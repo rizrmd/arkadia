@@ -180,6 +180,27 @@ async function character(id, spec) {
     const headToGround = frames[targetRow].reduce((n, f) => n + f.gy, 0) / 6;
     for (const f of frames[targetRow]) f.gy = Math.round(headToGround);
   }
+  // Idle and gait must share the same design, not merely the same total height.
+  // Reviewed idle-v3 was generated from the locomotion identity with planted feet.
+  // Scale each facing as a group; per-frame fitting would make the helmet pulse.
+  const idleSheet = await load('idle-v3.png');
+  const idle = figures(idleSheet, 4, 6, 'idle');
+  for (const [dir, row] of gaitRows.entries()) {
+    const targetRow = dir === 0 ? 0 : 4;
+    const height = idle.grid[row].reduce((n, c) => n + c.y1 - c.y0 + 1, 0) / 6;
+    const scale = referenceHeight / height;
+    frames[targetRow] = await Promise.all(idle.grid[row].map(async (c, col) => {
+      const raw = isolate(idleSheet, idle.label, idle.owned.get(c.id), c);
+      const {data, info} = await sharp(raw.data, {raw:{width:raw.w,height:raw.h,channels:4}})
+        .resize(Math.round(raw.w * scale), Math.round(raw.h * scale)).raw().toBuffer({resolveWithObject:true});
+      const f = {...raw, data, w:info.width, h:info.height, r:targetRow, c:col,
+        source:'idle-v3.png', sourceW:raw.w, sourceH:raw.h, sourceRatio:scale};
+      f.m = maskOf(f); f.gy = groundY(f, f.m); f.fx = feetX(f, f.m, f.gy);
+      return f;
+    }));
+    const baseline = Math.round(frames[targetRow].reduce((n,f) => n + f.gy, 0) / 6);
+    for (const f of frames[targetRow]) f.gy = baseline;
+  }
   // Supplemental frontal/rear gait uses the same registration and shared ground pivot.
   const vertical = await load('vertical-v3.png');
   // Reviewed sheet has touching silhouettes across row boundaries; explicit cell
@@ -233,6 +254,23 @@ async function character(id, spec) {
     if (list[0].ax === undefined) anchorFrom(name === 'die' ? frames[3][1] : ref, list[0]);
     for (let i = 1; i < list.length; i++) if (list[i].ax === undefined) anchorFrom(clip.loop ? list[0] : list[i - 1], list[i]);
     clips[name] = { ...clip, list };
+  }
+  // Cape/weapon silhouettes differ greatly between standing and walking. Alpha
+  // overlap alone can shift a rear-facing helmet sideways when movement starts.
+  // Register the crown landmark too, without changing head size or gait offsets.
+  const crownX = f => {
+    let left = f.w, right = -1;
+    for (let y = 0; y < Math.round(f.h * .10); y++) for (let x = 0; x < f.w; x++) {
+      if (f.data[(y * f.w + x) * 4 + 3] > 64) { left = Math.min(left, x); right = Math.max(right, x); }
+    }
+    if (right < left) throw Error(`${id}: missing crown landmark`);
+    return (left + right) / 2 - f.ax;
+  };
+  for (const suffix of ['', 'Back']) {
+    const idle = clips['idle' + suffix].list, move = clips['move' + suffix].list;
+    const mean = list => list.reduce((n, f) => n + crownX(f), 0) / list.length;
+    const correction = mean(move) - mean(idle);
+    for (const f of move) f.ax += correction;
   }
   // Shared canvas so the pivot is the same pixel in every cell.
   const all = frames.flat();

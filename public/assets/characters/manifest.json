@@ -5,28 +5,28 @@
   "hero": {
    "id": "hero",
    "image": "hero.png",
-   "revision": "24a9ded472bc1f22",
+   "revision": "e87bda77ec0b9095",
    "source": "hero-v2.png",
    "sourceSize": [
     1254,
     1254
    ],
    "atlasSize": [
-    826,
+    856,
     1004
    ],
    "scale": 0.5,
    "gutter": 4,
    "cell": {
-    "w": 133,
+    "w": 138,
     "h": 121,
     "pivot": {
-     "x": 62,
+     "x": 70,
      "y": 115
     }
    },
    "direction": "diagonal front/back plus straight up/down idle and locomotion; mirror diagonals only; attacks/hit/death use original art",
-   "idleHeightSourcePx": 197,
+   "idleHeightSourcePx": 198,
    "specks": 27,
    "droppedSpeckPx": 0,
    "clips": {
@@ -154,133 +154,133 @@
      "col": 0,
      "x": 4,
      "y": 4,
-     "w": 133,
+     "w": 138,
      "h": 121,
      "source": {
-      "file": "hero-v2.png",
-      "x": 35,
-      "y": 14,
-      "w": 144,
-      "h": 198
+      "file": "idle-v3.png",
+      "x": 11,
+      "y": 6,
+      "w": 217,
+      "h": 242
      },
      "anchorSourcePx": [
-      113.4,
-      210
+      154.6,
+      246.8
      ],
-     "roundingPx": 0.41,
+     "roundingPx": 0.48,
      "registrationIoU": 1
     },
     {
      "row": 0,
      "col": 1,
-     "x": 141,
+     "x": 146,
      "y": 4,
-     "w": 133,
+     "w": 138,
      "h": 121,
      "source": {
-      "file": "hero-v2.png",
-      "x": 235,
-      "y": 11,
-      "w": 150,
-      "h": 201
+      "file": "idle-v3.png",
+      "x": 263,
+      "y": 6,
+      "w": 219,
+      "h": 242
      },
      "anchorSourcePx": [
-      317,
-      210
+      407.2,
+      246.8
      ],
      "roundingPx": 0,
-     "registrationIoU": 0.939
+     "registrationIoU": 0.971
     },
     {
      "row": 0,
      "col": 2,
-     "x": 278,
+     "x": 288,
      "y": 4,
-     "w": 133,
+     "w": 138,
      "h": 121,
      "source": {
-      "file": "hero-v2.png",
-      "x": 436,
-      "y": 11,
-      "w": 154,
-      "h": 200
+      "file": "idle-v3.png",
+      "x": 518,
+      "y": 6,
+      "w": 218,
+      "h": 242
      },
      "anchorSourcePx": [
-      523,
-      209
+      661,
+      246.8
      ],
      "roundingPx": 0,
-     "registrationIoU": 0.933
+     "registrationIoU": 0.973
     },
     {
      "row": 0,
      "col": 3,
-     "x": 415,
+     "x": 430,
      "y": 4,
-     "w": 133,
+     "w": 138,
      "h": 121,
      "source": {
-      "file": "hero-v2.png",
-      "x": 644,
-      "y": 11,
-      "w": 156,
-      "h": 201
+      "file": "idle-v3.png",
+      "x": 771,
+      "y": 6,
+      "w": 220,
+      "h": 242
      },
      "anchorSourcePx": [
-      731,
-      210
+      916.4,
+      246.8
      ],
      "roundingPx": 0,
-     "registrationIoU": 0.913
+     "registrationIoU": 0.957
     },
     {
      "row": 0,
      "col": 4,
-     "x": 552,
+     "x": 572,
      "y": 4,
-     "w": 133,
+     "w": 138,
      "h": 121,
      "source": {
-      "file": "hero-v2.png",
-      "x": 857,
-      "y": 12,
-      "w": 154,
-      "h": 200
+      "file": "idle-v3.png",
+      "x": 1028,
+      "y": 6,
+      "w": 218,
+      "h": 242
      },
      "anchorSourcePx": [
-      943,
-      210
+      1169.8,
+      246.8
      ],
      "roundingPx": 0,
-     "registrationIoU": 0.937
+     "registrationIoU": 0.963
     },
     {
      "row": 0,
      "col": 5,
-     "x": 689,
+     "x": 714,
      "y": 4,
-     "w": 133,
+     "w": 138,
      "h": 121,
      "source": {
-      "file": "hero-v2.png",
-      "x": 1061,
-      "y": 10,
-      "w": 156,
-      "h": 201
+      "file": "idle-v3.png",
+      "x": 1281,
+      "y": 6,
+      "w": 220,
+      "h": 242
      },
      "anchorSourcePx": [
-      1150,
-      209
+      1425.2,
+      246.8
      ],
      "roundingPx": 0,
-     "registrationIoU": 0.92
+     "registrationIoU": 0.955
     },
     {
      "row": 1,
      "col": 0,
      "x": 4,
      "y": 129,
-     "w": 133,
+     "w": 138,
      "h": 121,
      "source": {
       "file": "locomotion-v2.png",
@@ -290,18 +290,18 @@
       "h": 239
      },
      "anchorSourcePx": [
-      135.1,
+      170.1,
       247.8
      ],
-     "roundingPx": 0,
-     "registrationIoU": 0.687
+     "roundingPx": 0.33,
+     "registrationIoU": 0.726
     },
     {
      "row": 1,
      "col": 1,
-     "x": 141,
+     "x": 146,
      "y": 129,
-     "w": 133,
+     "w": 138,
      "h": 121,
      "source": {
       "file": "locomotion-v2.png",
@@ -311,18 +311,18 @@
       "h": 244
      },
      "anchorSourcePx": [
-      402.1,
+      437,
       248.8
      ],
-     "roundingPx": 0,
+     "roundingPx": 0.33,
      "registrationIoU": 0.723
     },
     {
      "row": 1,
      "col": 2,
-     "x": 278,
+     "x": 288,
      "y": 129,
-     "w": 133,
+     "w": 138,
      "h": 121,
      "source": {
       "file": "locomotion-v2.png",
@@ -332,18 +332,18 @@
       "h": 245
      },
      "anchorSourcePx": [
-      662.4,
+      697.4,
       247.8
      ],
-     "roundingPx": 0,
+     "roundingPx": 0.33,
      "registrationIoU": 0.703
     },
     {
      "row": 1,
      "col": 3,
-     "x": 415,
+     "x": 430,
      "y": 129,
-     "w": 133,
+     "w": 138,
      "h": 121,
      "source": {
       "file": "locomotion-v2.png",
@@ -353,18 +353,18 @@
       "h": 248
      },
      "anchorSourcePx": [
-      919.1,
+      954,
       247.8
      ],
-     "roundingPx": 0,
+     "roundingPx": 0.33,
      "registrationIoU": 0.852
     },
     {
      "row": 1,
      "col": 4,
-     "x": 552,
+     "x": 572,
      "y": 129,
-     "w": 133,
+     "w": 138,
      "h": 121,
      "source": {
       "file": "locomotion-v2.png",
@@ -374,18 +374,18 @@
       "h": 245
      },
      "anchorSourcePx": [
-      1168.3,
+      1203.2,
       247.8
      ],
-     "roundingPx": 0,
+     "roundingPx": 0.33,
      "registrationIoU": 0.698
     },
     {
      "row": 1,
      "col": 5,
-     "x": 689,
+     "x": 714,
      "y": 129,
-     "w": 133,
+     "w": 138,
      "h": 121,
      "source": {
       "file": "locomotion-v2.png",
@@ -395,10 +395,10 @@
       "h": 243
      },
      "anchorSourcePx": [
-      1430.2,
+      1465.1,
       249.8
      ],
-     "roundingPx": 0,
+     "roundingPx": 0.33,
      "registrationIoU": 0.72
     },
     {
@@ -406,7 +406,7 @@
      "col": 0,
      "x": 4,
      "y": 254,
-     "w": 133,
+     "w": 138,
      "h": 121,
      "source": {
       "file": "hero-v2.png",
@@ -416,18 +416,18 @@
       "h": 168
      },
      "anchorSourcePx": [
-      142,
+      151,
       624
      ],
      "roundingPx": 0,
-     "registrationIoU": 0.556
+     "registrationIoU": 0.537
     },
     {
      "row": 2,
      "col": 1,
-     "x": 141,
+     "x": 146,
      "y": 254,
-     "w": 133,
+     "w": 138,
      "h": 121,
      "source": {
       "file": "hero-v2.png",
@@ -437,18 +437,18 @@
       "h": 224
      },
      "anchorSourcePx": [
-      336,
+      344,
       626
      ],
      "roundingPx": 0,
-     "registrationIoU": 0.605
+     "registrationIoU": 0.604
     },
     {
      "row": 2,
      "col": 2,
-     "x": 278,
+     "x": 288,
      "y": 254,
-     "w": 133,
+     "w": 138,
      "h": 121,
      "source": {
       "file": "hero-v2.png",
@@ -458,7 +458,7 @@
       "h": 215
      },
      "anchorSourcePx": [
-      525,
+      533,
       625
      ],
      "roundingPx": 0,
@@ -467,9 +467,9 @@
     {
      "row": 2,
      "col": 3,
-     "x": 415,
+     "x": 430,
      "y": 254,
-     "w": 133,
+     "w": 138,
      "h": 121,
      "source": {
       "file": "hero-v2.png",
@@ -479,7 +479,7 @@
       "h": 155
      },
      "anchorSourcePx": [
-      730,
+      738,
       615
      ],
      "roundingPx": 0,
@@ -488,9 +488,9 @@
     {
      "row": 2,
      "col": 4,
-     "x": 552,
+     "x": 572,
      "y": 254,
-     "w": 133,
+     "w": 138,
      "h": 121,
      "source": {
       "file": "hero-v2.png",
@@ -500,7 +500,7 @@
       "h": 169
      },
      "anchorSourcePx": [
-      952,
+      960,
       612
      ],
      "roundingPx": 0,
@@ -509,9 +509,9 @@
     {
      "row": 2,
      "col": 5,
-     "x": 689,
+     "x": 714,
      "y": 254,
-     "w": 133,
+     "w": 138,
      "h": 121,
      "source": {
       "file": "hero-v2.png",
@@ -521,7 +521,7 @@
       "h": 187
      },
      "anchorSourcePx": [
-      1157,
+      1165,
       626
      ],
      "roundingPx": 0,
@@ -532,7 +532,7 @@
      "col": 0,
      "x": 4,
      "y": 379,
-     "w": 133,
+     "w": 138,
      "h": 121,
      "source": {
       "file": "hero-v2.png",
@@ -542,18 +542,18 @@
       "h": 186
      },
      "anchorSourcePx": [
-      108,
+      128,
       819
      ],
      "roundingPx": 0,
-     "registrationIoU": 0.618
+     "registrationIoU": 0.603
     },
     {
      "row": 3,
      "col": 1,
-     "x": 141,
+     "x": 146,
      "y": 379,
-     "w": 133,
+     "w": 138,
      "h": 121,
      "source": {
       "file": "hero-v2.png",
@@ -563,7 +563,7 @@
       "h": 178
      },
      "anchorSourcePx": [
-      324,
+      344,
       817
      ],
      "roundingPx": 0,
@@ -572,9 +572,9 @@
     {
      "row": 3,
      "col": 2,
-     "x": 278,
+     "x": 288,
      "y": 379,
-     "w": 133,
+     "w": 138,
      "h": 121,
      "source": {
       "file": "hero-v2.png",
@@ -584,7 +584,7 @@
       "h": 153
      },
      "anchorSourcePx": [
-      520,
+      540,
       818
      ],
      "roundingPx": 0,
@@ -593,9 +593,9 @@
     {
      "row": 3,
      "col": 3,
-     "x": 415,
+     "x": 430,
      "y": 379,
-     "w": 133,
+     "w": 138,
      "h": 121,
      "source": {
       "file": "hero-v2.png",
@@ -605,7 +605,7 @@
       "h": 148
      },
      "anchorSourcePx": [
-      701,
+      721,
       816
      ],
      "roundingPx": 0,
@@ -614,9 +614,9 @@
     {
      "row": 3,
      "col": 4,
-     "x": 552,
+     "x": 572,
      "y": 379,
-     "w": 133,
+     "w": 138,
      "h": 121,
      "source": {
       "file": "hero-v2.png",
@@ -626,7 +626,7 @@
       "h": 117
      },
      "anchorSourcePx": [
-      895,
+      915,
       809
      ],
      "roundingPx": 0,
@@ -635,9 +635,9 @@
     {
      "row": 3,
      "col": 5,
-     "x": 689,
+     "x": 714,
      "y": 379,
-     "w": 133,
+     "w": 138,
      "h": 121,
      "source": {
       "file": "hero-v2.png",
@@ -647,7 +647,7 @@
       "h": 106
      },
      "anchorSourcePx": [
-      1117,
+      1137,
       813
      ],
      "roundingPx": 0,
@@ -658,133 +658,133 @@
      "col": 0,
      "x": 4,
      "y": 504,
-     "w": 133,
+     "w": 138,
      "h": 121,
      "source": {
-      "file": "hero-v2.png",
-      "x": 22,
-      "y": 831,
-      "w": 189,
-      "h": 188
+      "file": "idle-v3.png",
+      "x": 11,
+      "y": 256,
+      "w": 248,
+      "h": 253
      },
      "anchorSourcePx": [
-      101,
-      1018
+      154.1,
+      507.7
      ],
      "roundingPx": 0,
-     "registrationIoU": 0.663
+     "registrationIoU": 0.786
     },
     {
      "row": 4,
      "col": 1,
-     "x": 141,
+     "x": 146,
      "y": 504,
-     "w": 133,
+     "w": 138,
      "h": 121,
      "source": {
-      "file": "hero-v2.png",
-      "x": 229,
-      "y": 831,
-      "w": 190,
-      "h": 190
+      "file": "idle-v3.png",
+      "x": 268,
+      "y": 256,
+      "w": 248,
+      "h": 253
      },
      "anchorSourcePx": [
-      310,
-      1019
+      411.1,
+      507.7
      ],
      "roundingPx": 0,
-     "registrationIoU": 0.946
+     "registrationIoU": 0.94
     },
     {
      "row": 4,
      "col": 2,
-     "x": 278,
+     "x": 288,
      "y": 504,
-     "w": 133,
+     "w": 138,
      "h": 121,
      "source": {
-      "file": "hero-v2.png",
-      "x": 440,
-      "y": 831,
-      "w": 186,
-      "h": 190
+      "file": "idle-v3.png",
+      "x": 523,
+      "y": 256,
+      "w": 247,
+      "h": 253
      },
      "anchorSourcePx": [
-      516,
-      1019
+      666.1,
+      507.7
      ],
      "roundingPx": 0,
-     "registrationIoU": 0.941
+     "registrationIoU": 0.947
     },
     {
      "row": 4,
      "col": 3,
-     "x": 415,
+     "x": 430,
      "y": 504,
-     "w": 133,
+     "w": 138,
      "h": 121,
      "source": {
-      "file": "hero-v2.png",
-      "x": 640,
-      "y": 831,
-      "w": 196,
-      "h": 189
+      "file": "idle-v3.png",
+      "x": 776,
+      "y": 256,
+      "w": 251,
+      "h": 253
      },
      "anchorSourcePx": [
-      726,
-      1018
+      921.7,
+      507.7
      ],
      "roundingPx": 0,
-     "registrationIoU": 0.958
+     "registrationIoU": 0.938
     },
     {
      "row": 4,
      "col": 4,
-     "x": 552,
+     "x": 572,
      "y": 504,
-     "w": 133,
+     "w": 138,
      "h": 121,
      "source": {
-      "file": "hero-v2.png",
-      "x": 850,
-      "y": 830,
-      "w": 193,
-      "h": 190
+      "file": "idle-v3.png",
+      "x": 1036,
+      "y": 256,
+      "w": 253,
+      "h": 253
      },
      "anchorSourcePx": [
-      927,
-      1018
+      1181.7,
+      507.7
      ],
      "roundingPx": 0,
-     "registrationIoU": 0.927
+     "registrationIoU": 0.919
     },
     {
      "row": 4,
      "col": 5,
-     "x": 689,
+     "x": 714,
      "y": 504,
-     "w": 133,
+     "w": 138,
      "h": 121,
      "source": {
-      "file": "hero-v2.png",
-      "x": 1065,
-      "y": 831,
-      "w": 185,
-      "h": 189
+      "file": "idle-v3.png",
+      "x": 1292,
+      "y": 256,
+      "w": 244,
+      "h": 253
      },
      "anchorSourcePx": [
-      1142,
-      1019
+      1435.1,
+      507.7
      ],
      "roundingPx": 0,
-     "registrationIoU": 0.942
+     "registrationIoU": 0.938
     },
     {
      "row": 5,
      "col": 0,
      "x": 4,
      "y": 629,
-     "w": 133,
+     "w": 138,
      "h": 121,
      "source": {
       "file": "locomotion-v2.png",
@@ -794,18 +794,18 @@
       "h": 241
      },
      "anchorSourcePx": [
-      125.9,
+      171.7,
       497.5
      ],
-     "roundingPx": 0,
-     "registrationIoU": 0.675
+     "roundingPx": 0.17,
+     "registrationIoU": 0.687
     },
     {
      "row": 5,
      "col": 1,
-     "x": 141,
+     "x": 146,
      "y": 629,
-     "w": 133,
+     "w": 138,
      "h": 121,
      "source": {
       "file": "locomotion-v2.png",
@@ -815,18 +815,18 @@
       "h": 244
      },
      "anchorSourcePx": [
-      401.4,
+      447.2,
       496.5
      ],
-     "roundingPx": 0,
-     "registrationIoU": 0.708
+     "roundingPx": 0.17,
+     "registrationIoU": 0.709
     },
     {
      "row": 5,
      "col": 2,
-     "x": 278,
+     "x": 288,
      "y": 629,
-     "w": 133,
+     "w": 138,
      "h": 121,
      "source": {
       "file": "locomotion-v2.png",
@@ -836,18 +836,18 @@
       "h": 241
      },
      "anchorSourcePx": [
-      645.1,
+      692.2,
       496.5
      ],
-     "roundingPx": 0,
+     "roundingPx": 0.17,
      "registrationIoU": 0.695
     },
     {
      "row": 5,
      "col": 3,
-     "x": 415,
+     "x": 430,
      "y": 629,
-     "w": 133,
+     "w": 138,
      "h": 121,
      "source": {
       "file": "locomotion-v2.png",
@@ -857,18 +857,18 @@
       "h": 242
      },
      "anchorSourcePx": [
-      913.8,
+      959.6,
       497.5
      ],
-     "roundingPx": 0,
-     "registrationIoU": 0.912
+     "roundingPx": 0.17,
+     "registrationIoU": 0.915
     },
     {
      "row": 5,
      "col": 4,
-     "x": 552,
+     "x": 572,
      "y": 629,
-     "w": 133,
+     "w": 138,
      "h": 121,
      "source": {
       "file": "locomotion-v2.png",
@@ -878,18 +878,18 @@
       "h": 245
      },
      "anchorSourcePx": [
-      1169.3,
+      1213.9,
       495.5
      ],
-     "roundingPx": 0,
-     "registrationIoU": 0.728
+     "roundingPx": 0.17,
+     "registrationIoU": 0.727
     },
     {
      "row": 5,
      "col": 5,
-     "x": 689,
+     "x": 714,
      "y": 629,
-     "w": 133,
+     "w": 138,
      "h": 121,
      "source": {
       "file": "locomotion-v2.png",
@@ -899,18 +899,18 @@
       "h": 243
      },
      "anchorSourcePx": [
-      1418.4,
+      1462.9,
       496.5
      ],
-     "roundingPx": 0,
-     "registrationIoU": 0.666
+     "roundingPx": 0.17,
+     "registrationIoU": 0.664
     },
     {
      "row": 6,
      "col": 0,
      "x": 4,
      "y": 754,
-     "w": 133,
+     "w": 138,
      "h": 121,
      "source": {
       "file": "vertical-v3.png",
@@ -920,18 +920,18 @@
       "h": 243
      },
      "anchorSourcePx": [
-      123.6,
+      168.9,
       252.3
      ],
      "roundingPx": 0,
-     "registrationIoU": 0.699
+     "registrationIoU": 0.712
     },
     {
      "row": 6,
      "col": 1,
-     "x": 141,
+     "x": 146,
      "y": 754,
-     "w": 133,
+     "w": 138,
      "h": 121,
      "source": {
       "file": "vertical-v3.png",
@@ -941,18 +941,18 @@
       "h": 239
      },
      "anchorSourcePx": [
-      370.4,
+      416.9,
       251.3
      ],
      "roundingPx": 0,
-     "registrationIoU": 0.912
+     "registrationIoU": 0.91
     },
     {
      "row": 6,
      "col": 2,
-     "x": 278,
+     "x": 288,
      "y": 754,
-     "w": 133,
+     "w": 138,
      "h": 121,
      "source": {
       "file": "vertical-v3.png",
@@ -962,18 +962,18 @@
       "h": 244
      },
      "anchorSourcePx": [
-      623.2,
+      668.5,
       251.3
      ],
      "roundingPx": 0,
-     "registrationIoU": 0.866
+     "registrationIoU": 0.861
     },
     {
      "row": 6,
      "col": 3,
-     "x": 415,
+     "x": 430,
      "y": 754,
-     "w": 133,
+     "w": 138,
      "h": 121,
      "source": {
       "file": "vertical-v3.png",
@@ -983,18 +983,18 @@
       "h": 244
      },
      "anchorSourcePx": [
-      879.8,
+      925.1,
       251.3
      ],
      "roundingPx": 0,
-     "registrationIoU": 0.931
+     "registrationIoU": 0.937
     },
     {
      "row": 6,
      "col": 4,
-     "x": 552,
+     "x": 572,
      "y": 754,
-     "w": 133,
+     "w": 138,
      "h": 121,
      "source": {
       "file": "vertical-v3.png",
@@ -1004,18 +1004,18 @@
       "h": 243
      },
      "anchorSourcePx": [
-      1127.8,
+      1173.1,
       252.3
      ],
      "roundingPx": 0,
-     "registrationIoU": 0.937
+     "registrationIoU": 0.936
     },
     {
      "row": 6,
      "col": 5,
-     "x": 689,
+     "x": 714,
      "y": 754,
-     "w": 133,
+     "w": 138,
      "h": 121,
      "source": {
       "file": "vertical-v3.png",
@@ -1025,18 +1025,18 @@
       "h": 242
      },
      "anchorSourcePx": [
-      1379.3,
+      1424.6,
       251.3
      ],
      "roundingPx": 0,
-     "registrationIoU": 0.905
+     "registrationIoU": 0.908
     },
     {
      "row": 7,
      "col": 0,
      "x": 4,
      "y": 879,
-     "w": 133,
+     "w": 138,
      "h": 121,
      "source": {
       "file": "vertical-v3.png",
@@ -1046,18 +1046,18 @@
       "h": 251
      },
      "anchorSourcePx": [
-      136.1,
+      169,
       503.1
      ],
      "roundingPx": 0,
-     "registrationIoU": 0.626
+     "registrationIoU": 0.63
     },
     {
      "row": 7,
      "col": 1,
-     "x": 141,
+     "x": 146,
      "y": 879,
-     "w": 133,
+     "w": 138,
      "h": 121,
      "source": {
       "file": "vertical-v3.png",
@@ -1067,7 +1067,7 @@
       "h": 251
      },
      "anchorSourcePx": [
-      387.8,
+      420.7,
       503.1
      ],
      "roundingPx": 0,
@@ -1076,9 +1076,9 @@
     {
      "row": 7,
      "col": 2,
-     "x": 278,
+     "x": 288,
      "y": 879,
-     "w": 133,
+     "w": 138,
      "h": 121,
      "source": {
       "file": "vertical-v3.png",
@@ -1088,7 +1088,7 @@
       "h": 250
      },
      "anchorSourcePx": [
-      636.3,
+      669.2,
       504.1
      ],
      "roundingPx": 0,
@@ -1097,9 +1097,9 @@
     {
      "row": 7,
      "col": 3,
-     "x": 415,
+     "x": 430,
      "y": 879,
-     "w": 133,
+     "w": 138,
      "h": 121,
      "source": {
       "file": "vertical-v3.png",
@@ -1109,7 +1109,7 @@
       "h": 251
      },
      "anchorSourcePx": [
-      880.6,
+      913.4,
       503.1
      ],
      "roundingPx": 0,
@@ -1118,9 +1118,9 @@
     {
      "row": 7,
      "col": 4,
-     "x": 552,
+     "x": 572,
      "y": 879,
-     "w": 133,
+     "w": 138,
      "h": 121,
      "source": {
       "file": "vertical-v3.png",
@@ -1130,7 +1130,7 @@
       "h": 249
      },
      "anchorSourcePx": [
-      1146.5,
+      1179.4,
       505.1
      ],
      "roundingPx": 0,
@@ -1139,9 +1139,9 @@
     {
      "row": 7,
      "col": 5,
-     "x": 689,
+     "x": 714,
      "y": 879,
-     "w": 133,
+     "w": 138,
      "h": 121,
      "source": {
       "file": "vertical-v3.png",
@@ -1151,7 +1151,7 @@
       "h": 250
      },
      "anchorSourcePx": [
-      1396,
+      1428.9,
       504.1
      ],
      "roundingPx": 0,
@@ -1162,28 +1162,28 @@
   "revenant": {
    "id": "revenant",
    "image": "revenant.png",
-   "revision": "3bc4cdc2a249b958",
+   "revision": "b5fd563155bc98d1",
    "source": "enemy-v2.png",
    "sourceSize": [
     1254,
     1254
    ],
    "atlasSize": [
-    790,
+    784,
     996
    ],
    "scale": 0.5,
    "gutter": 4,
    "cell": {
-    "w": 127,
+    "w": 126,
     "h": 120,
     "pivot": {
-     "x": 72,
+     "x": 74,
      "y": 114
     }
    },
    "direction": "diagonal front/back plus straight up/down idle and locomotion; mirror diagonals only; attacks/hit/death use original art",
-   "idleHeightSourcePx": 183,
+   "idleHeightSourcePx": 185,
    "specks": 70,
    "droppedSpeckPx": 0,
    "clips": {
@@ -1311,133 +1311,133 @@
      "col": 0,
      "x": 4,
      "y": 4,
-     "w": 127,
+     "w": 126,
      "h": 120,
      "source": {
-      "file": "enemy-v2.png",
-      "x": 37,
-      "y": 19,
-      "w": 148,
-      "h": 185
+      "file": "idle-v3.png",
+      "x": 10,
+      "y": 515,
+      "w": 226,
+      "h": 235
      },
      "anchorSourcePx": [
-      118.1,
-      201
+      135.1,
+      748.7
      ],
-     "roundingPx": 0.09,
+     "roundingPx": 0.47,
      "registrationIoU": 1
     },
     {
      "row": 0,
      "col": 1,
-     "x": 135,
+     "x": 134,
      "y": 4,
-     "w": 127,
+     "w": 126,
      "h": 120,
      "source": {
-      "file": "enemy-v2.png",
-      "x": 251,
-      "y": 18,
-      "w": 140,
-      "h": 186
+      "file": "idle-v3.png",
+      "x": 260,
+      "y": 515,
+      "w": 232,
+      "h": 235
      },
      "anchorSourcePx": [
-      325,
-      201
+      390.8,
+      748.7
      ],
      "roundingPx": 0,
-     "registrationIoU": 0.889
+     "registrationIoU": 0.944
     },
     {
      "row": 0,
      "col": 2,
-     "x": 266,
+     "x": 264,
      "y": 4,
-     "w": 127,
+     "w": 126,
      "h": 120,
      "source": {
-      "file": "enemy-v2.png",
-      "x": 460,
-      "y": 14,
-      "w": 144,
-      "h": 190
+      "file": "idle-v3.png",
+      "x": 518,
+      "y": 515,
+      "w": 229,
+      "h": 235
      },
      "anchorSourcePx": [
-      537,
-      202
+      645,
+      748.7
      ],
      "roundingPx": 0,
-     "registrationIoU": 0.86
+     "registrationIoU": 0.942
     },
     {
      "row": 0,
      "col": 3,
-     "x": 397,
+     "x": 394,
      "y": 4,
-     "w": 127,
+     "w": 126,
      "h": 120,
      "source": {
-      "file": "enemy-v2.png",
-      "x": 660,
-      "y": 11,
-      "w": 150,
-      "h": 195
+      "file": "idle-v3.png",
+      "x": 769,
+      "y": 515,
+      "w": 234,
+      "h": 235
      },
      "anchorSourcePx": [
-      745,
-      203
+      901.1,
+      748.7
      ],
      "roundingPx": 0,
-     "registrationIoU": 0.83
+     "registrationIoU": 0.938
     },
     {
      "row": 0,
      "col": 4,
-     "x": 528,
+     "x": 524,
      "y": 4,
-     "w": 127,
+     "w": 126,
      "h": 120,
      "source": {
-      "file": "enemy-v2.png",
-      "x": 868,
-      "y": 15,
-      "w": 150,
-      "h": 189
+      "file": "idle-v3.png",
+      "x": 1031,
+      "y": 515,
+      "w": 228,
+      "h": 235
      },
      "anchorSourcePx": [
-      951,
-      203
+      1156.8,
+      748.7
      ],
      "roundingPx": 0,
-     "registrationIoU": 0.837
+     "registrationIoU": 0.949
     },
     {
      "row": 0,
      "col": 5,
-     "x": 659,
+     "x": 654,
      "y": 4,
-     "w": 127,
+     "w": 126,
      "h": 120,
      "source": {
-      "file": "enemy-v2.png",
-      "x": 1080,
-      "y": 14,
-      "w": 140,
-      "h": 190
+      "file": "idle-v3.png",
+      "x": 1284,
+      "y": 515,
+      "w": 230,
+      "h": 235
      },
      "anchorSourcePx": [
-      1157,
-      203
+      1412.3,
+      748.7
      ],
      "roundingPx": 0,
-     "registrationIoU": 0.841
+     "registrationIoU": 0.943
     },
     {
      "row": 1,
      "col": 0,
      "x": 4,
      "y": 128,
-     "w": 127,
+     "w": 126,
      "h": 120,
      "source": {
       "file": "locomotion-v2.png",
@@ -1447,18 +1447,18 @@
       "h": 245
      },
      "anchorSourcePx": [
-      155.9,
+      157.2,
       745
      ],
      "roundingPx": 0,
-     "registrationIoU": 0.634
+     "registrationIoU": 0.665
     },
     {
      "row": 1,
      "col": 1,
-     "x": 135,
+     "x": 134,
      "y": 128,
-     "w": 127,
+     "w": 126,
      "h": 120,
      "source": {
       "file": "locomotion-v2.png",
@@ -1472,14 +1472,14 @@
       746
      ],
      "roundingPx": 0,
-     "registrationIoU": 0.693
+     "registrationIoU": 0.69
     },
     {
      "row": 1,
      "col": 2,
-     "x": 266,
+     "x": 264,
      "y": 128,
-     "w": 127,
+     "w": 126,
      "h": 120,
      "source": {
       "file": "locomotion-v2.png",
@@ -1493,14 +1493,14 @@
       743
      ],
      "roundingPx": 0,
-     "registrationIoU": 0.662
+     "registrationIoU": 0.661
     },
     {
      "row": 1,
      "col": 3,
-     "x": 397,
+     "x": 394,
      "y": 128,
-     "w": 127,
+     "w": 126,
      "h": 120,
      "source": {
       "file": "locomotion-v2.png",
@@ -1510,18 +1510,18 @@
       "h": 246
      },
      "anchorSourcePx": [
-      925.2,
+      926.5,
       745
      ],
      "roundingPx": 0,
-     "registrationIoU": 0.893
+     "registrationIoU": 0.892
     },
     {
      "row": 1,
      "col": 4,
-     "x": 528,
+     "x": 524,
      "y": 128,
-     "w": 127,
+     "w": 126,
      "h": 120,
      "source": {
       "file": "locomotion-v2.png",
@@ -1535,14 +1535,14 @@
       746
      ],
      "roundingPx": 0,
-     "registrationIoU": 0.683
+     "registrationIoU": 0.684
     },
     {
      "row": 1,
      "col": 5,
-     "x": 659,
+     "x": 654,
      "y": 128,
-     "w": 127,
+     "w": 126,
      "h": 120,
      "source": {
       "file": "locomotion-v2.png",
@@ -1552,18 +1552,18 @@
       "h": 242
      },
      "anchorSourcePx": [
-      1427.3,
+      1428.6,
       746
      ],
      "roundingPx": 0,
-     "registrationIoU": 0.669
+     "registrationIoU": 0.666
     },
     {
      "row": 2,
      "col": 0,
      "x": 4,
      "y": 252,
-     "w": 127,
+     "w": 126,
      "h": 120,
      "source": {
       "file": "enemy-v2.png",
@@ -1573,18 +1573,18 @@
       "h": 178
      },
      "anchorSourcePx": [
-      146,
+      152,
       631
      ],
      "roundingPx": 0,
-     "registrationIoU": 0.588
+     "registrationIoU": 0.536
     },
     {
      "row": 2,
      "col": 1,
-     "x": 135,
+     "x": 134,
      "y": 252,
-     "w": 127,
+     "w": 126,
      "h": 120,
      "source": {
       "file": "enemy-v2.png",
@@ -1594,7 +1594,7 @@
       "h": 221
      },
      "anchorSourcePx": [
-      370,
+      376,
       632
      ],
      "roundingPx": 0,
@@ -1603,9 +1603,9 @@
     {
      "row": 2,
      "col": 2,
-     "x": 266,
+     "x": 264,
      "y": 252,
-     "w": 127,
+     "w": 126,
      "h": 120,
      "source": {
       "file": "enemy-v2.png",
@@ -1615,7 +1615,7 @@
       "h": 180
      },
      "anchorSourcePx": [
-      567,
+      573,
       633
      ],
      "roundingPx": 0,
@@ -1624,9 +1624,9 @@
     {
      "row": 2,
      "col": 3,
-     "x": 397,
+     "x": 394,
      "y": 252,
-     "w": 127,
+     "w": 126,
      "h": 120,
      "source": {
       "file": "enemy-v2.png",
@@ -1636,7 +1636,7 @@
       "h": 148
      },
      "anchorSourcePx": [
-      773,
+      779,
       634
      ],
      "roundingPx": 0,
@@ -1645,9 +1645,9 @@
     {
      "row": 2,
      "col": 4,
-     "x": 528,
+     "x": 524,
      "y": 252,
-     "w": 127,
+     "w": 126,
      "h": 120,
      "source": {
       "file": "enemy-v2.png",
@@ -1657,7 +1657,7 @@
       "h": 183
      },
      "anchorSourcePx": [
-      965,
+      971,
       627
      ],
      "roundingPx": 0,
@@ -1666,9 +1666,9 @@
     {
      "row": 2,
      "col": 5,
-     "x": 659,
+     "x": 654,
      "y": 252,
-     "w": 127,
+     "w": 126,
      "h": 120,
      "source": {
       "file": "enemy-v2.png",
@@ -1678,7 +1678,7 @@
       "h": 196
      },
      "anchorSourcePx": [
-      1178,
+      1184,
       627
      ],
      "roundingPx": 0,
@@ -1689,7 +1689,7 @@
      "col": 0,
      "x": 4,
      "y": 376,
-     "w": 127,
+     "w": 126,
      "h": 120,
      "source": {
       "file": "enemy-v2.png",
@@ -1699,18 +1699,18 @@
       "h": 197
      },
      "anchorSourcePx": [
-      129,
+      123,
       830
      ],
      "roundingPx": 0,
-     "registrationIoU": 0.505
+     "registrationIoU": 0.56
     },
     {
      "row": 3,
      "col": 1,
-     "x": 135,
+     "x": 134,
      "y": 376,
-     "w": 127,
+     "w": 126,
      "h": 120,
      "source": {
       "file": "enemy-v2.png",
@@ -1720,7 +1720,7 @@
       "h": 177
      },
      "anchorSourcePx": [
-      332,
+      326,
       829
      ],
      "roundingPx": 0,
@@ -1729,9 +1729,9 @@
     {
      "row": 3,
      "col": 2,
-     "x": 266,
+     "x": 264,
      "y": 376,
-     "w": 127,
+     "w": 126,
      "h": 120,
      "source": {
       "file": "enemy-v2.png",
@@ -1741,18 +1741,18 @@
       "h": 139
      },
      "anchorSourcePx": [
-      546,
+      544,
       831
      ],
      "roundingPx": 0,
-     "registrationIoU": 0.489
+     "registrationIoU": 0.485
     },
     {
      "row": 3,
      "col": 3,
-     "x": 397,
+     "x": 394,
      "y": 376,
-     "w": 127,
+     "w": 126,
      "h": 120,
      "source": {
       "file": "enemy-v2.png",
@@ -1771,9 +1771,9 @@
     {
      "row": 3,
      "col": 4,
-     "x": 528,
+     "x": 524,
      "y": 376,
-     "w": 127,
+     "w": 126,
      "h": 120,
      "source": {
       "file": "enemy-v2.png",
@@ -1792,9 +1792,9 @@
     {
      "row": 3,
      "col": 5,
-     "x": 659,
+     "x": 654,
      "y": 376,
-     "w": 127,
+     "w": 126,
      "h": 120,
      "source": {
       "file": "enemy-v2.png",
@@ -1815,133 +1815,133 @@
      "col": 0,
      "x": 4,
      "y": 500,
-     "w": 127,
+     "w": 126,
      "h": 120,
      "source": {
-      "file": "enemy-v2.png",
-      "x": 32,
-      "y": 840,
-      "w": 172,
-      "h": 174
+      "file": "idle-v3.png",
+      "x": 12,
+      "y": 757,
+      "w": 235,
+      "h": 251
      },
      "anchorSourcePx": [
-      142,
-      1013
+      143.8,
+      1007
      ],
      "roundingPx": 0,
-     "registrationIoU": 0.529
+     "registrationIoU": 0.86
     },
     {
      "row": 4,
      "col": 1,
-     "x": 135,
+     "x": 134,
      "y": 500,
-     "w": 127,
+     "w": 126,
      "h": 120,
      "source": {
-      "file": "enemy-v2.png",
-      "x": 236,
-      "y": 838,
-      "w": 170,
-      "h": 177
+      "file": "idle-v3.png",
+      "x": 270,
+      "y": 756,
+      "w": 233,
+      "h": 252
      },
      "anchorSourcePx": [
-      347,
-      1014
+      401.8,
+      1006
      ],
      "roundingPx": 0,
-     "registrationIoU": 0.847
+     "registrationIoU": 0.957
     },
     {
      "row": 4,
      "col": 2,
-     "x": 266,
+     "x": 264,
      "y": 500,
-     "w": 127,
+     "w": 126,
      "h": 120,
      "source": {
-      "file": "enemy-v2.png",
-      "x": 444,
-      "y": 838,
-      "w": 178,
-      "h": 184
+      "file": "idle-v3.png",
+      "x": 520,
+      "y": 756,
+      "w": 238,
+      "h": 252
      },
      "anchorSourcePx": [
-      555,
-      1020
+      654.5,
+      1006
      ],
      "roundingPx": 0,
-     "registrationIoU": 0.785
+     "registrationIoU": 0.96
     },
     {
      "row": 4,
      "col": 3,
-     "x": 397,
+     "x": 394,
      "y": 500,
-     "w": 127,
+     "w": 126,
      "h": 120,
      "source": {
-      "file": "enemy-v2.png",
-      "x": 654,
-      "y": 840,
-      "w": 172,
-      "h": 182
+      "file": "idle-v3.png",
+      "x": 774,
+      "y": 757,
+      "w": 238,
+      "h": 251
      },
      "anchorSourcePx": [
-      763,
-      1020
+      911.2,
+      1007
      ],
      "roundingPx": 0,
-     "registrationIoU": 0.805
+     "registrationIoU": 0.929
     },
     {
      "row": 4,
      "col": 4,
-     "x": 528,
+     "x": 524,
      "y": 500,
-     "w": 127,
+     "w": 126,
      "h": 120,
      "source": {
-      "file": "enemy-v2.png",
-      "x": 868,
-      "y": 838,
-      "w": 174,
-      "h": 184
+      "file": "idle-v3.png",
+      "x": 1033,
+      "y": 757,
+      "w": 238,
+      "h": 251
      },
      "anchorSourcePx": [
-      979,
-      1020
+      1167.5,
+      1007
      ],
      "roundingPx": 0,
-     "registrationIoU": 0.793
+     "registrationIoU": 0.956
     },
     {
      "row": 4,
      "col": 5,
-     "x": 659,
+     "x": 654,
      "y": 500,
-     "w": 127,
+     "w": 126,
      "h": 120,
      "source": {
-      "file": "enemy-v2.png",
-      "x": 1073,
-      "y": 839,
-      "w": 163,
-      "h": 182
+      "file": "idle-v3.png",
+      "x": 1290,
+      "y": 757,
+      "w": 234,
+      "h": 251
      },
      "anchorSourcePx": [
-      1180,
-      1019
+      1423.1,
+      1007
      ],
      "roundingPx": 0,
-     "registrationIoU": 0.768
+     "registrationIoU": 0.948
     },
     {
      "row": 5,
      "col": 0,
      "x": 4,
      "y": 624,
-     "w": 127,
+     "w": 126,
      "h": 120,
      "source": {
       "file": "locomotion-v2.png",
@@ -1951,18 +1951,18 @@
       "h": 246
      },
      "anchorSourcePx": [
-      143.3,
+      161.8,
       998
      ],
      "roundingPx": 0,
-     "registrationIoU": 0.626
+     "registrationIoU": 0.644
     },
     {
      "row": 5,
      "col": 1,
-     "x": 135,
+     "x": 134,
      "y": 624,
-     "w": 127,
+     "w": 126,
      "h": 120,
      "source": {
       "file": "locomotion-v2.png",
@@ -1972,18 +1972,18 @@
       "h": 248
      },
      "anchorSourcePx": [
-      402.1,
+      420.6,
       999
      ],
      "roundingPx": 0,
-     "registrationIoU": 0.657
+     "registrationIoU": 0.656
     },
     {
      "row": 5,
      "col": 2,
-     "x": 266,
+     "x": 264,
      "y": 624,
-     "w": 127,
+     "w": 126,
      "h": 120,
      "source": {
       "file": "locomotion-v2.png",
@@ -1993,18 +1993,18 @@
       "h": 247
      },
      "anchorSourcePx": [
-      657.4,
+      674.6,
       997
      ],
      "roundingPx": 0,
-     "registrationIoU": 0.67
+     "registrationIoU": 0.671
     },
     {
      "row": 5,
      "col": 3,
-     "x": 397,
+     "x": 394,
      "y": 624,
-     "w": 127,
+     "w": 126,
      "h": 120,
      "source": {
       "file": "locomotion-v2.png",
@@ -2014,18 +2014,18 @@
       "h": 250
      },
      "anchorSourcePx": [
-      918.2,
+      936.7,
       999
      ],
      "roundingPx": 0,
-     "registrationIoU": 0.877
+     "registrationIoU": 0.874
     },
     {
      "row": 5,
      "col": 4,
-     "x": 528,
+     "x": 524,
      "y": 624,
-     "w": 127,
+     "w": 126,
      "h": 120,
      "source": {
       "file": "locomotion-v2.png",
@@ -2035,18 +2035,18 @@
       "h": 246
      },
      "anchorSourcePx": [
-      1171.4,
+      1189.9,
       998
      ],
      "roundingPx": 0,
-     "registrationIoU": 0.684
+     "registrationIoU": 0.682
     },
     {
      "row": 5,
      "col": 5,
-     "x": 659,
+     "x": 654,
      "y": 624,
-     "w": 127,
+     "w": 126,
      "h": 120,
      "source": {
       "file": "locomotion-v2.png",
@@ -2056,18 +2056,18 @@
       "h": 248
      },
      "anchorSourcePx": [
-      1419.8,
+      1438.3,
       998
      ],
      "roundingPx": 0,
-     "registrationIoU": 0.653
+     "registrationIoU": 0.651
     },
     {
      "row": 6,
      "col": 0,
      "x": 4,
      "y": 748,
-     "w": 127,
+     "w": 126,
      "h": 120,
      "source": {
       "file": "vertical-v3.png",
@@ -2077,18 +2077,18 @@
       "h": 247
      },
      "anchorSourcePx": [
-      143.8,
+      142.5,
       750
      ],
      "roundingPx": 0,
-     "registrationIoU": 0.653
+     "registrationIoU": 0.613
     },
     {
      "row": 6,
      "col": 1,
-     "x": 135,
+     "x": 134,
      "y": 748,
-     "w": 127,
+     "w": 126,
      "h": 120,
      "source": {
       "file": "vertical-v3.png",
@@ -2098,18 +2098,18 @@
       "h": 247
      },
      "anchorSourcePx": [
-      393.2,
+      391.8,
       750
      ],
      "roundingPx": 0,
-     "registrationIoU": 0.84
+     "registrationIoU": 0.841
     },
     {
      "row": 6,
      "col": 2,
-     "x": 266,
+     "x": 264,
      "y": 748,
-     "w": 127,
+     "w": 126,
      "h": 120,
      "source": {
       "file": "vertical-v3.png",
@@ -2119,18 +2119,18 @@
       "h": 246
      },
      "anchorSourcePx": [
-      650.8,
+      649.5,
       751
      ],
      "roundingPx": 0,
-     "registrationIoU": 0.876
+     "registrationIoU": 0.874
     },
     {
      "row": 6,
      "col": 3,
-     "x": 397,
+     "x": 394,
      "y": 748,
-     "w": 127,
+     "w": 126,
      "h": 120,
      "source": {
       "file": "vertical-v3.png",
@@ -2140,18 +2140,18 @@
       "h": 247
      },
      "anchorSourcePx": [
-      902.5,
+      901.2,
       750
      ],
      "roundingPx": 0,
-     "registrationIoU": 0.855
+     "registrationIoU": 0.852
     },
     {
      "row": 6,
      "col": 4,
-     "x": 528,
+     "x": 524,
      "y": 748,
-     "w": 127,
+     "w": 126,
      "h": 120,
      "source": {
       "file": "vertical-v3.png",
@@ -2165,14 +2165,14 @@
       750
      ],
      "roundingPx": 0,
-     "registrationIoU": 0.86
+     "registrationIoU": 0.858
     },
     {
      "row": 6,
      "col": 5,
-     "x": 659,
+     "x": 654,
      "y": 748,
-     "w": 127,
+     "w": 126,
      "h": 120,
      "source": {
       "file": "vertical-v3.png",
@@ -2182,18 +2182,18 @@
       "h": 244
      },
      "anchorSourcePx": [
-      1409.5,
+      1408.2,
       753
      ],
      "roundingPx": 0,
-     "registrationIoU": 0.877
+     "registrationIoU": 0.875
     },
     {
      "row": 7,
      "col": 0,
      "x": 4,
      "y": 872,
-     "w": 127,
+     "w": 126,
      "h": 120,
      "source": {
       "file": "vertical-v3.png",
@@ -2203,18 +2203,18 @@
       "h": 263
      },
      "anchorSourcePx": [
-      154.7,
+      156.1,
       1013.4
      ],
      "roundingPx": 0,
-     "registrationIoU": 0.582
+     "registrationIoU": 0.642
     },
     {
      "row": 7,
      "col": 1,
-     "x": 135,
+     "x": 134,
      "y": 872,
-     "w": 127,
+     "w": 126,
      "h": 120,
      "source": {
       "file": "vertical-v3.png",
@@ -2224,18 +2224,18 @@
       "h": 263
      },
      "anchorSourcePx": [
-      410.9,
+      412.3,
       1013.4
      ],
      "roundingPx": 0,
-     "registrationIoU": 0.863
+     "registrationIoU": 0.862
     },
     {
      "row": 7,
      "col": 2,
-     "x": 266,
+     "x": 264,
      "y": 872,
-     "w": 127,
+     "w": 126,
      "h": 120,
      "source": {
       "file": "vertical-v3.png",
@@ -2245,18 +2245,18 @@
       "h": 264
      },
      "anchorSourcePx": [
-      658.4,
+      659.8,
       1013.4
      ],
      "roundingPx": 0,
-     "registrationIoU": 0.853
+     "registrationIoU": 0.852
     },
     {
      "row": 7,
      "col": 3,
-     "x": 397,
+     "x": 394,
      "y": 872,
-     "w": 127,
+     "w": 126,
      "h": 120,
      "source": {
       "file": "vertical-v3.png",
@@ -2266,18 +2266,18 @@
       "h": 261
      },
      "anchorSourcePx": [
-      911.7,
+      913.1,
       1013.4
      ],
      "roundingPx": 0,
-     "registrationIoU": 0.897
+     "registrationIoU": 0.894
     },
     {
      "row": 7,
      "col": 4,
-     "x": 528,
+     "x": 524,
      "y": 872,
-     "w": 127,
+     "w": 126,
      "h": 120,
      "source": {
       "file": "vertical-v3.png",
@@ -2287,7 +2287,7 @@
       "h": 263
      },
      "anchorSourcePx": [
-      1168.8,
+      1170.2,
       1014.4
      ],
      "roundingPx": 0,
@@ -2296,9 +2296,9 @@
     {
      "row": 7,
      "col": 5,
-     "x": 659,
+     "x": 654,
      "y": 872,
-     "w": 127,
+     "w": 126,
      "h": 120,
      "source": {
       "file": "vertical-v3.png",
@@ -2308,11 +2308,11 @@
       "h": 263
      },
      "anchorSourcePx": [
-      1420,
+      1422.8,
       1013.4
      ],
      "roundingPx": 0,
-     "registrationIoU": 0.899
+     "registrationIoU": 0.898
     }
    ]
   }
