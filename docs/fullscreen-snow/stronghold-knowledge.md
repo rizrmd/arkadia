@@ -59,3 +59,27 @@ Ground decals (snowdrifts, paving wear and weeds) now render before all structur
 ![Mine behind a continuous foreground wall at its original position](https://arkadia-stronghold-whachat.fural.space/fullscreen-snow/mine-wall-corrected.webp)
 
 ![Continuous snow after panning far outside the settlement](https://arkadia-stronghold-whachat.fural.space/fullscreen-snow/infinite-snow.webp)
+
+## Wall clearance for rocks, trees and snow
+
+Perimeter scenery no longer touches the enclosure. Behind the rear walls, cliffs, boulders and trees stand three or more tiles out, so their snowy bases sit on open snow above the battlements instead of resting on the wall top. In front of the front walls, they stand three to five tiles out, so no rock or tree crown covers the wall face. Snowdrift decals moved off the wall lines as well: rear drifts lie in open snow, and front drifts sit against the outer wall foot.
+
+The court paving also runs half a tile under the rear walls. Before this, a thin strip of snow showed between the paving and the inner foot of the rear walls.
+
+`scripts/verify-wall-clearance.mjs` enforces both rules on the rendered world surface. No opaque pixel of a cliff, boulder or tree may coincide with an opaque wall, bastion or gate pixel, and no snow-coloured pixel may appear just behind the rear wall line. Before the fix, all 24 perimeter props failed the first check and the second check found many snow pixels. Both checks now pass, together with the composited-world, roof-hit and full-screen Frostpass regressions.
+
+### Reported phone screenshot
+
+Red: rocks and a tree overlapping the front wall. Green: snow-covered rocks resting on the rear wall top, with snow visible at the inner wall foot.
+
+![Reported wall, rock and snow overlap](https://arkadia-stronghold-whachat.fural.space/fullscreen-snow/reported-wall-rock-snow.jpg)
+
+### Corrected views
+
+![Rear wall with scenery standing clear and paving reaching the wall foot](https://arkadia-stronghold-whachat.fural.space/fullscreen-snow/wall-clearance-rear.webp)
+
+![Front wall near Mine with no rock or tree covering the wall](https://arkadia-stronghold-whachat.fural.space/fullscreen-snow/wall-clearance-front.webp)
+
+![Front-left wall near the Mage Tower](https://arkadia-stronghold-whachat.fural.space/fullscreen-snow/wall-clearance-front-left.webp)
+
+![Desktop overview](https://arkadia-stronghold-whachat.fural.space/fullscreen-snow/wall-clearance-overview.webp)

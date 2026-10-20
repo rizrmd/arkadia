@@ -8,8 +8,11 @@ export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Buil
  await Promise.all([...new Set([paving,snow,...environment.map(p=>p.file),...buildings.flatMap(b=>[1,2,3].map(l=>spriteFile(b,l)))])].map(async file=>{const image=new Image();image.src=file;await image.decode();images.set(file,image);}));
  let w=0,h=0,dpr=1,scale=1,cx=WORLD.width/2,cy=385,selected:Building='forge',levels:State['levels']|undefined;
  const material=(file:string,size:number)=>{const p=ctx.createPattern(images.get(file)!,'repeat')!;p.setTransform(new DOMMatrix([size,size/2,-size,size/2,COURT.x,COURT.y]));return p;};
- const snowPattern=material(snow,.7),pavingPattern=material(paving,.22),court=new Path2D();
- [[0,0],[15,0],[15,15],[0,15]].forEach(([u,v],i)=>{const p=tilePoint(u,v);i?court.lineTo(p.x,p.y):court.moveTo(p.x,p.y);});court.closePath();
+ const snowPattern=material(snow,.7),pavingPattern=material(paving,.22);
+ const polygon=(corners:number[][])=>{const path=new Path2D();corners.forEach(([u,v],i)=>{const p=tilePoint(u,v);i?path.lineTo(p.x,p.y):path.moveTo(p.x,p.y);});path.closePath();return path;};
+ // Paving runs half a tile under the rear walls so snow cannot show between the
+ // court and their inner foot. Front walls stand outside the court edge already.
+ const court=polygon([[0,0],[15,0],[15,15],[0,15]]),paved=polygon([[-.5,-.5],[15,-.5],[15,15],[-.5,15]]);
  // Bake the soft ground shadow once. It must never run a blur filter while panning.
  const shadow=document.createElement('canvas'),shadowLeft=COURT.x-15*64-64,shadowTop=COURT.y-64;
  shadow.width=2048;shadow.height=1088;const shadowCtx=shadow.getContext('2d')!;shadowCtx.translate(-shadowLeft,-shadowTop);shadowCtx.strokeStyle='#29392d26';shadowCtx.lineWidth=30;shadowCtx.filter='blur(10px)';shadowCtx.stroke(court);
@@ -38,7 +41,7 @@ export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Buil
  const sc=surface.getContext('2d')!;let dirty=true,frame=0;
  function paintWorld(){
   sc.setTransform(surface.width/worldWidth,0,0,surface.height/worldHeight,-left*surface.width/worldWidth,-top*surface.height/worldHeight);
-  sc.fillStyle=snowPattern;sc.fillRect(left,top,worldWidth,worldHeight);sc.fillStyle=pavingPattern;sc.fill(court);sc.drawImage(shadow,shadowLeft,shadowTop);
+  sc.fillStyle=snowPattern;sc.fillRect(left,top,worldWidth,worldHeight);sc.fillStyle=pavingPattern;sc.fill(paved);sc.drawImage(shadow,shadowLeft,shadowTop);
   for(const p of objects){sc.save();sc.globalAlpha=p.opacity;sc.translate(p.x,p.y);sc.transform(1,p.shear,0,p.vertical,0,0);if(p.selected){sc.shadowColor='#ffca64';sc.shadowBlur=9;}sc.drawImage(p.image,-p.width/2,-p.height*p.foot,p.width,p.height);sc.restore();}
   dirty=false;surface.dataset.paints=String(Number(surface.dataset.paints||0)+1);
  }
