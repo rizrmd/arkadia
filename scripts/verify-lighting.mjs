@@ -19,6 +19,9 @@ const ready=page=>page.waitForFunction(()=>document.querySelector('#world-canvas
 async function open(page,query=''){await page.goto(base+'/stronghold.html'+query);await ready(page);await page.waitForFunction(()=>{const s=document.querySelector('#world-surface').dataset.lighting,t=document.querySelector('#world-layers').firstElementChild.dataset.tint||'off';return (s==='off')===(t==='off');});await page.waitForTimeout(250);}
 const stats=page=>page.evaluate(()=>{const g=document.querySelector('#world-glow'),s=document.querySelector('#world-surface'),v=document.querySelector('#world-layers');return {phase:v.dataset.phase,state:s.dataset.lighting,flicker:getComputedStyle(g).display,lights:+s.dataset.lights,lightPaints:+(s.dataset.lightPaints||0),surfacePaints:+(s.dataset.paints||0),tint:v.firstElementChild.dataset.tint||'off',snow:v.firstElementChild.style.backgroundImage.slice(0,10),sameTransform:g.style.transform===s.style.transform,layers:[...v.children].filter(e=>getComputedStyle(e).display!=='none').map(e=>e.id||'snow')};});
 let browser;
+// Single-process headless Chromium is unstable over many reloads on a shared host,
+// so every check below gets its own browser.
+async function fresh(vp=VIEWPORTS.desktop){await browser?.close();browser=await launch();return browser.newPage(vp);}
 try{
  // 1. Every lit sprite in the scene has authored anchors.
  for(const file of ['/fortress-ui/forge-1.webp','/fortress-ui/forge-2.webp','/fortress-ui/forge-3.webp',...['barracks','altar','mage','expedition','mine'].map(b=>`/assets/stronghold/${b}.png`),'/modular-stronghold/v2/gateway-grand.png','/modular-stronghold/v2/brazier.png'])assert.ok(LIGHT_SPRITES[file]?.length,'missing light anchors for '+file);
@@ -37,7 +40,7 @@ try{
   assert.ok(input);assert.deepEqual(errors,[]);await browser.close();browser=null;
  }
  pass('4 phases x 4 viewports: phase, layer state, snow tint and input surface');
- browser=await launch();let page=await browser.newPage(VIEWPORTS.desktop);
+ let page=await fresh();
  // 3. Lightmap content at night: ambient far from lights, full white on emissive art, light at every building.
  await open(page,'?time=0.02');
  const lm=await page.evaluate(slots=>{const l=document.querySelector('#world-lightmap'),[left,top,res]=l.dataset.origin.split(',').map(Number),c=l.getContext('2d'),d=c.getImageData(0,0,l.width,l.height).data;
@@ -47,20 +50,24 @@ try{
  report.buildings=lm.buildings;assert.ok(lm.min<=(0x38+0x45+0x75)+20,'night ambient colour '+lm.min);assert.ok(lm.white>200,'emissive pixels restored to white: '+lm.white);
  for(const [id,b] of Object.entries(lm.buildings)){assert.ok(b.peak>=700,`${id} has a bright light (${b.peak})`);assert.ok(b.lit>=20,`${id} has a lit area (${b.lit})`);}
  pass(`night lightmap: ambient ${lm.min}/765, ${lm.white} emissive white pixels, light at all ${Object.keys(lm.buildings).length} buildings`);
+ page=await fresh();
  // 4. Night is darker on screen while the altar flames stay bright.
  const shot=async t=>{await open(page,`?time=${t}`);const b=await page.screenshot();const {default:sharp}=await import('sharp');const {data,info}=await sharp(b).raw().toBuffer({resolveWithObject:true});let sum=0,n=0;for(let y=Math.floor(info.height*.3);y<info.height*.7;y+=3)for(let x=Math.floor(info.width*.3);x<info.width*.7;x+=3){const i=(y*info.width+x)*info.channels;sum+=.299*data[i]+.587*data[i+1]+.114*data[i+2];n++;}return sum/n;};
  const dayLuma=await shot(.5),nightLuma=await shot(.02);report.screenLuma={day:dayLuma,night:nightLuma};assert.ok(nightLuma<dayLuma*.6,`night darker (${nightLuma.toFixed(1)} vs ${dayLuma.toFixed(1)})`);
  pass(`night screen luma ${nightLuma.toFixed(1)} vs day ${dayLuma.toFixed(1)}`);
+ page=await fresh();
  // 5. Clock ticks repaint only the lightmap, never the baked world surface.
  await open(page,'?daySpeed=900');const t0=await stats(page);await page.waitForTimeout(3200);const t1=await stats(page);
  assert.ok(t1.lightPaints+(t1.state==='off'?3:0)>t0.lightPaints,'lightmap repainted on ticks');assert.equal(t1.surfacePaints,t0.surfacePaints,'surface not repainted by the clock');
  pass(`clock ticks: lightmap paints ${t0.lightPaints}->${t1.lightPaints}, surface paints unchanged (${t1.surfacePaints})`);
+ page=await fresh();
  // 6. ?lighting=night is remembered (no menu in the world-only view); ?lighting=dynamic restores the clock.
  await open(page,'?lighting=night');assert.equal((await stats(page)).phase,'Night');
  await open(page);const kept=await page.evaluate(()=>[document.querySelector('#world-layers').dataset.lightingMode,localStorage.getItem('arkadia.stronghold.lighting')]);assert.equal((await stats(page)).phase,'Night');assert.deepEqual(kept,['night','{"mode":"night"}']);
  await open(page,'?lighting=day');assert.equal((await stats(page)).phase,'Day');
  await open(page,'?lighting=dynamic');assert.equal(await page.evaluate(()=>document.querySelector('#world-layers').dataset.lightingMode),'dynamic');await page.evaluate(()=>localStorage.removeItem('arkadia.stronghold.lighting'));
  pass('?lighting=night|day persists across reloads, ?lighting=dynamic restores the clock');
+ page=await fresh();
  // 7. Night hit-testing on the forge roof still selects the building; drag still pans.
  await open(page,'?time=0.02');const before=await stats(page);
  // Default camera: scale = clamp(h/900) and centre (577.5, 385); the Forge roof is at world (235, 210).
@@ -69,6 +76,7 @@ try{
  const after=await page.evaluate(()=>({bakes:+document.querySelector('#world-surface').dataset.lightBakes,paints:+document.querySelector('#world-surface').dataset.paints}));
  assert.ok(after.bakes>bakes&&after.paints>before.surfacePaints,'selecting the Forge rebakes lights and the world');
  pass('night roof hit-test selects the Forge and relights the selection');
+ page=await fresh();await open(page,'?time=0.02');
  // 8. Reduced motion stops flame flicker.
  await page.emulateMedia({reducedMotion:'reduce'});const anim=await page.evaluate(()=>[...document.querySelectorAll('#world-glow canvas')].map(c=>getComputedStyle(c).animationName));assert.deepEqual(anim,['none']);
  await page.emulateMedia({reducedMotion:'no-preference'});assert.equal(await page.evaluate(()=>getComputedStyle(document.querySelector('#world-glow canvas')).animationName),'glow-flicker');
