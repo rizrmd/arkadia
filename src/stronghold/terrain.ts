@@ -2,9 +2,10 @@ import {project,unproject} from '../isometric';
 export const COURT={x:577,y:-160,size:15};
 export function tilePoint(u:number,v:number){const p=project(u,v);return {x:p.x+COURT.x,y:p.y+COURT.y};}
 const assetRoot='/modular-stronghold/',v2=assetRoot+'v2/';
-function prop(id:string,u:number,v:number,width:number,extra='',legacy=false){const p=tilePoint(u,v);return `<img class="terrain-prop ${id}" src="${(legacy?assetRoot:v2)+id}.png" alt="" draggable="false" style="left:${p.x}px;top:${p.y}px;width:${width}px;z-index:${Math.round(p.y)};${extra}">`;}
-export function modularEnclosure(){
- const parts:string[]=[];
+export type EnvironmentSprite={id:string;x:number;y:number;width:number;foot:number;shear:number;vertical:number;depth:number;opacity:number;file:string};
+function prop(id:string,u:number,v:number,width:number,extra='',legacy=false):EnvironmentSprite{const p=tilePoint(u,v),value=(key:string,fallback:number)=>Number(extra.match(new RegExp(key+':([\\d.%-]+)'))?.[1].replace('%',''))||fallback;return {id,...p,width,foot:value('--foot',97)/100,shear:value('--wall-shear',0),vertical:value('--wall-height',1),depth:value('z-index',Math.round(p.y)),opacity:value('opacity',1),file:(legacy?assetRoot:v2)+id+'.png'};}
+export function environmentSprites(){
+ const parts:EnvironmentSprite[]=[];
  for(let n=0;n<15;n+=5){
   parts.push(prop('rampart-se',n+2.5,0,356,'--foot:73%;--wall-shear:.03;'));
   parts.push(prop('rampart-ne',0,n+2.5,356,'--foot:74%;--wall-shear:-.13;'));
@@ -23,8 +24,9 @@ export function modularEnclosure(){
  for(const [u,v] of [[7,11],[12,8],[10,13],[9,7]])parts.push(prop('paving-worn',u,v,160,'z-index:1;opacity:.7;'));
  parts.push(prop('supply-cart',4.5,10,82),prop('brazier',13.2,5,32),prop('brazier',14,13.7,32),prop('brazier',13.7,14,32),prop('wall-broken',1.5,14.7,170));
  parts.push(prop('crate',5.3,10.6,34,'',true),prop('barrel',5.1,11.1,27,'',true));
- return parts.join('');
+ return parts;
 }
+export function modularEnclosure(){return environmentSprites().map(p=>`<img class="terrain-prop ${p.id}" src="${p.file}" alt="" style="left:${p.x}px;top:${p.y}px;width:${p.width}px;z-index:${p.depth};--foot:${p.foot*100}%;--wall-shear:${p.shear};opacity:${p.opacity}">`).join('');}
 export function installTerrain(scene:HTMLElement,world:{width:number;height:number}){
  const canvas=document.createElement('canvas');canvas.className='terrain-canvas';canvas.setAttribute('aria-hidden','true');scene.prepend(canvas);
  const ctx=canvas.getContext('2d')!;let ready=false;

@@ -42,6 +42,7 @@ export class Actor {
 }
 
 export class Arena {
+  respawnEnemies = true;
   hero: Actor; enemies: Actor[] = []; kills = 0; auto = true; mirror = true; pivots = false; manualUntil = 0; clock = 0;
   keys = new Set<string>(); private engaged = new Set<Actor>(); private moves = new Map<Actor, { before: Point; direction: Point; wasMoving: boolean }>(); private rand: () => number; frameChanges = 0;
   constructor(private sets: Record<string, SpriteSet>, private toScreen: (x: number, y: number) => Point, seed: () => number) {
@@ -145,7 +146,7 @@ export class Arena {
     if (!e.alive) {
       e.deadFor += dt;
       if (e.deadFor > 3500) e.view.alpha = Math.max(0, 1 - (e.deadFor - 3500) / 900);
-      if (e.deadFor > 4400) { const p = this.edgePoint(); Object.assign(e, { x: p.x, y: p.y, hp: STATS.revenant.hp, deadFor: 0 }); e.view.alpha = 1; e.play('idle'); }
+      if (this.respawnEnemies && e.deadFor > 4400) { const p = this.edgePoint(); Object.assign(e, { x: p.x, y: p.y, hp: STATS.revenant.hp, deadFor: 0 }); e.view.alpha = 1; e.play('idle'); }
       return;
     }
     this.recover(e);
