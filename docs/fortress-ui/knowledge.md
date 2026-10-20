@@ -8,7 +8,7 @@ The first release was rejected because it still looked wrong. It showed a comple
 
 The corrected scene uses a dedicated environment plate generated from the target's courtyard camera: close framing, cropped enclosing walls, varied paving, and a large foreground gate. The plate contains no buildings or UI. Forge, Barracks, Altar, Mage Tower, Expedition Table and Mine are separate interactive sprites placed at the reference's screen positions and scale. The gate uses a selectable region over the gate in the environment plate. A single 1155 × 770 coordinate space keeps environment and hit regions aligned.
 
-The desktop game screen fits one viewport. Its left scene occupies 75.2% of the height with the four forge states below it. The right column has a bounded building panel and all three major actions visible at 1536 × 1024. Custom SVG coin, gem, skull, chest, map and sword icons replace the mismatched text symbols. Current/next forge stats use actual weapon tier, crafted health bonus and crafting costs. Detailed crafting actions, import and export remain in the utility row beneath the game screen. On narrow screens the scene, variants, building selectors and details stack vertically.
+The desktop game screen fits one viewport. Its left scene occupies 75.2% of the height with the four forge states below it. The right column has a bounded building panel and all three major actions visible at 1536 × 1024. Custom SVG coin, gem, skull, chest, map and sword icons replace the mismatched text symbols. Current/next forge stats use actual weapon tier, crafted health bonus and crafting costs. Detailed crafting actions, import and export remain in the utility row beneath the game screen. On narrow screens the approved landscape composition scales to the available viewport height and pans horizontally; it does not stack vertically.
 
 The saved level still selects new/repaired/upgraded forge sprites, and the ruined sprite is a visual reference rather than a new damage mechanic. All costs, saves, production, crafting, expedition and arena rules remain unchanged.
 
@@ -51,3 +51,15 @@ The revised bundle uses versioned incremental chunks staged through the supporte
 ## Remaining visual differences
 
 Most building sprites and forge variants are still separate existing artwork rather than exact copies of the target. The reference's worker/percentage/interval values are not implemented game mechanics, so the sidebar shows real weapon and crafting values. Decorative townsfolk are not present. Visual approval remains with the human; automated interaction and layout checks alone are not a visual acceptance test.
+
+## Mobile: full-height horizontal layout
+
+After the human approved the corrected appearance, they requested mobile fill most of the screen, permitting horizontal scrolling and forbidding vertical scrolling. Mobile now retains the landscape game composition, scaled from the available visual viewport height with a 44-pixel utility row. The courtyard occupies roughly 70–75% of screen height. Swipe horizontally to reach the rest of the courtyard and the building sidebar. The resource HUD is compact enough to read in the initial portrait view. The building panel is slightly condensed so every building's full details and upgrade control fit without an internal vertical scrollbar.
+
+The page and body prevent vertical scrolling; the body owns horizontal panning. Resize and visual-viewport events recalculate the fit for device rotation and browser viewport changes. The approved desktop composition remains in place above 1100 pixels.
+
+The build and four-viewport UI regression pass. A dedicated touch/mobile browser check passes on both public hosts at 390 × 844, 360 × 640, 320 × 568 and landscape 844 × 390. It checks large scene height, portrait horizontal overflow, direct selection of all seven buildings, each panel fitting without vertical scrolling, reachable Claim All and Start Run controls, rejection of vertical wheel/page scrolling, and no page errors.
+
+![Portrait mobile courtyard filling the screen](https://arkadia-stronghold-whachat.fural.space/fortress-ui/mobile.webp)
+
+![Same mobile screen panned horizontally to building details and actions](https://arkadia-stronghold-whachat.fural.space/fortress-ui/mobile-panel.webp)

@@ -16,6 +16,23 @@ const root=document.querySelector('#stronghold')!;
 root.innerHTML=`<div class="layout"><main><section class="resources" aria-label="Resources"></section><div class="scene" aria-label="Stronghold fortress courtyard"><div class="scene-world">${ground()}${enclosure()}<div id="slots"></div></div></div><div class="variants"><h3>Forge Building Variants <span>(Same Base Module)</span></h3><div class="variant-grid">${['Base (New)','Ruined','Repaired','Upgraded (Level 3)'].map((name,i)=>`<figure class="variant variant-${i}"><img src="/fortress-ui/forge-${[1,0,2,3][i]}.webp" alt="Forge ${name}"><figcaption>${name}</figcaption></figure>`).join('')}</div></div><div class="quick" aria-label="Building selection"></div></main><div class="sidebar"><aside aria-label="Building details"></aside><div class="destinations"><button id="claim">${icon('chest')} <span>Claim All</span></button><a href="/expedition.html">${icon('map')} <span>Expeditions</span></a><button id="start-run">${icon('swords')} <span>Start Run</span></button></div><div class="return"><p id="offline"></p><p id="status" role="status">Saved locally in this browser.</p></div></div></div><footer><span id="building-action"></span><a href="/index.html">ARKADIA · Arena</a><span>Local save · 10-hour storage</span><button id="export">Export save</button><label class="import">Import save <input type="file" id="import" accept="application/json"></label></footer>`;
 let selected:Building='forge',busy=false;
 const el=(s:string)=>root.querySelector(s) as HTMLElement;
+// Scale the complete approved game frame by height on narrow screens. The
+// surrounding page owns horizontal panning; the game never stacks vertically.
+function configureViewport(){
+ const mobile=window.matchMedia('(max-width:1100px)').matches;
+ document.documentElement.classList.toggle('horizontal-game',mobile);
+ if(mobile){
+  const height=window.visualViewport?.height||window.innerHeight;
+  const scale=Math.max(0.1,(height-44)/1024);
+  const width=Math.max(window.innerWidth,1536*scale);
+  (root as HTMLElement).style.setProperty('--game-scale',String(scale));
+  (root as HTMLElement).style.setProperty('--game-width',`${width}px`);
+  (root as HTMLElement).style.setProperty('--game-offset',`${Math.max(0,(width-1536*scale)/2)}px`);
+ }
+}
+configureViewport();
+window.addEventListener('resize',configureViewport);
+window.visualViewport?.addEventListener('resize',configureViewport);
 const fit=()=>{const scene=el('.scene');const scale=Math.min(scene.clientWidth/WORLD.width,scene.clientHeight/WORLD.height);el('.scene-world').style.transform=`translate(-50%,-50%) scale(${scale})`;};
 new ResizeObserver(fit).observe(el('.scene'));fit();
 function read(){return load(localStorage.getItem(KEY));}

@@ -38,10 +38,18 @@ hr{border:0;border-top:1px solid #62707a;margin:19px 3px 12px}h3{font-size:20px;
 figure{margin:0;text-align:center;padding:3px 2px 10px;min-width:0;display:flex;flex-direction:column;min-height:0}.variant img{width:100%;height:calc(100% - 24px);min-height:0;object-fit:contain;flex:1}.variant figcaption{font-size:16px;line-height:24px}
 .quick{position:absolute;left:-10000px}.quick:focus-within{left:10px;bottom:10px;z-index:1000;background:#111b22;padding:8px;display:flex;gap:5px;flex-wrap:wrap}
 footer{padding:8px 20px;border-top:1px solid #34424b;display:flex;gap:14px;align-items:center;flex-wrap:wrap;font-size:11px;color:#9ba9b3}footer button,.import{font-size:11px;padding:6px}input[type=file]{max-width:170px;font-size:10px}
-@media(max-width:1100px) and (min-width:701px){.layout{grid-template-columns:minmax(0,1fr) 310px}.sidebar{padding-inline:10px}.portrait{width:95px}aside{padding-inline:10px}.description{font-size:18px}.facts{font-size:14px}.facts span{gap:6px}.next-stats{font-size:14px}.next-stats label{font-size:12px}.resources{font-size:14px;gap:10px;padding:6px}.resources b{font-size:20px;margin-left:0}}
-@media(max-width:700px){.layout{height:auto;min-height:0;grid-template-columns:1fr}main{display:flex;flex-direction:column}.scene{height:auto;aspect-ratio:1.5}.resources{left:8px;right:8px;top:6px;justify-content:space-between;gap:6px;padding:6px;font-size:13px}.resources div{gap:5px}.resources b{font-size:18px;margin-left:0}.resources .icon{width:18px;height:18px}.variants{height:155px;margin:6px 8px 12px}.variants h3{font-size:12px;line-height:18px;padding:5px 9px}.variant figcaption{font-size:10px;line-height:15px}.variant img{height:85px}.quick,.quick:focus-within{position:static;display:flex;gap:5px;flex-wrap:wrap;padding:0 8px 12px}.quick button{font-size:12px;min-height:40px;padding:7px}.sidebar{padding:14px 14px 45px;border-top:1px solid #53616b;grid-template-rows:auto 250px;gap:18px}aside{overflow:visible;padding:12px}.portrait{width:110px;height:100px}.description{font-size:20px}.facts{font-size:15px}.next-stats{font-size:15px}.next-stats label{font-size:13px}.destinations{margin:0}footer{gap:10px}.import{display:flex;flex-wrap:wrap;max-width:100%}footer input{max-width:100%;min-width:0}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
-@media(max-width:1100px) and (min-width:701px){.layout{height:auto;min-height:760px}main{display:flex;flex-direction:column}.scene{height:auto;aspect-ratio:1.5}.variants{height:210px}.sidebar{min-height:960px}}
 .layout{grid-template-rows:minmax(0,1fr)}main,.sidebar{min-height:0}.next-stats{line-height:1.9;margin:10px 5px 6px}.upgrade-card{padding:9px 12px}#building-action #action{width:auto;margin:0;padding:6px 10px;font-size:12px}
-@media(max-width:1100px){.layout{grid-template-rows:auto}}@media(max-width:1100px) and (min-width:701px){.sidebar{min-height:960px}}
 .building.selected img{filter:drop-shadow(2px 0 0 #ffd064) drop-shadow(-2px 0 0 #ffd064) drop-shadow(0 2px 0 #ffd064) drop-shadow(0 -2px 0 #ffd064) drop-shadow(0 0 6px #ffba4888)}
+
+/* Mobile keeps the approved landscape composition at the available screen height. */
+html.horizontal-game,html.horizontal-game body{height:100%;overflow-y:hidden;overscroll-behavior-y:none}
+html.horizontal-game body{overflow-x:auto;touch-action:pan-x pinch-zoom}
+.horizontal-game #stronghold{position:relative;width:var(--game-width);height:100dvh;overflow:hidden}
+.horizontal-game .layout{position:absolute;left:var(--game-offset);top:0;width:1536px;max-width:none;height:1024px;min-height:0;grid-template-columns:minmax(0,1fr) 24.8%;grid-template-rows:minmax(0,1fr);transform:scale(var(--game-scale));transform-origin:top left;margin:0}
+.horizontal-game .resources{left:12px;top:8px;font-size:16px;gap:16px}
+.horizontal-game aside{overflow:hidden}
+.horizontal-game footer{position:absolute;left:0;right:0;bottom:0;height:44px;padding:5px 10px;flex-wrap:nowrap;white-space:nowrap;overflow:hidden;gap:10px}
+.horizontal-game footer .import{display:flex;align-items:center;gap:5px;white-space:nowrap}
+.horizontal-game footer button,.horizontal-game footer .import{flex-shrink:0}
+.horizontal-game .portrait{height:96px}.horizontal-game .description{font-size:20px;margin:12px 10px}.horizontal-game hr{margin-top:15px}
