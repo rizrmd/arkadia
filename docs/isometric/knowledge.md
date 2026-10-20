@@ -53,3 +53,7 @@ The courtyard remains the approved painted background. Painterly stone joints an
 Production build passes. The isometric browser check covers seven building matrices and selection, 100 tile aspect ratios, 31 prop contact/depth placements, 13 actor pivots with all available clips, four actor ground directions, and mobile fit. Existing four-viewport fortress checks, portrait/landscape mobile checks, wall endpoint continuity and 13 character/animation regressions pass. The character stress test verifies rendering at 72 enemies; software-renderer FPS is not a hardware performance claim.
 
 [Open Stronghold](https://arkadia-stronghold-whachat.fural.space/stronghold.html) · [Open arena](https://arkadia-whachat.fural.space/) · [Generation prompts](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=docs%2Fisometric%2Fprompts.md) · [Projection source](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=src%2Fisometric.ts)
+
+## Publication
+
+Commit e4b9355 is pushed on feat/stronghold. Both public hosts passed the full isometric browser check after deployment. Deployed HTML and both replacement PNGs match the local build byte for byte on both hosts; all inline image URLs return valid images.
