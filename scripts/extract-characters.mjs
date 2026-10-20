@@ -153,7 +153,7 @@ function registerX(base, f) {
 
 async function character(id, spec) {
   const img = await load(spec.file);
-  const { label, grid, owned, specks, droppedPx } = figures(img, spec.rows, spec.cols, id);
+  const { label, grid, owned, specks, droppedPx } = figures(img, 6, spec.cols, id);
   const frames = grid.map((row, r) => row.map((c, col) => {
     const f = isolate(img, label, owned.get(c.id), c); f.m = maskOf(f); f.gy = groundY(f, f.m); f.fx = feetX(f, f.m, f.gy);
     f.r = r; f.c = col; return f;
@@ -179,6 +179,48 @@ async function character(id, spec) {
     const headToGround = frames[targetRow].reduce((n, f) => n + f.gy, 0) / 6;
     for (const f of frames[targetRow]) f.gy = Math.round(headToGround);
   }
+  // Supplemental frontal/rear gait uses the same registration and shared ground pivot.
+  const vertical = await load('vertical-v3.png');
+  // Reviewed sheet has touching silhouettes across row boundaries; explicit cell
+  // ownership avoids merging two actors into one connected component.
+  const bounds = [0, 254, 505, 752, vertical.H];
+  const verticalGait = {label:new Int32Array(vertical.W * vertical.H).fill(-1), grid:[], owned:new Map()};
+  for (let r=0; r<4; r++) {
+    const row=[];
+    for (let col=0; col<6; col++) {
+      const id=r*6+col, c={id,x0:vertical.W,y0:vertical.H,x1:-1,y1:-1};
+      for (let y=bounds[r];y<bounds[r+1];y++) for (let x=col*vertical.W/6;x<(col+1)*vertical.W/6;x++) {
+        const p=y*vertical.W+x;
+        if(vertical.data[p*4+3]<ALPHA) continue;
+        verticalGait.label[p]=id;
+        c.x0=Math.min(c.x0,x);c.y0=Math.min(c.y0,y);c.x1=Math.max(c.x1,x);c.y1=Math.max(c.y1,y);
+      }
+      if(c.x1<c.x0) throw Error('Empty vertical frame '+id);
+      row.push(c); verticalGait.owned.set(id,[id]);
+    }
+    verticalGait.grid.push(row);
+  }
+  const verticalRows = id === 'hero' ? [0, 1] : [2, 3];
+  for (const [dir, row] of verticalRows.entries()) {
+    const targetRow = 6 + dir;
+    const height = verticalGait.grid[row].reduce((n, c) => n + c.y1 - c.y0 + 1, 0) / 6;
+    const scale = referenceHeight / height;
+    frames[targetRow] = await Promise.all(verticalGait.grid[row].map(async (c, col) => {
+      const raw = isolate(vertical, verticalGait.label, verticalGait.owned.get(c.id), c);
+      const {data, info} = await sharp(raw.data, {raw:{width:raw.w,height:raw.h,channels:4}})
+        .resize(Math.round(raw.w * scale), Math.round(raw.h * scale)).raw().toBuffer({resolveWithObject:true});
+      const f = {...raw, data, w:info.width, h:info.height, r:targetRow, c:col,
+        source:'vertical-v3.png', sourceW:raw.w, sourceH:raw.h, sourceRatio:scale};
+      f.m = maskOf(f); f.gy = groundY(f, f.m); f.fx = feetX(f, f.m, f.gy);
+      return f;
+    }));
+    const baseline = Math.round(frames[targetRow].reduce((n,f) => n + f.gy, 0) / 6);
+    for (const f of frames[targetRow]) f.gy = baseline;
+    const suffix = dir === 0 ? 'Down' : 'Up';
+    spec.clips['idle' + suffix] = {row:targetRow, frames:[0], fps:6, loop:true};
+    spec.clips['move' + suffix] = {row:targetRow, frames:[0,1,2,3,4,5], fps:10, loop:true};
+  }
+  spec.rows = 8;
   // Anchor = point in frame-local px that sits on the world ground pivot.
   // Reference: idle frame 0 at its feet centre. Loops register to their clip's first frame; one-shots chain
   // frame-to-frame; every clip's first frame registers to the previous clip head so all states share one pivot.
@@ -219,7 +261,7 @@ async function character(id, spec) {
     .composite(composites).png({ compressionLevel: 9 }).toFile(`${OUT}/${id}.png`);
   return {
     id, image: `${id}.png`, source: spec.file, sourceSize: [img.W, img.H], atlasSize: [atlasW, atlasH], scale: SCALE, gutter: GUTTER, cell,
-    direction: 'front/back idle and locomotion; horizontal mirror for left/right; attacks/hit/death currently front-facing',
+    direction: 'diagonal front/back plus straight up/down idle and locomotion; mirror diagonals only; attacks/hit/death use original art',
     idleHeightSourcePx: ref.gy + 1, specks, droppedSpeckPx: droppedPx,
     clips: Object.fromEntries(Object.entries(clips).map(([n, c]) => [n, { fps: c.fps, loop: c.loop, impact: c.impact,
       frames: c.list.map(f => meta.findIndex(m => m.row === f.r && m.col === f.c)) }])),

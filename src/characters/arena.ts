@@ -3,7 +3,7 @@ import type { ClipName, SpriteSet, TextureClipName } from './sprites';
 import {ISO} from '../isometric';
 
 // Gameplay for the character preview: one hero vs a crowd of ash revenants on the 10 × 10 arena grid.
-// Front/back locomotion uses separate art. Horizontal mirroring supplies the other two quadrants.
+// Dedicated straight up/down gait supplements mirrored diagonal front/back locomotion.
 type Point = { x: number; y: number };
 const MAX_STEP = 50, MIN = 0.9, MAX = 9.1, ENGAGED = 8, SPACING = .72, CLEAVE = 3;
 const DISPLAY = 1.1; // atlas px → world px (atlas is 0.5 × source); idle hero ≈ 116 world px on a 128 × 64 tile
@@ -14,7 +14,7 @@ const STATS = {
 
 export class Actor {
   view = new Container(); sprite: Sprite; shadow: Graphics; pivotMark: Graphics;
-  state: ClipName = 'idle'; t = 0; facing = 1; back = false; stride = 0; hp: number; cooldown = 0; impactDone = false; flash = 0; deadFor = 0; wander: Point | null = null; immune = 0; retreating = false;
+  state: ClipName = 'idle'; t = 0; facing = 1; back = false; vertical = false; stride = 0; hp: number; cooldown = 0; impactDone = false; flash = 0; deadFor = 0; wander: Point | null = null; immune = 0; retreating = false;
   constructor(public kind: 'hero' | 'revenant', public set: SpriteSet, public x: number, public y: number) {
     this.hp = STATS[kind].hp;
     this.shadow = new Graphics().ellipse(0, 0, 26, 26*ISO.slope).fill({ color: 0x050608, alpha: .38 });
@@ -24,6 +24,7 @@ export class Actor {
     this.view.addChild(this.shadow, this.sprite, this.pivotMark); this.view.label = kind;
   }
   get textureClip(): TextureClipName {
+    if (this.vertical && (this.state === 'idle' || this.state === 'move')) return `${this.state}${this.back ? 'Up' : 'Down'}`;
     return this.back && (this.state === 'idle' || this.state === 'move') ? `${this.state}Back` : this.state;
   }
   get clip() { return this.set.meta.clips[this.textureClip]; }
@@ -57,7 +58,7 @@ export class Arena {
   }
   attach(layer: Container) { for (const a of this.actors) layer.addChild(a.view); this.sync(); }
   detach() { for (const a of this.actors) a.view.parent?.removeChild(a.view); }
-  respawnHero() { const h = this.hero; h.hp = STATS.hero.hp; h.x = 5; h.y = 5; h.back = false; h.facing = 1; h.play('idle'); h.view.alpha = 1; }
+  respawnHero() { const h = this.hero; h.hp = STATS.hero.hp; h.x = 5; h.y = 5; h.back = false; h.vertical = false; h.facing = 1; h.play('idle'); h.view.alpha = 1; }
 
   // Variable step (sub-stepped to ≤ 50 ms) so animation time tracks real time exactly; a fixed-step accumulator
   // at a matching 60 Hz display alternates 0/2 steps per frame, which reads as stutter.
@@ -101,6 +102,8 @@ export class Arena {
     const origin = this.toScreen(0, 0), p = this.toScreen(d.x, d.y), sx = p.x - origin.x, sy = p.y - origin.y;
     const length = Math.hypot(sx, sy);
     if (length < 1e-6) return;
+    // Hysteresis keeps near-vertical AI paths from flickering between views.
+    a.vertical = Math.abs(sx) / length < (a.vertical ? .4 : .28);
     // Angular dead bands retain the previous quadrant near an axis, independent of
     // target distance. Small collision corrections no longer flip front/back art.
     if (Math.abs(sy) / length > .15) a.back = sy < 0;
@@ -185,7 +188,7 @@ export class Arena {
       const p = this.toScreen(a.x - 4.5, a.y - 4.5), tex = a.set.clips[a.textureClip][a.frame()];
       if (a.sprite.texture !== tex) { a.sprite.texture = tex; this.frameChanges++; }
       a.view.position.set(Math.round(p.x), Math.round(p.y)); a.view.zIndex = a.view.y;
-      a.sprite.scale.set((this.mirror ? a.facing : 1) * DISPLAY, DISPLAY);
+      a.sprite.scale.set((this.mirror && !a.vertical ? a.facing : 1) * DISPLAY, DISPLAY);
       a.sprite.tint = a.flash > 0 ? 0xffb4a0 : 0xffffff;
       a.shadow.visible = a.state !== 'die' || a.frame() < 2; a.pivotMark.visible = this.pivots;
     }
@@ -193,7 +196,7 @@ export class Arena {
   snapshot() {
     const h = this.hero, counts: Record<string, number> = {};
     for (const e of this.enemies) counts[e.state] = (counts[e.state] ?? 0) + 1;
-    return { hero: { state: h.state, frame: h.frame(), hp: h.hp, x: +h.x.toFixed(2), y: +h.y.toFixed(2), facing: h.facing, back: h.back, textureClip: h.textureClip, stride: h.stride, texture: h.sprite.texture.frame.x + ',' + h.sprite.texture.frame.y, anchor: [h.sprite.anchor.x, h.sprite.anchor.y] },
+    return { hero: { state: h.state, frame: h.frame(), hp: h.hp, x: +h.x.toFixed(2), y: +h.y.toFixed(2), facing: h.facing, back: h.back, vertical: h.vertical, textureClip: h.textureClip, stride: h.stride, texture: h.sprite.texture.frame.x + ',' + h.sprite.texture.frame.y, anchor: [h.sprite.anchor.x, h.sprite.anchor.y] },
       enemies: this.enemies.length, alive: this.enemies.filter(e => e.alive).length, enemyStates: counts, kills: this.kills, auto: this.auto, mirror: this.mirror, frameChanges: this.frameChanges };
   }
 }
