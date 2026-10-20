@@ -62,12 +62,22 @@ export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Buil
   // This canvas is the transparent input/accessibility surface, not a frame buffer.
   if(canvas.width!==1)canvas.width=1;if(canvas.height!==1)canvas.height=1;
   scale=Math.max(.65,Math.min(1.35,h/900));requestDraw();}new ResizeObserver(resize).observe(canvas);resize();
+ // Focus glides the camera with an eased tween; any drag, pinch or wheel takes control back.
+ let glide=0;
+ function stopGlide(){if(glide){cancelAnimationFrame(glide);glide=0;canvas.dataset.camera='idle';}}
+ function glideTo(tx:number,ty:number){stopGlide();const fx=cx,fy=cy,distance=Math.hypot(tx-fx,ty-fy)*scale;
+  if(distance<1||matchMedia('(prefers-reduced-motion: reduce)').matches){cx=tx;cy=ty;requestDraw();return;}
+  // Advance by capped frame deltas: the selection repaint stalls the first frame,
+  // and wall-clock timing would spend the whole glide inside that stall.
+  const duration=Math.min(900,Math.max(380,240+distance*.6));let elapsed=0,last=0;canvas.dataset.camera='gliding';
+  const step=(now:number)=>{elapsed+=last?Math.min(now-last,34):0;last=now;const t=Math.min(1,elapsed/duration),k=t<.5?4*t*t*t:1-(2-2*t)**3/2;cx=fx+(tx-fx)*k;cy=fy+(ty-fy)*k;draw();if(t<1)glide=requestAnimationFrame(step);else{glide=0;canvas.dataset.camera='idle';}};
+  glide=requestAnimationFrame(step);}
  const held=new Map<number,{x:number;y:number}>();let moved=false,down={x:0,y:0};
- canvas.onpointerdown=e=>{canvas.setPointerCapture(e.pointerId);held.set(e.pointerId,{x:e.clientX,y:e.clientY});down={x:e.clientX,y:e.clientY};moved=false;};
+ canvas.onpointerdown=e=>{stopGlide();canvas.setPointerCapture(e.pointerId);held.set(e.pointerId,{x:e.clientX,y:e.clientY});down={x:e.clientX,y:e.clientY};moved=false;};
  canvas.onpointermove=e=>{const prev=held.get(e.pointerId);if(!prev)return;const points=[...held.values()],before=points.length===2?Math.hypot(points[0].x-points[1].x,points[0].y-points[1].y):0;cx-=(e.clientX-prev.x)/scale;cy-=(e.clientY-prev.y)/scale;held.set(e.pointerId,{x:e.clientX,y:e.clientY});if(Math.hypot(e.clientX-down.x,e.clientY-down.y)>6)moved=true;if(before){const p=[...held.values()];scale=Math.max(.35,Math.min(2.2,scale*Math.hypot(p[0].x-p[1].x,p[0].y-p[1].y)/before));moved=true;}requestDraw();};
  const masks=new Map<string,{data:Uint8ClampedArray;width:number;height:number}>();
  function hitBuilding(id:Building,x:number,y:number){const s=slots[id],c=calibration(id),file=spriteFile(id,levels?.[id]||1),image=images.get(file)!,height=image.height*s.width/image.width,dx=x-s.x,dy=(y-s.y-c.shear*dx)/c.vertical,px=(dx+s.width/2)/s.width,py=(dy+height*s.pivot)/height;if(px<0||py<0||px>=1||py>=1)return false;let mask=masks.get(file);if(!mask){const sample=document.createElement('canvas');sample.width=192;sample.height=Math.ceil(192*image.height/image.width);const sc=sample.getContext('2d')!;sc.drawImage(image,0,0,sample.width,sample.height);mask={data:sc.getImageData(0,0,sample.width,sample.height).data,width:sample.width,height:sample.height};masks.set(file,mask);}return mask.data[(Math.floor(py*mask.height)*mask.width+Math.floor(px*mask.width))*4+3]>40;}
  canvas.onpointerup=e=>{held.delete(e.pointerId);if(moved)return;const x=cx+(e.clientX-w/2)/scale,y=cy+(e.clientY-h/2)/scale;const hit=[...buildings].sort((a,b)=>slots[b].y-slots[a].y).find(id=>hitBuilding(id,x,y));if(hit)onSelect(hit);};
- canvas.onpointercancel=()=>{held.clear();moved=true;};canvas.onwheel=e=>{e.preventDefault();const old=scale;scale=Math.max(.35,Math.min(2.2,scale*Math.exp(-e.deltaY*.001)));cx+=(e.clientX-w/2)*(1/old-1/scale);cy+=(e.clientY-h/2)*(1/old-1/scale);requestDraw();};
- return {update(state:State,id:Building|null){const next=buildings.map(b=>state.levels[b]).join(',')+':'+id;if(next===signature)return;signature=next;levels=state.levels;selected=id;objects=makeObjects();dirty=true;requestDraw();},focus(id:Building){cx=slots[id].x;cy=slots[id].y-60;requestDraw();},fit(){scale=Math.max(.2,Math.min((w-40)/WORLD.width,(h-120)/WORLD.height));cx=WORLD.width/2;cy=385;requestDraw();}};
+ canvas.onpointercancel=()=>{held.clear();moved=true;};canvas.onwheel=e=>{e.preventDefault();stopGlide();const old=scale;scale=Math.max(.35,Math.min(2.2,scale*Math.exp(-e.deltaY*.001)));cx+=(e.clientX-w/2)*(1/old-1/scale);cy+=(e.clientY-h/2)*(1/old-1/scale);requestDraw();};
+ return {update(state:State,id:Building|null){const next=buildings.map(b=>state.levels[b]).join(',')+':'+id;if(next===signature)return;signature=next;levels=state.levels;selected=id;objects=makeObjects();dirty=true;requestDraw();},focus(id:Building){glideTo(slots[id].x,slots[id].y-60);},fit(){stopGlide();scale=Math.max(.2,Math.min((w-40)/WORLD.width,(h-120)/WORLD.height));cx=WORLD.width/2;cy=385;requestDraw();}};
 }
