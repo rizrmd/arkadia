@@ -62,3 +62,14 @@ html.horizontal-game body{overflow-x:auto;touch-action:pan-x pinch-zoom}
 .building.gate img{visibility:visible}.building.gate.selected{box-shadow:none}
 
 .building.gate{width:170px;height:90px}
+
+/* Keep the richer sprite edges intact at the reference camera scale. */
+.terrain-prop{filter:drop-shadow(0 5px 4px #1b25233b)}
+.weeds-edge,.snowdrift-edge,.paving-worn{filter:none}
+.building-label{z-index:1000}
+
+.building:hover .building-label{display:none}
+.building:focus-visible .building-label{display:block}
+
+.layout{max-width:none}
+.building::before{content:"";position:absolute;left:-10%;right:-10%;bottom:-7px;height:32px;background:radial-gradient(ellipse,#242b2760,transparent 70%);z-index:-1;pointer-events:none}
