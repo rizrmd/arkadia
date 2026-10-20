@@ -38,3 +38,7 @@ Sources: `assets-src/characters/{hero,enemy,equipment}-v1.png` (unmodified image
 Current implementation supersedes the single-direction character notes above. Hero uses cobalt blue/silver, revenants rust red/ochre. Idle and locomotion have front/back art with horizontal mirroring; W/up shows the back and stopped actors keep their facing. Step phase follows actual projected distance, with equal screen speed across directions and stable head height in move clips. Attacks, hit and death still use front art.
 
 Sources and exact imagegen prompts: [character-prompts-v2.md](docs/character-prompts-v2.md). Visual results, verification and remaining AI-art limits: [character-motion-v2.md](docs/character-motion-v2.md). Runtime atlases now have 36 frames each; regenerate with `node scripts/extract-characters.mjs`. Public preview remains https://arkadia-whachat.fural.space/.
+
+## Mobile blank arena recovery — 20 October 2026
+
+A reported 404 for the gallery-only `wall-b.png` could abort scene startup. The world now loads only its required textures and retries transient required-texture failures. Mobile settings, camera controls, visible loading/error recovery and renderer fallback are verified with `node scripts/verify-mobile.mjs`, including injected 404s and nontransparent rendered-pixel checks. See `docs/mobile/implementation.md`.

@@ -1,0 +1,134 @@
+{
+  "passed": true,
+  "base": "http://127.0.0.1:3016",
+  "pixelProof": {
+    "renderer": 1,
+    "opaque": 133192
+  },
+  "desktopPixels": {
+    "renderer": 1,
+    "opaque": 1161546
+  },
+  "fallbackPixels": {
+    "renderer": 4,
+    "opaque": 133232
+  },
+  "checks": [
+    "full-width phone arena",
+    "portrait and landscape resize",
+    "desktop rendering",
+    "world fits visible canvas",
+    "settings and source dialog accessible by touch",
+    "zoom and fit",
+    "real touch drag pans",
+    "loading failure visible",
+    "no runtime errors",
+    "optional wall-b 404 does not block arena",
+    "required texture retried after 404",
+    "Canvas2D nontransparent pixels",
+    "WebGL nontransparent pixels",
+    "WebGL unavailable falls back to Canvas2D"
+  ],
+  "results": [
+    {
+      "viewport": {
+        "width": 320,
+        "height": 640
+      },
+      "width": 320,
+      "scroll": 320,
+      "view": {
+        "width": 320,
+        "height": 474
+      },
+      "canvas": 320,
+      "world": {
+        "width": 288.00000000000006,
+        "height": 161.26689017639137,
+        "x": 16.000000000000025,
+        "y": 156.36655491180431
+      },
+      "zoom": 0.20777409198542326
+    },
+    {
+      "viewport": {
+        "width": 393,
+        "height": 800
+      },
+      "width": 393,
+      "scroll": 393,
+      "view": {
+        "width": 393,
+        "height": 634
+      },
+      "canvas": 393,
+      "world": {
+        "width": 361.00000000000006,
+        "height": 202.14356720026836,
+        "x": 16,
+        "y": 215.92821639986585
+      },
+      "zoom": 0.2604390528011729
+    },
+    {
+      "viewport": {
+        "width": 430,
+        "height": 932
+      },
+      "width": 430,
+      "scroll": 430,
+      "view": {
+        "width": 430,
+        "height": 766
+      },
+      "canvas": 430,
+      "world": {
+        "width": 398.00000000000006,
+        "height": 222.8618829520965,
+        "x": 16,
+        "y": 271.56905852395175
+      },
+      "zoom": 0.28713225211874466
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "width": 844,
+      "scroll": 844,
+      "view": {
+        "width": 550,
+        "height": 292
+      },
+      "canvas": 550,
+      "world": {
+        "width": 378.60220367130444,
+        "height": 212.00000000000003,
+        "x": 85.69889816434781,
+        "y": 40.00000000000001
+      },
+      "zoom": 0.2731379482343248
+    },
+    {
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "width": 1440,
+      "scroll": 1440,
+      "view": {
+        "width": 1146,
+        "height": 902
+      },
+      "canvas": 1146,
+      "world": {
+        "width": 1066.0000000000002,
+        "height": 596.9114754445598,
+        "x": 40.000000000000085,
+        "y": 152.5442622777201
+      },
+      "zoom": 0.7690527154738236
+    }
+  ]
+}
