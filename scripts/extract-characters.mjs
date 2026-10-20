@@ -12,16 +12,20 @@ const MIN_PART = 200;      // components smaller than this are specks; merged in
 
 // Clip layout was verified by viewing every frame (see Knowledge page); rows are detected, not assumed.
 const CHARACTERS = {
-  hero: { file: 'hero-v1.png', rows: 4, cols: 6, clips: {
+  hero: { file: 'hero-v2.png', rows: 6, cols: 6, clips: {
     idle:   { row: 0, frames: [0, 1, 2, 3, 4, 5], fps: 6,  loop: true },
     move:   { row: 1, frames: [0, 1, 2, 3, 4, 5], fps: 10, loop: true },
+    idleBack: { row: 4, frames: [0, 1, 2, 3, 4, 5], fps: 6, loop: true },
+    moveBack: { row: 5, frames: [0, 1, 2, 3, 4, 5], fps: 10, loop: true },
     attack: { row: 2, frames: [0, 1, 2, 3, 4, 5], fps: 12, loop: false, impact: 3 },
     hit:    { row: 3, frames: [0, 1],             fps: 10, loop: false },
     die:    { row: 3, frames: [2, 3, 4, 5],       fps: 8,  loop: false },
   } },
-  revenant: { file: 'enemy-v1.png', rows: 4, cols: 6, clips: {
+  revenant: { file: 'enemy-v2.png', rows: 6, cols: 6, clips: {
     idle:   { row: 0, frames: [0, 1, 2, 3, 4, 5], fps: 6,  loop: true },
     move:   { row: 1, frames: [0, 1, 2, 3, 4, 5], fps: 7,  loop: true },
+    idleBack: { row: 4, frames: [0, 1, 2, 3, 4, 5], fps: 6, loop: true },
+    moveBack: { row: 5, frames: [0, 1, 2, 3, 4, 5], fps: 10, loop: true },
     attack: { row: 2, frames: [0, 1, 2, 3, 4, 5], fps: 10, loop: false, impact: 3 },
     hit:    { row: 3, frames: [0, 1],             fps: 10, loop: false },
     die:    { row: 3, frames: [2, 3, 4, 5],       fps: 8,  loop: false },
@@ -58,6 +62,36 @@ function components({ data, W, H }) {
 // Groups big components into rows (by centroid y gaps) and columns (by x order). Fails loudly on a mismatch.
 function figures(img, rows, cols, name) {
   const { label, parts } = components(img);
+  // Reviewed hero-v2 attack 4 sword touches attack 5 cape. Separate that single
+  // joined component by geodesic distance to the two torso seeds, preserving pixels.
+  if (name === 'hero' && parts.filter(c => c.n >= MIN_PART).length === 35) {
+    const joined = parts.find(c => c.x1 - c.x0 > 400 && c.y0 > 400 && c.y0 < 500);
+    if (!joined) throw Error('hero-v2: unrecognized joined figures');
+    const ids = [joined.id, parts.length], queue = [], owner = new Int8Array(label.length).fill(-1);
+    for (const [k, [sx, sy]] of [[720, 500], [950, 500]].entries()) {
+      let seed = -1, best = Infinity;
+      for (let y = joined.y0; y <= joined.y1; y++) for (let x = joined.x0; x <= joined.x1; x++) {
+        const p = y * img.W + x, d = (x - sx)**2 + (y - sy)**2;
+        if (label[p] === joined.id && d < best) { seed = p; best = d; }
+      }
+      owner[seed] = k; queue.push(seed);
+    }
+    for (let i = 0; i < queue.length; i++) {
+      const p = queue[i], x = p % img.W, y = (p - x) / img.W;
+      for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) {
+        const q = (y + dy) * img.W + x + dx;
+        if (x + dx >= 0 && x + dx < img.W && label[q] === joined.id && owner[q] < 0) { owner[q] = owner[p]; queue.push(q); }
+      }
+    }
+    const split = ids.map(id => ({id,n:0,x0:img.W,y0:img.H,x1:-1,y1:-1,sx:0,sy:0}));
+    for (const p of queue) {
+      const c = split[owner[p]], x = p % img.W, y = (p - x) / img.W;
+      label[p] = c.id; c.n++; c.sx += x; c.sy += y;
+      c.x0 = Math.min(c.x0,x); c.x1 = Math.max(c.x1,x); c.y0 = Math.min(c.y0,y); c.y1 = Math.max(c.y1,y);
+    }
+    for (const c of split) { c.cx = c.sx/c.n; c.cy = c.sy/c.n; }
+    parts[joined.id] = split[0]; parts.push(split[1]);
+  }
   const big = parts.filter(c => c.n >= MIN_PART), specks = parts.filter(c => c.n < MIN_PART);
   if (big.length !== rows * cols) throw Error(`${name}: expected ${rows * cols} figures, found ${big.length}`);
   big.sort((a, b) => a.cy - b.cy);
@@ -124,6 +158,27 @@ async function character(id, spec) {
     const f = isolate(img, label, owned.get(c.id), c); f.m = maskOf(f); f.gy = groundY(f, f.m); f.fx = feetX(f, f.m, f.gy);
     f.r = r; f.c = col; return f;
   }));
+  // Use the reviewed upright locomotion sheet instead of the original repeated lunge poses.
+  const locomotion = await load('locomotion-v2.png');
+  const gait = figures(locomotion, 4, 6, 'locomotion');
+  const gaitRows = id === 'hero' ? [0, 1] : [2, 3];
+  const referenceHeight = frames[0][0].h;
+  const sourceHeight = gait.grid[gaitRows[0]].reduce((sum, c) => sum + c.y1 - c.y0 + 1, 0) / 6;
+  const ratio = referenceHeight / sourceHeight;
+  for (const [dir, row] of gaitRows.entries()) {
+    const targetRow = dir === 0 ? 1 : 5;
+    frames[targetRow] = await Promise.all(gait.grid[row].map(async (c, col) => {
+      const raw = isolate(locomotion, gait.label, gait.owned.get(c.id), c);
+      const { data, info } = await sharp(raw.data, {raw:{width:raw.w,height:raw.h,channels:4}})
+        .resize(Math.round(raw.w * ratio), Math.round(raw.h * ratio)).raw().toBuffer({resolveWithObject:true});
+      const f = {...raw, data, w:info.width, h:info.height, r:targetRow, c:col, source:'locomotion-v2.png', sourceW:raw.w, sourceH:raw.h, sourceRatio:ratio};
+      f.m = maskOf(f); f.gy = groundY(f, f.m); f.fx = feetX(f, f.m, f.gy);
+      return f;
+    }));
+    // Keep the head at a steady height; never re-seat each lifted boot onto the ground.
+    const headToGround = frames[targetRow].reduce((n, f) => n + f.gy, 0) / 6;
+    for (const f of frames[targetRow]) f.gy = Math.round(headToGround);
+  }
   // Anchor = point in frame-local px that sits on the world ground pivot.
   // Reference: idle frame 0 at its feet centre. Loops register to their clip's first frame; one-shots chain
   // frame-to-frame; every clip's first frame registers to the previous clip head so all states share one pivot.
@@ -157,14 +212,14 @@ async function character(id, spec) {
     let border = 0; for (let k = 0; k < cw; k++) border += small[k * 4 + 3] + small[((ch - 1) * cw + k) * 4 + 3];
     for (let k = 0; k < ch; k++) border += small[(k * cw) * 4 + 3] + small[(k * cw + cw - 1) * 4 + 3];
     if (border) throw Error(`${id} r${f.r}c${f.c}: opaque pixels touch the cell border`);
-    meta.push({ row: f.r, col: f.c, x, y, w: cw, h: ch, source: { x: f.x0, y: f.y0, w: f.w, h: f.h },
-      anchorSourcePx: [+(f.x0 + f.ax).toFixed(1), f.y0 + f.ay], roundingPx: +(ix - ox).toFixed(2), registrationIoU: f.iou === undefined ? 1 : +f.iou.toFixed(3) });
+    meta.push({ row: f.r, col: f.c, x, y, w: cw, h: ch, source: { file: f.source || spec.file, x: f.x0, y: f.y0, w: f.sourceW || f.w, h: f.sourceH || f.h },
+      anchorSourcePx: [+(f.x0 + f.ax / (f.sourceRatio || 1)).toFixed(1), +(f.y0 + f.ay / (f.sourceRatio || 1)).toFixed(1)], roundingPx: +(ix - ox).toFixed(2), registrationIoU: f.iou === undefined ? 1 : +f.iou.toFixed(3) });
   }
   await sharp({ create: { width: atlasW, height: atlasH, channels: 4, background: { r: 0, g: 0, b: 0, alpha: 0 } } })
     .composite(composites).png({ compressionLevel: 9 }).toFile(`${OUT}/${id}.png`);
   return {
     id, image: `${id}.png`, source: spec.file, sourceSize: [img.W, img.H], atlasSize: [atlasW, atlasH], scale: SCALE, gutter: GUTTER, cell,
-    direction: 'south-east only (horizontal mirror used for west-facing movement; no other directions exist)',
+    direction: 'front/back idle and locomotion; horizontal mirror for left/right; attacks/hit/death currently front-facing',
     idleHeightSourcePx: ref.gy + 1, specks, droppedSpeckPx: droppedPx,
     clips: Object.fromEntries(Object.entries(clips).map(([n, c]) => [n, { fps: c.fps, loop: c.loop, impact: c.impact,
       frames: c.list.map(f => meta.findIndex(m => m.row === f.r && m.col === f.c)) }])),

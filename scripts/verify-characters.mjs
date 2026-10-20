@@ -43,7 +43,7 @@ try {
       }
       return out;
     });
-    for (const v of Object.values(r)) { assert.equal(v.frames, 24); assert.deepEqual(v.clips, { idle: 6, move: 6, attack: 6, hit: 2, die: 4 }); assert.ok(v.rectsMatch && v.inAtlas && v.noOverlap); }
+    for (const v of Object.values(r)) { assert.equal(v.frames, 36); assert.deepEqual(v.clips, { idle: 6, move: 6, idleBack: 6, moveBack: 6, attack: 6, hit: 2, die: 4 }); assert.ok(v.rectsMatch && v.inAtlas && v.noOverlap); }
   });
 
   // Isolate the hero: no enemies, manual control.
@@ -57,7 +57,7 @@ try {
     window.__SIM__ = (ms, probe) => { const out = []; for (let t = 0; t < ms; t += 1000 / 60) { a.update(1000 / 60); out.push(probe(a)); } app.render(); return out; };
   });
   const sim = (ms, probe, before = '') => arena(([ms, probe, before]) => { new Function('a', before)(window.__ARKADIA_ARENA__); return window.__SIM__(ms, new Function('a', 'return ' + probe)); }, [ms, probe, before]);
-  const H = '({state:a.hero.state,frame:a.hero.frame(),t:a.hero.t,x:a.hero.x,y:a.hero.y,vx:a.hero.view.x,vy:a.hero.view.y,ax:a.hero.sprite.anchor.x,ay:a.hero.sprite.anchor.y,facing:a.hero.facing,sx:a.hero.sprite.scale.x,tex:a.hero.sprite.texture.frame.x+","+a.hero.sprite.texture.frame.y})';
+  const H = '({state:a.hero.state,frame:a.hero.frame(),t:a.hero.t,x:a.hero.x,y:a.hero.y,vx:a.hero.view.x,vy:a.hero.view.y,ax:a.hero.sprite.anchor.x,ay:a.hero.sprite.anchor.y,back:a.hero.back,textureClip:a.hero.textureClip,stride:a.hero.stride,facing:a.hero.facing,sx:a.hero.sprite.scale.x,tex:a.hero.sprite.texture.frame.x+","+a.hero.sprite.texture.frame.y})';
 
   await check('idle playback: time-based frames, stable position and anchor (no jitter)', async () => {
     const s = await sim(2000, H);
@@ -80,6 +80,55 @@ try {
     await page.keyboard.down('a'); const left = await sim(500, H); await page.keyboard.up('a');
     assert.ok(left.at(-1).state === 'move' && left.at(-1).facing === -1 && left.at(-1).sx < 0);
     assert.equal((await sim(50, H)).at(-1).state, 'idle');
+  });
+
+  await check('up shows back, down shows front, diagonal quadrants and stopped facing persist', async () => {
+    for (const [keys, back, facing] of [['w',true,1],['wd',true,1],['wa',true,-1],['s',false,1],['sd',false,1],['sa',false,-1]]) {
+      await sim(1,H,'a.respawnHero()');
+      for (const k of keys) await page.keyboard.down(k);
+      const moving = await sim(350,H);
+      for (const k of keys) await page.keyboard.up(k);
+      assert.ok(moving.every(v => v.back === back && v.textureClip === (back ? 'moveBack' : 'move') && v.facing === facing), keys);
+      const stopped = (await sim(100,H)).at(-1);
+      assert.equal(stopped.textureClip, back ? 'idleBack' : 'idle');
+      assert.equal(stopped.back,back); assert.equal(stopped.facing,facing);
+    }
+    await page.keyboard.down('w'); await sim(200,H); await page.keyboard.up('w');
+    await arena(() => { const app=window.__ARKADIA_APP__, h=window.__ARKADIA_ARENA__.hero, w=app.stage.children[0], v=document.querySelector('#viewport'); w.scale.set(3); w.position.set(v.clientWidth/2-h.view.x*3,v.clientHeight/2-(h.view.y-45)*3); app.render(); });
+    await page.screenshot({path:`${OUT}/direction-back.png`});
+    await page.keyboard.down('s'); await sim(200,H); await page.keyboard.up('s');
+    await arena(() => window.__ARKADIA_APP__.render());
+    await page.screenshot({path:`${OUT}/direction-front.png`});
+    await arena(() => document.querySelector('#reset').click());
+    await sim(1,H,'a.respawnHero()');
+  });
+
+  await check('step cadence follows actual distance, equal projected speed, no walking at blocked edge', async () => {
+    const r=await arena(() => {
+      const a=window.__ARKADIA_ARENA__, h=a.hero, out=[];
+      for (const k of ['d','w']) {
+        a.keys.clear();a.respawnHero();a.keys.add(k);a.update(1);
+        const x=h.view.x,y=h.view.y,s=h.stride;
+        for(let t=0;t<30;t++)a.update(1000/60);
+        out.push({distance:Math.hypot(h.view.x-x,h.view.y-y),stride:h.stride-s, frame:h.frame()});
+      }
+      a.keys.clear();h.x=9.1;h.y=.9;a.keys.add('d');a.update(20);
+      const blocked={state:h.state,stride:h.stride};a.update(200);
+      blocked.after=h.stride;a.keys.clear();a.respawnHero();return {out,blocked};
+    });
+    assert.ok(Math.abs(r.out[0].distance-r.out[1].distance)<2);
+    for (const o of r.out) assert.ok(Math.abs(o.distance/88-o.stride)<.025);
+    assert.equal(r.blocked.state,'idle');assert.equal(r.blocked.stride,r.blocked.after);
+  });
+
+  await check('enemy chase selects back/up and front/down art independently of hero', async () => {
+    const r=await arena(() => {
+      const a=window.__ARKADIA_ARENA__; a.respawnHero();a.spawn(1);const e=a.enemies[0],out=[];
+      for(const v of [6,4]) { e.x=v;e.y=v;e.play('idle');a.update(50);out.push({state:e.state,back:e.back,clip:e.textureClip,texture:e.sprite.texture.frame.y}); }
+      a.spawn(0);return out;
+    });
+    assert.deepEqual(r.map(v=>v.state),['move','move']);assert.deepEqual(r.map(v=>v.back),[true,false]);
+    assert.deepEqual(r.map(v=>v.clip),['moveBack','move']);assert.notEqual(r[0].texture,r[1].texture);
   });
 
   await check('attack: Space plays all 6 frames once (12 fps) then returns to idle', async () => {
