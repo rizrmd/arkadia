@@ -9,6 +9,7 @@ try {
  if(server) await new Promise(r=>setTimeout(r,600));
  browser=await chromium.launch({headless:true,env:{...process.env,LD_LIBRARY_PATH:'/home/dev/.local/browser-libs/usr/lib/x86_64-linux-gnu:/opt/fural-antigravity-glibc'},args:['--no-sandbox','--enable-unsafe-swiftshader','--no-zygote','--single-process']});
  const page=await browser.newPage({viewport:{width:1440,height:1000}});
+ const atlasRequests=[];page.on('request',r=>{if(/\/assets\/characters\/(hero|revenant)\.png/.test(r.url()))atlasRequests.push(r.url())});
  const errors=[];page.on('pageerror',e=>errors.push(e.message));
  await page.goto(url);await page.waitForFunction(()=>window.__ARKADIA_ARENA__);
  const results=await page.evaluate(()=>{
@@ -19,12 +20,19 @@ try {
   for(const actor of a.actors) {
    for(const [name,d] of [['Up',{x:-1,y:-1}],['Down',{x:1,y:1}]]) {
     actor.x=5;actor.y=5;actor.facing=-1;actor.stride=0;
-    const frames=new Set();
+    const frames=new Set();let visible=true;
     for(let i=0;i<90;i++){
      a.moves.clear();a.move(actor,d,1000/60);a.finishMoves(1000/60);a.sync();
+     if(!frames.has(actor.frame())) {
+      const {pixels}=window.__ARKADIA_APP__.renderer.extract.pixels(actor.sprite.texture);
+      let opaque=0;for(let p=3;p<pixels.length;p+=4)if(pixels[p]>16)opaque++;
+      out.push({name:actor.kind+' '+name+' frame '+actor.frame()+' opaque pixels '+opaque,passed:opaque>500});
+      visible=visible&&opaque>500;
+     }
      frames.add(actor.frame());
     }
     check(actor.kind+' '+name+' uses six distinct gait frames',actor.textureClip==='move'+name&&frames.size===6);
+    check(actor.kind+' '+name+' every GPU texture frame contains visible pixels',visible);
     check(actor.kind+' '+name+' is never horizontally mirrored',actor.sprite.scale.x>0);
     actor.play('idle');a.sync();
     check(actor.kind+' '+name+' idle retains vertical direction',actor.textureClip==='idle'+name);
@@ -50,6 +58,7 @@ try {
   a.attach(a.hero.view.parent);a.sync();window.__ARKADIA_APP__.render();
   return out;
  });
+ results.push({name:'character atlases use content revisions to bypass stale image caches',passed:['hero','revenant'].every(id=>atlasRequests.some(u=>new RegExp('/'+id+'\\.png\\?v=[a-f0-9]{16}$').test(u)))});
  results.forEach(r=>console.log(r.passed?'PASS':'FAIL',r.name));
  assert.ok(results.every(r=>r.passed));assert.deepEqual(errors,[]);
  await fs.mkdir('docs/vertical-facing',{recursive:true});

@@ -2,6 +2,7 @@
 // registers every frame to one ground pivot per character, and writes padded atlases + animation metadata.
 // Usage: node scripts/extract-characters.mjs  (sources: assets-src/characters/*.png, unmodified imagegen output)
 import sharp from 'sharp';
+import { createHash } from 'node:crypto';
 import fs from 'node:fs/promises';
 
 const SRC = 'assets-src/characters', OUT = 'public/assets/characters';
@@ -259,8 +260,9 @@ async function character(id, spec) {
   }
   await sharp({ create: { width: atlasW, height: atlasH, channels: 4, background: { r: 0, g: 0, b: 0, alpha: 0 } } })
     .composite(composites).png({ compressionLevel: 9 }).toFile(`${OUT}/${id}.png`);
+  const revision = createHash('sha256').update(await fs.readFile(`${OUT}/${id}.png`)).digest('hex').slice(0, 16);
   return {
-    id, image: `${id}.png`, source: spec.file, sourceSize: [img.W, img.H], atlasSize: [atlasW, atlasH], scale: SCALE, gutter: GUTTER, cell,
+    id, image: `${id}.png`, revision, source: spec.file, sourceSize: [img.W, img.H], atlasSize: [atlasW, atlasH], scale: SCALE, gutter: GUTTER, cell,
     direction: 'diagonal front/back plus straight up/down idle and locomotion; mirror diagonals only; attacks/hit/death use original art',
     idleHeightSourcePx: ref.gy + 1, specks, droppedSpeckPx: droppedPx,
     clips: Object.fromEntries(Object.entries(clips).map(([n, c]) => [n, { fps: c.fps, loop: c.loop, impact: c.impact,
