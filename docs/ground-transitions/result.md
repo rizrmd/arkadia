@@ -8,7 +8,7 @@ The dressing uses deterministic per-asset seeds and is cached by sprite/width/la
 
 ## Verification
 
-An isolated build of the committed foundation changes passes TypeScript and Vite. Browser checks pass at 1536×1024, 390×844 and 2560×1080: no page errors or failed resources, identical baked surface after reload, no surface rebakes during drag and wheel zoom. Desktop building selection still repaints and focuses the scene. Desktop, mobile and closer views were visually inspected. `scripts/verify-foundations.mjs` reproduces these checks; `public/foundation-transitions/verification.json` records the latest run.
+An isolated build of the committed foundation changes passes TypeScript and Vite. Browser checks pass at 1536×1024, 390×844 and 2560×1080: no page errors or failed resources, identical baked surface after reload, no surface rebakes during drag and wheel zoom. Desktop building selection still repaints and focuses the scene. The same checks also pass against the deployed HTTPS Stronghold host. Desktop, mobile and closer views were visually inspected. `scripts/verify-foundations.mjs` reproduces these checks; `public/foundation-transitions/verification.json` records the latest run.
 
 ## Live result
 
@@ -39,3 +39,7 @@ An isolated build of the committed foundation changes passes TypeScript and Vite
 ## Original human report
 
 ![Human screenshot showing plain ground-to-wall transitions](/api/organizations/ORd5dd6f99b4308d6187031557/task-attachments/TA29ffc978bb9457f37f0fb1d5)
+
+## Source and reproduction
+
+[Generation prompts](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=assets-src%2Ffoundation-transitions%2Fprompts.json) · [Live verification report](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=docs%2Fground-transitions%2Flive-verification.json)
