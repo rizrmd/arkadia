@@ -16,3 +16,6 @@
 .building.barracks img{transform:translate(-50%,calc(-1 * var(--pivot))) skewY(-14deg);transform-origin:50% 95%}
 .building.expedition img{transform:translate(-50%,calc(-1 * var(--pivot))) skewY(-11deg);transform-origin:50% 95%}
 .building.altar img{transform:translate(-50%,calc(-1 * var(--pivot))) skewY(7deg);transform-origin:50% 95%}
+
+/* Wider irregular clearing with a single camera for all terrain and props. */
+.scene{aspect-ratio:1280/900;max-height:800px}.scene-world,.ground,.wall-piece,.crop{width:1280px;height:900px}.meadow-clump{position:absolute;height:auto;transform:translate(-50%,-90%);pointer-events:none}
