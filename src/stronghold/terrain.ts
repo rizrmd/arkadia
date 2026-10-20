@@ -2,8 +2,8 @@ import {project,unproject} from '../isometric';
 export const COURT={x:577,y:-160,size:15};
 export function tilePoint(u:number,v:number){const p=project(u,v);return {x:p.x+COURT.x,y:p.y+COURT.y};}
 const assetRoot='/modular-stronghold/',v2=assetRoot+'v2/';
-export type EnvironmentSprite={id:string;x:number;y:number;width:number;foot:number;shear:number;vertical:number;depth:number;opacity:number;file:string};
-function prop(id:string,u:number,v:number,width:number,extra='',legacy=false):EnvironmentSprite{const p=tilePoint(u,v),value=(key:string,fallback:number)=>Number(extra.match(new RegExp(key+':([\\d.%-]+)'))?.[1].replace('%',''))||fallback;return {id,...p,width,foot:value('--foot',97)/100,shear:value('--wall-shear',0),vertical:value('--wall-height',1),depth:value('z-index',Math.round(p.y)),opacity:value('opacity',1),file:(legacy?assetRoot:v2)+id+'.png'};}
+export type EnvironmentSprite={layer:'ground'|'backdrop'|'world'|'foreground';id:string;x:number;y:number;width:number;foot:number;shear:number;vertical:number;depth:number;opacity:number;file:string};
+function prop(id:string,u:number,v:number,width:number,extra='',legacy=false):EnvironmentSprite{const p=tilePoint(u,v),value=(key:string,fallback:number)=>Number(extra.match(new RegExp(key+':([\\d.%-]+)'))?.[1].replace('%',''))||fallback;return {layer:['snowdrift-edge','weeds-edge','paving-worn'].includes(id)?'ground':u<0||v<0||u===0||v===0?'backdrop':u>=15||v>=15?'foreground':'world',id,...p,width,foot:value('--foot',97)/100,shear:value('--wall-shear',0),vertical:value('--wall-height',1),depth:value('z-index',Math.round(p.y)),opacity:value('opacity',1),file:(legacy?assetRoot:v2)+id+'.png'};}
 export function environmentSprites(){
  const parts:EnvironmentSprite[]=[];
  for(let n=0;n<15;n+=5){

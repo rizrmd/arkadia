@@ -1,6 +1,6 @@
 ## World and overlays
 
-Stronghold fills the entire viewport as a single canvas. Terrain, buildings, walls and vegetation are canvas artwork. All HTML controls float above the world; the building panel and forge gallery no longer reserve permanent screen space.
+Stronghold fills the entire viewport as a pre-rendered canvas world. Terrain, buildings, walls and vegetation are canvas artwork. All HTML controls float above the world; the building panel and forge gallery no longer reserve permanent screen space.
 
 Drag to pan, pinch/scroll to zoom, or choose Fit world. Click any visible part of a building, including its roof, or select it in the building dock. Its floating panel opens and the camera focuses it. Close the panel to reveal the world again. Portrait uses a bottom sheet and never scrolls the document.
 
@@ -31,16 +31,31 @@ The production build and browser checks pass across four viewport sizes. All sev
 
 ## Mobile panning performance
 
-The renderer caches rasterized world sections in a 32 MiB LRU cache, coalesces pointer movement into animation frames, reuses material patterns and a baked ground shadow, and resizes the canvas only when the viewport changes. Selection and building-level changes invalidate cached artwork; resource ticks leave unchanged artwork alone. Existing artwork and full-screen HTML overlays are preserved.
+The world is rasterized once into a bounded canvas surface, then moved and scaled with compositor transforms. Panning and pinching do not draw sprites, generate new chunks, allocate canvas buffers or upload changing canvas content. Resource ticks leave the world unchanged. Selection and building upgrades refresh the artwork. The world surface is limited to 32 MiB and 4096 pixels per dimension; the current surface uses 3787 × 2163 pixels (31.25 MiB). Infinite snow uses a separate repeated layer with the same world phase.
 
-A Chromium mobile emulation at 390 × 844, DPR 3 and 4× CPU slowdown measured the same 101-event pan before and after the change:
+Chromium emulation at 390 × 844, DPR 3 and 4× CPU slowdown measured:
 
-| Measurement | Before | After |
-| --- | --- | --- |
-| Canvas backing-store resets | 202 | 0 |
-| Material patterns created | 202 | 0 |
-| Pointer handler p95 | 286.2 ms | 0.3 ms |
-| Frame interval p95 | 266.6 ms | 50.0 ms |
-| Frame interval median | 16.7 ms | 16.7 ms |
+| Measurement | Original | Initial tile cache | Current compositor |
+| --- | --- | --- | --- |
+| Canvas backing-store resets during pan | 202 | 0 | 0 |
+| Canvas image draws during pan | 3884 | 2322 | 0 |
+| Pointer handler p95 | 286.2 ms | 0.3 ms | 0.2 ms |
+| Frame interval p95 | 266.6 ms | 50.0 ms | 16.8 ms |
 
-These are browser emulation results, not a physical-device FPS guarantee. Cold sections still require rasterization when first revealed. Automated checks cover native roof selection, drag without selection, pan cache reuse, resource tick suppression, zoom and resize. Four viewport layouts, all seven building panels and upgrades also passed. The broader Frostpass smoke run reached checkpoint and reward checks before its 60-second command limit; this change does not modify expedition code.
+A separate CDP touch-input gesture measured a 16.8 ms p95 frame interval and zero Canvas2D image draws. These are emulated results, not a physical-phone FPS guarantee. Tests cover touch pinch, extended panning outside the settlement, roof hit selection, zoom, viewport resize, resource ticks, Forge upgrade invalidation, all seven panels and four viewport sizes.
+
+## Snow and Mine occlusion
+
+Ground decals (snowdrifts, paving wear and weeds) now render before all structural artwork, including back walls whose depth coordinates are negative. Structural objects are grouped by the enclosure's isometric sides: rear perimeter first, interior buildings next, front perimeter last, with foot depth ordering within each group. Mine remains at its original position. The front wall correctly hides the part of Mine behind it; the wall is not cut through by a different segment or by snow.
+
+### Reported phone screenshots
+
+![Reported snow overlapping the rear wall](https://arkadia-stronghold-whachat.fural.space/fullscreen-snow/reported-snow-overlap.jpg)
+
+![Reported Mine and wall overlap](https://arkadia-stronghold-whachat.fural.space/fullscreen-snow/reported-mine-overlap.jpg)
+
+### Corrected views
+
+![Mine behind a continuous foreground wall at its original position](https://arkadia-stronghold-whachat.fural.space/fullscreen-snow/mine-wall-corrected.webp)
+
+![Continuous snow after panning far outside the settlement](https://arkadia-stronghold-whachat.fural.space/fullscreen-snow/infinite-snow.webp)
