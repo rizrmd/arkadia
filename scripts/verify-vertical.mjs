@@ -2,6 +2,7 @@ import {chromium} from 'playwright';
 import {spawn} from 'node:child_process';
 import fs from 'node:fs/promises';
 import assert from 'node:assert/strict';
+const output=process.env.OUTPUT_DIR||'docs/vertical-facing';
 const url=process.env.DEMO_URL||'http://127.0.0.1:3027/';
 const server=process.env.DEMO_URL?null:spawn(process.execPath,['server.mjs'],{env:{...process.env,PORT:'3027'}});
 let browser;
@@ -71,18 +72,19 @@ try {
   a.attach(a.hero.view.parent);a.sync();window.__ARKADIA_APP__.render();
   return out;
  });
- await fs.mkdir('docs/vertical-facing',{recursive:true});
- await page.screenshot({path:'docs/vertical-facing/runtime.png'});
- for(const keys of [['w','a'],['w','d'],['s','a'],['s','d']]) {
-  await page.evaluate(()=>{const a=window.__ARKADIA_ARENA__;a.keys.clear();a.spawn(0);a.respawnHero()});
+ await fs.mkdir(output,{recursive:true});
+ await page.screenshot({path:output+'/runtime.png'});
+ for(const keys of [['w'],['s'],['w','a'],['w','d'],['s','a'],['s','d']]) {
+  await page.evaluate(()=>{const a=window.__ARKADIA_ARENA__;a.keys.clear();a.spawn(0);a.respawnHero();a.hero.stride=0});
   for(const k of keys)await page.keyboard.down(k);
-  const distinct=await page.evaluate(()=>{const a=window.__ARKADIA_ARENA__;a.update(100);const h=a.hero;return !h.vertical&&h.set.meta.frames[h.clip.frames[h.frame()]].source.file==='locomotion-v2.png'});
+  const distinct=await page.evaluate(vertical=>{const a=window.__ARKADIA_ARENA__;a.update(100);window.__ARKADIA_APP__.render();const h=a.hero;return h.vertical===vertical&&h.set.meta.frames[h.clip.frames[h.frame()]].source.file===(vertical?'vertical-v3.png':'locomotion-v2.png')},keys.length===1);
+  await page.screenshot({path:output+'/'+keys.join('-')+'.png'});
   for(const k of keys)await page.keyboard.up(k);
-  results.push({name:'browser key events '+keys.join('+')+' select diagonal artwork',passed:distinct});
+  results.push({name:'browser key events '+keys.join('+')+' select '+(keys.length===1?'vertical':'diagonal')+' artwork',passed:distinct});
  }
  results.push({name:'character atlases use content revisions to bypass stale image caches',passed:['hero','revenant'].every(id=>atlasRequests.some(u=>new RegExp('/'+id+'\\.png\\?v=[a-f0-9]{16}$').test(u)))});
  results.forEach(r=>console.log(r.passed?'PASS':'FAIL',r.name));
  assert.ok(results.every(r=>r.passed));assert.deepEqual(errors,[]);
- await fs.mkdir('docs/vertical-facing',{recursive:true});
- await fs.writeFile('docs/vertical-facing/'+(process.env.DEMO_URL?'live':'local')+'.json',JSON.stringify({url,results,errors},null,2));
+ await fs.mkdir(output,{recursive:true});
+ await fs.writeFile(output+'/'+(process.env.DEMO_URL?'live':'local')+'.json',JSON.stringify({url,results,errors},null,2));
 }finally{await browser?.close();server?.kill();}
