@@ -1,3 +1,5 @@
+// Public releases use the single retained Arkadia sandbox.
+for (const id of process.argv.slice(2)) if (id !== 'CS13a31c114a666008eb9cafa5') throw Error('Use the canonical arkadia-stronghold sandbox: CS13a31c114a666008eb9cafa5');
 import fs from 'node:fs/promises';
 import {gzipSync} from 'node:zlib';
 import {execFileSync} from 'node:child_process';
@@ -10,7 +12,7 @@ for(const folder of ['assets/characters','vertical-facing'])for(const n of await
 const archive='vertical-v3-'+Date.now()+'.gz';await fs.writeFile(dir+'/'+archive,gzipSync(JSON.stringify(files)));
 if(!process.argv[2]){console.log('Packaged',Object.keys(files).length,'resources');process.exit();}
 const targets=process.argv.slice(2);
-const names={CS85ee4f83c745aa0b819ca6aa:'arkadia',CS13a31c114a666008eb9cafa5:'arkadia-stronghold'};
+const names={CS13a31c114a666008eb9cafa5:'arkadia-stronghold'};
 for(const id of targets)if(!names[id])throw Error('Unknown arena deployment target: '+id);
 for(const id of targets){
 run(['organization','home-files','transfer','--from-member','US4f550b10dab65dc9756fa429','--from','projects/arkadia/repos/arkadia/'+dir+'/'+archive,'--to-custom-sandbox',id,'--to',archive]);

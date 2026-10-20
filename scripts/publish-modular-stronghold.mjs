@@ -1,3 +1,5 @@
+// Public releases use the single retained Arkadia sandbox.
+for (const id of process.argv.slice(2)) if (id !== 'CS13a31c114a666008eb9cafa5') throw Error('Use the canonical arkadia-stronghold sandbox: CS13a31c114a666008eb9cafa5');
 import fs from 'node:fs/promises';import {createHash} from 'node:crypto';import {gzipSync} from 'node:zlib';import {execFileSync} from 'node:child_process';
 const run=args=>JSON.parse(execFileSync('fural-agent',args,{encoding:'utf8',timeout:120000,maxBuffer:6e6}));
 const dir='/home/dev/modular-stronghold-release';await fs.mkdir(dir,{recursive:true});const files={},html=await fs.readFile('dist/stronghold.html','utf8');files['/stronghold.html']=Buffer.from(html).toString('base64');
@@ -12,5 +14,5 @@ for(const id of process.argv.slice(2)){
  const injection=`Object.assign(files,JSON.parse(gunzipSync(Buffer.concat(${JSON.stringify(names)}.map(n=>readFileSync(n))))));`;
  if(!live.includes('const types='))throw Error('Unrecognized release loader');const code=live.includes(injection)?live:live.replace('const types=',injection+'const types=');
  const loader=dir+'/'+id;await fs.mkdir(loader,{recursive:true});await fs.writeFile(loader+'/app.mjs',code);
- console.log(JSON.stringify(run(['sandboxes','serve','--name',id==='CS13a31c114a666008eb9cafa5'?'arkadia-stronghold':'arkadia','--dir',loader,'--cmd','node app.mjs','--port','3000','--project','PJ8758f22f61165f3d3215e454'])));
+ console.log(JSON.stringify(run(['sandboxes','serve','--name','arkadia-stronghold','--dir',loader,'--cmd','node app.mjs','--port','3000','--project','PJ8758f22f61165f3d3215e454'])));
 }

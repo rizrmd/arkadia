@@ -1,3 +1,5 @@
+// Public releases use the single retained Arkadia sandbox.
+for (const id of process.argv.slice(2)) if (id !== 'CS13a31c114a666008eb9cafa5') throw Error('Use the canonical arkadia-stronghold sandbox: CS13a31c114a666008eb9cafa5');
 // Overlay only this task's Stronghold entry and evidence onto the current release.
 // Read the live loader first so unrelated arena releases are preserved.
 import fs from 'node:fs/promises';
@@ -20,7 +22,7 @@ for(const id of targets){
  if(!live.includes('const types='))throw Error('Unrecognized release loader');
  const code=live.includes(injection)?live:live.replace('const types=',injection+'const types=');
  await fs.writeFile(dir+'/app.mjs',code);
- const name=id==='CS13a31c114a666008eb9cafa5'?'arkadia-stronghold':'arkadia';
+ const name='arkadia-stronghold';
  const stage=dir+'/loader';await fs.mkdir(stage,{recursive:true});await fs.writeFile(stage+'/app.mjs',code);
  console.log(JSON.stringify(run(['sandboxes','serve','--name',name,'--dir',process.cwd()+'/'+stage,'--cmd','node app.mjs','--port','3000','--project',project])));
 }
