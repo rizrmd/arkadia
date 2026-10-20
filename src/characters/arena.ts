@@ -102,8 +102,10 @@ export class Arena {
     const origin = this.toScreen(0, 0), p = this.toScreen(d.x, d.y), sx = p.x - origin.x, sy = p.y - origin.y;
     const length = Math.hypot(sx, sy);
     if (length < 1e-6) return;
-    // Hysteresis keeps near-vertical AI paths from flickering between views.
-    a.vertical = Math.abs(sx) / length < (a.vertical ? .4 : .28);
+    // Reserve frontal/rear artwork for paths within 10° of straight up/down.
+    // A small 15° exit band absorbs AI jitter without retaining vertical art
+    // once the path visibly turns diagonal.
+    a.vertical = Math.abs(sx) / length < Math.sin((a.vertical ? 15 : 10) * Math.PI / 180);
     // Angular dead bands retain the previous quadrant near an axis, independent of
     // target distance. Small collision corrections no longer flip front/back art.
     if (Math.abs(sy) / length > .15) a.back = sy < 0;

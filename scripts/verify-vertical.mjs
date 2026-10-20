@@ -40,6 +40,15 @@ try {
    a.face(actor,{x:-1,y:-1});
    for(let i=0;i<100;i++)a.face(actor,{x:-1,y:-1+(i%2?.05:-.05)});
    check(actor.kind+' vertical jitter stays vertical',actor.vertical&&actor.back);
+   // A visible diagonal turn must leave the vertical hysteresis band.
+   for(const sign of [-1,1]) {
+    a.face(actor,{x:sign,y:sign});actor.play('move');a.sync();
+    const verticalTexture=actor.sprite.texture;
+    a.face(actor,{x:sign*1.175,y:sign*.825});a.sync();
+    check(actor.kind+' '+sign+' shallow diagonal uses separate artwork',!actor.vertical&&actor.sprite.texture!==verticalTexture);
+    check(actor.kind+' '+sign+' diagonal comes from diagonal source',actor.set.meta.frames[actor.clip.frames[actor.frame()]].source.file==='locomotion-v2.png');
+   }
+
    a.face(actor,{x:1,y:0});actor.play('move');
    check(actor.kind+' diagonal down restored',!actor.vertical&&actor.textureClip==='move');
    a.face(actor,{x:0,y:-1});
@@ -51,17 +60,29 @@ try {
    a.keys.clear();a.keys.add(key);a.update(100);
    check('keyboard '+key+' selects '+clip,a.hero.textureClip===clip);
   }
+  for(const [keys,clip] of [[['w','a'],'moveBack'],[['w','d'],'moveBack'],[['s','a'],'move'],[['s','d'],'move']]) {
+   a.hero.x=5;a.hero.y=5;a.keys.clear();keys.forEach(k=>a.keys.add(k));a.update(100);
+   check('keyboard '+keys.join('+')+' uses distinct diagonal artwork',!a.hero.vertical&&a.hero.textureClip===clip&&a.hero.set.meta.frames[a.hero.clip.frames[a.hero.frame()]].source.file==='locomotion-v2.png');
+  }
   a.keys.clear();
   a.spawn(3);
-  const dirs=[{x:-1,y:-1},{x:1,y:1},{x:-1,y:-1},{x:1,y:1}];
+  const dirs=[{x:-1,y:-1},{x:0,y:-1},{x:1,y:1},{x:1,y:0}];
   a.actors.forEach((actor,i)=>{actor.x=3+i;actor.y=5;a.face(actor,dirs[i]);actor.play('move');actor.stride=.3});
   a.attach(a.hero.view.parent);a.sync();window.__ARKADIA_APP__.render();
   return out;
  });
+ await fs.mkdir('docs/vertical-facing',{recursive:true});
+ await page.screenshot({path:'docs/vertical-facing/runtime.png'});
+ for(const keys of [['w','a'],['w','d'],['s','a'],['s','d']]) {
+  await page.evaluate(()=>{const a=window.__ARKADIA_ARENA__;a.keys.clear();a.spawn(0);a.respawnHero()});
+  for(const k of keys)await page.keyboard.down(k);
+  const distinct=await page.evaluate(()=>{const a=window.__ARKADIA_ARENA__;a.update(100);const h=a.hero;return !h.vertical&&h.set.meta.frames[h.clip.frames[h.frame()]].source.file==='locomotion-v2.png'});
+  for(const k of keys)await page.keyboard.up(k);
+  results.push({name:'browser key events '+keys.join('+')+' select diagonal artwork',passed:distinct});
+ }
  results.push({name:'character atlases use content revisions to bypass stale image caches',passed:['hero','revenant'].every(id=>atlasRequests.some(u=>new RegExp('/'+id+'\\.png\\?v=[a-f0-9]{16}$').test(u)))});
  results.forEach(r=>console.log(r.passed?'PASS':'FAIL',r.name));
  assert.ok(results.every(r=>r.passed));assert.deepEqual(errors,[]);
  await fs.mkdir('docs/vertical-facing',{recursive:true});
- await page.screenshot({path:'docs/vertical-facing/runtime.png'});
  await fs.writeFile('docs/vertical-facing/'+(process.env.DEMO_URL?'live':'local')+'.json',JSON.stringify({url,results,errors},null,2));
 }finally{await browser?.close();server?.kill();}
