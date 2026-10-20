@@ -1,19 +1,21 @@
 import type {Building} from './economy';
+import {modularEnclosure,tilePoint} from './terrain';
 import {groundCalibration,project,unproject} from '../isometric';
 
 // 3:2 is the canvas aspect ratio, not the ground projection. Ground is 2:1.
 export const WORLD = {width:1155,height:770};
+const spot=(u:number,v:number,width:number,asset:string)=>({...tilePoint(u,v),width,pivot:.95,asset});
 export const slots:Record<Building,{x:number;y:number;width:number;pivot:number;asset:string}>= {
- forge:{x:235,y:348,width:350,pivot:.95,asset:'stronghold/forge'},
- barracks:{x:600,y:270,width:300,pivot:.95,asset:'stronghold/barracks'},
- altar:{x:960,y:394,width:250,pivot:.95,asset:'stronghold/altar'},
- mage:{x:245,y:605,width:245,pivot:.95,asset:'stronghold/mage'},
- expedition:{x:560,y:500,width:270,pivot:.95,asset:'stronghold/expedition'},
- mine:{x:935,y:665,width:355,pivot:.95,asset:'stronghold/mine'},
- gate:{x:550,y:760,width:240,pivot:.95,asset:'stronghold/gate'}
+ forge:spot(3,6,295,'stronghold/forge'),
+ barracks:spot(3,2,260,'stronghold/barracks'),
+ altar:spot(6,2,215,'stronghold/altar'),
+ mage:spot(6,9,205,'stronghold/mage'),
+ expedition:spot(6,5,235,'stronghold/expedition'),
+ mine:spot(9,6,290,'stronghold/mine'),
+ gate:spot(10,9.7,210,'stronghold/gate')
 };
-export function ground(){return '<img class="courtyard-art" src="/fortress-ui/courtyard-v2.webp" alt="" draggable="false">';}
-export function enclosure(){return '';}
+export function ground(){return '';}
+export function enclosure(){return modularEnclosure();}
 // Source-pixel landmarks on masonry bases/table edges, never roof diagonals.
 // Each pair is [left endpoint, right endpoint]. Keep these auditable: the old
 // hand-entered slopes missed the Barracks facade (~-.35, rather than -.43).
@@ -24,8 +26,8 @@ export const groundEdges = {
  mage: {rising:[[304,631],[380,604]],falling:[[272,617],[304,631]]},
  expedition: {rising:[[291,371],[602,231]],falling:[[153,288],[291,371]]},
  mine: {rising:[[393,402],[499,363]],falling:[[245,282],[466,402]]},
- // The gate belongs to the background plate; its separate sprite is hidden.
- gate: {rising:[[0,1],[2,0]],falling:[[0,0],[2,1]]}
+ // Standalone gate sprite; ground facade measured from its generated base.
+ gate: {rising:[[1060,1000],[1300,900]],falling:[[260,650],[1060,1000]]}
 } as const;
 function slope(edge:readonly [readonly [number,number],readonly [number,number]]) {
  return (edge[1][1]-edge[0][1])/(edge[1][0]-edge[0][0]);

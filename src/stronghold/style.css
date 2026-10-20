@@ -53,3 +53,12 @@ html.horizontal-game body{overflow-x:auto;touch-action:pan-x pinch-zoom}
 .horizontal-game footer .import{display:flex;align-items:center;gap:5px;white-space:nowrap}
 .horizontal-game footer button,.horizontal-game footer .import{flex-shrink:0}
 .horizontal-game .portrait{height:96px}.horizontal-game .description{font-size:20px;margin:12px 10px}.horizontal-game hr{margin-top:15px}
+
+/* Modular terrain fills the viewport independently of the building camera. */
+.terrain-canvas{position:absolute;inset:0;pointer-events:none}
+.scene-world{pointer-events:none}.scene-world .building{pointer-events:auto}
+.terrain-prop{position:absolute;height:auto;pointer-events:none;transform-origin:50% var(--foot,97%)}
+.terrain-prop{transform:translate(-50%,calc(-1 * var(--foot,97%))) matrix(1,var(--wall-shear,0),0,var(--wall-height,1),0,0)}
+.building.gate img{visibility:visible}.building.gate.selected{box-shadow:none}
+
+.building.gate{width:170px;height:90px}
