@@ -20,7 +20,7 @@ Run npm run build, node scripts/verify-idle-proportions.mjs, node scripts/verify
 
 The proportion verifier reads GPU texture pixels for both characters, all four views and every idle/walking frame. It checks visible content, constant runtime scale/anchor/world position, clip coverage, crown-width agreement within 10%, total-height agreement within 5%, a stable idle crown within two atlas pixels, and average crown alignment within two atlas pixels across idle/walk. The top 10% isolates the crown before shoulders and cape; it measures silhouette agreement, not an anatomical reconstruction. The comparison image is captured from those actual GPU textures for visual review.
 
-Local verification: production build, 200 proportion/texture checks, 65 direction/keyboard/cache checks and seven collision checks passed. Measured average crown-width ratios are 0.930–1.031 for all views; total-height ratios are 0.995–1.011. Every idle cycle has zero vertical crown drift at atlas resolution. Largest average horizontal crown shift is under one atlas pixel.
+Local and public verification: production build, 200 proportion/texture checks, 65 direction/keyboard/cache checks and seven collision checks passed. Measured average crown-width ratios are 0.930–1.031 for all views; total-height ratios are 0.995–1.011. Every idle cycle has zero vertical crown drift at atlas resolution. Largest average horizontal crown shift is under one atlas pixel.
 
 Publication overlays only the two character atlases, their manifest and this evidence onto the current canonical release. It stages small uniquely named archive parts before switching the loader, retaining unrelated Stronghold work.
 
@@ -55,3 +55,7 @@ Standing reference prompt: Create four stationary standing game sprites in a 2×
 Idle cycle prompt: Use the four standing figures exactly, preserving details and proportions. Four rows, six columns: front knight, rear knight, front skeleton, rear skeleton. All poses stand still with planted feet and straight legs. Slight chest breathing and cloth motion only; no steps, head-size changes, background, shadows or labels. Consistent scale, crown and foot baseline; isolated figures on transparent background.
 
 Final correction prompt: Precise sprite sheet edit. Keep the entire provided four rows six columns sprite sheet exactly unchanged EXCEPT two localized corrections: row 2 rear knight helmets are too wide: reduce only helmet width about 12%, keep helmet height/position, body/cape/feet unchanged. Row 4 rear skeleton skulls are too wide: reduce only skull width about 18%, keep skull height/position, body/cape/feet unchanged. Rows 1 and 3 must remain exactly unchanged. Preserve same dimensions 1536x1024, 24 figures, transparent background, all feet planted, no new content, no shadows, no text.
+
+### Published result
+
+The canonical public arena at https://arkadia-stronghold-whachat.fural.space/ passed the same 200 proportion, 65 directional and seven collision checks after publication. Source and review images are served inline from that release. Code and assets were pushed to feat/stronghold.

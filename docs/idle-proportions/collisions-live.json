@@ -1,0 +1,43 @@
+{
+  "url": "https://arkadia-stronghold-whachat.fural.space/",
+  "results": [
+    {
+      "name": "opposing collisions stop gait and preserve opposing facing for 180 frames",
+      "passed": true,
+      "details": [
+        "idle",
+        "idle",
+        0,
+        0,
+        1,
+        -1
+      ]
+    },
+    {
+      "name": "unblocked actor immediately resumes walking",
+      "passed": true,
+      "details": 0.011228070175438856
+    },
+    {
+      "name": "near-axis collision jitter holds art; deliberate north turn uses back art",
+      "passed": true
+    },
+    {
+      "name": "near-vertical jitter holds horizontal mirror",
+      "passed": true
+    },
+    {
+      "name": "ring AI does not reverse across collision jitter at retreat boundary",
+      "passed": true
+    },
+    {
+      "name": "ring AI exits retreat after clearing outer boundary",
+      "passed": true
+    },
+    {
+      "name": "engagement selection retains incumbents under small crowd displacement",
+      "passed": true
+    }
+  ],
+  "errors": []
+}

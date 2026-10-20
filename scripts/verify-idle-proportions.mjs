@@ -8,7 +8,7 @@ let browser;
 try {
  if(server)await new Promise(r=>setTimeout(r,500));
  browser=await chromium.launch({headless:true,env:{...process.env,LD_LIBRARY_PATH:'/home/dev/.local/browser-libs/usr/lib/x86_64-linux-gnu:/opt/fural-antigravity-glibc'},args:['--no-sandbox','--enable-unsafe-swiftshader','--no-zygote','--single-process']});
- const page=await browser.newPage({viewport:{width:1440,height:1000}}), errors=[];
+ const page=await browser.newPage({viewport:{width:1440,height:1100}}), errors=[];
  page.on('pageerror',e=>errors.push(e.message));
  await page.goto(url);await page.waitForFunction(()=>window.__ARKADIA_ARENA__);
  const report=await page.evaluate(()=>{
@@ -53,13 +53,13 @@ try {
    }
   }
   // Build a same-scale visual comparison from GPU textures, not the source PNG.
-  const panel=document.createElement('div');panel.id='proportion-proof';panel.style='position:fixed;inset:0;z-index:99999;background:#20252a;display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:16px;color:white;font:16px sans-serif;overflow:auto';
+  const panel=document.createElement('div');panel.id='proportion-proof';panel.style='position:fixed;inset:0;z-index:99999;background:#20252a;display:grid;grid-template-columns:repeat(2,1fr);gap:8px;padding:16px;color:white;font:16px sans-serif;overflow:auto';
   for(const actor of a.actors)for(const [label,vertical,back] of [['Front',false,false],['Back',false,true],['Up',true,true],['Down',true,false]]){
    actor.vertical=vertical;actor.back=back;
    const box=document.createElement('div');box.textContent=actor.kind+' '+label+' — idle / walk';
-   const canvas=document.createElement('canvas');canvas.width=336;canvas.height=300;canvas.style='width:100%';const ctx=canvas.getContext('2d');
+   const canvas=document.createElement('canvas');canvas.width=672;canvas.height=216;canvas.style='width:100%';const ctx=canvas.getContext('2d');
    for(const [i,state] of ['idle','move'].entries()){
-    actor.play(state);actor.t=0;actor.stride=0;a.sync();const source=app.renderer.extract.canvas(actor.sprite.texture);ctx.drawImage(source,i*168,20,source.width*1.15,source.height*1.15);
+    actor.play(state);actor.t=0;actor.stride=0;a.sync();const source=app.renderer.extract.canvas(actor.sprite.texture);ctx.drawImage(source,i*336+30,0,source.width*1.7,source.height*1.7);
    }
    box.append(canvas);panel.append(box);
   }
