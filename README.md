@@ -32,3 +32,9 @@ Sources: `assets-src/characters/{hero,enemy,equipment}-v1.png` (unmodified image
 - Clips (one direction, south-east; west = horizontal mirror): idle 6f@6, move 6f@10 hero / @7 revenant, attack 6f@12 hero / @10 revenant (impact frame 3), hit = row 4 frames 1–2 @10, die = row 4 frames 3–6 @8 holding the last frame. Atlas scale 0.5 × source, displayed at 1.1 (idle hero ≈ 116 world px on a 128 × 64 tile), mip-mapped, integer screen positions.
 - Arena: WASD move, Space attack, R revive; arrow keys still drive the depth probe. Auto-battle drives the hero; only the 8 nearest revenants engage, the rest keep a ring. Equipment panel uses the 4 × 3 atlas (icons only — not armour attachments).
 - Limits: AI pose drift remains (torso drift ≤ 3.8 atlas px in idle, ≤ 5.4 in run); no north/back-facing art; no collision with props; hit/death shares one row; atlas icons are not wearable layers.
+
+## Character movement and identity v2
+
+Current implementation supersedes the single-direction character notes above. Hero uses cobalt blue/silver, revenants rust red/ochre. Idle and locomotion have front/back art with horizontal mirroring; W/up shows the back and stopped actors keep their facing. Step phase follows actual projected distance, with equal screen speed across directions and stable head height in move clips. Attacks, hit and death still use front art.
+
+Sources and exact imagegen prompts: [character-prompts-v2.md](docs/character-prompts-v2.md). Visual results, verification and remaining AI-art limits: [character-motion-v2.md](docs/character-motion-v2.md). Runtime atlases now have 36 frames each; regenerate with `node scripts/extract-characters.mjs`. Public preview remains https://arkadia-whachat.fural.space/.

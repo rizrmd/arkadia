@@ -3,7 +3,7 @@ import { equipmentUrl, type EquipmentMeta } from './sprites';
 
 // Equipment panel driven by the 4 × 3 equipment atlas. Icons are inventory art only: they are not attachments
 // and do not change the hero frames (the hero sheet already paints helm, armour, cloak and sword).
-const NAMES: Record<string, string> = { sword: 'Pedang pendek', axe: 'Kapak', spear: 'Tombak', staff: 'Tongkat relik', helm: 'Helm gading', armor: 'Zirah lempeng', cloak: 'Jubah plum', shield: 'Perisai', potion: 'Potion amber', backpack: 'Ransel', map: 'Peta ekspedisi', 'soul-shard': 'Soul shard' };
+const NAMES: Record<string, string> = { sword: 'Pedang pendek', axe: 'Kapak', spear: 'Tombak', staff: 'Tongkat relik', helm: 'Helm gading', armor: 'Zirah lempeng', cloak: 'Jubah biru kobalt', shield: 'Perisai', potion: 'Potion amber', backpack: 'Ransel', map: 'Peta ekspedisi', 'soul-shard': 'Soul shard' };
 const WORN = ['sword', 'helm', 'armor', 'cloak'];
 const BAG = ['potion', 'shield', 'axe', 'spear', 'staff', 'backpack', 'map', 'soul-shard'];
 const SIZE = 46;

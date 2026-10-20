@@ -1,52 +1,67 @@
 {
  "url": "https://arkadia-whachat.fural.space/",
- "at": "2026-10-20T09:23:53.237Z",
+ "at": "2026-10-20T09:53:01.363Z",
  "renderer": "webgl",
  "results": [
   {
    "name": "existing asset-lab regression (scripts/check-browser.js)",
    "passed": true,
-   "ms": 3306
+   "ms": 672
   },
   {
    "name": "atlas frames match manifest rects, shared anchor, gutters inside atlas",
    "passed": true,
-   "ms": 4100
+   "ms": 1203
   },
   {
    "name": "idle playback: time-based frames, stable position and anchor (no jitter)",
    "passed": true,
-   "ms": 2396
+   "ms": 1888
   },
   {
    "name": "move: WASD drives move clip, facing mirrors only horizontally",
    "passed": true,
-   "ms": 1801
+   "ms": 408
   },
   {
-   "name": "attack: Space plays all 6 frames once (12 fps) then returns to idle",
+   "name": "up shows back, down shows front, diagonal quadrants and stopped facing persist",
    "passed": true,
-   "ms": 95
+   "ms": 5388
   },
   {
-   "name": "hit then die: hit clip on damage, die clip holds final frame, R revives",
-   "passed": true,
-   "ms": 3505
-  },
-  {
-   "name": "equipment UI: 12 atlas icons, potion heals",
+   "name": "step cadence follows actual distance, equal projected speed, no walking at blocked edge",
    "passed": true,
    "ms": 3
   },
   {
+   "name": "enemy chase selects back/up and front/down art independently of hero",
+   "passed": true,
+   "ms": 9
+  },
+  {
+   "name": "attack: Space plays all 6 frames once (12 fps) then returns to idle",
+   "passed": true,
+   "ms": 405
+  },
+  {
+   "name": "hit then die: hit clip on damage, die clip holds final frame, R revives",
+   "passed": true,
+   "ms": 676
+  },
+  {
+   "name": "equipment UI: 12 atlas icons, potion heals",
+   "passed": true,
+   "ms": 2
+  },
+  {
    "name": "crowded arena (36): all hero/enemy states occur, kills counted, depth-sorted",
    "passed": true,
-   "ms": 48284
+   "ms": 12572
   },
   {
    "name": "stress arena (72): renders without errors (fps reported, not a hardware claim)",
    "passed": true,
-   "ms": 10800
+   "ms": 4988
   },
   {
    "name": "no page errors",
