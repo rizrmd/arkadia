@@ -7,3 +7,12 @@
 /* Dedicated building kit: the sprite is the silhouette; UI remains separate. */
 .wall-piece{position:absolute;inset:0;width:960px;height:650px;pointer-events:none}.sanctuary-relic{position:absolute;width:55px;height:auto;transform:translate(-50%,-94%);pointer-events:none;filter:drop-shadow(0 0 12px #dbbd6766)}.building img{filter:brightness(.88) saturate(.85);transition:filter .2s}.building.selected img{filter:brightness(1.08) drop-shadow(0 0 5px #f1b95b88)}.building .base{background:transparent}.building.selected .base{background:#f7ca7140}.building-label{font-size:11px;width:152px;left:-1px;background:#151e22ed;border-color:#726a54}.building-label small{font-size:9px}.building .repair{display:none}.building.tier-2::after,.building.tier-3::after{content:'';position:absolute;bottom:0;left:43px;width:64px;height:4px;background:#b4a078;z-index:2}.building.tier-3::after{background:#efc776;box-shadow:0 0 12px #e8ab4d}.building .furnace{left:70px;bottom:45px;width:6px;height:7px;opacity:.45;box-shadow:0 0 20px 10px #ffab4266;background:transparent;pointer-events:none}.portrait{height:180px}.portrait img{height:175px;width:230px}.scene{background:radial-gradient(ellipse at 50% 58%,#77705455,transparent 68%)}
 .scene{aspect-ratio:1060/730}.building-label{display:none}.building.selected .building-label{display:block}.building.selected img{filter:brightness(1.08) drop-shadow(0 0 5px #f1b95b88)}
+
+/* Open village: props use world ground pivots, never a second camera transform. */
+.village-prop{position:absolute;width:150px;height:160px;transform:translate(-50%,-87.5%);pointer-events:none}
+.crop{position:absolute;inset:0;width:960px;height:650px;pointer-events:none}
+/* Correct shallow source-art ground axes around each sprite's contact pivot.
+   Shear Y keeps vertical walls vertical, unlike rotating the entire building. */
+.building.barracks img{transform:translate(-50%,calc(-1 * var(--pivot))) skewY(-14deg);transform-origin:50% 95%}
+.building.expedition img{transform:translate(-50%,calc(-1 * var(--pivot))) skewY(-11deg);transform-origin:50% 95%}
+.building.altar img{transform:translate(-50%,calc(-1 * var(--pivot))) skewY(7deg);transform-origin:50% 95%}
