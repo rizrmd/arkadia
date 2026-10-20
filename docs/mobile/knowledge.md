@@ -36,3 +36,12 @@ The deployed package was checked against the public server: all 48 resources ret
 [Live browser test results](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=docs%2Fmobile%2Fresults.json)
 
 [Deployment asset checks](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=docs%2Fmobile%2Fassets.json)
+
+
+## Pinch zoom and mobile control pad
+
+The arena now tracks each captured pointer. Two fingers zoom around their midpoint and pan together; lifting one finger continues a single-finger pan without jumping. Cancellation and window blur release gesture state. The viewport retains `touch-action: none`, so the gesture changes the world camera rather than browser page magnification.
+
+On phone layouts (up to 700 CSS pixels wide), an on-screen direction pad controls movement. Hold Attack to attack, including while moving with another finger. Revive restores a defeated hero. Releasing or cancelling a control releases its input; hiding the page, losing focus, or switching layout also clears held controls. Settings hides the pad while its drawer is open. UI labels remain English.
+
+Build and all 22 mobile browser checks passed locally and against https://arkadia-whachat.fural.space/ after deployment. Added CDP touch checks cover spread/pinch ratios, world coordinates under the midpoint, two-finger translation, remaining-finger pan, cancellation, unchanged browser magnification, actual hero movement, simultaneous movement/Attack, and Revive. Verification uses Chromium mobile emulation; physical-device confirmation is still separate.

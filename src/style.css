@@ -20,3 +20,12 @@ main{position:relative}#viewport{position:relative}header,footer{flex-shrink:0}
  #error{top:105px}#stronghold-link{position:static!important;display:block;padding:8px 12px!important;font-size:11px!important;border-width:0 0 1px!important}
 }
 @media(max-width:700px){.mobile-toolbar{position:relative;z-index:11}aside{top:85px}}
+
+.mobile-gamepad{display:none}
+@media(max-width:700px){
+ .mobile-gamepad{position:absolute;z-index:4;left:12px;right:12px;bottom:48px;display:flex;justify-content:space-between;align-items:end;pointer-events:none}
+ .mobile-gamepad button{pointer-events:auto;touch-action:none;user-select:none;min-width:44px;min-height:44px;background:#191c20dd;border-color:#aa8c64}
+ .mobile-gamepad button:active{background:#80613b}.direction-pad{display:grid;grid-template-columns:repeat(3,44px);gap:4px}
+ .direction-pad button:first-child{grid-column:2}.direction-pad button:nth-child(2){grid-column:1;grid-row:2}.direction-pad button:nth-child(3){grid-column:2;grid-row:2}.direction-pad button:nth-child(4){grid-column:3;grid-row:2}
+ .action-pad{display:grid;gap:6px}#app.settings-open .mobile-gamepad{visibility:hidden}
+}
