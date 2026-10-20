@@ -1,3 +1,4 @@
+import {FOUNDATION_SOIL,FOUNDATION_MOSS,FOUNDATION_DRIFT,drawFoundation} from './foundations';
 import {environmentSprites,COURT,tilePoint} from './terrain';
 import {slots,calibration,WORLD} from './scene';
 import {buildings,type Building,type State} from './economy';
@@ -5,7 +6,7 @@ export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Buil
  const ctx=canvas.getContext('2d')!,environment=environmentSprites(),images=new Map<string,HTMLImageElement>();
  const spriteFile=(id:Building,level:number)=>id==='forge'?`/fortress-ui/forge-${level}.webp`:id==='gate'?'/modular-stronghold/v2/gateway-grand.png':`/assets/${slots[id].asset}.png`;
  const paving='/modular-stronghold/v2/paving-warm-texture.png',snow='/modular-stronghold/v2/snow-soft-texture.png';
- await Promise.all([...new Set([paving,snow,...environment.map(p=>p.file),...buildings.flatMap(b=>[1,2,3].map(l=>spriteFile(b,l)))])].map(async file=>{const image=new Image();image.src=file;await image.decode();images.set(file,image);}));
+ await Promise.all([...new Set([FOUNDATION_SOIL,FOUNDATION_MOSS,paving,snow,...environment.map(p=>p.file),...buildings.flatMap(b=>[1,2,3].map(l=>spriteFile(b,l)))])].map(async file=>{const image=new Image();image.src=file;await image.decode();images.set(file,image);}));
  let w=0,h=0,dpr=1,scale=1,cx=WORLD.width/2,cy=385,selected:Building|null=null,levels:State['levels']|undefined;
  const material=(file:string,size:number)=>{const p=ctx.createPattern(images.get(file)!,'repeat')!;p.setTransform(new DOMMatrix([size,size/2,-size,size/2,COURT.x,COURT.y]));return p;};
  const snowPattern=material(snow,.7),pavingPattern=material(paving,.22);
@@ -42,8 +43,8 @@ export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Buil
  function paintWorld(){
   sc.setTransform(surface.width/worldWidth,0,0,surface.height/worldHeight,-left*surface.width/worldWidth,-top*surface.height/worldHeight);
   sc.fillStyle=snowPattern;sc.fillRect(left,top,worldWidth,worldHeight);sc.fillStyle=pavingPattern;sc.fill(paved);sc.drawImage(shadow,shadowLeft,shadowTop);
-  for(const p of objects){sc.save();sc.globalAlpha=p.opacity;sc.translate(p.x,p.y);sc.transform(1,p.shear,0,p.vertical,0,0);if(p.selected){sc.shadowColor='#ffca64';sc.shadowBlur=9;}sc.drawImage(p.image,-p.width/2,-p.height*p.foot,p.width,p.height);sc.restore();}
-  dirty=false;surface.dataset.paints=String(Number(surface.dataset.paints||0)+1);
+  for(const p of objects){sc.save();sc.globalAlpha=p.opacity;sc.translate(p.x,p.y);sc.transform(1,p.shear,0,p.vertical,0,0);drawFoundation(sc,p,images.get(FOUNDATION_SOIL)!,'under',images.get(FOUNDATION_DRIFT),images.get(FOUNDATION_MOSS));if(p.selected){sc.shadowColor='#ffca64';sc.shadowBlur=9;}sc.drawImage(p.image,-p.width/2,-p.height*p.foot,p.width,p.height);sc.shadowBlur=0;drawFoundation(sc,p,images.get(FOUNDATION_SOIL)!,'face',images.get(FOUNDATION_DRIFT),images.get(FOUNDATION_MOSS));sc.restore();}
+  surface.dataset.foundations='soil-moss-v1';dirty=false;surface.dataset.paints=String(Number(surface.dataset.paints||0)+1);
  }
  function draw(){
   if(!w||!h)return;if(dirty)paintWorld();const x=w/2-cx*scale,y=h/2-cy*scale;
