@@ -1,0 +1,16 @@
+import {strict as a} from 'node:assert';
+import {DAY_MS,KEYFRAMES,AMBIENT_FLOOR,timeOfDay,lightingAt,phaseOf,clockLabel,resolveTime,modeFrom,luma} from '../src/stronghold/daylight.ts';
+import {LIGHT_SPRITES} from '../src/stronghold/light-anchors.ts';
+let tests=0;const test=(name,fn)=>{fn();tests++;console.log('PASS',name);};
+const near=(x,y,e=1e-6)=>a.ok(Math.abs(x-y)<=e,`${x} != ${y}`);
+test('keyframes are ordered and wrap seamlessly',()=>{for(let i=1;i<KEYFRAMES.length;i++)a.ok(KEYFRAMES[i].t>KEYFRAMES[i-1].t);a.equal(KEYFRAMES[0].t,0);a.equal(KEYFRAMES.at(-1).t,1);a.deepEqual({...KEYFRAMES[0],t:1},KEYFRAMES.at(-1));
+ const before=lightingAt(.99999),after=lightingAt(0);before.ambient.forEach((v,i)=>near(v,after.ambient[i],1e-3));near(before.lights,after.lights,1e-3);});
+test('interpolation hits every keyframe exactly',()=>{for(const k of KEYFRAMES.slice(0,-1)){const l=lightingAt(k.t),hex='#'+l.ambient.map(v=>Math.round(v*255).toString(16).padStart(2,'0')).join('');a.equal(hex,k.ambient);near(l.lights,k.lights);near(l.glow,k.glow);}});
+test('noon is full daylight with lights off',()=>{const l=lightingAt(.5);a.deepEqual(l.ambient.map(v=>Math.round(v*255)),[255,255,255]);a.equal(l.lights,0);a.equal(l.glow,0);a.equal(l.phase,'Day');});
+test('night never drops below the readability floor',()=>{for(let t=0;t<1;t+=.001){const l=lightingAt(t);a.ok(luma(l.ambient)>=AMBIENT_FLOOR-1e-9,`t=${t}`);for(const v of [...l.ambient,l.lights,l.glow])a.ok(v>=0&&v<=1);}});
+test('phases and clock labels',()=>{a.equal(phaseOf(0),'Night');a.equal(phaseOf(.25),'Dawn');a.equal(phaseOf(.5),'Day');a.equal(phaseOf(.75),'Dusk');a.equal(phaseOf(.9),'Night');a.equal(phaseOf(-.1),'Night');a.equal(clockLabel(0),'00:00');a.equal(clockLabel(.5),'12:00');a.equal(clockLabel(.75),'18:00');a.equal(clockLabel(1),'00:00');});
+test('time of day is deterministic and periodic',()=>{const now=Date.UTC(2026,9,21,8,30);a.equal(timeOfDay(now),timeOfDay(now+DAY_MS));near(timeOfDay(now+DAY_MS/4),(timeOfDay(now)+.25)%1);a.equal(timeOfDay(0),0);near(timeOfDay(DAY_MS/2),.5);});
+test('modes and URL overrides',()=>{const now=123456789;a.equal(resolveTime('day',now),.5);a.equal(resolveTime('night',now),0);a.equal(resolveTime('dynamic',now,'?time=0.85'),.85);a.equal(resolveTime('day',now,'?time=0.1'),.1);near(resolveTime('dynamic',now,'?daySpeed=60'),timeOfDay(now,DAY_MS/60));a.equal(resolveTime('dynamic',now,'?time=abc'),timeOfDay(now));
+ a.equal(modeFrom('',undefined),'dynamic');a.equal(modeFrom('?lighting=night',undefined),'night');a.equal(modeFrom('','day'),'day');a.equal(modeFrom('?lighting=dynamic','night'),'dynamic');a.equal(modeFrom('?lighting=bogus','night'),'dynamic');a.equal(modeFrom('','evil'),'dynamic');});
+test('every authored light anchor is valid',()=>{const kinds=['fire','window','candle','holy','arcane'];for(const [file,list] of Object.entries(LIGHT_SPRITES)){a.ok(list.length,file);for(const l of list){a.ok(kinds.includes(l.kind),file);a.ok(l.size>0&&l.radius>=0&&l.x>=0&&l.y>=0,file);if(l.radius)a.ok(l.drop>=0&&l.intensity>0&&l.intensity<=1,file);}}});
+console.log(`${tests} daylight tests passed`);

@@ -1,2 +1,7 @@
 :root{color-scheme:dark;font-family:Georgia,serif;color:#eee7d7;background:#11191e;font-synthesis:none}*{box-sizing:border-box}html,body,#stronghold{margin:0;width:100%;height:100%;overflow:hidden}
 #world-canvas{position:fixed;inset:0;width:100%;height:100dvh;touch-action:none;cursor:grab}#world-canvas:active{cursor:grabbing}
+/* Day/night: live flame flicker over the baked lighting (see lighting.ts). */
+#world-glow.moving,#world-glow[data-lit=false]{display:none}
+#world-glow canvas{animation:glow-flicker 1.1s ease-in-out infinite alternate}
+@keyframes glow-flicker{0%{opacity:1}30%{opacity:.45}55%{opacity:.85}80%{opacity:.35}100%{opacity:.7}}
+@media (prefers-reduced-motion:reduce){#world-glow canvas{animation:none}}

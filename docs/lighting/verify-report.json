@@ -1,0 +1,343 @@
+{
+ "phases": {
+  "desktop-night": {
+   "phase": "Night",
+   "state": "on",
+   "flicker": "block",
+   "lights": 28,
+   "lightPaints": 4,
+   "surfacePaints": 2,
+   "tint": "60,72,120",
+   "snow": "url(\"data:",
+   "sameTransform": true,
+   "layers": [
+    "snow",
+    "world-surface",
+    "world-glow"
+   ]
+  },
+  "desktop-dawn": {
+   "phase": "Dawn",
+   "state": "on",
+   "flicker": "block",
+   "lights": 28,
+   "lightPaints": 4,
+   "surfacePaints": 2,
+   "tint": "187,163,171",
+   "snow": "url(\"data:",
+   "sameTransform": true,
+   "layers": [
+    "snow",
+    "world-surface",
+    "world-glow"
+   ]
+  },
+  "desktop-day": {
+   "phase": "Day",
+   "state": "off",
+   "flicker": "none",
+   "lights": 28,
+   "lightPaints": 3,
+   "surfacePaints": 2,
+   "tint": "off",
+   "snow": "url(\"data:",
+   "sameTransform": true,
+   "layers": [
+    "snow",
+    "world-surface"
+   ]
+  },
+  "desktop-dusk": {
+   "phase": "Dusk",
+   "state": "on",
+   "flicker": "block",
+   "lights": 28,
+   "lightPaints": 4,
+   "surfacePaints": 2,
+   "tint": "167,139,159",
+   "snow": "url(\"data:",
+   "sameTransform": true,
+   "layers": [
+    "snow",
+    "world-surface",
+    "world-glow"
+   ]
+  },
+  "wide-night": {
+   "phase": "Night",
+   "state": "on",
+   "flicker": "block",
+   "lights": 28,
+   "lightPaints": 4,
+   "surfacePaints": 2,
+   "tint": "60,72,120",
+   "snow": "url(\"data:",
+   "sameTransform": true,
+   "layers": [
+    "snow",
+    "world-surface",
+    "world-glow"
+   ]
+  },
+  "wide-dawn": {
+   "phase": "Dawn",
+   "state": "on",
+   "flicker": "block",
+   "lights": 28,
+   "lightPaints": 4,
+   "surfacePaints": 2,
+   "tint": "187,163,171",
+   "snow": "url(\"data:",
+   "sameTransform": true,
+   "layers": [
+    "snow",
+    "world-surface",
+    "world-glow"
+   ]
+  },
+  "wide-day": {
+   "phase": "Day",
+   "state": "off",
+   "flicker": "none",
+   "lights": 28,
+   "lightPaints": 3,
+   "surfacePaints": 2,
+   "tint": "off",
+   "snow": "url(\"data:",
+   "sameTransform": true,
+   "layers": [
+    "snow",
+    "world-surface"
+   ]
+  },
+  "wide-dusk": {
+   "phase": "Dusk",
+   "state": "on",
+   "flicker": "block",
+   "lights": 28,
+   "lightPaints": 4,
+   "surfacePaints": 2,
+   "tint": "167,139,159",
+   "snow": "url(\"data:",
+   "sameTransform": true,
+   "layers": [
+    "snow",
+    "world-surface",
+    "world-glow"
+   ]
+  },
+  "portrait-night": {
+   "phase": "Night",
+   "state": "on",
+   "flicker": "block",
+   "lights": 28,
+   "lightPaints": 3,
+   "surfacePaints": 2,
+   "tint": "60,72,120",
+   "snow": "url(\"data:",
+   "sameTransform": true,
+   "layers": [
+    "snow",
+    "world-surface",
+    "world-glow"
+   ]
+  },
+  "portrait-dawn": {
+   "phase": "Dawn",
+   "state": "on",
+   "flicker": "block",
+   "lights": 28,
+   "lightPaints": 3,
+   "surfacePaints": 2,
+   "tint": "187,163,171",
+   "snow": "url(\"data:",
+   "sameTransform": true,
+   "layers": [
+    "snow",
+    "world-surface",
+    "world-glow"
+   ]
+  },
+  "portrait-day": {
+   "phase": "Day",
+   "state": "off",
+   "flicker": "none",
+   "lights": 28,
+   "lightPaints": 3,
+   "surfacePaints": 2,
+   "tint": "off",
+   "snow": "url(\"data:",
+   "sameTransform": true,
+   "layers": [
+    "snow",
+    "world-surface"
+   ]
+  },
+  "portrait-dusk": {
+   "phase": "Dusk",
+   "state": "on",
+   "flicker": "block",
+   "lights": 28,
+   "lightPaints": 4,
+   "surfacePaints": 2,
+   "tint": "167,139,159",
+   "snow": "url(\"data:",
+   "sameTransform": true,
+   "layers": [
+    "snow",
+    "world-surface",
+    "world-glow"
+   ]
+  },
+  "landscape-night": {
+   "phase": "Night",
+   "state": "on",
+   "flicker": "block",
+   "lights": 28,
+   "lightPaints": 3,
+   "surfacePaints": 2,
+   "tint": "60,72,120",
+   "snow": "url(\"data:",
+   "sameTransform": true,
+   "layers": [
+    "snow",
+    "world-surface",
+    "world-glow"
+   ]
+  },
+  "landscape-dawn": {
+   "phase": "Dawn",
+   "state": "on",
+   "flicker": "block",
+   "lights": 28,
+   "lightPaints": 4,
+   "surfacePaints": 2,
+   "tint": "187,163,171",
+   "snow": "url(\"data:",
+   "sameTransform": true,
+   "layers": [
+    "snow",
+    "world-surface",
+    "world-glow"
+   ]
+  },
+  "landscape-day": {
+   "phase": "Day",
+   "state": "off",
+   "flicker": "none",
+   "lights": 28,
+   "lightPaints": 3,
+   "surfacePaints": 2,
+   "tint": "off",
+   "snow": "url(\"data:",
+   "sameTransform": true,
+   "layers": [
+    "snow",
+    "world-surface"
+   ]
+  },
+  "landscape-dusk": {
+   "phase": "Dusk",
+   "state": "on",
+   "flicker": "block",
+   "lights": 28,
+   "lightPaints": 4,
+   "surfacePaints": 2,
+   "tint": "167,139,159",
+   "snow": "url(\"data:",
+   "sameTransform": true,
+   "layers": [
+    "snow",
+    "world-surface",
+    "world-glow"
+   ]
+  }
+ },
+ "buildings": {
+  "forge": {
+   "peak": 765,
+   "lit": 935
+  },
+  "barracks": {
+   "peak": 765,
+   "lit": 763
+  },
+  "altar": {
+   "peak": 765,
+   "lit": 3141
+  },
+  "mage": {
+   "peak": 765,
+   "lit": 1860
+  },
+  "expedition": {
+   "peak": 765,
+   "lit": 1822
+  },
+  "mine": {
+   "peak": 765,
+   "lit": 3879
+  },
+  "gate": {
+   "peak": 765,
+   "lit": 2283
+  }
+ },
+ "checks": [
+  "every building, gateway and brazier sprite has authored light anchors",
+  "4 phases x 4 viewports: phase, layer state, snow tint and input surface",
+  "night lightmap: ambient 252/765, 1680 emissive white pixels, light at all 7 buildings",
+  "night screen luma 42.5 vs day 114.8",
+  "clock ticks: lightmap paints 5->8, surface paints unchanged (2)",
+  "?lighting=night|day persists across reloads, ?lighting=dynamic restores the clock",
+  "night roof hit-test selects the Forge and relights the selection",
+  "prefers-reduced-motion disables flicker",
+  "mobile pan (390x844, DPR 3, 4x CPU, best of 3): zero world repaints; median day 16.6 / night 16.7 ms, p95 day 17.6 / night 17.3 ms"
+ ],
+ "screenLuma": {
+  "day": 114.80560116220578,
+  "night": 42.53586297923728
+ },
+ "pan": {
+  "day": [
+   {
+    "p50": 16.6,
+    "p95": 17.6,
+    "flickerHidden": true
+   },
+   {
+    "p50": 16.6,
+    "p95": 17.7,
+    "flickerHidden": true
+   },
+   {
+    "p50": 16.6,
+    "p95": 17.6,
+    "flickerHidden": true
+   }
+  ],
+  "night": [
+   {
+    "p50": 16.7,
+    "p95": 17.7,
+    "flickerHidden": true
+   },
+   {
+    "p50": 16.7,
+    "p95": 17.6,
+    "flickerHidden": true
+   },
+   {
+    "p50": 16.7,
+    "p95": 17.3,
+    "flickerHidden": true
+   }
+  ],
+  "gate": {
+   "dayP50": 16.6,
+   "nightP50": 16.7,
+   "dayP95": 17.6,
+   "nightP95": 17.3
+  }
+ }
+}

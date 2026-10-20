@@ -1,156 +1,107 @@
-# Stronghold lighting and day/night cycle: implementation plan
+# Stronghold lighting and day/night cycle
 
-Status: plan plus a throwaway rendering spike. No game code has changed yet.
+Status: **implemented** for the Stronghold only (Frostpass and other pages are unchanged). Lighting is cosmetic and does not touch the economy or save data.
 
-## Where Stronghold is today
+## What players see
 
-- Each painted sprite already contains lighting baked in by its artist: a light source from the upper left, plus glowing windows, torches, braziers, altar candles and the Mage Tower rune.
-- `createWorldView` (`src/stronghold/world-view.ts`) rasterizes the whole finite settlement **once** into `#world-surface`. Panning and zooming only change CSS transforms. The infinite snow is a repeated CSS background (`snowLayer`). Neither layer is repainted while panning, so no draw calls or uploads happen during a pan frame.
-- There is no time model, no light source data and no tint layer. The faint radial gradient in `installTerrain` belongs to the legacy DOM terrain path, which the composited world does not use.
+One Stronghold day lasts **24 real minutes**: Night → Dawn → Day → Golden hour → Dusk → Night. The clock derives from `Date.now()`, so every visit shows the same time of day. In full daylight the world looks exactly as before. As evening falls, the ambient light shifts to dusk violet and then to moonlit blue. Windows, hearths, lanterns, gate torches, braziers, altar candles and the Mage Tower rune stay at full painted brightness, cast warm or arcane light pools on the paving, and glow. Flames flicker gently while the camera is still.
 
-Any lighting design must keep that guarantee: **a pan frame repaints nothing**.
+![Night, dawn, day and dusk (desktop)](https://arkadia-stronghold-whachat.fural.space/lighting-plan/runtime-phases.webp)
 
-## Spike result: a world-space lightmap works
+![Night, dawn, day and dusk (portrait 390 × 844)](https://arkadia-stronghold-whachat.fural.space/lighting-plan/runtime-portrait.webp)
 
-`scripts/spike-stronghold-lighting.mjs` injects two extra world-space canvases into the running game. It repaints nothing in the game's own surface.
+![Night at default levels](https://arkadia-stronghold-whachat.fural.space/lighting-plan/runtime-night.webp)
 
-![Day, golden hour, dusk and night (desktop)](https://arkadia-stronghold-whachat.fural.space/lighting-plan/phases-desktop.webp)
+![Night with every building at level 3 (Forge hearth lit)](https://arkadia-stronghold-whachat.fural.space/lighting-plan/runtime-night-level3.webp)
 
-![Day, golden hour, dusk and night (portrait 390 × 844)](https://arkadia-stronghold-whachat.fural.space/lighting-plan/phases-mobile.webp)
+### Controls
 
-![Night close view](https://arkadia-stronghold-whachat.fural.space/lighting-plan/desktop-night.webp)
+The Stronghold is now a world-only view with no HUD or menu, so lighting is controlled through the URL:
 
-Measured in headless Chromium (software compositing). These are relative numbers, not device FPS ([raw report](https://arkadia-stronghold-whachat.fural.space/lighting-plan/spike-report.json)):
+| URL | Effect |
+| --- | --- |
+| `/stronghold.html` | Dynamic 24-minute cycle (default) |
+| `?lighting=night` / `?lighting=day` | Always night / always day; **remembered** in this browser |
+| `?lighting=dynamic` | Back to the cycle (remembered) |
+| `?time=0.85` | Freeze at a time of day (0 = midnight, 0.5 = noon); not remembered |
+| `?daySpeed=60` | Run the clock 60× faster (QA) |
 
-| Measurement | Day (layers off) | Night (2 blend layers) |
-| --- | --- | --- |
-| Pan frame interval, median (390 × 844, DPR 3, 4× CPU) | 16.5 ms | 18.0 ms |
-| Pan frame interval, p95 | 52.2 ms | 62.5 ms |
-| World surface repaints during pan | 0 | 0 |
-| Lightmap repaint per phase change (91 auto lights, blur filter) | 28–36 ms | |
+Users with `prefers-reduced-motion` get no flicker.
 
-Findings:
-
-1. Multiplying a low-resolution lightmap over the baked art gives a convincing night while the texture detail stays intact. UI overlays are unaffected because they sit above `#world-layers`.
-2. The spike detected emissive pixels automatically by colour threshold. That is **too noisy for production**: the parchment map, altar gold and paving produced false light pools, while some forge windows were missed. Production should use authored light anchors and per-sprite emissive masks (see below).
-3. Repainting the lightmap with ~90 gradients and a blur filter costs ~30 ms. That is fine once per building change but too slow to run every tick. The plan splits the work into a pre-baked light canvas and a cheap per-tick composite.
-4. The blend layers add measurable compositor cost at night, about +10 ms p95 under 4× throttle. They must therefore turn off completely in full daylight, and the benchmark must gate the change.
-
-## Target architecture
+## How it works
 
 ```d2
-direction: down
-clock: Day clock (daylight.ts) {
-  t: "timeOfDay(now) -> 0..1"
-  k: "lightingAt(t) -> ambient, lights, glow, phase"
+direction: right
+clock: "daylight.ts (pure clock)" {
+  k: "keyframes -> ambient, lights, glow"
 }
-data: Light data (lights.ts) {
-  a: Authored anchors per sprite and level
-  m: Emissive masks (offline, sharp)
+anchors: "light-anchors.ts" {
+  a: "authored lights per sprite, source pixels"
 }
-stack: "#world-layers (one CSS transform)" {
-  snow: "L0 snow repeat + ambient tint (background-blend-mode)"
-  surface: L1 world surface (unchanged baked art)
-  lightmap: "L2 lightmap canvas, mix-blend-mode multiply"
-  glow: "L3 glow canvas, mix-blend-mode screen + CSS flicker"
+world: "world-view.ts" {
+  paint: "paintWorld: unlit raster"
 }
-ui: HUD and panels (never tinted)
-clock -> stack.lightmap: "tick <= 1 Hz, 2 draw calls"
-clock -> stack.snow: tint colour
-clock -> stack.glow: opacity
-data -> stack.lightmap: "bake light canvas on building change"
-data -> stack.glow: bake glow canvas
-stack -> ui: composited below
+lighting: "lighting.ts" {
+  base: "unlit copy (base)"
+  bake: "light pools + emissive masks + bloom"
+  compose: "surface = base x lightmap + bloom"
+}
+screen: "#world-layers" {
+  snow: "snow tile, pre-tinted"
+  surface: "#world-surface (single layer)"
+  flicker: "#world-glow flicker, idle only"
+}
+anchors -> lighting.bake: on building or selection change
+world.paint -> lighting.base: capture after raster
+clock -> lighting.compose: "tick 1 Hz, quantized"
+lighting.compose -> screen.surface
+lighting.compose -> screen.snow
+lighting.bake -> screen.flicker
 ```
 
-### Layers
+- **`daylight.ts`**: the pure clock. Keyframes are interpolated in linear light with smoothstep easing, and a readability floor keeps night ambient luma ≥ 0.22. It also handles the URL overrides.
+- **`light-anchors.ts`**: hand-authored light sources for the 10 lit sprites (Forge levels 1–3, Barracks, Altar, Mage Tower, Expedition Table, Mine, Gateway, Brazier). Each light stores sprite source-pixel coordinates (the same convention as `groundEdges`), a mask radius, its kind (`fire`, `window`, `candle`, `holy`, `arcane`), a ground-pool radius and drop, and an intensity. Lights hidden behind the front walls are mask-only, because the 2D lightmap has no occlusion.
+- **`lighting.ts`**:
+  - On a building or selection change, it bakes a 0.35×-resolution light canvas: isometric (0.55-flattened) pools, white emissive masks and a colour bloom. Emissive masks are the authored circles intersected with a flame/arcane pixel test, so the parchment map, gold trim and red roofs never light up.
+  - After every world raster it keeps an unlit copy (`base`). When the quantized light level changes, it recomposes `surface = base × (ambient + lights) + glow`: three blits, no sprite redraw.
+  - The infinite snow uses a pre-tinted copy of its repeat tile (a `data:` URL).
+  - The selected building gets a soft extra pool, so it stays readable at night.
+- **`world-view.ts`** has four small hooks: create, `capture()` after `paintWorld`, `place()` beside the surface transform, and `setScene()` in `update()`.
 
-| Layer | Content | Repainted when | Cost per pan frame |
-| --- | --- | --- | --- |
-| L0 snow | Existing repeat plus `linear-gradient(ambient)` with `background-blend-mode: multiply` | Ambient colour changes (quantized, ≤ 1 Hz) | Transform only |
-| L1 surface | Existing baked world, unchanged | Building level or selection changes (as today) | Transform only |
-| L2 lightmap | `fill(ambient)`, then `drawImage(lightCanvas)` with `lighter` and `globalAlpha = lights` | Each clock tick (≤ 1 Hz), 2 draw calls | Transform only |
-| L3 glow | Pre-blurred emissive halos with `mix-blend-mode: screen`, opacity = `glow` | Building change only; intensity is CSS opacity | Transform only |
+### Departures from the plan, with reasons
 
-- `lightCanvas` is an offscreen canvas at about 0.35 × world resolution. It holds every light at full strength on black: ground pools are isometric ellipses (y scaled 0.55) and emissive masks render at full white. It is baked once per building or level change. Because emissive pixels map to lightmap white, `multiply` leaves windows and flames exactly as painted.
-- L2 and L3 copy the transform string that `draw()` already writes for `#world-surface` and share its CSS size. Lightmap and snow use the same ambient colour, so there is no seam at the world bounds.
-- When `ambient == white && lights == 0` (full day), L2/L3 are `display:none` and the snow gradient is removed. Daytime cost is then exactly today's cost.
-
-### Light sources
-
-| Source | Kind | Notes |
+| Plan | Shipped | Why |
 | --- | --- | --- |
-| Forge levels 1–3 | Windows, hearth | Anchors per level, since the three sprites differ |
-| Barracks, Mine, Mage Tower door | Wall lanterns, mine mouth | Warm 2700 K |
-| Mage Tower rune | Arcane | Cool blue, slow pulse |
-| Altar | Candles, braziers, inner glow | Strongest source; acts as the night landmark |
-| Expedition Table | Table lantern | Small |
-| Gateway | Two torches | Lights the entrance path |
-| Braziers (`terrain.ts` props) | Fire | Flicker |
+| Live `multiply`/`screen` overlay layers | Lighting baked into the surface on change (the plan's fallback) | The overlay layers cost +45–75 ms p95 per pan frame on throttled mobile. Baked lighting keeps pan frames identical to daytime |
+| `background-blend-mode` snow tint | Pre-tinted tile as a `data:` URL | Blend mode made Chrome re-raster the snow layer each pan frame, and `blob:` tiles also panned slower |
+| Header chip + Lighting menu | URL controls | A parallel task made the Stronghold world-only (no HUD or menu). Adding UI would undo that decision |
+| Always-on flicker | Flicker layer hidden while the camera moves | It is the only live blended layer. While the camera is still, its cost does not affect panning |
 
-`src/stronghold/lights.ts` stores anchors in **sprite source pixels**, the same convention as `groundEdges` in `scene.ts`, so the data stays auditable. They are transformed through the same `translate → shear/vertical` matrix as the sprite. Each anchor holds `{x, y, kind, radius, colour}`. A new offline script, `scripts/extract-emissive.mjs` (sharp), generates candidate masks and anchors with an HSV threshold. It then writes a review contact sheet, and a person accepts or edits the results. This replaces the noisy runtime detection used in the spike.
+Memory: the unlit copy doubles the world raster (3738 × 2243 px ≈ 33 MB, so about 67 MB in total). Dawn and dusk recompose every few seconds, deferred while the camera moves. Each recompose re-uploads the surface texture once.
 
-### Time model (`src/stronghold/daylight.ts`)
+## Verification
 
-- `timeOfDay(now, config)` is a pure function of `Date.now()`, so it stays deterministic and the offline claim screen matches what the player sees.
-- One game day takes **24 real minutes** by default (configurable). An optional **Sync to local time** mode is listed under open decisions.
-- `lightingAt(t)` interpolates keyframes in linear-light RGB with smoothstep easing:
+- `node scripts/test-daylight.mjs`: 8 tests (keyframes, wraparound, readability floor, phases, determinism, URL modes, anchor validity). `node scripts/test-stronghold.mjs`: the 8 economy tests still pass.
+- `npm run build`, then `node scripts/verify-lighting.mjs` (`SITE_DIR` or `PREVIEW_URL` selects the target). Results ([report](https://arkadia-stronghold-whachat.fural.space/lighting-plan/verify-report.json)):
+  - Every lit sprite has anchors.
+  - 4 phases × 4 viewports (1536 × 1024, 2560 × 1440, 390 × 844 @3×, 844 × 390 @2×) show the right phase, layer state and snow tint, and the canvas stays the input surface.
+  - Night lightmap: ambient 252/765, 1680 restored emissive pixels, light at all 7 buildings.
+  - Night screen luma is 42.5 vs 114.8 by day.
+  - Clock ticks relight without repainting the world.
+  - `?lighting` persistence works.
+  - A night roof click selects the Forge and relights the selection.
+  - Reduced motion stops the flicker.
+  - **Mobile pan** (390 × 844, DPR 3, 4× CPU, best of 3): zero world repaints; median 16.6 ms by day vs 16.7 ms at night, p95 17.6 vs 17.3 ms.
+- These are headless Chromium (software compositing) results on a shared host, not physical-device FPS.
 
-| t | Phase | Ambient (sRGB) | Lights | Glow |
-| --- | --- | --- | --- | --- |
-| 0.00 | Night | `#384575` | 1.0 | 0.9 |
-| 0.22 | Dawn | `#8f7393` | 0.7 | 0.5 |
-| 0.30 | Morning | `#ffe9d2` | 0.1 | 0 |
-| 0.40–0.62 | Day | `#ffffff` | 0 | 0 |
-| 0.72 | Golden hour | `#ffd6ad` | 0.3 | 0.2 |
-| 0.80 | Dusk | `#8f759e` | 0.75 | 0.55 |
-| 0.88 | Night | `#384575` | 1.0 | 0.9 |
+### Authoring lights
 
-- A readability floor keeps ambient luminance ≥ 0.22. The selected building also gets an extra light anchor at night so the existing gold selection glow stays visible.
-- QA overrides: `?time=0.85` freezes the clock and `?daySpeed=60` speeds it up. Preferences are stored in the separate localStorage key `arkadia.stronghold.lighting`, wrapped in try/catch, and never written into the economy save.
+Run `node scripts/extract-emissive.mjs [dir]`. It writes candidate flame/arcane clusters (green, numbered) and the authored anchors (magenta) for every lit sprite, plus `sheet.png`. Edit `src/stronghold/light-anchors.ts`, then re-run the overlay and `verify-lighting.mjs`.
 
-### UI and accessibility (English labels)
+![Authored light anchors review sheet](https://arkadia-stronghold-whachat.fural.space/lighting-plan/light-anchors-review.webp)
 
-- Header: a compact sun/moon chip showing the phase (`Dawn`, `Day`, `Dusk`, `Night`) and the time.
-- Menu → **Lighting**: `Dynamic`, `Always day`, `Always night`, plus a `Time of day` preview slider.
-- `prefers-reduced-motion`: no flicker or rune pulse; transitions stay smooth.
-- Flicker runs as CSS keyframes on L3 opacity (compositor only) with two offset periods (0.9 s / 1.3 s, ±6 %).
+## Planning spike (history)
 
-## Non-goals
+The first plan used a throwaway spike (`scripts/spike-stronghold-lighting.mjs`) with live blend layers and auto-detected emissive pixels. It proved the look, but its detection was noisy. Those mockups are kept for reference.
 
-- Dynamic shadows that rotate with the sun. The painted shading has a fixed light direction, and rotating shadows would contradict it.
-- Per-pixel normal-mapped lighting, WebGL migration, weather or sky rendering.
-- Economy changes. Night bonuses are listed as an open decision instead.
-
-## Delivery phases
-
-| # | Scope | Acceptance | Size |
-| --- | --- | --- | --- |
-| 1 | `daylight.ts` clock + keyframes + QA URL params; unit tests next to `scripts/test-stronghold.mjs` | Keyframe interpolation, wraparound at 1.0 → 0, deterministic `timeOfDay` | S |
-| 2 | L0 tint + L2 lightmap in `world-view.ts` (lighting module with `setTransform`, `setLights`, `tick`); auto-off in daylight | `#world-surface` paints unchanged during pan and ticks; benchmark p95 within +15 % at night, identical by day | M |
-| 3 | `extract-emissive.mjs`, anchors and masks for 7 buildings (forge × 3 levels) + gateway + braziers; review contact sheet | Every painted window, torch and candle stays bright at night; no false pools | M |
-| 4 | L3 glow, flicker, reduced motion, header chip, Lighting menu | UI never tinted; menu works on 390 px portrait | S |
-| 5 | `scripts/verify-lighting.mjs`: 4 phases × 4 viewports screenshots, pan benchmark gate, roof hit-test at night, Knowledge update, deploy | All checks green on the public sandbox | S |
-
-Phase 2 touches `world-view.ts`, which a parallel session is changing for mobile panning and snow overlap. Start phase 2 only after that work is committed. Keep the hook surface small: `draw()` forwards its transform string, and `update()` forwards building levels.
-
-## Risks and fallbacks
-
-- **Blend-layer cost on low-end mobile.** If the benchmark gate fails, use a fallback "baked" mode: composite the lightmap into `#world-surface` inside `paintWorld()` (one repaint per quantized step, e.g. every 2 % of the day), and turn flicker off.
-- **Readability at night.** Enforce the ambient floor, keep the selected-building light, and offer the `Always day` option.
-- **Art drift.** New or updated sprites need new anchors and masks. `verify-lighting.mjs` should fail when a sprite has no light data.
-
-## Open decisions for the team
-
-1. Cycle length: 24 real minutes, or synced to the player's local clock?
-2. Should night affect gameplay (e.g. Mage Tower +Mana at night, Mine +Gold by day), or stay cosmetic?
-3. Should Frostpass inherit the same clock in a later task?
-
-## Reproduce the spike
-
-```
-npx vite build --outDir /tmp/site
-SITE_DIR=/tmp/site OUTPUT_DIR=/tmp/shots node scripts/spike-stronghold-lighting.mjs
-```
-
-`scripts/publish-lighting-plan.mjs` publishes only the review images under `/lighting-plan/` on the shared sandbox. It does not change game code.
+![Spike mockups: day, golden hour, dusk, night](https://arkadia-stronghold-whachat.fural.space/lighting-plan/phases-desktop.webp)
