@@ -1,5 +1,6 @@
 import { Container, Graphics, Sprite } from 'pixi.js';
 import type { ClipName, SpriteSet, TextureClipName } from './sprites';
+import {ISO} from '../isometric';
 
 // Gameplay for the character preview: one hero vs a crowd of ash revenants on the 10 × 10 arena grid.
 // Front/back locomotion uses separate art. Horizontal mirroring supplies the other two quadrants.
@@ -16,7 +17,7 @@ export class Actor {
   state: ClipName = 'idle'; t = 0; facing = 1; back = false; stride = 0; hp: number; cooldown = 0; impactDone = false; flash = 0; deadFor = 0; wander: Point | null = null; immune = 0; retreating = false;
   constructor(public kind: 'hero' | 'revenant', public set: SpriteSet, public x: number, public y: number) {
     this.hp = STATS[kind].hp;
-    this.shadow = new Graphics().ellipse(0, 0, 26, 11).fill({ color: 0x050608, alpha: .38 });
+    this.shadow = new Graphics().ellipse(0, 0, 26, 26*ISO.slope).fill({ color: 0x050608, alpha: .38 });
     this.sprite = new Sprite(set.clips.idle[0]);
     this.sprite.anchor.set(set.anchor.x, set.anchor.y); this.sprite.roundPixels = true;
     this.pivotMark = new Graphics().circle(0, 0, 2.6).fill(kind === 'hero' ? 0x7fe0ff : 0xff6f8a); this.pivotMark.visible = false;

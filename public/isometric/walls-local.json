@@ -1,0 +1,176 @@
+{
+  "url": "http://127.0.0.1:3016/",
+  "at": "2026-10-20T13:19:03.272Z",
+  "regression": [
+    "floor grid beneath sorted props",
+    "100 individual tiles, twelve kit crops and three wall additions, no arena preview",
+    "same seed stable",
+    "different seed changes layout",
+    "restored seed matches",
+    "grid geometry visible",
+    "sort toggle off",
+    "props sorted by ground Y",
+    "depth probe keyboard movement",
+    "cursor anchored zoom handler",
+    "pan handler moves camera",
+    "floor only toggle",
+    "transparency checker"
+  ],
+  "geometry": [
+    {
+      "id": "wall-a",
+      "position": [
+        192,
+        -224
+      ],
+      "points": [
+        {
+          "x": 127.99999999999989,
+          "y": -256.00000000000006
+        },
+        {
+          "x": 255.9999999999999,
+          "y": -192
+        }
+      ],
+      "depth": -224
+    },
+    {
+      "id": "wall-left",
+      "position": [
+        -192,
+        -224
+      ],
+      "points": [
+        {
+          "x": -256,
+          "y": -192
+        },
+        {
+          "x": -128,
+          "y": -256.00000000000006
+        }
+      ],
+      "depth": -224
+    },
+    {
+      "id": "wall-a",
+      "position": [
+        320,
+        -160
+      ],
+      "points": [
+        {
+          "x": 255.99999999999977,
+          "y": -192
+        },
+        {
+          "x": 383.9999999999998,
+          "y": -128
+        }
+      ],
+      "depth": -160
+    },
+    {
+      "id": "wall-left-broken",
+      "position": [
+        -320,
+        -160
+      ],
+      "points": [
+        {
+          "x": -384,
+          "y": -128
+        },
+        {
+          "x": -256.00000000000006,
+          "y": -192
+        }
+      ],
+      "depth": -160
+    },
+    {
+      "id": "wall-a",
+      "position": [
+        448,
+        -96
+      ],
+      "points": [
+        {
+          "x": 383.9999999999998,
+          "y": -128.00000000000006
+        },
+        {
+          "x": 512,
+          "y": -64
+        }
+      ],
+      "depth": -96
+    },
+    {
+      "id": "wall-left",
+      "position": [
+        -448,
+        -96
+      ],
+      "points": [
+        {
+          "x": -512,
+          "y": -64
+        },
+        {
+          "x": -384.00000000000006,
+          "y": -128.00000000000006
+        }
+      ],
+      "depth": -96
+    },
+    {
+      "id": "wall-a",
+      "position": [
+        576,
+        -32
+      ],
+      "points": [
+        {
+          "x": 511.9999999999998,
+          "y": -64.00000000000011
+        },
+        {
+          "x": 639.9999999999998,
+          "y": 0
+        }
+      ],
+      "depth": -32
+    },
+    {
+      "id": "wall-left",
+      "position": [
+        -576,
+        -32
+      ],
+      "points": [
+        {
+          "x": -640,
+          "y": 0
+        },
+        {
+          "x": -512,
+          "y": -64.00000000000011
+        }
+      ],
+      "depth": -32
+    }
+  ],
+  "transparentHaloPixels": [
+    0,
+    0,
+    0,
+    0
+  ],
+  "character": {
+    "moved": true,
+    "state": "move"
+  },
+  "errors": []
+}

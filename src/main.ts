@@ -3,6 +3,7 @@ import './style.css';
 import {makeWall,wallSources,type WallId} from './walls';
 import {loadCharacters} from './characters/sprites';
 import {Arena} from './characters/arena';
+import {project as iso,ISO} from './isometric';
 import {mountEquipment,hud} from './characters/ui';
 const $=<T extends HTMLElement>(id:string)=>document.getElementById(id) as T;
 type Asset={id:string;kind:string;pivot:[number,number];rect:{left:number;top:number;width:number;height:number}};
@@ -20,15 +21,14 @@ const world=new Container(),floors=new Container(),props=new Container(),gridLay
 let arena:Arena|undefined,manifest:{assets:Asset[]},counter=1,hash='',probe:Graphics,probePos={x:0,y:0};
 const checks=(id:string)=>$<HTMLInputElement>(id).checked;
 function rng(seed:string){let a=2166136261;for(const c of seed)a=Math.imul(a^c.charCodeAt(0),16777619);return()=>{a+=0x6D2B79F5;let t=a;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return((t^t>>>14)>>>0)/4294967296;};}
-function iso(x:number,y:number){return {x:(x-y)*64,y:(x+y)*32};}
 function reset(){const b=world.getLocalBounds(),padding=matchMedia('(max-width:700px)').matches?32:80,scale=Math.max(.01,Math.min((view.clientWidth-padding)/b.width,(view.clientHeight-padding)/b.height));world.scale.set(scale);world.position.set(view.clientWidth/2-(b.x+b.width/2)*scale,view.clientHeight/2-(b.y+b.height/2)*scale);updateZoom();}
 function updateZoom(){$('zoom').textContent=`${Math.round(world.scale.x*100)}% · pinch to zoom`;}
 function zoomAt(factor:number,x=view.clientWidth/2,y=view.clientHeight/2){const old=world.scale.x,next=Math.max(.05,Math.min(2.8,old*factor));world.x=x-(x-world.x)*next/old;world.y=y-(y-world.y)*next/old;world.scale.set(next);updateZoom();}
 function inspect(a:Asset,x:number,y:number,s:Sprite){s.eventMode='static';s.cursor='crosshair';s.on('pointerover',()=>{if(checks('inspect'))$('selection').textContent=`${a.id} · ${a.kind}\ngrid ${x},${y} · depth ${s.zIndex.toFixed(0)}\ncrop ${a.rect.width}×${a.rect.height} · pivot ${a.pivot.join(',')}`;});}
 function draw(){arena?.detach();for(const c of [floors,props,gridLayer,overlay]){for(const child of c.removeChildren())child.destroy();}props.sortableChildren=checks('sort');props.visible=checks('props');
  const seed=$<HTMLInputElement>('seed').value,random=rng(seed),layout:string[]=[];let n=0;
- for(let x=0;x<10;x++)for(let y=0;y<10;y++){const id=(x>6&&y<5)?'corruption':random()<.12?'limestone':'ash';const a=manifest.assets.find(a=>a.id===id)!;const s=new Sprite(textures[id]);s.anchor.set(.5);s.width=128;s.height=64;const p=iso(x-4.5,y-4.5);s.position.copyFrom(p);floors.addChild(s);inspect(a,x,y,s);layout.push(id);
- if(checks('grid')){const g=new Graphics().poly([p.x,p.y-32,p.x+64,p.y,p.x,p.y+32,p.x-64,p.y]).stroke({color:0xd5b27a,width:.8,alpha:.65});gridLayer.addChild(g);}
+ for(let x=0;x<10;x++)for(let y=0;y<10;y++){const id=(x>6&&y<5)?'corruption':random()<.12?'limestone':'ash';const a=manifest.assets.find(a=>a.id===id)!;const s=new Sprite(textures[id]);s.anchor.set(.5);s.width=ISO.halfWidth*2;s.height=ISO.halfHeight*2;const p=iso(x-4.5,y-4.5);s.position.copyFrom(p);floors.addChild(s);inspect(a,x,y,s);layout.push(id);
+ if(checks('grid')){const g=new Graphics().poly([p.x,p.y-ISO.halfHeight,p.x+ISO.halfWidth,p.y,p.x,p.y+ISO.halfHeight,p.x-ISO.halfWidth,p.y]).stroke({color:0xd5b27a,width:.8,alpha:.65});gridLayer.addChild(g);}
  }
  function prop(id:string,x:number,y:number,width:number){const a=manifest.assets.find(a=>a.id===id)!;const s=new Sprite(textures[id]);s.anchor.set(...a.pivot);s.scale.set(width/s.texture.width);const p=iso(x-4.5,y-4.5);s.position.copyFrom(p);s.zIndex=p.y;props.addChild(s);inspect(a,x,y,s);layout.push(`${id}:${x}:${y}`);n++;
  if(checks('inspect')){overlay.addChild(new Graphics().circle(p.x,p.y,2.4).fill(0xd6a257));}}

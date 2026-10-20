@@ -14,7 +14,7 @@ main{position:relative;min-width:0;display:grid;grid-template-rows:75.2% 24.8%;o
 .icon{display:inline-block;width:24px;height:24px;flex-shrink:0;vertical-align:middle;color:#cfc4af}
 .icon-coin{color:#ecc260;fill:#a67724;stroke:#ffdd81}.icon-gem{color:#7ecaff;fill:#237bc3}.icon-skull{fill:#bcb6a7;color:#ddd3bd}.gold{color:#efbd57}
 .building{position:absolute;width:200px;height:150px;transform:translate(-50%,-100%);background:transparent;border:0;padding:0;overflow:visible;isolation:isolate}
-.building img{position:absolute;width:var(--sprite-width);height:auto;left:50%;top:100%;transform:translate(-50%,calc(-1 * var(--pivot)));pointer-events:none;filter:drop-shadow(0 8px 5px #191a1690);transition:filter .2s}
+.building img{position:absolute;width:var(--sprite-width);height:auto;left:50%;top:100%;transform-origin:50% var(--pivot);transform:translate(-50%,calc(-1 * var(--pivot))) matrix(1,var(--iso-shear,0),0,var(--iso-vertical,1),0,0);pointer-events:none;filter:drop-shadow(0 8px 5px #191a1690);transition:filter .2s}
 .building:hover{background:transparent}.building:hover img,.building.selected img{filter:drop-shadow(0 0 1px #ffd163) drop-shadow(0 0 3px #ffbc48) drop-shadow(0 8px 5px #191a1690)}
 .building .base{display:none}.building-label{display:none;position:absolute;top:100%;left:0;width:200px;background:#111a20e8;border:1px solid #bf9d5a;padding:7px;pointer-events:none;font-size:15px}
 .building:focus-visible .building-label,.building:hover .building-label{display:block}.building-label small{display:block;font-size:12px;color:#bbb}.repair,.furnace{display:none}
