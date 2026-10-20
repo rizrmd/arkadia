@@ -3,6 +3,8 @@ import fs from 'node:fs/promises';import {gzipSync} from 'node:zlib';import {cre
 const id='CS13a31c114a666008eb9cafa5',release='stronghold-only-release',dir='/home/dev/'+release,run=args=>JSON.parse(execFileSync('fural-agent',args,{encoding:'utf8',timeout:120000,maxBuffer:6e6}));await fs.mkdir(dir,{recursive:true});const files={};
 files['/stronghold.html']=(await fs.readFile('dist/stronghold.html')).toString('base64');
 for(const n of await fs.readdir('dist/assets'))if(/\.(js|css)$/.test(n))files['/assets/'+n]=(await fs.readFile('dist/assets/'+n)).toString('base64');
+// Runtime screenshots referenced by the Knowledge page.
+for(const n of await fs.readdir('public/stronghold-only'))files['/stronghold-only/'+n]=(await fs.readFile('public/stronghold-only/'+n)).toString('base64');
 const bytes=gzipSync(JSON.stringify(files)),version=createHash('sha256').update(bytes).digest('hex').slice(0,10),parts=[];for(let offset=0;offset<bytes.length;offset+=2e6){const n=`stronghold-only-${version}-${parts.length}.gzpart`;await fs.writeFile(dir+'/'+n,bytes.subarray(offset,offset+2e6));parts.push(n);}console.log('Packaged',Object.keys(files).length,'resources in',parts.length,'parts;',bytes.length,'bytes');
 for(const n of parts)run(['organization','home-files','transfer','--from-member','US4f550b10dab65dc9756fa429','--from',release+'/'+n,'--to-custom-sandbox',id,'--to',n]);
 let live=run(['organization','home-files','file','--custom-sandbox',id,'--path','app.mjs']).content;if(!live.includes('const types='))throw Error('Unknown release loader');
