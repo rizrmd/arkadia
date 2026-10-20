@@ -2,13 +2,15 @@
 
 The first attachment showed the mobile Stronghold as a document page: navigation, a large resource row, introduction text, a small open village and building buttons. The second attachment requests a game screen with an enclosed snowy courtyard, compact resource HUD, Forge selected by default, a building detail/upgrade sidebar, forge variants below the scene, and Claim All / Expeditions / Start Run actions.
 
-## Implemented
+## Correction after visual feedback
 
-The introduction and top navigation no longer push the game scene down the page. Resources overlay the courtyard. A dark framed sidebar shows the selected building portrait, saved level, actual player health, weapon tier, production, restoration requirements and cost. Gold upgrade and red Start Run buttons follow the reference hierarchy. Seven independent building buttons share depth sorting with the enclosing wall segments; a real gate opening remains at the front. The mobile view stacks the scene, variants and readable detail panel without horizontal scrolling. English quick selectors remain available for accessible building navigation.
+The first release was rejected because it still looked wrong. It showed a complete diamond fort from outside, with too much snowy landscape, repetitive walls and floor tiles, smaller buildings, and a sidebar/action stack taller than the reference. Passing interaction tests did not establish a visual match.
 
-Snow-covered pine forest and mountain art sits beneath separately rendered courtyard tiles, walls and interactive buildings. The target screenshot is not used as a flattened UI background. New, ruined, repaired and upgraded forge artwork is shown in the variant strip. Saved forge levels 1/2/3 select new/repaired/upgraded artwork in both scene and portrait; ruined art is a reference variant, not a new damage mechanic. Other buildings retain their existing sprites.
+The corrected scene uses a dedicated environment plate generated from the target's courtyard camera: close framing, cropped enclosing walls, varied paving, and a large foreground gate. The plate contains no buildings or UI. Forge, Barracks, Altar, Mage Tower, Expedition Table and Mine are separate interactive sprites placed at the reference's screen positions and scale. The gate uses a selectable region over the gate in the environment plate. A single 1155 × 770 coordinate space keeps environment and hit regions aligned.
 
-Resource totals, prices and effects come from the existing economy. The reference's fictional worker counts, equipment production percentages and 60-second interval were not invented as game mechanics. Existing crafting, training, blessings, skills, claims, exports/imports, expedition navigation and arena reward integration remain functional.
+The desktop game screen fits one viewport. Its left scene occupies 75.2% of the height with the four forge states below it. The right column has a bounded building panel and all three major actions visible at 1536 × 1024. Custom SVG coin, gem, skull, chest, map and sword icons replace the mismatched text symbols. Current/next forge stats use actual weapon tier, crafted health bonus and crafting costs. Detailed crafting actions, import and export remain in the utility row beneath the game screen. On narrow screens the scene, variants, building selectors and details stack vertically.
+
+The saved level still selects new/repaired/upgraded forge sprites, and the ruined sprite is a visual reference rather than a new damage mechanic. All costs, saves, production, crafting, expedition and arena rules remain unchanged.
 
 ## Live game
 
@@ -30,6 +32,10 @@ Built-in imagegen produced the snowy landscape and four-state forge sprite sheet
 
 ![Four forge states generated from the existing forge](https://arkadia-stronghold-whachat.fural.space/fortress-ui/forge-states.webp)
 
+## Corrected environment plate
+
+![Close courtyard environment without buildings or interface](https://arkadia-stronghold-whachat.fural.space/fortress-ui/courtyard-v2.webp)
+
 ## Runtime evidence
 
 ![Desktop fortress UI](https://arkadia-stronghold-whachat.fural.space/fortress-ui/desktop.webp)
@@ -38,10 +44,10 @@ Built-in imagegen produced the snowy landscape and four-state forge sprite sheet
 
 ## Verification and publishing
 
-TypeScript and Vite production build pass. Eight economy/save/offline tests pass. New browser checks pass at 1536, 844, 390 and 320 pixels on both public hosts: all seven selections, loaded matching portraits, mine and forge upgrades, crafting, reload persistence, claims, Start Run navigation, no overflow and no page errors. The broader existing browser regression also passes on the main public host, including concurrent-tab claim protection, expedition dispatch, arena entry with 110 HP and the controlled five-kill reward fixture.
+TypeScript/Vite build and eight economy/save/offline tests pass. Browser checks at 1536, 844, 390 and 320 pixels select all seven buildings directly in the scene, verify matching loaded portraits, upgrade/craft/save persistence, claims and Start Run navigation, and reject page errors and horizontal overflow. An additional layout check confirms that all three main actions and the variant strip fit the target 1536 × 1024 viewport. The existing broader regression passes, including concurrent claims, expedition dispatch, arena health bonus and the controlled run reward fixture.
 
-The publisher initially exceeded the platform's request/transfer timeout. A 2.44 MB incremental package in bounded chunks was published through the supported sandboxes serve command, preserving the existing full-site resource packages. Both public URLs were then checked against the new UI with real browser interactions. A gateway timeout during the main host's final boot did not indicate a failed release: boot logs confirmed the new server and the public browser regression passed. No resource-guard incidents were reported.
+The revised bundle uses versioned incremental chunks staged through the supported sandboxes serve command so the current release stays intact until the final switch. The original landscape and forge generation remain preserved in the repository. The new environment prompt is recorded in docs/fortress-ui/prompts.md.
 
-## Visual scope
+## Remaining visual differences
 
-The screen follows the reference composition and cold exterior / warm interior palette. Existing repeating masonry, floor tiles and most building silhouettes remain; this is not a pixel-identical recreation of the supplied illustration. There are no animated townsfolk or new worker-production mechanics.
+Most building sprites and forge variants are still separate existing artwork rather than exact copies of the target. The reference's worker/percentage/interval values are not implemented game mechanics, so the sidebar shows real weapon and crafting values. Decorative townsfolk are not present. Visual approval remains with the human; automated interaction and layout checks alone are not a visual acceptance test.
