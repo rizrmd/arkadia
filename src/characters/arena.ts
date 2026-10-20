@@ -13,7 +13,7 @@ const STATS = {
 
 export class Actor {
   view = new Container(); sprite: Sprite; shadow: Graphics; pivotMark: Graphics;
-  state: ClipName = 'idle'; t = 0; facing = 1; back = false; stride = 0; hp: number; cooldown = 0; impactDone = false; flash = 0; deadFor = 0; wander: Point | null = null; immune = 0;
+  state: ClipName = 'idle'; t = 0; facing = 1; back = false; stride = 0; hp: number; cooldown = 0; impactDone = false; flash = 0; deadFor = 0; wander: Point | null = null; immune = 0; retreating = false;
   constructor(public kind: 'hero' | 'revenant', public set: SpriteSet, public x: number, public y: number) {
     this.hp = STATS[kind].hp;
     this.shadow = new Graphics().ellipse(0, 0, 26, 11).fill({ color: 0x050608, alpha: .38 });
@@ -41,7 +41,7 @@ export class Actor {
 
 export class Arena {
   hero: Actor; enemies: Actor[] = []; kills = 0; auto = true; mirror = true; pivots = false; manualUntil = 0; clock = 0;
-  keys = new Set<string>(); private engaged = new Set<Actor>(); private rand: () => number; frameChanges = 0;
+  keys = new Set<string>(); private engaged = new Set<Actor>(); private moves = new Map<Actor, { before: Point; direction: Point; wasMoving: boolean }>(); private rand: () => number; frameChanges = 0;
   constructor(private sets: Record<string, SpriteSet>, private toScreen: (x: number, y: number) => Point, seed: () => number) {
     this.rand = seed; this.hero = new Actor('hero', sets.hero, 5, 5);
   }
@@ -65,12 +65,14 @@ export class Arena {
     this.sync();
   }
   private step(dt: number) {
+    this.moves.clear();
     this.clock += dt;
     for (const a of this.actors) { a.t += dt; a.cooldown -= dt; a.flash -= dt; a.immune -= dt; }
     this.heroStep(dt);
-    const h = this.hero; this.engaged = new Set(this.enemies.filter(e => e.alive).sort((a, b) => Math.hypot(a.x - h.x, a.y - h.y) - Math.hypot(b.x - h.x, b.y - h.y)).slice(0, ENGAGED));
+    const h = this.hero; this.engaged = new Set(this.enemies.filter(e => e.alive).sort((a, b) => (Math.hypot(a.x - h.x, a.y - h.y) - (this.engaged.has(a) ? .3 : 0)) - (Math.hypot(b.x - h.x, b.y - h.y) - (this.engaged.has(b) ? .3 : 0))).slice(0, ENGAGED));
     for (const e of this.enemies) this.enemyStep(e, dt);
     this.separate();
+    this.finishMoves(dt);
   }
   private move(a: Actor, d: Point, dt: number) {
     const len = Math.hypot(d.x, d.y); if (len < 1e-6) return;
@@ -80,17 +82,28 @@ export class Arena {
     const pxPerUnit = Math.hypot(projected.x - zero.x, projected.y - zero.y);
     const v = STATS[a.kind].speed * 64 * dt / 1000 / pxPerUnit;
     a.x = Math.min(MAX, Math.max(MIN, a.x + d.x / len * v)); a.y = Math.min(MAX, Math.max(MIN, a.y + d.y / len * v));
-    const after = this.toScreen(a.x, a.y), travelled = Math.hypot(after.x - before.x, after.y - before.y);
-    // A full two-step cycle spans a fixed distance. Blocked actors do not run in place.
-    a.stride += travelled / (a.kind === 'hero' ? 88 : 76);
-    if (travelled < 1e-6) a.play('idle');
+    this.moves.set(a, { before, direction: { x: (projected.x - zero.x) / pxPerUnit, y: (projected.y - zero.y) / pxPerUnit }, wasMoving: a.state === 'move' });
     this.face(a, d);
+  }
+  private finishMoves(dt: number) {
+    for (const [a, { before, direction, wasMoving }] of this.moves) {
+      const after = this.toScreen(a.x, a.y);
+      // Only forward progress after collision resolution advances the gait. Being pushed
+      // backwards or sideways must not make a blocked actor walk in place.
+      const progress = Math.max(0, (after.x - before.x) * direction.x + (after.y - before.y) * direction.y);
+      const moving = progress / (dt / 1000) > (wasMoving ? 2 : 5);
+      a.play(moving ? 'move' : 'idle');
+      if (moving) a.stride += progress / (a.kind === 'hero' ? 88 : 76);
+    }
   }
   private face(a: Actor, d: Point) {
     const origin = this.toScreen(0, 0), p = this.toScreen(d.x, d.y), sx = p.x - origin.x, sy = p.y - origin.y;
-    if (Math.abs(sy) > .05) a.back = sy < 0;
-    // Back art already faces screen-right; front art also faces screen-right.
-    if (Math.abs(sx) > .05) a.facing = sx > 0 ? 1 : -1;
+    const length = Math.hypot(sx, sy);
+    if (length < 1e-6) return;
+    // Angular dead bands retain the previous quadrant near an axis, independent of
+    // target distance. Small collision corrections no longer flip front/back art.
+    if (Math.abs(sy) / length > .15) a.back = sy < 0;
+    if (Math.abs(sx) / length > .15) a.facing = sx > 0 ? 1 : -1;
   }
   private recover(a: Actor) { if ((a.state === 'hit' || a.state === 'attack') && a.finished()) a.play('idle'); }
   private heroStep(dt: number) {
@@ -111,12 +124,12 @@ export class Arena {
     const manual = d.x || d.y || k.has(' ');
     if (manual) this.manualUntil = this.clock + 3000;
     if (k.has(' ')) { h.play('attack'); return; }
-    if (d.x || d.y) { h.play('move'); this.move(h, d, dt); return; }
+    if (d.x || d.y) { this.move(h, d, dt); return; }
     if (this.auto && this.clock > this.manualUntil) {
       const target = this.nearest(h);
       if (target) {
         const to = { x: target.x - h.x, y: target.y - h.y };
-        if (Math.hypot(to.x, to.y) > STATS.hero.reach * .8) { h.play('move'); this.move(h, to, dt); return; }
+        if (Math.hypot(to.x, to.y) > STATS.hero.reach * .8) { this.move(h, to, dt); return; }
         this.face(h, to); h.play('attack'); return;
       }
     }
@@ -138,15 +151,18 @@ export class Arena {
     }
     // Only the nearest ENGAGED revenants press the attack; the rest keep a loose ring so the hero stays readable.
     if (h.alive && dist < 5.5 && this.engaged.has(e)) {
-      if (dist > STATS.revenant.reach) { e.play('move'); this.move(e, to, dt); return; }
+      if (dist > STATS.revenant.reach) { this.move(e, to, dt); return; }
       this.face(e, to);
       if (e.cooldown <= 0) { e.cooldown = 1500 + this.rand() * 1200; e.play('attack'); return; }
       e.play('idle'); return;
     }
-    if (h.alive && dist < 2.4) { e.play('move'); this.move(e, { x: -to.x, y: -to.y }, dt); return; }
+    // Separate enter/leave radii prevent collision pushes from reversing a ring
+    // actor's decision every frame at the old single 2.4-tile boundary.
+    e.retreating = h.alive && dist < (e.retreating ? 2.6 : 2.4);
+    if (e.retreating) { this.move(e, { x: -to.x, y: -to.y }, dt); return; }
     if (!e.wander || this.rand() < .002) e.wander = this.rand() < .5 ? this.edgePoint() : { x: e.x, y: e.y };
     const w = { x: e.wander.x - e.x, y: e.wander.y - e.y };
-    if (Math.hypot(w.x, w.y) > .15) { e.play('move'); this.move(e, w, dt); } else e.play('idle');
+    if (Math.hypot(w.x, w.y) > .15) { this.move(e, w, dt); } else e.play('idle');
   }
   private inReach(a: Actor, b: Actor, reach: number) {
     const dx = b.x - a.x, dy = b.y - a.y, sx = dx - dy;
