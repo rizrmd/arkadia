@@ -21,7 +21,7 @@ export function ground(){let tiles='';for(let u=-2;u<=6;u++)for(let v=-2;v<=6;v+
  const paved=(u===2||v===2||(u>=1&&u<=3&&v>=1&&v<=3));
  tiles+=`<clipPath id="${id}"><polygon points="${diamond(u,v)}"/></clipPath><polygon points="${diamond(u,v)}" ${paved?'':'filter="url(#meadow-texture)"'} fill="${paved?'#66634c':(['#3d4b32','#3a482e','#414d33'][(u+v+4)%3])}"/>${paved?`<image href="/assets/limestone.png" x="${x-65}" y="${y-33}" width="130" height="67" preserveAspectRatio="none" clip-path="url(#${id})"/>`: ''}`;
  if(!paved)for(let i=0;i<12;i++){const q=project(u+((i*17%23)/23-.5)*.8,v+((i*7%19)/19-.5)*.8);tiles+=`<path d="M${q.x-2} ${q.y}l-1-4m1 4 3-5" stroke="${i%3?'#607345':'#8a9055'}" stroke-width="1"/>`;}
- }return `<svg class="ground" viewBox="0 0 960 650" aria-hidden="true"><defs><filter id="meadow-texture"><feTurbulence type="fractalNoise" baseFrequency=".38" numOctaves="3" seed="8"/><feColorMatrix type="saturate" values="0"/><feBlend in="SourceGraphic" mode="soft-light"/></filter></defs>${tiles}</svg>`;}
+ }return `<svg class="ground" viewBox="0 0 960 650" aria-hidden="true"><defs><filter id="meadow-texture"><feTurbulence type="fractalNoise" baseFrequency=".38" numOctaves="3" seed="8"/><feColorMatrix type="saturate" values="0"/><feComposite in2="SourceAlpha" operator="in"/><feBlend in="SourceGraphic" mode="multiply"/></filter></defs>${tiles}</svg>`;}
 // Decorative objects share the same ground-contact sorting as interactive buildings.
 export function village(){
  const prop=(u:number,v:number,body:string)=>{const p=project(u,v);return `<svg class="village-prop" style="left:${p.x}px;top:${p.y}px;z-index:${Math.round(p.y)}" viewBox="-75 -140 150 160" aria-hidden="true">${body}</svg>`;};
