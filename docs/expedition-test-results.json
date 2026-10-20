@@ -1,0 +1,25 @@
+{
+  "passed": 4,
+  "results": [
+    {
+      "name": "deterministic seed, negative coordinates and exploration order",
+      "passed": true,
+      "ms": 2370
+    },
+    {
+      "name": "chunk boundary geography and road continuity",
+      "passed": true,
+      "ms": 630
+    },
+    {
+      "name": "save/load stable snapshots, conditions, future generation and idle state",
+      "passed": true,
+      "ms": 798
+    },
+    {
+      "name": "navigation, active clear requirement, risk limit and idle same-world route",
+      "passed": true,
+      "ms": 278
+    }
+  ]
+}

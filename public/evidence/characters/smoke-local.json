@@ -1,0 +1,57 @@
+{
+ "url": "http://127.0.0.1:3005/",
+ "at": "2026-10-20T09:20:31.737Z",
+ "renderer": "webgl",
+ "results": [
+  {
+   "name": "existing asset-lab regression (scripts/check-browser.js)",
+   "passed": true,
+   "ms": 3609
+  },
+  {
+   "name": "atlas frames match manifest rects, shared anchor, gutters inside atlas",
+   "passed": true,
+   "ms": 4997
+  },
+  {
+   "name": "idle playback: time-based frames, stable position and anchor (no jitter)",
+   "passed": true,
+   "ms": 2799
+  },
+  {
+   "name": "move: WASD drives move clip, facing mirrors only horizontally",
+   "passed": true,
+   "ms": 1901
+  },
+  {
+   "name": "attack: Space plays all 6 frames once (12 fps) then returns to idle",
+   "passed": true,
+   "ms": 1498
+  },
+  {
+   "name": "hit then die: hit clip on damage, die clip holds final frame, R revives",
+   "passed": true,
+   "ms": 2602
+  },
+  {
+   "name": "equipment UI: 12 atlas icons, potion heals",
+   "passed": true,
+   "ms": 2
+  },
+  {
+   "name": "crowded arena (36): all hero/enemy states occur, kills counted, depth-sorted",
+   "passed": true,
+   "ms": 52387
+  },
+  {
+   "name": "stress arena (72): renders without errors (fps reported, not a hardware claim)",
+   "passed": true,
+   "ms": 11291
+  },
+  {
+   "name": "no page errors",
+   "passed": true,
+   "ms": 0
+  }
+ ]
+}
