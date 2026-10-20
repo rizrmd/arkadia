@@ -27,18 +27,16 @@ export function foundationLayers(p:Sprite,soil:HTMLImageElement,snow?:HTMLImageE
    [.559,.961,.017],[.623,.984,.018],[.685,.944,.017],
    [.80,.80,.017],[.842,.845,.018],[.922,.805,.017]
   ];
-  // Broad, very faint ambient occlusion beneath the table, followed by
-  // individual foot contacts. Nothing is drawn onto the furniture itself.
-  ground.save();ground.filter='blur(5px)';ground.fillStyle='#30281e16';
-  ground.beginPath();ground.moveTo(width*.235,height*.79);ground.lineTo(width*.44,height*.945);ground.lineTo(width*.94,height*.65);ground.lineTo(width*.735,height*.49);ground.closePath();ground.fill();ground.restore();
+  // Static, non-directional contact occlusion at the foot itself only.
+  // Directional cast shadows, broad lighting and time-of-day belong to lighting.ts.
   for(const [u,v,r] of feet){
    const x=u*width,y=v*height,rx=r*width;
    ground.globalAlpha=.46;ground.drawImage(soil,x-rx*1.7,y-2,rx*3.4,6);
    ground.globalAlpha=1;
-   ground.save();ground.translate(x,y+1);ground.scale(1,.38);
-   const contact=ground.createRadialGradient(0,0,0,0,0,rx*1.25);
-   contact.addColorStop(0,'#211b1490');contact.addColorStop(.38,'#30271955');contact.addColorStop(1,'#30271900');
-   ground.fillStyle=contact;ground.beginPath();ground.arc(0,0,rx*1.25,0,Math.PI*2);ground.fill();ground.restore();
+   ground.save();ground.translate(x,y+1);ground.scale(1,.28);
+   const contact=ground.createRadialGradient(0,0,0,0,0,rx*1.05);
+   contact.addColorStop(0,'#211b1470');contact.addColorStop(.38,'#30271955');contact.addColorStop(1,'#30271900');
+   ground.fillStyle=contact;ground.beginPath();ground.arc(0,0,rx*1.05,0,Math.PI*2);ground.fill();ground.restore();
   }
   result={under,face,pad};cache.set(key,result);return result;
  }

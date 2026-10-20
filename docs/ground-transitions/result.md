@@ -46,9 +46,9 @@ An isolated build of the committed foundation changes passes TypeScript and Vite
 
 ## Furniture contact correction
 
-The follow-up screenshot identified the expedition table and stools as still disconnected from the paving. Furniture now has eleven authored ground-contact landmarks covering the table feet, stool legs, rack and tripod. Tight elliptical contact shadows, tiny grit marks and a faint soft shadow under the table ground the furniture without treating its open underside as a continuous wall or adding climbing moss to chairs.
+The follow-up screenshot identified the expedition table and stools as still disconnected from the paving. Furniture now has eleven authored ground-contact landmarks covering the table feet, stool legs, rack and tripod. Tight elliptical contact shadows, tiny grit marks ground the furniture without treating its open underside as a continuous wall or adding climbing moss to chairs.
 
-The isolated production build and three-viewport browser checks pass again, including deterministic reload, selection and pan/zoom without rebakes. A before/after desktop pixel comparison found 2,804 changed pixels above a combined RGB difference of 12, all within x598–901/y557–652 around the furniture feet and ground beneath it.
+The isolated production build and three-viewport browser checks pass again, including deterministic reload, selection and pan/zoom without rebakes. The broad under-table shadow was removed following the lighting overlap concern. This module owns only tiny non-directional foot contact occlusion and dirt wear. All directional cast shadows, their length and angle, and time-of-day lighting remain the lighting system’s responsibility. No light anchors, lightmaps, phase logic or lighting files are changed by this correction.
 
 ![Furniture report from the human](https://arkadia-stronghold-whachat.fural.space/foundation-transitions/table-feedback.jpg)
 
