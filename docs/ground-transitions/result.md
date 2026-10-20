@@ -43,3 +43,15 @@ An isolated build of the committed foundation changes passes TypeScript and Vite
 ## Source and reproduction
 
 [Generation prompts](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=assets-src%2Ffoundation-transitions%2Fprompts.json) · [Live verification report](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=docs%2Fground-transitions%2Flive-verification.json)
+
+## Furniture contact correction
+
+The follow-up screenshot identified the expedition table and stools as still disconnected from the paving. Furniture now has eleven authored ground-contact landmarks covering the table feet, stool legs, rack and tripod. Tight elliptical contact shadows, tiny grit marks and a faint soft shadow under the table ground the furniture without treating its open underside as a continuous wall or adding climbing moss to chairs.
+
+The isolated production build and three-viewport browser checks pass again, including deterministic reload, selection and pan/zoom without rebakes. A before/after desktop pixel comparison found 2,804 changed pixels above a combined RGB difference of 12, all within x598–901/y557–652 around the furniture feet and ground beneath it.
+
+![Furniture report from the human](https://arkadia-stronghold-whachat.fural.space/foundation-transitions/table-feedback.jpg)
+
+![Table and stool ground-contact detail](https://arkadia-stronghold-whachat.fural.space/foundation-transitions/table-detail.png)
+
+![Original expedition furniture sprite](https://arkadia-stronghold-whachat.fural.space/assets/stronghold/expedition.png)

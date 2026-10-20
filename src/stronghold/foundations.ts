@@ -7,7 +7,7 @@ export const FOUNDATION_DRIFT='/modular-stronghold/v2/snowdrift-edge.png';
 const cache=new Map<string,{under:HTMLCanvasElement;face:HTMLCanvasElement;pad:number}>();
 function random(seed:number){let n=seed|0;return()=>{n=(Math.imul(n,1664525)+1013904223)|0;return(n>>>0)/4294967296;};}
 export function foundationLayers(p:Sprite,soil:HTMLImageElement,snow?:HTMLImageElement,vegetation?:HTMLImageElement){
- if(!structural.test(p.id))return null;
+ if(!structural.test(p.id)&&p.id!=='expedition')return null;
  const key=p.image.src+':'+p.width+':'+p.layer;let result=cache.get(key);if(result)return result;
  const width=Math.ceil(p.width),height=Math.ceil(p.height),pad=22;
  const sample=document.createElement('canvas');sample.width=width;sample.height=height;const ctx=sample.getContext('2d')!;
@@ -17,6 +17,31 @@ export function foundationLayers(p:Sprite,soil:HTMLImageElement,snow?:HTMLImageE
  const bottom=Array.from({length:width},(_,x)=>{for(let y=height-1;y>height*.68;y--)if(alpha[(y*width+x)*4+3]>160)return y;return -1;});
  const under=document.createElement('canvas'),face=document.createElement('canvas');under.width=face.width=width+pad*2;under.height=face.height=height+pad*2;
  const ground=under.getContext('2d')!,moss=face.getContext('2d')!;ground.translate(pad,pad);moss.translate(pad,pad);
+ // The furniture sprite has open space under its tabletop. A bottom-contour
+ // band would stain that opening and miss the separate stool legs. These
+ // normalized landmarks are the actual ground contacts in expedition.png.
+ if(p.id==='expedition'){
+  const feet=[
+   [.025,.745,.019],[.105,.77,.019],[.24,.79,.025],
+   [.44,.944,.032],[.94,.65,.024],
+   [.559,.961,.017],[.623,.984,.018],[.685,.944,.017],
+   [.80,.80,.017],[.842,.845,.018],[.922,.805,.017]
+  ];
+  // Broad, very faint ambient occlusion beneath the table, followed by
+  // individual foot contacts. Nothing is drawn onto the furniture itself.
+  ground.save();ground.filter='blur(5px)';ground.fillStyle='#30281e16';
+  ground.beginPath();ground.moveTo(width*.235,height*.79);ground.lineTo(width*.44,height*.945);ground.lineTo(width*.94,height*.65);ground.lineTo(width*.735,height*.49);ground.closePath();ground.fill();ground.restore();
+  for(const [u,v,r] of feet){
+   const x=u*width,y=v*height,rx=r*width;
+   ground.globalAlpha=.46;ground.drawImage(soil,x-rx*1.7,y-2,rx*3.4,6);
+   ground.globalAlpha=1;
+   ground.save();ground.translate(x,y+1);ground.scale(1,.38);
+   const contact=ground.createRadialGradient(0,0,0,0,0,rx*1.25);
+   contact.addColorStop(0,'#211b1490');contact.addColorStop(.38,'#30271955');contact.addColorStop(1,'#30271900');
+   ground.fillStyle=contact;ground.beginPath();ground.arc(0,0,rx*1.25,0,Math.PI*2);ground.fill();ground.restore();
+  }
+  result={under,face,pad};cache.set(key,result);return result;
+ }
  const rng=random([...p.id].reduce((s,c)=>s*31+c.charCodeAt(0),17));
  const dry=p.id==='forge'||p.id==='mine',gate=p.id==='gate'||p.id==='gateway-grand';
  for(let x=4;x<width-4;x+=9){
