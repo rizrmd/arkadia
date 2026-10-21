@@ -1,0 +1,4 @@
+import fs from 'node:fs/promises';import {createHash} from 'node:crypto';
+const deployment=JSON.parse(await fs.readFile('docs/ember-warden/deployment.json')),base=deployment.receipt.url,resources={},queue=Object.entries(deployment.resources);
+await Promise.all(Array.from({length:4},async()=>{while(queue.length){const [p,expected]=queue.shift(),r=await fetch(base+p+'?sha='+expected.slice(0,12),{signal:AbortSignal.timeout(20000)});if(!r.ok)throw Error(r.status+' '+p);const actual=createHash('sha256').update(Buffer.from(await r.arrayBuffer())).digest('hex');if(actual!==expected)throw Error('Deployed byte mismatch '+p);resources[p]=actual}}));
+await fs.writeFile('docs/ember-warden/public-resource-verification.json',JSON.stringify({base,status:'all-deployed-resource-bytes-match',resources},null,2));console.log(JSON.stringify({base,status:'all-deployed-resource-bytes-match',resources:Object.keys(resources).length}));

@@ -1,0 +1,4 @@
+import fs from 'node:fs/promises';import sharp from 'sharp';import {createHash} from 'node:crypto';
+const root='public/ember-warden/v1',m=JSON.parse(await fs.readFile(root+'/manifest.json')),clips=[];
+for(const c of m.clips.filter(c=>c.action==='death')){const png=await fs.readFile(root+'/'+c.image.split('?')[0]),hashes=[];for(let i=12;i<16;i++){const r=c.frames[i].rect,raw=await sharp(png).extract({left:r[0],top:r[1],width:r[2],height:r[3]}).raw().toBuffer();hashes.push(createHash('sha256').update(raw).digest('hex'))}if(new Set(hashes).size!==1)throw Error('Death terminal pixel drift '+c.direction);clips.push({direction:c.direction,terminalFrames:[12,13,14,15],pixelIdentical:true,hash:hashes[0]})}
+await fs.writeFile('docs/ember-warden/death-terminal-audit.json',JSON.stringify({status:'all-eight-death-terminal-poses-pixel-stable',clips},null,2));console.log('Eight death terminal poses are pixel-stable');
