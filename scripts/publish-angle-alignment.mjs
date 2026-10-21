@@ -7,7 +7,7 @@ import {gzipSync} from 'node:zlib';
 import {execFileSync} from 'node:child_process';
 import sharp from 'sharp';
 const run=(args)=>JSON.parse(execFileSync('fural-agent',args,{encoding:'utf8',timeout:120000,maxBuffer:4e6}));
-const dir='publish-angle-alignment';await fs.mkdir(dir,{recursive:true});
+const dir='.publish/angle-alignment';await fs.mkdir(dir,{recursive:true});
 const files={},html=await fs.readFile('dist/stronghold.html','utf8');files['/stronghold.html']=Buffer.from(html).toString('base64');
 for(const match of html.matchAll(/(?:src|href)="(\/assets\/[^\"]+)"/g))files[match[1]]=(await fs.readFile('dist'+match[1])).toString('base64');
 for(const name of ['desktop','mobile','barracks','barracks-guides'])await sharp('public/angle-alignment/'+name+'.png').webp({quality:95}).toFile('public/angle-alignment/'+name+'.webp');

@@ -1,7 +1,7 @@
 // Incremental release over the approved fortress + mobile release. Stage bounded
 // chunks via sandboxes serve, then switch app.mjs after every chunk is present.
 import fs from 'node:fs/promises';import {gzipSync} from 'node:zlib';import sharp from 'sharp';
-const dir='publish-isometric';await fs.mkdir(dir,{recursive:true});const files={};
+const dir='.publish/isometric';await fs.mkdir(dir,{recursive:true});const files={};
 for(const n of await fs.readdir('dist/assets'))if(/\.(js|css)$/.test(n))files['/assets/'+n]=(await fs.readFile('dist/assets/'+n)).toString('base64');
 for(const n of ['index.html','stronghold.html','expedition.html'])files['/'+n]=(await fs.readFile('dist/'+n)).toString('base64');
 for(const n of ['barracks.png','expedition.png','manifest.json'])files['/assets/stronghold/'+n]=(await fs.readFile('public/assets/stronghold/'+n)).toString('base64');

@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises';import {gzipSync} from 'node:zlib';import sharp from 'sharp';
 // A small overlay on the approved v2 art release; versioned chunks are switched
 // only after every part has been transferred through sandboxes serve.
-const dir='publish-mobile-fortress';await fs.mkdir(dir,{recursive:true});const files={};
+const dir='.publish/mobile-fortress';await fs.mkdir(dir,{recursive:true});const files={};
 for(const n of await fs.readdir('dist/assets'))if(/^stronghold-.*\.(js|css)$/.test(n))files['/assets/'+n]=(await fs.readFile('dist/assets/'+n)).toString('base64');
 files['/stronghold.html']=(await fs.readFile('dist/stronghold.html')).toString('base64');
 for(const [source,name] of [['mobile-fit-390x844','mobile'],['mobile-panel-390x844','mobile-panel']]){const png=await fs.readFile('docs/fortress-ui/'+source+'.png');await fs.writeFile('public/fortress-ui/'+name+'.png',png);const webp=await sharp(png).webp({quality:92}).toBuffer();await fs.writeFile('public/fortress-ui/'+name+'.webp',webp);files['/fortress-ui/'+name+'.webp']=webp.toString('base64');}

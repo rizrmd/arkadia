@@ -16,7 +16,7 @@ Hand-reviewed crop rectangles, original transparent alpha, alpha values below 24
 
 ## Verified live result — 20 October 2026
 
-https://arkadia-whachat.fural.space/ — custom sandbox arkadia, foreground `node app.mjs`, port 3000. `scripts/package-site.mjs` bundles the Vite output into a single Node file to avoid timeout while the platform copies many resources. Publish with `fural-agent sandboxes serve --name arkadia --dir /home/dev/arkadia/publish --cmd "node app.mjs" --port 3000 --project PJ8758f22f61165f3d3215e454`.
+https://arkadia-whachat.fural.space/ — custom sandbox arkadia, foreground `node app.mjs`, port 3000. `scripts/package-site.mjs` bundles the Vite output into a single Node file to avoid timeout while the platform copies many resources. All packaging scripts stage their output under the ignored `.publish/<name>/` folder (never the repo root). Publish with `fural-agent sandboxes serve --name arkadia --dir $PWD/.publish/site --cmd "node app.mjs" --port 3000 --project PJ8758f22f61165f3d3215e454`.
 
 `node scripts/final-verify.mjs` tests the public URL in Chromium. The browser uses HOME-only Ubuntu libraries on Alpine; organization runtime now includes their idempotent setup (scripts/organization-setup.sh). Playwright Chromium requires --no-zygote --single-process here; this is browser test configuration, not a site requirement. The test verifies 13 conditions, including grid below props, true sorting toggle, deterministic seeds, camera handlers and transparency toggles. Final deterministic camera assertions use dispatched events with pointer-capture bypassed; this does not prove physical mouse or touch behavior on every device. No hardware performance claim is made.
 

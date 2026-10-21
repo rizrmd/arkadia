@@ -4,7 +4,7 @@ import fs from 'node:fs/promises';
 import {gzipSync} from 'node:zlib';
 import {execFileSync} from 'node:child_process';
 const run=args=>JSON.parse(execFileSync('fural-agent',args,{encoding:'utf8',timeout:120000,maxBuffer:4e6}));
-const dir='publish-vertical';await fs.mkdir(dir+'/loader',{recursive:true});
+const dir='.publish/vertical';await fs.mkdir(dir+'/loader',{recursive:true});
 const files={};
 for(const n of await fs.readdir('dist/assets'))if(/\.(js|css)$/.test(n))files['/assets/'+n]=(await fs.readFile('dist/assets/'+n)).toString('base64');
 files['/index.html']=(await fs.readFile('dist/index.html')).toString('base64');
