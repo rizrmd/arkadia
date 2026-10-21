@@ -205,40 +205,49 @@ bpy.ops.file.pack_all()
 bpy.ops.wm.save_as_mainfile(filepath=os.path.abspath('docs/rift-runner-v2/rift-runner-rig.blend'))
 DIRECTIONS=[('S',0),('SW',-pi/4),('W',-pi/2),('NW',-3*pi/4),('N',pi),('NE',3*pi/4),('E',pi/2),('SE',pi/4)]
 mode=sys.argv[1] if len(sys.argv)>1 else 'turnaround'
+def apply_facing(angle):
+ root.rotation_euler.z=angle;root.location=Quaternion((0,0,1),angle)@root.location
+exec(compile(open('scripts/rift-runner/standard_states.py').read(),'standard_states.py','exec'),globals())
 if mode=='export':
- action=sys.argv[2];group=int(sys.argv[3]);order=['N','NE','E','SE','S','SW','W','NW'];angles=dict(DIRECTIONS);count=8 if action=='idle' else 16 if action=='run' else 12;per_group=4 if action=='idle' else 2;cols=8 if action in ['idle','run'] else 6;rows_per_direction=math.ceil(count/cols);directions=order[group*per_group:(group+1)*per_group]
+ action=sys.argv[2];group=int(sys.argv[3]);
+ if action not in ['idle','run','pulse-shot','phase-dash','rift-trap','overdrive','hurt','death']:raise ValueError('Unsupported action '+action)
+ order=['N','NE','E','SE','S','SW','W','NW'];angles=dict(DIRECTIONS);count=8 if action in ['idle','hurt'] else 16 if action in ['run','death'] else 12;per_group=4 if action=='idle' else 2;cols=8 if action in ['idle','run','hurt','death'] else 6;rows_per_direction=math.ceil(count/cols);directions=order[group*per_group:(group+1)*per_group]
  if not directions:raise ValueError('Empty export group')
- scene.render.resolution_x=scene.render.resolution_y=256;scene.cycles.samples=24;scene.cycles.use_denoising=True
- source_hash=hashlib.sha256(open(__file__,'rb').read().split(b'mode=sys.argv',1)[0]+b'cycles24-denoise-256'+open(ROOT+'/source/material-atlas.png','rb').read()).hexdigest()[:12];out=ROOT+'/exports/'+source_hash;os.makedirs(out,exist_ok=True);name=action+'-'+str(group);png=out+'/'+name+'.png';metadata=out+'/'+name+'.json'
- atlas=Image.new('RGBA',(cols*256,len(directions)*rows_per_direction*256));clips=[]
+ scene.render.resolution_x=scene.render.resolution_y=320;cam.data.ortho_scale=3.5;cam.data.shift_y=0;bpy.context.view_layer.update();y0=world_to_camera_view(scene,cam,Vector((0,0,0))).y;cam.data.shift_y=.1;bpy.context.view_layer.update();y1=world_to_camera_view(scene,cam,Vector((0,0,0))).y;cam.data.shift_y=(.3-y0)/(y1-y0)*.1;bpy.context.view_layer.update();scene.cycles.samples=24;scene.cycles.use_denoising=True;scene.render.threads_mode='FIXED';scene.render.threads=2
+ source_hash=hashlib.sha256(open(__file__,'rb').read().split(b'mode=sys.argv',1)[0]+b'cycles24-denoise-320'+open(ROOT+'/source/material-atlas.png','rb').read()).hexdigest()[:12];out=ROOT+'/exports/'+source_hash;os.makedirs(out,exist_ok=True);name=action+'-'+str(group);animation_hash=hashlib.sha256(open('scripts/rift-runner/standard_states.py','rb').read()).hexdigest()[:10] if action in ['hurt','death'] else None;image_name=action+'-'+animation_hash+'-'+str(group) if animation_hash else name;png=out+'/'+image_name+'.png';metadata=out+'/'+name+'.json'
+ atlas=Image.new('RGBA',(cols*320,len(directions)*rows_per_direction*320));clips=[]
  fd,tmp=tempfile.mkstemp(suffix='.png',prefix='rift-frame-',dir='/home/dev/.tmp');os.close(fd)
  try:
   for dindex,direction in enumerate(directions):
    frames=[]
    for f in range(count):
-    t=f/count if action in ['idle','run'] else f/(count-1);pose(action,t);root.rotation_euler.z=angles[direction];bpy.context.view_layer.update();scene.render.filepath=tmp;bpy.ops.render.render(write_still=True);frame=Image.open(tmp).convert('RGBA');col=f%cols;row=dindex*rows_per_direction+f//cols;atlas.paste(frame,(col*256,row*256));bounds=frame.getchannel('A').getbbox()
-    if bounds is None or min(bounds[0],bounds[1],256-bounds[2],256-bounds[3])<5:raise RuntimeError('Empty or clipped frame '+action+' '+direction+' '+str(f))
+    t=f/count if action in ['idle','run'] else f/(count-1);pose(action,t);apply_facing(angles[direction]);bpy.context.view_layer.update();scene.render.filepath=tmp;bpy.ops.render.render(write_still=True);frame=Image.open(tmp).convert('RGBA');col=f%cols;row=dindex*rows_per_direction+f//cols;atlas.paste(frame,(col*320,row*320));bounds=frame.getchannel('A').getbbox()
+    if bounds is None or min(bounds[0],bounds[1],320-bounds[2],320-bounds[3])<5:raise RuntimeError('Empty or clipped frame '+action+' '+direction+' '+str(f))
     def project(v):
-     p=world_to_camera_view(scene,cam,v);return [round(p.x*256,6),round((1-p.y)*256,6)]
-    muzzle=arms['Right'][2].matrix_world@Vector((0,-.005,-.15));hand=arms['Right'][2].matrix_world@Vector((0,-.05,0));feet={n:project(legs[n][2].matrix_world@Vector((0,0,-.115))) for n in legs};frames.append({'cell':[col,row],'time':t,'alphaBounds':list(bounds),'pivot':project(Vector((0,0,0))),'muzzle':project(muzzle),'rightPalm':project(hand),'feet':feet,'rootHeight':root.location.z})
-   clips.append({'id':action+'-'+direction,'direction':direction,'yaw':angles[direction],'frames':frames,'fps':5 if action=='idle' else 20 if action=='run' else 12,'loop':action in ['idle','run'],'duration':1.6 if action=='idle' else .8 if action=='run' else 1,'eventFrame':None if action in ['idle','run'] else 5,'locomotionSpeed':.55/.6/.8 if action=='run' else 0})
-  atlas.save(png);report={'status':'rendered-pending-full-visual-and-playback-acceptance','sourceHash':source_hash,'cell':[256,256],'bodyPivot':[128,224],'image':os.path.relpath(png,ROOT),'clips':clips};json.dump(report,open(metadata,'w'),indent=2);print('BODY_EXPORT',png,len(directions)*count)
+     p=world_to_camera_view(scene,cam,v);return [round(p.x*320,6),round((1-p.y)*320,6)]
+    muzzle=arms['Right'][2].matrix_world@Vector((0,-.005,-.15));hand=arms['Right'][2].matrix_world@Vector((0,-.05,0));feet={n:project(legs[n][2].matrix_world@Vector((0,0,-.115))) for n in legs};frames.append({'cell':[col,row],'time':t,'alphaBounds':list(bounds),'pivot':project(Vector((0,0,0))),'muzzle':project(muzzle),'rightPalm':project(hand),'feet':feet,'rootHeight':root.location.z,'bakedRootTranslation':list(root.location),'bakedRootRotation':list(root.rotation_euler)})
+   clips.append({'id':action+'-'+direction,'direction':direction,'yaw':angles[direction],'frames':frames,'fps':5 if action=='idle' else 20 if action=='run' else 10 if action=='hurt' else 12,'loop':action in ['idle','run'],'holdLastFrame':action=='death','duration':1.6 if action=='idle' else .8 if action in ['run','hurt'] else 16/12 if action=='death' else 1,'eventFrame':None if action in ['idle','run'] else 1 if action=='hurt' else 2 if action=='death' else 5,'locomotionSpeed':.55/.6/.8 if action=='run' else 0})
+  atlas.save(png);report={'status':'rendered-pending-full-visual-and-playback-acceptance','sourceHash':source_hash,'animationSourceHash':animation_hash,'cell':[320,320],'bodyPivot':[160,224],'image':os.path.relpath(png,ROOT),'clips':clips};json.dump(report,open(metadata,'w'),indent=2);print('BODY_EXPORT',png,len(directions)*count)
  finally:os.unlink(tmp)
 elif mode=='audit':
  pass
+elif mode=='standard-keys':
+ os.makedirs(ROOT+'/standard-key-proof',exist_ok=True)
+ for action,stage,t in [('hurt','impact',.12),('death','impact',.12),('death','fall',.45),('death','settled',.85)]:
+  pose(action,t);apply_facing(pi/4);scene.render.filepath=ROOT+f'/standard-key-proof/{action}-{stage}.png';bpy.ops.render.render(write_still=True)
 elif mode=='skill-keys':
  os.makedirs(ROOT+'/skill-key-proof',exist_ok=True)
  for action in ['pulse-shot','phase-dash','rift-trap','overdrive']:
   for stage,t in [('anticipation',.20),('activation',.50),('recovery',.78)]:
-   pose(action,t);root.rotation_euler.z=pi/4;scene.render.filepath=ROOT+f'/skill-key-proof/{action}-{stage}.png';bpy.ops.render.render(write_still=True)
+   pose(action,t);apply_facing(pi/4);scene.render.filepath=ROOT+f'/skill-key-proof/{action}-{stage}.png';bpy.ops.render.render(write_still=True)
 elif mode=='run-se':
  os.makedirs(ROOT+'/run-proof',exist_ok=True)
  for f in range(12):
-  pose('run',f/12);root.rotation_euler.z=pi/4;scene.render.filepath=ROOT+f'/run-proof/frame-{f:02d}.png';bpy.ops.render.render(write_still=True)
+  pose('run',f/12);apply_facing(pi/4);scene.render.filepath=ROOT+f'/run-proof/frame-{f:02d}.png';bpy.ops.render.render(write_still=True)
 else:
  for direction,angle in DIRECTIONS:
   if mode=='turnaround-se' and direction!='SE':continue
-  pose('idle',0);root.rotation_euler.z=angle;scene.render.filepath=ROOT+'/prototype-v2/neutral-'+direction+'.png';bpy.ops.render.render(write_still=True)
+  pose('idle',0);apply_facing(angle);scene.render.filepath=ROOT+'/prototype-v2/neutral-'+direction+'.png';bpy.ops.render.render(write_still=True)
 # Dense numerical audit of actual evaluated scene transforms.
 samples=[];previous={};max_stance_slide=0;max_floor_error=0
 for i in range(241):
@@ -267,3 +276,14 @@ with open('docs/rift-runner-v2/source-constraint-audit.json','w') as f:json.dump
 print('SOURCE_CONSTRAINT_AUDIT',json.dumps(acceptance))
 
 if not all(r["endpointPass"] and r.get("smoothStartPass",True) for r in endpoint_results) or not acceptance["trapContactPass"]:raise RuntimeError("Source constraint audit failed")
+
+standard=[]
+for action in ['hurt','death']:
+ pose(action,0);a=snapshot();pose(action,1);b=snapshot()
+ if action=='hurt':
+  error=max(abs(x-y) for name in a for x,y in zip(a[name],b[name]));standard.append({'action':action,'neutralReturnMatrixError':error,'pass':error<1e-6})
+ else:
+  pose(action,.8);c=snapshot();error=max(abs(x-y) for name in b for x,y in zip(b[name],c[name]));minimum=min((o.matrix_world@v.co).z for o in scene.objects if o.type=='MESH' for v in o.data.vertices);standard.append({'action':action,'terminalHoldMatrixError':error,'minimumFloorHeight':minimum,'pass':error<1e-6 and minimum>=-.01})
+json.dump({'states':standard,'status':'source-constraints-not-final-visual-acceptance'},open('docs/rift-runner-v2/standard-state-audit.json','w'),indent=2)
+print('STANDARD_STATE_AUDIT',json.dumps(standard))
+if not all(r['pass'] for r in standard):raise RuntimeError('Standard state constraints failed')
