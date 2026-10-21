@@ -68,19 +68,25 @@ export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Buil
   for(let i=0;i<n;i++)for(let y=0;y<m;y++)if(d[(y*n+i)*4+3]>128){if(top[i]<0)top[i]=y/m;bottom[i]=(y+1)/m;}
   r={top,bottom};profiles.set(image.src,r);return r;
  }
- // Trees stand on a round crown footprint; everything else on its bottom contour reflected through the
- // midpoint of its left and right ends (a footprint parallelogram is centrally symmetric), which
- // recovers the hidden back edge of buildings, walls and rocks under any calibrated shear.
- const round=/^(spruce-mature|fir-young)$/;
+ // Trees and braziers (a tripod under an overhanging bowl) stand on a round footprint; everything else on
+ // its bottom contour reflected through the midpoint of its left and right ground corners (a footprint
+ // parallelogram is centrally symmetric), which recovers the hidden back edge of buildings, walls and
+ // rocks under any calibrated shear.
+ const round=/^(spruce-mature|fir-young|brazier)$/;
  function footprint(p:(typeof objects)[number]){
   const key=p.file+'|'+p.x+'|'+p.y+'|'+p.width;let cols=footprints.get(key);if(cols)return cols;cols=[];
-  const {top,bottom}=profile(p.image),n=top.length,filled=[...top.keys()].filter(i=>top[i]>=0),first=filled[0],last=filled[filled.length-1];
+  const {top,bottom}=profile(p.image),n=top.length,filled=[...top.keys()].filter(i=>top[i]>=0);
   const at=(u:number,t:number)=>{const lx=-p.width/2+(u+.5)/n*p.width;return {x:p.x+lx,y:p.y+p.shear*lx+p.vertical*(t-p.foot)*p.height};};
+  // Ground corners are the outermost columns that reach the 2:1 ground lines rising from the lowest point.
+  // Higher ends are overhangs (the mage tower's banner, a roof tip); reflecting through one pushed the
+  // back edge hundreds of px behind the sprite, an invisible wall the hero could not walk behind.
+  const base=filled.map(i=>at(i,bottom[i])),low=base.reduce((a,q)=>q.y>a.y?q:a);
+  const grounded=filled.filter((_,k)=>base[k].y>=low.y-.5*Math.abs(base[k].x-low.x)-12),first=grounded[0],last=grounded[grounded.length-1];
   const front=(j:number)=>{if(j<first||j>last)return -1;const a=bottom[Math.floor(j)],b=bottom[Math.ceil(j)];return a<0?b:b<0?a:a+(b-a)*(j-Math.floor(j));};
   const ci=(first+last)/2,cy=(bottom[first]+bottom[last])/2;
   // Columns about 3.5 world px apart; the low-resolution blurred mask hides anything finer.
   const stride=Math.max(1,Math.round(3.5*n/p.width)),w=p.width/n*stride*1.2;
-  for(let i=first;i<=last;i+=stride){if(top[i]<0)continue;const t=at(i,top[i]);let back:number,front0:number;
+  for(let i=filled[0];i<=filled[filled.length-1];i+=stride){if(top[i]<0)continue;const t=at(i,top[i]);let back:number,front0:number;
    if(round.test(p.id)){const rx=p.width*.3,d=(t.x-p.x)/rx,s=Math.abs(d)<1?rx*.5*Math.sqrt(1-d*d):0;back=p.y-s;front0=p.y+s;}
    else{const f=at(i,bottom[i]).y,r=front(2*ci-i);front0=f;back=r<0?f:Math.min(f,at(i,2*cy-r).y);}
    cols.push({x:t.x,w,back,front:front0,height:Math.max(0,back-t.y)});}

@@ -29,7 +29,9 @@ export function environmentSprites(){
  // front walls, never under a wall line where they could show inside the court.
  for(const [u,v] of [rear(7,3.5,'v'),rear(7,3.5,'u'),[16.2,6],[16.2,12],[6,16.2],[12,16.2]])parts.push(prop('snowdrift-edge',u,v,200,'z-index:1;'));
  for(const [u,v] of [[7,11],[12,8],[10,13],[9,7]])parts.push(prop('paving-worn',u,v,160,'z-index:1;opacity:.7;'));
- parts.push(prop('supply-cart',4.5,10,82),prop('brazier',13.2,5,32),prop('brazier',14,13.7,32),prop('brazier',13.7,14,32),prop('wall-broken',1.5,14.7,170));
+ // No braziers at the front corner: the gateway covers them completely, so they only stood in its passage
+ // as invisible obstacles.
+ parts.push(prop('supply-cart',4.5,10,82),prop('brazier',13.2,5,32),prop('wall-broken',1.5,14.7,170));
  parts.push(prop('crate',5.3,10.6,34,'',true),prop('barrel',5.1,11.1,27,'',true));
  return parts;
 }
