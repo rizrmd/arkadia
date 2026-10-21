@@ -44,16 +44,18 @@ export function resolveTime(mode:Mode,now:number,query='',manual:number|null=nul
 }
 // ?lighting=day|night|dynamic picks the mode; the world-only view has no menu, so it is remembered.
 export function modeFrom(query:string,stored:unknown):Mode{const m=new URLSearchParams(query).get('lighting')??stored;return m==='day'||m==='night'?m:'dynamic';}
-// Sun for cast shadows: up from 06:00 to 18:00, crossing the sky from the
-// south-east. dx/dy is the ground offset per pixel of sprite height, in screen
-// space on the 2:1 isometric ground; alpha fades shadows in after sunrise and
-// out before sunset, so the night has none.
-export const SUNRISE=.25,SUNSET=.75,SHADOW_ALPHA=.42;
+// Sun for cast shadows: up from 06:00 to 18:00. The sprites are painted lit from the upper left, so at
+// noon the sun stands there and shadows fall short toward the lower right; the sun's azimuth then turns
+// 180 degrees through the day, so shadows reach long to the right after sunrise and long to the left
+// before sunset. dx/dy is the screen ground offset per screen pixel of height on the 2:1 ground (depth
+// halves, and a screen pixel of height is 1/cos 30 deg of world height); alpha fades shadows in after
+// sunrise and out before sunset, so the night has none.
+export const SUNRISE=.25,SUNSET=.75,SHADOW_ALPHA=.4,NOON_HEADING=60,MAX_ELEVATION=60,MAX_SHADOW=1.7;
 export type Sun={alpha:number;dx:number;dy:number;elevation:number};
 export function sunAt(t:number):Sun{
  const s=(wrap(t)-SUNRISE)/(SUNSET-SUNRISE);if(s<=0||s>=1)return {alpha:0,dx:0,dy:0,elevation:0};
- const arc=Math.sin(Math.PI*s),elevation=arc*55*Math.PI/180,length=Math.min(1.8,1/Math.tan(Math.max(elevation,.01)));
- // Shadow heading swings from lower right at sunrise, through upper right at noon, to upper left at sunset.
- const heading=(30-180*s)*Math.PI/180,fade=Math.min(1,arc/.35),alpha=SHADOW_ALPHA*fade*fade*(3-2*fade);
+ const arc=Math.sin(Math.PI*s),elevation=arc*MAX_ELEVATION*Math.PI/180,length=Math.min(MAX_SHADOW,1/Math.cos(Math.PI/6)/Math.tan(Math.max(elevation,.01)));
+ // Heading on the unsquashed ground, clockwise from screen right: -30 deg at sunrise, 60 at noon, 150 at sunset.
+ const heading=(NOON_HEADING+180*(s-.5))*Math.PI/180,fade=Math.min(1,arc/.35),alpha=SHADOW_ALPHA*fade*fade*(3-2*fade);
  return {alpha,dx:Math.cos(heading)*length,dy:Math.sin(heading)*length*.5,elevation};
 }

@@ -139,7 +139,7 @@
    "state": "on",
    "flicker": "block",
    "lights": 28,
-   "lightPaints": 4,
+   "lightPaints": 3,
    "surfacePaints": 2,
    "sun": "none",
    "tint": "60,72,120",
@@ -303,58 +303,58 @@
   "every building, gateway and brazier sprite has authored light anchors",
   "4 phases x 4 viewports: phase, layer state, snow tint and input surface",
   "night lightmap: ambient 252/765, 1680 emissive white pixels, light at all 7 buildings",
-  "night screen luma 42.6 vs day 113.0",
-  "clock ticks: lightmap paints 4->13, surface paints 3->10 for 7 sun steps",
+  "night screen luma 42.6 vs day 110.8",
+  "clock ticks: lightmap paints 3->11, surface paints 3->11 for 8 sun steps",
   "in-game clock: slider and presets relight, sun shadows by day only, pinned hour remembered, Live restores the cycle",
   "?lighting=night|day persists across reloads, ?lighting=dynamic restores the clock",
   "night roof hit-test selects the Forge and relights the selection",
   "prefers-reduced-motion disables flicker",
-  "mobile pan (390x844, DPR 3, 4x CPU, best of 3): zero world repaints; median day 16.6 / night 16.6 ms, p95 day 17.6 / night 17.3 ms"
+  "mobile pan (390x844, DPR 3, 4x CPU, best of 3): zero world repaints; median day 16.6 / night 16.6 ms, p95 day 21.1 / night 17.9 ms"
  ],
  "screenLuma": {
-  "day": 113.0214795903834,
+  "day": 110.79454748068333,
   "night": 42.557437637305455
  },
  "pan": {
   "day": [
    {
     "p50": 16.7,
-    "p95": 17.6,
+    "p95": 21.3,
     "flickerHidden": true
    },
    {
     "p50": 16.6,
-    "p95": 17.9,
+    "p95": 21.4,
     "flickerHidden": true
    },
    {
     "p50": 16.6,
-    "p95": 17.7,
+    "p95": 21.1,
     "flickerHidden": true
    }
   ],
   "night": [
    {
+    "p50": 16.8,
+    "p95": 23.9,
+    "flickerHidden": true
+   },
+   {
     "p50": 16.6,
     "p95": 17.9,
     "flickerHidden": true
    },
    {
-    "p50": 16.6,
-    "p95": 17.3,
-    "flickerHidden": true
-   },
-   {
-    "p50": 16.6,
-    "p95": 18.3,
+    "p50": 17.1,
+    "p95": 27.3,
     "flickerHidden": true
    }
   ],
   "gate": {
    "dayP50": 16.6,
    "nightP50": 16.6,
-   "dayP95": 17.6,
-   "nightP95": 17.3
+   "dayP95": 21.1,
+   "nightP95": 17.9
   }
  }
 }

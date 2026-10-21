@@ -14,7 +14,7 @@ async function shot(vp,hour,openPanel=false){
 }
 try{
  await new Promise(r=>setTimeout(r,500));const desktop={viewport:{width:1280,height:800}};
- // Shadows swing from lower right in the morning to upper left in the evening.
+ // Shadows reach right in the morning, fall short to the lower right at noon and reach left in the evening.
  const hours=[7.5,12,16.5],frames=[];for(const h of hours)frames.push(await sharp(await shot(desktop,h)).extract({left:140,top:90,width:1000,height:620}).resize(640).toBuffer());
  await sharp({create:{width:640*3+16,height:397,channels:3,background:'#11191e'}}).composite(frames.map((f,i)=>({input:f,left:i*648,top:0}))).webp({quality:82}).toFile(out+'/sun-shadows.webp');
  await sharp(await shot(desktop,17,true)).webp({quality:82}).toFile(out+'/clock-desktop.webp');

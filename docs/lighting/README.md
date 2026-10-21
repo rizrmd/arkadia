@@ -16,9 +16,19 @@ One Stronghold day lasts **24 real minutes**: Night → Dawn → Day → Golden 
 
 ### Sun shadows
 
-From 06:00 to 18:00, every upright sprite (buildings, walls, bastions, gateway, trees, rocks, props) casts a soft shadow on the ground. The shadow follows the sun: long and pointing to the lower right after sunrise, short and falling away from the camera at noon, and long toward the upper left before sunset. Shadows fade in after sunrise and out before sunset, so there are none at night. The ambient tint darkens them further at golden hour.
+From 06:00 to 18:00, every upright sprite (buildings, walls, bastions, gateway, trees, rocks, props) casts a soft shadow on the ground. The sprites are painted lit from the upper left, so the sun stands there at noon and shadows fall short toward the lower right. Through the day the sun turns 180°, so shadows reach long to the right after sunrise and long to the left before sunset. Shadow length is capped at 1.7× the object's height, so low-sun shadows never flood the court. Shadows fade in after sunrise and out before sunset, so there are none at night. The ambient tint darkens them further at golden hour.
 
 ![Sun shadows at 07:30, 12:00 and 16:30](https://arkadia-stronghold-whachat.fural.space/lighting-plan/sun-shadows.webp)
+
+#### Fix: stray shadow stripes (21 October 2026)
+
+The first version drew each sprite's flat 2D silhouette sheared along the sun. A sprite has no depth, so with a low sun each shadow collapsed into a thin stripe that ran across the court, detached from its building (reported at 07:46 on mobile):
+
+![Bug report: thin horizontal shadow stripes across the court at 07:46](https://arkadia-stronghold-whachat.fural.space/lighting-plan/shadow-bug-report.webp)
+
+Shadows now come from a solid volume. Each object stands on a ground footprint, and the sun sweeps that footprint, topped by the sprite's roof line, across the ground. Same view at 07:45, before (left) and after (right):
+
+![07:45 before and after: stripes replaced by attached shadows](https://arkadia-stronghold-whachat.fural.space/lighting-plan/shadow-fix-0745.webp)
 
 ### In-game clock
 
@@ -83,7 +93,7 @@ lighting.compose -> screen.snow
 lighting.bake -> screen.flicker
 ```
 
-- **`daylight.ts`**: the pure clock. Keyframes are interpolated in linear light with smoothstep easing, and a readability floor keeps night ambient luma ≥ 0.22. It also handles the URL overrides and the manual clock time (`?time` > pinned hour > `?lighting` mode > live clock). `sunAt(t)` gives the shadow direction, length (capped at 1.8× sprite height) and strength.
+- **`daylight.ts`**: the pure clock. Keyframes are interpolated in linear light with smoothstep easing, and a readability floor keeps night ambient luma ≥ 0.22. It also handles the URL overrides and the manual clock time (`?time` > pinned hour > `?lighting` mode > live clock). `sunAt(t)` gives the shadow direction, length and strength. The heading on the ground is −30° at sunrise, 60° (lower right) at noon and 150° at sunset. Elevation peaks at 60°, length is capped at 1.7× height, and alpha peaks at 0.4.
 - **`light-anchors.ts`**: hand-authored light sources for the 10 lit sprites (Forge levels 1–3, Barracks, Altar, Mage Tower, Expedition Table, Mine, Gateway, Brazier). Each light stores sprite source-pixel coordinates (the same convention as `groundEdges`), a mask radius, its kind (`fire`, `window`, `candle`, `holy`, `arcane`), a ground-pool radius and drop, and an intensity. Lights hidden behind the front walls are mask-only, because the 2D lightmap has no occlusion.
 - **`lighting.ts`**:
   - On a building or selection change, it bakes a 0.35×-resolution light canvas: isometric (0.55-flattened) pools, white emissive masks and a colour bloom. Emissive masks are the authored circles intersected with a flame/arcane pixel test, so the parchment map, gold trim and red roofs never light up.
@@ -91,7 +101,7 @@ lighting.bake -> screen.flicker
   - The infinite snow uses a pre-tinted copy of its repeat tile (a `data:` URL).
   - The selected building gets a soft extra pool, so it stays readable at night.
   - The sun moves in 15-minute steps (15 real seconds of a live day). On a new step it asks the world view to re-raster, deferred while the camera moves. Clock ticks inside a step only relight.
-- **`world-view.ts`** has four lighting hooks: create, `capture()` after `paintWorld`, `place()` beside the surface transform, and `setScene()` in `update()`. It also draws the cast shadows in `paintWorld`, after the ground decals and before any upright sprite, so shadows never darken a building. Each sprite's silhouette is built once per file (≤ 256 px wide, pre-blurred, fading from the foot to the top) and drawn with the sprite's own shear plus the sun's ground offset per pixel of height. Pan frames are unchanged.
+- **`world-view.ts`** has four lighting hooks: create, `capture()` after `paintWorld`, `place()` beside the surface transform, and `setScene()` in `update()`. It also draws the cast shadows in `paintWorld`, after the ground decals and before any upright sprite, so shadows never darken a building. Each placed sprite is cut into columns about 3.5 world px apart. A column spans its footprint from the back edge to the front edge, and its height is the roof line's height above the back edge. The footprint's front edge is the sprite's lowest opaque pixel in that column. The hidden back edge is that contour reflected through the midpoint of its left and right ends (a footprint parallelogram is centrally symmetric, under any calibrated shear). Trees use a round crown footprint instead. On each sun step, every column's footprint is swept along the sun's offset × height (a convex hexagon) and filled opaque into one 0.35× mask, so overlapping shadows never double-darken. The mask is blurred once (a wider penumbra for longer shadows) and blitted at the shadow alpha. Columns are built once per sprite. Each column is filled on its own, because building one Path2D with thousands of subpaths took about 1 s in Chrome. Pan frames are unchanged.
 - **`clock.ts`** is the clock chip and panel. `main.ts` mounts it with `worldView.setTime` and `worldView.subscribeClock`.
 
 ### Departures from the plan, with reasons
@@ -103,7 +113,7 @@ lighting.bake -> screen.flicker
 | Header chip + Lighting menu | URL controls, then a single clock chip | The Stronghold is world-only. Lighting was first URL-only, but nobody could see it change during the day, so a single clock chip was added in the top-right corner |
 | Always-on flicker | Flicker layer hidden while the camera moves | It is the only live blended layer. While the camera is still, its cost does not affect panning |
 
-Memory: the unlit copy doubles the world raster (3738 × 2243 px ≈ 33 MB, so about 67 MB in total). Dawn and dusk recompose every few seconds, deferred while the camera moves. Each recompose re-uploads the surface texture once. By day the world also re-rasters once per 15-minute sun step (every 15 s of a live day). Silhouettes add about 1–2 MB.
+Memory: the unlit copy doubles the world raster (3738 × 2243 px ≈ 33 MB, so about 67 MB in total). Dawn and dusk recompose every few seconds, deferred while the camera moves. Each recompose re-uploads the surface texture once. By day the world also re-rasters once per 15-minute sun step (every 15 s of a live day), deferred while the camera moves. That re-raster takes about 0.71 s in headless Chromium on this host, against 0.68 s before cast shadows. Its longest task under 4× CPU throttling is 1.9 s, against 1.6 s before. The shadow mask and its blurred copy add about 2 MB.
 
 ## Verification
 
@@ -118,7 +128,7 @@ Memory: the unlit copy doubles the world raster (3738 × 2243 px ≈ 33 MB, so a
   - `?lighting` persistence works.
   - A night roof click selects the Forge and relights the selection.
   - Reduced motion stops the flicker.
-  - **Mobile pan** (390 × 844, DPR 3, 4× CPU, best of 3): zero world repaints; median 16.6 ms by day and at night, p95 17.6 vs 17.3 ms (unchanged with sun shadows).
+  - **Mobile pan** (390 × 844, DPR 3, 4× CPU, best of 3): zero world repaints. Median 16.6 ms by day and at night. Day p95 varied between 17.5 and 26.1 ms across three runs on the shared host (night 17.9–18.4 ms). Pan frames only move the baked surface, so cast shadows cannot change them.
 - These are headless Chromium (software compositing) results on a shared host, not physical-device FPS.
 
 ### Authoring lights

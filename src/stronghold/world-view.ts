@@ -43,20 +43,51 @@ export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Buil
  const sc=surface.getContext('2d')!;let dirty=true,frame=0;
  // Day/night lighting is composited into this surface after each raster; see lighting.ts.
  const lighting=createLighting({surface,snowLayer,left,top,width:worldWidth,height:worldHeight,onSun:()=>{dirty=true;requestDraw();}});lighting.setScene(objects);
- // Cast shadows: each upright sprite's silhouette, sheared along the sun's ground direction from its foot.
- // Silhouettes are built once per file (small, pre-blurred, fading with height) so a sun step is plain blits.
- const silhouettes=new Map<string,HTMLCanvasElement>();
- function silhouette(p:{file:string;image:HTMLImageElement;foot:number}){
-  let c=silhouettes.get(p.file);if(c)return c;const k=Math.min(1,256/p.image.width);c=document.createElement('canvas');c.width=Math.ceil(p.image.width*k);c.height=Math.ceil(p.image.height*k);
-  const x=c.getContext('2d')!;x.filter='blur(1.5px)';x.drawImage(p.image,0,0,c.width,c.height);x.filter='none';x.globalCompositeOperation='source-in';
-  const g=x.createLinearGradient(0,0,0,c.height*p.foot);g.addColorStop(0,'rgba(20,28,44,.2)');g.addColorStop(1,'rgba(20,28,44,1)');x.fillStyle=g;x.fillRect(0,0,c.width,c.height);
-  silhouettes.set(p.file,c);return c;
+ // Cast shadows: every upright sprite stands as a solid on its ground footprint. Per sprite column the
+ // footprint spans back..front on screen and the roof line rises `height` above the back edge; the sun
+ // sweeps that span along its ground offset, so a long morning shadow keeps the footprint's depth
+ // instead of collapsing into a sheared sliver. Columns are built once per placed sprite; a sun step
+ // fills them opaque into one 0.35x mask (so overlaps never double-darken) and blurs it once.
+ // Each column is filled on its own: one Path2D of ~7k subpaths took ~1 s to build in Chrome.
+ type Column={x:number;w:number;back:number;front:number;height:number};
+ const profiles=new Map<string,{top:Float32Array;bottom:Float32Array}>(),footprints=new Map<string,Column[]>();
+ // Topmost and lowest opaque pixel of each source column, as fractions of the sprite height (-1 when empty).
+ function profile(image:HTMLImageElement){
+  let r=profiles.get(image.src);if(r)return r;const n=Math.min(256,image.width),m=Math.ceil(image.height*n/image.width),c=document.createElement('canvas');c.width=n;c.height=m;
+  const x=c.getContext('2d',{willReadFrequently:true})!;x.drawImage(image,0,0,n,m);const d=x.getImageData(0,0,n,m).data,top=new Float32Array(n).fill(-1),bottom=new Float32Array(n).fill(-1);
+  for(let i=0;i<n;i++)for(let y=0;y<m;y++)if(d[(y*n+i)*4+3]>128){if(top[i]<0)top[i]=y/m;bottom[i]=(y+1)/m;}
+  r={top,bottom};profiles.set(image.src,r);return r;
  }
+ // Trees stand on a round crown footprint; everything else on its bottom contour reflected through the
+ // midpoint of its left and right ends (a footprint parallelogram is centrally symmetric), which
+ // recovers the hidden back edge of buildings, walls and rocks under any calibrated shear.
+ const round=/^(spruce-mature|fir-young)$/;
+ function footprint(p:(typeof objects)[number]){
+  const key=p.file+'|'+p.x+'|'+p.y+'|'+p.width;let cols=footprints.get(key);if(cols)return cols;cols=[];
+  const {top,bottom}=profile(p.image),n=top.length,filled=[...top.keys()].filter(i=>top[i]>=0),first=filled[0],last=filled[filled.length-1];
+  const at=(u:number,t:number)=>{const lx=-p.width/2+(u+.5)/n*p.width;return {x:p.x+lx,y:p.y+p.shear*lx+p.vertical*(t-p.foot)*p.height};};
+  const front=(j:number)=>{if(j<first||j>last)return -1;const a=bottom[Math.floor(j)],b=bottom[Math.ceil(j)];return a<0?b:b<0?a:a+(b-a)*(j-Math.floor(j));};
+  const ci=(first+last)/2,cy=(bottom[first]+bottom[last])/2;
+  // Columns about 3.5 world px apart; the low-resolution blurred mask hides anything finer.
+  const stride=Math.max(1,Math.round(3.5*n/p.width)),w=p.width/n*stride*1.2;
+  for(let i=first;i<=last;i+=stride){if(top[i]<0)continue;const t=at(i,top[i]);let back:number,front0:number;
+   if(round.test(p.id)){const rx=p.width*.3,d=(t.x-p.x)/rx,s=Math.abs(d)<1?rx*.5*Math.sqrt(1-d*d):0;back=p.y-s;front0=p.y+s;}
+   else{const f=at(i,bottom[i]).y,r=front(2*ci-i);front0=f;back=r<0?f:Math.min(f,at(i,2*cy-r).y);}
+   cols.push({x:t.x,w,back,front:front0,height:Math.max(0,back-t.y)});}
+  footprints.set(key,cols);return cols;
+ }
+ const hull=(points:[number,number][])=>{points.sort((a,b)=>a[0]-b[0]||a[1]-b[1]);const cross=(o:number[],a:number[],b:number[])=>(a[0]-o[0])*(b[1]-o[1])-(a[1]-o[1])*(b[0]-o[0]),chain=(list:[number,number][])=>{const h:[number,number][]=[];for(const q of list){while(h.length>1&&cross(h[h.length-2],h[h.length-1],q)<=0)h.pop();h.push(q);}h.pop();return h;};return [...chain(points),...chain([...points].reverse())];};
+ const SHADE=.35,mask=document.createElement('canvas'),soft=document.createElement('canvas');mask.width=soft.width=Math.ceil(worldWidth*SHADE);mask.height=soft.height=Math.ceil(worldHeight*SHADE);
  function castShadows(){
-  const s=lighting.sun();if(!s.alpha)return;
+  const s=lighting.sun();if(!s.alpha)return;const m=mask.getContext('2d')!,g=soft.getContext('2d')!;
+  m.setTransform(1,0,0,1,0,0);m.clearRect(0,0,mask.width,mask.height);m.setTransform(SHADE,0,0,SHADE,-left*SHADE,-top*SHADE);m.fillStyle='rgb(20,28,44)';
   for(const p of objects){if(p.layer==='ground'||p.opacity<1)continue;
-   // Sprite-local (lx, ly) with ly < 0 above the foot lands at foot + (lx, shear*lx) + height*(dx, dy).
-   sc.save();sc.globalAlpha=s.alpha;sc.translate(p.x,p.y);sc.transform(1,p.shear,-s.dx,-s.dy,0,0);sc.drawImage(silhouette(p),-p.width/2,-p.height*p.foot,p.width,p.height);sc.restore();}
+   for(const c of footprint(p)){const vx=c.height*s.dx,vy=c.height*s.dy,a=c.x-c.w/2,b=c.x+c.w/2;
+    const h=hull([[a,c.back],[b,c.back],[a,c.front],[b,c.front],[a+vx,c.back+vy],[b+vx,c.back+vy],[a+vx,c.front+vy],[b+vx,c.front+vy]]);
+    m.beginPath();h.forEach(([x,y],i)=>i?m.lineTo(x,y):m.moveTo(x,y));m.fill();}}
+  // Penumbra widens with shadow length: crisp at noon, softer for the long low-sun shadows.
+  g.clearRect(0,0,soft.width,soft.height);g.filter=`blur(${(.7+Math.hypot(s.dx,s.dy*2)).toFixed(2)}px)`;g.drawImage(mask,0,0);g.filter='none';
+  sc.save();sc.globalAlpha=s.alpha;sc.drawImage(soft,left,top,worldWidth,worldHeight);sc.restore();
  }
  function paintWorld(){
   sc.setTransform(surface.width/worldWidth,0,0,surface.height/worldHeight,-left*surface.width/worldWidth,-top*surface.height/worldHeight);
