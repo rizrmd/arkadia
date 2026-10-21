@@ -12,11 +12,11 @@ try{
  await page.goto(url+'/?time=0');await page.waitForFunction(()=>document.querySelector('#world-surface')?.dataset.torchAssets==='ready');
  await page.waitForTimeout(700);
  const layer=page.locator('#torch-flames');assert.equal(await layer.locator('canvas').count(),16);assert.equal(await layer.evaluate(e=>e.hidden),false);
- const samples=[];for(let i=0;i<24;i++){samples.push(await layer.evaluate(e=>({frame:e.dataset.frame,pixels:e.firstChild.toDataURL(),bakes:document.querySelector('#world-surface').dataset.lightPaints})));await page.waitForTimeout(47);}
+ const samples=[];for(let i=0;i<24;i++){samples.push(await layer.evaluate(e=>({frame:e.dataset.frame,pixels:[...e.children].map(c=>c.toDataURL()).join('|'),bakes:document.querySelector('#world-surface').dataset.lightPaints})));await page.waitForTimeout(47);}
  assert.equal(new Set(samples.map(s=>s.frame)).size,3);assert.equal(new Set(samples.map(s=>s.pixels)).size,3);assert.equal(new Set(samples.map(s=>s.bakes)).size,1);
  await fs.mkdir('docs/realistic-torch',{recursive:true});await page.screenshot({path:'docs/realistic-torch/night.png'});
  await layer.locator('canvas').nth(6).screenshot({path:'docs/realistic-torch/flame-closeup.png'});
  await page.locator('.clock-chip').click();await page.locator('#clock-slider').evaluate(e=>{e.value='720';e.dispatchEvent(new Event('input',{bubbles:true}));e.dispatchEvent(new Event('change',{bubbles:true}));});await page.waitForTimeout(500);
- assert.equal(await layer.evaluate(e=>e.hidden),true);await page.locator('.clock-chip').click();await page.screenshot({path:'docs/realistic-torch/day.png'});assert.deepEqual(errors,[]);
+ assert.equal(await layer.evaluate(e=>e.hidden),true);await page.locator('.clock-chip').click();await page.screenshot({path:'docs/realistic-torch/day.png'});await page.emulateMedia({reducedMotion:'reduce'});await page.locator('.clock-chip').click();await page.locator('#clock-slider').evaluate(e=>{e.value='0';e.dispatchEvent(new Event('input',{bubbles:true}));e.dispatchEvent(new Event('change',{bubbles:true}));});await page.waitForTimeout(300);const still=await layer.getAttribute('data-frame');await page.waitForTimeout(450);assert.equal(await layer.getAttribute('data-frame'),still,'reduced motion freezes flames');assert.deepEqual(errors,[]);
  const result={url,torchCount:16,frames:[...new Set(samples.map(s=>s.frame))],distinctPixelFrames:new Set(samples.map(s=>s.pixels)).size,lightBakesDuringAnimation:[...new Set(samples.map(s=>s.bakes))],dayFlamesHidden:true,errors};await fs.writeFile('docs/realistic-torch/results.json',JSON.stringify(result,null,2));console.log(result);
 }finally{await browser?.close();server?.kill();}

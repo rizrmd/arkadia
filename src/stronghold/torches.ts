@@ -27,21 +27,45 @@ export function createTorchFlames(surface:HTMLCanvasElement,left:number,top:numb
  const layer=document.createElement('div');layer.id='torch-flames';
  layer.style.cssText='position:absolute;left:0;top:0;transform-origin:0 0;pointer-events:none';
  surface.after(layer);
- const canvases=TORCHES.map(t=>{const c=document.createElement('canvas');c.width=96;c.height=96;
-  c.style.cssText=`position:absolute;left:${t.x-W/2-left}px;top:${t.y-t.lift-21-top}px;width:${W}px;height:${H*330/724}px`;
+ // Isolate each tiny animated surface. Otherwise canvas writes invalidate a layer
+ // spanning the entire fortress, forcing costly texture uploads on every flame tick.
+ const FH=24,canvases=TORCHES.map(t=>{const c=document.createElement('canvas');c.width=W;c.height=FH;
+  c.style.cssText=`position:absolute;left:${t.x-W/2-left}px;top:${t.y-t.lift-21-top}px;width:${W}px;height:${H*330/724}px;contain:strict;will-change:transform;transform:translateZ(0)`;
   layer.append(c);return c;
  });
- let ready=false,lit=false;
- torchAssetsReady.then(()=>{ready=true;surface.dataset.torchAssets='ready';render();}).catch(()=>{surface.dataset.torchAssets='failed';});
- function render(){
-  layer.hidden=!lit;
-  if(!ready||!lit||document.hidden)return;
-  const step=Math.floor(performance.now()/120)%3;layer.dataset.frame=String(step);
-  canvases.forEach((c,i)=>{const ctx=c.getContext('2d')!;ctx.clearRect(0,0,96,96);
-   // Upper source region contains the changing flame and glowing fuel. Lower handle stays baked.
-   ctx.drawImage(frames[(step+i)%3],0,0,180,132,0,0,96,96);
+ const visible=new Set<HTMLCanvasElement>();
+ const observer=new IntersectionObserver(entries=>{for(const e of entries){const c=e.target as HTMLCanvasElement;if(e.isIntersecting)visible.add(c);else visible.delete(c);}},{rootMargin:'32px'});
+ canvases.forEach(c=>observer.observe(c));
+ const cache:HTMLCanvasElement[]=[];
+ let ready=false,lit=false,timer=0,movingUntil=0,lastStep=-1;
+ const reduced=matchMedia('(prefers-reduced-motion: reduce)');
+ torchAssetsReady.then(()=>{
+  // Blur only once when preparing the three small cached frames, never in a pan
+  // or animation frame. Low-resolution filtering also softens the flame tips.
+  for(let i=0;i<3;i++){
+   const c=document.createElement('canvas');c.width=W;c.height=FH;const ctx=c.getContext('2d')!;
+   ctx.filter='blur(0.65px)';ctx.drawImage(frames[i],0,0,180,132,0,0,W,FH);cache.push(c);
+  }
+  ready=true;surface.dataset.torchAssets='ready';render(true);schedule();
+ }).catch(()=>{surface.dataset.torchAssets='failed';});
+ function render(force=false){
+  if(!ready||!lit||document.hidden||(!force&&performance.now()<movingUntil))return;
+  const step=reduced.matches?0:Math.floor(performance.now()/160)%3;
+  if(!force&&step===lastStep)return;lastStep=step;layer.dataset.frame=String(step);
+  canvases.forEach((c,i)=>{if(!force&&!visible.has(c))return;const ctx=c.getContext('2d')!;
+   ctx.clearRect(0,0,W,FH);ctx.drawImage(cache[(step+i)%3],0,0);
   });
  }
- setInterval(render,120);
- return {place(transform:string){layer.style.transform=transform;},setLit(value:boolean){lit=value;render();}};
+ function schedule(){
+  clearTimeout(timer);timer=0;
+  if(!ready||!lit||document.hidden||reduced.matches)return;
+  timer=window.setTimeout(()=>{render();schedule();},160);
+ }
+ document.addEventListener('visibilitychange',()=>{if(!document.hidden)render(true);schedule();});
+ reduced.addEventListener('change',()=>{render(true);schedule();});
+ layer.hidden=true;
+ return {
+  place(transform:string){layer.style.transform=transform;movingUntil=performance.now()+180;},
+  setLit(value:boolean){if(value===lit)return;lit=value;layer.hidden=!lit;lastStep=-1;render(true);schedule();}
+ };
 }
