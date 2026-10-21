@@ -9,10 +9,6 @@ for(const n of ['knight-footfalls-front-v5.png','knight-footfalls-rear-v5.png'])
 async function evidence(dir,url){for(const entry of await fs.readdir(dir,{withFileTypes:true})){if(entry.isDirectory())await evidence(dir+'/'+entry.name,url+'/'+entry.name);else files[url+'/'+entry.name]=(await fs.readFile(dir+'/'+entry.name)).toString('base64');}}
 await evidence(release+'/docs/knight-footfalls','/knight-footfalls');
 for(const n of ['hero.png','manifest.json'])files['/assets/characters/'+n]=(await fs.readFile(release+'/public/assets/characters/'+n)).toString('base64');
-files['/knight-unified/source.png']=(await fs.readFile(release+'/assets-src/characters/knight-unified-v4.png')).toString('base64');
-files['/knight-unified/reference.png']=(await fs.readFile(release+'/assets-src/characters/hero-v2.png')).toString('base64');
-files['/knight-unified/atlas.png']=(await fs.readFile(release+'/public/assets/characters/hero.png')).toString('base64');
-for(const n of await fs.readdir(release+'/docs/knight-unified'))if(/\.(png|json|md)$/.test(n))files['/knight-unified/'+n]=(await fs.readFile(release+'/docs/knight-unified/'+n)).toString('base64');
 const bytes=gzipSync(JSON.stringify(files)),version=createHash('sha256').update(bytes).digest('hex').slice(0,10),parts=[];for(let offset=0;offset<bytes.length;offset+=2e6){const n=`stronghold-only-${version}-${parts.length}.gzpart`;await fs.writeFile(dir+'/'+n,bytes.subarray(offset,offset+2e6));parts.push(n);}console.log('Packaged',Object.keys(files).length,'resources in',parts.length,'parts;',bytes.length,'bytes');
 // Parts are named by content hash, so a retry after a timeout skips the ones already transferred.
 for(const n of parts)try{run(['organization','home-files','transfer','--from-member','US4f550b10dab65dc9756fa429','--from',from+'/'+n,'--to-custom-sandbox',id,'--to',n]);}catch(e){if(!String(e.stdout).includes('already exists'))throw e;}
