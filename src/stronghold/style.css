@@ -31,7 +31,7 @@
 .clock-live:disabled{opacity:.45;cursor:default}
 #day-clock :focus-visible{outline:2px solid #f2c46b;outline-offset:2px}
 @media (max-width:420px){.clock-phase{display:none}}
-/* Walk thumbstick (see controls.ts): invisible until a touch lands in the bottom-left quarter, then centred on that thumb.
+/* Walk thumbstick (see controls.ts): invisible until a touch lands in the bottom third, then centred on that thumb.
    It never takes pointer events itself; controls.ts listens on the window. Keyboards use the arrow keys or WASD. */
 #move-stick{position:fixed;left:0;top:0;z-index:10;width:128px;height:128px;margin:-64px 0 0 -64px;border-radius:50%;background:radial-gradient(circle,#141c2299 0 55%,#141c22cc 100%);border:1px solid #e2c27f;box-shadow:0 4px 16px #0006;pointer-events:none;user-select:none;-webkit-user-select:none;opacity:0;visibility:hidden;transform:scale(.85);transition:opacity .15s,transform .15s,visibility 0s .15s}
 #move-stick[data-active=true]{opacity:1;visibility:visible;transform:none;transition:opacity .1s,transform .1s}

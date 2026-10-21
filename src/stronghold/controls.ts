@@ -1,4 +1,4 @@
-// Walk input for the Stronghold hero: arrow keys or WASD on a keyboard, a thumbstick that appears under a touch in the bottom-left quarter.
+// Walk input for the Stronghold hero: arrow keys or WASD on a keyboard, a thumbstick that appears under a touch in the bottom third.
 // direction() is a screen-space vector of length 0..1. Keys combine on the ground grid like the arena
 // (W+D walks along a 2:1 tile edge, not at 45 degrees on screen); the stick follows the thumb exactly.
 export type Walk={x:number;y:number};
@@ -13,13 +13,14 @@ export function createControls(root:HTMLElement){
  window.addEventListener('keyup',e=>{held.delete(e.code);});
  const release=()=>{held.clear();stick={x:0,y:0};finger=-1;knob.style.transform='';base.dataset.active='false';};
  const reset=()=>{touches.clear();release();};window.addEventListener('blur',reset);document.addEventListener('visibilitychange',()=>{if(document.hidden)reset();});
- // Floating thumbstick: hidden until a touch starts on the world in the bottom-left quarter of the screen, then shown
+ // Floating thumbstick: hidden until a touch starts on the world in the bottom third of the screen, then shown
  // centred under that thumb and hidden again on release. Its finger is taken in the capture phase so the canvas never
  // pans or selects a building with it; touches anywhere else keep panning, pinching and tapping as before.
- // A touch that joins one already on the world is the second finger of a pinch, so it never becomes the stick.
+ // A joining touch promotes an active stick to a camera pinch; neither finger can restart walking.
  const base=document.createElement('div'),knob=document.createElement('div');base.id='move-stick';base.setAttribute('aria-hidden','true');knob.className='stick-knob';base.append(knob);root.append(base);
  let finger=-1,ox=0,oy=0;const touches=new Set<number>();
- const inZone=(e:PointerEvent)=>e.clientX<innerWidth/2&&e.clientY>innerHeight/2;
+ let canvas:HTMLCanvasElement|null=null,lastX=0,lastY=0;
+ const inZone=(e:PointerEvent)=>e.clientY>=innerHeight*2/3;
  const aim=(e:PointerEvent)=>{const radius=base.offsetWidth/2,dx=e.clientX-ox,dy=e.clientY-oy,d=Math.hypot(dx,dy),k=Math.min(1,d/(radius*.62));
   knob.style.transform=`translate(${dx/(d||1)*k*radius*.62}px,${dy/(d||1)*k*radius*.62}px)`;
   // Rescale past the dead zone so a light push starts slow instead of jumping to a third of full speed.
@@ -27,10 +28,19 @@ export function createControls(root:HTMLElement){
  const take=(e:PointerEvent)=>{e.stopImmediatePropagation();e.preventDefault();};
  window.addEventListener('pointerdown',e=>{
   if(e.pointerType!=='touch'||!(e.target instanceof HTMLCanvasElement))return;
-  const pinch=touches.size>0;touches.add(e.pointerId);if(finger>=0||pinch||!inZone(e))return;
+  const pinch=touches.size>0;touches.add(e.pointerId);
+  if(finger>=0){
+   // Hand the walking finger to the camera at its CURRENT position, before the joining finger.
+   // Both now belong to the camera until lifted; no remaining pinch finger becomes a stick.
+   const id=finger,target=canvas!;release();
+   target.dispatchEvent(new PointerEvent('pointerdown',{bubbles:true,pointerId:id,pointerType:'touch',clientX:lastX,clientY:lastY,buttons:1}));
+   return;
+  }
+  if(pinch||!inZone(e))return;
+  canvas=e.target;lastX=e.clientX;lastY=e.clientY;
   take(e);finger=e.pointerId;ox=e.clientX;oy=e.clientY;base.style.left=`${ox}px`;base.style.top=`${oy}px`;base.dataset.active='true';aim(e);
  },{capture:true});
- window.addEventListener('pointermove',e=>{if(e.pointerId===finger){take(e);aim(e);}},{capture:true});
+ window.addEventListener('pointermove',e=>{if(e.pointerId===finger){take(e);lastX=e.clientX;lastY=e.clientY;aim(e);}},{capture:true});
  const lift=(e:PointerEvent)=>{touches.delete(e.pointerId);if(e.pointerId!==finger)return;take(e);finger=-1;release();};
  window.addEventListener('pointerup',lift,{capture:true});window.addEventListener('pointercancel',lift,{capture:true});
  return {
