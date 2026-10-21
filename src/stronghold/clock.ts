@@ -3,7 +3,7 @@ import {icon} from './icons';
 import type {ClockState} from './lighting';
 // In-game clock: shows the Stronghold hour and lets the player pin any hour to
 // inspect its lighting and shadows. The only HUD element on the world-only view.
-const PRESETS:[string,number][]=[['Midnight',0],['Dawn',6],['Morning',9],['Noon',12],['Golden hour',17],['Dusk',18.75]].map(([name,hour])=>[name as string,(hour as number)/24]);
+const PRESETS:[string,number][]=[['Midnight',0],['Dawn',5],['Morning',9],['Noon',12],['Golden hour',17],['Dusk',19]].map(([name,hour])=>[name as string,(hour as number)/24]);
 const STEP=15,MINUTES=24*60;
 export function createClock(root:HTMLElement,o:{setTime:(t:number|null)=>void;preview:(on:boolean)=>void;subscribe:(f:(s:ClockState)=>void)=>unknown}){
  const el=document.createElement('section');el.id='day-clock';el.setAttribute('aria-label','Time of day');
