@@ -1,8 +1,8 @@
 {
  "url": "http://127.0.0.1:8792",
- "room": "5FKB5",
+ "room": "K8KPG",
  "tagOnA": "Bima",
- "tagOnB": "Guest 7039",
+ "tagOnB": "Guest 2594",
  "shots": [
   "docs/coop/1-court-desktop.webp",
   "docs/coop/1-court-phone.webp",
@@ -10,19 +10,19 @@
   "docs/coop/2-wilds-phone.webp"
  ],
  "predictionWhileWalking": {
-  "corrections": 1,
-  "maxCorrectionPx": 23.24,
-  "inputs": 510,
-  "rttMs": 14
+  "corrections": 0,
+  "maxCorrectionPx": 0,
+  "inputs": 248,
+  "rttMs": 0
  },
  "sameEnemies": {
-  "commonTicks": 360,
+  "commonTicks": 241,
   "mismatched": 0,
-  "atTick": 660,
+  "atTick": 336,
   "enemies": [
    [
     1,
-    2,
+    1,
     2,
     "move"
    ],
@@ -35,8 +35,8 @@
    [
     3,
     1,
-    0,
-    "die"
+    2,
+    "move"
    ],
    [
     4,
@@ -53,8 +53,8 @@
    [
     6,
     1,
-    0,
-    "die"
+    1,
+    "idle"
    ],
    [
     7,
@@ -70,9 +70,9 @@
    ],
    [
     9,
-    2,
-    2,
-    "move"
+    1,
+    0,
+    "die"
    ],
    [
     10,
@@ -82,9 +82,9 @@
    ],
    [
     11,
-    2,
-    2,
-    "move"
+    1,
+    0,
+    "die"
    ]
   ]
  },
@@ -92,46 +92,58 @@
   "a": {
    "low": "false",
    "zone": "wild",
-   "hp": "100",
+   "hp": "92",
    "max": "100",
    "state": "attack",
-   "kills": "7",
-   "foes": "5"
+   "kills": "4",
+   "foes": "3"
   },
   "b": {
    "low": "false",
    "zone": "wild",
-   "hp": "100",
+   "hp": "92",
    "max": "100",
    "state": "attack",
    "kills": "4",
-   "foes": "5"
+   "foes": "3"
   }
  },
  "stats": {
   "a": {
    "status": "online",
-   "room": "5FKB5",
+   "room": "K8KPG",
    "you": "p1",
-   "snapshots": 667,
-   "inputs": 651,
-   "corrections": 42,
-   "maxCorrection": 23.242349259060802,
-   "lastCorrection": 4.650268809434568,
-   "bytes": 801595,
-   "rtt": 0.5
+   "snapshots": 336,
+   "inputs": 314,
+   "corrections": 9,
+   "maxCorrection": 4.0404207701674215,
+   "lastCorrection": 4.0404207701674215,
+   "bytes": 397752,
+   "pace": 1,
+   "margin": 1,
+   "delay": 75,
+   "extrapolated": 2,
+   "held": 0,
+   "blended": 0,
+   "rtt": 0.3000001907348633
   },
   "b": {
    "status": "online",
-   "room": "5FKB5",
+   "room": "K8KPG",
    "you": "p2",
-   "snapshots": 411,
-   "inputs": 384,
-   "corrections": 40,
-   "maxCorrection": 16.601566172707294,
-   "lastCorrection": 4.511873225169403,
-   "bytes": 579062,
-   "rtt": 13.899999856948853
+   "snapshots": 251,
+   "inputs": 244,
+   "corrections": 9,
+   "maxCorrection": 3.4866889737973037,
+   "lastCorrection": 3.4866889737973037,
+   "bytes": 337844,
+   "pace": 1,
+   "margin": 1,
+   "delay": 75,
+   "extrapolated": 1,
+   "held": 1,
+   "blended": 2,
+   "rtt": 0.40000009536743164
   }
  },
  "ok": true

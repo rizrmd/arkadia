@@ -31,5 +31,5 @@ export async function mount(app:HTMLElement,progress:Progress){
  await new Promise<void>(done=>{const check=()=>canvas.dataset.ready==='true'?done():requestAnimationFrame(check);check();});
  if(invited)lobby!.prompt(invited);
  // Testing hook for scripts/coop-browser.mjs.
- (window as any).__COOP__=net&&{net,stats:()=>({status:net.status(),room:net.room(),you:net.you(),...net.stats,rtt:net.rtt()})};
+ (window as any).__COOP__=net&&{net,stats:()=>({status:net.status(),room:net.room(),you:net.you(),...net.stats,...net.timeline,rtt:net.rtt()})};
 }

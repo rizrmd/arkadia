@@ -203,10 +203,14 @@ type Welcome struct {
 	State  sim.State `json:"state"`
 }
 
-// Snapshot is the per-tick world state plus the last input sequence the server applied for this client.
+// Snapshot is the per-tick world state plus, for this client, the last input sequence the server applied, how
+// many steps it has walked ahead of that on its own (sim.Player.Owed) and how many of its inputs wait queued (the
+// client paces its sending to keep about one there, so a late input rarely leaves the server without one).
 type Snapshot struct {
 	T   string `json:"t"`
 	Ack uint32 `json:"ack"`
+	Ow  int    `json:"ow,omitempty"`
+	Q   int    `json:"q,omitempty"`
 	sim.State
 }
 
@@ -290,7 +294,7 @@ func (r *Room) run() {
 func (r *Room) broadcast() {
 	state := r.world.State()
 	for c := range r.clients {
-		msg, err := json.Marshal(Snapshot{T: "s", Ack: c.player.Ack, State: state})
+		msg, err := json.Marshal(Snapshot{T: "s", Ack: c.player.Ack, Ow: c.player.Owed, Q: c.player.Queued(), State: state})
 		if err != nil {
 			continue
 		}

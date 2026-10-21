@@ -18,8 +18,9 @@ export function createParty<P extends Placed>(o:{layer:HTMLElement;lightmap:HTML
    drive:()=>{const s=a.state;return {x:s.x,y:s.y,pose:s.st==='idle'?null:{clip:s.st,t:performance.now()-a.clipAt},look:{facing:s.fc,back:s.bk,vertical:s.vt}};}})
    .then(h=>{if(a.gone){h.remove();return;}a.hero=h;h.setScene(scene);h.place(origin.x,origin.y,origin.scale);h.start();}).catch(console.error);
  }
- function update(){
-  const list=o.net.active()?o.net.remotes(performance.now()):[],seen=new Set<string>(),own=document.querySelector<HTMLElement>('#world-hero'),me=o.own();
+ // Sampled at the frame's timestamp, so uneven callback timing never shows as uneven motion.
+ function update(now:number){
+  const list=o.net.active()?o.net.remotes(now):[],seen=new Set<string>(),own=document.querySelector<HTMLElement>('#world-hero'),me=o.own();
   for(const p of list){
    seen.add(p.id);const a=allies.get(p.id);if(!a){add(p);continue;}
    if(p.n!==a.plays){a.plays=p.n;a.clipAt=performance.now();}a.state=p;

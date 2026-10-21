@@ -12,6 +12,7 @@ export type EnemyState={id:number;g:number;u:number;v:number;hp:number;st:string
 export type GateState={open:boolean;frame:number;pass:boolean};
 export type WorldState={tick:number;clock:number;gate:GateState;players:PlayerState[];enemies:EnemyState[]};
 export type Welcome={t:'welcome';v:number;room:string;you:string;rate:number;max:number;layout:string[];state:WorldState};
-export type Snapshot=WorldState&{t:'s';ack:number};
+// ow: steps the server walked ahead of the acknowledged input because later inputs were late; q: inputs queued.
+export type Snapshot=WorldState&{t:'s';ack:number;ow?:number;q?:number};
 export type ServerError={t:'error';code:string;message:string};
 export type ServerMessage=Welcome|Snapshot|ServerError|{t:'pong';c:number;tick:number};

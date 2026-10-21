@@ -111,7 +111,7 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
    const p=o.hero.position(),t=toTile(p.x,p.y);h.x=t.u;h.y=t.v;h.tick(dt);
   }
   const seen=new Set<number>();
-  for(const e of net.enemies(performance.now())){
+  for(const e of net.enemies(frameAt)){
    seen.add(e.id);let f=mirrors.get(e.id);
    if(!f){f=Object.assign(new Fighter('revenant',meta.clips,e.u,e.v),{home:{u:e.u,v:e.v},wander:null,age:0,gen:e.g,plays:-1});mirrors.set(e.id,f);}
    if(f.gen!==e.g){Object.assign(f,{gen:e.g,age:0,deadFor:0,x:e.u,y:e.v});}
@@ -177,7 +177,9 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
   Object.assign(hud.dataset,{hp:String(Math.ceil(h.hp)),max:String(maxHp),state:h.state,kills:String(kills),foes:String(foes.filter(f=>f.alive).length)});
  }
  let last=0;
- const loop=(now:number)=>{let dt=last?Math.min(now-last,120):16;last=now;for(;dt>0;dt-=34)step(Math.min(dt,34));render();requestAnimationFrame(loop);};
+ // Co-op revenants are sampled at the frame's timestamp, not whenever this callback happens to run.
+ let frameAt=performance.now();
+ const loop=(now:number)=>{let dt=last?Math.min(now-last,120):16;last=now;frameAt=now;for(;dt>0;dt-=34)step(Math.min(dt,34));render();requestAnimationFrame(loop);};
  requestAnimationFrame(loop);
  const api={
   steer,

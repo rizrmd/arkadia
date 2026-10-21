@@ -80,9 +80,50 @@ func TestHeroWalksAtGroundSpeedAndAcksEveryInput(t *testing.T) {
 	if p.Ack != 20 || !p.Moving {
 		t.Fatalf("ack %d moving %v", p.Ack, p.Moving)
 	}
-	run(w, 2)
+	// A client that goes quiet may still be walking for maxOwed ticks (its inputs could just be late).
+	run(w, maxOwed+1)
 	if p.Moving {
 		t.Fatal("hero still moving without input")
+	}
+}
+
+// Late inputs: the hero keeps walking through a gap, and the inputs that arrive late are acknowledged without
+// walking twice, so it ends exactly where the inputs say and every other client saw an even walk.
+func TestLateInputsKeepAnEvenWalk(t *testing.T) {
+	w := newTestWorld(t)
+	w.Enemies = nil
+	p := w.AddPlayer("a", "A", 100)
+	x0, y0 := p.X, p.Y
+	seq := uint32(0)
+	send := func() { seq++; p.Queue(Input{Seq: seq, X: right.X, Y: right.Y}) }
+	var steps []float64
+	step := func() { x, y := p.X, p.Y; w.Step(); steps = append(steps, hypot(p.X-x, p.Y-y)) }
+	// 20 inputs: every fourth tick gets none and the next gets two, as a bursty browser sends them.
+	for i := 0; i < 20; i++ {
+		if i%4 == 1 {
+			step()
+			continue
+		}
+		send()
+		if i%4 == 2 {
+			send()
+		}
+		step()
+	}
+	for len(p.queue) > 0 {
+		step()
+	}
+	want := 105.0 * float64(seq) / 20
+	if got := hypot(p.X-x0, p.Y-y0); math.Abs(got-want) > .01 {
+		t.Fatalf("walked %.3f px for %d inputs, want %.3f", got, seq, want)
+	}
+	if p.Ack != seq || p.Owed != 0 {
+		t.Fatalf("ack %d owed %d after %d inputs", p.Ack, p.Owed, seq)
+	}
+	for i, s := range steps[:20] {
+		if math.Abs(s-105.0/20) > .01 {
+			t.Fatalf("tick %d stepped %.3f px, want an even %.3f: %v", i, s, 105.0/20, steps)
+		}
 	}
 }
 

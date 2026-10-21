@@ -65,10 +65,13 @@ type Player struct {
 	Kills  int
 	Moving bool
 	Ack    uint32 // last input sequence applied
+	Owed   int    // steps walked ahead of inputs that arrived late; the next Owed inputs are acked without walking
 
 	queue    []Input
 	tokens   float64
 	steering bool
+	last     Vec // the walk vector of the last input applied
+	starved  int // ticks in a row without any input
 }
 
 // Enemy is a revenant. Gen bumps on every respawn so clients restart its fade-in.
@@ -178,6 +181,9 @@ func (w *World) Player(id string) *Player {
 
 const maxQueue = 30
 
+// Queued is how many inputs wait to be applied.
+func (p *Player) Queued() int { return len(p.queue) }
+
 // Queue buffers a client input. Each input is applied exactly once, for one tick, in sequence order; stale or
 // malformed inputs are dropped, and a walk vector longer than 1 is shortened to 1.
 func (p *Player) Queue(in Input) {
@@ -233,13 +239,31 @@ func (w *World) Step() {
 }
 
 // walkInputs applies this tick's inputs. A token bucket refilled once per tick caps a client at 20 steps per
-// second on average however fast it sends; a backlog (after a network stall) drains two steps per tick.
+// second on average however fast it sends; a backlog of more than 300 ms (after a network stall) drains two steps
+// per tick. A shorter queue is the client's jitter buffer: it paces its sending to keep one or two inputs here.
+// An input that is merely late (browsers send in bursts on frame boundaries, phone networks jitter) would stop
+// the hero for a tick and double its step the next, which every other client sees as a stutter. So when no input
+// has arrived, a hero that was walking keeps its last walk vector for up to maxOwed ticks; the late inputs that
+// stand behind those steps are then acknowledged without walking again (Owed, sent to the client so its
+// prediction skips them too). The total walked never exceeds the inputs sent plus maxOwed steps.
+const (
+	maxOwed = 3
+	backlog = 6
+)
+
 func (w *World) walkInputs(p *Player, dt float64) {
 	p.tokens = math.Min(p.tokens+1, 3)
+	for p.Owed > 0 && len(p.queue) > 0 {
+		p.starved = 0
+		p.Ack = p.queue[0].Seq
+		p.last = Vec{p.queue[0].X, p.queue[0].Y}
+		p.queue = p.queue[1:]
+		p.Owed--
+	}
 	n := 0
 	if len(p.queue) > 0 {
 		n = 1
-		if len(p.queue) > 3 {
+		if len(p.queue) > backlog {
 			n = 2
 		}
 	}
@@ -249,12 +273,30 @@ func (w *World) walkInputs(p *Player, dt float64) {
 		p.queue = p.queue[1:]
 		p.tokens--
 		p.Ack = in.Seq
-		w.walk(p, Vec{in.X, in.Y}, dt)
+		p.last = Vec{in.X, in.Y}
+		w.walk(p, p.last, dt)
 		applied = true
 	}
-	if !applied {
-		w.walk(p, Vec{}, dt)
+	if applied || len(p.queue) > 0 {
+		p.starved = 0
+		if !applied {
+			w.walk(p, Vec{}, dt)
+		}
+		return
 	}
+	p.starved++
+	if p.starved <= maxOwed && p.Owed < maxOwed && p.tokens >= 1 && (p.last.X != 0 || p.last.Y != 0) && !posed(p) {
+		p.tokens--
+		p.Owed++
+		w.walk(p, p.last, dt)
+		return
+	}
+	// A client that went quiet (a background tab, a dropped connection) stops; its owed steps are forgiven and
+	// its prediction rebases on wherever the server left the hero.
+	if p.starved > 20 {
+		p.Owed = 0
+	}
+	w.walk(p, Vec{}, dt)
 }
 
 // posed: a swing, hit stun or death holds the hero in place.
