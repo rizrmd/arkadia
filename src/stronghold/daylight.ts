@@ -6,18 +6,20 @@ export type Phase='Dawn'|'Day'|'Dusk'|'Night';
 export type Lighting={t:number;phase:Phase;ambient:[number,number,number];lights:number;glow:number};
 // t: 0 = midnight, .5 = noon. Night takes a third of the day, 20:00 to 04:00, centred on midnight;
 // dawn and dusk sit inside the sunlit two thirds. Ambient is the sRGB multiply colour for the world.
-export const NIGHT=1/3,SUNRISE=NIGHT/2,SUNSET=1-NIGHT/2;
+// The world never gets darker than dusk (19:00): night keeps the dusk ambient and only the lamps rise.
+export const NIGHT=1/3,SUNRISE=NIGHT/2,SUNSET=1-NIGHT/2,DUSK=19/24,DUSK_AMBIENT='#88709a';
 export const KEYFRAMES:{t:number;ambient:string;lights:number;glow:number}[]=[
- {t:0,ambient:'#384575',lights:1,glow:.9},
- {t:SUNRISE,ambient:'#384575',lights:1,glow:.9},
+ {t:0,ambient:DUSK_AMBIENT,lights:1,glow:.9},
+ {t:SUNRISE,ambient:DUSK_AMBIENT,lights:1,glow:.9},
  {t:.22,ambient:'#8f7393',lights:.7,glow:.5},
  {t:.28,ambient:'#ffe9d2',lights:.1,glow:0},
  {t:.36,ambient:'#ffffff',lights:0,glow:0},
  {t:.64,ambient:'#ffffff',lights:0,glow:0},
  {t:.72,ambient:'#ffd6ad',lights:.3,glow:.2},
  {t:.78,ambient:'#8f759e',lights:.75,glow:.55},
- {t:SUNSET,ambient:'#384575',lights:1,glow:.9},
- {t:1,ambient:'#384575',lights:1,glow:.9}
+ {t:DUSK,ambient:DUSK_AMBIENT,lights:.78,glow:.59},
+ {t:SUNSET,ambient:DUSK_AMBIENT,lights:1,glow:.9},
+ {t:1,ambient:DUSK_AMBIENT,lights:1,glow:.9}
 ];
 // Night may be dark, never unreadable: minimum Rec. 601 luma of the ambient.
 export const AMBIENT_FLOOR=.22;
