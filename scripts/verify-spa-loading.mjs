@@ -1,4 +1,4 @@
-import{chromium}from'playwright';import{spawn}from'node:child_process';import assert from'node:assert/strict';import fs from'node:fs/promises';import sharp from'sharp';
+import{chromium}from'playwright';import{spawn}from'node:child_process';import assert from'node:assert/strict';import fs from'node:fs/promises';import sharp from'sharp';import dns from'node:dns/promises';
 // Single-page app + asset loading bar (npm run build first; DEMO_URL=https://… tests a deployed host instead).
 // Artwork requests are slowed so the bar is observable: it must only move forward, reach 100 % and step aside
 // for a painted world. Retired page URLs must land on / with their query, deep paths must stay in the SPA,
@@ -9,7 +9,9 @@ const base=process.env.DEMO_URL?.replace(/\/$/,'');const server=base?null:spawn(
 const trace=()=>{window.__loading=[];addEventListener('DOMContentLoaded',()=>{const s=document.querySelector('#loading-screen');if(!s)return;const log=()=>window.__loading.push({value:Number(s.getAttribute('aria-valuenow')),label:s.querySelector('.loading-label')?.textContent,state:s.dataset.state||''});log();new MutationObserver(log).observe(s,{attributes:true,subtree:true,childList:true,characterData:true});});};
 const slow=async page=>{let n=0;await page.route(/\.(png|webp|json)(\?|$)/,async route=>{await new Promise(r=>setTimeout(r,120+(n++%12)*45));await route.continue();});};
 const ready=page=>page.waitForFunction(()=>document.querySelector('#world-canvas')?.dataset.ready==='true'&&document.querySelector('#world-hero')?.dataset.x&&!document.querySelector('#loading-screen'),null,{timeout:90000});
-const launch=()=>chromium.launch({headless:true,env:{...process.env,LD_LIBRARY_PATH:'/home/dev/.local/browser-libs/usr/lib/x86_64-linux-gnu:/opt/fural-antigravity-glibc'},args:['--no-sandbox','--no-zygote','--single-process']});
+// Sandboxed Chromium may not resolve public hosts that Node can; pin the deployed host to Node's answer.
+const rules=base?[`--host-resolver-rules=MAP ${new URL(base).hostname} ${(await dns.lookup(new URL(base).hostname)).address}`]:[];
+const launch=()=>chromium.launch({headless:true,env:{...process.env,LD_LIBRARY_PATH:'/home/dev/.local/browser-libs/usr/lib/x86_64-linux-gnu:/opt/fural-antigravity-glibc'},args:['--no-sandbox','--no-zygote','--single-process',...rules]});
 // Single-process Chromium only survives one context, so every scenario gets a fresh browser.
 try{await new Promise(r=>setTimeout(r,600));
  const errors=[];const page=async(viewport)=>{await browser?.close();browser=await launch();const p=await (await browser.newContext({viewport})).newPage();p.on('pageerror',e=>errors.push(e.message));await p.addInitScript(trace);return p;};
