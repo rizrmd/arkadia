@@ -1,7 +1,7 @@
-import {unproject} from '../isometric';
 import {walkableGround,gatePassageColumn} from './navigation';
 import type {Sun} from './daylight';
 import type {Walk} from './controls';
+import {walkStep,ground,PACE} from './net/movement';
 // The player's hero walking the court, drawn from the arena's character atlas (front/back diagonals mirrored,
 // straight up/down views). The world is one pre-rastered surface, so the hero is its own small canvas over it:
 // sprites standing in front of the hero cut their silhouettes out of that canvas (leaving a faint ghost, so the
@@ -10,21 +10,23 @@ import type {Walk} from './controls';
 export type Column={x:number;w:number;back:number;front:number;height:number};
 // A combat clip (attack, hit or die) that encounters.ts plays in place of walking; t is ms into the clip.
 export type Pose={clip:string;t:number};
+// A co-op hero is driven from outside: the own hero by prediction (net/client.ts), the others by server snapshots.
+// `face` turns toward a walk direction as the keys do; `look` sets the server's facing outright.
+export type Drive={x:number;y:number;pose?:Pose|null;face?:Walk|null;look?:{facing:number;back:boolean;vertical:boolean}|null};
 export type Placed={layer:string;x:number;y:number;width:number;height:number;foot:number;shear:number;vertical:number;opacity:number;image:HTMLImageElement};
 type Clip={fps:number;loop:boolean;frames:number[];strideScale?:number};
 type Meta={image:string;revision?:string;cell:{w:number;h:number;pivot:{x:number;y:number}};clips:Record<string,Clip>;frames:{x:number;y:number;w:number;h:number}[]};
 const BASE='/assets/characters/',KEY='arkadia.stronghold.hero';
 // Atlas px -> world px. Matches the court props (a barrel is 27 px wide), not the arena's 1.1.
 // The hero starts (and respawns) just in front of the tent in the centre of the court.
-export const DISPLAY=.48;const SPEED=105,STRIDE=88*DISPLAY/1.1,RADIUS=9,SPAWN={x:590,y:420};
+export const DISPLAY=.48;const STRIDE=88*DISPLAY/1.1,RADIUS=9,SPAWN={x:590,y:420};
 // Speed and stride are measured on the ground, not the screen: on the 2:1 map a screen pixel straight up or down
 // covers twice the ground of one across, so equal screen speed walked the hero up and down twice as fast as left
-// and right. SPEED is screen px/s along a tile edge (the W+D walk); up/down and across follow at the same ground pace.
-const ground=(sx:number,sy:number)=>{const g=unproject(sx,sy);return Math.hypot(g.x,g.y);},PACE=ground(2,1)/Math.hypot(2,1);
-export async function createHero<P extends Placed>(o:{layer:HTMLElement;lightmap:HTMLCanvasElement;surface:HTMLElement;footprint:(p:P)=>Column[];sun:()=>Sun;direction:()=>Walk;follow:(x:number,y:number,dt:number)=>void;pose?:()=>Pose|null}){
+// and right. The walking rule itself (speed, pace, sliding along blockers) is net/movement.ts walkStep().
+export async function createHero<P extends Placed>(o:{layer:HTMLElement;lightmap:HTMLCanvasElement;surface:HTMLElement;footprint:(p:P)=>Column[];sun:()=>Sun;direction:()=>Walk;follow:(x:number,y:number,dt:number)=>void;pose?:()=>Pose|null;drive?:()=>Drive|null;id?:string}){
  const meta:Meta=(await (await fetch(BASE+'manifest.json')).json()).characters.hero,atlas=new Image();
  atlas.src=BASE+meta.image+(meta.revision?`?v=${encodeURIComponent(meta.revision)}`:'');await atlas.decode();
- const canvas=document.createElement('canvas'),c=canvas.getContext('2d')!;canvas.id='world-hero';
+ const canvas=document.createElement('canvas'),c=canvas.getContext('2d')!;canvas.id=o.id??'world-hero';const own=!o.id;
  canvas.style.cssText='position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform;pointer-events:none';o.layer.append(canvas);
  const {cell}=meta,pivot=cell.pivot;
  // One frame at atlas resolution: lit by the lightmap colour under the hero, or as a flat shadow silhouette.
@@ -52,24 +54,32 @@ export async function createHero<P extends Placed>(o:{layer:HTMLElement;lightmap
   let edge=-Infinity;for(const col of o.footprint(p))if(Math.abs(col.x-x)<=col.w/2+RADIUS)edge=Math.max(edge,col.front);
   return y<(edge>-Infinity?edge:p.y);
  }
- try{const saved=JSON.parse(localStorage.getItem(KEY)||'null');if(saved&&Number.isFinite(saved.x)&&Number.isFinite(saved.y)){x=saved.x;y=saved.y;}}catch{}
+ if(own)try{const saved=JSON.parse(localStorage.getItem(KEY)||'null');if(saved&&Number.isFinite(saved.x)&&Number.isFinite(saved.y)){x=saved.x;y=saved.y;}}catch{}
  const clipName=()=>pose?pose.clip:vertical?state+(back?'Up':'Down'):back?state+'Back':state;
  const frameIndex=()=>{const clip=meta.clips[clipName()],n=clip.frames.length,i=pose?Math.floor(pose.t*clip.fps/1000):state==='move'?Math.floor(stride*n/(clip.strideScale||1)):Math.floor(t*clip.fps/1000);return clip.frames[clip.loop?i%n:Math.min(i,n-1)];};
  // Arena facing rules: front/rear views only within 10 degrees of straight up/down (15 to leave), and dead
  // bands near each axis keep the previous quadrant so tiny slides along a wall never flip the art.
  function face(sx:number,sy:number){const l=Math.hypot(sx,sy);if(!l)return;vertical=Math.abs(sx)/l<Math.sin((vertical?15:10)*Math.PI/180);if(Math.abs(sy)/l>.15)back=sy<0;if(Math.abs(sx)/l>.15)facing=sx>0?1:-1;}
+ // A driven hero moves once per frame to where it is told; its stride follows the ground distance covered.
+ function driven(s:Drive,dt:number){
+  const dx=s.x-x,dy=s.y-y;x=s.x;y=s.y;pose=s.pose!==undefined?s.pose:o.pose?.()??null;
+  if(s.look){facing=s.look.facing;back=s.look.back;vertical=s.look.vertical;}else if(s.face&&(s.face.x||s.face.y)&&!pose)face(s.face.x,s.face.y);
+  if(own&&(dx||dy))o.follow(x,y,dt);
+  if(pose){if(state!=='idle'){state='idle';t=0;}return;}
+  t+=dt;if(!s.look&&!s.face&&(dx||dy))face(dx,dy);
+  const progress=ground(dx,dy)/PACE,moving=progress/(dt/1000)>(state==='move'?2:5);if(moving!==(state==='move')){state=moving?'move':'idle';t=0;}
+  if(moving)stride+=progress/STRIDE;
+ }
  function step(dt:number){
   // A swing, hit stun or death holds the hero in place.
   pose=o.pose?.()??null;if(pose){if(state!=='idle'){state='idle';t=0;}return;}
   const d=o.direction(),m=Math.hypot(d.x,d.y);t+=dt;let progress=0;
   if(m>0){
-   face(d.x,d.y);const g=ground(d.x,d.y),v=SPEED*dt/1000*m*PACE/g,dx=d.x*v,dy=d.y*v,stuck=blocked(x,y);
-   // Slide along whatever blocks the full step; a hero already overlapping a footprint may walk out.
-   for(const [mx,my] of [[dx,dy],[dx,0],[0,dy]])if(mx||my){if(stuck||!blocked(x+mx,y+my)){x+=mx;y+=my;progress=(mx*d.x+my*d.y)*g/(m*m*PACE);break;}}
+   face(d.x,d.y);const r=walkStep(blocked,x,y,d,dt);x=r.x;y=r.y;progress=r.progress;
   }
   const moving=progress/(dt/1000)>(state==='move'?2:5);if(moving!==(state==='move')){state=moving?'move':'idle';t=0;}
   if(moving){stride+=progress/STRIDE;lastMove=performance.now();}
-  else if(lastMove&&performance.now()-lastMove>400){lastMove=0;try{localStorage.setItem(KEY,JSON.stringify({x:Math.round(x),y:Math.round(y)}));}catch{}}
+  else if(own&&lastMove&&performance.now()-lastMove>400){lastMove=0;try{localStorage.setItem(KEY,JSON.stringify({x:Math.round(x),y:Math.round(y)}));}catch{}}
   if(m>0||moving)o.follow(x,y,dt);
  }
  // The lightmap (ambient plus light pools) under the hero's feet; untinted while the world is unlit. Read
@@ -107,7 +117,8 @@ export async function createHero<P extends Placed>(o:{layer:HTMLElement;lightmap
  function place(){canvas.style.transform=`translate3d(${origin.x+(x+box[0])*origin.scale}px,${origin.y+(y+box[1])*origin.scale}px,0) scale(${origin.scale})`;}
  let last=0;
  // Real time up to 120 ms per frame, sub-stepped so a slow phone walks at full speed without skipping through walls.
- const loop=(now:number)=>{let dt=last?Math.min(now-last,120):16;last=now;for(;dt>0;dt-=34)step(Math.min(dt,34));sample(now);render();place();requestAnimationFrame(loop);};
+ let stopped=false;
+ const loop=(now:number)=>{if(stopped)return;let dt=last?Math.min(now-last,120):16;last=now;const s=o.drive?.();if(s)driven(s,dt);else for(;dt>0;dt-=34)step(Math.min(dt,34));sample(now);render();place();requestAnimationFrame(loop);};
  return {
   setScene,
   // Called by every camera frame with the screen position of the world origin.
@@ -118,6 +129,8 @@ export async function createHero<P extends Placed>(o:{layer:HTMLElement;lightmap
   face,
   respawn(){x=SPAWN.x;y=SPAWN.y;back=false;vertical=false;facing=1;drawn='';o.follow(x,y,1e4);},
   // Testing hook: stand the hero anywhere they could walk to.
-  teleport(px:number,py:number){if(blocked(px,py))return false;x=px;y=py;drawn='';o.follow(x,y,1e4);return true;}
+  teleport(px:number,py:number){if(blocked(px,py))return false;x=px;y=py;drawn='';o.follow(x,y,1e4);return true;},
+  // A co-op ally who left the room.
+  remove(){stopped=true;canvas.remove();}
  };
 }

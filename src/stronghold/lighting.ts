@@ -62,6 +62,8 @@ export function createLighting(o:{surface:HTMLCanvasElement;snowLayer:HTMLElemen
   for(const c of [l,h,b])c.globalCompositeOperation='source-over';
   surface.dataset.lights=String(count);surface.dataset.lightBakes=String(Number(surface.dataset.lightBakes||0)+1);last='';tick();
  }
+ // The co-op server's time of day, while in a room (setClockSource).
+ let live:(()=>number|null)|null=null;
  let {mode,manual}=lightingSettings(),last='',moving=0,current:Lighting=lightingAt(resolveTime(mode,Date.now(),location.search,manual));
  // The sun moves in 15-minute steps (15 s of a live day); each step rebuilds the shadow mask once.
  const sunStep=(t:number)=>{const q=Math.round(t*96)/96,s=sunAt(q);return {key:s.alpha?q.toFixed(4):'none',sun:s};};
@@ -107,7 +109,7 @@ export function createLighting(o:{surface:HTMLCanvasElement;snowLayer:HTMLElemen
   if(previewing)unlit(surface.getContext('2d')!);else{last='';paint(current,true);}
  }
  function tick(){
-  current=lightingAt(resolveTime(mode,Date.now(),location.search,manual));const next=sunStep(current.t);
+  current=lightingAt(resolveTime(mode,Date.now(),location.search,manual,live?.()??null));const next=sunStep(current.t);
   // A new sun position rebuilds the shadow mask and relights; wait while the camera moves.
   // While the clock is dragged, shadows catch up once the slider rests for SUN_REST_MS.
   const wait=previewing?SUN_REST_MS-(Date.now()-timeSet):0;
@@ -160,6 +162,7 @@ export function createLighting(o:{surface:HTMLCanvasElement;snowLayer:HTMLElemen
   // Every camera frame: follow the surface; the flicker layer rests until the camera stops.
   place(transform:string){flicker.style.transform=lightmap.style.transform=bloom.style.transform=transform;moving=Date.now();if(!flicker.classList.contains('moving'))flicker.classList.add('moving');clearTimeout(still);still=window.setTimeout(()=>{flicker.classList.remove('moving');tick();},300);},
   setScene,capture,setTime,preview,setShadow,shadeSprite,spriteRevision:()=>spriteRevision,
+  setClockSource(f:(()=>number|null)|null){live=f;tick();},
   sun:()=>sun,
   subscribe(f:(s:ClockState)=>void){listeners.add(f);f(clockState());return ()=>listeners.delete(f);}
  };

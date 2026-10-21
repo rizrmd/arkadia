@@ -1,0 +1,138 @@
+{
+ "url": "http://127.0.0.1:8792",
+ "room": "5FKB5",
+ "tagOnA": "Bima",
+ "tagOnB": "Guest 7039",
+ "shots": [
+  "docs/coop/1-court-desktop.webp",
+  "docs/coop/1-court-phone.webp",
+  "docs/coop/2-wilds-desktop.webp",
+  "docs/coop/2-wilds-phone.webp"
+ ],
+ "predictionWhileWalking": {
+  "corrections": 1,
+  "maxCorrectionPx": 23.24,
+  "inputs": 510,
+  "rttMs": 14
+ },
+ "sameEnemies": {
+  "commonTicks": 360,
+  "mismatched": 0,
+  "atTick": 660,
+  "enemies": [
+   [
+    1,
+    2,
+    2,
+    "move"
+   ],
+   [
+    2,
+    1,
+    0,
+    "die"
+   ],
+   [
+    3,
+    1,
+    0,
+    "die"
+   ],
+   [
+    4,
+    1,
+    0,
+    "die"
+   ],
+   [
+    5,
+    1,
+    0,
+    "die"
+   ],
+   [
+    6,
+    1,
+    0,
+    "die"
+   ],
+   [
+    7,
+    1,
+    0,
+    "die"
+   ],
+   [
+    8,
+    1,
+    0,
+    "die"
+   ],
+   [
+    9,
+    2,
+    2,
+    "move"
+   ],
+   [
+    10,
+    1,
+    0,
+    "die"
+   ],
+   [
+    11,
+    2,
+    2,
+    "move"
+   ]
+  ]
+ },
+ "hud": {
+  "a": {
+   "low": "false",
+   "zone": "wild",
+   "hp": "100",
+   "max": "100",
+   "state": "attack",
+   "kills": "7",
+   "foes": "5"
+  },
+  "b": {
+   "low": "false",
+   "zone": "wild",
+   "hp": "100",
+   "max": "100",
+   "state": "attack",
+   "kills": "4",
+   "foes": "5"
+  }
+ },
+ "stats": {
+  "a": {
+   "status": "online",
+   "room": "5FKB5",
+   "you": "p1",
+   "snapshots": 667,
+   "inputs": 651,
+   "corrections": 42,
+   "maxCorrection": 23.242349259060802,
+   "lastCorrection": 4.650268809434568,
+   "bytes": 801595,
+   "rtt": 0.5
+  },
+  "b": {
+   "status": "online",
+   "room": "5FKB5",
+   "you": "p2",
+   "snapshots": 411,
+   "inputs": 384,
+   "corrections": 40,
+   "maxCorrection": 16.601566172707294,
+   "lastCorrection": 4.511873225169403,
+   "bytes": 579062,
+   "rtt": 13.899999856948853
+  }
+ },
+ "ok": true
+}

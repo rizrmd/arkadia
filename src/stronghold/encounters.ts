@@ -6,11 +6,14 @@ import {walkableGround} from './navigation';
 import {GATE,SPAWN_DISTANCE_M,METERS_PER_TILE,fromGate,fromCenter,inSafeZone,spawnPoint,meters,type Tile} from './safe-zone';
 import {DISPLAY,type Pose} from './hero';
 import type {Walk} from './controls';
+import type {Net} from './net/client';
 // Revenants roaming the snow beyond the safe zone, the hero's hit points and their auto attack. The fight runs on
 // the arena's rules (combat.ts): the same hit points, damage, reach, hit stun and swing timing, with the reach
 // scaled to the Stronghold's smaller figures. Positions are ground tiles from the court origin, as in terrain.ts tilePoint().
 // Revenants spawn 10 m outside the gate (safe-zone.ts) and never enter the court: a chase stops
 // at the boundary, and once the hero is back inside they lose interest and wander off; the hero heals there.
+// In a co-op room (net/client.ts) none of this runs here: the server simulates the same rules for every hero, and
+// this module only mirrors its revenants and the own hero's hit points, clips and kills (netStep below).
 const SCALE=DISPLAY/1.1; // the arena draws characters at 1.1x on tiles of the same size
 const HERO_REACH=STATS.hero.reach*SCALE,ENEMY_REACH=STATS.revenant.reach*SCALE,SIDE=.35*SCALE,SPACING=.72*SCALE;
 // Hero ground speed is 105 screen px/s along a 71.6 px tile edge (hero.ts); revenants walk at a bit over half of it,
@@ -26,13 +29,13 @@ const toTile=(x:number,y:number):Tile=>{const g=unproject(x-COURT.x,y-COURT.y);r
 const screen=(du:number,dv:number)=>({x:(du-dv)*64,y:(du+dv)*32});
 const tileOf=(f:Fighter):Tile=>({u:f.x,v:f.y});
 const walkable=(p:Tile)=>{const w=tilePoint(p.u,p.v);return walkableGround(w.x,w.y);};
-export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero:Hero;direction:()=>Walk}){
+export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero:Hero;direction:()=>Walk;net?:Net}){
  const manifest=await (await fetch('/assets/characters/manifest.json')).json(),heroMeta:CharacterMeta=manifest.characters.hero,meta:CharacterMeta=manifest.characters.revenant;
  const atlas=new Image();atlas.src='/assets/characters/'+meta.image+(meta.revision?`?v=${encodeURIComponent(meta.revision)}`:'');await atlas.decode();
  let seed=(Date.now()>>>0)||1;const random=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;};
  const start=o.hero.position(),h=new Fighter('hero',heroMeta.clips,toTile(start.x,start.y).u,toTile(start.x,start.y).v);
  let maxHp=STATS.hero.hp,kills=0,spawnTimer=0,ambient='255,255,255',origin={x:0,y:0,scale:1};
- const foes:Foe[]=[],spawns:{u:number;v:number;m:number}[]=[];
+ const local:Foe[]=[],spawns:{u:number;v:number;m:number}[]=[];let foes=local,online=false,heroPlays=-1;
  // Revenants behind the hero draw under its canvas, the rest over it.
  const heroCanvas=o.layer.querySelector<HTMLCanvasElement>('#world-hero')!,back=document.createElement('canvas'),front=document.createElement('canvas');
  back.id='world-foes-back';front.id='world-foes-front';for(const c of [back,front])c.style.cssText='position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none';
@@ -65,7 +68,7 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
  function nearest(range:number){let best:Foe|null=null,d=range;for(const f of foes){const v=Math.hypot(f.x-h.x,f.y-h.y);if(f.alive&&v<=d){d=v;best=f;}}return best;}
  // The hero, when nobody steers: swing at a revenant in reach, or step in toward one a few paces away.
  function steer(input:Walk):Walk{
-  if(input.x||input.y||!h.alive||h.state!=='idle')return input;
+  if(online||input.x||input.y||!h.alive||h.state!=='idle')return input;
   const f=nearest(ENGAGE);if(!f||Math.hypot(f.x-h.x,f.y-h.y)<=HERO_REACH*.8)return input;
   const s=screen(f.x-h.x,f.y-h.y),l=Math.hypot(s.x,s.y);return {x:s.x/l,y:s.y/l};
  }
@@ -97,7 +100,35 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
   for(const a of list){for(const b of [...list,h]){if(a===b)continue;const dx=a.x-b.x,dy=a.y-b.y,d=Math.hypot(dx,dy);if(d>=SPACING||d<1e-6)continue;
    const push=(SPACING-d)*(b===h?1:.5),next={u:a.x+dx/d*push,v:a.y+dy/d*push};if(!inSafeZone(next)&&walkable(next)){a.x=next.u;a.y=next.v;}}}
  }
+ // Co-op: revenants at the interpolated server snapshot, keyed by server id. A clip the server (re)starts (its
+ // play counter changed) replays from its first frame here; a respawn (new generation) fades in again.
+ type Mirror=Foe&{gen:number;plays:number};const mirrors=new Map<number,Mirror>();
+ function netStep(dt:number){
+  const net=o.net!,me=net.me();
+  if(me){
+   if(me.n!==heroPlays){heroPlays=me.n;h.state=me.st as Fighter['state'];h.t=0;}
+   if(me.hp<h.hp-.05)h.flash=120;Object.assign(h,{hp:me.hp,facing:me.fc,back:me.bk,vertical:me.vt});maxHp=me.max;kills=me.k;
+   const p=o.hero.position(),t=toTile(p.x,p.y);h.x=t.u;h.y=t.v;h.tick(dt);
+  }
+  const seen=new Set<number>();
+  for(const e of net.enemies(performance.now())){
+   seen.add(e.id);let f=mirrors.get(e.id);
+   if(!f){f=Object.assign(new Fighter('revenant',meta.clips,e.u,e.v),{home:{u:e.u,v:e.v},wander:null,age:0,gen:e.g,plays:-1});mirrors.set(e.id,f);}
+   if(f.gen!==e.g){Object.assign(f,{gen:e.g,age:0,deadFor:0,x:e.u,y:e.v});}
+   const m=screen(e.u-f.x,e.v-f.y);f.stride+=Math.hypot(m.x,m.y)/ENEMY_STRIDE;
+   Object.assign(f,{x:e.u,y:e.v,facing:e.fc,back:e.bk,vertical:e.vt});
+   if(e.n!==f.plays){f.plays=e.n;f.state=e.st as Fighter['state'];f.t=0;}
+   if(e.hp<f.hp)f.flash=120;f.hp=e.hp;
+   f.tick(dt);f.age+=dt;if(!f.alive)f.deadFor+=dt;
+  }
+  for(const id of mirrors.keys())if(!seen.has(id))mirrors.delete(id);
+  foes=[...mirrors.values()];
+ }
  function step(dt:number){
+  // Joining a room drops the local revenants; leaving it (offline) starts a fresh local fight where the hero stands.
+  const net=!!o.net?.active();
+  if(net!==online){online=net;mirrors.clear();local.length=0;foes=local;spawnTimer=0;heroPlays=-1;if(!net){h.play('idle');h.hp=maxHp;}}
+  if(online){netStep(dt);return;}
   const input=o.direction(),steering=!!(input.x||input.y);
   for(const f of [h,...foes])f.tick(dt);
   if(h.alive&&h.state==='idle'){const p=o.hero.position(),t=toTile(p.x,p.y);h.x=t.u;h.y=t.v;}

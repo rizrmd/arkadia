@@ -56,3 +56,49 @@
 
 /* A short, softly rounded clock keeps the mobile HUD quiet. */
 @media (max-width:600px){.clock-chip{min-width:90px;gap:6px;padding:0 10px}.clock-chip .clock-mode{display:none}.clock-time{font-size:15px}.clock-panel{max-width:calc(100vw - 24px)}}
+/* Co-op room chip under the clock, its panel, and join/leave notices (net/lobby.ts). */
+#coop{position:fixed;top:calc(max(12px,env(safe-area-inset-top)) + 42px);right:max(12px,env(safe-area-inset-right));z-index:9;display:flex;flex-direction:column;align-items:flex-end;gap:8px;font-size:14px;max-width:calc(100vw - 24px);color:#eee7d7}
+#coop button,#coop input{font:inherit;color:inherit}
+#coop button{cursor:pointer}
+.coop-chip{display:flex;align-items:center;gap:7px;height:32px;padding:0 11px;border:0;border-radius:16px;background:#172022e8;box-shadow:0 2px 7px #0003;white-space:nowrap}
+.coop-dot{width:8px;height:8px;border-radius:50%;background:#7d8783}
+#coop[data-status=online] .coop-dot{background:#7fd36a;box-shadow:0 0 6px #7fd36a99}
+#coop[data-status=connecting] .coop-dot,#coop[data-status=reconnecting] .coop-dot{background:#f2c46b;animation:coop-pulse 1s ease-in-out infinite}
+@keyframes coop-pulse{50%{opacity:.35}}
+.coop-label{color:#e8d6ae}.coop-code{font-variant-numeric:tabular-nums;letter-spacing:.08em;font-weight:600}.coop-count{color:#b9c3bd;font-size:12px}
+.coop-panel{width:min(290px,calc(100vw - 24px));box-sizing:border-box;padding:12px;border-radius:12px;background:#141c20f2;box-shadow:0 6px 20px #0007;display:flex;flex-direction:column;gap:10px}
+.coop-panel[hidden]{display:none}
+.coop-title{margin:0;font-size:13px;line-height:1.35;color:#d6cfbf}
+.coop-room[hidden]{display:none}
+.coop-head{display:flex;align-items:baseline;gap:8px;color:#b9c3bd;font-size:12px}
+.coop-room-code{font-size:22px;letter-spacing:.12em;color:#f2c46b;font-variant-numeric:tabular-nums}
+.coop-ping{margin-left:auto}
+.coop-copy,.coop-actions button,.coop-offline{min-height:36px;padding:0 12px;border:1px solid #c9a86a88;border-radius:18px;background:#1d282c}
+.coop-copy{width:100%;margin:8px 0 6px}
+.coop-primary{background:#6b4d22!important;border-color:#f2c46b!important}
+.coop-players{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:3px;font-size:13px}
+.coop-players li{display:flex;justify-content:space-between;gap:8px;padding:3px 2px;border-bottom:1px solid #ffffff12}
+.coop-players li[data-you=true] span::after{content:" (you)";color:#b9c3bd;font-size:12px}
+.coop-players small{color:#b9c3bd;font-variant-numeric:tabular-nums}
+.coop-join{display:flex;flex-direction:column;gap:8px;margin:0}
+.coop-join label{display:flex;flex-direction:column;gap:3px;font-size:12px;color:#b9c3bd}
+.coop-join input{height:34px;padding:0 10px;border:1px solid #ffffff2a;border-radius:8px;background:#0d1417;font-size:16px}
+.coop-join input[name=code]{text-transform:uppercase;letter-spacing:.1em}
+.coop-actions{display:flex;gap:8px}.coop-actions button{flex:1}
+.coop-actions button:disabled{opacity:.5;cursor:default}
+.coop-error{margin:0;min-height:0;color:#f2a37f;font-size:12px}.coop-error:empty{display:none}
+.coop-offline[hidden]{display:none}
+.coop-toasts{display:flex;flex-direction:column;align-items:flex-end;gap:4px;pointer-events:none}
+.coop-toasts p{margin:0;padding:5px 10px;border-radius:12px;background:#172022e0;font-size:13px;animation:coop-toast 3.2s ease forwards}
+@keyframes coop-toast{0%{opacity:0;transform:translateY(-4px)}8%,85%{opacity:1;transform:none}100%{opacity:0}}
+#coop :focus-visible{outline:2px solid #f2c46b;outline-offset:2px}
+/* Name and health bar over each other hero in the room (party.ts). */
+#party-tags{position:absolute;left:0;top:0;z-index:2;pointer-events:none}
+.party-tag{position:absolute;left:0;top:0;will-change:transform}
+.party-card{position:absolute;left:0;bottom:-4px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:2px}
+.party-name{max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:600 12px/1.15 Georgia,serif;color:#cfe6ff;text-shadow:0 1px 2px #000,0 0 5px #000}
+.party-hp{display:block;width:40px;height:6px;padding:1px;border-radius:4px;background:#120c0ccc;box-shadow:0 1px 3px #0008}
+.party-hp i{display:block;height:100%;border-radius:3px;background:linear-gradient(#8fd16a,#4f9a3c);transform-origin:0 50%}
+.party-tag[data-low=true] .party-hp i{background:linear-gradient(#f07a5f,#b8402c)}
+.party-tag[data-down=true]{opacity:.55}
+@media (max-width:480px){#coop{top:calc(max(12px,env(safe-area-inset-top)) + 40px)}.coop-chip{height:30px;padding:0 9px}.coop-label{display:none}}
