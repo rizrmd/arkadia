@@ -1,4 +1,4 @@
-import {TORCHES,torchesOn,drawTorches} from './torches';
+import {TORCHES,torchesOn,drawTorches,createTorchFlames,torchAssetsReady} from './torches';
 import {LIGHT_SPRITES as SPRITES,emissive} from './light-anchors';
 import {lightingAt,resolveTime,modeFrom,sunAt,type Lighting,type Mode} from './daylight';
 // Day/night is baked into #world-surface: the unlit world is kept in `base`, and
@@ -43,6 +43,8 @@ export function createLighting(o:{surface:HTMLCanvasElement;snowLayer:HTMLElemen
   const white=document.createElement('canvas');white.width=colour.width;white.height=colour.height;const w=white.getContext('2d')!;w.drawImage(colour,0,0);w.globalCompositeOperation='source-in';w.fillStyle='#fff';w.fillRect(0,0,white.width,white.height);
   m={white,colour};masks.set(p.file,m);return m;
  }
+ const flames=createTorchFlames(surface,left,top);
+ torchAssetsReady.then(()=>{last='';paint(current,true);}).catch(()=>{});
  const world=(c:CanvasRenderingContext2D)=>{c.setTransform(RES,0,0,RES,-left*RES,-top*RES);};
  const sprite=(c:CanvasRenderingContext2D,p:LitObject,source:HTMLCanvasElement)=>{c.save();c.translate(p.x,p.y);c.transform(1,p.shear,0,p.vertical,0,0);c.drawImage(source,-p.width/2,-p.height*p.foot,p.width,p.height);c.restore();};
  // Source pixel -> world point, with the sprite's own shear/vertical calibration.
@@ -119,7 +121,7 @@ export function createLighting(o:{surface:HTMLCanvasElement;snowLayer:HTMLElemen
   if(previewing)unlit(surface.getContext('2d')!);else{last='';paint(current,true);}
  }
  function tick(){
-  current=lightingAt(resolveTime(mode,Date.now(),location.search,manual));torchHalo.hidden=!torchesOn(current.t);torchBloom.hidden=!previewing||!torchesOn(current.t);const next=sunStep(current.t);
+  current=lightingAt(resolveTime(mode,Date.now(),location.search,manual));flames.setLit(torchesOn(current.t));torchHalo.hidden=!torchesOn(current.t);torchBloom.hidden=!previewing||!torchesOn(current.t);const next=sunStep(current.t);
   // A new sun position rebuilds the shadow mask and relights; wait while the camera moves.
   // While the clock is dragged, shadows catch up once the slider rests for SUN_REST_MS.
   const wait=previewing?SUN_REST_MS-(Date.now()-timeSet):0;
@@ -170,7 +172,7 @@ export function createLighting(o:{surface:HTMLCanvasElement;snowLayer:HTMLElemen
  setInterval(tick,1000);document.addEventListener('visibilitychange',()=>{if(!document.hidden)tick();});
  return {
   // Every camera frame: follow the surface; the flicker layer rests until the camera stops.
-  place(transform:string){flicker.style.transform=lightmap.style.transform=bloom.style.transform=torchBloom.style.transform=transform;moving=Date.now();if(!flicker.classList.contains('moving'))flicker.classList.add('moving');clearTimeout(still);still=window.setTimeout(()=>{flicker.classList.remove('moving');tick();},300);},
+  place(transform:string){flames.place(transform);flicker.style.transform=lightmap.style.transform=bloom.style.transform=torchBloom.style.transform=transform;moving=Date.now();if(!flicker.classList.contains('moving'))flicker.classList.add('moving');clearTimeout(still);still=window.setTimeout(()=>{flicker.classList.remove('moving');tick();},300);},
   setScene,capture,setTime,preview,setShadow,shadeSprite,spriteRevision:()=>spriteRevision,
   sun:()=>sun,
   subscribe(f:(s:ClockState)=>void){listeners.add(f);f(clockState());return ()=>listeners.delete(f);}

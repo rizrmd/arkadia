@@ -11,19 +11,37 @@ export const TORCHES=[
 ].map(t=>({...t,...tilePoint(t.u,t.v)}));
 export const torchesOn=(time:number)=>phaseOf(time)==='Night';
 
-export function drawTorches(c:CanvasRenderingContext2D,lit:boolean){
+const frames=Array.from({length:4},(_,i)=>{const image=new Image();image.src=`/realistic-torch/frame-${i}.webp`;return image;});
+export const torchAssetsReady=Promise.all(frames.map(image=>image.decode()));
+const W=32,H=52;
+// The same unlit body is baked once; only small local canvases animate above it.
+export function drawTorches(c:CanvasRenderingContext2D,_lit:boolean){
+ if(!frames[3].complete||!frames[3].naturalWidth)return;
  for(const t of TORCHES){
-  const x=t.x,y=t.y-t.lift;c.save();
-  // Dark iron collar, warm wood shaft, and a small snow-covered foot on free posts.
-  c.lineCap='round';c.strokeStyle='#261b16';c.lineWidth=t.wall?5:6;
-  c.beginPath();c.moveTo(x,y+5);c.lineTo(x,t.wall?y+25:t.y);c.stroke();
-  c.strokeStyle='#826044';c.lineWidth=2;c.beginPath();c.moveTo(x-1,y+6);c.lineTo(x-1,t.wall?y+22:t.y-3);c.stroke();
-  if(!t.wall){c.fillStyle='#4a4541';c.beginPath();c.ellipse(x,t.y,7,3,0,0,Math.PI*2);c.fill();c.fillStyle='#d9d9ce';c.fillRect(x-5,t.y-2,4,1.5);}
-  c.fillStyle='#27282c';c.fillRect(x-5,y+2,10,5);c.fillRect(x-4,y+12,8,3);
-  if(lit){
-   c.fillStyle='#ed6c25';c.beginPath();c.moveTo(x-4,y+3);c.quadraticCurveTo(x-7,y-4,x-1,y-13);c.quadraticCurveTo(x-1,y-7,x+3,y-8);c.quadraticCurveTo(x+8,y,x+3,y+3);c.closePath();c.fill();
-   c.fillStyle='#ffe5a0';c.beginPath();c.moveTo(x-2,y+3);c.quadraticCurveTo(x-3,y-2,x+1,y-6);c.quadraticCurveTo(x+4,y+1,x+2,y+3);c.fill();
-  }
-  c.restore();
+  const y=t.y-t.lift;
+  if(!t.wall){c.strokeStyle='#3b2a20';c.lineWidth=5;c.beginPath();c.moveTo(t.x,y+18);c.lineTo(t.x,t.y);c.stroke();}
+  c.drawImage(frames[3],t.x-W/2,y-21,W,H);
  }
+}
+export function createTorchFlames(surface:HTMLCanvasElement,left:number,top:number){
+ const layer=document.createElement('div');layer.id='torch-flames';
+ layer.style.cssText='position:absolute;left:0;top:0;transform-origin:0 0;pointer-events:none';
+ surface.after(layer);
+ const canvases=TORCHES.map(t=>{const c=document.createElement('canvas');c.width=96;c.height=96;
+  c.style.cssText=`position:absolute;left:${t.x-W/2-left}px;top:${t.y-t.lift-21-top}px;width:${W}px;height:${H*330/724}px`;
+  layer.append(c);return c;
+ });
+ let ready=false,lit=false;
+ torchAssetsReady.then(()=>{ready=true;surface.dataset.torchAssets='ready';render();}).catch(()=>{surface.dataset.torchAssets='failed';});
+ function render(){
+  layer.hidden=!lit;
+  if(!ready||!lit||document.hidden)return;
+  const step=Math.floor(performance.now()/120)%3;layer.dataset.frame=String(step);
+  canvases.forEach((c,i)=>{const ctx=c.getContext('2d')!;ctx.clearRect(0,0,96,96);
+   // Upper source region contains the changing flame and glowing fuel. Lower handle stays baked.
+   ctx.drawImage(frames[(step+i)%3],0,0,180,132,0,0,96,96);
+  });
+ }
+ setInterval(render,120);
+ return {place(transform:string){layer.style.transform=transform;},setLit(value:boolean){lit=value;render();}};
 }
