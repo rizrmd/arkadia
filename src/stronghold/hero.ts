@@ -46,6 +46,8 @@ export async function createHero<P extends Placed>(o:{layer:HTMLElement;lightmap
  // In front of the hero: the front walls and gate always; a court sprite when the hero stands behind the
  // front edge of its footprint at the hero's column (or behind its pivot where no column reaches).
  function front(p:P){
+  // The full animated gateway uses its own depth layer, so its current frame handles occlusion.
+  if('id' in p&&p.id==='gate')return false;
   if(p.layer==='foreground')return y<p.y+12;if(p.layer!=='world')return false;
   let edge=-Infinity;for(const col of o.footprint(p))if(Math.abs(col.x-x)<=col.w/2+RADIUS)edge=Math.max(edge,col.front);
   return y<(edge>-Infinity?edge:p.y);
