@@ -1,5 +1,7 @@
 import {project,unproject} from '../isometric';
 export const COURT={x:577,y:-160,size:15};
+// ?buildings=all shows every building and court prop in its original slot, whatever the save has built (layout QA).
+export const LEGACY_LAYOUT=typeof location!=='undefined'&&new URLSearchParams(location.search).get('buildings')==='all';
 export function tilePoint(u:number,v:number){const p=project(u,v);return {x:p.x+COURT.x,y:p.y+COURT.y};}
 const assetRoot='/modular-stronghold/',v2=assetRoot+'v2/';
 export type EnvironmentSprite={layer:'ground'|'backdrop'|'world'|'foreground';id:string;x:number;y:number;width:number;foot:number;shear:number;vertical:number;depth:number;opacity:number;file:string};
@@ -31,8 +33,9 @@ export function environmentSprites(){
  for(const [u,v] of [[7,11],[12,8],[10,13],[9,7]])parts.push(prop('paving-worn',u,v,160,'z-index:1;opacity:.7;'));
  // No braziers at the front corner: the gateway covers them completely, so they only stood in its passage
  // as invisible obstacles.
- parts.push(prop('supply-cart',4.5,10,82),prop('brazier',13.2,5,32),prop('wall-broken',1.5,14.7,170));
- parts.push(prop('crate',5.3,10.6,34,'',true),prop('barrel',5.1,11.1,27,'',true));
+ parts.push(prop('wall-broken',1.5,14.7,170));
+ // The camp starts with the tent alone in the court; the supply cart, crate, barrel and brazier come with the old layout.
+ if(LEGACY_LAYOUT)parts.push(prop('supply-cart',4.5,10,82),prop('brazier',13.2,5,32),prop('crate',5.3,10.6,34,'',true),prop('barrel',5.1,11.1,27,'',true));
  return parts;
 }
 export function modularEnclosure(){return environmentSprites().map(p=>`<img class="terrain-prop ${p.id}" src="${p.file}" alt="" style="left:${p.x}px;top:${p.y}px;width:${p.width}px;z-index:${p.depth};--foot:${p.foot*100}%;--wall-shear:${p.shear};opacity:${p.opacity}">`).join('');}

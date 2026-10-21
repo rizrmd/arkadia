@@ -35,3 +35,15 @@
 #move-stick{position:fixed;left:0;top:0;z-index:10;width:128px;height:128px;margin:-64px 0 0 -64px;border-radius:50%;background:radial-gradient(circle,#141c2299 0 55%,#141c22cc 100%);border:1px solid #e2c27f;box-shadow:0 4px 16px #0006;pointer-events:none;user-select:none;-webkit-user-select:none;opacity:0;visibility:hidden;transform:scale(.85);transition:opacity .15s,transform .15s,visibility 0s .15s}
 #move-stick[data-active=true]{opacity:1;visibility:visible;transform:none;transition:opacity .1s,transform .1s}
 .stick-knob{position:absolute;left:50%;top:50%;width:56px;height:56px;margin:-28px 0 0 -28px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#3a3222,#1d1912);border:2px solid #e2b65f;box-shadow:0 2px 8px #000a;pointer-events:none}
+/* Hero status (see encounters.ts): a bar over the hero's head, moved by the compositor, and a HUD panel. */
+#hero-health{position:absolute;left:-22px;top:0;width:44px;height:7px;padding:1px;border-radius:4px;background:#120c0ccc;box-shadow:0 1px 3px #0008;pointer-events:none;will-change:transform;opacity:0;transition:opacity .2s}
+#hero-health[data-visible=true]{opacity:1}
+#hero-health i,#hero-hud .hud-bar i{display:block;height:100%;border-radius:3px;background:linear-gradient(#8fd16a,#4f9a3c);transform-origin:0 50%}
+#hero-health[data-low=true] i,#hero-hud[data-low=true] .hud-bar i{background:linear-gradient(#f07a5f,#b8402c)}
+#hero-hud{position:fixed;top:max(12px,env(safe-area-inset-top));left:max(12px,env(safe-area-inset-left));z-index:10;width:min(240px,calc(100vw - 190px));padding:10px 12px;border:1px solid #c9a86a66;border-radius:14px;background:#141c22e6;box-shadow:0 4px 16px #0006;backdrop-filter:blur(6px);font-size:13px;pointer-events:none}
+#hero-hud .hud-row{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+#hero-hud .hud-label{color:#cfc3a6}#hero-hud .hud-hp{font-variant-numeric:tabular-nums;font-size:15px}
+#hero-hud .hud-bar{height:9px;margin:6px 0 8px;padding:1px;border-radius:5px;background:#0b0f12}
+#hero-hud .hud-zone{color:#b9dcb1}#hero-hud[data-zone=wild] .hud-zone{color:#f2a37f}
+#hero-hud .hud-kills{margin-top:2px;color:#8f9a9a;font-size:12px}
+@media (max-width:420px){#hero-hud{width:calc(100vw - 150px);padding:8px 10px;font-size:12px}#hero-hud .hud-kills{display:none}}

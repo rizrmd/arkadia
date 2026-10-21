@@ -30,9 +30,9 @@ before=await hero(page);during=await hold(page,'ArrowLeft',500);assert(during.x<
 await page.keyboard.down('KeyW');await page.keyboard.down('KeyD');await page.waitForTimeout(150);before=await hero(page);await page.waitForTimeout(400);during=await hero(page);await page.keyboard.up('KeyW');await page.keyboard.up('KeyD');await idle(page);
 const slope=(during.y-before.y)/(during.x-before.x);console.log('W+D slope',slope.toFixed(3));assert(Math.abs(slope+.5)<.02,'W+D follows the iso grid');
 await page.waitForTimeout(150);
-// Collision: the expedition table blocks the way north; the hero stops in front of it.
+// Collision: the expedition tent in the centre of the court blocks the way north; the hero stops at its front edge.
 await page.keyboard.down('KeyW');await page.waitForTimeout(4000);const a=await hero(page);await page.waitForTimeout(500);const b=await hero(page);await page.keyboard.up('KeyW');
-console.log('blocked',a,b);assert(Math.abs(a.y-b.y)<1,'the table footprint stops the hero');assert(b.y>470,'stopped at the table front, not inside it');
+console.log('blocked',a,b);assert(Math.abs(a.y-b.y)<1,'the table footprint stops the hero');assert(b.y>290&&b.y<400,'stopped at the tent front, not inside it');
 await shot(page,'2-blocked-by-table');
 // Court bound: holding right ends at the east wall, inside the court.
 await hold(page,'KeyS',900);

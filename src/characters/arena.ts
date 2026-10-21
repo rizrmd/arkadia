@@ -1,43 +1,25 @@
 import { Container, Graphics, Sprite } from 'pixi.js';
-import type { ClipName, SpriteSet, TextureClipName } from './sprites';
+import type { SpriteSet } from './sprites';
+import { Fighter, STATS, inReach, swingTargets, turn, type Kind } from './combat';
 import {ISO} from '../isometric';
 
 // Gameplay for the character preview: one hero vs a crowd of ash revenants on the 10 × 10 arena grid.
 // Dedicated straight up/down gait supplements mirrored diagonal front/back locomotion.
+// Hit points, reach, damage and the clip state machine live in combat.ts, shared with the Stronghold.
 type Point = { x: number; y: number };
-const MAX_STEP = 50, MIN = 0.9, MAX = 9.1, ENGAGED = 8, SPACING = .72, CLEAVE = 3;
+const MAX_STEP = 50, MIN = 0.9, MAX = 9.1, ENGAGED = 8, SPACING = .72;
 const DISPLAY = 1.1; // atlas px → world px (atlas is 0.5 × source); idle hero ≈ 116 world px on a 128 × 64 tile
-const STATS = {
-  hero: { hp: 100, speed: 2.2, reach: 1.15, damage: 1 },
-  revenant: { hp: 2, speed: 0.8, reach: 0.85, damage: 4 },
-};
 
-export class Actor {
+export class Actor extends Fighter {
   view = new Container(); sprite: Sprite; shadow: Graphics; pivotMark: Graphics;
-  state: ClipName = 'idle'; t = 0; facing = 1; back = false; vertical = false; stride = 0; hp: number; cooldown = 0; impactDone = false; flash = 0; deadFor = 0; wander: Point | null = null; immune = 0; retreating = false;
-  constructor(public kind: 'hero' | 'revenant', public set: SpriteSet, public x: number, public y: number) {
-    this.hp = STATS[kind].hp;
+  wander: Point | null = null; retreating = false;
+  constructor(kind: Kind, public set: SpriteSet, x: number, y: number) {
+    super(kind, set.meta.clips, x, y);
     this.shadow = new Graphics().ellipse(0, 0, 26, 26*ISO.slope).fill({ color: 0x050608, alpha: .38 });
     this.sprite = new Sprite(set.clips.idle[0]);
     this.sprite.anchor.set(set.anchor.x, set.anchor.y); this.sprite.roundPixels = true;
     this.pivotMark = new Graphics().circle(0, 0, 2.6).fill(kind === 'hero' ? 0x7fe0ff : 0xff6f8a); this.pivotMark.visible = false;
     this.view.addChild(this.shadow, this.sprite, this.pivotMark); this.view.label = kind;
-  }
-  get textureClip(): TextureClipName {
-    if (this.vertical && (this.state === 'idle' || this.state === 'move')) return `${this.state}${this.back ? 'Up' : 'Down'}`;
-    return this.back && (this.state === 'idle' || this.state === 'move') ? `${this.state}Back` : this.state;
-  }
-  get clip() { return this.set.meta.clips[this.textureClip]; }
-  get alive() { return this.state !== 'die'; }
-  frame() { const n = this.clip.frames.length, i = this.state === 'move' ? Math.floor(this.stride * n) : Math.floor(this.t * this.clip.fps / 1000); return this.clip.loop ? i % n : Math.min(i, n - 1); }
-  finished() { return !this.clip.loop && this.t >= this.clip.frames.length * 1000 / this.clip.fps; }
-  play(state: ClipName) { if (this.state === state && this.clip.loop) return; this.state = state; this.t = 0; this.impactDone = false; }
-  damage(n: number) {
-    if (!this.alive || this.immune > 0) return false;
-    this.hp -= n; this.flash = 120;
-    if (this.hp <= 0) { this.hp = 0; this.play('die'); this.deadFor = 0; return true; }
-    if (this.kind === 'revenant' || this.state !== 'attack') { this.play('hit'); this.immune = this.kind === 'hero' ? 600 : 0; }
-    return false;
   }
 }
 
@@ -70,7 +52,7 @@ export class Arena {
   private step(dt: number) {
     this.moves.clear();
     this.clock += dt;
-    for (const a of this.actors) { a.t += dt; a.cooldown -= dt; a.flash -= dt; a.immune -= dt; }
+    for (const a of this.actors) a.tick(dt);
     this.heroStep(dt);
     const h = this.hero; this.engaged = new Set(this.enemies.filter(e => e.alive).sort((a, b) => (Math.hypot(a.x - h.x, a.y - h.y) - (this.engaged.has(a) ? .3 : 0)) - (Math.hypot(b.x - h.x, b.y - h.y) - (this.engaged.has(b) ? .3 : 0))).slice(0, ENGAGED));
     for (const e of this.enemies) this.enemyStep(e, dt);
@@ -100,29 +82,15 @@ export class Arena {
     }
   }
   private face(a: Actor, d: Point) {
-    const origin = this.toScreen(0, 0), p = this.toScreen(d.x, d.y), sx = p.x - origin.x, sy = p.y - origin.y;
-    const length = Math.hypot(sx, sy);
-    if (length < 1e-6) return;
-    // Reserve frontal/rear artwork for paths within 10° of straight up/down.
-    // A small 15° exit band absorbs AI jitter without retaining vertical art
-    // once the path visibly turns diagonal.
-    a.vertical = Math.abs(sx) / length < Math.sin((a.vertical ? 15 : 10) * Math.PI / 180);
-    // Angular dead bands retain the previous quadrant near an axis, independent of
-    // target distance. Small collision corrections no longer flip front/back art.
-    if (Math.abs(sy) / length > .15) a.back = sy < 0;
-    if (Math.abs(sx) / length > .15) a.facing = sx > 0 ? 1 : -1;
+    const origin = this.toScreen(0, 0), p = this.toScreen(d.x, d.y);
+    turn(a, p.x - origin.x, p.y - origin.y);
   }
-  private recover(a: Actor) { if ((a.state === 'hit' || a.state === 'attack') && a.finished()) a.play('idle'); }
   private heroStep(dt: number) {
     const h = this.hero;
     if (!h.alive) { h.deadFor += dt; if (this.auto && h.deadFor > 3500) this.respawnHero(); return; }
-    this.recover(h);
+    h.recover();
     if (h.state === 'attack') {
-      if (!h.impactDone && h.frame() >= h.clip.impact!) {
-        h.impactDone = true;
-        const hits = this.enemies.filter(e => e.alive && this.inReach(h, e, STATS.hero.reach)).sort((a, b) => Math.hypot(a.x - h.x, a.y - h.y) - Math.hypot(b.x - h.x, b.y - h.y)).slice(0, CLEAVE);
-        for (const e of hits) if (e.damage(STATS.hero.damage)) this.kills++;
-      }
+      if (h.impact()) for (const e of swingTargets(h, this.enemies, STATS.hero.reach)) if (e.damage(STATS.hero.damage)) this.kills++;
       return;
     }
     if (h.state === 'hit') return;
@@ -149,11 +117,11 @@ export class Arena {
       if (this.respawnEnemies && e.deadFor > 4400) { const p = this.edgePoint(); Object.assign(e, { x: p.x, y: p.y, hp: STATS.revenant.hp, deadFor: 0 }); e.view.alpha = 1; e.play('idle'); }
       return;
     }
-    this.recover(e);
+    e.recover();
     if (e.state === 'hit') return;
     const h = this.hero, to = { x: h.x - e.x, y: h.y - e.y }, dist = Math.hypot(to.x, to.y);
     if (e.state === 'attack') {
-      if (!e.impactDone && e.frame() >= e.clip.impact!) { e.impactDone = true; if (h.alive && this.inReach(e, h, STATS.revenant.reach + .25)) h.damage(STATS.revenant.damage); }
+      if (e.impact() && h.alive && inReach(e, h, STATS.revenant.reach + .25)) h.damage(STATS.revenant.damage);
       return;
     }
     // Only the nearest ENGAGED revenants press the attack; the rest keep a loose ring so the hero stays readable.
@@ -170,10 +138,6 @@ export class Arena {
     if (!e.wander || this.rand() < .002) e.wander = this.rand() < .5 ? this.edgePoint() : { x: e.x, y: e.y };
     const w = { x: e.wander.x - e.x, y: e.wander.y - e.y };
     if (Math.hypot(w.x, w.y) > .15) { this.move(e, w, dt); } else e.play('idle');
-  }
-  private inReach(a: Actor, b: Actor, reach: number) {
-    const dx = b.x - a.x, dy = b.y - a.y, sx = dx - dy;
-    return Math.hypot(dx, dy) <= reach && (Math.abs(sx) < .35 || Math.sign(sx) === a.facing);
   }
   private nearest(a: Actor) { let best: Actor | null = null, d = Infinity; for (const e of this.enemies) { const v = Math.hypot(e.x - a.x, e.y - a.y); if (e.alive && v < d) { d = v; best = e; } } return best; }
   private separate() {
