@@ -7,9 +7,12 @@ const out='docs/walk-behind';await fs.mkdir(out,{recursive:true});
 const base=process.env.DEMO_URL?.replace(/\/$/,'');const server=base?null:spawn('node',['server.mjs'],{env:{...process.env,PORT:'3065'}});const url=base||'http://127.0.0.1:3065';let browser;
 try{await new Promise(r=>setTimeout(r,600));browser=await chromium.launch({headless:true,env:{...process.env,LD_LIBRARY_PATH:'/home/dev/.local/browser-libs/usr/lib/x86_64-linux-gnu:/opt/fural-antigravity-glibc'},args:['--no-sandbox','--no-zygote','--single-process']});
  const page=await (await browser.newContext({viewport:{width:1440,height:1000}})).newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));
- // 2x close-up around the resting hero (its faint ghost shows where it stands behind the sprite).
- const shot=async name=>{const b=await page.evaluate(()=>{const r=document.querySelector('#world-hero').getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2};}),left=Math.round(Math.min(1440-440,Math.max(0,b.x-220))),top=Math.round(Math.min(1000-400,Math.max(0,b.y-240)));
-  await fs.writeFile(`${out}/${name}.webp`,await sharp(await page.screenshot()).extract({left,top,width:440,height:400}).resize(880).webp({quality:82}).toBuffer());};
+ // 2x close-up around the resting hero. It stands hidden behind the sprite, so a gold ring marks its feet
+ // (screen = surface translation - raster left/top * scale + world position * scale).
+ const shot=async name=>{const b=await page.evaluate(()=>{const d=document.querySelector('#world-hero').dataset,[l,t]=document.querySelector('#world-lightmap').dataset.origin.split(',').map(Number);
+   const [tx,ty,k]=document.querySelector('#world-surface').style.transform.replace('translate3d','').match(/-?[\d.]+/g).map(Number).filter((_,i)=>i!==2);return {x:tx+(+d.x-l)*k,y:ty+(+d.y-t)*k};});
+  const left=Math.round(Math.min(1440-440,Math.max(0,b.x-220))),top=Math.round(Math.min(1000-400,Math.max(0,b.y-240))),ring=Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="440" height="400"><ellipse cx="${b.x-left}" cy="${b.y-top}" rx="14" ry="7" fill="none" stroke="#f2c46b" stroke-width="2.5"/></svg>`);
+  await fs.writeFile(`${out}/${name}.webp`,await sharp(await sharp(await page.screenshot()).extract({left,top,width:440,height:400}).composite([{input:ring}]).toBuffer()).resize(880).webp({quality:82}).toBuffer());};
  const hero=()=>page.evaluate(()=>{const d=document.querySelector('#world-hero').dataset;return {x:+d.x,y:+d.y};});
  // Saved position -> reload -> hold a key until the hero rests.
  const walk=async(x,y,key)=>{await page.evaluate(p=>localStorage.setItem('arkadia.stronghold.hero',JSON.stringify(p)),{x,y});await page.reload();await page.waitForFunction(()=>document.querySelector('#world-hero')?.dataset.x,null,{timeout:90000});await page.waitForTimeout(500);
