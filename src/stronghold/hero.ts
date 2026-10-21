@@ -10,6 +10,13 @@ import type {Walk} from './controls';
 export type Column={x:number;w:number;back:number;front:number;height:number};
 // A combat clip (attack, hit or die) that encounters.ts plays in place of walking; t is ms into the clip.
 export type Pose={clip:string;t:number};
+// Erase uprights standing in front of a figure drawn in local coordinates around its foot at (px, py),
+// leaving a faint ghost so it is never lost behind a wall.
+export function cutOut(c:CanvasRenderingContext2D,list:readonly Placed[],px:number,py:number){
+ c.globalCompositeOperation='destination-out';
+ for(const p of list){c.save();c.globalAlpha=.72;c.translate(p.x-px,p.y-py);c.transform(1,p.shear,0,p.vertical,0,0);c.drawImage(p.image,-p.width/2,-p.height*p.foot,p.width,p.height);c.restore();}
+ c.globalCompositeOperation='source-over';
+}
 export type Placed={layer:string;x:number;y:number;width:number;height:number;foot:number;shear:number;vertical:number;opacity:number;image:HTMLImageElement};
 type Clip={fps:number;loop:boolean;frames:number[];strideScale?:number};
 type Meta={image:string;revision?:string;cell:{w:number;h:number;pivot:{x:number;y:number}};clips:Record<string,Clip>;frames:{x:number;y:number;w:number;h:number}[]};
@@ -43,15 +50,17 @@ export async function createHero<P extends Placed>(o:{layer:HTMLElement;lightmap
    return [p,[Math.min(...pts.map(q=>q[0])),Math.min(...pts.map(q=>q[1])),Math.max(...pts.map(q=>q[0])),Math.max(...pts.map(q=>q[1]))]];}));
   drawn='';
  }
- // In front of the hero: the front walls and gate always; a court sprite when the hero stands behind the
- // front edge of its footprint at the hero's column (or behind its pivot where no column reaches).
- function front(p:P){
+ // In front of a figure standing at (px, py): the front walls and gate always; a court sprite when the figure
+ // stands behind the front edge of its footprint at the figure's column (or behind its pivot where no column reaches).
+ function front(p:P,px:number,py:number){
   // The full animated gateway uses its own depth layer, so its current frame handles occlusion.
   if('id' in p&&p.id==='gate')return false;
-  if(p.layer==='foreground')return y<p.y+12;if(p.layer!=='world')return false;
-  let edge=-Infinity;for(const col of o.footprint(p))if(Math.abs(col.x-x)<=col.w/2+RADIUS)edge=Math.max(edge,col.front);
-  return y<(edge>-Infinity?edge:p.y);
+  if(p.layer==='foreground')return py<p.y+12;if(p.layer!=='world')return false;
+  let edge=-Infinity;for(const col of o.footprint(p))if(Math.abs(col.x-px)<=col.w/2+RADIUS)edge=Math.max(edge,col.front);
+  return py<(edge>-Infinity?edge:p.y);
  }
+ // Uprights in front of a figure at (px, py) whose screen bounds overlap its local box [left, top, right, bottom].
+ const occluders=(px:number,py:number,b:number[])=>objects.filter(p=>{const r=bounds.get(p)!;return !(r[2]<px+b[0]||r[0]>px+b[2]||r[3]<py+b[1]||r[1]>py+b[3])&&front(p,px,py);});
  try{const saved=JSON.parse(localStorage.getItem(KEY)||'null');if(saved&&Number.isFinite(saved.x)&&Number.isFinite(saved.y)){x=saved.x;y=saved.y;}}catch{}
  const clipName=()=>pose?pose.clip:vertical?state+(back?'Up':'Down'):back?state+'Back':state;
  const frameIndex=()=>{const clip=meta.clips[clipName()],n=clip.frames.length,i=pose?Math.floor(pose.t*clip.fps/1000):state==='move'?Math.floor(stride*n/(clip.strideScale||1)):Math.floor(t*clip.fps/1000);return clip.frames[clip.loop?i%n:Math.min(i,n-1)];};
@@ -98,11 +107,8 @@ export async function createHero<P extends Placed>(o:{layer:HTMLElement;lightmap
   // building solids, faded with the same alpha and colour.
   if(s.alpha){const q=frame(flat);q.globalCompositeOperation='source-in';q.fillStyle='rgb(20,28,44)';q.fillRect(0,0,cell.w,cell.h);q.globalCompositeOperation='source-over';c.save();c.globalAlpha=s.alpha;c.filter='blur(1px)';c.transform(1,0,-s.dx,-s.dy,0,0);sprite(flat);c.restore();local();}
   c.save();sprite(lit);c.restore();
-  c.globalCompositeOperation='destination-out';let hidden=0;
-  for(const p of objects){const r=bounds.get(p)!;if(r[2]<x+box[0]||r[0]>x+box[2]||r[3]<y+box[1]||r[1]>y+box[3]||!front(p))continue;hidden++;
-   c.save();c.globalAlpha=.72;c.translate(p.x-x,p.y-y);c.transform(1,p.shear,0,p.vertical,0,0);c.drawImage(p.image,-p.width/2,-p.height*p.foot,p.width,p.height);c.restore();}
-  c.globalCompositeOperation='source-over';
-  Object.assign(canvas.dataset,{x:x.toFixed(1),y:y.toFixed(1),state,clip:clipName(),frame:String(frameIndex()),facing:String(facing),behind:String(hidden),tint});
+  const hidden=occluders(x,y,box);cutOut(c,hidden,x,y);
+  Object.assign(canvas.dataset,{x:x.toFixed(1),y:y.toFixed(1),state,clip:clipName(),frame:String(frameIndex()),facing:String(facing),behind:String(hidden.length),tint});
  }
  function place(){canvas.style.transform=`translate3d(${origin.x+(x+box[0])*origin.scale}px,${origin.y+(y+box[1])*origin.scale}px,0) scale(${origin.scale})`;}
  let last=0;
@@ -110,6 +116,9 @@ export async function createHero<P extends Placed>(o:{layer:HTMLElement;lightmap
  const loop=(now:number)=>{let dt=last?Math.min(now-last,120):16;last=now;for(;dt>0;dt-=34)step(Math.min(dt,34));sample(now);render();place();requestAnimationFrame(loop);};
  return {
   setScene,
+  // Shared with the revenants (encounters.ts): the same footprints block them, the same uprights hide them
+  // and the same sun casts their shadows.
+  blocked,occluders,sun:o.sun,
   // Called by every camera frame with the screen position of the world origin.
   place(ox:number,oy:number,scale:number){origin={x:ox,y:oy,scale};render();place();},
   start(){if(blocked(x,y)&&!blocked(SPAWN.x,SPAWN.y)){x=SPAWN.x;y=SPAWN.y;}requestAnimationFrame(loop);},

@@ -2,15 +2,17 @@ import {unproject} from '../isometric';
 import {Fighter,STATS,inReach,swingTargets,turn} from '../characters/combat';
 import type {CharacterMeta} from '../characters/sprites';
 import {COURT,tilePoint} from './terrain';
-import {walkableGround} from './navigation';
 import {GATE,SPAWN_DISTANCE_M,METERS_PER_TILE,fromGate,fromCenter,inSafeZone,spawnPoint,meters,type Tile} from './safe-zone';
-import {DISPLAY,type Pose} from './hero';
+import {DISPLAY,cutOut,type Placed,type Pose} from './hero';
+import type {Sun} from './daylight';
 import type {Walk} from './controls';
 // Revenants roaming the snow beyond the safe zone, the hero's hit points and their auto attack. The fight runs on
 // the arena's rules (combat.ts): the same hit points, damage, reach, hit stun and swing timing, with the reach
 // scaled to the Stronghold's smaller figures. Positions are ground tiles from the court origin, as in terrain.ts tilePoint().
 // Revenants spawn 10 m outside the gate (safe-zone.ts) and never enter the court: a chase stops
 // at the boundary, and once the hero is back inside they lose interest and wander off; the hero heals there.
+// Like the hero (hero.ts) they cannot walk through the ground footprints of trees, rocks and walls, uprights
+// standing in front of them cut their silhouette out, and the only shadow under them is the sun-cast one.
 const SCALE=DISPLAY/1.1; // the arena draws characters at 1.1x on tiles of the same size
 const HERO_REACH=STATS.hero.reach*SCALE,ENEMY_REACH=STATS.revenant.reach*SCALE,SIDE=.35*SCALE,SPACING=.72*SCALE;
 // Hero ground speed is 105 screen px/s along a 71.6 px tile edge (hero.ts); revenants walk at a bit over half of it,
@@ -19,14 +21,15 @@ const ENEMY_SPEED=105/Math.hypot(64,32)*.55,ENEMY_STRIDE=76*DISPLAY/1.1;
 // Tiles: a revenant hunts the hero within AGGRO (packs spawn inside it, so they come straight for a hero in the wilds);
 // the idle hero steps in to swing at one within ENGAGE. Packs of one to three surround the hero, and a swing only
 // reaches the side it faces, so the ones behind land their blows.
-const AGGRO=13,ENGAGE=2,MAX_ENEMIES=8,PACK=3,SPAWN_EVERY=2000,REGEN=8,HERO_RESPAWN=3500,CORPSE=4400;
-type Foe=Fighter&{home:Tile;wander:Tile|null;age:number};
-type Hero={position():{x:number;y:number};face(sx:number,sy:number):void;respawn():void;teleport(x:number,y:number):boolean};
+const VEER=[.4,.8,1.2,1.6,2,2.4],AGGRO=13,ENGAGE=2,MAX_ENEMIES=8,PACK=3,SPAWN_EVERY=2000,REGEN=8,HERO_RESPAWN=3500,CORPSE=4400;
+type Foe=Fighter&{home:Tile;wander:Tile|null;age:number;side:number};
+type Hero={position():{x:number;y:number};face(sx:number,sy:number):void;respawn():void;teleport(x:number,y:number):boolean;
+ blocked(x:number,y:number):boolean;occluders(x:number,y:number,box:number[]):Placed[];sun():Sun};
 const toTile=(x:number,y:number):Tile=>{const g=unproject(x-COURT.x,y-COURT.y);return {u:g.x,v:g.y};};
 const screen=(du:number,dv:number)=>({x:(du-dv)*64,y:(du+dv)*32});
 const tileOf=(f:Fighter):Tile=>({u:f.x,v:f.y});
-const walkable=(p:Tile)=>{const w=tilePoint(p.u,p.v);return walkableGround(w.x,w.y);};
 export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero:Hero;direction:()=>Walk}){
+ const walkable=(p:Tile)=>{const w=tilePoint(p.u,p.v);return !o.hero.blocked(w.x,w.y);};
  const manifest=await (await fetch('/assets/characters/manifest.json')).json(),heroMeta:CharacterMeta=manifest.characters.hero,meta:CharacterMeta=manifest.characters.revenant;
  const atlas=new Image();atlas.src='/assets/characters/'+meta.image+(meta.revision?`?v=${encodeURIComponent(meta.revision)}`:'');await atlas.decode();
  let seed=(Date.now()>>>0)||1;const random=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;};
@@ -51,16 +54,23 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
   for(let i=0;i<n;i++){
    const at=i?spawnPoint(random,tileOf(h),walkable):p;if(!at)continue;
    spawns.push({u:+at.u.toFixed(2),v:+at.v.toFixed(2),m:+meters(fromGate(at)).toFixed(1)});if(spawns.length>200)spawns.shift();
-   const g=f??Object.assign(new Fighter('revenant',meta.clips,at.u,at.v),{home:at,wander:null,age:0});if(!f)foes.push(g);
+   const g=f??Object.assign(new Fighter('revenant',meta.clips,at.u,at.v),{home:at,wander:null,age:0,side:1});if(!f)foes.push(g);
    Object.assign(g,{x:at.u,y:at.v,home:at,wander:null,age:0,hp:STATS.revenant.hp,deadFor:0,cooldown:600+random()*900});g.play('idle');
   }
  }
- // Ground speed in tiles; a step that would enter the safe zone or leave walkable snow slides along it or stops.
+ // Ground speed in tiles; a step that would enter the safe zone, leave walkable snow or walk into a footprint
+ // slides along it, veers around it or stops. Veering takes the shallowest free turn, first to the side it last
+ // turned to, and when pressed against a footprint steps partly back off it (footprints are widened across the
+ // screen more than up and down, so a square turn still grazes them): the revenant follows the edge round a
+ // trunk instead of dithering at it. One already overlapping a footprint may walk out. False when stopped.
  function move(f:Foe,du:number,dv:number,dt:number){
-  const len=Math.hypot(du,dv);if(len<1e-6)return;const v=ENEMY_SPEED*dt/1000,dx=du/len*v,dy=dv/len*v,s=screen(du,dv);turn(f,s.x,s.y);
-  for(const [mx,my] of [[dx,dy],[dx,0],[0,dy]]){const next={u:f.x+mx,v:f.y+my};if(inSafeZone(next)||!walkable(next))continue;
-   f.x=next.u;f.y=next.v;const m=screen(mx,my);f.stride+=Math.hypot(m.x,m.y)/ENEMY_STRIDE;f.play('move');return;}
-  f.play('idle');
+  const len=Math.hypot(du,dv);if(len<1e-6)return false;const v=ENEMY_SPEED*dt/1000,dx=du/len*v,dy=dv/len*v,stuck=!walkable(tileOf(f));
+  const veer=(a:number)=>[dx*Math.cos(a)-dy*Math.sin(a),dx*Math.sin(a)+dy*Math.cos(a),Math.sign(a)];
+  // A slide along one axis only counts when it covers real ground; head-on, it barely moves and stalled the chase.
+  for(const [mx,my,side=0] of [[dx,dy],[dx,0],[0,dy],...[1,-1].flatMap(t=>VEER.map(a=>veer(a*t*f.side)))]){
+   const next={u:f.x+mx,v:f.y+my};if(Math.hypot(mx,my)<v*.4||inSafeZone(next)||!stuck&&!walkable(next))continue;if(side)f.side=side;
+   f.x=next.u;f.y=next.v;const m=screen(mx,my);turn(f,m.x,m.y);f.stride+=Math.hypot(m.x,m.y)/ENEMY_STRIDE;f.play('move');return true;}
+  const s=screen(du,dv);turn(f,s.x,s.y);f.play('idle');return false;
  }
  function nearest(range:number){let best:Foe|null=null,d=range;for(const f of foes){const v=Math.hypot(f.x-h.x,f.y-h.y);if(f.alive&&v<=d){d=v;best=f;}}return best;}
  // The hero, when nobody steers: swing at a revenant in reach, or step in toward one a few paces away.
@@ -89,7 +99,8 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
   }
   // Wander around the spawn point, outside the zone.
   if(!f.wander||random()<.002){const a=random()*Math.PI*2,r=random()*5,w={u:f.home.u+Math.cos(a)*r,v:f.home.v+Math.sin(a)*r};f.wander=random()<.5&&!inSafeZone(w)&&walkable(w)?w:{u:f.x,v:f.y};}
-  const wu=f.wander.u-f.x,wv=f.wander.v-f.y;if(Math.hypot(wu,wv)>.15)move(f,wu,wv,dt);else f.play('idle');
+  // A wander target behind an obstacle is given up for a new one.
+  const wu=f.wander.u-f.x,wv=f.wander.v-f.y;if(Math.hypot(wu,wv)>.15){if(!move(f,wu,wv,dt))f.wander=null;}else f.play('idle');
  }
  // Revenants keep a body's width apart and off the hero; only revenants are pushed, never into the zone.
  function separate(){
@@ -107,13 +118,29 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
   separate();
   spawnTimer-=dt;if(spawnTimer<=0&&foes.length<MAX_ENEMIES){spawnTimer=SPAWN_EVERY;spawn();}
  }
- // One revenant frame at atlas resolution, tinted by the ambient light and the red hit flash.
- const cell=document.createElement('canvas');cell.width=meta.cell.w;cell.height=meta.cell.h;const cc=cell.getContext('2d')!;
+ // One revenant frame at atlas resolution, tinted by the ambient light and the red hit flash, and as a flat
+ // shadow silhouette.
+ const cell=document.createElement('canvas'),flat=document.createElement('canvas');for(const b of [cell,flat]){b.width=meta.cell.w;b.height=meta.cell.h;}
+ const cc=cell.getContext('2d')!,fc=flat.getContext('2d')!,pivot=meta.cell.pivot;
  function paintCell(f:Foe){
   const fr=meta.frames[f.clip.frames[f.frame()]];cc.globalCompositeOperation='copy';cc.drawImage(atlas,fr.x,fr.y,fr.w,fr.h,0,0,cell.width,cell.height);
+  fc.globalCompositeOperation='copy';fc.drawImage(cell,0,0);fc.globalCompositeOperation='source-in';fc.fillStyle='rgb(20,28,44)';fc.fillRect(0,0,flat.width,flat.height);
   if(ambient!=='255,255,255'){cc.globalCompositeOperation='multiply';cc.fillStyle=`rgb(${ambient})`;cc.fillRect(0,0,cell.width,cell.height);cc.globalCompositeOperation='destination-in';cc.drawImage(atlas,fr.x,fr.y,fr.w,fr.h,0,0,cell.width,cell.height);}
   if(f.flash>0){cc.globalCompositeOperation='source-atop';cc.fillStyle='rgba(255,140,110,.55)';cc.fillRect(0,0,cell.width,cell.height);}
   cc.globalCompositeOperation='source-over';
+ }
+ // Each revenant is composed in its own small canvas around its foot (sun shadow, sprite, then the uprights
+ // in front of it cut out), so a cut-out never erases another revenant, then drawn into the shared layer.
+ const figure=document.createElement('canvas'),fg=figure.getContext('2d')!;
+ function compose(f:Foe,px:number,py:number,box:number[],s:Sun,r:number){
+  const wpx=Math.ceil((box[2]-box[0])*r),hpx=Math.ceil((box[3]-box[1])*r);if(figure.width<wpx||figure.height<hpx){figure.width=Math.max(figure.width,wpx);figure.height=Math.max(figure.height,hpx);}
+  const local=()=>fg.setTransform(r,0,0,r,-box[0]*r,-box[1]*r),sprite=(src:HTMLCanvasElement)=>{fg.scale((f.vertical?1:f.facing)*DISPLAY,DISPLAY);fg.drawImage(src,-pivot.x,-pivot.y);};
+  fg.setTransform(1,0,0,1,0,0);fg.clearRect(0,0,wpx,hpx);paintCell(f);local();
+  // Sun shadow as the hero's: a sprite point h above the foot lands h*(dx,dy) along the ground.
+  if(s.alpha){fg.save();fg.globalAlpha=s.alpha;fg.filter='blur(1px)';fg.transform(1,0,-s.dx,-s.dy,0,0);sprite(flat);fg.restore();}
+  fg.save();sprite(cell);fg.restore();
+  cutOut(fg,o.hero.occluders(px,py,box),px,py);
+  return [wpx,hpx];
  }
  let painted=false;
  function render(){
@@ -123,12 +150,15 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
   const shown=foes.filter(f=>{if(f.deadFor>CORPSE-500&&!f.alive)return false;const w=tilePoint(f.x,f.y),s=at(w.x,w.y);return s.x>-80&&s.x<innerWidth+80&&s.y>-40&&s.y<innerHeight+120;});
   if(shown.length||painted){
    for(const c of [back,front]){const g=c.getContext('2d')!;g.setTransform(1,0,0,1,0,0);g.clearRect(0,0,W,H);}
+   // Local bounds around the foot: the mirrored sprite cell plus the sun-cast silhouette, as in hero.ts.
+   const sun=o.hero.sun(),r=k*dpr,half=Math.max(pivot.x,meta.cell.w-pivot.x)*DISPLAY,top=-pivot.y*DISPLAY,H0=-top,bottom=(meta.cell.h-pivot.y)*DISPLAY+8;
+   const sxs=[-half,half,-half+H0*sun.dx,half+H0*sun.dx],sys=[top,bottom,H0*sun.dy-8,H0*sun.dy+8];
+   const box=[Math.floor(Math.min(...sxs))-4,Math.floor(Math.min(...sys))-4,Math.ceil(Math.max(...sxs))+4,Math.ceil(Math.max(...sys))+4];
    for(const f of shown.sort((a,b)=>tilePoint(a.x,a.y).y-tilePoint(b.x,b.y).y)){
     const w=tilePoint(f.x,f.y),s=at(w.x,w.y),g=(w.y<hp.y?back:front).getContext('2d')!;
     const alpha=Math.min(1,f.age/500)*(f.alive?1:Math.max(0,1-(f.deadFor-3500)/900));if(alpha<=0)continue;
-    g.setTransform(dpr,0,0,dpr,0,0);g.globalAlpha=alpha;
-    g.fillStyle='rgba(5,6,8,.32)';g.beginPath();g.ellipse(s.x,s.y,12*k,6*k,0,0,Math.PI*2);g.fill();
-    paintCell(f);g.save();g.translate(s.x,s.y);g.scale((f.vertical?1:f.facing)*DISPLAY*k,DISPLAY*k);g.drawImage(cell,-meta.cell.pivot.x,-meta.cell.pivot.y);g.restore();
+    const [fw,fh]=compose(f,w.x,w.y,box,sun,r);
+    g.setTransform(1,0,0,1,0,0);g.globalAlpha=alpha;g.drawImage(figure,0,0,fw,fh,Math.round((s.x+box[0]*k)*dpr),Math.round((s.y+box[1]*k)*dpr),fw,fh);g.setTransform(dpr,0,0,dpr,0,0);
     // A small health bar over each wounded revenant.
     if(f.alive&&f.hp<STATS.revenant.hp){const bw=24,by=s.y-62*k;g.fillStyle='#120c0ccc';g.fillRect(s.x-bw/2-1,by-1,bw+2,5);g.fillStyle='#d9534f';g.fillRect(s.x-bw/2,by,bw*f.hp/STATS.revenant.hp,3);}
     g.globalAlpha=1;
@@ -157,10 +187,14 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
   setMaxHp(n:number){if(n===maxHp)return;h.hp=Math.min(n,h.hp+Math.max(0,n-maxHp));maxHp=n;},
   snapshot:()=>({spawnDistanceM:SPAWN_DISTANCE_M,gate:GATE,metersPerTile:METERS_PER_TILE,
    hero:{hp:h.hp,maxHp,state:h.state,u:+h.x.toFixed(2),v:+h.y.toFixed(2),meters:+meters(fromCenter(tileOf(h))).toFixed(1),safe:inSafeZone(tileOf(h))},
-   foes:foes.map(f=>({u:+f.x.toFixed(2),v:+f.y.toFixed(2),hp:f.hp,state:f.state,safe:inSafeZone(tileOf(f)),gateMeters:+meters(fromGate(tileOf(f))).toFixed(1)})),
+   foes:foes.map(f=>({u:+f.x.toFixed(2),v:+f.y.toFixed(2),hp:f.hp,state:f.state,safe:inSafeZone(tileOf(f)),clear:walkable(tileOf(f)),gateMeters:+meters(fromGate(tileOf(f))).toFixed(1)})),
    kills,spawns:[...spawns],minSpawnMeters:spawns.length?Math.min(...spawns.map(s=>s.m)):null,minFoeMeters:foes.length?Math.min(...foes.map(f=>meters(fromGate(tileOf(f))))):null}),
   // Testing hook: stand the hero on a ground tile.
-  teleport(u:number,v:number){const w=tilePoint(u,v);if(!o.hero.teleport(w.x,w.y))return false;h.x=u;h.y=v;return true;}
+  teleport(u:number,v:number){const w=tilePoint(u,v);if(!o.hero.teleport(w.x,w.y))return false;h.x=u;h.y=v;return true;},
+  // Testing hook: whether a revenant may stand on a ground tile.
+  clear:(u:number,v:number)=>walkable({u,v}),
+  // Testing hook: a revenant on a free ground tile outside the zone; returns its index in snapshot().foes, or -1.
+  summon(u:number,v:number){const at={u,v};if(inSafeZone(at)||!walkable(at))return -1;const f:Foe=Object.assign(new Fighter('revenant',meta.clips,u,v),{home:at,wander:null,age:500,side:1});f.play('idle');return foes.push(f)-1;}
  };
  (window as any).__STRONGHOLD_COMBAT__=api;
  return api;
