@@ -13,3 +13,9 @@ Runtime uses `full-gateway-sheet.webp` and its JSON manifest. The gate has one p
 The build and browser checks passed locally: full sprite frames contain both towers, closed/open passage alpha, frame reversal, unchanged world/light/shadow rebuild counts during transitions, two-way passage, tower collision, depth order on both sides, absence of a duplicate static gate, and pivot placement before/after camera movement. Position error was below 0.001 world/screen pixel in the recorded depth check.
 
 Performance is measured on a 390 × 844 viewport with CPU slowed 4 times. See the gate performance and full-gateway depth JSON reports. Runtime screenshots are recorded for closed, opening, open and closing poses.
+
+## Live verification
+
+Implementation `cab26d0` was pushed to `feat/stronghold` (with documentation-only merge `84fa4a8`) and deployed to the canonical Stronghold sandbox. All three browser checks passed on the public host: `verify-gateway-depth.mjs`, `verify-gate-animation.mjs`, and `verify-open-gate.mjs`.
+
+The live 390 × 844 / 4× CPU test measured p95 frame interval 66.7 ms and maximum 83.3 ms, with no world, light or shadow rebuild during the animation and no JavaScript errors. Both full towers were present in every sampled frame. Mid-swing reversal, two-way passage and tower collision passed. The live depth test measured placement errors below 0.001 pixels before and after camera panning, with correct hero/gateway order on either side of the threshold and zero duplicate gate draws in the cached world.
