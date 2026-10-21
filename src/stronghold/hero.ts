@@ -14,6 +14,10 @@ type Meta={image:string;revision?:string;cell:{w:number;h:number;pivot:{x:number
 const BASE='/assets/characters/',KEY='arkadia.stronghold.hero';
 // Atlas px -> world px. Matches the court props (a barrel is 27 px wide), not the arena's 1.1.
 const DISPLAY=.48,SPEED=105,STRIDE=88*DISPLAY/1.1,RADIUS=9,SPAWN={x:577,y:640};
+// Speed and stride are measured on the ground, not the screen: on the 2:1 map a screen pixel straight up or down
+// covers twice the ground of one across, so equal screen speed walked the hero up and down twice as fast as left
+// and right. SPEED is screen px/s along a tile edge (the W+D walk); up/down and across follow at the same ground pace.
+const ground=(sx:number,sy:number)=>{const g=unproject(sx,sy);return Math.hypot(g.x,g.y);},PACE=ground(2,1)/Math.hypot(2,1);
 export async function createHero<P extends Placed>(o:{layer:HTMLElement;lightmap:HTMLCanvasElement;surface:HTMLElement;footprint:(p:P)=>Column[];sun:()=>Sun;direction:()=>Walk;follow:(x:number,y:number,dt:number)=>void}){
  const meta:Meta=(await (await fetch(BASE+'manifest.json')).json()).characters.hero,atlas=new Image();
  atlas.src=BASE+meta.image+(meta.revision?`?v=${encodeURIComponent(meta.revision)}`:'');await atlas.decode();
@@ -52,9 +56,9 @@ export async function createHero<P extends Placed>(o:{layer:HTMLElement;lightmap
  function step(dt:number){
   const d=o.direction(),m=Math.hypot(d.x,d.y);t+=dt;let progress=0;
   if(m>0){
-   face(d.x,d.y);const v=SPEED*dt/1000,dx=d.x*v,dy=d.y*v,stuck=blocked(x,y);
+   face(d.x,d.y);const g=ground(d.x,d.y),v=SPEED*dt/1000*m*PACE/g,dx=d.x*v,dy=d.y*v,stuck=blocked(x,y);
    // Slide along whatever blocks the full step; a hero already overlapping a footprint may walk out.
-   for(const [mx,my] of [[dx,dy],[dx,0],[0,dy]])if(mx||my){if(stuck||!blocked(x+mx,y+my)){x+=mx;y+=my;progress=(mx*d.x+my*d.y)/m;break;}}
+   for(const [mx,my] of [[dx,dy],[dx,0],[0,dy]])if(mx||my){if(stuck||!blocked(x+mx,y+my)){x+=mx;y+=my;progress=(mx*d.x+my*d.y)*g/(m*m*PACE);break;}}
   }
   const moving=progress/(dt/1000)>(state==='move'?2:5);if(moving!==(state==='move')){state=moving?'move':'idle';t=0;}
   if(moving){stride+=progress/STRIDE;lastMove=performance.now();}

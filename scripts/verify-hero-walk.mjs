@@ -31,7 +31,7 @@ await page.keyboard.down('KeyW');await page.keyboard.down('KeyD');await page.wai
 const slope=(during.y-before.y)/(during.x-before.x);console.log('W+D slope',slope.toFixed(3));assert(Math.abs(slope+.5)<.02,'W+D follows the iso grid');
 await page.waitForTimeout(150);
 // Collision: the expedition table blocks the way north; the hero stops in front of it.
-await page.keyboard.down('KeyW');await page.waitForTimeout(2600);const a=await hero(page);await page.waitForTimeout(500);const b=await hero(page);await page.keyboard.up('KeyW');
+await page.keyboard.down('KeyW');await page.waitForTimeout(4000);const a=await hero(page);await page.waitForTimeout(500);const b=await hero(page);await page.keyboard.up('KeyW');
 console.log('blocked',a,b);assert(Math.abs(a.y-b.y)<1,'the table footprint stops the hero');assert(b.y>470,'stopped at the table front, not inside it');
 await shot(page,'2-blocked-by-table');
 // Court bound: holding right ends at the east wall, inside the court.
@@ -48,6 +48,18 @@ assert.deepEqual([(await hero(page)).x,(await hero(page)).y],[before.x,before.y]
 // Position survives a reload (saved once the hero has rested 400 ms).
 const rest=await hero(page);await page.waitForTimeout(800);await page.goto(url+'/stronghold.html?time=0.5');await page.waitForFunction(()=>document.querySelector('#world-hero')?.dataset.x);await page.waitForTimeout(300);const reloaded=await hero(page);console.log('reloaded',reloaded);assert(Math.hypot(reloaded.x-rest.x,reloaded.y-rest.y)<2,'saved position');
 // Walk back to the court centre for the lighting shots.
+await page.evaluate(()=>localStorage.removeItem('arkadia.stronghold.hero'));
+// Ground speed: up/down, across and along a tile edge all cross the court at the same pace (screen speed differs
+// on the 2:1 map: a vertical screen pixel is twice the ground of a horizontal one).
+await page.goto(url+'/stronghold.html?time=0.5');await page.waitForFunction(()=>document.querySelector('#world-hero')?.dataset.x);await page.waitForTimeout(800);
+const rate=async keys=>{for(const k of keys)await page.keyboard.down(k);await page.waitForFunction(()=>document.querySelector('#world-hero').dataset.state==='move');await page.waitForTimeout(100);
+ const r=await page.evaluate(async()=>{const d=document.querySelector('#world-hero').dataset,at=()=>({x:+d.x,y:+d.y,t:performance.now()}),a=at();await new Promise(r=>setTimeout(r,450));return [a,at()];});
+ for(const k of keys)await page.keyboard.up(k);await idle(page);const [a,b]=r.map(tile),screen=Math.hypot(r[1].x-r[0].x,r[1].y-r[0].y)/(r[1].t-r[0].t)*1000;
+ return {keys:keys.join('+'),tiles:Math.hypot(b.u-a.u,b.v-a.v)/(r[1].t-r[0].t)*1000,screen};};
+const rates=[];for(const keys of [['KeyD'],['KeyA'],['KeyW'],['KeyS'],['KeyW','KeyD'],['KeyS','KeyA'],['ArrowUp'],['ArrowRight']])rates.push(await rate(keys));
+console.table(rates.map(r=>({keys:r.keys,'tiles/s':r.tiles.toFixed(3),'screen px/s':r.screen.toFixed(1)})));
+const mean=rates.reduce((s,r)=>s+r.tiles,0)/rates.length;for(const r of rates)assert(Math.abs(r.tiles/mean-1)<.1,`${r.keys} walks ${r.tiles.toFixed(3)} tiles/s, mean ${mean.toFixed(3)}`);
+const up=rates.find(r=>r.keys==='KeyW'),right=rates.find(r=>r.keys==='KeyD');assert(Math.abs(up.screen/right.screen-.5)<.06,'straight up moves half the screen speed of straight across');
 await page.evaluate(()=>localStorage.removeItem('arkadia.stronghold.hero'));
 for(const [time,name] of [['0.31','4-morning-shadow'],['0','5-night-tint']]){const p=page;await p.goto(url+'/stronghold.html?time='+time);await p.waitForFunction(()=>document.querySelector('#world-hero')?.dataset.x);await p.waitForTimeout(1200);await hold(p,'KeyA',700);const h=await hero(p);console.log(name,h);
  if(time==='0'){const [r,g,bl]=h.tint.split(',').map(Number);assert(bl>r&&r<200,'night tints the hero blue-dark, got '+h.tint);}
