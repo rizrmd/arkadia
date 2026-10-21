@@ -136,8 +136,8 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
   const wpx=Math.ceil((box[2]-box[0])*r),hpx=Math.ceil((box[3]-box[1])*r);if(figure.width<wpx||figure.height<hpx){figure.width=Math.max(figure.width,wpx);figure.height=Math.max(figure.height,hpx);}
   const local=()=>fg.setTransform(r,0,0,r,-box[0]*r,-box[1]*r),sprite=(src:HTMLCanvasElement)=>{fg.scale((f.vertical?1:f.facing)*DISPLAY,DISPLAY);fg.drawImage(src,-pivot.x,-pivot.y);};
   fg.setTransform(1,0,0,1,0,0);fg.clearRect(0,0,wpx,hpx);paintCell(f);local();
-  // Sun shadow as the hero's: a sprite point h above the foot lands h*(dx,dy) along the ground.
-  if(s.alpha){fg.save();fg.globalAlpha=s.alpha;fg.filter='blur(1px)';fg.transform(1,0,-s.dx,-s.dy,0,0);sprite(flat);fg.restore();}
+  // Sun shadow as the hero's: a sprite point h above the foot lands h*(dx,dy) along the ground, its width across the sun.
+  if(s.alpha){fg.save();fg.globalAlpha=s.alpha;fg.filter='blur(1px)';fg.transform(s.wx,s.wy,-s.dx,-s.dy,0,0);sprite(flat);fg.restore();}
   fg.save();sprite(cell);fg.restore();
   cutOut(fg,o.hero.occluders(px,py,box),px,py);
   return [wpx,hpx];
@@ -152,7 +152,7 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
    for(const c of [back,front]){const g=c.getContext('2d')!;g.setTransform(1,0,0,1,0,0);g.clearRect(0,0,W,H);}
    // Local bounds around the foot: the mirrored sprite cell plus the sun-cast silhouette, as in hero.ts.
    const sun=o.hero.sun(),r=k*dpr,half=Math.max(pivot.x,meta.cell.w-pivot.x)*DISPLAY,top=-pivot.y*DISPLAY,H0=-top,bottom=(meta.cell.h-pivot.y)*DISPLAY+8;
-   const sxs=[-half,half,-half+H0*sun.dx,half+H0*sun.dx],sys=[top,bottom,H0*sun.dy-8,H0*sun.dy+8];
+   const ends=[-half,half].flatMap(w=>[0,H0].map(h=>[w*sun.wx+h*sun.dx,w*sun.wy+h*sun.dy])),sxs=[-half,half,...ends.map(e=>e[0])],sys=[top,bottom,...ends.map(e=>e[1]-8),...ends.map(e=>e[1]+8)];
    const box=[Math.floor(Math.min(...sxs))-4,Math.floor(Math.min(...sys))-4,Math.ceil(Math.max(...sxs))+4,Math.ceil(Math.max(...sys))+4];
    for(const f of shown.sort((a,b)=>tilePoint(a.x,a.y).y-tilePoint(b.x,b.y).y)){
     const w=tilePoint(f.x,f.y),s=at(w.x,w.y),g=(w.y<hp.y?back:front).getContext('2d')!;

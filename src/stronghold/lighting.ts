@@ -1,3 +1,4 @@
+import {TORCHES,torchesOn,drawTorches,createTorchFlames,torchAssetsReady} from './torches';
 import {LIGHT_SPRITES as SPRITES,emissive} from './light-anchors';
 import {lightingAt,resolveTime,modeFrom,sunAt,type Lighting,type Mode} from './daylight';
 // Day/night is baked into #world-surface: the unlit world is kept in `base`, and
@@ -18,10 +19,11 @@ export type ClockState=Lighting&{manual:boolean;mode:Mode};
 export function createLighting(o:{surface:HTMLCanvasElement;snowLayer:HTMLElement;left:number;top:number;width:number;height:number;onSun:()=>void}){
  const {surface,left,top,width,height}=o,canvas=()=>{const c=document.createElement('canvas');c.width=Math.ceil(width*RES);c.height=Math.ceil(height*RES);c.style.cssText=`position:absolute;left:0;top:0;width:${width}px;height:${height}px;transform-origin:0 0;pointer-events:none`;return c;};
  // The lightmap stays in the DOM, hidden, so verification tooling can read it.
+ const torchLight=canvas(),torchBloom=canvas(),torchHalo=canvas();
  const lightmap=canvas(),lights=canvas(),halo=canvas(),bloom=canvas(),flicker=document.createElement('div'),base=document.createElement('canvas');
  lightmap.id='world-lightmap';lightmap.hidden=true;lightmap.dataset.origin=`${left},${top},${RES}`;halo.className='glow-a';flicker.id='world-glow';
  flicker.style.cssText=`position:absolute;left:0;top:0;width:${width}px;height:${height}px;transform-origin:0 0;will-change:transform;mix-blend-mode:screen;pointer-events:none`;
- flicker.append(halo);surface.after(flicker,lightmap,bloom);
+ flicker.append(halo,torchHalo);torchBloom.style.mixBlendMode='screen';torchBloom.hidden=true;surface.after(flicker,lightmap,bloom,torchBloom);
  // Clock-drag preview: the surface shows the unlit world while the small lightmap and bloom
  // blend live over it and a flat ambient layer tints the snow. Each slider step then updates
  // an 807 x 485 canvas instead of recomposing the full world raster; releasing bakes once.
@@ -41,11 +43,20 @@ export function createLighting(o:{surface:HTMLCanvasElement;snowLayer:HTMLElemen
   const white=document.createElement('canvas');white.width=colour.width;white.height=colour.height;const w=white.getContext('2d')!;w.drawImage(colour,0,0);w.globalCompositeOperation='source-in';w.fillStyle='#fff';w.fillRect(0,0,white.width,white.height);
   m={white,colour};masks.set(p.file,m);return m;
  }
+ const flames=createTorchFlames(surface,left,top);
+ torchAssetsReady.then(()=>{last='';paint(current,true);}).catch(()=>{});
  const world=(c:CanvasRenderingContext2D)=>{c.setTransform(RES,0,0,RES,-left*RES,-top*RES);};
  const sprite=(c:CanvasRenderingContext2D,p:LitObject,source:HTMLCanvasElement)=>{c.save();c.translate(p.x,p.y);c.transform(1,p.shear,0,p.vertical,0,0);c.drawImage(source,-p.width/2,-p.height*p.foot,p.width,p.height);c.restore();};
  // Source pixel -> world point, with the sprite's own shear/vertical calibration.
  const point=(p:LitObject,sx:number,sy:number)=>{const lx=-p.width/2+sx*p.width/p.image.width,ly=-p.height*p.foot+sy*p.height/p.image.height;return {x:p.x+lx,y:p.y+p.shear*lx+p.vertical*ly};};
  const pool=(c:CanvasRenderingContext2D,x:number,y:number,r:number,rgb:string,a:number,flat=.55)=>{c.save();c.translate(x,y);c.scale(1,flat);const g=c.createRadialGradient(0,0,0,0,0,r);g.addColorStop(0,`rgba(${rgb},${a})`);g.addColorStop(.45,`rgba(${rgb},${a*.45})`);g.addColorStop(1,`rgba(${rgb},0)`);c.fillStyle=g;c.fillRect(-r,-r,2*r,2*r);c.restore();};
+ for(const t of TORCHES){
+  const l=torchLight.getContext('2d')!,b=torchBloom.getContext('2d')!,h=torchHalo.getContext('2d')!;
+  for(const c of [l,b,h])world(c);
+  pool(l,t.x,t.y,125,COLOURS.fire,.85);pool(l,t.x,t.y-t.lift,48,COLOURS.fire,.9,1);
+  pool(b,t.x,t.y,95,COLOURS.fire,.2);pool(b,t.x,t.y-t.lift,25,COLOURS.fire,.65,1);
+  pool(h,t.x,t.y-t.lift,20,COLOURS.fire,.65,1);
+ }
  // Rebuilt when buildings or the selection change: light pools, emissive masks and glow.
  function setScene(objects:LitObject[]){
   const l=lights.getContext('2d')!,h=halo.getContext('2d')!,b=bloom.getContext('2d')!;let count=0;
@@ -70,14 +81,14 @@ export function createLighting(o:{surface:HTMLCanvasElement;snowLayer:HTMLElemen
  let uprights:HTMLCanvasElement|null=null;
  function capture(layer:HTMLCanvasElement){uprights=layer;if(base.width!==surface.width||base.height!==surface.height){base.width=surface.width;base.height=surface.height;}const c=base.getContext('2d')!;c.globalCompositeOperation='copy';c.drawImage(surface,0,0);c.globalCompositeOperation='source-over';last='';paint(current,true);}
  // Ambient fill plus the baked light pools, at lightmap resolution.
- function drawLightmap(rgb:number[],li:number){spriteRevision++;const m=lightmap.getContext('2d')!;m.setTransform(1,0,0,1,0,0);m.globalAlpha=1;m.fillStyle=`rgb(${rgb})`;m.fillRect(0,0,lightmap.width,lightmap.height);m.globalCompositeOperation='lighter';m.globalAlpha=li;m.drawImage(lights,0,0);m.globalAlpha=1;m.globalCompositeOperation='source-over';}
+ function drawLightmap(rgb:number[],li:number){spriteRevision++;const m=lightmap.getContext('2d')!;m.setTransform(1,0,0,1,0,0);m.globalAlpha=1;m.fillStyle=`rgb(${rgb})`;m.fillRect(0,0,lightmap.width,lightmap.height);m.globalCompositeOperation='lighter';m.globalAlpha=li;m.drawImage(lights,0,0);m.globalAlpha=1;if(torchesOn(current.t))m.drawImage(torchLight,0,0);m.globalCompositeOperation='source-over';}
  function paint(state:Lighting,force=false){
   // Quantized so a dawn or dusk transition recomposes every few seconds, not every tick.
-  const q=(v:number,n:number)=>Math.round(v*n)/n,rgb=state.ambient.map(v=>Math.round(q(v,64)*255)),li=q(state.lights,50),gl=q(state.glow,50),key=rgb+'|'+li+'|'+gl;
+  const q=(v:number,n:number)=>Math.round(v*n)/n,rgb=state.ambient.map(v=>Math.round(q(v,64)*255)),li=q(state.lights,50),gl=q(state.glow,50),key=rgb+'|'+li+'|'+gl+'|'+torchesOn(state.t);
   if(key===last||!base.width||(!force&&Date.now()-moving<300))return;last=key;
   const off=rgb.every(v=>v===255)&&li===0,c=surface.getContext('2d')!;
   if(previewing){
-   drawLightmap(rgb,li);ambient.style.background=`rgb(${rgb})`;bloom.style.opacity=String(gl);
+   unlit(surface.getContext('2d')!);drawLightmap(rgb,li);ambient.style.background=`rgb(${rgb})`;bloom.style.opacity=String(gl);surface.dataset.torches=torchesOn(state.t)?'lit':'off';
    surface.dataset.lighting='preview';surface.dataset.lightPaints=String(Number(surface.dataset.lightPaints||0)+1);return;
   }
   drawLightmap(rgb,li);
@@ -85,11 +96,13 @@ export function createLighting(o:{surface:HTMLCanvasElement;snowLayer:HTMLElemen
   if(!off){
    worldSpace(c);
    c.globalCompositeOperation='multiply';c.drawImage(lightmap,left,top,width,height);
+   if(torchesOn(state.t)){c.globalCompositeOperation='screen';c.drawImage(torchBloom,left,top,width,height);}
    if(gl){c.globalCompositeOperation='screen';c.globalAlpha=gl;c.drawImage(bloom,left,top,width,height);c.globalAlpha=1;}
   }
   c.globalCompositeOperation='source-over';c.setTransform(1,0,0,1,0,0);
   tintSnow(rgb,off);
   flicker.style.opacity=String(q(gl*.45,50));flicker.dataset.lit=String(!off&&gl>0);
+  surface.dataset.torches=torchesOn(state.t)?'lit':'off';surface.dataset.torchCount=String(TORCHES.length);
   surface.dataset.lighting=off?'off':'on';surface.dataset.lightPaints=String(Number(surface.dataset.lightPaints||0)+1);
  }
  const worldSpace=(c:CanvasRenderingContext2D)=>c.setTransform(surface.width/width,0,0,surface.height/height,-left*surface.width/width,-top*surface.height/height);
@@ -98,6 +111,7 @@ export function createLighting(o:{surface:HTMLCanvasElement;snowLayer:HTMLElemen
   c.setTransform(1,0,0,1,0,0);c.globalCompositeOperation='copy';c.drawImage(base,0,0);c.globalCompositeOperation='source-over';
   if(shade.alpha){worldSpace(c);c.globalAlpha=shade.alpha;c.drawImage(shade.mask!,left,top,width,height);c.globalAlpha=1;c.setTransform(1,0,0,1,0,0);}
   if(uprights)c.drawImage(uprights,0,0);
+  worldSpace(c);drawTorches(c,torchesOn(current.t));c.setTransform(1,0,0,1,0,0);
  }
  let shade:{mask:HTMLCanvasElement|null;alpha:number}={mask:null,alpha:0};
  // A new shadow mask from world-view.ts; no repaint when a world raster (capture) follows anyway.
@@ -107,7 +121,7 @@ export function createLighting(o:{surface:HTMLCanvasElement;snowLayer:HTMLElemen
   if(previewing)unlit(surface.getContext('2d')!);else{last='';paint(current,true);}
  }
  function tick(){
-  current=lightingAt(resolveTime(mode,Date.now(),location.search,manual));const next=sunStep(current.t);
+  current=lightingAt(resolveTime(mode,Date.now(),location.search,manual));flames.setLit(torchesOn(current.t));torchHalo.hidden=!torchesOn(current.t);torchBloom.hidden=!previewing||!torchesOn(current.t);const next=sunStep(current.t);
   // A new sun position rebuilds the shadow mask and relights; wait while the camera moves.
   // While the clock is dragged, shadows catch up once the slider rests for SUN_REST_MS.
   const wait=previewing?SUN_REST_MS-(Date.now()-timeSet):0;
@@ -124,7 +138,7 @@ export function createLighting(o:{surface:HTMLCanvasElement;snowLayer:HTMLElemen
   manual=t===null?null:t-Math.floor(t);timeSet=Date.now();if(manual===null)mode='dynamic';try{localStorage.setItem(KEY,JSON.stringify(manual===null?{mode}:{mode,time:manual}));}catch{}tick();}
  const SUN_REST_MS=150;let previewing=false,timeSet=0,sunTimer=0;
  function preview(on:boolean){
-  if(on===previewing)return;previewing=on;last='';lightmap.hidden=bloom.hidden=!on;
+  if(on===previewing)return;previewing=on;last='';lightmap.hidden=bloom.hidden=!on;torchBloom.hidden=!on||!torchesOn(current.t);
   if(on){
    // Show the unlit world under the live overlays; the snow goes back to its untinted tile.
    unlit(surface.getContext('2d')!);
@@ -158,7 +172,7 @@ export function createLighting(o:{surface:HTMLCanvasElement;snowLayer:HTMLElemen
  setInterval(tick,1000);document.addEventListener('visibilitychange',()=>{if(!document.hidden)tick();});
  return {
   // Every camera frame: follow the surface; the flicker layer rests until the camera stops.
-  place(transform:string){flicker.style.transform=lightmap.style.transform=bloom.style.transform=transform;moving=Date.now();if(!flicker.classList.contains('moving'))flicker.classList.add('moving');clearTimeout(still);still=window.setTimeout(()=>{flicker.classList.remove('moving');tick();},300);},
+  place(transform:string){flames.place(transform);flicker.style.transform=lightmap.style.transform=bloom.style.transform=torchBloom.style.transform=transform;moving=Date.now();if(!flicker.classList.contains('moving'))flicker.classList.add('moving');clearTimeout(still);still=window.setTimeout(()=>{flicker.classList.remove('moving');tick();},300);},
   setScene,capture,setTime,preview,setShadow,shadeSprite,spriteRevision:()=>spriteRevision,
   sun:()=>sun,
   subscribe(f:(s:ClockState)=>void){listeners.add(f);f(clockState());return ()=>listeners.delete(f);}

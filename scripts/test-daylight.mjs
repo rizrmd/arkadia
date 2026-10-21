@@ -19,5 +19,11 @@ test('manual clock time wins over the mode but not over ?time',()=>{const now=12
 test('sun casts shadows only by day, longest near sunrise and sunset',()=>{for(const t of [0,.1,SUNRISE,SUNSET,.9])a.equal(sunAt(t).alpha,0);a.ok(sunAt(.2).alpha>0&&sunAt(.8).alpha>0,'sun is up just after 04:00 and before 20:00');const noon=sunAt(.5),morning=sunAt(.3),evening=sunAt(.7);near(noon.alpha,SHADOW_ALPHA);
  const len=s=>Math.hypot(s.dx,s.dy*2);a.ok(len(morning)>len(noon)&&len(evening)>len(noon));a.ok(len(sunAt(.27))<=1.7+1e-9);
  a.ok(morning.dx>0&&evening.dx<0,'shadows swing from right to left');a.ok(noon.dx>0&&noon.dy>0,'noon shadows fall to the lower right, away from the painted upper-left light');for(let t=0;t<1;t+=.001){const s=sunAt(t);a.ok(s.alpha>=0&&s.alpha<=SHADOW_ALPHA+1e-9&&Number.isFinite(s.dx)&&Number.isFinite(s.dy));}});
+test('figure shadows keep their width across the sun, so low-sun shadows stay attached to the feet',()=>{for(let t=SUNRISE+.002;t<SUNSET;t+=.002){const s=sunAt(t);if(!s.alpha)continue;
+ // On the unsquashed ground (screen y doubled) the width axis is a unit vector perpendicular to the shadow.
+ near(Math.hypot(s.wx,s.wy*2),1);near(s.wx*s.dx+s.wy*2*s.dy*2,0);a.ok(s.wx*s.dy*2-s.wy*2*s.dx>0,'width keeps one side of the shadow all day, never mirroring mid-day');}
+ const noon=sunAt(.5);a.ok(noon.wx>.8,'noon width stays close to screen x');
+ // At 06:00 the shadow runs along screen x: a width along x would sweep no area, the turned width keeps the full body.
+ const dawn=sunAt(.25);a.ok(Math.abs(dawn.dy)<.2&&Math.abs(dawn.wx*dawn.dy-dawn.wy*dawn.dx)>.5);});
 test('every authored light anchor is valid',()=>{const kinds=['fire','window','candle','holy','arcane'];for(const [file,list] of Object.entries(LIGHT_SPRITES)){a.ok(list.length,file);for(const l of list){a.ok(kinds.includes(l.kind),file);a.ok(l.size>0&&l.radius>=0&&l.x>=0&&l.y>=0,file);if(l.radius)a.ok(l.drop>=0&&l.intensity>0&&l.intensity<=1,file);}}});
 console.log(`${tests} daylight tests passed`);

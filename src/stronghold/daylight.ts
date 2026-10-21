@@ -54,13 +54,16 @@ export function modeFrom(query:string,stored:unknown):Mode{const m=new URLSearch
 // 180 degrees through the day, so shadows reach long to the right after sunrise and long to the left
 // before sunset. dx/dy is the screen ground offset per screen pixel of height on the 2:1 ground (depth
 // halves, and a screen pixel of height is 1/cos 30 deg of world height); alpha fades shadows in after
-// sunrise and out before sunset, so the night has none.
+// sunrise and out before sunset, so the night has none. wx/wy is the screen ground offset per pixel of a
+// figure's width: a round body casts its width across the sun, not along the screen x axis, or the low dawn
+// and dusk sun (shining along x) would squash a figure's legs to nothing and its shadow would float off its feet.
 export const SHADOW_ALPHA=.4,NOON_HEADING=60,MAX_ELEVATION=60,MAX_SHADOW=1.7;
-export type Sun={alpha:number;dx:number;dy:number;elevation:number};
+export type Sun={alpha:number;dx:number;dy:number;wx:number;wy:number;elevation:number};
 export function sunAt(t:number):Sun{
- const s=(wrap(t)-SUNRISE)/(SUNSET-SUNRISE);if(s<=0||s>=1)return {alpha:0,dx:0,dy:0,elevation:0};
+ const s=(wrap(t)-SUNRISE)/(SUNSET-SUNRISE);if(s<=0||s>=1)return {alpha:0,dx:0,dy:0,wx:1,wy:0,elevation:0};
  const arc=Math.sin(Math.PI*s),elevation=arc*MAX_ELEVATION*Math.PI/180,length=Math.min(MAX_SHADOW,1/Math.cos(Math.PI/6)/Math.tan(Math.max(elevation,.01)));
  // Heading on the unsquashed ground, clockwise from screen right: -30 deg at sunrise, 60 at noon, 150 at sunset.
  const heading=(NOON_HEADING+180*(s-.5))*Math.PI/180,fade=Math.min(1,arc/.35),alpha=SHADOW_ALPHA*fade*fade*(3-2*fade);
- return {alpha,dx:Math.cos(heading)*length,dy:Math.sin(heading)*length*.5,elevation};
+ // Width runs perpendicular to the heading: close to screen x at noon, turning with the sun through the day.
+ return {alpha,dx:Math.cos(heading)*length,dy:Math.sin(heading)*length*.5,wx:Math.sin(heading),wy:-Math.cos(heading)*.5,elevation};
 }
