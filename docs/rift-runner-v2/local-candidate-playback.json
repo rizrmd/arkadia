@@ -1,0 +1,34 @@
+{
+  "base": "http://127.0.0.1:46777",
+  "status": "candidate-playback-pass-complete-set-still-in-progress",
+  "results": [
+    {
+      "action": "pulse-shot",
+      "framesObserved": 96,
+      "phases": [
+        "neutral before",
+        "action",
+        "neutral after"
+      ]
+    },
+    {
+      "action": "hurt",
+      "framesObserved": 64,
+      "phases": [
+        "neutral before",
+        "action",
+        "neutral after"
+      ]
+    },
+    {
+      "action": "death",
+      "framesObserved": 128,
+      "phases": [
+        "neutral before",
+        "action",
+        "terminal hold"
+      ]
+    }
+  ],
+  "errors": []
+}
