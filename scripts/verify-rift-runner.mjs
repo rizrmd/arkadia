@@ -18,7 +18,7 @@ try{
   const state=await page.evaluate(()=>window.riftReview.state);
   for(const c of clips){const seen=state.seen.filter(v=>v.startsWith(c.id+':'));if(seen.length!==c.frames.length)throw Error(`Missing playback frame ${c.id}: ${seen.length}/${c.frames.length}`)}
   results.push({action,clipCount:clips.length,framesObserved:state.seen.length,allFramesRendered:true,elapsedSeconds:state.time});
-  await page.screenshot({path:`${out}/${action}-playback.png`,fullPage:true});
+  if(process.env.RIFT_CAPTURE_SCREENSHOTS!=='0')await page.screenshot({path:`${out}/${action}-playback.png`,fullPage:true});
   if(clips[0].layer==='body'&&action!=='idle'){
    await page.evaluate(()=>window.riftReview.setMode('transition'));
    await page.waitForTimeout((duration+2)*1000);const transition=await page.evaluate(()=>window.riftReview.state.trace);

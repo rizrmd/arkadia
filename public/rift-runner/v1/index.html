@@ -7,7 +7,7 @@
 const $=s=>document.querySelector(s),m=await fetch('manifest.json').then(r=>r.json()),images=new Map();
 await Promise.all(m.sheets.map(async s=>{const i=new Image();i.src=s.file;await i.decode();images.set(s.name,i)}));
 const actions=[...new Set(m.clips.map(c=>c.action))];for(const a of actions)$('#action').add(new Option(a.replaceAll('-',' '),a));
-let playing=true,t=0,last=performance.now(),draws=0,seen=new Set(),frameTrace=[];const grid=$('#grid');
+let playing=true,t=0,last=null,draws=0,seen=new Set(),frameTrace=[];const grid=$('#grid');
 function clips(){return m.clips.filter(c=>c.action===$('#action').value)}
 function rebuild(){grid.replaceChildren();for(const c of clips()){const a=document.createElement('article');a.innerHTML=`<h2>${c.direction}</h2><canvas width="256" height="256"></canvas><small></small>`;grid.append(a)}t=0;seen.clear();frameTrace=[];draw()}
 function render(ctx,c,f){const [x,y]=c.frames[f];ctx.drawImage(images.get(c.sheet),x*256,y*256,256,256,0,0,256,256)}
@@ -16,7 +16,7 @@ function draw(){const cs=clips();cs.forEach((clip,i)=>{let c=clip,f=Math.floor(t
  if($('#effects').checked&&c.layer==='body'){const map={'pulse-shot':'projectile','phase-dash':'afterimage','rift-trap':'trap','overdrive':'aura'},effect=m.clips.find(v=>v.action===map[c.action]&&(v.direction===c.direction||v.direction==='omni'));if(effect&&f>=2){ctx.save();ctx.globalAlpha=.6;render(ctx,effect,Math.min(effect.frames.length-1,f-2));ctx.restore()}}
  if($('#guides').checked){const p=c.layer==='body'?[128,224]:[128,128];ctx.strokeStyle='#f5bf64';ctx.beginPath();ctx.moveTo(p[0]-8,p[1]);ctx.lineTo(p[0]+8,p[1]);ctx.moveTo(p[0],p[1]-8);ctx.lineTo(p[0],p[1]+8);ctx.stroke();ctx.strokeStyle='#ffffff30';ctx.strokeRect(.5,.5,255,255)}
  seen.add(`${c.id}:${f}`);frameTrace.push({clip:c.id,frame:f,phase,time:Number(t.toFixed(3))});if(frameTrace.length>10000)frameTrace.shift();a.querySelector('small').textContent=`${phase} · frame ${f+1}/${c.frames.length} · ${c.fps} fps`;});draws++;$('#status').textContent=`${$('#action').value} · ${playing?'playing':'paused'} · ${t.toFixed(2)} s · ${cs.length} direction(s)`;}
-function tick(now){if(playing)t+=(now-last)/1000*Number($('#speed').value);last=now;draw();requestAnimationFrame(tick)}
+function tick(now){if(playing&&last!==null)t+=Math.max(0,now-last)/1000*Number($('#speed').value);last=now;draw();requestAnimationFrame(tick)}
 $('#action').onchange=rebuild;$('#mode').onchange=()=>{t=0};$('#pause').onclick=()=>{playing=!playing;$('#pause').textContent=playing?'Pause':'Play'};$('#step').onclick=()=>{playing=false;$('#pause').textContent='Play';t+=1/clips()[0].fps;draw()};$('#reset').onclick=()=>{t=0;draw()};$('#speed').oninput=()=>$('#rate').textContent=`${$('#speed').value}×`;
 window.riftReview={manifest:m,setAction(action){$('#action').value=action;rebuild()},setMode(mode){$('#mode').value=mode;t=0},setTime(value){t=value;draw()},setPlaying(value){playing=value;$('#pause').textContent=value?'Pause':'Play'},get state(){return {time:t,draws,seen:[...seen],trace:frameTrace,action:$('#action').value,playing}}};
 rebuild();window.riftReady=true;requestAnimationFrame(tick);
