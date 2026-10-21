@@ -1,8 +1,8 @@
-/** Generated door poses play from one atlas; closing reverses the same frames. Stonework stays cached. */
+/** The complete gateway plays as one sprite: both towers, arch and synchronized door leaves share one pivot. */
 export type GateSheet={image:string;columns:number;frames:number;frame:{w:number;h:number};fps:number;region:{x:number;y:number;w:number;h:number}};
-export const GATE_SHEET='/modular-stronghold/v2/gate-generated-sheet.json';
+export const GATE_SHEET='/modular-stronghold/v2/full-gateway-sheet.json';
 export function createGateDoors(layer:HTMLElement,gateway:HTMLImageElement,sheet:HTMLImageElement,meta:GateSheet,onPassable:(open:boolean)=>void){
- const {region,frame}=meta,height=gateway.height*270/gateway.width,canvas=document.createElement('canvas');
+ const {region,frame}=meta,height=region.h,canvas=document.createElement('canvas');
  canvas.id='world-gate-doors';canvas.width=frame.w;canvas.height=frame.h;
  canvas.style.cssText=`position:absolute;left:0;top:0;width:${region.w}px;height:${region.h}px;transform-origin:0 0;pointer-events:none;will-change:transform`;
  layer.append(canvas);const c=canvas.getContext('2d')!;
@@ -23,6 +23,7 @@ export function createGateDoors(layer:HTMLElement,gateway:HTMLImageElement,sheet
  }
  setTint([1,1,1]);
  return {setTint,
+  hit(x:number,y:number){const u=(x-442)/region.w,v=(y-(790-height*.97))/region.h;if(u<0||v<0||u>=1||v>=1)return false;return c.getImageData(Math.floor(u*frame.w),Math.floor(v*frame.h),1,1).data[3]>40;},
   order(hero:HTMLElement,inside:boolean){if(inside===behind)return;behind=inside;if(inside)hero.after(canvas);else hero.before(canvas);},
   setOpen(open:boolean){target=open?meta.frames-1:0;if(index!==target&&!raf)raf=requestAnimationFrame(tick);},
   place(x:number,y:number,scale:number){canvas.style.transform=`translate3d(${x+(442+region.x)*scale}px,${y+(790-height*.97+region.y)*scale}px,0) scale(${scale})`;}

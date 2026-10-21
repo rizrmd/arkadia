@@ -6,10 +6,13 @@ const id='CS13a31c114a666008eb9cafa5',dir=path.resolve('.publish/open-gate'),fro
 files['/index.html']=(await fs.readFile('dist/index.html')).toString('base64');
 for(const n of await fs.readdir('dist/assets'))if(/\.(js|css)$/.test(n))files['/assets/'+n]=(await fs.readFile('dist/assets/'+n)).toString('base64');
 for(const n of ['manifest.json','hero.png','revenant.png'])files['/assets/characters/'+n]=(await fs.readFile('public/assets/characters/'+n)).toString('base64');
-for(const n of ['gateway-open.png','gateway-grand.png','gate-generated-sheet.webp','gate-generated-sheet.json'])files['/modular-stronghold/v2/'+n]=(await fs.readFile('public/modular-stronghold/v2/'+n)).toString('base64');
+for(const n of ['gateway-open.png','gateway-grand.png','gate-generated-sheet.webp','gate-generated-sheet.json','full-gateway-sheet.webp','full-gateway-sheet.json','full-gateway-open.webp','full-gateway-closed.webp'])files['/modular-stronghold/v2/'+n]=(await fs.readFile('public/modular-stronghold/v2/'+n)).toString('base64');
 for(const n of ['open.png','closed.png','reference.jpg'])files['/gate-proximity/'+n]=(await fs.readFile('docs/gate-proximity/'+n)).toString('base64');
 for(const n of ['closed.png','opening.png','open.png','closing.png'])files['/gate-generated/'+n]=(await fs.readFile('docs/gate-generated/'+n)).toString('base64');
 files['/gate-generated/generated-sheet.png']=(await fs.readFile('assets-src/gate-animation/generated-sheet.png')).toString('base64');
+for(const n of ['closed.png','opening.png','open.png','closing.png'])files['/full-gateway/'+n]=(await fs.readFile('docs/full-gateway/'+n)).toString('base64');
+files['/full-gateway/draft.png']=(await fs.readFile('assets-src/full-gateway/draft.png')).toString('base64');
+files['/full-gateway/generated.png']=(await fs.readFile('assets-src/full-gateway/generated.png')).toString('base64');
 const bytes=gzipSync(JSON.stringify(files)),version=createHash('sha256').update(bytes).digest('hex').slice(0,10),parts=[];for(let offset=0;offset<bytes.length;offset+=2e6){const n=`stronghold-only-${version}-${parts.length}.gzpart`;await fs.writeFile(dir+'/'+n,bytes.subarray(offset,offset+2e6));parts.push(n);}console.log('Packaged',Object.keys(files).length,'resources in',parts.length,'parts;',bytes.length,'bytes');
 for(const n of parts)run(['organization','home-files','transfer','--from-member','US4f550b10dab65dc9756fa429','--from',from+'/'+n,'--to-custom-sandbox',id,'--to',n]);
 let live=run(['organization','home-files','file','--custom-sandbox',id,'--path','app.mjs']).content;if(!live.includes('const types='))throw Error('Unknown release loader');
