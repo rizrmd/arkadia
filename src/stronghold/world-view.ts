@@ -12,10 +12,10 @@ import type {Progress} from '../app/loader';
 export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Building)=>void,direction:()=>Walk,progress:Progress=()=>{}){
  const ctx=canvas.getContext('2d')!,environment=environmentSprites(),images=new Map<string,HTMLImageElement>();
  let gateOpen=false,gatePassable=false;
- const spriteFile=(id:Building,level:number)=>id==='forge'?`/fortress-ui/forge-${level}.webp`:id==='gate'?'/modular-stronghold/v2/full-gateway-open.webp':`/assets/${slots[id].asset}.png`;
+ const spriteFile=(id:Building,level:number)=>id==='forge'?`/fortress-ui/forge-${level}.webp`:id==='gate'?'/modular-stronghold/v2/full-gateway-v3-open.webp':`/assets/${slots[id].asset}.png`;
  const paving='/modular-stronghold/v2/paving-warm-texture.png',snow='/modular-stronghold/v2/snow-soft-texture.png';
  // Loading-screen steps: every artwork file, then the hero, then the first world raster.
- const files=[...new Set([FOUNDATION_SOIL,FOUNDATION_MOSS,paving,snow,'/modular-stronghold/v2/full-gateway-closed.webp','/modular-stronghold/v2/full-gateway-sheet.webp',...environment.map(p=>p.file),...buildings.flatMap(b=>[1,2,3].map(l=>spriteFile(b,l)))])],steps=files.length+2;let loaded=0;
+ const files=[...new Set([FOUNDATION_SOIL,FOUNDATION_MOSS,paving,snow,'/modular-stronghold/v2/full-gateway-v3-closed.webp','/modular-stronghold/v2/full-gateway-v3-sheet.webp',...environment.map(p=>p.file),...buildings.flatMap(b=>[1,2,3].map(l=>spriteFile(b,l)))])],steps=files.length+2;let loaded=0;
  progress(0,steps,'Loading artwork');
  await Promise.all(files.map(async file=>{const image=new Image();image.src=file;await image.decode();images.set(file,image);progress(++loaded,steps,'Loading artwork');}));
  let w=0,h=0,dpr=1,scale=1,cx=WORLD.width/2,cy=385,selected:Building|null=null,levels:State['levels']|undefined;
@@ -138,8 +138,8 @@ export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Buil
  // The player's hero walks the court in its own layer over the world; the camera eases after it.
  progress(loaded,steps,'Waking the hero');
  const sheet:GateSheet=await (await fetch(GATE_SHEET)).json();
- const doors=createGateDoors(viewport,images.get('/modular-stronghold/v2/full-gateway-closed.webp')!,images.get('/modular-stronghold/v2/full-gateway-sheet.webp')!,sheet,open=>{gatePassable=open;setGateOpen(open);hero.setScene(objects);});
- lighting.subscribe(state=>doors.setTint(state.ambient));
+ const doors=createGateDoors(viewport,images.get('/modular-stronghold/v2/full-gateway-v3-closed.webp')!,images.get('/modular-stronghold/v2/full-gateway-v3-sheet.webp')!,sheet,open=>{gatePassable=open;setGateOpen(open);hero.setScene(objects);},{revision:lighting.spriteRevision,shade:(source,target)=>lighting.shadeSprite(source,target,{left:442,top:790-sheet.region.h*.97,width:270,height:sheet.region.h})});
+ lighting.subscribe(()=>doors.refreshLighting());
  // Combat (encounters.ts) steers the idle hero toward a revenant in reach and plays its swing, hit and death clips.
  let encounters:Awaited<ReturnType<typeof createEncounters>>|undefined;
  const hero=await createHero<(typeof objects)[number]>({layer:viewport,lightmap:viewport.querySelector<HTMLCanvasElement>('#world-lightmap')!,surface,footprint:p=>p.id==='gate'?gateFootprint():footprint(p),sun:lighting.sun,direction:()=>encounters?encounters.steer(direction()):direction(),follow,pose:()=>encounters?.pose()??null});hero.setScene(objects);
@@ -153,7 +153,7 @@ export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Buil
   sc.fillStyle=snowPattern;sc.fillRect(left,top,worldWidth,worldHeight);sc.fillStyle=pavingPattern;sc.fill(paved);sc.drawImage(shadow,shadowLeft,shadowTop);
   for(const p of objects){if(p.id==='gate'){sc.save();sc.translate(p.x,p.y);drawFoundation(sc,p,images.get(FOUNDATION_SOIL)!,'under',images.get(FOUNDATION_DRIFT),images.get(FOUNDATION_MOSS));sc.restore();}else drawSprite(p.layer==='ground'?sc:u,p);}
   castShadows(false);
-  surface.dataset.foundations='soil-moss-v1';dirty=false;surface.dataset.paints=String(Number(surface.dataset.paints||0)+1);lighting.capture(uprights);
+  surface.dataset.foundations='soil-moss-v1';dirty=false;surface.dataset.paints=String(Number(surface.dataset.paints||0)+1);lighting.capture(uprights);doors.refreshLighting();
  }
  function draw(){
   if(!w||!h)return;if(dirty)paintWorld();const x=w/2-cx*scale,y=h/2-cy*scale;

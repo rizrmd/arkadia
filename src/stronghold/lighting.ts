@@ -65,12 +65,12 @@ export function createLighting(o:{surface:HTMLCanvasElement;snowLayer:HTMLElemen
  let {mode,manual}=lightingSettings(),last='',moving=0,current:Lighting=lightingAt(resolveTime(mode,Date.now(),location.search,manual));
  // The sun moves in 15-minute steps (15 s of a live day); each step rebuilds the shadow mask once.
  const sunStep=(t:number)=>{const q=Math.round(t*96)/96,s=sunAt(q);return {key:s.alpha?q.toFixed(4):'none',sun:s};};
- let {key:sunKey,sun}=sunStep(current.t);surface.dataset.sun=sunKey;const listeners=new Set<(s:ClockState)=>void>();
+ let {key:sunKey,sun}=sunStep(current.t);surface.dataset.sun=sunKey;const listeners=new Set<(s:ClockState)=>void>();let spriteRevision=0;
  // Called after every world raster with the ground on the surface: keep it, then relight.
  let uprights:HTMLCanvasElement|null=null;
  function capture(layer:HTMLCanvasElement){uprights=layer;if(base.width!==surface.width||base.height!==surface.height){base.width=surface.width;base.height=surface.height;}const c=base.getContext('2d')!;c.globalCompositeOperation='copy';c.drawImage(surface,0,0);c.globalCompositeOperation='source-over';last='';paint(current,true);}
  // Ambient fill plus the baked light pools, at lightmap resolution.
- function drawLightmap(rgb:number[],li:number){const m=lightmap.getContext('2d')!;m.setTransform(1,0,0,1,0,0);m.globalAlpha=1;m.fillStyle=`rgb(${rgb})`;m.fillRect(0,0,lightmap.width,lightmap.height);m.globalCompositeOperation='lighter';m.globalAlpha=li;m.drawImage(lights,0,0);m.globalAlpha=1;m.globalCompositeOperation='source-over';}
+ function drawLightmap(rgb:number[],li:number){spriteRevision++;const m=lightmap.getContext('2d')!;m.setTransform(1,0,0,1,0,0);m.globalAlpha=1;m.fillStyle=`rgb(${rgb})`;m.fillRect(0,0,lightmap.width,lightmap.height);m.globalCompositeOperation='lighter';m.globalAlpha=li;m.drawImage(lights,0,0);m.globalAlpha=1;m.globalCompositeOperation='source-over';}
  function paint(state:Lighting,force=false){
   // Quantized so a dawn or dusk transition recomposes every few seconds, not every tick.
   const q=(v:number,n:number)=>Math.round(v*n)/n,rgb=state.ambient.map(v=>Math.round(q(v,64)*255)),li=q(state.lights,50),gl=q(state.glow,50),key=rgb+'|'+li+'|'+gl;
@@ -80,9 +80,9 @@ export function createLighting(o:{surface:HTMLCanvasElement;snowLayer:HTMLElemen
    drawLightmap(rgb,li);ambient.style.background=`rgb(${rgb})`;bloom.style.opacity=String(gl);
    surface.dataset.lighting='preview';surface.dataset.lightPaints=String(Number(surface.dataset.lightPaints||0)+1);return;
   }
+  drawLightmap(rgb,li);
   unlit(c);
   if(!off){
-   drawLightmap(rgb,li);
    worldSpace(c);
    c.globalCompositeOperation='multiply';c.drawImage(lightmap,left,top,width,height);
    if(gl){c.globalCompositeOperation='screen';c.globalAlpha=gl;c.drawImage(bloom,left,top,width,height);c.globalAlpha=1;}
@@ -145,12 +145,21 @@ export function createLighting(o:{surface:HTMLCanvasElement;snowLayer:HTMLElemen
    if(!o.snowLayer.dataset.tint){o.snowLayer.style.backgroundImage=`url(${tint.toDataURL()})`;o.snowLayer.dataset.tint=key;ambient.hidden=true;return;}
    tint.toBlob(b=>{if(!b||key!==tintKey)return;const r=new FileReader();r.onload=()=>{if(key!==tintKey)return;o.snowLayer.style.backgroundImage=`url(${r.result})`;o.snowLayer.dataset.tint=key;};r.readAsDataURL(b);});}).catch(()=>{});
  }
+ // Uprights that animate outside the cached world use the same local lightmap and emissive bloom.
+ function shadeSprite(source:HTMLCanvasElement,target:HTMLCanvasElement,area:{left:number;top:number;width:number;height:number}){
+  if(!spriteRevision)drawLightmap(current.ambient.map(v=>Math.round(v*255)),current.lights);
+  const c=target.getContext('2d')!;c.globalCompositeOperation='copy';c.drawImage(source,0,0);c.globalCompositeOperation='source-over';
+  const sx=(area.left-left)*RES,sy=(area.top-top)*RES,sw=area.width*RES,sh=area.height*RES;
+  c.globalCompositeOperation='multiply';c.drawImage(lightmap,sx,sy,sw,sh,0,0,target.width,target.height);
+  if(current.glow){c.globalCompositeOperation='screen';c.globalAlpha=Math.round(current.glow*50)/50;c.drawImage(bloom,sx,sy,sw,sh,0,0,target.width,target.height);c.globalAlpha=1;}
+  c.globalCompositeOperation='destination-in';c.drawImage(source,0,0);c.globalCompositeOperation='source-over';
+ }
  let still=0;
  setInterval(tick,1000);document.addEventListener('visibilitychange',()=>{if(!document.hidden)tick();});
  return {
   // Every camera frame: follow the surface; the flicker layer rests until the camera stops.
   place(transform:string){flicker.style.transform=lightmap.style.transform=bloom.style.transform=transform;moving=Date.now();if(!flicker.classList.contains('moving'))flicker.classList.add('moving');clearTimeout(still);still=window.setTimeout(()=>{flicker.classList.remove('moving');tick();},300);},
-  setScene,capture,setTime,preview,setShadow,
+  setScene,capture,setTime,preview,setShadow,shadeSprite,spriteRevision:()=>spriteRevision,
   sun:()=>sun,
   subscribe(f:(s:ClockState)=>void){listeners.add(f);f(clockState());return ()=>listeners.delete(f);}
  };

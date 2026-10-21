@@ -19,16 +19,16 @@ for(let i=0;i<16;i++){
 // Freeze all masonry, banners, torches and silhouette pixels to the approved closed frame.
 // Only the arched doorway keeps the existing generated motion; every output is still a full gateway frame.
 const reference=await sharp(parts[0].input).ensureAlpha().raw().toBuffer();
-const aperture={left:144,right:244,springY:132,rise:29,bottom:218};
+const aperture={left:146,right:242,springY:134,rise:23,bottom:216};
 for(let i=0;i<parts.length;i++){
  const pixels=await sharp(parts[i].input).ensureAlpha().raw().toBuffer();
  for(let y=0;y<frame.h;y++)for(let x=0;x<frame.w;x++){
-  const dx=(x-194)/50,inside=x>=aperture.left&&x<=aperture.right&&y<=aperture.bottom&&y>=aperture.springY-aperture.rise*Math.sqrt(Math.max(0,1-dx*dx));
+  const dx=(x-194)/48,inside=x>=aperture.left&&x<=aperture.right&&y<=aperture.bottom&&y>=aperture.springY-aperture.rise*Math.sqrt(Math.max(0,1-dx*dx));
   if(!inside){const p=(y*frame.w+x)*4;reference.copy(pixels,p,p,p+4);}
  }
  parts[i].input=await sharp(pixels,{raw:{width:frame.w,height:frame.h,channels:4}}).png().toBuffer();
- if(i===0||i===15)await sharp(parts[i].input).webp({lossless:true}).toFile(out+`/full-gateway-${i?'open':'closed'}.webp`);
+ if(i===0||i===15)await sharp(parts[i].input).webp({lossless:true}).toFile(out+`/full-gateway-v3-${i?'open':'closed'}.webp`);
 }
-await sharp({create:{width:frame.w*4,height:frame.h*4,channels:4,background:'#00000000'}}).composite(parts).webp({lossless:true}).toFile(out+'/full-gateway-sheet.webp');
-const meta={image:'full-gateway-sheet.webp',columns:4,frames:16,frame,fps:20,region:{x:0,y:0,w:270,h:180},pivot:{x:.5,y:.97},threshold:{x:577,y:770},stabilization:{referenceFrame:0,aperture},registration};
-await fs.writeFile(out+'/full-gateway-sheet.json',JSON.stringify(meta,null,2));console.log('Packed 16 full-gateway frames, registered to one 270x180 world rectangle');
+await sharp({create:{width:frame.w*4,height:frame.h*4,channels:4,background:'#00000000'}}).composite(parts).webp({lossless:true}).toFile(out+'/full-gateway-v3-sheet.webp');
+const meta={image:'full-gateway-v3-sheet.webp',columns:4,frames:16,frame,fps:20,region:{x:0,y:0,w:270,h:180},pivot:{x:.5,y:.97},threshold:{x:577,y:770},stabilization:{referenceFrame:0,aperture},registration};
+await fs.writeFile(out+'/full-gateway-v3-sheet.json',JSON.stringify(meta,null,2));console.log('Packed 16 full-gateway frames, registered to one 270x180 world rectangle');
