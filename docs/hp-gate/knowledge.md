@@ -52,8 +52,8 @@ Both the isolated committed build and the public site passed the browser accepta
 The old scripts/verify-encounters.mjs entry point invokes the current gate-based acceptance suite. Public verification results: [live-results.json](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=docs%2Fhp-gate%2Flive-results.json).
 
 [Artwork source, generation prompt, behavior and publishing notes](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=docs%2Fhp-gate%2FREADME.md). Published through the managed Stronghold sandbox with scripts/publish-hp-gate.mjs; only committed release files were used.
-## Matching clock artwork
+## Simple rounded clock
 
-The clock now reuses the imagegen brass frame with preserved corner details. On phones it shows a compact day/night icon and time; the Pinned/Live badge is hidden in the compact chip. The settings panel remains available by tapping the clock, with English labels and all time presets. Its angular brass border matches the health meter.
+The clock is a slim 32-pixel-high capsule with a dark background, a thin muted gold outline, and 16-pixel rounded corners. Decorative brass frame artwork is removed from the clock. Phones show only the day/night icon and time, with a minimum width of 90 pixels. The settings panel also uses a plain background and soft rounded corners.
 
-Released in eea7f8c (merged release 950cdaf). The committed build and public site passed checks at 320, 390 and 1440 pixels: HP/clock clearance, settings panel bounds, opening/closing, time preset selection, and existing encounter checks. The inline mobile screenshots above now show the matching clock.
+Released in af57cf7. Build and public browser checks passed at 320, 390 and 1440 pixels: height at most 32 pixels, HP clearance, settings panel bounds, opening/closing and time preset selection. Encounter regression checks also passed. The inline mobile screenshots above show the updated simpler clock.

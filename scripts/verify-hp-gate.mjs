@@ -28,7 +28,7 @@ try{
   assert.equal(await page.locator('.clock-chip').getAttribute('aria-expanded'),'false');
   console.log('screenshot',width);await page.screenshot({timeout:10000,animations:'disabled',path:`${out}/${width}.png`});
   // Stand just outside the gate beside a foe; confirm auto combat still works.
-  console.log('combat',width);const foe=state.combat.foes[0];assert(await page.evaluate(f=>window.__STRONGHOLD_COMBAT__.teleport(f.u-.1,f.v+.05),foe));
+  console.log('combat',width);assert(await page.evaluate(()=>{const api=window.__STRONGHOLD_COMBAT__;return api.snapshot().foes.some(f=>api.teleport(f.u,f.v)||api.teleport(f.u+.3,f.v+.3));}),'can stand beside a current foe');
   await page.waitForFunction(()=>{const s=window.__STRONGHOLD_COMBAT__.snapshot();return s.hero.state==='attack'||s.kills>0;},null,{timeout:10000,polling:16});
   await page.waitForFunction(()=>window.__STRONGHOLD_COMBAT__.snapshot().kills>0,null,{timeout:15000});
   if(width===390){
