@@ -26,10 +26,11 @@ try{
  // Stop close enough to open; the camera can pan without changing proximity.
  await page.addInitScript(()=>localStorage.setItem('arkadia.stronghold.hero',JSON.stringify({x:577,y:820})));
  await page.reload();await page.waitForFunction(()=>document.querySelector('#world-canvas')?.dataset.gate==='open');
- await page.waitForTimeout(500);await fs.mkdir('docs/gate-proximity',{recursive:true});
+ await page.waitForFunction(()=>document.querySelector('#world-gate-doors')?.dataset.state==='open');await fs.mkdir('docs/gate-proximity',{recursive:true});
  await page.screenshot({path:'docs/gate-proximity/open.png'});
  await page.keyboard.down('s');await page.waitForFunction(()=>+document.querySelector('#world-hero').dataset.y>900,null,{timeout:15000});await page.keyboard.up('s');
  assert.equal(await page.locator('#world-canvas').getAttribute('data-gate'),'closed');
+ await page.waitForFunction(()=>document.querySelector('#world-gate-doors')?.dataset.state==='closed');
  await page.screenshot({path:'docs/gate-proximity/closed.png'});
  console.log(JSON.stringify({start,outside,inside,tower,errors}));
 }finally{await browser?.close();server?.kill();}
