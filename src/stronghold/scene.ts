@@ -9,7 +9,7 @@ export const slots:Record<Building,{x:number;y:number;width:number;pivot:number;
  barracks:{x:600,y:270,width:300,pivot:.95,asset:'stronghold/barracks'},
  altar:{x:950,y:390,width:245,pivot:.95,asset:'stronghold/altar'},
  mage:{x:245,y:605,width:225,pivot:.95,asset:'stronghold/mage'},
- expedition:{x:565,y:500,width:270,pivot:.95,asset:'stronghold/expedition'},
+ expedition:{x:565,y:500,width:210,pivot:.95,asset:'stronghold/expedition-tent'},
  mine:{x:905,y:620,width:330,pivot:.95,asset:'stronghold/mine'},
  gate:{x:577,y:790,width:270,pivot:.97,asset:'stronghold/gate'}
 };
@@ -23,7 +23,7 @@ export const groundEdges = {
  barracks: {rising:[[228,386],[555,269]],falling:[[20,305],[216,399]]},
  altar: {rising:[[362,621],[615,522]],falling:[[12,497],[362,621]]},
  mage: {rising:[[304,631],[380,604]],falling:[[272,617],[304,631]]},
- expedition: {rising:[[291,371],[602,231]],falling:[[153,288],[291,371]]},
+ expedition: {rising:[[760,920],[1350,600]],falling:[[400,800],[760,920]]},
  mine: {rising:[[393,402],[499,363]],falling:[[245,282],[466,402]]},
  // Standalone gate sprite; ground facade measured from its generated base.
  gate: {rising:[[0,1],[2,0]],falling:[[0,0],[2,1]]}

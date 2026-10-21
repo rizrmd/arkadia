@@ -17,31 +17,8 @@ export function foundationLayers(p:Sprite,soil:HTMLImageElement,snow?:HTMLImageE
  const bottom=Array.from({length:width},(_,x)=>{for(let y=height-1;y>height*.68;y--)if(alpha[(y*width+x)*4+3]>160)return y;return -1;});
  const under=document.createElement('canvas'),face=document.createElement('canvas');under.width=face.width=width+pad*2;under.height=face.height=height+pad*2;
  const ground=under.getContext('2d')!,moss=face.getContext('2d')!;ground.translate(pad,pad);moss.translate(pad,pad);
- // The furniture sprite has open space under its tabletop. A bottom-contour
- // band would stain that opening and miss the separate stool legs. These
- // normalized landmarks are the actual ground contacts in expedition.png.
- if(p.id==='expedition'){
-  const feet=[
-   [.025,.745,.019],[.105,.77,.019],[.24,.79,.025],
-   [.44,.944,.032],[.94,.65,.024],
-   [.559,.961,.017],[.623,.984,.018],[.685,.944,.017],
-   [.80,.80,.017],[.842,.845,.018],[.922,.805,.017]
-  ];
-  // Static, non-directional contact occlusion at the foot itself only.
-  // Directional cast shadows, broad lighting and time-of-day belong to lighting.ts.
-  for(const [u,v,r] of feet){
-   const x=u*width,y=v*height,rx=r*width;
-   ground.globalAlpha=.46;ground.drawImage(soil,x-rx*1.7,y-2,rx*3.4,6);
-   ground.globalAlpha=1;
-   ground.save();ground.translate(x,y+1);ground.scale(1,.28);
-   const contact=ground.createRadialGradient(0,0,0,0,0,rx*1.05);
-   contact.addColorStop(0,'#211b1470');contact.addColorStop(.38,'#30271955');contact.addColorStop(1,'#30271900');
-   ground.fillStyle=contact;ground.beginPath();ground.arc(0,0,rx*1.05,0,Math.PI*2);ground.fill();ground.restore();
-  }
-  result={under,face,pad};cache.set(key,result);return result;
- }
  const rng=random([...p.id].reduce((s,c)=>s*31+c.charCodeAt(0),17));
- const dry=p.id==='forge'||p.id==='mine',gate=p.id==='gate'||p.id==='gateway-grand';
+ const dry=p.id==='expedition'||p.id==='forge'||p.id==='mine',gate=p.id==='gate'||p.id==='gateway-grand';
  for(let x=4;x<width-4;x+=9){
   const ys=bottom.slice(Math.max(0,x-3),x+4).filter(y=>y>=0).sort((a,b)=>a-b);if(ys.length<5)continue;const y=ys[Math.floor(ys.length/2)];
   // Keep the center approach clear. Entrances must never acquire a green sill.
