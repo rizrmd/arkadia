@@ -10,8 +10,15 @@ for(let offset=0;offset<bytes.length;offset+=2e6){const n=`rift-runner-${version
 console.log(JSON.stringify({resources:Object.keys(files).length,bytes:bytes.length,parts:parts.length}));
 for(const n of parts)try{run(['organization','home-files','transfer','--from-member','US4f550b10dab65dc9756fa429','--from',path.relative(os.homedir(),dir)+'/'+n,'--to-custom-sandbox',id,'--to',n])}catch(e){if(!String(e.stdout).includes('already exists'))throw e}
 // Read the latest loader after staging, retaining peers' published overlays.
-const live=run(['organization','home-files','file','--custom-sandbox',id,'--path','app.mjs']).content;
+let live=run(['organization','home-files','file','--custom-sandbox',id,'--path','app.mjs']).content;
 if(!live.includes('const types='))throw Error('Unknown release loader');
+// Add only the review directory route; retain the existing SPA redirect behavior elsewhere.
+if(!live.includes("p.startsWith('/rift-runner/v1/')")){
+ if(!live.includes("const key=p.endsWith('/')"))throw Error('Unknown path resolver');
+ live=live.replace("p.endsWith('.html')&&","p.endsWith('.html')&&!p.startsWith('/rift-runner/v1/')&&");
+ live=live.replace("const key=p.endsWith('/')","const key=p.startsWith('/rift-runner/v1/')?(p.endsWith('/')?p+'index.html':p):p.endsWith('/')");
+}
+if(!live.includes("webm:'video/webm'"))live=live.replace("const types={","const types={webm:'video/webm',");
 const patch=`Object.assign(files,JSON.parse(gunzipSync(Buffer.concat(${JSON.stringify(parts)}.map(n=>readFileSync(n))))));`;
 const stage=dir+'/loader';await fs.mkdir(stage,{recursive:true});await fs.writeFile(stage+'/app.mjs',live.includes(patch)?live:live.replace('const types=',patch+'const types='));
 const receipt=run(['sandboxes','serve','--name','arkadia-stronghold','--dir',stage,'--cmd','node app.mjs','--port','3000','--project','PJ8758f22f61165f3d3215e454']);
