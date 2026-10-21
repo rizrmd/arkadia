@@ -93,3 +93,20 @@ Built-in imagegen used the inspected original concept DA66f49939f6e26121844a0957
 [Implementation and verification notes](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=docs%2Frift-runner-v1%2FREADME.md). Reproduce with prepare-rift-runner, preview-rift-runner and verify-rift-runner scripts.
 
 A manual sprite cleanup pass or controlled rig render source is needed to meet exact eight-direction anatomy, contact and continuity requirements. No game-ready claim is made.
+
+## Public deployment evidence
+
+Live browser playback passed all 66 clips with zero page/resource errors. All 70 initially deployed resources matched SHA-256 against the task package; the game homepage bytes were unchanged by the overlay. [Live playback results](https://arkadia-stronghold-whachat.fural.space/rift-runner/v1/evidence/live-playback.json) · [Checksum evidence](https://arkadia-stronghold-whachat.fural.space/rift-runner/v1/evidence/live-byte-verification.json).
+
+![idle public-site browser playback](https://arkadia-stronghold-whachat.fural.space/rift-runner/v1/evidence/live-idle-playback.png)
+
+![run public-site browser playback](https://arkadia-stronghold-whachat.fural.space/rift-runner/v1/evidence/live-run-playback.png)
+
+![pulse-shot public-site browser playback](https://arkadia-stronghold-whachat.fural.space/rift-runner/v1/evidence/live-pulse-shot-playback.png)
+
+![phase-dash public-site browser playback](https://arkadia-stronghold-whachat.fural.space/rift-runner/v1/evidence/live-phase-dash-playback.png)
+
+![rift-trap public-site browser playback](https://arkadia-stronghold-whachat.fural.space/rift-runner/v1/evidence/live-rift-trap-playback.png)
+
+![overdrive public-site browser playback](https://arkadia-stronghold-whachat.fural.space/rift-runner/v1/evidence/live-overdrive-playback.png)
+
