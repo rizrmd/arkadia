@@ -3,6 +3,7 @@ import {environmentSprites,COURT,tilePoint,LEGACY_LAYOUT} from './terrain';
 import {slots,calibration,WORLD} from './scene';
 import {buildings,isBuilt,heroBonus,START_BUILT,type Building,type State} from './economy';
 import {createLighting} from './lighting';
+import {sunAt} from './daylight';
 import {createHero} from './hero';
 import {createEncounters} from './encounters';
 import {setGateOpen,gateTowerFront} from './navigation';
@@ -47,6 +48,14 @@ export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Buil
  const boundsObjects=makeObjects(true).map(p=>({...p,height:p.id==='forge'?Math.max(...[1,2,3].map(l=>{const image=images.get(spriteFile('forge',l))!;return image.height*p.width/image.width;})):p.height}));
  const points=boundsObjects.flatMap(p=>[-p.width/2,p.width/2].flatMap(x=>[-p.height*p.foot,p.height*(1-p.foot)].map(y=>({x:p.x+x,y:p.y+p.shear*x+p.vertical*y}))));
  const corners=[[0,0],[15,0],[15,15],[0,15]].map(([u,v])=>tilePoint(u,v));points.push(...corners);
+ // Long low-sun shadows reach far past their sprite: each column's top, cast by the day's extreme sun
+ // offsets. Without them the surface (and the shadow composed into it) ended at the sprite box, cutting
+ // edge trees' shadows off in a straight line against the plain snow layer.
+ const profiles=new Map<string,{top:Float32Array;bottom:Float32Array}>(),suns=[...Array(96).keys()].map(k=>sunAt(k/96)).filter(s=>s.alpha);
+ const reach={left:Math.min(...suns.map(s=>s.dx)),right:Math.max(...suns.map(s=>s.dx)),up:Math.min(...suns.map(s=>s.dy)),down:Math.max(...suns.map(s=>s.dy))};
+ for(const p of boundsObjects){if(p.layer==='ground')continue;const {top}=profile(p.image),n=top.length;
+  for(let i=0;i<n;i++){if(top[i]<0)continue;const lx=-p.width/2+(i+.5)/n*p.width,x=p.x+lx,ground=p.y+p.shear*lx,height=-p.vertical*(top[i]-p.foot)*p.height;if(height<=0)continue;
+   points.push({x:x+height*reach.left,y:ground},{x:x+height*reach.right,y:ground},{x,y:ground+height*reach.up},{x,y:ground+height*reach.down});}}
  const left=Math.floor(Math.min(...points.map(p=>p.x))-32),top=Math.floor(Math.min(...points.map(p=>p.y))-32);
  const worldWidth=Math.ceil(Math.max(...points.map(p=>p.x))-left+32),worldHeight=Math.ceil(Math.max(...points.map(p=>p.y))-top+32);
  // Fixed quality across pan/zoom, bounded backing store and texture dimensions.
@@ -66,7 +75,7 @@ export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Buil
  // the whole 3738 x 2243 world (~0.5 s desktop, ~2.4 s on a 4x-throttled phone); now it rebuilds only
  // this 0.35x mask. (Cutting uprights out of the mask at 0.35x left a light halo around sprites.)
  type Column={x:number;w:number;back:number;front:number;height:number};
- const profiles=new Map<string,{top:Float32Array;bottom:Float32Array}>(),footprints=new Map<string,Column[]>();
+ const footprints=new Map<string,Column[]>();
  // Topmost and lowest opaque pixel of each source column, as fractions of the sprite height (-1 when empty).
  function profile(image:HTMLImageElement){
   let r=profiles.get(image.src);if(r)return r;const n=Math.min(256,image.width),m=Math.ceil(image.height*n/image.width),c=document.createElement('canvas');c.width=n;c.height=m;
