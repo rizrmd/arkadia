@@ -1,0 +1,39 @@
+{
+  "base": "http://127.0.0.1:41549",
+  "errors": [],
+  "results": [
+    {
+      "action": "hurt",
+      "clipCount": 8,
+      "framesObserved": 64,
+      "allFramesRendered": true,
+      "elapsedSeconds": 1.5833000000000006,
+      "transitionPhasesObserved": [
+        "neutral before",
+        "action",
+        "neutral after"
+      ]
+    },
+    {
+      "action": "death",
+      "clipCount": 8,
+      "framesObserved": 64,
+      "allFramesRendered": true,
+      "elapsedSeconds": 1.9999999999999998,
+      "transitionPhasesObserved": [
+        "neutral before",
+        "action",
+        "terminal hold"
+      ]
+    }
+  ],
+  "checks": [
+    "all selected clips rendered every frame during real-time requestAnimationFrame playback",
+    "selected body clip transitions exercised in all eight direction slots, including terminal corpse hold for death",
+    "pause and next-frame controls work"
+  ],
+  "limits": [
+    "Rendering coverage is not a visual quality pass.",
+    "No physical device or gameplay integration tested."
+  ]
+}

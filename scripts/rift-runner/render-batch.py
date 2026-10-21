@@ -9,7 +9,7 @@ def report(status):
   tmp=progress+'.tmp';open(tmp,'w').write(json.dumps(data));os.replace(tmp,progress)
 report('running')
 while jobs or active:
- if jobs and len(active)<2 and time.monotonic()-last_start>=6:
+ if jobs and len(active)<1 and time.monotonic()-last_start>=6:
   action,group=jobs.pop(0);p=subprocess.Popen(['scripts/rift-runner/render-body.sh',action,group],stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True);active.append((p,action,group));last_start=time.monotonic();report('running')
  for item in list(active):
   p,action,group=item

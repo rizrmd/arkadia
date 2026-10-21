@@ -208,25 +208,26 @@ mode=sys.argv[1] if len(sys.argv)>1 else 'turnaround'
 def apply_facing(angle):
  root.rotation_euler.z=angle;root.location=Quaternion((0,0,1),angle)@root.location
 exec(compile(open('scripts/rift-runner/standard_states.py').read(),'standard_states.py','exec'),globals())
+exec(compile(open('scripts/rift-runner/locomotion_states.py').read(),'locomotion_states.py','exec'),globals())
 if mode=='export':
  action=sys.argv[2];group=int(sys.argv[3]);
- if action not in ['idle','run','pulse-shot','phase-dash','rift-trap','overdrive','hurt','death']:raise ValueError('Unsupported action '+action)
- order=['N','NE','E','SE','S','SW','W','NW'];angles=dict(DIRECTIONS);count=8 if action in ['idle','hurt'] else 16 if action in ['run','death'] else 12;per_group=4 if action=='idle' else 2;cols=8 if action in ['idle','run','hurt','death'] else 6;rows_per_direction=math.ceil(count/cols);directions=order[group*per_group:(group+1)*per_group]
+ if action not in ['idle','walk','run','pulse-shot','phase-dash','rift-trap','overdrive','hurt','death']:raise ValueError('Unsupported action '+action)
+ order=['N','NE','E','SE','S','SW','W','NW'];angles=dict(DIRECTIONS);count=8 if action in ['idle','hurt'] else 16 if action in ['walk','run','death'] else 12;per_group=4 if action=='idle' else 2;cols=8 if action in ['idle','walk','run','hurt','death'] else 6;rows_per_direction=math.ceil(count/cols);directions=order[group*per_group:(group+1)*per_group]
  if not directions:raise ValueError('Empty export group')
  scene.render.resolution_x=scene.render.resolution_y=320;cam.data.ortho_scale=3.5;cam.data.shift_y=0;bpy.context.view_layer.update();y0=world_to_camera_view(scene,cam,Vector((0,0,0))).y;cam.data.shift_y=.1;bpy.context.view_layer.update();y1=world_to_camera_view(scene,cam,Vector((0,0,0))).y;cam.data.shift_y=(.3-y0)/(y1-y0)*.1;bpy.context.view_layer.update();scene.cycles.samples=24;scene.cycles.use_denoising=True;scene.render.threads_mode='FIXED';scene.render.threads=2
- source_hash=hashlib.sha256(open(__file__,'rb').read().split(b'mode=sys.argv',1)[0]+b'cycles24-denoise-320'+open(ROOT+'/source/material-atlas.png','rb').read()).hexdigest()[:12];out=ROOT+'/exports/'+source_hash;os.makedirs(out,exist_ok=True);name=action+'-'+str(group);animation_hash=hashlib.sha256(open('scripts/rift-runner/standard_states.py','rb').read()).hexdigest()[:10] if action in ['hurt','death'] else None;image_name=action+'-'+animation_hash+'-'+str(group) if animation_hash else name;png=out+'/'+image_name+'.png';metadata=out+'/'+name+'.json'
+ source_hash=hashlib.sha256(open(__file__,'rb').read().split(b'mode=sys.argv',1)[0]+b'cycles24-denoise-320'+open(ROOT+'/source/material-atlas.png','rb').read()).hexdigest()[:12];out=ROOT+'/exports/'+source_hash;os.makedirs(out,exist_ok=True);name=action+'-'+str(group);animation_hash=hashlib.sha256(open('scripts/rift-runner/standard_states.py','rb').read()).hexdigest()[:10] if action in ['hurt','death'] else hashlib.sha256(open('scripts/rift-runner/locomotion_states.py','rb').read()).hexdigest()[:10] if action in ['run','walk'] else None;image_name=action+'-'+animation_hash+'-'+str(group) if animation_hash else name;png=out+'/'+image_name+'.png';metadata=out+'/'+name+'.json'
  atlas=Image.new('RGBA',(cols*320,len(directions)*rows_per_direction*320));clips=[]
  fd,tmp=tempfile.mkstemp(suffix='.png',prefix='rift-frame-',dir='/home/dev/.tmp');os.close(fd)
  try:
   for dindex,direction in enumerate(directions):
    frames=[]
    for f in range(count):
-    t=f/count if action in ['idle','run'] else f/(count-1);pose(action,t);apply_facing(angles[direction]);bpy.context.view_layer.update();scene.render.filepath=tmp;bpy.ops.render.render(write_still=True);frame=Image.open(tmp).convert('RGBA');col=f%cols;row=dindex*rows_per_direction+f//cols;atlas.paste(frame,(col*320,row*320));bounds=frame.getchannel('A').getbbox()
+    t=f/count if action in ['idle','walk','run'] else f/(count-1);pose(action,t);apply_facing(angles[direction]);bpy.context.view_layer.update();scene.render.filepath=tmp;bpy.ops.render.render(write_still=True);frame=Image.open(tmp).convert('RGBA');col=f%cols;row=dindex*rows_per_direction+f//cols;atlas.paste(frame,(col*320,row*320));bounds=frame.getchannel('A').getbbox()
     if bounds is None or min(bounds[0],bounds[1],320-bounds[2],320-bounds[3])<5:raise RuntimeError('Empty or clipped frame '+action+' '+direction+' '+str(f))
     def project(v):
      p=world_to_camera_view(scene,cam,v);return [round(p.x*320,6),round((1-p.y)*320,6)]
-    muzzle=arms['Right'][2].matrix_world@Vector((0,-.005,-.15));hand=arms['Right'][2].matrix_world@Vector((0,-.05,0));feet={n:project(legs[n][2].matrix_world@Vector((0,0,-.115))) for n in legs};frames.append({'cell':[col,row],'time':t,'alphaBounds':list(bounds),'pivot':project(Vector((0,0,0))),'muzzle':project(muzzle),'rightPalm':project(hand),'feet':feet,'rootHeight':root.location.z,'bakedRootTranslation':list(root.location),'bakedRootRotation':list(root.rotation_euler)})
-   clips.append({'id':action+'-'+direction,'direction':direction,'yaw':angles[direction],'frames':frames,'fps':5 if action=='idle' else 20 if action=='run' else 10 if action=='hurt' else 12,'loop':action in ['idle','run'],'holdLastFrame':action=='death','duration':1.6 if action=='idle' else .8 if action in ['run','hurt'] else 16/12 if action=='death' else 1,'eventFrame':None if action in ['idle','run'] else 1 if action=='hurt' else 2 if action=='death' else 5,'locomotionSpeed':.55/.6/.8 if action=='run' else 0})
+    glove=bpy.data.objects['Right fingerless glove'];glove_point=min((glove.matrix_world@v.co for v in glove.data.vertices),key=lambda v:v.z);muzzle=arms['Right'][2].matrix_world@Vector((0,-.005,-.15));hand=arms['Right'][2].matrix_world@Vector((0,-.05,0));feet={n:project(legs[n][2].matrix_world@Vector((0,0,-.115))) for n in legs};frames.append({'cell':[col,row],'time':t,'alphaBounds':list(bounds),'pivot':project(Vector((0,0,0))),'muzzle':project(muzzle),'rightPalm':project(hand),'trapGround':project(Vector((glove_point.x,glove_point.y,0))),'feet':feet,'rootHeight':root.location.z,'bakedRootTranslation':list(root.location),'bakedRootRotation':list(root.rotation_euler)})
+   clips.append({'id':action+'-'+direction,'direction':direction,'yaw':angles[direction],'frames':frames,'fps':5 if action=='idle' else 16/1.2 if action=='walk' else 20 if action=='run' else 10 if action=='hurt' else 12,'loop':action in ['idle','walk','run'],'holdLastFrame':action=='death','duration':1.6 if action=='idle' else 1.2 if action=='walk' else .8 if action in ['run','hurt'] else 16/12 if action=='death' else 1,'eventFrame':None if action in ['idle','walk','run'] else 1 if action=='hurt' else 2 if action=='death' else 5,'locomotionSpeed':.50/.42/.8 if action=='run' else .40/.62/1.2 if action=='walk' else 0})
   atlas.save(png);report={'status':'rendered-pending-full-visual-and-playback-acceptance','sourceHash':source_hash,'animationSourceHash':animation_hash,'cell':[320,320],'bodyPivot':[160,224],'image':os.path.relpath(png,ROOT),'clips':clips};json.dump(report,open(metadata,'w'),indent=2);print('BODY_EXPORT',png,len(directions)*count)
  finally:os.unlink(tmp)
 elif mode=='audit':
@@ -253,7 +254,7 @@ samples=[];previous={};max_stance_slide=0;max_floor_error=0
 for i in range(241):
  t=i/240;pose('run',t);bpy.context.view_layer.update()
  for name,phase in [('Left',t%1),('Right',(t+.5)%1)]:
-  foot=legs[name][2].matrix_world@Vector((0,0,-.115));world_y=foot.y-(.55/.6)*t;stance=phase<.6
+  foot=legs[name][2].matrix_world@Vector((0,0,-.115));world_y=foot.y-(.50/.42)*t;stance=phase<.42
   if stance:
    max_floor_error=max(max_floor_error,abs(foot.z))
    if name in previous and previous[name]['stance'] and phase>previous[name]['phase']:max_stance_slide=max(max_stance_slide,abs(world_y-previous[name]['worldY']))
@@ -287,3 +288,5 @@ for action in ['hurt','death']:
 json.dump({'states':standard,'status':'source-constraints-not-final-visual-acceptance'},open('docs/rift-runner-v2/standard-state-audit.json','w'),indent=2)
 print('STANDARD_STATE_AUDIT',json.dumps(standard))
 if not all(r['pass'] for r in standard):raise RuntimeError('Standard state constraints failed')
+
+exec(compile(open('scripts/rift-runner/locomotion_audit.py').read(),'locomotion_audit.py','exec'),globals())

@@ -8,12 +8,28 @@
   "pending": [
     {
       "action": "idle",
-      "directionsPresent": [],
-      "missing": [
+      "directionsPresent": [
         "N",
         "NE",
         "E",
-        "SE",
+        "SE"
+      ],
+      "missing": [
+        "S",
+        "SW",
+        "W",
+        "NW"
+      ]
+    },
+    {
+      "action": "walk",
+      "directionsPresent": [
+        "E",
+        "SE"
+      ],
+      "missing": [
+        "N",
+        "NE",
         "S",
         "SW",
         "W",
@@ -22,12 +38,13 @@
     },
     {
       "action": "run",
-      "directionsPresent": [],
+      "directionsPresent": [
+        "E",
+        "SE"
+      ],
       "missing": [
         "N",
         "NE",
-        "E",
-        "SE",
         "S",
         "SW",
         "W",
@@ -78,6 +95,54 @@
     }
   ],
   "clips": [
+    {
+      "clip": "idle-N",
+      "frameCount": 8,
+      "maxPivotError": 0.000003999999989900971,
+      "minimumMargin": 47
+    },
+    {
+      "clip": "idle-NE",
+      "frameCount": 8,
+      "maxPivotError": 0.000003999999989900971,
+      "minimumMargin": 49
+    },
+    {
+      "clip": "idle-E",
+      "frameCount": 8,
+      "maxPivotError": 0.000003999999989900971,
+      "minimumMargin": 50
+    },
+    {
+      "clip": "idle-SE",
+      "frameCount": 8,
+      "maxPivotError": 0.000003999999989900971,
+      "minimumMargin": 50
+    },
+    {
+      "clip": "walk-E",
+      "frameCount": 16,
+      "maxPivotError": 0.000003999999989900971,
+      "minimumMargin": 52
+    },
+    {
+      "clip": "walk-SE",
+      "frameCount": 16,
+      "maxPivotError": 0.000003999999989900971,
+      "minimumMargin": 53
+    },
+    {
+      "clip": "run-E",
+      "frameCount": 16,
+      "maxPivotError": 0.000003999999989900971,
+      "minimumMargin": 54
+    },
+    {
+      "clip": "run-SE",
+      "frameCount": 16,
+      "maxPivotError": 0.000003999999989900971,
+      "minimumMargin": 56
+    },
     {
       "clip": "pulse-shot-N",
       "frameCount": 12,
