@@ -1,5 +1,5 @@
 import {strict as a} from 'node:assert';
-import {DAY_MS,KEYFRAMES,AMBIENT_FLOOR,timeOfDay,lightingAt,phaseOf,clockLabel,resolveTime,modeFrom,luma,sunAt,SHADOW_ALPHA,NIGHT,SUNRISE,SUNSET} from '../src/stronghold/daylight.ts';
+import {DAY_MS,KEYFRAMES,AMBIENT_FLOOR,timeOfDay,lightingAt,phaseOf,clockLabel,resolveTime,modeFrom,luma,sunAt,SHADOW_ALPHA,NIGHT,SUNRISE,SUNSET,DUSK} from '../src/stronghold/daylight.ts';
 import {LIGHT_SPRITES} from '../src/stronghold/light-anchors.ts';
 let tests=0;const test=(name,fn)=>{fn();tests++;console.log('PASS',name);};
 const near=(x,y,e=1e-6)=>a.ok(Math.abs(x-y)<=e,`${x} != ${y}`);
@@ -8,6 +8,7 @@ test('keyframes are ordered and wrap seamlessly',()=>{for(let i=1;i<KEYFRAMES.le
 test('interpolation hits every keyframe exactly',()=>{for(const k of KEYFRAMES.slice(0,-1)){const l=lightingAt(k.t),hex='#'+l.ambient.map(v=>Math.round(v*255).toString(16).padStart(2,'0')).join('');a.equal(hex,k.ambient);near(l.lights,k.lights);near(l.glow,k.glow);}});
 test('noon is full daylight with lights off',()=>{const l=lightingAt(.5);a.deepEqual(l.ambient.map(v=>Math.round(v*255)),[255,255,255]);a.equal(l.lights,0);a.equal(l.glow,0);a.equal(l.phase,'Day');});
 test('night never drops below the readability floor',()=>{for(let t=0;t<1;t+=.001){const l=lightingAt(t);a.ok(luma(l.ambient)>=AMBIENT_FLOOR-1e-9,`t=${t}`);for(const v of [...l.ambient,l.lights,l.glow])a.ok(v>=0&&v<=1);}});
+test('night is never darker than dusk',()=>{const dusk=luma(lightingAt(DUSK).ambient);for(let t=0;t<1;t+=.001)a.ok(luma(lightingAt(t).ambient)>=dusk-1e-9,`t=${t}`);for(const t of [0,.1,SUNSET,.9])lightingAt(t).ambient.forEach((v,i)=>near(v,lightingAt(DUSK).ambient[i]));});
 test('phases and clock labels',()=>{a.equal(phaseOf(0),'Night');a.equal(phaseOf(.25),'Dawn');a.equal(phaseOf(.5),'Day');a.equal(phaseOf(.75),'Dusk');a.equal(phaseOf(.9),'Night');a.equal(phaseOf(-.1),'Night');a.equal(clockLabel(0),'00:00');a.equal(clockLabel(.5),'12:00');a.equal(clockLabel(.75),'18:00');a.equal(clockLabel(1),'00:00');});
 test('night is one third of the day',()=>{near(NIGHT,1/3);let night=0;const n=24*60*10;for(let i=0;i<n;i++)if(phaseOf(i/n)==='Night')night++;near(night/n,1/3,1e-3);a.equal(phaseOf(SUNRISE-1e-6),'Night');a.equal(phaseOf(SUNRISE),'Dawn');a.equal(phaseOf(SUNSET-1e-6),'Dusk');a.equal(phaseOf(SUNSET),'Night');
  for(const t of [0,SUNRISE,SUNSET])a.equal(luma(lightingAt(t).ambient).toFixed(4),luma(lightingAt(0).ambient).toFixed(4),'night is fully dark from 20:00 to 04:00');});
