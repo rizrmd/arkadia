@@ -1,0 +1,48 @@
+{
+  "status": "source-constraints-only-not-final-art-acceptance",
+  "endpoints": [
+    {
+      "action": "idle",
+      "endpointMatrixMaxError": 1.387778801460961e-18,
+      "endpointPass": true
+    },
+    {
+      "action": "run",
+      "endpointMatrixMaxError": 0.0,
+      "endpointPass": true
+    },
+    {
+      "action": "pulse-shot",
+      "endpointMatrixMaxError": 0.0,
+      "endpointPass": true,
+      "nearStartMatrixMaxError": 2.905726432800293e-07,
+      "smoothStartPass": true
+    },
+    {
+      "action": "phase-dash",
+      "endpointMatrixMaxError": 0.0,
+      "endpointPass": true,
+      "nearStartMatrixMaxError": 9.08970832824707e-07,
+      "smoothStartPass": true
+    },
+    {
+      "action": "rift-trap",
+      "endpointMatrixMaxError": 0.0,
+      "endpointPass": true,
+      "nearStartMatrixMaxError": 4.3213367462158203e-07,
+      "smoothStartPass": true
+    },
+    {
+      "action": "overdrive",
+      "endpointMatrixMaxError": 0.0,
+      "endpointPass": true,
+      "nearStartMatrixMaxError": 2.905726432800293e-07,
+      "smoothStartPass": true
+    }
+  ],
+  "trapPalmMinimumHeight": -7.82310962677002e-08,
+  "trapContactPass": true,
+  "canonicalEmitterMeshes": [
+    "Canonical RIGHT cyan crystal"
+  ]
+}

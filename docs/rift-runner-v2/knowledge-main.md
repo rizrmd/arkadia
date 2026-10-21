@@ -114,6 +114,10 @@ Live browser playback passed all 66 clips with zero page/resource errors. All 70
 ## Final delivery check
 
 After the evidence overlay, all **82 deployed resources** matched their packaged SHA-256 hashes. The gameplay homepage bytes remain unchanged. [Final checksum report](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=docs%2Frift-runner-v1%2Flive-byte-verification.json). Assets and previews are shipped; final consistent animation acceptance is blocked by the documented art defects.
-## Active correction work
+## Active game-ready correction work
 
-The task has resumed toward **game-ready** acceptance. [Controlled render prototype](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/) tests one rigged source to prevent anatomical swaps and fix planted-foot sliding. Its first twelve-frame run proof passes numerical contacts and actual browser playback. It is still an unfinished prototype; the approved concept’s visual quality, full skill/VFX set and complete eight-direction acceptance remain open. All new images, including rejected model prototypes, are inline on the existing **Rift Runner — Animation Generation Sources** page. The gameplay hero is unchanged.
+The current complete candidates are **Pulse Shot, hurt and death in all eight directions**, with 288 verified rendered frames. [Open current playback](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/candidate.html). Hurt recovers to the shared neutral. Death includes impact, fall and a held terminal corpse pose; it does not loop or recover to idle by default.
+
+The candidate viewer verifies every frame, neutral/action/neutral transitions and terminal hold. The canonical rig prevents anatomical swaps. Numeric ground pivots and contact audits now pass; final visual acceptance and the remaining idle/run, skills and separate VFX are still in progress. No game-ready claim or hero replacement is made.
+
+All produced images, including rejected prototypes and earlier grid versions, are inline on the existing **Rift Runner — Animation Generation Sources** page. Knowledge and asset labels remain English.
