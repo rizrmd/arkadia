@@ -1,5 +1,5 @@
 import {unproject} from '../isometric';
-import {COURT} from './terrain';
+import {walkableGround,gatePassageColumn} from './navigation';
 import type {Sun} from './daylight';
 import type {Walk} from './controls';
 // The player's hero walking the court, drawn from the arena's character atlas (front/back diagonals mirrored,
@@ -13,7 +13,7 @@ type Clip={fps:number;loop:boolean;frames:number[]};
 type Meta={image:string;revision?:string;cell:{w:number;h:number;pivot:{x:number;y:number}};clips:Record<string,Clip>;frames:{x:number;y:number;w:number;h:number}[]};
 const BASE='/assets/characters/',KEY='arkadia.stronghold.hero';
 // Atlas px -> world px. Matches the court props (a barrel is 27 px wide), not the arena's 1.1.
-const DISPLAY=.48,SPEED=105,STRIDE=88*DISPLAY/1.1,RADIUS=9,EDGE=.5,SPAWN={x:577,y:640};
+const DISPLAY=.48,SPEED=105,STRIDE=88*DISPLAY/1.1,RADIUS=9,SPAWN={x:577,y:640};
 export async function createHero<P extends Placed>(o:{layer:HTMLElement;lightmap:HTMLCanvasElement;surface:HTMLElement;footprint:(p:P)=>Column[];sun:()=>Sun;direction:()=>Walk;follow:(x:number,y:number,dt:number)=>void}){
  const meta:Meta=(await (await fetch(BASE+'manifest.json')).json()).characters.hero,atlas=new Image();
  atlas.src=BASE+meta.image+(meta.revision?`?v=${encodeURIComponent(meta.revision)}`:'');await atlas.decode();
@@ -25,14 +25,12 @@ export async function createHero<P extends Placed>(o:{layer:HTMLElement;lightmap
  let objects:P[]=[],blockers:Column[]=[],bounds=new Map<P,number[]>();
  let x=SPAWN.x,y=SPAWN.y,state:'idle'|'move'='idle',t=0,stride=0,facing=1,back=false,vertical=false;
  let tint='255,255,255',sampled=-1e9,origin={x:0,y:0,scale:1},k=0,box=[0,0,0,0],drawn='',lastMove=0;
- // Ground point -> court tile; the hero stays on the paving, clear of the wall feet.
- const onCourt=(px:number,py:number)=>{const g=unproject(px-COURT.x,py-COURT.y);return g.x>=EDGE&&g.y>=EDGE&&g.x<=COURT.size-EDGE&&g.y<=COURT.size-EDGE;};
  function blocked(px:number,py:number){
-  if(!onCourt(px,py))return true;
+  if(!walkableGround(px,py))return true;
   for(const b of blockers)if(Math.abs(px-b.x)<b.w/2+RADIUS&&py>b.back-RADIUS*.5&&py<b.front+RADIUS*.5)return true;return false;
  }
  function setScene(list:P[]){
-  objects=list.filter(p=>p.layer!=='ground');blockers=objects.filter(p=>p.opacity>=1).flatMap(p=>o.footprint(p));
+  objects=list.filter(p=>p.layer!=='ground');blockers=objects.filter(p=>p.opacity>=1).flatMap(p=>o.footprint(p).filter(c=>!('id' in p&&p.id==='gate'&&gatePassageColumn(c.x))));
   // Screen bounds of each upright, for picking the few that can overlap the hero.
   bounds=new Map(objects.map(p=>{const xs=[-p.width/2,p.width/2],ys=[-p.height*p.foot,p.height*(1-p.foot)],pts=xs.flatMap(lx=>ys.map(ly=>[p.x+lx,p.y+p.shear*lx+p.vertical*ly]));
    return [p,[Math.min(...pts.map(q=>q[0])),Math.min(...pts.map(q=>q[1])),Math.max(...pts.map(q=>q[0])),Math.max(...pts.map(q=>q[1]))]];}));
@@ -41,7 +39,7 @@ export async function createHero<P extends Placed>(o:{layer:HTMLElement;lightmap
  // In front of the hero: the front walls and gate always; a court sprite when the hero stands behind the
  // front edge of its footprint at the hero's column (or behind its pivot where no column reaches).
  function front(p:P){
-  if(p.layer==='foreground')return true;if(p.layer!=='world')return false;
+  if(p.layer==='foreground')return y<p.y+12;if(p.layer!=='world')return false;
   let edge=-Infinity;for(const col of o.footprint(p))if(Math.abs(col.x-x)<=col.w/2+RADIUS)edge=Math.max(edge,col.front);
   return y<(edge>-Infinity?edge:p.y);
  }

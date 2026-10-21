@@ -54,7 +54,7 @@ export const LIGHT_SPRITES:Record<string,Anchor[]>={
   {x:220,y:212,size:24,kind:'fire',radius:80,drop:90,intensity:0.85},
   {x:275,y:245,size:45,kind:'fire',radius:70,drop:30,intensity:0.6}
  ],
- '/modular-stronghold/v2/gateway-grand.png':[
+ '/modular-stronghold/v2/gateway-open.png':[
   {x:355,y:395,size:32,kind:'fire',radius:110,drop:245,intensity:1},
   {x:840,y:395,size:32,kind:'fire',radius:110,drop:245,intensity:1}
  ],

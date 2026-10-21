@@ -8,7 +8,7 @@ import type {Walk} from './controls';
 import type {Progress} from '../app/loader';
 export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Building)=>void,direction:()=>Walk,progress:Progress=()=>{}){
  const ctx=canvas.getContext('2d')!,environment=environmentSprites(),images=new Map<string,HTMLImageElement>();
- const spriteFile=(id:Building,level:number)=>id==='forge'?`/fortress-ui/forge-${level}.webp`:id==='gate'?'/modular-stronghold/v2/gateway-grand.png':`/assets/${slots[id].asset}.png`;
+ const spriteFile=(id:Building,level:number)=>id==='forge'?`/fortress-ui/forge-${level}.webp`:id==='gate'?'/modular-stronghold/v2/gateway-open.png':`/assets/${slots[id].asset}.png`;
  const paving='/modular-stronghold/v2/paving-warm-texture.png',snow='/modular-stronghold/v2/snow-soft-texture.png';
  // Loading-screen steps: every artwork file, then the hero, then the first world raster.
  const files=[...new Set([FOUNDATION_SOIL,FOUNDATION_MOSS,paving,snow,...environment.map(p=>p.file),...buildings.flatMap(b=>[1,2,3].map(l=>spriteFile(b,l)))])],steps=files.length+2;let loaded=0;
