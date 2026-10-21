@@ -14,9 +14,24 @@ Hand-reviewed crop rectangles, original transparent alpha, alpha values below 24
 
 `npm run build` performs TypeScript checks and Vite production build. `scripts/verify.mjs` is a Playwright interaction test; local downloaded Chromium needs compatible system libraries. Managed Fural browser verification is performed separately if that runtime is unavailable. The static site server uses Node built-ins and a foreground boot command, with no npm or Vite dependency at runtime.
 
+## One preview sandbox — 22 October 2026
+
+Every public preview now lives in **one** custom sandbox, `arkadia`: https://arkadia-custom-whachat.fural.space/ (the platform kept `arkadia-whachat` bound to a retired sandbox, so it added `-custom`). The former sandboxes `arkadia-stronghold`, `arkadia-coop`, `arkadia-enemies` and `ember-warden-review` were merged into it and deleted; their hostnames no longer resolve.
+
+| Path | What | Former sandbox |
+|------|------|----------------|
+| `/` | The game, co-op build (Go server, rooms via `/?room=CODE`) | arkadia-coop |
+| `/?build=stronghold` | The latest `feat/stronghold` solo build (sticky cookie; `/?build=coop` switches back) | arkadia-stronghold |
+| `/rift-runner/v1/`, `/rift-runner/v2/`, `/knight-footfalls/review.html`, `/<review>/…` | Every review folder and evidence file, same paths as before | arkadia-stronghold |
+| `/enemies/v1/` | Ashfang & Mire Imp review | arkadia-enemies |
+| `/ember-warden-review/` | Ember Warden animation review | ember-warden-review |
+| `/ws`, `/api/rooms/{code}`, `/healthz` | Co-op WebSocket and room API | arkadia-coop |
+
+`scripts/arkadia/gateway.mjs` serves all of it from disk on port 3000 and runs the co-op Go binary on 127.0.0.1:3001 behind it. Releases are **layers**: `node scripts/arkadia/publish-layer.mjs --dir DIR [--prefix /x] [--build coop|stronghold]` (or `--tgz release.tgz` for a co-op release, `--gateway` for the gateway itself) uploads parts into `layers/`, restarts the sandbox and the gateway applies new layers in order at boot. `scripts/ember-warden/publish.mjs` and `scripts/publish-camera-follow.mjs` already publish this way; older `publish-*.mjs` scripts still target the deleted `arkadia-stronghold` and fail at their first transfer — port them to `publishLayer` before reuse. `node scripts/arkadia/verify-live.mjs` checks both builds, the co-op socket and the review folders in Chromium (`docs/arkadia-sandbox/`).
+
 ## Verified live result — 20 October 2026
 
-https://arkadia-whachat.fural.space/ — custom sandbox arkadia, foreground `node app.mjs`, port 3000. `scripts/package-site.mjs` bundles the Vite output into a single Node file to avoid timeout while the platform copies many resources. All packaging scripts stage their output under the ignored `.publish/<name>/` folder (never the repo root). Publish with `fural-agent sandboxes serve --name arkadia --dir $PWD/.publish/site --cmd "node app.mjs" --port 3000 --project PJ8758f22f61165f3d3215e454`.
+https://arkadia-whachat.fural.space/ (retired) — custom sandbox arkadia, foreground `node app.mjs`, port 3000. `scripts/package-site.mjs` bundles the Vite output into a single Node file to avoid timeout while the platform copies many resources. All packaging scripts stage their output under the ignored `.publish/<name>/` folder (never the repo root). That release was published with `sandboxes serve --name arkadia … --cmd "node app.mjs"`; do not run it now — it would replace the gateway boot script of today's `arkadia` sandbox. Use `scripts/arkadia/publish-layer.mjs`.
 
 `node scripts/final-verify.mjs` tests the public URL in Chromium. The browser uses HOME-only Ubuntu libraries on Alpine; organization runtime now includes their idempotent setup (scripts/organization-setup.sh). Playwright Chromium requires --no-zygote --single-process here; this is browser test configuration, not a site requirement. The test verifies 13 conditions, including grid below props, true sorting toggle, deterministic seeds, camera handlers and transparency toggles. Final deterministic camera assertions use dispatched events with pointer-capture bypassed; this does not prove physical mouse or touch behavior on every device. No hardware performance claim is made.
 

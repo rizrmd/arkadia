@@ -1,15 +1,6 @@
 {
-  "receipt": {
-    "boot_script": "cd \"$HOME\"\nnode serve.mjs\n",
-    "files_copied": 1,
-    "hostname": "ember-warden-review-whachat.fural.space",
-    "name": "ember-warden-review",
-    "port": 3000,
-    "sandbox_id": "CS69b10b21e0728f1141f2bf97",
-    "slug": "ember-warden-review",
-    "url": "https://ember-warden-review-whachat.fural.space/"
-  },
-  "version": "85441211d810",
+  "url": "https://arkadia-custom-whachat.fural.space/ember-warden-review/",
+  "sandbox": "arkadia",
   "resources": {
     "evidence/live-cinder-step.png": "b02f47b741f5ded2fab2c2fe566aea9472b2400a05cb0f6d41a4170fa8e03100",
     "evidence/live-death.png": "7a2b0f8dcc0a8302923ba862f70358cd0f4eb21a5ede06003d7482bc302cb5fc",
@@ -131,23 +122,5 @@
     "vfx/furnace-heart-2.png": "c2ada87688c796f9239ed77cd5ff2762bbd22e188269f1f8ff6516f80e698e6d",
     "vfx/furnace-heart-3.png": "c2ada87688c796f9239ed77cd5ff2762bbd22e188269f1f8ff6516f80e698e6d",
     "viewer.js": "c713b545611538f43ae32b8bc7ff2ed6c39439f689e8013b15f45fb2a52298f9"
-  },
-  "parts": [
-    "ember-85441211d810-0.gzpart",
-    "ember-85441211d810-1.gzpart",
-    "ember-85441211d810-2.gzpart",
-    "ember-85441211d810-3.gzpart",
-    "ember-85441211d810-4.gzpart",
-    "ember-85441211d810-5.gzpart",
-    "ember-85441211d810-6.gzpart",
-    "ember-85441211d810-7.gzpart",
-    "ember-85441211d810-8.gzpart",
-    "ember-85441211d810-9.gzpart",
-    "ember-85441211d810-10.gzpart",
-    "ember-85441211d810-11.gzpart",
-    "ember-85441211d810-12.gzpart",
-    "ember-85441211d810-13.gzpart",
-    "ember-85441211d810-14.gzpart",
-    "ember-85441211d810-15.gzpart"
-  ]
+  }
 }
