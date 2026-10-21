@@ -85,7 +85,6 @@ export async function createHero<P extends Placed>(o:{layer:HTMLElement;lightmap
   const g=frame(lit);if(tint!=='255,255,255'){const [r,gr,bl]=tint.split(',').map(v=>Number(v)/255),img=g.getImageData(0,0,cell.w,cell.h),d=img.data;for(let i=0;i<d.length;i+=4){d[i]*=r;d[i+1]*=gr;d[i+2]*=bl;}g.putImageData(img,0,0);}
   const local=()=>c.setTransform(k,0,0,k,-box[0]*k,-box[1]*k),sprite=(src:HTMLCanvasElement)=>{c.scale((vertical?1:facing)*DISPLAY,DISPLAY);c.drawImage(src,-pivot.x,-pivot.y);};
   c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,canvas.width,canvas.height);local();
-  c.fillStyle='rgba(5,6,8,.3)';c.beginPath();c.ellipse(0,0,12,6,0,0,Math.PI*2);c.fill();
   // Sun shadow: each sprite point at height h above the foot lands h*(dx,dy) along the ground, like the
   // building solids, faded with the same alpha and colour.
   if(s.alpha){const q=frame(flat);q.globalCompositeOperation='source-in';q.fillStyle='rgb(20,28,44)';q.fillRect(0,0,cell.w,cell.h);q.globalCompositeOperation='source-over';c.save();c.globalAlpha=s.alpha;c.filter='blur(1px)';c.transform(1,0,-s.dx,-s.dy,0,0);sprite(flat);c.restore();local();}
