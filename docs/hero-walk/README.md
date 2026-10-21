@@ -3,7 +3,7 @@
 The player's hero (the blue knight from the arena) now stands in the Stronghold court and can be walked around.
 
 - **Keyboard:** arrow keys or WASD. Up/down walk straight up/down the screen, left/right straight across it, and two keys together walk along a 2:1 tile edge (like the arena). Keys are ignored while the clock slider or another text control has focus, and when Ctrl/Alt/Cmd is held.
-- **Touch:** a thumbstick sits bottom-left on touch screens (or appears after the first touch). Speed follows how far the knob is pushed, with a small dead zone.
+- **Touch:** the thumbstick is hidden until a touch starts in the bottom-left quarter of the screen (left half, bottom half). It then appears centred under that thumb and hides again on release. Speed follows how far the knob is pushed, with a small dead zone. That finger never pans the map or selects a building; touches anywhere else still pan, pinch and tap as before.
 - **Camera:** the camera stays put while the hero walks inside a central box, then eases after them. Dragging still pans freely; the next step brings the camera back.
 - **Animation:** the arena's facing rules and clips. The rear view walks up, the front view walks down, diagonals are mirrored, and the last facing is kept when the hero stops. The step cycle follows distance walked, so a hero blocked by a wall stops animating.
 - **Collision:** the hero stays on the court paving and is blocked by the ground footprints of buildings, props and walls (the same solids that cast the sun shadows). Blocked steps slide along the obstacle.
@@ -32,10 +32,11 @@ The world stays a single pre-rastered surface. A walking frame redraws only the 
 - The clock slider's arrow keys do not walk the hero.
 - The position survives a reload.
 - At night the hero is tinted blue.
-- On a 390 × 844 touch phone the thumbstick is visible, a real touch drag walks the hero right, and releasing the stick stops the hero.
+- On a 390 × 844 touch phone the thumbstick starts hidden, and a drag in the top-right quarter pans the map without showing it or walking the hero. A touch in the bottom-left quarter shows the stick centred under the thumb, a drag to the right walks the hero right, and releasing stops the hero and hides the stick.
+- Desktop (mouse) never shows the thumbstick.
 - No page errors.
 
-Screenshots are in this folder: `1-spawn-noon`, `2-blocked-by-table`, `3-at-east-wall`, `4-morning-shadow`, `5-night-tint` and `6-phone-thumbstick`.
+Screenshots are in this folder: `1-spawn-noon`, `2-blocked-by-table`, `3-at-east-wall`, `4-morning-shadow`, `5-night-tint`, `6-phone-idle` (no stick at rest) and `7-phone-thumbstick` (stick under a bottom-left thumb).
 
 ### Limits
 

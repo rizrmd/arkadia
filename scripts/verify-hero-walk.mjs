@@ -12,10 +12,11 @@ const camera=page=>page.evaluate(()=>document.querySelector('#world-surface').st
 // A world re-raster can stall headless frames for a second, so wait on state rather than fixed sleeps.
 const idle=page=>page.waitForFunction(()=>document.querySelector('#world-hero').dataset.state==='idle',null,{timeout:10000});
 const hold=async(page,key,ms)=>{await page.keyboard.down(key);await page.waitForTimeout(ms);const during=await hero(page);await page.keyboard.up(key);await idle(page);return during;};
+const stickShown=page=>page.evaluate(()=>{const el=document.querySelector('#move-stick'),r=el.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2,visible:getComputedStyle(el).visibility==='visible'};});
 const desktop=await browser.newContext({viewport:{width:1440,height:1000}});
 let page=await open(desktop,'?time=0.5');await page.evaluate(()=>localStorage.removeItem('arkadia.stronghold.hero'));await page.reload();await page.waitForFunction(()=>document.querySelector('#world-hero')?.dataset.x);await page.waitForTimeout(500);
 const start=await hero(page);console.log('spawn',start);assert.equal(start.state,'idle');
-assert(await page.evaluate(()=>getComputedStyle(document.querySelector('#move-stick')).display==='none'),'no thumbstick on a mouse-only screen');
+assert(!(await stickShown(page)).visible,'no thumbstick on a mouse-only screen');
 await shot(page,'1-spawn-noon');
 // W walks straight up the screen with the rear view; release keeps that facing.
 let during=await hold(page,'KeyW',700),after=await hero(page);console.log('W',during,after);
@@ -53,16 +54,24 @@ for(const [time,name] of [['0.31','4-morning-shadow'],['0','5-night-tint']]){con
  const box=await p.evaluate(()=>{const r=document.querySelector('#world-hero').getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height};});
  await shot(p,name,{clip:{x:Math.max(0,box.x-160),y:Math.max(0,box.y-120),width:box.width+320,height:box.height+240}});}
 // Mobile, in a fresh browser (one single-process headless browser runs out of memory on a second world):
-// the thumbstick shows and walks the hero with a real touch drag.
+// the thumbstick stays hidden until a touch lands in the bottom-left quarter, appears under that thumb, walks the hero
+// with a real touch drag and hides on release; a drag anywhere else still pans the map without showing it.
 await browser.close();browser=await launch();
 const phone=await browser.newContext({viewport:{width:390,height:844},deviceScaleFactor:2,isMobile:true,hasTouch:true});
-page=await open(phone,'?time=0.5');const stick=await page.evaluate(()=>{const r=document.querySelector('#move-stick').getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2,visible:getComputedStyle(document.querySelector('#move-stick')).display!=='none'};});
-assert(stick.visible,'thumbstick visible on touch screens');before=await hero(page);const cdp=await phone.newCDPSession(page);
-await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:stick.x,y:stick.y,id:1}]});
-for(let i=1;i<=6;i++){await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:stick.x+i*7,y:stick.y,id:1}]});await page.waitForTimeout(16);}
-await page.waitForTimeout(900);during=await hero(page);await shot(page,'6-phone-thumbstick');
-await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});await idle(page);after=await hero(page);
+page=await open(phone,'?time=0.5');assert(!(await stickShown(page)).visible,'thumbstick hidden until touched');await shot(page,'6-phone-idle');
+const cdp=await phone.newCDPSession(page),touch=(type,points)=>cdp.send('Input.dispatchTouchEvent',{type,touchPoints:points.map(([x,y],id)=>({x,y,id:id+1}))});
+// A drag in the top-right quarter pans the camera, walks nobody and never shows the stick.
+before=await hero(page);const cam1=await camera(page);await touch('touchStart',[[300,250]]);
+for(let i=1;i<=6;i++){await touch('touchMove',[[300-i*15,250+i*10]]);await page.waitForTimeout(16);}
+assert(!(await stickShown(page)).visible,'no thumbstick outside the bottom-left quarter');await touch('touchEnd',[]);await page.waitForTimeout(200);
+assert.notEqual(await camera(page),cam1,'a drag outside the quarter pans');after=await hero(page);assert.deepEqual([after.x,after.y],[before.x,before.y],'panning does not walk');
+// A touch in the bottom-left quarter brings the stick up centred under the thumb, and dragging right walks right without panning.
+const at=[110,700];await touch('touchStart',[at]);let stick=await stickShown(page);console.log('stick shown at',stick);
+assert(stick.visible,'thumbstick appears under a touch in the bottom-left quarter');assert(Math.abs(stick.x-at[0])<1&&Math.abs(stick.y-at[1])<1,'centred on the thumb');
+before=await hero(page);for(let i=1;i<=6;i++){await touch('touchMove',[[at[0]+i*7,at[1]]]);await page.waitForTimeout(16);}
+await page.waitForTimeout(900);during=await hero(page);await shot(page,'7-phone-thumbstick');
+await touch('touchEnd',[]);await idle(page);after=await hero(page);
 console.log('stick',before,during,after);assert(during.x>before.x+30&&Math.abs(during.y-before.y)<1,'thumbstick right walks right');assert.equal(during.state,'move');assert.equal(after.state,'idle');
-assert.equal(await page.evaluate(()=>document.querySelector('#move-stick').dataset.active),'false');
-assert.deepEqual(errors,[]);console.log('PASS hero walks with WASD, arrows and the thumbstick; blocked by buildings and walls; camera follows');
+assert.equal(await page.evaluate(()=>document.querySelector('#move-stick').dataset.active),'false');await page.waitForTimeout(300);assert(!(await stickShown(page)).visible,'thumbstick hides on release');
+assert.deepEqual(errors,[]);console.log('PASS hero walks with WASD, arrows and the bottom-left touch thumbstick; blocked by buildings and walls; camera follows');
 }finally{await browser?.close();server?.kill();}

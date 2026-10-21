@@ -1,4 +1,4 @@
-// Walk input for the Stronghold hero: arrow keys or WASD on a keyboard, an on-screen thumbstick on touch screens.
+// Walk input for the Stronghold hero: arrow keys or WASD on a keyboard, a thumbstick that appears under a touch in the bottom-left quarter.
 // direction() is a screen-space vector of length 0..1. Keys combine on the ground grid like the arena
 // (W+D walks along a 2:1 tile edge, not at 45 degrees on screen); the stick follows the thumb exactly.
 export type Walk={x:number;y:number};
@@ -11,20 +11,26 @@ export function createControls(root:HTMLElement){
  // The clock slider keeps its own arrow keys; modified keys stay browser shortcuts.
  window.addEventListener('keydown',e=>{if(!KEYS[e.code]||editable(e.target)||e.ctrlKey||e.metaKey||e.altKey)return;e.preventDefault();held.add(e.code);});
  window.addEventListener('keyup',e=>{held.delete(e.code);});
- const release=()=>{held.clear();stick={x:0,y:0};knob.style.transform='';base.dataset.active='false';};
+ const release=()=>{held.clear();stick={x:0,y:0};finger=-1;knob.style.transform='';base.dataset.active='false';};
  window.addEventListener('blur',release);document.addEventListener('visibilitychange',()=>{if(document.hidden)release();});
- // Thumbstick: fixed bottom-left, shown on touch screens (or after the first touch anywhere).
+ // Floating thumbstick: hidden until a touch starts on the world in the bottom-left quarter of the screen, then shown
+ // centred under that thumb and hidden again on release. Its finger is taken in the capture phase so the canvas never
+ // pans or selects a building with it; touches anywhere else keep panning, pinching and tapping as before.
  const base=document.createElement('div'),knob=document.createElement('div');base.id='move-stick';base.setAttribute('aria-hidden','true');knob.className='stick-knob';base.append(knob);root.append(base);
- const coarse=matchMedia('(any-pointer: coarse)');const show=()=>{base.hidden=false;};base.hidden=!coarse.matches;
- coarse.addEventListener('change',()=>{if(coarse.matches)show();});window.addEventListener('pointerdown',e=>{if(e.pointerType==='touch')show();},{capture:true,passive:true});
- let finger=-1;
- const aim=(e:PointerEvent)=>{const r=base.getBoundingClientRect(),radius=r.width/2,dx=e.clientX-r.left-radius,dy=e.clientY-r.top-radius,d=Math.hypot(dx,dy),k=Math.min(1,d/(radius*.62));
+ let finger=-1,ox=0,oy=0;
+ const inZone=(e:PointerEvent)=>e.clientX<innerWidth/2&&e.clientY>innerHeight/2;
+ const aim=(e:PointerEvent)=>{const radius=base.offsetWidth/2,dx=e.clientX-ox,dy=e.clientY-oy,d=Math.hypot(dx,dy),k=Math.min(1,d/(radius*.62));
   knob.style.transform=`translate(${dx/(d||1)*k*radius*.62}px,${dy/(d||1)*k*radius*.62}px)`;
   // Rescale past the dead zone so a light push starts slow instead of jumping to a third of full speed.
   const m=k<DEAD?0:(k-DEAD)/(1-DEAD);stick={x:dx/(d||1)*m,y:dy/(d||1)*m};};
- base.onpointerdown=e=>{if(finger>=0)return;finger=e.pointerId;try{base.setPointerCapture(e.pointerId);}catch{}base.dataset.active='true';aim(e);e.preventDefault();};
- base.onpointermove=e=>{if(e.pointerId===finger)aim(e);};
- base.onpointerup=base.onpointercancel=e=>{if(e.pointerId!==finger)return;finger=-1;release();};
+ const take=(e:PointerEvent)=>{e.stopImmediatePropagation();e.preventDefault();};
+ window.addEventListener('pointerdown',e=>{
+  if(finger>=0||e.pointerType!=='touch'||!(e.target instanceof HTMLCanvasElement)||!inZone(e))return;
+  take(e);finger=e.pointerId;ox=e.clientX;oy=e.clientY;base.style.left=`${ox}px`;base.style.top=`${oy}px`;base.dataset.active='true';aim(e);
+ },{capture:true});
+ window.addEventListener('pointermove',e=>{if(e.pointerId===finger){take(e);aim(e);}},{capture:true});
+ const lift=(e:PointerEvent)=>{if(e.pointerId!==finger)return;take(e);finger=-1;release();};
+ window.addEventListener('pointerup',lift,{capture:true});window.addEventListener('pointercancel',lift,{capture:true});
  return {
   direction():Walk{
    if(stick.x||stick.y)return stick;let u=0,v=0;for(const code of held){u+=KEYS[code][0];v+=KEYS[code][1];}
