@@ -11,3 +11,9 @@ The sprite uses versioned `full-gateway-v3-*` URLs, and its canvas identifies it
 The production build, runtime stability in day/night, asset stability, lighting at noon/night/dusk, depth, passage/collision and 4× CPU mobile animation tests passed locally. Actual rendered frames: 0 changed stone pixels, 0 moved bounds, all 16 poses observed. At night, unlit masonry retains 27% of day luminance while torch-lit masonry retains 79%; flame luminance remains approximately 249/255.
 
 Checks: `verify-gateway-render.mjs`, `verify-gateway-lighting.mjs`, `verify-gateway-stability.mjs`, `verify-gateway-depth.mjs`, `verify-open-gate.mjs`, and `verify-gate-animation.mjs`. Publish the committed build with `node scripts/publish-gateway-lighting.mjs`.
+
+## Live release verification
+
+Implementation `664da53` was pushed to `feat/stronghold` and deployed. Live tests verified the `gateway-lightmap-v3` renderer and versioned assets, zero changed stone pixels and zero moved bounds at noon and night, restored local torch illumination and bright flame emission, and successful night → noon → night clock transitions.
+
+The final 390 × 844 / 4× CPU live animation check passed with p95 and maximum frame interval 33.4 ms, successful reversal, unchanged world/light/shadow counters, and no JavaScript errors. Reports and screenshots in this directory were captured from the public host.
