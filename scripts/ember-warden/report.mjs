@@ -1,5 +1,7 @@
 import fs from 'node:fs/promises';
 const root='public/ember-warden/v1',docs='docs/ember-warden',m=JSON.parse(await fs.readFile(root+'/manifest.json')),pixels=JSON.parse(await fs.readFile(docs+'/pixel-and-contact-audit.json')),source=JSON.parse(await fs.readFile(docs+'/source-audit.json'));let local,live;try{local=JSON.parse(await fs.readFile(docs+'/local-playback.json'))}catch{}try{live=JSON.parse(await fs.readFile(docs+'/live-playback.json'))}catch{}
+let mobile;try{mobile=JSON.parse(await fs.readFile(docs+'/live-mobile-loader.json'))}catch{}
+let mobileStatus;try{mobileStatus=JSON.parse(await fs.readFile(docs+'/mobile-fix-status.json'))}catch{}
 const text=`## Acceptance status
 
 **Production candidate published; final art acceptance is pending.** The simplified 3D rendering does not yet match the approved hand-painted concept. No game-ready quality claim is made.
@@ -29,7 +31,11 @@ The verifier observes every frame of all eight facings for each action at 1× an
 
 ## Mobile loading correction
 
+${mobile?'**Live mobile emulation: PASS.** Startup loads '+mobile.initialSheetRequests+' sheets; startup including the first idle cycle took '+(mobile.startupIncludingIdleCycleMs/1000).toFixed(2)+' seconds in this run. Moving Flame Fan, death hold and failed-image Retry recovery pass with zero page errors. The former deployment admission blocker is resolved.':'Public mobile verification pending.'}
+
 The original viewer decoded every body/VFX sheet before its first draw. It now loads only the selected action, uses browser-compatible canvas crops, releases unrelated actions and displays per-sheet progress, a timeout and Retry. Startup requests only four idle sheets. Android-sized touch emulation with ImageBitmap disabled verifies moving attack, death hold and recovery from a deliberately failed sheet. This is browser emulation, not a physical-phone claim. See local-mobile-loader.json and live-mobile-loader.json for evidence.
+
+${mobileStatus?.reportedScreenshot?'![Reported loading failure, before the fix]('+mobileStatus.reportedScreenshot+')':''}
 
 ## Visual inspection and limitations
 
