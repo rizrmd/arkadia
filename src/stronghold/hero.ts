@@ -2,6 +2,7 @@ import {unproject} from '../isometric';
 import {walkableGround,gatePassageColumn} from './navigation';
 import type {Sun} from './daylight';
 import type {Walk} from './controls';
+import {loadImage} from '../app/loader';
 // The player's hero walking the court, drawn from the arena's character atlas (front/back diagonals mirrored,
 // straight up/down views). The world is one pre-rastered surface, so the hero is its own small canvas over it:
 // sprites standing in front of the hero cut their silhouettes out of that canvas (leaving a faint ghost, so the
@@ -29,8 +30,7 @@ export const DISPLAY=.48;const SPEED=105,STRIDE=88*DISPLAY/1.1,RADIUS=9,SPAWN={x
 // and right. SPEED is screen px/s along a tile edge (the W+D walk); up/down and across follow at the same ground pace.
 const ground=(sx:number,sy:number)=>{const g=unproject(sx,sy);return Math.hypot(g.x,g.y);},PACE=ground(2,1)/Math.hypot(2,1);
 export async function createHero<P extends Placed>(o:{layer:HTMLElement;lightmap:HTMLCanvasElement;surface:HTMLElement;footprint:(p:P)=>Column[];sun:()=>Sun;direction:()=>Walk;follow:(x:number,y:number,dt:number,walking?:boolean)=>void;pose?:()=>Pose|null}){
- const meta:Meta=(await (await fetch(BASE+'manifest.json')).json()).characters.hero,atlas=new Image();
- atlas.src=BASE+meta.image+(meta.revision?`?v=${encodeURIComponent(meta.revision)}`:'');await atlas.decode();
+ const meta:Meta=(await (await fetch(BASE+'manifest.json')).json()).characters.hero,atlas=await loadImage(BASE+meta.image+(meta.revision?`?v=${encodeURIComponent(meta.revision)}`:''));
  const canvas=document.createElement('canvas'),c=canvas.getContext('2d')!;canvas.id='world-hero';
  canvas.style.cssText='position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform;pointer-events:none';o.layer.append(canvas);
  const {cell}=meta,pivot=cell.pivot;

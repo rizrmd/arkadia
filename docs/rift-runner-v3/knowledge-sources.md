@@ -99,7 +99,7 @@ Historical incomplete draft retained for provenance; not selected for the new ex
 
 The human rejected the controlled 3D-rendered hurt/death sprites because they do not match the approved painted v1 idle/run artwork. Those experiments are **rejected for the final asset set** and retained below for traceability. Numerical pivot and playback passes did not establish artistic compatibility.
 
-Replacement hurt/death sprites are generated directly from each approved painted idle heading. Each new source sheet contains one heading, eight frames in a 4×2 layout. The first multi-direction attempt drifted from NE to SE in its final row and is not accepted as a complete two-direction sheet. The replacement set has 16 clips and 128 frames. Calibrated sheets use 320px cells, constant scale per clip and pivot (160,224). Row extraction follows actual transparent gutters; disconnected neighboring-frame debris is excluded. Alpha, margins, complete heading coverage and exact recovery/corpse endpoints pass. Local real-time playback observes all 128 replacement frames, hurt recovery and terminal death hold. Whole-set run/skill consistency is still open; this is not full game-ready acceptance.
+Replacement hurt/death sprites are generated directly from each approved painted idle heading. Each new source sheet contains one heading, eight frames in a 4×2 layout. The first multi-direction attempt drifted from NE to SE in its final row and is not accepted as a complete two-direction sheet. The replacement set has 16 clips and 128 frames. Calibrated sheets use 320px cells, constant scale per clip and pivot (160,224). Row extraction follows actual transparent gutters; disconnected neighboring-frame debris is excluded. Alpha, margins, complete heading coverage and exact recovery/corpse endpoints pass. Local and public real-time playback observe all 128 replacement frames, hurt recovery and terminal death hold. Whole-set run/skill consistency is still open; this is not full game-ready acceptance.
 
 The reported limping run remains open in the approved painted style. Controlled-source gait experiments corrected same-side arm swing and missing flight, but must not be substituted into the approved painted set. [Open requested review page](https://arkadia-stronghold-whachat.fural.space/rift-runner/v1/).
 
@@ -615,6 +615,10 @@ The reported limping run remains open in the approved painted style. Controlled-
 
 ![Rift Runner v3/reference/idle-W.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/reference/idle-W.png)
 
+### v3 / reference / run E pose guide.png
+
+![Rift Runner v3/reference/run-E-pose-guide.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/reference/run-E-pose-guide.png)
+
 ### v3 / sheets / death E.png
 
 ![Rift Runner v3/sheets/death-E.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/sheets/death-E.png)
@@ -746,6 +750,10 @@ The reported limping run remains open in the approved painted style. Controlled-
 ### v3 / source / hurt n ne mixed review.png
 
 ![Rift Runner v3/source/hurt-n-ne-mixed-review.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/source/hurt-n-ne-mixed-review.png)
+
+### v3 / source / run E review.png
+
+![Rift Runner v3/source/run-E-review.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/source/run-E-review.png)
 
 ### v3 / style comparison 0.png
 

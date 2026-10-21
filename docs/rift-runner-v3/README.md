@@ -15,10 +15,16 @@ Hurt's last frame shares exact pixels with its first frame. Death's last two fra
 - `node scripts/rift-runner/audit-painted.mjs`
 - `RIFT_ACTIONS=hurt,death node scripts/verify-rift-runner.mjs`
 
-The pixel audit covers all 16 clips / 128 frames: all eight headings for each action, alpha, clipping margins, pivots and exact endpoints. Local real-time requestAnimationFrame playback observes every replacement frame, hurt recovery and held death, with zero page/resource errors. Style comparisons inspect approved idle, replacement neutral/recoil, and settled death at the same character height.
+The pixel audit covers all 16 clips / 128 frames: all eight headings for each action, alpha, clipping margins, pivots and exact endpoints. Local and public real-time requestAnimationFrame playback observe every replacement frame, hurt recovery and held death, with zero page/resource errors. Style comparisons inspect approved idle, replacement neutral/recoil, and settled death at the same character height.
 
 ## Remaining acceptance
 
 The human also reported a limping run. A rejected-style controlled-source experiment identified same-side arm/leg swing and insufficient flight; the approved painted run still needs a balanced replacement in the same artwork style. Old skill heading, anatomical continuity, foot-contact and neutral-transition issues from v1 remain open. Final VFX, sockets, packing, all-clip visual/transition review and public release verification must be completed before a game-ready claim.
 
 All sources, rejected experiments, final sheets, animated previews and comparison images are inline in the reused project Knowledge source archive. The requested public page remains `/rift-runner/v1/`.
+
+## Published checkpoint
+
+The requested v1 page now serves painted hurt/death from v3. Public playback passes for all 16 replacement clips / 128 frames, including neutral recovery and terminal corpse hold. All 198 release resources match local SHA-256 checksums. The gameplay homepage is byte-identical before and after this scoped publication. An earlier resource-pressure admission error and stale v2 prototype bytes were diagnosed and repaired; the before-repair evidence is retained.
+
+A new painted east run source is only a review experiment. It has not replaced the live run, and its scale, ground contacts, alternating stride, anatomy and seam remain to be verified. The approved painted gait correction and other remaining whole-set acceptance continue under the active goal.

@@ -6,6 +6,7 @@ import {GATE,SPAWN_DISTANCE_M,METERS_PER_TILE,fromGate,fromCenter,inSafeZone,spa
 import {DISPLAY,cutOut,type Placed,type Pose} from './hero';
 import type {Sun} from './daylight';
 import type {Walk} from './controls';
+import {loadImage} from '../app/loader';
 // Revenants roaming the snow beyond the safe zone, the hero's hit points and their auto attack. The fight runs on
 // the arena's rules (combat.ts): the same hit points, damage, reach, hit stun and swing timing, with the reach
 // scaled to the Stronghold's smaller figures. Positions are ground tiles from the court origin, as in terrain.ts tilePoint().
@@ -31,7 +32,7 @@ const tileOf=(f:Fighter):Tile=>({u:f.x,v:f.y});
 export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero:Hero;direction:()=>Walk}){
  const walkable=(p:Tile)=>{const w=tilePoint(p.u,p.v);return !o.hero.blocked(w.x,w.y);};
  const manifest=await (await fetch('/assets/characters/manifest.json')).json(),heroMeta:CharacterMeta=manifest.characters.hero,meta:CharacterMeta=manifest.characters.revenant;
- const atlas=new Image();atlas.src='/assets/characters/'+meta.image+(meta.revision?`?v=${encodeURIComponent(meta.revision)}`:'');await atlas.decode();
+ const atlas=await loadImage('/assets/characters/'+meta.image+(meta.revision?`?v=${encodeURIComponent(meta.revision)}`:''));
  let seed=(Date.now()>>>0)||1;const random=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;};
  const start=o.hero.position(),h=new Fighter('hero',heroMeta.clips,toTile(start.x,start.y).u,toTile(start.x,start.y).v);
  let maxHp=STATS.hero.hp,kills=0,spawnTimer=0,ambient='255,255,255',origin={x:0,y:0,scale:1};
