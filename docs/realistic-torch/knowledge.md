@@ -45,3 +45,5 @@ The matched mobile simulation (390 × 844, CPU slowed 4×) measured idle p95 fra
 ![Soft flame detail at game scale](https://arkadia-stronghold-whachat.fural.space/realistic-torch/fps-closeup.png)
 
 Raw comparison reports are in docs/realistic-torch/performance-before.json and performance-after.json. Run node scripts/measure-torch-performance.mjs to measure again.
+
+The optimized release is commit 186bb38, pushed and verified on the live game. Live 4× CPU smoke measurements recorded idle p95 50.1 ms and pan p95 66.7 ms, with 48 idle flame copies and 7 pan copies, unchanged lighting counters and no errors. Live frame timing varies with host load; the controlled local before/after comparison above should not be read as a guaranteed live FPS.
