@@ -3,13 +3,13 @@ import {Fighter,STATS,inReach,swingTargets,turn} from '../characters/combat';
 import type {CharacterMeta} from '../characters/sprites';
 import {COURT,tilePoint} from './terrain';
 import {walkableGround} from './navigation';
-import {SAFE_TILES,SAFE_RADIUS_M,METERS_PER_TILE,fromCenter,inSafeZone,spawnPoint,meters,type Tile} from './safe-zone';
+import {GATE,SPAWN_DISTANCE_M,METERS_PER_TILE,fromGate,fromCenter,inSafeZone,spawnPoint,meters,type Tile} from './safe-zone';
 import {DISPLAY,type Pose} from './hero';
 import type {Walk} from './controls';
 // Revenants roaming the snow beyond the safe zone, the hero's hit points and their auto attack. The fight runs on
 // the arena's rules (combat.ts): the same hit points, damage, reach, hit stun and swing timing, with the reach
 // scaled to the Stronghold's smaller figures. Positions are ground tiles from the court origin, as in terrain.ts tilePoint().
-// Revenants only ever spawn outside 100 m of the tent (safe-zone.ts) and never set foot inside it: a chase stops
+// Revenants spawn 10 m outside the gate (safe-zone.ts) and never enter the court: a chase stops
 // at the boundary, and once the hero is back inside they lose interest and wander off; the hero heals there.
 const SCALE=DISPLAY/1.1; // the arena draws characters at 1.1x on tiles of the same size
 const HERO_REACH=STATS.hero.reach*SCALE,ENEMY_REACH=STATS.revenant.reach*SCALE,SIDE=.35*SCALE,SPACING=.72*SCALE;
@@ -19,7 +19,7 @@ const ENEMY_SPEED=105/Math.hypot(64,32)*.55,ENEMY_STRIDE=76*DISPLAY/1.1;
 // Tiles: a revenant hunts the hero within AGGRO (packs spawn inside it, so they come straight for a hero in the wilds);
 // the idle hero steps in to swing at one within ENGAGE. Packs of one to three surround the hero, and a swing only
 // reaches the side it faces, so the ones behind land their blows.
-const AGGRO=13,ENGAGE=2,MAX_ENEMIES=8,PACK=3,SPAWN_EVERY=2000,RECYCLE=30,REGEN=8,HERO_RESPAWN=3500,CORPSE=4400;
+const AGGRO=13,ENGAGE=2,MAX_ENEMIES=8,PACK=3,SPAWN_EVERY=2000,REGEN=8,HERO_RESPAWN=3500,CORPSE=4400;
 type Foe=Fighter&{home:Tile;wander:Tile|null;age:number};
 type Hero={position():{x:number;y:number};face(sx:number,sy:number):void;respawn():void;teleport(x:number,y:number):boolean};
 const toTile=(x:number,y:number):Tile=>{const g=unproject(x-COURT.x,y-COURT.y);return {u:g.x,v:g.y};};
@@ -49,8 +49,8 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
   // A new pack, or one returning revenant.
   const n=f?1:Math.min(MAX_ENEMIES-foes.length,1+Math.floor(random()*PACK));
   for(let i=0;i<n;i++){
-   const a=random()*Math.PI*2,r=i?.6+random()*.6:0,q={u:p.u+Math.cos(a)*r,v:p.v+Math.sin(a)*r},at=inSafeZone(q)||!walkable(q)?p:q;
-   spawns.push({u:+at.u.toFixed(2),v:+at.v.toFixed(2),m:+meters(fromCenter(at)).toFixed(1)});if(spawns.length>200)spawns.shift();
+   const at=i?spawnPoint(random,tileOf(h),walkable):p;if(!at)continue;
+   spawns.push({u:+at.u.toFixed(2),v:+at.v.toFixed(2),m:+meters(fromGate(at)).toFixed(1)});if(spawns.length>200)spawns.shift();
    const g=f??Object.assign(new Fighter('revenant',meta.clips,at.u,at.v),{home:at,wander:null,age:0});if(!f)foes.push(g);
    Object.assign(g,{x:at.u,y:at.v,home:at,wander:null,age:0,hp:STATS.revenant.hp,deadFor:0,cooldown:600+random()*900});g.play('idle');
   }
@@ -83,8 +83,6 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
   f.recover();if(f.state==='hit')return;
   const du=h.x-f.x,dv=h.y-f.y,dist=Math.hypot(du,dv);
   if(f.state==='attack'){if(f.impact()&&h.alive&&!heroSafe&&inReach(f,h,ENEMY_REACH+.25*SCALE,SIDE))h.damage(STATS.revenant.damage);return;}
-  // Far from a hero out in the wilds: come back as a fresh revenant near them.
-  if(!heroSafe&&dist>RECYCLE){spawn(f);return;}
   if(h.alive&&!heroSafe&&dist<AGGRO){
    if(dist>ENEMY_REACH){move(f,du,dv,dt);return;}
    const s=screen(du,dv);turn(f,s.x,s.y);if(f.cooldown<=0){f.cooldown=1500+random()*1200;f.play('attack');}else f.play('idle');return;
@@ -142,7 +140,7 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
   bar.style.transform=`translate3d(${s.x}px,${s.y-64*k}px,0)`;bar.dataset.visible=String(show);barFill.style.transform=`scaleX(${ratio})`;bar.dataset.low=String(ratio<.3);
   hudFill.style.transform=`scaleX(${ratio})`;hud.dataset.low=String(ratio<.3);
   const text=`${Math.ceil(h.hp)} / ${maxHp}`;if(q('.hud-hp').textContent!==text){q('.hud-hp').textContent=text;q('.hud-bar').setAttribute('aria-valuenow',String(Math.ceil(h.hp)));q('.hud-bar').setAttribute('aria-valuemax',String(maxHp));}
-  const m=Math.round(meters(fromCenter(tileOf(h)))),zone=!h.alive?'Defeated · returning to the tent':inSafeZone(tileOf(h))?`Safe zone · ${m} m from the tent`:`Wilds · ${m} m from the tent · revenants roam`;
+  const zone=!h.alive?'Defeated · returning to the tent':inSafeZone(tileOf(h))?'Safe zone':'Wilds · revenants roam';
   if(q('.hud-zone').textContent!==zone)q('.hud-zone').textContent=zone;hud.dataset.zone=inSafeZone(tileOf(h))?'safe':'wild';
   const k2=`Revenants defeated · ${kills}`;if(q('.hud-kills').textContent!==k2)q('.hud-kills').textContent=k2;
   Object.assign(hud.dataset,{hp:String(Math.ceil(h.hp)),max:String(maxHp),state:h.state,kills:String(kills),foes:String(foes.filter(f=>f.alive).length)});
@@ -157,10 +155,10 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
   place(x:number,y:number,scale:number){origin={x,y,scale};},
   setAmbient(rgb:readonly number[]){ambient=rgb.map(v=>Math.round(v*255)).join();},
   setMaxHp(n:number){if(n===maxHp)return;h.hp=Math.min(n,h.hp+Math.max(0,n-maxHp));maxHp=n;},
-  snapshot:()=>({safeRadiusM:SAFE_RADIUS_M,metersPerTile:METERS_PER_TILE,safeTiles:SAFE_TILES,
+  snapshot:()=>({spawnDistanceM:SPAWN_DISTANCE_M,gate:GATE,metersPerTile:METERS_PER_TILE,
    hero:{hp:h.hp,maxHp,state:h.state,u:+h.x.toFixed(2),v:+h.y.toFixed(2),meters:+meters(fromCenter(tileOf(h))).toFixed(1),safe:inSafeZone(tileOf(h))},
-   foes:foes.map(f=>({u:+f.x.toFixed(2),v:+f.y.toFixed(2),hp:f.hp,state:f.state,meters:+meters(fromCenter(tileOf(f))).toFixed(1)})),
-   kills,spawns:[...spawns],minSpawnMeters:spawns.length?Math.min(...spawns.map(s=>s.m)):null,minFoeMeters:foes.length?Math.min(...foes.map(f=>meters(fromCenter(tileOf(f))))):null}),
+   foes:foes.map(f=>({u:+f.x.toFixed(2),v:+f.y.toFixed(2),hp:f.hp,state:f.state,safe:inSafeZone(tileOf(f)),gateMeters:+meters(fromGate(tileOf(f))).toFixed(1)})),
+   kills,spawns:[...spawns],minSpawnMeters:spawns.length?Math.min(...spawns.map(s=>s.m)):null,minFoeMeters:foes.length?Math.min(...foes.map(f=>meters(fromGate(tileOf(f))))):null}),
   // Testing hook: stand the hero on a ground tile.
   teleport(u:number,v:number){const w=tilePoint(u,v);if(!o.hero.teleport(w.x,w.y))return false;h.x=u;h.y=v;return true;}
  };

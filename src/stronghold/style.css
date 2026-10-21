@@ -40,10 +40,15 @@
 #hero-health[data-visible=true]{opacity:1}
 #hero-health i,#hero-hud .hud-bar i{display:block;height:100%;border-radius:3px;background:linear-gradient(#8fd16a,#4f9a3c);transform-origin:0 50%}
 #hero-health[data-low=true] i,#hero-hud[data-low=true] .hud-bar i{background:linear-gradient(#f07a5f,#b8402c)}
-#hero-hud{position:fixed;top:max(12px,env(safe-area-inset-top));left:max(12px,env(safe-area-inset-left));z-index:10;width:min(240px,calc(100vw - 190px));padding:10px 12px;border:1px solid #c9a86a66;border-radius:14px;background:#141c22e6;box-shadow:0 4px 16px #0006;backdrop-filter:blur(6px);font-size:13px;pointer-events:none}
-#hero-hud .hud-row{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
-#hero-hud .hud-label{color:#cfc3a6}#hero-hud .hud-hp{font-variant-numeric:tabular-nums;font-size:15px}
-#hero-hud .hud-bar{height:9px;margin:6px 0 8px;padding:1px;border-radius:5px;background:#0b0f12}
-#hero-hud .hud-zone{color:#b9dcb1}#hero-hud[data-zone=wild] .hud-zone{color:#f2a37f}
-#hero-hud .hud-kills{margin-top:2px;color:#8f9a9a;font-size:12px}
-@media (max-width:420px){#hero-hud{width:calc(100vw - 150px);padding:8px 10px;font-size:12px}#hero-hud .hud-kills{display:none}}
+#hero-hud{position:fixed;top:max(12px,env(safe-area-inset-top));left:max(12px,env(safe-area-inset-left));z-index:10;width:min(260px,calc(100vw - 190px));font-size:13px;pointer-events:none;text-shadow:0 1px 3px #000,0 0 6px #000}
+#hero-hud .hud-row{display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding:0 6%}
+#hero-hud .hud-label{color:#e8d6ae}#hero-hud .hud-hp{font-variant-numeric:tabular-nums;font-size:14px;white-space:nowrap}
+/* Generated frame keeps its native 2166:212 ratio at every viewport width. */
+#hero-hud .hud-bar{position:relative;width:100%;aspect-ratio:2166 / 212;margin:4px 0 6px;isolation:isolate}
+#hero-hud .hud-bar::before{content:"";position:absolute;inset:23% 5.8%;background:#131a19;border-radius:3px;z-index:-2}
+#hero-hud .hud-bar::after{content:"";position:absolute;inset:0;background:url('/ui/health-frame.webp') center / 100% 100% no-repeat;z-index:1}
+#hero-hud .hud-bar i{position:absolute;inset:23% 5.8%;height:auto;z-index:-1;box-shadow:inset 0 1px 2px #dbf9a666}
+#hero-hud .hud-zone{color:#b9dcb1;padding:0 6%}#hero-hud[data-zone=wild] .hud-zone{color:#f2a37f}
+#hero-hud .hud-kills{margin-top:3px;padding:0 6%;color:#cdc8bc;font-size:12px}
+@media (max-width:600px){#hero-hud{width:min(240px,calc(100vw - 190px));font-size:12px}#hero-hud .hud-hp{font-size:12px}.clock-phase{display:none}}
+@media (max-width:420px){#hero-hud .hud-kills{display:none}}
