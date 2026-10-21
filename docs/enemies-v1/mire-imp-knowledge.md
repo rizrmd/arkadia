@@ -2,6 +2,14 @@
 
 Mire Imp uses **Claw Swipe** as its default attack. [Open the interactive animation preview](https://arkadia-enemies-whachat.fural.space/enemies/v1/). Generated review assets only; gameplay has not been replaced.
 
+## Rift Runner style alignment
+
+The current sheet was restyled with the actual Rift Runner v2 southeast sprite as an image reference: simplified chunky painted forms, matte surfaces, soft upper-left light, muted charcoal/teal/ochre palette, and reduced fine texture. This supersedes the more realistic enemy treatment. The original pose order and 48-frame animation contract are retained.
+
+### Superseded source
+
+![Mire Imp original before Rift Runner style alignment](https://arkadia-enemies-whachat.fural.space/enemies/v1/source/mire-imp-before-style.png)
+
 ## Source sheet
 
 ![Mire Imp generated 48-pose source](https://arkadia-enemies-whachat.fural.space/enemies/v1/source/mire-imp.png)
@@ -10,7 +18,7 @@ Mire Imp uses **Claw Swipe** as its default attack. [Open the interactive animat
 
 ![Mire Imp 48-frame atlas](https://arkadia-enemies-whachat.fural.space/enemies/v1/mire-imp.png)
 
-784 × 996 atlas; 126 × 120 cells; fixed ground pivot (74,114); four-pixel gutters; alpha threshold 16. One uniform source scale 0.4247787611 across all frames. Source spacing is irregular and extracted by alpha components. The character is uniformly fitted to the existing canvas; this is not a claim of identical source resolution or body height to Revenant.
+784 × 996 atlas; 126 × 120 cells; fixed ground pivot (74,114); four-pixel gutters; alpha threshold 16. One uniform source scale 0.4173913043 across all frames. Source spacing is irregular and extracted by alpha components. The character is uniformly fitted to the existing canvas; this is not a claim of identical source resolution or body height to Revenant.
 
 ## Animated clips
 

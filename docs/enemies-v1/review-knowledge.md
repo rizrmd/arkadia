@@ -12,15 +12,15 @@ The new sources consolidate this into 6 × 8 poses, rather than pretending the o
 
 ## Scale and registration
 
-One scale per complete character is used; no per-frame resizing. The atlas/cell/pivot/gutters match Revenant exactly. Source pixel scales necessarily differ: Ashfang 0.3664921466, Mire Imp 0.4247787611, versus Revenant 0.5. These are measured in different-resolution source sheets. A uniform whole-character fit keeps the wide wolf and extended claw inside the existing cell/pivot, so the resulting wolf is lower than the biped and Mire Imp is smaller than Revenant. The manifest records actual scale and normalization instead of claiming a false 0.5 match. All facings share that scale. Alpha silhouette registration aligns X; shared row ground baselines preserve lifted feet instead of forcing each foot onto the floor. Every cell border is asserted transparent.
+One scale per complete character is used; no per-frame resizing. The atlas/cell/pivot/gutters match Revenant exactly. Source pixel scales necessarily differ: Ashfang 0.35, Mire Imp 0.4173913043, versus Revenant 0.5. These are measured in different-resolution source sheets. A uniform whole-character fit keeps the wide wolf and extended claw inside the existing cell/pivot, so the resulting wolf is lower than the biped and Mire Imp is smaller than Revenant. The manifest records actual scale and normalization instead of claiming a false 0.5 match. All facings share that scale. Alpha silhouette registration aligns X; shared row ground baselines preserve lifted feet instead of forcing each foot onto the floor. Every cell border is asserted transparent.
 
 ## Visual review and limitations
 
-The gray/ochre wolf and moss/ochre swamp monster fit the painterly, elevated orthographic enemy style. Both keep recognizable anatomy and identity across the source facings; Bite and Claw Swipe read distinctly, and recoil/death are separately playable. No missing frame or clipped neighbour was found. Death ends in a settled corpse; non-looping playback holds that pose.
+The revised charcoal-blue/ochre wolf and muted moss/teal swamp monster use simplified chunky painted forms and matte shading, matched against the actual Rift Runner v2 hero reference. The earlier realistic treatment is superseded. Both keep recognizable anatomy and identity across the source facings; Bite and Claw Swipe read distinctly, and recoil/death are separately playable. No missing frame or clipped neighbour was found. Death ends in a settled corpse; non-looping playback holds that pose.
 
 Generated poses are not a rigged gait. Ashfang has uneven paw spacing, similar extended-leg poses, slight body-length changes during attack, and a noticeable change from diagonal to straight-view silhouette. Mire Imp has shoulder/ear/moss silhouette changes, foot drift, and a sharper upper-body swing during its swipe. Idle/move transitions and walk loop seams can pop; the ground pivot does not prove planted-foot contact. The illustrative travel speed is not calibrated to game movement. Combat/hit/death cover only the source diagonal and its mirror, as in the existing contract; no eight-direction combat is claimed. Straight idle is a held walk pose. These assets need motion/art review before any future gameplay integration.
 
-The original Ashfang already had real alpha; its hidden RGB looked brown in the image viewer. A requested background-cleanup variant also has alpha but increased orange highlights, so it is retained as an unused generated alternative and embedded in Knowledge. Neither is silently substituted.
+The superseded original Ashfang already had real alpha; its hidden RGB looked brown in the image viewer. A requested background-cleanup variant also has alpha but increased orange highlights, so it is retained as an unused generated alternative and embedded in Knowledge. The current selected sources are the two Rift Runner style revisions.
 
 ## Reproduction and verification
 
@@ -39,6 +39,18 @@ Image generation used the built-in imagegen tool. Prompts requested the same 48-
 
 ## Published verification
 
-Public browser playback passed all 11 clip contracts for both enemies (96 extracted frames), including one-shot final holds, diagonal mirroring, attack transitions and mobile width. All 22 animated previews decoded with the expected frame counts. The final deployment has 32 resources verified byte-for-byte against SHA-256 hashes; all 29 image resources are embedded inline across these three Knowledge pages. This verifies delivery and technical playback, not a rigged gait or human art approval.
+Public browser playback passed all 11 clip contracts for both enemies (96 extracted frames), including one-shot final holds, diagonal mirroring, attack transitions and mobile width. All 22 animated previews decoded with the expected frame counts. The final deployment has 36 resources verified byte-for-byte against SHA-256 hashes; all 33 image resources are embedded inline across these three Knowledge pages. This verifies delivery and technical playback, not a rigged gait or human art approval.
 
 The dedicated preview sandbox is `arkadia-enemies`; the shared Stronghold and co-op deployments were not modified. Changes are pushed on `feat/ashfang-mire-assets`. The initial directory deploy hit the platform gateway timeout; transferring bounded resource bundles before publishing a small loader resolved it.
+
+## Rift Runner alignment revision
+
+The initial enemy treatment had excessive realistic fur/skin texture compared with the current Rift Runner v2 prototype. Both sheets were restyled with two image inputs: the existing enemy sheet as the edit target and `prototype-v2/neutral-SE.png` as the style reference. The prompt required all 48 positions/order and species anatomy to remain, with broad chunky low-poly painted surfaces, matte materials, soft restrained upper-left lighting, muted charcoal/teal/ochre colors, simplified fur/moss clumps, no realistic veins or hair detail, transparent alpha, and no hero/scenery/VFX in the output. The hero is a reference snapshot, not an assertion that its ongoing animation task is finished.
+
+Review: the reduced texture density, broader surface planes and softer shading now read together with the Rift Runner reference. Ashfang remains a low quadruped; Mire Imp retains the compact hunched enemy silhouette. Exact shared 3D materials, topology or lighting rigs are not claimed for generated raster art. Pose drift/foot sliding limitations above remain. The public player includes a static Rift Runner reference beside both animated enemies.
+
+### References used for visual comparison
+
+![Actual Rift Runner v2 southeast reference](https://arkadia-enemies-whachat.fural.space/enemies/v1/reference/rift-runner-v2-SE.png)
+
+![Rift Runner v2 skill pose reference](https://arkadia-enemies-whachat.fural.space/enemies/v1/reference/rift-runner-v2-skills.png)

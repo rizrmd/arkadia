@@ -3,11 +3,24 @@
   "preview": "https://arkadia-enemies-whachat.fural.space/enemies/v1/",
   "knowledgeParent": "Art Direction / Characters",
   "knowledge": [
-    {"id":"NKBD08817f4841301896dbc5778c","title":"Ashfang — Enemy Animation Assets","images":14},
-    {"id":"NKBD79a2a4b033ad406503bc6c76","title":"Mire Imp — Enemy Animation Assets","images":13},
-    {"id":"NKBD8a7748f40375a130f8f969b8","title":"Enemy Animation Review — Ashfang and Mire Imp","images":2}
+    {
+      "id": "NKBD08817f4841301896dbc5778c",
+      "title": "Ashfang — Enemy Animation Assets",
+      "images": 15
+    },
+    {
+      "id": "NKBD79a2a4b033ad406503bc6c76",
+      "title": "Mire Imp — Enemy Animation Assets",
+      "images": 14
+    },
+    {
+      "id": "NKBD8a7748f40375a130f8f969b8",
+      "title": "Enemy Animation Review — Ashfang and Mire Imp",
+      "images": 4
+    }
   ],
   "scope": "Only enemy source/atlas/manifest/previews, isolated static review site, and documentation. No gameplay replacement.",
-  "generation": "Built-in imagegen: two source sheets and one unused Ashfang alpha-cleanup variant; all retained and embedded inline.",
-  "limitations": "Generated gait sliding, pose/proportion drift, diagonal combat only, held straight idle, species-wide scale fit differs from Revenant source pixel scale."
+  "generation": "Built-in imagegen: original two sheets, unused Ashfang alpha variant, and two Rift Runner style revisions. All generated sources retained and embedded inline.",
+  "limitations": "Generated gait sliding, pose/proportion drift, diagonal combat only, held straight idle, species-wide scale fit differs from Revenant source pixel scale.",
+  "styleReference": "Rift Runner v2 prototype-v2/neutral-SE.png, captured reference snapshot and side-by-side player"
 }

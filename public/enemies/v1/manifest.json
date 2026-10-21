@@ -2,11 +2,17 @@
   "generatedBy": "scripts/enemies/pack.mjs",
   "alphaThreshold": 16,
   "reference": "Revenant current 48-frame contract",
+  "styleReference": {
+    "image": "reference/rift-runner-v2-SE.png",
+    "source": "Rift Runner v2 prototype-v2/neutral-SE.png",
+    "sha256": "6005fc5287484f2fa545e1e48a7357235517f38e91731d266e5c591a3aa8c8bb",
+    "direction": "Simplified stylized low-poly painted forms, matte surfaces, muted charcoal/teal/ochre, soft upper-left lighting"
+  },
   "characters": {
     "ashfang": {
       "id": "ashfang",
       "image": "ashfang.png",
-      "revision": "aa5c06d0afae5532",
+      "revision": "97a44f30512d40cd",
       "source": "source/ashfang.png",
       "sourceSize": [
         1536,
@@ -16,8 +22,8 @@
         784,
         996
       ],
-      "scale": 0.36649214659685864,
-      "normalization": 0.7329842931937173,
+      "scale": 0.35,
+      "normalization": 0.7,
       "gutter": 4,
       "cell": {
         "w": 126,
@@ -158,14 +164,14 @@
           "h": 120,
           "source": {
             "file": "source/ashfang.png",
-            "x": 80,
+            "x": 66,
             "y": 19,
-            "w": 161,
-            "h": 120
+            "w": 182,
+            "h": 123
           },
           "anchorSourcePx": [
-            196.5062344139651,
-            139
+            200.04845814977975,
+            141
           ],
           "registrationIoU": 1
         },
@@ -178,16 +184,16 @@
           "h": 120,
           "source": {
             "file": "source/ashfang.png",
-            "x": 333,
-            "y": 17,
-            "w": 161,
-            "h": 122
+            "x": 322,
+            "y": 19,
+            "w": 184,
+            "h": 123
           },
           "anchorSourcePx": [
-            450,
-            139
+            456,
+            141
           ],
-          "registrationIoU": 0.8309859154929577
+          "registrationIoU": 0.9342818428184282
         },
         {
           "row": 0,
@@ -199,15 +205,15 @@
           "source": {
             "file": "source/ashfang.png",
             "x": 572,
-            "y": 18,
-            "w": 162,
-            "h": 122
+            "y": 19,
+            "w": 181,
+            "h": 123
           },
           "anchorSourcePx": [
-            692,
-            139
+            705,
+            141
           ],
-          "registrationIoU": 0.8596881959910914
+          "registrationIoU": 0.940419769803656
         },
         {
           "row": 0,
@@ -218,16 +224,16 @@
           "h": 120,
           "source": {
             "file": "source/ashfang.png",
-            "x": 813,
-            "y": 17,
-            "w": 158,
-            "h": 123
+            "x": 816,
+            "y": 18,
+            "w": 185,
+            "h": 124
           },
           "anchorSourcePx": [
-            927,
-            139
+            953,
+            141
           ],
-          "registrationIoU": 0.8254937163375224
+          "registrationIoU": 0.924
         },
         {
           "row": 0,
@@ -238,16 +244,16 @@
           "h": 120,
           "source": {
             "file": "source/ashfang.png",
-            "x": 1053,
-            "y": 18,
-            "w": 165,
-            "h": 123
+            "x": 1061,
+            "y": 19,
+            "w": 187,
+            "h": 124
           },
           "anchorSourcePx": [
-            1173,
-            139
+            1200,
+            141
           ],
-          "registrationIoU": 0.8194984104556694
+          "registrationIoU": 0.9029850746268657
         },
         {
           "row": 0,
@@ -258,16 +264,16 @@
           "h": 120,
           "source": {
             "file": "source/ashfang.png",
-            "x": 1290,
-            "y": 18,
-            "w": 165,
-            "h": 121
+            "x": 1317,
+            "y": 20,
+            "w": 177,
+            "h": 122
           },
           "anchorSourcePx": [
-            1411,
-            139
+            1449,
+            141
           ],
-          "registrationIoU": 0.8107626514611547
+          "registrationIoU": 0.8859619873291097
         },
         {
           "row": 1,
@@ -278,14 +284,14 @@
           "h": 120,
           "source": {
             "file": "source/ashfang.png",
-            "x": 75,
-            "y": 141,
-            "w": 195,
-            "h": 112
+            "x": 67,
+            "y": 140,
+            "w": 205,
+            "h": 117
           },
           "anchorSourcePx": [
-            229.52768729641693,
-            262
+            228.63817663817665,
+            261
           ],
           "registrationIoU": 1
         },
@@ -298,16 +304,16 @@
           "h": 120,
           "source": {
             "file": "source/ashfang.png",
-            "x": 333,
-            "y": 145,
-            "w": 189,
-            "h": 112
+            "x": 326,
+            "y": 144,
+            "w": 202,
+            "h": 117
           },
           "anchorSourcePx": [
-            487,
-            262
+            488,
+            261
           ],
-          "registrationIoU": 0.8230742173760113
+          "registrationIoU": 0.8219575016097875
         },
         {
           "row": 1,
@@ -318,16 +324,16 @@
           "h": 120,
           "source": {
             "file": "source/ashfang.png",
-            "x": 561,
+            "x": 565,
             "y": 146,
-            "w": 194,
-            "h": 107
+            "w": 200,
+            "h": 110
           },
           "anchorSourcePx": [
-            715,
-            262
+            723,
+            261
           ],
-          "registrationIoU": 0.6346625766871166
+          "registrationIoU": 0.6536264991433467
         },
         {
           "row": 1,
@@ -338,276 +344,276 @@
           "h": 120,
           "source": {
             "file": "source/ashfang.png",
-            "x": 783,
-            "y": 142,
+            "x": 809,
+            "y": 144,
             "w": 207,
-            "h": 115
+            "h": 117
           },
           "anchorSourcePx": [
-            952,
-            262
+            976,
+            261
           ],
-          "registrationIoU": 0.7701453104359313
+          "registrationIoU": 0.8158058494088364
         },
         {
           "row": 1,
           "col": 4,
           "x": 524,
           "y": 128,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 1049,
+            "y": 142,
+            "w": 216,
+            "h": 122
+          },
+          "anchorSourcePx": [
+            1223,
+            261
+          ],
+          "registrationIoU": 0.7170564746149458
+        },
+        {
+          "row": 1,
+          "col": 5,
+          "x": 654,
+          "y": 128,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 1306,
+            "y": 143,
+            "w": 206,
+            "h": 112
+          },
+          "anchorSourcePx": [
+            1469,
+            261
+          ],
+          "registrationIoU": 0.7893761581222977
+        },
+        {
+          "row": 2,
+          "col": 0,
+          "x": 4,
+          "y": 252,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 68,
+            "y": 262,
+            "w": 212,
+            "h": 125
+          },
+          "anchorSourcePx": [
+            235.51582278481013,
+            386
+          ],
+          "registrationIoU": 1
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "x": 134,
+          "y": 252,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 302,
+            "y": 262,
+            "w": 212,
+            "h": 122
+          },
+          "anchorSourcePx": [
+            475,
+            386
+          ],
+          "registrationIoU": 0.6906107075598601
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "x": 264,
+          "y": 252,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 541,
+            "y": 267,
+            "w": 225,
+            "h": 121
+          },
+          "anchorSourcePx": [
+            724,
+            386
+          ],
+          "registrationIoU": 0.6599845797995374
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "x": 394,
+          "y": 252,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 794,
+            "y": 263,
+            "w": 230,
+            "h": 119
+          },
+          "anchorSourcePx": [
+            989,
+            386
+          ],
+          "registrationIoU": 0.6272076372315036
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "x": 524,
+          "y": 252,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 1052,
+            "y": 272,
+            "w": 223,
+            "h": 114
+          },
+          "anchorSourcePx": [
+            1239,
+            386
+          ],
+          "registrationIoU": 0.6654339250493096
+        },
+        {
+          "row": 2,
+          "col": 5,
+          "x": 654,
+          "y": 252,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 1306,
+            "y": 262,
+            "w": 198,
+            "h": 120
+          },
+          "anchorSourcePx": [
+            1492,
+            386
+          ],
+          "registrationIoU": 0.6702377841651425
+        },
+        {
+          "row": 3,
+          "col": 0,
+          "x": 4,
+          "y": 376,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 59,
+            "y": 382,
+            "w": 210,
+            "h": 119
+          },
+          "anchorSourcePx": [
+            223.12237762237763,
+            510
+          ],
+          "registrationIoU": 1
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "x": 134,
+          "y": 376,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 308,
+            "y": 382,
+            "w": 188,
+            "h": 130
+          },
+          "anchorSourcePx": [
+            474,
+            510
+          ],
+          "registrationIoU": 0.6687965921192758
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "x": 264,
+          "y": 376,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 532,
+            "y": 403,
+            "w": 228,
+            "h": 108
+          },
+          "anchorSourcePx": [
+            723,
+            510
+          ],
+          "registrationIoU": 0.5103365384615385
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "x": 394,
+          "y": 376,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 784,
+            "y": 411,
+            "w": 226,
+            "h": 90
+          },
+          "anchorSourcePx": [
+            968,
+            510
+          ],
+          "registrationIoU": 0.6511134676564156
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "x": 524,
+          "y": 376,
           "w": 126,
           "h": 120,
           "source": {
             "file": "source/ashfang.png",
             "x": 1024,
-            "y": 140,
-            "w": 211,
-            "h": 126
+            "y": 421,
+            "w": 239,
+            "h": 88
           },
           "anchorSourcePx": [
-            1201,
-            262
+            1224,
+            510
           ],
-          "registrationIoU": 0.617545871559633
-        },
-        {
-          "row": 1,
-          "col": 5,
-          "x": 654,
-          "y": 128,
-          "w": 126,
-          "h": 120,
-          "source": {
-            "file": "source/ashfang.png",
-            "x": 1274,
-            "y": 141,
-            "w": 206,
-            "h": 113
-          },
-          "anchorSourcePx": [
-            1441,
-            262
-          ],
-          "registrationIoU": 0.7318489835430784
-        },
-        {
-          "row": 2,
-          "col": 0,
-          "x": 4,
-          "y": 252,
-          "w": 126,
-          "h": 120,
-          "source": {
-            "file": "source/ashfang.png",
-            "x": 66,
-            "y": 261,
-            "w": 208,
-            "h": 123
-          },
-          "anchorSourcePx": [
-            231.36363636363637,
-            386
-          ],
-          "registrationIoU": 1
-        },
-        {
-          "row": 2,
-          "col": 1,
-          "x": 134,
-          "y": 252,
-          "w": 126,
-          "h": 120,
-          "source": {
-            "file": "source/ashfang.png",
-            "x": 303,
-            "y": 261,
-            "w": 203,
-            "h": 121
-          },
-          "anchorSourcePx": [
-            469,
-            386
-          ],
-          "registrationIoU": 0.6551014407527198
-        },
-        {
-          "row": 2,
-          "col": 2,
-          "x": 264,
-          "y": 252,
-          "w": 126,
-          "h": 120,
-          "source": {
-            "file": "source/ashfang.png",
-            "x": 534,
-            "y": 269,
-            "w": 222,
-            "h": 119
-          },
-          "anchorSourcePx": [
-            718,
-            386
-          ],
-          "registrationIoU": 0.6789173789173789
-        },
-        {
-          "row": 2,
-          "col": 3,
-          "x": 394,
-          "y": 252,
-          "w": 126,
-          "h": 120,
-          "source": {
-            "file": "source/ashfang.png",
-            "x": 776,
-            "y": 262,
-            "w": 229,
-            "h": 117
-          },
-          "anchorSourcePx": [
-            967,
-            386
-          ],
-          "registrationIoU": 0.5916152897657213
-        },
-        {
-          "row": 2,
-          "col": 4,
-          "x": 524,
-          "y": 252,
-          "w": 126,
-          "h": 120,
-          "source": {
-            "file": "source/ashfang.png",
-            "x": 1033,
-            "y": 270,
-            "w": 217,
-            "h": 111
-          },
-          "anchorSourcePx": [
-            1213,
-            386
-          ],
-          "registrationIoU": 0.6375613536553862
-        },
-        {
-          "row": 2,
-          "col": 5,
-          "x": 654,
-          "y": 252,
-          "w": 126,
-          "h": 120,
-          "source": {
-            "file": "source/ashfang.png",
-            "x": 1290,
-            "y": 257,
-            "w": 177,
-            "h": 124
-          },
-          "anchorSourcePx": [
-            1435,
-            386
-          ],
-          "registrationIoU": 0.6163345495369071
-        },
-        {
-          "row": 3,
-          "col": 0,
-          "x": 4,
-          "y": 376,
-          "w": 126,
-          "h": 120,
-          "source": {
-            "file": "source/ashfang.png",
-            "x": 58,
-            "y": 382,
-            "w": 208,
-            "h": 117
-          },
-          "anchorSourcePx": [
-            215.15860215053763,
-            501
-          ],
-          "registrationIoU": 1
-        },
-        {
-          "row": 3,
-          "col": 1,
-          "x": 134,
-          "y": 376,
-          "w": 126,
-          "h": 120,
-          "source": {
-            "file": "source/ashfang.png",
-            "x": 305,
-            "y": 377,
-            "w": 187,
-            "h": 125
-          },
-          "anchorSourcePx": [
-            461,
-            501
-          ],
-          "registrationIoU": 0.6237960339943343
-        },
-        {
-          "row": 3,
-          "col": 2,
-          "x": 264,
-          "y": 376,
-          "w": 126,
-          "h": 120,
-          "source": {
-            "file": "source/ashfang.png",
-            "x": 527,
-            "y": 401,
-            "w": 222,
-            "h": 103
-          },
-          "anchorSourcePx": [
-            703,
-            501
-          ],
-          "registrationIoU": 0.4953057599594012
-        },
-        {
-          "row": 3,
-          "col": 3,
-          "x": 394,
-          "y": 376,
-          "w": 126,
-          "h": 120,
-          "source": {
-            "file": "source/ashfang.png",
-            "x": 775,
-            "y": 417,
-            "w": 218,
-            "h": 83
-          },
-          "anchorSourcePx": [
-            953,
-            501
-          ],
-          "registrationIoU": 0.5450525152017689
-        },
-        {
-          "row": 3,
-          "col": 4,
-          "x": 524,
-          "y": 376,
-          "w": 126,
-          "h": 120,
-          "source": {
-            "file": "source/ashfang.png",
-            "x": 1013,
-            "y": 426,
-            "w": 228,
-            "h": 73
-          },
-          "anchorSourcePx": [
-            1197,
-            501
-          ],
-          "registrationIoU": 0.5802781289506953
+          "registrationIoU": 0.6838905775075987
         },
         {
           "row": 3,
@@ -618,16 +624,16 @@
           "h": 120,
           "source": {
             "file": "source/ashfang.png",
-            "x": 1257,
+            "x": 1283,
             "y": 422,
-            "w": 229,
-            "h": 74
+            "w": 227,
+            "h": 81
           },
           "anchorSourcePx": [
-            1440,
-            501
+            1469,
+            510
           ],
-          "registrationIoU": 0.8371747211895911
+          "registrationIoU": 0.7063743870781656
         },
         {
           "row": 4,
@@ -638,13 +644,13 @@
           "h": 120,
           "source": {
             "file": "source/ashfang.png",
-            "x": 87,
+            "x": 81,
             "y": 500,
-            "w": 163,
-            "h": 127
+            "w": 178,
+            "h": 128
           },
           "anchorSourcePx": [
-            201.8603448275862,
+            202.75684380032206,
             634
           ],
           "registrationIoU": 1
@@ -658,16 +664,16 @@
           "h": 120,
           "source": {
             "file": "source/ashfang.png",
-            "x": 334,
-            "y": 500,
-            "w": 153,
+            "x": 327,
+            "y": 499,
+            "w": 174,
             "h": 136
           },
           "anchorSourcePx": [
-            452,
+            453,
             634
           ],
-          "registrationIoU": 0.7603527607361963
+          "registrationIoU": 0.8030672708260718
         },
         {
           "row": 4,
@@ -678,214 +684,214 @@
           "h": 120,
           "source": {
             "file": "source/ashfang.png",
-            "x": 574,
-            "y": 503,
-            "w": 153,
-            "h": 127
+            "x": 573,
+            "y": 504,
+            "w": 175,
+            "h": 129
           },
           "anchorSourcePx": [
-            683,
+            695,
             634
           ],
-          "registrationIoU": 0.868993839835729
+          "registrationIoU": 0.9132061354283576
         },
         {
           "row": 4,
           "col": 3,
           "x": 394,
           "y": 500,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 819,
+            "y": 506,
+            "w": 174,
+            "h": 128
+          },
+          "anchorSourcePx": [
+            940,
+            634
+          ],
+          "registrationIoU": 0.9094650205761317
+        },
+        {
+          "row": 4,
+          "col": 4,
+          "x": 524,
+          "y": 500,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 1073,
+            "y": 508,
+            "w": 164,
+            "h": 129
+          },
+          "anchorSourcePx": [
+            1191,
+            634
+          ],
+          "registrationIoU": 0.8297180043383948
+        },
+        {
+          "row": 4,
+          "col": 5,
+          "x": 654,
+          "y": 500,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 1319,
+            "y": 506,
+            "w": 166,
+            "h": 127
+          },
+          "anchorSourcePx": [
+            1437,
+            634
+          ],
+          "registrationIoU": 0.8537313432835821
+        },
+        {
+          "row": 5,
+          "col": 0,
+          "x": 4,
+          "y": 624,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 79,
+            "y": 616,
+            "w": 188,
+            "h": 139
+          },
+          "anchorSourcePx": [
+            197.7983651226158,
+            759
+          ],
+          "registrationIoU": 1
+        },
+        {
+          "row": 5,
+          "col": 1,
+          "x": 134,
+          "y": 624,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 327,
+            "y": 616,
+            "w": 189,
+            "h": 146
+          },
+          "anchorSourcePx": [
+            453,
+            759
+          ],
+          "registrationIoU": 0.6247119815668203
+        },
+        {
+          "row": 5,
+          "col": 2,
+          "x": 264,
+          "y": 624,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 567,
+            "y": 618,
+            "w": 192,
+            "h": 135
+          },
+          "anchorSourcePx": [
+            689,
+            759
+          ],
+          "registrationIoU": 0.82558522914606
+        },
+        {
+          "row": 5,
+          "col": 3,
+          "x": 394,
+          "y": 624,
           "w": 126,
           "h": 120,
           "source": {
             "file": "source/ashfang.png",
             "x": 817,
-            "y": 503,
-            "w": 155,
-            "h": 126
-          },
-          "anchorSourcePx": [
-            928,
-            634
-          ],
-          "registrationIoU": 0.8747433264887063
-        },
-        {
-          "row": 4,
-          "col": 4,
-          "x": 524,
-          "y": 500,
-          "w": 126,
-          "h": 120,
-          "source": {
-            "file": "source/ashfang.png",
-            "x": 1063,
-            "y": 502,
-            "w": 155,
-            "h": 129
-          },
-          "anchorSourcePx": [
-            1172,
-            634
-          ],
-          "registrationIoU": 0.859748682610458
-        },
-        {
-          "row": 4,
-          "col": 5,
-          "x": 654,
-          "y": 500,
-          "w": 126,
-          "h": 120,
-          "source": {
-            "file": "source/ashfang.png",
-            "x": 1301,
-            "y": 501,
-            "w": 156,
-            "h": 131
-          },
-          "anchorSourcePx": [
-            1412,
-            634
-          ],
-          "registrationIoU": 0.852425601304525
-        },
-        {
-          "row": 5,
-          "col": 0,
-          "x": 4,
-          "y": 624,
-          "w": 126,
-          "h": 120,
-          "source": {
-            "file": "source/ashfang.png",
-            "x": 87,
-            "y": 617,
-            "w": 180,
+            "y": 619,
+            "w": 187,
             "h": 137
           },
           "anchorSourcePx": [
-            204.90753424657532,
-            758
+            937,
+            759
           ],
-          "registrationIoU": 1
+          "registrationIoU": 0.8522462562396007
         },
         {
           "row": 5,
-          "col": 1,
-          "x": 134,
+          "col": 4,
+          "x": 524,
           "y": 624,
           "w": 126,
           "h": 120,
           "source": {
             "file": "source/ashfang.png",
-            "x": 332,
-            "y": 615,
-            "w": 174,
-            "h": 148
+            "x": 1064,
+            "y": 622,
+            "w": 185,
+            "h": 135
           },
           "anchorSourcePx": [
-            454,
-            758
+            1183,
+            759
           ],
-          "registrationIoU": 0.5541902961562697
+          "registrationIoU": 0.8334991708126036
         },
         {
           "row": 5,
-          "col": 2,
-          "x": 264,
+          "col": 5,
+          "x": 654,
           "y": 624,
           "w": 126,
           "h": 120,
           "source": {
             "file": "source/ashfang.png",
-            "x": 571,
-            "y": 618,
-            "w": 171,
-            "h": 133
-          },
-          "anchorSourcePx": [
-            684,
-            758
-          ],
-          "registrationIoU": 0.7745494667157043
-        },
-        {
-          "row": 5,
-          "col": 3,
-          "x": 394,
-          "y": 624,
-          "w": 126,
-          "h": 120,
-          "source": {
-            "file": "source/ashfang.png",
-            "x": 815,
-            "y": 617,
-            "w": 164,
+            "x": 1318,
+            "y": 620,
+            "w": 192,
             "h": 138
           },
           "anchorSourcePx": [
-            928,
-            758
+            1439,
+            759
           ],
-          "registrationIoU": 0.8162650602409639
+          "registrationIoU": 0.8523997370151216
         },
         {
-          "row": 5,
-          "col": 4,
-          "x": 524,
-          "y": 624,
+          "row": 6,
+          "col": 0,
+          "x": 4,
+          "y": 748,
           "w": 126,
           "h": 120,
           "source": {
             "file": "source/ashfang.png",
-            "x": 1060,
-            "y": 618,
-            "w": 170,
+            "x": 114,
+            "y": 733,
+            "w": 72,
             "h": 137
           },
           "anchorSourcePx": [
-            1176,
-            758
-          ],
-          "registrationIoU": 0.7588342440801458
-        },
-        {
-          "row": 5,
-          "col": 5,
-          "x": 654,
-          "y": 624,
-          "w": 126,
-          "h": 120,
-          "source": {
-            "file": "source/ashfang.png",
-            "x": 1304,
-            "y": 620,
-            "w": 173,
-            "h": 139
-          },
-          "anchorSourcePx": [
-            1421,
-            758
-          ],
-          "registrationIoU": 0.8007968127490039
-        },
-        {
-          "row": 6,
-          "col": 0,
-          "x": 4,
-          "y": 748,
-          "w": 126,
-          "h": 120,
-          "source": {
-            "file": "source/ashfang.png",
-            "x": 120,
-            "y": 739,
-            "w": 72,
-            "h": 129
-          },
-          "anchorSourcePx": [
-            157.8864864864865,
-            867
+            154.89976689976692,
+            870
           ],
           "registrationIoU": 1
         },
@@ -894,140 +900,140 @@
           "col": 1,
           "x": 134,
           "y": 748,
-          "w": 126,
-          "h": 120,
-          "source": {
-            "file": "source/ashfang.png",
-            "x": 359,
-            "y": 737,
-            "w": 77,
-            "h": 132
-          },
-          "anchorSourcePx": [
-            401,
-            867
-          ],
-          "registrationIoU": 0.7699556541019955
-        },
-        {
-          "row": 6,
-          "col": 2,
-          "x": 264,
-          "y": 748,
-          "w": 126,
-          "h": 120,
-          "source": {
-            "file": "source/ashfang.png",
-            "x": 609,
-            "y": 739,
-            "w": 76,
-            "h": 129
-          },
-          "anchorSourcePx": [
-            652,
-            867
-          ],
-          "registrationIoU": 0.7793103448275862
-        },
-        {
-          "row": 6,
-          "col": 3,
-          "x": 394,
-          "y": 748,
-          "w": 126,
-          "h": 120,
-          "source": {
-            "file": "source/ashfang.png",
-            "x": 836,
-            "y": 746,
-            "w": 87,
-            "h": 123
-          },
-          "anchorSourcePx": [
-            887,
-            867
-          ],
-          "registrationIoU": 0.67870419543282
-        },
-        {
-          "row": 6,
-          "col": 4,
-          "x": 524,
-          "y": 748,
-          "w": 126,
-          "h": 120,
-          "source": {
-            "file": "source/ashfang.png",
-            "x": 1091,
-            "y": 747,
-            "w": 85,
-            "h": 122
-          },
-          "anchorSourcePx": [
-            1142,
-            867
-          ],
-          "registrationIoU": 0.734142305570877
-        },
-        {
-          "row": 6,
-          "col": 5,
-          "x": 654,
-          "y": 748,
-          "w": 126,
-          "h": 120,
-          "source": {
-            "file": "source/ashfang.png",
-            "x": 1334,
-            "y": 741,
-            "w": 84,
-            "h": 128
-          },
-          "anchorSourcePx": [
-            1383,
-            867
-          ],
-          "registrationIoU": 0.7183476394849786
-        },
-        {
-          "row": 7,
-          "col": 0,
-          "x": 4,
-          "y": 872,
-          "w": 126,
-          "h": 120,
-          "source": {
-            "file": "source/ashfang.png",
-            "x": 119,
-            "y": 873,
-            "w": 61,
-            "h": 136
-          },
-          "anchorSourcePx": [
-            147.53548387096774,
-            1010
-          ],
-          "registrationIoU": 1
-        },
-        {
-          "row": 7,
-          "col": 1,
-          "x": 134,
-          "y": 872,
           "w": 126,
           "h": 120,
           "source": {
             "file": "source/ashfang.png",
             "x": 367,
-            "y": 873,
-            "w": 63,
-            "h": 138
+            "y": 742,
+            "w": 71,
+            "h": 128
           },
           "anchorSourcePx": [
-            397,
-            1010
+            405,
+            870
           ],
-          "registrationIoU": 0.8636363636363636
+          "registrationIoU": 0.7771618625277162
+        },
+        {
+          "row": 6,
+          "col": 2,
+          "x": 264,
+          "y": 748,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 617,
+            "y": 744,
+            "w": 76,
+            "h": 126
+          },
+          "anchorSourcePx": [
+            662,
+            870
+          ],
+          "registrationIoU": 0.8125
+        },
+        {
+          "row": 6,
+          "col": 3,
+          "x": 394,
+          "y": 748,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 854,
+            "y": 749,
+            "w": 77,
+            "h": 121
+          },
+          "anchorSourcePx": [
+            901,
+            870
+          ],
+          "registrationIoU": 0.7583561643835617
+        },
+        {
+          "row": 6,
+          "col": 4,
+          "x": 524,
+          "y": 748,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 1101,
+            "y": 754,
+            "w": 87,
+            "h": 118
+          },
+          "anchorSourcePx": [
+            1156,
+            870
+          ],
+          "registrationIoU": 0.7410187667560322
+        },
+        {
+          "row": 6,
+          "col": 5,
+          "x": 654,
+          "y": 748,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 1352,
+            "y": 746,
+            "w": 84,
+            "h": 125
+          },
+          "anchorSourcePx": [
+            1403,
+            870
+          ],
+          "registrationIoU": 0.7469168900804289
+        },
+        {
+          "row": 7,
+          "col": 0,
+          "x": 4,
+          "y": 872,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 114,
+            "y": 875,
+            "w": 68,
+            "h": 134
+          },
+          "anchorSourcePx": [
+            141.4183266932271,
+            1009
+          ],
+          "registrationIoU": 1
+        },
+        {
+          "row": 7,
+          "col": 1,
+          "x": 134,
+          "y": 872,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 369,
+            "y": 878,
+            "w": 64,
+            "h": 129
+          },
+          "anchorSourcePx": [
+            395,
+            1009
+          ],
+          "registrationIoU": 0.8492063492063492
         },
         {
           "row": 7,
@@ -1038,16 +1044,16 @@
           "h": 120,
           "source": {
             "file": "source/ashfang.png",
-            "x": 622,
-            "y": 872,
-            "w": 65,
-            "h": 140
+            "x": 625,
+            "y": 877,
+            "w": 68,
+            "h": 134
           },
           "anchorSourcePx": [
-            654,
-            1010
+            652,
+            1009
           ],
-          "registrationIoU": 0.9121231558691469
+          "registrationIoU": 0.95350278983261
         },
         {
           "row": 7,
@@ -1058,16 +1064,16 @@
           "h": 120,
           "source": {
             "file": "source/ashfang.png",
-            "x": 852,
-            "y": 877,
-            "w": 61,
+            "x": 860,
+            "y": 876,
+            "w": 67,
             "h": 134
           },
           "anchorSourcePx": [
-            881,
-            1010
+            886,
+            1009
           ],
-          "registrationIoU": 0.9324414715719064
+          "registrationIoU": 0.9627994955863808
         },
         {
           "row": 7,
@@ -1078,16 +1084,16 @@
           "h": 120,
           "source": {
             "file": "source/ashfang.png",
-            "x": 1113,
-            "y": 874,
-            "w": 60,
-            "h": 138
+            "x": 1118,
+            "y": 877,
+            "w": 67,
+            "h": 134
           },
           "anchorSourcePx": [
-            1140,
-            1010
+            1144,
+            1009
           ],
-          "registrationIoU": 0.9290060851926978
+          "registrationIoU": 0.9592476489028213
         },
         {
           "row": 7,
@@ -1098,23 +1104,23 @@
           "h": 120,
           "source": {
             "file": "source/ashfang.png",
-            "x": 1349,
-            "y": 874,
-            "w": 59,
-            "h": 137
+            "x": 1364,
+            "y": 877,
+            "w": 68,
+            "h": 133
           },
           "anchorSourcePx": [
-            1376,
-            1010
+            1390,
+            1009
           ],
-          "registrationIoU": 0.9050758075148319
+          "registrationIoU": 0.9586206896551724
         }
       ]
     },
     "mire-imp": {
       "id": "mire-imp",
       "image": "mire-imp.png",
-      "revision": "4f9fdda4aab0f721",
+      "revision": "4f65104b6fd68476",
       "source": "source/mire-imp.png",
       "sourceSize": [
         1086,
@@ -1124,8 +1130,8 @@
         784,
         996
       ],
-      "scale": 0.4247787610619469,
-      "normalization": 0.8495575221238938,
+      "scale": 0.41739130434782606,
+      "normalization": 0.8347826086956521,
       "gutter": 4,
       "cell": {
         "w": 126,
@@ -1266,14 +1272,14 @@
           "h": 120,
           "source": {
             "file": "source/mire-imp.png",
-            "x": 41,
-            "y": 14,
-            "w": 104,
-            "h": 152
+            "x": 34,
+            "y": 15,
+            "w": 111,
+            "h": 156
           },
           "anchorSourcePx": [
-            87.62772277227722,
-            164
+            82.5367231638418,
+            172
           ],
           "registrationIoU": 1
         },
@@ -1286,16 +1292,16 @@
           "h": 120,
           "source": {
             "file": "source/mire-imp.png",
-            "x": 218,
-            "y": 14,
-            "w": 103,
-            "h": 152
+            "x": 213,
+            "y": 12,
+            "w": 116,
+            "h": 160
           },
           "anchorSourcePx": [
-            265,
-            164
+            264,
+            172
           ],
-          "registrationIoU": 0.8793742280773981
+          "registrationIoU": 0.8886590830748018
         },
         {
           "row": 0,
@@ -1307,15 +1313,15 @@
           "source": {
             "file": "source/mire-imp.png",
             "x": 400,
-            "y": 14,
-            "w": 102,
-            "h": 153
+            "y": 15,
+            "w": 110,
+            "h": 159
           },
           "anchorSourcePx": [
-            446,
-            164
+            448,
+            172
           ],
-          "registrationIoU": 0.8949124270225187
+          "registrationIoU": 0.8968641114982578
         },
         {
           "row": 0,
@@ -1327,15 +1333,15 @@
           "source": {
             "file": "source/mire-imp.png",
             "x": 581,
-            "y": 14,
-            "w": 104,
-            "h": 153
+            "y": 15,
+            "w": 111,
+            "h": 159
           },
           "anchorSourcePx": [
-            628,
-            164
+            629,
+            172
           ],
-          "registrationIoU": 0.8994576554025866
+          "registrationIoU": 0.897053726169844
         },
         {
           "row": 0,
@@ -1346,16 +1352,16 @@
           "h": 120,
           "source": {
             "file": "source/mire-imp.png",
-            "x": 762,
+            "x": 764,
             "y": 14,
-            "w": 102,
-            "h": 152
+            "w": 108,
+            "h": 158
           },
           "anchorSourcePx": [
-            808,
-            164
+            813,
+            172
           ],
-          "registrationIoU": 0.8709812108559499
+          "registrationIoU": 0.9080622347949081
         },
         {
           "row": 0,
@@ -1366,16 +1372,16 @@
           "h": 120,
           "source": {
             "file": "source/mire-imp.png",
-            "x": 942,
-            "y": 14,
-            "w": 103,
-            "h": 152
+            "x": 955,
+            "y": 16,
+            "w": 107,
+            "h": 157
           },
           "anchorSourcePx": [
-            989,
-            164
+            1001,
+            172
           ],
-          "registrationIoU": 0.8822075782537068
+          "registrationIoU": 0.8885005242922055
         },
         {
           "row": 1,
@@ -1386,14 +1392,14 @@
           "h": 120,
           "source": {
             "file": "source/mire-imp.png",
-            "x": 41,
-            "y": 186,
-            "w": 107,
-            "h": 161
+            "x": 31,
+            "y": 191,
+            "w": 121,
+            "h": 163
           },
           "anchorSourcePx": [
-            92.03402187120292,
-            344
+            91.43624161073825,
+            354
           ],
           "registrationIoU": 1
         },
@@ -1408,14 +1414,14 @@
             "file": "source/mire-imp.png",
             "x": 205,
             "y": 186,
-            "w": 135,
-            "h": 156
+            "w": 136,
+            "h": 166
           },
           "anchorSourcePx": [
-            266,
-            344
+            274,
+            354
           ],
-          "registrationIoU": 0.5724496426250812
+          "registrationIoU": 0.6857463524130191
         },
         {
           "row": 1,
@@ -1427,15 +1433,15 @@
           "source": {
             "file": "source/mire-imp.png",
             "x": 398,
-            "y": 185,
-            "w": 114,
-            "h": 157
+            "y": 188,
+            "w": 120,
+            "h": 164
           },
           "anchorSourcePx": [
-            451,
-            344
+            459,
+            354
           ],
-          "registrationIoU": 0.755223880597015
+          "registrationIoU": 0.8231765077360278
         },
         {
           "row": 1,
@@ -1446,16 +1452,16 @@
           "h": 120,
           "source": {
             "file": "source/mire-imp.png",
-            "x": 565,
-            "y": 184,
-            "w": 115,
-            "h": 162
+            "x": 568,
+            "y": 187,
+            "w": 123,
+            "h": 169
           },
           "anchorSourcePx": [
-            626,
-            344
+            635,
+            354
           ],
-          "registrationIoU": 0.6166549543218552
+          "registrationIoU": 0.6851907479723641
         },
         {
           "row": 1,
@@ -1466,16 +1472,16 @@
           "h": 120,
           "source": {
             "file": "source/mire-imp.png",
-            "x": 761,
-            "y": 186,
-            "w": 103,
-            "h": 158
+            "x": 769,
+            "y": 190,
+            "w": 112,
+            "h": 164
           },
           "anchorSourcePx": [
-            807,
-            344
+            824,
+            354
           ],
-          "registrationIoU": 0.6714181286549707
+          "registrationIoU": 0.772552783109405
         },
         {
           "row": 1,
@@ -1486,16 +1492,16 @@
           "h": 120,
           "source": {
             "file": "source/mire-imp.png",
-            "x": 934,
-            "y": 185,
-            "w": 116,
-            "h": 162
+            "x": 942,
+            "y": 190,
+            "w": 125,
+            "h": 166
           },
           "anchorSourcePx": [
-            996,
-            344
+            1012,
+            354
           ],
-          "registrationIoU": 0.75
+          "registrationIoU": 0.8163641956321132
         },
         {
           "row": 2,
@@ -1507,13 +1513,13 @@
           "source": {
             "file": "source/mire-imp.png",
             "x": 23,
-            "y": 372,
-            "w": 129,
-            "h": 158
+            "y": 377,
+            "w": 135,
+            "h": 167
           },
           "anchorSourcePx": [
-            97.20967741935483,
-            533
+            100.35622317596567,
+            547
           ],
           "registrationIoU": 1
         },
@@ -1526,16 +1532,16 @@
           "h": 120,
           "source": {
             "file": "source/mire-imp.png",
-            "x": 207,
-            "y": 356,
-            "w": 133,
+            "x": 210,
+            "y": 368,
+            "w": 142,
             "h": 177
           },
           "anchorSourcePx": [
-            274,
-            533
+            288,
+            547
           ],
-          "registrationIoU": 0.5646085295989816
+          "registrationIoU": 0.6741012857517712
         },
         {
           "row": 2,
@@ -1546,16 +1552,16 @@
           "h": 120,
           "source": {
             "file": "source/mire-imp.png",
-            "x": 378,
-            "y": 356,
-            "w": 167,
-            "h": 176
+            "x": 382,
+            "y": 369,
+            "w": 162,
+            "h": 179
           },
           "anchorSourcePx": [
-            468,
-            533
+            469,
+            547
           ],
-          "registrationIoU": 0.5696603339090386
+          "registrationIoU": 0.7103465722236276
         },
         {
           "row": 2,
@@ -1566,16 +1572,16 @@
           "h": 120,
           "source": {
             "file": "source/mire-imp.png",
-            "x": 545,
-            "y": 366,
-            "w": 210,
-            "h": 168
+            "x": 548,
+            "y": 373,
+            "w": 214,
+            "h": 175
           },
           "anchorSourcePx": [
-            642,
-            533
+            647,
+            547
           ],
-          "registrationIoU": 0.4393377810723993
+          "registrationIoU": 0.42568395263372805
         },
         {
           "row": 2,
@@ -1586,16 +1592,16 @@
           "h": 120,
           "source": {
             "file": "source/mire-imp.png",
-            "x": 751,
-            "y": 362,
+            "x": 762,
+            "y": 374,
             "w": 174,
-            "h": 175
+            "h": 174
           },
           "anchorSourcePx": [
-            828,
-            533
+            834,
+            547
           ],
-          "registrationIoU": 0.4993398468444679
+          "registrationIoU": 0.5879159782865235
         },
         {
           "row": 2,
@@ -1606,16 +1612,16 @@
           "h": 120,
           "source": {
             "file": "source/mire-imp.png",
-            "x": 949,
-            "y": 375,
-            "w": 110,
-            "h": 157
+            "x": 951,
+            "y": 385,
+            "w": 119,
+            "h": 160
           },
           "anchorSourcePx": [
-            1021,
-            533
+            1024,
+            547
           ],
-          "registrationIoU": 0.45301007899754836
+          "registrationIoU": 0.544564152791381
         },
         {
           "row": 3,
@@ -1626,14 +1632,14 @@
           "h": 120,
           "source": {
             "file": "source/mire-imp.png",
-            "x": 34,
-            "y": 555,
-            "w": 138,
+            "x": 35,
+            "y": 565,
+            "w": 140,
             "h": 154
           },
           "anchorSourcePx": [
-            134.74481074481076,
-            709
+            136.09663120567376,
+            720
           ],
           "registrationIoU": 1
         },
@@ -1646,16 +1652,16 @@
           "h": 120,
           "source": {
             "file": "source/mire-imp.png",
-            "x": 207,
-            "y": 549,
-            "w": 133,
-            "h": 161
+            "x": 206,
+            "y": 551,
+            "w": 137,
+            "h": 171
           },
           "anchorSourcePx": [
-            306,
-            709
+            307,
+            720
           ],
-          "registrationIoU": 0.5160220994475138
+          "registrationIoU": 0.659376571141277
         },
         {
           "row": 3,
@@ -1666,16 +1672,16 @@
           "h": 120,
           "source": {
             "file": "source/mire-imp.png",
-            "x": 380,
-            "y": 580,
-            "w": 138,
-            "h": 131
+            "x": 381,
+            "y": 589,
+            "w": 141,
+            "h": 132
           },
           "anchorSourcePx": [
-            494,
-            709
+            497,
+            720
           ],
-          "registrationIoU": 0.43407995463566773
+          "registrationIoU": 0.48074623295862234
         },
         {
           "row": 3,
@@ -1686,16 +1692,16 @@
           "h": 120,
           "source": {
             "file": "source/mire-imp.png",
-            "x": 528,
-            "y": 612,
-            "w": 171,
-            "h": 98
+            "x": 540,
+            "y": 619,
+            "w": 168,
+            "h": 101
           },
           "anchorSourcePx": [
-            648,
-            709
+            660,
+            720
           ],
-          "registrationIoU": 0.47584917419756934
+          "registrationIoU": 0.5426287744227354
         },
         {
           "row": 3,
@@ -1706,16 +1712,16 @@
           "h": 120,
           "source": {
             "file": "source/mire-imp.png",
-            "x": 709,
-            "y": 626,
-            "w": 194,
-            "h": 81
+            "x": 719,
+            "y": 632,
+            "w": 190,
+            "h": 85
           },
           "anchorSourcePx": [
-            827,
-            709
+            840,
+            720
           ],
-          "registrationIoU": 0.6644270250093318
+          "registrationIoU": 0.7101293103448276
         },
         {
           "row": 3,
@@ -1726,16 +1732,16 @@
           "h": 120,
           "source": {
             "file": "source/mire-imp.png",
-            "x": 908,
-            "y": 635,
-            "w": 168,
-            "h": 74
+            "x": 916,
+            "y": 640,
+            "w": 162,
+            "h": 78
           },
           "anchorSourcePx": [
-            1027,
-            709
+            1039,
+            720
           ],
-          "registrationIoU": 0.6246382802811079
+          "registrationIoU": 0.6544965411222137
         },
         {
           "row": 4,
@@ -1746,14 +1752,14 @@
           "h": 120,
           "source": {
             "file": "source/mire-imp.png",
-            "x": 36,
+            "x": 35,
             "y": 727,
-            "w": 109,
-            "h": 159
+            "w": 116,
+            "h": 166
           },
           "anchorSourcePx": [
-            92.26891734575088,
-            888
+            93.68591426071741,
+            895
           ],
           "registrationIoU": 1
         },
@@ -1767,15 +1773,15 @@
           "source": {
             "file": "source/mire-imp.png",
             "x": 217,
-            "y": 728,
-            "w": 111,
-            "h": 155
+            "y": 730,
+            "w": 118,
+            "h": 162
           },
           "anchorSourcePx": [
-            273,
-            888
+            277,
+            895
           ],
-          "registrationIoU": 0.7693747660052415
+          "registrationIoU": 0.8404053198226725
         },
         {
           "row": 4,
@@ -1786,16 +1792,16 @@
           "h": 120,
           "source": {
             "file": "source/mire-imp.png",
-            "x": 397,
-            "y": 727,
-            "w": 107,
-            "h": 157
+            "x": 400,
+            "y": 734,
+            "w": 115,
+            "h": 162
           },
           "anchorSourcePx": [
-            453,
-            888
+            459,
+            895
           ],
-          "registrationIoU": 0.830034924330617
+          "registrationIoU": 0.8667537557152188
         },
         {
           "row": 4,
@@ -1806,16 +1812,16 @@
           "h": 120,
           "source": {
             "file": "source/mire-imp.png",
-            "x": 577,
-            "y": 728,
-            "w": 112,
-            "h": 158
+            "x": 581,
+            "y": 734,
+            "w": 117,
+            "h": 159
           },
           "anchorSourcePx": [
-            636,
-            888
+            640,
+            895
           ],
-          "registrationIoU": 0.8439798683701123
+          "registrationIoU": 0.8686107470511141
         },
         {
           "row": 4,
@@ -1826,16 +1832,16 @@
           "h": 120,
           "source": {
             "file": "source/mire-imp.png",
-            "x": 757,
-            "y": 728,
-            "w": 115,
-            "h": 161
+            "x": 762,
+            "y": 734,
+            "w": 118,
+            "h": 163
           },
           "anchorSourcePx": [
-            818,
-            888
+            822,
+            895
           ],
-          "registrationIoU": 0.8016749143509707
+          "registrationIoU": 0.9038589487691284
         },
         {
           "row": 4,
@@ -1846,256 +1852,256 @@
           "h": 120,
           "source": {
             "file": "source/mire-imp.png",
-            "x": 940,
-            "y": 729,
-            "w": 112,
+            "x": 946,
+            "y": 734,
+            "w": 115,
             "h": 160
           },
           "anchorSourcePx": [
-            998,
-            888
+            1004,
+            895
           ],
-          "registrationIoU": 0.8049886621315193
+          "registrationIoU": 0.849803664921466
         },
         {
           "row": 5,
           "col": 0,
           "x": 4,
           "y": 624,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/mire-imp.png",
+            "x": 35,
+            "y": 904,
+            "w": 118,
+            "h": 163
+          },
+          "anchorSourcePx": [
+            103.65926558497011,
+            1072
+          ],
+          "registrationIoU": 1
+        },
+        {
+          "row": 5,
+          "col": 1,
+          "x": 134,
+          "y": 624,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/mire-imp.png",
+            "x": 219,
+            "y": 902,
+            "w": 117,
+            "h": 171
+          },
+          "anchorSourcePx": [
+            287,
+            1072
+          ],
+          "registrationIoU": 0.7503768465480857
+        },
+        {
+          "row": 5,
+          "col": 2,
+          "x": 264,
+          "y": 624,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/mire-imp.png",
+            "x": 404,
+            "y": 901,
+            "w": 115,
+            "h": 167
+          },
+          "anchorSourcePx": [
+            470,
+            1072
+          ],
+          "registrationIoU": 0.819162045594578
+        },
+        {
+          "row": 5,
+          "col": 3,
+          "x": 394,
+          "y": 624,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/mire-imp.png",
+            "x": 580,
+            "y": 904,
+            "w": 122,
+            "h": 164
+          },
+          "anchorSourcePx": [
+            652,
+            1072
+          ],
+          "registrationIoU": 0.8510771152044958
+        },
+        {
+          "row": 5,
+          "col": 4,
+          "x": 524,
+          "y": 624,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/mire-imp.png",
+            "x": 766,
+            "y": 905,
+            "w": 123,
+            "h": 159
+          },
+          "anchorSourcePx": [
+            833,
+            1072
+          ],
+          "registrationIoU": 0.7852307692307692
+        },
+        {
+          "row": 5,
+          "col": 5,
+          "x": 654,
+          "y": 624,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/mire-imp.png",
+            "x": 950,
+            "y": 905,
+            "w": 114,
+            "h": 165
+          },
+          "anchorSourcePx": [
+            1017,
+            1072
+          ],
+          "registrationIoU": 0.8624269954574951
+        },
+        {
+          "row": 6,
+          "col": 0,
+          "x": 4,
+          "y": 748,
           "w": 126,
           "h": 120,
           "source": {
             "file": "source/mire-imp.png",
             "x": 37,
-            "y": 901,
-            "w": 105,
+            "y": 1079,
+            "w": 124,
+            "h": 158
+          },
+          "anchorSourcePx": [
+            100.79177377892032,
+            1237
+          ],
+          "registrationIoU": 1
+        },
+        {
+          "row": 6,
+          "col": 1,
+          "x": 134,
+          "y": 748,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/mire-imp.png",
+            "x": 207,
+            "y": 1080,
+            "w": 132,
+            "h": 158
+          },
+          "anchorSourcePx": [
+            278,
+            1237
+          ],
+          "registrationIoU": 0.8823334438183627
+        },
+        {
+          "row": 6,
+          "col": 2,
+          "x": 264,
+          "y": 748,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/mire-imp.png",
+            "x": 399,
+            "y": 1079,
+            "w": 130,
+            "h": 160
+          },
+          "anchorSourcePx": [
+            467,
+            1237
+          ],
+          "registrationIoU": 0.8859416445623343
+        },
+        {
+          "row": 6,
+          "col": 3,
+          "x": 394,
+          "y": 748,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/mire-imp.png",
+            "x": 575,
+            "y": 1079,
+            "w": 135,
+            "h": 159
+          },
+          "anchorSourcePx": [
+            645,
+            1237
+          ],
+          "registrationIoU": 0.8631578947368421
+        },
+        {
+          "row": 6,
+          "col": 4,
+          "x": 524,
+          "y": 748,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/mire-imp.png",
+            "x": 764,
+            "y": 1077,
+            "w": 124,
             "h": 157
           },
           "anchorSourcePx": [
-            105.08607021517554,
-            1065
+            829,
+            1237
           ],
-          "registrationIoU": 1
+          "registrationIoU": 0.7874116891457932
         },
         {
-          "row": 5,
-          "col": 1,
-          "x": 134,
-          "y": 624,
-          "w": 126,
-          "h": 120,
-          "source": {
-            "file": "source/mire-imp.png",
-            "x": 215,
-            "y": 900,
-            "w": 116,
-            "h": 163
-          },
-          "anchorSourcePx": [
-            284,
-            1065
-          ],
-          "registrationIoU": 0.6395869191049914
-        },
-        {
-          "row": 5,
-          "col": 2,
-          "x": 264,
-          "y": 624,
-          "w": 126,
-          "h": 120,
-          "source": {
-            "file": "source/mire-imp.png",
-            "x": 396,
-            "y": 898,
-            "w": 112,
-            "h": 165
-          },
-          "anchorSourcePx": [
-            463,
-            1065
-          ],
-          "registrationIoU": 0.6858359957401491
-        },
-        {
-          "row": 5,
-          "col": 3,
-          "x": 394,
-          "y": 624,
-          "w": 126,
-          "h": 120,
-          "source": {
-            "file": "source/mire-imp.png",
-            "x": 570,
-            "y": 902,
-            "w": 119,
-            "h": 164
-          },
-          "anchorSourcePx": [
-            644,
-            1065
-          ],
-          "registrationIoU": 0.6914562435143549
-        },
-        {
-          "row": 5,
-          "col": 4,
-          "x": 524,
-          "y": 624,
-          "w": 126,
-          "h": 120,
-          "source": {
-            "file": "source/mire-imp.png",
-            "x": 760,
-            "y": 902,
-            "w": 115,
-            "h": 151
-          },
-          "anchorSourcePx": [
-            827,
-            1065
-          ],
-          "registrationIoU": 0.7290346626910175
-        },
-        {
-          "row": 5,
+          "row": 6,
           "col": 5,
           "x": 654,
-          "y": 624,
+          "y": 748,
           "w": 126,
           "h": 120,
           "source": {
             "file": "source/mire-imp.png",
-            "x": 942,
-            "y": 904,
-            "w": 107,
-            "h": 155
+            "x": 944,
+            "y": 1081,
+            "w": 122,
+            "h": 157
           },
           "anchorSourcePx": [
             1009,
-            1065
+            1237
           ],
-          "registrationIoU": 0.8112687155240347
-        },
-        {
-          "row": 6,
-          "col": 0,
-          "x": 4,
-          "y": 748,
-          "w": 126,
-          "h": 120,
-          "source": {
-            "file": "source/mire-imp.png",
-            "x": 40,
-            "y": 1075,
-            "w": 111,
-            "h": 165
-          },
-          "anchorSourcePx": [
-            95.10766961651917,
-            1238
-          ],
-          "registrationIoU": 1
-        },
-        {
-          "row": 6,
-          "col": 1,
-          "x": 134,
-          "y": 748,
-          "w": 126,
-          "h": 120,
-          "source": {
-            "file": "source/mire-imp.png",
-            "x": 205,
-            "y": 1074,
-            "w": 120,
-            "h": 166
-          },
-          "anchorSourcePx": [
-            268,
-            1238
-          ],
-          "registrationIoU": 0.7238062521470285
-        },
-        {
-          "row": 6,
-          "col": 2,
-          "x": 264,
-          "y": 748,
-          "w": 126,
-          "h": 120,
-          "source": {
-            "file": "source/mire-imp.png",
-            "x": 394,
-            "y": 1074,
-            "w": 120,
-            "h": 166
-          },
-          "anchorSourcePx": [
-            455,
-            1238
-          ],
-          "registrationIoU": 0.7870668095748482
-        },
-        {
-          "row": 6,
-          "col": 3,
-          "x": 394,
-          "y": 748,
-          "w": 126,
-          "h": 120,
-          "source": {
-            "file": "source/mire-imp.png",
-            "x": 568,
-            "y": 1074,
-            "w": 129,
-            "h": 166
-          },
-          "anchorSourcePx": [
-            633,
-            1238
-          ],
-          "registrationIoU": 0.6903160726294553
-        },
-        {
-          "row": 6,
-          "col": 4,
-          "x": 524,
-          "y": 748,
-          "w": 126,
-          "h": 120,
-          "source": {
-            "file": "source/mire-imp.png",
-            "x": 758,
-            "y": 1075,
-            "w": 113,
-            "h": 163
-          },
-          "anchorSourcePx": [
-            815,
-            1238
-          ],
-          "registrationIoU": 0.8022222222222222
-        },
-        {
-          "row": 6,
-          "col": 5,
-          "x": 654,
-          "y": 748,
-          "w": 126,
-          "h": 120,
-          "source": {
-            "file": "source/mire-imp.png",
-            "x": 938,
-            "y": 1074,
-            "w": 114,
-            "h": 166
-          },
-          "anchorSourcePx": [
-            995,
-            1238
-          ],
-          "registrationIoU": 0.7709677419354839
+          "registrationIoU": 0.8876712328767123
         },
         {
           "row": 7,
@@ -2107,13 +2113,13 @@
           "source": {
             "file": "source/mire-imp.png",
             "x": 38,
-            "y": 1250,
-            "w": 107,
-            "h": 181
+            "y": 1245,
+            "w": 122,
+            "h": 184
           },
           "anchorSourcePx": [
-            102.38980509745127,
-            1434
+            112.50958627648839,
+            1432
           ],
           "registrationIoU": 1
         },
@@ -2126,16 +2132,16 @@
           "h": 120,
           "source": {
             "file": "source/mire-imp.png",
-            "x": 217,
-            "y": 1259,
-            "w": 105,
-            "h": 174
+            "x": 219,
+            "y": 1252,
+            "w": 117,
+            "h": 177
           },
           "anchorSourcePx": [
-            277,
-            1434
+            288,
+            1432
           ],
-          "registrationIoU": 0.7327033412082349
+          "registrationIoU": 0.7583856013089719
         },
         {
           "row": 7,
@@ -2146,16 +2152,16 @@
           "h": 120,
           "source": {
             "file": "source/mire-imp.png",
-            "x": 395,
-            "y": 1251,
-            "w": 111,
+            "x": 403,
+            "y": 1249,
+            "w": 117,
             "h": 184
           },
           "anchorSourcePx": [
-            461,
-            1434
+            473,
+            1432
           ],
-          "registrationIoU": 0.7973523421588594
+          "registrationIoU": 0.8365902010761824
         },
         {
           "row": 7,
@@ -2166,16 +2172,16 @@
           "h": 120,
           "source": {
             "file": "source/mire-imp.png",
-            "x": 570,
-            "y": 1259,
-            "w": 121,
-            "h": 173
+            "x": 579,
+            "y": 1251,
+            "w": 124,
+            "h": 180
           },
           "anchorSourcePx": [
-            638,
-            1434
+            652,
+            1432
           ],
-          "registrationIoU": 0.7041210560206053
+          "registrationIoU": 0.7815869505114736
         },
         {
           "row": 7,
@@ -2186,16 +2192,16 @@
           "h": 120,
           "source": {
             "file": "source/mire-imp.png",
-            "x": 756,
-            "y": 1259,
-            "w": 115,
-            "h": 177
+            "x": 766,
+            "y": 1254,
+            "w": 116,
+            "h": 178
           },
           "anchorSourcePx": [
-            820,
-            1434
+            835,
+            1432
           ],
-          "registrationIoU": 0.7449379490529066
+          "registrationIoU": 0.8263829787234043
         },
         {
           "row": 7,
@@ -2206,16 +2212,16 @@
           "h": 120,
           "source": {
             "file": "source/mire-imp.png",
-            "x": 940,
-            "y": 1254,
-            "w": 106,
-            "h": 181
+            "x": 945,
+            "y": 1250,
+            "w": 117,
+            "h": 183
           },
           "anchorSourcePx": [
-            1004,
-            1434
+            1016,
+            1432
           ],
-          "registrationIoU": 0.8363824646185709
+          "registrationIoU": 0.821519344817848
         }
       ]
     }

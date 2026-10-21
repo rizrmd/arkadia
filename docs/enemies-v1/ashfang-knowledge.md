@@ -2,13 +2,21 @@
 
 Ashfang uses **Bite** as its default attack. [Open the interactive animation preview](https://arkadia-enemies-whachat.fural.space/enemies/v1/). Generated review assets only; gameplay has not been replaced.
 
+## Rift Runner style alignment
+
+The current sheet was restyled with the actual Rift Runner v2 southeast sprite as an image reference: simplified chunky painted forms, matte surfaces, soft upper-left light, muted charcoal/teal/ochre palette, and reduced fine texture. This supersedes the more realistic enemy treatment. The original pose order and 48-frame animation contract are retained.
+
+### Superseded source
+
+![Ashfang original before Rift Runner style alignment](https://arkadia-enemies-whachat.fural.space/enemies/v1/source/ashfang-before-style.png)
+
 ## Source sheet
 
 ![Ashfang generated 48-pose source](https://arkadia-enemies-whachat.fural.space/enemies/v1/source/ashfang.png)
 
 ### Unused generated alternative
 
-This alpha-cleanup variant increased orange highlights, so the original remains selected. Both have real alpha; the brown viewer background is hidden RGB.
+This superseded alpha-cleanup experiment increased orange highlights. Neither it nor the old realistic source is selected now. The current sheet above uses the Rift Runner style revision. All have real alpha; the brown viewer background is hidden RGB.
 
 ![Ashfang unused alpha-cleanup alternative](https://arkadia-enemies-whachat.fural.space/enemies/v1/source/ashfang-alpha-variant.png)
 
@@ -16,7 +24,7 @@ This alpha-cleanup variant increased orange highlights, so the original remains 
 
 ![Ashfang 48-frame atlas](https://arkadia-enemies-whachat.fural.space/enemies/v1/ashfang.png)
 
-784 × 996 atlas; 126 × 120 cells; fixed ground pivot (74,114); four-pixel gutters; alpha threshold 16. One uniform source scale 0.3664921466 across all frames. Source spacing is irregular and extracted by alpha components. The character is uniformly fitted to the existing canvas; this is not a claim of identical source resolution or body height to Revenant.
+784 × 996 atlas; 126 × 120 cells; fixed ground pivot (74,114); four-pixel gutters; alpha threshold 16. One uniform source scale 0.3500000000 across all frames. Source spacing is irregular and extracted by alpha components. The character is uniformly fitted to the existing canvas; this is not a claim of identical source resolution or body height to Revenant.
 
 ## Animated clips
 

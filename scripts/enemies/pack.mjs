@@ -89,7 +89,7 @@ function registerX(base, f) {
 
 const OUT='public/enemies/v1';
 const reference=JSON.parse(await fs.readFile('public/assets/characters/manifest.json','utf8')).characters.revenant;
-const manifest={generatedBy:'scripts/enemies/pack.mjs',alphaThreshold:ALPHA,reference:'Revenant current 48-frame contract',characters:{}};
+const manifest={generatedBy:'scripts/enemies/pack.mjs',alphaThreshold:ALPHA,reference:'Revenant current 48-frame contract',styleReference:{image:'reference/rift-runner-v2-SE.png',source:'Rift Runner v2 prototype-v2/neutral-SE.png',sha256:createHash('sha256').update(await fs.readFile(`${OUT}/reference/rift-runner-v2-SE.png`)).digest('hex'),direction:'Simplified stylized low-poly painted forms, matte surfaces, muted charcoal/teal/ochre, soft upper-left lighting'},characters:{}};
 const audit={};
 for(const id of ['ashfang','mire-imp']){
  const {data,info}=await sharp(`${OUT}/source/${id}.png`).ensureAlpha().raw().toBuffer({resolveWithObject:true});
