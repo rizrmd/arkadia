@@ -9,14 +9,14 @@
 #day-clock{position:fixed;top:max(12px,env(safe-area-inset-top));right:max(12px,env(safe-area-inset-right));z-index:10;display:flex;flex-direction:column;align-items:flex-end;gap:8px;font-size:14px;max-width:calc(100vw - 24px)}
 #day-clock button{font:inherit;color:inherit;cursor:pointer}
 #day-clock .icon{width:18px;height:18px;display:block}
-.clock-chip{display:flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:2px 6px;border:12px solid transparent;border-image:url('/ui/health-frame.webp') 65 130 fill / 10px 18px / 0 stretch;border-radius:0;background:#141c22ed;background-clip:padding-box;filter:drop-shadow(0 2px 4px #0008)}
-.clock-chip:hover,.clock-chip[aria-expanded=true]{filter:drop-shadow(0 0 4px #e2c27f66);background-color:#29302c}
+.clock-chip{display:flex;align-items:center;justify-content:center;gap:7px;height:32px;padding:0 11px;border:1px solid #c9a86a70;border-radius:16px;background:#172022e8;box-shadow:0 2px 7px #0003}
+.clock-chip:hover,.clock-chip[aria-expanded=true]{border-color:#dac08c;background:#25302f}
 .clock-icon{color:#f2c46b}#day-clock[data-sky=moon] .clock-icon{color:#a9bcf5}
 .clock-time{font-variant-numeric:tabular-nums;font-size:16px;letter-spacing:.02em}
 .clock-phase{color:#cfc3a6}
-.clock-mode{font-size:11px;text-transform:uppercase;letter-spacing:.08em;padding:2px 6px;border-radius:2px;background:#2b3a2f;color:#b9dcb1}
+.clock-mode{font-size:11px;text-transform:uppercase;letter-spacing:.08em;padding:2px 6px;border-radius:8px;background:#2b3a2f;color:#b9dcb1}
 #day-clock[data-clock=manual] .clock-mode{background:#4a3920;color:#f2c46b}
-.clock-panel{width:min(320px,calc(100vw - 24px));padding:14px;border:1px solid #ae8d4e;border-radius:3px;background:linear-gradient(135deg,#27302bf5,#111a1df7);box-shadow:0 8px 28px #0008}
+.clock-panel{width:min(320px,calc(100vw - 24px));padding:14px;border:1px solid #c9a86a55;border-radius:14px;background:#172022f5;box-shadow:0 8px 28px #0008}
 .clock-panel[hidden]{display:none}
 .clock-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:8px}
 .clock-head label{color:#cfc3a6}.clock-readout{font-variant-numeric:tabular-nums;font-size:16px}
@@ -53,5 +53,5 @@
 @media (max-width:600px){#hero-hud{width:min(240px,calc(100vw - 190px));font-size:12px}#hero-hud .hud-hp{font-size:12px}.clock-phase{display:none}}
 @media (max-width:420px){#hero-hud .hud-kills{display:none}}
 
-/* Compact clock reuses the generated brass frame without stretching its corners. */
-@media (max-width:600px){.clock-chip{min-width:112px;gap:7px;padding:2px 4px}.clock-chip .clock-mode{display:none}.clock-time{font-size:15px}.clock-panel{max-width:calc(100vw - 24px)}}
+/* A short, softly rounded clock keeps the mobile HUD quiet. */
+@media (max-width:600px){.clock-chip{min-width:90px;gap:6px;padding:0 10px}.clock-chip .clock-mode{display:none}.clock-time{font-size:15px}.clock-panel{max-width:calc(100vw - 24px)}}
