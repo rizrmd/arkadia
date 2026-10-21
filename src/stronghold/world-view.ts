@@ -9,16 +9,24 @@ import {createEncounters} from './encounters';
 import {setGateOpen,gateTowerFront} from './navigation';
 import {createGateDoors,GATE_SHEET,type GateSheet} from './gate-doors';
 import type {Walk} from './controls';
-import type {Progress} from '../app/loader';
+import {loadImage,expectSizes,downloadedBytes,onDownload,type Progress} from '../app/loader';
 export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Building)=>void,direction:()=>Walk,progress:Progress=()=>{}){
  const ctx=canvas.getContext('2d')!,environment=environmentSprites(),images=new Map<string,HTMLImageElement>();
  let gateOpen=false,gatePassable=false;
  const spriteFile=(id:Building,level:number)=>id==='forge'?`/fortress-ui/forge-${level}.webp`:id==='gate'?'/modular-stronghold/v2/full-gateway-v3-open.webp':`/assets/${slots[id].asset}.png`;
  const paving='/modular-stronghold/v2/paving-warm-texture.png',snow='/modular-stronghold/v2/snow-soft-texture.png';
- // Loading-screen steps: every artwork file, then the hero, then the first world raster.
- const files=[...new Set([FOUNDATION_SOIL,FOUNDATION_MOSS,paving,snow,'/modular-stronghold/v2/full-gateway-v3-closed.webp','/modular-stronghold/v2/full-gateway-v3-sheet.webp',...environment.map(p=>p.file),...buildings.flatMap(b=>[1,2,3].map(l=>spriteFile(b,l)))])],steps=files.length+2;let loaded=0;
- progress(0,steps,'Loading artwork');
- await Promise.all(files.map(async file=>{const image=new Image();image.src=file;await image.decode();images.set(file,image);progress(++loaded,steps,'Loading artwork');}));
+ // Loading screen: downloads fill the bar in proportion to their bytes (the character atlases that the hero
+ // and the revenants load later are fetched in the same batch), then the hero and the first world raster.
+ const files=[...new Set([FOUNDATION_SOIL,FOUNDATION_MOSS,paving,snow,'/modular-stronghold/v2/full-gateway-v3-closed.webp','/modular-stronghold/v2/full-gateway-v3-sheet.webp',...environment.map(p=>p.file),...buildings.flatMap(b=>[1,2,3].map(l=>spriteFile(b,l)))])];
+ const DOWNLOAD=920,steps=1000,mb=(n:number)=>(n/1e6).toFixed(1);let loaded=DOWNLOAD;
+ let queued=0;const report=()=>{queued=0;const {received,expected}=downloadedBytes();progress(Math.floor(DOWNLOAD*received/Math.max(1,expected)),steps,`Loading artwork · ${mb(received)} of ${mb(expected)} MB`);};
+ const stopReport=onDownload(()=>{queued||=requestAnimationFrame(report);});progress(0,steps,'Loading artwork');
+ const [{characters}]=await Promise.all([fetch('/assets/characters/manifest.json').then(r=>r.json()),expectSizes()]);
+ const atlas=characters as Record<string,{image:string;revision?:string}>,artwork=files.map(async file=>{images.set(file,await loadImage(file));});
+ try{
+  await Promise.all([...artwork,...[atlas.hero,atlas.revenant].map(m=>loadImage('/assets/characters/'+m.image+(m.revision?`?v=${encodeURIComponent(m.revision)}`:'')))]);
+ }finally{stopReport();cancelAnimationFrame(queued);}
+ report();
  let w=0,h=0,dpr=1,scale=1,cx=WORLD.width/2,cy=385,selected:Building|null=null,levels:State['levels']|undefined;
  // Standing buildings: a new game has only the tent and the gateway (economy.ts); ?buildings=all shows every one.
  let built=new Set<Building>(LEGACY_LAYOUT?buildings:START_BUILT);
@@ -153,7 +161,7 @@ export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Buil
  let encounters:Awaited<ReturnType<typeof createEncounters>>|undefined;
  const hero=await createHero<(typeof objects)[number]>({layer:viewport,lightmap:viewport.querySelector<HTMLCanvasElement>('#world-lightmap')!,surface,footprint:p=>p.id==='gate'?gateFootprint():footprint(p),sun:lighting.sun,direction:()=>encounters?encounters.steer(direction()):direction(),follow,pose:()=>encounters?.pose()??null});hero.setScene(objects);
  encounters=await createEncounters({layer:viewport,hud:canvas.parentElement!,hero,direction});lighting.subscribe(s=>encounters!.setAmbient(s.ambient));
- progress(++loaded,steps,'Raising the Stronghold');
+ progress(loaded+=40,steps,'Raising the Stronghold');
  // Everything standing above the ground shadows, at surface resolution with transparency.
  const uprights=document.createElement('canvas');uprights.id='world-uprights';uprights.width=surface.width;uprights.height=surface.height;
  function paintWorld(){

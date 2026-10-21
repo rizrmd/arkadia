@@ -1,0 +1,70 @@
+{
+  "status": "source-constraints-not-final-art-acceptance",
+  "endpoints": [
+    {
+      "action": "flame-fan",
+      "endpointMatrixError": 0.0,
+      "pass": true
+    },
+    {
+      "action": "cinder-step",
+      "endpointMatrixError": 0.0,
+      "pass": true
+    },
+    {
+      "action": "ember-snare",
+      "endpointMatrixError": 0.0,
+      "pass": true
+    },
+    {
+      "action": "furnace-heart",
+      "endpointMatrixError": 0.0,
+      "pass": true
+    },
+    {
+      "action": "hurt",
+      "endpointMatrixError": 0.0,
+      "pass": true
+    },
+    {
+      "action": "death",
+      "terminalHoldMatrixError": 0.0,
+      "pass": true
+    }
+  ],
+  "contacts": [
+    {
+      "action": "run",
+      "samples": 482,
+      "maxStanceSlide": 9.801652700591745e-08,
+      "maxStanceFloorError": 5.21540641784668e-08,
+      "pass": true
+    },
+    {
+      "action": "flame-fan-moving",
+      "samples": 482,
+      "maxStanceSlide": 9.801652700591745e-08,
+      "maxStanceFloorError": 5.21540641784668e-08,
+      "pass": true
+    }
+  ],
+  "floor": [
+    {
+      "action": "ember-snare",
+      "minimumMeshHeight": -7.82310962677002e-08,
+      "atTime": 0.45,
+      "pass": true
+    },
+    {
+      "action": "death",
+      "minimumMeshHeight": 0.0009999684989452362,
+      "atTime": 0.45,
+      "pass": true
+    }
+  ],
+  "rightGauntlet": {
+    "anatomicalSide": "Right",
+    "parent": "Right elbow",
+    "mirroring": false
+  }
+}

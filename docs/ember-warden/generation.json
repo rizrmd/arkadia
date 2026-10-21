@@ -1,0 +1,11 @@
+{
+  "date": "2026-10-21",
+  "tool": "built-in image_gen.imagegen",
+  "mode": "generate",
+  "asset": "public/ember-warden/v1/source/material-atlas.png",
+  "prompt": "Use case: stylized-concept. Asset type: seamless material atlas for a controlled Ember Warden animation rig. Generate one square texture with exactly four equal quadrants, no gaps, no labels, no text, no objects. Top left: ochre yellow worn canvas jacket cloth, subtle painterly weave. Top right: charcoal gray trouser cloth, soft hand-painted fibers. Bottom left: dark brown boot leather, understated fine wear. Bottom right: warm aged bronze gauntlet metal, restrained hammered texture. Flat even lighting, no highlights or shadows baked from a scene, no flames. Material swatches only. Style should support hand-painted fantasy character sprites and preserve the Ember Warden ochre/charcoal/brown/bronze palette.",
+  "referencesInspectedBeforeGeneration": ["DAb93e9b0a0293bfe3c007a878", "DA5e4990dbee175645ab893e11", "docs/rift-runner-v1/README.md", "docs/rift-runner-v2/README.md"],
+  "bodySource": "One isolated controlled Blender scene derived from repository mesh/motion helpers; no independent imagegen body sheets.",
+  "vfxSource": "Code-authored vector geometry rasterized by Sharp; no additional imagegen outputs.",
+  "knowledgeSourcePage": "NKBDa71ebbfe31f5a794f33f045a"
+}

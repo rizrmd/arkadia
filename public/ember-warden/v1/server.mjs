@@ -1,0 +1,3 @@
+import http from 'node:http';import {readFile} from 'node:fs/promises';import path from 'node:path';
+const root=path.resolve('.');const mime={'.html':'text/html','.js':'text/javascript','.mjs':'text/javascript','.json':'application/json','.png':'image/png','.webp':'image/webp','.md':'text/markdown'};
+http.createServer(async(req,res)=>{try{const u=new URL(req.url,'http://local'),rel=decodeURIComponent(u.pathname==='/'?'/index.html':u.pathname),file=path.resolve(root,'.'+rel);if(!file.startsWith(root+'/'))throw Error('path');const bytes=await readFile(file);res.setHeader('Content-Type',mime[path.extname(file)]||'application/octet-stream');res.setHeader('Cache-Control','no-cache');res.end(bytes)}catch{res.writeHead(404).end('Not found')}}).listen(3000,'0.0.0.0');

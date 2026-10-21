@@ -1,0 +1,342 @@
+{
+  "status": "playback-and-resource-verification-pass-not-final-art-acceptance",
+  "base": "http://127.0.0.1:44073",
+  "sourceHash": "be1ab5c59f1d",
+  "results": [
+    {
+      "action": "idle",
+      "speed": 1,
+      "observedBodyFrames": 64,
+      "observedVfxFrames": 0,
+      "allEightDirections": true
+    },
+    {
+      "action": "idle",
+      "speed": 0.25,
+      "observedBodyFrames": 64,
+      "observedVfxFrames": 0,
+      "allEightDirections": true
+    },
+    {
+      "action": "idle",
+      "transitionFrom": "idle",
+      "transitionPhases": [
+        "idle before",
+        "action",
+        "run after"
+      ]
+    },
+    {
+      "action": "idle",
+      "transitionFrom": "run",
+      "transitionPhases": [
+        "run before",
+        "action",
+        "run after"
+      ]
+    },
+    {
+      "action": "idle",
+      "scrubbedAllFrames": 8,
+      "paused": true
+    },
+    {
+      "action": "run",
+      "speed": 1,
+      "observedBodyFrames": 96,
+      "observedVfxFrames": 0,
+      "allEightDirections": true
+    },
+    {
+      "action": "run",
+      "speed": 0.25,
+      "observedBodyFrames": 96,
+      "observedVfxFrames": 0,
+      "allEightDirections": true
+    },
+    {
+      "action": "run",
+      "transitionFrom": "idle",
+      "transitionPhases": [
+        "idle before",
+        "action",
+        "run after"
+      ]
+    },
+    {
+      "action": "run",
+      "transitionFrom": "run",
+      "transitionPhases": [
+        "run before",
+        "action",
+        "run after"
+      ]
+    },
+    {
+      "action": "run",
+      "scrubbedAllFrames": 12,
+      "paused": true
+    },
+    {
+      "action": "flame-fan",
+      "speed": 1,
+      "observedBodyFrames": 96,
+      "observedVfxFrames": 96,
+      "allEightDirections": true
+    },
+    {
+      "action": "flame-fan",
+      "speed": 0.25,
+      "observedBodyFrames": 96,
+      "observedVfxFrames": 96,
+      "allEightDirections": true
+    },
+    {
+      "action": "flame-fan",
+      "transitionFrom": "idle",
+      "transitionPhases": [
+        "idle before",
+        "action",
+        "idle after"
+      ]
+    },
+    {
+      "action": "flame-fan",
+      "transitionFrom": "run",
+      "transitionPhases": [
+        "run before",
+        "action",
+        "run after"
+      ]
+    },
+    {
+      "action": "flame-fan",
+      "scrubbedAllFrames": 12,
+      "paused": true
+    },
+    {
+      "action": "flame-fan-moving",
+      "speed": 1,
+      "observedBodyFrames": 96,
+      "observedVfxFrames": 96,
+      "allEightDirections": true
+    },
+    {
+      "action": "flame-fan-moving",
+      "speed": 0.25,
+      "observedBodyFrames": 96,
+      "observedVfxFrames": 96,
+      "allEightDirections": true
+    },
+    {
+      "action": "flame-fan-moving",
+      "transitionFrom": "idle",
+      "transitionPhases": [
+        "idle before",
+        "action",
+        "run after"
+      ]
+    },
+    {
+      "action": "flame-fan-moving",
+      "transitionFrom": "run",
+      "transitionPhases": [
+        "run before",
+        "action",
+        "run after"
+      ]
+    },
+    {
+      "action": "flame-fan-moving",
+      "scrubbedAllFrames": 12,
+      "paused": true
+    },
+    {
+      "action": "cinder-step",
+      "speed": 1,
+      "observedBodyFrames": 96,
+      "observedVfxFrames": 96,
+      "allEightDirections": true
+    },
+    {
+      "action": "cinder-step",
+      "speed": 0.25,
+      "observedBodyFrames": 96,
+      "observedVfxFrames": 96,
+      "allEightDirections": true
+    },
+    {
+      "action": "cinder-step",
+      "transitionFrom": "idle",
+      "transitionPhases": [
+        "idle before",
+        "action",
+        "idle after"
+      ]
+    },
+    {
+      "action": "cinder-step",
+      "transitionFrom": "run",
+      "transitionPhases": [
+        "run before",
+        "action",
+        "run after"
+      ]
+    },
+    {
+      "action": "cinder-step",
+      "scrubbedAllFrames": 12,
+      "paused": true
+    },
+    {
+      "action": "ember-snare",
+      "speed": 1,
+      "observedBodyFrames": 96,
+      "observedVfxFrames": 96,
+      "allEightDirections": true
+    },
+    {
+      "action": "ember-snare",
+      "speed": 0.25,
+      "observedBodyFrames": 96,
+      "observedVfxFrames": 96,
+      "allEightDirections": true
+    },
+    {
+      "action": "ember-snare",
+      "transitionFrom": "idle",
+      "transitionPhases": [
+        "idle before",
+        "action",
+        "idle after"
+      ]
+    },
+    {
+      "action": "ember-snare",
+      "transitionFrom": "run",
+      "transitionPhases": [
+        "run before",
+        "action",
+        "run after"
+      ]
+    },
+    {
+      "action": "ember-snare",
+      "scrubbedAllFrames": 12,
+      "paused": true
+    },
+    {
+      "action": "furnace-heart",
+      "speed": 1,
+      "observedBodyFrames": 96,
+      "observedVfxFrames": 96,
+      "allEightDirections": true
+    },
+    {
+      "action": "furnace-heart",
+      "speed": 0.25,
+      "observedBodyFrames": 96,
+      "observedVfxFrames": 96,
+      "allEightDirections": true
+    },
+    {
+      "action": "furnace-heart",
+      "transitionFrom": "idle",
+      "transitionPhases": [
+        "idle before",
+        "action",
+        "idle after"
+      ]
+    },
+    {
+      "action": "furnace-heart",
+      "transitionFrom": "run",
+      "transitionPhases": [
+        "run before",
+        "action",
+        "run after"
+      ]
+    },
+    {
+      "action": "furnace-heart",
+      "scrubbedAllFrames": 12,
+      "paused": true
+    },
+    {
+      "action": "hurt",
+      "speed": 1,
+      "observedBodyFrames": 64,
+      "observedVfxFrames": 0,
+      "allEightDirections": true
+    },
+    {
+      "action": "hurt",
+      "speed": 0.25,
+      "observedBodyFrames": 64,
+      "observedVfxFrames": 0,
+      "allEightDirections": true
+    },
+    {
+      "action": "hurt",
+      "transitionFrom": "idle",
+      "transitionPhases": [
+        "idle before",
+        "action",
+        "idle after"
+      ]
+    },
+    {
+      "action": "hurt",
+      "transitionFrom": "run",
+      "transitionPhases": [
+        "run before",
+        "action",
+        "run after"
+      ]
+    },
+    {
+      "action": "hurt",
+      "scrubbedAllFrames": 8,
+      "paused": true
+    },
+    {
+      "action": "death",
+      "speed": 1,
+      "observedBodyFrames": 128,
+      "observedVfxFrames": 0,
+      "allEightDirections": true
+    },
+    {
+      "action": "death",
+      "speed": 0.25,
+      "observedBodyFrames": 128,
+      "observedVfxFrames": 0,
+      "allEightDirections": true
+    },
+    {
+      "action": "death",
+      "transitionFrom": "idle",
+      "transitionPhases": [
+        "idle before",
+        "action",
+        "death hold"
+      ]
+    },
+    {
+      "action": "death",
+      "transitionFrom": "run",
+      "transitionPhases": [
+        "run before",
+        "action",
+        "death hold"
+      ]
+    },
+    {
+      "action": "death",
+      "scrubbedAllFrames": 16,
+      "paused": true
+    }
+  ],
+  "resourcesVerified": {},
+  "errors": []
+}
