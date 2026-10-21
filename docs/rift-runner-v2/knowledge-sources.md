@@ -95,81 +95,311 @@ The west idle and Overdrive originals were replaced by targeted direction correc
 Historical incomplete draft retained for provenance; not selected for the new export.
 
 ![Earlier incomplete Rift Runner draft](/api/rooms/DRb4787514f3224844f3c207ab/attachments/DA2fabc269e58c1f18c0d5606d)
-## Controlled source prototype — work in progress
+## Controlled source and render candidates — active work
 
-The goal remains **fix and generate until game-ready**. [Open the rig prototype](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/). The source is now a reproducible articulated character with one anatomical emitter arm and exact direction rotations. A 482-state numerical contact audit reports planted-foot displacement below 1e-7 model units per sample. The twelve-frame southeast proof also passes actual browser playback, pause/step and alpha checks. These checks do not establish final art quality or complete skill coverage. The face, cloth, scarf motion and concept fidelity still require refinement before full renders.
+The goal remains **fix and generate until game-ready**. [Open candidate playback](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/candidate.html). Pulse Shot, hurt and death now cover all eight directions. All 288 candidate frames pass local playback, hurt returns to neutral, and death holds its final pose. The complete set is not yet game-ready: idle/run, the other three skills, separate VFX and final visual acceptance remain open.
 
-[Prototype source and remaining acceptance work](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=docs%2Frift-runner-v2%2FREADME.md). [Contact audit](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/run-contact-audit.json).
+The canonical model follows the inspected concept with a teal hood, rust scarf and one anatomical right emitter (from the concept front view). The first prototype was too toy-like; later key proofs refine the collar, boots, chest wrap and face. Prototypes and rejected framing experiments are preserved below. The initial death key proof clips the head; it is rejected. Final 320px cells fix that clipping without shrinking the character. All final body clips share ground pivot (160,224).
 
-### Imagegen material study
+The numerical source audits verify planted-foot contacts, common initial-state endpoints, smooth skill starts, trap palm contact and a stable death pose. These are limited source constraints and do not substitute for final art/playback acceptance. [Contact audit](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/run-contact-audit.json) · [Candidate pixel audit](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/candidate-pixel-audit.json) · [Local playback evidence](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/local-candidate-playback.json).
 
-![source material-atlas.png, work-in-progress Rift Runner source](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/source/material-atlas.png)
+### candidate previews / death a82e004976a6.webp
 
-### First model prototype — rejected for visual quality
+![Rift Runner candidate-previews/death-a82e004976a6.webp, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/candidate-previews/death-a82e004976a6.webp)
 
-![prototype-v0 neutral-E.png, work-in-progress Rift Runner source](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/prototype-v0/neutral-E.png)
+### candidate previews / hurt a82e004976a6.webp
 
-![prototype-v0 neutral-N.png, work-in-progress Rift Runner source](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/prototype-v0/neutral-N.png)
+![Rift Runner candidate-previews/hurt-a82e004976a6.webp, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/candidate-previews/hurt-a82e004976a6.webp)
 
-![prototype-v0 neutral-NE.png, work-in-progress Rift Runner source](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/prototype-v0/neutral-NE.png)
+### candidate previews / pulse shot a82e004976a6.webp
 
-![prototype-v0 neutral-NW.png, work-in-progress Rift Runner source](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/prototype-v0/neutral-NW.png)
+![Rift Runner candidate-previews/pulse-shot-a82e004976a6.webp, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/candidate-previews/pulse-shot-a82e004976a6.webp)
 
-![prototype-v0 neutral-S.png, work-in-progress Rift Runner source](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/prototype-v0/neutral-S.png)
+### candidate previews / pulse shot.webp
 
-![prototype-v0 neutral-SE.png, work-in-progress Rift Runner source](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/prototype-v0/neutral-SE.png)
+![Rift Runner candidate-previews/pulse-shot.webp, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/candidate-previews/pulse-shot.webp)
 
-![prototype-v0 neutral-SW.png, work-in-progress Rift Runner source](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/prototype-v0/neutral-SW.png)
+### death contact proof.png
 
-![prototype-v0 neutral-W.png, work-in-progress Rift Runner source](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/prototype-v0/neutral-W.png)
+![Rift Runner death-contact-proof.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/death-contact-proof.png)
 
-### Revised neutral turnaround — still under refinement
+### exports / 3346c6057837 / pulse shot 0.png
 
-![prototype neutral-E.png, work-in-progress Rift Runner source](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/prototype/neutral-E.png)
+![Rift Runner exports/3346c6057837/pulse-shot-0.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/exports/3346c6057837/pulse-shot-0.png)
 
-![prototype neutral-N.png, work-in-progress Rift Runner source](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/prototype/neutral-N.png)
+### exports / 3346c6057837 / pulse shot 1.png
 
-![prototype neutral-NE.png, work-in-progress Rift Runner source](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/prototype/neutral-NE.png)
+![Rift Runner exports/3346c6057837/pulse-shot-1.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/exports/3346c6057837/pulse-shot-1.png)
 
-![prototype neutral-NW.png, work-in-progress Rift Runner source](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/prototype/neutral-NW.png)
+### exports / 3346c6057837 / pulse shot 2.png
 
-![prototype neutral-S.png, work-in-progress Rift Runner source](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/prototype/neutral-S.png)
+![Rift Runner exports/3346c6057837/pulse-shot-2.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/exports/3346c6057837/pulse-shot-2.png)
 
-![prototype neutral-SE.png, work-in-progress Rift Runner source](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/prototype/neutral-SE.png)
+### exports / 3346c6057837 / pulse shot 3.png
 
-![prototype neutral-SW.png, work-in-progress Rift Runner source](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/prototype/neutral-SW.png)
+![Rift Runner exports/3346c6057837/pulse-shot-3.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/exports/3346c6057837/pulse-shot-3.png)
 
-![prototype neutral-W.png, work-in-progress Rift Runner source](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/prototype/neutral-W.png)
+### exports / a82e004976a6 / death 75684fc236 0.png
 
-### Rendered run contact proof frames
+![Rift Runner exports/a82e004976a6/death-75684fc236-0.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/exports/a82e004976a6/death-75684fc236-0.png)
 
-![run-proof frame-00.png, work-in-progress Rift Runner source](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/run-proof/frame-00.png)
+### exports / a82e004976a6 / death 75684fc236 1.png
 
-![run-proof frame-01.png, work-in-progress Rift Runner source](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/run-proof/frame-01.png)
+![Rift Runner exports/a82e004976a6/death-75684fc236-1.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/exports/a82e004976a6/death-75684fc236-1.png)
 
-![run-proof frame-02.png, work-in-progress Rift Runner source](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/run-proof/frame-02.png)
+### exports / a82e004976a6 / death 75684fc236 2.png
 
-![run-proof frame-03.png, work-in-progress Rift Runner source](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/run-proof/frame-03.png)
+![Rift Runner exports/a82e004976a6/death-75684fc236-2.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/exports/a82e004976a6/death-75684fc236-2.png)
 
-![run-proof frame-04.png, work-in-progress Rift Runner source](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/run-proof/frame-04.png)
+### exports / a82e004976a6 / death 75684fc236 3.png
 
-![run-proof frame-05.png, work-in-progress Rift Runner source](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/run-proof/frame-05.png)
+![Rift Runner exports/a82e004976a6/death-75684fc236-3.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/exports/a82e004976a6/death-75684fc236-3.png)
 
-![run-proof frame-06.png, work-in-progress Rift Runner source](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/run-proof/frame-06.png)
+### exports / a82e004976a6 / hurt 75684fc236 0.png
 
-![run-proof frame-07.png, work-in-progress Rift Runner source](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/run-proof/frame-07.png)
+![Rift Runner exports/a82e004976a6/hurt-75684fc236-0.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/exports/a82e004976a6/hurt-75684fc236-0.png)
 
-![run-proof frame-08.png, work-in-progress Rift Runner source](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/run-proof/frame-08.png)
+### exports / a82e004976a6 / hurt 75684fc236 1.png
 
-![run-proof frame-09.png, work-in-progress Rift Runner source](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/run-proof/frame-09.png)
+![Rift Runner exports/a82e004976a6/hurt-75684fc236-1.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/exports/a82e004976a6/hurt-75684fc236-1.png)
 
-![run-proof frame-10.png, work-in-progress Rift Runner source](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/run-proof/frame-10.png)
+### exports / a82e004976a6 / hurt 75684fc236 2.png
 
-![run-proof frame-11.png, work-in-progress Rift Runner source](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/run-proof/frame-11.png)
+![Rift Runner exports/a82e004976a6/hurt-75684fc236-2.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/exports/a82e004976a6/hurt-75684fc236-2.png)
 
-![Twelve-frame calibrated run proof sheet, not final game-ready art](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/run-proof-sheet.png)
+### exports / a82e004976a6 / hurt 75684fc236 3.png
 
-![Animated run contact proof, not final game-ready art](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/run-proof.webp)
+![Rift Runner exports/a82e004976a6/hurt-75684fc236-3.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/exports/a82e004976a6/hurt-75684fc236-3.png)
 
-![Actual local prototype playback screenshot, not final game-ready art](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/local-prototype.png)
+### exports / a82e004976a6 / pulse shot 0.png
+
+![Rift Runner exports/a82e004976a6/pulse-shot-0.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/exports/a82e004976a6/pulse-shot-0.png)
+
+### exports / a82e004976a6 / pulse shot 1.png
+
+![Rift Runner exports/a82e004976a6/pulse-shot-1.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/exports/a82e004976a6/pulse-shot-1.png)
+
+### exports / a82e004976a6 / pulse shot 2.png
+
+![Rift Runner exports/a82e004976a6/pulse-shot-2.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/exports/a82e004976a6/pulse-shot-2.png)
+
+### exports / a82e004976a6 / pulse shot 3.png
+
+![Rift Runner exports/a82e004976a6/pulse-shot-3.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/exports/a82e004976a6/pulse-shot-3.png)
+
+### live prototype.png
+
+![Rift Runner live-prototype.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/live-prototype.png)
+
+### local candidate death.png
+
+![Rift Runner local-candidate-death.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/local-candidate-death.png)
+
+### local candidate hurt.png
+
+![Rift Runner local-candidate-hurt.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/local-candidate-hurt.png)
+
+### local candidate pulse shot.png
+
+![Rift Runner local-candidate-pulse-shot.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/local-candidate-pulse-shot.png)
+
+### local prototype.png
+
+![Rift Runner local-prototype.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/local-prototype.png)
+
+### prototype v0 / neutral E.png
+
+![Rift Runner prototype-v0/neutral-E.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/prototype-v0/neutral-E.png)
+
+### prototype v0 / neutral N.png
+
+![Rift Runner prototype-v0/neutral-N.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/prototype-v0/neutral-N.png)
+
+### prototype v0 / neutral NE.png
+
+![Rift Runner prototype-v0/neutral-NE.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/prototype-v0/neutral-NE.png)
+
+### prototype v0 / neutral NW.png
+
+![Rift Runner prototype-v0/neutral-NW.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/prototype-v0/neutral-NW.png)
+
+### prototype v0 / neutral S.png
+
+![Rift Runner prototype-v0/neutral-S.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/prototype-v0/neutral-S.png)
+
+### prototype v0 / neutral SE.png
+
+![Rift Runner prototype-v0/neutral-SE.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/prototype-v0/neutral-SE.png)
+
+### prototype v0 / neutral SW.png
+
+![Rift Runner prototype-v0/neutral-SW.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/prototype-v0/neutral-SW.png)
+
+### prototype v0 / neutral W.png
+
+![Rift Runner prototype-v0/neutral-W.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/prototype-v0/neutral-W.png)
+
+### prototype v2 / neutral SE.png
+
+![Rift Runner prototype-v2/neutral-SE.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/prototype-v2/neutral-SE.png)
+
+### prototype / neutral E.png
+
+![Rift Runner prototype/neutral-E.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/prototype/neutral-E.png)
+
+### prototype / neutral N.png
+
+![Rift Runner prototype/neutral-N.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/prototype/neutral-N.png)
+
+### prototype / neutral NE.png
+
+![Rift Runner prototype/neutral-NE.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/prototype/neutral-NE.png)
+
+### prototype / neutral NW.png
+
+![Rift Runner prototype/neutral-NW.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/prototype/neutral-NW.png)
+
+### prototype / neutral S.png
+
+![Rift Runner prototype/neutral-S.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/prototype/neutral-S.png)
+
+### prototype / neutral SE.png
+
+![Rift Runner prototype/neutral-SE.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/prototype/neutral-SE.png)
+
+### prototype / neutral SW.png
+
+![Rift Runner prototype/neutral-SW.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/prototype/neutral-SW.png)
+
+### prototype / neutral W.png
+
+![Rift Runner prototype/neutral-W.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/prototype/neutral-W.png)
+
+### run proof sheet.png
+
+![Rift Runner run-proof-sheet.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/run-proof-sheet.png)
+
+### run proof.webp
+
+![Rift Runner run-proof.webp, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/run-proof.webp)
+
+### run proof / frame 00.png
+
+![Rift Runner run-proof/frame-00.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/run-proof/frame-00.png)
+
+### run proof / frame 01.png
+
+![Rift Runner run-proof/frame-01.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/run-proof/frame-01.png)
+
+### run proof / frame 02.png
+
+![Rift Runner run-proof/frame-02.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/run-proof/frame-02.png)
+
+### run proof / frame 03.png
+
+![Rift Runner run-proof/frame-03.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/run-proof/frame-03.png)
+
+### run proof / frame 04.png
+
+![Rift Runner run-proof/frame-04.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/run-proof/frame-04.png)
+
+### run proof / frame 05.png
+
+![Rift Runner run-proof/frame-05.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/run-proof/frame-05.png)
+
+### run proof / frame 06.png
+
+![Rift Runner run-proof/frame-06.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/run-proof/frame-06.png)
+
+### run proof / frame 07.png
+
+![Rift Runner run-proof/frame-07.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/run-proof/frame-07.png)
+
+### run proof / frame 08.png
+
+![Rift Runner run-proof/frame-08.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/run-proof/frame-08.png)
+
+### run proof / frame 09.png
+
+![Rift Runner run-proof/frame-09.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/run-proof/frame-09.png)
+
+### run proof / frame 10.png
+
+![Rift Runner run-proof/frame-10.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/run-proof/frame-10.png)
+
+### run proof / frame 11.png
+
+![Rift Runner run-proof/frame-11.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/run-proof/frame-11.png)
+
+### skill key proof.png
+
+![Rift Runner skill-key-proof.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/skill-key-proof.png)
+
+### skill key proof / overdrive activation.png
+
+![Rift Runner skill-key-proof/overdrive-activation.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/skill-key-proof/overdrive-activation.png)
+
+### skill key proof / overdrive anticipation.png
+
+![Rift Runner skill-key-proof/overdrive-anticipation.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/skill-key-proof/overdrive-anticipation.png)
+
+### skill key proof / overdrive recovery.png
+
+![Rift Runner skill-key-proof/overdrive-recovery.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/skill-key-proof/overdrive-recovery.png)
+
+### skill key proof / phase dash activation.png
+
+![Rift Runner skill-key-proof/phase-dash-activation.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/skill-key-proof/phase-dash-activation.png)
+
+### skill key proof / phase dash anticipation.png
+
+![Rift Runner skill-key-proof/phase-dash-anticipation.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/skill-key-proof/phase-dash-anticipation.png)
+
+### skill key proof / phase dash recovery.png
+
+![Rift Runner skill-key-proof/phase-dash-recovery.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/skill-key-proof/phase-dash-recovery.png)
+
+### skill key proof / pulse shot activation.png
+
+![Rift Runner skill-key-proof/pulse-shot-activation.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/skill-key-proof/pulse-shot-activation.png)
+
+### skill key proof / pulse shot anticipation.png
+
+![Rift Runner skill-key-proof/pulse-shot-anticipation.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/skill-key-proof/pulse-shot-anticipation.png)
+
+### skill key proof / pulse shot recovery.png
+
+![Rift Runner skill-key-proof/pulse-shot-recovery.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/skill-key-proof/pulse-shot-recovery.png)
+
+### skill key proof / rift trap activation.png
+
+![Rift Runner skill-key-proof/rift-trap-activation.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/skill-key-proof/rift-trap-activation.png)
+
+### skill key proof / rift trap anticipation.png
+
+![Rift Runner skill-key-proof/rift-trap-anticipation.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/skill-key-proof/rift-trap-anticipation.png)
+
+### skill key proof / rift trap recovery.png
+
+![Rift Runner skill-key-proof/rift-trap-recovery.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/skill-key-proof/rift-trap-recovery.png)
+
+### source / material atlas.png
+
+![Rift Runner source/material-atlas.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/source/material-atlas.png)
+
+### standard key proof v0 / death fall.png
+
+![Rift Runner standard-key-proof-v0/death-fall.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/standard-key-proof-v0/death-fall.png)
+
+### standard key proof v0 / death impact.png
+
+![Rift Runner standard-key-proof-v0/death-impact.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/standard-key-proof-v0/death-impact.png)
+
+### standard key proof v0 / death settled.png
+
+![Rift Runner standard-key-proof-v0/death-settled.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/standard-key-proof-v0/death-settled.png)
+
+### standard key proof v0 / hurt impact.png
+
+![Rift Runner standard-key-proof-v0/hurt-impact.png, source or candidate under verification](https://arkadia-stronghold-whachat.fural.space/rift-runner/v2/standard-key-proof-v0/hurt-impact.png)
 

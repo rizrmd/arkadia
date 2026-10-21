@@ -47,3 +47,11 @@ The complete final body scope is idle, run, Pulse Shot, Phase Dash, Rift Trap, O
 Remaining work runs in the dedicated task worktree. `render-body.sh` checks the source hash before/after the job, requires an explicit `BODY_EXPORT` receipt, then validates the output metadata. This prevents a refreshed shared checkout from silently running an earlier turnaround script.
 
 Source `3346c6057837` currently supplies the complete eight-direction Pulse Shot candidate: four 24-frame sheets, 96 total frames, calibrated 256px cells and world ground pivot (128,224). Every clip has pixel-identical first/last neutral frames. Its local browser test observed all 96 frames and neutral/action/neutral phases without errors. Source-constraint checks now cover all six initial action families, including exact endpoint transforms, smooth skill starts and trap palm contact at the floor. These do not yet establish full eight-state final readiness.
+
+## Current verified candidate checkpoint
+
+Pulse Shot (96 frames), hurt (64 frames) and death (128 frames) now cover all eight directions. The local browser rendered all 288 frames and verified hurt's neutral recovery and death's terminal hold with zero page/resource errors. All non-death neutral endpoints are pixel-identical; death's held final frames are pixel-stable. Final cells are 320 × 320 with ground pivot (160,224), preserving character pixel scale while leaving room for the corpse. The earlier Pulse Shot 256px sources were padded without resampling and remain archived.
+
+The candidate viewer pre-slices alpha bounds into small ImageBitmaps before playback. This avoids first-use uploads of large atlas textures skipping one-shot frames. The final runtime pack should likewise trim transparent margins and preserve logical origins in metadata. The verifier requires full observed frame coverage; it does not count a timeout or a jumped one-shot as a pass.
+
+The remaining complete body scope is idle, run, Phase Dash, Rift Trap and Overdrive. Separate VFX, full cross-state visual review, runtime packing and public verification are still required. Source-model prototype art remains subject to final visual acceptance.
