@@ -27,6 +27,10 @@ Public browser: ${live?'PASS — '+live.results.length+' playback/scrub/transiti
 
 The verifier observes every frame of all eight facings for each action at 1× and 0.25× through requestAnimationFrame playback. It tests every frame with the scrubber, idle/action/idle-or-run transitions, hurt recovery and death's terminal hold. Trace evidence is stored in local-playback.json and live-playback.json, separately from the art review. Screenshots of each action are embedded in project Knowledge.
 
+## Mobile loading correction
+
+The original viewer decoded every body/VFX sheet before its first draw. It now loads only the selected action, uses browser-compatible canvas crops, releases unrelated actions and displays per-sheet progress, a timeout and Retry. Startup requests only four idle sheets. Android-sized touch emulation with ImageBitmap disabled verifies moving attack, death hold and recovery from a deliberately failed sheet. This is browser emulation, not a physical-phone claim. See local-mobile-loader.json and live-mobile-loader.json for evidence.
+
 ## Visual inspection and limitations
 
 - Fixed yaw rotations and one camera prevent mirrored-arm swaps and sheet-to-sheet scale guesses. Right-arm anatomy is explicit in the source. Heading should still receive human review at production sprite size.
