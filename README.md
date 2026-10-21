@@ -42,3 +42,9 @@ Sources and exact imagegen prompts: [character-prompts-v2.md](docs/character-pro
 ## Mobile blank arena recovery — 20 October 2026
 
 A reported 404 for the gallery-only `wall-b.png` could abort scene startup. The world now loads only its required textures and retries transient required-texture failures. Mobile settings, camera controls, visible loading/error recovery and renderer fallback are verified with `node scripts/verify-mobile.mjs`, including injected 404s and nontransparent rendered-pixel checks. See `docs/mobile/implementation.md`.
+
+## Single-page app and asset loading bar — 21 October 2026
+
+`index.html` is the only page. It paints the loading screen from inline CSS before any script runs; `src/app/main.ts` is the router (today `/` → the Stronghold, lazy-loaded) and `src/app/loader.ts` drives the bar. `stronghold.html` is gone: every server (`vite`, `server.mjs`, the live loader) serves index.html for directory and extensionless paths and redirects any other `.html` page, including `/stronghold.html`, to `/` with its query (`/stronghold.html?time=0.5` → `/?time=0.5`). The old arena page is kept as `arena.html` for reference only.
+
+The bar counts real steps: every Stronghold artwork file, then the hero atlas, then the first world raster; it only moves forward and leaves once the world has painted. A failed load keeps the screen up with the reason and a *Try again* button. `node scripts/verify-spa-loading.mjs` (or `DEMO_URL=…`) slows artwork requests to check all of this plus the redirects and a 404 recovery; screenshots in `docs/spa-loading/`. Publish with `node scripts/publish-spa.mjs` from a clean checkout.

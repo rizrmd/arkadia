@@ -5,11 +5,15 @@ import {buildings,type Building,type State} from './economy';
 import {createLighting} from './lighting';
 import {createHero} from './hero';
 import type {Walk} from './controls';
-export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Building)=>void,direction:()=>Walk){
+import type {Progress} from '../app/loader';
+export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Building)=>void,direction:()=>Walk,progress:Progress=()=>{}){
  const ctx=canvas.getContext('2d')!,environment=environmentSprites(),images=new Map<string,HTMLImageElement>();
  const spriteFile=(id:Building,level:number)=>id==='forge'?`/fortress-ui/forge-${level}.webp`:id==='gate'?'/modular-stronghold/v2/gateway-grand.png':`/assets/${slots[id].asset}.png`;
  const paving='/modular-stronghold/v2/paving-warm-texture.png',snow='/modular-stronghold/v2/snow-soft-texture.png';
- await Promise.all([...new Set([FOUNDATION_SOIL,FOUNDATION_MOSS,paving,snow,...environment.map(p=>p.file),...buildings.flatMap(b=>[1,2,3].map(l=>spriteFile(b,l)))])].map(async file=>{const image=new Image();image.src=file;await image.decode();images.set(file,image);}));
+ // Loading-screen steps: every artwork file, then the hero, then the first world raster.
+ const files=[...new Set([FOUNDATION_SOIL,FOUNDATION_MOSS,paving,snow,...environment.map(p=>p.file),...buildings.flatMap(b=>[1,2,3].map(l=>spriteFile(b,l)))])],steps=files.length+2;let loaded=0;
+ progress(0,steps,'Loading artwork');
+ await Promise.all(files.map(async file=>{const image=new Image();image.src=file;await image.decode();images.set(file,image);progress(++loaded,steps,'Loading artwork');}));
  let w=0,h=0,dpr=1,scale=1,cx=WORLD.width/2,cy=385,selected:Building|null=null,levels:State['levels']|undefined;
  const material=(file:string,size:number)=>{const p=ctx.createPattern(images.get(file)!,'repeat')!;p.setTransform(new DOMMatrix([size,size/2,-size,size/2,COURT.x,COURT.y]));return p;};
  const snowPattern=material(snow,.7),pavingPattern=material(paving,.22);
@@ -98,7 +102,8 @@ export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Buil
   lighting.setShadow(soft,s.alpha,paint);
  }
  // The player's hero walks the court in its own layer over the world; the camera eases after it.
- const hero=await createHero({layer:viewport,lightmap:viewport.querySelector<HTMLCanvasElement>('#world-lightmap')!,surface,footprint,sun:lighting.sun,direction,follow});hero.setScene(objects);
+ progress(loaded,steps,'Waking the hero');
+ const hero=await createHero({layer:viewport,lightmap:viewport.querySelector<HTMLCanvasElement>('#world-lightmap')!,surface,footprint,sun:lighting.sun,direction,follow});hero.setScene(objects);progress(++loaded,steps,'Raising the Stronghold');
  // Everything standing above the ground shadows, at surface resolution with transparency.
  const uprights=document.createElement('canvas');uprights.id='world-uprights';uprights.width=surface.width;uprights.height=surface.height;
  function paintWorld(){

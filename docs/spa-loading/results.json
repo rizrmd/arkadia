@@ -1,0 +1,31 @@
+{
+ "url": "http://127.0.0.1:3064",
+ "passed": true,
+ "results": {
+  "desktop": {
+   "steps": 31,
+   "labels": [
+    "Loading the game",
+    "Loading artwork",
+    "Waking the hero",
+    "Raising the Stronghold",
+    "Ready"
+   ]
+  },
+  "phone": {
+   "steps": 31,
+   "labels": [
+    "Loading the game",
+    "Loading artwork",
+    "Waking the hero",
+    "Raising the Stronghold",
+    "Ready"
+   ]
+  },
+  "/stronghold.html?time=0.5": "/?time=0.5",
+  "/index.html": "/",
+  "/arena.html": "/",
+  "/some/deep/path?time=0.25": "/?time=0.25",
+  "retry": "recovered after Try again"
+ }
+}
