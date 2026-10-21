@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "status": "animation-study-requires-art-review",
+  "status": "painted-style-correction-run-and-full-consistency-still-under-review",
   "cell": [
     256,
     256
@@ -9055,6 +9055,102 @@
           ]
         }
       ]
+    },
+    {
+      "name": "painted-hurt-N",
+      "file": "../v3/sheets/hurt-N.png",
+      "cell": 320,
+      "layer": "body"
+    },
+    {
+      "name": "painted-hurt-NE",
+      "file": "../v3/sheets/hurt-NE.png",
+      "cell": 320,
+      "layer": "body"
+    },
+    {
+      "name": "painted-hurt-E",
+      "file": "../v3/sheets/hurt-E.png",
+      "cell": 320,
+      "layer": "body"
+    },
+    {
+      "name": "painted-hurt-SE",
+      "file": "../v3/sheets/hurt-SE.png",
+      "cell": 320,
+      "layer": "body"
+    },
+    {
+      "name": "painted-hurt-S",
+      "file": "../v3/sheets/hurt-S.png",
+      "cell": 320,
+      "layer": "body"
+    },
+    {
+      "name": "painted-hurt-SW",
+      "file": "../v3/sheets/hurt-SW.png",
+      "cell": 320,
+      "layer": "body"
+    },
+    {
+      "name": "painted-hurt-W",
+      "file": "../v3/sheets/hurt-W.png",
+      "cell": 320,
+      "layer": "body"
+    },
+    {
+      "name": "painted-hurt-NW",
+      "file": "../v3/sheets/hurt-NW.png",
+      "cell": 320,
+      "layer": "body"
+    },
+    {
+      "name": "painted-death-N",
+      "file": "../v3/sheets/death-N.png",
+      "cell": 320,
+      "layer": "body"
+    },
+    {
+      "name": "painted-death-NE",
+      "file": "../v3/sheets/death-NE.png",
+      "cell": 320,
+      "layer": "body"
+    },
+    {
+      "name": "painted-death-E",
+      "file": "../v3/sheets/death-E.png",
+      "cell": 320,
+      "layer": "body"
+    },
+    {
+      "name": "painted-death-SE",
+      "file": "../v3/sheets/death-SE.png",
+      "cell": 320,
+      "layer": "body"
+    },
+    {
+      "name": "painted-death-S",
+      "file": "../v3/sheets/death-S.png",
+      "cell": 320,
+      "layer": "body"
+    },
+    {
+      "name": "painted-death-SW",
+      "file": "../v3/sheets/death-SW.png",
+      "cell": 320,
+      "layer": "body"
+    },
+    {
+      "name": "painted-death-W",
+      "file": "../v3/sheets/death-W.png",
+      "cell": 320,
+      "layer": "body"
+    },
+    {
+      "name": "painted-death-NW",
+      "file": "../v3/sheets/death-NW.png",
+      "cell": 320,
+      "layer": "body"
     }
   ],
   "clips": [
@@ -11223,7 +11319,839 @@
       ],
       "fps": 10,
       "loop": false
+    },
+    {
+      "id": "hurt-N",
+      "action": "hurt",
+      "direction": "N",
+      "frames": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          3,
+          1
+        ]
+      ],
+      "fps": 12,
+      "loop": false,
+      "holdLastFrame": false,
+      "duration": 0.6666666666666666,
+      "cellSize": 320,
+      "image": "sheets/hurt-N.png",
+      "layer": "body",
+      "source": "painted-v3",
+      "sheet": "painted-hurt-N",
+      "pivot": [
+        160,
+        224
+      ]
+    },
+    {
+      "id": "hurt-NE",
+      "action": "hurt",
+      "direction": "NE",
+      "frames": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          3,
+          1
+        ]
+      ],
+      "fps": 12,
+      "loop": false,
+      "holdLastFrame": false,
+      "duration": 0.6666666666666666,
+      "cellSize": 320,
+      "image": "sheets/hurt-NE.png",
+      "layer": "body",
+      "source": "painted-v3",
+      "sheet": "painted-hurt-NE",
+      "pivot": [
+        160,
+        224
+      ]
+    },
+    {
+      "id": "hurt-E",
+      "action": "hurt",
+      "direction": "E",
+      "frames": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          3,
+          1
+        ]
+      ],
+      "fps": 12,
+      "loop": false,
+      "holdLastFrame": false,
+      "duration": 0.6666666666666666,
+      "cellSize": 320,
+      "image": "sheets/hurt-E.png",
+      "layer": "body",
+      "source": "painted-v3",
+      "sheet": "painted-hurt-E",
+      "pivot": [
+        160,
+        224
+      ]
+    },
+    {
+      "id": "hurt-SE",
+      "action": "hurt",
+      "direction": "SE",
+      "frames": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          3,
+          1
+        ]
+      ],
+      "fps": 12,
+      "loop": false,
+      "holdLastFrame": false,
+      "duration": 0.6666666666666666,
+      "cellSize": 320,
+      "image": "sheets/hurt-SE.png",
+      "layer": "body",
+      "source": "painted-v3",
+      "sheet": "painted-hurt-SE",
+      "pivot": [
+        160,
+        224
+      ]
+    },
+    {
+      "id": "hurt-S",
+      "action": "hurt",
+      "direction": "S",
+      "frames": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          3,
+          1
+        ]
+      ],
+      "fps": 12,
+      "loop": false,
+      "holdLastFrame": false,
+      "duration": 0.6666666666666666,
+      "cellSize": 320,
+      "image": "sheets/hurt-S.png",
+      "layer": "body",
+      "source": "painted-v3",
+      "sheet": "painted-hurt-S",
+      "pivot": [
+        160,
+        224
+      ]
+    },
+    {
+      "id": "hurt-SW",
+      "action": "hurt",
+      "direction": "SW",
+      "frames": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          3,
+          1
+        ]
+      ],
+      "fps": 12,
+      "loop": false,
+      "holdLastFrame": false,
+      "duration": 0.6666666666666666,
+      "cellSize": 320,
+      "image": "sheets/hurt-SW.png",
+      "layer": "body",
+      "source": "painted-v3",
+      "sheet": "painted-hurt-SW",
+      "pivot": [
+        160,
+        224
+      ]
+    },
+    {
+      "id": "hurt-W",
+      "action": "hurt",
+      "direction": "W",
+      "frames": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          3,
+          1
+        ]
+      ],
+      "fps": 12,
+      "loop": false,
+      "holdLastFrame": false,
+      "duration": 0.6666666666666666,
+      "cellSize": 320,
+      "image": "sheets/hurt-W.png",
+      "layer": "body",
+      "source": "painted-v3",
+      "sheet": "painted-hurt-W",
+      "pivot": [
+        160,
+        224
+      ]
+    },
+    {
+      "id": "hurt-NW",
+      "action": "hurt",
+      "direction": "NW",
+      "frames": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          3,
+          1
+        ]
+      ],
+      "fps": 12,
+      "loop": false,
+      "holdLastFrame": false,
+      "duration": 0.6666666666666666,
+      "cellSize": 320,
+      "image": "sheets/hurt-NW.png",
+      "layer": "body",
+      "source": "painted-v3",
+      "sheet": "painted-hurt-NW",
+      "pivot": [
+        160,
+        224
+      ]
+    },
+    {
+      "id": "death-N",
+      "action": "death",
+      "direction": "N",
+      "frames": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          3,
+          1
+        ]
+      ],
+      "fps": 9,
+      "loop": false,
+      "holdLastFrame": true,
+      "duration": 0.8888888888888888,
+      "cellSize": 320,
+      "image": "sheets/death-N.png",
+      "layer": "body",
+      "source": "painted-v3",
+      "sheet": "painted-death-N",
+      "pivot": [
+        160,
+        224
+      ]
+    },
+    {
+      "id": "death-NE",
+      "action": "death",
+      "direction": "NE",
+      "frames": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          3,
+          1
+        ]
+      ],
+      "fps": 9,
+      "loop": false,
+      "holdLastFrame": true,
+      "duration": 0.8888888888888888,
+      "cellSize": 320,
+      "image": "sheets/death-NE.png",
+      "layer": "body",
+      "source": "painted-v3",
+      "sheet": "painted-death-NE",
+      "pivot": [
+        160,
+        224
+      ]
+    },
+    {
+      "id": "death-E",
+      "action": "death",
+      "direction": "E",
+      "frames": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          3,
+          1
+        ]
+      ],
+      "fps": 9,
+      "loop": false,
+      "holdLastFrame": true,
+      "duration": 0.8888888888888888,
+      "cellSize": 320,
+      "image": "sheets/death-E.png",
+      "layer": "body",
+      "source": "painted-v3",
+      "sheet": "painted-death-E",
+      "pivot": [
+        160,
+        224
+      ]
+    },
+    {
+      "id": "death-SE",
+      "action": "death",
+      "direction": "SE",
+      "frames": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          3,
+          1
+        ]
+      ],
+      "fps": 9,
+      "loop": false,
+      "holdLastFrame": true,
+      "duration": 0.8888888888888888,
+      "cellSize": 320,
+      "image": "sheets/death-SE.png",
+      "layer": "body",
+      "source": "painted-v3",
+      "sheet": "painted-death-SE",
+      "pivot": [
+        160,
+        224
+      ]
+    },
+    {
+      "id": "death-S",
+      "action": "death",
+      "direction": "S",
+      "frames": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          3,
+          1
+        ]
+      ],
+      "fps": 9,
+      "loop": false,
+      "holdLastFrame": true,
+      "duration": 0.8888888888888888,
+      "cellSize": 320,
+      "image": "sheets/death-S.png",
+      "layer": "body",
+      "source": "painted-v3",
+      "sheet": "painted-death-S",
+      "pivot": [
+        160,
+        224
+      ]
+    },
+    {
+      "id": "death-SW",
+      "action": "death",
+      "direction": "SW",
+      "frames": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          3,
+          1
+        ]
+      ],
+      "fps": 9,
+      "loop": false,
+      "holdLastFrame": true,
+      "duration": 0.8888888888888888,
+      "cellSize": 320,
+      "image": "sheets/death-SW.png",
+      "layer": "body",
+      "source": "painted-v3",
+      "sheet": "painted-death-SW",
+      "pivot": [
+        160,
+        224
+      ]
+    },
+    {
+      "id": "death-W",
+      "action": "death",
+      "direction": "W",
+      "frames": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          3,
+          1
+        ]
+      ],
+      "fps": 9,
+      "loop": false,
+      "holdLastFrame": true,
+      "duration": 0.8888888888888888,
+      "cellSize": 320,
+      "image": "sheets/death-W.png",
+      "layer": "body",
+      "source": "painted-v3",
+      "sheet": "painted-death-W",
+      "pivot": [
+        160,
+        224
+      ]
+    },
+    {
+      "id": "death-NW",
+      "action": "death",
+      "direction": "NW",
+      "frames": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          3,
+          1
+        ]
+      ],
+      "fps": 9,
+      "loop": false,
+      "holdLastFrame": true,
+      "duration": 0.8888888888888888,
+      "cellSize": 320,
+      "image": "sheets/death-NW.png",
+      "layer": "body",
+      "source": "painted-v3",
+      "sheet": "painted-death-NW",
+      "pivot": [
+        160,
+        224
+      ]
     }
   ],
-  "frameCount": 360
+  "frameCount": 488
 }

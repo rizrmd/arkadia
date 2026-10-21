@@ -3,8 +3,9 @@ import fs from 'node:fs/promises';import os from 'node:os';import path from 'nod
 const id='CS13a31c114a666008eb9cafa5',dir=path.resolve('.publish/rift-runner-v2'),run=args=>JSON.parse(execFileSync('fural-agent',args,{encoding:'utf8',timeout:120000,maxBuffer:8e6}));
 await fs.mkdir(dir,{recursive:true});const files={};
 async function collect(base){for(const e of await fs.readdir(base,{withFileTypes:true})){const f=base+'/'+e.name;if(e.isDirectory())await collect(f);else files['/'+f.slice('public/'.length)]=(await fs.readFile(f)).toString('base64')}}
-await collect('public/rift-runner/v2');
-if(Object.keys(files).some(p=>!p.startsWith('/rift-runner/v2/')))throw Error('Overlay escaped task prefix');
+await collect('public/rift-runner/v2');await collect('public/rift-runner/v3');
+for(const p of ['index.html','manifest.json'])files['/rift-runner/v1/'+p]=(await fs.readFile('public/rift-runner/v1/'+p)).toString('base64');
+if(Object.keys(files).some(p=>!p.startsWith('/rift-runner/v2/')&&!p.startsWith('/rift-runner/v3/')&&!['/rift-runner/v1/index.html','/rift-runner/v1/manifest.json'].includes(p)))throw Error('Overlay escaped task prefix');
 const allFiles={...files},hashes=Object.fromEntries(Object.entries(allFiles).map(([p,b])=>[p,createHash('sha256').update(Buffer.from(b,'base64')).digest('hex')]));
 let previous={};try{previous=JSON.parse(await fs.readFile('docs/rift-runner-v2/deployment.json','utf8')).resources||{}}catch{}
 for(const p of Object.keys(files))if(previous[p]===hashes[p])delete files[p];
@@ -12,10 +13,11 @@ if(!Object.keys(files).length){console.log('No changed task resources to deploy'
 const bytes=gzipSync(JSON.stringify(files)),version=createHash('sha256').update(bytes).digest('hex').slice(0,12),parts=[];
 for(let offset=0;offset<bytes.length;offset+=2e6){const n=`rift-runner-${version}-${parts.length}.gzpart`;await fs.writeFile(dir+'/'+n,bytes.subarray(offset,offset+2e6));parts.push(n)}
 console.log(JSON.stringify({resources:Object.keys(files).length,bytes:bytes.length,parts:parts.length}));
-for(const n of parts)try{run(['organization','home-files','transfer','--from-member','US4f550b10dab65dc9756fa429','--from',path.relative(os.homedir(),dir)+'/'+n,'--to-custom-sandbox',id,'--to',n])}catch(e){if(!String(e.stdout).includes('already exists'))throw e}
+for(const n of parts)try{console.log('Staging '+n);run(['organization','home-files','transfer','--from-member','US4f550b10dab65dc9756fa429','--from',path.relative(os.homedir(),dir)+'/'+n,'--to-custom-sandbox',id,'--to',n])}catch(e){if(!String(e.stdout).includes('already exists'))throw e}
 // Read the latest loader after staging, retaining peers' published overlays.
 let live=run(['organization','home-files','file','--custom-sandbox',id,'--path','app.mjs']).content;
 if(!live.includes('const types='))throw Error('Unknown release loader');
+if(!live.includes("!p.startsWith('/rift-runner/v3/')"))live=live.replace("p.endsWith('.html')&&","p.endsWith('.html')&&!p.startsWith('/rift-runner/v3/')&&");
 // Add only the review directory route; retain the existing SPA redirect behavior elsewhere.
 if(!live.includes("p.startsWith('/rift-runner/v2/')")){
  if(!live.includes('const key='))throw Error('Unknown path resolver');

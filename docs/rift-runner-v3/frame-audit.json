@@ -1,0 +1,242 @@
+[
+  {
+    "clip": "hurt-N",
+    "frames": 8,
+    "source": "source/hurt-N.png",
+    "sourceSize": [
+      1536,
+      1024
+    ],
+    "rowBreak": 512,
+    "scale": 0.4439252336448598,
+    "scaling": "one constant scale per clip based on standing neutral, never normalize individual poses",
+    "alignment": "boot center and ground",
+    "alpha": true,
+    "endpointPolicy": "last frame is exact first-frame neutral"
+  },
+  {
+    "clip": "hurt-NE",
+    "frames": 8,
+    "source": "source/hurt-NE.png",
+    "sourceSize": [
+      1774,
+      887
+    ],
+    "rowBreak": 453,
+    "scale": 0.45023696682464454,
+    "scaling": "one constant scale per clip based on standing neutral, never normalize individual poses",
+    "alignment": "boot center and ground",
+    "alpha": true,
+    "endpointPolicy": "last frame is exact first-frame neutral"
+  },
+  {
+    "clip": "hurt-E",
+    "frames": 8,
+    "source": "source/hurt-E.png",
+    "sourceSize": [
+      1536,
+      1024
+    ],
+    "rowBreak": 513,
+    "scale": 0.42035398230088494,
+    "scaling": "one constant scale per clip based on standing neutral, never normalize individual poses",
+    "alignment": "boot center and ground",
+    "alpha": true,
+    "endpointPolicy": "last frame is exact first-frame neutral"
+  },
+  {
+    "clip": "hurt-SE",
+    "frames": 8,
+    "source": "source/hurt-SE.png",
+    "sourceSize": [
+      1536,
+      1024
+    ],
+    "rowBreak": 521,
+    "scale": 0.45454545454545453,
+    "scaling": "one constant scale per clip based on standing neutral, never normalize individual poses",
+    "alignment": "boot center and ground",
+    "alpha": true,
+    "endpointPolicy": "last frame is exact first-frame neutral"
+  },
+  {
+    "clip": "hurt-S",
+    "frames": 8,
+    "source": "source/hurt-S.png",
+    "sourceSize": [
+      1536,
+      1024
+    ],
+    "rowBreak": 520,
+    "scale": 0.4668304668304668,
+    "scaling": "one constant scale per clip based on standing neutral, never normalize individual poses",
+    "alignment": "boot center and ground",
+    "alpha": true,
+    "endpointPolicy": "last frame is exact first-frame neutral"
+  },
+  {
+    "clip": "hurt-SW",
+    "frames": 8,
+    "source": "source/hurt-SW.png",
+    "sourceSize": [
+      1536,
+      1024
+    ],
+    "rowBreak": 526,
+    "scale": 0.46454767726161367,
+    "scaling": "one constant scale per clip based on standing neutral, never normalize individual poses",
+    "alignment": "boot center and ground",
+    "alpha": true,
+    "endpointPolicy": "last frame is exact first-frame neutral"
+  },
+  {
+    "clip": "hurt-W",
+    "frames": 8,
+    "source": "source/hurt-W.png",
+    "sourceSize": [
+      1536,
+      1024
+    ],
+    "rowBreak": 523,
+    "scale": 0.41575492341356673,
+    "scaling": "one constant scale per clip based on standing neutral, never normalize individual poses",
+    "alignment": "boot center and ground",
+    "alpha": true,
+    "endpointPolicy": "last frame is exact first-frame neutral"
+  },
+  {
+    "clip": "hurt-NW",
+    "frames": 8,
+    "source": "source/hurt-NW.png",
+    "sourceSize": [
+      1536,
+      1024
+    ],
+    "rowBreak": 524,
+    "scale": 0.48223350253807107,
+    "scaling": "one constant scale per clip based on standing neutral, never normalize individual poses",
+    "alignment": "boot center and ground",
+    "alpha": true,
+    "endpointPolicy": "last frame is exact first-frame neutral"
+  },
+  {
+    "clip": "death-N",
+    "frames": 8,
+    "source": "source/death-N.png",
+    "sourceSize": [
+      1774,
+      887
+    ],
+    "rowBreak": 552,
+    "scale": 0.46228710462287104,
+    "scaling": "one constant scale per clip based on standing neutral, never normalize individual poses",
+    "alignment": "whole-body center and floor; requires fall-path visual review",
+    "alpha": true,
+    "endpointPolicy": "last two frames share exact settled corpse pixels"
+  },
+  {
+    "clip": "death-NE",
+    "frames": 8,
+    "source": "source/death-NE.png",
+    "sourceSize": [
+      1774,
+      887
+    ],
+    "rowBreak": 558,
+    "scale": 0.4398148148148148,
+    "scaling": "one constant scale per clip based on standing neutral, never normalize individual poses",
+    "alignment": "whole-body center and floor; requires fall-path visual review",
+    "alpha": true,
+    "endpointPolicy": "last two frames share exact settled corpse pixels"
+  },
+  {
+    "clip": "death-E",
+    "frames": 8,
+    "source": "source/death-E.png",
+    "sourceSize": [
+      1774,
+      887
+    ],
+    "rowBreak": 553,
+    "scale": 0.46454767726161367,
+    "scaling": "one constant scale per clip based on standing neutral, never normalize individual poses",
+    "alignment": "whole-body center and floor; requires fall-path visual review",
+    "alpha": true,
+    "endpointPolicy": "last two frames share exact settled corpse pixels"
+  },
+  {
+    "clip": "death-SE",
+    "frames": 8,
+    "source": "source/death-SE.png",
+    "sourceSize": [
+      1536,
+      1024
+    ],
+    "rowBreak": 614,
+    "scale": 0.47146401985111663,
+    "scaling": "one constant scale per clip based on standing neutral, never normalize individual poses",
+    "alignment": "whole-body center and floor; requires fall-path visual review",
+    "alpha": true,
+    "endpointPolicy": "last two frames share exact settled corpse pixels"
+  },
+  {
+    "clip": "death-S",
+    "frames": 8,
+    "source": "source/death-S.png",
+    "sourceSize": [
+      1536,
+      1024
+    ],
+    "rowBreak": 639,
+    "scale": 0.48717948717948717,
+    "scaling": "one constant scale per clip based on standing neutral, never normalize individual poses",
+    "alignment": "whole-body center and floor; requires fall-path visual review",
+    "alpha": true,
+    "endpointPolicy": "last two frames share exact settled corpse pixels"
+  },
+  {
+    "clip": "death-SW",
+    "frames": 8,
+    "source": "source/death-SW.png",
+    "sourceSize": [
+      1536,
+      1024
+    ],
+    "rowBreak": 613,
+    "scale": 0.49868766404199477,
+    "scaling": "one constant scale per clip based on standing neutral, never normalize individual poses",
+    "alignment": "whole-body center and floor; requires fall-path visual review",
+    "alpha": true,
+    "endpointPolicy": "last two frames share exact settled corpse pixels"
+  },
+  {
+    "clip": "death-W",
+    "frames": 8,
+    "source": "source/death-W.png",
+    "sourceSize": [
+      1536,
+      1024
+    ],
+    "rowBreak": 645,
+    "scale": 0.40948275862068967,
+    "scaling": "one constant scale per clip based on standing neutral, never normalize individual poses",
+    "alignment": "whole-body center and floor; requires fall-path visual review",
+    "alpha": true,
+    "endpointPolicy": "last two frames share exact settled corpse pixels"
+  },
+  {
+    "clip": "death-NW",
+    "frames": 8,
+    "source": "source/death-NW.png",
+    "sourceSize": [
+      1536,
+      1024
+    ],
+    "rowBreak": 576,
+    "scale": 0.48717948717948717,
+    "scaling": "one constant scale per clip based on standing neutral, never normalize individual poses",
+    "alignment": "whole-body center and floor; requires fall-path visual review",
+    "alpha": true,
+    "endpointPolicy": "last two frames share exact settled corpse pixels"
+  }
+]

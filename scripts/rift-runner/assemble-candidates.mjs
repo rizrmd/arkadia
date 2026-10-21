@@ -1,8 +1,8 @@
 import fs from 'node:fs/promises';import sharp from 'sharp';import {sourceHash} from './source-hash.mjs';
 sharp.concurrency(1);
-const root='public/rift-runner/v2',hash=process.env.RIFT_SOURCE_HASH||sourceHash(),dir=`${root}/exports/${hash}`,sheets=[],order=['idle','run','pulse-shot','phase-dash','rift-trap','overdrive','hurt','death'],directions=['N','NE','E','SE','S','SW','W','NW'];
-for(const f of (await fs.readdir(dir)).filter(f=>/^(idle|run|pulse-shot|phase-dash|rift-trap|overdrive|hurt|death)-\d+\.json$/.test(f)).sort())sheets.push(JSON.parse(await fs.readFile(`${dir}/${f}`)));
-const allClips=sheets.flatMap(s=>s.clips.map(c=>({...c,action:c.id.slice(0,c.id.lastIndexOf('-')),image:s.image,cellSize:s.cell[0]}))),expectedFrames={idle:8,run:16,'pulse-shot':12,'phase-dash':12,'rift-trap':12,overdrive:12,hurt:8,death:16},audit=[],complete=[],pending=[];
+const root='public/rift-runner/v2',hash=process.env.RIFT_SOURCE_HASH||sourceHash(),dir=`${root}/exports/${hash}`,sheets=[],order=['idle','walk','run','pulse-shot','phase-dash','rift-trap','overdrive','hurt','death'],directions=['N','NE','E','SE','S','SW','W','NW'];
+for(const f of (await fs.readdir(dir)).filter(f=>/^(idle|walk|run|pulse-shot|phase-dash|rift-trap|overdrive|hurt|death)-\d+\.json$/.test(f)).sort())sheets.push(JSON.parse(await fs.readFile(`${dir}/${f}`)));
+const allClips=sheets.flatMap(s=>s.clips.map(c=>({...c,action:c.id.slice(0,c.id.lastIndexOf('-')),image:s.image,cellSize:s.cell[0]}))),expectedFrames={idle:8,walk:16,run:16,'pulse-shot':12,'phase-dash':12,'rift-trap':12,overdrive:12,hurt:8,death:16},audit=[],complete=[],pending=[];
 await fs.mkdir(`${root}/candidate-previews`,{recursive:true});
 async function frameBytes(c,f){return sharp(`${root}/${c.image}`).extract({left:f.cell[0]*c.cellSize,top:f.cell[1]*c.cellSize,width:c.cellSize,height:c.cellSize}).raw().toBuffer()}
 function difference(a,b){let maximum=0,changed=0;for(let i=0;i<a.length;i++){const d=Math.abs(a[i]-b[i]);if(d)changed++;maximum=Math.max(maximum,d)}return {maximum,changed}}
