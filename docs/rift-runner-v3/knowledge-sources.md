@@ -615,6 +615,10 @@ The reported limping run remains open in the approved painted style. Controlled-
 
 ![Rift Runner v3/reference/idle-W.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/reference/idle-W.png)
 
+### v3 / reference / run E pose guide.png
+
+![Rift Runner v3/reference/run-E-pose-guide.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/reference/run-E-pose-guide.png)
+
 ### v3 / sheets / death E.png
 
 ![Rift Runner v3/sheets/death-E.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/sheets/death-E.png)
@@ -746,6 +750,10 @@ The reported limping run remains open in the approved painted style. Controlled-
 ### v3 / source / hurt n ne mixed review.png
 
 ![Rift Runner v3/source/hurt-n-ne-mixed-review.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/source/hurt-n-ne-mixed-review.png)
+
+### v3 / source / run E review.png
+
+![Rift Runner v3/source/run-E-review.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/source/run-E-review.png)
 
 ### v3 / style comparison 0.png
 
