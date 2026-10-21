@@ -30,4 +30,4 @@ Raw reports with per-frame traces: `before-*.json`, `after-*.json`. Re-render th
 
 ### Release
 
-Merged as a431576 on feat/stronghold and deployed from a clean build to the canonical Stronghold sandbox with `node scripts/publish-camera-follow.mjs` ([live](https://arkadia-custom-whachat.fural.space/)). Against the live URL, `verify-camera-follow` passed and `measure-camera-follow` recorded no hard stops, a largest frame-to-frame speed change of 19.2 px/s and 0 px HP bar drift (`after-live.json`).
+Merged as a431576 on feat/stronghold and deployed from a clean build to the canonical Stronghold sandbox with `node scripts/publish-camera-follow.mjs` ([live](https://ark-whachat.fural.space/)). Against the live URL, `verify-camera-follow` passed and `measure-camera-follow` recorded no hard stops, a largest frame-to-frame speed change of 19.2 px/s and 0 px HP bar drift (`after-live.json`).

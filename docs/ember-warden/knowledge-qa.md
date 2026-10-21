@@ -2,7 +2,7 @@
 
 **Production candidate published; final art acceptance is pending.** The simplified 3D rendering does not yet match the approved hand-painted concept. No game-ready quality claim is made.
 
-[Play the isolated review](https://arkadia-custom-whachat.fural.space/ember-warden-review/) · [Atlas manifest](https://arkadia-custom-whachat.fural.space/ember-warden-review/manifest.json)
+[Play the isolated review](https://ark-whachat.fural.space/ember-warden-review/) · [Atlas manifest](https://ark-whachat.fural.space/ember-warden-review/manifest.json)
 
 ## Asset coverage
 
@@ -55,42 +55,42 @@ The delivered pack is a reproducible animation and VFX candidate with an isolate
 
 Screenshots document the running viewer; the actual normal/slow/scrub traces are in the QA JSON.
 
-![live cinder step](https://arkadia-custom-whachat.fural.space/ember-warden-review/evidence/live-cinder-step.png)
+![live cinder step](https://ark-whachat.fural.space/ember-warden-review/evidence/live-cinder-step.png)
 
-![live death](https://arkadia-custom-whachat.fural.space/ember-warden-review/evidence/live-death.png)
+![live death](https://ark-whachat.fural.space/ember-warden-review/evidence/live-death.png)
 
-![live ember snare](https://arkadia-custom-whachat.fural.space/ember-warden-review/evidence/live-ember-snare.png)
+![live ember snare](https://ark-whachat.fural.space/ember-warden-review/evidence/live-ember-snare.png)
 
-![live flame fan moving](https://arkadia-custom-whachat.fural.space/ember-warden-review/evidence/live-flame-fan-moving.png)
+![live flame fan moving](https://ark-whachat.fural.space/ember-warden-review/evidence/live-flame-fan-moving.png)
 
-![live flame fan](https://arkadia-custom-whachat.fural.space/ember-warden-review/evidence/live-flame-fan.png)
+![live flame fan](https://ark-whachat.fural.space/ember-warden-review/evidence/live-flame-fan.png)
 
-![live furnace heart](https://arkadia-custom-whachat.fural.space/ember-warden-review/evidence/live-furnace-heart.png)
+![live furnace heart](https://ark-whachat.fural.space/ember-warden-review/evidence/live-furnace-heart.png)
 
-![live hurt](https://arkadia-custom-whachat.fural.space/ember-warden-review/evidence/live-hurt.png)
+![live hurt](https://ark-whachat.fural.space/ember-warden-review/evidence/live-hurt.png)
 
-![live idle](https://arkadia-custom-whachat.fural.space/ember-warden-review/evidence/live-idle.png)
+![live idle](https://ark-whachat.fural.space/ember-warden-review/evidence/live-idle.png)
 
-![live mobile loader](https://arkadia-custom-whachat.fural.space/ember-warden-review/evidence/live-mobile-loader.png)
+![live mobile loader](https://ark-whachat.fural.space/ember-warden-review/evidence/live-mobile-loader.png)
 
-![live run](https://arkadia-custom-whachat.fural.space/ember-warden-review/evidence/live-run.png)
+![live run](https://ark-whachat.fural.space/ember-warden-review/evidence/live-run.png)
 
-![local cinder step](https://arkadia-custom-whachat.fural.space/ember-warden-review/evidence/local-cinder-step.png)
+![local cinder step](https://ark-whachat.fural.space/ember-warden-review/evidence/local-cinder-step.png)
 
-![local death](https://arkadia-custom-whachat.fural.space/ember-warden-review/evidence/local-death.png)
+![local death](https://ark-whachat.fural.space/ember-warden-review/evidence/local-death.png)
 
-![local ember snare](https://arkadia-custom-whachat.fural.space/ember-warden-review/evidence/local-ember-snare.png)
+![local ember snare](https://ark-whachat.fural.space/ember-warden-review/evidence/local-ember-snare.png)
 
-![local flame fan moving](https://arkadia-custom-whachat.fural.space/ember-warden-review/evidence/local-flame-fan-moving.png)
+![local flame fan moving](https://ark-whachat.fural.space/ember-warden-review/evidence/local-flame-fan-moving.png)
 
-![local flame fan](https://arkadia-custom-whachat.fural.space/ember-warden-review/evidence/local-flame-fan.png)
+![local flame fan](https://ark-whachat.fural.space/ember-warden-review/evidence/local-flame-fan.png)
 
-![local furnace heart](https://arkadia-custom-whachat.fural.space/ember-warden-review/evidence/local-furnace-heart.png)
+![local furnace heart](https://ark-whachat.fural.space/ember-warden-review/evidence/local-furnace-heart.png)
 
-![local hurt](https://arkadia-custom-whachat.fural.space/ember-warden-review/evidence/local-hurt.png)
+![local hurt](https://ark-whachat.fural.space/ember-warden-review/evidence/local-hurt.png)
 
-![local idle](https://arkadia-custom-whachat.fural.space/ember-warden-review/evidence/local-idle.png)
+![local idle](https://ark-whachat.fural.space/ember-warden-review/evidence/local-idle.png)
 
-![local mobile loader](https://arkadia-custom-whachat.fural.space/ember-warden-review/evidence/local-mobile-loader.png)
+![local mobile loader](https://ark-whachat.fural.space/ember-warden-review/evidence/local-mobile-loader.png)
 
-![local run](https://arkadia-custom-whachat.fural.space/ember-warden-review/evidence/local-run.png)
+![local run](https://ark-whachat.fural.space/ember-warden-review/evidence/local-run.png)

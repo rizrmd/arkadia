@@ -20,7 +20,7 @@ The seven missing base building assets are complete; future animation and roof v
 
 Both deployments passed browser verification on 20 October 2026. Code commit: bdc4408 on feat/stronghold.
 
-[Open stronghold](https://arkadia-custom-whachat.fural.space/) · [Dedicated stronghold host](https://arkadia-custom-whachat.fural.space/).
+[Open stronghold](https://ark-whachat.fural.space/) · [Dedicated stronghold host](https://ark-whachat.fural.space/).
 
 ## Human report and visual target
 
@@ -30,41 +30,41 @@ Both deployments passed browser verification on 20 October 2026. Code commit: bd
 
 ## Generated building kit
 
-![Seven generated building sprites](https://arkadia-custom-whachat.fural.space/stronghold-art/contact-sheet.png)
+![Seven generated building sprites](https://ark-whachat.fural.space/stronghold-art/contact-sheet.png)
 
 ### Forge
 
-![Forge generated transparent sprite](https://arkadia-custom-whachat.fural.space/assets/stronghold/forge.png)
+![Forge generated transparent sprite](https://ark-whachat.fural.space/assets/stronghold/forge.png)
 
 ### Barracks
 
-![Barracks generated transparent sprite](https://arkadia-custom-whachat.fural.space/assets/stronghold/barracks.png)
+![Barracks generated transparent sprite](https://ark-whachat.fural.space/assets/stronghold/barracks.png)
 
 ### Altar
 
-![Altar generated transparent sprite](https://arkadia-custom-whachat.fural.space/assets/stronghold/altar.png)
+![Altar generated transparent sprite](https://ark-whachat.fural.space/assets/stronghold/altar.png)
 
 ### Mage Tower
 
-![Mage Tower generated transparent sprite](https://arkadia-custom-whachat.fural.space/assets/stronghold/mage.png)
+![Mage Tower generated transparent sprite](https://ark-whachat.fural.space/assets/stronghold/mage.png)
 
 ### Mine / Farm
 
-![Mine / Farm generated transparent sprite](https://arkadia-custom-whachat.fural.space/assets/stronghold/mine.png)
+![Mine / Farm generated transparent sprite](https://ark-whachat.fural.space/assets/stronghold/mine.png)
 
 ### Expedition Table
 
-![Expedition Table generated transparent sprite](https://arkadia-custom-whachat.fural.space/assets/stronghold/expedition.png)
+![Expedition Table generated transparent sprite](https://ark-whachat.fural.space/assets/stronghold/expedition.png)
 
 ### Run Gate
 
-![Run Gate generated transparent sprite](https://arkadia-custom-whachat.fural.space/assets/stronghold/gate.png)
+![Run Gate generated transparent sprite](https://ark-whachat.fural.space/assets/stronghold/gate.png)
 
 ## Runtime screenshots
 
-![Desktop runtime after asset integration](https://arkadia-custom-whachat.fural.space/stronghold-art/desktop.png)
+![Desktop runtime after asset integration](https://ark-whachat.fural.space/stronghold-art/desktop.png)
 
-![Mobile runtime after asset integration](https://arkadia-custom-whachat.fural.space/stronghold-art/mobile.png)
+![Mobile runtime after asset integration](https://ark-whachat.fural.space/stronghold-art/mobile.png)
 
 ## Source and reproducibility
 

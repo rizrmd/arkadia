@@ -1,5 +1,5 @@
 import fs from 'node:fs/promises';import {readFileSync} from 'node:fs';import os from 'node:os';import path from 'node:path';import {gzipSync} from 'node:zlib';import {createHash} from 'node:crypto';import {execFileSync} from 'node:child_process';import {fileURLToPath} from 'node:url';
-// Release into the one Arkadia sandbox (https://arkadia-custom-whachat.fural.space, served by gateway.mjs).
+// Release into the one Arkadia sandbox (https://ark-whachat.fural.space, served by gateway.mjs).
 // A layer is a set of files at a URL prefix; the gateway applies new layers in order when the sandbox boots.
 //   node scripts/arkadia/publish-layer.mjs --dir public/ember-warden/v1 --prefix /ember-warden-review --name ember
 //   node scripts/arkadia/publish-layer.mjs --tgz release.tgz --name game        (game release from scripts/fural-deploy.sh: arkadia binary +
@@ -7,7 +7,7 @@ import fs from 'node:fs/promises';import {readFileSync} from 'node:fs';import os
 //   node scripts/arkadia/publish-layer.mjs --gateway                             (gateway.mjs and the boot script only)
 // From code: import {publishLayer} from './arkadia/publish-layer.mjs'; await publishLayer({name, files: {'/path': base64}, prefix}).
 // The game itself ships only as a release: review and evidence layers take a prefix and never carry /index.html.
-export const SANDBOX='arkadia',URL_BASE='https://arkadia-custom-whachat.fural.space',PROJECT='PJ8758f22f61165f3d3215e454',MEMBER='US4f550b10dab65dc9756fa429';
+export const SANDBOX='arkadia',URL_BASE='https://ark-whachat.fural.space',PROJECT='PJ8758f22f61165f3d3215e454',MEMBER='US4f550b10dab65dc9756fa429';
 export const BOOT=`cd "$HOME"
 if [ ! -f www/.seeded ] && ls seed/www.tgz.* >/dev/null 2>&1; then rm -rf www builds coop && cat seed/www.tgz.* | tar -xz && touch www/.seeded && rm -rf seed; fi
 exec node gateway.mjs

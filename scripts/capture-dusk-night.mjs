@@ -3,7 +3,7 @@
 import {chromium} from 'playwright';
 import {spawn} from 'node:child_process';
 import sharp from 'sharp';
-const before=process.env.BEFORE_URL||'https://arkadia-custom-whachat.fural.space/',after=process.env.AFTER_URL||'http://127.0.0.1:3075',out='docs/dusk-night';
+const before=process.env.BEFORE_URL||'https://ark-whachat.fural.space/',after=process.env.AFTER_URL||'http://127.0.0.1:3075',out='docs/dusk-night';
 const server=process.env.AFTER_URL?null:spawn('node',['server.mjs'],{env:{...process.env,PORT:'3075'}});
 const browser=await chromium.launch({headless:true,env:{...process.env,LD_LIBRARY_PATH:'/home/dev/.local/browser-libs/usr/lib/x86_64-linux-gnu:/opt/fural-antigravity-glibc'},args:['--no-sandbox','--no-zygote']});
 async function shot(base,hour){

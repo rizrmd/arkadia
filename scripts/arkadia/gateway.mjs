@@ -1,4 +1,4 @@
-// The one public Arkadia sandbox (https://arkadia-custom-whachat.fural.space). Serves every preview from disk on :3000:
+// The one public Arkadia sandbox (https://ark-whachat.fural.space). Serves every preview from disk on :3000:
 //   /                       the game (one build: solo, or co-op rooms via /?room=CODE)
 //   /ws /api/ /healthz      proxied to the co-op Go server (coop/arkadia on 127.0.0.1:3001)
 //   /ember-warden-review/   the Ember Warden animation review

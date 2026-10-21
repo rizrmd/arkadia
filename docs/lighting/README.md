@@ -6,35 +6,35 @@ Status: **implemented** for the Stronghold only (Frostpass and other pages are u
 
 One Stronghold day lasts **24 real minutes**: Night → Dawn → Day → Golden hour → Dusk → Night. The live clock derives from `Date.now()`, so every visit shows the same time of day; the in-game clock can pin any hour instead. In full daylight the colours are unchanged, and the sun casts shadows that move through the day. As evening falls, the ambient light shifts to dusk violet and then to moonlit blue. Windows, hearths, lanterns, gate torches, braziers, altar candles and the Mage Tower rune stay at full painted brightness, cast warm or arcane light pools on the paving, and glow. Flames flicker gently while the camera is still.
 
-![Night, dawn, day and dusk (desktop)](https://arkadia-custom-whachat.fural.space/lighting-plan/runtime-phases.webp)
+![Night, dawn, day and dusk (desktop)](https://ark-whachat.fural.space/lighting-plan/runtime-phases.webp)
 
-![Night, dawn, day and dusk (portrait 390 × 844)](https://arkadia-custom-whachat.fural.space/lighting-plan/runtime-portrait.webp)
+![Night, dawn, day and dusk (portrait 390 × 844)](https://ark-whachat.fural.space/lighting-plan/runtime-portrait.webp)
 
-![Night at default levels](https://arkadia-custom-whachat.fural.space/lighting-plan/runtime-night.webp)
+![Night at default levels](https://ark-whachat.fural.space/lighting-plan/runtime-night.webp)
 
-![Night with every building at level 3 (Forge hearth lit)](https://arkadia-custom-whachat.fural.space/lighting-plan/runtime-night-level3.webp)
+![Night with every building at level 3 (Forge hearth lit)](https://ark-whachat.fural.space/lighting-plan/runtime-night-level3.webp)
 
 ### Sun shadows
 
 From 06:00 to 18:00, every upright sprite (buildings, walls, bastions, gateway, trees, rocks, props) casts a soft shadow on the ground. The sprites are painted lit from the upper left, so the sun stands there at noon and shadows fall short toward the lower right. Through the day the sun turns 180°, so shadows reach long to the right after sunrise and long to the left before sunset. Shadow length is capped at 1.7× the object's height, so low-sun shadows never flood the court. Shadows fade in after sunrise and out before sunset, so there are none at night. The ambient tint darkens them further at golden hour.
 
-![Sun shadows at 07:30, 12:00 and 16:30](https://arkadia-custom-whachat.fural.space/lighting-plan/sun-shadows.webp)
+![Sun shadows at 07:30, 12:00 and 16:30](https://ark-whachat.fural.space/lighting-plan/sun-shadows.webp)
 
 #### Fix: stray shadow stripes (21 October 2026)
 
 The first version drew each sprite's flat 2D silhouette sheared along the sun. A sprite has no depth, so with a low sun each shadow collapsed into a thin stripe that ran across the court, detached from its building (reported at 07:46 on mobile):
 
-![Bug report: thin horizontal shadow stripes across the court at 07:46](https://arkadia-custom-whachat.fural.space/lighting-plan/shadow-bug-report.webp)
+![Bug report: thin horizontal shadow stripes across the court at 07:46](https://ark-whachat.fural.space/lighting-plan/shadow-bug-report.webp)
 
 Shadows now come from a solid volume. Each object stands on a ground footprint, and the sun sweeps that footprint, topped by the sprite's roof line, across the ground. Same view at 07:45, before (left) and after (right):
 
-![07:45 before and after: stripes replaced by attached shadows](https://arkadia-custom-whachat.fural.space/lighting-plan/shadow-fix-0745.webp)
+![07:45 before and after: stripes replaced by attached shadows](https://ark-whachat.fural.space/lighting-plan/shadow-fix-0745.webp)
 
 #### Follow-up: stripes still on a phone after the fix (21 October 2026)
 
 Two hours after the fix shipped, the same phone still showed stripes at 08:15. The server was already serving the fixed bundle, and the same 08:15 view renders attached shadows in a fresh browser. The phone's tab had been loaded before the release and was never reloaded, so it kept running the old shadow code. Phone screenshot (left) and a fresh load of the live build at 08:15 (right):
 
-![08:15 on a stale phone tab (left) and a fresh load of the live build (right)](https://arkadia-custom-whachat.fural.space/lighting-plan/shadow-stale-tab-0815.webp)
+![08:15 on a stale phone tab (left) and a fresh load of the live build (right)](https://ark-whachat.fural.space/lighting-plan/shadow-stale-tab-0815.webp)
 
 The Stronghold now picks up releases on its own. When the tab comes back into view (screen unlocked, app or tab switched back, page restored from the back/forward cache), it fetches `stronghold.html` and compares the listed bundle with the one it is running, at most once every 5 minutes. If they differ, it reloads. Progress and the pinned hour live in `localStorage`, so the reload loses nothing. This only runs in production builds, never on the Vite dev server.
 
@@ -53,7 +53,7 @@ The world is now drawn once as two cached layers: the **ground** (snow, paving, 
 | Phone 390 × 844 @3×, 4× CPU, click to shadows | ~2.5 s | ~600 ms |
 | Phone, longest main-thread task | ~2.9 s | ~0.55 s |
 
-![07:30 before (left) and after (right): the same shadows at about a quarter of the cost](https://arkadia-custom-whachat.fural.space/lighting-plan/shadow-perf-0730.webp)
+![07:30 before (left) and after (right): the same shadows at about a quarter of the cost](https://ark-whachat.fural.space/lighting-plan/shadow-perf-0730.webp)
 
 A cheaper variant that cut the shadow under each sprite with a 0.35× silhouette mask was rejected because it left a visible light halo around sprites. The cached uprights layer costs one more world-sized canvas (about 33 MB).
 
@@ -67,9 +67,9 @@ A clock chip in the top-right corner shows the Stronghold hour, its phase and wh
 
 A pinned hour is remembered in this browser (`arkadia.stronghold.lighting` = `{"mode":"dynamic","time":0.708}`). Picking an hour also takes over from the `?time` / `?daySpeed` QA parameters by removing them from the URL. Escape closes the panel.
 
-![Clock panel open at 17:00 (desktop)](https://arkadia-custom-whachat.fural.space/lighting-plan/clock-desktop.webp)
+![Clock panel open at 17:00 (desktop)](https://ark-whachat.fural.space/lighting-plan/clock-desktop.webp)
 
-![Clock panel at Dusk 18:45 (portrait 390 × 844)](https://arkadia-custom-whachat.fural.space/lighting-plan/clock-mobile.webp)
+![Clock panel at Dusk 18:45 (portrait 390 × 844)](https://ark-whachat.fural.space/lighting-plan/clock-mobile.webp)
 
 ### URL controls
 
@@ -148,7 +148,7 @@ Memory: the surface, the unlit ground copy and the uprights layer are each the s
 ## Verification
 
 - `node scripts/test-daylight.mjs`: 10 tests (keyframes, wraparound, readability floor, phases, determinism, URL modes, manual clock precedence, sun shadows, anchor validity). `node scripts/test-stronghold.mjs`: the 8 economy tests still pass.
-- `npm run build`, then `node scripts/verify-lighting.mjs` (and `node scripts/capture-clock-docs.mjs` for the clock and shadow images) (`SITE_DIR` or `PREVIEW_URL` selects the target). Results ([report](https://arkadia-custom-whachat.fural.space/lighting-plan/verify-report.json)):
+- `npm run build`, then `node scripts/verify-lighting.mjs` (and `node scripts/capture-clock-docs.mjs` for the clock and shadow images) (`SITE_DIR` or `PREVIEW_URL` selects the target). Results ([report](https://ark-whachat.fural.space/lighting-plan/verify-report.json)):
   - Every lit sprite has anchors.
   - 4 phases × 4 viewports (1536 × 1024, 2560 × 1440, 390 × 844 @3×, 844 × 390 @2×) show the right phase, layer state and snow tint, and the canvas stays the input surface.
   - Night lightmap: ambient 252/765, 1680 restored emissive pixels, light at all 7 buildings.
@@ -167,10 +167,10 @@ Memory: the surface, the unlit ground copy and the uprights layer are each the s
 
 Run `node scripts/extract-emissive.mjs [dir]`. It writes candidate flame/arcane clusters (green, numbered) and the authored anchors (magenta) for every lit sprite, plus `sheet.png`. Edit `src/stronghold/light-anchors.ts`, then re-run the overlay and `verify-lighting.mjs`.
 
-![Authored light anchors review sheet](https://arkadia-custom-whachat.fural.space/lighting-plan/light-anchors-review.webp)
+![Authored light anchors review sheet](https://ark-whachat.fural.space/lighting-plan/light-anchors-review.webp)
 
 ## Planning spike (history)
 
 The first plan used a throwaway spike (`scripts/spike-stronghold-lighting.mjs`) with live blend layers and auto-detected emissive pixels. It proved the look, but its detection was noisy. Those mockups are kept for reference.
 
-![Spike mockups: day, golden hour, dusk, night](https://arkadia-custom-whachat.fural.space/lighting-plan/phases-desktop.webp)
+![Spike mockups: day, golden hour, dusk, night](https://ark-whachat.fural.space/lighting-plan/phases-desktop.webp)

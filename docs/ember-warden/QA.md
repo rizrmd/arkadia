@@ -2,7 +2,7 @@
 
 **Production candidate published; final art acceptance is pending.** The simplified 3D rendering does not yet match the approved hand-painted concept. No game-ready quality claim is made.
 
-[Play the isolated review](https://arkadia-custom-whachat.fural.space/ember-warden-review/) · [Atlas manifest](https://arkadia-custom-whachat.fural.space/ember-warden-review/manifest.json)
+[Play the isolated review](https://ark-whachat.fural.space/ember-warden-review/) · [Atlas manifest](https://ark-whachat.fural.space/ember-warden-review/manifest.json)
 
 ## Asset coverage
 

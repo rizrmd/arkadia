@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises';import {chromium} from 'playwright';import sharp from 'sharp';
 // Open the Arkadia sandbox in Chromium: the game in a co-op room and offline (solo), and the review folders.
 // node scripts/arkadia/verify-live.mjs → docs/arkadia-sandbox/*.webp + results.json
-const base=process.env.BASE||'https://arkadia-custom-whachat.fural.space',out='docs/arkadia-sandbox',results=[];
+const base=process.env.BASE||'https://ark-whachat.fural.space',out='docs/arkadia-sandbox',results=[];
 const browser=await chromium.launch({headless:true,env:{...process.env,LD_LIBRARY_PATH:'/home/dev/.local/browser-libs/usr/lib/x86_64-linux-gnu:/opt/fural-antigravity-glibc'},args:['--no-sandbox','--no-zygote','--single-process']});
 // Chromium runs single-process in the sandbox, so every visit reuses one page.
 const page=await (await browser.newContext({viewport:{width:1280,height:720}})).newPage();let errors,sockets;

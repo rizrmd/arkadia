@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Release the game as one deployable into the one Arkadia sandbox (https://arkadia-custom-whachat.fural.space): the
+# Release the game as one deployable into the one Arkadia sandbox (https://ark-whachat.fural.space): the
 # Go game server (server/) with the built Vite client, behind scripts/arkadia/gateway.mjs, which also serves every
 # review page. Published as a release layer (scripts/arkadia/publish-layer.mjs) with this commit's gateway.
 #   scripts/fural-deploy.sh                      (also what `fural-agent repos ship` runs)

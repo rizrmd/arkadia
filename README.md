@@ -16,7 +16,7 @@ Hand-reviewed crop rectangles, original transparent alpha, alpha values below 24
 
 ## One preview sandbox — 22 October 2026
 
-Every public preview now lives in **one** custom sandbox, `arkadia`: https://arkadia-custom-whachat.fural.space/ (the platform kept `arkadia-whachat` bound to a retired sandbox, so it added `-custom`). The former sandboxes `arkadia-stronghold`, `arkadia-coop`, `arkadia-enemies` and `ember-warden-review` were merged into it and deleted; their hostnames no longer resolve.
+Every public preview now lives in **one** custom sandbox, `arkadia`: https://ark-whachat.fural.space/. The former sandboxes `arkadia-stronghold`, `arkadia-coop`, `arkadia-enemies` and `ember-warden-review` were merged into it and deleted; their hostnames no longer resolve.
 
 | Path | What | Former sandbox |
 |------|------|----------------|
@@ -36,7 +36,7 @@ The per-feature `scripts/publish-*.mjs` one-offs that patched the old in-memory 
 
 ## Verified live result — 20 October 2026
 
-https://arkadia-custom-whachat.fural.space/ (retired) — custom sandbox arkadia, foreground `node app.mjs`, port 3000. `scripts/package-site.mjs` bundles the Vite output into a single Node file to avoid timeout while the platform copies many resources. All packaging scripts stage their output under the ignored `.publish/<name>/` folder (never the repo root). That release was published with `sandboxes serve --name arkadia … --cmd "node app.mjs"`; do not run it now — it would replace the gateway boot script of today's `arkadia` sandbox. Use `scripts/arkadia/publish-layer.mjs`.
+https://ark-whachat.fural.space/ (retired) — custom sandbox arkadia, foreground `node app.mjs`, port 3000. `scripts/package-site.mjs` bundles the Vite output into a single Node file to avoid timeout while the platform copies many resources. All packaging scripts stage their output under the ignored `.publish/<name>/` folder (never the repo root). That release was published with `sandboxes serve --name arkadia … --cmd "node app.mjs"`; do not run it now — it would replace the gateway boot script of today's `arkadia` sandbox. Use `scripts/arkadia/publish-layer.mjs`.
 
 `node scripts/final-verify.mjs` tests the public URL in Chromium. The browser uses HOME-only Ubuntu libraries on Alpine; organization runtime now includes their idempotent setup (scripts/organization-setup.sh). Playwright Chromium requires --no-zygote --single-process here; this is browser test configuration, not a site requirement. The test verifies 13 conditions, including grid below props, true sorting toggle, deterministic seeds, camera handlers and transparency toggles. Final deterministic camera assertions use dispatched events with pointer-capture bypassed; this does not prove physical mouse or touch behavior on every device. No hardware performance claim is made.
 
@@ -57,7 +57,7 @@ Sources: `assets-src/characters/{hero,enemy,equipment}-v1.png` (unmodified image
 
 Current implementation supersedes the single-direction character notes above. Hero uses cobalt blue/silver, revenants rust red/ochre. Idle and locomotion have front/back art with horizontal mirroring; W/up shows the back and stopped actors keep their facing. Step phase follows actual projected distance, with equal screen speed across directions and stable head height in move clips. Attacks, hit and death still use front art.
 
-Sources and exact imagegen prompts: [character-prompts-v2.md](docs/character-prompts-v2.md). Visual results, verification and remaining AI-art limits: [character-motion-v2.md](docs/character-motion-v2.md). Runtime atlases now have 36 frames each; regenerate with `node scripts/extract-characters.mjs`. Public preview remains https://arkadia-custom-whachat.fural.space/.
+Sources and exact imagegen prompts: [character-prompts-v2.md](docs/character-prompts-v2.md). Visual results, verification and remaining AI-art limits: [character-motion-v2.md](docs/character-motion-v2.md). Runtime atlases now have 36 frames each; regenerate with `node scripts/extract-characters.mjs`. Public preview remains https://ark-whachat.fural.space/.
 
 ## Mobile blank arena recovery — 20 October 2026
 
@@ -77,4 +77,4 @@ The Stronghold now runs on an authoritative Go game server (`server/`, Go 1.25, 
 - Tests: `cd server && go test ./...` (sim, rooms, WebSocket, static routes); `node scripts/coop-smoke.mjs` (two headless protocol clients plus a cheating one); `npm run build && node scripts/coop-browser.mjs` (two browser tabs in one room, screenshots in `docs/coop/`).
 - Smooth motion: the server walks a hero on through up to three ticks of late input and acknowledges those inputs without walking twice (`ow` in each snapshot); the client paces its inputs (±5%) to keep one or two queued at the server (`q`). Remote heroes and revenants use `src/stronghold/net/timeline.ts`: delay = one tick + the 95th percentile of snapshot lateness, a clock warped at most ±6% toward it, extrapolation capped at 200 ms, corrections blended over 100 ms. `node scripts/coop-interpolation.mjs` checks it deterministically against the old fixed 100 ms interpolation on four network profiles (`docs/coop/interpolation.json`, chart `interpolation-mobile.webp`); `npm run build && PROFILE=lan|mobile|bad node scripts/coop-smoothness.mjs` measures the drawn speed in two browser tabs over a delayed, jittery WebSocket (`ROOT=` another built checkout for A/B runs).
 - Collision data: `node scripts/export-coop-nav.mjs` re-exports the sprite footprints to `server/internal/sim/nav.json` and `public/coop/nav.json` after any court sprite changes.
-- Release: `scripts/fural-deploy.sh` (tests, builds, stages only the files the game loads and publishes it as a release of the `arkadia` sandbox, https://arkadia-custom-whachat.fural.space/).
+- Release: `scripts/fural-deploy.sh` (tests, builds, stages only the files the game loads and publishes it as a release of the `arkadia` sandbox, https://ark-whachat.fural.space/).

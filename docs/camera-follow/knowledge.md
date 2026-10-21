@@ -6,7 +6,7 @@ Walking the hero felt janky: the camera did not move smoothly. Measurement found
 - **Camera updated inside physics sub-steps.** On slow frames, the hero loop moved the camera once per 34 ms sub-step, not once per rendered frame.
 - **Revenants and the hero HP bar lagged a frame.** Their loop ran before the hero's, so they drew with the previous frame's camera and shook against the world (4 px on desktop, 10 px on a throttled phone).
 
-[Play Stronghold](https://arkadia-custom-whachat.fural.space/)
+[Play Stronghold](https://ark-whachat.fural.space/)
 
 ## Fix
 
@@ -16,7 +16,7 @@ Walking the hero felt janky: the camera did not move smoothly. Measurement found
 
 ## Before and after
 
-![Camera speed while walking and stopping: before drops from 113 px/s to zero in one frame and spikes on the next walk; after eases smoothly to rest](https://arkadia-custom-whachat.fural.space/camera-follow/speed.png)
+![Camera speed while walking and stopping: before drops from 113 px/s to zero in one frame and spikes on the next walk; after eases smoothly to rest](https://ark-whachat.fural.space/camera-follow/speed.png)
 
 | Metric | Desktop before | Desktop after | Phone (4× CPU) before | Phone (4× CPU) after |
 |---|---|---|---|---|

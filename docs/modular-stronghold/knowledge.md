@@ -55,7 +55,7 @@ Production TypeScript/Vite build passes. Automated browser checks cover four vie
 
 ## Live tools and downloads
 
-[Open the modular editor](https://arkadia-custom-whachat.fural.space/modular-stronghold/index.html) · [Open the game](https://arkadia-custom-whachat.fural.space/) · [Download runtime kit ZIP](https://arkadia-custom-whachat.fural.space/modular-stronghold/kit.zip)
+[Open the modular editor](https://ark-whachat.fural.space/modular-stronghold/index.html) · [Open the game](https://ark-whachat.fural.space/) · [Download runtime kit ZIP](https://ark-whachat.fural.space/modular-stronghold/kit.zip)
 
 ## Human reference
 
@@ -63,7 +63,7 @@ Production TypeScript/Vite build passes. Automated browser checks cover four vie
 
 ## Asset overview
 
-![Modular asset breakdown](https://arkadia-custom-whachat.fural.space/modular-stronghold/contact-sheet.webp)
+![Modular asset breakdown](https://ark-whachat.fural.space/modular-stronghold/contact-sheet.webp)
 
 ## Generated source artwork
 
@@ -71,65 +71,65 @@ The following are previews of each independent imagegen output; original full-re
 
 ### Banner
 
-![banner generated source](https://arkadia-custom-whachat.fural.space/modular-stronghold/source-banner.webp)
+![banner generated source](https://ark-whachat.fural.space/modular-stronghold/source-banner.webp)
 
 ### Barrel
 
-![barrel generated source](https://arkadia-custom-whachat.fural.space/modular-stronghold/source-barrel.webp)
+![barrel generated source](https://ark-whachat.fural.space/modular-stronghold/source-barrel.webp)
 
 ### Crate
 
-![crate generated source](https://arkadia-custom-whachat.fural.space/modular-stronghold/source-crate.webp)
+![crate generated source](https://ark-whachat.fural.space/modular-stronghold/source-crate.webp)
 
 ### Gate
 
-![gate generated source](https://arkadia-custom-whachat.fural.space/modular-stronghold/source-gate.webp)
+![gate generated source](https://ark-whachat.fural.space/modular-stronghold/source-gate.webp)
 
 ### Moss
 
-![moss generated source](https://arkadia-custom-whachat.fural.space/modular-stronghold/source-moss.webp)
+![moss generated source](https://ark-whachat.fural.space/modular-stronghold/source-moss.webp)
 
 ### Paving
 
-![paving generated source](https://arkadia-custom-whachat.fural.space/modular-stronghold/source-paving.webp)
+![paving generated source](https://ark-whachat.fural.space/modular-stronghold/source-paving.webp)
 
 ### Pine
 
-![pine generated source](https://arkadia-custom-whachat.fural.space/modular-stronghold/source-pine.webp)
+![pine generated source](https://ark-whachat.fural.space/modular-stronghold/source-pine.webp)
 
 ### Rocks
 
-![rocks generated source](https://arkadia-custom-whachat.fural.space/modular-stronghold/source-rocks.webp)
+![rocks generated source](https://ark-whachat.fural.space/modular-stronghold/source-rocks.webp)
 
 ### Snow
 
-![snow generated source](https://arkadia-custom-whachat.fural.space/modular-stronghold/source-snow.webp)
+![snow generated source](https://ark-whachat.fural.space/modular-stronghold/source-snow.webp)
 
 ### Torch
 
-![torch generated source](https://arkadia-custom-whachat.fural.space/modular-stronghold/source-torch.webp)
+![torch generated source](https://ark-whachat.fural.space/modular-stronghold/source-torch.webp)
 
 ### Tower
 
-![tower generated source](https://arkadia-custom-whachat.fural.space/modular-stronghold/source-tower.webp)
+![tower generated source](https://ark-whachat.fural.space/modular-stronghold/source-tower.webp)
 
 ### Wall Ne
 
-![wall-ne generated source](https://arkadia-custom-whachat.fural.space/modular-stronghold/source-wall-ne.webp)
+![wall-ne generated source](https://ark-whachat.fural.space/modular-stronghold/source-wall-ne.webp)
 
 ### Wall Se
 
-![wall-se generated source](https://arkadia-custom-whachat.fural.space/modular-stronghold/source-wall-se.webp)
+![wall-se generated source](https://ark-whachat.fural.space/modular-stronghold/source-wall-se.webp)
 
 ## Runtime evidence
 
-![Modular game composition](https://arkadia-custom-whachat.fural.space/modular-stronghold/runtime-1536.webp)
+![Modular game composition](https://ark-whachat.fural.space/modular-stronghold/runtime-1536.webp)
 
-![Wider viewport filled by tiles](https://arkadia-custom-whachat.fural.space/modular-stronghold/runtime-2560.webp)
+![Wider viewport filled by tiles](https://ark-whachat.fural.space/modular-stronghold/runtime-2560.webp)
 
-![Mobile modular game](https://arkadia-custom-whachat.fural.space/modular-stronghold/runtime-390.webp)
+![Mobile modular game](https://ark-whachat.fural.space/modular-stronghold/runtime-390.webp)
 
-![Infinite tile editor](https://arkadia-custom-whachat.fural.space/modular-stronghold/editor.webp)
+![Infinite tile editor](https://ark-whachat.fural.space/modular-stronghold/editor.webp)
 
 ## Publishing
 
