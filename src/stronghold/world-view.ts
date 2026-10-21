@@ -4,14 +4,16 @@ import {slots,calibration,WORLD} from './scene';
 import {buildings,type Building,type State} from './economy';
 import {createLighting} from './lighting';
 import {createHero} from './hero';
+import {setGateOpen} from './navigation';
 import type {Walk} from './controls';
 import type {Progress} from '../app/loader';
 export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Building)=>void,direction:()=>Walk,progress:Progress=()=>{}){
  const ctx=canvas.getContext('2d')!,environment=environmentSprites(),images=new Map<string,HTMLImageElement>();
- const spriteFile=(id:Building,level:number)=>id==='forge'?`/fortress-ui/forge-${level}.webp`:id==='gate'?'/modular-stronghold/v2/gateway-open.png':`/assets/${slots[id].asset}.png`;
+ let gateOpen=false;
+ const spriteFile=(id:Building,level:number)=>id==='forge'?`/fortress-ui/forge-${level}.webp`:id==='gate'?`/modular-stronghold/v2/${gateOpen?'gateway-open':'gateway-grand'}.png`:`/assets/${slots[id].asset}.png`;
  const paving='/modular-stronghold/v2/paving-warm-texture.png',snow='/modular-stronghold/v2/snow-soft-texture.png';
  // Loading-screen steps: every artwork file, then the hero, then the first world raster.
- const files=[...new Set([FOUNDATION_SOIL,FOUNDATION_MOSS,paving,snow,...environment.map(p=>p.file),...buildings.flatMap(b=>[1,2,3].map(l=>spriteFile(b,l)))])],steps=files.length+2;let loaded=0;
+ const files=[...new Set([FOUNDATION_SOIL,FOUNDATION_MOSS,paving,snow,'/modular-stronghold/v2/gateway-open.png',...environment.map(p=>p.file),...buildings.flatMap(b=>[1,2,3].map(l=>spriteFile(b,l)))])],steps=files.length+2;let loaded=0;
  progress(0,steps,'Loading artwork');
  await Promise.all(files.map(async file=>{const image=new Image();image.src=file;await image.decode();images.set(file,image);progress(++loaded,steps,'Loading artwork');}));
  let w=0,h=0,dpr=1,scale=1,cx=WORLD.width/2,cy=385,selected:Building|null=null,levels:State['levels']|undefined;
@@ -83,6 +85,17 @@ export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Buil
   for(let k=1;k<h.length;k++)for(let j=h[k-1];j<=h[k];j++)edge[j]=bottom[h[k-1]]+(bottom[h[k]]-bottom[h[k-1]])*(j-h[k-1])/(h[k]-h[k-1]);
   return edge;
  }
+ // Ground contact of the two stone towers, measured separately from the hollow arch.
+ // Reflecting the entire gateway silhouette treats its overhead arch as solid ground.
+ function gateFootprint(){
+  const cols:Column[]=[];
+  for(const side of [-1,1])for(let d=36;d<=135;d+=3){
+   const front=d<86?774+(d-36)*.42:795-(d-86)*.62;
+   cols.push({x:577+side*d,w:3,back:front-34,front,height:110});
+  }
+  if(!gateOpen)for(let d=-35;d<=35;d+=3)cols.push({x:577+d,w:3,back:763,front:775,height:105});
+  return cols;
+ }
  function footprint(p:(typeof objects)[number]){
   const key=p.file+'|'+p.x+'|'+p.y+'|'+p.width;let cols=footprints.get(key);if(cols)return cols;cols=[];
   const {top,bottom}=profile(p.image),n=top.length,filled=[...top.keys()].filter(i=>top[i]>=0);
@@ -120,7 +133,7 @@ export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Buil
  }
  // The player's hero walks the court in its own layer over the world; the camera eases after it.
  progress(loaded,steps,'Waking the hero');
- const hero=await createHero({layer:viewport,lightmap:viewport.querySelector<HTMLCanvasElement>('#world-lightmap')!,surface,footprint,sun:lighting.sun,direction,follow});hero.setScene(objects);progress(++loaded,steps,'Raising the Stronghold');
+ const hero=await createHero<(typeof objects)[number]>({layer:viewport,lightmap:viewport.querySelector<HTMLCanvasElement>('#world-lightmap')!,surface,footprint:p=>p.id==='gate'?gateFootprint():footprint(p),sun:lighting.sun,direction,follow});hero.setScene(objects);progress(++loaded,steps,'Raising the Stronghold');
  // Everything standing above the ground shadows, at surface resolution with transparency.
  const uprights=document.createElement('canvas');uprights.id='world-uprights';uprights.width=surface.width;uprights.height=surface.height;
  function paintWorld(){
@@ -158,7 +171,7 @@ export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Buil
   const step=(now:number)=>{elapsed+=last?Math.min(now-last,34):0;last=now;const t=Math.min(1,elapsed/duration),k=t<.5?4*t*t*t:1-(2-2*t)**3/2;cx=fx+(tx-fx)*k;cy=fy+(ty-fy)*k;draw();if(t<1)glide=requestAnimationFrame(step);else{glide=0;canvas.dataset.camera='idle';}};
   glide=requestAnimationFrame(step);}
  // Walking keeps the hero inside a central box and the camera eases after them past it; a drag still pans freely.
- function follow(hx:number,hy:number,dt:number){if(held.size||!w)return;const zx=w/scale*.16,zy=h/scale*.14,fy=hy-40,tx=hx-Math.max(-zx,Math.min(zx,hx-cx)),ty=fy-Math.max(-zy,Math.min(zy,fy-cy));
+ function follow(hx:number,hy:number,dt:number){updateGate(hx,hy);if(held.size||!w)return;const zx=w/scale*.16,zy=h/scale*.14,fy=hy-40,tx=hx-Math.max(-zx,Math.min(zx,hx-cx)),ty=fy-Math.max(-zy,Math.min(zy,fy-cy));
   if(Math.abs(tx-cx)+Math.abs(ty-cy)<.05)return;stopGlide();const e=1-Math.exp(-dt/180);cx+=(tx-cx)*e;cy+=(ty-cy)*e;draw();}
  const held=new Map<number,{x:number;y:number}>();let moved=false,down={x:0,y:0};
  canvas.onpointerdown=e=>{stopGlide();canvas.setPointerCapture(e.pointerId);held.set(e.pointerId,{x:e.clientX,y:e.clientY});down={x:e.clientX,y:e.clientY};moved=false;};
@@ -167,6 +180,14 @@ export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Buil
  function hitBuilding(id:Building,x:number,y:number){const s=slots[id],c=calibration(id),file=spriteFile(id,levels?.[id]||1),image=images.get(file)!,height=image.height*s.width/image.width,dx=x-s.x,dy=(y-s.y-c.shear*dx)/c.vertical,px=(dx+s.width/2)/s.width,py=(dy+height*s.pivot)/height;if(px<0||py<0||px>=1||py>=1)return false;let mask=masks.get(file);if(!mask){const sample=document.createElement('canvas');sample.width=192;sample.height=Math.ceil(192*image.height/image.width);const sc=sample.getContext('2d')!;sc.drawImage(image,0,0,sample.width,sample.height);mask={data:sc.getImageData(0,0,sample.width,sample.height).data,width:sample.width,height:sample.height};masks.set(file,mask);}return mask.data[(Math.floor(py*mask.height)*mask.width+Math.floor(px*mask.width))*4+3]>40;}
  canvas.onpointerup=e=>{held.delete(e.pointerId);if(moved)return;const x=cx+(e.clientX-w/2)/scale,y=cy+(e.clientY-h/2)/scale;const hit=[...buildings].sort((a,b)=>slots[b].y-slots[a].y).find(id=>hitBuilding(id,x,y));if(hit)onSelect(hit);};
  canvas.onpointercancel=()=>{held.clear();moved=true;};canvas.onwheel=e=>{e.preventDefault();stopGlide();const old=scale;scale=Math.max(.35,Math.min(2.2,scale*Math.exp(-e.deltaY*.001)));cx+=(e.clientX-w/2)*(1/old-1/scale);cy+=(e.clientY-h/2)*(1/old-1/scale);requestDraw();};
+ function updateGate(hx:number,hy:number){
+  // Ground-space distance to the threshold. Hysteresis prevents flickering at the edge.
+  const near=Math.abs(hx-577)<(gateOpen?65:48)&&Math.abs(hy-770)<(gateOpen?88:66);
+  if(near===gateOpen)return;
+  gateOpen=near;setGateOpen(near);objects=makeObjects();lighting.setScene(objects);hero.setScene(objects);dirty=true;requestDraw();
+  canvas.dataset.gate=near?'open':'closed';
+ }
+ canvas.dataset.gate='closed';setGateOpen(false);updateGate(hero.position().x,hero.position().y);
  hero.start();
  return {update(state:State,id:Building|null){const next=buildings.map(b=>state.levels[b]).join(',')+':'+id;if(next===signature)return;signature=next;levels=state.levels;selected=id;objects=makeObjects();lighting.setScene(objects);hero.setScene(objects);dirty=true;requestDraw();},focus(id:Building){glideTo(slots[id].x,slots[id].y-60);},fit(){stopGlide();scale=Math.max(.2,Math.min((w-40)/WORLD.width,(h-120)/WORLD.height));cx=WORLD.width/2;cy=385;requestDraw();},setTime:lighting.setTime,previewClock:lighting.preview,subscribeClock:lighting.subscribe};
 }
