@@ -47,3 +47,8 @@ These six discarded images record why checking the actual leg poses matters. The
 ![Rejected eight-frame extension repeating one side](https://arkadia-stronghold-whachat.fural.space/knight-footfalls/attempts/05-repeated-eight.png)
 
 ![Rear key poses before reducing the raised sole height](https://arkadia-stronghold-whachat.fural.space/knight-footfalls/attempts/06-rear-keys-high.png)
+
+
+## Live release
+
+Deployed atlas revision: `a2750639f0e49585`. The live desktop/mobile browser checks passed, including alternating boot pixels, grounded support, six input direction cases, combat and no page errors. [Live report](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=docs%2Fknight-footfalls%2Flive.json).

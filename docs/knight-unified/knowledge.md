@@ -1,3 +1,7 @@
+## Current movement correction
+
+The v4 sheet below is the initial identity pass. Human review found repeated supporting-leg poses in diagonal and rear walking. The current game uses reviewed alternating low-clearance footfalls and a slower cadence for those views; straight-down movement is preserved. See **Knight — Alternating Footfalls** in this section and [open the before/after animation player](https://arkadia-stronghold-whachat.fural.space/knight-footfalls/review.html).
+
 [Play the updated Stronghold](https://arkadia-stronghold-whachat.fural.space/).
 
 ## One knight identity across every movement
