@@ -11,7 +11,7 @@ export type Column={x:number;w:number;back:number;front:number;height:number};
 // A combat clip (attack, hit or die) that encounters.ts plays in place of walking; t is ms into the clip.
 export type Pose={clip:string;t:number};
 export type Placed={layer:string;x:number;y:number;width:number;height:number;foot:number;shear:number;vertical:number;opacity:number;image:HTMLImageElement};
-type Clip={fps:number;loop:boolean;frames:number[]};
+type Clip={fps:number;loop:boolean;frames:number[];strideScale?:number};
 type Meta={image:string;revision?:string;cell:{w:number;h:number;pivot:{x:number;y:number}};clips:Record<string,Clip>;frames:{x:number;y:number;w:number;h:number}[]};
 const BASE='/assets/characters/',KEY='arkadia.stronghold.hero';
 // Atlas px -> world px. Matches the court props (a barrel is 27 px wide), not the arena's 1.1.
@@ -54,7 +54,7 @@ export async function createHero<P extends Placed>(o:{layer:HTMLElement;lightmap
  }
  try{const saved=JSON.parse(localStorage.getItem(KEY)||'null');if(saved&&Number.isFinite(saved.x)&&Number.isFinite(saved.y)){x=saved.x;y=saved.y;}}catch{}
  const clipName=()=>pose?pose.clip:vertical?state+(back?'Up':'Down'):back?state+'Back':state;
- const frameIndex=()=>{const clip=meta.clips[clipName()],n=clip.frames.length,i=pose?Math.floor(pose.t*clip.fps/1000):state==='move'?Math.floor(stride*n):Math.floor(t*clip.fps/1000);return clip.frames[clip.loop?i%n:Math.min(i,n-1)];};
+ const frameIndex=()=>{const clip=meta.clips[clipName()],n=clip.frames.length,i=pose?Math.floor(pose.t*clip.fps/1000):state==='move'?Math.floor(stride*n/(clip.strideScale||1)):Math.floor(t*clip.fps/1000);return clip.frames[clip.loop?i%n:Math.min(i,n-1)];};
  // Arena facing rules: front/rear views only within 10 degrees of straight up/down (15 to leave), and dead
  // bands near each axis keep the previous quadrant so tiny slides along a wall never flip the art.
  function face(sx:number,sy:number){const l=Math.hypot(sx,sy);if(!l)return;vertical=Math.abs(sx)/l<Math.sin((vertical?15:10)*Math.PI/180);if(Math.abs(sy)/l>.15)back=sy<0;if(Math.abs(sx)/l>.15)facing=sx>0?1:-1;}

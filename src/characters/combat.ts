@@ -19,7 +19,7 @@ export class Fighter {
   }
   get clip() { return this.clips[this.textureClip]; }
   get alive() { return this.state !== 'die'; }
-  frame() { const n = this.clip.frames.length, i = this.state === 'move' ? Math.floor(this.stride * n) : Math.floor(this.t * this.clip.fps / 1000); return this.clip.loop ? i % n : Math.min(i, n - 1); }
+  frame() { const n = this.clip.frames.length, i = this.state === 'move' ? Math.floor(this.stride * n / (this.clip.strideScale || 1)) : Math.floor(this.t * this.clip.fps / 1000); return this.clip.loop ? i % n : Math.min(i, n - 1); }
   finished() { return !this.clip.loop && this.t >= this.clip.frames.length * 1000 / this.clip.fps; }
   play(state: ClipName) { if (this.state === state && this.clip.loop) return; this.state = state; this.t = 0; this.impactDone = false; }
   tick(dt: number) { this.t += dt; this.cooldown -= dt; this.flash -= dt; this.immune -= dt; }

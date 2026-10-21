@@ -1,5 +1,6 @@
 // Packs the reviewed unified imagegen sheet. No per-clip identity swaps or per-frame scaling.
 import sharp from 'sharp';
+import {packFootfalls} from './pack-knight-footfalls.mjs';
 import fs from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 
@@ -56,11 +57,12 @@ export async function packKnight() {
  }
  const atlasSize=[6*(cell.w+gutter)+gutter,8*(cell.h+gutter)+gutter];
  const bytes=await sharp({create:{width:atlasSize[0],height:atlasSize[1],channels:4,background:'#00000000'}}).composite(parts).png().toBuffer();
- await fs.writeFile('public/assets/characters/hero.png',bytes);
+
  const clip=(row,fps=6,loop=true,indices=[0,1,2,3,4,5])=>({fps,loop,frames:indices.map(i=>row*6+i)});
- return {id:'hero',image:'hero.png',revision:createHash('sha256').update(bytes).digest('hex').slice(0,16),source:file,sourceSize:[info.width,info.height],atlasSize,scale,gutter,cell,
+ const meta={id:'hero',image:'hero.png',revision:createHash('sha256').update(bytes).digest('hex').slice(0,16),source:file,sourceSize:[info.width,info.height],atlasSize,scale,gutter,cell,
   direction:'Unified knight: diagonal front/back and straight front/back; mirror diagonals only',idleHeightSourcePx:height,
   clips:{idle:clip(0),move:clip(1,10),attack:{...clip(2,12,false),impact:3},hit:clip(3,10,false,[0,1]),die:clip(3,8,false,[2,3,4,5]),idleBack:clip(4),moveBack:clip(5,10),idleDown:clip(6,6,true,[1]),moveDown:clip(6,10),idleUp:clip(7,6,true,[1]),moveUp:clip(7,10)},frames};
+ return packFootfalls(bytes,meta);
 }
 
 if(process.argv[1]?.endsWith('/pack-knight.mjs')){

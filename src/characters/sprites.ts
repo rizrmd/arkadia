@@ -3,7 +3,7 @@ import { Assets, Rectangle, Texture } from 'pixi.js';
 // Mirrors public/assets/characters/manifest.json written by scripts/extract-characters.mjs.
 export type ClipName = 'idle' | 'move' | 'attack' | 'hit' | 'die';
 export type TextureClipName = ClipName | 'idleBack' | 'moveBack' | 'idleUp' | 'moveUp' | 'idleDown' | 'moveDown';
-export type Clip = { fps: number; loop: boolean; impact?: number; frames: number[] };
+export type Clip = { fps: number; loop: boolean; impact?: number; strideScale?: number; frames: number[] };
 export type FrameMeta = { row: number; col: number; x: number; y: number; w: number; h: number; source: { x: number; y: number; w: number; h: number } };
 export type CharacterMeta = { id: string; image: string; revision?: string; atlasSize: [number, number]; scale: number; gutter: number; cell: { w: number; h: number; pivot: { x: number; y: number } }; direction: string; clips: Record<TextureClipName, Clip>; frames: FrameMeta[] };
 export type EquipmentMeta = { image: string; atlasSize: [number, number]; icon: number; items: { id: string; x: number; y: number; w: number; h: number; source: { x: number; y: number; w: number; h: number } }[] };

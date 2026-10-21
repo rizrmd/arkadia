@@ -5,7 +5,7 @@
   "hero": {
    "id": "hero",
    "image": "hero.png",
-   "revision": "c9a0e18bb327a0bd",
+   "revision": "a2750639f0e49585",
    "source": "knight-unified-v4.png",
    "sourceSize": [
     1086,
@@ -13,7 +13,7 @@
    ],
    "atlasSize": [
     1228,
-    1236
+    1698
    ],
    "scale": 0.6,
    "gutter": 4,
@@ -25,31 +25,25 @@
      "y": 130
     }
    },
-   "direction": "Unified knight: diagonal front/back and straight front/back; mirror diagonals only",
+   "direction": "Low-clearance alternating diagonal/rear footfalls; original straight-down walk retained; mirror diagonals only",
    "idleHeightSourcePx": 161.94444444444446,
    "clips": {
     "idle": {
      "fps": 6,
      "loop": true,
      "frames": [
-      0,
-      1,
-      2,
-      3,
-      4,
-      5
+      48
      ]
     },
     "move": {
-     "fps": 10,
+     "fps": 6,
      "loop": true,
+     "strideScale": 1.6,
      "frames": [
-      6,
-      7,
-      8,
-      9,
-      10,
-      11
+      48,
+      49,
+      48,
+      50
      ]
     },
     "attack": {
@@ -87,24 +81,18 @@
      "fps": 6,
      "loop": true,
      "frames": [
-      24,
-      25,
-      26,
-      27,
-      28,
-      29
+      51
      ]
     },
     "moveBack": {
-     "fps": 10,
+     "fps": 6,
      "loop": true,
+     "strideScale": 1.6,
      "frames": [
-      30,
-      31,
-      32,
-      33,
-      34,
-      35
+      51,
+      52,
+      51,
+      53
      ]
     },
     "idleDown": {
@@ -130,19 +118,18 @@
      "fps": 6,
      "loop": true,
      "frames": [
-      43
+      54
      ]
     },
     "moveUp": {
-     "fps": 10,
+     "fps": 6,
      "loop": true,
+     "strideScale": 1.6,
      "frames": [
-      42,
-      43,
-      44,
-      45,
-      46,
-      47
+      54,
+      55,
+      54,
+      56
      ]
     }
    },
@@ -866,6 +853,150 @@
       "w": 142,
       "h": 168
      }
+    },
+    {
+     "row": 8,
+     "col": 0,
+     "x": 4,
+     "y": 1236,
+     "w": 200,
+     "h": 150,
+     "source": {
+      "file": "knight-footfalls-front-v5.png",
+      "x": 62,
+      "y": 64,
+      "w": 535,
+      "h": 616
+     },
+     "footfall": "contact"
+    },
+    {
+     "row": 8,
+     "col": 1,
+     "x": 208,
+     "y": 1236,
+     "w": 200,
+     "h": 150,
+     "source": {
+      "file": "knight-footfalls-front-v5.png",
+      "x": 757,
+      "y": 63,
+      "w": 555,
+      "h": 616
+     },
+     "footfall": "rightSwing"
+    },
+    {
+     "row": 8,
+     "col": 2,
+     "x": 412,
+     "y": 1236,
+     "w": 200,
+     "h": 150,
+     "source": {
+      "file": "knight-footfalls-front-v5.png",
+      "x": 1488,
+      "y": 64,
+      "w": 549,
+      "h": 615
+     },
+     "footfall": "leftSwing"
+    },
+    {
+     "row": 9,
+     "col": 0,
+     "x": 4,
+     "y": 1390,
+     "w": 200,
+     "h": 150,
+     "source": {
+      "file": "knight-footfalls-rear-v5.png",
+      "x": 40,
+      "y": 41,
+      "w": 458,
+      "h": 447
+     },
+     "footfall": "contact"
+    },
+    {
+     "row": 9,
+     "col": 1,
+     "x": 208,
+     "y": 1390,
+     "w": 200,
+     "h": 150,
+     "source": {
+      "file": "knight-footfalls-rear-v5.png",
+      "x": 522,
+      "y": 41,
+      "w": 464,
+      "h": 446
+     },
+     "footfall": "rightSwing"
+    },
+    {
+     "row": 9,
+     "col": 2,
+     "x": 412,
+     "y": 1390,
+     "w": 200,
+     "h": 150,
+     "source": {
+      "file": "knight-footfalls-rear-v5.png",
+      "x": 1054,
+      "y": 41,
+      "w": 460,
+      "h": 447
+     },
+     "footfall": "leftSwing"
+    },
+    {
+     "row": 10,
+     "col": 0,
+     "x": 4,
+     "y": 1544,
+     "w": 200,
+     "h": 150,
+     "source": {
+      "file": "knight-footfalls-rear-v5.png",
+      "x": 71,
+      "y": 528,
+      "w": 428,
+      "h": 468
+     },
+     "footfall": "contact"
+    },
+    {
+     "row": 10,
+     "col": 1,
+     "x": 208,
+     "y": 1544,
+     "w": 200,
+     "h": 150,
+     "source": {
+      "file": "knight-footfalls-rear-v5.png",
+      "x": 573,
+      "y": 529,
+      "w": 432,
+      "h": 467
+     },
+     "footfall": "rightSwing"
+    },
+    {
+     "row": 10,
+     "col": 2,
+     "x": 412,
+     "y": 1544,
+     "w": 200,
+     "h": 150,
+     "source": {
+      "file": "knight-footfalls-rear-v5.png",
+      "x": 1082,
+      "y": 529,
+      "w": 433,
+      "h": 467
+     },
+     "footfall": "leftSwing"
     }
    ]
   },
