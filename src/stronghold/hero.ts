@@ -92,10 +92,10 @@ export async function createHero<P extends Placed>(o:{layer:HTMLElement;lightmap
  }
  function render(){
   const s=o.sun(),f=meta.frames[frameIndex()],res=Math.min(3,Math.max(1,origin.scale*(devicePixelRatio||1)));
-  const key=[state,clipName(),f.x,f.y,facing,vertical,tint,s.dx,s.dy,s.alpha,res,Math.round(x*4),Math.round(y*4),objects.length].join();if(key===drawn)return;drawn=key;
+  const key=[state,clipName(),f.x,f.y,facing,vertical,tint,s.dx,s.dy,s.wx,s.wy,s.alpha,res,Math.round(x*4),Math.round(y*4),objects.length].join();if(key===drawn)return;drawn=key;
   // Local bounds around the foot: the mirrored sprite cell plus the sun-cast silhouette.
   const half=Math.max(pivot.x,cell.w-pivot.x)*DISPLAY,top=-pivot.y*DISPLAY,bottom=(cell.h-pivot.y)*DISPLAY+8,H=-top;
-  const sxs=[-half,half,-half+H*s.dx,half+H*s.dx],sys=[top,bottom,H*s.dy-8,H*s.dy+8];
+  const ends=[-half,half].flatMap(w=>[0,H].map(h=>[w*s.wx+h*s.dx,w*s.wy+h*s.dy])),sxs=[-half,half,...ends.map(e=>e[0])],sys=[top,bottom,...ends.map(e=>e[1]-8),...ends.map(e=>e[1]+8)];
   const b=[Math.floor(Math.min(...sxs))-4,Math.floor(Math.min(...sys))-4,Math.ceil(Math.max(...sxs))+4,Math.ceil(Math.max(...sys))+4];
   if(res!==k||b.some((v,i)=>v!==box[i])){k=res;box=b;canvas.width=Math.ceil((b[2]-b[0])*k);canvas.height=Math.ceil((b[3]-b[1])*k);canvas.style.width=b[2]-b[0]+'px';canvas.style.height=b[3]-b[1]+'px';}
   const frame=(target:HTMLCanvasElement)=>{const g=target.getContext('2d',{willReadFrequently:target===lit})!;g.globalCompositeOperation='copy';g.drawImage(atlas,f.x,f.y,f.w,f.h,0,0,cell.w,cell.h);g.globalCompositeOperation='source-over';return g;};
@@ -104,8 +104,8 @@ export async function createHero<P extends Placed>(o:{layer:HTMLElement;lightmap
   const local=()=>c.setTransform(k,0,0,k,-box[0]*k,-box[1]*k),sprite=(src:HTMLCanvasElement)=>{c.scale((vertical&&!pose?1:facing)*DISPLAY,DISPLAY);c.drawImage(src,-pivot.x,-pivot.y);};
   c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,canvas.width,canvas.height);local();
   // Sun shadow: each sprite point at height h above the foot lands h*(dx,dy) along the ground, like the
-  // building solids, faded with the same alpha and colour.
-  if(s.alpha){const q=frame(flat);q.globalCompositeOperation='source-in';q.fillStyle='rgb(20,28,44)';q.fillRect(0,0,cell.w,cell.h);q.globalCompositeOperation='source-over';c.save();c.globalAlpha=s.alpha;c.filter='blur(1px)';c.transform(1,0,-s.dx,-s.dy,0,0);sprite(flat);c.restore();local();}
+  // building solids, faded with the same alpha and colour; its width w lands w*(wx,wy) across the sun.
+  if(s.alpha){const q=frame(flat);q.globalCompositeOperation='source-in';q.fillStyle='rgb(20,28,44)';q.fillRect(0,0,cell.w,cell.h);q.globalCompositeOperation='source-over';c.save();c.globalAlpha=s.alpha;c.filter='blur(1px)';c.transform(s.wx,s.wy,-s.dx,-s.dy,0,0);sprite(flat);c.restore();local();}
   c.save();sprite(lit);c.restore();
   const hidden=occluders(x,y,box);cutOut(c,hidden,x,y);
   Object.assign(canvas.dataset,{x:x.toFixed(1),y:y.toFixed(1),state,clip:clipName(),frame:String(frameIndex()),facing:String(facing),behind:String(hidden.length),tint});
