@@ -12,7 +12,7 @@ try{
  browser=await chromium.launch({headless:true,env:{...process.env,LD_LIBRARY_PATH:'/home/dev/.local/browser-libs/usr/lib/x86_64-linux-gnu:/opt/fural-antigravity-glibc'},args:['--no-sandbox','--no-zygote','--single-process']});
  const page=await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:3,isMobile:true,hasTouch:true});
  const errors=[];page.on('pageerror',e=>errors.push(e.message));
- await page.addInitScript(()=>{window.__DRAW_ORDER__=[];const draw=CanvasRenderingContext2D.prototype.drawImage;CanvasRenderingContext2D.prototype.drawImage=function(source,...args){if(this.canvas.id==='world-surface'&&source instanceof HTMLImageElement)window.__DRAW_ORDER__.push({file:new URL(source.src).pathname,x:args[0],y:args[1],width:args[2]});return draw.call(this,source,...args);};});
+ await page.addInitScript(()=>{window.__DRAW_ORDER__=[];const draw=CanvasRenderingContext2D.prototype.drawImage;CanvasRenderingContext2D.prototype.drawImage=function(source,...args){if(['world-surface','world-uprights'].includes(this.canvas.id)&&source instanceof HTMLImageElement)window.__DRAW_ORDER__.push({file:new URL(source.src).pathname,x:args[0],y:args[1],width:args[2]});return draw.call(this,source,...args);};});
  await page.goto(base+'/stronghold.html');await page.waitForFunction(()=>document.querySelector('#world-canvas')?.dataset.renderer==='composited-world');
  const order=await page.evaluate(()=>window.__DRAW_ORDER__);
  const lastGround=Math.max(...order.flatMap((p,i)=>/snowdrift|weeds|paving-worn/.test(p.file)?[i]:[]));

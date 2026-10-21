@@ -1,7 +1,9 @@
 import {LIGHT_SPRITES as SPRITES,emissive} from './light-anchors';
 import {lightingAt,resolveTime,modeFrom,sunAt,type Lighting,type Mode} from './daylight';
 // Day/night is baked into #world-surface: the unlit world is kept in `base`, and
-// a lighting change recomposes surface = base x lightmap + glow (three blits).
+// a lighting change recomposes surface = (base + sun shadow + uprights) x lightmap + glow.
+// `base` holds the ground and `uprights` every sprite standing on it; the shadow is a small 0.35x
+// mask from world-view.ts laid between them, so a sun step never re-rasters the world.
 // Pan frames therefore composite exactly the same single layer as in daylight;
 // blended overlay layers measured +45-75 ms p95 per pan frame on throttled mobile.
 // Only the small flame-flicker layer blends live, and it hides while the camera moves.
@@ -61,11 +63,12 @@ export function createLighting(o:{surface:HTMLCanvasElement;snowLayer:HTMLElemen
   surface.dataset.lights=String(count);surface.dataset.lightBakes=String(Number(surface.dataset.lightBakes||0)+1);last='';tick();
  }
  let {mode,manual}=lightingSettings(),last='',moving=0,current:Lighting=lightingAt(resolveTime(mode,Date.now(),location.search,manual));
- // Cast shadows are rasterized with the world, so the sun moves in 15-minute steps (15 s of a live day).
+ // The sun moves in 15-minute steps (15 s of a live day); each step rebuilds the shadow mask once.
  const sunStep=(t:number)=>{const q=Math.round(t*96)/96,s=sunAt(q);return {key:s.alpha?q.toFixed(4):'none',sun:s};};
  let {key:sunKey,sun}=sunStep(current.t);surface.dataset.sun=sunKey;const listeners=new Set<(s:ClockState)=>void>();
- // Called after every world raster: keep the unlit copy, then relight.
- function capture(){if(base.width!==surface.width||base.height!==surface.height){base.width=surface.width;base.height=surface.height;}const c=base.getContext('2d')!;c.globalCompositeOperation='copy';c.drawImage(surface,0,0);c.globalCompositeOperation='source-over';last='';paint(current,true);}
+ // Called after every world raster with the ground on the surface: keep it, then relight.
+ let uprights:HTMLCanvasElement|null=null;
+ function capture(layer:HTMLCanvasElement){uprights=layer;if(base.width!==surface.width||base.height!==surface.height){base.width=surface.width;base.height=surface.height;}const c=base.getContext('2d')!;c.globalCompositeOperation='copy';c.drawImage(surface,0,0);c.globalCompositeOperation='source-over';last='';paint(current,true);}
  // Ambient fill plus the baked light pools, at lightmap resolution.
  function drawLightmap(rgb:number[],li:number){const m=lightmap.getContext('2d')!;m.setTransform(1,0,0,1,0,0);m.globalAlpha=1;m.fillStyle=`rgb(${rgb})`;m.fillRect(0,0,lightmap.width,lightmap.height);m.globalCompositeOperation='lighter';m.globalAlpha=li;m.drawImage(lights,0,0);m.globalAlpha=1;m.globalCompositeOperation='source-over';}
  function paint(state:Lighting,force=false){
@@ -77,10 +80,10 @@ export function createLighting(o:{surface:HTMLCanvasElement;snowLayer:HTMLElemen
    drawLightmap(rgb,li);ambient.style.background=`rgb(${rgb})`;bloom.style.opacity=String(gl);
    surface.dataset.lighting='preview';surface.dataset.lightPaints=String(Number(surface.dataset.lightPaints||0)+1);return;
   }
-  c.setTransform(1,0,0,1,0,0);c.globalCompositeOperation='copy';c.drawImage(base,0,0);
+  unlit(c);
   if(!off){
    drawLightmap(rgb,li);
-   c.setTransform(surface.width/width,0,0,surface.height/height,-left*surface.width/width,-top*surface.height/height);
+   worldSpace(c);
    c.globalCompositeOperation='multiply';c.drawImage(lightmap,left,top,width,height);
    if(gl){c.globalCompositeOperation='screen';c.globalAlpha=gl;c.drawImage(bloom,left,top,width,height);c.globalAlpha=1;}
   }
@@ -89,10 +92,24 @@ export function createLighting(o:{surface:HTMLCanvasElement;snowLayer:HTMLElemen
   flicker.style.opacity=String(q(gl*.45,50));flicker.dataset.lit=String(!off&&gl>0);
   surface.dataset.lighting=off?'off':'on';surface.dataset.lightPaints=String(Number(surface.dataset.lightPaints||0)+1);
  }
+ const worldSpace=(c:CanvasRenderingContext2D)=>c.setTransform(surface.width/width,0,0,surface.height/height,-left*surface.width/width,-top*surface.height/height);
+ // Unlit world: ground, sun shadow, then the uprights over it.
+ function unlit(c:CanvasRenderingContext2D){
+  c.setTransform(1,0,0,1,0,0);c.globalCompositeOperation='copy';c.drawImage(base,0,0);c.globalCompositeOperation='source-over';
+  if(shade.alpha){worldSpace(c);c.globalAlpha=shade.alpha;c.drawImage(shade.mask!,left,top,width,height);c.globalAlpha=1;c.setTransform(1,0,0,1,0,0);}
+  if(uprights)c.drawImage(uprights,0,0);
+ }
+ let shade:{mask:HTMLCanvasElement|null;alpha:number}={mask:null,alpha:0};
+ // A new shadow mask from world-view.ts; no repaint when a world raster (capture) follows anyway.
+ function setShadow(mask:HTMLCanvasElement|null,alpha:number,repaint=true){
+  shade=mask&&alpha?{mask,alpha}:{mask:null,alpha:0};surface.dataset.shadowPaints=String(Number(surface.dataset.shadowPaints||0)+1);
+  if(!repaint||!base.width)return;
+  if(previewing)unlit(surface.getContext('2d')!);else{last='';paint(current,true);}
+ }
  function tick(){
   current=lightingAt(resolveTime(mode,Date.now(),location.search,manual));const next=sunStep(current.t);
-  // A new sun position re-rasters the world (which relights it via capture); wait while the camera
-  // moves. While the clock is dragged, shadows catch up once the slider rests for SUN_REST_MS.
+  // A new sun position rebuilds the shadow mask and relights; wait while the camera moves.
+  // While the clock is dragged, shadows catch up once the slider rests for SUN_REST_MS.
   const wait=previewing?SUN_REST_MS-(Date.now()-timeSet):0;
   if(next.key!==sunKey&&Date.now()-moving>=300&&wait<=0){sunKey=next.key;sun=next.sun;surface.dataset.sun=sunKey;o.onSun();}
   else{paint(current);if(next.key!==sunKey&&wait>0){clearTimeout(sunTimer);sunTimer=window.setTimeout(tick,wait);}}
@@ -110,10 +127,10 @@ export function createLighting(o:{surface:HTMLCanvasElement;snowLayer:HTMLElemen
   if(on===previewing)return;previewing=on;last='';lightmap.hidden=bloom.hidden=!on;
   if(on){
    // Show the unlit world under the live overlays; the snow goes back to its untinted tile.
-   const c=surface.getContext('2d')!;c.setTransform(1,0,0,1,0,0);c.globalCompositeOperation='copy';c.drawImage(base,0,0);c.globalCompositeOperation='source-over';
+   unlit(surface.getContext('2d')!);
    ambient.hidden=false;tintKey='';o.snowLayer.style.backgroundImage=snowImage;o.snowLayer.dataset.tint='preview';flicker.dataset.lit='false';
   }
-  // Releasing bakes once (via the sun-step re-raster when shadows moved); the ambient
+  // Releasing bakes once (after the sun-step shadow when shadows moved); the ambient
   // layer stays until the tinted snow tile is in place.
   else delete o.snowLayer.dataset.tint;
   if(on)paint(current,true);else tick();
@@ -133,7 +150,7 @@ export function createLighting(o:{surface:HTMLCanvasElement;snowLayer:HTMLElemen
  return {
   // Every camera frame: follow the surface; the flicker layer rests until the camera stops.
   place(transform:string){flicker.style.transform=lightmap.style.transform=bloom.style.transform=transform;moving=Date.now();if(!flicker.classList.contains('moving'))flicker.classList.add('moving');clearTimeout(still);still=window.setTimeout(()=>{flicker.classList.remove('moving');tick();},300);},
-  setScene,capture,setTime,preview,
+  setScene,capture,setTime,preview,setShadow,
   sun:()=>sun,
   subscribe(f:(s:ClockState)=>void){listeners.add(f);f(clockState());return ()=>listeners.delete(f);}
  };

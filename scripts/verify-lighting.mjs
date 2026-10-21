@@ -17,7 +17,7 @@ const slots=Object.fromEntries([...(await fs.readFile('src/stronghold/scene.ts',
 const report={phases:{},buildings:{},checks:[]},pass=name=>{report.checks.push(name);console.log('PASS',name);};
 const ready=page=>page.waitForFunction(()=>document.querySelector('#world-canvas')?.dataset.ready==='true'&&document.querySelector('#world-surface')?.dataset.lighting);
 async function open(page,query=''){await page.goto(base+'/stronghold.html'+query);await ready(page);await page.waitForFunction(()=>{const s=document.querySelector('#world-surface').dataset.lighting,t=document.querySelector('#world-layers').firstElementChild.dataset.tint||'off';return (s==='off')===(t==='off');});await page.waitForTimeout(250);}
-const stats=page=>page.evaluate(()=>{const g=document.querySelector('#world-glow'),s=document.querySelector('#world-surface'),v=document.querySelector('#world-layers');return {phase:v.dataset.phase,state:s.dataset.lighting,flicker:getComputedStyle(g).display,lights:+s.dataset.lights,lightPaints:+(s.dataset.lightPaints||0),surfacePaints:+(s.dataset.paints||0),sun:s.dataset.sun,tint:v.firstElementChild.dataset.tint||'off',snow:v.firstElementChild.style.backgroundImage.slice(0,10),sameTransform:g.style.transform===s.style.transform,layers:[...v.children].filter(e=>getComputedStyle(e).display!=='none').map(e=>e.id||'snow')};});
+const stats=page=>page.evaluate(()=>{const g=document.querySelector('#world-glow'),s=document.querySelector('#world-surface'),v=document.querySelector('#world-layers');return {phase:v.dataset.phase,state:s.dataset.lighting,flicker:getComputedStyle(g).display,lights:+s.dataset.lights,lightPaints:+(s.dataset.lightPaints||0),surfacePaints:+(s.dataset.paints||0),shadowPaints:+(s.dataset.shadowPaints||0),sun:s.dataset.sun,tint:v.firstElementChild.dataset.tint||'off',snow:v.firstElementChild.style.backgroundImage.slice(0,10),sameTransform:g.style.transform===s.style.transform,layers:[...v.children].filter(e=>getComputedStyle(e).display!=='none').map(e=>e.id||'snow')};});
 let browser;
 // Single-process headless Chromium is unstable over many reloads on a shared host,
 // so every check below gets its own browser.
@@ -56,13 +56,24 @@ try{
  const dayLuma=await shot(.5),nightLuma=await shot(.02);report.screenLuma={day:dayLuma,night:nightLuma};assert.ok(nightLuma<dayLuma*.6,`night darker (${nightLuma.toFixed(1)} vs ${dayLuma.toFixed(1)})`);
  pass(`night screen luma ${nightLuma.toFixed(1)} vs day ${dayLuma.toFixed(1)}`);
  page=await fresh();
- // 5. Clock ticks repaint only the lightmap; the baked world surface re-rasters only when the sun
- // (cast shadows) moves to its next 15-minute step.
+ // 5. Clock ticks repaint only the lightmap; the world is never re-rastered for the sun: each
+ // 15-minute sun step rebuilds only the cast-shadow mask.
  await open(page,'?daySpeed=900');const t0=await stats(page);let sunSteps=0,prevSun=t0.sun;
  for(let i=0;i<8;i++){await page.waitForTimeout(400);const s=await stats(page);if(s.sun!==prevSun){sunSteps++;prevSun=s.sun;}}
  const t1=await stats(page);
- assert.ok(t1.lightPaints+(t1.state==='off'?3:0)>t0.lightPaints,'lightmap repainted on ticks');assert.ok(t1.surfacePaints-t0.surfacePaints<=sunSteps,`surface repainted only on sun steps (${t1.surfacePaints-t0.surfacePaints} paints, ${sunSteps} steps)`);
- pass(`clock ticks: lightmap paints ${t0.lightPaints}->${t1.lightPaints}, surface paints ${t0.surfacePaints}->${t1.surfacePaints} for ${sunSteps} sun steps`);
+ assert.ok(t1.lightPaints+(t1.state==='off'?3:0)>t0.lightPaints,'lightmap repainted on ticks');assert.equal(t1.surfacePaints,t0.surfacePaints,'no world re-raster on sun steps');
+ assert.ok(sunSteps>0&&t1.shadowPaints-t0.shadowPaints>=sunSteps,`shadow mask rebuilt on sun steps (${t1.shadowPaints-t0.shadowPaints} rebuilds, ${sunSteps} steps)`);
+ pass(`clock ticks: lightmap paints ${t0.lightPaints}->${t1.lightPaints}, ${t1.shadowPaints-t0.shadowPaints} shadow rebuilds and 0 world re-rasters for ${sunSteps} sun steps`);
+ page=await fresh();
+ // 5a. A sun step stays cheap: alternating Noon / Morning / Golden hour, it never re-rasters the world.
+ // Before shadows left the world raster, each step took 450-740 ms here (2-2.9 s on a 4x-throttled phone).
+ await open(page,'?time=0.375');await page.click('.clock-chip');
+ const steps=await page.evaluate(async()=>{const w=document.querySelector('#world-surface'),p0=+w.dataset.paints,times=[];
+  for(const n of ['Noon','Morning','Golden hour','Noon','Morning','Golden hour']){const b=[...document.querySelectorAll('.clock-presets button')].find(e=>e.textContent.startsWith(n)),k0=+w.dataset.shadowPaints,t0=performance.now();b.click();
+   while(+w.dataset.shadowPaints===k0)await new Promise(r=>requestAnimationFrame(r));await new Promise(r=>requestAnimationFrame(r));times.push(performance.now()-t0);await new Promise(r=>setTimeout(r,300));}
+  times.sort((a,b)=>a-b);return {paints:+w.dataset.paints-p0,median:+times[3].toFixed(1),max:+times[5].toFixed(1)};});
+ report.sunStep=steps;assert.equal(steps.paints,0,'no world re-raster on a sun step');assert.ok(steps.median<300,'sun step median '+steps.median);
+ pass(`sun step (preset click to shadows on screen): median ${steps.median} ms, max ${steps.max} ms, 0 world re-rasters`);
  page=await fresh();
  // 5b. In-game clock: pinning an hour relights, casts shadows by day only, is remembered, and Live restores the cycle.
  await open(page);await page.click('.clock-chip');
@@ -77,16 +88,16 @@ try{
  pass('in-game clock: slider and presets relight, sun shadows by day only, pinned hour remembered, Live restores the cycle');
  page=await fresh();
  // 5c. Dragging the clock previews over the unlit world: no world re-raster or snow re-encode per step,
- // shadows catch up once on release, and the preview matches the baked result.
+ // shadows catch up on release without a world re-raster, and the preview matches the baked result.
  await open(page,'?time=0.2');await page.click('.clock-chip');
- const drag=await page.evaluate(async()=>{const s=document.querySelector('#clock-slider'),w=document.querySelector('#world-surface'),frames=[],p0=+w.dataset.paints;let prev=performance.now();
+ const drag=await page.evaluate(async()=>{const s=document.querySelector('#clock-slider'),w=document.querySelector('#world-surface'),frames=[],p0=+w.dataset.paints,k0=+w.dataset.shadowPaints;let prev=performance.now();
   for(let v=300;v<=1020;v+=5){s.value=String(v);s.dispatchEvent(new Event('input',{bubbles:true}));const now=await new Promise(r=>requestAnimationFrame(r));frames.push(now-prev);prev=now;}
   const during={paints:+w.dataset.paints-p0,state:w.dataset.lighting,tint:document.querySelector('#world-layers').firstElementChild.dataset.tint};
   s.dispatchEvent(new Event('change',{bubbles:true}));await new Promise(r=>setTimeout(r,600));frames.sort((a,b)=>a-b);
-  return {during,after:{paints:+w.dataset.paints-p0,state:w.dataset.lighting,sun:w.dataset.sun},p95:frames[Math.floor(frames.length*.95)]};});
+  return {during,after:{paints:+w.dataset.paints-p0,shadows:+w.dataset.shadowPaints-k0,state:w.dataset.lighting,sun:w.dataset.sun},p95:frames[Math.floor(frames.length*.95)]};});
  report.clockDrag=drag;assert.equal(drag.during.paints,0,'no world re-raster while dragging');assert.equal(drag.during.state,'preview');assert.equal(drag.during.tint,'preview');
- assert.equal(drag.after.paints,1,'one re-raster on release');assert.equal(drag.after.state,'on');assert.equal(drag.after.sun,(1020/1440).toFixed(4));assert.ok(drag.p95<100,'drag p95 '+drag.p95);
- pass(`clock drag 05:00 -> 17:00: p95 ${drag.p95.toFixed(1)} ms, 0 world re-rasters while dragging, 1 on release`);
+ assert.equal(drag.after.paints,0,'no world re-raster on release');assert.ok(drag.after.shadows>=1,'shadows rebuilt on release');assert.equal(drag.after.state,'on');assert.equal(drag.after.sun,(1020/1440).toFixed(4));assert.ok(drag.p95<100,'drag p95 '+drag.p95);
+ pass(`clock drag 05:00 -> 17:00: p95 ${drag.p95.toFixed(1)} ms, 0 world re-rasters while dragging or on release`);
  page=await fresh();
  // 6. ?lighting=night is remembered (no menu in the world-only view); ?lighting=dynamic restores the clock.
  await open(page,'?lighting=night');assert.equal((await stats(page)).phase,'Night');

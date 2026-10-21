@@ -5,8 +5,9 @@
    "state": "on",
    "flicker": "block",
    "lights": 28,
-   "lightPaints": 3,
+   "lightPaints": 4,
    "surfacePaints": 2,
+   "shadowPaints": 2,
    "sun": "none",
    "tint": "60,72,120",
    "snow": "url(\"data:",
@@ -24,6 +25,7 @@
    "lights": 28,
    "lightPaints": 4,
    "surfacePaints": 2,
+   "shadowPaints": 2,
    "sun": "none",
    "tint": "187,163,171",
    "snow": "url(\"data:",
@@ -41,6 +43,7 @@
    "lights": 28,
    "lightPaints": 3,
    "surfacePaints": 2,
+   "shadowPaints": 2,
    "sun": "0.5000",
    "tint": "off",
    "snow": "url(\"data:",
@@ -57,6 +60,7 @@
    "lights": 28,
    "lightPaints": 4,
    "surfacePaints": 2,
+   "shadowPaints": 2,
    "sun": "none",
    "tint": "167,139,159",
    "snow": "url(\"data:",
@@ -74,6 +78,7 @@
    "lights": 28,
    "lightPaints": 4,
    "surfacePaints": 2,
+   "shadowPaints": 2,
    "sun": "none",
    "tint": "60,72,120",
    "snow": "url(\"data:",
@@ -91,6 +96,7 @@
    "lights": 28,
    "lightPaints": 4,
    "surfacePaints": 2,
+   "shadowPaints": 2,
    "sun": "none",
    "tint": "187,163,171",
    "snow": "url(\"data:",
@@ -108,6 +114,7 @@
    "lights": 28,
    "lightPaints": 3,
    "surfacePaints": 2,
+   "shadowPaints": 2,
    "sun": "0.5000",
    "tint": "off",
    "snow": "url(\"data:",
@@ -124,6 +131,7 @@
    "lights": 28,
    "lightPaints": 4,
    "surfacePaints": 2,
+   "shadowPaints": 2,
    "sun": "none",
    "tint": "167,139,159",
    "snow": "url(\"data:",
@@ -139,8 +147,9 @@
    "state": "on",
    "flicker": "block",
    "lights": 28,
-   "lightPaints": 3,
+   "lightPaints": 4,
    "surfacePaints": 2,
+   "shadowPaints": 2,
    "sun": "none",
    "tint": "60,72,120",
    "snow": "url(\"data:",
@@ -158,6 +167,7 @@
    "lights": 28,
    "lightPaints": 4,
    "surfacePaints": 2,
+   "shadowPaints": 2,
    "sun": "none",
    "tint": "187,163,171",
    "snow": "url(\"data:",
@@ -175,6 +185,7 @@
    "lights": 28,
    "lightPaints": 3,
    "surfacePaints": 2,
+   "shadowPaints": 2,
    "sun": "0.5000",
    "tint": "off",
    "snow": "url(\"data:",
@@ -191,6 +202,7 @@
    "lights": 28,
    "lightPaints": 4,
    "surfacePaints": 2,
+   "shadowPaints": 2,
    "sun": "none",
    "tint": "167,139,159",
    "snow": "url(\"data:",
@@ -206,8 +218,9 @@
    "state": "on",
    "flicker": "block",
    "lights": 28,
-   "lightPaints": 3,
+   "lightPaints": 4,
    "surfacePaints": 2,
+   "shadowPaints": 2,
    "sun": "none",
    "tint": "60,72,120",
    "snow": "url(\"data:",
@@ -223,8 +236,9 @@
    "state": "on",
    "flicker": "block",
    "lights": 28,
-   "lightPaints": 3,
+   "lightPaints": 4,
    "surfacePaints": 2,
+   "shadowPaints": 2,
    "sun": "none",
    "tint": "187,163,171",
    "snow": "url(\"data:",
@@ -242,6 +256,7 @@
    "lights": 28,
    "lightPaints": 3,
    "surfacePaints": 2,
+   "shadowPaints": 2,
    "sun": "0.5000",
    "tint": "off",
    "snow": "url(\"data:",
@@ -258,6 +273,7 @@
    "lights": 28,
    "lightPaints": 4,
    "surfacePaints": 2,
+   "shadowPaints": 2,
    "sun": "none",
    "tint": "167,139,159",
    "snow": "url(\"data:",
@@ -303,18 +319,24 @@
   "every building, gateway and brazier sprite has authored light anchors",
   "4 phases x 4 viewports: phase, layer state, snow tint and input surface",
   "night lightmap: ambient 252/765, 1680 emissive white pixels, light at all 7 buildings",
-  "night screen luma 42.5 vs day 110.8",
-  "clock ticks: lightmap paints 5->12, surface paints 2->8 for 6 sun steps",
+  "night screen luma 42.2 vs day 110.7",
+  "clock ticks: lightmap paints 6->13, 7 shadow rebuilds and 0 world re-rasters for 6 sun steps",
+  "sun step (preset click to shadows on screen): median 155 ms, max 312.8 ms, 0 world re-rasters",
   "in-game clock: slider and presets relight, sun shadows by day only, pinned hour remembered, Live restores the cycle",
-  "clock drag 05:00 -> 17:00: p95 50.0 ms, 0 world re-rasters while dragging, 1 on release",
+  "clock drag 05:00 -> 17:00: p95 66.7 ms, 0 world re-rasters while dragging or on release",
   "?lighting=night|day persists across reloads, ?lighting=dynamic restores the clock",
   "night roof hit-test selects the Forge and relights the selection",
   "prefers-reduced-motion disables flicker",
-  "mobile pan (390x844, DPR 3, 4x CPU, best of 3): zero world repaints; median day 16.5 / night 16.5 ms, p95 day 17.9 / night 17.6 ms"
+  "mobile pan (390x844, DPR 3, 4x CPU, best of 3): zero world repaints; median day 16.5 / night 16.6 ms, p95 day 21.2 / night 19.6 ms"
  ],
  "screenLuma": {
-  "day": 110.79454748068333,
-  "night": 42.50834908936418
+  "day": 110.7288590461284,
+  "night": 42.240393699951554
+ },
+ "sunStep": {
+  "paints": 0,
+  "median": 155,
+  "max": 312.8
  },
  "clockDrag": {
   "during": {
@@ -323,52 +345,53 @@
    "tint": "preview"
   },
   "after": {
-   "paints": 1,
+   "paints": 0,
+   "shadows": 1,
    "state": "on",
    "sun": "0.7083"
   },
-  "p95": 50
+  "p95": 66.69999999999982
  },
  "pan": {
   "day": [
    {
     "p50": 16.6,
-    "p95": 17.9,
+    "p95": 21.3,
     "flickerHidden": true
    },
    {
     "p50": 16.6,
-    "p95": 60.9,
+    "p95": 27.7,
     "flickerHidden": true
    },
    {
     "p50": 16.5,
-    "p95": 22.5,
+    "p95": 21.2,
     "flickerHidden": true
    }
   ],
   "night": [
    {
-    "p50": 16.7,
-    "p95": 17.6,
+    "p50": 16.6,
+    "p95": 19.6,
     "flickerHidden": true
    },
    {
-    "p50": 16.5,
+    "p50": 16.8,
     "p95": 22.6,
     "flickerHidden": true
    },
    {
-    "p50": 16.6,
-    "p95": 20.2,
+    "p50": 17.8,
+    "p95": 65.4,
     "flickerHidden": true
    }
   ],
   "gate": {
    "dayP50": 16.5,
-   "nightP50": 16.5,
-   "dayP95": 17.9,
-   "nightP95": 17.6
+   "nightP50": 16.6,
+   "dayP95": 21.2,
+   "nightP95": 19.6
   }
  }
 }

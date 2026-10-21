@@ -42,13 +42,17 @@ export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Buil
  surface.width=Math.floor(worldWidth*raster);surface.height=Math.floor(worldHeight*raster);surface.style.width=worldWidth+'px';surface.style.height=worldHeight+'px';
  const sc=surface.getContext('2d')!;let dirty=true,frame=0;
  // Day/night lighting is composited into this surface after each raster; see lighting.ts.
- const lighting=createLighting({surface,snowLayer,left,top,width:worldWidth,height:worldHeight,onSun:()=>{dirty=true;requestDraw();}});lighting.setScene(objects);
+ const lighting=createLighting({surface,snowLayer,left,top,width:worldWidth,height:worldHeight,onSun:()=>castShadows()});lighting.setScene(objects);
  // Cast shadows: every upright sprite stands as a solid on its ground footprint. Per sprite column the
  // footprint spans back..front on screen and the roof line rises `height` above the back edge; the sun
  // sweeps that span along its ground offset, so a long morning shadow keeps the footprint's depth
  // instead of collapsing into a sheared sliver. Columns are built once per placed sprite; a sun step
  // fills them opaque into one 0.35x mask (so overlaps never double-darken) and blurs it once.
  // Each column is filled on its own: one Path2D of ~7k subpaths took ~1 s to build in Chrome.
+ // Shadows stay out of the world raster: the world is rasterized once as a ground layer and an
+ // uprights layer, and lighting.ts composes ground + shadow + uprights. A sun step used to re-raster
+ // the whole 3738 x 2243 world (~0.5 s desktop, ~2.4 s on a 4x-throttled phone); now it rebuilds only
+ // this 0.35x mask. (Cutting uprights out of the mask at 0.35x left a light halo around sprites.)
  type Column={x:number;w:number;back:number;front:number;height:number};
  const profiles=new Map<string,{top:Float32Array;bottom:Float32Array}>(),footprints=new Map<string,Column[]>();
  // Topmost and lowest opaque pixel of each source column, as fractions of the sprite height (-1 when empty).
@@ -78,8 +82,10 @@ export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Buil
  }
  const hull=(points:[number,number][])=>{points.sort((a,b)=>a[0]-b[0]||a[1]-b[1]);const cross=(o:number[],a:number[],b:number[])=>(a[0]-o[0])*(b[1]-o[1])-(a[1]-o[1])*(b[0]-o[0]),chain=(list:[number,number][])=>{const h:[number,number][]=[];for(const q of list){while(h.length>1&&cross(h[h.length-2],h[h.length-1],q)<=0)h.pop();h.push(q);}h.pop();return h;};return [...chain(points),...chain([...points].reverse())];};
  const SHADE=.35,mask=document.createElement('canvas'),soft=document.createElement('canvas');mask.width=soft.width=Math.ceil(worldWidth*SHADE);mask.height=soft.height=Math.ceil(worldHeight*SHADE);
- function castShadows(){
-  const s=lighting.sun();if(!s.alpha)return;const m=mask.getContext('2d')!,g=soft.getContext('2d')!;
+ // Sprite plus foundation in world space.
+ function drawSprite(c:CanvasRenderingContext2D,p:(typeof objects)[number]){c.save();c.globalAlpha=p.opacity;c.translate(p.x,p.y);c.transform(1,p.shear,0,p.vertical,0,0);drawFoundation(c,p,images.get(FOUNDATION_SOIL)!,'under',images.get(FOUNDATION_DRIFT),images.get(FOUNDATION_MOSS));if(p.selected){c.shadowColor='#ffca64';c.shadowBlur=9;}c.drawImage(p.image,-p.width/2,-p.height*p.foot,p.width,p.height);c.shadowBlur=0;drawFoundation(c,p,images.get(FOUNDATION_SOIL)!,'face',images.get(FOUNDATION_DRIFT),images.get(FOUNDATION_MOSS));c.restore();}
+ function castShadows(paint=true){
+  const s=lighting.sun();if(!s.alpha){lighting.setShadow(null,0,paint);return;}const m=mask.getContext('2d')!,g=soft.getContext('2d')!;
   m.setTransform(1,0,0,1,0,0);m.clearRect(0,0,mask.width,mask.height);m.setTransform(SHADE,0,0,SHADE,-left*SHADE,-top*SHADE);m.fillStyle='rgb(20,28,44)';
   for(const p of objects){if(p.layer==='ground'||p.opacity<1)continue;
    for(const c of footprint(p)){const vx=c.height*s.dx,vy=c.height*s.dy,a=c.x-c.w/2,b=c.x+c.w/2;
@@ -87,14 +93,17 @@ export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Buil
     m.beginPath();h.forEach(([x,y],i)=>i?m.lineTo(x,y):m.moveTo(x,y));m.fill();}}
   // Penumbra widens with shadow length: crisp at noon, softer for the long low-sun shadows.
   g.clearRect(0,0,soft.width,soft.height);g.filter=`blur(${(.7+Math.hypot(s.dx,s.dy*2)).toFixed(2)}px)`;g.drawImage(mask,0,0);g.filter='none';
-  sc.save();sc.globalAlpha=s.alpha;sc.drawImage(soft,left,top,worldWidth,worldHeight);sc.restore();
+  lighting.setShadow(soft,s.alpha,paint);
  }
+ // Everything standing above the ground shadows, at surface resolution with transparency.
+ const uprights=document.createElement('canvas');uprights.id='world-uprights';uprights.width=surface.width;uprights.height=surface.height;
  function paintWorld(){
-  sc.setTransform(surface.width/worldWidth,0,0,surface.height/worldHeight,-left*surface.width/worldWidth,-top*surface.height/worldHeight);
+  const u=uprights.getContext('2d')!;u.setTransform(1,0,0,1,0,0);u.clearRect(0,0,uprights.width,uprights.height);
+  for(const c of [sc,u])c.setTransform(surface.width/worldWidth,0,0,surface.height/worldHeight,-left*surface.width/worldWidth,-top*surface.height/worldHeight);
   sc.fillStyle=snowPattern;sc.fillRect(left,top,worldWidth,worldHeight);sc.fillStyle=pavingPattern;sc.fill(paved);sc.drawImage(shadow,shadowLeft,shadowTop);
-  let cast=false;
-  for(const p of objects){if(!cast&&p.layer!=='ground'){castShadows();cast=true;}sc.save();sc.globalAlpha=p.opacity;sc.translate(p.x,p.y);sc.transform(1,p.shear,0,p.vertical,0,0);drawFoundation(sc,p,images.get(FOUNDATION_SOIL)!,'under',images.get(FOUNDATION_DRIFT),images.get(FOUNDATION_MOSS));if(p.selected){sc.shadowColor='#ffca64';sc.shadowBlur=9;}sc.drawImage(p.image,-p.width/2,-p.height*p.foot,p.width,p.height);sc.shadowBlur=0;drawFoundation(sc,p,images.get(FOUNDATION_SOIL)!,'face',images.get(FOUNDATION_DRIFT),images.get(FOUNDATION_MOSS));sc.restore();}
-  surface.dataset.foundations='soil-moss-v1';dirty=false;surface.dataset.paints=String(Number(surface.dataset.paints||0)+1);lighting.capture();
+  for(const p of objects)drawSprite(p.layer==='ground'?sc:u,p);
+  castShadows(false);
+  surface.dataset.foundations='soil-moss-v1';dirty=false;surface.dataset.paints=String(Number(surface.dataset.paints||0)+1);lighting.capture(uprights);
  }
  function draw(){
   if(!w||!h)return;if(dirty)paintWorld();const x=w/2-cx*scale,y=h/2-cy*scale;

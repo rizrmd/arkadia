@@ -40,6 +40,23 @@ The Stronghold now picks up releases on its own. When the tab comes back into vi
 
 If a phone still shows stripes, reload the page once. Tabs opened before this release do not have the check yet.
 
+#### Fix: slow shadow updates (21 October 2026)
+
+Every time the sun moved to its next 15-minute step (every 15 s of a live day, and on every clock preset or slider release), the Stronghold redrew the **whole 3738 × 2243 world** from scratch, including snow, paving, every sprite and every foundation, just to move the shadows. Profiling showed that building and blurring the shadow mask took only about 50 ms; almost all of the cost was this redraw.
+
+The world is now drawn once as two cached layers: the **ground** (snow, paving, ground decals) and the **uprights** (buildings, walls, trees, props). A sun step rebuilds only the small 0.35× shadow mask and recomposes ground + shadow + uprights. The result is pixel-identical (mean difference 0.05/255 across four hours on desktop and portrait).
+
+| Sun step, headless Chromium | Before | After |
+| --- | --- | --- |
+| Desktop, click to shadows on screen (median) | ~600 ms | ~170 ms |
+| Desktop, longest main-thread task | ~550 ms | ~130 ms |
+| Phone 390 × 844 @3×, 4× CPU, click to shadows | ~2.5 s | ~600 ms |
+| Phone, longest main-thread task | ~2.9 s | ~0.55 s |
+
+![07:30 before (left) and after (right): the same shadows at about a quarter of the cost](https://arkadia-stronghold-whachat.fural.space/lighting-plan/shadow-perf-0730.webp)
+
+A cheaper variant that cut the shadow under each sprite with a 0.35× silhouette mask was rejected because it left a visible light halo around sprites. The cached uprights layer costs one more world-sized canvas (about 33 MB).
+
 ### In-game clock
 
 A clock chip in the top-right corner shows the Stronghold hour, its phase and whether the clock is **Live** (following the 24-minute cycle) or **Pinned**. Tap it to open the panel:
@@ -81,12 +98,13 @@ anchors: "light-anchors.ts" {
   a: "authored lights per sprite, source pixels"
 }
 world: "world-view.ts" {
-  paint: "paintWorld: unlit raster + cast shadows"
+  paint: "paintWorld: ground + uprights layers"
+  cast: "castShadows: 0.35x mask"
 }
 lighting: "lighting.ts" {
   base: "unlit copy (base)"
   bake: "light pools + emissive masks + bloom"
-  compose: "surface = base x lightmap + bloom"
+  compose: "surface = (ground + shadow + uprights) x lightmap + bloom"
 }
 screen: "#world-layers" {
   snow: "snow tile, pre-tinted"
@@ -95,9 +113,10 @@ screen: "#world-layers" {
 }
 anchors -> lighting.bake: on building or selection change
 world.paint -> lighting.base: capture after raster
+world.cast -> lighting.compose: setShadow
 clock -> lighting.compose: "tick 1 Hz, quantized"
 ui -> lighting.compose: "setTime (pin or live)"
-lighting.compose -> world.paint: "new 15-minute sun step"
+lighting.compose -> world.cast: "new 15-minute sun step"
 lighting.compose -> screen.surface
 lighting.compose -> screen.snow
 lighting.bake -> screen.flicker
@@ -107,12 +126,12 @@ lighting.bake -> screen.flicker
 - **`light-anchors.ts`**: hand-authored light sources for the 10 lit sprites (Forge levels 1–3, Barracks, Altar, Mage Tower, Expedition Table, Mine, Gateway, Brazier). Each light stores sprite source-pixel coordinates (the same convention as `groundEdges`), a mask radius, its kind (`fire`, `window`, `candle`, `holy`, `arcane`), a ground-pool radius and drop, and an intensity. Lights hidden behind the front walls are mask-only, because the 2D lightmap has no occlusion.
 - **`lighting.ts`**:
   - On a building or selection change, it bakes a 0.35×-resolution light canvas: isometric (0.55-flattened) pools, white emissive masks and a colour bloom. Emissive masks are the authored circles intersected with a flame/arcane pixel test, so the parchment map, gold trim and red roofs never light up.
-  - After every world raster it keeps an unlit copy (`base`). When the quantized light level changes, it recomposes `surface = base × (ambient + lights) + glow`: three blits, no sprite redraw.
+  - After every world raster it keeps the unlit ground (`base`) and the transparent uprights layer from the world view. When the quantized light level or the sun shadow changes, it recomposes `surface = (base + shadow + uprights) × (ambient + lights) + glow`: a few blits, no sprite redraw.
   - The infinite snow uses a pre-tinted copy of its repeat tile (a `data:` URL).
   - The selected building gets a soft extra pool, so it stays readable at night.
-  - The sun moves in 15-minute steps (15 real seconds of a live day). On a new step it asks the world view to re-raster, deferred while the camera moves. Clock ticks inside a step only relight.
-  - **Clock-drag preview.** Baking recomposes the full 3738 × 2243 surface, and each step re-encoded the snow tile. At one bake per slider step, a drag ran at p95 417 ms per frame (3 s with 4× CPU throttling). While the slider is dragged, the surface instead shows the unlit world. The 807 × 485 lightmap (`multiply`) and bloom (`screen`) blend live over it, and a flat `#world-ambient` layer tints the snow. Each step redraws only the small lightmap, and the clock applies at most one hour per frame. Releasing the slider, or resting on it for 1.5 s, bakes once. When the sun moved, that bake is the shadow re-raster itself. The preview matches the baked frame to a mean difference below 1/255.
-- **`world-view.ts`** has four lighting hooks: create, `capture()` after `paintWorld`, `place()` beside the surface transform, and `setScene()` in `update()`. It also draws the cast shadows in `paintWorld`, after the ground decals and before any upright sprite, so shadows never darken a building. Each placed sprite is cut into columns about 3.5 world px apart. A column spans its footprint from the back edge to the front edge, and its height is the roof line's height above the back edge. The footprint's front edge is the sprite's lowest opaque pixel in that column. The hidden back edge is that contour reflected through the midpoint of its left and right ends (a footprint parallelogram is centrally symmetric, under any calibrated shear). Trees use a round crown footprint instead. On each sun step, every column's footprint is swept along the sun's offset × height (a convex hexagon) and filled opaque into one 0.35× mask, so overlapping shadows never double-darken. The mask is blurred once (a wider penumbra for longer shadows) and blitted at the shadow alpha. Columns are built once per sprite. Each column is filled on its own, because building one Path2D with thousands of subpaths took about 1 s in Chrome. Pan frames are unchanged.
+  - The sun moves in 15-minute steps (15 real seconds of a live day). On a new step it asks the world view for a new shadow mask (`setShadow`), deferred while the camera moves, and recomposes. The world is never re-rastered for the sun. Clock ticks inside a step only relight.
+  - **Clock-drag preview.** Baking recomposes the full 3738 × 2243 surface, and each step re-encoded the snow tile. At one bake per slider step, a drag ran at p95 417 ms per frame (3 s with 4× CPU throttling). While the slider is dragged, the surface instead shows the unlit world. The 807 × 485 lightmap (`multiply`) and bloom (`screen`) blend live over it, and a flat `#world-ambient` layer tints the snow. Each step redraws only the small lightmap, and the clock applies at most one hour per frame. Releasing the slider, or resting on it for 1.5 s, bakes once. When the sun moved, that bake includes the new shadow mask. The preview matches the baked frame to a mean difference below 1/255.
+- **`world-view.ts`** has four lighting hooks: create, `capture()` after `paintWorld`, `place()` beside the surface transform, and `setScene()` in `update()`. `paintWorld` draws the ground and ground decals into the surface and every upright sprite into a separate transparent `uprights` canvas, so shadows land between them and never darken a building. `castShadows()` builds the shadow mask and hands it to `lighting.setShadow()`. Each placed sprite is cut into columns about 3.5 world px apart. A column spans its footprint from the back edge to the front edge, and its height is the roof line's height above the back edge. The footprint's front edge is the sprite's lowest opaque pixel in that column. The hidden back edge is that contour reflected through the midpoint of its left and right ends (a footprint parallelogram is centrally symmetric, under any calibrated shear). Trees use a round crown footprint instead. On each sun step, every column's footprint is swept along the sun's offset × height (a convex hexagon) and filled opaque into one 0.35× mask, so overlapping shadows never double-darken. The mask is blurred once (a wider penumbra for longer shadows) and laid over the ground at the shadow alpha. Columns are built once per sprite. Each column is filled on its own, because building one Path2D with thousands of subpaths took about 1 s in Chrome. Pan frames are unchanged.
 - **`clock.ts`** is the clock chip and panel. `main.ts` mounts it with `worldView.setTime` and `worldView.subscribeClock`.
 
 ### Departures from the plan, with reasons
@@ -124,7 +143,7 @@ lighting.bake -> screen.flicker
 | Header chip + Lighting menu | URL controls, then a single clock chip | The Stronghold is world-only. Lighting was first URL-only, but nobody could see it change during the day, so a single clock chip was added in the top-right corner |
 | Always-on flicker | Flicker layer hidden while the camera moves | It is the only live blended layer. While the camera is still, its cost does not affect panning |
 
-Memory: the unlit copy doubles the world raster (3738 × 2243 px ≈ 33 MB, so about 67 MB in total). Dawn and dusk recompose every few seconds, deferred while the camera moves. Each recompose re-uploads the surface texture once. By day the world also re-rasters once per 15-minute sun step (every 15 s of a live day), deferred while the camera moves. That re-raster takes about 0.71 s in headless Chromium on this host, against 0.68 s before cast shadows. Its longest task under 4× CPU throttling is 1.9 s, against 1.6 s before. The shadow mask and its blurred copy add about 2 MB.
+Memory: the surface, the unlit ground copy and the uprights layer are each the size of the world raster (3738 × 2243 px ≈ 33 MB, so about 100 MB in total). Dawn and dusk recompose every few seconds, deferred while the camera moves. Each recompose re-uploads the surface texture once. By day the surface also recomposes once per 15-minute sun step (every 15 s of a live day), deferred while the camera moves. It does not re-raster the world (see *Fix: slow shadow updates* above). The shadow mask and its blurred copy add about 2 MB.
 
 ## Verification
 
@@ -134,9 +153,10 @@ Memory: the unlit copy doubles the world raster (3738 × 2243 px ≈ 33 MB, so a
   - 4 phases × 4 viewports (1536 × 1024, 2560 × 1440, 390 × 844 @3×, 844 × 390 @2×) show the right phase, layer state and snow tint, and the canvas stays the input surface.
   - Night lightmap: ambient 252/765, 1680 restored emissive pixels, light at all 7 buildings.
   - Night screen luma is 42.6 vs 113.0 by day (day now includes sun shadows).
-  - Clock ticks relight; the world re-rasters only on a 15-minute sun step.
+  - Clock ticks relight; a 15-minute sun step rebuilds only the shadow mask, with zero world re-rasters.
+  - Sun step from a clock preset to shadows on screen: median 155 ms, with zero world re-rasters (450–740 ms before).
   - The in-game clock: slider and presets relight, sun shadows appear by day only, a pinned hour survives a reload, and Live restores the cycle.
-  - Clock drag from 05:00 to 17:00 at 60 Hz: no world re-raster or snow re-encode while dragging, one re-raster on release. Headless p95 went from 417 ms to 33 ms per frame (3016 → 50 ms at 4× CPU).
+  - Clock drag from 05:00 to 17:00 at 60 Hz: no world re-raster or snow re-encode while dragging or on release (shadows catch up from the mask). Headless p95 went from 417 ms to 33 ms per frame (3016 → 50 ms at 4× CPU).
   - `?lighting` persistence works.
   - A night roof click selects the Forge and relights the selection.
   - Reduced motion stops the flicker.
