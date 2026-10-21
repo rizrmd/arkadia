@@ -3,7 +3,9 @@ import {environmentSprites,COURT,tilePoint} from './terrain';
 import {slots,calibration,WORLD} from './scene';
 import {buildings,type Building,type State} from './economy';
 import {createLighting} from './lighting';
-export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Building)=>void){
+import {createHero} from './hero';
+import type {Walk} from './controls';
+export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Building)=>void,direction:()=>Walk){
  const ctx=canvas.getContext('2d')!,environment=environmentSprites(),images=new Map<string,HTMLImageElement>();
  const spriteFile=(id:Building,level:number)=>id==='forge'?`/fortress-ui/forge-${level}.webp`:id==='gate'?'/modular-stronghold/v2/gateway-grand.png':`/assets/${slots[id].asset}.png`;
  const paving='/modular-stronghold/v2/paving-warm-texture.png',snow='/modular-stronghold/v2/snow-soft-texture.png';
@@ -89,6 +91,8 @@ export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Buil
   g.clearRect(0,0,soft.width,soft.height);g.filter=`blur(${(.7+Math.hypot(s.dx,s.dy*2)).toFixed(2)}px)`;g.drawImage(mask,0,0);g.filter='none';
   sc.save();sc.globalAlpha=s.alpha;sc.drawImage(soft,left,top,worldWidth,worldHeight);sc.restore();
  }
+ // The player's hero walks the court in its own layer over the world; the camera eases after it.
+ const hero=await createHero({layer:viewport,lightmap:viewport.querySelector<HTMLCanvasElement>('#world-lightmap')!,surface,footprint,sun:lighting.sun,direction,follow});hero.setScene(objects);
  function paintWorld(){
   sc.setTransform(surface.width/worldWidth,0,0,surface.height/worldHeight,-left*surface.width/worldWidth,-top*surface.height/worldHeight);
   sc.fillStyle=snowPattern;sc.fillRect(left,top,worldWidth,worldHeight);sc.fillStyle=pavingPattern;sc.fill(paved);sc.drawImage(shadow,shadowLeft,shadowTop);
@@ -98,7 +102,7 @@ export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Buil
  }
  function draw(){
   if(!w||!h)return;if(dirty)paintWorld();const x=w/2-cx*scale,y=h/2-cy*scale;
-  const placement=`translate3d(${x+left*scale}px,${y+top*scale}px,0) scale(${scale})`;surface.style.transform=placement;lighting.place(placement);
+  const placement=`translate3d(${x+left*scale}px,${y+top*scale}px,0) scale(${scale})`;surface.style.transform=placement;lighting.place(placement);hero.place(x,y,scale);
   // Wrap a repeated GPU layer rather than repainting an infinite background.
   const sx=((x%(periodX*scale))+periodX*scale)%(periodX*scale)-periodX*scale;
   const sy=((y%(periodY*scale))+periodY*scale)%(periodY*scale)-periodY*scale;
@@ -122,6 +126,9 @@ export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Buil
   const duration=Math.min(900,Math.max(380,240+distance*.6));let elapsed=0,last=0;canvas.dataset.camera='gliding';
   const step=(now:number)=>{elapsed+=last?Math.min(now-last,34):0;last=now;const t=Math.min(1,elapsed/duration),k=t<.5?4*t*t*t:1-(2-2*t)**3/2;cx=fx+(tx-fx)*k;cy=fy+(ty-fy)*k;draw();if(t<1)glide=requestAnimationFrame(step);else{glide=0;canvas.dataset.camera='idle';}};
   glide=requestAnimationFrame(step);}
+ // Walking keeps the hero inside a central box and the camera eases after them past it; a drag still pans freely.
+ function follow(hx:number,hy:number,dt:number){if(held.size||!w)return;const zx=w/scale*.16,zy=h/scale*.14,fy=hy-40,tx=hx-Math.max(-zx,Math.min(zx,hx-cx)),ty=fy-Math.max(-zy,Math.min(zy,fy-cy));
+  if(Math.abs(tx-cx)+Math.abs(ty-cy)<.05)return;stopGlide();const e=1-Math.exp(-dt/180);cx+=(tx-cx)*e;cy+=(ty-cy)*e;draw();}
  const held=new Map<number,{x:number;y:number}>();let moved=false,down={x:0,y:0};
  canvas.onpointerdown=e=>{stopGlide();canvas.setPointerCapture(e.pointerId);held.set(e.pointerId,{x:e.clientX,y:e.clientY});down={x:e.clientX,y:e.clientY};moved=false;};
  canvas.onpointermove=e=>{const prev=held.get(e.pointerId);if(!prev)return;const points=[...held.values()],before=points.length===2?Math.hypot(points[0].x-points[1].x,points[0].y-points[1].y):0;cx-=(e.clientX-prev.x)/scale;cy-=(e.clientY-prev.y)/scale;held.set(e.pointerId,{x:e.clientX,y:e.clientY});if(Math.hypot(e.clientX-down.x,e.clientY-down.y)>6)moved=true;if(before){const p=[...held.values()];scale=Math.max(.35,Math.min(2.2,scale*Math.hypot(p[0].x-p[1].x,p[0].y-p[1].y)/before));moved=true;}requestDraw();};
@@ -129,5 +136,6 @@ export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Buil
  function hitBuilding(id:Building,x:number,y:number){const s=slots[id],c=calibration(id),file=spriteFile(id,levels?.[id]||1),image=images.get(file)!,height=image.height*s.width/image.width,dx=x-s.x,dy=(y-s.y-c.shear*dx)/c.vertical,px=(dx+s.width/2)/s.width,py=(dy+height*s.pivot)/height;if(px<0||py<0||px>=1||py>=1)return false;let mask=masks.get(file);if(!mask){const sample=document.createElement('canvas');sample.width=192;sample.height=Math.ceil(192*image.height/image.width);const sc=sample.getContext('2d')!;sc.drawImage(image,0,0,sample.width,sample.height);mask={data:sc.getImageData(0,0,sample.width,sample.height).data,width:sample.width,height:sample.height};masks.set(file,mask);}return mask.data[(Math.floor(py*mask.height)*mask.width+Math.floor(px*mask.width))*4+3]>40;}
  canvas.onpointerup=e=>{held.delete(e.pointerId);if(moved)return;const x=cx+(e.clientX-w/2)/scale,y=cy+(e.clientY-h/2)/scale;const hit=[...buildings].sort((a,b)=>slots[b].y-slots[a].y).find(id=>hitBuilding(id,x,y));if(hit)onSelect(hit);};
  canvas.onpointercancel=()=>{held.clear();moved=true;};canvas.onwheel=e=>{e.preventDefault();stopGlide();const old=scale;scale=Math.max(.35,Math.min(2.2,scale*Math.exp(-e.deltaY*.001)));cx+=(e.clientX-w/2)*(1/old-1/scale);cy+=(e.clientY-h/2)*(1/old-1/scale);requestDraw();};
- return {update(state:State,id:Building|null){const next=buildings.map(b=>state.levels[b]).join(',')+':'+id;if(next===signature)return;signature=next;levels=state.levels;selected=id;objects=makeObjects();lighting.setScene(objects);dirty=true;requestDraw();},focus(id:Building){glideTo(slots[id].x,slots[id].y-60);},fit(){stopGlide();scale=Math.max(.2,Math.min((w-40)/WORLD.width,(h-120)/WORLD.height));cx=WORLD.width/2;cy=385;requestDraw();},setTime:lighting.setTime,previewClock:lighting.preview,subscribeClock:lighting.subscribe};
+ hero.start();
+ return {update(state:State,id:Building|null){const next=buildings.map(b=>state.levels[b]).join(',')+':'+id;if(next===signature)return;signature=next;levels=state.levels;selected=id;objects=makeObjects();lighting.setScene(objects);hero.setScene(objects);dirty=true;requestDraw();},focus(id:Building){glideTo(slots[id].x,slots[id].y-60);},fit(){stopGlide();scale=Math.max(.2,Math.min((w-40)/WORLD.width,(h-120)/WORLD.height));cx=WORLD.width/2;cy=385;requestDraw();},setTime:lighting.setTime,previewClock:lighting.preview,subscribeClock:lighting.subscribe};
 }
