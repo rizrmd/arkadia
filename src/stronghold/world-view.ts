@@ -5,7 +5,7 @@ import {buildings,isBuilt,heroBonus,START_BUILT,type Building,type State} from '
 import {createLighting} from './lighting';
 import {createHero} from './hero';
 import {createEncounters} from './encounters';
-import {setGateOpen} from './navigation';
+import {setGateOpen,gateTowerFront} from './navigation';
 import {createGateDoors,GATE_SHEET,type GateSheet} from './gate-doors';
 import type {Walk} from './controls';
 import type {Progress} from '../app/loader';
@@ -94,7 +94,7 @@ export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Buil
  function gateFootprint(){
   const cols:Column[]=[];
   for(const side of [-1,1])for(let d=36;d<=135;d+=3){
-   const front=d<86?774+(d-36)*.42:795-(d-86)*.62;
+   const front=gateTowerFront(d);
    cols.push({x:577+side*d,w:3,back:front-34,front,height:110});
   }
   if(!gatePassable)for(let d=-35;d<=35;d+=3)cols.push({x:577+d,w:3,back:763,front:775,height:105});
@@ -194,7 +194,7 @@ export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Buil
  canvas.onpointerup=e=>{held.delete(e.pointerId);if(moved)return;const x=cx+(e.clientX-w/2)/scale,y=cy+(e.clientY-h/2)/scale;const hit=[...built].sort((a,b)=>slots[b].y-slots[a].y).find(id=>hitBuilding(id,x,y));if(hit)onSelect(hit);};
  canvas.onpointercancel=()=>{held.clear();moved=true;};canvas.onwheel=e=>{e.preventDefault();stopGlide();const old=scale;scale=Math.max(.35,Math.min(2.2,scale*Math.exp(-e.deltaY*.001)));cx+=(e.clientX-w/2)*(1/old-1/scale);cy+=(e.clientY-h/2)*(1/old-1/scale);requestDraw();};
  function updateGate(hx:number,hy:number){
-  const d=Math.abs(hx-577),edge=d<36||d>135?770:d<86?774+(d-36)*.42:795-(d-86)*.62;
+  const d=Math.abs(hx-577),edge=d<36||d>135?770:gateTowerFront(d);
   doors.order(viewport.querySelector<HTMLElement>('#world-hero')!,hy<edge);
   // Ground-space distance to the threshold. Hysteresis prevents flickering at the edge.
   const near=Math.abs(hx-577)<(gateOpen?65:48)&&Math.abs(hy-770)<(gateOpen?88:66);
