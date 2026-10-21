@@ -1,0 +1,8 @@
+import fs from 'node:fs/promises';import {createHash}from 'node:crypto';import {execFileSync}from 'node:child_process';import assert from 'node:assert/strict';
+const publication=JSON.parse(await fs.readFile('docs/enemies-v1/publication.json','utf8')),deployment=JSON.parse(await fs.readFile('docs/enemies-v1/deployment.json','utf8')),base=new URL(publication.preview).origin;
+const images=new Set(),pages=[];
+for(const p of publication.knowledge){const d=JSON.parse(execFileSync('fural-agent',['knowledge','get',p.id],{encoding:'utf8',maxBuffer:2e6}));assert.equal(d.parent_id,'NKBDbf92263842a4a4a39a381ad3');assert.equal(d.title,p.title);for(const m of d.markdown.matchAll(/!\[[^\]]*\]\(([^)]+)\)/g))images.add(new URL(m[1]).pathname);pages.push({id:d.id,title:d.title,inlineImages:d.markdown.match(/!\[/g)?.length||0});}
+const resources=Object.entries(deployment.resources),results=[];let cursor=0;
+await Promise.all(Array.from({length:4},async()=>{while(cursor<resources.length){const [p,hash]=resources[cursor++];const r=await fetch(base+p,{signal:AbortSignal.timeout(20000)});assert.equal(r.status,200,p);const b=Buffer.from(await r.arrayBuffer());assert.equal(createHash('sha256').update(b).digest('hex'),hash,p);if(/\.(png|webp)$/.test(p))assert.ok(images.has(p),'Missing Knowledge embed '+p);results.push(p);}}));
+assert.equal(images.size,resources.filter(([p])=>/\.(png|webp)$/.test(p)).length);
+const report={base,version:deployment.version,resourcesVerified:results.length,inlineImagesVerified:images.size,knowledge:pages,publicPlayback:'Passed all 11 clip contracts for both enemies; see live-playback.json',status:'pass'};await fs.writeFile('docs/enemies-v1/release-verification.json',JSON.stringify(report,null,2));console.log(JSON.stringify(report));

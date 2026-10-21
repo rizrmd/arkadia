@@ -1,5 +1,14 @@
-import fs from 'node:fs/promises';import path from 'node:path';import {execFileSync} from 'node:child_process';
-// A dedicated asset review site: no shared gameplay loader, bundles, server, or peer assets.
-const stage=path.resolve('.publish/enemies');await fs.mkdir(stage+'/enemies',{recursive:true});await fs.cp('public/enemies/v1',stage+'/enemies/v1',{recursive:true});await fs.copyFile('scripts/enemies/server.mjs',stage+'/server.mjs');
-const receipt=JSON.parse(execFileSync('fural-agent',['sandboxes','serve','--name','arkadia-enemies','--slug','arkadia-enemies','--dir',stage,'--cmd','node server.mjs','--port','3000','--project','PJ8758f22f61165f3d3215e454'],{encoding:'utf8',timeout:120000,maxBuffer:4e6}));
-await fs.writeFile('docs/enemies-v1/deployment.json',JSON.stringify(receipt,null,2));console.log(JSON.stringify(receipt));
+import fs from 'node:fs/promises';import path from 'node:path';import os from 'node:os';import {gzipSync} from 'node:zlib';import {execFileSync} from 'node:child_process';import {createHash} from 'node:crypto';
+// Dedicated site only; binary resources transfer in bounded chunks before the tiny serve operation.
+const stage=path.resolve('.publish/enemies-loader'),out=path.resolve('.publish/enemies-bundle'),sandbox='CS5c87967c4417a298aa100fd9',files={};await fs.mkdir(stage,{recursive:true});await fs.mkdir(out,{recursive:true});
+async function collect(dir){for(const e of await fs.readdir(dir,{withFileTypes:true})){const f=dir+'/'+e.name;if(e.isDirectory())await collect(f);else files['/'+f.slice('public/'.length)]=(await fs.readFile(f)).toString('base64');}}await collect('public/enemies/v1');
+const resources=Object.fromEntries(Object.entries(files).map(([p,b])=>[p,createHash('sha256').update(Buffer.from(b,'base64')).digest('hex')]));const gzip=gzipSync(JSON.stringify(files)),version=createHash('sha256').update(gzip).digest('hex').slice(0,12),parts=[];
+for(let i=0;i<gzip.length;i+=1500000){const n=`enemies-${version}-${parts.length}.gzpart`;await fs.writeFile(out+'/'+n,gzip.subarray(i,i+1500000));parts.push(n);}
+const run=args=>JSON.parse(execFileSync('fural-agent',args,{encoding:'utf8',timeout:120000,maxBuffer:8e6}));
+for(const n of parts){console.log('Transfer '+n);try{run(['organization','home-files','transfer','--from-member','US4f550b10dab65dc9756fa429','--from',path.relative(os.homedir(),out)+'/'+n,'--to-custom-sandbox',sandbox,'--to',n]);}catch(e){if(!String(e.stdout).includes('destination already exists'))throw e;}}
+const server=`import http from 'node:http';import {readFileSync} from 'node:fs';import {gunzipSync} from 'node:zlib';
+const files=JSON.parse(gunzipSync(Buffer.concat(${JSON.stringify(parts)}.map(p=>readFileSync(p)))));const types={html:'text/html; charset=utf-8',js:'text/javascript; charset=utf-8',json:'application/json',png:'image/png',webp:'image/webp'};
+http.createServer((req,res)=>{let p;try{p=decodeURIComponent(new URL(req.url,'http://local').pathname)}catch{res.writeHead(400).end();return;}if(p==='/'){res.writeHead(302,{Location:'/enemies/v1/'}).end();return;}if(p.endsWith('/'))p+='index.html';if(!files[p]){res.writeHead(404).end();return;}res.writeHead(200,{'Content-Type':types[p.split('.').pop()]||'application/octet-stream','Cache-Control':'no-cache','X-Content-Type-Options':'nosniff'}).end(Buffer.from(files[p],'base64'));}).listen(3000,'0.0.0.0');`;
+await fs.writeFile(stage+'/server.mjs',server);
+if(process.env.STAGE_ONLY){console.log('Resource transfer completed; loader staged');process.exit(0);}
+const receipt=run(['sandboxes','serve','--name','arkadia-enemies','--slug','arkadia-enemies','--dir',stage,'--cmd','node server.mjs','--port','3000','--project','PJ8758f22f61165f3d3215e454']);await fs.writeFile('docs/enemies-v1/deployment.json',JSON.stringify({version,resources,receipt},null,2));console.log(JSON.stringify(receipt));
