@@ -17,6 +17,7 @@ try{
   await page.waitForFunction(()=>document.querySelector('#world-canvas')?.dataset.ready==='true'&&window.__STRONGHOLD_COMBAT__?.snapshot().spawns.length>=3,null,{timeout:60000});
   const state=await page.evaluate(async()=>{const img=new Image();img.src='/ui/health-frame.webp';await img.decode();const hud=document.querySelector('#hero-hud'),bar=hud.querySelector('.hud-bar'),clock=document.querySelector('.clock-chip');const r=bar.getBoundingClientRect(),h=hud.getBoundingClientRect(),c=clock.getBoundingClientRect();return {text:hud.innerText,ratio:r.width/r.height,hud:{left:h.left,right:h.right},clockLeft:c.left,art:{w:img.naturalWidth,h:img.naturalHeight},combat:window.__STRONGHOLD_COMBAT__.snapshot()};});
   console.log(width,state.hud,state.clockLeft,state.text);assert(Math.abs(state.ratio-2166/212)<.02);assert(state.hud.left>=0&&state.hud.right<state.clockLeft);assert(!/\d+\s*m\b|distance|from the tent/i.test(state.text));assert(state.combat.spawns.every(s=>s.m===10));assert(state.combat.foes.every(f=>!f.safe));
+  const chip=await page.locator('.clock-chip').boundingBox();assert(chip.height<=32,'clock stays short');
   await page.locator('.clock-chip').click();
   assert.equal(await page.locator('.clock-chip').getAttribute('aria-expanded'),'true');
   const panel=await page.locator('.clock-panel').boundingBox();assert(panel.x>=0&&panel.x+panel.width<=width);
@@ -27,7 +28,7 @@ try{
   assert.equal(await page.locator('.clock-chip').getAttribute('aria-expanded'),'false');
   console.log('screenshot',width);await page.screenshot({timeout:10000,animations:'disabled',path:`${out}/${width}.png`});
   // Stand just outside the gate beside a foe; confirm auto combat still works.
-  console.log('combat',width);const foe=state.combat.foes[0];assert(await page.evaluate(f=>window.__STRONGHOLD_COMBAT__.teleport(f.u-.1,f.v+.05),foe));
+  console.log('combat',width);assert(await page.evaluate(()=>{const api=window.__STRONGHOLD_COMBAT__;return api.snapshot().foes.some(f=>api.teleport(f.u,f.v)||api.teleport(f.u+.3,f.v+.3));}),'can stand beside a current foe');
   await page.waitForFunction(()=>{const s=window.__STRONGHOLD_COMBAT__.snapshot();return s.hero.state==='attack'||s.kills>0;},null,{timeout:10000,polling:16});
   await page.waitForFunction(()=>window.__STRONGHOLD_COMBAT__.snapshot().kills>0,null,{timeout:15000});
   if(width===390){

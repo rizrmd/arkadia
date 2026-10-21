@@ -10,7 +10,7 @@
         "left": 12,
         "right": 142
       },
-      "clockLeft": 196,
+      "clockLeft": 218,
       "art": {
         "w": 2166,
         "h": 212
@@ -33,50 +33,76 @@
         },
         "foes": [
           {
-            "u": 16.26,
-            "v": 17.67,
-            "hp": 2,
-            "state": "move",
-            "safe": false,
-            "gateMeters": 9.5
-          },
-          {
-            "u": 15.98,
-            "v": 17.98,
+            "u": 16.94,
+            "v": 17.44,
             "hp": 2,
             "state": "idle",
             "safe": false,
             "gateMeters": 10
           },
           {
-            "u": 17.46,
-            "v": 16.62,
+            "u": 17.17,
+            "v": 17.23,
+            "hp": 2,
+            "state": "idle",
+            "safe": false,
+            "gateMeters": 10
+          },
+          {
+            "u": 14.09,
+            "v": 18.09,
             "hp": 2,
             "state": "move",
             "safe": false,
-            "gateMeters": 9.5
+            "gateMeters": 10
+          },
+          {
+            "u": 15.51,
+            "v": 18.11,
+            "hp": 2,
+            "state": "idle",
+            "safe": false,
+            "gateMeters": 10
+          },
+          {
+            "u": 15.82,
+            "v": 18.04,
+            "hp": 2,
+            "state": "move",
+            "safe": false,
+            "gateMeters": 10
           }
         ],
         "kills": 0,
         "spawns": [
           {
-            "u": 16.2,
-            "v": 17.89,
+            "u": 16.97,
+            "v": 17.41,
             "m": 10
           },
           {
-            "u": 16,
-            "v": 17.97,
+            "u": 17.16,
+            "v": 17.24,
             "m": 10
           },
           {
-            "u": 17.65,
-            "v": 16.65,
+            "u": 14.08,
+            "v": 18.09,
+            "m": 10
+          },
+          {
+            "u": 15.51,
+            "v": 18.11,
+            "m": 10
+          },
+          {
+            "u": 15.82,
+            "v": 18.03,
             "m": 10
           }
         ],
         "minSpawnMeters": 10,
-        "minFoeMeters": 9.482660907907805
+        "minFoeMeters": 10
       }
     },
     {
@@ -87,7 +113,7 @@
         "left": 12,
         "right": 212
       },
-      "clockLeft": 266,
+      "clockLeft": 288,
       "art": {
         "w": 2166,
         "h": 212
@@ -110,24 +136,24 @@
         },
         "foes": [
           {
-            "u": 14.23,
-            "v": 18.12,
+            "u": 17.4,
+            "v": 16.98,
             "hp": 2,
             "state": "idle",
             "safe": false,
             "gateMeters": 10
           },
           {
-            "u": 14.35,
-            "v": 19.61,
+            "u": 16.88,
+            "v": 17.67,
             "hp": 2,
             "state": "move",
             "safe": false,
-            "gateMeters": 14.4
+            "gateMeters": 10.5
           },
           {
-            "u": 18.15,
-            "v": 14.4,
+            "u": 14.1,
+            "v": 18.09,
             "hp": 2,
             "state": "idle",
             "safe": false,
@@ -137,23 +163,23 @@
         "kills": 0,
         "spawns": [
           {
-            "u": 14.23,
-            "v": 18.12,
+            "u": 17.4,
+            "v": 16.98,
             "m": 10
           },
           {
-            "u": 15.19,
-            "v": 18.16,
+            "u": 16.8,
+            "v": 17.54,
             "m": 10
           },
           {
-            "u": 18.15,
-            "v": 14.4,
+            "u": 14.1,
+            "v": 18.09,
             "m": 10
           }
         ],
         "minSpawnMeters": 10,
-        "minFoeMeters": 10.000000000000004
+        "minFoeMeters": 9.999999999999998
       }
     },
     {
@@ -164,7 +190,7 @@
         "left": 12,
         "right": 272
       },
-      "clockLeft": 1222.734375,
+      "clockLeft": 1237.734375,
       "art": {
         "w": 2166,
         "h": 212
@@ -187,50 +213,50 @@
         },
         "foes": [
           {
-            "u": 18.08,
-            "v": 16.1,
-            "hp": 2,
-            "state": "move",
-            "safe": false,
-            "gateMeters": 10.4
-          },
-          {
-            "u": 16.05,
-            "v": 17.93,
-            "hp": 2,
-            "state": "move",
-            "safe": false,
-            "gateMeters": 9.9
-          },
-          {
-            "u": 16.47,
-            "v": 17.75,
+            "u": 14.25,
+            "v": 18.12,
             "hp": 2,
             "state": "idle",
             "safe": false,
             "gateMeters": 10
+          },
+          {
+            "u": 17.18,
+            "v": 17.22,
+            "hp": 2,
+            "state": "idle",
+            "safe": false,
+            "gateMeters": 10
+          },
+          {
+            "u": 18.21,
+            "v": 14.67,
+            "hp": 2,
+            "state": "move",
+            "safe": false,
+            "gateMeters": 10.1
           }
         ],
         "kills": 0,
         "spawns": [
           {
-            "u": 17.9,
-            "v": 16.18,
+            "u": 14.25,
+            "v": 18.12,
             "m": 10
           },
           {
-            "u": 16.27,
-            "v": 17.86,
+            "u": 17.18,
+            "v": 17.22,
             "m": 10
           },
           {
-            "u": 16.45,
-            "v": 17.76,
+            "u": 18.17,
+            "v": 14.64,
             "m": 10
           }
         ],
         "minSpawnMeters": 10,
-        "minFoeMeters": 9.947834365740448
+        "minFoeMeters": 9.999999999999998
       }
     }
   ]
