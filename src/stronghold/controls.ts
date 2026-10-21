@@ -12,12 +12,13 @@ export function createControls(root:HTMLElement){
  window.addEventListener('keydown',e=>{if(!KEYS[e.code]||editable(e.target)||e.ctrlKey||e.metaKey||e.altKey)return;e.preventDefault();held.add(e.code);});
  window.addEventListener('keyup',e=>{held.delete(e.code);});
  const release=()=>{held.clear();stick={x:0,y:0};finger=-1;knob.style.transform='';base.dataset.active='false';};
- window.addEventListener('blur',release);document.addEventListener('visibilitychange',()=>{if(document.hidden)release();});
+ const reset=()=>{touches.clear();release();};window.addEventListener('blur',reset);document.addEventListener('visibilitychange',()=>{if(document.hidden)reset();});
  // Floating thumbstick: hidden until a touch starts on the world in the bottom-left quarter of the screen, then shown
  // centred under that thumb and hidden again on release. Its finger is taken in the capture phase so the canvas never
  // pans or selects a building with it; touches anywhere else keep panning, pinching and tapping as before.
+ // A touch that joins one already on the world is the second finger of a pinch, so it never becomes the stick.
  const base=document.createElement('div'),knob=document.createElement('div');base.id='move-stick';base.setAttribute('aria-hidden','true');knob.className='stick-knob';base.append(knob);root.append(base);
- let finger=-1,ox=0,oy=0;
+ let finger=-1,ox=0,oy=0;const touches=new Set<number>();
  const inZone=(e:PointerEvent)=>e.clientX<innerWidth/2&&e.clientY>innerHeight/2;
  const aim=(e:PointerEvent)=>{const radius=base.offsetWidth/2,dx=e.clientX-ox,dy=e.clientY-oy,d=Math.hypot(dx,dy),k=Math.min(1,d/(radius*.62));
   knob.style.transform=`translate(${dx/(d||1)*k*radius*.62}px,${dy/(d||1)*k*radius*.62}px)`;
@@ -25,11 +26,12 @@ export function createControls(root:HTMLElement){
   const m=k<DEAD?0:(k-DEAD)/(1-DEAD);stick={x:dx/(d||1)*m,y:dy/(d||1)*m};};
  const take=(e:PointerEvent)=>{e.stopImmediatePropagation();e.preventDefault();};
  window.addEventListener('pointerdown',e=>{
-  if(finger>=0||e.pointerType!=='touch'||!(e.target instanceof HTMLCanvasElement)||!inZone(e))return;
+  if(e.pointerType!=='touch'||!(e.target instanceof HTMLCanvasElement))return;
+  const pinch=touches.size>0;touches.add(e.pointerId);if(finger>=0||pinch||!inZone(e))return;
   take(e);finger=e.pointerId;ox=e.clientX;oy=e.clientY;base.style.left=`${ox}px`;base.style.top=`${oy}px`;base.dataset.active='true';aim(e);
  },{capture:true});
  window.addEventListener('pointermove',e=>{if(e.pointerId===finger){take(e);aim(e);}},{capture:true});
- const lift=(e:PointerEvent)=>{if(e.pointerId!==finger)return;take(e);finger=-1;release();};
+ const lift=(e:PointerEvent)=>{touches.delete(e.pointerId);if(e.pointerId!==finger)return;take(e);finger=-1;release();};
  window.addEventListener('pointerup',lift,{capture:true});window.addEventListener('pointercancel',lift,{capture:true});
  return {
   direction():Walk{

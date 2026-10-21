@@ -161,7 +161,9 @@ export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Buil
   // Wrap a repeated GPU layer rather than repainting an infinite background.
   const sx=((x%(periodX*scale))+periodX*scale)%(periodX*scale)-periodX*scale;
   const sy=((y%(periodY*scale))+periodY*scale)%(periodY*scale)-periodY*scale;
-  const sw=Math.ceil(w/scale+periodX),sh=Math.ceil(h/scale+periodY);
+  // Sized for the furthest pinch zoom-out, so a pinch never resizes it: every resize re-rastered the whole
+  // layer and its newly exposed bottom and right strips flickered empty on phones.
+  const cover=Math.min(scale,.35),sw=Math.ceil(w/cover+periodX),sh=Math.ceil(h/cover+periodY);
   if(snowLayer.style.width!==sw+'px')snowLayer.style.width=sw+'px';if(snowLayer.style.height!==sh+'px')snowLayer.style.height=sh+'px';
   snowLayer.style.transform=`translate3d(${sx}px,${sy}px,0) scale(${scale})`;
   canvas.dataset.ready='true';canvas.dataset.mode='full-screen';canvas.dataset.renderer='composited-world';
