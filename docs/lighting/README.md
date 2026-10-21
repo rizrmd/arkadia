@@ -4,7 +4,7 @@ Status: **implemented** for the Stronghold only (Frostpass and other pages are u
 
 ## What players see
 
-One Stronghold day lasts **24 real minutes**: Night → Dawn → Day → Golden hour → Dusk → Night. The clock derives from `Date.now()`, so every visit shows the same time of day. In full daylight the world looks exactly as before. As evening falls, the ambient light shifts to dusk violet and then to moonlit blue. Windows, hearths, lanterns, gate torches, braziers, altar candles and the Mage Tower rune stay at full painted brightness, cast warm or arcane light pools on the paving, and glow. Flames flicker gently while the camera is still.
+One Stronghold day lasts **24 real minutes**: Night → Dawn → Day → Golden hour → Dusk → Night. The live clock derives from `Date.now()`, so every visit shows the same time of day; the in-game clock can pin any hour instead. In full daylight the colours are unchanged, and the sun casts shadows that move through the day. As evening falls, the ambient light shifts to dusk violet and then to moonlit blue. Windows, hearths, lanterns, gate torches, braziers, altar candles and the Mage Tower rune stay at full painted brightness, cast warm or arcane light pools on the paving, and glow. Flames flicker gently while the camera is still.
 
 ![Night, dawn, day and dusk (desktop)](https://arkadia-stronghold-whachat.fural.space/lighting-plan/runtime-phases.webp)
 
@@ -54,12 +54,14 @@ Users with `prefers-reduced-motion` get no flicker.
 direction: right
 clock: "daylight.ts (pure clock)" {
   k: "keyframes -> ambient, lights, glow"
+  sun: "sunAt -> shadow direction, length"
 }
+ui: "clock.ts (chip, slider, presets)"
 anchors: "light-anchors.ts" {
   a: "authored lights per sprite, source pixels"
 }
 world: "world-view.ts" {
-  paint: "paintWorld: unlit raster"
+  paint: "paintWorld: unlit raster + cast shadows"
 }
 lighting: "lighting.ts" {
   base: "unlit copy (base)"
@@ -74,6 +76,8 @@ screen: "#world-layers" {
 anchors -> lighting.bake: on building or selection change
 world.paint -> lighting.base: capture after raster
 clock -> lighting.compose: "tick 1 Hz, quantized"
+ui -> lighting.compose: "setTime (pin or live)"
+lighting.compose -> world.paint: "new 15-minute sun step"
 lighting.compose -> screen.surface
 lighting.compose -> screen.snow
 lighting.bake -> screen.flicker
