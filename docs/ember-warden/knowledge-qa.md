@@ -1,13 +1,3 @@
-## Mobile loading defect and fix
-
-**Deployment blocked:** the corrected viewer passes local testing, but the hosting node rejects the isolated deployment with `runtime_admission_paused` under CPU pressure. The public URL still serves the previous viewer. Earlier public playback results do not establish mobile compatibility.
-
-The previous loader waited for all 1,312 body and VFX frames and had no visible failure/retry state. The replacement loads only the selected action, starts with four idle sheets, uses canvas crops without requiring ImageBitmap, releases unrelated clips and displays progress, timeout errors and Retry. All 45 full regression checks pass locally. Android-sized touch emulation with ImageBitmap disabled verifies startup, moving Flame Fan, death hold and recovery from an intentionally failed image. Physical-phone verification remains outstanding.
-
-![Reported mobile loading failure](/api/rooms/DRb4787514f3224844f3c207ab/attachments/DAd3bcea6903c918c3f1964c32)
-
-![Local mobile emulation after the loader correction](/api/rooms/DRb4787514f3224844f3c207ab/attachments/DA09e05aac89bfb1360ec482fd)
-
 ## Acceptance status
 
 **Production candidate published; final art acceptance is pending.** The simplified 3D rendering does not yet match the approved hand-painted concept. No game-ready quality claim is made.
@@ -34,6 +24,14 @@ Local browser: PASS — 45 playback/scrub/transition checks, zero page or resour
 Public browser: PASS — 45 playback/scrub/transition checks; 57 deployed image resources match SHA-256; zero page or resource errors.
 
 The verifier observes every frame of all eight facings for each action at 1× and 0.25× through requestAnimationFrame playback. It tests every frame with the scrubber, idle/action/idle-or-run transitions, hurt recovery and death's terminal hold. Trace evidence is stored in local-playback.json and live-playback.json, separately from the art review. Screenshots of each action are embedded in project Knowledge.
+
+## Mobile loading correction
+
+**Live mobile emulation: PASS.** Startup loads 4 sheets; startup including the first idle cycle took 2.69 seconds in this run. Moving Flame Fan, death hold and failed-image Retry recovery pass with zero page errors. The former deployment admission blocker is resolved.
+
+The original viewer decoded every body/VFX sheet before its first draw. It now loads only the selected action, uses browser-compatible canvas crops, releases unrelated actions and displays per-sheet progress, a timeout and Retry. Startup requests only four idle sheets. Android-sized touch emulation with ImageBitmap disabled verifies moving attack, death hold and recovery from a deliberately failed sheet. This is browser emulation, not a physical-phone claim. See local-mobile-loader.json and live-mobile-loader.json for evidence.
+
+![Reported loading failure, before the fix](/api/rooms/DRb4787514f3224844f3c207ab/attachments/DAd3bcea6903c918c3f1964c32)
 
 ## Visual inspection and limitations
 
@@ -73,6 +71,8 @@ Screenshots document the running viewer; the actual normal/slow/scrub traces are
 
 ![live idle](https://ember-warden-review-whachat.fural.space/evidence/live-idle.png)
 
+![live mobile loader](https://ember-warden-review-whachat.fural.space/evidence/live-mobile-loader.png)
+
 ![live run](https://ember-warden-review-whachat.fural.space/evidence/live-run.png)
 
 ![local cinder step](https://ember-warden-review-whachat.fural.space/evidence/local-cinder-step.png)
@@ -90,5 +90,7 @@ Screenshots document the running viewer; the actual normal/slow/scrub traces are
 ![local hurt](https://ember-warden-review-whachat.fural.space/evidence/local-hurt.png)
 
 ![local idle](https://ember-warden-review-whachat.fural.space/evidence/local-idle.png)
+
+![local mobile loader](https://ember-warden-review-whachat.fural.space/evidence/local-mobile-loader.png)
 
 ![local run](https://ember-warden-review-whachat.fural.space/evidence/local-run.png)

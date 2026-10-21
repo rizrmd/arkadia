@@ -1,13 +1,18 @@
 {
-  "status": "deployment-blocked",
-  "code": "runtime_admission_paused",
+  "status": "deployed-and-mobile-verified",
+  "code": null,
   "localRegressionChecks": 45,
   "mobileEmulationPassed": true,
   "physicalDeviceTest": false,
-  "publicMobileVerification": "not run: corrected viewer has not been admitted for deployment",
+  "publicMobileVerification": "PASS: public Android-sized touch emulation with ImageBitmap disabled; four-sheet startup, moving Flame Fan, death hold, and failed-image Retry recovery.",
   "stagedVersion": "b5b4a9414179",
   "attachments": {
     "evidence/local-mobile-loader.png": "/api/rooms/DRb4787514f3224844f3c207ab/attachments/DA09e05aac89bfb1360ec482fd"
   },
-  "reportedScreenshot": "/api/rooms/DRb4787514f3224844f3c207ab/attachments/DAd3bcea6903c918c3f1964c32"
+  "reportedScreenshot": "/api/rooms/DRb4787514f3224844f3c207ab/attachments/DAd3bcea6903c918c3f1964c32",
+  "previousBlocker": "runtime_admission_paused",
+  "deployedVersion": "85441211d810",
+  "publicRegressionChecks": 45,
+  "deployedResourcesVerified": 120,
+  "knowledgeOutputImages": 78
 }
