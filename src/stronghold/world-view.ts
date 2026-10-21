@@ -73,6 +73,16 @@ export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Buil
  // parallelogram is centrally symmetric), which recovers the hidden back edge of buildings, walls and
  // rocks under any calibrated shear.
  const round=/^(spruce-mature|fir-young|brazier)$/;
+ // The expedition tent's open doorway shows its dark interior, whose lowest pixel sits far behind the canvas
+ // walls: the hero walked into that notch and stood in front of the whole tent. Open-fronted sprites take the
+ // lower convex hull of their ground contour (wall feet, poles, rope pegs) as the front edge instead.
+ const hollow=/^expedition$/;
+ function hollowFront(p:{id:string},bottom:Float32Array,first:number,last:number){
+  if(!hollow.test(p.id))return bottom;const h:number[]=[],edge=Float32Array.from(bottom);
+  for(let i=first;i<=last;i++){if(bottom[i]<0)continue;while(h.length>1){const o=h[h.length-2],a=h[h.length-1];if((a-o)*(bottom[i]-bottom[o])-(bottom[a]-bottom[o])*(i-o)<0)break;h.pop();}h.push(i);}
+  for(let k=1;k<h.length;k++)for(let j=h[k-1];j<=h[k];j++)edge[j]=bottom[h[k-1]]+(bottom[h[k]]-bottom[h[k-1]])*(j-h[k-1])/(h[k]-h[k-1]);
+  return edge;
+ }
  function footprint(p:(typeof objects)[number]){
   const key=p.file+'|'+p.x+'|'+p.y+'|'+p.width;let cols=footprints.get(key);if(cols)return cols;cols=[];
   const {top,bottom}=profile(p.image),n=top.length,filled=[...top.keys()].filter(i=>top[i]>=0);
@@ -82,13 +92,14 @@ export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Buil
   // back edge hundreds of px behind the sprite, an invisible wall the hero could not walk behind.
   const base=filled.map(i=>at(i,bottom[i])),low=base.reduce((a,q)=>q.y>a.y?q:a);
   const grounded=filled.filter((_,k)=>base[k].y>=low.y-.5*Math.abs(base[k].x-low.x)-12),first=grounded[0],last=grounded[grounded.length-1];
-  const front=(j:number)=>{if(j<first||j>last)return -1;const a=bottom[Math.floor(j)],b=bottom[Math.ceil(j)];return a<0?b:b<0?a:a+(b-a)*(j-Math.floor(j));};
-  const ci=(first+last)/2,cy=(bottom[first]+bottom[last])/2;
+  const edge=hollowFront(p,bottom,first,last);
+  const front=(j:number)=>{if(j<first||j>last)return -1;const a=edge[Math.floor(j)],b=edge[Math.ceil(j)];return a<0?b:b<0?a:a+(b-a)*(j-Math.floor(j));};
+  const ci=(first+last)/2,cy=(edge[first]+edge[last])/2;
   // Columns about 3.5 world px apart; the low-resolution blurred mask hides anything finer.
   const stride=Math.max(1,Math.round(3.5*n/p.width)),w=p.width/n*stride*1.2;
   for(let i=filled[0];i<=filled[filled.length-1];i+=stride){if(top[i]<0)continue;const t=at(i,top[i]);let back:number,front0:number;
    if(round.test(p.id)){const rx=p.width*.3,d=(t.x-p.x)/rx,s=Math.abs(d)<1?rx*.5*Math.sqrt(1-d*d):0;back=p.y-s;front0=p.y+s;}
-   else{const f=at(i,bottom[i]).y,r=front(2*ci-i);front0=f;back=r<0?f:Math.min(f,at(i,2*cy-r).y);}
+   else{const f=at(i,edge[i]).y,r=front(2*ci-i);front0=f;back=r<0?f:Math.min(f,at(i,2*cy-r).y);}
    cols.push({x:t.x,w,back,front:front0,height:Math.max(0,back-t.y)});}
   footprints.set(key,cols);return cols;
  }

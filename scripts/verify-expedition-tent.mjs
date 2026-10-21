@@ -17,6 +17,15 @@ try{
  await page.keyboard.down('w');await page.waitForTimeout(800);await page.keyboard.up('w');await page.waitForTimeout(300);const blocked=await pos();assert(Math.abs(blocked.y-stopped.y)<2,'tent collision holds');
  await page.screenshot({path:out+'/day.png'});
  await page.keyboard.down('d');await page.waitForTimeout(1600);await page.keyboard.up('d');await page.waitForTimeout(300);const aside=await pos();assert(aside.x>blocked.x+100,'can walk around tent');
+ // The open doorway is not walkable, and from the north the tent covers the hero.
+ // Reload first: a page that just stopped walking saves the hero's position 400 ms later, over the seeded one.
+ const walk=async(from,key)=>{await page.reload();await page.evaluate(p=>localStorage.setItem('arkadia.stronghold.hero',JSON.stringify(p)),from);await page.reload();
+  await page.waitForFunction(()=>document.querySelector('#world-hero')?.dataset.x&&!document.querySelector('#loading-screen'));
+  await page.keyboard.down(key);await page.waitForTimeout(2400);await page.keyboard.up(key);await page.waitForTimeout(300);
+  return page.evaluate(()=>{const d=document.querySelector('#world-hero').dataset;return{x:+d.x,y:+d.y,behind:+d.behind};});};
+ const doorway=await walk({x:532,y:500},'w');assert(doorway.y>485,'tent doorway blocks movement');
+ const behind=await walk({x:565,y:390},'s');assert(behind.y<420&&behind.behind>0,'tent covers hero behind it');
+ await page.screenshot({path:out+'/behind.png'});
  await page.setViewportSize({width:390,height:844});await page.waitForTimeout(600);await page.screenshot({path:out+'/phone.png'});assert.deepEqual(errors,[]);
- console.log(JSON.stringify({passed:true,start,stopped,blocked,aside,errors}));
+ console.log(JSON.stringify({passed:true,start,stopped,blocked,aside,doorway,behind,errors}));
 }finally{await browser?.close();server?.kill();}
