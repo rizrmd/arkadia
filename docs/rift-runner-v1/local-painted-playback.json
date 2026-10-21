@@ -1,13 +1,20 @@
 {
-  "base": "http://127.0.0.1:34943",
+  "base": "http://127.0.0.1:45473",
   "errors": [],
   "results": [
+    {
+      "action": "idle",
+      "clipCount": 8,
+      "framesObserved": 32,
+      "allFramesRendered": true,
+      "elapsedSeconds": 1.8165
+    },
     {
       "action": "hurt",
       "clipCount": 8,
       "framesObserved": 64,
       "allFramesRendered": true,
-      "elapsedSeconds": 1.5332999999999994,
+      "elapsedSeconds": 1.5497999999999994,
       "transitionPhasesObserved": [
         "neutral before",
         "action",
@@ -19,11 +26,23 @@
       "clipCount": 8,
       "framesObserved": 64,
       "allFramesRendered": true,
-      "elapsedSeconds": 1.9832000000000005,
+      "elapsedSeconds": 1.9833000000000005,
       "transitionPhasesObserved": [
         "neutral before",
         "action",
         "terminal hold"
+      ]
+    },
+    {
+      "action": "run",
+      "clipCount": 8,
+      "framesObserved": 64,
+      "allFramesRendered": true,
+      "elapsedSeconds": 1.8000000000000023,
+      "transitionPhasesObserved": [
+        "idle before",
+        "action",
+        "idle after"
       ]
     }
   ],

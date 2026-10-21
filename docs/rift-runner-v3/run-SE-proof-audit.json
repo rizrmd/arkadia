@@ -1,0 +1,215 @@
+{
+  "file": "source/run-SE-nine.png",
+  "sourceGutters": [
+    [
+      0,
+      455,
+      848,
+      1254
+    ],
+    [
+      0,
+      447,
+      832,
+      1254
+    ],
+    [
+      0,
+      446,
+      854,
+      1254
+    ]
+  ],
+  "scale": 0.4567307692307692,
+  "alignment": "constant scale; projected guide lateral head path; sole contact follows projected ground during support and rises during flight; constant scale, no per-frame height normalization",
+  "frames": [
+    {
+      "frame": 0,
+      "sourceCell": 1,
+      "sourceFile": "source/run-SE-nine.png",
+      "scale": 0.4567307692307692,
+      "translation": [
+        71,
+        66
+      ],
+      "headTarget": [
+        185.61895539819346,
+        66
+      ],
+      "actualBounds": [
+        71,
+        66,
+        221,
+        243
+      ],
+      "expectedGuideBottom": 242.7690578034682,
+      "bottomDifference": 0.23094219653179948,
+      "supportPhase": true
+    },
+    {
+      "frame": 1,
+      "sourceCell": 2,
+      "sourceFile": "source/run-SE-nine.png",
+      "scale": 0.4567307692307692,
+      "translation": [
+        71,
+        76
+      ],
+      "headTarget": [
+        185.79792737840515,
+        76
+      ],
+      "actualBounds": [
+        71,
+        76,
+        226,
+        236
+      ],
+      "expectedGuideBottom": 235.55795375722542,
+      "bottomDifference": 0.4420462427745804,
+      "supportPhase": true
+    },
+    {
+      "frame": 2,
+      "sourceCell": 3,
+      "sourceFile": "source/run-SE-nine.png",
+      "scale": 0.4567307692307692,
+      "translation": [
+        72,
+        69
+      ],
+      "headTarget": [
+        185.92139663150678,
+        69
+      ],
+      "actualBounds": [
+        72,
+        69,
+        230,
+        236
+      ],
+      "expectedGuideBottom": 235.77222543352602,
+      "bottomDifference": 0.22777456647398253,
+      "supportPhase": true
+    },
+    {
+      "frame": 3,
+      "sourceCell": 4,
+      "sourceFile": "source/run-SE-nine.png",
+      "scale": 0.4567307692307692,
+      "translation": [
+        67,
+        68
+      ],
+      "headTarget": [
+        186.03117800433182,
+        85
+      ],
+      "actualBounds": [
+        67,
+        68,
+        239,
+        229
+      ],
+      "expectedGuideBottom": 245.94084971098266,
+      "bottomDifference": -16.94084971098266,
+      "flightRootAdjustment": -17,
+      "flightHeadTargetRelativeToSupport": -7.5,
+      "supportPhase": false
+    },
+    {
+      "frame": 4,
+      "sourceCell": 5,
+      "sourceFile": "source/run-SE-nine.png",
+      "scale": 0.4567307692307692,
+      "translation": [
+        72,
+        82
+      ],
+      "headTarget": [
+        185.69315934046733,
+        82
+      ],
+      "actualBounds": [
+        72,
+        82,
+        225,
+        255
+      ],
+      "expectedGuideBottom": 254.53763583815027,
+      "bottomDifference": 0.4623641618497345,
+      "supportPhase": true
+    },
+    {
+      "frame": 5,
+      "sourceCell": 6,
+      "sourceFile": "source/run-SE-nine.png",
+      "scale": 0.4567307692307692,
+      "translation": [
+        75,
+        85
+      ],
+      "headTarget": [
+        185.15270456948377,
+        85
+      ],
+      "actualBounds": [
+        75,
+        85,
+        223,
+        247
+      ],
+      "expectedGuideBottom": 247.3265317919075,
+      "bottomDifference": -0.326531791907513,
+      "supportPhase": true
+    },
+    {
+      "frame": 6,
+      "sourceCell": 7,
+      "sourceFile": "source/run-SE-nine.png",
+      "scale": 0.4567307692307692,
+      "translation": [
+        72,
+        75
+      ],
+      "headTarget": [
+        184.8838865797873,
+        75
+      ],
+      "actualBounds": [
+        72,
+        75,
+        212,
+        240
+      ],
+      "expectedGuideBottom": 240.11542774566473,
+      "bottomDifference": -0.11542774566473213,
+      "supportPhase": true
+    },
+    {
+      "frame": 7,
+      "sourceCell": 8,
+      "sourceFile": "source/run-SE-nine.png",
+      "scale": 0.4567307692307692,
+      "translation": [
+        67,
+        63
+      ],
+      "headTarget": [
+        185.2175887696119,
+        81
+      ],
+      "actualBounds": [
+        67,
+        63,
+        231,
+        216
+      ],
+      "expectedGuideBottom": 234.1722716763006,
+      "bottomDifference": -18.172271676300596,
+      "flightRootAdjustment": -18,
+      "flightHeadTargetRelativeToSupport": -7.5,
+      "supportPhase": false
+    }
+  ]
+}

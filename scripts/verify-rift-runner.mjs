@@ -22,7 +22,7 @@ try{
   if(clips[0].layer==='body'&&action!=='idle'){
    await page.evaluate(()=>window.riftReview.setMode('transition'));
    await page.waitForTimeout((duration+2)*1000);const transition=await page.evaluate(()=>window.riftReview.state.trace);
-   const expectedPhases=['canonical','painted-v3'].includes(clips[0].source)?['neutral before','action',clips[0].holdLastFrame?'terminal hold':'neutral after']:['idle before','action','idle after'];for(const phase of expectedPhases)if(!transition.some(v=>v.phase===phase))throw Error(`Missing ${phase} ${action}`);
+   const expectedPhases=(['canonical','painted-v3'].includes(clips[0].source)&&!clips[0].loop)?['neutral before','action',clips[0].holdLastFrame?'terminal hold':'neutral after']:['idle before','action','idle after'];for(const phase of expectedPhases)if(!transition.some(v=>v.phase===phase))throw Error(`Missing ${phase} ${action}`);
    results.at(-1).transitionPhasesObserved=expectedPhases; if(clips[0].holdLastFrame){await page.waitForTimeout(200);const trace=await page.evaluate(()=>window.riftReview.state.trace.filter(v=>v.time>window.riftReview.state.time-.15));if(!trace.every(v=>v.frame===clips[0].frames.length-1&&v.phase==='terminal hold'))throw Error('Death terminal hold failed')}
   }
  }

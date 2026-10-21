@@ -1,0 +1,2997 @@
+{
+  "status": "eight-direction-painted-run-candidate-pending-full-motion-and-transition-acceptance",
+  "cell": [
+    352,
+    352
+  ],
+  "bodyPivot": [
+    176,
+    240
+  ],
+  "actions": [
+    "run"
+  ],
+  "directions": [
+    "N",
+    "NE",
+    "E",
+    "SE",
+    "S",
+    "SW",
+    "W",
+    "NW"
+  ],
+  "sheets": [
+    {
+      "image": "../v3/run-proof/run-N.png",
+      "cell": [
+        352,
+        352
+      ],
+      "clips": [
+        {
+          "id": "run-N",
+          "action": "run",
+          "direction": "N",
+          "image": "../v3/run-proof/run-N.png",
+          "cellSize": 352,
+          "frames": [
+            {
+              "cell": [
+                0,
+                0
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                120,
+                45,
+                249,
+                240
+              ],
+              "time": 0,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                1,
+                0
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                122,
+                53,
+                256,
+                238
+              ],
+              "time": 0.125,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                2,
+                0
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                120,
+                67,
+                250,
+                248
+              ],
+              "time": 0.25,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                3,
+                0
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                119,
+                55,
+                262,
+                229
+              ],
+              "time": 0.375,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                0,
+                1
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                119,
+                59,
+                255,
+                240
+              ],
+              "time": 0.5,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                1,
+                1
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                119,
+                55,
+                253,
+                238
+              ],
+              "time": 0.625,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                2,
+                1
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                118,
+                64,
+                249,
+                248
+              ],
+              "time": 0.75,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                3,
+                1
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                120,
+                47,
+                258,
+                218
+              ],
+              "time": 0.875,
+              "muzzle": [
+                160,
+                160
+              ]
+            }
+          ],
+          "fps": 10,
+          "loop": true,
+          "duration": 0.8,
+          "layer": "body"
+        }
+      ]
+    },
+    {
+      "image": "../v3/run-proof/run-NE.png",
+      "cell": [
+        352,
+        352
+      ],
+      "clips": [
+        {
+          "id": "run-NE",
+          "action": "run",
+          "direction": "NE",
+          "image": "../v3/run-proof/run-NE.png",
+          "cellSize": 352,
+          "frames": [
+            {
+              "cell": [
+                0,
+                0
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                82,
+                74,
+                230,
+                242
+              ],
+              "time": 0,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                1,
+                0
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                81,
+                68,
+                217,
+                233
+              ],
+              "time": 0.125,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                2,
+                0
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                74,
+                72,
+                225,
+                240
+              ],
+              "time": 0.25,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                3,
+                0
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                71,
+                66,
+                244,
+                218
+              ],
+              "time": 0.375,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                0,
+                1
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                74,
+                75,
+                232,
+                237
+              ],
+              "time": 0.5,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                1,
+                1
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                80,
+                78,
+                221,
+                244
+              ],
+              "time": 0.625,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                2,
+                1
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                78,
+                88,
+                229,
+                252
+              ],
+              "time": 0.75,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                3,
+                1
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                80,
+                73,
+                251,
+                223
+              ],
+              "time": 0.875,
+              "muzzle": [
+                160,
+                160
+              ]
+            }
+          ],
+          "fps": 10,
+          "loop": true,
+          "duration": 0.8,
+          "layer": "body"
+        }
+      ]
+    },
+    {
+      "image": "../v3/run-proof/run-E.png",
+      "cell": [
+        352,
+        352
+      ],
+      "clips": [
+        {
+          "id": "run-E",
+          "action": "run",
+          "direction": "E",
+          "image": "../v3/run-proof/run-E.png",
+          "cellSize": 352,
+          "frames": [
+            {
+              "cell": [
+                0,
+                0
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                73,
+                63,
+                228,
+                236
+              ],
+              "time": 0,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                1,
+                0
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                74,
+                62,
+                223,
+                232
+              ],
+              "time": 0.125,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                2,
+                0
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                63,
+                56,
+                232,
+                232
+              ],
+              "time": 0.25,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                3,
+                0
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                67,
+                60,
+                249,
+                220
+              ],
+              "time": 0.375,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                0,
+                1
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                62,
+                79,
+                239,
+                248
+              ],
+              "time": 0.5,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                1,
+                1
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                70,
+                79,
+                225,
+                248
+              ],
+              "time": 0.625,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                2,
+                1
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                67,
+                77,
+                231,
+                248
+              ],
+              "time": 0.75,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                3,
+                1
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                75,
+                62,
+                261,
+                227
+              ],
+              "time": 0.875,
+              "muzzle": [
+                160,
+                160
+              ]
+            }
+          ],
+          "fps": 10,
+          "loop": true,
+          "duration": 0.8,
+          "layer": "body"
+        }
+      ]
+    },
+    {
+      "image": "../v3/run-proof/run-SE.png",
+      "cell": [
+        352,
+        352
+      ],
+      "clips": [
+        {
+          "id": "run-SE",
+          "action": "run",
+          "direction": "SE",
+          "image": "../v3/run-proof/run-SE.png",
+          "cellSize": 352,
+          "frames": [
+            {
+              "cell": [
+                0,
+                0
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                71,
+                66,
+                221,
+                243
+              ],
+              "time": 0,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                1,
+                0
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                71,
+                76,
+                226,
+                236
+              ],
+              "time": 0.125,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                2,
+                0
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                72,
+                69,
+                230,
+                236
+              ],
+              "time": 0.25,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                3,
+                0
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                67,
+                68,
+                239,
+                229
+              ],
+              "time": 0.375,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                0,
+                1
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                72,
+                82,
+                225,
+                255
+              ],
+              "time": 0.5,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                1,
+                1
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                75,
+                85,
+                223,
+                247
+              ],
+              "time": 0.625,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                2,
+                1
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                72,
+                75,
+                212,
+                240
+              ],
+              "time": 0.75,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                3,
+                1
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                67,
+                63,
+                231,
+                216
+              ],
+              "time": 0.875,
+              "muzzle": [
+                160,
+                160
+              ]
+            }
+          ],
+          "fps": 10,
+          "loop": true,
+          "duration": 0.8,
+          "layer": "body"
+        }
+      ]
+    },
+    {
+      "image": "../v3/run-proof/run-S.png",
+      "cell": [
+        352,
+        352
+      ],
+      "clips": [
+        {
+          "id": "run-S",
+          "action": "run",
+          "direction": "S",
+          "image": "../v3/run-proof/run-S.png",
+          "cellSize": 352,
+          "frames": [
+            {
+              "cell": [
+                0,
+                0
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                124,
+                69,
+                295,
+                252
+              ],
+              "time": 0,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                1,
+                0
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                123,
+                68,
+                293,
+                242
+              ],
+              "time": 0.125,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                2,
+                0
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                104,
+                59,
+                290,
+                233
+              ],
+              "time": 0.25,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                3,
+                0
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                111,
+                60,
+                290,
+                219
+              ],
+              "time": 0.375,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                0,
+                1
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                109,
+                77,
+                292,
+                252
+              ],
+              "time": 0.5,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                1,
+                1
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                119,
+                68,
+                289,
+                242
+              ],
+              "time": 0.625,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                2,
+                1
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                120,
+                60,
+                296,
+                233
+              ],
+              "time": 0.75,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                3,
+                1
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                116,
+                57,
+                299,
+                222
+              ],
+              "time": 0.875,
+              "muzzle": [
+                160,
+                160
+              ]
+            }
+          ],
+          "fps": 10,
+          "loop": true,
+          "duration": 0.8,
+          "layer": "body"
+        }
+      ]
+    },
+    {
+      "image": "../v3/run-proof/run-SW.png",
+      "cell": [
+        352,
+        352
+      ],
+      "clips": [
+        {
+          "id": "run-SW",
+          "action": "run",
+          "direction": "SW",
+          "image": "../v3/run-proof/run-SW.png",
+          "cellSize": 352,
+          "frames": [
+            {
+              "cell": [
+                0,
+                0
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                116,
+                77,
+                320,
+                255
+              ],
+              "time": 0,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                1,
+                0
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                131,
+                76,
+                320,
+                247
+              ],
+              "time": 0.125,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                2,
+                0
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                123,
+                74,
+                324,
+                240
+              ],
+              "time": 0.25,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                3,
+                0
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                105,
+                68,
+                338,
+                227
+              ],
+              "time": 0.375,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                0,
+                1
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                133,
+                78,
+                326,
+                243
+              ],
+              "time": 0.5,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                1,
+                1
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                132,
+                70,
+                326,
+                236
+              ],
+              "time": 0.625,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                2,
+                1
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                131,
+                68,
+                316,
+                236
+              ],
+              "time": 0.75,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                3,
+                1
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                109,
+                65,
+                329,
+                228
+              ],
+              "time": 0.875,
+              "muzzle": [
+                160,
+                160
+              ]
+            }
+          ],
+          "fps": 10,
+          "loop": true,
+          "duration": 0.8,
+          "layer": "body"
+        }
+      ]
+    },
+    {
+      "image": "../v3/run-proof/run-W.png",
+      "cell": [
+        352,
+        352
+      ],
+      "clips": [
+        {
+          "id": "run-W",
+          "action": "run",
+          "direction": "W",
+          "image": "../v3/run-proof/run-W.png",
+          "cellSize": 352,
+          "frames": [
+            {
+              "cell": [
+                0,
+                0
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                122,
+                78,
+                287,
+                248
+              ],
+              "time": 0,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                1,
+                0
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                132,
+                88,
+                280,
+                248
+              ],
+              "time": 0.125,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                2,
+                0
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                123,
+                87,
+                282,
+                248
+              ],
+              "time": 0.25,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                3,
+                0
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                125,
+                72,
+                291,
+                228
+              ],
+              "time": 0.375,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                0,
+                1
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                119,
+                72,
+                287,
+                236
+              ],
+              "time": 0.5,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                1,
+                1
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                132,
+                72,
+                281,
+                232
+              ],
+              "time": 0.625,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                2,
+                1
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                126,
+                70,
+                286,
+                232
+              ],
+              "time": 0.75,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                3,
+                1
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                124,
+                66,
+                287,
+                225
+              ],
+              "time": 0.875,
+              "muzzle": [
+                160,
+                160
+              ]
+            }
+          ],
+          "fps": 10,
+          "loop": true,
+          "duration": 0.8,
+          "layer": "body"
+        }
+      ]
+    },
+    {
+      "image": "../v3/run-proof/run-NW.png",
+      "cell": [
+        352,
+        352
+      ],
+      "clips": [
+        {
+          "id": "run-NW",
+          "action": "run",
+          "direction": "NW",
+          "image": "../v3/run-proof/run-NW.png",
+          "cellSize": 352,
+          "frames": [
+            {
+              "cell": [
+                0,
+                0
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                123,
+                48,
+                294,
+                237
+              ],
+              "time": 0,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                1,
+                0
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                133,
+                57,
+                292,
+                244
+              ],
+              "time": 0.125,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                2,
+                0
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                118,
+                67,
+                284,
+                252
+              ],
+              "time": 0.25,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                3,
+                0
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                123,
+                56,
+                297,
+                241
+              ],
+              "time": 0.375,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                0,
+                1
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                120,
+                60,
+                285,
+                242
+              ],
+              "time": 0.5,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                1,
+                1
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                122,
+                48,
+                284,
+                233
+              ],
+              "time": 0.625,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                2,
+                1
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                119,
+                58,
+                291,
+                240
+              ],
+              "time": 0.75,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                3,
+                1
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                122,
+                45,
+                293,
+                227
+              ],
+              "time": 0.875,
+              "muzzle": [
+                160,
+                160
+              ]
+            }
+          ],
+          "fps": 10,
+          "loop": true,
+          "duration": 0.8,
+          "layer": "body"
+        }
+      ]
+    }
+  ],
+  "clips": [
+    {
+      "id": "run-N",
+      "action": "run",
+      "direction": "N",
+      "image": "../v3/run-proof/run-N.png",
+      "cellSize": 352,
+      "frames": [
+        {
+          "cell": [
+            0,
+            0
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            120,
+            45,
+            249,
+            240
+          ],
+          "time": 0,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            1,
+            0
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            122,
+            53,
+            256,
+            238
+          ],
+          "time": 0.125,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            2,
+            0
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            120,
+            67,
+            250,
+            248
+          ],
+          "time": 0.25,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            3,
+            0
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            119,
+            55,
+            262,
+            229
+          ],
+          "time": 0.375,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            0,
+            1
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            119,
+            59,
+            255,
+            240
+          ],
+          "time": 0.5,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            1,
+            1
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            119,
+            55,
+            253,
+            238
+          ],
+          "time": 0.625,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            2,
+            1
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            118,
+            64,
+            249,
+            248
+          ],
+          "time": 0.75,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            3,
+            1
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            120,
+            47,
+            258,
+            218
+          ],
+          "time": 0.875,
+          "muzzle": [
+            160,
+            160
+          ]
+        }
+      ],
+      "fps": 10,
+      "loop": true,
+      "duration": 0.8,
+      "layer": "body"
+    },
+    {
+      "id": "run-NE",
+      "action": "run",
+      "direction": "NE",
+      "image": "../v3/run-proof/run-NE.png",
+      "cellSize": 352,
+      "frames": [
+        {
+          "cell": [
+            0,
+            0
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            82,
+            74,
+            230,
+            242
+          ],
+          "time": 0,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            1,
+            0
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            81,
+            68,
+            217,
+            233
+          ],
+          "time": 0.125,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            2,
+            0
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            74,
+            72,
+            225,
+            240
+          ],
+          "time": 0.25,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            3,
+            0
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            71,
+            66,
+            244,
+            218
+          ],
+          "time": 0.375,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            0,
+            1
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            74,
+            75,
+            232,
+            237
+          ],
+          "time": 0.5,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            1,
+            1
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            80,
+            78,
+            221,
+            244
+          ],
+          "time": 0.625,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            2,
+            1
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            78,
+            88,
+            229,
+            252
+          ],
+          "time": 0.75,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            3,
+            1
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            80,
+            73,
+            251,
+            223
+          ],
+          "time": 0.875,
+          "muzzle": [
+            160,
+            160
+          ]
+        }
+      ],
+      "fps": 10,
+      "loop": true,
+      "duration": 0.8,
+      "layer": "body"
+    },
+    {
+      "id": "run-E",
+      "action": "run",
+      "direction": "E",
+      "image": "../v3/run-proof/run-E.png",
+      "cellSize": 352,
+      "frames": [
+        {
+          "cell": [
+            0,
+            0
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            73,
+            63,
+            228,
+            236
+          ],
+          "time": 0,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            1,
+            0
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            74,
+            62,
+            223,
+            232
+          ],
+          "time": 0.125,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            2,
+            0
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            63,
+            56,
+            232,
+            232
+          ],
+          "time": 0.25,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            3,
+            0
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            67,
+            60,
+            249,
+            220
+          ],
+          "time": 0.375,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            0,
+            1
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            62,
+            79,
+            239,
+            248
+          ],
+          "time": 0.5,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            1,
+            1
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            70,
+            79,
+            225,
+            248
+          ],
+          "time": 0.625,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            2,
+            1
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            67,
+            77,
+            231,
+            248
+          ],
+          "time": 0.75,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            3,
+            1
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            75,
+            62,
+            261,
+            227
+          ],
+          "time": 0.875,
+          "muzzle": [
+            160,
+            160
+          ]
+        }
+      ],
+      "fps": 10,
+      "loop": true,
+      "duration": 0.8,
+      "layer": "body"
+    },
+    {
+      "id": "run-SE",
+      "action": "run",
+      "direction": "SE",
+      "image": "../v3/run-proof/run-SE.png",
+      "cellSize": 352,
+      "frames": [
+        {
+          "cell": [
+            0,
+            0
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            71,
+            66,
+            221,
+            243
+          ],
+          "time": 0,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            1,
+            0
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            71,
+            76,
+            226,
+            236
+          ],
+          "time": 0.125,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            2,
+            0
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            72,
+            69,
+            230,
+            236
+          ],
+          "time": 0.25,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            3,
+            0
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            67,
+            68,
+            239,
+            229
+          ],
+          "time": 0.375,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            0,
+            1
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            72,
+            82,
+            225,
+            255
+          ],
+          "time": 0.5,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            1,
+            1
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            75,
+            85,
+            223,
+            247
+          ],
+          "time": 0.625,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            2,
+            1
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            72,
+            75,
+            212,
+            240
+          ],
+          "time": 0.75,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            3,
+            1
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            67,
+            63,
+            231,
+            216
+          ],
+          "time": 0.875,
+          "muzzle": [
+            160,
+            160
+          ]
+        }
+      ],
+      "fps": 10,
+      "loop": true,
+      "duration": 0.8,
+      "layer": "body"
+    },
+    {
+      "id": "run-S",
+      "action": "run",
+      "direction": "S",
+      "image": "../v3/run-proof/run-S.png",
+      "cellSize": 352,
+      "frames": [
+        {
+          "cell": [
+            0,
+            0
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            124,
+            69,
+            295,
+            252
+          ],
+          "time": 0,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            1,
+            0
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            123,
+            68,
+            293,
+            242
+          ],
+          "time": 0.125,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            2,
+            0
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            104,
+            59,
+            290,
+            233
+          ],
+          "time": 0.25,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            3,
+            0
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            111,
+            60,
+            290,
+            219
+          ],
+          "time": 0.375,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            0,
+            1
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            109,
+            77,
+            292,
+            252
+          ],
+          "time": 0.5,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            1,
+            1
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            119,
+            68,
+            289,
+            242
+          ],
+          "time": 0.625,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            2,
+            1
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            120,
+            60,
+            296,
+            233
+          ],
+          "time": 0.75,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            3,
+            1
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            116,
+            57,
+            299,
+            222
+          ],
+          "time": 0.875,
+          "muzzle": [
+            160,
+            160
+          ]
+        }
+      ],
+      "fps": 10,
+      "loop": true,
+      "duration": 0.8,
+      "layer": "body"
+    },
+    {
+      "id": "run-SW",
+      "action": "run",
+      "direction": "SW",
+      "image": "../v3/run-proof/run-SW.png",
+      "cellSize": 352,
+      "frames": [
+        {
+          "cell": [
+            0,
+            0
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            116,
+            77,
+            320,
+            255
+          ],
+          "time": 0,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            1,
+            0
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            131,
+            76,
+            320,
+            247
+          ],
+          "time": 0.125,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            2,
+            0
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            123,
+            74,
+            324,
+            240
+          ],
+          "time": 0.25,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            3,
+            0
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            105,
+            68,
+            338,
+            227
+          ],
+          "time": 0.375,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            0,
+            1
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            133,
+            78,
+            326,
+            243
+          ],
+          "time": 0.5,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            1,
+            1
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            132,
+            70,
+            326,
+            236
+          ],
+          "time": 0.625,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            2,
+            1
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            131,
+            68,
+            316,
+            236
+          ],
+          "time": 0.75,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            3,
+            1
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            109,
+            65,
+            329,
+            228
+          ],
+          "time": 0.875,
+          "muzzle": [
+            160,
+            160
+          ]
+        }
+      ],
+      "fps": 10,
+      "loop": true,
+      "duration": 0.8,
+      "layer": "body"
+    },
+    {
+      "id": "run-W",
+      "action": "run",
+      "direction": "W",
+      "image": "../v3/run-proof/run-W.png",
+      "cellSize": 352,
+      "frames": [
+        {
+          "cell": [
+            0,
+            0
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            122,
+            78,
+            287,
+            248
+          ],
+          "time": 0,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            1,
+            0
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            132,
+            88,
+            280,
+            248
+          ],
+          "time": 0.125,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            2,
+            0
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            123,
+            87,
+            282,
+            248
+          ],
+          "time": 0.25,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            3,
+            0
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            125,
+            72,
+            291,
+            228
+          ],
+          "time": 0.375,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            0,
+            1
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            119,
+            72,
+            287,
+            236
+          ],
+          "time": 0.5,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            1,
+            1
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            132,
+            72,
+            281,
+            232
+          ],
+          "time": 0.625,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            2,
+            1
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            126,
+            70,
+            286,
+            232
+          ],
+          "time": 0.75,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            3,
+            1
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            124,
+            66,
+            287,
+            225
+          ],
+          "time": 0.875,
+          "muzzle": [
+            160,
+            160
+          ]
+        }
+      ],
+      "fps": 10,
+      "loop": true,
+      "duration": 0.8,
+      "layer": "body"
+    },
+    {
+      "id": "run-NW",
+      "action": "run",
+      "direction": "NW",
+      "image": "../v3/run-proof/run-NW.png",
+      "cellSize": 352,
+      "frames": [
+        {
+          "cell": [
+            0,
+            0
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            123,
+            48,
+            294,
+            237
+          ],
+          "time": 0,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            1,
+            0
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            133,
+            57,
+            292,
+            244
+          ],
+          "time": 0.125,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            2,
+            0
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            118,
+            67,
+            284,
+            252
+          ],
+          "time": 0.25,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            3,
+            0
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            123,
+            56,
+            297,
+            241
+          ],
+          "time": 0.375,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            0,
+            1
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            120,
+            60,
+            285,
+            242
+          ],
+          "time": 0.5,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            1,
+            1
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            122,
+            48,
+            284,
+            233
+          ],
+          "time": 0.625,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            2,
+            1
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            119,
+            58,
+            291,
+            240
+          ],
+          "time": 0.75,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            3,
+            1
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            122,
+            45,
+            293,
+            227
+          ],
+          "time": 0.875,
+          "muzzle": [
+            160,
+            160
+          ]
+        }
+      ],
+      "fps": 10,
+      "loop": true,
+      "duration": 0.8,
+      "layer": "body"
+    }
+  ],
+  "frameCount": 64
+}

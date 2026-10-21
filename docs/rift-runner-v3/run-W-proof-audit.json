@@ -1,0 +1,215 @@
+{
+  "file": "source/run-W-nine.png",
+  "sourceGutters": [
+    [
+      0,
+      461,
+      845,
+      1254
+    ],
+    [
+      0,
+      447,
+      831,
+      1254
+    ],
+    [
+      0,
+      450,
+      833,
+      1254
+    ]
+  ],
+  "scale": 0.47029702970297027,
+  "alignment": "constant scale; projected guide lateral head path; sole contact follows projected ground during support and rises during flight; constant scale, no per-frame height normalization",
+  "frames": [
+    {
+      "frame": 0,
+      "sourceCell": 1,
+      "sourceFile": "source/run-W-nine.png",
+      "scale": 0.47029702970297027,
+      "translation": [
+        122,
+        78
+      ],
+      "headTarget": [
+        160.05907679690702,
+        78
+      ],
+      "actualBounds": [
+        122,
+        78,
+        287,
+        248
+      ],
+      "expectedGuideBottom": 248.37005232558138,
+      "bottomDifference": -0.37005232558138346,
+      "supportPhase": true
+    },
+    {
+      "frame": 1,
+      "sourceCell": 2,
+      "sourceFile": "source/run-W-nine.png",
+      "scale": 0.47029702970297027,
+      "translation": [
+        132,
+        88
+      ],
+      "headTarget": [
+        160.10313117495062,
+        88
+      ],
+      "actualBounds": [
+        132,
+        88,
+        280,
+        248
+      ],
+      "expectedGuideBottom": 248.37005232558138,
+      "bottomDifference": -0.37005232558138346,
+      "supportPhase": true
+    },
+    {
+      "frame": 2,
+      "sourceCell": 3,
+      "sourceFile": "source/run-W-nine.png",
+      "scale": 0.47029702970297027,
+      "translation": [
+        123,
+        87
+      ],
+      "headTarget": [
+        160.11474472757905,
+        87
+      ],
+      "actualBounds": [
+        123,
+        87,
+        282,
+        248
+      ],
+      "expectedGuideBottom": 248.37005232558138,
+      "bottomDifference": -0.37005232558138346,
+      "supportPhase": true
+    },
+    {
+      "frame": 3,
+      "sourceCell": 4,
+      "sourceFile": "source/run-W-nine.png",
+      "scale": 0.47029702970297027,
+      "translation": [
+        125,
+        72
+      ],
+      "headTarget": [
+        160.1025678910198,
+        85
+      ],
+      "actualBounds": [
+        125,
+        72,
+        291,
+        228
+      ],
+      "expectedGuideBottom": 240.88869186046512,
+      "bottomDifference": -12.888691860465116,
+      "flightRootAdjustment": -13,
+      "flightHeadTargetRelativeToSupport": -7.5,
+      "supportPhase": false
+    },
+    {
+      "frame": 4,
+      "sourceCell": 5,
+      "sourceFile": "source/run-W-nine.png",
+      "scale": 0.47029702970297027,
+      "translation": [
+        119,
+        72
+      ],
+      "headTarget": [
+        159.95654834761322,
+        72
+      ],
+      "actualBounds": [
+        119,
+        72,
+        287,
+        236
+      ],
+      "expectedGuideBottom": 235.97244186046512,
+      "bottomDifference": 0.02755813953487518,
+      "supportPhase": true
+    },
+    {
+      "frame": 5,
+      "sourceCell": 6,
+      "sourceFile": "source/run-W-nine.png",
+      "scale": 0.47029702970297027,
+      "translation": [
+        132,
+        72
+      ],
+      "headTarget": [
+        159.89722694016203,
+        72
+      ],
+      "actualBounds": [
+        132,
+        72,
+        281,
+        232
+      ],
+      "expectedGuideBottom": 231.62994767441862,
+      "bottomDifference": 0.37005232558138346,
+      "supportPhase": true
+    },
+    {
+      "frame": 6,
+      "sourceCell": 7,
+      "sourceFile": "source/run-W-nine.png",
+      "scale": 0.47029702970297027,
+      "translation": [
+        126,
+        70
+      ],
+      "headTarget": [
+        159.84547878624227,
+        70
+      ],
+      "actualBounds": [
+        126,
+        70,
+        286,
+        232
+      ],
+      "expectedGuideBottom": 231.90622093023256,
+      "bottomDifference": 0.09377906976743589,
+      "supportPhase": true
+    },
+    {
+      "frame": 7,
+      "sourceCell": 8,
+      "sourceFile": "source/run-W-nine.png",
+      "scale": 0.47029702970297027,
+      "translation": [
+        124,
+        66
+      ],
+      "headTarget": [
+        160.01420179263567,
+        78
+      ],
+      "actualBounds": [
+        124,
+        66,
+        287,
+        225
+      ],
+      "expectedGuideBottom": 237.36021511627905,
+      "bottomDifference": -12.36021511627905,
+      "flightRootAdjustment": -12,
+      "flightHeadTargetRelativeToSupport": -8,
+      "supportPhase": false
+    }
+  ]
+}

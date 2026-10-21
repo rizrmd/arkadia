@@ -101,7 +101,7 @@ The human rejected the controlled 3D-rendered hurt/death sprites because they do
 
 Replacement hurt/death sprites are generated directly from each approved painted idle heading. Each new source sheet contains one heading, eight frames in a 4×2 layout. The first multi-direction attempt drifted from NE to SE in its final row and is not accepted as a complete two-direction sheet. The replacement set has 16 clips and 128 frames. Calibrated sheets use 320px cells, constant scale per clip and pivot (160,224). Row extraction follows actual transparent gutters; disconnected neighboring-frame debris is excluded. Alpha, margins, complete heading coverage and exact recovery/corpse endpoints pass. Local and public real-time playback observe all 128 replacement frames, hurt recovery and terminal death hold. Whole-set run/skill consistency is still open; this is not full game-ready acceptance.
 
-The reported limping run remains open in the approved painted style. Controlled-source gait experiments corrected same-side arm swing and missing flight, but must not be substituted into the approved painted set. [Open requested review page](https://arkadia-stronghold-whachat.fural.space/rift-runner/v1/).
+The new painted run replacement contains eight uniformly sampled frames per heading, including alternating support and flight. All 64 run frames and idle/run transitions pass local real-time playback. W/NW idle now keep the cyan device on the anatomical right arm. Constant calibration scale replaces per-frame height normalization. The shared review canvas is 352px with pivot (176,240); older sprites are padded without rescaling. Final painted foot-contact and gait quality review remains open. Controlled-source gait experiments corrected same-side arm swing and missing flight, but must not be substituted into the approved painted set. [Open requested review page](https://arkadia-stronghold-whachat.fural.space/rift-runner/v1/).
 
 ### v2 / candidate previews / death a82e004976a6.webp
 
@@ -575,6 +575,14 @@ The reported limping run remains open in the approved painted style. Controlled-
 
 ![Rift Runner v3/evidence/trap-playback.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/evidence/trap-playback.png)
 
+### v3 / idle corrections / idle NW.png
+
+![Rift Runner v3/idle-corrections/idle-NW.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/idle-corrections/idle-NW.png)
+
+### v3 / idle corrections / idle W.png
+
+![Rift Runner v3/idle-corrections/idle-W.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/idle-corrections/idle-W.png)
+
 ### v3 / previews / death.webp
 
 ![Rift Runner v3/previews/death.webp; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/previews/death.webp)
@@ -582,6 +590,10 @@ The reported limping run remains open in the approved painted style. Controlled-
 ### v3 / previews / hurt.webp
 
 ![Rift Runner v3/previews/hurt.webp; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/previews/hurt.webp)
+
+### v3 / previews / run candidate.webp
+
+![Rift Runner v3/previews/run-candidate.webp; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/previews/run-candidate.webp)
 
 ### v3 / reference / idle E.png
 
@@ -594,6 +606,10 @@ The reported limping run remains open in the approved painted style. Controlled-
 ### v3 / reference / idle NE.png
 
 ![Rift Runner v3/reference/idle-NE.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/reference/idle-NE.png)
+
+### v3 / reference / idle NW corrected.png
+
+![Rift Runner v3/reference/idle-NW-corrected.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/reference/idle-NW-corrected.png)
 
 ### v3 / reference / idle NW.png
 
@@ -611,13 +627,177 @@ The reported limping run remains open in the approved painted style. Controlled-
 
 ![Rift Runner v3/reference/idle-SW.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/reference/idle-SW.png)
 
+### v3 / reference / idle W corrected.png
+
+![Rift Runner v3/reference/idle-W-corrected.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/reference/idle-W-corrected.png)
+
 ### v3 / reference / idle W.png
 
 ![Rift Runner v3/reference/idle-W.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/reference/idle-W.png)
 
+### v3 / reference / run E nine pose guide v1.png
+
+![Rift Runner v3/reference/run-E-nine-pose-guide-v1.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/reference/run-E-nine-pose-guide-v1.png)
+
+### v3 / reference / run E nine pose guide v2.png
+
+![Rift Runner v3/reference/run-E-nine-pose-guide-v2.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/reference/run-E-nine-pose-guide-v2.png)
+
+### v3 / reference / run E nine pose guide v3.png
+
+![Rift Runner v3/reference/run-E-nine-pose-guide-v3.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/reference/run-E-nine-pose-guide-v3.png)
+
+### v3 / reference / run E nine pose guide.png
+
+![Rift Runner v3/reference/run-E-nine-pose-guide.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/reference/run-E-nine-pose-guide.png)
+
 ### v3 / reference / run E pose guide.png
 
 ![Rift Runner v3/reference/run-E-pose-guide.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/reference/run-E-pose-guide.png)
+
+### v3 / reference / run N nine pose guide v1.png
+
+![Rift Runner v3/reference/run-N-nine-pose-guide-v1.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/reference/run-N-nine-pose-guide-v1.png)
+
+### v3 / reference / run N nine pose guide v2.png
+
+![Rift Runner v3/reference/run-N-nine-pose-guide-v2.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/reference/run-N-nine-pose-guide-v2.png)
+
+### v3 / reference / run N nine pose guide v3.png
+
+![Rift Runner v3/reference/run-N-nine-pose-guide-v3.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/reference/run-N-nine-pose-guide-v3.png)
+
+### v3 / reference / run N nine pose guide.png
+
+![Rift Runner v3/reference/run-N-nine-pose-guide.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/reference/run-N-nine-pose-guide.png)
+
+### v3 / reference / run NE nine pose guide v1.png
+
+![Rift Runner v3/reference/run-NE-nine-pose-guide-v1.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/reference/run-NE-nine-pose-guide-v1.png)
+
+### v3 / reference / run NE nine pose guide v2.png
+
+![Rift Runner v3/reference/run-NE-nine-pose-guide-v2.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/reference/run-NE-nine-pose-guide-v2.png)
+
+### v3 / reference / run NE nine pose guide v3.png
+
+![Rift Runner v3/reference/run-NE-nine-pose-guide-v3.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/reference/run-NE-nine-pose-guide-v3.png)
+
+### v3 / reference / run NE nine pose guide.png
+
+![Rift Runner v3/reference/run-NE-nine-pose-guide.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/reference/run-NE-nine-pose-guide.png)
+
+### v3 / reference / run NW nine pose guide v1.png
+
+![Rift Runner v3/reference/run-NW-nine-pose-guide-v1.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/reference/run-NW-nine-pose-guide-v1.png)
+
+### v3 / reference / run NW nine pose guide v2.png
+
+![Rift Runner v3/reference/run-NW-nine-pose-guide-v2.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/reference/run-NW-nine-pose-guide-v2.png)
+
+### v3 / reference / run NW nine pose guide v3.png
+
+![Rift Runner v3/reference/run-NW-nine-pose-guide-v3.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/reference/run-NW-nine-pose-guide-v3.png)
+
+### v3 / reference / run NW nine pose guide.png
+
+![Rift Runner v3/reference/run-NW-nine-pose-guide.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/reference/run-NW-nine-pose-guide.png)
+
+### v3 / reference / run S nine pose guide v1.png
+
+![Rift Runner v3/reference/run-S-nine-pose-guide-v1.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/reference/run-S-nine-pose-guide-v1.png)
+
+### v3 / reference / run S nine pose guide v2.png
+
+![Rift Runner v3/reference/run-S-nine-pose-guide-v2.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/reference/run-S-nine-pose-guide-v2.png)
+
+### v3 / reference / run S nine pose guide v3.png
+
+![Rift Runner v3/reference/run-S-nine-pose-guide-v3.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/reference/run-S-nine-pose-guide-v3.png)
+
+### v3 / reference / run S nine pose guide.png
+
+![Rift Runner v3/reference/run-S-nine-pose-guide.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/reference/run-S-nine-pose-guide.png)
+
+### v3 / reference / run SE nine pose guide v1.png
+
+![Rift Runner v3/reference/run-SE-nine-pose-guide-v1.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/reference/run-SE-nine-pose-guide-v1.png)
+
+### v3 / reference / run SE nine pose guide v2.png
+
+![Rift Runner v3/reference/run-SE-nine-pose-guide-v2.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/reference/run-SE-nine-pose-guide-v2.png)
+
+### v3 / reference / run SE nine pose guide v3.png
+
+![Rift Runner v3/reference/run-SE-nine-pose-guide-v3.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/reference/run-SE-nine-pose-guide-v3.png)
+
+### v3 / reference / run SE nine pose guide.png
+
+![Rift Runner v3/reference/run-SE-nine-pose-guide.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/reference/run-SE-nine-pose-guide.png)
+
+### v3 / reference / run SW nine pose guide v1.png
+
+![Rift Runner v3/reference/run-SW-nine-pose-guide-v1.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/reference/run-SW-nine-pose-guide-v1.png)
+
+### v3 / reference / run SW nine pose guide v2.png
+
+![Rift Runner v3/reference/run-SW-nine-pose-guide-v2.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/reference/run-SW-nine-pose-guide-v2.png)
+
+### v3 / reference / run SW nine pose guide v3.png
+
+![Rift Runner v3/reference/run-SW-nine-pose-guide-v3.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/reference/run-SW-nine-pose-guide-v3.png)
+
+### v3 / reference / run SW nine pose guide.png
+
+![Rift Runner v3/reference/run-SW-nine-pose-guide.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/reference/run-SW-nine-pose-guide.png)
+
+### v3 / reference / run W nine pose guide v1.png
+
+![Rift Runner v3/reference/run-W-nine-pose-guide-v1.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/reference/run-W-nine-pose-guide-v1.png)
+
+### v3 / reference / run W nine pose guide v2.png
+
+![Rift Runner v3/reference/run-W-nine-pose-guide-v2.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/reference/run-W-nine-pose-guide-v2.png)
+
+### v3 / reference / run W nine pose guide v3.png
+
+![Rift Runner v3/reference/run-W-nine-pose-guide-v3.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/reference/run-W-nine-pose-guide-v3.png)
+
+### v3 / reference / run W nine pose guide.png
+
+![Rift Runner v3/reference/run-W-nine-pose-guide.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/reference/run-W-nine-pose-guide.png)
+
+### v3 / run proof / run E.png
+
+![Rift Runner v3/run-proof/run-E.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/run-proof/run-E.png)
+
+### v3 / run proof / run N.png
+
+![Rift Runner v3/run-proof/run-N.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/run-proof/run-N.png)
+
+### v3 / run proof / run NE.png
+
+![Rift Runner v3/run-proof/run-NE.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/run-proof/run-NE.png)
+
+### v3 / run proof / run NW.png
+
+![Rift Runner v3/run-proof/run-NW.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/run-proof/run-NW.png)
+
+### v3 / run proof / run S.png
+
+![Rift Runner v3/run-proof/run-S.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/run-proof/run-S.png)
+
+### v3 / run proof / run SE.png
+
+![Rift Runner v3/run-proof/run-SE.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/run-proof/run-SE.png)
+
+### v3 / run proof / run SW.png
+
+![Rift Runner v3/run-proof/run-SW.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/run-proof/run-SW.png)
+
+### v3 / run proof / run W.png
+
+![Rift Runner v3/run-proof/run-W.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/run-proof/run-W.png)
 
 ### v3 / sheets / death E.png
 
@@ -751,9 +931,77 @@ The reported limping run remains open in the approved painted style. Controlled-
 
 ![Rift Runner v3/source/hurt-n-ne-mixed-review.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/source/hurt-n-ne-mixed-review.png)
 
+### v3 / source / idle NW four.png
+
+![Rift Runner v3/source/idle-NW-four.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/source/idle-NW-four.png)
+
+### v3 / source / idle W four.png
+
+![Rift Runner v3/source/idle-W-four.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/source/idle-W-four.png)
+
+### v3 / source / run E nine v0 review.png
+
+![Rift Runner v3/source/run-E-nine-v0-review.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/source/run-E-nine-v0-review.png)
+
+### v3 / source / run E nine v1 arm review.png
+
+![Rift Runner v3/source/run-E-nine-v1-arm-review.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/source/run-E-nine-v1-arm-review.png)
+
+### v3 / source / run E nine.png
+
+![Rift Runner v3/source/run-E-nine.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/source/run-E-nine.png)
+
 ### v3 / source / run E review.png
 
 ![Rift Runner v3/source/run-E-review.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/source/run-E-review.png)
+
+### v3 / source / run N nine v0 review.png
+
+![Rift Runner v3/source/run-N-nine-v0-review.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/source/run-N-nine-v0-review.png)
+
+### v3 / source / run N nine v1 leg review.png
+
+![Rift Runner v3/source/run-N-nine-v1-leg-review.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/source/run-N-nine-v1-leg-review.png)
+
+### v3 / source / run N nine.png
+
+![Rift Runner v3/source/run-N-nine.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/source/run-N-nine.png)
+
+### v3 / source / run NE nine.png
+
+![Rift Runner v3/source/run-NE-nine.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/source/run-NE-nine.png)
+
+### v3 / source / run NW nine v0 review.png
+
+![Rift Runner v3/source/run-NW-nine-v0-review.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/source/run-NW-nine-v0-review.png)
+
+### v3 / source / run NW nine.png
+
+![Rift Runner v3/source/run-NW-nine.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/source/run-NW-nine.png)
+
+### v3 / source / run S nine.png
+
+![Rift Runner v3/source/run-S-nine.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/source/run-S-nine.png)
+
+### v3 / source / run SE nine.png
+
+![Rift Runner v3/source/run-SE-nine.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/source/run-SE-nine.png)
+
+### v3 / source / run SW nine v0 arm review.png
+
+![Rift Runner v3/source/run-SW-nine-v0-arm-review.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/source/run-SW-nine-v0-arm-review.png)
+
+### v3 / source / run SW nine.png
+
+![Rift Runner v3/source/run-SW-nine.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/source/run-SW-nine.png)
+
+### v3 / source / run W nine v0 arm review.png
+
+![Rift Runner v3/source/run-W-nine-v0-arm-review.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/source/run-W-nine-v0-arm-review.png)
+
+### v3 / source / run W nine.png
+
+![Rift Runner v3/source/run-W-nine.png; source or review artifact, see acceptance notes above](https://arkadia-stronghold-whachat.fural.space/rift-runner/v3/source/run-W-nine.png)
 
 ### v3 / style comparison 0.png
 

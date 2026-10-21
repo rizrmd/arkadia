@@ -254,7 +254,7 @@ samples=[];previous={};max_stance_slide=0;max_floor_error=0
 for i in range(241):
  t=i/240;pose('run',t);bpy.context.view_layer.update()
  for name,phase in [('Left',t%1),('Right',(t+.5)%1)]:
-  foot=legs[name][2].matrix_world@Vector((0,0,-.115));world_y=foot.y-(.50/.42)*t;stance=phase<.42
+  foot=legs[name][2].matrix_world@Vector((0,0,-.115));world_y=foot.y-(LOCOMOTION['run']['stride']/LOCOMOTION['run']['stance'])*t;stance=phase<LOCOMOTION['run']['stance']
   if stance:
    max_floor_error=max(max_floor_error,abs(foot.z))
    if name in previous and previous[name]['stance'] and phase>previous[name]['phase']:max_stance_slide=max(max_stance_slide,abs(world_y-previous[name]['worldY']))

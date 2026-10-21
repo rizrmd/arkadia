@@ -28,3 +28,11 @@ All sources, rejected experiments, final sheets, animated previews and compariso
 The requested v1 page now serves painted hurt/death from v3. Public playback passes for all 16 replacement clips / 128 frames, including neutral recovery and terminal corpse hold. All 198 release resources match local SHA-256 checksums. The gameplay homepage is byte-identical before and after this scoped publication. An earlier resource-pressure admission error and stale v2 prototype bytes were diagnosed and repaired; the before-repair evidence is retained.
 
 A new painted east run source is only a review experiment. It has not replaced the live run, and its scale, ground contacts, alternating stride, anatomy and seam remain to be verified. The approved painted gait correction and other remaining whole-set acceptance continue under the active goal.
+
+## Eight-direction painted run candidate
+
+The new run replaces six-frame studies with eight-frame clips (64 frames total). W/NW idle were regenerated to preserve the anatomical right-arm emitter through idle/run transitions. The combined review manifest now contains 82 clips and 504 frames. Run/idle corrections use 352px cells, pivot (176,240), and 190px standing-height calibration. Each clip has one scale; no individual frame is resized to force equal heights. Older 256px cells are padded at (48,16) and hurt/death 320px cells at (16,16).
+
+`assemble-run-proof.mjs` follows guide-projected sole contacts and lateral head paths. It preserves flight poses and a measured upward root arc. These are alignment heuristics, not tracked painted skeletal landmarks. N uses valid first-step frames from its earlier source and corrected second-step frames from the final source; per-frame provenance is in the audit. All source iterations are archived. Source guide meshes remain rejected as final art.
+
+Local browser playback observes all new run frames plus idle, hurt and death; idle/run transitions, hurt recovery and terminal death hold pass without errors. The eight-direction candidate WebP is `public/rift-runner/v3/previews/run-candidate.webp`. Gait seam, source anatomy, skill neutral continuity, VFX sockets and final gameplay integration remain open. The human has now authorized replacing the main hero after asset acceptance; gameplay has not been changed at this checkpoint.
