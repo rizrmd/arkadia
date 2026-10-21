@@ -6,7 +6,7 @@ import {createLighting} from './lighting';
 import {createHero} from './hero';
 import {createEncounters} from './encounters';
 import {setGateOpen} from './navigation';
-import {createGateDoors} from './gate-doors';
+import {createGateDoors,GATE_SHEET,type GateSheet} from './gate-doors';
 import type {Walk} from './controls';
 import type {Progress} from '../app/loader';
 export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Building)=>void,direction:()=>Walk,progress:Progress=()=>{}){
@@ -15,7 +15,7 @@ export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Buil
  const spriteFile=(id:Building,level:number)=>id==='forge'?`/fortress-ui/forge-${level}.webp`:id==='gate'?'/modular-stronghold/v2/gateway-open.png':`/assets/${slots[id].asset}.png`;
  const paving='/modular-stronghold/v2/paving-warm-texture.png',snow='/modular-stronghold/v2/snow-soft-texture.png';
  // Loading-screen steps: every artwork file, then the hero, then the first world raster.
- const files=[...new Set([FOUNDATION_SOIL,FOUNDATION_MOSS,paving,snow,'/modular-stronghold/v2/gateway-grand.png',...environment.map(p=>p.file),...buildings.flatMap(b=>[1,2,3].map(l=>spriteFile(b,l)))])],steps=files.length+2;let loaded=0;
+ const files=[...new Set([FOUNDATION_SOIL,FOUNDATION_MOSS,paving,snow,'/modular-stronghold/v2/gateway-grand.png','/modular-stronghold/v2/gate-generated-sheet.webp',...environment.map(p=>p.file),...buildings.flatMap(b=>[1,2,3].map(l=>spriteFile(b,l)))])],steps=files.length+2;let loaded=0;
  progress(0,steps,'Loading artwork');
  await Promise.all(files.map(async file=>{const image=new Image();image.src=file;await image.decode();images.set(file,image);progress(++loaded,steps,'Loading artwork');}));
  let w=0,h=0,dpr=1,scale=1,cx=WORLD.width/2,cy=385,selected:Building|null=null,levels:State['levels']|undefined;
@@ -137,7 +137,8 @@ export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Buil
  }
  // The player's hero walks the court in its own layer over the world; the camera eases after it.
  progress(loaded,steps,'Waking the hero');
- const doors=createGateDoors(viewport,images.get('/modular-stronghold/v2/gateway-grand.png')!,open=>{gatePassable=open;setGateOpen(open);hero.setScene(objects);});
+ const sheet:GateSheet=await (await fetch(GATE_SHEET)).json();
+ const doors=createGateDoors(viewport,images.get('/modular-stronghold/v2/gateway-grand.png')!,images.get('/modular-stronghold/v2/gate-generated-sheet.webp')!,sheet,open=>{gatePassable=open;setGateOpen(open);hero.setScene(objects);});
  lighting.subscribe(state=>doors.setTint(state.ambient));
  // Combat (encounters.ts) steers the idle hero toward a revenant in reach and plays its swing, hit and death clips.
  let encounters:Awaited<ReturnType<typeof createEncounters>>|undefined;
@@ -191,6 +192,7 @@ export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Buil
  canvas.onpointerup=e=>{held.delete(e.pointerId);if(moved)return;const x=cx+(e.clientX-w/2)/scale,y=cy+(e.clientY-h/2)/scale;const hit=[...built].sort((a,b)=>slots[b].y-slots[a].y).find(id=>hitBuilding(id,x,y));if(hit)onSelect(hit);};
  canvas.onpointercancel=()=>{held.clear();moved=true;};canvas.onwheel=e=>{e.preventDefault();stopGlide();const old=scale;scale=Math.max(.35,Math.min(2.2,scale*Math.exp(-e.deltaY*.001)));cx+=(e.clientX-w/2)*(1/old-1/scale);cy+=(e.clientY-h/2)*(1/old-1/scale);requestDraw();};
  function updateGate(hx:number,hy:number){
+  doors.order(viewport.querySelector<HTMLElement>('#world-hero')!,hy<790);
   // Ground-space distance to the threshold. Hysteresis prevents flickering at the edge.
   const near=Math.abs(hx-577)<(gateOpen?65:48)&&Math.abs(hy-770)<(gateOpen?88:66);
   if(near===gateOpen)return;

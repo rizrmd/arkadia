@@ -1,31 +1,30 @@
-/** Only the two door leaves animate. The stone gateway stays in the cached world. */
-export function createGateDoors(layer:HTMLElement,image:HTMLImageElement,onPassable:(open:boolean)=>void){
- const width=270,height=image.height*width/image.width,canvas=document.createElement('div');
- canvas.id='world-gate-doors';const resolutionWidth=540,resolutionHeight=Math.ceil(height*2);
- canvas.style.cssText=`position:absolute;left:0;top:0;width:${width}px;height:${height}px;transform-origin:0 0;pointer-events:none;will-change:transform`;
- layer.append(canvas);
- // Each leaf is clipped to its own half of the arched doorway, excluding the masonry.
- const leaves=[-1,1].map(side=>{
-  const raw=document.createElement('canvas');raw.width=resolutionWidth;raw.height=resolutionHeight;
-  const r=raw.getContext('2d')!;r.scale(2,2);r.beginPath();
-  if(side<0){r.moveTo(97,145);r.lineTo(97,87);r.bezierCurveTo(97,75,116,65,135,64);r.lineTo(135,145);}
-  else{r.moveTo(135,145);r.lineTo(135,64);r.bezierCurveTo(154,65,173,75,173,87);r.lineTo(173,145);}
-  r.closePath();r.clip();r.drawImage(image,0,0,width,height);
-  const tinted=document.createElement('canvas');tinted.width=raw.width;tinted.height=raw.height;
-  tinted.style.cssText=`position:absolute;left:0;top:0;width:${width}px;height:${height}px;transform-origin:${side<0?97:173}px 0;will-change:transform`;canvas.append(tinted);
-  return {side,raw,tinted};
- });
- let progress=0,target=0,frame=0,last=0,passable=false,tint='';
+/** Generated door poses play from one atlas; closing reverses the same frames. Stonework stays cached. */
+export type GateSheet={image:string;columns:number;frames:number;frame:{w:number;h:number};fps:number;region:{x:number;y:number;w:number;h:number}};
+export const GATE_SHEET='/modular-stronghold/v2/gate-generated-sheet.json';
+export function createGateDoors(layer:HTMLElement,gateway:HTMLImageElement,sheet:HTMLImageElement,meta:GateSheet,onPassable:(open:boolean)=>void){
+ const {region,frame}=meta,height=gateway.height*270/gateway.width,canvas=document.createElement('canvas');
+ canvas.id='world-gate-doors';canvas.width=frame.w;canvas.height=frame.h;
+ canvas.style.cssText=`position:absolute;left:0;top:0;width:${region.w}px;height:${region.h}px;transform-origin:0 0;pointer-events:none;will-change:transform`;
+ layer.append(canvas);const c=canvas.getContext('2d')!;
+ // Tint the small atlas only when ambient light changes, never while the doors move.
+ const tinted=document.createElement('canvas');tinted.width=sheet.width;tinted.height=sheet.height;
+ let index=0,target=0,raf=0,last=0,elapsed=0,shown=-1,passable=false,tint='',behind:boolean|null=null;
  function paint(){
-  const eased=progress*progress*(3-2*progress),angle=eased*Math.PI*.49;
-  for(const {side,tinted} of leaves)tinted.style.transform=`matrix(${Math.cos(angle)},${side*.16*Math.sin(angle)},0,1,0,0)`;
-  canvas.dataset.progress=progress.toFixed(3);canvas.dataset.state=progress===target?(target?'open':'closed'):(target?'opening':'closing');
+  if(index!==shown){shown=index;c.globalCompositeOperation='copy';c.drawImage(tinted,(index%meta.columns)*frame.w,Math.floor(index/meta.columns)*frame.h,frame.w,frame.h,0,0,frame.w,frame.h);c.globalCompositeOperation='source-over';}
+  const progress=index/(meta.frames-1);canvas.dataset.frame=String(index);canvas.dataset.progress=progress.toFixed(3);canvas.dataset.state=index===target?(target?'open':'closed'):(target?'opening':'closing');
   const next=progress>=.8;if(next!==passable){passable=next;onPassable(next);}
  }
- function tick(now:number){const dt=last?Math.min(50,now-last):16;last=now;progress=Math.max(0,Math.min(1,progress+(target?1:-1)*dt/700));paint();if(progress!==target)frame=requestAnimationFrame(tick);else{frame=0;last=0;}}
- function setTint(rgb:number[]){const key=rgb.join();if(key===tint)return;tint=key;
-  for(const {raw,tinted} of leaves){const t=tinted.getContext('2d')!;t.globalCompositeOperation='copy';t.drawImage(raw,0,0);t.globalCompositeOperation='multiply';t.fillStyle=`rgb(${rgb.map(v=>Math.round(v*255))})`;t.fillRect(0,0,tinted.width,tinted.height);t.globalCompositeOperation='destination-in';t.drawImage(raw,0,0);t.globalCompositeOperation='source-over';}paint();
+ function tick(now:number){elapsed+=last?Math.min(100,now-last):0;last=now;const step=1000/meta.fps;
+  while(elapsed>=step&&index!==target){elapsed-=step;index+=Math.sign(target-index);}paint();
+  if(index!==target)raf=requestAnimationFrame(tick);else{raf=0;last=0;elapsed=0;}
+ }
+ function setTint(rgb:readonly number[]){const key=rgb.join();if(key===tint)return;tint=key;const t=tinted.getContext('2d')!;
+  t.globalCompositeOperation='copy';t.drawImage(sheet,0,0);if(rgb.some(v=>v<1)){t.globalCompositeOperation='multiply';t.fillStyle=`rgb(${rgb.map(v=>Math.round(v*255))})`;t.fillRect(0,0,tinted.width,tinted.height);t.globalCompositeOperation='destination-in';t.drawImage(sheet,0,0);}t.globalCompositeOperation='source-over';shown=-1;paint();
  }
  setTint([1,1,1]);
- return {setTint,setOpen(open:boolean){target=open?1:0;if(!frame&&progress!==target)frame=requestAnimationFrame(tick);},place(x:number,y:number,scale:number){canvas.style.transform=`translate3d(${x+442*scale}px,${y+(790-height*.97)*scale}px,0) scale(${scale})`;}};
+ return {setTint,
+  order(hero:HTMLElement,inside:boolean){if(inside===behind)return;behind=inside;if(inside)hero.after(canvas);else hero.before(canvas);},
+  setOpen(open:boolean){target=open?meta.frames-1:0;if(index!==target&&!raf)raf=requestAnimationFrame(tick);},
+  place(x:number,y:number,scale:number){canvas.style.transform=`translate3d(${x+(442+region.x)*scale}px,${y+(790-height*.97+region.y)*scale}px,0) scale(${scale})`;}
+ };
 }
