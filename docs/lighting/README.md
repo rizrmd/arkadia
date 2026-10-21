@@ -34,7 +34,7 @@ Shadows now come from a solid volume. Each object stands on a ground footprint, 
 
 A clock chip in the top-right corner shows the Stronghold hour, its phase and whether the clock is **Live** (following the 24-minute cycle) or **Pinned**. Tap it to open the panel:
 
-- **Set the hour**: a slider from 00:00 to 23:45 in 15-minute steps. Lighting, glow, snow tint and sun shadows update as you drag.
+- **Set the hour**: a slider from 00:00 to 23:45 in 15-minute steps. Lighting, glow and snow tint follow the thumb every frame. Sun shadows catch up as soon as the thumb rests for 150 ms, and on release.
 - **Presets**: Midnight 00:00, Dawn 06:00, Morning 09:00, Noon 12:00, Golden hour 17:00, Dusk 18:45.
 - **Return to live clock**: unpins the hour and goes back to the cycle.
 
@@ -101,6 +101,7 @@ lighting.bake -> screen.flicker
   - The infinite snow uses a pre-tinted copy of its repeat tile (a `data:` URL).
   - The selected building gets a soft extra pool, so it stays readable at night.
   - The sun moves in 15-minute steps (15 real seconds of a live day). On a new step it asks the world view to re-raster, deferred while the camera moves. Clock ticks inside a step only relight.
+  - **Clock-drag preview.** Baking recomposes the full 3738 × 2243 surface, and each step re-encoded the snow tile. At one bake per slider step, a drag ran at p95 417 ms per frame (3 s with 4× CPU throttling). While the slider is dragged, the surface instead shows the unlit world. The 807 × 485 lightmap (`multiply`) and bloom (`screen`) blend live over it, and a flat `#world-ambient` layer tints the snow. Each step redraws only the small lightmap, and the clock applies at most one hour per frame. Releasing the slider, or resting on it for 1.5 s, bakes once. When the sun moved, that bake is the shadow re-raster itself. The preview matches the baked frame to a mean difference below 1/255.
 - **`world-view.ts`** has four lighting hooks: create, `capture()` after `paintWorld`, `place()` beside the surface transform, and `setScene()` in `update()`. It also draws the cast shadows in `paintWorld`, after the ground decals and before any upright sprite, so shadows never darken a building. Each placed sprite is cut into columns about 3.5 world px apart. A column spans its footprint from the back edge to the front edge, and its height is the roof line's height above the back edge. The footprint's front edge is the sprite's lowest opaque pixel in that column. The hidden back edge is that contour reflected through the midpoint of its left and right ends (a footprint parallelogram is centrally symmetric, under any calibrated shear). Trees use a round crown footprint instead. On each sun step, every column's footprint is swept along the sun's offset × height (a convex hexagon) and filled opaque into one 0.35× mask, so overlapping shadows never double-darken. The mask is blurred once (a wider penumbra for longer shadows) and blitted at the shadow alpha. Columns are built once per sprite. Each column is filled on its own, because building one Path2D with thousands of subpaths took about 1 s in Chrome. Pan frames are unchanged.
 - **`clock.ts`** is the clock chip and panel. `main.ts` mounts it with `worldView.setTime` and `worldView.subscribeClock`.
 
@@ -125,6 +126,7 @@ Memory: the unlit copy doubles the world raster (3738 × 2243 px ≈ 33 MB, so a
   - Night screen luma is 42.6 vs 113.0 by day (day now includes sun shadows).
   - Clock ticks relight; the world re-rasters only on a 15-minute sun step.
   - The in-game clock: slider and presets relight, sun shadows appear by day only, a pinned hour survives a reload, and Live restores the cycle.
+  - Clock drag from 05:00 to 17:00 at 60 Hz: no world re-raster or snow re-encode while dragging, one re-raster on release. Headless p95 went from 417 ms to 33 ms per frame (3016 → 50 ms at 4× CPU).
   - `?lighting` persistence works.
   - A night roof click selects the Forge and relights the selection.
   - Reduced motion stops the flicker.

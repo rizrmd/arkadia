@@ -11,4 +11,4 @@ let worldView:Awaited<ReturnType<typeof createWorldView>>;
 function render(){try{worldView?.update(load(localStorage.getItem(KEY)),selected);}catch(e){console.error(e);}}
 function selectBuilding(id:Building){selected=id;render();worldView?.focus(id);}
 window.addEventListener('storage',render);
-void (async()=>{try{worldView=await createWorldView(root.querySelector('#world-canvas') as HTMLCanvasElement,selectBuilding);createClock(root as HTMLElement,{setTime:worldView.setTime,subscribe:worldView.subscribeClock});await transact(()=>{}).catch(console.error);render();}catch(e){console.error('Unable to load the Stronghold artwork.',e);}})();
+void (async()=>{try{worldView=await createWorldView(root.querySelector('#world-canvas') as HTMLCanvasElement,selectBuilding);createClock(root as HTMLElement,{setTime:worldView.setTime,preview:worldView.previewClock,subscribe:worldView.subscribeClock});await transact(()=>{}).catch(console.error);render();}catch(e){console.error('Unable to load the Stronghold artwork.',e);}})();

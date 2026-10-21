@@ -14,12 +14,18 @@ const COLOURS:Record<string,string>={fire:'255,150,70',window:'255,190,110',cand
 function lightingSettings(){let stored:{mode?:unknown;time?:unknown}={};try{stored=JSON.parse(localStorage.getItem(KEY)||'{}')||{};}catch{}const mode=modeFrom(location.search,stored.mode),url=new URLSearchParams(location.search).has('lighting');if(url)try{localStorage.setItem(KEY,JSON.stringify({mode}));}catch{}return {mode,manual:!url&&typeof stored.time==='number'&&stored.time>=0&&stored.time<1?stored.time:null};}
 export type ClockState=Lighting&{manual:boolean;mode:Mode};
 export function createLighting(o:{surface:HTMLCanvasElement;snowLayer:HTMLElement;left:number;top:number;width:number;height:number;onSun:()=>void}){
- const {surface,left,top,width,height}=o,canvas=()=>{const c=document.createElement('canvas');c.width=Math.ceil(width*RES);c.height=Math.ceil(height*RES);c.style.cssText=`position:absolute;left:0;top:0;width:${width}px;height:${height}px;pointer-events:none`;return c;};
+ const {surface,left,top,width,height}=o,canvas=()=>{const c=document.createElement('canvas');c.width=Math.ceil(width*RES);c.height=Math.ceil(height*RES);c.style.cssText=`position:absolute;left:0;top:0;width:${width}px;height:${height}px;transform-origin:0 0;pointer-events:none`;return c;};
  // The lightmap stays in the DOM, hidden, so verification tooling can read it.
  const lightmap=canvas(),lights=canvas(),halo=canvas(),bloom=canvas(),flicker=document.createElement('div'),base=document.createElement('canvas');
  lightmap.id='world-lightmap';lightmap.hidden=true;lightmap.dataset.origin=`${left},${top},${RES}`;halo.className='glow-a';flicker.id='world-glow';
  flicker.style.cssText=`position:absolute;left:0;top:0;width:${width}px;height:${height}px;transform-origin:0 0;will-change:transform;mix-blend-mode:screen;pointer-events:none`;
- flicker.append(halo);surface.after(flicker,lightmap);
+ flicker.append(halo);surface.after(flicker,lightmap,bloom);
+ // Clock-drag preview: the surface shows the unlit world while the small lightmap and bloom
+ // blend live over it and a flat ambient layer tints the snow. Each slider step then updates
+ // an 807 x 485 canvas instead of recomposing the full world raster; releasing bakes once.
+ const ambient=document.createElement('div');ambient.id='world-ambient';ambient.style.cssText='position:absolute;inset:0;mix-blend-mode:multiply;pointer-events:none';
+ lightmap.style.mixBlendMode='multiply';bloom.style.mixBlendMode='screen';bloom.id='world-bloom';
+ for(const e of [ambient,bloom])e.hidden=true;o.snowLayer.after(ambient);
  const snowImage=o.snowLayer.style.backgroundImage,tile=new Image(),tint=document.createElement('canvas'),masks=new Map<string,{white:HTMLCanvasElement;colour:HTMLCanvasElement}>();
  // Emissive pixels of one sprite: colour copy for glow, white copy for the lightmap.
  function mask(p:LitObject){
@@ -60,14 +66,20 @@ export function createLighting(o:{surface:HTMLCanvasElement;snowLayer:HTMLElemen
  let {key:sunKey,sun}=sunStep(current.t);surface.dataset.sun=sunKey;const listeners=new Set<(s:ClockState)=>void>();
  // Called after every world raster: keep the unlit copy, then relight.
  function capture(){if(base.width!==surface.width||base.height!==surface.height){base.width=surface.width;base.height=surface.height;}const c=base.getContext('2d')!;c.globalCompositeOperation='copy';c.drawImage(surface,0,0);c.globalCompositeOperation='source-over';last='';paint(current,true);}
+ // Ambient fill plus the baked light pools, at lightmap resolution.
+ function drawLightmap(rgb:number[],li:number){const m=lightmap.getContext('2d')!;m.setTransform(1,0,0,1,0,0);m.globalAlpha=1;m.fillStyle=`rgb(${rgb})`;m.fillRect(0,0,lightmap.width,lightmap.height);m.globalCompositeOperation='lighter';m.globalAlpha=li;m.drawImage(lights,0,0);m.globalAlpha=1;m.globalCompositeOperation='source-over';}
  function paint(state:Lighting,force=false){
   // Quantized so a dawn or dusk transition recomposes every few seconds, not every tick.
   const q=(v:number,n:number)=>Math.round(v*n)/n,rgb=state.ambient.map(v=>Math.round(q(v,64)*255)),li=q(state.lights,50),gl=q(state.glow,50),key=rgb+'|'+li+'|'+gl;
   if(key===last||!base.width||(!force&&Date.now()-moving<300))return;last=key;
   const off=rgb.every(v=>v===255)&&li===0,c=surface.getContext('2d')!;
+  if(previewing){
+   drawLightmap(rgb,li);ambient.style.background=`rgb(${rgb})`;bloom.style.opacity=String(gl);
+   surface.dataset.lighting='preview';surface.dataset.lightPaints=String(Number(surface.dataset.lightPaints||0)+1);return;
+  }
   c.setTransform(1,0,0,1,0,0);c.globalCompositeOperation='copy';c.drawImage(base,0,0);
   if(!off){
-   const m=lightmap.getContext('2d')!;m.setTransform(1,0,0,1,0,0);m.globalAlpha=1;m.fillStyle=`rgb(${rgb})`;m.fillRect(0,0,lightmap.width,lightmap.height);m.globalCompositeOperation='lighter';m.globalAlpha=li;m.drawImage(lights,0,0);m.globalAlpha=1;m.globalCompositeOperation='source-over';
+   drawLightmap(rgb,li);
    c.setTransform(surface.width/width,0,0,surface.height/height,-left*surface.width/width,-top*surface.height/height);
    c.globalCompositeOperation='multiply';c.drawImage(lightmap,left,top,width,height);
    if(gl){c.globalCompositeOperation='screen';c.globalAlpha=gl;c.drawImage(bloom,left,top,width,height);c.globalAlpha=1;}
@@ -79,8 +91,11 @@ export function createLighting(o:{surface:HTMLCanvasElement;snowLayer:HTMLElemen
  }
  function tick(){
   current=lightingAt(resolveTime(mode,Date.now(),location.search,manual));const next=sunStep(current.t);
-  // A new sun position re-rasters the world (which relights it via capture); wait while the camera moves.
-  if(next.key!==sunKey&&Date.now()-moving>=300){sunKey=next.key;sun=next.sun;surface.dataset.sun=sunKey;o.onSun();}else paint(current);
+  // A new sun position re-rasters the world (which relights it via capture); wait while the camera
+  // moves. While the clock is dragged, shadows catch up once the slider rests for SUN_REST_MS.
+  const wait=previewing?SUN_REST_MS-(Date.now()-timeSet):0;
+  if(next.key!==sunKey&&Date.now()-moving>=300&&wait<=0){sunKey=next.key;sun=next.sun;surface.dataset.sun=sunKey;o.onSun();}
+  else{paint(current);if(next.key!==sunKey&&wait>0){clearTimeout(sunTimer);sunTimer=window.setTimeout(tick,wait);}}
   const v=surface.parentElement!;v.dataset.phase=current.phase;v.dataset.time=current.t.toFixed(3);v.dataset.lightingMode=mode;
   const state=clockState();v.dataset.clock=state.manual?'manual':'live';for(const f of listeners)f(state);
  }
@@ -89,23 +104,36 @@ export function createLighting(o:{surface:HTMLCanvasElement;snowLayer:HTMLElemen
  function setTime(t:number|null){
   // The clock takes over from QA URL overrides, which would otherwise keep winning.
   const url=new URL(location.href);if(url.searchParams.has('time')||url.searchParams.has('daySpeed')){url.searchParams.delete('time');url.searchParams.delete('daySpeed');history.replaceState(history.state,'',url);}
-  manual=t===null?null:t-Math.floor(t);if(manual===null)mode='dynamic';try{localStorage.setItem(KEY,JSON.stringify(manual===null?{mode}:{mode,time:manual}));}catch{}tick();}
+  manual=t===null?null:t-Math.floor(t);timeSet=Date.now();if(manual===null)mode='dynamic';try{localStorage.setItem(KEY,JSON.stringify(manual===null?{mode}:{mode,time:manual}));}catch{}tick();}
+ const SUN_REST_MS=150;let previewing=false,timeSet=0,sunTimer=0;
+ function preview(on:boolean){
+  if(on===previewing)return;previewing=on;last='';lightmap.hidden=bloom.hidden=!on;
+  if(on){
+   // Show the unlit world under the live overlays; the snow goes back to its untinted tile.
+   const c=surface.getContext('2d')!;c.setTransform(1,0,0,1,0,0);c.globalCompositeOperation='copy';c.drawImage(base,0,0);c.globalCompositeOperation='source-over';
+   ambient.hidden=false;tintKey='';o.snowLayer.style.backgroundImage=snowImage;o.snowLayer.dataset.tint='preview';flicker.dataset.lit='false';
+  }
+  // Releasing bakes once (via the sun-step re-raster when shadows moved); the ambient
+  // layer stays until the tinted snow tile is in place.
+  else delete o.snowLayer.dataset.tint;
+  if(on)paint(current,true);else tick();
+ }
  let tintKey='';tile.src=snowImage.slice(5,-2);
  function tintSnow(rgb:number[],off:boolean){
   const key=off?'off':rgb.join();if(key===tintKey)return;tintKey=key;
-  if(off){o.snowLayer.style.backgroundImage=snowImage;o.snowLayer.dataset.tint='off';return;}
+  if(off){o.snowLayer.style.backgroundImage=snowImage;o.snowLayer.dataset.tint='off';ambient.hidden=true;return;}
   tile.decode().then(()=>{if(key!==tintKey)return;tint.width=tile.naturalWidth;tint.height=tile.naturalHeight;const c=tint.getContext('2d')!;c.globalCompositeOperation='source-over';c.drawImage(tile,0,0);c.globalCompositeOperation='multiply';c.fillStyle=`rgb(${rgb})`;c.fillRect(0,0,tint.width,tint.height);
    // Applied as a data: URL like the original tile (blob: tiles panned slower). The first
    // tint is synchronous so the snow never loads untinted; later ones encode off-thread.
-   if(!o.snowLayer.dataset.tint){o.snowLayer.style.backgroundImage=`url(${tint.toDataURL()})`;o.snowLayer.dataset.tint=key;return;}
+   if(!o.snowLayer.dataset.tint){o.snowLayer.style.backgroundImage=`url(${tint.toDataURL()})`;o.snowLayer.dataset.tint=key;ambient.hidden=true;return;}
    tint.toBlob(b=>{if(!b||key!==tintKey)return;const r=new FileReader();r.onload=()=>{if(key!==tintKey)return;o.snowLayer.style.backgroundImage=`url(${r.result})`;o.snowLayer.dataset.tint=key;};r.readAsDataURL(b);});}).catch(()=>{});
  }
  let still=0;
  setInterval(tick,1000);document.addEventListener('visibilitychange',()=>{if(!document.hidden)tick();});
  return {
   // Every camera frame: follow the surface; the flicker layer rests until the camera stops.
-  place(transform:string){flicker.style.transform=transform;moving=Date.now();if(!flicker.classList.contains('moving'))flicker.classList.add('moving');clearTimeout(still);still=window.setTimeout(()=>{flicker.classList.remove('moving');tick();},300);},
-  setScene,capture,setTime,
+  place(transform:string){flicker.style.transform=lightmap.style.transform=bloom.style.transform=transform;moving=Date.now();if(!flicker.classList.contains('moving'))flicker.classList.add('moving');clearTimeout(still);still=window.setTimeout(()=>{flicker.classList.remove('moving');tick();},300);},
+  setScene,capture,setTime,preview,
   sun:()=>sun,
   subscribe(f:(s:ClockState)=>void){listeners.add(f);f(clockState());return ()=>listeners.delete(f);}
  };

@@ -66,7 +66,7 @@ try{
  page=await fresh();
  // 5b. In-game clock: pinning an hour relights, casts shadows by day only, is remembered, and Live restores the cycle.
  await open(page);await page.click('.clock-chip');
- await page.$eval('#clock-slider',e=>{e.value='1020';e.dispatchEvent(new Event('input',{bubbles:true}));});await page.waitForTimeout(700);
+ await page.$eval('#clock-slider',e=>{e.value='1020';e.dispatchEvent(new Event('input',{bubbles:true}));e.dispatchEvent(new Event('change',{bubbles:true}));});await page.waitForTimeout(700);
  let c=await stats(page);assert.equal(c.phase,'Dusk');assert.equal(c.sun,(1020/1440).toFixed(4));
  const shadowed=await page.evaluate(()=>document.querySelector('#day-clock .clock-time').textContent);assert.equal(shadowed,'17:00');
  await page.click('text=Midnight');await page.waitForTimeout(700);c=await stats(page);assert.equal(c.phase,'Night');assert.equal(c.sun,'none');assert.equal(c.state,'on');
@@ -75,6 +75,18 @@ try{
  assert.deepEqual(await page.evaluate(()=>[document.querySelector('#day-clock').dataset.clock,localStorage.getItem('arkadia.stronghold.lighting')]),['live','{"mode":"dynamic"}']);
  await page.evaluate(()=>localStorage.removeItem('arkadia.stronghold.lighting'));
  pass('in-game clock: slider and presets relight, sun shadows by day only, pinned hour remembered, Live restores the cycle');
+ page=await fresh();
+ // 5c. Dragging the clock previews over the unlit world: no world re-raster or snow re-encode per step,
+ // shadows catch up once on release, and the preview matches the baked result.
+ await open(page,'?time=0.2');await page.click('.clock-chip');
+ const drag=await page.evaluate(async()=>{const s=document.querySelector('#clock-slider'),w=document.querySelector('#world-surface'),frames=[],p0=+w.dataset.paints;let prev=performance.now();
+  for(let v=300;v<=1020;v+=5){s.value=String(v);s.dispatchEvent(new Event('input',{bubbles:true}));const now=await new Promise(r=>requestAnimationFrame(r));frames.push(now-prev);prev=now;}
+  const during={paints:+w.dataset.paints-p0,state:w.dataset.lighting,tint:document.querySelector('#world-layers').firstElementChild.dataset.tint};
+  s.dispatchEvent(new Event('change',{bubbles:true}));await new Promise(r=>setTimeout(r,600));frames.sort((a,b)=>a-b);
+  return {during,after:{paints:+w.dataset.paints-p0,state:w.dataset.lighting,sun:w.dataset.sun},p95:frames[Math.floor(frames.length*.95)]};});
+ report.clockDrag=drag;assert.equal(drag.during.paints,0,'no world re-raster while dragging');assert.equal(drag.during.state,'preview');assert.equal(drag.during.tint,'preview');
+ assert.equal(drag.after.paints,1,'one re-raster on release');assert.equal(drag.after.state,'on');assert.equal(drag.after.sun,(1020/1440).toFixed(4));assert.ok(drag.p95<100,'drag p95 '+drag.p95);
+ pass(`clock drag 05:00 -> 17:00: p95 ${drag.p95.toFixed(1)} ms, 0 world re-rasters while dragging, 1 on release`);
  page=await fresh();
  // 6. ?lighting=night is remembered (no menu in the world-only view); ?lighting=dynamic restores the clock.
  await open(page,'?lighting=night');assert.equal((await stats(page)).phase,'Night');
