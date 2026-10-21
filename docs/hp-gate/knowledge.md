@@ -52,8 +52,12 @@ Both the isolated committed build and the public site passed the browser accepta
 The old scripts/verify-encounters.mjs entry point invokes the current gate-based acceptance suite. Public verification results: [live-results.json](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=docs%2Fhp-gate%2Flive-results.json).
 
 [Artwork source, generation prompt, behavior and publishing notes](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=docs%2Fhp-gate%2FREADME.md). Published through the managed Stronghold sandbox with scripts/publish-hp-gate.mjs; only committed release files were used.
-## Simple rounded clock
+## Generated rounded clock frame
 
-The clock is a slim 32-pixel-high capsule with a dark background, a thin muted gold outline, and 16-pixel rounded corners. Decorative brass frame artwork is removed from the clock. Phones show only the day/night icon and time, with a minimum width of 90 pixels. The settings panel also uses a plain background and soft rounded corners.
+The approved clock height stays at 32 pixels. Its frame is now generated with the built-in imagegen tool using the HP frame as a material reference: aged brass bevels, a dark recessed rim, and simple rounded ends, without diamond ornaments. The transparent source is preserved; a trimmed WebP supplies the runtime frame. Nine-slice rendering keeps the corners curved at phone and desktop widths.
 
-Released in af57cf7. Build and public browser checks passed at 320, 390 and 1440 pixels: height at most 32 pixels, HP clearance, settings panel bounds, opening/closing and time preset selection. Encounter regression checks also passed. The inline mobile screenshots above show the updated simpler clock.
+![Original imagegen clock frame](https://arkadia-stronghold-whachat.fural.space/hp-gate/clock-frame-source.png)
+
+![Trimmed runtime clock frame](https://arkadia-stronghold-whachat.fural.space/ui/clock-frame.webp)
+
+The mobile screenshots above show the new frame. Released in 141990e. Build and public browser checks passed at 320, 390 and 1440 pixels: clock height at most 32 pixels, generated artwork loads and is applied, HP clearance, panel bounds, toggle and time presets, and encounter regressions. The source prompt and reference are recorded in [clock-frame-prompt.txt](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=assets-src%2Fui%2Fclock-frame-prompt.txt).
