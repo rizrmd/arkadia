@@ -1,0 +1,270 @@
+{
+  "tool": "built-in image_gen.imagegen",
+  "referenceAttachment": "DA66f49939f6e26121844a0957",
+  "supersedesDraft": "DAa0928eda21fb0243763e976a",
+  "sheets": [
+    {
+      "name": "idle-n-ne-e-se",
+      "generation": "61473705-a43b-4361-906f-982e9d89e921",
+      "columns": 4,
+      "rows": 4,
+      "layer": "body",
+      "action": "idle",
+      "directions": [
+        "N",
+        "NE",
+        "E",
+        "SE"
+      ]
+    },
+    {
+      "name": "idle-s-sw-w-nw",
+      "generation": "b0f02cce-8740-4038-b552-36a85477bf1e",
+      "columns": 4,
+      "rows": 4,
+      "layer": "body",
+      "action": "idle",
+      "directions": [
+        "S",
+        "SW",
+        "W",
+        "NW"
+      ],
+      "rejectedGeneration": "67fa01fa-a1f9-49bf-b609-4c3f1c252bcb"
+    },
+    {
+      "name": "run-n-ne-e-se",
+      "generation": "50588061-124c-40c6-89c7-154fcca6e004",
+      "columns": 6,
+      "rows": 4,
+      "layer": "body",
+      "action": "run",
+      "directions": [
+        "N",
+        "NE",
+        "E",
+        "SE"
+      ]
+    },
+    {
+      "name": "run-s-sw-w-nw",
+      "generation": "71d9e3cb-0c0c-47ca-867f-45c0d5095a1d",
+      "columns": 6,
+      "rows": 4,
+      "layer": "body",
+      "action": "run",
+      "directions": [
+        "S",
+        "SW",
+        "W",
+        "NW"
+      ]
+    },
+    {
+      "name": "pulse-shot-n-ne-e-se",
+      "generation": "8a0fbf2c-bcaa-403f-a62d-bdd1ba1a8da5",
+      "columns": 6,
+      "rows": 4,
+      "layer": "body",
+      "action": "pulse-shot",
+      "directions": [
+        "N",
+        "NE",
+        "E",
+        "SE"
+      ]
+    },
+    {
+      "name": "pulse-shot-s-sw-w-nw",
+      "generation": "356b1d01-fdc9-4ebc-a95c-34102ebad2b0",
+      "columns": 6,
+      "rows": 4,
+      "layer": "body",
+      "action": "pulse-shot",
+      "directions": [
+        "S",
+        "SW",
+        "W",
+        "NW"
+      ]
+    },
+    {
+      "name": "phase-dash-n-ne-e-se",
+      "generation": "77d944b8-5f22-4cf7-bacf-2f2ad0a92c45",
+      "columns": 6,
+      "rows": 4,
+      "layer": "body",
+      "action": "phase-dash",
+      "directions": [
+        "N",
+        "NE",
+        "E",
+        "SE"
+      ]
+    },
+    {
+      "name": "phase-dash-s-sw-w-nw",
+      "generation": "fee695f2-4e98-461d-a11a-74a4a62ee50f",
+      "columns": 6,
+      "rows": 4,
+      "layer": "body",
+      "action": "phase-dash",
+      "directions": [
+        "S",
+        "SW",
+        "W",
+        "NW"
+      ]
+    },
+    {
+      "name": "rift-trap-n-ne-e-se",
+      "generation": "676799e0-650f-4c2e-8c4d-c8c60a2928a3",
+      "columns": 6,
+      "rows": 4,
+      "layer": "body",
+      "action": "rift-trap",
+      "directions": [
+        "N",
+        "NE",
+        "E",
+        "SE"
+      ]
+    },
+    {
+      "name": "rift-trap-s-sw-w-nw",
+      "generation": "c37926e0-365e-443f-a687-2809fd0980dc",
+      "columns": 6,
+      "rows": 4,
+      "layer": "body",
+      "action": "rift-trap",
+      "directions": [
+        "S",
+        "SW",
+        "W",
+        "NW"
+      ]
+    },
+    {
+      "name": "overdrive-n-ne-e-se",
+      "generation": "f991834d-0419-46c8-b12b-4f8d269773fa",
+      "columns": 6,
+      "rows": 4,
+      "layer": "body",
+      "action": "overdrive",
+      "directions": [
+        "N",
+        "NE",
+        "E",
+        "SE"
+      ]
+    },
+    {
+      "name": "overdrive-s-sw-w-nw",
+      "generation": "4f3a3295-14cd-4e57-8327-9e6e2106afa5",
+      "columns": 6,
+      "rows": 4,
+      "layer": "body",
+      "action": "overdrive",
+      "directions": [
+        "S",
+        "SW",
+        "W",
+        "NW"
+      ],
+      "rejectedGeneration": "2c838c28-3906-471f-ae27-f7dbf4832efb"
+    },
+    {
+      "name": "projectile-n-ne-e-se",
+      "generation": "225f1575-f363-475b-bdc2-0e550e728fef",
+      "columns": 4,
+      "rows": 4,
+      "layer": "vfx",
+      "action": "projectile",
+      "directions": [
+        "N",
+        "NE",
+        "E",
+        "SE"
+      ]
+    },
+    {
+      "name": "projectile-s-sw-w-nw",
+      "generation": "0b376bd2-3fc6-4e1b-b4f2-99e4da5e0bf4",
+      "columns": 4,
+      "rows": 4,
+      "layer": "vfx",
+      "action": "projectile",
+      "directions": [
+        "S",
+        "SW",
+        "W",
+        "NW"
+      ]
+    },
+    {
+      "name": "afterimage-n-ne-e-se",
+      "generation": "ca099392-d062-4596-96f1-62b771a6fcd0",
+      "columns": 4,
+      "rows": 4,
+      "layer": "vfx",
+      "action": "afterimage",
+      "directions": [
+        "N",
+        "NE",
+        "E",
+        "SE"
+      ]
+    },
+    {
+      "name": "afterimage-s-sw-w-nw",
+      "generation": "fc47204d-b9da-4ded-b49e-7a7f673a54e3",
+      "columns": 4,
+      "rows": 4,
+      "layer": "vfx",
+      "action": "afterimage",
+      "directions": [
+        "S",
+        "SW",
+        "W",
+        "NW"
+      ]
+    },
+    {
+      "name": "trap",
+      "generation": "10563013-85c1-443f-ad9d-47515a6447e0",
+      "columns": 6,
+      "rows": 2,
+      "layer": "vfx",
+      "action": "trap",
+      "directions": [
+        "omni"
+      ]
+    },
+    {
+      "name": "aura",
+      "generation": "06851439-2d16-4513-99fd-9b274d5113f4",
+      "columns": 6,
+      "rows": 2,
+      "layer": "vfx",
+      "action": "aura",
+      "directions": [
+        "omni"
+      ]
+    }
+  ],
+  "corrections": [
+    {
+      "name": "north-skill-correction",
+      "generation": "18e1c63e-3731-427b-ae76-a33da2603cb0",
+      "columns": 6,
+      "rows": 3,
+      "selectedRows": {
+        "pulse-shot-n-ne-e-se": 0,
+        "phase-dash-n-ne-e-se": 1
+      },
+      "rejectedRows": {
+        "2": "Rift Trap anticipation raises hand instead of reaching ground."
+      }
+    }
+  ]
+}

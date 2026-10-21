@@ -1,0 +1,18 @@
+{
+ "status":"rendering-verified-art-acceptance-blocked","gameReady":false,"selectedSheets":18,"selectedFrames":360,"clips":66,
+ "requestedBodyDirections":["N","NE","E","SE","S","SW","W","NW"],
+ "renderingVerification":"Every selected frame of all 66 clips rendered during real-time browser playback. Idle/action/idle transitions exercised for run and all four skills. Pause and step passed without page errors.",
+ "pixelVerification":"RGBA, 256x256 cells. Body anchor [128,224] inferred from silhouette bottom-center. VFX origin [128,128]. Bodies isolated by alpha components; fixed scale per row.",
+ "artReview":[
+ {"area":"Idle","finding":"Eight requested rows after correction. Scarf length, anatomy and emitter side vary; foot landmarks move relative to inferred anchor."},
+ {"area":"Run","finding":"Eight rows with six frames each. Some contact poses repeat; foot sliding and scarf snapping remain."},
+ {"area":"Pulse Shot","finding":"Full body ready/windup/aim/release/recovery/ready. North correction reads overhead instead of forward. E/SE/S and diagonals can drift through aim and recovery; emitter changes arms."},
+ {"area":"Phase Dash","finding":"Ready/crouch/launch/airborne/landing/recovery. SW recovery becomes front-facing. Bottom alignment suppresses airborne root height; landing transitions pop."},
+ {"area":"Rift Trap","finding":"Kneel and ground contact exist in eight requested slots, but N drifts diagonally. North correction rejected because its hand rises. Front rows also turn during placement."},
+ {"area":"Overdrive","finding":"Crouch/expansion/apex/recovery in eight slots. West correction improves heading; costume and limb lengths vary."},
+ {"area":"VFX","finding":"Projectile and afterimage eight slots; trap/aura omnidirectional. Some glow touches source edges; direction silhouettes need cleanup; aura fade leaves a ring."},
+ {"area":"Transitions","finding":"All transitions render, but stance width, scarf position and proportions pop between independently generated neutral poses. No hand-tracked foot or pelvis anchors."}
+ ],
+ "acceptanceBlocker":"Built-in generation did not reliably preserve emitter anatomy, precise heading, foot contacts or neutral continuity after targeted corrections. Final consistency requires sprite art cleanup or controlled rig-based rendering. Not game-ready.",
+ "scope":"Independent assets, previews and docs only. No gameplay hero replacement. Composite VFX placement is approximate, without calibrated emitter sockets."
+}
