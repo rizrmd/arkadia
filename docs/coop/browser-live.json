@@ -1,8 +1,8 @@
 {
  "url": "https://arkadia-coop-whachat.fural.space",
- "room": "2HMV2",
+ "room": "25MSK",
  "tagOnA": "Bima",
- "tagOnB": "Guest 4342",
+ "tagOnB": "Guest 7644",
  "shots": [
   "docs/coop/1-court-desktop-live.webp",
   "docs/coop/1-court-phone-live.webp",
@@ -10,15 +10,15 @@
   "docs/coop/2-wilds-phone-live.webp"
  ],
  "predictionWhileWalking": {
-  "corrections": 1,
-  "maxCorrectionPx": 3.32,
-  "inputs": 590,
-  "rttMs": 14
+  "corrections": 0,
+  "maxCorrectionPx": 0,
+  "inputs": 311,
+  "rttMs": 13
  },
  "sameEnemies": {
-  "commonTicks": 292,
+  "commonTicks": 274,
   "mismatched": 0,
-  "atTick": 721,
+  "atTick": 422,
   "enemies": [
    [
     1,
@@ -70,9 +70,9 @@
    ],
    [
     9,
-    1,
-    0,
-    "die"
+    2,
+    2,
+    "move"
    ],
    [
     10,
@@ -92,46 +92,58 @@
   "a": {
    "low": "false",
    "zone": "wild",
-   "hp": "88",
+   "hp": "96",
    "max": "100",
-   "state": "idle",
-   "kills": "5",
-   "foes": "0"
+   "state": "attack",
+   "kills": "3",
+   "foes": "1"
   },
   "b": {
    "low": "false",
    "zone": "wild",
-   "hp": "96",
+   "hp": "100",
    "max": "100",
-   "state": "idle",
-   "kills": "6",
-   "foes": "0"
+   "state": "attack",
+   "kills": "8",
+   "foes": "1"
   }
  },
  "stats": {
   "a": {
    "status": "online",
-   "room": "2HMV2",
+   "room": "25MSK",
    "you": "p1",
-   "snapshots": 726,
-   "inputs": 694,
-   "corrections": 11,
-   "maxCorrection": 6.042929753025479,
-   "lastCorrection": 3.8200785332241813,
-   "bytes": 825589,
-   "rtt": 11.099999904632568
+   "snapshots": 423,
+   "inputs": 409,
+   "corrections": 9,
+   "maxCorrection": 5.777862926723024,
+   "lastCorrection": 5.777862926723024,
+   "bytes": 503813,
+   "pace": 1,
+   "margin": 1,
+   "delay": 84,
+   "extrapolated": 1,
+   "held": 0,
+   "blended": 0,
+   "rtt": 11.899999856948853
   },
   "b": {
    "status": "online",
-   "room": "2HMV2",
+   "room": "25MSK",
    "you": "p2",
-   "snapshots": 321,
-   "inputs": 298,
-   "corrections": 12,
-   "maxCorrection": 6.640391543176861,
-   "lastCorrection": 3.440930106817048,
-   "bytes": 452758,
-   "rtt": 383.7999999523163
+   "snapshots": 285,
+   "inputs": 276,
+   "corrections": 9,
+   "maxCorrection": 5.396823139588672,
+   "lastCorrection": 5.076938053590872,
+   "bytes": 398794,
+   "pace": 1,
+   "margin": 1,
+   "delay": 82,
+   "extrapolated": 1,
+   "held": 1,
+   "blended": 9,
+   "rtt": 12.800000190734863
   }
  },
  "ok": true
