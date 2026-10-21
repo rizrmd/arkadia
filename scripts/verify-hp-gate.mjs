@@ -18,6 +18,8 @@ try{
   const state=await page.evaluate(async()=>{const img=new Image();img.src='/ui/health-frame.webp';await img.decode();const hud=document.querySelector('#hero-hud'),bar=hud.querySelector('.hud-bar'),clock=document.querySelector('.clock-chip');const r=bar.getBoundingClientRect(),h=hud.getBoundingClientRect(),c=clock.getBoundingClientRect();return {text:hud.innerText,ratio:r.width/r.height,hud:{left:h.left,right:h.right},clockLeft:c.left,art:{w:img.naturalWidth,h:img.naturalHeight},combat:window.__STRONGHOLD_COMBAT__.snapshot()};});
   console.log(width,state.hud,state.clockLeft,state.text);assert(Math.abs(state.ratio-2166/212)<.02);assert(state.hud.left>=0&&state.hud.right<state.clockLeft);assert(!/\d+\s*m\b|distance|from the tent/i.test(state.text));assert(state.combat.spawns.every(s=>s.m===10));assert(state.combat.foes.every(f=>!f.safe));
   const chip=await page.locator('.clock-chip').boundingBox();assert(chip.height<=32,'clock stays short');
+  assert.match(await page.locator('.clock-chip').evaluate(el=>getComputedStyle(el,'::before').borderImageSource),/clock-frame.webp/);
+  await page.evaluate(async()=>{const img=new Image();img.src='/ui/clock-frame.webp';await img.decode();});
   await page.locator('.clock-chip').click();
   assert.equal(await page.locator('.clock-chip').getAttribute('aria-expanded'),'true');
   const panel=await page.locator('.clock-panel').boundingBox();assert(panel.x>=0&&panel.x+panel.width<=width);

@@ -9,8 +9,9 @@
 #day-clock{position:fixed;top:max(12px,env(safe-area-inset-top));right:max(12px,env(safe-area-inset-right));z-index:10;display:flex;flex-direction:column;align-items:flex-end;gap:8px;font-size:14px;max-width:calc(100vw - 24px)}
 #day-clock button{font:inherit;color:inherit;cursor:pointer}
 #day-clock .icon{width:18px;height:18px;display:block}
-.clock-chip{display:flex;align-items:center;justify-content:center;gap:7px;height:32px;padding:0 11px;border:1px solid #c9a86a70;border-radius:16px;background:#172022e8;box-shadow:0 2px 7px #0003}
-.clock-chip:hover,.clock-chip[aria-expanded=true]{border-color:#dac08c;background:#25302f}
+.clock-chip{position:relative;display:flex;align-items:center;justify-content:center;gap:7px;height:32px;padding:0 11px;border:0;border-radius:16px;background:#172022e8;box-shadow:0 2px 7px #0003}
+.clock-chip::before{content:"";position:absolute;inset:0;border:1px solid transparent;border-image:url('/ui/clock-frame.webp') 120 150 / 15px 19px / 0 stretch;pointer-events:none}
+.clock-chip:hover,.clock-chip[aria-expanded=true]{background:#25302f}
 .clock-icon{color:#f2c46b}#day-clock[data-sky=moon] .clock-icon{color:#a9bcf5}
 .clock-time{font-variant-numeric:tabular-nums;font-size:16px;letter-spacing:.02em}
 .clock-phase{color:#cfc3a6}

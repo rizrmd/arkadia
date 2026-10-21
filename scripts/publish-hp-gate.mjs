@@ -5,6 +5,8 @@ const release=process.env.RELEASE_DIR||'.';
 const id='CS13a31c114a666008eb9cafa5',dir=path.resolve('.publish/hp-gate'),from=path.relative(os.homedir(),dir),run=args=>JSON.parse(execFileSync('fural-agent',args,{encoding:'utf8',timeout:120000,maxBuffer:6e6}));await fs.mkdir(dir,{recursive:true});const files={};
 files['/index.html']=(await fs.readFile(release+'/dist/index.html')).toString('base64');
 for(const n of await fs.readdir(release+'/dist/assets'))if(/\.(js|css)$/.test(n))files['/assets/'+n]=(await fs.readFile(release+'/dist/assets/'+n)).toString('base64');
+files['/ui/clock-frame.webp']=(await fs.readFile(release+'/public/ui/clock-frame.webp')).toString('base64');
+files['/hp-gate/clock-frame-source.png']=(await fs.readFile(release+'/assets-src/ui/clock-frame.png')).toString('base64');
 files['/ui/health-frame.webp']=(await fs.readFile(release+'/public/ui/health-frame.webp')).toString('base64');
 files['/hp-gate/health-frame-source.png']=(await fs.readFile(release+'/assets-src/ui/health-frame.png')).toString('base64');
 for(const n of await fs.readdir(release+'/docs/hp-gate'))if(n.endsWith('.png'))files['/hp-gate/'+n]=(await fs.readFile(release+'/docs/hp-gate/'+n)).toString('base64');
