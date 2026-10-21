@@ -110,3 +110,7 @@ Live browser playback passed all 66 clips with zero page/resource errors. All 70
 
 ![overdrive public-site browser playback](https://arkadia-stronghold-whachat.fural.space/rift-runner/v1/evidence/live-overdrive-playback.png)
 
+
+## Final delivery check
+
+After the evidence overlay, all **82 deployed resources** matched their packaged SHA-256 hashes. The gameplay homepage bytes remain unchanged. [Final checksum report](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=docs%2Frift-runner-v1%2Flive-byte-verification.json). Assets and previews are shipped; final consistent animation acceptance is blocked by the documented art defects.
