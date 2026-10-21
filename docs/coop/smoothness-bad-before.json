@@ -1,0 +1,56 @@
+{
+ "profile": "bad",
+ "network": {
+  "base": 80,
+  "jitter": 120,
+  "spike": 0.06,
+  "spikeMs": 250
+ },
+ "build": "reference",
+ "own": {
+  "frames": 187,
+  "medianPxPerS": 65.9,
+  "cv": 0.271,
+  "stalls": 8,
+  "jumps": 0,
+  "minPxPerS": 0,
+  "maxPxPerS": 102.4
+ },
+ "remote": {
+  "frames": 157,
+  "medianPxPerS": 59.9,
+  "cv": 1.706,
+  "stalls": 58,
+  "jumps": 21,
+  "minPxPerS": 0,
+  "maxPxPerS": 909.6
+ },
+ "serverSteps": {
+  "ticks": 83,
+  "histogram": {
+   "0": 13,
+   "3.3": 60,
+   "6.6": 10
+  }
+ },
+ "stats": {
+  "a": {
+   "status": "online",
+   "room": "XNDYN",
+   "you": "p1",
+   "corrections": 22,
+   "maxCorrection": 13.279999999999973,
+   "lastCorrection": 3.32000000000005,
+   "rtt": 603.2000000476837
+  },
+  "b": {
+   "status": "online",
+   "room": "XNDYN",
+   "you": "p2",
+   "corrections": 0,
+   "maxCorrection": 0,
+   "lastCorrection": 0,
+   "rtt": 351.5
+  }
+ }
+}

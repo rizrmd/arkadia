@@ -12,22 +12,22 @@ Built-in imagegen, transparent background. Prompt: two separated vegetation spri
 
 TypeScript/Vite build, eight economy/save tests and browser checks at 1440, 390 and 320 pixels pass. Browser checks confirm six dirt trails, painted meadow clumps, 35 crop clumps, seven building selections, assets loading and no horizontal overflow or page errors. Repeated against the public Stronghold host. Both existing Arkadia hosts updated. Compressed binary asset packages keep publishing below the platform size limit.
 
-[Open Stronghold](https://arkadia-stronghold-whachat.fural.space/stronghold.html)
+[Open Stronghold](https://arkadia-custom-whachat.fural.space/)
 
 ## Human reference and inspected assets
 
 ![Human report: symbolic vegetation and cramped square clearing](/api/organizations/ORd5dd6f99b4308d6187031557/task-attachments/TA3e3d72b81a8d22abba4d387c)
 
-![Oak style reference](https://arkadia-whachat.fural.space/village/oak.png)
+![Oak style reference](https://arkadia-custom-whachat.fural.space/village/oak.png)
 
-![Generated painted vegetation source](https://arkadia-whachat.fural.space/village/vegetation-source.png)
+![Generated painted vegetation source](https://arkadia-custom-whachat.fural.space/village/vegetation-source.png)
 
 ## Runtime evidence
 
-![Desktop village](https://arkadia-whachat.fural.space/village/vegetation-1440.png)
+![Desktop village](https://arkadia-custom-whachat.fural.space/village/vegetation-1440.png)
 
-![Mobile village](https://arkadia-whachat.fural.space/village/vegetation-390.png)
+![Mobile village](https://arkadia-custom-whachat.fural.space/village/vegetation-390.png)
 
-![Narrow mobile village](https://arkadia-whachat.fural.space/village/vegetation-320.png)
+![Narrow mobile village](https://arkadia-custom-whachat.fural.space/village/vegetation-320.png)
 
-![Intermediate terrain draft before reducing noise contrast](https://arkadia-whachat.fural.space/village/1440.png)
+![Intermediate terrain draft before reducing noise contrast](https://arkadia-custom-whachat.fural.space/village/1440.png)

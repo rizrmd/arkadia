@@ -1,0 +1,66 @@
+{
+ "profile": "bad",
+ "network": {
+  "base": 80,
+  "jitter": 120,
+  "spike": 0.06,
+  "spikeMs": 250
+ },
+ "build": "working tree",
+ "own": {
+  "frames": 209,
+  "medianPxPerS": 65.9,
+  "cv": 0.33,
+  "stalls": 11,
+  "jumps": 4,
+  "minPxPerS": 0,
+  "maxPxPerS": 156.6
+ },
+ "remote": {
+  "frames": 165,
+  "medianPxPerS": 65.9,
+  "cv": 0.156,
+  "stalls": 3,
+  "jumps": 0,
+  "minPxPerS": 0,
+  "maxPxPerS": 99.1
+ },
+ "serverSteps": {
+  "ticks": 81,
+  "histogram": {
+   "3.3": 81
+  }
+ },
+ "stats": {
+  "a": {
+   "status": "online",
+   "room": "TPFXC",
+   "you": "p1",
+   "corrections": 16,
+   "maxCorrection": 9.961174629530433,
+   "lastCorrection": 9.961174629530433,
+   "pace": 0.95,
+   "margin": -3,
+   "delay": 350,
+   "extrapolated": 55,
+   "held": 0,
+   "blended": 3,
+   "rtt": 513.2999999523163
+  },
+  "b": {
+   "status": "online",
+   "room": "TPFXC",
+   "you": "p2",
+   "corrections": 0,
+   "maxCorrection": 0,
+   "lastCorrection": 0,
+   "pace": 1,
+   "margin": 2,
+   "delay": 337,
+   "extrapolated": 61,
+   "held": 16,
+   "blended": 8,
+   "rtt": 251.40000009536743
+  }
+ }
+}

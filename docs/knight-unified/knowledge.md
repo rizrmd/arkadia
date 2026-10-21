@@ -1,8 +1,8 @@
 ## Current movement correction
 
-The v4 sheet below is the initial identity pass. Human review found repeated supporting-leg poses in diagonal and rear walking. The current game uses reviewed alternating low-clearance footfalls and a slower cadence for those views; straight-down movement is preserved. See **Knight — Alternating Footfalls** in this section and [open the before/after animation player](https://arkadia-stronghold-whachat.fural.space/knight-footfalls/review.html).
+The v4 sheet below is the initial identity pass. Human review found repeated supporting-leg poses in diagonal and rear walking. The current game uses reviewed alternating low-clearance footfalls and a slower cadence for those views; straight-down movement is preserved. See **Knight — Alternating Footfalls** in this section and [open the before/after animation player](https://arkadia-custom-whachat.fural.space/knight-footfalls/review.html).
 
-[Play the updated Stronghold](https://arkadia-stronghold-whachat.fural.space/).
+[Play the updated Stronghold](https://arkadia-custom-whachat.fural.space/).
 
 ## One knight identity across every movement
 
@@ -10,15 +10,15 @@ The knight now uses a single regenerated 48-frame sheet for idle, diagonal walki
 
 Previously these clips came from four independently generated sheets. The new sheet replaces that mixture. Every atlas frame uses the same scale and pivot. Crown registration keeps the helmet steady when movement starts; lifted boots retain their gait offsets. Diagonal views mirror for opposite directions. Straight idle uses a contact frame from the matching walk cycle.
 
-![Selected unified knight source sheet](https://arkadia-stronghold-whachat.fural.space/knight-unified/source.png)
+![Selected unified knight source sheet](https://arkadia-custom-whachat.fural.space/knight-unified/source.png)
 
-![Packed transparent knight atlas used by the game](https://arkadia-stronghold-whachat.fural.space/knight-unified/atlas.png)
+![Packed transparent knight atlas used by the game](https://arkadia-custom-whachat.fural.space/knight-unified/atlas.png)
 
 ## In the game
 
-![Knight in the mobile Stronghold](https://arkadia-stronghold-whachat.fural.space/knight-unified/local-390.png)
+![Knight in the mobile Stronghold](https://arkadia-custom-whachat.fural.space/knight-unified/local-390.png)
 
-![Knight in the desktop Stronghold](https://arkadia-stronghold-whachat.fural.space/knight-unified/local-1440.png)
+![Knight in the desktop Stronghold](https://arkadia-custom-whachat.fural.space/knight-unified/local-1440.png)
 
 ## Generation and integration
 
@@ -30,9 +30,9 @@ Generated with the built-in imagegen tool and refined once to replace running lu
 
 The original knight supplied the visual identity. The first generated pass was rejected because its diagonal steps still resembled running.
 
-![Original knight identity reference](https://arkadia-stronghold-whachat.fural.space/knight-unified/reference.png)
+![Original knight identity reference](https://arkadia-custom-whachat.fural.space/knight-unified/reference.png)
 
-![Rejected first pass with running poses](https://arkadia-stronghold-whachat.fural.space/knight-unified/first-pass.png)
+![Rejected first pass with running poses](https://arkadia-custom-whachat.fural.space/knight-unified/first-pass.png)
 
 ## Verification
 

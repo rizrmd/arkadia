@@ -1,0 +1,150 @@
+{
+ "url": "https://arkadia-coop-whachat.fural.space",
+ "room": "25MSK",
+ "tagOnA": "Bima",
+ "tagOnB": "Guest 7644",
+ "shots": [
+  "docs/coop/1-court-desktop-live.webp",
+  "docs/coop/1-court-phone-live.webp",
+  "docs/coop/2-wilds-desktop-live.webp",
+  "docs/coop/2-wilds-phone-live.webp"
+ ],
+ "predictionWhileWalking": {
+  "corrections": 0,
+  "maxCorrectionPx": 0,
+  "inputs": 311,
+  "rttMs": 13
+ },
+ "sameEnemies": {
+  "commonTicks": 274,
+  "mismatched": 0,
+  "atTick": 422,
+  "enemies": [
+   [
+    1,
+    1,
+    0,
+    "die"
+   ],
+   [
+    2,
+    1,
+    0,
+    "die"
+   ],
+   [
+    3,
+    1,
+    0,
+    "die"
+   ],
+   [
+    4,
+    1,
+    0,
+    "die"
+   ],
+   [
+    5,
+    1,
+    0,
+    "die"
+   ],
+   [
+    6,
+    1,
+    0,
+    "die"
+   ],
+   [
+    7,
+    1,
+    0,
+    "die"
+   ],
+   [
+    8,
+    1,
+    0,
+    "die"
+   ],
+   [
+    9,
+    2,
+    2,
+    "move"
+   ],
+   [
+    10,
+    1,
+    0,
+    "die"
+   ],
+   [
+    11,
+    1,
+    0,
+    "die"
+   ]
+  ]
+ },
+ "hud": {
+  "a": {
+   "low": "false",
+   "zone": "wild",
+   "hp": "96",
+   "max": "100",
+   "state": "attack",
+   "kills": "3",
+   "foes": "1"
+  },
+  "b": {
+   "low": "false",
+   "zone": "wild",
+   "hp": "100",
+   "max": "100",
+   "state": "attack",
+   "kills": "8",
+   "foes": "1"
+  }
+ },
+ "stats": {
+  "a": {
+   "status": "online",
+   "room": "25MSK",
+   "you": "p1",
+   "snapshots": 423,
+   "inputs": 409,
+   "corrections": 9,
+   "maxCorrection": 5.777862926723024,
+   "lastCorrection": 5.777862926723024,
+   "bytes": 503813,
+   "pace": 1,
+   "margin": 1,
+   "delay": 84,
+   "extrapolated": 1,
+   "held": 0,
+   "blended": 0,
+   "rtt": 11.899999856948853
+  },
+  "b": {
+   "status": "online",
+   "room": "25MSK",
+   "you": "p2",
+   "snapshots": 285,
+   "inputs": 276,
+   "corrections": 9,
+   "maxCorrection": 5.396823139588672,
+   "lastCorrection": 5.076938053590872,
+   "bytes": 398794,
+   "pace": 1,
+   "margin": 1,
+   "delay": 82,
+   "extrapolated": 1,
+   "held": 1,
+   "blended": 9,
+   "rtt": 12.800000190734863
+  }
+ },
+ "ok": true
+}

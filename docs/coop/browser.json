@@ -1,0 +1,150 @@
+{
+ "url": "http://127.0.0.1:8792",
+ "room": "F8X6P",
+ "tagOnA": "Bima",
+ "tagOnB": "Guest 3529",
+ "shots": [
+  "docs/coop/1-court-desktop.webp",
+  "docs/coop/1-court-phone.webp",
+  "docs/coop/2-wilds-desktop.webp",
+  "docs/coop/2-wilds-phone.webp"
+ ],
+ "predictionWhileWalking": {
+  "corrections": 0,
+  "maxCorrectionPx": 0,
+  "inputs": 290,
+  "rttMs": 1
+ },
+ "sameEnemies": {
+  "commonTicks": 258,
+  "mismatched": 0,
+  "atTick": 384,
+  "enemies": [
+   [
+    1,
+    1,
+    0,
+    "die"
+   ],
+   [
+    2,
+    1,
+    0,
+    "die"
+   ],
+   [
+    3,
+    1,
+    0,
+    "die"
+   ],
+   [
+    4,
+    1,
+    0,
+    "die"
+   ],
+   [
+    5,
+    1,
+    2,
+    "move"
+   ],
+   [
+    6,
+    1,
+    1,
+    "hit"
+   ],
+   [
+    7,
+    1,
+    0,
+    "die"
+   ],
+   [
+    8,
+    1,
+    0,
+    "die"
+   ],
+   [
+    9,
+    1,
+    0,
+    "die"
+   ],
+   [
+    10,
+    1,
+    0,
+    "die"
+   ],
+   [
+    11,
+    1,
+    0,
+    "die"
+   ]
+  ]
+ },
+ "hud": {
+  "a": {
+   "low": "false",
+   "zone": "wild",
+   "hp": "100",
+   "max": "100",
+   "state": "attack",
+   "kills": "3",
+   "foes": "2"
+  },
+  "b": {
+   "low": "false",
+   "zone": "wild",
+   "hp": "84",
+   "max": "100",
+   "state": "attack",
+   "kills": "6",
+   "foes": "2"
+  }
+ },
+ "stats": {
+  "a": {
+   "status": "online",
+   "room": "F8X6P",
+   "you": "p1",
+   "snapshots": 386,
+   "inputs": 362,
+   "corrections": 18,
+   "maxCorrection": 6.641927431100204,
+   "lastCorrection": 6.610363076261416,
+   "bytes": 449708,
+   "pace": 1,
+   "margin": 1,
+   "delay": 125,
+   "extrapolated": 4,
+   "held": 1,
+   "blended": 0,
+   "rtt": 39.5
+  },
+  "b": {
+   "status": "online",
+   "room": "F8X6P",
+   "you": "p2",
+   "snapshots": 271,
+   "inputs": 262,
+   "corrections": 11,
+   "maxCorrection": 5.201586296506093,
+   "lastCorrection": 5.201586296506093,
+   "bytes": 375235,
+   "pace": 1,
+   "margin": 1,
+   "delay": 124,
+   "extrapolated": 4,
+   "held": 1,
+   "blended": 9,
+   "rtt": 17.90000009536743
+  }
+ },
+ "ok": true
+}

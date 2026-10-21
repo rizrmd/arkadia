@@ -14,7 +14,7 @@ The saved level still selects new/repaired/upgraded forge sprites, and the ruine
 
 ## Live game
 
-[Open Stronghold](https://arkadia-stronghold-whachat.fural.space/stronghold.html) · [Open through the main Arkadia host](https://arkadia-whachat.fural.space/stronghold.html).
+[Open Stronghold](https://arkadia-custom-whachat.fural.space/) · [Open through the main Arkadia host](https://arkadia-custom-whachat.fural.space/).
 
 ## Human images
 
@@ -26,21 +26,21 @@ The saved level still selects new/repaired/upgraded forge sprites, and the ruine
 
 Built-in imagegen produced the snowy landscape and four-state forge sprite sheet. Original PNGs and WebP runtime encodings are in public/fortress-ui. The sheet is extracted into separate transparent sprites without changing the painted artwork. Full generation prompts are recorded in docs/fortress-ui/prompts.md.
 
-![Snowy landscape](https://arkadia-stronghold-whachat.fural.space/fortress-ui/snowy-landscape.webp)
+![Snowy landscape](https://arkadia-custom-whachat.fural.space/fortress-ui/snowy-landscape.webp)
 
-![Existing forge used as an art reference](https://arkadia-stronghold-whachat.fural.space/assets/stronghold/forge.png)
+![Existing forge used as an art reference](https://arkadia-custom-whachat.fural.space/assets/stronghold/forge.png)
 
-![Four forge states generated from the existing forge](https://arkadia-stronghold-whachat.fural.space/fortress-ui/forge-states.webp)
+![Four forge states generated from the existing forge](https://arkadia-custom-whachat.fural.space/fortress-ui/forge-states.webp)
 
 ## Corrected environment plate
 
-![Close courtyard environment without buildings or interface](https://arkadia-stronghold-whachat.fural.space/fortress-ui/courtyard-v2.webp)
+![Close courtyard environment without buildings or interface](https://arkadia-custom-whachat.fural.space/fortress-ui/courtyard-v2.webp)
 
 ## Runtime evidence
 
-![Desktop fortress UI](https://arkadia-stronghold-whachat.fural.space/fortress-ui/desktop.webp)
+![Desktop fortress UI](https://arkadia-custom-whachat.fural.space/fortress-ui/desktop.webp)
 
-![Mobile fortress UI](https://arkadia-stronghold-whachat.fural.space/fortress-ui/mobile.webp)
+![Mobile fortress UI](https://arkadia-custom-whachat.fural.space/fortress-ui/mobile.webp)
 
 ## Verification and publishing
 
@@ -60,6 +60,6 @@ The page and body prevent vertical scrolling; the body owns horizontal panning. 
 
 The build and four-viewport UI regression pass. A dedicated touch/mobile browser check passes on both public hosts at 390 × 844, 360 × 640, 320 × 568 and landscape 844 × 390. It checks large scene height, portrait horizontal overflow, direct selection of all seven buildings, each panel fitting without vertical scrolling, reachable Claim All and Start Run controls, rejection of vertical wheel/page scrolling, and no page errors.
 
-![Portrait mobile courtyard filling the screen](https://arkadia-stronghold-whachat.fural.space/fortress-ui/mobile.webp)
+![Portrait mobile courtyard filling the screen](https://arkadia-custom-whachat.fural.space/fortress-ui/mobile.webp)
 
-![Same mobile screen panned horizontally to building details and actions](https://arkadia-stronghold-whachat.fural.space/fortress-ui/mobile-panel.webp)
+![Same mobile screen panned horizontally to building details and actions](https://arkadia-custom-whachat.fural.space/fortress-ui/mobile-panel.webp)

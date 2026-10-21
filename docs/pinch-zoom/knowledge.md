@@ -1,4 +1,4 @@
-[Play the updated Stronghold](https://arkadia-stronghold-whachat.fural.space/) on a phone and pinch to zoom.
+[Play the updated Stronghold](https://arkadia-custom-whachat.fural.space/) on a phone and pinch to zoom.
 
 ## What was wrong
 
@@ -27,13 +27,13 @@ The script fails on the previous build and passes on the live site. Results: [re
 
 Headless screenshots cannot show compositor flicker itself. They do confirm that snow fills the bottom of the screen in the middle of each pinch.
 
-![Mid-pinch at the furthest zoom-out](https://arkadia-stronghold-whachat.fural.space/pinch-zoom/zoom-out-390.webp)
+![Mid-pinch at the furthest zoom-out](https://arkadia-custom-whachat.fural.space/pinch-zoom/zoom-out-390.webp)
 
-![Mid-pinch zoomed in](https://arkadia-stronghold-whachat.fural.space/pinch-zoom/zoom-in-390.webp)
+![Mid-pinch zoomed in](https://arkadia-custom-whachat.fural.space/pinch-zoom/zoom-in-390.webp)
 
-![Pinch with the second finger in the bottom-left quarter: no thumbstick](https://arkadia-stronghold-whachat.fural.space/pinch-zoom/bottom-left-finger-390.webp)
+![Pinch with the second finger in the bottom-left quarter: no thumbstick](https://arkadia-custom-whachat.fural.space/pinch-zoom/bottom-left-finger-390.webp)
 
 ## Commands
 
-- `npm run build && node scripts/verify-pinch-zoom.mjs` checks a local build. `DEMO_URL=https://arkadia-stronghold-whachat.fural.space node scripts/verify-pinch-zoom.mjs` checks the live site.
+- `npm run build && node scripts/verify-pinch-zoom.mjs` checks a local build. `DEMO_URL=https://arkadia-custom-whachat.fural.space/ node scripts/verify-pinch-zoom.mjs` checks the live site.
 - `RELEASE_DIR=<clean checkout> node scripts/publish-pinch-zoom.mjs` publishes the page scripts and these screenshots.

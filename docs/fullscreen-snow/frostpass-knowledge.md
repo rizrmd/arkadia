@@ -12,15 +12,15 @@ The world uses a following camera and modular snow, trees, cliffs, stones and ca
 
 ## Play
 
-[Enter Expedition I — Frostpass](https://arkadia-stronghold-whachat.fural.space/snow-expedition.html) · [Return to Stronghold](https://arkadia-stronghold-whachat.fural.space/stronghold.html)
+[Enter Expedition I — Frostpass](https://arkadia-custom-whachat.fural.space/snow-expedition.html) · [Return to Stronghold](https://arkadia-custom-whachat.fural.space/)
 
 ## Runtime evidence
 
-![Frostpass desktop gameplay](https://arkadia-stronghold-whachat.fural.space/fullscreen-snow/frostpass-desktop.webp)
+![Frostpass desktop gameplay](https://arkadia-custom-whachat.fural.space/fullscreen-snow/frostpass-desktop.webp)
 
-![Frostpass portrait controls](https://arkadia-stronghold-whachat.fural.space/fullscreen-snow/frostpass-mobile.webp)
+![Frostpass portrait controls](https://arkadia-custom-whachat.fural.space/fullscreen-snow/frostpass-mobile.webp)
 
-![Extraction and first-clear reward](https://arkadia-stronghold-whachat.fural.space/fullscreen-snow/frostpass-complete.webp)
+![Extraction and first-clear reward](https://arkadia-custom-whachat.fural.space/fullscreen-snow/frostpass-complete.webp)
 
 ## Verification
 

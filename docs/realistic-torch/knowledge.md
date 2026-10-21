@@ -2,7 +2,7 @@
 
 The supplied screenshot showed a flat orange flame on a simple wall bracket. The game now uses a generated realistic torch with charred wood, forged iron and textured fuel. All 16 wall and courtyard torches use the new asset. The two flames embedded in the gateway artwork remain separate.
 
-[Play Stronghold](https://arkadia-stronghold-whachat.fural.space/?time=0)
+[Play Stronghold](https://arkadia-custom-whachat.fural.space/?time=0)
 
 ### Animation and lighting
 
@@ -10,9 +10,9 @@ Three softly blurred burning poses loop at 160 ms per frame, with phase offsets 
 
 ### Reference and generated source
 
-![Original wall-torch reference](https://arkadia-stronghold-whachat.fural.space/realistic-torch/reference.png)
+![Original wall-torch reference](https://arkadia-custom-whachat.fural.space/realistic-torch/reference.png)
 
-![Generated transparent torch sheet: three burning poses and one unlit pose](https://arkadia-stronghold-whachat.fural.space/realistic-torch/generated.png)
+![Generated transparent torch sheet: three burning poses and one unlit pose](https://arkadia-custom-whachat.fural.space/realistic-torch/generated.png)
 
 Created with the built-in imagegen tool. Prompt: generate a transparent horizontal four-cell realistic isometric medieval wall torch sheet, with three identical torch bodies showing left-curl, upright split and right-curl flames, then one unlit torch. Charred wood, forged iron basket, oil-soaked cloth, small wall bracket, grain, soot and rough metal. Three-quarter camera slightly above. Orange translucent flames with pale yellow cores and wispy tips. Lock body geometry, camera, scale and pivot. No wall, floor, cast shadows, text, labels, grid or background.
 
@@ -20,11 +20,11 @@ The packing script extracts registered cells, resizes them and preserves alpha. 
 
 ### In-game appearance
 
-![Nighttime torches](https://arkadia-stronghold-whachat.fural.space/realistic-torch/night.png)
+![Nighttime torches](https://arkadia-custom-whachat.fural.space/realistic-torch/night.png)
 
-![Flame close-up at game scale](https://arkadia-stronghold-whachat.fural.space/realistic-torch/flame-closeup.png)
+![Flame close-up at game scale](https://arkadia-custom-whachat.fural.space/realistic-torch/flame-closeup.png)
 
-![Daytime: unlit torches](https://arkadia-stronghold-whachat.fural.space/realistic-torch/day.png)
+![Daytime: unlit torches](https://arkadia-custom-whachat.fural.space/realistic-torch/day.png)
 
 ### Verification and release
 
@@ -40,9 +40,9 @@ Each flame now uses an isolated 32 × 24 canvas and copies from one of three cac
 
 The matched mobile simulation (390 × 844, CPU slowed 4×) measured idle p95 frame intervals of 100.1 → 66.6 ms and pan p95 of 66.7 → 33.4 ms. Idle flame copies fell from 528 to 54; pan copies fell from 1,376 to 3, with the final copies after movement settled. World light-paint counters stayed stable and no JavaScript errors occurred. A desktop smoke measurement and day/night/reduced-motion checks also passed. These headless measurements show an improvement, not guaranteed 60 FPS on every device.
 
-![Optimized softly blurred flames in game](https://arkadia-stronghold-whachat.fural.space/realistic-torch/fps-night.png)
+![Optimized softly blurred flames in game](https://arkadia-custom-whachat.fural.space/realistic-torch/fps-night.png)
 
-![Soft flame detail at game scale](https://arkadia-stronghold-whachat.fural.space/realistic-torch/fps-closeup.png)
+![Soft flame detail at game scale](https://arkadia-custom-whachat.fural.space/realistic-torch/fps-closeup.png)
 
 Raw comparison reports are in docs/realistic-torch/performance-before.json and performance-after.json. Run node scripts/measure-torch-performance.mjs to measure again.
 

@@ -8,19 +8,19 @@ The overlay menu contains the modular asset editor, legacy travel map, save impo
 
 ## Live game
 
-[Open full-screen Stronghold](https://arkadia-stronghold-whachat.fural.space/stronghold.html)
+[Open full-screen Stronghold](https://arkadia-custom-whachat.fural.space/)
 
 ## Runtime views
 
-![Full-screen desktop Stronghold](https://arkadia-stronghold-whachat.fural.space/fullscreen-snow/stronghold-1536.webp)
+![Full-screen desktop Stronghold](https://arkadia-custom-whachat.fural.space/fullscreen-snow/stronghold-1536.webp)
 
-![Wide full-screen canvas](https://arkadia-stronghold-whachat.fural.space/fullscreen-snow/stronghold-2560.webp)
+![Wide full-screen canvas](https://arkadia-custom-whachat.fural.space/fullscreen-snow/stronghold-2560.webp)
 
-![Default portrait camera](https://arkadia-stronghold-whachat.fural.space/fullscreen-snow/stronghold-mobile-default.webp)
+![Default portrait camera](https://arkadia-custom-whachat.fural.space/fullscreen-snow/stronghold-mobile-default.webp)
 
-![Portrait after Fit world](https://arkadia-stronghold-whachat.fural.space/fullscreen-snow/stronghold-390.webp)
+![Portrait after Fit world](https://arkadia-custom-whachat.fural.space/fullscreen-snow/stronghold-390.webp)
 
-![Landscape view](https://arkadia-stronghold-whachat.fural.space/fullscreen-snow/stronghold-844.webp)
+![Landscape view](https://arkadia-custom-whachat.fural.space/fullscreen-snow/stronghold-844.webp)
 
 ## Verification
 
@@ -50,15 +50,15 @@ Ground decals (snowdrifts, paving wear and weeds) now render before all structur
 
 ### Reported phone screenshots
 
-![Reported snow overlapping the rear wall](https://arkadia-stronghold-whachat.fural.space/fullscreen-snow/reported-snow-overlap.jpg)
+![Reported snow overlapping the rear wall](https://arkadia-custom-whachat.fural.space/fullscreen-snow/reported-snow-overlap.jpg)
 
-![Reported Mine and wall overlap](https://arkadia-stronghold-whachat.fural.space/fullscreen-snow/reported-mine-overlap.jpg)
+![Reported Mine and wall overlap](https://arkadia-custom-whachat.fural.space/fullscreen-snow/reported-mine-overlap.jpg)
 
 ### Corrected views
 
-![Mine behind a continuous foreground wall at its original position](https://arkadia-stronghold-whachat.fural.space/fullscreen-snow/mine-wall-corrected.webp)
+![Mine behind a continuous foreground wall at its original position](https://arkadia-custom-whachat.fural.space/fullscreen-snow/mine-wall-corrected.webp)
 
-![Continuous snow after panning far outside the settlement](https://arkadia-stronghold-whachat.fural.space/fullscreen-snow/infinite-snow.webp)
+![Continuous snow after panning far outside the settlement](https://arkadia-custom-whachat.fural.space/fullscreen-snow/infinite-snow.webp)
 
 ## Wall clearance for rocks, trees and snow
 
@@ -72,14 +72,14 @@ The court paving also runs half a tile under the rear walls. Before this, a thin
 
 Red: rocks and a tree overlapping the front wall. Green: snow-covered rocks resting on the rear wall top, with snow visible at the inner wall foot.
 
-![Reported wall, rock and snow overlap](https://arkadia-stronghold-whachat.fural.space/fullscreen-snow/reported-wall-rock-snow.jpg)
+![Reported wall, rock and snow overlap](https://arkadia-custom-whachat.fural.space/fullscreen-snow/reported-wall-rock-snow.jpg)
 
 ### Corrected views
 
-![Rear wall with scenery standing clear and paving reaching the wall foot](https://arkadia-stronghold-whachat.fural.space/fullscreen-snow/wall-clearance-rear.webp)
+![Rear wall with scenery standing clear and paving reaching the wall foot](https://arkadia-custom-whachat.fural.space/fullscreen-snow/wall-clearance-rear.webp)
 
-![Front wall near Mine with no rock or tree covering the wall](https://arkadia-stronghold-whachat.fural.space/fullscreen-snow/wall-clearance-front.webp)
+![Front wall near Mine with no rock or tree covering the wall](https://arkadia-custom-whachat.fural.space/fullscreen-snow/wall-clearance-front.webp)
 
-![Front-left wall near the Mage Tower](https://arkadia-stronghold-whachat.fural.space/fullscreen-snow/wall-clearance-front-left.webp)
+![Front-left wall near the Mage Tower](https://arkadia-custom-whachat.fural.space/fullscreen-snow/wall-clearance-front-left.webp)
 
-![Desktop overview](https://arkadia-stronghold-whachat.fural.space/fullscreen-snow/wall-clearance-overview.webp)
+![Desktop overview](https://arkadia-custom-whachat.fural.space/fullscreen-snow/wall-clearance-overview.webp)

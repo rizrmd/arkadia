@@ -1,20 +1,21 @@
 // The one public Arkadia sandbox (https://arkadia-custom-whachat.fural.space). Serves every preview from disk on :3000:
-//   /                       the game; co-op build by default, ?build=stronghold switches (sticky cookie)
+//   /                       the game (one build: solo, or co-op rooms via /?room=CODE)
 //   /ws /api/ /healthz      proxied to the co-op Go server (coop/arkadia on 127.0.0.1:3001)
 //   /ember-warden-review/   the Ember Warden animation review
 //   /enemies/ /rift-runner/ and every other review folder from the former split sandboxes
 // Releases arrive as layers (see publish-layer.mjs) and are applied once at boot, oldest first.
 import http from 'node:http';import net from 'node:net';import fs from 'node:fs';import path from 'node:path';import {gunzipSync} from 'node:zlib';import {spawn,execFileSync} from 'node:child_process';
-const home=process.cwd(),www=path.join(home,'www'),builds=path.join(home,'builds'),layers=path.join(home,'layers'),coopBin=path.join(home,'coop/arkadia'),applied=path.join(home,'applied.json');
-const BUILDS=['coop','stronghold'],DEFAULT_BUILD='coop',PORT=+(process.env.PORT||3000),COOP_PORT=+(process.env.COOP_PORT||3001);
+const home=process.cwd(),www=path.join(home,'www'),layers=path.join(home,'layers'),coopBin=path.join(home,'coop/arkadia'),applied=path.join(home,'applied.json');
+const PORT=+(process.env.PORT||3000),COOP_PORT=+(process.env.COOP_PORT||3001);
 // Folders with their own pages (directory index and .html allowed); any other .html is a retired page and redirects home.
 const OPEN=['/rift-runner/','/enemies/','/ember-warden-review/','/knight-footfalls/review.html'];
 // Former sandbox roots, now folders.
 const MOVED={'/ember-warden-review':'/ember-warden-review/','/enemies':'/enemies/v1/','/enemies/':'/enemies/v1/'};
 
 function write(dest,bytes){fs.mkdirSync(path.dirname(dest),{recursive:true});fs.writeFileSync(dest,bytes);}
-function target(key,layer){const k=(layer.prefix||'')+key;return layer.build&&key==='/index.html'?path.join(builds,layer.build+'.html'):path.join(www,path.normalize(k));}
-// A layer is layers/<id>.json: {seq, parts, format: 'gzjson' (gzip JSON {path: base64}) | 'tgz' (co-op release: arkadia + site/), prefix?, build?}.
+function target(key,layer){return path.join(www,path.normalize((layer.prefix||'')+key));}
+// A layer is layers/<id>.json: {seq, parts, format: 'gzjson' (gzip JSON {path: base64}) | 'tgz' (game release: arkadia + site/), prefix?}.
+// A layer without a prefix that carries /index.html is a game release: that file is the game page.
 function applyLayers(){
  const done=fs.existsSync(applied)?JSON.parse(fs.readFileSync(applied,'utf8')):[];
  const pending=fs.existsSync(layers)?fs.readdirSync(layers).filter(n=>n.endsWith('.json')).map(n=>({id:n.slice(0,-5),...JSON.parse(fs.readFileSync(path.join(layers,n),'utf8'))})).sort((a,b)=>a.seq-b.seq):[];
@@ -47,11 +48,11 @@ const isOpen=p=>OPEN.some(o=>p.startsWith(o));
 // Errors and redirects must not stick at the CDN edge (it cached header-less 404s for 4 hours, hiding files published later).
 const NO_STORE={'Cache-Control':'no-store'};
 function cookie(req,name){return (req.headers.cookie||'').split(/;\s*/).map(c=>c.split('=')).find(([k])=>k===name)?.[1];}
-function gamePage(req,res,u){
- const asked=u.searchParams.get('build'),build=u.searchParams.has('room')?'coop':BUILDS.includes(asked)?asked:BUILDS.includes(cookie(req,'arkadia_build'))?cookie(req,'arkadia_build'):DEFAULT_BUILD;
- const headers={'Content-Type':TYPES.html,'Cache-Control':'no-cache','Vary':'Cookie'};
- if(asked||u.searchParams.has('room'))headers['Set-Cookie']=`arkadia_build=${build}; Path=/; Max-Age=2592000; SameSite=Lax`;
- fs.readFile(path.join(builds,build+'.html'),(err,b)=>err?res.writeHead(503,NO_STORE).end('Game build missing'):res.writeHead(200,headers).end(b));
+// The game page; a cookie left by the retired two-build switch is cleared.
+function gamePage(req,res){
+ const headers={'Content-Type':TYPES.html,'Cache-Control':'no-cache'};
+ if(cookie(req,'arkadia_build'))headers['Set-Cookie']='arkadia_build=; Path=/; Max-Age=0; SameSite=Lax';
+ fs.readFile(path.join(www,'index.html'),(err,b)=>err?res.writeHead(503,NO_STORE).end('Game build missing'):res.writeHead(200,headers).end(b));
 }
 function sendFile(req,res,file,p){
  fs.stat(file,(err,st)=>{
@@ -73,6 +74,8 @@ function proxy(req,res){
 }
 
 applyLayers();startCoop();
+// builds/ held the two game pages of the retired build switch.
+fs.rmSync(path.join(home,'builds'),{recursive:true,force:true});
 const server=http.createServer((req,res)=>{
  let u,p;try{u=new URL(req.url,'http://local');p=decodeURIComponent(u.pathname);}catch{res.writeHead(400,NO_STORE).end();return;}
  if(p.includes('\0')||p.split('/').includes('..')){res.writeHead(400,NO_STORE).end();return;}
@@ -80,7 +83,7 @@ const server=http.createServer((req,res)=>{
  if(MOVED[p]){res.writeHead(302,{...NO_STORE,Location:MOVED[p]+u.search}).end();return;}
  if(p.endsWith('/')&&p!=='/'&&isOpen(p)&&fs.existsSync(path.join(www,p,'index.html')))return sendFile(req,res,path.join(www,p,'index.html'),p);
  if(p.endsWith('.html')&&p!=='/index.html'&&!isOpen(p)){res.writeHead(302,{...NO_STORE,Location:'/'+u.search}).end();return;}
- if(p==='/index.html'||p.endsWith('/')||!path.extname(p))return gamePage(req,res,u);
+ if(p==='/index.html'||p.endsWith('/')||!path.extname(p))return gamePage(req,res);
  sendFile(req,res,path.join(www,p),p);
 });
 // Co-op WebSocket: hand the upgrade straight to the Go server.

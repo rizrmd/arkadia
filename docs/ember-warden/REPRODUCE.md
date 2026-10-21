@@ -7,7 +7,7 @@ The renderer requires the existing home-installed bpy 4.5.3 environment and Pill
 3. `node scripts/ember-warden/assemble.mjs` packs the manifest, creates the separate deterministic VFX sheets, and audits alpha coverage, clipping, endpoints and frame-sampled contacts.
 4. `node scripts/ember-warden/report.mjs` prepares the English QA document. `node scripts/ember-warden/verify.mjs` runs actual local normal/slow playback, both idle/run transition paths and full frame scrubbing. Screenshots are saved in the public evidence folder.
 5. `node scripts/ember-warden/report.mjs` updates the report with local evidence. `node scripts/ember-warden/publish.mjs` publishes only this task's review directory to its own named custom sandbox, without touching the gameplay deployment.
-6. `DEMO_URL=https://ember-warden-review-whachat.fural.space node scripts/ember-warden/verify.mjs` repeats browser verification publicly and compares every manifest image resource to SHA-256.
+6. `DEMO_URL=https://arkadia-custom-whachat.fural.space/ember-warden-review/ node scripts/ember-warden/verify.mjs` repeats browser verification publicly and compares every manifest image resource to SHA-256.
 7. Update the report, publish the final evidence directory again, then run `node scripts/ember-warden/verify-resources.mjs` to compare every deployed file against the final deployment receipt.
 8. `node scripts/ember-warden/publish-knowledge.mjs` embeds all body/VFX sheets and playback screenshots in the existing English Characters hierarchy. The generated material is embedded separately on the Sources page. Commit and push only the three Ember Warden directories.
 

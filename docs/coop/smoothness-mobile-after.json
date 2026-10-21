@@ -1,0 +1,66 @@
+{
+ "profile": "mobile",
+ "network": {
+  "base": 40,
+  "jitter": 50,
+  "spike": 0.03,
+  "spikeMs": 120
+ },
+ "build": "working tree",
+ "own": {
+  "frames": 160,
+  "medianPxPerS": 66.1,
+  "cv": 0.045,
+  "stalls": 0,
+  "jumps": 0,
+  "minPxPerS": 56.9,
+  "maxPxPerS": 72.3
+ },
+ "remote": {
+  "frames": 138,
+  "medianPxPerS": 66.3,
+  "cv": 0.043,
+  "stalls": 0,
+  "jumps": 0,
+  "minPxPerS": 59.9,
+  "maxPxPerS": 72.3
+ },
+ "serverSteps": {
+  "ticks": 99,
+  "histogram": {
+   "3.3": 99
+  }
+ },
+ "stats": {
+  "a": {
+   "status": "online",
+   "room": "ZQS6Z",
+   "you": "p1",
+   "corrections": 2,
+   "maxCorrection": 3.3207830863536287,
+   "lastCorrection": 3.320783086353572,
+   "pace": 1,
+   "margin": 2,
+   "delay": 219,
+   "extrapolated": 22,
+   "held": 2,
+   "blended": 1,
+   "rtt": 188.09999990463257
+  },
+  "b": {
+   "status": "online",
+   "room": "ZQS6Z",
+   "you": "p2",
+   "corrections": 0,
+   "maxCorrection": 0,
+   "lastCorrection": 0,
+   "pace": 0.95,
+   "margin": 0,
+   "delay": 150,
+   "extrapolated": 11,
+   "held": 8,
+   "blended": 29,
+   "rtt": 185.80000019073486
+  }
+ }
+}

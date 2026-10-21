@@ -12,7 +12,7 @@ On narrow screens, the arena uses the available width and Settings opens an over
 
 `npm run build` and `node scripts/verify-mobile.mjs` pass. The browser test deliberately makes optional `wall-b.png` unavailable and fails the first required `ash.png` request. The arena still initializes and produces nontransparent pixels. It checks widths 320, 393, 430, 844, and 1440; settings/source dialog by touch; actual CDP touch drag; zoom/Fit; error visibility; WebGL output; and Canvas2D output with WebGL disabled. This is browser emulation, not a physical-device performance test.
 
-Public site: https://arkadia-whachat.fural.space/ . Results: `docs/mobile/results.json`. Screenshot: `docs/mobile/after.png`.
+Public site: https://arkadia-custom-whachat.fural.space/ . Results: `docs/mobile/results.json`. Screenshot: `docs/mobile/after.png`.
 
 
 ## Original report and confirmed error
@@ -23,11 +23,11 @@ The initial phone screenshot showed an empty arena:
 
 The follow-up screenshot exposed the failing asset request:
 
-![Phone error: wall-b.png returned HTTP 404](https://arkadia-whachat.fural.space/mobile/reported-error.jpg)
+![Phone error: wall-b.png returned HTTP 404](https://arkadia-custom-whachat.fural.space/mobile/reported-error.jpg)
 
 ## Verified rendering
 
-![Mobile arena rendering after loader recovery and camera fixes](https://arkadia-whachat.fural.space/mobile/after.png)
+![Mobile arena rendering after loader recovery and camera fixes](https://arkadia-custom-whachat.fural.space/mobile/after.png)
 
 The deployed package was checked against the public server: all 48 resources returned HTTP 200 and exactly matched their packaged bytes, including `/assets/wall-b.png`. The live browser test passed the injected missing-wall and retried-required-texture scenarios, plus visible WebGL and Canvas2D pixel checks. The actual phone should reload the page to receive the new bundle; physical-phone confirmation remains outside browser emulation.
 
@@ -44,4 +44,4 @@ The arena now tracks each captured pointer. Two fingers zoom around their midpoi
 
 On phone layouts (up to 700 CSS pixels wide), an on-screen direction pad controls movement. Hold Attack to attack, including while moving with another finger. Revive restores a defeated hero. Releasing or cancelling a control releases its input; hiding the page, losing focus, or switching layout also clears held controls. Settings hides the pad while its drawer is open. UI labels remain English.
 
-Build and all 22 mobile browser checks passed locally and against https://arkadia-whachat.fural.space/ after deployment. Added CDP touch checks cover spread/pinch ratios, world coordinates under the midpoint, two-finger translation, remaining-finger pan, cancellation, unchanged browser magnification, actual hero movement, simultaneous movement/Attack, and Revive. Verification uses Chromium mobile emulation; physical-device confirmation is still separate.
+Build and all 22 mobile browser checks passed locally and against https://arkadia-custom-whachat.fural.space/ after deployment. Added CDP touch checks cover spread/pinch ratios, world coordinates under the midpoint, two-finger translation, remaining-finger pan, cancellation, unchanged browser magnification, actual hero movement, simultaneous movement/Attack, and Revive. Verification uses Chromium mobile emulation; physical-device confirmation is still separate.

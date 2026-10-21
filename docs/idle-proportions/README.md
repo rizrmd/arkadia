@@ -8,15 +8,15 @@ The extractor now takes diagonal idle from this new source, scales each facing a
 
 ### Visual evidence
 
-![All eight character/facing comparisons at the same scale](https://arkadia-stronghold-whachat.fural.space/idle-proportions/comparison.png)
+![All eight character/facing comparisons at the same scale](https://arkadia-custom-whachat.fural.space/idle-proportions/comparison.png)
 
-![Rendered arena](https://arkadia-stronghold-whachat.fural.space/idle-proportions/runtime.png)
+![Rendered arena](https://arkadia-custom-whachat.fural.space/idle-proportions/runtime.png)
 
-![Final idle source sheet](https://arkadia-stronghold-whachat.fural.space/idle-proportions/source.png)
+![Final idle source sheet](https://arkadia-custom-whachat.fural.space/idle-proportions/source.png)
 
 ### Verification
 
-Run npm run build, node scripts/verify-idle-proportions.mjs, node scripts/verify-vertical.mjs and node scripts/verify-collisions.mjs. Set DEMO_URL=https://arkadia-stronghold-whachat.fural.space/ to repeat the browser checks against the public game.
+Run npm run build, node scripts/verify-idle-proportions.mjs, node scripts/verify-vertical.mjs and node scripts/verify-collisions.mjs. Set DEMO_URL=https://arkadia-custom-whachat.fural.space/ to repeat the browser checks against the public game.
 
 The proportion verifier reads GPU texture pixels for both characters, all four views and every idle/walking frame. It checks visible content, constant runtime scale/anchor/world position, clip coverage, crown-width agreement within 10%, total-height agreement within 5%, a stable idle crown within two atlas pixels, and average crown alignment within two atlas pixels across idle/walk. The top 10% isolates the crown before shoulders and cape; it measures silhouette agreement, not an anatomical reconstruction. The comparison image is captured from those actual GPU textures for visual review.
 
@@ -28,17 +28,17 @@ Publication overlays only the two character atlases, their manifest and this evi
 
 All images inspected during the task are retained here. The first generated sheet still stepped rather than standing, and was rejected. A planted standing reference then supplied the idle cycle. Targeted head-width edits were reviewed against GPU measurements before choosing the final sheet.
 
-![Original idle identity](https://arkadia-stronghold-whachat.fural.space/idle-proportions/review/old-idle-reference.png)
+![Original idle identity](https://arkadia-custom-whachat.fural.space/idle-proportions/review/old-idle-reference.png)
 
-![Walking identity reference](https://arkadia-stronghold-whachat.fural.space/idle-proportions/review/walking-reference.png)
+![Walking identity reference](https://arkadia-custom-whachat.fural.space/idle-proportions/review/walking-reference.png)
 
-![Rejected stepping variant](https://arkadia-stronghold-whachat.fural.space/idle-proportions/review/rejected-walk.png)
+![Rejected stepping variant](https://arkadia-custom-whachat.fural.space/idle-proportions/review/rejected-walk.png)
 
-![Standing pose reference](https://arkadia-stronghold-whachat.fural.space/idle-proportions/review/standing-reference.png)
+![Standing pose reference](https://arkadia-custom-whachat.fural.space/idle-proportions/review/standing-reference.png)
 
-![First idle cycle](https://arkadia-stronghold-whachat.fural.space/idle-proportions/review/idle-first.png)
+![First idle cycle](https://arkadia-custom-whachat.fural.space/idle-proportions/review/idle-first.png)
 
-![Intermediate head correction](https://arkadia-stronghold-whachat.fural.space/idle-proportions/review/idle-wide.png)
+![Intermediate head correction](https://arkadia-custom-whachat.fural.space/idle-proportions/review/idle-wide.png)
 
 ### Original report screenshots
 
@@ -58,4 +58,4 @@ Final correction prompt: Precise sprite sheet edit. Keep the entire provided fou
 
 ### Published result
 
-The canonical public arena at https://arkadia-stronghold-whachat.fural.space/ passed the same 200 proportion, 65 directional and seven collision checks after publication. Source and review images are served inline from that release. Code and assets were pushed to feat/stronghold.
+The canonical public arena at https://arkadia-custom-whachat.fural.space/ passed the same 200 proportion, 65 directional and seven collision checks after publication. Source and review images are served inline from that release. Code and assets were pushed to feat/stronghold.

@@ -1,5 +1,5 @@
 import fs from 'node:fs/promises';import {chromium} from 'playwright';import sharp from 'sharp';
-// Open the consolidated Arkadia sandbox in Chromium: both game builds, co-op connection and the review folders.
+// Open the Arkadia sandbox in Chromium: the game in a co-op room and offline (solo), and the review folders.
 // node scripts/arkadia/verify-live.mjs → docs/arkadia-sandbox/*.webp + results.json
 const base=process.env.BASE||'https://arkadia-custom-whachat.fural.space',out='docs/arkadia-sandbox',results=[];
 const browser=await chromium.launch({headless:true,env:{...process.env,LD_LIBRARY_PATH:'/home/dev/.local/browser-libs/usr/lib/x86_64-linux-gnu:/opt/fural-antigravity-glibc'},args:['--no-sandbox','--no-zygote','--single-process']});
@@ -14,7 +14,7 @@ async function visit(name,url,ready,wait=9000){
 }
 const canvas=()=>({canvas:!!document.querySelector('canvas'),title:document.title});
 await visit('1-game-coop','/',canvas,15000);
-await visit('2-game-stronghold','/?build=stronghold',canvas,15000);
+await visit('2-game-offline','/?offline=1',canvas,15000);
 await visit('3-ember-warden-review','/ember-warden-review/',()=>({title:document.title,info:document.getElementById('info')?.textContent?.slice(0,120)??null}));
 await visit('4-rift-runner-v1','/rift-runner/v1/',()=>({title:document.title}),4000);
 await visit('5-enemies','/enemies/v1/',()=>({title:document.title}),4000);

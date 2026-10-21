@@ -16,6 +16,6 @@ Rows: diagonal front idle, diagonal front walk, sword attack, two hurt plus four
 
 ### Verification
 
-`npm run build` and `node scripts/verify-knight.mjs` pass. The latter checks 48 nonempty isolated frames, transparent borders, one source identity, idle/walk helmet width and crown registration, all clip indices, cached revision, keyboard direction selection on desktop/mobile, successful combat kills and no browser errors. Local and live JSON reports and screenshots are saved alongside this document. Run against the published host with `DEMO_URL=https://arkadia-stronghold-whachat.fural.space node scripts/verify-knight.mjs`.
+`npm run build` and `node scripts/verify-knight.mjs` pass. The latter checks 48 nonempty isolated frames, transparent borders, one source identity, idle/walk helmet width and crown registration, all clip indices, cached revision, keyboard direction selection on desktop/mobile, successful combat kills and no browser errors. Local and live JSON reports and screenshots are saved alongside this document. Run against the published host with `DEMO_URL=https://arkadia-custom-whachat.fural.space/ node scripts/verify-knight.mjs`.
 
 Use `node scripts/publish-knight.mjs` to publish the atlas, manifest and evidence through the canonical managed sandbox without replacing the current game JS/CSS.

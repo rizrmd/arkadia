@@ -12,4 +12,4 @@ On narrow screens, the arena uses the available width and Settings opens an over
 
 `npm run build` and `node scripts/verify-mobile.mjs` pass. The browser test deliberately makes optional `wall-b.png` unavailable and fails the first required `ash.png` request. The arena still initializes and produces nontransparent pixels. It checks widths 320, 393, 430, 844, and 1440; settings/source dialog by touch; actual CDP touch drag; zoom/Fit; error visibility; WebGL output; and Canvas2D output with WebGL disabled. This is browser emulation, not a physical-device performance test.
 
-Public site: https://arkadia-whachat.fural.space/ . Results: `docs/mobile/results.json`. Screenshot: `docs/mobile/after.png`.
+Public site: https://arkadia-custom-whachat.fural.space/ . Results: `docs/mobile/results.json`. Screenshot: `docs/mobile/after.png`.

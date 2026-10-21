@@ -41,7 +41,7 @@ Open `/modular-stronghold/index.html` to compose the unbounded grid. The new ass
 
 ## Live tools
 
-[Open Stronghold](https://arkadia-stronghold-whachat.fural.space/stronghold.html) · [Open the modular editor](https://arkadia-stronghold-whachat.fural.space/modular-stronghold/index.html) · [Download runtime kit](https://arkadia-stronghold-whachat.fural.space/modular-stronghold/kit.zip)
+[Open Stronghold](https://arkadia-custom-whachat.fural.space/) · [Open the modular editor](https://arkadia-custom-whachat.fural.space/modular-stronghold/index.html) · [Download runtime kit](https://arkadia-custom-whachat.fural.space/modular-stronghold/kit.zip)
 
 ## Visual comparison
 
@@ -51,21 +51,21 @@ Open `/modular-stronghold/index.html` to compose the unbounded grid. The new ass
 
 ### Earlier modular release
 
-![First modular release before quality revision](https://arkadia-stronghold-whachat.fural.space/modular-stronghold/runtime-1536.webp)
+![First modular release before quality revision](https://arkadia-custom-whachat.fural.space/modular-stronghold/runtime-1536.webp)
 
 ### Revised modular game
 
-![Revised courtyard composition](https://arkadia-stronghold-whachat.fural.space/modular-stronghold/v2/runtime-1536.webp)
+![Revised courtyard composition](https://arkadia-custom-whachat.fural.space/modular-stronghold/v2/runtime-1536.webp)
 
-![Wide viewport without empty outer margins](https://arkadia-stronghold-whachat.fural.space/modular-stronghold/v2/runtime-2560.webp)
+![Wide viewport without empty outer margins](https://arkadia-custom-whachat.fural.space/modular-stronghold/v2/runtime-2560.webp)
 
-![Mobile revised game](https://arkadia-stronghold-whachat.fural.space/modular-stronghold/v2/runtime-390.webp)
+![Mobile revised game](https://arkadia-custom-whachat.fural.space/modular-stronghold/v2/runtime-390.webp)
 
-![Revised modular editor](https://arkadia-stronghold-whachat.fural.space/modular-stronghold/v2/editor.webp)
+![Revised modular editor](https://arkadia-custom-whachat.fural.space/modular-stronghold/v2/editor.webp)
 
 ## New asset overview
 
-![Sixteen additional assets](https://arkadia-stronghold-whachat.fural.space/modular-stronghold/v2/contact-sheet.webp)
+![Sixteen additional assets](https://arkadia-custom-whachat.fural.space/modular-stronghold/v2/contact-sheet.webp)
 
 ## Individual generated sources
 
@@ -73,67 +73,67 @@ Every image below is a preview of a separate reference-guided built-in imagegen 
 
 ### Paving Warm
 
-![paving-warm source](https://arkadia-stronghold-whachat.fural.space/modular-stronghold/v2/source-paving-warm.webp)
+![paving-warm source](https://arkadia-custom-whachat.fural.space/modular-stronghold/v2/source-paving-warm.webp)
 
 ### Snow Soft
 
-![snow-soft source](https://arkadia-stronghold-whachat.fural.space/modular-stronghold/v2/source-snow-soft.webp)
+![snow-soft source](https://arkadia-custom-whachat.fural.space/modular-stronghold/v2/source-snow-soft.webp)
 
 ### Rampart Ne
 
-![rampart-ne source](https://arkadia-stronghold-whachat.fural.space/modular-stronghold/v2/source-rampart-ne.webp)
+![rampart-ne source](https://arkadia-custom-whachat.fural.space/modular-stronghold/v2/source-rampart-ne.webp)
 
 ### Rampart Se
 
-![rampart-se source](https://arkadia-stronghold-whachat.fural.space/modular-stronghold/v2/source-rampart-se.webp)
+![rampart-se source](https://arkadia-custom-whachat.fural.space/modular-stronghold/v2/source-rampart-se.webp)
 
 ### Bastion
 
-![bastion source](https://arkadia-stronghold-whachat.fural.space/modular-stronghold/v2/source-bastion.webp)
+![bastion source](https://arkadia-custom-whachat.fural.space/modular-stronghold/v2/source-bastion.webp)
 
 ### Gateway Grand
 
-![gateway-grand source](https://arkadia-stronghold-whachat.fural.space/modular-stronghold/v2/source-gateway-grand.webp)
+![gateway-grand source](https://arkadia-custom-whachat.fural.space/modular-stronghold/v2/source-gateway-grand.webp)
 
 ### Spruce Mature
 
-![spruce-mature source](https://arkadia-stronghold-whachat.fural.space/modular-stronghold/v2/source-spruce-mature.webp)
+![spruce-mature source](https://arkadia-custom-whachat.fural.space/modular-stronghold/v2/source-spruce-mature.webp)
 
 ### Fir Young
 
-![fir-young source](https://arkadia-stronghold-whachat.fural.space/modular-stronghold/v2/source-fir-young.webp)
+![fir-young source](https://arkadia-custom-whachat.fural.space/modular-stronghold/v2/source-fir-young.webp)
 
 ### Cliff Snow
 
-![cliff-snow source](https://arkadia-stronghold-whachat.fural.space/modular-stronghold/v2/source-cliff-snow.webp)
+![cliff-snow source](https://arkadia-custom-whachat.fural.space/modular-stronghold/v2/source-cliff-snow.webp)
 
 ### Boulders Snow
 
-![boulders-snow source](https://arkadia-stronghold-whachat.fural.space/modular-stronghold/v2/source-boulders-snow.webp)
+![boulders-snow source](https://arkadia-custom-whachat.fural.space/modular-stronghold/v2/source-boulders-snow.webp)
 
 ### Weeds Edge
 
-![weeds-edge source](https://arkadia-stronghold-whachat.fural.space/modular-stronghold/v2/source-weeds-edge.webp)
+![weeds-edge source](https://arkadia-custom-whachat.fural.space/modular-stronghold/v2/source-weeds-edge.webp)
 
 ### Snowdrift Edge
 
-![snowdrift-edge source](https://arkadia-stronghold-whachat.fural.space/modular-stronghold/v2/source-snowdrift-edge.webp)
+![snowdrift-edge source](https://arkadia-custom-whachat.fural.space/modular-stronghold/v2/source-snowdrift-edge.webp)
 
 ### Supply Cart
 
-![supply-cart source](https://arkadia-stronghold-whachat.fural.space/modular-stronghold/v2/source-supply-cart.webp)
+![supply-cart source](https://arkadia-custom-whachat.fural.space/modular-stronghold/v2/source-supply-cart.webp)
 
 ### Brazier
 
-![brazier source](https://arkadia-stronghold-whachat.fural.space/modular-stronghold/v2/source-brazier.webp)
+![brazier source](https://arkadia-custom-whachat.fural.space/modular-stronghold/v2/source-brazier.webp)
 
 ### Paving Worn
 
-![paving-worn source](https://arkadia-stronghold-whachat.fural.space/modular-stronghold/v2/source-paving-worn.webp)
+![paving-worn source](https://arkadia-custom-whachat.fural.space/modular-stronghold/v2/source-paving-worn.webp)
 
 ### Wall Broken
 
-![wall-broken source](https://arkadia-stronghold-whachat.fural.space/modular-stronghold/v2/source-wall-broken.webp)
+![wall-broken source](https://arkadia-custom-whachat.fural.space/modular-stronghold/v2/source-wall-broken.webp)
 
 ## Source files and earlier documentation
 

@@ -39,12 +39,14 @@ export function lightingAt(t:number):Lighting{
 }
 export function clockLabel(t:number){const m=Math.floor(wrap(t)*24*60);return `${String(Math.floor(m/60)).padStart(2,'0')}:${String(m%60).padStart(2,'0')}`;}
 // ?time=0.85 freezes the clock; ?daySpeed=60 runs sixty days per normal day.
-// A manual time from the in-game clock wins over the mode, but not over ?time.
-export function resolveTime(mode:Mode,now:number,query='',manual:number|null=null){
+// A manual time from the in-game clock wins over the mode, but not over ?time. In a co-op room the server's
+// clock (`live`) replaces the wall-clock day.
+export function resolveTime(mode:Mode,now:number,query='',manual:number|null=null,live:number|null=null){
  const q=new URLSearchParams(query),fixed=q.get('time'),speed=Number(q.get('daySpeed'))||1;
  if(fixed!==null&&Number.isFinite(Number(fixed)))return wrap(Number(fixed));
  if(manual!==null&&Number.isFinite(manual))return wrap(manual);
  if(mode==='day')return .5;if(mode==='night')return 0;
+ if(live!==null&&Number.isFinite(live))return wrap(live);
  return timeOfDay(now,DAY_MS/speed);
 }
 // ?lighting=day|night|dynamic picks the mode; the world-only view has no menu, so it is remembered.

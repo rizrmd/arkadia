@@ -43,7 +43,7 @@ Browser results: `docs/stronghold/browser-results.json`. Screenshots: `docs/stro
 
 ## Public deployment
 
-Verified public preview: https://arkadia-stronghold-whachat.fural.space/
+Verified public preview: https://arkadia-custom-whachat.fural.space/
 
 Custom sandbox `arkadia-stronghold` has a persisted, supervised boot script serving the three-page build from its own `dist` directory. It is independent of this AgentSession. The `/` route opens the stronghold; `/index.html` opens the existing arena. `sandboxes serve` was used to publish build outputs. Large uploads hit the platform's 30-second gateway timeout and left partial files; completing smaller batches through the same supported command resolved it. Public browser smoke passed after the final code upload. Screenshots and the public browser report are also served under `/evidence/stronghold/`.
 
