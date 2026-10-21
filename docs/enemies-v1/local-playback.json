@@ -1,0 +1,78 @@
+{
+  "base": "http://127.0.0.1:43215",
+  "checks": [
+    {
+      "clip": "idle",
+      "framesObserved": 6,
+      "oneShotHold": false
+    },
+    {
+      "clip": "move",
+      "framesObserved": 6,
+      "oneShotHold": false
+    },
+    {
+      "clip": "idleBack",
+      "framesObserved": 6,
+      "oneShotHold": false
+    },
+    {
+      "clip": "moveBack",
+      "framesObserved": 6,
+      "oneShotHold": false
+    },
+    {
+      "clip": "attack",
+      "framesObserved": 6,
+      "oneShotHold": true
+    },
+    {
+      "clip": "hit",
+      "framesObserved": 2,
+      "oneShotHold": true
+    },
+    {
+      "clip": "die",
+      "framesObserved": 4,
+      "oneShotHold": true
+    },
+    {
+      "clip": "idleDown",
+      "framesObserved": 1,
+      "oneShotHold": false
+    },
+    {
+      "clip": "moveDown",
+      "framesObserved": 6,
+      "oneShotHold": false
+    },
+    {
+      "clip": "idleUp",
+      "framesObserved": 1,
+      "oneShotHold": false
+    },
+    {
+      "clip": "moveUp",
+      "framesObserved": 6,
+      "oneShotHold": false
+    }
+  ],
+  "pixel": [
+    {
+      "id": "ashfang",
+      "frames": 48,
+      "allBordersTransparent": true,
+      "allAnimatedPreviewsValid": true
+    },
+    {
+      "id": "mire-imp",
+      "frames": 48,
+      "allBordersTransparent": true,
+      "allAnimatedPreviewsValid": true
+    }
+  ],
+  "mirror": true,
+  "attackTransition": true,
+  "mobileOverflow": false,
+  "errors": []
+}

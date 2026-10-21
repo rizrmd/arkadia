@@ -1,0 +1,2223 @@
+{
+  "generatedBy": "scripts/enemies/pack.mjs",
+  "alphaThreshold": 16,
+  "reference": "Revenant current 48-frame contract",
+  "characters": {
+    "ashfang": {
+      "id": "ashfang",
+      "image": "ashfang.png",
+      "revision": "aa5c06d0afae5532",
+      "source": "source/ashfang.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "atlasSize": [
+        784,
+        996
+      ],
+      "scale": 0.36649214659685864,
+      "normalization": 0.7329842931937173,
+      "gutter": 4,
+      "cell": {
+        "w": 126,
+        "h": 120,
+        "pivot": {
+          "x": 74,
+          "y": 114
+        }
+      },
+      "direction": "diagonal front/back plus straight up/down idle and locomotion; mirror diagonals only; attacks/hit/death use original art",
+      "defaultAttack": "Bite",
+      "clips": {
+        "idle": {
+          "fps": 6,
+          "loop": true,
+          "frames": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        "move": {
+          "fps": 7,
+          "loop": true,
+          "frames": [
+            6,
+            7,
+            8,
+            9,
+            10,
+            11
+          ]
+        },
+        "idleBack": {
+          "fps": 6,
+          "loop": true,
+          "frames": [
+            24,
+            25,
+            26,
+            27,
+            28,
+            29
+          ]
+        },
+        "moveBack": {
+          "fps": 10,
+          "loop": true,
+          "frames": [
+            30,
+            31,
+            32,
+            33,
+            34,
+            35
+          ]
+        },
+        "attack": {
+          "fps": 10,
+          "loop": false,
+          "impact": 3,
+          "frames": [
+            12,
+            13,
+            14,
+            15,
+            16,
+            17
+          ]
+        },
+        "hit": {
+          "fps": 10,
+          "loop": false,
+          "frames": [
+            18,
+            19
+          ]
+        },
+        "die": {
+          "fps": 8,
+          "loop": false,
+          "frames": [
+            20,
+            21,
+            22,
+            23
+          ]
+        },
+        "idleDown": {
+          "fps": 6,
+          "loop": true,
+          "frames": [
+            36
+          ]
+        },
+        "moveDown": {
+          "fps": 10,
+          "loop": true,
+          "frames": [
+            36,
+            37,
+            38,
+            39,
+            40,
+            41
+          ]
+        },
+        "idleUp": {
+          "fps": 6,
+          "loop": true,
+          "frames": [
+            42
+          ]
+        },
+        "moveUp": {
+          "fps": 10,
+          "loop": true,
+          "frames": [
+            42,
+            43,
+            44,
+            45,
+            46,
+            47
+          ]
+        }
+      },
+      "frames": [
+        {
+          "row": 0,
+          "col": 0,
+          "x": 4,
+          "y": 4,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 80,
+            "y": 19,
+            "w": 161,
+            "h": 120
+          },
+          "anchorSourcePx": [
+            196.5062344139651,
+            139
+          ],
+          "registrationIoU": 1
+        },
+        {
+          "row": 0,
+          "col": 1,
+          "x": 134,
+          "y": 4,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 333,
+            "y": 17,
+            "w": 161,
+            "h": 122
+          },
+          "anchorSourcePx": [
+            450,
+            139
+          ],
+          "registrationIoU": 0.8309859154929577
+        },
+        {
+          "row": 0,
+          "col": 2,
+          "x": 264,
+          "y": 4,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 572,
+            "y": 18,
+            "w": 162,
+            "h": 122
+          },
+          "anchorSourcePx": [
+            692,
+            139
+          ],
+          "registrationIoU": 0.8596881959910914
+        },
+        {
+          "row": 0,
+          "col": 3,
+          "x": 394,
+          "y": 4,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 813,
+            "y": 17,
+            "w": 158,
+            "h": 123
+          },
+          "anchorSourcePx": [
+            927,
+            139
+          ],
+          "registrationIoU": 0.8254937163375224
+        },
+        {
+          "row": 0,
+          "col": 4,
+          "x": 524,
+          "y": 4,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 1053,
+            "y": 18,
+            "w": 165,
+            "h": 123
+          },
+          "anchorSourcePx": [
+            1173,
+            139
+          ],
+          "registrationIoU": 0.8194984104556694
+        },
+        {
+          "row": 0,
+          "col": 5,
+          "x": 654,
+          "y": 4,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 1290,
+            "y": 18,
+            "w": 165,
+            "h": 121
+          },
+          "anchorSourcePx": [
+            1411,
+            139
+          ],
+          "registrationIoU": 0.8107626514611547
+        },
+        {
+          "row": 1,
+          "col": 0,
+          "x": 4,
+          "y": 128,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 75,
+            "y": 141,
+            "w": 195,
+            "h": 112
+          },
+          "anchorSourcePx": [
+            229.52768729641693,
+            262
+          ],
+          "registrationIoU": 1
+        },
+        {
+          "row": 1,
+          "col": 1,
+          "x": 134,
+          "y": 128,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 333,
+            "y": 145,
+            "w": 189,
+            "h": 112
+          },
+          "anchorSourcePx": [
+            487,
+            262
+          ],
+          "registrationIoU": 0.8230742173760113
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "x": 264,
+          "y": 128,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 561,
+            "y": 146,
+            "w": 194,
+            "h": 107
+          },
+          "anchorSourcePx": [
+            715,
+            262
+          ],
+          "registrationIoU": 0.6346625766871166
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "x": 394,
+          "y": 128,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 783,
+            "y": 142,
+            "w": 207,
+            "h": 115
+          },
+          "anchorSourcePx": [
+            952,
+            262
+          ],
+          "registrationIoU": 0.7701453104359313
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "x": 524,
+          "y": 128,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 1024,
+            "y": 140,
+            "w": 211,
+            "h": 126
+          },
+          "anchorSourcePx": [
+            1201,
+            262
+          ],
+          "registrationIoU": 0.617545871559633
+        },
+        {
+          "row": 1,
+          "col": 5,
+          "x": 654,
+          "y": 128,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 1274,
+            "y": 141,
+            "w": 206,
+            "h": 113
+          },
+          "anchorSourcePx": [
+            1441,
+            262
+          ],
+          "registrationIoU": 0.7318489835430784
+        },
+        {
+          "row": 2,
+          "col": 0,
+          "x": 4,
+          "y": 252,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 66,
+            "y": 261,
+            "w": 208,
+            "h": 123
+          },
+          "anchorSourcePx": [
+            231.36363636363637,
+            386
+          ],
+          "registrationIoU": 1
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "x": 134,
+          "y": 252,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 303,
+            "y": 261,
+            "w": 203,
+            "h": 121
+          },
+          "anchorSourcePx": [
+            469,
+            386
+          ],
+          "registrationIoU": 0.6551014407527198
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "x": 264,
+          "y": 252,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 534,
+            "y": 269,
+            "w": 222,
+            "h": 119
+          },
+          "anchorSourcePx": [
+            718,
+            386
+          ],
+          "registrationIoU": 0.6789173789173789
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "x": 394,
+          "y": 252,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 776,
+            "y": 262,
+            "w": 229,
+            "h": 117
+          },
+          "anchorSourcePx": [
+            967,
+            386
+          ],
+          "registrationIoU": 0.5916152897657213
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "x": 524,
+          "y": 252,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 1033,
+            "y": 270,
+            "w": 217,
+            "h": 111
+          },
+          "anchorSourcePx": [
+            1213,
+            386
+          ],
+          "registrationIoU": 0.6375613536553862
+        },
+        {
+          "row": 2,
+          "col": 5,
+          "x": 654,
+          "y": 252,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 1290,
+            "y": 257,
+            "w": 177,
+            "h": 124
+          },
+          "anchorSourcePx": [
+            1435,
+            386
+          ],
+          "registrationIoU": 0.6163345495369071
+        },
+        {
+          "row": 3,
+          "col": 0,
+          "x": 4,
+          "y": 376,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 58,
+            "y": 382,
+            "w": 208,
+            "h": 117
+          },
+          "anchorSourcePx": [
+            215.15860215053763,
+            501
+          ],
+          "registrationIoU": 1
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "x": 134,
+          "y": 376,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 305,
+            "y": 377,
+            "w": 187,
+            "h": 125
+          },
+          "anchorSourcePx": [
+            461,
+            501
+          ],
+          "registrationIoU": 0.6237960339943343
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "x": 264,
+          "y": 376,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 527,
+            "y": 401,
+            "w": 222,
+            "h": 103
+          },
+          "anchorSourcePx": [
+            703,
+            501
+          ],
+          "registrationIoU": 0.4953057599594012
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "x": 394,
+          "y": 376,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 775,
+            "y": 417,
+            "w": 218,
+            "h": 83
+          },
+          "anchorSourcePx": [
+            953,
+            501
+          ],
+          "registrationIoU": 0.5450525152017689
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "x": 524,
+          "y": 376,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 1013,
+            "y": 426,
+            "w": 228,
+            "h": 73
+          },
+          "anchorSourcePx": [
+            1197,
+            501
+          ],
+          "registrationIoU": 0.5802781289506953
+        },
+        {
+          "row": 3,
+          "col": 5,
+          "x": 654,
+          "y": 376,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 1257,
+            "y": 422,
+            "w": 229,
+            "h": 74
+          },
+          "anchorSourcePx": [
+            1440,
+            501
+          ],
+          "registrationIoU": 0.8371747211895911
+        },
+        {
+          "row": 4,
+          "col": 0,
+          "x": 4,
+          "y": 500,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 87,
+            "y": 500,
+            "w": 163,
+            "h": 127
+          },
+          "anchorSourcePx": [
+            201.8603448275862,
+            634
+          ],
+          "registrationIoU": 1
+        },
+        {
+          "row": 4,
+          "col": 1,
+          "x": 134,
+          "y": 500,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 334,
+            "y": 500,
+            "w": 153,
+            "h": 136
+          },
+          "anchorSourcePx": [
+            452,
+            634
+          ],
+          "registrationIoU": 0.7603527607361963
+        },
+        {
+          "row": 4,
+          "col": 2,
+          "x": 264,
+          "y": 500,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 574,
+            "y": 503,
+            "w": 153,
+            "h": 127
+          },
+          "anchorSourcePx": [
+            683,
+            634
+          ],
+          "registrationIoU": 0.868993839835729
+        },
+        {
+          "row": 4,
+          "col": 3,
+          "x": 394,
+          "y": 500,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 817,
+            "y": 503,
+            "w": 155,
+            "h": 126
+          },
+          "anchorSourcePx": [
+            928,
+            634
+          ],
+          "registrationIoU": 0.8747433264887063
+        },
+        {
+          "row": 4,
+          "col": 4,
+          "x": 524,
+          "y": 500,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 1063,
+            "y": 502,
+            "w": 155,
+            "h": 129
+          },
+          "anchorSourcePx": [
+            1172,
+            634
+          ],
+          "registrationIoU": 0.859748682610458
+        },
+        {
+          "row": 4,
+          "col": 5,
+          "x": 654,
+          "y": 500,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 1301,
+            "y": 501,
+            "w": 156,
+            "h": 131
+          },
+          "anchorSourcePx": [
+            1412,
+            634
+          ],
+          "registrationIoU": 0.852425601304525
+        },
+        {
+          "row": 5,
+          "col": 0,
+          "x": 4,
+          "y": 624,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 87,
+            "y": 617,
+            "w": 180,
+            "h": 137
+          },
+          "anchorSourcePx": [
+            204.90753424657532,
+            758
+          ],
+          "registrationIoU": 1
+        },
+        {
+          "row": 5,
+          "col": 1,
+          "x": 134,
+          "y": 624,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 332,
+            "y": 615,
+            "w": 174,
+            "h": 148
+          },
+          "anchorSourcePx": [
+            454,
+            758
+          ],
+          "registrationIoU": 0.5541902961562697
+        },
+        {
+          "row": 5,
+          "col": 2,
+          "x": 264,
+          "y": 624,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 571,
+            "y": 618,
+            "w": 171,
+            "h": 133
+          },
+          "anchorSourcePx": [
+            684,
+            758
+          ],
+          "registrationIoU": 0.7745494667157043
+        },
+        {
+          "row": 5,
+          "col": 3,
+          "x": 394,
+          "y": 624,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 815,
+            "y": 617,
+            "w": 164,
+            "h": 138
+          },
+          "anchorSourcePx": [
+            928,
+            758
+          ],
+          "registrationIoU": 0.8162650602409639
+        },
+        {
+          "row": 5,
+          "col": 4,
+          "x": 524,
+          "y": 624,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 1060,
+            "y": 618,
+            "w": 170,
+            "h": 137
+          },
+          "anchorSourcePx": [
+            1176,
+            758
+          ],
+          "registrationIoU": 0.7588342440801458
+        },
+        {
+          "row": 5,
+          "col": 5,
+          "x": 654,
+          "y": 624,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 1304,
+            "y": 620,
+            "w": 173,
+            "h": 139
+          },
+          "anchorSourcePx": [
+            1421,
+            758
+          ],
+          "registrationIoU": 0.8007968127490039
+        },
+        {
+          "row": 6,
+          "col": 0,
+          "x": 4,
+          "y": 748,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 120,
+            "y": 739,
+            "w": 72,
+            "h": 129
+          },
+          "anchorSourcePx": [
+            157.8864864864865,
+            867
+          ],
+          "registrationIoU": 1
+        },
+        {
+          "row": 6,
+          "col": 1,
+          "x": 134,
+          "y": 748,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 359,
+            "y": 737,
+            "w": 77,
+            "h": 132
+          },
+          "anchorSourcePx": [
+            401,
+            867
+          ],
+          "registrationIoU": 0.7699556541019955
+        },
+        {
+          "row": 6,
+          "col": 2,
+          "x": 264,
+          "y": 748,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 609,
+            "y": 739,
+            "w": 76,
+            "h": 129
+          },
+          "anchorSourcePx": [
+            652,
+            867
+          ],
+          "registrationIoU": 0.7793103448275862
+        },
+        {
+          "row": 6,
+          "col": 3,
+          "x": 394,
+          "y": 748,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 836,
+            "y": 746,
+            "w": 87,
+            "h": 123
+          },
+          "anchorSourcePx": [
+            887,
+            867
+          ],
+          "registrationIoU": 0.67870419543282
+        },
+        {
+          "row": 6,
+          "col": 4,
+          "x": 524,
+          "y": 748,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 1091,
+            "y": 747,
+            "w": 85,
+            "h": 122
+          },
+          "anchorSourcePx": [
+            1142,
+            867
+          ],
+          "registrationIoU": 0.734142305570877
+        },
+        {
+          "row": 6,
+          "col": 5,
+          "x": 654,
+          "y": 748,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 1334,
+            "y": 741,
+            "w": 84,
+            "h": 128
+          },
+          "anchorSourcePx": [
+            1383,
+            867
+          ],
+          "registrationIoU": 0.7183476394849786
+        },
+        {
+          "row": 7,
+          "col": 0,
+          "x": 4,
+          "y": 872,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 119,
+            "y": 873,
+            "w": 61,
+            "h": 136
+          },
+          "anchorSourcePx": [
+            147.53548387096774,
+            1010
+          ],
+          "registrationIoU": 1
+        },
+        {
+          "row": 7,
+          "col": 1,
+          "x": 134,
+          "y": 872,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 367,
+            "y": 873,
+            "w": 63,
+            "h": 138
+          },
+          "anchorSourcePx": [
+            397,
+            1010
+          ],
+          "registrationIoU": 0.8636363636363636
+        },
+        {
+          "row": 7,
+          "col": 2,
+          "x": 264,
+          "y": 872,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 622,
+            "y": 872,
+            "w": 65,
+            "h": 140
+          },
+          "anchorSourcePx": [
+            654,
+            1010
+          ],
+          "registrationIoU": 0.9121231558691469
+        },
+        {
+          "row": 7,
+          "col": 3,
+          "x": 394,
+          "y": 872,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 852,
+            "y": 877,
+            "w": 61,
+            "h": 134
+          },
+          "anchorSourcePx": [
+            881,
+            1010
+          ],
+          "registrationIoU": 0.9324414715719064
+        },
+        {
+          "row": 7,
+          "col": 4,
+          "x": 524,
+          "y": 872,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 1113,
+            "y": 874,
+            "w": 60,
+            "h": 138
+          },
+          "anchorSourcePx": [
+            1140,
+            1010
+          ],
+          "registrationIoU": 0.9290060851926978
+        },
+        {
+          "row": 7,
+          "col": 5,
+          "x": 654,
+          "y": 872,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/ashfang.png",
+            "x": 1349,
+            "y": 874,
+            "w": 59,
+            "h": 137
+          },
+          "anchorSourcePx": [
+            1376,
+            1010
+          ],
+          "registrationIoU": 0.9050758075148319
+        }
+      ]
+    },
+    "mire-imp": {
+      "id": "mire-imp",
+      "image": "mire-imp.png",
+      "revision": "4f9fdda4aab0f721",
+      "source": "source/mire-imp.png",
+      "sourceSize": [
+        1086,
+        1448
+      ],
+      "atlasSize": [
+        784,
+        996
+      ],
+      "scale": 0.4247787610619469,
+      "normalization": 0.8495575221238938,
+      "gutter": 4,
+      "cell": {
+        "w": 126,
+        "h": 120,
+        "pivot": {
+          "x": 74,
+          "y": 114
+        }
+      },
+      "direction": "diagonal front/back plus straight up/down idle and locomotion; mirror diagonals only; attacks/hit/death use original art",
+      "defaultAttack": "Claw Swipe",
+      "clips": {
+        "idle": {
+          "fps": 6,
+          "loop": true,
+          "frames": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        "move": {
+          "fps": 7,
+          "loop": true,
+          "frames": [
+            6,
+            7,
+            8,
+            9,
+            10,
+            11
+          ]
+        },
+        "idleBack": {
+          "fps": 6,
+          "loop": true,
+          "frames": [
+            24,
+            25,
+            26,
+            27,
+            28,
+            29
+          ]
+        },
+        "moveBack": {
+          "fps": 10,
+          "loop": true,
+          "frames": [
+            30,
+            31,
+            32,
+            33,
+            34,
+            35
+          ]
+        },
+        "attack": {
+          "fps": 10,
+          "loop": false,
+          "impact": 3,
+          "frames": [
+            12,
+            13,
+            14,
+            15,
+            16,
+            17
+          ]
+        },
+        "hit": {
+          "fps": 10,
+          "loop": false,
+          "frames": [
+            18,
+            19
+          ]
+        },
+        "die": {
+          "fps": 8,
+          "loop": false,
+          "frames": [
+            20,
+            21,
+            22,
+            23
+          ]
+        },
+        "idleDown": {
+          "fps": 6,
+          "loop": true,
+          "frames": [
+            36
+          ]
+        },
+        "moveDown": {
+          "fps": 10,
+          "loop": true,
+          "frames": [
+            36,
+            37,
+            38,
+            39,
+            40,
+            41
+          ]
+        },
+        "idleUp": {
+          "fps": 6,
+          "loop": true,
+          "frames": [
+            42
+          ]
+        },
+        "moveUp": {
+          "fps": 10,
+          "loop": true,
+          "frames": [
+            42,
+            43,
+            44,
+            45,
+            46,
+            47
+          ]
+        }
+      },
+      "frames": [
+        {
+          "row": 0,
+          "col": 0,
+          "x": 4,
+          "y": 4,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/mire-imp.png",
+            "x": 41,
+            "y": 14,
+            "w": 104,
+            "h": 152
+          },
+          "anchorSourcePx": [
+            87.62772277227722,
+            164
+          ],
+          "registrationIoU": 1
+        },
+        {
+          "row": 0,
+          "col": 1,
+          "x": 134,
+          "y": 4,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/mire-imp.png",
+            "x": 218,
+            "y": 14,
+            "w": 103,
+            "h": 152
+          },
+          "anchorSourcePx": [
+            265,
+            164
+          ],
+          "registrationIoU": 0.8793742280773981
+        },
+        {
+          "row": 0,
+          "col": 2,
+          "x": 264,
+          "y": 4,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/mire-imp.png",
+            "x": 400,
+            "y": 14,
+            "w": 102,
+            "h": 153
+          },
+          "anchorSourcePx": [
+            446,
+            164
+          ],
+          "registrationIoU": 0.8949124270225187
+        },
+        {
+          "row": 0,
+          "col": 3,
+          "x": 394,
+          "y": 4,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/mire-imp.png",
+            "x": 581,
+            "y": 14,
+            "w": 104,
+            "h": 153
+          },
+          "anchorSourcePx": [
+            628,
+            164
+          ],
+          "registrationIoU": 0.8994576554025866
+        },
+        {
+          "row": 0,
+          "col": 4,
+          "x": 524,
+          "y": 4,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/mire-imp.png",
+            "x": 762,
+            "y": 14,
+            "w": 102,
+            "h": 152
+          },
+          "anchorSourcePx": [
+            808,
+            164
+          ],
+          "registrationIoU": 0.8709812108559499
+        },
+        {
+          "row": 0,
+          "col": 5,
+          "x": 654,
+          "y": 4,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/mire-imp.png",
+            "x": 942,
+            "y": 14,
+            "w": 103,
+            "h": 152
+          },
+          "anchorSourcePx": [
+            989,
+            164
+          ],
+          "registrationIoU": 0.8822075782537068
+        },
+        {
+          "row": 1,
+          "col": 0,
+          "x": 4,
+          "y": 128,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/mire-imp.png",
+            "x": 41,
+            "y": 186,
+            "w": 107,
+            "h": 161
+          },
+          "anchorSourcePx": [
+            92.03402187120292,
+            344
+          ],
+          "registrationIoU": 1
+        },
+        {
+          "row": 1,
+          "col": 1,
+          "x": 134,
+          "y": 128,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/mire-imp.png",
+            "x": 205,
+            "y": 186,
+            "w": 135,
+            "h": 156
+          },
+          "anchorSourcePx": [
+            266,
+            344
+          ],
+          "registrationIoU": 0.5724496426250812
+        },
+        {
+          "row": 1,
+          "col": 2,
+          "x": 264,
+          "y": 128,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/mire-imp.png",
+            "x": 398,
+            "y": 185,
+            "w": 114,
+            "h": 157
+          },
+          "anchorSourcePx": [
+            451,
+            344
+          ],
+          "registrationIoU": 0.755223880597015
+        },
+        {
+          "row": 1,
+          "col": 3,
+          "x": 394,
+          "y": 128,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/mire-imp.png",
+            "x": 565,
+            "y": 184,
+            "w": 115,
+            "h": 162
+          },
+          "anchorSourcePx": [
+            626,
+            344
+          ],
+          "registrationIoU": 0.6166549543218552
+        },
+        {
+          "row": 1,
+          "col": 4,
+          "x": 524,
+          "y": 128,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/mire-imp.png",
+            "x": 761,
+            "y": 186,
+            "w": 103,
+            "h": 158
+          },
+          "anchorSourcePx": [
+            807,
+            344
+          ],
+          "registrationIoU": 0.6714181286549707
+        },
+        {
+          "row": 1,
+          "col": 5,
+          "x": 654,
+          "y": 128,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/mire-imp.png",
+            "x": 934,
+            "y": 185,
+            "w": 116,
+            "h": 162
+          },
+          "anchorSourcePx": [
+            996,
+            344
+          ],
+          "registrationIoU": 0.75
+        },
+        {
+          "row": 2,
+          "col": 0,
+          "x": 4,
+          "y": 252,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/mire-imp.png",
+            "x": 23,
+            "y": 372,
+            "w": 129,
+            "h": 158
+          },
+          "anchorSourcePx": [
+            97.20967741935483,
+            533
+          ],
+          "registrationIoU": 1
+        },
+        {
+          "row": 2,
+          "col": 1,
+          "x": 134,
+          "y": 252,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/mire-imp.png",
+            "x": 207,
+            "y": 356,
+            "w": 133,
+            "h": 177
+          },
+          "anchorSourcePx": [
+            274,
+            533
+          ],
+          "registrationIoU": 0.5646085295989816
+        },
+        {
+          "row": 2,
+          "col": 2,
+          "x": 264,
+          "y": 252,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/mire-imp.png",
+            "x": 378,
+            "y": 356,
+            "w": 167,
+            "h": 176
+          },
+          "anchorSourcePx": [
+            468,
+            533
+          ],
+          "registrationIoU": 0.5696603339090386
+        },
+        {
+          "row": 2,
+          "col": 3,
+          "x": 394,
+          "y": 252,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/mire-imp.png",
+            "x": 545,
+            "y": 366,
+            "w": 210,
+            "h": 168
+          },
+          "anchorSourcePx": [
+            642,
+            533
+          ],
+          "registrationIoU": 0.4393377810723993
+        },
+        {
+          "row": 2,
+          "col": 4,
+          "x": 524,
+          "y": 252,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/mire-imp.png",
+            "x": 751,
+            "y": 362,
+            "w": 174,
+            "h": 175
+          },
+          "anchorSourcePx": [
+            828,
+            533
+          ],
+          "registrationIoU": 0.4993398468444679
+        },
+        {
+          "row": 2,
+          "col": 5,
+          "x": 654,
+          "y": 252,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/mire-imp.png",
+            "x": 949,
+            "y": 375,
+            "w": 110,
+            "h": 157
+          },
+          "anchorSourcePx": [
+            1021,
+            533
+          ],
+          "registrationIoU": 0.45301007899754836
+        },
+        {
+          "row": 3,
+          "col": 0,
+          "x": 4,
+          "y": 376,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/mire-imp.png",
+            "x": 34,
+            "y": 555,
+            "w": 138,
+            "h": 154
+          },
+          "anchorSourcePx": [
+            134.74481074481076,
+            709
+          ],
+          "registrationIoU": 1
+        },
+        {
+          "row": 3,
+          "col": 1,
+          "x": 134,
+          "y": 376,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/mire-imp.png",
+            "x": 207,
+            "y": 549,
+            "w": 133,
+            "h": 161
+          },
+          "anchorSourcePx": [
+            306,
+            709
+          ],
+          "registrationIoU": 0.5160220994475138
+        },
+        {
+          "row": 3,
+          "col": 2,
+          "x": 264,
+          "y": 376,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/mire-imp.png",
+            "x": 380,
+            "y": 580,
+            "w": 138,
+            "h": 131
+          },
+          "anchorSourcePx": [
+            494,
+            709
+          ],
+          "registrationIoU": 0.43407995463566773
+        },
+        {
+          "row": 3,
+          "col": 3,
+          "x": 394,
+          "y": 376,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/mire-imp.png",
+            "x": 528,
+            "y": 612,
+            "w": 171,
+            "h": 98
+          },
+          "anchorSourcePx": [
+            648,
+            709
+          ],
+          "registrationIoU": 0.47584917419756934
+        },
+        {
+          "row": 3,
+          "col": 4,
+          "x": 524,
+          "y": 376,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/mire-imp.png",
+            "x": 709,
+            "y": 626,
+            "w": 194,
+            "h": 81
+          },
+          "anchorSourcePx": [
+            827,
+            709
+          ],
+          "registrationIoU": 0.6644270250093318
+        },
+        {
+          "row": 3,
+          "col": 5,
+          "x": 654,
+          "y": 376,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/mire-imp.png",
+            "x": 908,
+            "y": 635,
+            "w": 168,
+            "h": 74
+          },
+          "anchorSourcePx": [
+            1027,
+            709
+          ],
+          "registrationIoU": 0.6246382802811079
+        },
+        {
+          "row": 4,
+          "col": 0,
+          "x": 4,
+          "y": 500,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/mire-imp.png",
+            "x": 36,
+            "y": 727,
+            "w": 109,
+            "h": 159
+          },
+          "anchorSourcePx": [
+            92.26891734575088,
+            888
+          ],
+          "registrationIoU": 1
+        },
+        {
+          "row": 4,
+          "col": 1,
+          "x": 134,
+          "y": 500,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/mire-imp.png",
+            "x": 217,
+            "y": 728,
+            "w": 111,
+            "h": 155
+          },
+          "anchorSourcePx": [
+            273,
+            888
+          ],
+          "registrationIoU": 0.7693747660052415
+        },
+        {
+          "row": 4,
+          "col": 2,
+          "x": 264,
+          "y": 500,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/mire-imp.png",
+            "x": 397,
+            "y": 727,
+            "w": 107,
+            "h": 157
+          },
+          "anchorSourcePx": [
+            453,
+            888
+          ],
+          "registrationIoU": 0.830034924330617
+        },
+        {
+          "row": 4,
+          "col": 3,
+          "x": 394,
+          "y": 500,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/mire-imp.png",
+            "x": 577,
+            "y": 728,
+            "w": 112,
+            "h": 158
+          },
+          "anchorSourcePx": [
+            636,
+            888
+          ],
+          "registrationIoU": 0.8439798683701123
+        },
+        {
+          "row": 4,
+          "col": 4,
+          "x": 524,
+          "y": 500,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/mire-imp.png",
+            "x": 757,
+            "y": 728,
+            "w": 115,
+            "h": 161
+          },
+          "anchorSourcePx": [
+            818,
+            888
+          ],
+          "registrationIoU": 0.8016749143509707
+        },
+        {
+          "row": 4,
+          "col": 5,
+          "x": 654,
+          "y": 500,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/mire-imp.png",
+            "x": 940,
+            "y": 729,
+            "w": 112,
+            "h": 160
+          },
+          "anchorSourcePx": [
+            998,
+            888
+          ],
+          "registrationIoU": 0.8049886621315193
+        },
+        {
+          "row": 5,
+          "col": 0,
+          "x": 4,
+          "y": 624,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/mire-imp.png",
+            "x": 37,
+            "y": 901,
+            "w": 105,
+            "h": 157
+          },
+          "anchorSourcePx": [
+            105.08607021517554,
+            1065
+          ],
+          "registrationIoU": 1
+        },
+        {
+          "row": 5,
+          "col": 1,
+          "x": 134,
+          "y": 624,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/mire-imp.png",
+            "x": 215,
+            "y": 900,
+            "w": 116,
+            "h": 163
+          },
+          "anchorSourcePx": [
+            284,
+            1065
+          ],
+          "registrationIoU": 0.6395869191049914
+        },
+        {
+          "row": 5,
+          "col": 2,
+          "x": 264,
+          "y": 624,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/mire-imp.png",
+            "x": 396,
+            "y": 898,
+            "w": 112,
+            "h": 165
+          },
+          "anchorSourcePx": [
+            463,
+            1065
+          ],
+          "registrationIoU": 0.6858359957401491
+        },
+        {
+          "row": 5,
+          "col": 3,
+          "x": 394,
+          "y": 624,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/mire-imp.png",
+            "x": 570,
+            "y": 902,
+            "w": 119,
+            "h": 164
+          },
+          "anchorSourcePx": [
+            644,
+            1065
+          ],
+          "registrationIoU": 0.6914562435143549
+        },
+        {
+          "row": 5,
+          "col": 4,
+          "x": 524,
+          "y": 624,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/mire-imp.png",
+            "x": 760,
+            "y": 902,
+            "w": 115,
+            "h": 151
+          },
+          "anchorSourcePx": [
+            827,
+            1065
+          ],
+          "registrationIoU": 0.7290346626910175
+        },
+        {
+          "row": 5,
+          "col": 5,
+          "x": 654,
+          "y": 624,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/mire-imp.png",
+            "x": 942,
+            "y": 904,
+            "w": 107,
+            "h": 155
+          },
+          "anchorSourcePx": [
+            1009,
+            1065
+          ],
+          "registrationIoU": 0.8112687155240347
+        },
+        {
+          "row": 6,
+          "col": 0,
+          "x": 4,
+          "y": 748,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/mire-imp.png",
+            "x": 40,
+            "y": 1075,
+            "w": 111,
+            "h": 165
+          },
+          "anchorSourcePx": [
+            95.10766961651917,
+            1238
+          ],
+          "registrationIoU": 1
+        },
+        {
+          "row": 6,
+          "col": 1,
+          "x": 134,
+          "y": 748,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/mire-imp.png",
+            "x": 205,
+            "y": 1074,
+            "w": 120,
+            "h": 166
+          },
+          "anchorSourcePx": [
+            268,
+            1238
+          ],
+          "registrationIoU": 0.7238062521470285
+        },
+        {
+          "row": 6,
+          "col": 2,
+          "x": 264,
+          "y": 748,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/mire-imp.png",
+            "x": 394,
+            "y": 1074,
+            "w": 120,
+            "h": 166
+          },
+          "anchorSourcePx": [
+            455,
+            1238
+          ],
+          "registrationIoU": 0.7870668095748482
+        },
+        {
+          "row": 6,
+          "col": 3,
+          "x": 394,
+          "y": 748,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/mire-imp.png",
+            "x": 568,
+            "y": 1074,
+            "w": 129,
+            "h": 166
+          },
+          "anchorSourcePx": [
+            633,
+            1238
+          ],
+          "registrationIoU": 0.6903160726294553
+        },
+        {
+          "row": 6,
+          "col": 4,
+          "x": 524,
+          "y": 748,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/mire-imp.png",
+            "x": 758,
+            "y": 1075,
+            "w": 113,
+            "h": 163
+          },
+          "anchorSourcePx": [
+            815,
+            1238
+          ],
+          "registrationIoU": 0.8022222222222222
+        },
+        {
+          "row": 6,
+          "col": 5,
+          "x": 654,
+          "y": 748,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/mire-imp.png",
+            "x": 938,
+            "y": 1074,
+            "w": 114,
+            "h": 166
+          },
+          "anchorSourcePx": [
+            995,
+            1238
+          ],
+          "registrationIoU": 0.7709677419354839
+        },
+        {
+          "row": 7,
+          "col": 0,
+          "x": 4,
+          "y": 872,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/mire-imp.png",
+            "x": 38,
+            "y": 1250,
+            "w": 107,
+            "h": 181
+          },
+          "anchorSourcePx": [
+            102.38980509745127,
+            1434
+          ],
+          "registrationIoU": 1
+        },
+        {
+          "row": 7,
+          "col": 1,
+          "x": 134,
+          "y": 872,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/mire-imp.png",
+            "x": 217,
+            "y": 1259,
+            "w": 105,
+            "h": 174
+          },
+          "anchorSourcePx": [
+            277,
+            1434
+          ],
+          "registrationIoU": 0.7327033412082349
+        },
+        {
+          "row": 7,
+          "col": 2,
+          "x": 264,
+          "y": 872,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/mire-imp.png",
+            "x": 395,
+            "y": 1251,
+            "w": 111,
+            "h": 184
+          },
+          "anchorSourcePx": [
+            461,
+            1434
+          ],
+          "registrationIoU": 0.7973523421588594
+        },
+        {
+          "row": 7,
+          "col": 3,
+          "x": 394,
+          "y": 872,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/mire-imp.png",
+            "x": 570,
+            "y": 1259,
+            "w": 121,
+            "h": 173
+          },
+          "anchorSourcePx": [
+            638,
+            1434
+          ],
+          "registrationIoU": 0.7041210560206053
+        },
+        {
+          "row": 7,
+          "col": 4,
+          "x": 524,
+          "y": 872,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/mire-imp.png",
+            "x": 756,
+            "y": 1259,
+            "w": 115,
+            "h": 177
+          },
+          "anchorSourcePx": [
+            820,
+            1434
+          ],
+          "registrationIoU": 0.7449379490529066
+        },
+        {
+          "row": 7,
+          "col": 5,
+          "x": 654,
+          "y": 872,
+          "w": 126,
+          "h": 120,
+          "source": {
+            "file": "source/mire-imp.png",
+            "x": 940,
+            "y": 1254,
+            "w": 106,
+            "h": 181
+          },
+          "anchorSourcePx": [
+            1004,
+            1434
+          ],
+          "registrationIoU": 0.8363824646185709
+        }
+      ]
+    }
+  }
+}
