@@ -4,6 +4,7 @@
 import sharp from 'sharp';
 import { createHash } from 'node:crypto';
 import fs from 'node:fs/promises';
+import {packKnight} from './pack-knight.mjs';
 
 const SRC = 'assets-src/characters', OUT = 'public/assets/characters';
 const ALPHA = 16;          // alpha below this is treated as empty and zeroed (fringe + background colour bleed)
@@ -153,6 +154,7 @@ function registerX(base, f) {
 }
 
 async function character(id, spec) {
+  if (id === 'hero') return packKnight();
   const img = await load(spec.file);
   const { label, grid, owned, specks, droppedPx } = figures(img, 6, spec.cols, id);
   const frames = grid.map((row, r) => row.map((c, col) => {
