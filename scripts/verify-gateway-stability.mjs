@@ -1,14 +1,14 @@
 import sharp from 'sharp';import assert from 'node:assert/strict';import fs from 'node:fs/promises';import {createHash} from 'node:crypto';
 const base=process.env.DEMO_URL,root='public/modular-stronghold/v2/';
 const read=async name=>{if(!base)return fs.readFile(root+name);const r=await fetch(base+'/modular-stronghold/v2/'+name);assert(r.ok,name+' must be published');return Buffer.from(await r.arrayBuffer());};
-const meta=JSON.parse(await read('full-gateway-sheet.json')),atlas=await read(meta.image),frames=[];
+const meta=JSON.parse(await read('full-gateway-v3-sheet.json')),atlas=await read(meta.image),frames=[];
 for(let i=0;i<meta.frames;i++)frames.push(await sharp(atlas).extract({left:i%meta.columns*meta.frame.w,top:Math.floor(i/meta.columns)*meta.frame.h,width:meta.frame.w,height:meta.frame.h}).ensureAlpha().raw().toBuffer());
 const w=meta.frame.w,h=meta.frame.h,reference=frames[0];let oldStonePixelChanges=0;const doorHashes=[];
 for(let i=0;i<frames.length;i++){
  const f=frames[i],door=[];for(let y=0;y<h;y++)for(let x=0;x<w;x++){
   const p=(y*w+x)*4;
   // Both towers, their ground contact, banners, flames and the complete upper arch must stay still.
-  if(x<144||x>244||y<103||y>218){if((f[p+3]||reference[p+3])&&!f.subarray(p,p+4).equals(reference.subarray(p,p+4)))oldStonePixelChanges++;}
+  if(x<146||x>242||y<111||y>216){if((f[p+3]||reference[p+3])&&!f.subarray(p,p+4).equals(reference.subarray(p,p+4)))oldStonePixelChanges++;}
   if(x>=154&&x<=234&&y>=136&&y<=210)door.push(...f.subarray(p,p+4));
  }
  doorHashes.push(createHash('sha256').update(Buffer.from(door)).digest('hex'));
