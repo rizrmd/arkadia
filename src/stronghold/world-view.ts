@@ -97,6 +97,8 @@ export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Buil
   g.clearRect(0,0,soft.width,soft.height);g.filter=`blur(${(.7+Math.hypot(s.dx,s.dy*2)).toFixed(2)}px)`;g.drawImage(mask,0,0);g.filter='none';
   lighting.setShadow(soft,s.alpha,paint);
  }
+ // The player's hero walks the court in its own layer over the world; the camera eases after it.
+ const hero=await createHero({layer:viewport,lightmap:viewport.querySelector<HTMLCanvasElement>('#world-lightmap')!,surface,footprint,sun:lighting.sun,direction,follow});hero.setScene(objects);
  // Everything standing above the ground shadows, at surface resolution with transparency.
  const uprights=document.createElement('canvas');uprights.id='world-uprights';uprights.width=surface.width;uprights.height=surface.height;
  function paintWorld(){

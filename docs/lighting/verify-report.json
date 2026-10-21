@@ -5,7 +5,7 @@
    "state": "on",
    "flicker": "block",
    "lights": 28,
-   "lightPaints": 4,
+   "lightPaints": 3,
    "surfacePaints": 2,
    "shadowPaints": 2,
    "sun": "none",
@@ -58,7 +58,7 @@
    "state": "on",
    "flicker": "block",
    "lights": 28,
-   "lightPaints": 4,
+   "lightPaints": 3,
    "surfacePaints": 2,
    "shadowPaints": 2,
    "sun": "none",
@@ -76,7 +76,7 @@
    "state": "on",
    "flicker": "block",
    "lights": 28,
-   "lightPaints": 4,
+   "lightPaints": 3,
    "surfacePaints": 2,
    "shadowPaints": 2,
    "sun": "none",
@@ -129,7 +129,7 @@
    "state": "on",
    "flicker": "block",
    "lights": 28,
-   "lightPaints": 4,
+   "lightPaints": 3,
    "surfacePaints": 2,
    "shadowPaints": 2,
    "sun": "none",
@@ -147,7 +147,7 @@
    "state": "on",
    "flicker": "block",
    "lights": 28,
-   "lightPaints": 4,
+   "lightPaints": 3,
    "surfacePaints": 2,
    "shadowPaints": 2,
    "sun": "none",
@@ -165,7 +165,7 @@
    "state": "on",
    "flicker": "block",
    "lights": 28,
-   "lightPaints": 4,
+   "lightPaints": 3,
    "surfacePaints": 2,
    "shadowPaints": 2,
    "sun": "none",
@@ -218,7 +218,7 @@
    "state": "on",
    "flicker": "block",
    "lights": 28,
-   "lightPaints": 4,
+   "lightPaints": 3,
    "surfacePaints": 2,
    "shadowPaints": 2,
    "sun": "none",
@@ -236,7 +236,7 @@
    "state": "on",
    "flicker": "block",
    "lights": 28,
-   "lightPaints": 4,
+   "lightPaints": 3,
    "surfacePaints": 2,
    "shadowPaints": 2,
    "sun": "none",
@@ -271,7 +271,7 @@
    "state": "on",
    "flicker": "block",
    "lights": 28,
-   "lightPaints": 4,
+   "lightPaints": 3,
    "surfacePaints": 2,
    "shadowPaints": 2,
    "sun": "none",
@@ -319,24 +319,24 @@
   "every building, gateway and brazier sprite has authored light anchors",
   "4 phases x 4 viewports: phase, layer state, snow tint and input surface",
   "night lightmap: ambient 252/765, 1680 emissive white pixels, light at all 7 buildings",
-  "night screen luma 42.2 vs day 110.7",
-  "clock ticks: lightmap paints 6->13, 7 shadow rebuilds and 0 world re-rasters for 6 sun steps",
-  "sun step (preset click to shadows on screen): median 155 ms, max 312.8 ms, 0 world re-rasters",
+  "night screen luma 42.4 vs day 110.7",
+  "clock ticks: lightmap paints 4->8, 3 shadow rebuilds and 0 world re-rasters for 3 sun steps",
+  "sun step (preset click to shadows on screen): median 155.5 ms, max 183.3 ms, 0 world re-rasters",
   "in-game clock: slider and presets relight, sun shadows by day only, pinned hour remembered, Live restores the cycle",
-  "clock drag 05:00 -> 17:00: p95 66.7 ms, 0 world re-rasters while dragging or on release",
+  "clock drag 05:00 -> 17:00: p95 50.0 ms, 0 world re-rasters while dragging or on release",
   "?lighting=night|day persists across reloads, ?lighting=dynamic restores the clock",
   "night roof hit-test selects the Forge and relights the selection",
   "prefers-reduced-motion disables flicker",
-  "mobile pan (390x844, DPR 3, 4x CPU, best of 3): zero world repaints; median day 16.5 / night 16.6 ms, p95 day 21.2 / night 19.6 ms"
+  "mobile pan (390x844, DPR 3, 4x CPU, best of 3): zero world repaints; median day 16.4 / night 16.6 ms, p95 day 20.7 / night 18.9 ms"
  ],
  "screenLuma": {
   "day": 110.7288590461284,
-  "night": 42.240393699951554
+  "night": 42.40576220679026
  },
  "sunStep": {
   "paints": 0,
-  "median": 155,
-  "max": 312.8
+  "median": 155.5,
+  "max": 183.3
  },
  "clockDrag": {
   "during": {
@@ -350,48 +350,48 @@
    "state": "on",
    "sun": "0.7083"
   },
-  "p95": 66.69999999999982
+  "p95": 50
  },
  "pan": {
   "day": [
    {
-    "p50": 16.6,
-    "p95": 21.3,
+    "p50": 19.3,
+    "p95": 66.5,
     "flickerHidden": true
    },
    {
-    "p50": 16.6,
-    "p95": 27.7,
+    "p50": 16.4,
+    "p95": 24.6,
     "flickerHidden": true
    },
    {
-    "p50": 16.5,
-    "p95": 21.2,
+    "p50": 16.7,
+    "p95": 20.7,
     "flickerHidden": true
    }
   ],
   "night": [
    {
+    "p50": 17.4,
+    "p95": 63.6,
+    "flickerHidden": true
+   },
+   {
     "p50": 16.6,
-    "p95": 19.6,
+    "p95": 22,
     "flickerHidden": true
    },
    {
-    "p50": 16.8,
-    "p95": 22.6,
-    "flickerHidden": true
-   },
-   {
-    "p50": 17.8,
-    "p95": 65.4,
+    "p50": 16.6,
+    "p95": 18.9,
     "flickerHidden": true
    }
   ],
   "gate": {
-   "dayP50": 16.5,
+   "dayP50": 16.4,
    "nightP50": 16.6,
-   "dayP95": 21.2,
-   "nightP95": 19.6
+   "dayP95": 20.7,
+   "nightP95": 18.9
   }
  }
 }
