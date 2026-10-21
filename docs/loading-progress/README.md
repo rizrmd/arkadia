@@ -26,3 +26,9 @@ game finishes loading without errors. Set `VERIFY_URL` to test the live site.
 - `progress-chart.png` plots both runs (`node scripts/chart-loading-progress.mjs`).
 - At 10 Mbps the old bar sat at 14% for 4.9 s and at 32% for 2.9 s, then went from 46% to 89% in 3 s.
   The new bar climbs about 3% every 0.6 s until the artwork is in.
+
+## Live
+
+Deployed to `arkadia-stronghold` with `node scripts/publish-loading-progress.mjs`. The live proxy drops
+`Content-Length`, so the build-time size list is what makes the total exact there.
+`results-live.json`: 10 Mbps, total fixed at 27.2 MB, longest flat stretch while downloading 0.5 s, no errors.
