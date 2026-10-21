@@ -32,3 +32,18 @@ The local browser observed all twelve actual animation frames, verified alpha, p
 - Publish every produced image inline in the existing English Knowledge hierarchy, then push and deploy scoped assets and repeat public verification.
 
 No completion or game-ready claim is made while any of these requirements lacks direct evidence.
+
+## Added standard states
+
+The human explicitly added **hurt** and **death** to game-ready acceptance. Both must cover N, NE, E, SE, S, SW, W and NW from the same canonical character source.
+
+- Hurt: readable impact reaction, recoil and recovery to the shared neutral; one-shot, with an interrupt/recovery policy in the manifest.
+- Death: impact, loss of balance, fall and settled terminal pose; one-shot with hold-last-frame playback. It must not recover to idle or loop. Verify floor contact, final pose stability and directional coverage.
+
+The complete final body scope is idle, run, Pulse Shot, Phase Dash, Rift Trap, Overdrive, hurt and death. Standard-state additions do not authorize gameplay hero replacement.
+
+## Source isolation and current production candidate
+
+Remaining work runs in the dedicated task worktree. `render-body.sh` checks the source hash before/after the job, requires an explicit `BODY_EXPORT` receipt, then validates the output metadata. This prevents a refreshed shared checkout from silently running an earlier turnaround script.
+
+Source `3346c6057837` currently supplies the complete eight-direction Pulse Shot candidate: four 24-frame sheets, 96 total frames, calibrated 256px cells and world ground pivot (128,224). Every clip has pixel-identical first/last neutral frames. Its local browser test observed all 96 frames and neutral/action/neutral phases without errors. Source-constraint checks now cover all six initial action families, including exact endpoint transforms, smooth skill starts and trap palm contact at the floor. These do not yet establish full eight-state final readiness.
