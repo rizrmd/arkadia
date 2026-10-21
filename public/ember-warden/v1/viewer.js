@@ -1,21 +1,49 @@
-const manifest=await(await fetch('manifest.json')).json(),canvas=document.querySelector('canvas'),ctx=canvas.getContext('2d');
+const canvas=document.querySelector('canvas'),ctx=canvas.getContext('2d');
+const manifest=await(await fetch('manifest.json',{signal:AbortSignal.timeout(20000)})).json();
 const entry=document.querySelector('#entry');
 const action=document.querySelector('#action'),mode=document.querySelector('#mode'),speed=document.querySelector('#speed'),scrub=document.querySelector('#scrub'),play=document.querySelector('#play'),vfxToggle=document.querySelector('#vfx'),sockets=document.querySelector('#sockets'),info=document.querySelector('#info');
 for(const a of manifest.actions){const o=document.createElement('option');o.value=a;o.textContent=a.replaceAll('-',' ');action.append(o)}
-// Trim logical margins when uploading frames; retain the common origin in draw offsets.
-const bitmaps=new Map;
-for(const p of new Set([...manifest.clips,...manifest.vfx].map(c=>c.image))){
- const im=new Image;im.src=p;await im.decode();
- for(const c of [...manifest.clips,...manifest.vfx].filter(c=>c.image===p))for(let i=0;i<c.frames.length;i++){
-  const f=c.frames[i],b=f.alphaBounds||[0,0,f.rect[2],f.rect[3]],key=(c.image.startsWith('vfx/')?'vfx:':'body:')+c.id+':'+i;
-  const bitmap=await createImageBitmap(im,f.rect[0]+b[0],f.rect[1]+b[1],Math.max(1,b[2]-b[0]),Math.max(1,b[3]-b[1]));bitmaps.set(key,{bitmap,offset:b.slice(0,2)});
+// Load only the selected action. Canvas crops work on browsers without ImageBitmap.
+const bitmaps=new Map,loadedActions=new Set;let loading=false,loadGeneration=0,loadingQueue=Promise.resolve();
+async function loadAction(name){
+ if(loadedActions.has(name))return;
+ const clips=[...manifest.clips,...manifest.vfx].filter(c=>c.action===name);
+ const paths=[...new Set(clips.map(c=>c.image))];let complete=0;
+ for(const p of paths){
+  info.textContent=`Loading ${name.replaceAll('-',' ')} · ${complete+1}/${paths.length} sheets…`;
+  const im=new Image;
+  await new Promise((resolve,reject)=>{
+   const timer=setTimeout(()=>{im.src='';reject(Error(`Timed out loading ${p.split('?')[0]}`))},20000);
+   im.onload=()=>{clearTimeout(timer);resolve()};im.onerror=()=>{clearTimeout(timer);reject(Error(`Could not load ${p.split('?')[0]}`))};im.src=p;
+  });
+  for(const c of clips.filter(c=>c.image===p))for(let i=0;i<c.frames.length;i++){
+   const f=c.frames[i],b=f.alphaBounds||[0,0,f.rect[2],f.rect[3]],key=(c.image.startsWith('vfx/')?'vfx:':'body:')+c.id+':'+i;
+   const bitmap=document.createElement('canvas');bitmap.width=Math.max(1,b[2]-b[0]);bitmap.height=Math.max(1,b[3]-b[1]);
+   bitmap.getContext('2d').drawImage(im,f.rect[0]+b[0],f.rect[1]+b[1],bitmap.width,bitmap.height,0,0,bitmap.width,bitmap.height);bitmaps.set(key,{bitmap,offset:b.slice(0,2),action:name});
+  }
+  im.src='';complete++;
+  await new Promise(resolve=>setTimeout(resolve,0));
  }
+ loadedActions.add(name);
 }
+function releaseExcept(names){for(const [key,b]of bitmaps)if(!names.includes(b.action)){b.bitmap.width=0;b.bitmap.height=0;bitmaps.delete(key);loadedActions.delete(b.action)}}
+function showError(error){loading=true;state.playing=false;info.textContent=`Preview could not load: ${error.message}. Tap Retry.`;document.querySelector('#retry').hidden=false;console.error(error)}
 const state={time:0,playing:true,seen:[],vfxSeen:[],trace:[],phases:[],frame:0,action:'idle',selected:0,drawSerial:0};let last=null;const seen=new Set,phases=new Set,fxSeen=new Set;let resetTime=0;
-function reset(a){action.value=a;state.action=a;state.time=0;last=null;seen.clear();fxSeen.clear();phases.clear();state.trace=[];state.seen=[];state.vfxSeen=[];state.phases=[];state.playing=true;play.textContent='Pause';const c=manifest.clips.find(c=>c.action===a);scrub.max=c.frames.length-1;scrub.value=0;resetTime=performance.now()}
+function reset(a){const generation=++loadGeneration;loadingQueue=loadingQueue.catch(()=>{}).then(()=>generation===loadGeneration?resetNow(a,generation):undefined);return loadingQueue}
+async function resetNow(a,generation){
+loading=true;state.playing=false;window.emberReady=false;document.querySelector('#retry').hidden=true;action.value=a;
+ try{
+  // Serial action requests avoid duplicate downloads and mobile memory spikes.
+  const needed=[a];if(mode.value==='transition'){needed.push(entry.value);if(!manifest.clips.find(c=>c.action===a).loop)needed.push('idle');else needed.push('run')}
+  releaseExcept(needed);
+  for(const name of new Set(needed))await loadAction(name);
+  if(generation!==loadGeneration)return;
+  state.action=a;state.time=0;last=null;seen.clear();fxSeen.clear();phases.clear();state.trace=[];state.seen=[];state.vfxSeen=[];state.phases=[];state.playing=true;play.textContent='Pause';const c=manifest.clips.find(c=>c.action===a);scrub.max=c.frames.length-1;scrub.value=0;resetTime=performance.now();loading=false;window.emberReady=true;
+ }catch(error){if(generation===loadGeneration)showError(error)}
+}
 function drawBody(c,f,x,y,alpha=1){ctx.globalAlpha=alpha;const b=bitmaps.get('body:'+c.id+':'+f);ctx.drawImage(b.bitmap,x-128+b.offset[0],y-179.2+b.offset[1]);ctx.globalAlpha=1}
 function drawFx(c,f,x,y){if(!c||!vfxToggle.checked)return;const b=bitmaps.get('vfx:'+c.id+':'+f);ctx.drawImage(b.bitmap,x-192+b.offset[0],y-243.2+b.offset[1]);fxSeen.add(c.id+':'+f)}
-function draw(now){const dt=last===null?0:Math.min(.06,(now-last)/1000);last=now;if(state.playing)state.time+=dt*Number(speed.value);
+function draw(now){if(loading){last=null;requestAnimationFrame(draw);return}const dt=last===null?0:Math.min(.06,(now-last)/1000);last=now;if(state.playing)state.time+=dt*Number(speed.value);
  ctx.fillStyle='#192027';ctx.fillRect(0,0,canvas.width,canvas.height);const chosen=manifest.clips.filter(c=>c.action===state.action),first=chosen[0],duration=first.frames.length/first.fps;let phase='action',local=state.time;
  if(mode.value==='transition'){if(local<.65){phase=entry.value+' before';local=state.time}else{local-=.65;if(!first.loop&&local>=duration){phase=first.holdLastFrame?'death hold':entry.value+' after';local=first.holdLastFrame?duration-.00001:local-duration}else if(first.loop&&local>=duration*2){phase='run after';local-=duration*2}}}
  else if(!first.loop&&local>=duration)phase=first.holdLastFrame?'death hold':'completed';
@@ -47,4 +75,5 @@ function draw(now){const dt=last===null?0:Math.min(.06,(now-last)/1000);last=now
  requestAnimationFrame(draw)
 }
 action.onchange=()=>reset(action.value);mode.onchange=()=>reset(action.value);entry.onchange=()=>reset(action.value);play.onclick=()=>{if(state.playing)state.selected=state.frame;state.playing=!state.playing;play.textContent=state.playing?'Pause':'Play';last=null};document.querySelector('#restart').onclick=()=>reset(action.value);scrub.oninput=()=>{state.playing=false;play.textContent='Play';state.selected=Number(scrub.value);state.time=state.selected/manifest.clips.find(c=>c.action===state.action).fps};document.querySelector('#step').onclick=()=>{state.selected=(state.frame+1)%Number(Number(scrub.max)+1);scrub.value=state.selected;scrub.oninput()};
-window.ember={manifest,state,setAction:reset};reset('idle');window.emberReady=true;requestAnimationFrame(draw);
+document.querySelector('#retry').onclick=()=>reset(action.value);
+window.ember={manifest,state,setAction:reset,loadedActions};await reset('idle');requestAnimationFrame(draw);

@@ -178,12 +178,13 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
  }
  let last=0;
  const loop=(now:number)=>{let dt=last?Math.min(now-last,120):16;last=now;for(;dt>0;dt-=34)step(Math.min(dt,34));render();requestAnimationFrame(loop);};
- requestAnimationFrame(loop);
  const api={
   steer,
   // While swinging, stunned or down, the hero plays that clip in place of walking.
   pose:():Pose|null=>h.state==='idle'||h.state==='move'?null:{clip:h.state,t:h.t},
   place(x:number,y:number,scale:number){origin={x,y,scale};},
+  // Started after the hero's loop (world-view.ts), so each frame draws with the camera the hero just moved.
+  start(){requestAnimationFrame(loop);},
   setAmbient(rgb:readonly number[]){ambient=rgb.map(v=>Math.round(v*255)).join();},
   setMaxHp(n:number){if(n===maxHp)return;h.hp=Math.min(n,h.hp+Math.max(0,n-maxHp));maxHp=n;},
   snapshot:()=>({spawnDistanceM:SPAWN_DISTANCE_M,gate:GATE,metersPerTile:METERS_PER_TILE,

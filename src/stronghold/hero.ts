@@ -29,7 +29,7 @@ export const DISPLAY=.48;const SPEED=105,STRIDE=88*DISPLAY/1.1,RADIUS=9,SPAWN={x
 // covers twice the ground of one across, so equal screen speed walked the hero up and down twice as fast as left
 // and right. SPEED is screen px/s along a tile edge (the W+D walk); up/down and across follow at the same ground pace.
 const ground=(sx:number,sy:number)=>{const g=unproject(sx,sy);return Math.hypot(g.x,g.y);},PACE=ground(2,1)/Math.hypot(2,1);
-export async function createHero<P extends Placed>(o:{layer:HTMLElement;lightmap:HTMLCanvasElement;surface:HTMLElement;footprint:(p:P)=>Column[];sun:()=>Sun;direction:()=>Walk;follow:(x:number,y:number,dt:number)=>void;pose?:()=>Pose|null}){
+export async function createHero<P extends Placed>(o:{layer:HTMLElement;lightmap:HTMLCanvasElement;surface:HTMLElement;footprint:(p:P)=>Column[];sun:()=>Sun;direction:()=>Walk;follow:(x:number,y:number,dt:number,walking?:boolean)=>void;pose?:()=>Pose|null}){
  const meta:Meta=(await (await fetch(BASE+'manifest.json')).json()).characters.hero,atlas=await loadImage(BASE+meta.image+(meta.revision?`?v=${encodeURIComponent(meta.revision)}`:''));
  const canvas=document.createElement('canvas'),c=canvas.getContext('2d')!;canvas.id='world-hero';
  canvas.style.cssText='position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform;pointer-events:none';o.layer.append(canvas);
@@ -67,9 +67,10 @@ export async function createHero<P extends Placed>(o:{layer:HTMLElement;lightmap
  // Arena facing rules: front/rear views only within 10 degrees of straight up/down (15 to leave), and dead
  // bands near each axis keep the previous quadrant so tiny slides along a wall never flip the art.
  function face(sx:number,sy:number){const l=Math.hypot(sx,sy);if(!l)return;vertical=Math.abs(sx)/l<Math.sin((vertical?15:10)*Math.PI/180);if(Math.abs(sy)/l>.15)back=sy<0;if(Math.abs(sx)/l>.15)facing=sx>0?1:-1;}
+ // Returns whether the hero is walking (or pushing against something), for the camera.
  function step(dt:number){
   // A swing, hit stun or death holds the hero in place.
-  pose=o.pose?.()??null;if(pose){if(state!=='idle'){state='idle';t=0;}return;}
+  pose=o.pose?.()??null;if(pose){if(state!=='idle'){state='idle';t=0;}return false;}
   const d=o.direction(),m=Math.hypot(d.x,d.y);t+=dt;let progress=0;
   if(m>0){
    face(d.x,d.y);const g=ground(d.x,d.y),v=SPEED*dt/1000*m*PACE/g,dx=d.x*v,dy=d.y*v,stuck=blocked(x,y);
@@ -79,7 +80,7 @@ export async function createHero<P extends Placed>(o:{layer:HTMLElement;lightmap
   const moving=progress/(dt/1000)>(state==='move'?2:5);if(moving!==(state==='move')){state=moving?'move':'idle';t=0;}
   if(moving){stride+=progress/STRIDE;lastMove=performance.now();}
   else if(lastMove&&performance.now()-lastMove>400){lastMove=0;try{localStorage.setItem(KEY,JSON.stringify({x:Math.round(x),y:Math.round(y)}));}catch{}}
-  if(m>0||moving)o.follow(x,y,dt);
+  return m>0||moving;
  }
  // The lightmap (ambient plus light pools) under the hero's feet; untinted while the world is unlit. Read
  // through a 1 px copy so the lightmap itself never gets flagged for CPU readback.
@@ -112,8 +113,9 @@ export async function createHero<P extends Placed>(o:{layer:HTMLElement;lightmap
  }
  function place(){canvas.style.transform=`translate3d(${origin.x+(x+box[0])*origin.scale}px,${origin.y+(y+box[1])*origin.scale}px,0) scale(${origin.scale})`;}
  let last=0;
- // Real time up to 120 ms per frame, sub-stepped so a slow phone walks at full speed without skipping through walls.
- const loop=(now:number)=>{let dt=last?Math.min(now-last,120):16;last=now;for(;dt>0;dt-=34)step(Math.min(dt,34));sample(now);render();place();requestAnimationFrame(loop);};
+ // Real time up to 120 ms per frame, sub-stepped so a slow phone walks at full speed without skipping through walls;
+ // the camera then moves once per frame, and every frame so it can settle after the hero stops.
+ const loop=(now:number)=>{const span=last?Math.min(now-last,120):16;let walking=false;last=now;for(let dt=span;dt>0;dt-=34)walking=step(Math.min(dt,34))||walking;o.follow(x,y,span,walking);sample(now);render();place();requestAnimationFrame(loop);};
  return {
   setScene,
   // Shared with the revenants (encounters.ts): the same footprints block them, the same uprights hide them
