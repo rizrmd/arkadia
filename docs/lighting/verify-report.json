@@ -7,6 +7,7 @@
    "lights": 28,
    "lightPaints": 4,
    "surfacePaints": 2,
+   "sun": "none",
    "tint": "60,72,120",
    "snow": "url(\"data:",
    "sameTransform": true,
@@ -23,6 +24,7 @@
    "lights": 28,
    "lightPaints": 4,
    "surfacePaints": 2,
+   "sun": "none",
    "tint": "187,163,171",
    "snow": "url(\"data:",
    "sameTransform": true,
@@ -39,6 +41,7 @@
    "lights": 28,
    "lightPaints": 3,
    "surfacePaints": 2,
+   "sun": "0.5000",
    "tint": "off",
    "snow": "url(\"data:",
    "sameTransform": true,
@@ -54,6 +57,7 @@
    "lights": 28,
    "lightPaints": 4,
    "surfacePaints": 2,
+   "sun": "none",
    "tint": "167,139,159",
    "snow": "url(\"data:",
    "sameTransform": true,
@@ -70,6 +74,7 @@
    "lights": 28,
    "lightPaints": 4,
    "surfacePaints": 2,
+   "sun": "none",
    "tint": "60,72,120",
    "snow": "url(\"data:",
    "sameTransform": true,
@@ -86,6 +91,7 @@
    "lights": 28,
    "lightPaints": 4,
    "surfacePaints": 2,
+   "sun": "none",
    "tint": "187,163,171",
    "snow": "url(\"data:",
    "sameTransform": true,
@@ -102,6 +108,7 @@
    "lights": 28,
    "lightPaints": 3,
    "surfacePaints": 2,
+   "sun": "0.5000",
    "tint": "off",
    "snow": "url(\"data:",
    "sameTransform": true,
@@ -117,6 +124,7 @@
    "lights": 28,
    "lightPaints": 4,
    "surfacePaints": 2,
+   "sun": "none",
    "tint": "167,139,159",
    "snow": "url(\"data:",
    "sameTransform": true,
@@ -131,8 +139,9 @@
    "state": "on",
    "flicker": "block",
    "lights": 28,
-   "lightPaints": 3,
+   "lightPaints": 4,
    "surfacePaints": 2,
+   "sun": "none",
    "tint": "60,72,120",
    "snow": "url(\"data:",
    "sameTransform": true,
@@ -147,8 +156,9 @@
    "state": "on",
    "flicker": "block",
    "lights": 28,
-   "lightPaints": 3,
+   "lightPaints": 4,
    "surfacePaints": 2,
+   "sun": "none",
    "tint": "187,163,171",
    "snow": "url(\"data:",
    "sameTransform": true,
@@ -165,6 +175,7 @@
    "lights": 28,
    "lightPaints": 3,
    "surfacePaints": 2,
+   "sun": "0.5000",
    "tint": "off",
    "snow": "url(\"data:",
    "sameTransform": true,
@@ -180,6 +191,7 @@
    "lights": 28,
    "lightPaints": 4,
    "surfacePaints": 2,
+   "sun": "none",
    "tint": "167,139,159",
    "snow": "url(\"data:",
    "sameTransform": true,
@@ -194,8 +206,9 @@
    "state": "on",
    "flicker": "block",
    "lights": 28,
-   "lightPaints": 3,
+   "lightPaints": 4,
    "surfacePaints": 2,
+   "sun": "none",
    "tint": "60,72,120",
    "snow": "url(\"data:",
    "sameTransform": true,
@@ -212,6 +225,7 @@
    "lights": 28,
    "lightPaints": 4,
    "surfacePaints": 2,
+   "sun": "none",
    "tint": "187,163,171",
    "snow": "url(\"data:",
    "sameTransform": true,
@@ -228,6 +242,7 @@
    "lights": 28,
    "lightPaints": 3,
    "surfacePaints": 2,
+   "sun": "0.5000",
    "tint": "off",
    "snow": "url(\"data:",
    "sameTransform": true,
@@ -243,6 +258,7 @@
    "lights": 28,
    "lightPaints": 4,
    "surfacePaints": 2,
+   "sun": "none",
    "tint": "167,139,159",
    "snow": "url(\"data:",
    "sameTransform": true,
@@ -287,55 +303,56 @@
   "every building, gateway and brazier sprite has authored light anchors",
   "4 phases x 4 viewports: phase, layer state, snow tint and input surface",
   "night lightmap: ambient 252/765, 1680 emissive white pixels, light at all 7 buildings",
-  "night screen luma 42.5 vs day 114.8",
-  "clock ticks: lightmap paints 5->8, surface paints unchanged (2)",
+  "night screen luma 42.6 vs day 113.0",
+  "clock ticks: lightmap paints 4->13, surface paints 3->10 for 7 sun steps",
+  "in-game clock: slider and presets relight, sun shadows by day only, pinned hour remembered, Live restores the cycle",
   "?lighting=night|day persists across reloads, ?lighting=dynamic restores the clock",
   "night roof hit-test selects the Forge and relights the selection",
   "prefers-reduced-motion disables flicker",
-  "mobile pan (390x844, DPR 3, 4x CPU, best of 3): zero world repaints; median day 16.6 / night 16.7 ms, p95 day 17.6 / night 17.3 ms"
+  "mobile pan (390x844, DPR 3, 4x CPU, best of 3): zero world repaints; median day 16.6 / night 16.6 ms, p95 day 17.6 / night 17.3 ms"
  ],
  "screenLuma": {
-  "day": 114.80560116220578,
-  "night": 42.53586297923728
+  "day": 113.0214795903834,
+  "night": 42.557437637305455
  },
  "pan": {
   "day": [
    {
-    "p50": 16.6,
+    "p50": 16.7,
     "p95": 17.6,
+    "flickerHidden": true
+   },
+   {
+    "p50": 16.6,
+    "p95": 17.9,
     "flickerHidden": true
    },
    {
     "p50": 16.6,
     "p95": 17.7,
-    "flickerHidden": true
-   },
-   {
-    "p50": 16.6,
-    "p95": 17.6,
     "flickerHidden": true
    }
   ],
   "night": [
    {
-    "p50": 16.7,
-    "p95": 17.7,
+    "p50": 16.6,
+    "p95": 17.9,
     "flickerHidden": true
    },
    {
-    "p50": 16.7,
-    "p95": 17.6,
-    "flickerHidden": true
-   },
-   {
-    "p50": 16.7,
+    "p50": 16.6,
     "p95": 17.3,
+    "flickerHidden": true
+   },
+   {
+    "p50": 16.6,
+    "p95": 18.3,
     "flickerHidden": true
    }
   ],
   "gate": {
    "dayP50": 16.6,
-   "nightP50": 16.7,
+   "nightP50": 16.6,
    "dayP95": 17.6,
    "nightP95": 17.3
   }

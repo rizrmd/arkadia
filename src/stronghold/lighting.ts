@@ -1,5 +1,5 @@
 import {LIGHT_SPRITES as SPRITES,emissive} from './light-anchors';
-import {lightingAt,resolveTime,modeFrom,type Lighting} from './daylight';
+import {lightingAt,resolveTime,modeFrom,sunAt,type Lighting,type Mode} from './daylight';
 // Day/night is baked into #world-surface: the unlit world is kept in `base`, and
 // a lighting change recomposes surface = base x lightmap + glow (three blits).
 // Pan frames therefore composite exactly the same single layer as in daylight;
@@ -10,8 +10,10 @@ import {lightingAt,resolveTime,modeFrom,type Lighting} from './daylight';
 export type LitObject={file:string;image:HTMLImageElement;x:number;y:number;width:number;height:number;foot:number;shear:number;vertical:number;selected:boolean};
 const KEY='arkadia.stronghold.lighting',RES=.35;
 const COLOURS:Record<string,string>={fire:'255,150,70',window:'255,190,110',candle:'255,205,140',holy:'255,236,190',arcane:'110,150,255',selection:'255,226,180'};
-function lightingMode(){let stored:unknown;try{stored=JSON.parse(localStorage.getItem(KEY)||'{}').mode;}catch{}const mode=modeFrom(location.search,stored);if(new URLSearchParams(location.search).has('lighting'))try{localStorage.setItem(KEY,JSON.stringify({mode}));}catch{}return mode;}
-export function createLighting(o:{surface:HTMLCanvasElement;snowLayer:HTMLElement;left:number;top:number;width:number;height:number}){
+// Stored as {mode, time?}: time is the hour picked on the in-game clock (0..1), absent when live.
+function lightingSettings(){let stored:{mode?:unknown;time?:unknown}={};try{stored=JSON.parse(localStorage.getItem(KEY)||'{}')||{};}catch{}const mode=modeFrom(location.search,stored.mode),url=new URLSearchParams(location.search).has('lighting');if(url)try{localStorage.setItem(KEY,JSON.stringify({mode}));}catch{}return {mode,manual:!url&&typeof stored.time==='number'&&stored.time>=0&&stored.time<1?stored.time:null};}
+export type ClockState=Lighting&{manual:boolean;mode:Mode};
+export function createLighting(o:{surface:HTMLCanvasElement;snowLayer:HTMLElement;left:number;top:number;width:number;height:number;onSun:()=>void}){
  const {surface,left,top,width,height}=o,canvas=()=>{const c=document.createElement('canvas');c.width=Math.ceil(width*RES);c.height=Math.ceil(height*RES);c.style.cssText=`position:absolute;left:0;top:0;width:${width}px;height:${height}px;pointer-events:none`;return c;};
  // The lightmap stays in the DOM, hidden, so verification tooling can read it.
  const lightmap=canvas(),lights=canvas(),halo=canvas(),bloom=canvas(),flicker=document.createElement('div'),base=document.createElement('canvas');
@@ -52,7 +54,10 @@ export function createLighting(o:{surface:HTMLCanvasElement;snowLayer:HTMLElemen
   for(const c of [l,h,b])c.globalCompositeOperation='source-over';
   surface.dataset.lights=String(count);surface.dataset.lightBakes=String(Number(surface.dataset.lightBakes||0)+1);last='';tick();
  }
- const mode=lightingMode();let last='',moving=0,current:Lighting=lightingAt(resolveTime(mode,Date.now(),location.search));
+ let {mode,manual}=lightingSettings(),last='',moving=0,current:Lighting=lightingAt(resolveTime(mode,Date.now(),location.search,manual));
+ // Cast shadows are rasterized with the world, so the sun moves in 15-minute steps (15 s of a live day).
+ const sunStep=(t:number)=>{const q=Math.round(t*96)/96,s=sunAt(q);return {key:s.alpha?q.toFixed(4):'none',sun:s};};
+ let {key:sunKey,sun}=sunStep(current.t);surface.dataset.sun=sunKey;const listeners=new Set<(s:ClockState)=>void>();
  // Called after every world raster: keep the unlit copy, then relight.
  function capture(){if(base.width!==surface.width||base.height!==surface.height){base.width=surface.width;base.height=surface.height;}const c=base.getContext('2d')!;c.globalCompositeOperation='copy';c.drawImage(surface,0,0);c.globalCompositeOperation='source-over';last='';paint(current,true);}
  function paint(state:Lighting,force=false){
@@ -72,7 +77,19 @@ export function createLighting(o:{surface:HTMLCanvasElement;snowLayer:HTMLElemen
   flicker.style.opacity=String(q(gl*.45,50));flicker.dataset.lit=String(!off&&gl>0);
   surface.dataset.lighting=off?'off':'on';surface.dataset.lightPaints=String(Number(surface.dataset.lightPaints||0)+1);
  }
- function tick(){current=lightingAt(resolveTime(mode,Date.now(),location.search));paint(current);const v=surface.parentElement!;v.dataset.phase=current.phase;v.dataset.time=current.t.toFixed(3);v.dataset.lightingMode=mode;}
+ function tick(){
+  current=lightingAt(resolveTime(mode,Date.now(),location.search,manual));const next=sunStep(current.t);
+  // A new sun position re-rasters the world (which relights it via capture); wait while the camera moves.
+  if(next.key!==sunKey&&Date.now()-moving>=300){sunKey=next.key;sun=next.sun;surface.dataset.sun=sunKey;o.onSun();}else paint(current);
+  const v=surface.parentElement!;v.dataset.phase=current.phase;v.dataset.time=current.t.toFixed(3);v.dataset.lightingMode=mode;
+  const state=clockState();v.dataset.clock=state.manual?'manual':'live';for(const f of listeners)f(state);
+ }
+ // In-game clock: a number fixes the hour (remembered in this browser); null returns to the live cycle.
+ const clockState=():ClockState=>({...current,manual:manual!==null||new URLSearchParams(location.search).has('time'),mode});
+ function setTime(t:number|null){
+  // The clock takes over from QA URL overrides, which would otherwise keep winning.
+  const url=new URL(location.href);if(url.searchParams.has('time')||url.searchParams.has('daySpeed')){url.searchParams.delete('time');url.searchParams.delete('daySpeed');history.replaceState(history.state,'',url);}
+  manual=t===null?null:t-Math.floor(t);if(manual===null)mode='dynamic';try{localStorage.setItem(KEY,JSON.stringify(manual===null?{mode}:{mode,time:manual}));}catch{}tick();}
  let tintKey='';tile.src=snowImage.slice(5,-2);
  function tintSnow(rgb:number[],off:boolean){
   const key=off?'off':rgb.join();if(key===tintKey)return;tintKey=key;
@@ -88,6 +105,8 @@ export function createLighting(o:{surface:HTMLCanvasElement;snowLayer:HTMLElemen
  return {
   // Every camera frame: follow the surface; the flicker layer rests until the camera stops.
   place(transform:string){flicker.style.transform=transform;moving=Date.now();if(!flicker.classList.contains('moving'))flicker.classList.add('moving');clearTimeout(still);still=window.setTimeout(()=>{flicker.classList.remove('moving');tick();},300);},
-  setScene,capture
+  setScene,capture,setTime,
+  sun:()=>sun,
+  subscribe(f:(s:ClockState)=>void){listeners.add(f);f(clockState());return ()=>listeners.delete(f);}
  };
 }

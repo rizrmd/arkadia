@@ -5,3 +5,28 @@
 #world-glow canvas{animation:glow-flicker 1.1s ease-in-out infinite alternate}
 @keyframes glow-flicker{0%{opacity:1}30%{opacity:.45}55%{opacity:.85}80%{opacity:.35}100%{opacity:.7}}
 @media (prefers-reduced-motion:reduce){#world-glow canvas{animation:none}}
+/* Time-of-day clock: pin any hour to inspect its lighting and cast shadows. */
+#day-clock{position:fixed;top:max(12px,env(safe-area-inset-top));right:max(12px,env(safe-area-inset-right));z-index:10;display:flex;flex-direction:column;align-items:flex-end;gap:8px;font-size:14px;max-width:calc(100vw - 24px)}
+#day-clock button{font:inherit;color:inherit;cursor:pointer}
+#day-clock .icon{width:18px;height:18px;display:block}
+.clock-chip{display:flex;align-items:center;gap:8px;min-height:40px;padding:6px 12px;border:1px solid #c9a86a66;border-radius:999px;background:#141c22e6;box-shadow:0 4px 16px #0006;backdrop-filter:blur(6px)}
+.clock-chip:hover,.clock-chip[aria-expanded=true]{border-color:#e2c27f}
+.clock-icon{color:#f2c46b}#day-clock[data-sky=moon] .clock-icon{color:#a9bcf5}
+.clock-time{font-variant-numeric:tabular-nums;font-size:16px;letter-spacing:.02em}
+.clock-phase{color:#cfc3a6}
+.clock-mode{font-size:11px;text-transform:uppercase;letter-spacing:.08em;padding:2px 6px;border-radius:999px;background:#2b3a2f;color:#b9dcb1}
+#day-clock[data-clock=manual] .clock-mode{background:#4a3920;color:#f2c46b}
+.clock-panel{width:min(320px,calc(100vw - 24px));padding:14px;border:1px solid #c9a86a55;border-radius:14px;background:#141c22f2;box-shadow:0 8px 28px #0008}
+.clock-panel[hidden]{display:none}
+.clock-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:8px}
+.clock-head label{color:#cfc3a6}.clock-readout{font-variant-numeric:tabular-nums;font-size:16px}
+#clock-slider{width:100%;margin:4px 0;accent-color:#e2b65f;height:28px}
+.clock-scale{display:flex;justify-content:space-between;font-size:11px;color:#8f9a9a;font-variant-numeric:tabular-nums;margin-bottom:10px}
+.clock-presets{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px}
+.clock-presets button{display:flex;flex-direction:column;align-items:center;gap:2px;min-height:44px;padding:6px 4px;border:1px solid #ffffff1f;border-radius:8px;background:#1d272e;font-size:13px}
+.clock-presets small{font-size:11px;color:#8f9a9a;font-variant-numeric:tabular-nums}
+.clock-presets button:hover{border-color:#c9a86a88}.clock-presets button[aria-pressed=true]{border-color:#e2b65f;background:#3a2f1c}
+.clock-live{width:100%;min-height:40px;border:1px solid #6e8f6a;border-radius:8px;background:#22301f}
+.clock-live:disabled{opacity:.45;cursor:default}
+#day-clock :focus-visible{outline:2px solid #f2c46b;outline-offset:2px}
+@media (max-width:420px){.clock-phase{display:none}}

@@ -42,11 +42,27 @@ export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Buil
  surface.width=Math.floor(worldWidth*raster);surface.height=Math.floor(worldHeight*raster);surface.style.width=worldWidth+'px';surface.style.height=worldHeight+'px';
  const sc=surface.getContext('2d')!;let dirty=true,frame=0;
  // Day/night lighting is composited into this surface after each raster; see lighting.ts.
- const lighting=createLighting({surface,snowLayer,left,top,width:worldWidth,height:worldHeight});lighting.setScene(objects);
+ const lighting=createLighting({surface,snowLayer,left,top,width:worldWidth,height:worldHeight,onSun:()=>{dirty=true;requestDraw();}});lighting.setScene(objects);
+ // Cast shadows: each upright sprite's silhouette, sheared along the sun's ground direction from its foot.
+ // Silhouettes are built once per file (small, pre-blurred, fading with height) so a sun step is plain blits.
+ const silhouettes=new Map<string,HTMLCanvasElement>();
+ function silhouette(p:{file:string;image:HTMLImageElement;foot:number}){
+  let c=silhouettes.get(p.file);if(c)return c;const k=Math.min(1,256/p.image.width);c=document.createElement('canvas');c.width=Math.ceil(p.image.width*k);c.height=Math.ceil(p.image.height*k);
+  const x=c.getContext('2d')!;x.filter='blur(1.5px)';x.drawImage(p.image,0,0,c.width,c.height);x.filter='none';x.globalCompositeOperation='source-in';
+  const g=x.createLinearGradient(0,0,0,c.height*p.foot);g.addColorStop(0,'rgba(20,28,44,.2)');g.addColorStop(1,'rgba(20,28,44,1)');x.fillStyle=g;x.fillRect(0,0,c.width,c.height);
+  silhouettes.set(p.file,c);return c;
+ }
+ function castShadows(){
+  const s=lighting.sun();if(!s.alpha)return;
+  for(const p of objects){if(p.layer==='ground'||p.opacity<1)continue;
+   // Sprite-local (lx, ly) with ly < 0 above the foot lands at foot + (lx, shear*lx) + height*(dx, dy).
+   sc.save();sc.globalAlpha=s.alpha;sc.translate(p.x,p.y);sc.transform(1,p.shear,-s.dx,-s.dy,0,0);sc.drawImage(silhouette(p),-p.width/2,-p.height*p.foot,p.width,p.height);sc.restore();}
+ }
  function paintWorld(){
   sc.setTransform(surface.width/worldWidth,0,0,surface.height/worldHeight,-left*surface.width/worldWidth,-top*surface.height/worldHeight);
   sc.fillStyle=snowPattern;sc.fillRect(left,top,worldWidth,worldHeight);sc.fillStyle=pavingPattern;sc.fill(paved);sc.drawImage(shadow,shadowLeft,shadowTop);
-  for(const p of objects){sc.save();sc.globalAlpha=p.opacity;sc.translate(p.x,p.y);sc.transform(1,p.shear,0,p.vertical,0,0);drawFoundation(sc,p,images.get(FOUNDATION_SOIL)!,'under',images.get(FOUNDATION_DRIFT),images.get(FOUNDATION_MOSS));if(p.selected){sc.shadowColor='#ffca64';sc.shadowBlur=9;}sc.drawImage(p.image,-p.width/2,-p.height*p.foot,p.width,p.height);sc.shadowBlur=0;drawFoundation(sc,p,images.get(FOUNDATION_SOIL)!,'face',images.get(FOUNDATION_DRIFT),images.get(FOUNDATION_MOSS));sc.restore();}
+  let cast=false;
+  for(const p of objects){if(!cast&&p.layer!=='ground'){castShadows();cast=true;}sc.save();sc.globalAlpha=p.opacity;sc.translate(p.x,p.y);sc.transform(1,p.shear,0,p.vertical,0,0);drawFoundation(sc,p,images.get(FOUNDATION_SOIL)!,'under',images.get(FOUNDATION_DRIFT),images.get(FOUNDATION_MOSS));if(p.selected){sc.shadowColor='#ffca64';sc.shadowBlur=9;}sc.drawImage(p.image,-p.width/2,-p.height*p.foot,p.width,p.height);sc.shadowBlur=0;drawFoundation(sc,p,images.get(FOUNDATION_SOIL)!,'face',images.get(FOUNDATION_DRIFT),images.get(FOUNDATION_MOSS));sc.restore();}
   surface.dataset.foundations='soil-moss-v1';dirty=false;surface.dataset.paints=String(Number(surface.dataset.paints||0)+1);lighting.capture();
  }
  function draw(){
@@ -82,5 +98,5 @@ export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Buil
  function hitBuilding(id:Building,x:number,y:number){const s=slots[id],c=calibration(id),file=spriteFile(id,levels?.[id]||1),image=images.get(file)!,height=image.height*s.width/image.width,dx=x-s.x,dy=(y-s.y-c.shear*dx)/c.vertical,px=(dx+s.width/2)/s.width,py=(dy+height*s.pivot)/height;if(px<0||py<0||px>=1||py>=1)return false;let mask=masks.get(file);if(!mask){const sample=document.createElement('canvas');sample.width=192;sample.height=Math.ceil(192*image.height/image.width);const sc=sample.getContext('2d')!;sc.drawImage(image,0,0,sample.width,sample.height);mask={data:sc.getImageData(0,0,sample.width,sample.height).data,width:sample.width,height:sample.height};masks.set(file,mask);}return mask.data[(Math.floor(py*mask.height)*mask.width+Math.floor(px*mask.width))*4+3]>40;}
  canvas.onpointerup=e=>{held.delete(e.pointerId);if(moved)return;const x=cx+(e.clientX-w/2)/scale,y=cy+(e.clientY-h/2)/scale;const hit=[...buildings].sort((a,b)=>slots[b].y-slots[a].y).find(id=>hitBuilding(id,x,y));if(hit)onSelect(hit);};
  canvas.onpointercancel=()=>{held.clear();moved=true;};canvas.onwheel=e=>{e.preventDefault();stopGlide();const old=scale;scale=Math.max(.35,Math.min(2.2,scale*Math.exp(-e.deltaY*.001)));cx+=(e.clientX-w/2)*(1/old-1/scale);cy+=(e.clientY-h/2)*(1/old-1/scale);requestDraw();};
- return {update(state:State,id:Building|null){const next=buildings.map(b=>state.levels[b]).join(',')+':'+id;if(next===signature)return;signature=next;levels=state.levels;selected=id;objects=makeObjects();lighting.setScene(objects);dirty=true;requestDraw();},focus(id:Building){glideTo(slots[id].x,slots[id].y-60);},fit(){stopGlide();scale=Math.max(.2,Math.min((w-40)/WORLD.width,(h-120)/WORLD.height));cx=WORLD.width/2;cy=385;requestDraw();}};
+ return {update(state:State,id:Building|null){const next=buildings.map(b=>state.levels[b]).join(',')+':'+id;if(next===signature)return;signature=next;levels=state.levels;selected=id;objects=makeObjects();lighting.setScene(objects);dirty=true;requestDraw();},focus(id:Building){glideTo(slots[id].x,slots[id].y-60);},fit(){stopGlide();scale=Math.max(.2,Math.min((w-40)/WORLD.width,(h-120)/WORLD.height));cx=WORLD.width/2;cy=385;requestDraw();},setTime:lighting.setTime,subscribeClock:lighting.subscribe};
 }

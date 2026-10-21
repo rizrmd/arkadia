@@ -34,11 +34,26 @@ export function lightingAt(t:number):Lighting{
 }
 export function clockLabel(t:number){const m=Math.floor(wrap(t)*24*60);return `${String(Math.floor(m/60)).padStart(2,'0')}:${String(m%60).padStart(2,'0')}`;}
 // ?time=0.85 freezes the clock; ?daySpeed=60 runs sixty days per normal day.
-export function resolveTime(mode:Mode,now:number,query=''){
+// A manual time from the in-game clock wins over the mode, but not over ?time.
+export function resolveTime(mode:Mode,now:number,query='',manual:number|null=null){
  const q=new URLSearchParams(query),fixed=q.get('time'),speed=Number(q.get('daySpeed'))||1;
  if(fixed!==null&&Number.isFinite(Number(fixed)))return wrap(Number(fixed));
+ if(manual!==null&&Number.isFinite(manual))return wrap(manual);
  if(mode==='day')return .5;if(mode==='night')return 0;
  return timeOfDay(now,DAY_MS/speed);
 }
 // ?lighting=day|night|dynamic picks the mode; the world-only view has no menu, so it is remembered.
 export function modeFrom(query:string,stored:unknown):Mode{const m=new URLSearchParams(query).get('lighting')??stored;return m==='day'||m==='night'?m:'dynamic';}
+// Sun for cast shadows: up from 06:00 to 18:00, crossing the sky from the
+// south-east. dx/dy is the ground offset per pixel of sprite height, in screen
+// space on the 2:1 isometric ground; alpha fades shadows in after sunrise and
+// out before sunset, so the night has none.
+export const SUNRISE=.25,SUNSET=.75,SHADOW_ALPHA=.42;
+export type Sun={alpha:number;dx:number;dy:number;elevation:number};
+export function sunAt(t:number):Sun{
+ const s=(wrap(t)-SUNRISE)/(SUNSET-SUNRISE);if(s<=0||s>=1)return {alpha:0,dx:0,dy:0,elevation:0};
+ const arc=Math.sin(Math.PI*s),elevation=arc*55*Math.PI/180,length=Math.min(1.8,1/Math.tan(Math.max(elevation,.01)));
+ // Shadow heading swings from lower right at sunrise, through upper right at noon, to upper left at sunset.
+ const heading=(30-180*s)*Math.PI/180,fade=Math.min(1,arc/.35),alpha=SHADOW_ALPHA*fade*fade*(3-2*fade);
+ return {alpha,dx:Math.cos(heading)*length,dy:Math.sin(heading)*length*.5,elevation};
+}

@@ -1,5 +1,5 @@
 import {strict as a} from 'node:assert';
-import {DAY_MS,KEYFRAMES,AMBIENT_FLOOR,timeOfDay,lightingAt,phaseOf,clockLabel,resolveTime,modeFrom,luma} from '../src/stronghold/daylight.ts';
+import {DAY_MS,KEYFRAMES,AMBIENT_FLOOR,timeOfDay,lightingAt,phaseOf,clockLabel,resolveTime,modeFrom,luma,sunAt,SHADOW_ALPHA} from '../src/stronghold/daylight.ts';
 import {LIGHT_SPRITES} from '../src/stronghold/light-anchors.ts';
 let tests=0;const test=(name,fn)=>{fn();tests++;console.log('PASS',name);};
 const near=(x,y,e=1e-6)=>a.ok(Math.abs(x-y)<=e,`${x} != ${y}`);
@@ -12,5 +12,9 @@ test('phases and clock labels',()=>{a.equal(phaseOf(0),'Night');a.equal(phaseOf(
 test('time of day is deterministic and periodic',()=>{const now=Date.UTC(2026,9,21,8,30);a.equal(timeOfDay(now),timeOfDay(now+DAY_MS));near(timeOfDay(now+DAY_MS/4),(timeOfDay(now)+.25)%1);a.equal(timeOfDay(0),0);near(timeOfDay(DAY_MS/2),.5);});
 test('modes and URL overrides',()=>{const now=123456789;a.equal(resolveTime('day',now),.5);a.equal(resolveTime('night',now),0);a.equal(resolveTime('dynamic',now,'?time=0.85'),.85);a.equal(resolveTime('day',now,'?time=0.1'),.1);near(resolveTime('dynamic',now,'?daySpeed=60'),timeOfDay(now,DAY_MS/60));a.equal(resolveTime('dynamic',now,'?time=abc'),timeOfDay(now));
  a.equal(modeFrom('',undefined),'dynamic');a.equal(modeFrom('?lighting=night',undefined),'night');a.equal(modeFrom('','day'),'day');a.equal(modeFrom('?lighting=dynamic','night'),'dynamic');a.equal(modeFrom('?lighting=bogus','night'),'dynamic');a.equal(modeFrom('','evil'),'dynamic');});
+test('manual clock time wins over the mode but not over ?time',()=>{const now=123456789;a.equal(resolveTime('night',now,'',.5),.5);a.equal(resolveTime('dynamic',now,'',1.25),.25);a.equal(resolveTime('day',now,'?time=0.1',.5),.1);a.equal(resolveTime('dynamic',now,'',null),timeOfDay(now));});
+test('sun casts shadows only by day, longest near sunrise and sunset',()=>{for(const t of [0,.1,.25,.75,.9])a.equal(sunAt(t).alpha,0);const noon=sunAt(.5),morning=sunAt(.3),evening=sunAt(.7);near(noon.alpha,SHADOW_ALPHA);
+ const len=s=>Math.hypot(s.dx,s.dy*2);a.ok(len(morning)>len(noon)&&len(evening)>len(noon));a.ok(len(sunAt(.27))<=1.8+1e-9);
+ a.ok(morning.dx>0&&evening.dx<0,'shadows swing from right to left');a.ok(noon.dy<0,'noon shadows fall away from the camera');for(let t=0;t<1;t+=.001){const s=sunAt(t);a.ok(s.alpha>=0&&s.alpha<=SHADOW_ALPHA+1e-9&&Number.isFinite(s.dx)&&Number.isFinite(s.dy));}});
 test('every authored light anchor is valid',()=>{const kinds=['fire','window','candle','holy','arcane'];for(const [file,list] of Object.entries(LIGHT_SPRITES)){a.ok(list.length,file);for(const l of list){a.ok(kinds.includes(l.kind),file);a.ok(l.size>0&&l.radius>=0&&l.x>=0&&l.y>=0,file);if(l.radius)a.ok(l.drop>=0&&l.intensity>0&&l.intensity<=1,file);}}});
 console.log(`${tests} daylight tests passed`);

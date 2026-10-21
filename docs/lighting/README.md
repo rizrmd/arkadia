@@ -14,9 +14,29 @@ One Stronghold day lasts **24 real minutes**: Night → Dawn → Day → Golden 
 
 ![Night with every building at level 3 (Forge hearth lit)](https://arkadia-stronghold-whachat.fural.space/lighting-plan/runtime-night-level3.webp)
 
-### Controls
+### Sun shadows
 
-The Stronghold is now a world-only view with no HUD or menu, so lighting is controlled through the URL:
+From 06:00 to 18:00, every upright sprite (buildings, walls, bastions, gateway, trees, rocks, props) casts a soft shadow on the ground. The shadow follows the sun: long and pointing to the lower right after sunrise, short and falling away from the camera at noon, and long toward the upper left before sunset. Shadows fade in after sunrise and out before sunset, so there are none at night. The ambient tint darkens them further at golden hour.
+
+![Sun shadows at 07:30, 12:00 and 16:30](https://arkadia-stronghold-whachat.fural.space/lighting-plan/sun-shadows.webp)
+
+### In-game clock
+
+A clock chip in the top-right corner shows the Stronghold hour, its phase and whether the clock is **Live** (following the 24-minute cycle) or **Pinned**. Tap it to open the panel:
+
+- **Set the hour**: a slider from 00:00 to 23:45 in 15-minute steps. Lighting, glow, snow tint and sun shadows update as you drag.
+- **Presets**: Midnight 00:00, Dawn 06:00, Morning 09:00, Noon 12:00, Golden hour 17:00, Dusk 18:45.
+- **Return to live clock**: unpins the hour and goes back to the cycle.
+
+A pinned hour is remembered in this browser (`arkadia.stronghold.lighting` = `{"mode":"dynamic","time":0.708}`). Picking an hour also takes over from the `?time` / `?daySpeed` QA parameters by removing them from the URL. Escape closes the panel.
+
+![Clock panel open at 17:00 (desktop)](https://arkadia-stronghold-whachat.fural.space/lighting-plan/clock-desktop.webp)
+
+![Clock panel at Dusk 18:45 (portrait 390 × 844)](https://arkadia-stronghold-whachat.fural.space/lighting-plan/clock-mobile.webp)
+
+### URL controls
+
+The URL parameters remain for QA and links:
 
 | URL | Effect |
 | --- | --- |
@@ -59,14 +79,16 @@ lighting.compose -> screen.snow
 lighting.bake -> screen.flicker
 ```
 
-- **`daylight.ts`**: the pure clock. Keyframes are interpolated in linear light with smoothstep easing, and a readability floor keeps night ambient luma ≥ 0.22. It also handles the URL overrides.
+- **`daylight.ts`**: the pure clock. Keyframes are interpolated in linear light with smoothstep easing, and a readability floor keeps night ambient luma ≥ 0.22. It also handles the URL overrides and the manual clock time (`?time` > pinned hour > `?lighting` mode > live clock). `sunAt(t)` gives the shadow direction, length (capped at 1.8× sprite height) and strength.
 - **`light-anchors.ts`**: hand-authored light sources for the 10 lit sprites (Forge levels 1–3, Barracks, Altar, Mage Tower, Expedition Table, Mine, Gateway, Brazier). Each light stores sprite source-pixel coordinates (the same convention as `groundEdges`), a mask radius, its kind (`fire`, `window`, `candle`, `holy`, `arcane`), a ground-pool radius and drop, and an intensity. Lights hidden behind the front walls are mask-only, because the 2D lightmap has no occlusion.
 - **`lighting.ts`**:
   - On a building or selection change, it bakes a 0.35×-resolution light canvas: isometric (0.55-flattened) pools, white emissive masks and a colour bloom. Emissive masks are the authored circles intersected with a flame/arcane pixel test, so the parchment map, gold trim and red roofs never light up.
   - After every world raster it keeps an unlit copy (`base`). When the quantized light level changes, it recomposes `surface = base × (ambient + lights) + glow`: three blits, no sprite redraw.
   - The infinite snow uses a pre-tinted copy of its repeat tile (a `data:` URL).
   - The selected building gets a soft extra pool, so it stays readable at night.
-- **`world-view.ts`** has four small hooks: create, `capture()` after `paintWorld`, `place()` beside the surface transform, and `setScene()` in `update()`.
+  - The sun moves in 15-minute steps (15 real seconds of a live day). On a new step it asks the world view to re-raster, deferred while the camera moves. Clock ticks inside a step only relight.
+- **`world-view.ts`** has four lighting hooks: create, `capture()` after `paintWorld`, `place()` beside the surface transform, and `setScene()` in `update()`. It also draws the cast shadows in `paintWorld`, after the ground decals and before any upright sprite, so shadows never darken a building. Each sprite's silhouette is built once per file (≤ 256 px wide, pre-blurred, fading from the foot to the top) and drawn with the sprite's own shear plus the sun's ground offset per pixel of height. Pan frames are unchanged.
+- **`clock.ts`** is the clock chip and panel. `main.ts` mounts it with `worldView.setTime` and `worldView.subscribeClock`.
 
 ### Departures from the plan, with reasons
 
@@ -74,24 +96,25 @@ lighting.bake -> screen.flicker
 | --- | --- | --- |
 | Live `multiply`/`screen` overlay layers | Lighting baked into the surface on change (the plan's fallback) | The overlay layers cost +45–75 ms p95 per pan frame on throttled mobile. Baked lighting keeps pan frames identical to daytime |
 | `background-blend-mode` snow tint | Pre-tinted tile as a `data:` URL | Blend mode made Chrome re-raster the snow layer each pan frame, and `blob:` tiles also panned slower |
-| Header chip + Lighting menu | URL controls | A parallel task made the Stronghold world-only (no HUD or menu). Adding UI would undo that decision |
+| Header chip + Lighting menu | URL controls, then a single clock chip | The Stronghold is world-only. Lighting was first URL-only, but nobody could see it change during the day, so a single clock chip was added in the top-right corner |
 | Always-on flicker | Flicker layer hidden while the camera moves | It is the only live blended layer. While the camera is still, its cost does not affect panning |
 
-Memory: the unlit copy doubles the world raster (3738 × 2243 px ≈ 33 MB, so about 67 MB in total). Dawn and dusk recompose every few seconds, deferred while the camera moves. Each recompose re-uploads the surface texture once.
+Memory: the unlit copy doubles the world raster (3738 × 2243 px ≈ 33 MB, so about 67 MB in total). Dawn and dusk recompose every few seconds, deferred while the camera moves. Each recompose re-uploads the surface texture once. By day the world also re-rasters once per 15-minute sun step (every 15 s of a live day). Silhouettes add about 1–2 MB.
 
 ## Verification
 
-- `node scripts/test-daylight.mjs`: 8 tests (keyframes, wraparound, readability floor, phases, determinism, URL modes, anchor validity). `node scripts/test-stronghold.mjs`: the 8 economy tests still pass.
-- `npm run build`, then `node scripts/verify-lighting.mjs` (`SITE_DIR` or `PREVIEW_URL` selects the target). Results ([report](https://arkadia-stronghold-whachat.fural.space/lighting-plan/verify-report.json)):
+- `node scripts/test-daylight.mjs`: 10 tests (keyframes, wraparound, readability floor, phases, determinism, URL modes, manual clock precedence, sun shadows, anchor validity). `node scripts/test-stronghold.mjs`: the 8 economy tests still pass.
+- `npm run build`, then `node scripts/verify-lighting.mjs` (and `node scripts/capture-clock-docs.mjs` for the clock and shadow images) (`SITE_DIR` or `PREVIEW_URL` selects the target). Results ([report](https://arkadia-stronghold-whachat.fural.space/lighting-plan/verify-report.json)):
   - Every lit sprite has anchors.
   - 4 phases × 4 viewports (1536 × 1024, 2560 × 1440, 390 × 844 @3×, 844 × 390 @2×) show the right phase, layer state and snow tint, and the canvas stays the input surface.
   - Night lightmap: ambient 252/765, 1680 restored emissive pixels, light at all 7 buildings.
-  - Night screen luma is 42.5 vs 114.8 by day.
-  - Clock ticks relight without repainting the world.
+  - Night screen luma is 42.6 vs 113.0 by day (day now includes sun shadows).
+  - Clock ticks relight; the world re-rasters only on a 15-minute sun step.
+  - The in-game clock: slider and presets relight, sun shadows appear by day only, a pinned hour survives a reload, and Live restores the cycle.
   - `?lighting` persistence works.
   - A night roof click selects the Forge and relights the selection.
   - Reduced motion stops the flicker.
-  - **Mobile pan** (390 × 844, DPR 3, 4× CPU, best of 3): zero world repaints; median 16.6 ms by day vs 16.7 ms at night, p95 17.6 vs 17.3 ms.
+  - **Mobile pan** (390 × 844, DPR 3, 4× CPU, best of 3): zero world repaints; median 16.6 ms by day and at night, p95 17.6 vs 17.3 ms (unchanged with sun shadows).
 - These are headless Chromium (software compositing) results on a shared host, not physical-device FPS.
 
 ### Authoring lights
