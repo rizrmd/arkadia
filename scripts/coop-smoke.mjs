@@ -44,7 +44,9 @@ try{
  await new Promise(r=>setTimeout(r,300));
  // Identical server world on both clients, tick by tick.
  const common=[...a.ticks.keys()].filter(t=>b.ticks.has(t));
- assert(common.length>SECONDS*20*.8,`only ${common.length} common ticks`);
+ // The server catches up on ticks it was late for and then sends only the newest, so a loaded machine skips some.
+ const span=Math.max(...common)-Math.min(...common);
+ assert(span>SECONDS*20*.85,`world advanced only ${span} ticks in ${SECONDS} s`);assert(common.length>span*.6,`only ${common.length} of ${span} ticks seen by both`);
  let enemyTicks=0;
  for(const t of common){const x=a.ticks.get(t),y=b.ticks.get(t);
   assert.deepEqual(x.enemies,y.enemies,`enemies differ at tick ${t}`);assert.deepEqual(x.players,y.players,`players differ at tick ${t}`);assert.deepEqual(x.gate,y.gate);assert.equal(x.clock,y.clock);
@@ -59,7 +61,7 @@ try{
  const id=cheat.welcome.you;let maxStep=0;const seq=[...a.ticks.keys()].sort((p,q)=>p-q);
  for(let i=1;i<seq.length;i++){const p=a.ticks.get(seq[i-1]).players.find(x=>x.id===id),q=a.ticks.get(seq[i]).players.find(x=>x.id===id);if(p&&q&&p.st!=='die'&&q.st!=='die')maxStep=Math.max(maxStep,Math.hypot(q.x-p.x,q.y-p.y)/(seq[i]-seq[i-1]));}
  assert(maxStep<=2*STEP+.01,`cheat moved ${maxStep.toFixed(2)} px in one tick`);assert.equal(cheat.ws.readyState,1,'cheat connection still open');
- Object.assign(results,{commonTicks:common.length,ticksWithEnemies:enemyTicks,enemyIds:ids,lastTick:last.tick,kills:Object.fromEntries(last.players.map(p=>[p.name,p.k])),heroesHurt:hurt,cheatMaxStepPx:+maxStep.toFixed(2),heroStepPx:STEP,
+ Object.assign(results,{commonTicks:common.length,tickSpan:span,ticksWithEnemies:enemyTicks,enemyIds:ids,lastTick:last.tick,kills:Object.fromEntries(last.players.map(p=>[p.name,p.k])),heroesHurt:hurt,cheatMaxStepPx:+maxStep.toFixed(2),heroStepPx:STEP,
   snapshotBytes:Math.round(JSON.stringify(last).length),ackA:last.ack,inputsA:a.seq});
  // Everyone leaves: the room pauses (its tick stops) but stays joinable.
  for(const c of [a,b,cheat])c.ws.close();await new Promise(r=>setTimeout(r,400));

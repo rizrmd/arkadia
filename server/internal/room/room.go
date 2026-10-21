@@ -213,12 +213,14 @@ type Snapshot struct {
 func (r *Room) run() {
 	var tick <-chan time.Time
 	var ticker *time.Ticker
+	var due time.Time // when the next tick is owed
 	sweep := time.NewTicker(time.Minute)
 	defer sweep.Stop()
 	start := func() {
 		if ticker == nil {
 			ticker = time.NewTicker(time.Duration(sim.TickMS) * time.Millisecond)
 			tick = ticker.C
+			due = time.Now()
 		}
 	}
 	stop := func() {
@@ -263,8 +265,16 @@ func (r *Room) run() {
 			if r.clients[m.client] {
 				m.client.player.Queue(m.in)
 			}
-		case <-tick:
-			r.world.Step()
+		case now := <-tick:
+			// A ticker drops ticks when the process is starved of CPU; catch up (at most 5 per wake-up) so the
+			// world keeps 20 Hz on average, and send only the newest state.
+			for n := 0; n < 5 && !now.Before(due); n++ {
+				r.world.Step()
+				due = due.Add(time.Duration(sim.TickMS) * time.Millisecond)
+			}
+			if now.Sub(due) > time.Second {
+				due = now
+			}
 			r.tick.Store(r.world.Tick)
 			r.broadcast()
 		case <-sweep.C:
