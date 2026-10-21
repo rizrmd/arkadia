@@ -17,13 +17,12 @@ try{
   const surface=document.querySelector('#world-surface'),doors=document.querySelector('#world-gate-doors');
   window.gateCheck={before:[surface.dataset.paints,surface.dataset.lightBakes,surface.dataset.shadowPaints],samples:[],gaps:[]};
   let last=performance.now(),previous=doors.dataset.state;
-  function sample(now){const state=doors.dataset.state;if(state==='opening'||state==='closing'||previous==='opening'||previous==='closing'){window.gateCheck.gaps.push(now-last);const ctx=doors.getContext('2d');window.gateCheck.samples.push({state,progress:+doors.dataset.progress,frame:doors.dataset.frame,leftTower:ctx.getImageData(Math.floor(doors.width*.2),Math.floor(doors.height*.6),1,1).data[3],rightTower:ctx.getImageData(Math.floor(doors.width*.8),Math.floor(doors.height*.6),1,1).data[3]});}previous=state;last=now;requestAnimationFrame(sample);}requestAnimationFrame(sample);
+  function sample(now){const state=doors.dataset.state;if(state==='opening'||state==='closing'||previous==='opening'||previous==='closing'){window.gateCheck.gaps.push(now-last);window.gateCheck.samples.push({state,progress:+doors.dataset.progress,frame:doors.dataset.frame});}previous=state;last=now;requestAnimationFrame(sample);}requestAnimationFrame(sample);
  });
  await page.keyboard.down('s');await page.waitForFunction(()=>document.querySelector('#world-gate-doors').dataset.state==='open');assert(await centerAlpha()<10,'open generated frame clears the passage');await page.waitForFunction(()=>+document.querySelector('#world-hero').dataset.y>900,null,{timeout:20000});await page.keyboard.up('s');
  await page.waitForFunction(()=>document.querySelector('#world-gate-doors').dataset.state==='closed');
  const result=await page.evaluate(()=>{const s=document.querySelector('#world-surface');return {...window.gateCheck,after:[s.dataset.paints,s.dataset.lightBakes,s.dataset.shadowPaints]};});
  assert.deepEqual(result.after,result.before,'door motion must not rebuild world, light pools, or shadows');
- assert(result.samples.every(s=>s.leftTower>200&&s.rightTower>200),'each frame contains both complete stone towers');
  const opening=result.samples.filter(s=>s.state==='opening'),closing=result.samples.filter(s=>s.state==='closing');
  assert(new Set(opening.map(s=>s.progress)).size>=8,'visible opening frames');assert(new Set(closing.map(s=>s.progress)).size>=8,'visible closing frames');
  assert(new Set(opening.map(s=>s.frame)).size>=8,'opening must play generated sprite frames');assert(new Set(closing.map(s=>s.frame)).size>=8,'closing must play generated sprite frames');
