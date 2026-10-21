@@ -30,6 +30,16 @@ Shadows now come from a solid volume. Each object stands on a ground footprint, 
 
 ![07:45 before and after: stripes replaced by attached shadows](https://arkadia-stronghold-whachat.fural.space/lighting-plan/shadow-fix-0745.webp)
 
+#### Follow-up: stripes still on a phone after the fix (21 October 2026)
+
+Two hours after the fix shipped, the same phone still showed stripes at 08:15. The server was already serving the fixed bundle, and the same 08:15 view renders attached shadows in a fresh browser. The phone's tab had been loaded before the release and was never reloaded, so it kept running the old shadow code. Phone screenshot (left) and a fresh load of the live build at 08:15 (right):
+
+![08:15 on a stale phone tab (left) and a fresh load of the live build (right)](https://arkadia-stronghold-whachat.fural.space/lighting-plan/shadow-stale-tab-0815.webp)
+
+The Stronghold now picks up releases on its own. When the tab comes back into view (screen unlocked, app or tab switched back, page restored from the back/forward cache), it fetches `stronghold.html` and compares the listed bundle with the one it is running, at most once every 5 minutes. If they differ, it reloads. Progress and the pinned hour live in `localStorage`, so the reload loses nothing. This only runs in production builds, never on the Vite dev server.
+
+If a phone still shows stripes, reload the page once. Tabs opened before this release do not have the check yet.
+
 ### In-game clock
 
 A clock chip in the top-right corner shows the Stronghold hour, its phase and whether the clock is **Live** (following the 24-minute cycle) or **Pinned**. Tap it to open the panel:
