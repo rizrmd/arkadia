@@ -1,0 +1,26 @@
+{
+  "passed": true,
+  "expBar": {
+    "lv": "Lv. 1",
+    "xp": "10 / 20 XP (50%)",
+    "fillTransform": "scaleX(0.5)",
+    "skillButtons": 4,
+    "skillsVisible": true
+  },
+  "critStats": {
+    "critChance": 0.15,
+    "critMultiplier": 1.5
+  },
+  "vfxTotals": {
+    "crits": 4,
+    "normals": 8,
+    "projectiles": 5,
+    "aoes": 4,
+    "levelUps": 3
+  },
+  "screenshots": [
+    "docs/combat-vfx/ro-crit-and-exp-bar.webp",
+    "docs/combat-vfx/aoe-telegraph-and-projectiles.webp",
+    "docs/combat-vfx/level-up-vfx-and-aoe-impact.webp"
+  ]
+}

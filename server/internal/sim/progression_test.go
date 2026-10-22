@@ -1,10 +1,16 @@
 package sim
 
-import "testing"
+import (
+	"math"
+	"testing"
+)
 
 func TestRunRewardsAndChoices(t *testing.T) {
 	w := NewWorld(nil, .5, 1)
 	p := &Player{Run: newProgression(), MaxHP: 100, F: newFighter(Hero, Vec{})}
+	if math.Abs(p.Run.critChance()-.15) > 1e-6 || math.Abs(p.Run.critMultiplier()-1.5) > 1e-6 {
+		t.Fatalf("unexpected base crit stats: chance=%v mult=%v", p.Run.critChance(), p.Run.critMultiplier())
+	}
 	w.reward(p)
 	if p.Run.Gold != 5 || p.Run.XP != 10 || p.Run.Level != 1 {
 		t.Fatal(p.Run)
@@ -48,5 +54,8 @@ func TestRunUpgradeEffects(t *testing.T) {
 	}
 	if p.Run.damage() != 1.75 || p.Run.reach() != 1.2 || p.MaxHP != 130 || p.F.HP != 95.5 {
 		t.Fatalf("wrong effects: %+v hp %v max %v", p.Run, p.F.HP, p.MaxHP)
+	}
+	if p.Run.critChance() <= .15 || p.Run.critMultiplier() <= 1.5 {
+		t.Fatalf("crit stats did not scale with blessings: chance=%v mult=%v", p.Run.critChance(), p.Run.critMultiplier())
 	}
 }
