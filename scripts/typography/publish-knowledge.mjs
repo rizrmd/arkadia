@@ -26,7 +26,10 @@ const fill=f=>Array.isArray(f)?`gradient ${f.map(hex).join(' → ')}`:hex(f);
 const stroke=s=>s?`${hex(s.color)} ${Math.round(s.alpha*100)}% · ${s.width}px`:'—';
 const shadow=s=>s?`${hex(s.color)} ${Math.round(s.alpha*100)}% · (${s.dx}, ${s.dy}) · soft ${s.softness}px`:'—';
 const USE={'display-title':'CHOOSE YOUR HERO','display-name':'EMBER WARDEN, mobile Loadout','display-button':'BEGIN JOURNEY','label-wide':'LOADOUT','body-lg':'Subtitle, card names','body':'Back, description, skill names, Empty','accent':'Selected, Lv. 1','paragraph':'Skills cast automatically… (wrapped)',
- 'hud-name':'Ember Warden','hud-value':'96 / 100 HP','hud-stat':'250 Gold, 06:27, Wilds','hud-level':'9','hud-skill':'Flame Fan, Rift Trap, Seismic Slam','hud-badge':'Lv. 1','hud-state':'AUTO','hud-xp':'60','hud-xp-accent':'/ 100 XP','hud-key':'W A S D, Esc','hud-hint':'· Move, · Menu'};
+ 'hud-name':'Ember Warden','hud-value':'96 / 100 HP','hud-stat':'250 Gold, 06:27, Wilds','hud-level':'9','hud-skill':'Flame Fan, Rift Trap, Seismic Slam','hud-badge':'Lv. 1','hud-state':'AUTO','hud-xp':'60','hud-xp-accent':'/ 100 XP','hud-key':'W A S D, Esc','hud-hint':'· Move, · Menu',
+ 'tag-ally':'Overhead ally / party name tags','tag-foe':'Overhead enemy & gate name tags',
+ 'combat-hit':'Floating player damage numbers','combat-crit':'Floating critical hit numbers','combat-crit-label':'CRITICAL badge over crit hits','combat-incoming':'Floating incoming damage numbers','combat-heal':'Floating heal numbers','combat-banner':'Zone / victory / defeat banner title','combat-banner-sub':'Zone / victory / defeat banner subtitle',
+ 'panel-title':'Popover & modal headers (Clock, Co-op, Blessings, Loading)','panel-label':'Popover section & status labels','panel-body':'Popover body & button labels','panel-muted':'Secondary hints & loading status','panel-error':'Co-op error & warning text','blessing-title':'Blessing card title','blessing-desc':'Blessing card wrapped description'};
 const tokenRows=Object.entries(ROLES).map(([name,r])=>`| \`${name}\` | ${USE[name]??''} | ${FONTS[r.font].family} ${FONTS[r.font].weight} | ${r.size} | ${r.letterSpacing}${r.uppercase?' · caps':''} | ${fill(r.fill)} | ${stroke(r.outline)} | ${shadow(r.shadow)} | ${stroke(r.glow)} |`).join('\n');
 const C=Object.fromEntries(evidence.compare.map(c=>[c.name,c]));
 const pair=(name,title)=>`### ${title}\n\n${C[name].label} · ${C[name].pixels.join(' × ')} device px, the reference scaled to the same size.\n\n${img(`${D}/${name}-side-by-side.webp`,`${title}: reference and result side by side`)}\n\n${img(`${D}/${name}-overlay.webp`,`${title}: result with the reference overlaid at 50 %`)}`;
@@ -130,6 +133,71 @@ ${img(`${D}/fx-glow.png`,'Glow off and on for display caps and HUD skill names')
 
 - Code: ${repo('src/typography/tokens.ts','tokens')} · ${repo('src/typography/msdf.ts','MSDF shader')} · ${repo('src/typography/text.ts','text')} · ${repo('src/typography/frames.ts','frames')} · ${repo('src/typography/hud.ts','HUD')} · ${repo('src/typography/hero-select.ts','Choose Your Hero')}
 - Evidence data: ${repo(`${D}/evidence.json`)}
+
+## Full Game UI Migration to Pixi v8 + MSDF Typography
+
+Every screen, HUD element, popover, modal, and world label in the playable game now renders in Pixi v8 using the shared MSDF typography module (${repo('src/typography/tokens.ts')}, \`MsdfText\`, \`installMsdfFx\` with DPR-aware edge correction, and \`FrameSet\` \`@1x/@2x/@3x\` 9-slice bronze frames). All legacy HTML/CSS overlays and stylesheets (\`src/style.css\`, \`src/stronghold/style.css\`, \`src/stronghold/progression.css\`, \`src/expedition/style.css\`, \`src/expedition/snow.css\`, \`src/characters/ui.ts\`) have been removed.
+
+### Unavoidable DOM Exception
+
+During play, \`div#app\` holds only:
+1. \`canvas#world-canvas\` — the single WebGL2 Pixi canvas rendering the 3D/2.5D world and all UI layers.
+2. \`input#coop-keyboard-proxy\` — a 1×1 px off-screen transparent \`<input type="text" aria-hidden="true">\` managed by ${repo('src/stronghold/net/lobby.ts')}. Mobile browsers (iOS Safari / Android Chrome) only summon the native soft keyboard when a real DOM \`<input>\` receives focus inside a user pointer gesture; this hidden input proxies keystrokes into the Pixi Co-op Lobby room-code and player-name fields. Zero stylesheets (\`document.styleSheets.length === 0\`) are loaded.
+
+### Before vs. After (HTML/CSS DOM → Pixi v8 + MSDF)
+
+#### 1. Loading Screen (\`src/app/loader.ts\`)
+
+Replaced \`#loading-screen\` in \`index.html\` with a Pixi v8 stage displaying the \`ARKADIA\` logo (\`@1x/@2x/@3x\`), \`MsdfText\` status and progress readouts (\`panel-title\`, \`panel-muted\`), and a 9-slice bronze progress bar (\`xp-frame\` + \`xp-fill\`).
+
+${img('docs/pixi-ui/compare-loading-desktop.webp','Loading screen before (HTML/CSS) and after (Pixi v8 + MSDF) on desktop (1440×900 DPR 1)')}
+
+${img('docs/pixi-ui/compare-loading-mobile.webp','Loading screen before (HTML/CSS) and after (Pixi v8 + MSDF) on mobile (390×844 DPR 2)')}
+
+#### 2. Choose Your Hero (\`src/stronghold/hero-picker.ts\` & \`src/typography/hero-select.ts\`)
+
+Replaced the DOM hero cards and CSS layout with the interactive Pixi \`HeroSelect\` scene (\`MsdfText\`, \`FrameSet\`, interactive card selection, keyboard shortcuts \`1\`/\`2\`/\`ArrowLeft\`/\`ArrowRight\`/\`Enter\`/\`Space\`, and responsive desktop + mobile portrait layout).
+
+${img('docs/pixi-ui/compare-hero-picker-desktop.webp','Choose Your Hero before (HTML/CSS) and after (Pixi v8 + MSDF) on desktop (1440×900 DPR 1)')}
+
+${img('docs/pixi-ui/compare-hero-picker-mobile.webp','Choose Your Hero before (HTML/CSS) and after (Pixi v8 + MSDF) on mobile (390×844 DPR 2)')}
+
+#### 3. In-Game HUD, Overhead Tags, Combat VFX & Virtual Thumbstick (\`src/typography/hud.ts\`, \`src/stronghold/encounters.ts\`, \`src/stronghold/combat-vfx.ts\`)
+
+Replaced the DOM HUD, party list, and skill strip with the interactive Pixi \`HudScene\` (\`@1x/@2x/@3x\` 9-slice bronze frames, live HP/XP bars, clickable skill slots with cooldown sweeps and star pips, interactive Clock/Zone/Co-op/Reset/Hero pills, and a Pixi virtual thumbstick for touch movement). Overhead ally/enemy/gate labels and floating combat numbers now use pooled \`MsdfText\` roles (\`tag-ally\`, \`tag-foe\`, \`combat-hit\`, \`combat-crit\`, \`combat-crit-label\`, \`combat-incoming\`, \`combat-heal\`, \`combat-banner\`).
+
+${img('docs/pixi-ui/compare-hud-desktop.webp','In-game HUD before (HTML/CSS) and after (Pixi v8 + MSDF) on desktop (1440×900 DPR 1)')}
+
+${img('docs/pixi-ui/compare-hud-mobile.webp','In-game HUD before (HTML/CSS) and after (Pixi v8 + MSDF) on mobile (390×844 DPR 2)')}
+
+#### 4. World Clock & Lighting Popover (\`src/stronghold/clock.ts\`)
+
+Replaced the DOM time-of-day popover with a Pixi 9-slice bronze panel featuring a draggable time scrubber, live/hold toggle, preset buttons (\`Dawn\`, \`Noon\`, \`Dusk\`, \`Midnight\`), and \`Esc\` / outside-tap dismissal.
+
+${img('docs/pixi-ui/compare-clock-desktop.webp','Clock popover before (HTML/CSS) and after (Pixi v8 + MSDF) on desktop (1440×900 DPR 1)')}
+
+${img('docs/pixi-ui/compare-clock-mobile.webp','Clock popover before (HTML/CSS) and after (Pixi v8 + MSDF) on mobile (390×844 DPR 2)')}
+
+#### 5. Level-Up Blessing Modal (\`src/stronghold/encounters.ts\`)
+
+Replaced the DOM blessing modal with a Pixi 9-slice bronze modal and three interactive blessing cards (\`blessing-title\`, \`blessing-desc\`, \`panel-label\`, \`panel-title\`), supporting both pointer clicks and keyboard keys \`1\`/\`2\`/\`3\`.
+
+${img('docs/pixi-ui/compare-blessing-desktop.webp','Level-up blessing modal before (HTML/CSS) and after (Pixi v8 + MSDF) on desktop (1440×900 DPR 1)')}
+
+${img('docs/pixi-ui/compare-blessing-mobile.webp','Level-up blessing modal before (HTML/CSS) and after (Pixi v8 + MSDF) on mobile (390×844 DPR 2)')}
+
+#### 6. Co-op Lobby Popover (\`src/stronghold/net/lobby.ts\`)
+
+Replaced the DOM co-op drawer with a Pixi 9-slice bronze popover supporting room creation, room code entry, player name editing, invite link copying, and party member status readouts.
+
+${img('docs/pixi-ui/after-lobby-desktop.webp','Co-op lobby popover in Pixi v8 + MSDF on desktop (1440×900 DPR 1)')}
+
+${img('docs/pixi-ui/after-lobby-mobile.webp','Co-op lobby popover in Pixi v8 + MSDF on mobile (390×844 DPR 2)')}
+
+### Verification & Smoke Tests
+
+- **UI & DOM Audit** (${repo('scripts/verify-pixi-ui.mjs')} → ${repo('docs/pixi-ui/verification.json')}): Verified on desktop (\`1440×900\` DPR 1) and mobile (\`390×844\` DPR 2) with \`0\` console errors, \`0\` page errors, \`0\` stylesheets, only \`canvas#world-canvas\` + \`input#coop-keyboard-proxy\` in the DOM, and full pointer/keyboard interaction across Hero Picker, HUD, Clock Popover, Blessing Modal, and Co-op Lobby.
+- **Co-op Smoke Test** (${repo('scripts/coop-smoke.mjs')} → ${repo('docs/coop/smoke.json')}): Passed (\`ok: true\`, 806 common ticks, 14 enemies, level-up blessing offers verified across synced clients).
 `;
 fs.writeFileSync('docs/typography/sample.md',md);
 if(dry){console.log(md.slice(0,3000));process.exit(0);}

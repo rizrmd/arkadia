@@ -56,9 +56,9 @@ Choose Your Hero · desktop · Ember Warden · 1672 × 941 device px, the refere
 
 Choose Your Hero · desktop · Rift Runner · 1672 × 941 device px, the reference scaled to the same size.
 
-![Desktop, Rift Runner: reference and result side by side](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DA05575dc0064ecc9d39347e5a)
+![Desktop, Rift Runner: reference and result side by side](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DA36bda536bee23d604ca37e54)
 
-![Desktop, Rift Runner: result with the reference overlaid at 50 %](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DA060fda814e2e84fd7ebe4185)
+![Desktop, Rift Runner: result with the reference overlaid at 50 %](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DA054f79ce1d7cfb1f2a27383f)
 
 ### Mobile, Ember Warden
 
@@ -101,6 +101,22 @@ One module ([src/typography/tokens.ts](/organizations/ORd5dd6f99b4308d6187031557
 | `hud-xp-accent` | / 100 XP | EBGaramond-Medium 500 | 22.5 | 0.2 | #f6d04c | — | #000000 72% · (0, 1.5) · soft 1.6px | — |
 | `hud-key` | W A S D, Esc | EBGaramond-Medium 500 | 19 | 0 | #f3e6c6 | — | #000000 72% · (0, 1.5) · soft 1.6px | — |
 | `hud-hint` | · Move, · Menu | EBGaramond-Medium 500 | 21.5 | 0.2 | #f3e6c6 | — | #000000 72% · (0, 1.5) · soft 1.6px | — |
+| `tag-ally` | Overhead ally / party name tags | EBGaramond-Medium 500 | 15 | 0.3 | #f3e6c6 | #0a0604 85% · 0.9px | #000000 95% · (0, 1.5) · soft 3.2px | — |
+| `tag-foe` | Overhead enemy & gate name tags | EBGaramond-Medium 500 | 13 | 0.3 | #f2e4c4 | #0a0604 85% · 0.8px | #000000 95% · (0, 1.5) · soft 3.2px | — |
+| `combat-hit` | Floating player damage numbers | Cinzel-SemiBold 600 | 22 | 0.4 | #ffe69c | #2a1606 95% · 1.4px | #000000 80% · (0, 3) · soft 4px | — |
+| `combat-crit` | Floating critical hit numbers | Cinzel-SemiBold 600 | 30 | 0.5 | gradient #fff4cc → #f0c464 → #a86e26 | #2a1606 95% · 1.4px | #000000 80% · (0, 3) · soft 4px | #ffb347 45% · 5px |
+| `combat-crit-label` | CRITICAL badge over crit hits | Cinzel-SemiBold 600 | 11 | 1.6 · caps | #ffdf7a | #2a1606 95% · 1.4px | #000000 72% · (0, 1.5) · soft 1.6px | — |
+| `combat-incoming` | Floating incoming damage numbers | Cinzel-SemiBold 600 | 20 | 0.3 | #ff6452 | #1a0404 95% · 1.3px | #000000 80% · (0, 3) · soft 4px | — |
+| `combat-heal` | Floating heal numbers | Cinzel-SemiBold 600 | 19 | 0.3 | #8effa8 | #061a0a 95% · 1.2px | #000000 80% · (0, 3) · soft 4px | — |
+| `combat-banner` | Zone / victory / defeat banner title | Cinzel-SemiBold 600 | 28 | 2.4 · caps | gradient #fff4cc → #f0c464 → #a86e26 | #2a1606 95% · 1.4px | #000000 80% · (0, 3) · soft 4px | #ffb347 45% · 5px |
+| `combat-banner-sub` | Zone / victory / defeat banner subtitle | EBGaramond-Medium 500 | 16 | 0.6 | #e4d8c2 | #0a0604 85% · 0.9px | #000000 72% · (0, 1.5) · soft 1.6px | — |
+| `panel-title` | Popover & modal headers (Clock, Co-op, Blessings, Loading) | Cinzel-SemiBold 600 | 16 | 1.4 · caps | gradient #fff4cc → #f0c464 → #a86e26 | #221104 90% · 1px | #000000 72% · (0, 1.5) · soft 1.6px | — |
+| `panel-label` | Popover section & status labels | Cinzel-SemiBold 600 | 12 | 1.6 · caps | #e2bd72 | — | #000000 72% · (0, 1.5) · soft 1.6px | — |
+| `panel-body` | Popover body & button labels | EBGaramond-Medium 500 | 16 | 0.1 | #f3e6c6 | — | #000000 72% · (0, 1.5) · soft 1.6px | — |
+| `panel-muted` | Secondary hints & loading status | EBGaramond-Medium 500 | 14 | 0.1 | #bfa982 | — | #000000 72% · (0, 1.5) · soft 1.6px | — |
+| `panel-error` | Co-op error & warning text | EBGaramond-Medium 500 | 14 | 0.1 | #f08c7a | — | #000000 72% · (0, 1.5) · soft 1.6px | — |
+| `blessing-title` | Blessing card title | Cinzel-SemiBold 600 | 18 | 0.5 | gradient #fff4cc → #f0c464 → #a86e26 | #221104 90% · 1px | #000000 72% · (0, 1.5) · soft 1.6px | — |
+| `blessing-desc` | Blessing card wrapped description | EBGaramond-Medium 500 | 15 | 0 | #e4d8c2 | — | #000000 72% · (0, 1.5) · soft 1.6px | — |
 
 Paragraph wrapping: the role sets wrap and centre, and the screen passes the wrap width from its panel. Desktop uses the panel width minus 40 px per side (405 px), which breaks the help text into the reference's two sentences. Mobile uses the panel width minus 70 px per side (676 px).
 
@@ -114,7 +130,7 @@ Paragraph wrapping: the role sets wrap and centre, and the screen passes the wra
 
 ## Frames
 
-![HUD frames, icons and art at @3x with 9-slice borders](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DAaaf75cdb1bc34658306c4f5a)
+![HUD frames, icons and art at @3x with 9-slice borders](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DAbfeab3c8bea0f621f05e4126)
 
 Drawn in the Choosing Hero kit's bronze language: dark gold rails with a pale top highlight, near-black fills and four-point compass stars as finials. Every stretchable frame is a NineSliceSprite with the borders in [manifest.json](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=public%2Ftypography%2Fv2%2Fhud%2Fmanifest.json): pills, key plate, keycaps, hero plate, HP and XP frames and fills, and the Lv/AUTO badges. Rings, medallion, icons and art keep a fixed size. The set is chosen from **devicePixelRatio × scene scale**, rounded up to @1x, @2x or @3x. At 1280 × 720 (scene scale 0.7651) the captures loaded @1x at DPR 1, @2x at DPR 2, @3x at DPR 3, @2x at DPR 2.625; the full 1672 × 941 layout at DPR 2.625 loads @3x. Choose Your Hero reuses the kit's frames, art and English labels read-only; the kit files are not modified.
 
@@ -132,15 +148,15 @@ Edge width is measured on each text crop: the average run of pixels between 10 %
 | DPR 3 · Pixi stock | 2.88 | 2.87 | 2.71 | 2.75 | 3.02 | @3x |
 | DPR 2.625 · Pixi stock | 2.6 | 2.47 | 2.47 | 2.44 | 2.66 | @2x |
 
-| Choose Your Hero | CHOOSE YOUR HERO | Ember Warden | Selected | LOADOUT | Skills cast automaticall… |
-|---|---:|---:|---:|---:|---:|
-| DPR 1 · this module | 1.23 | 1.74 | 1.6 | 1.14 | 1.42 |
-| DPR 2 · this module | 1.34 | 2.98 | 1.47 | 1.12 | 1.2 |
-| DPR 3 · this module | 1.34 | 3.78 | 1.46 | 1.17 | 1.2 |
-| DPR 2.625 · this module | 1.32 | 3.52 | 1.41 | 1.12 | 1.22 |
-| DPR 2 · Pixi stock | 2.3 | 2.88 | 2.21 | 1.85 | 2.07 |
-| DPR 3 · Pixi stock | 3.24 | 3.81 | 2.9 | 2.84 | 2.86 |
-| DPR 2.625 · Pixi stock | 2.85 | 3.46 | 2.66 | 2.46 | 2.62 |
+| Choose Your Hero | CHOOSE YOUR HERO | Selected | LOADOUT | Skills cast automaticall… |
+|---|---:|---:|---:|---:|
+| DPR 1 · this module | 1.23 | 1.6 | 1.14 | 1.42 |
+| DPR 2 · this module | 1.34 | 1.47 | 1.12 | 1.2 |
+| DPR 3 · this module | 1.34 | 1.46 | 1.17 | 1.2 |
+| DPR 2.625 · this module | 1.32 | 1.41 | 1.12 | 1.22 |
+| DPR 2 · Pixi stock | 2.3 | 2.21 | 1.85 | 2.07 |
+| DPR 3 · Pixi stock | 3.24 | 2.9 | 2.84 | 2.86 |
+| DPR 2.625 · Pixi stock | 2.85 | 2.66 | 2.46 | 2.62 |
 
 With the correction, text edges stay at 1.1–1.6 device px at every DPR. Pixi's stock edge widens with DPR, to 2.7–3.2 px at DPR 3. Begin Journey is shown in the sheets but not measured: it is a dark-bottomed gold gradient on a red button with gold rails, and with that little luminance contrast the scan measures the gradient rather than the edge. The panel title Ember Warden reads about 3–3.8 px at DPR 2 and above in both modes for the same reason: the panel's compass crest and gradient rails overlap its crop, as the sheets show. It is listed in the table but left out of the ranges. Display caps are measured on CHOOSE YOUR HERO.
 
@@ -158,19 +174,19 @@ With the correction, text edges stay at 1.1–1.6 device px at every DPR. Pixi's
 
 ![HUD at DPR 2.625, Pixi stock edge](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DA41330954418ef309824e56e7)
 
-![Choose Your Hero at DPR 1, resolution-aware edge](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DA253d7d11b3b0c6623914c967)
+![Choose Your Hero at DPR 1, resolution-aware edge](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DAbe13c968c47e126b1ac57717)
 
-![Choose Your Hero at DPR 2, resolution-aware edge](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DA00ca6865a6e43f6dbaa692c4)
+![Choose Your Hero at DPR 2, resolution-aware edge](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DA1426117aa70796f5b9009d3d)
 
-![Choose Your Hero at DPR 3, resolution-aware edge](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DAda2283ddd3d70c691eced0d2)
+![Choose Your Hero at DPR 3, resolution-aware edge](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DA091056acf857c49d1f550503)
 
-![Choose Your Hero at DPR 2.625, resolution-aware edge](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DA78f5534b25105a55b2f9211d)
+![Choose Your Hero at DPR 2.625, resolution-aware edge](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DA461e04206ab91da2f2924e76)
 
-![Choose Your Hero at DPR 2, Pixi stock edge](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DAdb1a7a6e09d90ed5f45117ca)
+![Choose Your Hero at DPR 2, Pixi stock edge](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DA0a223c104f2bcf24272ce53d)
 
-![Choose Your Hero at DPR 3, Pixi stock edge](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DAa8588991ea362af8a231ccb5)
+![Choose Your Hero at DPR 3, Pixi stock edge](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DA3480fafd0b70d0bcc3972939)
 
-![Choose Your Hero at DPR 2.625, Pixi stock edge](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DA138962d61629dfacf383d30f)
+![Choose Your Hero at DPR 2.625, Pixi stock edge](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DAb62eaa1b19587214054f4236)
 
 ## Optional glow
 
@@ -189,3 +205,68 @@ With the correction, text edges stay at 1.1–1.6 device px at every DPR. Pixi's
 
 - Code: [tokens](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=src%2Ftypography%2Ftokens.ts) · [MSDF shader](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=src%2Ftypography%2Fmsdf.ts) · [text](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=src%2Ftypography%2Ftext.ts) · [frames](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=src%2Ftypography%2Fframes.ts) · [HUD](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=src%2Ftypography%2Fhud.ts) · [Choose Your Hero](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=src%2Ftypography%2Fhero-select.ts)
 - Evidence data: [docs/typography/v2/evidence.json](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=docs%2Ftypography%2Fv2%2Fevidence.json)
+
+## Full Game UI Migration to Pixi v8 + MSDF Typography
+
+Every screen, HUD element, popover, modal, and world label in the playable game now renders in Pixi v8 using the shared MSDF typography module ([src/typography/tokens.ts](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=src%2Ftypography%2Ftokens.ts), `MsdfText`, `installMsdfFx` with DPR-aware edge correction, and `FrameSet` `@1x/@2x/@3x` 9-slice bronze frames). All legacy HTML/CSS overlays and stylesheets (`src/style.css`, `src/stronghold/style.css`, `src/stronghold/progression.css`, `src/expedition/style.css`, `src/expedition/snow.css`, `src/characters/ui.ts`) have been removed.
+
+### Unavoidable DOM Exception
+
+During play, `div#app` holds only:
+1. `canvas#world-canvas` — the single WebGL2 Pixi canvas rendering the 3D/2.5D world and all UI layers.
+2. `input#coop-keyboard-proxy` — a 1×1 px off-screen transparent `<input type="text" aria-hidden="true">` managed by [src/stronghold/net/lobby.ts](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=src%2Fstronghold%2Fnet%2Flobby.ts). Mobile browsers (iOS Safari / Android Chrome) only summon the native soft keyboard when a real DOM `<input>` receives focus inside a user pointer gesture; this hidden input proxies keystrokes into the Pixi Co-op Lobby room-code and player-name fields. Zero stylesheets (`document.styleSheets.length === 0`) are loaded.
+
+### Before vs. After (HTML/CSS DOM → Pixi v8 + MSDF)
+
+#### 1. Loading Screen (`src/app/loader.ts`)
+
+Replaced `#loading-screen` in `index.html` with a Pixi v8 stage displaying the `ARKADIA` logo (`@1x/@2x/@3x`), `MsdfText` status and progress readouts (`panel-title`, `panel-muted`), and a 9-slice bronze progress bar (`xp-frame` + `xp-fill`).
+
+![Loading screen before (HTML/CSS) and after (Pixi v8 + MSDF) on desktop (1440×900 DPR 1)](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DA1cc539f54cbeb5d29da01c6e)
+
+![Loading screen before (HTML/CSS) and after (Pixi v8 + MSDF) on mobile (390×844 DPR 2)](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DA08440942466d70876b1717c9)
+
+#### 2. Choose Your Hero (`src/stronghold/hero-picker.ts` & `src/typography/hero-select.ts`)
+
+Replaced the DOM hero cards and CSS layout with the interactive Pixi `HeroSelect` scene (`MsdfText`, `FrameSet`, interactive card selection, keyboard shortcuts `1`/`2`/`ArrowLeft`/`ArrowRight`/`Enter`/`Space`, and responsive desktop + mobile portrait layout).
+
+![Choose Your Hero before (HTML/CSS) and after (Pixi v8 + MSDF) on desktop (1440×900 DPR 1)](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DAfded26f83c7a57149d675145)
+
+![Choose Your Hero before (HTML/CSS) and after (Pixi v8 + MSDF) on mobile (390×844 DPR 2)](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DAef4168997963cbbe440c6ff5)
+
+#### 3. In-Game HUD, Overhead Tags, Combat VFX & Virtual Thumbstick (`src/typography/hud.ts`, `src/stronghold/encounters.ts`, `src/stronghold/combat-vfx.ts`)
+
+Replaced the DOM HUD, party list, and skill strip with the interactive Pixi `HudScene` (`@1x/@2x/@3x` 9-slice bronze frames, live HP/XP bars, clickable skill slots with cooldown sweeps and star pips, interactive Clock/Zone/Co-op/Reset/Hero pills, and a Pixi virtual thumbstick for touch movement). Overhead ally/enemy/gate labels and floating combat numbers now use pooled `MsdfText` roles (`tag-ally`, `tag-foe`, `combat-hit`, `combat-crit`, `combat-crit-label`, `combat-incoming`, `combat-heal`, `combat-banner`).
+
+![In-game HUD before (HTML/CSS) and after (Pixi v8 + MSDF) on desktop (1440×900 DPR 1)](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DAf2ed274b3740eb61db4c7546)
+
+![In-game HUD before (HTML/CSS) and after (Pixi v8 + MSDF) on mobile (390×844 DPR 2)](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DA257b15ba8c1962410149f4e7)
+
+#### 4. World Clock & Lighting Popover (`src/stronghold/clock.ts`)
+
+Replaced the DOM time-of-day popover with a Pixi 9-slice bronze panel featuring a draggable time scrubber, live/hold toggle, preset buttons (`Dawn`, `Noon`, `Dusk`, `Midnight`), and `Esc` / outside-tap dismissal.
+
+![Clock popover before (HTML/CSS) and after (Pixi v8 + MSDF) on desktop (1440×900 DPR 1)](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DA8ad19b11b854754679afa91b)
+
+![Clock popover before (HTML/CSS) and after (Pixi v8 + MSDF) on mobile (390×844 DPR 2)](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DA50dd9bb3ae79f3209077315e)
+
+#### 5. Level-Up Blessing Modal (`src/stronghold/encounters.ts`)
+
+Replaced the DOM blessing modal with a Pixi 9-slice bronze modal and three interactive blessing cards (`blessing-title`, `blessing-desc`, `panel-label`, `panel-title`), supporting both pointer clicks and keyboard keys `1`/`2`/`3`.
+
+![Level-up blessing modal before (HTML/CSS) and after (Pixi v8 + MSDF) on desktop (1440×900 DPR 1)](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DAe49fdf02f65f180fd7579baf)
+
+![Level-up blessing modal before (HTML/CSS) and after (Pixi v8 + MSDF) on mobile (390×844 DPR 2)](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DA2db9d36d203c6ec254749971)
+
+#### 6. Co-op Lobby Popover (`src/stronghold/net/lobby.ts`)
+
+Replaced the DOM co-op drawer with a Pixi 9-slice bronze popover supporting room creation, room code entry, player name editing, invite link copying, and party member status readouts.
+
+![Co-op lobby popover in Pixi v8 + MSDF on desktop (1440×900 DPR 1)](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DAac03033f50be03c36984aa8b)
+
+![Co-op lobby popover in Pixi v8 + MSDF on mobile (390×844 DPR 2)](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DA6123dc7353f7c45dbb42415a)
+
+### Verification & Smoke Tests
+
+- **UI & DOM Audit** ([scripts/verify-pixi-ui.mjs](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=scripts%2Fverify-pixi-ui.mjs) → [docs/pixi-ui/verification.json](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=docs%2Fpixi-ui%2Fverification.json)): Verified on desktop (`1440×900` DPR 1) and mobile (`390×844` DPR 2) with `0` console errors, `0` page errors, `0` stylesheets, only `canvas#world-canvas` + `input#coop-keyboard-proxy` in the DOM, and full pointer/keyboard interaction across Hero Picker, HUD, Clock Popover, Blessing Modal, and Co-op Lobby.
+- **Co-op Smoke Test** ([scripts/coop-smoke.mjs](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=scripts%2Fcoop-smoke.mjs) → [docs/coop/smoke.json](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=docs%2Fcoop%2Fsmoke.json)): Passed (`ok: true`, 806 common ticks, 14 enemies, level-up blessing offers verified across synced clients).

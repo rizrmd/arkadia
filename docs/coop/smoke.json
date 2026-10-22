@@ -1,10 +1,10 @@
 {
  "url": "ws://127.0.0.1:8791/ws",
- "seconds": 25,
- "room": "T5NSA",
- "commonTicks": 506,
- "tickSpan": 505,
- "ticksWithEnemies": 506,
+ "seconds": 40,
+ "room": "8JUNR",
+ "commonTicks": 806,
+ "tickSpan": 805,
+ "ticksWithEnemies": 806,
  "enemyIds": [
   1,
   2,
@@ -21,7 +21,7 @@
   13,
   14
  ],
- "lastTick": 507,
+ "lastTick": 807,
  "kills": {
   "Ayu": 2,
   "Bima": 2,
@@ -34,9 +34,9 @@
    "gold": 10,
    "pending": 1,
    "offers": [
-    "rift-bolt",
-    "cleave",
-    "leech"
+    "vitality",
+    "haste",
+    "shockwave"
    ],
    "skills": {
     "rift-bolt": 1
@@ -56,9 +56,9 @@
    "gold": 10,
    "pending": 1,
    "offers": [
-    "nova",
-    "shockwave",
-    "star"
+    "rift-trap",
+    "cleave",
+    "haste"
    ],
    "skills": {
     "rift-bolt": 1
@@ -67,7 +67,7 @@
    "slots": [
     "rift-bolt"
    ],
-   "autoCasts": 3,
+   "autoCasts": 2,
    "lastCast": [
     "rift-bolt"
    ]
@@ -90,9 +90,9 @@
  "heroesHurt": false,
  "cheatMaxStepPx": 10.18,
  "heroStepPx": 6,
- "snapshotBytes": 2673,
- "ackA": 499,
- "inputsA": 499,
- "pausedAtTick": 507,
+ "snapshotBytes": 2650,
+ "ackA": 798,
+ "inputsA": 798,
+ "pausedAtTick": 808,
  "ok": true
 }
