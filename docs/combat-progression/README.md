@@ -39,3 +39,10 @@ Proposed named duo evolutions should require both skills at rank 3 and one star,
 ## Verification
 
 `npm run build`, `node scripts/test-progression.mjs`, and Go `go test ./...` pass. New Go tests cover reward thresholds, duplicate-free offers, rejection of invalid/stale choices, XP overflow and upgrade effects. `node scripts/verify-progression.mjs` uses real combat against summoned enemies and checks rewards, three cards, protection while selecting, mobile overflow, selection consumption and page errors. Screenshots are test fixtures, not natural encounter difficulty evidence.
+
+## Delivery status
+
+Live at [ark-whachat.fural.space](https://ark-whachat.fural.space) since release `40a7094` on `feat/stronghold` (2026-10-22). Verified against the live deployment:
+
+- `DEMO_URL=https://ark-whachat.fural.space node scripts/verify-progression.mjs` passed all six browser checks (kills award XP and gold, three unique cards, protected while choosing, fits a 390 px phone, choice consumed, no page errors).
+- `COOP_URL=wss://ark-whachat.fural.space/ws node scripts/coop-smoke.mjs` passed. Both co-op heroes reached level 2 with 10 gold from two kills each, and the cheating client gained nothing. The smoke test now asserts that server-side run gold and XP match each player's kills.

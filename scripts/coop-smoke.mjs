@@ -56,12 +56,14 @@ try{
  for(const s of a.ticks.values())for(const e of s.enemies)assert([0,1,2].includes(e.hp),`revenant hp ${e.hp} outside 0..2`);
  const kills=last.players.reduce((k,p)=>k+p.k,0),hurt=[...a.ticks.values()].some(s=>s.players.some(p=>p.hp<p.max)),killed=[...a.ticks.values()].some(s=>s.enemies.some(e=>e.st==='die'));
  assert(kills>0&&killed,'the heroes killed revenants');
+ // Run progression is server authoritative: each kill pays the killer 5 gold and 10 XP (src/stronghold/progression.ts).
+ for(const p of last.players){const r=p.run;assert(r,'snapshot carries run progression');let xp=r.xp;for(let l=1;l<r.level;l++)xp+=20+(l-1)*10;assert.equal(r.gold,5*p.k,p.name+' gold matches kills');assert.equal(xp,10*p.k,p.name+' XP matches kills');}
  // The cheat never outruns two hero steps per tick (the server's catch-up after a stall) and its forged messages
  // changed nothing: it stays connected, every revenant hp is a server value and both honest views agree.
  const id=cheat.welcome.you;let maxStep=0;const seq=[...a.ticks.keys()].sort((p,q)=>p-q);
  for(let i=1;i<seq.length;i++){const p=a.ticks.get(seq[i-1]).players.find(x=>x.id===id),q=a.ticks.get(seq[i]).players.find(x=>x.id===id);if(p&&q&&p.st!=='die'&&q.st!=='die')maxStep=Math.max(maxStep,Math.hypot(q.x-p.x,q.y-p.y)/(seq[i]-seq[i-1]));}
  assert(maxStep<=2*STEP+.01,`cheat moved ${maxStep.toFixed(2)} px in one tick`);assert.equal(cheat.ws.readyState,1,'cheat connection still open');
- Object.assign(results,{commonTicks:common.length,tickSpan:span,ticksWithEnemies:enemyTicks,enemyIds:ids,lastTick:last.tick,kills:Object.fromEntries(last.players.map(p=>[p.name,p.k])),heroesHurt:hurt,cheatMaxStepPx:+maxStep.toFixed(2),heroStepPx:STEP,
+ Object.assign(results,{commonTicks:common.length,tickSpan:span,ticksWithEnemies:enemyTicks,enemyIds:ids,lastTick:last.tick,kills:Object.fromEntries(last.players.map(p=>[p.name,p.k])),runs:Object.fromEntries(last.players.map(p=>[p.name,p.run])),heroesHurt:hurt,cheatMaxStepPx:+maxStep.toFixed(2),heroStepPx:STEP,
   snapshotBytes:Math.round(JSON.stringify(last).length),ackA:last.ack,inputsA:a.seq});
  // Everyone leaves: the room pauses (its tick stops) but stays joinable.
  for(const c of [a,b,cheat])c.ws.close();await new Promise(r=>setTimeout(r,400));

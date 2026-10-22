@@ -1,10 +1,10 @@
 {
  "url": "wss://ark-whachat.fural.space/ws",
- "seconds": 40,
- "room": "H96X7",
- "commonTicks": 809,
- "tickSpan": 808,
- "ticksWithEnemies": 809,
+ "seconds": 30,
+ "room": "4N4MP",
+ "commonTicks": 627,
+ "tickSpan": 629,
+ "ticksWithEnemies": 627,
  "enemyIds": [
   1,
   2,
@@ -21,17 +21,54 @@
   13,
   14
  ],
- "lastTick": 811,
+ "lastTick": 658,
  "kills": {
-  "Ayu": 0,
-  "Bima": 28,
+  "Ayu": 2,
+  "Bima": 2,
   "Cheat": 0
  },
+ "runs": {
+  "Ayu": {
+   "level": 2,
+   "xp": 0,
+   "gold": 10,
+   "pending": 1,
+   "offers": [
+    "nova",
+    "might",
+    "leech"
+   ],
+   "skills": {},
+   "stars": 0
+  },
+  "Bima": {
+   "level": 2,
+   "xp": 0,
+   "gold": 10,
+   "pending": 1,
+   "offers": [
+    "might",
+    "heal",
+    "star"
+   ],
+   "skills": {},
+   "stars": 0
+  },
+  "Cheat": {
+   "level": 1,
+   "xp": 0,
+   "gold": 0,
+   "pending": 0,
+   "offers": [],
+   "skills": {},
+   "stars": 0
+  }
+ },
  "heroesHurt": true,
- "cheatMaxStepPx": 8.4,
- "heroStepPx": 5.25,
- "snapshotBytes": 1860,
- "ackA": 798,
- "inputsA": 798,
+ "cheatMaxStepPx": 10.18,
+ "heroStepPx": 6,
+ "snapshotBytes": 2197,
+ "ackA": 598,
+ "inputsA": 599,
  "ok": true
 }

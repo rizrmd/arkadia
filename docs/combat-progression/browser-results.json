@@ -1,5 +1,5 @@
 {
-  "base": "http://127.0.0.1:8796",
+  "base": "https://ark-whachat.fural.space",
   "passed": true,
   "checks": [
     "real kills award XP and gold",
@@ -27,8 +27,8 @@
     },
     "foes": [
       {
-        "u": 17.6,
-        "v": 17.69,
+        "u": 17.7,
+        "v": 17.58,
         "hp": 2,
         "state": "move",
         "safe": false,
@@ -36,13 +36,13 @@
         "gateMeters": 11.9
       },
       {
-        "u": 17.3,
-        "v": 17.8,
+        "u": 14.95,
+        "v": 18.11,
         "hp": 2,
         "state": "move",
         "safe": false,
         "clear": true,
-        "gateMeters": 11.5
+        "gateMeters": 9.8
       },
       {
         "u": 18.22,
@@ -70,8 +70,8 @@
       "pending": 1,
       "offers": [
         "leech",
-        "star",
-        "nova"
+        "heal",
+        "vitality"
       ],
       "skills": {},
       "stars": 0
@@ -79,18 +79,18 @@
     "kills": 2,
     "spawns": [
       {
-        "u": 17.09,
-        "v": 17.31,
+        "u": 17.33,
+        "v": 17.07,
         "m": 10
       },
       {
-        "u": 16.69,
-        "v": 17.62,
+        "u": 14.31,
+        "v": 18.13,
         "m": 10
       }
     ],
     "minSpawnMeters": 10,
-    "minFoeMeters": 11.524274171702862
+    "minFoeMeters": 9.806814834235166
   },
   "after": {
     "spawnDistanceM": 10,
@@ -102,7 +102,7 @@
     "hero": {
       "hp": 100,
       "maxHp": 100,
-      "state": "attack",
+      "state": "idle",
       "u": 18,
       "v": 18,
       "meters": 44.5,
@@ -110,22 +110,22 @@
     },
     "foes": [
       {
-        "u": 17.85,
+        "u": 17.79,
         "v": 17.7,
         "hp": 2,
         "state": "idle",
         "safe": false,
         "clear": true,
-        "gateMeters": 12.4
+        "gateMeters": 12.3
       },
       {
-        "u": 17.64,
-        "v": 17.94,
+        "u": 16.49,
+        "v": 18.1,
         "hp": 2,
-        "state": "idle",
+        "state": "move",
         "safe": false,
         "clear": true,
-        "gateMeters": 12.5
+        "gateMeters": 11
       },
       {
         "u": 18.22,
@@ -146,22 +146,13 @@
         "gateMeters": 14.2
       },
       {
-        "u": 15.63,
-        "v": 18.14,
+        "u": 16.19,
+        "v": 18,
         "hp": 2,
         "state": "move",
         "safe": false,
         "clear": true,
-        "gateMeters": 10.2
-      },
-      {
-        "u": 14.6,
-        "v": 18.09,
-        "hp": 2,
-        "state": "move",
-        "safe": false,
-        "clear": true,
-        "gateMeters": 9.8
+        "gateMeters": 10.3
       }
     ],
     "run": {
@@ -178,27 +169,22 @@
     "kills": 2,
     "spawns": [
       {
-        "u": 17.09,
-        "v": 17.31,
+        "u": 17.33,
+        "v": 17.07,
         "m": 10
       },
       {
-        "u": 16.69,
-        "v": 17.62,
+        "u": 14.31,
+        "v": 18.13,
         "m": 10
       },
       {
-        "u": 15.16,
-        "v": 18.16,
-        "m": 10
-      },
-      {
-        "u": 14.13,
-        "v": 18.1,
+        "u": 15.83,
+        "v": 18.03,
         "m": 10
       }
     ],
     "minSpawnMeters": 10,
-    "minFoeMeters": 9.75795473173963
+    "minFoeMeters": 10.296409190725608
   }
 }
