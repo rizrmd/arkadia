@@ -12,21 +12,21 @@ import type {Walk} from './controls';
 import {loadImage,expectSizes,downloadedBytes,onDownload,type Progress} from '../app/loader';
 import type {Net} from './net/client';
 import {createParty} from './party';
-export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Building)=>void,direction:()=>Walk,progress:Progress=()=>{},net?:Net){
+import {characters,atlasUrl,DEFAULT_HERO,type HeroId} from './heroes';
+export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Building)=>void,direction:()=>Walk,progress:Progress=()=>{},net?:Net,pick:HeroId=DEFAULT_HERO){
  const ctx=canvas.getContext('2d')!,environment=environmentSprites(),images=new Map<string,HTMLImageElement>();
  let gateOpen=false,gatePassable=false;
  const spriteFile=(id:Building,level:number)=>id==='forge'?`/fortress-ui/forge-${level}.webp`:id==='gate'?'/modular-stronghold/v2/full-gateway-v3-open.webp':`/assets/${slots[id].asset}.png`;
  const paving='/modular-stronghold/v2/paving-warm-texture.png',snow='/modular-stronghold/v2/snow-soft-texture.png';
- // Loading screen: downloads fill the bar in proportion to their bytes (the character atlases that the hero
- // and the revenants load later are fetched in the same batch), then the hero and the first world raster.
+ // Loading screen: downloads fill the bar in proportion to their bytes (the atlases of the picked hero and the
+ // revenants, which hero.ts and encounters.ts load later, are fetched in the same batch), then the hero and the first world raster.
  const files=[...new Set([FOUNDATION_SOIL,FOUNDATION_MOSS,paving,snow,'/modular-stronghold/v2/full-gateway-v3-closed.webp','/modular-stronghold/v2/full-gateway-v3-sheet.webp',...environment.map(p=>p.file),...buildings.flatMap(b=>[1,2,3].map(l=>spriteFile(b,l)))])];
  const DOWNLOAD=920,steps=1000,mb=(n:number)=>(n/1e6).toFixed(1);let loaded=DOWNLOAD;
  let queued=0;const report=()=>{queued=0;const {received,expected}=downloadedBytes();progress(Math.floor(DOWNLOAD*received/Math.max(1,expected)),steps,`Loading artwork · ${mb(received)} of ${mb(expected)} MB`);};
  const stopReport=onDownload(()=>{queued||=requestAnimationFrame(report);});progress(0,steps,'Loading artwork');
- const [{characters}]=await Promise.all([fetch('/assets/characters/manifest.json').then(r=>r.json()),expectSizes()]);
- const atlas=characters as Record<string,{image:string;revision?:string}>,artwork=files.map(async file=>{images.set(file,await loadImage(file));});
+ const [atlas]=await Promise.all([characters() as Promise<Record<string,{image:string;revision?:string}>>,expectSizes()]),artwork=files.map(async file=>{images.set(file,await loadImage(file));});
  try{
-  await Promise.all([...artwork,...[atlas.hero,atlas.revenant].map(m=>loadImage('/assets/characters/'+m.image+(m.revision?`?v=${encodeURIComponent(m.revision)}`:'')))]);
+  await Promise.all([...artwork,...[atlas[pick]??atlas[DEFAULT_HERO],atlas.revenant].map(m=>loadImage(atlasUrl(m)))]);
  }finally{stopReport();cancelAnimationFrame(queued);}
  report();
  let w=0,h=0,dpr=1,scale=1,cx=WORLD.width/2,cy=385,selected:Building|null=null,levels:State['levels']|undefined;
@@ -161,7 +161,7 @@ export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Buil
  lighting.subscribe(()=>doors.refreshLighting());
  // Combat (encounters.ts) steers the idle hero toward a revenant in reach and plays its swing, hit and death clips.
  let encounters:Awaited<ReturnType<typeof createEncounters>>|undefined;
- const hero=await createHero<(typeof objects)[number]>({layer:viewport,lightmap:viewport.querySelector<HTMLCanvasElement>('#world-lightmap')!,surface,footprint:p=>p.id==='gate'?gateFootprint():footprint(p),sun:lighting.sun,direction:()=>encounters?encounters.steer(direction()):direction(),follow,pose:()=>encounters?.pose()??null,
+ const hero=await createHero<(typeof objects)[number]>({hero:pick,layer:viewport,lightmap:viewport.querySelector<HTMLCanvasElement>('#world-lightmap')!,surface,footprint:p=>p.id==='gate'?gateFootprint():footprint(p),sun:lighting.sun,direction:()=>encounters?encounters.steer(direction()):direction(),follow,pose:()=>encounters?.pose()??null,
   // In a co-op room the hero stands where prediction puts it (net/client.ts) and faces the walk keys; while the
   // server holds it in a swing, hit or death it faces the way the server turned it.
   drive:()=>{if(!net?.active())return null;const p=net.position(),me=net.me();return {...p,face:direction(),look:me&&me.st!=='idle'?{facing:me.fc,back:me.bk,vertical:me.vt}:null};}});hero.setScene(objects);
@@ -247,5 +247,5 @@ export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Buil
  // A co-op room stands the server's layout (the camp: tent and gateway), whatever this browser's save has built.
  return {update(state:State,id:Building|null){encounters?.setMaxHp(100+heroBonus(state));const room=net?.active()?net.layout().filter((b):b is Building=>(buildings as readonly string[]).includes(b)):null;
   const next=buildings.map(b=>state.levels[b]+(isBuilt(state,b)?'':'x')).join(',')+':'+id+':'+(room?.join('+')??'');if(next===signature)return;signature=next;levels=state.levels;selected=id;
-  if(!LEGACY_LAYOUT||room)built=new Set(room??buildings.filter(b=>isBuilt(state,b)));canvas.dataset.buildings=[...built].join(',');objects=makeObjects();lighting.setScene(objects);hero.setScene(objects);party?.setScene(objects);dirty=true;requestDraw();},focus(id:Building){glideTo(slots[id].x,slots[id].y-60);},fit(){stopGlide();chasing=false;vx=vy=0;scale=Math.max(.2,Math.min((w-40)/WORLD.width,(h-120)/WORLD.height));cx=WORLD.width/2;cy=385;requestDraw();},setTime:lighting.setTime,previewClock:lighting.preview,subscribeClock:lighting.subscribe};
+  if(!LEGACY_LAYOUT||room)built=new Set(room??buildings.filter(b=>isBuilt(state,b)));canvas.dataset.buildings=[...built].join(',');objects=makeObjects();lighting.setScene(objects);hero.setScene(objects);party?.setScene(objects);dirty=true;requestDraw();},focus(id:Building){glideTo(slots[id].x,slots[id].y-60);},fit(){stopGlide();chasing=false;vx=vy=0;scale=Math.max(.2,Math.min((w-40)/WORLD.width,(h-120)/WORLD.height));cx=WORLD.width/2;cy=385;requestDraw();},setHero:hero.setHero,setTime:lighting.setTime,previewClock:lighting.preview,subscribeClock:lighting.subscribe};
 }

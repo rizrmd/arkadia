@@ -94,13 +94,16 @@ func query(r *http.Request) string {
 	return "?" + r.URL.RawQuery
 }
 
-// Client messages. Hello must come first; then inputs at the tick rate and occasional pings.
+// Client messages. Hello must come first; then inputs at the tick rate, occasional pings and a hero message
+// whenever the player picks another hero.
 type clientMsg struct {
 	T     string   `json:"t"`
 	V     int      `json:"v"`
 	Name  string   `json:"name"`
 	Room  string   `json:"room"`
 	MaxHP float64  `json:"maxHp"`
+	Hero  string   `json:"hero"` // hello: the picked hero (clients before heroes send none)
+	H     string   `json:"h"`    // hero: a new pick
 	Seq   uint32   `json:"seq"`
 	X     float64  `json:"x"`
 	Y     float64  `json:"y"`
@@ -171,7 +174,8 @@ func (s *Server) ws(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	client := room.NewClient()
-	if code := rm.Join(client, name, hello.MaxHP); code != "" {
+	hero, _ := room.CleanHero(hello.Hero)
+	if code := rm.Join(client, name, hero, hello.MaxHP); code != "" {
 		fail(code)
 		return
 	}
@@ -224,6 +228,10 @@ func (s *Server) ws(w http.ResponseWriter, r *http.Request) {
 		case "in":
 			if !math.IsNaN(m.X) && !math.IsNaN(m.Y) {
 				rm.Input(client, sim.Input{Seq: m.Seq, X: m.X, Y: m.Y})
+			}
+		case "hero":
+			if hero, ok := room.CleanHero(m.H); ok {
+				rm.SetHero(client, hero)
 			}
 		case "ping":
 			msg, _ := json.Marshal(map[string]any{"t": "pong", "c": m.C, "tick": rm.Info().Tick})

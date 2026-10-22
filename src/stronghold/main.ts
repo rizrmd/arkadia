@@ -8,8 +8,11 @@ import {createControls} from './controls';
 import type {Progress} from '../app/loader';
 import {createNet} from './net/client';
 import {createLobby} from './net/lobby';
+import {savedHero,saveHero,type HeroId} from './heroes';
+import {createHeroPicker} from './hero-picker';
 // World-only view: no menus; the HUD is the hero's health panel (encounters.ts), the time-of-day clock, the co-op room
 // chip (net/lobby.ts) and, while a thumb walks the hero, the touch thumbstick. ?offline=1 skips the co-op server.
+// A new tab first asks which hero to play (hero-picker.ts) over the loaded world; the panel's hero name asks again.
 // Selecting a building just follows it with the camera.
 export async function mount(app:HTMLElement,progress:Progress){
  const root=document.createElement('div');root.id='stronghold';app.append(root);
@@ -21,15 +24,19 @@ export async function mount(app:HTMLElement,progress:Progress){
  reloadOnNewBuild();
  // Co-op starts connecting while the artwork loads; the local save still sets the hero's hit points.
  const maxHp=()=>{try{return 100+heroBonus(load(localStorage.getItem(KEY)));}catch{return 100;}};
- const net=new URLSearchParams(location.search).has('offline')?undefined:createNet({direction:controls.direction,maxHp});
+ let hero:HeroId=savedHero();
+ const net=new URLSearchParams(location.search).has('offline')?undefined:createNet({direction:controls.direction,maxHp,hero:()=>hero});
  const lobby=net?createLobby(root,net):null,invited=lobby?.start()??'';
- const worldView=await createWorldView(canvas,selectBuilding,controls.direction,progress,net);
+ const worldView=await createWorldView(canvas,selectBuilding,controls.direction,progress,net,hero);
+ const picker=createHeroPicker(root,{current:()=>hero,choose(id){hero=id;saveHero(id);void worldView.setHero(id);net?.setHero(id);}});
+ const slot=root.querySelector<HTMLElement>('#hero-hud .hud-label');if(slot)picker.attach(slot);
  net?.onStatus(render);
  window.addEventListener('storage',render);
  createClock(root,{setTime:worldView.setTime,preview:worldView.previewClock,subscribe:worldView.subscribeClock});await transact(()=>{}).catch(console.error);render();
  // Keep the loading screen up until the first frame of the world has been painted.
  await new Promise<void>(done=>{const check=()=>canvas.dataset.ready==='true'?done():requestAnimationFrame(check);check();});
- if(invited)lobby!.prompt(invited);
+ // The invite's name prompt waits for the hero pick.
+ void picker.start().then(()=>{if(invited)lobby!.prompt(invited);});
  // Testing hook for scripts/coop-browser.mjs.
  (window as any).__COOP__=net&&{net,stats:()=>({status:net.status(),room:net.room(),you:net.you(),...net.stats,...net.timeline,rtt:net.rtt()})};
 }

@@ -211,3 +211,38 @@ func TestStaticSiteKeepsSinglePageRoutes(t *testing.T) {
 		t.Fatal("path traversal served a file")
 	}
 }
+
+// heroes maps each player's name to the hero the snapshot carries.
+func heroes(s map[string]any) map[string]any {
+	out := map[string]any{}
+	for _, p := range s["players"].([]any) {
+		out[p.(map[string]any)["name"].(string)] = p.(map[string]any)["h"]
+	}
+	return out
+}
+
+func TestEveryPlayerSeesEachOthersHeroPick(t *testing.T) {
+	ts, _ := newTestServer(t)
+	ember := hello("Ayu", "")
+	ember["hero"] = "ember-warden"
+	a, wa := dial(t, ts, ember)
+	if got := heroes(wa["state"].(map[string]any)); got["Ayu"] != "ember-warden" {
+		t.Fatalf("welcome heroes %v", got)
+	}
+	// A client from before hero picks sends none and plays the default; an unknown hero changes nothing.
+	b, _ := dial(t, ts, hello("Bima", wa["room"].(string)))
+	b.send(map[string]any{"t": "hero", "h": "knight-of-nothing"})
+	s := a.snapshot(0)
+	for len(s["players"].([]any)) < 2 {
+		s = a.snapshot(0)
+	}
+	if got := heroes(s); got["Ayu"] != "ember-warden" || got["Bima"] != "rift-runner" {
+		t.Fatalf("heroes after join %v", got)
+	}
+	a.send(map[string]any{"t": "hero", "h": "rift-runner"})
+	b.send(map[string]any{"t": "hero", "h": "ember-warden"})
+	tick := s["tick"].(float64) + 4
+	if got := heroes(b.snapshot(tick)); got["Ayu"] != "rift-runner" || got["Bima"] != "ember-warden" {
+		t.Fatalf("heroes after picks %v", got)
+	}
+}

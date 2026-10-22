@@ -58,6 +58,7 @@ type Input struct {
 type Player struct {
 	ID     string
 	Name   string
+	Hero   string // which hero the player picked (room.CleanHero); only clients draw it
 	Slot   int
 	X, Y   float64 // world px of the foot
 	F      Fighter

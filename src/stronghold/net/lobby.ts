@@ -1,4 +1,5 @@
 import type {Net,JoinError} from './client';
+import {DEFAULT_HERO,heroInfo,isHero} from '../heroes';
 // Co-op rooms in the HUD: a chip under the clock shows the room and how many heroes are in it; its panel copies
 // the invite link, lists the party and joins or creates a room with a guest name (no accounts). Playing alone is
 // a room with one player; if the server cannot be reached the Stronghold falls back to the offline solo game.
@@ -43,8 +44,8 @@ export function createLobby(root:HTMLElement,net:Net){
   q<HTMLElement>('.coop-room').hidden=!online;q('.coop-room-code').textContent=net.room();
   q('.coop-ping').textContent=online&&net.rtt()?`${Math.round(net.rtt())} ms`:s==='reconnecting'?'Reconnecting…':'';
   q('.coop-offline').textContent=online?'Leave room · play offline':'Play offline';q<HTMLElement>('.coop-offline').hidden=!online;
-  const list=q<HTMLUListElement>('.coop-players'),players=net.latest()?.players??[],key=players.map(p=>p.id+p.name+Math.ceil(p.hp)).join();
-  if(list.dataset.key!==key){list.dataset.key=key;list.replaceChildren(...players.map(p=>{const li=document.createElement('li');const n=document.createElement('span');n.textContent=p.name;const hp=document.createElement('small');hp.textContent=p.st==='die'?'Down':`${Math.ceil(p.hp)} / ${p.max}`;li.append(n,hp);if(p.id===net.you())li.dataset.you='true';return li;}));}
+  const list=q<HTMLUListElement>('.coop-players'),players=net.latest()?.players??[],key=players.map(p=>p.id+p.name+p.h+Math.ceil(p.hp)).join();
+  if(list.dataset.key!==key){list.dataset.key=key;list.replaceChildren(...players.map(p=>{const li=document.createElement('li');const n=document.createElement('span');n.textContent=p.name;const h=document.createElement('em');h.textContent=heroInfo(isHero(p.h)?p.h:DEFAULT_HERO).name;n.append(h);const hp=document.createElement('small');hp.textContent=p.st==='die'?'Down':`${Math.ceil(p.hp)} / ${p.max}`;li.append(n,hp);if(p.id===net.you())li.dataset.you='true';return li;}));}
   for(const b of el.querySelectorAll<HTMLButtonElement>('.coop-actions button'))b.disabled=s==='connecting';
  }
  // Join and leave notices from the roster in each snapshot.

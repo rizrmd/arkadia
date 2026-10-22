@@ -8,6 +8,7 @@ import type {Sun} from './daylight';
 import type {Walk} from './controls';
 import {loadImage} from '../app/loader';
 import type {Net} from './net/client';
+import {characters} from './heroes';
 // Revenants roaming the snow beyond the safe zone, the hero's hit points and their auto attack. The fight runs on
 // the arena's rules (combat.ts): the same hit points, damage, reach, hit stun and swing timing, with the reach
 // scaled to the Stronghold's smaller figures. Positions are ground tiles from the court origin, as in terrain.ts tilePoint().
@@ -34,7 +35,9 @@ const screen=(du:number,dv:number)=>({x:(du-dv)*64,y:(du+dv)*32});
 const tileOf=(f:Fighter):Tile=>({u:f.x,v:f.y});
 export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero:Hero;direction:()=>Walk;net?:Net}){
  const walkable=(p:Tile)=>{const w=tilePoint(p.u,p.v);return !o.hero.blocked(w.x,w.y);};
- const manifest=await (await fetch('/assets/characters/manifest.json')).json(),heroMeta:CharacterMeta=manifest.characters.hero,meta:CharacterMeta=manifest.characters.revenant;
+ // The fight times every hero by the knight's clips, as the co-op server does: each picked hero's swing, hit and
+ // fall are packed to the same lengths (scripts/pack-heroes.mjs).
+ const all=await characters(),heroMeta:CharacterMeta=all.hero,meta:CharacterMeta=all.revenant;
  const atlas=await loadImage('/assets/characters/'+meta.image+(meta.revision?`?v=${encodeURIComponent(meta.revision)}`:''));
  let seed=(Date.now()>>>0)||1;const random=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;};
  const start=o.hero.position(),h=new Fighter('hero',heroMeta.clips,toTile(start.x,start.y).u,toTile(start.x,start.y).v);

@@ -1,4 +1,4 @@
-import {PROTOCOL,TICK_MS,type EnemyState,type Hello,type Input,type PlayerState,type ServerMessage,type Snapshot,type Welcome} from './protocol';
+import {PROTOCOL,TICK_MS,type EnemyState,type Hello,type HeroPick,type Input,type PlayerState,type ServerMessage,type Snapshot,type Welcome} from './protocol';
 import {walkStep,navBlocker,type Column} from './movement';
 import {createTimeline,type Timed} from './timeline';
 import {DAY_MS} from '../daylight';
@@ -21,7 +21,7 @@ export function socketUrl(){
  const q=new URLSearchParams(location.search).get('server');if(q)return q;
  return (location.protocol==='https:'?'wss://':'ws://')+location.host+'/ws';
 }
-export function createNet(o:{direction:()=>Walk;maxHp:()=>number;url?:string}){
+export function createNet(o:{direction:()=>Walk;maxHp:()=>number;hero:()=>string;url?:string}){
  let ws:WebSocket|null=null,status:NetStatus='idle',room='',you='',name='',layout:string[]=[],lastError='',retries=0,retryTimer=0;
  let blocked:((x:number,y:number,pass:boolean)=>boolean)|null=null;
  let latest:Timed|null=null,rtt=0;const timeline=createTimeline(TICK_MS);
@@ -66,7 +66,7 @@ export function createNet(o:{direction:()=>Walk;maxHp:()=>number;url?:string}){
    clearTimeout(retryTimer);ws?.close();let settled=false;
    const socket=new WebSocket(o.url??socketUrl());ws=socket;
    const timer=setTimeout(()=>{if(!settled){settled=true;socket.close();reject(fail('timeout','The co-op server did not answer.'));}},8000);
-   socket.onopen=()=>{const hello:Hello={t:'hello',v:PROTOCOL,name:who,room:code,maxHp:o.maxHp()};socket.send(JSON.stringify(hello));};
+   socket.onopen=()=>{const hello:Hello={t:'hello',v:PROTOCOL,name:who,room:code,maxHp:o.maxHp(),hero:o.hero()};socket.send(JSON.stringify(hello));};
    socket.onmessage=e=>{
     if(settled){if(ws===socket)receive(String(e.data));return;}
     let m:ServerMessage;try{m=JSON.parse(String(e.data));}catch{return;}
@@ -124,6 +124,8 @@ export function createNet(o:{direction:()=>Walk;maxHp:()=>number;url?:string}){
  setInterval(()=>{if(ws?.readyState===WebSocket.OPEN)ws.send(JSON.stringify({t:'ping',c:performance.now()}));},1000);
  const api={
   join,leave,
+  // The picked hero, for the rest of the room; a later hello (rejoin) carries it too.
+  setHero(h:string){if(ws?.readyState===WebSocket.OPEN){const m:HeroPick={t:'hero',h};ws.send(JSON.stringify(m));}},
   status:()=>status,room:()=>room,you:()=>you,name:()=>name,error:()=>lastError,layout:()=>layout,rtt:()=>rtt,stats,timeline:timeline.stats,
   // In co-op the server's world replaces the local simulation, also while briefly reconnecting.
   active:()=>!!you&&(status==='online'||status==='reconnecting'),

@@ -1,4 +1,4 @@
-import {chromium} from 'playwright';import {spawn} from 'node:child_process';
+import {chromium} from 'playwright';import {spawn} from 'node:child_process';import {readFileSync} from 'node:fs';
 // Print (one per line) the dist/ files the Stronghold actually loads, so a release stages those and not the
 // 370 MB of documentation renders in public/. Serves dist/ with the built server/bin/arkadia, opens the game in
 // co-op and offline, walks the hero out through the gate, and records every same-origin file fetched.
@@ -18,5 +18,8 @@ try{
   await page.context().close();
  }
 }finally{await browser?.close();server.kill();}
+// Every pickable hero's atlas and picker portrait (src/stronghold/heroes.ts): one visit loads only the hero it plays.
+const {characters}=JSON.parse(readFileSync('dist/assets/characters/manifest.json','utf8'));
+for(const m of Object.values(characters))for(const f of [m.image,m.portrait])if(f)files.add('assets/characters/'+f);
 if(files.size<20)throw Error('Only '+files.size+' files loaded');
 console.log([...files].sort().join('\n'));

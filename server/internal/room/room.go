@@ -86,7 +86,7 @@ func (g *Registry) Create() (*Room, bool) {
 	seed, _ := rand.Int(rand.Reader, big.NewInt(1<<62))
 	clock := float64(now.UnixMilli()) / sim.DayMS
 	r := &Room{Code: code, reg: g, world: sim.NewWorld(g.nav, clock, seed.Uint64()), layout: g.layout,
-		join: make(chan joinReq), leave: make(chan *Client), input: make(chan inputMsg, 256), clients: map[*Client]bool{}, emptySince: now}
+		join: make(chan joinReq), leave: make(chan *Client), input: make(chan inputMsg, 256), pick: make(chan heroMsg, 16), clients: map[*Client]bool{}, emptySince: now}
 	g.rooms[code] = r
 	go r.run()
 	return r, true
@@ -122,6 +122,7 @@ func NewClient() *Client { return &Client{Send: make(chan []byte, 32)} }
 type joinReq struct {
 	client *Client
 	name   string
+	hero   string
 	maxHP  float64
 	reply  chan string
 }
@@ -129,6 +130,11 @@ type joinReq struct {
 type inputMsg struct {
 	client *Client
 	in     sim.Input
+}
+
+type heroMsg struct {
+	client *Client
+	hero   string
 }
 
 // Room is one co-op world and its connected players. Only run() touches the world.
@@ -140,6 +146,7 @@ type Room struct {
 	join       chan joinReq
 	leave      chan *Client
 	input      chan inputMsg
+	pick       chan heroMsg
 	clients    map[*Client]bool
 	emptySince time.Time
 	nextID     int
@@ -162,13 +169,13 @@ func (r *Room) Info() Info {
 }
 
 // Join adds a client's hero, returning an error code when refused. On success the welcome is already queued.
-func (r *Room) Join(c *Client, name string, maxHP float64) string {
+func (r *Room) Join(c *Client, name, hero string, maxHP float64) string {
 	if r.closed.Load() {
 		return ErrRoomNotFound
 	}
 	reply := make(chan string, 1)
 	select {
-	case r.join <- joinReq{c, name, maxHP, reply}:
+	case r.join <- joinReq{c, name, hero, maxHP, reply}:
 		return <-reply
 	case <-time.After(5 * time.Second):
 		return ErrRoomNotFound
@@ -187,6 +194,14 @@ func (r *Room) Leave(c *Client) {
 func (r *Room) Input(c *Client, in sim.Input) {
 	select {
 	case r.input <- inputMsg{c, in}:
+	default:
+	}
+}
+
+// SetHero switches a client's hero; a full queue drops it.
+func (r *Room) SetHero(c *Client, hero string) {
+	select {
+	case r.pick <- heroMsg{c, hero}:
 	default:
 	}
 }
@@ -246,6 +261,7 @@ func (r *Room) run() {
 				j.reply <- ErrRoomFull
 				continue
 			}
+			p.Hero = j.hero
 			j.client.player = p
 			r.clients[j.client] = true
 			r.players.Store(int32(len(r.clients)))
@@ -264,6 +280,10 @@ func (r *Room) run() {
 			if len(r.clients) == 0 {
 				stop()
 				r.emptySince = r.reg.now()
+			}
+		case m := <-r.pick:
+			if r.clients[m.client] {
+				m.client.player.Hero = m.hero
 			}
 		case m := <-r.input:
 			if r.clients[m.client] {
@@ -303,6 +323,19 @@ func (r *Room) broadcast() {
 		default:
 		}
 	}
+}
+
+// Heroes a player can pick (src/stronghold/heroes.ts); the first is the default.
+var Heroes = []string{"rift-runner", "ember-warden"}
+
+// CleanHero returns a known hero id, or the default and false.
+func CleanHero(hero string) (string, bool) {
+	for _, h := range Heroes {
+		if h == hero {
+			return h, true
+		}
+	}
+	return Heroes[0], false
 }
 
 // CleanName makes a guest name safe to show: printable, single-spaced, at most 16 characters.

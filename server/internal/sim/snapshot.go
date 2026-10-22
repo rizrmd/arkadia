@@ -6,6 +6,7 @@ import "math"
 type PlayerState struct {
 	ID       string  `json:"id"`
 	Name     string  `json:"name"`
+	Hero     string  `json:"h,omitempty"`
 	X        float64 `json:"x"`
 	Y        float64 `json:"y"`
 	HP       float64 `json:"hp"`
@@ -56,7 +57,7 @@ func (w *World) State() State {
 	s := State{Tick: w.Tick, Clock: round(w.Clock, 1e-6), Gate: GateState{w.Gate.Open, w.Gate.Frame, w.Gate.Passable()},
 		Players: make([]PlayerState, 0, len(w.Players)), Enemies: make([]EnemyState, 0, len(w.Enemies))}
 	for _, p := range w.Players {
-		s.Players = append(s.Players, PlayerState{ID: p.ID, Name: p.Name, X: round(p.X, .01), Y: round(p.Y, .01), HP: round(p.F.HP, .1), Max: p.MaxHP,
+		s.Players = append(s.Players, PlayerState{ID: p.ID, Name: p.Name, Hero: p.Hero, X: round(p.X, .01), Y: round(p.Y, .01), HP: round(p.F.HP, .1), Max: p.MaxHP,
 			State: p.F.State, Plays: p.F.Plays, Moving: p.Moving, Facing: p.F.Facing, Back: p.F.Back, Vertical: p.F.Vertical, Kills: p.Kills})
 	}
 	for _, e := range w.Enemies {
