@@ -22,4 +22,4 @@ const BASE='/assets/characters/';
 let manifest:Promise<{characters:Record<string,any>}>|null=null;
 export const characters=async()=>(await (manifest??=fetch(BASE+'manifest.json').then(r=>{if(!r.ok)throw Error('Character manifest missing');return r.json();}))).characters;
 export const atlasUrl=(m:{image:string;revision?:string})=>BASE+m.image+(m.revision?`?v=${encodeURIComponent(m.revision)}`:'');
-export const portraitUrl=(id:HeroId)=>`${BASE}portraits/${id}.webp`;
+export const portraitUrl=(id:HeroId)=>`${BASE}portraits/${id}.webp?v=${id==='ember-warden'?'painted-v3':'1'}`;

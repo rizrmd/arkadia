@@ -29,10 +29,20 @@ async function riftRunner(){
  return {id:'rift-runner',name:'Rift Runner',frames,actions:{idle:'idle',move:'run',attack:'pulse-shot',hit:'hurt',die:'death'},source:'public/rift-runner/v1/manifest.json'};
 }
 async function emberWarden(){
- const dir='public/ember-warden/v1/',m=await json(dir+'manifest.json');
- const frames=(action,d)=>{const c=m.clips.find(c=>c.id===`${action}-${d}`);if(!c)throw Error('Ember Warden has no '+action+'-'+d);
-  return {fps:c.fps,list:c.frames.map(f=>({file:dir+c.image.split('?')[0],rect:f.rect,pivot:f.pivot}))};};
- return {id:'ember-warden',name:'Ember Warden',frames,actions:{idle:'idle',move:'run',attack:'flame-fan',hit:'hurt',die:'death'},source:'public/ember-warden/v1/manifest.json'};
+ // Painted art was previously confined to review pages. Pack it into the actual game assets.
+ const dir='public/ember-warden/',atlas=await json(dir+'v3/atlas.json');
+ const frames=(action,d)=>{
+  // Turnaround and run study provide real unmirrored headings. The authored combat
+  // animation export currently covers SE only; reuse that painted clip for other headings.
+  if(d!=='SE'&&(action==='idle'||action==='run')){
+   const files=action==='idle'?[`idle-${d}.png`]:[0,1,2,3].map(i=>`run-${d}-${i}.png`);
+   return {fps:action==='idle'?6:8,list:files.map(file=>({file:dir+'v2/sprites/'+file,rect:[0,0,384,384],pivot:[192,320]}))};
+  }
+  const entries=Object.entries(atlas.frames).filter(([name])=>name.startsWith(action+'-SE-'));
+  if(!entries.length)throw Error('Missing painted Ember clip '+action);
+  return {fps:1000/entries[0][1].duration,list:entries.map(([,f])=>({file:dir+'v3/ember-warden-SE.png',rect:[f.frame.x,f.frame.y,f.frame.w,f.frame.h],pivot:[192,320]}))};
+ };
+ return {id:'ember-warden',name:'Ember Warden',frames,actions:{idle:'idle',move:'run',attack:'flame-fan',hit:'hurt',die:'death'},source:'public/ember-warden/v3/atlas.json + public/ember-warden/v2/manifest.json'};
 }
 
 const raws=new Map();
@@ -86,5 +96,5 @@ async function pack(hero){
 }
 
 const path=OUT+'manifest.json',manifest=await json(path);
-for(const hero of [await riftRunner(),await emberWarden()])manifest.characters[hero.id]=await pack(hero);
+for(const hero of (process.argv.includes('--ember-only')?[await emberWarden()]:[await riftRunner(),await emberWarden()]))manifest.characters[hero.id]=await pack(hero);
 await fs.writeFile(path,JSON.stringify(manifest,null,1));
