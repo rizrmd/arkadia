@@ -43,6 +43,8 @@ mkdir -p "$STAGE/site/monster-scaling"; cp docs/monster-scaling/*.webp docs/mons
 mkdir -p "$STAGE/site/locked-zoom-aoe"; cp docs/locked-zoom-aoe/*.webp docs/locked-zoom-aoe/*.json docs/assets/locked-zoom-aoe-ref.png "$STAGE/site/locked-zoom-aoe/"
 mkdir -p "$STAGE/site/go-webp-cache"; cp docs/go-webp-cache/*.webp docs/go-webp-cache/*.json "$STAGE/site/go-webp-cache/"
 mkdir -p "$STAGE/site/loading-screen"; cp docs/loading-screen/*.webp docs/loading-screen/*.json "$STAGE/site/loading-screen/"
+mkdir -p "$STAGE/site/pixi-ui"; cp docs/pixi-ui/*.webp docs/pixi-ui/*.json "$STAGE/site/pixi-ui/"
+mkdir -p "$STAGE/site/typography/v2"; cp docs/typography/v2/*.webp docs/typography/v2/*.json "$STAGE/site/typography/v2/"
 mkdir -p "$STAGE/site/ui"; cp assets-src/ui/hero-card-frame*.png "$STAGE/site/ui/"
 echo "Staged $(wc -l < "$list") files, $(du -sh "$STAGE" | cut -f1) in $STAGE"
 
