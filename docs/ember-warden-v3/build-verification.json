@@ -1,0 +1,11 @@
+{
+  "status": "clean-merged-checkout-build-pass",
+  "command": "npm run build",
+  "checks": [
+    "TypeScript noEmit",
+    "Vite production build"
+  ],
+  "modules": 38,
+  "verifiedHead": "5e38f6e9eca813be250bc93a063c97dd8303313a",
+  "sharedWorkspace": "Unrelated hero-selection work-in-progress preserved; no changes made to gameplay files."
+}
