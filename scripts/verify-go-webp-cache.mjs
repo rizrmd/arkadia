@@ -87,8 +87,13 @@ try {
     totalWebpBytes += r.webpBytes;
   }
 
+  const m = labels.map(l => l.match(/of ([\d.]+) MB/)).find(Boolean);
+  const initialLoadingMB = m ? Number(m[1]) : 0;
+  assert(initialLoadingMB > 0 && initialLoadingMB <= 8.0, `Expected initial loading <= 8.0 MB, got ${initialLoadingMB} MB (${labels.join(', ')})`);
+
   const report = {
     verifiedAt: new Date().toISOString(),
+    initialLoadingMB,
     pngFilesConverted: pngResponses.length,
     totalOriginalMB: +(totalOriginalBytes / 1e6).toFixed(2),
     totalWebpMB: +(totalWebpBytes / 1e6).toFixed(2),
@@ -100,6 +105,7 @@ try {
 
   await fs.writeFile(`${out}/verification.json`, JSON.stringify(report, null, 2));
   console.log(JSON.stringify({
+    initialLoadingMB: report.initialLoadingMB,
     pngFilesConverted: report.pngFilesConverted,
     totalOriginalMB: report.totalOriginalMB,
     totalWebpMB: report.totalWebpMB,

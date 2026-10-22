@@ -58,6 +58,10 @@ export const LIGHT_SPRITES:Record<string,Anchor[]>={
   {x:231,y:277,size:28,kind:'fire',radius:110,drop:130,intensity:1},
   {x:537,y:277,size:28,kind:'fire',radius:110,drop:130,intensity:1}
  ],
+ '/modular-stronghold/v2/full-gateway-v7-closed.webp':[
+  {x:231,y:277,size:28,kind:'fire',radius:110,drop:130,intensity:1},
+  {x:537,y:277,size:28,kind:'fire',radius:110,drop:130,intensity:1}
+ ],
  '/modular-stronghold/v2/full-gateway-v3-open.webp':[
   {x:231,y:277,size:28,kind:'fire',radius:110,drop:130,intensity:1},
   {x:537,y:277,size:28,kind:'fire',radius:110,drop:130,intensity:1}

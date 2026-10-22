@@ -16,11 +16,11 @@ import {characters,atlasUrl,DEFAULT_HERO,type HeroId} from './heroes';
 export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Building)=>void,direction:()=>Walk,progress:Progress=()=>{},net?:Net,pick:HeroId=DEFAULT_HERO){
  const ctx=canvas.getContext('2d')!,environment=environmentSprites(),images=new Map<string,HTMLImageElement>();
  let gateOpen=false,gatePassable=false;
- const spriteFile=(id:Building,level:number)=>id==='forge'?`/fortress-ui/forge-${level}.webp`:id==='gate'?'/modular-stronghold/v2/full-gateway-v7-open.webp':`/assets/${slots[id].asset}.png`;
+ const spriteFile=(id:Building,level:number)=>id==='forge'?`/fortress-ui/forge-${level}.webp`:id==='gate'?'/modular-stronghold/v2/full-gateway-v7-closed.webp':`/assets/${slots[id].asset}.png`;
  const paving='/modular-stronghold/v2/paving-warm-texture.png',snow='/modular-stronghold/v2/snow-soft-texture.png';
  // Loading screen: downloads fill the bar in proportion to their bytes (the atlases of the picked hero and the
  // revenants, which hero.ts and encounters.ts load later, are fetched in the same batch), then the hero and the first world raster.
- const files=[...new Set([FOUNDATION_SOIL,FOUNDATION_MOSS,FOUNDATION_DRIFT,paving,snow,'/modular-stronghold/v2/full-gateway-v7-closed.webp','/modular-stronghold/v2/full-gateway-v7-sheet.webp',...environment.map(p=>p.file),...buildings.flatMap(b=>[1,2,3].map(l=>spriteFile(b,l)))])];
+ const files=[...new Set([FOUNDATION_SOIL,FOUNDATION_MOSS,FOUNDATION_DRIFT,paving,snow,'/modular-stronghold/v2/full-gateway-v7-closed.webp',...environment.map(p=>p.file),...buildings.flatMap(b=>[1,2,3].map(l=>spriteFile(b,l)))])];
  const DOWNLOAD=920,steps=1000,mb=(n:number)=>(n/1e6).toFixed(1);let loaded=DOWNLOAD;
  let queued=0;const report=()=>{queued=0;const {received,expected}=downloadedBytes();progress(Math.floor(DOWNLOAD*received/Math.max(1,expected)),steps,`Loading artwork · ${mb(received)} of ${mb(expected)} MB`);};
  const stopReport=onDownload(()=>{queued||=requestAnimationFrame(report);});progress(0,steps,'Loading artwork');
@@ -29,10 +29,11 @@ export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Buil
   await Promise.all([...artwork,...[atlas[pick]??atlas[DEFAULT_HERO],atlas.revenant].map(m=>loadImage(atlasUrl(m)))]);
  }finally{stopReport();cancelAnimationFrame(queued);}
  report();
+ const gateSheetImg=new Image();gateSheetImg.src='/modular-stronghold/v2/full-gateway-v7-sheet.webp';
  let w=0,h=0,dpr=1,scale=1,cx=WORLD.width/2,cy=385,selected:Building|null=null,levels:State['levels']|undefined;
  // Standing buildings: a new game has only the tent and the gateway (economy.ts); ?buildings=all shows every one.
  let built=new Set<Building>(LEGACY_LAYOUT?buildings:START_BUILT);
- const material=(file:string,size:number)=>{const p=ctx.createPattern(images.get(file)!,'repeat')!;p.setTransform(new DOMMatrix([size,size/2,-size,size/2,COURT.x,COURT.y]));return p;};
+ const material=(file:string,size:number)=>{const img=images.get(file)!,s=size*1024/img.width,p=ctx.createPattern(img,'repeat')!;p.setTransform(new DOMMatrix([s,s/2,-s,s/2,COURT.x,COURT.y]));return p;};
  const snowPattern=material(snow,.7),pavingPattern=material(paving,.22);
  const polygon=(corners:number[][])=>{const path=new Path2D();corners.forEach(([u,v],i)=>{const p=tilePoint(u,v);i?path.lineTo(p.x,p.y):path.moveTo(p.x,p.y);});path.closePath();return path;};
  // Paving runs half a tile under the rear walls so snow cannot show between the
@@ -66,7 +67,7 @@ export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Buil
  for(const layer of [snowLayer,surface])layer.style.cssText='position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform;pointer-events:none';
  viewport.append(snowLayer,surface);canvas.before(viewport);
  // Two source diagonals form a rectangular repeat of the isometric snow.
- const snowImage=images.get(snow)!,periodX=snowImage.width*1.4,periodY=snowImage.height*.7;
+ const periodX=1024*1.4,periodY=1024*.7;
  const repeat=document.createElement('canvas');repeat.width=Math.ceil(periodX);repeat.height=Math.ceil(periodY);const rc=repeat.getContext('2d')!;
  rc.scale(repeat.width/periodX,repeat.height/periodY);rc.fillStyle=snowPattern;rc.fillRect(0,0,periodX,periodY);
  snowLayer.style.backgroundImage=`url(${repeat.toDataURL()})`;snowLayer.style.backgroundSize=`${periodX}px ${periodY}px`;
@@ -173,7 +174,7 @@ export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Buil
  // The player's hero walks the court in its own layer over the world; the camera eases after it.
  progress(loaded,steps,'Waking the hero');
  const sheet:GateSheet=await (await fetch(GATE_SHEET)).json();
- const doors=createGateDoors(viewport,images.get('/modular-stronghold/v2/full-gateway-v7-closed.webp')!,images.get('/modular-stronghold/v2/full-gateway-v7-sheet.webp')!,sheet,open=>{gatePassable=open;setGateOpen(open);hero.setScene(objects);party?.setScene(objects);},{raster,foundation:foundationLayers(objects.find(p=>p.id==='gate')!,images.get(FOUNDATION_SOIL)!,images.get(FOUNDATION_DRIFT),images.get(FOUNDATION_MOSS))!,revision:lighting.spriteRevision,torches:lighting.torches,shade:(source,target)=>lighting.shadeSprite(source,target,{left:442,top:798-sheet.region.h*.97,width:270,height:sheet.region.h})});
+ const doors=createGateDoors(viewport,images.get('/modular-stronghold/v2/full-gateway-v7-closed.webp')!,gateSheetImg,sheet,open=>{gatePassable=open;setGateOpen(open);hero.setScene(objects);party?.setScene(objects);},{raster,foundation:foundationLayers(objects.find(p=>p.id==='gate')!,images.get(FOUNDATION_SOIL)!,images.get(FOUNDATION_DRIFT),images.get(FOUNDATION_MOSS))!,revision:lighting.spriteRevision,torches:lighting.torches,shade:(source,target)=>lighting.shadeSprite(source,target,{left:442,top:798-sheet.region.h*.97,width:270,height:sheet.region.h})});
  gateOccluder=doors.canvas;for(const p of objects)if(p.id==='gate')p.occluder=gateOccluder;
  lighting.subscribe(()=>doors.refreshLighting());
  // Combat (encounters.ts) steers the idle hero toward a revenant in reach and plays its swing, hit and death clips.

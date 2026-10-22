@@ -9,6 +9,7 @@ import (
 	"image/draw"
 	"image/png"
 	"io/fs"
+	"math"
 	"net/http"
 	"os"
 	"path"
@@ -19,10 +20,11 @@ import (
 	"time"
 
 	"github.com/HugoSmits86/nativewebp"
+	xdraw "golang.org/x/image/draw"
 )
 
 // Priority Stronghold game PNGs warmed first so initial page load and /asset-sizes.json
-// immediately see cached lossless WebP files without waiting to scan documentation folders.
+// immediately see cached WebP files without waiting to scan documentation folders.
 var startupPNGs = []string{
 	"/foundation-transitions/soil-moss.png",
 	"/foundation-transitions/moss.png",
@@ -54,7 +56,34 @@ var startupPNGs = []string{
 	"/assets/characters/hero.png",
 }
 
-// webpCacheDir returns the directory where converted lossless WebP files are persisted.
+// maxDisplayWidths maps oversized Stronghold environment/terrain PNGs (authored at 1024-1200 px)
+// to their maximum possible rendered backing-store width (@1.75x of world px in world-view.ts).
+// Assets with source-pixel coordinate tables (characters/manifest.json, stronghold/light-anchors.ts)
+// are intentionally omitted so their exact source pixel dimensions remain untouched.
+var maxDisplayWidths = map[string]int{
+	"/foundation-transitions/soil-moss.png":          160,
+	"/foundation-transitions/moss.png":               128,
+	"/modular-stronghold/v2/snowdrift-edge.png":      350,
+	"/modular-stronghold/v2/paving-warm-texture.png": 400,
+	"/modular-stronghold/v2/snow-soft-texture.png":   640,
+	"/modular-stronghold/v2/rampart-se.png":          624,
+	"/modular-stronghold/v2/rampart-ne.png":          624,
+	"/modular-stronghold/v2/bastion.png":             320,
+	"/modular-stronghold/v2/spruce-mature.png":       336,
+	"/modular-stronghold/v2/fir-young.png":           336,
+	"/modular-stronghold/v2/cliff-snow.png":          560,
+	"/modular-stronghold/v2/boulders-snow.png":       324,
+	"/modular-stronghold/v2/weeds-edge.png":          224,
+	"/modular-stronghold/v2/paving-worn.png":         342,
+	"/modular-stronghold/v2/wall-broken.png":         300,
+	"/modular-stronghold/v2/supply-cart.png":         256,
+	"/modular-stronghold/crate.png":                  256,
+	"/modular-stronghold/barrel.png":                 256,
+}
+
+const cacheSchemaVersion = "v2"
+
+// webpCacheDir returns the directory where converted WebP files are persisted.
 func (s *Server) webpCacheDir() string {
 	if s.CacheDir != "" {
 		return s.CacheDir
@@ -62,7 +91,7 @@ func (s *Server) webpCacheDir() string {
 	if envDir := os.Getenv("WEBP_CACHE_DIR"); envDir != "" {
 		return envDir
 	}
-	return filepath.Join(s.Site, ".webp-cache")
+	return filepath.Join(s.Site, ".webp-cache-"+cacheSchemaVersion)
 }
 
 func (s *Server) pathLock(key string) *sync.Mutex {
@@ -111,9 +140,32 @@ func zeroTransparentPixels(pix []byte) {
 	}
 }
 
+// scaleCatmullRomNRGBA resizes src to targetW (preserving aspect ratio) using
+// unpremultiplied/premultiplied-safe Catmull-Rom bicubic resampling so transparent
+// edges never acquire dark fringes.
+func scaleCatmullRomNRGBA(src *image.NRGBA, targetW int) *image.NRGBA {
+	b := src.Bounds()
+	w, h := b.Dx(), b.Dy()
+	if targetW <= 0 || targetW >= w {
+		return src
+	}
+	targetH := max(1, int(math.Round(float64(h)*float64(targetW)/float64(w))))
+	// Resample in premultiplied RGBA so transparent pixels (alpha=0) cannot bleed into edges.
+	rgbaSrc := image.NewRGBA(image.Rect(0, 0, w, h))
+	draw.Draw(rgbaSrc, rgbaSrc.Bounds(), src, b.Min, draw.Src)
+	rgbaDst := image.NewRGBA(image.Rect(0, 0, targetW, targetH))
+	xdraw.CatmullRom.Scale(rgbaDst, rgbaDst.Bounds(), rgbaSrc, rgbaSrc.Bounds(), xdraw.Over, nil)
+
+	dst := image.NewNRGBA(image.Rect(0, 0, targetW, targetH))
+	draw.Draw(dst, dst.Bounds(), rgbaDst, image.Point{}, draw.Src)
+	zeroTransparentPixels(dst.Pix)
+	return dst
+}
+
 // ConvertPNGToWebP decodes pngFile, strips invisible RGB noise under alpha=0 pixels,
-// encodes it to lossless VP8L WebP, and atomically writes cacheFile with srcModTime.
-func ConvertPNGToWebP(pngFile, cacheFile string, srcModTime time.Time) (int64, error) {
+// applies display-exact @1.75x Catmull-Rom sizing when configured for the asset path,
+// encodes to VP8L WebP, and atomically writes cacheFile with srcModTime.
+func ConvertPNGToWebP(cleanURLPath, pngFile, cacheFile string, srcModTime time.Time) (int64, error) {
 	in, err := os.Open(pngFile)
 	if err != nil {
 		return 0, err
@@ -125,6 +177,10 @@ func ConvertPNGToWebP(pngFile, cacheFile string, srcModTime time.Time) (int64, e
 	}
 
 	nrgba := cleanTransparentNRGBA(img)
+	if maxW, ok := maxDisplayWidths[cleanURLPath]; ok && nrgba.Bounds().Dx() > maxW {
+		nrgba = scaleCatmullRomNRGBA(nrgba, maxW)
+	}
+
 	var buf bytes.Buffer
 	if err := nativewebp.Encode(&buf, nrgba, nil); err != nil {
 		return 0, err
@@ -148,7 +204,8 @@ func ConvertPNGToWebP(pngFile, cacheFile string, srcModTime time.Time) (int64, e
 // ensureWebP returns the path and FileInfo of the cached WebP file for cleanURLPath,
 // converting the source PNG on cache miss or when the source PNG's mtime changed.
 func (s *Server) ensureWebP(cleanURLPath, pngFile string, srcStat os.FileInfo) (string, os.FileInfo, bool, error) {
-	rel := strings.TrimPrefix(path.Clean(cleanURLPath), "/")
+	normPath := "/" + strings.TrimPrefix(path.Clean(cleanURLPath), "/")
+	rel := strings.TrimPrefix(normPath, "/")
 	cacheRoot := filepath.Clean(s.webpCacheDir())
 	cacheFile := filepath.Join(cacheRoot, filepath.FromSlash(rel)+".webp")
 	if !strings.HasPrefix(cacheFile, cacheRoot+string(filepath.Separator)) {
@@ -168,7 +225,7 @@ func (s *Server) ensureWebP(cleanURLPath, pngFile string, srcStat os.FileInfo) (
 	}
 
 	start := time.Now()
-	size, err := ConvertPNGToWebP(pngFile, cacheFile, srcStat.ModTime())
+	size, err := ConvertPNGToWebP(normPath, pngFile, cacheFile, srcStat.ModTime())
 	if err != nil {
 		return "", nil, false, err
 	}
@@ -177,8 +234,8 @@ func (s *Server) ensureWebP(cleanURLPath, pngFile string, srcStat os.FileInfo) (
 		return "", nil, false, err
 	}
 	if s.Log != nil {
-		s.Log.Info("converted png to lossless webp",
-			"path", cleanURLPath,
+		s.Log.Info("converted png to webp",
+			"path", normPath,
 			"pngBytes", srcStat.Size(),
 			"webpBytes", size,
 			"savedPct", fmt.Sprintf("%.1f%%", float64(srcStat.Size()-size)*100/float64(max(1, srcStat.Size()))),
@@ -189,7 +246,7 @@ func (s *Server) ensureWebP(cleanURLPath, pngFile string, srcStat os.FileInfo) (
 }
 
 // servePNGAsWebP intercepts a .png static file request, converts & caches it as
-// lossless WebP, and serves the cached WebP. Returns false to fall back to raw PNG.
+// WebP, and serves the cached WebP. Returns false to fall back to raw PNG.
 func (s *Server) servePNGAsWebP(w http.ResponseWriter, r *http.Request, cleanURLPath, pngFile string, srcStat os.FileInfo) bool {
 	if !acceptsWebP(r) {
 		return false
@@ -221,8 +278,8 @@ func (s *Server) servePNGAsWebP(w http.ResponseWriter, r *http.Request, cleanURL
 	return true
 }
 
-// WarmWebPCache converts and caches the priority Stronghold PNG assets (plus any
-// already-cached or small site PNGs) so startup downloads and /asset-sizes.json are ready.
+// WarmWebPCache converts and caches the priority Stronghold PNG assets so startup
+// downloads and /asset-sizes.json are ready immediately.
 func (s *Server) WarmWebPCache(ctx context.Context) {
 	siteRoot := filepath.Clean(s.Site)
 	for _, relURL := range startupPNGs {
@@ -241,12 +298,11 @@ func (s *Server) WarmWebPCache(ctx context.Context) {
 }
 
 // serveAssetSizes serves /asset-sizes.json with byte counts updated to reflect the
-// cached lossless WebP size for every PNG asset.
+// cached WebP size for every PNG asset.
 func (s *Server) serveAssetSizes(w http.ResponseWriter, r *http.Request) {
 	siteRoot := filepath.Clean(s.Site)
 	sizes := map[string]int64{}
 
-	// Load static build asset-sizes.json if present; otherwise walk s.Site.
 	rawPath := filepath.Join(siteRoot, "asset-sizes.json")
 	if data, err := os.ReadFile(rawPath); err == nil {
 		_ = json.Unmarshal(data, &sizes)
@@ -257,7 +313,7 @@ func (s *Server) serveAssetSizes(w http.ResponseWriter, r *http.Request) {
 				return nil
 			}
 			if d.IsDir() {
-				if d.Name() == ".webp-cache" {
+				if strings.HasPrefix(d.Name(), ".webp-cache") {
 					return filepath.SkipDir
 				}
 				return nil
@@ -276,7 +332,6 @@ func (s *Server) serveAssetSizes(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if acceptsWebP(r) {
-		// Ensure startup PNGs are warmed so their WebP sizes are always exact.
 		s.WarmWebPCache(r.Context())
 
 		cacheRoot := filepath.Clean(s.webpCacheDir())

@@ -21,6 +21,6 @@ try{
 // Every pickable hero's atlas, picker portrait and picker card frames (src/stronghold/heroes.ts, style.css).
 const {characters}=JSON.parse(readFileSync('dist/assets/characters/manifest.json','utf8'));
 for(const m of Object.values(characters))for(const f of [m.image,m.portrait])if(f)files.add('assets/characters/'+f);
-for(const f of ['ui/hero-card-frame.webp','ui/hero-card-frame-active.webp','ui/thumbstick-base.webp','ui/thumbstick-knob.webp'])files.add(f);
+for(const f of ['ui/hero-card-frame.webp','ui/hero-card-frame-active.webp','ui/thumbstick-base.webp','ui/thumbstick-knob.webp','modular-stronghold/v2/full-gateway-v7-open.webp','modular-stronghold/v2/full-gateway-v7-sheet.webp'])files.add(f);
 if(files.size<20)throw Error('Only '+files.size+' files loaded');
 console.log([...files].sort().join('\n'));

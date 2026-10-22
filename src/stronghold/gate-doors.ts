@@ -28,8 +28,13 @@ export function createGateDoors(layer:HTMLElement,gateway:HTMLImageElement,sheet
   const torchesLit=!!light.torches?.(),activeFlame=torchesLit?flamePose:-1;
   if(index!==shown||lit!==light.revision()||activeFlame!==shownFlame){
    shown=index;lit=light.revision();shownFlame=activeFlame;
-   const sw=(sheet.naturalWidth||frame.w*meta.columns)/meta.columns,sh=(sheet.naturalHeight||frame.h*rows)/rows;
-   raw.globalCompositeOperation='copy';raw.drawImage(sheet,(index%meta.columns)*sw,Math.floor(index/meta.columns)*sh,sw,sh,0,0,frame.w,frame.h);
+   raw.globalCompositeOperation='copy';
+   if(sheet.complete&&sheet.naturalWidth){
+    const sw=(sheet.naturalWidth||frame.w*meta.columns)/meta.columns,sh=(sheet.naturalHeight||frame.h*rows)/rows;
+    raw.drawImage(sheet,(index%meta.columns)*sw,Math.floor(index/meta.columns)*sh,sw,sh,0,0,frame.w,frame.h);
+   }else if(gateway.complete&&gateway.naturalWidth){
+    raw.drawImage(gateway,0,0,gateway.naturalWidth,gateway.naturalHeight,0,0,frame.w,frame.h);
+   }
    raw.globalCompositeOperation='source-over';
    if(gateway.complete&&gateway.naturalWidth){const gx=gateway.naturalWidth/frame.w,gy=gateway.naturalHeight/frame.h;for(const p of pierPatches)raw.drawImage(gateway,p.x*gx,p.y*gy,p.w*gx,p.h*gy,p.x,p.y,p.w,p.h);}
    if(light.foundation){
@@ -53,6 +58,7 @@ export function createGateDoors(layer:HTMLElement,gateway:HTMLImageElement,sheet
   if(!light.torches?.()||index!==target||pointerHeld||document.hidden||reduced.matches||!TORCH_FRAMES[0].complete)return;
   flameTimer=window.setTimeout(()=>{flamePose=(flamePose+1)%3;paint();},160);
  }
+ if(!sheet.complete)sheet.addEventListener('load',()=>{shown=-1;paint();},{once:true});
  torchAssetsReady.then(()=>{shownFlame=-2;paint();}).catch(()=>{});
  window.addEventListener('pointerdown',()=>{pointerHeld=true;clearTimeout(flameTimer);flameTimer=0;},{passive:true});
  window.addEventListener('pointerup',()=>{pointerHeld=false;scheduleFlames();},{passive:true});
