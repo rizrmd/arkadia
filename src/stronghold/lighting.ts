@@ -177,6 +177,7 @@ export function createLighting(o:{surface:HTMLCanvasElement;snowLayer:HTMLElemen
   // Every camera frame: follow the surface; the flicker layer rests until the camera stops.
   place(transform:string){flames.place(transform);flicker.style.transform=lightmap.style.transform=bloom.style.transform=torchBloom.style.transform=transform;moving=Date.now();if(!flicker.classList.contains('moving'))flicker.classList.add('moving');clearTimeout(still);still=window.setTimeout(()=>{flicker.classList.remove('moving');tick();},300);},
   setScene,capture,setTime,preview,setShadow,shadeSprite,spriteRevision:()=>spriteRevision,
+  torches:()=>torchesOn(current.t),
   setClockSource(f:(()=>number|null)|null){live=f;tick();},
   sun:()=>sun,
   subscribe(f:(s:ClockState)=>void){listeners.add(f);f(clockState());return ()=>listeners.delete(f);}

@@ -12,6 +12,7 @@ export const TORCHES=[
 export const torchesOn=(time:number)=>phaseOf(time)==='Night';
 
 const frames=Array.from({length:4},(_,i)=>{const image=new Image();image.src=`/realistic-torch/frame-${i}.webp`;return image;});
+export const TORCH_FRAMES=frames;
 export const torchAssetsReady=Promise.all(frames.map(image=>image.decode()));
 const W=24,H=39,TOP=15.75;
 // Keep source proportions and enough texels for the maximum 2.2× camera zoom.

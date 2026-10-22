@@ -16,11 +16,11 @@ import {characters,atlasUrl,DEFAULT_HERO,type HeroId} from './heroes';
 export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Building)=>void,direction:()=>Walk,progress:Progress=()=>{},net?:Net,pick:HeroId=DEFAULT_HERO){
  const ctx=canvas.getContext('2d')!,environment=environmentSprites(),images=new Map<string,HTMLImageElement>();
  let gateOpen=false,gatePassable=false;
- const spriteFile=(id:Building,level:number)=>id==='forge'?`/fortress-ui/forge-${level}.webp`:id==='gate'?'/modular-stronghold/v2/full-gateway-v3-open.webp':`/assets/${slots[id].asset}.png`;
+ const spriteFile=(id:Building,level:number)=>id==='forge'?`/fortress-ui/forge-${level}.webp`:id==='gate'?'/modular-stronghold/v2/full-gateway-v4-open.webp':`/assets/${slots[id].asset}.png`;
  const paving='/modular-stronghold/v2/paving-warm-texture.png',snow='/modular-stronghold/v2/snow-soft-texture.png';
  // Loading screen: downloads fill the bar in proportion to their bytes (the atlases of the picked hero and the
  // revenants, which hero.ts and encounters.ts load later, are fetched in the same batch), then the hero and the first world raster.
- const files=[...new Set([FOUNDATION_SOIL,FOUNDATION_MOSS,paving,snow,'/modular-stronghold/v2/full-gateway-v3-closed.webp','/modular-stronghold/v2/full-gateway-v3-sheet.webp',...environment.map(p=>p.file),...buildings.flatMap(b=>[1,2,3].map(l=>spriteFile(b,l)))])];
+ const files=[...new Set([FOUNDATION_SOIL,FOUNDATION_MOSS,paving,snow,'/modular-stronghold/v2/full-gateway-v4-closed.webp','/modular-stronghold/v2/full-gateway-v4-sheet.webp',...environment.map(p=>p.file),...buildings.flatMap(b=>[1,2,3].map(l=>spriteFile(b,l)))])];
  const DOWNLOAD=920,steps=1000,mb=(n:number)=>(n/1e6).toFixed(1);let loaded=DOWNLOAD;
  let queued=0;const report=()=>{queued=0;const {received,expected}=downloadedBytes();progress(Math.floor(DOWNLOAD*received/Math.max(1,expected)),steps,`Loading artwork · ${mb(received)} of ${mb(expected)} MB`);};
  const stopReport=onDownload(()=>{queued||=requestAnimationFrame(report);});progress(0,steps,'Loading artwork');
@@ -41,7 +41,8 @@ export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Buil
  // Bake the soft ground shadow once. It must never run a blur filter while panning.
  const shadow=document.createElement('canvas'),shadowLeft=COURT.x-15*64-64,shadowTop=COURT.y-64;
  shadow.width=2048;shadow.height=1088;const shadowCtx=shadow.getContext('2d')!;shadowCtx.translate(-shadowLeft,-shadowTop);shadowCtx.strokeStyle='#29392d26';shadowCtx.lineWidth=30;shadowCtx.filter='blur(10px)';shadowCtx.stroke(court);
- function makeObjects(all=false){return [...environment.map(p=>({...p,selected:false})),...buildings.filter(id=>all||built.has(id)).map(id=>{const s=slots[id],c=calibration(id);return {layer:id==='gate'?'foreground' as const:'world' as const,id,...s,foot:s.pivot,shear:c.shear,vertical:c.vertical,depth:s.y,opacity:1,file:spriteFile(id,levels?.[id]||1),selected:id===selected};})].sort((a,b)=>({ground:0,backdrop:1,world:2,foreground:3})[a.layer]-({ground:0,backdrop:1,world:2,foreground:3})[b.layer]||a.depth-b.depth).map(p=>({...p,image:images.get(p.file)!,height:images.get(p.file)!.height*p.width/images.get(p.file)!.width}));}
+ let gateOccluder:HTMLCanvasElement|undefined;
+ function makeObjects(all=false){return [...environment.map(p=>({...p,selected:false,occluder:undefined as HTMLCanvasElement|undefined})),...buildings.filter(id=>all||built.has(id)).map(id=>{const s=slots[id],c=calibration(id);return {layer:id==='gate'?'foreground' as const:'world' as const,id,...s,foot:s.pivot,shear:c.shear,vertical:c.vertical,depth:s.y,opacity:1,file:spriteFile(id,levels?.[id]||1),selected:id===selected,occluder:id==='gate'?gateOccluder:undefined};})].sort((a,b)=>({ground:0,backdrop:1,world:2,foreground:3})[a.layer]-({ground:0,backdrop:1,world:2,foreground:3})[b.layer]||a.depth-b.depth).map(p=>({...p,image:images.get(p.file)!,height:images.get(p.file)!.height*p.width/images.get(p.file)!.width}));}
  let objects=makeObjects(),signature='';canvas.dataset.buildings=[...built].join(',');
  // Rasterize the finite settlement once; camera movement only changes compositor
  // transforms. No tile creation, blur, canvas upload or eviction in a pan frame.
@@ -157,7 +158,8 @@ export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Buil
  // The player's hero walks the court in its own layer over the world; the camera eases after it.
  progress(loaded,steps,'Waking the hero');
  const sheet:GateSheet=await (await fetch(GATE_SHEET)).json();
- const doors=createGateDoors(viewport,images.get('/modular-stronghold/v2/full-gateway-v3-closed.webp')!,images.get('/modular-stronghold/v2/full-gateway-v3-sheet.webp')!,sheet,open=>{gatePassable=open;setGateOpen(open);hero.setScene(objects);party?.setScene(objects);},{revision:lighting.spriteRevision,shade:(source,target)=>lighting.shadeSprite(source,target,{left:442,top:790-sheet.region.h*.97,width:270,height:sheet.region.h})});
+ const doors=createGateDoors(viewport,images.get('/modular-stronghold/v2/full-gateway-v4-closed.webp')!,images.get('/modular-stronghold/v2/full-gateway-v4-sheet.webp')!,sheet,open=>{gatePassable=open;setGateOpen(open);hero.setScene(objects);party?.setScene(objects);},{revision:lighting.spriteRevision,torches:lighting.torches,shade:(source,target)=>lighting.shadeSprite(source,target,{left:442,top:790-sheet.region.h*.97,width:270,height:sheet.region.h})});
+ gateOccluder=doors.canvas;for(const p of objects)if(p.id==='gate')p.occluder=gateOccluder;
  lighting.subscribe(()=>doors.refreshLighting());
  // Combat (encounters.ts) steers the idle hero toward a revenant in reach and plays its swing, hit and death clips.
  let encounters:Awaited<ReturnType<typeof createEncounters>>|undefined;

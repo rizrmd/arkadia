@@ -11,9 +11,10 @@ export function environmentSprites(){
  for(let n=0;n<15;n+=5){
   parts.push(prop('rampart-se',n+2.5,0,356,'--foot:73%;--wall-shear:.03;'));
   parts.push(prop('rampart-ne',0,n+2.5,356,'--foot:74%;--wall-shear:-.13;'));
-  // Foreground wings end before the freestanding gateway at the front corner.
-  parts.push(prop('rampart-se',n+(n===10?1.8:2.5),15.5,n===10?270:356,'--foot:73%;--wall-shear:.03;'));
-  parts.push(prop('rampart-ne',15.5,n+(n===10?1.8:2.5),n===10?270:356,'--foot:74%;--wall-shear:-.13;'));
+  // Keep the terminal wings at the same masonry scale as the rest of the wall.
+  // Their end caps overlap behind the gateway towers, outside the central passage.
+  parts.push(prop('rampart-se',n+(n===10?1.8:2.5),15.5,356,'--foot:73%;--wall-shear:.03;'));
+  parts.push(prop('rampart-ne',15.5,n+(n===10?1.8:2.5),356,'--foot:74%;--wall-shear:-.13;'));
  }
  for(const [u,v] of [[0,0],[15,0],[0,15]])parts.push(prop('bastion',u,v,180));
  // Irregular masses and two distinct tree silhouettes replace the evenly spaced
