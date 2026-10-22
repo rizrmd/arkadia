@@ -165,7 +165,9 @@ export function createLighting(o:{surface:HTMLCanvasElement;snowLayer:HTMLElemen
  // Uprights that animate outside the cached world use the same local lightmap and emissive bloom.
  function shadeSprite(source:HTMLCanvasElement,target:HTMLCanvasElement,area:{left:number;top:number;width:number;height:number}){
   if(!spriteRevision)drawLightmap(current.ambient.map(v=>Math.round(v*255)),current.lights);
-  const c=target.getContext('2d')!;c.globalCompositeOperation='copy';c.drawImage(source,0,0);c.globalCompositeOperation='source-over';
+  const c=target.getContext('2d')!;c.globalCompositeOperation='copy';c.drawImage(source,0,0);
+  // Back semi-transparent edge pixels with dark mortar before multiply so opaque daylight never bleeds a light border.
+  c.globalCompositeOperation='destination-over';c.fillStyle='#4a3f33';c.fillRect(0,0,target.width,target.height);c.globalCompositeOperation='source-over';
   const sx=(area.left-left)*RES,sy=(area.top-top)*RES,sw=area.width*RES,sh=area.height*RES;
   c.globalCompositeOperation='multiply';c.drawImage(lightmap,sx,sy,sw,sh,0,0,target.width,target.height);
   if(current.glow){c.globalCompositeOperation='screen';c.globalAlpha=Math.round(current.glow*50)/50;c.drawImage(bloom,sx,sy,sw,sh,0,0,target.width,target.height);c.globalAlpha=1;}
