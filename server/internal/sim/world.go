@@ -61,8 +61,10 @@ func fullSpeed(sx, sy float64) float64 {
 
 // Input is one client step: a screen-space walk vector of length 0..1 for one tick.
 type Input struct {
-	Seq  uint32
-	X, Y float64
+	Choice string
+	Level  int
+	Seq    uint32
+	X, Y   float64
 }
 
 // Player is a connected hero.
@@ -74,6 +76,7 @@ type Player struct {
 	X, Y   float64 // world px of the foot
 	F      Fighter
 	MaxHP  float64
+	Run    Progression
 	Kills  int
 	Moving bool
 	Ack    uint32 // last input sequence applied
@@ -145,7 +148,7 @@ func (w *World) AddPlayer(id, name string, maxHP float64) *Player {
 	for used[slot] {
 		slot++
 	}
-	p := &Player{ID: id, Name: name, Slot: slot, MaxHP: clampMaxHP(maxHP), tokens: 2}
+	p := &Player{ID: id, Name: name, Slot: slot, MaxHP: clampMaxHP(maxHP), tokens: 2, Run: newProgression()}
 	w.place(p)
 	w.Players = append(w.Players, p)
 	return p
@@ -214,6 +217,7 @@ func (p *Player) Queue(in Input) {
 	if l := hypot(in.X, in.Y); l > 1 {
 		in.X, in.Y = in.X/l, in.Y/l
 	}
+	p.choose(in.Choice, in.Level)
 	p.queue = append(p.queue, in)
 	if len(p.queue) > maxQueue {
 		p.queue = p.queue[len(p.queue)-maxQueue:]
@@ -230,6 +234,12 @@ func (w *World) Step() {
 		w.walkInputs(p, dt)
 	}
 	for _, p := range w.Players {
+		if p.Run.Pending > 0 {
+			p.F.Immune = 200
+			if len(p.Run.Offers) == 0 {
+				w.roll(&p.Run)
+			}
+		}
 		p.F.Tick(dt)
 		if p.F.Alive() && p.F.State == Idle {
 			p.F.Pos = ToTile(p.X, p.Y)
@@ -448,11 +458,15 @@ func (w *World) heroStep(p *Player, dt float64) {
 		return
 	}
 	h.Recover()
+	if p.Run.Pending > 0 {
+		return
+	}
 	if h.State == Attack {
 		if h.Impact() {
-			for _, f := range swingTargets(h, w.enemyFighters(), heroReach, side) {
-				if f.Damage(kinds[Hero].damage) {
+			for _, f := range swingTargets(h, w.enemyFighters(), heroReach*p.Run.reach(), side) {
+				if f.Damage(p.Run.damage()) {
 					p.Kills++
+					w.reward(p)
 				}
 			}
 		}
@@ -462,7 +476,7 @@ func (w *World) heroStep(p *Player, dt float64) {
 		return
 	}
 	if !p.steering {
-		if e := w.nearestEnemy(p, heroReach); e != nil {
+		if e := w.nearestEnemy(p, heroReach*p.Run.reach()); e != nil {
 			s := screen(e.F.Pos.X-h.Pos.X, e.F.Pos.Y-h.Pos.Y)
 			turn(h, s.X, s.Y)
 			h.Play(Attack)

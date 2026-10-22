@@ -1,0 +1,204 @@
+{
+  "base": "http://127.0.0.1:8796",
+  "passed": true,
+  "checks": [
+    "real kills award XP and gold",
+    "three unique level-up cards",
+    "protected while choosing",
+    "mobile fits viewport",
+    "choice consumed",
+    "no page errors"
+  ],
+  "before": {
+    "spawnDistanceM": 10,
+    "gate": {
+      "u": 14.84375,
+      "v": 14.84375
+    },
+    "metersPerTile": 3,
+    "hero": {
+      "hp": 100,
+      "maxHp": 100,
+      "state": "attack",
+      "u": 18,
+      "v": 18,
+      "meters": 44.5,
+      "safe": false
+    },
+    "foes": [
+      {
+        "u": 17.6,
+        "v": 17.69,
+        "hp": 2,
+        "state": "move",
+        "safe": false,
+        "clear": true,
+        "gateMeters": 11.9
+      },
+      {
+        "u": 17.3,
+        "v": 17.8,
+        "hp": 2,
+        "state": "move",
+        "safe": false,
+        "clear": true,
+        "gateMeters": 11.5
+      },
+      {
+        "u": 18.22,
+        "v": 17.77,
+        "hp": 0,
+        "state": "die",
+        "safe": false,
+        "clear": true,
+        "gateMeters": 13.4
+      },
+      {
+        "u": 18.31,
+        "v": 18.08,
+        "hp": 0,
+        "state": "die",
+        "safe": false,
+        "clear": true,
+        "gateMeters": 14.2
+      }
+    ],
+    "run": {
+      "level": 2,
+      "xp": 0,
+      "gold": 10,
+      "pending": 1,
+      "offers": [
+        "leech",
+        "star",
+        "nova"
+      ],
+      "skills": {},
+      "stars": 0
+    },
+    "kills": 2,
+    "spawns": [
+      {
+        "u": 17.09,
+        "v": 17.31,
+        "m": 10
+      },
+      {
+        "u": 16.69,
+        "v": 17.62,
+        "m": 10
+      }
+    ],
+    "minSpawnMeters": 10,
+    "minFoeMeters": 11.524274171702862
+  },
+  "after": {
+    "spawnDistanceM": 10,
+    "gate": {
+      "u": 14.84375,
+      "v": 14.84375
+    },
+    "metersPerTile": 3,
+    "hero": {
+      "hp": 100,
+      "maxHp": 100,
+      "state": "attack",
+      "u": 18,
+      "v": 18,
+      "meters": 44.5,
+      "safe": false
+    },
+    "foes": [
+      {
+        "u": 17.85,
+        "v": 17.7,
+        "hp": 2,
+        "state": "idle",
+        "safe": false,
+        "clear": true,
+        "gateMeters": 12.4
+      },
+      {
+        "u": 17.64,
+        "v": 17.94,
+        "hp": 2,
+        "state": "idle",
+        "safe": false,
+        "clear": true,
+        "gateMeters": 12.5
+      },
+      {
+        "u": 18.22,
+        "v": 17.77,
+        "hp": 0,
+        "state": "die",
+        "safe": false,
+        "clear": true,
+        "gateMeters": 13.4
+      },
+      {
+        "u": 18.31,
+        "v": 18.08,
+        "hp": 0,
+        "state": "die",
+        "safe": false,
+        "clear": true,
+        "gateMeters": 14.2
+      },
+      {
+        "u": 15.63,
+        "v": 18.14,
+        "hp": 2,
+        "state": "move",
+        "safe": false,
+        "clear": true,
+        "gateMeters": 10.2
+      },
+      {
+        "u": 14.6,
+        "v": 18.09,
+        "hp": 2,
+        "state": "move",
+        "safe": false,
+        "clear": true,
+        "gateMeters": 9.8
+      }
+    ],
+    "run": {
+      "level": 2,
+      "xp": 0,
+      "gold": 10,
+      "pending": 0,
+      "offers": [],
+      "skills": {
+        "leech": 1
+      },
+      "stars": 0
+    },
+    "kills": 2,
+    "spawns": [
+      {
+        "u": 17.09,
+        "v": 17.31,
+        "m": 10
+      },
+      {
+        "u": 16.69,
+        "v": 17.62,
+        "m": 10
+      },
+      {
+        "u": 15.16,
+        "v": 18.16,
+        "m": 10
+      },
+      {
+        "u": 14.13,
+        "v": 18.1,
+        "m": 10
+      }
+    ],
+    "minSpawnMeters": 10,
+    "minFoeMeters": 9.75795473173963
+  }
+}

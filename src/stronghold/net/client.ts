@@ -125,7 +125,7 @@ export function createNet(o:{direction:()=>Walk;maxHp:()=>number;hero:()=>string
  }
  function tick(){
   const d=o.direction(),input:Input={t:'in',seq:++seq,x:+d.x.toFixed(4),y:+d.y.toFixed(4)};
-  if(ws?.readyState===WebSocket.OPEN){ws.send(JSON.stringify(input));stats.inputs++;}
+  if(ws?.readyState===WebSocket.OPEN){ws.send(JSON.stringify({...input,...choice}));choice=null;stats.inputs++;}
   pending.push(input);if(pending.length>60)pending.shift();
   prev={...pred};
   if(hold>0)hold--;else if(blocked&&latest){const r=walkStep(block(gatePassable(gate)),pred.x,pred.y,input,TICK_MS);pred={x:r.x,y:r.y};}
@@ -133,7 +133,9 @@ export function createNet(o:{direction:()=>Walk;maxHp:()=>number;hero:()=>string
  }
  requestAnimationFrame(frame);
  setInterval(()=>{if(ws?.readyState===WebSocket.OPEN)ws.send(JSON.stringify({t:'ping',c:performance.now()}));},1000);
+ let choice:{choice:string;level:number}|null=null;
  const api={
+ chooseCard(id:string,level:number){choice={choice:id,level};},
   join,leave,
   // The picked hero, for the rest of the room; a later hello (rejoin) carries it too.
   setHero(h:string){if(ws?.readyState===WebSocket.OPEN){const m:HeroPick={t:'hero',h};ws.send(JSON.stringify(m));}},

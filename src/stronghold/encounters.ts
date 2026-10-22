@@ -1,3 +1,5 @@
+import {fresh,reward,choose,cards,damage,reach,health,threshold,type Progression} from './progression';
+import './progression.css';
 import {unproject} from '../isometric';
 import {Fighter,STATS,inReach,swingTargets,turn} from '../characters/combat';
 import type {CharacterMeta} from '../characters/sprites';
@@ -42,6 +44,7 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
  let seed=(Date.now()>>>0)||1;const random=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;};
  const start=o.hero.position(),h=new Fighter('hero',heroMeta.clips,toTile(start.x,start.y).u,toTile(start.x,start.y).v);
  let maxHp=STATS.hero.hp,kills=0,spawnTimer=0,ambient='255,255,255',origin={x:0,y:0,scale:1};
+ let run=fresh(),baseHp=100;
  const local:Foe[]=[],spawns:{u:number;v:number;m:number}[]=[];let foes=local,online=false,heroPlays=-1;
  // Revenants behind the hero stand under its canvas, the rest over it; their health bars sit above both.
  const heroCanvas=o.layer.querySelector<HTMLCanvasElement>('#world-hero')!,back=document.createElement('div'),front=document.createElement('div'),bars=document.createElement('div');
@@ -52,6 +55,21 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
  const hud=document.createElement('section');hud.id='hero-hud';hud.setAttribute('aria-label','Hero status');
  hud.innerHTML='<div class="hud-row"><span class="hud-label">Health</span><span class="hud-hp">100 / 100</span></div><div class="hud-bar" role="meter" aria-label="Health" aria-valuemin="0"><i></i></div><div class="hud-zone"></div><div class="hud-kills">Revenants defeated · 0</div>';
  o.hud.append(hud);
+ const progress=document.createElement('div');progress.className='run-progress';hud.append(progress);
+ const picker=document.createElement('section');picker.className='level-cards';picker.hidden=true;picker.setAttribute('role','dialog');picker.setAttribute('aria-label','Choose a level-up blessing');o.hud.append(picker);
+ let offerKey='';
+ function select(id:string){if(online){o.net?.chooseCard(id,run.level);return;}if(!choose(run,id,random))return;const before=maxHp;maxHp=baseHp+health(run);h.hp=Math.min(maxHp,h.hp+Math.max(0,maxHp-before)+(id==='heal'?maxHp*.35:0));}
+ function drawProgress(){
+  const label=`Level ${run.level} · ${run.xp} / ${threshold(run)} XP · ${run.gold} Gold · ${run.stars} Stars`;
+  if(progress.textContent!==label)progress.textContent=label;
+  picker.hidden=!run.pending;const key=JSON.stringify([online,run.level,run.pending,run.offers,run.skills]);if(key===offerKey)return;offerKey=key;
+  picker.replaceChildren();if(!run.pending)return;
+  const title=document.createElement('h2');title.textContent=`Level ${run.level} — Choose a blessing`;picker.append(title);
+  const help=document.createElement('p');help.textContent=`${run.pending} choice(s) remaining · Protected while choosing`;picker.append(help);
+  const row=document.createElement('div');row.className='blessing-row';picker.append(row);
+  for(const id of run.offers){const card=cards[id];if(!card)continue;const button=document.createElement('button');const rank=run.skills[id]??0;button.innerHTML=`<small>${id==='star'?'STAR UPGRADE':rank?'SKILL UPGRADE':'BLESSING'}</small><strong>${card.name}${rank?' · Rank '+(rank+1):''}</strong><span>${card.description}</span>`;button.onclick=()=>select(id);row.append(button);}
+ }
+
  const q=<T extends Element>(s:string)=>hud.querySelector(s) as T,hudFill=q<HTMLElement>('.hud-bar i'),barFill=bar.querySelector('i')!;
 
  function spawn(f?:Foe){
@@ -82,6 +100,7 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
  function nearest(range:number){let best:Foe|null=null,d=range;for(const f of foes){const v=Math.hypot(f.x-h.x,f.y-h.y);if(f.alive&&v<=d){d=v;best=f;}}return best;}
  // The hero, when nobody steers: swing at a revenant in reach, or step in toward one a few paces away.
  function steer(input:Walk):Walk{
+  if(run.pending)return {x:0,y:0};
   if(online||input.x||input.y||!h.alive||h.state!=='idle')return input;
   const f=nearest(ENGAGE);if(!f||Math.hypot(f.x-h.x,f.y-h.y)<=HERO_REACH*.8)return input;
   const s=screen(f.x-h.x,f.y-h.y),l=Math.hypot(s.x,s.y);return {x:s.x/l,y:s.y/l};
@@ -89,9 +108,10 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
  function heroStep(dt:number,steering:boolean){
   if(!h.alive){h.deadFor+=dt;if(h.deadFor>HERO_RESPAWN){o.hero.respawn();const p=o.hero.position(),t=toTile(p.x,p.y);Object.assign(h,{x:t.u,y:t.v,hp:maxHp});h.play('idle');}return;}
   h.recover();
-  if(h.state==='attack'){if(h.impact())for(const f of swingTargets(h,foes,HERO_REACH,SIDE))if(f.damage(STATS.hero.damage))kills++;return;}
+  if(run.pending){h.immune=200;return;}
+  if(h.state==='attack'){if(h.impact())for(const f of swingTargets(h,foes,HERO_REACH*reach(run),SIDE))if(f.damage(damage(run))){kills++;reward(run,random);if(run.pending)h.immune=200;h.hp=Math.min(maxHp,h.hp+(run.skills.leech??0)*2);}return;}
   if(h.state==='hit')return;
-  if(!steering){const f=nearest(HERO_REACH);if(f){const s=screen(f.x-h.x,f.y-h.y);turn(h,s.x,s.y);o.hero.face(s.x,s.y);h.play('attack');return;}}
+  if(!steering){const f=nearest(HERO_REACH*reach(run));if(f){const s=screen(f.x-h.x,f.y-h.y);turn(h,s.x,s.y);o.hero.face(s.x,s.y);h.play('attack');return;}}
   if(inSafeZone(tileOf(h)))h.hp=Math.min(maxHp,h.hp+REGEN*dt/1000);
  }
  function foeStep(f:Foe,dt:number,heroSafe:boolean){
@@ -122,7 +142,7 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
   const net=o.net!,me=net.me();
   if(me){
    if(me.n!==heroPlays){heroPlays=me.n;h.state=me.st as Fighter['state'];h.t=0;}
-   if(me.hp<h.hp-.05)h.flash=120;Object.assign(h,{hp:me.hp,facing:me.fc,back:me.bk,vertical:me.vt});maxHp=me.max;kills=me.k;
+   if(me.hp<h.hp-.05)h.flash=120;Object.assign(h,{hp:me.hp,facing:me.fc,back:me.bk,vertical:me.vt});maxHp=me.max;kills=me.k;run=me.run??fresh();
    const p=o.hero.position(),t=toTile(p.x,p.y);h.x=t.u;h.y=t.v;h.tick(dt);
   }
   const seen=new Set<number>();
@@ -142,7 +162,7 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
  function step(dt:number){
   // Joining a room drops the local revenants; leaving it (offline) starts a fresh local fight where the hero stands.
   const net=!!o.net?.active();
-  if(net!==online){online=net;mirrors.clear();local.length=0;foes=local;spawnTimer=0;heroPlays=-1;if(!net){h.play('idle');h.hp=maxHp;}}
+  if(net!==online){run=fresh();online=net;mirrors.clear();local.length=0;foes=local;spawnTimer=0;heroPlays=-1;if(!net){h.play('idle');h.hp=maxHp;}}
   if(online){netStep(dt);return;}
   const input=o.direction(),steering=!!(input.x||input.y);
   for(const f of [h,...foes])f.tick(dt);
@@ -203,6 +223,7 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
  // Children of a layer in this order; anything else (hidden revenants) moves behind them.
  function arrange(layer:HTMLElement,list:HTMLElement[]){list.forEach((el,i)=>{if(layer.children[i]!==el)layer.insertBefore(el,layer.children[i]??null);});}
  function render(){
+  drawProgress();
   const dpr=Math.min(devicePixelRatio||1,2),hp=o.hero.position(),k=origin.scale,at=(x:number,y:number)=>({x:origin.x+x*k,y:origin.y+y*k});
   const shown=foes.filter(f=>{if(f.deadFor>CORPSE-500&&!f.alive)return false;const w=tilePoint(f.x,f.y),s=at(w.x,w.y);return s.x>-80&&s.x<innerWidth+80&&s.y>-40&&s.y<innerHeight+120;});
   const layers={back:[] as HTMLElement[],front:[] as HTMLElement[]},live=new Set<Foe>();
@@ -254,11 +275,11 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
   // Started after the hero's loop (world-view.ts), so each frame draws with the camera the hero just moved.
   start(){requestAnimationFrame(loop);},
   setAmbient(rgb:readonly number[]){ambient=rgb.map(v=>Math.round(v*255)).join();},
-  setMaxHp(n:number){if(n===maxHp)return;h.hp=Math.min(n,h.hp+Math.max(0,n-maxHp));maxHp=n;},
+  setMaxHp(n:number){baseHp=n;if(online)return;n+=health(run);if(n===maxHp)return;h.hp=Math.min(n,h.hp+Math.max(0,n-maxHp));maxHp=n;},
   snapshot:()=>({spawnDistanceM:SPAWN_DISTANCE_M,gate:GATE,metersPerTile:METERS_PER_TILE,
    hero:{hp:h.hp,maxHp,state:h.state,u:+h.x.toFixed(2),v:+h.y.toFixed(2),meters:+meters(fromCenter(tileOf(h))).toFixed(1),safe:inSafeZone(tileOf(h))},
    foes:foes.map(f=>({u:+f.x.toFixed(2),v:+f.y.toFixed(2),hp:f.hp,state:f.state,safe:inSafeZone(tileOf(f)),clear:walkable(tileOf(f)),gateMeters:+meters(fromGate(tileOf(f))).toFixed(1)})),
-   kills,spawns:[...spawns],minSpawnMeters:spawns.length?Math.min(...spawns.map(s=>s.m)):null,minFoeMeters:foes.length?Math.min(...foes.map(f=>meters(fromGate(tileOf(f))))):null}),
+   run:structuredClone(run),kills,spawns:[...spawns],minSpawnMeters:spawns.length?Math.min(...spawns.map(s=>s.m)):null,minFoeMeters:foes.length?Math.min(...foes.map(f=>meters(fromGate(tileOf(f))))):null}),
   // Testing hook: stand the hero on a ground tile.
   teleport(u:number,v:number){const w=tilePoint(u,v);if(!o.hero.teleport(w.x,w.y))return false;h.x=u;h.y=v;return true;},
   // Testing hook: whether a revenant may stand on a ground tile.

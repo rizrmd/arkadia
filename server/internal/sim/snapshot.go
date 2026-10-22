@@ -4,20 +4,21 @@ import "math"
 
 // PlayerState is a hero as clients see it. Positions are world px; states are clip names.
 type PlayerState struct {
-	ID       string  `json:"id"`
-	Name     string  `json:"name"`
-	Hero     string  `json:"h,omitempty"`
-	X        float64 `json:"x"`
-	Y        float64 `json:"y"`
-	HP       float64 `json:"hp"`
-	Max      float64 `json:"max"`
-	State    string  `json:"st"`
-	Plays    int     `json:"n"`
-	Moving   bool    `json:"mv"`
-	Facing   int     `json:"fc"`
-	Back     bool    `json:"bk"`
-	Vertical bool    `json:"vt"`
-	Kills    int     `json:"k"`
+	ID       string      `json:"id"`
+	Name     string      `json:"name"`
+	Hero     string      `json:"h,omitempty"`
+	X        float64     `json:"x"`
+	Y        float64     `json:"y"`
+	HP       float64     `json:"hp"`
+	Max      float64     `json:"max"`
+	State    string      `json:"st"`
+	Plays    int         `json:"n"`
+	Moving   bool        `json:"mv"`
+	Facing   int         `json:"fc"`
+	Back     bool        `json:"bk"`
+	Vertical bool        `json:"vt"`
+	Run      Progression `json:"run"`
+	Kills    int         `json:"k"`
 }
 
 // EnemyState is a revenant as clients see it. Positions are ground tiles.
@@ -58,7 +59,7 @@ func (w *World) State() State {
 		Players: make([]PlayerState, 0, len(w.Players)), Enemies: make([]EnemyState, 0, len(w.Enemies))}
 	for _, p := range w.Players {
 		s.Players = append(s.Players, PlayerState{ID: p.ID, Name: p.Name, Hero: p.Hero, X: round(p.X, .01), Y: round(p.Y, .01), HP: round(p.F.HP, .1), Max: p.MaxHP,
-			State: p.F.State, Plays: p.F.Plays, Moving: p.Moving, Facing: p.F.Facing, Back: p.F.Back, Vertical: p.F.Vertical, Kills: p.Kills})
+			State: p.F.State, Plays: p.F.Plays, Moving: p.Moving, Facing: p.F.Facing, Back: p.F.Back, Vertical: p.F.Vertical, Kills: p.Kills, Run: p.Run})
 	}
 	for _, e := range w.Enemies {
 		s.Enemies = append(s.Enemies, EnemyState{ID: e.ID, Gen: e.Gen, U: round(e.F.Pos.X, .001), V: round(e.F.Pos.Y, .001), HP: e.F.HP,
