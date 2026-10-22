@@ -210,6 +210,7 @@ Desktop and phone viewport checks cover direction switching, the four-frame run 
 
 ![Previous Ember 3D idle sheet, superseded style](https://ark-whachat.fural.space/ember-warden-review/sheets/idle-2.png)
 
+
 ## Painted animation sprite sheets — v03
 
 [Open the sprite sheet collection](/organizations/ORd5dd6f99b4308d6187031557/knowledge/NKBD7b917bae8fc62a6603d6f6fa) · [Animation player](https://ark-whachat.fural.space/ember-warden-review/v3/). This export contains eight eight-frame SE clips. Skills have baked effects. Other headings, physically measured foot contacts and gameplay integration are not claimed.

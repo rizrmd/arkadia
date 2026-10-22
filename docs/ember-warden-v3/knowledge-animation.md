@@ -39,7 +39,7 @@ The verifier compares all 64 combined-atlas frame crops to the individual sheets
 
 Public playback is executed in Chromium using actual public HTTPS responses fetched by Node; direct Chromium navigation to this sandbox hostname is unreliable in this environment. This is not a physical-device or direct browser-network test.
 
-The shared working tree currently fails the repository TypeScript build because its unrelated `world-view.ts` work-in-progress does not expose the six-argument hero-selection API used by `main.ts`. This task changes static assets and viewers, not those gameplay files. Relevant browser and export checks pass independently.
+The shared working tree fails the repository TypeScript build because its unrelated `world-view.ts` work-in-progress does not expose the six-argument hero-selection API used by `main.ts`. To preserve that work, the animation commit was merged with the latest remote in a separate clean worktree. **`npm run build` passes there** (TypeScript and Vite, 38 modules). This task changes static assets and viewers, not those gameplay files. Browser and export checks also pass independently.
 
 ## Commands
 
