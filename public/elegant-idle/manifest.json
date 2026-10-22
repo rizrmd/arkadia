@@ -1,0 +1,3128 @@
+{
+  "version": 1,
+  "scope": "Preview only",
+  "cell": {
+    "width": 384,
+    "height": 384
+  },
+  "pivot": {
+    "x": 192,
+    "y": 360
+  },
+  "directions": [
+    "N",
+    "NE",
+    "E",
+    "SE",
+    "S",
+    "SW",
+    "W",
+    "NW"
+  ],
+  "frames": 8,
+  "fps": 5,
+  "characters": {
+    "ember": {
+      "name": "Ember Warden",
+      "sheet": "ember-idle.png",
+      "audit": [
+        {
+          "direction": "N",
+          "frame": 1,
+          "source": "sources/ember-N-clean.png",
+          "scale": 0.6560636182902585,
+          "sourceBounds": [
+            80,
+            4,
+            347,
+            502
+          ],
+          "bounds": [
+            104,
+            33,
+            176,
+            327
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 127515,
+          "sha256": "015caa823c757dfbe057f68fec20ff0bf31f5fc298f672bbae4c9bf03a72f774"
+        },
+        {
+          "direction": "N",
+          "frame": 2,
+          "source": "sources/ember-N-clean.png",
+          "scale": 0.6560636182902585,
+          "sourceBounds": [
+            56,
+            4,
+            350,
+            502
+          ],
+          "bounds": [
+            96,
+            33,
+            194,
+            327
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 123388,
+          "sha256": "a778ae7d07943907cc22df649e84ca89ab04050534c976594899ada938b3b0c3"
+        },
+        {
+          "direction": "N",
+          "frame": 3,
+          "source": "sources/ember-N-clean.png",
+          "scale": 0.6560636182902585,
+          "sourceBounds": [
+            48,
+            0,
+            344,
+            503
+          ],
+          "bounds": [
+            96,
+            29,
+            195,
+            331
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 121945,
+          "sha256": "5f2ad34e409f91cb9010749ee5b42c235d137a599cbe5553feeb6f8637650239"
+        },
+        {
+          "direction": "N",
+          "frame": 4,
+          "source": "sources/ember-N-clean.png",
+          "scale": 0.6560636182902585,
+          "sourceBounds": [
+            35,
+            0,
+            342,
+            503
+          ],
+          "bounds": [
+            87,
+            29,
+            202,
+            331
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 118209,
+          "sha256": "bd22e1be5b1e8033b56f6dbae385b66bc8b5a8b3085432dbf42409cfcc777196"
+        },
+        {
+          "direction": "N",
+          "frame": 5,
+          "source": "sources/ember-N-clean.png",
+          "scale": 0.6560636182902585,
+          "sourceBounds": [
+            47,
+            2,
+            358,
+            504
+          ],
+          "bounds": [
+            82,
+            30,
+            205,
+            330
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 117545,
+          "sha256": "f58e595f956b191a01172fd39977aa1107562a77aa5c13fc1613c279930e5aef"
+        },
+        {
+          "direction": "N",
+          "frame": 6,
+          "source": "sources/ember-N-clean.png",
+          "scale": 0.6560636182902585,
+          "sourceBounds": [
+            74,
+            2,
+            348,
+            504
+          ],
+          "bounds": [
+            106,
+            30,
+            180,
+            330
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 124146,
+          "sha256": "d96f0c5135ae9332708153a686e4b72bf7560e1c1e18acda1878a3b4eafcfd7e"
+        },
+        {
+          "direction": "N",
+          "frame": 7,
+          "source": "sources/ember-N-clean.png",
+          "scale": 0.6560636182902585,
+          "sourceBounds": [
+            77,
+            2,
+            342,
+            504
+          ],
+          "bounds": [
+            110,
+            30,
+            175,
+            330
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 125340,
+          "sha256": "fcad3aaee7fb1b50f9864fcb21e07c5ec298e656c3297096e45d28c7d9d3c9ce"
+        },
+        {
+          "direction": "N",
+          "frame": 8,
+          "source": "sources/ember-N-clean.png",
+          "scale": 0.6560636182902585,
+          "sourceBounds": [
+            69,
+            2,
+            336,
+            504
+          ],
+          "bounds": [
+            107,
+            30,
+            176,
+            330
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 123273,
+          "sha256": "e5046e3b6271e8c1402a847d59fb5c72df2f13b665351781be6ece4512a2be4f"
+        },
+        {
+          "direction": "NE",
+          "frame": 1,
+          "source": "sources/ember-NE-clean.png",
+          "scale": 0.650887573964497,
+          "sourceBounds": [
+            58,
+            6,
+            339,
+            511
+          ],
+          "bounds": [
+            82,
+            31,
+            184,
+            329
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 123555,
+          "sha256": "af6d0b2ca4dd479aed34ce521899e2c704398fcb14b2f7c2372f9f7f58b95e29"
+        },
+        {
+          "direction": "NE",
+          "frame": 2,
+          "source": "sources/ember-NE-clean.png",
+          "scale": 0.650887573964497,
+          "sourceBounds": [
+            38,
+            6,
+            329,
+            511
+          ],
+          "bounds": [
+            73,
+            31,
+            190,
+            329
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 122116,
+          "sha256": "c9c84bb8ca4066a48c00b9fe811841e29c55b4e9e6a7835ebacdad5afa69e9ee"
+        },
+        {
+          "direction": "NE",
+          "frame": 3,
+          "source": "sources/ember-NE-clean.png",
+          "scale": 0.650887573964497,
+          "sourceBounds": [
+            26,
+            6,
+            322,
+            511
+          ],
+          "bounds": [
+            71,
+            31,
+            193,
+            329
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 119679,
+          "sha256": "2ca77f2a6312b490ca1357abde5586ba38bdcd30c83871d2d0101cba1f2d32d6"
+        },
+        {
+          "direction": "NE",
+          "frame": 4,
+          "source": "sources/ember-NE-clean.png",
+          "scale": 0.650887573964497,
+          "sourceBounds": [
+            20,
+            5,
+            318,
+            511
+          ],
+          "bounds": [
+            70,
+            30,
+            195,
+            330
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 117051,
+          "sha256": "d59209a8752133b8fecaa921d614f7dee1c14ff7741a4ceea2f8c6c0b359144b"
+        },
+        {
+          "direction": "NE",
+          "frame": 5,
+          "source": "sources/ember-NE-clean.png",
+          "scale": 0.650887573964497,
+          "sourceBounds": [
+            41,
+            3,
+            335,
+            509
+          ],
+          "bounds": [
+            71,
+            30,
+            192,
+            330
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 119535,
+          "sha256": "a7787e7ebf6172804b1ece8bdae0ab72909c0bb3eea1fe5492bc4d50432d717d"
+        },
+        {
+          "direction": "NE",
+          "frame": 6,
+          "source": "sources/ember-NE-clean.png",
+          "scale": 0.650887573964497,
+          "sourceBounds": [
+            38,
+            0,
+            330,
+            508
+          ],
+          "bounds": [
+            73,
+            29,
+            191,
+            331
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 121786,
+          "sha256": "97ad9921a4ff5c5ee1dcdb1f11eec991baa8318be8e6c760fef9d8fa7c9c6f76"
+        },
+        {
+          "direction": "NE",
+          "frame": 7,
+          "source": "sources/ember-NE-clean.png",
+          "scale": 0.650887573964497,
+          "sourceBounds": [
+            32,
+            3,
+            327,
+            508
+          ],
+          "bounds": [
+            72,
+            31,
+            193,
+            329
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 121593,
+          "sha256": "357b4b16c8e9a9506aec7b10f2a839f36140eb57d366e3dfb53cf68a59866234"
+        },
+        {
+          "direction": "NE",
+          "frame": 8,
+          "source": "sources/ember-NE-clean.png",
+          "scale": 0.650887573964497,
+          "sourceBounds": [
+            38,
+            2,
+            317,
+            509
+          ],
+          "bounds": [
+            82,
+            29,
+            182,
+            331
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 122266,
+          "sha256": "cbc165cfda31b3873822a4f0a0b21a599d084b13d510bcb26e701d539e007ffd"
+        },
+        {
+          "direction": "E",
+          "frame": 1,
+          "source": "sources/ember-E-clean.png",
+          "scale": 0.6613226452905812,
+          "sourceBounds": [
+            67,
+            5,
+            306,
+            502
+          ],
+          "bounds": [
+            75,
+            31,
+            159,
+            329
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 132874,
+          "sha256": "5bc87dfa16730b95bfa7a7bffdbbefc195267d7197f6c696dc734d452c5138a4"
+        },
+        {
+          "direction": "E",
+          "frame": 2,
+          "source": "sources/ember-E-clean.png",
+          "scale": 0.6613226452905812,
+          "sourceBounds": [
+            68,
+            5,
+            304,
+            502
+          ],
+          "bounds": [
+            76,
+            31,
+            157,
+            329
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 131522,
+          "sha256": "295befab75b9d3bff1aace028cdba48d3a798b47303b0a06544205608d033d34"
+        },
+        {
+          "direction": "E",
+          "frame": 3,
+          "source": "sources/ember-E-clean.png",
+          "scale": 0.6613226452905812,
+          "sourceBounds": [
+            27,
+            6,
+            304,
+            503
+          ],
+          "bounds": [
+            49,
+            31,
+            184,
+            329
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 126041,
+          "sha256": "806b636902da18f01454545cb8be3fd968c7c28763b892fecc4ded0944e91993"
+        },
+        {
+          "direction": "E",
+          "frame": 4,
+          "source": "sources/ember-E-clean.png",
+          "scale": 0.6613226452905812,
+          "sourceBounds": [
+            12,
+            6,
+            303,
+            502
+          ],
+          "bounds": [
+            40,
+            31,
+            193,
+            329
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 122664,
+          "sha256": "7e3dbc999eaff3731ee679eebbd1155489320a13c8d9a7b97a1a7c283733417b"
+        },
+        {
+          "direction": "E",
+          "frame": 5,
+          "source": "sources/ember-E-clean.png",
+          "scale": 0.6613226452905812,
+          "sourceBounds": [
+            44,
+            4,
+            306,
+            502
+          ],
+          "bounds": [
+            60,
+            30,
+            174,
+            330
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 127902,
+          "sha256": "b1a613f011cf7c1a834ccebb3c0dec4aa06a115415ff30552b119e3db416d46c"
+        },
+        {
+          "direction": "E",
+          "frame": 6,
+          "source": "sources/ember-E-clean.png",
+          "scale": 0.6613226452905812,
+          "sourceBounds": [
+            58,
+            4,
+            306,
+            502
+          ],
+          "bounds": [
+            70,
+            30,
+            165,
+            330
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 128241,
+          "sha256": "6228fe325542f1582c554e456654c09480d1bc66ac909ac991d124284d8f0a8e"
+        },
+        {
+          "direction": "E",
+          "frame": 7,
+          "source": "sources/ember-E-clean.png",
+          "scale": 0.6613226452905812,
+          "sourceBounds": [
+            68,
+            4,
+            307,
+            502
+          ],
+          "bounds": [
+            76,
+            30,
+            159,
+            330
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 130069,
+          "sha256": "3d3c7fef53ffa03d88d9cc190e6492de96bc44532d5fef3d6684175b4ffb5d53"
+        },
+        {
+          "direction": "E",
+          "frame": 8,
+          "source": "sources/ember-E-clean.png",
+          "scale": 0.6613226452905812,
+          "sourceBounds": [
+            68,
+            4,
+            304,
+            502
+          ],
+          "bounds": [
+            77,
+            30,
+            157,
+            330
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 130695,
+          "sha256": "bc7507eb3d18d6311a84f873bfcb793b9f62cd739412fbe659ca84262c646f0b"
+        },
+        {
+          "direction": "SE",
+          "frame": 1,
+          "source": "sources/ember-SE-clean.png",
+          "scale": 0.6573705179282868,
+          "sourceBounds": [
+            59,
+            7,
+            353,
+            508
+          ],
+          "bounds": [
+            97,
+            30,
+            194,
+            330
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 115443,
+          "sha256": "09e631c021ee101b4f4fc5b5c6d2f751325d7f02ad6c34ee72e8339ef93233de"
+        },
+        {
+          "direction": "SE",
+          "frame": 2,
+          "source": "sources/ember-SE-clean.png",
+          "scale": 0.6573705179282868,
+          "sourceBounds": [
+            65,
+            7,
+            377,
+            508
+          ],
+          "bounds": [
+            106,
+            30,
+            206,
+            330
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 112865,
+          "sha256": "faeceb727a90597d0e6d8bb3da8f7f69f8986b19d1da8f08e434dfb00b66bc06"
+        },
+        {
+          "direction": "SE",
+          "frame": 3,
+          "source": "sources/ember-SE-clean.png",
+          "scale": 0.6573705179282868,
+          "sourceBounds": [
+            22,
+            7,
+            361,
+            508
+          ],
+          "bounds": [
+            93,
+            30,
+            224,
+            330
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 110506,
+          "sha256": "792dcc3c8683f7622f51a1f0ee0df78ea5ef9e564a70cbf1895fd36000de4e25"
+        },
+        {
+          "direction": "SE",
+          "frame": 4,
+          "source": "sources/ember-SE-clean.png",
+          "scale": 0.6573705179282868,
+          "sourceBounds": [
+            19,
+            5,
+            370,
+            508
+          ],
+          "bounds": [
+            83,
+            29,
+            231,
+            331
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 106447,
+          "sha256": "d678fa4502c78a8e1c3b7360a46ac67a0b95d9463e086da2215146a7a77a16bf"
+        },
+        {
+          "direction": "SE",
+          "frame": 5,
+          "source": "sources/ember-SE-clean.png",
+          "scale": 0.6573705179282868,
+          "sourceBounds": [
+            51,
+            0,
+            381,
+            490
+          ],
+          "bounds": [
+            91,
+            37,
+            218,
+            323
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 114510,
+          "sha256": "13c51f53fbfff3d281666c3115aed53d207362f1a07351059a6afc11907cc348"
+        },
+        {
+          "direction": "SE",
+          "frame": 6,
+          "source": "sources/ember-SE-clean.png",
+          "scale": 0.6573705179282868,
+          "sourceBounds": [
+            54,
+            0,
+            346,
+            490
+          ],
+          "bounds": [
+            98,
+            37,
+            193,
+            323
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 117383,
+          "sha256": "5ae2f8528abb03c4627dc672e5a314a6f9be90e224e31b995b1056ce9afeae56"
+        },
+        {
+          "direction": "SE",
+          "frame": 7,
+          "source": "sources/ember-SE-clean.png",
+          "scale": 0.6573705179282868,
+          "sourceBounds": [
+            32,
+            0,
+            347,
+            490
+          ],
+          "bounds": [
+            94,
+            37,
+            208,
+            323
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 115439,
+          "sha256": "10183eb0847cc14a6bb1c83f5b1e3cba8864f18b05d97e9989ce8ef708ab73cf"
+        },
+        {
+          "direction": "SE",
+          "frame": 8,
+          "source": "sources/ember-SE-clean.png",
+          "scale": 0.6573705179282868,
+          "sourceBounds": [
+            37,
+            0,
+            350,
+            490
+          ],
+          "bounds": [
+            94,
+            37,
+            206,
+            323
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 113163,
+          "sha256": "59f03ff10c2a84a025757699ca5caeead8ce32ba52d5cf2fef56b7b8f2028230"
+        },
+        {
+          "direction": "S",
+          "frame": 1,
+          "source": "sources/ember-S-clean.png",
+          "scale": 0.6573705179282868,
+          "sourceBounds": [
+            43,
+            5,
+            332,
+            506
+          ],
+          "bounds": [
+            95,
+            30,
+            191,
+            330
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 120074,
+          "sha256": "1df0a205ffe78512f855d4d735c163263aa3d766b62c9aeff1a9c61a25c4d12f"
+        },
+        {
+          "direction": "S",
+          "frame": 2,
+          "source": "sources/ember-S-clean.png",
+          "scale": 0.6573705179282868,
+          "sourceBounds": [
+            32,
+            5,
+            337,
+            506
+          ],
+          "bounds": [
+            87,
+            30,
+            201,
+            330
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 116926,
+          "sha256": "ac12e2e7a9f96cad69e44805a766417e311793f35e28e71ca3e9a2eb5d679cfd"
+        },
+        {
+          "direction": "S",
+          "frame": 3,
+          "source": "sources/ember-S-clean.png",
+          "scale": 0.6573705179282868,
+          "sourceBounds": [
+            17,
+            5,
+            346,
+            506
+          ],
+          "bounds": [
+            78,
+            30,
+            217,
+            330
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 113102,
+          "sha256": "637be53600c3491df13d3c6428a1c5b44a127f8e20a972fa210dde45b465c82a"
+        },
+        {
+          "direction": "S",
+          "frame": 4,
+          "source": "sources/ember-S-clean.png",
+          "scale": 0.6573705179282868,
+          "sourceBounds": [
+            20,
+            5,
+            352,
+            506
+          ],
+          "bounds": [
+            80,
+            30,
+            219,
+            330
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 110570,
+          "sha256": "84ecc884353dd0472147dc9fd622e04d36329160943be4a82986e264383b7e8f"
+        },
+        {
+          "direction": "S",
+          "frame": 5,
+          "source": "sources/ember-S-clean.png",
+          "scale": 0.6573705179282868,
+          "sourceBounds": [
+            27,
+            5,
+            344,
+            505
+          ],
+          "bounds": [
+            84,
+            31,
+            209,
+            329
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 113721,
+          "sha256": "c11dd90040844617769ad422c7b7a9a2dd4e1183640e06e72bfda167fcadd3e5"
+        },
+        {
+          "direction": "S",
+          "frame": 6,
+          "source": "sources/ember-S-clean.png",
+          "scale": 0.6573705179282868,
+          "sourceBounds": [
+            42,
+            5,
+            334,
+            506
+          ],
+          "bounds": [
+            94,
+            30,
+            193,
+            330
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 116969,
+          "sha256": "9d83e6b71e6026c3dfa24a011bc92751b4719c74433097a97b4ec0070dd90ab1"
+        },
+        {
+          "direction": "S",
+          "frame": 7,
+          "source": "sources/ember-S-clean.png",
+          "scale": 0.6573705179282868,
+          "sourceBounds": [
+            50,
+            5,
+            330,
+            505
+          ],
+          "bounds": [
+            100,
+            31,
+            185,
+            329
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 120238,
+          "sha256": "547cc16d6deeee51a71d72fe6a3f8052dfae0a736184090aa9221823bde22240"
+        },
+        {
+          "direction": "S",
+          "frame": 8,
+          "source": "sources/ember-S-clean.png",
+          "scale": 0.6573705179282868,
+          "sourceBounds": [
+            44,
+            5,
+            334,
+            506
+          ],
+          "bounds": [
+            95,
+            30,
+            191,
+            330
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 119624,
+          "sha256": "862d4da8e60c52e1cc2aed498c2f927cea3094302c2259b3218e7b25192628b3"
+        },
+        {
+          "direction": "SW",
+          "frame": 1,
+          "source": "sources/ember-SW-final.png",
+          "scale": 0.6483300589390962,
+          "sourceBounds": [
+            31,
+            6,
+            383,
+            511
+          ],
+          "bounds": [
+            48,
+            32,
+            229,
+            328
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 101007,
+          "sha256": "ece91117506081d07cd94736905ddf2ec023c8cb17d666176e3a8d2c1607c449"
+        },
+        {
+          "direction": "SW",
+          "frame": 2,
+          "source": "sources/ember-SW-final.png",
+          "scale": 0.6483300589390962,
+          "sourceBounds": [
+            28,
+            4,
+            379,
+            511
+          ],
+          "bounds": [
+            54,
+            31,
+            228,
+            329
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 100343,
+          "sha256": "1b236d6b06ed55bb1b9abc8457c6357f06ad5f3a417bdfa5bb95400cad4d79aa"
+        },
+        {
+          "direction": "SW",
+          "frame": 3,
+          "source": "sources/ember-SW-final.png",
+          "scale": 0.6483300589390962,
+          "sourceBounds": [
+            27,
+            4,
+            379,
+            511
+          ],
+          "bounds": [
+            56,
+            31,
+            229,
+            329
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 99638,
+          "sha256": "9a5b978d4538c70efec88e412b849a4de81e0f47cfa4d713df5e123d871fa493"
+        },
+        {
+          "direction": "SW",
+          "frame": 4,
+          "source": "sources/ember-SW-final.png",
+          "scale": 0.6483300589390962,
+          "sourceBounds": [
+            7,
+            1,
+            359,
+            511
+          ],
+          "bounds": [
+            55,
+            29,
+            229,
+            331
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 95529,
+          "sha256": "6a49d19d523cab1b01adc3e7d60c8c529d0d0cba92fc029f6b34f9a2077e16f6"
+        },
+        {
+          "direction": "SW",
+          "frame": 5,
+          "source": "sources/ember-SW-final.png",
+          "scale": 0.6483300589390962,
+          "sourceBounds": [
+            28,
+            0,
+            383,
+            508
+          ],
+          "bounds": [
+            45,
+            30,
+            231,
+            330
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 99797,
+          "sha256": "fe50b5a2cc13b94a9e62a8ccf55d3f8df8f18355350313036c028bf6e5caac8d"
+        },
+        {
+          "direction": "SW",
+          "frame": 6,
+          "source": "sources/ember-SW-final.png",
+          "scale": 0.6483300589390962,
+          "sourceBounds": [
+            26,
+            0,
+            375,
+            508
+          ],
+          "bounds": [
+            47,
+            30,
+            227,
+            330
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 99894,
+          "sha256": "71bfc839ad09a4d2b137a0f2ba74d53e12e861be0752dc05f4ba59f7ecf5c807"
+        },
+        {
+          "direction": "SW",
+          "frame": 7,
+          "source": "sources/ember-SW-final.png",
+          "scale": 0.6483300589390962,
+          "sourceBounds": [
+            15,
+            0,
+            373,
+            508
+          ],
+          "bounds": [
+            44,
+            30,
+            233,
+            330
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 99026,
+          "sha256": "355cb940324965687ce9d2403228792b88daf91264052e16af60b8a56d22a37f"
+        },
+        {
+          "direction": "SW",
+          "frame": 8,
+          "source": "sources/ember-SW-final.png",
+          "scale": 0.6483300589390962,
+          "sourceBounds": [
+            11,
+            0,
+            366,
+            508
+          ],
+          "bounds": [
+            52,
+            30,
+            231,
+            330
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 97422,
+          "sha256": "cf1f42e4c42df74555d94f94b28a0b48caefcfaffdf9d85d90bdb6fd1640dafc"
+        },
+        {
+          "direction": "W",
+          "frame": 1,
+          "source": "sources/ember-W-clean.png",
+          "scale": 0.6693711967545639,
+          "sourceBounds": [
+            74,
+            13,
+            343,
+            505
+          ],
+          "bounds": [
+            144,
+            30,
+            181,
+            330
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 134205,
+          "sha256": "6d5b98c87ce02ca9eecced56e7b74fc131df3ef2b7aa38be49c2bea2193ff584"
+        },
+        {
+          "direction": "W",
+          "frame": 2,
+          "source": "sources/ember-W-clean.png",
+          "scale": 0.6693711967545639,
+          "sourceBounds": [
+            57,
+            13,
+            354,
+            505
+          ],
+          "bounds": [
+            143,
+            30,
+            199,
+            330
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 127619,
+          "sha256": "00b3da4c07b9d3c75cdd859b128277cc0daf3739ae30da1adaea68f4b1a5cf0b"
+        },
+        {
+          "direction": "W",
+          "frame": 3,
+          "source": "sources/ember-W-clean.png",
+          "scale": 0.6693711967545639,
+          "sourceBounds": [
+            43,
+            13,
+            340,
+            505
+          ],
+          "bounds": [
+            143,
+            30,
+            199,
+            330
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 126131,
+          "sha256": "b2f4d3625a3147e078ff41a7147fbb779e8e2c911c1648c7f5a18c0e2c5ec430"
+        },
+        {
+          "direction": "W",
+          "frame": 4,
+          "source": "sources/ember-W-clean.png",
+          "scale": 0.6693711967545639,
+          "sourceBounds": [
+            30,
+            13,
+            338,
+            505
+          ],
+          "bounds": [
+            142,
+            30,
+            207,
+            330
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 124531,
+          "sha256": "d6490b3b834e2546ca2ad30bddc6a6e432befb93cef1b3c47d052d8332acb177"
+        },
+        {
+          "direction": "W",
+          "frame": 5,
+          "source": "sources/ember-W-clean.png",
+          "scale": 0.6693711967545639,
+          "sourceBounds": [
+            72,
+            5,
+            361,
+            496
+          ],
+          "bounds": [
+            142,
+            31,
+            194,
+            329
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 131053,
+          "sha256": "2149b7bcf4d1d4f884e64ad7171fe8634a09f9b4f09931c26cfe8b42ab6bebb2"
+        },
+        {
+          "direction": "W",
+          "frame": 6,
+          "source": "sources/ember-W-clean.png",
+          "scale": 0.6693711967545639,
+          "sourceBounds": [
+            56,
+            5,
+            353,
+            496
+          ],
+          "bounds": [
+            142,
+            31,
+            199,
+            329
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 129681,
+          "sha256": "79cb3d62f59edbf799e0deef74125f645596947a2ffd17980a6252227b249be2"
+        },
+        {
+          "direction": "W",
+          "frame": 7,
+          "source": "sources/ember-W-clean.png",
+          "scale": 0.6693711967545639,
+          "sourceBounds": [
+            46,
+            6,
+            337,
+            496
+          ],
+          "bounds": [
+            143,
+            31,
+            195,
+            329
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 132023,
+          "sha256": "dfbf10d581265625727947f24c1832fc1b2b344813fb9eb08cc1f5f347d7ef11"
+        },
+        {
+          "direction": "W",
+          "frame": 8,
+          "source": "sources/ember-W-clean.png",
+          "scale": 0.6693711967545639,
+          "sourceBounds": [
+            36,
+            5,
+            328,
+            496
+          ],
+          "bounds": [
+            142,
+            31,
+            196,
+            329
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 130430,
+          "sha256": "69ae336ee0efa5d4117d67f55133a3eb75f1d73b7289fd6d466acf5f53515b45"
+        },
+        {
+          "direction": "NW",
+          "frame": 1,
+          "source": "sources/ember-NW-final.png",
+          "scale": 0.6521739130434783,
+          "sourceBounds": [
+            81,
+            5,
+            341,
+            508
+          ],
+          "bounds": [
+            132,
+            31,
+            170,
+            329
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 126681,
+          "sha256": "7a8653989e341ebb5213e5305704638bedfe0a004913bea40658fe7c6009fb01"
+        },
+        {
+          "direction": "NW",
+          "frame": 2,
+          "source": "sources/ember-NW-final.png",
+          "scale": 0.6521739130434783,
+          "sourceBounds": [
+            74,
+            5,
+            350,
+            508
+          ],
+          "bounds": [
+            131,
+            31,
+            181,
+            329
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 121869,
+          "sha256": "79fae22a205a25df2e91c194d5222826cff8f014f83fed15552f1d0b7c1ab9db"
+        },
+        {
+          "direction": "NW",
+          "frame": 3,
+          "source": "sources/ember-NW-final.png",
+          "scale": 0.6521739130434783,
+          "sourceBounds": [
+            69,
+            4,
+            361,
+            507
+          ],
+          "bounds": [
+            128,
+            31,
+            191,
+            329
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 119277,
+          "sha256": "60ff4f83decac264a66ec3ecf07d10c92d4b4033f43e92efaf128af5dcc6be1c"
+        },
+        {
+          "direction": "NW",
+          "frame": 4,
+          "source": "sources/ember-NW-final.png",
+          "scale": 0.6521739130434783,
+          "sourceBounds": [
+            69,
+            5,
+            359,
+            507
+          ],
+          "bounds": [
+            128,
+            32,
+            190,
+            328
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 118398,
+          "sha256": "58ebce9cd42180c14f765b4d718fa0bc1eecce7705c31ee4a2f72feedee4d2b7"
+        },
+        {
+          "direction": "NW",
+          "frame": 5,
+          "source": "sources/ember-NW-final.png",
+          "scale": 0.6521739130434783,
+          "sourceBounds": [
+            69,
+            0,
+            353,
+            505
+          ],
+          "bounds": [
+            126,
+            30,
+            186,
+            330
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 120581,
+          "sha256": "0ad78e693b6129fc7be782ae599bf39c88feb8d78b7d93f9c38e9a52bbc59a3a"
+        },
+        {
+          "direction": "NW",
+          "frame": 6,
+          "source": "sources/ember-NW-final.png",
+          "scale": 0.6521739130434783,
+          "sourceBounds": [
+            66,
+            0,
+            373,
+            505
+          ],
+          "bounds": [
+            126,
+            30,
+            201,
+            330
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 118763,
+          "sha256": "93135027ee5f49fe4565113446bdb4b54ebf3290e771073e609b3c23dd43ea67"
+        },
+        {
+          "direction": "NW",
+          "frame": 7,
+          "source": "sources/ember-NW-final.png",
+          "scale": 0.6521739130434783,
+          "sourceBounds": [
+            69,
+            0,
+            377,
+            505
+          ],
+          "bounds": [
+            129,
+            30,
+            202,
+            330
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 116557,
+          "sha256": "0ff00a021819ae43de58d254dbdd44bd2dcc80ed23bd5643ccedb9ee06ab3c28"
+        },
+        {
+          "direction": "NW",
+          "frame": 8,
+          "source": "sources/ember-NW-final.png",
+          "scale": 0.6521739130434783,
+          "sourceBounds": [
+            67,
+            0,
+            355,
+            505
+          ],
+          "bounds": [
+            126,
+            30,
+            188,
+            330
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 120325,
+          "sha256": "75e34e8c772d205ecb219a04ce74b5a22093784f54e1e58dcb4966fe4999fd46"
+        }
+      ]
+    },
+    "rift": {
+      "name": "Rift Runner",
+      "sheet": "rift-idle.png",
+      "audit": [
+        {
+          "direction": "N",
+          "frame": 1,
+          "source": "sources/rift-N-clean.png",
+          "scale": 0.6613226452905812,
+          "sourceBounds": [
+            47,
+            9,
+            326,
+            507
+          ],
+          "bounds": [
+            92,
+            30,
+            185,
+            330
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 121294,
+          "sha256": "289a2d850c091800ff03958fd2be611380b9e5c98904ef753cff44c3ba6b88a6"
+        },
+        {
+          "direction": "N",
+          "frame": 2,
+          "source": "sources/rift-N-clean.png",
+          "scale": 0.6613226452905812,
+          "sourceBounds": [
+            31,
+            9,
+            331,
+            507
+          ],
+          "bounds": [
+            81,
+            30,
+            199,
+            330
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 118338,
+          "sha256": "7dad4b332bb9c19f395940b9dbf83a58ab8a28b369a747f24587cc35281b2c63"
+        },
+        {
+          "direction": "N",
+          "frame": 3,
+          "source": "sources/rift-N-clean.png",
+          "scale": 0.6613226452905812,
+          "sourceBounds": [
+            13,
+            9,
+            334,
+            507
+          ],
+          "bounds": [
+            69,
+            30,
+            213,
+            330
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 118099,
+          "sha256": "e7f83ec9b65489990f89d1c9fb5f85542772fd99a84994aa89ebec9867bfb72f"
+        },
+        {
+          "direction": "N",
+          "frame": 4,
+          "source": "sources/rift-N-clean.png",
+          "scale": 0.6613226452905812,
+          "sourceBounds": [
+            5,
+            9,
+            343,
+            507
+          ],
+          "bounds": [
+            64,
+            30,
+            224,
+            330
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 116891,
+          "sha256": "18f79257a7f459702f5b28188bd3855c2e27208d12d8a5c690f1c9d781f19b97"
+        },
+        {
+          "direction": "N",
+          "frame": 5,
+          "source": "sources/rift-N-clean.png",
+          "scale": 0.6613226452905812,
+          "sourceBounds": [
+            28,
+            10,
+            332,
+            506
+          ],
+          "bounds": [
+            80,
+            31,
+            202,
+            329
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 119419,
+          "sha256": "22d96b2bbe76d0136d8b0e3b63dea70de054804747a58b490356d1d4119306ff"
+        },
+        {
+          "direction": "N",
+          "frame": 6,
+          "source": "sources/rift-N-clean.png",
+          "scale": 0.6613226452905812,
+          "sourceBounds": [
+            28,
+            10,
+            332,
+            506
+          ],
+          "bounds": [
+            79,
+            31,
+            202,
+            329
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 120699,
+          "sha256": "26f4e755383f66f2414ae707122dab292d3c7233079acda5537d2f6e4ce37592"
+        },
+        {
+          "direction": "N",
+          "frame": 7,
+          "source": "sources/rift-N-clean.png",
+          "scale": 0.6613226452905812,
+          "sourceBounds": [
+            25,
+            10,
+            328,
+            506
+          ],
+          "bounds": [
+            78,
+            31,
+            201,
+            329
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 119608,
+          "sha256": "99b7f3bc7ac150619bfcdd96d87a9f6c681ca6edcf20d581fe48d18949f865d0"
+        },
+        {
+          "direction": "N",
+          "frame": 8,
+          "source": "sources/rift-N-clean.png",
+          "scale": 0.6613226452905812,
+          "sourceBounds": [
+            46,
+            10,
+            326,
+            506
+          ],
+          "bounds": [
+            91,
+            31,
+            186,
+            329
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 121402,
+          "sha256": "6bccbe1ea86994358645543e9b6aebdc5c72561859f8a3dc7588d29152f745fc"
+        },
+        {
+          "direction": "NE",
+          "frame": 1,
+          "source": "sources/rift-NE-clean.png",
+          "scale": 0.6573705179282868,
+          "sourceBounds": [
+            58,
+            11,
+            342,
+            509
+          ],
+          "bounds": [
+            68,
+            32,
+            187,
+            328
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 119648,
+          "sha256": "1ca38a30b10997f289ce28b0243a6f0ea5b1ff73ed7c4d318d536c807e901ce6"
+        },
+        {
+          "direction": "NE",
+          "frame": 2,
+          "source": "sources/rift-NE-clean.png",
+          "scale": 0.6573705179282868,
+          "sourceBounds": [
+            52,
+            11,
+            345,
+            509
+          ],
+          "bounds": [
+            64,
+            32,
+            193,
+            328
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 119326,
+          "sha256": "207f03450158e73df6d66a232172c217d872a529dd8e15977e90f34fd88bd6be"
+        },
+        {
+          "direction": "NE",
+          "frame": 3,
+          "source": "sources/rift-NE-clean.png",
+          "scale": 0.6573705179282868,
+          "sourceBounds": [
+            44,
+            11,
+            345,
+            509
+          ],
+          "bounds": [
+            59,
+            32,
+            199,
+            328
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 116407,
+          "sha256": "6dfc0f63d7e894222d2cce0050ed25839fb6ae9600e589c2ec26846b0a47fbe3"
+        },
+        {
+          "direction": "NE",
+          "frame": 4,
+          "source": "sources/rift-NE-clean.png",
+          "scale": 0.6573705179282868,
+          "sourceBounds": [
+            51,
+            11,
+            345,
+            509
+          ],
+          "bounds": [
+            64,
+            32,
+            194,
+            328
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 119293,
+          "sha256": "d6e90ea91e2188d838828581904449237549066bc457041060250145cf7c5519"
+        },
+        {
+          "direction": "NE",
+          "frame": 5,
+          "source": "sources/rift-NE-clean.png",
+          "scale": 0.6573705179282868,
+          "sourceBounds": [
+            51,
+            7,
+            345,
+            509
+          ],
+          "bounds": [
+            63,
+            29,
+            194,
+            331
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 117673,
+          "sha256": "bda75a9c0b105b849ef50d17496c564ecb9d63639a6163f814db9527206e984c"
+        },
+        {
+          "direction": "NE",
+          "frame": 6,
+          "source": "sources/rift-NE-clean.png",
+          "scale": 0.6573705179282868,
+          "sourceBounds": [
+            54,
+            7,
+            346,
+            509
+          ],
+          "bounds": [
+            65,
+            29,
+            193,
+            331
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 119785,
+          "sha256": "87fed80d18bb1c61dbdcb2855dd23daed93eddc180f6527d9c354c5eb81bfe1e"
+        },
+        {
+          "direction": "NE",
+          "frame": 7,
+          "source": "sources/rift-NE-clean.png",
+          "scale": 0.6573705179282868,
+          "sourceBounds": [
+            55,
+            8,
+            346,
+            509
+          ],
+          "bounds": [
+            66,
+            30,
+            192,
+            330
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 119077,
+          "sha256": "52d6ba414673e4e68979aa170e204e224f0731c101fae779386719ee715d6997"
+        },
+        {
+          "direction": "NE",
+          "frame": 8,
+          "source": "sources/rift-NE-clean.png",
+          "scale": 0.6573705179282868,
+          "sourceBounds": [
+            59,
+            7,
+            344,
+            509
+          ],
+          "bounds": [
+            69,
+            29,
+            188,
+            331
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 119032,
+          "sha256": "3c39924dadf251995ea77748a71c00d4c23b95cff6477a2ddab942ad41a69081"
+        },
+        {
+          "direction": "E",
+          "frame": 1,
+          "source": "sources/rift-E-clean.png",
+          "scale": 0.5719237435008665,
+          "sourceBounds": [
+            27,
+            4,
+            309,
+            577
+          ],
+          "bounds": [
+            78,
+            32,
+            162,
+            328
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 112209,
+          "sha256": "fc94edca4baad4fc72b7d9c02da32600833da89befebee0ef065f3d7c6138a36"
+        },
+        {
+          "direction": "E",
+          "frame": 2,
+          "source": "sources/rift-E-clean.png",
+          "scale": 0.5719237435008665,
+          "sourceBounds": [
+            15,
+            5,
+            310,
+            578
+          ],
+          "bounds": [
+            70,
+            32,
+            169,
+            328
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 109416,
+          "sha256": "febfe70c1fb4c84ea3ce4c0eb918bf4c6cf8647d2180988b1c813d97c8d76d96"
+        },
+        {
+          "direction": "E",
+          "frame": 3,
+          "source": "sources/rift-E-clean.png",
+          "scale": 0.5719237435008665,
+          "sourceBounds": [
+            15,
+            4,
+            314,
+            577
+          ],
+          "bounds": [
+            68,
+            32,
+            172,
+            328
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 108704,
+          "sha256": "980cd417a45cf6c3c68ab569ac5e2f1d1faab0b41e0690719b9c62c0a94d1539"
+        },
+        {
+          "direction": "E",
+          "frame": 4,
+          "source": "sources/rift-E-clean.png",
+          "scale": 0.5719237435008665,
+          "sourceBounds": [
+            22,
+            4,
+            319,
+            578
+          ],
+          "bounds": [
+            71,
+            31,
+            170,
+            329
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 106881,
+          "sha256": "71c88420a65ea6be4a00405b11b84cbfcefe08aa4a9a3f62e29ec2103b2f7621"
+        },
+        {
+          "direction": "E",
+          "frame": 5,
+          "source": "sources/rift-E-clean.png",
+          "scale": 0.5719237435008665,
+          "sourceBounds": [
+            15,
+            2,
+            316,
+            578
+          ],
+          "bounds": [
+            70,
+            30,
+            173,
+            330
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 107192,
+          "sha256": "e33470e109175f8ccf36eb28db26c8bd774dcc845db2c15660b7d3d310b8d5ff"
+        },
+        {
+          "direction": "E",
+          "frame": 6,
+          "source": "sources/rift-E-clean.png",
+          "scale": 0.5719237435008665,
+          "sourceBounds": [
+            11,
+            3,
+            310,
+            579
+          ],
+          "bounds": [
+            68,
+            30,
+            172,
+            330
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 107002,
+          "sha256": "868924eee41a135ad20a32794f34554813292819112c56e279c17737281b59df"
+        },
+        {
+          "direction": "E",
+          "frame": 7,
+          "source": "sources/rift-E-clean.png",
+          "scale": 0.5719237435008665,
+          "sourceBounds": [
+            8,
+            2,
+            317,
+            578
+          ],
+          "bounds": [
+            64,
+            30,
+            177,
+            330
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 105367,
+          "sha256": "5723b1ed9e1a80e9863e57c0089c8f3ce206cb13842c72c27d28a151ee9b4a78"
+        },
+        {
+          "direction": "E",
+          "frame": 8,
+          "source": "sources/rift-E-clean.png",
+          "scale": 0.5719237435008665,
+          "sourceBounds": [
+            18,
+            1,
+            319,
+            578
+          ],
+          "bounds": [
+            69,
+            29,
+            173,
+            331
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 108174,
+          "sha256": "1690d149e74726171139c978df7471e5734da6135dc489915fad94743ab96e10"
+        },
+        {
+          "direction": "SE",
+          "frame": 1,
+          "source": "sources/rift-SE-clean.png",
+          "scale": 0.6521739130434783,
+          "sourceBounds": [
+            46,
+            9,
+            375,
+            511
+          ],
+          "bounds": [
+            111,
+            32,
+            215,
+            328
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 110341,
+          "sha256": "a6f58318a7b25b1aa77bb7bbeeb354b1b814cacdd943475c31208694eb0e251e"
+        },
+        {
+          "direction": "SE",
+          "frame": 2,
+          "source": "sources/rift-SE-clean.png",
+          "scale": 0.6521739130434783,
+          "sourceBounds": [
+            26,
+            8,
+            380,
+            511
+          ],
+          "bounds": [
+            98,
+            31,
+            232,
+            329
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 107533,
+          "sha256": "a5fa20a99e6b622b4a9e559d89e4ff594158b766fa9b9b83f67163d4ca498714"
+        },
+        {
+          "direction": "SE",
+          "frame": 3,
+          "source": "sources/rift-SE-clean.png",
+          "scale": 0.6521739130434783,
+          "sourceBounds": [
+            32,
+            8,
+            380,
+            511
+          ],
+          "bounds": [
+            102,
+            31,
+            228,
+            329
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 106413,
+          "sha256": "dc8d1385d57e25ad44f9e718a77e54021dc94c9ba859207972ef8095705c99e1"
+        },
+        {
+          "direction": "SE",
+          "frame": 4,
+          "source": "sources/rift-SE-clean.png",
+          "scale": 0.6521739130434783,
+          "sourceBounds": [
+            31,
+            7,
+            380,
+            511
+          ],
+          "bounds": [
+            101,
+            31,
+            228,
+            329
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 107592,
+          "sha256": "830d7e185c557097a46277036da9688a620be66de64f3dd1c94a48347f907795"
+        },
+        {
+          "direction": "SE",
+          "frame": 5,
+          "source": "sources/rift-SE-clean.png",
+          "scale": 0.6521739130434783,
+          "sourceBounds": [
+            31,
+            6,
+            383,
+            511
+          ],
+          "bounds": [
+            101,
+            30,
+            230,
+            330
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 107574,
+          "sha256": "14d714dd68fb22f90282f86011f2e50de1e9d53d9551248ee2715ba59b9a8367"
+        },
+        {
+          "direction": "SE",
+          "frame": 6,
+          "source": "sources/rift-SE-clean.png",
+          "scale": 0.6521739130434783,
+          "sourceBounds": [
+            19,
+            6,
+            381,
+            511
+          ],
+          "bounds": [
+            94,
+            30,
+            237,
+            330
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 108222,
+          "sha256": "ae61463bb1efd2bcf1de9533c47ebc8cbe4c2cd42332762552debd0956760241"
+        },
+        {
+          "direction": "SE",
+          "frame": 7,
+          "source": "sources/rift-SE-clean.png",
+          "scale": 0.6521739130434783,
+          "sourceBounds": [
+            26,
+            6,
+            383,
+            511
+          ],
+          "bounds": [
+            98,
+            30,
+            233,
+            330
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 106587,
+          "sha256": "6bb028063d2e48091f349f0c8df9d4373959acd4342052a1d80b6050b68fd10b"
+        },
+        {
+          "direction": "SE",
+          "frame": 8,
+          "source": "sources/rift-SE-clean.png",
+          "scale": 0.6521739130434783,
+          "sourceBounds": [
+            13,
+            6,
+            381,
+            511
+          ],
+          "bounds": [
+            90,
+            30,
+            241,
+            330
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 108304,
+          "sha256": "7dbbc4325d3aabcaa28c2fab14e5da25582bd9307c7161aae10f3ef71ba13bf8"
+        },
+        {
+          "direction": "S",
+          "frame": 1,
+          "source": "sources/rift-S-clean.png",
+          "scale": 0.6496062992125984,
+          "sourceBounds": [
+            23,
+            6,
+            360,
+            511
+          ],
+          "bounds": [
+            83,
+            31,
+            220,
+            329
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 107302,
+          "sha256": "fa798c0ec1bd7c2b752c7c26c622ca44827e512f47b3808ca446197f54ff2c74"
+        },
+        {
+          "direction": "S",
+          "frame": 2,
+          "source": "sources/rift-S-clean.png",
+          "scale": 0.6496062992125984,
+          "sourceBounds": [
+            23,
+            6,
+            362,
+            511
+          ],
+          "bounds": [
+            83,
+            31,
+            221,
+            329
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 104413,
+          "sha256": "8c7cef83d9bcaefc4c165ba3e5168d36ba5221cfb5be2c6625e50ad12957b953"
+        },
+        {
+          "direction": "S",
+          "frame": 3,
+          "source": "sources/rift-S-clean.png",
+          "scale": 0.6496062992125984,
+          "sourceBounds": [
+            27,
+            6,
+            383,
+            511
+          ],
+          "bounds": [
+            86,
+            31,
+            232,
+            329
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 103070,
+          "sha256": "02370a76785de5c12052fdd86c34c0ee3f28be616b9c786b51b465e9424353bb"
+        },
+        {
+          "direction": "S",
+          "frame": 4,
+          "source": "sources/rift-S-clean.png",
+          "scale": 0.6496062992125984,
+          "sourceBounds": [
+            5,
+            5,
+            366,
+            511
+          ],
+          "bounds": [
+            72,
+            31,
+            235,
+            329
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 99724,
+          "sha256": "1582a44ff203b9eb810266ac2f8e3263ea73fe3304326c1a42c213f34ea20c49"
+        },
+        {
+          "direction": "S",
+          "frame": 5,
+          "source": "sources/rift-S-clean.png",
+          "scale": 0.6496062992125984,
+          "sourceBounds": [
+            30,
+            4,
+            361,
+            511
+          ],
+          "bounds": [
+            87,
+            30,
+            216,
+            330
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 104854,
+          "sha256": "c417201283517fe7afdfd0981d417813c82a3c949a4dbf8f45152af47b88969d"
+        },
+        {
+          "direction": "S",
+          "frame": 6,
+          "source": "sources/rift-S-clean.png",
+          "scale": 0.6496062992125984,
+          "sourceBounds": [
+            26,
+            4,
+            357,
+            511
+          ],
+          "bounds": [
+            85,
+            30,
+            216,
+            330
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 104972,
+          "sha256": "98b63c734f987b7ca86f63332032f06c5bb76ba616529e04d5c5e50d1e7e5736"
+        },
+        {
+          "direction": "S",
+          "frame": 7,
+          "source": "sources/rift-S-clean.png",
+          "scale": 0.6496062992125984,
+          "sourceBounds": [
+            29,
+            4,
+            356,
+            511
+          ],
+          "bounds": [
+            87,
+            30,
+            213,
+            330
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 105138,
+          "sha256": "3d10ab24a07d48c403b33c0716f28bcbf38c360cf70fab57e58276197203604a"
+        },
+        {
+          "direction": "S",
+          "frame": 8,
+          "source": "sources/rift-S-clean.png",
+          "scale": 0.6496062992125984,
+          "sourceBounds": [
+            31,
+            4,
+            356,
+            511
+          ],
+          "bounds": [
+            89,
+            30,
+            212,
+            330
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 106560,
+          "sha256": "a2d682b85188965f7ccbff1908d5db1ac99f660f685733fb49172289ff072592"
+        },
+        {
+          "direction": "SW",
+          "frame": 1,
+          "source": "sources/rift-SW-final.png",
+          "scale": 0.6626506024096386,
+          "sourceBounds": [
+            31,
+            7,
+            378,
+            505
+          ],
+          "bounds": [
+            109,
+            29,
+            231,
+            331
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 103118,
+          "sha256": "bd4dfbcb85caab652870aa7e7b1eb8adf6f59b9ea0dad3af575229744c2259d0"
+        },
+        {
+          "direction": "SW",
+          "frame": 2,
+          "source": "sources/rift-SW-final.png",
+          "scale": 0.6626506024096386,
+          "sourceBounds": [
+            15,
+            8,
+            383,
+            505
+          ],
+          "bounds": [
+            110,
+            30,
+            245,
+            330
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 99608,
+          "sha256": "dda29e73998c943ee575f5c0c1cdcbff5944bb2c1d903e6a68489decdcfc45f8"
+        },
+        {
+          "direction": "SW",
+          "frame": 3,
+          "source": "sources/rift-SW-final.png",
+          "scale": 0.6626506024096386,
+          "sourceBounds": [
+            15,
+            7,
+            380,
+            504
+          ],
+          "bounds": [
+            110,
+            30,
+            243,
+            330
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 101182,
+          "sha256": "05a378c0fb5987325b3a65cca346a9054b8cc13b9c53817ef2fda73c6dd5be85"
+        },
+        {
+          "direction": "SW",
+          "frame": 4,
+          "source": "sources/rift-SW-final.png",
+          "scale": 0.6626506024096386,
+          "sourceBounds": [
+            14,
+            7,
+            364,
+            504
+          ],
+          "bounds": [
+            110,
+            30,
+            233,
+            330
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 101718,
+          "sha256": "ddd407e31202daccd30ab68a2f9280063834483af6a722934e805e732ca71396"
+        },
+        {
+          "direction": "SW",
+          "frame": 5,
+          "source": "sources/rift-SW-final.png",
+          "scale": 0.6626506024096386,
+          "sourceBounds": [
+            31,
+            1,
+            379,
+            497
+          ],
+          "bounds": [
+            110,
+            31,
+            231,
+            329
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 100637,
+          "sha256": "62b6604986c25217cf1ad438130955e000df29ab22c5775e1b902244f8b62861"
+        },
+        {
+          "direction": "SW",
+          "frame": 6,
+          "source": "sources/rift-SW-final.png",
+          "scale": 0.6626506024096386,
+          "sourceBounds": [
+            18,
+            1,
+            375,
+            497
+          ],
+          "bounds": [
+            110,
+            31,
+            237,
+            329
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 99895,
+          "sha256": "230b30f14d8e7c36e4f3048071ff766085809942b9d2f0bd048980dc9b9e8011"
+        },
+        {
+          "direction": "SW",
+          "frame": 7,
+          "source": "sources/rift-SW-final.png",
+          "scale": 0.6626506024096386,
+          "sourceBounds": [
+            16,
+            2,
+            382,
+            497
+          ],
+          "bounds": [
+            110,
+            31,
+            243,
+            329
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 99420,
+          "sha256": "db07ae2735ed982c8cdd30a4de7d1693c645e0a30f541618d4995f3b8fdd8659"
+        },
+        {
+          "direction": "SW",
+          "frame": 8,
+          "source": "sources/rift-SW-final.png",
+          "scale": 0.6626506024096386,
+          "sourceBounds": [
+            14,
+            2,
+            378,
+            497
+          ],
+          "bounds": [
+            108,
+            31,
+            242,
+            329
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 99992,
+          "sha256": "db7e4ac617037ca89d6a85735b9d4c9b4cef853702b11e8a8597d8047a9562aa"
+        },
+        {
+          "direction": "W",
+          "frame": 1,
+          "source": "sources/rift-W-clean.png",
+          "scale": 0.6521739130434783,
+          "sourceBounds": [
+            57,
+            7,
+            335,
+            510
+          ],
+          "bounds": [
+            148,
+            31,
+            182,
+            329
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 124824,
+          "sha256": "34062cc76302fc0de924bf99ccd6eee1acacaf9fdc942ea12a9dd05116b80795"
+        },
+        {
+          "direction": "W",
+          "frame": 2,
+          "source": "sources/rift-W-clean.png",
+          "scale": 0.6521739130434783,
+          "sourceBounds": [
+            56,
+            7,
+            382,
+            510
+          ],
+          "bounds": [
+            147,
+            31,
+            213,
+            329
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 117053,
+          "sha256": "5bae93c04868cf7ff1d02685842599b277318f53d63d14acb1c034a19717c77a"
+        },
+        {
+          "direction": "W",
+          "frame": 3,
+          "source": "sources/rift-W-clean.png",
+          "scale": 0.6521739130434783,
+          "sourceBounds": [
+            56,
+            6,
+            383,
+            510
+          ],
+          "bounds": [
+            147,
+            31,
+            214,
+            329
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 114227,
+          "sha256": "194d794887a4558c1d13215fed6ac0b181a9c5308b8108087d042164f0ac33d4"
+        },
+        {
+          "direction": "W",
+          "frame": 4,
+          "source": "sources/rift-W-clean.png",
+          "scale": 0.6521739130434783,
+          "sourceBounds": [
+            57,
+            2,
+            378,
+            510
+          ],
+          "bounds": [
+            148,
+            28,
+            210,
+            332
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 113159,
+          "sha256": "5f89de40b54ffb2df651c2988855618dea2dad4d4193f33f53f3ce95d80764c7"
+        },
+        {
+          "direction": "W",
+          "frame": 5,
+          "source": "sources/rift-W-clean.png",
+          "scale": 0.6521739130434783,
+          "sourceBounds": [
+            57,
+            3,
+            383,
+            509
+          ],
+          "bounds": [
+            148,
+            29,
+            213,
+            331
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 113658,
+          "sha256": "79ac64c79006dbb9fa1fd1a59f438076b5c1cce323b848badd54b7f602d374b1"
+        },
+        {
+          "direction": "W",
+          "frame": 6,
+          "source": "sources/rift-W-clean.png",
+          "scale": 0.6521739130434783,
+          "sourceBounds": [
+            54,
+            4,
+            365,
+            509
+          ],
+          "bounds": [
+            145,
+            30,
+            203,
+            330
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 122473,
+          "sha256": "f1f7be0d6824f2b28d496996bd85ae5de1071fc832cc1a1a036a876ab44927dd"
+        },
+        {
+          "direction": "W",
+          "frame": 7,
+          "source": "sources/rift-W-clean.png",
+          "scale": 0.6521739130434783,
+          "sourceBounds": [
+            56,
+            5,
+            344,
+            509
+          ],
+          "bounds": [
+            148,
+            31,
+            188,
+            329
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 123799,
+          "sha256": "9cf143f4554035fc7e5ea5aa17295923a252f09347f8bc58fcc3e987b8f3ccb7"
+        },
+        {
+          "direction": "W",
+          "frame": 8,
+          "source": "sources/rift-W-clean.png",
+          "scale": 0.6521739130434783,
+          "sourceBounds": [
+            57,
+            5,
+            366,
+            510
+          ],
+          "bounds": [
+            148,
+            30,
+            202,
+            330
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 122025,
+          "sha256": "ddb8f74ab8865f763f958270acbabffcc65ddba84fad5a2e064f08e9d6b3d86d"
+        },
+        {
+          "direction": "NW",
+          "frame": 1,
+          "source": "sources/rift-NW-final.png",
+          "scale": 0.6560636182902585,
+          "sourceBounds": [
+            37,
+            7,
+            383,
+            511
+          ],
+          "bounds": [
+            99,
+            29,
+            228,
+            331
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 106198,
+          "sha256": "9f325143619255856a2aecaa88867676ab9f7c7a2acabae4dddc14618704b290"
+        },
+        {
+          "direction": "NW",
+          "frame": 2,
+          "source": "sources/rift-NW-final.png",
+          "scale": 0.6560636182902585,
+          "sourceBounds": [
+            40,
+            8,
+            383,
+            510
+          ],
+          "bounds": [
+            112,
+            30,
+            226,
+            330
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 104188,
+          "sha256": "2dd7ace2c3450c515e5b81e96a874b5667fbe4a50ebc0e3f62e5f8833db0f369"
+        },
+        {
+          "direction": "NW",
+          "frame": 3,
+          "source": "sources/rift-NW-final.png",
+          "scale": 0.6560636182902585,
+          "sourceBounds": [
+            25,
+            8,
+            383,
+            510
+          ],
+          "bounds": [
+            99,
+            30,
+            236,
+            330
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 103408,
+          "sha256": "526a48fe02ca2b7283f3cfee51e9a199db2e4a386351f1548c5a33307a8fb316"
+        },
+        {
+          "direction": "NW",
+          "frame": 4,
+          "source": "sources/rift-NW-final.png",
+          "scale": 0.6560636182902585,
+          "sourceBounds": [
+            34,
+            8,
+            376,
+            510
+          ],
+          "bounds": [
+            90,
+            30,
+            225,
+            330
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 103724,
+          "sha256": "81e77c6783338c0ddf4a994c525e2851bcbe30ffa9658ee801c61669d2f22489"
+        },
+        {
+          "direction": "NW",
+          "frame": 5,
+          "source": "sources/rift-NW-final.png",
+          "scale": 0.6560636182902585,
+          "sourceBounds": [
+            52,
+            2,
+            383,
+            505
+          ],
+          "bounds": [
+            102,
+            29,
+            218,
+            331
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 104584,
+          "sha256": "4a61423c1673f3b6cce7b6c2af0007c20d051dbf25672de0451bba31683bf7ab"
+        },
+        {
+          "direction": "NW",
+          "frame": 6,
+          "source": "sources/rift-NW-final.png",
+          "scale": 0.6560636182902585,
+          "sourceBounds": [
+            42,
+            2,
+            383,
+            505
+          ],
+          "bounds": [
+            108,
+            29,
+            224,
+            331
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 103452,
+          "sha256": "465b7c70ad09905a538b800e81c7ce5bc4e48583ae8cab6514fe7b59b68f1d18"
+        },
+        {
+          "direction": "NW",
+          "frame": 7,
+          "source": "sources/rift-NW-final.png",
+          "scale": 0.6560636182902585,
+          "sourceBounds": [
+            27,
+            4,
+            383,
+            505
+          ],
+          "bounds": [
+            106,
+            31,
+            234,
+            329
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 104044,
+          "sha256": "360da5e3477718f9146f225b3105fdf57f015b8a3bdb44cfacb0812f0182e509"
+        },
+        {
+          "direction": "NW",
+          "frame": 8,
+          "source": "sources/rift-NW-final.png",
+          "scale": 0.6560636182902585,
+          "sourceBounds": [
+            29,
+            4,
+            377,
+            505
+          ],
+          "bounds": [
+            104,
+            31,
+            229,
+            329
+          ],
+          "pivot": {
+            "x": 192,
+            "y": 360
+          },
+          "transparentSourcePixels": 103474,
+          "sha256": "4af53fe96a22a8115f9f2d08038b40fcc6253ca429e6dd8e9e992e2860d3aa2b"
+        }
+      ]
+    }
+  },
+  "sources": [
+    "sources/ember-N-clean.png",
+    "sources/ember-NE-clean.png",
+    "sources/ember-E-clean.png",
+    "sources/ember-SE-clean.png",
+    "sources/ember-S-clean.png",
+    "sources/ember-SW-final.png",
+    "sources/ember-W-clean.png",
+    "sources/ember-NW-final.png",
+    "sources/rift-N-clean.png",
+    "sources/rift-NE-clean.png",
+    "sources/rift-E-clean.png",
+    "sources/rift-SE-clean.png",
+    "sources/rift-S-clean.png",
+    "sources/rift-SW-final.png",
+    "sources/rift-W-clean.png",
+    "sources/rift-NW-final.png"
+  ]
+}
