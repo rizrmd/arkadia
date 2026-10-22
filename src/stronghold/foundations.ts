@@ -29,7 +29,7 @@ export function foundationLayers(p:Sprite,soil:HTMLImageElement,snow?:HTMLImageE
   // Tiny contact crevice; soft earth decal supplies the broad transition.
   ground.fillStyle='#302c2428';ground.beginPath();ground.ellipse(x,y+1,7,1.8,0,0,Math.PI*2);ground.fill();
   if(vegetation&&!approach&&rng()<(dry?.035:.18)){const size=24+rng()*22;ground.globalAlpha=.78;ground.drawImage(vegetation,x-size*.5,y-3,size,size*vegetation.height/vegetation.width);}
-  if(snow&&p.layer==='foreground'&&!gate&&!approach&&rng()<.24){ground.globalAlpha=.74;ground.drawImage(snow,x-22,y+1,44,13);}
+  if(snow&&p.layer==='foreground'&&!approach&&rng()<(gate?.55:.24)){ground.globalAlpha=.74;ground.drawImage(snow,x-22,y+1,44,13);}
   if(approach||rng()>(dry?.16:.62))continue;
   // Broken climbing moss only at the lowest opaque pixels, clipped to the
   // owning sprite below. Sparse stippling preserves masonry and its lighting.

@@ -1,7 +1,7 @@
 import {TORCH_FRAMES,torchAssetsReady} from './torches';
 /** The complete gateway plays as one sprite: both towers, arch and synchronized door leaves share one pivot. */
 export type GateSheet={image:string;columns:number;frames:number;frame:{w:number;h:number};fps:number;region:{x:number;y:number;w:number;h:number};torches?:{left:{x:number;y:number;w:number;h:number};right:{x:number;y:number;w:number;h:number}}};
-export const GATE_SHEET='/modular-stronghold/v2/full-gateway-v4-sheet.json';
+export const GATE_SHEET='/modular-stronghold/v2/full-gateway-v5-sheet.json';
 export function createGateDoors(layer:HTMLElement,gateway:HTMLImageElement,sheet:HTMLImageElement,meta:GateSheet,onPassable:(open:boolean)=>void,light:{foundation?:{face:HTMLCanvasElement;pad:number;fade?:HTMLCanvasElement};revision:()=>number;torches?:()=>boolean;shade:(source:HTMLCanvasElement,target:HTMLCanvasElement)=>void}){
  const {region,frame}=meta,rows=Math.ceil(meta.frames/meta.columns),height=region.h,canvas=document.createElement('canvas');
  canvas.id='world-gate-doors';canvas.dataset.renderer='gateway-lightmap-v3';canvas.width=frame.w;canvas.height=frame.h;
