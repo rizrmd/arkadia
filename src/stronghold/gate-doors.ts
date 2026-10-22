@@ -2,7 +2,7 @@ import {TORCH_FRAMES,torchAssetsReady} from './torches';
 /** The complete gateway plays as one sprite: both towers, arch and synchronized door leaves share one pivot. */
 export type GateSheet={image:string;columns:number;frames:number;frame:{w:number;h:number};fps:number;region:{x:number;y:number;w:number;h:number};torches?:{left:{x:number;y:number;w:number;h:number};right:{x:number;y:number;w:number;h:number}}};
 export const GATE_SHEET='/modular-stronghold/v2/full-gateway-v4-sheet.json';
-export function createGateDoors(layer:HTMLElement,gateway:HTMLImageElement,sheet:HTMLImageElement,meta:GateSheet,onPassable:(open:boolean)=>void,light:{foundation?:{face:HTMLCanvasElement;pad:number};revision:()=>number;torches?:()=>boolean;shade:(source:HTMLCanvasElement,target:HTMLCanvasElement)=>void}){
+export function createGateDoors(layer:HTMLElement,gateway:HTMLImageElement,sheet:HTMLImageElement,meta:GateSheet,onPassable:(open:boolean)=>void,light:{foundation?:{face:HTMLCanvasElement;pad:number;fade?:HTMLCanvasElement};revision:()=>number;torches?:()=>boolean;shade:(source:HTMLCanvasElement,target:HTMLCanvasElement)=>void}){
  const {region,frame}=meta,rows=Math.ceil(meta.frames/meta.columns),height=region.h,canvas=document.createElement('canvas');
  canvas.id='world-gate-doors';canvas.dataset.renderer='gateway-lightmap-v3';canvas.width=frame.w;canvas.height=frame.h;
  canvas.style.cssText=`position:absolute;left:0;top:0;width:${region.w}px;height:${region.h}px;transform-origin:0 0;pointer-events:none;will-change:transform`;
@@ -29,8 +29,9 @@ export function createGateDoors(layer:HTMLElement,gateway:HTMLImageElement,sheet
    raw.globalCompositeOperation='source-over';
    if(gateway.complete&&gateway.naturalWidth){const gx=gateway.naturalWidth/frame.w,gy=gateway.naturalHeight/frame.h;for(const p of pierPatches)raw.drawImage(gateway,p.x*gx,p.y*gy,p.w*gx,p.h*gy,p.x,p.y,p.w,p.h);}
    if(light.foundation){
-    const {face,pad}=light.foundation,sx=frame.w/region.w,sy=frame.h/region.h;
+    const {face,pad,fade}=light.foundation,sx=frame.w/region.w,sy=frame.h/region.h;
     raw.drawImage(face,-pad*sx,-pad*sy,face.width*sx,face.height*sy);
+    if(fade){raw.globalCompositeOperation='destination-in';raw.drawImage(fade,0,0,frame.w,frame.h);raw.globalCompositeOperation='source-over';}
    }
    light.shade(source,canvas);
    if(torchesLit)drawLitTorches();
