@@ -17,6 +17,12 @@ try{
   await page.keyboard.down('KeyS');await page.waitForTimeout(6000);await page.keyboard.up('KeyS');await page.waitForTimeout(1500);
   await page.context().close();
  }
+ // The FX Lab (/fx-lab, src/fx/lab.ts) is a page of the same build with its own chunks.
+ await browser?.close();browser=await launch();
+ const lab=await (await browser.newContext({viewport:{width:1280,height:800}})).newPage();
+ lab.on('response',r=>{const u=new URL(r.url());if(u.host==='127.0.0.1:8793'&&r.status()===200&&!u.pathname.startsWith('/api/'))files.add(decodeURIComponent(u.pathname.slice(1))||'index.html');});
+ await lab.goto('http://127.0.0.1:8793/fx-lab');
+ await lab.waitForFunction(()=>document.body.dataset.fxLab==='ready',null,{timeout:180000});
 }finally{await browser?.close();server.kill();}
 // Every pickable hero's atlas, picker portrait and picker card frames (src/stronghold/heroes.ts, style.css).
 const {characters}=JSON.parse(readFileSync('dist/assets/characters/manifest.json','utf8'));
