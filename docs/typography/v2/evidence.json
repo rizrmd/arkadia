@@ -1,0 +1,390 @@
+{
+ "compare": [
+  {
+   "name": "hud-desktop",
+   "label": "HUD · desktop 1672 × 941 · DPR 1",
+   "viewport": [
+    1672,
+    941
+   ],
+   "dpr": 1,
+   "pixels": [
+    1672,
+    941
+   ],
+   "reference": "public/typography/reference.png",
+   "files": [
+    "hud-desktop.webp",
+    "hud-desktop-side-by-side.webp",
+    "hud-desktop-overlay.webp"
+   ]
+  },
+  {
+   "name": "hud-mobile",
+   "label": "HUD · phone landscape 836 × 470 CSS px · DPR 2",
+   "viewport": [
+    836,
+    470
+   ],
+   "dpr": 2,
+   "pixels": [
+    1672,
+    940
+   ],
+   "reference": "public/typography/reference.png",
+   "files": [
+    "hud-mobile.webp",
+    "hud-mobile-side-by-side.webp",
+    "hud-mobile-overlay.webp"
+   ]
+  },
+  {
+   "name": "hero-desktop-ember",
+   "label": "Choose Your Hero · desktop · Ember Warden",
+   "viewport": [
+    1672,
+    941
+   ],
+   "dpr": 1,
+   "pixels": [
+    1672,
+    941
+   ],
+   "reference": "public/typography/v2/references/choose-your-hero-desktop.png",
+   "files": [
+    "hero-desktop-ember.webp",
+    "hero-desktop-ember-side-by-side.webp",
+    "hero-desktop-ember-overlay.webp"
+   ]
+  },
+  {
+   "name": "hero-desktop-rift",
+   "label": "Choose Your Hero · desktop · Rift Runner",
+   "viewport": [
+    1672,
+    941
+   ],
+   "dpr": 1,
+   "pixels": [
+    1672,
+    941
+   ],
+   "reference": "public/typography/v2/references/rift-runner-desktop.png",
+   "files": [
+    "hero-desktop-rift.webp",
+    "hero-desktop-rift-side-by-side.webp",
+    "hero-desktop-rift-overlay.webp"
+   ]
+  },
+  {
+   "name": "hero-mobile-ember",
+   "label": "Choose Your Hero · mobile 432 × 912 CSS px · DPR 2 · Ember",
+   "viewport": [
+    432,
+    912
+   ],
+   "dpr": 2,
+   "pixels": [
+    864,
+    1824
+   ],
+   "reference": "public/typography/v2/references/ember-warden-mobile.png",
+   "files": [
+    "hero-mobile-ember.webp",
+    "hero-mobile-ember-side-by-side.webp",
+    "hero-mobile-ember-overlay.webp"
+   ]
+  },
+  {
+   "name": "hero-mobile-rift",
+   "label": "Choose Your Hero · mobile 432 × 912 CSS px · DPR 2 · Rift",
+   "viewport": [
+    432,
+    912
+   ],
+   "dpr": 2,
+   "pixels": [
+    864,
+    1824
+   ],
+   "reference": "public/typography/v2/references/rift-runner-mobile.png",
+   "files": [
+    "hero-mobile-rift.webp",
+    "hero-mobile-rift-side-by-side.webp",
+    "hero-mobile-rift-overlay.webp"
+   ]
+  }
+ ],
+ "crisp": [
+  {
+   "screen": "hud",
+   "dpr": 1,
+   "fix": true,
+   "viewport": [
+    1280,
+    720
+   ],
+   "frameScale": 1,
+   "sceneScale": 0.7651,
+   "file": "crisp-hud-dpr1.png",
+   "edges": {
+    "Ember Warden": 1.25,
+    "AUTO": 1.35,
+    "Flame Fan": 1.63,
+    "06:27": 1.2,
+    "Esc": 1.54
+   }
+  },
+  {
+   "screen": "hud",
+   "dpr": 2,
+   "fix": true,
+   "viewport": [
+    1280,
+    720
+   ],
+   "frameScale": 2,
+   "sceneScale": 0.7651,
+   "file": "crisp-hud-dpr2.png",
+   "edges": {
+    "Ember Warden": 1.15,
+    "AUTO": 1.21,
+    "Flame Fan": 1.21,
+    "06:27": 1.14,
+    "Esc": 1.17
+   }
+  },
+  {
+   "screen": "hud",
+   "dpr": 3,
+   "fix": true,
+   "viewport": [
+    1280,
+    720
+   ],
+   "frameScale": 3,
+   "sceneScale": 0.7651,
+   "file": "crisp-hud-dpr3.png",
+   "edges": {
+    "Ember Warden": 1.15,
+    "AUTO": 1.16,
+    "Flame Fan": 1.18,
+    "06:27": 1.11,
+    "Esc": 1.15
+   }
+  },
+  {
+   "screen": "hud",
+   "dpr": 2.625,
+   "fix": true,
+   "viewport": [
+    1280,
+    720
+   ],
+   "frameScale": 2,
+   "sceneScale": 0.7651,
+   "file": "crisp-hud-dpr2_625.png",
+   "edges": {
+    "Ember Warden": 1.16,
+    "AUTO": 1.16,
+    "Flame Fan": 1.16,
+    "06:27": 1.1,
+    "Esc": 1.18
+   }
+  },
+  {
+   "screen": "hud",
+   "dpr": 2,
+   "fix": false,
+   "viewport": [
+    1280,
+    720
+   ],
+   "frameScale": 2,
+   "sceneScale": 0.7651,
+   "file": "crisp-hud-dpr2-stock.png",
+   "edges": {
+    "Ember Warden": 2.06,
+    "AUTO": 1.91,
+    "Flame Fan": 2.02,
+    "06:27": 1.88,
+    "Esc": 2.26
+   }
+  },
+  {
+   "screen": "hud",
+   "dpr": 3,
+   "fix": false,
+   "viewport": [
+    1280,
+    720
+   ],
+   "frameScale": 3,
+   "sceneScale": 0.7651,
+   "file": "crisp-hud-dpr3-stock.png",
+   "edges": {
+    "Ember Warden": 2.88,
+    "AUTO": 2.87,
+    "Flame Fan": 2.71,
+    "06:27": 2.75,
+    "Esc": 3.02
+   }
+  },
+  {
+   "screen": "hud",
+   "dpr": 2.625,
+   "fix": false,
+   "viewport": [
+    1280,
+    720
+   ],
+   "frameScale": 2,
+   "sceneScale": 0.7651,
+   "file": "crisp-hud-dpr2_625-stock.png",
+   "edges": {
+    "Ember Warden": 2.6,
+    "AUTO": 2.47,
+    "Flame Fan": 2.47,
+    "06:27": 2.44,
+    "Esc": 2.66
+   }
+  },
+  {
+   "screen": "hero",
+   "dpr": 1,
+   "fix": true,
+   "viewport": [
+    1280,
+    720
+   ],
+   "frameScale": null,
+   "sceneScale": 0.7651,
+   "file": "crisp-hero-dpr1.png",
+   "edges": {
+    "CHOOSE YOUR HERO": 1.23,
+    "Ember Warden": 1.74,
+    "Selected": 1.6,
+    "LOADOUT": 1.14,
+    "Skills cast automaticall…": 1.42
+   }
+  },
+  {
+   "screen": "hero",
+   "dpr": 2,
+   "fix": true,
+   "viewport": [
+    1280,
+    720
+   ],
+   "frameScale": null,
+   "sceneScale": 0.7651,
+   "file": "crisp-hero-dpr2.png",
+   "edges": {
+    "CHOOSE YOUR HERO": 1.34,
+    "Ember Warden": 2.98,
+    "Selected": 1.47,
+    "LOADOUT": 1.12,
+    "Skills cast automaticall…": 1.2
+   }
+  },
+  {
+   "screen": "hero",
+   "dpr": 3,
+   "fix": true,
+   "viewport": [
+    1280,
+    720
+   ],
+   "frameScale": null,
+   "sceneScale": 0.7651,
+   "file": "crisp-hero-dpr3.png",
+   "edges": {
+    "CHOOSE YOUR HERO": 1.34,
+    "Ember Warden": 3.78,
+    "Selected": 1.46,
+    "LOADOUT": 1.17,
+    "Skills cast automaticall…": 1.2
+   }
+  },
+  {
+   "screen": "hero",
+   "dpr": 2.625,
+   "fix": true,
+   "viewport": [
+    1280,
+    720
+   ],
+   "frameScale": null,
+   "sceneScale": 0.7651,
+   "file": "crisp-hero-dpr2_625.png",
+   "edges": {
+    "CHOOSE YOUR HERO": 1.32,
+    "Ember Warden": 3.52,
+    "Selected": 1.41,
+    "LOADOUT": 1.12,
+    "Skills cast automaticall…": 1.22
+   }
+  },
+  {
+   "screen": "hero",
+   "dpr": 2,
+   "fix": false,
+   "viewport": [
+    1280,
+    720
+   ],
+   "frameScale": null,
+   "sceneScale": 0.7651,
+   "file": "crisp-hero-dpr2-stock.png",
+   "edges": {
+    "CHOOSE YOUR HERO": 2.3,
+    "Ember Warden": 2.88,
+    "Selected": 2.21,
+    "LOADOUT": 1.85,
+    "Skills cast automaticall…": 2.07
+   }
+  },
+  {
+   "screen": "hero",
+   "dpr": 3,
+   "fix": false,
+   "viewport": [
+    1280,
+    720
+   ],
+   "frameScale": null,
+   "sceneScale": 0.7651,
+   "file": "crisp-hero-dpr3-stock.png",
+   "edges": {
+    "CHOOSE YOUR HERO": 3.24,
+    "Ember Warden": 3.81,
+    "Selected": 2.9,
+    "LOADOUT": 2.84,
+    "Skills cast automaticall…": 2.86
+   }
+  },
+  {
+   "screen": "hero",
+   "dpr": 2.625,
+   "fix": false,
+   "viewport": [
+    1280,
+    720
+   ],
+   "frameScale": null,
+   "sceneScale": 0.7651,
+   "file": "crisp-hero-dpr2_625-stock.png",
+   "edges": {
+    "CHOOSE YOUR HERO": 2.85,
+    "Ember Warden": 3.46,
+    "Selected": 2.66,
+    "LOADOUT": 2.46,
+    "Skills cast automaticall…": 2.62
+   }
+  }
+ ],
+ "fx": {
+  "file": "fx-glow.png",
+  "dpr": 2
+ }
+}

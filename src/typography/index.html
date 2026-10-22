@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Arkadia · Typography rendering sample</title>
+<style>
+ html,body{margin:0;height:100%;overflow:hidden;background:#0b0d12}
+ canvas{display:block}
+ .bar{position:fixed;left:8px;bottom:8px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;max-width:calc(100% - 16px);padding:6px 8px;border:1px solid #6b5228;border-radius:6px;background:#0d0b09e6;color:#e9dcc0;font:13px/1.2 system-ui,sans-serif;opacity:.35;transition:opacity .2s}
+ .bar:hover,.bar:focus-within{opacity:1}
+ .bar a{color:#e9dcc0;text-decoration:none;padding:4px 8px;border:1px solid #4a3a1e;border-radius:4px}
+ .bar a.on{border-color:#d9b064;color:#ffe2a0}
+ .bar label{display:flex;gap:4px;align-items:center}
+ .bar span{color:#a99c86}
+</style>
+</head>
+<body>
+<script type="module" src="./main.ts"></script>
+</body>
+</html>

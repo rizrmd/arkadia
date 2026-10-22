@@ -1,0 +1,2 @@
+// Chromium in this sandbox needs the bundled browser libraries and a single process (see scripts/coop-site-files.mjs).
+export const launchOptions=(args=[])=>({headless:true,env:{...process.env,LD_LIBRARY_PATH:'/home/dev/.local/browser-libs/usr/lib/x86_64-linux-gnu:/opt/fural-antigravity-glibc'},args:['--no-sandbox','--no-zygote','--single-process','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader',...args]});
