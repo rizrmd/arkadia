@@ -1,0 +1,265 @@
+{
+  "hero": "rift",
+  "dir": "E",
+  "sheet": "run-proof/rift-run-E.png",
+  "cell": 384,
+  "frames": 8,
+  "root": [
+    192,
+    360
+  ],
+  "fps": 10,
+  "loop": true,
+  "registration": "one fixed scale; head/torso horizontal anchor; support sole Y360, flight Y348; no per-frame scaling or body deformation",
+  "scale": 0.3146146745743347,
+  "audit": [
+    {
+      "frame": 1,
+      "source": "sources/rift-run-E-pair-0.png",
+      "sourcePanel": 0,
+      "sourceSize": [
+        1832,
+        859
+      ],
+      "sourceBounds": [
+        165,
+        29,
+        913,
+        805
+      ],
+      "sourceEdgeContact": false,
+      "scale": 0.3146146745743347,
+      "translation": [
+        45,
+        115
+      ],
+      "bounds": [
+        45,
+        115,
+        238,
+        246
+      ],
+      "headX": 208.38910159618,
+      "footY": 359.7702168188324,
+      "flight": false,
+      "sha256": "6e55132b20ff4c57c1e861807811c71eaecc7b81560c03c40fc0c7c975d757f7"
+    },
+    {
+      "frame": 2,
+      "source": "sources/rift-run-E-pair-1.png",
+      "sourcePanel": 0,
+      "sourceSize": [
+        1831,
+        859
+      ],
+      "sourceBounds": [
+        80,
+        19,
+        903,
+        830
+      ],
+      "sourceEdgeContact": false,
+      "scale": 0.3146146745743347,
+      "translation": [
+        21,
+        104
+      ],
+      "bounds": [
+        21,
+        104,
+        261,
+        257
+      ],
+      "headX": 207.86154743747505,
+      "footY": 360.09634510350844,
+      "flight": false,
+      "sha256": "01d56c8d8be3cf24c4a55ad1082d345879783acb800c7306fd83c3a80da68e1c"
+    },
+    {
+      "frame": 3,
+      "source": "sources/rift-run-E-pair-2.png",
+      "sourcePanel": 0,
+      "sourceSize": [
+        1832,
+        859
+      ],
+      "sourceBounds": [
+        46,
+        5,
+        833,
+        845
+      ],
+      "sourceEdgeContact": false,
+      "scale": 0.3146146745743347,
+      "translation": [
+        18,
+        95
+      ],
+      "bounds": [
+        18,
+        95,
+        250,
+        266
+      ],
+      "headX": 208,
+      "footY": 360.2201706661641,
+      "flight": false,
+      "sha256": "1f443de079d6480fc8de5de360b99df31c675d1cf7febbf6b8634a811ce10f25"
+    },
+    {
+      "frame": 4,
+      "source": "sources/rift-run-E-pair-3.png",
+      "sourcePanel": 0,
+      "sourceSize": [
+        1748,
+        900
+      ],
+      "sourceBounds": [
+        35,
+        49,
+        946,
+        851
+      ],
+      "sourceEdgeContact": false,
+      "scale": 0.3146146745743347,
+      "translation": [
+        30,
+        95
+      ],
+      "bounds": [
+        30,
+        95,
+        289,
+        255
+      ],
+      "headX": 207.77773618052862,
+      "footY": 347.9501983577651,
+      "flight": true,
+      "sha256": "dece47f4e34bd57e42eaad35d3bb13be993720b35d3228935066bdab93a208ba"
+    },
+    {
+      "frame": 5,
+      "source": "sources/rift-run-E-pair-0.png",
+      "sourcePanel": 1,
+      "sourceSize": [
+        1832,
+        859
+      ],
+      "sourceBounds": [
+        1023,
+        28,
+        1789,
+        818
+      ],
+      "sourceEdgeContact": false,
+      "scale": 0.3146146745743347,
+      "translation": [
+        51,
+        111
+      ],
+      "bounds": [
+        51,
+        111,
+        243,
+        251
+      ],
+      "headX": 207.94029045184888,
+      "footY": 360.174822262873,
+      "flight": false,
+      "sha256": "cfdb5798533e7bb3dce28b22e6f1f79471071e07b74ad573ce2f266b72542017"
+    },
+    {
+      "frame": 6,
+      "source": "sources/rift-run-E-pair-1.png",
+      "sourcePanel": 1,
+      "sourceSize": [
+        1831,
+        859
+      ],
+      "sourceBounds": [
+        997,
+        18,
+        1816,
+        830
+      ],
+      "sourceEdgeContact": false,
+      "scale": 0.3146146745743347,
+      "translation": [
+        37,
+        104
+      ],
+      "bounds": [
+        37,
+        104,
+        260,
+        258
+      ],
+      "headX": 207.97698955435447,
+      "footY": 360.41095977808277,
+      "flight": false,
+      "sha256": "ef6f7102fd31ce5c16f94c4a0c328ef1cd975e358baf3885fbf8e0b95e84709d"
+    },
+    {
+      "frame": 7,
+      "source": "sources/rift-run-E-pair-2.png",
+      "sourcePanel": 1,
+      "sourceSize": [
+        1832,
+        859
+      ],
+      "sourceBounds": [
+        960,
+        6,
+        1736,
+        845
+      ],
+      "sourceEdgeContact": false,
+      "scale": 0.3146146745743347,
+      "translation": [
+        31,
+        95
+      ],
+      "bounds": [
+        31,
+        95,
+        246,
+        266
+      ],
+      "headX": 208.3524792362046,
+      "footY": 359.59094131701545,
+      "flight": false,
+      "sha256": "86ba1145da9c6bab79699cf8f2a5faa18cb4b867de01d6588d22990341daecc7"
+    },
+    {
+      "frame": 8,
+      "source": "sources/rift-run-E-pair-3.png",
+      "sourcePanel": 1,
+      "sourceSize": [
+        1748,
+        900
+      ],
+      "sourceBounds": [
+        898,
+        50,
+        1742,
+        848
+      ],
+      "sourceEdgeContact": false,
+      "scale": 0.3146146745743347,
+      "translation": [
+        35,
+        96
+      ],
+      "bounds": [
+        35,
+        96,
+        268,
+        253
+      ],
+      "headX": 208.33781519815307,
+      "footY": 347.69173965946777,
+      "flight": true,
+      "sha256": "dc041ede679df419ccfd78fc5e036f60da7112ff171615f60063920725edf9b5"
+    }
+  ]
+}

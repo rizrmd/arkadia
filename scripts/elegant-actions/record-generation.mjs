@@ -1,0 +1,1 @@
+import fs from 'node:fs/promises';const [key,json]=process.argv.slice(2),path='docs/elegant-actions/v2/run-generation-records.json';let records={};try{records=JSON.parse(await fs.readFile(path))}catch{}records[key]=JSON.parse(json);await fs.writeFile(path,JSON.stringify(records,null,2)+'\n');

@@ -1,5 +1,5 @@
 {
-  "status": "in-validation",
+  "status": "partial-corrections-run-rejected",
   "cell": 384,
   "pivot": [
     192,
@@ -7508,6 +7508,4764 @@
         "W": 0.691358024691358,
         "NW": 0.6787878787878788
       }
+    },
+    {
+      "hero": "ember",
+      "action": "run",
+      "sheet": "ember-run.png",
+      "fps": 10,
+      "loop": true,
+      "status": "rejected-motion-and-anatomy",
+      "acceptance": "NOT FINAL: paired source review found repeated leg silhouettes, wrong-arm devices and inconsistent body height. Structural/export checks do not establish motion acceptance.",
+      "audit": [
+        {
+          "frame": 1,
+          "source": "sources/ember-run-N-pair-0.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1536,
+            1024
+          ],
+          "sourceBounds": [
+            139,
+            56,
+            740,
+            964
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.3252032520325203,
+          "translation": [
+            99,
+            64
+          ],
+          "bounds": [
+            99,
+            64,
+            198,
+            298
+          ],
+          "headX": 191.6459379626978,
+          "footY": 359.9349593495935,
+          "flight": false,
+          "sha256": "250db3b9a1db76990c8b827f277584bf2c0a20ff4836784d5a29be4b4cd18fa1",
+          "direction": "N",
+          "foot": [
+            192,
+            359.9349593495935
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 2,
+          "source": "sources/ember-run-N-pair-1.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1536,
+            1024
+          ],
+          "sourceBounds": [
+            72,
+            20,
+            771,
+            994
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.3252032520325203,
+          "translation": [
+            77,
+            43
+          ],
+          "bounds": [
+            77,
+            43,
+            230,
+            319
+          ],
+          "headX": 191.74533909520565,
+          "footY": 360.3983739837398,
+          "flight": false,
+          "sha256": "cdcc455a70c2755293d7519cded1cb007a446f3f943e8c3e222a860cd3b8f1ee",
+          "direction": "N",
+          "foot": [
+            192,
+            360.3983739837398
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 3,
+          "source": "sources/ember-run-N-pair-2.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1536,
+            1024
+          ],
+          "sourceBounds": [
+            104,
+            29,
+            757,
+            983
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.3252032520325203,
+          "translation": [
+            85,
+            49
+          ],
+          "bounds": [
+            85,
+            49,
+            215,
+            313
+          ],
+          "headX": 191.60884294920527,
+          "footY": 360.2195121951219,
+          "flight": false,
+          "sha256": "6d1efc3139ab972d92a455da9e09c7d791f531ff9fcc58ce989ff5d833c2cd9f",
+          "direction": "N",
+          "foot": [
+            192,
+            360.2195121951219
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 4,
+          "source": "sources/ember-run-N-pair-3.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1468,
+            1071
+          ],
+          "sourceBounds": [
+            43,
+            43,
+            741,
+            949
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.3252032520325203,
+          "translation": [
+            79,
+            53
+          ],
+          "bounds": [
+            79,
+            53,
+            229,
+            297
+          ],
+          "headX": 191.52671681779898,
+          "footY": 348.2845528455284,
+          "flight": true,
+          "sha256": "39566e20183c13bbfca49c78da8eebcafb7089a9822cdac644c65119819bf3b7",
+          "direction": "N",
+          "foot": [
+            192,
+            348.2845528455284
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 5,
+          "source": "sources/ember-run-N-pair-0.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1536,
+            1024
+          ],
+          "sourceBounds": [
+            841,
+            56,
+            1429,
+            964
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.3252032520325203,
+          "translation": [
+            107,
+            64
+          ],
+          "bounds": [
+            107,
+            64,
+            193,
+            298
+          ],
+          "headX": 191.86467115381444,
+          "footY": 359.9349593495935,
+          "flight": false,
+          "sha256": "ba6eb1d972c7478d4bc2cfde221e219d63af8b13caed033231d16efa27b1d39c",
+          "direction": "N",
+          "foot": [
+            192,
+            359.9349593495935
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 6,
+          "source": "sources/ember-run-N-pair-1.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1536,
+            1024
+          ],
+          "sourceBounds": [
+            827,
+            20,
+            1479,
+            1002
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.3252032520325203,
+          "translation": [
+            98,
+            40
+          ],
+          "bounds": [
+            98,
+            40,
+            214,
+            322
+          ],
+          "headX": 191.75171290179208,
+          "footY": 360,
+          "flight": false,
+          "sha256": "d513f420dcfea70392f300b5723669b077fb429f9df357240f3fa157ac206df6",
+          "direction": "N",
+          "foot": [
+            192,
+            360
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 7,
+          "source": "sources/ember-run-N-pair-2.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1536,
+            1024
+          ],
+          "sourceBounds": [
+            840,
+            28,
+            1458,
+            1001
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.3252032520325203,
+          "translation": [
+            95,
+            43
+          ],
+          "bounds": [
+            95,
+            43,
+            203,
+            319
+          ],
+          "headX": 191.88158161425332,
+          "footY": 360.0731707317073,
+          "flight": false,
+          "sha256": "8621c8e662e014bb9a632975b0e99bf62ea2c9a5bf956961a014bad5053c8a9e",
+          "direction": "N",
+          "foot": [
+            192,
+            360.0731707317073
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 8,
+          "source": "sources/ember-run-N-pair-3.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1468,
+            1071
+          ],
+          "sourceBounds": [
+            770,
+            40,
+            1439,
+            1022
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.3252032520325203,
+          "translation": [
+            84,
+            28
+          ],
+          "bounds": [
+            84,
+            28,
+            220,
+            322
+          ],
+          "headX": 191.6437890556163,
+          "footY": 348,
+          "flight": true,
+          "sha256": "addb1a7a369b537719b7401163d325641c550fd4098ffdce642dd61aebd3714d",
+          "direction": "N",
+          "foot": [
+            192,
+            348
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 1,
+          "source": "sources/ember-run-NE-pair-0.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1774,
+            887
+          ],
+          "sourceBounds": [
+            128,
+            12,
+            790,
+            860
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.3409155552162058,
+          "translation": [
+            32,
+            70
+          ],
+          "bounds": [
+            32,
+            70,
+            228,
+            291
+          ],
+          "headX": 202.95852880473646,
+          "footY": 359.77822193377494,
+          "flight": false,
+          "sha256": "88c08b30c602ae77a11d60f57e9cc21e68ec83c96a40c29c4437ad7f20e73d53",
+          "direction": "NE",
+          "foot": [
+            192,
+            359.77822193377494
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 2,
+          "source": "sources/ember-run-NE-pair-1.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1774,
+            887
+          ],
+          "sourceBounds": [
+            118,
+            11,
+            804,
+            858
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.3409155552162058,
+          "translation": [
+            30,
+            71
+          ],
+          "bounds": [
+            30,
+            71,
+            236,
+            291
+          ],
+          "headX": 203.0763863223329,
+          "footY": 360.43730637855873,
+          "flight": false,
+          "sha256": "fdc13969990ce8f13f4bda8d0677147098bcb78e5618a301738be65528f5608c",
+          "direction": "NE",
+          "foot": [
+            192,
+            360.43730637855873
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 3,
+          "source": "sources/ember-run-NE-pair-2.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1774,
+            887
+          ],
+          "sourceBounds": [
+            149,
+            11,
+            851,
+            873
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.3409155552162058,
+          "translation": [
+            31,
+            65
+          ],
+          "bounds": [
+            31,
+            65,
+            242,
+            296
+          ],
+          "headX": 203.32773441702437,
+          "footY": 359.5510397068018,
+          "flight": false,
+          "sha256": "016e97a53d8311074193a66911c4d344a19ea1598b2401bd29c01d814a068b22",
+          "direction": "NE",
+          "foot": [
+            192,
+            359.5510397068018
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 4,
+          "source": "sources/ember-run-NE-pair-3.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1580,
+            995
+          ],
+          "sourceBounds": [
+            30,
+            28,
+            758,
+            960
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.3409155552162058,
+          "translation": [
+            21,
+            30
+          ],
+          "bounds": [
+            21,
+            30,
+            251,
+            320
+          ],
+          "headX": 203.2788795019604,
+          "footY": 348.41512857193624,
+          "flight": true,
+          "sha256": "23ae79a32663c7fdea67cbf63cc67090b9a7671aae29ea3d9da9458a61f29e99",
+          "direction": "NE",
+          "foot": [
+            192,
+            348.41512857193624
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 5,
+          "source": "sources/ember-run-NE-pair-0.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1774,
+            887
+          ],
+          "sourceBounds": [
+            983,
+            11,
+            1602,
+            862
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.3409155552162058,
+          "translation": [
+            47,
+            69
+          ],
+          "bounds": [
+            47,
+            69,
+            213,
+            293
+          ],
+          "headX": 202.69811120162026,
+          "footY": 359.8009685994236,
+          "flight": false,
+          "sha256": "a84a0f43d3fee4ab3834032da1472a6bf71a1f4a0940aac3871075f38922b0b0",
+          "direction": "NE",
+          "foot": [
+            192,
+            359.8009685994236
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 6,
+          "source": "sources/ember-run-NE-pair-1.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1774,
+            887
+          ],
+          "sourceBounds": [
+            975,
+            10,
+            1603,
+            863
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.3409155552162058,
+          "translation": [
+            42,
+            69
+          ],
+          "bounds": [
+            42,
+            69,
+            216,
+            293
+          ],
+          "headX": 202.61113078929097,
+          "footY": 360.48279970985595,
+          "flight": false,
+          "sha256": "74466a08a527c954c8f9afa3cb80295f99650b047df70a4b1ecadb9ffc04dd63",
+          "direction": "NE",
+          "foot": [
+            192,
+            360.48279970985595
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 7,
+          "source": "sources/ember-run-NE-pair-2.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1774,
+            887
+          ],
+          "sourceBounds": [
+            947,
+            10,
+            1599,
+            873
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.3409155552162058,
+          "translation": [
+            28,
+            65
+          ],
+          "bounds": [
+            28,
+            65,
+            225,
+            297
+          ],
+          "headX": 203.37063300305658,
+          "footY": 359.89195526201803,
+          "flight": false,
+          "sha256": "190b15f2125bd7e5752a6d06c398cd3fa62525fff656470e3ca3b5a8c9b89aa5",
+          "direction": "NE",
+          "foot": [
+            192,
+            359.89195526201803
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 8,
+          "source": "sources/ember-run-NE-pair-3.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1580,
+            995
+          ],
+          "sourceBounds": [
+            820,
+            27,
+            1552,
+            938
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.3409155552162058,
+          "translation": [
+            18,
+            36
+          ],
+          "bounds": [
+            18,
+            36,
+            252,
+            313
+          ],
+          "headX": 203,
+          "footY": 347.59681746761214,
+          "flight": true,
+          "sha256": "004406f350eda41197cdddae3ee6d2a6ce1bbc424aebc8b067c62ffabd642984",
+          "direction": "NE",
+          "foot": [
+            192,
+            347.59681746761214
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 1,
+          "source": "sources/ember-run-E-pair-0.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1774,
+            887
+          ],
+          "sourceBounds": [
+            111,
+            25,
+            841,
+            846
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.31498151277646924,
+          "translation": [
+            54,
+            101
+          ],
+          "bounds": [
+            54,
+            101,
+            232,
+            261
+          ],
+          "headX": 207.88188884324938,
+          "footY": 360.22978501503417,
+          "flight": false,
+          "sha256": "242ad2654e0c7e87929a0087269cdd694c93f711d4e20b5f154fa599274ed789",
+          "direction": "E",
+          "foot": [
+            192,
+            360.22978501503417
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 2,
+          "source": "sources/ember-run-E-pair-1.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1774,
+            887
+          ],
+          "sourceBounds": [
+            89,
+            28,
+            816,
+            857
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.31498151277646924,
+          "translation": [
+            37,
+            98
+          ],
+          "bounds": [
+            37,
+            98,
+            231,
+            263
+          ],
+          "headX": 208.37711129487212,
+          "footY": 359.7496371172459,
+          "flight": false,
+          "sha256": "bae9aa9f66fac4b9b0f88a80767b1dd3690c8b6a9938883c06829b101271b2f1",
+          "direction": "E",
+          "foot": [
+            192,
+            359.7496371172459
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 3,
+          "source": "sources/ember-run-E-pair-2.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1774,
+            887
+          ],
+          "sourceBounds": [
+            82,
+            17,
+            804,
+            824
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.31498151277646924,
+          "translation": [
+            32,
+            105
+          ],
+          "bounds": [
+            32,
+            105,
+            230,
+            256
+          ],
+          "headX": 207.92785770534977,
+          "footY": 359.8200438361636,
+          "flight": false,
+          "sha256": "241e4e582da57ed6c8ec4e05f2cd1292d8b67a1e944a3dbf8aacbe0e9bd989b2",
+          "direction": "E",
+          "foot": [
+            192,
+            359.8200438361636
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 4,
+          "source": "sources/ember-run-E-pair-3.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1680,
+            936
+          ],
+          "sourceBounds": [
+            28,
+            36,
+            976,
+            858
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.31498151277646924,
+          "translation": [
+            18,
+            88
+          ],
+          "bounds": [
+            18,
+            88,
+            301,
+            261
+          ],
+          "headX": 208.00000000000003,
+          "footY": 347.5447665278107,
+          "flight": true,
+          "sha256": "3a001d86b5f76dcd951353b21c9ef8706bd9abf9427704fb6eeb4e1c220dc0a3",
+          "direction": "E",
+          "foot": [
+            192,
+            347.5447665278107
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 5,
+          "source": "sources/ember-run-E-pair-0.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1774,
+            887
+          ],
+          "sourceBounds": [
+            991,
+            26,
+            1694,
+            846
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.31498151277646924,
+          "translation": [
+            51,
+            101
+          ],
+          "bounds": [
+            51,
+            101,
+            224,
+            260
+          ],
+          "headX": 207.57143553445226,
+          "footY": 359.9148035022577,
+          "flight": false,
+          "sha256": "77b7e7385ee4c56ff975d68570df16737674a744b19b9ecdc454f346a22dd845",
+          "direction": "E",
+          "foot": [
+            192,
+            359.9148035022577
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 6,
+          "source": "sources/ember-run-E-pair-1.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1774,
+            887
+          ],
+          "sourceBounds": [
+            987,
+            28,
+            1702,
+            856
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.31498151277646924,
+          "translation": [
+            38,
+            99
+          ],
+          "bounds": [
+            38,
+            99,
+            227,
+            263
+          ],
+          "headX": 207.99279589811047,
+          "footY": 360.43465560446947,
+          "flight": false,
+          "sha256": "9853f5eb304d41a96c63aaf74fce69e504e60e8e6e7451a170b1ed1ed9027df5",
+          "direction": "E",
+          "foot": [
+            192,
+            360.43465560446947
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 7,
+          "source": "sources/ember-run-E-pair-2.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1774,
+            887
+          ],
+          "sourceBounds": [
+            951,
+            17,
+            1662,
+            869
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.31498151277646924,
+          "translation": [
+            45,
+            91
+          ],
+          "bounds": [
+            45,
+            91,
+            226,
+            271
+          ],
+          "headX": 208.39748481491299,
+          "footY": 359.99421191110474,
+          "flight": false,
+          "sha256": "b10856f8ebd1fce2509ee9871da07700fa5aa031a6e054b7944d31cab78c4dc0",
+          "direction": "E",
+          "foot": [
+            192,
+            359.99421191110474
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 8,
+          "source": "sources/ember-run-E-pair-3.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1680,
+            936
+          ],
+          "sourceBounds": [
+            889,
+            35,
+            1676,
+            894
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.31498151277646924,
+          "translation": [
+            25,
+            77
+          ],
+          "bounds": [
+            25,
+            77,
+            250,
+            273
+          ],
+          "headX": 208.39117495098373,
+          "footY": 348.19908250054004,
+          "flight": true,
+          "sha256": "9f6dfbc7b302913735ea8fb1df9ecd3732d5b9b3fe2191eb9b8afc857ed0705e",
+          "direction": "E",
+          "foot": [
+            192,
+            348.19908250054004
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 1,
+          "source": "sources/ember-run-SE-pair-0.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1536,
+            1024
+          ],
+          "sourceBounds": [
+            93,
+            34,
+            708,
+            984
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.3282051282051282,
+          "translation": [
+            73,
+            47
+          ],
+          "bounds": [
+            73,
+            47,
+            204,
+            314
+          ],
+          "headX": 202.5075649266348,
+          "footY": 359.7794871794872,
+          "flight": false,
+          "sha256": "f0c318c23e9c297acb01b928c0f52f6a039d1667d8ff032bc08d0c7ed4dd42ac",
+          "direction": "SE",
+          "foot": [
+            192,
+            359.7794871794872
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 2,
+          "source": "sources/ember-run-SE-pair-1.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1536,
+            1024
+          ],
+          "sourceBounds": [
+            52,
+            23,
+            764,
+            996
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.3282051282051282,
+          "translation": [
+            56,
+            40
+          ],
+          "bounds": [
+            56,
+            40,
+            236,
+            322
+          ],
+          "headX": 203.25824301981118,
+          "footY": 360,
+          "flight": false,
+          "sha256": "d350218e0661159c864b463a4116ddaef5ad919279a60be5112cd9fab7204379",
+          "direction": "SE",
+          "foot": [
+            192,
+            360
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 3,
+          "source": "sources/ember-run-SE-pair-2.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1536,
+            1024
+          ],
+          "sourceBounds": [
+            64,
+            26,
+            742,
+            972
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.3282051282051282,
+          "translation": [
+            56,
+            49
+          ],
+          "bounds": [
+            56,
+            49,
+            225,
+            313
+          ],
+          "headX": 203.39944000618794,
+          "footY": 360.1384615384615,
+          "flight": false,
+          "sha256": "b1ec5fa0fdf0cdf813c1bf673912f1fbe7bc8f27ed0e8de78327c106b6cf05d7",
+          "direction": "SE",
+          "foot": [
+            192,
+            360.1384615384615
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 4,
+          "source": "sources/ember-run-SE-pair-3.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1461,
+            1077
+          ],
+          "sourceBounds": [
+            32,
+            88,
+            807,
+            925
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.3282051282051282,
+          "translation": [
+            29,
+            73
+          ],
+          "bounds": [
+            29,
+            73,
+            257,
+            277
+          ],
+          "headX": 202.65915739451216,
+          "footY": 348.36410256410255,
+          "flight": true,
+          "sha256": "23d86b701a1d834ee1ff8512c6ebee34499c373408776004f6028d0521007879",
+          "direction": "SE",
+          "foot": [
+            192,
+            348.36410256410255
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 5,
+          "source": "sources/ember-run-SE-pair-0.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1536,
+            1024
+          ],
+          "sourceBounds": [
+            812,
+            35,
+            1435,
+            985
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.3282051282051282,
+          "translation": [
+            73,
+            48
+          ],
+          "bounds": [
+            73,
+            48,
+            207,
+            314
+          ],
+          "headX": 203.19201662359342,
+          "footY": 360.4512820512821,
+          "flight": false,
+          "sha256": "6f2ad8878440ff77c6773b64bd919a9f61ccae7928a965b37f0e8ac30e38d7f8",
+          "direction": "SE",
+          "foot": [
+            192,
+            360.4512820512821
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 6,
+          "source": "sources/ember-run-SE-pair-1.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1536,
+            1024
+          ],
+          "sourceBounds": [
+            809,
+            24,
+            1489,
+            996
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.3282051282051282,
+          "translation": [
+            63,
+            40
+          ],
+          "bounds": [
+            63,
+            40,
+            225,
+            321
+          ],
+          "headX": 202.72862410288374,
+          "footY": 359.6717948717949,
+          "flight": false,
+          "sha256": "cf538e4128dab3fe58af5f22b4fb327db6eff607110d8b44f41f7a0e913e7cc5",
+          "direction": "SE",
+          "foot": [
+            192,
+            359.6717948717949
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 7,
+          "source": "sources/ember-run-SE-pair-2.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1536,
+            1024
+          ],
+          "sourceBounds": [
+            801,
+            26,
+            1497,
+            950
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.3282051282051282,
+          "translation": [
+            61,
+            56
+          ],
+          "bounds": [
+            61,
+            56,
+            231,
+            306
+          ],
+          "headX": 203.03562268732244,
+          "footY": 359.9179487179487,
+          "flight": false,
+          "sha256": "820ed51ac85bcf0bbe04a2db082148ad854eb6acdf2109636996c4d6dd6f641c",
+          "direction": "SE",
+          "foot": [
+            192,
+            359.9179487179487
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 8,
+          "source": "sources/ember-run-SE-pair-3.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1461,
+            1077
+          ],
+          "sourceBounds": [
+            747,
+            82,
+            1452,
+            1009
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.3282051282051282,
+          "translation": [
+            31,
+            43
+          ],
+          "bounds": [
+            31,
+            43,
+            234,
+            307
+          ],
+          "headX": 202.55301704840963,
+          "footY": 347.9025641025641,
+          "flight": true,
+          "sha256": "c03af787fcbe1f2a2b86951f4b2eb014e4ffdbc6d0be9d5082cacd1603a9b0f5",
+          "direction": "SE",
+          "foot": [
+            192,
+            347.9025641025641
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 1,
+          "source": "sources/ember-run-S-pair-0.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1536,
+            1024
+          ],
+          "sourceBounds": [
+            71,
+            28,
+            765,
+            979
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.32553407934893186,
+          "translation": [
+            62,
+            50
+          ],
+          "bounds": [
+            62,
+            50,
+            228,
+            312
+          ],
+          "headX": 191.8082792753626,
+          "footY": 360.2339776195321,
+          "flight": false,
+          "sha256": "5860b71516dcd09b0d2f464d74ee755cb7d9d1364b4f563a744625ad909b04c5",
+          "direction": "S",
+          "foot": [
+            192,
+            360.2339776195321
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 2,
+          "source": "sources/ember-run-S-pair-1.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1536,
+            1024
+          ],
+          "sourceBounds": [
+            60,
+            21,
+            788,
+            1002
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.32553407934893186,
+          "translation": [
+            68,
+            40
+          ],
+          "bounds": [
+            68,
+            40,
+            239,
+            322
+          ],
+          "headX": 191.70278686355317,
+          "footY": 360,
+          "flight": false,
+          "sha256": "e173fd0a4a6b118f73414e7e117d68234bb227ead905331f76ea6126b289b734",
+          "direction": "S",
+          "foot": [
+            192,
+            360
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 3,
+          "source": "sources/ember-run-S-pair-2.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1536,
+            1024
+          ],
+          "sourceBounds": [
+            23,
+            22,
+            798,
+            847
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.32553407934893186,
+          "translation": [
+            46,
+            91
+          ],
+          "bounds": [
+            46,
+            91,
+            255,
+            271
+          ],
+          "headX": 191.8337686230574,
+          "footY": 360.21668362156663,
+          "flight": false,
+          "sha256": "8160f5787cae5bf1270c0dfea49cefec312bc2455cd3044e1caf974368d667ce",
+          "direction": "S",
+          "foot": [
+            192,
+            360.21668362156663
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 4,
+          "source": "sources/ember-run-S-pair-3.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1531,
+            1027
+          ],
+          "sourceBounds": [
+            36,
+            16,
+            735,
+            964
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.32553407934893186,
+          "translation": [
+            67,
+            39
+          ],
+          "bounds": [
+            67,
+            39,
+            230,
+            311
+          ],
+          "headX": 191.68526128223795,
+          "footY": 348.25737538148525,
+          "flight": true,
+          "sha256": "2fb797b0a2dffd195896445ce53818d6e2e16e9210340ec02209033400deb9a4",
+          "direction": "S",
+          "foot": [
+            192,
+            348.25737538148525
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 5,
+          "source": "sources/ember-run-S-pair-0.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1536,
+            1024
+          ],
+          "sourceBounds": [
+            840,
+            29,
+            1484,
+            983
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.32553407934893186,
+          "translation": [
+            97,
+            49
+          ],
+          "bounds": [
+            97,
+            49,
+            212,
+            313
+          ],
+          "headX": 192.14795204881847,
+          "footY": 360.21057985757886,
+          "flight": false,
+          "sha256": "a6db1d4c06490a0a1c637bfe425454554a111e797b80cf6c55fd473eac2a4651",
+          "direction": "S",
+          "foot": [
+            192,
+            360.21057985757886
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 6,
+          "source": "sources/ember-run-S-pair-1.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1536,
+            1024
+          ],
+          "sourceBounds": [
+            821,
+            21,
+            1494,
+            1001
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.32553407934893186,
+          "translation": [
+            102,
+            40
+          ],
+          "bounds": [
+            102,
+            40,
+            221,
+            321
+          ],
+          "headX": 191.57881805079109,
+          "footY": 360,
+          "flight": false,
+          "sha256": "74ea987f362311bc4f042c18253af04d220f9291c52c02ffa97ac6b3f298e05d",
+          "direction": "S",
+          "foot": [
+            192,
+            360
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 7,
+          "source": "sources/ember-run-S-pair-2.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1536,
+            1024
+          ],
+          "sourceBounds": [
+            790,
+            25,
+            1516,
+            1000
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.32553407934893186,
+          "translation": [
+            78,
+            42
+          ],
+          "bounds": [
+            78,
+            42,
+            239,
+            320
+          ],
+          "headX": 192.4190077431027,
+          "footY": 360.04679552390644,
+          "flight": false,
+          "sha256": "c254c45bc97ef867463ed883fbae4c158f446da61dd720675151e881f6d103b2",
+          "direction": "S",
+          "foot": [
+            192,
+            360.04679552390644
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 8,
+          "source": "sources/ember-run-S-pair-3.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1531,
+            1027
+          ],
+          "sourceBounds": [
+            778,
+            17,
+            1499,
+            994
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.32553407934893186,
+          "translation": [
+            79,
+            29
+          ],
+          "bounds": [
+            79,
+            29,
+            237,
+            320
+          ],
+          "headX": 191.80533985863474,
+          "footY": 347.6978636826043,
+          "flight": true,
+          "sha256": "273009f93a602dd43e3d8e40b91dbc0c7b6a0210239fcf8b3fb900cb2f222a46",
+          "direction": "S",
+          "foot": [
+            192,
+            347.6978636826043
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 1,
+          "source": "sources/ember-run-SW-pair-0.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1774,
+            887
+          ],
+          "sourceBounds": [
+            168,
+            21,
+            894,
+            860
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.2730644996503689,
+          "translation": [
+            137,
+            130
+          ],
+          "bounds": [
+            137,
+            130,
+            200,
+            231
+          ],
+          "headX": 180.54080609141664,
+          "footY": 359.6472442059602,
+          "flight": false,
+          "sha256": "5a5e971b755f2c19b7ecea35615c0b630df7abbeca34a16be4554914e9379a3d",
+          "direction": "SW",
+          "foot": [
+            192,
+            359.6472442059602
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 2,
+          "source": "sources/ember-run-SW-pair-1.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1774,
+            887
+          ],
+          "sourceBounds": [
+            152,
+            18,
+            917,
+            856
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.2730644996503689,
+          "translation": [
+            131,
+            131
+          ],
+          "bounds": [
+            131,
+            131,
+            211,
+            231
+          ],
+          "headX": 180.512857468187,
+          "footY": 360.37417970630986,
+          "flight": false,
+          "sha256": "7785711ad9d97b29228adaca4f0d4289dccb993fcb4f77f3709a449bce5d6747",
+          "direction": "SW",
+          "foot": [
+            192,
+            360.37417970630986
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 3,
+          "source": "sources/ember-run-SW-pair-2.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1774,
+            887
+          ],
+          "sourceBounds": [
+            111,
+            10,
+            907,
+            863
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.2730644996503689,
+          "translation": [
+            126,
+            127
+          ],
+          "bounds": [
+            126,
+            127,
+            219,
+            235
+          ],
+          "headX": 180.54749162692815,
+          "footY": 360.4701472010654,
+          "flight": false,
+          "sha256": "572fd1259ab26b78f158ca948cd94a186a659cb08eb372017a55dd956977e38b",
+          "direction": "SW",
+          "foot": [
+            192,
+            360.4701472010654
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 4,
+          "source": "sources/ember-run-SW-pair-3.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1679,
+            937
+          ],
+          "sourceBounds": [
+            26,
+            40,
+            844,
+            881
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.2730644996503689,
+          "translation": [
+            128,
+            118
+          ],
+          "bounds": [
+            128,
+            118,
+            225,
+            232
+          ],
+          "headX": 180.52891034196287,
+          "footY": 348.19337320526097,
+          "flight": true,
+          "sha256": "6563d923a6cb3079e47ed07373792148845b3ca5a60261fd342c1bc4ed070b54",
+          "direction": "SW",
+          "foot": [
+            192,
+            348.19337320526097
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 5,
+          "source": "sources/ember-run-SW-pair-0.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1774,
+            887
+          ],
+          "sourceBounds": [
+            981,
+            23,
+            1726,
+            857
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.2730644996503689,
+          "translation": [
+            132,
+            132
+          ],
+          "bounds": [
+            132,
+            132,
+            205,
+            230
+          ],
+          "headX": 180.93349419312517,
+          "footY": 360.2819217077084,
+          "flight": false,
+          "sha256": "bac463bc132abf53789b25443a9f002c65acb284307399bcea64ff6ee9f820f2",
+          "direction": "SW",
+          "foot": [
+            192,
+            360.2819217077084
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 6,
+          "source": "sources/ember-run-SW-pair-1.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1774,
+            887
+          ],
+          "sourceBounds": [
+            935,
+            21,
+            1749,
+            860
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.2730644996503689,
+          "translation": [
+            142,
+            130
+          ],
+          "bounds": [
+            142,
+            130,
+            224,
+            231
+          ],
+          "headX": 181.18595421295282,
+          "footY": 359.6472442059602,
+          "flight": false,
+          "sha256": "e82549158780ed7a112decbdf13c42afc877d2d0d1dfcc72388b8a06cca7f508",
+          "direction": "SW",
+          "foot": [
+            192,
+            359.6472442059602
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 7,
+          "source": "sources/ember-run-SW-pair-2.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1774,
+            887
+          ],
+          "sourceBounds": [
+            960,
+            10,
+            1723,
+            809
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.2730644996503689,
+          "translation": [
+            138,
+            141
+          ],
+          "bounds": [
+            138,
+            141,
+            210,
+            220
+          ],
+          "headX": 181.32154837908044,
+          "footY": 359.72466421994545,
+          "flight": false,
+          "sha256": "e051cdd0edfe054c8227fe82aa3f0e8403f400bc2edc483512dcc04ba691f852",
+          "direction": "SW",
+          "foot": [
+            192,
+            359.72466421994545
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 8,
+          "source": "sources/ember-run-SW-pair-3.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1679,
+            937
+          ],
+          "sourceBounds": [
+            818,
+            40,
+            1643,
+            872
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.2730644996503689,
+          "translation": [
+            116,
+            120
+          ],
+          "bounds": [
+            116,
+            120,
+            227,
+            229
+          ],
+          "headX": 181.2916746592131,
+          "footY": 347.73579270840764,
+          "flight": true,
+          "sha256": "f4e65a614f6e28471c0ecea5435a4a419d50281ffa070b6faf26fdd6a1cc7961",
+          "direction": "SW",
+          "foot": [
+            192,
+            347.73579270840764
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 1,
+          "source": "sources/ember-run-W-pair-0.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1832,
+            859
+          ],
+          "sourceBounds": [
+            137,
+            45,
+            883,
+            808
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.29041814826584567,
+          "translation": [
+            110,
+            138
+          ],
+          "bounds": [
+            110,
+            138,
+            219,
+            224
+          ],
+          "headX": 175.78645267659363,
+          "footY": 360.16988342337197,
+          "flight": false,
+          "sha256": "bb4fdd08417b834120ea52a1f3f4acc81edffd6957cdd680196fdf4e202c5027",
+          "direction": "W",
+          "foot": [
+            192,
+            360.16988342337197
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 2,
+          "source": "sources/ember-run-W-pair-1.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1832,
+            859
+          ],
+          "sourceBounds": [
+            180,
+            29,
+            883,
+            821
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.29041814826584567,
+          "translation": [
+            121,
+            129
+          ],
+          "bounds": [
+            121,
+            129,
+            206,
+            232
+          ],
+          "headX": 176.4944532988251,
+          "footY": 359.59200972308145,
+          "flight": false,
+          "sha256": "39736483b6960a26685b31d980baf78565e72e14f68c6e7630327d9734c4ec5f",
+          "direction": "W",
+          "foot": [
+            192,
+            359.59200972308145
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 3,
+          "source": "sources/ember-run-W-pair-2.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1831,
+            859
+          ],
+          "sourceBounds": [
+            115,
+            23,
+            905,
+            825
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.29041814826584567,
+          "translation": [
+            129,
+            127
+          ],
+          "bounds": [
+            129,
+            127,
+            231,
+            235
+          ],
+          "headX": 175.94151685949558,
+          "footY": 360.49619120573993,
+          "flight": false,
+          "sha256": "0ff9b54423622cc38be7c14d9a7fdbe251fc56f6d89a3fca4e1bd1e03e99d11e",
+          "direction": "W",
+          "foot": [
+            192,
+            360.49619120573993
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 4,
+          "source": "sources/ember-run-W-pair-3.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1755,
+            896
+          ],
+          "sourceBounds": [
+            23,
+            32,
+            890,
+            848
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.29041814826584567,
+          "translation": [
+            112,
+            110
+          ],
+          "bounds": [
+            112,
+            110,
+            254,
+            239
+          ],
+          "headX": 175.8254615843491,
+          "footY": 347.5620452814618,
+          "flight": true,
+          "sha256": "90a4c9f8a8ee67e56a3da5ba1dd04fe9fe39cb4bb48be4da5aca278cad51eebb",
+          "direction": "W",
+          "foot": [
+            192,
+            347.5620452814618
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 5,
+          "source": "sources/ember-run-W-pair-0.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1832,
+            859
+          ],
+          "sourceBounds": [
+            1030,
+            47,
+            1776,
+            806
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.29041814826584567,
+          "translation": [
+            122,
+            139
+          ],
+          "bounds": [
+            122,
+            139,
+            219,
+            222
+          ],
+          "headX": 175.72192799967254,
+          "footY": 360.00821083030854,
+          "flight": false,
+          "sha256": "decb20f9ddf7a87057b415e8ead051b4aa654b393c24b67f6398d57a5894287f",
+          "direction": "W",
+          "foot": [
+            192,
+            360.00821083030854
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 6,
+          "source": "sources/ember-run-W-pair-1.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1832,
+            859
+          ],
+          "sourceBounds": [
+            1016,
+            28,
+            1762,
+            824
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.29041814826584567,
+          "translation": [
+            121,
+            128
+          ],
+          "bounds": [
+            121,
+            128,
+            219,
+            233
+          ],
+          "headX": 176.33860153635598,
+          "footY": 360.0441004644107,
+          "flight": false,
+          "sha256": "fa88527f386ac25c65464586b619202fd922a8fd67cb8e73d1c9ae3ecd81e09d",
+          "direction": "W",
+          "foot": [
+            192,
+            360.0441004644107
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 7,
+          "source": "sources/ember-run-W-pair-2.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1831,
+            859
+          ],
+          "sourceBounds": [
+            1044,
+            23,
+            1798,
+            833
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.29041814826584567,
+          "translation": [
+            136,
+            124
+          ],
+          "bounds": [
+            136,
+            124,
+            221,
+            237
+          ],
+          "headX": 176.36384891232603,
+          "footY": 359.8195363918667,
+          "flight": false,
+          "sha256": "182cc5c9c2d84a10963a5b41749f25237f6e61297098e420688670cc29d4b6e0",
+          "direction": "W",
+          "foot": [
+            192,
+            359.8195363918667
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 8,
+          "source": "sources/ember-run-W-pair-3.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1755,
+            896
+          ],
+          "sourceBounds": [
+            858,
+            44,
+            1725,
+            847
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.29041814826584567,
+          "translation": [
+            87,
+            114
+          ],
+          "bounds": [
+            87,
+            114,
+            254,
+            235
+          ],
+          "headX": 176.00289433623422,
+          "footY": 347.78660935400575,
+          "flight": true,
+          "sha256": "796d1c660e2dc11d21e4ea7e1fcdc6f900a973f74781f19d13d13a890917b32b",
+          "direction": "W",
+          "foot": [
+            192,
+            347.78660935400575
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 1,
+          "source": "sources/ember-run-NW-pair-0.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1832,
+            859
+          ],
+          "sourceBounds": [
+            306,
+            35,
+            842,
+            822
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.3343782654127482,
+          "translation": [
+            132,
+            96
+          ],
+          "bounds": [
+            132,
+            96,
+            182,
+            265
+          ],
+          "headX": 181.124025655207,
+          "footY": 359.8244514106583,
+          "flight": false,
+          "sha256": "2324143a5493259f130377078358f0f319044fc3cb132eac982b19798bdcb4e1",
+          "direction": "NW",
+          "foot": [
+            192,
+            359.8244514106583
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 2,
+          "source": "sources/ember-run-NW-pair-1.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1832,
+            859
+          ],
+          "sourceBounds": [
+            264,
+            25,
+            885,
+            828
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.3343782654127482,
+          "translation": [
+            127,
+            91
+          ],
+          "bounds": [
+            127,
+            91,
+            210,
+            271
+          ],
+          "headX": 181.22746657177913,
+          "footY": 360.1745036572623,
+          "flight": false,
+          "sha256": "5f98f4af2cb97f265585d10ea9c05de6f886362a9f4d49ad718bdb366275e987",
+          "direction": "NW",
+          "foot": [
+            192,
+            360.1745036572623
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 3,
+          "source": "sources/ember-run-NW-pair-2.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1832,
+            859
+          ],
+          "sourceBounds": [
+            252,
+            35,
+            885,
+            811
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.3343782654127482,
+          "translation": [
+            114,
+            100
+          ],
+          "bounds": [
+            114,
+            100,
+            214,
+            262
+          ],
+          "headX": 180.5710557770267,
+          "footY": 360.14629049111807,
+          "flight": false,
+          "sha256": "e4d97a723754c0a60e083afd0d827c397ded217ef948db29b540415ddee03d99",
+          "direction": "NW",
+          "foot": [
+            192,
+            360.14629049111807
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 4,
+          "source": "sources/ember-run-NW-pair-3.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1528,
+            1029
+          ],
+          "sourceBounds": [
+            32,
+            27,
+            771,
+            981
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.3343782654127482,
+          "translation": [
+            114,
+            28
+          ],
+          "bounds": [
+            114,
+            28,
+            249,
+            321
+          ],
+          "headX": 181.43430827928916,
+          "footY": 348,
+          "flight": true,
+          "sha256": "13fe6f60ee9ec6f3fef6bf2270ff0e1c3120ff964f4716ac1889c7a717b494b2",
+          "direction": "NW",
+          "foot": [
+            192,
+            348
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 5,
+          "source": "sources/ember-run-NW-pair-0.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1832,
+            859
+          ],
+          "sourceBounds": [
+            1133,
+            37,
+            1700,
+            820
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.3343782654127482,
+          "translation": [
+            123,
+            98
+          ],
+          "bounds": [
+            123,
+            98,
+            192,
+            264
+          ],
+          "headX": 181.26027073094457,
+          "footY": 360.48693834900735,
+          "flight": false,
+          "sha256": "248bb5d0fd61d467baa4301c87bb498c998ba47744adc64d5c379471d180cdd2",
+          "direction": "NW",
+          "foot": [
+            192,
+            360.48693834900735
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 6,
+          "source": "sources/ember-run-NW-pair-1.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1832,
+            859
+          ],
+          "sourceBounds": [
+            1103,
+            22,
+            1760,
+            828
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.3343782654127482,
+          "translation": [
+            120,
+            90
+          ],
+          "bounds": [
+            120,
+            90,
+            222,
+            272
+          ],
+          "headX": 181.19038570418695,
+          "footY": 360.17763845350055,
+          "flight": false,
+          "sha256": "35f20bc6d2535652f6abbdaf498df12a0ed018e1818126b224f8229194e02929",
+          "direction": "NW",
+          "foot": [
+            192,
+            360.17763845350055
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 7,
+          "source": "sources/ember-run-NW-pair-2.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1832,
+            859
+          ],
+          "sourceBounds": [
+            1112,
+            36,
+            1723,
+            812
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.3343782654127482,
+          "translation": [
+            120,
+            100
+          ],
+          "bounds": [
+            120,
+            100,
+            207,
+            262
+          ],
+          "headX": 181.3850840027259,
+          "footY": 360.14629049111807,
+          "flight": false,
+          "sha256": "ec193ce46f3123adef85bbc24d231bccd89e3b7fd8c4cfebb87b38805240f467",
+          "direction": "NW",
+          "foot": [
+            192,
+            360.14629049111807
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 8,
+          "source": "sources/ember-run-NW-pair-3.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1528,
+            1029
+          ],
+          "sourceBounds": [
+            829,
+            31,
+            1510,
+            985
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.3343782654127482,
+          "translation": [
+            110,
+            28
+          ],
+          "bounds": [
+            110,
+            28,
+            230,
+            321
+          ],
+          "headX": 181.3820377799637,
+          "footY": 348,
+          "flight": true,
+          "sha256": "c640498a3920097f3ad16baa6241691fb85ad1a50525af2c1e46b6fa582fcc78",
+          "direction": "NW",
+          "foot": [
+            192,
+            348
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        }
+      ]
+    },
+    {
+      "hero": "rift",
+      "action": "run",
+      "sheet": "rift-run.png",
+      "fps": 10,
+      "loop": true,
+      "status": "rejected-motion-and-anatomy",
+      "acceptance": "NOT FINAL: paired source review found repeated leg silhouettes, wrong-arm devices and inconsistent body height. Structural/export checks do not establish motion acceptance.",
+      "audit": [
+        {
+          "frame": 1,
+          "source": "sources/rift-run-N-pair-0.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1832,
+            858
+          ],
+          "sourceBounds": [
+            258,
+            24,
+            833,
+            830
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.337909186906019,
+          "translation": [
+            72,
+            87
+          ],
+          "bounds": [
+            72,
+            87,
+            197,
+            275
+          ],
+          "headX": 191.51493000749426,
+          "footY": 360.3685322069694,
+          "flight": false,
+          "sha256": "ca08ff9a6e0b6b2f537ee6ba31b57c6c84dd85f6bc3f5d77a3e287c22196febc",
+          "direction": "N",
+          "foot": [
+            192,
+            360.3685322069694
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 2,
+          "source": "sources/rift-run-N-pair-1.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1832,
+            858
+          ],
+          "sourceBounds": [
+            240,
+            19,
+            860,
+            834
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.337909186906019,
+          "translation": [
+            66,
+            84
+          ],
+          "bounds": [
+            66,
+            84,
+            212,
+            278
+          ],
+          "headX": 192.40173297582893,
+          "footY": 360.07180570221755,
+          "flight": false,
+          "sha256": "1c1b484b0162a65dec118fa3adaaf476d26e606ebbe1a778de9df11480931e2b",
+          "direction": "N",
+          "foot": [
+            192,
+            360.07180570221755
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 3,
+          "source": "sources/rift-run-N-pair-2.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1832,
+            858
+          ],
+          "sourceBounds": [
+            197,
+            15,
+            818,
+            837
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.337909186906019,
+          "translation": [
+            65,
+            82
+          ],
+          "bounds": [
+            65,
+            82,
+            212,
+            280
+          ],
+          "headX": 191.82598925188768,
+          "footY": 360.43717001055967,
+          "flight": false,
+          "sha256": "1d1a163e1503d2306472ccf4c4586b16c927ed335723f841749f3de4608a84a9",
+          "direction": "N",
+          "foot": [
+            192,
+            360.43717001055967
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 4,
+          "source": "sources/rift-run-N-pair-3.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1520,
+            1035
+          ],
+          "sourceBounds": [
+            42,
+            38,
+            787,
+            968
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.337909186906019,
+          "translation": [
+            59,
+            33
+          ],
+          "bounds": [
+            59,
+            33,
+            254,
+            317
+          ],
+          "headX": 192.24289210613367,
+          "footY": 347.93136219640974,
+          "flight": true,
+          "sha256": "76de4a58b3cfda4e84defefca27fc884e747bc09e8040b977fef17aab1eac964",
+          "direction": "N",
+          "foot": [
+            192,
+            347.93136219640974
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 5,
+          "source": "sources/rift-run-N-pair-0.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1832,
+            858
+          ],
+          "sourceBounds": [
+            1037,
+            24,
+            1601,
+            831
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.337909186906019,
+          "translation": [
+            90,
+            87
+          ],
+          "bounds": [
+            90,
+            87,
+            193,
+            275
+          ],
+          "headX": 192.15155528193515,
+          "footY": 360.3685322069694,
+          "flight": false,
+          "sha256": "172ac31b2ebe6977033917920d5b89f2a9036ecab608f117259a03f517c67592",
+          "direction": "N",
+          "foot": [
+            192,
+            360.3685322069694
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 6,
+          "source": "sources/rift-run-N-pair-1.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1832,
+            858
+          ],
+          "sourceBounds": [
+            1041,
+            20,
+            1655,
+            828
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.337909186906019,
+          "translation": [
+            88,
+            86
+          ],
+          "bounds": [
+            88,
+            86,
+            210,
+            275
+          ],
+          "headX": 191.79537830291298,
+          "footY": 359.7064413938754,
+          "flight": false,
+          "sha256": "1d9b5008ee718496fdc4e055d26c13da7ae75cf43c96c7a3ff3633a019563480",
+          "direction": "N",
+          "foot": [
+            192,
+            359.7064413938754
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 7,
+          "source": "sources/rift-run-N-pair-2.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1832,
+            858
+          ],
+          "sourceBounds": [
+            1003,
+            15,
+            1621,
+            841
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.337909186906019,
+          "translation": [
+            76,
+            80
+          ],
+          "bounds": [
+            76,
+            80,
+            211,
+            281
+          ],
+          "headX": 191.9392608358455,
+          "footY": 359.78880675818374,
+          "flight": false,
+          "sha256": "9411da3eb3a8f47dc647f6b0826fb99daed81ddb325bb694dd5b574d5247fe1a",
+          "direction": "N",
+          "foot": [
+            192,
+            359.78880675818374
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 8,
+          "source": "sources/rift-run-N-pair-3.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1520,
+            1035
+          ],
+          "sourceBounds": [
+            767,
+            39,
+            1490,
+            983
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.337909186906019,
+          "translation": [
+            52,
+            28
+          ],
+          "bounds": [
+            52,
+            28,
+            247,
+            321
+          ],
+          "headX": 192.0270053072266,
+          "footY": 348,
+          "flight": true,
+          "sha256": "b586f28c80af661982538d47a1f76e1e735983723b4187068f0700881de42f46",
+          "direction": "N",
+          "foot": [
+            192,
+            348
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 1,
+          "source": "sources/rift-run-NE-pair-0.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1536,
+            1024
+          ],
+          "sourceBounds": [
+            49,
+            39,
+            723,
+            976
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.32753326509723646,
+          "translation": [
+            45,
+            52
+          ],
+          "bounds": [
+            45,
+            52,
+            223,
+            309
+          ],
+          "headX": 203.49592365365248,
+          "footY": 359.553735926305,
+          "flight": false,
+          "sha256": "a9fe0aaf64222c8be5bd5deaef8fc790f571073e7ec255200800805e97232ecb",
+          "direction": "NE",
+          "foot": [
+            192,
+            359.553735926305
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 2,
+          "source": "sources/rift-run-NE-pair-1.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1536,
+            1024
+          ],
+          "sourceBounds": [
+            25,
+            35,
+            750,
+            986
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.32753326509723646,
+          "translation": [
+            33,
+            48
+          ],
+          "bounds": [
+            33,
+            48,
+            240,
+            314
+          ],
+          "headX": 203.25295197756526,
+          "footY": 360.46673490276356,
+          "flight": false,
+          "sha256": "90a811caede1b00bd8d9ac5aba86bbfc34ffa97862d202ebf75c793e3c94cc23",
+          "direction": "NE",
+          "foot": [
+            192,
+            360.46673490276356
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 3,
+          "source": "sources/rift-run-NE-pair-2.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1536,
+            1024
+          ],
+          "sourceBounds": [
+            25,
+            22,
+            787,
+            988
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.32753326509723646,
+          "translation": [
+            28,
+            43
+          ],
+          "bounds": [
+            28,
+            43,
+            252,
+            319
+          ],
+          "headX": 203.26996933220894,
+          "footY": 360.3797338792221,
+          "flight": false,
+          "sha256": "cb83707b5022620f6081074438b18ed29df37d8ec2d5fa3e8902af228851eeb4",
+          "direction": "NE",
+          "foot": [
+            192,
+            360.3797338792221
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 4,
+          "source": "sources/rift-run-NE-pair-3.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1524,
+            1032
+          ],
+          "sourceBounds": [
+            26,
+            31,
+            812,
+            964
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.32753326509723646,
+          "translation": [
+            30,
+            42
+          ],
+          "bounds": [
+            30,
+            42,
+            260,
+            308
+          ],
+          "headX": 202.85214838976307,
+          "footY": 348.2436028659161,
+          "flight": true,
+          "sha256": "799375ac499c1bb8f400a92bace3f14dd089918eec2a0922f0096196db9d0bcd",
+          "direction": "NE",
+          "foot": [
+            192,
+            348.2436028659161
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 5,
+          "source": "sources/rift-run-NE-pair-0.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1536,
+            1024
+          ],
+          "sourceBounds": [
+            858,
+            39,
+            1462,
+            964
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.32753326509723646,
+          "translation": [
+            58,
+            56
+          ],
+          "bounds": [
+            58,
+            56,
+            200,
+            305
+          ],
+          "headX": 202.83041445977074,
+          "footY": 359.6233367451382,
+          "flight": false,
+          "sha256": "ba034205c56cffc5950e15f96183c3e16b978de8b9864b2a31a11813845a94da",
+          "direction": "NE",
+          "foot": [
+            192,
+            359.6233367451382
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 6,
+          "source": "sources/rift-run-NE-pair-1.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1536,
+            1024
+          ],
+          "sourceBounds": [
+            832,
+            37,
+            1480,
+            977
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.32753326509723646,
+          "translation": [
+            51,
+            51
+          ],
+          "bounds": [
+            51,
+            51,
+            215,
+            310
+          ],
+          "headX": 202.76108086638988,
+          "footY": 359.53633572159674,
+          "flight": false,
+          "sha256": "d80674210d594458cde8759a8a4ee52ed490a7f709085f4d089748875b1b8fe1",
+          "direction": "NE",
+          "foot": [
+            192,
+            359.53633572159674
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 7,
+          "source": "sources/rift-run-NE-pair-2.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1536,
+            1024
+          ],
+          "sourceBounds": [
+            806,
+            20,
+            1487,
+            995
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.32753326509723646,
+          "translation": [
+            45,
+            40
+          ],
+          "bounds": [
+            45,
+            40,
+            225,
+            322
+          ],
+          "headX": 202.62719436098152,
+          "footY": 360,
+          "flight": false,
+          "sha256": "c1338b26c3a3d3fc84bb5f975c1fd9475539e35ccab8d00b72aaf5d34c76a2e9",
+          "direction": "NE",
+          "foot": [
+            192,
+            360
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 8,
+          "source": "sources/rift-run-NE-pair-3.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1524,
+            1032
+          ],
+          "sourceBounds": [
+            798,
+            31,
+            1501,
+            989
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.32753326509723646,
+          "translation": [
+            36,
+            33
+          ],
+          "bounds": [
+            36,
+            33,
+            233,
+            316
+          ],
+          "headX": 203.42922508507937,
+          "footY": 347.75946775844426,
+          "flight": true,
+          "sha256": "aaf786baff53a8852eef9fc13f2c97c7c76303af7fbc7088de2476c33d36bbdc",
+          "direction": "NE",
+          "foot": [
+            192,
+            347.75946775844426
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 1,
+          "source": "sources/rift-run-E-pair-0.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1832,
+            859
+          ],
+          "sourceBounds": [
+            165,
+            29,
+            913,
+            805
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.3146146745743347,
+          "translation": [
+            45,
+            115
+          ],
+          "bounds": [
+            45,
+            115,
+            238,
+            246
+          ],
+          "headX": 208.38910159618,
+          "footY": 359.7702168188324,
+          "flight": false,
+          "sha256": "6e55132b20ff4c57c1e861807811c71eaecc7b81560c03c40fc0c7c975d757f7",
+          "direction": "E",
+          "foot": [
+            192,
+            359.7702168188324
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 2,
+          "source": "sources/rift-run-E-pair-1.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1831,
+            859
+          ],
+          "sourceBounds": [
+            80,
+            19,
+            903,
+            830
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.3146146745743347,
+          "translation": [
+            21,
+            104
+          ],
+          "bounds": [
+            21,
+            104,
+            261,
+            257
+          ],
+          "headX": 207.86154743747505,
+          "footY": 360.09634510350844,
+          "flight": false,
+          "sha256": "01d56c8d8be3cf24c4a55ad1082d345879783acb800c7306fd83c3a80da68e1c",
+          "direction": "E",
+          "foot": [
+            192,
+            360.09634510350844
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 3,
+          "source": "sources/rift-run-E-pair-2.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1832,
+            859
+          ],
+          "sourceBounds": [
+            46,
+            5,
+            833,
+            845
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.3146146745743347,
+          "translation": [
+            18,
+            95
+          ],
+          "bounds": [
+            18,
+            95,
+            250,
+            266
+          ],
+          "headX": 208,
+          "footY": 360.2201706661641,
+          "flight": false,
+          "sha256": "1f443de079d6480fc8de5de360b99df31c675d1cf7febbf6b8634a811ce10f25",
+          "direction": "E",
+          "foot": [
+            192,
+            360.2201706661641
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 4,
+          "source": "sources/rift-run-E-pair-3.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1748,
+            900
+          ],
+          "sourceBounds": [
+            35,
+            49,
+            946,
+            851
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.3146146745743347,
+          "translation": [
+            30,
+            95
+          ],
+          "bounds": [
+            30,
+            95,
+            289,
+            255
+          ],
+          "headX": 207.77773618052862,
+          "footY": 347.9501983577651,
+          "flight": true,
+          "sha256": "dece47f4e34bd57e42eaad35d3bb13be993720b35d3228935066bdab93a208ba",
+          "direction": "E",
+          "foot": [
+            192,
+            347.9501983577651
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 5,
+          "source": "sources/rift-run-E-pair-0.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1832,
+            859
+          ],
+          "sourceBounds": [
+            1023,
+            28,
+            1789,
+            818
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.3146146745743347,
+          "translation": [
+            51,
+            111
+          ],
+          "bounds": [
+            51,
+            111,
+            243,
+            251
+          ],
+          "headX": 207.94029045184888,
+          "footY": 360.174822262873,
+          "flight": false,
+          "sha256": "cfdb5798533e7bb3dce28b22e6f1f79471071e07b74ad573ce2f266b72542017",
+          "direction": "E",
+          "foot": [
+            192,
+            360.174822262873
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 6,
+          "source": "sources/rift-run-E-pair-1.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1831,
+            859
+          ],
+          "sourceBounds": [
+            997,
+            18,
+            1816,
+            830
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.3146146745743347,
+          "translation": [
+            37,
+            104
+          ],
+          "bounds": [
+            37,
+            104,
+            260,
+            258
+          ],
+          "headX": 207.97698955435447,
+          "footY": 360.41095977808277,
+          "flight": false,
+          "sha256": "ef6f7102fd31ce5c16f94c4a0c328ef1cd975e358baf3885fbf8e0b95e84709d",
+          "direction": "E",
+          "foot": [
+            192,
+            360.41095977808277
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 7,
+          "source": "sources/rift-run-E-pair-2.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1832,
+            859
+          ],
+          "sourceBounds": [
+            960,
+            6,
+            1736,
+            845
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.3146146745743347,
+          "translation": [
+            31,
+            95
+          ],
+          "bounds": [
+            31,
+            95,
+            246,
+            266
+          ],
+          "headX": 208.3524792362046,
+          "footY": 359.59094131701545,
+          "flight": false,
+          "sha256": "86ba1145da9c6bab79699cf8f2a5faa18cb4b867de01d6588d22990341daecc7",
+          "direction": "E",
+          "foot": [
+            192,
+            359.59094131701545
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 8,
+          "source": "sources/rift-run-E-pair-3.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1748,
+            900
+          ],
+          "sourceBounds": [
+            898,
+            50,
+            1742,
+            848
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.3146146745743347,
+          "translation": [
+            35,
+            96
+          ],
+          "bounds": [
+            35,
+            96,
+            268,
+            253
+          ],
+          "headX": 208.33781519815307,
+          "footY": 347.69173965946777,
+          "flight": true,
+          "sha256": "dc041ede679df419ccfd78fc5e036f60da7112ff171615f60063920725edf9b5",
+          "direction": "E",
+          "foot": [
+            192,
+            347.69173965946777
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 1,
+          "source": "sources/rift-run-SE-pair-0.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1536,
+            1024
+          ],
+          "sourceBounds": [
+            22,
+            22,
+            773,
+            992
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.30674807602862875,
+          "translation": [
+            45,
+            62
+          ],
+          "bounds": [
+            45,
+            62,
+            233,
+            300
+          ],
+          "headX": 202.87198647137583,
+          "footY": 360.1591298998271,
+          "flight": false,
+          "sha256": "966f3456411a5ea1bf9843f2fb1d4de08b4930bb5622b4d96c77aecad1b6145d",
+          "direction": "SE",
+          "foot": [
+            192,
+            360.1591298998271
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 2,
+          "source": "sources/rift-run-SE-pair-1.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1536,
+            1024
+          ],
+          "sourceBounds": [
+            14,
+            23,
+            773,
+            986
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.30674807602862875,
+          "translation": [
+            40,
+            64
+          ],
+          "bounds": [
+            40,
+            64,
+            235,
+            298
+          ],
+          "headX": 202.7400501413511,
+          "footY": 360.0118933676267,
+          "flight": false,
+          "sha256": "851dfb09a60278aa6328a9e7bd407f0657c3875b4c2037c68e90b0de6dd724aa",
+          "direction": "SE",
+          "foot": [
+            192,
+            360.0118933676267
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 3,
+          "source": "sources/rift-run-SE-pair-2.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1536,
+            1024
+          ],
+          "sourceBounds": [
+            18,
+            13,
+            780,
+            873
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.30674807602862875,
+          "translation": [
+            18,
+            96
+          ],
+          "bounds": [
+            18,
+            96,
+            236,
+            266
+          ],
+          "headX": 203,
+          "footY": 360.41684153667796,
+          "flight": false,
+          "sha256": "44b70e90da70902c0e1d7682c29328400b623f2fd36e85643e53eb6b239c8922",
+          "direction": "SE",
+          "foot": [
+            192,
+            360.41684153667796
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 4,
+          "source": "sources/rift-run-SE-pair-3.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1575,
+            999
+          ],
+          "sourceBounds": [
+            22,
+            39,
+            827,
+            963
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.30674807602862875,
+          "translation": [
+            33,
+            64
+          ],
+          "bounds": [
+            33,
+            64,
+            249,
+            286
+          ],
+          "headX": 202.67981896198683,
+          "footY": 348.04871840251025,
+          "flight": true,
+          "sha256": "cfcb80a61cbdcc536fafc26da925f73f4fa9d0627bd7701ccf2a45387414647f",
+          "direction": "SE",
+          "foot": [
+            192,
+            348.04871840251025
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 5,
+          "source": "sources/rift-run-SE-pair-0.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1536,
+            1024
+          ],
+          "sourceBounds": [
+            782,
+            22,
+            1518,
+            989
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.30674807602862875,
+          "translation": [
+            49,
+            62
+          ],
+          "bounds": [
+            49,
+            62,
+            228,
+            299
+          ],
+          "headX": 202.76573188437635,
+          "footY": 359.5456337477699,
+          "flight": false,
+          "sha256": "25d1cf3a96cbeedf6e2c5a12d01a1759818d7431a867cb4d6abe3f0fc0252331",
+          "direction": "SE",
+          "foot": [
+            192,
+            359.5456337477699
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 6,
+          "source": "sources/rift-run-SE-pair-1.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1536,
+            1024
+          ],
+          "sourceBounds": [
+            767,
+            23,
+            1519,
+            981
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.30674807602862875,
+          "translation": [
+            46,
+            66
+          ],
+          "bounds": [
+            46,
+            66,
+            233,
+            296
+          ],
+          "headX": 203.1547927572213,
+          "footY": 360.4781529874836,
+          "flight": false,
+          "sha256": "1fc27e4ef9e25589bd745e28dbe591399d4a5b6fd6d3f26a1bfc934ccfff1b01",
+          "direction": "SE",
+          "foot": [
+            192,
+            360.4781529874836
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 7,
+          "source": "sources/rift-run-SE-pair-2.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1536,
+            1024
+          ],
+          "sourceBounds": [
+            766,
+            13,
+            1532,
+            985
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.30674807602862875,
+          "translation": [
+            29,
+            61
+          ],
+          "bounds": [
+            29,
+            61,
+            237,
+            300
+          ],
+          "headX": 203.01412889786576,
+          "footY": 359.7726260518844,
+          "flight": false,
+          "sha256": "02a950e5afeefe6699250ae7bd4c578603b0de421c8ec631063f48c3971d90e9",
+          "direction": "SE",
+          "foot": [
+            192,
+            359.7726260518844
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 8,
+          "source": "sources/rift-run-SE-pair-3.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1575,
+            999
+          ],
+          "sourceBounds": [
+            818,
+            35,
+            1554,
+            960
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.30674807602862875,
+          "translation": [
+            40,
+            64
+          ],
+          "bounds": [
+            40,
+            64,
+            228,
+            286
+          ],
+          "headX": 203.33348877027436,
+          "footY": 348.35546647853886,
+          "flight": true,
+          "sha256": "216b7acd7d6ebdd7c91a00668a58d6b3619c56d1cb64401c506f682c1dc99120",
+          "direction": "SE",
+          "foot": [
+            192,
+            348.35546647853886
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 1,
+          "source": "sources/rift-run-S-pair-0.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1536,
+            1024
+          ],
+          "sourceBounds": [
+            74,
+            17,
+            773,
+            991
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.3242147922998987,
+          "translation": [
+            62,
+            44
+          ],
+          "bounds": [
+            62,
+            44,
+            229,
+            318
+          ],
+          "headX": 191.93747024934663,
+          "footY": 360.43363728470115,
+          "flight": false,
+          "sha256": "de29163fa98effa285874c47525e1c1c12baf6cc0fa5308a958d8c90262ecb05",
+          "direction": "S",
+          "foot": [
+            192,
+            360.43363728470115
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 2,
+          "source": "sources/rift-run-S-pair-1.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1536,
+            1024
+          ],
+          "sourceBounds": [
+            40,
+            15,
+            774,
+            998
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.3242147922998987,
+          "translation": [
+            54,
+            41
+          ],
+          "bounds": [
+            54,
+            41,
+            240,
+            321
+          ],
+          "headX": 192.46702846375894,
+          "footY": 360.3515704154002,
+          "flight": false,
+          "sha256": "c292d1277684347ccd56d5c58fc27834c68754ea7cb830ac18a54105330c571a",
+          "direction": "S",
+          "foot": [
+            192,
+            360.3515704154002
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 3,
+          "source": "sources/rift-run-S-pair-2.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1536,
+            1024
+          ],
+          "sourceBounds": [
+            49,
+            17,
+            761,
+            1001
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.3242147922998987,
+          "translation": [
+            55,
+            40
+          ],
+          "bounds": [
+            55,
+            40,
+            233,
+            321
+          ],
+          "headX": 192.19644875590427,
+          "footY": 360,
+          "flight": false,
+          "sha256": "66bea2aa24f3f6d74a5807aebefc4bca084209bbf32d471e371459418c24aa94",
+          "direction": "S",
+          "foot": [
+            192,
+            360
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 4,
+          "source": "sources/rift-run-S-pair-3.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1523,
+            1032
+          ],
+          "sourceBounds": [
+            13,
+            18,
+            774,
+            985
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.3242147922998987,
+          "translation": [
+            64,
+            34
+          ],
+          "bounds": [
+            64,
+            34,
+            249,
+            316
+          ],
+          "headX": 192.42107143017222,
+          "footY": 348.16413373860183,
+          "flight": true,
+          "sha256": "8d9ed0d3f2518c28fb399c57e6c3ce1cdbe31f4ff8ca30b9f1942b31df3d2dc5",
+          "direction": "S",
+          "foot": [
+            192,
+            348.16413373860183
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 5,
+          "source": "sources/rift-run-S-pair-0.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1536,
+            1024
+          ],
+          "sourceBounds": [
+            790,
+            16,
+            1493,
+            994
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.3242147922998987,
+          "translation": [
+            83,
+            42
+          ],
+          "bounds": [
+            83,
+            42,
+            230,
+            319
+          ],
+          "headX": 192.449009516446,
+          "footY": 360.0547112462006,
+          "flight": false,
+          "sha256": "00243d2287533106be18a1f93345a172a30a6df0465823c95428c703638870f5",
+          "direction": "S",
+          "foot": [
+            192,
+            360.0547112462006
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 6,
+          "source": "sources/rift-run-S-pair-1.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1536,
+            1024
+          ],
+          "sourceBounds": [
+            807,
+            15,
+            1525,
+            998
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.3242147922998987,
+          "translation": [
+            87,
+            41
+          ],
+          "bounds": [
+            87,
+            41,
+            235,
+            321
+          ],
+          "headX": 192.04299923497229,
+          "footY": 360.3515704154002,
+          "flight": false,
+          "sha256": "fa0f4e57ae8fa075e03660058abdf50f1ec100795e6db31bb0176844bfadcb77",
+          "direction": "S",
+          "foot": [
+            192,
+            360.3515704154002
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 7,
+          "source": "sources/rift-run-S-pair-2.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1536,
+            1024
+          ],
+          "sourceBounds": [
+            794,
+            17,
+            1498,
+            947
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.3242147922998987,
+          "translation": [
+            84,
+            58
+          ],
+          "bounds": [
+            84,
+            58,
+            231,
+            304
+          ],
+          "headX": 192.17090984214087,
+          "footY": 360.1681864235056,
+          "flight": false,
+          "sha256": "9dd954b00bd180ca03fb1251857e4eb812a6f2f404bf72ac8673a1c81649f15d",
+          "direction": "S",
+          "foot": [
+            192,
+            360.1681864235056
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 8,
+          "source": "sources/rift-run-S-pair-3.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1523,
+            1032
+          ],
+          "sourceBounds": [
+            806,
+            28,
+            1510,
+            965
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.3242147922998987,
+          "translation": [
+            89,
+            43
+          ],
+          "bounds": [
+            89,
+            43,
+            231,
+            306
+          ],
+          "headX": 191.73416860738058,
+          "footY": 347.76190476190476,
+          "flight": true,
+          "sha256": "1506d2ea1b4e2fc5216551e6e861b7732c335d94d72517a94bfab220410ef3f2",
+          "direction": "S",
+          "foot": [
+            192,
+            347.76190476190476
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 1,
+          "source": "sources/rift-run-SW-pair-0.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1703,
+            923
+          ],
+          "sourceBounds": [
+            125,
+            32,
+            888,
+            886
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.2550909383653953,
+          "translation": [
+            136,
+            142
+          ],
+          "bounds": [
+            136,
+            142,
+            196,
+            220
+          ],
+          "headX": 180.83326491130472,
+          "footY": 360.3578432407784,
+          "flight": false,
+          "sha256": "93b056b15f56f0e89e82aa2eebcedb38cfae142a1d5c3738d14f7cb6cfff9747",
+          "direction": "SW",
+          "foot": [
+            192,
+            360.3578432407784
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 2,
+          "source": "sources/rift-run-SW-pair-1.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1704,
+            923
+          ],
+          "sourceBounds": [
+            99,
+            31,
+            909,
+            784
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.2550909383653953,
+          "translation": [
+            136,
+            167
+          ],
+          "bounds": [
+            136,
+            167,
+            208,
+            194
+          ],
+          "headX": 180.76710514823728,
+          "footY": 359.59365846587343,
+          "flight": false,
+          "sha256": "c65e24a96528d442a3181a526d9ac448537040a9389c544fc5deae46b21d5a93",
+          "direction": "SW",
+          "foot": [
+            192,
+            359.59365846587343
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 3,
+          "source": "sources/rift-run-SW-pair-2.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1705,
+            923
+          ],
+          "sourceBounds": [
+            91,
+            31,
+            903,
+            881
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.2550909383653953,
+          "translation": [
+            136,
+            143
+          ],
+          "bounds": [
+            136,
+            143,
+            209,
+            219
+          ],
+          "headX": 181.15150005214733,
+          "footY": 360.33747948731684,
+          "flight": false,
+          "sha256": "cd94f95d06d8e9aaa7336d5112b922bfd81fcc47063a2c76e850014f428a3d24",
+          "direction": "SW",
+          "foot": [
+            192,
+            360.33747948731684
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 4,
+          "source": "sources/rift-run-SW-pair-3.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1817,
+            866
+          ],
+          "sourceBounds": [
+            23,
+            19,
+            914,
+            834
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.2550909383653953,
+          "translation": [
+            137,
+            139
+          ],
+          "bounds": [
+            137,
+            139,
+            229,
+            210
+          ],
+          "headX": 181.07166265212499,
+          "footY": 347.66438758289337,
+          "flight": true,
+          "sha256": "37cdda94c5b0da709a25487456dd2171ccbe62cafa09ff17ab35a4607286f367",
+          "direction": "SW",
+          "foot": [
+            192,
+            347.66438758289337
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 5,
+          "source": "sources/rift-run-SW-pair-0.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1703,
+            923
+          ],
+          "sourceBounds": [
+            936,
+            34,
+            1689,
+            892
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.2550909383653953,
+          "translation": [
+            143,
+            140
+          ],
+          "bounds": [
+            143,
+            140,
+            194,
+            221
+          ],
+          "headX": 180.79409986039988,
+          "footY": 359.6332979326054,
+          "flight": false,
+          "sha256": "efa3cb326629d36c661b8dac8530551436cdb1217d3bc6dbfd594175708ec71f",
+          "direction": "SW",
+          "foot": [
+            192,
+            359.6332979326054
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 6,
+          "source": "sources/rift-run-SW-pair-1.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1704,
+            923
+          ],
+          "sourceBounds": [
+            844,
+            42,
+            1700,
+            886
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.2550909383653953,
+          "translation": [
+            125,
+            144
+          ],
+          "bounds": [
+            125,
+            144,
+            220,
+            217
+          ],
+          "headX": 181.45760220690994,
+          "footY": 360.06202479548983,
+          "flight": false,
+          "sha256": "0feec30dfaebe4b447413dded92f68f93d307d7efc193775aaf428b4b7428a63",
+          "direction": "SW",
+          "foot": [
+            192,
+            360.06202479548983
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 7,
+          "source": "sources/rift-run-SW-pair-2.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1705,
+            923
+          ],
+          "sourceBounds": [
+            948,
+            31,
+            1697,
+            881
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.2550909383653953,
+          "translation": [
+            143,
+            143
+          ],
+          "bounds": [
+            143,
+            143,
+            193,
+            219
+          ],
+          "headX": 180.8385553210821,
+          "footY": 360.33747948731684,
+          "flight": false,
+          "sha256": "5fd5b9380a24f7da655a5e217e194fd318707d504f1185bc19a585490f90bee6",
+          "direction": "SW",
+          "foot": [
+            192,
+            360.33747948731684
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 8,
+          "source": "sources/rift-run-SW-pair-3.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1817,
+            866
+          ],
+          "sourceBounds": [
+            896,
+            19,
+            1801,
+            820
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.2550909383653953,
+          "translation": [
+            110,
+            143
+          ],
+          "bounds": [
+            110,
+            143,
+            233,
+            206
+          ],
+          "headX": 181.11241168683665,
+          "footY": 347.83802350741246,
+          "flight": true,
+          "sha256": "8aef185522b761dcbc410c13f0126ea7844531c85b5bd44f84b1f0f206bb3234",
+          "direction": "SW",
+          "foot": [
+            192,
+            347.83802350741246
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 1,
+          "source": "sources/rift-run-W-pair-0.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1619,
+            971
+          ],
+          "sourceBounds": [
+            48,
+            46,
+            816,
+            921
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.2570236004924664,
+          "translation": [
+            127,
+            134
+          ],
+          "bounds": [
+            127,
+            134,
+            199,
+            227
+          ],
+          "headX": 175.95206576023972,
+          "footY": 359.6667212323855,
+          "flight": false,
+          "sha256": "1a999cc3f278a9d507335da1b3cfaf1ffc8e8111768b0e0ee9853887bf24da93",
+          "direction": "W",
+          "foot": [
+            192,
+            359.6667212323855
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 2,
+          "source": "sources/rift-run-W-pair-1.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1620,
+            971
+          ],
+          "sourceBounds": [
+            62,
+            44,
+            850,
+            921
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.2570236004924664,
+          "translation": [
+            133,
+            134
+          ],
+          "bounds": [
+            133,
+            134,
+            204,
+            227
+          ],
+          "headX": 175.87497736864603,
+          "footY": 359.923744832878,
+          "flight": false,
+          "sha256": "458fc32c2efd489975bf695cfbd58d1e1c8e5279ff6ef35309f80fe3964925d8",
+          "direction": "W",
+          "foot": [
+            192,
+            359.923744832878
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 3,
+          "source": "sources/rift-run-W-pair-2.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1620,
+            971
+          ],
+          "sourceBounds": [
+            72,
+            43,
+            848,
+            913
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.2570236004924664,
+          "translation": [
+            134,
+            136
+          ],
+          "bounds": [
+            134,
+            136,
+            201,
+            225
+          ],
+          "headX": 176.45899936134887,
+          "footY": 360.12457962943074,
+          "flight": false,
+          "sha256": "91aca5ef4707576d446e76f788ff16490c87f5d2e4f89e997cc37fbb667784b2",
+          "direction": "W",
+          "foot": [
+            192,
+            360.12457962943074
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 4,
+          "source": "sources/rift-run-W-pair-3.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1854,
+            848
+          ],
+          "sourceBounds": [
+            7,
+            16,
+            987,
+            794
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.2570236004924664,
+          "translation": [
+            112,
+            148
+          ],
+          "bounds": [
+            112,
+            148,
+            254,
+            202
+          ],
+          "headX": 175.68229368606436,
+          "footY": 348.4784083841238,
+          "flight": true,
+          "sha256": "5f31f1c5f82ceba2bdd515471fda6d3ad852601471823d2e0014a8c654a51d4c",
+          "direction": "W",
+          "foot": [
+            192,
+            348.4784083841238
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 5,
+          "source": "sources/rift-run-W-pair-0.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1619,
+            971
+          ],
+          "sourceBounds": [
+            806,
+            46,
+            1597,
+            922
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.2570236004924664,
+          "translation": [
+            134,
+            134
+          ],
+          "bounds": [
+            134,
+            134,
+            205,
+            227
+          ],
+          "headX": 176.39618769365703,
+          "footY": 359.6667212323855,
+          "flight": false,
+          "sha256": "a766f4e7a130a24a68231875c4d04db2a092259ffa87222b4ca38cb5bfa37e9a",
+          "direction": "W",
+          "foot": [
+            192,
+            359.6667212323855
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 6,
+          "source": "sources/rift-run-W-pair-1.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1620,
+            971
+          ],
+          "sourceBounds": [
+            861,
+            54,
+            1592,
+            927
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.2570236004924664,
+          "translation": [
+            136,
+            135
+          ],
+          "bounds": [
+            136,
+            135,
+            190,
+            226
+          ],
+          "headX": 175.91289038612308,
+          "footY": 359.8956504309081,
+          "flight": false,
+          "sha256": "20c4e177a6d810a53092c8be7249ab762007b5749cefcf62806673bbaf990b81",
+          "direction": "W",
+          "foot": [
+            192,
+            359.8956504309081
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 7,
+          "source": "sources/rift-run-W-pair-2.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1620,
+            971
+          ],
+          "sourceBounds": [
+            890,
+            47,
+            1615,
+            915
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.2570236004924664,
+          "translation": [
+            142,
+            136
+          ],
+          "bounds": [
+            142,
+            136,
+            188,
+            225
+          ],
+          "headX": 175.6694519725418,
+          "footY": 359.6105324284458,
+          "flight": false,
+          "sha256": "04ef0c648eb1dba9bb16324fa477f6669ea16de3792e5b375ce284f758f9c5a3",
+          "direction": "W",
+          "foot": [
+            192,
+            359.6105324284458
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 8,
+          "source": "sources/rift-run-W-pair-3.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1854,
+            848
+          ],
+          "sourceBounds": [
+            952,
+            15,
+            1847,
+            820
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.2570236004924664,
+          "translation": [
+            104,
+            141
+          ],
+          "bounds": [
+            104,
+            141,
+            232,
+            209
+          ],
+          "headX": 175.94774281693958,
+          "footY": 348.41804559742036,
+          "flight": true,
+          "sha256": "4e820e15052822a648c01b9fae79979d38d31f56f38885602e097c40506bda20",
+          "direction": "W",
+          "foot": [
+            192,
+            348.41804559742036
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 1,
+          "source": "sources/rift-run-NW-pair-0.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1536,
+            1024
+          ],
+          "sourceBounds": [
+            148,
+            69,
+            786,
+            958
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.3152030252074721,
+          "translation": [
+            133,
+            79
+          ],
+          "bounds": [
+            133,
+            79,
+            203,
+            282
+          ],
+          "headX": 181.33825985483713,
+          "footY": 360.1610984850651,
+          "flight": false,
+          "sha256": "5821c2472310ef4d14dfa978c7b1954359623cf4a9e209d83e40ac2b2fd709fb",
+          "direction": "NW",
+          "foot": [
+            192,
+            360.1610984850651
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 2,
+          "source": "sources/rift-run-NW-pair-1.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1536,
+            1024
+          ],
+          "sourceBounds": [
+            98,
+            27,
+            809,
+            982
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.3152030252074721,
+          "translation": [
+            129,
+            58
+          ],
+          "bounds": [
+            129,
+            58,
+            226,
+            303
+          ],
+          "headX": 181.0560806009046,
+          "footY": 359.6492951235508,
+          "flight": false,
+          "sha256": "997b0da59cdc35c9bd634654bda8074197b45542c93b3d3ee64d4ea14db82d67",
+          "direction": "NW",
+          "foot": [
+            192,
+            359.6492951235508
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 3,
+          "source": "sources/rift-run-NW-pair-2.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1536,
+            1024
+          ],
+          "sourceBounds": [
+            103,
+            53,
+            810,
+            975
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.3152030252074721,
+          "translation": [
+            132,
+            68
+          ],
+          "bounds": [
+            132,
+            68,
+            225,
+            293
+          ],
+          "headX": 180.9030403883973,
+          "footY": 359.5627983169117,
+          "flight": false,
+          "sha256": "cb87d9e1c8910cc21b1f36cca2f6d0f14cdb3c6b2fd8ccb144dc83687116dcf5",
+          "direction": "NW",
+          "foot": [
+            192,
+            359.5627983169117
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 4,
+          "source": "sources/rift-run-NW-pair-3.png",
+          "sourcePanel": 0,
+          "sourceSize": [
+            1522,
+            1033
+          ],
+          "sourceBounds": [
+            33,
+            35,
+            785,
+            968
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.3152030252074721,
+          "translation": [
+            127,
+            53
+          ],
+          "bounds": [
+            127,
+            53,
+            239,
+            296
+          ],
+          "headX": 181.23909613247136,
+          "footY": 347.71482856898643,
+          "flight": true,
+          "sha256": "306ef69b4891e74a2e479daf6fe49dc421d8f8d122dcaaad30797bb27fdb8b42",
+          "direction": "NW",
+          "foot": [
+            192,
+            347.71482856898643
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 5,
+          "source": "sources/rift-run-NW-pair-0.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1536,
+            1024
+          ],
+          "sourceBounds": [
+            881,
+            69,
+            1519,
+            959
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.3152030252074721,
+          "translation": [
+            123,
+            79
+          ],
+          "bounds": [
+            123,
+            79,
+            203,
+            283
+          ],
+          "headX": 180.80610441509717,
+          "footY": 360.4763015102726,
+          "flight": false,
+          "sha256": "0937a74941a92140face6336a707e7437a76bdd1ccd37fea39af8a583b96a3a3",
+          "direction": "NW",
+          "foot": [
+            192,
+            360.4763015102726
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 6,
+          "source": "sources/rift-run-NW-pair-1.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1536,
+            1024
+          ],
+          "sourceBounds": [
+            854,
+            27,
+            1527,
+            979
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.3152030252074721,
+          "translation": [
+            126,
+            59
+          ],
+          "bounds": [
+            126,
+            59,
+            214,
+            302
+          ],
+          "headX": 181.0679491408895,
+          "footY": 360.0188890731359,
+          "flight": false,
+          "sha256": "cd24197ad14318d8af42162505524138dce000d2e49ff40b8fb04724b48b2eba",
+          "direction": "NW",
+          "foot": [
+            192,
+            360.0188890731359
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 7,
+          "source": "sources/rift-run-NW-pair-2.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1536,
+            1024
+          ],
+          "sourceBounds": [
+            847,
+            52,
+            1520,
+            975
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.3152030252074721,
+          "translation": [
+            138,
+            68
+          ],
+          "bounds": [
+            138,
+            68,
+            214,
+            293
+          ],
+          "headX": 180.6593194015398,
+          "footY": 359.5627983169117,
+          "flight": false,
+          "sha256": "29a27cf8ce8838ddaeaeac28f1ee4eb4a16b3b1d9d635ae62ccfcde1f41cf448",
+          "direction": "NW",
+          "foot": [
+            192,
+            359.5627983169117
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        },
+        {
+          "frame": 8,
+          "source": "sources/rift-run-NW-pair-3.png",
+          "sourcePanel": 1,
+          "sourceSize": [
+            1522,
+            1033
+          ],
+          "sourceBounds": [
+            800,
+            35,
+            1519,
+            994
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.3152030252074721,
+          "translation": [
+            126,
+            45
+          ],
+          "bounds": [
+            126,
+            45,
+            229,
+            304
+          ],
+          "headX": 181.35905197208558,
+          "footY": 347.9101072243807,
+          "flight": true,
+          "sha256": "6a767fc3374933f9a9fa855254070fe327ac50a5bc4af9a71b470f274da5fe45",
+          "direction": "NW",
+          "foot": [
+            192,
+            347.9101072243807
+          ],
+          "anchorMode": "head horizontal; support/flight sole height"
+        }
+      ]
     }
   ]
 }

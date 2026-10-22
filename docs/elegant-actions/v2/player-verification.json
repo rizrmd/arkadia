@@ -1,19 +1,25 @@
 {
   "status": "PASS",
-  "url": "https://preview.example/",
+  "url": "https://ark-whachat.fural.space/rift-runner/elegant-actions/v2/",
   "checks": [
     "ember hurt: sheet loads in Knowledge sandbox iframe",
     "ember hurt: all 64 direction/frame selections",
     "ember death: sheet loads in Knowledge sandbox iframe",
     "ember death: all 64 direction/frame selections",
     "ember: death plays once and holds final frame",
+    "ember run: sheet loads in Knowledge sandbox iframe",
+    "ember run: all 64 direction/frame selections",
+    "ember: run continues beyond one cycle",
     "rift hurt: sheet loads in Knowledge sandbox iframe",
     "rift hurt: all 64 direction/frame selections",
     "rift death: sheet loads in Knowledge sandbox iframe",
     "rift death: all 64 direction/frame selections",
-    "rift: death plays once and holds final frame"
+    "rift: death plays once and holds final frame",
+    "rift run: sheet loads in Knowledge sandbox iframe",
+    "rift run: all 64 direction/frame selections",
+    "rift: run continues beyond one cycle"
   ],
   "errors": [],
   "visualAcceptance": "Tracked separately; these tests verify player behavior only",
-  "verifiedAt": "2026-10-22T18:55:22.267Z"
+  "verifiedAt": "2026-10-22T20:29:39.819Z"
 }

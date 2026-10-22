@@ -1,3 +1,7 @@
+## Latest correction status
+
+See [v2 acceptance and failures](v2/acceptance.md). Hurt/Death corrections and two rejected Run candidates are published in the [six-clip review player](https://ark-whachat.fural.space/rift-runner/elegant-actions/v2/). All 384 cells pass structural/player checks, but Run fails visual acceptance. No live gameplay sprite is replaced. The historical rejection report below describes the first iteration.
+
 ## Active correction goal
 
 The goal **fix until pass** is active. The earlier blocked report below describes the first rejected candidates, not the latest work. Hurt and Death now have regenerated direction-specific sources, four 3072×3072 exports, 256 distinct cells, no source-border contacts, dark/light reviews, fixed scales and passing browser selection/Death hold checks. The v2 preview is https://ark-whachat.fural.space/rift-runner/elegant-actions/v2/ . Run corrections and the final six-sheet acceptance audit are still required; do not mark the task or goal complete. See v2/progress.json for continuation state and v2/prompts.json for exact generation prompts.

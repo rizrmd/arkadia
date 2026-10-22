@@ -1,0 +1,265 @@
+{
+  "hero": "ember",
+  "dir": "N",
+  "sheet": "run-proof/ember-run-N.png",
+  "cell": 384,
+  "frames": 8,
+  "root": [
+    192,
+    360
+  ],
+  "fps": 10,
+  "loop": true,
+  "registration": "one fixed scale; head/torso horizontal anchor; support sole Y360, flight Y348; no per-frame scaling or body deformation",
+  "scale": 0.3252032520325203,
+  "audit": [
+    {
+      "frame": 1,
+      "source": "sources/ember-run-N-pair-0.png",
+      "sourcePanel": 0,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "sourceBounds": [
+        139,
+        56,
+        740,
+        964
+      ],
+      "sourceEdgeContact": false,
+      "scale": 0.3252032520325203,
+      "translation": [
+        99,
+        64
+      ],
+      "bounds": [
+        99,
+        64,
+        198,
+        298
+      ],
+      "headX": 191.6459379626978,
+      "footY": 359.9349593495935,
+      "flight": false,
+      "sha256": "250db3b9a1db76990c8b827f277584bf2c0a20ff4836784d5a29be4b4cd18fa1"
+    },
+    {
+      "frame": 2,
+      "source": "sources/ember-run-N-pair-1.png",
+      "sourcePanel": 0,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "sourceBounds": [
+        72,
+        20,
+        771,
+        994
+      ],
+      "sourceEdgeContact": false,
+      "scale": 0.3252032520325203,
+      "translation": [
+        77,
+        43
+      ],
+      "bounds": [
+        77,
+        43,
+        230,
+        319
+      ],
+      "headX": 191.74533909520565,
+      "footY": 360.3983739837398,
+      "flight": false,
+      "sha256": "cdcc455a70c2755293d7519cded1cb007a446f3f943e8c3e222a860cd3b8f1ee"
+    },
+    {
+      "frame": 3,
+      "source": "sources/ember-run-N-pair-2.png",
+      "sourcePanel": 0,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "sourceBounds": [
+        104,
+        29,
+        757,
+        983
+      ],
+      "sourceEdgeContact": false,
+      "scale": 0.3252032520325203,
+      "translation": [
+        85,
+        49
+      ],
+      "bounds": [
+        85,
+        49,
+        215,
+        313
+      ],
+      "headX": 191.60884294920527,
+      "footY": 360.2195121951219,
+      "flight": false,
+      "sha256": "6d1efc3139ab972d92a455da9e09c7d791f531ff9fcc58ce989ff5d833c2cd9f"
+    },
+    {
+      "frame": 4,
+      "source": "sources/ember-run-N-pair-3.png",
+      "sourcePanel": 0,
+      "sourceSize": [
+        1468,
+        1071
+      ],
+      "sourceBounds": [
+        43,
+        43,
+        741,
+        949
+      ],
+      "sourceEdgeContact": false,
+      "scale": 0.3252032520325203,
+      "translation": [
+        79,
+        53
+      ],
+      "bounds": [
+        79,
+        53,
+        229,
+        297
+      ],
+      "headX": 191.52671681779898,
+      "footY": 348.2845528455284,
+      "flight": true,
+      "sha256": "39566e20183c13bbfca49c78da8eebcafb7089a9822cdac644c65119819bf3b7"
+    },
+    {
+      "frame": 5,
+      "source": "sources/ember-run-N-pair-0.png",
+      "sourcePanel": 1,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "sourceBounds": [
+        841,
+        56,
+        1429,
+        964
+      ],
+      "sourceEdgeContact": false,
+      "scale": 0.3252032520325203,
+      "translation": [
+        107,
+        64
+      ],
+      "bounds": [
+        107,
+        64,
+        193,
+        298
+      ],
+      "headX": 191.86467115381444,
+      "footY": 359.9349593495935,
+      "flight": false,
+      "sha256": "ba6eb1d972c7478d4bc2cfde221e219d63af8b13caed033231d16efa27b1d39c"
+    },
+    {
+      "frame": 6,
+      "source": "sources/ember-run-N-pair-1.png",
+      "sourcePanel": 1,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "sourceBounds": [
+        827,
+        20,
+        1479,
+        1002
+      ],
+      "sourceEdgeContact": false,
+      "scale": 0.3252032520325203,
+      "translation": [
+        98,
+        40
+      ],
+      "bounds": [
+        98,
+        40,
+        214,
+        322
+      ],
+      "headX": 191.75171290179208,
+      "footY": 360,
+      "flight": false,
+      "sha256": "d513f420dcfea70392f300b5723669b077fb429f9df357240f3fa157ac206df6"
+    },
+    {
+      "frame": 7,
+      "source": "sources/ember-run-N-pair-2.png",
+      "sourcePanel": 1,
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "sourceBounds": [
+        840,
+        28,
+        1458,
+        1001
+      ],
+      "sourceEdgeContact": false,
+      "scale": 0.3252032520325203,
+      "translation": [
+        95,
+        43
+      ],
+      "bounds": [
+        95,
+        43,
+        203,
+        319
+      ],
+      "headX": 191.88158161425332,
+      "footY": 360.0731707317073,
+      "flight": false,
+      "sha256": "8621c8e662e014bb9a632975b0e99bf62ea2c9a5bf956961a014bad5053c8a9e"
+    },
+    {
+      "frame": 8,
+      "source": "sources/ember-run-N-pair-3.png",
+      "sourcePanel": 1,
+      "sourceSize": [
+        1468,
+        1071
+      ],
+      "sourceBounds": [
+        770,
+        40,
+        1439,
+        1022
+      ],
+      "sourceEdgeContact": false,
+      "scale": 0.3252032520325203,
+      "translation": [
+        84,
+        28
+      ],
+      "bounds": [
+        84,
+        28,
+        220,
+        322
+      ],
+      "headX": 191.6437890556163,
+      "footY": 348,
+      "flight": true,
+      "sha256": "addb1a7a369b537719b7401163d325641c550fd4098ffdce642dd61aebd3714d"
+    }
+  ]
+}

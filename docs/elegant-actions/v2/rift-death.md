@@ -1,4 +1,4 @@
-**Death correction checkpoint.** Direction-specific collapse strips replace the first rejected sheet. Run is still being corrected; full task acceptance is pending.
+**Hurt and Death correction pass published. Full task incomplete: Run visual acceptance failed.** The six-clip player is available; all 384 frame selections and timed Death hold / Run continuation pass. These functional checks do not accept the Run artwork.
 
 ## Corrected Death sheet
 
@@ -106,3 +106,9 @@ References were the approved elegant Idle and corrected SE Hurt attachments, ins
 HTTP delivery and file-integrity checks passed for the initial 30-resource preview. Live browser verification timed out after 60 seconds; player behavior is not browser-certified.
 
 Isolated branch: preview/elegant-actions. Task files only. Preview publication and commit receipt are recorded in docs/elegant-actions. These pages preserve failed candidates honestly and do not supersede the approved Idle pages.
+
+## Latest full-task verification
+
+The Run sources for both characters cover all headings but are rejected for repeated leg phases, device-arm swaps and body-scale jumps. Hurt/Death corrections remain available. All six exports pass size, alpha/margin, source-edge and distinct-cell checks. The live player passes all 384 frame selections, Death final-frame hold and Run continuation. No live gameplay sprite has been replaced.
+
+[Six-clip review player](https://ark-whachat.fural.space/rift-runner/elegant-actions/v2/) · [Structural report with Run rejection](https://ark-whachat.fural.space/rift-runner/elegant-actions/v2/verification.json)
