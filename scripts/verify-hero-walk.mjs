@@ -7,7 +7,7 @@ const shot=async(page,name,opts={})=>fs.writeFile(`${out}/${name}.webp`,await sh
 const base=process.env.DEMO_URL?.replace(/\/$/,'');const server=base?null:spawn('node',['server.mjs'],{env:{...process.env,PORT:'3062'}});const url=base||'http://127.0.0.1:3062';let browser;
 try{await new Promise(r=>setTimeout(r,600));const launch=()=>chromium.launch({headless:true,env:{...process.env,LD_LIBRARY_PATH:'/home/dev/.local/browser-libs/usr/lib/x86_64-linux-gnu:/opt/fural-antigravity-glibc'},args:['--no-sandbox','--no-zygote','--single-process']});browser=await launch();
 const errors=[],open=async(context,query)=>{const page=await context.newPage();page.on('pageerror',e=>{errors.push(e.message);console.error('pageerror',e.message);});await page.goto(url+'/?offline=1&hero=rift-runner&'+query.slice(1));await page.waitForFunction(()=>document.querySelector('#world-hero')?.dataset.x);await page.waitForTimeout(500);return page;};
-const hero=page=>page.evaluate(()=>{const d=document.querySelector('#world-hero').dataset;return {x:+d.x,y:+d.y,state:d.state,clip:d.clip,facing:+d.facing,behind:+d.behind,tint:d.tint};});
+const hero=page=>page.evaluate(()=>{const d=document.querySelector('#world-hero').dataset;return {x:+d.x,y:+d.y,state:d.state,clip:d.clip,facing:+d.facing,behind:+d.behind,tint:d.tint,night:+d.night};});
 const camera=page=>page.evaluate(()=>document.querySelector('#world-surface').style.transform);
 // A world re-raster can stall headless frames for a second, so wait on state rather than fixed sleeps.
 const idle=page=>page.waitForFunction(()=>document.querySelector('#world-hero').dataset.state==='idle',null,{timeout:10000});
@@ -69,7 +69,7 @@ for(const r of rates)assert(Math.abs(r.screen/expect[r.keys]-1)<.08,`${r.keys} w
 const up=rates.find(r=>r.keys==='KeyW'),right=rates.find(r=>r.keys==='KeyD');assert(Math.abs(up.screen/right.screen-.75)<.06,'straight up moves three quarters of the screen speed of straight across');
 await page.evaluate(()=>localStorage.removeItem('arkadia.stronghold.hero'));
 for(const [time,name] of [['0.31','4-morning-shadow'],['0','5-night-tint']]){const p=page;await p.goto(url+'/?offline=1&hero=rift-runner&time='+time);await p.waitForFunction(()=>document.querySelector('#world-hero')?.dataset.x);await p.waitForTimeout(1200);await hold(p,'KeyA',700);const h=await hero(p);console.log(name,h);
- if(time==='0'){const [r,g,bl]=h.tint.split(',').map(Number);assert(bl>r&&r<200,'night tints the hero blue-dark, got '+h.tint);}
+ if(time==='0'){assert.equal(h.tint,'255,255,255','night keeps the own hero untinted and bright, got '+h.tint);assert.equal(h.night,1,'night aura active on own hero');}
  const box=await p.evaluate(()=>{const r=document.querySelector('#world-hero').getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height};});
  await shot(p,name,{clip:{x:Math.max(0,box.x-160),y:Math.max(0,box.y-120),width:box.width+320,height:box.height+240}});}
 // Mobile, in a fresh browser (one single-process headless browser runs out of memory on a second world):

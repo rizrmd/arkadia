@@ -27,6 +27,7 @@ mkdir -p "$STAGE/site/coop/docs"; cp docs/coop/*.webp docs/coop/*.json "$STAGE/s
 mkdir -p "$STAGE/site/hero-select"; cp docs/hero-select/*.webp docs/hero-select/*.json "$STAGE/site/hero-select/"
 mkdir -p "$STAGE/site/hero-picker-size"; cp docs/hero-picker-size/*.webp docs/hero-picker-size/*.json "$STAGE/site/hero-picker-size/"
 mkdir -p "$STAGE/site/foot-shadow"; cp docs/foot-shadow/*.webp docs/foot-shadow/*.png "$STAGE/site/foot-shadow/"
+mkdir -p "$STAGE/site/hero-night-visibility"; cp docs/hero-night-visibility/*.webp docs/hero-night-visibility/*.json "$STAGE/site/hero-night-visibility/"
 mkdir -p "$STAGE/site/realistic-torch"; cp public/realistic-torch/* "$STAGE/site/realistic-torch/"
 mkdir -p "$STAGE/site/sharp-torches"; cp docs/sharp-torches/*.png docs/sharp-torches/*.json "$STAGE/site/sharp-torches/"
 mkdir -p "$STAGE/site/ui"; cp assets-src/ui/hero-card-frame*.png "$STAGE/site/ui/"

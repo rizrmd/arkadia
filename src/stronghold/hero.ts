@@ -149,36 +149,43 @@ export async function createHero<P extends Placed>(o:{layer:HTMLElement;lightmap
   else if(own&&lastMove&&performance.now()-lastMove>400){lastMove=0;try{localStorage.setItem(KEY,JSON.stringify({x:Math.round(x),y:Math.round(y)}));}catch{}}
   return m>0||moving;
  }
- // The lightmap (ambient plus light pools) under the hero's feet; untinted while the world is unlit. Read
- // through a 1 px copy so the lightmap itself never gets flagged for CPU readback.
+ // The lightmap (ambient plus light pools) under a co-op ally's feet; the player's own hero stays at full
+ // painted brightness so they remain clearly visible at night. Read through a 1 px copy so the lightmap itself
+ // never gets flagged for CPU readback.
  const probe=Object.assign(document.createElement('canvas'),{width:1,height:1}).getContext('2d',{willReadFrequently:true})!;
  function sample(now:number){
-  if(now-sampled<250)return;sampled=now;let next='255,255,255';
+  if(own||now-sampled<250)return;sampled=now;let next='255,255,255';
   if(o.surface.dataset.lighting!=='off'&&o.lightmap.dataset.origin){const [l,tp,r]=o.lightmap.dataset.origin.split(',').map(Number),px=Math.floor((x-l)*r),py=Math.floor((y-12-tp)*r);
    if(px>=0&&py>=0&&px<o.lightmap.width&&py<o.lightmap.height){probe.clearRect(0,0,1,1);probe.drawImage(o.lightmap,px,py,1,1,0,0,1,1);next=[...probe.getImageData(0,0,1,1).data.slice(0,3)].join();}}
   tint=next;
  }
  function render(){
   const s=o.sun(),f=meta.frames[frameIndex()],res=Math.min(3,Math.max(1,origin.scale*(devicePixelRatio||1)));
-  // Local bounds around the foot: the mirrored sprite cell plus the foot-anchored sun-cast silhouette.
-  const half=Math.max(pivot.x,cell.w-pivot.x)*DISPLAY,top=-pivot.y*DISPLAY,bottom=(cell.h-pivot.y)*DISPLAY+8,H=-top;
+  const night=own?Math.max(0,1-s.alpha/.4):0;
+  // Local bounds around the foot: the mirrored sprite cell plus the foot-anchored sun-cast silhouette (or night aura).
+  const half=Math.max((pivot.x>cell.w-pivot.x?pivot.x:cell.w-pivot.x)*DISPLAY,night?48:0),top=-pivot.y*DISPLAY-(night?14:0),bottom=(cell.h-pivot.y)*DISPLAY+(night?20:8),H=- pivot.y*DISPLAY;
   const ends=[-half,half].flatMap(w=>[0,H].flatMap(h=>[[w+h*s.dx,h*s.dy],[w*s.wx+h*s.dx,w*s.wy+h*s.dy]])),sxs=[-half,half,...ends.map(e=>e[0])],sys=[top,bottom,...ends.map(e=>e[1]-8),...ends.map(e=>e[1]+8)];
   const b=[Math.floor(Math.min(...sxs))-4,Math.floor(Math.min(...sys))-4,Math.ceil(Math.max(...sxs))+4,Math.ceil(Math.max(...sys))+4];
   // The canvas is drawn around the foot and moved by place(), so walking redraws it only where uprights in front
   // cut it out (a hero, or an ally in co-op, re-composed every frame it walked).
   const hidden=occluders(x,y,b),at=x.toFixed(1)+','+y.toFixed(1);if(canvas.dataset.x+','+canvas.dataset.y!==at)Object.assign(canvas.dataset,{x:x.toFixed(1),y:y.toFixed(1)});
-  const key=[hero.id,state,clipName(),f.x,f.y,facing,vertical,tint,s.dx,s.dy,s.wx,s.wy,s.alpha,res,b,hidden.length?hidden.map(p=>p.x+':'+p.y).join()+'@'+Math.round(x*4)+','+Math.round(y*4):'',objects.length].join();if(key===drawn)return;drawn=key;
+  const key=[hero.id,state,clipName(),f.x,f.y,facing,vertical,tint,night.toFixed(2),s.dx,s.dy,s.wx,s.wy,s.alpha,res,b,hidden.length?hidden.map(p=>p.x+':'+p.y).join()+'@'+Math.round(x*4)+','+Math.round(y*4):'',objects.length].join();if(key===drawn)return;drawn=key;
   if(res!==k||b.some((v,i)=>v!==box[i])){k=res;box=b;canvas.width=Math.ceil((b[2]-b[0])*k);canvas.height=Math.ceil((b[3]-b[1])*k);canvas.style.width=b[2]-b[0]+'px';canvas.style.height=b[3]-b[1]+'px';}
   const frame=(target:HTMLCanvasElement)=>{const g=target.getContext('2d',{willReadFrequently:target===lit})!;g.globalCompositeOperation='copy';g.drawImage(atlas,f.x,f.y,f.w,f.h,0,0,cell.w,cell.h);g.globalCompositeOperation='source-over';return g;};
   // Multiply per pixel: a multiply fill plus alpha mask would bleed the tint into the soft edges.
+  // For the player's own hero at night, keep full painted colour and boost midtones/highlights while keeping dark outlines crisp.
   const g=frame(lit);if(tint!=='255,255,255'){const [r,gr,bl]=tint.split(',').map(v=>Number(v)/255),img=g.getImageData(0,0,cell.w,cell.h),d=img.data;for(let i=0;i<d.length;i+=4){d[i]*=r;d[i+1]*=gr;d[i+2]*=bl;}g.putImageData(img,0,0);}
+  else if(night>0){const img=g.getImageData(0,0,cell.w,cell.h),d=img.data;for(let i=0;i<d.length;i+=4)if(d[i+3]){const lum=.299*d[i]+.587*d[i+1]+.114*d[i+2],k=1+.18*night*Math.min(1,Math.max(0,(lum-28)/70));d[i]=Math.min(255,d[i]*k);d[i+1]=Math.min(255,d[i+1]*(1+(k-1)*.92));d[i+2]=Math.min(255,d[i+2]*(1+(k-1)*.78));}g.putImageData(img,0,0);}
   const dir=meta.views||vertical&&!pose?1:facing;
   const local=()=>c.setTransform(k,0,0,k,-box[0]*k,-box[1]*k),sprite=(src:HTMLCanvasElement)=>{c.scale(dir*DISPLAY,DISPLAY);c.drawImage(src,-pivot.x,-pivot.y);};
   c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,canvas.width,canvas.height);local();
+  if(night>0){
+   c.save();c.translate(0,-2);c.scale(1,.52);const pg=c.createRadialGradient(0,0,2,0,0,40);pg.addColorStop(0,`rgba(255,206,136,${(.24*night).toFixed(3)})`);pg.addColorStop(.55,`rgba(255,178,102,${(.1*night).toFixed(3)})`);pg.addColorStop(1,'rgba(255,160,85,0)');c.fillStyle=pg;c.fillRect(-40,-40,80,80);c.restore();
+  }
   drawFigureShadow(c,atlas,f,cell,s,dir);
   c.save();sprite(lit);c.restore();
   cutOut(c,hidden,x,y);
-  Object.assign(canvas.dataset,{hero:hero.id,state,clip:clipName(),frame:String(frameIndex()),facing:String(facing),behind:String(hidden.length),tint});
+  Object.assign(canvas.dataset,{hero:hero.id,state,clip:clipName(),frame:String(frameIndex()),facing:String(facing),behind:String(hidden.length),tint,night:night.toFixed(2)});
  }
  function place(){canvas.style.transform=`translate3d(${origin.x+(x+box[0])*origin.scale}px,${origin.y+(y+box[1])*origin.scale}px,0) scale(${origin.scale})`;}
  let last=0;
