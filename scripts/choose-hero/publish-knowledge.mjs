@@ -31,7 +31,10 @@ const hex=c=>'#'+c.toString(16).padStart(6,'0'),fill=f=>Array.isArray(f)?`gold g
 const roleRows=Object.entries(SLOTS).map(([slot,use])=>{const d=CHOOSE_HERO_TEXT.desktop[slot];
  return `| \`${slot}\` | ${use} | ${FONTS[d.font].family} | ${CHOOSE_HERO_TEXT.desktop[slot].size} | ${CHOOSE_HERO_TEXT.portrait[slot].size} | ${CHOOSE_HERO_TEXT.landscape[slot].size} | ${d.letterSpacing}${d.uppercase?' · caps':''} | ${fill(d.fill)} |`;}).join('\n');
 const crisp=E.crisp.filter(c=>c.edges),texts=Object.keys(crisp[0].edges);
-const edges=crisp.flatMap(c=>Object.values(c.edges)).filter(x=>x!=null);
+// Selected sits right under the card name and over the selected frame's gold glow: its crop catches both, so it is listed
+// but left out of the range (see the note under the table).
+const OVERLAPPED=['Selected'],edges=crisp.flatMap(c=>Object.entries(c.edges).filter(([t])=>!OVERLAPPED.includes(t)).map(([,e])=>e)).filter(x=>x!=null);
+const picks=crisp.map(c=>`@${c.frameScale}x at DPR ${c.dpr}`).join(', ');
 const crispTable=`| 1280 × 720 | ${texts.map(t=>t.replace(/\|/g,'')).join(' | ')} | Frames |\n|---|${texts.map(()=>'---:').join('|')}|---|\n`+crisp.map(c=>`| DPR ${c.dpr} | ${texts.map(t=>c.edges[t]??'—').join(' | ')} | @${c.frameScale}x |`).join('\n');
 const full=E.crisp.find(c=>!c.edges);
 const checks=E.input.map(c=>`| ${c.name} | ${c.pass?'Pass':'**Fail**'} | ${c.detail||''} |`).join('\n');
@@ -127,7 +130,7 @@ ${checks}
 
 ## Crispness at DPR 1, 2, 3 and 2.625
 
-Edge width is measured on each text crop: the mean run of pixels between 10 % and 90 % of the crop's contrast, in device pixels (1 px is an ideal anti-aliased edge). Viewport 1280 × 720. The edges stay between ${Math.min(...edges).toFixed(2)} and ${Math.max(...edges).toFixed(2)} device px at every DPR. Frames pick @1x at DPR 1 and @2x at DPR 2, 3 and 2.625, because the stage scale at 1280 × 720 is ${crisp[0].stageScale}.${full?` The full 1672 × 941 composition at DPR 2.625 loads @${full.frameScale}x.`:''} The sheets also show Begin Journey, a card and an icon at device resolution (frame crops are not measured).
+Edge width is measured on each text crop: the mean run of pixels between 10 % and 90 % of the crop's contrast, in device pixels (1 px is an ideal anti-aliased edge). Viewport 1280 × 720. Text edges stay between ${Math.min(...edges).toFixed(2)} and ${Math.max(...edges).toFixed(2)} device px at every DPR. Selected reads ${Math.min(...crisp.map(c=>c.edges.Selected)).toFixed(1)}–${Math.max(...crisp.map(c=>c.edges.Selected)).toFixed(1)} px because its crop also catches the card name just above it and the glowing gold frame behind it (visible in the sheets), so the scan measures those gradients rather than the label's own edge. The stage scale at 1280 × 720 is ${crisp[0].stageScale}, so frames load ${picks}.${full?` The full 1672 × 941 composition at DPR 2.625 loads @${full.frameScale}x.`:''} The sheets also show Begin Journey, a card and an icon at device resolution (frame crops are not measured).
 
 ${crispTable}
 
@@ -152,9 +155,9 @@ ${E.consoleErrors.length?`Console errors: ${E.consoleErrors.join('; ')}`:'No con
 `;
 fs.writeFileSync(`${D}/screen.md`,md);
 if(dry){console.log(md.length,'chars (dry run)');process.exit(0);}
-const pages=cli(['knowledge','list']),list=Array.isArray(pages)?pages:pages.documents??pages.items??[];
+const pages=cli(['knowledge','list','--project','PJ8758f22f61165f3d3215e454']),list=Array.isArray(pages)?pages:pages.documents??pages.items??[];
 const existing=list.find(p=>p.title===TITLE&&p.parent_id===PARENT);
 const siblings=list.filter(p=>p.parent_id===PARENT).map(p=>p.sort_order??0);
-const page=existing?cli(['knowledge','update',existing.id,'--markdown',md]):cli(['knowledge','create','--title',TITLE,'--parent',PARENT,'--sort-order',String(Math.max(0,...siblings)+10),'--markdown',md]);
+const page=existing?cli(['knowledge','update',existing.id,'--markdown',md]):cli(['knowledge','create','--project','PJ8758f22f61165f3d3215e454','--title',TITLE,'--parent',PARENT,'--sort-order',String(Math.max(0,...siblings)+10),'--markdown',md]);
 receipts.page=page.id??page.document?.id??existing?.id;save();
 console.log('Knowledge page',receipts.page,Object.keys(receipts.attachments).length,'images');
