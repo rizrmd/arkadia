@@ -10,6 +10,12 @@
 #hero-health{height:10px}
 #hero-health i{height:5px}
 #hero-health b.hero-exp{display:block;height:2px;margin-top:1px;border-radius:2px;background:linear-gradient(90deg,#d89628,#ffe27a);transform-origin:0 50%;transform:scaleX(0);transition:transform .22s ease-out}
+.foe-health{display:inline-flex;align-items:center;gap:4px;width:auto;height:auto;padding:1.5px 5px 1.5px 3px;border-radius:8px;border:1px solid #59332bcc;background:linear-gradient(180deg,#1d1211e8,#0f0909f0);box-shadow:0 2px 5px #000b;pointer-events:none;will-change:transform}
+.foe-health[hidden]{display:none}
+.foe-health[data-wounded=true]{border-color:#d9534fcc;box-shadow:0 2px 7px #000c,0 0 8px #d9534f44}
+.foe-lv{display:inline-flex;align-items:center;justify-content:center;padding:1px 4.5px;border-radius:5px;background:linear-gradient(180deg,#4c2e18,#26160b);border:1px solid #d9a45b;color:#ffe89e;font:700 9.5px/1.05 Georgia,serif;letter-spacing:.03em;font-variant-numeric:tabular-nums;white-space:nowrap;text-shadow:0 1px 2px #000}
+.foe-bar-track{position:relative;display:block;width:28px;height:5px;border-radius:3px;background:#1a0d0d;border:1px solid #422222;overflow:hidden;box-shadow:inset 0 1px 2px #000c}
+.foe-bar-track i{display:block;width:100%;height:100%;border-radius:2px;background:linear-gradient(90deg,#c93b35 0%,#eb5e50 60%,#ff8b73 100%);transform-origin:0 50%;transition:transform .12s ease-out}
 .run-progress{margin-top:5px;padding:0 6%;color:#f2d99a;font-size:11.5px;font-variant-numeric:tabular-nums}
 
 #combat-skills{position:fixed;left:50%;bottom:max(12px,env(safe-area-inset-bottom));transform:translateX(-50%);z-index:12;display:flex;flex-direction:column;gap:5px;padding:7px 10px 8px;border-radius:14px;background:linear-gradient(180deg,#131e26f2,#0d151bf5);border:1px solid #c9a86a88;box-shadow:0 8px 26px #000c,inset 0 1px 0 #ffffff18;pointer-events:auto;min-width:308px;transition:border-color .18s,box-shadow .18s}

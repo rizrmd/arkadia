@@ -9,8 +9,8 @@ export type Input={t:'in';seq:number;x:number;y:number;a?:string[];choice?:strin
 export type Ping={t:'ping';c:number};
 // Heroes in world px; which hero (h), clip state, a counter that bumps whenever a clip (re)starts, facing and kills.
 export type PlayerState={id:string;name:string;h?:string;x:number;y:number;hp:number;max:number;st:string;n:number;mv:boolean;fc:number;bk:boolean;vt:boolean;k:number;run?:import('../progression').Progression};
-// Revenants on ground tiles; g bumps on every respawn at the gate arc.
-export type EnemyState={id:number;g:number;u:number;v:number;hp:number;st:string;n:number;fc:number;bk:boolean;vt:boolean};
+// Revenants on ground tiles; g bumps on every respawn at the gate arc; level/max track monster scaling.
+export type EnemyState={id:number;g:number;level?:number;u:number;v:number;hp:number;max?:number;st:string;n:number;fc:number;bk:boolean;vt:boolean};
 export type GateState={open:boolean;frame:number;pass:boolean};
 export type WorldState={tick:number;clock:number;gate:GateState;players:PlayerState[];enemies:EnemyState[]};
 export type Welcome={t:'welcome';v:number;room:string;you:string;rate:number;max:number;layout:string[];state:WorldState};

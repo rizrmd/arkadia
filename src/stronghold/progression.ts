@@ -185,8 +185,17 @@ export function syncHeroLoadout(p:Progression,hero:HeroKind):Progression{
  return p;
 }
 
-export const threshold=(p:Progression)=>20+(p.level-1)*10;
+export function thresholdForLevel(level:number):number{
+ const lv=Math.max(1,Math.floor(level));
+ const n=lv-1;
+ return 20+10*n+(5*n*(n+1))/2;
+}
+export const threshold=(p:Progression)=>thresholdForLevel(p.level);
 export const xpPercent=(p:Progression)=>Math.max(0,Math.min(100,Math.round(p.xp/Math.max(1,threshold(p))*100)));
+
+export const revenantMaxHp=(level=1)=>2+Math.max(0,Math.floor(level)-1);
+export const revenantDamage=(level=1)=>4+Math.max(0,Math.floor(level)-1);
+export const revenantXpReward=(level=1)=>10+Math.max(0,Math.floor(level)-1)*4;
 
 export function eligibleActiveSkills(p:Progression,hero?:HeroKind):ActiveSkillId[]{
  const h=hero??inferHero(p);
@@ -230,9 +239,10 @@ export function roll(p:Progression,random:()=>number,hero?:HeroKind){
  p.offers=chosen;
 }
 
-export function reward(p:Progression,random:()=>number,hero?:HeroKind){
+export function reward(p:Progression,random:()=>number,hero?:HeroKind,foeLevel?:number){
+ const lv=Math.max(1,Math.floor(foeLevel??p.level));
  p.gold+=5;
- p.xp+=10;
+ p.xp+=revenantXpReward(lv);
  while(p.xp>=threshold(p)){
   p.xp-=threshold(p);
   p.level++;

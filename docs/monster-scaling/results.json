@@ -1,0 +1,212 @@
+{
+  "passed": true,
+  "base": "http://127.0.0.1:8892",
+  "xpCurve": [
+    {
+      "level": 1,
+      "nextXp": 20,
+      "delta": 0
+    },
+    {
+      "level": 2,
+      "nextXp": 35,
+      "delta": 15
+    },
+    {
+      "level": 3,
+      "nextXp": 55,
+      "delta": 20
+    },
+    {
+      "level": 4,
+      "nextXp": 80,
+      "delta": 25
+    },
+    {
+      "level": 5,
+      "nextXp": 110,
+      "delta": 30
+    },
+    {
+      "level": 6,
+      "nextXp": 145,
+      "delta": 35
+    }
+  ],
+  "lv1Check": {
+    "expBar": {
+      "level": 1,
+      "xp": 0,
+      "nextXp": 20,
+      "percent": 0,
+      "pulsing": false
+    },
+    "visibleBars": [
+      {
+        "level": 1,
+        "hp": 2,
+        "maxHp": 2,
+        "wounded": false,
+        "badgeText": "Lv. 1"
+      },
+      {
+        "level": 1,
+        "hp": 2,
+        "maxHp": 2,
+        "wounded": false,
+        "badgeText": "Lv. 1"
+      },
+      {
+        "level": 1,
+        "hp": 1,
+        "maxHp": 2,
+        "wounded": true,
+        "badgeText": "Lv. 1"
+      }
+    ],
+    "foes": [
+      {
+        "u": 19.55,
+        "v": 18.3,
+        "level": 1,
+        "hp": 1,
+        "maxHp": 2,
+        "damage": 4,
+        "xpReward": 10,
+        "label": "Lv. 1",
+        "state": "hit",
+        "safe": false,
+        "clear": true,
+        "gateMeters": 17.5
+      },
+      {
+        "u": 17.6,
+        "v": 18.8,
+        "level": 1,
+        "hp": 2,
+        "maxHp": 2,
+        "damage": 4,
+        "xpReward": 10,
+        "label": "Lv. 1",
+        "state": "idle",
+        "safe": false,
+        "clear": true,
+        "gateMeters": 14.5
+      }
+    ]
+  },
+  "lv4Check": {
+    "expBar": {
+      "level": 4,
+      "xp": 10,
+      "nextXp": 80,
+      "percent": 13,
+      "pulsing": false
+    },
+    "hudLv": "Lv. 4",
+    "hudXp": "10 / 80 XP (13%)",
+    "visibleBars": [
+      {
+        "level": 4,
+        "hp": 5,
+        "maxHp": 5,
+        "wounded": false,
+        "badgeText": "Lv. 4"
+      },
+      {
+        "level": 4,
+        "hp": 2.5,
+        "maxHp": 5,
+        "wounded": true,
+        "badgeText": "Lv. 4"
+      },
+      {
+        "level": 4,
+        "hp": 5,
+        "maxHp": 5,
+        "wounded": false,
+        "badgeText": "Lv. 4"
+      },
+      {
+        "level": 4,
+        "hp": 3.5,
+        "maxHp": 5,
+        "wounded": true,
+        "badgeText": "Lv. 4"
+      }
+    ],
+    "sampleFoe": {
+      "u": 15.74,
+      "v": 18.27,
+      "level": 4,
+      "hp": 5,
+      "maxHp": 5,
+      "damage": 7,
+      "xpReward": 22,
+      "label": "Lv. 4",
+      "state": "move",
+      "safe": false,
+      "clear": true,
+      "gateMeters": 10.6
+    }
+  },
+  "mobileCheck": {
+    "heroLevel": 4,
+    "fitsViewport": true,
+    "visibleBars": [
+      {
+        "badgeText": "Lv. 4",
+        "level": 4,
+        "maxHp": 5
+      },
+      {
+        "badgeText": "Lv. 4",
+        "level": 4,
+        "maxHp": 5
+      },
+      {
+        "badgeText": "Lv. 4",
+        "level": 4,
+        "maxHp": 5
+      },
+      {
+        "badgeText": "Lv. 4",
+        "level": 4,
+        "maxHp": 5
+      }
+    ],
+    "hudLv": "Lv. 4",
+    "hudXp": "0 / 80 XP (0%)"
+  },
+  "coopSync": {
+    "onlineStatus": "online",
+    "foeCount": 3,
+    "sampleFoe": {
+      "u": 15.24,
+      "v": 16.6,
+      "level": 1,
+      "hp": 2,
+      "maxHp": 2,
+      "damage": 4,
+      "xpReward": 10,
+      "label": "Lv. 1",
+      "state": "move",
+      "safe": false,
+      "clear": true,
+      "gateMeters": 5.4
+    },
+    "expBar": {
+      "level": 1,
+      "xp": 0,
+      "nextXp": 20,
+      "percent": 0,
+      "pulsing": false
+    }
+  },
+  "screenshots": [
+    "docs/monster-scaling/level1-monster-scaling.webp",
+    "docs/monster-scaling/level4-monster-scaling-desktop.webp",
+    "docs/monster-scaling/level4-monster-scaling-mobile.webp"
+  ],
+  "errors": []
+}
