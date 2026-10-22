@@ -1,0 +1,95 @@
+// Skill archetypes: each kit returns the full set of effects one kind of skill needs (cast, travel, impact,
+// telegraph, detonation; world + ground), built from layers.mjs and coloured by a palette. Hero recipes call a
+// kit with their palette and tune it, or extend its layer stacks with extra layers of their own:
+//   ...kits.trap('rift-runner.rift-trap',RIFT,{radius:1.45,charge:.64,sigil:'sigil-hex'})
+// o.extra = {'<suffix>':[layers…]} appends layers to one effect of the kit (suffix: 'cast', 'detonate.ground', …;
+// '' for a kit's unsuffixed effect, e.g. the swing's spark burst).
+import * as L from './layers.mjs';
+const fx=(base,suffix,name,emitters,o)=>({id:suffix?`${base}.${suffix}`:base,name,emitters:[...emitters,...(o?.extra?.[suffix]??[])]});
+const title=id=>id.split('.').slice(1).map(s=>s.replace(/-/g,' ').replace(/\b\w/g,c=>c.toUpperCase())).join(' · ');
+
+// Basic weapon swing: a ground crescent toward the aim plus a spit of sparks off the blade.
+export function swing(id,P,o={}){const r=o.radius??.95;return [
+ fx(id,'',title(id),[L.sparks(P,{at:[.35,.5,0],count:16,spread:55,speed:[2.5,6],gravity:4,intensity:2}),L.glints(P,{at:[.5,.55,0],count:1,radius:.05,size:.4})],o),
+ fx(id,'ground',title(id)+' · arc',[L.slashDecal(P,{at:[.12,0,0],radius:r,life:.22}),L.slashDecal(P,{at:[.12,0,0],radius:r*.82,life:.18,delay:.03,intensity:1.6})],o)];}
+
+// Projectile skills: muzzle burst at the caster, a travelling bolt (moved by the game), an impact on hit.
+export function projectile(id,P,o={}){const hand=o.hand??[.28,.62,0];return [
+ fx(id,'cast',title(id),[L.flash(P,{at:hand,size:1.3,intensity:3.2,life:.2}),L.flash(P,{at:hand,size:.6,intensity:5,life:.1}),
+  L.sparks(P,{at:hand,count:34,spread:30,speed:[5,11],gravity:3}),L.glints(P,{at:hand,count:2,radius:.08,size:.5}),
+  L.embers(P,{at:hand,count:12,radius:.2,shape:{type:'cone',angle:40,radius:.08},rot:[0,0,-90],speed:[.8,2.4]})],o),
+ fx(id,'cast.ground',title(id)+' · ground',[L.ring(P,{radius:1,life:.4,intensity:1.8}),L.pool(P,{radius:.8,life:.45,intensity:1})],o),
+ fx(id,'bolt',title(id)+' · bolt',[L.comet(P,{at:[0,hand[1],0],size:.4,width:.28,trailLife:.18,life:o.flight??1.4}),
+  L.core(P,{at:[0,hand[1],0],size:.48,rate:40,duration:o.flight??1.4,intensity:2.6}),
+  L.wake(P,{at:[0,hand[1],0],flame:false,rate:50,duration:o.flight??1.4})],o),
+ fx(id,'impact',title(id)+' · impact',[L.flash(P,{at:[0,.5,0],size:1.4,intensity:3.4}),
+  L.sparks(P,{at:[0,.5,0],count:34,rot:[0,0,0],spread:90,shape:{type:'sphere',radius:.05},spherical:1,speed:[3,7],gravity:5}),
+  L.glints(P,{at:[0,.55,0],count:3,radius:.2,size:.45}),L.embers(P,{at:[0,.5,0],count:10,radius:.25})],o),
+ fx(id,'impact.ground',title(id)+' · impact ground',[L.shockRing(P,{radius:.75,life:.3}),L.pool(P,{radius:.55,life:.35})],o)];}
+
+// Lunges: afterimages and a streaming wake along the path (0 → reach along +X), and a cone burst at its end.
+export function dash(id,P,o={}){const reach=o.reach??1.5,mid=reach/2;return [
+ fx(id,'cast',title(id),[
+  L.core(P,{name:'afterimages',local:false,at:[mid,.62,0],shape:{type:'box',box:[reach,.05,.05]},bursts:[[0,3],[.04,3],[.08,3]],rate:0,max:12,life:[.28,.42],
+   sizeXY:[[.42,.55],[1.05,1.3]],intensity:1.6}),
+  ...(o.flame===false?[L.sparks(P,{name:'rift lines',at:[0,.5,0],count:30,spread:12,speed:[9,14],drag:1.5,gravity:0,life:[.16,.28],sizeXY:[[.05,.08],[.8,1.4]],intensity:2.2})]
+   :[L.stream(P,{at:[0,.5,0],count:22,spread:14,speed:[7,11],sizeXY:[[.2,.28],[.4,.6]]})]),
+  L.sparks(P,{at:[reach*.6,.5,0],count:30,spread:24,speed:[6,12],gravity:2}),
+  L.wake(P,{at:[mid,.3,0],flame:o.flame!==false,rate:0,bursts:[[0,14]],max:16,shape:{type:'box',box:[reach,.1,.25]},duration:.2}),
+  L.embers(P,{at:[mid,.3,0],count:16,shape:{type:'box',box:[reach,.2,.4]}})],o),
+ fx(id,'cast.ground',title(id)+' · trail',[L.scorch(P,{at:[mid,0,0],radius:.4,shape:{type:'box',box:[reach,0,.15]},bursts:[[0,5]],max:6,life:1.2,alpha:.55}),
+  L.pool(P,{at:[mid,0,0],radius:.5,shape:{type:'box',box:[reach,0,.1]},bursts:[[0,3]],max:4,life:.35}),L.ring(P,{radius:.7,life:.3})],o),
+ fx(id,'detonate',title(id)+' · burst',[L.flash(P,{at:[reach*.75,.45,0],size:1.6,intensity:3}),
+  ...(o.flame===false?[L.shards(P,{at:[reach*.6,.45,0],count:10,speed:[3,6]})]:[L.stream(P,{at:[.2,.45,0],count:16,spread:38,speed:[5,9],sizeXY:[[.2,.28],[.4,.6]]})]),
+  L.sparks(P,{at:[.2,.45,0],count:46,spread:40,speed:[5,10],gravity:4}),
+  L.smoke(P,{at:[reach*.7,.4,0],count:3,size:.5,alpha:.3})],o),
+ fx(id,'detonate.ground',title(id)+' · burst ground',[L.slashDecal(P,{at:[.15,0,0],radius:o.radius??1.3,life:.28,intensity:2.2}),L.pool(P,{at:[.7,0,0],radius:.8,life:.35})],o)];}
+
+// Ground traps: a charging rune circle (telegraph, `charge` seconds) that erupts (detonate). radius = base radius.
+export function trap(id,P,o={}){const R=o.radius??1.5,c=o.charge??.64,sig=o.sigil??'sigil-sun';return [
+ fx(id,'telegraph',title(id)+' · charge',[
+  L.vortex(P,{radius:R,rate:70,duration:c,lift:.5,swirl:2.8,pull:-1.6}),
+  L.arcs(P,{name:'rim arcs',radius:R*.98,rate:30,duration:c,size:.45,at:[0,.06,0]}),
+  ...(o.rimFlames===false?[]:[L.flames(P,{name:'rim flames',shape:{type:'circle',radius:R*.95,thickness:0},rate:44,duration:c,size:.42,speed:[.3,.8],intensity:1.4})])],o),
+ fx(id,'telegraph.ground',title(id)+' · rune',[
+  L.sigil(P,{texture:sig,radius:R,fadeIn:.1,hold:c-.05,fadeOut:.28,spin:1.4}),
+  L.glow(L.sigil(P,{texture:sig,radius:R,fadeIn:.1,hold:c-.05,fadeOut:.28,spin:1.4}),.7),
+  L.sigil(P,{texture:sig,radius:R*.62,fadeIn:.1,hold:c-.05,fadeOut:.2,spin:-2.2,intensity:1.4,rotation:.5}),
+  L.ring(P,{radius:R*1.35,life:c,grow:R/(R*1.35),intensity:1.6}),
+  L.pool(P,{radius:R*.95,life:c+.1,intensity:1.1,sizeOverLife:{curve:[[0,.3],[.9,1],[1,1.1]]}}),
+  L.groundArcs(P,{radius:R,rate:50,duration:c,size:.5})],o),
+ fx(id,'detonate',title(id)+' · eruption',[
+  L.flash(P,{at:[0,.4,0],size:3*R,intensity:3.4,life:.28}),L.flash(P,{at:[0,.3,0],size:1.4*R,intensity:5,life:.14}),
+  L.pillar(P,{radius:R*.35,count:16,power:o.power??4.5}),
+  L.sparks(P,{at:[0,.2,0],rot:[0,0,0],spread:55,count:70,speed:[4,10],gravity:7,shape:{type:'cone',angle:55,radius:R*.3}}),
+  L.radialSkim(P,{radius:R*.3,count:40,speed:[5,9]}),
+  ...(o.rock===false?[]:[L.cinders(P,{count:14,radius:R*.4,speed:[2.5,5.5]})]),
+  ...(o.flames===false?[]:[L.flames(P,{shape:{type:'circle',radius:R*.7},count:10,size:.45,speed:[.8,2]})]),
+  L.embers(P,{count:30,radius:R*.6,speed:[.8,2.4]}),
+  L.smoke(P,{at:[0,.5,0],count:7,radius:R*.5,size:.9,alpha:.42,delay:.1})],o),
+ fx(id,'detonate.ground',title(id)+' · scar',[L.shockRing(P,{radius:R*1.45,life:.45}),L.shockRing(P,{radius:R*1.1,life:.35,delay:.06,intensity:1.6}),
+  L.cracks(P,{radius:R*1.05,life:1.2}),L.scorch(P,{radius:R*.85,life:1.8}),L.pool(P,{radius:R*1.1,life:.5,intensity:1.6})],o)];}
+
+// Slams around the caster: cracks gather while the blow winds up (telegraph), then the ground bursts (detonate).
+export function slam(id,P,o={}){const R=o.radius??1.65,c=o.charge??.46;return [
+ fx(id,'telegraph',title(id)+' · wind-up',[L.vortex(P,{radius:R*.9,rate:50,duration:c,lift:.2,swirl:1.5,pull:-2.4,trail:false}),
+  L.smoke(P,{count:5,size:.5,alpha:.25,shape:{type:'circle',radius:R*.85,thickness:0},speed:0,spherical:0,radial:-1.4,gravity:-.2})],o),
+ fx(id,'telegraph.ground',title(id)+' · fracture',[L.cracks(P,{radius:R,life:c+.05,intensity:1.2,sizeOverLife:{curve:[[0,.15],[1,.85]]}}),
+  L.ring(P,{radius:R*1.25,life:c,grow:.8,intensity:1.4}),L.pool(P,{radius:R*.7,life:c,intensity:.8})],o),
+ fx(id,'detonate',title(id)+' · burst',[L.flash(P,{at:[0,.3,0],size:2.6*R,intensity:3,life:.24}),
+  L.debris(P,{count:o.debris??26,radius:R*.45,speed:[2.6,5.4]}),
+  ...(o.molten?[L.cinders(P,{count:18,radius:R*.4,speed:[2.5,5]}),L.flames(P,{shape:{type:'circle',radius:R*.6,thickness:.4},count:8,size:.38,speed:[.6,1.6]})]:[]),
+  L.radialSkim(P,{radius:R*.25,count:48,speed:[6,10]}),
+  L.smoke(P,{name:'dust ring',count:12,shape:{type:'circle',radius:R*.4,thickness:0},spherical:1,speed:[2,3.4],drag:2.6,gravity:-.2,size:.75,alpha:.4,color:o.dust??P.smoke}),
+  L.glints(P,{count:4,radius:R*.5,size:.45,at:[0,.3,0]})],o),
+ fx(id,'detonate.ground',title(id)+' · shock',[L.shockRing(P,{radius:R*1.3,life:.42,intensity:2.4}),L.shockRing(P,{radius:R*1.6,life:.55,delay:.08,intensity:1.6}),
+  L.cracks(P,{radius:R*1.1,life:1.3}),...(o.molten?[L.glow(L.cracks(P,{radius:R*1.1,life:1.3}),.9)]:[]),L.scorch(P,{radius:R*.9,life:1.6,alpha:.5,color:o.scar??'#2a2018'})],o)];}
+
+// Sweeping cleaves: a crescent wind-up toward the aim (cast) and the blow landing in a cone (detonate).
+export function cleave(id,P,o={}){const R=o.radius??1.55,arc=o.arc??120;return [
+ fx(id,'cast',title(id),[L.glints(P,{count:7,shape:{type:'circle',radius:R*.8,thickness:.1,arc,arcMode:'burstSpread'},rot:[0,-arc/2,0],at:[0,.35,0],size:.45}),
+  L.sparks(P,{at:[.2,.4,0],count:28,spread:arc/2,speed:[4,8],gravity:2,intensity:2})],o),
+ fx(id,'cast.ground',title(id)+' · arc',[L.slashDecal(P,{radius:R*.9,life:.3}),L.slashDecal(P,{radius:R*.7,life:.24,delay:.06,intensity:1.8})],o),
+ fx(id,'detonate',title(id)+' · strike',[L.flash(P,{at:[R*.55,.4,0],size:1.8,intensity:3}),
+  L.sparks(P,{at:[.2,.4,0],count:46,spread:arc/2,speed:[6,12],gravity:3}),L.shards(P,{at:[R*.5,.4,0],count:10,speed:[2,5]})],o),
+ fx(id,'detonate.ground',title(id)+' · strike ground',[L.slashDecal(P,{radius:R*1.05,life:.32,intensity:3}),L.shockRing(P,{at:[R*.5,0,0],radius:.8,life:.3})],o)];}

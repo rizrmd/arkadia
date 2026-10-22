@@ -37,6 +37,7 @@ mkdir -p "$STAGE/site/gate-seams"; cp docs/gate-seams/*.png "$STAGE/site/gate-se
 mkdir -p "$STAGE/site/full-gateway"; cp docs/full-gateway/*.json "$STAGE/site/full-gateway/"
 mkdir -p "$STAGE/site/walk-behind"; cp docs/walk-behind/*.webp "$STAGE/site/walk-behind/"
 mkdir -p "$STAGE/site/combat-vfx"; cp docs/combat-vfx/*.webp docs/combat-vfx/*.json "$STAGE/site/combat-vfx/"
+mkdir -p "$STAGE/site/nixie-fx"; cp docs/nixie-fx/*.webp docs/nixie-fx/*.json "$STAGE/site/nixie-fx/"
 mkdir -p "$STAGE/site/three-slot-autocast"; cp docs/three-slot-autocast/*.webp docs/three-slot-autocast/*.json "$STAGE/site/three-slot-autocast/"
 mkdir -p "$STAGE/site/monster-scaling"; cp docs/monster-scaling/*.webp docs/monster-scaling/*.json "$STAGE/site/monster-scaling/"
 mkdir -p "$STAGE/site/locked-zoom-aoe"; cp docs/locked-zoom-aoe/*.webp docs/locked-zoom-aoe/*.json docs/assets/locked-zoom-aoe-ref.png "$STAGE/site/locked-zoom-aoe/"

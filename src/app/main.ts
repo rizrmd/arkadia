@@ -1,8 +1,9 @@
 import {loadingScreen,type Progress} from './loader';
 // Arkadia is one page: the server answers every page path with index.html and this router picks the view.
-// The Stronghold is the only view today; any other path (including the retired /stronghold.html) lands on it.
+// The Stronghold is the game; any other path (including the retired /stronghold.html) lands on it.
 type View={mount(root:HTMLElement,progress:Progress):Promise<void>};
-const routes:Record<string,()=>Promise<View>>={'/':()=>import('../stronghold/main')};
+// /fx-lab previews every hero's skill FX (src/fx/lab.ts).
+const routes:Record<string,()=>Promise<View>>={'/':()=>import('../stronghold/main'),'/fx-lab':()=>import('../fx/lab')};
 const path=location.pathname in routes?location.pathname:'/';
 if(path!==location.pathname)history.replaceState(history.state,'',path+location.search+location.hash);
 const screen=loadingScreen();
