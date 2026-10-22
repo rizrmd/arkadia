@@ -1,10 +1,10 @@
 {
  "url": "ws://127.0.0.1:8791/ws",
- "seconds": 30,
- "room": "EYPVN",
- "commonTicks": 606,
- "tickSpan": 605,
- "ticksWithEnemies": 606,
+ "seconds": 40,
+ "room": "JUHDA",
+ "commonTicks": 806,
+ "tickSpan": 805,
+ "ticksWithEnemies": 806,
  "enemyIds": [
   1,
   2,
@@ -21,35 +21,35 @@
   13,
   14
  ],
- "lastTick": 607,
+ "lastTick": 807,
  "kills": {
-  "Ayu": 3,
-  "Bima": 3,
+  "Ayu": 2,
+  "Bima": 2,
   "Cheat": 0
  },
  "runs": {
   "Ayu": {
    "level": 2,
-   "xp": 10,
-   "gold": 15,
+   "xp": 0,
+   "gold": 10,
    "pending": 1,
    "offers": [
-    "vitality",
-    "star",
-    "nova"
+    "nova",
+    "leech",
+    "vitality"
    ],
    "skills": {},
    "stars": 0
   },
   "Bima": {
    "level": 2,
-   "xp": 10,
-   "gold": 15,
+   "xp": 0,
+   "gold": 10,
    "pending": 1,
    "offers": [
-    "heal",
-    "might",
-    "star"
+    "vitality",
+    "star",
+    "leech"
    ],
    "skills": {},
    "stars": 0
@@ -67,9 +67,9 @@
  "heroesHurt": true,
  "cheatMaxStepPx": 10.18,
  "heroStepPx": 6,
- "snapshotBytes": 2239,
- "ackA": 599,
- "inputsA": 599,
- "pausedAtTick": 608,
+ "snapshotBytes": 2173,
+ "ackA": 799,
+ "inputsA": 799,
+ "pausedAtTick": 808,
  "ok": true
 }

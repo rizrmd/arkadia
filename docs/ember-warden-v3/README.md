@@ -1,6 +1,6 @@
 ## Export
 
-Eight painted southeast animation clips, eight frames each: **idle, run, Flame Fan, Cinder Step, Ember Snare, Furnace Heart, hurt, death**. The new Ember identity and painted Rift-style material treatment are retained.
+Eight painted southeast animation clips, eight frames each: **idle, run, Flame Fan, Cinder Step, Ember Snare, Furnace Heart, hurt, death**. The redesigned female Ember Warden identity with long flowing dark hair, ochre jacket, and right-arm bronze furnace gauntlet is retained across all 64 frames.
 
 - `ember-warden-SE.png`: transparent 3072 × 3072 atlas, eight columns and eight rows.
 - `atlas.json`: named frame rectangles, normalized ground pivots, frame durations, animation frame lists, FPS, loop policy, next state and terminal hold.
@@ -15,7 +15,7 @@ Every frame uses a 384 × 384 cell and ground pivot (192, 320). Read each indivi
 
 Idle (6 FPS) and run (12 FPS) loop. Flame Fan (10 FPS), Cinder Step (12 FPS), Ember Snare (9 FPS), Furnace Heart (8 FPS), and hurt (12 FPS) play once and recover to idle. Their first and last frames use the exact same shared neutral pixels. Death (8 FPS) plays once and holds its final frame; its last two frames have identical settled-body pixels. It never automatically revives or loops.
 
-Skill effects are painted into the RGBA frames. They are **not** separate body/VFX layers. Root motion, skill mechanics and gameplay integration are not included. This export covers **SE only**, not eight headings.
+Skill effects are painted into the RGBA frames. They are **not** separate body/VFX layers. The run cycle alternates left and right leg strides (frames 0–3 step the right leg forward while frames 4–7 step the left leg forward) with crown-stabilized vertical registration so the walk/run never hops on one foot. The painted Ember Warden is also packed into the Stronghold game atlas (`public/assets/characters/ember-warden.webp`) and portrait (`public/assets/characters/portraits/ember-warden.webp`).
 
 ## Generation and packing
 

@@ -7,7 +7,7 @@ const root='public/ember-warden/v3',docs='docs/ember-warden-v3',CELL=384,PIVOT=[
 const definitions=[['idle',6,true],['run',12,true],['flame-fan',10,false],['cinder-step',12,false],['ember-snare',9,false],['furnace-heart',8,false],['hurt',12,false],['death',8,false]];
 await fs.mkdir(root+'/sheets',{recursive:true});await fs.mkdir(root+'/previews',{recursive:true});
 async function pixels(buffer){return sharp(buffer).ensureAlpha().raw().toBuffer({resolveWithObject:true})}
-async function inspect(buffer){const {data,info}=await pixels(buffer);let b=[info.width,info.height,0,0],boot=[info.width,0,0],count=0;for(let y=0;y<info.height;y++)for(let x=0;x<info.width;x++){const p=(y*info.width+x)*4;if(data[p+3]>16){b=[Math.min(b[0],x),Math.min(b[1],y),Math.max(b[2],x+1),Math.max(b[3],y+1)];count++;if(y>info.height*.6&&data[p+3]>220&&data[p]<160&&data[p+1]<130&&data[p+2]<110&&data[p]<2.5*(data[p+1]+1)){boot=[Math.min(boot[0],x),Math.max(boot[1],x+1),Math.max(boot[2],y+1)]}}}if(!count)throw Error('Empty source cell');return {bounds:b,boot,opaquePixels:count}}
+async function inspect(buffer){const {data,info}=await pixels(buffer);let b=[info.width,info.height,0,0],boot=[info.width,0,0],count=0;for(let y=0;y<info.height;y++)for(let x=0;x<info.width;x++){const p=(y*info.width+x)*4;if(data[p+3]>16){b=[Math.min(b[0],x),Math.min(b[1],y),Math.max(b[2],x+1),Math.max(b[3],y+1)];count++;if(y>info.height*.6&&data[p+3]>220&&data[p]<160&&data[p+1]<130&&data[p+2]<110&&data[p]<2.5*(data[p+1]+1)){boot=[Math.min(boot[0],x),Math.max(boot[1],x+1),Math.max(boot[2],y+1)]}}}if(!count)throw Error('Empty source cell');let hx=0,hc=0,hy1=Math.round(b[1]+(b[3]-b[1])*0.45);for(let y=b[1];y<hy1;y++)for(let x=b[0];x<b[2];x++)if(data[(y*info.width+x)*4+3]>64){hx+=x;hc++}return {bounds:b,boot,headCenter:hc?hx/hc:(b[0]+b[2])/2,opaquePixels:count}}
 async function clean(buffer){
  const {data,info}=await pixels(buffer),seen=new Uint8Array(info.width*info.height),components=[];
  for(let p=0;p<seen.length;p++){if(seen[p]||data[p*4+3]<=16)continue;const queue=[p];seen[p]=1;let b=[info.width,info.height,0,0];for(let i=0;i<queue.length;i++){const at=queue[i],x=at%info.width,y=Math.floor(at/info.width);b=[Math.min(b[0],x),Math.min(b[1],y),Math.max(b[2],x),Math.max(b[3],y)];for(const n of [x?at-1:-1,x+1<info.width?at+1:-1,y?at-info.width:-1,y+1<info.height?at+info.width:-1])if(n>=0&&!seen[n]&&data[n*4+3]>16){seen[n]=1;queue.push(n)}}components.push({queue,b})}
@@ -24,10 +24,12 @@ for(let row=0;row<definitions.length;row++){
  // One scale for the entire clip; crouches and falls retain their proportions.
  const scale=Math.min(250/(first[3]-first[1]),340/Math.max(...stats.map(s=>s.bounds[2]-s.bounds[0])),290/Math.max(...stats.map(s=>s.bounds[3]-s.bounds[1])));
  const frames=[];
+ const runBob=[0,1,2,1,0,1,2,1],runTopBase=Math.round(PIVOT[1]-(first[3]-first[1])*scale);
  for(let n=0;n<8;n++){
   const s=stats[n],b=s.bounds,w=Math.round((b[2]-b[0])*scale),h=Math.round((b[3]-b[1])*scale);
-  const hasBoot=s.boot[1]>s.boot[0],center=id==='death'&&n>=3?(b[0]+b[2])/2:hasBoot?(s.boot[0]+s.boot[1])/2:(b[0]+b[2])/2,ground=hasBoot?s.boot[2]:b[3];
-  const left=Math.round(PIVOT[0]-(center-b[0])*scale),top=Math.round(PIVOT[1]-(ground-b[1])*scale);
+  const hasBoot=s.boot[1]>s.boot[0],center=id==='run'?s.headCenter:id==='death'&&n>=3?(b[0]+b[2])/2:hasBoot?(s.boot[0]+s.boot[1])/2:(b[0]+b[2])/2,ground=hasBoot?s.boot[2]:b[3];
+  const rawLeft=Math.round(PIVOT[0]-(center-b[0])*scale),rawTop=id==='run'?runTopBase+runBob[n]:Math.round(PIVOT[1]-(ground-b[1])*scale);
+  const left=Math.max(4,Math.min(CELL-4-w,rawLeft)),top=Math.max(4,Math.min(CELL-4-h,rawTop));
   if(left<3||top<3||left+w>CELL-3||top+h>CELL-3)throw Error(`Clipping ${id} frame ${n}: ${[left,top,w,h]}`);
   frames.push(await sharp({create:{width:CELL,height:CELL,channels:4,background:'#00000000'}}).composite([{input:await sharp(source[n]).extract({left:b[0],top:b[1],width:b[2]-b[0],height:b[3]-b[1]}).resize(w,h).png().toBuffer(),left,top}]).png().toBuffer());
  }

@@ -1,6 +1,6 @@
 ## Painted redesign — v03
 
-Ember Warden has been redesigned to match Rift Runner's painted fantasy RPG style: textured canvas and leather, confident dark edges, compact adult proportions, and warm bronze highlights. The ochre jacket, exposed dark curls and right-arm furnace gauntlet preserve Ember's identity.
+Ember Warden has been redesigned as a female firekeeper with long flowing dark hair to match Rift Runner's painted fantasy RPG style: textured canvas and leather, confident dark edges, compact adult proportions, and warm bronze highlights. The ochre jacket, long dark hair and right-arm furnace gauntlet preserve Ember's identity.
 
 [Open the interactive painted art viewer](https://ark-whachat.fural.space/ember-warden-review/v2/) · [Legacy animation timing viewer](https://ark-whachat.fural.space/ember-warden-review/).
 
@@ -16,9 +16,9 @@ Reading order: idle, run, Flame Fan, Cinder Step; Ember Snare, Furnace Heart, hu
 
 ### Scope and verification
 
-The art redesign is implemented and published. The viewer includes a four-frame run study per heading, a before/after comparison with Rift, a snow contrast check and pose details. Local and deployed-page checks pass at desktop and phone viewport widths; the source and exported sprite hashes match over public HTTPS.
+The art redesign is implemented and published. The viewer includes a four-frame alternating run study per heading, a before/after comparison with Rift, a snow contrast check and pose details. Local and deployed-page checks pass at desktop and phone viewport widths; the source and exported sprite hashes match over public HTTPS.
 
-Production animation and gameplay still use the previous exports. The run study needs gait and heading cleanup; the generated attack animation experiment was rejected for heading drift. All sources and exported images, including rejected experiments, are inline in the existing Animation Sources page.
+All sources and exported images, including layout studies, are inline in the existing Animation Sources page.
 
 <!-- ember-painted-archive -->## Earlier character sheet — v02
 

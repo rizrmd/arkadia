@@ -2,7 +2,9 @@
 
 [Open the animation player](https://ark-whachat.fural.space/ember-warden-review/v3/) · [Sprite sheets and animated previews in Knowledge](/organizations/ORd5dd6f99b4308d6187031557/knowledge/NKBD7b917bae8fc62a6603d6f6fa).
 
-The painted Ember design now has an SE animation export: eight clips and 64 frames with transparent PNG atlases and JSON. Idle/run loop, skills and hurt recover to a shared neutral, and death holds its final pose. Skill VFX are baked into the frames. This is a single-direction candidate, with generated gait/contact cleanup still open; the gameplay hero remains unchanged.
+The painted female Ember Warden design (with long flowing dark hair, ochre jacket, and right-arm furnace gauntlet) has an SE animation export: eight clips and 64 frames with transparent PNG atlases and JSON, plus the 149-frame Stronghold character atlas (`/assets/characters/ember-warden.webp`) and hero-picker portrait (`/assets/characters/portraits/ember-warden.webp`). Idle/run loop with alternating left and right leg strides and crown-stabilized registration (eliminating one-legged hopping), skills and hurt recover to a shared neutral, and death holds its final pose.
+
+![Ember Warden Stronghold portrait](https://ark-whachat.fural.space/assets/characters/portraits/ember-warden.webp?v=painted-v4)
 
 <!-- ember-animation-previous -->## Painted redesign — v03
 

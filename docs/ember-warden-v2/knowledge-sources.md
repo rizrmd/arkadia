@@ -20,13 +20,14 @@ This early inspection sheet was rejected because the curls read too light under 
 
 [Controlled model and motion source](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=scripts%2Fember-warden%2Frig.py). The scoped source, packed Blender scene, exact generation prompt and source audits are committed with the asset pack. Renderer setup and reproduction steps are documented in the Ember Warden repository docs.
 
+
 ## Painted redesign — v03
 
 [Open painted art review](https://ark-whachat.fural.space/ember-warden-review/v2/). The built-in imagegen tool used the approved painted Rift idle sheet as the style reference, the old Ember render as the identity reference, and the new turnaround for later poses. The v1 3D model is retained for motion reference but is superseded as the art direction.
 
 ## Painted redesign
 
-Ember Warden now has a painted character-art set aligned to the approved Rift Runner idle artwork: dark drawn edges, textured cloth and leather, compact adult proportions, and warm material highlights. The exposed dark curls, ochre jacket, cream rolled sleeves, charcoal trousers, brown boots and anatomical right-arm bronze furnace gauntlet retain Ember's identity.
+Ember Warden now has a painted female character-art set aligned to the approved Rift Runner idle artwork: dark drawn edges, textured cloth and leather, compact adult proportions, and warm material highlights. Long flowing dark hair, an ochre jacket, cream rolled sleeves, charcoal trousers, brown boots and an anatomical right-arm bronze furnace gauntlet define Ember's identity.
 
 [Open the painted art viewer](https://ark-whachat.fural.space/ember-warden-review/v2/).
 

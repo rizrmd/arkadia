@@ -1,6 +1,6 @@
 ## Painted redesign
 
-Ember Warden now has a painted character-art set aligned to the approved Rift Runner idle artwork: dark drawn edges, textured cloth and leather, compact adult proportions, and warm material highlights. The exposed dark curls, ochre jacket, cream rolled sleeves, charcoal trousers, brown boots and anatomical right-arm bronze furnace gauntlet retain Ember's identity.
+Ember Warden now has a painted female character-art set aligned to the approved Rift Runner idle artwork: dark drawn edges, textured cloth and leather, compact adult proportions, and warm material highlights. Long flowing dark hair, an ochre jacket, cream rolled sleeves, charcoal trousers, brown boots and an anatomical right-arm bronze furnace gauntlet define Ember's identity.
 
 [Open the painted art viewer](https://ark-whachat.fural.space/ember-warden-review/v2/).
 
