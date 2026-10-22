@@ -15,10 +15,11 @@ export class FrameSet{
  private constructor(readonly scale:FrameScale,private manifest:Manifest,private textures:Record<string,Texture>){}
  // only: load just the frames these names select (an ornate frame's name selects its parts).
  static async load(base:string,scale:FrameScale,only?:(name:string)=>boolean){
-  const manifest=await (await fetch(base+'manifest.json')).json() as Manifest;
+  const v='?v=4';
+  const manifest=await (await fetch(base+'manifest.json'+v)).json() as Manifest;
   const names=Object.keys(manifest.frames).filter(n=>!only||only(n.replace(/\.(tl|tr|bl|br|l|r)$/,'')));
   // The resolution makes texture sizes read in @1x units, so layouts and slice borders are scale-independent.
-  const textures=await Promise.all(names.map(n=>Assets.load<Texture>({src:`${base}@${scale}x/${n}.png`,data:{resolution:scale,autoGenerateMipmaps:true}})));
+  const textures=await Promise.all(names.map(n=>Assets.load<Texture>({src:`${base}@${scale}x/${n}.png${v}`,data:{resolution:scale,autoGenerateMipmaps:true}})));
   return new FrameSet(scale,manifest,Object.fromEntries(names.map((n,i)=>[n,textures[i]])));
  }
  texture(name:string){const t=this.textures[name];if(!t)throw Error(`Unknown frame ${name}`);return t;}

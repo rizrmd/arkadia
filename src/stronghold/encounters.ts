@@ -73,21 +73,20 @@ export async function createEncounters(o:{
  const bars=new Container();bars.zIndex=40;
  o.worldStage.addChild(aoeView.sprite,back,front,bars);
 
- // Hero overhead health + EXP bar in Pixi
+ // Hero overhead health bar in Pixi (single slim green bar matching reference)
  const heroOverhead=bars.addChild(new Container());
  heroOverhead.visible=false;
- const heroBarBg=heroOverhead.addChild(o.frames.frame('overhead-bar',48,12));
- heroBarBg.position.set(-24,-12);
+ const heroBarBg=heroOverhead.addChild(o.frames.frame('overhead-bar',46,8));
+ heroBarBg.position.set(-23,-8);
  const heroHpGreen=heroOverhead.addChild(new Container());
- heroHpGreen.position.set(-21,-9.5);
- heroHpGreen.addChild(o.frames.frame('hp-fill-green',42,4));
+ heroHpGreen.position.set(-20,-6);
+ heroHpGreen.addChild(o.frames.frame('hp-fill-green',40,4));
  const heroHpLow=heroOverhead.addChild(new Container());
- heroHpLow.position.set(-21,-9.5);
- heroHpLow.addChild(o.frames.frame('hp-fill',42,4));
+ heroHpLow.position.set(-20,-6);
+ heroHpLow.addChild(o.frames.frame('hp-fill',40,4));
  heroHpLow.visible=false;
- const heroExpFill=heroOverhead.addChild(new Container());
- heroExpFill.position.set(-21,-4.5);
- heroExpFill.addChild(o.frames.frame('xp-fill',42,3));
+ const heroExpFill=new Container();
+ heroExpFill.addChild(o.frames.frame('xp-fill',40,3));
 
  // Main Gameplay HUD in Pixi (using src/typography/hud.ts)
  const initialHero=heroInfo(currentHeroId());
@@ -559,13 +558,13 @@ export async function createEncounters(o:{
   const canvasView=createCanvasSprite(el);
   const bar=bars.addChild(new Container());
   bar.visible=false;
-  const lv=bar.addChild(new MsdfText('tag-foe','Lv. 1'));
-  lv.place(0,-14,0.5);
-  const barTrack=bar.addChild(o.frames.frame('overhead-bar',44,9));
-  barTrack.position.set(-22,-10);
+  const barTrack=bar.addChild(o.frames.frame('overhead-bar',44,8));
+  barTrack.position.set(-22,-8);
   const fill=bar.addChild(new Container());
-  fill.position.set(-19.5,-8);
-  fill.addChild(o.frames.frame('hp-fill',39,5));
+  fill.position.set(-19.5,-6);
+  fill.addChild(o.frames.frame('hp-fill',39,4));
+  const lv=bar.addChild(new MsdfText('tag-foe','Lv. 1'));
+  lv.place(0,-13.5,0.5);
   v={el,g:el.getContext('2d')!,canvasView,bar,lv,fill,look:'',hp:''};
   views.set(f,v);
   return v;
@@ -628,9 +627,11 @@ export async function createEncounters(o:{
     const showBar=f.alive&&alpha>.05;
     v.bar.visible=showBar;
     if(showBar){
-     v.bar.position.set(s.x+shk.dx,s.y-64*k+shk.dy);
+     const barScale=Math.max(0.58,Math.min(1,k));
+     v.bar.scale.set(barScale);
+     v.bar.position.set(s.x+shk.dx,s.y-60*k+shk.dy);
      const lvTxt=`Lv. ${fLv}`;
-     if(v.lv.text!==lvTxt){v.lv.text=lvTxt;v.lv.place(0,-14,0.5);}
+     if(v.lv.text!==lvTxt){v.lv.text=lvTxt;v.lv.place(0,-13.5,0.5);}
      const fillNode=v.fill.children[0] as Container;
      fillNode.visible=fRatio>0.02;
      if(fRatio>0.02)fillNode.width=Math.max(6,Math.round(39*fRatio));
@@ -679,11 +680,13 @@ export async function createEncounters(o:{
 
   heroOverhead.visible=show;
   if(show){
-   heroOverhead.position.set(s.x,s.y-64*k);
+   const barScale=Math.max(0.58,Math.min(1,k));
+   heroOverhead.scale.set(barScale);
+   heroOverhead.position.set(s.x,s.y-60*k);
    const low=ratio<0.3;
    heroHpGreen.visible=!low&&ratio>0.02;
    heroHpLow.visible=low&&ratio>0.02;
-   const barW=Math.max(6,Math.round(42*ratio));
+   const barW=Math.max(6,Math.round(40*ratio));
    (heroHpGreen.children[0] as Container).width=barW;
    (heroHpLow.children[0] as Container).width=barW;
   }

@@ -1,6 +1,14 @@
 import {Container,Graphics,Rectangle,Sprite,type Texture} from 'pixi.js';
 import type {FrameSet} from './frames';
 import {MsdfText} from './text';
+import {ROLES,type TextRole} from './tokens';
+
+const BAR_OUTLINE={color:0x160a04,alpha:.9,width:1.1};
+const HP_TEXT_ROLE:TextRole={...ROLES['hud-value'],outline:BAR_OUTLINE};
+const XP_VAL_ROLE:TextRole={...ROLES['hud-xp'],outline:BAR_OUTLINE};
+const XP_REST_ROLE:TextRole={...ROLES['hud-xp-accent'],outline:BAR_OUTLINE};
+const TL_XP_VAL_ROLE:TextRole={...ROLES['hud-xp'],size:21,outline:BAR_OUTLINE};
+const TL_XP_REST_ROLE:TextRole={...ROLES['hud-xp-accent'],size:21,outline:BAR_OUTLINE};
 
 // Gameplay HUD rebuilt from the Typography Reference Asset (1672 × 941). Coordinates are reference pixels; each group is
 // anchored to its screen corner or edge, so other aspect ratios keep the corners and centre where the reference has them.
@@ -50,13 +58,16 @@ export class Hud extends Container{
  private backdrop?:Sprite;
  private overlay?:Sprite;
  private heroPlate!:Container;
- private hpFill!:Container;private hpText!:MsdfText;
- private tlXpGroup!:Container;private tlXpFill!:Container;private tlXpValue!:MsdfText;private tlXpRest!:MsdfText;
+ private hpFrame!:Container;private hpFill!:Container;private hpText!:MsdfText;
+ private tlXpGroup!:Container;private tlXpFrame!:Container;private tlXpFill!:Container;private tlXpValue!:MsdfText;private tlXpRest!:MsdfText;
  private bcXpGroup!:Container;private xpFill!:Container;private xpValue!:MsdfText;private xpRest!:MsdfText;
  private heroNameText!:MsdfText;
+ private levelMedallion!:Container;
  private levelText!:MsdfText;
  private portraitHolder!:Container;
+ private portraitRing!:Container;
  private currentPortrait='';
+ private isPortrait=false;
  private goldPillBg!:Container;
  private goldCoinIcon!:Container;
  private goldText!:MsdfText;
@@ -99,28 +110,30 @@ export class Hud extends Container{
   hit.addChild(f.frame('corner'));
   this.heroPlate=hit.addChild(f.frame('hero-plate',388,104));
   this.heroPlate.position.set(150,24);
-  hit.addChild(f.frame('hp-frame',362,40)).position.set(178,68);
+  this.hpFrame=hit.addChild(f.frame('hp-frame',362,40));
+  this.hpFrame.position.set(178,68);
   this.hpFill=hit.addChild(new Container());this.hpFill.position.set(186,77);
   this.hpFill.addChild(f.frame('hp-fill',320,22));
-  this.hpText=hit.addChild(new MsdfText('hud-value',''));
+  this.hpText=hit.addChild(new MsdfText(HP_TEXT_ROLE,''));
   this.heroNameText=hit.addChild(new MsdfText('hud-name',s.name));
   this.heroNameText.place(195,52.5);
 
   // Portrait XP bar directly below HP bar inside hero-plate (matches mobile portrait reference)
   this.tlXpGroup=hit.addChild(new Container());
   this.tlXpGroup.visible=false;
-  this.tlXpGroup.addChild(f.frame('hp-frame',362,40)).position.set(178,108);
+  this.tlXpFrame=this.tlXpGroup.addChild(f.frame('hp-frame',366,40));
+  this.tlXpFrame.position.set(140,108);
   this.tlXpFill=this.tlXpGroup.addChild(new Container());
-  this.tlXpFill.position.set(186,117);
-  this.tlXpFill.addChild(f.frame('xp-fill',320,22));
-  this.tlXpValue=this.tlXpGroup.addChild(new MsdfText('hud-xp',''));
-  this.tlXpRest=this.tlXpGroup.addChild(new MsdfText('hud-xp-accent',''));
+  this.tlXpFill.position.set(148,117);
+  this.tlXpFill.addChild(f.frame('xp-fill',324,22));
+  this.tlXpValue=this.tlXpGroup.addChild(new MsdfText(TL_XP_VAL_ROLE,''));
+  this.tlXpRest=this.tlXpGroup.addChild(new MsdfText(TL_XP_REST_ROLE,''));
 
   this.portraitHolder=hit.addChild(new Container());
   this.currentPortrait=s.portrait??'portrait-ember-warden';
   this.portraitHolder.addChild(centred(f.frame(this.currentPortrait),95,88));
-  hit.addChild(centred(f.frame('portrait-ring'),95,88));
-  hit.addChild(centred(f.frame('level-medallion'),57,149));
+  this.portraitRing=hit.addChild(centred(f.frame('portrait-ring'),95,88));
+  this.levelMedallion=hit.addChild(centred(f.frame('level-medallion'),57,149));
   this.levelText=hit.addChild(new MsdfText('hud-level',String(s.level)));
   this.levelText.place(57,154.5,.5);
  }
@@ -159,7 +172,7 @@ export class Hud extends Container{
  }
 
  private layoutGoldPill(){
-  const pillX=Math.min(1450,Math.round(1665-(this.goldText.advance+123)));
+  const pillX=this.goldText.text==='250 Gold'?1450:Math.round(1665-(this.goldText.advance+119));
   const pillW=1665-pillX;
   this.goldPillBg.position.set(pillX,20);
   this.goldPillBg.width=pillW;
@@ -234,7 +247,7 @@ export class Hud extends Container{
   this.bcXpGroup.addChild(f.frame('xp-frame',716,50)).position.set(483,829);
   this.xpFill=this.bcXpGroup.addChild(new Container());this.xpFill.position.set(527,842);
   this.xpFill.addChild(f.frame('xp-fill',628,24));
-  this.xpValue=this.bcXpGroup.addChild(new MsdfText('hud-xp',''));this.xpRest=this.bcXpGroup.addChild(new MsdfText('hud-xp-accent',''));
+  this.xpValue=this.bcXpGroup.addChild(new MsdfText(XP_VAL_ROLE,''));this.xpRest=this.bcXpGroup.addChild(new MsdfText(XP_REST_ROLE,''));
  }
 
  private buildKeys(){
@@ -260,28 +273,30 @@ export class Hud extends Container{
  setHero(name:string,portrait?:string){
   this.state.name=name;
   this.heroNameText.text=name;
-  this.heroNameText.place(195,52.5);
+  this.heroNameText.place(this.isPortrait?184:195,52.5);
   const nextPortrait=portrait??(name.toLowerCase().includes('rift')?'portrait-rift-runner':'portrait-ember-warden');
   if(nextPortrait!==this.currentPortrait){
    this.currentPortrait=nextPortrait;
    this.portraitHolder.removeChildren();
-   this.portraitHolder.addChild(centred(this.frames.frame(nextPortrait),95,88));
+   this.portraitHolder.addChild(centred(this.frames.frame(nextPortrait),95,this.isPortrait?92:88));
   }
  }
 
  setLevel(level:number){
   this.state.level=level;
   this.levelText.text=String(level);
-  this.levelText.place(57,154.5,.5);
+  this.levelText.place(57,this.isPortrait?157.5:154.5,.5);
  }
 
  setHp(hp:number,hpMax=this.state.hpMax){
   this.state.hp=hp;this.state.hpMax=hpMax;
-  const max=Math.max(1,hpMax),w=Math.max(0,Math.min(320,320*Math.max(0,hp)/max));
+  const maxW=this.isPortrait?340:320;
+  const max=Math.max(1,hpMax),w=Math.max(0,Math.min(maxW,maxW*Math.max(0,hp)/max));
   const bar=this.hpFill.children[0] as Container;
   bar.visible=w>2;
   if(w>2)bar.width=Math.max(12,w);
-  this.hpText.text=`${Math.round(hp)} / ${Math.round(max)} HP`;this.hpText.place(352,92.5,.5);
+  this.hpText.text=`${Math.round(hp)} / ${Math.round(max)} HP`;
+  this.hpText.place(this.isPortrait?332:352,this.isPortrait?90.5:92.5,.5);
  }
 
  setXp(xp:number,xpMax=this.state.xpMax,overrideRestText?:string){
@@ -295,12 +310,12 @@ export class Hud extends Container{
   const w=this.xpValue.advance+this.xpRest.advance,x=Math.round(852-w/2);
   this.xpValue.place(x,855.5);this.xpRest.place(x+this.xpValue.advance,855.5);
 
-  const tlRawW=320*ratio,tlBar=this.tlXpFill.children[0] as Container;
+  const tlRawW=324*ratio,tlBar=this.tlXpFill.children[0] as Container;
   tlBar.visible=tlRawW>1;
-  if(tlRawW>1)tlBar.width=Math.max(12,Math.min(320,tlRawW));
+  if(tlRawW>1)tlBar.width=Math.max(12,Math.min(324,tlRawW));
   this.tlXpValue.text=this.xpValue.text;
   this.tlXpRest.text=this.xpRest.text;
-  const tlX=Math.round(352-w/2);
+  const tlW=this.tlXpValue.advance+this.tlXpRest.advance,tlX=Math.round(318-tlW/2);
   this.tlXpValue.place(tlX,132.5);this.tlXpRest.place(tlX+this.tlXpValue.advance,132.5);
  }
 
@@ -390,8 +405,21 @@ export class Hud extends Container{
   const {width:W,height:H}=HUD_DESIGN,portrait=width<height;
   const s=portrait?width/848:Math.min(width/W,height/H);
   this.lastScale=s;
-  this.heroPlate.height=portrait?138:104;
-  this.heroPlate.position.set(150,portrait?22:24);
+  if(portrait!==this.isPortrait){
+   this.isPortrait=portrait;
+   this.heroPlate.width=portrait?378:388;
+   this.heroPlate.height=portrait?138:104;
+   this.heroPlate.position.set(portrait?144:150,portrait?22:24);
+   this.hpFrame.width=portrait?382:362;
+   this.hpFrame.position.set(portrait?154:178,portrait?66:68);
+   this.hpFill.position.set(portrait?162:186,portrait?75:77);
+   if(this.portraitHolder.children[0])centred(this.portraitHolder.children[0] as Container,95,portrait?92:88);
+   centred(this.portraitRing,95,portrait?92:88);
+   centred(this.levelMedallion,57,portrait?152:149);
+   this.levelText.place(57,portrait?157.5:154.5,.5);
+   this.heroNameText.place(portrait?184:195,52.5);
+   this.setHp(this.state.hp,this.state.hpMax);
+  }
   this.tlXpGroup.visible=portrait;
   this.bcXpGroup.visible=!portrait;
   this.groups.bl.visible=!portrait;

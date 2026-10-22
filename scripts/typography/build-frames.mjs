@@ -55,8 +55,8 @@ function fill(w,h,stops,tip){
 // Dark band behind the hero name and health bar; only the middle stretches.
 function heroPlate(w,h){
  const top=8,bot=h-8;
- return svg(w,h,`<linearGradient id="band" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#070505" stop-opacity=".9"/><stop offset=".85" stop-color="#0b0807" stop-opacity=".86"/><stop offset="1" stop-color="#0b0807" stop-opacity=".0"/></linearGradient>`+
-  `<path d="M0,${top} H${w-30} L${w-6},${h/2} L${w-30},${bot} H0 Z" fill="url(#band)"/>`+rail(`M0,${top} H${w-36}`,1.1)+rail(`M0,${bot} H${w-36}`,1.1)+hair(`M0,${top+3.2} H${w-44}`,.18)+
+ return svg(w,h,`<linearGradient id="band" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#070505" stop-opacity=".92"/><stop offset=".78" stop-color="#0b0807" stop-opacity=".86"/><stop offset="1" stop-color="#0b0807" stop-opacity=".0"/></linearGradient>`+
+  `<path d="M0,${top} H${w-18} V${bot} H0 Z" fill="url(#band)"/>`+rail(`M0,${top} H${w-36}`,1.1)+rail(`M0,${bot} H${w-36}`,1.1)+hair(`M0,${top+3.2} H${w-44}`,.18)+
   star(w-34,top,5,3.2)+star(w-34,bot,5,3.2));
 }
 function ring(size,{outer,inner,stars,arc}){
