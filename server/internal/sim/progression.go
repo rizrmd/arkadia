@@ -20,6 +20,12 @@ func (p *Progression) damage() float64 {
 	return 1 + float64(p.Skills["might"])*.5 + float64(p.Stars)*.25
 }
 func (p *Progression) reach() float64 { return 1 + float64(p.Skills["nova"])*.2 }
+func (p *Progression) critChance() float64 {
+	return math.Min(.75, .15+float64(p.Skills["crit"])*.1+float64(p.Skills["might"])*.04+float64(p.Stars)*.04)
+}
+func (p *Progression) critMultiplier() float64 {
+	return math.Min(2.0, 1.5+float64(p.Skills["crit"])*.12+float64(p.Skills["might"])*.05+float64(p.Stars)*.05)
+}
 func (w *World) roll(p *Progression) {
 	pool := []string{"might", "nova", "leech", "star", "vitality", "heal"}
 	p.Offers = []string{}

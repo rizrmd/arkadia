@@ -1,0 +1,96 @@
+{
+  "url": "http://127.0.0.1:8798",
+  "passed": true,
+  "mobileViewport": "380x836",
+  "desktopViewport": "1280x800",
+  "baseLockedState": {
+    "zoomMode": "locked",
+    "scale": 1.32698,
+    "datasetScale": 1.327,
+    "targetScale": 1.327,
+    "reach": 1,
+    "aoeVisible": true,
+    "aoeRadiusPx": 45,
+    "aoeRect": {
+      "left": 122.3,
+      "top": 429.9,
+      "right": 257.7,
+      "bottom": 506.9,
+      "width": 135.4,
+      "height": 77
+    },
+    "hudBottom": 147.6,
+    "cardsTop": 561
+  },
+  "manualZoomBlocked": {
+    "beforeScale": 1.32698,
+    "afterWheelScale": 1.32698,
+    "afterPinchScale": 1.32698
+  },
+  "rankTransitions": [
+    {
+      "rank": 1,
+      "reach": 1.2,
+      "beforeScale": 1.327,
+      "settledScale": 1.1343,
+      "expectedTarget": 1.1342,
+      "distinctFrames": 18,
+      "aoeRadiusWorldPx": 55,
+      "aoeScreenRect": {
+        "left": 120.8,
+        "top": 421.4,
+        "right": 259.2,
+        "bottom": 500.8,
+        "width": 138.4,
+        "height": 79.4
+      }
+    },
+    {
+      "rank": 2,
+      "reach": 1.4,
+      "beforeScale": 1.1343,
+      "settledScale": 0.9904,
+      "expectedTarget": 0.9903,
+      "distinctFrames": 19,
+      "aoeRadiusWorldPx": 64,
+      "aoeScreenRect": {
+        "left": 120.7,
+        "top": 417,
+        "right": 259.3,
+        "bottom": 494.3,
+        "width": 138.7,
+        "height": 77.2
+      }
+    },
+    {
+      "rank": 3,
+      "reach": 1.6,
+      "beforeScale": 0.9904,
+      "settledScale": 0.8789,
+      "expectedTarget": 0.8788,
+      "distinctFrames": 26,
+      "aoeRadiusWorldPx": 73,
+      "aoeScreenRect": {
+        "left": 120.6,
+        "top": 412.7,
+        "right": 259.4,
+        "bottom": 490.1,
+        "width": 138.9,
+        "height": 77.3
+      }
+    }
+  ],
+  "desktopCoopAndRank3": {
+    "desktopBase": {
+      "scale": 1.2698,
+      "reach": 1,
+      "coopStatus": "online"
+    },
+    "desktopRank3": {
+      "scale": 0.841,
+      "targetScale": 0.841,
+      "reach": 1.6
+    }
+  },
+  "errors": []
+}
