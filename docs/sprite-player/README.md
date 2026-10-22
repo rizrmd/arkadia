@@ -2,19 +2,25 @@
 
 An iframe-ready player for grid sprite sheets (rows = headings, columns = frames). Live: https://ark-whachat.fural.space/rift-runner/sprite-player/
 
-Sample: the Rift Runner idle atlas from Knowledge (Rift Runner › Sprites & Animation › Idle, attachment `DA0addbe3d3b0d4d9e3631bdc0`): 8 headings × 8 frames, 384 × 384 cells, foot pivot (192, 360), 5 fps. The unmodified source is `assets-src/sprite-player/rift-runner-idle.png`. `node scripts/sprite-player/prepare-sample.mjs` writes the full and half-size WebP atlases, the sheet description (`.json`, plus the same as `.js`) and an animated 8-heading preview for the Knowledge page. Frames are copied from the sheet, not redrawn or interpolated.
+Built-in idle samples from Knowledge:
+- **Rift Runner — Idle** (Rift Runner › Sprites & Animation › Idle, attachment `DA0addbe3d3b0d4d9e3631bdc0`): 8 headings × 8 frames, 384 × 384 cells, foot pivot (192, 360), 5 fps. Unmodified source: `assets-src/sprite-player/rift-runner-idle.png`.
+- **Ember Warden — Idle** (Ember Warden › Sprites & Animation › Idle, attachment `DA643ce3d7b15fb6e943e49c3c`): 8 headings × 8 frames, 384 × 384 cells, foot pivot (192, 360), 5 fps. Unmodified source: `assets-src/sprite-player/ember-warden-idle.png`.
+
+`node scripts/sprite-player/prepare-sample.mjs` writes the full and half-size WebP atlases, the sheet descriptions (`.json`, plus `.js`) and animated 8-heading previews for both heroes. Frames are copied from the sheet, not redrawn or interpolated.
 
 ### Embedding
 
-Since the fural.space release of 22 October 2026 (23:48 WIB), Knowledge pages render `<iframe>` from `*.fural.space` hosts in a preview card (sandbox `allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox`, lazy, no referrer). The Rift Runner Idle page embeds the player directly; the design document "Idle — Sprite Player" holds the same player. Before that release, pages stripped `<iframe>`.
+Since the fural.space release of 22 October 2026 (23:48 WIB), Knowledge pages render `<iframe>` from `*.fural.space` hosts in a preview card (sandbox `allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox`, lazy, no referrer). Both the Rift Runner Idle and Ember Warden Idle pages embed the player directly; their design documents ("Idle — Sprite Player") hold the same player. Before that release, pages stripped `<iframe>`.
 
 ```html
 <iframe src="https://ark-whachat.fural.space/rift-runner/sprite-player/?row=S&controls=simple" title="Rift Runner idle" width="100%" height="560"></iframe>
+<iframe src="https://ark-whachat.fural.space/rift-runner/sprite-player/?hero=ember-warden&row=S&controls=simple" title="Ember Warden idle" width="100%" height="560"></iframe>
 ```
 
 | Parameter | Effect |
 | --- | --- |
-| `manifest=sheets/x.js` | Sheet description (default: the Rift Runner idle sample). Use the `.js` form inside Knowledge design frames: they sandbox the player to an opaque origin, where `fetch()` of a `.json` fails without CORS |
+| `hero=ember-warden\|rift-runner` | Select built-in hero idle sheet (`ember`, `ember-warden`, `rift` or `rift-runner`) |
+| `manifest=sheets/x.js` | Sheet description (default: the Rift Runner idle sample; `sheets/ember-warden-idle.js` for Ember Warden). Use the `.js` form inside Knowledge design frames: they sandbox the player to an opaque origin, where `fetch()` of a `.json` fails without CORS |
 | `sheet=URL&cell=384&cols=8&rows=8&pivot=192,360&fps=5&labels=N,NE,…` | Any sheet without a description |
 | `row=S` or `row=4` | Starting heading |
 | `fps`, `frame`, `bg=dark\|light\|checker\|snow`, `guides=1`, `all=1`, `autoplay=0` | Playback and display |

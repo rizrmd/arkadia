@@ -2,6 +2,7 @@
 // Built to sit in an iframe. Configure with query parameters:
 //   manifest=sheets/rift-runner-idle.js     sheet description (default); paths inside resolve against it. A .js description
 //                                          calls spritePlayerSheet({...}) and also loads in sandboxed frames; .json needs CORS there
+//   hero=ember-warden|rift-runner           built-in hero idle sheet shortcut (ember / ember-warden / rift / rift-runner)
 //   sheet=URL&cell=384[,384]&cols=8&rows=8&pivot=192,360&fps=5&labels=N,NE,E,SE,S,SW,W,NW   a sheet without a manifest
 //   row=S|4  fps=5  frame=0  bg=dark|light|checker|snow  guides=1  all=1  autoplay=0  loop=0 (play once)
 //   zoom=1.5   start zoomed (0.5–4); drag pans when zoomed, Ctrl+wheel / +, −, 0 zoom and reset
@@ -17,13 +18,15 @@ window.spritePlayer={state,get sheet(){return sheet}};
 
 const fail=message=>{status.textContent=message;status.classList.add('error');state.error=message;};
 const list=(v,fn=Number)=>v==null||v===''?null:String(v).split(',').map(s=>fn(s.trim()));
+const HERO_SHEETS={ember:'sheets/ember-warden-idle.js','ember-warden':'sheets/ember-warden-idle.js',rift:'sheets/rift-runner-idle.js','rift-runner':'sheets/rift-runner-idle.js'};
 async function loadSheet(){
  if(params.has('sheet')){
   const cell=list(params.get('cell'))||[256],cols=+params.get('cols')||1,rows=+params.get('rows')||1;
   return {name:params.get('name')||'Sprite sheet',sheet:new URL(params.get('sheet'),location.href).href,cell:[cell[0],cell[1]??cell[0]],columns:cols,rows,
    pivot:list(params.get('pivot')),fps:+params.get('fps')||8,rowLabels:list(params.get('labels'),String)};
  }
- const url=new URL(params.get('manifest')||'sheets/rift-runner-idle.js',location.href);let m;
+ const hero=(params.get('hero')||'').toLowerCase();
+ const url=new URL(params.get('manifest')||HERO_SHEETS[hero]||'sheets/rift-runner-idle.js',location.href);let m;
  if(url.pathname.endsWith('.js'))m=await new Promise((resolve,reject)=>{const script=document.createElement('script');window.spritePlayerSheet=resolve;
   script.onerror=()=>reject(Error('Sheet description could not be loaded'));script.src=url;document.head.append(script);});
  else{const response=await fetch(url);if(!response.ok)throw Error(`Sheet description could not be loaded (${response.status})`);m=await response.json();}

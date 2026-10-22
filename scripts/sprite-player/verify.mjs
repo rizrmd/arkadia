@@ -86,6 +86,24 @@ try{
  await knowledge.waitForFunction(()=>window.spritePlayer?.state.ready||window.spritePlayer?.state.error,null,{timeout:60000});s=await knowledge.evaluate(()=>window.spritePlayer.state);
  test(s.ready&&!s.error&&s.row===4,'plays inside a Knowledge page iframe (fural.space sandbox card)');await page.waitForTimeout(700);
  test((await knowledge.evaluate(()=>window.spritePlayer.state.frame))!==s.frame,'Knowledge page iframe playback advances');await page.screenshot({path:`${OUT}/knowledge-iframe.png`});
+ // Ember Warden idle sheet: full 64-cell sweep, all-headings view, simple controls and Knowledge page iframe sandbox.
+ ({frame,state}=await open('?hero=ember-warden&row=S',560,620));s=await state();
+ const emberName=await frame.evaluate(()=>window.spritePlayer.sheet?.name);
+ test(s.ready&&!s.error&&emberName==='Ember Warden — Idle'&&s.row===4&&s.fps===5,'Ember Warden idle sheet loads via hero=ember-warden on heading S at 5 fps');
+ const emberVisited=[];for(let r=0;r<8;r++){await frame.click(`#headings button:nth-child(${r+1})`);for(let f=0;f<8;f++){await frame.evaluate(f=>{const el=document.getElementById('frame');el.value=f;el.dispatchEvent(new Event('input'))},f);const d=(await state()).drawn;if(d.row===r&&d.frame===f)emberVisited.push(r*8+f);}}
+ test(emberVisited.length===64,`Ember Warden all 64 heading/frame cells drawn (${emberVisited.length})`);
+ const emberPixels=await frame.evaluate(()=>{const c=document.getElementById('canvas'),d=c.getContext('2d').getImageData(0,0,c.width,c.height).data;let n=0;for(let i=3;i<d.length;i+=4)if(d[i]>200)n++;return n/(d.length/4);});
+ test(emberPixels>0.03&&emberPixels<0.6,`Ember Warden character pixels on canvas (${(emberPixels*100).toFixed(1)} %)`);
+ await frame.check('#guides');await frame.check('#all');await frame.selectOption('#bg','checker');
+ await page.screenshot({path:`${OUT}/ember-warden-all-headings.png`});
+ await page.setViewportSize({width:600,height:600});({frame,state}=await open('?hero=ember-warden&row=S&controls=simple',560,560));s=await state();
+ test(s.ready&&!s.error&&s.row===4,'Ember Warden simple controls load on heading S');
+ await page.screenshot({path:`${OUT}/ember-warden-simple.png`});
+ await page.setViewportSize({width:760,height:700});await page.unroute(HOST);await page.route(HOST,r=>r.fulfill({contentType:'text/html',body:`<!doctype html><body style="margin:0"><iframe id="ke" src="${base}/rift-runner/sprite-player/?hero=ember-warden&row=S&controls=simple" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox" referrerpolicy="no-referrer" loading="lazy" allowfullscreen style="display:block;border:0;width:100%;height:620px"></iframe></body>`}));
+ await page.goto(HOST);const emberKnowledge=await (await page.waitForSelector('#ke')).contentFrame();
+ await emberKnowledge.waitForFunction(()=>window.spritePlayer?.state.ready||window.spritePlayer?.state.error,null,{timeout:60000});s=await emberKnowledge.evaluate(()=>window.spritePlayer.state);
+ test(s.ready&&!s.error&&s.row===4,'Ember Warden plays inside a Knowledge page iframe (fural.space sandbox card)');await page.waitForTimeout(700);
+ test((await emberKnowledge.evaluate(()=>window.spritePlayer.state.frame))!==s.frame,'Ember Warden Knowledge page iframe playback advances');await page.screenshot({path:`${OUT}/ember-warden-knowledge-iframe.png`});
  // Broken configuration reports an error instead of failing silently.
  ({frame,state}=await open('?manifest=sheets/missing.json',400,400));s=await state();test(!!s.error&&!s.ready,'missing sheet description shows an error');errors.splice(errors.findIndex(e=>e.includes('missing.json')),1);
  test(errors.length===0,'no page or resource errors'+(errors.length?': '+errors.join(' | '):''));
