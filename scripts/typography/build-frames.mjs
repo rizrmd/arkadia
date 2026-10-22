@@ -147,9 +147,9 @@ function thumbstickCap(size){
 }
 // Icons for the stat pills.
 function coins(w,h){
- const coin=(x,y)=>`<path d="M${x-8},${y} v2.6 a8,3.2 0 0 0 16,0 v-2.6" fill="#8f5a14" stroke="${C.ink}" stroke-width=".6"/><ellipse cx="${x}" cy="${y}" rx="8" ry="3.2" fill="url(#star)" stroke="${C.ink}" stroke-width=".6"/><ellipse cx="${x}" cy="${y}" rx="5" ry="1.8" fill="none" stroke="#fff1c0" stroke-opacity=".45" stroke-width=".5"/>`;
- const stack=(x,base,n)=>[...Array(n)].map((_,i)=>coin(x,base-i*3.4)).join('');
- return svg(w,h,stack(10,h-6,3)+stack(28,h-4,2)+stack(19,h-3,4));
+ const coin=(x,y)=>`<path d="M${x-7.5},${y} v2.6 a7.5,3.1 0 0 0 15,0 v-2.6" fill="#8f5a14" stroke="${C.ink}" stroke-width=".6"/><ellipse cx="${x}" cy="${y}" rx="7.5" ry="3.1" fill="url(#star)" stroke="${C.ink}" stroke-width=".6"/><ellipse cx="${x}" cy="${y}" rx="4.8" ry="1.7" fill="none" stroke="#fff1c0" stroke-opacity=".45" stroke-width=".5"/>`;
+ const stack=(x,base,n)=>[...Array(n)].map((_,i)=>coin(x,base-i*3.2)).join('');
+ return svg(w,h,stack(20,h-7,6)+stack(10,h-5.5,4)+stack(29,h-5,3)+stack(19,h-3,3));
 }
 const clock=(s)=>svg(s,s,`<circle cx="${s/2}" cy="${s/2}" r="${s/2-2.2}" fill="none" stroke="${C.ink}" stroke-width="3.6"/><circle cx="${s/2}" cy="${s/2}" r="${s/2-2.2}" fill="none" stroke="url(#gold)" stroke-width="2.1"/>`+
  `<path d="M${s/2},${s/2-7} V${s/2} L${s/2+5},${s/2+3.5}" fill="none" stroke="${C.ink}" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M${s/2},${s/2-7} V${s/2} L${s/2+5},${s/2+3.5}" fill="none" stroke="url(#gold)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>`);
@@ -221,7 +221,7 @@ const assets={
  'hp-fill-green':[40,18,fill(40,18,[[0,'#b4f08a'],[.35,'#6ec447'],[.75,'#3c8522'],[1,'#1c470d']],'#e2ffc8'),[6,9,6,9]],
  'xp-frame':[200,50,xpFrame(200,50),[62,25,62,25]],
  'xp-fill':[40,24,fill(40,24,[[0,'#ffcf6a'],[.35,'#f5a21f'],[.72,'#cf7409'],[1,'#7c4003']],'#fff0b0'),[6,12,6,12]],
- 'hero-plate':[200,104,heroPlate(200,104),[24,52,64,52]],
+ 'hero-plate':[200,104,heroPlate(200,104),[24,16,64,16]],
  'portrait-ring':[176,176,ring(176,{outer:70,inner:62,stars:[[0,6.5,13],[90,12,7],[180,6.5,13],[270,12,7]]}),null],
  'level-medallion':[60,60,medallion(60),null],
  'corner':[470,230,corner(470,230),null],

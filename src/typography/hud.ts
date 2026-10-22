@@ -38,6 +38,7 @@ interface SkillSlotView{
  currentArt:string;
  cooldownArc:Graphics;
  levelText:MsdfText;
+ stateBadge:Container;
  stateText:MsdfText;
  nameText:MsdfText;
  cx:number;
@@ -48,11 +49,16 @@ export class Hud extends Container{
  private groups:Record<'tl'|'tr'|'bc'|'bl'|'br',Container>={tl:new Container(),tr:new Container(),bc:new Container(),bl:new Container(),br:new Container()};
  private backdrop?:Sprite;
  private overlay?:Sprite;
- private hpFill!:Container;private hpText!:MsdfText;private xpFill!:Container;private xpValue!:MsdfText;private xpRest!:MsdfText;
+ private heroPlate!:Container;
+ private hpFill!:Container;private hpText!:MsdfText;
+ private tlXpGroup!:Container;private tlXpFill!:Container;private tlXpValue!:MsdfText;private tlXpRest!:MsdfText;
+ private bcXpGroup!:Container;private xpFill!:Container;private xpValue!:MsdfText;private xpRest!:MsdfText;
  private heroNameText!:MsdfText;
  private levelText!:MsdfText;
  private portraitHolder!:Container;
  private currentPortrait='';
+ private goldPillBg!:Container;
+ private goldCoinIcon!:Container;
  private goldText!:MsdfText;
  private clockText!:MsdfText;
  private zonePillBg!:Container;
@@ -91,41 +97,53 @@ export class Hud extends Container{
   g.addChild(hit);
 
   hit.addChild(f.frame('corner'));
-  hit.addChild(f.frame('hero-plate',388,104)).position.set(150,24);
+  this.heroPlate=hit.addChild(f.frame('hero-plate',388,104));
+  this.heroPlate.position.set(150,24);
   hit.addChild(f.frame('hp-frame',362,40)).position.set(178,68);
   this.hpFill=hit.addChild(new Container());this.hpFill.position.set(186,77);
   this.hpFill.addChild(f.frame('hp-fill',320,22));
   this.hpText=hit.addChild(new MsdfText('hud-value',''));
   this.heroNameText=hit.addChild(new MsdfText('hud-name',s.name));
-  this.heroNameText.place(195,56);
+  this.heroNameText.place(195,52.5);
+
+  // Portrait XP bar directly below HP bar inside hero-plate (matches mobile portrait reference)
+  this.tlXpGroup=hit.addChild(new Container());
+  this.tlXpGroup.visible=false;
+  this.tlXpGroup.addChild(f.frame('hp-frame',362,40)).position.set(178,108);
+  this.tlXpFill=this.tlXpGroup.addChild(new Container());
+  this.tlXpFill.position.set(186,117);
+  this.tlXpFill.addChild(f.frame('xp-fill',320,22));
+  this.tlXpValue=this.tlXpGroup.addChild(new MsdfText('hud-xp',''));
+  this.tlXpRest=this.tlXpGroup.addChild(new MsdfText('hud-xp-accent',''));
+
   this.portraitHolder=hit.addChild(new Container());
   this.currentPortrait=s.portrait??'portrait-ember-warden';
   this.portraitHolder.addChild(centred(f.frame(this.currentPortrait),95,88));
   hit.addChild(centred(f.frame('portrait-ring'),95,88));
   hit.addChild(centred(f.frame('level-medallion'),57,149));
   this.levelText=hit.addChild(new MsdfText('hud-level',String(s.level)));
-  this.levelText.place(57,157.5,.5);
+  this.levelText.place(57,154.5,.5);
  }
 
  private buildStats(){
   const g=this.groups.tr,f=this.frames,s=this.state;
   // Row 0: Gold / Kills
   const goldRow=g.addChild(new Container());
-  goldRow.addChild(f.frame('pill',1665-1450,48)).position.set(1450,20);
-  goldRow.addChild(centred(f.frame('icon-coins'),1495,44));
+  this.goldPillBg=goldRow.addChild(f.frame('pill',1665-1450,48));
+  this.goldCoinIcon=goldRow.addChild(centred(f.frame('icon-coins'),1495,44));
   this.goldText=goldRow.addChild(new MsdfText('hud-stat',`${s.gold} Gold`));
-  this.goldText.place(1530,51);
+  this.layoutGoldPill();
 
   // Row 1: Clock (interactive)
   const clockRow=g.addChild(new Container());
   clockRow.eventMode='static';
   clockRow.cursor='pointer';
-  clockRow.hitArea=new Rectangle(1505,70,165,52);
+  clockRow.hitArea=new Rectangle(1508,70,162,52);
   clockRow.on('pointertap',()=>this.callbacks.onClockClick?.());
-  clockRow.addChild(f.frame('pill',1665-1510,48)).position.set(1510,72);
-  clockRow.addChild(centred(f.frame('icon-clock'),1553,96));
+  clockRow.addChild(f.frame('pill',1665-1512,48)).position.set(1512,72);
+  clockRow.addChild(centred(f.frame('icon-clock'),1557,96));
   this.clockText=clockRow.addChild(new MsdfText('hud-stat',s.time));
-  this.clockText.place(1581,104);
+  this.clockText.place(1611,100.5,.5);
 
   // Row 2: Zone
   const zoneRow=g.addChild(new Container());
@@ -140,13 +158,22 @@ export class Hud extends Container{
   }
  }
 
+ private layoutGoldPill(){
+  const pillX=Math.min(1450,Math.round(1665-(this.goldText.advance+123)));
+  const pillW=1665-pillX;
+  this.goldPillBg.position.set(pillX,20);
+  this.goldPillBg.width=pillW;
+  centred(this.goldCoinIcon,pillX+45,44);
+  this.goldText.place((pillX+82+1632)/2,48,.5);
+ }
+
  private layoutZonePill(zone:string){
-  const pillX=zone==='Wilds'?1505:Math.min(1505,Math.round(1665-(this.zoneText.advance+96)));
+  const pillX=zone==='Wilds'?1505:Math.min(1505,Math.round(1665-(this.zoneText.advance+106)));
   const pillW=1665-pillX;
   this.zonePillBg.position.set(pillX,125);
   this.zonePillBg.width=pillW;
   centred(this.zonePinIcon,pillX+46,149);
-  this.zoneText.place(pillX+69,156);
+  this.zoneText.place((pillX+77+1630)/2,153.5,.5);
  }
 
  private ensureCoopPill(label:string){
@@ -163,12 +190,12 @@ export class Hud extends Container{
   }
   if(this.coopText&&this.coopPillBg&&this.coopIcon&&this.coopPill){
    this.coopText.text=label;
-   const pillX=Math.min(1470,Math.round(1665-(this.coopText.advance+102)));
+   const pillX=Math.min(1480,Math.round(1665-(this.coopText.advance+110)));
    const pillW=1665-pillX;
    this.coopPillBg.position.set(pillX,178);
    this.coopPillBg.width=pillW;
-   centred(this.coopIcon,pillX+44,202);
-   this.coopText.place(pillX+72,209);
+   centred(this.coopIcon,pillX+45,202);
+   this.coopText.place((pillX+70+1629)/2,205.5,.5);
    this.coopPill.hitArea=new Rectangle(pillX-4,176,pillW+8,52);
   }
  }
@@ -191,45 +218,49 @@ export class Hud extends Container{
    slot.addChild(centred(f.frame('skill-ring'),cx,cy));
    slot.addChild(f.frame('badge-level',58,24)).position.set(cx-29,736);
    const levelText=slot.addChild(new MsdfText('hud-badge',sk.locked?'—':`Lv. ${sk.level}`));
-   levelText.place(cx,753.5,.5);
-   slot.addChild(f.frame('badge-auto',84,28)).position.set(cx-42,761);
-   const stateText=slot.addChild(new MsdfText('hud-state',sk.stateLabel??'Auto'));
-   stateText.place(cx,781,.5);
+   levelText.place(cx,751.5,.5);
+   const stateBadge=slot.addChild(f.frame('badge-auto',84,28));
+   const stateText=slot.addChild(new MsdfText('hud-state',sk.stateLabel??(sk.locked?'Locked':'Auto')));
+   const bw=Math.max(84,Math.round(stateText.advance+36));
+   stateBadge.width=bw;
+   stateBadge.position.set(cx-bw/2,761);
+   stateText.place(cx,779,.5);
    const nameText=slot.addChild(new MsdfText('hud-skill',sk.name));
-   nameText.place(cx,813,.5);
+   nameText.place(cx,811,.5);
 
-   this.skillViews.push({root:slot,artHolder,currentArt:sk.art,cooldownArc,levelText,stateText,nameText,cx,cy});
+   this.skillViews.push({root:slot,artHolder,currentArt:sk.art,cooldownArc,levelText,stateBadge,stateText,nameText,cx,cy});
   });
-  g.addChild(f.frame('xp-frame',716,50)).position.set(483,829);
-  this.xpFill=g.addChild(new Container());this.xpFill.position.set(527,842);
+  this.bcXpGroup=g.addChild(new Container());
+  this.bcXpGroup.addChild(f.frame('xp-frame',716,50)).position.set(483,829);
+  this.xpFill=this.bcXpGroup.addChild(new Container());this.xpFill.position.set(527,842);
   this.xpFill.addChild(f.frame('xp-fill',628,24));
-  this.xpValue=g.addChild(new MsdfText('hud-xp',''));this.xpRest=g.addChild(new MsdfText('hud-xp-accent',''));
+  this.xpValue=this.bcXpGroup.addChild(new MsdfText('hud-xp',''));this.xpRest=this.bcXpGroup.addChild(new MsdfText('hud-xp-accent',''));
  }
 
  private buildKeys(){
   const f=this.frames,bl=this.groups.bl,br=this.groups.br;
   bl.addChild(f.frame('pill-wide',258,60)).position.set(6,853);
-  ['W','A','S','D'].forEach((k,i)=>{bl.addChild(f.frame('keycap',28,28)).position.set(40+i*30,872);bl.addChild(new MsdfText('hud-key',k)).place(54+i*30,893,.5);});
-  bl.addChild(new MsdfText('hud-hint','· Move')).place(166,891);
+  ['W','A','S','D'].forEach((k,i)=>{bl.addChild(f.frame('keycap',28,28)).position.set(40+i*30,872);bl.addChild(new MsdfText('hud-key',k)).place(54+i*30,890,.5);});
+  bl.addChild(new MsdfText('hud-hint','· Move')).place(166,888);
   br.eventMode='static';
   br.cursor='pointer';
   br.hitArea=new Rectangle(1478,853,190,60);
   br.on('pointertap',()=>this.callbacks.onMenuClick?.());
   br.addChild(f.frame('pill-wide',190,60)).position.set(1478,853);
   br.addChild(f.frame('keycap',46,30)).position.set(1509,871);
-  br.addChild(new MsdfText('hud-key','Esc')).place(1532,892,.5);
-  br.addChild(new MsdfText('hud-hint','· Hero')).place(1566,891);
+  br.addChild(new MsdfText('hud-key','Esc')).place(1532,889.5,.5);
+  br.addChild(new MsdfText('hud-hint','· Hero')).place(1566,888);
   // Keep reference text '· Menu' if no menu callback is wired so capture.mjs stays 100% identical
   if(!this.callbacks.onMenuClick){
    const last=br.children[br.children.length-1] as MsdfText;
-   last.text='· Menu';last.place(1566,891);
+   last.text='· Menu';last.place(1566,888);
   }
  }
 
  setHero(name:string,portrait?:string){
   this.state.name=name;
   this.heroNameText.text=name;
-  this.heroNameText.place(195,56);
+  this.heroNameText.place(195,52.5);
   const nextPortrait=portrait??(name.toLowerCase().includes('rift')?'portrait-rift-runner':'portrait-ember-warden');
   if(nextPortrait!==this.currentPortrait){
    this.currentPortrait=nextPortrait;
@@ -241,7 +272,7 @@ export class Hud extends Container{
  setLevel(level:number){
   this.state.level=level;
   this.levelText.text=String(level);
-  this.levelText.place(57,157.5,.5);
+  this.levelText.place(57,154.5,.5);
  }
 
  setHp(hp:number,hpMax=this.state.hpMax){
@@ -250,31 +281,40 @@ export class Hud extends Container{
   const bar=this.hpFill.children[0] as Container;
   bar.visible=w>2;
   if(w>2)bar.width=Math.max(12,w);
-  this.hpText.text=`${Math.round(hp)} / ${Math.round(max)} HP`;this.hpText.place(349,95,.5);
+  this.hpText.text=`${Math.round(hp)} / ${Math.round(max)} HP`;this.hpText.place(352,92.5,.5);
  }
 
  setXp(xp:number,xpMax=this.state.xpMax,overrideRestText?:string){
   this.state.xp=xp;this.state.xpMax=xpMax;
-  const max=Math.max(1,xpMax),fillW=Math.max(12,Math.min(628,628*Math.max(0,xp)/max));
-  (this.xpFill.children[0] as Container).width=fillW;
-  // The value sits just past the fill's end (as in the reference), or inside its end when the bar is nearly full.
+  const max=Math.max(1,xpMax),ratio=Math.max(0,Math.min(1,xp/max));
+  const rawW=628*ratio,bar=this.xpFill.children[0] as Container;
+  bar.visible=rawW>1;
+  if(rawW>1)bar.width=Math.max(12,Math.min(628,rawW));
   this.xpValue.text=String(Math.floor(xp));
   this.xpRest.text=overrideRestText??` / ${max} XP`;
-  const end=527+fillW,w=this.xpValue.advance+this.xpRest.advance,x=end+8+w<=1150?end+8:end-8-w;
-  this.xpValue.place(x,858);this.xpRest.place(x+this.xpValue.advance,858);
+  const w=this.xpValue.advance+this.xpRest.advance,x=Math.round(852-w/2);
+  this.xpValue.place(x,855.5);this.xpRest.place(x+this.xpValue.advance,855.5);
+
+  const tlRawW=320*ratio,tlBar=this.tlXpFill.children[0] as Container;
+  tlBar.visible=tlRawW>1;
+  if(tlRawW>1)tlBar.width=Math.max(12,Math.min(320,tlRawW));
+  this.tlXpValue.text=this.xpValue.text;
+  this.tlXpRest.text=this.xpRest.text;
+  const tlX=Math.round(352-w/2);
+  this.tlXpValue.place(tlX,132.5);this.tlXpRest.place(tlX+this.tlXpValue.advance,132.5);
  }
 
  setGold(labelOrAmount:number|string){
   const text=typeof labelOrAmount==='number'?`${labelOrAmount} Gold`:labelOrAmount;
   this.goldText.text=text;
-  this.goldText.place(1530,51);
+  this.layoutGoldPill();
  }
 
  setTime(time:string){
   if(this.state.time===time)return;
   this.state.time=time;
   this.clockText.text=time;
-  this.clockText.place(1581,104);
+  this.clockText.place(1611,100.5,.5);
  }
 
  setZone(zone:string){
@@ -301,11 +341,14 @@ export class Hud extends Container{
    }
    view.artHolder.alpha=sk.locked?0.45:1;
    view.levelText.text=sk.locked?'—':`Lv. ${sk.level}`;
-   view.levelText.place(view.cx,753.5,.5);
+   view.levelText.place(view.cx,751.5,.5);
    view.stateText.text=sk.stateLabel??(sk.locked?'Locked':'Auto');
-   view.stateText.place(view.cx,781,.5);
+   const bw=Math.max(84,Math.round(view.stateText.advance+36));
+   view.stateBadge.width=bw;
+   view.stateBadge.position.set(view.cx-bw/2,761);
+   view.stateText.place(view.cx,779,.5);
    view.nameText.text=sk.name;
-   view.nameText.place(view.cx,813,.5);
+   view.nameText.place(view.cx,811,.5);
    this.drawCooldown(view,sk.cooldownRatio??0,sk.stateLabel);
   });
  }
@@ -327,7 +370,10 @@ export class Hud extends Container{
   }
   if(stateLabel!==undefined){
    view.stateText.text=stateLabel;
-   view.stateText.place(view.cx,781,.5);
+   const bw=Math.max(84,Math.round(view.stateText.advance+36));
+   view.stateBadge.width=bw;
+   view.stateBadge.position.set(view.cx-bw/2,761);
+   view.stateText.place(view.cx,779,.5);
   }
  }
 
@@ -338,18 +384,24 @@ export class Hud extends Container{
   return {x:this.lastWidth-12*s,y:designY*s,scale:s};
  }
 
- // Desktop and landscape keep the reference arrangement at one uniform scale; portrait raises the skill row above the key hints.
+ // Desktop and landscape keep the reference arrangement at one uniform scale; portrait places XP below HP and removes bottom desktop clutter.
  layout(width:number,height:number){
   this.lastWidth=width;
   const {width:W,height:H}=HUD_DESIGN,portrait=width<height;
-  const s=portrait?width/790:Math.min(width/W,height/H);
+  const s=portrait?width/848:Math.min(width/W,height/H);
   this.lastScale=s;
+  this.heroPlate.height=portrait?138:104;
+  this.heroPlate.position.set(150,portrait?22:24);
+  this.tlXpGroup.visible=portrait;
+  this.bcXpGroup.visible=!portrait;
+  this.groups.bl.visible=!portrait;
+  this.groups.br.visible=!portrait;
   const place=(g:Container,px:number,py:number,x:number,y:number)=>{g.scale.set(s);g.pivot.set(px,py);g.position.set(x,y);};
   place(this.groups.tl,0,0,0,0);place(this.groups.tr,W,0,width,0);
-  place(this.groups.bc,W/2,H,width/2,height-(portrait?72*s:0));
+  place(this.groups.bc,W/2,portrait?842:H,width/2,height);
   place(this.groups.bl,0,H,0,height);place(this.groups.br,W,H,width,height);
   for(const img of [this.backdrop,this.overlay]){if(!img)continue;const c=Math.max(width/W,height/H);img.scale.set(c*W/img.texture.width);img.position.set((width-W*c)/2,(height-H*c)/2);}
   return s;
  }
- static sceneScale(width:number,height:number){return width<height?width/790:Math.min(width/HUD_DESIGN.width,height/HUD_DESIGN.height);}
+ static sceneScale(width:number,height:number){return width<height?width/848:Math.min(width/HUD_DESIGN.width,height/HUD_DESIGN.height);}
 }

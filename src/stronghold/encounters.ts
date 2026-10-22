@@ -354,10 +354,10 @@ export async function createEncounters(o:{
    const info=heroInfo(hid);
    hud.setHero(info.name,hid==='rift-runner'?'portrait-rift-runner':'portrait-ember-warden');
   }
-  const nextXp=threshold(run),pct=xpPercent(run),expRatio=Math.max(0,Math.min(1,run.xp/Math.max(1,nextXp)));
+  const nextXp=threshold(run),expRatio=Math.max(0,Math.min(1,run.xp/Math.max(1,nextXp)));
   const shownRatio=levelUpPulseMs>600?1:expRatio;
   hud.setLevel(run.level);
-  hud.setXp(shownRatio*nextXp,nextXp,` / ${nextXp} XP (${pct}%)`);
+  hud.setXp(shownRatio*nextXp,nextXp);
   hud.setGold(`${run.gold} Gold`);
 
   const expBar=heroExpFill.children[0] as Container;
