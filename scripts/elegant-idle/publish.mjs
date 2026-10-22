@@ -1,5 +1,5 @@
 import fs from 'node:fs/promises';import {createHash} from 'node:crypto';import {execFileSync} from 'node:child_process';import {publishLayer,readDir,URL_BASE} from '../arkadia/publish-layer.mjs';
-const root='public/elegant-idle',prefix='/elegant-idle',hash=b=>createHash('sha256').update(b).digest('hex');
+const root='public/elegant-idle',prefix='/rift-runner/elegant-idle',hash=b=>createHash('sha256').update(b).digest('hex');
 const before=await fetch(URL_BASE+'/',{signal:AbortSignal.timeout(20000)});if(!before.ok)throw Error('Game homepage unavailable before publish');const gameBefore=hash(Buffer.from(await before.arrayBuffer()));
 const files=await readDir(root);await publishLayer({name:'elegant-idle',files,prefix});
 const resources={};for(const [file,base64]of Object.entries(files)){const expected=hash(Buffer.from(base64,'base64'));const response=await fetch(URL_BASE+prefix+file+'?verification='+Date.now(),{signal:AbortSignal.timeout(30000)});if(!response.ok)throw Error(`Missing deployed file ${file}: ${response.status}`);const actual=hash(Buffer.from(await response.arrayBuffer()));if(actual!==expected)throw Error('Checksum mismatch '+file);resources[file]=expected;}

@@ -1,6 +1,6 @@
 ## Elegant idle preview
 
-Preview only. No production character asset is replaced. Player: https://ark-whachat.fural.space/elegant-idle/
+Preview only. No production character asset is replaced. Player: https://ark-whachat.fural.space/rift-runner/elegant-idle/
 
 Sources are the two latest retained elegant posters in project Knowledge: Ember Warden `DAd70799ae3cd9f661c8513d23` and Rift Runner `DA29b8b200cef04aff12014c59`, both in character room `DRb4787514f3224844f3c207ab`. No purged concepts were downloaded or restored.
 
@@ -22,6 +22,6 @@ Chromium checks scrub all 128 hero/direction/frame combinations and execute all 
 
 ## Publication
 
-Commit only this task's three directories. Push the isolated `preview/elegant-idle` branch. Deploy with `node scripts/elegant-idle/publish.mjs`, using the repository's supported persistent `publishLayer` gateway path. It creates a scoped `/elegant-idle` layer in the existing Arkadia sandbox, verifies every deployed file by SHA-256, and checks that the gameplay homepage bytes are unchanged. `deployment.json` records the actual code commit, public URL and resource checksums.
+Commit only this task's three directories. Push the isolated `preview/elegant-idle` branch. Deploy with `node scripts/elegant-idle/publish.mjs`, using the repository's supported persistent `publishLayer` gateway path. It creates a scoped `/rift-runner/elegant-idle` layer in the existing Arkadia sandbox, verifies every deployed file by SHA-256, and checks that the gameplay homepage bytes are unchanged. `deployment.json` records the actual code commit, public URL and resource checksums.
 
 Knowledge pages remain under their existing character parents; all source attempts, final atlases and shown evidence are inline. Retained poster embeds remain untouched.
