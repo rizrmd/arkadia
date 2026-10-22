@@ -1,7 +1,7 @@
 import sharp from 'sharp';import assert from 'node:assert/strict';import fs from 'node:fs/promises';import {createHash} from 'node:crypto';
 const base=process.env.DEMO_URL,root='public/modular-stronghold/v2/';
 const read=async name=>{if(!base)return fs.readFile(root+name);const r=await fetch(base+'/modular-stronghold/v2/'+name);assert(r.ok,name+' must be published');return Buffer.from(await r.arrayBuffer());};
-const meta=JSON.parse(await read('full-gateway-v5-sheet.json')),atlas=await read(meta.image),frames=[];
+const meta=JSON.parse(await read('full-gateway-v6-sheet.json')),atlas=await read(meta.image),frames=[];
 for(let i=0;i<meta.frames;i++)frames.push(await sharp(atlas).extract({left:i%meta.columns*meta.frame.w,top:Math.floor(i/meta.columns)*meta.frame.h,width:meta.frame.w,height:meta.frame.h}).ensureAlpha().raw().toBuffer());
 const w=meta.frame.w,h=meta.frame.h,sx=w/384,sy=h/256,ap=meta.stabilization?.aperture??{left:Math.round(146*sx),right:Math.round(242*sx),top:Math.round(111*sy),bottom:Math.round(216*sy)},reference=frames[0];let oldStonePixelChanges=0;const doorHashes=[];
 for(let i=0;i<frames.length;i++){
