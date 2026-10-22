@@ -1,0 +1,3639 @@
+{
+  "status": "in-validation",
+  "cell": 384,
+  "pivot": [
+    192,
+    360
+  ],
+  "directions": [
+    "N",
+    "NE",
+    "E",
+    "SE",
+    "S",
+    "SW",
+    "W",
+    "NW"
+  ],
+  "frames": 8,
+  "clips": [
+    {
+      "hero": "ember",
+      "action": "hurt",
+      "sheet": "ember-hurt.png",
+      "audit": [
+        {
+          "direction": "N",
+          "frame": 1,
+          "source": "sources/ember-hurt-N.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            184,
+            19,
+            407,
+            377
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.8864864864864865,
+          "bounds": [
+            81,
+            41,
+            204,
+            324
+          ],
+          "foot": [
+            192.25405405405405,
+            360.13513513513516
+          ],
+          "sha256": "2bdc456c7362c60a5050c2895b1a37ca203e4e420964a32b6e461f281003f8dd"
+        },
+        {
+          "direction": "N",
+          "frame": 2,
+          "source": "sources/ember-hurt-N.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            615,
+            67,
+            862,
+            377
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.8864864864864865,
+          "bounds": [
+            77,
+            83,
+            225,
+            281
+          ],
+          "foot": [
+            191.8,
+            359.5837837837838
+          ],
+          "sha256": "d87cb712a9e0854184cf064bd12e71cce65d5058f9bf3ba2fd5b2a45975b963d"
+        },
+        {
+          "direction": "N",
+          "frame": 3,
+          "source": "sources/ember-hurt-N.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            161,
+            420,
+            440,
+            755
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.8864864864864865,
+          "bounds": [
+            57,
+            60,
+            254,
+            303
+          ],
+          "foot": [
+            191.74594594594595,
+            359.63243243243244
+          ],
+          "sha256": "3553655bf55e7e4b72844c81099e43bc192d4d47e7b6f8d541352a3184fcd9d3"
+        },
+        {
+          "direction": "N",
+          "frame": 4,
+          "source": "sources/ember-hurt-N.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            603,
+            477,
+            880,
+            755
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.8864864864864865,
+          "bounds": [
+            65,
+            111,
+            252,
+            253
+          ],
+          "foot": [
+            192.2108108108108,
+            360.1027027027027
+          ],
+          "sha256": "c03e0deda0c8eb75e3e627c7e5495d4dfb56fbd758c776f598b635eac8090f65"
+        },
+        {
+          "direction": "N",
+          "frame": 5,
+          "source": "sources/ember-hurt-N.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            164,
+            794,
+            432,
+            1132
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.8864864864864865,
+          "bounds": [
+            61,
+            59,
+            244,
+            306
+          ],
+          "foot": [
+            191.75675675675677,
+            360.4054054054054
+          ],
+          "sha256": "6081f216c45fcbbf977aac2390045cb5a3905406d6f2a7dd96635a209a8d6753"
+        },
+        {
+          "direction": "N",
+          "frame": 6,
+          "source": "sources/ember-hurt-N.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            616,
+            781,
+            875,
+            1132
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.8864864864864865,
+          "bounds": [
+            68,
+            47,
+            236,
+            317
+          ],
+          "foot": [
+            192.10810810810813,
+            359.92972972972973
+          ],
+          "sha256": "865bb9bae79752c804c253c73397dbf2800f04c27811a6ca47e8fc342d6966a7"
+        },
+        {
+          "direction": "N",
+          "frame": 7,
+          "source": "sources/ember-hurt-N.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            174,
+            1142,
+            422,
+            1506
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.8864864864864865,
+          "bounds": [
+            72,
+            35,
+            226,
+            329
+          ],
+          "foot": [
+            191.67567567567568,
+            360.34054054054053
+          ],
+          "sha256": "0d0d3a66e34ef75d67aca4e07242a465043f964a78fd8f5ad87eeac0fe2e99e3"
+        },
+        {
+          "direction": "N",
+          "frame": 8,
+          "source": "sources/ember-hurt-N.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            634,
+            1139,
+            854,
+            1506
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.8864864864864865,
+          "bounds": [
+            86,
+            32,
+            201,
+            332
+          ],
+          "foot": [
+            191.93513513513514,
+            360
+          ],
+          "sha256": "1a1d361d227fa257e03c337e8271367e59428820cf53ad63a4dedb9ae2c9334d"
+        },
+        {
+          "direction": "NE",
+          "frame": 1,
+          "source": "sources/ember-hurt-NE.png",
+          "sourceSize": [
+            1105,
+            1423
+          ],
+          "sourceBounds": [
+            219,
+            13,
+            430,
+            358
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.9411764705882353,
+          "bounds": [
+            71,
+            33,
+            205,
+            331
+          ],
+          "foot": [
+            192.41176470588235,
+            359.5882352941176
+          ],
+          "sha256": "9043b60029fa9149ffe29ab2f5a5101014543d91390d0b3dc7c900e7920aa573"
+        },
+        {
+          "direction": "NE",
+          "frame": 2,
+          "source": "sources/ember-hurt-NE.png",
+          "sourceSize": [
+            1105,
+            1423
+          ],
+          "sourceBounds": [
+            653,
+            21,
+            914,
+            357
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.9411764705882353,
+          "bounds": [
+            40,
+            41,
+            252,
+            323
+          ],
+          "foot": [
+            191.52941176470588,
+            360.05882352941177
+          ],
+          "sha256": "b0edb46dbba6d67fe56c5c65bb939f26b3a022b1900feac2a3687bb012fd8c9b"
+        },
+        {
+          "direction": "NE",
+          "frame": 3,
+          "source": "sources/ember-hurt-NE.png",
+          "sourceSize": [
+            1105,
+            1423
+          ],
+          "sourceBounds": [
+            208,
+            373,
+            471,
+            699
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.9411764705882353,
+          "bounds": [
+            37,
+            51,
+            254,
+            313
+          ],
+          "foot": [
+            191.8235294117647,
+            359.70588235294116
+          ],
+          "sha256": "99b2a6f3da5fba5cb6f68f8b124a6780432fc2d64ab23ffaa96c37d96dd3b2e9"
+        },
+        {
+          "direction": "NE",
+          "frame": 4,
+          "source": "sources/ember-hurt-NE.png",
+          "sourceSize": [
+            1105,
+            1423
+          ],
+          "sourceBounds": [
+            633,
+            427,
+            927,
+            698
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.9411764705882353,
+          "bounds": [
+            24,
+            103,
+            283,
+            262
+          ],
+          "foot": [
+            192,
+            359.94117647058823
+          ],
+          "sha256": "f08cacae8305e252edbf97cd496720e04bb60384d0df861cd4a8ff60bfa23b96"
+        },
+        {
+          "direction": "NE",
+          "frame": 5,
+          "source": "sources/ember-hurt-NE.png",
+          "sourceSize": [
+            1105,
+            1423
+          ],
+          "sourceBounds": [
+            187,
+            730,
+            443,
+            1037
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.9411764705882353,
+          "bounds": [
+            28,
+            69,
+            248,
+            296
+          ],
+          "foot": [
+            191.76470588235293,
+            359.8235294117647
+          ],
+          "sha256": "be38994eeb6f0706bc3754371a8ceebc96a9821179dcc243600c9c96e0dece6c"
+        },
+        {
+          "direction": "NE",
+          "frame": 6,
+          "source": "sources/ember-hurt-NE.png",
+          "sourceSize": [
+            1105,
+            1423
+          ],
+          "sourceBounds": [
+            653,
+            708,
+            914,
+            1041
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.9411764705882353,
+          "bounds": [
+            25,
+            44,
+            252,
+            320
+          ],
+          "foot": [
+            192.05882352941177,
+            360.2352941176471
+          ],
+          "sha256": "2b4c9e407d948564a6222d15518c04eac85debe1676c27106c03005570572a87"
+        },
+        {
+          "direction": "NE",
+          "frame": 7,
+          "source": "sources/ember-hurt-NE.png",
+          "sourceSize": [
+            1105,
+            1423
+          ],
+          "sourceBounds": [
+            199,
+            1055,
+            442,
+            1396
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.9411764705882353,
+          "bounds": [
+            39,
+            36,
+            235,
+            328
+          ],
+          "foot": [
+            191.94117647058823,
+            359.7647058823529
+          ],
+          "sha256": "52a6028e0480fc219fcba6255afc18c43ef7b2bedb2c4734ed1b240563a7efd9"
+        },
+        {
+          "direction": "NE",
+          "frame": 8,
+          "source": "sources/ember-hurt-NE.png",
+          "sourceSize": [
+            1105,
+            1423
+          ],
+          "sourceBounds": [
+            670,
+            1056,
+            890,
+            1396
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.9411764705882353,
+          "bounds": [
+            61,
+            37,
+            214,
+            327
+          ],
+          "foot": [
+            191.8235294117647,
+            359.8235294117647
+          ],
+          "sha256": "7145bc4e819f3cb3294b7bfbd0e7cad407e457bf3a0710cb1d3013438e15d9c3"
+        },
+        {
+          "direction": "E",
+          "frame": 1,
+          "source": "sources/ember-hurt-E.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            157,
+            2,
+            351,
+            391
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.8388746803069054,
+          "bounds": [
+            75,
+            32,
+            169,
+            331
+          ],
+          "foot": [
+            192.0230179028133,
+            360
+          ],
+          "sha256": "8c9d877a984db0db04f899d8656e3107210b5980673e600d8dfbcd9a0b040b79"
+        },
+        {
+          "direction": "E",
+          "frame": 2,
+          "source": "sources/ember-hurt-E.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            603,
+            28,
+            850,
+            391
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.8388746803069054,
+          "bounds": [
+            57,
+            54,
+            213,
+            310
+          ],
+          "foot": [
+            191.63938618925832,
+            360.18925831202046
+          ],
+          "sha256": "b518e183d7ea86fa1d9130274010656ff1e71931838f1bf239b108a24f04541c"
+        },
+        {
+          "direction": "E",
+          "frame": 3,
+          "source": "sources/ember-hurt-E.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            127,
+            409,
+            424,
+            760
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.8388746803069054,
+          "bounds": [
+            30,
+            63,
+            255,
+            300
+          ],
+          "foot": [
+            192.3222506393862,
+            359.9616368286445
+          ],
+          "sha256": "c7fd65f26b73d12d89f076f5d7ce0fd204fd7e2c43ff76ae2d48848b45f732d3"
+        },
+        {
+          "direction": "E",
+          "frame": 4,
+          "source": "sources/ember-hurt-E.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            575,
+            481,
+            849,
+            758
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.8388746803069054,
+          "bounds": [
+            37,
+            125,
+            236,
+            238
+          ],
+          "foot": [
+            191.77237851662403,
+            359.8849104859335
+          ],
+          "sha256": "fb7b50d790f1bdeb719b413441be2c50f420739112ef43b3de57f0baac71232a"
+        },
+        {
+          "direction": "E",
+          "frame": 5,
+          "source": "sources/ember-hurt-E.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            156,
+            797,
+            404,
+            1129
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.8388746803069054,
+          "bounds": [
+            52,
+            79,
+            214,
+            284
+          ],
+          "foot": [
+            191.67263427109975,
+            360.0230179028133
+          ],
+          "sha256": "1e235b9d600c8c9c933dc4d50b50ee42927e78c47b98a336545ced09be84bb3a"
+        },
+        {
+          "direction": "E",
+          "frame": 6,
+          "source": "sources/ember-hurt-E.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            573,
+            771,
+            841,
+            1129
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.8388746803069054,
+          "bounds": [
+            29,
+            57,
+            231,
+            306
+          ],
+          "foot": [
+            192.1611253196931,
+            359.83375959079285
+          ],
+          "sha256": "7c1f9672a28dd6eb505122ef7424f93dec192395c05f911cf46df36c4aba81ef"
+        },
+        {
+          "direction": "E",
+          "frame": 7,
+          "source": "sources/ember-hurt-E.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            172,
+            1137,
+            408,
+            1520
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.8388746803069054,
+          "bounds": [
+            67,
+            37,
+            204,
+            327
+          ],
+          "foot": [
+            191.9923273657289,
+            359.9667519181586
+          ],
+          "sha256": "ae789baa9156c235937eedf83f454c2a22a7fe38575f18092854dbe185b56e16"
+        },
+        {
+          "direction": "E",
+          "frame": 8,
+          "source": "sources/ember-hurt-E.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            606,
+            1137,
+            821,
+            1524
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.8388746803069054,
+          "bounds": [
+            61,
+            33,
+            186,
+            331
+          ],
+          "foot": [
+            192.28388746803068,
+            360.1611253196931
+          ],
+          "sha256": "ddcf98b8c2a5c66de574da6d0c714baddb0a07a05a456a36a21e748df9c61b60"
+        },
+        {
+          "direction": "SE",
+          "frame": 1,
+          "source": "sources/ember-hurt-SE.png",
+          "sourceSize": [
+            1376,
+            768
+          ],
+          "sourceBounds": [
+            58,
+            3,
+            281,
+            384
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.856396866840731,
+          "bounds": [
+            95,
+            32,
+            197,
+            332
+          ],
+          "foot": [
+            191.77284595300262,
+            360
+          ],
+          "sha256": "5e58e44bc3b4a53faa577449a4054fc7ff5b967901f47a224c497938ad610e68"
+        },
+        {
+          "direction": "SE",
+          "frame": 2,
+          "source": "sources/ember-hurt-SE.png",
+          "sourceSize": [
+            1376,
+            768
+          ],
+          "sourceBounds": [
+            395,
+            18,
+            644,
+            384
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.856396866840731,
+          "bounds": [
+            75,
+            44,
+            219,
+            319
+          ],
+          "foot": [
+            192.32637075718014,
+            360.0104438642297
+          ],
+          "sha256": "665aaf3ed61848136c8f65d94a41de21e4ce3d76dd091dd29212f8ea73cb6017"
+        },
+        {
+          "direction": "SE",
+          "frame": 3,
+          "source": "sources/ember-hurt-SE.png",
+          "sourceSize": [
+            1376,
+            768
+          ],
+          "sourceBounds": [
+            734,
+            24,
+            989,
+            382
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.856396866840731,
+          "bounds": [
+            75,
+            51,
+            224,
+            313
+          ],
+          "foot": [
+            192.32637075718014,
+            360.1592689295039
+          ],
+          "sha256": "e5881cbafa7eed0f0772d8033d5682a88fcb902bcc611f395eb1ca7cd7ca6bb6"
+        },
+        {
+          "direction": "SE",
+          "frame": 4,
+          "source": "sources/ember-hurt-SE.png",
+          "sourceSize": [
+            1376,
+            768
+          ],
+          "sourceBounds": [
+            1066,
+            90,
+            1321,
+            380
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.856396866840731,
+          "bounds": [
+            66,
+            109,
+            224,
+            254
+          ],
+          "foot": [
+            191.89033942558746,
+            359.9242819843342
+          ],
+          "sha256": "b41fadf014726d4de7a80e4c284aefb02308d008866a54a3b9cd21b9e69b9359"
+        },
+        {
+          "direction": "SE",
+          "frame": 5,
+          "source": "sources/ember-hurt-SE.png",
+          "sourceSize": [
+            1376,
+            768
+          ],
+          "sourceBounds": [
+            53,
+            394,
+            281,
+            755
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.856396866840731,
+          "bounds": [
+            80,
+            49,
+            201,
+            315
+          ],
+          "foot": [
+            192.18798955613576,
+            359.8720626631854
+          ],
+          "sha256": "faedaa759034ff4b8f97930299e8c76e67674e83724ce528a54a648ace783372"
+        },
+        {
+          "direction": "SE",
+          "frame": 6,
+          "source": "sources/ember-hurt-SE.png",
+          "sourceSize": [
+            1376,
+            768
+          ],
+          "sourceBounds": [
+            423,
+            391,
+            612,
+            754
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.856396866840731,
+          "bounds": [
+            91,
+            47,
+            168,
+            317
+          ],
+          "foot": [
+            192.05483028720624,
+            360.44125326370755
+          ],
+          "sha256": "c4ac650f26dac02e626a380493013f570db79e082fec448d62069a0cbbe36a08"
+        },
+        {
+          "direction": "SE",
+          "frame": 7,
+          "source": "sources/ember-hurt-SE.png",
+          "sourceSize": [
+            1376,
+            768
+          ],
+          "sourceBounds": [
+            754,
+            392,
+            956,
+            754
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.856396866840731,
+          "bounds": [
+            78,
+            47,
+            179,
+            316
+          ],
+          "foot": [
+            192.32898172323758,
+            359.5848563968668
+          ],
+          "sha256": "2dc26fcd2246327ab47f481abc342c46bd2f2d829d84e748a5c3302675411d0f"
+        },
+        {
+          "direction": "SE",
+          "frame": 8,
+          "source": "sources/ember-hurt-SE.png",
+          "sourceSize": [
+            1376,
+            768
+          ],
+          "sourceBounds": [
+            1108,
+            392,
+            1336,
+            754
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.856396866840731,
+          "bounds": [
+            97,
+            47,
+            201,
+            316
+          ],
+          "foot": [
+            192.4882506527415,
+            359.5848563968668
+          ],
+          "sha256": "6fd1632182b4c476f0797f8e0f375abe22bfe6fe43acb5acb7d4240acfe06936"
+        },
+        {
+          "direction": "S",
+          "frame": 1,
+          "source": "sources/ember-hurt-S.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            166,
+            10,
+            411,
+            381
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.8388746803069054,
+          "bounds": [
+            83,
+            47,
+            211,
+            317
+          ],
+          "foot": [
+            192.05370843989772,
+            359.9002557544757
+          ],
+          "sha256": "34afdf6d065384a832ff46a3cf43e04e662dd29cd38b3e004b9d14d9f96318cc"
+        },
+        {
+          "direction": "S",
+          "frame": 2,
+          "source": "sources/ember-hurt-S.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            584,
+            13,
+            863,
+            381
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.8388746803069054,
+          "bounds": [
+            64,
+            50,
+            240,
+            315
+          ],
+          "foot": [
+            191.92838874680308,
+            360.38363171355496
+          ],
+          "sha256": "dfbde7c7166c6166d4e0c1af85360c90dd099da3e9ce2bf3f60e373c81b25091"
+        },
+        {
+          "direction": "S",
+          "frame": 3,
+          "source": "sources/ember-hurt-S.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            139,
+            401,
+            438,
+            755
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.8388746803069054,
+          "bounds": [
+            57,
+            61,
+            257,
+            303
+          ],
+          "foot": [
+            192.47826086956522,
+            359.6393861892583
+          ],
+          "sha256": "e41b500033b5cb7a2c0d39100756f69466cc4bd05540121e0d22e1bffb763a30"
+        },
+        {
+          "direction": "S",
+          "frame": 4,
+          "source": "sources/ember-hurt-S.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            571,
+            428,
+            885,
+            755
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.8388746803069054,
+          "bounds": [
+            49,
+            84,
+            269,
+            280
+          ],
+          "foot": [
+            191.6086956521739,
+            359.98976982097184
+          ],
+          "sha256": "6cc3c6c74d794e4a28ac4e8873b0f6dfe1933ec35f3ee132138dc0d74b06b5cf"
+        },
+        {
+          "direction": "S",
+          "frame": 5,
+          "source": "sources/ember-hurt-S.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            144,
+            786,
+            419,
+            1130
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.8388746803069054,
+          "bounds": [
+            61,
+            70,
+            237,
+            294
+          ],
+          "foot": [
+            191.86445012787723,
+            360.2506393861893
+          ],
+          "sha256": "4219c78657e098de4c54b21293e3fb1a1c91555ce7173ad1ed13fdffe38a247c"
+        },
+        {
+          "direction": "S",
+          "frame": 6,
+          "source": "sources/ember-hurt-S.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            571,
+            765,
+            875,
+            1130
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.8388746803069054,
+          "bounds": [
+            56,
+            52,
+            261,
+            312
+          ],
+          "foot": [
+            192.31713554987212,
+            359.86700767263426
+          ],
+          "sha256": "02c7b2209bf8abce3aa832364ad4284147902fe282a2d5622c8fbc725a8961f2"
+        },
+        {
+          "direction": "S",
+          "frame": 7,
+          "source": "sources/ember-hurt-S.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            163,
+            1133,
+            417,
+            1521
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.8388746803069054,
+          "bounds": [
+            77,
+            33,
+            219,
+            331
+          ],
+          "foot": [
+            191.92583120204603,
+            360.1611253196931
+          ],
+          "sha256": "e232f7f71a22894f432872b05da66320ba7bdf2effbff5ae326fb712ff2d98c9"
+        },
+        {
+          "direction": "S",
+          "frame": 8,
+          "source": "sources/ember-hurt-S.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            600,
+            1132,
+            857,
+            1521
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.8388746803069054,
+          "bounds": [
+            79,
+            32,
+            221,
+            332
+          ],
+          "foot": [
+            191.82864450127877,
+            360
+          ],
+          "sha256": "e1638766510168ac25e25044cc3722cac9ad980c965cf01212d0cd273aa5f3cf"
+        },
+        {
+          "direction": "SW",
+          "frame": 1,
+          "source": "sources/ember-hurt-SW.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            149,
+            15,
+            454,
+            395
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.7601809954751131,
+          "bounds": [
+            74,
+            70,
+            237,
+            294
+          ],
+          "foot": [
+            192.20814479638008,
+            360.3891402714932
+          ],
+          "sha256": "1c306bb856d2063a2c395d6b560b23dab617d6b4950272dd0c839937d8421562"
+        },
+        {
+          "direction": "SW",
+          "frame": 2,
+          "source": "sources/ember-hurt-SW.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            576,
+            18,
+            932,
+            396
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.7601809954751131,
+          "bounds": [
+            65,
+            71,
+            276,
+            293
+          ],
+          "foot": [
+            191.57013574660633,
+            359.868778280543
+          ],
+          "sha256": "a8e6be15f6cd5f6614cdbe07be5f652dfda44a1f9244aba761181c8b72ef9fa8"
+        },
+        {
+          "direction": "SW",
+          "frame": 3,
+          "source": "sources/ember-hurt-SW.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            148,
+            408,
+            492,
+            758
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.7601809954751131,
+          "bounds": [
+            80,
+            92,
+            267,
+            271
+          ],
+          "foot": [
+            191.74660633484163,
+            359.5837104072398
+          ],
+          "sha256": "4f18ac0ee7c2ec4db6dfc2430c89d929443954e4e3e6d517290e4215247b90c8"
+        },
+        {
+          "direction": "SW",
+          "frame": 4,
+          "source": "sources/ember-hurt-SW.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            599,
+            444,
+            950,
+            758
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.7601809954751131,
+          "bounds": [
+            88,
+            120,
+            272,
+            244
+          ],
+          "foot": [
+            192.1447963800905,
+            360.21719457013575
+          ],
+          "sha256": "61370f3d9092b62c73a35828799e2500f64a37baef334ce021f21d405d34c9b7"
+        },
+        {
+          "direction": "SW",
+          "frame": 5,
+          "source": "sources/ember-hurt-SW.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            167,
+            780,
+            492,
+            1135
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.7601809954751131,
+          "bounds": [
+            93,
+            89,
+            252,
+            275
+          ],
+          "foot": [
+            192.20361990950227,
+            360.38461538461536
+          ],
+          "sha256": "a4535afa365d61baaed3432d4718016329b9b4a299928608e4d5480ba769866d"
+        },
+        {
+          "direction": "SW",
+          "frame": 6,
+          "source": "sources/ember-hurt-SW.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            612,
+            775,
+            936,
+            1135
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.7601809954751131,
+          "bounds": [
+            96,
+            85,
+            252,
+            279
+          ],
+          "foot": [
+            192.16289592760182,
+            360.18552036199094
+          ],
+          "sha256": "ef5ea85dfcf99d7ecc29d8f8d1902f1021ab36f0f1a8073f4ad87729423a4748"
+        },
+        {
+          "direction": "SW",
+          "frame": 7,
+          "source": "sources/ember-hurt-SW.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            156,
+            1143,
+            460,
+            1519
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.7601809954751131,
+          "bounds": [
+            78,
+            72,
+            236,
+            291
+          ],
+          "foot": [
+            192.40723981900453,
+            360.10859728506784
+          ],
+          "sha256": "1becc7a504cd696e316cd99e5ab54c252e18c0ecfbce762b24f32e2db9d2f0dc"
+        },
+        {
+          "direction": "SW",
+          "frame": 8,
+          "source": "sources/ember-hurt-SW.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            591,
+            1143,
+            912,
+            1519
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.7601809954751131,
+          "bounds": [
+            70,
+            72,
+            249,
+            291
+          ],
+          "foot": [
+            192.3891402714932,
+            360.10859728506784
+          ],
+          "sha256": "fc7e658b81914cfe2007804f4c340b1abcafc05eafafae569657107a83895b39"
+        },
+        {
+          "direction": "W",
+          "frame": 1,
+          "source": "sources/ember-hurt-W.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            198,
+            23,
+            412,
+            395
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.84,
+          "bounds": [
+            141,
+            46,
+            186,
+            318
+          ],
+          "foot": [
+            192.24,
+            360.15999999999997
+          ],
+          "sha256": "5f42a766725ca5e44baa84105261f3580005a67c8a1d03830088c6c6cd85a628"
+        },
+        {
+          "direction": "W",
+          "frame": 2,
+          "source": "sources/ember-hurt-W.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            648,
+            25,
+            894,
+            395
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.84,
+          "bounds": [
+            112,
+            48,
+            213,
+            317
+          ],
+          "foot": [
+            192.22,
+            360.47999999999996
+          ],
+          "sha256": "c991fbfa56a6663abba1d969c0ccb0e2d6e25e86b4f7559819cf0906ea2189fb"
+        },
+        {
+          "direction": "W",
+          "frame": 3,
+          "source": "sources/ember-hurt-W.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            173,
+            420,
+            464,
+            761
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.84,
+          "bounds": [
+            104,
+            72,
+            250,
+            292
+          ],
+          "foot": [
+            191.78,
+            360.12
+          ],
+          "sha256": "79bcc0ab55e69ea731396082de437d11804aa6e58a170f000a7e2a6e8f007595"
+        },
+        {
+          "direction": "W",
+          "frame": 4,
+          "source": "sources/ember-hurt-W.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            628,
+            463,
+            936,
+            762
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.84,
+          "bounds": [
+            93,
+            107,
+            265,
+            257
+          ],
+          "foot": [
+            192.12,
+            359.84000000000003
+          ],
+          "sha256": "a48941a8eed6f57ac2a42bae922c112fdca425d365baa583b953537e89bdddc4"
+        },
+        {
+          "direction": "W",
+          "frame": 5,
+          "source": "sources/ember-hurt-W.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            166,
+            799,
+            454,
+            1132
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.84,
+          "bounds": [
+            104,
+            79,
+            248,
+            286
+          ],
+          "foot": [
+            192.2,
+            360.4
+          ],
+          "sha256": "087efaedb0342087fe8154af415959e2bdd41e347ea9fe55ad3a2866e9e7c5b7"
+        },
+        {
+          "direction": "W",
+          "frame": 6,
+          "source": "sources/ember-hurt-W.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            673,
+            774,
+            940,
+            1132
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.84,
+          "bounds": [
+            130,
+            58,
+            230,
+            307
+          ],
+          "foot": [
+            192.16,
+            360.4
+          ],
+          "sha256": "588b2590f97041f841c0cc35a9303af8b85c7caa433b70e8e0b76919985a3292"
+        },
+        {
+          "direction": "W",
+          "frame": 7,
+          "source": "sources/ember-hurt-W.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            201,
+            1149,
+            424,
+            1520
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.84,
+          "bounds": [
+            140,
+            47,
+            193,
+            318
+          ],
+          "foot": [
+            192.5,
+            360.32
+          ],
+          "sha256": "e65c2d8cc21441b7040afed1c6367d997f8fe938c3a02175e8afb5742420b64c"
+        },
+        {
+          "direction": "W",
+          "frame": 8,
+          "source": "sources/ember-hurt-W.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            680,
+            1149,
+            893,
+            1520
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.84,
+          "bounds": [
+            141,
+            47,
+            185,
+            318
+          ],
+          "foot": [
+            192.24,
+            360.32
+          ],
+          "sha256": "2a3532bd4414ad7b4a71e2e0cc711217c22ecad182ea98be776c2db953bae592"
+        },
+        {
+          "direction": "NW",
+          "frame": 1,
+          "source": "sources/ember-hurt-NW.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            239,
+            10,
+            426,
+            374
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.8961748633879781,
+          "bounds": [
+            130,
+            32,
+            174,
+            332
+          ],
+          "foot": [
+            192.28415300546447,
+            360
+          ],
+          "sha256": "05ae290aad9d5ca910123ed29a7072d2c4a62d9159d06045f486d395de5af6f1"
+        },
+        {
+          "direction": "NW",
+          "frame": 2,
+          "source": "sources/ember-hurt-NW.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            638,
+            20,
+            835,
+            372
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.8961748633879781,
+          "bounds": [
+            126,
+            43,
+            183,
+            322
+          ],
+          "foot": [
+            192.3169398907104,
+            360.24590163934425
+          ],
+          "sha256": "c5e7fe4ac1ac947a42f0eff65de902bf8c232c631cf79f62dd67b06f09a18136"
+        },
+        {
+          "direction": "NW",
+          "frame": 3,
+          "source": "sources/ember-hurt-NW.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            228,
+            403,
+            430,
+            756
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.8961748633879781,
+          "bounds": [
+            118,
+            42,
+            187,
+            323
+          ],
+          "foot": [
+            191.93442622950818,
+            360.14207650273227
+          ],
+          "sha256": "4a50d600b6105692ac8335ef81da3020e605de65118e69fb666284c0236569c3"
+        },
+        {
+          "direction": "NW",
+          "frame": 4,
+          "source": "sources/ember-hurt-NW.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            625,
+            457,
+            844,
+            756
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.8961748633879781,
+          "bounds": [
+            112,
+            90,
+            203,
+            274
+          ],
+          "foot": [
+            191.75956284153006,
+            359.74863387978144
+          ],
+          "sha256": "fe6fd00cb9c7148b51b18fd8f715e3b392649e16cb541ccea82322e92ecd7690"
+        },
+        {
+          "direction": "NW",
+          "frame": 5,
+          "source": "sources/ember-hurt-NW.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            252,
+            806,
+            448,
+            1129
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.8961748633879781,
+          "bounds": [
+            130,
+            69,
+            182,
+            296
+          ],
+          "foot": [
+            192.28415300546447,
+            360.2568306010929
+          ],
+          "sha256": "e996b4ddd324599575bd71bbd9f60946be3c469efb75ce58d96f83584d4c2c5e"
+        },
+        {
+          "direction": "NW",
+          "frame": 6,
+          "source": "sources/ember-hurt-NW.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            632,
+            775,
+            840,
+            1132
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.8961748633879781,
+          "bounds": [
+            118,
+            37,
+            193,
+            326
+          ],
+          "foot": [
+            192.38251366120218,
+            359.62295081967216
+          ],
+          "sha256": "52d303984b20268027b923c14d24c7e0293ea0178d57f968b835062a5cc61a91"
+        },
+        {
+          "direction": "NW",
+          "frame": 7,
+          "source": "sources/ember-hurt-NW.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            242,
+            1146,
+            432,
+            1509
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.8961748633879781,
+          "bounds": [
+            131,
+            33,
+            177,
+            332
+          ],
+          "foot": [
+            192.38797814207652,
+            360.10382513661204
+          ],
+          "sha256": "fe6364b6509cb9fca3f7786e049caffea9f7780a5c2211ab0804ee326570073c"
+        },
+        {
+          "direction": "NW",
+          "frame": 8,
+          "source": "sources/ember-hurt-NW.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            635,
+            1146,
+            826,
+            1509
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.8961748633879781,
+          "bounds": [
+            130,
+            33,
+            177,
+            332
+          ],
+          "foot": [
+            192.28415300546447,
+            360.10382513661204
+          ],
+          "sha256": "820847b21998ca9c3e9a05d0cc103543acb7bf833c3fdf7e938152a55b9ea6f9"
+        }
+      ],
+      "scaleByHeading": {
+        "N": 0.8864864864864865,
+        "NE": 0.9411764705882353,
+        "E": 0.8388746803069054,
+        "SE": 0.856396866840731,
+        "S": 0.8388746803069054,
+        "SW": 0.7601809954751131,
+        "W": 0.84,
+        "NW": 0.8961748633879781
+      }
+    },
+    {
+      "hero": "rift",
+      "action": "hurt",
+      "sheet": "rift-hurt.png",
+      "audit": [
+        {
+          "direction": "N",
+          "frame": 1,
+          "source": "sources/rift-hurt-N.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            175,
+            15,
+            400,
+            390
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.870026525198939,
+          "bounds": [
+            80,
+            32,
+            202,
+            332
+          ],
+          "foot": [
+            192.23342175066313,
+            360
+          ],
+          "sha256": "ac9d514bd570d5b9d2d7630b8f2e10bd01f4fc35fc7d594e64767148f7bd455b"
+        },
+        {
+          "direction": "N",
+          "frame": 2,
+          "source": "sources/rift-hurt-N.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            592,
+            30,
+            890,
+            389
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.870026525198939,
+          "bounds": [
+            47,
+            45,
+            265,
+            318
+          ],
+          "foot": [
+            191.85941644562334,
+            359.9496021220159
+          ],
+          "sha256": "bdfc86d27fbbe32658c5acc6c7e37406f0a3e57c76cfe9187133fc4b3238f8ed"
+        },
+        {
+          "direction": "N",
+          "frame": 3,
+          "source": "sources/rift-hurt-N.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            156,
+            418,
+            438,
+            745
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.870026525198939,
+          "bounds": [
+            59,
+            74,
+            251,
+            291
+          ],
+          "foot": [
+            191.67904509283818,
+            360.2387267904509
+          ],
+          "sha256": "5cfa814dea7da43e60f0beb06a3069c5019c3a6d1956b053c4caaebc2cd91078"
+        },
+        {
+          "direction": "N",
+          "frame": 4,
+          "source": "sources/rift-hurt-N.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            624,
+            463,
+            903,
+            745
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.870026525198939,
+          "bounds": [
+            59,
+            113,
+            249,
+            251
+          ],
+          "foot": [
+            191.67904509283818,
+            360.0875331564987
+          ],
+          "sha256": "7c9bd35c9604f6bdd29980621f812c0fe443953a5ec3151fb767e3c02613664b"
+        },
+        {
+          "direction": "N",
+          "frame": 5,
+          "source": "sources/rift-hurt-N.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            153,
+            792,
+            433,
+            1126
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.870026525198939,
+          "bounds": [
+            55,
+            68,
+            250,
+            297
+          ],
+          "foot": [
+            191.59416445623341,
+            360.3289124668435
+          ],
+          "sha256": "e72d4d93bb0822abb9e7b3c13dd3141b2d6ee92bd2a812e1c2898b9edc18b23c"
+        },
+        {
+          "direction": "N",
+          "frame": 6,
+          "source": "sources/rift-hurt-N.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            597,
+            779,
+            883,
+            1126
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.870026525198939,
+          "bounds": [
+            50,
+            56,
+            255,
+            308
+          ],
+          "foot": [
+            191.81432360742704,
+            359.6392572944297
+          ],
+          "sha256": "63e70425cb0b6be5a6461e4a6bcf57c5cdc977de43dd6726842a14fb005b0c34"
+        },
+        {
+          "direction": "N",
+          "frame": 7,
+          "source": "sources/rift-hurt-N.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            183,
+            1142,
+            415,
+            1515
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.870026525198939,
+          "bounds": [
+            79,
+            34,
+            208,
+            331
+          ],
+          "foot": [
+            191.66843501326258,
+            360.2599469496021
+          ],
+          "sha256": "97f007ecb36faf22e8a3bd4b814fe6a36335485ce587f0382fbbb97c20b9dcfc"
+        },
+        {
+          "direction": "N",
+          "frame": 8,
+          "source": "sources/rift-hurt-N.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            642,
+            1141,
+            864,
+            1515
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.870026525198939,
+          "bounds": [
+            85,
+            33,
+            199,
+            331
+          ],
+          "foot": [
+            191.57824933687004,
+            360.12997347480103
+          ],
+          "sha256": "82c547212331a2074f11a37d5eb1e2339544233191888dabcb1d83465a1af853"
+        },
+        {
+          "direction": "NE",
+          "frame": 1,
+          "source": "sources/rift-hurt-NE.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            184,
+            20,
+            414,
+            399
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.830379746835443,
+          "bounds": [
+            61,
+            44,
+            197,
+            321
+          ],
+          "foot": [
+            191.78481012658227,
+            360.37468354430376
+          ],
+          "sha256": "56cd36e626c51ce8b818006a2247b08fd3cee4ae462d819e22318374f5539211"
+        },
+        {
+          "direction": "NE",
+          "frame": 2,
+          "source": "sources/rift-hurt-NE.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            606,
+            62,
+            856,
+            398
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.830379746835443,
+          "bounds": [
+            52,
+            79,
+            213,
+            285
+          ],
+          "foot": [
+            191.91898734177215,
+            360.49873417721517
+          ],
+          "sha256": "c8127ffb62f7a08d2ac5e39517e4bca4235d7aa2d2821ffa99aa3d71c1848520"
+        },
+        {
+          "direction": "NE",
+          "frame": 3,
+          "source": "sources/rift-hurt-NE.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            153,
+            421,
+            427,
+            750
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.830379746835443,
+          "bounds": [
+            46,
+            85,
+            233,
+            279
+          ],
+          "foot": [
+            192.14683544303796,
+            359.85569620253165
+          ],
+          "sha256": "07a0e7c8857ac4b03dd2e99c518333945308c93fde96cc1cee36dc2b7039cd9e"
+        },
+        {
+          "direction": "NE",
+          "frame": 4,
+          "source": "sources/rift-hurt-NE.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            613,
+            466,
+            887,
+            753
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.830379746835443,
+          "bounds": [
+            44,
+            120,
+            233,
+            244
+          ],
+          "foot": [
+            192.22278481012657,
+            359.97974683544305
+          ],
+          "sha256": "ded491ad4b1952863da56f4c1b81658dfd18c776abec4a49eb3bf633d030b6ee"
+        },
+        {
+          "direction": "NE",
+          "frame": 5,
+          "source": "sources/rift-hurt-NE.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            161,
+            767,
+            420,
+            1114
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.830379746835443,
+          "bounds": [
+            46,
+            70,
+            221,
+            294
+          ],
+          "foot": [
+            191.73164556962024,
+            359.8025316455696
+          ],
+          "sha256": "106d54c561a45c258431015f5e1902ba1cf51f35b034e06dc435bdc517cda741"
+        },
+        {
+          "direction": "NE",
+          "frame": 6,
+          "source": "sources/rift-hurt-NE.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            627,
+            766,
+            867,
+            1113
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.830379746835443,
+          "bounds": [
+            57,
+            69,
+            205,
+            294
+          ],
+          "foot": [
+            191.9367088607595,
+            359.63291139240505
+          ],
+          "sha256": "900de59b57d1f5339a16eaeb02757b71621563a83fb3603b7c59ee7b29594e84"
+        },
+        {
+          "direction": "NE",
+          "frame": 7,
+          "source": "sources/rift-hurt-NE.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            173,
+            1126,
+            414,
+            1518
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.830379746835443,
+          "bounds": [
+            55,
+            33,
+            206,
+            331
+          ],
+          "foot": [
+            192.0126582278481,
+            360.16962025316457
+          ],
+          "sha256": "67a1c1684dd7650054ed0e16b1a7c6357fcafce17e4deecc655167ce45b042c5"
+        },
+        {
+          "direction": "NE",
+          "frame": 8,
+          "source": "sources/rift-hurt-NE.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            620,
+            1125,
+            862,
+            1517
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.830379746835443,
+          "bounds": [
+            57,
+            32,
+            207,
+            331
+          ],
+          "foot": [
+            192.3518987341772,
+            360
+          ],
+          "sha256": "b1cf3220a3cc05879b82f22db861baeb8f7a11de0dab4bee7bfd0473de198dcf"
+        },
+        {
+          "direction": "E",
+          "frame": 1,
+          "source": "sources/rift-hurt-E.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            149,
+            15,
+            363,
+            378
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.8608923884514436,
+          "bounds": [
+            59,
+            46,
+            190,
+            319
+          ],
+          "foot": [
+            191.57742782152232,
+            360.2257217847769
+          ],
+          "sha256": "2c56932a8eb19958f310b25e34900f380dc919a53d6615885a3fdfbd7b953b77"
+        },
+        {
+          "direction": "E",
+          "frame": 2,
+          "source": "sources/rift-hurt-E.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            589,
+            16,
+            832,
+            378
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.8608923884514436,
+          "bounds": [
+            54,
+            47,
+            215,
+            318
+          ],
+          "foot": [
+            191.74278215223097,
+            360.36482939632543
+          ],
+          "sha256": "8999ac6c9c5e166e76d7bc30c492fa7211984e1aa624fafd54e6de5d52258be3"
+        },
+        {
+          "direction": "E",
+          "frame": 3,
+          "source": "sources/rift-hurt-E.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            141,
+            394,
+            415,
+            757
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.8608923884514436,
+          "bounds": [
+            43,
+            46,
+            242,
+            319
+          ],
+          "foot": [
+            192.36482939632546,
+            360.2257217847769
+          ],
+          "sha256": "53edc3937a9731b1dca14ca4ff492b644593431ce319fbcc766e34981271e49a"
+        },
+        {
+          "direction": "E",
+          "frame": 4,
+          "source": "sources/rift-hurt-E.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            608,
+            461,
+            850,
+            757
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.8608923884514436,
+          "bounds": [
+            71,
+            103,
+            214,
+            261
+          ],
+          "foot": [
+            191.95538057742783,
+            359.5459317585302
+          ],
+          "sha256": "2f6dc21a04b4822408b161d40c7c3e62a41b37bf2cf23563d650c2cbcbc4497b"
+        },
+        {
+          "direction": "E",
+          "frame": 5,
+          "source": "sources/rift-hurt-E.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            145,
+            787,
+            401,
+            1128
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.8608923884514436,
+          "bounds": [
+            52,
+            65,
+            226,
+            300
+          ],
+          "foot": [
+            191.89501312335958,
+            360.28608923884514
+          ],
+          "sha256": "eef9eab0923b3f49b518672a94ec5baf4c1f49e080c00d3fb6620915bc784b43"
+        },
+        {
+          "direction": "E",
+          "frame": 6,
+          "source": "sources/rift-hurt-E.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            594,
+            773,
+            826,
+            1128
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.8608923884514436,
+          "bounds": [
+            51,
+            53,
+            206,
+            312
+          ],
+          "foot": [
+            191.75590551181102,
+            360.33858267716533
+          ],
+          "sha256": "45c508854c13a0ec6bd837bdcc493f6ca729f0a35936b31907844ec9784ae107"
+        },
+        {
+          "direction": "E",
+          "frame": 7,
+          "source": "sources/rift-hurt-E.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            160,
+            1141,
+            367,
+            1518
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.8608923884514436,
+          "bounds": [
+            65,
+            33,
+            184,
+            331
+          ],
+          "foot": [
+            192.41207349081364,
+            360.1391076115485
+          ],
+          "sha256": "c3d7320d3fdeab73dfec8345a873acee4cc3211077010f4d0ce06ce73c525a61"
+        },
+        {
+          "direction": "E",
+          "frame": 8,
+          "source": "sources/rift-hurt-E.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            625,
+            1139,
+            830,
+            1518
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.8608923884514436,
+          "bounds": [
+            65,
+            32,
+            183,
+            332
+          ],
+          "foot": [
+            192.41207349081364,
+            360
+          ],
+          "sha256": "97688f241c7e679f392403053b9e05430aa92f353293e87c8b99397b5ba23e29"
+        },
+        {
+          "direction": "SE",
+          "frame": 1,
+          "source": "sources/rift-hurt-SE.png",
+          "sourceSize": [
+            1531,
+            1027
+          ],
+          "sourceBounds": [
+            37,
+            56,
+            365,
+            521
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.6303939962476548,
+          "bounds": [
+            111,
+            65,
+            211,
+            298
+          ],
+          "foot": [
+            192.00562851782365,
+            360.0243902439024
+          ],
+          "sha256": "334ddf8ca8bf2b4c5c3559dfd221047b4f848305c0bdbd05c92c7942dcb58614"
+        },
+        {
+          "direction": "SE",
+          "frame": 2,
+          "source": "sources/rift-hurt-SE.png",
+          "sourceSize": [
+            1531,
+            1027
+          ],
+          "sourceBounds": [
+            405,
+            74,
+            754,
+            515
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.6303939962476548,
+          "bounds": [
+            104,
+            81,
+            224,
+            282
+          ],
+          "foot": [
+            191.93996247654786,
+            360.2645403377111
+          ],
+          "sha256": "5db29bc824cd2b384eec40299b9be38987ac821942750f3344d5e13f975b0bb8"
+        },
+        {
+          "direction": "SE",
+          "frame": 3,
+          "source": "sources/rift-hurt-SE.png",
+          "sourceSize": [
+            1531,
+            1027
+          ],
+          "sourceBounds": [
+            780,
+            83,
+            1133,
+            515
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.6303939962476548,
+          "bounds": [
+            103,
+            86,
+            227,
+            277
+          ],
+          "foot": [
+            191.88555347091932,
+            359.59099437148217
+          ],
+          "sha256": "404a769eec28676af3ecb2ba3529b2c3c794d3a2091101e3c1b3f97a15814a43"
+        },
+        {
+          "direction": "SE",
+          "frame": 4,
+          "source": "sources/rift-hurt-SE.png",
+          "sourceSize": [
+            1531,
+            1027
+          ],
+          "sourceBounds": [
+            1178,
+            177,
+            1506,
+            515
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.6303939962476548,
+          "bounds": [
+            75,
+            146,
+            211,
+            217
+          ],
+          "foot": [
+            192.25328330206378,
+            360.3339587242026
+          ],
+          "sha256": "b99c2ffd238fed734c58a2fd85dd9332abbb858e6a3d597e89455c38e2947f1f"
+        },
+        {
+          "direction": "SE",
+          "frame": 5,
+          "source": "sources/rift-hurt-SE.png",
+          "sourceSize": [
+            1531,
+            1027
+          ],
+          "sourceBounds": [
+            27,
+            657,
+            351,
+            989
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.6303939962476548,
+          "bounds": [
+            151,
+            149,
+            209,
+            214
+          ],
+          "foot": [
+            191.66041275797375,
+            359.5515947467167
+          ],
+          "sha256": "61eef0440452e2e1d8c08440f797b84d719d4fc521faa2ec1c7550e6f7e9dd6a"
+        },
+        {
+          "direction": "SE",
+          "frame": 6,
+          "source": "sources/rift-hurt-SE.png",
+          "sourceSize": [
+            1531,
+            1027
+          ],
+          "sourceBounds": [
+            409,
+            565,
+            758,
+            997
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.6303939962476548,
+          "bounds": [
+            104,
+            86,
+            224,
+            277
+          ],
+          "foot": [
+            191.93996247654786,
+            359.59099437148217
+          ],
+          "sha256": "9c348bff162d320a15365e8f5db5dce0843cbab4263540c959f590835f489eeb"
+        },
+        {
+          "direction": "SE",
+          "frame": 7,
+          "source": "sources/rift-hurt-SE.png",
+          "sourceSize": [
+            1531,
+            1027
+          ],
+          "sourceBounds": [
+            794,
+            560,
+            1129,
+            1003
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.6303939962476548,
+          "bounds": [
+            107,
+            79,
+            216,
+            284
+          ],
+          "foot": [
+            192.41838649155721,
+            360.15572232645405
+          ],
+          "sha256": "8fdc16cf588c76af2becf93f616b18766e3f94698121e3fc15a46ecf94116712"
+        },
+        {
+          "direction": "SE",
+          "frame": 8,
+          "source": "sources/rift-hurt-SE.png",
+          "sourceSize": [
+            1531,
+            1027
+          ],
+          "sourceBounds": [
+            1177,
+            559,
+            1506,
+            1003
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.6303939962476548,
+          "bounds": [
+            111,
+            78,
+            212,
+            284
+          ],
+          "foot": [
+            192.00562851782365,
+            359.7861163227017
+          ],
+          "sha256": "808e5f9b0c230dfc56b8210ac36a3bc7ef345ae78b78ec0432d269e80f8c58f3"
+        },
+        {
+          "direction": "S",
+          "frame": 1,
+          "source": "sources/rift-hurt-S.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            133,
+            16,
+            414,
+            407
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.8346055979643766,
+          "bounds": [
+            73,
+            32,
+            240,
+            332
+          ],
+          "foot": [
+            191.51399491094148,
+            360
+          ],
+          "sha256": "69aeea618077eb3f72cedaf23c9508ccea43243f11983f71cb3fdc0e32ea3586"
+        },
+        {
+          "direction": "S",
+          "frame": 2,
+          "source": "sources/rift-hurt-S.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            594,
+            25,
+            931,
+            407
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.8346055979643766,
+          "bounds": [
+            52,
+            40,
+            287,
+            325
+          ],
+          "foot": [
+            192.21374045801528,
+            360.48854961832063
+          ],
+          "sha256": "261305875df83322919a50ea546d4390299649e4ebafc6f99ce548e18afaec43"
+        },
+        {
+          "direction": "S",
+          "frame": 3,
+          "source": "sources/rift-hurt-S.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            109,
+            431,
+            439,
+            769
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.8346055979643766,
+          "bounds": [
+            47,
+            76,
+            281,
+            288
+          ],
+          "foot": [
+            192.22137404580153,
+            359.76590330788804
+          ],
+          "sha256": "9f8623812e0cb455c1aa511128ea37f0201efa0ef94760855f0d11ea253392e3"
+        },
+        {
+          "direction": "S",
+          "frame": 4,
+          "source": "sources/rift-hurt-S.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            604,
+            478,
+            942,
+            769
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.8346055979643766,
+          "bounds": [
+            26,
+            115,
+            288,
+            249
+          ],
+          "foot": [
+            191.66921119592877,
+            359.5394402035623
+          ],
+          "sha256": "194d4c47c1feb1a84bebe8e6cc1d0f0defc1bb3590ebad8c3ebc87bc3717d75e"
+        },
+        {
+          "direction": "S",
+          "frame": 5,
+          "source": "sources/rift-hurt-S.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            120,
+            781,
+            443,
+            1135
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.8346055979643766,
+          "bounds": [
+            56,
+            62,
+            275,
+            301
+          ],
+          "foot": [
+            192.0407124681934,
+            359.9541984732825
+          ],
+          "sha256": "1955b81c66ad1dd7ce7fe5a24bb2f4203cb23714f70d4998648d22c3f779f688"
+        },
+        {
+          "direction": "S",
+          "frame": 6,
+          "source": "sources/rift-hurt-S.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            612,
+            773,
+            927,
+            1136
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.8346055979643766,
+          "bounds": [
+            60,
+            55,
+            269,
+            309
+          ],
+          "foot": [
+            192.28498727735368,
+            359.6310432569975
+          ],
+          "sha256": "d0273b2c415ff04426642b4ff277c75377c0de41fd6c209d51e8dbd94407699f"
+        },
+        {
+          "direction": "S",
+          "frame": 7,
+          "source": "sources/rift-hurt-S.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            120,
+            1136,
+            424,
+            1524
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.8346055979643766,
+          "bounds": [
+            62,
+            34,
+            260,
+            330
+          ],
+          "foot": [
+            192.19847328244276,
+            360.33078880407123
+          ],
+          "sha256": "5e5df26984a44f40a71b86393a32e1649f04a8d669148b5f01d9958e7f206049"
+        },
+        {
+          "direction": "S",
+          "frame": 8,
+          "source": "sources/rift-hurt-S.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            629,
+            1138,
+            918,
+            1524
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.8346055979643766,
+          "bounds": [
+            71,
+            35,
+            247,
+            328
+          ],
+          "foot": [
+            192.4351145038168,
+            359.6615776081425
+          ],
+          "sha256": "4fde62a32e0a8cea1816454ebedca2802dbe773ec94e368537b0785caf38e539"
+        },
+        {
+          "direction": "SW",
+          "frame": 1,
+          "source": "sources/rift-hurt-SW.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            173,
+            7,
+            459,
+            386
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.7601809954751131,
+          "bounds": [
+            110,
+            70,
+            223,
+            293
+          ],
+          "foot": [
+            191.71945701357464,
+            359.62895927601807
+          ],
+          "sha256": "719f049fa658be92f1e9e2c82b0147a9b55a22aa239a0e061c77544244e3e2f1"
+        },
+        {
+          "direction": "SW",
+          "frame": 2,
+          "source": "sources/rift-hurt-SW.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            612,
+            14,
+            954,
+            385
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.7601809954751131,
+          "bounds": [
+            86,
+            76,
+            265,
+            287
+          ],
+          "foot": [
+            192.42533936651583,
+            359.5475113122172
+          ],
+          "sha256": "d3557d7eccaff1731672faf0edfc7744472e30fb59a22c37c51519b523170512"
+        },
+        {
+          "direction": "SW",
+          "frame": 3,
+          "source": "sources/rift-hurt-SW.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            158,
+            404,
+            476,
+            757
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.7601809954751131,
+          "bounds": [
+            102,
+            90,
+            247,
+            274
+          ],
+          "foot": [
+            191.70135746606334,
+            359.86425339366514
+          ],
+          "sha256": "ca11e851a32e38e35c2dcaf6cfd19e2a0d90573db3b8e01ca8dac625ac8d82ad"
+        },
+        {
+          "direction": "SW",
+          "frame": 4,
+          "source": "sources/rift-hurt-SW.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            618,
+            480,
+            948,
+            756
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.7601809954751131,
+          "bounds": [
+            96,
+            149,
+            256,
+            215
+          ],
+          "foot": [
+            192.16289592760182,
+            360.33031674208144
+          ],
+          "sha256": "967941625b39a08658574b5c369ed2058a3db0905b7e41776604c8e8bf5b1229"
+        },
+        {
+          "direction": "SW",
+          "frame": 5,
+          "source": "sources/rift-hurt-SW.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            157,
+            774,
+            481,
+            1128
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.7601809954751131,
+          "bounds": [
+            108,
+            89,
+            252,
+            274
+          ],
+          "foot": [
+            191.61990950226243,
+            359.6244343891403
+          ],
+          "sha256": "bac9c5491992e1fd8feb12d8c87584d50dbb2083fc1839fdbb582f44b1e70d98"
+        },
+        {
+          "direction": "SW",
+          "frame": 6,
+          "source": "sources/rift-hurt-SW.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            643,
+            768,
+            952,
+            1128
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.7601809954751131,
+          "bounds": [
+            116,
+            85,
+            240,
+            279
+          ],
+          "foot": [
+            192.01809954751133,
+            360.18552036199094
+          ],
+          "sha256": "a4105eca24bb8ccbbabeff768c378c9f76e108d111fd9ef780474dcd16decc5b"
+        },
+        {
+          "direction": "SW",
+          "frame": 7,
+          "source": "sources/rift-hurt-SW.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            188,
+            1136,
+            487,
+            1518
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.7601809954751131,
+          "bounds": [
+            127,
+            67,
+            233,
+            296
+          ],
+          "foot": [
+            191.99547511312215,
+            359.66968325791856
+          ],
+          "sha256": "a2b98d8125490fa08a871e7530d633ac62343314a246ca8a40490f3564ffcbd7"
+        },
+        {
+          "direction": "SW",
+          "frame": 8,
+          "source": "sources/rift-hurt-SW.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            650,
+            1132,
+            937,
+            1518
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.7601809954751131,
+          "bounds": [
+            111,
+            65,
+            223,
+            299
+          ],
+          "foot": [
+            192.3393665158371,
+            359.95022624434387
+          ],
+          "sha256": "fa5ffe9471d7e7d50d31714986da422d5aecc8a5d79540c18ca5382c65c2db3a"
+        },
+        {
+          "direction": "W",
+          "frame": 1,
+          "source": "sources/rift-hurt-W.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            196,
+            12,
+            425,
+            383
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.7567567567567568,
+          "bounds": [
+            148,
+            78,
+            179,
+            286
+          ],
+          "foot": [
+            191.8918918918919,
+            360.27027027027026
+          ],
+          "sha256": "e366cb6b2c742e39b8c4856d506b5899d6308dc82fa7d6fb7946eee7a6797220"
+        },
+        {
+          "direction": "W",
+          "frame": 2,
+          "source": "sources/rift-hurt-W.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            661,
+            27,
+            924,
+            383
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.7567567567567568,
+          "bounds": [
+            140,
+            88,
+            204,
+            275
+          ],
+          "foot": [
+            192.21621621621622,
+            359.6756756756757
+          ],
+          "sha256": "513ef69d972c17e94258bb99bfbd1f7310122e8962dddefcfc79ae741cca891f"
+        },
+        {
+          "direction": "W",
+          "frame": 3,
+          "source": "sources/rift-hurt-W.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            190,
+            425,
+            487,
+            745
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.7567567567567568,
+          "bounds": [
+            120,
+            116,
+            230,
+            247
+          ],
+          "foot": [
+            192.27027027027026,
+            359.6756756756757
+          ],
+          "sha256": "352318d589d5a89580293c7b3360f305d96c5a507d39182f6ec0e7df10fdcf41"
+        },
+        {
+          "direction": "W",
+          "frame": 4,
+          "source": "sources/rift-hurt-W.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            658,
+            430,
+            988,
+            744
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.7567567567567568,
+          "bounds": [
+            105,
+            121,
+            255,
+            243
+          ],
+          "foot": [
+            192.40540540540542,
+            360.13513513513516
+          ],
+          "sha256": "c5b67dfaa5aadbd1e616b52cb45d8c556994e2436ec095101d296b43e91e61f6"
+        },
+        {
+          "direction": "W",
+          "frame": 5,
+          "source": "sources/rift-hurt-W.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            166,
+            781,
+            480,
+            1106
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.7567567567567568,
+          "bounds": [
+            107,
+            113,
+            243,
+            251
+          ],
+          "foot": [
+            192.13513513513516,
+            360.4594594594595
+          ],
+          "sha256": "17cbd9cc2bf224403643a3d8b88e215f947b10bc7dad2df006563554aebb5aa4"
+        },
+        {
+          "direction": "W",
+          "frame": 6,
+          "source": "sources/rift-hurt-W.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            646,
+            758,
+            950,
+            1106
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.7567567567567568,
+          "bounds": [
+            125,
+            95,
+            235,
+            269
+          ],
+          "foot": [
+            192.35135135135135,
+            359.8648648648649
+          ],
+          "sha256": "e1b4acf9922b7acef57cf49b380e63144bd241bb56fb58da2cbe4f0b5786f647"
+        },
+        {
+          "direction": "W",
+          "frame": 7,
+          "source": "sources/rift-hurt-W.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            204,
+            1126,
+            445,
+            1515
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.7567567567567568,
+          "bounds": [
+            148,
+            64,
+            188,
+            300
+          ],
+          "foot": [
+            191.8918918918919,
+            359.89189189189193
+          ],
+          "sha256": "905e0d7fd46a81082540bff83a81177d0f97f7c74452320fc34bb8efd4708929"
+        },
+        {
+          "direction": "W",
+          "frame": 8,
+          "source": "sources/rift-hurt-W.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            666,
+            1125,
+            893,
+            1515
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.7567567567567568,
+          "bounds": [
+            147,
+            63,
+            177,
+            300
+          ],
+          "foot": [
+            192.02702702702703,
+            359.64864864864865
+          ],
+          "sha256": "6eb59446f319fdaee95f0fc52206438bc219f0dd01001f58e13d26689c62e34b"
+        },
+        {
+          "direction": "NW",
+          "frame": 1,
+          "source": "sources/rift-hurt-NW.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            151,
+            18,
+            400,
+            383
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.721030042918455,
+          "bounds": [
+            113,
+            95,
+            185,
+            268
+          ],
+          "foot": [
+            191.95278969957081,
+            360.3390557939914
+          ],
+          "sha256": "5bf65866450eba27f02222847618db6e716f92e08b11955f547ece933f817634"
+        },
+        {
+          "direction": "NW",
+          "frame": 2,
+          "source": "sources/rift-hurt-NW.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            600,
+            33,
+            968,
+            383
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.721030042918455,
+          "bounds": [
+            90,
+            106,
+            270,
+            257
+          ],
+          "foot": [
+            192.3862660944206,
+            359.80257510729615
+          ],
+          "sha256": "fd11c20b63229cb0335b98121c121215e207d0429e8dd6b0f77df4f2c401a4a5"
+        },
+        {
+          "direction": "NW",
+          "frame": 3,
+          "source": "sources/rift-hurt-NW.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            126,
+            406,
+            475,
+            754
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.721030042918455,
+          "bounds": [
+            89,
+            107,
+            257,
+            256
+          ],
+          "foot": [
+            191.74678111587983,
+            360.0815450643777
+          ],
+          "sha256": "7c5cb8f54cccd31ad2d8bf5d6fdbe50d171fe82356ef16cb325ab2e09d671b35"
+        },
+        {
+          "direction": "NW",
+          "frame": 4,
+          "source": "sources/rift-hurt-NW.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            643,
+            474,
+            957,
+            753
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.721030042918455,
+          "bounds": [
+            112,
+            157,
+            231,
+            206
+          ],
+          "foot": [
+            191.6738197424893,
+            360.3304721030043
+          ],
+          "sha256": "65375bd8a36ac820fa6a040a10b753cc72198fe6e845d2665a2b21bb1e627200"
+        },
+        {
+          "direction": "NW",
+          "frame": 5,
+          "source": "sources/rift-hurt-NW.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            161,
+            779,
+            484,
+            1130
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.721030042918455,
+          "bounds": [
+            113,
+            105,
+            238,
+            258
+          ],
+          "foot": [
+            191.95278969957081,
+            359.5236051502146
+          ],
+          "sha256": "273378d4d53de3945287c73406b3e1534e5c40170935b1b39a40a80dd514bdc5"
+        },
+        {
+          "direction": "NW",
+          "frame": 6,
+          "source": "sources/rift-hurt-NW.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            635,
+            773,
+            956,
+            1130
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.721030042918455,
+          "bounds": [
+            109,
+            101,
+            236,
+            262
+          ],
+          "foot": [
+            191.91845493562232,
+            359.84978540772534
+          ],
+          "sha256": "79569b56f2a227241b81e8037e1c92a7cd628819c8aa972f533f996d3ad27655"
+        },
+        {
+          "direction": "NW",
+          "frame": 7,
+          "source": "sources/rift-hurt-NW.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            150,
+            1153,
+            442,
+            1520
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.721030042918455,
+          "bounds": [
+            107,
+            94,
+            216,
+            270
+          ],
+          "foot": [
+            192.08154506437768,
+            360.0600858369099
+          ],
+          "sha256": "e4dfd614e7fd551f0d3597a0e0d62d0106448240e254695aae432e2970758c45"
+        },
+        {
+          "direction": "NW",
+          "frame": 8,
+          "source": "sources/rift-hurt-NW.png",
+          "sourceSize": [
+            1024,
+            1536
+          ],
+          "sourceBounds": [
+            643,
+            1149,
+            902,
+            1520
+          ],
+          "sourceEdgeContact": false,
+          "scale": 0.721030042918455,
+          "bounds": [
+            113,
+            91,
+            192,
+            273
+          ],
+          "foot": [
+            191.95278969957081,
+            359.9442060085837
+          ],
+          "sha256": "81c71df073f8c6651fa8e8d30b4fa35ed749f5771100f90e887f96d935bb1fab"
+        }
+      ],
+      "scaleByHeading": {
+        "N": 0.870026525198939,
+        "NE": 0.830379746835443,
+        "E": 0.8608923884514436,
+        "SE": 0.6303939962476548,
+        "S": 0.8346055979643766,
+        "SW": 0.7601809954751131,
+        "W": 0.7567567567567568,
+        "NW": 0.721030042918455
+      }
+    }
+  ]
+}
