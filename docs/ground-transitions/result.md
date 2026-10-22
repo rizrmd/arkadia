@@ -12,29 +12,29 @@ An isolated build of the committed foundation changes passes TypeScript and Vite
 
 ## Live result
 
-[Open Stronghold](https://arkadia-stronghold-whachat.fural.space/stronghold.html)
+[Open Stronghold](https://ark-whachat.fural.space/)
 
-![Desktop foundation transitions](https://arkadia-stronghold-whachat.fural.space/foundation-transitions/desktop.png)
+![Desktop foundation transitions](https://ark-whachat.fural.space/foundation-transitions/desktop.png)
 
-![Mobile foundation transitions](https://arkadia-stronghold-whachat.fural.space/foundation-transitions/mobile.png)
+![Mobile foundation transitions](https://ark-whachat.fural.space/foundation-transitions/mobile.png)
 
-![Wide foundation transitions](https://arkadia-stronghold-whachat.fural.space/foundation-transitions/wide.png)
+![Wide foundation transitions](https://ark-whachat.fural.space/foundation-transitions/wide.png)
 
-![Desktop closer view](https://arkadia-stronghold-whachat.fural.space/foundation-transitions/desktop-detail.png)
+![Desktop closer view](https://ark-whachat.fural.space/foundation-transitions/desktop-detail.png)
 
-![Mobile closer view](https://arkadia-stronghold-whachat.fural.space/foundation-transitions/mobile-detail.png)
+![Mobile closer view](https://ark-whachat.fural.space/foundation-transitions/mobile-detail.png)
 
-![Wide closer view](https://arkadia-stronghold-whachat.fural.space/foundation-transitions/wide-detail.png)
+![Wide closer view](https://ark-whachat.fural.space/foundation-transitions/wide-detail.png)
 
 ## Generated assets
 
-![Generated soil and moss source](https://arkadia-stronghold-whachat.fural.space/foundation-transitions/soil-moss-source.webp)
+![Generated soil and moss source](https://ark-whachat.fural.space/foundation-transitions/soil-moss-source.webp)
 
-![Generated creeping moss source](https://arkadia-stronghold-whachat.fural.space/foundation-transitions/moss-source.webp)
+![Generated creeping moss source](https://ark-whachat.fural.space/foundation-transitions/moss-source.webp)
 
-![Runtime soil and grit strip](https://arkadia-stronghold-whachat.fural.space/foundation-transitions/soil-moss.png)
+![Runtime soil and grit strip](https://ark-whachat.fural.space/foundation-transitions/soil-moss.png)
 
-![Runtime low moss cluster](https://arkadia-stronghold-whachat.fural.space/foundation-transitions/moss.png)
+![Runtime low moss cluster](https://ark-whachat.fural.space/foundation-transitions/moss.png)
 
 ## Original human report
 
@@ -50,8 +50,8 @@ The follow-up screenshot identified the expedition table and stools as still dis
 
 The isolated production build and three-viewport browser checks pass again, including deterministic reload, selection and pan/zoom without rebakes. The broad under-table shadow was removed following the lighting overlap concern. This module owns only tiny non-directional foot contact occlusion and dirt wear. All directional cast shadows, their length and angle, and time-of-day lighting remain the lighting system’s responsibility. No light anchors, lightmaps, phase logic or lighting files are changed by this correction.
 
-![Furniture report from the human](https://arkadia-stronghold-whachat.fural.space/foundation-transitions/table-feedback.jpg)
+![Furniture report from the human](https://ark-whachat.fural.space/foundation-transitions/table-feedback.jpg)
 
-![Table and stool ground-contact detail](https://arkadia-stronghold-whachat.fural.space/foundation-transitions/table-detail.png)
+![Table and stool ground-contact detail](https://ark-whachat.fural.space/foundation-transitions/table-detail.png)
 
-![Original expedition furniture sprite](https://arkadia-stronghold-whachat.fural.space/assets/stronghold/expedition.png)
+![Original expedition furniture sprite](https://ark-whachat.fural.space/assets/stronghold/expedition.png)

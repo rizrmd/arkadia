@@ -1,0 +1,185 @@
+{
+ "secondsPerRun": 30,
+ "fps": 60,
+ "heroSpeedPxPerS": 66,
+ "profiles": {
+  "lan": {
+   "base": 2,
+   "jitter": 4,
+   "spike": 0,
+   "spikeMs": 0,
+   "jank": 0
+  },
+  "mobile": {
+   "base": 40,
+   "jitter": 50,
+   "spike": 0.03,
+   "spikeMs": 120,
+   "jank": 0
+  },
+  "bad": {
+   "base": 80,
+   "jitter": 120,
+   "spike": 0.06,
+   "spikeMs": 250,
+   "jank": 0
+  },
+  "janky": {
+   "base": 40,
+   "jitter": 50,
+   "spike": 0.03,
+   "spikeMs": 120,
+   "jank": 0.02
+  },
+  "stopgap": {
+   "base": 40,
+   "jitter": 50,
+   "spike": 0.03,
+   "spikeMs": 120,
+   "jank": 0,
+   "gap": {
+    "from": 281,
+    "to": 286,
+    "ms": 300
+   }
+  }
+ },
+ "runs": {
+  "lan": {
+   "before": {
+    "frames": 1428,
+    "cv": 0.007,
+    "stalls": 0,
+    "jumps": 0,
+    "p95SpeedError": "1.3%",
+    "maxSpeedError": "5.4%",
+    "restOvershootPx": 0,
+    "pastStopPx": 0,
+    "offPathPx": 0
+   },
+   "after": {
+    "frames": 1428,
+    "cv": 0.005,
+    "stalls": 0,
+    "jumps": 0,
+    "p95SpeedError": "1%",
+    "maxSpeedError": "1%",
+    "restOvershootPx": 0,
+    "pastStopPx": 0,
+    "offPathPx": 0,
+    "delayMs": 73,
+    "extrapolatedFrames": 0,
+    "heldFrames": 0
+   }
+  },
+  "mobile": {
+   "before": {
+    "frames": 1428,
+    "cv": 0.502,
+    "stalls": 63,
+    "jumps": 16,
+    "p95SpeedError": "100%",
+    "maxSpeedError": "592.8%",
+    "restOvershootPx": 0,
+    "pastStopPx": 0,
+    "offPathPx": 0
+   },
+   "after": {
+    "frames": 1428,
+    "cv": 0.021,
+    "stalls": 0,
+    "jumps": 0,
+    "p95SpeedError": "6%",
+    "maxSpeedError": "6.9%",
+    "restOvershootPx": 0,
+    "pastStopPx": 0,
+    "offPathPx": 0,
+    "delayMs": 162,
+    "extrapolatedFrames": 87,
+    "heldFrames": 0
+   }
+  },
+  "bad": {
+   "before": {
+    "frames": 1428,
+    "cv": 1.712,
+    "stalls": 406,
+    "jumps": 121,
+    "p95SpeedError": "143.8%",
+    "maxSpeedError": "1751.9%",
+    "restOvershootPx": 0,
+    "pastStopPx": 0,
+    "offPathPx": 0
+   },
+   "after": {
+    "frames": 1428,
+    "cv": 0.042,
+    "stalls": 0,
+    "jumps": 0,
+    "p95SpeedError": "6%",
+    "maxSpeedError": "43.5%",
+    "restOvershootPx": 0,
+    "pastStopPx": 0,
+    "offPathPx": 0,
+    "delayMs": 339,
+    "extrapolatedFrames": 193,
+    "heldFrames": 6
+   }
+  },
+  "janky": {
+   "before": {
+    "frames": 1254,
+    "cv": 0.474,
+    "stalls": 49,
+    "jumps": 19,
+    "p95SpeedError": "88.6%",
+    "maxSpeedError": "572.8%",
+    "restOvershootPx": 0,
+    "pastStopPx": 0,
+    "offPathPx": 0
+   },
+   "after": {
+    "frames": 1254,
+    "cv": 0.027,
+    "stalls": 0,
+    "jumps": 0,
+    "p95SpeedError": "6%",
+    "maxSpeedError": "6.9%",
+    "restOvershootPx": 0,
+    "pastStopPx": 0,
+    "offPathPx": 0,
+    "delayMs": 206,
+    "extrapolatedFrames": 37,
+    "heldFrames": 0
+   }
+  },
+  "stopgap": {
+   "before": {
+    "frames": 1428,
+    "cv": 0.502,
+    "stalls": 63,
+    "jumps": 16,
+    "p95SpeedError": "100%",
+    "maxSpeedError": "592.8%",
+    "restOvershootPx": 0,
+    "pastStopPx": 0,
+    "offPathPx": 0
+   },
+   "after": {
+    "frames": 1428,
+    "cv": 0.026,
+    "stalls": 0,
+    "jumps": 0,
+    "p95SpeedError": "6%",
+    "maxSpeedError": "6.9%",
+    "restOvershootPx": 0,
+    "pastStopPx": 13.2,
+    "offPathPx": 13.2,
+    "delayMs": 162,
+    "extrapolatedFrames": 101,
+    "heldFrames": 10
+   }
+  }
+ },
+ "ok": true
+}

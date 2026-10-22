@@ -54,3 +54,75 @@
 
 /* A short, softly rounded clock keeps the mobile HUD quiet. */
 @media (max-width:600px){.clock-chip{min-width:90px;gap:6px;padding:0 10px}.clock-chip .clock-mode{display:none}.clock-time{font-size:15px}.clock-panel{max-width:calc(100vw - 24px)}}
+/* Co-op room chip under the clock, its panel, and join/leave notices (net/lobby.ts). */
+#coop{position:fixed;top:calc(max(12px,env(safe-area-inset-top)) + 42px);right:max(12px,env(safe-area-inset-right));z-index:9;display:flex;flex-direction:column;align-items:flex-end;gap:8px;font-size:14px;max-width:calc(100vw - 24px);color:#eee7d7}
+#coop button,#coop input{font:inherit;color:inherit}
+#coop button{cursor:pointer}
+.coop-chip{display:flex;align-items:center;gap:7px;height:32px;padding:0 11px;border:0;border-radius:16px;background:#172022e8;box-shadow:0 2px 7px #0003;white-space:nowrap}
+.coop-dot{width:8px;height:8px;border-radius:50%;background:#7d8783}
+#coop[data-status=online] .coop-dot{background:#7fd36a;box-shadow:0 0 6px #7fd36a99}
+#coop[data-status=connecting] .coop-dot,#coop[data-status=reconnecting] .coop-dot{background:#f2c46b;animation:coop-pulse 1s ease-in-out infinite}
+@keyframes coop-pulse{50%{opacity:.35}}
+.coop-label{color:#e8d6ae}.coop-code{font-variant-numeric:tabular-nums;letter-spacing:.08em;font-weight:600}.coop-count{color:#b9c3bd;font-size:12px}
+.coop-panel{width:min(290px,calc(100vw - 24px));box-sizing:border-box;padding:12px;border-radius:12px;background:#141c20f2;box-shadow:0 6px 20px #0007;display:flex;flex-direction:column;gap:10px}
+.coop-panel[hidden]{display:none}
+.coop-title{margin:0;font-size:13px;line-height:1.35;color:#d6cfbf}
+.coop-room[hidden]{display:none}
+.coop-head{display:flex;align-items:baseline;gap:8px;color:#b9c3bd;font-size:12px}
+.coop-room-code{font-size:22px;letter-spacing:.12em;color:#f2c46b;font-variant-numeric:tabular-nums}
+.coop-ping{margin-left:auto}
+.coop-copy,.coop-actions button,.coop-offline{min-height:36px;padding:0 12px;border:1px solid #c9a86a88;border-radius:18px;background:#1d282c}
+.coop-copy{width:100%;margin:8px 0 6px}
+.coop-primary{background:#6b4d22!important;border-color:#f2c46b!important}
+.coop-players{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:3px;font-size:13px}
+.coop-players li{display:flex;justify-content:space-between;gap:8px;padding:3px 2px;border-bottom:1px solid #ffffff12}
+.coop-players li[data-you=true] span::after{content:" (you)";color:#b9c3bd;font-size:12px}
+.coop-players em{margin-left:6px;font-style:normal;font-size:12px;color:#c9a86a}
+.coop-players small{color:#b9c3bd;font-variant-numeric:tabular-nums}
+.coop-join{display:flex;flex-direction:column;gap:8px;margin:0}
+.coop-join label{display:flex;flex-direction:column;gap:3px;font-size:12px;color:#b9c3bd}
+.coop-join input{height:34px;padding:0 10px;border:1px solid #ffffff2a;border-radius:8px;background:#0d1417;font-size:16px}
+.coop-join input[name=code]{text-transform:uppercase;letter-spacing:.1em}
+.coop-actions{display:flex;gap:8px}.coop-actions button{flex:1}
+.coop-actions button:disabled{opacity:.5;cursor:default}
+.coop-error{margin:0;min-height:0;color:#f2a37f;font-size:12px}.coop-error:empty{display:none}
+.coop-offline[hidden]{display:none}
+.coop-toasts{display:flex;flex-direction:column;align-items:flex-end;gap:4px;pointer-events:none}
+.coop-toasts p{margin:0;padding:5px 10px;border-radius:12px;background:#172022e0;font-size:13px;animation:coop-toast 3.2s ease forwards}
+@keyframes coop-toast{0%{opacity:0;transform:translateY(-4px)}8%,85%{opacity:1;transform:none}100%{opacity:0}}
+#coop :focus-visible{outline:2px solid #f2c46b;outline-offset:2px}
+/* Name and health bar over each other hero in the room (party.ts). */
+#party-tags{position:absolute;left:0;top:0;z-index:2;pointer-events:none}
+.party-tag{position:absolute;left:0;top:0;will-change:transform}
+.party-card{position:absolute;left:0;bottom:-4px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:2px}
+.party-name{max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:600 12px/1.15 Georgia,serif;color:#cfe6ff;text-shadow:0 1px 2px #000,0 0 5px #000}
+.party-hp{display:block;width:40px;height:6px;padding:1px;border-radius:4px;background:#120c0ccc;box-shadow:0 1px 3px #0008}
+.party-hp i{display:block;height:100%;border-radius:3px;background:linear-gradient(#8fd16a,#4f9a3c);transform-origin:0 50%}
+.party-tag[data-low=true] .party-hp i{background:linear-gradient(#f07a5f,#b8402c)}
+.party-tag[data-down=true]{opacity:.55}
+@media (max-width:480px){#coop{top:calc(max(12px,env(safe-area-inset-top)) + 40px)}.coop-chip{height:30px;padding:0 9px}.coop-label{display:none}}
+/* Hero selection over the world (hero-picker.ts), and the hero's name in the health panel that reopens it. */
+#hero-picker{position:fixed;inset:0;z-index:40;display:grid;place-items:center;padding:max(16px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) max(16px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left));background:radial-gradient(ellipse at 50% 45%,#11191eb3 0%,#0b1114eb 75%);overflow:auto}
+#hero-picker[hidden]{display:none}
+.picker-card{width:min(560px,100%);text-align:center;animation:picker-in .3s ease-out}
+@keyframes picker-in{from{opacity:0;transform:translateY(8px)}}
+.picker-card small{display:block;letter-spacing:.32em;font-size:11px;color:#c9a86a}
+.picker-card h2{margin:6px 0 18px;font-weight:400;font-size:clamp(24px,7vw,34px);letter-spacing:.02em}
+.picker-heroes{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.picker-hero{display:flex;flex-direction:column;align-items:center;gap:4px;padding:12px 10px 14px;font:inherit;color:inherit;text-align:center;cursor:pointer;border:1px solid #c9a86a55;border-radius:14px;background:linear-gradient(#1b2529,#121a1e);box-shadow:0 6px 20px #0006;transition:border-color .15s,transform .15s}
+.picker-hero:hover{border-color:#c9a86a;transform:translateY(-2px)}
+.picker-hero[aria-pressed=true]{border-color:#f2c46b;background:linear-gradient(#2c2618,#161c1d)}
+.picker-hero:focus-visible,.picker-close:focus-visible,.hud-hero:focus-visible{outline:2px solid #f2c46b;outline-offset:2px}
+.picker-portrait{display:flex;align-items:flex-end;justify-content:center;width:100%;height:clamp(110px,26vh,200px);margin-bottom:6px;background:radial-gradient(ellipse at 50% 92%,#c9a86a33 0%,transparent 60%)}
+.picker-portrait img{max-width:100%;max-height:100%;object-fit:contain;filter:drop-shadow(0 4px 6px #0008)}
+.picker-name{font-size:19px;color:#f2e6c9}
+.picker-role{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#c9a86a}
+.picker-blurb{margin-top:4px;font-size:13px;line-height:1.35;color:#cfc6b4}
+.picker-close{margin-top:16px;min-height:40px;padding:0 18px;font:inherit;font-size:14px;color:#eee7d7;cursor:pointer;background:#141c22;border:1px solid #c9a86a88;border-radius:999px}
+#hero-picker[data-first=true] .picker-close{display:none}
+@media (max-width:420px){.picker-hero{padding:10px 6px 12px}.picker-name{font-size:17px}.picker-blurb{font-size:12px}}
+@media (max-height:520px){.picker-card h2{margin-bottom:10px}.picker-portrait{height:clamp(90px,30vh,140px)}.picker-blurb{display:none}}
+@media (prefers-reduced-motion:reduce){.picker-card{animation:none}.picker-hero{transition:none}}
+#hero-hud .hud-hero{pointer-events:auto;display:inline-flex;align-items:center;gap:5px;min-height:28px;margin:-6px 0;padding:0;font:inherit;color:#e8d6ae;text-shadow:inherit;cursor:pointer;background:none;border:0}
+#hero-hud .hud-hero::after{content:"";width:6px;height:6px;margin-top:-3px;border:solid #c9a86a;border-width:0 1.5px 1.5px 0;transform:rotate(45deg)}
+#hero-hud .hud-hero:hover{color:#f2c46b}

@@ -18,3 +18,10 @@ for action,spec in LOCOMOTION.items():
 json.dump({'status':'evaluated-source-proof-visual-review-still-required','results':results},open('docs/rift-runner-v2/locomotion-audit.json','w'),indent=2)
 print('LOCOMOTION_AUDIT',json.dumps(results))
 if not all(r['pass'] for r in results):raise RuntimeError('Locomotion phase/contact audit failed')
+
+flight=[]
+for t in [.375,.875]:
+ pose('run',t);bpy.context.view_layer.update();heights={name:(legs[name][2].matrix_world@Vector((0,0,-.115))).z for name in legs};flight.append({'phase':t,'heights':heights,'pass':min(heights.values())>.03})
+json.dump({'frames':flight,'status':'source-flight-clearance-proof'},open('docs/rift-runner-v3/run-flight-audit.json','w'),indent=2)
+print('RUN_FLIGHT_AUDIT',json.dumps(flight))
+if not all(r['pass'] for r in flight):raise RuntimeError('Run flight not visible in eight-frame sampling')

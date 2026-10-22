@@ -8,87 +8,87 @@ The west idle and Overdrive originals were replaced by targeted direction correc
 
 ## afterimage n ne e se
 
-![afterimage-n-ne-e-se.png original generated PNG](https://arkadia-stronghold-whachat.fural.space/rift-runner/v1/source/afterimage-n-ne-e-se.png)
+![afterimage-n-ne-e-se.png original generated PNG](https://ark-whachat.fural.space/rift-runner/v1/source/afterimage-n-ne-e-se.png)
 
 ## afterimage s sw w nw
 
-![afterimage-s-sw-w-nw.png original generated PNG](https://arkadia-stronghold-whachat.fural.space/rift-runner/v1/source/afterimage-s-sw-w-nw.png)
+![afterimage-s-sw-w-nw.png original generated PNG](https://ark-whachat.fural.space/rift-runner/v1/source/afterimage-s-sw-w-nw.png)
 
 ## aura
 
-![aura.png original generated PNG](https://arkadia-stronghold-whachat.fural.space/rift-runner/v1/source/aura.png)
+![aura.png original generated PNG](https://ark-whachat.fural.space/rift-runner/v1/source/aura.png)
 
 ## idle n ne e se
 
-![idle-n-ne-e-se.png original generated PNG](https://arkadia-stronghold-whachat.fural.space/rift-runner/v1/source/idle-n-ne-e-se.png)
+![idle-n-ne-e-se.png original generated PNG](https://ark-whachat.fural.space/rift-runner/v1/source/idle-n-ne-e-se.png)
 
 ## idle s sw w nw rejected
 
-![idle-s-sw-w-nw-rejected.png original generated PNG — rejected version](https://arkadia-stronghold-whachat.fural.space/rift-runner/v1/source/idle-s-sw-w-nw-rejected.png)
+![idle-s-sw-w-nw-rejected.png original generated PNG — rejected version](https://ark-whachat.fural.space/rift-runner/v1/source/idle-s-sw-w-nw-rejected.png)
 
 ## idle s sw w nw
 
-![idle-s-sw-w-nw.png original generated PNG](https://arkadia-stronghold-whachat.fural.space/rift-runner/v1/source/idle-s-sw-w-nw.png)
+![idle-s-sw-w-nw.png original generated PNG](https://ark-whachat.fural.space/rift-runner/v1/source/idle-s-sw-w-nw.png)
 
 ## north skill correction
 
-![north-skill-correction.png original generated PNG](https://arkadia-stronghold-whachat.fural.space/rift-runner/v1/source/north-skill-correction.png)
+![north-skill-correction.png original generated PNG](https://ark-whachat.fural.space/rift-runner/v1/source/north-skill-correction.png)
 
 ## overdrive n ne e se
 
-![overdrive-n-ne-e-se.png original generated PNG](https://arkadia-stronghold-whachat.fural.space/rift-runner/v1/source/overdrive-n-ne-e-se.png)
+![overdrive-n-ne-e-se.png original generated PNG](https://ark-whachat.fural.space/rift-runner/v1/source/overdrive-n-ne-e-se.png)
 
 ## overdrive s sw w nw rejected
 
-![overdrive-s-sw-w-nw-rejected.png original generated PNG — rejected version](https://arkadia-stronghold-whachat.fural.space/rift-runner/v1/source/overdrive-s-sw-w-nw-rejected.png)
+![overdrive-s-sw-w-nw-rejected.png original generated PNG — rejected version](https://ark-whachat.fural.space/rift-runner/v1/source/overdrive-s-sw-w-nw-rejected.png)
 
 ## overdrive s sw w nw
 
-![overdrive-s-sw-w-nw.png original generated PNG](https://arkadia-stronghold-whachat.fural.space/rift-runner/v1/source/overdrive-s-sw-w-nw.png)
+![overdrive-s-sw-w-nw.png original generated PNG](https://ark-whachat.fural.space/rift-runner/v1/source/overdrive-s-sw-w-nw.png)
 
 ## phase dash n ne e se
 
-![phase-dash-n-ne-e-se.png original generated PNG](https://arkadia-stronghold-whachat.fural.space/rift-runner/v1/source/phase-dash-n-ne-e-se.png)
+![phase-dash-n-ne-e-se.png original generated PNG](https://ark-whachat.fural.space/rift-runner/v1/source/phase-dash-n-ne-e-se.png)
 
 ## phase dash s sw w nw
 
-![phase-dash-s-sw-w-nw.png original generated PNG](https://arkadia-stronghold-whachat.fural.space/rift-runner/v1/source/phase-dash-s-sw-w-nw.png)
+![phase-dash-s-sw-w-nw.png original generated PNG](https://ark-whachat.fural.space/rift-runner/v1/source/phase-dash-s-sw-w-nw.png)
 
 ## projectile n ne e se
 
-![projectile-n-ne-e-se.png original generated PNG](https://arkadia-stronghold-whachat.fural.space/rift-runner/v1/source/projectile-n-ne-e-se.png)
+![projectile-n-ne-e-se.png original generated PNG](https://ark-whachat.fural.space/rift-runner/v1/source/projectile-n-ne-e-se.png)
 
 ## projectile s sw w nw
 
-![projectile-s-sw-w-nw.png original generated PNG](https://arkadia-stronghold-whachat.fural.space/rift-runner/v1/source/projectile-s-sw-w-nw.png)
+![projectile-s-sw-w-nw.png original generated PNG](https://ark-whachat.fural.space/rift-runner/v1/source/projectile-s-sw-w-nw.png)
 
 ## pulse shot n ne e se
 
-![pulse-shot-n-ne-e-se.png original generated PNG](https://arkadia-stronghold-whachat.fural.space/rift-runner/v1/source/pulse-shot-n-ne-e-se.png)
+![pulse-shot-n-ne-e-se.png original generated PNG](https://ark-whachat.fural.space/rift-runner/v1/source/pulse-shot-n-ne-e-se.png)
 
 ## pulse shot s sw w nw
 
-![pulse-shot-s-sw-w-nw.png original generated PNG](https://arkadia-stronghold-whachat.fural.space/rift-runner/v1/source/pulse-shot-s-sw-w-nw.png)
+![pulse-shot-s-sw-w-nw.png original generated PNG](https://ark-whachat.fural.space/rift-runner/v1/source/pulse-shot-s-sw-w-nw.png)
 
 ## rift trap n ne e se
 
-![rift-trap-n-ne-e-se.png original generated PNG](https://arkadia-stronghold-whachat.fural.space/rift-runner/v1/source/rift-trap-n-ne-e-se.png)
+![rift-trap-n-ne-e-se.png original generated PNG](https://ark-whachat.fural.space/rift-runner/v1/source/rift-trap-n-ne-e-se.png)
 
 ## rift trap s sw w nw
 
-![rift-trap-s-sw-w-nw.png original generated PNG](https://arkadia-stronghold-whachat.fural.space/rift-runner/v1/source/rift-trap-s-sw-w-nw.png)
+![rift-trap-s-sw-w-nw.png original generated PNG](https://ark-whachat.fural.space/rift-runner/v1/source/rift-trap-s-sw-w-nw.png)
 
 ## run n ne e se
 
-![run-n-ne-e-se.png original generated PNG](https://arkadia-stronghold-whachat.fural.space/rift-runner/v1/source/run-n-ne-e-se.png)
+![run-n-ne-e-se.png original generated PNG](https://ark-whachat.fural.space/rift-runner/v1/source/run-n-ne-e-se.png)
 
 ## run s sw w nw
 
-![run-s-sw-w-nw.png original generated PNG](https://arkadia-stronghold-whachat.fural.space/rift-runner/v1/source/run-s-sw-w-nw.png)
+![run-s-sw-w-nw.png original generated PNG](https://ark-whachat.fural.space/rift-runner/v1/source/run-s-sw-w-nw.png)
 
 ## trap
 
-![trap.png original generated PNG](https://arkadia-stronghold-whachat.fural.space/rift-runner/v1/source/trap.png)
+![trap.png original generated PNG](https://ark-whachat.fural.space/rift-runner/v1/source/trap.png)
 
 ## Superseded animation draft
 

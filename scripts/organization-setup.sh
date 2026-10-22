@@ -41,6 +41,14 @@ with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:list(pool.map(
 print('Browser libraries ready',flush=True)
 BROWSER_PY
 python3 "$HOME/tools/install-browser-libs.py"
+# Go toolchain for the co-op game server (server/): HOME-only and statically linked, so it runs on the musl sandbox.
+GO_VERSION=1.25.3
+if [ "$("$HOME/.local/go/bin/go" env GOVERSION 2>/dev/null)" != "go$GO_VERSION" ]; then
+  rm -rf "$HOME/.local/go"
+  curl -fsSL "https://go.dev/dl/go$GO_VERSION.linux-amd64.tar.gz" | tar -C "$HOME/.local" -xz
+fi
+ln -sfn "$HOME/.local/go/bin/go" "$HOME/.local/bin/go"
+ln -sfn "$HOME/.local/go/bin/gofmt" "$HOME/.local/bin/gofmt"
 if ! command -v uv >/dev/null 2>&1; then
   curl -LsSf https://astral.sh/uv/install.sh | env UV_INSTALL_DIR="$HOME/.local/bin" sh
 fi

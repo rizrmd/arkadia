@@ -2,7 +2,7 @@
 
 **Production candidate published; final art acceptance is pending.** The simplified 3D rendering does not yet match the approved hand-painted concept. No game-ready quality claim is made.
 
-[Play the isolated review](https://ember-warden-review-whachat.fural.space/) · [Atlas manifest](https://ember-warden-review-whachat.fural.space/manifest.json)
+[Play the isolated review](https://ark-whachat.fural.space/ember-warden-review/) · [Atlas manifest](https://ark-whachat.fural.space/ember-warden-review/manifest.json)
 
 ## Asset coverage
 
@@ -55,41 +55,41 @@ The delivered pack is a reproducible animation and VFX candidate with an isolate
 
 Screenshots document the running viewer; the actual normal/slow/scrub traces are in the QA JSON.
 
-![live cinder step](https://ember-warden-review-whachat.fural.space/evidence/live-cinder-step.png)
+![live cinder step](https://ark-whachat.fural.space/ember-warden-review/evidence/live-cinder-step.png)
 
-![live death](https://ember-warden-review-whachat.fural.space/evidence/live-death.png)
+![live death](https://ark-whachat.fural.space/ember-warden-review/evidence/live-death.png)
 
-![live ember snare](https://ember-warden-review-whachat.fural.space/evidence/live-ember-snare.png)
+![live ember snare](https://ark-whachat.fural.space/ember-warden-review/evidence/live-ember-snare.png)
 
-![live flame fan moving](https://ember-warden-review-whachat.fural.space/evidence/live-flame-fan-moving.png)
+![live flame fan moving](https://ark-whachat.fural.space/ember-warden-review/evidence/live-flame-fan-moving.png)
 
-![live flame fan](https://ember-warden-review-whachat.fural.space/evidence/live-flame-fan.png)
+![live flame fan](https://ark-whachat.fural.space/ember-warden-review/evidence/live-flame-fan.png)
 
-![live furnace heart](https://ember-warden-review-whachat.fural.space/evidence/live-furnace-heart.png)
+![live furnace heart](https://ark-whachat.fural.space/ember-warden-review/evidence/live-furnace-heart.png)
 
-![live hurt](https://ember-warden-review-whachat.fural.space/evidence/live-hurt.png)
+![live hurt](https://ark-whachat.fural.space/ember-warden-review/evidence/live-hurt.png)
 
-![live idle](https://ember-warden-review-whachat.fural.space/evidence/live-idle.png)
+![live idle](https://ark-whachat.fural.space/ember-warden-review/evidence/live-idle.png)
 
 ![live mobile loader](https://ember-warden-review-whachat.fural.space/evidence/live-mobile-loader.png)
 
 ![live run](https://ember-warden-review-whachat.fural.space/evidence/live-run.png)
 
-![local cinder step](https://ember-warden-review-whachat.fural.space/evidence/local-cinder-step.png)
+![live run](https://ark-whachat.fural.space/ember-warden-review/evidence/live-run.png)
 
-![local death](https://ember-warden-review-whachat.fural.space/evidence/local-death.png)
+![local cinder step](https://ark-whachat.fural.space/ember-warden-review/evidence/local-cinder-step.png)
 
-![local ember snare](https://ember-warden-review-whachat.fural.space/evidence/local-ember-snare.png)
+![local death](https://ark-whachat.fural.space/ember-warden-review/evidence/local-death.png)
 
-![local flame fan moving](https://ember-warden-review-whachat.fural.space/evidence/local-flame-fan-moving.png)
+![local ember snare](https://ark-whachat.fural.space/ember-warden-review/evidence/local-ember-snare.png)
 
-![local flame fan](https://ember-warden-review-whachat.fural.space/evidence/local-flame-fan.png)
+![local flame fan moving](https://ark-whachat.fural.space/ember-warden-review/evidence/local-flame-fan-moving.png)
 
-![local furnace heart](https://ember-warden-review-whachat.fural.space/evidence/local-furnace-heart.png)
+![local flame fan](https://ark-whachat.fural.space/ember-warden-review/evidence/local-flame-fan.png)
 
-![local hurt](https://ember-warden-review-whachat.fural.space/evidence/local-hurt.png)
+![local furnace heart](https://ark-whachat.fural.space/ember-warden-review/evidence/local-furnace-heart.png)
 
-![local idle](https://ember-warden-review-whachat.fural.space/evidence/local-idle.png)
+![local hurt](https://ark-whachat.fural.space/ember-warden-review/evidence/local-hurt.png)
 
 ![local mobile loader](https://ember-warden-review-whachat.fural.space/evidence/local-mobile-loader.png)
 

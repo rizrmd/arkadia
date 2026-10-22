@@ -6,13 +6,13 @@ Rift Runner concept DA5e4990dbee175645ab893e11 and its v1/v2 production reviews 
 
 ## Generated source — material atlas
 
-![Ember Warden generated material atlas](https://ember-warden-review-whachat.fural.space/source/material-atlas.png)
+![Ember Warden generated material atlas](https://ark-whachat.fural.space/ember-warden-review/source/material-atlas.png)
 
 Built-in imagegen, 2026-10-21. Prompt: one square seamless material atlas, four equal quadrants, no gaps or labels; ochre worn jacket canvas (top left), charcoal trouser cloth (top right), dark brown boot leather (bottom left), aged bronze gauntlet metal (bottom right). Flat even lighting, subtle hand-painted fantasy texture, no objects, scene shadows or flames. This texture is used by the controlled scene shaders. No independently generated body sheets are mixed.
 
 ## Initial source inspection study
 
-![Initial brown-hair idle inspection sheet, E and SE](https://ember-warden-review-whachat.fural.space/studies/initial-brown-hair-idle.png)
+![Initial brown-hair idle inspection sheet, E and SE](https://ark-whachat.fural.space/ember-warden-review/studies/initial-brown-hair-idle.png)
 
 This early inspection sheet was rejected because the curls read too light under the scene lighting. The final material is darker. The sheet is retained separately and is excluded from the runtime manifest. It was reproduced deterministically from the initial material setting after the final exports, preserving the source-inspection image without overwriting the corrected production scene.
 

@@ -1,4 +1,4 @@
-[Play Stronghold](https://arkadia-stronghold-whachat.fural.space/)
+[Play Stronghold](https://ark-whachat.fural.space/)
 
 ## Touch controls
 
@@ -8,4 +8,4 @@ Adding a second world touch while walking stops the hero and hands both fingers 
 
 ## Verification
 
-Run `npm run build && node scripts/verify-thumb-pad.mjs`. The script uses real Chromium touch events to check the left, middle and right activation zones, the upper boundary, normal pinches, a pinch after active walking, a stationary hero during zoom, remaining-finger behavior and cancellation recovery. It also checks snow coverage, stable snow layer size and runtime errors. Use `DEMO_URL=https://arkadia-stronghold-whachat.fural.space node scripts/verify-thumb-pad.mjs` for the live build.
+Run `npm run build && node scripts/verify-thumb-pad.mjs`. The script uses real Chromium touch events to check the left, middle and right activation zones, the upper boundary, normal pinches, a pinch after active walking, a stationary hero during zoom, remaining-finger behavior and cancellation recovery. It also checks snow coverage, stable snow layer size and runtime errors. Use `DEMO_URL=https://ark-whachat.fural.space/ node scripts/verify-thumb-pad.mjs` for the live build.

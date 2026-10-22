@@ -21,6 +21,6 @@ The built-in imagegen tool generated the correction. Earlier attempts still repe
 - `node scripts/preview-knight-footfalls.mjs` produces a self-contained before/after animation player (`review.html`) with pause, a phase scrubber and normal/slow speeds.
 - `npm run build` validates TypeScript and builds the game.
 - `node scripts/verify-knight.mjs` verifies actual alternating boot pixels, grounded supporting soles, crown stability, all cell borders and clip indices, revision hashes, exact preservation of down-facing and combat artwork, desktop/mobile direction selection and successful combat without browser errors.
-- `DEMO_URL=https://arkadia-stronghold-whachat.fural.space node scripts/verify-knight.mjs` checks the deployed game.
+- `DEMO_URL=https://ark-whachat.fural.space/ node scripts/verify-knight.mjs` checks the deployed game.
 
 The comparison player makes visual review repeatable. Numeric tests cover the listed invariants; they do not substitute for judging how natural an animation looks.

@@ -4,21 +4,21 @@ The follow-up report shows that the Barracks foundation still rises too shallowl
 
 The earlier runtime correction used estimated slopes. The actual Barracks masonry edge rises 117 pixels over 327 pixels (slope −0.358), rather than the assumed −0.43. Its second base direction falls 94 pixels over 196 pixels. The corrected runtime matrix maps those measured directions to −0.5 and +0.5. Foundation, stair, rail and tabletop landmarks were also recorded for Forge, Altar, Mage Tower, Mine and Expedition Table in the scene source. Gate art is already painted into the background.
 
-![Original human report](https://arkadia-stronghold-whachat.fural.space/angle-alignment/report.png)
+![Original human report](https://ark-whachat.fural.space/angle-alignment/report.png)
 
-![Human annotation identifying the shallow foundation direction](https://arkadia-stronghold-whachat.fural.space/angle-alignment/report-annotated.png)
+![Human annotation identifying the shallow foundation direction](https://ark-whachat.fural.space/angle-alignment/report-annotated.png)
 
 ## Corrected foundation evidence
 
 These are browser captures of the actual rendered game. Pink follows the long Barracks foundation and cyan follows its side; both lines extend onto the paving. Guides appear only in verification screenshots.
 
-![Corrected Barracks with foundation direction guides](https://arkadia-stronghold-whachat.fural.space/angle-alignment/barracks-guides.webp)
+![Corrected Barracks with foundation direction guides](https://ark-whachat.fural.space/angle-alignment/barracks-guides.webp)
 
-![Corrected Barracks without guides](https://arkadia-stronghold-whachat.fural.space/angle-alignment/barracks.webp)
+![Corrected Barracks without guides](https://ark-whachat.fural.space/angle-alignment/barracks.webp)
 
-![Updated desktop courtyard](https://arkadia-stronghold-whachat.fural.space/angle-alignment/desktop.webp)
+![Updated desktop courtyard](https://ark-whachat.fural.space/angle-alignment/desktop.webp)
 
-![Updated mobile courtyard](https://arkadia-stronghold-whachat.fural.space/angle-alignment/mobile.webp)
+![Updated mobile courtyard](https://ark-whachat.fural.space/angle-alignment/mobile.webp)
 
 ## Shared ground convention
 
@@ -30,41 +30,41 @@ The courtyard remains the approved painted background. Painterly stone joints an
 
 ## Corrected sprites
 
-![Regenerated Barracks](https://arkadia-stronghold-whachat.fural.space/isometric/barracks-source.webp)
+![Regenerated Barracks](https://ark-whachat.fural.space/isometric/barracks-source.webp)
 
-![Regenerated Expedition Table](https://arkadia-stronghold-whachat.fural.space/isometric/expedition-source.webp)
+![Regenerated Expedition Table](https://ark-whachat.fural.space/isometric/expedition-source.webp)
 
 ## Earlier release evidence
 
 The captures below are retained for comparison; use the corrected foundation evidence above for the current Stronghold.
 
-![Desktop with calibrated building ground directions](https://arkadia-stronghold-whachat.fural.space/isometric/desktop.webp)
+![Desktop with calibrated building ground directions](https://ark-whachat.fural.space/isometric/desktop.webp)
 
-![Mobile courtyard with corrected Barracks and Expedition Table](https://arkadia-stronghold-whachat.fural.space/isometric/mobile.webp)
+![Mobile courtyard with corrected Barracks and Expedition Table](https://ark-whachat.fural.space/isometric/mobile.webp)
 
-![Arena floor grid, environment and actor foot pivots](https://arkadia-stronghold-whachat.fural.space/isometric/arena-grid.webp)
+![Arena floor grid, environment and actor foot pivots](https://ark-whachat.fural.space/isometric/arena-grid.webp)
 
 ## Inspected art references
 
-![Original Barracks](https://arkadia-stronghold-whachat.fural.space/isometric/barracks-before.webp)
+![Original Barracks](https://ark-whachat.fural.space/isometric/barracks-before.webp)
 
-![Original Expedition Table](https://arkadia-stronghold-whachat.fural.space/isometric/expedition-before.webp)
+![Original Expedition Table](https://ark-whachat.fural.space/isometric/expedition-before.webp)
 
-![Approved courtyard ground reference](https://arkadia-stronghold-whachat.fural.space/fortress-ui/courtyard-v2.webp)
+![Approved courtyard ground reference](https://ark-whachat.fural.space/fortress-ui/courtyard-v2.webp)
 
-![Seven-building reference sheet](https://arkadia-stronghold-whachat.fural.space/stronghold-art/contact-sheet.png)
+![Seven-building reference sheet](https://ark-whachat.fural.space/stronghold-art/contact-sheet.png)
 
-![Altar ground steps](https://arkadia-stronghold-whachat.fural.space/assets/stronghold/altar.png)
+![Altar ground steps](https://ark-whachat.fural.space/assets/stronghold/altar.png)
 
-![Mage Tower and porch](https://arkadia-stronghold-whachat.fural.space/assets/stronghold/mage.png)
+![Mage Tower and porch](https://ark-whachat.fural.space/assets/stronghold/mage.png)
 
-![Mine rails and supports](https://arkadia-stronghold-whachat.fural.space/assets/stronghold/mine.png)
+![Mine rails and supports](https://ark-whachat.fural.space/assets/stronghold/mine.png)
 
-![Forge progression art](https://arkadia-stronghold-whachat.fural.space/fortress-ui/forge-states.webp)
+![Forge progression art](https://ark-whachat.fural.space/fortress-ui/forge-states.webp)
 
-![Original environment module kit](https://arkadia-stronghold-whachat.fural.space/assets/source-kit.png)
+![Original environment module kit](https://ark-whachat.fural.space/assets/source-kit.png)
 
-![Earlier character back-view reference](https://arkadia-stronghold-whachat.fural.space/isometric/character-back-reference.webp)
+![Earlier character back-view reference](https://ark-whachat.fural.space/isometric/character-back-reference.webp)
 
 ## Verification
 
@@ -74,4 +74,4 @@ Both public hosts passed the updated isometric browser check after publication. 
 
 Painted masonry and paving contain irregular lines. Calibration aligns the recorded structural ground edges; it does not straighten every roof, curved tower course, loose stone or painted joint.
 
-[Open Stronghold](https://arkadia-stronghold-whachat.fural.space/stronghold.html) · [Open arena](https://arkadia-whachat.fural.space/) · [Projection source](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=src%2Fisometric.ts) · [Measured foundation landmarks](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=src%2Fstronghold%2Fscene.ts)
+[Open Stronghold](https://ark-whachat.fural.space/) · [Open arena](https://ark-whachat.fural.space/) · [Projection source](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=src%2Fisometric.ts) · [Measured foundation landmarks](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=src%2Fstronghold%2Fscene.ts)

@@ -1,0 +1,146 @@
+[
+  {
+    "direction": "W",
+    "source": "source/idle-W-four.png",
+    "scale": 0.36608863198458574,
+    "frames": [
+      {
+        "cell": [
+          0,
+          0
+        ],
+        "pivot": [
+          176,
+          240
+        ],
+        "alphaBounds": [
+          145,
+          50,
+          283,
+          240
+        ]
+      },
+      {
+        "cell": [
+          1,
+          0
+        ],
+        "pivot": [
+          176,
+          240
+        ],
+        "alphaBounds": [
+          145,
+          50,
+          271,
+          240
+        ]
+      },
+      {
+        "cell": [
+          2,
+          0
+        ],
+        "pivot": [
+          176,
+          240
+        ],
+        "alphaBounds": [
+          145,
+          51,
+          284,
+          240
+        ]
+      },
+      {
+        "cell": [
+          3,
+          0
+        ],
+        "pivot": [
+          176,
+          240
+        ],
+        "alphaBounds": [
+          145,
+          51,
+          283,
+          240
+        ]
+      }
+    ],
+    "policy": "constant clip scale, fixed boot ground and lower-foot center"
+  },
+  {
+    "direction": "NW",
+    "source": "source/idle-NW-four.png",
+    "scale": 0.3612167300380228,
+    "frames": [
+      {
+        "cell": [
+          0,
+          0
+        ],
+        "pivot": [
+          176,
+          240
+        ],
+        "alphaBounds": [
+          131,
+          50,
+          289,
+          240
+        ]
+      },
+      {
+        "cell": [
+          1,
+          0
+        ],
+        "pivot": [
+          176,
+          240
+        ],
+        "alphaBounds": [
+          131,
+          49,
+          295,
+          240
+        ]
+      },
+      {
+        "cell": [
+          2,
+          0
+        ],
+        "pivot": [
+          176,
+          240
+        ],
+        "alphaBounds": [
+          130,
+          50,
+          298,
+          240
+        ]
+      },
+      {
+        "cell": [
+          3,
+          0
+        ],
+        "pivot": [
+          176,
+          240
+        ],
+        "alphaBounds": [
+          131,
+          50,
+          289,
+          240
+        ]
+      }
+    ],
+    "policy": "constant clip scale, fixed boot ground and lower-foot center"
+  }
+]

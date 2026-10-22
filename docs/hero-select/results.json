@@ -1,0 +1,49 @@
+{
+ "url": "http://127.0.0.1:8794",
+ "picker": {
+  "first": "true",
+  "cards": [
+   "Rift Runner",
+   "Ember Warden"
+  ],
+  "focused": "rift-runner",
+  "closeShown": false,
+  "portraits": [
+   true,
+   true
+  ]
+ },
+ "shots": [
+  "docs/hero-select/1-picker-phone.webp",
+  "docs/hero-select/2-ember-phone.webp",
+  "docs/hero-select/3-ember-attack-desktop.webp",
+  "docs/hero-select/4-picker-desktop.webp",
+  "docs/hero-select/5-rift-runner-desktop.webp",
+  "docs/hero-select/6-coop-allies.webp"
+ ],
+ "emberHud": "Ember Warden",
+ "reloadAsks": false,
+ "walkViews": {
+  "SE": "move-SE",
+  "SW": "move-SW",
+  "NE": "move-NE",
+  "NW": "move-NW",
+  "S": "move-S",
+  "N": "move-N"
+ },
+ "attackClip": "attack-SE",
+ "reopen": {
+  "first": "false",
+  "closeShown": true,
+  "focused": "ember-warden"
+ },
+ "riftClip": "attack-NW",
+ "room": "YU7YG",
+ "roster": [
+  "Guest 1647Ember Warden",
+  "BimaRift Runner"
+ ],
+ "coopSwitch": "ally shown as Ember Warden after switching",
+ "errors": [],
+ "pass": true
+}

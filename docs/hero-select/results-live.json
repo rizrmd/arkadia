@@ -1,0 +1,49 @@
+{
+ "url": "https://ark-whachat.fural.space",
+ "picker": {
+  "first": "true",
+  "cards": [
+   "Rift Runner",
+   "Ember Warden"
+  ],
+  "focused": "rift-runner",
+  "closeShown": false,
+  "portraits": [
+   true,
+   true
+  ]
+ },
+ "shots": [
+  "docs/hero-select/1-picker-phone-live.webp",
+  "docs/hero-select/2-ember-phone-live.webp",
+  "docs/hero-select/3-ember-attack-desktop-live.webp",
+  "docs/hero-select/4-picker-desktop-live.webp",
+  "docs/hero-select/5-rift-runner-desktop-live.webp",
+  "docs/hero-select/6-coop-allies-live.webp"
+ ],
+ "emberHud": "Ember Warden",
+ "reloadAsks": false,
+ "walkViews": {
+  "SE": "move-SE",
+  "SW": "move-SW",
+  "NE": "move-NE",
+  "NW": "move-NW",
+  "S": "move-S",
+  "N": "move-N"
+ },
+ "attackClip": "attack-NE",
+ "reopen": {
+  "first": "false",
+  "closeShown": true,
+  "focused": "ember-warden"
+ },
+ "riftClip": "attack-NW",
+ "room": "MJBZ2",
+ "roster": [
+  "Guest 7531Ember Warden",
+  "BimaRift Runner"
+ ],
+ "coopSwitch": "ally shown as Ember Warden after switching",
+ "errors": [],
+ "pass": true
+}

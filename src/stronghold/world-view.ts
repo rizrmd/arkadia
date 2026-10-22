@@ -9,16 +9,26 @@ import {createEncounters} from './encounters';
 import {setGateOpen,gateTowerFront} from './navigation';
 import {createGateDoors,GATE_SHEET,type GateSheet} from './gate-doors';
 import type {Walk} from './controls';
-import type {Progress} from '../app/loader';
-export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Building)=>void,direction:()=>Walk,progress:Progress=()=>{}){
+import {loadImage,expectSizes,downloadedBytes,onDownload,type Progress} from '../app/loader';
+import type {Net} from './net/client';
+import {createParty} from './party';
+import {characters,atlasUrl,DEFAULT_HERO,type HeroId} from './heroes';
+export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Building)=>void,direction:()=>Walk,progress:Progress=()=>{},net?:Net,pick:HeroId=DEFAULT_HERO){
  const ctx=canvas.getContext('2d')!,environment=environmentSprites(),images=new Map<string,HTMLImageElement>();
  let gateOpen=false,gatePassable=false;
  const spriteFile=(id:Building,level:number)=>id==='forge'?`/fortress-ui/forge-${level}.webp`:id==='gate'?'/modular-stronghold/v2/full-gateway-v3-open.webp':`/assets/${slots[id].asset}.png`;
  const paving='/modular-stronghold/v2/paving-warm-texture.png',snow='/modular-stronghold/v2/snow-soft-texture.png';
- // Loading-screen steps: every artwork file, then the hero, then the first world raster.
- const files=[...new Set([FOUNDATION_SOIL,FOUNDATION_MOSS,paving,snow,'/modular-stronghold/v2/full-gateway-v3-closed.webp','/modular-stronghold/v2/full-gateway-v3-sheet.webp',...environment.map(p=>p.file),...buildings.flatMap(b=>[1,2,3].map(l=>spriteFile(b,l)))])],steps=files.length+2;let loaded=0;
- progress(0,steps,'Loading artwork');
- await Promise.all(files.map(async file=>{const image=new Image();image.src=file;await image.decode();images.set(file,image);progress(++loaded,steps,'Loading artwork');}));
+ // Loading screen: downloads fill the bar in proportion to their bytes (the atlases of the picked hero and the
+ // revenants, which hero.ts and encounters.ts load later, are fetched in the same batch), then the hero and the first world raster.
+ const files=[...new Set([FOUNDATION_SOIL,FOUNDATION_MOSS,paving,snow,'/modular-stronghold/v2/full-gateway-v3-closed.webp','/modular-stronghold/v2/full-gateway-v3-sheet.webp',...environment.map(p=>p.file),...buildings.flatMap(b=>[1,2,3].map(l=>spriteFile(b,l)))])];
+ const DOWNLOAD=920,steps=1000,mb=(n:number)=>(n/1e6).toFixed(1);let loaded=DOWNLOAD;
+ let queued=0;const report=()=>{queued=0;const {received,expected}=downloadedBytes();progress(Math.floor(DOWNLOAD*received/Math.max(1,expected)),steps,`Loading artwork · ${mb(received)} of ${mb(expected)} MB`);};
+ const stopReport=onDownload(()=>{queued||=requestAnimationFrame(report);});progress(0,steps,'Loading artwork');
+ const [atlas]=await Promise.all([characters() as Promise<Record<string,{image:string;revision?:string}>>,expectSizes()]),artwork=files.map(async file=>{images.set(file,await loadImage(file));});
+ try{
+  await Promise.all([...artwork,...[atlas[pick]??atlas[DEFAULT_HERO],atlas.revenant].map(m=>loadImage(atlasUrl(m)))]);
+ }finally{stopReport();cancelAnimationFrame(queued);}
+ report();
  let w=0,h=0,dpr=1,scale=1,cx=WORLD.width/2,cy=385,selected:Building|null=null,levels:State['levels']|undefined;
  // Standing buildings: a new game has only the tent and the gateway (economy.ts); ?buildings=all shows every one.
  let built=new Set<Building>(LEGACY_LAYOUT?buildings:START_BUILT);
@@ -147,13 +157,20 @@ export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Buil
  // The player's hero walks the court in its own layer over the world; the camera eases after it.
  progress(loaded,steps,'Waking the hero');
  const sheet:GateSheet=await (await fetch(GATE_SHEET)).json();
- const doors=createGateDoors(viewport,images.get('/modular-stronghold/v2/full-gateway-v3-closed.webp')!,images.get('/modular-stronghold/v2/full-gateway-v3-sheet.webp')!,sheet,open=>{gatePassable=open;setGateOpen(open);hero.setScene(objects);},{revision:lighting.spriteRevision,shade:(source,target)=>lighting.shadeSprite(source,target,{left:442,top:790-sheet.region.h*.97,width:270,height:sheet.region.h})});
+ const doors=createGateDoors(viewport,images.get('/modular-stronghold/v2/full-gateway-v3-closed.webp')!,images.get('/modular-stronghold/v2/full-gateway-v3-sheet.webp')!,sheet,open=>{gatePassable=open;setGateOpen(open);hero.setScene(objects);party?.setScene(objects);},{revision:lighting.spriteRevision,shade:(source,target)=>lighting.shadeSprite(source,target,{left:442,top:790-sheet.region.h*.97,width:270,height:sheet.region.h})});
  lighting.subscribe(()=>doors.refreshLighting());
  // Combat (encounters.ts) steers the idle hero toward a revenant in reach and plays its swing, hit and death clips.
  let encounters:Awaited<ReturnType<typeof createEncounters>>|undefined;
- const hero=await createHero<(typeof objects)[number]>({layer:viewport,lightmap:viewport.querySelector<HTMLCanvasElement>('#world-lightmap')!,surface,footprint:p=>p.id==='gate'?gateFootprint():footprint(p),sun:lighting.sun,direction:()=>encounters?encounters.steer(direction()):direction(),follow,pose:()=>encounters?.pose()??null});hero.setScene(objects);
- encounters=await createEncounters({layer:viewport,hud:canvas.parentElement!,hero,direction});lighting.subscribe(s=>encounters!.setAmbient(s.ambient));
- progress(++loaded,steps,'Raising the Stronghold');
+ const hero=await createHero<(typeof objects)[number]>({hero:pick,layer:viewport,lightmap:viewport.querySelector<HTMLCanvasElement>('#world-lightmap')!,surface,footprint:p=>p.id==='gate'?gateFootprint():footprint(p),sun:lighting.sun,direction:()=>encounters?encounters.steer(direction()):direction(),follow,pose:()=>encounters?.pose()??null,
+  // In a co-op room the hero stands where prediction puts it (net/client.ts) and faces the walk keys; while the
+  // server holds it in a swing, hit or death it faces the way the server turned it.
+  drive:()=>{if(!net?.active())return null;const p=net.position(),me=net.me();return {...p,face:direction(),look:me&&me.st!=='idle'?{facing:me.fc,back:me.bk,vertical:me.vt}:null};}});hero.setScene(objects);
+ encounters=await createEncounters({layer:viewport,hud:canvas.parentElement!,hero,direction,net});
+ // The other heroes of a co-op room, with name labels and health bars.
+ const party=net?createParty<(typeof objects)[number]>({layer:viewport,lightmap:viewport.querySelector<HTMLCanvasElement>('#world-lightmap')!,surface,footprint:p=>p.id==='gate'?gateFootprint():footprint(p),sun:lighting.sun,net,own:()=>hero.position()}):null;party?.setScene(objects);
+ // The room's clock and gateway are the server's.
+ lighting.setClockSource(()=>net?.active()?net.clock():null);net?.onSnapshot(()=>{const p=hero.position();updateGate(p.x,p.y);});lighting.subscribe(s=>encounters!.setAmbient(s.ambient));
+ progress(loaded+=40,steps,'Raising the Stronghold');
  // Everything standing above the ground shadows, at surface resolution with transparency.
  const uprights=document.createElement('canvas');uprights.id='world-uprights';uprights.width=surface.width;uprights.height=surface.height;
  function paintWorld(){
@@ -166,7 +183,7 @@ export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Buil
  }
  function draw(){
   if(!w||!h)return;if(dirty)paintWorld();const x=w/2-cx*scale,y=h/2-cy*scale;
-  const placement=`translate3d(${x+left*scale}px,${y+top*scale}px,0) scale(${scale})`;surface.style.transform=placement;lighting.place(placement);doors.place(x,y,scale);hero.place(x,y,scale);encounters?.place(x,y,scale);
+  const placement=`translate3d(${x+left*scale}px,${y+top*scale}px,0) scale(${scale})`;surface.style.transform=placement;lighting.place(placement);doors.place(x,y,scale);hero.place(x,y,scale);party?.place(x,y,scale);encounters?.place(x,y,scale);
   // Wrap a repeated GPU layer rather than repainting an infinite background.
   const sx=((x%(periodX*scale))+periodX*scale)%(periodX*scale)-periodX*scale;
   const sy=((y%(periodY*scale))+periodY*scale)%(periodY*scale)-periodY*scale;
@@ -216,13 +233,19 @@ export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Buil
   const d=Math.abs(hx-577),edge=d<36||d>135?770:gateTowerFront(d);
   doors.order(viewport.querySelector<HTMLElement>('#world-hero')!,hy<edge);
   // Ground-space distance to the threshold. Hysteresis prevents flickering at the edge.
-  const near=Math.abs(hx-577)<(gateOpen?65:48)&&Math.abs(hy-770)<(gateOpen?88:66);
+  const g=net?.active()?net.gate():null,near=g?g.open:Math.abs(hx-577)<(gateOpen?65:48)&&Math.abs(hy-770)<(gateOpen?88:66);
   if(near===gateOpen)return;
   gateOpen=near;doors.setOpen(near);
   canvas.dataset.gate=near?'open':'closed';
  }
+ // Collision data for the co-op server (scripts/export-coop-nav.mjs): every upright footprint but the gateway,
+ // whose towers and doors both sides rebuild from gateFootprint()'s rule (server/internal/sim/nav.go).
+ (window as any).__STRONGHOLD_NAV__=()=>({version:1,layout:[...built],columns:objects.filter(p=>p.layer!=='ground'&&p.opacity>=1&&p.id!=='gate').flatMap(p=>footprint(p).map(c=>({x:+c.x.toFixed(2),w:+c.w.toFixed(2),back:+c.back.toFixed(2),front:+c.front.toFixed(2)})))});
  canvas.dataset.gate='closed';setGateOpen(false);updateGate(hero.position().x,hero.position().y);
  // The revenants and HP bar draw after the hero's frame, with the camera it just moved (a frame behind, they shook).
  hero.start();encounters.start();
- return {update(state:State,id:Building|null){encounters?.setMaxHp(100+heroBonus(state));const next=buildings.map(b=>state.levels[b]+(isBuilt(state,b)?'':'x')).join(',')+':'+id;if(next===signature)return;signature=next;levels=state.levels;selected=id;if(!LEGACY_LAYOUT)built=new Set(buildings.filter(b=>isBuilt(state,b)));canvas.dataset.buildings=[...built].join(',');objects=makeObjects();lighting.setScene(objects);hero.setScene(objects);dirty=true;requestDraw();},focus(id:Building){glideTo(slots[id].x,slots[id].y-60);},fit(){stopGlide();chasing=false;vx=vy=0;scale=Math.max(.2,Math.min((w-40)/WORLD.width,(h-120)/WORLD.height));cx=WORLD.width/2;cy=385;requestDraw();},setTime:lighting.setTime,previewClock:lighting.preview,subscribeClock:lighting.subscribe};
+ // A co-op room stands the server's layout (the camp: tent and gateway), whatever this browser's save has built.
+ return {update(state:State,id:Building|null){encounters?.setMaxHp(100+heroBonus(state));const room=net?.active()?net.layout().filter((b):b is Building=>(buildings as readonly string[]).includes(b)):null;
+  const next=buildings.map(b=>state.levels[b]+(isBuilt(state,b)?'':'x')).join(',')+':'+id+':'+(room?.join('+')??'');if(next===signature)return;signature=next;levels=state.levels;selected=id;
+  if(!LEGACY_LAYOUT||room)built=new Set(room??buildings.filter(b=>isBuilt(state,b)));canvas.dataset.buildings=[...built].join(',');objects=makeObjects();lighting.setScene(objects);hero.setScene(objects);party?.setScene(objects);dirty=true;requestDraw();},focus(id:Building){glideTo(slots[id].x,slots[id].y-60);},fit(){stopGlide();chasing=false;vx=vy=0;scale=Math.max(.2,Math.min((w-40)/WORLD.width,(h-120)/WORLD.height));cx=WORLD.width/2;cy=385;requestDraw();},setHero:hero.setHero,setTime:lighting.setTime,previewClock:lighting.preview,subscribeClock:lighting.subscribe};
 }

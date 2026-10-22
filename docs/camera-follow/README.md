@@ -27,3 +27,7 @@ The camera felt janky while walking. Three causes, all fixed:
 Raw reports with per-frame traces: `before-*.json`, `after-*.json`. Re-render the chart with `node scripts/chart-camera-follow.mjs`.
 
 `node scripts/verify-camera-follow.mjs` checks that a drag during the settle wins, walking resumes the follow, the camera comes to rest, a building tap glides without interruption, and a teleport snaps with nothing left to settle. `verify-hero-walk`, `verify-encounters` and `verify-pinch-zoom` still pass. Set `VERIFY_URL` to run either script against the deployed build.
+
+### Release
+
+Merged as a431576 on feat/stronghold and deployed from a clean build to the canonical Stronghold sandbox with `node scripts/publish-camera-follow.mjs` ([live](https://ark-whachat.fural.space/)). Against the live URL, `verify-camera-follow` passed and `measure-camera-follow` recorded no hard stops, a largest frame-to-frame speed change of 19.2 px/s and 0 px HP bar drift (`after-live.json`).

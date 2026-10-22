@@ -1,6 +1,6 @@
 ## Collision animation stability
 
-Opposing AI can collide and push each other without rapidly changing sprite direction or walking in place. The fix is published at https://arkadia-whachat.fural.space/ on branch `feat/stronghold` (implementation commit `21cc329`).
+Opposing AI can collide and push each other without rapidly changing sprite direction or walking in place. The fix is published at https://ark-whachat.fural.space/ on branch `feat/stronghold` (implementation commit `21cc329`).
 
 ## Changes
 
@@ -19,7 +19,7 @@ Implementation: [Arena movement and animation](/organizations/ORd5dd6f99b4308d61
 Repeat against the public deployment:
 
 ```bash
-DEMO_URL=https://arkadia-whachat.fural.space/ node scripts/verify-collisions.mjs
+DEMO_URL=https://ark-whachat.fural.space/ node scripts/verify-collisions.mjs
 ```
 
 Machine-readable evidence is stored in `docs/collisions/local.json`, `docs/collisions/live.json`, and `docs/collisions/arena-regression.json`.

@@ -6,7 +6,7 @@ const text=`## Acceptance status
 
 **Production candidate published; final art acceptance is pending.** The simplified 3D rendering does not yet match the approved hand-painted concept. No game-ready quality claim is made.
 
-[Play the isolated review](https://ember-warden-review-whachat.fural.space/) · [Atlas manifest](https://ember-warden-review-whachat.fural.space/manifest.json)
+[Play the isolated review](https://ark-whachat.fural.space/ember-warden-review/) · [Atlas manifest](https://ark-whachat.fural.space/ember-warden-review/manifest.json)
 
 ## Asset coverage
 

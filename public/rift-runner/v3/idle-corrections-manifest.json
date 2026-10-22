@@ -1,0 +1,343 @@
+{
+  "cell": [
+    352,
+    352
+  ],
+  "bodyPivot": [
+    176,
+    240
+  ],
+  "actions": [
+    "idle"
+  ],
+  "clips": [
+    {
+      "id": "idle-W",
+      "action": "idle",
+      "direction": "W",
+      "image": "../v3/idle-corrections/idle-W.png",
+      "cellSize": 352,
+      "frames": [
+        {
+          "cell": [
+            0,
+            0
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            145,
+            50,
+            283,
+            240
+          ]
+        },
+        {
+          "cell": [
+            1,
+            0
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            145,
+            50,
+            271,
+            240
+          ]
+        },
+        {
+          "cell": [
+            2,
+            0
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            145,
+            51,
+            284,
+            240
+          ]
+        },
+        {
+          "cell": [
+            3,
+            0
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            145,
+            51,
+            283,
+            240
+          ]
+        }
+      ],
+      "fps": 6,
+      "loop": true,
+      "duration": 0.6666666666666666,
+      "layer": "body"
+    },
+    {
+      "id": "idle-NW",
+      "action": "idle",
+      "direction": "NW",
+      "image": "../v3/idle-corrections/idle-NW.png",
+      "cellSize": 352,
+      "frames": [
+        {
+          "cell": [
+            0,
+            0
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            131,
+            50,
+            289,
+            240
+          ]
+        },
+        {
+          "cell": [
+            1,
+            0
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            131,
+            49,
+            295,
+            240
+          ]
+        },
+        {
+          "cell": [
+            2,
+            0
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            130,
+            50,
+            298,
+            240
+          ]
+        },
+        {
+          "cell": [
+            3,
+            0
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            131,
+            50,
+            289,
+            240
+          ]
+        }
+      ],
+      "fps": 6,
+      "loop": true,
+      "duration": 0.6666666666666666,
+      "layer": "body"
+    }
+  ],
+  "sheets": [
+    {
+      "image": "../v3/idle-corrections/idle-W.png",
+      "cell": [
+        352,
+        352
+      ],
+      "clips": [
+        {
+          "id": "idle-W",
+          "action": "idle",
+          "direction": "W",
+          "image": "../v3/idle-corrections/idle-W.png",
+          "cellSize": 352,
+          "frames": [
+            {
+              "cell": [
+                0,
+                0
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                145,
+                50,
+                283,
+                240
+              ]
+            },
+            {
+              "cell": [
+                1,
+                0
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                145,
+                50,
+                271,
+                240
+              ]
+            },
+            {
+              "cell": [
+                2,
+                0
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                145,
+                51,
+                284,
+                240
+              ]
+            },
+            {
+              "cell": [
+                3,
+                0
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                145,
+                51,
+                283,
+                240
+              ]
+            }
+          ],
+          "fps": 6,
+          "loop": true,
+          "duration": 0.6666666666666666,
+          "layer": "body"
+        }
+      ]
+    },
+    {
+      "image": "../v3/idle-corrections/idle-NW.png",
+      "cell": [
+        352,
+        352
+      ],
+      "clips": [
+        {
+          "id": "idle-NW",
+          "action": "idle",
+          "direction": "NW",
+          "image": "../v3/idle-corrections/idle-NW.png",
+          "cellSize": 352,
+          "frames": [
+            {
+              "cell": [
+                0,
+                0
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                131,
+                50,
+                289,
+                240
+              ]
+            },
+            {
+              "cell": [
+                1,
+                0
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                131,
+                49,
+                295,
+                240
+              ]
+            },
+            {
+              "cell": [
+                2,
+                0
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                130,
+                50,
+                298,
+                240
+              ]
+            },
+            {
+              "cell": [
+                3,
+                0
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                131,
+                50,
+                289,
+                240
+              ]
+            }
+          ],
+          "fps": 6,
+          "loop": true,
+          "duration": 0.6666666666666666,
+          "layer": "body"
+        }
+      ]
+    }
+  ]
+}
