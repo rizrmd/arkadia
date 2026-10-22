@@ -1,5 +1,5 @@
-import {Application,BitmapTextPipe,CanvasSource,Container,extensions,Graphics,GraphicsPipe,NineSliceSpritePipe,Rectangle,Sprite,Texture,TilingSpritePipe} from 'pixi.js';
-import {FrameSet,pickFrameScale} from '../typography/frames';
+import {Application,Assets,BitmapTextPipe,CanvasSource,Container,extensions,Graphics,GraphicsPipe,NineSliceSpritePipe,Rectangle,Sprite,Texture,TilingSpritePipe} from 'pixi.js';
+import {FrameSet,pickFrameScale,type FrameScale} from '../typography/frames';
 import {installMsdfFx,loadFonts} from '../typography/msdf';
 import {MsdfText} from '../typography/text';
 
@@ -48,7 +48,7 @@ export function ensurePixiRuntime(host?:HTMLElement):Promise<SharedPixiRuntime>{
   await app.init({
    preference:'webgl',
    resizeTo:window,
-   backgroundColor:0x11191e,
+   backgroundColor:0x0b0e12,
    antialias:true,
    autoDensity:true,
    resolution:window.devicePixelRatio||1,
@@ -72,75 +72,154 @@ export function ensurePixiRuntime(host?:HTMLElement):Promise<SharedPixiRuntime>{
  return runtimePromise;
 }
 
+interface LoadingAssets{
+ bgDesktop:Texture;
+ bgMobile:Texture;
+ vignette:Texture;
+ logo:Texture;
+ divider:Texture;
+ track:Texture;
+ fill:Texture;
+ crest:Texture;
+}
+
+async function loadLoadingAssets(scale:FrameScale):Promise<LoadingAssets>{
+ const base='/typography/v2/loading/';
+ const [bgDesktop,bgMobile,vignette,logo,divider,track,fill,crest]=await Promise.all([
+  Assets.load<Texture>({src:`${base}bg-desktop.webp`,data:{autoGenerateMipmaps:true}}),
+  Assets.load<Texture>({src:`${base}bg-mobile.webp`,data:{autoGenerateMipmaps:true}}),
+  Assets.load<Texture>({src:`${base}vignette.png`,data:{autoGenerateMipmaps:true}}),
+  Assets.load<Texture>({src:`${base}logo@${scale}x.png`,data:{resolution:scale,autoGenerateMipmaps:true}}),
+  Assets.load<Texture>({src:`${base}divider@${scale}x.png`,data:{resolution:scale,autoGenerateMipmaps:true}}),
+  Assets.load<Texture>({src:`${base}bar-track@${scale}x.png`,data:{resolution:scale,autoGenerateMipmaps:true}}),
+  Assets.load<Texture>({src:`${base}bar-fill@${scale}x.png`,data:{resolution:scale,autoGenerateMipmaps:true}}),
+  Assets.load<Texture>({src:`${base}bar-crest@${scale}x.png`,data:{resolution:scale,autoGenerateMipmaps:true}}),
+ ]);
+ return {bgDesktop,bgMobile,vignette,logo,divider,track,fill,crest};
+}
+
 export function loadingScreen(){
  // Artwork still in flight after a failure keeps reporting; it must not overwrite the error.
- let shown=0,failed=false,finished=false,statusText='Loading the game';
- const holdLoading=typeof location!=='undefined'&&new URLSearchParams(location.search).get('holdLoading')==='1';
+ const params=typeof location!=='undefined'?new URLSearchParams(location.search):null;
+ const holdLoading=params?.get('holdLoading')==='1';
+ const pinnedPct=params?.get('loadingPct')!==null&&params?.get('loadingPct')!==undefined?Number(params.get('loadingPct')):null;
+ const pinnedText=params?.get('loadingText');
 
- let backdrop:Graphics|undefined;
- let card:Container|undefined;
- let trackFill:Container|undefined;
+ let shown=pinnedPct!==null&&!Number.isNaN(pinnedPct)?Math.max(0,Math.min(100,Math.round(pinnedPct))):0;
+ let failed=false,finished=false,statusText=pinnedText||'Loading the game';
+
+ let baseBg:Graphics|undefined;
+ let bgSprite:Sprite|undefined;
+ let dimOverlay:Graphics|undefined;
+ let content:Container|undefined;
+ let fillMask:Graphics|undefined;
+ let crestSprite:Sprite|undefined;
  let labelNode:MsdfText|undefined;
  let percentNode:MsdfText|undefined;
  let retryBtn:Container|undefined;
  let rtRef:SharedPixiRuntime|undefined;
+ let assetsRef:LoadingAssets|undefined;
 
- const CARD_W=460,CARD_H=250,BAR_W=372,BAR_H=24;
+ // Layout in @1x design pixels (no enclosing modal box):
+ // Logo (390x120) -> Divider (340x16) -> Ornate Bar Track (460x28, inner cavity 408x10 at x=26,y=9) -> Status + %
+ const STAGE_W=460,STAGE_H=230;
+ const TRACK_Y=150,INNER_X=26,INNER_Y=9,INNER_W=408,INNER_H=10;
 
  const syncView=()=>{
-  if(!rtRef||!card||!backdrop)return;
-  const w=rtRef.app.screen.width,h=rtRef.app.screen.height;
-  backdrop.clear().rect(0,0,w,h).fill({color:0x11191e,alpha:0.96});
-  backdrop.circle(w*0.5,h*0.42,Math.min(w,h)*0.48).fill({color:0x1d2a30,alpha:0.55});
-  const s=Math.min(1,Math.min((w-24)/CARD_W,(h-24)/CARD_H));
-  card.scale.set(s);
-  card.position.set(Math.round((w-CARD_W*s)/2),Math.round((h-CARD_H*s)/2));
-  if(trackFill){
-   const fillChild=trackFill.children[0] as Container|undefined;
-   if(fillChild){
-    const ratio=failed?1:Math.max(0.04,shown/100);
-    fillChild.width=Math.round(BAR_W*ratio);
-   }
+  if(!rtRef||!content||!baseBg||!bgSprite||!dimOverlay||!assetsRef)return;
+  const w=window.innerWidth||rtRef.app.screen.width,h=window.innerHeight||rtRef.app.screen.height;
+  if(rtRef.app.screen.width!==w||rtRef.app.screen.height!==h){
+   rtRef.app.renderer.resize(w,h);
+  }
+  const portrait=w<h;
+
+  // Solid opaque floor so the uninitialized world/HUD never bleeds through.
+  baseBg.clear().rect(0,0,w,h).fill({color:0x080b0e,alpha:1});
+
+  // Full-bleed background painting (cover fit).
+  const tex=portrait?assetsRef.bgMobile:assetsRef.bgDesktop;
+  if(bgSprite.texture!==tex)bgSprite.texture=tex;
+  const bgScale=Math.max(w/tex.width,h/tex.height);
+  bgSprite.scale.set(bgScale);
+  bgSprite.position.set(Math.round((w-tex.width*bgScale)/2),Math.round((h-tex.height*bgScale)/2));
+
+  // Subtle uniform atmospheric wash over the full background.
+  dimOverlay.clear().rect(0,0,w,h).fill({color:0x05070a,alpha:0.18});
+
+  const s=Math.min(1.06,Math.min((w-28)/STAGE_W,(h-36)/STAGE_H));
+  const cy=Math.round(h*(portrait?0.52:0.54));
+  content.scale.set(s);
+  content.position.set(Math.round((w-STAGE_W*s)/2),Math.round(cy-STAGE_H*s*0.5));
+
+  const displayPct=pinnedPct!==null&&!Number.isNaN(pinnedPct)?Math.max(0,Math.min(100,Math.round(pinnedPct))):shown;
+  const ratio=failed?1:Math.max(0.02,Math.min(1,displayPct/100));
+  const fillW=Math.round(INNER_W*ratio);
+
+  if(fillMask){
+   fillMask.clear().roundRect(0,0,fillW,INNER_H,1.5).fill(0xffffff);
+  }
+  if(crestSprite){
+   crestSprite.visible=!failed&&displayPct>0;
+   crestSprite.position.set(INNER_X+fillW-12,TRACK_Y+INNER_Y+INNER_H/2-12);
   }
   if(labelNode){
    labelNode.text=statusText;
-   labelNode.place(38,188);
+   labelNode.place(INNER_X,202);
+   labelNode.refresh();
   }
   if(percentNode){
-   percentNode.text=failed?'':`${shown}%`;
-   percentNode.place(CARD_W-38,188,1);
+   percentNode.text=failed?'':`${displayPct}%`;
+   percentNode.place(STAGE_W-INNER_X,202,1);
+   percentNode.refresh();
   }
   if(retryBtn){
    retryBtn.visible=failed;
   }
  };
 
- void ensurePixiRuntime().then(rt=>{
+ void ensurePixiRuntime().then(async rt=>{
+  const scale=pickFrameScale(window.devicePixelRatio||1);
+  const assets=await loadLoadingAssets(scale);
   rtRef=rt;
-  const {frames,loadingStage,app}=rt;
-  backdrop=loadingStage.addChild(new Graphics());
-  backdrop.eventMode='static';
-  card=loadingStage.addChild(new Container());
-  card.addChild(frames.frame('panel-bronze',CARD_W,CARD_H));
+  assetsRef=assets;
+  const {frames,loadingStage}=rt;
 
-  const subtitle=card.addChild(new MsdfText('label-wide','ARKADIA',{size:16,letterSpacing:4}));
-  subtitle.place(CARD_W/2,52,0.5);
+  baseBg=loadingStage.addChild(new Graphics());
+  baseBg.eventMode='static';
+  bgSprite=loadingStage.addChild(new Sprite(assets.bgDesktop));
+  dimOverlay=loadingStage.addChild(new Graphics());
+  content=loadingStage.addChild(new Container());
 
-  const title=card.addChild(new MsdfText('display-title','Stronghold',{size:42}));
-  title.place(CARD_W/2,102,0.5);
+  // Smooth feathered radial vignette sprite behind the logo, bar, and status text (no hard edges).
+  const vigSprite=content.addChild(new Sprite(assets.vignette));
+  vigSprite.position.set(Math.round((STAGE_W-680)/2),Math.round((STAGE_H-340)/2)+8);
 
-  const barFrame=card.addChild(frames.frame('xp-frame',BAR_W+28,40));
-  barFrame.position.set((CARD_W-(BAR_W+28))/2,126);
+  // High-resolution ARKADIA compass logo (no modal box, no STRONGHOLD subtitle).
+  const logoSprite=content.addChild(new Sprite(assets.logo));
+  logoSprite.position.set(Math.round((STAGE_W-390)/2),0);
 
-  trackFill=card.addChild(new Container());
-  trackFill.position.set((CARD_W-BAR_W)/2,134);
-  trackFill.addChild(frames.frame('xp-fill',BAR_W,BAR_H));
+  // Delicate antique-gold compass divider beneath the logo.
+  const divSprite=content.addChild(new Sprite(assets.divider));
+  divSprite.position.set(Math.round((STAGE_W-340)/2),124);
 
-  labelNode=card.addChild(new MsdfText('panel-body',statusText));
-  percentNode=card.addChild(new MsdfText('hud-xp-accent',`${shown}%`,{size:18}));
+  // Ornate antique-gold progress bar track (460 x 28) and strictly-masked molten-gold fill (408 x 10).
+  const trackSprite=content.addChild(new Sprite(assets.track));
+  trackSprite.position.set(0,TRACK_Y);
 
-  retryBtn=card.addChild(new Container());
-  retryBtn.position.set((CARD_W-168)/2,196);
+  const fillHolder=content.addChild(new Container());
+  fillHolder.position.set(INNER_X,TRACK_Y+INNER_Y);
+  const fillSprite=fillHolder.addChild(new Sprite(assets.fill));
+  fillMask=fillHolder.addChild(new Graphics());
+  fillSprite.mask=fillMask;
+
+  // Leading-edge compass spark crest riding the tip of the fill.
+  crestSprite=content.addChild(new Sprite(assets.crest));
+
+  labelNode=content.addChild(new MsdfText('panel-body',statusText));
+  percentNode=content.addChild(new MsdfText('hud-xp-accent',`${shown}%`,{size:18}));
+
+  retryBtn=content.addChild(new Container());
+  retryBtn.position.set((STAGE_W-168)/2,216);
   retryBtn.eventMode='static';
   retryBtn.cursor='pointer';
   retryBtn.hitArea=new Rectangle(0,0,168,42);
@@ -152,16 +231,28 @@ export function loadingScreen(){
 
   syncView();
   (window as any).__LOADING_READY__=true;
+  (window as any).__LOADING_SCREEN__={
+   set(pct:number,text:string){
+    shown=Math.max(0,Math.min(100,Math.round(pct)));
+    statusText=text;
+    syncView();
+   },
+  };
   window.addEventListener('resize',syncView);
+  rt.app.renderer.on('resize',syncView);
   if(finished&&!failed&&!holdLoading){
-   fadeOutLoading(rt,()=>window.removeEventListener('resize',syncView));
+   fadeOutLoading(rt,()=>{
+    window.removeEventListener('resize',syncView);
+    rt.app.renderer.off('resize',syncView);
+   });
   }
  }).catch(e=>console.error('Loading screen runtime error:',e));
 
  const progress:Progress=(done,total,text)=>{
   if(failed)return;
+  if(pinnedPct!==null&&!Number.isNaN(pinnedPct))return;
   shown=Math.max(shown,Math.round(100*Math.min(1,done/Math.max(1,total))));
-  statusText=text;
+  statusText=pinnedText||text;
   syncView();
  };
 
