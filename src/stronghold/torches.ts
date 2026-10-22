@@ -13,14 +13,16 @@ export const torchesOn=(time:number)=>phaseOf(time)==='Night';
 
 const frames=Array.from({length:4},(_,i)=>{const image=new Image();image.src=`/realistic-torch/frame-${i}.webp`;return image;});
 export const torchAssetsReady=Promise.all(frames.map(image=>image.decode()));
-const W=32,H=52;
+const W=24,H=39,TOP=15.75;
+// Keep source proportions and enough texels for the maximum 2.2× camera zoom.
+const FLAME_SOURCE_HEIGHT=132,FLAME_HEIGHT=H*FLAME_SOURCE_HEIGHT/290,RESOLUTION=3;
 // The same unlit body is baked once; only small local canvases animate above it.
 export function drawTorches(c:CanvasRenderingContext2D,_lit:boolean){
  if(!frames[3].complete||!frames[3].naturalWidth)return;
  for(const t of TORCHES){
   const y=t.y-t.lift;
-  if(!t.wall){c.strokeStyle='#3b2a20';c.lineWidth=5;c.beginPath();c.moveTo(t.x,y+18);c.lineTo(t.x,t.y);c.stroke();}
-  c.drawImage(frames[3],t.x-W/2,y-21,W,H);
+  if(!t.wall){c.strokeStyle='#3b2a20';c.lineWidth=3.75;c.beginPath();c.moveTo(t.x,y+13.5);c.lineTo(t.x,t.y);c.stroke();}
+  c.drawImage(frames[3],t.x-W/2,y-TOP,W,H);
  }
 }
 export function createTorchFlames(surface:HTMLCanvasElement,left:number,top:number){
@@ -29,8 +31,8 @@ export function createTorchFlames(surface:HTMLCanvasElement,left:number,top:numb
  surface.after(layer);
  // Isolate each tiny animated surface. Otherwise canvas writes invalidate a layer
  // spanning the entire fortress, forcing costly texture uploads on every flame tick.
- const FH=24,canvases=TORCHES.map(t=>{const c=document.createElement('canvas');c.width=W;c.height=FH;
-  c.style.cssText=`position:absolute;left:${t.x-W/2-left}px;top:${t.y-t.lift-21-top}px;width:${W}px;height:${H*330/724}px;contain:strict;will-change:transform;transform:translateZ(0)`;
+ const FW=W*RESOLUTION,FH=Math.ceil(FLAME_HEIGHT*RESOLUTION),canvases=TORCHES.map(t=>{const c=document.createElement('canvas');c.width=FW;c.height=FH;
+  c.style.cssText=`position:absolute;left:${t.x-W/2-left}px;top:${t.y-t.lift-TOP-top}px;width:${W}px;height:${FLAME_HEIGHT}px;contain:strict;will-change:transform;transform:translateZ(0)`;
   layer.append(c);return c;
  });
  const visible=new Set<HTMLCanvasElement>();
@@ -40,11 +42,10 @@ export function createTorchFlames(surface:HTMLCanvasElement,left:number,top:numb
  let ready=false,lit=false,timer=0,movingUntil=0,lastStep=-1;
  const reduced=matchMedia('(prefers-reduced-motion: reduce)');
  torchAssetsReady.then(()=>{
-  // Blur only once when preparing the three small cached frames, never in a pan
-  // or animation frame. Low-resolution filtering also softens the flame tips.
+  // Cache sharp, supersampled crops once; animation only copies these small surfaces.
   for(let i=0;i<3;i++){
-   const c=document.createElement('canvas');c.width=W;c.height=FH;const ctx=c.getContext('2d')!;
-   ctx.filter='blur(0.65px)';ctx.drawImage(frames[i],0,0,180,132,0,0,W,FH);cache.push(c);
+   const c=document.createElement('canvas');c.width=FW;c.height=FH;const ctx=c.getContext('2d')!;
+   ctx.imageSmoothingQuality='high';ctx.drawImage(frames[i],0,0,180,FLAME_SOURCE_HEIGHT,0,0,FW,FH);cache.push(c);
   }
   ready=true;surface.dataset.torchAssets='ready';render(true);schedule();
  }).catch(()=>{surface.dataset.torchAssets='failed';});
@@ -53,7 +54,7 @@ export function createTorchFlames(surface:HTMLCanvasElement,left:number,top:numb
   const step=reduced.matches?0:Math.floor(performance.now()/160)%3;
   if(!force&&step===lastStep)return;lastStep=step;layer.dataset.frame=String(step);
   canvases.forEach((c,i)=>{if(!force&&!visible.has(c))return;const ctx=c.getContext('2d')!;
-   ctx.clearRect(0,0,W,FH);ctx.drawImage(cache[(step+i)%3],0,0);
+   ctx.clearRect(0,0,FW,FH);ctx.drawImage(cache[(step+i)%3],0,0);
   });
  }
  function schedule(){
