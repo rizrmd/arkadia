@@ -6,6 +6,8 @@ import type {Walk} from '../controls';
 // The co-op connection. The server owns the world; this client sends one walk input per 50 ms tick and renders
 // snapshots. The own hero is predicted: every input is applied locally with the server's walking rule at once,
 // and each snapshot rebases it on the server's position after the last acknowledged input, replaying the rest.
+// Steps the server guessed ahead of late inputs are not part of that position (it sends the one under them):
+// it walks them again with the real inputs when they arrive, as this prediction already has.
 // A mismatch (a server-side swing, hit or auto-step) is blended out over ~90 ms instead of snapping. Other heroes
 // and every revenant are drawn slightly in the past on an adaptive render clock with bounded extrapolation
 // (timeline.ts).
@@ -25,8 +27,8 @@ export function createNet(o:{direction:()=>Walk;maxHp:()=>number;hero:()=>string
  let ws:WebSocket|null=null,status:NetStatus='idle',room='',you='',name='',layout:string[]=[],lastError='',retries=0,retryTimer=0;
  let blocked:((x:number,y:number,pass:boolean)=>boolean)|null=null;
  let latest:Timed|null=null,rtt=0;const timeline=createTimeline(TICK_MS);
- let seq=0,pending:Input[]=[],owed=0,margins:number[]=[],pace=1,pred={x:0,y:0},prev={x:0,y:0},err={x:0,y:0},acc=0,last=0;
- const stats={snapshots:0,inputs:0,corrections:0,maxCorrection:0,lastCorrection:0,bytes:0,pace:1,margin:0};
+ let seq=0,pending:Input[]=[],margins:number[]=[],pace=1,pred={x:0,y:0},prev={x:0,y:0},err={x:0,y:0},acc=0,last=0;
+ const stats={snapshots:0,inputs:0,corrections:0,maxCorrection:0,lastCorrection:0,totalCorrection:0,bytes:0,pace:1,margin:0};
  const snapshotListeners=new Set<(s:Snapshot)=>void>(),statusListeners=new Set<(s:NetStatus)=>void>();
  const setStatus=(s:NetStatus)=>{if(s===status)return;status=s;for(const f of statusListeners)f(s);};
  const navReady=fetch('/coop/nav.json').then(r=>{if(!r.ok)throw Error('Co-op collision data missing');return r.json();}).then((n:{columns:Column[]})=>{blocked=navBlocker(n.columns);});
@@ -34,21 +36,21 @@ export function createNet(o:{direction:()=>Walk;maxHp:()=>number;hero:()=>string
  const mine=(s:Snapshot|null)=>s?.players.find(p=>p.id===you)??null;
  const block=(pass:boolean)=>(x:number,y:number)=>blocked!(x,y,pass);
  function reset(state:Welcome['state']){
-  timeline.reset(you);latest=null;pending=[];owed=0;margins=[];pace=1;seq=0;acc=0;err={x:0,y:0};
+  timeline.reset(you);latest=null;pending=[];margins=[];pace=1;seq=0;acc=0;err={x:0,y:0};
   const me=state.players.find(p=>p.id===you);if(me){pred={x:me.x,y:me.y};prev={...pred};}
  }
  // Rebase the own hero on the server and replay inputs it has not applied yet.
  function reconcile(s:Snapshot){
   const me=mine(s);if(!me||!blocked)return;
   pending=pending.filter(i=>i.seq>s.ack);
-  // The server may already have walked the next few inputs ahead of their arrival (late inputs, sim.Player.Owed),
-  // even inputs this client has not sent yet (a frame stall): those are not walked again here or in tick().
-  owed=s.ow??0;let x=me.x,y=me.y;
-  margins.push((s.q??0)-owed);if(margins.length>PACE_WINDOW)margins.shift();
+  // Under any steps the server guessed ahead of late inputs (sim.Player.Owed): where the last applied input left it.
+  // A hero held in a swing or hit keeps the guessed steps.
+  const idle=me.st==='idle';let x=idle?s.bx??me.x:me.x,y=idle?s.by??me.y:me.y;
+  margins.push((s.q??0)-(s.ow??0));if(margins.length>PACE_WINDOW)margins.shift();
   const margin=Math.min(...margins);pace=margin<1?1-PACE:margin>2?1+PACE:1;stats.pace=pace;stats.margin=margin;
-  if(me.st==='idle')for(const i of pending.slice(owed)){const r=walkStep(block(s.gate.pass),x,y,i,TICK_MS);x=r.x;y=r.y;}
+  if(idle)for(const i of pending){const r=walkStep(block(s.gate.pass),x,y,i,TICK_MS);x=r.x;y=r.y;}
   const dx=pred.x-x,dy=pred.y-y,d=Math.hypot(dx,dy);
-  if(d>.5){stats.corrections++;stats.lastCorrection=d;stats.maxCorrection=Math.max(stats.maxCorrection,d);}
+  if(d>.5){stats.corrections++;stats.totalCorrection+=d;stats.lastCorrection=d;stats.maxCorrection=Math.max(stats.maxCorrection,d);}
   // A respawn or teleport jumps; anything smaller glides.
   if(d>SNAP_PX){err={x:0,y:0};prev={x,y};}else{err.x+=dx;err.y+=dy;prev.x-=dx;prev.y-=dy;}
   pred={x,y};
@@ -118,7 +120,7 @@ export function createNet(o:{direction:()=>Walk;maxHp:()=>number;hero:()=>string
   if(ws?.readyState===WebSocket.OPEN){ws.send(JSON.stringify(input));stats.inputs++;}
   pending.push(input);if(pending.length>60)pending.shift();
   prev={...pred};const me=mine(latest);
-  if(blocked&&latest&&(!me||me.st==='idle')&&pending.length>owed){const r=walkStep(block(latest.gate.pass),pred.x,pred.y,input,TICK_MS);pred={x:r.x,y:r.y};}
+  if(blocked&&latest&&(!me||me.st==='idle')){const r=walkStep(block(latest.gate.pass),pred.x,pred.y,input,TICK_MS);pred={x:r.x,y:r.y};}
  }
  requestAnimationFrame(frame);
  setInterval(()=>{if(ws?.readyState===WebSocket.OPEN)ws.send(JSON.stringify({t:'ping',c:performance.now()}));},1000);

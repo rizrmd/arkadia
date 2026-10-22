@@ -128,6 +128,95 @@ func TestLateInputsKeepAnEvenWalk(t *testing.T) {
 	}
 }
 
+// A phone thumbstick turns or lets go while its inputs are held up: the steps guessed along the old direction
+// are walked again with the real inputs once they arrive, so the hero ends exactly where a client that sent the
+// same inputs on time (and the sender's own prediction) puts it.
+func TestLateInputsReplaceTheGuessedSteps(t *testing.T) {
+	for _, tc := range []struct {
+		name string
+		turn Vec
+	}{{"turn", down}, {"let go", Vec{}}} {
+		inputs := make([]Vec, 0, 16)
+		for i := 0; i < 16; i++ {
+			d := right
+			if i >= 8 {
+				d = tc.turn
+			}
+			inputs = append(inputs, d)
+		}
+		// On time: one input per tick.
+		ref := newTestWorld(t)
+		ref.Enemies = nil
+		a := ref.AddPlayer("a", "A", 100)
+		for i, d := range inputs {
+			a.Queue(Input{Seq: uint32(i + 1), X: d.X, Y: d.Y})
+			ref.Step()
+		}
+		run(ref, 4)
+		// Late: inputs 8-10 (the turn) are held for three ticks and arrive together with input 11.
+		w := newTestWorld(t)
+		w.Enemies = nil
+		p := w.AddPlayer("a", "A", 100)
+		var held []Input
+		for i, d := range inputs {
+			in := Input{Seq: uint32(i + 1), X: d.X, Y: d.Y}
+			if i >= 8 && i < 11 {
+				held = append(held, in)
+			} else {
+				for _, h := range held {
+					p.Queue(h)
+				}
+				held = nil
+				p.Queue(in)
+			}
+			w.Step()
+			if i == 10 && p.Owed != maxOwed {
+				t.Fatalf("%s: %d steps guessed through the gap, want %d", tc.name, p.Owed, maxOwed)
+			}
+		}
+		run(w, 4)
+		if d := hypot(p.X-a.X, p.Y-a.Y); d > 1e-9 || p.Owed != a.Owed || p.Ack != a.Ack {
+			t.Fatalf("%s: late hero at %.2f,%.2f (owed %d, ack %d), on-time hero at %.2f,%.2f (ack %d)", tc.name, p.X, p.Y, p.Owed, p.Ack, a.X, a.Y, a.Ack)
+		}
+	}
+}
+
+// Half a second of a phone network holding every packet: the inputs behind the stall are walked two a tick until
+// the queue is short again, instead of leaving the server that far behind the player for good.
+func TestABacklogAfterAStallDrains(t *testing.T) {
+	w := newTestWorld(t)
+	w.Enemies = nil
+	p := w.AddPlayer("a", "A", 100)
+	x0, y0 := p.X, p.Y
+	seq := uint32(0)
+	send := func() { seq++; p.Queue(Input{Seq: seq, X: right.X, Y: right.Y}) }
+	for i := 0; i < 10; i++ {
+		send()
+		w.Step()
+	}
+	for i := 0; i < 10; i++ {
+		w.Step()
+	}
+	for i := 0; i < 10; i++ {
+		send()
+	}
+	ticks := 0
+	for len(p.queue) > backlog {
+		send()
+		w.Step()
+		if ticks++; ticks > 12 {
+			t.Fatalf("%d inputs still queued %d ticks after the stall", len(p.queue), ticks)
+		}
+	}
+	for len(p.queue) > 0 {
+		w.Step()
+	}
+	want := 105.0 * float64(seq) / 20
+	if got := hypot(p.X-x0, p.Y-y0); math.Abs(got-want) > .01 {
+		t.Fatalf("walked %.3f px for %d inputs, want %.3f", got, seq, want)
+	}
+}
+
 func TestFloodedInputsCannotOutrunTheTickRate(t *testing.T) {
 	w := newTestWorld(t)
 	p := w.AddPlayer("a", "A", 100)

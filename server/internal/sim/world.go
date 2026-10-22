@@ -77,7 +77,9 @@ type Player struct {
 	Kills  int
 	Moving bool
 	Ack    uint32 // last input sequence applied
-	Owed   int    // steps walked ahead of inputs that arrived late; the next Owed inputs are acked without walking
+	Owed   int    // steps guessed ahead of inputs that are late; they are walked again when those inputs arrive
+	// BaseX, BaseY: where the last applied input left the hero, under the Owed guessed steps (only while Owed > 0).
+	BaseX, BaseY float64
 
 	queue    []Input
 	tokens   float64
@@ -163,6 +165,7 @@ func (w *World) place(p *Player) {
 		at = Vec{at.X + o.X, at.Y + o.Y}
 	}
 	p.X, p.Y = at.X, at.Y
+	p.Owed = 0
 	p.F = newFighter(Hero, ToTile(at.X, at.Y))
 	p.F.HP = p.MaxHP
 	p.Moving = false
@@ -253,26 +256,50 @@ func (w *World) Step() {
 }
 
 // walkInputs applies this tick's inputs. A token bucket refilled once per tick caps a client at 20 steps per
-// second on average however fast it sends; a backlog of more than 300 ms (after a network stall) drains two steps
-// per tick. A shorter queue is the client's jitter buffer: it paces its sending to keep one or two inputs here.
-// An input that is merely late (browsers send in bursts on frame boundaries, phone networks jitter) would stop
-// the hero for a tick and double its step the next, which every other client sees as a stutter. So when no input
-// has arrived, a hero that was walking keeps its last walk vector for up to maxOwed ticks; the late inputs that
-// stand behind those steps are then acknowledged without walking again (Owed, sent to the client so its
-// prediction skips them too). The total walked never exceeds the inputs sent plus maxOwed steps.
+// second on average however fast it sends. A shorter queue is the client's jitter buffer: it paces its sending to
+// keep one or two inputs here. An input that is merely late (browsers send in bursts on frame boundaries, phone
+// networks jitter) would stop the hero for a tick and double its step the next, which every other client sees as
+// a stutter. So when no input has arrived, a hero that was walking keeps its last walk vector for up to maxOwed
+// ticks (Owed). Those steps are only a guess: when the late inputs arrive the hero goes back to where the last
+// real input left it (Base) and walks them, so a thumbstick that turned or let go during the gap is followed
+// exactly, and the client's prediction (which walked the real inputs) needs no correction.
+// A longer stall (a phone network holding packets for half a second) leaves a backlog behind it: the ticks spent
+// waiting bank tokens (up to maxTokens), and more than `backlog` waiting inputs walk two a tick until caught up,
+// so the server never stays hundreds of ms behind the player. The total walked never exceeds one step per tick
+// on average plus the banked tokens.
 const (
-	maxOwed = 3
-	backlog = 6
+	maxOwed   = 3
+	backlog   = 2
+	maxTokens = 8
 )
 
 func (w *World) walkInputs(p *Player, dt float64) {
-	p.tokens = math.Min(p.tokens+1, 3)
-	for p.Owed > 0 && len(p.queue) > 0 {
+	p.tokens = math.Min(p.tokens+1, maxTokens)
+	if p.Owed > 0 && len(p.queue) > 0 {
 		p.starved = 0
-		p.Ack = p.queue[0].Seq
-		p.last = Vec{p.queue[0].X, p.queue[0].Y}
-		p.queue = p.queue[1:]
-		p.Owed--
+		k := min(p.Owed, len(p.queue))
+		// A hero held in a swing or hit since keeps its place; those inputs are only acknowledged.
+		replay := !posed(p)
+		if replay {
+			p.X, p.Y = p.BaseX, p.BaseY
+		}
+		for i := 0; i < k; i++ {
+			in := p.queue[0]
+			p.queue = p.queue[1:]
+			p.Ack = in.Seq
+			p.last = Vec{in.X, in.Y}
+			if replay {
+				w.walk(p, p.last, dt)
+			}
+		}
+		p.Owed -= k
+		p.BaseX, p.BaseY = p.X, p.Y
+		// Guesses still standing for inputs not here yet follow the newest real input.
+		if replay {
+			for i := 0; i < p.Owed; i++ {
+				w.walk(p, p.last, dt)
+			}
+		}
 	}
 	n := 0
 	if len(p.queue) > 0 {
@@ -300,13 +327,16 @@ func (w *World) walkInputs(p *Player, dt float64) {
 	}
 	p.starved++
 	if p.starved <= maxOwed && p.Owed < maxOwed && p.tokens >= 1 && (p.last.X != 0 || p.last.Y != 0) && !posed(p) {
+		if p.Owed == 0 {
+			p.BaseX, p.BaseY = p.X, p.Y
+		}
 		p.tokens--
 		p.Owed++
 		w.walk(p, p.last, dt)
 		return
 	}
-	// A client that went quiet (a background tab, a dropped connection) stops; its owed steps are forgiven and
-	// its prediction rebases on wherever the server left the hero.
+	// A client that went quiet (a background tab, a dropped connection) stops; its guessed steps stand and its
+	// prediction rebases on wherever the server left the hero.
 	if p.starved > 20 {
 		p.Owed = 0
 	}
