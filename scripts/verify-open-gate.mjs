@@ -9,7 +9,7 @@ try{
  browser=await chromium.launch({headless:true,env:{...process.env,LD_LIBRARY_PATH:'/home/dev/.local/browser-libs/usr/lib/x86_64-linux-gnu:/opt/fural-antigravity-glibc'},args:['--no-sandbox','--no-zygote','--single-process']});
  const page=await browser.newPage({viewport:{width:1000,height:900}}),errors=[];page.on('pageerror',e=>errors.push(e.message));
  await page.addInitScript(()=>localStorage.setItem('arkadia.stronghold.hero',JSON.stringify({x:577,y:700})));
- await page.goto((process.env.DEMO_URL||'http://127.0.0.1:3065')+'/?time=0.5');
+ await page.goto((process.env.DEMO_URL||'http://127.0.0.1:3065')+'/?time=0.5&offline=1');
  await page.waitForFunction(()=>document.querySelector('#world-hero')?.dataset.x);
  const pos=()=>page.locator('#world-hero').evaluate(e=>({x:+e.dataset.x,y:+e.dataset.y}));
  assert.equal(await page.locator('#world-canvas').getAttribute('data-gate'),'closed');
