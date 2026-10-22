@@ -20,12 +20,11 @@
   "thumbnail-size embed keeps the half-size sheet",
   "sheet parameters work without a manifest",
   "host page controls the player with postMessage",
+  "plays inside a Knowledge design frame sandbox (origin null)",
+  "design-frame playback advances",
   "missing sheet description shows an error",
   "no page or resource errors"
  ],
- "failures": [
-  "plays inside a Knowledge design frame sandbox (origin null, Failed to fetch)",
-  "design-frame playback advances"
- ],
- "verifiedAt": "2026-10-22T15:58:03.870Z"
+ "failures": [],
+ "verifiedAt": "2026-10-22T15:59:35.154Z"
 }

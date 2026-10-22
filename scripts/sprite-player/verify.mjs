@@ -1,7 +1,8 @@
 // Chromium check of the sprite player, loaded the way Knowledge loads it: inside an iframe on another page.
 //   node scripts/sprite-player/verify.mjs                       (serves public/ from disk under a stand-in public origin)
 //   BASE=https://ark-whachat.fural.space node scripts/sprite-player/verify.mjs   (deployed player)
-// Writes screenshots and docs/sprite-player/verification[-live].json.
+// Writes screenshots and docs/sprite-player/verification[-live].json; a live run also copies its screenshots to the
+// published evidence/ folder, which the Knowledge page shows inline.
 import fs from 'node:fs';import path from 'node:path';import {chromium} from 'playwright';
 const live=!!process.env.BASE,OUT='docs/sprite-player',TYPES={html:'text/html',js:'text/javascript',css:'text/css',json:'application/json',webp:'image/webp',png:'image/png'};
 fs.mkdirSync(OUT,{recursive:true});
@@ -59,7 +60,7 @@ try{
  await page.waitForTimeout(200);s=await state();test(!s.playing&&s.row===6,'host page controls the player with postMessage');
  // Knowledge design frame: Fural renders frame HTML as srcdoc in a sandbox without allow-same-origin, and the
  // nested player inherits that sandbox (opaque origin), exactly as in the "Idle — Sprite Player" design document.
- await page.unroute(HOST);await page.route(HOST,r=>r.fulfill({contentType:'text/html',body:`<!doctype html><body style="margin:0"><iframe id="d" sandbox="allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox" style="border:0;width:560px;height:620px" srcdoc="${`<!doctype html><style>html,body{margin:0;height:100%}iframe{display:block;width:100%;height:100vh;border:0}</style><iframe src='${base}/rift-runner/sprite-player/?row=S'></iframe>`.replace(/"/g,'&quot;')}"></iframe></body>`}));
+ await page.setViewportSize({width:600,height:660}); await page.unroute(HOST);await page.route(HOST,r=>r.fulfill({contentType:'text/html',body:`<!doctype html><body style="margin:0"><iframe id="d" sandbox="allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox" style="border:0;width:560px;height:620px" srcdoc="${`<!doctype html><style>html,body{margin:0;height:100%}iframe{display:block;width:100%;height:100vh;border:0}</style><iframe src='${base}/rift-runner/sprite-player/?row=S'></iframe>`.replace(/"/g,'&quot;')}"></iframe></body>`}));
  await page.goto(HOST);const outer=await (await page.waitForSelector('#d')).contentFrame(),inner=await (await outer.waitForSelector('iframe')).contentFrame();
  await inner.waitForFunction(()=>window.spritePlayer?.state.ready||window.spritePlayer?.state.error,null,{timeout:60000});s=await inner.evaluate(()=>({...window.spritePlayer.state,origin:self.origin}));
  test(s.ready&&!s.error&&s.origin==='null',`plays inside a Knowledge design frame sandbox (origin ${s.origin}${s.error?', '+s.error:''})`);await page.waitForTimeout(700);
@@ -68,6 +69,7 @@ try{
  ({frame,state}=await open('?manifest=sheets/missing.json',400,400));s=await state();test(!!s.error&&!s.ready,'missing sheet description shows an error');errors.splice(errors.findIndex(e=>e.includes('missing.json')),1);
  test(errors.length===0,'no page or resource errors'+(errors.length?': '+errors.join(' | '):''));
 }finally{await browser.close();}
+if(live)for(const f of ['embed-560.png','all-headings.png','design-frame.png','embed-340.png']){fs.mkdirSync('public/rift-runner/sprite-player/evidence',{recursive:true});fs.copyFileSync(`${OUT}/${f}`,`public/rift-runner/sprite-player/evidence/${f}`);}
 const result={base,checks,failures,verifiedAt:new Date().toISOString()};
 fs.writeFileSync(`${OUT}/verification${live?'-live':''}.json`,JSON.stringify(result,null,1)+'\n');
 console.log(JSON.stringify({passed:checks.length,failed:failures},null,1));process.exit(failures.length?1:0);
