@@ -1,21 +1,29 @@
+import type {Container} from 'pixi.js';
+import {createCanvasSprite} from '../app/loader';
 import {TORCH_FRAMES,torchAssetsReady} from './torches';
+
 /** The complete gateway plays as one sprite: both towers, arch and synchronized door leaves share one pivot. */
 export type GateSheet={image:string;columns:number;frames:number;frame:{w:number;h:number};fps:number;region:{x:number;y:number;w:number;h:number};torches?:{left:{x:number;y:number;w:number;h:number};right:{x:number;y:number;w:number;h:number}}};
 export const GATE_SHEET='/modular-stronghold/v2/full-gateway-v7-sheet.json';
-export function createGateDoors(layer:HTMLElement,gateway:HTMLImageElement,sheet:HTMLImageElement,meta:GateSheet,onPassable:(open:boolean)=>void,light:{raster:number;foundation?:{face:HTMLCanvasElement;pad:number;fade?:HTMLCanvasElement};revision:()=>number;torches?:()=>boolean;shade:(source:HTMLCanvasElement,target:HTMLCanvasElement)=>void}){
+
+export function createGateDoors(worldStage:Container,gateway:HTMLImageElement,sheet:HTMLImageElement,meta:GateSheet,onPassable:(open:boolean)=>void,light:{raster:number;foundation?:{face:HTMLCanvasElement;pad:number;fade?:HTMLCanvasElement};revision:()=>number;torches?:()=>boolean;shade:(source:HTMLCanvasElement,target:HTMLCanvasElement)=>void}){
  const {region,frame}=meta,rows=Math.ceil(meta.frames/meta.columns),height=region.h,canvas=document.createElement('canvas');
- canvas.id='world-gate-doors';canvas.dataset.renderer='gateway-lightmap-v3';// Use the world's backing density: a high-resolution animated overlay otherwise
- // looks pasted over the softer cached masonry even when both share materials.
+ canvas.id='world-gate-doors';canvas.dataset.renderer='gateway-lightmap-v3';
  canvas.width=Math.round(region.w*light.raster);canvas.height=Math.round(region.h*light.raster);
  canvas.dataset.raster=String(light.raster);
- canvas.style.cssText=`position:absolute;left:0;top:0;width:${region.w}px;height:${region.h}px;transform-origin:0 0;pointer-events:none;will-change:transform`;
- layer.append(canvas);const c=canvas.getContext('2d')!;
+ const c=canvas.getContext('2d')!;
+ const gateView=createCanvasSprite(canvas);
+ gateView.sprite.zIndex=38;
+ worldStage.addChild(gateView.sprite);
+
  const source=document.createElement('canvas');source.width=canvas.width;source.height=canvas.height;const raw=source.getContext('2d')!;
  raw.scale(source.width/frame.w,source.height/frame.h);
  let index=0,target=0,raf=0,last=0,elapsed=0,shown=-1,passable=false,lit=-1,flamePose=0,shownFlame=-1,flameTimer=0,pointerHeld=false,behind:boolean|null=null;
  const reduced=matchMedia('(prefers-reduced-motion: reduce)');
  const torches=meta.torches??{left:{x:Math.round(frame.w*196/768),y:Math.round(frame.h*253/512),w:Math.round(frame.w*70/768),h:Math.round(frame.h*112/512)},right:{x:Math.round(frame.w*502/768),y:Math.round(frame.h*253/512),w:Math.round(frame.w*70/768),h:Math.round(frame.h*112/512)}};
  const pierPatches=[{x:torches.left.x-4,y:torches.left.y-5,w:torches.left.w+8,h:torches.left.h+8},{x:torches.right.x-4,y:torches.right.y-5,w:torches.right.w+8,h:torches.right.h+8}];
+ let lastScale=1;
+
  function drawLitTorches(){
   if(!light.torches?.()||!TORCH_FRAMES[0].complete||!TORCH_FRAMES[0].naturalWidth)return;
   c.save();c.scale(canvas.width/frame.w,canvas.height/frame.h);c.imageSmoothingQuality='high';
@@ -45,6 +53,7 @@ export function createGateDoors(layer:HTMLElement,gateway:HTMLImageElement,sheet
    light.shade(source,canvas);
    if(torchesLit)drawLitTorches();
    if(canvas.dataset.torches!==(torchesLit?'lit':'off'))canvas.dataset.torches=torchesLit?'lit':'off';
+   gateView.sync(region.w*lastScale,region.h*lastScale);
   }
   const progress=index/(meta.frames-1),fStr=String(index),pStr=progress.toFixed(3),sStr=index===target?(target?'open':'closed'):(target?'opening':'closing');
   if(canvas.dataset.frame!==fStr)canvas.dataset.frame=fStr;
@@ -70,10 +79,15 @@ export function createGateDoors(layer:HTMLElement,gateway:HTMLImageElement,sheet
   if(index!==target)raf=requestAnimationFrame(tick);else{raf=0;last=0;elapsed=0;scheduleFlames();}
  }
  paint();
- return {canvas,refreshLighting:paint,
+ return {canvas,sprite:gateView.sprite,refreshLighting:paint,
   hit(x:number,y:number){const u=(x-442)/region.w,v=(y-(798-height*.97))/region.h;if(u<0||v<0||u>=1||v>=1)return false;return c.getImageData(Math.floor(u*canvas.width),Math.floor(v*canvas.height),1,1).data[3]>40;},
-  order(hero:HTMLElement,inside:boolean){if(inside===behind)return;behind=inside;if(inside)hero.before(canvas);else hero.after(canvas);},
+  order(inside:boolean){if(inside===behind)return;behind=inside;gateView.sprite.zIndex=inside?26:36;},
   setOpen(open:boolean){target=open?meta.frames-1:0;if(index!==target&&!raf)raf=requestAnimationFrame(tick);},
-  place(x:number,y:number,scale:number){canvas.style.transform=`translate3d(${x+(442+region.x)*scale}px,${y+(798-height*.97+region.y)*scale}px,0) scale(${scale})`;}
+  place(x:number,y:number,scale:number){
+   lastScale=scale;
+   gateView.sprite.position.set(x+(442+region.x)*scale,y+(798-height*.97+region.y)*scale);
+   gateView.sprite.width=region.w*scale;
+   gateView.sprite.height=region.h*scale;
+  }
  };
 }

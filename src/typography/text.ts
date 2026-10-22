@@ -12,7 +12,7 @@ export const liveTexts=()=>[...live];
 // Effect widths and the edge width follow the world scale, which Pixi only reads when a text changes: call after rescaling a scene.
 export function refreshAllText(){for(const t of live)t.refresh();}
 
-export interface TextOptions{size?:number;wrapWidth?:number;align?:'left'|'center'|'right';fill?:TextRole['fill']}
+export interface TextOptions{size?:number;wrapWidth?:number;align?:'left'|'center'|'right';fill?:TextRole['fill'];lineHeight?:number;letterSpacing?:number}
 export class MsdfText extends Container{
  readonly role:TextRole;
  private readonly fillPass:BitmapText;
@@ -39,9 +39,9 @@ export class MsdfText extends Container{
  private shown(){return this.role.uppercase?this.value.toUpperCase():this.value;}
  private passes(){return this.shadowPass?[this.shadowPass,this.fillPass]:[this.fillPass];}
  private style(){
-  const r=this.role,o=this.options;
-  return {fontFamily:FONTS[r.font].family,fontSize:this.size,letterSpacing:r.letterSpacing,fill:0xffffff,align:o.align??r.align??'left',
-   ...(r.lineHeight?{lineHeight:r.lineHeight*this.size/r.size}:{}),...(o.wrapWidth?{wordWrap:true,wordWrapWidth:o.wrapWidth}:{})};
+  const r=this.role,o=this.options,lh=o.lineHeight??(r.lineHeight?r.lineHeight*this.size/r.size:undefined);
+  return {fontFamily:FONTS[r.font].family,fontSize:this.size,letterSpacing:o.letterSpacing??r.letterSpacing,fill:0xffffff,align:o.align??r.align??'left',
+   ...(lh?{lineHeight:lh}:{}),...(o.wrapWidth?{wordWrap:true,wordWrapWidth:o.wrapWidth}:{})};
  }
  // Baseline and line advance in local units, replicating Pixi's BitmapText line placement.
  metrics(){

@@ -61,5 +61,24 @@ export const ROLES={
  'hud-xp-accent':{font:'body',size:22.5,letterSpacing:.2,fill:GOLD,shadow:softShadow},
  'hud-key':{font:'body',size:19,letterSpacing:0,fill:IVORY,shadow:softShadow},
  'hud-hint':{font:'body',size:21.5,letterSpacing:.2,fill:IVORY,shadow:softShadow},
+ // World overhead labels (allies, enemies, gates).
+ 'tag-ally':{font:'body',size:15,letterSpacing:.3,fill:IVORY,shadow:snowShadow,outline:{color:0x0a0604,alpha:.85,width:.9}},
+ 'tag-foe':{font:'body',size:13,letterSpacing:.3,fill:0xf2e4c4,shadow:snowShadow,outline:{color:0x0a0604,alpha:.85,width:.8}},
+ // Floating combat text & banners.
+ 'combat-hit':{font:'display',size:22,letterSpacing:.4,fill:0xffe69c,outline:darkOutline,shadow:displayShadow},
+ 'combat-crit':{font:'display',size:30,letterSpacing:.5,fill:GOLD_GRADIENT,outline:darkOutline,shadow:displayShadow,glow:warmGlow},
+ 'combat-crit-label':{font:'display',size:11,letterSpacing:1.6,fill:0xffdf7a,outline:darkOutline,shadow:softShadow,uppercase:true},
+ 'combat-incoming':{font:'display',size:20,letterSpacing:.3,fill:0xff6452,outline:{color:0x1a0404,alpha:.95,width:1.3},shadow:displayShadow},
+ 'combat-heal':{font:'display',size:19,letterSpacing:.3,fill:0x8effa8,outline:{color:0x061a0a,alpha:.95,width:1.2},shadow:displayShadow},
+ 'combat-banner':{font:'display',size:28,letterSpacing:2.4,fill:GOLD_GRADIENT,outline:darkOutline,shadow:displayShadow,glow:warmGlow,uppercase:true},
+ 'combat-banner-sub':{font:'body',size:16,letterSpacing:.6,fill:IVORY_DIM,outline:{color:0x0a0604,alpha:.85,width:.9},shadow:softShadow},
+ // Popover panels, modals, blessings & loading screen.
+ 'panel-title':{font:'display',size:16,letterSpacing:1.4,fill:GOLD_GRADIENT,outline:{color:0x221104,alpha:.9,width:1},shadow:softShadow,uppercase:true},
+ 'panel-label':{font:'display',size:12,letterSpacing:1.6,fill:GOLD_LABEL,shadow:softShadow,uppercase:true},
+ 'panel-body':{font:'body',size:16,letterSpacing:.1,fill:IVORY,shadow:softShadow},
+ 'panel-muted':{font:'body',size:14,letterSpacing:.1,fill:0xbfa982,shadow:softShadow},
+ 'panel-error':{font:'body',size:14,letterSpacing:.1,fill:0xf08c7a,shadow:softShadow},
+ 'blessing-title':{font:'display',size:18,letterSpacing:.5,fill:GOLD_GRADIENT,outline:{color:0x221104,alpha:.9,width:1},shadow:softShadow},
+ 'blessing-desc':{font:'body',size:15,letterSpacing:0,fill:IVORY_DIM,shadow:softShadow,lineHeight:20,align:'center'},
 } satisfies Record<string,TextRole>;
 export type RoleName=keyof typeof ROLES;

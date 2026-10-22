@@ -16,6 +16,9 @@ export class HeroSelect extends Container{
  private stage=new Container();
  private bg=new Sprite();
  private overlay=new Sprite();
+ public onSelect?:(hero:HeroId)=>void;
+ public onConfirm?:(hero:HeroId)=>void;
+ public onBack?:()=>void;
  private constructor(private kit:Record<string,Texture>,private logo:Texture,private labels:Labels,private references:Partial<Record<string,Texture>>,public hero:HeroId,public device:'desktop'|'mobile'){
   super();this.addChild(this.bg,this.stage,this.overlay);this.overlay.alpha=0;this.build();
  }
@@ -29,7 +32,9 @@ export class HeroSelect extends Container{
   return new HeroSelect(Object.fromEntries(files.map((f,i)=>[f.replace(/^.*\/|\.png$/g,''),textures[i]])),logoTex,labels,refs,hero,'desktop');
  }
  set referenceAlpha(a:number){this.overlay.alpha=a;}
- select(hero:HeroId){this.hero=hero;this.build();}
+ select(hero:HeroId){this.hero=hero;this.build();this.onSelect?.(hero);}
+ confirm(){this.onConfirm?.(this.hero);}
+ back(){if(this.onBack)this.onBack();else this.onConfirm?.(this.hero);}
  private sprite(name:string,x:number,y:number,w:number,h:number){const s=new Sprite(this.kit[name]);s.position.set(x,y);s.width=w;s.height=h;return this.stage.addChild(s);}
  private text(...args:ConstructorParameters<typeof MsdfText>){return this.stage.addChild(new MsdfText(...args));}
  private card(id:HeroId,x:number,y:number,w:number,h:number,names:{selected:[number,number];plain:number}){
@@ -49,11 +54,12 @@ export class HeroSelect extends Container{
   if(!mobile){
    const art=this.sprite(this.hero,346,141,800,1200),mask=new Graphics().rect(346,141,800,800).fill(0xffffff);art.mask=mask;this.stage.addChild(mask);
    const logo=this.stage.addChild(new Sprite(this.logo));logo.position.set(42,16);
-   this.sprite('back',42,92,56,56);this.text('body',L.back).place(106,126);
+   const backBtn=this.sprite('back',42,92,56,56);backBtn.eventMode='static';backBtn.cursor='pointer';backBtn.on('pointertap',()=>this.back());
+   const backTxt=this.text('body',L.back);backTxt.place(106,126);backTxt.eventMode='static';backTxt.cursor='pointer';backTxt.on('pointertap',()=>this.back());
    this.sprite('divider',420,68,820,55);
    this.text('display-title',L.title).place(W/2,77,.5);
    this.text('body-lg',L.subtitle,{size:27}).place(W/2,121,.5);
-   HEROES.forEach((id,i)=>this.card(id,60,158+i*350,270,338,{selected:[430,453],plain:158+i*350+288}));
+   HEROES.forEach((id,i)=>this.card(id,60,158+i*350,270,338,{selected:[430+i*350,453+i*350],plain:158+i*350+288}));
    this.sprite('panel-desktop',1155,130,485,660);
    this.text('display-name',h.name,{size:41.5}).place(1397,235,.5);
    this.sprite('divider',1200,256,395,28);
@@ -64,12 +70,12 @@ export class HeroSelect extends Container{
    this.text('accent',L.level,{size:21}).place(1257,590,.5);
    // The paragraph wraps to the panel's dark interior: panel width less 40 px on each side.
    const para=this.text('paragraph',`${L.automatic} ${L.blessings}`,{wrapWidth:485-80});para.place(1397,642,.5);
-   this.sprite('button-default',1155,744,485,97);
+   const journeyBtn=this.sprite('button-default',1155,744,485,97);journeyBtn.eventMode='static';journeyBtn.cursor='pointer';journeyBtn.on('pointertap',()=>this.confirm());
    this.text('display-button',titleCase(L.journey)).place(1397,795,.5);
   }else{
    const art=new Sprite(this.kit[this.hero]);art.position.set(0,174);art.width=864;art.height=1296;
    const mask=new Graphics().rect(0,174,864,1080).fill(0xffffff);art.mask=mask;this.stage.addChild(art,mask);
-   this.sprite('back',20,20,80,80);
+   const backBtn=this.sprite('back',20,20,80,80);backBtn.eventMode='static';backBtn.cursor='pointer';backBtn.on('pointertap',()=>this.back());
    const logo=this.stage.addChild(new Sprite(this.logo));logo.width=290;logo.height=290*70/270;logo.position.set(432-145,18);
    this.sprite('divider',78,172,708,40);
    this.text('display-title',L.title,{size:46.5}).place(432,150,.5);
@@ -99,7 +105,7 @@ export class HeroSelect extends Container{
     const para=this.text('paragraph',L.automatic,{size:26,wrapWidth:816-2*70});para.place(432,1646,.5);
    }
    const buttonY=compact?1572:1662;
-   this.sprite('button-default',24,buttonY,816,164);
+   const journeyBtn=this.sprite('button-default',24,buttonY,816,164);journeyBtn.eventMode='static';journeyBtn.cursor='pointer';journeyBtn.on('pointertap',()=>this.confirm());
    this.text('display-button',titleCase(L.journey),{size:50}).place(432,buttonY+83,.5);
   }
   this.layout(this.lastSize[0],this.lastSize[1]);

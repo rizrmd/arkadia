@@ -1,8 +1,10 @@
+import {Container,Graphics} from 'pixi.js';
+import {createCanvasSprite} from '../app/loader';
+import {MsdfText} from '../typography/text';
 import {tilePoint} from './terrain';
 import {rollHit,reach,skillRank,skillDamageMultiplier,skillAreaMultiplier,skillCooldownMs,type Progression} from './progression';
 import type {Fighter} from '../characters/combat';
 import type {HeroId} from './heroes';
-import {createFxStage,playCue,type CueContext,type FxHandle} from '../fx';
 
 export type FloatKind='normal'|'crit'|'incoming'|'heal'|'banner';
 export type FloatingText={
@@ -21,13 +23,13 @@ export type SlashTrail={
 };
 export type ProjectileKind='rift-bolt'|'flame-bolt'|'arcane-orb';
 export type Projectile={
- id:number;kind:ProjectileKind;skill:SkillId;u:number;v:number;vx:number;vy:number;
+ id:number;kind:ProjectileKind;u:number;v:number;vx:number;vy:number;
  radius:number;range:number;traveled:number;damageScale:number;forceCrit?:boolean;
- trail:{u:number;v:number}[];age:number;alive:boolean;hitIds:Set<object>;fx:FxHandle[];
+ trail:{u:number;v:number}[];age:number;alive:boolean;hitIds:Set<object>;
 };
 export type AoEKind='rift-trap'|'ember-snare'|'shockwave'|'cleave-cone'|'flame-cone';
 export type AoETelegraph={
- id:number;kind:AoEKind;skill:SkillId;shape:'circle'|'cone';u:number;v:number;
+ id:number;kind:AoEKind;shape:'circle'|'cone';u:number;v:number;
  radius:number;angle:number;spread:number;age:number;duration:number;
  damageScale:number;forceCrit?:boolean;detonated:boolean;
 };
@@ -59,9 +61,6 @@ export const SKILL_CATALOG:Record<SkillId,SkillDef>={
  shockwave:{id:'shockwave',name:'Seismic Slam',key:'4',cooldownMs:2800,hero:'shared',badge:'SLAM',icon:'💥'}
 };
 
-// The skill whose FX an AoE plays when the caller does not say (Rift Dash also uses the cleave cone).
-const AOE_SKILL:Record<AoEKind,SkillId>={'rift-trap':'rift-trap','ember-snare':'ember-snare',shockwave:'shockwave','cleave-cone':'cleave','flame-cone':'cinder-step'};
-
 export const HERO_SKILLS:Record<HeroId,SkillDef[]>={
  'rift-runner':[
   SKILL_CATALOG['rift-bolt'],
@@ -89,27 +88,38 @@ export function facingScreenAngle(f:{facing:number;back:boolean;vertical:boolean
 }
 
 export function createCombatVfx(o:{
- layer:HTMLElement;
+ layer:Container;
  heroCanvas:HTMLCanvasElement;
- backLayer:HTMLElement;
- frontLayer:HTMLElement;
+ backLayer:Container;
+ frontLayer:Container;
  getHero:()=>{u:number;v:number;facing:number;back:boolean;vertical:boolean;heroId:HeroId};
  getRun:()=>Progression;
  getFoes:()=>Fighter[];
  onKill:(f:Fighter)=>void;
  random:()=>number;
 }){
- // Skill FX are NixieFX particle effects (src/fx, authored in vfx/) on two WebGL planes: rune circles, scorch and
- // shock rings flat on the snow under every figure, sparks, flames and smoke over them. This module decides when
- // and where (cues such as "flame-fan.cast", "hit.crit"); the hero's FX profile (src/fx/heroes) decides how it looks.
- const fx=createFxStage({under:o.backLayer,over:o.frontLayer});
- // Over-character canvas for the RO-style floating combat text and banners, above the particle plane.
+ // Ground under-foot layer (2:1 isometric AoE telegraphs, Level-Up rune rings, Cinder Step scorch marks, Trinity Resonance rings)
+ const groundCanvas=document.createElement('canvas');
+ groundCanvas.id='world-vfx-ground';
+ const groundView=createCanvasSprite(groundCanvas);
+ groundView.sprite.zIndex=22;
+ o.layer.addChild(groundView.sprite);
+
+ // Over-character layer (slash arcs, hit sparks, projectiles, AoE impact bursts, Level-Up light pillar)
  const overCanvas=document.createElement('canvas');
  overCanvas.id='world-vfx-over';
- overCanvas.style.cssText='position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:3';
- o.frontLayer.after(overCanvas);
+ const overView=createCanvasSprite(overCanvas);
+ overView.sprite.zIndex=38;
+ o.layer.addChild(overView.sprite);
 
- const oc=overCanvas.getContext('2d')!;
+ // Pixi MSDF floating combat text & banner layer
+ const floatsLayer=new Container();
+ floatsLayer.zIndex=45;
+ o.layer.addChild(floatsLayer);
+ type FloatView={root:Container;badge:Graphics;main:MsdfText;sub?:MsdfText;kind:FloatKind;text:string;subtext?:string};
+ const floatViews=new Map<number,FloatView>();
+
+ const gc=groundCanvas.getContext('2d')!,oc=overCanvas.getContext('2d')!;
  let nextId=1,origin={x:0,y:0,scale:1};
  const floats:FloatingText[]=[],sparks:HitSpark[]=[],slashes:SlashTrail[]=[];
  const projectiles:Projectile[]=[],aoes:AoETelegraph[]=[],impacts:AoEImpact[]=[];
@@ -120,11 +130,7 @@ export function createCombatVfx(o:{
  let totalAutoCasts=0,totalSimultaneousCasts=0,totalTrinityCasts=0;
  let lastSkill:SkillId|''='';
  let lastSimultaneousSkills:SkillId[]=[];
- let lastComboBannerMs=0,fxDtMs=0;
- const SPARK_CUE:Record<SparkKind,string>={normal:'hit.normal',crit:'hit.crit',incoming:'hit.incoming',arcane:'hit.arcane',fire:'hit.fire',seismic:'hit.seismic'};
- const yawOf=(du:number,dv:number)=>Math.atan2(dv,du);
- const heroAt=()=>{const h=o.getHero();return {u:h.u,v:h.v};};
- function cue(key:string,c:CueContext){return playCue(fx,o.getHero().heroId,key,c);}
+ let lastComboBannerMs=0;
 
  function addFloat(kind:FloatKind,text:string,u:number,v:number,subtext?:string){
   const spread=(o.random()-.5)*38;
@@ -137,7 +143,6 @@ export function createCombatVfx(o:{
 
  function addSpark(kind:SparkKind,u:number,v:number,angle=0,radius=26){
   sparks.push({id:nextId++,kind,u,v,angle,age:0,duration:kind==='crit'?380:270,radius});
-  cue(SPARK_CUE[kind],{u,v,yaw:angle});
  }
 
  function addShake(target:object,amp=5.5,duration=190){
@@ -154,8 +159,6 @@ export function createCombatVfx(o:{
   const run=o.getRun(),novaRank=run.skills.nova??0,reachScale=reach(run);
   const {heroId}=o.getHero();
   slashes.push({id:nextId++,u,v,angle,reachScale,novaRank,hero:heroId,crit,age:0,duration:crit?340:260});
-  const d=tileVec(Math.cos(angle),Math.sin(angle));
-  cue('attack.swing',{u,v,yaw:yawOf(d.u,d.v),radius:reachScale});
  }
 
  function applyHitToFoe(f:Fighter,opts:{scale?:number;forceCrit?:boolean;sparkKind?:SparkKind;angle?:number}={}){
@@ -202,19 +205,17 @@ export function createCombatVfx(o:{
  function recordHeroHeal(amount:number,u:number,v:number,label?:string){
   const val=Math.max(1,Math.round(amount));
   addFloat('heal',`+${val} HP`,u,v,label);
-  cue('heal',{u,v,follow:heroAt});
  }
 
  function triggerLevelUp(level:number,u?:number,v?:number){
   const h=o.getHero(),tu=u??h.u,tv=v??h.v;
   totalLevelUps++;
   levelUps.push({id:nextId++,u:tu,v:tv,level,age:0,duration:1750});
-  cue('level-up',{u:tu,v:tv,follow:heroAt});
   addFloat('banner',`LEVEL UP!`,tu,tv,`LV. ${level}`);
  }
 
  function spawnProjectile(opts:{
-  kind?:ProjectileKind;skill?:SkillId;u?:number;v?:number;angle?:number;speed?:number;
+  kind?:ProjectileKind;u?:number;v?:number;angle?:number;speed?:number;
   range?:number;radius?:number;damageScale?:number;forceCrit?:boolean;
  }={}){
   const h=o.getHero(),u=opts.u??h.u,v=opts.v??h.v;
@@ -222,23 +223,19 @@ export function createCombatVfx(o:{
   const dir=tileVec(Math.cos(angle),Math.sin(angle));
   const speed=opts.speed??6.8;
   const kind=opts.kind??(h.heroId==='ember-warden'?'flame-bolt':'rift-bolt');
-  const skill=opts.skill??(kind==='flame-bolt'?'flame-fan':'rift-bolt');
   totalProjectiles++;
   const p:Projectile={
-   id:nextId++,kind,skill,u,v,vx:dir.u*speed,vy:dir.v*speed,
+   id:nextId++,kind,u,v,vx:dir.u*speed,vy:dir.v*speed,
    radius:opts.radius??.38,range:opts.range??4.8,traveled:0,
    damageScale:opts.damageScale??.85,forceCrit:opts.forceCrit,
-   trail:[{u,v}],age:0,alive:true,hitIds:new Set(),
-   // The bolt effect stays anchored where it was fired, turned along the flight; the game slides its emitter
-   // along the path, so its fire wake stays behind in the world.
-   fx:cue(`${skill}.bolt`,{u,v,yaw:yawOf(dir.u,dir.v)})
+   trail:[{u,v}],age:0,alive:true,hitIds:new Set()
   };
   projectiles.push(p);
   return p;
  }
 
  function spawnAoE(opts:{
-  kind?:AoEKind;skill?:SkillId;shape?:'circle'|'cone';u?:number;v?:number;
+  kind?:AoEKind;shape?:'circle'|'cone';u?:number;v?:number;
   radius?:number;angle?:number;spread?:number;duration?:number;
   damageScale?:number;forceCrit?:boolean;
  }={}){
@@ -249,16 +246,14 @@ export function createCombatVfx(o:{
   const offset=shape==='cone'?.35:.95;
   const u=opts.u??(h.u+dir.u*offset),v=opts.v??(h.v+dir.v*offset);
   totalAoEs++;
-  const skill=opts.skill??AOE_SKILL[kind];
   const aoe:AoETelegraph={
-   id:nextId++,kind,skill,shape,u,v,
+   id:nextId++,kind,shape,u,v,
    radius:opts.radius??1.45*reach(o.getRun()),
    angle,spread:opts.spread??(shape==='cone'?Math.PI*.62:Math.PI*2),
    age:0,duration:opts.duration??680,
    damageScale:opts.damageScale??1.15,forceCrit:opts.forceCrit,detonated:false
   };
   aoes.push(aoe);
-  cue(`${skill}.telegraph`,{u,v,yaw:yawOf(dir.u,dir.v),radius:aoe.radius});
   return aoe;
  }
 
@@ -266,8 +261,6 @@ export function createCombatVfx(o:{
   if(a.detonated)return;
   a.detonated=true;
   impacts.push({id:nextId++,kind:a.kind,u:a.u,v:a.v,radius:a.radius,angle:a.angle,age:0,duration:580});
-  const d=tileVec(Math.cos(a.angle),Math.sin(a.angle));
-  cue(`${a.skill}.detonate`,{u:a.u,v:a.v,yaw:yawOf(d.u,d.v),radius:a.radius});
   const sparkKind:SparkKind=a.kind==='ember-snare'||a.kind==='flame-cone'?'fire':a.kind==='shockwave'||a.kind==='cleave-cone'?'seismic':'arcane';
   for(const f of o.getFoes()){
    if(!f.alive)continue;
@@ -305,7 +298,6 @@ export function createCombatVfx(o:{
   lastSkill=id;
   cooldowns[id]=skillCooldownMs(run,id);
   const dir=tileVec(Math.cos(angle),Math.sin(angle));
-  cue(`${id}.cast`,{u:h.u,v:h.v,yaw:yawOf(dir.u,dir.v),target:targetU!==undefined&&targetV!==undefined?{u:targetU,v:targetV}:undefined,follow:heroAt,radius:1.55*reach(run)*areaMult});
 
   switch(id){
    case 'rift-bolt':{
@@ -313,7 +305,7 @@ export function createCombatVfx(o:{
     const offsets=rank>=3?[-0.22,0,0.22]:rank===2?[-0.12,0.12]:[0];
     for(const off of offsets){
      spawnProjectile({
-      kind:'rift-bolt',skill:'rift-bolt',
+      kind:'rift-bolt',
       u:h.u+dir.u*.24,
       v:h.v+dir.v*.24,
       angle:angle+off,
@@ -330,7 +322,7 @@ export function createCombatVfx(o:{
     const offsets=rank>=3?[-0.44,-0.22,0,0.22,0.44]:rank===2?[-0.36,-0.12,0.12,0.36]:[-0.34,0,0.34];
     for(const offset of offsets){
      spawnProjectile({
-      kind:'flame-bolt',skill:'flame-fan',
+      kind:'flame-bolt',
       u:h.u+dir.u*.22,
       v:h.v+dir.v*.22,
       angle:angle+offset,
@@ -352,7 +344,7 @@ export function createCombatVfx(o:{
     addSpark(id==='cinder-step'?'fire':'arcane',h.u+dir.u*.6,h.v+dir.v*.6,angle,36);
     spawnSlash(h.u+dir.u*.5,h.v+dir.v*.5,angle,!!opts.forceCrit);
     spawnAoE({
-     kind:id==='cinder-step'?'flame-cone':'cleave-cone',skill:id,
+     kind:id==='cinder-step'?'flame-cone':'cleave-cone',
      shape:'cone',
      u:h.u+dir.u*.2,
      v:h.v+dir.v*.2,
@@ -432,7 +424,6 @@ export function createCombatVfx(o:{
    totalSimultaneousCasts++;
    if(unique.length>=3)totalTrinityCasts++;
    combos.push({id:nextId++,u:h.u,v:h.v,count:unique.length,skills:unique,age:0,duration:960});
-   cue(unique.length>=3?'combo.trinity':'combo.dual',{u:h.u,v:h.v,follow:heroAt});
    if(lastComboBannerMs<=0){
     lastComboBannerMs=1100;
     const label=unique.length>=3?'TRINITY AUTO-CAST!':'DUAL AUTO-CAST!';
@@ -456,7 +447,6 @@ export function createCombatVfx(o:{
  }
 
  function step(dt:number){
-  fxDtMs+=dt;
   lastComboBannerMs=Math.max(0,lastComboBannerMs-dt);
   for(const k of Object.keys(cooldowns) as SkillId[]){
    cooldowns[k]=Math.max(0,(cooldowns[k]??0)-dt);
@@ -491,15 +481,12 @@ export function createCombatVfx(o:{
      p.hitIds.add(f);
      applyHitToFoe(f,{scale:p.damageScale,forceCrit:p.forceCrit,sparkKind:p.kind==='flame-bolt'?'fire':'arcane',angle});
      impacts.push({id:nextId++,kind:p.kind==='flame-bolt'?'ember-snare':'rift-trap',u:p.u,v:p.v,radius:.65,angle,age:0,duration:340});
-     cue(`${p.skill}.impact`,{u:p.u,v:p.v,yaw:yawOf(p.vx,p.vy)});
      p.alive=false;
      break;
     }
    }
-   for(const h of p.fx)h.setLocal(p.traveled);
    if(!p.alive||p.traveled>=p.range){
     if(p.alive)addSpark(p.kind==='flame-bolt'?'fire':'arcane',p.u,p.v,angle,22);
-    for(const h of p.fx)h.release();
     projectiles.splice(i,1);
    }
   }
@@ -531,87 +518,412 @@ export function createCombatVfx(o:{
  }
 
  function render(){
-  fx.frame(fxDtMs/1000);fxDtMs=0;
   const dpr=Math.min(devicePixelRatio||1,2),w=innerWidth,h=innerHeight,k=origin.scale;
-  const pw=Math.max(1,Math.floor(w*dpr)),ph=Math.max(1,Math.floor(h*dpr));
-  if(overCanvas.width!==pw||overCanvas.height!==ph){overCanvas.width=pw;overCanvas.height=ph;}
+  for(const canvas of [groundCanvas,overCanvas]){
+   const pw=Math.max(1,Math.floor(w*dpr)),ph=Math.max(1,Math.floor(h*dpr));
+   if(canvas.width!==pw||canvas.height!==ph){canvas.width=pw;canvas.height=ph;}
+  }
+  gc.setTransform(dpr,0,0,dpr,0,0);gc.clearRect(0,0,w,h);
   oc.setTransform(dpr,0,0,dpr,0,0);oc.clearRect(0,0,w,h);
 
-  // RO-Style Floating Combat Text & Level-Up / Trinity Combo Banner
+  const heroPos=o.getHero();
+
+  // 0. GROUND LAYER: Trinity / Dual Simultaneous Auto-Cast Resonance Rings
+  for(const cb of combos){
+   const p=toScreen(heroPos.u,heroPos.v),t=Math.min(1,cb.age/cb.duration);
+   const alpha=t<.15?t/.15:Math.max(0,1-(t-.15)/.85);
+   const baseR=(cb.count>=3?76:58)*k*reach(o.getRun());
+   gc.save();
+   gc.translate(p.x,p.y);
+   gc.scale(1,.5);
+   gc.globalAlpha=alpha;
+   const ringColors=cb.count>=3?['#ffe066','#5ce1e6','#ff6b35']:['#ffe066','#5ce1e6'];
+   for(let idx=0;idx<ringColors.length;idx++){
+    const rt=Math.min(1,Math.max(0,t*1.25-idx*.12));
+    const r=baseR*(.35+rt*.85);
+    gc.beginPath();gc.arc(0,0,r,0,Math.PI*2);
+    gc.lineWidth=(1-rt)*4+1.6;
+    gc.strokeStyle=ringColors[idx];
+    gc.stroke();
+   }
+   gc.rotate(-cb.age*.004);
+   const spokes=cb.count>=3?9:6;
+   gc.strokeStyle='#fff3b0';gc.lineWidth=1.8;
+   for(let i=0;i<spokes;i++){
+    const ang=(i*Math.PI*2)/spokes;
+    gc.beginPath();
+    gc.moveTo(Math.cos(ang)*baseR*.25,Math.sin(ang)*baseR*.25);
+    gc.lineTo(Math.cos(ang)*baseR*.95,Math.sin(ang)*baseR*.95);
+    gc.stroke();
+   }
+   gc.restore();
+  }
+
+  // 1. GROUND LAYER: 2:1 Isometric AoE Telegraphs (under character feet)
+  for(const a of aoes){
+   const p=toScreen(a.u,a.v),progress=Math.min(1,Math.max(0,a.age/a.duration));
+   const rx=a.radius*64*k;
+   const isFire=a.kind==='ember-snare'||a.kind==='flame-cone';
+   const isSeismic=a.kind==='shockwave'||a.kind==='cleave-cone';
+   const stroke=isFire?'#ff6b2b':isSeismic?'#f5c453':'#4be3ff';
+   const fill=isFire?'rgba(255,88,28,0.24)':isSeismic?'rgba(245,196,83,0.22)':'rgba(75,227,255,0.22)';
+   const innerFill=isFire?'rgba(255,168,52,0.46)':isSeismic?'rgba(255,226,122,0.44)':'rgba(142,118,255,0.46)';
+
+   gc.save();
+   gc.translate(p.x,p.y);
+   // 2:1 isometric ground plane projection
+   gc.scale(1,.5);
+   if(a.shape==='cone'){
+    const start=a.angle-a.spread/2,end=a.angle+a.spread/2;
+    gc.beginPath();gc.moveTo(0,0);gc.arc(0,0,rx,start,end);gc.closePath();
+    gc.fillStyle=fill;gc.fill();
+    gc.lineWidth=2.4;gc.strokeStyle=stroke;gc.stroke();
+
+    gc.beginPath();gc.moveTo(0,0);gc.arc(0,0,rx*progress,start,end);gc.closePath();
+    gc.fillStyle=innerFill;gc.fill();
+   }else{
+    // Outer telegraph boundary ellipse (circle in 2:1 scaled space)
+    gc.beginPath();gc.arc(0,0,rx,0,Math.PI*2);
+    gc.fillStyle=fill;gc.fill();
+    gc.lineWidth=2.5;gc.strokeStyle=stroke;gc.stroke();
+
+    // Animated fill progress disk
+    gc.beginPath();gc.arc(0,0,rx*progress,0,Math.PI*2);
+    gc.fillStyle=innerFill;gc.fill();
+
+    // Inner rotating geometric rune ring
+    gc.rotate(a.age*.0035);
+    gc.strokeStyle=stroke;gc.lineWidth=1.5;gc.setLineDash([6,5]);
+    gc.beginPath();gc.arc(0,0,rx*.72,0,Math.PI*2);gc.stroke();
+    gc.setLineDash([]);
+    for(let i=0;i<6;i++){
+     const ang=(i*Math.PI)/3;
+     gc.beginPath();
+     gc.moveTo(Math.cos(ang)*rx*.42,Math.sin(ang)*rx*.42);
+     gc.lineTo(Math.cos(ang)*rx*.95,Math.sin(ang)*rx*.95);
+     gc.stroke();
+    }
+   }
+   gc.restore();
+  }
+
+  // 2. GROUND LAYER: Level-Up Expanding Isometric Rune Aura Rings (under hero feet)
+  for(const lv of levelUps){
+   const p=toScreen(heroPos.u,heroPos.v),t=Math.min(1,lv.age/lv.duration);
+   const alpha=t<.15?t/.15:Math.max(0,1-(t-.15)/.85);
+   const baseR=48*k;
+   gc.save();
+   gc.translate(p.x,p.y);
+   gc.scale(1,.5);
+   gc.globalAlpha=alpha;
+   // Expanding concentric shockwave rings
+   for(let ring=0;ring<3;ring++){
+    const rt=(t*1.35-ring*.18);if(rt<=0||rt>1)continue;
+    const r=baseR*(.45+rt*1.45);
+    gc.beginPath();gc.arc(0,0,r,0,Math.PI*2);
+    gc.lineWidth=(1-rt)*4.5+1;
+    gc.strokeStyle=ring%2===0?'#ffe27a':'#7ce8ff';
+    gc.stroke();
+   }
+   // Rotating 8-point RO blessing rune circle
+   gc.rotate(lv.age*.0025);
+   const runeR=baseR*(.85+.12*Math.sin(lv.age*.008));
+   gc.fillStyle='rgba(255,224,112,0.22)';
+   gc.beginPath();gc.arc(0,0,runeR,0,Math.PI*2);gc.fill();
+   gc.lineWidth=2.4;gc.strokeStyle='#ffd859';gc.stroke();
+   for(let i=0;i<8;i++){
+    const a=(i*Math.PI)/4;
+    gc.beginPath();
+    gc.moveTo(Math.cos(a)*runeR*.35,Math.sin(a)*runeR*.35);
+    gc.lineTo(Math.cos(a)*runeR,Math.sin(a)*runeR);
+    gc.stroke();
+   }
+   gc.restore();
+  }
+
+  // 3. GROUND LAYER: Dash / Cinder Step Ground Trails
+  for(const g of ghosts){
+   if(g.age<0)continue;
+   const p=toScreen(g.u,g.v),t=g.age/g.duration,alpha=Math.max(0,1-t);
+   gc.save();
+   gc.translate(p.x,p.y);
+   gc.scale(1,.5);
+   gc.globalAlpha=alpha*.75;
+   const r=22*k*(1+t*.4);
+   gc.beginPath();gc.arc(0,0,r,0,Math.PI*2);
+   gc.fillStyle=g.kind==='cinder-step'?'rgba(255,102,24,0.45)':'rgba(90,224,255,0.4)';
+   gc.fill();
+   gc.lineWidth=2;gc.strokeStyle=g.kind==='cinder-step'?'#ffbc42':'#7be3ff';gc.stroke();
+   gc.restore();
+  }
+
+  // 4. OVER LAYER: Dash Afterimage Silhouettes
+  for(const g of ghosts){
+   if(g.age<0)continue;
+   const p=toScreen(g.u,g.v),t=g.age/g.duration,alpha=Math.max(0,(1-t)*.7);
+   oc.save();
+   oc.translate(p.x,p.y-28*k);
+   oc.globalAlpha=alpha;
+   const grad=oc.createRadialGradient(0,0,2*k,0,0,26*k);
+   if(g.kind==='cinder-step'){
+    grad.addColorStop(0,'#fff3b0');grad.addColorStop(.5,'#ff6b2b');grad.addColorStop(1,'rgba(255,50,0,0)');
+   }else{
+    grad.addColorStop(0,'#e0fbff');grad.addColorStop(.5,'#48cae4');grad.addColorStop(1,'rgba(114,9,183,0)');
+   }
+   oc.fillStyle=grad;
+   oc.beginPath();oc.ellipse(0,0,14*k,26*k,0,0,Math.PI*2);oc.fill();
+   oc.restore();
+  }
+
+  // 5. OVER LAYER: Directional Weapon Swing Slash Arc Trails (scaling with Arc Nova rank)
+  for(const s of slashes){
+   const p=toScreen(s.u,s.v),t=s.age/s.duration,alpha=Math.max(0,1-t*t);
+   const radius=(38*s.reachScale+(s.crit?10:0))*k;
+   const sweep=(Math.PI*.72+Math.min(Math.PI*.48,s.novaRank*.18));
+   const start=s.angle-sweep*.5,end=s.angle+sweep*.5;
+
+   oc.save();
+   oc.translate(p.x,p.y-24*k);
+   oc.globalAlpha=alpha;
+   // Primary crescent slash arc
+   oc.beginPath();
+   oc.arc(0,0,radius,start,end);
+   oc.arc(0,0,radius*.58,end,start,true);
+   oc.closePath();
+   const primaryColor=s.crit?'#ffd644':s.hero==='ember-warden'?'#ff7b29':'#66e3ff';
+   const coreColor=s.crit?'#fff9d2':s.hero==='ember-warden'?'#ffe299':'#e6fcff';
+   oc.fillStyle=primaryColor;oc.fill();
+   oc.lineWidth=(s.crit?3.5:2.4)*k;oc.strokeStyle=coreColor;oc.stroke();
+
+   // Secondary Arc Nova outer wave when Arc Nova rank > 0 or crit
+   if(s.novaRank>0||s.crit){
+    const outerR=radius*1.24;
+    oc.beginPath();
+    oc.arc(0,0,outerR,start-.12,end+.12);
+    oc.lineWidth=(2.5+s.novaRank*.8)*k;
+    oc.strokeStyle=s.crit?'#ff3b30':s.hero==='ember-warden'?'#ffba49':'#a984ff';
+    oc.stroke();
+   }
+   oc.restore();
+  }
+
+  // 6. OVER LAYER: Projectiles (with directional rotation & glowing trail)
+  for(const p of projectiles){
+   const cur=toScreen(p.u,p.v);
+   const sv=screenVec(p.vx,p.vy),angle=Math.atan2(sv.y,sv.x);
+   const isFire=p.kind==='flame-bolt';
+   // Trail ribbon
+   if(p.trail.length>1){
+    oc.save();
+    for(let i=1;i<p.trail.length;i++){
+     const a=toScreen(p.trail[i-1].u,p.trail[i-1].v),b=toScreen(p.trail[i].u,p.trail[i].v);
+     const frac=i/p.trail.length;
+     oc.beginPath();oc.moveTo(a.x,a.y-22*k);oc.lineTo(b.x,b.y-22*k);
+     oc.lineWidth=frac*7*k;
+     oc.strokeStyle=isFire?`rgba(255,115,35,${frac*.75})`:`rgba(82,229,255,${frac*.75})`;
+     oc.lineCap='round';oc.stroke();
+    }
+    oc.restore();
+   }
+   // Projectile head rotated along flight vector
+   oc.save();
+   oc.translate(cur.x,cur.y-22*k);
+   oc.rotate(angle);
+   const len=18*k,wid=7*k;
+   // Outer glow
+   oc.fillStyle=isFire?'rgba(255,94,19,0.5)':'rgba(72,219,251,0.5)';
+   oc.beginPath();oc.ellipse(0,0,len*1.25,wid*1.4,0,0,Math.PI*2);oc.fill();
+   // Spear/Bolt crystal body
+   oc.beginPath();
+   oc.moveTo(len,0);oc.lineTo(-len*.45,-wid);oc.lineTo(-len*.85,0);oc.lineTo(-len*.45,wid);oc.closePath();
+   oc.fillStyle=isFire?'#ff9f1c':'#72efdd';oc.fill();
+   oc.lineWidth=1.8*k;oc.strokeStyle='#ffffff';oc.stroke();
+   oc.restore();
+  }
+
+  // 7. OVER LAYER: AoE Detonation Impact Bursts
+  for(const imp of impacts){
+   const p=toScreen(imp.u,imp.v),t=imp.age/imp.duration,alpha=Math.max(0,1-t);
+   const rx=imp.radius*64*k;
+   const isFire=imp.kind==='ember-snare'||imp.kind==='flame-cone';
+   const isSeismic=imp.kind==='shockwave'||imp.kind==='cleave-cone';
+   oc.save();
+   oc.translate(p.x,p.y);
+   oc.globalAlpha=alpha;
+   // Vertical eruption pillar / dome
+   const pillarH=(isFire?115:isSeismic?70:95)*k*(.5+t*.65);
+   const pillarW=rx*(.75-t*.25);
+   const grad=oc.createLinearGradient(0,0,0,-pillarH);
+   if(isFire){
+    grad.addColorStop(0,'rgba(255,230,128,0.92)');grad.addColorStop(.5,'rgba(255,92,24,0.75)');grad.addColorStop(1,'rgba(255,30,0,0)');
+   }else if(isSeismic){
+    grad.addColorStop(0,'rgba(255,238,153,0.9)');grad.addColorStop(.5,'rgba(217,155,56,0.65)');grad.addColorStop(1,'rgba(120,85,40,0)');
+   }else{
+    grad.addColorStop(0,'rgba(212,252,255,0.92)');grad.addColorStop(.5,'rgba(114,9,183,0.72)');grad.addColorStop(1,'rgba(58,12,163,0)');
+   }
+   oc.fillStyle=grad;
+   oc.beginPath();
+   oc.moveTo(-pillarW,0);oc.lineTo(-pillarW*.65,-pillarH);oc.lineTo(pillarW*.65,-pillarH);oc.lineTo(pillarW,0);
+   oc.closePath();oc.fill();
+
+   // Expanding over-character shockwave ring
+   oc.save();
+   oc.scale(1,.5);
+   oc.beginPath();oc.arc(0,0,rx*(.4+t*.75),0,Math.PI*2);
+   oc.lineWidth=(1-t)*5*k+1.5;
+   oc.strokeStyle=isFire?'#ffbe3b':isSeismic?'#ffe17d':'#7df9ff';
+   oc.stroke();
+   oc.restore();
+
+   // Radial impact rays
+   const rays=8;
+   oc.strokeStyle='#ffffff';oc.lineWidth=2*k;
+   for(let i=0;i<rays;i++){
+    const a=(i*Math.PI*2)/rays+t*.5;
+    const r0=rx*.18*t,r1=rx*(.45+t*.55);
+    oc.beginPath();
+    oc.moveTo(Math.cos(a)*r0,Math.sin(a)*r0*.5-14*k);
+    oc.lineTo(Math.cos(a)*r1,Math.sin(a)*r1*.5-32*k*t);
+    oc.stroke();
+   }
+   oc.restore();
+  }
+
+  // 8. OVER LAYER: Hit Spark Sprites (Normal & RO-Style Critical)
+  for(const sp of sparks){
+   const p=toScreen(sp.u,sp.v),t=sp.age/sp.duration,alpha=Math.max(0,1-t);
+   const r=sp.radius*k*(.45+t*.75);
+   oc.save();
+   oc.translate(p.x,p.y-28*k);
+   oc.globalAlpha=alpha;
+   if(sp.kind==='crit'){
+    // Sharp RO-style critical twin cross-slash + crimson/gold shock burst
+    oc.lineWidth=3.2*k*(1-t*.5);
+    oc.strokeStyle='#ff2a2a';
+    for(const ang of [Math.PI/4,-Math.PI/4]){
+     oc.beginPath();
+     oc.moveTo(Math.cos(ang)*-r*1.25,Math.sin(ang)*-r*1.25);
+     oc.lineTo(Math.cos(ang)*r*1.25,Math.sin(ang)*r*1.25);
+     oc.stroke();
+    }
+    oc.lineWidth=2*k;oc.strokeStyle='#fff38a';
+    for(let i=0;i<8;i++){
+     const a=(i*Math.PI)/4+sp.angle;
+     oc.beginPath();oc.moveTo(Math.cos(a)*r*.2,Math.sin(a)*r*.2);oc.lineTo(Math.cos(a)*r,Math.sin(a)*r);oc.stroke();
+    }
+    oc.beginPath();oc.arc(0,0,r*.65,0,Math.PI*2);
+    oc.strokeStyle='#ffd23f';oc.lineWidth=2.2*k;oc.stroke();
+   }else{
+    const color=sp.kind==='incoming'?'#ff5252':sp.kind==='fire'?'#ff9233':sp.kind==='arcane'?'#66e3ff':'#fff5cc';
+    oc.strokeStyle=color;oc.lineWidth=2.2*k*(1-t*.4);
+    for(let i=0;i<6;i++){
+     const a=(i*Math.PI)/3+sp.angle;
+     oc.beginPath();oc.moveTo(Math.cos(a)*r*.25,Math.sin(a)*r*.25);oc.lineTo(Math.cos(a)*r,Math.sin(a)*r);oc.stroke();
+    }
+   }
+   oc.restore();
+  }
+
+  // 9. OVER LAYER: Level-Up Vertical Light Pillar + Rising Motes
+  for(const lv of levelUps){
+   const p=toScreen(heroPos.u,heroPos.v),t=Math.min(1,lv.age/lv.duration);
+   const alpha=t<.12?t/.12:Math.max(0,1-(t-.12)/.88);
+   const pillarW=36*k*(1-.18*t),pillarH=195*k;
+   oc.save();
+   oc.translate(p.x,p.y);
+   oc.globalAlpha=alpha;
+   const grad=oc.createLinearGradient(0,6*k,0,-pillarH);
+   grad.addColorStop(0,'rgba(255,244,184,0.95)');
+   grad.addColorStop(.35,'rgba(255,214,92,0.75)');
+   grad.addColorStop(.75,'rgba(122,232,255,0.42)');
+   grad.addColorStop(1,'rgba(122,232,255,0)');
+   oc.fillStyle=grad;
+   oc.beginPath();
+   oc.moveTo(-pillarW,0);oc.lineTo(-pillarW*.7,-pillarH);oc.lineTo(pillarW*.7,-pillarH);oc.lineTo(pillarW,0);
+   oc.closePath();oc.fill();
+
+   // Inner bright core beam
+   const coreGrad=oc.createLinearGradient(0,0,0,-pillarH*.9);
+   coreGrad.addColorStop(0,'rgba(255,255,255,0.95)');
+   coreGrad.addColorStop(.6,'rgba(255,245,190,0.65)');
+   coreGrad.addColorStop(1,'rgba(255,255,255,0)');
+   oc.fillStyle=coreGrad;
+   oc.fillRect(-pillarW*.32,-pillarH*.9,pillarW*.64,pillarH*.9);
+
+   // Rising golden motes / angel sparks
+   for(let i=0;i<10;i++){
+    const mt=(t*1.6+i*.11)%1;
+    const mx=Math.sin(i*2.1+t*5)*pillarW*.75,my=-mt*pillarH*.85;
+    oc.fillStyle=i%2===0?'#fff7b2':'#9bf6ff';
+    oc.beginPath();oc.arc(mx,my,2.6*k*(1-mt*.5),0,Math.PI*2);oc.fill();
+   }
+   oc.restore();
+  }
+
+  // 10. OVER LAYER: MSDF Floating Combat Text & Level-Up / Trinity Combo Banner
+  const activeFloatIds=new Set<number>();
   for(const fl of floats){
+   activeFloatIds.add(fl.id);
+   let fv=floatViews.get(fl.id);
+   if(!fv){
+    const root=floatsLayer.addChild(new Container());
+    const badge=root.addChild(new Graphics());
+    if(fl.kind==='crit'){
+     const drawStar=(rx:number,ry:number,pts:number,color:number)=>{
+      const poly:number[]=[];
+      for(let i=0;i<pts*2;i++){
+       const a=(i*Math.PI)/pts-Math.PI/2;
+       const r=i%2===0?1:(i%4===1?.56:.68);
+       poly.push(Math.cos(a)*rx*r,Math.sin(a)*ry*r);
+      }
+      badge.poly(poly,true).fill({color,alpha:0.95}).stroke({color:0x240404,width:2});
+     };
+     drawStar(44,26,12,0xd61f1f);
+     drawStar(34,19,12,0xff9f1c);
+    }else if(fl.kind==='banner'){
+     const hasSub=Boolean(fl.subtext);
+     const bw=hasSub?Math.max(190,Math.min(280,(fl.subtext?.length??0)*6.2+34)):154;
+     const bh=hasSub?44:34;
+     badge.roundRect(-bw/2,-bh/2,bw,bh,8).fill({color:0x140d07,alpha:0.92}).stroke({color:0xe2bd72,width:2});
+    }
+    const role=fl.kind==='crit'?'combat-crit':fl.kind==='banner'?'combat-banner':fl.kind==='incoming'?'combat-incoming':fl.kind==='heal'?'combat-heal':'combat-hit';
+    const main=root.addChild(new MsdfText(role,fl.text,fl.kind==='banner'?{size:18}:{size:fl.kind==='crit'?24:18}));
+    let sub:MsdfText|undefined;
+    if(fl.subtext){
+     sub=root.addChild(new MsdfText(fl.kind==='crit'?'combat-crit-label':'combat-banner-sub',fl.subtext,fl.kind==='banner'?{size:13}:{size:11}));
+    }
+    if(fl.kind==='crit'){
+     if(sub)sub.place(0,-10,0.5);
+     main.place(0,8,0.5);
+    }else if(fl.kind==='banner'){
+     main.place(0,sub?-2:6,0.5);
+     if(sub)sub.place(0,14,0.5);
+    }else{
+     main.place(0,6,0.5);
+    }
+    fv={root,badge,main,sub,kind:fl.kind,text:fl.text,subtext:fl.subtext};
+    floatViews.set(fl.id,fv);
+   }
    const base=toScreen(fl.u,fl.v),t=fl.age/fl.duration;
    const alpha=t<.72?1:Math.max(0,1-(t-.72)/.28);
-   // Pop-in scale for criticals and banners (1.4x -> 1.0x)
    const pop=fl.kind==='crit'||fl.kind==='banner'
     ?(t<.18?1.42-(t/.18)*.42:1+Math.sin((t-.18)*Math.PI*2)*.04*Math.max(0,1-t))
     :1;
    const yLift=fl.kind==='banner'?86:fl.kind==='heal'?66:50;
    const x=base.x+fl.ox*k,y=base.y-yLift*k+fl.oy*k;
-
-   oc.save();
-   oc.translate(x,y);
-   oc.scale(pop,pop);
-   oc.globalAlpha=alpha;
-   oc.textAlign='center';
-   oc.textBaseline='middle';
-
-   if(fl.kind==='crit'){
-    // Signature Ragnarok Online spiky red/gold burst badge behind larger yellow/gold numbers
-    drawSpikyBadge(oc,0,0,42,25,12);
-    oc.fillStyle='#d61f1f';oc.fill();
-    oc.lineWidth=2.2;oc.strokeStyle='#240404';oc.stroke();
-
-    drawSpikyBadge(oc,0,0,34,19,12);
-    oc.fillStyle='#ff9f1c';oc.fill();
-
-    if(fl.subtext){
-     oc.font='800 9px Georgia, serif';
-     oc.lineWidth=3;oc.strokeStyle='#1c0404';
-     oc.strokeText(fl.subtext,0,-13);
-     oc.fillStyle='#fff6b3';oc.fillText(fl.subtext,0,-13);
-    }
-    oc.font='900 20px Georgia, serif';
-    oc.lineWidth=4.5;oc.strokeStyle='#1c0404';
-    oc.strokeText(fl.text,0,2);
-    const numGrad=oc.createLinearGradient(0,-9,0,11);
-    numGrad.addColorStop(0,'#fff9b0');numGrad.addColorStop(.55,'#ffd43b');numGrad.addColorStop(1,'#ff8800');
-    oc.fillStyle=numGrad;oc.fillText(fl.text,0,2);
-   }else if(fl.kind==='banner'){
-    const hasSub=Boolean(fl.subtext);
-    const bw=hasSub?Math.max(168,Math.min(248,(fl.subtext?.length??0)*5.6+26)):136;
-    const bh=hasSub?36:28;
-    oc.fillStyle='rgba(14, 24, 34, 0.94)';
-    oc.strokeStyle='#ffd452';oc.lineWidth=2;
-    oc.beginPath();oc.roundRect(-bw/2,-bh/2,bw,bh,8);oc.fill();oc.stroke();
-    oc.font='800 12px Georgia, serif';
-    oc.lineWidth=3.5;oc.strokeStyle='#090d12';
-    oc.strokeText(fl.text,0,hasSub?-5:1);
-    oc.fillStyle='#ffe680';oc.fillText(fl.text,0,hasSub?-5:1);
-    if(fl.subtext){
-     oc.font='700 9px Georgia, serif';
-     oc.lineWidth=2.8;oc.strokeStyle='#090d12';
-     oc.strokeText(fl.subtext,0,9);
-     oc.fillStyle='#9bf6ff';oc.fillText(fl.subtext,0,9);
-    }
-   }else if(fl.kind==='incoming'){
-    oc.font='800 15px Georgia, serif';
-    oc.lineWidth=3.8;oc.strokeStyle='#1f0404';
-    oc.strokeText(fl.text,0,0);
-    oc.fillStyle='#ff5454';oc.fillText(fl.text,0,0);
-   }else if(fl.kind==='heal'){
-    oc.font='800 14px Georgia, serif';
-    oc.lineWidth=3.6;oc.strokeStyle='#051c10';
-    oc.strokeText(fl.text,0,0);
-    oc.fillStyle='#5ef29b';oc.fillText(fl.text,0,0);
-   }else{
-    // Crisp white normal damage number with strong dark outline
-    oc.font='800 15px Georgia, serif';
-    oc.lineWidth=3.8;oc.strokeStyle='#120b07';
-    oc.strokeText(fl.text,0,0);
-    oc.fillStyle='#ffffff';oc.fillText(fl.text,0,0);
-   }
-   oc.restore();
+   fv.root.position.set(x,y);
+   fv.root.scale.set(pop);
+   fv.root.alpha=alpha;
   }
+  for(const [id,fv] of floatViews){
+   if(!activeFloatIds.has(id)){
+    fv.root.destroy({children:true});
+    floatViews.delete(id);
+   }
+  }
+
+  groundView.sync(w,h);
+  overView.sync(w,h);
 
   // Expose live state on dataset for automated verification
   overCanvas.dataset.floats=String(floats.length);
@@ -628,14 +940,12 @@ export function createCombatVfx(o:{
   overCanvas.dataset.totalTrinityCasts=String(totalTrinityCasts);
   overCanvas.dataset.lastSkill=lastSkill;
   overCanvas.dataset.lastSimultaneous=lastSimultaneousSkills.join(',');
-  const fs=fx.stats();overCanvas.dataset.fx=fs.ready?'ready':fs.failed?'failed':'loading';overCanvas.dataset.fxParticles=String(fs.particles);overCanvas.dataset.fxLive=String(fs.live);
  }
 
  return {
   step,
   render,
-  place(x:number,y:number,scale:number){origin={x,y,scale};fx.place(x,y,scale);},
-  fx,
+  place(x:number,y:number,scale:number){origin={x,y,scale};},
   spawnSlash,
   applyHitToFoe,
   recordCoopEnemyDamage,
@@ -669,8 +979,7 @@ export function createCombatVfx(o:{
     trinityCasts:totalTrinityCasts
    },
    lastSkill,
-   lastSimultaneousSkills:[...lastSimultaneousSkills],
-   fx:fx.stats()
+   lastSimultaneousSkills:[...lastSimultaneousSkills]
   })
  };
 }

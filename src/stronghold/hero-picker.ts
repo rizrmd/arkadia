@@ -1,52 +1,101 @@
-import {HEROES,heroInfo,isHero,isHeroReset,portraitUrl,saveHero,type HeroId} from './heroes';
-// Hero selection over the live world: a new tab opens on it (a reload in the same tab keeps the pick), with the last
-// pick on this device focused; the hero's name in the health panel reopens it at any time. Picking swaps the hero
-// in place, keeping its spot, health and room.
+import {Container,Graphics} from 'pixi.js';
+import {HeroSelect} from '../typography/hero-select';
+import {isHero,isHeroReset,saveHero,type HeroId} from './heroes';
+
 const SESSION_KEY='arkadia.hero.picked';
-export function createHeroPicker(root:HTMLElement,o:{current:()=>HeroId;choose:(id:HeroId)=>void}){
- const el=document.createElement('section');el.id='hero-picker';el.hidden=true;el.setAttribute('role','dialog');el.setAttribute('aria-modal','true');el.setAttribute('aria-labelledby','hero-picker-title');
- el.innerHTML=`<div class="picker-card"><small>ARKADIA</small><h2 id="hero-picker-title">Choose your hero</h2>
- <div class="picker-heroes">${HEROES.map(h=>`<button type="button" class="picker-hero" data-hero="${h.id}" aria-pressed="false">
-  <span class="picker-portrait"><img src="${portraitUrl(h.id)}" alt="" height="200" decoding="async"></span>
-  <span class="picker-name">${h.name}</span><span class="picker-role">${h.role}</span><span class="picker-blurb">${h.blurb}</span></button>`).join('')}</div>
- <button type="button" class="picker-close">Keep current hero</button></div>`;
- root.append(el);
- const buttons=[...el.querySelectorAll<HTMLButtonElement>('.picker-hero')],close=el.querySelector<HTMLButtonElement>('.picker-close')!;
- let done:(()=>void)|null=null,opener:HTMLElement|null=null;
- function hide(){el.hidden=true;el.dataset.first='false';const d=done;done=null;d?.();opener?.focus();opener=null;}
- function pick(id:HeroId){try{sessionStorage.setItem(SESSION_KEY,id);}catch{}saveHero(id);if(id!==o.current())o.choose(id);label?.update();hide();}
- for(const b of buttons)b.onclick=()=>pick(b.dataset.hero as HeroId);
- close.onclick=()=>pick(o.current());
- // Arrow keys move between the cards; Escape keeps the current hero.
- el.addEventListener('keydown',e=>{
-  if(e.key==='Escape'){e.preventDefault();pick(o.current());return;}
-  const i=buttons.indexOf(document.activeElement as HTMLButtonElement);if(i<0)return;
+const HERO_ORDER:HeroId[]=['ember-warden','rift-runner'];
+
+export function createHeroPicker(uiStage:Container,o:{current:()=>HeroId;choose:(id:HeroId)=>void}){
+ const holder=new Container();
+ holder.zIndex=70;
+ holder.visible=false;
+ holder.eventMode='static';
+ uiStage.addChild(holder);
+
+ const backdrop=holder.addChild(new Graphics());
+ backdrop.eventMode='static';
+
+ let viewPromise:Promise<HeroSelect>|undefined;
+ let viewRef:HeroSelect|undefined;
+ let done:(()=>void)|null=null;
+
+ const ensureView=async()=>{
+  if(viewPromise)return viewPromise;
+  viewPromise=HeroSelect.load('/choosing-hero/v1/','/typography/v2/hero/logo@3x.png',{},o.current()).then(v=>{
+   viewRef=v;
+   v.onConfirm=(id)=>pick(id);
+   v.onBack=()=>pick(o.current());
+   holder.addChild(v);
+   layout();
+   return v;
+  });
+  return viewPromise;
+ };
+
+ // Warm the HeroSelect assets in the background
+ void ensureView().catch(console.error);
+
+ function layout(){
+  if(!holder.visible)return;
+  const w=innerWidth,h=innerHeight;
+  backdrop.clear().rect(0,0,w,h).fill({color:0x0c1116,alpha:0.96});
+  viewRef?.layout(w,h);
+ }
+ window.addEventListener('resize',layout);
+
+ function hide(){
+  holder.visible=false;
+  const d=done;done=null;d?.();
+ }
+
+ function pick(id:HeroId){
+  try{sessionStorage.setItem(SESSION_KEY,id);}catch{}
+  saveHero(id);
+  if(id!==o.current())o.choose(id);
+  hide();
+ }
+
+ window.addEventListener('keydown',e=>{
+  if(!holder.visible)return;
+  if(e.key==='Escape'){
+   e.preventDefault();
+   e.stopPropagation();
+   pick(o.current());
+   return;
+  }
+  if(e.key==='Enter'){
+   e.preventDefault();
+   e.stopPropagation();
+   pick(viewRef?.hero??o.current());
+   return;
+  }
   const step=e.key==='ArrowRight'||e.key==='ArrowDown'?1:e.key==='ArrowLeft'||e.key==='ArrowUp'?-1:0;
-  if(step){e.preventDefault();buttons[(i+step+buttons.length)%buttons.length].focus();}
-  // Keys pressed while choosing must not walk the hero.
-  e.stopPropagation();
- });
- function open(first=false){
-  if(!el.hidden)return Promise.resolve();
-  opener=first?null:document.activeElement as HTMLElement|null;
-  const current=o.current();for(const b of buttons)b.setAttribute('aria-pressed',String(b.dataset.hero===current));
-  el.dataset.first=String(first);el.hidden=false;buttons.find(b=>b.dataset.hero===current)?.focus();
+  if(step&&viewRef){
+   e.preventDefault();
+   e.stopPropagation();
+   const idx=HERO_ORDER.indexOf(viewRef.hero);
+   const next=HERO_ORDER[(idx+step+HERO_ORDER.length)%HERO_ORDER.length];
+   viewRef.select(next);
+  }
+ },{capture:true});
+
+ async function open(){
+  if(holder.visible)return;
+  const v=await ensureView();
+  v.select(o.current());
+  holder.visible=true;
+  layout();
   return new Promise<void>(r=>{done=r;});
  }
- // The health panel's label names the hero and opens the picker.
- let label:{update():void}|null=null;
+
  return {
   open,
-  // A new tab asks once; a reload in the same tab (or a ?hero=<id> link) plays on; ?hero=reset asks again.
+  isOpen:()=>holder.visible,
   start(){
-   if(isHeroReset())return open(true);
-   let picked='';try{picked=sessionStorage.getItem(SESSION_KEY)||'';}catch{}const q=new URLSearchParams(location.search);
-   return picked||isHero(q.get('hero'))||(navigator.webdriver&&!q.has('pick'))?Promise.resolve():open(true);
+   if(isHeroReset())return open();
+   let picked='';try{picked=sessionStorage.getItem(SESSION_KEY)||'';}catch{}
+   const q=new URLSearchParams(location.search);
+   return picked||isHero(q.get('hero'))||(navigator.webdriver&&!q.has('pick'))?Promise.resolve():open();
   },
-  attach(slot:HTMLElement){
-   const b=document.createElement('button');b.type='button';b.className='hud-hero';b.setAttribute('aria-haspopup','dialog');slot.replaceWith(b);
-   label={update(){const h=heroInfo(o.current());b.textContent=h.name;b.setAttribute('aria-label',`${h.name}. Change hero`);}};label.update();
-   b.onclick=()=>void open();
-  }
  };
 }

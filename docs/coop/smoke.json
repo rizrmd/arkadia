@@ -1,10 +1,10 @@
 {
  "url": "ws://127.0.0.1:8791/ws",
- "seconds": 40,
- "room": "JUHDA",
- "commonTicks": 806,
- "tickSpan": 805,
- "ticksWithEnemies": 806,
+ "seconds": 25,
+ "room": "T5NSA",
+ "commonTicks": 506,
+ "tickSpan": 505,
+ "ticksWithEnemies": 506,
  "enemyIds": [
   1,
   2,
@@ -21,7 +21,7 @@
   13,
   14
  ],
- "lastTick": 807,
+ "lastTick": 507,
  "kills": {
   "Ayu": 2,
   "Bima": 2,
@@ -34,25 +34,43 @@
    "gold": 10,
    "pending": 1,
    "offers": [
-    "nova",
-    "leech",
-    "vitality"
+    "rift-bolt",
+    "cleave",
+    "leech"
    ],
-   "skills": {},
-   "stars": 0
+   "skills": {
+    "rift-bolt": 1
+   },
+   "stars": 0,
+   "slots": [
+    "rift-bolt"
+   ],
+   "autoCasts": 1,
+   "lastCast": [
+    "rift-bolt"
+   ]
   },
   "Bima": {
    "level": 2,
-   "xp": 0,
+   "xp": 8,
    "gold": 10,
    "pending": 1,
    "offers": [
-    "vitality",
-    "star",
-    "leech"
+    "nova",
+    "shockwave",
+    "star"
    ],
-   "skills": {},
-   "stars": 0
+   "skills": {
+    "rift-bolt": 1
+   },
+   "stars": 0,
+   "slots": [
+    "rift-bolt"
+   ],
+   "autoCasts": 3,
+   "lastCast": [
+    "rift-bolt"
+   ]
   },
   "Cheat": {
    "level": 1,
@@ -60,16 +78,21 @@
    "gold": 0,
    "pending": 0,
    "offers": [],
-   "skills": {},
-   "stars": 0
+   "skills": {
+    "rift-bolt": 1
+   },
+   "stars": 0,
+   "slots": [
+    "rift-bolt"
+   ]
   }
  },
- "heroesHurt": true,
+ "heroesHurt": false,
  "cheatMaxStepPx": 10.18,
  "heroStepPx": 6,
- "snapshotBytes": 2173,
- "ackA": 799,
- "inputsA": 799,
- "pausedAtTick": 808,
+ "snapshotBytes": 2673,
+ "ackA": 499,
+ "inputsA": 499,
+ "pausedAtTick": 507,
  "ok": true
 }

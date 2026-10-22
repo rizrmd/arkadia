@@ -1,3 +1,4 @@
+import {CanvasSource,Container,Sprite,Texture} from 'pixi.js';
 import {tilePoint} from './terrain';
 import {phaseOf} from './daylight';
 
@@ -40,7 +41,7 @@ const postGround=TORCHES.filter(t=>!t.wall).map((_,index)=>{
  g.globalAlpha=1;g.fillStyle='#27271f88';g.beginPath();g.ellipse(0,0,4,1.6,0,0,Math.PI*2);g.fill();
  return patch;
 });
-// The unlit body is baked in daylight; at night the firelit lower sconce sits over the wall bloom while local canvases animate the upper flame.
+// The unlit body is baked in daylight; at night the firelit lower sconce sits over the wall bloom while Pixi sprites animate the upper flame.
 export function drawTorches(c:CanvasRenderingContext2D,lit:boolean){
  const frame=lit?frames[1]:frames[3];
  if(!frame.complete||!frame.naturalWidth)return;
@@ -53,36 +54,42 @@ export function drawTorches(c:CanvasRenderingContext2D,lit:boolean){
   else c.drawImage(frame,t.x-W/2,y-TOP,W,H);
  }
 }
-export function createTorchFlames(surface:HTMLCanvasElement,left:number,top:number){
- const layer=document.createElement('div');layer.id='torch-flames';
- layer.style.cssText='position:absolute;left:0;top:0;transform-origin:0 0;pointer-events:none';
- surface.after(layer);
- // Isolate each tiny animated surface. Otherwise canvas writes invalidate a layer
- // spanning the entire fortress, forcing costly texture uploads on every flame tick.
- const FW=W*RESOLUTION,FH=Math.ceil(FLAME_HEIGHT*RESOLUTION),canvases=TORCHES.map(t=>{const c=document.createElement('canvas');c.width=FW;c.height=FH;
-  c.style.cssText=`position:absolute;left:${t.x-W/2-left}px;top:${t.y-t.lift-TOP-top}px;width:${W}px;height:${FLAME_HEIGHT}px;contain:strict;will-change:transform;transform:translateZ(0)`;
-  layer.append(c);return c;
+export function createTorchFlames(worldStage:Container,surface:HTMLCanvasElement,left:number,top:number){
+ const layer=new Container();
+ layer.zIndex=12;
+ layer.visible=false;
+ worldStage.addChild(layer);
+
+ const FW=W*RESOLUTION,FH=Math.ceil(FLAME_HEIGHT*RESOLUTION);
+ const sprites=TORCHES.map(t=>{
+  const s=new Sprite(Texture.EMPTY);
+  s.position.set(t.x-W/2-left,t.y-t.lift-TOP-top);
+  s.width=W;
+  s.height=FLAME_HEIGHT;
+  layer.addChild(s);
+  return s;
  });
- const visible=new Set<HTMLCanvasElement>();
- const observer=new IntersectionObserver(entries=>{for(const e of entries){const c=e.target as HTMLCanvasElement;if(e.isIntersecting)visible.add(c);else visible.delete(c);}},{rootMargin:'32px'});
- canvases.forEach(c=>observer.observe(c));
- const cache:HTMLCanvasElement[]=[];
+ const cache:Texture[]=[];
  let ready=false,lit=false,timer=0,movingUntil=0,lastStep=-1;
  const reduced=matchMedia('(prefers-reduced-motion: reduce)');
  torchAssetsReady.then(()=>{
-  // Cache sharp, supersampled crops once; animation only copies these small surfaces.
   for(let i=0;i<3;i++){
    const c=document.createElement('canvas');c.width=FW;c.height=FH;const ctx=c.getContext('2d')!;
-   ctx.imageSmoothingQuality='high';ctx.drawImage(frames[i],0,0,180,FLAME_SOURCE_HEIGHT,0,0,FW,FH);cache.push(c);
+   ctx.imageSmoothingQuality='high';ctx.drawImage(frames[i],0,0,180,FLAME_SOURCE_HEIGHT,0,0,FW,FH);
+   const src=new CanvasSource({resource:c,resolution:1});
+   src.update();
+   cache.push(new Texture({source:src}));
   }
   ready=true;surface.dataset.torchAssets='ready';render(true);schedule();
  }).catch(()=>{surface.dataset.torchAssets='failed';});
  function render(force=false){
   if(!ready||!lit||document.hidden||(!force&&performance.now()<movingUntil))return;
   const step=reduced.matches?0:Math.floor(performance.now()/160)%3;
-  if(!force&&step===lastStep)return;lastStep=step;layer.dataset.frame=String(step);
-  canvases.forEach((c,i)=>{if(!force&&!visible.has(c))return;const ctx=c.getContext('2d')!;
-   ctx.clearRect(0,0,FW,FH);ctx.drawImage(cache[(step+i)%3],0,0);
+  if(!force&&step===lastStep)return;lastStep=step;
+  sprites.forEach((s,i)=>{
+   s.texture=cache[(step+i)%3];
+   s.width=W;
+   s.height=FLAME_HEIGHT;
   });
  }
  function schedule(){
@@ -92,9 +99,12 @@ export function createTorchFlames(surface:HTMLCanvasElement,left:number,top:numb
  }
  document.addEventListener('visibilitychange',()=>{if(!document.hidden)render(true);schedule();});
  reduced.addEventListener('change',()=>{render(true);schedule();});
- layer.hidden=true;
  return {
-  place(transform:string){layer.style.transform=transform;movingUntil=performance.now()+180;},
-  setLit(value:boolean){if(value===lit)return;lit=value;layer.hidden=!lit;lastStep=-1;render(true);schedule();}
+  place(x:number,y:number,scale:number){
+   layer.position.set(x+left*scale,y+top*scale);
+   layer.scale.set(scale);
+   movingUntil=performance.now()+180;
+  },
+  setLit(value:boolean){if(value===lit)return;lit=value;layer.visible=lit;lastStep=-1;render(true);schedule();}
  };
 }

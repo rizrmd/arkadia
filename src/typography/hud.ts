@@ -1,97 +1,349 @@
-import {Container,Sprite,type Texture} from 'pixi.js';
+import {Container,Graphics,Rectangle,Sprite,type Texture} from 'pixi.js';
 import type {FrameSet} from './frames';
 import {MsdfText} from './text';
 
 // Gameplay HUD rebuilt from the Typography Reference Asset (1672 × 941). Coordinates are reference pixels; each group is
 // anchored to its screen corner or edge, so other aspect ratios keep the corners and centre where the reference has them.
 export const HUD_DESIGN={width:1672,height:941};
-export interface HudState{name:string;level:number;hp:number;hpMax:number;gold:number;time:string;zone:string;xp:number;xpMax:number;skills:{name:string;level:number;art:string}[]}
-export const DEFAULT_HUD:HudState={name:'Ember Warden',level:9,hp:96,hpMax:100,gold:250,time:'06:27',zone:'Wilds',xp:60,xpMax:100,
+export interface HudSkillState{name:string;level:number;art:string;stateLabel?:string;locked?:boolean;cooldownRatio?:number}
+export interface HudState{
+ name:string;
+ portrait?:string;
+ level:number;
+ hp:number;
+ hpMax:number;
+ gold:number;
+ time:string;
+ zone:string;
+ xp:number;
+ xpMax:number;
+ coopLabel?:string;
+ skills:HudSkillState[];
+}
+export interface HudCallbacks{
+ onHeroClick?:()=>void;
+ onClockClick?:()=>void;
+ onCoopClick?:()=>void;
+ onSkillClick?:(index:number)=>void;
+ onMenuClick?:()=>void;
+}
+export const DEFAULT_HUD:HudState={name:'Ember Warden',portrait:'portrait-ember-warden',level:9,hp:96,hpMax:100,gold:250,time:'06:27',zone:'Wilds',xp:60,xpMax:100,
  skills:[{name:'Flame Fan',level:1,art:'skill-flame-fan'},{name:'Rift Trap',level:2,art:'skill-rift-trap'},{name:'Seismic Slam',level:3,art:'skill-seismic-slam'}]};
 
 const centred=(s:Sprite|Container,cx:number,cy:number,w?:number,h?:number)=>{if(w)s.width=w;if(h)s.height=h;s.position.set(cx-s.width/2,cy-s.height/2);return s;};
+
+interface SkillSlotView{
+ root:Container;
+ artHolder:Container;
+ currentArt:string;
+ cooldownArc:Graphics;
+ levelText:MsdfText;
+ stateText:MsdfText;
+ nameText:MsdfText;
+ cx:number;
+ cy:number;
+}
 
 export class Hud extends Container{
  private groups:Record<'tl'|'tr'|'bc'|'bl'|'br',Container>={tl:new Container(),tr:new Container(),bc:new Container(),bl:new Container(),br:new Container()};
  private backdrop?:Sprite;
  private overlay?:Sprite;
  private hpFill!:Container;private hpText!:MsdfText;private xpFill!:Container;private xpValue!:MsdfText;private xpRest!:MsdfText;
- constructor(private frames:FrameSet,private state:HudState=DEFAULT_HUD,images:{backdrop?:Texture;reference?:Texture}={}){
+ private heroNameText!:MsdfText;
+ private levelText!:MsdfText;
+ private portraitHolder!:Container;
+ private currentPortrait='';
+ private goldText!:MsdfText;
+ private clockText!:MsdfText;
+ private zonePillBg!:Container;
+ private zonePinIcon!:Container;
+ private zoneText!:MsdfText;
+ private coopPill?:Container;
+ private coopPillBg?:Container;
+ private coopIcon?:Container;
+ private coopText?:MsdfText;
+ private skillViews:SkillSlotView[]=[];
+ private lastScale=1;
+ private lastWidth=HUD_DESIGN.width;
+
+ constructor(
+  private frames:FrameSet,
+  private state:HudState={...DEFAULT_HUD,skills:DEFAULT_HUD.skills.map(s=>({...s}))},
+  images:{backdrop?:Texture;reference?:Texture}={},
+  private callbacks:HudCallbacks={},
+ ){
   super();
   if(images.backdrop)this.addChild(this.backdrop=new Sprite(images.backdrop));
   for(const g of Object.values(this.groups))this.addChild(g);
   if(images.reference){this.overlay=new Sprite(images.reference);this.overlay.alpha=0;this.addChild(this.overlay);}
   this.buildHero();this.buildStats();this.buildSkills();this.buildKeys();
-  this.setHp(state.hp);this.setXp(state.xp);
+  this.setHp(state.hp,state.hpMax);this.setXp(state.xp,state.xpMax);
  }
  set referenceAlpha(a:number){if(this.overlay)this.overlay.alpha=a;}
 
  private buildHero(){
   const g=this.groups.tl,f=this.frames,s=this.state;
-  g.addChild(f.frame('corner'));
-  g.addChild(f.frame('hero-plate',388,104)).position.set(150,24);
-  g.addChild(f.frame('hp-frame',362,40)).position.set(178,68);
-  this.hpFill=g.addChild(new Container());this.hpFill.position.set(186,77);
+  const hit=new Container();
+  hit.eventMode='static';
+  hit.cursor='pointer';
+  hit.hitArea=new Rectangle(0,0,545,190);
+  hit.on('pointertap',()=>this.callbacks.onHeroClick?.());
+  g.addChild(hit);
+
+  hit.addChild(f.frame('corner'));
+  hit.addChild(f.frame('hero-plate',388,104)).position.set(150,24);
+  hit.addChild(f.frame('hp-frame',362,40)).position.set(178,68);
+  this.hpFill=hit.addChild(new Container());this.hpFill.position.set(186,77);
   this.hpFill.addChild(f.frame('hp-fill',320,22));
-  this.hpText=g.addChild(new MsdfText('hud-value',''));
-  g.addChild(new MsdfText('hud-name',s.name)).place(195,56);
-  g.addChild(centred(f.frame('portrait-ember-warden'),95,88));
-  g.addChild(centred(f.frame('portrait-ring'),95,88));
-  g.addChild(centred(f.frame('level-medallion'),57,149));
-  g.addChild(new MsdfText('hud-level',String(s.level))).place(57,157.5,.5);
+  this.hpText=hit.addChild(new MsdfText('hud-value',''));
+  this.heroNameText=hit.addChild(new MsdfText('hud-name',s.name));
+  this.heroNameText.place(195,56);
+  this.portraitHolder=hit.addChild(new Container());
+  this.currentPortrait=s.portrait??'portrait-ember-warden';
+  this.portraitHolder.addChild(centred(f.frame(this.currentPortrait),95,88));
+  hit.addChild(centred(f.frame('portrait-ring'),95,88));
+  hit.addChild(centred(f.frame('level-medallion'),57,149));
+  this.levelText=hit.addChild(new MsdfText('hud-level',String(s.level)));
+  this.levelText.place(57,157.5,.5);
  }
+
  private buildStats(){
   const g=this.groups.tr,f=this.frames,s=this.state;
-  const rows:[number,number,string,string,number,number,number][]=[[1450,20,'icon-coins',`${s.gold} Gold`,1495,44,1530],[1510,72,'icon-clock',s.time,1553,96,1581],[1505,125,'icon-pin',s.zone,1551,149,1574]];
-  const baselines=[51,104,156];
-  rows.forEach(([x,y,icon,text,ix,iy,tx],i)=>{
-   g.addChild(f.frame('pill',1665-x,48)).position.set(x,y);
-   g.addChild(centred(f.frame(icon),ix,iy));
-   g.addChild(new MsdfText('hud-stat',text)).place(tx,baselines[i]);
-  });
+  // Row 0: Gold / Kills
+  const goldRow=g.addChild(new Container());
+  goldRow.addChild(f.frame('pill',1665-1450,48)).position.set(1450,20);
+  goldRow.addChild(centred(f.frame('icon-coins'),1495,44));
+  this.goldText=goldRow.addChild(new MsdfText('hud-stat',`${s.gold} Gold`));
+  this.goldText.place(1530,51);
+
+  // Row 1: Clock (interactive)
+  const clockRow=g.addChild(new Container());
+  clockRow.eventMode='static';
+  clockRow.cursor='pointer';
+  clockRow.hitArea=new Rectangle(1505,70,165,52);
+  clockRow.on('pointertap',()=>this.callbacks.onClockClick?.());
+  clockRow.addChild(f.frame('pill',1665-1510,48)).position.set(1510,72);
+  clockRow.addChild(centred(f.frame('icon-clock'),1553,96));
+  this.clockText=clockRow.addChild(new MsdfText('hud-stat',s.time));
+  this.clockText.place(1581,104);
+
+  // Row 2: Zone
+  const zoneRow=g.addChild(new Container());
+  this.zonePillBg=zoneRow.addChild(f.frame('pill',1665-1505,48));
+  this.zonePinIcon=zoneRow.addChild(centred(f.frame('icon-pin'),1551,149));
+  this.zoneText=zoneRow.addChild(new MsdfText('hud-stat',s.zone));
+  this.layoutZonePill(s.zone);
+
+  // Optional Row 3: Co-op pill (only shown when coopLabel is provided)
+  if(s.coopLabel!==undefined){
+   this.ensureCoopPill(s.coopLabel);
+  }
  }
+
+ private layoutZonePill(zone:string){
+  const pillX=zone==='Wilds'?1505:Math.min(1505,Math.round(1665-(this.zoneText.advance+96)));
+  const pillW=1665-pillX;
+  this.zonePillBg.position.set(pillX,125);
+  this.zonePillBg.width=pillW;
+  centred(this.zonePinIcon,pillX+46,149);
+  this.zoneText.place(pillX+69,156);
+ }
+
+ private ensureCoopPill(label:string){
+  if(!this.coopPill){
+   const g=this.groups.tr,f=this.frames;
+   const row=g.addChild(new Container());
+   row.eventMode='static';
+   row.cursor='pointer';
+   row.on('pointertap',()=>this.callbacks.onCoopClick?.());
+   this.coopPillBg=row.addChild(f.frame('pill',1665-1470,48));
+   this.coopIcon=row.addChild(centred(f.frame('icon-users'),1514,202));
+   this.coopText=row.addChild(new MsdfText('hud-stat',label));
+   this.coopPill=row;
+  }
+  if(this.coopText&&this.coopPillBg&&this.coopIcon&&this.coopPill){
+   this.coopText.text=label;
+   const pillX=Math.min(1470,Math.round(1665-(this.coopText.advance+102)));
+   const pillW=1665-pillX;
+   this.coopPillBg.position.set(pillX,178);
+   this.coopPillBg.width=pillW;
+   centred(this.coopIcon,pillX+44,202);
+   this.coopText.place(pillX+72,209);
+   this.coopPill.hitArea=new Rectangle(pillX-4,176,pillW+8,52);
+  }
+ }
+
  private buildSkills(){
   const g=this.groups.bc,f=this.frames;
+  this.skillViews=[];
   this.state.skills.forEach((sk,i)=>{
    const cx=680+i*157,cy=700;
-   g.addChild(centred(f.frame(sk.art),cx,cy));
-   g.addChild(centred(f.frame('skill-ring'),cx,cy));
-   g.addChild(f.frame('badge-level',58,24)).position.set(cx-29,736);
-   g.addChild(new MsdfText('hud-badge',`Lv. ${sk.level}`)).place(cx,753.5,.5);
-   g.addChild(f.frame('badge-auto',84,28)).position.set(cx-42,761);
-   g.addChild(new MsdfText('hud-state','Auto')).place(cx,781,.5);
-   g.addChild(new MsdfText('hud-skill',sk.name)).place(cx,813,.5);
+   const slot=g.addChild(new Container());
+   slot.eventMode='static';
+   slot.cursor='pointer';
+   slot.hitArea=new Rectangle(cx-68,cy-62,136,192);
+   slot.on('pointertap',()=>this.callbacks.onSkillClick?.(i));
+
+   const artHolder=slot.addChild(new Container());
+   artHolder.addChild(centred(f.frame(sk.art),cx,cy));
+
+   const cooldownArc=slot.addChild(new Graphics());
+   slot.addChild(centred(f.frame('skill-ring'),cx,cy));
+   slot.addChild(f.frame('badge-level',58,24)).position.set(cx-29,736);
+   const levelText=slot.addChild(new MsdfText('hud-badge',sk.locked?'—':`Lv. ${sk.level}`));
+   levelText.place(cx,753.5,.5);
+   slot.addChild(f.frame('badge-auto',84,28)).position.set(cx-42,761);
+   const stateText=slot.addChild(new MsdfText('hud-state',sk.stateLabel??'Auto'));
+   stateText.place(cx,781,.5);
+   const nameText=slot.addChild(new MsdfText('hud-skill',sk.name));
+   nameText.place(cx,813,.5);
+
+   this.skillViews.push({root:slot,artHolder,currentArt:sk.art,cooldownArc,levelText,stateText,nameText,cx,cy});
   });
   g.addChild(f.frame('xp-frame',716,50)).position.set(483,829);
   this.xpFill=g.addChild(new Container());this.xpFill.position.set(527,842);
   this.xpFill.addChild(f.frame('xp-fill',628,24));
   this.xpValue=g.addChild(new MsdfText('hud-xp',''));this.xpRest=g.addChild(new MsdfText('hud-xp-accent',''));
  }
+
  private buildKeys(){
   const f=this.frames,bl=this.groups.bl,br=this.groups.br;
   bl.addChild(f.frame('pill-wide',258,60)).position.set(6,853);
   ['W','A','S','D'].forEach((k,i)=>{bl.addChild(f.frame('keycap',28,28)).position.set(40+i*30,872);bl.addChild(new MsdfText('hud-key',k)).place(54+i*30,893,.5);});
   bl.addChild(new MsdfText('hud-hint','· Move')).place(166,891);
+  br.eventMode='static';
+  br.cursor='pointer';
+  br.hitArea=new Rectangle(1478,853,190,60);
+  br.on('pointertap',()=>this.callbacks.onMenuClick?.());
   br.addChild(f.frame('pill-wide',190,60)).position.set(1478,853);
   br.addChild(f.frame('keycap',46,30)).position.set(1509,871);
   br.addChild(new MsdfText('hud-key','Esc')).place(1532,892,.5);
-  br.addChild(new MsdfText('hud-hint','· Menu')).place(1566,891);
+  br.addChild(new MsdfText('hud-hint','· Hero')).place(1566,891);
+  // Keep reference text '· Menu' if no menu callback is wired so capture.mjs stays 100% identical
+  if(!this.callbacks.onMenuClick){
+   const last=br.children[br.children.length-1] as MsdfText;
+   last.text='· Menu';last.place(1566,891);
+  }
  }
- setHp(hp:number){
-  const max=this.state.hpMax,w=Math.max(12,320*hp/max);(this.hpFill.children[0] as Container).width=w;
-  this.hpText.text=`${hp} / ${max} HP`;this.hpText.place(349,95,.5);
+
+ setHero(name:string,portrait?:string){
+  this.state.name=name;
+  this.heroNameText.text=name;
+  this.heroNameText.place(195,56);
+  const nextPortrait=portrait??(name.toLowerCase().includes('rift')?'portrait-rift-runner':'portrait-ember-warden');
+  if(nextPortrait!==this.currentPortrait){
+   this.currentPortrait=nextPortrait;
+   this.portraitHolder.removeChildren();
+   this.portraitHolder.addChild(centred(this.frames.frame(nextPortrait),95,88));
+  }
  }
- setXp(xp:number){
-  const max=this.state.xpMax;(this.xpFill.children[0] as Container).width=Math.max(12,628*xp/max);
+
+ setLevel(level:number){
+  this.state.level=level;
+  this.levelText.text=String(level);
+  this.levelText.place(57,157.5,.5);
+ }
+
+ setHp(hp:number,hpMax=this.state.hpMax){
+  this.state.hp=hp;this.state.hpMax=hpMax;
+  const max=Math.max(1,hpMax),w=Math.max(0,Math.min(320,320*Math.max(0,hp)/max));
+  const bar=this.hpFill.children[0] as Container;
+  bar.visible=w>2;
+  if(w>2)bar.width=Math.max(12,w);
+  this.hpText.text=`${Math.round(hp)} / ${Math.round(max)} HP`;this.hpText.place(349,95,.5);
+ }
+
+ setXp(xp:number,xpMax=this.state.xpMax,overrideRestText?:string){
+  this.state.xp=xp;this.state.xpMax=xpMax;
+  const max=Math.max(1,xpMax),fillW=Math.max(12,Math.min(628,628*Math.max(0,xp)/max));
+  (this.xpFill.children[0] as Container).width=fillW;
   // The value sits just past the fill's end (as in the reference), or inside its end when the bar is nearly full.
-  this.xpValue.text=String(xp);this.xpRest.text=` / ${max} XP`;
-  const end=527+Math.max(12,628*xp/max),w=this.xpValue.advance+this.xpRest.advance,x=end+8+w<=1150?end+8:end-8-w;
+  this.xpValue.text=String(Math.floor(xp));
+  this.xpRest.text=overrideRestText??` / ${max} XP`;
+  const end=527+fillW,w=this.xpValue.advance+this.xpRest.advance,x=end+8+w<=1150?end+8:end-8-w;
   this.xpValue.place(x,858);this.xpRest.place(x+this.xpValue.advance,858);
  }
+
+ setGold(labelOrAmount:number|string){
+  const text=typeof labelOrAmount==='number'?`${labelOrAmount} Gold`:labelOrAmount;
+  this.goldText.text=text;
+  this.goldText.place(1530,51);
+ }
+
+ setTime(time:string){
+  if(this.state.time===time)return;
+  this.state.time=time;
+  this.clockText.text=time;
+  this.clockText.place(1581,104);
+ }
+
+ setZone(zone:string){
+  if(this.state.zone===zone)return;
+  this.state.zone=zone;
+  this.zoneText.text=zone;
+  this.layoutZonePill(zone);
+ }
+
+ setCoop(label:string){
+  this.state.coopLabel=label;
+  this.ensureCoopPill(label);
+ }
+
+ setSkills(skills:HudSkillState[]){
+  this.state.skills=skills;
+  skills.forEach((sk,i)=>{
+   const view=this.skillViews[i];
+   if(!view)return;
+   if(view.currentArt!==sk.art){
+    view.currentArt=sk.art;
+    view.artHolder.removeChildren();
+    view.artHolder.addChild(centred(this.frames.frame(sk.art),view.cx,view.cy));
+   }
+   view.artHolder.alpha=sk.locked?0.45:1;
+   view.levelText.text=sk.locked?'—':`Lv. ${sk.level}`;
+   view.levelText.place(view.cx,753.5,.5);
+   view.stateText.text=sk.stateLabel??(sk.locked?'Locked':'Auto');
+   view.stateText.place(view.cx,781,.5);
+   view.nameText.text=sk.name;
+   view.nameText.place(view.cx,813,.5);
+   this.drawCooldown(view,sk.cooldownRatio??0,sk.stateLabel);
+  });
+ }
+
+ setSkillCooldown(index:number,ratio:number,stateLabel?:string){
+  const view=this.skillViews[index];
+  if(!view)return;
+  this.drawCooldown(view,ratio,stateLabel);
+ }
+
+ private drawCooldown(view:SkillSlotView,ratio:number,stateLabel?:string){
+  view.cooldownArc.clear();
+  if(ratio>0.01){
+   const r=43,start=-Math.PI/2,end=start+Math.PI*2*Math.min(1,ratio);
+   view.cooldownArc.moveTo(view.cx,view.cy);
+   view.cooldownArc.arc(view.cx,view.cy,r,start,end);
+   view.cooldownArc.closePath();
+   view.cooldownArc.fill({color:0x060402,alpha:0.68});
+  }
+  if(stateLabel!==undefined){
+   view.stateText.text=stateLabel;
+   view.stateText.place(view.cx,781,.5);
+  }
+ }
+
+ // Returns screen-space anchor below the top-right pills for positioning popovers (Clock / Co-op).
+ topRightPopoverAnchor(row:1|3):{x:number;y:number;scale:number}{
+  const s=this.lastScale;
+  const designY=row===1?126:232;
+  return {x:this.lastWidth-12*s,y:designY*s,scale:s};
+ }
+
  // Desktop and landscape keep the reference arrangement at one uniform scale; portrait raises the skill row above the key hints.
  layout(width:number,height:number){
+  this.lastWidth=width;
   const {width:W,height:H}=HUD_DESIGN,portrait=width<height;
   const s=portrait?width/790:Math.min(width/W,height/H);
+  this.lastScale=s;
   const place=(g:Container,px:number,py:number,x:number,y:number)=>{g.scale.set(s);g.pivot.set(px,py);g.position.set(x,y);};
   place(this.groups.tl,0,0,0,0);place(this.groups.tr,W,0,width,0);
   place(this.groups.bc,W/2,H,width/2,height-(portrait?72*s:0));
