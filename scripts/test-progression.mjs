@@ -60,4 +60,29 @@ for(let i=0;i<40;i++){
  }
 }
 
-console.log('Progression 3-slot loadout, slot 2/3 unlock, rank scaling, 3/3 pool restriction, EXP percent, and RO crit stats passed');
+// 3. Test Progressive XP Curve (increasing delta per level: 20, 35 [+15], 55 [+20], 80 [+25], 110 [+30], 145 [+35])
+const expectedThresholds={1:20,2:35,3:55,4:80,5:110,6:145};
+let prevDelta=0;
+for(let lv=1;lv<=6;lv++){
+ const t=m.thresholdForLevel(lv);
+ assert.equal(t,expectedThresholds[lv],`Level ${lv} threshold should be ${expectedThresholds[lv]}`);
+ if(lv>1){
+  const delta=t-m.thresholdForLevel(lv-1);
+  assert.ok(delta>prevDelta,`XP increment at level ${lv} (+${delta}) must exceed previous increment (+${prevDelta})`);
+  prevDelta=delta;
+ }
+}
+
+// 4. Test Monster Level Stat Scaling (Max HP, Damage, XP Drop)
+for(let lv=1;lv<=5;lv++){
+ assert.equal(m.revenantMaxHp(lv),2+(lv-1),`Revenant Lv.${lv} Max HP`);
+ assert.equal(m.revenantDamage(lv),4+(lv-1),`Revenant Lv.${lv} Damage`);
+ assert.equal(m.revenantXpReward(lv),10+(lv-1)*4,`Revenant Lv.${lv} XP Reward`);
+ if(lv>1){
+  assert.ok(m.revenantMaxHp(lv)>m.revenantMaxHp(lv-1));
+  assert.ok(m.revenantDamage(lv)>m.revenantDamage(lv-1));
+  assert.ok(m.revenantXpReward(lv)>m.revenantXpReward(lv-1));
+ }
+}
+
+console.log('Progression 3-slot loadout, slot 2/3 unlock, rank scaling, 3/3 pool restriction, progressive XP curve, monster stat scaling, EXP percent, and RO crit stats passed');

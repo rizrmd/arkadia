@@ -177,7 +177,25 @@ func (p *Progression) eligibleActiveSkills(hero string) []string {
 	return out
 }
 
-func (p *Progression) threshold() int { return 20 + (p.Level-1)*10 }
+func ThresholdForLevel(level int) int {
+	lv := max(1, level)
+	n := lv - 1
+	return 20 + 10*n + (5*n*(n+1))/2
+}
+
+func RevenantMaxHP(level int) float64 {
+	return 2 + float64(max(0, level-1))
+}
+
+func RevenantDamage(level int) float64 {
+	return 4 + float64(max(0, level-1))
+}
+
+func RevenantXPReward(level int) int {
+	return 10 + max(0, level-1)*4
+}
+
+func (p *Progression) threshold() int { return ThresholdForLevel(p.Level) }
 func (p *Progression) damage() float64 {
 	return 1 + float64(p.Skills["might"])*.5 + float64(p.Stars)*.25
 }
@@ -281,12 +299,20 @@ func (w *World) rollForHero(p *Progression, hero string) {
 }
 
 func (w *World) reward(p *Player) {
+	w.rewardFoe(p, p.Run.Level)
+}
+
+func (w *World) rewardFoe(p *Player, foeLevel int) {
+	prevLevel := p.Run.Level
 	p.Run.Gold += 5
-	p.Run.XP += 10
+	p.Run.XP += RevenantXPReward(max(1, foeLevel))
 	for p.Run.XP >= p.Run.threshold() {
 		p.Run.XP -= p.Run.threshold()
 		p.Run.Level++
 		p.Run.Pending++
+	}
+	if p.Run.Level > prevLevel {
+		w.syncEnemyLevels()
 	}
 	if p.Run.Pending > 0 && len(p.Run.Offers) == 0 {
 		w.rollForHero(&p.Run, p.Hero)

@@ -1,4 +1,4 @@
-import {fresh,reward,roll,choose,cards,reach,aoeCastRadius,health,threshold,xpPercent,critChance,critMultiplier,syncHeroLoadout,isActiveSkill,skillRank,skillCooldownMs,MAX_SKILL_SLOTS,type Progression} from './progression';
+import {fresh,reward,roll,choose,cards,reach,aoeCastRadius,health,threshold,thresholdForLevel,xpPercent,critChance,critMultiplier,syncHeroLoadout,isActiveSkill,skillRank,skillCooldownMs,revenantMaxHp,revenantDamage,revenantXpReward,MAX_SKILL_SLOTS,type Progression} from './progression';
 import './progression.css';
 import {unproject} from '../isometric';
 import {Fighter,STATS,inReach,swingTargets,turn} from '../characters/combat';
@@ -31,7 +31,7 @@ const ENEMY_SPEED=105/Math.hypot(64,32)*.55,ENEMY_STRIDE=76*DISPLAY/1.1;
 // reaches the side it faces, so the ones behind land their blows.
 const VEER=[.4,.8,1.2,1.6,2,2.4],AGGRO=13,ENGAGE=2,MAX_ENEMIES=8,PACK=3,SPAWN_EVERY=2000,REGEN=8,HERO_RESPAWN=3500,CORPSE=4400;
 const SIMULTANEOUS_SYNC_WINDOW_MS=340;
-type Foe=Fighter&{home:Tile;wander:Tile|null;age:number;side:number};
+type Foe=Fighter&{home:Tile;wander:Tile|null;age:number;side:number;level:number;maxHp:number};
 type Hero={position():{x:number;y:number};face(sx:number,sy:number):void;respawn():void;teleport(x:number,y:number):boolean;
  blocked(x:number,y:number):boolean;occluders(x:number,y:number,box:number[]):Placed[];sun():Sun;hero?:()=>HeroId};
 const toTile=(x:number,y:number):Tile=>{const g=unproject(x-COURT.x,y-COURT.y);return {u:g.x,v:g.y};};
@@ -64,11 +64,26 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
  const progress=document.createElement('div');progress.className='run-progress';hud.append(progress);
  const picker=document.createElement('section');picker.className='level-cards';picker.hidden=true;picker.setAttribute('role','dialog');picker.setAttribute('aria-label','Choose a level-up blessing');o.hud.append(picker);
 
- function onKill(){
+ function syncFoeLevels(){
+  if(online)return;
+  const targetLv=Math.max(1,run.level);
+  for(const f of local){
+   if((f.level||1)<targetLv){
+    const prevMax=f.maxHp||revenantMaxHp(f.level||1);
+    const ratio=f.alive&&prevMax>0?Math.min(1,f.hp/prevMax):1;
+    f.level=targetLv;
+    f.maxHp=revenantMaxHp(targetLv);
+    if(f.alive)f.hp=+(ratio*f.maxHp).toFixed(2);
+   }
+  }
+ }
+
+ function onKill(f?:Foe){
   kills++;
   const prevLevel=run.level;
-  reward(run,random,currentHeroId());
+  reward(run,random,currentHeroId(),f?.level??run.level);
   if(run.level>prevLevel){
+   syncFoeLevels();
    levelUpPulseMs=1200;
    vfx.triggerLevelUp(run.level,h.x,h.y);
   }
@@ -85,7 +100,7 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
   getHero:()=>({u:h.x,v:h.y,facing:h.facing,back:h.back,vertical:h.vertical,heroId:currentHeroId()}),
   getRun:()=>run,
   getFoes:()=>foes,
-  onKill:()=>onKill(),
+  onKill:f=>onKill(f as Foe),
   random
  });
 
@@ -274,13 +289,14 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
 
  function spawn(f?:Foe){
   const p=spawnPoint(random,tileOf(h),walkable);if(!p)return;
-  // A new pack, or one returning revenant.
+  // A new pack, or one returning revenant, scaled to the hero's current progression level.
   const n=f?1:Math.min(MAX_ENEMIES-foes.length,1+Math.floor(random()*PACK));
+  const lv=Math.max(1,run.level),fMaxHp=revenantMaxHp(lv);
   for(let i=0;i<n;i++){
    const at=i?spawnPoint(random,tileOf(h),walkable):p;if(!at)continue;
    spawns.push({u:+at.u.toFixed(2),v:+at.v.toFixed(2),m:+meters(fromGate(at)).toFixed(1)});if(spawns.length>200)spawns.shift();
-   const g=f??Object.assign(new Fighter('revenant',meta.clips,at.u,at.v),{home:at,wander:null,age:0,side:1});if(!f)foes.push(g);
-   Object.assign(g,{x:at.u,y:at.v,home:at,wander:null,age:0,hp:STATS.revenant.hp,deadFor:0,cooldown:600+random()*900});g.play('idle');
+   const g=f??Object.assign(new Fighter('revenant',meta.clips,at.u,at.v),{home:at,wander:null,age:0,side:1,level:lv,maxHp:fMaxHp});if(!f)foes.push(g);
+   Object.assign(g,{x:at.u,y:at.v,home:at,wander:null,age:0,level:lv,maxHp:fMaxHp,hp:fMaxHp,deadFor:0,cooldown:600+random()*900});g.play('idle');
   }
  }
  // Ground speed in tiles; a step that would enter the safe zone, leave walkable snow or walk into a footprint
@@ -361,7 +377,7 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
   if(f.state==='attack'){
    if(f.impact()&&h.alive&&!heroSafe&&inReach(f,h,ENEMY_REACH+.25*SCALE,SIDE)){
     const before=h.hp;
-    h.damage(STATS.revenant.damage);
+    h.damage(revenantDamage(f.level||1));
     if(h.hp<before)vfx.recordHeroDamage(before-h.hp,h.x,h.y);
    }
    return;
@@ -409,11 +425,13 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
   }
   const seen=new Set<number>();
   for(const e of net.enemies(frameAt)){
-   seen.add(e.id);let f=mirrors.get(e.id);
-   if(!f){f=Object.assign(new Fighter('revenant',meta.clips,e.u,e.v),{home:{u:e.u,v:e.v},wander:null,age:0,side:1,gen:e.g,plays:-1});mirrors.set(e.id,f);}
-   if(f.gen!==e.g){Object.assign(f,{gen:e.g,age:0,deadFor:0,x:e.u,y:e.v,hp:e.hp});}
+   seen.add(e.id);
+   const eLv=Math.max(1,e.level??run.level??1),eMax=e.max??revenantMaxHp(eLv);
+   let f=mirrors.get(e.id);
+   if(!f){f=Object.assign(new Fighter('revenant',meta.clips,e.u,e.v),{home:{u:e.u,v:e.v},wander:null,age:0,side:1,level:eLv,maxHp:eMax,gen:e.g,plays:-1});mirrors.set(e.id,f);}
+   if(f.gen!==e.g){Object.assign(f,{gen:e.g,age:0,deadFor:0,x:e.u,y:e.v,level:eLv,maxHp:eMax,hp:e.hp});}
    const m=screen(e.u-f.x,e.v-f.y);f.stride+=Math.hypot(m.x,m.y)/ENEMY_STRIDE;
-   Object.assign(f,{x:e.u,y:e.v,facing:e.fc,back:e.bk,vertical:e.vt});
+   Object.assign(f,{x:e.u,y:e.v,level:eLv,maxHp:eMax,facing:e.fc,back:e.bk,vertical:e.vt});
    if(e.n!==f.plays){f.plays=e.n;f.state=e.st as Fighter['state'];f.t=0;}
    if(e.hp<f.hp){f.flash=120;vfx.recordCoopEnemyDamage(f,f.hp-e.hp);}
    f.hp=e.hp;
@@ -449,13 +467,13 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
   cc.globalCompositeOperation='source-over';
   return fr;
  }
- type View={el:HTMLCanvasElement;g:CanvasRenderingContext2D;bar:HTMLElement;fill:HTMLElement;look:string;size:string;at:string;alpha:string;hp:string};
+ type View={el:HTMLCanvasElement;g:CanvasRenderingContext2D;bar:HTMLElement;lv:HTMLElement;fill:HTMLElement;look:string;size:string;at:string;alpha:string;hp:string};
  const views=new Map<Foe,View>();
  function view(f:Foe){
   let v=views.get(f);if(v)return v;
-  const el=document.createElement('canvas'),bar=document.createElement('div');el.className='foe';bar.className='foe-health';bar.hidden=true;bar.innerHTML='<i></i>';bars.append(bar);
+  const el=document.createElement('canvas'),bar=document.createElement('div');el.className='foe';bar.className='foe-health';bar.hidden=true;bar.innerHTML='<span class="foe-lv">Lv. 1</span><span class="foe-bar-track"><i></i></span>';bars.append(bar);
   el.style.cssText='position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform;pointer-events:none';
-  v={el,g:el.getContext('2d')!,bar,fill:bar.querySelector('i')!,look:'',size:'',at:'',alpha:'',hp:''};views.set(f,v);return v;
+  v={el,g:el.getContext('2d')!,bar,lv:bar.querySelector('.foe-lv')!,fill:bar.querySelector('i')!,look:'',size:'',at:'',alpha:'',hp:''};views.set(f,v);return v;
  }
  function paint(f:Foe,target:HTMLCanvasElement,box:number[],s:Sun,r:number){
   const wpx=Math.ceil((box[2]-box[0])*r),hpx=Math.ceil((box[3]-box[1])*r),fg=target.getContext('2d')!;if(target.width!==wpx||target.height!==hpx){target.width=wpx;target.height=hpx;}
@@ -497,8 +515,22 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
     set(v,'size',v.el.width+'x'+v.el.height+'@'+dpr,()=>{v.el.style.width=v.el.width/dpr+'px';v.el.style.height=v.el.height/dpr+'px';});
     set(v,'at',`translate3d(${s.x+box[0]*k+shk.dx}px,${s.y+box[1]*k+shk.dy}px,0)`,()=>{v.el.style.transform=v.at;v.el.dataset.x=w.x.toFixed(2);v.el.dataset.y=w.y.toFixed(2);});
     set(v,'alpha',alpha.toFixed(2),()=>{v.el.style.opacity=v.alpha;});
-    const wounded=f.alive&&f.hp<STATS.revenant.hp;
-    set(v,'hp',wounded?`translate3d(${s.x-13+shk.dx}px,${s.y-62*k-1+shk.dy}px,0)|${f.hp/STATS.revenant.hp}`:'',()=>{v.bar.hidden=!wounded;if(wounded){v.bar.style.transform=`translate3d(${s.x-13+shk.dx}px,${s.y-62*k-1+shk.dy}px,0)`;v.fill.style.transform=`scaleX(${f.hp/STATS.revenant.hp})`;}});
+    const fLv=Math.max(1,f.level||1),fMax=Math.max(1,f.maxHp||revenantMaxHp(fLv)),fRatio=Math.max(0,Math.min(1,f.hp/fMax));
+    const showBar=f.alive&&alpha>.05;
+    const wounded=f.alive&&f.hp<fMax-.001;
+    set(v,'hp',showBar?`translate3d(${(s.x+shk.dx).toFixed(1)}px,${(s.y-64*k+shk.dy).toFixed(1)}px,0)|${fLv}|${fRatio.toFixed(3)}|${wounded?1:0}`:'',()=>{
+     v.bar.hidden=!showBar;
+     if(showBar){
+      const lvTxt=`Lv. ${fLv}`;
+      if(v.lv.textContent!==lvTxt)v.lv.textContent=lvTxt;
+      v.bar.dataset.level=String(fLv);
+      v.bar.dataset.hp=String(+f.hp.toFixed(2));
+      v.bar.dataset.maxHp=String(fMax);
+      v.bar.dataset.wounded=String(wounded);
+      v.bar.style.transform=`translate3d(${(s.x+shk.dx).toFixed(1)}px,${(s.y-64*k+shk.dy).toFixed(1)}px,0) translate(-50%,-100%)`;
+      v.fill.style.transform=`scaleX(${fRatio.toFixed(3)})`;
+     }
+    });
    }
   }
   arrange(back,layers.back);arrange(front,layers.front);
@@ -581,19 +613,20 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
   setMaxHp(n:number){baseHp=n;if(online)return;n+=health(run);if(n===maxHp)return;h.hp=Math.min(n,h.hp+Math.max(0,n-maxHp));maxHp=n;},
   snapshot:()=>({spawnDistanceM:SPAWN_DISTANCE_M,gate:GATE,metersPerTile:METERS_PER_TILE,
    hero:{hp:h.hp,maxHp,state:h.state,u:+h.x.toFixed(2),v:+h.y.toFixed(2),meters:+meters(fromCenter(tileOf(h))).toFixed(1),safe:inSafeZone(tileOf(h)),reach:+reach(run).toFixed(2),aoeRadiusPx:Math.round(HERO_REACH*reach(run)*64*Math.SQRT2),aoeCastRadiusTiles:+aoeCastRadius(run).toFixed(2),critChance:+critChance(run).toFixed(2),critMultiplier:+critMultiplier(run).toFixed(2)},
-   foes:foes.map(f=>({u:+f.x.toFixed(2),v:+f.y.toFixed(2),hp:f.hp,state:f.state,safe:inSafeZone(tileOf(f)),clear:walkable(tileOf(f)),gateMeters:+meters(fromGate(tileOf(f))).toFixed(1)})),
+   foes:foes.map(f=>{const lv=Math.max(1,f.level||1),mHp=f.maxHp||revenantMaxHp(lv);return {u:+f.x.toFixed(2),v:+f.y.toFixed(2),level:lv,hp:f.hp,maxHp:mHp,damage:revenantDamage(lv),xpReward:revenantXpReward(lv),label:`Lv. ${lv}`,state:f.state,safe:inSafeZone(tileOf(f)),clear:walkable(tileOf(f)),gateMeters:+meters(fromGate(tileOf(f))).toFixed(1)};}),
    run:structuredClone(run),
    loadout:buildLoadoutSnapshot(),
    reach:+reach(run).toFixed(2),
    scale:+origin.scale.toFixed(4),
    expBar:{level:run.level,xp:run.xp,nextXp:threshold(run),percent:xpPercent(run),pulsing:levelUpPulseMs>0},
+   xpCurve:[1,2,3,4,5,6].map(lv=>({level:lv,nextXp:thresholdForLevel(lv),delta:lv>1?thresholdForLevel(lv)-thresholdForLevel(lv-1):0})),
    vfx:vfx.snapshot(),
    kills,spawns:[...spawns],minSpawnMeters:spawns.length?Math.min(...spawns.map(s=>s.m)):null,minFoeMeters:foes.length?Math.min(...foes.map(f=>meters(fromGate(tileOf(f))))):null}),
   // Testing hooks: stand the hero on a ground tile, summon revenants, and trigger skills / crits / projectiles / AoE / level-up VFX.
   teleport(u:number,v:number){const w=tilePoint(u,v);if(!o.hero.teleport(w.x,w.y))return false;h.x=u;h.y=v;return true;},
   clear:(u:number,v:number)=>walkable({u,v}),
-  summon(u:number,v:number){const at={u,v};if(inSafeZone(at)||!walkable(at))return -1;const f:Foe=Object.assign(new Fighter('revenant',meta.clips,u,v),{home:at,wander:null,age:500,side:1});f.play('idle');return foes.push(f)-1;},
-  offer(offers?:string[]){if(!online){if(run.pending<=0){run.level++;run.pending=1;}if(offers?.length)run.offers=[...offers];else if(!run.offers.length)roll(run,random,currentHeroId());offerKey='';render();}return structuredClone(run);},
+  summon(u:number,v:number,level?:number){const at={u,v};if(inSafeZone(at)||!walkable(at))return -1;const lv=Math.max(1,Math.floor(level??run.level)),fMaxHp=revenantMaxHp(lv);const f:Foe=Object.assign(new Fighter('revenant',meta.clips,u,v),{home:at,wander:null,age:500,side:1,level:lv,maxHp:fMaxHp,hp:fMaxHp});f.play('idle');return foes.push(f)-1;},
+  offer(offers?:string[]){if(!online){if(run.pending<=0){run.level++;run.pending=1;syncFoeLevels();}if(offers?.length)run.offers=[...offers];else if(!run.offers.length)roll(run,random,currentHeroId());offerKey='';render();}return structuredClone(run);},
   choose:(id:string)=>{select(id);render();return structuredClone(run);},
   castSkill:(id:SkillId,opts?:{targetU?:number;targetV?:number;forceCrit?:boolean})=>vfx.castSkill(id,opts),
   castSimultaneous:(ids?:SkillId[],opts?:{targetU?:number;targetV?:number;forceCrit?:boolean})=>{
@@ -607,7 +640,7 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
   autoCastNow:()=>{const fired=autoCastInAoE(true);render();return fired;},
   spawnProjectile:vfx.spawnProjectile,
   spawnAoE:vfx.spawnAoE,
-  triggerLevelUp:(level?:number)=>{const lv=level??run.level;levelUpPulseMs=1200;vfx.triggerLevelUp(lv,h.x,h.y);render();},
+  triggerLevelUp:(level?:number)=>{const lv=level??run.level;if(!online&&lv>run.level){run.level=lv;syncFoeLevels();}levelUpPulseMs=1200;vfx.triggerLevelUp(lv,h.x,h.y);render();},
   hitFoe:(index:number,forceCrit?:boolean)=>{const f=foes[index];if(!f)return null;const r=vfx.applyHitToFoe(f,{forceCrit});render();return r;}
  };
  (window as any).__STRONGHOLD_COMBAT__=api;

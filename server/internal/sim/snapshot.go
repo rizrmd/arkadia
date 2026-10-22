@@ -25,9 +25,11 @@ type PlayerState struct {
 type EnemyState struct {
 	ID       int     `json:"id"`
 	Gen      int     `json:"g"`
+	Level    int     `json:"level"`
 	U        float64 `json:"u"`
 	V        float64 `json:"v"`
 	HP       float64 `json:"hp"`
+	Max      float64 `json:"max"`
 	State    string  `json:"st"`
 	Plays    int     `json:"n"`
 	Facing   int     `json:"fc"`
@@ -62,7 +64,7 @@ func (w *World) State() State {
 			State: p.F.State, Plays: p.F.Plays, Moving: p.Moving, Facing: p.F.Facing, Back: p.F.Back, Vertical: p.F.Vertical, Kills: p.Kills, Run: p.Run})
 	}
 	for _, e := range w.Enemies {
-		s.Enemies = append(s.Enemies, EnemyState{ID: e.ID, Gen: e.Gen, U: round(e.F.Pos.X, .001), V: round(e.F.Pos.Y, .001), HP: e.F.HP,
+		s.Enemies = append(s.Enemies, EnemyState{ID: e.ID, Gen: e.Gen, Level: e.enemyLevel(), U: round(e.F.Pos.X, .001), V: round(e.F.Pos.Y, .001), HP: e.F.HP, Max: e.maxHP(),
 			State: e.F.State, Plays: e.F.Plays, Facing: e.F.Facing, Back: e.F.Back, Vertical: e.F.Vertical})
 	}
 	return s

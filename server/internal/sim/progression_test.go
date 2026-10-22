@@ -129,3 +129,62 @@ func TestThreeSlotLoadoutAndSimultaneousAoEAutoCast(t *testing.T) {
 		t.Fatalf("expected simultaneous AoE auto-cast to damage revenant in AoE radius, hp=%v", e.F.HP)
 	}
 }
+
+func TestProgressiveXPCurveAndMonsterLevelScaling(t *testing.T) {
+	wantThresholds := map[int]int{
+		1: 20,
+		2: 35,
+		3: 55,
+		4: 80,
+		5: 110,
+		6: 145,
+	}
+	prevDelta := 0
+	for lv := 1; lv <= 6; lv++ {
+		got := ThresholdForLevel(lv)
+		if got != wantThresholds[lv] {
+			t.Fatalf("ThresholdForLevel(%d) = %d, want %d", lv, got, wantThresholds[lv])
+		}
+		if lv > 1 {
+			delta := got - ThresholdForLevel(lv-1)
+			if delta <= prevDelta {
+				t.Fatalf("XP delta at level %d (%d) must be strictly greater than previous delta (%d)", lv, delta, prevDelta)
+			}
+			prevDelta = delta
+		}
+	}
+
+	w := newTestWorld(t)
+	p := w.AddPlayer("a", "Hero", 100)
+	w.spawn(nil)
+	if len(w.Enemies) == 0 {
+		t.Fatal("expected initial enemy pack to spawn")
+	}
+	for _, e := range w.Enemies {
+		if e.enemyLevel() != 1 || e.maxHP() != 2 || e.F.HP != 2 || e.damage() != 4 {
+			t.Fatalf("Lv.1 Revenant unexpected stats: lv=%d max=%v hp=%v dmg=%v", e.enemyLevel(), e.maxHP(), e.F.HP, e.damage())
+		}
+	}
+
+	// Level hero up from Lv.1 -> Lv.2 (needs 20 XP = 2 Lv.1 kills)
+	w.rewardFoe(p, 1)
+	w.rewardFoe(p, 1)
+	if p.Run.Level != 2 || p.Run.threshold() != 35 {
+		t.Fatalf("expected Hero Lv.2 with next threshold 35 XP, got lv=%d threshold=%d", p.Run.Level, p.Run.threshold())
+	}
+	for _, e := range w.Enemies {
+		if e.enemyLevel() != 2 || e.maxHP() != 3 || e.damage() != 5 {
+			t.Fatalf("expected existing Revenant to scale to Lv.2 (max=3, dmg=5), got lv=%d max=%v dmg=%v", e.enemyLevel(), e.maxHP(), e.damage())
+		}
+	}
+
+	// Respawn an enemy while hero is Lv.2 and verify State() snapshot exposes level & max
+	w.spawn(w.Enemies[0])
+	st := w.State()
+	if len(st.Enemies) == 0 || st.Enemies[0].Level != 2 || st.Enemies[0].Max != 3 || st.Enemies[0].HP != 3 {
+		t.Fatalf("snapshot enemy did not carry Lv.2 stats: %+v", st.Enemies)
+	}
+	if RevenantXPReward(2) <= RevenantXPReward(1) || RevenantXPReward(3) <= RevenantXPReward(2) {
+		t.Fatalf("RevenantXPReward did not scale with monster level: lv1=%d lv2=%d lv3=%d", RevenantXPReward(1), RevenantXPReward(2), RevenantXPReward(3))
+	}
+}

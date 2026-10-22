@@ -53,11 +53,11 @@ try{
   if(x.enemies.length)enemyTicks++;}
  const last=a.ticks.get(Math.max(...common)),ids=last.enemies.map(e=>e.id);
  assert.equal(new Set(ids).size,ids.length,'enemy ids are unique');
- for(const s of a.ticks.values())for(const e of s.enemies)assert([0,1,2].includes(e.hp),`revenant hp ${e.hp} outside 0..2`);
+ for(const s of a.ticks.values())for(const e of s.enemies){const maxHp=e.max??(2+Math.max(0,(e.level??1)-1));assert(e.hp>=0&&e.hp<=maxHp,`revenant hp ${e.hp} outside 0..${maxHp}`);assert((e.level??1)>=1,`revenant level ${e.level} < 1`);}
  const kills=last.players.reduce((k,p)=>k+p.k,0),hurt=[...a.ticks.values()].some(s=>s.players.some(p=>p.hp<p.max)),killed=[...a.ticks.values()].some(s=>s.enemies.some(e=>e.st==='die'));
  assert(kills>0&&killed,'the heroes killed revenants');
- // Run progression is server authoritative: each kill pays the killer 5 gold and 10 XP (src/stronghold/progression.ts).
- for(const p of last.players){const r=p.run;assert(r,'snapshot carries run progression');let xp=r.xp;for(let l=1;l<r.level;l++)xp+=20+(l-1)*10;assert.equal(r.gold,5*p.k,p.name+' gold matches kills');assert.equal(xp,10*p.k,p.name+' XP matches kills');}
+ // Run progression is server authoritative: each kill pays the killer 5 gold and scaled XP (10 + (foeLv - 1)*4) on progressive thresholds (src/stronghold/progression.ts).
+ for(const p of last.players){const r=p.run;assert(r,'snapshot carries run progression');let xp=r.xp;for(let l=1;l<r.level;l++){const n=l-1;xp+=20+10*n+(5*n*(n+1))/2;}assert.equal(r.gold,5*p.k,p.name+' gold matches kills');assert(xp>=10*p.k,p.name+' XP matches scaled kills');}
  // The cheat never outruns two hero steps per tick (the server's catch-up after a stall) and its forged messages
  // changed nothing: it stays connected, every revenant hp is a server value and both honest views agree.
  const id=cheat.welcome.you;let maxStep=0;const seq=[...a.ticks.keys()].sort((p,q)=>p-q);

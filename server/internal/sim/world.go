@@ -98,10 +98,12 @@ func (p *Player) SetHero(hero string) {
 	p.Run.SyncHero(hero)
 }
 
-// Enemy is a revenant. Gen bumps on every respawn so clients restart its fade-in.
+// Enemy is a revenant. Gen bumps on every respawn so clients restart its fade-in; Level scales HP, damage and XP reward.
 type Enemy struct {
 	ID     int
 	Gen    int
+	Level  int
+	MaxHP  float64
 	Age    float64
 	F      Fighter
 	Home   Vec
@@ -109,6 +111,24 @@ type Enemy struct {
 	Target string
 	// Side is the way it last veered round a footprint (+1 or -1; 0 counts as +1), tried first next time.
 	Side float64
+}
+
+func (e *Enemy) enemyLevel() int {
+	if e.Level < 1 {
+		return 1
+	}
+	return e.Level
+}
+
+func (e *Enemy) maxHP() float64 {
+	if e.MaxHP > 0 {
+		return e.MaxHP
+	}
+	return RevenantMaxHP(e.enemyLevel())
+}
+
+func (e *Enemy) damage() float64 {
+	return RevenantDamage(e.enemyLevel())
 }
 
 // Gate is the gateway: open while a hero stands at the threshold; Frame follows the 16-frame, 20 fps door sheet
@@ -522,7 +542,7 @@ func (w *World) autoCastInAoE(p *Player) {
 			if e == target || hypot(e.F.Pos.X-target.F.Pos.X, e.F.Pos.Y-target.F.Pos.Y) <= splashR {
 				if e.F.Damage(dmg) {
 					p.Kills++
-					w.reward(p)
+					w.rewardFoe(p, e.enemyLevel())
 				}
 				hits++
 				if hits >= cleave {
@@ -536,6 +556,15 @@ func (w *World) autoCastInAoE(p *Player) {
 		p.Run.TrinityCasts++
 	}
 	p.Run.LastCast = fired
+}
+
+func (w *World) enemyLevelOf(f *Fighter) int {
+	for _, e := range w.Enemies {
+		if &e.F == f {
+			return e.enemyLevel()
+		}
+	}
+	return w.spawnLevel()
 }
 
 func (w *World) heroStep(p *Player, dt float64) {
@@ -560,7 +589,7 @@ func (w *World) heroStep(p *Player, dt float64) {
 			for _, f := range swingTargets(h, w.enemyFighters(), heroReach*p.Run.reach(), side) {
 				if f.Damage(p.Run.damage()) {
 					p.Kills++
-					w.reward(p)
+					w.rewardFoe(p, w.enemyLevelOf(f))
 				}
 			}
 		}
@@ -615,7 +644,7 @@ func (w *World) foeStep(e *Enemy, dt float64) {
 	if f.State == Attack {
 		if f.Impact() {
 			if t := w.Player(e.Target); t != nil && t.F.Alive() && !InSafeZone(t.F.Pos) && inReach(f, &t.F, enemyReach+.25*figure, side) {
-				t.F.Damage(kinds[Revenant].damage)
+				t.F.Damage(e.damage())
 			}
 		}
 		return
@@ -757,6 +786,35 @@ func (w *World) separate() {
 	}
 }
 
+// spawnLevel returns the highest current Hero progression level in the room (minimum 1).
+func (w *World) spawnLevel() int {
+	lv := 1
+	for _, p := range w.Players {
+		if p.Run.Level > lv {
+			lv = p.Run.Level
+		}
+	}
+	return lv
+}
+
+func (w *World) syncEnemyLevels() {
+	targetLv := w.spawnLevel()
+	for _, e := range w.Enemies {
+		if e.enemyLevel() < targetLv {
+			prevMax := e.maxHP()
+			ratio := 1.0
+			if e.F.Alive() && prevMax > 0 {
+				ratio = math.Min(1, e.F.HP/prevMax)
+			}
+			e.Level = targetLv
+			e.MaxHP = RevenantMaxHP(targetLv)
+			if e.F.Alive() {
+				e.F.HP = math.Round(ratio*e.MaxHP*100) / 100
+			}
+		}
+	}
+}
+
 // spawn raises a new pack of one to three at the gate arc, or returns one fallen revenant there.
 func (w *World) spawn(back *Enemy) {
 	p, ok := spawnPoint(w.random, w.clearTile)
@@ -767,6 +825,8 @@ func (w *World) spawn(back *Enemy) {
 	if back == nil {
 		n = min(w.maxEnemies()-len(w.Enemies), 1+int(math.Floor(w.random()*pack)))
 	}
+	lv := w.spawnLevel()
+	maxHP := RevenantMaxHP(lv)
 	for i := 0; i < n; i++ {
 		at := p
 		if i > 0 {
@@ -776,7 +836,7 @@ func (w *World) spawn(back *Enemy) {
 		}
 		e := back
 		if e == nil {
-			e = &Enemy{ID: w.nextEnemy, F: newFighter(Revenant, at)}
+			e = &Enemy{ID: w.nextEnemy, Level: lv, MaxHP: maxHP, F: newFighter(Revenant, at)}
 			w.nextEnemy++
 			w.Enemies = append(w.Enemies, e)
 		}
@@ -784,7 +844,9 @@ func (w *World) spawn(back *Enemy) {
 		if e.Side == 0 {
 			e.Side = 1
 		}
-		e.F.HP, e.F.DeadFor, e.F.Cooldown, e.Age = kinds[Revenant].hp, 0, 600+w.random()*900, 0
+		e.Level = lv
+		e.MaxHP = maxHP
+		e.F.HP, e.F.DeadFor, e.F.Cooldown, e.Age = maxHP, 0, 600+w.random()*900, 0
 		e.F.Play(Idle)
 		e.Gen++
 	}
