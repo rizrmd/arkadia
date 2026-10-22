@@ -1,9 +1,9 @@
 import {TORCH_FRAMES,torchAssetsReady} from './torches';
 /** The complete gateway plays as one sprite: both towers, arch and synchronized door leaves share one pivot. */
 export type GateSheet={image:string;columns:number;frames:number;frame:{w:number;h:number};fps:number;region:{x:number;y:number;w:number;h:number};torches?:{left:{x:number;y:number;w:number;h:number};right:{x:number;y:number;w:number;h:number}}};
-export const GATE_SHEET='/modular-stronghold/v2/full-gateway-v3-sheet.json';
+export const GATE_SHEET='/modular-stronghold/v2/full-gateway-v4-sheet.json';
 export function createGateDoors(layer:HTMLElement,gateway:HTMLImageElement,sheet:HTMLImageElement,meta:GateSheet,onPassable:(open:boolean)=>void,light:{revision:()=>number;torches?:()=>boolean;shade:(source:HTMLCanvasElement,target:HTMLCanvasElement)=>void}){
- const {region,frame}=meta,height=region.h,canvas=document.createElement('canvas');
+ const {region,frame}=meta,rows=Math.ceil(meta.frames/meta.columns),height=region.h,canvas=document.createElement('canvas');
  canvas.id='world-gate-doors';canvas.dataset.renderer='gateway-lightmap-v3';canvas.width=frame.w;canvas.height=frame.h;
  canvas.style.cssText=`position:absolute;left:0;top:0;width:${region.w}px;height:${region.h}px;transform-origin:0 0;pointer-events:none;will-change:transform`;
  layer.append(canvas);const c=canvas.getContext('2d')!;
@@ -24,9 +24,10 @@ export function createGateDoors(layer:HTMLElement,gateway:HTMLImageElement,sheet
   const torchesLit=!!light.torches?.(),activeFlame=torchesLit?flamePose:-1;
   if(index!==shown||lit!==light.revision()||activeFlame!==shownFlame){
    shown=index;lit=light.revision();shownFlame=activeFlame;
-   raw.globalCompositeOperation='copy';raw.drawImage(sheet,(index%meta.columns)*frame.w,Math.floor(index/meta.columns)*frame.h,frame.w,frame.h,0,0,frame.w,frame.h);
+   const sw=(sheet.naturalWidth||frame.w*meta.columns)/meta.columns,sh=(sheet.naturalHeight||frame.h*rows)/rows;
+   raw.globalCompositeOperation='copy';raw.drawImage(sheet,(index%meta.columns)*sw,Math.floor(index/meta.columns)*sh,sw,sh,0,0,frame.w,frame.h);
    raw.globalCompositeOperation='source-over';
-   if(gateway.complete&&gateway.naturalWidth===frame.w){for(const p of pierPatches)raw.drawImage(gateway,p.x,p.y,p.w,p.h,p.x,p.y,p.w,p.h);}
+   if(gateway.complete&&gateway.naturalWidth){const gx=gateway.naturalWidth/frame.w,gy=gateway.naturalHeight/frame.h;for(const p of pierPatches)raw.drawImage(gateway,p.x*gx,p.y*gy,p.w*gx,p.h*gy,p.x,p.y,p.w,p.h);}
    light.shade(source,canvas);
    if(torchesLit)drawLitTorches();
    if(canvas.dataset.torches!==(torchesLit?'lit':'off'))canvas.dataset.torches=torchesLit?'lit':'off';

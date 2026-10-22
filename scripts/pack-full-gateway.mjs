@@ -124,25 +124,32 @@ for (let i = 0; i < 16; i++) {
  }
  const png = await sharp(pixels, {raw: {width: frame.w, height: frame.h, channels: 4}}).png().toBuffer();
  parts.push({input: png, left: (i % 4) * frame.w, top: Math.floor(i / 4) * frame.h});
- if (i === 15) await sharp(png).webp({lossless: true}).toFile(`${out}/full-gateway-v3-open.webp`);
+ if (i === 15) {
+  await sharp(png).webp({lossless: true}).toFile(`${out}/full-gateway-v4-open.webp`);
+  await sharp(png).webp({lossless: true}).toFile(`${out}/full-gateway-v3-open.webp`);
+ }
 }
 
 // Closed reference holds the clean unlit stone piers + unlit forged-iron sconces for daytime rendering.
-await sharp(unlitClosed768, {raw: {width: frame.w, height: frame.h, channels: 4}})
- .webp({lossless: true})
- .toFile(`${out}/full-gateway-v3-closed.webp`);
+for (const name of ['full-gateway-v4-closed.webp', 'full-gateway-v3-closed.webp']) {
+ await sharp(unlitClosed768, {raw: {width: frame.w, height: frame.h, channels: 4}})
+  .webp({lossless: true})
+  .toFile(`${out}/${name}`);
+}
 
-await sharp({create: {width: frame.w * 4, height: frame.h * 4, channels: 4, background: '#00000000'}})
+const sheetBuf = await sharp({create: {width: frame.w * 4, height: frame.h * 4, channels: 4, background: '#00000000'}})
  .composite(parts)
  .webp({lossless: true})
- .toFile(`${out}/full-gateway-v3-sheet.webp`);
+ .toBuffer();
+await fs.writeFile(`${out}/full-gateway-v4-sheet.webp`, sheetBuf);
+await fs.writeFile(`${out}/full-gateway-v3-sheet.webp`, sheetBuf);
 
 const torches = {
  left: {x: 196, y: 253, w: 70, h: 112},
  right: {x: 502, y: 253, w: 70, h: 112}
 };
 const meta = {
- image: 'full-gateway-v3-sheet.webp',
+ image: 'full-gateway-v4-sheet.webp',
  columns: 4,
  frames: 16,
  frame,
@@ -154,5 +161,6 @@ const meta = {
  stabilization: {referenceFrame: 0, aperture},
  registration
 };
-await fs.writeFile(`${out}/full-gateway-v3-sheet.json`, JSON.stringify(meta, null, 2));
-console.log('Packed 16 high-resolution 768x512 full-gateway frames with realistic torches');
+await fs.writeFile(`${out}/full-gateway-v4-sheet.json`, JSON.stringify(meta, null, 2));
+await fs.writeFile(`${out}/full-gateway-v3-sheet.json`, JSON.stringify({...meta, image: 'full-gateway-v3-sheet.webp'}, null, 2));
+console.log('Packed 16 high-resolution 768x512 full-gateway-v4 frames with realistic torches');
