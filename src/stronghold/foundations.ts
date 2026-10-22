@@ -29,7 +29,27 @@ export function foundationLayers(p:Sprite,soil:HTMLImageElement,snow?:HTMLImageE
   // Tiny contact crevice; soft earth decal supplies the broad transition.
   ground.fillStyle='#302c2428';ground.beginPath();ground.ellipse(x,y+1,7,1.8,0,0,Math.PI*2);ground.fill();
   if(vegetation&&!approach&&rng()<(dry?.035:.18)){const size=24+rng()*22;ground.globalAlpha=.78;ground.drawImage(vegetation,x-size*.5,y-3,size,size*vegetation.height/vegetation.width);}
-  if(snow&&p.layer==='foreground'&&!approach&&rng()<.24){ground.globalAlpha=.74;ground.drawImage(snow,x-22,y+1,44,13);}
+  if(snow&&p.layer==='foreground'&&!gate&&!approach&&rng()<.24){ground.globalAlpha=.74;ground.drawImage(snow,x-22,y+1,44,13);}
+  if(gate&&!approach){
+   // The animated gateway needs the same weathered contact as static walls.
+   // Fade textured earth upward into the stone, then break the snow edge into
+   // small overlapping drifts. Both are clipped to the tower silhouette below.
+   moss.save();
+   const fade=moss.createLinearGradient(0,y-10,0,y+2);
+   fade.addColorStop(0,'#514b3500');fade.addColorStop(.55,'#514b3548');fade.addColorStop(1,'#514b35bb');
+   moss.fillStyle=fade;moss.fillRect(x-8,y-10,16,13);
+   moss.globalAlpha=.48;moss.drawImage(soil,x-13,y-5,26,11);
+   if(snow){
+    // A feathered drift, rather than a flattened rectangular snow sprite.
+    for(const c of [ground,moss]){
+     c.save();c.translate(x,y+1);c.scale(1,.28);
+     const drift=c.createRadialGradient(0,0,1,0,0,13);
+     drift.addColorStop(0,'#dce6edb0');drift.addColorStop(.5,'#dce6ed55');drift.addColorStop(1,'#dce6ed00');
+     c.globalAlpha=.8;c.fillStyle=drift;c.fillRect(-13,-13,26,26);c.restore();
+    }
+   }
+   moss.restore();
+  }
   if(approach||rng()>(dry?.16:.62))continue;
   // Broken climbing moss only at the lowest opaque pixels, clipped to the
   // owning sprite below. Sparse stippling preserves masonry and its lighting.
