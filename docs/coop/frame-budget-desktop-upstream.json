@@ -1,0 +1,123 @@
+{
+ "tag": "upstream",
+ "phone": false,
+ "bots": 3,
+ "scene": {
+  "revenants": 17,
+  "onScreen": 0,
+  "zone": "wild",
+  "heroes": 4
+ },
+ "frames": 655,
+ "fps": 54,
+ "frameMs": {
+  "p50": 16.7,
+  "p90": 33.3,
+  "p99": 33.4,
+  "max": 66.7
+ },
+ "slowFrames": 69,
+ "idlePct": 10.1,
+ "drawImagePct": 45.9,
+ "self": [
+  [
+   "drawImage",
+   45.9
+  ],
+  [
+   "(program)",
+   36.2
+  ],
+  [
+   "(idle)",
+   10.1
+  ],
+  [
+   "V main.js:1",
+   2.3
+  ],
+  [
+   "oe main.js:1",
+   0.6
+  ],
+  [
+   "U main.js:1",
+   0.6
+  ],
+  [
+   "(anonymous) main.js:1",
+   0.4
+  ],
+  [
+   "fillRect",
+   0.3
+  ],
+  [
+   "getContext",
+   0.2
+  ],
+  [
+   "c main.js:1",
+   0.2
+  ],
+  [
+   "B main.js:1",
+   0.2
+  ],
+  [
+   "m main.js:8",
+   0.2
+  ]
+ ],
+ "inclusive": [
+  [
+   "oe main.js:1",
+   51.6
+  ],
+  [
+   "drawImage",
+   45.9
+  ],
+  [
+   "le main.js:1",
+   43.7
+  ],
+  [
+   "(program)",
+   36.2
+  ],
+  [
+   "(idle)",
+   10.1
+  ],
+  [
+   "U main.js:1",
+   9.3
+  ],
+  [
+   "V main.js:1",
+   7.9
+  ],
+  [
+   "re main.js:1",
+   4.9
+  ],
+  [
+   "B main.js:1",
+   4.4
+  ],
+  [
+   "u main.js:1",
+   3.9
+  ],
+  [
+   "place main.js:1",
+   1.4
+  ],
+  [
+   "_t main.js:1",
+   1.2
+  ]
+ ],
+ "errors": []
+}

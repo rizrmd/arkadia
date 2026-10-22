@@ -43,12 +43,12 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
  const start=o.hero.position(),h=new Fighter('hero',heroMeta.clips,toTile(start.x,start.y).u,toTile(start.x,start.y).v);
  let maxHp=STATS.hero.hp,kills=0,spawnTimer=0,ambient='255,255,255',origin={x:0,y:0,scale:1};
  const local:Foe[]=[],spawns:{u:number;v:number;m:number}[]=[];let foes=local,online=false,heroPlays=-1;
- // Revenants behind the hero draw under its canvas, the rest over it.
- const heroCanvas=o.layer.querySelector<HTMLCanvasElement>('#world-hero')!,back=document.createElement('canvas'),front=document.createElement('canvas');
- back.id='world-foes-back';front.id='world-foes-front';for(const c of [back,front])c.style.cssText='position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none';
+ // Revenants behind the hero stand under its canvas, the rest over it; their health bars sit above both.
+ const heroCanvas=o.layer.querySelector<HTMLCanvasElement>('#world-hero')!,back=document.createElement('div'),front=document.createElement('div'),bars=document.createElement('div');
+ back.id='world-foes-back';front.id='world-foes-front';bars.id='world-foe-bars';for(const c of [back,front,bars])c.style.cssText='position:absolute;left:0;top:0;pointer-events:none';
  heroCanvas.before(back);heroCanvas.after(front);
  // Health bar over the hero's head, moved by the compositor, and the HUD panel.
- const bar=document.createElement('div');bar.id='hero-health';bar.setAttribute('aria-hidden','true');bar.innerHTML='<i></i>';front.after(bar);
+ const bar=document.createElement('div');bar.id='hero-health';bar.setAttribute('aria-hidden','true');bar.innerHTML='<i></i>';front.after(bars,bar);
  const hud=document.createElement('section');hud.id='hero-hud';hud.setAttribute('aria-label','Hero status');
  hud.innerHTML='<div class="hud-row"><span class="hud-label">Health</span><span class="hud-hp">100 / 100</span></div><div class="hud-bar" role="meter" aria-label="Health" aria-valuemin="0"><i></i></div><div class="hud-zone"></div><div class="hud-kills">Revenants defeated · 0</div>';
  o.hud.append(hud);
@@ -164,51 +164,83 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
   if(f.flash>0){cc.globalCompositeOperation='source-atop';cc.fillStyle='rgba(255,140,110,.55)';cc.fillRect(0,0,cell.width,cell.height);}
   cc.globalCompositeOperation='source-over';
  }
- // Each revenant is composed in its own small canvas around its foot (sun shadow, sprite, then the uprights
- // in front of it cut out), so a cut-out never erases another revenant, then drawn into the shared layer.
- const figure=document.createElement('canvas'),fg=figure.getContext('2d')!;
- function compose(f:Foe,px:number,py:number,box:number[],s:Sun,r:number){
-  const wpx=Math.ceil((box[2]-box[0])*r),hpx=Math.ceil((box[3]-box[1])*r);if(figure.width<wpx||figure.height<hpx){figure.width=Math.max(figure.width,wpx);figure.height=Math.max(figure.height,hpx);}
+ // Each revenant is its own small canvas around its foot (sun shadow, sprite, then the uprights in front of it
+ // cut out), moved by the compositor like the heroes. It is composed again only when its look changes (frame,
+ // facing, light, hit flash, sun, zoom or what stands in front of it), not every frame: two full-screen layers
+ // cleared and redrawn every frame used half the frame time of a phone in a co-op room full of revenants.
+ type View={el:HTMLCanvasElement;g:CanvasRenderingContext2D;bar:HTMLElement;fill:HTMLElement;look:string;size:string;at:string;alpha:string;hp:string};
+ const views=new Map<Foe,View>();
+ function view(f:Foe){
+  let v=views.get(f);if(v)return v;
+  const el=document.createElement('canvas'),bar=document.createElement('div');el.className='foe';bar.className='foe-health';bar.hidden=true;bar.innerHTML='<i></i>';bars.append(bar);
+  el.style.cssText='position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform;pointer-events:none';
+  v={el,g:el.getContext('2d')!,bar,fill:bar.querySelector('i')!,look:'',size:'',at:'',alpha:'',hp:''};views.set(f,v);return v;
+ }
+ function paint(f:Foe,target:HTMLCanvasElement,box:number[],s:Sun,r:number){
+  const wpx=Math.ceil((box[2]-box[0])*r),hpx=Math.ceil((box[3]-box[1])*r),fg=target.getContext('2d')!;if(target.width!==wpx||target.height!==hpx){target.width=wpx;target.height=hpx;}
   const local=()=>fg.setTransform(r,0,0,r,-box[0]*r,-box[1]*r),sprite=(src:HTMLCanvasElement)=>{fg.scale((f.vertical?1:f.facing)*DISPLAY,DISPLAY);fg.drawImage(src,-pivot.x,-pivot.y);};
   fg.setTransform(1,0,0,1,0,0);fg.clearRect(0,0,wpx,hpx);paintCell(f);local();
   // Sun shadow as the hero's: a sprite point h above the foot lands h*(dx,dy) along the ground, its width across the sun.
   if(s.alpha){fg.save();fg.globalAlpha=s.alpha;fg.filter='blur(1px)';fg.transform(s.wx,s.wy,-s.dx,-s.dy,0,0);sprite(flat);fg.restore();}
-  fg.save();sprite(cell);fg.restore();
-  cutOut(fg,o.hero.occluders(px,py,box),px,py);
-  return [wpx,hpx];
+  fg.save();sprite(cell);fg.restore();return fg;
  }
- let painted=false;
+ // Revenants share one atlas, so a pack walking or waiting together shows the same few pictures: those are kept
+ // (the most recently used 48, about 7 MB at phone resolution) and a revenant in the open copies one in. A
+ // revenant behind an upright is composed on its own, with that upright cut out where it stands.
+ const looks=new Map<string,HTMLCanvasElement>(),LOOKS=48;
+ function compose(f:Foe,v:View,px:number,py:number,box:number[],s:Sun,r:number,hidden:Placed[],look:string){
+  if(hidden.length){cutOut(paint(f,v.el,box,s,r),hidden,px,py);return;}
+  let c=looks.get(look);
+  if(c){looks.delete(look);looks.set(look,c);}
+  else{const oldest=looks.size>=LOOKS?looks.keys().next().value:undefined;if(oldest!==undefined){c=looks.get(oldest)!;looks.delete(oldest);}else c=document.createElement('canvas');paint(f,c,box,s,r);looks.set(look,c);}
+  if(v.el.width!==c.width||v.el.height!==c.height){v.el.width=c.width;v.el.height=c.height;}
+  v.g.globalCompositeOperation='copy';v.g.setTransform(1,0,0,1,0,0);v.g.drawImage(c,0,0);v.g.globalCompositeOperation='source-over';
+ }
+ // Compared with what was last written: a style reads back normalized.
+ const written=new Map<object,Record<string,string>>();
+ const put=(target:Record<string,any>,key:string,value:string)=>{let w=written.get(target);if(!w)written.set(target,w={});if(w[key]!==value){w[key]=value;target[key]=value;}};
+ const set=(v:View,k:'size'|'at'|'alpha'|'hp',value:string,apply:()=>void)=>{if(v[k]!==value){v[k]=value;apply();}};
+ // Children of a layer in this order; anything else (hidden revenants) moves behind them.
+ function arrange(layer:HTMLElement,list:HTMLElement[]){list.forEach((el,i)=>{if(layer.children[i]!==el)layer.insertBefore(el,layer.children[i]??null);});}
  function render(){
-  const dpr=Math.min(devicePixelRatio||1,2),W=Math.round(innerWidth*dpr),H=Math.round(innerHeight*dpr);
-  for(const c of [back,front])if(c.width!==W||c.height!==H){c.width=W;c.height=H;painted=true;}
-  const hp=o.hero.position(),k=origin.scale,at=(x:number,y:number)=>({x:origin.x+x*k,y:origin.y+y*k});
+  const dpr=Math.min(devicePixelRatio||1,2),hp=o.hero.position(),k=origin.scale,at=(x:number,y:number)=>({x:origin.x+x*k,y:origin.y+y*k});
   const shown=foes.filter(f=>{if(f.deadFor>CORPSE-500&&!f.alive)return false;const w=tilePoint(f.x,f.y),s=at(w.x,w.y);return s.x>-80&&s.x<innerWidth+80&&s.y>-40&&s.y<innerHeight+120;});
-  if(shown.length||painted){
-   for(const c of [back,front]){const g=c.getContext('2d')!;g.setTransform(1,0,0,1,0,0);g.clearRect(0,0,W,H);}
+  const layers={back:[] as HTMLElement[],front:[] as HTMLElement[]},live=new Set<Foe>();
+  if(shown.length){
    // Local bounds around the foot: the mirrored sprite cell plus the sun-cast silhouette, as in hero.ts.
    const sun=o.hero.sun(),r=k*dpr,half=Math.max(pivot.x,meta.cell.w-pivot.x)*DISPLAY,top=-pivot.y*DISPLAY,H0=-top,bottom=(meta.cell.h-pivot.y)*DISPLAY+8;
    const ends=[-half,half].flatMap(w=>[0,H0].map(h=>[w*sun.wx+h*sun.dx,w*sun.wy+h*sun.dy])),sxs=[-half,half,...ends.map(e=>e[0])],sys=[top,bottom,...ends.map(e=>e[1]-8),...ends.map(e=>e[1]+8)];
    const box=[Math.floor(Math.min(...sxs))-4,Math.floor(Math.min(...sys))-4,Math.ceil(Math.max(...sxs))+4,Math.ceil(Math.max(...sys))+4];
+   const light=[ambient,sun.alpha,sun.dx,sun.dy,sun.wx,sun.wy,r,box].join();
    for(const f of shown.sort((a,b)=>tilePoint(a.x,a.y).y-tilePoint(b.x,b.y).y)){
-    const w=tilePoint(f.x,f.y),s=at(w.x,w.y),g=(w.y<hp.y?back:front).getContext('2d')!;
+    const w=tilePoint(f.x,f.y),s=at(w.x,w.y);
     const alpha=Math.min(1,f.age/500)*(f.alive?1:Math.max(0,1-(f.deadFor-3500)/900));if(alpha<=0)continue;
-    const [fw,fh]=compose(f,w.x,w.y,box,sun,r);
-    g.setTransform(1,0,0,1,0,0);g.globalAlpha=alpha;g.drawImage(figure,0,0,fw,fh,Math.round((s.x+box[0]*k)*dpr),Math.round((s.y+box[1]*k)*dpr),fw,fh);g.setTransform(dpr,0,0,dpr,0,0);
+    const v=view(f),hidden=o.hero.occluders(w.x,w.y,box);live.add(f);(w.y<hp.y?layers.back:layers.front).push(v.el);
+    // Uprights in front cut the figure where it stands, so only then does its position change the picture.
+    const look=[f.clip.frames[f.frame()],f.vertical?0:f.facing,f.flash>0,light,hidden.length?hidden.map(p=>p.x+':'+p.y).join()+'@'+w.x.toFixed(1)+','+w.y.toFixed(1):''].join('|');
+    if(look!==v.look){v.look=look;compose(f,v,w.x,w.y,box,sun,r,hidden,look);}
+    set(v,'size',v.el.width+'x'+v.el.height+'@'+dpr,()=>{v.el.style.width=v.el.width/dpr+'px';v.el.style.height=v.el.height/dpr+'px';});
+    set(v,'at',`translate3d(${Math.round((s.x+box[0]*k)*dpr)/dpr}px,${Math.round((s.y+box[1]*k)*dpr)/dpr}px,0)`,()=>{v.el.style.transform=v.at;});
+    set(v,'alpha',alpha.toFixed(2),()=>{v.el.style.opacity=v.alpha;});
     // A small health bar over each wounded revenant.
-    if(f.alive&&f.hp<STATS.revenant.hp){const bw=24,by=s.y-62*k;g.fillStyle='#120c0ccc';g.fillRect(s.x-bw/2-1,by-1,bw+2,5);g.fillStyle='#d9534f';g.fillRect(s.x-bw/2,by,bw*f.hp/STATS.revenant.hp,3);}
-    g.globalAlpha=1;
+    const wounded=f.alive&&f.hp<STATS.revenant.hp;
+    set(v,'hp',wounded?`translate3d(${s.x-13}px,${s.y-62*k-1}px,0)|${f.hp/STATS.revenant.hp}`:'',()=>{v.bar.hidden=!wounded;if(wounded){v.bar.style.transform=`translate3d(${s.x-13}px,${s.y-62*k-1}px,0)`;v.fill.style.transform=`scaleX(${f.hp/STATS.revenant.hp})`;}});
    }
-   painted=shown.length>0;
   }
-  // Hero bar: hidden at full health inside the zone, shown once hurt or out in the wilds.
+  arrange(back,layers.back);arrange(front,layers.front);
+  // Off screen or gone: hidden, and dropped once the revenant no longer exists (a co-op mirror that left).
+  for(const [f,v] of views){if(live.has(f))continue;if(foes.includes(f)){if(!v.el.hidden){v.el.hidden=true;v.bar.hidden=true;v.hp='';}}else{v.el.remove();v.bar.remove();views.delete(f);}}
+  for(const f of live){const v=views.get(f)!;if(v.el.hidden)v.el.hidden=false;}
+  // Hero bar: hidden at full health inside the zone, shown once hurt or out in the wilds. Styles and data
+  // attributes are written only when they change.
   const s=at(hp.x,hp.y),ratio=Math.max(0,h.hp)/maxHp,show=h.alive&&(ratio<.999||!inSafeZone(tileOf(h)));
-  bar.style.transform=`translate3d(${s.x}px,${s.y-64*k}px,0)`;bar.dataset.visible=String(show);barFill.style.transform=`scaleX(${ratio})`;bar.dataset.low=String(ratio<.3);
-  hudFill.style.transform=`scaleX(${ratio})`;hud.dataset.low=String(ratio<.3);
+  put(bar.style,'transform',`translate3d(${s.x}px,${s.y-64*k}px,0)`);put(bar.dataset,'visible',String(show));put(barFill.style,'transform',`scaleX(${ratio})`);put(bar.dataset,'low',String(ratio<.3));
+  put(hudFill.style,'transform',`scaleX(${ratio})`);put(hud.dataset,'low',String(ratio<.3));
   const text=`${Math.ceil(h.hp)} / ${maxHp}`;if(q('.hud-hp').textContent!==text){q('.hud-hp').textContent=text;q('.hud-bar').setAttribute('aria-valuenow',String(Math.ceil(h.hp)));q('.hud-bar').setAttribute('aria-valuemax',String(maxHp));}
   const zone=!h.alive?'Defeated · returning to the tent':inSafeZone(tileOf(h))?'Safe zone':'Wilds · revenants roam';
-  if(q('.hud-zone').textContent!==zone)q('.hud-zone').textContent=zone;hud.dataset.zone=inSafeZone(tileOf(h))?'safe':'wild';
+  if(q('.hud-zone').textContent!==zone)q('.hud-zone').textContent=zone;put(hud.dataset,'zone',inSafeZone(tileOf(h))?'safe':'wild');
   const k2=`Revenants defeated · ${kills}`;if(q('.hud-kills').textContent!==k2)q('.hud-kills').textContent=k2;
-  Object.assign(hud.dataset,{hp:String(Math.ceil(h.hp)),max:String(maxHp),state:h.state,kills:String(kills),foes:String(foes.filter(f=>f.alive).length)});
+  for(const [key,value] of Object.entries({hp:String(Math.ceil(h.hp)),max:String(maxHp),state:h.state,kills:String(kills),foes:String(foes.filter(f=>f.alive).length)}))put(hud.dataset,key,value);
  }
  let last=0;
  // Co-op revenants are sampled at the frame's timestamp, not whenever this callback happens to run.

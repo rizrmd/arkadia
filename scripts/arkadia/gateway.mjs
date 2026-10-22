@@ -86,10 +86,12 @@ const server=http.createServer((req,res)=>{
  if(p==='/index.html'||p.endsWith('/')||!path.extname(p))return gamePage(req,res);
  sendFile(req,res,path.join(www,p),p);
 });
-// Co-op WebSocket: hand the upgrade straight to the Go server.
+// Co-op WebSocket: hand the upgrade straight to the Go server. Both legs send at once (no Nagle): a 40-byte input
+// held back until the previous one is acknowledged reached the server a tick late.
 server.on('upgrade',(req,socket,head)=>{
  if(new URL(req.url,'http://local').pathname!=='/ws'){socket.destroy();return;}
- const up=net.connect(COOP_PORT,'127.0.0.1',()=>{let lines=`${req.method} ${req.url} HTTP/1.1\r\n`;for(let i=0;i<req.rawHeaders.length;i+=2)lines+=`${req.rawHeaders[i]}: ${req.rawHeaders[i+1]}\r\n`;up.write(lines+'\r\n');up.write(head);socket.pipe(up).pipe(socket);});
+ socket.setNoDelay(true);
+ const up=net.connect({port:COOP_PORT,host:'127.0.0.1',noDelay:true},()=>{let lines=`${req.method} ${req.url} HTTP/1.1\r\n`;for(let i=0;i<req.rawHeaders.length;i+=2)lines+=`${req.rawHeaders[i]}: ${req.rawHeaders[i+1]}\r\n`;up.write(lines+'\r\n');up.write(head);socket.pipe(up).pipe(socket);});
  up.on('error',()=>socket.destroy());socket.on('error',()=>up.destroy());
 });
 server.listen(PORT,'0.0.0.0',()=>console.log('Arkadia gateway listening on',PORT));

@@ -45,16 +45,19 @@ export function createTimeline(tickMs:number){
   for(const e of b.enemies){const q=a.enemies.find(x=>x.id===e.id);out.set('e'+e.id+'.'+e.g,q&&q.g===e.g?step({x:q.u,y:q.v},{x:e.u,y:e.v},k,q.st===e.st):{x:e.u,y:e.v});}
   return out;
  }
+ // Heroes and revenants are sampled at the same frame timestamp: worked out once per frame and snapshot.
+ let memo:{now:number;r:[Timed,Timed,number];pos:Map<string,Point>}|null=null;
  function at(now:number){
+  if(memo?.now===now)return memo;
   const fresh=now!==viewAt,t=clockAt(now),r=around(t),tip=latest()!.tick*tickMs;
   // Clock reads past the newest snapshot (extrapolated) and past the extrapolation cap (held still).
   if(fresh&&t>tip){stats.extrapolated++;if(t>tip+EXTRAP_MS)stats.held++;}
-  return {r:r!,pos:drawn(t)};
+  return memo={now,r:r!,pos:drawn(t)};
  }
  const smoothed=(key:string,p:Point)=>{const b=blend.get(key);return b?{x:p.x+b.x,y:p.y+b.y}:p;};
  return {
   stats,latest,
-  reset(own:string){snaps=[];late=[];base=Infinity;view=NaN;blend.clear();you=own;},
+  reset(own:string){memo=null;snaps=[];late=[];base=Infinity;view=NaN;blend.clear();you=own;},
   // A snapshot received at local time `at` (ms).
   push(m:Snapshot,at:number){
    // The least-delayed snapshot of the last 3 s anchors the server timeline; the spread above it sets the delay.
@@ -62,7 +65,7 @@ export function createTimeline(tickMs:number){
    const sorted=[...late].sort((a,b)=>a-b);base=sorted[0];
    delay=Math.min(MAX_DELAY,tickMs+MARGIN+sorted[Math.floor((sorted.length-1)*.95)]-base);stats.delay=Math.round(delay);
    // Where everything is drawn right now, before and after this snapshot: what changes was extrapolated wrong.
-   const before=Number.isFinite(view)?drawn(view):null,s=Object.assign(m,{at});
+   memo=null;const before=Number.isFinite(view)?drawn(view):null,s=Object.assign(m,{at});
    snaps.push(s);if(snaps.length>KEEP)snaps.shift();
    if(before)for(const [id,p] of drawn(view)){const q=before.get(id);if(!q)continue;const dx=q.x-p.x,dy=q.y-p.y,d=Math.hypot(dx,dy);if(d<.01||d>SNAP_PX)continue;
     const b=blend.get(id)??{x:0,y:0};blend.set(id,{x:b.x+dx,y:b.y+dy});stats.blended++;}

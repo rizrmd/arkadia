@@ -1,8 +1,8 @@
 {
  "url": "http://127.0.0.1:8792",
- "room": "UA4JP",
+ "room": "9AFX9",
  "tagOnA": "Bima",
- "tagOnB": "Guest 1894",
+ "tagOnB": "Guest 8888",
  "shots": [
   "docs/coop/1-court-desktop.webp",
   "docs/coop/1-court-phone.webp",
@@ -10,21 +10,21 @@
   "docs/coop/2-wilds-phone.webp"
  ],
  "predictionWhileWalking": {
-  "corrections": 0,
-  "maxCorrectionPx": 0,
-  "inputs": 260,
-  "rttMs": 15
+  "corrections": 2,
+  "maxCorrectionPx": 4.5,
+  "inputs": 261,
+  "rttMs": 1
  },
  "sameEnemies": {
-  "commonTicks": 262,
+  "commonTicks": 224,
   "mismatched": 0,
-  "atTick": 370,
+  "atTick": 341,
   "enemies": [
    [
     1,
     1,
-    1,
-    "attack"
+    2,
+    "move"
    ],
    [
     2,
@@ -53,8 +53,8 @@
    [
     6,
     1,
-    0,
-    "die"
+    2,
+    "attack"
    ],
    [
     7,
@@ -65,8 +65,8 @@
    [
     8,
     1,
-    0,
-    "die"
+    1,
+    "idle"
    ],
    [
     9,
@@ -92,11 +92,11 @@
   "a": {
    "low": "false",
    "zone": "wild",
-   "hp": "100",
+   "hp": "76",
    "max": "100",
    "state": "attack",
    "kills": "5",
-   "foes": "1"
+   "foes": "4"
   },
   "b": {
    "low": "false",
@@ -104,48 +104,48 @@
    "hp": "100",
    "max": "100",
    "state": "attack",
-   "kills": "5",
-   "foes": "1"
+   "kills": "3",
+   "foes": "4"
   }
  },
  "stats": {
   "a": {
    "status": "online",
-   "room": "UA4JP",
+   "room": "9AFX9",
    "you": "p1",
-   "snapshots": 371,
-   "inputs": 347,
-   "corrections": 8,
-   "maxCorrection": 5.996540669419336,
-   "lastCorrection": 5.996540669419336,
-   "totalCorrection": 39.1723529526308,
-   "bytes": 407781,
-   "pace": 0.95,
-   "margin": 0,
-   "delay": 110,
-   "extrapolated": 2,
-   "held": 0,
-   "blended": 0,
-   "rtt": 29.09999990463257
+   "snapshots": 341,
+   "inputs": 313,
+   "corrections": 2,
+   "maxCorrection": 4.5,
+   "lastCorrection": 4.5,
+   "totalCorrection": 9,
+   "bytes": 401296,
+   "pace": 1,
+   "margin": 1,
+   "delay": 81,
+   "extrapolated": 3,
+   "held": 1,
+   "blended": 4,
+   "rtt": 0.2999999523162842
   },
   "b": {
    "status": "online",
-   "room": "UA4JP",
+   "room": "9AFX9",
    "you": "p2",
-   "snapshots": 273,
-   "inputs": 268,
-   "corrections": 6,
-   "maxCorrection": 5.177074463439718,
-   "lastCorrection": 5.177074463439718,
-   "totalCorrection": 30.531578069475728,
-   "bytes": 359837,
+   "snapshots": 237,
+   "inputs": 230,
+   "corrections": 3,
+   "maxCorrection": 4.540099117860795,
+   "lastCorrection": 4.540099117860795,
+   "totalCorrection": 13.616353852055923,
+   "bytes": 331102,
    "pace": 0.95,
    "margin": 0,
-   "delay": 109,
+   "delay": 79,
    "extrapolated": 1,
    "held": 1,
-   "blended": 3,
-   "rtt": 0.5
+   "blended": 20,
+   "rtt": 0.39999985694885254
   }
  },
  "ok": true

@@ -37,6 +37,8 @@
 /* Hero status (see encounters.ts): a bar over the hero's head, moved by the compositor, and a HUD panel. */
 #hero-health{position:absolute;left:-22px;top:0;width:44px;height:7px;padding:1px;border-radius:4px;background:#120c0ccc;box-shadow:0 1px 3px #0008;pointer-events:none;will-change:transform;opacity:0;transition:opacity .2s}
 #hero-health[data-visible=true]{opacity:1}
+.foe-health{position:absolute;left:0;top:0;width:24px;height:3px;border:1px solid #120c0ccc;background:#120c0ccc;pointer-events:none;will-change:transform}
+.foe-health i{display:block;height:100%;background:#d9534f;transform-origin:0 50%}
 #hero-health i,#hero-hud .hud-bar i{display:block;height:100%;border-radius:3px;background:linear-gradient(#8fd16a,#4f9a3c);transform-origin:0 50%}
 #hero-health[data-low=true] i,#hero-hud[data-low=true] .hud-bar i{background:linear-gradient(#f07a5f,#b8402c)}
 #hero-hud{position:fixed;top:max(12px,env(safe-area-inset-top));left:max(12px,env(safe-area-inset-left));z-index:10;width:min(260px,calc(100vw - 190px));font-size:13px;pointer-events:none;text-shadow:0 1px 3px #000,0 0 6px #000}

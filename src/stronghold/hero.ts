@@ -110,11 +110,14 @@ export async function createHero<P extends Placed>(o:{layer:HTMLElement;lightmap
  }
  function render(){
   const s=o.sun(),f=meta.frames[frameIndex()],res=Math.min(3,Math.max(1,origin.scale*(devicePixelRatio||1)));
-  const key=[hero.id,state,clipName(),f.x,f.y,facing,vertical,tint,s.dx,s.dy,s.wx,s.wy,s.alpha,res,Math.round(x*4),Math.round(y*4),objects.length].join();if(key===drawn)return;drawn=key;
   // Local bounds around the foot: the mirrored sprite cell plus the sun-cast silhouette.
   const half=Math.max(pivot.x,cell.w-pivot.x)*DISPLAY,top=-pivot.y*DISPLAY,bottom=(cell.h-pivot.y)*DISPLAY+8,H=-top;
   const ends=[-half,half].flatMap(w=>[0,H].map(h=>[w*s.wx+h*s.dx,w*s.wy+h*s.dy])),sxs=[-half,half,...ends.map(e=>e[0])],sys=[top,bottom,...ends.map(e=>e[1]-8),...ends.map(e=>e[1]+8)];
   const b=[Math.floor(Math.min(...sxs))-4,Math.floor(Math.min(...sys))-4,Math.ceil(Math.max(...sxs))+4,Math.ceil(Math.max(...sys))+4];
+  // The canvas is drawn around the foot and moved by place(), so walking redraws it only where uprights in front
+  // cut it out (a hero, or an ally in co-op, re-composed every frame it walked).
+  const hidden=occluders(x,y,b),at=x.toFixed(1)+','+y.toFixed(1);if(canvas.dataset.x+','+canvas.dataset.y!==at)Object.assign(canvas.dataset,{x:x.toFixed(1),y:y.toFixed(1)});
+  const key=[hero.id,state,clipName(),f.x,f.y,facing,vertical,tint,s.dx,s.dy,s.wx,s.wy,s.alpha,res,b,hidden.length?hidden.map(p=>p.x+':'+p.y).join()+'@'+Math.round(x*4)+','+Math.round(y*4):'',objects.length].join();if(key===drawn)return;drawn=key;
   if(res!==k||b.some((v,i)=>v!==box[i])){k=res;box=b;canvas.width=Math.ceil((b[2]-b[0])*k);canvas.height=Math.ceil((b[3]-b[1])*k);canvas.style.width=b[2]-b[0]+'px';canvas.style.height=b[3]-b[1]+'px';}
   const frame=(target:HTMLCanvasElement)=>{const g=target.getContext('2d',{willReadFrequently:target===lit})!;g.globalCompositeOperation='copy';g.drawImage(atlas,f.x,f.y,f.w,f.h,0,0,cell.w,cell.h);g.globalCompositeOperation='source-over';return g;};
   // Multiply per pixel: a multiply fill plus alpha mask would bleed the tint into the soft edges.
@@ -125,8 +128,8 @@ export async function createHero<P extends Placed>(o:{layer:HTMLElement;lightmap
   // building solids, faded with the same alpha and colour; its width w lands w*(wx,wy) across the sun.
   if(s.alpha){const q=frame(flat);q.globalCompositeOperation='source-in';q.fillStyle='rgb(20,28,44)';q.fillRect(0,0,cell.w,cell.h);q.globalCompositeOperation='source-over';c.save();c.globalAlpha=s.alpha;c.filter='blur(1px)';c.transform(s.wx,s.wy,-s.dx,-s.dy,0,0);sprite(flat);c.restore();local();}
   c.save();sprite(lit);c.restore();
-  const hidden=occluders(x,y,box);cutOut(c,hidden,x,y);
-  Object.assign(canvas.dataset,{hero:hero.id,x:x.toFixed(1),y:y.toFixed(1),state,clip:clipName(),frame:String(frameIndex()),facing:String(facing),behind:String(hidden.length),tint});
+  cutOut(c,hidden,x,y);
+  Object.assign(canvas.dataset,{hero:hero.id,state,clip:clipName(),frame:String(frameIndex()),facing:String(facing),behind:String(hidden.length),tint});
  }
  function place(){canvas.style.transform=`translate3d(${origin.x+(x+box[0])*origin.scale}px,${origin.y+(y+box[1])*origin.scale}px,0) scale(${origin.scale})`;}
  let last=0;

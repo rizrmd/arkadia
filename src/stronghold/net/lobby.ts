@@ -36,14 +36,16 @@ export function createLobby(root:HTMLElement,net:Net){
  let roster=new Map<string,string>(),title='';
  const invite=()=>`${location.origin}/?room=${net.room()}`;
  function toast(text:string){const t=document.createElement('p');t.textContent=text;q('.coop-toasts').append(t);setTimeout(()=>t.remove(),3200);}
+ // Writes only what changed: this runs a few times a second during play.
+ const text=(sel:string,value:string)=>{const e=q<HTMLElement>(sel);if(e.textContent!==value)e.textContent=value;},hide=(sel:string,v:boolean)=>{const e=q<HTMLElement>(sel);if(e.hidden!==v)e.hidden=v;};
  function render(){
-  const s=net.status(),online=net.active();el.dataset.status=s;
-  q('.coop-code').textContent=online?net.room():'';
-  q('.coop-count').textContent=online?`${net.latest()?.players.length??1}/4`:s==='connecting'?'Connecting…':'Offline';
-  q('.coop-title').textContent=title||(online?'Heroes in this room share one world: the same revenants, gate and clock.':s==='connecting'?'Connecting to the co-op server…':'Offline — solo play on this device. Join or create a room to play together.');
-  q<HTMLElement>('.coop-room').hidden=!online;q('.coop-room-code').textContent=net.room();
-  q('.coop-ping').textContent=online&&net.rtt()?`${Math.round(net.rtt())} ms`:s==='reconnecting'?'Reconnecting…':'';
-  q('.coop-offline').textContent=online?'Leave room · play offline':'Play offline';q<HTMLElement>('.coop-offline').hidden=!online;
+  const s=net.status(),online=net.active();if(el.dataset.status!==s)el.dataset.status=s;
+  text('.coop-code',online?net.room():'');
+  text('.coop-count',online?`${net.latest()?.players.length??1}/4`:s==='connecting'?'Connecting…':'Offline');
+  text('.coop-title',title||(online?'Heroes in this room share one world: the same revenants, gate and clock.':s==='connecting'?'Connecting to the co-op server…':'Offline — solo play on this device. Join or create a room to play together.'));
+  hide('.coop-room',!online);text('.coop-room-code',net.room());
+  text('.coop-ping',online&&net.rtt()?`${Math.round(net.rtt())} ms`:s==='reconnecting'?'Reconnecting…':'');
+  text('.coop-offline',online?'Leave room · play offline':'Play offline');hide('.coop-offline',!online);
   const list=q<HTMLUListElement>('.coop-players'),players=net.latest()?.players??[],key=players.map(p=>p.id+p.name+p.h+Math.ceil(p.hp)).join();
   if(list.dataset.key!==key){list.dataset.key=key;list.replaceChildren(...players.map(p=>{const li=document.createElement('li');const n=document.createElement('span');n.textContent=p.name;const h=document.createElement('em');h.textContent=heroInfo(isHero(p.h)?p.h:DEFAULT_HERO).name;n.append(h);const hp=document.createElement('small');hp.textContent=p.st==='die'?'Down':`${Math.ceil(p.hp)} / ${p.max}`;li.append(n,hp);if(p.id===net.you())li.dataset.you='true';return li;}));}
   for(const b of el.querySelectorAll<HTMLButtonElement>('.coop-actions button'))b.disabled=s==='connecting';
