@@ -9,9 +9,24 @@ export type HeroId=(typeof HEROES)[number]['id'];
 export const DEFAULT_HERO:HeroId='rift-runner';
 export const isHero=(id:unknown):id is HeroId=>HEROES.some(h=>h.id===id);
 export const heroInfo=(id:HeroId)=>HEROES.find(h=>h.id===id)!;
-const KEY='arkadia.hero';
+const KEY='arkadia.hero',PICKED_KEY='arkadia.hero.picked',POS_KEY='arkadia.stronghold.hero';
+let resetRequested:boolean|null=null;
+// ?hero=reset clears the saved hero pick, session pick and hero position, strips the query param and reopens the picker.
+export function isHeroReset():boolean{
+ if(resetRequested!==null)return resetRequested;
+ const u=new URL(location.href);
+ resetRequested=u.searchParams.get('hero')?.toLowerCase()==='reset';
+ if(resetRequested){
+  try{localStorage.removeItem(KEY);localStorage.removeItem(POS_KEY);}catch{}
+  try{sessionStorage.removeItem(PICKED_KEY);}catch{}
+  u.searchParams.delete('hero');
+  history.replaceState(history.state,'',u.pathname+u.search+u.hash);
+ }
+ return resetRequested;
+}
 // ?hero=ember-warden picks for this visit (and skips the picker); otherwise the last pick on this device.
 export function savedHero():HeroId{
+ if(isHeroReset())return DEFAULT_HERO;
  const q=new URLSearchParams(location.search).get('hero');if(isHero(q))return q;
  try{const s=localStorage.getItem(KEY);if(isHero(s))return s;}catch{}
  return DEFAULT_HERO;

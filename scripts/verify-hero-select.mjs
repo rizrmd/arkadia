@@ -38,9 +38,28 @@ try{
  await phone.tap('.picker-hero[data-hero=ember-warden]');await phone.waitForSelector('#hero-picker',{state:'hidden'});
  await heroIs(phone,'ember-warden');results.emberHud=await phone.textContent('#hero-hud .hud-hero');assert.equal(results.emberHud,'Ember Warden');
  results.shots.push(await shot(phone,'2-ember-phone'));
- // 2. A reload in the same tab keeps the pick and does not ask again.
+ // 2. A reload in the same tab keeps the pick and does not ask again; ?hero=reset clears the pick and position and reopens the picker.
  await phone.reload();await ready(phone);await heroIs(phone,'ember-warden');await phone.waitForTimeout(800);
  results.reloadAsks=await phone.isVisible('#hero-picker');assert.equal(results.reloadAsks,false);
+ await phone.evaluate(()=>localStorage.setItem('arkadia.stronghold.hero',JSON.stringify({x:640,y:450})));
+ await phone.goto(url+'/?hero=reset&offline=1&time=0.5');await ready(phone);
+ await phone.waitForSelector('#hero-picker:not([hidden])');
+ results.shots.push(await shot(phone,'7-reset-picker'));
+ results.reset=await phone.evaluate(()=>({
+  first:document.querySelector('#hero-picker')?.getAttribute('data-first'),
+  focused:document.activeElement?.dataset.hero,
+  hero:document.querySelector('#world-hero')?.dataset.hero,
+  x:+document.querySelector('#world-hero')?.dataset.x,
+  y:+document.querySelector('#world-hero')?.dataset.y,
+  savedHero:localStorage.getItem('arkadia.hero'),
+  pickedSession:sessionStorage.getItem('arkadia.hero.picked'),
+  savedPos:localStorage.getItem('arkadia.stronghold.hero'),
+  urlHero:new URL(location.href).searchParams.get('hero')
+ }));
+ assert.deepEqual(results.reset,{first:'true',focused:'rift-runner',hero:'rift-runner',x:590,y:420,savedHero:null,pickedSession:null,savedPos:null,urlHero:null});
+ await phone.tap('.picker-hero[data-hero=rift-runner]');await phone.waitForSelector('#hero-picker',{state:'hidden'});
+ await phone.reload();await ready(phone);await heroIs(phone,'rift-runner');await phone.waitForTimeout(400);
+ assert.equal(await phone.isVisible('#hero-picker'),false,'reload after ?hero=reset pick does not reset again');
  // 3. Desktop: Ember Warden walks with its own views (no mirroring) and swings at a revenant.
  const desk=await open('/?pick=1&offline=1&time=0.45',{viewport:{width:1440,height:900}});
  await desk.waitForSelector('#hero-picker:not([hidden])');await desk.keyboard.press('ArrowRight');

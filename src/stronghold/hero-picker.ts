@@ -1,4 +1,4 @@
-import {HEROES,heroInfo,portraitUrl,type HeroId} from './heroes';
+import {HEROES,heroInfo,isHero,isHeroReset,portraitUrl,saveHero,type HeroId} from './heroes';
 // Hero selection over the live world: a new tab opens on it (a reload in the same tab keeps the pick), with the last
 // pick on this device focused; the hero's name in the health panel reopens it at any time. Picking swaps the hero
 // in place, keeping its spot, health and room.
@@ -14,7 +14,7 @@ export function createHeroPicker(root:HTMLElement,o:{current:()=>HeroId;choose:(
  const buttons=[...el.querySelectorAll<HTMLButtonElement>('.picker-hero')],close=el.querySelector<HTMLButtonElement>('.picker-close')!;
  let done:(()=>void)|null=null,opener:HTMLElement|null=null;
  function hide(){el.hidden=true;el.dataset.first='false';const d=done;done=null;d?.();opener?.focus();opener=null;}
- function pick(id:HeroId){try{sessionStorage.setItem(SESSION_KEY,id);}catch{}if(id!==o.current())o.choose(id);label?.update();hide();}
+ function pick(id:HeroId){try{sessionStorage.setItem(SESSION_KEY,id);}catch{}saveHero(id);if(id!==o.current())o.choose(id);label?.update();hide();}
  for(const b of buttons)b.onclick=()=>pick(b.dataset.hero as HeroId);
  close.onclick=()=>pick(o.current());
  // Arrow keys move between the cards; Escape keeps the current hero.
@@ -37,9 +37,12 @@ export function createHeroPicker(root:HTMLElement,o:{current:()=>HeroId;choose:(
  let label:{update():void}|null=null;
  return {
   open,
-  // A new tab asks once; a reload in the same tab (or a ?hero= link) plays on.
-  start(){let picked='';try{picked=sessionStorage.getItem(SESSION_KEY)||'';}catch{}const q=new URLSearchParams(location.search);
-   return picked||q.has('hero')||(navigator.webdriver&&!q.has('pick'))?Promise.resolve():open(true);},
+  // A new tab asks once; a reload in the same tab (or a ?hero=<id> link) plays on; ?hero=reset asks again.
+  start(){
+   if(isHeroReset())return open(true);
+   let picked='';try{picked=sessionStorage.getItem(SESSION_KEY)||'';}catch{}const q=new URLSearchParams(location.search);
+   return picked||isHero(q.get('hero'))||(navigator.webdriver&&!q.has('pick'))?Promise.resolve():open(true);
+  },
   attach(slot:HTMLElement){
    const b=document.createElement('button');b.type='button';b.className='hud-hero';b.setAttribute('aria-haspopup','dialog');slot.replaceWith(b);
    label={update(){const h=heroInfo(o.current());b.textContent=h.name;b.setAttribute('aria-label',`${h.name}. Change hero`);}};label.update();
