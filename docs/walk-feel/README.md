@@ -24,6 +24,10 @@ Players said the hero's walk felt uneven, sometimes fast and sometimes slow, and
 | Mean frame-to-frame speed jitter | 4.0% | 2.3% | 2.2% |
 | Walk clip frame rate at full speed | ~10 fps | ~10 fps | ~10 fps |
 
+### Live
+
+Release `game-c0ea00f` on https://ark-whachat.fural.space/ (co-op, phone viewport, `live-coop.json`): full speed 90–120 px/s in every direction (1.33×), a thumb at 65% of the stick's reach walks at 120 px/s, 100–167 ms to 90% speed, 150–283 ms to rest, mean jitter 2.3%. The served `main` chunk is byte-identical to this build.
+
 ### Not changed
 
 In co-op the client sends inputs up to 5% faster or slower to keep the server's input queue short (`net/client.ts`), and each input walks one full 50 ms step. On a jittery network the own hero therefore still varies by up to about 5% (`docs/coop/smoothness-mobile-after.json`). That is part of the co-op netcode design, and this change leaves it alone.
