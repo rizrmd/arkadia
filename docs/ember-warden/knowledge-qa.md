@@ -71,7 +71,9 @@ Screenshots document the running viewer; the actual normal/slow/scrub traces are
 
 ![live idle](https://ark-whachat.fural.space/ember-warden-review/evidence/live-idle.png)
 
-![live mobile loader](https://ark-whachat.fural.space/ember-warden-review/evidence/live-mobile-loader.png)
+![live mobile loader](https://ember-warden-review-whachat.fural.space/evidence/live-mobile-loader.png)
+
+![live run](https://ember-warden-review-whachat.fural.space/evidence/live-run.png)
 
 ![live run](https://ark-whachat.fural.space/ember-warden-review/evidence/live-run.png)
 
@@ -89,8 +91,6 @@ Screenshots document the running viewer; the actual normal/slow/scrub traces are
 
 ![local hurt](https://ark-whachat.fural.space/ember-warden-review/evidence/local-hurt.png)
 
-![local idle](https://ark-whachat.fural.space/ember-warden-review/evidence/local-idle.png)
+![local mobile loader](https://ember-warden-review-whachat.fural.space/evidence/local-mobile-loader.png)
 
-![local mobile loader](https://ark-whachat.fural.space/ember-warden-review/evidence/local-mobile-loader.png)
-
-![local run](https://ark-whachat.fural.space/ember-warden-review/evidence/local-run.png)
+![local run](https://ember-warden-review-whachat.fural.space/evidence/local-run.png)

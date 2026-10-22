@@ -1,6 +1,15 @@
 {
-  "url": "https://ark-whachat.fural.space/ember-warden-review/",
-  "sandbox": "arkadia",
+  "receipt": {
+    "boot_script": "cd \"$HOME\"\nnode serve.mjs\n",
+    "files_copied": 1,
+    "hostname": "ember-warden-review-whachat.fural.space",
+    "name": "ember-warden-review",
+    "port": 3000,
+    "sandbox_id": "CS69b10b21e0728f1141f2bf97",
+    "slug": "ember-warden-review",
+    "url": "https://ember-warden-review-whachat.fural.space/"
+  },
+  "version": "85441211d810",
   "resources": {
     "evidence/live-cinder-step.png": "b02f47b741f5ded2fab2c2fe566aea9472b2400a05cb0f6d41a4170fa8e03100",
     "evidence/live-death.png": "7a2b0f8dcc0a8302923ba862f70358cd0f4eb21a5ede06003d7482bc302cb5fc",
@@ -60,7 +69,7 @@
     "metadata/run-1.json": "6d5f4465188bdbb746678cc29453d02b3df8baade5bbaf63981596d79f498e20",
     "metadata/run-2.json": "cd4c1e8c2024c56fca5b5a6f0b6e2afdb483b05f1b0939e5455b7802d619812c",
     "metadata/run-3.json": "aef63f515c31ca96c58a201a1fd021f043196f4750b5d4536aea48d1212913f6",
-    "qa.md": "6d3cfce96cc8d76c2c06c63f58efec8e8ae73bcf2a413d87861c450748dab096",
+    "qa.md": "7aac30523eec76cf5417a9126b4726c5193addf9a8a69af0975affe191e0f669",
     "server.mjs": "1ad15ecf88e3454e305ee61105aa6c1610010e86f91095d1e0fc422dd54f504a",
     "sheets/cinder-step-0.png": "522b5ea6fd877ef5b1a7c730e092cce6fa01bcf38053ef279b678de269bb3b4c",
     "sheets/cinder-step-1.png": "996299d6c8e444a48e7e0e07daaf01431bfa1c2adc27db8bcea310b82e939efe",
@@ -122,5 +131,23 @@
     "vfx/furnace-heart-2.png": "c2ada87688c796f9239ed77cd5ff2762bbd22e188269f1f8ff6516f80e698e6d",
     "vfx/furnace-heart-3.png": "c2ada87688c796f9239ed77cd5ff2762bbd22e188269f1f8ff6516f80e698e6d",
     "viewer.js": "c713b545611538f43ae32b8bc7ff2ed6c39439f689e8013b15f45fb2a52298f9"
-  }
+  },
+  "parts": [
+    "ember-85441211d810-0.gzpart",
+    "ember-85441211d810-1.gzpart",
+    "ember-85441211d810-2.gzpart",
+    "ember-85441211d810-3.gzpart",
+    "ember-85441211d810-4.gzpart",
+    "ember-85441211d810-5.gzpart",
+    "ember-85441211d810-6.gzpart",
+    "ember-85441211d810-7.gzpart",
+    "ember-85441211d810-8.gzpart",
+    "ember-85441211d810-9.gzpart",
+    "ember-85441211d810-10.gzpart",
+    "ember-85441211d810-11.gzpart",
+    "ember-85441211d810-12.gzpart",
+    "ember-85441211d810-13.gzpart",
+    "ember-85441211d810-14.gzpart",
+    "ember-85441211d810-15.gzpart"
+  ]
 }
