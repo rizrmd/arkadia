@@ -4,7 +4,7 @@ import {chromium} from 'playwright';import {createServer} from 'vite';import fs 
 // server/internal/sim/nav.json (embedded in the Go binary) and public/coop/nav.json (the client's prediction).
 // Re-run after changing any court sprite, its slot or the footprint rules: node scripts/export-coop-nav.mjs
 const vite=await createServer({server:{port:5191,host:'127.0.0.1'},logLevel:'error'});await vite.listen();
-const browser=await chromium.launch({headless:true,env:{...process.env,LD_LIBRARY_PATH:'/home/dev/.local/browser-libs/usr/lib/x86_64-linux-gnu:/opt/fural-antigravity-glibc'},args:['--no-sandbox','--no-zygote','--single-process']});
+const browser=await chromium.launch({headless:true,env:{...process.env,LD_LIBRARY_PATH:'/home/dev/.local/browser-libs/usr/lib/x86_64-linux-gnu:/opt/fural-antigravity-glibc'},args:['--no-sandbox','--no-zygote','--single-process','--disable-gpu','--js-flags=--max-old-space-size=128']});
 try{
  const page=await browser.newPage();await page.goto('http://127.0.0.1:5191/?time=0.5&offline=1');
  await page.waitForFunction(()=>document.querySelector('#world-canvas')?.dataset.ready==='true'&&window.__STRONGHOLD_NAV__,null,{timeout:120000});

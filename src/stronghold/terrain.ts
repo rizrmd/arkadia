@@ -19,6 +19,8 @@ export function environmentSprites(){
   const right=prop('rampart-ne',15.5,n+(n===10?1.8:2.5),356,'--foot:74%;--wall-shear:-.13;');
   if(n===10){right.x-=16;right.y-=8;}parts.push(right);
  }
+ // Coping piers bridge the side faces of the gateway towers to the wall wings.
+ for(const x of [445,709])parts.push({layer:'foreground',id:'gate-connector',x,y:769,width:46,foot:1,shear:0,vertical:1,depth:769,opacity:1,file:v2+'gate-connector.png'});
  for(const [u,v] of [[0,0],[15,0],[0,15]])parts.push(prop('bastion',u,v,180));
  // Irregular masses and two distinct tree silhouettes replace the evenly spaced
  // miniature pine/rock arrangement. All remain individual reusable sprites.

@@ -1,7 +1,7 @@
 /** Static, alpha-fitted foundation dressing. No work is performed on pan frames. */
 export const FOUNDATION_SOIL='/foundation-transitions/soil-moss.png';
 type Sprite={id:string;image:HTMLImageElement;width:number;height:number;foot:number;layer?:string};
-const structural=/^(forge|barracks|altar|mage|mine|gate|bastion|rampart-ne|rampart-se|gateway-grand|wall-broken)$/;
+const structural=/^(forge|barracks|altar|mage|mine|gate|gate-connector|bastion|rampart-ne|rampart-se|gateway-grand|wall-broken)$/;
 export const FOUNDATION_MOSS='/foundation-transitions/moss.png';
 export const FOUNDATION_DRIFT='/modular-stronghold/v2/snowdrift-edge.png';
 const cache=new Map<string,{under:HTMLCanvasElement;face:HTMLCanvasElement;pad:number;fade?:HTMLCanvasElement}>();
