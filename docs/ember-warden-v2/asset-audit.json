@@ -1,0 +1,22 @@
+{
+  "status": "art-export-pass",
+  "sprites": 50,
+  "turnaround": 8,
+  "poses": 8,
+  "runStudyFrames": 32,
+  "cell": [
+    384,
+    384
+  ],
+  "pivot": [
+    192,
+    320
+  ],
+  "checks": [
+    "nonempty alpha",
+    "sprite bounds within cell",
+    "constant run scale per direction",
+    "source and sprite SHA-256"
+  ],
+  "animationAcceptance": "not evaluated; art review only"
+}

@@ -1,0 +1,805 @@
+{
+  "version": 2,
+  "purpose": "painted-character-art-review",
+  "cell": [
+    384,
+    384
+  ],
+  "pivot": [
+    192,
+    320
+  ],
+  "directions": [
+    "N",
+    "NE",
+    "E",
+    "SE",
+    "S",
+    "SW",
+    "W",
+    "NW"
+  ],
+  "turnaround": [
+    {
+      "direction": "N",
+      "image": "sprites/idle-N.png",
+      "bounds": [
+        125,
+        50,
+        259,
+        320
+      ],
+      "pivot": [
+        192,
+        320
+      ]
+    },
+    {
+      "direction": "NE",
+      "image": "sprites/idle-NE.png",
+      "bounds": [
+        131,
+        50,
+        253,
+        320
+      ],
+      "pivot": [
+        192,
+        320
+      ]
+    },
+    {
+      "direction": "E",
+      "image": "sprites/idle-E.png",
+      "bounds": [
+        155,
+        50,
+        229,
+        320
+      ],
+      "pivot": [
+        192,
+        320
+      ]
+    },
+    {
+      "direction": "SE",
+      "image": "sprites/idle-SE.png",
+      "bounds": [
+        125,
+        50,
+        258,
+        320
+      ],
+      "pivot": [
+        192,
+        320
+      ]
+    },
+    {
+      "direction": "S",
+      "image": "sprites/idle-S.png",
+      "bounds": [
+        118,
+        50,
+        265,
+        320
+      ],
+      "pivot": [
+        192,
+        320
+      ]
+    },
+    {
+      "direction": "SW",
+      "image": "sprites/idle-SW.png",
+      "bounds": [
+        130,
+        50,
+        255,
+        320
+      ],
+      "pivot": [
+        192,
+        320
+      ]
+    },
+    {
+      "direction": "W",
+      "image": "sprites/idle-W.png",
+      "bounds": [
+        156,
+        50,
+        227,
+        320
+      ],
+      "pivot": [
+        192,
+        320
+      ]
+    },
+    {
+      "direction": "NW",
+      "image": "sprites/idle-NW.png",
+      "bounds": [
+        129,
+        50,
+        256,
+        320
+      ],
+      "pivot": [
+        192,
+        320
+      ]
+    }
+  ],
+  "poses": [
+    {
+      "action": "Idle",
+      "image": "sprites/pose-0.png",
+      "bounds": [
+        111,
+        50,
+        272,
+        320
+      ],
+      "pivot": [
+        192,
+        320
+      ]
+    },
+    {
+      "action": "Run",
+      "image": "sprites/pose-1.png",
+      "bounds": [
+        82,
+        50,
+        302,
+        320
+      ],
+      "pivot": [
+        192,
+        320
+      ]
+    },
+    {
+      "action": "Flame Fan",
+      "image": "sprites/pose-2.png",
+      "bounds": [
+        35,
+        50,
+        348,
+        320
+      ],
+      "pivot": [
+        192,
+        320
+      ]
+    },
+    {
+      "action": "Cinder Step",
+      "image": "sprites/pose-3.png",
+      "bounds": [
+        22,
+        60,
+        362,
+        320
+      ],
+      "pivot": [
+        192,
+        320
+      ]
+    },
+    {
+      "action": "Ember Snare",
+      "image": "sprites/pose-4.png",
+      "bounds": [
+        27,
+        50,
+        358,
+        320
+      ],
+      "pivot": [
+        192,
+        320
+      ]
+    },
+    {
+      "action": "Furnace Heart",
+      "image": "sprites/pose-5.png",
+      "bounds": [
+        84,
+        50,
+        301,
+        320
+      ],
+      "pivot": [
+        192,
+        320
+      ]
+    },
+    {
+      "action": "Hurt",
+      "image": "sprites/pose-6.png",
+      "bounds": [
+        71,
+        50,
+        314,
+        320
+      ],
+      "pivot": [
+        192,
+        320
+      ]
+    },
+    {
+      "action": "Death",
+      "image": "sprites/pose-7.png",
+      "bounds": [
+        22,
+        208,
+        362,
+        320
+      ],
+      "pivot": [
+        192,
+        320
+      ]
+    }
+  ],
+  "run": [
+    {
+      "direction": "N",
+      "fps": 8,
+      "frames": [
+        {
+          "image": "sprites/run-N-0.png",
+          "bounds": [
+            116,
+            61,
+            285,
+            320
+          ],
+          "pivot": [
+            192,
+            320
+          ]
+        },
+        {
+          "image": "sprites/run-N-1.png",
+          "bounds": [
+            115,
+            60,
+            276,
+            320
+          ],
+          "pivot": [
+            192,
+            320
+          ]
+        },
+        {
+          "image": "sprites/run-N-2.png",
+          "bounds": [
+            102,
+            60,
+            265,
+            320
+          ],
+          "pivot": [
+            192,
+            320
+          ]
+        },
+        {
+          "image": "sprites/run-N-3.png",
+          "bounds": [
+            104,
+            61,
+            273,
+            320
+          ],
+          "pivot": [
+            192,
+            320
+          ]
+        }
+      ]
+    },
+    {
+      "direction": "NE",
+      "fps": 8,
+      "frames": [
+        {
+          "image": "sprites/run-NE-0.png",
+          "bounds": [
+            116,
+            60,
+            283,
+            320
+          ],
+          "pivot": [
+            192,
+            320
+          ]
+        },
+        {
+          "image": "sprites/run-NE-1.png",
+          "bounds": [
+            120,
+            60,
+            280,
+            320
+          ],
+          "pivot": [
+            192,
+            320
+          ]
+        },
+        {
+          "image": "sprites/run-NE-2.png",
+          "bounds": [
+            112,
+            92,
+            267,
+            320
+          ],
+          "pivot": [
+            192,
+            320
+          ]
+        },
+        {
+          "image": "sprites/run-NE-3.png",
+          "bounds": [
+            103,
+            97,
+            255,
+            320
+          ],
+          "pivot": [
+            192,
+            320
+          ]
+        }
+      ]
+    },
+    {
+      "direction": "E",
+      "fps": 8,
+      "frames": [
+        {
+          "image": "sprites/run-E-0.png",
+          "bounds": [
+            94,
+            84,
+            300,
+            320
+          ],
+          "pivot": [
+            192,
+            320
+          ]
+        },
+        {
+          "image": "sprites/run-E-1.png",
+          "bounds": [
+            94,
+            60,
+            296,
+            320
+          ],
+          "pivot": [
+            192,
+            320
+          ]
+        },
+        {
+          "image": "sprites/run-E-2.png",
+          "bounds": [
+            90,
+            60,
+            284,
+            320
+          ],
+          "pivot": [
+            192,
+            320
+          ]
+        },
+        {
+          "image": "sprites/run-E-3.png",
+          "bounds": [
+            88,
+            60,
+            292,
+            320
+          ],
+          "pivot": [
+            192,
+            320
+          ]
+        }
+      ]
+    },
+    {
+      "direction": "SE",
+      "fps": 8,
+      "frames": [
+        {
+          "image": "sprites/run-SE-0.png",
+          "bounds": [
+            109,
+            60,
+            288,
+            320
+          ],
+          "pivot": [
+            192,
+            320
+          ]
+        },
+        {
+          "image": "sprites/run-SE-1.png",
+          "bounds": [
+            108,
+            76,
+            279,
+            320
+          ],
+          "pivot": [
+            192,
+            320
+          ]
+        },
+        {
+          "image": "sprites/run-SE-2.png",
+          "bounds": [
+            110,
+            76,
+            265,
+            320
+          ],
+          "pivot": [
+            192,
+            320
+          ]
+        },
+        {
+          "image": "sprites/run-SE-3.png",
+          "bounds": [
+            108,
+            76,
+            270,
+            320
+          ],
+          "pivot": [
+            192,
+            320
+          ]
+        }
+      ]
+    },
+    {
+      "direction": "S",
+      "fps": 8,
+      "frames": [
+        {
+          "image": "sprites/run-S-0.png",
+          "bounds": [
+            127,
+            75,
+            270,
+            320
+          ],
+          "pivot": [
+            192,
+            320
+          ]
+        },
+        {
+          "image": "sprites/run-S-1.png",
+          "bounds": [
+            127,
+            76,
+            266,
+            320
+          ],
+          "pivot": [
+            192,
+            320
+          ]
+        },
+        {
+          "image": "sprites/run-S-2.png",
+          "bounds": [
+            118,
+            60,
+            260,
+            320
+          ],
+          "pivot": [
+            192,
+            320
+          ]
+        },
+        {
+          "image": "sprites/run-S-3.png",
+          "bounds": [
+            110,
+            60,
+            259,
+            320
+          ],
+          "pivot": [
+            192,
+            320
+          ]
+        }
+      ]
+    },
+    {
+      "direction": "SW",
+      "fps": 8,
+      "frames": [
+        {
+          "image": "sprites/run-SW-0.png",
+          "bounds": [
+            109,
+            60,
+            303,
+            312
+          ],
+          "pivot": [
+            192,
+            320
+          ]
+        },
+        {
+          "image": "sprites/run-SW-1.png",
+          "bounds": [
+            100,
+            60,
+            277,
+            316
+          ],
+          "pivot": [
+            192,
+            320
+          ]
+        },
+        {
+          "image": "sprites/run-SW-2.png",
+          "bounds": [
+            103,
+            60,
+            279,
+            320
+          ],
+          "pivot": [
+            192,
+            320
+          ]
+        },
+        {
+          "image": "sprites/run-SW-3.png",
+          "bounds": [
+            99,
+            72,
+            266,
+            320
+          ],
+          "pivot": [
+            192,
+            320
+          ]
+        }
+      ]
+    },
+    {
+      "direction": "W",
+      "fps": 8,
+      "frames": [
+        {
+          "image": "sprites/run-W-0.png",
+          "bounds": [
+            88,
+            60,
+            307,
+            320
+          ],
+          "pivot": [
+            192,
+            320
+          ]
+        },
+        {
+          "image": "sprites/run-W-1.png",
+          "bounds": [
+            91,
+            60,
+            289,
+            308
+          ],
+          "pivot": [
+            192,
+            320
+          ]
+        },
+        {
+          "image": "sprites/run-W-2.png",
+          "bounds": [
+            91,
+            60,
+            290,
+            319
+          ],
+          "pivot": [
+            192,
+            320
+          ]
+        },
+        {
+          "image": "sprites/run-W-3.png",
+          "bounds": [
+            81,
+            60,
+            298,
+            294
+          ],
+          "pivot": [
+            192,
+            320
+          ]
+        }
+      ]
+    },
+    {
+      "direction": "NW",
+      "fps": 8,
+      "frames": [
+        {
+          "image": "sprites/run-NW-0.png",
+          "bounds": [
+            123,
+            60,
+            288,
+            314
+          ],
+          "pivot": [
+            192,
+            320
+          ]
+        },
+        {
+          "image": "sprites/run-NW-1.png",
+          "bounds": [
+            115,
+            60,
+            278,
+            320
+          ],
+          "pivot": [
+            192,
+            320
+          ]
+        },
+        {
+          "image": "sprites/run-NW-2.png",
+          "bounds": [
+            99,
+            60,
+            264,
+            318
+          ],
+          "pivot": [
+            192,
+            320
+          ]
+        },
+        {
+          "image": "sprites/run-NW-3.png",
+          "bounds": [
+            97,
+            60,
+            273,
+            320
+          ],
+          "pivot": [
+            192,
+            320
+          ]
+        }
+      ]
+    }
+  ],
+  "resources": {
+    "source/action-poses-layout-study.png": "c8db26fa9ee1f3d3074e8abd8f21d363f96c500331189810a4874f199f4b6725",
+    "source/action-poses.png": "fe8ef55c3e49caa1c427568e24e3d610e47c8f46e8714af5d1521a3245b8847f",
+    "source/flame-fan.png": "e667127c15fdeee5e09123e98911af5dcf3f0d7410b47b05bf74cdf597455d9f",
+    "source/run.png": "337b10d7a2e75a43f34c4e336f35ce13eeb7946116624e8f97b3e5776c8dbb39",
+    "source/turnaround.png": "60835fb24d61af96fbffe1e36445c0098bc8b65df6ed59d36a9ef30a20ca4f3a",
+    "sprites/idle-E.png": "fbd3005686b0a7c68d455f80b9fa635ad8268d73feea8018bcc35ccf747be182",
+    "sprites/idle-N.png": "d0039df638ec3ffd57ea50025e4526a24ef35849563e71141a94a9935cb570a7",
+    "sprites/idle-NE.png": "0b81c30fe49444c98175c20018c0248d1cf47a8da125e1298a6f52be7b47f262",
+    "sprites/idle-NW.png": "f840530b53c99a7f64cb06a351dc5de97b6565e861cde2e33e3a622a8334a7f2",
+    "sprites/idle-S.png": "b8c18fcc97588c1c17cf85f40222f58f7b1c1c52d70fbf1c78a124ab7ea4a716",
+    "sprites/idle-SE.png": "4b73b0ef67bc9e85e3303e836f165b64b8a3c1aa8e05477c5d00fa8b17ba1f03",
+    "sprites/idle-SW.png": "aa6735b08e16749e4b9a54ef01c811d156f1a20af5d8f1d834684c6c7e2ce9f3",
+    "sprites/idle-W.png": "d770d9cedb0e2650997f54bfc02ad678a85ce15a31dcbf6270541082719e3c23",
+    "sprites/pose-0.png": "dc846708677b41233c4ae2dcc1287edfe9d3861026099a89a8738eda1ad14851",
+    "sprites/pose-1.png": "a8be9263b99edd6448eaed6509b3c898d7cbea6da8d9c9530f89a462e1bc77cc",
+    "sprites/pose-2.png": "102cb5d7b0de34929a445d2f210b6983e567b3da0d890cf8db4e13d660bf00a2",
+    "sprites/pose-3.png": "0a81dcedb234b366c6a7b65f9d224cabeb2f2f638e3f098a2da4771915a6d979",
+    "sprites/pose-4.png": "d47ce644f5fc241e8aa52ebbf801649e73686c6af1e19c6c0a063062c7e8a512",
+    "sprites/pose-5.png": "9d4b4b8d0724f7b835d9b3fbd2f52ddb3b17a5b05656e6ea3a6d5a6b80c277e4",
+    "sprites/pose-6.png": "951e0360e282591dc30d9e0063835869e77a22f5d421ab045464d3630b449442",
+    "sprites/pose-7.png": "f743cd8ee9711c235736532d3d50962b4310fb5071697d979e88eea43b3d4e0c",
+    "sprites/previous-ember.png": "c125fef51f30eb41fd4e215120dad9655d902fe977061690bffa04821d6a2ee5",
+    "sprites/rift-reference.png": "7738e0941d8a622c8034b2dfc3f61d09ba6a3864eeff53bbf545786e2efa9b2a",
+    "sprites/run-E-0.png": "6fcea148c137df9484047fc76318a05d60965752ae08d222719f636bdec9d857",
+    "sprites/run-E-1.png": "241b97b73b46eae983ff6b7d74e2b2bfdeba816371f3a420c4da8ec5747cb3d4",
+    "sprites/run-E-2.png": "8d6c1aa536714fce03cbe4b6d1efb7b4d0d713096f676d37446ade6c9c2e02a6",
+    "sprites/run-E-3.png": "7e776d3d3d57129b032e1a8433c3a4ab68ba66c6f7a41beddc3c7f20b80fb8d3",
+    "sprites/run-N-0.png": "410c73d883e81fa5f7aa6c8ac3e2d5125535dc7129044c04e32460b9c45b7365",
+    "sprites/run-N-1.png": "9875cea165cab92ca65d18e32ea49ed9c3161547d413e0c6bd0bb57253ee21f7",
+    "sprites/run-N-2.png": "f562e8be48333b95800ead9d1405e23be3bfbfaca3627b4556bd6803a2540526",
+    "sprites/run-N-3.png": "e9b8bf443ecf0edc8ab61d73801072ef4f4da21c7b09b7e9b168ff7b15f8048f",
+    "sprites/run-NE-0.png": "8c50f3c4f50a8282889c42b50f503c7f43362206e979174b085382cd1c16ff7d",
+    "sprites/run-NE-1.png": "5f964dc5e9ca15cac2f7608f30a8066aeedeb5cd0280e3da507b89ab49702377",
+    "sprites/run-NE-2.png": "31b62b3bd200e162dafc9374b532e51667cff37ae0529659b0a2cd20cb42f738",
+    "sprites/run-NE-3.png": "18612972813901a27a04a9c0d828d6c5318a32ab566fcd7ab4fc192ad48c4cef",
+    "sprites/run-NW-0.png": "bf8c9e6d445bef72dd8641896c34bbdac9cd6c333f5a8494deb38d52ed0bcc11",
+    "sprites/run-NW-1.png": "a78e46ec1dedd87347deb6581bce5918bea079ebb11b3c746a437710ed3bf259",
+    "sprites/run-NW-2.png": "d2fe999b2bff776449af349527718ff0b9c9257f2484b0975d6e7def6c722be8",
+    "sprites/run-NW-3.png": "e2b22903c41b109b2f2abf8deb031c5f83010350a3b826e2644102e524a3bcb6",
+    "sprites/run-S-0.png": "dc2598e934cba1d281e0ca8e8ec14332d06e406b6528330630a2adb639840bc7",
+    "sprites/run-S-1.png": "5361f9040ae0d8dee755e0bdcac4ab736ad0a6ed7ccd3de91220c02b6ba85df2",
+    "sprites/run-S-2.png": "230208b475549a8ddf3f541d737626b5abbcc28f6a2668da1c0ecee85d6507f0",
+    "sprites/run-S-3.png": "8655564edd24d4ae85d95b8403ad3fe6de5f943ef56d22d4f296216c1a5094d5",
+    "sprites/run-SE-0.png": "b2533d17c99a454092cf0e956354612166b150eef41ac1ff52bc844400a8dff5",
+    "sprites/run-SE-1.png": "adb18082e3c2cbc2dc198e85d67fe44c2ce09109aeedda190a83219c56a1a834",
+    "sprites/run-SE-2.png": "c6319465baa5e5e79bd560e04859e9fa36ce2f2d55b5f293ac6f2c934b108ce7",
+    "sprites/run-SE-3.png": "b4ca7f82d72c947541508fa0d419e928aeee679bfc9ffc018e03f5f156e72fdd",
+    "sprites/run-SW-0.png": "11ef8a9e0e0f1bd820db73c52d3612cc94b655569b0b21b61a47bbb32d21b84e",
+    "sprites/run-SW-1.png": "403d848722d1c662ea9e256a3f3249230a8c95ab209eb5532aac3d89dcfe1d4f",
+    "sprites/run-SW-2.png": "16a6cf2918b91af2da8f6e2d9b2bd9e698c0c6d164be2ea6a91120ead7a2f030",
+    "sprites/run-SW-3.png": "c5b45ebdc434c02553ac10214a124b51bb43250ee5dd0bf3ea4cf0b75bf0a018",
+    "sprites/run-W-0.png": "368cd9c04dc61b9a9578da55da29599d097e9c45ddb1046a76a07e9bed0e76cc",
+    "sprites/run-W-1.png": "22c69b0c245a8f3d574437437f865a12ade6683f0ad427df1d445ad160a1db21",
+    "sprites/run-W-2.png": "2cf9d6ee38cdb4db7074e60baa2d8924e85f6deeace2bfb155b2b36c2c87a383",
+    "sprites/run-W-3.png": "7d8da92720451e9a0542821233626a9084ee75ab4abd3ae9be0f43e0dcba8187"
+  },
+  "notes": [
+    "Turnaround and action poses define the revised painted art direction.",
+    "Run is a four-frame motion study, not a validated production locomotion export.",
+    "The attack animation experiment has heading drift and is excluded from active playback.",
+    "Action-pose effects are painted into the concept images; separate production VFX remain in the legacy viewer."
+  ],
+  "reference": {
+    "image": "sprites/rift-reference.png",
+    "bounds": [
+      70,
+      50,
+      313,
+      320
+    ],
+    "pivot": [
+      192,
+      320
+    ]
+  },
+  "previous": {
+    "image": "sprites/previous-ember.png",
+    "bounds": [
+      145,
+      50,
+      239,
+      320
+    ],
+    "pivot": [
+      192,
+      320
+    ]
+  }
+}

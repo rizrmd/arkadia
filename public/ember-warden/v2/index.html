@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Ember Warden · Painted Character Art</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <header><a class="brand" href="./">ARKADIA <span>/ CHARACTER ART</span></a><a href="../">Legacy animation viewer ↗</a></header>
+    <section class="intro"><p class="eyebrow">CHARACTER REDESIGN · 03</p><h1>Ember Warden<span>A spark worth protecting.</span></h1><p class="lede">A frontier firekeeper, painted in the same visual language as Rift Runner. Worn ochre canvas, dark curls, weathered bronze, and a furnace that never quite goes cold.</p></section>
+    <section class="workspace" aria-label="Character turnaround">
+      <div class="stage-panel"><div class="stage-label"><span>01 / TURNAROUND</span><span id="heading">SOUTH EAST</span></div><div class="stage" id="stage"><img id="hero" alt="Ember Warden facing southeast" width="384" height="384"><span class="ground" aria-hidden="true"></span></div><div class="direction-list" id="directions" role="group" aria-label="Character direction"></div><div class="preview-controls"><button id="motion" type="button" aria-pressed="false">Play run study</button><button id="surface" type="button" aria-pressed="false">Snow background</button></div><p class="caption" id="motion-note">Eight painted views · right-arm furnace gauntlet</p></div>
+      <aside><p class="eyebrow">THE FIREKEEPER</p><h2>Built for the same world.</h2><p>Confident inked edges and painted material highlights bring Ember alongside Rift. The palette stays warm enough to read against the snow.</p><dl><div><dt>Silhouette</dt><dd>Exposed curls, rolled sleeves, compact work jacket</dd></div><div><dt>Materials</dt><dd>Ochre canvas, charcoal cloth, worn leather, aged bronze</dd></div><div><dt>Signature</dt><dd>Right-arm furnace gauntlet with an amber core</dd></div></dl><div class="swatches" aria-label="Character palette"><span style="--swatch:#b67a2e">Ochre</span><span style="--swatch:#363235">Charcoal</span><span style="--swatch:#63432e">Leather</span><span style="--swatch:#df8334">Ember</span></div></aside>
+    </section>
+    <section class="comparison"><div class="section-heading"><div><p class="eyebrow">02 / STYLE ALIGNMENT</p><h2>One painted art direction.</h2></div><p>Compare texture, outline weight, and material shading at the same display height.</p></div><div class="compare-grid"><figure><img src="sprites/previous-ember.png" alt="Previous Ember Warden 3D render" loading="lazy" width="384" height="384"><figcaption><span>Previous Ember</span><small>Original 3D study</small></figcaption></figure><figure class="current"><img src="sprites/idle-S.png" alt="Redesigned painted Ember Warden" loading="lazy" width="384" height="384"><figcaption><span>Ember Warden</span><small>New painted direction</small></figcaption></figure><figure><img src="sprites/rift-reference.png" alt="Rift Runner painted style reference" loading="lazy" width="384" height="384"><figcaption><span>Rift Runner</span><small>Style reference</small></figcaption></figure></div></section>
+    <section><div class="section-heading"><div><p class="eyebrow">03 / ACTION LANGUAGE</p><h2>Four ways to carry the fire.</h2></div><p>Painted key poses establish the look of each skill. Select a pose for a closer view.</p></div><div id="poses" class="pose-grid"></div></section>
+    <section class="contact-sheet"><div class="section-heading"><div><p class="eyebrow">04 / EIGHT DIRECTIONS</p><h2>The complete turnaround.</h2></div><a href="source/turnaround.png">Open source image ↗</a></div><img src="source/turnaround.png" alt="Ember Warden painted turnaround: north, northeast, east, southeast, south, southwest, west, northwest" loading="lazy" width="1774" height="887"></section>
+    <footer><p>Character art review. The run loop is a four-frame motion study; skill images are key poses. Production animation and gameplay use the legacy exports until they are rebuilt and validated in this painted style.</p><div><a href="manifest.json">Asset manifest</a><a href="source/action-poses.png">Action pose source</a><a href="../">Legacy animation review</a></div></footer>
+    <p id="status" role="status" aria-live="polite">Loading painted character…</p><button id="retry" hidden type="button">Retry loading</button>
+  </main>
+  <dialog id="detail"><button id="close-detail" type="button" aria-label="Close pose detail">Close ×</button><img id="detail-art" alt="" width="384" height="384"><h2 id="detail-title"></h2><p id="detail-description"></p></dialog>
+  <script type="module" src="viewer.js"></script>
+</body>
+</html>
