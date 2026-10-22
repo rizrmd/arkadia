@@ -1,8 +1,8 @@
 {
  "url": "http://127.0.0.1:8792",
- "room": "F8X6P",
+ "room": "UA4JP",
  "tagOnA": "Bima",
- "tagOnB": "Guest 3529",
+ "tagOnB": "Guest 1894",
  "shots": [
   "docs/coop/1-court-desktop.webp",
   "docs/coop/1-court-phone.webp",
@@ -12,19 +12,19 @@
  "predictionWhileWalking": {
   "corrections": 0,
   "maxCorrectionPx": 0,
-  "inputs": 290,
-  "rttMs": 1
+  "inputs": 260,
+  "rttMs": 15
  },
  "sameEnemies": {
-  "commonTicks": 258,
+  "commonTicks": 262,
   "mismatched": 0,
-  "atTick": 384,
+  "atTick": 370,
   "enemies": [
    [
     1,
     1,
-    0,
-    "die"
+    1,
+    "attack"
    ],
    [
     2,
@@ -47,14 +47,14 @@
    [
     5,
     1,
-    2,
-    "move"
+    0,
+    "die"
    ],
    [
     6,
     1,
-    1,
-    "hit"
+    0,
+    "die"
    ],
    [
     7,
@@ -95,55 +95,57 @@
    "hp": "100",
    "max": "100",
    "state": "attack",
-   "kills": "3",
-   "foes": "2"
+   "kills": "5",
+   "foes": "1"
   },
   "b": {
    "low": "false",
    "zone": "wild",
-   "hp": "84",
+   "hp": "100",
    "max": "100",
    "state": "attack",
-   "kills": "6",
-   "foes": "2"
+   "kills": "5",
+   "foes": "1"
   }
  },
  "stats": {
   "a": {
    "status": "online",
-   "room": "F8X6P",
+   "room": "UA4JP",
    "you": "p1",
-   "snapshots": 386,
-   "inputs": 362,
-   "corrections": 18,
-   "maxCorrection": 6.641927431100204,
-   "lastCorrection": 6.610363076261416,
-   "bytes": 449708,
-   "pace": 1,
-   "margin": 1,
-   "delay": 125,
-   "extrapolated": 4,
-   "held": 1,
+   "snapshots": 371,
+   "inputs": 347,
+   "corrections": 8,
+   "maxCorrection": 5.996540669419336,
+   "lastCorrection": 5.996540669419336,
+   "totalCorrection": 39.1723529526308,
+   "bytes": 407781,
+   "pace": 0.95,
+   "margin": 0,
+   "delay": 110,
+   "extrapolated": 2,
+   "held": 0,
    "blended": 0,
-   "rtt": 39.5
+   "rtt": 29.09999990463257
   },
   "b": {
    "status": "online",
-   "room": "F8X6P",
+   "room": "UA4JP",
    "you": "p2",
-   "snapshots": 271,
-   "inputs": 262,
-   "corrections": 11,
-   "maxCorrection": 5.201586296506093,
-   "lastCorrection": 5.201586296506093,
-   "bytes": 375235,
-   "pace": 1,
-   "margin": 1,
-   "delay": 124,
-   "extrapolated": 4,
+   "snapshots": 273,
+   "inputs": 268,
+   "corrections": 6,
+   "maxCorrection": 5.177074463439718,
+   "lastCorrection": 5.177074463439718,
+   "totalCorrection": 30.531578069475728,
+   "bytes": 359837,
+   "pace": 0.95,
+   "margin": 0,
+   "delay": 109,
+   "extrapolated": 1,
    "held": 1,
-   "blended": 9,
-   "rtt": 17.90000009536743
+   "blended": 3,
+   "rtt": 0.5
   }
  },
  "ok": true

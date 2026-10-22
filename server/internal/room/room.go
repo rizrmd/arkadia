@@ -221,14 +221,16 @@ type Welcome struct {
 // Snapshot is the per-tick world state plus, for this client, the last input sequence the server applied, how
 // many steps it has guessed ahead of that on its own (sim.Player.Owed) and, while it has, where the last applied
 // input left the hero (Bx, By: the client predicts from there, as the guesses are walked again with the real
-// inputs), and how many of its inputs wait queued (the client paces its sending to keep about one there, so a
-// late input rarely leaves the server without one).
+// inputs), how many more ticks a swing, hit stun or death holds the hero (Hd: the inputs applied in them do not
+// walk, so the client's prediction skips as many) and how many of its inputs wait queued (the client paces its
+// sending to keep about one there, so a late input rarely leaves the server without one).
 type Snapshot struct {
 	T   string   `json:"t"`
 	Ack uint32   `json:"ack"`
 	Ow  int      `json:"ow,omitempty"`
 	Bx  *float64 `json:"bx,omitempty"`
 	By  *float64 `json:"by,omitempty"`
+	Hd  int      `json:"hd,omitempty"`
 	Q   int      `json:"q,omitempty"`
 	sim.State
 }
@@ -319,7 +321,7 @@ func (r *Room) broadcast() {
 	state := r.world.State()
 	for c := range r.clients {
 		p := c.player
-		s := Snapshot{T: "s", Ack: p.Ack, Ow: p.Owed, Q: p.Queued(), State: state}
+		s := Snapshot{T: "s", Ack: p.Ack, Ow: p.Owed, Hd: p.HoldTicks(), Q: p.Queued(), State: state}
 		if p.Owed > 0 {
 			s.Bx, s.By = &p.BaseX, &p.BaseY
 		}

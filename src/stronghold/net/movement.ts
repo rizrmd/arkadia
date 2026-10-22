@@ -17,8 +17,17 @@ export function walkStep(blocked:(x:number,y:number)=>boolean,x:number,y:number,
  for(const [mx,my] of [[dx,dy],[dx,0],[0,dy]])if(mx||my){if(stuck||!blocked(x+mx,y+my))return {x:x+mx,y:y+my,progress:Math.sqrt(mx*mx+my*my)};}
  return {x,y,progress:0};
 }
+// The gateway's rule (server/internal/sim/world.go updateGate): open while a living hero stands at the threshold
+// (a wider box once open), its 16 door frames step one a tick toward open or shut, and heroes pass from 80% open.
+// Prediction runs it once per input from the server's state, so the doors give way when the own hero reaches them,
+// as the server will when it walks the same inputs, instead of a snapshot later.
+export type GateGuess={open:boolean;frame:number};
+const GATE_FRAMES=16;
+export const atGate=(x:number,y:number,open:boolean)=>Math.abs(x-577)<(open?65:48)&&Math.abs(y-770)<(open?88:66);
+export const gatePassable=(g:GateGuess)=>g.frame/(GATE_FRAMES-1)>=.8;
+export const gateTick=(g:GateGuess,near:boolean):GateGuess=>({open:near,frame:near?Math.min(GATE_FRAMES-1,g.frame+1):Math.max(0,g.frame-1)});
 // Co-op collision: the footprints the server embeds (public/coop/nav.json, scripts/export-coop-nav.mjs) plus the
-// gateway's towers and, until the server says the leaves are 80% open, its doors. Bucketed by 32 px of x.
+// gateway's towers and, until its leaves are 80% open, its doors. Bucketed by 32 px of x.
 export type Column={x:number;w:number;back:number;front:number};
 const BUCKET=32;
 function buckets(cols:Column[]){const m=new Map<number,Column[]>();for(const c of cols){const r=c.w/2+RADIUS;for(let k=Math.floor((c.x-r)/BUCKET);k<=Math.floor((c.x+r)/BUCKET);k++){let list=m.get(k);if(!list)m.set(k,list=[]);list.push(c);}}return m;}

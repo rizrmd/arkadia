@@ -6,14 +6,17 @@ import {chromium} from 'playwright';import {spawn,execFileSync} from 'node:child
 // over the steady stretch the per-frame on-screen speed should stay even: a stall is a frame under a quarter of
 // the median speed, a jump one over 1.75 times it. Server corrections of the predicted hero are counted too.
 //   npm run build && node scripts/coop-phone-feel.mjs        (starts server/ on dist/)
-//   CPU=6 TAG=after node scripts/coop-phone-feel.mjs         (heavier throttle, report suffix)
+//   CPU=4 TAG=after node scripts/coop-phone-feel.mjs         (CPU slowed 4x, report suffix)
+//   ROOT=/path/to/other/checkout node scripts/coop-phone-feel.mjs  (its prebuilt server/bin and dist/, for A/B runs)
+// Also reported: how many inputs waited at the server (each is 50 ms the server trails the phone) and how far the
+// server's hero trailed the predicted one, which is how far a revenant's hit (the server holds the hero) pulls it back.
 // NET=cell (default): a cellular link, 50-90 ms one way, where now and then a lost packet holds everything behind
 // it for 250-500 ms (TCP head-of-line blocking). NET=jitter: a one-way delay plus random jitter and spikes.
 // NET=burst: a phone radio in power save, releasing held packets together at its wake-ups every 100 ms.
 const CPU=Number(process.env.CPU||1),NET=process.env.NET||'cell',net={base:40,jitter:50,spike:.03,spikeMs:120,wake:100,stall:.025,stallMs:[250,500]};
-const out='docs/coop';await fs.mkdir(out,{recursive:true});
-if(!process.env.NOBUILD)execFileSync(process.env.GO||'go',['build','-o','bin/arkadia','./cmd/arkadia'],{cwd:'server',stdio:'inherit',env:{...process.env,CGO_ENABLED:'0'}});
-const server=spawn('server/bin/arkadia',[],{env:{...process.env,PORT:'8796',SITE_DIR:'dist'},stdio:['ignore','pipe','inherit']});
+const out='docs/coop',root=process.env.ROOT||'.';await fs.mkdir(out,{recursive:true});
+if(!process.env.ROOT&&!process.env.NOBUILD)execFileSync(process.env.GO||'go',['build','-o','bin/arkadia','./cmd/arkadia'],{cwd:'server',stdio:'inherit',env:{...process.env,CGO_ENABLED:'0'}});
+const server=spawn(root+'/server/bin/arkadia',[],{env:{...process.env,PORT:'8796',SITE_DIR:root+'/dist'},stdio:['ignore','pipe','inherit']});
 await new Promise((ok,no)=>{server.stdout.on('data',d=>{if(String(d).includes('listening'))ok();});server.on('exit',c=>no(Error('server exited '+c)));});
 const url='http://127.0.0.1:8796';
 const launch=()=>chromium.launch({headless:true,env:{...process.env,LD_LIBRARY_PATH:'/home/dev/.local/browser-libs/usr/lib/x86_64-linux-gnu:/opt/fural-antigravity-glibc'},args:['--no-sandbox','--no-zygote','--single-process']});
@@ -42,10 +45,12 @@ async function run(mode){
  // Screen position of the hero's foot: world foot through the surface's camera transform.
  await page.evaluate(()=>{window.__track=[];const surface=document.querySelector('#world-surface');
   const f=now=>{const h=document.querySelector('#world-hero');if(h&&window.__track){const m=new DOMMatrix(surface.style.transform),wx=+h.dataset.x,wy=+h.dataset.y;window.__track.push({t:now,wx,wy,sx:m.m41+wx*m.m11,sy:m.m42+wy*m.m11});}if(window.__track)requestAnimationFrame(f);};requestAnimationFrame(f);});
+ if(mode==='coop')await page.evaluate(()=>{window.__lag=[];window.__COOP__.net.onSnapshot(s=>{const me=window.__COOP__.net.me(),p=window.__COOP__.net.position();if(me&&window.__lag)window.__lag.push({q:s.q??0,d:Math.hypot(p.x-me.x,p.y-me.y)});});});
  const touch=(type,points)=>cdp.send('Input.dispatchTouchEvent',{type,touchPoints:points.map(([x,y],id)=>({x,y,id:id+1}))});
- // The thumb zigzags the hero back and forth near the tent, turning every 0.8 s and once lifting for 0.4 s, with a
- // 2-3 px tremor on every touch event: the turns and the stop are where a guessed step goes wrong.
- const at=[120,720],legs=[0,150,-30,180,30,null,200,-20,160,10];let leg=-1,down=false,dir=0;const t0=Date.now();
+ // The thumb walks the hero down from the tent through the gateway into the wilds (where revenants close in), then
+ // zigzags, turning every 0.8 s and once lifting for 0.8 s, with a 2-3 px tremor on every touch event: the doors,
+ // the turns and the stop are where a prediction that disagrees with the server shows.
+ const at=[120,720],legs=[95,95,95,95,95,95,0,150,-30,null,180,30,200];let leg=-1,down=false,dir=0;const t0=Date.now();
  while(Date.now()-t0<legs.length*800){const i=Math.floor((Date.now()-t0)/800);
   if(i!==leg){leg=i;if(legs[i]===null){if(down)await touch('touchEnd',[]);down=false;}else{if(!down)await touch('touchStart',[at]);down=true;}}
   if(down){const target=legs[leg]*Math.PI/180;dir+=Math.atan2(Math.sin(target-dir),Math.cos(target-dir))*.35;const r=34;
@@ -56,11 +61,13 @@ async function run(mode){
  const moved=track.filter((s,i)=>i&&(s.wx!==track[i-1].wx||s.wy!==track[i-1].wy)),from=moved[0].t+300,to=moved.at(-1).t,steady=track.filter(s=>s.t>=from&&s.t<=to);
  if(process.env.RAW)await fs.writeFile(`${process.env.RAW}-${mode}.json`,JSON.stringify(steady));
  const r={world:score(steady,'w'),screen:score(steady,'s'),frames:frames(steady)};
- if(mode==='coop'){const s=await page.evaluate(()=>window.__COOP__.stats());r.net={corrections:s.corrections,maxCorrection:+s.maxCorrection.toFixed(2),totalCorrection:+(s.totalCorrection??0).toFixed(1),pace:s.pace,margin:s.margin,rtt:Math.round(s.rtt)};}
+ if(mode==='coop'){const s=await page.evaluate(()=>window.__COOP__.stats()),lag=await page.evaluate(()=>window.__lag);
+  const pct=(list,k)=>{const v=[...list].sort((a,b)=>a-b);return +v[Math.min(v.length-1,Math.floor(v.length*k))].toFixed(1);},q=lag.map(l=>l.q),d=lag.map(l=>l.d);
+  r.server={queuedMedian:pct(q,.5),queuedP95:pct(q,.95),trailPxMedian:pct(d,.5),trailPxP95:pct(d,.95)};r.net={corrections:s.corrections,maxCorrection:+s.maxCorrection.toFixed(2),totalCorrection:+(s.totalCorrection??0).toFixed(1),pace:s.pace,margin:s.margin,rtt:Math.round(s.rtt)};}
  if(mode==='coop'&&process.env.RAW)await fs.writeFile(`${process.env.RAW}-netlog.json`,JSON.stringify(await page.evaluate(()=>window.__NETLOG)));
  await browser.close();return r;
 }
-const results={cpuThrottle:CPU,network:{model:NET,...net}};
+const results={build:process.env.ROOT?'reference':'working tree',cpuThrottle:CPU,network:{model:NET,...net}};
 try{results.offline=await run('offline');results.coop=await run('coop');}
 finally{server.kill();}
 console.log(JSON.stringify(results,null,1));

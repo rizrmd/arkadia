@@ -346,6 +346,22 @@ func (w *World) walkInputs(p *Player, dt float64) {
 // posed: a swing, hit stun or death holds the hero in place.
 func posed(p *Player) bool { return p.F.State != Idle }
 
+// HoldTicks is how many more ticks a swing or hit stun holds the hero in place (a death: until it respawns). The
+// input applied in each of them is used up without walking, so the client skips as many of the inputs it has
+// sent since the acknowledged one instead of walking them in its prediction.
+func (p *Player) HoldTicks() int {
+	s := kinds[p.F.Kind]
+	switch p.F.State {
+	case Attack:
+		return max(0, int(math.Ceil((s.attackMs-p.F.T)/TickMS)))
+	case Hit:
+		return max(0, int(math.Ceil((s.hitMs-p.F.T)/TickMS)))
+	case Die:
+		return 1 << 20
+	}
+	return 0
+}
+
 // walk moves a hero one tick along a screen-space vector, sliding along whatever blocks the full step (hero.ts).
 func (w *World) walk(p *Player, input Vec, dt float64) {
 	p.steering = input.X != 0 || input.Y != 0

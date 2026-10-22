@@ -16,8 +16,11 @@ const server=spawn(root+'/server/bin/arkadia',[],{env:{...process.env,PORT:'8795
 await new Promise((ok,no)=>{server.stdout.on('data',d=>{if(String(d).includes('listening'))ok();});server.on('exit',c=>no(Error('server exited '+c)));});
 const url='http://127.0.0.1:8795';
 const launch=()=>chromium.launch({headless:true,env:{...process.env,LD_LIBRARY_PATH:'/home/dev/.local/browser-libs/usr/lib/x86_64-linux-gnu:/opt/fural-antigravity-glibc'},args:['--no-sandbox','--no-zygote','--single-process']});
-// One ordered, delayed pipe per direction.
-function pipe(){let free=0;return send=>{const d=net.base+Math.random()*net.jitter+(Math.random()<net.spike?net.spikeMs:0),at=Math.max(free,performance.now()+d);free=at;setTimeout(send,at-performance.now());};}
+// One ordered, delayed pipe per direction. Frames wait in one queue and leave strictly in turn: separate timers
+// for each frame could fire out of order (whole-ms rounding), which TCP never does.
+function pipe(){const queue=[];let timer=0,free=0;
+ const flush=()=>{timer=0;const now=performance.now();while(queue.length&&queue[0].at<=now+1)queue.shift().send();if(queue.length)timer=setTimeout(flush,queue[0].at-now);};
+ return send=>{const now=performance.now(),d=net.base+Math.random()*net.jitter+(Math.random()<net.spike?net.spikeMs:0);free=Math.max(free,now+d);queue.push({at:free,send});if(!timer)timer=setTimeout(flush,free-now);};}
 const ready=page=>page.waitForFunction(()=>document.querySelector('#world-canvas')?.dataset.ready==='true'&&!document.querySelector('#loading-screen'),null,{timeout:180000});
 const online=page=>page.waitForFunction(()=>window.__COOP__?.stats().status==='online',null,{timeout:30000});
 const browsers=[];const results={profile:name,network:net,build:process.env.ROOT?'reference':'working tree'};
@@ -47,6 +50,8 @@ try{
  // Steady stretch: from 1.2 s after the first drawn movement to 0.6 s before the last.
  const steady=t=>{const moved=t.filter((s,i)=>i&&(s.x!==t[i-1].x||s.y!==t[i-1].y));const from=moved[0].t+1200,to=moved.at(-1).t-600;return t.filter(s=>s.t>=from&&s.t<=to);};
  results.own=score(steady(ta));results.remote=score(steady(tb));
+ // Per-frame drawn speed of the own hero over the whole walk, for scripts/chart-coop-phone.mjs.
+ results.ownTrace=ta.slice(1).map((b,i)=>{const p=ta[i],dt=b.t-p.t;return [Math.round(b.t-ta[0].t),dt>0?Math.round(Math.hypot(b.x-p.x,b.y-p.y)/dt*1000):0];});
  // Server steps per tick while walking (one step is fullSpeed*50/1000 px, net/movement.ts): zero means the server had no input that tick.
  const ticks=await b.evaluate(()=>window.__ticks),steps=[];for(let i=1;i<ticks.length;i++)if(ticks[i].tick===ticks[i-1].tick+1)steps.push(+Math.hypot(ticks[i].x-ticks[i-1].x,ticks[i].y-ticks[i-1].y).toFixed(1));
  const walking=steps.slice(steps.findIndex(v=>v>0),steps.length-1-[...steps].reverse().findIndex(v=>v>0)+1),hist={};for(const v of walking)hist[v]=(hist[v]||0)+1;

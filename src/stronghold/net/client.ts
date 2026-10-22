@@ -1,5 +1,5 @@
 import {PROTOCOL,TICK_MS,type EnemyState,type Hello,type HeroPick,type Input,type PlayerState,type ServerMessage,type Snapshot,type Welcome} from './protocol';
-import {walkStep,navBlocker,type Column} from './movement';
+import {walkStep,navBlocker,atGate,gatePassable,gateTick,type Column,type GateGuess} from './movement';
 import {createTimeline,type Timed} from './timeline';
 import {DAY_MS} from '../daylight';
 import type {Walk} from '../controls';
@@ -8,9 +8,11 @@ import type {Walk} from '../controls';
 // and each snapshot rebases it on the server's position after the last acknowledged input, replaying the rest.
 // Steps the server guessed ahead of late inputs are not part of that position (it sends the one under them):
 // it walks them again with the real inputs when they arrive, as this prediction already has.
-// A mismatch (a server-side swing, hit or auto-step) is blended out over ~90 ms instead of snapping. Other heroes
-// and every revenant are drawn slightly in the past on an adaptive render clock with bounded extrapolation
-// (timeline.ts).
+// A swing, hit stun or death holds the hero for the next few inputs the server applies (hd), not from the moment
+// this client hears of it, so prediction skips exactly those and walks the rest. A mismatch that remains (an
+// auto-step, inputs used up by a hit before this client knew of it) is blended out over ~90 ms instead of
+// snapping. Other heroes and every revenant are drawn slightly in the past on an adaptive render clock with
+// bounded extrapolation (timeline.ts).
 export type NetStatus='idle'|'connecting'|'online'|'reconnecting'|'offline';
 export type JoinError=Error&{code:string};
 const SMOOTH_MS=90,SNAP_PX=80;
@@ -27,7 +29,7 @@ export function createNet(o:{direction:()=>Walk;maxHp:()=>number;hero:()=>string
  let ws:WebSocket|null=null,status:NetStatus='idle',room='',you='',name='',layout:string[]=[],lastError='',retries=0,retryTimer=0;
  let blocked:((x:number,y:number,pass:boolean)=>boolean)|null=null;
  let latest:Timed|null=null,rtt=0;const timeline=createTimeline(TICK_MS);
- let seq=0,pending:Input[]=[],margins:number[]=[],pace=1,pred={x:0,y:0},prev={x:0,y:0},err={x:0,y:0},acc=0,last=0;
+ let seq=0,pending:Input[]=[],margins:number[]=[],pace=1,hold=0,gate:GateGuess={open:false,frame:0},pred={x:0,y:0},prev={x:0,y:0},err={x:0,y:0},acc=0,last=0;
  const stats={snapshots:0,inputs:0,corrections:0,maxCorrection:0,lastCorrection:0,totalCorrection:0,bytes:0,pace:1,margin:0};
  const snapshotListeners=new Set<(s:Snapshot)=>void>(),statusListeners=new Set<(s:NetStatus)=>void>();
  const setStatus=(s:NetStatus)=>{if(s===status)return;status=s;for(const f of statusListeners)f(s);};
@@ -35,9 +37,10 @@ export function createNet(o:{direction:()=>Walk;maxHp:()=>number;hero:()=>string
  navReady.catch(()=>{});
  const mine=(s:Snapshot|null)=>s?.players.find(p=>p.id===you)??null;
  const block=(pass:boolean)=>(x:number,y:number)=>blocked!(x,y,pass);
+ const othersAtGate=(s:Snapshot,open:boolean)=>s.players.some(p=>p.id!==you&&p.st!=='die'&&atGate(p.x,p.y,open));
  function reset(state:Welcome['state']){
-  timeline.reset(you);latest=null;pending=[];margins=[];pace=1;seq=0;acc=0;err={x:0,y:0};
-  const me=state.players.find(p=>p.id===you);if(me){pred={x:me.x,y:me.y};prev={...pred};}
+  timeline.reset(you);latest=null;pending=[];margins=[];hold=0;pace=1;seq=0;acc=0;err={x:0,y:0};
+  const me=state.players.find(p=>p.id===you);if(me){pred={x:me.x,y:me.y};prev={...pred};}gate={open:state.gate.open,frame:state.gate.frame};
  }
  // Rebase the own hero on the server and replay inputs it has not applied yet.
  function reconcile(s:Snapshot){
@@ -46,9 +49,14 @@ export function createNet(o:{direction:()=>Walk;maxHp:()=>number;hero:()=>string
   // Under any steps the server guessed ahead of late inputs (sim.Player.Owed): where the last applied input left it.
   // A hero held in a swing or hit keeps the guessed steps.
   const idle=me.st==='idle';let x=idle?s.bx??me.x:me.x,y=idle?s.by??me.y:me.y;
+  // The next hd inputs the server applies are used up by the swing, hit stun or death (a server without hd: all).
+  hold=s.hd??(idle?0:1e9);
   margins.push((s.q??0)-(s.ow??0));if(margins.length>PACE_WINDOW)margins.shift();
   const margin=Math.min(...margins);pace=margin<1?1-PACE:margin>2?1+PACE:1;stats.pace=pace;stats.margin=margin;
-  if(idle)for(const i of pending){const r=walkStep(block(s.gate.pass),x,y,i,TICK_MS);x=r.x;y=r.y;}
+  // The gateway as it will stand for each input (its doors move once per server tick, after that tick's walk).
+  let g:GateGuess={open:s.gate.open,frame:s.gate.frame};
+  for(const i of pending){if(hold>0)hold--;else{const r=walkStep(block(gatePassable(g)),x,y,i,TICK_MS);x=r.x;y=r.y;}g=gateTick(g,atGate(x,y,g.open)||othersAtGate(s,g.open));}
+  gate=g;
   const dx=pred.x-x,dy=pred.y-y,d=Math.hypot(dx,dy);
   if(d>.5){stats.corrections++;stats.totalCorrection+=d;stats.lastCorrection=d;stats.maxCorrection=Math.max(stats.maxCorrection,d);}
   // A respawn or teleport jumps; anything smaller glides.
@@ -119,8 +127,9 @@ export function createNet(o:{direction:()=>Walk;maxHp:()=>number;hero:()=>string
   const d=o.direction(),input:Input={t:'in',seq:++seq,x:+d.x.toFixed(4),y:+d.y.toFixed(4)};
   if(ws?.readyState===WebSocket.OPEN){ws.send(JSON.stringify(input));stats.inputs++;}
   pending.push(input);if(pending.length>60)pending.shift();
-  prev={...pred};const me=mine(latest);
-  if(blocked&&latest&&(!me||me.st==='idle')){const r=walkStep(block(latest.gate.pass),pred.x,pred.y,input,TICK_MS);pred={x:r.x,y:r.y};}
+  prev={...pred};
+  if(hold>0)hold--;else if(blocked&&latest){const r=walkStep(block(gatePassable(gate)),pred.x,pred.y,input,TICK_MS);pred={x:r.x,y:r.y};}
+  if(latest)gate=gateTick(gate,atGate(pred.x,pred.y,gate.open)||othersAtGate(latest,gate.open));
  }
  requestAnimationFrame(frame);
  setInterval(()=>{if(ws?.readyState===WebSocket.OPEN)ws.send(JSON.stringify({t:'ping',c:performance.now()}));},1000);
@@ -136,7 +145,8 @@ export function createNet(o:{direction:()=>Walk;maxHp:()=>number;hero:()=>string
   position(){const k=Math.min(1,acc/(TICK_MS*pace));return {x:lerp(prev.x,pred.x,k)+err.x,y:lerp(prev.y,pred.y,k)+err.y};},
   remotes:(now:number):PlayerState[]=>timeline.remotes(now),
   enemies:(now:number):EnemyState[]=>timeline.enemies(now),
-  gate:()=>latest?.gate??null,
+  // The gateway as the own hero's prediction has it: the doors open as the hero reaches them.
+  gate:()=>latest?{...gate,pass:gatePassable(gate)}:null,
   // Server time of day, advanced between snapshots while connected.
   clock(){if(!latest)return null;const t=latest.clock+(status==='online'?(performance.now()-latest.at)/DAY_MS:0);return t-Math.floor(t);},
   onSnapshot(f:(s:Snapshot)=>void){snapshotListeners.add(f);return ()=>snapshotListeners.delete(f);},

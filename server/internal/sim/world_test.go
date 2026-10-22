@@ -211,9 +211,34 @@ func TestABacklogAfterAStallDrains(t *testing.T) {
 	for len(p.queue) > 0 {
 		w.Step()
 	}
-	want := 105.0 * float64(seq) / 20
+	want := fullSpeed(right.X, right.Y) * float64(seq) / 20
 	if got := hypot(p.X-x0, p.Y-y0); math.Abs(got-want) > .01 {
 		t.Fatalf("walked %.3f px for %d inputs, want %.3f", got, seq, want)
+	}
+}
+
+// HoldTicks, sent to the client with every snapshot, is exactly the number of inputs a hit stun or a swing uses
+// up without walking, counted from the tick it started: the client's prediction skips that many and no more.
+func TestHoldTicksCountTheInputsAPoseUsesUp(t *testing.T) {
+	for _, state := range []string{Hit, Attack} {
+		w := newTestWorld(t)
+		w.Enemies = nil
+		p := w.AddPlayer("a", "A", 100)
+		drive(w, 2, walker{p, right})
+		p.F.Play(state)
+		hold := p.HoldTicks()
+		x, y := p.X, p.Y
+		held := 0
+		for i := 0; i < 20; i++ {
+			drive(w, 1, walker{p, right})
+			if p.X != x || p.Y != y {
+				break
+			}
+			held++
+		}
+		if hold == 0 || held != hold {
+			t.Fatalf("%s: %d inputs used up without walking, HoldTicks said %d", state, held, hold)
+		}
 	}
 }
 
