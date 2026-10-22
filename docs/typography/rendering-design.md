@@ -97,3 +97,28 @@ At widths at or below 520px, reflow the HUD instead of shrinking the desktop com
 | Full three-skill combat load | No unbounded text cache growth; no new text-related long tasks over 50ms in a 30s trace on the target device |
 
 This task verified the source audit, reference asset identity and published Knowledge content. Runtime screenshots, font licensing/download checks, contrast measurements and performance captures remain acceptance work for the subsequent game implementation; no visual parity or performance result is claimed yet.
+
+Rendering output: [Typography Rendering Sample](/organizations/ORd5dd6f99b4308d6187031557/projects/PJ8758f22f61165f3d3215e454/knowledge/NKBDdb2b11d05be02c9301d0bedc).
+
+## Verified integration with this codebase
+
+The current application is Vite + strict TypeScript with native DOM/CSS and Canvas 2D. React, Tailwind, shadcn and a new text renderer are not required. The sample deliberately uses the existing Georgia fallback, so it works immediately without installing a candidate font. Candidate font adoption remains a separate visual comparison.
+
+| Existing integration point | Compatible change |
+|---|---|
+| `src/app/main.ts` dynamically imports `src/stronghold/main.ts` | Keep the existing single-page mount; do not add a competing router |
+| `src/stronghold/main.ts` imports `style.css` | Import a scoped shared typography stylesheet before component rules, then update the actual selectors below |
+| `encounters.ts` imports `progression.css` | Update its later and mobile overrides as well; generic `.hud-label` rules alone lose to existing ID selectors |
+| `#hero-hud .hud-label` and `.hud-hero` | The hero picker attaches here; style the existing text/button and preserve its interaction |
+| `#hero-hud .hud-hp`, `.hud-xp-text`, `.hud-lv-badge` | Apply value/label tokens to existing spans; do not change meter/progressbar semantics or update loops |
+| `.clock-time`, `.clock-phase` | Keep existing tabular time and clock handlers |
+| `.skill-btn .skill-name`, `.skill-status`, `.skill-key`, `.skill-rank` | Increase label area along with font size; replace `nowrap`/ellipsis for names when using two-line labels; remove the conflicting 9.5px mobile override |
+| `.skill-btn` height 58px / 52px on mobile | Two 16px name lines already need about 39px; add state/rank rows and padding, so the original height cannot be preserved. Reflow and measure the full bar rather than only increasing fonts |
+| `combat-vfx.ts` render loop | Already caps DPR at 2 and resets `oc.setTransform(dpr,0,0,dpr,0,0)` every frame. Reuse this; never multiply font sizes by DPR again |
+| Canvas `oc.font` assignments | Existing branches request 700/800/900. If only 400/600 are installed, replace all branch weights with available weights; otherwise browser matching may hide the intended difference |
+
+Combat text currently draws directly every frame with no glyph cache. Newly loaded fonts will be used on subsequent draws after changing `oc.font`; cache invalidation is only needed if caching is added later. Keep `toScreen()` for world anchors and the existing critical-hit pop animation; glyph size is already screen-space while offsets use the camera scale. The DPR and projection machinery do not need replacement.
+
+Vite copies `public/fonts/*` and `public/typography/*` into `dist/`. The game's asset-size manifest only scans PNG/WebP, so font readiness must use CSS/FontFaceSet and must not depend on that image manifest. Apply prototype tokens under `#stronghold` and `#hero-hud` when integrating: the sample's `body`, `.plate` and `.scene` rules belong to the standalone specimen and must not be pasted globally into the game stylesheet.
+
+The production server redirects secondary `.html` pages and directory routes to the game SPA; `/typography/` is therefore a standalone preview-server path, not a claimed production game route. The release script also stages an explicit asset subset. Publishing a public game-host sample later requires deliberate routing/staging changes. Knowledge attachments and repository source are the published outputs for this study.
