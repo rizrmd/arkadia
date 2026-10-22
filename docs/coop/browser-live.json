@@ -1,8 +1,8 @@
 {
  "url": "https://ark-whachat.fural.space",
- "room": "2BG3J",
+ "room": "WT9C6",
  "tagOnA": "Bima",
- "tagOnB": "Guest 5613",
+ "tagOnB": "Guest 8828",
  "shots": [
   "docs/coop/1-court-desktop-live.webp",
   "docs/coop/1-court-phone-live.webp",
@@ -10,21 +10,21 @@
   "docs/coop/2-wilds-phone-live.webp"
  ],
  "predictionWhileWalking": {
-  "corrections": 0,
-  "maxCorrectionPx": 0,
-  "inputs": 284,
-  "rttMs": 39
+  "corrections": 1,
+  "maxCorrectionPx": 9,
+  "inputs": 297,
+  "rttMs": 14
  },
  "sameEnemies": {
-  "commonTicks": 249,
+  "commonTicks": 242,
   "mismatched": 0,
-  "atTick": 404,
+  "atTick": 391,
   "enemies": [
    [
     1,
     1,
-    0,
-    "die"
+    2,
+    "move"
    ],
    [
     2,
@@ -35,8 +35,8 @@
    [
     3,
     1,
-    0,
-    "die"
+    2,
+    "move"
    ],
    [
     4,
@@ -53,20 +53,20 @@
    [
     6,
     1,
-    0,
-    "die"
-   ],
-   [
-    7,
-    2,
     2,
     "move"
    ],
    [
-    8,
+    7,
     1,
     0,
     "die"
+   ],
+   [
+    8,
+    1,
+    1,
+    "idle"
    ],
    [
     9,
@@ -92,58 +92,60 @@
   "a": {
    "low": "false",
    "zone": "wild",
-   "hp": "96",
+   "hp": "88",
    "max": "100",
-   "state": "idle",
-   "kills": "2",
-   "foes": "1"
+   "state": "attack",
+   "kills": "4",
+   "foes": "4"
   },
   "b": {
    "low": "false",
    "zone": "wild",
-   "hp": "92",
+   "hp": "100",
    "max": "100",
-   "state": "idle",
-   "kills": "9",
-   "foes": "1"
+   "state": "attack",
+   "kills": "3",
+   "foes": "4"
   }
  },
  "stats": {
   "a": {
    "status": "online",
-   "room": "2BG3J",
+   "room": "WT9C6",
    "you": "p1",
-   "snapshots": 404,
-   "inputs": 387,
-   "corrections": 19,
-   "maxCorrection": 5.098284025042196,
-   "lastCorrection": 5.093446770115492,
-   "bytes": 459513,
+   "snapshots": 393,
+   "inputs": 362,
+   "corrections": 2,
+   "maxCorrection": 9,
+   "lastCorrection": 5.655554791530129,
+   "totalCorrection": 14.655554791530129,
+   "bytes": 417143,
    "pace": 1,
    "margin": 1,
-   "delay": 145,
+   "delay": 121,
    "extrapolated": 2,
-   "held": 0,
-   "blended": 0,
-   "rtt": 30.299999952316284
+   "held": 1,
+   "blended": 2,
+   "rtt": 16.899999856948853
   },
   "b": {
    "status": "online",
-   "room": "2BG3J",
+   "room": "WT9C6",
    "you": "p2",
-   "snapshots": 292,
-   "inputs": 284,
-   "corrections": 19,
-   "maxCorrection": 5.35494164300608,
-   "lastCorrection": 5.35494164300608,
-   "bytes": 398158,
-   "pace": 1,
-   "margin": 1,
-   "delay": 143,
-   "extrapolated": 2,
+   "snapshots": 256,
+   "inputs": 248,
+   "corrections": 2,
+   "maxCorrection": 4.519347298006575,
+   "lastCorrection": 4.500011111097394,
+   "totalCorrection": 9.019358409103969,
+   "bytes": 332779,
+   "pace": 0.95,
+   "margin": 0,
+   "delay": 120,
+   "extrapolated": 3,
    "held": 1,
-   "blended": 0,
-   "rtt": 43.700000047683716
+   "blended": 5,
+   "rtt": 14.200000047683716
   }
  },
  "ok": true
