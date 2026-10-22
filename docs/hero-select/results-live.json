@@ -11,6 +11,10 @@
   "portraits": [
    true,
    true
+  ],
+  "frames": [
+   "url(\"https://ark-whachat.fural.space/ui/hero-card-frame-active.webp\")",
+   "url(\"https://ark-whachat.fural.space/ui/hero-card-frame.webp\")"
   ]
  },
  "shots": [
@@ -31,16 +35,16 @@
   "S": "move-S",
   "N": "move-N"
  },
- "attackClip": "attack-NE",
+ "attackClip": "attack-N",
  "reopen": {
   "first": "false",
   "closeShown": true,
   "focused": "ember-warden"
  },
- "riftClip": "attack-NW",
- "room": "MJBZ2",
+ "riftClip": "idle-SE",
+ "room": "BWF44",
  "roster": [
-  "Guest 7531Ember Warden",
+  "Guest 7244Ember Warden",
   "BimaRift Runner"
  ],
  "coopSwitch": "ally shown as Ember Warden after switching",

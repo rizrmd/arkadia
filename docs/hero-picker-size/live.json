@@ -1,9 +1,9 @@
 {
  "url": "https://ark-whachat.fural.space/?pick&offline",
- "release": "game-bf5443f",
- "note": "Rendered portrait img size in CSS px (headless Chromium, deviceScaleFactor 2). Before the fix Rift Runner rendered about 120x133 against Ember Warden 109x200 on desktop.",
+ "release": "game-a364b96",
+ "note": "Rendered portrait img size in CSS px (headless Chromium, deviceScaleFactor 2) inside the 9-slice brass and hammered-iron hero card frames (hero-card-frame.webp / hero-card-frame-active.webp).",
  "desktop_1280x900": {"rift-runner": [181, 200], "ember-warden": [109, 200]},
- "phone_390x844": {"rift-runner": [158, 175], "ember-warden": [95, 175]},
+ "phone_390x844": {"rift-runner": [137, 151], "ember-warden": [82, 151]},
  "phone_landscape_844x390": {"rift-runner": [106, 117], "ember-warden": [64, 117]},
  "all_inside_card_width": true
 }
