@@ -19,6 +19,56 @@ export function cutOut(c:CanvasRenderingContext2D,list:readonly Placed[],px:numb
  for(const p of list){c.save();c.globalAlpha=.72;c.translate(p.x-px,p.y-py);c.transform(1,p.shear,0,p.vertical,0,0);c.drawImage(p.image,-p.width/2,-p.height*p.foot,p.width,p.height);c.restore();}
  c.globalCompositeOperation='source-over';
 }
+type FrameShadowProfile={base:Float32Array;vc:number;px:Uint8Array;py:Uint8Array};
+const shadowProfiles=new Map<string,FrameShadowProfile>();
+const profileCanvas=document.createElement('canvas'),profileCtx=profileCanvas.getContext('2d',{willReadFrequently:true})!;
+const shadeCanvas=document.createElement('canvas'),shadeCtx=shadeCanvas.getContext('2d')!;
+let shadeData:ImageData|null=null,shadeOut:Uint32Array|null=null;
+function frameShadowProfile(atlas:HTMLImageElement,f:{x:number;y:number;w:number;h:number},cell:{w:number;h:number;pivot:{x:number;y:number}}):FrameShadowProfile{
+ const key=`${atlas.src}:${f.x},${f.y},${cell.w},${cell.h}`;let prof=shadowProfiles.get(key);if(prof)return prof;
+ if(profileCanvas.width<cell.w||profileCanvas.height<cell.h){profileCanvas.width=Math.max(profileCanvas.width,cell.w);profileCanvas.height=Math.max(profileCanvas.height,cell.h);}
+ profileCtx.clearRect(0,0,cell.w,cell.h);profileCtx.drawImage(atlas,f.x,f.y,f.w,f.h,0,0,cell.w,cell.h);
+ const rgba=profileCtx.getImageData(0,0,cell.w,cell.h).data,bot=new Int16Array(cell.w).fill(-1);let maxB=-1;
+ for(let x=0;x<cell.w;x++)for(let y=cell.h-1;y>=0;y--)if(rgba[(y*cell.w+x)*4+3]>32){bot[x]=y;if(y>maxB)maxB=y;break;}
+ const base=new Float32Array(cell.w).fill(maxB>0?maxB:cell.pivot.y),pts:[number,number][]=[];
+ if(maxB>=0){
+  for(let x=0;x<cell.w;x++)if(bot[x]>=maxB-14)pts.push([x,bot[x]]);
+  if(pts.length>=2){
+   const hull:[number,number][]=[];
+   for(const p of pts){
+    while(hull.length>=2){const a=hull[hull.length-2],b=hull[hull.length-1];if((b[0]-a[0])*(p[1]-a[1])-(b[1]-a[1])*(p[0]-a[0])<=0)hull.pop();else break;}
+    hull.push(p);
+   }
+   for(let x=0;x<=hull[0][0];x++)base[x]=hull[0][1];
+   for(let k=0;k<hull.length-1;k++){const [x0,y0]=hull[k],[x1,y1]=hull[k+1];for(let x=x0;x<=x1;x++)base[x]=y0+(y1-y0)*(x-x0)/(x1-x0||1);}
+   for(let x=hull[hull.length-1][0];x<cell.w;x++)base[x]=hull[hull.length-1][1];
+  }
+ }
+ const vc=pts.length?(pts[0][1]+pts[pts.length-1][1])*.5-cell.pivot.y:0,xs:number[]=[],ys:number[]=[];
+ for(let y=0;y<cell.h;y++)for(let x=0;x<cell.w;x++)if(rgba[(y*cell.w+x)*4+3]>32){xs.push(x);ys.push(y);}
+ prof={base,vc,px:new Uint8Array(xs),py:new Uint8Array(ys)};shadowProfiles.set(key,prof);return prof;
+}
+// Casts a figure's sun shadow anchored directly to its boots (h=0 stays at each boot column's ground contact
+// on the lower convex hull, while upper-body width turns smoothly across the sun so low dawn/dusk shadows stay full).
+export function drawFigureShadow(c:CanvasRenderingContext2D,atlas:HTMLImageElement,f:{x:number;y:number;w:number;h:number},cell:{w:number;h:number;pivot:{x:number;y:number}},s:Sun,dir:number){
+ if(!s.alpha)return;
+ const {base,vc,px,py}=frameShadowProfile(atlas,f,cell),pivot=cell.pivot,pad=8;
+ const sw=Math.ceil(cell.w+cell.h*Math.abs(s.dx)+pad*2),sh=Math.ceil(cell.h+cell.h*Math.abs(s.dy)+pad*2);
+ const ox=Math.ceil(Math.max(pivot.x,cell.w-pivot.x)+(s.dx<0?cell.h*-s.dx:0)+pad),oy=Math.ceil(pivot.y+(s.dy<0?cell.h*-s.dy:0)+pad);
+ if(shadeCanvas.width<sw||shadeCanvas.height<sh||!shadeData){
+  shadeCanvas.width=Math.max(shadeCanvas.width,sw);shadeCanvas.height=Math.max(shadeCanvas.height,sh);
+  shadeData=shadeCtx.createImageData(shadeCanvas.width,shadeCanvas.height);shadeOut=new Uint32Array(shadeData.data.buffer);
+ }
+ const stride=shadeCanvas.width,out=shadeOut!,COLOR=0xff2c1c14;
+ for(let y=0;y<sh;y++)out.fill(0,y*stride,y*stride+sw);
+ for(let i=0,n=px.length;i<n;i++){
+  const x=px[i],y=py[i],u=dir*(x-pivot.x),vf=base[x]-pivot.y,ht=Math.max(0,base[x]-y),tau=Math.min(1,Math.max(0,(ht-3)/26));
+  const sx=Math.round((1-tau)*u+tau*u*s.wx+ht*s.dx)+ox,sy=Math.round((1-tau)*vf+tau*(vc+u*s.wy)+ht*s.dy)+oy;
+  if(sx>=0&&sx+1<sw&&sy>=0&&sy+1<sh){const idx=sy*stride+sx;out[idx]=COLOR;out[idx+1]=COLOR;out[idx+stride]=COLOR;out[idx+stride+1]=COLOR;}
+ }
+ shadeCtx.putImageData(shadeData,0,0,0,0,sw,sh);
+ c.save();c.globalAlpha=s.alpha;c.filter='blur(1px)';c.scale(DISPLAY,DISPLAY);c.drawImage(shadeCanvas,0,0,sw,sh,-ox,-oy,sw,sh);c.restore();
+}
 // A co-op hero is driven from outside: the own hero by prediction (net/client.ts), the others by server snapshots.
 // `face` turns toward a walk direction as the keys do; `look` sets the server's facing outright.
 export type Drive={x:number;y:number;pose?:Pose|null;face?:Walk|null;look?:{facing:number;back:boolean;vertical:boolean}|null};
@@ -39,9 +89,9 @@ export async function createHero<P extends Placed>(o:{layer:HTMLElement;lightmap
  const canvas=document.createElement('canvas'),c=canvas.getContext('2d')!;canvas.id=o.id??'world-hero';const own=!o.id;
  canvas.style.cssText='position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform;pointer-events:none';o.layer.append(canvas);
  let cell=meta.cell,pivot=cell.pivot;
- // One frame at atlas resolution: lit by the lightmap colour under the hero, or as a flat shadow silhouette.
- const lit=document.createElement('canvas'),flat=document.createElement('canvas');
- const fit=()=>{cell=meta.cell;pivot=cell.pivot;for(const b of [lit,flat]){b.width=cell.w;b.height=cell.h;}};fit();
+ // One frame at atlas resolution: lit by the lightmap colour under the hero.
+ const lit=document.createElement('canvas');
+ const fit=()=>{cell=meta.cell;pivot=cell.pivot;lit.width=cell.w;lit.height=cell.h;};fit();
  let objects:P[]=[],blockers:Column[]=[],bounds=new Map<P,number[]>();
  let x=SPAWN.x,y=SPAWN.y,state:'idle'|'move'='idle',t=0,gait=0,facing=1,back=false,vertical=false;
  let pose:Pose|null=null,tint='255,255,255',sampled=-1e9,origin={x:0,y:0,scale:1},k=0,box=[0,0,0,0],drawn='',lastMove=0;
@@ -110,9 +160,9 @@ export async function createHero<P extends Placed>(o:{layer:HTMLElement;lightmap
  }
  function render(){
   const s=o.sun(),f=meta.frames[frameIndex()],res=Math.min(3,Math.max(1,origin.scale*(devicePixelRatio||1)));
-  // Local bounds around the foot: the mirrored sprite cell plus the sun-cast silhouette.
+  // Local bounds around the foot: the mirrored sprite cell plus the foot-anchored sun-cast silhouette.
   const half=Math.max(pivot.x,cell.w-pivot.x)*DISPLAY,top=-pivot.y*DISPLAY,bottom=(cell.h-pivot.y)*DISPLAY+8,H=-top;
-  const ends=[-half,half].flatMap(w=>[0,H].map(h=>[w*s.wx+h*s.dx,w*s.wy+h*s.dy])),sxs=[-half,half,...ends.map(e=>e[0])],sys=[top,bottom,...ends.map(e=>e[1]-8),...ends.map(e=>e[1]+8)];
+  const ends=[-half,half].flatMap(w=>[0,H].flatMap(h=>[[w+h*s.dx,h*s.dy],[w*s.wx+h*s.dx,w*s.wy+h*s.dy]])),sxs=[-half,half,...ends.map(e=>e[0])],sys=[top,bottom,...ends.map(e=>e[1]-8),...ends.map(e=>e[1]+8)];
   const b=[Math.floor(Math.min(...sxs))-4,Math.floor(Math.min(...sys))-4,Math.ceil(Math.max(...sxs))+4,Math.ceil(Math.max(...sys))+4];
   // The canvas is drawn around the foot and moved by place(), so walking redraws it only where uprights in front
   // cut it out (a hero, or an ally in co-op, re-composed every frame it walked).
@@ -122,11 +172,10 @@ export async function createHero<P extends Placed>(o:{layer:HTMLElement;lightmap
   const frame=(target:HTMLCanvasElement)=>{const g=target.getContext('2d',{willReadFrequently:target===lit})!;g.globalCompositeOperation='copy';g.drawImage(atlas,f.x,f.y,f.w,f.h,0,0,cell.w,cell.h);g.globalCompositeOperation='source-over';return g;};
   // Multiply per pixel: a multiply fill plus alpha mask would bleed the tint into the soft edges.
   const g=frame(lit);if(tint!=='255,255,255'){const [r,gr,bl]=tint.split(',').map(v=>Number(v)/255),img=g.getImageData(0,0,cell.w,cell.h),d=img.data;for(let i=0;i<d.length;i+=4){d[i]*=r;d[i+1]*=gr;d[i+2]*=bl;}g.putImageData(img,0,0);}
-  const local=()=>c.setTransform(k,0,0,k,-box[0]*k,-box[1]*k),sprite=(src:HTMLCanvasElement)=>{c.scale((meta.views||vertical&&!pose?1:facing)*DISPLAY,DISPLAY);c.drawImage(src,-pivot.x,-pivot.y);};
+  const dir=meta.views||vertical&&!pose?1:facing;
+  const local=()=>c.setTransform(k,0,0,k,-box[0]*k,-box[1]*k),sprite=(src:HTMLCanvasElement)=>{c.scale(dir*DISPLAY,DISPLAY);c.drawImage(src,-pivot.x,-pivot.y);};
   c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,canvas.width,canvas.height);local();
-  // Sun shadow: each sprite point at height h above the foot lands h*(dx,dy) along the ground, like the
-  // building solids, faded with the same alpha and colour; its width w lands w*(wx,wy) across the sun.
-  if(s.alpha){const q=frame(flat);q.globalCompositeOperation='source-in';q.fillStyle='rgb(20,28,44)';q.fillRect(0,0,cell.w,cell.h);q.globalCompositeOperation='source-over';c.save();c.globalAlpha=s.alpha;c.filter='blur(1px)';c.transform(s.wx,s.wy,-s.dx,-s.dy,0,0);sprite(flat);c.restore();local();}
+  drawFigureShadow(c,atlas,f,cell,s,dir);
   c.save();sprite(lit);c.restore();
   cutOut(c,hidden,x,y);
   Object.assign(canvas.dataset,{hero:hero.id,state,clip:clipName(),frame:String(frameIndex()),facing:String(facing),behind:String(hidden.length),tint});

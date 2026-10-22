@@ -5,7 +5,7 @@ import {Fighter,STATS,inReach,swingTargets,turn} from '../characters/combat';
 import type {CharacterMeta} from '../characters/sprites';
 import {COURT,tilePoint} from './terrain';
 import {GATE,SPAWN_DISTANCE_M,METERS_PER_TILE,fromGate,fromCenter,inSafeZone,spawnPoint,meters,type Tile} from './safe-zone';
-import {DISPLAY,cutOut,type Placed,type Pose} from './hero';
+import {DISPLAY,cutOut,drawFigureShadow,type Placed,type Pose} from './hero';
 import type {Sun} from './daylight';
 import type {Walk} from './controls';
 import {loadImage} from '../app/loader';
@@ -173,16 +173,15 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
   separate();
   spawnTimer-=dt;if(spawnTimer<=0&&foes.length<MAX_ENEMIES){spawnTimer=SPAWN_EVERY;spawn();}
  }
- // One revenant frame at atlas resolution, tinted by the ambient light and the red hit flash, and as a flat
- // shadow silhouette.
- const cell=document.createElement('canvas'),flat=document.createElement('canvas');for(const b of [cell,flat]){b.width=meta.cell.w;b.height=meta.cell.h;}
- const cc=cell.getContext('2d')!,fc=flat.getContext('2d')!,pivot=meta.cell.pivot;
+ // One revenant frame at atlas resolution, tinted by the ambient light and the red hit flash.
+ const cell=document.createElement('canvas');cell.width=meta.cell.w;cell.height=meta.cell.h;
+ const cc=cell.getContext('2d')!,pivot=meta.cell.pivot;
  function paintCell(f:Foe){
   const fr=meta.frames[f.clip.frames[f.frame()]];cc.globalCompositeOperation='copy';cc.drawImage(atlas,fr.x,fr.y,fr.w,fr.h,0,0,cell.width,cell.height);
-  fc.globalCompositeOperation='copy';fc.drawImage(cell,0,0);fc.globalCompositeOperation='source-in';fc.fillStyle='rgb(20,28,44)';fc.fillRect(0,0,flat.width,flat.height);
   if(ambient!=='255,255,255'){cc.globalCompositeOperation='multiply';cc.fillStyle=`rgb(${ambient})`;cc.fillRect(0,0,cell.width,cell.height);cc.globalCompositeOperation='destination-in';cc.drawImage(atlas,fr.x,fr.y,fr.w,fr.h,0,0,cell.width,cell.height);}
   if(f.flash>0){cc.globalCompositeOperation='source-atop';cc.fillStyle='rgba(255,140,110,.55)';cc.fillRect(0,0,cell.width,cell.height);}
   cc.globalCompositeOperation='source-over';
+  return fr;
  }
  // Each revenant is its own small canvas around its foot (sun shadow, sprite, then the uprights in front of it
  // cut out), moved by the compositor like the heroes. It is composed again only when its look changes (frame,
@@ -198,10 +197,9 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
  }
  function paint(f:Foe,target:HTMLCanvasElement,box:number[],s:Sun,r:number){
   const wpx=Math.ceil((box[2]-box[0])*r),hpx=Math.ceil((box[3]-box[1])*r),fg=target.getContext('2d')!;if(target.width!==wpx||target.height!==hpx){target.width=wpx;target.height=hpx;}
-  const local=()=>fg.setTransform(r,0,0,r,-box[0]*r,-box[1]*r),sprite=(src:HTMLCanvasElement)=>{fg.scale((f.vertical?1:f.facing)*DISPLAY,DISPLAY);fg.drawImage(src,-pivot.x,-pivot.y);};
-  fg.setTransform(1,0,0,1,0,0);fg.clearRect(0,0,wpx,hpx);paintCell(f);local();
-  // Sun shadow as the hero's: a sprite point h above the foot lands h*(dx,dy) along the ground, its width across the sun.
-  if(s.alpha){fg.save();fg.globalAlpha=s.alpha;fg.filter='blur(1px)';fg.transform(s.wx,s.wy,-s.dx,-s.dy,0,0);sprite(flat);fg.restore();}
+  const dir=f.vertical?1:f.facing,local=()=>fg.setTransform(r,0,0,r,-box[0]*r,-box[1]*r),sprite=(src:HTMLCanvasElement)=>{fg.scale(dir*DISPLAY,DISPLAY);fg.drawImage(src,-pivot.x,-pivot.y);};
+  fg.setTransform(1,0,0,1,0,0);fg.clearRect(0,0,wpx,hpx);const fr=paintCell(f);local();
+  drawFigureShadow(fg,atlas,fr,meta.cell,s,dir);
   fg.save();sprite(cell);fg.restore();return fg;
  }
  // Revenants share one atlas, so a pack walking or waiting together shows the same few pictures: those are kept
@@ -228,9 +226,9 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
   const shown=foes.filter(f=>{if(f.deadFor>CORPSE-500&&!f.alive)return false;const w=tilePoint(f.x,f.y),s=at(w.x,w.y);return s.x>-80&&s.x<innerWidth+80&&s.y>-40&&s.y<innerHeight+120;});
   const layers={back:[] as HTMLElement[],front:[] as HTMLElement[]},live=new Set<Foe>();
   if(shown.length){
-   // Local bounds around the foot: the mirrored sprite cell plus the sun-cast silhouette, as in hero.ts.
+   // Local bounds around the foot: the mirrored sprite cell plus the foot-anchored sun-cast silhouette, as in hero.ts.
    const sun=o.hero.sun(),r=k*dpr,half=Math.max(pivot.x,meta.cell.w-pivot.x)*DISPLAY,top=-pivot.y*DISPLAY,H0=-top,bottom=(meta.cell.h-pivot.y)*DISPLAY+8;
-   const ends=[-half,half].flatMap(w=>[0,H0].map(h=>[w*sun.wx+h*sun.dx,w*sun.wy+h*sun.dy])),sxs=[-half,half,...ends.map(e=>e[0])],sys=[top,bottom,...ends.map(e=>e[1]-8),...ends.map(e=>e[1]+8)];
+   const ends=[-half,half].flatMap(w=>[0,H0].flatMap(h=>[[w+h*sun.dx,h*sun.dy],[w*sun.wx+h*sun.dx,w*sun.wy+h*sun.dy]])),sxs=[-half,half,...ends.map(e=>e[0])],sys=[top,bottom,...ends.map(e=>e[1]-8),...ends.map(e=>e[1]+8)];
    const box=[Math.floor(Math.min(...sxs))-4,Math.floor(Math.min(...sys))-4,Math.ceil(Math.max(...sxs))+4,Math.ceil(Math.max(...sys))+4];
    const light=[ambient,sun.alpha,sun.dx,sun.dy,sun.wx,sun.wy,r,box].join();
    for(const f of shown.sort((a,b)=>tilePoint(a.x,a.y).y-tilePoint(b.x,b.y).y)){
