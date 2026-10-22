@@ -1,3 +1,7 @@
+## Active correction goal
+
+The goal **fix until pass** is active. The earlier blocked report below describes the first rejected candidates, not the latest work. Hurt and Death now have regenerated direction-specific sources, four 3072×3072 exports, 256 distinct cells, no source-border contacts, dark/light reviews, fixed scales and passing browser selection/Death hold checks. The v2 preview is https://ark-whachat.fural.space/rift-runner/elegant-actions/v2/ . Run corrections and the final six-sheet acceptance audit are still required; do not mark the task or goal complete. See v2/progress.json for continuation state and v2/prompts.json for exact generation prompts.
+
 ## Delivery status: blocked, incomplete
 
 Six generated candidates cover Hurt → Death → Run for Ember Warden and Rift Runner. They are **not final approved assets**. Real motion, right-arm weapon consistency, clean source-cell isolation and directional death fidelity failed visual acceptance. A larger E Run retry also failed. No gameplay source or asset was replaced.

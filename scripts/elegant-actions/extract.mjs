@@ -12,7 +12,7 @@ export async function extractFigures(path,{columns=2,rows=4,order}={}){
   if(queue.length>500)components.push({pixels:queue,l,t,r,b,area:queue.length});
  }
  const selected=components.sort((a,b)=>b.area-a.area).slice(0,columns*rows);
- if(selected.length!==columns*rows)throw Error(`Expected ${columns*rows} complete figures in ${path}; got ${selected.length}`);
+ if(selected.length!==columns*rows)throw Error(`Expected ${columns*rows} complete figures in ${path}; got ${selected.length}; bounds ${JSON.stringify(components.map(c=>[c.l,c.t,c.r,c.b,c.area]))}`);
  // Sort figure centers by row, then x, independent of arbitrary source cell boundaries.
  selected.sort((a,b)=>(a.t+a.b)-(b.t+b.b));const sorted=[];
  for(let row=0;row<rows;row++)sorted.push(...selected.slice(row*columns,(row+1)*columns).sort((a,b)=>(a.l+a.r)-(b.l+b.r)));

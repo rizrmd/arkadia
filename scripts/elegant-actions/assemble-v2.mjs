@@ -5,12 +5,12 @@ for(const action of (process.env.ACTIONS||'hurt').split(','))for(const hero of [
  const composite=[],audit=[],scaleByHeading={};
  for(const [row,dir]of directions.entries()){
   const source=`sources/${hero}-${action}-${dir}.png`,{frames,sourceSize}=await extractFigures(root+'/'+source,{columns:dir==='SE'&&action==='hurt'?4:2,rows:dir==='SE'&&action==='hurt'?2:4});
-  const scale=Math.min(328/Math.max(...frames.map(f=>f.footY)),...frames.map(f=>Math.min(168/Math.max(1,f.footX),168/Math.max(1,f.width-f.footX))));scaleByHeading[dir]=scale;
+  const scale=action==='death'?Math.min(328/Math.max(...frames.map(f=>f.height)),336/Math.max(...frames.map(f=>f.width))):Math.min(328/Math.max(...frames.map(f=>f.footY)),...frames.map(f=>Math.min(168/Math.max(1,f.footX),168/Math.max(1,f.width-f.footX))));scaleByHeading[dir]=scale;
   for(const [f,q]of frames.entries()){
-   const width=Math.round(q.width*scale),height=Math.round(q.height*scale),left=Math.round(192-q.footX*scale),top=Math.round(360-q.footY*scale);
+   const width=Math.round(q.width*scale),height=Math.round(q.height*scale),left=action==='death'?Math.round((384-width)/2):Math.round(192-q.footX*scale),top=action==='death'?360-height:Math.round(360-q.footY*scale);
    if(left<12||left+width>372||top<12||top+height>372)throw Error(`Clip ${hero} ${action} ${dir} ${f}: ${left} ${top} ${width} ${height}`);
    const input=await sharp(q.data,{raw:{width:q.width,height:q.height,channels:4}}).resize(width,height).png().toBuffer();
-   composite.push({input,left:f*384+left,top:row*384+top});audit.push({direction:dir,frame:f+1,source,sourceSize,sourceBounds:q.sourceBounds,sourceEdgeContact:q.sourceEdgeContact,scale,bounds:[left,top,width,height],foot:[left+q.footX*scale,top+q.footY*scale],sha256:createHash('sha256').update(input).digest('hex')});
+   composite.push({input,left:f*384+left,top:row*384+top});audit.push({direction:dir,frame:f+1,source,sourceSize,sourceBounds:q.sourceBounds,sourceEdgeContact:q.sourceEdgeContact,scale,bounds:[left,top,width,height],foot:[left+q.footX*scale,top+q.footY*scale],anchorMode:action==='death'?'fixed-cell-root-with-grounded-collapse':'boot-center',sha256:createHash('sha256').update(input).digest('hex')});
   }
  }
  const sheet=`${hero}-${action}.png`;await sharp({create:{width:3072,height:3072,channels:4,background:'#00000000'}}).composite(composite).png().toFile(root+'/'+sheet);
