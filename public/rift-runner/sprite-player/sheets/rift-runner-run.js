@@ -29,7 +29,7 @@ spritePlayerSheet({
  "defaultRow": 4,
  "source": {
   "knowledge": "NKBD7b2d30906c8a963483c32888",
-  "attachment": "DA491cd29951c4bbf15d80f1dd",
+  "attachment": "DA5aa74505c50e3ea9e9b4ce83",
   "file": "assets-src/sprite-player/rift-runner-run.png"
  }
 });

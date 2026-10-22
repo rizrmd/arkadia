@@ -29,7 +29,7 @@ spritePlayerSheet({
  "defaultRow": 4,
  "source": {
   "knowledge": "NKBD9c1df4ae8524e49a749059f3",
-  "attachment": "DA643ce3d7b15fb6e943e49c3c",
+  "attachment": "DA5c7edb22a60d30311056a24b",
   "file": "assets-src/sprite-player/ember-warden-idle.png"
  }
 });

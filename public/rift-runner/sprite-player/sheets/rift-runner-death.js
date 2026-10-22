@@ -29,7 +29,7 @@ spritePlayerSheet({
  "defaultRow": 4,
  "source": {
   "knowledge": "NKBDc0435b17089590ebf758c5b0",
-  "attachment": "DA9dc6c5997e83e261128fb23c",
+  "attachment": "DAfbd2c9a0c5da2fc637a70259",
   "file": "assets-src/sprite-player/rift-runner-death.png"
  }
 });

@@ -7,14 +7,14 @@ import fs from 'node:fs/promises';import {existsSync} from 'node:fs';import shar
 const OUT='public/rift-runner/sprite-player/sheets',force=process.argv.includes('--force');
 const CELL=384,COLS=8,ROWS=8,PIVOT=[192,360],LABELS=['N','NE','E','SE','S','SW','W','NW'];
 const SAMPLES=[
- {name:'rift-runner-idle',hero:'rift-runner',pose:'idle',title:'Rift Runner — Idle',fps:5,loop:true,src:'assets-src/sprite-player/rift-runner-idle.png',knowledge:'NKBD5d29155bc5f9d7ba568672e6',attachment:'DA0addbe3d3b0d4d9e3631bdc0'},
- {name:'rift-runner-hurt',hero:'rift-runner',pose:'hurt',title:'Rift Runner — Hurt',fps:8,loop:false,src:'assets-src/sprite-player/rift-runner-hurt.png',knowledge:'NKBDd93e7ee52b19d68efa7907c6',attachment:'DA8500d2aa02f2d22c68d1610a'},
- {name:'rift-runner-death',hero:'rift-runner',pose:'death',title:'Rift Runner — Death',fps:8,loop:false,src:'assets-src/sprite-player/rift-runner-death.png',knowledge:'NKBDc0435b17089590ebf758c5b0',attachment:'DA9dc6c5997e83e261128fb23c'},
- {name:'rift-runner-run',hero:'rift-runner',pose:'run',title:'Rift Runner — Run',fps:10,loop:true,src:'assets-src/sprite-player/rift-runner-run.png',knowledge:'NKBD7b2d30906c8a963483c32888',attachment:'DA491cd29951c4bbf15d80f1dd'},
- {name:'ember-warden-idle',hero:'ember-warden',pose:'idle',title:'Ember Warden — Idle',fps:5,loop:true,src:'assets-src/sprite-player/ember-warden-idle.png',knowledge:'NKBD9c1df4ae8524e49a749059f3',attachment:'DA643ce3d7b15fb6e943e49c3c'},
- {name:'ember-warden-hurt',hero:'ember-warden',pose:'hurt',title:'Ember Warden — Hurt',fps:8,loop:false,src:'assets-src/sprite-player/ember-warden-hurt.png',knowledge:'NKBD3acc769cfee0487d59def5e6',attachment:'DAeed87d064b6d95538b4794cd'},
- {name:'ember-warden-death',hero:'ember-warden',pose:'death',title:'Ember Warden — Death',fps:8,loop:false,src:'assets-src/sprite-player/ember-warden-death.png',knowledge:'NKBD3c1f34f5ca7b63f32516d2e9',attachment:'DAf848defd25fb17b5fa37b2c1'},
- {name:'ember-warden-run',hero:'ember-warden',pose:'run',title:'Ember Warden — Run',fps:10,loop:true,src:'assets-src/sprite-player/ember-warden-run.png',knowledge:'NKBDf18fa50ee1a4cc98cc5d2106',attachment:'DA9fd2331401c246424a7402bf'}
+ {name:'rift-runner-idle',hero:'rift-runner',pose:'idle',title:'Rift Runner — Idle',fps:5,loop:true,src:'assets-src/sprite-player/rift-runner-idle.png',knowledge:'NKBD5d29155bc5f9d7ba568672e6',attachment:'DA59302806cec76687789b5184'},
+ {name:'rift-runner-hurt',hero:'rift-runner',pose:'hurt',title:'Rift Runner — Hurt',fps:8,loop:false,src:'assets-src/sprite-player/rift-runner-hurt.png',knowledge:'NKBDd93e7ee52b19d68efa7907c6',attachment:'DA87deea44505a2201746fa8a7'},
+ {name:'rift-runner-death',hero:'rift-runner',pose:'death',title:'Rift Runner — Death',fps:8,loop:false,src:'assets-src/sprite-player/rift-runner-death.png',knowledge:'NKBDc0435b17089590ebf758c5b0',attachment:'DAfbd2c9a0c5da2fc637a70259'},
+ {name:'rift-runner-run',hero:'rift-runner',pose:'run',title:'Rift Runner — Run',fps:10,loop:true,src:'assets-src/sprite-player/rift-runner-run.png',knowledge:'NKBD7b2d30906c8a963483c32888',attachment:'DA5aa74505c50e3ea9e9b4ce83'},
+ {name:'ember-warden-idle',hero:'ember-warden',pose:'idle',title:'Ember Warden — Idle',fps:5,loop:true,src:'assets-src/sprite-player/ember-warden-idle.png',knowledge:'NKBD9c1df4ae8524e49a749059f3',attachment:'DA5c7edb22a60d30311056a24b'},
+ {name:'ember-warden-hurt',hero:'ember-warden',pose:'hurt',title:'Ember Warden — Hurt',fps:8,loop:false,src:'assets-src/sprite-player/ember-warden-hurt.png',knowledge:'NKBD3acc769cfee0487d59def5e6',attachment:'DA5f14c906da737218c090449d'},
+ {name:'ember-warden-death',hero:'ember-warden',pose:'death',title:'Ember Warden — Death',fps:8,loop:false,src:'assets-src/sprite-player/ember-warden-death.png',knowledge:'NKBD3c1f34f5ca7b63f32516d2e9',attachment:'DA500ea9e987c6c1501dcb9606'},
+ {name:'ember-warden-run',hero:'ember-warden',pose:'run',title:'Ember Warden — Run',fps:10,loop:true,src:'assets-src/sprite-player/ember-warden-run.png',knowledge:'NKBDf18fa50ee1a4cc98cc5d2106',attachment:'DAfa0af16dd158809cacb0e5d3'}
 ];
 await fs.mkdir(OUT,{recursive:true});
 for(const {name:NAME,hero,pose,title,fps:FPS,loop:LOOP,src:SRC,knowledge,attachment} of SAMPLES){

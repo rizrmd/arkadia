@@ -29,7 +29,7 @@ spritePlayerSheet({
  "defaultRow": 4,
  "source": {
   "knowledge": "NKBDd93e7ee52b19d68efa7907c6",
-  "attachment": "DA8500d2aa02f2d22c68d1610a",
+  "attachment": "DA87deea44505a2201746fa8a7",
   "file": "assets-src/sprite-player/rift-runner-hurt.png"
  }
 });

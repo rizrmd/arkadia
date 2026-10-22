@@ -50,16 +50,24 @@ function pickImage(cellDevicePx){
  if(wantFull&&!images.full&&!images.loadingFull){images.loadingFull=loadImage(sheet.sheet).then(img=>{images.full=img;draw();}).catch(e=>images.half||fail(e.message));}
  return wantFull&&images.full?['full',images.full]:images.half?['half',images.half]:['full',images.full];
 }
-function drawCell(img,scaleOfSheet,row,frame,x,y,w,h){
- const [cw,ch]=sheet.cell,sw=cw*scaleOfSheet,sh=ch*scaleOfSheet;
- ctx.drawImage(img,frame*sw,row*sh,sw,sh,x,y,w,h);
+function drawCell(img,scaleOfSheet,row,frame,x,y,w,h,blend=0){
+ const [cw,ch]=sheet.cell,sw=cw*scaleOfSheet,sh=ch*scaleOfSheet,n=frames(),next=state.loop?(frame+1)%n:Math.min(n-1,frame+1);
+ if(blend>0.01&&next!==frame){
+  const t=blend*blend*(3-2*blend);
+  ctx.save();
+  ctx.globalAlpha=1-t*0.85;ctx.drawImage(img,frame*sw,row*sh,sw,sh,x,y,w,h);
+  ctx.globalAlpha=t;ctx.drawImage(img,next*sw,row*sh,sw,sh,x,y,w,h);
+  ctx.globalCompositeOperation='destination-over';
+  ctx.globalAlpha=1-t;ctx.drawImage(img,frame*sw,row*sh,sw,sh,x,y,w,h);
+  ctx.restore();
+ }else ctx.drawImage(img,frame*sw,row*sh,sw,sh,x,y,w,h);
  if(state.guides&&sheet.pivot){
   const px=Math.round(x+sheet.pivot[0]/cw*w)+.5,py=Math.round(y+sheet.pivot[1]/ch*h)+.5,s=Math.max(4,w*.03);
   ctx.strokeStyle='rgba(255,196,92,.9)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(x,py);ctx.lineTo(x+w,py);ctx.moveTo(px,py-s);ctx.lineTo(px,py+s);ctx.stroke();
   ctx.strokeStyle='rgba(255,255,255,.18)';ctx.strokeRect(Math.round(x)+.5,Math.round(y)+.5,Math.round(w)-1,Math.round(h)-1);
  }
 }
-function draw(){
+function draw(blend=0){
  if(!state.ready)return;
  const W=canvas.width,H=canvas.height,[cw,ch]=sheet.cell;ctx.setTransform(1,0,0,1,0,0);ctx.clearRect(0,0,W,H);ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';
  // Zoom about the stage centre, then pan; the fitted layout below is unchanged.
@@ -69,12 +77,12 @@ function draw(){
   let best=null;for(let c=1;c<=sheet.rows;c++){const r=Math.ceil(sheet.rows/c),s=Math.min(W/(c*cw),H/(r*ch));if(!best||s>best.s)best={c,r,s};}
   const {c,r,s}=best,ox=(W-c*cw*s)/2,oy=(H-r*ch*s)/2,[source,img]=pickImage(cw*s*state.zoom);
   ctx.font=`600 ${Math.round(12*dpr())}px system-ui,sans-serif`;ctx.textBaseline='top';
-  for(let i=0;i<sheet.rows;i++){const x=ox+(i%c)*cw*s,y=oy+Math.floor(i/c)*ch*s;drawCell(img,source==='half'?.5:1,i,state.frame,x,y,cw*s,ch*s);
+  for(let i=0;i<sheet.rows;i++){const x=ox+(i%c)*cw*s,y=oy+Math.floor(i/c)*ch*s;drawCell(img,source==='half'?.5:1,i,state.frame,x,y,cw*s,ch*s,blend);
    ctx.fillStyle=i===state.row?'#5fc9b5':state.bg==='light'||state.bg==='snow'?'#35444a':'#c4d3cf';ctx.fillText(label(i),x+6*dpr(),y+6*dpr());}
   state.source=source;
  }else{
   const s=Math.min(W/cw,H/ch),w=cw*s,h=ch*s,[source,img]=pickImage(w*state.zoom);
-  drawCell(img,source==='half'?.5:1,state.row,state.frame,(W-w)/2,(H-h)/2,w,h);state.source=source;
+  drawCell(img,source==='half'?.5:1,state.row,state.frame,(W-w)/2,(H-h)/2,w,h,blend);state.source=source;
  }
  ctx.setTransform(1,0,0,1,0,0);
  state.drawn={row:state.row,frame:state.frame,all:state.all,zoom:state.zoom};
@@ -90,8 +98,10 @@ function tick(now){
  elapsed+=Math.min(now-last,250);last=now;const step=1000/state.fps;
  if(elapsed>=step){const n=Math.floor(elapsed/step);elapsed-=n*step;
   // Once: stop on the last frame instead of wrapping.
-  if(!state.loop&&state.frame+n>=frames()-1){state.frame=frames()-1;state.playing=false;state.ended=true;draw();return;}
-  state.frame=(state.frame+n)%frames();draw();}
+  if(!state.loop&&state.frame+n>=frames()-1){state.frame=frames()-1;state.playing=false;state.ended=true;draw(0);return;}
+  state.frame=(state.frame+n)%frames();}
+ const phase=elapsed/step,blend=phase>0.55?(phase-0.55)/0.45:0;
+ draw(blend);
  raf=requestAnimationFrame(tick);
 }
 function setPlaying(on){if(on&&!state.loop&&state.frame===frames()-1)state.frame=0;state.ended=false;state.playing=on;elapsed=0;last=performance.now();if(on&&!raf&&state.ready)raf=requestAnimationFrame(tick);draw();}

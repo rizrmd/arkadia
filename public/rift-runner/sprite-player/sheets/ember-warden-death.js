@@ -29,7 +29,7 @@ spritePlayerSheet({
  "defaultRow": 4,
  "source": {
   "knowledge": "NKBD3c1f34f5ca7b63f32516d2e9",
-  "attachment": "DAf848defd25fb17b5fa37b2c1",
+  "attachment": "DA500ea9e987c6c1501dcb9606",
   "file": "assets-src/sprite-player/ember-warden-death.png"
  }
 });
