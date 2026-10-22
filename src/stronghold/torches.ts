@@ -16,13 +16,15 @@ export const torchAssetsReady=Promise.all(frames.map(image=>image.decode()));
 const W=24,H=39,TOP=15.75;
 // Keep source proportions and enough texels for the maximum 2.2× camera zoom.
 const FLAME_SOURCE_HEIGHT=132,FLAME_HEIGHT=H*FLAME_SOURCE_HEIGHT/290,RESOLUTION=3;
-// The same unlit body is baked once; only small local canvases animate above it.
-export function drawTorches(c:CanvasRenderingContext2D,_lit:boolean){
- if(!frames[3].complete||!frames[3].naturalWidth)return;
+// The unlit body is baked in daylight; at night the firelit lower sconce sits over the wall bloom while local canvases animate the upper flame.
+export function drawTorches(c:CanvasRenderingContext2D,lit:boolean){
+ const frame=lit?frames[1]:frames[3];
+ if(!frame.complete||!frame.naturalWidth)return;
  for(const t of TORCHES){
   const y=t.y-t.lift;
   if(!t.wall){c.strokeStyle='#3b2a20';c.lineWidth=3.75;c.beginPath();c.moveTo(t.x,y+13.5);c.lineTo(t.x,t.y);c.stroke();}
-  c.drawImage(frames[3],t.x-W/2,y-TOP,W,H);
+  if(lit)c.drawImage(frame,0,FLAME_SOURCE_HEIGHT,180,290-FLAME_SOURCE_HEIGHT,t.x-W/2,y-TOP+FLAME_HEIGHT,W,H-FLAME_HEIGHT);
+  else c.drawImage(frame,t.x-W/2,y-TOP,W,H);
  }
 }
 export function createTorchFlames(surface:HTMLCanvasElement,left:number,top:number){

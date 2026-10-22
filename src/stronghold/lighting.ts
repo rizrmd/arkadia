@@ -54,8 +54,8 @@ export function createLighting(o:{surface:HTMLCanvasElement;snowLayer:HTMLElemen
   const l=torchLight.getContext('2d')!,b=torchBloom.getContext('2d')!,h=torchHalo.getContext('2d')!;
   for(const c of [l,b,h])world(c);
   pool(l,t.x,t.y,125,COLOURS.fire,.85);pool(l,t.x,t.y-t.lift,48,COLOURS.fire,.9,1);
-  pool(b,t.x,t.y,95,COLOURS.fire,.2);pool(b,t.x,t.y-t.lift,25,COLOURS.fire,.65,1);
-  pool(h,t.x,t.y-t.lift,20,COLOURS.fire,.65,1);
+  pool(b,t.x,t.y,95,COLOURS.fire,.2);pool(b,t.x,t.y-t.lift-6,26,COLOURS.fire,.55,1);
+  pool(h,t.x,t.y-t.lift-7,18,COLOURS.fire,.35,1);
  }
  // Rebuilt when buildings or the selection change: light pools, emissive masks and glow.
  function setScene(objects:LitObject[]){
@@ -100,6 +100,7 @@ export function createLighting(o:{surface:HTMLCanvasElement;snowLayer:HTMLElemen
    c.globalCompositeOperation='multiply';c.drawImage(lightmap,left,top,width,height);
    if(torchesOn(state.t)){c.globalCompositeOperation='screen';c.drawImage(torchBloom,left,top,width,height);}
    if(gl){c.globalCompositeOperation='screen';c.globalAlpha=gl;c.drawImage(bloom,left,top,width,height);c.globalAlpha=1;}
+   if(torchesOn(state.t)){c.globalCompositeOperation='source-over';drawTorches(c,true);}
   }
   c.globalCompositeOperation='source-over';c.setTransform(1,0,0,1,0,0);
   tintSnow(rgb,off);
@@ -113,7 +114,7 @@ export function createLighting(o:{surface:HTMLCanvasElement;snowLayer:HTMLElemen
   c.setTransform(1,0,0,1,0,0);c.globalCompositeOperation='copy';c.drawImage(base,0,0);c.globalCompositeOperation='source-over';
   if(shade.alpha){worldSpace(c);c.globalAlpha=shade.alpha;c.drawImage(shade.mask!,left,top,width,height);c.globalAlpha=1;c.setTransform(1,0,0,1,0,0);}
   if(uprights)c.drawImage(uprights,0,0);
-  worldSpace(c);drawTorches(c,torchesOn(current.t));c.setTransform(1,0,0,1,0,0);
+  if(!torchesOn(current.t)||previewing){worldSpace(c);drawTorches(c,torchesOn(current.t));c.setTransform(1,0,0,1,0,0);}
  }
  let shade:{mask:HTMLCanvasElement|null;alpha:number}={mask:null,alpha:0};
  // A new shadow mask from world-view.ts; no repaint when a world raster (capture) follows anyway.
