@@ -1,4 +1,4 @@
-import {fresh,reward,choose,cards,reach,health,threshold,xpPercent,critChance,critMultiplier,type Progression} from './progression';
+import {fresh,reward,roll,choose,cards,reach,health,threshold,xpPercent,critChance,critMultiplier,type Progression} from './progression';
 import './progression.css';
 import {unproject} from '../isometric';
 import {Fighter,STATS,inReach,swingTargets,turn} from '../characters/combat';
@@ -48,9 +48,12 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
  let run=fresh(),baseHp=100,levelUpPulseMs=0,regenAccum=0,swingCount=0;
  const local:Foe[]=[],spawns:{u:number;v:number;m:number}[]=[];let foes=local,online=false,heroPlays=-1;
  // Revenants behind the hero stand under its canvas, the rest over it; their health bars sit above both.
- const heroCanvas=o.layer.querySelector<HTMLCanvasElement>('#world-hero')!,back=document.createElement('div'),front=document.createElement('div'),bars=document.createElement('div');
+ // The ground AoE / attack reach ring (#hero-aoe) sits flat on the snow beneath both the hero and revenants.
+ const heroCanvas=o.layer.querySelector<HTMLCanvasElement>('#world-hero')!,aoe=document.createElement('canvas'),aoeCtx=aoe.getContext('2d')!,back=document.createElement('div'),front=document.createElement('div'),bars=document.createElement('div');
+ aoe.id='hero-aoe';aoe.setAttribute('aria-hidden','true');aoe.hidden=true;
+ aoe.style.cssText='position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform;pointer-events:none';
  back.id='world-foes-back';front.id='world-foes-front';bars.id='world-foe-bars';for(const c of [back,front,bars])c.style.cssText='position:absolute;left:0;top:0;pointer-events:none';
- heroCanvas.before(back);heroCanvas.after(front);
+ heroCanvas.before(aoe,back);heroCanvas.after(front);
  // Health + EXP bar over the hero's head, moved by the compositor, and the HUD panel.
  const bar=document.createElement('div');bar.id='hero-health';bar.setAttribute('aria-hidden','true');bar.innerHTML='<i></i><b class="hero-exp"></b>';front.after(bars,bar);
  const hud=document.createElement('section');hud.id='hero-hud';hud.setAttribute('aria-label','Hero status');
@@ -185,7 +188,7 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
  function steer(input:Walk):Walk{
   if(run.pending)return {x:0,y:0};
   if(online||input.x||input.y||!h.alive||h.state!=='idle')return input;
-  const f=nearest(ENGAGE);if(!f||Math.hypot(f.x-h.x,f.y-h.y)<=HERO_REACH*.8)return input;
+  const r=reach(run),f=nearest(Math.max(ENGAGE,HERO_REACH*r+.8));if(!f||Math.hypot(f.x-h.x,f.y-h.y)<=HERO_REACH*r*.8)return input;
   const s=screen(f.x-h.x,f.y-h.y),l=Math.hypot(s.x,s.y);return {x:s.x/l,y:s.y/l};
  }
  function heroStep(dt:number,steering:boolean){
@@ -376,16 +379,36 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
   for(const [f,v] of views){if(live.has(f))continue;if(foes.includes(f)){if(!v.el.hidden){v.el.hidden=true;v.bar.hidden=true;v.hp='';}}else{v.el.remove();v.bar.remove();views.delete(f);}}
   for(const f of live){const v=views.get(f)!;if(v.el.hidden)v.el.hidden=false;}
   vfx.render();
-  // Hero bar: hidden at full health inside the zone, shown once hurt or out in the wilds. Styles and data
-  // attributes are written only when they change.
-  const s=at(hp.x,hp.y),ratio=Math.max(0,h.hp)/maxHp,show=h.alive&&(ratio<.999||!inSafeZone(tileOf(h))||run.xp>0||run.level>1);
+  // Hero bar and ground AoE reach indicator: hidden at full health inside the zone (unless reach is upgraded), shown once hurt or out in the wilds.
+  const s=at(hp.x,hp.y),ratio=Math.max(0,h.hp)/maxHp,inZone=inSafeZone(tileOf(h)),show=h.alive&&(ratio<.999||!inZone||run.xp>0||run.level>1);
+  const rMult=reach(run),aoeRx=Math.round(HERO_REACH*rMult*64*Math.SQRT2),aoeRy=Math.round(aoeRx*.52),aoePadX=aoeRx+6,aoePadY=aoeRy+6,showAoe=h.alive&&(!inZone||rMult>1.001);
+  if(aoe.hidden===showAoe)aoe.hidden=!showAoe;
+  if(showAoe){
+   const aoeKey=`${rMult.toFixed(2)}:${dpr}:${h.state==='attack'?1:0}`;
+   if(aoe.dataset.key!==aoeKey){
+    aoe.dataset.key=aoeKey;aoe.dataset.reach=rMult.toFixed(2);aoe.dataset.radiusPx=String(aoeRx);
+    const wpx=aoePadX*2,hpx=aoePadY*2;aoe.width=Math.ceil(wpx*dpr);aoe.height=Math.ceil(hpx*dpr);aoe.style.width=wpx+'px';aoe.style.height=hpx+'px';
+    aoeCtx.setTransform(dpr,0,0,dpr,aoePadX*dpr,aoePadY*dpr);aoeCtx.clearRect(-aoePadX,-aoePadY,wpx,hpx);
+    aoeCtx.save();aoeCtx.scale(1,.52);
+    const pulse=h.state==='attack'?.05:0,g=aoeCtx.createRadialGradient(0,0,4,0,0,aoeRx);
+    g.addColorStop(0,`rgba(255,208,138,${(.22+pulse).toFixed(2)})`);
+    g.addColorStop(.68,`rgba(255,180,104,${(.11+pulse*.5).toFixed(2)})`);
+    g.addColorStop(1,'rgba(242,196,107,0)');
+    aoeCtx.fillStyle=g;aoeCtx.beginPath();aoeCtx.arc(0,0,aoeRx,0,Math.PI*2);aoeCtx.fill();
+    aoeCtx.strokeStyle=`rgba(242,196,107,${((rMult>1.001?.38:.24)+pulse).toFixed(2)})`;
+    aoeCtx.lineWidth=rMult>1.001?1.75:1.2;
+    aoeCtx.beginPath();aoeCtx.arc(0,0,aoeRx-1,0,Math.PI*2);aoeCtx.stroke();
+    aoeCtx.restore();
+   }
+   put(aoe.style,'transform',`translate3d(${s.x-aoePadX*k}px,${s.y-2*k-aoePadY*k}px,0) scale(${k})`);
+  }
   put(bar.style,'transform',`translate3d(${s.x}px,${s.y-64*k}px,0)`);put(bar.dataset,'visible',String(show));put(barFill.style,'transform',`scaleX(${ratio})`);put(bar.dataset,'low',String(ratio<.3));
   put(hudFill.style,'transform',`scaleX(${ratio})`);put(hud.dataset,'low',String(ratio<.3));
   const text=`${Math.ceil(h.hp)} / ${maxHp}`;if(q('.hud-hp').textContent!==text){q('.hud-hp').textContent=text;q('.hud-bar').setAttribute('aria-valuenow',String(Math.ceil(h.hp)));q('.hud-bar').setAttribute('aria-valuemax',String(maxHp));}
-  const zone=!h.alive?'Defeated · returning to the tent':inSafeZone(tileOf(h))?'Safe zone':'Wilds · revenants roam';
-  if(q('.hud-zone').textContent!==zone)q('.hud-zone').textContent=zone;put(hud.dataset,'zone',inSafeZone(tileOf(h))?'safe':'wild');
+  const zone=!h.alive?'Defeated · returning to the tent':inZone?'Safe zone':'Wilds · revenants roam';
+  if(q('.hud-zone').textContent!==zone)q('.hud-zone').textContent=zone;put(hud.dataset,'zone',inZone?'safe':'wild');
   const k2=`Revenants defeated · ${kills}`;if(q('.hud-kills').textContent!==k2)q('.hud-kills').textContent=k2;
-  for(const [key,value] of Object.entries({hp:String(Math.ceil(h.hp)),max:String(maxHp),state:h.state,kills:String(kills),foes:String(foes.filter(f=>f.alive).length)}))put(hud.dataset,key,value);
+  for(const [key,value] of Object.entries({hp:String(Math.ceil(h.hp)),max:String(maxHp),state:h.state,kills:String(kills),foes:String(foes.filter(f=>f.alive).length),reach:rMult.toFixed(2)}))put(hud.dataset,key,value);
  }
  let last=0;
  // Co-op revenants are sampled at the frame's timestamp, not whenever this callback happens to run.
@@ -393,6 +416,7 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
  const loop=(now:number)=>{let dt=last?Math.min(now-last,120):16;last=now;frameAt=now;for(;dt>0;dt-=34)step(Math.min(dt,34));render();requestAnimationFrame(loop);};
  const api={
   steer,
+  reach:()=>reach(run),
   // While swinging, stunned or down, the hero plays that clip in place of walking.
   pose:():Pose|null=>h.state==='idle'||h.state==='move'?null:{clip:h.state,t:h.t},
   place(x:number,y:number,scale:number){origin={x,y,scale};vfx.place(x,y,scale);render();},
@@ -401,9 +425,11 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
   setAmbient(rgb:readonly number[]){ambient=rgb.map(v=>Math.round(v*255)).join();},
   setMaxHp(n:number){baseHp=n;if(online)return;n+=health(run);if(n===maxHp)return;h.hp=Math.min(n,h.hp+Math.max(0,n-maxHp));maxHp=n;},
   snapshot:()=>({spawnDistanceM:SPAWN_DISTANCE_M,gate:GATE,metersPerTile:METERS_PER_TILE,
-   hero:{hp:h.hp,maxHp,state:h.state,u:+h.x.toFixed(2),v:+h.y.toFixed(2),meters:+meters(fromCenter(tileOf(h))).toFixed(1),safe:inSafeZone(tileOf(h)),critChance:+critChance(run).toFixed(2),critMultiplier:+critMultiplier(run).toFixed(2)},
+   hero:{hp:h.hp,maxHp,state:h.state,u:+h.x.toFixed(2),v:+h.y.toFixed(2),meters:+meters(fromCenter(tileOf(h))).toFixed(1),safe:inSafeZone(tileOf(h)),reach:+reach(run).toFixed(2),aoeRadiusPx:Math.round(HERO_REACH*reach(run)*64*Math.SQRT2),critChance:+critChance(run).toFixed(2),critMultiplier:+critMultiplier(run).toFixed(2)},
    foes:foes.map(f=>({u:+f.x.toFixed(2),v:+f.y.toFixed(2),hp:f.hp,state:f.state,safe:inSafeZone(tileOf(f)),clear:walkable(tileOf(f)),gateMeters:+meters(fromGate(tileOf(f))).toFixed(1)})),
    run:structuredClone(run),
+   reach:+reach(run).toFixed(2),
+   scale:+origin.scale.toFixed(4),
    expBar:{level:run.level,xp:run.xp,nextXp:threshold(run),percent:xpPercent(run),pulsing:levelUpPulseMs>0},
    vfx:vfx.snapshot(),
    kills,spawns:[...spawns],minSpawnMeters:spawns.length?Math.min(...spawns.map(s=>s.m)):null,minFoeMeters:foes.length?Math.min(...foes.map(f=>meters(fromGate(tileOf(f))))):null}),
@@ -411,6 +437,8 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
   teleport(u:number,v:number){const w=tilePoint(u,v);if(!o.hero.teleport(w.x,w.y))return false;h.x=u;h.y=v;return true;},
   clear:(u:number,v:number)=>walkable({u,v}),
   summon(u:number,v:number){const at={u,v};if(inSafeZone(at)||!walkable(at))return -1;const f:Foe=Object.assign(new Fighter('revenant',meta.clips,u,v),{home:at,wander:null,age:500,side:1});f.play('idle');return foes.push(f)-1;},
+  offer(offers?:string[]){if(!online){if(run.pending<=0){run.level++;run.pending=1;}if(offers?.length)run.offers=[...offers];else if(!run.offers.length)roll(run,random);offerKey='';render();}return structuredClone(run);},
+  choose:(id:string)=>{select(id);render();return structuredClone(run);},
   castSkill:(id:SkillId,opts?:{targetU?:number;targetV?:number;forceCrit?:boolean})=>vfx.castSkill(id,opts),
   spawnProjectile:vfx.spawnProjectile,
   spawnAoE:vfx.spawnAoE,

@@ -193,13 +193,23 @@ export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Buil
   if(snowLayer.style.width!==sw+'px')snowLayer.style.width=sw+'px';if(snowLayer.style.height!==sh+'px')snowLayer.style.height=sh+'px';
   snowLayer.style.transform=`translate3d(${sx}px,${sy}px,0) scale(${scale})`;
   canvas.dataset.ready='true';canvas.dataset.mode='full-screen';canvas.dataset.renderer='composited-world';
+  canvas.dataset.zoom='locked';canvas.dataset.scale=scale.toFixed(4);canvas.dataset.targetScale=targetScale().toFixed(4);canvas.dataset.reach=reachFactor().toFixed(2);
  }
  function requestDraw(){if(!frame)frame=requestAnimationFrame(()=>{frame=0;draw();});}
+ // Locked default AoE framing (~1.27x..1.35x across viewports, 1.327x at 380x836) that dynamically zooms out
+ // as the hero's attack/AoE reach grows (`reach(run) = 1 + rank * 0.2`), clamped so the AoE ring and outer pack fit.
+ const baseScale=()=>Math.max(1,Math.min(1.35,h/630));
+ const reachFactor=()=>encounters?.reach()??1;
+ const targetScale=()=>{
+  const r=Math.max(1,reachFactor()),base=baseScale(),raw=base/(1+(r-1)*.85);
+  const fit=w&&h?Math.min((w-24)/(180*r),Math.max(180,h-240)/(110*r)):raw;
+  return Math.max(.45,Math.min(1.35,raw,fit));
+ };
  function resize(){const nw=canvas.clientWidth,nh=canvas.clientHeight,nd=Math.min(devicePixelRatio||1,1.75);if(nw===w&&nh===h&&nd===dpr)return;w=nw;h=nh;dpr=nd;
   // This canvas is the transparent input/accessibility surface, not a frame buffer.
   if(canvas.width!==1)canvas.width=1;if(canvas.height!==1)canvas.height=1;
-  scale=Math.max(.65,Math.min(1.35,h/900));requestDraw();}new ResizeObserver(resize).observe(canvas);resize();
- // Focus glides the camera with an eased tween; any drag, pinch or wheel takes control back.
+  scale=targetScale();vs=0;lastReach=reachFactor();requestDraw();}
+ // Focus glides the camera with an eased tween; any drag takes control back.
  let glide=0;
  function stopGlide(){if(glide){cancelAnimationFrame(glide);glide=0;canvas.dataset.camera='idle';}}
  function glideTo(tx:number,ty:number){stopGlide();chasing=false;vx=vy=0;const fx=cx,fy=cy,distance=Math.hypot(tx-fx,ty-fy)*scale;
@@ -211,24 +221,41 @@ export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Buil
   glide=requestAnimationFrame(step);}
  // Walking keeps the hero inside a central box; past it the camera chases them on a critically damped spring,
  // once per frame, so it starts, follows and comes to rest without a jump in speed and keeps settling after
- // the hero stops (it used to halt dead at walking pace). A drag still pans freely.
- let chasing=false,vx=0,vy=0;const LAG=.22;
+ // the hero stops (it used to halt dead at walking pace). Selecting a radius blessing smoothly zooms out on the same spring.
+ let chasing=false,vx=0,vy=0,vs=0,lastReach=1;const LAG=.22;
+ new ResizeObserver(resize).observe(canvas);resize();
  // Unity-style SmoothDamp on one axis (px, px/s, s): returns the new position and velocity, never overshooting.
  // A step of a second or more (respawn, teleport) lands exactly.
  function damp(from:number,to:number,v:number,t:number){if(t>=1)return [to,0];const f=2/LAG,x=f*t,e=1/(1+x+.48*x*x+.235*x*x*x),d=from-to,q=(v+f*d)*t;let out=to+(d+q)*e,nv=(v-f*q)*e;
   if(to-from>0===out>to){out=to;nv=0;}return [out,nv];}
- function follow(hx:number,hy:number,dt:number,walking=true){if(walking){updateGate(hx,hy);chasing=true;}if(!chasing||held.size||!w)return;
-  const zx=w/scale*.16,zy=h/scale*.14,fy=hy-40,tx=hx-Math.max(-zx,Math.min(zx,hx-cx)),ty=fy-Math.max(-zy,Math.min(zy,fy-cy));
-  const [nx,nvx]=damp(cx,tx,vx,dt/1000),[ny,nvy]=damp(cy,ty,vy,dt/1000);vx=nvx;vy=nvy;
-  if(!walking&&Math.abs(tx-nx)+Math.abs(ty-ny)<.05&&Math.abs(vx)+Math.abs(vy)<1){chasing=false;vx=vy=0;}
-  if(Math.abs(nx-cx)+Math.abs(ny-cy)<.001)return;stopGlide();cx=nx;cy=ny;draw();}
+ function follow(hx:number,hy:number,dt:number,walking=true){
+  if(walking){updateGate(hx,hy);chasing=true;}
+  if(!w)return;
+  const r=reachFactor(),ts=targetScale();
+  if(Math.abs(r-lastReach)>1e-4){lastReach=r;if(!held.size)chasing=true;}
+  const zooming=Math.abs(ts-scale)>5e-4||Math.abs(vs)>1e-3;
+  let changed=false;
+  if(zooming){
+   const [ns,nvs]=damp(scale,ts,vs,dt/1000);
+   if(Math.abs(ns-scale)>1e-5){scale=ns;changed=true;}
+   vs=Math.abs(ts-scale)<=5e-4&&Math.abs(nvs)<1e-3?0:nvs;
+  }
+  if(chasing&&!held.size){
+   const snap=dt>=1000,zx=snap?0:w/scale*.16,zy=snap?0:h/scale*.14,fy=hy-40,tx=hx-Math.max(-zx,Math.min(zx,hx-cx)),ty=fy-Math.max(-zy,Math.min(zy,fy-cy));
+   const [nx,nvx]=damp(cx,tx,vx,dt/1000),[ny,nvy]=damp(cy,ty,vy,dt/1000);vx=nvx;vy=nvy;
+   if(!walking&&!zooming&&Math.abs(tx-nx)+Math.abs(ty-ny)<.05&&Math.abs(vx)+Math.abs(vy)<1){chasing=false;vx=vy=0;}
+   if(Math.abs(nx-cx)+Math.abs(ny-cy)>=.001){stopGlide();cx=nx;cy=ny;changed=true;}
+  }
+  if(changed)draw();
+ }
  const held=new Map<number,{x:number;y:number}>();let moved=false,down={x:0,y:0};
  canvas.onpointerdown=e=>{stopGlide();chasing=false;vx=vy=0;canvas.setPointerCapture(e.pointerId);held.set(e.pointerId,{x:e.clientX,y:e.clientY});down={x:e.clientX,y:e.clientY};moved=false;};
- canvas.onpointermove=e=>{const prev=held.get(e.pointerId);if(!prev)return;const points=[...held.values()],before=points.length===2?Math.hypot(points[0].x-points[1].x,points[0].y-points[1].y):0;cx-=(e.clientX-prev.x)/scale;cy-=(e.clientY-prev.y)/scale;held.set(e.pointerId,{x:e.clientX,y:e.clientY});if(Math.hypot(e.clientX-down.x,e.clientY-down.y)>6)moved=true;if(before){const p=[...held.values()];scale=Math.max(.35,Math.min(2.2,scale*Math.hypot(p[0].x-p[1].x,p[0].y-p[1].y)/before));moved=true;}requestDraw();};
+ // Manual zoom (wheel and 2-finger pinch) is locked so framing stays bound to the active AoE radius; 1-finger drag pans.
+ canvas.onpointermove=e=>{const prev=held.get(e.pointerId);if(!prev)return;if(held.size===1){cx-=(e.clientX-prev.x)/scale;cy-=(e.clientY-prev.y)/scale;}else moved=true;held.set(e.pointerId,{x:e.clientX,y:e.clientY});if(Math.hypot(e.clientX-down.x,e.clientY-down.y)>6)moved=true;requestDraw();};
  const masks=new Map<string,{data:Uint8ClampedArray;width:number;height:number}>();
  function hitBuilding(id:Building,x:number,y:number){if(id==='gate')return doors.hit(x,y);const s=slots[id],c=calibration(id),file=spriteFile(id,levels?.[id]||1),image=images.get(file)!,height=image.height*s.width/image.width,dx=x-s.x,dy=(y-s.y-c.shear*dx)/c.vertical,px=(dx+s.width/2)/s.width,py=(dy+height*s.pivot)/height;if(px<0||py<0||px>=1||py>=1)return false;let mask=masks.get(file);if(!mask){const sample=document.createElement('canvas');sample.width=192;sample.height=Math.ceil(192*image.height/image.width);const sc=sample.getContext('2d')!;sc.drawImage(image,0,0,sample.width,sample.height);mask={data:sc.getImageData(0,0,sample.width,sample.height).data,width:sample.width,height:sample.height};masks.set(file,mask);}return mask.data[(Math.floor(py*mask.height)*mask.width+Math.floor(px*mask.width))*4+3]>40;}
  canvas.onpointerup=e=>{held.delete(e.pointerId);if(moved)return;const x=cx+(e.clientX-w/2)/scale,y=cy+(e.clientY-h/2)/scale;const hit=[...built].sort((a,b)=>slots[b].y-slots[a].y).find(id=>hitBuilding(id,x,y));if(hit)onSelect(hit);};
- canvas.onpointercancel=()=>{held.clear();moved=true;};canvas.onwheel=e=>{e.preventDefault();stopGlide();const old=scale;scale=Math.max(.35,Math.min(2.2,scale*Math.exp(-e.deltaY*.001)));cx+=(e.clientX-w/2)*(1/old-1/scale);cy+=(e.clientY-h/2)*(1/old-1/scale);requestDraw();};
+ canvas.onpointercancel=()=>{held.clear();moved=true;};canvas.onwheel=e=>{e.preventDefault();};
  function updateGate(hx:number,hy:number){
   const d=Math.abs(hx-577),edge=d<36||d>135?770:gateTowerFront(d);
   doors.order(viewport.querySelector<HTMLElement>('#world-hero')!,hy<edge);
