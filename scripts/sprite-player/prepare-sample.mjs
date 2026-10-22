@@ -1,7 +1,7 @@
 // Builds the sprite player's sample sheet from the Rift Runner idle atlas shown in Knowledge
 // (Art Direction › Characters › Rift Runner › Sprites & Animation › Idle, attachment DA0addbe3d3b0d4d9e3631bdc0).
 //   node scripts/sprite-player/prepare-sample.mjs
-// Writes public/rift-runner/sprite-player/sheets/rift-runner-idle{.webp,@0.5x.webp,.json} and the animated 8-heading
+// Writes public/rift-runner/sprite-player/sheets/rift-runner-idle{.webp,@0.5x.webp,.json,.js} and the animated 8-heading
 // preview rift-runner-idle-preview.webp used inline on the Knowledge page. Frames are copied, never redrawn.
 import fs from 'node:fs/promises';import sharp from 'sharp';
 const SRC='assets-src/sprite-player/rift-runner-idle.png',OUT='public/rift-runner/sprite-player/sheets',NAME='rift-runner-idle';
@@ -18,6 +18,8 @@ await clean().resize(info.width/2,info.height/2,{kernel:'lanczos3'}).webp({quali
 const manifest={name:'Rift Runner — Idle',sheet:`${NAME}.webp`,sheetHalf:`${NAME}@0.5x.webp`,cell:[CELL,CELL],columns:COLS,rows:ROWS,pivot:PIVOT,fps:FPS,loop:true,rowLabels:LABELS,defaultRow:LABELS.indexOf('S'),
  source:{knowledge:'NKBD5d29155bc5f9d7ba568672e6',attachment:'DA0addbe3d3b0d4d9e3631bdc0',file:SRC}};
 await fs.writeFile(`${OUT}/${NAME}.json`,JSON.stringify(manifest,null,1)+'\n');
+// Same description as a script: Knowledge design frames sandbox the player to an opaque origin, where fetch() of the JSON fails without CORS.
+await fs.writeFile(`${OUT}/${NAME}.js`,`spritePlayerSheet(${JSON.stringify(manifest,null,1)});\n`);
 
 // Animated preview: all eight headings side by side (4 × 2), half scale, labelled, looping at the clip FPS.
 const P=CELL/2,PW=P*4,PH=P*2,half=await clean().resize(info.width/2,info.height/2,{kernel:'lanczos3'}).png().toBuffer();

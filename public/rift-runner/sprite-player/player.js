@@ -1,6 +1,7 @@
 // Arkadia sprite player: plays one row of a grid sprite sheet (rows = headings, columns = frames).
 // Built to sit in an iframe. Configure with query parameters:
-//   manifest=sheets/rift-runner-idle.json   sheet description (default); paths inside resolve against it
+//   manifest=sheets/rift-runner-idle.js     sheet description (default); paths inside resolve against it. A .js description
+//                                          calls spritePlayerSheet({...}) and also loads in sandboxed frames; .json needs CORS there
 //   sheet=URL&cell=384[,384]&cols=8&rows=8&pivot=192,360&fps=5&labels=N,NE,E,SE,S,SW,W,NW   a sheet without a manifest
 //   row=S|4  fps=5  frame=0  bg=dark|light|checker|snow  guides=1  all=1  autoplay=0  controls=full|min|none
 // Parent pages can drive it with postMessage({type:'sprite-player',action:'play'|'pause'|'row'|'frame'|'fps',value}).
@@ -19,9 +20,10 @@ async function loadSheet(){
   return {name:params.get('name')||'Sprite sheet',sheet:new URL(params.get('sheet'),location.href).href,cell:[cell[0],cell[1]??cell[0]],columns:cols,rows,
    pivot:list(params.get('pivot')),fps:+params.get('fps')||8,rowLabels:list(params.get('labels'),String)};
  }
- const url=new URL(params.get('manifest')||'sheets/rift-runner-idle.json',location.href),response=await fetch(url);
- if(!response.ok)throw Error(`Sheet description could not be loaded (${response.status})`);
- const m=await response.json();
+ const url=new URL(params.get('manifest')||'sheets/rift-runner-idle.js',location.href);let m;
+ if(url.pathname.endsWith('.js'))m=await new Promise((resolve,reject)=>{const script=document.createElement('script');window.spritePlayerSheet=resolve;
+  script.onerror=()=>reject(Error('Sheet description could not be loaded'));script.src=url;document.head.append(script);});
+ else{const response=await fetch(url);if(!response.ok)throw Error(`Sheet description could not be loaded (${response.status})`);m=await response.json();}
  for(const k of ['sheet','sheetHalf'])if(m[k])m[k]=new URL(m[k],url).href;
  return m;
 }

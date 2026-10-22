@@ -57,6 +57,13 @@ try{
  // postMessage control from the host page.
  ({frame,state}=await open('',480,520));await page.evaluate(()=>{const w=document.getElementById('f').contentWindow;w.postMessage({type:'sprite-player',action:'pause'},'*');w.postMessage({type:'sprite-player',action:'row',value:'W'},'*');});
  await page.waitForTimeout(200);s=await state();test(!s.playing&&s.row===6,'host page controls the player with postMessage');
+ // Knowledge design frame: Fural renders frame HTML as srcdoc in a sandbox without allow-same-origin, and the
+ // nested player inherits that sandbox (opaque origin), exactly as in the "Idle — Sprite Player" design document.
+ await page.unroute(HOST);await page.route(HOST,r=>r.fulfill({contentType:'text/html',body:`<!doctype html><body style="margin:0"><iframe id="d" sandbox="allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox" style="border:0;width:560px;height:620px" srcdoc="${`<!doctype html><style>html,body{margin:0;height:100%}iframe{display:block;width:100%;height:100vh;border:0}</style><iframe src='${base}/rift-runner/sprite-player/?row=S'></iframe>`.replace(/"/g,'&quot;')}"></iframe></body>`}));
+ await page.goto(HOST);const outer=await (await page.waitForSelector('#d')).contentFrame(),inner=await (await outer.waitForSelector('iframe')).contentFrame();
+ await inner.waitForFunction(()=>window.spritePlayer?.state.ready||window.spritePlayer?.state.error,null,{timeout:60000});s=await inner.evaluate(()=>({...window.spritePlayer.state,origin:self.origin}));
+ test(s.ready&&!s.error&&s.origin==='null',`plays inside a Knowledge design frame sandbox (origin ${s.origin}${s.error?', '+s.error:''})`);await page.waitForTimeout(700);
+ test((await inner.evaluate(()=>window.spritePlayer.state.frame))!==s.frame,'design-frame playback advances');await page.screenshot({path:`${OUT}/design-frame.png`});
  // Broken configuration reports an error instead of failing silently.
  ({frame,state}=await open('?manifest=sheets/missing.json',400,400));s=await state();test(!!s.error&&!s.ready,'missing sheet description shows an error');errors.splice(errors.findIndex(e=>e.includes('missing.json')),1);
  test(errors.length===0,'no page or resource errors'+(errors.length?': '+errors.join(' | '):''));
