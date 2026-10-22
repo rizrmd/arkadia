@@ -1,11 +1,12 @@
 // Publishes the sprite player as a layer at https://ark-whachat.fural.space/rift-runner/sprite-player/ and checks every deployed byte.
-//   node scripts/sprite-player/publish.mjs
+//   node scripts/sprite-player/publish.mjs            (--check: only re-verify the deployed bytes and rewrite the receipt)
 // /rift-runner/ is already an open gateway folder, so the gateway itself is not redeployed. Writes docs/sprite-player/deployment.json.
 import fs from 'node:fs/promises';import {createHash} from 'node:crypto';import {execFileSync} from 'node:child_process';import {publishLayer,readDir,URL_BASE} from '../arkadia/publish-layer.mjs';
 const root='public/rift-runner/sprite-player',prefix='/rift-runner/sprite-player',hash=b=>createHash('sha256').update(b).digest('hex');
-const get=async p=>{const r=await fetch(URL_BASE+p,{signal:AbortSignal.timeout(30000)});if(!r.ok)throw Error(`${p}: ${r.status}`);return Buffer.from(await r.arrayBuffer());};
+// The gateway can answer 502 for a few seconds while the sandbox settles after a restart; retry those.
+const get=async(p,tries=6)=>{const r=await fetch(URL_BASE+p,{signal:AbortSignal.timeout(30000)});if(r.status>=500&&tries>1){await new Promise(f=>setTimeout(f,5000));return get(p,tries-1);}if(!r.ok)throw Error(`${p}: ${r.status}`);return Buffer.from(await r.arrayBuffer());};
 const gameBefore=hash(await get('/'));
-const files=await readDir(root);await publishLayer({name:'sprite-player',files,prefix});
+const files=await readDir(root);if(!process.argv.includes('--check'))await publishLayer({name:'sprite-player',files,prefix});
 const resources={};
 for(const [file,base64] of Object.entries(files)){const expected=hash(Buffer.from(base64,'base64')),actual=hash(await get(prefix+file+'?verification='+Date.now()));if(actual!==expected)throw Error('Checksum mismatch '+file);resources[file]=expected;}
 const gameAfter=hash(await get('/'));if(gameBefore!==gameAfter)throw Error('Game homepage changed during publish; inspect concurrent deployment');

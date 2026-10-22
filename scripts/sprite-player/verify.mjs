@@ -1,8 +1,7 @@
 // Chromium check of the sprite player, loaded the way Knowledge loads it: inside an iframe on another page.
 //   node scripts/sprite-player/verify.mjs                       (serves public/ from disk under a stand-in public origin)
 //   BASE=https://ark-whachat.fural.space node scripts/sprite-player/verify.mjs   (deployed player)
-// Writes screenshots and docs/sprite-player/verification[-live].json; a live run also copies its screenshots to the
-// published evidence/ folder, which the Knowledge page shows inline.
+// Writes screenshots and docs/sprite-player/verification[-live].json.
 import fs from 'node:fs';import path from 'node:path';import {chromium} from 'playwright';
 const live=!!process.env.BASE,OUT='docs/sprite-player',TYPES={html:'text/html',js:'text/javascript',css:'text/css',json:'application/json',webp:'image/webp',png:'image/png'};
 fs.mkdirSync(OUT,{recursive:true});
@@ -91,7 +90,6 @@ try{
  ({frame,state}=await open('?manifest=sheets/missing.json',400,400));s=await state();test(!!s.error&&!s.ready,'missing sheet description shows an error');errors.splice(errors.findIndex(e=>e.includes('missing.json')),1);
  test(errors.length===0,'no page or resource errors'+(errors.length?': '+errors.join(' | '):''));
 }finally{await browser.close();}
-if(live)for(const f of ['embed-560.png','all-headings.png','design-frame.png','embed-340.png']){fs.mkdirSync('public/rift-runner/sprite-player/evidence',{recursive:true});fs.copyFileSync(`${OUT}/${f}`,`public/rift-runner/sprite-player/evidence/${f}`);}
 const result={base,checks,failures,verifiedAt:new Date().toISOString()};
 fs.writeFileSync(`${OUT}/verification${live?'-live':''}.json`,JSON.stringify(result,null,1)+'\n');
 console.log(JSON.stringify({passed:checks.length,failed:failures},null,1));process.exit(failures.length?1:0);
