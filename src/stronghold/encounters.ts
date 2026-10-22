@@ -236,7 +236,7 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
     const alpha=Math.min(1,f.age/500)*(f.alive?1:Math.max(0,1-(f.deadFor-3500)/900));if(alpha<=0)continue;
     const v=view(f),hidden=o.hero.occluders(w.x,w.y,box);live.add(f);(w.y<hp.y?layers.back:layers.front).push(v.el);
     // Uprights in front cut the figure where it stands, so only then does its position change the picture.
-    const look=[f.clip.frames[f.frame()],f.vertical?0:f.facing,f.flash>0,light,hidden.length?hidden.map(p=>p.x+':'+p.y).join()+'@'+w.x.toFixed(1)+','+w.y.toFixed(1):''].join('|');
+    const look=[f.clip.frames[f.frame()],f.vertical?0:f.facing,f.flash>0,light,hidden.length?hidden.map(p=>p.x+':'+p.y+':'+(p.occluder?.dataset.frame??'')).join()+'@'+w.x.toFixed(1)+','+w.y.toFixed(1):''].join('|');
     if(look!==v.look){v.look=look;compose(f,v,w.x,w.y,box,sun,r,hidden,look);}
     set(v,'size',v.el.width+'x'+v.el.height+'@'+dpr,()=>{v.el.style.width=v.el.width/dpr+'px';v.el.style.height=v.el.height/dpr+'px';});
     set(v,'at',`translate3d(${s.x+box[0]*k}px,${s.y+box[1]*k}px,0)`,()=>{v.el.style.transform=v.at;v.el.dataset.x=w.x.toFixed(2);v.el.dataset.y=w.y.toFixed(2);});

@@ -1,4 +1,4 @@
-import {walkableGround,gatePassageColumn} from './navigation';
+import {walkableGround,gatePassageColumn,gateTowerFront} from './navigation';
 import type {Sun} from './daylight';
 import type {Walk} from './controls';
 import {loadImage} from '../app/loader';
@@ -16,7 +16,7 @@ export type Pose={clip:string;t:number};
 // leaving a faint ghost so it is never lost behind a wall.
 export function cutOut(c:CanvasRenderingContext2D,list:readonly Placed[],px:number,py:number){
  c.globalCompositeOperation='destination-out';
- for(const p of list){c.save();c.globalAlpha=.72;c.translate(p.x-px,p.y-py);c.transform(1,p.shear,0,p.vertical,0,0);c.drawImage(p.image,-p.width/2,-p.height*p.foot,p.width,p.height);c.restore();}
+ for(const p of list){c.save();c.globalAlpha=.68;c.translate(p.x-px,p.y-py);c.transform(1,p.shear,0,p.vertical,0,0);c.drawImage(p.occluder??p.image,-p.width/2,-p.height*p.foot,p.width,p.height);c.restore();}
  c.globalCompositeOperation='source-over';
 }
 type FrameShadowProfile={base:Float32Array;vc:number;px:Uint8Array;py:Uint8Array};
@@ -72,7 +72,7 @@ export function drawFigureShadow(c:CanvasRenderingContext2D,atlas:HTMLImageEleme
 // A co-op hero is driven from outside: the own hero by prediction (net/client.ts), the others by server snapshots.
 // `face` turns toward a walk direction as the keys do; `look` sets the server's facing outright.
 export type Drive={x:number;y:number;pose?:Pose|null;face?:Walk|null;look?:{facing:number;back:boolean;vertical:boolean}|null};
-export type Placed={layer:string;x:number;y:number;width:number;height:number;foot:number;shear:number;vertical:number;opacity:number;image:HTMLImageElement};
+export type Placed={layer:string;x:number;y:number;width:number;height:number;foot:number;shear:number;vertical:number;opacity:number;image:HTMLImageElement;occluder?:HTMLCanvasElement};
 type Clip={fps:number;loop:boolean;frames:number[];strideScale?:number};
 // A six-view atlas (`views`) names its clips <state>-<view>; the knight's mirrored atlas has no views.
 type Meta={image:string;revision?:string;views?:string[];cell:{w:number;h:number;pivot:{x:number;y:number}};clips:Record<string,Clip>;frames:{x:number;y:number;w:number;h:number}[]};
@@ -109,8 +109,7 @@ export async function createHero<P extends Placed>(o:{layer:HTMLElement;lightmap
  // In front of a figure standing at (px, py): the front walls and gate always; a court sprite when the figure
  // stands behind the front edge of its footprint at the figure's column (or behind its pivot where no column reaches).
  function front(p:P,px:number,py:number){
-  // The full animated gateway uses its own depth layer, so its current frame handles occlusion.
-  if('id' in p&&p.id==='gate')return false;
+  if('id' in p&&p.id==='gate'){const d=Math.abs(px-577);return py<(d<36?775:gateTowerFront(Math.min(135,d)));}
   if(p.layer==='foreground')return py<p.y+12;if(p.layer!=='world')return false;
   let edge=-Infinity;for(const col of o.footprint(p))if(Math.abs(col.x-px)<=col.w/2+RADIUS)edge=Math.max(edge,col.front);
   return py<(edge>-Infinity?edge:p.y);
@@ -169,7 +168,7 @@ export async function createHero<P extends Placed>(o:{layer:HTMLElement;lightmap
   // The canvas is drawn around the foot and moved by place(), so walking redraws it only where uprights in front
   // cut it out (a hero, or an ally in co-op, re-composed every frame it walked).
   const hidden=occluders(x,y,b),at=x.toFixed(1)+','+y.toFixed(1);if(canvas.dataset.x+','+canvas.dataset.y!==at)Object.assign(canvas.dataset,{x:x.toFixed(1),y:y.toFixed(1)});
-  const key=[hero.id,state,clipName(),f.x,f.y,facing,vertical,tint,night.toFixed(2),s.dx,s.dy,s.wx,s.wy,s.alpha,res,b,hidden.length?hidden.map(p=>p.x+':'+p.y).join()+'@'+Math.round(x*4)+','+Math.round(y*4):'',objects.length].join();if(key===drawn)return;drawn=key;
+  const key=[hero.id,state,clipName(),f.x,f.y,facing,vertical,tint,night.toFixed(2),s.dx,s.dy,s.wx,s.wy,s.alpha,res,b,hidden.length?hidden.map(p=>p.x+':'+p.y+':'+(p.occluder?.dataset.frame??'')).join()+'@'+Math.round(x*4)+','+Math.round(y*4):'',objects.length].join();if(key===drawn)return;drawn=key;
   if(res!==k||b.some((v,i)=>v!==box[i])){k=res;box=b;canvas.width=Math.ceil((b[2]-b[0])*k);canvas.height=Math.ceil((b[3]-b[1])*k);canvas.style.width=b[2]-b[0]+'px';canvas.style.height=b[3]-b[1]+'px';}
   const frame=(target:HTMLCanvasElement)=>{const g=target.getContext('2d',{willReadFrequently:target===lit})!;g.globalCompositeOperation='copy';g.drawImage(atlas,f.x,f.y,f.w,f.h,0,0,cell.w,cell.h);g.globalCompositeOperation='source-over';return g;};
   // Multiply per pixel: a multiply fill plus alpha mask would bleed the tint into the soft edges.
