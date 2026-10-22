@@ -7,7 +7,7 @@ let browser;
 try {
  await new Promise(r=>setTimeout(r,1200));
  browser=await chromium.launch({headless:true,env:{...process.env,LD_LIBRARY_PATH:'/home/dev/.local/browser-libs/usr/lib/x86_64-linux-gnu:/opt/fural-antigravity-glibc'},args:['--no-sandbox','--no-zygote','--single-process']});
- const page=await browser.newPage({viewport:{width:1100,height:900},deviceScaleFactor:process.env.CLOSEUP?2:1});
+ const page=await browser.newPage({viewport:{width:1100,height:900},deviceScaleFactor:1});
  await page.addInitScript(()=>localStorage.setItem('arkadia.stronghold.hero',JSON.stringify({x:577,y:700})));
  await page.goto(base+'/?time='+ (process.env.TIME||'.5') +'&offline=1');
  await page.waitForFunction(()=>document.querySelector('#world-canvas')?.dataset.ready==='true');
