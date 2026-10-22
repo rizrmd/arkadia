@@ -31,9 +31,9 @@
 @media (max-width:420px){.clock-phase{display:none}}
 /* Walk thumbstick (see controls.ts): invisible until a touch lands in the bottom third, then centred on that thumb.
    It never takes pointer events itself; controls.ts listens on the window. Keyboards use the arrow keys or WASD. */
-#move-stick{position:fixed;left:0;top:0;z-index:10;width:128px;height:128px;margin:-64px 0 0 -64px;border-radius:50%;background:radial-gradient(circle,#141c2299 0 55%,#141c22cc 100%);border:1px solid #e2c27f;box-shadow:0 4px 16px #0006;pointer-events:none;user-select:none;-webkit-user-select:none;opacity:0;visibility:hidden;transform:scale(.85);transition:opacity .15s,transform .15s,visibility 0s .15s}
+#move-stick{position:fixed;left:0;top:0;z-index:10;width:128px;height:128px;margin:-64px 0 0 -64px;border-radius:50%;background:url('/ui/thumbstick-base.webp') center / contain no-repeat;filter:drop-shadow(0 3px 5px #0007);pointer-events:none;user-select:none;-webkit-user-select:none;opacity:0;visibility:hidden;transform:scale(.85);transition:opacity .15s,transform .15s,visibility 0s .15s}
 #move-stick[data-active=true]{opacity:1;visibility:visible;transform:none;transition:opacity .1s,transform .1s}
-.stick-knob{position:absolute;left:50%;top:50%;width:56px;height:56px;margin:-28px 0 0 -28px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#3a3222,#1d1912);border:2px solid #e2b65f;box-shadow:0 2px 8px #000a;pointer-events:none}
+.stick-knob{position:absolute;left:50%;top:50%;width:56px;height:56px;margin:-28px 0 0 -28px;border-radius:50%;background:url('/ui/thumbstick-knob.webp') center / contain no-repeat;filter:drop-shadow(0 2px 3px #000a);pointer-events:none}
 /* Hero status (see encounters.ts): a bar over the hero's head, moved by the compositor, and a HUD panel. */
 #hero-health{position:absolute;left:-22px;top:0;width:44px;height:7px;padding:1px;border-radius:4px;background:#120c0ccc;box-shadow:0 1px 3px #0008;pointer-events:none;will-change:transform;opacity:0;transition:opacity .2s}
 #hero-health[data-visible=true]{opacity:1}
