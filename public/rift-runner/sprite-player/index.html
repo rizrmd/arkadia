@@ -21,6 +21,8 @@
    <button type="button" id="next" aria-label="Next frame" title="Next frame (→)">›</button>
    <input type="range" id="frame" min="0" max="7" value="0" aria-label="Frame">
    <output id="counter">1 / 8</output>
+   <div class="repeat" role="group" aria-label="Repeat"><button type="button" id="loop" aria-pressed="true">Loop</button><button type="button" id="once" aria-pressed="false">Once</button></div>
+   <div class="zoom" role="group" aria-label="Zoom"><button type="button" id="zoom-out" aria-label="Zoom out" title="Zoom out (−)">−</button><output id="zoom-level" aria-live="polite">100%</output><button type="button" id="zoom-in" aria-label="Zoom in" title="Zoom in (+)">+</button><button type="button" id="zoom-reset" title="Reset zoom (0)">Reset</button></div>
   </div>
   <div class="row options">
    <label>FPS <select id="fps"></select></label>

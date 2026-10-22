@@ -65,6 +65,28 @@ try{
  await inner.waitForFunction(()=>window.spritePlayer?.state.ready||window.spritePlayer?.state.error,null,{timeout:60000});s=await inner.evaluate(()=>({...window.spritePlayer.state,origin:self.origin}));
  test(s.ready&&!s.error&&s.origin==='null',`plays inside a Knowledge design frame sandbox (origin ${s.origin}${s.error?', '+s.error:''})`);await page.waitForTimeout(700);
  test((await inner.evaluate(()=>window.spritePlayer.state.frame))!==s.frame,'design-frame playback advances');await page.screenshot({path:`${OUT}/design-frame.png`});
+ // Simple embed: only Play/Pause, Loop/Once and zoom.
+ await page.setViewportSize({width:600,height:600});({frame,state}=await open('?row=S&controls=simple',560,560));
+ const visible=await frame.$$eval('button,input,select,output',els=>els.filter(e=>e.offsetParent!==null&&getComputedStyle(e).visibility!=='hidden').map(e=>e.id));
+ test(visible.join()==='play,loop,once,zoom-out,zoom-level,zoom-in,zoom-reset',`simple controls show only play, loop/once and zoom (${visible.join()})`);
+ await frame.click('#once');await frame.waitForFunction(()=>!window.spritePlayer.state.playing,null,{timeout:5000}).catch(()=>{});s=await state();
+ test(!s.loop&&!s.playing&&s.frame===7,'Once stops on the last frame');
+ await frame.click('#play');s=await state();test(s.playing&&s.frame===0,'Play after Once restarts from the first frame');
+ await frame.click('#loop');await page.waitForTimeout(2000);s=await state();test(s.loop&&s.playing,'Loop keeps playing past the last frame');
+ await frame.click('#zoom-in');await frame.click('#zoom-in');s=await state();
+ test(s.zoom===1.5&&(await frame.$eval('#zoom-level',e=>e.textContent))==='150%','zoom in steps 100 → 125 → 150 %');
+ const box=await (await frame.$('#stage')).boundingBox();await page.mouse.move(box.x+box.width/2,box.y+box.height/2);await page.mouse.down();await page.mouse.move(box.x+box.width/2+60,box.y+box.height/2+30,{steps:4});await page.mouse.up();
+ s=await state();test(s.pan[0]>0&&s.pan[1]>0,'drag pans the zoomed sprite');await page.screenshot({path:`${OUT}/simple-zoomed.png`});
+ await frame.click('#zoom-reset');s=await state();test(s.zoom===1&&s.pan[0]===0&&s.pan[1]===0,'Reset returns to 100 % and centres');
+ await frame.click('#zoom-out');s=await state();test(s.zoom===0.75,'zoom out below 100 %');await frame.click('#zoom-reset');
+ await page.keyboard.press('Escape');await page.screenshot({path:`${OUT}/simple.png`});
+ ({frame,state}=await open('?controls=simple&zoom=2&loop=0',560,560));s=await state();test(s.zoom===2&&!s.loop,'zoom and loop=0 from the URL');
+ // Knowledge page iframe: fural.space renders <iframe> from *.fural.space in a card with this sandbox, no-referrer and lazy loading.
+ await page.setViewportSize({width:760,height:700});await page.unroute(HOST);await page.route(HOST,r=>r.fulfill({contentType:'text/html',body:`<!doctype html><body style="margin:0"><iframe id="k" src="${base}/rift-runner/sprite-player/?row=S&controls=simple" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox" referrerpolicy="no-referrer" loading="lazy" allowfullscreen style="display:block;border:0;width:100%;height:620px"></iframe></body>`}));
+ await page.goto(HOST);const knowledge=await (await page.waitForSelector('#k')).contentFrame();
+ await knowledge.waitForFunction(()=>window.spritePlayer?.state.ready||window.spritePlayer?.state.error,null,{timeout:60000});s=await knowledge.evaluate(()=>window.spritePlayer.state);
+ test(s.ready&&!s.error&&s.row===4,'plays inside a Knowledge page iframe (fural.space sandbox card)');await page.waitForTimeout(700);
+ test((await knowledge.evaluate(()=>window.spritePlayer.state.frame))!==s.frame,'Knowledge page iframe playback advances');await page.screenshot({path:`${OUT}/knowledge-iframe.png`});
  // Broken configuration reports an error instead of failing silently.
  ({frame,state}=await open('?manifest=sheets/missing.json',400,400));s=await state();test(!!s.error&&!s.ready,'missing sheet description shows an error');errors.splice(errors.findIndex(e=>e.includes('missing.json')),1);
  test(errors.length===0,'no page or resource errors'+(errors.length?': '+errors.join(' | '):''));
