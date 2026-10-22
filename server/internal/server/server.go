@@ -13,6 +13,7 @@ import (
 	"path"
 	"path/filepath"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/coder/websocket"
@@ -22,9 +23,11 @@ import (
 
 // Server routes HTTP requests.
 type Server struct {
-	Rooms *room.Registry
-	Site  string // directory of the built client
-	Log   *slog.Logger
+	Rooms     *room.Registry
+	Site      string // directory of the built client
+	CacheDir  string // directory for cached lossless WebP conversions (defaults to <Site>/.webp-cache)
+	Log       *slog.Logger
+	webpLocks sync.Map
 }
 
 // Handler returns the HTTP routes.
@@ -32,6 +35,7 @@ func (s *Server) Handler() http.Handler {
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /ws", s.ws)
 	mux.HandleFunc("GET /api/rooms/{code}", s.roomInfo)
+	mux.HandleFunc("GET /asset-sizes.json", s.serveAssetSizes)
 	mux.HandleFunc("GET /healthz", func(w http.ResponseWriter, _ *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(map[string]any{"ok": true, "rooms": s.Rooms.Count(), "protocol": room.Version})
@@ -77,6 +81,9 @@ func (s *Server) static(w http.ResponseWriter, r *http.Request) {
 	st, err := f.Stat()
 	if err != nil || st.IsDir() {
 		http.Error(w, "Not found", http.StatusNotFound)
+		return
+	}
+	if strings.EqualFold(path.Ext(p), ".png") && s.servePNGAsWebP(w, r, p, file, st) {
 		return
 	}
 	if strings.HasPrefix(p, "/assets/") && strings.Contains(path.Base(p), "-") && (path.Ext(p) == ".js" || path.Ext(p) == ".css") {

@@ -37,10 +37,20 @@ func main() {
 		log.Error("ROOM_TTL", "err", err)
 		os.Exit(1)
 	}
-	s := &server.Server{Rooms: room.NewRegistry(nav, ttl, 500), Site: env("SITE_DIR", "dist"), Log: log}
-	srv := &http.Server{Addr: ":" + env("PORT", "3000"), Handler: s.Handler(), ReadHeaderTimeout: 10 * time.Second}
+	s := &server.Server{
+		Rooms:    room.NewRegistry(nav, ttl, 500),
+		Site:     env("SITE_DIR", "dist"),
+		CacheDir: os.Getenv("WEBP_CACHE_DIR"),
+		Log:      log,
+	}
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer stop()
+	if len(os.Args) > 1 && os.Args[1] == "--warm-webp" {
+		s.WarmWebPCache(ctx)
+		return
+	}
+	go s.WarmWebPCache(ctx)
+	srv := &http.Server{Addr: ":" + env("PORT", "3000"), Handler: s.Handler(), ReadHeaderTimeout: 10 * time.Second}
 	go func() {
 		<-ctx.Done()
 		shutdown, cancel := context.WithTimeout(context.Background(), 5*time.Second)

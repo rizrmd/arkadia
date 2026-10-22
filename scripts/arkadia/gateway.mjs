@@ -3,16 +3,17 @@
 //   /ws /api/ /healthz      proxied to the co-op Go server (coop/arkadia on 127.0.0.1:3001)
 //   /ember-warden-review/   the Ember Warden animation review
 //   /enemies/ /rift-runner/ and every other review folder from the former split sandboxes
+//   /typography/            the MSDF typography rendering sample (HUD and Choose Your Hero)
 // Releases arrive as layers (see publish-layer.mjs) and are applied once at boot, oldest first.
 import http from 'node:http';import net from 'node:net';import fs from 'node:fs';import path from 'node:path';import {gunzipSync} from 'node:zlib';import {spawn,execFileSync} from 'node:child_process';
 const home=process.cwd(),www=path.join(home,'www'),layers=path.join(home,'layers'),coopBin=path.join(home,'coop/arkadia'),applied=path.join(home,'applied.json');
 const PORT=+(process.env.PORT||3000),COOP_PORT=+(process.env.COOP_PORT||3001);
 // Folders with their own pages (directory index and .html allowed); any other .html is a retired page and redirects home.
-const OPEN=['/environment-corners/','/rift-runner/','/enemies/','/ember-warden-review/','/knight-footfalls/review.html'];
+const OPEN=['/environment-corners/','/typography/','/rift-runner/','/enemies/','/ember-warden-review/','/knight-footfalls/review.html'];
 // Former sandbox roots, now folders.
-const MOVED={'/ember-warden-review':'/ember-warden-review/','/enemies':'/enemies/v1/','/enemies/':'/enemies/v1/'};
+const MOVED={'/ember-warden-review':'/ember-warden-review/','/typography':'/typography/','/enemies':'/enemies/v1/','/enemies/':'/enemies/v1/'};
 
-function write(dest,bytes){fs.mkdirSync(path.dirname(dest),{recursive:true});fs.writeFileSync(dest,bytes);}
+function write(dest,bytes,mtime){fs.mkdirSync(path.dirname(dest),{recursive:true});fs.writeFileSync(dest,bytes);if(mtime)try{fs.utimesSync(dest,mtime,mtime);}catch{}}
 function target(key,layer){return path.join(www,path.normalize((layer.prefix||'')+key));}
 // A layer is layers/<id>.json: {seq, parts, format: 'gzjson' (gzip JSON {path: base64}) | 'tgz' (game release: arkadia + site/), prefix?}.
 // A layer without a prefix that carries /index.html is a game release: that file is the game page.
@@ -25,7 +26,7 @@ function applyLayers(){
    if(layer.format==='tgz'){
     const tmp=path.join(home,'.layer-tmp');fs.rmSync(tmp,{recursive:true,force:true});fs.mkdirSync(tmp);execFileSync('tar',['-xz','-C',tmp],{input:bytes,maxBuffer:1<<30});
     if(fs.existsSync(path.join(tmp,'arkadia'))){fs.mkdirSync(path.dirname(coopBin),{recursive:true});fs.copyFileSync(path.join(tmp,'arkadia'),coopBin);fs.chmodSync(coopBin,0o755);}
-    const site=path.join(tmp,'site');if(fs.existsSync(site))for(const f of fs.readdirSync(site,{recursive:true})){const src=path.join(site,f);if(fs.statSync(src).isFile())write(target('/'+f.split(path.sep).join('/'),layer),fs.readFileSync(src));}
+    const site=path.join(tmp,'site');if(fs.existsSync(site))for(const f of fs.readdirSync(site,{recursive:true})){const src=path.join(site,f),st=fs.statSync(src);if(st.isFile())write(target('/'+f.split(path.sep).join('/'),layer),fs.readFileSync(src),st.mtime);}
     fs.rmSync(tmp,{recursive:true,force:true});
    }else for(const [key,b64] of Object.entries(JSON.parse(gunzipSync(bytes))))write(target(key,layer),Buffer.from(b64,'base64'));
    done.push(layer.id);fs.writeFileSync(applied,JSON.stringify(done,null,1));console.log('Applied layer',layer.id);
@@ -67,10 +68,10 @@ function sendFile(req,res,file,p){
   res.writeHead(200,{...headers,'Content-Length':st.size});if(req.method==='HEAD')res.end();else fs.createReadStream(file).pipe(res);
  });
 }
-const toCoop=p=>p==='/ws'||p==='/healthz'||p.startsWith('/api/');
-function proxy(req,res){
+const toCoop=p=>p==='/ws'||p==='/healthz'||p==='/asset-sizes.json'||p.startsWith('/api/')||(p.toLowerCase().endsWith('.png')&&fs.existsSync(path.join(www,p)));
+function proxy(req,res,fallback){
  const up=http.request({host:'127.0.0.1',port:COOP_PORT,method:req.method,path:req.url,headers:req.headers},r=>{res.writeHead(r.statusCode,r.headers);r.pipe(res);});
- up.on('error',()=>res.headersSent?res.destroy():res.writeHead(502,NO_STORE).end('Co-op server unavailable'));req.pipe(up);
+ up.on('error',()=>res.headersSent?res.destroy():fallback?fallback():res.writeHead(502,NO_STORE).end('Co-op server unavailable'));req.pipe(up);
 }
 
 applyLayers();startCoop();
@@ -79,7 +80,7 @@ fs.rmSync(path.join(home,'builds'),{recursive:true,force:true});
 const server=http.createServer((req,res)=>{
  let u,p;try{u=new URL(req.url,'http://local');p=decodeURIComponent(u.pathname);}catch{res.writeHead(400,NO_STORE).end();return;}
  if(p.includes('\0')||p.split('/').includes('..')){res.writeHead(400,NO_STORE).end();return;}
- if(toCoop(p))return proxy(req,res);
+ if(toCoop(p))return proxy(req,res,p.toLowerCase().endsWith('.png')||p==='/asset-sizes.json'?()=>sendFile(req,res,path.join(www,p),p):null);
  if(MOVED[p]){res.writeHead(302,{...NO_STORE,Location:MOVED[p]+u.search}).end();return;}
  if(p.endsWith('/')&&p!=='/'&&isOpen(p)&&fs.existsSync(path.join(www,p,'index.html')))return sendFile(req,res,path.join(www,p,'index.html'),p);
  if(p.endsWith('.html')&&p!=='/index.html'&&!isOpen(p)){res.writeHead(302,{...NO_STORE,Location:'/'+u.search}).end();return;}

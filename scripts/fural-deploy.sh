@@ -12,7 +12,7 @@ STAGE="$HOME/releases/arkadia-game"
 
 npm run build
 # The organization shares 1 GiB of RAM across sessions: compile one package at a time under a memory limit.
-export GOFLAGS=-p=1 GOMAXPROCS=2 GOMEMLIMIT=256MiB
+export GOFLAGS=-p=1 GOMAXPROCS=2 GOMEMLIMIT=256MiB GOTOOLCHAIN=local
 (cd server && go test ./... && CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -trimpath -ldflags="-s -w" -o bin/arkadia ./cmd/arkadia)
 node scripts/coop-smoke.mjs >/dev/null
 
@@ -21,7 +21,8 @@ list="$(mktemp)"; trap 'rm -f "$list"' EXIT
 node scripts/coop-site-files.mjs > "$list"
 rm -rf "$STAGE"; mkdir -p "$STAGE/site"
 cp server/bin/arkadia "$STAGE/arkadia"
-while IFS= read -r f; do mkdir -p "$STAGE/site/$(dirname "$f")"; cp "dist/$f" "$STAGE/site/$f"; done < "$list"
+while IFS= read -r f; do mkdir -p "$STAGE/site/$(dirname "$f")"; cp -p "dist/$f" "$STAGE/site/$f"; done < "$list"
+SITE_DIR="$STAGE/site" "$STAGE/arkadia" --warm-webp
 # The co-op and hero-picker screenshots, test reports and UI frame sources embedded in Knowledge.
 mkdir -p "$STAGE/site/coop/docs"; cp docs/coop/*.webp docs/coop/*.json "$STAGE/site/coop/docs/"
 mkdir -p "$STAGE/site/hero-select"; cp docs/hero-select/*.webp docs/hero-select/*.json "$STAGE/site/hero-select/"
@@ -39,6 +40,7 @@ mkdir -p "$STAGE/site/combat-vfx"; cp docs/combat-vfx/*.webp docs/combat-vfx/*.j
 mkdir -p "$STAGE/site/three-slot-autocast"; cp docs/three-slot-autocast/*.webp docs/three-slot-autocast/*.json "$STAGE/site/three-slot-autocast/"
 mkdir -p "$STAGE/site/monster-scaling"; cp docs/monster-scaling/*.webp docs/monster-scaling/*.json "$STAGE/site/monster-scaling/"
 mkdir -p "$STAGE/site/locked-zoom-aoe"; cp docs/locked-zoom-aoe/*.webp docs/locked-zoom-aoe/*.json docs/assets/locked-zoom-aoe-ref.png "$STAGE/site/locked-zoom-aoe/"
+mkdir -p "$STAGE/site/go-webp-cache"; cp docs/go-webp-cache/*.webp docs/go-webp-cache/*.json "$STAGE/site/go-webp-cache/"
 mkdir -p "$STAGE/site/ui"; cp assets-src/ui/hero-card-frame*.png "$STAGE/site/ui/"
 echo "Staged $(wc -l < "$list") files, $(du -sh "$STAGE" | cut -f1) in $STAGE"
 

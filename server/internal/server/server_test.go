@@ -1,8 +1,12 @@
 package server
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
+	"image"
+	"image/color"
+	"image/png"
 	"io"
 	"log/slog"
 	"net/http"
@@ -17,6 +21,7 @@ import (
 	"github.com/coder/websocket"
 	"github.com/rizrmd/arkadia/server/internal/room"
 	"github.com/rizrmd/arkadia/server/internal/sim"
+	"golang.org/x/image/webp"
 )
 
 func newTestServer(t *testing.T) (*httptest.Server, *room.Registry) {
@@ -246,3 +251,108 @@ func TestEveryPlayerSeesEachOthersHeroPick(t *testing.T) {
 		t.Fatalf("heroes after picks %v", got)
 	}
 }
+
+func TestAutomaticPNGToWebPLosslessConversionAndCache(t *testing.T) {
+	nav, err := sim.LoadNav()
+	if err != nil {
+		t.Fatal(err)
+	}
+	site := t.TempDir()
+	cacheDir := t.TempDir()
+
+	// Create a synthetic 64x64 NRGBA PNG with both opaque and dirty-transparent pixels.
+	srcImg := image.NewNRGBA(image.Rect(0, 0, 64, 64))
+	for y := 0; y < 64; y++ {
+		for x := 0; x < 64; x++ {
+			if (x+y)%3 == 0 {
+				// Transparent pixel with non-zero RGB noise
+				srcImg.SetNRGBA(x, y, color.NRGBA{R: 123, G: 45, B: 67, A: 0})
+			} else {
+				srcImg.SetNRGBA(x, y, color.NRGBA{R: uint8(x * 3), G: uint8(y * 3), B: 180, A: 255})
+			}
+		}
+	}
+	pngDir := filepath.Join(site, "modular-stronghold", "v2")
+	if err := os.MkdirAll(pngDir, 0o755); err != nil {
+		t.Fatal(err)
+	}
+	pngPath := filepath.Join(pngDir, "bastion.png")
+	var pngBuf bytes.Buffer
+	if err := png.Encode(&pngBuf, srcImg); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(pngPath, pngBuf.Bytes(), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	// Write initial asset-sizes.json with the raw PNG byte size.
+	initialSizes, _ := json.Marshal(map[string]int{"/modular-stronghold/v2/bastion.png": pngBuf.Len()})
+	if err := os.WriteFile(filepath.Join(site, "asset-sizes.json"), initialSizes, 0o644); err != nil {
+		t.Fatal(err)
+	}
+
+	reg := room.NewRegistry(nav, time.Minute, 10)
+	s := &Server{Rooms: reg, Site: site, CacheDir: cacheDir, Log: slog.New(slog.NewTextHandler(io.Discard, nil))}
+	ts := httptest.NewServer(s.Handler())
+	t.Cleanup(ts.Close)
+
+	// 1. First request converts PNG -> lossless WebP (MISS) and caches on disk.
+	res1, err := http.Get(ts.URL + "/modular-stronghold/v2/bastion.png")
+	if err != nil {
+		t.Fatal(err)
+	}
+	webpBytes1, _ := io.ReadAll(res1.Body)
+	res1.Body.Close()
+	if res1.StatusCode != 200 || res1.Header.Get("Content-Type") != "image/webp" {
+		t.Fatalf("status=%d content-type=%q", res1.StatusCode, res1.Header.Get("Content-Type"))
+	}
+	if res1.Header.Get("X-Asset-Cache") != "MISS" {
+		t.Fatalf("expected MISS on first request, got %q", res1.Header.Get("X-Asset-Cache"))
+	}
+
+	// Verify decoded WebP is 100% visually/mathematically lossless for all visible pixels
+	// and has cleaned RGB=(0,0,0) on alpha=0 pixels.
+	decImg, err := webp.Decode(bytes.NewReader(webpBytes1))
+	if err != nil {
+		t.Fatalf("webp decode failed: %v", err)
+	}
+	decNRGBA := cleanTransparentNRGBA(decImg)
+	expectedNRGBA := cleanTransparentNRGBA(srcImg)
+	if !bytes.Equal(decNRGBA.Pix, expectedNRGBA.Pix) {
+		t.Fatal("decoded WebP pixels differ from lossless source PNG")
+	}
+
+	// 2. Second request serves directly from disk cache (HIT).
+	res2, err := http.Get(ts.URL + "/modular-stronghold/v2/bastion.png")
+	if err != nil {
+		t.Fatal(err)
+	}
+	webpBytes2, _ := io.ReadAll(res2.Body)
+	res2.Body.Close()
+	if res2.Header.Get("X-Asset-Cache") != "HIT" || !bytes.Equal(webpBytes1, webpBytes2) {
+		t.Fatalf("expected cache HIT with identical bytes, got %q", res2.Header.Get("X-Asset-Cache"))
+	}
+
+	// 3. /asset-sizes.json reports the cached WebP byte size instead of the raw PNG size.
+	resSizes, err := http.Get(ts.URL + "/asset-sizes.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var gotSizes map[string]int
+	json.NewDecoder(resSizes.Body).Decode(&gotSizes)
+	resSizes.Body.Close()
+	if gotSizes["/modular-stronghold/v2/bastion.png"] != len(webpBytes1) {
+		t.Fatalf("asset-sizes.json reported %d, want cached WebP size %d", gotSizes["/modular-stronghold/v2/bastion.png"], len(webpBytes1))
+	}
+
+	// 4. Explicit ?format=png serves the original PNG untouched.
+	resPNG, err := http.Get(ts.URL + "/modular-stronghold/v2/bastion.png?format=png")
+	if err != nil {
+		t.Fatal(err)
+	}
+	rawBody, _ := io.ReadAll(resPNG.Body)
+	resPNG.Body.Close()
+	if resPNG.Header.Get("Content-Type") != "image/png" || !bytes.Equal(rawBody, pngBuf.Bytes()) {
+		t.Fatalf("?format=png returned content-type=%q len=%d", resPNG.Header.Get("Content-Type"), len(rawBody))
+	}
+}
+
