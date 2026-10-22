@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sprite Player</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="player" id="player" data-bg="dark">
+ <div class="stage" id="stage">
+  <canvas id="canvas" role="img" aria-label="Sprite animation"></canvas>
+  <p class="status" id="status" role="status">Loading sprite sheet…</p>
+  <div class="badge" id="badge" aria-hidden="true"></div>
+ </div>
+ <form class="controls" id="controls" onsubmit="return false">
+  <div class="row headings" id="headings" role="group" aria-label="Heading"></div>
+  <div class="row transport">
+   <button type="button" id="prev" aria-label="Previous frame" title="Previous frame (←)">‹</button>
+   <button type="button" id="play" class="primary" title="Play / pause (Space)">Pause</button>
+   <button type="button" id="next" aria-label="Next frame" title="Next frame (→)">›</button>
+   <input type="range" id="frame" min="0" max="7" value="0" aria-label="Frame">
+   <output id="counter">1 / 8</output>
+  </div>
+  <div class="row options">
+   <label>FPS <select id="fps"></select></label>
+   <label>Background <select id="bg"><option value="dark">Dark</option><option value="light">Light</option><option value="checker">Checker</option><option value="snow">Snow</option></select></label>
+   <label class="check"><input type="checkbox" id="guides"> Pivot</label>
+   <label class="check"><input type="checkbox" id="all"> All headings</label>
+  </div>
+ </form>
+</main>
+<script src="player.js"></script>
+</body>
+</html>

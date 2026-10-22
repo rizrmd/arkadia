@@ -1,0 +1,28 @@
+{
+ "base": "https://sprite-player.example",
+ "checks": [
+  "sample sheet loads inside an iframe",
+  "starts on heading S at 5 fps",
+  "timed playback advances frames (saw 8 distinct)",
+  "pause button stops playback",
+  "paused frame holds",
+  "next frame",
+  "previous frame wraps",
+  "eight heading buttons in sheet order",
+  "all 64 heading/frame cells drawn (64)",
+  "character pixels on canvas (21.6 %)",
+  "arrow key changes heading",
+  "all-headings view, pivot guides and checker background",
+  "row, fps, background and guides from the URL",
+  "large stage switches to the full-resolution sheet",
+  "controls=min hides the option rows",
+  "no horizontal overflow at 340 px",
+  "thumbnail-size embed keeps the half-size sheet",
+  "sheet parameters work without a manifest",
+  "host page controls the player with postMessage",
+  "missing sheet description shows an error",
+  "no page or resource errors"
+ ],
+ "failures": [],
+ "verifiedAt": "2026-10-22T15:55:31.581Z"
+}
