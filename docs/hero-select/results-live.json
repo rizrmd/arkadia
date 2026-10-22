@@ -20,6 +20,7 @@
  "shots": [
   "docs/hero-select/1-picker-phone-live.webp",
   "docs/hero-select/2-ember-phone-live.webp",
+  "docs/hero-select/7-reset-picker-live.webp",
   "docs/hero-select/3-ember-attack-desktop-live.webp",
   "docs/hero-select/4-picker-desktop-live.webp",
   "docs/hero-select/5-rift-runner-desktop-live.webp",
@@ -27,6 +28,17 @@
  ],
  "emberHud": "Ember Warden",
  "reloadAsks": false,
+ "reset": {
+  "first": "true",
+  "focused": "rift-runner",
+  "hero": "rift-runner",
+  "x": 590,
+  "y": 420,
+  "savedHero": null,
+  "pickedSession": null,
+  "savedPos": null,
+  "urlHero": null
+ },
  "walkViews": {
   "SE": "move-SE",
   "SW": "move-SW",
@@ -35,16 +47,16 @@
   "S": "move-S",
   "N": "move-N"
  },
- "attackClip": "attack-S",
+ "attackClip": "attack-NE",
  "reopen": {
   "first": "false",
   "closeShown": true,
   "focused": "ember-warden"
  },
- "riftClip": "idle-SE",
- "room": "838MC",
+ "riftClip": "idle-NE",
+ "room": "Y32U4",
  "roster": [
-  "Guest 3346Ember Warden",
+  "Guest 3562Ember Warden",
   "BimaRift Runner"
  ],
  "coopSwitch": "ally shown as Ember Warden after switching",
