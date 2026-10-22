@@ -1,6 +1,6 @@
 ## Sprite player
 
-An iframe-ready player for grid sprite sheets (rows = headings, columns = frames). Live: https://ark-whachat.fural.space/rift-runner/sprite-player/
+An iframe-ready player for grid sprite sheets (rows = headings, columns = frames). Live: https://ark-whachat.fural.space/sprite-player/
 
 Built-in pose samples from Knowledge (`Art Direction › Characters › Rift Runner / Ember Warden › Sprites & Animation`):
 - **Rift Runner — Idle** (`NKBD5d29155bc5f9d7ba568672e6`, attachment `DA0addbe3d3b0d4d9e3631bdc0`): 8 headings × 8 frames, 384 × 384 cells, foot pivot (192, 360), 5 fps, Loop.
@@ -19,8 +19,8 @@ Built-in pose samples from Knowledge (`Art Direction › Characters › Rift Run
 Knowledge pages render `<iframe>` from `*.fural.space` hosts in a preview card (sandbox `allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox`, lazy, no referrer). Each per-pose Knowledge page under `Sprites & Animation` (`Idle`, `Hurt`, `Death`, `Run`) embeds its dedicated pose player directly.
 
 ```html
-<iframe src="https://ark-whachat.fural.space/rift-runner/sprite-player/?hero=rift-runner&pose=idle&row=S&controls=simple" title="Rift Runner — Idle sprite player" width="100%" height="560"></iframe>
-<iframe src="https://ark-whachat.fural.space/rift-runner/sprite-player/?hero=ember-warden&pose=idle&row=S&controls=simple" title="Ember Warden — Idle sprite player" width="100%" height="560"></iframe>
+<iframe src="https://ark-whachat.fural.space/sprite-player/?hero=rift-runner&pose=idle&row=S&controls=simple" title="Rift Runner — Idle sprite player" width="100%" height="560"></iframe>
+<iframe src="https://ark-whachat.fural.space/sprite-player/?hero=ember-warden&pose=idle&row=S&controls=simple" title="Ember Warden — Idle sprite player" width="100%" height="560"></iframe>
 ```
 
 | Parameter | Effect |

@@ -1,0 +1,35 @@
+spritePlayerSheet({
+ "name": "Ember Warden — Idle",
+ "hero": "ember-warden",
+ "pose": "idle",
+ "sheet": "ember-warden-idle.webp",
+ "sheetHalf": "ember-warden-idle@0.5x.webp",
+ "cell": [
+  384,
+  384
+ ],
+ "columns": 8,
+ "rows": 8,
+ "pivot": [
+  192,
+  360
+ ],
+ "fps": 5,
+ "loop": true,
+ "rowLabels": [
+  "N",
+  "NE",
+  "E",
+  "SE",
+  "S",
+  "SW",
+  "W",
+  "NW"
+ ],
+ "defaultRow": 4,
+ "source": {
+  "knowledge": "NKBD9c1df4ae8524e49a749059f3",
+  "attachment": "DA643ce3d7b15fb6e943e49c3c",
+  "file": "assets-src/sprite-player/ember-warden-idle.png"
+ }
+});

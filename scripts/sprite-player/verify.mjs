@@ -10,7 +10,7 @@ const base=process.env.BASE||'https://sprite-player.example';
 const serveDisk=route=>{const p=decodeURIComponent(new URL(route.request().url()).pathname),f=path.join('public',p.endsWith('/')?p+'index.html':p);
  fs.existsSync(f)?route.fulfill({contentType:TYPES[path.extname(f).slice(1)]||'application/octet-stream',body:fs.readFileSync(f)}):route.fulfill({status:404,body:''});};
 // The host page is served from a separate origin, as the Fural Knowledge page is.
-const HOST='https://knowledge.example/host.html',host=(query,w,h)=>`<!doctype html><body style="margin:0;background:#fff"><iframe id="f" src="${base}/rift-runner/sprite-player/${query}" style="border:0;width:${w}px;height:${h}px;display:block" title="Sprite player"></iframe></body>`;
+const HOST='https://knowledge.example/host.html',host=(query,w,h)=>`<!doctype html><body style="margin:0;background:#fff"><iframe id="f" src="${base}/sprite-player/${query}" style="border:0;width:${w}px;height:${h}px;display:block" title="Sprite player"></iframe></body>`;
 const checks=[],failures=[],test=(ok,name)=>(ok?checks:failures).push(name);
 const browser=await chromium.launch({headless:true,env:{...process.env,LD_LIBRARY_PATH:'/home/dev/.local/browser-libs/usr/lib/x86_64-linux-gnu:/opt/fural-antigravity-glibc'},args:['--no-sandbox','--no-zygote','--single-process']});
 // One page for every scenario: closing a page takes down single-process Chromium.
@@ -60,7 +60,7 @@ try{
  await page.waitForTimeout(200);s=await state();test(!s.playing&&s.row===6,'host page controls the player with postMessage');
  // Knowledge design frame: Fural renders frame HTML as srcdoc in a sandbox without allow-same-origin, and the
  // nested player inherits that sandbox (opaque origin), exactly as in the "Idle — Sprite Player" design document.
- await page.setViewportSize({width:600,height:660}); await page.unroute(HOST);await page.route(HOST,r=>r.fulfill({contentType:'text/html',body:`<!doctype html><body style="margin:0"><iframe id="d" sandbox="allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox" style="border:0;width:560px;height:620px" srcdoc="${`<!doctype html><style>html,body{margin:0;height:100%}iframe{display:block;width:100%;height:100vh;border:0}</style><iframe src='${base}/rift-runner/sprite-player/?row=S'></iframe>`.replace(/"/g,'&quot;')}"></iframe></body>`}));
+ await page.setViewportSize({width:600,height:660}); await page.unroute(HOST);await page.route(HOST,r=>r.fulfill({contentType:'text/html',body:`<!doctype html><body style="margin:0"><iframe id="d" sandbox="allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox" style="border:0;width:560px;height:620px" srcdoc="${`<!doctype html><style>html,body{margin:0;height:100%}iframe{display:block;width:100%;height:100vh;border:0}</style><iframe src='${base}/sprite-player/?row=S'></iframe>`.replace(/"/g,'&quot;')}"></iframe></body>`}));
  await page.goto(HOST);const outer=await (await page.waitForSelector('#d')).contentFrame(),inner=await (await outer.waitForSelector('iframe')).contentFrame();
  await inner.waitForFunction(()=>window.spritePlayer?.state.ready||window.spritePlayer?.state.error,null,{timeout:60000});s=await inner.evaluate(()=>({...window.spritePlayer.state,origin:self.origin}));
  test(s.ready&&!s.error&&s.origin==='null',`plays inside a Knowledge design frame sandbox (origin ${s.origin}${s.error?', '+s.error:''})`);await page.waitForTimeout(700);
@@ -85,7 +85,7 @@ try{
  await page.keyboard.press('Escape');await page.screenshot({path:`${OUT}/simple.png`});
  ({frame,state}=await open('?controls=simple&zoom=2&loop=0',560,560));s=await state();test(s.zoom===2&&!s.loop,'zoom and loop=0 from the URL');
  // Knowledge page iframe: fural.space renders <iframe> from *.fural.space in a card with this sandbox, no-referrer and lazy loading.
- await page.setViewportSize({width:760,height:700});await page.unroute(HOST);await page.route(HOST,r=>r.fulfill({contentType:'text/html',body:`<!doctype html><body style="margin:0"><iframe id="k" src="${base}/rift-runner/sprite-player/?row=S&controls=simple" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox" referrerpolicy="no-referrer" loading="lazy" allowfullscreen style="display:block;border:0;width:100%;height:560px"></iframe></body>`}));
+ await page.setViewportSize({width:760,height:700});await page.unroute(HOST);await page.route(HOST,r=>r.fulfill({contentType:'text/html',body:`<!doctype html><body style="margin:0"><iframe id="k" src="${base}/sprite-player/?row=S&controls=simple" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox" referrerpolicy="no-referrer" loading="lazy" allowfullscreen style="display:block;border:0;width:100%;height:560px"></iframe></body>`}));
  await page.goto(HOST);const knowledge=await (await page.waitForSelector('#k')).contentFrame();
  await knowledge.waitForFunction(()=>window.spritePlayer?.state.ready||window.spritePlayer?.state.error,null,{timeout:60000});s=await knowledge.evaluate(()=>window.spritePlayer.state);
  test(s.ready&&!s.error&&s.row===4,'plays inside a Knowledge page iframe (fural.space sandbox card)');await page.waitForTimeout(700);
