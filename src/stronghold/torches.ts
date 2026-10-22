@@ -7,7 +7,9 @@ export const TORCHES=[
   {u:n,v:0,lift:65,wall:true},{u:0,v:n,lift:65,wall:true},
   {u:n,v:15.5,lift:65,wall:true},{u:15.5,v:n,lift:65,wall:true}
  ]),
- ...[[5.5,6],[6,10],[10,6],[10.5,10]].map(([u,v])=>({u,v,lift:48,wall:false}))
+ // Clear the whole tent silhouette (including the roof and guy ropes), not
+ // just its ground footprint. Keep the approach through the court open.
+ ...[[4.5,4.5],[4.5,10.5],[10.5,4.5],[12,12]].map(([u,v])=>({u,v,lift:48,wall:false}))
 ].map(t=>({...t,...tilePoint(t.u,t.v)}));
 export const torchesOn=(time:number)=>phaseOf(time)==='Night';
 
@@ -17,12 +19,35 @@ export const torchAssetsReady=Promise.all(frames.map(image=>image.decode()));
 const W=24,H=39,TOP=15.75;
 // Keep source proportions and enough texels for the maximum 2.2× camera zoom.
 const FLAME_SOURCE_HEIGHT=132,FLAME_HEIGHT=H*FLAME_SOURCE_HEIGHT/290,RESOLUTION=3;
+// Small deterministic ground patches are cached once; flame animation never
+// regenerates grass geometry or repaints the courtyard.
+const postGround=TORCHES.filter(t=>!t.wall).map((_,index)=>{
+ const patch=document.createElement('canvas');patch.width=216;patch.height=108;
+ const g=patch.getContext('2d')!;g.scale(3,3);g.translate(36,19);
+ let seed=917+index*431;const random=()=>((seed=(Math.imul(seed,1664525)+1013904223)>>>0)/4294967296);
+ const shade=g.createRadialGradient(0,0,1,0,0,29);shade.addColorStop(0,'#343b2480');shade.addColorStop(1,'#40472b00');
+ g.save();g.scale(1,.38);g.fillStyle=shade;g.fillRect(-32,-32,64,64);g.restore();
+ for(let i=0;i<180;i++){
+  const angle=random()*Math.PI*2,r=Math.sqrt(random());const x=Math.cos(angle)*r*30,y=Math.sin(angle)*r*10;
+  g.globalAlpha=.35+random()*.45;g.fillStyle=['#555d35','#687043','#7b7d4c','#464d2e'][i%4];
+  g.beginPath();g.ellipse(x,y,1+random()*3,.4+random()*1.1,-.35,0,Math.PI*2);g.fill();
+ }
+ g.globalAlpha=.85;
+ for(let i=0;i<26;i++){
+  const x=(random()-.5)*44,y=(random()-.5)*13,h=2+random()*5;
+  g.strokeStyle=i%2?'#777d48':'#454f2e';g.lineWidth=.55;g.beginPath();g.moveTo(x,y);g.quadraticCurveTo(x-1,y-h*.6,x+(random()-.5)*4,y-h);g.stroke();
+ }
+ g.globalAlpha=1;g.fillStyle='#27271f88';g.beginPath();g.ellipse(0,0,4,1.6,0,0,Math.PI*2);g.fill();
+ return patch;
+});
 // The unlit body is baked in daylight; at night the firelit lower sconce sits over the wall bloom while local canvases animate the upper flame.
 export function drawTorches(c:CanvasRenderingContext2D,lit:boolean){
  const frame=lit?frames[1]:frames[3];
  if(!frame.complete||!frame.naturalWidth)return;
+ let post=0;
  for(const t of TORCHES){
   const y=t.y-t.lift;
+  if(!t.wall)c.drawImage(postGround[post++],t.x-36,t.y-19,72,36);
   if(!t.wall){c.strokeStyle='#3b2a20';c.lineWidth=3.75;c.beginPath();c.moveTo(t.x,y+13.5);c.lineTo(t.x,t.y);c.stroke();}
   if(lit)c.drawImage(frame,0,FLAME_SOURCE_HEIGHT,180,290-FLAME_SOURCE_HEIGHT,t.x-W/2,y-TOP+FLAME_HEIGHT,W,H-FLAME_HEIGHT);
   else c.drawImage(frame,t.x-W/2,y-TOP,W,H);
