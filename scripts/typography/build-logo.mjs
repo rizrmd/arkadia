@@ -248,4 +248,223 @@ const vigSvg=`<svg xmlns="http://www.w3.org/2000/svg" width="${VIG_W}" height="$
 </svg>`;
 await sharp(Buffer.from(vigSvg)).png({compressionLevel:9}).toFile(`${LOAD_OUT}/vignette.png`);
 
-console.log('Built high-res ARKADIA logo, loading backgrounds, and loading bar assets in',HERO_OUT,'and',LOAD_OUT);
+// 4. Build pure HTML instant loading screen in index.html (renders at t=0ms before JS/Pixi download)
+const bgDeskLqip=await sharp(`${LOAD_OUT}/bg-desktop.webp`).resize(64,36,{fit:'cover'}).webp({quality:55}).toBuffer();
+const bgMobLqip=await sharp(`${LOAD_OUT}/bg-mobile.webp`).resize(36,64,{fit:'cover'}).webp({quality:55}).toBuffer();
+const logoInlineBuf=await sharp(`${LOAD_OUT}/logo@1x.png`).webp({quality:78,alphaQuality:85}).toBuffer();
+
+const bgDeskData=`data:image/webp;base64,${bgDeskLqip.toString('base64')}`;
+const bgMobData=`data:image/webp;base64,${bgMobLqip.toString('base64')}`;
+const logoInlineData=`data:image/webp;base64,${logoInlineBuf.toString('base64')}`;
+
+const minifySvg=s=>s.replace(/<!--[\s\S]*?-->/g,'').replace(/\s+/g,' ').replace(/> </g,'><').trim();
+
+const inlineDivSvg=minifySvg(
+ divSvg
+  .replace(`width="${DIV_W*3}" height="${DIV_H*3}"`,'id="loading-divider" aria-hidden="true"')
+  .replaceAll('id="dg"','id="ld-div-g"')
+  .replaceAll('url(#dg)','url(#ld-div-g)')
+  .replaceAll('id="star"','id="ld-div-star"')
+  .replaceAll('url(#star)','url(#ld-div-star)'),
+);
+
+const inlineTrackSvg=minifySvg(
+ trackSvg
+  .replace(`width="${TRACK_W*3}" height="${TRACK_H*3}"`,'id="loading-track" aria-hidden="true"')
+  .replaceAll('id="gold"','id="ld-trk-gold"')
+  .replaceAll('url(#gold)','url(#ld-trk-gold)')
+  .replaceAll('id="cavity"','id="ld-trk-cav"')
+  .replaceAll('url(#cavity)','url(#ld-trk-cav)')
+  .replaceAll('id="star"','id="ld-trk-star"')
+  .replaceAll('url(#star)','url(#ld-trk-star)')
+  .replaceAll('id="drop"','id="ld-trk-drop"')
+  .replaceAll('url(#drop)','url(#ld-trk-drop)'),
+);
+
+const inlineFillSvg=minifySvg(
+ fillSvg
+  .replace(`width="${INNER_W*3}" height="${INNER_H*3}"`,'id="loading-fill" aria-hidden="true"')
+  .replaceAll('id="fh"','id="ld-fill-h"')
+  .replaceAll('url(#fh)','url(#ld-fill-h)')
+  .replaceAll('id="fv"','id="ld-fill-v"')
+  .replaceAll('url(#fv)','url(#ld-fill-v)'),
+);
+
+const inlineCrestSvg=minifySvg(
+ crestSvg
+  .replace(`width="${CREST_S*3}" height="${CREST_S*3}"`,'id="loading-crest" aria-hidden="true"')
+  .replaceAll('id="glow"','id="ld-cr-glow"')
+  .replaceAll('url(#glow)','url(#ld-cr-glow)')
+  .replaceAll('id="star"','id="ld-cr-star"')
+  .replaceAll('url(#star)','url(#ld-cr-star)'),
+);
+
+const indexHtml=`<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Arkadia · Stronghold</title>
+<link rel="preload" as="image" href="/typography/v2/loading/bg-mobile.webp" media="(orientation: portrait)" fetchpriority="high">
+<link rel="preload" as="image" href="/typography/v2/loading/bg-desktop.webp" media="(orientation: landscape)" fetchpriority="high">
+<style>
+html,body,#app{margin:0;width:100%;height:100%;overflow:hidden;background:#080b0e;touch-action:none;user-select:none;-webkit-user-select:none}
+canvas{display:block;width:100%;height:100%}
+#loading-screen{position:fixed;inset:0;z-index:9999;overflow:hidden;background:#080b0e;transition:opacity 180ms ease-out;will-change:opacity}
+#loading-bg{position:absolute;inset:0;background-color:#080b0e;background-image:url('/typography/v2/loading/bg-desktop.webp'),url('${bgDeskData}');background-size:cover;background-position:center;background-repeat:no-repeat}
+@media (max-aspect-ratio: 9999/10000), (orientation: portrait){
+ #loading-bg{background-image:url('/typography/v2/loading/bg-mobile.webp'),url('${bgMobData}')}
+}
+#loading-dim{position:absolute;inset:0;background:rgba(5,7,10,0.18);pointer-events:none}
+#loading-stage{position:absolute;left:50%;top:54%;width:460px;height:230px;transform:translate(-50%,-50%) scale(var(--loading-scale,1));transform-origin:center center}
+@media (max-aspect-ratio: 9999/10000), (orientation: portrait){
+ #loading-stage{top:52%}
+}
+#loading-vignette{position:absolute;left:-110px;top:-47px;width:680px;height:340px;pointer-events:none;background:radial-gradient(50% 50% at 50% 50%,rgba(5,7,10,0.68) 0%,rgba(5,7,10,0.46) 45%,rgba(5,7,10,0.14) 78%,rgba(5,7,10,0) 100%)}
+#loading-logo{position:absolute;left:35px;top:0;width:390px;height:120px;display:block;object-fit:contain;pointer-events:none}
+#loading-divider{position:absolute;left:60px;top:124px;width:340px;height:16px;display:block;pointer-events:none}
+#loading-bar-wrap{position:absolute;left:0;top:150px;width:460px;height:28px;pointer-events:none}
+#loading-track{position:absolute;left:0;top:0;width:460px;height:28px;display:block}
+#loading-cavity{position:absolute;left:26px;top:9px;width:408px;height:10px;border-radius:1.5px;overflow:hidden}
+#loading-fill-clip{width:8px;height:10px;border-radius:1.5px;overflow:hidden;position:relative}
+#loading-fill{width:408px;height:10px;display:block}
+#loading-crest{position:absolute;top:2px;left:22px;width:24px;height:24px;display:block;pointer-events:none}
+#loading-meta{position:absolute;left:26px;right:26px;top:185px;display:flex;justify-content:space-between;align-items:baseline;pointer-events:none}
+#loading-label{font:500 17.5px/1.2 "EB Garamond","Palatino Linotype","Book Antiqua",Palatino,Georgia,"Times New Roman",serif;color:#f1e3c6;letter-spacing:0.015em;text-shadow:0 1.5px 3px rgba(0,0,0,0.95),0 0 8px rgba(0,0,0,0.8)}
+#loading-pct{font:600 18px/1.2 "Cinzel","EB Garamond","Palatino Linotype",Palatino,Georgia,serif;color:#f2c665;letter-spacing:0.02em;font-variant-numeric:tabular-nums;text-shadow:0 1.5px 3px rgba(0,0,0,0.95),0 0 8px rgba(0,0,0,0.8)}
+#loading-retry{position:absolute;left:50%;top:214px;transform:translateX(-50%);width:168px;height:42px;display:none;align-items:center;justify-content:center;cursor:pointer;border:1.5px solid #d9ab55;border-radius:4px;background:linear-gradient(180deg,#2d1c0d 0%,#160d06 100%);box-shadow:0 3px 10px rgba(0,0,0,0.85),inset 0 1px 0 rgba(255,240,196,0.35);font:600 15px/1 "Cinzel","EB Garamond",Georgia,serif;color:#f5e4bc;letter-spacing:0.04em;text-shadow:0 1px 2px #000}
+#loading-retry:hover{filter:brightness(1.12)}
+</style></head><body><div id="app"></div>
+<div id="loading-screen" role="status" aria-live="polite" aria-label="Loading Arkadia">
+ <div id="loading-bg"></div>
+ <div id="loading-dim"></div>
+ <div id="loading-stage">
+  <div id="loading-vignette"></div>
+  <img id="loading-logo" alt="ARKADIA" width="390" height="120" src="${logoInlineData}">
+  ${inlineDivSvg}
+  <div id="loading-bar-wrap">
+   ${inlineTrackSvg}
+   <div id="loading-cavity"><div id="loading-fill-clip">${inlineFillSvg}</div></div>
+   ${inlineCrestSvg}
+  </div>
+  <div id="loading-meta">
+   <span id="loading-label">Loading the game</span>
+   <span id="loading-pct">1%</span>
+  </div>
+  <button id="loading-retry" type="button">Try Again</button>
+ </div>
+</div>
+<script>
+(function(){
+ var screen=document.getElementById('loading-screen');
+ var stage=document.getElementById('loading-stage');
+ var logo=document.getElementById('loading-logo');
+ var fillClip=document.getElementById('loading-fill-clip');
+ var crest=document.getElementById('loading-crest');
+ var labelEl=document.getElementById('loading-label');
+ var pctEl=document.getElementById('loading-pct');
+ var retryBtn=document.getElementById('loading-retry');
+ if(!screen||!stage)return;
+
+ var params=typeof location!=='undefined'?new URLSearchParams(location.search):null;
+ var holdLoading=Boolean(params&&params.get('holdLoading')==='1');
+ var rawPct=params?params.get('loadingPct'):null;
+ var pinnedPct=rawPct!==null&&rawPct!==''&&!Number.isNaN(Number(rawPct))?Number(rawPct):null;
+ var pinnedText=params?params.get('loadingText'):null;
+
+ var shown=pinnedPct!==null?Math.max(0,Math.min(100,Math.round(pinnedPct))):1;
+ var statusText=pinnedText||'Loading the game';
+ var failed=false,finished=false;
+
+ function syncLayout(){
+  var w=window.innerWidth||390,h=window.innerHeight||844;
+  var s=Math.min(1.06,Math.min((w-28)/460,(h-36)/230));
+  stage.style.setProperty('--loading-scale',s.toFixed(4));
+ }
+ function syncState(){
+  var displayPct=pinnedPct!==null?Math.max(0,Math.min(100,Math.round(pinnedPct))):shown;
+  var ratio=failed?1:Math.max(0.02,Math.min(1,displayPct/100));
+  var fillW=Math.round(408*ratio);
+  if(fillClip)fillClip.style.width=fillW+'px';
+  if(crest){
+   crest.style.display=!failed&&displayPct>0?'block':'none';
+   crest.style.left=(26+fillW-12)+'px';
+  }
+  if(labelEl)labelEl.textContent=statusText;
+  if(pctEl)pctEl.textContent=failed?'':(displayPct+'%');
+  if(retryBtn)retryBtn.style.display=failed?'flex':'none';
+ }
+ syncLayout();
+ syncState();
+ window.addEventListener('resize',syncLayout);
+ if(retryBtn)retryBtn.addEventListener('click',function(){location.reload();});
+
+ var bootTimer=pinnedPct===null?setInterval(function(){
+  if(failed||finished||shown>=10){clearInterval(bootTimer);return;}
+  shown+=1;
+  syncState();
+ },120):0;
+
+ function removeScreen(){
+  clearInterval(bootTimer);
+  window.removeEventListener('resize',syncLayout);
+  if(screen.parentNode)screen.parentNode.removeChild(screen);
+ }
+
+ window.__LOADING_SCREEN__={
+  set:function(pct,text){
+   shown=Math.max(0,Math.min(100,Math.round(pct)));
+   if(typeof text==='string')statusText=text;
+   syncLayout();
+   syncState();
+  },
+  progress:function(done,total,text){
+   if(failed||pinnedPct!==null)return;
+   var pct=Math.round(100*Math.min(1,Math.max(0,done/Math.max(1,total))));
+   if(pct>shown)shown=pct;
+   if(text)statusText=pinnedText||text;
+   syncState();
+  },
+  done:function(){
+   clearInterval(bootTimer);
+   if(!failed&&pinnedPct===null){
+    shown=100;
+    statusText=pinnedText||'Ready';
+    syncState();
+   }
+   finished=true;
+   if(!failed&&!holdLoading){
+    screen.style.pointerEvents='none';
+    screen.style.opacity='0';
+    setTimeout(removeScreen,190);
+   }
+  },
+  fail:function(msg){
+   clearInterval(bootTimer);
+   failed=true;
+   statusText=msg;
+   syncState();
+  }
+ };
+
+ var dpr=window.devicePixelRatio||1;
+ var scale=dpr>=2.25?3:dpr>=1.35?2:1;
+ function preloadImg(url,onLoad){
+  var im=new Image();
+  im.src=url;
+  var p=im.decode?im.decode():new Promise(function(r){im.onload=im.onerror=r;});
+  return p.then(function(){if(onLoad)onLoad(im);}).catch(function(){});
+ }
+ var isPortrait=(window.innerWidth||390)<(window.innerHeight||844);
+ var primaryBg=isPortrait?'/typography/v2/loading/bg-mobile.webp':'/typography/v2/loading/bg-desktop.webp';
+ var secondaryBg=isPortrait?'/typography/v2/loading/bg-desktop.webp':'/typography/v2/loading/bg-mobile.webp';
+ var logoP=preloadImg('/typography/v2/loading/logo@'+scale+'x.png',function(im){if(logo)logo.src=im.src;});
+ var bgP=preloadImg(primaryBg).then(function(){return preloadImg(secondaryBg);});
+ Promise.race([
+  Promise.all([logoP,bgP]),
+  new Promise(function(r){setTimeout(r,4000);})
+ ]).then(function(){
+  window.__LOADING_READY__=true;
+ });
+})();
+</script>
+<script type="module" src="/src/app/main.ts"></script></body></html>
+`;
+
+fs.writeFileSync('index.html',indexHtml);
+console.log('Built high-res ARKADIA logo, loading backgrounds, loading bar assets, and pure HTML index.html in',HERO_OUT,'and',LOAD_OUT);
