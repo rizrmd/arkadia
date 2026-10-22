@@ -53,7 +53,7 @@ func gateColumns(passable bool) []Column {
 	}
 	if !passable {
 		for d := -35.0; d <= 35; d += 3 {
-			cols = append(cols, Column{X: 577 + d, W: 3, Back: 763, Front: 775})
+			cols = append(cols, Column{X: 577 + d, W: 3, Back: 771, Front: 783})
 		}
 	}
 	return cols

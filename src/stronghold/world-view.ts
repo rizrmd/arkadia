@@ -16,11 +16,11 @@ import {characters,atlasUrl,DEFAULT_HERO,type HeroId} from './heroes';
 export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Building)=>void,direction:()=>Walk,progress:Progress=()=>{},net?:Net,pick:HeroId=DEFAULT_HERO){
  const ctx=canvas.getContext('2d')!,environment=environmentSprites(),images=new Map<string,HTMLImageElement>();
  let gateOpen=false,gatePassable=false;
- const spriteFile=(id:Building,level:number)=>id==='forge'?`/fortress-ui/forge-${level}.webp`:id==='gate'?'/modular-stronghold/v2/full-gateway-v6-open.webp':`/assets/${slots[id].asset}.png`;
+ const spriteFile=(id:Building,level:number)=>id==='forge'?`/fortress-ui/forge-${level}.webp`:id==='gate'?'/modular-stronghold/v2/full-gateway-v7-open.webp':`/assets/${slots[id].asset}.png`;
  const paving='/modular-stronghold/v2/paving-warm-texture.png',snow='/modular-stronghold/v2/snow-soft-texture.png';
  // Loading screen: downloads fill the bar in proportion to their bytes (the atlases of the picked hero and the
  // revenants, which hero.ts and encounters.ts load later, are fetched in the same batch), then the hero and the first world raster.
- const files=[...new Set(['/gate-foundation/ground-underlay.webp',FOUNDATION_SOIL,FOUNDATION_MOSS,FOUNDATION_DRIFT,paving,snow,'/modular-stronghold/v2/full-gateway-v6-closed.webp','/modular-stronghold/v2/full-gateway-v6-sheet.webp',...environment.map(p=>p.file),...buildings.flatMap(b=>[1,2,3].map(l=>spriteFile(b,l)))])];
+ const files=[...new Set([FOUNDATION_SOIL,FOUNDATION_MOSS,FOUNDATION_DRIFT,paving,snow,'/modular-stronghold/v2/full-gateway-v7-closed.webp','/modular-stronghold/v2/full-gateway-v7-sheet.webp',...environment.map(p=>p.file),...buildings.flatMap(b=>[1,2,3].map(l=>spriteFile(b,l)))])];
  const DOWNLOAD=920,steps=1000,mb=(n:number)=>(n/1e6).toFixed(1);let loaded=DOWNLOAD;
  let queued=0;const report=()=>{queued=0;const {received,expected}=downloadedBytes();progress(Math.floor(DOWNLOAD*received/Math.max(1,expected)),steps,`Loading artwork · ${mb(received)} of ${mb(expected)} MB`);};
  const stopReport=onDownload(()=>{queued||=requestAnimationFrame(report);});progress(0,steps,'Loading artwork');
@@ -46,9 +46,9 @@ export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Buil
  ac.translate(-apronX,-apronY);ac.fillStyle=snowPattern;ac.fillRect(apronX,apronY,apron.width,apron.height);
  const snowPixels=ac.getImageData(0,0,apron.width,apron.height);
  for(let y=0;y<apron.height;y++)for(let x=0;x<apron.width;x++){
-  const wx=x+apronX,wy=y+apronY,edge=800-Math.abs(wx-577)*.5;
-  const noise=Math.sin(wx*.37+wy*.23)*2+Math.sin(wx*.91-wy*.71)*1.1;
-  const t=Math.max(0,Math.min(1,(wy-edge+10+noise)/18));
+  const wx=x+apronX,wy=y+apronY,edge=785-Math.abs(wx-577)*.35;
+  const noise=Math.sin(wx*.37+wy*.23)*5+Math.sin(wx*.91-wy*.71)*2.5;
+  const t=Math.max(0,Math.min(1,(wy-edge+20+noise)/40));
   snowPixels.data[(y*apron.width+x)*4+3]=Math.round(255*t*t*(3-2*t));
  }
  ac.putImageData(snowPixels,0,0);
@@ -132,7 +132,7 @@ export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Buil
    const front=gateTowerFront(d);
    cols.push({x:577+side*d,w:3,back:front-34,front,height:110});
   }
-  if(!gatePassable)for(let d=-35;d<=35;d+=3)cols.push({x:577+d,w:3,back:763,front:775,height:105});
+  if(!gatePassable)for(let d=-35;d<=35;d+=3)cols.push({x:577+d,w:3,back:771,front:783,height:105});
   return cols;
  }
  function footprint(p:(typeof objects)[number]){
@@ -173,7 +173,7 @@ export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Buil
  // The player's hero walks the court in its own layer over the world; the camera eases after it.
  progress(loaded,steps,'Waking the hero');
  const sheet:GateSheet=await (await fetch(GATE_SHEET)).json();
- const doors=createGateDoors(viewport,images.get('/modular-stronghold/v2/full-gateway-v6-closed.webp')!,images.get('/modular-stronghold/v2/full-gateway-v6-sheet.webp')!,sheet,open=>{gatePassable=open;setGateOpen(open);hero.setScene(objects);party?.setScene(objects);},{raster,foundation:foundationLayers(objects.find(p=>p.id==='gate')!,images.get(FOUNDATION_SOIL)!,images.get(FOUNDATION_DRIFT),images.get(FOUNDATION_MOSS))!,revision:lighting.spriteRevision,torches:lighting.torches,shade:(source,target)=>lighting.shadeSprite(source,target,{left:442,top:790-sheet.region.h*.97,width:270,height:sheet.region.h})});
+ const doors=createGateDoors(viewport,images.get('/modular-stronghold/v2/full-gateway-v7-closed.webp')!,images.get('/modular-stronghold/v2/full-gateway-v7-sheet.webp')!,sheet,open=>{gatePassable=open;setGateOpen(open);hero.setScene(objects);party?.setScene(objects);},{raster,foundation:foundationLayers(objects.find(p=>p.id==='gate')!,images.get(FOUNDATION_SOIL)!,images.get(FOUNDATION_DRIFT),images.get(FOUNDATION_MOSS))!,revision:lighting.spriteRevision,torches:lighting.torches,shade:(source,target)=>lighting.shadeSprite(source,target,{left:442,top:798-sheet.region.h*.97,width:270,height:sheet.region.h})});
  gateOccluder=doors.canvas;for(const p of objects)if(p.id==='gate')p.occluder=gateOccluder;
  lighting.subscribe(()=>doors.refreshLighting());
  // Combat (encounters.ts) steers the idle hero toward a revenant in reach and plays its swing, hit and death clips.
@@ -193,7 +193,7 @@ export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Buil
  function paintWorld(){
   const u=uprights.getContext('2d')!;u.setTransform(1,0,0,1,0,0);u.clearRect(0,0,uprights.width,uprights.height);
   for(const c of [sc,u])c.setTransform(surface.width/worldWidth,0,0,surface.height/worldHeight,-left*surface.width/worldWidth,-top*surface.height/worldHeight);
-  sc.fillStyle=snowPattern;sc.fillRect(left,top,worldWidth,worldHeight);sc.fillStyle=pavingPattern;sc.fill(paved);sc.drawImage(apron,apronX,apronY);sc.drawImage(images.get('/gate-foundation/ground-underlay.webp')!,407,733,340,100);sc.drawImage(shadow,shadowLeft,shadowTop);
+  sc.fillStyle=snowPattern;sc.fillRect(left,top,worldWidth,worldHeight);sc.fillStyle=pavingPattern;sc.fill(paved);sc.drawImage(apron,apronX,apronY);sc.drawImage(shadow,shadowLeft,shadowTop);
   for(const p of objects){if(p.id==='gate'){sc.save();sc.translate(p.x,p.y);drawFoundation(sc,p,images.get(FOUNDATION_SOIL)!,'under',images.get(FOUNDATION_DRIFT),images.get(FOUNDATION_MOSS));sc.restore();}else drawSprite(p.layer==='ground'?sc:u,p);}
   castShadows(false);
   surface.dataset.foundations='soil-moss-v1';dirty=false;surface.dataset.paints=String(Number(surface.dataset.paints||0)+1);lighting.capture(uprights);doors.refreshLighting();
@@ -274,10 +274,10 @@ export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Buil
  canvas.onpointerup=e=>{held.delete(e.pointerId);if(moved)return;const x=cx+(e.clientX-w/2)/scale,y=cy+(e.clientY-h/2)/scale;const hit=[...built].sort((a,b)=>slots[b].y-slots[a].y).find(id=>hitBuilding(id,x,y));if(hit)onSelect(hit);};
  canvas.onpointercancel=()=>{held.clear();moved=true;};canvas.onwheel=e=>{e.preventDefault();};
  function updateGate(hx:number,hy:number){
-  const d=Math.abs(hx-577),edge=d<36||d>135?770:gateTowerFront(d);
+  const d=Math.abs(hx-577),edge=d<36||d>135?778:gateTowerFront(d);
   doors.order(viewport.querySelector<HTMLElement>('#world-hero')!,hy<edge);
   // Ground-space distance to the threshold. Hysteresis prevents flickering at the edge.
-  const g=net?.active()?net.gate():null,near=g?g.open:Math.abs(hx-577)<(gateOpen?65:48)&&Math.abs(hy-770)<(gateOpen?88:66);
+  const g=net?.active()?net.gate():null,near=g?g.open:Math.abs(hx-577)<(gateOpen?65:48)&&Math.abs(hy-778)<(gateOpen?88:66);
   if(near===gateOpen)return;
   gateOpen=near;doors.setOpen(near);
   canvas.dataset.gate=near?'open':'closed';

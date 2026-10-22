@@ -20,7 +20,7 @@ export function environmentSprites(){
   if(n===10){right.x-=16;right.y-=8;}parts.push(right);
  }
  // Coping piers bridge the side faces of the gateway towers to the wall wings.
- for(const x of [445,709])parts.push({layer:'foreground',id:'gate-connector',x,y:769,width:46,foot:1,shear:0,vertical:1,depth:769,opacity:1,file:v2+'gate-connector.png'});
+ for(const [x,side] of [[469,'left'],[685,'right']] as const)parts.push({layer:'foreground',id:'gate-connector',x,y:774,width:104,foot:1,shear:0,vertical:1,depth:769,opacity:1,file:v2+'gate-connector-'+side+'-v3.png'});
  for(const [u,v] of [[0,0],[15,0],[0,15]])parts.push(prop('bastion',u,v,180));
  // Irregular masses and two distinct tree silhouettes replace the evenly spaced
  // miniature pine/rock arrangement. All remain individual reusable sprites.

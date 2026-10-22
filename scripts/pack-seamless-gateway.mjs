@@ -1,5 +1,6 @@
 import sharp from 'sharp';
 import fs from 'node:fs/promises';
+import {stoneMean,matchStone} from './gateway-palette.mjs';
 
 // Register the painted material pass to the existing silhouette. Its generated
 // backdrop is deliberately discarded; authored alpha and moving doors stay exact.
@@ -9,6 +10,7 @@ const {w,h}=meta.frame,ap=meta.stabilization.aperture;
 // Match the walls' effective texel density instead of retaining generated microdetail.
 const softened=await sharp('assets-src/gate-seamless/wall-matched-source.png').resize(600,400,{fit:'fill'}).png().toBuffer();
 const art=await sharp(softened).resize(w,h,{fit:'fill',kernel:'linear'}).ensureAlpha().raw().toBuffer();
+matchStone(art,await stoneMean(root+'full-gateway-v6-closed.webp',{left:177,top:183,width:90,height:180}));
 const atlas=await fs.readFile(root+meta.image),parts=[];
 function material(pixels){
  for(let y=0;y<h;y++)for(let x=0;x<w;x++){
@@ -23,10 +25,10 @@ for(let i=0;i<meta.frames;i++){
  const pixels=material(await sharp(atlas).extract({left:i%meta.columns*w,top:Math.floor(i/meta.columns)*h,width:w,height:h}).ensureAlpha().raw().toBuffer());
  const png=await sharp(pixels,{raw:{width:w,height:h,channels:4}}).png().toBuffer();
  parts.push({input:png,left:i%meta.columns*w,top:Math.floor(i/meta.columns)*h});
- if(i===meta.frames-1)await sharp(png).webp({lossless:true}).toFile(root+'full-gateway-v6-open.webp');
+ if(i===meta.frames-1)await sharp(png).webp({lossless:true}).toFile(root+'full-gateway-v7-open.webp');
 }
 const closed=material(await sharp(root+'full-gateway-v4-closed.webp').ensureAlpha().raw().toBuffer());
-await sharp(closed,{raw:{width:w,height:h,channels:4}}).webp({lossless:true}).toFile(root+'full-gateway-v6-closed.webp');
-await sharp({create:{width:w*meta.columns,height:h*Math.ceil(meta.frames/meta.columns),channels:4,background:'#00000000'}}).composite(parts).webp({lossless:true}).toFile(root+'full-gateway-v6-sheet.webp');
-await fs.writeFile(root+'full-gateway-v6-sheet.json',JSON.stringify({...meta,image:'full-gateway-v6-sheet.webp'},null,2));
+await sharp(closed,{raw:{width:w,height:h,channels:4}}).webp({lossless:true}).toFile(root+'full-gateway-v7-closed.webp');
+await sharp({create:{width:w*meta.columns,height:h*Math.ceil(meta.frames/meta.columns),channels:4,background:'#00000000'}}).composite(parts).webp({lossless:true}).toFile(root+'full-gateway-v7-sheet.webp');
+await fs.writeFile(root+'full-gateway-v7-sheet.json',JSON.stringify({...meta,image:'full-gateway-v7-sheet.webp',threshold:{x:577,y:778}},null,2));
 console.log('Packed weathered gateway: original alpha, aperture and 16 moving door poses preserved.');

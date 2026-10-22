@@ -863,7 +863,7 @@ func (w *World) updateGate() {
 		if w.Gate.Open {
 			rx, ry = 65, 88
 		}
-		if math.Abs(p.X-577) < rx && math.Abs(p.Y-770) < ry {
+		if math.Abs(p.X-577) < rx && math.Abs(p.Y-778) < ry {
 			near = true
 		}
 	}

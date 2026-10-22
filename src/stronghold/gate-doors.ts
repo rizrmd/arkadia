@@ -1,7 +1,7 @@
 import {TORCH_FRAMES,torchAssetsReady} from './torches';
 /** The complete gateway plays as one sprite: both towers, arch and synchronized door leaves share one pivot. */
 export type GateSheet={image:string;columns:number;frames:number;frame:{w:number;h:number};fps:number;region:{x:number;y:number;w:number;h:number};torches?:{left:{x:number;y:number;w:number;h:number};right:{x:number;y:number;w:number;h:number}}};
-export const GATE_SHEET='/modular-stronghold/v2/full-gateway-v6-sheet.json';
+export const GATE_SHEET='/modular-stronghold/v2/full-gateway-v7-sheet.json';
 export function createGateDoors(layer:HTMLElement,gateway:HTMLImageElement,sheet:HTMLImageElement,meta:GateSheet,onPassable:(open:boolean)=>void,light:{raster:number;foundation?:{face:HTMLCanvasElement;pad:number;fade?:HTMLCanvasElement};revision:()=>number;torches?:()=>boolean;shade:(source:HTMLCanvasElement,target:HTMLCanvasElement)=>void}){
  const {region,frame}=meta,rows=Math.ceil(meta.frames/meta.columns),height=region.h,canvas=document.createElement('canvas');
  canvas.id='world-gate-doors';canvas.dataset.renderer='gateway-lightmap-v3';// Use the world's backing density: a high-resolution animated overlay otherwise
@@ -65,9 +65,9 @@ export function createGateDoors(layer:HTMLElement,gateway:HTMLImageElement,sheet
  }
  paint();
  return {canvas,refreshLighting:paint,
-  hit(x:number,y:number){const u=(x-442)/region.w,v=(y-(790-height*.97))/region.h;if(u<0||v<0||u>=1||v>=1)return false;return c.getImageData(Math.floor(u*canvas.width),Math.floor(v*canvas.height),1,1).data[3]>40;},
+  hit(x:number,y:number){const u=(x-442)/region.w,v=(y-(798-height*.97))/region.h;if(u<0||v<0||u>=1||v>=1)return false;return c.getImageData(Math.floor(u*canvas.width),Math.floor(v*canvas.height),1,1).data[3]>40;},
   order(hero:HTMLElement,inside:boolean){if(inside===behind)return;behind=inside;if(inside)hero.before(canvas);else hero.after(canvas);},
   setOpen(open:boolean){target=open?meta.frames-1:0;if(index!==target&&!raf)raf=requestAnimationFrame(tick);},
-  place(x:number,y:number,scale:number){canvas.style.transform=`translate3d(${x+(442+region.x)*scale}px,${y+(790-height*.97+region.y)*scale}px,0) scale(${scale})`;}
+  place(x:number,y:number,scale:number){canvas.style.transform=`translate3d(${x+(442+region.x)*scale}px,${y+(798-height*.97+region.y)*scale}px,0) scale(${scale})`;}
  };
 }

@@ -35,9 +35,9 @@ func hypot(x, y float64) float64 { return math.Sqrt(x*x + y*y) }
 // gateTowerFront is the ground line of a gate tower's front face, d px either side of the arch centre (36 to 135).
 func gateTowerFront(d float64) float64 {
 	if d < 86 {
-		return 774 + (d-36)*.42
+		return 782 + (d-36)*.42
 	}
-	return 795 - (d-86)*.62
+	return 803 - (d-86)*.62
 }
 
 // walkableGround mirrors navigation.ts: the court, the gate passage and its apron, and the open snow beyond.
@@ -55,7 +55,7 @@ func walkableGround(x, y float64) bool {
 const (
 	metersPerTile  = 3.0
 	spawnDistanceM = 10.0
-	gateTile       = 950.0 / 64
+	gateTile       = 958.0 / 64
 	safeLine       = gateTile * 2
 )
 

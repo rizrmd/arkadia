@@ -13,7 +13,7 @@ export function walkableGround(x:number,y:number){
  return court||passage||outside;
 }
 // Ground line of a gate tower's front face, d px either side of the arch centre (36 to 135).
-export const gateTowerFront=(d:number)=>d<86?774+(d-36)*.42:795-(d-86)*.62;
+export const gateTowerFront=(d:number)=>d<86?782+(d-36)*.42:803-(d-86)*.62;
 let gateOpen=false;
 export const setGateOpen=(open:boolean)=>{gateOpen=open;};
 export const gatePassageColumn=(x:number)=>gateOpen&&Math.abs(x-577)<35;

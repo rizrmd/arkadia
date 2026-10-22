@@ -1,8 +1,8 @@
 // Distances use the square ground grid, not the isometric screen projection.
-// The gate threshold is at world (577, 790), with COURT origin (577, -160).
+// The gate threshold is at world (577, 798), with COURT origin (577, -160).
 export const METERS_PER_TILE=3;
 export const CENTER={u:7.5,v:7.5};
-export const GATE={u:950/64,v:950/64};
+export const GATE={u:958/64,v:958/64};
 export const SPAWN_DISTANCE_M=10;
 export type Tile={u:number;v:number};
 export const meters=(tiles:number)=>tiles*METERS_PER_TILE;

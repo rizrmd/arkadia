@@ -23,7 +23,7 @@ export function walkStep(blocked:(x:number,y:number)=>boolean,x:number,y:number,
 // as the server will when it walks the same inputs, instead of a snapshot later.
 export type GateGuess={open:boolean;frame:number};
 const GATE_FRAMES=16;
-export const atGate=(x:number,y:number,open:boolean)=>Math.abs(x-577)<(open?65:48)&&Math.abs(y-770)<(open?88:66);
+export const atGate=(x:number,y:number,open:boolean)=>Math.abs(x-577)<(open?65:48)&&Math.abs(y-778)<(open?88:66);
 export const gatePassable=(g:GateGuess)=>g.frame/(GATE_FRAMES-1)>=.8;
 export const gateTick=(g:GateGuess,near:boolean):GateGuess=>({open:near,frame:near?Math.min(GATE_FRAMES-1,g.frame+1):Math.max(0,g.frame-1)});
 // Co-op collision: the footprints the server embeds (public/coop/nav.json, scripts/export-coop-nav.mjs) plus the
@@ -32,7 +32,7 @@ export type Column={x:number;w:number;back:number;front:number};
 const BUCKET=32;
 function buckets(cols:Column[]){const m=new Map<number,Column[]>();for(const c of cols){const r=c.w/2+RADIUS;for(let k=Math.floor((c.x-r)/BUCKET);k<=Math.floor((c.x+r)/BUCKET);k++){let list=m.get(k);if(!list)m.set(k,list=[]);list.push(c);}}return m;}
 function gateColumns(passable:boolean){const cols:Column[]=[];for(const side of [-1,1])for(let d=36;d<=135;d+=3){const front=gateTowerFront(d);cols.push({x:577+side*d,w:3,back:front-34,front});}
- if(!passable)for(let d=-35;d<=35;d+=3)cols.push({x:577+d,w:3,back:763,front:775});return cols;}
+ if(!passable)for(let d=-35;d<=35;d+=3)cols.push({x:577+d,w:3,back:771,front:783});return cols;}
 export function navBlocker(columns:Column[]){
  const fixed=buckets(columns),open=buckets(gateColumns(true)),closed=buckets(gateColumns(false));
  const hits=(m:Map<number,Column[]>,x:number,y:number)=>{for(const b of m.get(Math.floor(x/BUCKET))||[])if(Math.abs(x-b.x)<b.w/2+RADIUS&&y>b.back-RADIUS*.5&&y<b.front+RADIUS*.5)return true;return false;};

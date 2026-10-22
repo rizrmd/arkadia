@@ -12,7 +12,7 @@ export const slots:Record<Building,{x:number;y:number;width:number;pivot:number;
  // The tent stands in the centre of the court (tile 7.5, 7.5), where a new game starts; the old layout keeps it by the gate.
  expedition:{...LEGACY_LAYOUT?{x:565,y:500}:{x:577,y:320},width:210,pivot:.95,asset:'stronghold/expedition-tent'},
  mine:{x:905,y:620,width:330,pivot:.95,asset:'stronghold/mine'},
- gate:{x:577,y:790,width:270,pivot:.97,asset:'stronghold/gate'}
+ gate:{x:577,y:798,width:270,pivot:.97,asset:'stronghold/gate'}
 };
 export function ground(){return '';}
 export function enclosure(){return modularEnclosure();}
