@@ -1,17 +1,20 @@
-import {unproject} from '../../isometric';
 import {walkableGround,gateTowerFront} from '../navigation';
 import type {Walk} from '../controls';
 // The hero's walking rule, shared by the solo hero (hero.ts) and co-op prediction, and mirrored step for step by
 // the server (server/internal/sim/world.go WalkStep): server and client must land on the same foot position.
-// SPEED is screen px/s along a tile edge (the W+D walk); up/down and across keep the same ground pace.
-export const SPEED=105,RADIUS=9;
-export const ground=(sx:number,sy:number)=>{const g=unproject(sx,sy);return Math.sqrt(g.x*g.x+g.y*g.y);},PACE=ground(2,1)/Math.sqrt(5);
+// Full speed is screen px/s straight across (ACROSS) and straight up/down (UPDOWN), on an ellipse between them.
+// Equal screen speed walked up and down twice as fast over the 2:1 ground; equal ground speed walked 66 px/s up
+// and down against 133 across, so the hero felt quick one way and sluggish the next. A 4:3 split keeps a hint of
+// depth while every direction reads as one walk: 90 to 120 px/s, 112 along a tile edge (the W+D walk).
+// fullSpeed is the speed along (sx, sy) at a full push; a shorter input vector walks proportionally slower.
+export const ACROSS=120,UPDOWN=90,RADIUS=9;
+export const fullSpeed=(sx:number,sy:number)=>{const l=Math.sqrt(sx*sx+sy*sy),a=sx/ACROSS,b=sy/UPDOWN;return l?l/Math.sqrt(a*a+b*b):0;};
 // One step of dt ms: slide along whatever blocks the full step; a hero already overlapping a footprint may walk out.
-// Returns the new foot and the screen px walked along the direction (the stride clock).
+// Returns the new foot and the screen px walked.
 export function walkStep(blocked:(x:number,y:number)=>boolean,x:number,y:number,d:Walk,dt:number){
  const m=Math.sqrt(d.x*d.x+d.y*d.y);if(!m)return {x,y,progress:0};
- const g=ground(d.x,d.y),v=SPEED*dt/1000*m*PACE/g,dx=d.x*v,dy=d.y*v,stuck=blocked(x,y);
- for(const [mx,my] of [[dx,dy],[dx,0],[0,dy]])if(mx||my){if(stuck||!blocked(x+mx,y+my))return {x:x+mx,y:y+my,progress:(mx*d.x+my*d.y)*g/(m*m*PACE)};}
+ const v=fullSpeed(d.x,d.y)*dt/1000,dx=d.x*v,dy=d.y*v,stuck=blocked(x,y);
+ for(const [mx,my] of [[dx,dy],[dx,0],[0,dy]])if(mx||my){if(stuck||!blocked(x+mx,y+my))return {x:x+mx,y:y+my,progress:Math.sqrt(mx*mx+my*my)};}
  return {x,y,progress:0};
 }
 // Co-op collision: the footprints the server embeds (public/coop/nav.json, scripts/export-coop-nav.mjs) plus the

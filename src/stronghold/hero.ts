@@ -2,7 +2,7 @@ import {walkableGround,gatePassageColumn} from './navigation';
 import type {Sun} from './daylight';
 import type {Walk} from './controls';
 import {loadImage} from '../app/loader';
-import {walkStep,ground,PACE} from './net/movement';
+import {walkStep,fullSpeed} from './net/movement';
 import {characters,atlasUrl,DEFAULT_HERO,isHero,type HeroId} from './heroes';
 // The player's hero walking the court, drawn from the picked hero's character atlas (heroes.ts): six unmirrored
 // views, the four diagonals and straight up/down (the knight's atlas mirrored its diagonals). The world is one pre-rastered surface, so the hero is its own small canvas over it:
@@ -29,10 +29,10 @@ type Meta={image:string;revision?:string;views?:string[];cell:{w:number;h:number
 const KEY='arkadia.stronghold.hero';
 // Atlas px -> world px. Matches the court props (a barrel is 27 px wide), not the arena's 1.1.
 // The hero starts (and respawns) just in front of the tent in the centre of the court.
-export const DISPLAY=.48;const STRIDE=88*DISPLAY/1.1,RADIUS=9,SPAWN={x:590,y:420};
-// Speed and stride are measured on the ground, not the screen: on the 2:1 map a screen pixel straight up or down
-// covers twice the ground of one across, so equal screen speed walked the hero up and down twice as fast as left
-// and right. The walking rule itself (speed, pace, sliding along blockers) is net/movement.ts walkStep().
+export const DISPLAY=.48;const RADIUS=9,SPAWN={x:590,y:420};
+// The walking rule itself (speed per direction, sliding along blockers) is net/movement.ts walkStep(). The legs
+// keep time with it: `gait` counts seconds walked at full speed, so a walk clip plays at its own fps at full speed
+// in every direction and slows with a light push, a start or a stop.
 export async function createHero<P extends Placed>(o:{layer:HTMLElement;lightmap:HTMLCanvasElement;surface:HTMLElement;footprint:(p:P)=>Column[];sun:()=>Sun;direction:()=>Walk;follow:(x:number,y:number,dt:number,walking?:boolean)=>void;pose?:()=>Pose|null;drive?:()=>Drive|null;id?:string;hero?:HeroId}){
  const load=async(id:HeroId)=>{const all=await characters(),m:Meta=all[id]??all[DEFAULT_HERO];return {id,meta:m,atlas:await loadImage(atlasUrl(m))};};
  let hero=await load(isHero(o.hero)?o.hero:DEFAULT_HERO),{meta,atlas}=hero,wanted=hero.id;
@@ -43,7 +43,7 @@ export async function createHero<P extends Placed>(o:{layer:HTMLElement;lightmap
  const lit=document.createElement('canvas'),flat=document.createElement('canvas');
  const fit=()=>{cell=meta.cell;pivot=cell.pivot;for(const b of [lit,flat]){b.width=cell.w;b.height=cell.h;}};fit();
  let objects:P[]=[],blockers:Column[]=[],bounds=new Map<P,number[]>();
- let x=SPAWN.x,y=SPAWN.y,state:'idle'|'move'='idle',t=0,stride=0,facing=1,back=false,vertical=false;
+ let x=SPAWN.x,y=SPAWN.y,state:'idle'|'move'='idle',t=0,gait=0,facing=1,back=false,vertical=false;
  let pose:Pose|null=null,tint='255,255,255',sampled=-1e9,origin={x:0,y:0,scale:1},k=0,box=[0,0,0,0],drawn='',lastMove=0;
  function blocked(px:number,py:number){
   if(!walkableGround(px,py))return true;
@@ -71,19 +71,19 @@ export async function createHero<P extends Placed>(o:{layer:HTMLElement;lightmap
  // Six-view heroes turn to the view; the knight mirrors its diagonals and swings only on them.
  const view=()=>vertical?(back?'N':'S'):(back?'N':'S')+(facing>0?'E':'W');
  const clipName=()=>meta.views?`${pose?pose.clip:state}-${view()}`:pose?pose.clip:vertical?state+(back?'Up':'Down'):back?state+'Back':state;
- const frameIndex=()=>{const clip=meta.clips[clipName()],n=clip.frames.length,i=pose?Math.floor(pose.t*clip.fps/1000):state==='move'?Math.floor(stride*n/(clip.strideScale||1)):Math.floor(t*clip.fps/1000);return clip.frames[clip.loop?i%n:Math.min(i,n-1)];};
+ const frameIndex=()=>{const clip=meta.clips[clipName()],n=clip.frames.length,i=pose?Math.floor(pose.t*clip.fps/1000):state==='move'?Math.floor(gait*clip.fps):Math.floor(t*clip.fps/1000);return clip.frames[clip.loop?i%n:Math.min(i,n-1)];};
  // Arena facing rules: front/rear views only within 10 degrees of straight up/down (15 to leave), and dead
  // bands near each axis keep the previous quadrant so tiny slides along a wall never flip the art.
  function face(sx:number,sy:number){const l=Math.hypot(sx,sy);if(!l)return;vertical=Math.abs(sx)/l<Math.sin((vertical?15:10)*Math.PI/180);if(Math.abs(sy)/l>.15)back=sy<0;if(Math.abs(sx)/l>.15)facing=sx>0?1:-1;}
- // A driven hero moves once per frame to where it is told; its stride follows the ground distance covered.
+ // A driven hero moves once per frame to where it is told; its legs follow the distance covered.
  // Returns whether it moved, for the camera.
  function driven(s:Drive,dt:number){
   const dx=s.x-x,dy=s.y-y;x=s.x;y=s.y;pose=s.pose!==undefined?s.pose:o.pose?.()??null;
   if(s.look){facing=s.look.facing;back=s.look.back;vertical=s.look.vertical;}else if(s.face&&(s.face.x||s.face.y)&&!pose)face(s.face.x,s.face.y);
   if(pose){if(state!=='idle'){state='idle';t=0;}return !!(dx||dy);}
   t+=dt;if(!s.look&&!s.face&&(dx||dy))face(dx,dy);
-  const progress=ground(dx,dy)/PACE,moving=progress/(dt/1000)>(state==='move'?2:5);if(moving!==(state==='move')){state=moving?'move':'idle';t=0;}
-  if(moving)stride+=progress/STRIDE;
+  const progress=Math.hypot(dx,dy),moving=progress/(dt/1000)>(state==='move'?2:5);if(moving!==(state==='move')){state=moving?'move':'idle';t=0;}
+  if(moving)gait+=progress/fullSpeed(dx,dy);
   return !!(dx||dy);
  }
  // Returns whether the hero is walking (or pushing against something), for the camera.
@@ -92,10 +92,10 @@ export async function createHero<P extends Placed>(o:{layer:HTMLElement;lightmap
   pose=o.pose?.()??null;if(pose){if(state!=='idle'){state='idle';t=0;}return false;}
   const d=o.direction(),m=Math.hypot(d.x,d.y);t+=dt;let progress=0;
   if(m>0){
-   face(d.x,d.y);const r=walkStep(blocked,x,y,d,dt);x=r.x;y=r.y;progress=r.progress;
+   face(d.x,d.y);const r=walkStep(blocked,x,y,d,dt);if(r.progress)gait+=r.progress/fullSpeed(r.x-x,r.y-y);x=r.x;y=r.y;progress=r.progress;
   }
   const moving=progress/(dt/1000)>(state==='move'?2:5);if(moving!==(state==='move')){state=moving?'move':'idle';t=0;}
-  if(moving){stride+=progress/STRIDE;lastMove=performance.now();}
+  if(moving)lastMove=performance.now();
   else if(own&&lastMove&&performance.now()-lastMove>400){lastMove=0;try{localStorage.setItem(KEY,JSON.stringify({x:Math.round(x),y:Math.round(y)}));}catch{}}
   return m>0||moving;
  }

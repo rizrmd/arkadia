@@ -47,7 +47,7 @@ try{
  // Steady stretch: from 1.2 s after the first drawn movement to 0.6 s before the last.
  const steady=t=>{const moved=t.filter((s,i)=>i&&(s.x!==t[i-1].x||s.y!==t[i-1].y));const from=moved[0].t+1200,to=moved.at(-1).t-600;return t.filter(s=>s.t>=from&&s.t<=to);};
  results.own=score(steady(ta));results.remote=score(steady(tb));
- // Server steps per tick while walking (one step is 105*50/1000*pace px): zero means the server had no input that tick.
+ // Server steps per tick while walking (one step is fullSpeed*50/1000 px, net/movement.ts): zero means the server had no input that tick.
  const ticks=await b.evaluate(()=>window.__ticks),steps=[];for(let i=1;i<ticks.length;i++)if(ticks[i].tick===ticks[i-1].tick+1)steps.push(+Math.hypot(ticks[i].x-ticks[i-1].x,ticks[i].y-ticks[i-1].y).toFixed(1));
  const walking=steps.slice(steps.findIndex(v=>v>0),steps.length-1-[...steps].reverse().findIndex(v=>v>0)+1),hist={};for(const v of walking)hist[v]=(hist[v]||0)+1;
  results.serverSteps={ticks:walking.length,histogram:hist};

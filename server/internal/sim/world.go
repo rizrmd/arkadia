@@ -34,19 +34,30 @@ const (
 	enemiesPerPlayer = 3
 )
 
-// Hero walking, from hero.ts: SPEED is screen px/s along a tile edge; up/down and across keep the same ground pace.
-const heroSpeed = 105.0
+// Hero walking, from net/movement.ts: full speed is screen px/s straight across and straight up/down, on an
+// ellipse between them (112 px/s along a tile edge).
+const (
+	heroAcross = 120.0
+	heroUpDown = 90.0
+)
 
 var (
 	enemySpeed = 105 / hypot(64, 32) * .55 // tiles/s, a bit over half the hero's
-	pace       = groundLen(2, 1) / hypot(2, 1)
 	// The hero starts (and respawns) just in front of the tent in the centre of the court.
 	heroSpawn = Vec{590, 420}
 	// Later players stand beside the first so the party never spawns stacked.
 	spawnOffsets = []Vec{{0, 0}, {-26, 12}, {26, 12}, {0, 26}}
 )
 
-func groundLen(sx, sy float64) float64 { g := unproject(sx, sy); return hypot(g.X, g.Y) }
+// fullSpeed is the hero's speed in screen px/s along (sx, sy) at a full push (fullSpeed in movement.ts); WalkStep
+// scales it by the input's length.
+func fullSpeed(sx, sy float64) float64 {
+	l := hypot(sx, sy)
+	if l == 0 {
+		return 0
+	}
+	return l / hypot(sx/heroAcross, sy/heroUpDown)
+}
 
 // Input is one client step: a screen-space walk vector of length 0..1 for one tick.
 type Input struct {
@@ -328,14 +339,13 @@ func (w *World) walk(p *Player, input Vec, dt float64) {
 }
 
 // WalkStep is the hero's movement rule, shared with the client's prediction (src/stronghold/net/movement.ts):
-// it returns the new foot position and the screen px walked along the direction.
+// it returns the new foot position and the screen px walked.
 func WalkStep(nav *Blocker, x, y float64, d Vec, dt float64, gatePassable bool) (float64, float64, float64) {
 	m := hypot(d.X, d.Y)
 	if m == 0 {
 		return x, y, 0
 	}
-	g := groundLen(d.X, d.Y)
-	v := heroSpeed * dt / 1000 * m * pace / g
+	v := fullSpeed(d.X, d.Y) * dt / 1000
 	dx, dy := d.X*v, d.Y*v
 	stuck := nav.Blocked(x, y, gatePassable)
 	for _, s := range [3]Vec{{dx, dy}, {dx, 0}, {0, dy}} {
@@ -343,7 +353,7 @@ func WalkStep(nav *Blocker, x, y float64, d Vec, dt float64, gatePassable bool) 
 			continue
 		}
 		if stuck || !nav.Blocked(x+s.X, y+s.Y, gatePassable) {
-			return x + s.X, y + s.Y, (s.X*d.X + s.Y*d.Y) * g / (m * m * pace)
+			return x + s.X, y + s.Y, hypot(s.X, s.Y)
 		}
 	}
 	return x, y, 0

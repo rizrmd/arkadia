@@ -1,12 +1,12 @@
 import{chromium}from'playwright';import{spawn}from'node:child_process';import assert from'node:assert/strict';import fs from'node:fs/promises';import sharp from'sharp';
 // Walks the Stronghold hero with WASD, the arrow keys and the touch thumbstick; checks collision, court bounds,
 // camera follow, facing art, night tint, saved position and that the clock slider keeps its own arrow keys.
-// Local build by default (npm run build first); DEMO_URL=https://… tests a deployed host instead.
+// Solo play (?offline=1) as the Rift Runner. Local build by default (npm run build first); DEMO_URL=https://… tests a deployed host instead.
 const out='docs/hero-walk';await fs.mkdir(out,{recursive:true});
 const shot=async(page,name,opts={})=>fs.writeFile(`${out}/${name}.webp`,await sharp(await page.screenshot(opts)).webp({quality:80}).toBuffer());
 const base=process.env.DEMO_URL?.replace(/\/$/,'');const server=base?null:spawn('node',['server.mjs'],{env:{...process.env,PORT:'3062'}});const url=base||'http://127.0.0.1:3062';let browser;
 try{await new Promise(r=>setTimeout(r,600));const launch=()=>chromium.launch({headless:true,env:{...process.env,LD_LIBRARY_PATH:'/home/dev/.local/browser-libs/usr/lib/x86_64-linux-gnu:/opt/fural-antigravity-glibc'},args:['--no-sandbox','--no-zygote','--single-process']});browser=await launch();
-const errors=[],open=async(context,query)=>{const page=await context.newPage();page.on('pageerror',e=>{errors.push(e.message);console.error('pageerror',e.message);});await page.goto(url+'/stronghold.html'+query);await page.waitForFunction(()=>document.querySelector('#world-hero')?.dataset.x);await page.waitForTimeout(500);return page;};
+const errors=[],open=async(context,query)=>{const page=await context.newPage();page.on('pageerror',e=>{errors.push(e.message);console.error('pageerror',e.message);});await page.goto(url+'/?offline=1&hero=rift-runner&'+query.slice(1));await page.waitForFunction(()=>document.querySelector('#world-hero')?.dataset.x);await page.waitForTimeout(500);return page;};
 const hero=page=>page.evaluate(()=>{const d=document.querySelector('#world-hero').dataset;return {x:+d.x,y:+d.y,state:d.state,clip:d.clip,facing:+d.facing,behind:+d.behind,tint:d.tint};});
 const camera=page=>page.evaluate(()=>document.querySelector('#world-surface').style.transform);
 // A world re-raster can stall headless frames for a second, so wait on state rather than fixed sleeps.
@@ -20,11 +20,11 @@ assert(!(await stickShown(page)).visible,'no thumbstick on a mouse-only screen')
 await shot(page,'1-spawn-noon');
 // W walks straight up the screen with the rear view; release keeps that facing.
 let during=await hold(page,'KeyW',700),after=await hero(page);console.log('W',during,after);
-assert.equal(during.state,'move');assert.equal(during.clip,'moveUp');assert(Math.abs(during.x-start.x)<.5&&start.y-during.y>15,'W walks straight up');assert.equal(after.clip,'idleUp');
+assert.equal(during.state,'move');assert.equal(during.clip,'move-N');assert(Math.abs(during.x-start.x)<.5&&start.y-during.y>15,'W walks straight up');assert.equal(after.clip,'idle-N');
 // S (arrow) walks down with the front view.
-during=await hold(page,'ArrowDown',400);console.log('Down',during);assert.equal(during.clip,'moveDown');
+during=await hold(page,'ArrowDown',400);console.log('Down',during);assert.equal(during.clip,'move-S');
 // D and the left arrow mirror the diagonal art.
-let before=await hero(page);during=await hold(page,'KeyD',500);console.log('D',during);assert(during.x>before.x+30&&Math.abs(during.y-before.y)<.5,'D walks straight right');assert.equal(during.facing,1);assert(/^move(Back)?$/.test(during.clip));
+let before=await hero(page);during=await hold(page,'KeyD',500);console.log('D',during);assert(during.x>before.x+30&&Math.abs(during.y-before.y)<.5,'D walks straight right');assert.equal(during.facing,1);assert(/^move-[NS]E$/.test(during.clip));
 before=await hero(page);during=await hold(page,'ArrowLeft',500);assert(during.x<before.x-30);assert.equal(during.facing,-1);
 // W+D walks along the 2:1 tile edge.
 await page.keyboard.down('KeyW');await page.keyboard.down('KeyD');await page.waitForTimeout(150);before=await hero(page);await page.waitForTimeout(400);during=await hero(page);await page.keyboard.up('KeyW');await page.keyboard.up('KeyD');await idle(page);
@@ -46,23 +46,29 @@ const cam0=await camera(page);await hold(page,'KeyA',600);await page.waitForFunc
 before=await hero(page);await page.click('.clock-chip');await page.focus('#clock-slider');await page.keyboard.down('ArrowLeft');await page.waitForTimeout(300);await page.keyboard.up('ArrowLeft');
 assert.deepEqual([(await hero(page)).x,(await hero(page)).y],[before.x,before.y],'slider arrows must not walk');await page.keyboard.press('Escape');
 // Position survives a reload (saved once the hero has rested 400 ms).
-const rest=await hero(page);await page.waitForTimeout(800);await page.goto(url+'/stronghold.html?time=0.5');await page.waitForFunction(()=>document.querySelector('#world-hero')?.dataset.x);await page.waitForTimeout(300);const reloaded=await hero(page);console.log('reloaded',reloaded);assert(Math.hypot(reloaded.x-rest.x,reloaded.y-rest.y)<2,'saved position');
+const rest=await hero(page);await page.waitForTimeout(800);await page.goto(url+'/?offline=1&hero=rift-runner&time=0.5');await page.waitForFunction(()=>document.querySelector('#world-hero')?.dataset.x);await page.waitForTimeout(300);const reloaded=await hero(page);console.log('reloaded',reloaded);assert(Math.hypot(reloaded.x-rest.x,reloaded.y-rest.y)<2,'saved position');
 // Walk back to the court centre for the lighting shots.
 await page.evaluate(()=>localStorage.removeItem('arkadia.stronghold.hero'));
-// Ground speed: up/down, across and along a tile edge all cross the court at the same pace (screen speed differs
-// on the 2:1 map: a vertical screen pixel is twice the ground of a horizontal one).
-await page.goto(url+'/stronghold.html?time=0.5');await page.waitForFunction(()=>document.querySelector('#world-hero')?.dataset.x);await page.waitForTimeout(800);
-const rate=async keys=>{for(const k of keys)await page.keyboard.down(k);await page.waitForFunction(()=>document.querySelector('#world-hero').dataset.state==='move');await page.waitForTimeout(100);
+// Walking speed in every key direction, measured once the hero is up to speed.
+await page.goto(url+'/?offline=1&hero=rift-runner&time=0.5');await page.waitForFunction(()=>document.querySelector('#world-hero')?.dataset.x);await page.waitForTimeout(800);
+// Each run starts on open court west of the tent, so repeated runs never end against the tent or a wall.
+const steps={KeyD:[2,0],ArrowRight:[2,0],KeyA:[-2,0],KeyW:[0,-1],ArrowUp:[0,-1],KeyS:[0,1]};
+const rate=async keys=>{const sx=keys.reduce((a,k)=>a+steps[k][0],0),sy=keys.reduce((a,k)=>a+steps[k][1],0),l=Math.hypot(sx,sy);
+ assert(await page.evaluate(([x,y])=>window.__STRONGHOLD_COMBAT__.teleport(((x-577)/64+(y+160)/32)/2,((y+160)/32-(x-577)/64)/2),[420-sx/l*60,480-sy/l*45]));await page.waitForTimeout(100);
+ for(const k of keys)await page.keyboard.down(k);await page.waitForFunction(()=>document.querySelector('#world-hero').dataset.state==='move');await page.waitForTimeout(300);
  const r=await page.evaluate(async()=>{const d=document.querySelector('#world-hero').dataset,at=()=>({x:+d.x,y:+d.y,t:performance.now()}),a=at();await new Promise(r=>setTimeout(r,450));return [a,at()];});
  for(const k of keys)await page.keyboard.up(k);await idle(page);const [a,b]=r.map(tile),screen=Math.hypot(r[1].x-r[0].x,r[1].y-r[0].y)/(r[1].t-r[0].t)*1000;
  return {keys:keys.join('+'),tiles:Math.hypot(b.u-a.u,b.v-a.v)/(r[1].t-r[0].t)*1000,screen};};
-// Best of three: a stalled headless frame (over 120 ms) drops ground, as it does in the game.
-const rates=[];for(const keys of [['KeyD'],['KeyA'],['KeyW'],['KeyS'],['KeyW','KeyD'],['KeyS','KeyA'],['ArrowUp'],['ArrowRight']]){let best;for(let i=0;i<3;i++){const r=await rate(keys);if(!best||r.tiles>best.tiles)best=r;}rates.push(best);}
+// Median of three: a stalled headless frame (over 120 ms) at either end of a run skews that run either way.
+const rates=[];for(const keys of [['KeyD'],['KeyA'],['KeyW'],['KeyS'],['KeyW','KeyD'],['KeyS','KeyA'],['ArrowUp'],['ArrowRight']]){const runs=[];for(let i=0;i<3;i++)runs.push(await rate(keys));rates.push(runs.sort((a,b)=>a.screen-b.screen)[1]);}
 console.table(rates.map(r=>({keys:r.keys,'tiles/s':r.tiles.toFixed(3),'screen px/s':r.screen.toFixed(1)})));
-const mean=rates.reduce((s,r)=>s+r.tiles,0)/rates.length;for(const r of rates)assert(Math.abs(r.tiles/mean-1)<.1,`${r.keys} walks ${r.tiles.toFixed(3)} tiles/s, mean ${mean.toFixed(3)}`);
-const up=rates.find(r=>r.keys==='KeyW'),right=rates.find(r=>r.keys==='KeyD');assert(Math.abs(up.screen/right.screen-.5)<.06,'straight up moves half the screen speed of straight across');
+// Screen speed sits on a 4:3 ellipse (net/movement.ts): 120 px/s across, 90 up/down, 112 along a tile edge, so no direction feels
+// twice as fast as another (equal ground speed walked 66 up/down against 133 across).
+const expect={KeyD:120,KeyA:120,ArrowRight:120,KeyW:90,KeyS:90,ArrowUp:90,'KeyW+KeyD':111.6,'KeyS+KeyA':111.6};
+for(const r of rates)assert(Math.abs(r.screen/expect[r.keys]-1)<.08,`${r.keys} walks ${r.screen.toFixed(1)} screen px/s, expected ${expect[r.keys]}`);
+const up=rates.find(r=>r.keys==='KeyW'),right=rates.find(r=>r.keys==='KeyD');assert(Math.abs(up.screen/right.screen-.75)<.06,'straight up moves three quarters of the screen speed of straight across');
 await page.evaluate(()=>localStorage.removeItem('arkadia.stronghold.hero'));
-for(const [time,name] of [['0.31','4-morning-shadow'],['0','5-night-tint']]){const p=page;await p.goto(url+'/stronghold.html?time='+time);await p.waitForFunction(()=>document.querySelector('#world-hero')?.dataset.x);await p.waitForTimeout(1200);await hold(p,'KeyA',700);const h=await hero(p);console.log(name,h);
+for(const [time,name] of [['0.31','4-morning-shadow'],['0','5-night-tint']]){const p=page;await p.goto(url+'/?offline=1&hero=rift-runner&time='+time);await p.waitForFunction(()=>document.querySelector('#world-hero')?.dataset.x);await p.waitForTimeout(1200);await hold(p,'KeyA',700);const h=await hero(p);console.log(name,h);
  if(time==='0'){const [r,g,bl]=h.tint.split(',').map(Number);assert(bl>r&&r<200,'night tints the hero blue-dark, got '+h.tint);}
  const box=await p.evaluate(()=>{const r=document.querySelector('#world-hero').getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height};});
  await shot(p,name,{clip:{x:Math.max(0,box.x-160),y:Math.max(0,box.y-120),width:box.width+320,height:box.height+240}});}
