@@ -1,3 +1,5 @@
+**Blocked on corrected Run source production.** Built-in generation repeatedly failed anatomical leg alternation, right-arm weapon consistency and body-scale continuity, including targeted edits and a single-frame retry. A choice of corrected animator artwork or an explicitly authorized CLI/API fallback is pending. The six-sheet task is incomplete; none of the rejected Run candidates may be used as finals.
+
 **Run correction in progress — not accepted.** Hurt and Death corrections are published. Both full 3072-square Run candidates now exist, but visual acceptance FAILED: repeated leg overlap, wrong-arm devices and body-scale jumps. 384 cells across all six exports pass structural checks; all 384 player selections and timed Death hold/Run continuation pass. These functional results do not accept the Run artwork. No live gameplay sprite has been replaced.
 
 ## Source review

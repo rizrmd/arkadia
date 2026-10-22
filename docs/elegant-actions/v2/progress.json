@@ -1,6 +1,6 @@
 {
   "goal": "fix until pass",
-  "goalStatus": "active",
+  "goalStatus": "blocked",
   "completedCorrectionPhases": [
     "hurt",
     "death"
@@ -18,5 +18,6 @@
     "headings": 16,
     "pairs": 64,
     "frames": 128
-  }
+  },
+  "blocker": "Built-in generation cannot reliably deliver accepted Run sources after repeated approaches. Awaiting alternate source-production route: corrected artwork or explicit CLI/API fallback authorization."
 }
