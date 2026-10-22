@@ -8,6 +8,8 @@ Painterly blue shadows, restrained amber torch rims, darker foreground silhouett
 
 ![Snow gate concept](/api/rooms/DR7f0a660e4dfc6ca5002753b3/attachments/DA09f0b9e6d337117fec3f3fad)
 
+![Court and snow: desktop left/right, then mobile left/right](/api/rooms/DR7f0a660e4dfc6ca5002753b3/attachments/DAce39824167b3dc85ab1f8911)
+
 ## Asset kit
 
 Desktop: **640×760 px**, bottom corners, camera parallax and area cross-fade. Mobile: **360×300 px**, separately composed thin top corners, static with area cross-fade. Dimensions are @2x targets; all files retain alpha. No CSS blur is needed.
