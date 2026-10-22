@@ -241,7 +241,7 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
     const look=[f.clip.frames[f.frame()],f.vertical?0:f.facing,f.flash>0,light,hidden.length?hidden.map(p=>p.x+':'+p.y).join()+'@'+w.x.toFixed(1)+','+w.y.toFixed(1):''].join('|');
     if(look!==v.look){v.look=look;compose(f,v,w.x,w.y,box,sun,r,hidden,look);}
     set(v,'size',v.el.width+'x'+v.el.height+'@'+dpr,()=>{v.el.style.width=v.el.width/dpr+'px';v.el.style.height=v.el.height/dpr+'px';});
-    set(v,'at',`translate3d(${Math.round((s.x+box[0]*k)*dpr)/dpr}px,${Math.round((s.y+box[1]*k)*dpr)/dpr}px,0)`,()=>{v.el.style.transform=v.at;});
+    set(v,'at',`translate3d(${s.x+box[0]*k}px,${s.y+box[1]*k}px,0)`,()=>{v.el.style.transform=v.at;v.el.dataset.x=w.x.toFixed(2);v.el.dataset.y=w.y.toFixed(2);});
     set(v,'alpha',alpha.toFixed(2),()=>{v.el.style.opacity=v.alpha;});
     // A small health bar over each wounded revenant.
     const wounded=f.alive&&f.hp<STATS.revenant.hp;
@@ -271,7 +271,7 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
   steer,
   // While swinging, stunned or down, the hero plays that clip in place of walking.
   pose:():Pose|null=>h.state==='idle'||h.state==='move'?null:{clip:h.state,t:h.t},
-  place(x:number,y:number,scale:number){origin={x,y,scale};},
+  place(x:number,y:number,scale:number){origin={x,y,scale};render();},
   // Started after the hero's loop (world-view.ts), so each frame draws with the camera the hero just moved.
   start(){requestAnimationFrame(loop);},
   setAmbient(rgb:readonly number[]){ambient=rgb.map(v=>Math.round(v*255)).join();},
