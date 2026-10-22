@@ -9,6 +9,7 @@ const LIVE='https://ark-whachat.fural.space/typography/';
 const D='docs/typography/v2',dry=process.argv.includes('--dry');
 const cli=args=>JSON.parse(execFileSync('fural-agent',args,{encoding:'utf8',maxBuffer:16e6}));
 const receiptsFile=`${D}/publication.json`,receipts=fs.existsSync(receiptsFile)?JSON.parse(fs.readFileSync(receiptsFile,'utf8')):{attachments:{}};
+const live=fs.existsSync(`${D}/live.json`)?JSON.parse(fs.readFileSync(`${D}/live.json`,'utf8')):null;
 const evidence=JSON.parse(fs.readFileSync(`${D}/evidence.json`,'utf8'));
 function upload(file){
  const sha=createHash('sha256').update(fs.readFileSync(file)).digest('hex'),r=receipts.attachments[file];
@@ -45,6 +46,12 @@ const md=`## Result
 The HUD sample and a new Choose Your Hero sample now share one Pixi v8 typography module: MSDF BitmapText in two self-hosted OFL fonts, named text-role tokens, and an effect shader for gradients, outlines, glow and soft shadows. HUD frames are bronze bitmaps generated as @3x masters with @2x/@1x downscales and drawn as 9-slices. Every word on both screens is live MSDF text. The ARKADIA logo stays an image. Extras that are not in the reference, such as CRITICAL 248, are removed.
 
 Live sample: [${LIVE}](${LIVE}) ([Choose Your Hero](${LIVE}?screen=hero)). Toolbar: screen, hero, glow, and a reference-overlay slider.
+
+## Live deployment
+
+${live?`Checked ${live.checked.slice(0,16).replace('T',' ')} UTC by ${repo('scripts/typography/verify-live.mjs','verify-live.mjs')}: ${live.results.map(r=>`${r.name.replace('live-','')} at ${r.viewport.join(' × ')} DPR ${r.dpr} (${r.texts} live texts, ${r.errors.length?r.errors.length+' errors':'no errors'})`).join('; ')}.
+
+${live.results.map(r=>img(`${D}/${r.name}.webp`,`Live ${r.name.replace('live-','')} capture`)).join('\n\n')}`:'Not checked yet.'}
 
 ## Reference 1 — HUD
 

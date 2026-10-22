@@ -4,6 +4,16 @@ The HUD sample and a new Choose Your Hero sample now share one Pixi v8 typograph
 
 Live sample: [https://ark-whachat.fural.space/typography/](https://ark-whachat.fural.space/typography/) ([Choose Your Hero](https://ark-whachat.fural.space/typography/?screen=hero)). Toolbar: screen, hero, glow, and a reference-overlay slider.
 
+## Live deployment
+
+Checked 2026-10-22 17:11 UTC by [verify-live.mjs](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=scripts%2Ftypography%2Fverify-live.mjs): hud at 1672 × 941 DPR 1 (24 live texts, no errors); hero at 1672 × 941 DPR 1 (15 live texts, no errors); hero-mobile at 432 × 912 DPR 2 (13 live texts, no errors).
+
+![Live hud capture](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DA026184765f2c3d0a9a7b512c)
+
+![Live hero capture](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DAd4746cfd1a08f41e57a66c51)
+
+![Live hero-mobile capture](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DA5203d803e62929f3a442bd2e)
+
 ## Reference 1 — HUD
 
 ![Reference 1: HUD typography target](/api/organizations/ORd5dd6f99b4308d6187031557/task-attachments/TA114f71174983c55c7fe5186b)
