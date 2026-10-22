@@ -4,7 +4,7 @@ type Sprite={id:string;image:HTMLImageElement;width:number;height:number;foot:nu
 const structural=/^(forge|barracks|altar|mage|mine|gate|bastion|rampart-ne|rampart-se|gateway-grand|wall-broken)$/;
 export const FOUNDATION_MOSS='/foundation-transitions/moss.png';
 export const FOUNDATION_DRIFT='/modular-stronghold/v2/snowdrift-edge.png';
-const cache=new Map<string,{under:HTMLCanvasElement;face:HTMLCanvasElement;pad:number}>();
+const cache=new Map<string,{under:HTMLCanvasElement;face:HTMLCanvasElement;pad:number;fade?:HTMLCanvasElement}>();
 function random(seed:number){let n=seed|0;return()=>{n=(Math.imul(n,1664525)+1013904223)|0;return(n>>>0)/4294967296;};}
 export function foundationLayers(p:Sprite,soil:HTMLImageElement,snow?:HTMLImageElement,vegetation?:HTMLImageElement){
  if(!structural.test(p.id)&&p.id!=='expedition')return null;
@@ -24,12 +24,12 @@ export function foundationLayers(p:Sprite,soil:HTMLImageElement,snow?:HTMLImageE
   // Keep the center approach clear. Entrances must never acquire a green sill.
   const approach=gate&&Math.abs(x-width*.5)<width*.2;
   const length=34+rng()*22,depth=approach?7:14+rng()*11;
-  ground.globalAlpha=approach?.32:dry?.5:.6;
+  ground.globalAlpha=approach?.16:gate?.25:dry?.5:.6;
   ground.drawImage(soil,x-length/2,y-depth*.35,length,depth);
   // Tiny contact crevice; soft earth decal supplies the broad transition.
   ground.fillStyle='#302c2428';ground.beginPath();ground.ellipse(x,y+1,7,1.8,0,0,Math.PI*2);ground.fill();
   if(vegetation&&!approach&&rng()<(dry?.035:.18)){const size=24+rng()*22;ground.globalAlpha=.78;ground.drawImage(vegetation,x-size*.5,y-3,size,size*vegetation.height/vegetation.width);}
-  if(snow&&p.layer==='foreground'&&!approach&&rng()<.24){ground.globalAlpha=.74;ground.drawImage(snow,x-22,y+1,44,13);}
+  if(snow&&p.layer==='foreground'&&!approach&&rng()<(gate?.55:.24)){ground.globalAlpha=.74;ground.drawImage(snow,x-22,y+1,44,13);}
   if(approach||rng()>(dry?.16:.62))continue;
   // Broken climbing moss only at the lowest opaque pixels, clipped to the
   // owning sprite below. Sparse stippling preserves masonry and its lighting.
@@ -41,7 +41,23 @@ export function foundationLayers(p:Sprite,soil:HTMLImageElement,snow?:HTMLImageE
   }
  }
  moss.globalAlpha=1;moss.globalCompositeOperation='destination-in';moss.drawImage(p.image,0,0,width,height);
- result={under,face,pad};cache.set(key,result);return result;
+ let fade:HTMLCanvasElement|undefined;
+ if(gate){
+  // Erode the cutout's straight bottom edge into the actual terrain below it.
+  // A stable, irregular transition follows each tower's own stone contour;
+  // the doorway is excluded so opening alpha and collision remain unchanged.
+  fade=document.createElement('canvas');fade.width=width;fade.height=height;
+  const f=fade.getContext('2d')!,pixels=f.createImageData(width,height);
+  for(let y=0;y<height;y++)for(let x=0;x<width;x++){
+   const edge=bottom[x],tower=Math.abs(x-width*.5)>width*.18;
+   const grain=Math.sin(x*1.71+y*2.39)*.65+Math.sin(x*.43)*1.3;
+   const t=tower&&edge>=0?Math.max(0,Math.min(1,(edge-y+grain)/3.5)):1;
+   const i=(y*width+x)*4;pixels.data[i]=pixels.data[i+1]=pixels.data[i+2]=255;
+   pixels.data[i+3]=Math.round(255*t*t*(3-2*t));
+  }
+  f.putImageData(pixels,0,0);
+ }
+ result={under,face,pad,fade};cache.set(key,result);return result;
 }
 export function drawFoundation(ctx:CanvasRenderingContext2D,p:Sprite,soil:HTMLImageElement,part:'under'|'face',snow?:HTMLImageElement,vegetation?:HTMLImageElement){
  const layers=foundationLayers(p,soil,snow,vegetation);if(!layers)return;

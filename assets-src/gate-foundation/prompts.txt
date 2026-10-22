@@ -1,0 +1,7 @@
+Built-in image_gen; two generations using the reported game screenshot and then the generated reference.
+
+Reference prompt: Create the same isometric twin-tower stone gateway and wall wings, with a continuous mossy foundation, natural irregular earth/gravel/snow contact and a worn approach dissolving into trampled snow. Preserve blue banners, wooden arch door, painterly art and 2:1 perspective. Remove UI and people. Avoid cutout edges, uniform halos and a sharp triangular paving tip.
+
+Ground asset prompt: Ground-only transparent 2:1 isometric winter terrain decal based on the reference: coarse earth, tiny gravel, moss and patchy snow flanking a short central flagstone approach. Irregular feathered outer edges breaking into small pebbles and snow flecks. No buildings, walls, vertical stones, trees, characters, cast shadows, text or solid background.
+
+The generated PNG is preserved; the runtime WebP is a lossless encoding of the original. Runtime blends the existing stone bottom contour into this underlay and uses world-aligned snow to soften the old paving edge. No generated images or updates were published to Knowledge, per the latest user instruction.
