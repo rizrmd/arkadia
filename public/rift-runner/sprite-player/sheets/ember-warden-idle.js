@@ -1,5 +1,7 @@
 spritePlayerSheet({
  "name": "Ember Warden — Idle",
+ "hero": "ember-warden",
+ "pose": "idle",
  "sheet": "ember-warden-idle.webp",
  "sheetHalf": "ember-warden-idle@0.5x.webp",
  "cell": [

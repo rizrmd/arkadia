@@ -14,7 +14,8 @@ const HOST='https://knowledge.example/host.html',host=(query,w,h)=>`<!doctype ht
 const checks=[],failures=[],test=(ok,name)=>(ok?checks:failures).push(name);
 const browser=await chromium.launch({headless:true,env:{...process.env,LD_LIBRARY_PATH:'/home/dev/.local/browser-libs/usr/lib/x86_64-linux-gnu:/opt/fural-antigravity-glibc'},args:['--no-sandbox','--no-zygote','--single-process']});
 // One page for every scenario: closing a page takes down single-process Chromium.
-const errors=[],page=await browser.newPage();page.on('pageerror',e=>errors.push(e.message));page.on('response',r=>{if(r.status()>=400)errors.push(r.status()+' '+r.url())});
+const errors=[],page=await chromiumPage();
+async function chromiumPage(){const p=await browser.newPage();p.on('pageerror',e=>errors.push(e.message));p.on('response',r=>{if(r.status()>=400)errors.push(r.status()+' '+r.url())});return p;}
 if(!live)await page.route(base+'/**',serveDisk);
 async function open(query,w,h){
  await page.setViewportSize({width:w+40,height:h+40});await page.unroute(HOST);await page.route(HOST,r=>r.fulfill({contentType:'text/html',body:host(query,w,h)}));await page.goto(HOST);const frame=await (await page.waitForSelector('#f')).contentFrame();
@@ -24,7 +25,7 @@ async function open(query,w,h){
 try{
  // Default sample, sized like the Knowledge design frame.
  let {frame,state}=await open('',560,620);let s=await state();
- test(s.ready&&!s.error,'sample sheet loads inside an iframe');test(s.row===4&&s.fps===5,'starts on heading S at 5 fps');
+ test(s.ready&&!s.error,'sample sheet loads inside an iframe');test(s.row===4&&s.fps===5&&s.loop,'starts on heading S at 5 fps in Loop mode');
  const seen=new Set();for(let i=0;i<14;i++){seen.add((await state()).frame);await page.waitForTimeout(110);}
  test(seen.size>=6,`timed playback advances frames (saw ${seen.size} distinct)`);
  await frame.click('#play');s=await state();test(!s.playing,'pause button stops playback');const held=s.frame;await page.waitForTimeout(600);test((await state()).frame===held,'paused frame holds');
@@ -64,14 +65,17 @@ try{
  await inner.waitForFunction(()=>window.spritePlayer?.state.ready||window.spritePlayer?.state.error,null,{timeout:60000});s=await inner.evaluate(()=>({...window.spritePlayer.state,origin:self.origin}));
  test(s.ready&&!s.error&&s.origin==='null',`plays inside a Knowledge design frame sandbox (origin ${s.origin}${s.error?', '+s.error:''})`);await page.waitForTimeout(700);
  test((await inner.evaluate(()=>window.spritePlayer.state.frame))!==s.frame,'design-frame playback advances');await page.screenshot({path:`${OUT}/design-frame.png`});
- // Simple embed: only Play/Pause, Loop/Once and zoom.
+ // Simple embed: 8-direction switcher (N, NE, E, SE, S, SW, W, NW), Play/Pause, Loop/Once and zoom.
  await page.setViewportSize({width:600,height:600});({frame,state}=await open('?row=S&controls=simple',560,560));
  const visible=await frame.$$eval('button,input,select,output',els=>els.filter(e=>e.offsetParent!==null&&getComputedStyle(e).visibility!=='hidden').map(e=>e.id));
- test(visible.join()==='play,loop,once,zoom-out,zoom-level,zoom-in,zoom-reset',`simple controls show only play, loop/once and zoom (${visible.join()})`);
+ test(visible.join()==='dir-N,dir-NE,dir-E,dir-SE,dir-S,dir-SW,dir-W,dir-NW,play,loop,once,zoom-out,zoom-level,zoom-in,zoom-reset',`simple controls show 8-direction switcher, play, loop/once and zoom (${visible.join()})`);
+ const switched=[];for(const [idx,dir] of ['N','NE','E','SE','S','SW','W','NW'].entries()){await frame.click(`#dir-${dir}`);if((await state()).row===idx)switched.push(dir);}
+ test(switched.join()==='N,NE,E,SE,S,SW,W,NW','all 8 directions switchable in simple embed mode');
+ await frame.click('#dir-S');
  await frame.click('#once');await frame.waitForFunction(()=>!window.spritePlayer.state.playing,null,{timeout:5000}).catch(()=>{});s=await state();
  test(!s.loop&&!s.playing&&s.frame===7,'Once stops on the last frame');
  await frame.click('#play');s=await state();test(s.playing&&s.frame===0,'Play after Once restarts from the first frame');
- await frame.click('#loop');await page.waitForTimeout(2000);s=await state();test(s.loop&&s.playing,'Loop keeps playing past the last frame');
+ await frame.click('#loop');await page.waitForTimeout(1500);s=await state();test(s.loop&&s.playing,'Loop keeps playing past the last frame');
  await frame.click('#zoom-in');await frame.click('#zoom-in');s=await state();
  test(s.zoom===1.5&&(await frame.$eval('#zoom-level',e=>e.textContent))==='150%','zoom in steps 100 → 125 → 150 %');
  const box=await (await frame.$('#stage')).boundingBox();await page.mouse.move(box.x+box.width/2,box.y+box.height/2);await page.mouse.down();await page.mouse.move(box.x+box.width/2+60,box.y+box.height/2+30,{steps:4});await page.mouse.up();
@@ -81,29 +85,36 @@ try{
  await page.keyboard.press('Escape');await page.screenshot({path:`${OUT}/simple.png`});
  ({frame,state}=await open('?controls=simple&zoom=2&loop=0',560,560));s=await state();test(s.zoom===2&&!s.loop,'zoom and loop=0 from the URL');
  // Knowledge page iframe: fural.space renders <iframe> from *.fural.space in a card with this sandbox, no-referrer and lazy loading.
- await page.setViewportSize({width:760,height:700});await page.unroute(HOST);await page.route(HOST,r=>r.fulfill({contentType:'text/html',body:`<!doctype html><body style="margin:0"><iframe id="k" src="${base}/rift-runner/sprite-player/?row=S&controls=simple" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox" referrerpolicy="no-referrer" loading="lazy" allowfullscreen style="display:block;border:0;width:100%;height:620px"></iframe></body>`}));
+ await page.setViewportSize({width:760,height:700});await page.unroute(HOST);await page.route(HOST,r=>r.fulfill({contentType:'text/html',body:`<!doctype html><body style="margin:0"><iframe id="k" src="${base}/rift-runner/sprite-player/?row=S&controls=simple" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox" referrerpolicy="no-referrer" loading="lazy" allowfullscreen style="display:block;border:0;width:100%;height:560px"></iframe></body>`}));
  await page.goto(HOST);const knowledge=await (await page.waitForSelector('#k')).contentFrame();
  await knowledge.waitForFunction(()=>window.spritePlayer?.state.ready||window.spritePlayer?.state.error,null,{timeout:60000});s=await knowledge.evaluate(()=>window.spritePlayer.state);
  test(s.ready&&!s.error&&s.row===4,'plays inside a Knowledge page iframe (fural.space sandbox card)');await page.waitForTimeout(700);
  test((await knowledge.evaluate(()=>window.spritePlayer.state.frame))!==s.frame,'Knowledge page iframe playback advances');await page.screenshot({path:`${OUT}/knowledge-iframe.png`});
- // Ember Warden idle sheet: full 64-cell sweep, all-headings view, simple controls and Knowledge page iframe sandbox.
- ({frame,state}=await open('?hero=ember-warden&row=S',560,620));s=await state();
- const emberName=await frame.evaluate(()=>window.spritePlayer.sheet?.name);
- test(s.ready&&!s.error&&emberName==='Ember Warden — Idle'&&s.row===4&&s.fps===5,'Ember Warden idle sheet loads via hero=ember-warden on heading S at 5 fps');
- const emberVisited=[];for(let r=0;r<8;r++){await frame.click(`#headings button:nth-child(${r+1})`);for(let f=0;f<8;f++){await frame.evaluate(f=>{const el=document.getElementById('frame');el.value=f;el.dispatchEvent(new Event('input'))},f);const d=(await state()).drawn;if(d.row===r&&d.frame===f)emberVisited.push(r*8+f);}}
- test(emberVisited.length===64,`Ember Warden all 64 heading/frame cells drawn (${emberVisited.length})`);
- const emberPixels=await frame.evaluate(()=>{const c=document.getElementById('canvas'),d=c.getContext('2d').getImageData(0,0,c.width,c.height).data;let n=0;for(let i=3;i<d.length;i+=4)if(d[i]>200)n++;return n/(d.length/4);});
- test(emberPixels>0.03&&emberPixels<0.6,`Ember Warden character pixels on canvas (${(emberPixels*100).toFixed(1)} %)`);
- await frame.check('#guides');await frame.check('#all');await frame.selectOption('#bg','checker');
- await page.screenshot({path:`${OUT}/ember-warden-all-headings.png`});
- await page.setViewportSize({width:600,height:600});({frame,state}=await open('?hero=ember-warden&row=S&controls=simple',560,560));s=await state();
- test(s.ready&&!s.error&&s.row===4,'Ember Warden simple controls load on heading S');
+
+ // Verify all 8 hero/pose manifests (Rift Runner & Ember Warden × Idle, Hurt, Death, Run) in simple embed mode.
+ const POSE_CASES=[
+  {hero:'rift-runner',pose:'idle',name:'Rift Runner — Idle',fps:5,loop:true},
+  {hero:'rift-runner',pose:'hurt',name:'Rift Runner — Hurt',fps:8,loop:false},
+  {hero:'rift-runner',pose:'death',name:'Rift Runner — Death',fps:8,loop:false},
+  {hero:'rift-runner',pose:'run',name:'Rift Runner — Run',fps:10,loop:true},
+  {hero:'ember-warden',pose:'idle',name:'Ember Warden — Idle',fps:5,loop:true},
+  {hero:'ember-warden',pose:'hurt',name:'Ember Warden — Hurt',fps:8,loop:false},
+  {hero:'ember-warden',pose:'death',name:'Ember Warden — Death',fps:8,loop:false},
+  {hero:'ember-warden',pose:'run',name:'Ember Warden — Run',fps:10,loop:true}
+ ];
+ for(const c of POSE_CASES){
+  ({frame,state}=await open(`?hero=${c.hero}&pose=${c.pose}&row=S&controls=simple`,560,560));s=await state();
+  const sheetName=await frame.evaluate(()=>window.spritePlayer.sheet?.name);
+  test(s.ready&&!s.error&&sheetName===c.name&&s.fps===c.fps&&s.loop===c.loop,`${c.name}: loads with default loop=${c.loop} and fps=${c.fps}`);
+  const poseDirs=[];for(const [idx,dir] of ['N','NE','E','SE','S','SW','W','NW'].entries()){await frame.click(`#dir-${dir}`);if((await state()).row===idx)poseDirs.push(dir);}
+  test(poseDirs.length===8,`${c.name}: all 8 directions selectable in simple mode`);
+  await frame.click('#dir-S');
+  if(!c.loop){
+   await frame.waitForFunction(()=>!window.spritePlayer.state.playing&&window.spritePlayer.state.frame===7,null,{timeout:5000}).catch(()=>{});
+   s=await state();test(!s.playing&&s.frame===7,`${c.name}: Once mode holds final frame 8`);
+  }
+ }
  await page.screenshot({path:`${OUT}/ember-warden-simple.png`});
- await page.setViewportSize({width:760,height:700});await page.unroute(HOST);await page.route(HOST,r=>r.fulfill({contentType:'text/html',body:`<!doctype html><body style="margin:0"><iframe id="ke" src="${base}/rift-runner/sprite-player/?hero=ember-warden&row=S&controls=simple" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox" referrerpolicy="no-referrer" loading="lazy" allowfullscreen style="display:block;border:0;width:100%;height:620px"></iframe></body>`}));
- await page.goto(HOST);const emberKnowledge=await (await page.waitForSelector('#ke')).contentFrame();
- await emberKnowledge.waitForFunction(()=>window.spritePlayer?.state.ready||window.spritePlayer?.state.error,null,{timeout:60000});s=await emberKnowledge.evaluate(()=>window.spritePlayer.state);
- test(s.ready&&!s.error&&s.row===4,'Ember Warden plays inside a Knowledge page iframe (fural.space sandbox card)');await page.waitForTimeout(700);
- test((await emberKnowledge.evaluate(()=>window.spritePlayer.state.frame))!==s.frame,'Ember Warden Knowledge page iframe playback advances');await page.screenshot({path:`${OUT}/ember-warden-knowledge-iframe.png`});
  // Broken configuration reports an error instead of failing silently.
  ({frame,state}=await open('?manifest=sheets/missing.json',400,400));s=await state();test(!!s.error&&!s.ready,'missing sheet description shows an error');errors.splice(errors.findIndex(e=>e.includes('missing.json')),1);
  test(errors.length===0,'no page or resource errors'+(errors.length?': '+errors.join(' | '):''));

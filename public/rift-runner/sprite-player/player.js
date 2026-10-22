@@ -2,31 +2,39 @@
 // Built to sit in an iframe. Configure with query parameters:
 //   manifest=sheets/rift-runner-idle.js     sheet description (default); paths inside resolve against it. A .js description
 //                                          calls spritePlayerSheet({...}) and also loads in sandboxed frames; .json needs CORS there
-//   hero=ember-warden|rift-runner           built-in hero idle sheet shortcut (ember / ember-warden / rift / rift-runner)
+//   hero=ember-warden|rift-runner           built-in hero selector (ember / ember-warden / rift / rift-runner)
+//   pose=idle|hurt|death|run                built-in pose selector (also accepts action=idle|hurt|death|run or hero=ember-warden-hurt)
 //   sheet=URL&cell=384[,384]&cols=8&rows=8&pivot=192,360&fps=5&labels=N,NE,E,SE,S,SW,W,NW   a sheet without a manifest
-//   row=S|4  fps=5  frame=0  bg=dark|light|checker|snow  guides=1  all=1  autoplay=0  loop=0 (play once)
+//   row=S|4  fps=5  frame=0  bg=dark|light|checker|snow  guides=1  all=1  autoplay=0  loop=0|1 (override pose default)
 //   zoom=1.5   start zoomed (0.5–4); drag pans when zoomed, Ctrl+wheel / +, −, 0 zoom and reset
-//   controls=full|min|simple|none   simple = only Play/Pause, Loop/Once and zoom, for embeds
-// Parent pages can drive it with postMessage({type:'sprite-player',action:'play'|'pause'|'row'|'frame'|'fps',value}).
+//   controls=full|min|simple|none   simple = 8-direction switcher, Play/Pause, Loop/Once and zoom, for embeds
+// Parent pages can drive it with postMessage({type:'sprite-player',action:'play'|'pause'|'row'|'frame'|'fps'|'loop',value}).
 (()=>{
 const $=id=>document.getElementById(id),params=new URLSearchParams(location.search),dpr=()=>Math.min(window.devicePixelRatio||1,3);
 const player=$('player'),stage=$('stage'),canvas=$('canvas'),ctx=canvas.getContext('2d'),status=$('status');
 const ZOOMS=[0.5,0.75,1,1.25,1.5,2,3,4];
-const state={ready:false,playing:true,loop:true,zoom:1,pan:[0,0],row:0,frame:0,fps:5,all:false,guides:false,bg:'dark',source:null,drawn:null};
+const state={ready:false,playing:true,ended:false,loop:true,zoom:1,pan:[0,0],row:0,frame:0,fps:5,all:false,guides:false,bg:'dark',source:null,drawn:null};
 let sheet,images={},last=0,elapsed=0,raf=0;
 window.spritePlayer={state,get sheet(){return sheet}};
 
 const fail=message=>{status.textContent=message;status.classList.add('error');state.error=message;};
 const list=(v,fn=Number)=>v==null||v===''?null:String(v).split(',').map(s=>fn(s.trim()));
-const HERO_SHEETS={ember:'sheets/ember-warden-idle.js','ember-warden':'sheets/ember-warden-idle.js',rift:'sheets/rift-runner-idle.js','rift-runner':'sheets/rift-runner-idle.js'};
+const HEROES={ember:'ember-warden','ember-warden':'ember-warden',rift:'rift-runner','rift-runner':'rift-runner'};
+const POSES=new Set(['idle','hurt','death','run']);
+function resolveManifest(){
+ if(params.get('manifest'))return params.get('manifest');
+ let h=(params.get('hero')||'').toLowerCase().trim(),p=(params.get('pose')||params.get('action')||'').toLowerCase().trim();
+ for(const pose of POSES)if(h.endsWith('-'+pose)){p=p||pose;h=h.slice(0,-pose.length-1);break;}
+ const hero=HEROES[h]||'rift-runner',pose=POSES.has(p)?p:'idle';
+ return `sheets/${hero}-${pose}.js`;
+}
 async function loadSheet(){
  if(params.has('sheet')){
   const cell=list(params.get('cell'))||[256],cols=+params.get('cols')||1,rows=+params.get('rows')||1;
   return {name:params.get('name')||'Sprite sheet',sheet:new URL(params.get('sheet'),location.href).href,cell:[cell[0],cell[1]??cell[0]],columns:cols,rows,
-   pivot:list(params.get('pivot')),fps:+params.get('fps')||8,rowLabels:list(params.get('labels'),String)};
+   pivot:list(params.get('pivot')),fps:+params.get('fps')||8,loop:params.get('loop')!=='0',rowLabels:list(params.get('labels'),String)};
  }
- const hero=(params.get('hero')||'').toLowerCase();
- const url=new URL(params.get('manifest')||HERO_SHEETS[hero]||'sheets/rift-runner-idle.js',location.href);let m;
+ const url=new URL(resolveManifest(),location.href);let m;
  if(url.pathname.endsWith('.js'))m=await new Promise((resolve,reject)=>{const script=document.createElement('script');window.spritePlayerSheet=resolve;
   script.onerror=()=>reject(Error('Sheet description could not be loaded'));script.src=url;document.head.append(script);});
  else{const response=await fetch(url);if(!response.ok)throw Error(`Sheet description could not be loaded (${response.status})`);m=await response.json();}
@@ -82,12 +90,12 @@ function tick(now){
  elapsed+=Math.min(now-last,250);last=now;const step=1000/state.fps;
  if(elapsed>=step){const n=Math.floor(elapsed/step);elapsed-=n*step;
   // Once: stop on the last frame instead of wrapping.
-  if(!state.loop&&state.frame+n>=frames()-1){state.frame=frames()-1;state.playing=false;draw();return;}
+  if(!state.loop&&state.frame+n>=frames()-1){state.frame=frames()-1;state.playing=false;state.ended=true;draw();return;}
   state.frame=(state.frame+n)%frames();draw();}
  raf=requestAnimationFrame(tick);
 }
-function setPlaying(on){if(on&&!state.loop&&state.frame===frames()-1)state.frame=0;state.playing=on;elapsed=0;last=performance.now();if(on&&!raf&&state.ready)raf=requestAnimationFrame(tick);draw();}
-function setFrame(f){state.playing=false;state.frame=((f%frames())+frames())%frames();draw();}
+function setPlaying(on){if(on&&!state.loop&&state.frame===frames()-1)state.frame=0;state.ended=false;state.playing=on;elapsed=0;last=performance.now();if(on&&!raf&&state.ready)raf=requestAnimationFrame(tick);draw();}
+function setFrame(f){state.playing=false;state.ended=false;state.frame=((f%frames())+frames())%frames();draw();}
 function setRow(r){const i=typeof r==='string'&&isNaN(r)?(sheet.rowLabels||[]).indexOf(r.toUpperCase()):+r;if(i>=0&&i<sheet.rows){state.row=i;draw();}}
 // Keep at least part of the sprite on screen: pan is limited to the zoomed overflow.
 function clampPan(){const W=canvas.width,H=canvas.height,mx=Math.max(0,W*(state.zoom-1)/2+W*.25),my=Math.max(0,H*(state.zoom-1)/2+H*.25);
@@ -105,7 +113,7 @@ function bind(){
  stage.addEventListener('pointerdown',e=>{if(state.zoom<=1)return;drag={x:e.clientX,y:e.clientY,pan:[...state.pan]};stage.setPointerCapture?.(e.pointerId);stage.classList.add('dragging');});
  stage.addEventListener('pointermove',e=>{if(!drag)return;state.pan=[drag.pan[0]+(e.clientX-drag.x)*dpr(),drag.pan[1]+(e.clientY-drag.y)*dpr()];clampPan();draw();});
  for(const t of ['pointerup','pointercancel'])stage.addEventListener(t,()=>{drag=null;stage.classList.remove('dragging');});
- $('loop').onclick=()=>{state.loop=true;draw();};$('once').onclick=()=>{state.loop=false;draw();};
+ $('loop').onclick=()=>{state.loop=true;if(state.ended)setPlaying(true);else draw();};$('once').onclick=()=>{state.loop=false;draw();};
  $('frame').oninput=e=>setFrame(+e.target.value);$('fps').onchange=e=>{state.fps=+e.target.value;elapsed=0;draw();};
  $('bg').onchange=e=>{state.bg=player.dataset.bg=e.target.value;draw();};$('guides').onchange=e=>{state.guides=e.target.checked;draw();};$('all').onchange=e=>{state.all=e.target.checked;draw();};
  document.addEventListener('keydown',e=>{
@@ -113,12 +121,13 @@ function bind(){
   if(e.key===' '){e.preventDefault();setPlaying(!state.playing);}
   else if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();setFrame(state.frame+(e.key==='ArrowRight'?1:-1));}
   else if(e.key==='+'||e.key==='=')stepZoom(1);else if(e.key==='-'||e.key==='_')stepZoom(-1);else if(e.key==='0')resetZoom();
-  else if(e.key==='ArrowUp'||e.key==='ArrowDown'){e.preventDefault();setRow((state.row+(e.key==='ArrowDown'?1:sheet.rows-1))%sheet.rows);}
+  else if(e.key==='ArrowUp'||e.key==='ArrowDown'){e.preventDefault();setRow((state.row+(e.key==='ArrowDown'?1:sheet.rows-1))%sheet.rows);if(state.ended&&!state.loop)setPlaying(true);}
  });
  document.addEventListener('visibilitychange',()=>{if(!document.hidden&&state.playing)setPlaying(true);});
  new ResizeObserver(resize).observe(stage);
  window.addEventListener('message',e=>{const d=e.data;if(!d||d.type!=='sprite-player')return;
   if(d.action==='play')setPlaying(true);else if(d.action==='pause')setPlaying(false);else if(d.action==='row')setRow(d.value);else if(d.action==='frame')setFrame(+d.value);
+  else if(d.action==='loop'){state.loop=!!d.value;draw();}
   else if(d.action==='fps'&&+d.value>0){state.fps=+d.value;$('fps').value=String(state.fps);draw();}});
 }
 async function init(){
@@ -131,9 +140,10 @@ async function init(){
   document.title=`${sheet.name} — Sprite Player`;
   state.fps=+params.get('fps')||sheet.fps||8;state.row=sheet.defaultRow??0;
   state.guides=params.get('guides')==='1';state.all=params.get('all')==='1';state.bg=player.dataset.bg=['dark','light','checker','snow'].includes(params.get('bg'))?params.get('bg'):'dark';
-  state.loop=params.get('loop')!=='0';if(+params.get('zoom')>0)state.zoom=Math.max(ZOOMS[0],Math.min(ZOOMS.at(-1),+params.get('zoom')));state.playing=params.get('autoplay')!=='0'&&!matchMedia('(prefers-reduced-motion: reduce)').matches;
+  state.loop=params.has('loop')?params.get('loop')!=='0'&&params.get('loop')!=='false':sheet.loop!==false;
+  if(+params.get('zoom')>0)state.zoom=Math.max(ZOOMS[0],Math.min(ZOOMS.at(-1),+params.get('zoom')));state.playing=params.get('autoplay')!=='0'&&!matchMedia('(prefers-reduced-motion: reduce)').matches;
   player.dataset.controls=params.get('controls')||'full';
-  if(sheet.rows>1)for(let r=0;r<sheet.rows;r++){const b=document.createElement('button');b.type='button';b.textContent=label(r);b.onclick=()=>setRow(r);$('headings').append(b);}
+  if(sheet.rows>1)for(let r=0;r<sheet.rows;r++){const b=document.createElement('button');b.type='button';b.id=`dir-${label(r)}`;b.dataset.dir=label(r);b.textContent=label(r);b.onclick=()=>{setRow(r);if(state.ended&&!state.loop)setPlaying(true);};$('headings').append(b);}
   else $('headings').hidden=true;
   const rates=[...new Set([2,4,5,6,8,10,12,15,24,state.fps])].sort((a,b)=>a-b);$('fps').innerHTML=rates.map(f=>`<option value="${f}">${f}</option>`).join('');$('fps').value=String(state.fps);
   $('frame').max=frames()-1;$('bg').value=state.bg;$('guides').checked=state.guides;$('all').checked=state.all;

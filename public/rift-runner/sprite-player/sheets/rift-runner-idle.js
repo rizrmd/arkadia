@@ -1,5 +1,7 @@
 spritePlayerSheet({
  "name": "Rift Runner — Idle",
+ "hero": "rift-runner",
+ "pose": "idle",
  "sheet": "rift-runner-idle.webp",
  "sheetHalf": "rift-runner-idle@0.5x.webp",
  "cell": [
