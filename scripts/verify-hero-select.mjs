@@ -28,9 +28,11 @@ try{
  await phone.waitForSelector('#hero-picker:not([hidden])');
  results.picker={first:await phone.getAttribute('#hero-picker','data-first'),cards:await phone.$$eval('.picker-hero',b=>b.map(x=>x.querySelector('.picker-name').textContent)),
   focused:await phone.evaluate(()=>document.activeElement?.dataset.hero),closeShown:await phone.isVisible('.picker-close'),
-  portraits:await phone.$$eval('.picker-hero img',i=>i.map(x=>x.complete&&x.naturalHeight>0))};
+  portraits:await phone.$$eval('.picker-hero img',i=>i.map(x=>x.complete&&x.naturalHeight>0)),
+  frames:await phone.evaluate(async()=>{const u=['/ui/hero-card-frame.webp','/ui/hero-card-frame-active.webp'];for(const s of u){const i=new Image();i.src=s;await i.decode();}return [...document.querySelectorAll('.picker-hero')].map(b=>getComputedStyle(b,'::before').borderImageSource);})};
  assert.deepEqual(results.picker.cards,['Rift Runner','Ember Warden']);assert.equal(results.picker.first,'true');assert.equal(results.picker.closeShown,false);
  assert.equal(results.picker.focused,'rift-runner','the default hero is focused');assert.ok(results.picker.portraits.every(Boolean),'portraits load');
+ assert.match(results.picker.frames[0],/hero-card-frame-active\.webp/);assert.match(results.picker.frames[1],/hero-card-frame\.webp/);
  const fits=await phone.evaluate(()=>{const r=document.querySelector('.picker-card').getBoundingClientRect();return r.left>=0&&r.right<=innerWidth&&document.documentElement.scrollWidth<=innerWidth;});assert.ok(fits,'the picker fits a 390 px phone');
  results.shots=[await shot(phone,'1-picker-phone')];
  await phone.tap('.picker-hero[data-hero=ember-warden]');await phone.waitForSelector('#hero-picker',{state:'hidden'});
@@ -57,7 +59,7 @@ try{
  results.shots.push(await shot(desk,'3-ember-attack-desktop'));
  // 4. The hero's name reopens the picker; Rift Runner replaces the Ember Warden where it stands.
  await desk.waitForTimeout(1200);const before=await desk.evaluate(()=>({x:+document.querySelector('#world-hero').dataset.x,y:+document.querySelector('#world-hero').dataset.y}));
- await desk.click('#hero-hud .hud-hero');await desk.waitForSelector('#hero-picker:not([hidden])');
+ await desk.click('#hero-hud .hud-hero');await desk.waitForSelector('#hero-picker:not([hidden])');await desk.waitForTimeout(350);
  results.reopen={first:await desk.getAttribute('#hero-picker','data-first'),closeShown:await desk.isVisible('.picker-close'),focused:await desk.evaluate(()=>document.activeElement?.dataset.hero)};
  assert.equal(results.reopen.closeShown,true);assert.equal(results.reopen.focused,'ember-warden');
  results.shots.push(await shot(desk,'4-picker-desktop'));

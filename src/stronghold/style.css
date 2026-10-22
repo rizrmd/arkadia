@@ -104,28 +104,34 @@
 .party-tag[data-down=true]{opacity:.55}
 @media (max-width:480px){#coop{top:calc(max(12px,env(safe-area-inset-top)) + 40px)}.coop-chip{height:30px;padding:0 9px}.coop-label{display:none}}
 /* Hero selection over the world (hero-picker.ts), and the hero's name in the health panel that reopens it. */
-#hero-picker{position:fixed;inset:0;z-index:40;display:grid;place-items:center;padding:max(16px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) max(16px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left));background:radial-gradient(ellipse at 50% 45%,#11191eb3 0%,#0b1114eb 75%);overflow:auto}
+#hero-picker{position:fixed;inset:0;z-index:10010;display:grid;place-items:center;padding:max(16px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) max(16px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left));background:radial-gradient(ellipse at 50% 45%,#11191eb3 0%,#0b1114eb 75%);overflow:auto}
 #hero-picker[hidden]{display:none}
 .picker-card{width:min(560px,100%);text-align:center;animation:picker-in .3s ease-out}
 @keyframes picker-in{from{opacity:0;transform:translateY(8px)}}
 .picker-card small{display:block;letter-spacing:.32em;font-size:11px;color:#c9a86a}
 .picker-card h2{margin:6px 0 18px;font-weight:400;font-size:clamp(24px,7vw,34px);letter-spacing:.02em}
-.picker-heroes{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.picker-hero{display:flex;flex-direction:column;align-items:center;gap:4px;padding:12px 10px 14px;font:inherit;color:inherit;text-align:center;cursor:pointer;border:1px solid #c9a86a55;border-radius:14px;background:linear-gradient(#1b2529,#121a1e);box-shadow:0 6px 20px #0006;transition:border-color .15s,transform .15s}
-.picker-hero:hover{border-color:#c9a86a;transform:translateY(-2px)}
-.picker-hero[aria-pressed=true]{border-color:#f2c46b;background:linear-gradient(#2c2618,#161c1d)}
-.picker-hero:focus-visible,.picker-close:focus-visible,.hud-hero:focus-visible{outline:2px solid #f2c46b;outline-offset:2px}
-.picker-portrait{display:flex;align-items:flex-end;justify-content:center;width:100%;height:clamp(110px,26vh,200px);margin-bottom:6px;container-type:inline-size;background:radial-gradient(ellipse at 50% 92%,#c9a86a33 0%,transparent 60%)}
+.picker-heroes{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.picker-hero{position:relative;isolation:isolate;display:flex;flex-direction:column;align-items:center;gap:4px;padding:20px 18px 22px;font:inherit;color:inherit;text-align:center;cursor:pointer;border:0;border-radius:10px;background:radial-gradient(ellipse at 50% 38%,#222d31 0%,#141c20 68%,#0e1417 100%);box-shadow:0 10px 28px #000a,inset 0 0 24px #0009;transition:transform .15s,box-shadow .15s}
+.picker-hero::before{content:"";position:absolute;inset:0;border:1px solid transparent;border-image:url('/ui/hero-card-frame.webp') 156 156 / 26px / 0 stretch;pointer-events:none;z-index:2;transition:filter .15s}
+.picker-hero:hover{transform:translateY(-2px);box-shadow:0 12px 30px #000c,0 0 14px #c9a86a33,inset 0 0 20px #0008}
+.picker-hero:hover::before{filter:brightness(1.12)}
+.picker-hero[aria-pressed=true],.picker-hero:focus-visible{background:radial-gradient(ellipse at 50% 36%,#332818 0%,#1a1f20 68%,#111618 100%);box-shadow:0 12px 32px #000c,0 0 22px #f2c46b3d,inset 0 0 22px #f2c46b1a}
+.picker-hero[aria-pressed=true]::before,.picker-hero:focus-visible::before{border-image-source:url('/ui/hero-card-frame-active.webp');filter:drop-shadow(0 0 8px #f2c46b44)}
+.picker-hero:focus-visible{outline:none}
+.picker-close:focus-visible,.hud-hero:focus-visible{outline:2px solid #f2c46b;outline-offset:2px}
+.picker-portrait{display:flex;align-items:flex-end;justify-content:center;width:100%;height:clamp(110px,26vh,200px);margin-bottom:6px;container-type:inline-size;background:radial-gradient(ellipse at 50% 92%,#c9a86a38 0%,transparent 62%)}
 /* Portraits are all trimmed to the same toe-to-crown height but differ in width (Rift Runner's scarf), so size them by
-   height alone: every hero stands equally tall. 110cqw keeps the widest portrait (181x200) inside narrow cards. */
-.picker-portrait img{width:auto;max-width:none;height:min(100%,110cqw);filter:drop-shadow(0 4px 6px #0008)}
-.picker-name{font-size:19px;color:#f2e6c9}
+   height alone: every hero stands equally tall. 102cqw keeps the widest portrait (181x200) inside the brass frame on narrow phones. */
+.picker-portrait img{width:auto;max-width:none;height:min(100%,102cqw);filter:drop-shadow(0 4px 6px #0008)}
+.picker-name{font-size:19px;color:#f2e6c9;text-shadow:0 1px 3px #000c}
 .picker-role{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#c9a86a}
 .picker-blurb{margin-top:4px;font-size:13px;line-height:1.35;color:#cfc6b4}
-.picker-close{margin-top:16px;min-height:40px;padding:0 18px;font:inherit;font-size:14px;color:#eee7d7;cursor:pointer;background:#141c22;border:1px solid #c9a86a88;border-radius:999px}
+.picker-close{position:relative;margin-top:16px;min-height:40px;padding:0 22px;font:inherit;font-size:14px;color:#eee7d7;cursor:pointer;background:#172022e8;border:0;border-radius:20px;box-shadow:0 4px 14px #0008}
+.picker-close::before{content:"";position:absolute;inset:0;border:1px solid transparent;border-image:url('/ui/clock-frame.webp') 120 150 / 16px 20px / 0 stretch;pointer-events:none}
+.picker-close:hover{background:#25302f}
 #hero-picker[data-first=true] .picker-close{display:none}
-@media (max-width:420px){.picker-hero{padding:10px 6px 12px}.picker-name{font-size:17px}.picker-blurb{font-size:12px}}
-@media (max-height:520px){.picker-card h2{margin-bottom:10px}.picker-portrait{height:clamp(90px,30vh,140px)}.picker-blurb{display:none}}
+@media (max-width:420px){.picker-heroes{gap:10px}.picker-hero{padding:16px 13px 18px}.picker-hero::before{border-image-width:20px}.picker-name{font-size:17px}.picker-blurb{font-size:12px}}
+@media (max-height:520px){.picker-card h2{margin-bottom:10px}.picker-hero{padding:14px 16px 14px}.picker-hero::before{border-image-width:22px}.picker-portrait{height:clamp(90px,30vh,140px)}.picker-blurb{display:none}}
 @media (prefers-reduced-motion:reduce){.picker-card{animation:none}.picker-hero{transition:none}}
 #hero-hud .hud-hero{pointer-events:auto;display:inline-flex;align-items:center;gap:5px;min-height:28px;margin:-6px 0;padding:0;font:inherit;color:#e8d6ae;text-shadow:inherit;cursor:pointer;background:none;border:0}
 #hero-hud .hud-hero::after{content:"";width:6px;height:6px;margin-top:-3px;border:solid #c9a86a;border-width:0 1.5px 1.5px 0;transform:rotate(45deg)}
