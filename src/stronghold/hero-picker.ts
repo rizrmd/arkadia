@@ -7,7 +7,7 @@ export function createHeroPicker(root:HTMLElement,o:{current:()=>HeroId;choose:(
  const el=document.createElement('section');el.id='hero-picker';el.hidden=true;el.setAttribute('role','dialog');el.setAttribute('aria-modal','true');el.setAttribute('aria-labelledby','hero-picker-title');
  el.innerHTML=`<div class="picker-card"><small>ARKADIA</small><h2 id="hero-picker-title">Choose your hero</h2>
  <div class="picker-heroes">${HEROES.map(h=>`<button type="button" class="picker-hero" data-hero="${h.id}" aria-pressed="false">
-  <span class="picker-portrait"><img src="${portraitUrl(h.id)}" alt="" width="120" height="200" decoding="async"></span>
+  <span class="picker-portrait"><img src="${portraitUrl(h.id)}" alt="" height="200" decoding="async"></span>
   <span class="picker-name">${h.name}</span><span class="picker-role">${h.role}</span><span class="picker-blurb">${h.blurb}</span></button>`).join('')}</div>
  <button type="button" class="picker-close">Keep current hero</button></div>`;
  root.append(el);
