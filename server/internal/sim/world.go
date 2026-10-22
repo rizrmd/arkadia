@@ -512,7 +512,7 @@ func (w *World) autoCastInAoE(p *Player) {
 	for _, idx := range readyIndices {
 		skillID := p.Run.Slots[idx]
 		p.slotCD[idx] = p.Run.skillCooldownMs(skillID)
-		dmg := .75 * p.Run.damage() * p.Run.skillDamageMultiplier(skillID) * comboMult
+		dmg := math.Max(1, math.Round(p.Run.damage()*p.Run.skillDamageMultiplier(skillID)*comboMult))
 		splashR := 1.35 * p.Run.reach() * p.Run.skillAreaMultiplier(skillID)
 		hits := 0
 		for _, e := range w.Enemies {
