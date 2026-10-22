@@ -1,4 +1,4 @@
-import {fresh,reward,roll,choose,cards,reach,health,threshold,xpPercent,critChance,critMultiplier,type Progression} from './progression';
+import {fresh,reward,roll,choose,cards,reach,aoeCastRadius,health,threshold,xpPercent,critChance,critMultiplier,syncHeroLoadout,isActiveSkill,skillRank,skillCooldownMs,MAX_SKILL_SLOTS,type Progression} from './progression';
 import './progression.css';
 import {unproject} from '../isometric';
 import {Fighter,STATS,inReach,swingTargets,turn} from '../characters/combat';
@@ -11,7 +11,7 @@ import type {Walk} from './controls';
 import {loadImage} from '../app/loader';
 import type {Net} from './net/client';
 import {characters,DEFAULT_HERO,type HeroId} from './heroes';
-import {createCombatVfx,facingScreenAngle,HERO_SKILLS,type SkillId} from './combat-vfx';
+import {createCombatVfx,facingScreenAngle,SKILL_CATALOG,type SkillId} from './combat-vfx';
 // Revenants roaming the snow beyond the safe zone, the hero's hit points and their auto attack. The fight runs on
 // the arena's rules (combat.ts): the same hit points, damage, reach, hit stun and swing timing, with the reach
 // scaled to the Stronghold's smaller figures. Positions are ground tiles from the court origin, as in terrain.ts tilePoint().
@@ -30,6 +30,7 @@ const ENEMY_SPEED=105/Math.hypot(64,32)*.55,ENEMY_STRIDE=76*DISPLAY/1.1;
 // the idle hero steps in to swing at one within ENGAGE. Packs of one to three surround the hero, and a swing only
 // reaches the side it faces, so the ones behind land their blows.
 const VEER=[.4,.8,1.2,1.6,2,2.4],AGGRO=13,ENGAGE=2,MAX_ENEMIES=8,PACK=3,SPAWN_EVERY=2000,REGEN=8,HERO_RESPAWN=3500,CORPSE=4400;
+const SIMULTANEOUS_SYNC_WINDOW_MS=340;
 type Foe=Fighter&{home:Tile;wander:Tile|null;age:number;side:number};
 type Hero={position():{x:number;y:number};face(sx:number,sy:number):void;respawn():void;teleport(x:number,y:number):boolean;
  blocked(x:number,y:number):boolean;occluders(x:number,y:number,box:number[]):Placed[];sun():Sun;hero?:()=>HeroId};
@@ -43,9 +44,10 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
  const all=await characters(),heroMeta:CharacterMeta=all.hero,meta:CharacterMeta=all.revenant;
  const atlas=await loadImage('/assets/characters/'+meta.image+(meta.revision?`?v=${encodeURIComponent(meta.revision)}`:''));
  let seed=(Date.now()>>>0)||1;const random=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;};
+ const currentHeroId=():HeroId=>o.hero.hero?.()??DEFAULT_HERO;
  const start=o.hero.position(),h=new Fighter('hero',heroMeta.clips,toTile(start.x,start.y).u,toTile(start.x,start.y).v);
  let maxHp=STATS.hero.hp,kills=0,spawnTimer=0,ambient='255,255,255',origin={x:0,y:0,scale:1};
- let run=fresh(),baseHp=100,levelUpPulseMs=0,regenAccum=0,swingCount=0;
+ let run=fresh(currentHeroId()),baseHp=100,levelUpPulseMs=0,comboHighlightMs=0,regenAccum=0,lastCoopAutoCasts=0;
  const local:Foe[]=[],spawns:{u:number;v:number;m:number}[]=[];let foes=local,online=false,heroPlays=-1;
  // Revenants behind the hero stand under its canvas, the rest over it; their health bars sit above both.
  // The ground AoE / attack reach ring (#hero-aoe) sits flat on the snow beneath both the hero and revenants.
@@ -62,11 +64,10 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
  const progress=document.createElement('div');progress.className='run-progress';hud.append(progress);
  const picker=document.createElement('section');picker.className='level-cards';picker.hidden=true;picker.setAttribute('role','dialog');picker.setAttribute('aria-label','Choose a level-up blessing');o.hud.append(picker);
 
- const currentHeroId=():HeroId=>o.hero.hero?.()??DEFAULT_HERO;
  function onKill(){
   kills++;
   const prevLevel=run.level;
-  reward(run,random);
+  reward(run,random,currentHeroId());
   if(run.level>prevLevel){
    levelUpPulseMs=1200;
    vfx.triggerLevelUp(run.level,h.x,h.y);
@@ -88,39 +89,130 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
   random
  });
 
- // Combat skill bar (hotkeys 1-4 or click/tap)
- const skillBar=document.createElement('nav');skillBar.id='combat-skills';skillBar.setAttribute('aria-label','Combat skills');o.hud.append(skillBar);
- let renderedHeroSkills='';
+ // 3-Slot Auto-Cast Skill Loadout HUD (Slot 1 default at Lv. 1; Slot 2 & Slot 3 unlocked via level-up blessings)
+ const skillBar=document.createElement('nav');
+ skillBar.id='combat-skills';
+ skillBar.setAttribute('aria-label','Auto-Cast Skill Loadout');
+ skillBar.innerHTML='<div class="loadout-header"><span class="loadout-title">Auto-Cast Loadout · 1/3 Slots</span><span class="loadout-state">AoE Standby</span></div><div class="loadout-slots"></div>';
+ const loadoutTitle=skillBar.querySelector<HTMLElement>('.loadout-title')!;
+ const loadoutState=skillBar.querySelector<HTMLElement>('.loadout-state')!;
+ const loadoutSlots=skillBar.querySelector<HTMLElement>('.loadout-slots')!;
+ const slotButtons:HTMLButtonElement[]=[];
+ for(let i=0;i<MAX_SKILL_SLOTS;i++){
+  const btn=document.createElement('button');
+  btn.type='button';
+  btn.className='skill-btn skill-slot';
+  btn.dataset.slot=String(i+1);
+  btn.innerHTML=`<div class="skill-slot-top"><span class="skill-key">SLOT ${i+1} · LOCKED</span><span class="skill-rank">Locked</span></div><div class="skill-main"><span class="skill-icon" aria-hidden="true">🔒</span><span class="skill-badge">EMPTY</span><span class="skill-name">Empty Slot</span></div><span class="skill-status">Unlock via Blessing</span><div class="skill-cd-track"><i class="skill-cd-fill"></i></div><i class="skill-cd"></i>`;
+  btn.onclick=e=>{
+   e.stopPropagation();
+   const sid=run.slots[i] as SkillId|undefined;
+   if(sid&&!run.pending&&h.alive)vfx.castSkill(sid);
+  };
+  slotButtons.push(btn);
+  loadoutSlots.append(btn);
+ }
+ o.hud.append(skillBar);
+
+ function nearest(range:number){
+  let best:Foe|null=null,d=range;
+  for(const f of foes){
+   const v=Math.hypot(f.x-h.x,f.y-h.y);
+   if(f.alive&&v<=d){d=v;best=f;}
+  }
+  return best;
+ }
+
  function syncSkillBar(){
+  const hid=currentHeroId();
+  syncHeroLoadout(run,hid);
   skillBar.hidden=Boolean(run.pending);
-  const hid=currentHeroId(),skills=HERO_SKILLS[hid];
-  if(renderedHeroSkills!==hid){
-   renderedHeroSkills=hid;
-   skillBar.replaceChildren();
-   for(const s of skills){
-    const btn=document.createElement('button');btn.type='button';btn.className='skill-btn';btn.dataset.skill=s.id;
-    btn.innerHTML=`<span class="skill-key">${s.key}</span><span class="skill-badge">${s.badge}</span><span class="skill-name">${s.name}</span><i class="skill-cd"></i>`;
-    btn.onclick=e=>{e.stopPropagation();if(!run.pending&&h.alive)vfx.castSkill(s.id);};
-    skillBar.append(btn);
+  const inZone=inSafeZone(tileOf(h));
+  const foeInAoe=!inZone&&h.alive&&Boolean(nearest(aoeCastRadius(run)));
+  const equippedCount=Math.min(MAX_SKILL_SLOTS,run.slots.length);
+  skillBar.dataset.slotsEquipped=String(equippedCount);
+  skillBar.dataset.slotsMax=String(MAX_SKILL_SLOTS);
+  skillBar.dataset.aoeEngaged=String(foeInAoe);
+  skillBar.dataset.comboActive=String(comboHighlightMs>0);
+
+  const titleText=`Auto-Cast Loadout · ${equippedCount}/${MAX_SKILL_SLOTS} Slots`;
+  if(loadoutTitle.textContent!==titleText)loadoutTitle.textContent=titleText;
+  const stateText=comboHighlightMs>0
+   ?(equippedCount>=3?'Trinity Simultaneous Cast!':'Simultaneous Combo!')
+   :foeInAoe?'AoE Engaged · Auto-Firing':'AoE Detection Standby';
+  if(loadoutState.textContent!==stateText)loadoutState.textContent=stateText;
+
+  for(let i=0;i<MAX_SKILL_SLOTS;i++){
+   const btn=slotButtons[i];
+   const sid=run.slots[i] as SkillId|undefined;
+   const def=sid?SKILL_CATALOG[sid]:undefined;
+   const keyEl=btn.querySelector<HTMLElement>('.skill-key')!;
+   const rankEl=btn.querySelector<HTMLElement>('.skill-rank')!;
+   const iconEl=btn.querySelector<HTMLElement>('.skill-icon')!;
+   const badgeEl=btn.querySelector<HTMLElement>('.skill-badge')!;
+   const nameEl=btn.querySelector<HTMLElement>('.skill-name')!;
+   const statusEl=btn.querySelector<HTMLElement>('.skill-status')!;
+   const cdSweep=btn.querySelector<HTMLElement>('.skill-cd')!;
+   const cdFill=btn.querySelector<HTMLElement>('.skill-cd-fill')!;
+
+   if(sid&&def){
+    const rank=Math.max(1,skillRank(run,sid));
+    const maxCd=skillCooldownMs(run,sid);
+    const cd=vfx.cooldown(sid);
+    const ratio=Math.min(1,cd/Math.max(1,maxCd));
+    const ready=cd<=40;
+    const casting=cd>maxCd-260;
+    btn.disabled=false;
+    btn.dataset.state='equipped';
+    btn.dataset.skill=sid;
+    btn.dataset.rank=String(rank);
+    btn.dataset.ready=String(ready);
+    btn.dataset.casting=String(casting);
+    const kTxt=`SLOT ${i+1} · AUTO`;if(keyEl.textContent!==kTxt)keyEl.textContent=kTxt;
+    const rTxt=`Lv. ${rank}`;if(rankEl.textContent!==rTxt)rankEl.textContent=rTxt;
+    if(iconEl.textContent!==def.icon)iconEl.textContent=def.icon;
+    if(badgeEl.textContent!==def.badge)badgeEl.textContent=def.badge;
+    if(nameEl.textContent!==def.name)nameEl.textContent=def.name;
+    const sTxt=ready?(foeInAoe?'AUTO · FIRING':'AUTO · READY'):`AUTO · ${(cd/1000).toFixed(1)}s`;
+    if(statusEl.textContent!==sTxt)statusEl.textContent=sTxt;
+    cdSweep.style.transform=`scaleY(${ratio.toFixed(3)})`;
+    cdFill.style.transform=`scaleX(${(1-ratio).toFixed(3)})`;
+   }else{
+    btn.disabled=true;
+    btn.dataset.state='empty';
+    btn.dataset.skill='';
+    btn.dataset.rank='0';
+    btn.dataset.ready='false';
+    btn.dataset.casting='false';
+    const kTxt=`SLOT ${i+1} · LOCKED`;if(keyEl.textContent!==kTxt)keyEl.textContent=kTxt;
+    if(rankEl.textContent!=='Locked')rankEl.textContent='Locked';
+    if(iconEl.textContent!=='🔒')iconEl.textContent='🔒';
+    if(badgeEl.textContent!=='EMPTY')badgeEl.textContent='EMPTY';
+    if(nameEl.textContent!=='Empty Slot')nameEl.textContent='Empty Slot';
+    if(statusEl.textContent!=='Unlock via Blessing')statusEl.textContent='Unlock via Blessing';
+    cdSweep.style.transform='scaleY(0)';
+    cdFill.style.transform='scaleX(0)';
    }
   }
-  for(const s of skills){
-   const cd=vfx.cooldown(s.id),ratio=Math.min(1,cd/s.cooldownMs);
-   const fill=skillBar.querySelector<HTMLElement>(`.skill-btn[data-skill="${s.id}"] .skill-cd`);
-   if(fill)fill.style.transform=`scaleY(${ratio.toFixed(3)})`;
-  }
  }
+
  window.addEventListener('keydown',e=>{
   if(run.pending||!h.alive||e.repeat)return;
   const tag=(e.target as HTMLElement|null)?.tagName;if(tag==='INPUT'||tag==='TEXTAREA')return;
-  const skills=HERO_SKILLS[currentHeroId()],idx=['1','2','3','4'].indexOf(e.key);
-  if(idx>=0&&skills[idx])vfx.castSkill(skills[idx].id);
+  const idx=['1','2','3'].indexOf(e.key);
+  const sid=idx>=0?(run.slots[idx] as SkillId|undefined):undefined;
+  if(sid)vfx.castSkill(sid);
  });
 
  let offerKey='';
  function select(id:string){
   if(online){o.net?.chooseCard(id,run.level);return;}
-  if(!choose(run,id,random))return;
+  const hid=currentHeroId();
+  if(!choose(run,id,random,hid))return;
+  if(isActiveSkill(id)){
+   // Reset slot cooldowns on skill unlock/upgrade so all equipped slots unleash together on the next AoE tick
+   vfx.resetCooldowns();
+  }
   const beforeMax=maxHp,beforeHp=h.hp;
   maxHp=baseHp+health(run);
   h.hp=Math.min(maxHp,h.hp+Math.max(0,maxHp-beforeMax)+(id==='heal'?maxHp*.35:0));
@@ -133,6 +225,7 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
  const barExpFill=bar.querySelector<HTMLElement>('b.hero-exp')!;
 
  function drawProgress(){
+  syncHeroLoadout(run,currentHeroId());
   const nextXp=threshold(run),pct=xpPercent(run),expRatio=Math.max(0,Math.min(1,run.xp/Math.max(1,nextXp)));
   const lvText=`Lv. ${run.level}`,xpText=`${run.xp} / ${nextXp} XP (${pct}%)`;
   if(hudLvBadge.textContent!==lvText)hudLvBadge.textContent=lvText;
@@ -148,14 +241,35 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
   hud.dataset.xpPct=String(pct);
   hud.dataset.levelup=String(levelUpPulseMs>0);
 
-  const label=`Level ${run.level} · ${run.xp} / ${nextXp} XP · ${run.gold} Gold · ${run.stars} Stars`;
+  const label=`Level ${run.level} · ${run.xp} / ${nextXp} XP · ${run.gold} Gold · ${run.slots.length}/${MAX_SKILL_SLOTS} Auto-Cast Slots`;
   if(progress.textContent!==label)progress.textContent=label;
-  picker.hidden=!run.pending;const key=JSON.stringify([online,run.level,run.pending,run.offers,run.skills]);if(key===offerKey)return;offerKey=key;
+  picker.hidden=!run.pending;const key=JSON.stringify([online,run.level,run.pending,run.offers,run.skills,run.slots]);if(key===offerKey)return;offerKey=key;
   picker.replaceChildren();if(!run.pending)return;
-  const title=document.createElement('h2');title.textContent=`Level ${run.level} — Choose a blessing`;picker.append(title);
-  const help=document.createElement('p');help.textContent=`${run.pending} choice(s) remaining · Protected while choosing`;picker.append(help);
+  const title=document.createElement('h2');title.textContent=`Level ${run.level} — Choose a Blessing`;picker.append(title);
+  const slotHint=run.slots.length<MAX_SKILL_SLOTS?`Slots ${run.slots.length}/${MAX_SKILL_SLOTS} equipped (new active skills unlock Slot ${run.slots.length+1})`:`All ${MAX_SKILL_SLOTS}/${MAX_SKILL_SLOTS} slots equipped (active blessings upgrade skill Rank)`;
+  const help=document.createElement('p');help.textContent=`${run.pending} choice(s) remaining · ${slotHint} · Protected while choosing`;picker.append(help);
   const row=document.createElement('div');row.className='blessing-row';picker.append(row);
-  for(const id of run.offers){const card=cards[id];if(!card)continue;const button=document.createElement('button');const rank=run.skills[id]??0;button.innerHTML=`<small>${id==='star'?'STAR UPGRADE':rank?'SKILL UPGRADE':'BLESSING'}</small><strong>${card.name}${rank?' · Rank '+(rank+1):''}</strong><span>${card.description}</span>`;button.onclick=()=>select(id);row.append(button);}
+  for(const id of run.offers){
+   const card=cards[id];if(!card)continue;
+   const button=document.createElement('button');
+   button.dataset.card=id;
+   button.dataset.kind=card.kind;
+   if(isActiveSkill(id)){
+    const slotIdx=run.slots.indexOf(id);
+    const rank=skillRank(run,id);
+    if(slotIdx>=0){
+     button.innerHTML=`<small>ACTIVE SKILL · SLOT ${slotIdx+1} UPGRADE</small><strong>${card.icon} ${card.name} · Lv. ${rank} → Lv. ${rank+1}</strong><span>${card.description}</span>`;
+    }else{
+     const nextSlot=Math.min(MAX_SKILL_SLOTS,run.slots.length+1);
+     button.innerHTML=`<small>NEW AUTO-CAST SKILL · SLOT ${nextSlot}</small><strong>${card.icon} ${card.name} · Unlock Lv. 1</strong><span>${card.description}</span>`;
+    }
+   }else{
+    const rank=run.skills[id]??0;
+    button.innerHTML=`<small>${id==='star'?'STAR UPGRADE':rank?'PASSIVE UPGRADE':'PASSIVE BLESSING'}</small><strong>${card.icon} ${card.name}${rank?' · Rank '+(rank+1):''}</strong><span>${card.description}</span>`;
+   }
+   button.onclick=()=>select(id);
+   row.append(button);
+  }
  }
 
  function spawn(f?:Foe){
@@ -170,20 +284,15 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
   }
  }
  // Ground speed in tiles; a step that would enter the safe zone, leave walkable snow or walk into a footprint
- // slides along it, veers around it or stops. Veering takes the shallowest free turn, first to the side it last
- // turned to, and when pressed against a footprint steps partly back off it (footprints are widened across the
- // screen more than up and down, so a square turn still grazes them): the revenant follows the edge round a
- // trunk instead of dithering at it. One already overlapping a footprint may walk out. False when stopped.
+ // slides along it, veers around it or stops.
  function move(f:Foe,du:number,dv:number,dt:number){
   const len=Math.hypot(du,dv);if(len<1e-6)return false;const v=ENEMY_SPEED*dt/1000,dx=du/len*v,dy=dv/len*v,stuck=!walkable(tileOf(f));
   const veer=(a:number)=>[dx*Math.cos(a)-dy*Math.sin(a),dx*Math.sin(a)+dy*Math.cos(a),Math.sign(a)];
-  // A slide along one axis only counts when it covers real ground; head-on, it barely moves and stalled the chase.
   for(const [mx,my,side=0] of [[dx,dy],[dx,0],[0,dy],...[1,-1].flatMap(t=>VEER.map(a=>veer(a*t*f.side)))]){
    const next={u:f.x+mx,v:f.y+my};if(Math.hypot(mx,my)<v*.4||inSafeZone(next)||!stuck&&!walkable(next))continue;if(side)f.side=side;
    f.x=next.u;f.y=next.v;const m=screen(mx,my);turn(f,m.x,m.y);f.stride+=Math.hypot(m.x,m.y)/ENEMY_STRIDE;f.play('move');return true;}
   const s=screen(du,dv);turn(f,s.x,s.y);f.play('idle');return false;
  }
- function nearest(range:number){let best:Foe|null=null,d=range;for(const f of foes){const v=Math.hypot(f.x-h.x,f.y-h.y);if(f.alive&&v<=d){d=v;best=f;}}return best;}
  // The hero, when nobody steers: swing at a revenant in reach, or step in toward one a few paces away.
  function steer(input:Walk):Walk{
   if(run.pending)return {x:0,y:0};
@@ -191,13 +300,38 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
   const r=reach(run),f=nearest(Math.max(ENGAGE,HERO_REACH*r+.8));if(!f||Math.hypot(f.x-h.x,f.y-h.y)<=HERO_REACH*r*.8)return input;
   const s=screen(f.x-h.x,f.y-h.y),l=Math.hypot(s.x,s.y);return {x:s.x/l,y:s.y/l};
  }
+
+ // Vampire Survivors / Archero style Simultaneous Auto-Cast when any Revenant is inside the Hero's AoE radius
+ function autoCastInAoE(forceAll=false):SkillId[]{
+  if(!h.alive||run.pending||inSafeZone(tileOf(h)))return [];
+  syncHeroLoadout(run,currentHeroId());
+  const aoeTarget=nearest(aoeCastRadius(run));
+  if(!aoeTarget)return [];
+  const equipped=run.slots.slice(0,MAX_SKILL_SLOTS).filter((id):id is SkillId=>Boolean(SKILL_CATALOG[id as SkillId]));
+  if(!equipped.length)return [];
+  if(forceAll)vfx.resetCooldowns(equipped);
+  const anyReady=equipped.some(id=>vfx.cooldown(id)<=0);
+  if(!anyReady)return [];
+  // Pull any equipped slot within SIMULTANEOUS_SYNC_WINDOW_MS into the same cast window so multiple slots unleash together
+  const readySlots=equipped.filter(id=>vfx.cooldown(id)<=SIMULTANEOUS_SYNC_WINDOW_MS);
+  const fired=vfx.castSimultaneous(readySlots,{targetU:aoeTarget.x,targetV:aoeTarget.y});
+  if(fired.length){
+   run.autoCasts=(run.autoCasts??0)+1;
+   if(fired.length>=3)run.trinityCasts=(run.trinityCasts??0)+1;
+   run.lastCast=fired;
+   if(fired.length>=2)comboHighlightMs=900;
+  }
+  return fired;
+ }
+
  function heroStep(dt:number,steering:boolean){
   if(!h.alive){h.deadFor+=dt;if(h.deadFor>HERO_RESPAWN){o.hero.respawn();const p=o.hero.position(),t=toTile(p.x,p.y);Object.assign(h,{x:t.u,y:t.v,hp:maxHp});h.play('idle');}return;}
   h.recover();
   if(run.pending){h.immune=200;return;}
+  // Continuously auto-cast equipped skill slots whenever enemies are inside the hero's AoE detection radius
+  autoCastInAoE(false);
   if(h.state==='attack'){
    if(h.impact()){
-    swingCount++;
     const angle=facingScreenAngle(h);
     let anyCrit=false;
     for(const f of swingTargets(h,foes,HERO_REACH*reach(run),SIDE)){
@@ -205,11 +339,6 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
      if(res.crit)anyCrit=true;
     }
     vfx.spawnSlash(h.x,h.y,angle,anyCrit);
-    // Weave hero signature projectile on every 3rd swing when foes are still active
-    if(swingCount%3===0&&!run.pending){
-     const hid=currentHeroId();
-     vfx.castSkill(hid==='ember-warden'?'flame-fan':'rift-bolt');
-    }
    }
    return;
   }
@@ -252,8 +381,7 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
   for(const a of list){for(const b of [...list,h]){if(a===b)continue;const dx=a.x-b.x,dy=a.y-b.y,d=Math.hypot(dx,dy);if(d>=SPACING||d<1e-6)continue;
    const push=(SPACING-d)*(b===h?1:.5),next={u:a.x+dx/d*push,v:a.y+dy/d*push};if(!inSafeZone(next)&&walkable(next)){a.x=next.u;a.y=next.v;}}}
  }
- // Co-op: revenants at the interpolated server snapshot, keyed by server id. A clip the server (re)starts (its
- // play counter changed) replays from its first frame here; a respawn (new generation) fades in again.
+ // Co-op: revenants at the interpolated server snapshot, keyed by server id.
  type Mirror=Foe&{gen:number;plays:number};const mirrors=new Map<number,Mirror>();
  function netStep(dt:number){
   const net=o.net!,me=net.me();
@@ -265,9 +393,19 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
    }
    if(me.hp<prevHp-.05){h.flash=120;vfx.recordHeroDamage(prevHp-me.hp,h.x,h.y);}
    else if(me.hp>prevHp+.5&&prevHp>0){vfx.recordHeroHeal(me.hp-prevHp,h.x,h.y);}
-   Object.assign(h,{hp:me.hp,facing:me.fc,back:me.bk,vertical:me.vt});maxHp=me.max;kills=me.k;run=me.run??fresh();
+   Object.assign(h,{hp:me.hp,facing:me.fc,back:me.bk,vertical:me.vt});maxHp=me.max;kills=me.k;
+   run=me.run??fresh(currentHeroId());
+   syncHeroLoadout(run,currentHeroId());
    if(run.level>prevLevel){levelUpPulseMs=1200;vfx.triggerLevelUp(run.level,h.x,h.y);}
    const p=o.hero.position(),t=toTile(p.x,p.y);h.x=t.u;h.y=t.v;h.tick(dt);
+   if((run.autoCasts??0)>lastCoopAutoCasts){
+    lastCoopAutoCasts=run.autoCasts??0;
+    const castIds=(run.lastCast?.length?run.lastCast:run.slots).filter((id):id is SkillId=>Boolean(SKILL_CATALOG[id as SkillId]));
+    if(castIds.length){
+     vfx.castSimultaneous(castIds);
+     if(castIds.length>=2)comboHighlightMs=900;
+    }
+   }
   }
   const seen=new Set<number>();
   for(const e of net.enemies(frameAt)){
@@ -286,10 +424,11 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
  }
  function step(dt:number){
   levelUpPulseMs=Math.max(0,levelUpPulseMs-dt);
+  comboHighlightMs=Math.max(0,comboHighlightMs-dt);
   vfx.step(dt);
   // Joining a room drops the local revenants; leaving it (offline) starts a fresh local fight where the hero stands.
   const net=!!o.net?.active();
-  if(net!==online){run=fresh();online=net;mirrors.clear();local.length=0;foes=local;spawnTimer=0;heroPlays=-1;if(!net){h.play('idle');h.hp=maxHp;}}
+  if(net!==online){run=fresh(currentHeroId());online=net;mirrors.clear();local.length=0;foes=local;spawnTimer=0;heroPlays=-1;lastCoopAutoCasts=0;if(!net){h.play('idle');h.hp=maxHp;}}
   if(online){netStep(dt);return;}
   const input=o.direction(),steering=!!(input.x||input.y);
   for(const f of [h,...foes])f.tick(dt);
@@ -310,10 +449,6 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
   cc.globalCompositeOperation='source-over';
   return fr;
  }
- // Each revenant is its own small canvas around its foot (sun shadow, sprite, then the uprights in front of it
- // cut out), moved by the compositor like the heroes. It is composed again only when its look changes (frame,
- // facing, light, hit flash, sun, zoom or what stands in front of it), not every frame: two full-screen layers
- // cleared and redrawn every frame used half the frame time of a phone in a co-op room full of revenants.
  type View={el:HTMLCanvasElement;g:CanvasRenderingContext2D;bar:HTMLElement;fill:HTMLElement;look:string;size:string;at:string;alpha:string;hp:string};
  const views=new Map<Foe,View>();
  function view(f:Foe){
@@ -329,9 +464,6 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
   drawFigureShadow(fg,atlas,fr,meta.cell,s,dir);
   fg.save();sprite(cell);fg.restore();return fg;
  }
- // Revenants share one atlas, so a pack walking or waiting together shows the same few pictures: those are kept
- // (the most recently used 48, about 7 MB at phone resolution) and a revenant in the open copies one in. A
- // revenant behind an upright is composed on its own, with that upright cut out where it stands.
  const looks=new Map<string,HTMLCanvasElement>(),LOOKS=48;
  function compose(f:Foe,v:View,px:number,py:number,box:number[],s:Sun,r:number,hidden:Placed[],look:string){
   if(hidden.length){cutOut(paint(f,v.el,box,s,r),hidden,px,py);return;}
@@ -341,11 +473,9 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
   if(v.el.width!==c.width||v.el.height!==c.height){v.el.width=c.width;v.el.height=c.height;}
   v.g.globalCompositeOperation='copy';v.g.setTransform(1,0,0,1,0,0);v.g.drawImage(c,0,0);v.g.globalCompositeOperation='source-over';
  }
- // Compared with what was last written: a style reads back normalized.
  const written=new Map<object,Record<string,string>>();
  const put=(target:Record<string,any>,key:string,value:string)=>{let w=written.get(target);if(!w)written.set(target,w={});if(w[key]!==value){w[key]=value;target[key]=value;}};
  const set=(v:View,k:'size'|'at'|'alpha'|'hp',value:string,apply:()=>void)=>{if(v[k]!==value){v[k]=value;apply();}};
- // Children of a layer in this order; anything else (hidden revenants) moves behind them.
  function arrange(layer:HTMLElement,list:HTMLElement[]){list.forEach((el,i)=>{if(layer.children[i]!==el)layer.insertBefore(el,layer.children[i]??null);});}
  function render(){
   drawProgress();
@@ -354,7 +484,6 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
   const shown=foes.filter(f=>{if(f.deadFor>CORPSE-500&&!f.alive)return false;const w=tilePoint(f.x,f.y),s=at(w.x,w.y);return s.x>-80&&s.x<innerWidth+80&&s.y>-40&&s.y<innerHeight+120;});
   const layers={back:[] as HTMLElement[],front:[] as HTMLElement[]},live=new Set<Foe>();
   if(shown.length){
-   // Local bounds around the foot: the mirrored sprite cell plus the foot-anchored sun-cast silhouette, as in hero.ts.
    const sun=o.hero.sun(),r=k*dpr,half=Math.max(pivot.x,meta.cell.w-pivot.x)*DISPLAY,top=-pivot.y*DISPLAY,H0=-top,bottom=(meta.cell.h-pivot.y)*DISPLAY+8;
    const ends=[-half,half].flatMap(w=>[0,H0].flatMap(h=>[[w+h*sun.dx,h*sun.dy],[w*sun.wx+h*sun.dx,w*sun.wy+h*sun.dy]])),sxs=[-half,half,...ends.map(e=>e[0])],sys=[top,bottom,...ends.map(e=>e[1]-8),...ends.map(e=>e[1]+8)];
    const box=[Math.floor(Math.min(...sxs))-4,Math.floor(Math.min(...sys))-4,Math.ceil(Math.max(...sxs))+4,Math.ceil(Math.max(...sys))+4];
@@ -363,19 +492,16 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
     const w=tilePoint(f.x,f.y),s=at(w.x,w.y),shk=vfx.shakeOffset(f);
     const alpha=Math.min(1,f.age/500)*(f.alive?1:Math.max(0,1-(f.deadFor-3500)/900));if(alpha<=0)continue;
     const v=view(f),hidden=o.hero.occluders(w.x,w.y,box);live.add(f);(w.y<hp.y?layers.back:layers.front).push(v.el);
-    // Uprights in front cut the figure where it stands, so only then does its position change the picture.
     const look=[f.clip.frames[f.frame()],f.vertical?0:f.facing,f.flash>0,light,hidden.length?hidden.map(p=>p.x+':'+p.y).join()+'@'+w.x.toFixed(1)+','+w.y.toFixed(1):''].join('|');
     if(look!==v.look){v.look=look;compose(f,v,w.x,w.y,box,sun,r,hidden,look);}
     set(v,'size',v.el.width+'x'+v.el.height+'@'+dpr,()=>{v.el.style.width=v.el.width/dpr+'px';v.el.style.height=v.el.height/dpr+'px';});
     set(v,'at',`translate3d(${s.x+box[0]*k+shk.dx}px,${s.y+box[1]*k+shk.dy}px,0)`,()=>{v.el.style.transform=v.at;v.el.dataset.x=w.x.toFixed(2);v.el.dataset.y=w.y.toFixed(2);});
     set(v,'alpha',alpha.toFixed(2),()=>{v.el.style.opacity=v.alpha;});
-    // A small health bar over each wounded revenant.
     const wounded=f.alive&&f.hp<STATS.revenant.hp;
     set(v,'hp',wounded?`translate3d(${s.x-13+shk.dx}px,${s.y-62*k-1+shk.dy}px,0)|${f.hp/STATS.revenant.hp}`:'',()=>{v.bar.hidden=!wounded;if(wounded){v.bar.style.transform=`translate3d(${s.x-13+shk.dx}px,${s.y-62*k-1+shk.dy}px,0)`;v.fill.style.transform=`scaleX(${f.hp/STATS.revenant.hp})`;}});
    }
   }
   arrange(back,layers.back);arrange(front,layers.front);
-  // Off screen or gone: hidden, and dropped once the revenant no longer exists (a co-op mirror that left).
   for(const [f,v] of views){if(live.has(f))continue;if(foes.includes(f)){if(!v.el.hidden){v.el.hidden=true;v.bar.hidden=true;v.hp='';}}else{v.el.remove();v.bar.remove();views.delete(f);}}
   for(const f of live){const v=views.get(f)!;if(v.el.hidden)v.el.hidden=false;}
   vfx.render();
@@ -384,19 +510,19 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
   const rMult=reach(run),aoeRx=Math.round(HERO_REACH*rMult*64*Math.SQRT2),aoeRy=Math.round(aoeRx*.52),aoePadX=aoeRx+6,aoePadY=aoeRy+6,showAoe=h.alive&&(!inZone||rMult>1.001);
   if(aoe.hidden===showAoe)aoe.hidden=!showAoe;
   if(showAoe){
-   const aoeKey=`${rMult.toFixed(2)}:${dpr}:${h.state==='attack'?1:0}`;
+   const aoeKey=`${rMult.toFixed(2)}:${dpr}:${h.state==='attack'?1:0}:${comboHighlightMs>0?1:0}`;
    if(aoe.dataset.key!==aoeKey){
     aoe.dataset.key=aoeKey;aoe.dataset.reach=rMult.toFixed(2);aoe.dataset.radiusPx=String(aoeRx);
     const wpx=aoePadX*2,hpx=aoePadY*2;aoe.width=Math.ceil(wpx*dpr);aoe.height=Math.ceil(hpx*dpr);aoe.style.width=wpx+'px';aoe.style.height=hpx+'px';
     aoeCtx.setTransform(dpr,0,0,dpr,aoePadX*dpr,aoePadY*dpr);aoeCtx.clearRect(-aoePadX,-aoePadY,wpx,hpx);
     aoeCtx.save();aoeCtx.scale(1,.52);
-    const pulse=h.state==='attack'?.05:0,g=aoeCtx.createRadialGradient(0,0,4,0,0,aoeRx);
+    const pulse=(h.state==='attack'?.05:0)+(comboHighlightMs>0?.08:0),g=aoeCtx.createRadialGradient(0,0,4,0,0,aoeRx);
     g.addColorStop(0,`rgba(255,208,138,${(.22+pulse).toFixed(2)})`);
     g.addColorStop(.68,`rgba(255,180,104,${(.11+pulse*.5).toFixed(2)})`);
     g.addColorStop(1,'rgba(242,196,107,0)');
     aoeCtx.fillStyle=g;aoeCtx.beginPath();aoeCtx.arc(0,0,aoeRx,0,Math.PI*2);aoeCtx.fill();
-    aoeCtx.strokeStyle=`rgba(242,196,107,${((rMult>1.001?.38:.24)+pulse).toFixed(2)})`;
-    aoeCtx.lineWidth=rMult>1.001?1.75:1.2;
+    aoeCtx.strokeStyle=comboHighlightMs>0?'rgba(102,227,255,0.62)':`rgba(242,196,107,${((rMult>1.001?.38:.24)+pulse).toFixed(2)})`;
+    aoeCtx.lineWidth=comboHighlightMs>0?2.2:(rMult>1.001?1.75:1.2);
     aoeCtx.beginPath();aoeCtx.arc(0,0,aoeRx-1,0,Math.PI*2);aoeCtx.stroke();
     aoeCtx.restore();
    }
@@ -408,26 +534,56 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
   const zone=!h.alive?'Defeated · returning to the tent':inZone?'Safe zone':'Wilds · revenants roam';
   if(q('.hud-zone').textContent!==zone)q('.hud-zone').textContent=zone;put(hud.dataset,'zone',inZone?'safe':'wild');
   const k2=`Revenants defeated · ${kills}`;if(q('.hud-kills').textContent!==k2)q('.hud-kills').textContent=k2;
-  for(const [key,value] of Object.entries({hp:String(Math.ceil(h.hp)),max:String(maxHp),state:h.state,kills:String(kills),foes:String(foes.filter(f=>f.alive).length),reach:rMult.toFixed(2)}))put(hud.dataset,key,value);
+  for(const [key,value] of Object.entries({hp:String(Math.ceil(h.hp)),max:String(maxHp),state:h.state,kills:String(kills),foes:String(foes.filter(f=>f.alive).length),reach:rMult.toFixed(2),slots:String(run.slots.length)}))put(hud.dataset,key,value);
  }
  let last=0;
- // Co-op revenants are sampled at the frame's timestamp, not whenever this callback happens to run.
  let frameAt=performance.now();
  const loop=(now:number)=>{let dt=last?Math.min(now-last,120):16;last=now;frameAt=now;for(;dt>0;dt-=34)step(Math.min(dt,34));render();requestAnimationFrame(loop);};
+ const buildLoadoutSnapshot=()=>{
+  const hid=currentHeroId();
+  syncHeroLoadout(run,hid);
+  const inZone=inSafeZone(tileOf(h));
+  const foeInAoe=!inZone&&h.alive&&Boolean(nearest(aoeCastRadius(run)));
+  return {
+   heroId:hid,
+   equippedCount:Math.min(MAX_SKILL_SLOTS,run.slots.length),
+   maxSlots:MAX_SKILL_SLOTS,
+   aoeEngaged:foeInAoe,
+   aoeCastRadiusTiles:+aoeCastRadius(run).toFixed(2),
+   slots:[0,1,2].map(i=>{
+    const id=run.slots[i] as SkillId|undefined;
+    const def=id?SKILL_CATALOG[id]:undefined;
+    const rank=id?Math.max(1,skillRank(run,id)):0;
+    const cdMs=id?Math.round(vfx.cooldown(id)):0;
+    const maxCdMs=id?skillCooldownMs(run,id):0;
+    return {
+     slot:i+1,
+     state:id?'equipped':'empty',
+     skillId:id??null,
+     name:def?.name??'Empty Slot',
+     badge:def?.badge??'EMPTY',
+     icon:def?.icon??'🔒',
+     rank,
+     cooldownMs:cdMs,
+     maxCooldownMs:maxCdMs,
+     ready:Boolean(id&&cdMs<=40)
+    };
+   })
+  };
+ };
  const api={
   steer,
   reach:()=>reach(run),
-  // While swinging, stunned or down, the hero plays that clip in place of walking.
   pose:():Pose|null=>h.state==='idle'||h.state==='move'?null:{clip:h.state,t:h.t},
   place(x:number,y:number,scale:number){origin={x,y,scale};vfx.place(x,y,scale);render();},
-  // Started after the hero's loop (world-view.ts), so each frame draws with the camera the hero just moved.
   start(){requestAnimationFrame(loop);},
   setAmbient(rgb:readonly number[]){ambient=rgb.map(v=>Math.round(v*255)).join();},
   setMaxHp(n:number){baseHp=n;if(online)return;n+=health(run);if(n===maxHp)return;h.hp=Math.min(n,h.hp+Math.max(0,n-maxHp));maxHp=n;},
   snapshot:()=>({spawnDistanceM:SPAWN_DISTANCE_M,gate:GATE,metersPerTile:METERS_PER_TILE,
-   hero:{hp:h.hp,maxHp,state:h.state,u:+h.x.toFixed(2),v:+h.y.toFixed(2),meters:+meters(fromCenter(tileOf(h))).toFixed(1),safe:inSafeZone(tileOf(h)),reach:+reach(run).toFixed(2),aoeRadiusPx:Math.round(HERO_REACH*reach(run)*64*Math.SQRT2),critChance:+critChance(run).toFixed(2),critMultiplier:+critMultiplier(run).toFixed(2)},
+   hero:{hp:h.hp,maxHp,state:h.state,u:+h.x.toFixed(2),v:+h.y.toFixed(2),meters:+meters(fromCenter(tileOf(h))).toFixed(1),safe:inSafeZone(tileOf(h)),reach:+reach(run).toFixed(2),aoeRadiusPx:Math.round(HERO_REACH*reach(run)*64*Math.SQRT2),aoeCastRadiusTiles:+aoeCastRadius(run).toFixed(2),critChance:+critChance(run).toFixed(2),critMultiplier:+critMultiplier(run).toFixed(2)},
    foes:foes.map(f=>({u:+f.x.toFixed(2),v:+f.y.toFixed(2),hp:f.hp,state:f.state,safe:inSafeZone(tileOf(f)),clear:walkable(tileOf(f)),gateMeters:+meters(fromGate(tileOf(f))).toFixed(1)})),
    run:structuredClone(run),
+   loadout:buildLoadoutSnapshot(),
    reach:+reach(run).toFixed(2),
    scale:+origin.scale.toFixed(4),
    expBar:{level:run.level,xp:run.xp,nextXp:threshold(run),percent:xpPercent(run),pulsing:levelUpPulseMs>0},
@@ -437,9 +593,18 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
   teleport(u:number,v:number){const w=tilePoint(u,v);if(!o.hero.teleport(w.x,w.y))return false;h.x=u;h.y=v;return true;},
   clear:(u:number,v:number)=>walkable({u,v}),
   summon(u:number,v:number){const at={u,v};if(inSafeZone(at)||!walkable(at))return -1;const f:Foe=Object.assign(new Fighter('revenant',meta.clips,u,v),{home:at,wander:null,age:500,side:1});f.play('idle');return foes.push(f)-1;},
-  offer(offers?:string[]){if(!online){if(run.pending<=0){run.level++;run.pending=1;}if(offers?.length)run.offers=[...offers];else if(!run.offers.length)roll(run,random);offerKey='';render();}return structuredClone(run);},
+  offer(offers?:string[]){if(!online){if(run.pending<=0){run.level++;run.pending=1;}if(offers?.length)run.offers=[...offers];else if(!run.offers.length)roll(run,random,currentHeroId());offerKey='';render();}return structuredClone(run);},
   choose:(id:string)=>{select(id);render();return structuredClone(run);},
   castSkill:(id:SkillId,opts?:{targetU?:number;targetV?:number;forceCrit?:boolean})=>vfx.castSkill(id,opts),
+  castSimultaneous:(ids?:SkillId[],opts?:{targetU?:number;targetV?:number;forceCrit?:boolean})=>{
+   const list=(ids?.length?ids:run.slots.slice(0,MAX_SKILL_SLOTS)) as SkillId[];
+   const fired=vfx.castSimultaneous(list,opts);
+   if(fired.length>=2)comboHighlightMs=900;
+   render();
+   return fired;
+  },
+  resetCooldowns:()=>{vfx.resetCooldowns();render();},
+  autoCastNow:()=>{const fired=autoCastInAoE(true);render();return fired;},
   spawnProjectile:vfx.spawnProjectile,
   spawnAoE:vfx.spawnAoE,
   triggerLevelUp:(level?:number)=>{const lv=level??run.level;levelUpPulseMs=1200;vfx.triggerLevelUp(lv,h.x,h.y);render();},

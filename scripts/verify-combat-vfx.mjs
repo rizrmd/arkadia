@@ -76,7 +76,7 @@ try{
  assert.equal(combatCheck.hitCrit.crit,true,'crit hit flagged crit');
  assert.equal(combatCheck.hud.lv,'Lv. 1');
  assert.equal(combatCheck.hud.xp,'10 / 20 XP (50%)');
- assert.equal(combatCheck.hud.skillButtons,4,'combat skills bar rendered 4 kit skills');
+ assert.equal(combatCheck.hud.skillButtons,3,'combat skills bar rendered 3 auto-cast skill slots');
  assert.equal(combatCheck.hud.skillsVisible,true,'combat skills bar visible during active combat');
 
  await page.waitForTimeout(60);

@@ -4,7 +4,7 @@
     "lv": "Lv. 1",
     "xp": "10 / 20 XP (50%)",
     "fillTransform": "scaleX(0.5)",
-    "skillButtons": 4,
+    "skillButtons": 3,
     "skillsVisible": true
   },
   "critStats": {
@@ -13,10 +13,13 @@
   },
   "vfxTotals": {
     "crits": 4,
-    "normals": 8,
-    "projectiles": 5,
-    "aoes": 4,
-    "levelUps": 3
+    "normals": 9,
+    "projectiles": 6,
+    "aoes": 6,
+    "levelUps": 3,
+    "autoCasts": 2,
+    "simultaneousCasts": 1,
+    "trinityCasts": 0
   },
   "screenshots": [
     "docs/combat-vfx/ro-crit-and-exp-bar.webp",

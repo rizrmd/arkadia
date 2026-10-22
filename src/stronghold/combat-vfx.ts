@@ -1,5 +1,5 @@
 import {tilePoint} from './terrain';
-import {rollHit,reach,type Progression} from './progression';
+import {rollHit,reach,skillRank,skillDamageMultiplier,skillAreaMultiplier,skillCooldownMs,type Progression} from './progression';
 import type {Fighter} from '../characters/combat';
 import type {HeroId} from './heroes';
 
@@ -41,21 +41,37 @@ export type DashGhost={
  id:number;kind:'rift-dash'|'cinder-step';u:number;v:number;angle:number;
  age:number;duration:number;
 };
+export type ComboBurstVfx={
+ id:number;u:number;v:number;count:number;skills:SkillId[];age:number;duration:number;
+};
 export type SkillId='rift-bolt'|'rift-dash'|'rift-trap'|'flame-fan'|'cinder-step'|'ember-snare'|'cleave'|'shockwave';
-export type SkillDef={id:SkillId;name:string;key:string;cooldownMs:number;hero:HeroId|'shared';badge:string};
+export type SkillDef={id:SkillId;name:string;key:string;cooldownMs:number;hero:HeroId|'shared';badge:string;icon:string};
+
+export const SKILL_CATALOG:Record<SkillId,SkillDef>={
+ 'rift-bolt':{id:'rift-bolt',name:'Rift Bolt',key:'1',cooldownMs:1400,hero:'rift-runner',badge:'BOLT',icon:'⚡'},
+ 'rift-dash':{id:'rift-dash',name:'Rift Dash',key:'2',cooldownMs:1400,hero:'rift-runner',badge:'DASH',icon:'💨'},
+ 'rift-trap':{id:'rift-trap',name:'Rift Trap',key:'3',cooldownMs:2800,hero:'rift-runner',badge:'TRAP',icon:'🔮'},
+ 'flame-fan':{id:'flame-fan',name:'Flame Fan',key:'1',cooldownMs:1400,hero:'ember-warden',badge:'FAN',icon:'🔥'},
+ 'cinder-step':{id:'cinder-step',name:'Cinder Step',key:'2',cooldownMs:1400,hero:'ember-warden',badge:'STEP',icon:'☄️'},
+ 'ember-snare':{id:'ember-snare',name:'Ember Snare',key:'3',cooldownMs:2800,hero:'ember-warden',badge:'SNARE',icon:'🌋'},
+ cleave:{id:'cleave',name:'Astral Cleave',key:'4',cooldownMs:2100,hero:'shared',badge:'ARC',icon:'🌙'},
+ shockwave:{id:'shockwave',name:'Seismic Slam',key:'4',cooldownMs:2800,hero:'shared',badge:'SLAM',icon:'💥'}
+};
 
 export const HERO_SKILLS:Record<HeroId,SkillDef[]>={
  'rift-runner':[
-  {id:'rift-bolt',name:'Rift Bolt',key:'1',cooldownMs:1400,hero:'rift-runner',badge:'BOLT'},
-  {id:'rift-dash',name:'Rift Dash',key:'2',cooldownMs:2200,hero:'rift-runner',badge:'DASH'},
-  {id:'rift-trap',name:'Rift Trap',key:'3',cooldownMs:3000,hero:'rift-runner',badge:'AOE'},
-  {id:'cleave',name:'Astral Cleave',key:'4',cooldownMs:2600,hero:'shared',badge:'ARC'}
+  SKILL_CATALOG['rift-bolt'],
+  SKILL_CATALOG['rift-dash'],
+  SKILL_CATALOG['rift-trap'],
+  SKILL_CATALOG.cleave,
+  SKILL_CATALOG.shockwave
  ],
  'ember-warden':[
-  {id:'flame-fan',name:'Flame Fan',key:'1',cooldownMs:1500,hero:'ember-warden',badge:'FAN'},
-  {id:'cinder-step',name:'Cinder Step',key:'2',cooldownMs:2200,hero:'ember-warden',badge:'STEP'},
-  {id:'ember-snare',name:'Ember Snare',key:'3',cooldownMs:3000,hero:'ember-warden',badge:'AOE'},
-  {id:'shockwave',name:'Seismic Slam',key:'4',cooldownMs:2800,hero:'shared',badge:'SLAM'}
+  SKILL_CATALOG['flame-fan'],
+  SKILL_CATALOG['cinder-step'],
+  SKILL_CATALOG['ember-snare'],
+  SKILL_CATALOG.shockwave,
+  SKILL_CATALOG.cleave
  ]
 };
 
@@ -79,7 +95,7 @@ export function createCombatVfx(o:{
  onKill:(f:Fighter)=>void;
  random:()=>number;
 }){
- // Ground under-foot layer (2:1 isometric AoE telegraphs, Level-Up rune rings, Cinder Step scorch marks)
+ // Ground under-foot layer (2:1 isometric AoE telegraphs, Level-Up rune rings, Cinder Step scorch marks, Trinity Resonance rings)
  const groundCanvas=document.createElement('canvas');
  groundCanvas.id='world-vfx-ground';
  groundCanvas.style.cssText='position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none';
@@ -95,10 +111,14 @@ export function createCombatVfx(o:{
  let nextId=1,origin={x:0,y:0,scale:1};
  const floats:FloatingText[]=[],sparks:HitSpark[]=[],slashes:SlashTrail[]=[];
  const projectiles:Projectile[]=[],aoes:AoETelegraph[]=[],impacts:AoEImpact[]=[];
- const levelUps:LevelUpVfx[]=[],ghosts:DashGhost[]=[];
+ const levelUps:LevelUpVfx[]=[],ghosts:DashGhost[]=[],combos:ComboBurstVfx[]=[];
  const shakes=new Map<object,{amp:number;age:number;duration:number;seed:number}>();
- const cooldowns: Partial<Record<SkillId,number>>={};
- let totalCrits=0,totalNormals=0,totalProjectiles=0,totalAoEs=0,totalLevelUps=0,lastSkill:SkillId|''='';
+ const cooldowns:Partial<Record<SkillId,number>>={};
+ let totalCrits=0,totalNormals=0,totalProjectiles=0,totalAoEs=0,totalLevelUps=0;
+ let totalAutoCasts=0,totalSimultaneousCasts=0,totalTrinityCasts=0;
+ let lastSkill:SkillId|''='';
+ let lastSimultaneousSkills:SkillId[]=[];
+ let lastComboBannerMs=0;
 
  function addFloat(kind:FloatKind,text:string,u:number,v:number,subtext?:string){
   const spread=(o.random()-.5)*38;
@@ -150,8 +170,7 @@ export function createCombatVfx(o:{
 
  function recordCoopEnemyDamage(f:Fighter,deltaHp:number){
   const run=o.getRun(),crit=deltaHp>=1.5||deltaHp>=1.35*(1+(run.skills.might??0)*.5+run.stars*.25);
-  const mult=crit?Math.max(1.5,deltaHp/Math.max(1,deltaHp)):1;
-  const display=Math.max(10,Math.round(deltaHp*10*(crit?1.0:1.0)));
+  const display=Math.max(10,Math.round(deltaHp*10));
   if(crit){
    totalCrits++;
    addFloat('crit',`${display}!`,f.x,f.y,'CRITICAL');
@@ -163,7 +182,6 @@ export function createCombatVfx(o:{
    addSpark('normal',f.x,f.y,o.random()*Math.PI*2,26);
    addShake(f,2.2,110);
   }
-  void mult;
  }
 
  function recordHeroDamage(amount:number,u:number,v:number){
@@ -205,7 +223,7 @@ export function createCombatVfx(o:{
  }
 
  function spawnAoE(opts:{
-  kind?:AoEKind;shape?: 'circle'|'cone';u?:number;v?:number;
+  kind?:AoEKind;shape?:'circle'|'cone';u?:number;v?:number;
   radius?:number;angle?:number;spread?:number;duration?:number;
   damageScale?:number;forceCrit?:boolean;
  }={}){
@@ -220,7 +238,7 @@ export function createCombatVfx(o:{
    id:nextId++,kind,shape,u,v,
    radius:opts.radius??1.45*reach(o.getRun()),
    angle,spread:opts.spread??(shape==='cone'?Math.PI*.62:Math.PI*2),
-   age:0,duration:opts.duration??720,
+   age:0,duration:opts.duration??680,
    damageScale:opts.damageScale??1.15,forceCrit:opts.forceCrit,detonated:false
   };
   aoes.push(aoe);
@@ -235,7 +253,7 @@ export function createCombatVfx(o:{
   for(const f of o.getFoes()){
    if(!f.alive)continue;
    const du=f.x-a.u,dv=f.y-a.v,dist=Math.hypot(du,dv);
-   if(dist>a.radius+.35)continue;
+   if(dist>a.radius+.38)continue;
    if(a.shape==='cone'&&dist>1e-4){
     const s=screenVec(du,dv),fa=Math.atan2(s.y,s.x);
     let diff=fa-a.angle;while(diff>Math.PI)diff-=Math.PI*2;while(diff<-Math.PI)diff+=Math.PI*2;
@@ -245,60 +263,179 @@ export function createCombatVfx(o:{
   }
  }
 
- function castSkill(id:SkillId,opts:{targetU?:number;targetV?:number;forceCrit?:boolean}={}):boolean{
-  const h=o.getHero();
+ function castSkill(id:SkillId,opts:{targetU?:number;targetV?:number;forceCrit?:boolean;comboScale?:number}={}):boolean{
+  const h=o.getHero(),run=o.getRun();
   let angle=facingScreenAngle(h);
-  if(opts.targetU!==undefined&&opts.targetV!==undefined){
-   const s=screenVec(opts.targetU-h.u,opts.targetV-h.v);
+  let targetU=opts.targetU,targetV=opts.targetV;
+  if(targetU!==undefined&&targetV!==undefined){
+   const s=screenVec(targetU-h.u,targetV-h.v);
    if(Math.hypot(s.x,s.y)>1e-3)angle=Math.atan2(s.y,s.x);
   }else{
    // Aim toward nearest living foe if within 6 tiles
    let best:Fighter|null=null,bestD=6;
    for(const f of o.getFoes()){const d=Math.hypot(f.x-h.u,f.y-h.v);if(f.alive&&d<bestD){bestD=d;best=f;}}
-   if(best){const s=screenVec(best.x-h.u,best.y-h.v);if(Math.hypot(s.x,s.y)>1e-3)angle=Math.atan2(s.y,s.x);}
+   if(best){
+    targetU=best.x;targetV=best.y;
+    const s=screenVec(best.x-h.u,best.y-h.v);
+    if(Math.hypot(s.x,s.y)>1e-3)angle=Math.atan2(s.y,s.x);
+   }
   }
+  const rank=Math.max(1,skillRank(run,id));
+  const dmgMult=skillDamageMultiplier(run,id)*(opts.comboScale??1);
+  const areaMult=skillAreaMultiplier(run,id);
   lastSkill=id;
-  cooldowns[id]=HERO_SKILLS[h.heroId].find(s=>s.id===id)?.cooldownMs??2000;
+  cooldowns[id]=skillCooldownMs(run,id);
   const dir=tileVec(Math.cos(angle),Math.sin(angle));
 
   switch(id){
-   case 'rift-bolt':
+   case 'rift-bolt':{
     spawnSlash(h.u,h.v,angle,false);
-    spawnProjectile({kind:'rift-bolt',u:h.u+dir.u*.25,v:h.v+dir.v*.25,angle,speed:7.5,range:5.2,damageScale:1.0,forceCrit:opts.forceCrit});
-    return true;
-   case 'flame-fan':
-    spawnSlash(h.u,h.v,angle,false);
-    for(const offset of [-0.34,0,0.34]){
-     spawnProjectile({kind:'flame-bolt',u:h.u+dir.u*.22,v:h.v+dir.v*.22,angle:angle+offset,speed:6.4,range:4.2,damageScale:.75,forceCrit:opts.forceCrit});
+    const offsets=rank>=3?[-0.22,0,0.22]:rank===2?[-0.12,0.12]:[0];
+    for(const off of offsets){
+     spawnProjectile({
+      kind:'rift-bolt',
+      u:h.u+dir.u*.24,
+      v:h.v+dir.v*.24,
+      angle:angle+off,
+      speed:7.5,
+      range:5.2,
+      damageScale:1.0*dmgMult,
+      forceCrit:opts.forceCrit
+     });
     }
     return true;
+   }
+   case 'flame-fan':{
+    spawnSlash(h.u,h.v,angle,false);
+    const offsets=rank>=3?[-0.44,-0.22,0,0.22,0.44]:rank===2?[-0.36,-0.12,0.12,0.36]:[-0.34,0,0.34];
+    for(const offset of offsets){
+     spawnProjectile({
+      kind:'flame-bolt',
+      u:h.u+dir.u*.22,
+      v:h.v+dir.v*.22,
+      angle:angle+offset,
+      speed:6.4,
+      range:4.4,
+      damageScale:.78*dmgMult,
+      forceCrit:opts.forceCrit
+     });
+    }
+    return true;
+   }
    case 'rift-dash':
    case 'cinder-step':{
     const kind=id;
-    for(let i=0;i<3;i++){
-     ghosts.push({id:nextId++,kind,u:h.u+dir.u*(i*.32),v:h.v+dir.v*(i*.32),angle,age:-i*45,duration:460});
+    const ghostCount=Math.min(5,3+(rank-1));
+    for(let i=0;i<ghostCount;i++){
+     ghosts.push({id:nextId++,kind,u:h.u+dir.u*(i*.3),v:h.v+dir.v*(i*.3),angle,age:-i*40,duration:480});
     }
-    addSpark(id==='cinder-step'?'fire':'arcane',h.u+dir.u*.6,h.v+dir.v*.6,angle,34);
+    addSpark(id==='cinder-step'?'fire':'arcane',h.u+dir.u*.6,h.v+dir.v*.6,angle,36);
     spawnSlash(h.u+dir.u*.5,h.v+dir.v*.5,angle,!!opts.forceCrit);
+    spawnAoE({
+     kind:id==='cinder-step'?'flame-cone':'cleave-cone',
+     shape:'cone',
+     u:h.u+dir.u*.2,
+     v:h.v+dir.v*.2,
+     angle,
+     radius:1.35*reach(run)*areaMult,
+     spread:Math.PI*.68,
+     duration:260,
+     damageScale:1.1*dmgMult,
+     forceCrit:opts.forceCrit
+    });
     return true;
    }
    case 'rift-trap':
-    spawnAoE({kind:'rift-trap',shape:'circle',u:opts.targetU,v:opts.targetV,angle,radius:1.45*reach(o.getRun()),duration:680,damageScale:1.25,forceCrit:opts.forceCrit});
+    spawnAoE({
+     kind:'rift-trap',
+     shape:'circle',
+     u:targetU,
+     v:targetV,
+     angle,
+     radius:1.45*reach(run)*areaMult,
+     duration:640,
+     damageScale:1.25*dmgMult,
+     forceCrit:opts.forceCrit
+    });
     return true;
    case 'ember-snare':
-    spawnAoE({kind:'ember-snare',shape:'circle',u:opts.targetU,v:opts.targetV,angle,radius:1.5*reach(o.getRun()),duration:680,damageScale:1.25,forceCrit:opts.forceCrit});
+    spawnAoE({
+     kind:'ember-snare',
+     shape:'circle',
+     u:targetU,
+     v:targetV,
+     angle,
+     radius:1.5*reach(run)*areaMult,
+     duration:640,
+     damageScale:1.25*dmgMult,
+     forceCrit:opts.forceCrit
+    });
     return true;
    case 'cleave':
     spawnSlash(h.u,h.v,angle,true);
-    spawnAoE({kind:'cleave-cone',shape:'cone',u:h.u,v:h.v,angle,radius:1.55*reach(o.getRun()),spread:Math.PI*.75,duration:320,damageScale:1.2,forceCrit:opts.forceCrit});
+    spawnAoE({
+     kind:'cleave-cone',
+     shape:'cone',
+     u:h.u,
+     v:h.v,
+     angle,
+     radius:1.55*reach(run)*areaMult,
+     spread:Math.min(Math.PI*1.15,Math.PI*.75+(rank-1)*.12),
+     duration:320,
+     damageScale:1.2*dmgMult,
+     forceCrit:opts.forceCrit
+    });
     return true;
    case 'shockwave':
-    spawnAoE({kind:'shockwave',shape:'circle',u:h.u,v:h.v,angle,radius:1.6*reach(o.getRun()),duration:480,damageScale:1.3,forceCrit:opts.forceCrit});
+    spawnAoE({
+     kind:'shockwave',
+     shape:'circle',
+     u:h.u,
+     v:h.v,
+     angle,
+     radius:1.65*reach(run)*areaMult,
+     duration:460,
+     damageScale:1.3*dmgMult,
+     forceCrit:opts.forceCrit
+    });
     return true;
   }
  }
 
+ function castSimultaneous(ids:SkillId[],opts:{targetU?:number;targetV?:number;forceCrit?:boolean}={}):SkillId[]{
+  const unique=[...new Set(ids.filter(id=>Boolean(SKILL_CATALOG[id])))];
+  if(!unique.length)return [];
+  const h=o.getHero();
+  const comboScale=unique.length>=3?1.3:unique.length===2?1.15:1.0;
+  totalAutoCasts++;
+  if(unique.length>=2){
+   totalSimultaneousCasts++;
+   if(unique.length>=3)totalTrinityCasts++;
+   combos.push({id:nextId++,u:h.u,v:h.v,count:unique.length,skills:unique,age:0,duration:960});
+   if(lastComboBannerMs<=0){
+    lastComboBannerMs=1100;
+    const label=unique.length>=3?'TRINITY AUTO-CAST!':'DUAL AUTO-CAST!';
+    const sub=unique.map(id=>SKILL_CATALOG[id].name.toUpperCase()).join(' + ');
+    addFloat('banner',label,h.u,h.v,sub);
+   }
+  }
+  lastSimultaneousSkills=unique;
+  for(const id of unique){
+   castSkill(id,{...opts,comboScale});
+  }
+  return unique;
+ }
+
+ function resetCooldowns(ids?:SkillId[]){
+  if(ids?.length){
+   for(const id of ids)cooldowns[id]=0;
+   return;
+  }
+  for(const k of Object.keys(cooldowns) as SkillId[])cooldowns[k]=0;
+ }
+
  function step(dt:number){
+  lastComboBannerMs=Math.max(0,lastComboBannerMs-dt);
   for(const k of Object.keys(cooldowns) as SkillId[]){
    cooldowns[k]=Math.max(0,(cooldowns[k]??0)-dt);
   }
@@ -315,6 +452,7 @@ export function createCombatVfx(o:{
   for(let i=impacts.length-1;i>=0;i--){impacts[i].age+=dt;if(impacts[i].age>=impacts[i].duration)impacts.splice(i,1);}
   for(let i=levelUps.length-1;i>=0;i--){levelUps[i].age+=dt;if(levelUps[i].age>=levelUps[i].duration)levelUps.splice(i,1);}
   for(let i=ghosts.length-1;i>=0;i--){ghosts[i].age+=dt;if(ghosts[i].age>=ghosts[i].duration)ghosts.splice(i,1);}
+  for(let i=combos.length-1;i>=0;i--){combos[i].age+=dt;if(combos[i].age>=combos[i].duration)combos.splice(i,1);}
   for(const [target,s] of shakes){s.age+=dt;if(s.age>=s.duration)shakes.delete(target);}
 
   // Step projectiles & collide with living revenants
@@ -376,6 +514,39 @@ export function createCombatVfx(o:{
   gc.setTransform(dpr,0,0,dpr,0,0);gc.clearRect(0,0,w,h);
   oc.setTransform(dpr,0,0,dpr,0,0);oc.clearRect(0,0,w,h);
 
+  const heroPos=o.getHero();
+
+  // 0. GROUND LAYER: Trinity / Dual Simultaneous Auto-Cast Resonance Rings
+  for(const cb of combos){
+   const p=toScreen(heroPos.u,heroPos.v),t=Math.min(1,cb.age/cb.duration);
+   const alpha=t<.15?t/.15:Math.max(0,1-(t-.15)/.85);
+   const baseR=(cb.count>=3?76:58)*k*reach(o.getRun());
+   gc.save();
+   gc.translate(p.x,p.y);
+   gc.scale(1,.5);
+   gc.globalAlpha=alpha;
+   const ringColors=cb.count>=3?['#ffe066','#5ce1e6','#ff6b35']:['#ffe066','#5ce1e6'];
+   for(let idx=0;idx<ringColors.length;idx++){
+    const rt=Math.min(1,Math.max(0,t*1.25-idx*.12));
+    const r=baseR*(.35+rt*.85);
+    gc.beginPath();gc.arc(0,0,r,0,Math.PI*2);
+    gc.lineWidth=(1-rt)*4+1.6;
+    gc.strokeStyle=ringColors[idx];
+    gc.stroke();
+   }
+   gc.rotate(-cb.age*.004);
+   const spokes=cb.count>=3?9:6;
+   gc.strokeStyle='#fff3b0';gc.lineWidth=1.8;
+   for(let i=0;i<spokes;i++){
+    const ang=(i*Math.PI*2)/spokes;
+    gc.beginPath();
+    gc.moveTo(Math.cos(ang)*baseR*.25,Math.sin(ang)*baseR*.25);
+    gc.lineTo(Math.cos(ang)*baseR*.95,Math.sin(ang)*baseR*.95);
+    gc.stroke();
+   }
+   gc.restore();
+  }
+
   // 1. GROUND LAYER: 2:1 Isometric AoE Telegraphs (under character feet)
   for(const a of aoes){
    const p=toScreen(a.u,a.v),progress=Math.min(1,Math.max(0,a.age/a.duration));
@@ -425,7 +596,6 @@ export function createCombatVfx(o:{
   }
 
   // 2. GROUND LAYER: Level-Up Expanding Isometric Rune Aura Rings (under hero feet)
-  const heroPos=o.getHero();
   for(const lv of levelUps){
    const p=toScreen(heroPos.u,heroPos.v),t=Math.min(1,lv.age/lv.duration);
    const alpha=t<.15?t/.15:Math.max(0,1-(t-.15)/.85);
@@ -678,7 +848,7 @@ export function createCombatVfx(o:{
    oc.restore();
   }
 
-  // 10. OVER LAYER: RO-Style Floating Combat Text & Level-Up Banner
+  // 10. OVER LAYER: RO-Style Floating Combat Text & Level-Up / Trinity Combo Banner
   for(const fl of floats){
    const base=toScreen(fl.u,fl.v),t=fl.age/fl.duration;
    const alpha=t<.72?1:Math.max(0,1-(t-.72)/.28);
@@ -718,16 +888,22 @@ export function createCombatVfx(o:{
     numGrad.addColorStop(0,'#fff9b0');numGrad.addColorStop(.55,'#ffd43b');numGrad.addColorStop(1,'#ff8800');
     oc.fillStyle=numGrad;oc.fillText(fl.text,0,2);
    }else if(fl.kind==='banner'){
-    // Floating LEVEL UP! plaque above hero
-    const bw=124,bh=30;
-    oc.fillStyle='rgba(16, 26, 36, 0.92)';
+    const hasSub=Boolean(fl.subtext);
+    const bw=hasSub?Math.max(168,Math.min(248,(fl.subtext?.length??0)*5.6+26)):136;
+    const bh=hasSub?36:28;
+    oc.fillStyle='rgba(14, 24, 34, 0.94)';
     oc.strokeStyle='#ffd452';oc.lineWidth=2;
     oc.beginPath();oc.roundRect(-bw/2,-bh/2,bw,bh,8);oc.fill();oc.stroke();
-    oc.font='800 13px Georgia, serif';
+    oc.font='800 12px Georgia, serif';
     oc.lineWidth=3.5;oc.strokeStyle='#090d12';
-    const label=fl.subtext?`${fl.text} · ${fl.subtext}`:fl.text;
-    oc.strokeText(label,0,1);
-    oc.fillStyle='#ffe680';oc.fillText(label,0,1);
+    oc.strokeText(fl.text,0,hasSub?-5:1);
+    oc.fillStyle='#ffe680';oc.fillText(fl.text,0,hasSub?-5:1);
+    if(fl.subtext){
+     oc.font='700 9px Georgia, serif';
+     oc.lineWidth=2.8;oc.strokeStyle='#090d12';
+     oc.strokeText(fl.subtext,0,9);
+     oc.fillStyle='#9bf6ff';oc.fillText(fl.subtext,0,9);
+    }
    }else if(fl.kind==='incoming'){
     oc.font='800 15px Georgia, serif';
     oc.lineWidth=3.8;oc.strokeStyle='#1f0404';
@@ -755,9 +931,14 @@ export function createCombatVfx(o:{
   overCanvas.dataset.impacts=String(impacts.length);
   overCanvas.dataset.levelups=String(levelUps.length);
   overCanvas.dataset.slashes=String(slashes.length);
+  overCanvas.dataset.combos=String(combos.length);
   overCanvas.dataset.totalCrits=String(totalCrits);
   overCanvas.dataset.totalNormals=String(totalNormals);
+  overCanvas.dataset.totalAutoCasts=String(totalAutoCasts);
+  overCanvas.dataset.totalSimultaneousCasts=String(totalSimultaneousCasts);
+  overCanvas.dataset.totalTrinityCasts=String(totalTrinityCasts);
   overCanvas.dataset.lastSkill=lastSkill;
+  overCanvas.dataset.lastSimultaneous=lastSimultaneousSkills.join(',');
  }
 
  return {
@@ -773,6 +954,8 @@ export function createCombatVfx(o:{
   spawnProjectile,
   spawnAoE,
   castSkill,
+  castSimultaneous,
+  resetCooldowns,
   shakeOffset,
   cooldown:(id:SkillId)=>Math.max(0,cooldowns[id]??0),
   snapshot:()=>({
@@ -781,10 +964,21 @@ export function createCombatVfx(o:{
    activeAoEs:aoes.map(a=>({id:a.id,kind:a.kind,shape:a.shape,u:+a.u.toFixed(2),v:+a.v.toFixed(2),radius:+a.radius.toFixed(2),progress:+(a.age/a.duration).toFixed(2)})),
    activeImpacts:impacts.map(i=>({id:i.id,kind:i.kind,u:+i.u.toFixed(2),v:+i.v.toFixed(2),radius:+i.radius.toFixed(2)})),
    activeLevelUps:levelUps.map(l=>({level:l.level,u:+l.u.toFixed(2),v:+l.v.toFixed(2),progress:+(l.age/l.duration).toFixed(2)})),
+   activeCombos:combos.map(c=>({id:c.id,count:c.count,skills:c.skills,progress:+(c.age/c.duration).toFixed(2)})),
    activeSlashes:slashes.length,
    activeSparks:sparks.length,
-   totals:{crits:totalCrits,normals:totalNormals,projectiles:totalProjectiles,aoes:totalAoEs,levelUps:totalLevelUps},
-   lastSkill
+   totals:{
+    crits:totalCrits,
+    normals:totalNormals,
+    projectiles:totalProjectiles,
+    aoes:totalAoEs,
+    levelUps:totalLevelUps,
+    autoCasts:totalAutoCasts,
+    simultaneousCasts:totalSimultaneousCasts,
+    trinityCasts:totalTrinityCasts
+   },
+   lastSkill,
+   lastSimultaneousSkills:[...lastSimultaneousSkills]
   })
  };
 }

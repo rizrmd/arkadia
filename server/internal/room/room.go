@@ -267,7 +267,7 @@ func (r *Room) run() {
 				j.reply <- ErrRoomFull
 				continue
 			}
-			p.Hero = j.hero
+			p.SetHero(j.hero)
 			j.client.player = p
 			r.clients[j.client] = true
 			r.players.Store(int32(len(r.clients)))
@@ -289,7 +289,7 @@ func (r *Room) run() {
 			}
 		case m := <-r.pick:
 			if r.clients[m.client] {
-				m.client.player.Hero = m.hero
+				m.client.player.SetHero(m.hero)
 			}
 		case m := <-r.input:
 			if r.clients[m.client] {

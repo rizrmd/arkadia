@@ -1,0 +1,369 @@
+{
+  "passed": true,
+  "lv1Default": {
+    "loadout": {
+      "heroId": "rift-runner",
+      "equippedCount": 1,
+      "maxSlots": 3,
+      "aoeEngaged": true,
+      "aoeCastRadiusTiles": 2.2,
+      "slots": [
+        {
+          "slot": 1,
+          "state": "equipped",
+          "skillId": "rift-bolt",
+          "name": "Rift Bolt",
+          "badge": "BOLT",
+          "icon": "⚡",
+          "rank": 1,
+          "cooldownMs": 1250,
+          "maxCooldownMs": 1400,
+          "ready": false
+        },
+        {
+          "slot": 2,
+          "state": "empty",
+          "skillId": null,
+          "name": "Empty Slot",
+          "badge": "EMPTY",
+          "icon": "🔒",
+          "rank": 0,
+          "cooldownMs": 0,
+          "maxCooldownMs": 0,
+          "ready": false
+        },
+        {
+          "slot": 3,
+          "state": "empty",
+          "skillId": null,
+          "name": "Empty Slot",
+          "badge": "EMPTY",
+          "icon": "🔒",
+          "rank": 0,
+          "cooldownMs": 0,
+          "maxCooldownMs": 0,
+          "ready": false
+        }
+      ]
+    },
+    "headerTitle": "Auto-Cast Loadout · 1/3 Slots",
+    "slotEls": [
+      {
+        "slot": 1,
+        "state": "equipped",
+        "skill": "rift-bolt",
+        "rank": 1,
+        "keyText": "SLOT 1 · AUTO",
+        "rankText": "Lv. 1",
+        "nameText": "Rift Bolt",
+        "statusText": "AUTO · 1.3s"
+      },
+      {
+        "slot": 2,
+        "state": "empty",
+        "skill": "",
+        "rank": 0,
+        "keyText": "SLOT 2 · LOCKED",
+        "rankText": "Locked",
+        "nameText": "Empty Slot",
+        "statusText": "Unlock via Blessing"
+      },
+      {
+        "slot": 3,
+        "state": "empty",
+        "skill": "",
+        "rank": 0,
+        "keyText": "SLOT 3 · LOCKED",
+        "rankText": "Locked",
+        "nameText": "Empty Slot",
+        "statusText": "Unlock via Blessing"
+      }
+    ]
+  },
+  "blessingCards": [
+    {
+      "card": "rift-dash",
+      "kind": "active",
+      "header": "NEW AUTO-CAST SKILL · SLOT 2",
+      "title": "💨 Rift Dash · Unlock Lv. 1"
+    },
+    {
+      "card": "rift-bolt",
+      "kind": "active",
+      "header": "ACTIVE SKILL · SLOT 1 UPGRADE",
+      "title": "⚡ Rift Bolt · Lv. 1 → Lv. 2"
+    },
+    {
+      "card": "nova",
+      "kind": "passive",
+      "header": "PASSIVE BLESSING",
+      "title": "🌀 Arc Nova"
+    }
+  ],
+  "slotProgression": {
+    "afterSlot2": [
+      {
+        "slot": 1,
+        "state": "equipped",
+        "skillId": "rift-bolt",
+        "name": "Rift Bolt",
+        "badge": "BOLT",
+        "icon": "⚡",
+        "rank": 1,
+        "cooldownMs": 0,
+        "maxCooldownMs": 1400,
+        "ready": true
+      },
+      {
+        "slot": 2,
+        "state": "equipped",
+        "skillId": "rift-dash",
+        "name": "Rift Dash",
+        "badge": "DASH",
+        "icon": "💨",
+        "rank": 1,
+        "cooldownMs": 0,
+        "maxCooldownMs": 1400,
+        "ready": true
+      },
+      {
+        "slot": 3,
+        "state": "empty",
+        "skillId": null,
+        "name": "Empty Slot",
+        "badge": "EMPTY",
+        "icon": "🔒",
+        "rank": 0,
+        "cooldownMs": 0,
+        "maxCooldownMs": 0,
+        "ready": false
+      }
+    ],
+    "afterSlot3": [
+      {
+        "slot": 1,
+        "state": "equipped",
+        "skillId": "rift-bolt",
+        "name": "Rift Bolt",
+        "badge": "BOLT",
+        "icon": "⚡",
+        "rank": 1,
+        "cooldownMs": 0,
+        "maxCooldownMs": 1400,
+        "ready": true
+      },
+      {
+        "slot": 2,
+        "state": "equipped",
+        "skillId": "rift-dash",
+        "name": "Rift Dash",
+        "badge": "DASH",
+        "icon": "💨",
+        "rank": 1,
+        "cooldownMs": 0,
+        "maxCooldownMs": 1400,
+        "ready": true
+      },
+      {
+        "slot": 3,
+        "state": "equipped",
+        "skillId": "rift-trap",
+        "name": "Rift Trap",
+        "badge": "TRAP",
+        "icon": "🔮",
+        "rank": 1,
+        "cooldownMs": 0,
+        "maxCooldownMs": 2800,
+        "ready": true
+      }
+    ],
+    "afterRankUp": [
+      {
+        "slot": 1,
+        "state": "equipped",
+        "skillId": "rift-bolt",
+        "name": "Rift Bolt",
+        "badge": "BOLT",
+        "icon": "⚡",
+        "rank": 2,
+        "cooldownMs": 0,
+        "maxCooldownMs": 1288,
+        "ready": true
+      },
+      {
+        "slot": 2,
+        "state": "equipped",
+        "skillId": "rift-dash",
+        "name": "Rift Dash",
+        "badge": "DASH",
+        "icon": "💨",
+        "rank": 1,
+        "cooldownMs": 0,
+        "maxCooldownMs": 1400,
+        "ready": true
+      },
+      {
+        "slot": 3,
+        "state": "equipped",
+        "skillId": "rift-trap",
+        "name": "Rift Trap",
+        "badge": "TRAP",
+        "icon": "🔮",
+        "rank": 1,
+        "cooldownMs": 0,
+        "maxCooldownMs": 2800,
+        "ready": true
+      }
+    ]
+  },
+  "trinitySimultaneousCast": {
+    "fired": [
+      "rift-bolt",
+      "rift-dash",
+      "rift-trap"
+    ],
+    "hud": {
+      "slotsEquipped": "3",
+      "aoeEngaged": "true",
+      "comboActive": "true",
+      "stateText": "Trinity Simultaneous Cast!",
+      "slotRanks": [
+        "Lv. 6",
+        "Lv. 6",
+        "Lv. 3"
+      ]
+    },
+    "vfxTotals": {
+      "crits": 0,
+      "normals": 3,
+      "projectiles": 8,
+      "aoes": 4,
+      "levelUps": 0,
+      "autoCasts": 4,
+      "simultaneousCasts": 2,
+      "trinityCasts": 2
+    }
+  },
+  "emberWardenMobile": {
+    "lv1Slot1": {
+      "slot": 1,
+      "state": "equipped",
+      "skillId": "flame-fan",
+      "name": "Flame Fan",
+      "badge": "FAN",
+      "icon": "🔥",
+      "rank": 1,
+      "cooldownMs": 1250,
+      "maxCooldownMs": 1400,
+      "ready": false
+    },
+    "fired": [
+      "flame-fan",
+      "cinder-step",
+      "ember-snare"
+    ],
+    "fitsViewport": true,
+    "loadout": {
+      "heroId": "ember-warden",
+      "equippedCount": 3,
+      "maxSlots": 3,
+      "aoeEngaged": true,
+      "aoeCastRadiusTiles": 2.2,
+      "slots": [
+        {
+          "slot": 1,
+          "state": "equipped",
+          "skillId": "flame-fan",
+          "name": "Flame Fan",
+          "badge": "FAN",
+          "icon": "🔥",
+          "rank": 1,
+          "cooldownMs": 1400,
+          "maxCooldownMs": 1400,
+          "ready": false
+        },
+        {
+          "slot": 2,
+          "state": "equipped",
+          "skillId": "cinder-step",
+          "name": "Cinder Step",
+          "badge": "STEP",
+          "icon": "☄️",
+          "rank": 1,
+          "cooldownMs": 1400,
+          "maxCooldownMs": 1400,
+          "ready": false
+        },
+        {
+          "slot": 3,
+          "state": "equipped",
+          "skillId": "ember-snare",
+          "name": "Ember Snare",
+          "badge": "SNARE",
+          "icon": "🌋",
+          "rank": 1,
+          "cooldownMs": 2800,
+          "maxCooldownMs": 2800,
+          "ready": false
+        }
+      ]
+    }
+  },
+  "coopServerSync": {
+    "status": "online",
+    "slots": [
+      "flame-fan"
+    ],
+    "loadout": {
+      "heroId": "ember-warden",
+      "equippedCount": 1,
+      "maxSlots": 3,
+      "aoeEngaged": false,
+      "aoeCastRadiusTiles": 2.2,
+      "slots": [
+        {
+          "slot": 1,
+          "state": "equipped",
+          "skillId": "flame-fan",
+          "name": "Flame Fan",
+          "badge": "FAN",
+          "icon": "🔥",
+          "rank": 1,
+          "cooldownMs": 0,
+          "maxCooldownMs": 1400,
+          "ready": true
+        },
+        {
+          "slot": 2,
+          "state": "empty",
+          "skillId": null,
+          "name": "Empty Slot",
+          "badge": "EMPTY",
+          "icon": "🔒",
+          "rank": 0,
+          "cooldownMs": 0,
+          "maxCooldownMs": 0,
+          "ready": false
+        },
+        {
+          "slot": 3,
+          "state": "empty",
+          "skillId": null,
+          "name": "Empty Slot",
+          "badge": "EMPTY",
+          "icon": "🔒",
+          "rank": 0,
+          "cooldownMs": 0,
+          "maxCooldownMs": 0,
+          "ready": false
+        }
+      ]
+    }
+  },
+  "screenshots": [
+    "docs/three-slot-autocast/level1-default-slot1.webp",
+    "docs/three-slot-autocast/blessing-unlock-slot2-slot3.webp",
+    "docs/three-slot-autocast/trinity-simultaneous-autocast.webp",
+    "docs/three-slot-autocast/mobile-ember-warden-trinity.webp"
+  ]
+}

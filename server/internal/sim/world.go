@@ -89,12 +89,20 @@ type Player struct {
 	steering bool
 	last     Vec // the walk vector of the last input applied
 	starved  int // ticks in a row without any input
+	slotCD   [MaxSkillSlots]float64
+}
+
+// SetHero sets the player's hero and synchronizes their 3-slot skill loadout.
+func (p *Player) SetHero(hero string) {
+	p.Hero = hero
+	p.Run.SyncHero(hero)
 }
 
 // Enemy is a revenant. Gen bumps on every respawn so clients restart its fade-in.
 type Enemy struct {
 	ID     int
 	Gen    int
+	Age    float64
 	F      Fighter
 	Home   Vec
 	Wander *Vec
@@ -237,7 +245,7 @@ func (w *World) Step() {
 		if p.Run.Pending > 0 {
 			p.F.Immune = 200
 			if len(p.Run.Offers) == 0 {
-				w.roll(&p.Run)
+				w.rollForHero(&p.Run, p.Hero)
 			}
 		}
 		p.F.Tick(dt)
@@ -448,7 +456,92 @@ func (w *World) enemyFighters() []*Fighter {
 	return list
 }
 
+const simultaneousSyncWindowMs = 340.0
+
+func (w *World) nearestAutoCastTarget(p *Player, rng float64) *Enemy {
+	var best *Enemy
+	d := rng
+	for _, e := range w.Enemies {
+		if !e.F.Alive() || (e.Gen > 0 && e.Age < 250) {
+			continue
+		}
+		if v := hypot(e.F.Pos.X-p.F.Pos.X, e.F.Pos.Y-p.F.Pos.Y); v <= d {
+			d, best = v, e
+		}
+	}
+	return best
+}
+
+func (w *World) autoCastInAoE(p *Player) {
+	if !p.F.Alive() || p.Run.Pending > 0 || InSafeZone(p.F.Pos) {
+		return
+	}
+	p.Run.SyncHero(p.Hero)
+	target := w.nearestAutoCastTarget(p, p.Run.aoeCastRadius())
+	if target == nil {
+		return
+	}
+	slotCount := min(MaxSkillSlots, len(p.Run.Slots))
+	if slotCount == 0 {
+		return
+	}
+	anyReady := false
+	for i := 0; i < slotCount; i++ {
+		if p.slotCD[i] <= 0 {
+			anyReady = true
+			break
+		}
+	}
+	if !anyReady {
+		return
+	}
+	readyIndices := make([]int, 0, slotCount)
+	fired := make([]string, 0, slotCount)
+	for i := 0; i < slotCount; i++ {
+		if p.slotCD[i] <= simultaneousSyncWindowMs {
+			readyIndices = append(readyIndices, i)
+			fired = append(fired, p.Run.Slots[i])
+		}
+	}
+	comboMult := 1.0
+	if len(readyIndices) >= 3 {
+		comboMult = 1.30
+	} else if len(readyIndices) == 2 {
+		comboMult = 1.15
+	}
+	for _, idx := range readyIndices {
+		skillID := p.Run.Slots[idx]
+		p.slotCD[idx] = p.Run.skillCooldownMs(skillID)
+		dmg := .75 * p.Run.damage() * p.Run.skillDamageMultiplier(skillID) * comboMult
+		splashR := 1.35 * p.Run.reach() * p.Run.skillAreaMultiplier(skillID)
+		hits := 0
+		for _, e := range w.Enemies {
+			if !e.F.Alive() || (e.Gen > 0 && e.Age < 250) {
+				continue
+			}
+			if e == target || hypot(e.F.Pos.X-target.F.Pos.X, e.F.Pos.Y-target.F.Pos.Y) <= splashR {
+				if e.F.Damage(dmg) {
+					p.Kills++
+					w.reward(p)
+				}
+				hits++
+				if hits >= cleave {
+					break
+				}
+			}
+		}
+	}
+	p.Run.AutoCasts++
+	if len(fired) >= 3 {
+		p.Run.TrinityCasts++
+	}
+	p.Run.LastCast = fired
+}
+
 func (w *World) heroStep(p *Player, dt float64) {
+	for i := 0; i < MaxSkillSlots; i++ {
+		p.slotCD[i] = math.Max(0, p.slotCD[i]-dt)
+	}
 	h := &p.F
 	if !h.Alive() {
 		h.DeadFor += dt
@@ -461,6 +554,7 @@ func (w *World) heroStep(p *Player, dt float64) {
 	if p.Run.Pending > 0 {
 		return
 	}
+	w.autoCastInAoE(p)
 	if h.State == Attack {
 		if h.Impact() {
 			for _, f := range swingTargets(h, w.enemyFighters(), heroReach*p.Run.reach(), side) {
@@ -505,6 +599,7 @@ func (w *World) target(e *Enemy) *Player {
 }
 
 func (w *World) foeStep(e *Enemy, dt float64) {
+	e.Age += dt
 	f := &e.F
 	if !f.Alive() {
 		f.DeadFor += dt
@@ -689,7 +784,7 @@ func (w *World) spawn(back *Enemy) {
 		if e.Side == 0 {
 			e.Side = 1
 		}
-		e.F.HP, e.F.DeadFor, e.F.Cooldown = kinds[Revenant].hp, 0, 600+w.random()*900
+		e.F.HP, e.F.DeadFor, e.F.Cooldown, e.Age = kinds[Revenant].hp, 0, 600+w.random()*900, 0
 		e.F.Play(Idle)
 		e.Gen++
 	}
