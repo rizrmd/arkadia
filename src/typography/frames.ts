@@ -1,4 +1,4 @@
-import {Assets,NineSliceSprite,Sprite,type Texture} from 'pixi.js';
+import {Assets,Container,NineSliceSprite,Sprite,type Texture} from 'pixi.js';
 
 // HUD frames and art are exported at @1x, @2x and @3x from @3x masters (scripts/typography/build-frames.mjs).
 // The set is chosen from the device pixels each design pixel covers: devicePixelRatio × scene scale, rounded up.
@@ -6,23 +6,45 @@ import {Assets,NineSliceSprite,Sprite,type Texture} from 'pixi.js';
 export type FrameScale=1|2|3;
 export const pickFrameScale=(dpr:number,sceneScale=1):FrameScale=>{const d=dpr*sceneScale;return d<=1.05?1:d<=2.05?2:3;};
 
-interface Manifest{frames:Record<string,{width:number;height:number;slice?:[number,number,number,number]}>}
+// An ornate frame is stored as parts named `<name>.tl|tr|bl|br` (quad) or `<name>.l|r` (halves), each a 9-slice. Its
+// corners and the half-ornaments at the middle of its edges stay fixed; only the rails between them stretch
+// (scripts/choose-hero/build-ui.mjs).
+interface Ornate{width:number;height:number;split:'quad'|'halves'}
+interface Manifest{frames:Record<string,{width:number;height:number;slice?:[number,number,number,number]}>;ornate?:Record<string,Ornate>}
 export class FrameSet{
  private constructor(readonly scale:FrameScale,private manifest:Manifest,private textures:Record<string,Texture>){}
- static async load(base:string,scale:FrameScale){
+ // only: load just the frames these names select (an ornate frame's name selects its parts).
+ static async load(base:string,scale:FrameScale,only?:(name:string)=>boolean){
   const manifest=await (await fetch(base+'manifest.json')).json() as Manifest;
-  const names=Object.keys(manifest.frames);
+  const names=Object.keys(manifest.frames).filter(n=>!only||only(n.replace(/\.(tl|tr|bl|br|l|r)$/,'')));
   // The resolution makes texture sizes read in @1x units, so layouts and slice borders are scale-independent.
   const textures=await Promise.all(names.map(n=>Assets.load<Texture>({src:`${base}@${scale}x/${n}.png`,data:{resolution:scale,autoGenerateMipmaps:true}})));
   return new FrameSet(scale,manifest,Object.fromEntries(names.map((n,i)=>[n,textures[i]])));
  }
  texture(name:string){const t=this.textures[name];if(!t)throw Error(`Unknown frame ${name}`);return t;}
- size(name:string){return this.manifest.frames[name];}
+ size(name:string){return this.manifest.ornate?.[name]??this.manifest.frames[name];}
  // Stretchable frames become NineSliceSprites: corners keep their pixels, edges stretch along one axis only.
- frame(name:string,width?:number,height?:number){
+ frame(name:string,width?:number,height?:number):Container{
+  if(this.manifest.ornate?.[name])return this.ornate(name,width,height);
   const m=this.size(name),texture=this.texture(name);
-  if(!m.slice){const s=new Sprite(texture);if(width)s.width=width;if(height)s.height=height;return s;}
-  const [leftWidth,topHeight,rightWidth,bottomHeight]=m.slice;
-  return new NineSliceSprite({texture,leftWidth,topHeight,rightWidth,bottomHeight,width:width??m.width,height:height??m.height});
+  if(!('slice' in m)||!m.slice){const s=new Sprite(texture);if(width)s.width=width;if(height)s.height=height;return s;}
+  return this.slice(name,width??m.width,height??m.height);
+ }
+ private slice(name:string,width:number,height:number){
+  const [leftWidth,topHeight,rightWidth,bottomHeight]=this.manifest.frames[name].slice!;
+  return new NineSliceSprite({texture:this.texture(name),leftWidth,topHeight,rightWidth,bottomHeight,width,height});
+ }
+ // Ornaments scale uniformly by k (never above their @1x size along the tighter axis); the parts stretch to the rest.
+ // Halves keep their own height and centre vertically when the box is taller.
+ private ornate(name:string,width?:number,height?:number){
+  const o=this.manifest.ornate![name],w=width??o.width,h=height??o.height,k=Math.min(w/o.width,h/o.height),lw=w/k,lh=h/k;
+  const c=new Container();c.scale.set(k);
+  if(o.split==='quad'){
+   for(const [p,x,y] of [['tl',0,0],['tr',1,0],['bl',0,1],['br',1,1]] as const){const s=c.addChild(this.slice(`${name}.${p}`,lw/2,lh/2));s.position.set(x*lw/2,y*lh/2);}
+  }else{
+   const y=(lh-o.height)/2;
+   for(const [p,x] of [['l',0],['r',1]] as const){const s=c.addChild(this.slice(`${name}.${p}`,lw/2,o.height));s.position.set(x*lw/2,y);}
+  }
+  return c;
  }
 }

@@ -82,3 +82,22 @@ export const ROLES={
  'blessing-desc':{font:'body',size:15,letterSpacing:0,fill:IVORY_DIM,shadow:softShadow,lineHeight:20,align:'center'},
 } satisfies Record<string,TextRole>;
 export type RoleName=keyof typeof ROLES;
+
+// Choose Your Hero (src/stronghold/choose-hero.ts): one role per text slot and layout, derived from the shared roles above.
+// Sizes are design pixels of each layout's canvas: desktop 1672 × 941 and portrait 864 × 1824 (the Choosing Hero
+// references), and phone landscape 1240 × 600, sized so body text stays at about 14 CSS px on an 844 × 390 phone.
+export type ChooseLayout='desktop'|'portrait'|'landscape';
+export type ChooseSlot='title'|'subtitle'|'back'|'card-name'|'card-state'|'hero-name'|'loadout-title'|'hero-desc'|'loadout'|'skill'|'level'|'help'|'action';
+const sized=(role:TextRole,size:number,extra:Partial<TextRole>={}):TextRole=>({...role,size,...(role.lineHeight?{lineHeight:role.lineHeight*size/role.size}:{}),...extra});
+const chooseRoles=(s:Record<ChooseSlot,number>):Record<ChooseSlot,TextRole>=>({
+ 'title':sized(ROLES['display-title'],s.title),'subtitle':sized(ROLES['body-lg'],s.subtitle),'back':sized(ROLES['body'],s.back),
+ 'card-name':sized(ROLES['body-lg'],s['card-name']),'card-state':sized(ROLES['accent'],s['card-state']),
+ 'hero-name':sized(ROLES['display-name'],s['hero-name']),'loadout-title':sized(ROLES['display-name'],s['loadout-title']),
+ 'hero-desc':sized(ROLES['body'],s['hero-desc']),'loadout':sized(ROLES['label-wide'],s.loadout),
+ 'skill':sized(ROLES['body'],s.skill),'level':sized(ROLES['accent'],s.level),'help':sized(ROLES['paragraph'],s.help),'action':sized(ROLES['display-button'],s.action),
+});
+export const CHOOSE_HERO_TEXT:Record<ChooseLayout,Record<ChooseSlot,TextRole>>={
+ desktop:chooseRoles({'title':49,'subtitle':27,'back':22,'card-name':27,'card-state':23,'hero-name':41.5,'loadout-title':41.5,'hero-desc':23,'loadout':19,'skill':22.5,'level':21,'help':19.5,'action':33}),
+ portrait:chooseRoles({'title':46.5,'subtitle':27,'back':25,'card-name':29,'card-state':25,'hero-name':46,'loadout-title':46,'hero-desc':29,'loadout':24,'skill':25,'level':23,'help':26,'action':50}),
+ landscape:chooseRoles({'title':40,'subtitle':23,'back':22,'card-name':24,'card-state':21,'hero-name':34,'loadout-title':34,'hero-desc':22,'loadout':18,'skill':21,'level':20,'help':20,'action':32}),
+};

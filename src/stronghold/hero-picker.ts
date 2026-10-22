@@ -1,96 +1,65 @@
-import {Container,Graphics} from 'pixi.js';
-import {HeroSelect} from '../typography/hero-select';
+import {Container} from 'pixi.js';
+import {ChooseHero} from './choose-hero';
 import {isHero,isHeroReset,saveHero,type HeroId} from './heroes';
 
+// Hero selection over the live world (choose-hero.ts): a new tab opens on it (a reload in the same tab keeps the pick),
+// with the last pick on this device selected; the hero's name in the HUD reopens it at any time. Begin Journey swaps
+// the hero in place, keeping its spot, health and room; Back keeps the current hero.
 const SESSION_KEY='arkadia.hero.picked';
-const HERO_ORDER:HeroId[]=['ember-warden','rift-runner'];
 
 export function createHeroPicker(uiStage:Container,o:{current:()=>HeroId;choose:(id:HeroId)=>void}){
  const holder=new Container();
  holder.zIndex=70;
  holder.visible=false;
- holder.eventMode='static';
  uiStage.addChild(holder);
 
- const backdrop=holder.addChild(new Graphics());
- backdrop.eventMode='static';
-
- let viewPromise:Promise<HeroSelect>|undefined;
- let viewRef:HeroSelect|undefined;
+ let viewPromise:Promise<ChooseHero>|undefined,view:ChooseHero|undefined;
  let done:(()=>void)|null=null;
-
- const ensureView=async()=>{
-  if(viewPromise)return viewPromise;
-  viewPromise=HeroSelect.load('/choosing-hero/v1/','/typography/v2/hero/logo@3x.png',{},o.current()).then(v=>{
-   viewRef=v;
-   v.onConfirm=(id)=>pick(id);
-   v.onBack=()=>pick(o.current());
-   holder.addChild(v);
-   layout();
-   return v;
-  });
-  return viewPromise;
- };
-
- // Warm the HeroSelect assets in the background
+ const ensureView=()=>viewPromise??=ChooseHero.load(o.current()).then(v=>{
+  v.onConfirm=id=>pick(id);
+  v.onBack=()=>pick(o.current());
+  holder.addChild(v);view=v;
+  return v;
+ });
+ // Warm the screen's assets in the background.
  void ensureView().catch(console.error);
 
- function layout(){
-  if(!holder.visible)return;
-  const w=innerWidth,h=innerHeight;
-  backdrop.clear().rect(0,0,w,h).fill({color:0x0c1116,alpha:0.96});
-  viewRef?.layout(w,h);
- }
- window.addEventListener('resize',layout);
+ const layout=async()=>{const v=await ensureView();await v.layout(innerWidth,innerHeight);};
+ window.addEventListener('resize',()=>{if(holder.visible)void layout().catch(console.error);});
 
  function hide(){
   holder.visible=false;
   const d=done;done=null;d?.();
  }
-
  function pick(id:HeroId){
   try{sessionStorage.setItem(SESSION_KEY,id);}catch{}
   saveHero(id);
   if(id!==o.current())o.choose(id);
   hide();
  }
-
- window.addEventListener('keydown',e=>{
-  if(!holder.visible)return;
-  if(e.key==='Escape'){
-   e.preventDefault();
-   e.stopPropagation();
-   pick(o.current());
-   return;
-  }
-  if(e.key==='Enter'){
-   e.preventDefault();
-   e.stopPropagation();
-   pick(viewRef?.hero??o.current());
-   return;
-  }
-  const step=e.key==='ArrowRight'||e.key==='ArrowDown'?1:e.key==='ArrowLeft'||e.key==='ArrowUp'?-1:0;
-  if(step&&viewRef){
-   e.preventDefault();
-   e.stopPropagation();
-   const idx=HERO_ORDER.indexOf(viewRef.hero);
-   const next=HERO_ORDER[(idx+step+HERO_ORDER.length)%HERO_ORDER.length];
-   viewRef.select(next);
-  }
- },{capture:true});
+ // While open every key belongs to the screen: keys pressed while choosing must not walk the hero.
+ const onKey=(e:KeyboardEvent)=>{
+  if(!holder.visible||!view)return;
+  e.stopPropagation();
+  if(view.key(e))e.preventDefault();
+ };
+ window.addEventListener('keydown',onKey,{capture:true});
+ window.addEventListener('keyup',onKey,{capture:true});
 
  async function open(){
   if(holder.visible)return;
   const v=await ensureView();
   v.select(o.current());
+  await layout();
   holder.visible=true;
-  layout();
   return new Promise<void>(r=>{done=r;});
  }
 
  return {
   open,
   isOpen:()=>holder.visible,
+  view:()=>viewPromise,
+  // A new tab asks once; a reload in the same tab (or a ?hero=<id> link) plays on; ?hero=reset asks again.
   start(){
    if(isHeroReset())return open();
    let picked='';try{picked=sessionStorage.getItem(SESSION_KEY)||'';}catch{}

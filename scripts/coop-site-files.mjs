@@ -1,4 +1,4 @@
-import {chromium} from 'playwright';import {spawn} from 'node:child_process';import {readFileSync} from 'node:fs';
+import {chromium} from 'playwright';import {spawn} from 'node:child_process';import {readFileSync,readdirSync} from 'node:fs';
 // Print (one per line) the dist/ files the Stronghold actually loads, so a release stages those and not the
 // 370 MB of documentation renders in public/. Serves dist/ with the built server/bin/arkadia, opens the game in
 // co-op and offline, walks the hero out through the gate, and records every same-origin file fetched.
@@ -25,7 +25,7 @@ try{
 // Every pickable hero's atlas and portrait (src/stronghold/heroes.ts).
 const {characters}=JSON.parse(readFileSync('dist/assets/characters/manifest.json','utf8'));
 for(const m of Object.values(characters))for(const f of [m.image,m.portrait])if(f)files.add('assets/characters/'+f);
-// All @1x/@2x/@3x HUD frames from public/typography/v2/hud/manifest.json, MSDF fonts, and Choosing Hero kit assets.
+// All @1x/@2x/@3x HUD frames from public/typography/v2/hud/manifest.json and MSDF fonts.
 const hudManifest=JSON.parse(readFileSync('dist/typography/v2/hud/manifest.json','utf8'));
 files.add('typography/v2/hud/manifest.json');
 for(const name of Object.keys(hudManifest.frames)){
@@ -41,17 +41,12 @@ for(const f of [
  'typography/v2/loading/bar-track@1x.png','typography/v2/loading/bar-track@2x.png','typography/v2/loading/bar-track@3x.png',
  'typography/v2/loading/bar-fill@1x.png','typography/v2/loading/bar-fill@2x.png','typography/v2/loading/bar-fill@3x.png',
  'typography/v2/loading/bar-crest@1x.png','typography/v2/loading/bar-crest@2x.png','typography/v2/loading/bar-crest@3x.png',
- 'choosing-hero/v1/labels.en.json',
- 'choosing-hero/v1/backgrounds/castle-desktop.png','choosing-hero/v1/backgrounds/castle-mobile.png',
- 'choosing-hero/v1/heroes/ember-warden.png','choosing-hero/v1/heroes/rift-runner.png',
- 'choosing-hero/v1/cards/ember-warden-portrait.png','choosing-hero/v1/cards/rift-runner-portrait.png',
- 'choosing-hero/v1/components/card-frame.png','choosing-hero/v1/components/card-frame-selected.png',
- 'choosing-hero/v1/components/selected-badge.png','choosing-hero/v1/components/back.png',
- 'choosing-hero/v1/components/divider.png','choosing-hero/v1/components/panel-desktop.png',
- 'choosing-hero/v1/components/panel-mobile.png','choosing-hero/v1/components/button-default.png',
- 'choosing-hero/v1/components/skill-flame-fan.png','choosing-hero/v1/components/skill-rift-bolt.png',
- 'choosing-hero/v1/components/skill-empty.png',
  'modular-stronghold/v2/full-gateway-v7-open.webp','modular-stronghold/v2/full-gateway-v7-sheet.webp',
 ])files.add(f);
+// Choose Your Hero (src/stronghold/choose-hero.ts): every @1x/@2x/@3x UI texture, art and labels from its manifest, and the
+// NixieFX bundle its highlights play from, since the screen loads frames only when it opens at a given scale.
+const chooseHero=JSON.parse(readFileSync('dist/assets/choose-hero/manifest.json','utf8'));
+for(const f of ['manifest.json','labels.en.json',...Object.values(chooseHero.art).map(a=>a.file),...Object.keys(chooseHero.frames).flatMap(n=>[1,2,3].map(s=>`@${s}x/${n}.png`))])files.add('assets/choose-hero/'+f);
+files.add('vfx/skills.bin');for(const f of readdirSync('dist/vfx/textures'))files.add('vfx/textures/'+f);
 if(files.size<20)throw Error('Only '+files.size+' files loaded');
 console.log([...files].sort().join('\n'));

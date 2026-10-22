@@ -27,7 +27,7 @@ const BUNDLE='/vfx/skills.bin',POOL=6;
 const BLOOM=typeof location!=='undefined'&&new URLSearchParams(location.search).get('fxbloom')==='1';
 // The bundle is gzipped JSON (~20x smaller; named .bin because servers treat .gz as an encoding), inflated here
 // since the server sends files uncompressed.
-async function fetchBundle():Promise<{manifest:unknown;effects:Record<string,unknown>}>{
+export async function fetchBundle():Promise<{manifest:unknown;effects:Record<string,unknown>}>{
  const res=await fetch(BUNDLE);if(!res.ok||!res.body)throw Error(`${BUNDLE}: ${res.status}`);
  return new Response(res.body.pipeThrough(new DecompressionStream('gzip'))).json();
 }
