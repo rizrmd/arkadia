@@ -6,7 +6,7 @@ import {spawn,execFileSync} from 'node:child_process';import assert from 'node:a
 // at hero speed and change nothing.
 //   node scripts/coop-smoke.mjs                 builds and starts server/ on a free port
 //   COOP_URL=wss://host/ws node scripts/coop-smoke.mjs   tests a deployed server
-const SECONDS=Number(process.env.SECONDS||40),TICK=50,STEP=105*TICK/1000;
+const SECONDS=Number(process.env.SECONDS||40),TICK=50,STEP=120*TICK/1000;
 let server=null,url=process.env.COOP_URL;
 if(!url){
  const bin='server/bin/arkadia';execFileSync(process.env.GO||'go',['build','-o','bin/arkadia','./cmd/arkadia'],{cwd:'server',stdio:'inherit',env:{...process.env,CGO_ENABLED:'0'}});

@@ -67,15 +67,15 @@ func TestPlayersSpawnBesideTheTentOnWalkableGround(t *testing.T) {
 	}
 }
 
-func TestHeroWalksAtGroundSpeedAndAcksEveryInput(t *testing.T) {
+func TestHeroWalksAtFullSpeedAndAcksEveryInput(t *testing.T) {
 	w := newTestWorld(t)
 	w.Enemies = nil
 	p := w.AddPlayer("a", "A", 100)
 	x0, y0 := p.X, p.Y
 	drive(w, 20, walker{p, right})
-	// W+D walks 105 screen px per second along a tile edge.
-	if got := hypot(p.X-x0, p.Y-y0); math.Abs(got-105) > .01 {
-		t.Fatalf("walked %.3f px in one second, want 105", got)
+	// W+D walks 111.63 screen px per second along a tile edge.
+	if got := hypot(p.X-x0, p.Y-y0); math.Abs(got-111.63) > .01 {
+		t.Fatalf("walked %.3f px in one second, want 111.63", got)
 	}
 	if p.Ack != 20 || !p.Moving {
 		t.Fatalf("ack %d moving %v", p.Ack, p.Moving)
@@ -113,7 +113,8 @@ func TestLateInputsKeepAnEvenWalk(t *testing.T) {
 	for len(p.queue) > 0 {
 		step()
 	}
-	want := 105.0 * float64(seq) / 20
+	edge := fullSpeed(right.X, right.Y)
+	want := edge * float64(seq) / 20
 	if got := hypot(p.X-x0, p.Y-y0); math.Abs(got-want) > .01 {
 		t.Fatalf("walked %.3f px for %d inputs, want %.3f", got, seq, want)
 	}
@@ -121,8 +122,8 @@ func TestLateInputsKeepAnEvenWalk(t *testing.T) {
 		t.Fatalf("ack %d owed %d after %d inputs", p.Ack, p.Owed, seq)
 	}
 	for i, s := range steps[:20] {
-		if math.Abs(s-105.0/20) > .01 {
-			t.Fatalf("tick %d stepped %.3f px, want an even %.3f: %v", i, s, 105.0/20, steps)
+		if math.Abs(s-edge/20) > .01 {
+			t.Fatalf("tick %d stepped %.3f px, want an even %.3f: %v", i, s, edge/20, steps)
 		}
 	}
 }
@@ -136,7 +137,7 @@ func TestFloodedInputsCannotOutrunTheTickRate(t *testing.T) {
 		p.Queue(Input{Seq: uint32(i + 1), X: right.X * 50, Y: right.Y * 50})
 	}
 	run(w, 20)
-	if got := hypot(p.X-x0, p.Y-y0); got > 105*(22.0/20)+.01 {
+	if got := hypot(p.X-x0, p.Y-y0); got > fullSpeed(right.X, right.Y)*(22.0/20)+.01 {
 		t.Fatalf("flooded hero moved %.1f px in one second", got)
 	}
 	// Replayed or out-of-order sequence numbers are ignored.
@@ -392,4 +393,22 @@ func TestRevenantsWalkRoundFootprints(t *testing.T) {
 		}
 	}
 	t.Fatalf("revenant stuck at %v behind the footprint, hero at %v", e.F.Pos, p.F.Pos)
+}
+
+// Full speed sits on a 4:3 ellipse in screen px/s: no direction walks twice as fast as another, and a half push
+// walks at half speed.
+func TestFullSpeedByDirection(t *testing.T) {
+	r := 1 / math.Sqrt2
+	for _, c := range []struct {
+		d    Vec
+		want float64
+	}{{Vec{1, 0}, 120}, {Vec{-1, 0}, 120}, {Vec{0, 1}, 90}, {Vec{0, -1}, 90}, {right, 111.63}, {Vec{r, r}, 101.82}} {
+		if got := fullSpeed(c.d.X, c.d.Y); math.Abs(got-c.want) > .01 {
+			t.Fatalf("full speed along %v is %.3f, want %.2f", c.d, got, c.want)
+		}
+	}
+	w := newTestWorld(t)
+	if x, y, prog := WalkStep(w.nav, heroSpawn.X, heroSpawn.Y, Vec{.5, 0}, 1000, false); math.Abs(x-heroSpawn.X-60) > .01 || y != heroSpawn.Y || math.Abs(prog-60) > .01 {
+		t.Fatalf("a half push right walked to %.2f,%.2f (%.2f px) in one second, want 60 px", x, y, prog)
+	}
 }
