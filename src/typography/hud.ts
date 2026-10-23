@@ -547,11 +547,12 @@ export class Hud extends Container {
   // ---------------------------------------------------------------------------
   // 1. TOP ROW: Twin Circular-Medallion Chamfered Plaques (`0 Gold` & `09:00`)
   // ---------------------------------------------------------------------------
-  const plaqueCy = this.isPortrait ? 46 : 42;
-  const plaqueH = this.isPortrait ? 42 : 38;
-  const medSize = this.isPortrait ? 58 : 54;
+  const plaqueCy = 40;
+  const plaqueH = this.isPortrait ? 40 : 38;
+  const medSize = 54;
   const medR = medSize / 2;
   const chamfer = 14;
+  const plaqueTextY = plaqueCy + 5.2;
 
   // Keep a compact timer slot; the medallion, label padding and chamfer define its width.
   const clockAdv = Math.ceil(this.trRibbonClockText.advance);
@@ -562,9 +563,9 @@ export class Hud extends Container {
   const clockMedX = clockRightX - clockSpan;
   drawChamferedPlaque(g, clockMedX, clockRightX, plaqueCy, plaqueH, chamfer, medR);
   centred(this.trRibbonClockMedallion, clockMedX, plaqueCy, medSize, medSize);
-  centred(this.trRibbonClockIcon, clockMedX, plaqueCy, this.isPortrait ? 26 : 24, this.isPortrait ? 26 : 24);
-  const clockTextCx = (clockMedX + medR + 4 + (clockRightX - chamfer + 2)) / 2;
-  this.trRibbonClockText.place(clockTextCx, plaqueCy + 5.5, 0.5);
+  centred(this.trRibbonClockIcon, clockMedX, plaqueCy, this.isPortrait ? 25 : 24, this.isPortrait ? 25 : 24);
+  const clockTextCx = (clockMedX + medR + 4 + (clockRightX - chamfer * 0.5)) / 2;
+  this.trRibbonClockText.place(clockTextCx, plaqueTextY, 0.5);
   this.trRibbonClockHit.hitArea = new Rectangle(
    clockMedX - medR - 4,
    plaqueCy - medR - 2,
@@ -582,16 +583,16 @@ export class Hud extends Container {
   const goldMedX = goldRightX - goldSpan;
   drawChamferedPlaque(g, goldMedX, goldRightX, plaqueCy, plaqueH, chamfer, medR);
   centred(this.trRibbonGoldMedallion, goldMedX, plaqueCy, medSize, medSize);
-  centred(this.trRibbonGoldIcon, goldMedX, plaqueCy, this.isPortrait ? 32 : 30, this.isPortrait ? 24 : 22);
-  const goldTextCx = (goldMedX + medR + 4 + (goldRightX - chamfer + 2)) / 2;
-  this.trRibbonGoldText.place(goldTextCx, plaqueCy + 5.5, 0.5);
+  centred(this.trRibbonGoldIcon, goldMedX, plaqueCy, this.isPortrait ? 31 : 30, this.isPortrait ? 23 : 22);
+  const goldTextCx = (goldMedX + medR + 4 + (goldRightX - chamfer * 0.5)) / 2;
+  this.trRibbonGoldText.place(goldTextCx, plaqueTextY, 0.5);
 
   // ---------------------------------------------------------------------------
   // 2. MIDDLE ROW: Frameless Status Ledger (`Safe Zone ♦ Co-op · Solo`) + Filigree Rule
   // ---------------------------------------------------------------------------
-  const ledgerCy = this.isPortrait ? 96 : 84;
-  const ledgerTextY = ledgerCy + 5.5;
-  const ledgerRightX = rightAnchor - 2;
+  const ledgerCy = this.isPortrait ? 95 : 92;
+  const ledgerTextY = ledgerCy + 5.2;
+  const ledgerRightX = rightAnchor - 3;
 
   // Solo play (no co-op session) leaves the zone alone on the ledger, right-aligned.
   const online = this.state.coopLabel !== undefined;
@@ -624,11 +625,9 @@ export class Hud extends Container {
   centred(this.trRibbonZoneIcon, zoneIconCx, ledgerCy - 0.5, this.isPortrait ? 20 : 18, this.isPortrait ? 25 : 23);
 
   // Delicate antique-gold filigree divider rule with central 4-point star node
-  const ruleY = this.isPortrait ? 118 : 103;
-  const ruleRightX = rightAnchor - 2;
-  const ruleLeftX = this.isPortrait
-   ? Math.min(goldMedX - medR + 10, zoneIconCx - 14)
-   : Math.min(1322, zoneIconCx - 16);
+  const ruleY = this.isPortrait ? 119 : 115;
+  const ruleRightX = rightAnchor - 3;
+  const ruleLeftX = Math.min(goldMedX - medR + 12, zoneIconCx - 14);
   const ruleMidX = Math.round((ruleLeftX + ruleRightX) / 2);
 
   // Dark ink drop-shadow under rule
@@ -637,11 +636,11 @@ export class Hud extends Container {
    .stroke({ color: 0x000000, width: 2.3, alpha: 0.72 });
 
   // Outer tapered whisker tips
-  g.moveTo(ruleLeftX - 16, ruleY)
+  g.moveTo(ruleLeftX - 12, ruleY)
    .lineTo(ruleLeftX, ruleY)
    .stroke({ color: 0xb88638, width: 0.9, alpha: 0.55 });
   g.moveTo(ruleRightX, ruleY)
-   .lineTo(ruleRightX + 8, ruleY)
+   .lineTo(ruleRightX + 6, ruleY)
    .stroke({ color: 0xb88638, width: 0.9, alpha: 0.55 });
 
   // Primary antique-gold rule segments flanking the central star node
@@ -671,9 +670,9 @@ export class Hud extends Container {
   // 3. BOTTOM ROW: Iconless High-Contrast Telemetry (`24 MS ♦ 60 FPS`)
   // ---------------------------------------------------------------------------
   const telK = this.isDesktopTelemetry ? 0.7 : 1;
-  const telCy = this.isPortrait ? 140 : this.isDesktopTelemetry ? 119 : 122.5;
-  const telTextY = telCy + 5.5 * telK;
-  const telRightX = rightAnchor - 4;
+  const telCy = this.isPortrait ? 143 : 138;
+  const telTextY = telCy + 5.2 * telK;
+  const telRightX = rightAnchor - 3;
   const placeTel = (t: MsdfText, x: number) => {
    t.scale.set(telK);
    t.position.set(x, telTextY - t.metrics().baseline * telK);
@@ -685,6 +684,7 @@ export class Hud extends Container {
 
   // Ping is a network reading, so solo play shows FPS only.
   this.trTelemetryPingText.visible = online;
+  this.trTelemetryPingText.scale.set(telK);
   const telSepX = online ? telRightX - fpsSlotW - 11 * telK : fpsX;
   let pingX = fpsX;
   if (online) {
@@ -1417,7 +1417,7 @@ export class Hud extends Container {
  topRightPopoverAnchor(row: 1 | 3): { x: number; y: number; scale: number } {
   const s = this.lastScale;
   if (this.isAltB) {
-   const designY = this.isPortrait ? 168 : 140;
+   const designY = this.isPortrait ? 172 : 162;
    return { x: this.lastWidth - 18 * s, y: designY * s, scale: s };
   }
   const designY = row === 1 ? 126 : 232;
@@ -1516,7 +1516,7 @@ export class Hud extends Container {
    g.pivot.set(px, py);
    g.position.set(x, y);
   };
-  place(this.groups.tl, 0, 0, 0, 0, portrait ? (this.isAltB ? 1.08 : 0.9) : 1);
+  place(this.groups.tl, 0, 0, 0, 0, portrait ? (this.isAltB ? 1.06 : 0.9) : 1);
   place(this.groups.tr, W, 0, width, 0);
   place(this.groups.bc, W / 2, portrait ? 842 : H, width / 2, height);
   place(this.groups.bl, 0, H, 0, height);

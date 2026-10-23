@@ -103,10 +103,10 @@ export class PlayerConsole extends Container {
   if (!image) return;
   if (this.isPortrait) {
    image.position.set(6, 13);
-   image.width = 154;
-   image.height = 154;
+   image.width = 144;
+   image.height = 144;
   } else {
-   image.position.set(7, 12);
+   image.position.set(7, 13);
    image.width = 140;
    image.height = 140;
   }
@@ -117,18 +117,16 @@ export class PlayerConsole extends Container {
   const rightTop = p ? 392 : 558;
   const rightBot = p ? 378 : 544;
   const trackRightTop = p ? 389 : 555;
-  const trackRightBot = p ? 376 : 542;
+  const trackRightBot = p ? 375 : 541;
   const valueX = p ? 370 : 536;
   const valueScale = p ? 1.18 : 1;
   const labelScale = p ? 1.06 : 1;
+  const left = p ? 246 : 244;
+  const bottomLeft = p ? 232 : 230;
 
   this.rows.forEach((row, i) => {
-   const y = p ? [56, 97, 138][i] : [66, 99, 133][i];
-   const h = p ? (i === 2 ? 27 : 35) : (i === 2 ? 17 : 24);
-   const left = p
-    ? (i === 2 ? 242 : i === 1 ? 249 : 246)
-    : (i === 2 ? 240 : i === 1 ? 247 : 244);
-   const bottomLeft = i === 1 ? 234 : 230;
+   const y = p ? [56, 93, 130][i] : [64, 97, 130][i];
+   const h = p ? (i === 2 ? 26 : 31) : (i === 2 ? 20 : 24);
    const path = [left, y + 1.5, trackRightTop, y + 1.5, trackRightBot, y + h - 1.5, bottomLeft, y + h - 1.5];
 
    row.y = y;
@@ -159,7 +157,7 @@ export class PlayerConsole extends Container {
    row.trim.poly(path).stroke({ color: row.color, width: 1 });
    row.trim.moveTo(left + 1, y + 2).lineTo(trackRightTop - 2, y + 2).stroke({ color: 0xfff9e4, width: 0.6, alpha: 0.65 });
    if (i === 2) {
-    const tickEnd = p ? trackRightBot - 48 : 515;
+    const tickEnd = p ? 290 : 468;
     const tickStep = p ? 26 : 33;
     for (let x = 256; x < tickEnd; x += tickStep) {
      row.trim.moveTo(x + 0.5, y + 6).lineTo(x + 0.5, y + h - 4).stroke({ color: 0x170f02, width: 1.2 });
@@ -167,12 +165,12 @@ export class PlayerConsole extends Container {
     }
    }
 
-   placeScaled(row.label, p ? 174 : 176, y + h * (p ? 0.69 : 0.73), 0, labelScale);
+   placeScaled(row.label, p ? 174 : 176, y + h * (i === 2 ? (p ? 0.64 : 0.68) : (p ? 0.62 : 0.66)), 0, labelScale);
   });
 
   const bx = p ? 30 : 29;
-  const by = p ? 152 : 137;
-  const br = p ? 1.06 : 1;
+  const by = p ? 142 : 138;
+  const br = p ? 1.04 : 1;
   this.badge.clear();
   this.badge.circle(bx, by + 0.8, 20.5 * br).fill(0x030303).stroke({ color: 0x120b02, width: 1.4 });
   this.badge.circle(bx, by, 19.2 * br).fill(0x100e0a).stroke({ color: 0xc58d2b, width: 1.6 });
@@ -191,15 +189,15 @@ export class PlayerConsole extends Container {
   this.key = key;
 
   const p = this.isPortrait;
-  const maxNameW = p ? 224 : 390;
+  const maxNameW = p ? 220 : 386;
   this.nameText.text = name;
-  placeScaled(this.nameText, 165, p ? 47 : 54, 0, p ? 0.92 : 1);
+  placeScaled(this.nameText, 169, p ? 46.5 : 51.5, 0, p ? 0.92 : 1);
   if (this.nameText.width > maxNameW) {
    this.nameText.scale.x *= maxNameW / this.nameText.width;
   }
 
   const bx = p ? 30 : 29;
-  const bTextY = p ? 162 : 147;
+  const bTextY = p ? 147.5 : 143.5;
   this.levelText.scale.set(1);
   this.levelText.text = String(level);
   this.levelText.place(bx, bTextY, 0.5);
@@ -233,7 +231,7 @@ export class PlayerConsole extends Container {
     }
    }
    row.value.text = `${Math.floor(current)} / ${Math.floor(max)}`;
-   placeScaled(row.value, valueX, y + h * (p ? 0.70 : 0.77), 1, valueScale);
+   placeScaled(row.value, valueX, y + h * (i === 2 ? (p ? 0.65 : 0.69) : (p ? 0.63 : 0.67)), 1, valueScale);
   });
  }
 }
