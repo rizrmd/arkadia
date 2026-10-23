@@ -553,11 +553,11 @@ export class Hud extends Container {
   const medR = medSize / 2;
   const chamfer = 14;
 
-  // Right Plaque (Timer `09:00` — fixed width reserved for `99:59` so digits never shift)
+  // Keep a compact timer slot; the medallion, label padding and chamfer define its width.
   const clockAdv = Math.ceil(this.trRibbonClockText.advance);
   const clockSpan = this.isPortrait
-   ? Math.max(118, clockAdv + 48)
-   : Math.max(128, clockAdv + 56);
+   ? Math.max(108, clockAdv + 48)
+   : Math.max(110, clockAdv + 46);
   const clockRightX = rightAnchor;
   const clockMedX = clockRightX - clockSpan;
   drawChamferedPlaque(g, clockMedX, clockRightX, plaqueCy, plaqueH, chamfer, medR);
@@ -572,12 +572,13 @@ export class Hud extends Container {
    medSize + 4,
   );
 
-  // Left Plaque (Gold `0 Gold` — fixed width reserved for `9,999 Gold` so adjacent plaques never shift)
+  // Size Gold to its label instead of leaving the former separator slot empty.
+  // Larger balances expand leftward, preserving the timer anchor and inter-plaque gap.
   const goldAdv = Math.ceil(this.trRibbonGoldText.advance);
   const goldSpan = this.isPortrait
-   ? Math.max(154, goldAdv + 42)
-   : Math.max(166, goldAdv + 54);
-  const goldRightX = clockMedX - (this.isPortrait ? 38 : 51);
+   ? Math.max(120, goldAdv + 48)
+   : Math.max(120, goldAdv + 46);
+  const goldRightX = clockMedX - (medR + 12);
   const goldMedX = goldRightX - goldSpan;
   drawChamferedPlaque(g, goldMedX, goldRightX, plaqueCy, plaqueH, chamfer, medR);
   centred(this.trRibbonGoldMedallion, goldMedX, plaqueCy, medSize, medSize);
