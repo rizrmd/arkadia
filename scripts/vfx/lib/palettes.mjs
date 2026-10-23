@@ -8,10 +8,10 @@
 //   deep  — the darkest hue, for the tail of long-lived particles
 //   smoke — alpha-blended residue (smoke, dust); rock — debris chunks
 export const EMBER={
- flame:{c:[[0,'#ffc24a'],[.15,'#ff9c30'],[.45,'#ff6c1c'],[.8,'#e2401a'],[1,'#b82c0e']]},
- hot:{c:[[0,'#fff6d2'],[.18,'#ffd873'],[.45,'#ff9a2e'],[.75,'#f0501a'],[1,'#a8200a']]},
- body:{c:[[0,'#ffe7a0'],[.18,'#ffb13b'],[.45,'#ff6a14'],[.75,'#c8300a'],[1,'#3a0802']]},
- light:'#ff8a2a',spark:'#ffd27a',deep:'#a8200a',accent:'#ffe9a8',smoke:'#2f2522',rock:'#4a2a1e',
+ flame:{c:[[0,'#fffdf4'],[.22,'#ffe696'],[.52,'#ff9a2a'],[.82,'#f25216'],[1,'#d42c0a']]},
+ hot:{c:[[0,'#fffef6'],[.2,'#ffe99c'],[.48,'#ffa236'],[.78,'#f45618'],[1,'#c82808']]},
+ body:{c:[[0,'#fff4c8'],[.24,'#ffbe4a'],[.54,'#ff7218'],[.82,'#dc340c'],[1,'#7a1204']]},
+ light:'#ff922e',spark:'#ffde8c',deep:'#b8260c',accent:'#fff3c4',smoke:'#2a1e1a',rock:'#4a2a1e',
 };
 export const RIFT={
  flame:{c:[[0,'#f4f0ff'],[.3,'#bba8ff'],[.6,'#8c64ff'],[1,'#5a36e0']]},
@@ -27,9 +27,9 @@ export const SEISMIC={
 };
 // Molten earth: the Seismic Slam as the Ember Warden casts it.
 export const MAGMA={
- flame:{c:[[0,'#ffd468'],[.25,'#ffa436'],[.6,'#ff6a1e'],[1,'#d8400e']]},
- hot:{c:[[0,'#fff2c8'],[.2,'#ffd06a'],[.5,'#ff8a24'],[.8,'#d8400e'],[1,'#6a1404']]},
- body:{c:[[0,'#ffd88a'],[.3,'#ff9a30'],[.65,'#d8481a'],[1,'#3a0a04']]},
+ flame:{c:[[0,'#fff4d8'],[.22,'#ffd27a'],[.55,'#ff8a28'],[.82,'#dc3e10'],[1,'#8c1806']]},
+ hot:{c:[[0,'#fff8dc'],[.2,'#ffd674'],[.5,'#ff8c26'],[.8,'#d8400e'],[1,'#6a1404']]},
+ body:{c:[[0,'#ffe29e'],[.28,'#ff9e34'],[.65,'#d8481a'],[1,'#3a0a04']]},
  light:'#ff7a24',spark:'#ffc66a',deep:'#9a2208',accent:'#ffe2a0',smoke:'#3a2a24',rock:'#3a221a',
 };
 export const ASTRAL={

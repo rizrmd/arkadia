@@ -10,6 +10,7 @@ const GAME=process.env.GAME??'http://127.0.0.1:5173',OUT=process.env.OUT??'docs/
 const browser=await launch();
 try{
  const page=await browser.newPage({viewport:{width:Number(process.env.W??1280),height:Number(process.env.H??760)}});
+ await page.routeWebSocket('**/*',()=>{});
  const errors=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
  await page.clock.install();
  await page.goto(`${GAME}/?offline=1&hero=${hero}&time=${time}`);
@@ -18,15 +19,16 @@ try{
   for(let u=18;u<30;u+=.25)for(let v=18;v<30;v+=.25)if(c.clear(u,v)&&c.clear(u+2.6,v-.4)&&c.clear(u+2.4,v+.6)&&c.teleport(u,v)){
    const a=c.summon(u+2.6,v-.5,12),b=c.summon(u+2.3,v+.7,12),d=c.summon(u+3.2,v+.1,12);return {u,v,a,b,d};}
   throw Error('no clear tile');});
- await page.waitForTimeout(1500);
  await fs.mkdir(OUT,{recursive:true});
  const moments=msArg.split(',').map(Number),shots=[];
- await page.clock.pauseAt(await page.evaluate(()=>Date.now()+200));
- await page.evaluate(()=>window.__STRONGHOLD_COMBAT__.resetCooldowns());
+ await page.clock.pauseAt(await page.evaluate(()=>Date.now()+1500));
+ await page.evaluate(()=>{const c=window.__STRONGHOLD_COMBAT__;while(c.isModalOpen()&&c.snapshot().run.offers[0])c.choose(c.snapshot().run.offers[0]);c.resetCooldowns();});
  await page.evaluate(([s,u,v])=>window.__STRONGHOLD_COMBAT__.castSkill(s,{targetU:u+2.6,targetV:v}),[skill,spot.u,spot.v]);
  let at=0;
  for(const ms of moments){
-  await page.clock.runFor(ms-at);at=ms;
+  await page.clock.runFor(Math.max(0,ms-at-16));
+  await page.evaluate(()=>{const c=window.__STRONGHOLD_COMBAT__;while(c.isModalOpen()&&c.snapshot().run.offers[0])c.choose(c.snapshot().run.offers[0]);});
+  await page.clock.runFor(16);at=ms;
   const file=`${OUT}/game-${hero}-${skill}-${time.replace('.','')}-${ms}.png`;await page.screenshot({path:file});
   shots.push({file,fx:await page.evaluate(()=>window.__STRONGHOLD_COMBAT__.snapshot().vfx.fx)});
  }

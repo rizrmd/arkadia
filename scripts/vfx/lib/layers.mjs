@@ -21,23 +21,32 @@ export const core=(P,o={})=>mix({texture:'glow',rate:o.rate??30,duration:o.durat
 // W · Velocity-stretched sparks sprayed in a cone along +X (spread = cone half-angle in degrees; 90 = hemisphere fan).
 export const sparks=(P,o={})=>mix({texture:'streak',align:'velocity',bursts:[[0,o.count??40]],max:(o.count??40)+8,
  shape:{type:'cone',angle:o.spread??30,radius:.04},rot:AIM,life:[.22,.55],speed:o.speed??[4,10],
- sizeXY:[[.04,.07],[.3,.62]],sizeOverLife:{curve:[[0,1],[1,.15]]},gravity:o.gravity??5,drag:o.drag??2.2,
- color:[P.spark,P.light],intensity:o.intensity??1.8,colorOverLife:grad(P.hot,[[0,1],[.6,.9],[1,0]])},pick(o,['intensity','gravity','drag','speed',...OWN]));
+ sizeXY:[[.04,.07],[.28,.58]],sizeOverLife:{curve:[[0,1],[.65,.7],[1,.12]]},gravity:o.gravity??5,drag:o.drag??2.2,
+ noise:{strength:o.turbulence??.85,frequency:2.2,speed:2.5,octaves:2},
+ color:[P.spark,P.light],intensity:o.intensity??1.8,colorOverLife:grad(P.hot,[[0,1],[.6,.9],[1,0]])},pick(o,['intensity','gravity','drag','speed','turbulence',...OWN]));
 // W · Floating embers: small hot dots that drift up on curl noise and twinkle out.
 export const embers=(P,o={})=>mix({texture:'ember',bursts:o.rate?[]:[[0,o.count??18]],rate:o.rate??0,duration:o.duration??.5,max:(o.count??18)+(o.rate?Math.ceil(o.rate*1.6):0)+4,
  shape:{type:'sphere',radius:o.radius??.35},life:[.7,1.5],speed:[.2,.9],spherical:1,gravity:o.gravity??-1.2,drag:1.2,
  noise:{strength:o.turbulence??1.4,frequency:1.8,speed:1.2,octaves:2},size:[.05,.12],color:[P.spark,P.accent],intensity:o.intensity??1.8,
  colorOverLife:grad(P.hot,[[0,0],[.08,1],[.5,.85],[.7,.35],[.8,.9],[1,0]])},pick(o,['intensity','gravity','turbulence','rate',...OWN]));
-// W · Flipbook flame tongues licking upward (+Y). Use `shape` to spread them over an area or a ring.
-export const flames=(P,o={})=>mix({texture:'flame',tiles:[4,4],frames:{random:true,cycles:1},blend:'alpha',sort:'oldestFirst',bursts:o.rate?[]:[[0,o.count??10]],rate:o.rate??0,duration:o.duration??.4,
- max:(o.count??10)+(o.rate?Math.ceil(o.rate*.8):0)+4,shape:{type:'circle',radius:o.radius??.15},life:[.35,.6],speed:[.4,1.1],spherical:0,
- rotation:[-.25,.25],size:[(o.size??.6)*.75,(o.size??.6)*1.2],sizeOverLife:{curve:[[0,.35],[.25,1],[.7,.9],[1,.45]]},
- color:'#ffffff',alpha:o.alpha??1,intensity:o.intensity??1,colorOverLife:grad(flameOf(P),[[0,0],[.08,1],[.8,1],[1,0]])},pick(o,['size','intensity','rate','alpha',...OWN]));
+// W · Flipbook flame tongues licking upward (+Y) with buoyancy and curl turbulence. Use `shape` to spread them over an area or a ring.
+export const flames=(P,o={})=>{const s=o.size??.6;return mix({texture:'flame',tiles:[4,4],frames:{random:true,cycles:1},blend:'alpha',sort:'oldestFirst',bursts:o.rate?[]:[[0,o.count??10]],rate:o.rate??0,duration:o.duration??.4,
+ max:(o.count??10)+(o.rate?Math.ceil(o.rate*.85):0)+6,shape:{type:'circle',radius:o.radius??.15},life:[.32,.56],speed:o.speed??[.42,1.15],spherical:0,
+ gravity:o.gravity??-1.8,drag:o.drag??1.5,noise:{strength:o.turbulence??.85,frequency:2,speed:2.4,octaves:2},
+ rotation:[-.32,.32],spin:[-1,1],sizeXY:[[s*.78,s*1.08],[s*.92,s*1.32]],
+ sizeOverLife:{curve:[[0,.46],[.25,1],[.68,.88],[1,.34]]},
+ color:'#ffffff',alpha:o.alpha??.9,intensity:o.intensity??1.05,colorOverLife:grad(flameOf(P),[[0,0],[.1,1],[.5,.92],[.8,.48],[1,0]])},pick(o,['size','intensity','rate','alpha','gravity','drag','turbulence','speed',...OWN]));};
 // W · Fire stream: licking flame tongues poured along +X in a cone, each pointing where it flies (breath, fans, jets).
-export const stream=(P,o={})=>mix({texture:'flame',tiles:[4,4],frames:{random:true,cycles:1},align:'velocity',blend:'alpha',sort:'oldestFirst',alpha:o.alpha??1,bursts:o.rate?[]:[[0,o.count??24]],rate:o.rate??0,duration:o.duration??.25,max:(o.count??24)+(o.rate?Math.ceil(o.rate*.6):0)+6,
- shape:{type:'cone',angle:o.spread??25,radius:.06},rot:AIM,life:[.3,.55],speed:o.speed??[7,13],drag:o.drag??2.2,gravity:-.6,
- sizeXY:[[.3,.42],[.62,.92]],sizeOverLife:{curve:[[0,.4],[.3,1],[1,.75]]},noise:{strength:.8,frequency:2,speed:2},
- color:'#ffffff',intensity:o.intensity??1,colorOverLife:grad(flameOf(P),[[0,1],[.8,1],[1,0]])},pick(o,['intensity','speed','drag','rate','alpha',...OWN]));
+export const stream=(P,o={})=>mix({texture:'flame',tiles:[4,4],frames:{random:true,cycles:1},align:'velocity',blend:'alpha',sort:'oldestFirst',alpha:o.alpha??.9,bursts:o.rate?[]:[[0,o.count??24]],rate:o.rate??0,duration:o.duration??.25,max:(o.count??24)+(o.rate?Math.ceil(o.rate*.65):0)+8,
+ shape:{type:'cone',angle:o.spread??25,radius:.06},rot:AIM,life:[.24,.44],speed:o.speed??[6,11.5],drag:o.drag??2.2,gravity:o.gravity??-.7,
+ sizeXY:[[.56,.82],[.74,1.08]],sizeOverLife:{curve:[[0,.42],[.24,1],[.66,.88],[1,.32]]},
+ noise:{strength:o.turbulence??.95,frequency:2,speed:2.5,octaves:2},
+ color:'#ffffff',intensity:o.intensity??1.05,colorOverLife:grad(flameOf(P),[[0,0],[.08,1],[.48,.92],[.8,.45],[1,0]])},pick(o,['intensity','speed','drag','gravity','turbulence','rate','alpha',...OWN]));
+// W · Whipping flame/energy wisp stream: high-velocity incandescent flame tongues poured along +X in a cone for fiery jets and bursts.
+export const wispStream=(P,o={})=>mix({texture:'flame',tiles:[4,4],frames:{random:true,cycles:1},align:'velocity',blend:o.blend??'additive',alpha:o.alpha??.85,bursts:o.rate?[]:[[0,o.count??18]],rate:o.rate??0,duration:o.duration??.22,max:(o.count??18)+(o.rate?Math.ceil(o.rate*.55):0)+6,
+ shape:{type:'cone',angle:o.spread??24,radius:.05},rot:AIM,life:[.18,.34],speed:o.speed??[6.2,11.8],drag:o.drag??2,gravity:o.gravity??-.6,
+ sizeXY:[[.46,.68],[.66,.96]],sizeOverLife:{curve:[[0,.38],[.22,1],[.65,.85],[1,.25]]},noise:{strength:o.turbulence??.9,frequency:2.2,speed:2.6,octaves:2},
+ color:P.light,intensity:o.intensity??1.65,colorOverLife:grad(P.hot,[[0,0],[.08,1],[.55,.85],[1,0]])},pick(o,['intensity','speed','drag','gravity','turbulence','rate','alpha','blend',...OWN]));
 // W · Smoke/dust: alpha-blended billowing puffs that rise and spread (residue after fire or impacts).
 export const smoke=(P,o={})=>mix({texture:'smoke',tiles:[2,2],frames:{random:true,still:true},blend:'alpha',sort:'oldestFirst',bursts:[[o.delay0??0,o.count??6]],max:(o.count??6)+2,
  shape:{type:'sphere',radius:o.radius??.3},life:[.9,1.6],speed:[.2,.6],spherical:1,gravity:o.gravity??-.5,drag:1.5,
@@ -66,14 +75,15 @@ export const comet=(P,o={})=>mix({texture:'glow',bursts:[[0,1]],max:2,life:o.lif
  ...(o.ribbon?{trail:{life:o.trailLife??.22,width:o.width??.3,widthOverTrail:{curve:[[0,1],[1,0]]},colorOverTrail:grad(P.body,[[0,1],[.5,.7],[1,0]]),texture:'glow',minVertexDistance:.02,worldSpace:true}}:{})},pick(o,['size','intensity','life','trailLife','width','ribbon',...OWN]));
 // W · Continuous shedding behind a moving origin (fire trail, rift dust): world-space particles left in its wake.
 export const wake=(P,o={})=>mix(o.flame===false?{texture:'ember',rate:o.rate??60,duration:o.duration??1.2,max:Math.ceil((o.rate??60)*.5)+8,life:[.2,.45],speed:[.2,.8],
- shape:{type:'sphere',radius:.08},spherical:1,gravity:-1,drag:2,size:[.05,.1],color:[P.spark,P.accent],intensity:1.8,colorOverLife:grad(P.hot,[[0,1],[1,0]])}
- :{texture:'flame',tiles:[4,4],frames:{random:true},blend:'alpha',alpha:1,rate:o.rate??55,duration:o.duration??1.2,max:Math.ceil((o.rate??55)*.4)+8,life:[.16,.3],speed:[.1,.5],
- shape:{type:'sphere',radius:.1},spherical:1,gravity:-1.8,rotation:[-.4,.4],size:[(o.size??.35)*.8,(o.size??.35)*1.2],sizeOverLife:{curve:[[0,1],[1,.3]]},
- color:'#ffffff',intensity:1.1,colorOverLife:grad(flameOf(P),[[0,1],[.8,1],[1,0]])},pick(o,['rate','size','flame','duration',...OWN]));
-// W · Vertical light column (eruptions, level-ups): tall stretched glows rising from the origin.
-export const pillar=(P,o={})=>mix({texture:'wisp',align:'velocity',blend:'alpha',alpha:.85,bursts:o.rate?[]:[[0,o.count??10]],rate:o.rate??0,duration:o.duration??.3,max:(o.count??10)+(o.rate?Math.ceil(o.rate*.8):0)+4,
- shape:{type:'circle',radius:o.radius??.25},life:[.35,.6],velocity:{min:[0,o.power??3.5,0],max:[0,(o.power??3.5)*1.8,0]},drag:1.5,
- sizeXY:[[.35,.55],[1.2,2.2]],sizeOverLife:{curve:[[0,.4],[.3,1],[1,.6]]},color:'#ffffff',intensity:o.intensity??1.1,colorOverLife:grad(flameOf(P),[[0,0],[.15,1],[1,0]])},pick(o,['intensity','rate',...OWN]));
+ shape:{type:'sphere',radius:.08},spherical:1,gravity:-1,drag:2,noise:{strength:.9,frequency:2.2,speed:2.4,octaves:2},size:[.05,.1],color:[P.spark,P.accent],intensity:1.8,colorOverLife:grad(P.hot,[[0,1],[1,0]])}
+ :{texture:'flame',tiles:[4,4],frames:{random:true,cycles:1},blend:'alpha',sort:'oldestFirst',alpha:o.alpha??.9,rate:o.rate??90,duration:o.duration??1.2,max:Math.ceil((o.rate??90)*.38)+10,life:[.11,.22],speed:[.08,.32],
+ shape:{type:'sphere',radius:.05},spherical:1,gravity:-1.1,drag:2.2,noise:{strength:.58,frequency:2.2,speed:2.5,octaves:2},rotation:[0,6.28],spin:[-3.5,3.5],size:[(o.size??.38)*.88,(o.size??.38)*1.28],sizeOverLife:{curve:[[0,.96],[.26,1.02],[.65,.48],[1,.1]]},
+ color:'#ffffff',intensity:1.05,colorOverLife:grad(flameOf(P),[[0,.98],[.35,.88],[.72,.45],[1,0]])},pick(o,['rate','size','flame','duration','alpha',...OWN]));
+// W · Vertical light/flame column (eruptions, level-ups): tall billowing flames rising upright from the origin.
+export const pillar=(P,o={})=>mix({texture:'flame',tiles:[4,4],frames:{random:true,cycles:1},blend:'alpha',sort:'oldestFirst',alpha:o.alpha??.9,bursts:o.rate?[]:[[0,o.count??14]],rate:o.rate??0,duration:o.duration??.3,max:(o.count??14)+(o.rate?Math.ceil(o.rate*.8):0)+6,
+ shape:{type:'circle',radius:o.radius??.25},life:[.34,.56],velocity:{min:[0,o.power??3.2,0],max:[0,(o.power??3.2)*1.65,0]},drag:1.6,
+ noise:{strength:.55,frequency:1.8,speed:2.2,octaves:2},rotation:[-.2,.2],spin:[-.55,.55],
+ sizeXY:[[.68,.96],[1.05,1.52]],sizeOverLife:{curve:[[0,.42],[.24,1],[.68,.88],[1,.32]]},sizeOverLifeY:{curve:[[0,.48],[.3,1.14],[1,.76]]},color:'#ffffff',intensity:o.intensity??1.1,colorOverLife:grad(flameOf(P),[[0,0],[.12,1],[.55,.9],[1,0]])},pick(o,['intensity','rate','alpha',...OWN]));
 // W · Motes spiralling around the vertical axis (summons, level-ups, traps): orbit + optional inward pull.
 export const vortex=(P,o={})=>mix({texture:'ember',rate:o.rate??40,duration:o.duration??.6,max:Math.ceil((o.rate??40)*1.2)+6,shape:{type:'circle',radius:o.radius??1.2,thickness:.2},
  life:[.5,.9],velocity:{min:[0,o.lift??.6,0],max:[0,(o.lift??.6)*2,0]},orbit:[0,o.swirl??3.2,0],radial:o.pull??-1.2,
@@ -89,13 +99,67 @@ export const radialSkim=(P,o={})=>mix({texture:'streak',align:'velocity',bursts:
 // G · Shock ring expanding over the ground. radius = final radius in tiles.
 export const shockRing=(P,o={})=>mix({texture:'shock',blend:'alpha',bursts:[[0,1]],max:2,life:o.life??.45,size:2*(o.radius??1.5),sizeOverLife:{curve:[[0,.15],[.35,.75],[1,1]]},
  color:P.light,alpha:o.alpha??.85,intensity:o.intensity??1.15,colorOverLife:grad(flameOf(P),[[0,1],[.5,.7],[1,0]])},pick(o,['life','intensity','alpha',...OWN]));
-// G · Thin bright ring, expanding (grow>1) or contracting (grow<1).
-export const ring=(P,o={})=>mix({texture:'ring',blend:'alpha',bursts:[[0,1]],max:2,life:o.life??.5,size:2*(o.radius??1.2),sizeOverLife:{curve:[[0,o.grow===undefined?.3:1],[1,o.grow===undefined?1:o.grow]]},
- color:P.light,intensity:o.intensity??1.15,colorOverLife:grad(flameOf(P),[[0,0],[.15,1],[1,0]])},pick(o,['life','intensity',...OWN]));
-// G · Rune circle: fades in, spins, holds and fades out. hold = seconds at full strength.
-export const sigil=(P,o={})=>{const life=(o.fadeIn??.12)+(o.hold??.4)+(o.fadeOut??.35),i=(o.fadeIn??.12)/life,h=((o.fadeIn??.12)+(o.hold??.4))/life;
- return mix({texture:o.texture??'sigil-sun',blend:'alpha',bursts:[[0,1]],max:2,life,size:2*(o.radius??1.3),rotation:o.rotation??0,spin:o.spin??1.1,
-  sizeOverLife:{curve:[[0,o.from??.6],[i,1],[1,o.to??1.06]]},color:P.light,intensity:o.intensity??1.15,colorOverLife:grad(flameOf(P),[[0,0],[i,1],[h,.9],[1,0]])},pick(o,['texture','fadeIn','hold','fadeOut','spin','from','to','intensity','rotation',...OWN]));};
+// G · Particle ring: circumference of orbiting velocity-aligned particle streaks (replaces single-quad ring decals).
+export const ring=(P,o={})=>magicCircle(P,{radius:o.radius??1.2,duration:o.life??.5,intensity:o.intensity??1.6,name:o.name??'particle ring'})[0];
+// G · Particle-constructed magic circle: multiple emitter layers of velocity-aligned orbiting particle streaks,
+// concentric particle rings, radial star glints, and swirling ember motes (no predefined circle/vector texture).
+export const magicCircle=(P,o={})=>{
+ const R=o.radius??1.35,dur=o.duration??((o.fadeIn??.12)+(o.hold??.4)+(o.fadeOut??.1)),spin=o.spin??1.6,n=o.name??'magic circle';
+ const count=o.count??Math.max(52,Math.round(R*50)),innerCount=Math.max(28,Math.round(count*.62));
+ const life=o.life??[(dur*.58),dur+.24],swirl=spin>=0?Math.max(1.4,spin):Math.min(-1.4,spin);
+ const pass=['texture','fadeIn','hold','fadeOut','spin','from','to','intensity','rotation','alpha','duration','life','radial',...OWN];
+ return [
+  // Saturated alpha-blended energy particle bed along the outer ring (white streak texture so any palette tints cleanly)
+  mix({name:`${n} outer bed`,texture:'streak',align:'velocity',blend:'alpha',alpha:o.alpha??.9,
+   bursts:[[0,count],[Math.min(dur*.45,.28),Math.round(count*.5)]],rate:Math.round(count*1.1),duration:dur,max:count*3+16,
+   shape:{type:'circle',radius:R,thickness:.02,arcMode:'burstSpread'},life,speed:0,
+   orbit:[0,swirl,0],radial:o.radial??-.02,noise:{strength:.1,frequency:2.2,speed:1.5,octaves:2},
+   sizeXY:[[.08,.125],[.34,.56]],sizeOverLife:{curve:[[0,.35],[.16,1],[.8,.92],[1,.2]]},
+   color:'#ffffff',intensity:1,
+   colorOverLife:grad(flameOf(P),[[0,0],[.12,1],[.75,.9],[1,0]])},pick(o,pass)),
+  // Incandescent additive particle streaks tracing the outer rim
+  mix({name:`${n} outer streaks`,texture:'streak',align:'velocity',blend:'additive',
+   bursts:[[0,count],[Math.min(dur*.45,.28),Math.round(count*.5)]],rate:Math.round(count*1.1),duration:dur,max:count*3+16,
+   shape:{type:'circle',radius:R,thickness:.02,arcMode:'burstSpread'},life,speed:0,
+   orbit:[0,swirl,0],radial:o.radial??-.02,noise:{strength:.1,frequency:2.4,speed:1.8,octaves:2},
+   sizeXY:[[.042,.068],[.32,.52]],sizeOverLife:{curve:[[0,.35],[.18,1],[.78,.92],[1,.18]]},
+   color:P.light,intensity:o.intensity??1.35,
+   colorOverLife:grad(P.body,[[0,0],[.12,1],[.75,.9],[1,0]])},pick(o,pass)),
+  // Glowing ember nodes evenly beaded around the outer ring circumference
+  mix({name:`${n} outer embers`,texture:'ember',blend:'alpha',alpha:o.alpha??.92,
+   bursts:[[0,count]],rate:Math.round(count*.85),duration:dur,max:count*2+12,
+   shape:{type:'circle',radius:R,thickness:.05,arcMode:'burstSpread'},life,speed:[.02,.1],spherical:0,
+   orbit:[0,swirl*.85,0],noise:{strength:.16,frequency:2,speed:1.4,octaves:2},
+   size:[.1,.19],sizeOverLife:{curve:[[0,.3],[.2,1],[.8,.85],[1,0]]},
+   color:'#ffffff',intensity:1,
+   colorOverLife:grad(flameOf(P),[[0,0],[.14,1],[.76,.88],[1,0]])},pick(o,pass)),
+  // Counter-rotating inner particle ring (at ~0.68 R) forming the concentric particle band seen in the reference
+  mix({name:`${n} inner streaks`,texture:'streak',align:'velocity',blend:'alpha',alpha:(o.alpha??.88)*.88,
+   bursts:[[.02,innerCount]],rate:Math.round(innerCount*.9),duration:dur,max:innerCount*2+12,
+   shape:{type:'circle',radius:R*.68,thickness:.03,arcMode:'burstSpread'},life:[life[0]*.85,life[1]*.9],speed:0,
+   orbit:[0,-swirl*1.25,0],radial:.02,noise:{strength:.1,frequency:2.2,speed:1.6,octaves:2},
+   sizeXY:[[.05,.08],[.28,.46]],sizeOverLife:{curve:[[0,.3],[.2,1],[.75,.85],[1,.15]]},
+   color:'#ffffff',intensity:1,
+   colorOverLife:grad(flameOf(P),[[0,0],[.15,.95],[.72,.8],[1,0]])},pick(o,pass)),
+  // Cardinal & ordinal star glints sparkling around the particle perimeter
+  mix({name:`${n} rim glints`,texture:'flare',blend:'additive',
+   bursts:[[0,14],[Math.min(dur*.5,.24),10]],rate:20,duration:dur,max:36,
+   shape:{type:'circle',radius:R*.99,thickness:.04,arcMode:'burstSpread'},life:[.22,.48],speed:0,
+   orbit:[0,swirl*.55,0],rotation:[0,.6],spin:[-1.8,1.8],
+   size:[.2,.38],sizeOverLife:{curve:[[0,0],[.24,1],[1,0]]},
+   color:[P.spark,P.light],intensity:o.intensity??1.55,
+   colorOverLife:grad(P.hot,[[0,1],[.65,.85],[1,0]])},pick(o,pass)),
+  // Inward-spiralling energy motes bridging the outer rim to the caster/trap core
+  mix({name:`${n} core motes`,texture:'ember',blend:'additive',
+   bursts:[[0,Math.round(innerCount*.85)]],rate:Math.round(count*.85),duration:dur,max:count*2,
+   shape:{type:'circle',radius:R*.92,thickness:.35},life:[.28,.58],speed:[.06,.2],
+   orbit:[0,swirl*1.1,0],radial:-.42,noise:{strength:.28,frequency:2,speed:1.8,octaves:2},
+   size:[.07,.15],color:[P.spark,P.light],intensity:o.intensity??1.45,
+   colorOverLife:grad(P.body,[[0,0],[.15,1],[.8,.75],[1,0]])},pick(o,pass)),
+ ];
+};
+// G · Backwards-compatible single-layer alias for custom callers; prefer magicCircle() spread for full multi-ring particle circles.
+export const sigil=(P,o={})=>magicCircle(P,o)[0];
 // G · Under-glow: a broad soft light pool on the ground (heat, magic charge).
 export const pool=(P,o={})=>mix({texture:'glow',bursts:[[0,1]],max:2,life:o.life??.6,size:2.4*(o.radius??1.2),sizeOverLife:{curve:[[0,.6],[.3,1],[1,1.05]]},
  color:P.light,intensity:o.intensity??.7,colorOverLife:grad(P.body,[[0,0],[.2,.8],[1,0]])},pick(o,['life','intensity',...OWN]));

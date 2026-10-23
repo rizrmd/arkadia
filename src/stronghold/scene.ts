@@ -1,6 +1,8 @@
 import type {Building} from './economy';
-import {modularEnclosure,LEGACY_LAYOUT} from './terrain';
+import {modularEnclosure} from './terrain';
 import {groundCalibration,project,unproject} from '../isometric';
+
+const LEGACY_LAYOUT=typeof location!=='undefined'&&new URLSearchParams(location.search).get('buildings')==='all';
 
 // 3:2 is the canvas aspect ratio, not the ground projection. Ground is 2:1.
 export const WORLD = {width:1155,height:770};

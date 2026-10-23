@@ -10,9 +10,11 @@ function valueNoise(seed,period=256){const r=rng(seed),g=new Float32Array(period
  return(x,y)=>{const xi=Math.floor(x),yi=Math.floor(y),xf=sm(x-xi),yf=sm(y-yi),a=at(xi,yi),b=at(xi+1,yi),c=at(xi,yi+1),d=at(xi+1,yi+1);return a+(b-a)*xf+(c-a)*yf+(a-b-c+d)*xf*yf;};}
 function fbm(n,x,y,oct=4){let v=0,a=.5,f=1,t=0;for(let i=0;i<oct;i++){v+=a*n(x*f,y*f);t+=a;a*=.5;f*=2;}return v/t;}
 const clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,v)),smooth=(a,b,v)=>{const t=clamp((v-a)/(b-a));return t*t*(3-2*t);};
-// Per-pixel painter. fn(x,y) returns [luminance 0..1, alpha 0..1] in cell-normalised coordinates.
+// Per-pixel painter. fn(x,y) returns [luminance 0..1, alpha 0..1] or [r, g, b, alpha] in cell-normalised coordinates.
 function pixels(ctx,ox,oy,w,h,fn){const img=ctx.createImageData(w,h),d=img.data;
- for(let y=0;y<h;y++)for(let x=0;x<w;x++){const [l,a]=fn((x+.5)/w,(y+.5)/h);const i=(y*w+x)*4,v=Math.round(clamp(l)*255);d[i]=d[i+1]=d[i+2]=v;d[i+3]=Math.round(clamp(a)*255);}
+ for(let y=0;y<h;y++)for(let x=0;x<w;x++){const p=fn((x+.5)/w,(y+.5)/h),i=(y*w+x)*4;
+  if(p.length===4){d[i]=Math.round(clamp(p[0])*255);d[i+1]=Math.round(clamp(p[1])*255);d[i+2]=Math.round(clamp(p[2])*255);d[i+3]=Math.round(clamp(p[3])*255);}
+  else{const v=Math.round(clamp(p[0])*255);d[i]=d[i+1]=d[i+2]=v;d[i+3]=Math.round(clamp(p[1])*255);}}
  ctx.putImageData(img,ox,oy);}
 const polar=(x,y)=>{const dx=x*2-1,dy=y*2-1;return{r:Math.hypot(dx,dy),a:Math.atan2(dy,dx),dx,dy};};
 function glowStroke(ctx,blur,width,draw){ctx.save();ctx.strokeStyle='#fff';ctx.fillStyle='#fff';ctx.lineCap='round';ctx.lineJoin='round';
@@ -28,52 +30,59 @@ const P={};
 P.glow={w:128,h:128,paint(c){pixels(c,0,0,128,128,(x,y)=>{const {r}=polar(x,y);const a=Math.pow(clamp(1-r),2.4);return[1,a];});}};
 // Hot ember: pin-point white core with a thin halo, reads as a spark at small sizes.
 P.ember={w:64,h:64,paint(c){pixels(c,0,0,64,64,(x,y)=>{const {r}=polar(x,y);const core=Math.exp(-r*r/.018),halo=Math.exp(-r*r/.16)*.45;return[.75+.25*core,clamp(core+halo)*smooth(1,.85,r)];});}};
-// Velocity streak: bright head at the top, long fading tail downward. NixieFX velocity alignment pins the texture
-// top (+Y) to the direction of motion, so every motion texture here points up.
-P.streak={w:32,h:128,paint(c){pixels(c,0,0,32,128,(x,y)=>{const t=1-y,dx=(x-.5)*2,head=smooth(1,.9,t),tail=Math.pow(t,1.6),w=.22+.5*t;const a=Math.exp(-(dx*dx)/(w*w*.35))*tail*head;return[.7+.3*Math.exp(-dx*dx*30)*t,a];});}};
+// Velocity streak: bright teardrop head near the top, sleek tapering tail downward. NixieFX velocity alignment pins
+// the texture top (+Y) to the direction of motion, so every motion texture here points up.
+P.streak={w:32,h:128,paint(c){pixels(c,0,0,32,128,(x,y)=>{const t=1-y,dx=(x-.5)*2;
+ const tip=smooth(1,.86,t),tail=Math.pow(clamp(t/.88),1.45),w=.12+.28*Math.sin(clamp(t)*Math.PI*.88);
+ const spine=Math.exp(-(dx*dx)/(.045*w*w))*tail*tip,halo=Math.exp(-(dx*dx)/(.42*w*w))*tail*tip*.55;
+ const a=clamp(spine+halo)*smooth(0,.04,t);return[.78+.22*spine,a];});}};
 // Four-point star flare with faint diagonals, for crit flashes and sparkles.
 P.flare={w:128,h:128,paint(c){pixels(c,0,0,128,128,(x,y)=>{const {dx,dy,r}=polar(x,y);const ray=(u,v)=>Math.exp(-Math.abs(v)*38)*Math.pow(clamp(1-Math.abs(u)),1.5);
  const d1=(dx+dy)/Math.SQRT2,d2=(dx-dy)/Math.SQRT2,a=Math.max(ray(dx,dy),ray(dy,dx),.45*ray(d1,d2),.45*ray(d2,d1))+Math.exp(-r*r/.012)+Math.exp(-r*r/.09)*.35;return[1,clamp(a)*smooth(1,.92,r)];});}};
-// Flame tongue flipbook, 4x4 frames of 128: fBm-licked teardrop whose noise scrolls upward frame to frame. Hard-edged
-// and opaque, so alpha-blended fire stays saturated over the snow; edges are a little darker than the core.
-P.flame={w:512,h:512,tiles:[4,4],paint(c){const n=valueNoise(11,64);for(let f=0;f<16;f++){const ox=(f%4)*128,oy=Math.floor(f/4)*128,t=f/16;
- pixels(c,ox,oy,128,128,(x,y)=>{const ny=1-y,nx=(x-.5)*2;const lick=fbm(n,x*5+3.1,(y+t)*6,4),sway=(fbm(n,y*3+t*4,7.7,3)-.5)*.5*ny;
-  const width=.8*Math.pow(clamp(1-ny*.92),.75)*(.55+.9*Math.min(1,ny*4));const ex=Math.abs(nx-sway)/Math.max(.001,width);
-  const body=smooth(1,.78,ex+(lick-.5)*.9)*smooth(.98,.8,ny+(lick-.5)*.35)*smooth(0,.06,ny);const core=smooth(.7,.1,ex)*smooth(.75,.15,ny);
-  return[.8+.2*core,body];});}}};
+// Flame tongue flipbook, 4x4 frames of 128: broad multi-lobed billowing fire sheets with incandescent core and soft feathered glow.
+P.flame={w:512,h:512,tiles:[4,4],paint(c){const n=valueNoise(11,32),n2=valueNoise(73,32);for(let f=0;f<16;f++){const ox=(f%4)*128,oy=Math.floor(f/4)*128,t=f/16,ph=t*TAU,variant=(f%4)*.55;
+ pixels(c,ox,oy,128,128,(x,y)=>{const ny=1-y,nx=(x-.5)*2;
+  // Soft S-curve billow that scrolls upward across the 16-frame cycle
+  const wave=Math.sin(ny*3.6-ph+variant)*.16*Math.pow(ny,.75)+Math.cos(ny*5.8-ph*2+variant)*.06*ny;
+  const turb=(fbm(n,y*3.8+t*7+variant,3.7,3)-.5)*.32*Math.pow(ny,.8);
+  const cx=wave+turb,dx=nx-cx;
+  // Broad, volumetric flame sheet envelope: full rounded belly tapering into multiple soft rising tongues
+  const base=smooth(.02,.22,ny);
+  const width=.72*Math.pow(clamp(1-ny*.86),.92)*(.52+.62*smooth(0,.28,ny));
+  const ex=Math.abs(dx)/Math.max(.002,width);
+  // Upward-scrolling turbulent flame billows and multi-lobe crown
+  const lick=fbm(n,x*4.2+1.9+variant*.4,(y+t)*7,4),fine=fbm(n2,x*8+4.1,(y+t*2)*10,3);
+  const lobes=Math.sin(nx*4.8+ph+variant)*.12*ny+Math.cos(nx*7.5-ph+variant)*.08*ny;
+  const shear=(lick-.46)*(.58+.62*ny)+(fine-.5)*.26*ny+lobes;
+  // Broad secondary curling side-lobes that merge into a fuller fire cluster
+  const leftLobe=smooth(.62,.05,Math.abs(dx+width*(.48+.18*ny))/(width*.52))*smooth(.1,.32,ny)*smooth(.88,.42,ny)*smooth(.3,.72,lick);
+  const rightLobe=smooth(.62,.05,Math.abs(dx-width*(.46+.2*ny))/(width*.52))*smooth(.14,.38,ny)*smooth(.92,.48,ny)*smooth(.3,.72,fine);
+  const sideLobing=(leftLobe*(.6+.3*Math.sin(ph+1.1))+rightLobe*(.6+.3*Math.cos(ph-.8)));
+  const edge=ex-shear*.68;
+  const mainBody=smooth(1.04,.08,edge)*base*smooth(.98,.68,ny-(lick-.5)*.34-lobes*.4);
+  const rawBody=clamp(mainBody+sideLobing*.78);
+  // Soft radial glow halo so overlapping particles fuse into a continuous glowing fire volume without hard outlines
+  const radial=Math.hypot(nx,ny*1.85-.88);
+  const halo=Math.exp(-(dx*dx)/(.62*width*width+.06))*smooth(.02,.24,ny)*smooth(.94,.24,ny)*.32;
+  const alpha=clamp((Math.pow(rawBody,1.65)+halo)*smooth(1,.82,radial)*.92);
+  if(alpha<=.002)return[0,0,0,0];
+  // Local temperature (0 = luminous fiery orange-red outer wisp, 1 = incandescent white-gold core)
+  const coreSpine=smooth(.78,.0,ex)*smooth(.84,.06,ny)*base;
+  const vein=smooth(.28,.76,fine)*smooth(.94,.14,ex)*smooth(.92,.1,ny)*.36;
+  const heat=clamp(rawBody*.56+coreSpine*.64+vein-ny*.12);
+  // Luminous thermal ramp: stays bright fiery orange at heat=0 so vertex tinting never creates dark brown borders on snow
+  const r=1;
+  const g=.48+.52*Math.pow(clamp(heat/.88),1.02);
+  const b=.14+.84*Math.pow(clamp((heat-.32)/.66),1.5);
+  return[r,g,b,alpha];});}}};
 // Smoke puff flipbook, 2x2 frames of 128: billowy fBm blobs with a lit upper-left.
 P.smoke={w:256,h:256,tiles:[2,2],paint(c){const n=valueNoise(23,64);for(let f=0;f<4;f++){const ox=(f%2)*128,oy=Math.floor(f/2)*128;
  pixels(c,ox,oy,128,128,(x,y)=>{const {r,dx,dy}=polar(x,y);const b=fbm(n,x*4+f*9.3,y*4+f*4.1,5);const a=smooth(.95,.25,r+(b-.5)*.8)*.85;const light=.72+.28*clamp(.5-(dx+dy)*.35+b*.3);return[light,a];});}}};
-// Thin glowing ring (decals, telegraph edges).
-P.ring={w:256,h:256,paint(c){pixels(c,0,0,256,256,(x,y)=>{const {r}=polar(x,y);const d=Math.abs(r-.9);return[1,Math.exp(-d*d/.0006)+Math.exp(-d*d/.006)*.35];});}};
 // Shockwave front: sharp outer lip, fading inward, ragged by angular noise.
 P.shock={w:256,h:256,paint(c){const n=valueNoise(37,32);pixels(c,0,0,256,256,(x,y)=>{const {r,a}=polar(x,y);const j=(fbm(n,(a/TAU+.5)*32,r*6,4)-.5)*.08;const rr=r+j;
  const lip=smooth(.97,.9,rr)*smooth(.45,.88,rr);return[.6+.4*smooth(.8,.92,rr),Math.pow(lip,1.4)];});}};
 // Scorch decal: dark burnt patch with ragged rim (alpha-blended, tinted near black).
 P.scorch={w:256,h:256,paint(c){const n=valueNoise(41,32);pixels(c,0,0,256,256,(x,y)=>{const {r}=polar(x,y);const b=fbm(n,x*7,y*7,5);const a=smooth(.98,.35,r+(b-.5)*.55)*(.55+.45*b);return[.12+.2*b,a*.9];});}};
-// Ember magic circle: double rim, glyph band, twelve flame rays, hexagram and core ring.
-P['sigil-sun']={w:512,h:512,paint(c){const r=rng(7),C=256;c.translate(C,C);
- glowStroke(c,14,3,()=>{c.beginPath();c.arc(0,0,236,0,TAU);c.stroke();c.beginPath();c.arc(0,0,214,0,TAU);c.stroke();c.beginPath();c.arc(0,0,150,0,TAU);c.stroke();c.beginPath();c.arc(0,0,58,0,TAU);c.stroke();});
- glowStroke(c,8,2,()=>{for(let i=0;i<48;i++){const a=i/48*TAU,l=i%4===0?14:7;c.beginPath();c.moveTo(Math.cos(a)*(236-l),Math.sin(a)*(236-l));c.lineTo(Math.cos(a)*236,Math.sin(a)*236);c.stroke();}
-  // glyph band: small angular runes between the two rims
-  for(let i=0;i<24;i++){const a=(i+.5)/24*TAU;c.save();c.rotate(a);c.translate(0,-182);c.beginPath();const s=11;const k=Math.floor(r()*4);
-   if(k===0){c.moveTo(-s,-s);c.lineTo(0,s);c.lineTo(s,-s);}else if(k===1){c.moveTo(0,-s);c.lineTo(0,s);c.moveTo(-s,0);c.lineTo(s*.6,-s*.6);}
-   else if(k===2){c.moveTo(-s,s);c.lineTo(-s,-s);c.lineTo(s,-s*.2);c.moveTo(-s,0);c.lineTo(s*.4,s);}else{c.arc(0,0,s*.6,0,TAU);c.moveTo(0,-s);c.lineTo(0,s);}c.stroke();c.restore();}
-  // flame rays between core ring and inner rim
-  for(let i=0;i<12;i++){const a=i/12*TAU;c.save();c.rotate(a);c.beginPath();c.moveTo(-12,-62);c.quadraticCurveTo(-4,-104,0,-146);c.quadraticCurveTo(4,-104,12,-62);c.stroke();c.restore();}
-  // hexagram
-  for(const off of [0,Math.PI]){c.beginPath();for(let i=0;i<=3;i++){const a=off+i/3*TAU-Math.PI/2;const px=Math.cos(a)*150,py=Math.sin(a)*150;i?c.lineTo(px,py):c.moveTo(px,py);}c.stroke();}
- });}};
-// Arcane circle for the rift hero: ticked rim, octagram, orbit rings and an inner glyph ring.
-P['sigil-hex']={w:512,h:512,paint(c){const r=rng(9),C=256;c.translate(C,C);
- glowStroke(c,14,3,()=>{c.beginPath();c.arc(0,0,238,0,TAU);c.stroke();c.beginPath();c.arc(0,0,196,0,TAU);c.stroke();c.beginPath();c.arc(0,0,92,0,TAU);c.stroke();});
- glowStroke(c,8,2,()=>{for(let i=0;i<72;i++){const a=i/72*TAU,l=i%6===0?18:8;c.beginPath();c.moveTo(Math.cos(a)*(238-l),Math.sin(a)*(238-l));c.lineTo(Math.cos(a)*238,Math.sin(a)*238);c.stroke();}
-  for(const rot of [0,Math.PI/4]){c.save();c.rotate(rot);c.strokeRect(-138,-138,276,276);c.restore();}
-  for(let i=0;i<4;i++){const a=i/4*TAU+Math.PI/4;c.beginPath();c.arc(Math.cos(a)*196,Math.sin(a)*196,20,0,TAU);c.stroke();}
-  for(let i=0;i<16;i++){const a=i/16*TAU;c.save();c.rotate(a);c.translate(0,-70);c.beginPath();const s=8,k=Math.floor(r()*3);
-   if(k===0){c.moveTo(-s,0);c.lineTo(0,-s);c.lineTo(s,0);c.lineTo(0,s);c.closePath();}else if(k===1){c.moveTo(0,-s);c.lineTo(0,s);c.moveTo(-s,-s*.3);c.lineTo(s,-s*.3);}else{c.arc(0,0,s*.55,0,TAU);}c.stroke();c.restore();}
-  c.beginPath();c.arc(0,0,30,0,TAU);c.stroke();
- });}};
 // Lightning / flame tendril flipbook, 2x2 frames of 128: jagged branching arcs from left to right.
 P.arc={w:256,h:256,tiles:[2,2],paint(c){for(let f=0;f<4;f++){const r=rng(100+f),ox=(f%2)*128,oy=Math.floor(f/2)*128;c.save();c.beginPath();c.rect(ox,oy,128,128);c.clip();c.translate(ox,oy);
  const main=jagged(r,6,64,122,64,.55,6);glowStroke(c,6,2.2,()=>{path(c,main);c.stroke();});
@@ -97,9 +106,15 @@ P.slash={w:256,h:128,paint(c){pixels(c,0,0,256,128,(x,y)=>{const px=(x-.5)*2,py=
 // Swirling energy orb: spiral arms in polar fBm around a bright core.
 P.orb={w:128,h:128,paint(c){const n=valueNoise(51,32);pixels(c,0,0,128,128,(x,y)=>{const {r,a}=polar(x,y);const s=fbm(n,(a/TAU+.5+r*.6)*16,r*5,4);
  const arms=smooth(.45,.8,s)*smooth(1,.4,r);const core=Math.exp(-r*r/.05);return[.7+.3*core,clamp(arms*.9+core+Math.exp(-r*r/.3)*.25)*smooth(1,.9,r)];});}};
-// Fire wisp: wide, turbulent velocity-aligned tongue with its head at the top.
-P.wisp={w:64,h:128,paint(c){const n=valueNoise(61,32);pixels(c,0,0,64,128,(x,y)=>{const t=1-y,dx=(x-.5)*2,b=fbm(n,x*3,y*6,4),w=.18+.7*Math.pow(1-t,.8)*smooth(1,.75,t)+.12;
- const a=clamp(1.2*smooth(1,.6,Math.abs(dx+(b-.5)*.6*(1-t))/w)*Math.pow(t,.7)*smooth(1,.88,t)*(.7+.3*b));return[1,a];});}};
+// Fire wisp: tapering, turbulent velocity-aligned plume with a bright core spine and feathered edges, head at top.
+P.wisp={w:64,h:128,paint(c){const n=valueNoise(61,32),n2=valueNoise(89,32);pixels(c,0,0,64,128,(x,y)=>{const t=1-y,dx=(x-.5)*2;
+ const sway=(fbm(n,1.9,y*4.2,3)-.5)*.24*(1-t*.45),b=fbm(n,x*3.6,y*5.8,4),f=fbm(n2,x*7+2.3,y*9,3);
+ const env=Math.sin(clamp(t)*Math.PI),w=.18+.52*Math.pow(env,.68)*(1-.18*t);
+ const ex=Math.abs(dx-sway+(b-.5)*.34*(1-t*.3))/Math.max(.01,w);
+ const body=smooth(1.04,.12,ex)*smooth(.02,.18,t)*smooth(.98,.76,t+(b-.5)*.16)*(.72+.28*f);
+ const core=smooth(.62,0,ex)*smooth(.08,.32,t)*smooth(.94,.58,t);
+ const alpha=Math.pow(clamp(body*1.12),1.55);
+ return[1,.55+.45*core,.2+.78*Math.pow(core,1.4),alpha];});}};
 // Crystal shard: faceted diamond, lighter facet on the left (alpha-blended or additive).
 P.shard={w:64,h:128,paint(c){c.translate(32,64);const fill=(pts,col)=>{c.fillStyle=col;path(c,pts);c.closePath();c.fill();};
  fill([[0,-60],[-18,0],[0,60],[18,0]],'#cfd8ff');fill([[0,-60],[-18,0],[0,60]],'#ffffff');fill([[0,-60],[6,0],[0,60],[18,0]],'#8c9bd6');

@@ -1,16 +1,16 @@
 {
- "checkedAt": "2026-10-23T01:50:02.772Z",
- "lab": "https://ark-whachat.fural.space",
+ "checkedAt": "2026-10-23T03:03:15.885Z",
+ "lab": "http://127.0.0.1:5199",
  "cues": 54,
  "effectsInBundle": 65,
- "peakParticles": 461,
+ "peakParticles": 1286,
  "passed": true,
  "details": [
   {
    "hero": "ember-warden",
    "key": "attack.swing",
    "effects": 2,
-   "particles": 29,
+   "particles": 37,
    "missing": [],
    "unsupported": []
   },
@@ -18,7 +18,7 @@
    "hero": "ember-warden",
    "key": "cinder-step.cast",
    "effects": 2,
-   "particles": 108,
+   "particles": 327,
    "missing": [],
    "unsupported": []
   },
@@ -26,7 +26,7 @@
    "hero": "ember-warden",
    "key": "cinder-step.detonate",
    "effects": 2,
-   "particles": 68,
+   "particles": 96,
    "missing": [],
    "unsupported": []
   },
@@ -50,7 +50,7 @@
    "hero": "ember-warden",
    "key": "combo.dual",
    "effects": 1,
-   "particles": 3,
+   "particles": 531,
    "missing": [],
    "unsupported": []
   },
@@ -58,7 +58,7 @@
    "hero": "ember-warden",
    "key": "combo.trinity",
    "effects": 2,
-   "particles": 46,
+   "particles": 605,
    "missing": [],
    "unsupported": []
   },
@@ -66,7 +66,7 @@
    "hero": "ember-warden",
    "key": "ember-snare.detonate",
    "effects": 2,
-   "particles": 231,
+   "particles": 273,
    "missing": [],
    "unsupported": []
   },
@@ -74,7 +74,7 @@
    "hero": "ember-warden",
    "key": "ember-snare.telegraph",
    "effects": 2,
-   "particles": 24,
+   "particles": 379,
    "missing": [],
    "unsupported": []
   },
@@ -82,7 +82,7 @@
    "hero": "ember-warden",
    "key": "flame-fan.bolt",
    "effects": 1,
-   "particles": 15,
+   "particles": 43,
    "missing": [],
    "unsupported": []
   },
@@ -90,7 +90,7 @@
    "hero": "ember-warden",
    "key": "flame-fan.cast",
    "effects": 3,
-   "particles": 214,
+   "particles": 536,
    "missing": [],
    "unsupported": []
   },
@@ -98,7 +98,7 @@
    "hero": "ember-warden",
    "key": "flame-fan.impact",
    "effects": 2,
-   "particles": 78,
+   "particles": 129,
    "missing": [],
    "unsupported": []
   },
@@ -130,7 +130,7 @@
    "hero": "ember-warden",
    "key": "hit.fire",
    "effects": 1,
-   "particles": 28,
+   "particles": 37,
    "missing": [],
    "unsupported": []
   },
@@ -162,7 +162,7 @@
    "hero": "ember-warden",
    "key": "level-up",
    "effects": 2,
-   "particles": 48,
+   "particles": 355,
    "missing": [],
    "unsupported": []
   },
@@ -170,7 +170,7 @@
    "hero": "ember-warden",
    "key": "shockwave.detonate",
    "effects": 2,
-   "particles": 122,
+   "particles": 140,
    "missing": [],
    "unsupported": []
   },
@@ -178,14 +178,14 @@
    "hero": "ember-warden",
    "key": "shockwave.telegraph",
    "effects": 2,
-   "particles": 13,
+   "particles": 360,
    "missing": [],
    "unsupported": []
   },
   {
    "hero": "ember-warden",
    "key": "skill:Flame Fan",
-   "particles": 461,
+   "particles": 1132,
    "effects": 49,
    "missing": [],
    "unsupported": []
@@ -193,7 +193,7 @@
   {
    "hero": "ember-warden",
    "key": "skill:Cinder Step",
-   "particles": 167,
+   "particles": 421,
    "effects": 53,
    "missing": [],
    "unsupported": []
@@ -201,7 +201,7 @@
   {
    "hero": "ember-warden",
    "key": "skill:Ember Snare",
-   "particles": 291,
+   "particles": 680,
    "effects": 57,
    "missing": [],
    "unsupported": []
@@ -209,7 +209,7 @@
   {
    "hero": "ember-warden",
    "key": "skill:Seismic Slam",
-   "particles": 149,
+   "particles": 515,
    "effects": 61,
    "missing": [],
    "unsupported": []
@@ -217,7 +217,7 @@
   {
    "hero": "ember-warden",
    "key": "skill:Astral Cleave",
-   "particles": 77,
+   "particles": 83,
    "effects": 65,
    "missing": [],
    "unsupported": []
@@ -250,7 +250,7 @@
    "hero": "rift-runner",
    "key": "combo.dual",
    "effects": 1,
-   "particles": 3,
+   "particles": 531,
    "missing": [],
    "unsupported": []
   },
@@ -258,7 +258,7 @@
    "hero": "rift-runner",
    "key": "combo.trinity",
    "effects": 2,
-   "particles": 46,
+   "particles": 605,
    "missing": [],
    "unsupported": []
   },
@@ -290,7 +290,7 @@
    "hero": "rift-runner",
    "key": "hit.fire",
    "effects": 1,
-   "particles": 28,
+   "particles": 37,
    "missing": [],
    "unsupported": []
   },
@@ -322,7 +322,7 @@
    "hero": "rift-runner",
    "key": "level-up",
    "effects": 2,
-   "particles": 48,
+   "particles": 355,
    "missing": [],
    "unsupported": []
   },
@@ -338,7 +338,7 @@
    "hero": "rift-runner",
    "key": "rift-bolt.cast",
    "effects": 2,
-   "particles": 52,
+   "particles": 267,
    "missing": [],
    "unsupported": []
   },
@@ -354,7 +354,7 @@
    "hero": "rift-runner",
    "key": "rift-dash.cast",
    "effects": 2,
-   "particles": 108,
+   "particles": 289,
    "missing": [],
    "unsupported": []
   },
@@ -370,7 +370,7 @@
    "hero": "rift-runner",
    "key": "rift-trap.detonate",
    "effects": 2,
-   "particles": 255,
+   "particles": 269,
    "missing": [],
    "unsupported": []
   },
@@ -378,7 +378,7 @@
    "hero": "rift-runner",
    "key": "rift-trap.telegraph",
    "effects": 2,
-   "particles": 20,
+   "particles": 364,
    "missing": [],
    "unsupported": []
   },
@@ -394,14 +394,14 @@
    "hero": "rift-runner",
    "key": "shockwave.telegraph",
    "effects": 2,
-   "particles": 13,
+   "particles": 360,
    "missing": [],
    "unsupported": []
   },
   {
    "hero": "rift-runner",
    "key": "skill:Rift Bolt",
-   "particles": 109,
+   "particles": 372,
    "effects": 106,
    "missing": [],
    "unsupported": []
@@ -409,7 +409,7 @@
   {
    "hero": "rift-runner",
    "key": "skill:Rift Dash",
-   "particles": 132,
+   "particles": 335,
    "effects": 110,
    "missing": [],
    "unsupported": []
@@ -417,7 +417,7 @@
   {
    "hero": "rift-runner",
    "key": "skill:Rift Trap",
-   "particles": 297,
+   "particles": 647,
    "effects": 114,
    "missing": [],
    "unsupported": []
@@ -425,7 +425,7 @@
   {
    "hero": "rift-runner",
    "key": "skill:Astral Cleave",
-   "particles": 81,
+   "particles": 76,
    "effects": 118,
    "missing": [],
    "unsupported": []
@@ -433,7 +433,7 @@
   {
    "hero": "rift-runner",
    "key": "skill:Seismic Slam",
-   "particles": 122,
+   "particles": 493,
    "effects": 122,
    "missing": [],
    "unsupported": []
