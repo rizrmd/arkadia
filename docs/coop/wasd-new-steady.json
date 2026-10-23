@@ -2,18 +2,20 @@
  "label": "new-steady",
  "burst": false,
  "kills": 10,
- "pressesDuringSwing": 3,
+ "pressesDuringSwing": 4,
  "msToMoveWhenPressedMidSwing": [
-  32,
-  22,
-  43
+  41,
+  67,
+  58,
+  57
  ],
  "serverHeldTicksAfterInputMidSwing": [
   0,
   0,
+  0,
   0
  ],
- "medianMsToMove": 59,
- "worstMsToMove": 94,
- "swingShareOfKeyHeldTime": 0
+ "medianMsToMove": 56,
+ "worstMsToMove": 83,
+ "swingShareOfKeyHeldTime": 0.004
 }
