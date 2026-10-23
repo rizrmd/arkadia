@@ -69,17 +69,20 @@ func (s *Server) static(w http.ResponseWriter, r *http.Request) {
 	}
 	file := filepath.Join(s.Site, filepath.FromSlash(path.Clean(p)))
 	if !strings.HasPrefix(file, filepath.Clean(s.Site)+string(filepath.Separator)) {
+		w.Header().Set("Cache-Control", "no-store")
 		http.Error(w, "Forbidden", http.StatusForbidden)
 		return
 	}
 	f, err := os.Open(file)
 	if err != nil {
+		w.Header().Set("Cache-Control", "no-store")
 		http.Error(w, "Not found", http.StatusNotFound)
 		return
 	}
 	defer f.Close()
 	st, err := f.Stat()
 	if err != nil || st.IsDir() {
+		w.Header().Set("Cache-Control", "no-store")
 		http.Error(w, "Not found", http.StatusNotFound)
 		return
 	}

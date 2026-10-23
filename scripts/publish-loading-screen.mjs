@@ -66,6 +66,30 @@ When the loading screen was rendered inside Pixi (${repo('src/app/loader.ts')}),
 
 ![Task Reference 3: Mobile loading screen appearing only at 96% after initial blank wait](/api/organizations/${ORG}/task-attachments/TAd8e44d53c7acfa333b2187d4)
 
+### Reference 4 — "Try Again" Button Overlapping Wrapped Error Message
+
+When an error message wrapped onto two lines (\`The Stronghold could not load. Check your connection and try again.\`), the hardcoded \`top: 214px\` on \`#loading-retry\` caused the **Try Again** button to overlap the second line of text (\`connection and try again.\`):
+
+![Task Reference 4: Try Again button overlapping two-line error text](/api/organizations/${ORG}/task-attachments/TA138b833e837ae7c437e575f1)
+
+## Error State & "Try Again" Button Positioning Fix (Before vs. After)
+
+Placing \`#loading-meta\` and \`#loading-retry\` inside a flex-column \`#loading-footer\` container (\`top: 185px; gap: 14px; align-items: center\`) and centering \`#loading-label\` when \`#loading-screen[data-state="error"]\` is active ensures the **Try Again** button always flows cleanly below multi-line error messages with zero overlap and expands \`#loading-stage\` height (\`230 px → 290 px\`) so it scales and centers across portrait and landscape viewports ([inspect error state](https://ark-whachat.fural.space/?loadingError=1)):
+
+${img('docs/loading-screen/compare-error-retry-before-after.webp','Before and after comparison of the Try Again button positioning on the loading error screen')}
+
+### Mobile Portrait Error State (\`390 × 844\`)
+
+${img('docs/loading-screen/loading-mobile-error-retry.webp','Loading error screen with centered error text and flow-positioned Try Again button on mobile portrait (390 × 844)')}
+
+### Desktop Error State (\`1440 × 900\`)
+
+${img('docs/loading-screen/loading-desktop-error-retry.webp','Loading error screen with centered error text and flow-positioned Try Again button on desktop (1440 × 900)')}
+
+### Mobile Landscape Error State (\`844 × 390\`)
+
+${img('docs/loading-screen/loading-mobile-landscape-error-retry.webp','Loading error screen with centered error text and flow-positioned Try Again button on mobile landscape (844 × 390)')}
+
 ## Instant Pure HTML Render (\`t = 0 ms\`, Before Any JS/Pixi Loads)
 
 With the module entry script blocked so zero application or Pixi JavaScript runs, ${repo('index.html')} immediately renders the complete loading screen on the first HTML parse:

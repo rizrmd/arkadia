@@ -315,7 +315,7 @@ canvas{display:block;width:100%;height:100%}
 @media (max-aspect-ratio: 9999/10000), (orientation: portrait){
  #loading-stage{top:52%}
 }
-#loading-vignette{position:absolute;left:-110px;top:-47px;width:680px;height:340px;pointer-events:none;background:radial-gradient(50% 50% at 50% 50%,rgba(5,7,10,0.68) 0%,rgba(5,7,10,0.46) 45%,rgba(5,7,10,0.14) 78%,rgba(5,7,10,0) 100%)}
+#loading-vignette{position:absolute;left:-110px;top:-47px;width:680px;height:360px;pointer-events:none;background:radial-gradient(50% 50% at 50% 50%,rgba(5,7,10,0.68) 0%,rgba(5,7,10,0.46) 45%,rgba(5,7,10,0.14) 78%,rgba(5,7,10,0) 100%)}
 #loading-logo{position:absolute;left:35px;top:0;width:390px;height:120px;display:block;object-fit:contain;pointer-events:none}
 #loading-divider{position:absolute;left:60px;top:124px;width:340px;height:16px;display:block;pointer-events:none}
 #loading-bar-wrap{position:absolute;left:0;top:150px;width:460px;height:28px;pointer-events:none}
@@ -324,13 +324,17 @@ canvas{display:block;width:100%;height:100%}
 #loading-fill-clip{width:8px;height:10px;border-radius:1.5px;overflow:hidden;position:relative}
 #loading-fill{width:408px;height:10px;display:block}
 #loading-crest{position:absolute;top:2px;left:22px;width:24px;height:24px;display:block;pointer-events:none}
-#loading-meta{position:absolute;left:26px;right:26px;top:185px;display:flex;justify-content:space-between;align-items:baseline;pointer-events:none}
-#loading-label{font:500 17.5px/1.2 "EB Garamond","Palatino Linotype","Book Antiqua",Palatino,Georgia,"Times New Roman",serif;color:#f1e3c6;letter-spacing:0.015em;text-shadow:0 1.5px 3px rgba(0,0,0,0.95),0 0 8px rgba(0,0,0,0.8)}
-#loading-pct{font:600 18px/1.2 "Cinzel","EB Garamond","Palatino Linotype",Palatino,Georgia,serif;color:#f2c665;letter-spacing:0.02em;font-variant-numeric:tabular-nums;text-shadow:0 1.5px 3px rgba(0,0,0,0.95),0 0 8px rgba(0,0,0,0.8)}
-#loading-retry{position:absolute;left:50%;top:214px;transform:translateX(-50%);width:168px;height:42px;display:none;align-items:center;justify-content:center;cursor:pointer;border:1.5px solid #d9ab55;border-radius:4px;background:linear-gradient(180deg,#2d1c0d 0%,#160d06 100%);box-shadow:0 3px 10px rgba(0,0,0,0.85),inset 0 1px 0 rgba(255,240,196,0.35);font:600 15px/1 "Cinzel","EB Garamond",Georgia,serif;color:#f5e4bc;letter-spacing:0.04em;text-shadow:0 1px 2px #000}
+#loading-footer{position:absolute;left:26px;right:26px;top:185px;display:flex;flex-direction:column;align-items:center;gap:14px;pointer-events:none}
+#loading-meta{width:100%;display:flex;justify-content:space-between;align-items:baseline;gap:12px;pointer-events:none}
+#loading-screen[data-state="error"] #loading-meta{justify-content:center;text-align:center}
+#loading-label{font:500 17.5px/1.28 "EB Garamond","Palatino Linotype","Book Antiqua",Palatino,Georgia,"Times New Roman",serif;color:#f1e3c6;letter-spacing:0.015em;text-shadow:0 1.5px 3px rgba(0,0,0,0.95),0 0 8px rgba(0,0,0,0.8)}
+#loading-screen[data-state="error"] #loading-label{text-align:center}
+#loading-pct{font:600 18px/1.2 "Cinzel","EB Garamond","Palatino Linotype",Palatino,Georgia,serif;color:#f2c665;letter-spacing:0.02em;font-variant-numeric:tabular-nums;flex-shrink:0;text-shadow:0 1.5px 3px rgba(0,0,0,0.95),0 0 8px rgba(0,0,0,0.8)}
+#loading-screen[data-state="error"] #loading-pct{display:none}
+#loading-retry{width:168px;height:42px;flex-shrink:0;display:none;align-items:center;justify-content:center;cursor:pointer;pointer-events:auto;border:1.5px solid #d9ab55;border-radius:4px;background:linear-gradient(180deg,#2d1c0d 0%,#160d06 100%);box-shadow:0 3px 10px rgba(0,0,0,0.85),inset 0 1px 0 rgba(255,240,196,0.35);font:600 15px/1 "Cinzel","EB Garamond",Georgia,serif;color:#f5e4bc;letter-spacing:0.04em;text-shadow:0 1px 2px #000}
 #loading-retry:hover{filter:brightness(1.12)}
 </style></head><body><div id="app"></div>
-<div id="loading-screen" role="status" aria-live="polite" aria-label="Loading Arkadia">
+<div id="loading-screen" role="status" aria-live="polite" aria-label="Loading Arkadia" aria-valuenow="1" data-state="loading">
  <div id="loading-bg"></div>
  <div id="loading-dim"></div>
  <div id="loading-stage">
@@ -342,11 +346,13 @@ canvas{display:block;width:100%;height:100%}
    <div id="loading-cavity"><div id="loading-fill-clip">${inlineFillSvg}</div></div>
    ${inlineCrestSvg}
   </div>
-  <div id="loading-meta">
-   <span id="loading-label">Loading the game</span>
-   <span id="loading-pct">1%</span>
+  <div id="loading-footer">
+   <div id="loading-meta">
+    <span id="loading-label" class="loading-label">Loading the game</span>
+    <span id="loading-pct">1%</span>
+   </div>
+   <button id="loading-retry" class="loading-retry" type="button">Try Again</button>
   </div>
-  <button id="loading-retry" type="button">Try Again</button>
  </div>
 </div>
 <script>
@@ -366,20 +372,26 @@ canvas{display:block;width:100%;height:100%}
  var rawPct=params?params.get('loadingPct'):null;
  var pinnedPct=rawPct!==null&&rawPct!==''&&!Number.isNaN(Number(rawPct))?Number(rawPct):null;
  var pinnedText=params?params.get('loadingText'):null;
+ var pinnedError=params?params.get('loadingError'):null;
 
  var shown=pinnedPct!==null?Math.max(0,Math.min(100,Math.round(pinnedPct))):1;
- var statusText=pinnedText||'Loading the game';
- var failed=false,finished=false;
+ var failed=Boolean(pinnedError!==null&&pinnedError!=='');
+ var finished=false;
+ var statusText=failed?(pinnedError==='1'?'The Stronghold could not load. Check your connection and try again.':pinnedError):(pinnedText||'Loading the game');
 
  function syncLayout(){
   var w=window.innerWidth||390,h=window.innerHeight||844;
-  var s=Math.min(1.06,Math.min((w-28)/460,(h-36)/230));
+  var stageH=failed?290:230;
+  stage.style.height=stageH+'px';
+  var s=Math.min(1.06,Math.min((w-28)/460,(h-36)/stageH));
   stage.style.setProperty('--loading-scale',s.toFixed(4));
  }
  function syncState(){
   var displayPct=pinnedPct!==null?Math.max(0,Math.min(100,Math.round(pinnedPct))):shown;
   var ratio=failed?1:Math.max(0.02,Math.min(1,displayPct/100));
   var fillW=Math.round(408*ratio);
+  screen.setAttribute('aria-valuenow',String(displayPct));
+  screen.setAttribute('data-state',failed?'error':(finished?'done':'loading'));
   if(fillClip)fillClip.style.width=fillW+'px';
   if(crest){
    crest.style.display=!failed&&displayPct>0?'block':'none';
@@ -394,7 +406,7 @@ canvas{display:block;width:100%;height:100%}
  window.addEventListener('resize',syncLayout);
  if(retryBtn)retryBtn.addEventListener('click',function(){location.reload();});
 
- var bootTimer=pinnedPct===null?setInterval(function(){
+ var bootTimer=pinnedPct===null&&!failed?setInterval(function(){
   if(failed||finished||shown>=10){clearInterval(bootTimer);return;}
   shown+=1;
   syncState();
@@ -408,6 +420,7 @@ canvas{display:block;width:100%;height:100%}
 
  window.__LOADING_SCREEN__={
   set:function(pct,text){
+   failed=false;
    shown=Math.max(0,Math.min(100,Math.round(pct)));
    if(typeof text==='string')statusText=text;
    syncLayout();
@@ -422,13 +435,14 @@ canvas{display:block;width:100%;height:100%}
   },
   done:function(){
    clearInterval(bootTimer);
-   if(!failed&&pinnedPct===null){
+   if(failed)return;
+   finished=true;
+   if(pinnedPct===null){
     shown=100;
     statusText=pinnedText||'Ready';
-    syncState();
    }
-   finished=true;
-   if(!failed&&!holdLoading){
+   syncState();
+   if(!holdLoading){
     screen.style.pointerEvents='none';
     screen.style.opacity='0';
     setTimeout(removeScreen,190);
@@ -438,6 +452,7 @@ canvas{display:block;width:100%;height:100%}
    clearInterval(bootTimer);
    failed=true;
    statusText=msg;
+   syncLayout();
    syncState();
   }
  };

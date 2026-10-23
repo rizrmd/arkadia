@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-10-22T22:28:20.641Z",
+  "checkedAt": "2026-10-23T01:57:49.696Z",
   "architecture": "pure-html-instant-loading-screen",
   "instantHtmlAudit": {
     "screenVisible": true,
@@ -11,6 +11,80 @@
     "pctText": "10%",
     "noPixiCanvasYet": true
   },
+  "errorAudits": [
+    {
+      "viewport": "390x844",
+      "state": "error",
+      "labelText": "The Stronghold could not load. Check your connection and try again.",
+      "labelTextAlign": "center",
+      "pctDisplay": "none",
+      "gapBarToLabelPx": 5.5,
+      "gapLabelToRetryPx": 11,
+      "centerOffsetPx": 0,
+      "bottomMarginPx": 294.3,
+      "labelRect": {
+        "top": 470,
+        "bottom": 506,
+        "width": 321,
+        "height": 35
+      },
+      "retryRect": {
+        "top": 517,
+        "bottom": 550,
+        "width": 132,
+        "height": 33
+      },
+      "file": "docs/loading-screen/loading-mobile-error-retry.webp"
+    },
+    {
+      "viewport": "1440x900",
+      "state": "error",
+      "labelText": "The Stronghold could not load. Check your connection and try again.",
+      "labelTextAlign": "center",
+      "pctDisplay": "none",
+      "gapBarToLabelPx": 7.4,
+      "gapLabelToRetryPx": 14.8,
+      "centerOffsetPx": 0,
+      "bottomMarginPx": 264.8,
+      "labelRect": {
+        "top": 528,
+        "bottom": 576,
+        "width": 432,
+        "height": 47
+      },
+      "retryRect": {
+        "top": 591,
+        "bottom": 635,
+        "width": 178,
+        "height": 45
+      },
+      "file": "docs/loading-screen/loading-desktop-error-retry.webp"
+    },
+    {
+      "viewport": "844x390",
+      "state": "error",
+      "labelText": "The Stronghold could not load. Check your connection and try again.",
+      "labelTextAlign": "center",
+      "pctDisplay": "none",
+      "gapBarToLabelPx": 7.4,
+      "gapLabelToRetryPx": 14.8,
+      "centerOffsetPx": 0,
+      "bottomMarginPx": 30.2,
+      "labelRect": {
+        "top": 253,
+        "bottom": 300,
+        "width": 432,
+        "height": 47
+      },
+      "retryRect": {
+        "top": 315,
+        "bottom": 360,
+        "width": 178,
+        "height": 45
+      },
+      "file": "docs/loading-screen/loading-mobile-landscape-error-retry.webp"
+    }
+  ],
   "domRemovedAfterDone": true,
   "errors": [],
   "results": [
@@ -53,6 +127,30 @@
       "pct": 96,
       "text": "Raising the Stronghold",
       "file": "docs/loading-screen/loading-mobile-landscape-96.webp"
+    },
+    {
+      "name": "loading-mobile-error-retry",
+      "width": 390,
+      "height": 844,
+      "state": "error",
+      "text": "The Stronghold could not load. Check your connection and try again.",
+      "file": "docs/loading-screen/loading-mobile-error-retry.webp"
+    },
+    {
+      "name": "loading-desktop-error-retry",
+      "width": 1440,
+      "height": 900,
+      "state": "error",
+      "text": "The Stronghold could not load. Check your connection and try again.",
+      "file": "docs/loading-screen/loading-desktop-error-retry.webp"
+    },
+    {
+      "name": "loading-mobile-landscape-error-retry",
+      "width": 844,
+      "height": 390,
+      "state": "error",
+      "text": "The Stronghold could not load. Check your connection and try again.",
+      "file": "docs/loading-screen/loading-mobile-landscape-error-retry.webp"
     }
   ]
 }
