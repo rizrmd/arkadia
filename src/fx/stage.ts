@@ -3,9 +3,11 @@ import type {PixiVfxEffectInstance,PixiVfxRenderer,PixiVfxTextureProvider} from 
 import type {VfxExportedEffect} from 'nixie-fx/export';
 import type {VfxTextureAssetRef} from 'nixie-fx';
 import {groundProjection,worldProjection,type Anchor,type View} from './space';
-// The NixieFX stage: two transparent Pixi canvases layered into the world — "ground" under every figure (decals:
-// rune circles, scorch, shock rings) and "world" over them (sparks, flames, smoke) — playing the exported
-// effects of vfx/ (packed by scripts/vfx/pack.mjs into /vfx/skills.bin).
+// The NixieFX stage: two planes layered into the world — "ground" under every figure (decals: rune circles, scorch,
+// shock rings) and "world" over them (sparks, flames, smoke) — playing the exported effects of vfx/ (packed by
+// scripts/vfx/pack.mjs into /vfx/skills.bin). In the game the planes are containers of its own Pixi scene
+// ({host}), drawn by its renderer; elsewhere (the FX Lab) they are two transparent canvases of their own
+// ({under, over}: the DOM elements the ground canvas goes before and the world canvas goes after).
 // An effect is addressed by its authored file without .json, e.g. "ember-warden/flame-fan.cast"; a key ending
 // in ".ground" plays on the ground plane. Finished instances go back to a per-effect pool for reuse.
 export type Plane='ground'|'world';
@@ -31,7 +33,7 @@ export async function fetchBundle():Promise<{manifest:unknown;effects:Record<str
  const res=await fetch(BUNDLE);if(!res.ok||!res.body)throw Error(`${BUNDLE}: ${res.status}`);
  return new Response(res.body.pipeThrough(new DecompressionStream('gzip'))).json();
 }
-// Pixi and NixieFX load with the effect bundle, after the game's first paint (the world itself is drawn without Pixi).
+// NixieFX (and Pixi, where the page has none yet) loads with the effect bundle, after the first paint.
 const PIXI=()=>import('pixi.js');
 const planeOf=(key:string):Plane=>key.endsWith('.ground')?'ground':'world';
 
@@ -49,11 +51,12 @@ async function mountPlane(host:{before?:Element;after?:Element},id:string,z:stri
  return app;
 }
 
-export function createFxStage(o:{under:Element;over:Element;bloom?:boolean}){
+export type FxStageOptions={under?:Element;over?:Element;host?:{ground:Container;world:Container};bloom?:boolean};
+export function createFxStage(o:FxStageOptions){
  const view:View={x:0,y:0,scale:1};
  const effects=new Map<string,VfxExportedEffect>(),pool=new Map<string,PixiVfxEffectInstance[]>(),live:Live[]=[];
  const pending:{at:number;run:()=>void}[]=[];
- let clock=0,ready=false,failed='',planes:Record<Plane,{app:Application;vfx:PixiVfxRenderer;root:Container}>|null=null;
+ let clock=0,ready=false,failed='',planes:Record<Plane,{app:Application|null;vfx:PixiVfxRenderer;root:Container}>|null=null;
  let Rect:typeof import('pixi.js').Rectangle|null=null;
  let played=0,peakParticles=0,idle=false;
  const textures=new Map<string,Texture>();
@@ -69,15 +72,17 @@ export function createFxStage(o:{under:Element;over:Element;bloom?:boolean}){
   const bundle=loadVfxExportBundle({manifest:packed.manifest,effectsByPath:packed.effects},{requiredBackend:'pixi2d'});
   for(const fx of bundle.effectsById.values())effects.set((fx.sourceEffectFile??fx.id).replace(/\.json$/,''),fx);
   await textureProvider.preload!(bundle.manifest.assets.filter((a):a is VfxTextureAssetRef=>a.type==='texture'));
-  const [ground,world]=await Promise.all([mountPlane({before:o.under},'world-fx-ground',''),mountPlane({after:o.over},'world-fx-over',';z-index:3')]);
   const {Container,Rectangle}=await PIXI();Rect=Rectangle;
-  const make=(app:Application,flat:boolean,bloom:boolean)=>{const root=new Container();if(flat)root.scale.set(1,.5);app.stage.addChild(root);
-   return {app,root,vfx:new PixiVfxRenderer({parent:root,textureProvider,pixiRenderer:bloom?app.renderer:undefined,bloom:bloom?{enabled:true,quality:'low',threshold:1,intensity:1.6,radius:22}:undefined})};};
-  planes={ground:make(ground,true,false),world:make(world,false,o.bloom??BLOOM)};
+  // The ground plane is drawn as seen from above and squashed to the 2:1 ground (space.ts groundProjection).
+  const make=(parent:Container,app:Application|null,flat:boolean,bloom:boolean)=>{const root=new Container();if(flat)root.scale.set(1,.5);parent.addChild(root);
+   return {app,root,vfx:new PixiVfxRenderer({parent:root,textureProvider,pixiRenderer:bloom&&app?app.renderer:undefined,bloom:bloom&&app?{enabled:true,quality:'low',threshold:1,intensity:1.6,radius:22}:undefined})};};
+  if(o.host)planes={ground:make(o.host.ground,null,true,false),world:make(o.host.world,null,false,false)};
+  else{const [ground,world]=await Promise.all([mountPlane({before:o.under!},'world-fx-ground',''),mountPlane({after:o.over!},'world-fx-over',';z-index:3')]);
+   planes={ground:make(ground.stage,ground,true,false),world:make(world.stage,world,false,o.bloom??BLOOM)};}
   resize();addEventListener('resize',resize);ready=true;
  })().catch(e=>{failed=String(e?.message??e);console.error('NixieFX stage unavailable; skills play without particle effects.',e);});
 
- function resize(){if(!planes||!Rect)return;const Rectangle=Rect;const w=innerWidth,h=innerHeight;for(const p of Object.values(planes))p.app.renderer.resize(w,h);
+ function resize(){if(!planes||!Rect)return;const Rectangle=Rect;const w=innerWidth,h=innerHeight;for(const p of Object.values(planes))p.app?.renderer.resize(w,h);
   planes.world.vfx.setBoundsArea(new Rectangle(-64,-64,w+128,h+128));planes.ground.vfx.setBoundsArea(new Rectangle(-64,-128,w+128,h*2+256));}
  function projection(plane:Plane,a:Anchor){return plane==='ground'?groundProjection(view,a):worldProjection(view,a);}
 
@@ -112,8 +117,9 @@ export function createFxStage(o:{under:Element;over:Element;bloom?:boolean}){
   for(let i=live.length-1;i>=0;i--){const l=live[i];if(l.inst.isActive)continue;live.splice(i,1);
    const list=pool.get(l.key)??[];if(list.length<POOL){l.inst.stop();l.inst.root.visible=false;list.push(l.inst);pool.set(l.key,list);}else planes[l.plane].vfx.removeEffect(l.inst,true);}
   peakParticles=Math.max(peakParticles,planes.world.vfx.stats.activeParticles+planes.ground.vfx.stats.activeParticles);
-  // Nothing playing: draw the cleared planes once, then leave the GPU alone until something plays.
-  const empty=!live.length&&!pending.length;if(render&&!(empty&&idle)){planes.ground.app.render();planes.world.app.render();}idle=empty;
+  // Own canvases only (a host scene renders itself): nothing playing draws the cleared planes once, then leaves
+  // the GPU alone until something plays.
+  const empty=!live.length&&!pending.length;if(render&&!(empty&&idle)){planes.ground.app?.render();planes.world.app?.render();}idle=empty;
  }
 
  return {

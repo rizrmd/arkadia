@@ -13,7 +13,7 @@ try{
  const errors=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
  await page.clock.install();
  await page.goto(`${GAME}/?offline=1&hero=${hero}&time=${time}`);
- await page.waitForFunction(()=>window.__STRONGHOLD_COMBAT__&&document.querySelector('#world-vfx-over')?.dataset.fx==='ready'&&!document.querySelector('#loading-screen'),null,{timeout:180000});
+ await page.waitForFunction(()=>window.__STRONGHOLD_COMBAT__?.snapshot().vfx.fx.ready&&!document.querySelector('#loading-screen'),null,{timeout:180000});
  const spot=await page.evaluate(()=>{const c=window.__STRONGHOLD_COMBAT__;
   for(let u=18;u<30;u+=.25)for(let v=18;v<30;v+=.25)if(c.clear(u,v)&&c.clear(u+2.6,v-.4)&&c.clear(u+2.4,v+.6)&&c.teleport(u,v)){
    const a=c.summon(u+2.6,v-.5,12),b=c.summon(u+2.3,v+.7,12),d=c.summon(u+3.2,v+.1,12);return {u,v,a,b,d};}
