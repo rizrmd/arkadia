@@ -1,0 +1,97 @@
+{
+  "verifiedAt": "2026-10-23T02:17:52.354Z",
+  "baseUrl": "http://127.0.0.1:8799",
+  "pageErrors": 0,
+  "tracelogPostsCaptured": 3,
+  "serverStoredCount": 3,
+  "serverSummary": {
+    "byReason": {
+      "frame_spike": 2,
+      "sustained_low_fps": 1
+    },
+    "byBottleneck": {
+      "encounters-render": 1,
+      "pixi-render": 1,
+      "shadow-cast": 1
+    },
+    "lowestFps": 16.88,
+    "worstFrameMs": 583.3
+  },
+  "sustainedDropSample": {
+    "id": "tl-mvkcb8sj-2",
+    "reason": "sustained_low_fps",
+    "fps": 22.07,
+    "minFps": 19.05,
+    "p95FrameMs": 52.5,
+    "maxFrameMs": 52.5,
+    "bottleneck": "encounters-render",
+    "phasesAvg": {
+      "worldDrawMs": 1.36,
+      "worldPaintMs": 0,
+      "shadowCastMs": 0,
+      "encountersStepMs": 1.98,
+      "encountersRenderMs": 31.14,
+      "pixiRenderMs": 3.9,
+      "netMs": 0.38,
+      "unaccountedMs": 6.56
+    },
+    "phasesMax": {
+      "worldDrawMs": 1.4,
+      "worldPaintMs": 0,
+      "shadowCastMs": 0,
+      "encountersStepMs": 2.1,
+      "encountersRenderMs": 38.4,
+      "pixiRenderMs": 4.1,
+      "netMs": 0.4,
+      "unaccountedMs": 8.4
+    },
+    "scene": {
+      "mode": "coop",
+      "room": "USHQJ",
+      "playerId": "p1",
+      "rttMs": 1.5,
+      "hero": "rift-runner",
+      "heroState": "idle",
+      "heroU": 11.66,
+      "heroV": 11.46,
+      "safeZone": true,
+      "level": 1,
+      "heroesCount": 1,
+      "foesTotal": 8,
+      "foesRendered": 8,
+      "particles": 0,
+      "liveEffects": 0,
+      "activeFloats": 0,
+      "projectiles": 0,
+      "aoes": 0,
+      "scale": 1.35,
+      "camera": "idle",
+      "gate": "closed",
+      "lighting": "on",
+      "torches": "off",
+      "sun": "none",
+      "surfacePaints": 0,
+      "lightPaints": 0,
+      "shadowPaints": 0
+    },
+    "frameSampleCount": 60
+  },
+  "frameSpikeSample": {
+    "id": "tl-mvkcb8v7-3",
+    "reason": "frame_spike",
+    "fps": 50.05,
+    "minFps": 8.47,
+    "maxFrameMs": 118,
+    "bottleneck": "shadow-cast",
+    "phasesMax": {
+      "worldDrawMs": 1.4,
+      "worldPaintMs": 0,
+      "shadowCastMs": 84.2,
+      "encountersStepMs": 2.1,
+      "encountersRenderMs": 3.2,
+      "pixiRenderMs": 4.1,
+      "netMs": 0.4,
+      "unaccountedMs": 106.8
+    }
+  }
+}

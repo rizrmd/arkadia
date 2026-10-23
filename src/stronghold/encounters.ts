@@ -16,6 +16,7 @@ import {loadImage} from '../app/loader';
 import type {Net} from './net/client';
 import {characters,DEFAULT_HERO,heroInfo,type HeroId} from './heroes';
 import {createCombatVfx,facingScreenAngle,SKILL_CATALOG,type SkillId} from './combat-vfx';
+import {measureTracelogPhase} from './tracelog';
 
 const SCALE=DISPLAY/1.1;
 const HERO_REACH=STATS.hero.reach*SCALE,ENEMY_REACH=STATS.revenant.reach*SCALE,SIDE=.35*SCALE,SPACING=.72*SCALE;
@@ -697,7 +698,7 @@ export async function createEncounters(o:{
  }
  let last=0;
  let frameAt=performance.now();
- const loop=(now:number)=>{let dt=last?Math.min(now-last,120):16;last=now;frameAt=now;for(;dt>0;dt-=34)step(Math.min(dt,34));render();requestAnimationFrame(loop);};
+ const loop=(now:number)=>{let dt=last?Math.min(now-last,120):16;last=now;frameAt=now;measureTracelogPhase('encountersStep',()=>{for(;dt>0;dt-=34)step(Math.min(dt,34));});measureTracelogPhase('encountersRender',render);requestAnimationFrame(loop);};
  const buildLoadoutSnapshot=()=>{
   const hid=currentHeroId();
   syncHeroLoadout(run,hid);
@@ -733,6 +734,7 @@ export async function createEncounters(o:{
  const api={
   hud,
   isModalOpen:()=>blessingModal.visible,
+  combatants:()=>[o.hero.position(),...foes.filter(f=>f.alive).map(f=>tilePoint(f.x,f.y))],
   steer,
   reach:()=>reach(run),
   pose:():Pose|null=>h.state==='idle'||h.state==='move'?null:{clip:h.state,t:h.t},

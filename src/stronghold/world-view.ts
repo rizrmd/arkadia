@@ -15,6 +15,8 @@ import type {HudCallbacks} from '../typography/hud';
 import type {Net} from './net/client';
 import {createParty} from './party';
 import {characters,atlasUrl,DEFAULT_HERO,type HeroId} from './heroes';
+import {measureTracelogPhase} from './tracelog';
+import {createParallax} from './parallax';
 
 export async function createWorldView(
  rt:SharedPixiRuntime,
@@ -157,14 +159,16 @@ export async function createWorldView(
  const SHADE=.35,mask=document.createElement('canvas'),soft=document.createElement('canvas');mask.width=soft.width=Math.ceil(worldWidth*SHADE);mask.height=soft.height=Math.ceil(worldHeight*SHADE);
  function drawSprite(c:CanvasRenderingContext2D,p:(typeof objects)[number]){c.save();c.globalAlpha=p.opacity;c.translate(p.x,p.y);c.transform(1,p.shear,0,p.vertical,0,0);drawFoundation(c,p,images.get(FOUNDATION_SOIL)!,'under',images.get(FOUNDATION_DRIFT),images.get(FOUNDATION_MOSS));if(p.selected){c.shadowColor='#ffca64';c.shadowBlur=9;}c.drawImage(p.image,-p.width/2,-p.height*p.foot,p.width,p.height);c.shadowBlur=0;drawFoundation(c,p,images.get(FOUNDATION_SOIL)!,'face',images.get(FOUNDATION_DRIFT),images.get(FOUNDATION_MOSS));c.restore();}
  function castShadows(paint=true){
-  const s=lighting.sun();if(!s.alpha){lighting.setShadow(null,0,paint);return;}const m=mask.getContext('2d')!,g=soft.getContext('2d')!;
-  m.setTransform(1,0,0,1,0,0);m.clearRect(0,0,mask.width,mask.height);m.setTransform(SHADE,0,0,SHADE,-left*SHADE,-top*SHADE);m.fillStyle='rgb(20,28,44)';
-  for(const p of objects){if(p.layer==='ground'||p.opacity<1)continue;
-   for(const c of footprint(p)){const vx=c.height*s.dx,vy=c.height*s.dy,a=c.x-c.w/2,b=c.x+c.w/2;
-    const h=hull([[a,c.back],[b,c.back],[a,c.front],[b,c.front],[a+vx,c.back+vy],[b+vx,c.back+vy],[a+vx,c.front+vy],[b+vx,c.front+vy]]);
-    m.beginPath();h.forEach(([x,y],i)=>i?m.lineTo(x,y):m.moveTo(x,y));m.fill();}}
-  g.clearRect(0,0,soft.width,soft.height);g.filter=`blur(${(.7+Math.hypot(s.dx,s.dy*2)).toFixed(2)}px)`;g.drawImage(mask,0,0);g.filter='none';
-  lighting.setShadow(soft,s.alpha,paint);
+  measureTracelogPhase('shadowCast',()=>{
+   const s=lighting.sun();if(!s.alpha){lighting.setShadow(null,0,paint);return;}const m=mask.getContext('2d')!,g=soft.getContext('2d')!;
+   m.setTransform(1,0,0,1,0,0);m.clearRect(0,0,mask.width,mask.height);m.setTransform(SHADE,0,0,SHADE,-left*SHADE,-top*SHADE);m.fillStyle='rgb(20,28,44)';
+   for(const p of objects){if(p.layer==='ground'||p.opacity<1)continue;
+    for(const c of footprint(p)){const vx=c.height*s.dx,vy=c.height*s.dy,a=c.x-c.w/2,b=c.x+c.w/2;
+     const h=hull([[a,c.back],[b,c.back],[a,c.front],[b,c.front],[a+vx,c.back+vy],[b+vx,c.back+vy],[a+vx,c.front+vy],[b+vx,c.front+vy]]);
+     m.beginPath();h.forEach(([x,y],i)=>i?m.lineTo(x,y):m.moveTo(x,y));m.fill();}}
+   g.clearRect(0,0,soft.width,soft.height);g.filter=`blur(${(.7+Math.hypot(s.dx,s.dy*2)).toFixed(2)}px)`;g.drawImage(mask,0,0);g.filter='none';
+   lighting.setShadow(soft,s.alpha,paint);
+  });
  }
 
  progress(loaded,steps,'Waking the hero');
@@ -183,28 +187,33 @@ export async function createWorldView(
 
  const uprights=document.createElement('canvas');uprights.id='world-uprights';uprights.width=surface.width;uprights.height=surface.height;
  function paintWorld(){
-  const u=uprights.getContext('2d')!;u.setTransform(1,0,0,1,0,0);u.clearRect(0,0,uprights.width,uprights.height);
-  for(const c of [sc,u])c.setTransform(surface.width/worldWidth,0,0,surface.height/worldHeight,-left*surface.width/worldWidth,-top*surface.height/worldHeight);
-  sc.fillStyle=snowPattern;sc.fillRect(left,top,worldWidth,worldHeight);sc.fillStyle=pavingPattern;sc.fill(paved);sc.drawImage(apron,apronX,apronY);sc.drawImage(shadow,shadowLeft,shadowTop);
-  for(const p of objects){if(p.id==='gate'){sc.save();sc.translate(p.x,p.y);drawFoundation(sc,p,images.get(FOUNDATION_SOIL)!,'under',images.get(FOUNDATION_DRIFT),images.get(FOUNDATION_MOSS));sc.restore();}else drawSprite(p.layer==='ground'?sc:u,p);}
-  castShadows(false);
-  surface.dataset.foundations='soil-moss-v1';dirty=false;surface.dataset.paints=String(Number(surface.dataset.paints||0)+1);lighting.capture(uprights);doors.refreshLighting();
-  surfaceView.sync(worldWidth*scale,worldHeight*scale);
+  measureTracelogPhase('worldPaint',()=>{
+   const u=uprights.getContext('2d')!;u.setTransform(1,0,0,1,0,0);u.clearRect(0,0,uprights.width,uprights.height);
+   for(const c of [sc,u])c.setTransform(surface.width/worldWidth,0,0,surface.height/worldHeight,-left*surface.width/worldWidth,-top*surface.height/worldHeight);
+   sc.fillStyle=snowPattern;sc.fillRect(left,top,worldWidth,worldHeight);sc.fillStyle=pavingPattern;sc.fill(paved);sc.drawImage(apron,apronX,apronY);sc.drawImage(shadow,shadowLeft,shadowTop);
+   for(const p of objects){if(p.id==='gate'){sc.save();sc.translate(p.x,p.y);drawFoundation(sc,p,images.get(FOUNDATION_SOIL)!,'under',images.get(FOUNDATION_DRIFT),images.get(FOUNDATION_MOSS));sc.restore();}else drawSprite(p.layer==='ground'?sc:u,p);}
+   castShadows(false);
+   surface.dataset.foundations='soil-moss-v1';dirty=false;surface.dataset.paints=String(Number(surface.dataset.paints||0)+1);lighting.capture(uprights);doors.refreshLighting();
+   surfaceView.sync(worldWidth*scale,worldHeight*scale);
+  });
  }
  function draw(){
-  if(!w||!h)return;if(dirty)paintWorld();const x=w/2-cx*scale,y=h/2-cy*scale;
-  surfaceView.sprite.position.set(x+left*scale,y+top*scale);
-  surfaceView.sprite.width=worldWidth*scale;
-  surfaceView.sprite.height=worldHeight*scale;
-  lighting.place(x,y,scale);doors.place(x,y,scale);hero.place(x,y,scale);party?.place(x,y,scale);encounters?.place(x,y,scale);
+  if(!w||!h)return;
+  measureTracelogPhase('worldDraw',()=>{
+   if(dirty)paintWorld();const x=w/2-cx*scale,y=h/2-cy*scale;
+   surfaceView.sprite.position.set(x+left*scale,y+top*scale);
+   surfaceView.sprite.width=worldWidth*scale;
+   surfaceView.sprite.height=worldHeight*scale;
+   lighting.place(x,y,scale);doors.place(x,y,scale);hero.place(x,y,scale);party?.place(x,y,scale);encounters?.place(x,y,scale);
 
-  snowSprite.width=w;
-  snowSprite.height=h;
-  snowSprite.tileScale.set(scale);
-  snowSprite.tilePosition.set(x,y);
+   snowSprite.width=w;
+   snowSprite.height=h;
+   snowSprite.tileScale.set(scale);
+   snowSprite.tilePosition.set(x,y);
 
-  canvas.dataset.ready='true';canvas.dataset.mode='full-screen';canvas.dataset.renderer='pixi-msdf-world';
-  canvas.dataset.zoom='locked';canvas.dataset.scale=scale.toFixed(4);canvas.dataset.targetScale=targetScale().toFixed(4);canvas.dataset.reach=reachFactor().toFixed(2);
+   canvas.dataset.ready='true';canvas.dataset.mode='full-screen';canvas.dataset.renderer='pixi-msdf-world';
+   canvas.dataset.zoom='locked';canvas.dataset.scale=scale.toFixed(4);canvas.dataset.targetScale=targetScale().toFixed(4);canvas.dataset.reach=reachFactor().toFixed(2);
+  });
  }
  function requestDraw(){if(!frame)frame=requestAnimationFrame(()=>{frame=0;draw();});}
  const baseScale=()=>Math.max(1,Math.min(1.35,h/630));

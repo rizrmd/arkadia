@@ -9,6 +9,7 @@ import {createNet} from './net/client';
 import {createLobby} from './net/lobby';
 import {savedHero,saveHero,type HeroId} from './heroes';
 import {createHeroPicker} from './hero-picker';
+import {startFpsTracelog} from './tracelog';
 
 export async function mount(app:HTMLElement,progress:Progress){
  const rt=await ensurePixiRuntime(app);
@@ -73,6 +74,7 @@ export async function mount(app:HTMLElement,progress:Progress){
  render();
 
  await new Promise<void>(done=>{const check=()=>canvas.dataset.ready==='true'?done():requestAnimationFrame(check);check();});
+ startFpsTracelog({rt,getCombatSnapshot:()=>worldView.encounters.snapshot(),net,getHeroId:()=>hero});
  void picker.start().then(()=>{if(invited)lobby!.prompt(invited);});
 
  (window as any).__COOP__=net&&{net,stats:()=>({status:net.status(),room:net.room(),you:net.you(),...net.stats,...net.timeline,rtt:net.rtt()})};

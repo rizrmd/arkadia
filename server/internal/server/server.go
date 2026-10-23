@@ -23,11 +23,12 @@ import (
 
 // Server routes HTTP requests.
 type Server struct {
-	Rooms     *room.Registry
-	Site      string // directory of the built client
-	CacheDir  string // directory for cached lossless WebP conversions (defaults to <Site>/.webp-cache)
-	Log       *slog.Logger
-	webpLocks sync.Map
+	Rooms        *room.Registry
+	Site         string // directory of the built client
+	CacheDir     string // directory for cached lossless WebP conversions (defaults to <Site>/.webp-cache)
+	Log          *slog.Logger
+	webpLocks    sync.Map
+	tracelogOnce sync.Map
 }
 
 // Handler returns the HTTP routes.
@@ -35,6 +36,9 @@ func (s *Server) Handler() http.Handler {
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /ws", s.ws)
 	mux.HandleFunc("GET /api/rooms/{code}", s.roomInfo)
+	mux.HandleFunc("POST /api/tracelogs", s.postTracelog)
+	mux.HandleFunc("GET /api/tracelogs", s.listTracelogs)
+	mux.HandleFunc("GET /api/tracelogs/{id}", s.getTracelog)
 	mux.HandleFunc("GET /asset-sizes.json", s.serveAssetSizes)
 	mux.HandleFunc("GET /healthz", func(w http.ResponseWriter, _ *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
