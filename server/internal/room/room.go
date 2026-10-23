@@ -226,8 +226,8 @@ type Welcome struct {
 // Snapshot is the per-tick world state plus, for this client, the last input sequence the server applied, how
 // many steps it has guessed ahead of that on its own (sim.Player.Owed) and, while it has, where the last applied
 // input left the hero (Bx, By: the client predicts from there, as the guesses are walked again with the real
-// inputs), how many more ticks a swing, hit stun or death holds the hero (Hd: the inputs applied in them do not
-// walk, so the client's prediction skips as many) and how many of its inputs wait queued (the client paces its
+// inputs), how many more ticks a hit stun or death holds the hero (Hd: the inputs applied in them do not walk, so
+// the client's prediction skips as many; a walking input cancels a swing) and how many of its inputs wait queued (the client paces its
 // sending to keep about one there, so a late input rarely leaves the server without one).
 type Snapshot struct {
 	T   string   `json:"t"`

@@ -217,10 +217,11 @@ func TestABacklogAfterAStallDrains(t *testing.T) {
 	}
 }
 
-// HoldTicks, sent to the client with every snapshot, is exactly the number of inputs a hit stun or a swing uses
-// up without walking, counted from the tick it started: the client's prediction skips that many and no more.
+// HoldTicks, sent to the client with every snapshot, is exactly the number of inputs a hit stun uses up without
+// walking, counted from the tick it started: the client's prediction skips that many and no more. (A swing uses
+// none: TestHeldWalkIsNeverLockedInASwing.)
 func TestHoldTicksCountTheInputsAPoseUsesUp(t *testing.T) {
-	for _, state := range []string{Hit, Attack} {
+	for _, state := range []string{Hit} {
 		w := newTestWorld(t)
 		w.Enemies = nil
 		p := w.AddPlayer("a", "A", 100)
@@ -587,3 +588,41 @@ func TestHeroRespawnAndResumeNeverStickOrResetWildsProgress(t *testing.T) {
 	}
 }
 
+// A hero walking past a revenant keeps walking: one input arriving a tick late (network jitter) must not let the
+// auto attack start a swing under a held key, and a key pressed during a swing cancels it at once, as solo play
+// does (encounters.ts step).
+func TestHeldWalkIsNeverLockedInASwing(t *testing.T) {
+	w := newTestWorld(t)
+	p := w.AddPlayer("a", "A", 100)
+	at := Vec{gateTile + 2.5, gateTile + 2.5}
+	px := TilePoint(at.X, at.Y)
+	p.X, p.Y, p.F.Pos = px.X, px.Y, at
+	w.spawnTimer = 1e9
+	e := &Enemy{ID: 1, F: newFighter(Revenant, Vec{at.X + heroReach*.6, at.Y + heroReach*.6}), Home: at}
+	e.F.Cooldown, e.F.Immune = 1e9, 1e9
+	w.Enemies, w.nextEnemy = []*Enemy{e}, 2
+	// Standing still beside it, the hero swings.
+	run(w, 2)
+	if p.F.State != Attack {
+		t.Fatalf("idle hero beside a revenant is %q, want a swing", p.F.State)
+	}
+	// Pressing a key mid-swing walks on this very input.
+	x, y := p.X, p.Y
+	drive(w, 1, walker{p, right})
+	if p.X == x && p.Y == y {
+		t.Fatalf("a held key did not cancel the swing (state %q)", p.F.State)
+	}
+	if p.HoldTicks() != 0 {
+		t.Fatalf("a swing holds %d inputs, but a walk cancels it", p.HoldTicks())
+	}
+	// Jittery inputs: every third tick nothing arrives, the next brings two. The hero never swings again.
+	for i := 0; i < 60; i++ {
+		if i%3 != 2 {
+			p.Queue(Input{Seq: p.nextSeq(), X: right.X, Y: right.Y})
+		}
+		w.Step()
+		if p.F.State == Attack {
+			t.Fatalf("tick %d: hero holding a key started a swing", i)
+		}
+	}
+}

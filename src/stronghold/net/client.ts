@@ -9,8 +9,8 @@ import {measureTracelogPhase} from '../tracelog';
 // and each snapshot rebases it on the server's position after the last acknowledged input, replaying the rest.
 // Steps the server guessed ahead of late inputs are not part of that position (it sends the one under them):
 // it walks them again with the real inputs when they arrive, as this prediction already has.
-// A swing, hit stun or death holds the hero for the next few inputs the server applies (hd), not from the moment
-// this client hears of it, so prediction skips exactly those and walks the rest. A mismatch that remains (an
+// A hit stun or death holds the hero for the next few inputs the server applies (hd), not from the moment this
+// client hears of it, so prediction skips exactly those and walks the rest; a walking input cancels a swing. A mismatch that remains (an
 // auto-step, inputs used up by a hit before this client knew of it) is blended out over ~90 ms instead of
 // snapping. Other heroes and every revenant are drawn slightly in the past on an adaptive render clock with
 // bounded extrapolation (timeline.ts).
@@ -53,8 +53,9 @@ export function createNet(o:{direction:()=>Walk;maxHp:()=>number;hero:()=>string
   // Under any steps the server guessed ahead of late inputs (sim.Player.Owed): where the last applied input left it.
   // A hero held in a swing or hit keeps the guessed steps.
   const idle=me.st==='idle';let x=idle?s.bx??me.x:me.x,y=idle?s.by??me.y:me.y;
-  // The next hd inputs the server applies are used up by the swing, hit stun or death (a server without hd: all).
-  hold=s.hd??(idle?0:1e9);
+  // The next hd inputs the server applies are used up by a hit stun or death. A swing holds none: a walking input
+  // cancels it on the server as in solo play, so a missing hd (omitted when 0) never freezes the prediction.
+  hold=s.hd??0;
   margins.push((s.q??0)-(s.ow??0));if(margins.length>PACE_WINDOW)margins.shift();
   const margin=Math.min(...margins);pace=margin<1?1-PACE:margin>2?1+PACE:1;stats.pace=pace;stats.margin=margin;
   // The gateway as it will stand for each input (its doors move once per server tick, after that tick's walk).

@@ -378,15 +378,20 @@ const (
 	maxOwed   = 3
 	backlog   = 2
 	maxTokens = 8
+	quiet     = 20
 )
 
 func (w *World) walkInputs(p *Player, dt float64) {
+	// Steering (which holds off the auto attack) follows the player's last real input, not the vector walked this
+	// tick: a key held through a late input still steers, so the hero is not locked into a swing by a gap in the
+	// network. A client quiet for a second has let go.
+	defer func() { p.steering = (p.last.X != 0 || p.last.Y != 0) && p.starved <= quiet }()
 	p.tokens = math.Min(p.tokens+1, maxTokens)
 	if p.Owed > 0 && len(p.queue) > 0 {
 		p.starved = 0
 		k := min(p.Owed, len(p.queue))
-		// A hero held in a swing or hit since keeps its place; those inputs are only acknowledged.
-		replay := !posed(p)
+		// A hero held in a hit since keeps its place; those inputs are only acknowledged.
+		replay := !held(p)
 		if replay {
 			p.X, p.Y = p.BaseX, p.BaseY
 		}
@@ -433,7 +438,7 @@ func (w *World) walkInputs(p *Player, dt float64) {
 		return
 	}
 	p.starved++
-	if p.starved <= maxOwed && p.Owed < maxOwed && p.tokens >= 1 && (p.last.X != 0 || p.last.Y != 0) && !posed(p) {
+	if p.starved <= maxOwed && p.Owed < maxOwed && p.tokens >= 1 && (p.last.X != 0 || p.last.Y != 0) && !held(p) {
 		if p.Owed == 0 {
 			p.BaseX, p.BaseY = p.X, p.Y
 		}
@@ -444,23 +449,22 @@ func (w *World) walkInputs(p *Player, dt float64) {
 	}
 	// A client that went quiet (a background tab, a dropped connection) stops; its guessed steps stand and its
 	// prediction rebases on wherever the server left the hero.
-	if p.starved > 20 {
+	if p.starved > quiet {
 		p.Owed = 0
 	}
 	w.walk(p, Vec{}, dt)
 }
 
-// posed: a swing, hit stun or death holds the hero in place.
-func posed(p *Player) bool { return p.F.State != Idle }
+// held: a hit stun or death holds the hero in place. A swing does not: walking cancels it (walk), as in solo play.
+func held(p *Player) bool { return p.F.State != Idle && p.F.State != Attack }
 
-// HoldTicks is how many more ticks a swing or hit stun holds the hero in place (a death: until it respawns). The
-// input applied in each of them is used up without walking, so the client skips as many of the inputs it has
-// sent since the acknowledged one instead of walking them in its prediction.
+// HoldTicks is how many more ticks a hit stun holds the hero in place (a death: until it respawns). The input
+// applied in each of them is used up without walking, so the client skips as many of the inputs it has sent since
+// the acknowledged one instead of walking them in its prediction. A swing holds none: a walking input cancels it
+// and walks, and a still one stands anyway.
 func (p *Player) HoldTicks() int {
 	s := kinds[p.F.Kind]
 	switch p.F.State {
-	case Attack:
-		return max(0, int(math.Ceil((s.attackMs-p.F.T)/TickMS)))
 	case Hit:
 		return max(0, int(math.Ceil((s.hitMs-p.F.T)/TickMS)))
 	case Die:
@@ -471,8 +475,10 @@ func (p *Player) HoldTicks() int {
 
 // walk moves a hero one tick along a screen-space vector, sliding along whatever blocks the full step (hero.ts).
 func (w *World) walk(p *Player, input Vec, dt float64) {
-	p.steering = input.X != 0 || input.Y != 0
-	if posed(p) {
+	if p.F.State == Attack && (input.X != 0 || input.Y != 0) {
+		p.F.Play(Idle)
+	}
+	if p.F.State != Idle {
 		p.Moving = false
 		return
 	}
