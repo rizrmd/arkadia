@@ -19,7 +19,7 @@ try{
   const initial=await page.evaluate(()=>window.__STRONGHOLD_COMBAT__.snapshot().hero);
   await page.evaluate(()=>window.__STRONGHOLD_COMBAT__.setPreviewMode(true));
   await page.evaluate(initial=>{const a=window.__STRONGHOLD_COMBAT__;a.setPreviewMode(true);a.clearFoes();a.teleport(initial.u,initial.v);},initial);await page.waitForTimeout(2000);
-  const shots=name==='desktop'?[['court',null],['ridge-ramp',[25.5,14.2]],['on-ridge',[25.5,7.2]],['behind-ridge',[25.5,4.5]],['on-terrace',[5.5,25]]]:name==='phone'?[['court',null],['on-ridge',[25.5,7.2]]]:[['on-ridge',[25.5,7.2]]];
+  const shots=name==='desktop'?[['court',null],['ridge-ramp',[25.5,14.2]],['on-ridge',[25.5,7.2]],['ramp-middle',[25.5,11.5]],['ramp-shoulder',[24.5,10.2]],['behind-ridge',[25.5,4.5]],['on-terrace',[5.5,25]]]:name==='phone'?[['court',null],['on-ridge',[25.5,7.2]],['ramp-middle',[25.5,11.5]]]:[['on-ridge',[25.5,7.2]]];
   for(const [shot,at] of shots.filter(s=>!process.env.COURT_ONLY||s[0]==='court')){
    if(at){const ok=await page.evaluate(([u,v])=>window.__STRONGHOLD_COMBAT__.teleport(u,v),at);if(!ok)throw Error('teleport failed for '+shot);await page.waitForTimeout(2500);}
    const file=`${OUT}/${name}-${shot}.png`;await page.screenshot({path:file});
@@ -41,8 +41,8 @@ try{
    }
   }
   const perf=await page.evaluate(async()=>{
-   const samples=[];let last=performance.now();await new Promise(resolve=>{const next=t=>{samples.push(t-last);last=t;if(samples.length<30)requestAnimationFrame(next);else resolve();};requestAnimationFrame(next);});
-   samples.sort((a,b)=>a-b);return {frameIntervalMs:{p50:samples[15],p95:samples[28]},resources:performance.getEntriesByType('resource').filter(x=>x.name.includes('cliff-strip')).map(x=>({name:x.name,transferSize:x.transferSize,decodedBodySize:x.decodedBodySize}))};
+   const samples=[];let last=performance.now();await new Promise(resolve=>{const next=t=>{samples.push(t-last);last=t;if(samples.length<15)requestAnimationFrame(next);else resolve();};requestAnimationFrame(next);});
+   samples.sort((a,b)=>a-b);return {frameIntervalMs:{p50:samples[7],p95:samples[14]},resources:performance.getEntriesByType('resource').filter(x=>x.name.includes('cliff-strip')).map(x=>({name:x.name,transferSize:x.transferSize,decodedBodySize:x.decodedBodySize}))};
   });report.performance.push({camera:name,...perf});
   await browser.close();browser=null;
  }
