@@ -66,23 +66,14 @@ export async function createEncounters(o:{
  const currentHeroId=():HeroId=>o.hero.hero?.()??DEFAULT_HERO;
  const start=o.hero.position(),h=new Fighter('hero',heroMeta.clips,toTile(start.x,start.y).u,toTile(start.x,start.y).v);
  let maxHp=STATS.hero.hp,kills=0,spawnTimer=0,ambient='255,255,255',origin={x:0,y:0,scale:1};
- let run=fresh(currentHeroId()),baseHp=100,levelUpPulseMs=0,comboHighlightMs=0,regenAccum=0,lastCoopAutoCasts=0;
+ let run=fresh(currentHeroId()),baseHp=100,levelUpPulseMs=0,regenAccum=0,lastCoopAutoCasts=0;
  const local:Foe[]=[],spawns:{u:number;v:number;m:number}[]=[];let foes=local,online=false,heroPlays=-1;
 
- // Ground AoE ring (isometric ground container with rotating outer/inner dashed rings) + Revenant layers + Overhead bars
- const aoeGround=new Container();aoeGround.zIndex=20;aoeGround.scale.set(1,0.52);aoeGround.visible=false;
- const aoe=document.createElement('canvas'),aoeCtx=aoe.getContext('2d')!;
- const aoeView=createCanvasSprite(aoe);
- aoeView.sprite.anchor.set(0.5,0.5);
- const aoeInner=document.createElement('canvas'),aoeInnerCtx=aoeInner.getContext('2d')!;
- const aoeInnerView=createCanvasSprite(aoeInner);
- aoeInnerView.sprite.anchor.set(0.5,0.5);
- aoeGround.addChild(aoeInnerView.sprite,aoeView.sprite);
- const aoeBaseCache=new Map<string,{outer:HTMLCanvasElement;inner:HTMLCanvasElement}>();
+ // Revenant layers + Overhead bars
  const back=new Container();back.zIndex=24;back.sortableChildren=true;
  const front=new Container();front.zIndex=34;front.sortableChildren=true;
  const bars=new Container();bars.zIndex=40;
- o.worldStage.addChild(aoeGround,back,front,bars);
+ o.worldStage.addChild(back,front,bars);
 
  // Hero overhead health bar in Pixi (single slim green bar matching reference)
  const heroOverhead=bars.addChild(new Container());
@@ -426,7 +417,6 @@ export async function createEncounters(o:{
    run.autoCasts=(run.autoCasts??0)+1;
    if(fired.length>=3)run.trinityCasts=(run.trinityCasts??0)+1;
    run.lastCast=fired;
-   if(fired.length>=2)comboHighlightMs=900;
   }
   return fired;
  }
@@ -508,7 +498,6 @@ export async function createEncounters(o:{
     const castIds=(run.lastCast?.length?run.lastCast:run.slots).filter((id):id is SkillId=>Boolean(SKILL_CATALOG[id as SkillId]));
     if(castIds.length){
      vfx.castSimultaneous(castIds);
-     if(castIds.length>=2)comboHighlightMs=900;
     }
    }
   }
@@ -532,7 +521,6 @@ export async function createEncounters(o:{
  }
  function step(dt:number){
   levelUpPulseMs=Math.max(0,levelUpPulseMs-dt);
-  comboHighlightMs=Math.max(0,comboHighlightMs-dt);
   vfx.step(dt);
   const net=!!o.net?.active();
   if(net!==online){run=fresh(currentHeroId());online=net;mirrors.clear();local.length=0;foes=local;spawnTimer=0;heroPlays=-1;lastCoopAutoCasts=0;if(!net){h.play('idle');h.hp=maxHp;}}
@@ -615,14 +603,7 @@ export async function createEncounters(o:{
     v.bar.position.set(s.x+shk.dx,s.y-80*k+shk.dy);
    }
   }
-  const s=at(hp.x,hp.y),rMult=reach(run),aoeRx=Math.round(HERO_REACH*rMult*64*Math.SQRT2),aoePad=aoeRx+6;
-  if(aoeGround.visible){
-   aoeGround.position.set(s.x,s.y-2*k);
-   aoeView.sprite.width=aoePad*2*k;
-   aoeView.sprite.height=aoePad*2*k;
-   aoeInnerView.sprite.width=aoePad*2*k;
-   aoeInnerView.sprite.height=aoePad*2*k;
-  }
+  const s=at(hp.x,hp.y);
   if(heroOverhead.visible){
    heroOverhead.scale.set(Math.max(0.58,Math.min(1,k)));
    heroOverhead.position.set(s.x,s.y-80*k);
@@ -696,99 +677,8 @@ export async function createEncounters(o:{
   }
   vfx.render();
 
-  // Hero overhead bar and ground AoE reach indicator (continuous fading loop + smooth isometric rotation)
+  // Hero overhead bar
   const s=at(hp.x,hp.y),ratio=Math.max(0,Math.min(1,h.hp/Math.max(1,maxHp))),inZone=inSafeZone(tileOf(h)),show=h.alive&&(ratio<.999||!inZone||run.xp>0||run.level>1);
-  const rMult=reach(run),aoeRx=Math.round(HERO_REACH*rMult*64*Math.SQRT2),aoeRy=Math.round(aoeRx*.52),aoePad=aoeRx+6,aoePadY=aoeRy+6,showAoe=h.alive;
-  aoeGround.visible=showAoe;
-  aoeView.sprite.visible=showAoe;
-  aoeInnerView.sprite.visible=showAoe;
-  if(showAoe){
-   const nowMs=performance.now();
-   const rotOuter=((nowMs/1000)*0.55)%(Math.PI*2);
-   const rotInner=-(((nowMs/1000)*0.40)%(Math.PI*2));
-   const aoeDpr=Math.min(devicePixelRatio||1,1.5);
-   const baseCacheKey=`pixel-rot-v8:${rMult.toFixed(2)}:${aoeDpr}`;
-   const aoeKey=baseCacheKey;
-   if(aoe.dataset.key!==aoeKey){
-    aoe.dataset.key=aoeKey;aoe.dataset.reach=rMult.toFixed(2);aoe.dataset.radiusPx=String(aoeRx);
-    const wpx=aoePad*2,aw=Math.ceil(wpx*aoeDpr);
-    let cached=aoeBaseCache.get(baseCacheKey);
-    if(!cached){
-     if(aoeBaseCache.size>=12)aoeBaseCache.delete(aoeBaseCache.keys().next().value!);
-     const outerCan=document.createElement('canvas');outerCan.width=aw;outerCan.height=aw;
-     const innerCan=document.createElement('canvas');innerCan.width=aw;innerCan.height=aw;
-     const oCtx=outerCan.getContext('2d')!,iCtx=innerCan.getContext('2d')!;
-     oCtx.setTransform(aoeDpr,0,0,aoeDpr,aoePad*aoeDpr,aoePad*aoeDpr);oCtx.imageSmoothingEnabled=false;
-     iCtx.setTransform(aoeDpr,0,0,aoeDpr,aoePad*aoeDpr,aoePad*aoeDpr);iCtx.imageSmoothingEnabled=false;
-     // Fine irregular dashed pixel rings in circular ground-plane space with dark-umber contrast rim for daytime readability
-     const hash=(n:number)=>(((Math.imul(n,1664525)+1013904223)>>>0)&0xffff)/0xffff;
-     const drawHeroDashedRing=(targetCtx:CanvasRenderingContext2D,rBase:number,seed:number,isOuter:boolean)=>{
-      const steps=Math.max(120,Math.round(rBase*3.4));
-      let inDash=true,segRemain=6+Math.floor(hash(seed)*4),segIdx=0;
-      for(let i=0;i<steps;i++){
-       if(--segRemain<=0){
-        segIdx++;inDash=!inDash;
-        segRemain=inDash?(6+Math.floor(hash(seed+segIdx*17)*5)):(5+Math.floor(hash(seed+segIdx*29)*4));
-       }
-       if(!inDash)continue;
-       const ang=(i/steps)*Math.PI*2;
-       const wave=Math.sin(ang*5+seed)*2.1+Math.cos(ang*11-seed*1.5)*1.3+Math.sin(ang*17+seed*2.1)*.85;
-       const jitR=(hash(seed+i*23)-.5)*1.25,jitT=(hash(seed+i*41)-.5)*.85;
-       const rCur=Math.max(8,rBase+wave+jitR);
-       const rx=Math.round(Math.cos(ang)*rCur-Math.sin(ang)*jitT);
-       const ry=Math.round(Math.sin(ang)*rCur+Math.cos(ang)*jitT);
-       const hot=isOuter?(i%2===0):(i%3===0),psW=(i%4===0)?2:1.5,psH=(i%4===0)?3:2;
-       targetCtx.fillStyle=isOuter?'rgba(118,38,8,0.68)':'rgba(98,30,6,0.58)';
-       targetCtx.fillRect(rx-0.5,ry-0.5,psW+1,psH+1);
-       targetCtx.fillStyle=hot
-        ?(isOuter?'rgba(255,224,128,0.98)':'rgba(255,192,96,0.92)')
-        :(isOuter?'rgba(255,156,52,0.94)':'rgba(242,128,36,0.86)');
-       targetCtx.fillRect(rx,ry,psW,psH);
-       if(hot&&isOuter&&(i%5===0)){targetCtx.fillStyle='rgba(255,252,232,0.98)';targetCtx.fillRect(rx,ry,1,2);}
-      }
-     };
-     drawHeroDashedRing(oCtx,aoeRx-3,13,true);
-     drawHeroDashedRing(iCtx,aoeRx*.66,47,false);
-     cached={outer:outerCan,inner:innerCan};
-     aoeBaseCache.set(baseCacheKey,cached);
-    }
-    if(aoe.width!==aw||aoe.height!==aw){aoe.width=aw;aoe.height=aw;}
-    if(aoeInner.width!==aw||aoeInner.height!==aw){aoeInner.width=aw;aoeInner.height=aw;}
-    aoeCtx.setTransform(1,0,0,1,0,0);aoeCtx.globalCompositeOperation='copy';aoeCtx.drawImage(cached.outer,0,0);aoeCtx.globalCompositeOperation='source-over';
-    aoeInnerCtx.setTransform(1,0,0,1,0,0);aoeInnerCtx.globalCompositeOperation='copy';aoeInnerCtx.drawImage(cached.inner,0,0);aoeInnerCtx.globalCompositeOperation='source-over';
-    aoeView.sync(wpx*k,wpx*k);
-    aoeInnerView.sync(wpx*k,wpx*k);
-   }
-   const fadePhase=((nowMs%2000)/2000)*Math.PI*2;
-   const outerWave=0.5-0.5*Math.cos(fadePhase);
-   const innerWave=0.5-0.5*Math.cos(fadePhase-0.95);
-   const minA=comboHighlightMs>0?0.55:h.state==='attack'?0.48:0.42;
-   const maxA=comboHighlightMs>0?1.0:h.state==='attack'?1.0:0.98;
-   const outerAlpha=minA+(maxA-minA)*outerWave;
-   const innerAlpha=(minA*0.85)+(maxA*0.88-minA*0.85)*innerWave;
-   aoeView.sprite.alpha=outerAlpha;
-   aoeInnerView.sprite.alpha=innerAlpha;
-   aoeView.sprite.rotation=rotOuter;
-   aoeInnerView.sprite.rotation=rotInner;
-   aoe.dataset.fadeAlpha=outerAlpha.toFixed(3);
-   aoeInner.dataset.fadeAlpha=innerAlpha.toFixed(3);
-   aoe.dataset.rotRad=rotOuter.toFixed(3);
-   aoeInner.dataset.rotRad=rotInner.toFixed(3);
-   const tint=comboHighlightMs>0?0x8cecff:0xffffff;
-   aoeView.sprite.tint=tint;
-   aoeInnerView.sprite.tint=tint;
-   const breatheOuter=1+0.015*Math.sin(fadePhase);
-   const breatheInner=1+0.018*Math.sin(fadePhase-0.95);
-   const ow=aoePad*2*k*breatheOuter;
-   const iw=aoePad*2*k*breatheInner;
-   aoeGround.position.set(s.x,s.y-2*k);
-   aoeView.sprite.position.set(0,0);
-   aoeView.sprite.width=ow;
-   aoeView.sprite.height=ow;
-   aoeInnerView.sprite.position.set(0,0);
-   aoeInnerView.sprite.width=iw;
-   aoeInnerView.sprite.height=iw;
-  }
 
   heroOverhead.visible=show;
   if(show){
@@ -878,7 +768,7 @@ export async function createEncounters(o:{
   setMaxHp(n:number){baseHp=n;if(online)return;n+=health(run);if(n===maxHp)return;h.hp=Math.min(n,h.hp+Math.max(0,n-maxHp));maxHp=n;},
   liveCounts:()=>({foesRendered:foes.length,particles:vfx.fx.particleCount()}),
   snapshot:()=>({spawnDistanceM:SPAWN_DISTANCE_M,gate:GATE,metersPerTile:METERS_PER_TILE,
-   hero:{hp:h.hp,maxHp,state:h.state,u:+h.x.toFixed(2),v:+h.y.toFixed(2),meters:+meters(fromCenter(tileOf(h))).toFixed(1),safe:inSafeZone(tileOf(h)),reach:+reach(run).toFixed(2),aoeRadiusPx:Math.round(HERO_REACH*reach(run)*64*Math.SQRT2),aoeCastRadiusTiles:+aoeCastRadius(run).toFixed(2),aoeFadeAlpha:+aoeView.sprite.alpha.toFixed(3),aoeInnerFadeAlpha:+aoeInnerView.sprite.alpha.toFixed(3),aoeRotationRad:+aoeView.sprite.rotation.toFixed(3),aoeInnerRotationRad:+aoeInnerView.sprite.rotation.toFixed(3),critChance:+critChance(run).toFixed(2),critMultiplier:+critMultiplier(run).toFixed(2)},
+   hero:{hp:h.hp,maxHp,state:h.state,u:+h.x.toFixed(2),v:+h.y.toFixed(2),meters:+meters(fromCenter(tileOf(h))).toFixed(1),safe:inSafeZone(tileOf(h)),reach:+reach(run).toFixed(2),aoeCastRadiusTiles:+aoeCastRadius(run).toFixed(2),critChance:+critChance(run).toFixed(2),critMultiplier:+critMultiplier(run).toFixed(2)},
    foes:foes.map(f=>{const lv=Math.max(1,f.level||1),mHp=f.maxHp||revenantMaxHp(lv);return {u:+f.x.toFixed(2),v:+f.y.toFixed(2),level:lv,hp:f.hp,maxHp:mHp,damage:revenantDamage(lv),xpReward:revenantXpReward(lv),label:`Lv. ${lv}`,state:f.state,safe:inSafeZone(tileOf(f)),clear:walkable(tileOf(f)),gateMeters:+meters(fromGate(tileOf(f))).toFixed(1)};}),
    run:structuredClone(run),
    loadout:buildLoadoutSnapshot(),
@@ -900,7 +790,6 @@ export async function createEncounters(o:{
   castSimultaneous:(ids?:SkillId[],opts?:{targetU?:number;targetV?:number;forceCrit?:boolean})=>{
    const list=(ids?.length?ids:run.slots.slice(0,MAX_SKILL_SLOTS)) as SkillId[];
    const fired=vfx.castSimultaneous(list,opts);
-   if(fired.length>=2)comboHighlightMs=900;
    render();
    return fired;
   },
