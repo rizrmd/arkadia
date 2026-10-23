@@ -33,8 +33,6 @@ var startupPNGs = []string{
 	"/modular-stronghold/v2/snow-soft-texture.png",
 	"/modular-stronghold/v2/rampart-se.png",
 	"/modular-stronghold/v2/rampart-ne.png",
-	"/modular-stronghold/v2/gate-connector-left-v3.png",
-	"/modular-stronghold/v2/gate-connector-right-v3.png",
 	"/modular-stronghold/v2/bastion.png",
 	"/modular-stronghold/v2/spruce-mature.png",
 	"/modular-stronghold/v2/fir-young.png",

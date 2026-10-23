@@ -151,7 +151,7 @@ export async function createWorldView(
   const stride=Math.max(1,Math.round(3.5*n/p.width)),w=p.width/n*stride*1.2;
   for(let i=filled[0];i<=filled[filled.length-1];i+=stride){if(top[i]<0)continue;const t=at(i,top[i]);let back:number,front0:number;
    if(round.test(p.id)){const rx=p.width*.3,d=(t.x-p.x)/rx,s=Math.abs(d)<1?rx*.5*Math.sqrt(1-d*d):0;back=p.y-s;front0=p.y+s;}
-   else{const f=at(i,edge[i]).y,r=front(2*ci-i);front0=f;back=r<0?f:Math.min(f,at(i,2*cy-r).y);}
+   else{const f=at(i,edge[i]).y,r=front(2*ci-i);front0=f;back=r<0?f:Math.min(f,at(i,2*cy-r).y);if(/^rampart-/.test(p.id))back=Math.min(back,f-28);}
    cols.push({x:t.x,w,back,front:front0,height:Math.max(0,back-t.y)});}
   footprints.set(key,cols);return cols;
  }
@@ -206,6 +206,7 @@ export async function createWorldView(
    surfaceView.sprite.position.set(x+left*scale,y+top*scale);
    surfaceView.sprite.width=worldWidth*scale;
    surfaceView.sprite.height=worldHeight*scale;
+   surface.style.width=worldWidth*scale+'px';surface.style.height=worldHeight*scale+'px';
    lighting.place(x,y,scale);doors.place(x,y,scale);hero.place(x,y,scale);party?.place(x,y,scale);encounters?.place(x,y,scale);
    parallax.place(cx,cy,scale,w,h);
 

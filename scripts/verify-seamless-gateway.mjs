@@ -18,10 +18,11 @@ assert.equal(oldStonePixelChanges,0,'stonework must remain pixel-identical acros
 assert(new Set(doorHashes).size>=12,'the approved generated door movement must remain animated');
 for(const x of [.2,.8])assert(reference[(Math.floor(h*.6)*w+Math.floor(w*x))*4+3]>200,'full stone towers are present');
 const center=(f)=>f[(Math.round(170*sy)*w+Math.round(194*sx))*4+3];assert(center(frames[0])>200,'closed door covers passage');assert(center(frames.at(-1))<10,'open door clears passage');
-const palette={wall:await stoneMean(await read('rampart-se.png'),{left:250,top:280,width:260,height:90}),gate:await stoneMean(await read('full-gateway-v7-closed.webp'),{left:177,top:183,width:90,height:180}),gateOuter:await stoneMean(await read('full-gateway-v7-closed.webp'),{left:48,top:165,width:85,height:180}),pillar:await stoneMean(await read('gate-connector-left-v3.png'),{left:30,top:75,width:70,height:130})};
+const palette={wall:await stoneMean(await read('rampart-se.png'),{left:250,top:280,width:260,height:90}),wallRight:await stoneMean(await read('rampart-ne.png'),{left:690,top:280,width:260,height:90}),gate:await stoneMean(await read('full-gateway-v7-closed.webp'),{left:177,top:183,width:90,height:180}),gateOuter:await stoneMean(await read('full-gateway-v7-closed.webp'),{left:48,top:165,width:85,height:180})};
 for(let c=0;c<3;c++){
  assert(Math.abs(palette.gate[c]/palette.wall[c]-1)<.05,'gate limestone sample must match wall within 5% per channel');
- assert(palette.pillar[c]<palette.wall[c]&&Math.abs(palette.pillar[c]/palette.gateOuter[c]-1)<.1,'weathered sub-pillar must stay duller than wall coping and match adjacent gate tower shaft');
+ assert(Math.abs(palette.wallRight[c]/palette.wall[c]-1)<.05,'right rampart limestone sample must match left rampart within 5% per channel');
+ assert(palette.gateOuter[c]<palette.wall[c],'outer tower shaft must remain shaded to weld cleanly into the flush rampart junction');
 }
 assert.equal(meta.threshold.y,778,'atlas metadata follows the lowered gate');
 const report={palette,frames:frames.length,frame:{w,h},stonePixelChanges:oldStonePixelChanges,distinctDoorPoses:new Set(doorHashes).size,closedAlpha:center(frames[0]),openAlpha:center(frames.at(-1))};

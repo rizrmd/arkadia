@@ -9,7 +9,7 @@ export const GATE_SHEET='/modular-stronghold/v2/full-gateway-v7-sheet.json';
 
 export function createGateDoors(worldStage:Container,gateway:HTMLImageElement,sheet:HTMLImageElement,meta:GateSheet,onPassable:(open:boolean)=>void,light:{raster:number;foundation?:{face:HTMLCanvasElement;pad:number;fade?:HTMLCanvasElement};revision:()=>number;torches?:()=>boolean;shade:(source:HTMLCanvasElement,target:HTMLCanvasElement)=>void}){
  const {region,frame}=meta,rows=Math.ceil(meta.frames/meta.columns),height=region.h,canvas=document.createElement('canvas');
- canvas.id='world-gate-doors';canvas.dataset.renderer='gateway-lightmap-v3';
+ canvas.id='world-gate-doors';canvas.dataset.renderer='gateway-lightmap-v3';(window as any).__WORLD_GATE_DOORS__=canvas;
  canvas.width=Math.round(region.w*light.raster);canvas.height=Math.round(region.h*light.raster);
  canvas.dataset.raster=String(light.raster);
  const c=canvas.getContext('2d')!;
@@ -97,6 +97,8 @@ export function createGateDoors(worldStage:Container,gateway:HTMLImageElement,sh
    gateView.sprite.position.set(sx,sy);
    gateView.sprite.width=sw;
    gateView.sprite.height=sh;
+   canvas.style.width=sw+'px';canvas.style.height=sh+'px';
+   canvas.dataset.rect=JSON.stringify({x:sx,y:sy,width:sw,height:sh});
    const vis=sx+sw>-64&&sx<(innerWidth||1440)+64&&sy+sh>-64&&sy<(innerHeight||900)+64;
    if(vis!==onScreen){onScreen=vis;if(vis)scheduleFlames();else{clearTimeout(flameTimer);flameTimer=0;}}
   }

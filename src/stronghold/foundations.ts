@@ -1,7 +1,7 @@
 /** Static, alpha-fitted foundation dressing. No work is performed on pan frames. */
 export const FOUNDATION_SOIL='/foundation-transitions/soil-moss.png';
 type Sprite={id:string;image:HTMLImageElement;width:number;height:number;foot:number;layer?:string};
-const structural=/^(forge|barracks|altar|mage|mine|gate|gate-connector|bastion|rampart-ne|rampart-se|gateway-grand|wall-broken)$/;
+const structural=/^(forge|barracks|altar|mage|mine|gate|bastion|gateway-grand|wall-broken)$/;
 export const FOUNDATION_MOSS='/foundation-transitions/moss.png';
 export const FOUNDATION_DRIFT='/modular-stronghold/v2/snowdrift-edge.png';
 const cache=new Map<string,{under:HTMLCanvasElement;face:HTMLCanvasElement;pad:number;fade?:HTMLCanvasElement}>();
@@ -18,9 +18,9 @@ export function foundationLayers(p:Sprite,soil:HTMLImageElement,snow?:HTMLImageE
  const under=document.createElement('canvas'),face=document.createElement('canvas');under.width=face.width=width+pad*2;under.height=face.height=height+pad*2;
  const ground=under.getContext('2d')!,moss=face.getContext('2d')!;ground.translate(pad,pad);moss.translate(pad,pad);
  const rng=random([...p.id].reduce((s,c)=>s*31+c.charCodeAt(0),17));
- const connector=p.id==='gate-connector';
+ const connector=p.id==='gate-connector',rampart=/^rampart-/.test(p.id);
  const dry=p.id==='expedition'||p.id==='forge'||p.id==='mine',gate=p.id==='gate'||p.id==='gateway-grand'||connector;
- for(let x=4;x<width-4;x+=9){
+ for(let x=rampart?22:4;x<width-(rampart?22:4);x+=9){
   const ys=bottom.slice(Math.max(0,x-3),x+4).filter(y=>y>=0).sort((a,b)=>a-b);if(ys.length<5)continue;const y=ys[Math.floor(ys.length/2)];
   // Keep the center approach clear. Entrances must never acquire a green sill.
   const approach=gate&&!connector&&Math.abs(x-width*.5)<width*.2;

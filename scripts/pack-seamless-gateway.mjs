@@ -12,23 +12,38 @@ const softened=await sharp('assets-src/gate-seamless/wall-matched-source.png').r
 const art=await sharp(softened).resize(w,h,{fit:'fill',kernel:'linear'}).ensureAlpha().raw().toBuffer();
 matchStone(art,await stoneMean(root+'full-gateway-v6-closed.webp',{left:177,top:183,width:90,height:180}));
 
-// Seamlessly blend the outer tower edges and outer plinth steps into the flanking
-// pilasters so no freestanding rim highlight or bright step border separates them.
+// Seamlessly blend the outer tower edges and outer plinth steps directly into the
+// world-aligned diagonal ramparts (rampart-se.png and rampart-ne.png) so no
+// freestanding rim highlight, intermediate pilaster or bright step border separates them.
 const closedBase=await sharp(root+'full-gateway-v4-closed.webp').ensureAlpha().raw().toBuffer();
-const cw=260,ch=305;
-const connLeft=await sharp(root+'gate-connector-left-v3.png').ensureAlpha().raw().toBuffer();
-const connRight=await sharp(root+'gate-connector-right-v3.png').ensureAlpha().raw().toBuffer();
+const ww=1200,wh=960;
+const wallLeft=await sharp(root+'rampart-se.png').ensureAlpha().raw().toBuffer();
+const wallRight=await sharp(root+'rampart-ne.png').ensureAlpha().raw().toBuffer();
 const smoothstep=(a,b,x)=>{const t=Math.max(0,Math.min(1,(x-a)/(b-a)));return t*t*(3-2*t);};
 
-function sampleConnector(side,gx,gy){
- const fx=(side==='left'?62.5:-477.5)+gx*.87890625,fy=-71.5+gy*.87890625;
- const x0=Math.floor(fx),y0=Math.floor(fy);
- if(x0<0||x0+1>=cw||y0<0||y0+1>=ch)return null;
- const tx=fx-x0,ty=fy-y0,buf=side==='left'?connLeft:connRight;
- const idx=(x,y)=>(y*cw+x)*4;
+function sampleWall(side,gx,gy){
+ const wx=442+gx*(270/768),wy=623.2+gy*(180/512);
+ const px=side==='left'?305:849,py=696,shear=side==='left'?.03:-.03;
+ const dx=wx-px,dy=(wy-py)-dx*Math.tan(shear);
+ const scale=1200/356;
+ const fx=(dx+178)*scale;
+ let fy=(dy+284.8*.70)*scale;
+ const x0=Math.floor(fx);
+ if(x0<0||x0+1>=ww)return null;
+ const buf=side==='left'?wallLeft:wallRight;
+ const idx=(x,y)=>(y*ww+x)*4;
+ let y0=Math.floor(fy);
+ if(y0<0||y0+1>=wh)return null;
+ // If closedBase extends 1-3 px below the wall plinth's bottom contour, clamp to the mossy base edge.
+ if(gy>395&&buf[idx(x0,y0)+3]<200){
+  for(let sy=y0;sy>=Math.max(0,y0-18);sy--){
+   if(buf[idx(x0,sy)+3]>=220&&buf[idx(x0+1,sy)+3]>=220){fy=Math.max(0,sy-1.5);y0=Math.floor(fy);break;}
+  }
+ }
+ const tx=fx-x0,ty=fy-y0;
  const i00=idx(x0,y0),i10=idx(x0+1,y0),i01=idx(x0,y0+1),i11=idx(x0+1,y0+1);
  const minA=Math.min(buf[i00+3],buf[i10+3],buf[i01+3],buf[i11+3]);
- if(minA<180)return null;
+ if(minA<160)return null;
  const out=[0,0,0,minA/255];
  for(let c=0;c<3;c++){
   const top=buf[i00+c]*(1-tx)+buf[i10+c]*tx;
@@ -39,17 +54,19 @@ function sampleConnector(side,gx,gy){
 }
 
 const origArt=Buffer.from(art);
-for(let y=75;y<445;y++){
+for(let i=0;i<w*h*4;i+=4)art[i+3]=closedBase[i+3];
+for(let y=125;y<445;y++){
  let firstX=-1,lastX=-1;
  for(let x=0;x<w;x++)if(closedBase[(y*w+x)*4+3]>16){if(firstX<0)firstX=x;lastX=x;}
  if(firstX<0)continue;
- const plinthT=smoothstep(305,345,y),lowFootT=smoothstep(365,405,y);
- const stepInward=plinthT*(1-lowFootT*.75);
+ const corbelClear=smoothstep(134,142,y);
+ const plinthT=smoothstep(315,345,y);
  for(const side of ['left','right']){
-  const joinEdgeX=side==='left'?firstX*(1-stepInward)+45*stepInward:lastX*(1-stepInward)+722*stepInward;
+  const targetPlinthX=side==='left'?35.5:732.5;
+  const joinEdgeX=side==='left'?firstX*(1-plinthT)+targetPlinthX*plinthT:lastX*(1-plinthT)+targetPlinthX*plinthT;
   let refR=0,refG=0,refB=0,refN=0;
   for(let dy=-3;dy<=3;dy++){
-   const sy=Math.max(75,Math.min(440,y+dy));
+   const sy=Math.max(125,Math.min(440,y+dy));
    for(let d=18;d<=34;d++){
     const sx=Math.round(side==='left'?joinEdgeX+d:joinEdgeX-d);
     if(sx<0||sx>=w)continue;
@@ -80,22 +97,26 @@ for(let y=75;y<445;y++){
    locL=locN?locL/locN:luma;
    const grain=luma-locL;
    if(distInsideMain<24&&locL>refL){
-    const u=Math.max(0,Math.min(1,1-distInsideMain/24)),pull=u*u*(3-2*u);
+    const u=Math.max(0,Math.min(1,1-distInsideMain/24))*corbelClear,pull=u*u*(3-2*u);
     const newEnvL=locL*(1-pull)+refL*pull,targetL=Math.max(24,newEnvL+grain*(1-.25*pull));
     const scale=luma>1?targetL/luma:1;
     r=r*scale*(1-pull*.35)+refR*(targetL/Math.max(1,refL))*(pull*.35);
     g=g*scale*(1-pull*.35)+refG*(targetL/Math.max(1,refL))*(pull*.35);
     b=b*scale*(1-pull*.35)+refB*(targetL/Math.max(1,refL))*(pull*.35);
    }
-   const conn=sampleConnector(side,x,y);
-   if(conn){
-    const shaftT=smoothstep(138,162,y),innerReach=3+7*shaftT;
-    const blend=(1-smoothstep(-2,innerReach,distInsideMain))*conn[3]*(1-lowFootT*.65);
-    const cornerDist=Math.abs(distInsideMain-3.5)/4.5;
-    const mortarDip=cornerDist<1?1-.09*(1-cornerDist*cornerDist):1;
-    r=(r*(1-blend)+conn[0]*blend)*mortarDip;
-    g=(g*(1-blend)+conn[1]*blend)*mortarDip;
-    b=(b*(1-blend)+conn[2]*blend)*mortarDip;
+   const wallPx=sampleWall(side,x,y);
+   if(wallPx&&corbelClear>0){
+    const shaftT=smoothstep(138,162,y),innerReach=2.5+4.5*shaftT;
+    const blend=(1-smoothstep(-2,innerReach,distInsideMain))*wallPx[3]*corbelClear;
+    const cornerDist=Math.abs(distInsideMain-2.0)/3.5;
+    const mortarDip=cornerDist<1?1-.07*corbelClear*(1-cornerDist*cornerDist):1;
+    r=(r*(1-blend)+wallPx[0]*blend)*mortarDip;
+    g=(g*(1-blend)+wallPx[1]*blend)*mortarDip;
+    b=(b*(1-blend)+wallPx[2]*blend)*mortarDip;
+   }
+   if(plinthT>0&&distInsideMain<1.5){
+    const keepA=smoothstep(-1.5,1.5,distInsideMain);
+    art[i+3]=Math.round(closedBase[i+3]*(1-plinthT+plinthT*keepA));
    }
    art[i]=Math.max(0,Math.min(255,Math.round(r)));
    art[i+1]=Math.max(0,Math.min(255,Math.round(g)));
@@ -110,7 +131,7 @@ function material(pixels){
   const archY=201+50*Math.pow(Math.abs(x-384)/104,2);
   if(x>=ap.left&&x<=ap.right&&y>=archY&&y<=ap.bottom)continue;
   const p=(y*w+x)*4;
-  for(let c=0;c<3;c++)pixels[p+c]=art[p+c];
+  for(let c=0;c<4;c++)pixels[p+c]=art[p+c];
  }
  return pixels;
 }

@@ -10,18 +10,14 @@ function prop(id:string,u:number,v:number,width:number,extra='',legacy=false):En
 export function environmentSprites(){
  const parts:EnvironmentSprite[]=[];
  for(let n=0;n<15;n+=5){
-  parts.push(prop('rampart-se',n+2.5,0,356,'--foot:73%;--wall-shear:.03;'));
-  parts.push(prop('rampart-ne',0,n+2.5,356,'--foot:74%;--wall-shear:-.13;'));
-  // Keep the terminal wings at the same masonry scale as the rest of the wall.
-  // Seat the terminal wings 16 px into and 8 px behind the gate towers.
-  // Hide their end caps and stepped footings without extending into the passage.
-  const left=prop('rampart-se',n+(n===10?1.8:2.5),15.5,356,'--foot:73%;--wall-shear:.03;');
-  if(n===10){left.x+=16;left.y-=8;}parts.push(left);
-  const right=prop('rampart-ne',15.5,n+(n===10?1.8:2.5),356,'--foot:74%;--wall-shear:-.13;');
-  if(n===10){right.x-=16;right.y-=8;}parts.push(right);
+  parts.push(prop('rampart-se',n+2.5,0,356,'--foot:70%;--wall-shear:.03;'));
+  parts.push(prop('rampart-ne',0,n+2.5,356,'--foot:70%;--wall-shear:-.03;'));
+  // Keep the terminal wings on the exact 2:1 perimeter line, phase-locked by 6 bays
+  // (3.75 tiles = 240 world px) from the middle segments so courses and crenels meet
+  // the gate towers flush without protruding side pilasters or end-pillars.
+  parts.push(prop('rampart-se',n+(n===10?1.25:2.5),15.5,356,'--foot:70%;--wall-shear:.03;'));
+  parts.push(prop('rampart-ne',15.5,n+(n===10?1.25:2.5),356,'--foot:70%;--wall-shear:-.03;'));
  }
- // Coping piers bridge the side faces of the gateway towers to the wall wings.
- for(const [x,side] of [[469,'left'],[685,'right']] as const)parts.push({layer:'foreground',id:'gate-connector',x,y:774,width:104,foot:1,shear:0,vertical:1,depth:769,opacity:1,file:v2+'gate-connector-'+side+'-v3.png'});
  for(const [u,v] of [[0,0],[15,0],[0,15]])parts.push(prop('bastion',u,v,180));
  // Irregular masses and two distinct tree silhouettes replace the evenly spaced
  // miniature pine/rock arrangement. All remain individual reusable sprites.
