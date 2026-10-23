@@ -59,10 +59,15 @@ export function createHeroPicker(uiStage:Container,o:{current:()=>HeroId;choose:
   // Shows the screen on a first visit; resolves once it is on screen, so the loading screen lifts onto it.
   async start(){
    if(!needed||holder.visible)return;
-   const v=await ensureView();
-   v.select(o.current());
-   await layout();
-   holder.visible=true;
+   try{
+    const v=await ensureView();
+    v.select(o.current());
+    await layout();
+    holder.visible=true;
+   }catch(e){
+    // The screen failed to load: play on with the current hero rather than strand the first visit (asks again next time).
+    console.error(e);resolvePicked();
+   }
   },
  };
 }
