@@ -1,4 +1,5 @@
 import {project,unproject} from '../isometric';
+export {biomeAt,biomeDisplayName,type BiomeId} from './parallax';
 export const COURT={x:577,y:-160,size:15};
 // ?buildings=all shows every building and court prop in its original slot, whatever the save has built (layout QA).
 export const LEGACY_LAYOUT=typeof location!=='undefined'&&new URLSearchParams(location.search).get('buildings')==='all';
@@ -28,7 +29,7 @@ export function environmentSprites(){
  // its base clears the battlements, in front of the front walls its crown stays
  // below the wall foot. verify-wall-clearance.mjs checks this per pixel.
  const rear=(along:number,out:number,side:'u'|'v')=>side==='u'?[along,-out]:[-out,along],front=(along:number,out:number,side:'u'|'v')=>side==='u'?[along,15+out]:[15+out,along];
- const trees=[...[3,5,9].map(n=>rear(n,3,'v')),...[2,5,9,13].map(n=>rear(n,3,'u')),...[4,7,10,13].map(n=>front(n,5,'v')),...[4,7,10,13].map(n=>front(n,5,'u'))];
+ const trees=[...[3,5,9].map(n=>rear(n,3,'v')),...[2,5,9,13].map(n=>rear(n,3,'u')),...[4,10].map(n=>front(n,5,'v')),...[4,10].map(n=>front(n,5,'u'))];
  for(const [i,[u,v]] of trees.entries())parts.push(prop(i%3?'spruce-mature':'fir-young',u,v,135+(i%4)*19));
  for(const [u,v] of [rear(4,3.8,'v'),rear(4,3.8,'u'),rear(11,3.8,'u'),front(7,4.5,'v'),front(7,4.5,'u')])parts.push(prop('cliff-snow',u,v,320));
  for(const [u,v] of [rear(11,3,'v'),rear(11,3,'u'),front(11,3,'v'),front(11,3,'u')])parts.push(prop('boulders-snow',u,v,185));

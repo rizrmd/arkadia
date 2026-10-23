@@ -182,6 +182,7 @@ export async function createWorldView(
   drive:()=>{if(!net?.active())return null;const p=net.position(),me=net.me();return {...p,face:direction(),look:me&&me.st!=='idle'?{facing:me.fc,back:me.bk,vertical:me.vt}:null};}});hero.setScene(objects);
  encounters=await createEncounters({worldStage,uiStage,frames,hudCallbacks,showCoop:Boolean(net),hero,direction,net});
  const party=net?createParty<(typeof objects)[number]>({layer:worldStage,frames,lightmap:lighting.lightmap,surface,footprint:p=>p.id==='gate'?gateFootprint():footprint(p),sun:lighting.sun,net,own:()=>hero.position()}):null;party?.setScene(objects);
+ const parallax=await createParallax({worldStage,anchorX:WORLD.width/2,anchorY:385,getHeroWorld:()=>hero.position(),getCombatantsWorld:()=>encounters?encounters.combatants():[hero.position()]});
  lighting.setClockSource(()=>net?.active()?net.clock():null);net?.onSnapshot(()=>{const p=hero.position();updateGate(p.x,p.y);});lighting.subscribe(s=>encounters!.setAmbient(s.ambient));
  progress(loaded+=40,steps,'Raising the Stronghold');
 
@@ -205,14 +206,17 @@ export async function createWorldView(
    surfaceView.sprite.width=worldWidth*scale;
    surfaceView.sprite.height=worldHeight*scale;
    lighting.place(x,y,scale);doors.place(x,y,scale);hero.place(x,y,scale);party?.place(x,y,scale);encounters?.place(x,y,scale);
+   parallax.place(cx,cy,scale,w,h);
 
    snowSprite.width=w;
    snowSprite.height=h;
    snowSprite.tileScale.set(scale);
    snowSprite.tilePosition.set(x,y);
 
+   const pSnap=parallax.snapshot();
    canvas.dataset.ready='true';canvas.dataset.mode='full-screen';canvas.dataset.renderer='pixi-msdf-world';
    canvas.dataset.zoom='locked';canvas.dataset.scale=scale.toFixed(4);canvas.dataset.targetScale=targetScale().toFixed(4);canvas.dataset.reach=reachFactor().toFixed(2);
+   canvas.dataset.biome=pSnap.biome;canvas.dataset.cornerArea=pSnap.area;
   });
  }
  function requestDraw(){if(!frame)frame=requestAnimationFrame(()=>{frame=0;draw();});}
@@ -292,10 +296,11 @@ export async function createWorldView(
  }
  (window as any).__STRONGHOLD_NAV__=()=>({version:1,layout:[...built],columns:objects.filter(p=>p.layer!=='ground'&&p.opacity>=1&&p.id!=='gate').flatMap(p=>footprint(p).map(c=>({x:+c.x.toFixed(2),w:+c.w.toFixed(2),back:+c.back.toFixed(2),front:+c.front.toFixed(2)})))});
  canvas.dataset.gate='closed';setGateOpen(false);updateGate(hero.position().x,hero.position().y);
- hero.start();encounters.start();
+ hero.start();encounters.start();parallax.start();
  return {
   hud:encounters.hud,
   encounters,
+  parallax,
   update(state:State,id:Building|null){encounters?.setMaxHp(100+heroBonus(state));const room=net?.active()?net.layout().filter((b):b is Building=>(buildings as readonly string[]).includes(b)):null;
    const next=buildings.map(b=>state.levels[b]+(isBuilt(state,b)?'':'x')).join(',')+':'+id+':'+(room?.join('+')??'');if(next===signature)return;signature=next;levels=state.levels;selected=id;
    if(!LEGACY_LAYOUT||room)built=new Set(room??buildings.filter(b=>isBuilt(state,b)));canvas.dataset.buildings=[...built].join(',');objects=makeObjects();lighting.setScene(objects);hero.setScene(objects);party?.setScene(objects);dirty=true;requestDraw();},

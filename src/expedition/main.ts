@@ -1,11 +1,17 @@
 import {Application,Container,Graphics,Rectangle} from 'pixi.js';
 import '../stronghold/expedition-link';
+import {translate} from '../stronghold/english';
 import {FrameSet,pickFrameScale} from '../typography/frames';
 import {installMsdfFx,loadFonts} from '../typography/msdf';
 import {MsdfText} from '../typography/text';
 import {World,type Point} from './world';
 
 const colors:Record<string,number>={
+ River:0x436f86,
+ Mountains:0x93908c,
+ Swamp:0x4d6555,
+ 'Relic Forest':0x364f40,
+ 'Ash Frontier':0x746c5e,
  Sungai:0x436f86,
  Pegunungan:0x93908c,
  Rawa:0x4d6555,
@@ -82,7 +88,7 @@ async function start(){
     mapGraphics.rect(x,y+10,28,6).fill(0xb39b73);
    }
    if(t.landmark){
-    mapGraphics.rect(x+6,y+6,15,15).stroke({color:t.landmark==='Sarang'?0xff897c:0xeee2b7,width:2});
+    mapGraphics.rect(x+6,y+6,15,15).stroke({color:t.landmark==='Lair'||t.landmark==='Sarang'?0xff897c:0xeee2b7,width:2});
    }
    if(s.cleared){
     mapGraphics.rect(x+2,y+2,4,4).fill(0xd9e8ba);
@@ -101,14 +107,14 @@ async function start(){
   const t=world.tile(target);
   posText.text=`You: (${world.position.x}, ${world.position.y}) · ${world.condition(world.position).cleared?'Cleared':'Uncleared'}`;
   posText.place(24,114);
-  detailText.text=`${t.name} (${t.x}, ${t.y}) · ${t.biome} · risk ${world.risk(target)} · ${t.faction}`;
+  detailText.text=translate(`${t.name} (${t.x}, ${t.y}) · ${t.biome} · risk ${world.risk(target)} · ${t.faction}`);
   detailText.place(24,142);
   statsText.text=`${Object.keys(world.chunks).length} chunks · ${world.materials} materials · ${world.xp} XP`;
   statsText.place(24,234);
  }
  function act(fn:()=>void){
   try{fn();draw();persist();msgText.text='Saved.';msgText.place(24,524);}
-  catch(e){msgText.text=(e as Error).message;msgText.place(24,524);}
+  catch(e){msgText.text=translate((e as Error).message);msgText.place(24,524);}
  }
  window.addEventListener('keydown',e=>{
   const d:Record<string,Point>={ArrowUp:{x:0,y:-1},w:{x:0,y:-1},ArrowDown:{x:0,y:1},s:{x:0,y:1},ArrowLeft:{x:-1,y:0},a:{x:-1,y:0},ArrowRight:{x:1,y:0},d:{x:1,y:0}};

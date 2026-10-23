@@ -54,5 +54,6 @@ for(const f of [
 const chooseHero=JSON.parse(readFileSync('dist/assets/choose-hero/manifest.json','utf8'));
 for(const f of ['manifest.json','labels.en.json',...Object.values(chooseHero.art).map(a=>a.file),...Object.keys(chooseHero.frames).flatMap(n=>[1,2,3].map(s=>`@${s}x/${n}.png`))])files.add('assets/choose-hero/'+f);
 files.add('vfx/skills.bin');for(const f of readdirSync('dist/vfx/textures'))files.add('vfx/textures/'+f);
+for(const f of readdirSync('dist/environment-corners/v1'))files.add('environment-corners/v1/'+f);
 if(files.size<20)throw Error('Only '+files.size+' files loaded');
 console.log([...files].sort().join('\n'));
