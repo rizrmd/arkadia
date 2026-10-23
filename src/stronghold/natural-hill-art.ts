@@ -38,12 +38,13 @@ export function naturalHillArt(f:ReliefFeature,snow:HTMLImageElement,rock:HTMLIm
   const x=b.g.x,y=b.g.y,k=dy/dx;
   c.save();c.beginPath();c.moveTo(a.g.x,a.g.y+3);c.lineTo(b.g.x,b.g.y+3);c.lineTo(b.t.x,b.t.y-5);c.lineTo(a.t.x,a.t.y-5);c.closePath();c.clip();
   c.beginPath();c.moveTo(a.g.x,a.g.y+2);c.lineTo(b.g.x,b.g.y+2);c.lineTo(b.t.x,b.t.y+1);c.lineTo(a.t.x,a.t.y+1);c.closePath();
-  c.fillStyle=dy>0?'#8995a8':'#a7b1bd';c.fill();
+  c.fillStyle=dy>0?'#a7b1bd':'#8995a8';c.fill();
   c.transform(1,k,0,1,x,y);
   // Generated strip has a narrow alpha fringe; crop within its connected rock and snow bank, preserving scale.
   const sw=rock.naturalWidth,sh=rock.naturalHeight,scale=.19;
-  for(let at=-offset% (sw*scale);at<len;at+=sw*scale)c.drawImage(rock,0,sh*.045,sw,sh*.85,at,-H-6,sw*scale,H+14);
-  c.globalCompositeOperation='source-atop';c.fillStyle=dy>0?'rgba(34,48,73,.18)':'rgba(252,235,213,.04)';c.fillRect(0,-H,len,H+4);
+  // The ring runs right to left: phase at the shared vertex must match the next panel.
+  for(let at=(offset+len)%(sw*scale)-sw*scale;at<len;at+=sw*scale)c.drawImage(rock,0,sh*.045,sw,sh*.85,at,-H-6,sw*scale,H+14);
+  c.globalCompositeOperation='source-atop';c.fillStyle=dy>0?'rgba(252,235,213,.04)':'rgba(34,48,73,.18)';c.fillRect(0,-H,len,H+4);
   c.restore();offset+=len;
   // A soft contact at the foot and uneven snow apron blend the cliff into the ground texture.
   c.save();c.lineCap='round';c.strokeStyle='rgba(45,56,76,.13)';c.lineWidth=7;c.filter='blur(3px)';c.beginPath();c.moveTo(a.g.x,a.g.y);c.lineTo(b.g.x,b.g.y);c.stroke();c.restore();
