@@ -296,7 +296,7 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
   }
   return {hit:false,x:x1,y:y1,t:1};
  }
- const occluders=(px:number,py:number,b:number[])=>sceneBounds.filter(sb=>{
+ const occluders=(px:number,py:number,b:number[])=>py+b[1]>=maxSceneFront?[]:sceneBounds.filter(sb=>{
   if(sb.x1<px+b[0]||sb.x0>px+b[2]||sb.y1<py+b[1]||sb.y0>py+b[3])return false;
   const wideGround=b[2]-b[0]>100&&b[3]-b[1]>40&&b[3]<45;
   if(wideGround){
@@ -316,7 +316,7 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
   const pad=Math.max(3,Math.min(28,rad*.62)),padY=flat?pad*.55:pad;
   const x0=wx-pad,x1=wx+pad,y0=wy-padY,y1=wy+padY;
   let maxA=0;
-  if(y0<=maxSceneY&&y1>=minSceneY&&x0<=maxSceneX&&x1>=minSceneX){
+  if(Math.min(py,y0,anchorY??py)<=maxSceneFront&&y0<=maxSceneY&&y1>=minSceneY&&x0<=maxSceneX&&x1>=minSceneX){
    for(let i=0,n=sceneBounds.length;i<n;i++){
     const sb=sceneBounds[i];
     if(sb.x1<x0||sb.x0>x1||sb.y1<y0||sb.y0>y1)continue;

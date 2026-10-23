@@ -1,54 +1,54 @@
 {
-  "verifiedAt": "2026-10-23T05:15:01.174Z",
-  "baseUrl": "http://127.0.0.1:8799",
+  "verifiedAt": "2026-10-23T06:12:24.872Z",
+  "baseUrl": "http://127.0.0.1:8849",
   "pageErrors": 0,
   "combatBenchmark": {
     "sampleCount": 16,
     "phasesAvg": {
-      "worldDrawMs": 0.07,
+      "worldDrawMs": 0.08,
       "worldPaintMs": 0,
       "shadowCastMs": 0,
-      "encountersStepMs": 4.59,
-      "encountersRenderMs": 5.32,
-      "pixiRenderMs": 9.31,
-      "netMs": 0.41,
+      "encountersStepMs": 1.36,
+      "encountersRenderMs": 3.17,
+      "pixiRenderMs": 9.17,
+      "netMs": 0.71,
       "unaccountedMs": 0
     },
     "phasesMax": {
       "worldDrawMs": 0.6,
       "worldPaintMs": 0,
       "shadowCastMs": 0,
-      "encountersStepMs": 62.1,
-      "encountersRenderMs": 9.8,
-      "pixiRenderMs": 93.4,
-      "netMs": 4.9,
+      "encountersStepMs": 11,
+      "encountersRenderMs": 5.9,
+      "pixiRenderMs": 43.3,
+      "netMs": 2.2,
       "unaccountedMs": 0
     },
     "foesRendered": 8,
-    "particles": 113,
-    "peakParticles": 178,
-    "liveEffects": 10,
-    "playedEffects": 20,
-    "activeFloats": 3
+    "particles": 12,
+    "peakParticles": 119,
+    "liveEffects": 2,
+    "playedEffects": 36,
+    "activeFloats": 1
   },
   "tracelogPostsCaptured": 4,
-  "serverStoredCount": 9,
+  "serverStoredCount": 4,
   "serverSummary": {
     "byReason": {
-      "frame_spike": 7,
-      "sustained_low_fps": 2
+      "frame_spike": 3,
+      "sustained_low_fps": 1
     },
     "byBottleneck": {
-      "encounters-render": 2,
-      "main-thread-longtask": 4,
+      "encounters-render": 1,
+      "main-thread-longtask": 1,
       "pixi-render": 1,
-      "shadow-cast": 2
+      "shadow-cast": 1
     },
-    "lowestFps": 3.75,
-    "worstFrameMs": 872.3
+    "lowestFps": 3.44,
+    "worstFrameMs": 1019.5
   },
   "sustainedDropSample": {
-    "id": "tl-mvkin1v7-3",
+    "id": "tl-mvkkovr7-3",
     "reason": "sustained_low_fps",
     "fps": 22.07,
     "minFps": 19.05,
@@ -77,13 +77,13 @@
     },
     "scene": {
       "mode": "coop",
-      "room": "6PEE2",
+      "room": "BTGWQ",
       "playerId": "p1",
-      "rttMs": 0.6,
+      "rttMs": 0.8,
       "hero": "rift-runner",
       "heroState": "idle",
-      "heroU": 10.62,
-      "heroV": 10.41,
+      "heroU": 11.43,
+      "heroV": 11.23,
       "safeZone": true,
       "level": 4,
       "heroesCount": 1,
@@ -100,14 +100,14 @@
       "lighting": "off",
       "torches": "off",
       "sun": "0.4479",
-      "surfacePaints": 2,
+      "surfacePaints": 1,
       "lightPaints": 4,
-      "shadowPaints": 2
+      "shadowPaints": 1
     },
     "frameSampleCount": 60
   },
   "frameSpikeSample": {
-    "id": "tl-mvkin1w1-4",
+    "id": "tl-mvkkovtx-4",
     "reason": "frame_spike",
     "fps": 50.05,
     "minFps": 8.47,

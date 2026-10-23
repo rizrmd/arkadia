@@ -56,6 +56,8 @@ export async function mount(app:HTMLElement,progress:Progress){
  lobby?.bindHud(worldView.hud);
  picker=createHeroPicker(rt.uiStage,{
   current:()=>hero,
+  renderer:rt.app.renderer,
+  stage:rt.app.stage,
   choose(id){
    hero=id;
    saveHero(id);

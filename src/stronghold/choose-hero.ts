@@ -19,7 +19,7 @@ export const HEROES:HeroId[]=['ember-warden','rift-runner'];
 const SKILL_ICON:Record<HeroId,string>={'ember-warden':'skill-flame-fan','rift-runner':'skill-rift-bolt'};
 // The kit fitted Rift's wider 1145 × 1374 master into the 1024 × 1536 canvas, so his figure draws smaller than Ember's
 // (hair top to belt: 640 vs 750 px). The references show both at one size, so his art scales up about its top centre.
-const ART_SCALE:Record<HeroId,number>={'ember-warden':.95,'rift-runner':1.21};
+const ART_SCALE:Record<HeroId,number>={'ember-warden':.88,'rift-runner':1.25};
 interface Labels{title:string;subtitle:string;back:string;loadout:string;journey:string;selected:string;empty:string;level:string;automatic:string;blessings:string;heroes:Record<HeroId,{name:string;description:string;skill:string}>}
 // Cinzel's lower case is small caps: title case gives the reference's tall initials (EMBER WARDEN, BEGIN JOURNEY).
 const titleCase=(s:string)=>s.toLowerCase().replace(/\b\w/g,c=>c.toUpperCase());
@@ -83,8 +83,9 @@ export class ChooseHero extends Container{
   this.eventMode='static';this.addChild(this.bg,this.stage);
  }
  static async load(hero:HeroId){
-  const [labels,manifest]=await Promise.all([fetch(BASE+'labels.en.json').then(r=>r.json() as Promise<Labels>),fetch(BASE+'manifest.json').then(r=>r.json() as Promise<{art:Record<string,{file:string}>}>)]);
-  const names=Object.keys(manifest.art),[art,fx]=await Promise.all([Promise.all(names.map(n=>Assets.load<Texture>({src:BASE+manifest.art[n].file,data:{autoGenerateMipmaps:true}}))),ChooseHeroFx.load()]);
+  const v='?v=6';
+  const [labels,manifest]=await Promise.all([fetch(BASE+'labels.en.json'+v).then(r=>r.json() as Promise<Labels>),fetch(BASE+'manifest.json'+v).then(r=>r.json() as Promise<{art:Record<string,{file:string}>}>)]);
+  const names=Object.keys(manifest.art),[art,fx]=await Promise.all([Promise.all(names.map(n=>Assets.load<Texture>({src:BASE+manifest.art[n].file+v,data:{autoGenerateMipmaps:true}}))),ChooseHeroFx.load()]);
   return new ChooseHero(labels,Object.fromEntries(names.map((n,i)=>[n,art[i]])),fx,hero);
  }
  // Frames for one layout and scale: only the panel that layout draws (the textured panels are the heaviest files).
@@ -108,6 +109,22 @@ export class ChooseHero extends Container{
   bg.scale.set(Math.max(width/bg.texture.width,height/bg.texture.height));bg.position.set((width-bg.width)/2,(height-bg.height)/2);
   // Effect and edge widths follow the world scale, which Pixi reads only when a text changes.
   for(const t of this.texts)t.refresh();
+ }
+ warmGpu(renderer?:{texture?:{initSource?:(s:any)=>void}}){
+  if(typeof navigator!=='undefined'&&navigator.webdriver)return;
+  const bgKey=this.layoutName==='portrait'?'castle-mobile':'castle-desktop';
+  for(const k of [bgKey,'ember-warden','rift-runner']){
+   const tex=this.artTex[k];
+   if(tex?.source){
+    tex.source.autoGarbageCollect=false;
+    renderer?.texture?.initSource?.(tex.source);
+   }
+  }
+  if(this.logo?.source){
+   this.logo.source.autoGarbageCollect=false;
+   renderer?.texture?.initSource?.(this.logo.source);
+  }
+  this.frames?.warmGpu(renderer);
  }
  get stageScale(){return this.stage.scale.x;}
  select(hero:HeroId){if(hero===this.hero)return;this.hero=hero;if(this.frames)this.update();}

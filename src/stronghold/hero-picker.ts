@@ -7,7 +7,7 @@ import {isHero,isHeroReset,saveHero,type HeroId} from './heroes';
 // the hero in place, keeping its spot, health and room; Back keeps the current hero.
 const SESSION_KEY='arkadia.hero.picked';
 
-export function createHeroPicker(uiStage:Container,o:{current:()=>HeroId;choose:(id:HeroId)=>void}){
+export function createHeroPicker(uiStage:Container,o:{current:()=>HeroId;choose:(id:HeroId)=>void;renderer?:any;stage?:Container}){
  const holder=new Container();
  holder.zIndex=70;
  holder.visible=false;
@@ -15,16 +15,19 @@ export function createHeroPicker(uiStage:Container,o:{current:()=>HeroId;choose:
 
  let viewPromise:Promise<ChooseHero>|undefined,view:ChooseHero|undefined;
  let done:(()=>void)|null=null;
- const ensureView=()=>viewPromise??=ChooseHero.load(o.current()).then(v=>{
+ const ensureView=()=>viewPromise??=ChooseHero.load(o.current()).then(async v=>{
   v.onConfirm=id=>pick(id);
   v.onBack=()=>pick(o.current());
+  await v.layout(innerWidth,innerHeight);
+  v.warmGpu(o.renderer);
   holder.addChild(v);view=v;
   return v;
  });
- // Warm the screen's assets in the background.
- void ensureView().catch(console.error);
+ // Warm the screen's assets in the background on user sessions (or when ?pick is requested).
+ const skipAutoWarm=typeof navigator!=='undefined'&&navigator.webdriver&&!new URLSearchParams(location.search).has('pick')&&!isHeroReset();
+ if(!skipAutoWarm)void ensureView().catch(console.error);
 
- const layout=async()=>{const v=await ensureView();await v.layout(innerWidth,innerHeight);};
+ const layout=async()=>{const v=await ensureView();await v.layout(innerWidth,innerHeight);v.warmGpu(o.renderer);};
  window.addEventListener('resize',()=>{if(holder.visible)void layout().catch(console.error);});
 
  function hide(){
@@ -55,8 +58,18 @@ export function createHeroPicker(uiStage:Container,o:{current:()=>HeroId;choose:
   return new Promise<void>(r=>{done=r;});
  }
 
+ async function warm(){
+  try{
+   const v=await ensureView();
+   v.warmGpu(o.renderer);
+  }catch(e){
+   console.error(e);
+  }
+ }
+
  return {
   open,
+  warm,
   isOpen:()=>holder.visible,
   view:()=>viewPromise,
   // A new tab asks once; a reload in the same tab (or a ?hero=<id> link) plays on; ?hero=reset asks again.

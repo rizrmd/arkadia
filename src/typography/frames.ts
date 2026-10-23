@@ -15,7 +15,7 @@ export class FrameSet{
  private constructor(readonly scale:FrameScale,private manifest:Manifest,private textures:Record<string,Texture>){}
  // only: load just the frames these names select (an ornate frame's name selects its parts).
  static async load(base:string,scale:FrameScale,only?:(name:string)=>boolean){
-  const v='?v=4';
+  const v='?v=6';
   const manifest=await (await fetch(base+'manifest.json'+v)).json() as Manifest;
   const names=Object.keys(manifest.frames).filter(n=>!only||only(n.replace(/\.(tl|tr|bl|br|l|r)$/,'')));
   // The resolution makes texture sizes read in @1x units, so layouts and slice borders are scale-independent.
@@ -23,6 +23,14 @@ export class FrameSet{
   return new FrameSet(scale,manifest,Object.fromEntries(names.map((n,i)=>[n,textures[i]])));
  }
  texture(name:string){const t=this.textures[name];if(!t)throw Error(`Unknown frame ${name}`);return t;}
+ warmGpu(renderer?:{texture?:{initSource?:(s:any)=>void}}){
+  for(const tex of Object.values(this.textures)){
+   if(tex?.source){
+    tex.source.autoGarbageCollect=false;
+    renderer?.texture?.initSource?.(tex.source);
+   }
+  }
+ }
  size(name:string){return this.manifest.ornate?.[name]??this.manifest.frames[name];}
  // Stretchable frames become NineSliceSprites: corners keep their pixels, edges stretch along one axis only.
  frame(name:string,width?:number,height?:number):Container{

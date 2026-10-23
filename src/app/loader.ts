@@ -26,16 +26,29 @@ export function createCanvasSprite(canvas:HTMLCanvasElement){
  if(!canvas.width)canvas.width=1;
  if(!canvas.height)canvas.height=1;
  const source=new CanvasSource({resource:canvas,resolution:1});
- const texture=new Texture({source});
+ const texture=new Texture({source,dynamic:true});
  const sprite=new Sprite(texture);
  return {
   sprite,
   source,
   texture,
   sync(logicalW=canvas.width,logicalH=canvas.height){
+   let resized=false;
    if(source.pixelWidth!==canvas.width||source.pixelHeight!==canvas.height){
     source.resize(canvas.width,canvas.height,1);
+    resized=true;
+   }
+   if(texture.frame.width!==source.width||texture.frame.height!==source.height||texture.orig.width!==source.width||texture.orig.height!==source.height){
+    texture.frame.width=source.width;
+    texture.frame.height=source.height;
+    texture.orig.width=source.width;
+    texture.orig.height=source.height;
+    resized=true;
+   }
+   if(resized){
     texture.updateUvs();
+    texture.update();
+    (sprite as unknown as {onViewUpdate():void}).onViewUpdate();
    }
    source.update();
    sprite.width=logicalW;
@@ -66,6 +79,7 @@ export function ensurePixiRuntime(host?:HTMLElement):Promise<SharedPixiRuntime>{
    antialias:true,
    autoDensity:true,
    resolution:window.devicePixelRatio||1,
+   gcActive:false,
   });
   app.canvas.id='world-canvas';
   const mountTarget=host??document.querySelector<HTMLElement>('#app')??document.body;

@@ -75,13 +75,14 @@ export function createFxStage(o:FxStageOptions){
  let deriveAlpha:typeof import('nixie-fx/pixi').createDerivedAlphaTexture|null=null;
  const textureProvider:PixiVfxTextureProvider={
   staticAssets:true,
-  async preload(refs:VfxTextureAssetRef[]){await Promise.all(refs.map(async ref=>{if(!textures.has(ref.path)){const tex=await (await PIXI()).Assets.load<Texture>({src:'/vfx/'+ref.path,data:{scaleMode:'nearest'}});if(tex?.source)tex.source.scaleMode='nearest';textures.set(ref.path,tex);}}));},
+  async preload(refs:VfxTextureAssetRef[]){await Promise.all(refs.map(async ref=>{if(!textures.has(ref.path)){const tex=await (await PIXI()).Assets.load<Texture>({src:'/vfx/'+ref.path,data:{scaleMode:'nearest'}});if(tex?.source){tex.source.scaleMode='nearest';tex.source.autoGarbageCollect=false;}textures.set(ref.path,tex);}}));},
   getTexture:(ref:VfxTextureAssetRef)=>textures.get(ref.path),
   getAlphaTexture:(ref,opacitySource,invert)=>{
    const key=`${ref.path}|${opacitySource}|${invert?1:0}`;
    const hit=alphaTextures.get(key);if(hit)return hit;
    const src=textures.get(ref.path);if(!src||!deriveAlpha)return undefined;
    const derived=deriveAlpha(src,opacitySource,invert)??src;
+   if(derived?.source)derived.source.autoGarbageCollect=false;
    alphaTextures.set(key,derived);
    return derived;
   },
@@ -94,11 +95,11 @@ export function createFxStage(o:FxStageOptions){
   const bundle=loadVfxExportBundle({manifest:packed.manifest,effectsByPath:packed.effects},{requiredBackend:'pixi2d'});
   for(const fx of bundle.effectsById.values()){
    if(o.host&&fx.emitters){
-    if(fx.emitters.length>4){
-     const src=fx.emitters,step=(src.length-1)/3;
-     fx.emitters=[src[0],src[Math.round(step)],src[Math.round(step*2)],src[src.length-1]];
+    if(fx.emitters.length>3){
+     const src=fx.emitters;
+     fx.emitters=[src[0],src[Math.round((src.length-1)/2)],src[src.length-1]];
     }
-    const perMax=Math.max(8,Math.min(14,Math.floor(40/Math.max(1,fx.emitters.length))));
+    const perMax=Math.max(6,Math.min(10,Math.floor(28/Math.max(1,fx.emitters.length))));
     for(const e of fx.emitters as any[]){
      e.maxParticles=Math.min(e.maxParticles||perMax,perMax);
      if(e.spawn){
@@ -109,7 +110,7 @@ export function createFxStage(o:FxStageOptions){
        if(typeof rv.min==='number'&&rv.min>perMax)rv.min=perMax;
        if(typeof rv.max==='number'&&rv.max>perMax)rv.max=perMax;
       }
-      if(e.spawn.bursts)for(const b of e.spawn.bursts)if(b.count>8)b.count=Math.min(perMax,Math.ceil(b.count*.32));
+      if(e.spawn.bursts)for(const b of e.spawn.bursts)if(b.count>6)b.count=Math.min(perMax,Math.ceil(b.count*.3));
      }
     }
    }
@@ -138,7 +139,7 @@ export function createFxStage(o:FxStageOptions){
      list.push(inst);
     }
     pool.set(key,list);
-    if(++batch%5===0)await new Promise(r=>setTimeout(r,0));
+    if(++batch%20===0)await new Promise(r=>setTimeout(r,0));
    }
   }
   ready=true;

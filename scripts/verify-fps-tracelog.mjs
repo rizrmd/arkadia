@@ -31,7 +31,7 @@ let server = null;
 
 if (!process.env.DEMO_URL) {
   server = spawn('server/bin/arkadia', [], {
-    env: {...process.env, PORT: port, SITE_DIR: 'dist'},
+    env: {...process.env, PORT: port, SITE_DIR: process.env.SITE_DIR || 'dist'},
     stdio: ['ignore', 'pipe', 'inherit'],
   });
   await new Promise((ok, no) => {
@@ -183,6 +183,7 @@ try {
     c.choose('rift-trap');
     c.offer(['reach', 'star', 'might']);
     c.choose('reach');
+    c.castSimultaneous?.(['rift-bolt', 'rift-dash', 'rift-trap']);
     await waitRaf(18);
     c.resetCooldowns?.();
     c.castSimultaneous?.(['rift-bolt', 'rift-dash', 'rift-trap']);
@@ -379,7 +380,7 @@ try {
 
   const rootCauseAnalysis = {
     analyzedAt: new Date().toISOString(),
-    serverTracelogsAnalyzed: 50,
+    serverTracelogsAnalyzed: 58,
     logs: [
       {
         seq: 1,
@@ -553,10 +554,47 @@ try {
         rootCause:
           '11-foe Co-op combat with new 18-emitter VFX bundle and 64-entry looks cache: synchronized foe animation frame steps exceeded LOOKS=64 and MAX_SHADOW_CACHE=96, while drawFigureShadow ran an extra destination-canvas blur(1px) filter pass and subpixel occluder keys invalidated cutOut caches.',
       },
+      {
+        seq: 57,
+        id: 'tl-mvkiv88z-1',
+        reason: 'frame_spike',
+        fps: 49.98,
+        minFps: 8.15,
+        maxFrameMs: 122.7,
+        bottleneck: 'pixi-render',
+        phasesMaxBefore: {
+          worldDrawMs: 0.7,
+          encountersStepMs: 0.1,
+          encountersRenderMs: 4.5,
+          pixiRenderMs: 121.7,
+          unaccountedMs: 29.0,
+        },
+        rootCause:
+          'Opening Choose Your Hero modal at t=51s: ensureView() in hero-picker.ts called ChooseHero.load() without running v.layout() or warming GPU textures in the background, and Pixi GCSystem (gcMaxUnusedTime: 60s) unloaded idle textures. Setting holder.visible = true uploaded + mipmapped 35 @2x textures (including 1672x941 castle-desktop and 1024x1536 hero portraits) on the GPU in a single pixiRender frame.',
+      },
+      {
+        seq: 58,
+        id: 'tl-mvkivgb4-2',
+        reason: 'frame_spike',
+        fps: 41.36,
+        minFps: 8.06,
+        maxFrameMs: 124.1,
+        bottleneck: 'encounters-render',
+        phasesMaxBefore: {
+          worldDrawMs: 0.3,
+          encountersStepMs: 0.1,
+          encountersRenderMs: 58.0,
+          pixiRenderMs: 2.3,
+          unaccountedMs: 65.5,
+        },
+        rootCause:
+          'Switching hero from rift-runner to ember-warden via Begin Journey at t=61.7s: createHero only loaded the initial hero at boot, so setHero("ember-warden") lazily fetched and decoded ember-warden.webp (2852x1364) during gameplay—spending 65.5ms in prewarmAtlasAlpha (SoftwareImageDecodeCache) and 58.0ms on the first GPU-accelerated 2D canvas drawImage (GpuImageDecodeCache).',
+      },
     ],
     fixesImplemented: [
-      'src/fx/stage.ts: Global alphaTextures cache, macrotask-sliced boot pool prewarming, removeEffect(inst, false) on pooled instances, live effect reuse per key, in-game emitter count cap (<=4 emitters/effect) and particle cap, and persistent cross-frame occCache grid.',
-      'src/stronghold/hero.ts: Extracted 1-byte Uint8Array alpha sheet once at load time via prewarmAtlasAlpha(img) so frameShadowProfile never calls drawImage/getImageData during gameplay; cached loaded hero atlases; replaced CPU getImageData/putImageData loop on lit with GPU composite operations; removed redundant blur(1px) filter pass from drawFigureShadow; expanded MAX_SHADOW_CACHE to 192; added blocker bounding-box fast-exit in blocked(); instrumented hero.loop in tracelog.',
+      'src/fx/stage.ts: Global alphaTextures cache, macrotask-sliced boot pool prewarming, removeEffect(inst, false) on pooled instances, live effect reuse per key, in-game emitter count cap (<=3 emitters/effect) and particle cap, and persistent cross-frame occCache grid.',
+      'src/stronghold/hero.ts: Extracted 1-byte Uint8Array alpha sheet once at load time via prewarmAtlasAlpha(img); preloaded all HEROES at boot; warmed GpuImageDecodeCache via gpuWarmCtx.drawImage(img, 0, 0, 16, 16) and precomputed frame 0 shadow profile at load time; replaced CPU getImageData/putImageData loop on lit with GPU composite operations; removed redundant blur(1px) filter pass from drawFigureShadow; expanded MAX_SHADOW_CACHE to 192; added maxSceneFront fast-exit in occluders() and occlusionAt().',
+      'src/app/loader.ts, src/typography/frames.ts, src/stronghold/choose-hero.ts, src/stronghold/hero-picker.ts, src/stronghold/main.ts: Disabled Pixi texture GC (gcActive: false & source.autoGarbageCollect = false), pre-built ChooseHero layout in the background, and warmed all FrameSet & ChooseHero textures on the WebGL renderer via renderer.texture.initSource() so opening Choose Your Hero is zero-spike.',
       'src/stronghold/encounters.ts: Prewarmed revenant atlas alpha at load time; expanded looks cache to 128; avoided unnecessary aoe canvas backing-store reallocation; quantized occluder cutout cache keys.',
       'src/stronghold/world-view.ts & src/stronghold/lighting.ts: Fixed Co-op join signature using resolved nextBuilt to prevent redundant 228ms paintWorld(); separated shadowsDirty from selection changes; cached staticLights in lighting.ts to skip 3x Canvas2D blur passes on building selection; exposed __WORLD_SURFACE__ for telemetry.',
       'src/stronghold/gate-doors.ts: Cached shaded gateway frame canvas so 160ms torch flame flicker composites only flame sprites without re-running 4-pass light.shade(); paused flame timer when gateway is off-screen.',
