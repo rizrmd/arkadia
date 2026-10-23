@@ -140,7 +140,7 @@ const drawChamferedPlaque = (
   .lineTo(xChamfer - 1, top - 0.3)
   .stroke({ color: 0xfbe7b5, width: 0.65, alpha: 0.72 });
 
- // Inner inset pale-gold hairline + concentric medallion cuff arc
+ // Inner inset pale-gold hairline; keep the icon-label join free of cuff separators.
  const inset = 3.2;
  const cuffR = medR + 3.2;
  const dy = h / 2 - inset;
@@ -152,8 +152,6 @@ const drawChamferedPlaque = (
   .lineTo(xChamfer - 1.8, bot - inset)
   .lineTo(arcStartX, bot - inset)
   .stroke({ color: 0xfbe7b5, width: 0.65, alpha: 0.34 });
- g.arc(medCx, cy, cuffR, -ang, ang)
-  .stroke({ color: 0xd4a852, width: 0.9, alpha: 0.55 });
 
  // Right 4-point compass star finial
  drawCompassStar(g, rightX + 1, cy, 6.2, 4.3, false);
