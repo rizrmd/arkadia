@@ -309,6 +309,8 @@ export class Hud extends Container {
  private portraitRing!: Container;
  private currentPortrait = '';
  private isPortrait = false;
+ // Desktop (landscape, >= 1024 CSS px wide) draws the `24 MS ♦ 60 FPS` telemetry row smaller than mobile.
+ private isDesktopTelemetry = false;
 
  // Top-right telemetry: Concept 3 Twin Medallion Plaques + Filigree Status Ledger + Iconless Ping/FPS (Alt B)
  // + legacy stacked pills (Reference specimen mode)
@@ -665,20 +667,25 @@ export class Hud extends Container {
   // ---------------------------------------------------------------------------
   // 3. BOTTOM ROW: Iconless High-Contrast Telemetry (`24 MS ♦ 60 FPS`)
   // ---------------------------------------------------------------------------
-  const telCy = this.isPortrait ? 140 : 122.5;
-  const telTextY = telCy + 5.5;
+  const telK = this.isDesktopTelemetry ? 0.7 : 1;
+  const telCy = this.isPortrait ? 140 : this.isDesktopTelemetry ? 119 : 122.5;
+  const telTextY = telCy + 5.5 * telK;
   const telRightX = rightAnchor - 4;
-  const fpsAdv = Math.ceil(this.trTelemetryFpsText.advance);
-  const fpsSlotW = Math.max(66, fpsAdv);
+  const placeTel = (t: MsdfText, x: number) => {
+   t.scale.set(telK);
+   t.position.set(x, telTextY - t.metrics().baseline * telK);
+  };
+  const fpsAdv = Math.ceil(this.trTelemetryFpsText.advance * telK);
+  const fpsSlotW = Math.max(66 * telK, fpsAdv);
   const fpsX = telRightX - fpsAdv;
-  this.trTelemetryFpsText.place(fpsX, telTextY);
+  placeTel(this.trTelemetryFpsText, fpsX);
 
-  const telSepX = telRightX - fpsSlotW - 11;
-  drawCompassStar(g, telSepX, telCy, 4.5, 4.5, false);
+  const telSepX = telRightX - fpsSlotW - 11 * telK;
+  drawCompassStar(g, telSepX, telCy, 4.5 * telK, 4.5 * telK, false);
 
-  const pingAdv = Math.ceil(this.trTelemetryPingText.advance);
-  const pingX = telSepX - 11 - pingAdv;
-  this.trTelemetryPingText.place(pingX, telTextY);
+  const pingAdv = Math.ceil(this.trTelemetryPingText.advance * telK);
+  const pingX = telSepX - 11 * telK - pingAdv;
+  placeTel(this.trTelemetryPingText, pingX);
 
   this.trDesignBounds = {
    goldPlaque: { medX: goldMedX, rightX: goldRightX, cy: plaqueCy, h: plaqueH, medR },
@@ -1095,8 +1102,11 @@ export class Hud extends Container {
   }
  }
 
+ private gateBarReady = false;
+
  setGateHp(gateHp: number, gateHpMax = 100) {
-  if (this.state.gateHp === gateHp && this.state.gateHpMax === gateHpMax && this.gateBarG?.geometry) return;
+  if (this.state.gateHp === gateHp && this.state.gateHpMax === gateHpMax && this.gateBarReady) return;
+  this.gateBarReady = true;
   this.state.gateHp = gateHp;
   this.state.gateHpMax = gateHpMax;
   this.syncPlayerConsole();
@@ -1267,6 +1277,7 @@ export class Hud extends Container {
    variant: this.isAltB ? 'concept-3-medallion-plaques-ledger' : 'legacy-4-pill-stack',
    isPortrait: this.isPortrait,
    ribbonScale: trScale,
+   telemetryTextScale: this.trTelemetryPingText?.scale.x ?? 1,
    goldLabel: this.trRibbonGoldText?.text ?? this.goldText.text,
    timeLabel: this.trRibbonClockText?.text ?? this.clockText.text,
    zoneLabel: this.trRibbonZoneText?.text ?? this.zoneText.text,
@@ -1451,8 +1462,14 @@ export class Hud extends Container {
   const portrait = width < height;
   const s = portrait ? width / 848 : Math.min(width / W, height / H);
   this.lastScale = s;
+  const desktopTelemetry = !portrait && width >= 1024;
+  if (portrait === this.isPortrait && desktopTelemetry !== this.isDesktopTelemetry) {
+   this.isDesktopTelemetry = desktopTelemetry;
+   this.layoutTopRightRibbon();
+  }
   if (portrait !== this.isPortrait) {
    this.isPortrait = portrait;
+   this.isDesktopTelemetry = desktopTelemetry;
    this.heroPlate.width = portrait ? 308 : 388;
    this.heroPlate.height = portrait || this.isAltB ? 138 : 104;
    this.heroPlate.position.set(portrait ? 144 : 150, portrait ? 22 : 24);
