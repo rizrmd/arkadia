@@ -370,12 +370,12 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
 
             // Subtle upper-edge rim highlight
             float rim = pow(clamp(1.0 - abs(nView.z), 0.0, 1.0), 3.2) * smoothstep(-0.1, 0.45, nView.y);
-            painted += uRimColor * (rim * 0.18);
+            painted += uRimColor * (rim * 0.16);
 
-            // Slight painterly tonal quantization (14 steps) for brush-painted look
+            // Smooth 24-step brush-painted tonal grading (avoids low-poly posterization on face & coat)
             float pLuma = max(0.001, dot(painted, vec3(0.299, 0.587, 0.114)));
-            float qLuma = floor(pLuma * 14.0 + 0.5) / 14.0;
-            painted *= mix(1.0, qLuma / pLuma, 0.42);
+            float qLuma = floor(pLuma * 24.0 + 0.5) / 24.0;
+            painted *= mix(1.0, qLuma / pLuma, 0.12);
 
             gl_FragColor.rgb = clamp(painted, 0.0, 1.0);
             #include <dithering_fragment>
@@ -476,8 +476,8 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
             r = r * (1 - inkMix) + INK_R * inkMix;
             g = g * (1 - inkMix) + INK_G * inkMix;
             b = b * (1 - inkMix) + INK_B * inkMix;
-          } else {
-            // Internal crease line detection (luminance jump between armor plates / cloak folds)
+          } else if (y > 68) {
+            // Subtle internal crease line detection below face/collar (avoids dark ink speckles on face/eyes)
             const lumC = r * 0.3 + g * 0.59 + b * 0.11;
             const lumR = workPixels[p + 4] * 0.3 + workPixels[p + 5] * 0.59 + workPixels[p + 6] * 0.11;
             const lumD =
@@ -485,8 +485,8 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
               workPixels[p + W * 4 + 1] * 0.59 +
               workPixels[p + W * 4 + 2] * 0.11;
             const diff = Math.max(Math.abs(lumC - lumR), Math.abs(lumC - lumD));
-            if (diff > 34) {
-              const crease = Math.min(0.42, (diff - 34) * 0.008);
+            if (diff > 56) {
+              const crease = Math.min(0.22, (diff - 56) * 0.0045);
               r = r * (1 - crease) + INK_R * crease;
               g = g * (1 - crease) + INK_G * crease;
               b = b * (1 - crease) + INK_B * crease;
@@ -759,13 +759,15 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
         const center = new THREE.Vector3();
         box.getSize(size);
         box.getCenter(center);
-        const scale = 1.48 / (size.y || 1);
-        model.scale.setScalar(scale);
+        const targetHeight = heroId === 'ember-warden' ? 1.54 : 1.50;
+        const scaleY = targetHeight / (size.y || 1);
+        const scaleXZ = heroId === 'ember-warden' ? scaleY * 0.89 : scaleY * 0.94;
+        model.scale.set(scaleXZ, scaleY, scaleXZ);
         model.updateMatrixWorld(true);
         const scaledBox = new THREE.Box3().setFromObject(model);
-        entry.baseOffsetX = -center.x * scale;
+        entry.baseOffsetX = -center.x * scaleXZ;
         entry.baseOffsetY = -scaledBox.min.y;
-        entry.baseOffsetZ = -center.z * scale;
+        entry.baseOffsetZ = -center.z * scaleXZ;
         model.position.set(entry.baseOffsetX, entry.baseOffsetY, entry.baseOffsetZ);
 
         model.traverse((obj: any) => {

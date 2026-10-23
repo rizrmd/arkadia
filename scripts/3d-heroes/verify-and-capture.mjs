@@ -59,7 +59,7 @@ try {
     if (m.type() === 'error') errors.push(m.text());
   });
 
-  await page.goto(`http://127.0.0.1:${port}/3d-hero-lab/index.html`, { waitUntil: 'networkidle' });
+  await page.goto(`http://127.0.0.1:${port}/3d-hero-lab/index.html?pause_raf=1`, { waitUntil: 'networkidle' });
   await page.waitForFunction(() => window.__LAB_READY__ === true, null, { timeout: 60000 });
 
   // Capture 1: Overview in Stylized Dark-Fantasy Isometric mode (Run While Casting animation, SE facing)
@@ -88,8 +88,27 @@ try {
   const octEl = await page.$('.grid-card');
   await octEl.screenshot({ path: path.join(DOCS_DIR, 'octant-strip-run.png') });
 
+  // Capture 6-8: Ember Warden 8-heads-tall 31.6k-tri 3D model in Stylized, Wireframe, and 8-direction strip
+  await page.evaluate(() => {
+    window.__LAB_READY__ = false;
+    document.querySelector('#hero-buttons .btn[data-hero="ember-warden"]')?.click();
+  });
+  await page.waitForFunction(() => window.__LAB_READY__ === true, null, { timeout: 60000 });
+  await page.evaluate(() => window.__setLabState({ clip: 'run_cast', dir: 'SE', cameraMode: 'iso', shaderMode: 'stylized', time: 0.45 }));
+  await page.waitForTimeout(180);
+  await page.screenshot({ path: path.join(DOCS_DIR, 'ember-lab-overview-se.png') });
+
+  await page.evaluate(() => window.__setLabState({ clip: 'idle', dir: 'S', cameraMode: 'iso', shaderMode: 'wireframe', time: 0.1 }));
+  await page.waitForTimeout(180);
+  await page.screenshot({ path: path.join(DOCS_DIR, 'ember-lab-wireframe.png') });
+
+  await page.evaluate(() => window.__setLabState({ clip: 'run', dir: 'S', cameraMode: 'iso', shaderMode: 'stylized', time: 0.22 }));
+  await page.waitForTimeout(180);
+  const emberOctEl = await page.$('.grid-card');
+  await emberOctEl.screenshot({ path: path.join(DOCS_DIR, 'ember-octant-strip.png') });
+
   assert.deepEqual(errors, [], `Page errors detected: ${errors.join('; ')}`);
-  console.log('Verified /3d-hero-lab/ with 0 errors and captured 5 evidence screenshots in docs/3d-heroes/!');
+  console.log('Verified /3d-hero-lab/ for both Rift Runner & Ember Warden with 0 errors and captured evidence screenshots in docs/3d-heroes/!');
 } finally {
   await browser.close();
   srv.close();

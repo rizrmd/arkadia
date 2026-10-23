@@ -350,7 +350,7 @@
   <header>
     <div class="brand">
       <span class="badge">Meshy MCP · meshy-t2.5</span>
-      <span class="badge gold">Smart Topology · 15,000 Tris</span>
+      <span class="badge gold">High-Detail Topology · 31.6k Tris · 4K PBR</span>
       <span class="badge ok">Real-Time WebGL · 60 FPS</span>
       <h1 id="header-title">Arkodia — Real-Time 3D Hero &amp; Animation Lab (Rift Runner &amp; Ember Warden)</h1>
     </div>
@@ -462,10 +462,10 @@
 
       <div class="panel">
         <h3>Play Live in Stronghold Game (60 FPS)</h3>
-        <p style="font-size: 12px; color: var(--muted); line-height: 1.5; margin-bottom: 10px;">
+        <p id="launch-stronghold-desc" style="font-size: 12px; color: var(--muted); line-height: 1.5; margin-bottom: 10px;">
           Rift Runner's 3D rigged mesh &amp; 60 FPS skeletal animations (<code>idle_cast</code> &amp; <code>run_cast</code>) are wired directly into the Stronghold game engine (<code>?3d=1</code>) with full 360° rotation, dynamic sun shadows, and wall occlusion:
         </p>
-        <a href="/?hero=rift-runner&amp;3d=1" target="_top" class="btn active" style="display: block; text-align: center; text-decoration: none; padding: 9px 12px;">
+        <a id="launch-stronghold-link" href="/?hero=rift-runner&amp;3d=1" target="_top" class="btn active" style="display: block; text-align: center; text-decoration: none; padding: 9px 12px;">
           Launch Stronghold in Real-Time 3D Mode (60 FPS) →
         </a>
       </div>
@@ -667,6 +667,7 @@
 
     function applyShaderMode(root, mode) {
       if (!root) return;
+      const isEmber = state.hero === 'ember-warden';
       root.traverse((obj) => {
         if (!obj.isMesh) return;
         if (!obj.userData.origMaterial) {
@@ -674,36 +675,40 @@
         }
         const orig = obj.userData.origMaterial;
         if (mode === 'pbr') {
-          obj.material = orig;
+          obj.material = orig.clone();
           obj.material.wireframe = false;
         } else if (mode === 'wireframe') {
-          obj.material = orig.clone();
-          obj.material.wireframe = true;
+          const mat = orig.clone();
+          mat.wireframe = true;
+          mat.emissive = new THREE.Color(isEmber ? 0xf59e0b : 0x38bdf8);
+          mat.emissiveIntensity = 0.28;
+          obj.material = mat;
         } else {
           const mat = orig.clone();
-          mat.roughness = 0.62;
-          mat.metalness = 0.15;
-          mat.emissive = new THREE.Color(0x071526);
-          mat.emissiveIntensity = 0.35;
+          mat.roughness = 0.72;
+          mat.metalness = 0.08;
+          mat.emissive = new THREE.Color(isEmber ? 0x1a0b04 : 0x071526);
+          mat.emissiveIntensity = isEmber ? 0.22 : 0.30;
           mat.wireframe = false;
           obj.material = mat;
         }
       });
     }
 
-    function normalizeModelToGround(model) {
+    function normalizeModelToGround(model, heroId) {
       model.updateMatrixWorld(true);
       const box = new THREE.Box3().setFromObject(model);
       const size = new THREE.Vector3();
       const center = new THREE.Vector3();
       box.getSize(size);
       box.getCenter(center);
-      const targetHeight = 1.52;
-      const scale = targetHeight / (size.y || 1);
-      model.scale.setScalar(scale);
+      const targetHeight = heroId === 'ember-warden' ? 1.56 : 1.52;
+      const scaleY = targetHeight / (size.y || 1);
+      const scaleXZ = heroId === 'ember-warden' ? scaleY * 0.90 : scaleY * 0.96;
+      model.scale.set(scaleXZ, scaleY, scaleXZ);
       model.updateMatrixWorld(true);
       const scaledBox = new THREE.Box3().setFromObject(model);
-      model.position.set(-center.x * scale, -scaledBox.min.y, -center.z * scale);
+      model.position.set(-center.x * scaleXZ, -scaledBox.min.y, -center.z * scaleXZ);
     }
 
     const loader = new GLTFLoader();
@@ -711,12 +716,26 @@
 
     function loadHero(heroId, onDone) {
       state.hero = heroId;
+      const isEmber = heroId === 'ember-warden';
+      if (rimLight) rimLight.color.setHex(isEmber ? 0xf59e0b : 0x38bdf8);
+      if (octRim) octRim.color.setHex(isEmber ? 0xf59e0b : 0x38bdf8);
+      if (heroRing) heroRing.material.color.setHex(isEmber ? 0xf59e0b : 0x38bdf8);
       document.querySelectorAll('#hero-buttons .btn').forEach((b) => {
         b.classList.toggle('active', b.dataset.hero === heroId);
       });
       const assetReadout = document.getElementById('asset-readout');
       if (assetReadout) {
-        assetReadout.innerHTML = `Unified Asset: <strong>${heroId}.glb</strong>`;
+        const sizeLabel = isEmber ? '3.52 MB · 31,594 Tris' : '2.68 MB · 15,929 Tris';
+        assetReadout.innerHTML = `Unified Asset: <strong>${heroId}.glb (${sizeLabel})</strong>`;
+      }
+      const launchDesc = document.getElementById('launch-stronghold-desc');
+      if (launchDesc) {
+        const heroTitle = isEmber ? 'Ember Warden' : 'Rift Runner';
+        launchDesc.innerHTML = `${heroTitle}'s 3D rigged mesh &amp; 60 FPS skeletal animations (<code>idle_cast</code> &amp; <code>run_cast</code>) are wired directly into the Stronghold game engine (<code>?3d=1</code>) with full 360° rotation, dynamic sun shadows, and wall occlusion:`;
+      }
+      const launchLink = document.getElementById('launch-stronghold-link');
+      if (launchLink) {
+        launchLink.href = `/?hero=${heroId}&3d=1`;
       }
       document.getElementById('loading-banner').style.display = 'flex';
       loader.load(`/assets/characters/3d/${heroId}.glb`, (gltf) => {
@@ -735,7 +754,7 @@
 
         heroRoot = new THREE.Group();
         heroRoot.add(rawHeroMesh);
-        normalizeModelToGround(rawHeroMesh);
+        normalizeModelToGround(rawHeroMesh, heroId);
         scene.add(heroRoot);
 
         mixer = new THREE.AnimationMixer(rawHeroMesh);
@@ -759,6 +778,7 @@
         applyShaderMode(rawHeroMesh, state.shaderMode);
         applyShaderMode(rawOctMesh, state.shaderMode);
         playClip(state.clip || 'run_cast', true);
+        renderFrame(0);
 
         document.getElementById('loading-banner').style.display = 'none';
         window.__LAB_READY__ = true;
@@ -768,6 +788,7 @@
 
     {
       const qp = new URLSearchParams(location.search);
+      if (qp.get('pause_raf') === '1') window.__PAUSE_RAF__ = true;
       const qDir = qp.get('dir');
       if (qDir) setDirection(qDir.toUpperCase());
       const qStyle = qp.get('style');
@@ -983,6 +1004,7 @@
     });
 
     window.__setLabState = ({ clip, dir, cameraMode, shaderMode, time, turntable }) => {
+      window.__PAUSE_RAF__ = true;
       if (shaderMode) {
         state.shaderMode = shaderMode;
         document.querySelectorAll('#shader-buttons .btn').forEach((b) => b.classList.toggle('active', b.dataset.shader === shaderMode));
@@ -1070,6 +1092,10 @@
     }
 
     function animate(now) {
+      if (window.__PAUSE_RAF__) {
+        requestAnimationFrame(animate);
+        return;
+      }
       const dt = Math.min(0.1, (now - lastTime) / 1000);
       lastTime = now;
       frames++;

@@ -28,6 +28,7 @@ try {
   await fs.cp('public/assets/characters/3d', path.join(site, 'assets/characters/3d'), { recursive: true });
   if (existsSync('docs/3d-heroes')) {
     await fs.cp('docs/3d-heroes', path.join(site, '3d-hero-lab/evidence'), { recursive: true });
+    await fs.cp('docs/3d-heroes', path.join(site, 'docs/3d-heroes'), { recursive: true });
   }
 
   const tgz = path.join(os.tmpdir(), 'arkadia-3d-release.tgz');

@@ -134,15 +134,81 @@ async function buildHeroGlb(hero) {
     return Buffer.from(base.bin.subarray(start, start + bv.byteLength));
   });
 
-  // Compress embedded images (1024x1024 JPEG quality 86) for fast web loading
-  for (const img of outJson.images || []) {
+  // Refine Ember Warden bind-pose vertex proportions (sleeker 8-heads-tall head/neck ratio & tailored coat silhouette)
+  if (hero.id === 'ember-warden') {
+    for (const mesh of outJson.meshes || []) {
+      for (const prim of mesh.primitives || []) {
+        if (prim.attributes?.POSITION === undefined) continue;
+        const posAcc = outJson.accessors[prim.attributes.POSITION];
+        const posBv = outJson.bufferViews[posAcc.bufferView];
+        const buf = bvBuffers[posAcc.bufferView];
+        const baseOff = posAcc.byteOffset || 0;
+        const stride = posBv.byteStride || 12;
+        const min = [Infinity, Infinity, Infinity];
+        const max = [-Infinity, -Infinity, -Infinity];
+        const smoothstep = (e0, e1, v) => {
+          const t = Math.max(0, Math.min(1, (v - e0) / (e1 - e0)));
+          return t * t * (3 - 2 * t);
+        };
+
+        for (let i = 0; i < posAcc.count; i++) {
+          const off = baseOff + i * stride;
+          let x = buf.readFloatLE(off);
+          let y = buf.readFloatLE(off + 4);
+          let z = buf.readFloatLE(off + 8);
+
+          // 1. Scale head & crown curls around neck pivot (y = 1.455m) for true 8-heads-tall heroic proportions
+          //    (masked to central column |x| < 0.24 so T-pose arms/hands are untouched)
+          const headWeight = smoothstep(1.39, 1.48, y) * (1 - smoothstep(0.18, 0.25, Math.abs(x)));
+          if (headWeight > 0) {
+            const pivotY = 1.455;
+            const sXZ = 1 - 0.20 * headWeight;
+            const sY = 1 - 0.20 * headWeight;
+            x *= sXZ;
+            y = pivotY + (y - pivotY) * sY;
+            z *= sXZ;
+          }
+
+          // 2. Tailor waist/corset & outer coat flare so silhouette reads tall and slender instead of wide/stubby
+          const coatFlareWeight = smoothstep(0.25, 0.45, y) * (1 - smoothstep(0.85, 1.15, y)) * smoothstep(0.14, 0.28, Math.abs(x));
+          if (coatFlareWeight > 0) {
+            x *= 1 - 0.14 * coatFlareWeight;
+          }
+          const waistWeight = smoothstep(0.92, 1.08, y) * (1 - smoothstep(1.22, 1.34, y)) * (1 - smoothstep(0.18, 0.26, Math.abs(x)));
+          if (waistWeight > 0) {
+            x *= 1 - 0.08 * waistWeight;
+            z *= 1 - 0.06 * waistWeight;
+          }
+
+          buf.writeFloatLE(x, off);
+          buf.writeFloatLE(y, off + 4);
+          buf.writeFloatLE(z, off + 8);
+          if (x < min[0]) min[0] = x;
+          if (y < min[1]) min[1] = y;
+          if (z < min[2]) min[2] = z;
+          if (x > max[0]) max[0] = x;
+          if (y > max[1]) max[1] = y;
+          if (z > max[2]) max[2] = z;
+        }
+        posAcc.min = min;
+        posAcc.max = max;
+        console.log(`[${hero.id}] Refined bind-pose proportions (${posAcc.count} vertices, maxY=${max[1].toFixed(3)}m)`);
+      }
+    }
+  }
+
+  // Compress embedded images (2048x2048 quality 90 for baseColor texture 0; 1024x1024 quality 86 for secondary PBR maps)
+  for (let imgIdx = 0; imgIdx < (outJson.images || []).length; imgIdx++) {
+    const img = outJson.images[imgIdx];
     if (typeof img.bufferView === 'number') {
       const orig = bvBuffers[img.bufferView];
+      const maxDim = imgIdx === 0 ? 2048 : 1024;
+      const qual = imgIdx === 0 ? 90 : 86;
       const compressed = await sharp(orig)
-        .resize(1024, 1024, { fit: 'inside', withoutEnlargement: true })
-        .jpeg({ quality: 86, mozjpeg: true })
+        .resize(maxDim, maxDim, { fit: 'inside', withoutEnlargement: true })
+        .jpeg({ quality: qual, mozjpeg: true })
         .toBuffer();
-      console.log(`[${hero.id}] Compressed image bufferView ${img.bufferView}: ${(orig.length / 1024).toFixed(0)} KB -> ${(compressed.length / 1024).toFixed(0)} KB`);
+      console.log(`[${hero.id}] Compressed image[${imgIdx}] bufferView ${img.bufferView} (${maxDim}px q${qual}): ${(orig.length / 1024).toFixed(0)} KB -> ${(compressed.length / 1024).toFixed(0)} KB`);
       bvBuffers[img.bufferView] = compressed;
       img.mimeType = 'image/jpeg';
     }
