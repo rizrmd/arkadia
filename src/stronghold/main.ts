@@ -34,7 +34,9 @@ export async function mount(app:HTMLElement,progress:Progress){
 
  const maxHp=()=>{try{return 100+heroBonus(load(localStorage.getItem(KEY)));}catch{return 100;}};
  let hero:HeroId=savedHero();
- const net=new URLSearchParams(location.search).has('offline')?undefined:createNet({direction:controls.direction,maxHp,hero:()=>hero});
+ // Co-op is temporarily disabled: the game plays solo and offline, with no co-op UI. `?coop` opts back in for netcode testing.
+ const coop=new URLSearchParams(location.search).has('coop');
+ const net=coop?createNet({direction:controls.direction,maxHp,hero:()=>hero}):undefined;
  const lobby=net?createLobby(rt.uiStage,rt.frames,net):null,invited=lobby?.start()??'';
  // The first visit chooses a hero once, before gameplay: the world loads behind the screen with the hero and the
  // revenants held until the pick (hero-picker.ts).

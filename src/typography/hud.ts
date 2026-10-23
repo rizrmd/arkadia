@@ -593,28 +593,32 @@ export class Hud extends Container {
   const ledgerTextY = ledgerCy + 5.5;
   const ledgerRightX = rightAnchor - 2;
 
-  this.trRibbonCoopHit.visible = true;
-  if (!this.trRibbonCoopText.text) {
-   this.trRibbonCoopText.text = this.state.coopLabel || 'Co-op · Solo';
+  // Solo play (no co-op session) leaves the zone alone on the ledger, right-aligned.
+  const online = this.state.coopLabel !== undefined;
+  this.trRibbonCoopHit.visible = online;
+  let ledgerSepX = ledgerRightX;
+  let zoneTextX = ledgerRightX - Math.ceil(this.trRibbonZoneText.advance);
+  if (online) {
+   if (!this.trRibbonCoopText.text) {
+    this.trRibbonCoopText.text = this.state.coopLabel || 'Co-op · Solo';
+   }
+   const coopAdv = Math.ceil(this.trRibbonCoopText.advance);
+   const coopTextX = ledgerRightX - coopAdv;
+   this.trRibbonCoopText.place(coopTextX, ledgerTextY);
+   const coopIconCx = coopTextX - 18;
+   centred(this.trRibbonCoopIcon, coopIconCx, ledgerCy - 0.5, this.isPortrait ? 26 : 24, this.isPortrait ? 22 : 20);
+   this.trRibbonCoopHit.hitArea = new Rectangle(
+    coopIconCx - 16,
+    ledgerCy - 16,
+    ledgerRightX - (coopIconCx - 16) + 6,
+    32,
+   );
+
+   // Gold 4-point diamond separator (`♦`) between Zone and Co-op
+   ledgerSepX = coopIconCx - (this.isPortrait ? 22 : 25);
+   drawCompassStar(g, ledgerSepX, ledgerCy, this.isPortrait ? 5.8 : 5.2, this.isPortrait ? 5.8 : 5.2, false);
+   zoneTextX = ledgerSepX - (this.isPortrait ? 12 : 13) - Math.ceil(this.trRibbonZoneText.advance);
   }
-  const coopAdv = Math.ceil(this.trRibbonCoopText.advance);
-  const coopTextX = ledgerRightX - coopAdv;
-  this.trRibbonCoopText.place(coopTextX, ledgerTextY);
-  const coopIconCx = coopTextX - 18;
-  centred(this.trRibbonCoopIcon, coopIconCx, ledgerCy - 0.5, this.isPortrait ? 26 : 24, this.isPortrait ? 22 : 20);
-  this.trRibbonCoopHit.hitArea = new Rectangle(
-   coopIconCx - 16,
-   ledgerCy - 16,
-   ledgerRightX - (coopIconCx - 16) + 6,
-   32,
-  );
-
-  // Gold 4-point diamond separator (`♦`) between Zone and Co-op
-  const ledgerSepX = coopIconCx - (this.isPortrait ? 22 : 25);
-  drawCompassStar(g, ledgerSepX, ledgerCy, this.isPortrait ? 5.8 : 5.2, this.isPortrait ? 5.8 : 5.2, false);
-
-  const zoneAdv = Math.ceil(this.trRibbonZoneText.advance);
-  const zoneTextX = ledgerSepX - (this.isPortrait ? 12 : 13) - zoneAdv;
   this.trRibbonZoneText.place(zoneTextX, ledgerTextY);
   const zoneIconCx = zoneTextX - 15;
   centred(this.trRibbonZoneIcon, zoneIconCx, ledgerCy - 0.5, this.isPortrait ? 20 : 18, this.isPortrait ? 25 : 23);
@@ -679,12 +683,16 @@ export class Hud extends Container {
   const fpsX = telRightX - fpsAdv;
   placeTel(this.trTelemetryFpsText, fpsX);
 
-  const telSepX = telRightX - fpsSlotW - 11 * telK;
-  drawCompassStar(g, telSepX, telCy, 4.5 * telK, 4.5 * telK, false);
-
-  const pingAdv = Math.ceil(this.trTelemetryPingText.advance * telK);
-  const pingX = telSepX - 11 * telK - pingAdv;
-  placeTel(this.trTelemetryPingText, pingX);
+  // Ping is a network reading, so solo play shows FPS only.
+  this.trTelemetryPingText.visible = online;
+  const telSepX = online ? telRightX - fpsSlotW - 11 * telK : fpsX;
+  let pingX = fpsX;
+  if (online) {
+   drawCompassStar(g, telSepX, telCy, 4.5 * telK, 4.5 * telK, false);
+   const pingAdv = Math.ceil(this.trTelemetryPingText.advance * telK);
+   pingX = telSepX - 11 * telK - pingAdv;
+   placeTel(this.trTelemetryPingText, pingX);
+  }
 
   this.trDesignBounds = {
    goldPlaque: { medX: goldMedX, rightX: goldRightX, cy: plaqueCy, h: plaqueH, medR },
@@ -1272,8 +1280,8 @@ export class Hud extends Container {
    goldLabel: this.trRibbonGoldText?.text ?? this.goldText.text,
    timeLabel: this.trRibbonClockText?.text ?? this.clockText.text,
    zoneLabel: this.trRibbonZoneText?.text ?? this.zoneText.text,
-   coopLabel: this.trRibbonCoopText?.text ?? (this.state.coopLabel ?? 'Co-op · Solo'),
-   pingLabel: this.trTelemetryPingText?.text ?? '24 ms',
+   coopLabel: this.state.coopLabel === undefined ? null : (this.trRibbonCoopText?.text ?? this.state.coopLabel),
+   pingLabel: this.state.coopLabel === undefined ? null : (this.trTelemetryPingText?.text ?? '24 ms'),
    fpsLabel: this.trTelemetryFpsText?.text ?? '60 fps',
    pingMs: this.state.pingMs ?? 24,
    fps: this.state.fps ?? 60,
