@@ -204,12 +204,10 @@ try{
   }
   if(!startSpot)throw new Error('Could not locate unoccluded start spot near SW rampart wall');
   // Cast wide-area skills from unoccluded courtyard positions (not right behind the wall) whose wide radius extends behind the SW rampart wall
-  c.fxStage.play('ember-warden/ember-snare.telegraph.ground',{u:startSpot.u,v:13.3,scale:1.55});
-  c.fxStage.play('ember-warden/ember-snare.detonate',{u:startSpot.u,v:13.3,scale:1.55});
-  c.fxStage.play('ember-warden/ember-snare.detonate.ground',{u:startSpot.u,v:13.3,scale:1.55});
-  c.fxStage.play('ember-warden/shockwave.detonate',{u:startSpot.u,v:13.1,scale:1.65});
-  c.fxStage.play('ember-warden/shockwave.detonate.ground',{u:startSpot.u,v:13.1,scale:1.65});
-  c.fxStage.play('ember-warden/flame-fan.cast',{u:startSpot.u,v:13.0,yaw:Math.PI*0.45,scale:1.45});
+  c.fxStage.play('ember-warden/ember-snare.telegraph.ground',{u:startSpot.u,v:13.2,scale:1.45});
+  c.fxStage.play('ember-warden/ember-snare.detonate',{u:startSpot.u,v:13.2,scale:1.45});
+  c.fxStage.play('ember-warden/ember-snare.detonate.ground',{u:startSpot.u,v:13.2,scale:1.45});
+  c.fxStage.play('ember-warden/flame-fan.cast',{u:startSpot.u,v:13.0,yaw:Math.PI*0.45,scale:1.35});
   for(let i=0;i<3;i++)c.fxStage.frame(0.03,false);
   // Verify that the portion of the wide VFX behind the SW rampart wall has hero-like reduced opacity (~0.32), NOT 1.0 and NOT 0
   let behindWallOcc=1,behindWallGroundOcc=1;

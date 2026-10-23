@@ -259,14 +259,14 @@
     "color": {
      "mode": "constant",
      "color": [
-      0.4902,
-      0.3608,
+      1,
+      1,
       1,
       1
      ],
      "colorB": [
-      0.4902,
-      0.3608,
+      1,
+      1,
       1,
       1
      ],
@@ -334,9 +334,9 @@
      },
      "alpha": {
       "mode": "constant",
-      "value": 1,
-      "min": 1,
-      "max": 1,
+      "value": 0.88,
+      "min": 0.88,
+      "max": 0.88,
       "curve": [
        {
         "x": 0,
@@ -362,9 +362,9 @@
      },
      "intensity": {
       "mode": "constant",
-      "value": 1.25,
-      "min": 1.25,
-      "max": 1.25,
+      "value": 1,
+      "min": 1,
+      "max": 1,
       "curve": [
        {
         "x": 0,
@@ -391,9 +391,9 @@
     },
     "size": {
      "mode": "random",
-     "value": 0.38,
-     "min": 0.32,
-     "max": 0.44,
+     "value": 0.063,
+     "min": 0.048,
+     "max": 0.078,
      "curve": [
       {
        "x": 0,
@@ -419,10 +419,10 @@
     },
     "size3D": {
      "x": {
-      "mode": "random",
-      "value": 0.38,
-      "min": 0.32,
-      "max": 0.44,
+      "mode": "constant",
+      "value": 1,
+      "min": 1,
+      "max": 1,
       "curve": [
        {
         "x": 0,
@@ -447,10 +447,10 @@
       "editorMax": 24
      },
      "y": {
-      "mode": "random",
-      "value": 0.95,
-      "min": 0.82,
-      "max": 1.08,
+      "mode": "constant",
+      "value": 1,
+      "min": 1,
+      "max": 1,
       "curve": [
        {
         "x": 0,
@@ -503,7 +503,7 @@
       "editorMax": 24
      }
     },
-    "startSizeSeparateAxes": true,
+    "startSizeSeparateAxes": false,
     "rotation": {
      "mode": "constant",
      "value": 0,
@@ -837,7 +837,7 @@
     }
    },
    "render": {
-    "blend": "additive",
+    "blend": "alpha",
     "shading": "unlit",
     "depthTest": false,
     "depthWrite": false,
@@ -854,7 +854,7 @@
     ],
     "opacitySource": "textureAlpha",
     "opacityInvert": false,
-    "texture": "textures/glow.png",
+    "texture": "textures/ember.png",
     "material": null
    },
    "billboard": {
@@ -1045,41 +1045,33 @@
       {
        "position": 0,
        "color": [
-        1,
-        1,
+        0.9569,
+        0.9412,
         1
        ]
       },
       {
-       "position": 0.2,
+       "position": 0.3,
        "color": [
-        0.902,
-        0.9647,
+        0.7333,
+        0.6588,
         1
        ]
       },
       {
-       "position": 0.45,
+       "position": 0.6,
        "color": [
-        0.5608,
-        0.902,
-        1
-       ]
-      },
-      {
-       "position": 0.75,
-       "color": [
-        0.5451,
-        0.3843,
+        0.549,
+        0.3922,
         1
        ]
       },
       {
        "position": 1,
        "color": [
-        0.2902,
-        0.1059,
-        0.7216
+        0.3529,
+        0.2118,
+        0.8784
        ]
       }
      ],
@@ -5015,9 +5007,9 @@
     },
     "size": {
      "mode": "random",
-     "value": 0.08499999999999999,
-     "min": 0.05,
-     "max": 0.12,
+     "value": 0.045,
+     "min": 0.032,
+     "max": 0.058,
      "curve": [
       {
        "x": 0,
@@ -7323,9 +7315,9 @@
     },
     "size": {
      "mode": "random",
-     "value": 0.0725,
-     "min": 0.055,
-     "max": 0.09,
+     "value": 0.038,
+     "min": 0.028,
+     "max": 0.048,
      "curve": [
       {
        "x": 0,
@@ -7352,9 +7344,9 @@
     "size3D": {
      "x": {
       "mode": "random",
-      "value": 0.0725,
-      "min": 0.055,
-      "max": 0.09,
+      "value": 0.038,
+      "min": 0.028,
+      "max": 0.048,
       "curve": [
        {
         "x": 0,
@@ -7380,9 +7372,9 @@
      },
      "y": {
       "mode": "random",
-      "value": 0.24,
-      "min": 0.16,
-      "max": 0.32,
+      "value": 0.11499999999999999,
+      "min": 0.08,
+      "max": 0.15,
       "curve": [
        {
         "x": 0,
@@ -9606,9 +9598,9 @@
      },
      "intensity": {
       "mode": "constant",
-      "value": 1.8,
-      "min": 1.8,
-      "max": 1.8,
+      "value": 1.6,
+      "min": 1.6,
+      "max": 1.6,
       "curve": [
        {
         "x": 0,
@@ -9635,9 +9627,9 @@
     },
     "size": {
      "mode": "random",
-     "value": 0.07500000000000001,
-     "min": 0.05,
-     "max": 0.1,
+     "value": 0.044,
+     "min": 0.032,
+     "max": 0.056,
      "curve": [
       {
        "x": 0,
@@ -11898,9 +11890,9 @@
      },
      "intensity": {
       "mode": "constant",
-      "value": 1.8,
-      "min": 1.8,
-      "max": 1.8,
+      "value": 1.6,
+      "min": 1.6,
+      "max": 1.6,
       "curve": [
        {
         "x": 0,
@@ -11927,9 +11919,9 @@
     },
     "size": {
      "mode": "random",
-     "value": 0.08499999999999999,
-     "min": 0.05,
-     "max": 0.12,
+     "value": 0.045,
+     "min": 0.032,
+     "max": 0.058,
      "curve": [
       {
        "x": 0,

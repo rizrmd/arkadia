@@ -700,34 +700,39 @@ export async function createEncounters(o:{
    const aoeDpr=Math.min(devicePixelRatio||1,1.5);
    const aoeHidden=o.hero.occluders(hp.x,hp.y,[-aoePadX,-aoePadY-2,aoePadX,aoePadY-2]);
    const aoeOccKey=aoeHidden.length?aoeHidden.map(p=>p.x+':'+p.y+':'+Math.round(Number(p.occluder?.dataset.frame??0)/8)).join()+'@'+Math.round(hp.x*.5)+','+Math.round(hp.y*.5):'';
-   const aoeKey=`pixel-v3:${rMult.toFixed(2)}:${aoeDpr}:${aoeOccKey}`;
+   const aoeKey=`pixel-v4:${rMult.toFixed(2)}:${aoeDpr}:${aoeOccKey}`;
    if(aoe.dataset.key!==aoeKey){
     aoe.dataset.key=aoeKey;aoe.dataset.reach=rMult.toFixed(2);aoe.dataset.radiusPx=String(aoeRx);
     const wpx=aoePadX*2,hpx=aoePadY*2,aw=Math.ceil(wpx*aoeDpr),ah=Math.ceil(hpx*aoeDpr);if(aoe.width!==aw||aoe.height!==ah){aoe.width=aw;aoe.height=ah;}
     aoeCtx.setTransform(aoeDpr,0,0,aoeDpr,aoePadX*aoeDpr,aoePadY*aoeDpr);aoeCtx.clearRect(-aoePadX,-aoePadY,wpx,hpx);
     aoeCtx.imageSmoothingEnabled=false;
-    // Isometric dotted grid inside ground AoE reach + crisp dotted outer boundary (no continuous vector stroke)
-    const stepX=12,stepY=6;
-    for(let gy=-aoeRy+4;gy<=aoeRy-4;gy+=stepY){
-     const rowIdx=Math.round(gy/stepY);
-     for(let gx=-aoeRx+4;gx<=aoeRx-4;gx+=stepX){
-      const colIdx=Math.round(gx/stepX);
-      if(((rowIdx+colIdx)&1)!==0)continue;
-      const dist=Math.hypot(gx,gy/.52);
-      if(dist>aoeRx-5||dist<14)continue;
-      aoeCtx.fillStyle='rgba(255,186,96,0.38)';
-      aoeCtx.fillRect(gx-1,gy-1,2,2);
+    // Fine irregular dashed pixel rings (small 1x1..2x2 pixel motes forming slightly wavy dashed lines, never rigid blocks)
+    const hash=(n:number)=>(((Math.imul(n,1664525)+1013904223)>>>0)&0xffff)/0xffff;
+    const drawHeroDashedRing=(rBase:number,seed:number,isOuter:boolean)=>{
+     const steps=Math.max(96,Math.round(rBase*3.2));
+     let inDash=true,segRemain=6+Math.floor(hash(seed)*4),segIdx=0;
+     for(let i=0;i<steps;i++){
+      if(--segRemain<=0){
+       segIdx++;inDash=!inDash;
+       segRemain=inDash?(6+Math.floor(hash(seed+segIdx*17)*5)):(5+Math.floor(hash(seed+segIdx*29)*4));
+      }
+      if(!inDash)continue;
+      const ang=(i/steps)*Math.PI*2;
+      const wave=Math.sin(ang*5+seed)*2.1+Math.cos(ang*11-seed*1.5)*1.3+Math.sin(ang*17+seed*2.1)*.8;
+      const jitR=(hash(seed+i*23)-.5)*1.2,jitT=(hash(seed+i*41)-.5)*.8;
+      const rCur=Math.max(8,rBase+wave+jitR);
+      const rx=Math.round(Math.cos(ang)*rCur-Math.sin(ang)*jitT);
+      const ry=Math.round((Math.sin(ang)*rCur+Math.cos(ang)*jitT)*.52);
+      const hot=isOuter?(i%2===0):(i%3===0),ps=(i%4===0)?2:1;
+      aoeCtx.fillStyle=hot
+       ?(isOuter?'rgba(255,232,162,0.88)':'rgba(255,192,102,0.62)')
+       :(isOuter?'rgba(255,172,82,0.68)':'rgba(255,156,68,0.44)');
+      aoeCtx.fillRect(rx,ry,ps,ps);
+      if(hot&&isOuter&&(i%5===0)){aoeCtx.fillStyle='rgba(255,252,232,0.92)';aoeCtx.fillRect(rx,ry,1,1);}
      }
-    }
-    const beadCount=Math.max(44,Math.round(aoeRx*.85));
-    for(let i=0;i<beadCount;i++){
-     const ang=(i/beadCount)*Math.PI*2;
-     const rx=Math.round(Math.cos(ang)*(aoeRx-2)),ry=Math.round(Math.sin(ang)*(aoeRy-1));
-     const major=i%2===0,ps=major?3:2;
-     aoeCtx.fillStyle=major?'rgba(255,232,162,0.86)':'rgba(255,168,78,0.66)';
-     aoeCtx.fillRect(rx-1,ry-1,ps,ps);
-     if(major){aoeCtx.fillStyle='rgba(255,252,232,0.92)';aoeCtx.fillRect(rx,ry,1,1);}
-    }
+    };
+    drawHeroDashedRing(aoeRx-3,13,true);
+    drawHeroDashedRing(aoeRx*.66,47,false);
     if(aoeHidden.length)cutOut(aoeCtx,aoeHidden,hp.x,hp.y-2);
     aoeView.sync(wpx*k,hpx*k);
    }

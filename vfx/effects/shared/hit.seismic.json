@@ -21,7 +21,7 @@
    "name": "emitter-1",
    "enabled": true,
    "mode": "billboard",
-   "maxParticles": 3,
+   "maxParticles": 7,
    "duration": 0.5,
    "loop": false,
    "timeline": {
@@ -114,19 +114,19 @@
     "bursts": [
      {
       "time": 0,
-      "count": 1,
+      "count": 5,
       "cycles": 1,
       "interval": 0,
       "probability": 1
      }
     ],
-    "shape": "point",
-    "radius": 0,
+    "shape": "circle",
+    "radius": 0.108,
     "radiusValue": {
      "mode": "constant",
-     "value": 0,
-     "min": 0,
-     "max": 0,
+     "value": 0.108,
+     "min": 0.108,
+     "max": 0.108,
      "curve": [
       {
        "x": 0,
@@ -156,9 +156,9 @@
      0
     ],
     "angle": 25,
-    "radiusThickness": 1,
+    "radiusThickness": 0.85,
     "arc": 360,
-    "arcMode": "random",
+    "arcMode": "burstSpread",
     "arcSpread": 0,
     "arcSpeedValue": {
      "mode": "constant",
@@ -246,14 +246,14 @@
      "mode": "constant",
      "color": [
       1,
-      0.7765,
-      0.3529,
+      1,
+      1,
       1
      ],
      "colorB": [
       1,
-      0.7765,
-      0.3529,
+      1,
+      1,
       1
      ],
      "gradient": {
@@ -320,9 +320,9 @@
      },
      "alpha": {
       "mode": "constant",
-      "value": 1,
-      "min": 1,
-      "max": 1,
+      "value": 0.9,
+      "min": 0.9,
+      "max": 0.9,
       "curve": [
        {
         "x": 0,
@@ -348,9 +348,9 @@
      },
      "intensity": {
       "mode": "constant",
-      "value": 2.6,
-      "min": 2.6,
-      "max": 2.6,
+      "value": 1,
+      "min": 1,
+      "max": 1,
       "curve": [
        {
         "x": 0,
@@ -376,10 +376,10 @@
      }
     },
     "size": {
-     "mode": "constant",
-     "value": 0.45,
-     "min": 0.45,
-     "max": 0.45,
+     "mode": "random",
+     "value": 0.06,
+     "min": 0.045,
+     "max": 0.075,
      "curve": [
       {
        "x": 0,
@@ -823,7 +823,7 @@
     }
    },
    "render": {
-    "blend": "additive",
+    "blend": "alpha",
     "shading": "unlit",
     "depthTest": false,
     "depthWrite": false,
@@ -840,7 +840,7 @@
     ],
     "opacitySource": "textureAlpha",
     "opacityInvert": false,
-    "texture": "textures/glow.png",
+    "texture": "textures/ember.png",
     "material": null
    },
    "billboard": {
@@ -849,13 +849,13 @@
     "sizeEnd": 0.28,
     "sizeValue": {
      "mode": "curve",
-     "value": 0.6,
-     "min": 0.6,
-     "max": 1.25,
+     "value": 0.7,
+     "min": 0.2,
+     "max": 1,
      "curve": [
       {
        "x": 0,
-       "y": 0.6
+       "y": 0.7
       },
       {
        "x": 0.25,
@@ -863,13 +863,13 @@
       },
       {
        "x": 1,
-       "y": 1.25
+       "y": 0.2
       }
      ],
      "curveB": [
       {
        "x": 0,
-       "y": 0.6
+       "y": 0.7
       },
       {
        "x": 0.25,
@@ -877,7 +877,7 @@
       },
       {
        "x": 1,
-       "y": 1.25
+       "y": 0.2
       }
      ],
      "editorMin": 0.001,
@@ -888,13 +888,13 @@
     "sizeEndY": 0.28,
     "sizeValueY": {
      "mode": "curve",
-     "value": 0.6,
-     "min": 0.6,
-     "max": 1.25,
+     "value": 0.7,
+     "min": 0.2,
+     "max": 1,
      "curve": [
       {
        "x": 0,
-       "y": 0.6
+       "y": 0.7
       },
       {
        "x": 0.25,
@@ -902,13 +902,13 @@
       },
       {
        "x": 1,
-       "y": 1.25
+       "y": 0.2
       }
      ],
      "curveB": [
       {
        "x": 0,
-       "y": 0.6
+       "y": 0.7
       },
       {
        "x": 0.25,
@@ -916,7 +916,7 @@
       },
       {
        "x": 1,
-       "y": 1.25
+       "y": 0.2
       }
      ],
      "editorMin": 0.001,
@@ -1048,40 +1048,32 @@
        "position": 0,
        "color": [
         1,
-        0.9804,
-        0.9412
+        0.9647,
+        0.8627
        ]
       },
       {
-       "position": 0.2,
+       "position": 0.3,
        "color": [
         1,
-        0.9412,
-        0.749
-       ]
-      },
-      {
-       "position": 0.5,
-       "color": [
-        1,
-        0.8157,
-        0.4157
-       ]
-      },
-      {
-       "position": 0.8,
-       "color": [
         0.851,
-        0.5647,
-        0.1804
+        0.5255
+       ]
+      },
+      {
+       "position": 0.7,
+       "color": [
+        0.8784,
+        0.6431,
+        0.2824
        ]
       },
       {
        "position": 1,
        "color": [
+        0.6902,
         0.4784,
-        0.2902,
-        0.0863
+        0.1961
        ]
       }
      ],
@@ -1091,8 +1083,8 @@
        "alpha": 1
       },
       {
-       "position": 0.4,
-       "alpha": 0.8
+       "position": 0.45,
+       "alpha": 0.88
       },
       {
        "position": 1,
@@ -2689,9 +2681,9 @@
     },
     "size": {
      "mode": "random",
-     "value": 0.0725,
-     "min": 0.055,
-     "max": 0.09,
+     "value": 0.038,
+     "min": 0.028,
+     "max": 0.048,
      "curve": [
       {
        "x": 0,
@@ -2718,9 +2710,9 @@
     "size3D": {
      "x": {
       "mode": "random",
-      "value": 0.0725,
-      "min": 0.055,
-      "max": 0.09,
+      "value": 0.038,
+      "min": 0.028,
+      "max": 0.048,
       "curve": [
        {
         "x": 0,
@@ -2746,9 +2738,9 @@
      },
      "y": {
       "mode": "random",
-      "value": 0.24,
-      "min": 0.16,
-      "max": 0.32,
+      "value": 0.11499999999999999,
+      "min": 0.08,
+      "max": 0.15,
       "curve": [
        {
         "x": 0,
@@ -4671,7 +4663,7 @@
     "collision": true,
     "triggers": false,
     "subEmitters": false,
-    "textureSheetAnimation": true,
+    "textureSheetAnimation": false,
     "lights": false,
     "trails": false,
     "customData": false
@@ -4944,9 +4936,9 @@
      },
      "alpha": {
       "mode": "constant",
-      "value": 1,
-      "min": 1,
-      "max": 1,
+      "value": 0.9,
+      "min": 0.9,
+      "max": 0.9,
       "curve": [
        {
         "x": 0,
@@ -5001,9 +4993,9 @@
     },
     "size": {
      "mode": "random",
-     "value": 0.133,
-     "min": 0.084,
-     "max": 0.18200000000000002,
+     "value": 0.049,
+     "min": 0.036,
+     "max": 0.062,
      "curve": [
       {
        "x": 0,
@@ -5464,7 +5456,7 @@
     ],
     "opacitySource": "textureAlpha",
     "opacityInvert": false,
-    "texture": "textures/debris.png",
+    "texture": "textures/ember.png",
     "material": null
    },
    "billboard": {
@@ -6522,13 +6514,13 @@
     },
     "textureSheetAnimation": {
      "tiles": [
-      2,
-      2
+      1,
+      1
      ],
      "startFrame": 0,
-     "endFrame": 3,
+     "endFrame": 255,
      "frameOverTime": {
-      "mode": "constant",
+      "mode": "curve",
       "value": 0,
       "min": 0,
       "max": 0,
@@ -6556,7 +6548,7 @@
       "editorMax": 1
      },
      "cycles": 1,
-     "randomStartFrame": true
+     "randomStartFrame": false
     },
     "lights": {
      "color": [

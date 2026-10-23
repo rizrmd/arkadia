@@ -63,7 +63,7 @@ export function trap(id,P,o={}){const R=o.radius??1.5,c=o.charge??.64,isFire=o.r
    L.glow(L.flames(P,{name:'rim flame core',shape:{type:'circle',radius:R*.95,thickness:0},rate:36,duration:c,size:.22,speed:[.5,1.2],gravity:-2.2,turbulence:1.2}),.85)])],o),
  fx(id,'telegraph.ground',title(id)+' · rune',[
   ...L.magicCircle(P,{name:'trap circle',radius:R,duration:c,spin:isFire?1.8:2.1,count:Math.round(R*50)}),
-  L.pool(P,{radius:R*.95,life:c+.1,intensity:.9,sizeOverLife:{curve:[[0,.3],[.9,1],[1,1.1]]}}),
+  L.pool(P,{radius:R,life:c+.1,intensity:.9}),
   L.groundArcs(P,{radius:R,rate:isFire?24:50,duration:c,size:isFire?.28:.5})],o),
  fx(id,'detonate',title(id)+' · eruption',[
   L.flash(P,{at:[0,.4,0],size:3*R,intensity:3.4,life:.28}),L.flash(P,{at:[0,.3,0],size:1.4*R,intensity:5,life:.14}),
@@ -78,7 +78,7 @@ export function trap(id,P,o={}){const R=o.radius??1.5,c=o.charge??.64,isFire=o.r
   L.embers(P,{count:34,radius:R*.6,speed:[.8,2.4]}),
   L.smoke(P,{at:[0,.5,0],count:7,radius:R*.5,size:.9,alpha:.38,delay:.1})],o),
  fx(id,'detonate.ground',title(id)+' · scar',[...L.magicCircle(P,{name:'detonate circle',radius:R,duration:.55}),
-  L.pool(P,{radius:R*.58,life:.55,intensity:1.1})],o)];}
+  L.pool(P,{radius:R,life:.55,intensity:1.1})],o)];}
 
 // Slams around the caster: cracks gather while the blow winds up (telegraph), then the ground bursts (detonate).
 export function slam(id,P,o={}){const R=o.radius??1.65,c=o.charge??.46;return [
@@ -86,8 +86,8 @@ export function slam(id,P,o={}){const R=o.radius??1.65,c=o.charge??.46;return [
   L.smoke(P,{count:5,size:.5,alpha:.25,shape:{type:'circle',radius:R*.85,thickness:0},speed:0,spherical:0,radial:-1.4,gravity:-.2})],o),
  fx(id,'telegraph.ground',title(id)+' · fracture',[
   ...L.magicCircle(P,{name:'slam circle',radius:R,duration:c,spin:1.6,radial:-.18,count:Math.round(R*44)}),
-  L.cracks(P,{radius:R,life:c+.05,intensity:1.2,sizeOverLife:{curve:[[0,.15],[1,.85]]}}),
-  L.pool(P,{radius:R*.7,life:c,intensity:.8})],o),
+  L.cracks(P,{radius:R,life:c+.05,intensity:1.2}),
+  L.pool(P,{radius:R,life:c,intensity:.8})],o),
  fx(id,'detonate',title(id)+' · burst',[L.flash(P,{at:[0,.3,0],size:2.6*R,intensity:3,life:.24}),
   L.debris(P,{count:o.debris??26,radius:R*.45,speed:[2.6,5.4]}),
   ...(o.molten?[
@@ -98,7 +98,7 @@ export function slam(id,P,o={}){const R=o.radius??1.65,c=o.charge??.46;return [
   L.smoke(P,{name:'dust ring',count:12,shape:{type:'circle',radius:R*.4,thickness:0},spherical:1,speed:[2,3.4],drag:2.6,gravity:-.2,size:.75,alpha:.4,color:o.dust??P.smoke}),
   L.glints(P,{count:4,radius:R*.5,size:.45,at:[0,.3,0]})],o),
  fx(id,'detonate.ground',title(id)+' · shock',[...L.magicCircle(P,{name:'slam detonate circle',radius:R,duration:.55}),
-  L.pool(P,{radius:R*.58,life:.55,intensity:1.1})],o)];}
+  L.pool(P,{radius:R,life:.55,intensity:1.1})],o)];}
 
 // Sweeping cleaves: a crescent wind-up toward the aim (cast) and the blow landing in a cone (detonate).
 export function cleave(id,P,o={}){const R=o.radius??1.55,arc=o.arc??120;return [

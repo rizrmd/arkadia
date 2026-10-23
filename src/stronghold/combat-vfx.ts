@@ -634,59 +634,64 @@ export function createCombatVfx(o:{
      bctx.imageSmoothingEnabled=false;
      const pal=zonePalette(kind);
      const halfSpread=Math.max(0.28,spread*.55);
-     // 1. Interior isometric dotted pattern on the ground
-     const stepX=10,stepY=5;
-     for(let gy=-ry+4;gy<=ry-4;gy+=stepY){
-      const rowIdx=Math.round(gy/stepY);
-      for(let gx=-rx+4;gx<=rx-4;gx+=stepX){
-       const colIdx=Math.round(gx/stepX);
-       if(((rowIdx+colIdx)&1)!==0)continue;
-       const isoY=gy/.52,dist=Math.hypot(gx,isoY);
-       if(dist>rx-5)continue;
-       if(shape==='cone'){
-        if(dist<10)continue;
-        const ang=Math.atan2(isoY,gx);
-        let diff=ang-qAngle;while(diff>Math.PI)diff-=Math.PI*2;while(diff<-Math.PI)diff+=Math.PI*2;
-        if(Math.abs(diff)>halfSpread)continue;
+     const hash=(n:number)=>(((Math.imul(n,1664525)+1013904223)>>>0)&0xffff)/0xffff;
+     const drawIrregularDashedArc=(rBase:number,a0:number,a1:number,seed:number,isOuter:boolean)=>{
+      const span=Math.max(0.1,a1-a0);
+      const arcPx=rBase*span*.78;
+      const steps=Math.max(64,Math.round(arcPx/1.4));
+      let inDash=true,segRemain=6+Math.floor(hash(seed)*4),segIdx=0;
+      for(let i=0;i<=steps;i++){
+       if(--segRemain<=0){
+        segIdx++;
+        inDash=!inDash;
+        // 6..10 tiny closely-spaced pixel dots per dash, 5..8 steps per gap
+        segRemain=inDash?(6+Math.floor(hash(seed+segIdx*17)*5)):(5+Math.floor(hash(seed+segIdx*31)*4));
        }
-       const major=((rowIdx*3+colIdx)&3)===0;
-       bctx.fillStyle=major?pal.minor:pal.grid;
-       bctx.fillRect(gx-1,gy-1,major?3:2,major?2:2);
-       if(major){bctx.fillStyle=pal.core;bctx.fillRect(gx,gy,1,1);}
+       if(!inDash)continue;
+       const t=i/steps,ang=a0+t*span;
+       const wave=Math.sin(ang*5+seed)*2.2+Math.cos(ang*11-seed*1.7)*1.4+Math.sin(ang*19+seed*2.3)*.8;
+       const jitR=(hash(seed+i*23)-.5)*1.3,jitT=(hash(seed+i*41)-.5)*.9;
+       const rCur=Math.max(6,rBase+wave+jitR);
+       const tx=-Math.sin(ang)*jitT,ty=Math.cos(ang)*jitT*.52;
+       const px=Math.round(Math.cos(ang)*rCur+tx),py=Math.round(Math.sin(ang)*rCur*.52+ty);
+       const hot=isOuter?(i%2===0):(i%3===0);
+       const ps=(i%4===0)?2:1;
+       bctx.fillStyle=hot?(isOuter?pal.major:pal.minor):pal.grid;
+       bctx.fillRect(px,py,ps,ps);
+       if(hot&&isOuter&&(i%5===0)){
+        bctx.fillStyle=pal.core;
+        bctx.fillRect(px,py,1,1);
+       }
       }
-     }
-     // 2. Dotted boundary perimeter (cone or circle)
+     };
      if(shape==='cone'){
-      const arcLen=rx*halfSpread*2,arcDots=Math.max(18,Math.round(arcLen/6.5));
-      for(let i=0;i<=arcDots;i++){
-       const ang=qAngle-halfSpread+(i/arcDots)*(halfSpread*2);
-       const px=Math.round(Math.cos(ang)*rx),py=Math.round(Math.sin(ang)*ry);
-       const major=i%2===0;
-       bctx.fillStyle=major?pal.major:pal.minor;
-       bctx.fillRect(px-1,py-1,major?3:2,major?3:2);
-       if(major){bctx.fillStyle=pal.core;bctx.fillRect(px,py,1,1);}
-      }
-      const rayDots=Math.max(8,Math.round(rx/8.5));
+      drawIrregularDashedArc(rx*.95,qAngle-halfSpread,qAngle+halfSpread,11,true);
+      drawIrregularDashedArc(rx*.68,qAngle-halfSpread*.94,qAngle+halfSpread*.94,37,false);
+      drawIrregularDashedArc(rx*.42,qAngle-halfSpread*.88,qAngle+halfSpread*.88,73,false);
       for(const side of [-1,1]){
        const ang=qAngle+side*halfSpread;
-       for(let i=1;i<rayDots;i++){
-        const rFrac=i/rayDots;
-        const px=Math.round(Math.cos(ang)*rx*rFrac),py=Math.round(Math.sin(ang)*ry*rFrac);
-        const major=i%2===0;
-        bctx.fillStyle=major?pal.major:pal.minor;
-        bctx.fillRect(px-1,py-1,major?3:2,major?3:2);
+       const ca=Math.cos(ang),sa=Math.sin(ang),nx=-sa,ny=ca;
+       const rSteps=Math.max(36,Math.round((rx*.94-10)/1.45));
+       let inDash=true,segRemain=6,segIdx=0;
+       const seed=side<0?101:203;
+       for(let i=0;i<=rSteps;i++){
+        if(--segRemain<=0){
+         segIdx++;inDash=!inDash;
+         segRemain=inDash?(6+Math.floor(hash(seed+segIdx*19)*4)):(5+Math.floor(hash(seed+segIdx*29)*3));
+        }
+        if(!inDash)continue;
+        const rFrac=i/rSteps,d=10+rFrac*(rx*.95-10);
+        const perp=Math.sin(rFrac*11+seed)*2.2+Math.cos(rFrac*21-seed)*1.2+(hash(seed+i*37)-.5)*1.3;
+        const px=Math.round(ca*d+nx*perp),py=Math.round((sa*d+ny*perp)*.52);
+        const hot=i%2===0,ps=(i%4===0)?2:1;
+        bctx.fillStyle=hot?pal.major:pal.minor;
+        bctx.fillRect(px,py,ps,ps);
        }
       }
      }else{
-      const beadCount=Math.max(36,Math.round(rx*.82));
-      for(let i=0;i<beadCount;i++){
-       const ang=(i/beadCount)*Math.PI*2;
-       const px=Math.round(Math.cos(ang)*rx),py=Math.round(Math.sin(ang)*ry);
-       const major=i%2===0;
-       bctx.fillStyle=major?pal.major:pal.minor;
-       bctx.fillRect(px-1,py-1,major?3:2,major?3:2);
-       if(major){bctx.fillStyle=pal.core;bctx.fillRect(px,py,1,1);}
-      }
+      drawIrregularDashedArc(rx*.95,0,Math.PI*2,19,true);
+      drawIrregularDashedArc(rx*.68,0,Math.PI*2,53,false);
+      drawIrregularDashedArc(rx*.40,0,Math.PI*2,89,false);
      }
      zoneBaseCache.set(baseKey,baseCan);
     }

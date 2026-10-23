@@ -72,7 +72,7 @@ export default [
    L.glow(L.flames(P,{name:'fire column core',at:[0,.18,0],shape:{type:'circle',radius:.24},count:14,size:.42,speed:[2.5,5.2],gravity:-2.8,turbulence:.75}),1.25),
    L.flames(P,{name:'column crown',at:[0,.45,0],shape:{type:'circle',radius:.28},count:12,size:.48,speed:[1.8,4],gravity:-2.4,turbulence:.9}),
    L.glow(L.flames(P,{name:'column crown core',at:[0,.48,0],shape:{type:'circle',radius:.2},count:9,size:.34,speed:[2,4.2],gravity:-2.5,turbulence:.8}),1.2)],
-  'detonate.ground':[L.groundArcs(P,{radius:1.2,thickness:1,rate:32,duration:.3,size:.3})]}}),
+  'detonate.ground':[L.groundArcs(P,{radius:1.5,duration:.3})]}}),
 
  // Seismic Slam, molten: the shared slam re-skinned with magma, flames and glowing cinders.
  ...K.slam('ember-warden.shockwave',MAGMA,{radius:1.65,charge:.46,molten:true,dust:'#3a2a24',scar:'#1a100c'}),

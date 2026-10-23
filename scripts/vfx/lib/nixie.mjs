@@ -64,7 +64,7 @@ export function emitter(spec,index,T){
  S('spawn.rateValue',spec.rate??0);sp.rate=typeof spec.rate==='number'?spec.rate:0;
  sp.bursts=(spec.bursts??[]).map(([time,count,cycles=1,interval=0,probability=1])=>({time,count,cycles,interval,probability}));
  sp.shape=sh.type;S('spawn.radiusValue',sh.radius??0);sp.radius=typeof sh.radius==='number'?sh.radius:0;
- if(sh.angle!==undefined)sp.angle=sh.angle;if(sh.arc!==undefined)sp.arc=sh.arc;if(sh.arcMode)sp.arcMode=sh.arcMode;if(sh.thickness!==undefined)sp.radiusThickness=sh.thickness;
+ if(sh.angle!==undefined)sp.angle=sh.angle;if(sh.arc!==undefined)sp.arc=sh.arc;if(sh.arcMode)sp.arcMode=sh.arcMode;if(sh.arcSpread!==undefined)sp.arcSpread=sh.arcSpread;if(sh.thickness!==undefined)sp.radiusThickness=sh.thickness;
  if(sh.length!==undefined)sp.length=sh.length;if(sh.box)sp.box=sh.box;if(sh.emitFrom)sp.emitFrom=sh.emitFrom;
  if(spec.at)sp.position=spec.at;if(spec.rot)sp.rotation=spec.rot;if(spec.local)sp.simulationSpace='local';
  sp.sphericalDirectionAmount=spec.spherical??0;sp.randomDirectionAmount=spec.randomDir??0;sp.randomPositionAmount=spec.jitter??0;
