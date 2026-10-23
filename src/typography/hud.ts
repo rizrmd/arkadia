@@ -1,5 +1,6 @@
 import { Container, Graphics, Rectangle, Sprite, type Texture } from 'pixi.js';
 import type { FrameSet } from './frames';
+import { PlayerConsole } from './player-console';
 import { MsdfText } from './text';
 import { ROLES, type TextRole } from './tokens';
 import type { Point2D, SkillSocketGeometry } from './vector-tether';
@@ -285,6 +286,7 @@ export class Hud extends Container {
  private readonly isAltB: boolean;
  private backdrop?: Sprite;
  private overlay?: Sprite;
+ private playerConsole?: PlayerConsole;
  private heroPlate!: Container;
  private hpFrame!: Container;
  private hpFill!: Container;
@@ -393,7 +395,7 @@ export class Hud extends Container {
   const hit = new Container();
   hit.eventMode = 'static';
   hit.cursor = this.callbacks.onHeroClick ? 'pointer' : 'default';
-  hit.hitArea = new Rectangle(0, 0, 545, 195);
+  hit.hitArea = new Rectangle(0, 0, this.isAltB ? 560 : 545, 195);
   hit.on('pointertap', () => this.callbacks.onHeroClick?.());
   g.addChild(hit);
 
@@ -438,6 +440,16 @@ export class Hud extends Container {
   this.levelMedallion = hit.addChild(centred(f.frame('level-medallion'), 57, 149));
   this.levelText = hit.addChild(new MsdfText('hud-level', String(s.level)));
   this.levelText.place(57, 154.5, 0.5);
+  if (this.isAltB) {
+   for (const child of hit.children) child.visible = false;
+   this.playerConsole = hit.addChild(new PlayerConsole(f));
+   this.syncPlayerConsole();
+  }
+ }
+
+ private syncPlayerConsole() {
+  const s = this.state;
+  this.playerConsole?.update(s.name, this.currentPortrait, s.level, [[s.hp,s.hpMax],[s.gateHp ?? 100,s.gateHpMax ?? 100],[s.xp,s.xpMax]]);
  }
 
  private buildStats() {
@@ -1053,12 +1065,14 @@ export class Hud extends Container {
     centred(this.frames.frame(nextPortrait), 95, this.isPortrait ? 92 : 88),
    );
   }
+  this.syncPlayerConsole();
  }
 
  setLevel(level: number) {
   const text = String(level);
   if (this.state.level === level && this.levelText.text === text) return;
   this.state.level = level;
+  this.syncPlayerConsole();
   this.levelText.text = text;
   this.levelText.place(57, this.isPortrait ? 157.5 : 154.5, 0.5);
  }
@@ -1066,6 +1080,7 @@ export class Hud extends Container {
  setHp(hp: number, hpMax = this.state.hpMax) {
   this.state.hp = hp;
   this.state.hpMax = hpMax;
+  this.syncPlayerConsole();
   const maxW = this.isPortrait ? 266 : 320;
   const max = Math.max(1, hpMax);
   const w = Math.max(0, Math.min(maxW, (maxW * Math.max(0, hp)) / max));
@@ -1082,6 +1097,7 @@ export class Hud extends Container {
  setGateHp(gateHp: number, gateHpMax = 100) {
   this.state.gateHp = gateHp;
   this.state.gateHpMax = gateHpMax;
+  this.syncPlayerConsole();
   if (!this.isAltB || !this.gateBarG) return;
   const ratio = Math.max(0, Math.min(1, gateHp / Math.max(1, gateHpMax)));
   const gx = this.isPortrait ? 162 : 186;
@@ -1104,6 +1120,7 @@ export class Hud extends Container {
  setXp(xp: number, xpMax = this.state.xpMax, overrideRestText?: string) {
   this.state.xp = xp;
   this.state.xpMax = xpMax;
+  this.syncPlayerConsole();
   const max = Math.max(1, xpMax);
   const ratio = Math.max(0, Math.min(1, xp / max));
   const rawW = 628 * ratio;
@@ -1453,7 +1470,7 @@ export class Hud extends Container {
    this.layoutTopRightRibbon();
    this.layoutCrescentArc();
   }
-  this.tlXpGroup.visible = this.isAltB ? true : portrait;
+  this.tlXpGroup.visible = this.isAltB ? false : portrait;
   this.bcXpGroup.visible = this.isAltB ? false : !portrait;
   this.groups.bl.visible = !portrait;
 
@@ -1478,7 +1495,7 @@ export class Hud extends Container {
    g.pivot.set(px, py);
    g.position.set(x, y);
   };
-  place(this.groups.tl, 0, 0, 0, 0, portrait ? 0.9 : 1);
+  place(this.groups.tl, 0, 0, 0, 0, portrait ? (this.isAltB ? 0.82 : 0.9) : 1);
   place(this.groups.tr, W, 0, width, 0);
   place(this.groups.bc, W / 2, portrait ? 842 : H, width / 2, height);
   place(this.groups.bl, 0, H, 0, height);
