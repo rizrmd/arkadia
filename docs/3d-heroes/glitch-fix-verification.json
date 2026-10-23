@@ -1,5 +1,5 @@
 {
-  "verifiedAt": "2026-10-23T20:30:04.984Z",
+  "verifiedAt": "2026-10-23T22:44:15.888Z",
   "syntheticTileGlitchTest": {
     "heroOriginalCount": 7260,
     "heroRemaining": 7260,
@@ -31,6 +31,32 @@
       "borderOpaquePixels": 0,
       "spriteOpaquePixels": 12247,
       "spriteTopLeftRightBorderOpaque": 0
+    }
+  },
+  "emberCastAndRunContinuityTest": {
+    "idle_cast": {
+      "minOpaque": 10214,
+      "maxOpaque": 11503,
+      "zeroOrLowFrames": 0,
+      "maxBorderOpaque": 0
+    },
+    "run_cast": {
+      "minOpaque": 7639,
+      "maxOpaque": 10625,
+      "zeroOrLowFrames": 0,
+      "maxBorderOpaque": 0
+    },
+    "run": {
+      "minOpaque": 7599,
+      "maxOpaque": 10625,
+      "zeroOrLowFrames": 0,
+      "maxBorderOpaque": 0
+    },
+    "idle": {
+      "minOpaque": 8326,
+      "maxOpaque": 10398,
+      "zeroOrLowFrames": 0,
+      "maxBorderOpaque": 0
     }
   }
 }

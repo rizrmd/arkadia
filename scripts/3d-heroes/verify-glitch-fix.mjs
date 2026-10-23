@@ -193,6 +193,65 @@ try {
     '100% of hero pixels (including boots at y=204) must be preserved'
   );
 
+  // Verify Ember Warden cast & run_cast never disappear at the end of the animation across all 70 frames
+  results.emberCastContinuityTest = await page.evaluate(async () => {
+    const mod = await import('/src/stronghold/hero-3d.ts');
+    const r3d = mod.get3dHeroRenderer();
+    const cell = { w: 114, h: 103, pivot: { x: 57, y: 101 } };
+    const sun = { dx: 0.4, dy: 0.3, wx: 0.5, wy: 0.2, alpha: 0.5 };
+    const summary = {};
+
+    for (const [modeName, movingFlag] of [
+      ['idle_cast', false],
+      ['run_cast', true],
+      ['run', true]
+    ]) {
+      let minOpaque = Infinity;
+      let maxOpaque = 0;
+      let zeroOrLowFrames = 0;
+      let maxBorderOpaque = 0;
+
+      for (let f = 0; f < 72; f++) {
+        const res = r3d.updateAndRender({
+          heroId: 'ember-warden',
+          clip: modeName === 'run' ? 'move' : 'attack',
+          moving: movingFlag,
+          yaw: Math.PI * 0.25,
+          dt: 1 / 30,
+          tint: '255,255,255',
+          night: 0,
+          sun,
+          cell
+        });
+        const sCan = res.sprite;
+        const sData = sCan.getContext('2d').getImageData(0, 0, sCan.width, sCan.height).data;
+        let opaque = 0;
+        let border = 0;
+        for (let y = 0; y < sCan.height; y++) {
+          for (let x = 0; x < sCan.width; x++) {
+            if (sData[(y * sCan.width + x) * 4 + 3] > 20) {
+              opaque++;
+              if (x === 0 || x === sCan.width - 1 || y === 0) border++;
+            }
+          }
+        }
+        if (opaque < minOpaque) minOpaque = opaque;
+        if (opaque > maxOpaque) maxOpaque = opaque;
+        if (opaque < 7500) zeroOrLowFrames++;
+        if (border > maxBorderOpaque) maxBorderOpaque = border;
+      }
+      summary[modeName] = { minOpaque, maxOpaque, zeroOrLowFrames, maxBorderOpaque };
+    }
+    return summary;
+  });
+
+  console.log('Ember Warden cast & run continuity test:', results.emberCastContinuityTest);
+  for (const [clipName, stat] of Object.entries(results.emberCastContinuityTest)) {
+    assert.equal(stat.zeroOrLowFrames, 0, `Expected 0 disappearing/low frames during ${clipName}, got ${stat.zeroOrLowFrames}`);
+    assert.ok(stat.minOpaque > 7500, `Expected >7500 opaque pixels on every frame of ${clipName}, got min=${stat.minOpaque}`);
+    assert.equal(stat.maxBorderOpaque, 0, `Expected 0 border opaque pixels during ${clipName}, got ${stat.maxBorderOpaque}`);
+  }
+
   // Desktop verification (1440x900) reusing the same page
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto(`http://127.0.0.1:${port}/?hero=ember-warden&lighting=day&time=0.5&3d=1`, {
@@ -311,5 +370,6 @@ try {
   console.log('Successfully verified 3D hero glitch fix and generated comparison artifacts!');
 } finally {
   await browser.close();
-  await server.close();
+  server.close();
+  process.exit(0);
 }

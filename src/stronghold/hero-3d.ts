@@ -116,8 +116,15 @@ export function sanitizeHeroWorkPixels(
   const q = bfsQueue && bfsQueue.length >= total ? bfsQueue : new Int32Array(total);
   const seen = visited && visited.length >= total ? visited : new Uint8Array(total);
 
+  const coreX0 = Math.floor(w * 0.36);
+  const coreX1 = Math.ceil(w * 0.64);
+  const coreY0 = Math.floor(h * 0.24);
+  const coreY1 = Math.ceil(h * 0.95);
+
   // Step 1: Check left, right, and top 1px borders (never bottom center where boots touch y = h-1).
-  // If outer GPU tiles contain unresolved VRAM garbage, flood-erase them up to the resolved tile moat.
+  // Only flood-erase when outer GPU tiles contain unresolved VRAM garbage (opaque corners or widespread
+  // perimeter tile fill), and never flood-erase into the central hero spine box so a raised casting hand
+  // or staff brushing the top border can never erase the hero!
   let qHead = 0;
   let qTail = 0;
   seen.fill(0);
@@ -141,30 +148,43 @@ export function sanitizeHeroWorkPixels(
     }
   }
 
-  while (qHead < qTail) {
-    const idx = q[qHead++];
-    const p = idx * 4;
-    pixels[p] = 0;
-    pixels[p + 1] = 0;
-    pixels[p + 2] = 0;
-    pixels[p + 3] = 0;
+  const cornerOpaque = pixels[3] > 12 || pixels[(w - 1) * 4 + 3] > 12;
+  if (cornerOpaque || qTail > 96) {
+    while (qHead < qTail) {
+      const idx = q[qHead++];
+      const p = idx * 4;
+      pixels[p] = 0;
+      pixels[p + 1] = 0;
+      pixels[p + 2] = 0;
+      pixels[p + 3] = 0;
 
-    const x = idx % w;
-    const y = (idx - x) / w;
-    const y0 = y > 0 ? y - 1 : 0;
-    const y1 = y + 1 < h ? y + 1 : h - 1;
-    const x0 = x > 0 ? x - 1 : 0;
-    const x1 = x + 1 < w ? x + 1 : w - 1;
+      const x = idx % w;
+      const y = (idx - x) / w;
+      const y0 = y > 0 ? y - 1 : 0;
+      const y1 = y + 1 < h ? y + 1 : h - 1;
+      const x0 = x > 0 ? x - 1 : 0;
+      const x1 = x + 1 < w ? x + 1 : w - 1;
 
-    for (let ny = y0; ny <= y1; ny++) {
-      const nRow = ny * w;
-      for (let nx = x0; nx <= x1; nx++) {
-        const nIdx = nRow + nx;
-        if (seen[nIdx] === 0 && pixels[nIdx * 4 + 3] > 12) {
-          seen[nIdx] = 1;
-          q[qTail++] = nIdx;
+      for (let ny = y0; ny <= y1; ny++) {
+        const nRow = ny * w;
+        for (let nx = x0; nx <= x1; nx++) {
+          if (nx >= coreX0 && nx <= coreX1 && ny >= coreY0 && ny <= coreY1) continue;
+          const nIdx = nRow + nx;
+          if (seen[nIdx] === 0 && pixels[nIdx * 4 + 3] > 12) {
+            seen[nIdx] = 1;
+            q[qTail++] = nIdx;
+          }
         }
       }
+    }
+  } else {
+    // Clear only the 1px outer top/left/right border pixels without flood-erasing the connected hero
+    for (let i = 0; i < qTail; i++) {
+      const p = q[i] * 4;
+      pixels[p] = 0;
+      pixels[p + 1] = 0;
+      pixels[p + 2] = 0;
+      pixels[p + 3] = 0;
     }
   }
 
@@ -172,11 +192,6 @@ export function sanitizeHeroWorkPixels(
   qHead = 0;
   qTail = 0;
   seen.fill(0);
-
-  const coreX0 = Math.floor(w * 0.36);
-  const coreX1 = Math.ceil(w * 0.64);
-  const coreY0 = Math.floor(h * 0.24);
-  const coreY1 = Math.ceil(h * 0.95);
 
   for (let y = coreY0; y <= coreY1; y++) {
     const row = y * w;
@@ -759,7 +774,7 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
         const center = new THREE.Vector3();
         box.getSize(size);
         box.getCenter(center);
-        const targetHeight = heroId === 'ember-warden' ? 1.54 : 1.50;
+        const targetHeight = heroId === 'ember-warden' ? 1.50 : 1.48;
         const scaleY = targetHeight / (size.y || 1);
         const scaleXZ = heroId === 'ember-warden' ? scaleY * 0.89 : scaleY * 0.94;
         model.scale.set(scaleXZ, scaleY, scaleXZ);
