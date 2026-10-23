@@ -29,6 +29,6 @@ game finishes loading without errors. Set `VERIFY_URL` to test the live site.
 
 ## Live
 
-Deployed to `arkodia-stronghold` with `node scripts/publish-loading-progress.mjs`. The live proxy drops
+Deployed to `arkadia-stronghold` with `node scripts/publish-loading-progress.mjs`. The live proxy drops
 `Content-Length`, so the build-time size list is what makes the total exact there.
 `results-live.json`: 10 Mbps, total fixed at 27.2 MB, longest flat stretch while downloading 0.5 s, no errors.

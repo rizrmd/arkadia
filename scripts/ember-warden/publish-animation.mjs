@@ -9,7 +9,7 @@ import {execFileSync} from 'node:child_process';
 // the game page, binaries, gateway configuration, or another review directory.
 const root='public/ember-warden/v3',prefix='/ember-warden-review/v3',base='https://ark-whachat.fural.space';
 const run=args=>{try{return JSON.parse(execFileSync('fural-agent',args,{encoding:'utf8',timeout:120000,maxBuffer:4e6,stdio:['ignore','pipe','pipe']}))}catch(e){throw Error((e.stderr||e.stdout||e.message).toString().slice(0,2000))}};
-const sandboxes=run(['sandboxes','list','--project','PJ8758f22f61165f3d3215e454']),sandbox=sandboxes.find(s=>s.name==='arkodia');
+const sandboxes=run(['sandboxes','list','--project','PJ8758f22f61165f3d3215e454']),sandbox=sandboxes.find(s=>s.name==='arkadia');
 if(!sandbox?.boot_running)throw Error('Existing Arkodia gateway must be running before publishing');
 const files={},resources={};
 for(const file of await fs.readdir(root,{recursive:true})){const full=root+'/'+file;if(!(await fs.stat(full)).isFile())continue;const b=await fs.readFile(full);files['/'+file]=b.toString('base64');resources[file]=createHash('sha256').update(b).digest('hex')}

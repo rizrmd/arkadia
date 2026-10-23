@@ -1,6 +1,6 @@
 ## Hasil dan preview
 
-Live: https://ark-whachat.fural.space/ — sandbox persisten `arkodia`, foreground `node app.mjs`. Perubahan menggantikan konfigurasi satu arah pada integrasi v1.
+Live: https://ark-whachat.fural.space/ — sandbox persisten `arkadia`, foreground `node app.mjs`. Perubahan menggantikan konfigurasi satu arah pada integrasi v1.
 
 - Hero: jubah/tabard biru kobalt, zirah perak dan helm gading, detail emas.
 - Revenant: kain merah karat, tulang oker kusam dan kapak. Bukan lagi kain plum yang menyerupai hero.
@@ -71,5 +71,5 @@ node scripts/verify-characters.mjs
 DEMO_URL=https://ark-whachat.fural.space/ node scripts/verify-characters.mjs
 node scripts/test-expedition.mjs
 node scripts/package-site.mjs
-fural-agent sandboxes serve --name arkodia --dir /home/dev/arkodia/publish --cmd "node app.mjs" --port 3000 --project PJ8758f22f61165f3d3215e454
+fural-agent sandboxes serve --name arkadia --dir /home/dev/arkadia/publish --cmd "node app.mjs" --port 3000 --project PJ8758f22f61165f3d3215e454
 ```

@@ -1,19 +1,19 @@
 # One Arkodia sandbox — 22 October 2026
 
-Every public preview runs in one custom sandbox, `arkodia` (`CS3d5f22197da69327e209c1c5`): **https://ark-whachat.fural.space/**. The four sandboxes it replaced (`arkodia-stronghold`, `arkodia-coop`, `arkodia-enemies`, `ember-warden-review`) were deleted, and so was their split of the game into a solo and a co-op build: `feat/coop-server` is merged into `feat/stronghold` and one build is served.
+Every public preview runs in one custom sandbox, `arkadia` (`CS3d5f22197da69327e209c1c5`): **https://ark-whachat.fural.space/**. The four sandboxes it replaced (`arkadia-stronghold`, `arkadia-coop`, `arkadia-enemies`, `ember-warden-review`) were deleted, and so was their split of the game into a solo and a co-op build: `feat/coop-server` is merged into `feat/stronghold` and one build is served.
 
 ## Routes
 
 | Path | Content | Former host |
 |------|---------|-------------|
-| `/` | The game: solo, or a co-op room via `/?room=CODE`; `?offline=1` (or no reachable server) runs the local simulation | arkodia-stronghold + arkodia-coop |
-| `/ws`, `/api/rooms/{code}`, `/healthz` | Go game server on 127.0.0.1:3001 | arkodia-coop |
-| `/rift-runner/v1/`, `/rift-runner/v2/`, `/knight-footfalls/review.html`, every review folder | Unchanged paths | arkodia-stronghold |
-| `/evidence/…` | Evidence that sat in the old sandbox's `dist/` but was no longer served | arkodia-stronghold |
-| `/enemies/v1/` (`/enemies` redirects) | Ashfang & Mire Imp review | arkodia-enemies |
-| `/coop/docs/…` | Co-op screenshots and reports | arkodia-coop |
+| `/` | The game: solo, or a co-op room via `/?room=CODE`; `?offline=1` (or no reachable server) runs the local simulation | arkadia-stronghold + arkadia-coop |
+| `/ws`, `/api/rooms/{code}`, `/healthz` | Go game server on 127.0.0.1:3001 | arkadia-coop |
+| `/rift-runner/v1/`, `/rift-runner/v2/`, `/knight-footfalls/review.html`, every review folder | Unchanged paths | arkadia-stronghold |
+| `/evidence/…` | Evidence that sat in the old sandbox's `dist/` but was no longer served | arkadia-stronghold |
+| `/enemies/v1/` (`/enemies` redirects) | Ashfang & Mire Imp review | arkadia-enemies |
+| `/coop/docs/…` | Co-op screenshots and reports | arkadia-coop |
 | `/ember-warden-review/` | Ember Warden review | ember-warden-review |
-| `/arkodia-sandbox/` | These screenshots | — |
+| `/arkadia-sandbox/` | These screenshots | — |
 
 ## One game build
 
@@ -47,7 +47,7 @@ node scripts/arkodia/publish-layer.mjs --gateway                                
 node scripts/arkodia/verify-live.mjs                                            # Chromium check → this folder
 ```
 
-A layer never carries the game page; a game release also installs the gateway from the same commit. `scripts/ember-warden/publish.mjs`, `scripts/publish-rift-runner.mjs` and `scripts/rift-runner/publish-prototype.mjs` publish layers. The 34 per-feature `scripts/publish-*.mjs` one-offs that patched the retired `arkodia-stronghold` loader were removed: each release they made is already part of the site, and running one would have rolled the game back.
+A layer never carries the game page; a game release also installs the gateway from the same commit. `scripts/ember-warden/publish.mjs`, `scripts/publish-rift-runner.mjs` and `scripts/rift-runner/publish-prototype.mjs` publish layers. The 34 per-feature `scripts/publish-*.mjs` one-offs that patched the retired `arkadia-stronghold` loader were removed: each release they made is already part of the site, and running one would have rolled the game back.
 
 ## Browser check (`results.json`)
 

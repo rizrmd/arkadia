@@ -21,7 +21,9 @@ sessionStorage key to the matching `arkodia*` key (a key already saved under the
 These are addresses or data, not the game's name. Changing them would break links or the world:
 
 - World seeds `'arkadia-01'` (`src/stronghold/parallax.ts`, `src/expedition/main.ts`, the map's `seed`): the terrain is hashed from them.
-- The Fural sandbox slug `arkadia` (`SANDBOX` in `scripts/arkodia/publish-layer.mjs`); the public URL stays https://ark-whachat.fural.space.
+- The Fural sandbox `arkadia` (`SANDBOX` in `scripts/arkodia/publish-layer.mjs`, the lookups in `scripts/ember-warden/publish-*.mjs`)
+  and the retired `arkadia-stronghold`, `arkadia-coop`, `arkadia-enemies` and `arkadia-expedition` sandboxes the docs mention;
+  the public URL stays https://ark-whachat.fural.space. Screenshots already published under `/arkadia-sandbox/` keep that path.
 - The GitHub repository `github.com/rizrmd/arkadia` and the Go module path that matches it.
 - Retired preview hosts `arkadia-whachat.fural.space` / `arkadia-stronghold-whachat.fural.space` recorded in old evidence files.
 - The legacy `arkadia_build` cookie the gateway clears, and absolute workspace paths (`~/projects/arkadia/...`).
