@@ -218,9 +218,9 @@ export async function mount(root:HTMLElement,progress:Progress){
   const g=groundCv.getContext('2d')!;g.setTransform(dpr,0,0,dpr,0,0);
   const night=bgMode==='night';
   const bg=g.createRadialGradient(w*.5,h*.55,36,w*.5,h*.55,Math.max(w,h)*.75);
-  for(const [t,c] of (night?[[0,'#4a5a72'],[.55,'#2a3448'],[1,'#0e131c']]:[[0,'#d6dee6'],[.55,'#a9b5c2'],[1,'#4a5664']]) as [number,string][])bg.addColorStop(t,c);
+  for(const [t,c] of (night?[[0,'#4a5a72'],[.55,'#2a3448'],[1,'#0e131c']]:[[0,'#eef4fa'],[.55,'#d4e0ec'],[1,'#889aaa']]) as [number,string][])bg.addColorStop(t,c);
   g.fillStyle=bg;g.fillRect(0,0,w,h);
-  g.strokeStyle=night?'rgba(140,175,210,.14)':'rgba(40,56,72,.18)';g.lineWidth=1;
+  g.strokeStyle=night?'rgba(140,175,210,.14)':'rgba(40,56,72,.14)';g.lineWidth=1;
   for(let i=0;i<=40;i++){const a=screen(i,0),b=screen(i,40),c=screen(0,i),d=screen(40,i);g.beginPath();g.moveTo(a.x,a.y);g.lineTo(b.x,b.y);g.moveTo(c.x,c.y);g.lineTo(d.x,d.y);g.stroke();}
  }
 
@@ -271,14 +271,15 @@ export async function mount(root:HTMLElement,progress:Progress){
  addEventListener('resize',layout);
  new ResizeObserver(()=>layout()).observe(stageWrap);
 
- const tasks:{at:number;run:()=>void}[]=[],bolts:{h:FxHandle[];yaw:number;d:number;onEnd?:(at:{u:number;v:number})=>void}[]=[];
+ const tasks:{at:number;run:()=>void}[]=[],bolts:{h:FxHandle[];yaw:number;d:number;speed:number;hit:boolean;onEnd?:(at:{u:number;v:number})=>void}[]=[];
  const after=(ms:number,run:()=>void)=>tasks.push({at:simTime+ms/1000,run});
 
  const ctx=(at:{u:number;v:number},extra:{radius?:number}={})=>({...at,yaw:yawOfScreenAngle(aimDeg*Math.PI/180),target:target(3.2),follow:()=>HERO,...extra});
 
  function bolt(key:string,offset:number,onEnd?:(at:{u:number;v:number})=>void){
   const yaw=yawOfScreenAngle(aimDeg*Math.PI/180+offset);
-  bolts.push({h:playCue(stage,hero,key,{...HERO,yaw}),yaw,d:0,onEnd});
+  const speed=key.startsWith('rift-bolt')?16.5:6.5;
+  bolts.push({h:playCue(stage,hero,key,{...HERO,yaw}),yaw,d:0,speed,hit:false,onEnd});
  }
 
  function cue(key:string){
@@ -312,12 +313,14 @@ export async function mount(root:HTMLElement,progress:Progress){
   simTime+=dt;
   for(let i=tasks.length-1;i>=0;i--)if(tasks[i].at<=simTime)tasks.splice(i,1)[0].run();
   for(let i=bolts.length-1;i>=0;i--){
-   const b=bolts[i];b.d=Math.min(3.2,b.d+6.5*dt);
+   const b=bolts[i];b.d=Math.min(3.2,b.d+b.speed*dt);
    for(const x of b.h)x.setLocal(b.d);
-   if(b.d>=3.2){
-    bolts.splice(i,1);
-    for(const x of b.h)x.release();
+   if(b.d>=3.2&&!b.hit){
+    b.hit=true;
     b.onEnd?.({u:HERO.u+Math.cos(b.yaw)*3.2,v:HERO.v+Math.sin(b.yaw)*3.2});
+    const handles=b.h;
+    bolts.splice(i,1);
+    after(220,()=>{for(const x of handles)x.release();});
    }
   }
   if(render)drawFigures();

@@ -2325,7 +2325,7 @@
    "name": "pixel shock wave",
    "enabled": true,
    "mode": "billboard",
-   "maxParticles": 32,
+   "maxParticles": 24,
    "duration": 0.5,
    "loop": false,
    "timeline": {
@@ -2418,19 +2418,19 @@
     "bursts": [
      {
       "time": 0,
-      "count": 28,
+      "count": 20,
       "cycles": 1,
       "interval": 0,
       "probability": 1
      }
     ],
     "shape": "circle",
-    "radius": 0.784,
+    "radius": 0.796,
     "radiusValue": {
      "mode": "constant",
-     "value": 0.784,
-     "min": 0.784,
-     "max": 0.784,
+     "value": 0.796,
+     "min": 0.796,
+     "max": 0.796,
      "curve": [
       {
        "x": 0,
@@ -2503,7 +2503,7 @@
     ],
     "rotation": [
      0,
-     0,
+     11.8,
      0
     ],
     "scale": [
@@ -2515,7 +2515,7 @@
     "alignToDirection": false,
     "randomDirectionAmount": 0,
     "sphericalDirectionAmount": 0,
-    "randomPositionAmount": 0.0025
+    "randomPositionAmount": 0.002
    },
    "initializeParticle": {
     "lifetime": {
@@ -2681,9 +2681,9 @@
     },
     "size": {
      "mode": "random",
-     "value": 0.086,
-     "min": 0.072,
-     "max": 0.1,
+     "value": 0.049,
+     "min": 0.042,
+     "max": 0.056,
      "curve": [
       {
        "x": 0,

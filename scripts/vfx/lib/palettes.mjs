@@ -14,10 +14,10 @@ export const EMBER={
  light:'#ff7c1c',spark:'#ffc654',deep:'#9e1e08',accent:'#ffe294',smoke:'#2a1e1a',rock:'#4a2a1e',
 };
 export const RIFT={
- flame:{c:[[0,'#e6d8ff'],[.22,'#a472ff'],[.55,'#6c34eb'],[.82,'#4416b4'],[1,'#220864']]},
- hot:{c:[[0,'#eef8ff'],[.20,'#74dcff'],[.48,'#7848ff'],[.78,'#4818bc'],[1,'#200660']]},
- body:{c:[[0,'#e2d2ff'],[.24,'#9c68ff'],[.54,'#642ce4'],[.82,'#3c12a4'],[1,'#18064c']]},
- light:'#6a42f4',spark:'#68d8ff',deep:'#32128e',accent:'#a8ecff',smoke:'#1d1838',rock:'#2a2450',
+ flame:{c:[[0,'#a472ff'],[.24,'#6c34eb'],[.56,'#4416b4'],[.82,'#220864'],[1,'#1d1838']]},
+ hot:{c:[[0,'#eef8ff'],[.20,'#68d8ff'],[.48,'#6c34eb'],[.78,'#4416b4'],[1,'#200660']]},
+ body:{c:[[0,'#c69cff'],[.24,'#7848ff'],[.54,'#4416b4'],[.82,'#220864'],[1,'#18064c']]},
+ light:'#6c34eb',spark:'#68d8ff',deep:'#32128e',accent:'#eef8ff',smoke:'#1d1838',rock:'#220864',
 };
 export const SEISMIC={
  flame:{c:[[0,'#fff6dc'],[.3,'#ffd986'],[.7,'#e0a448'],[1,'#b07a32']]},

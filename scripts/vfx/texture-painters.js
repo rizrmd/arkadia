@@ -27,17 +27,17 @@ const path=(ctx,pts)=>{ctx.beginPath();pts.forEach(([x,y],i)=>i?ctx.lineTo(x,y):
 
 const P={};
 // Soft round glow: rich saturated rim around a bright core so it reads on both bright snow/stone by day and dark ground by night.
-P.glow={w:128,h:128,paint(c){pixels(c,0,0,128,128,(x,y)=>{const {r}=polar(x,y);const a=Math.pow(clamp(1-r),1.8),core=smooth(.62,.08,r);return[.46+.54*core,a];});}};
-// Hot ember: crisp dual-tone pixel dot with a wide bright incandescent core (1.0) and a thin saturated outer rim (0.44) so tiny dots pop on bright daylight snow/stone without looking dark-outlined.
-P.ember={w:64,h:64,paint(c){pixels(c,0,0,64,64,(x,y)=>{const {r}=polar(x,y);const core=smooth(.56,.16,r),body=smooth(.74,.38,r),halo=Math.exp(-r*r/.22)*.35;const a=clamp(body*.95+halo)*smooth(1,.86,r);return[.44+.56*core,a];});}};
-// Velocity streak: bright teardrop head near the top, sleek tapering tail downward with saturated contrast rim for daytime visibility.
+P.glow={w:128,h:128,paint(c){pixels(c,0,0,128,128,(x,y)=>{const {r}=polar(x,y);const a=Math.pow(clamp(1-r),1.8),core=smooth(.62,.08,r);return[.78+.22*core,a];});}};
+// Hot ember: crisp dual-tone pixel dot with a wide bright incandescent core (1.0) and a saturated outer rim (.80) so tiny dots pop on bright daylight snow/stone.
+P.ember={w:64,h:64,paint(c){pixels(c,0,0,64,64,(x,y)=>{const {r}=polar(x,y);const core=smooth(.56,.16,r),body=smooth(.80,.36,r),halo=Math.exp(-r*r/.24)*.42;const a=clamp(body*.98+halo)*smooth(1,.86,r);return[.80+.20*core,a];});}};
+// Velocity streak: conical spearhead near the top tapering smoothly into a sleek tail downward for bolts and velocity sparks.
 P.streak={w:32,h:128,paint(c){pixels(c,0,0,32,128,(x,y)=>{const t=1-y,dx=(x-.5)*2;
- const tip=smooth(1,.86,t),tail=Math.pow(clamp(t/.88),1.3),w=.15+.30*Math.sin(clamp(t)*Math.PI*.88);
- const spine=Math.exp(-(dx*dx)/(.06*w*w))*tail*tip,halo=Math.exp(-(dx*dx)/(.48*w*w))*tail*tip*.72;
- const a=clamp(spine+halo)*smooth(0,.04,t);return[.45+.55*spine,a];});}};
+ const tip=smooth(1,.85,t),tail=Math.pow(clamp(t/.78),.68),w=.14+.50*Math.pow(clamp(t/.82),.82)*smooth(1,.80,t*.92);
+ const spine=Math.exp(-(dx*dx)/(.10*w*w))*tail*tip,halo=Math.exp(-(dx*dx)/(.62*w*w))*tail*tip*.88;
+ const a=clamp(spine+halo)*smooth(0,.04,t);return[.82+.18*spine,a];});}};
 // Four-point star flare with faint diagonals, for crit flashes and sparkles.
-P.flare={w:128,h:128,paint(c){pixels(c,0,0,128,128,(x,y)=>{const {dx,dy,r}=polar(x,y);const ray=(u,v)=>Math.exp(-Math.abs(v)*34)*Math.pow(clamp(1-Math.abs(u)),1.4);
- const d1=(dx+dy)/Math.SQRT2,d2=(dx-dy)/Math.SQRT2,core=Math.exp(-r*r/.025),a=Math.max(ray(dx,dy),ray(dy,dx),.5*ray(d1,d2),.5*ray(d2,d1))+core+Math.exp(-r*r/.12)*.48;return[.48+.52*core,clamp(a)*smooth(1,.92,r)];});}};
+P.flare={w:128,h:128,paint(c){pixels(c,0,0,128,128,(x,y)=>{const {dx,dy,r}=polar(x,y);const ray=(u,v)=>Math.exp(-Math.abs(v)*28)*Math.pow(clamp(1-Math.abs(u)),1.35);
+ const d1=(dx+dy)/Math.SQRT2,d2=(dx-dy)/Math.SQRT2,core=Math.exp(-r*r/.028),a=Math.max(ray(dx,dy),ray(dy,dx),.52*ray(d1,d2),.52*ray(d2,d1))+core+Math.exp(-r*r/.14)*.54;return[.82+.18*core,clamp(a)*smooth(1,.92,r)];});}};
 // Flame tongue flipbook, 4x4 frames of 128: multi-lobed billowing fire sheets with wide incandescent core and saturated fiery-crimson edge so flames read clearly in bright daylight and glow at night.
 P.flame={w:512,h:512,tiles:[4,4],paint(c){const n=valueNoise(11,32),n2=valueNoise(73,32);for(let f=0;f<16;f++){const ox=(f%4)*128,oy=Math.floor(f/4)*128,t=f/16,ph=t*TAU,variant=(f%4)*.55;
  pixels(c,ox,oy,128,128,(x,y)=>{const ny=1-y,nx=(x-.5)*2;
@@ -82,10 +82,13 @@ P.shock={w:256,h:256,paint(c){const n=valueNoise(37,32);pixels(c,0,0,256,256,(x,
  const lip=smooth(.97,.9,rr)*smooth(.45,.88,rr);return[.6+.4*smooth(.8,.92,rr),Math.pow(lip,1.4)];});}};
 // Scorch decal: dark burnt patch with ragged rim (alpha-blended, tinted near black).
 P.scorch={w:256,h:256,paint(c){const n=valueNoise(41,32);pixels(c,0,0,256,256,(x,y)=>{const {r}=polar(x,y);const b=fbm(n,x*7,y*7,5);const a=smooth(.98,.35,r+(b-.5)*.55)*(.55+.45*b);return[.12+.2*b,a*.9];});}};
-// Lightning / flame tendril flipbook, 2x2 frames of 128: jagged branching arcs from left to right.
-P.arc={w:256,h:256,tiles:[2,2],paint(c){for(let f=0;f<4;f++){const r=rng(100+f),ox=(f%2)*128,oy=Math.floor(f/2)*128;c.save();c.beginPath();c.rect(ox,oy,128,128);c.clip();c.translate(ox,oy);
- const main=jagged(r,6,64,122,64,.55,6);glowStroke(c,6,2.2,()=>{path(c,main);c.stroke();});
- for(let b=0;b<3;b++){const i=2+Math.floor(r()*(main.length-6)),[sx,sy]=main[i];const br=jagged(r,sx,sy,sx+20+r()*30,sy+(r()-.5)*60,.5,4);glowStroke(c,4,1.2,()=>{path(c,br);c.stroke();});}c.restore();}}};
+// Lightning / flame tendril flipbook, 2x2 frames of 128: jagged branching arcs from left to right with dark-saturated contrast sheath around a bright core.
+P.arc={w:256,h:256,tiles:[2,2],paint(c){const arcStroke=(w,draw)=>{c.save();c.lineCap='round';c.lineJoin='round';
+ for(const [col,sh,bl,wd,al] of [['#9e92dc','rgba(130,115,210,.88)',6,w*2.6,.90],['#d4ccff','rgba(212,204,255,.94)',3,w*1.6,.96],['#ffffff','rgba(255,255,255,1)',1.5,w,1]]){
+  c.strokeStyle=col;c.shadowColor=sh;c.shadowBlur=bl;c.globalAlpha=al;c.lineWidth=wd;draw();}c.restore();};
+ for(let f=0;f<4;f++){const r=rng(100+f),ox=(f%2)*128,oy=Math.floor(f/2)*128;c.save();c.beginPath();c.rect(ox,oy,128,128);c.clip();c.translate(ox,oy);
+ const main=jagged(r,6,64,122,64,.55,6);arcStroke(2.2,()=>{path(c,main);c.stroke();});
+ for(let b=0;b<3;b++){const i=2+Math.floor(r()*(main.length-6)),[sx,sy]=main[i];const br=jagged(r,sx,sy,sx+20+r()*30,sy+(r()-.5)*60,.5,4);arcStroke(1.3,()=>{path(c,br);c.stroke();});}c.restore();}}};
 // Radial ground cracks with a crumbled rim, for slams and eruptions (glows when tinted and blended additively).
 P.crack={w:512,h:512,paint(c){const r=rng(5),C=256;c.translate(C,C);
  glowStroke(c,10,3,()=>{for(let i=0;i<11;i++){const a=i/11*TAU+r()*.3,len=150+r()*80;const pts=jagged(r,Math.cos(a)*18,Math.sin(a)*18,Math.cos(a)*len,Math.sin(a)*len,.35,5);path(c,pts);c.stroke();
@@ -100,8 +103,8 @@ P.debris={w:128,h:128,tiles:[2,2],paint(c){for(let f=0;f<4;f++){const r=rng(300+
 // Crescent slash: a half ring around the bottom-centre of the texture, bulging toward the top (the aim once the
 // decal is pinned to it), thickest and brightest at its apex with a hot leading edge, tapering to both ends.
 P.slash={w:256,h:128,paint(c){pixels(c,0,0,256,128,(x,y)=>{const px=(x-.5)*2,py=(1-y),r=Math.hypot(px,py),a=Math.atan2(py,px);
- const taper=Math.pow(Math.max(0,Math.sin(a)),.7),inner=.98-.2*taper,band=smooth(inner-.04,inner+.04,r)*smooth(1,.96,r),edge=Math.exp(-Math.pow((r-.955)/.022,2));
- return[.75+.25*edge,clamp((band*.7+edge)*taper)];});}};
+ const taper=Math.pow(Math.max(0,Math.sin(a)),.65),inner=.96-.32*taper,band=smooth(inner-.05,inner+.05,r)*smooth(1,.94,r),edge=Math.exp(-Math.pow((r-(inner+.18*taper))/(.045+.025*taper),2));
+ return[.80+.20*edge,clamp((band*.92+edge)*taper)];});}};
 // Swirling energy orb: spiral arms in polar fBm around a bright core.
 P.orb={w:128,h:128,paint(c){const n=valueNoise(51,32);pixels(c,0,0,128,128,(x,y)=>{const {r,a}=polar(x,y);const s=fbm(n,(a/TAU+.5+r*.6)*16,r*5,4);
  const arms=smooth(.45,.8,s)*smooth(1,.4,r);const core=Math.exp(-r*r/.05);return[.7+.3*core,clamp(arms*.9+core+Math.exp(-r*r/.3)*.25)*smooth(1,.9,r)];});}};
@@ -115,10 +118,14 @@ P.wisp={w:64,h:128,paint(c){const n=valueNoise(61,32),n2=valueNoise(89,32);pixel
  const alpha=Math.pow(clamp(body*1.22),1.15);
  const rim=.34+.66*smooth(0,.5,core+body*.45);
  return[rim,rim*(.42+.58*core),rim*(.14+.84*Math.pow(core,1.35)),alpha];});}};
-// Crystal shard: faceted diamond, lighter facet on the left (alpha-blended or additive).
+// Crystal shard: high-contrast faceted diamond splinter with dark outer bevel and bright specular facet for daylight readability.
 P.shard={w:64,h:128,paint(c){c.translate(32,64);const fill=(pts,col)=>{c.fillStyle=col;path(c,pts);c.closePath();c.fill();};
- fill([[0,-60],[-18,0],[0,60],[18,0]],'#cfd8ff');fill([[0,-60],[-18,0],[0,60]],'#ffffff');fill([[0,-60],[6,0],[0,60],[18,0]],'#8c9bd6');
- c.strokeStyle='rgba(255,255,255,.9)';c.lineWidth=1.5;c.beginPath();c.moveTo(0,-60);c.lineTo(0,60);c.stroke();}};
+ fill([[0,-60],[-20,0],[0,60],[20,0]],'#6e5ec2');
+ fill([[0,-56],[-17,0],[0,56]],'#c4b8ff');
+ fill([[0,-56],[-17,0],[0,-4]],'#ffffff');
+ fill([[0,-56],[5,0],[0,56],[17,0]],'#8a7ae0');
+ c.strokeStyle='rgba(36,20,82,.94)';c.lineWidth=2.4;path(c,[[0,-60],[-20,0],[0,60],[20,0]]);c.closePath();c.stroke();
+ c.strokeStyle='rgba(255,255,255,.94)';c.lineWidth=1.6;c.beginPath();c.moveTo(0,-56);c.lineTo(0,56);c.moveTo(-17,0);c.lineTo(5,0);c.stroke();}};
 
 window.VFX_TEXTURES=Object.fromEntries(Object.entries(P).map(([name,p])=>[name,{w:p.w,h:p.h,tiles:p.tiles??[1,1],render(){const cv=document.createElement('canvas');cv.width=p.w;cv.height=p.h;const ctx=cv.getContext('2d');p.paint(ctx);return cv.toDataURL('image/png');}}]));
 })();

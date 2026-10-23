@@ -1047,21 +1047,13 @@
       {
        "position": 0,
        "color": [
-        0.902,
-        0.8471,
-        1
-       ]
-      },
-      {
-       "position": 0.22,
-       "color": [
         0.6431,
         0.4471,
         1
        ]
       },
       {
-       "position": 0.55,
+       "position": 0.24,
        "color": [
         0.4235,
         0.2039,
@@ -1069,7 +1061,7 @@
        ]
       },
       {
-       "position": 0.82,
+       "position": 0.56,
        "color": [
         0.2667,
         0.0863,
@@ -1077,11 +1069,19 @@
        ]
       },
       {
-       "position": 1,
+       "position": 0.82,
        "color": [
         0.1333,
         0.0314,
         0.3922
+       ]
+      },
+      {
+       "position": 1,
+       "color": [
+        0.1137,
+        0.0941,
+        0.2196
        ]
       }
      ],
@@ -2333,7 +2333,7 @@
    "name": "pool dots",
    "enabled": true,
    "mode": "billboard",
-   "maxParticles": 26,
+   "maxParticles": 20,
    "duration": 0.5,
    "loop": false,
    "timeline": {
@@ -2426,7 +2426,7 @@
     "bursts": [
      {
       "time": 0,
-      "count": 22,
+      "count": 16,
       "cycles": 1,
       "interval": 0,
       "probability": 1
@@ -2511,7 +2511,7 @@
     ],
     "rotation": [
      0,
-     2.55,
+     9.6,
      0
     ],
     "scale": [
@@ -2632,9 +2632,9 @@
      },
      "alpha": {
       "mode": "constant",
-      "value": 0.95,
-      "min": 0.95,
-      "max": 0.95,
+      "value": 0.96,
+      "min": 0.96,
+      "max": 0.96,
       "curve": [
        {
         "x": 0,
@@ -2689,9 +2689,9 @@
     },
     "size": {
      "mode": "random",
-     "value": 0.079,
-     "min": 0.066,
-     "max": 0.092,
+     "value": 0.045,
+     "min": 0.038,
+     "max": 0.052,
      "curve": [
       {
        "x": 0,
@@ -3359,21 +3359,13 @@
       {
        "position": 0,
        "color": [
-        0.902,
-        0.8471,
-        1
-       ]
-      },
-      {
-       "position": 0.22,
-       "color": [
         0.6431,
         0.4471,
         1
        ]
       },
       {
-       "position": 0.55,
+       "position": 0.24,
        "color": [
         0.4235,
         0.2039,
@@ -3381,7 +3373,7 @@
        ]
       },
       {
-       "position": 0.82,
+       "position": 0.56,
        "color": [
         0.2667,
         0.0863,
@@ -3389,11 +3381,19 @@
        ]
       },
       {
-       "position": 1,
+       "position": 0.82,
        "color": [
         0.1333,
         0.0314,
         0.3922
+       ]
+      },
+      {
+       "position": 1,
+       "color": [
+        0.1137,
+        0.0941,
+        0.2196
        ]
       }
      ],

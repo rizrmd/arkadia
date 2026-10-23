@@ -17,7 +17,7 @@ const SKILLS_BY_HERO={
   {id:'shockwave',ms:520,dir:'SE'},
  ],
  'rift-runner':[
-  {id:'rift-bolt',ms:220,dir:'SE'},
+  {id:'rift-bolt',ms:220,dir:'SE',bg:'day'},
   {id:'rift-dash',ms:300,dir:'SE'},
   {id:'rift-trap',ms:720,dir:'SE'},
   {id:'cleave',ms:360,dir:'SE'},
@@ -54,7 +54,7 @@ try{
 
  for(const [hero,skills] of Object.entries(SKILLS_BY_HERO)){
   for(const item of skills){
-   const url=`${baseUrl}/skill-player/?hero=${hero}&skill=${item.id}&dir=${item.dir}&controls=simple`;
+   const url=`${baseUrl}/skill-player/?hero=${hero}&skill=${item.id}&dir=${item.dir}${item.bg?`&bg=${item.bg}`:''}&controls=simple`;
    await page.goto(url);
    await page.waitForFunction(()=>document.body.dataset.fxLab==='ready'&&window.skillPlayer?.stats()?.ready===true,null,{timeout:120000});
 

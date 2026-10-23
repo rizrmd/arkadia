@@ -139,6 +139,7 @@ export function createCombatVfx(o:{
  let nextId=1,origin={x:0,y:0,scale:1};
  const floats:FloatingText[]=[],sparks:HitSpark[]=[],slashes:SlashTrail[]=[];
  const projectiles:Projectile[]=[],aoes:AoETelegraph[]=[],impacts:AoEImpact[]=[];
+ const lingeringFx:{fx:FxHandle[];age:number;duration:number}[]=[];
  const levelUps:LevelUpVfx[]=[],ghosts:DashGhost[]=[],combos:ComboBurstVfx[]=[];
  const shakes=new Map<object,{amp:number;age:number;duration:number;seed:number}>();
  const cooldowns:Partial<Record<SkillId,number>>={};
@@ -359,10 +360,10 @@ export function createCombatVfx(o:{
     spawnSlash(h.u,h.v,angle,false);
     const offsets=rank>=3?[-0.22,0,0.22]:rank===2?[-0.12,0.12]:[0];
     impacts.push({
-     id:nextId++,kind:'cleave-cone',shape:'cone',u:h.u,v:h.v,
-     radius:2.25*reach(run)*areaMult,angle,
-     spread:rank>=3?0.68:rank===2?0.52:0.38,
-     age:0,duration:560
+     id:nextId++,kind:'rift-trap',shape:'circle',u:h.u,v:h.v,
+     radius:1.08*reach(run)*areaMult,angle,
+     spread:Math.PI*2,
+     age:0,duration:640
     });
     for(const off of offsets){
      spawnProjectile({
@@ -535,6 +536,13 @@ export function createCombatVfx(o:{
   for(let i=levelUps.length-1;i>=0;i--){levelUps[i].age+=dt;if(levelUps[i].age>=levelUps[i].duration)levelUps.splice(i,1);}
   for(let i=ghosts.length-1;i>=0;i--){ghosts[i].age+=dt;if(ghosts[i].age>=ghosts[i].duration)ghosts.splice(i,1);}
   for(let i=combos.length-1;i>=0;i--){combos[i].age+=dt;if(combos[i].age>=combos[i].duration)combos.splice(i,1);}
+  for(let i=lingeringFx.length-1;i>=0;i--){
+   lingeringFx[i].age+=dt;
+   if(lingeringFx[i].age>=lingeringFx[i].duration){
+    for(const h of lingeringFx[i].fx)h.release();
+    lingeringFx.splice(i,1);
+   }
+  }
   for(const [target,s] of shakes){s.age+=dt;if(s.age>=s.duration)shakes.delete(target);}
 
   // Step projectiles & collide with walls/buildings or living revenants
@@ -559,10 +567,17 @@ export function createCombatVfx(o:{
      if(!f.alive||p.hitIds.has(f))continue;
      if(Math.hypot(f.x-p.u,f.y-p.v)<=p.radius+.42){
       p.hitIds.add(f);
+      if(p.kind==='rift-bolt'){
+       const hitDist=Math.hypot(f.x-p.u,f.y-p.v);
+       p.u=f.x;p.v=f.y;p.traveled+=hitDist;
+      }
       let sameFrameImpacts=0;
       for(let k=sparks.length-1;k>=0;k--){if(sparks[k].age===0)sameFrameImpacts++;else break;}
       applyHitToFoe(f,{scale:p.damageScale,forceCrit:p.forceCrit,sparkKind:p.kind==='flame-bolt'?'fire':'arcane',angle});
-      if(sameFrameImpacts<2)cue(`${p.skill}.impact`,{u:p.u,v:p.v,yaw:yawOf(p.vx,p.vy)});
+      if(sameFrameImpacts<2){
+       cue(`${p.skill}.impact`,{u:p.u,v:p.v,yaw:yawOf(p.vx,p.vy)});
+       if(p.skill==='rift-bolt')impacts.push({id:nextId++,kind:'rift-trap',shape:'circle',u:p.u,v:p.v,radius:.96,angle,spread:Math.PI*2,age:0,duration:520});
+      }
       p.alive=false;
       break;
      }
@@ -571,7 +586,8 @@ export function createCombatVfx(o:{
    for(const h of p.fx)h.setLocal(p.traveled);
    if(!p.alive||p.traveled>=p.range){
     if(p.alive)addSpark(p.kind==='flame-bolt'?'fire':'arcane',p.u,p.v,angle,22);
-    for(const h of p.fx)h.release();
+    if(p.kind==='rift-bolt'&&!p.alive)lingeringFx.push({fx:p.fx,age:0,duration:220});
+    else for(const h of p.fx)h.release();
     projectiles.splice(i,1);
    }
   }
@@ -600,7 +616,7 @@ export function createCombatVfx(o:{
   const zonePalette=(kind:AoEKind)=>{
    if(kind==='ember-snare'||kind==='flame-cone')return {major:'rgba(255,222,126,0.95)',minor:'rgba(255,126,38,0.82)',grid:'rgba(255,148,54,0.68)',core:'rgba(255,252,224,0.95)'};
    if(kind==='shockwave')return {major:'rgba(255,232,158,0.94)',minor:'rgba(232,164,68,0.8)',grid:'rgba(242,186,88,0.65)',core:'rgba(255,252,228,0.94)'};
-   return {major:'rgba(164,242,255,0.95)',minor:'rgba(88,186,255,0.82)',grid:'rgba(116,208,255,0.68)',core:'rgba(240,254,255,0.95)'};
+   return {major:'rgba(108,52,235,0.96)',minor:'rgba(68,22,180,0.94)',grid:'rgba(34,8,100,0.90)',core:'rgba(164,114,255,0.98)'};
   };
   const renderZone=(id:number,kind:AoEKind,shape:'circle'|'cone',u:number,v:number,radius:number,angle:number,spread:number,age:number,duration:number,isImpact:boolean)=>{
    activeZoneIds.add(id);

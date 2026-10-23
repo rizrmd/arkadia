@@ -96,10 +96,11 @@ export function createFxStage(o:FxStageOptions){
   for(const fx of bundle.effectsById.values()){
    const effKey=(fx.sourceEffectFile??fx.id).replace(/\.json$/,'');
    const isGround=effKey.endsWith('.ground');
+   const isRiftBolt=effKey.includes('rift-bolt');
    if(o.host&&fx.emitters){
-    const maxEmitters=isGround?8:5;
+    const maxEmitters=isRiftBolt?16:(isGround?8:5);
     if(fx.emitters.length>maxEmitters){
-     const src=fx.emitters.filter((e:any)=>!/(smoke|glint|hand core)/i.test(e.name??''));
+     const src=isRiftBolt?fx.emitters:fx.emitters.filter((e:any)=>!/(smoke|glint|hand core)/i.test(e.name??''));
      const base=src.length>=maxEmitters?src:fx.emitters;
      if(base.length>maxEmitters){
       const step=(base.length-1)/(maxEmitters-1);
@@ -108,7 +109,7 @@ export function createFxStage(o:FxStageOptions){
       fx.emitters=base;
      }
     }
-    const perMax=isGround?38:Math.max(14,Math.min(22,Math.floor(88/Math.max(1,fx.emitters.length))));
+    const perMax=isRiftBolt?46:(isGround?38:Math.max(14,Math.min(22,Math.floor(88/Math.max(1,fx.emitters.length)))));
     for(const e of fx.emitters as any[]){
      e.maxParticles=Math.min(e.maxParticles||perMax,perMax);
      if(e.spawn){
