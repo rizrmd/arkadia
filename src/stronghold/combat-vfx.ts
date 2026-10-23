@@ -7,6 +7,7 @@ import {rollHit,reach,skillRank,skillDamageMultiplier,skillAreaMultiplier,skillC
 import type {Fighter} from '../characters/combat';
 import type {HeroId} from './heroes';
 import {cutOut,type Placed} from './hero';
+import {notifyHeroCast} from './hero-3d';
 import {createFxStage,playCue,type CueContext,type FxHandle} from '../fx';
 
 export type FloatKind='normal'|'crit'|'incoming'|'heal'|'banner';
@@ -80,7 +81,7 @@ export const HERO_SKILLS:Record<HeroId,SkillDef[]>={
   SKILL_CATALOG['cinder-step'],
   SKILL_CATALOG['ember-snare'],
   SKILL_CATALOG.shockwave,
-  SKILL_CATALOG.cleave
+  {...SKILL_CATALOG.cleave,name:'Molten Cleave',icon:'🔥'}
  ]
 };
 
@@ -188,12 +189,12 @@ export function createCombatVfx(o:{
   return {dx:Math.cos(phase)*s.amp*decay,dy:Math.sin(phase*1.3)*s.amp*.6*decay};
  }
 
- function spawnSlash(u:number,v:number,angle:number,crit=false){
+ function spawnSlash(u:number,v:number,angle:number,crit=false,skipCue=false){
   const run=o.getRun(),novaRank=run.skills.nova??0,reachScale=reach(run);
   const {heroId}=o.getHero();
   const hasSameFrameSlash=slashes.length>0&&slashes[slashes.length-1].age===0;
   slashes.push({id:nextId++,u,v,angle,reachScale,novaRank,hero:heroId,crit,age:0,duration:crit?340:260});
-  if(!hasSameFrameSlash){
+  if(!hasSameFrameSlash&&!skipCue){
    const d=tileVec(Math.cos(angle),Math.sin(angle));
    cue('attack.swing',{u,v,yaw:yawOf(d.u,d.v),radius:reachScale});
   }
@@ -315,7 +316,7 @@ export function createCombatVfx(o:{
   impacts.push({id:nextId++,kind:a.kind,shape:a.shape,u:a.u,v:a.v,radius:a.radius,angle:a.angle,spread:a.spread,age:0,duration:640});
   const d=tileVec(Math.cos(a.angle),Math.sin(a.angle));
   cue(`${a.skill}.detonate`,{u:a.u,v:a.v,yaw:yawOf(d.u,d.v),radius:a.radius});
-  const sparkKind:SparkKind=a.kind==='ember-snare'||a.kind==='flame-cone'?'fire':a.kind==='shockwave'||a.kind==='cleave-cone'?'seismic':'arcane';
+  const sparkKind:SparkKind=a.kind==='ember-snare'||a.kind==='flame-cone'||(a.kind==='cleave-cone'&&o.getHero().heroId==='ember-warden')?'fire':a.kind==='shockwave'?'seismic':'arcane';
   for(const f of o.getFoes()){
    if(!f.alive)continue;
    const du=f.x-a.u,dv=f.y-a.v,dist=Math.hypot(du,dv);
@@ -331,6 +332,7 @@ export function createCombatVfx(o:{
  }
 
  function castSkill(id:SkillId,opts:{targetU?:number;targetV?:number;forceCrit?:boolean;comboScale?:number;skipCastCue?:boolean}={}):boolean{
+  notifyHeroCast(1050);
   const h=o.getHero(),run=o.getRun();
   let angle=facingScreenAngle(h);
   let targetU=opts.targetU,targetV=opts.targetV;
@@ -357,7 +359,7 @@ export function createCombatVfx(o:{
 
   switch(id){
    case 'rift-bolt':{
-    spawnSlash(h.u,h.v,angle,false);
+    spawnSlash(h.u,h.v,angle,false,true);
     const offsets=rank>=3?[-0.22,0,0.22]:rank===2?[-0.12,0.12]:[0];
     impacts.push({
      id:nextId++,kind:'rift-trap',shape:'circle',u:h.u,v:h.v,
@@ -380,7 +382,7 @@ export function createCombatVfx(o:{
     return true;
    }
    case 'flame-fan':{
-    spawnSlash(h.u,h.v,angle,false);
+    spawnSlash(h.u,h.v,angle,false,true);
     const offsets=rank>=3?[-0.44,-0.22,0,0.22,0.44]:rank===2?[-0.36,-0.12,0.12,0.36]:[-0.34,0,0.34];
     for(const offset of offsets){
      spawnProjectile({
@@ -403,8 +405,8 @@ export function createCombatVfx(o:{
     for(let i=0;i<ghostCount;i++){
      ghosts.push({id:nextId++,kind,u:h.u+dir.u*(i*.3),v:h.v+dir.v*(i*.3),angle,age:-i*40,duration:480});
     }
-    addSpark(id==='cinder-step'?'fire':'arcane',h.u+dir.u*.6,h.v+dir.v*.6,angle,36);
-    spawnSlash(h.u+dir.u*.5,h.v+dir.v*.5,angle,!!opts.forceCrit);
+    if(id==='rift-dash')addSpark('arcane',h.u+dir.u*.6,h.v+dir.v*.6,angle,36);
+    spawnSlash(h.u+dir.u*.5,h.v+dir.v*.5,angle,!!opts.forceCrit,true);
     spawnAoE({
      kind:id==='cinder-step'?'flame-cone':'cleave-cone',skill:id,
      shape:'cone',
@@ -446,7 +448,7 @@ export function createCombatVfx(o:{
     });
     return true;
    case 'cleave':
-    spawnSlash(h.u,h.v,angle,true);
+    spawnSlash(h.u,h.v,angle,true,true);
     spawnAoE({
      kind:'cleave-cone',
      shape:'cone',
@@ -479,6 +481,7 @@ export function createCombatVfx(o:{
  function castSimultaneous(ids:SkillId[],opts:{targetU?:number;targetV?:number;forceCrit?:boolean}={}):SkillId[]{
   const unique=[...new Set(ids.filter(id=>Boolean(SKILL_CATALOG[id])))];
   if(!unique.length)return [];
+  notifyHeroCast(1150);
   const h=o.getHero();
   const comboScale=unique.length>=3?1.3:unique.length===2?1.15:1.0;
   totalAutoCasts++;
@@ -497,7 +500,7 @@ export function createCombatVfx(o:{
   }
   lastSimultaneousSkills=unique;
   for(const id of unique){
-   castSkill(id,{...opts,comboScale,skipCastCue:unique.length>=2});
+   castSkill(id,{...opts,comboScale});
   }
   return unique;
  }
@@ -571,7 +574,6 @@ export function createCombatVfx(o:{
       if(sameFrameImpacts<3){
        cue(`${p.skill}.impact`,{u:p.u,v:p.v,yaw:yawOf(p.vx,p.vy)});
        if(p.skill==='rift-bolt')impacts.push({id:nextId++,kind:'rift-trap',shape:'circle',u:p.u,v:p.v,radius:.96,angle,spread:Math.PI*2,age:0,duration:520});
-       else if(p.skill==='flame-fan')impacts.push({id:nextId++,kind:'ember-snare',shape:'circle',u:p.u,v:p.v,radius:.94,angle,spread:Math.PI*2,age:0,duration:500});
       }
       p.alive=false;
       break;
@@ -725,11 +727,14 @@ export function createCombatVfx(o:{
    zv.view.sprite.height=hpx*k;
    zv.view.sprite.alpha=alpha;
   };
-  for(const a of aoes){
-   renderZone(a.id,a.kind,a.shape,a.u,a.v,a.radius,a.angle,a.spread,a.age,a.duration,false);
-  }
-  for(const imp of impacts){
-   renderZone(imp.id,imp.kind,imp.shape??'circle',imp.u,imp.v,imp.radius,imp.angle,imp.spread??Math.PI*2,imp.age,imp.duration,true);
+  const skipHeroZones=fx.ready()&&(o.getHero().heroId==='ember-warden'||o.getHero().heroId==='rift-runner');
+  if(!skipHeroZones){
+   for(const a of aoes){
+    renderZone(a.id,a.kind,a.shape,a.u,a.v,a.radius,a.angle,a.spread,a.age,a.duration,false);
+   }
+   for(const imp of impacts){
+    renderZone(imp.id,imp.kind,imp.shape??'circle',imp.u,imp.v,imp.radius,imp.angle,imp.spread??Math.PI*2,imp.age,imp.duration,true);
+   }
   }
   for(const [id,zv] of zoneViews){
    if(!activeZoneIds.has(id)){

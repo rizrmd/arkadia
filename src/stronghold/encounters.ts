@@ -9,8 +9,10 @@ import {unproject} from '../isometric';
 import {Fighter,STATS,inReach,swingTargets,turn} from '../characters/combat';
 import type {CharacterMeta} from '../characters/sprites';
 import {COURT,tilePoint} from './terrain';
+import {liftAt,liftAtTile,cliffTile} from '../world/relief';
 import {GATE,SPAWN_DISTANCE_M,METERS_PER_TILE,fromGate,fromCenter,inSafeZone,spawnPoint,meters,type Tile} from './safe-zone';
 import {DISPLAY,cutOut,drawFigureShadow,prewarmAtlasAlpha,type Placed,type Pose} from './hero';
+import {notifyHeroCast} from './hero-3d';
 import type {Sun} from './daylight';
 import type {Walk} from './controls';
 import {loadImage} from '../app/loader';
@@ -28,7 +30,7 @@ type Foe=Fighter&{home:Tile;wander:Tile|null;age:number;side:number;level:number
 type Hero={
  canvas:HTMLCanvasElement;
  position():{x:number;y:number};face(sx:number,sy:number):void;respawn():void;teleport(x:number,y:number):boolean;
- blocked(x:number,y:number):boolean;occluders(x:number,y:number,box:number[]):Placed[];
+ blocked(x:number,y:number):boolean;occluders(x:number,y:number,box:number[],lift?:number):Placed[];
  occlusionAt(px:number,py:number,wx?:number,wy?:number,rad?:number,flat?:boolean,includeHero?:boolean,anchorY?:number):number;
  traceWallRay(x0:number,y0:number,x1:number,y1:number):{hit:boolean;x:number;y:number;t:number};
  sun():Sun;hero?:()=>HeroId
@@ -119,7 +121,7 @@ export async function createEncounters(o:{
    ...o.hudCallbacks,
    onSkillClick:(idx)=>{
     const sid=run.slots[idx] as SkillId|undefined;
-    if(sid&&!run.pending&&h.alive)vfx.castSkill(sid);
+    if(sid&&h.alive)vfx.castSkill(sid);
    },
   },
  );
@@ -380,7 +382,7 @@ export async function createEncounters(o:{
   const tryStep=(mx:number,my:number,side:number)=>{
    if(Math.hypot(mx,my)<v*.4)return false;
    const next={u:f.x+mx,v:f.y+my};
-   if(inSafeZone(next)||(!stuck&&!walkable(next)))return false;
+   if(inSafeZone(next)||(!stuck&&!walkable(next))||cliffTile(f.x,f.y,next.u,next.v))return false;
    if(side)f.side=side;
    f.x=next.u;f.y=next.v;const m=screen(mx,my);turn(f,m.x,m.y);f.stride+=Math.hypot(m.x,m.y)/ENEMY_STRIDE;f.play('move');
    return true;
@@ -407,6 +409,7 @@ export async function createEncounters(o:{
   syncHeroLoadout(run,currentHeroId());
   const aoeTarget=nearest(aoeCastRadius(run));
   if(!aoeTarget)return [];
+  notifyHeroCast(380);
   const equipped=run.slots.slice(0,MAX_SKILL_SLOTS).filter((id):id is SkillId=>Boolean(SKILL_CATALOG[id as SkillId]));
   if(!equipped.length)return [];
   if(forceAll)vfx.resetCooldowns(equipped);
@@ -478,6 +481,23 @@ export async function createEncounters(o:{
  type Mirror=Foe&{gen:number;plays:number};const mirrors=new Map<number,Mirror>();
  function netStep(dt:number){
   const net=o.net!,me=net.me();
+  const seen=new Set<number>();
+  for(const e of net.enemies(frameAt)){
+   seen.add(e.id);
+   const eLv=Math.max(1,e.level??run.level??1),eMax=e.max??revenantMaxHp(eLv),eSt=e.st as Fighter['state'];
+   let f=mirrors.get(e.id);
+   if(!f){f=Object.assign(new Fighter('revenant',meta.clips,e.u,e.v),{home:{u:e.u,v:e.v},wander:null,age:0,side:1,level:eLv,maxHp:eMax,gen:e.g,plays:-1});mirrors.set(e.id,f);}
+   if(f.gen!==e.g){Object.assign(f,{gen:e.g,age:0,deadFor:0,x:e.u,y:e.v,level:eLv,maxHp:eMax,hp:e.hp});}
+   const m=screen(e.u-f.x,e.v-f.y);f.stride+=Math.hypot(m.x,m.y)/ENEMY_STRIDE;
+   Object.assign(f,{x:e.u,y:e.v,level:eLv,maxHp:eMax,facing:e.fc,back:e.bk,vertical:e.vt});
+   if(e.n!==f.plays||f.state!==eSt){f.plays=e.n;f.state=eSt;f.t=0;}
+   if(e.hp<f.hp){f.flash=120;vfx.recordCoopEnemyDamage(f,f.hp-e.hp);}
+   f.hp=e.hp;
+   if(f.alive)f.deadFor=0;
+   f.tick(dt);f.age+=dt;if(!f.alive)f.deadFor+=dt;
+  }
+  for(const id of mirrors.keys())if(!seen.has(id))mirrors.delete(id);
+  foes=[...mirrors.values()];
   if(me){
    const prevHp=h.hp,prevLevel=run.level,nextSt=me.st as Fighter['state'];
    if(me.n!==heroPlays||h.state!==nextSt){
@@ -498,27 +518,14 @@ export async function createEncounters(o:{
     lastCoopAutoCasts=run.autoCasts??0;
     const castIds=(run.lastCast?.length?run.lastCast:run.slots).filter((id):id is SkillId=>Boolean(SKILL_CATALOG[id as SkillId]));
     if(castIds.length){
-     vfx.castSimultaneous(castIds);
+     const aoeTarget=nearest(aoeCastRadius(run));
+     vfx.castSimultaneous(castIds,aoeTarget?{targetU:aoeTarget.x,targetV:aoeTarget.y}:undefined);
     }
+   }else if(run.pending>0){
+    autoCastInAoE(false);
    }
   }
-  const seen=new Set<number>();
-  for(const e of net.enemies(frameAt)){
-   seen.add(e.id);
-   const eLv=Math.max(1,e.level??run.level??1),eMax=e.max??revenantMaxHp(eLv),eSt=e.st as Fighter['state'];
-   let f=mirrors.get(e.id);
-   if(!f){f=Object.assign(new Fighter('revenant',meta.clips,e.u,e.v),{home:{u:e.u,v:e.v},wander:null,age:0,side:1,level:eLv,maxHp:eMax,gen:e.g,plays:-1});mirrors.set(e.id,f);}
-   if(f.gen!==e.g){Object.assign(f,{gen:e.g,age:0,deadFor:0,x:e.u,y:e.v,level:eLv,maxHp:eMax,hp:e.hp});}
-   const m=screen(e.u-f.x,e.v-f.y);f.stride+=Math.hypot(m.x,m.y)/ENEMY_STRIDE;
-   Object.assign(f,{x:e.u,y:e.v,level:eLv,maxHp:eMax,facing:e.fc,back:e.bk,vertical:e.vt});
-   if(e.n!==f.plays||f.state!==eSt){f.plays=e.n;f.state=eSt;f.t=0;}
-   if(e.hp<f.hp){f.flash=120;vfx.recordCoopEnemyDamage(f,f.hp-e.hp);}
-   f.hp=e.hp;
-   if(f.alive)f.deadFor=0;
-   f.tick(dt);f.age+=dt;if(!f.alive)f.deadFor+=dt;
-  }
-  for(const id of mirrors.keys())if(!seen.has(id))mirrors.delete(id);
-  foes=[...mirrors.values()];
+  if(h.alive&&!inSafeZone(tileOf(h))&&nearest(aoeCastRadius(run)))notifyHeroCast(380);
  }
  function step(dt:number){
   levelUpPulseMs=Math.max(0,levelUpPulseMs-dt);
@@ -600,7 +607,7 @@ export async function createEncounters(o:{
   const hp=o.hero.position(),k=origin.scale,at=(x:number,y:number)=>({x:origin.x+x*k,y:origin.y+y*k});
   for(const [f,v] of views){
    if(!v.canvasView.sprite.visible)continue;
-   const w=tilePoint(f.x,f.y),s=at(w.x,w.y),shk=vfx.shakeOffset(f);
+   const w=tilePoint(f.x,f.y),s=at(w.x,w.y-liftAtTile(f.x,f.y)),shk=vfx.shakeOffset(f);
    v.canvasView.sprite.width=(lastBox[2]-lastBox[0])*k;
    v.canvasView.sprite.height=(lastBox[3]-lastBox[1])*k;
    v.canvasView.sprite.position.set(s.x+lastBox[0]*k+shk.dx,s.y+lastBox[1]*k+shk.dy);
@@ -609,7 +616,7 @@ export async function createEncounters(o:{
     v.bar.position.set(s.x+shk.dx,s.y-80*k+shk.dy);
    }
   }
-  const s=at(hp.x,hp.y);
+  const s=at(hp.x,hp.y-liftAt(hp.x,hp.y));
   if(heroOverhead.visible){
    heroOverhead.scale.set(Math.max(0.58,Math.min(1,k)));
    heroOverhead.position.set(s.x,s.y-80*k);
@@ -636,15 +643,15 @@ export async function createEncounters(o:{
    const light=[ambient,sun.alpha,sun.dx,sun.dy,sun.wx,sun.wy,r,box].join();
    let lightRefreshes=0;
    for(const f of shown.sort((a,b)=>tilePoint(a.x,a.y).y-tilePoint(b.x,b.y).y)){
-    const w=tilePoint(f.x,f.y),s=at(w.x,w.y),shk=vfx.shakeOffset(f);
+    const w=tilePoint(f.x,f.y),lift=liftAtTile(f.x,f.y),s=at(w.x,w.y-lift),shk=vfx.shakeOffset(f);
     const alpha=Math.min(1,f.age/500)*(f.alive?1:Math.max(0,1-(f.deadFor-3500)/900));if(alpha<=0)continue;
-    const v=view(f),hidden=o.hero.occluders(w.x,w.y,box);live.add(f);
+    const v=view(f),hidden=o.hero.occluders(w.x,w.y,box,lift);live.add(f);
     const targetParent=w.y<hp.y?back:front;
     if(v.canvasView.sprite.parent!==targetParent)targetParent.addChild(v.canvasView.sprite);
     v.canvasView.sprite.zIndex=w.y;
     v.canvasView.sprite.visible=true;
     const coreId=`${f.clip.frames[f.frame()]}|${f.vertical?0:f.facing}`;
-    const occKey=hidden.length?`${hidden.map(p=>p.x+':'+p.y).join()}@${Math.round(w.x*.25)},${Math.round(w.y*.25)}`:'';
+    const occKey=hidden.length?`${hidden.map(p=>p.x+':'+p.y).join()}@${Math.round(w.x*.25)},${Math.round((w.y-lift)*.25)}`:'';
     const coreLook=occKey?`${coreId}|${occKey}`:coreId;
     const baseLook=`${coreId}|${light}`;
     const look=occKey?`${baseLook}|${occKey}`:baseLook;
@@ -654,7 +661,7 @@ export async function createEncounters(o:{
       if(lightOnly)lightRefreshes++;
       v.look=look;
       v.coreLook=coreLook;
-      compose(f,v,w.x,w.y,box,sun,r,hidden,baseLook,(box[2]-box[0])*k,(box[3]-box[1])*k);
+      compose(f,v,w.x,w.y-lift,box,sun,r,hidden,baseLook,(box[2]-box[0])*k,(box[3]-box[1])*k);
      }
     }
     v.canvasView.sprite.tint=f.flash>0?0xff9c84:0xffffff;
@@ -693,7 +700,7 @@ export async function createEncounters(o:{
   vfx.render();
 
   // Hero overhead bar
-  const s=at(hp.x,hp.y),ratio=Math.max(0,Math.min(1,h.hp/Math.max(1,maxHp))),inZone=inSafeZone(tileOf(h)),show=h.alive&&(ratio<.999||!inZone||run.xp>0||run.level>1);
+  const s=at(hp.x,hp.y-liftAt(hp.x,hp.y)),ratio=Math.max(0,Math.min(1,h.hp/Math.max(1,maxHp))),inZone=inSafeZone(tileOf(h)),show=h.alive&&(ratio<.999||!inZone||run.xp>0||run.level>1);
 
   heroOverhead.visible=show;
   if(show){

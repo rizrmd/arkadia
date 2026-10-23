@@ -5,6 +5,7 @@ import type {Walk} from './controls';
 import {createCanvasSprite,loadImage} from '../app/loader';
 import {walkStep,fullSpeed} from './net/movement';
 import {STRONGHOLD} from './prefabs/stronghold';
+import {liftAt,reliefHides,type ReliefFeature} from '../world/relief';
 import {characters,atlasUrl,DEFAULT_HERO,HEROES,isHero,type HeroId} from './heroes';
 import {measureTracelogPhase} from './tracelog';
 import {is3dHeroEnabled,get3dHeroRenderer} from './hero-3d';
@@ -183,7 +184,7 @@ export function drawFigureShadow(c:CanvasRenderingContext2D,atlas:AtlasSource,f:
 }
 
 export type Drive={x:number;y:number;pose?:Pose|null;face?:Walk|null;look?:{facing:number;back:boolean;vertical:boolean}|null};
-export type Placed={layer:string;x:number;y:number;width:number;height:number;foot:number;shear:number;vertical:number;opacity:number;image:HTMLImageElement;occluder?:HTMLCanvasElement};
+export type Placed={layer:string;x:number;y:number;width:number;height:number;foot:number;shear:number;vertical:number;opacity:number;image:HTMLImageElement;occluder?:HTMLCanvasElement;relief?:ReliefFeature};
 type Clip={fps:number;loop:boolean;frames:number[];strideScale?:number};
 type Meta={image:string;revision?:string;views?:string[];cell:{w:number;h:number;pivot:{x:number;y:number}};clips:Record<string,Clip>;frames:{x:number;y:number;w:number;h:number}[]};
 const KEY='arkodia.stronghold.hero';
@@ -285,6 +286,8 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
  }
  function frontBound(sb:SceneBound,px:number,py:number,anchorY?:number){
   const fY=frontY(sb,px);
+  // Raised ground hides only actors below its top that stand off it.
+  if(sb.p.relief)return py<fY&&reliefHides(sb.p.relief,px,py);
   if(py<fY)return true;
   if(sb.isWall||sb.isGate){
    if(!walkableGround(px,py))return true;
@@ -308,8 +311,9 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
   }
   return {hit:false,x:x1,y:y1,t:1};
  }
- const occluders=(px:number,py:number,b:number[])=>py+b[1]>=maxSceneFront?[]:sceneBounds.filter(sb=>{
-  if(sb.x1<px+b[0]||sb.x0>px+b[2]||sb.y1<py+b[1]||sb.y0>py+b[3])return false;
+ // (px, py) is the actor's ground point; lift raises its drawn box (the actor stands on raised terrain).
+ const occluders=(px:number,py:number,b:number[],lift=0)=>py-lift+b[1]>=maxSceneFront?[]:sceneBounds.filter(sb=>{
+  if(sb.x1<px+b[0]||sb.x0>px+b[2]||sb.y1<py-lift+b[1]||sb.y0>py-lift+b[3])return false;
   return frontBound(sb,px,py);
  }).map(sb=>sb.p);
  function sampleHeroAlpha(wx:number,wy:number):number{
@@ -380,14 +384,14 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
   x=s.x;y=s.y;pose=s.pose!==undefined?s.pose:o.pose?.()??null;
   if(s.look){if(s.face&&(s.face.x||s.face.y))face(s.face.x,s.face.y);else if(progress>.01)face(dx,dy);facing=s.look.facing;back=s.look.back;vertical=s.look.vertical;if(vertical)horizontal=false;}else if(s.face&&(s.face.x||s.face.y)&&!pose)face(s.face.x,s.face.y);
   if(jumped){state='idle';t=0;drawn='';return true;}
-  if(pose){if(state!=='idle'){state='idle';t=0;}return !!(dx||dy);}
+  if(pose&&(!r3d||pose.clip==='die')){if(state!=='idle'){state='idle';t=0;}return !!(dx||dy);}
   t+=dt;if(!s.look&&!s.face&&(dx||dy))face(dx,dy);
   const moving=progress/(dt/1000)>(state==='move'?2:5);if(moving!==(state==='move')){state=moving?'move':'idle';t=0;}
   if(moving)gait+=progress/fullSpeed(dx,dy);
   return !!(dx||dy);
  }
  function step(dt:number){
-  pose=o.pose?.()??null;if(pose){if(state!=='idle'){state='idle';t=0;}return false;}
+  pose=o.pose?.()??null;if(pose&&(!r3d||pose.clip==='die')){if(state!=='idle'){state='idle';t=0;}return false;}
   const d=o.direction(),m=Math.hypot(d.x,d.y);t+=dt;let progress=0;
   if(m>0){
    face(d.x,d.y);const r=walkStep(blocked,x,y,d,dt);if(r.progress)gait+=r.progress/fullSpeed(r.x-x,r.y-y);x=r.x;y=r.y;progress=r.progress;
@@ -400,7 +404,7 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
  const probe=Object.assign(document.createElement('canvas'),{width:1,height:1}).getContext('2d',{willReadFrequently:true})!;
  function sample(now:number){
   if(own||now-sampled<250)return;sampled=now;let next='255,255,255';
-  if(o.surface.dataset.lighting!=='off'&&o.lightmap.dataset.origin){const [l,tp,r]=o.lightmap.dataset.origin.split(',').map(Number),px=Math.floor((x-l)*r),py=Math.floor((y-12-tp)*r);
+  if(o.surface.dataset.lighting!=='off'&&o.lightmap.dataset.origin){const [l,tp,r]=o.lightmap.dataset.origin.split(',').map(Number),px=Math.floor((x-l)*r),py=Math.floor((y-liftAt(x,y)-12-tp)*r);
    if(px>=0&&py>=0&&px<o.lightmap.width&&py<o.lightmap.height){probe.clearRect(0,0,1,1);probe.drawImage(o.lightmap,px,py,1,1,0,0,1,1);next=[...probe.getImageData(0,0,1,1).data.slice(0,3)].map(v=>Math.min(255,Math.round(v/8)*8)).join();}}
   tint=next;
  }
@@ -411,10 +415,10 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
   const half=Math.max((pivot.x>cell.w-pivot.x?pivot.x:cell.w-pivot.x)*DISPLAY,night?48:0),top=-pivot.y*DISPLAY-(night?14:0),bottom=(cell.h-pivot.y)*DISPLAY+(night?20:8),H=(cell.h+18)*DISPLAY;
   const ends=[-half,half].flatMap(w=>[0,H].flatMap(h=>[[w+h*s.dx,h*s.dy],[w*s.wx+h*s.dx,w*s.wy+h*s.dy]])),sxs=[-half,half,...ends.map(e=>e[0])],sys=[top,bottom,...ends.map(e=>e[1]-12),...ends.map(e=>e[1]+12)];
   const b=[Math.floor(Math.min(...sxs))-8,Math.floor(Math.min(...sys))-8,Math.ceil(Math.max(...sxs))+8,Math.ceil(Math.max(...sys))+8];
-  const hidden=occluders(x,y,b),at=x.toFixed(1)+','+y.toFixed(1);if(canvas.dataset.x+','+canvas.dataset.y!==at)Object.assign(canvas.dataset,{x:x.toFixed(1),y:y.toFixed(1)});
+  const lift=liftAt(x,y),hidden=occluders(x,y,b,lift),at=x.toFixed(1)+','+y.toFixed(1);if(canvas.dataset.x+','+canvas.dataset.y!==at)Object.assign(canvas.dataset,{x:x.toFixed(1),y:y.toFixed(1)});
   const qNight=Math.round(night*20)/20;
   const active3d=Boolean(r3d?.isHeroReady(hero.id));
-  const key=[hero.id,state,clipName(),f.x,f.y,facing,vertical,tint,qNight.toFixed(2),s.dx,s.dy,s.wx,s.wy,s.alpha,res,b,hidden.length?hidden.map(p=>p.x+':'+p.y+':'+Math.round(Number(p.occluder?.dataset.frame??0)/8)).join()+'@'+Math.round(x*.25)+','+Math.round(y*.25):'',objects.length].join();if(!active3d&&key===drawn)return;drawn=key;
+  const key=[hero.id,state,clipName(),f.x,f.y,facing,vertical,tint,qNight.toFixed(2),s.dx,s.dy,s.wx,s.wy,s.alpha,res,b,hidden.length?hidden.map(p=>p.x+':'+p.y+':'+Math.round(Number(p.occluder?.dataset.frame??0)/8)).join()+'@'+Math.round(x*.25)+','+Math.round((y-lift)*.25):'',objects.length].join();if(!active3d&&key===drawn)return;drawn=key;
   if(res!==k||b.some((v,i)=>v!==box[i])){k=res;box=b;canvas.width=Math.ceil((b[2]-b[0])*k);canvas.height=Math.ceil((b[3]-b[1])*k);}
   const lw=cell.w,lh=cell.h,fKey=`${hero.id}:${f.x},${f.y}:${lw}x${lh}:${tint}:${qNight.toFixed(2)}`;
   let fCan=frameCache.get(fKey);
@@ -447,18 +451,20 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
   if(qNight>0){
    c.save();c.translate(0,-2);c.scale(1,.52);const pg=c.createRadialGradient(0,0,2,0,0,40);pg.addColorStop(0,`rgba(255,206,136,${(.24*qNight).toFixed(3)})`);pg.addColorStop(.55,`rgba(255,178,102,${(.1*qNight).toFixed(3)})`);pg.addColorStop(1,'rgba(255,160,85,0)');c.fillStyle=pg;c.fillRect(-40,-40,80,80);c.restore();
   }
-  const can3d=active3d?r3d!.updateAndRender({heroId:hero.id,clip:pose?pose.clip:state,moving:state==='move',yaw:yaw3d,dt:lastDt,tint,night}):null;
-  if(can3d){
-   if(s.alpha>0){
+  const dirInput=o.direction();
+  const isMovingNow=state==='move'||Math.hypot(dirInput.x,dirInput.y)>.05;
+  const res3d=active3d?r3d!.updateAndRender({heroId:hero.id,clip:pose?pose.clip:state,moving:isMovingNow,yaw:yaw3d,dt:lastDt,tint,night,sun:s,cell}):null;
+  if(res3d){
+   if(res3d.shadow){
+    const sh=res3d.shadow;
     c.save();
-    c.globalAlpha=Math.min(.55,s.alpha*1.35);
+    c.globalAlpha=Math.max(.34,s.alpha);
     c.scale(DISPLAY,DISPLAY);
-    c.transform(Math.max(.65,Math.abs(s.wx)),s.wy*.35,-s.dx,-s.dy,0,0);
-    c.drawImage(r3d!.shadowCanvas,0,0,can3d.width,can3d.height,-pivot.x,-pivot.y,cell.w,cell.h);
+    c.drawImage(sh.canvas,0,0,sh.sw,sh.sh,-sh.ox,-sh.oy,sh.sw,sh.sh);
     c.restore();
    }
    c.save();c.scale(DISPLAY,DISPLAY);
-   c.drawImage(can3d,0,0,can3d.width,can3d.height,-pivot.x,-pivot.y,cell.w,cell.h);
+   c.drawImage(res3d.sprite,0,0,res3d.sprite.width,res3d.sprite.height,-pivot.x,-pivot.y,cell.w,cell.h);
    c.restore();
   }else if(fCan){
    drawFigureShadow(c,atlas,f,cell,s,dir);
@@ -466,12 +472,12 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
    c.drawImage(fCan,0,0,lw,lh,-pivot.x,-pivot.y,cell.w,cell.h);
    c.restore();
   }
-  cutOut(c,hidden,x,y);
+  cutOut(c,hidden,x,y-lift);
   heroView.sync((box[2]-box[0])*origin.scale,(box[3]-box[1])*origin.scale);
-  Object.assign(canvas.dataset,{hero:hero.id,state,clip:clipName(),frame:String(frameIndex()),facing:String(facing),behind:String(hidden.length),tint,night:night.toFixed(2),mode:active3d?'3d-60fps':'2d'});
+  Object.assign(canvas.dataset,{hero:hero.id,state,clip:clipName(),clip3d:res3d?.activeClip??'',frame:String(frameIndex()),facing:String(facing),behind:String(hidden.length),tint,night:night.toFixed(2),mode:active3d?'3d-60fps':'2d'});
  }
  function place(){
-  heroView.sprite.position.set(origin.x+(x+box[0])*origin.scale,origin.y+(y+box[1])*origin.scale);
+  heroView.sprite.position.set(origin.x+(x+box[0])*origin.scale,origin.y+(y-liftAt(x,y)+box[1])*origin.scale);
   heroView.sprite.width=(box[2]-box[0])*origin.scale;
   heroView.sprite.height=(box[3]-box[1])*origin.scale;
  }
@@ -483,7 +489,7 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
    if(s)walking=driven(s,span);else for(let dt=span;dt>0;dt-=34)walking=step(Math.min(dt,34))||walking;
    sample(now);
   });
-  if(own)o.follow(x,y,jumped?1e4:span,walking);
+  if(own)o.follow(x,y-liftAt(x,y),jumped?1e4:span,walking);
   measureTracelogPhase('encountersRender',()=>{render();place();});
   requestAnimationFrame(loop);};
  return {
@@ -495,8 +501,8 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
   start(){if(blocked(x,y)&&!blocked(SPAWN.x,SPAWN.y)){x=SPAWN.x;y=SPAWN.y;}requestAnimationFrame(loop);},
   position:()=>({x,y}),
   face,
-  respawn(){x=SPAWN.x;y=SPAWN.y;back=false;vertical=false;horizontal=false;facing=1;drawn='';o.follow(x,y,1e4);},
-  teleport(px:number,py:number){if(blocked(px,py))return false;x=px;y=py;drawn='';o.follow(x,y,1e4);return true;},
+  respawn(){x=SPAWN.x;y=SPAWN.y;back=false;vertical=false;horizontal=false;facing=1;drawn='';o.follow(x,y-liftAt(x,y),1e4);},
+  teleport(px:number,py:number){if(blocked(px,py))return false;x=px;y=py;drawn='';o.follow(x,y-liftAt(x,y),1e4);return true;},
   async setHero(id:HeroId){wanted=id;if(id===hero.id)return;const next=await load(id);if(wanted!==id)return;hero=next;({meta,atlas}=next);fit();drawn='';},
   hero:()=>hero.id,
   remove(){stopped=true;heroView.sprite.removeFromParent();heroView.sprite.destroy();}
