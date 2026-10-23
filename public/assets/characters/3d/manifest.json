@@ -1,0 +1,46 @@
+{
+  "hero": "rift-runner",
+  "name": "Rift Runner",
+  "ai_model": "meshy-t2.5",
+  "model_type": "smart-topology",
+  "glb": "/assets/characters/3d/rift-runner.glb",
+  "thumbnail": "/assets/characters/3d/rift-runner-3d-thumb.png",
+  "fileSizeKB": 2389.3,
+  "animations": [
+    {
+      "slug": "idle",
+      "label": "Idle",
+      "loop": true
+    },
+    {
+      "slug": "walk",
+      "label": "Walk",
+      "loop": true
+    },
+    {
+      "slug": "run",
+      "label": "Run",
+      "loop": true
+    },
+    {
+      "slug": "attack",
+      "label": "Attack",
+      "loop": false
+    },
+    {
+      "slug": "cast",
+      "label": "Rift Bolt Cast",
+      "loop": false
+    },
+    {
+      "slug": "hit",
+      "label": "Hit Reaction",
+      "loop": false
+    },
+    {
+      "slug": "death",
+      "label": "Death",
+      "loop": false
+    }
+  ]
+}
