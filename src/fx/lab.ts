@@ -73,6 +73,7 @@ export async function mount(root:HTMLElement,progress:Progress){
  const isSimple=controlsMode==='simple';
 
  let hero:HeroId=resolveHeroParam(q.get('hero'));
+ let previewPose:'idle'|'run'=q.get('pose')==='run'?'run':'idle';
  const rawPlay=q.get('skill')??q.get('play');
  let activeSkill:SkillId=resolveSkillParam(hero,rawPlay);
 
@@ -134,6 +135,7 @@ export async function mount(root:HTMLElement,progress:Progress){
    <aside id="fx-lab-panel" style="position:absolute;z-index:5;right:16px;top:16px;width:min(300px,calc(100vw - 32px));max-height:calc(100vh - 32px);overflow:auto;background:#0e1418e6;border:1px solid #c9a86a66;border-radius:10px;padding:12px;font:14px Georgia,serif;color:#eee7d7">
     <h1 style="margin:0 0 8px;font-size:18px;font-weight:400;letter-spacing:.04em">FX Lab <small style="color:#c9a86a;font-size:11px;letter-spacing:.2em">NIXIEFX</small></h1>
     <label>Hero <select id="fx-hero" style="width:100%;margin:4px 0 10px;font:inherit;background:#141c22;color:inherit;border:1px solid #c9a86a66;border-radius:6px;padding:4px"></select></label>
+    <label>Pose <select id="fx-pose" style="width:100%;margin:4px 0 10px;font:inherit;background:#141c22;color:inherit"><option value="idle">Skill</option><option value="run">Run</option></select></label>
     <div style="font-size:11px;letter-spacing:.18em;color:#c9a86a">SKILLS</div><div id="fx-skills" style="display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 10px"></div>
     <div style="font-size:11px;letter-spacing:.18em;color:#c9a86a">CUES</div><div id="fx-cues" style="display:flex;flex-wrap:wrap;gap:4px;margin:6px 0 10px"></div>
     <label style="display:block">Aim <span id="fx-aim-v"></span>°<input id="fx-aim" type="range" min="-180" max="180" style="width:100%"></label>
@@ -143,6 +145,7 @@ export async function mount(root:HTMLElement,progress:Progress){
   </div>
   <form id="sp-controls" onsubmit="return false" aria-label="Skill Player Controls">
    <div class="sp-row">
+    <label class="sp-group">Pose <select id="sp-pose" class="sp-select" aria-label="Preview Pose"><option value="idle">Skill</option><option value="run">Run</option></select></label>
     <label class="sp-group" aria-label="Skill">
      <span class="sp-label">Skill</span>
      <select id="sp-skill" class="sp-select" aria-label="Select Skill"></select>
@@ -171,6 +174,9 @@ export async function mount(root:HTMLElement,progress:Progress){
  const stageWrap=$<HTMLElement>('#fx-stage-wrap');
  const groundCv=$<HTMLCanvasElement>('#fx-lab-ground'),figCv=$<HTMLCanvasElement>('#fx-lab-figures');
  const stage=createFxStage({under:figCv,over:figCv});
+ const poseSelect=$<HTMLSelectElement>('#sp-pose'),labPoseSelect=$<HTMLSelectElement>('#fx-pose');
+ const selectPose=(pose:'idle'|'run')=>{previewPose=pose;poseSelect.value=labPoseSelect.value=pose;};selectPose(previewPose);
+ poseSelect.onchange=()=>selectPose(poseSelect.value==='run'?'run':'idle');labPoseSelect.onchange=()=>selectPose(labPoseSelect.value==='run'?'run':'idle');
  const chars=await characters(),imgs=new Map<string,HTMLImageElement>();
  await Promise.all(['ember-warden','rift-runner','revenant'].map(id=>new Promise<void>(ok=>{const m=chars[id],i=new Image();i.onload=()=>ok();i.onerror=()=>ok();i.src=atlasUrl(m);imgs.set(id,i);})));
  await stage.loaded;
@@ -186,7 +192,7 @@ export async function mount(root:HTMLElement,progress:Progress){
  const screen=(u:number,v:number)=>{const p=tilePoint(u,v);return {x:view.x+p.x*view.scale,y:view.y+p.y*view.scale};};
 
  function heroClipForDir(m:any,dir:CompassDir,attacking:boolean):{clipName:string;clip:any;flip:boolean}{
-  const prefix=attacking?'attack':'idle';
+  const prefix=previewPose==='run'?'move':attacking?'attack':'idle';
   const fallbackDir=dir==='E'?'SE':dir==='W'?'SW':dir;
   const viewKey=m.clips?.[`${prefix}-${dir}`]?dir:fallbackDir;
   const flip=dir==='SW'||dir==='W'||dir==='NW';
@@ -235,7 +241,7 @@ export async function mount(root:HTMLElement,progress:Progress){
     const hc=heroClipForDir(m,activeDir,attacking);
     const frames=hc.clip?.frames??[0];
     const fps=hc.clip?.fps??6;
-    const animIdx=attacking?Math.min(frames.length-1,Math.floor(Math.max(0,simTime-castAnimStart)*fps)):(Math.floor(simTime*fps)%frames.length);
+    const animIdx=attacking&&previewPose!=='run'?Math.min(frames.length-1,Math.floor(Math.max(0,simTime-castAnimStart)*fps)):(Math.floor(simTime*fps)%frames.length);
     frameIdx=frames[animIdx]??0;
     flip=hc.flip;
     lastHeroClip=hc.clipName;
@@ -495,6 +501,7 @@ export async function mount(root:HTMLElement,progress:Progress){
   },
   pause:(on=true)=>{paused=on;},
   advance:(ms:number)=>{const n=Math.max(1,Math.round(ms/1000*60));for(let i=0;i<n;i++)tick(1/60,i===n-1);},
+  setPose:(pose:'idle'|'run')=>{selectPose(pose);layout();},
   setHero:(id:HeroId)=>{hero=id;activeSkill=HERO_SKILLS[hero][0].id;activeCue='full';panel();layout();},
   setSkill:(id:SkillId)=>{activeSkill=id;activeCue='full';layout();triggerActive();},
   setCue:(c:string)=>{activeCue=c;layout();triggerActive();},
@@ -502,7 +509,7 @@ export async function mount(root:HTMLElement,progress:Progress){
   setAim:(d:number)=>{aimDeg=d;activeDir=nearestCompassDir(d);panel();layout();},
   setLoop:(on:boolean)=>{repeat=on;syncSimpleUI();},
   setBg:(bg:'night'|'day')=>{bgMode=bg;layout();syncSimpleUI();},
-  state:()=>({hero,skill:activeSkill,cue:activeCue,dir:activeDir,aimDeg,repeat,bg:bgMode,paused,heroClip:lastHeroClip,heroFrame:lastHeroFrame,heroFlip:lastHeroFlip}),
+  state:()=>({hero,pose:previewPose,skill:activeSkill,cue:activeCue,dir:activeDir,aimDeg,repeat,bg:bgMode,paused,heroClip:lastHeroClip,heroFrame:lastHeroFrame,heroFlip:lastHeroFlip}),
   stats:()=>stage.stats(),
   hide:()=>{$('#fx-lab-panel').style.display='none';},
  };

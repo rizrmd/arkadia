@@ -2161,7 +2161,7 @@
    "id": "rift-runner",
    "name": "Rift Runner",
    "image": "rift-runner.webp",
-   "revision": "8df5a3977684aed8",
+   "revision": "3c02338ebb8b958d",
    "portrait": "portraits/rift-runner.webp",
    "source": "assets-src/sprite-player/rift-runner-*.png (1-side mirrored)",
    "scale": 0.3018,
@@ -3740,13 +3740,19 @@
      "w": 182,
      "h": 165
     }
-   ]
+   ],
+   "runCadence": {
+    "frames": 8,
+    "fps": 10,
+    "cycleMs": 800,
+    "source": "public/run-cadence/audit.json"
+   }
   },
   "ember-warden": {
    "id": "ember-warden",
    "name": "Ember Warden",
    "image": "ember-warden.webp",
-   "revision": "1eeb794aff03c569",
+   "revision": "151e3d880bc98377",
    "portrait": "portraits/ember-warden.webp",
    "source": "assets-src/sprite-player/ember-warden-*.png (1-side mirrored)",
    "scale": 0.3018,
@@ -5325,7 +5331,13 @@
      "w": 181,
      "h": 165
     }
-   ]
+   ],
+   "runCadence": {
+    "frames": 8,
+    "fps": 10,
+    "cycleMs": 800,
+    "source": "public/run-cadence/audit.json"
+   }
   }
  },
  "equipment": {

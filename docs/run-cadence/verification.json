@@ -1,0 +1,347 @@
+{
+  "base": "http://127.0.0.1:18976",
+  "heroes": {
+    "ember-warden": {
+      "sprite": {
+        "N": {
+          "cells": 8,
+          "fps": 10,
+          "cycleMs": 800,
+          "mirror": false
+        },
+        "NE": {
+          "cells": 8,
+          "fps": 10,
+          "cycleMs": 800,
+          "mirror": false
+        },
+        "E": {
+          "cells": 8,
+          "fps": 10,
+          "cycleMs": 800,
+          "mirror": false
+        },
+        "SE": {
+          "cells": 8,
+          "fps": 10,
+          "cycleMs": 800,
+          "mirror": false
+        },
+        "S": {
+          "cells": 8,
+          "fps": 10,
+          "cycleMs": 800,
+          "mirror": false
+        },
+        "SW": {
+          "cells": 8,
+          "fps": 10,
+          "cycleMs": 800,
+          "mirror": true
+        },
+        "W": {
+          "cells": 8,
+          "fps": 10,
+          "cycleMs": 800,
+          "mirror": true
+        },
+        "NW": {
+          "cells": 8,
+          "fps": 10,
+          "cycleMs": 800,
+          "mirror": true
+        }
+      },
+      "skill": {
+        "N": {
+          "clip": "move-N",
+          "uniqueFrames": 8,
+          "cycleMs": 800
+        },
+        "NE": {
+          "clip": "move-NE",
+          "uniqueFrames": 8,
+          "cycleMs": 800
+        },
+        "E": {
+          "clip": "move-E",
+          "uniqueFrames": 8,
+          "cycleMs": 800
+        },
+        "SE": {
+          "clip": "move-SE",
+          "uniqueFrames": 8,
+          "cycleMs": 800
+        },
+        "S": {
+          "clip": "move-S",
+          "uniqueFrames": 8,
+          "cycleMs": 800
+        },
+        "SW": {
+          "clip": "move-SW",
+          "uniqueFrames": 8,
+          "cycleMs": 800
+        },
+        "W": {
+          "clip": "move-W",
+          "uniqueFrames": 8,
+          "cycleMs": 800
+        },
+        "NW": {
+          "clip": "move-NW",
+          "uniqueFrames": 8,
+          "cycleMs": 800
+        }
+      },
+      "lab": {
+        "N": {
+          "clip": "move-N",
+          "uniqueFrames": 8,
+          "cycleMs": 800
+        },
+        "NE": {
+          "clip": "move-NE",
+          "uniqueFrames": 8,
+          "cycleMs": 800
+        },
+        "E": {
+          "clip": "move-E",
+          "uniqueFrames": 8,
+          "cycleMs": 800
+        },
+        "SE": {
+          "clip": "move-SE",
+          "uniqueFrames": 8,
+          "cycleMs": 800
+        },
+        "S": {
+          "clip": "move-S",
+          "uniqueFrames": 8,
+          "cycleMs": 800
+        },
+        "SW": {
+          "clip": "move-SW",
+          "uniqueFrames": 8,
+          "cycleMs": 800
+        },
+        "W": {
+          "clip": "move-W",
+          "uniqueFrames": 8,
+          "cycleMs": 800
+        },
+        "NW": {
+          "clip": "move-NW",
+          "uniqueFrames": 8,
+          "cycleMs": 800
+        }
+      },
+      "runtime": {
+        "N": {
+          "clip": "move-N",
+          "frame": "147"
+        },
+        "NE": {
+          "clip": "move-NE",
+          "frame": "46"
+        },
+        "E": {
+          "clip": "move-E",
+          "frame": "81"
+        },
+        "SE": {
+          "clip": "move-SE",
+          "frame": "10"
+        },
+        "S": {
+          "clip": "move-S",
+          "frame": "114"
+        },
+        "SW": {
+          "clip": "move-SW",
+          "frame": "14"
+        },
+        "W": {
+          "clip": "move-W",
+          "frame": "77"
+        },
+        "NW": {
+          "clip": "move-NW",
+          "frame": "45"
+        }
+      }
+    },
+    "rift-runner": {
+      "sprite": {
+        "N": {
+          "cells": 8,
+          "fps": 10,
+          "cycleMs": 800,
+          "mirror": false
+        },
+        "NE": {
+          "cells": 8,
+          "fps": 10,
+          "cycleMs": 800,
+          "mirror": false
+        },
+        "E": {
+          "cells": 8,
+          "fps": 10,
+          "cycleMs": 800,
+          "mirror": false
+        },
+        "SE": {
+          "cells": 8,
+          "fps": 10,
+          "cycleMs": 800,
+          "mirror": false
+        },
+        "S": {
+          "cells": 8,
+          "fps": 10,
+          "cycleMs": 800,
+          "mirror": false
+        },
+        "SW": {
+          "cells": 8,
+          "fps": 10,
+          "cycleMs": 800,
+          "mirror": true
+        },
+        "W": {
+          "cells": 8,
+          "fps": 10,
+          "cycleMs": 800,
+          "mirror": true
+        },
+        "NW": {
+          "cells": 8,
+          "fps": 10,
+          "cycleMs": 800,
+          "mirror": true
+        }
+      },
+      "skill": {
+        "N": {
+          "clip": "move-N",
+          "uniqueFrames": 8,
+          "cycleMs": 800
+        },
+        "NE": {
+          "clip": "move-NE",
+          "uniqueFrames": 8,
+          "cycleMs": 800
+        },
+        "E": {
+          "clip": "move-E",
+          "uniqueFrames": 8,
+          "cycleMs": 800
+        },
+        "SE": {
+          "clip": "move-SE",
+          "uniqueFrames": 8,
+          "cycleMs": 800
+        },
+        "S": {
+          "clip": "move-S",
+          "uniqueFrames": 8,
+          "cycleMs": 800
+        },
+        "SW": {
+          "clip": "move-SW",
+          "uniqueFrames": 8,
+          "cycleMs": 800
+        },
+        "W": {
+          "clip": "move-W",
+          "uniqueFrames": 8,
+          "cycleMs": 800
+        },
+        "NW": {
+          "clip": "move-NW",
+          "uniqueFrames": 8,
+          "cycleMs": 800
+        }
+      },
+      "lab": {
+        "N": {
+          "clip": "move-N",
+          "uniqueFrames": 8,
+          "cycleMs": 800
+        },
+        "NE": {
+          "clip": "move-NE",
+          "uniqueFrames": 8,
+          "cycleMs": 800
+        },
+        "E": {
+          "clip": "move-E",
+          "uniqueFrames": 8,
+          "cycleMs": 800
+        },
+        "SE": {
+          "clip": "move-SE",
+          "uniqueFrames": 8,
+          "cycleMs": 800
+        },
+        "S": {
+          "clip": "move-S",
+          "uniqueFrames": 8,
+          "cycleMs": 800
+        },
+        "SW": {
+          "clip": "move-SW",
+          "uniqueFrames": 8,
+          "cycleMs": 800
+        },
+        "W": {
+          "clip": "move-W",
+          "uniqueFrames": 8,
+          "cycleMs": 800
+        },
+        "NW": {
+          "clip": "move-NW",
+          "uniqueFrames": 8,
+          "cycleMs": 800
+        }
+      },
+      "runtime": {
+        "N": {
+          "clip": "move-N",
+          "frame": "149"
+        },
+        "NE": {
+          "clip": "move-NE",
+          "frame": "42"
+        },
+        "E": {
+          "clip": "move-E",
+          "frame": "78"
+        },
+        "SE": {
+          "clip": "move-SE",
+          "frame": "13"
+        },
+        "S": {
+          "clip": "move-S",
+          "frame": "110"
+        },
+        "SW": {
+          "clip": "move-SW",
+          "frame": "11"
+        },
+        "W": {
+          "clip": "move-W",
+          "frame": "81"
+        },
+        "NW": {
+          "clip": "move-NW",
+          "frame": "42"
+        }
+      }
+    }
+  },
+  "errors": [],
+  "status": "passed"
+}

@@ -2,8 +2,8 @@ spritePlayerSheet({
  "name": "Ember Warden — Run",
  "hero": "ember-warden",
  "pose": "run",
- "sheet": "ember-warden-run.webp?v=793f6fff",
- "sheetHalf": "ember-warden-run@0.5x.webp?v=793f6fff",
+ "sheet": "ember-warden-run.webp?v=2c54f52e",
+ "sheetHalf": "ember-warden-run@0.5x.webp?v=2c54f52e",
  "cell": [
   384,
   384

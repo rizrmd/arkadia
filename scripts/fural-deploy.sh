@@ -54,6 +54,14 @@ mkdir -p "$STAGE/site/typography/v2"; cp docs/typography/v2/*.webp docs/typograp
 mkdir -p "$STAGE/site/ui"; cp assets-src/ui/hero-card-frame*.png "$STAGE/site/ui/"
 echo "Staged $(wc -l < "$list") files, $(du -sh "$STAGE" | cut -f1) in $STAGE"
 
+# Run review and both Sprite Player URLs ship with the same character atlas release.
+cp -R public/run-cadence "$STAGE/site/run-cadence"
+mkdir -p "$STAGE/site/rift-runner"
+cp -R public/sprite-player "$STAGE/site/sprite-player"
+cp -R public/rift-runner/sprite-player "$STAGE/site/rift-runner/sprite-player"
+mkdir -p "$STAGE/site/run-cadence/verification"
+cp docs/run-cadence/*.json docs/run-cadence/*.webp "$STAGE/site/run-cadence/verification/"
+
 # One versioned tarball, uploaded in parts and applied by the gateway at boot (the release also writes www/index.html).
 mkdir -p "$HOME/releases"
 tgz="$HOME/releases/arkadia-game-$(git rev-parse --short HEAD).tgz"

@@ -223,7 +223,7 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
  type SceneBound={p:P;x0:number;y0:number;x1:number;y1:number;cols:Column[];maxFront:number;isGate:boolean;isWall:boolean;isRound:boolean};
  let sceneBounds:SceneBound[]=[],minSceneX=0,minSceneY=0,maxSceneX=0,maxSceneY=0,maxSceneFront=0;
  let minBlockerX=0,maxBlockerX=0,minBlockerY=0,maxBlockerY=0;
- let x=SPAWN.x,y=SPAWN.y,state:'idle'|'move'='idle',t=0,gait=0,facing=1,back=false,vertical=false;
+ let x=SPAWN.x,y=SPAWN.y,state:'idle'|'move'='idle',t=0,gait=0,facing=1,back=false,vertical=false,horizontal=false;
  let pose:Pose|null=null,tint='255,255,255',sampled=-1e9,origin={x:0,y:0,scale:1},k=0,box=[0,0,0,0],drawn='',lastMove=0;
  function blocked(px:number,py:number){
   if(!walkableGround(px,py))return true;
@@ -365,16 +365,16 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
   return Math.max(.32,1-.68*maxA);
  }
  if(own)try{const saved=JSON.parse(localStorage.getItem(KEY)||'null');if(saved&&Number.isFinite(saved.x)&&Number.isFinite(saved.y)){x=saved.x;y=saved.y;}}catch{}
- const view=()=>vertical?(back?'N':'S'):(back?'N':'S')+(facing>0?'E':'W');
+ const view=()=>vertical?(back?'N':'S'):horizontal?(facing>0?'E':'W'):(back?'N':'S')+(facing>0?'E':'W');
  const clipName=()=>meta.views?`${pose?pose.clip:state}-${view()}`:pose?pose.clip:vertical?state+(back?'Up':'Down'):back?state+'Back':state;
  const frameIndex=()=>{const clip=meta.clips[clipName()],n=clip.frames.length,i=pose?Math.floor(pose.t*clip.fps/1000):state==='move'?Math.floor(gait*clip.fps):Math.floor(t*clip.fps/1000);return clip.frames[clip.loop?i%n:Math.min(i,n-1)];};
- function face(sx:number,sy:number){const l=Math.hypot(sx,sy);if(!l)return;vertical=Math.abs(sx)/l<Math.sin((vertical?15:10)*Math.PI/180);back=Math.abs(sy)/l>.15?sy<0:false;if(Math.abs(sx)/l>.15)facing=sx>0?1:-1;}
+ function face(sx:number,sy:number){const l=Math.hypot(sx,sy);if(!l)return;vertical=Math.abs(sx)/l<Math.sin((vertical?15:10)*Math.PI/180);horizontal=Math.abs(sy)/l<Math.sin((horizontal?15:10)*Math.PI/180);back=Math.abs(sy)/l>.15?sy<0:false;if(Math.abs(sx)/l>.15)facing=sx>0?1:-1;}
  let jumped=false;
  function driven(s:Drive,dt:number){
   const dx=s.x-x,dy=s.y-y,progress=Math.hypot(dx,dy);
   jumped=progress>80;
   x=s.x;y=s.y;pose=s.pose!==undefined?s.pose:o.pose?.()??null;
-  if(s.look){facing=s.look.facing;back=s.look.back;vertical=s.look.vertical;}else if(s.face&&(s.face.x||s.face.y)&&!pose)face(s.face.x,s.face.y);
+  if(s.look){if(s.face&&(s.face.x||s.face.y))face(s.face.x,s.face.y);else if(progress>.01)face(dx,dy);facing=s.look.facing;back=s.look.back;vertical=s.look.vertical;if(vertical)horizontal=false;}else if(s.face&&(s.face.x||s.face.y)&&!pose)face(s.face.x,s.face.y);
   if(jumped){state='idle';t=0;drawn='';return true;}
   if(pose){if(state!=='idle'){state='idle';t=0;}return !!(dx||dy);}
   t+=dt;if(!s.look&&!s.face&&(dx||dy))face(dx,dy);
@@ -473,7 +473,7 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
   start(){if(blocked(x,y)&&!blocked(SPAWN.x,SPAWN.y)){x=SPAWN.x;y=SPAWN.y;}requestAnimationFrame(loop);},
   position:()=>({x,y}),
   face,
-  respawn(){x=SPAWN.x;y=SPAWN.y;back=false;vertical=false;facing=1;drawn='';o.follow(x,y,1e4);},
+  respawn(){x=SPAWN.x;y=SPAWN.y;back=false;vertical=false;horizontal=false;facing=1;drawn='';o.follow(x,y,1e4);},
   teleport(px:number,py:number){if(blocked(px,py))return false;x=px;y=py;drawn='';o.follow(x,y,1e4);return true;},
   async setHero(id:HeroId){wanted=id;if(id===hero.id)return;const next=await load(id);if(wanted!==id)return;hero=next;({meta,atlas}=next);fit();drawn='';},
   hero:()=>hero.id,

@@ -20,7 +20,7 @@ const SAMPLES=[
  {name:'ember-warden-attack',hero:'ember-warden',pose:'attack',title:'Ember Warden — Attack',fps:10,loop:true,src:'assets-src/sprite-player/ember-warden-attack.png',knowledge:'NKBD903bcee333c2137d8b04adba',attachment:'DA051186c3aeb2539350a5eb30'}
 ];
 await fs.mkdir(OUT,{recursive:true});
-for(const {name:NAME,hero,pose,title,fps:FPS,loop:LOOP,src:SRC,knowledge,attachment} of SAMPLES){
+for(const {name:NAME,hero,pose,title,fps:FPS,loop:LOOP,src:SRC,knowledge,attachment} of SAMPLES.filter(s=>!process.argv.includes('--run-only')||s.pose==='run')){
  const srcMeta=await sharp(SRC).metadata();
  const storedRows=Math.round(srcMeta.height/CELL);
  const isFull8=storedRows===ROWS;
