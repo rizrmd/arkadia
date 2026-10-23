@@ -1031,8 +1031,6 @@ export class Hud extends Container {
   this.brEscGroup.addChild(new MsdfText('hud-key', 'Esc')).place(escX + 49, escY + escH / 2 + 6.5, 0.5);
   const label = !this.callbacks.onMenuClick && !this.isAltB ? '· Menu' : '· Hero';
   this.brEscGroup.addChild(new MsdfText('hud-hint', label)).place(escX + 82, escY + escH / 2 + 5);
-  // The hero is chosen once (hero-picker.ts): the game wires no menu, so its HUD drops the Esc pill.
-  if (!this.callbacks.onMenuClick && this.isAltB) this.brEscGroup.visible = false;
  }
 
  setHero(name: string, portrait?: string) {
@@ -1451,7 +1449,8 @@ export class Hud extends Container {
 
   if (this.isAltB) {
    this.groups.br.visible = true;
-   this.brEscGroup.visible = !portrait;
+   // No menu wired (the game: the hero is chosen once, hero-picker.ts): no Esc pill.
+   this.brEscGroup.visible = !portrait && !!this.callbacks.onMenuClick;
    this.trRibbonGroup.visible = true;
    this.trStackGroup.visible = false;
    const trScale = portrait ? 0.68 : 1;

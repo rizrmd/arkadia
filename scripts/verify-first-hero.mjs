@@ -8,9 +8,11 @@
 //  4. ?hero=reset asks again.
 // Usage: node scripts/verify-first-hero.mjs [BASE_URL]  (with a URL, tests that site instead of a local build)
 import fs from 'node:fs';import os from 'node:os';
-import {build,preview} from 'vite';import {chromium} from 'playwright';
+import sharp from 'sharp';import {build,preview} from 'vite';import {chromium} from 'playwright';
 import {launchOptions} from './typography/browser.mjs';
-const OUT='docs/first-hero',PORT=3063;
+// FIRST_HERO_ONLINE=1 joins the co-op server instead of ?offline=1 (needs a site with the Go server).
+const Q=process.env.FIRST_HERO_ONLINE?'':'offline=1&';
+const PORT=3063,OUT=process.argv[2]?`docs/first-hero/live${Q?'':'-online'}`:'docs/first-hero';
 fs.mkdirSync(OUT,{recursive:true});
 let server,BASE=process.argv[2];
 if(!BASE){
@@ -31,6 +33,7 @@ const loaded=async p=>{
  return p.evaluate(()=>({open:window.__PIXI_UI__.picker.isOpen(),saved:localStorage.getItem('arkadia.hero')}));
 };
 const snap=p=>p.evaluate(()=>{const s=window.__STRONGHOLD_COMBAT__.snapshot();return {hero:[s.hero.u,s.hero.v,s.hero.state],foes:s.foes.map(f=>[f.u,f.v,f.state]).join('|'),spawns:s.spawns.length};});
+const shot=async(p,name)=>sharp(await p.screenshot({timeout:180000})).webp({quality:88}).toFile(`${OUT}/${name}.webp`);
 const hud=p=>p.evaluate(()=>window.__PIXI_UI__.hud.heroNameText?.text);
 const hold=async(p,key,ms)=>{await p.keyboard.down(key);await p.waitForTimeout(ms);await p.keyboard.up(key);};
 // Holds a key until the hero has moved (software-rendered Chromium can take seconds per few frames), up to ms.
@@ -38,11 +41,11 @@ const walks=async(p,key,ms=8000)=>{const at=(await snap(p)).hero;await p.keyboar
 try{
  // 1. Fresh device.
  const p=await ctx.newPage();p.on('pageerror',e=>errors.push(String(e)));
- await p.goto(BASE+'/?offline=1');
+ await p.goto(BASE+'/?'+Q);
  const first=await loaded(p);
  ok('first visit: loading screen lifts onto Choose Your Hero',first.open,`saved=${first.saved}`);
  await p.waitForTimeout(1500);
- await p.screenshot({path:`${OUT}/first-visit.png`});
+ await shot(p,'first-visit');
  const a=await snap(p);
  await hold(p,'d',1200);await hold(p,'ArrowUp',800);await p.waitForTimeout(800);
  const b=await snap(p);
@@ -62,19 +65,20 @@ try{
  ok('Begin Journey starts gameplay (hero walks)',w.moved,JSON.stringify(w));
  const saved=await p.evaluate(()=>localStorage.getItem('arkadia.hero'));
  ok('pick saved on the device and shown in the HUD',saved==='ember-warden'&&/ember/i.test(await hud(p)),`saved=${saved} hud=${await hud(p)}`);
- await p.screenshot({path:`${OUT}/after-pick.png`});
+ await shot(p,'after-pick');
  // 3. The HUD hero panel and the Esc pill no longer reopen it; reload and new tab play on.
  await p.mouse.click(200,60);await p.keyboard.press('Escape');await p.waitForTimeout(600);
  ok('HUD hero panel and Escape do not reopen the screen',!(await p.evaluate(()=>window.__PIXI_UI__.picker.isOpen())));
  await p.reload();const r=await loaded(p);
  ok('reload goes straight to the game',!r.open&&/ember/i.test(await hud(p)),`hud=${await hud(p)}`);
+ // Single-process Chromium handles one heavy page at a time: the first tab closes; the context (device) keeps storage.
+ await p.close();
  const p2=await ctx.newPage();p2.on('pageerror',e=>errors.push(String(e)));
- await p2.goto(BASE+'/?offline=1');const n=await loaded(p2);
+ await p2.goto(BASE+'/?'+Q);const n=await loaded(p2);
  const w2=await walks(p2,'d');
  ok('new tab on the same device goes straight to the game',!n.open&&/ember/i.test(await hud(p2))&&w2.moved,`hud=${await hud(p2)} ${JSON.stringify(w2)}`);
- await p2.close();
  // 4. ?hero=reset asks again.
- await p.goto(BASE+'/?offline=1&hero=reset');const z=await loaded(p);
+ await p2.goto(BASE+'/?'+Q+'hero=reset');const z=await loaded(p2);
  ok('?hero=reset asks again',z.open&&z.saved===null);
  ok('no page errors',errors.length===0,errors.join(' | '));
 }finally{
