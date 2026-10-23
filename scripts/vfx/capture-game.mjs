@@ -59,8 +59,7 @@ try{
     await page.clock.install();
     await page.goto(`${GAME}/?offline=1&hero=${heroId}&time=${mode.time}`);
     await page.waitForFunction(()=>window.__STRONGHOLD_COMBAT__?.snapshot().vfx.fx.ready&&!document.querySelector('#loading-screen'),null,{timeout:180000});
-    const pageNow=await page.evaluate(()=>Date.now());
-    await page.clock.pauseAt(pageNow+200);
+    await page.clock.pauseAt(Date.now()+5000);
 
     const baseSpot=await page.evaluate(()=>{
      const c=window.__STRONGHOLD_COMBAT__;

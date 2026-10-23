@@ -270,11 +270,8 @@ P.wisp={w:64,h:128,paint(c){const n=valueNoise(61,32),n2=valueNoise(89,32);pixel
  const core=smooth(.58,0,ex)*smooth(.10,.34,t)*smooth(.94,.56,t);
  const alpha=Math.pow(clamp(body*1.16),1.28);
  if(alpha<=.002)return[0,0,0,0];
- const heat=clamp(body*.55+core*.68);
- const r=mix(.44,1.0,smooth(0,.30,heat));
- const g=mix(.10,1.0,Math.pow(clamp((heat-.06)/.84),1.08));
- const bCol=mix(.02,.90,Math.pow(clamp((heat-.34)/.62),1.5));
- return[r,g,bCol,alpha];});}};
+ const heat=clamp(.42+body*.42+core*.58);
+ return[heat,alpha];});}};
 
 // 3D Faceted crystal shard (64x128): compact asymmetric 4-facet crystal prism shaded per-pixel without cartoon black outlines,
 // so ASTRAL and RIFT palettes tint it into realistic 3D dark-indigo/violet gemstones with a bright specular facet.

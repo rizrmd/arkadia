@@ -210,6 +210,9 @@ export function syncHeroLoadout(p:Progression,hero:HeroKind):Progression{
  if(Array.isArray(p.offers)&&p.offers.length){
   p.offers=p.offers.map(id=>HERO_SKILL_SWAP[id]?.[hero]??id);
  }
+ if(Array.isArray(p.lastCast)&&p.lastCast.length){
+  p.lastCast=p.lastCast.map(id=>HERO_SKILL_SWAP[id]?.[hero]??id);
+ }
  return p;
 }
 
