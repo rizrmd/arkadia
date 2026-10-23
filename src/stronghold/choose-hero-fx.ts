@@ -29,7 +29,7 @@ export class ChooseHeroFx{
    const effects=new Map<string,VfxExportedEffect>();
    for(const fx of bundle.effectsById.values()){const key=(fx.sourceEffectFile??fx.id).replace(/\.json$/,'');if(key.startsWith('ui/'))effects.set(key,fx);}
    const textures=new Map<string,Texture>(),refs=bundle.manifest.assets.filter((a):a is VfxTextureAssetRef=>a.type==='texture');
-   await Promise.all(refs.map(async r=>textures.set(r.path,await Assets.load<Texture>({src:'/vfx/'+r.path,data:{scaleMode:'linear'}}))));
+   await Promise.all(refs.map(async r=>{const tex=await Assets.load<Texture>({src:'/vfx/'+r.path,data:{scaleMode:'nearest'}});if(tex?.source)tex.source.scaleMode='nearest';textures.set(r.path,tex);}));
    return new ChooseHeroFx(PixiVfxRenderer,effects,{staticAssets:true,getTexture:r=>textures.get(r.path),resolveUrl:r=>'/vfx/'+r.path});
   }catch(e){console.warn('Choose Your Hero highlights unavailable; the screen runs without them.',e);return null;}
  }

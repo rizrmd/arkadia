@@ -16209,7 +16209,7 @@
     "rotationBySpeed": false,
     "externalForces": false,
     "noise": true,
-    "collision": false,
+    "collision": true,
     "triggers": false,
     "subEmitters": false,
     "textureSheetAnimation": false,
@@ -17015,7 +17015,7 @@
     "sizeValue": {
      "mode": "curve",
      "value": 1,
-     "min": 0.12,
+     "min": 0.2,
      "max": 1,
      "curve": [
       {
@@ -17024,11 +17024,11 @@
       },
       {
        "x": 0.65,
-       "y": 0.7
+       "y": 0.78
       },
       {
        "x": 1,
-       "y": 0.12
+       "y": 0.2
       }
      ],
      "curveB": [
@@ -17038,11 +17038,11 @@
       },
       {
        "x": 0.65,
-       "y": 0.7
+       "y": 0.78
       },
       {
        "x": 1,
-       "y": 0.12
+       "y": 0.2
       }
      ],
      "editorMin": 0.001,
@@ -17054,7 +17054,7 @@
     "sizeValueY": {
      "mode": "curve",
      "value": 1,
-     "min": 0.12,
+     "min": 0.2,
      "max": 1,
      "curve": [
       {
@@ -17063,11 +17063,11 @@
       },
       {
        "x": 0.65,
-       "y": 0.7
+       "y": 0.78
       },
       {
        "x": 1,
-       "y": 0.12
+       "y": 0.2
       }
      ],
      "curveB": [
@@ -17077,11 +17077,11 @@
       },
       {
        "x": 0.65,
-       "y": 0.7
+       "y": 0.78
       },
       {
        "x": 1,
-       "y": 0.12
+       "y": 0.2
       }
      ],
      "editorMin": 0.001,
@@ -18052,11 +18052,11 @@
      "damping": 0.5
     },
     "collision": {
-     "mode": "none",
+     "mode": "plane",
      "planeY": 0,
      "radius": 0,
-     "bounce": 0.35,
-     "dampen": 0.45,
+     "bounce": 0.28,
+     "dampen": 0.5,
      "killBelow": 20
     },
     "triggers": {

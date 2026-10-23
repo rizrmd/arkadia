@@ -18,10 +18,11 @@ export const flash=(P,o={})=>mix({texture:'glow',bursts:[[0,o.count??1]],max:4,l
 // W · Lingering hot core that pulses (charge-up, projectile heads, eruption cores).
 export const core=(P,o={})=>mix({texture:'glow',rate:o.rate??30,duration:o.duration??.4,loop:o.loop??false,max:24,life:[.12,.2],size:[(o.size??.8)*.8,(o.size??.8)*1.1],
  color:P.light,intensity:o.intensity??1.6,colorOverLife:grad(P.hot,[[0,0],[.2,1],[1,0]]),local:o.local??true},pick(o,['size','intensity','rate',...OWN]));
-// W · Velocity-stretched sparks sprayed in a cone along +X (spread = cone half-angle in degrees; 90 = hemisphere fan).
+// W · Velocity-aligned pixel spark cluster sprayed in a cone along +X (spread = cone half-angle in degrees; 90 = hemisphere fan).
 export const sparks=(P,o={})=>mix({texture:'streak',align:'velocity',bursts:[[0,o.count??40]],max:(o.count??40)+8,
  shape:{type:'cone',angle:o.spread??30,radius:.04},rot:AIM,life:[.22,.55],speed:o.speed??[4,10],
- sizeXY:[[.04,.07],[.28,.58]],sizeOverLife:{curve:[[0,1],[.65,.7],[1,.12]]},gravity:o.gravity??5,drag:o.drag??2.2,
+ sizeXY:[[.055,.09],[.16,.32]],sizeOverLife:{curve:[[0,1],[.65,.78],[1,.2]]},gravity:o.gravity??5,drag:o.drag??2.2,
+ collide:{y:0,bounce:.28,dampen:.5},
  noise:{strength:o.turbulence??.85,frequency:2.2,speed:2.5,octaves:2},
  color:[P.spark,P.light],intensity:o.intensity??1.8,colorOverLife:grad(P.hot,[[0,1],[.6,.9],[1,0]])},pick(o,['intensity','gravity','drag','speed','turbulence',...OWN]));
 // W · Floating embers: small hot dots that drift up on curl noise and twinkle out.
@@ -52,14 +53,14 @@ export const smoke=(P,o={})=>mix({texture:'smoke',tiles:[2,2],frames:{random:tru
  shape:{type:'sphere',radius:o.radius??.3},life:[.9,1.6],speed:[.2,.6],spherical:1,gravity:o.gravity??-.5,drag:1.5,
  rotation:[0,6.28],spin:[-.8,.8],size:[(o.size??.7)*.7,(o.size??.7)*1.1],sizeOverLife:{curve:[[0,.45],[1,1.5]]},
  color:o.color??P.smoke,alpha:o.alpha??.55,colorOverLife:{c:[[0,'#ffffff'],[1,'#ffffff']],a:[[0,0],[.15,1],[1,0]]},order:-2},pick(o,['size','alpha','color','gravity','delay0',...OWN]));
-// W · Debris chunks thrown up and out; they fall back, bounce on the ground plane and settle.
+// W · Debris chunks thrown up and out; they fall back, bounce on the ground plane and settle as incandescent pixel shards.
 export const debris=(P,o={})=>mix({texture:'debris',tiles:[2,2],frames:{random:true,still:true},blend:'alpha',bursts:[[0,o.count??16]],max:(o.count??16)+4,
- shape:{type:'hemisphere',radius:o.radius??.3,thickness:1},life:[.8,1.3],speed:o.speed??[2.2,4.6],spherical:.6,gravity:o.gravity??11,drag:.4,
- collide:{y:0,bounce:.32,dampen:.55},rotation:[0,6.28],spin:[-9,9],size:[(o.size??.14)*.6,(o.size??.14)*1.4],
- color:o.color??P.rock,colorOverLife:{c:[[0,'#ffffff'],[1,'#ffffff']],a:[[0,1],[.8,1],[1,0]]},order:-1},pick(o,['size','speed','gravity','color',...OWN]));
-// W · Molten/energised chunks: like debris but glowing additively, for eruptions.
+ shape:{type:'hemisphere',radius:o.radius??.3,thickness:1},life:[.55,.95],speed:o.speed??[2.2,4.6],spherical:.6,gravity:o.gravity??11,drag:.4,
+ collide:{y:0,bounce:.32,dampen:.55},rotation:[0,6.28],spin:[-9,9],size:[(o.size??.14)*.6,(o.size??.14)*1.3],
+ color:[P.spark,P.light,P.accent],intensity:1.25,colorOverLife:grad(flameOf(P),[[0,1],[.55,.85],[1,0]]),order:-1},pick(o,['size','speed','gravity','color',...OWN]));
+// W · Molten/energised pixel chunks: like debris but glowing additively, for eruptions (pixel clusters without ribbon lines).
 export const cinders=(P,o={})=>mix(debris(P,o),{texture:'ember',tiles:undefined,frames:undefined,blend:'additive',color:[P.spark,P.light],intensity:1.6,
- colorOverLife:grad(P.hot,[[0,1],[.7,.8],[1,0]]),trail:{life:.18,width:.06,colorOverTrail:grad(P.body,[[0,.9],[1,0]])},...pick(o,['count','size','speed','gravity','color',...OWN])});
+ colorOverLife:grad(P.hot,[[0,1],[.7,.8],[1,0]]),...pick(o,['count','size','speed','gravity','color',...OWN])});
 // W · Crackling arcs: lightning/flame tendrils flickering over a ring or area.
 export const arcs=(P,o={})=>mix({texture:'arc',tiles:[2,2],frames:{random:true,still:true},rate:o.rate??40,duration:o.duration??.5,max:Math.ceil((o.rate??40)*.25)+6,
  shape:{type:'circle',radius:o.radius??1,thickness:0},life:[.06,.14],rotation:[0,6.28],size:[(o.size??.55)*.7,(o.size??.55)*1.2],
@@ -84,64 +85,73 @@ export const pillar=(P,o={})=>mix({texture:'flame',tiles:[4,4],frames:{random:tr
  shape:{type:'circle',radius:o.radius??.25},life:[.34,.56],velocity:{min:[0,o.power??3.2,0],max:[0,(o.power??3.2)*1.65,0]},drag:1.6,
  noise:{strength:.55,frequency:1.8,speed:2.2,octaves:2},rotation:[-.2,.2],spin:[-.55,.55],
  sizeXY:[[.68,.96],[1.05,1.52]],sizeOverLife:{curve:[[0,.42],[.24,1],[.68,.88],[1,.32]]},sizeOverLifeY:{curve:[[0,.48],[.3,1.14],[1,.76]]},color:'#ffffff',intensity:o.intensity??1.1,colorOverLife:grad(flameOf(P),[[0,0],[.12,1],[.55,.9],[1,0]])},pick(o,['intensity','rate','alpha',...OWN]));
-// W · Motes spiralling around the vertical axis (summons, level-ups, traps): orbit + optional inward pull.
-export const vortex=(P,o={})=>mix({texture:'ember',rate:o.rate??40,duration:o.duration??.6,max:Math.ceil((o.rate??40)*1.2)+6,shape:{type:'circle',radius:o.radius??1.2,thickness:.2},
+// W · Motes spiralling around the vertical axis (summons, level-ups, traps): orbit + optional inward pull (pixel particle cluster, no ribbon line).
+export const vortex=(P,o={})=>mix({texture:'ember',rate:o.rate??48,duration:o.duration??.6,max:Math.ceil((o.rate??48)*1.3)+8,shape:{type:'circle',radius:o.radius??1.2,thickness:.22},
  life:[.5,.9],velocity:{min:[0,o.lift??.6,0],max:[0,(o.lift??.6)*2,0]},orbit:[0,o.swirl??3.2,0],radial:o.pull??-1.2,
- size:[.05,.11],color:[P.spark,P.accent],intensity:o.intensity??1.8,colorOverLife:grad(P.hot,[[0,0],[.15,1],[1,0]]),trail:o.trail===false?undefined:{life:.16,width:.05,inheritColor:true}},pick(o,['rate','lift','swirl','pull','intensity','trail',...OWN]));
+ size:[.07,.14],color:[P.spark,P.accent],intensity:o.intensity??1.8,colorOverLife:grad(P.hot,[[0,0],[.15,1],[1,0]])},pick(o,['rate','lift','swirl','pull','intensity','trail',...OWN]));
 // W · Shards bursting outward and tumbling (crystal or bone splinters).
 export const shards=(P,o={})=>mix({texture:'shard',align:'velocity',bursts:[[0,o.count??12]],max:(o.count??12)+2,shape:{type:'sphere',radius:.15},life:[.3,.55],speed:o.speed??[3,6],spherical:1,
  drag:2.5,gravity:2,sizeXY:[[.08,.14],[.22,.38]],sizeOverLife:{curve:[[0,1],[1,.2]]},color:[P.accent,P.spark],intensity:o.intensity??1.5,colorOverLife:grad(P.hot,[[0,1],[1,0]])},pick(o,['intensity','speed',...OWN]));
-// W · Ground-skimming ring of sparks or dust flying outward from the origin (shock fronts).
-export const radialSkim=(P,o={})=>mix({texture:'streak',align:'velocity',bursts:[[0,o.count??36]],max:(o.count??36)+4,shape:{type:'circle',radius:o.radius??.3,thickness:0,arcMode:'burstSpread'},
- spherical:1,life:[.25,.45],speed:o.speed??[5,8],drag:3,gravity:0,at:[0,.05,0],sizeXY:[[.05,.09],[.35,.6]],sizeOverLife:{curve:[[0,1],[1,.2]]},
+// W · Ground-skimming ring of pixel sparks flying outward from the origin (shock fronts).
+export const radialSkim=(P,o={})=>mix({texture:'ember',bursts:[[0,o.count??36]],max:(o.count??36)+4,shape:{type:'circle',radius:o.radius??.3,thickness:0,arcMode:'burstSpread'},
+ spherical:1,life:[.25,.45],speed:o.speed??[4.5,7.5],drag:3,gravity:0,at:[0,.05,0],size:[.08,.15],sizeOverLife:{curve:[[0,1],[1,.2]]},
  color:[P.spark,P.light],intensity:o.intensity??1.7,colorOverLife:grad(P.hot,[[0,1],[1,0]])},pick(o,['intensity','speed',...OWN]));
 
-// G · Shock ring expanding over the ground. radius = final radius in tiles.
-export const shockRing=(P,o={})=>mix({texture:'shock',blend:'alpha',bursts:[[0,1]],max:2,life:o.life??.45,size:2*(o.radius??1.5),sizeOverLife:{curve:[[0,.15],[.35,.75],[1,1]]},
- color:P.light,alpha:o.alpha??.85,intensity:o.intensity??1.15,colorOverLife:grad(flameOf(P),[[0,1],[.5,.7],[1,0]])},pick(o,['life','intensity','alpha',...OWN]));
-// G · Particle ring: circumference of orbiting velocity-aligned particle streaks (replaces single-quad ring decals).
+// G · Expanding pixel particle shock wave over the ground (composed of radial pixel embers & flame clusters, not a single vector ring quad).
+export const shockRing=(P,o={})=>{
+ const R=o.radius??1.5,life=o.life??.42,count=o.count??Math.max(28,Math.round(R*28)),spd=R/Math.max(.18,life*.78);
+ return mix({name:o.name??'pixel shock wave',texture:'ember',blend:o.blend??'alpha',alpha:o.alpha??.9,
+  bursts:[[0,count]],max:count+8,
+  shape:{type:'circle',radius:R*.18,thickness:.06,arcMode:'burstSpread'},
+  life:[life*.75,life*1.08],speed:[spd*.82,spd*1.16],spherical:0,
+  radial:spd*.55,drag:1.9,noise:{strength:.22,frequency:2.2,speed:2,octaves:2},
+  size:[.12,.24],sizeOverLife:{curve:[[0,.55],[.28,1],[.75,.82],[1,.15]]},
+  color:'#ffffff',intensity:o.intensity??1.2,
+  colorOverLife:grad(flameOf(P),[[0,1],[.45,.88],[1,0]])},pick(o,['life','intensity','alpha','blend',...OWN]));
+};
+// G · Particle ring: circumference of orbiting pixel particle clusters (replaces single-quad ring decals).
 export const ring=(P,o={})=>magicCircle(P,{radius:o.radius??1.2,duration:o.life??.5,intensity:o.intensity??1.6,name:o.name??'particle ring'})[0];
-// G · Particle-constructed magic circle: multiple emitter layers of velocity-aligned orbiting particle streaks,
-// concentric particle rings, radial star glints, and swirling ember motes (no predefined circle/vector texture).
+// G · Diablo-like pixel-particle magic circle: multiple emitter layers of orbiting pixel embers, flame clusters,
+// concentric pixel motes, and radial star glints (no predefined circle/vector/line texture).
 export const magicCircle=(P,o={})=>{
  const R=o.radius??1.35,dur=o.duration??((o.fadeIn??.12)+(o.hold??.4)+(o.fadeOut??.1)),spin=o.spin??1.6,n=o.name??'magic circle';
  const count=o.count??Math.max(52,Math.round(R*50)),innerCount=Math.max(28,Math.round(count*.62));
  const life=o.life??[(dur*.58),dur+.24],swirl=spin>=0?Math.max(1.4,spin):Math.min(-1.4,spin);
  const pass=['texture','fadeIn','hold','fadeOut','spin','from','to','intensity','rotation','alpha','duration','life','radial',...OWN];
  return [
-  // Saturated alpha-blended energy particle bed along the outer ring (white streak texture so any palette tints cleanly)
-  mix({name:`${n} outer bed`,texture:'streak',align:'velocity',blend:'alpha',alpha:o.alpha??.9,
+  // Saturated alpha-blended pixel flame/ember bed along the outer ring
+  mix({name:`${n} outer bed`,texture:'flame',tiles:[4,4],frames:{random:true,cycles:1},blend:'alpha',alpha:o.alpha??.9,
    bursts:[[0,count],[Math.min(dur*.45,.28),Math.round(count*.5)]],rate:Math.round(count*1.1),duration:dur,max:count*3+16,
-   shape:{type:'circle',radius:R,thickness:.02,arcMode:'burstSpread'},life,speed:0,
-   orbit:[0,swirl,0],radial:o.radial??-.02,noise:{strength:.1,frequency:2.2,speed:1.5,octaves:2},
-   sizeXY:[[.08,.125],[.34,.56]],sizeOverLife:{curve:[[0,.35],[.16,1],[.8,.92],[1,.2]]},
+   shape:{type:'circle',radius:R,thickness:.05,arcMode:'burstSpread'},life,speed:[.04,.16],
+   orbit:[0,swirl,0],radial:o.radial??-.04,noise:{strength:.18,frequency:2.2,speed:1.6,octaves:2},
+   size:[.18,.3],sizeOverLife:{curve:[[0,.38],[.18,1],[.8,.9],[1,.2]]},
    color:'#ffffff',intensity:1,
    colorOverLife:grad(flameOf(P),[[0,0],[.12,1],[.75,.9],[1,0]])},pick(o,pass)),
-  // Incandescent additive particle streaks tracing the outer rim
-  mix({name:`${n} outer streaks`,texture:'streak',align:'velocity',blend:'additive',
+  // Incandescent additive pixel spark clusters tracing the outer rim
+  mix({name:`${n} outer sparks`,texture:'ember',blend:'additive',
    bursts:[[0,count],[Math.min(dur*.45,.28),Math.round(count*.5)]],rate:Math.round(count*1.1),duration:dur,max:count*3+16,
-   shape:{type:'circle',radius:R,thickness:.02,arcMode:'burstSpread'},life,speed:0,
-   orbit:[0,swirl,0],radial:o.radial??-.02,noise:{strength:.1,frequency:2.4,speed:1.8,octaves:2},
-   sizeXY:[[.042,.068],[.32,.52]],sizeOverLife:{curve:[[0,.35],[.18,1],[.78,.92],[1,.18]]},
+   shape:{type:'circle',radius:R,thickness:.04,arcMode:'burstSpread'},life,speed:[.03,.14],
+   orbit:[0,swirl,0],radial:o.radial??-.03,noise:{strength:.16,frequency:2.4,speed:1.8,octaves:2},
+   size:[.1,.2],sizeOverLife:{curve:[[0,.35],[.18,1],[.78,.92],[1,.18]]},
    color:P.light,intensity:o.intensity??1.35,
    colorOverLife:grad(P.body,[[0,0],[.12,1],[.75,.9],[1,0]])},pick(o,pass)),
-  // Glowing ember nodes evenly beaded around the outer ring circumference
+  // Glowing pixel ember nodes evenly beaded around the outer ring circumference
   mix({name:`${n} outer embers`,texture:'ember',blend:'alpha',alpha:o.alpha??.92,
    bursts:[[0,count]],rate:Math.round(count*.85),duration:dur,max:count*2+12,
-   shape:{type:'circle',radius:R,thickness:.05,arcMode:'burstSpread'},life,speed:[.02,.1],spherical:0,
-   orbit:[0,swirl*.85,0],noise:{strength:.16,frequency:2,speed:1.4,octaves:2},
-   size:[.1,.19],sizeOverLife:{curve:[[0,.3],[.2,1],[.8,.85],[1,0]]},
+   shape:{type:'circle',radius:R,thickness:.06,arcMode:'burstSpread'},life,speed:[.02,.12],spherical:0,
+   orbit:[0,swirl*.85,0],noise:{strength:.18,frequency:2,speed:1.4,octaves:2},
+   size:[.11,.21],sizeOverLife:{curve:[[0,.3],[.2,1],[.8,.85],[1,0]]},
    color:'#ffffff',intensity:1,
    colorOverLife:grad(flameOf(P),[[0,0],[.14,1],[.76,.88],[1,0]])},pick(o,pass)),
-  // Counter-rotating inner particle ring (at ~0.68 R) forming the concentric particle band seen in the reference
-  mix({name:`${n} inner streaks`,texture:'streak',align:'velocity',blend:'alpha',alpha:(o.alpha??.88)*.88,
+  // Counter-rotating inner pixel ring (at ~0.68 R) forming the concentric Diablo-like rune particle band
+  mix({name:`${n} inner embers`,texture:'ember',blend:'alpha',alpha:(o.alpha??.88)*.88,
    bursts:[[.02,innerCount]],rate:Math.round(innerCount*.9),duration:dur,max:innerCount*2+12,
-   shape:{type:'circle',radius:R*.68,thickness:.03,arcMode:'burstSpread'},life:[life[0]*.85,life[1]*.9],speed:0,
-   orbit:[0,-swirl*1.25,0],radial:.02,noise:{strength:.1,frequency:2.2,speed:1.6,octaves:2},
-   sizeXY:[[.05,.08],[.28,.46]],sizeOverLife:{curve:[[0,.3],[.2,1],[.75,.85],[1,.15]]},
+   shape:{type:'circle',radius:R*.68,thickness:.05,arcMode:'burstSpread'},life:[life[0]*.85,life[1]*.9],speed:[.03,.12],
+   orbit:[0,-swirl*1.25,0],radial:.02,noise:{strength:.14,frequency:2.2,speed:1.6,octaves:2},
+   size:[.09,.18],sizeOverLife:{curve:[[0,.3],[.2,1],[.75,.85],[1,.15]]},
    color:'#ffffff',intensity:1,
    colorOverLife:grad(flameOf(P),[[0,0],[.15,.95],[.72,.8],[1,0]])},pick(o,pass)),
-  // Cardinal & ordinal star glints sparkling around the particle perimeter
+  // Cardinal & ordinal pixel star glints sparkling around the particle perimeter
   mix({name:`${n} rim glints`,texture:'flare',blend:'additive',
    bursts:[[0,14],[Math.min(dur*.5,.24),10]],rate:20,duration:dur,max:36,
    shape:{type:'circle',radius:R*.99,thickness:.04,arcMode:'burstSpread'},life:[.22,.48],speed:0,
@@ -149,7 +159,7 @@ export const magicCircle=(P,o={})=>{
    size:[.2,.38],sizeOverLife:{curve:[[0,0],[.24,1],[1,0]]},
    color:[P.spark,P.light],intensity:o.intensity??1.55,
    colorOverLife:grad(P.hot,[[0,1],[.65,.85],[1,0]])},pick(o,pass)),
-  // Inward-spiralling energy motes bridging the outer rim to the caster/trap core
+  // Inward-spiralling pixel energy motes bridging the outer rim to the caster/trap core
   mix({name:`${n} core motes`,texture:'ember',blend:'additive',
    bursts:[[0,Math.round(innerCount*.85)]],rate:Math.round(count*.85),duration:dur,max:count*2,
    shape:{type:'circle',radius:R*.92,thickness:.35},life:[.28,.58],speed:[.06,.2],
@@ -160,19 +170,41 @@ export const magicCircle=(P,o={})=>{
 };
 // G · Backwards-compatible single-layer alias for custom callers; prefer magicCircle() spread for full multi-ring particle circles.
 export const sigil=(P,o={})=>magicCircle(P,o)[0];
-// G · Under-glow: a broad soft light pool on the ground (heat, magic charge).
-export const pool=(P,o={})=>mix({texture:'glow',bursts:[[0,1]],max:2,life:o.life??.6,size:2.4*(o.radius??1.2),sizeOverLife:{curve:[[0,.6],[.3,1],[1,1.05]]},
+// G · Under-glow: a cluster of warm pixel light motes on the ground (heat, magic charge).
+export const pool=(P,o={})=>mix({texture:'glow',bursts:[[0,3]],max:5,life:o.life??.6,
+ shape:{type:'circle',radius:(o.radius??1.2)*.25,thickness:1},
+ size:1.85*(o.radius??1.2),sizeOverLife:{curve:[[0,.6],[.3,1],[1,1.05]]},
  color:P.light,intensity:o.intensity??.7,colorOverLife:grad(P.body,[[0,0],[.2,.8],[1,0]])},pick(o,['life','intensity',...OWN]));
-// G · Ground cracks that flare bright and cool down.
-export const cracks=(P,o={})=>mix({texture:'crack',blend:'alpha',bursts:[[0,1]],max:2,life:o.life??1.1,size:2*(o.radius??1.4),rotation:[0,6.28],sizeOverLife:{curve:[[0,.55],[.12,1],[1,1]]},
- color:P.light,intensity:o.intensity??1.15,colorOverLife:grad(flameOf(P),[[0,1],[.25,.9],[1,0]])},pick(o,['life','intensity',...OWN]));
-// G · Scorch/dust decal left behind (alpha-blended, dark).
-export const scorch=(P,o={})=>mix({texture:'scorch',blend:'alpha',bursts:[[0,1]],max:2,life:o.life??1.6,size:2*(o.radius??.9),rotation:[0,6.28],
- color:o.color??'#1a1210',alpha:o.alpha??.7,colorOverLife:{c:[[0,'#ffffff'],[1,'#ffffff']],a:[[0,0],[.06,1],[.7,.8],[1,0]]},order:-5},pick(o,['life','alpha','color',...OWN]));
-// G · Ground-aligned slash crescent bulging toward +X (the texture top is pinned to the aim).
-// The crescent's centre is the texture's bottom edge, so the decal sits half its height ahead of the anchor.
-export const slashDecal=(P,o={})=>mix({texture:'slash',align:'vector',blend:'alpha',bursts:[[0,1]],max:2,life:o.life??.26,at:[(o.at?.[0]??0)+(o.radius??1.2)/2,0,o.at?.[2]??0],
- sizeXY:[2*(o.radius??1.2),o.radius??1.2],sizeOverLife:{curve:[[0,.7],[.3,1],[1,1.08]]},color:P.light,intensity:o.intensity??1.2,colorOverLife:grad(flameOf(P),[[0,1],[.5,.8],[1,0]])},pick(o,['life','intensity','at',...OWN]));
+// G · Ground magma/fissure particle clusters that flare bright and cool down (replaces single vector crack image).
+export const cracks=(P,o={})=>{
+ const R=o.radius??1.4,life=o.life??1.1,count=o.count??Math.max(22,Math.round(R*18));
+ return mix({texture:'crack',blend:'alpha',bursts:[[0,count]],max:count+6,life:[life*.75,life],
+  shape:{type:'circle',radius:R*.78,thickness:.85,arcMode:'burstSpread'},
+  speed:[.04,.18],rotation:[0,6.28],size:[.32,.62],
+  sizeOverLife:o.sizeOverLife??{curve:[[0,.45],[.16,1],[.82,.92],[1,.25]]},
+  color:P.light,intensity:o.intensity??1.15,colorOverLife:grad(flameOf(P),[[0,1],[.25,.9],[1,0]])},pick(o,['life','intensity','sizeOverLife',...OWN]));
+};
+// G · Scorch/dust pixel clusters left behind (alpha-blended, dark).
+export const scorch=(P,o={})=>{
+ const R=o.radius??.9,count=o.count??6;
+ return mix({texture:'scorch',blend:'alpha',bursts:o.bursts??[[0,count]],max:(o.max??count)+4,life:o.life??1.6,
+  shape:o.shape??{type:'circle',radius:R*.48,thickness:1},
+  size:[R*.95,R*1.45],rotation:[0,6.28],
+  color:o.color??'#1a1210',alpha:o.alpha??.68,colorOverLife:{c:[[0,'#ffffff'],[1,'#ffffff']],a:[[0,0],[.06,1],[.7,.8],[1,0]]},order:-5},pick(o,['life','alpha','color','bursts','max',...OWN]));
+};
+// G · Ground-aligned crescent arc of swirling pixel flame/energy particles toward +X (replaces single vector slash decal).
+export const slashDecal=(P,o={})=>{
+ const R=o.radius??1.2,life=o.life??.28,arc=o.arc??125,count=o.count??Math.max(26,Math.round(R*26));
+ return mix({name:o.name??'pixel slash arc',texture:'flame',tiles:[4,4],frames:{random:true,cycles:1},blend:'alpha',alpha:o.alpha??.92,
+  bursts:[[0,count]],max:count+8,life:[life*.72,life*1.12],
+  at:o.at??[0,0,0],rot:[0,-arc/2,0],
+  shape:{type:'circle',radius:R*.86,thickness:.22,arc,arcMode:'burstSpread'},
+  speed:[.35,1.15],orbit:[0,2.8,0],drag:2.2,noise:{strength:.35,frequency:2.4,speed:2.2,octaves:2},
+  rotation:[0,6.28],spin:[-3,3],size:[.24*R,.42*R],
+  sizeOverLife:{curve:[[0,.45],[.24,1],[.72,.86],[1,.18]]},
+  color:'#ffffff',intensity:o.intensity??1.15,
+  colorOverLife:grad(flameOf(P),[[0,1],[.48,.9],[1,0]])},pick(o,['life','intensity','at','alpha',...OWN]));
+};
 // G · Ground arcs crackling along a ring (flat version of arcs()).
 export const groundArcs=(P,o={})=>mix(arcs(P,o),{...pick(o,['rate','size','intensity',...OWN])});
 // G · Additive glow copy of a decal layer (sigil, ring, slash…): put it over the alpha-blended one so the decal

@@ -32,7 +32,9 @@ export function dash(id,P,o={}){const reach=o.reach??1.5,mid=reach/2;return [
  fx(id,'cast',title(id),[
   L.core(P,{name:'afterimages',local:false,at:[mid,.58,0],shape:{type:'box',box:[reach,.05,.05]},bursts:[[0,3],[.04,3],[.08,3]],rate:0,max:12,life:[.24,.36],
    sizeXY:[[.32,.44],[.82,1.08]],intensity:1.25}),
-  ...(o.flame===false?[L.sparks(P,{name:'rift lines',at:[0,.5,0],count:30,spread:12,speed:[9,14],drag:1.5,gravity:0,life:[.16,.28],sizeXY:[[.05,.08],[.8,1.4]],intensity:2.2})]
+  ...(o.flame===false?[
+    L.stream(P,{name:'rift pixel stream',at:[0,.48,0],count:18,spread:15,speed:[6,10.5],sizeXY:[[.42,.64],[.56,.82]]}),
+    L.embers(P,{name:'rift pixel motes',at:[0,.48,0],count:28,shape:{type:'cone',angle:14,radius:.08},rot:[0,0,-90],speed:[7,12],life:[.18,.32],intensity:2.1})]
    :[L.stream(P,{at:[0,.48,0],count:24,spread:15,speed:[6,11],sizeXY:[[.52,.78],[.68,.98]]}),
     L.glow(L.stream(P,{name:'dash fire core',at:[0,.48,0],count:18,spread:12,speed:[6.5,11.5],sizeXY:[[.4,.62],[.54,.82]]}),1.15),
     L.wispStream(P,{name:'dash wisps',at:[0,.48,0],count:14,spread:14,speed:[6.8,12],sizeXY:[[.44,.65],[.62,.92]]})]),

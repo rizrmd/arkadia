@@ -1,0 +1,149 @@
+{
+  "checkedAt": "2026-10-23T05:01:24.145Z",
+  "passed": true,
+  "gatewayOcclusion": {
+    "best": {
+      "u": 13.5,
+      "v": 13.899999999999999,
+      "hx": 551.4,
+      "hy": 716.8,
+      "behind": 4
+    },
+    "minSampleOcc": 0,
+    "stats": {
+      "ready": true,
+      "failed": "",
+      "effects": 65,
+      "live": 4,
+      "played": 4,
+      "peakParticles": 344,
+      "occludedParticles": 171,
+      "minOcclusion": 0,
+      "meanOcclusion": 0.566,
+      "backEffects": 2,
+      "frontEffects": 1,
+      "particles": 344,
+      "missing": [],
+      "unsupported": [],
+      "playing": [
+        "ember-warden/ember-snare.telegraph.ground:100",
+        "ember-warden/ember-snare.detonate:117",
+        "ember-warden/flame-fan.cast:61",
+        "ember-warden/shockwave.detonate:66"
+      ]
+    }
+  },
+  "buildingOcclusion": {
+    "spot": {
+      "u": 5.5,
+      "v": 5.75,
+      "hx": 561,
+      "hy": 200,
+      "behind": 1,
+      "minOcc": 0.34133333333333327
+    },
+    "stats": {
+      "ready": true,
+      "failed": "",
+      "effects": 65,
+      "live": 3,
+      "played": 7,
+      "peakParticles": 369,
+      "occludedParticles": 64,
+      "minOcclusion": 0,
+      "meanOcclusion": 0.835,
+      "backEffects": 0,
+      "frontEffects": 2,
+      "particles": 251,
+      "missing": [],
+      "unsupported": [],
+      "playing": [
+        "rift-runner/rift-trap.telegraph.ground:101",
+        "rift-runner/rift-trap.detonate:89",
+        "ember-warden/flame-fan.cast:61"
+      ]
+    }
+  },
+  "heroDepthAndSilhouette": {
+    "open": {
+      "u": 6.5,
+      "v": 8,
+      "hx": 481,
+      "hy": 304
+    },
+    "behindHeroMinOcc": 0.32266666666666666,
+    "frontOfHeroMinOcc": 1,
+    "stats": {
+      "ready": true,
+      "failed": "",
+      "effects": 65,
+      "live": 4,
+      "played": 11,
+      "peakParticles": 369,
+      "occludedParticles": 47,
+      "minOcclusion": 0,
+      "meanOcclusion": 0.772,
+      "backEffects": 1,
+      "frontEffects": 2,
+      "particles": 190,
+      "missing": [],
+      "unsupported": [],
+      "playing": [
+        "rift-runner/rift-dash.detonate:31",
+        "ember-warden/cinder-step.detonate:45",
+        "ember-warden/shockwave.detonate:66",
+        "ember-warden/shockwave.detonate.ground:48"
+      ]
+    }
+  },
+  "wallCollisionAndOcclusion": {
+    "wallSpot": {
+      "u": 7.5,
+      "v": 13.6,
+      "hx": 186.6,
+      "hy": 515.2
+    },
+    "snareClamped": {
+      "u": 7.5,
+      "v": 14.44
+    },
+    "wallFootOcc": 0,
+    "wallHitsDelta": 1,
+    "stats": {
+      "ready": true,
+      "failed": "",
+      "effects": 65,
+      "live": 12,
+      "played": 23,
+      "peakParticles": 512,
+      "occludedParticles": 382,
+      "minOcclusion": 0,
+      "meanOcclusion": 0.154,
+      "backEffects": 0,
+      "frontEffects": 8,
+      "particles": 512,
+      "missing": [],
+      "unsupported": [],
+      "playing": [
+        "ember-warden/flame-fan.cast.ground:97",
+        "ember-warden/flame-fan.cast.rim:3",
+        "ember-warden/flame-fan.cast:61",
+        "ember-warden/attack.swing.ground:20",
+        "ember-warden/attack.swing:25",
+        "ember-warden/flame-fan.bolt:10",
+        "ember-warden/flame-fan.bolt:10",
+        "ember-warden/flame-fan.bolt:10",
+        "ember-warden/ember-snare.telegraph.ground:100",
+        "ember-warden/ember-snare.telegraph:4",
+        "ember-warden/ember-snare.detonate:117",
+        "ember-warden/ember-snare.detonate.ground:55"
+      ]
+    }
+  },
+  "screenshots": [
+    "docs/nixie-fx/occlusion-behind-gateway.webp",
+    "docs/nixie-fx/occlusion-behind-building.webp",
+    "docs/nixie-fx/occlusion-hero-depth.webp",
+    "docs/nixie-fx/occlusion-wall-collision.webp"
+  ]
+}

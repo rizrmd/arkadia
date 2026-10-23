@@ -72,7 +72,7 @@ export function createFxStage(o:FxStageOptions){
  let deriveAlpha:typeof import('nixie-fx/pixi').createDerivedAlphaTexture|null=null;
  const textureProvider:PixiVfxTextureProvider={
   staticAssets:true,
-  async preload(refs:VfxTextureAssetRef[]){await Promise.all(refs.map(async ref=>{if(!textures.has(ref.path))textures.set(ref.path,await (await PIXI()).Assets.load<Texture>({src:'/vfx/'+ref.path,data:{scaleMode:'linear'}}));}));},
+  async preload(refs:VfxTextureAssetRef[]){await Promise.all(refs.map(async ref=>{if(!textures.has(ref.path)){const tex=await (await PIXI()).Assets.load<Texture>({src:'/vfx/'+ref.path,data:{scaleMode:'nearest'}});if(tex?.source)tex.source.scaleMode='nearest';textures.set(ref.path,tex);}}));},
   getTexture:(ref:VfxTextureAssetRef)=>textures.get(ref.path),
   getAlphaTexture:(ref,opacitySource,invert)=>{
    const key=`${ref.path}|${opacitySource}|${invert?1:0}`;
@@ -91,17 +91,22 @@ export function createFxStage(o:FxStageOptions){
   const bundle=loadVfxExportBundle({manifest:packed.manifest,effectsByPath:packed.effects},{requiredBackend:'pixi2d'});
   for(const fx of bundle.effectsById.values()){
    if(o.host&&fx.emitters){
+    if(fx.emitters.length>4){
+     const src=fx.emitters,step=(src.length-1)/3;
+     fx.emitters=[src[0],src[Math.round(step)],src[Math.round(step*2)],src[src.length-1]];
+    }
+    const perMax=Math.max(6,Math.min(12,Math.floor(36/Math.max(1,fx.emitters.length))));
     for(const e of fx.emitters as any[]){
-     e.maxParticles=Math.min(e.maxParticles||16,16);
+     e.maxParticles=Math.min(e.maxParticles||perMax,perMax);
      if(e.spawn){
-      if(typeof e.spawn.rate==='number'&&e.spawn.rate>12)e.spawn.rate=12;
+      if(typeof e.spawn.rate==='number'&&e.spawn.rate>perMax)e.spawn.rate=perMax;
       const rv=e.spawn.rateValue;
       if(rv){
-       if(typeof rv.value==='number'&&rv.value>12)rv.value=12;
-       if(typeof rv.min==='number'&&rv.min>12)rv.min=12;
-       if(typeof rv.max==='number'&&rv.max>12)rv.max=12;
+       if(typeof rv.value==='number'&&rv.value>perMax)rv.value=perMax;
+       if(typeof rv.min==='number'&&rv.min>perMax)rv.min=perMax;
+       if(typeof rv.max==='number'&&rv.max>perMax)rv.max=perMax;
       }
-      if(e.spawn.bursts)for(const b of e.spawn.bursts)if(b.count>10)b.count=Math.min(12,Math.ceil(b.count*.22));
+      if(e.spawn.bursts)for(const b of e.spawn.bursts)if(b.count>6)b.count=Math.min(perMax,Math.ceil(b.count*.28));
      }
     }
    }
@@ -186,7 +191,7 @@ export function createFxStage(o:FxStageOptions){
   planes.ground.vfx.update(dt,{timeSeconds:clock});planes.world.vfx.update(dt,{timeSeconds:clock});
   const occFn=o.occlusionAt,heroPos=o.getHeroWorld?.(),layers=o.depthLayers,sc=view.scale||1;
   const activePartCount=planes.world.vfx.stats.activeParticles+planes.ground.vfx.stats.activeParticles;
-  const useGridCache=activePartCount>48;
+  const useGridCache=activePartCount>24;
   if(useGridCache)occCache.clear();
   let occCount=0,occMin=1,occSum=0,occTotal=0,backCnt=0,frontCnt=0;
   for(let i=live.length-1;i>=0;i--){
@@ -205,10 +210,20 @@ export function createFxStage(o:FxStageOptions){
    let canOcclude=Boolean(occFn);
    if(canOcclude&&occFn){
     const ax=anchorPt.x,ay=anchorPt.y;
-    if(flat){
-     canOcclude=occFn(ax,ay,ax,ay,28,true,false)<1||occFn(ax-48,ay-28,ax-48,ay-28,24,true,false)<1||occFn(ax+48,ay-28,ax+48,ay-28,24,true,false)<1||occFn(ax-48,ay+28,ax-48,ay+28,24,true,false)<1||occFn(ax+48,ay+28,ax+48,ay+28,24,true,false)<1;
-    }else if(!heroPos||Math.hypot(ax-heroPos.x,ay-heroPos.y)>88){
-     canOcclude=occFn(ax,ay,ax,ay-anchorLift*.5,28,false,false)<1||occFn(ax-48,ay-36,ax-48,ay-36,24,false,false)<1||occFn(ax+48,ay-36,ax+48,ay-36,24,false,false)<1;
+    if(ay>860){
+     canOcclude=!flat&&Boolean(heroPos&&Math.abs(ax-heroPos.x)<=110&&Math.abs(ay-heroPos.y)<=110);
+    }else if(flat){
+     canOcclude=occFn(ax,ay,ax,ay,32,true,false)<1
+      ||occFn(ax-56,ay-32,ax-56,ay-32,28,true,false)<1||occFn(ax+56,ay-32,ax+56,ay-32,28,true,false)<1
+      ||occFn(ax-56,ay+32,ax-56,ay+32,28,true,false)<1||occFn(ax+56,ay+32,ax+56,ay+32,28,true,false)<1
+      ||occFn(ax-112,ay,ax-112,ay,28,true,false)<1||occFn(ax+112,ay,ax+112,ay,28,true,false)<1
+      ||occFn(ax,ay-64,ax,ay-64,28,true,false)<1||occFn(ax,ay+64,ax,ay+64,28,true,false)<1;
+    }else if(!heroPos||Math.hypot(ax-heroPos.x,ay-heroPos.y)>110){
+     canOcclude=occFn(ax,ay,ax,ay-anchorLift*.5,32,false,false)<1
+      ||occFn(ax-56,ay-40,ax-56,ay-40,28,false,false)<1||occFn(ax+56,ay-40,ax+56,ay-40,28,false,false)<1
+      ||occFn(ax-112,ay-24,ax-112,ay-24,28,false,false)<1||occFn(ax+112,ay-24,ax+112,ay-24,28,false,false)<1
+      ||occFn(ax,ay+40,ax,ay+40,28,false,false)<1||occFn(ax,ay+84,ax,ay+84,28,false,false)<1
+      ||occFn(ax-64,ay+56,ax-64,ay+56,28,false,false)<1||occFn(ax+64,ay+56,ax+64,ay+56,28,false,false)<1;
     }
    }
    if(flat&&!canOcclude)continue;
@@ -224,16 +239,28 @@ export function createFxStage(o:FxStageOptions){
       if(canOcclude&&occFn){
        let occ:number|undefined;
        if(useGridCache){
-        const gk=(((px*.1667)|0)<<16)^(((wy*.1667)|0)&0x7fff)^(flat?0x8000:0);
+        const gk=(((px*.1667)|0)*73856093)^(((py*.1667)|0)*19349663)^(((wy*.1667)|0)*83492791)^(flat?1:0);
         occ=occCache.get(gk);
         if(occ===undefined){
          const texW=p.texture?.orig?.width??64,rad=Math.abs(p.scaleX)*texW*.5/sc;
          occ=occFn(px,py,wx,wy,rad,flat,!flat);
+         if(occ>0&&anchorPt.y<860&&(Math.abs(px-anchorPt.x)>14||Math.abs(py-anchorPt.y)>14)){
+          const dx=px-anchorPt.x,dy=py-anchorPt.y;
+          if(occFn(anchorPt.x+dx*.33,anchorPt.y+dy*.33,anchorPt.x+dx*.33,anchorPt.y+dy*.33,0,true,false)===0
+           ||occFn(anchorPt.x+dx*.5,anchorPt.y+dy*.5,anchorPt.x+dx*.5,anchorPt.y+dy*.5,0,true,false)===0
+           ||occFn(anchorPt.x+dx*.67,anchorPt.y+dy*.67,anchorPt.x+dx*.67,anchorPt.y+dy*.67,0,true,false)===0)occ=0;
+         }
          occCache.set(gk,occ);
         }
        }else{
         const texW=p.texture?.orig?.width??64,rad=Math.abs(p.scaleX)*texW*.5/sc;
         occ=occFn(px,py,wx,wy,rad,flat,!flat);
+        if(occ>0&&anchorPt.y<860&&(Math.abs(px-anchorPt.x)>14||Math.abs(py-anchorPt.y)>14)){
+         const dx=px-anchorPt.x,dy=py-anchorPt.y;
+         if(occFn(anchorPt.x+dx*.33,anchorPt.y+dy*.33,anchorPt.x+dx*.33,anchorPt.y+dy*.33,0,true,false)===0
+          ||occFn(anchorPt.x+dx*.5,anchorPt.y+dy*.5,anchorPt.x+dx*.5,anchorPt.y+dy*.5,0,true,false)===0
+          ||occFn(anchorPt.x+dx*.67,anchorPt.y+dy*.67,anchorPt.x+dx*.67,anchorPt.y+dy*.67,0,true,false)===0)occ=0;
+        }
        }
        occTotal++;occSum+=occ;if(occ<occMin)occMin=occ;
        if(occ<.999){p.alpha*=occ;occCount++;}
@@ -258,7 +285,7 @@ export function createFxStage(o:FxStageOptions){
    if(canOcclude)walkInst(l.inst);
    if(l.plane==='world'&&layers&&heroPos){
     const effY=cntPy>0?sumPy/cntPy:anchorPt.y-anchorLift*.5;
-    const isBehind=!l.follow&&anchorPt.y<heroPos.y-2&&effY<heroPos.y-2;
+    const isBehind=!l.follow&&anchorPt.y<heroPos.y-2&&Math.min(anchorPt.y,effY)<heroPos.y-2;
     const targetLayer=isBehind?layers.back:layers.front;
     if(l.inst.root.parent!==targetLayer)targetLayer.addChild(l.inst.root);
     l.inst.root.zIndex=effY;

@@ -4640,7 +4640,7 @@
    "name": "emitter-3",
    "enabled": true,
    "mode": "billboard",
-   "maxParticles": 90,
+   "maxParticles": 99,
    "duration": 1,
    "loop": false,
    "timeline": {
@@ -4668,7 +4668,7 @@
     "subEmitters": false,
     "textureSheetAnimation": false,
     "lights": false,
-    "trails": true,
+    "trails": false,
     "customData": false
    },
    "spawn": {
@@ -4767,7 +4767,7 @@
      0
     ],
     "angle": 25,
-    "radiusThickness": 0.2,
+    "radiusThickness": 0.22,
     "arc": 360,
     "arcMode": "random",
     "arcSpread": 0,
@@ -4988,9 +4988,9 @@
     },
     "size": {
      "mode": "random",
-     "value": 0.08,
-     "min": 0.05,
-     "max": 0.11,
+     "value": 0.10500000000000001,
+     "min": 0.07,
+     "max": 0.14,
      "curve": [
       {
        "x": 0,
@@ -6625,9 +6625,9 @@
      "ratio": 1,
      "lifetime": {
       "mode": "constant",
-      "value": 0.16,
-      "min": 0.16,
-      "max": 0.16,
+      "value": 0.5,
+      "min": 0.5,
+      "max": 0.5,
       "curve": [
        {
         "x": 0,
@@ -6681,9 +6681,9 @@
      },
      "width": {
       "mode": "constant",
-      "value": 0.05,
-      "min": 0.05,
-      "max": 0.05,
+      "value": 1,
+      "min": 1,
+      "max": 1,
       "curve": [
        {
         "x": 0,
@@ -6708,9 +6708,9 @@
       "editorMax": 4
      },
      "widthOverTrail": {
-      "mode": "curve",
+      "mode": "constant",
       "value": 1,
-      "min": 0,
+      "min": 1,
       "max": 1,
       "curve": [
        {
@@ -6719,7 +6719,7 @@
        },
        {
         "x": 1,
-        "y": 0
+        "y": 1
        }
       ],
       "curveB": [
@@ -6729,7 +6729,7 @@
        },
        {
         "x": 1,
-        "y": 0
+        "y": 1
        }
       ],
       "editorMin": 0,
@@ -6801,7 +6801,7 @@
      "inheritColor": true,
      "textureMode": "stretch",
      "texture": null,
-     "minVertexDistance": 0.03,
+     "minVertexDistance": 0.02,
      "worldSpace": true
     },
     "customData": {

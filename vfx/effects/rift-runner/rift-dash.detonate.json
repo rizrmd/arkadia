@@ -4647,7 +4647,7 @@
     "rotationBySpeed": false,
     "externalForces": false,
     "noise": true,
-    "collision": false,
+    "collision": true,
     "triggers": false,
     "subEmitters": false,
     "textureSheetAnimation": false,
@@ -4980,9 +4980,9 @@
     },
     "size": {
      "mode": "random",
-     "value": 0.05500000000000001,
-     "min": 0.04,
-     "max": 0.07,
+     "value": 0.0725,
+     "min": 0.055,
+     "max": 0.09,
      "curve": [
       {
        "x": 0,
@@ -5009,9 +5009,9 @@
     "size3D": {
      "x": {
       "mode": "random",
-      "value": 0.05500000000000001,
-      "min": 0.04,
-      "max": 0.07,
+      "value": 0.0725,
+      "min": 0.055,
+      "max": 0.09,
       "curve": [
        {
         "x": 0,
@@ -5037,9 +5037,9 @@
      },
      "y": {
       "mode": "random",
-      "value": 0.43,
-      "min": 0.28,
-      "max": 0.58,
+      "value": 0.24,
+      "min": 0.16,
+      "max": 0.32,
       "curve": [
        {
         "x": 0,
@@ -5453,7 +5453,7 @@
     "sizeValue": {
      "mode": "curve",
      "value": 1,
-     "min": 0.12,
+     "min": 0.2,
      "max": 1,
      "curve": [
       {
@@ -5462,11 +5462,11 @@
       },
       {
        "x": 0.65,
-       "y": 0.7
+       "y": 0.78
       },
       {
        "x": 1,
-       "y": 0.12
+       "y": 0.2
       }
      ],
      "curveB": [
@@ -5476,11 +5476,11 @@
       },
       {
        "x": 0.65,
-       "y": 0.7
+       "y": 0.78
       },
       {
        "x": 1,
-       "y": 0.12
+       "y": 0.2
       }
      ],
      "editorMin": 0.001,
@@ -5492,7 +5492,7 @@
     "sizeValueY": {
      "mode": "curve",
      "value": 1,
-     "min": 0.12,
+     "min": 0.2,
      "max": 1,
      "curve": [
       {
@@ -5501,11 +5501,11 @@
       },
       {
        "x": 0.65,
-       "y": 0.7
+       "y": 0.78
       },
       {
        "x": 1,
-       "y": 0.12
+       "y": 0.2
       }
      ],
      "curveB": [
@@ -5515,11 +5515,11 @@
       },
       {
        "x": 0.65,
-       "y": 0.7
+       "y": 0.78
       },
       {
        "x": 1,
-       "y": 0.12
+       "y": 0.2
       }
      ],
      "editorMin": 0.001,
@@ -6490,11 +6490,11 @@
      "damping": 0.5
     },
     "collision": {
-     "mode": "none",
+     "mode": "plane",
      "planeY": 0,
      "radius": 0,
-     "bounce": 0.35,
-     "dampen": 0.45,
+     "bounce": 0.28,
+     "dampen": 0.5,
      "killBelow": 20
     },
     "triggers": {

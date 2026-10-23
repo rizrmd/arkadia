@@ -1,6 +1,7 @@
 import {Container} from 'pixi.js';
 import {MsdfText} from '../typography/text';
-import {tilePoint} from './terrain';
+import {COURT,tilePoint} from './terrain';
+import {unproject} from '../isometric';
 import {rollHit,reach,skillRank,skillDamageMultiplier,skillAreaMultiplier,skillCooldownMs,type Progression} from './progression';
 import type {Fighter} from '../characters/combat';
 import type {HeroId} from './heroes';
@@ -97,6 +98,8 @@ export function createCombatVfx(o:{
  frontLayer:Container;
  getHero:()=>{u:number;v:number;facing:number;back:boolean;vertical:boolean;heroId:HeroId};
  occlusionAt?:(px:number,py:number,wx?:number,wy?:number,rad?:number,flat?:boolean,includeHero?:boolean)=>number;
+ blocked?:(px:number,py:number)=>boolean;
+ traceWallRay?:(x0:number,y0:number,x1:number,y1:number)=>{hit:boolean;x:number;y:number;t:number};
  getRun:()=>Progression;
  getFoes:()=>Fighter[];
  onKill:(f:Fighter)=>void;
@@ -131,7 +134,7 @@ export function createCombatVfx(o:{
  const levelUps:LevelUpVfx[]=[],ghosts:DashGhost[]=[],combos:ComboBurstVfx[]=[];
  const shakes=new Map<object,{amp:number;age:number;duration:number;seed:number}>();
  const cooldowns:Partial<Record<SkillId,number>>={};
- let totalCrits=0,totalNormals=0,totalProjectiles=0,totalAoEs=0,totalLevelUps=0;
+ let totalCrits=0,totalNormals=0,totalProjectiles=0,totalAoEs=0,totalLevelUps=0,totalWallHits=0;
  let totalAutoCasts=0,totalSimultaneousCasts=0,totalTrinityCasts=0;
  let lastSkill:SkillId|''='';
  let lastSimultaneousSkills:SkillId[]=[];
@@ -139,6 +142,15 @@ export function createCombatVfx(o:{
  const SPARK_CUE:Record<SparkKind,string>={normal:'hit.normal',crit:'hit.crit',incoming:'hit.incoming',arcane:'hit.arcane',fire:'hit.fire',seismic:'hit.seismic'};
  const yawOf=(du:number,dv:number)=>Math.atan2(dv,du);
  const heroAt=()=>{const h=o.getHero();return {u:h.u,v:h.v};};
+ const worldToTile=(wx:number,wy:number)=>{const g=unproject(wx-COURT.x,wy-COURT.y);return {u:g.x,v:g.y};};
+ const clampTargetToWall=(u0:number,v0:number,u1:number,v1:number)=>{
+  if(!o.traceWallRay)return {hit:false,u:u1,v:v1,t:1};
+  const p0=tilePoint(u0,v0),p1=tilePoint(u1,v1);
+  const r=o.traceWallRay(p0.x,p0.y,p1.x,p1.y);
+  if(!r.hit)return {hit:false,u:u1,v:v1,t:1};
+  const t=worldToTile(r.x,r.y);
+  return {hit:true,u:t.u,v:t.v,t:r.t};
+ };
  function cue(key:string,c:CueContext){return playCue(fx,o.getHero().heroId,key,c);}
 
  function addFloat(kind:FloatKind,text:string,u:number,v:number,subtext?:string){
@@ -264,7 +276,10 @@ export function createCombatVfx(o:{
   const kind=opts.kind??(h.heroId==='ember-warden'?'ember-snare':'rift-trap');
   const shape=opts.shape??(kind==='cleave-cone'||kind==='flame-cone'?'cone':'circle');
   const offset=shape==='cone'?.35:.95;
-  const u=opts.u??(h.u+dir.u*offset),v=opts.v??(h.v+dir.v*offset);
+  const rawU=opts.u??(h.u+dir.u*offset),rawV=opts.v??(h.v+dir.v*offset);
+  const clamped=clampTargetToWall(h.u,h.v,rawU,rawV);
+  const u=clamped.u,v=clamped.v;
+  if(clamped.hit)totalWallHits++;
   totalAoEs++;
   const skill=opts.skill??AOE_SKILL[kind];
   const aoe:AoETelegraph={
@@ -295,6 +310,7 @@ export function createCombatVfx(o:{
     let diff=fa-a.angle;while(diff>Math.PI)diff-=Math.PI*2;while(diff<-Math.PI)diff+=Math.PI*2;
     if(Math.abs(diff)>a.spread*.55)continue;
    }
+   if(clampTargetToWall(a.u,a.v,f.x,f.y).hit)continue;
    applyHitToFoe(f,{scale:a.damageScale,forceCrit:a.forceCrit,sparkKind,angle:a.angle});
   }
  }
@@ -495,23 +511,36 @@ export function createCombatVfx(o:{
   for(let i=combos.length-1;i>=0;i--){combos[i].age+=dt;if(combos[i].age>=combos[i].duration)combos.splice(i,1);}
   for(const [target,s] of shakes){s.age+=dt;if(s.age>=s.duration)shakes.delete(target);}
 
-  // Step projectiles & collide with living revenants
+  // Step projectiles & collide with walls/buildings or living revenants
   const foes=o.getFoes();
   for(let i=projectiles.length-1;i>=0;i--){
    const p=projectiles[i];p.age+=dt;
+   const prevU=p.u,prevV=p.v;
    const stepU=p.vx*dt/1000,stepV=p.vy*dt/1000,dist=Math.hypot(stepU,stepV);
-   p.u+=stepU;p.v+=stepV;p.traveled+=dist;
-   p.trail.push({u:p.u,v:p.v});if(p.trail.length>8)p.trail.shift();
+   const nextU=prevU+stepU,nextV=prevV+stepV;
    const s=screenVec(p.vx,p.vy),angle=Math.atan2(s.y,s.x);
-   for(const f of foes){
-    if(!f.alive||p.hitIds.has(f))continue;
-    if(Math.hypot(f.x-p.u,f.y-p.v)<=p.radius+.42){
-     p.hitIds.add(f);
-     applyHitToFoe(f,{scale:p.damageScale,forceCrit:p.forceCrit,sparkKind:p.kind==='flame-bolt'?'fire':'arcane',angle});
-     impacts.push({id:nextId++,kind:p.kind==='flame-bolt'?'ember-snare':'rift-trap',u:p.u,v:p.v,radius:.65,angle,age:0,duration:340});
-     cue(`${p.skill}.impact`,{u:p.u,v:p.v,yaw:yawOf(p.vx,p.vy)});
-     p.alive=false;
-     break;
+   const wallRay=clampTargetToWall(prevU,prevV,nextU,nextV);
+   if(wallRay.hit||(o.blocked&&o.blocked(tilePoint(nextU,nextV).x,tilePoint(nextU,nextV).y))){
+    p.u=wallRay.u;p.v=wallRay.v;p.traveled+=dist*wallRay.t;
+    p.trail.push({u:p.u,v:p.v});if(p.trail.length>8)p.trail.shift();
+    totalWallHits++;
+    impacts.push({id:nextId++,kind:p.kind==='flame-bolt'?'ember-snare':'rift-trap',u:p.u,v:p.v,radius:.65,angle,age:0,duration:340});
+    cue(`${p.skill}.impact`,{u:p.u,v:p.v,yaw:yawOf(p.vx,p.vy)});
+    addSpark(p.kind==='flame-bolt'?'fire':'arcane',p.u,p.v,angle,24);
+    p.alive=false;
+   }else{
+    p.u=nextU;p.v=nextV;p.traveled+=dist;
+    p.trail.push({u:p.u,v:p.v});if(p.trail.length>8)p.trail.shift();
+    for(const f of foes){
+     if(!f.alive||p.hitIds.has(f))continue;
+     if(Math.hypot(f.x-p.u,f.y-p.v)<=p.radius+.42){
+      p.hitIds.add(f);
+      applyHitToFoe(f,{scale:p.damageScale,forceCrit:p.forceCrit,sparkKind:p.kind==='flame-bolt'?'fire':'arcane',angle});
+      impacts.push({id:nextId++,kind:p.kind==='flame-bolt'?'ember-snare':'rift-trap',u:p.u,v:p.v,radius:.65,angle,age:0,duration:340});
+      cue(`${p.skill}.impact`,{u:p.u,v:p.v,yaw:yawOf(p.vx,p.vy)});
+      p.alive=false;
+      break;
+     }
     }
    }
    for(const h of p.fx)h.setLocal(p.traveled);
@@ -658,6 +687,7 @@ export function createCombatVfx(o:{
     projectiles:totalProjectiles,
     aoes:totalAoEs,
     levelUps:totalLevelUps,
+    wallHits:totalWallHits,
     autoCasts:totalAutoCasts,
     simultaneousCasts:totalSimultaneousCasts,
     trinityCasts:totalTrinityCasts

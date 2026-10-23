@@ -5,16 +5,21 @@ import type {Walk} from './controls';
 import {createCanvasSprite,loadImage} from '../app/loader';
 import {walkStep,fullSpeed} from './net/movement';
 import {characters,atlasUrl,DEFAULT_HERO,isHero,type HeroId} from './heroes';
+import {measureTracelogPhase} from './tracelog';
 
 export type Column={x:number;w:number;back:number;front:number;height:number};
 export type Pose={clip:string;t:number};
+export type AtlasSource=HTMLImageElement|HTMLCanvasElement;
+function atlasSrcKey(a:AtlasSource):string{
+ return a instanceof HTMLImageElement?a.src:(a.dataset.src||'canvas');
+}
 
 export function cutOut(c:CanvasRenderingContext2D,list:readonly Placed[],px:number,py:number){
  c.globalCompositeOperation='destination-out';
  for(const p of list){c.save();c.globalAlpha=.68;c.translate(p.x-px,p.y-py);c.transform(1,p.shear,0,p.vertical,0,0);c.drawImage(p.occluder??p.image,-p.width/2,-p.height*p.foot,p.width,p.height);c.restore();}
  c.globalCompositeOperation='source-over';
 }
-type FrameShadowProfile={base:Float32Array;vc:number;px:Uint8Array;py:Uint8Array;alpha:Uint8Array};
+type FrameShadowProfile={base:Float32Array;bot:Int16Array;vc:number;px:Uint8Array;py:Uint8Array;alpha:Uint8Array};
 const shadowProfiles=new Map<string,FrameShadowProfile>();
 type AlphaMask={w:number;h:number;data:Uint8Array};
 const alphaMasks=new Map<string,AlphaMask>();
@@ -41,19 +46,63 @@ function samplePlacedAlpha(p:Placed,wx:number,wy:number):number{
  const m=getAlphaMask(p);if(!m)return 0;
  return m.data[Math.min(m.h-1,Math.floor(v*m.h))*m.w+Math.min(m.w-1,Math.floor(u*m.w))]/255;
 }
+type AtlasAlphaSheet={w:number;h:number;sx:number;sy:number;alpha:Uint8Array};
+const atlasAlphaSheets=new Map<string,AtlasAlphaSheet>();
+const alphaExtractCanvas=document.createElement('canvas'),alphaExtractCtx=alphaExtractCanvas.getContext('2d',{willReadFrequently:true})!;
+export function prewarmAtlasAlpha(img:HTMLImageElement):AtlasAlphaSheet{
+ const key=img.src;
+ let sheet=atlasAlphaSheets.get(key);if(sheet)return sheet;
+ const sw=img.naturalWidth||img.width||1,sh=img.naturalHeight||img.height||1;
+ const k=Math.min(1,1600/Math.max(sw,sh));
+ const w=Math.max(1,Math.round(sw*k)),h=Math.max(1,Math.round(sh*k));
+ alphaExtractCanvas.width=w;alphaExtractCanvas.height=h;
+ alphaExtractCtx.clearRect(0,0,w,h);
+ alphaExtractCtx.drawImage(img,0,0,w,h);
+ const rgba=alphaExtractCtx.getImageData(0,0,w,h).data;
+ const alpha=new Uint8Array(w*h);
+ for(let i=0,n=w*h;i<n;i++)alpha[i]=rgba[i*4+3];
+ // Release large temporary backing store immediately after extracting 1-byte alpha.
+ alphaExtractCanvas.width=1;alphaExtractCanvas.height=1;
+ sheet={w,h,sx:w/sw,sy:h/sh,alpha};
+ atlasAlphaSheets.set(key,sheet);
+ return sheet;
+}
 const profileCanvas=document.createElement('canvas'),profileCtx=profileCanvas.getContext('2d',{willReadFrequently:true})!;
 const shadeCanvas=document.createElement('canvas'),shadeCtx=shadeCanvas.getContext('2d')!;
 let shadeData:ImageData|null=null,shadeOut:Uint32Array|null=null;
-function frameShadowProfile(atlas:HTMLImageElement,f:{x:number;y:number;w:number;h:number},cell:{w:number;h:number;pivot:{x:number;y:number}}):FrameShadowProfile{
- const key=`${atlas.src}:${f.x},${f.y},${cell.w},${cell.h}`;let prof=shadowProfiles.get(key);if(prof)return prof;
- if(profileCanvas.width<cell.w||profileCanvas.height<cell.h){profileCanvas.width=Math.max(profileCanvas.width,cell.w);profileCanvas.height=Math.max(profileCanvas.height,cell.h);}
- profileCtx.clearRect(0,0,cell.w,cell.h);profileCtx.drawImage(atlas,f.x,f.y,f.w,f.h,0,0,cell.w,cell.h);
- const rgba=profileCtx.getImageData(0,0,cell.w,cell.h).data,bot=new Int16Array(cell.w).fill(-1),alpha=new Uint8Array(cell.w*cell.h);let maxB=-1;
- for(let i=0,n=alpha.length;i<n;i++)alpha[i]=rgba[i*4+3];
- for(let x=0;x<cell.w;x++)for(let y=cell.h-1;y>=0;y--)if(rgba[(y*cell.w+x)*4+3]>32){bot[x]=y;if(y>maxB)maxB=y;break;}
+function frameShadowProfile(atlas:AtlasSource,f:{x:number;y:number;w:number;h:number},cell:{w:number;h:number;pivot:{x:number;y:number}}):FrameShadowProfile{
+ const srcKey=atlasSrcKey(atlas);
+ const key=`${srcKey}:${f.x},${f.y},${cell.w},${cell.h}`;let prof=shadowProfiles.get(key);if(prof)return prof;
+ const bot=new Int16Array(cell.w).fill(-1),alpha=new Uint8Array(cell.w*cell.h);
+ const sheet=atlas instanceof HTMLImageElement?prewarmAtlasAlpha(atlas):atlasAlphaSheets.get(srcKey);
+ if(sheet){
+  const {w:sw,h:sh,sx,sy,alpha:sAlpha}=sheet;
+  const rx=f.w/cell.w,ry=f.h/cell.h;
+  for(let y=0;y<cell.h;y++){
+   const ay=Math.min(sh-1,Math.max(0,Math.floor((f.y+(y+.5)*ry)*sy)))*sw;
+   const row=y*cell.w;
+   for(let x=0;x<cell.w;x++){
+    const ax=Math.min(sw-1,Math.max(0,Math.floor((f.x+(x+.5)*rx)*sx)));
+    alpha[row+x]=sAlpha[ay+ax];
+   }
+  }
+ }else{
+  if(profileCanvas.width<cell.w||profileCanvas.height<cell.h){profileCanvas.width=Math.max(profileCanvas.width,cell.w);profileCanvas.height=Math.max(profileCanvas.height,cell.h);}
+  profileCtx.clearRect(0,0,cell.w,cell.h);profileCtx.drawImage(atlas,f.x,f.y,f.w,f.h,0,0,cell.w,cell.h);
+  const rgba=profileCtx.getImageData(0,0,cell.w,cell.h).data;
+  for(let i=0,n=alpha.length;i<n;i++)alpha[i]=rgba[i*4+3];
+ }
+ const footHalf=Math.ceil(cell.w*.22);let maxFootB=-1,maxAllB=-1;
+ for(let x=0;x<cell.w;x++)for(let y=cell.h-1;y>=0;y--)if(alpha[y*cell.w+x]>32){
+  bot[x]=y;if(y>maxAllB)maxAllB=y;
+  if(Math.abs(x-cell.pivot.x)<=footHalf&&y>maxFootB)maxFootB=y;
+  break;
+ }
+ const maxB=maxFootB>0?maxFootB:maxAllB;
  const base=new Float32Array(cell.w).fill(maxB>0?maxB:cell.pivot.y),pts:[number,number][]=[];
  if(maxB>=0){
-  for(let x=0;x<cell.w;x++)if(bot[x]>=maxB-14)pts.push([x,bot[x]]);
+  for(let x=0;x<cell.w;x++)if(Math.abs(x-cell.pivot.x)<=footHalf&&bot[x]>=maxB-5)pts.push([x,bot[x]]);
+  if(pts.length<2){pts.length=0;for(let x=0;x<cell.w;x++)if(bot[x]>=maxB-5)pts.push([x,bot[x]]);}
   if(pts.length>=2){
    const hull:[number,number][]=[];
    for(const p of pts){
@@ -66,31 +115,37 @@ function frameShadowProfile(atlas:HTMLImageElement,f:{x:number;y:number;w:number
   }
  }
  const vc=pts.length?(pts[0][1]+pts[pts.length-1][1])*.5-cell.pivot.y:0,xs:number[]=[],ys:number[]=[];
- for(let y=0;y<cell.h;y++)for(let x=0;x<cell.w;x++)if(rgba[(y*cell.w+x)*4+3]>32){xs.push(x);ys.push(y);}
- prof={base,vc,px:new Uint8Array(xs),py:new Uint8Array(ys),alpha};shadowProfiles.set(key,prof);return prof;
+ for(let y=0;y<cell.h;y++)for(let x=0;x<cell.w;x++)if(alpha[y*cell.w+x]>32){xs.push(x);ys.push(y);}
+ prof={base,bot,vc,px:new Uint8Array(xs),py:new Uint8Array(ys),alpha};shadowProfiles.set(key,prof);return prof;
 }
 
 type CachedShadow={canvas:HTMLCanvasElement;ox:number;oy:number;sw:number;sh:number};
-const shadowCache=new Map<string,CachedShadow>(),MAX_SHADOW_CACHE=96;
-export function drawFigureShadow(c:CanvasRenderingContext2D,atlas:HTMLImageElement,f:{x:number;y:number;w:number;h:number},cell:{w:number;h:number;pivot:{x:number;y:number}},s:Sun,dir:number){
+const shadowCache=new Map<string,CachedShadow>(),MAX_SHADOW_CACHE=192;
+export function drawFigureShadow(c:CanvasRenderingContext2D,atlas:AtlasSource,f:{x:number;y:number;w:number;h:number},cell:{w:number;h:number;pivot:{x:number;y:number}},s:Sun,dir:number){
  if(!s.alpha)return;
- const cacheKey=`${atlas.src}:${f.x},${f.y},${cell.w},${cell.h}:${dir}:${s.dx.toFixed(2)},${s.dy.toFixed(2)},${s.wx.toFixed(2)},${s.wy.toFixed(2)}`;
+ const cacheKey=`${atlasSrcKey(atlas)}:${f.x},${f.y},${cell.w},${cell.h}:${dir}:${s.dx.toFixed(2)},${s.dy.toFixed(2)},${s.wx.toFixed(2)},${s.wy.toFixed(2)}`;
  let entry=shadowCache.get(cacheKey);
  if(entry){
   shadowCache.delete(cacheKey);shadowCache.set(cacheKey,entry);
  }else{
-  const {base,vc,px,py}=frameShadowProfile(atlas,f,cell),pivot=cell.pivot,pad=8;
-  const sw=Math.ceil(cell.w+cell.h*Math.abs(s.dx)+pad*2),sh=Math.ceil(cell.h+cell.h*Math.abs(s.dy)+pad*2);
-  const ox=Math.ceil(Math.max(pivot.x,cell.w-pivot.x)+(s.dx<0?cell.h*-s.dx:0)+pad),oy=Math.ceil(pivot.y+(s.dy<0?cell.h*-s.dy:0)+pad);
+  const {base,bot,vc,px,py}=frameShadowProfile(atlas,f,cell),pivot=cell.pivot,pad=12,footHalf=Math.ceil(cell.w*.22);
+  const reachH=cell.h+20;
+  const ox=Math.ceil(cell.w*.65+(s.dx<0?reachH*-s.dx:0)+pad),oy=Math.ceil(cell.w*.5+(s.dy<0?reachH*-s.dy:0)+pad);
+  const sw=Math.ceil(ox+cell.w*.65+(s.dx>0?reachH*s.dx:0)+pad),sh=Math.ceil(oy+cell.w*.5+(s.dy>0?reachH*s.dy:0)+pad);
   if(shadeCanvas.width<sw||shadeCanvas.height<sh||!shadeData){
    shadeCanvas.width=Math.max(shadeCanvas.width,sw);shadeCanvas.height=Math.max(shadeCanvas.height,sh);
    shadeData=shadeCtx.createImageData(shadeCanvas.width,shadeCanvas.height);shadeOut=new Uint32Array(shadeData.data.buffer);
   }
   const stride=shadeCanvas.width,out=shadeOut!,COLOR=0xff2c1c14;
   for(let y=0;y<sh;y++)out.fill(0,y*stride,y*stride+sw);
+  const wxEff=Math.max(.6,Math.abs(s.wx)),wyEff=s.wy*.35;
   for(let i=0,n=px.length;i<n;i++){
-   const x=px[i],y=py[i],u=dir*(x-pivot.x),vf=base[x]-pivot.y,ht=Math.max(0,base[x]-y),tau=Math.min(1,Math.max(0,(ht-3)/26));
-   const sx=Math.round((1-tau)*u+tau*u*s.wx+ht*s.dx)+ox,sy=Math.round((1-tau)*vf+tau*(vc+u*s.wy)+ht*s.dy)+oy;
+   const x=px[i],y=py[i],gap=Math.max(0,base[x]-bot[x]),grounded=gap<=4&&Math.abs(x-pivot.x)<=footHalf;
+   const rawHt=Math.max(0,base[x]-y),ht=grounded?rawHt:rawHt+Math.min(18,gap*.85);
+   const rawU=dir*(x-pivot.x),u=grounded?rawU:rawU*Math.min(1,.35+(rawHt/38)*.65);
+   const vf=base[x]-pivot.y,tau=grounded?Math.min(1,Math.max(0,(ht-4)/26)):1;
+   const uCross=Math.max(-10,Math.min(10,u))*Math.min(1,ht/48);
+   const sx=Math.round((1-tau)*u+tau*u*wxEff+ht*s.dx)+ox,sy=Math.round((1-tau)*vf+tau*vc+uCross*wyEff+ht*s.dy)+oy;
    if(sx>=0&&sx+1<sw&&sy>=0&&sy+1<sh){const idx=sy*stride+sx;out[idx]=COLOR;out[idx+1]=COLOR;out[idx+stride]=COLOR;out[idx+stride+1]=COLOR;}
   }
   shadeCtx.putImageData(shadeData,0,0,0,0,sw,sh);
@@ -102,7 +157,7 @@ export function drawFigureShadow(c:CanvasRenderingContext2D,atlas:HTMLImageEleme
   }else targetCanvas=document.createElement('canvas');
   if(targetCanvas.width!==sw||targetCanvas.height!==sh){targetCanvas.width=sw;targetCanvas.height=sh;}
   const tc=targetCanvas.getContext('2d')!;
-  tc.clearRect(0,0,sw,sh);tc.filter='blur(1px)';tc.drawImage(shadeCanvas,0,0,sw,sh,0,0,sw,sh);tc.filter='none';
+  tc.clearRect(0,0,sw,sh);tc.drawImage(shadeCanvas,0,0,sw,sh,0,0,sw,sh);
   entry={canvas:targetCanvas,ox,oy,sw,sh};
   shadowCache.set(cacheKey,entry);
  }
@@ -116,40 +171,64 @@ type Meta={image:string;revision?:string;views?:string[];cell:{w:number;h:number
 const KEY='arkadia.stronghold.hero';
 export const DISPLAY=.66;const RADIUS=9,SPAWN={x:590,y:420};
 
+const loadedHeroes=new Map<HeroId,Promise<{id:HeroId;meta:Meta;atlas:HTMLImageElement}>>();
+function loadHeroAtlas(id:HeroId){
+ let p=loadedHeroes.get(id);
+ if(p)return p;
+ p=(async()=>{
+  const all=await characters(),m:Meta=all[id]??all[DEFAULT_HERO];
+  const img=await loadImage(atlasUrl(m));
+  prewarmAtlasAlpha(img);
+  return {id,meta:m,atlas:img};
+ })();
+ loadedHeroes.set(id,p);
+ return p;
+}
+
 export async function createHero<P extends Placed>(o:{layer:Container;lightmap:HTMLCanvasElement;surface:HTMLElement;footprint:(p:P)=>Column[];sun:()=>Sun;direction:()=>Walk;follow:(x:number,y:number,dt:number,walking?:boolean)=>void;pose?:()=>Pose|null;drive?:()=>Drive|null;id?:string;hero?:HeroId}){
- const load=async(id:HeroId)=>{const all=await characters(),m:Meta=all[id]??all[DEFAULT_HERO];return {id,meta:m,atlas:await loadImage(atlasUrl(m))};};
+ const load=loadHeroAtlas;
  let hero=await load(isHero(o.hero)?o.hero:DEFAULT_HERO),{meta,atlas}=hero,wanted=hero.id;
  const canvas=document.createElement('canvas'),c=canvas.getContext('2d')!;canvas.id=o.id??'world-hero';const own=!o.id;if(own)(window as any).__WORLD_HERO__=canvas;
  const heroView=createCanvasSprite(canvas);
  heroView.sprite.zIndex=30;
  o.layer.addChild(heroView.sprite);
 
- let cell=meta.cell,pivot=cell.pivot;
+ let cell=meta.cell,pivot=cell.pivot,lastLitKey='';
  const lit=document.createElement('canvas');
- const fit=()=>{cell=meta.cell;pivot=cell.pivot;const f0=meta.frames[0];lit.width=f0?.w??cell.w;lit.height=f0?.h??cell.h;};fit();
+ const fit=()=>{cell=meta.cell;pivot=cell.pivot;lastLitKey='';const f0=meta.frames[0];lit.width=f0?.w??cell.w;lit.height=f0?.h??cell.h;};fit();
  let objects:P[]=[],blockers:Column[]=[],bounds=new Map<P,number[]>();
- type SceneBound={p:P;x0:number;y0:number;x1:number;y1:number;cols:Column[];maxFront:number;isGate:boolean};
+ type SceneBound={p:P;x0:number;y0:number;x1:number;y1:number;cols:Column[];maxFront:number;isGate:boolean;isWall:boolean};
  let sceneBounds:SceneBound[]=[],minSceneX=0,minSceneY=0,maxSceneX=0,maxSceneY=0,maxSceneFront=0;
+ let minBlockerX=0,maxBlockerX=0,minBlockerY=0,maxBlockerY=0;
  let x=SPAWN.x,y=SPAWN.y,state:'idle'|'move'='idle',t=0,gait=0,facing=1,back=false,vertical=false;
  let pose:Pose|null=null,tint='255,255,255',sampled=-1e9,origin={x:0,y:0,scale:1},k=0,box=[0,0,0,0],drawn='',lastMove=0;
  function blocked(px:number,py:number){
   if(!walkableGround(px,py))return true;
-  for(const b of blockers)if(Math.abs(px-b.x)<b.w/2+RADIUS&&py>b.back-RADIUS*.5&&py<b.front+RADIUS*.5)return true;return false;
+  if(py>maxBlockerY||py<minBlockerY||px<minBlockerX||px>maxBlockerX)return false;
+  for(let i=0,n=blockers.length;i<n;i++){const b=blockers[i];if(Math.abs(px-b.x)<b.w/2+RADIUS&&py>b.back-RADIUS*.5&&py<b.front+RADIUS*.5)return true;}
+  return false;
  }
  function setScene(list:P[]){
   objects=list.filter(p=>p.layer!=='ground');blockers=objects.filter(p=>p.opacity>=1).flatMap(p=>o.footprint(p).filter(c=>!('id' in p&&p.id==='gate'&&gatePassageColumn(c.x))));
+  minBlockerX=Infinity;maxBlockerX=-Infinity;minBlockerY=Infinity;maxBlockerY=-Infinity;
+  for(let i=0,n=blockers.length;i<n;i++){
+   const b=blockers[i],bx0=b.x-b.w*.5-RADIUS,bx1=b.x+b.w*.5+RADIUS,by0=b.back-RADIUS*.5,by1=b.front+RADIUS*.5;
+   if(bx0<minBlockerX)minBlockerX=bx0;if(bx1>maxBlockerX)maxBlockerX=bx1;
+   if(by0<minBlockerY)minBlockerY=by0;if(by1>maxBlockerY)maxBlockerY=by1;
+  }
   minSceneX=Infinity;minSceneY=Infinity;maxSceneX=-Infinity;maxSceneY=-Infinity;maxSceneFront=-Infinity;
   sceneBounds=objects.map(p=>{
    const xs=[-p.width/2,p.width/2],ys=[-p.height*p.foot,p.height*(1-p.foot)],pts=xs.flatMap(lx=>ys.map(ly=>[p.x+lx,p.y+p.shear*lx+p.vertical*ly]));
    const x0=Math.min(...pts.map(q=>q[0])),y0=Math.min(...pts.map(q=>q[1])),x1=Math.max(...pts.map(q=>q[0])),y1=Math.max(...pts.map(q=>q[1]));
    if(x0<minSceneX)minSceneX=x0;if(y0<minSceneY)minSceneY=y0;if(x1>maxSceneX)maxSceneX=x1;if(y1>maxSceneY)maxSceneY=y1;
    const isGate=Boolean('id' in p&&p.id==='gate');
-   const cols=!isGate&&p.layer==='world'?o.footprint(p):[];
-   let maxFront=isGate?820:p.layer==='foreground'?p.y+12:p.y;
+   const isWall=Boolean('id' in p&&typeof p.id==='string'&&/^(rampart-|bastion|gate-connector|wall-)/.test(p.id));
+   const cols=!isGate&&(p.layer==='world'||isWall)?o.footprint(p):[];
+   let maxFront=isGate?820:p.layer==='foreground'?Math.max(p.y+12,y1):p.y;
    for(let i=0;i<cols.length;i++)if(cols[i].front>maxFront)maxFront=cols[i].front;
    if(maxFront>maxSceneFront)maxSceneFront=maxFront;
    if(!p.occluder)getAlphaMask(p);
-   return {p,x0,y0,x1,y1,cols,maxFront,isGate};
+   return {p,x0,y0,x1,y1,cols,maxFront,isGate,isWall};
   });
   bounds=new Map(sceneBounds.map(s=>[s.p,[s.x0,s.y0,s.x1,s.y1]]));
   drawn='';
@@ -158,18 +237,39 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
   if(py>=sb.maxFront)return false;
   if(sb.isGate){const d=Math.abs(px-577);return py<(d<36?775:gateTowerFront(Math.min(135,d)));}
   const p=sb.p;
-  if(p.layer==='foreground')return py<p.y+12;if(p.layer!=='world')return false;
-  let edge=-Infinity;const cols=sb.cols;
-  for(let i=0,n=cols.length;i<n;i++){const col=cols[i];if(Math.abs(col.x-px)<=col.w/2+RADIUS&&col.front>edge)edge=col.front;}
-  return py<(edge>-Infinity?edge:p.y);
+  if(sb.isWall||p.layer==='world'||p.layer==='foreground'){
+   const cols=sb.cols;
+   if(cols.length){
+    let edge=-Infinity;
+    for(let i=0,n=cols.length;i<n;i++){const col=cols[i];if(Math.abs(col.x-px)<=col.w/2+RADIUS&&col.front>edge)edge=col.front;}
+    if(edge>-Infinity)return py<edge;
+   }
+   if(p.layer==='foreground')return py<p.y+12+p.shear*(px-p.x);
+   return false;
+  }
+  return false;
  }
  function front(p:P,px:number,py:number){
   if('id' in p&&p.id==='gate'){const d=Math.abs(px-577);return py<(d<36?775:gateTowerFront(Math.min(135,d)));}
-  if(p.layer==='foreground')return py<p.y+12;if(p.layer!=='world')return false;
+  if(p.layer==='foreground')return py<p.y+12+p.shear*(px-p.x);if(p.layer!=='world')return false;
   let edge=-Infinity;for(const col of o.footprint(p))if(Math.abs(col.x-px)<=col.w/2+RADIUS)edge=Math.max(edge,col.front);
   return py<(edge>-Infinity?edge:p.y);
  }
- const occluders=(px:number,py:number,b:number[])=>sceneBounds.filter(sb=>!(sb.x1<px+b[0]||sb.x0>px+b[2]||sb.y1<py+b[1]||sb.y0>py+b[3])&&frontBound(sb,px,py)).map(sb=>sb.p);
+ // Ray-march from (x0,y0) to (x1,y1) in world pixels to clamp or collide skill VFX against walls & solid buildings.
+ function traceWallRay(x0:number,y0:number,x1:number,y1:number):{hit:boolean;x:number;y:number;t:number}{
+  if(y0>850&&y1>850)return {hit:false,x:x1,y:y1,t:1};
+  const dx=x1-x0,dy=y1-y0,dist=Math.hypot(dx,dy);
+  if(dist<1e-3)return {hit:false,x:x1,y:y1,t:1};
+  const steps=Math.max(4,Math.min(64,Math.ceil(dist/6)));
+  let lastX=x0,lastY=y0;
+  for(let i=1;i<=steps;i++){
+   const t=i/steps,wx=x0+dx*t,wy=y0+dy*t;
+   if(blocked(wx,wy))return {hit:true,x:lastX,y:lastY,t:(i-1)/steps};
+   lastX=wx;lastY=wy;
+  }
+  return {hit:false,x:x1,y:y1,t:1};
+ }
+ const occluders=(px:number,py:number,b:number[])=>py+b[1]>=maxSceneFront?[]:sceneBounds.filter(sb=>!(sb.x1<px+b[0]||sb.x0>px+b[2]||sb.y1<py+b[1]||sb.y0>py+b[3])&&frontBound(sb,px,py)).map(sb=>sb.p);
  function sampleHeroAlpha(wx:number,wy:number):number{
   const dir=meta.views?(vertical?1:facing):(vertical&&!pose?1:facing);
   const hx=(wx-x)/(dir*DISPLAY)+pivot.x,hy=(wy-y)/DISPLAY+pivot.y;
@@ -178,25 +278,34 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
   return prof.alpha[Math.floor(hy)*cell.w+Math.floor(hx)]/255;
  }
  function occlusionAt(px:number,py:number,wx=px,wy=py,rad=0,flat=false,includeHero=false):number{
+  if(py>850&&wy>850){
+   if(!includeHero||py>=y-2||wx<x-56||wx>x+56||wy<y-108||wy>y+28)return 1;
+  }
+  // Ground decals and volumetric skill particles cannot enter or pass through perimeter walls (!walkableGround).
+  if(!walkableGround(px,py)||!walkableGround(wx,Math.max(py,wy))||(flat&&blocked(wx,wy)))return 0;
   const pad=Math.max(2,Math.min(12,rad*.28)),padY=flat?pad*.52:pad;
   const x0=wx-pad,x1=wx+pad,y0=wy-padY,y1=wy+padY;
-  let cA=0,rSum=0;
+  let cA=0,rSum=0,wallHit=false;
   if(Math.min(py,y0)<maxSceneFront&&y0<=maxSceneY&&y1>=minSceneY&&x0<=maxSceneX&&x1>=minSceneX){
    for(let i=0,n=sceneBounds.length;i<n;i++){
     const sb=sceneBounds[i];
     if(sb.x1<x0||sb.x0>x1||sb.y1<y0||sb.y0>y1||Math.min(py,wy-padY)>=sb.maxFront)continue;
-    const p=sb.p,fCenter=frontBound(sb,px,py);
-    if(fCenter){const a0=samplePlacedAlpha(p,wx,wy);if(a0>cA)cA=a0;}
+    const p=sb.p,fCenter=frontBound(sb,px,py)||(flat&&frontBound(sb,wx,wy));
+    if(fCenter){
+     const a0=samplePlacedAlpha(p,wx,wy);
+     if(a0>cA){cA=a0;if(sb.isWall)wallHit=true;}
+    }
     if(rad>4&&(fCenter||flat)){
      const aN=(fCenter||(flat&&frontBound(sb,wx,wy-padY)))?samplePlacedAlpha(p,wx,wy-padY):0;
      const aS=(fCenter||(flat&&frontBound(sb,wx,wy+padY)))?samplePlacedAlpha(p,wx,wy+padY):0;
      const aW=(fCenter||(flat&&frontBound(sb,wx-pad,wy)))?samplePlacedAlpha(p,wx-pad,wy):0;
      const aE=(fCenter||(flat&&frontBound(sb,wx+pad,wy)))?samplePlacedAlpha(p,wx+pad,wy):0;
      const ar=(aN+aS+aW+aE)*.25;
-     if(ar>rSum)rSum=ar;
+     if(ar>rSum){rSum=ar;if(sb.isWall)wallHit=true;}
     }
    }
   }
+  if(!flat&&!walkableGround(wx,py))wallHit=true;
   if(includeHero&&py<y-2&&x1>=x-44&&x0<=x+44&&y1>=y-96&&y0<=y+16){
    const ha0=sampleHeroAlpha(wx,wy);if(ha0>cA)cA=ha0;
    if(rad>4){
@@ -205,7 +314,9 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
    }
   }
   const a=Math.max(cA,rSum*.75);
-  return a>0?Math.max(.32,1-.68*a):1;
+  if(a<=0)return 1;
+  // Rampart walls (isWall) and wall footprints block skill VFX completely (0 bleed-through); gateway/hero/props attenuate to 0.32.
+  return wallHit?Math.max(0,1-10*a):Math.max(.32,1-.68*a);
  }
  if(own)try{const saved=JSON.parse(localStorage.getItem(KEY)||'null');if(saved&&Number.isFinite(saved.x)&&Number.isFinite(saved.y)){x=saved.x;y=saved.y;}}catch{}
  const view=()=>vertical?(back?'N':'S'):(back?'N':'S')+(facing>0?'E':'W');
@@ -236,31 +347,48 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
  function sample(now:number){
   if(own||now-sampled<250)return;sampled=now;let next='255,255,255';
   if(o.surface.dataset.lighting!=='off'&&o.lightmap.dataset.origin){const [l,tp,r]=o.lightmap.dataset.origin.split(',').map(Number),px=Math.floor((x-l)*r),py=Math.floor((y-12-tp)*r);
-   if(px>=0&&py>=0&&px<o.lightmap.width&&py<o.lightmap.height){probe.clearRect(0,0,1,1);probe.drawImage(o.lightmap,px,py,1,1,0,0,1,1);next=[...probe.getImageData(0,0,1,1).data.slice(0,3)].join();}}
+   if(px>=0&&py>=0&&px<o.lightmap.width&&py<o.lightmap.height){probe.clearRect(0,0,1,1);probe.drawImage(o.lightmap,px,py,1,1,0,0,1,1);next=[...probe.getImageData(0,0,1,1).data.slice(0,3)].map(v=>Math.min(255,Math.round(v/8)*8)).join();}}
   tint=next;
  }
  const quantizeRes=(scale:number)=>Math.round(Math.min(3,Math.max(1,scale*Math.min(devicePixelRatio||1,2.5)))*4)/4;
  function render(){
   const s=o.sun(),f=meta.frames[frameIndex()],res=quantizeRes(origin.scale);
   const night=own?Math.max(0,1-s.alpha/.4):0;
-  const half=Math.max((pivot.x>cell.w-pivot.x?pivot.x:cell.w-pivot.x)*DISPLAY,night?48:0),top=-pivot.y*DISPLAY-(night?14:0),bottom=(cell.h-pivot.y)*DISPLAY+(night?20:8),H=- pivot.y*DISPLAY;
-  const ends=[-half,half].flatMap(w=>[0,H].flatMap(h=>[[w+h*s.dx,h*s.dy],[w*s.wx+h*s.dx,w*s.wy+h*s.dy]])),sxs=[-half,half,...ends.map(e=>e[0])],sys=[top,bottom,...ends.map(e=>e[1]-8),...ends.map(e=>e[1]+8)];
-  const b=[Math.floor(Math.min(...sxs))-4,Math.floor(Math.min(...sys))-4,Math.ceil(Math.max(...sxs))+4,Math.ceil(Math.max(...sys))+4];
+  const half=Math.max((pivot.x>cell.w-pivot.x?pivot.x:cell.w-pivot.x)*DISPLAY,night?48:0),top=-pivot.y*DISPLAY-(night?14:0),bottom=(cell.h-pivot.y)*DISPLAY+(night?20:8),H=(cell.h+18)*DISPLAY;
+  const ends=[-half,half].flatMap(w=>[0,H].flatMap(h=>[[w+h*s.dx,h*s.dy],[w*s.wx+h*s.dx,w*s.wy+h*s.dy]])),sxs=[-half,half,...ends.map(e=>e[0])],sys=[top,bottom,...ends.map(e=>e[1]-12),...ends.map(e=>e[1]+12)];
+  const b=[Math.floor(Math.min(...sxs))-8,Math.floor(Math.min(...sys))-8,Math.ceil(Math.max(...sxs))+8,Math.ceil(Math.max(...sys))+8];
   const hidden=occluders(x,y,b),at=x.toFixed(1)+','+y.toFixed(1);if(canvas.dataset.x+','+canvas.dataset.y!==at)Object.assign(canvas.dataset,{x:x.toFixed(1),y:y.toFixed(1)});
-  const key=[hero.id,state,clipName(),f.x,f.y,facing,vertical,tint,night.toFixed(2),s.dx,s.dy,s.wx,s.wy,s.alpha,res,b,hidden.length?hidden.map(p=>p.x+':'+p.y+':'+(p.occluder?.dataset.frame??'')).join()+'@'+Math.round(x*4)+','+Math.round(y*4):'',objects.length].join();if(key===drawn)return;drawn=key;
+  const key=[hero.id,state,clipName(),f.x,f.y,facing,vertical,tint,night.toFixed(2),s.dx,s.dy,s.wx,s.wy,s.alpha,res,b,hidden.length?hidden.map(p=>p.x+':'+p.y+':'+(p.occluder?.dataset.frame??'')).join()+'@'+Math.round(x)+','+Math.round(y):'',objects.length].join();if(key===drawn)return;drawn=key;
   if(res!==k||b.some((v,i)=>v!==box[i])){k=res;box=b;canvas.width=Math.ceil((b[2]-b[0])*k);canvas.height=Math.ceil((b[3]-b[1])*k);}
-  const lw=f.w,lh=f.h;if(lit.width!==lw||lit.height!==lh){lit.width=lw;lit.height=lh;}
-  const frame=(target:HTMLCanvasElement)=>{const g=target.getContext('2d',{willReadFrequently:target===lit})!;g.globalCompositeOperation='copy';g.drawImage(atlas,f.x,f.y,f.w,f.h,0,0,lw,lh);g.globalCompositeOperation='source-over';return g;};
-  const g=frame(lit);if(tint!=='255,255,255'){const [r,gr,bl]=tint.split(',').map(v=>Number(v)/255),img=g.getImageData(0,0,lw,lh),d=img.data;for(let i=0;i<d.length;i+=4){d[i]*=r;d[i+1]*=gr;d[i+2]*=bl;}g.putImageData(img,0,0);}
-  else if(night>0){const img=g.getImageData(0,0,lw,lh),d=img.data;for(let i=0;i<d.length;i+=4)if(d[i+3]){const lum=.299*d[i]+.587*d[i+1]+.114*d[i+2],k=1+.18*night*Math.min(1,Math.max(0,(lum-28)/70));d[i]=Math.min(255,d[i]*k);d[i+1]=Math.min(255,d[i+1]*(1+(k-1)*.92));d[i+2]=Math.min(255,d[i+2]*(1+(k-1)*.78));}g.putImageData(img,0,0);}
+  const useLit=tint!=='255,255,255'||night>0;
+  if(useLit){
+   const lw=f.w,lh=f.h,litKey=`${hero.id}:${f.x},${f.y}:${tint}:${night.toFixed(2)}`;
+   if(litKey!==lastLitKey||lit.width!==lw||lit.height!==lh){
+    lastLitKey=litKey;
+    if(lit.width!==lw||lit.height!==lh){lit.width=lw;lit.height=lh;}
+    const g=lit.getContext('2d')!;
+    g.globalCompositeOperation='copy';g.drawImage(atlas,f.x,f.y,f.w,f.h,0,0,lw,lh);
+    if(tint!=='255,255,255'){
+     g.globalCompositeOperation='multiply';g.fillStyle=`rgb(${tint})`;g.fillRect(0,0,lw,lh);
+     g.globalCompositeOperation='destination-in';g.drawImage(atlas,f.x,f.y,f.w,f.h,0,0,lw,lh);
+    }else if(night>0){
+     g.globalCompositeOperation='screen';g.fillStyle=`rgba(46,38,28,${(.18*night).toFixed(3)})`;g.fillRect(0,0,lw,lh);
+     g.globalCompositeOperation='destination-in';g.drawImage(atlas,f.x,f.y,f.w,f.h,0,0,lw,lh);
+    }
+    g.globalCompositeOperation='source-over';
+   }
+  }
   const dir=meta.views?(vertical?1:facing):(vertical&&!pose?1:facing);
-  const local=()=>c.setTransform(k,0,0,k,-box[0]*k,-box[1]*k),sprite=(src:HTMLCanvasElement)=>{c.scale(dir*DISPLAY,DISPLAY);c.drawImage(src,0,0,src.width,src.height,-pivot.x,-pivot.y,cell.w,cell.h);};
+  const local=()=>c.setTransform(k,0,0,k,-box[0]*k,-box[1]*k);
   c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,canvas.width,canvas.height);local();
   if(night>0){
    c.save();c.translate(0,-2);c.scale(1,.52);const pg=c.createRadialGradient(0,0,2,0,0,40);pg.addColorStop(0,`rgba(255,206,136,${(.24*night).toFixed(3)})`);pg.addColorStop(.55,`rgba(255,178,102,${(.1*night).toFixed(3)})`);pg.addColorStop(1,'rgba(255,160,85,0)');c.fillStyle=pg;c.fillRect(-40,-40,80,80);c.restore();
   }
   drawFigureShadow(c,atlas,f,cell,s,dir);
-  c.save();sprite(lit);c.restore();
+  c.save();c.scale(dir*DISPLAY,DISPLAY);
+  if(useLit)c.drawImage(lit,0,0,lit.width,lit.height,-pivot.x,-pivot.y,cell.w,cell.h);
+  else c.drawImage(atlas,f.x,f.y,f.w,f.h,-pivot.x,-pivot.y,cell.w,cell.h);
+  c.restore();
   cutOut(c,hidden,x,y);
   heroView.sync((box[2]-box[0])*origin.scale,(box[3]-box[1])*origin.scale);
   Object.assign(canvas.dataset,{hero:hero.id,state,clip:clipName(),frame:String(frameIndex()),facing:String(facing),behind:String(hidden.length),tint,night:night.toFixed(2)});
@@ -272,14 +400,20 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
  }
  let last=0;
  let stopped=false;
- const loop=(now:number)=>{if(stopped)return;const span=last?Math.min(now-last,120):16;let walking=false;last=now;const s=o.drive?.();
-  if(s)walking=driven(s,span);else for(let dt=span;dt>0;dt-=34)walking=step(Math.min(dt,34))||walking;
-  sample(now);if(own)o.follow(x,y,span,walking);render();place();requestAnimationFrame(loop);};
+ const loop=(now:number)=>{if(stopped)return;const span=last?Math.min(now-last,120):16;let walking=false;last=now;
+  measureTracelogPhase('encountersStep',()=>{
+   const s=o.drive?.();
+   if(s)walking=driven(s,span);else for(let dt=span;dt>0;dt-=34)walking=step(Math.min(dt,34))||walking;
+   sample(now);
+  });
+  if(own)o.follow(x,y,span,walking);
+  measureTracelogPhase('encountersRender',()=>{render();place();});
+  requestAnimationFrame(loop);};
  return {
   canvas,
   sprite:heroView.sprite,
   setScene,
-  blocked,occluders,occlusionAt,sun:o.sun,
+  blocked,occluders,occlusionAt,traceWallRay,sun:o.sun,
   place(ox:number,oy:number,scale:number){origin={x:ox,y:oy,scale};if(!drawn||quantizeRes(scale)!==k)render();place();},
   start(){if(blocked(x,y)&&!blocked(SPAWN.x,SPAWN.y)){x=SPAWN.x;y=SPAWN.y;}requestAnimationFrame(loop);},
   position:()=>({x,y}),

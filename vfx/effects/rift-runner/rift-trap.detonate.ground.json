@@ -18,10 +18,10 @@
  "emitters": [
   {
    "id": "emitter-1",
-   "name": "emitter-1",
+   "name": "pixel shock wave",
    "enabled": true,
    "mode": "billboard",
-   "maxParticles": 2,
+   "maxParticles": 67,
    "duration": 0.5,
    "loop": false,
    "timeline": {
@@ -30,8 +30,8 @@
     "locked": false
    },
    "modules": {
-    "velocity": false,
-    "velocityOverLifetime": false,
+    "velocity": true,
+    "velocityOverLifetime": true,
     "limitVelocityOverLifetime": false,
     "inheritVelocity": false,
     "color": true,
@@ -43,7 +43,7 @@
     "sizeBySpeed": false,
     "rotationBySpeed": false,
     "externalForces": false,
-    "noise": false,
+    "noise": true,
     "collision": false,
     "triggers": false,
     "subEmitters": false,
@@ -114,18 +114,19 @@
     "bursts": [
      {
       "time": 0,
-      "count": 1,
+      "count": 59,
       "cycles": 1,
       "interval": 0,
       "probability": 1
      }
     ],
-    "radius": 0,
+    "shape": "circle",
+    "radius": 0.37845,
     "radiusValue": {
      "mode": "constant",
-     "value": 0,
-     "min": 0,
-     "max": 0,
+     "value": 0.37845,
+     "min": 0.37845,
+     "max": 0.37845,
      "curve": [
       {
        "x": 0,
@@ -155,9 +156,9 @@
      0
     ],
     "angle": 25,
-    "radiusThickness": 1,
+    "radiusThickness": 0.06,
     "arc": 360,
-    "arcMode": "random",
+    "arcMode": "burstSpread",
     "arcSpread": 0,
     "arcSpeedValue": {
      "mode": "constant",
@@ -214,10 +215,10 @@
    },
    "initializeParticle": {
     "lifetime": {
-     "mode": "constant",
-     "value": 0.45,
-     "min": 0.45,
-     "max": 0.45,
+     "mode": "random",
+     "value": 0.41175000000000006,
+     "min": 0.3375,
+     "max": 0.48600000000000004,
      "curve": [
       {
        "x": 0,
@@ -244,14 +245,14 @@
     "color": {
      "mode": "constant",
      "color": [
-      0.4902,
-      0.3608,
+      1,
+      1,
       1,
       1
      ],
      "colorB": [
-      0.4902,
-      0.3608,
+      1,
+      1,
       1,
       1
      ],
@@ -319,9 +320,9 @@
      },
      "alpha": {
       "mode": "constant",
-      "value": 0.85,
-      "min": 0.85,
-      "max": 0.85,
+      "value": 0.9,
+      "min": 0.9,
+      "max": 0.9,
       "curve": [
        {
         "x": 0,
@@ -375,10 +376,10 @@
      }
     },
     "size": {
-     "mode": "constant",
-     "value": 4.205,
-     "min": 4.205,
-     "max": 4.205,
+     "mode": "random",
+     "value": 0.18,
+     "min": 0.12,
+     "max": 0.24,
      "curve": [
       {
        "x": 0,
@@ -732,10 +733,10 @@
       0
      ],
      "speed": {
-      "mode": "constant",
-      "value": 0,
-      "min": 0,
-      "max": 0,
+      "mode": "random",
+      "value": 5.930128205128204,
+      "min": 4.911823361823361,
+      "max": 6.948433048433047,
       "curve": [
        {
         "x": 0,
@@ -791,12 +792,12 @@
      "editorMin": 0,
      "editorMax": 80
     },
-    "drag": 0,
+    "drag": 1.9,
     "dragValue": {
      "mode": "constant",
-     "value": 0,
-     "min": 0,
-     "max": 0,
+     "value": 1.9,
+     "min": 1.9,
+     "max": 1.9,
      "curve": [
       {
        "x": 0,
@@ -839,7 +840,7 @@
     ],
     "opacitySource": "textureAlpha",
     "opacityInvert": false,
-    "texture": "textures/shock.png",
+    "texture": "textures/ember.png",
     "material": null
    },
    "billboard": {
@@ -848,35 +849,43 @@
     "sizeEnd": 0.28,
     "sizeValue": {
      "mode": "curve",
-     "value": 0.15,
+     "value": 0.55,
      "min": 0.15,
      "max": 1,
      "curve": [
       {
        "x": 0,
-       "y": 0.15
+       "y": 0.55
       },
       {
-       "x": 0.35,
-       "y": 0.75
+       "x": 0.28,
+       "y": 1
+      },
+      {
+       "x": 0.75,
+       "y": 0.82
       },
       {
        "x": 1,
-       "y": 1
+       "y": 0.15
       }
      ],
      "curveB": [
       {
        "x": 0,
-       "y": 0.15
+       "y": 0.55
       },
       {
-       "x": 0.35,
-       "y": 0.75
+       "x": 0.28,
+       "y": 1
+      },
+      {
+       "x": 0.75,
+       "y": 0.82
       },
       {
        "x": 1,
-       "y": 1
+       "y": 0.15
       }
      ],
      "editorMin": 0.001,
@@ -887,35 +896,43 @@
     "sizeEndY": 0.28,
     "sizeValueY": {
      "mode": "curve",
-     "value": 0.15,
+     "value": 0.55,
      "min": 0.15,
      "max": 1,
      "curve": [
       {
        "x": 0,
-       "y": 0.15
+       "y": 0.55
       },
       {
-       "x": 0.35,
-       "y": 0.75
+       "x": 0.28,
+       "y": 1
+      },
+      {
+       "x": 0.75,
+       "y": 0.82
       },
       {
        "x": 1,
-       "y": 1
+       "y": 0.15
       }
      ],
      "curveB": [
       {
        "x": 0,
-       "y": 0.15
+       "y": 0.55
       },
       {
-       "x": 0.35,
-       "y": 0.75
+       "x": 0.28,
+       "y": 1
+      },
+      {
+       "x": 0.75,
+       "y": 0.82
       },
       {
        "x": 1,
-       "y": 1
+       "y": 0.15
       }
      ],
      "editorMin": 0.001,
@@ -1082,8 +1099,8 @@
        "alpha": 1
       },
       {
-       "position": 0.5,
-       "alpha": 0.7
+       "position": 0.45,
+       "alpha": 0.88
       },
       {
        "position": 1,
@@ -1355,9 +1372,9 @@
      },
      "radial": {
       "mode": "constant",
-      "value": 0,
-      "min": 0,
-      "max": 0,
+      "value": 3.2945156695156697,
+      "min": 3.2945156695156697,
+      "max": 3.2945156695156697,
       "curve": [
        {
         "x": 0,
@@ -1838,12 +1855,12 @@
      "vortexStrength": 0
     },
     "noise": {
-     "mode": "sine",
+     "mode": "curl",
      "strength": {
       "mode": "constant",
-      "value": 0,
-      "min": 0,
-      "max": 0,
+      "value": 0.22,
+      "min": 0.22,
+      "max": 0.22,
       "curve": [
        {
         "x": 0,
@@ -1867,8 +1884,8 @@
       "editorMin": 0,
       "editorMax": 8
      },
-     "frequency": 1.5,
-     "speed": 1,
+     "frequency": 2.2,
+     "speed": 2,
      "scroll": [
       1,
       0,
@@ -2321,10 +2338,10 @@
   },
   {
    "id": "emitter-2",
-   "name": "emitter-2",
+   "name": "pixel shock wave",
    "enabled": true,
    "mode": "billboard",
-   "maxParticles": 2,
+   "maxParticles": 53,
    "duration": 0.5,
    "loop": false,
    "timeline": {
@@ -2333,8 +2350,8 @@
     "locked": false
    },
    "modules": {
-    "velocity": false,
-    "velocityOverLifetime": false,
+    "velocity": true,
+    "velocityOverLifetime": true,
     "limitVelocityOverLifetime": false,
     "inheritVelocity": false,
     "color": true,
@@ -2346,7 +2363,7 @@
     "sizeBySpeed": false,
     "rotationBySpeed": false,
     "externalForces": false,
-    "noise": false,
+    "noise": true,
     "collision": false,
     "triggers": false,
     "subEmitters": false,
@@ -2417,18 +2434,19 @@
     "bursts": [
      {
       "time": 0,
-      "count": 1,
+      "count": 45,
       "cycles": 1,
       "interval": 0,
       "probability": 1
      }
     ],
-    "radius": 0,
+    "shape": "circle",
+    "radius": 0.28709999999999997,
     "radiusValue": {
      "mode": "constant",
-     "value": 0,
-     "min": 0,
-     "max": 0,
+     "value": 0.28709999999999997,
+     "min": 0.28709999999999997,
+     "max": 0.28709999999999997,
      "curve": [
       {
        "x": 0,
@@ -2458,9 +2476,9 @@
      0
     ],
     "angle": 25,
-    "radiusThickness": 1,
+    "radiusThickness": 0.06,
     "arc": 360,
-    "arcMode": "random",
+    "arcMode": "burstSpread",
     "arcSpread": 0,
     "arcSpeedValue": {
      "mode": "constant",
@@ -2517,10 +2535,10 @@
    },
    "initializeParticle": {
     "lifetime": {
-     "mode": "constant",
-     "value": 0.35,
-     "min": 0.35,
-     "max": 0.35,
+     "mode": "random",
+     "value": 0.32025,
+     "min": 0.26249999999999996,
+     "max": 0.378,
      "curve": [
       {
        "x": 0,
@@ -2547,14 +2565,14 @@
     "color": {
      "mode": "constant",
      "color": [
-      0.4902,
-      0.3608,
+      1,
+      1,
       1,
       1
      ],
      "colorB": [
-      0.4902,
-      0.3608,
+      1,
+      1,
       1,
       1
      ],
@@ -2622,9 +2640,9 @@
      },
      "alpha": {
       "mode": "constant",
-      "value": 0.85,
-      "min": 0.85,
-      "max": 0.85,
+      "value": 0.9,
+      "min": 0.9,
+      "max": 0.9,
       "curve": [
        {
         "x": 0,
@@ -2678,10 +2696,10 @@
      }
     },
     "size": {
-     "mode": "constant",
-     "value": 3.19,
-     "min": 3.19,
-     "max": 3.19,
+     "mode": "random",
+     "value": 0.18,
+     "min": 0.12,
+     "max": 0.24,
      "curve": [
       {
        "x": 0,
@@ -3035,10 +3053,10 @@
       0
      ],
      "speed": {
-      "mode": "constant",
-      "value": 0,
-      "min": 0,
-      "max": 0,
+      "mode": "random",
+      "value": 5.784065934065934,
+      "min": 4.790842490842491,
+      "max": 6.777289377289377,
       "curve": [
        {
         "x": 0,
@@ -3094,12 +3112,12 @@
      "editorMin": 0,
      "editorMax": 80
     },
-    "drag": 0,
+    "drag": 1.9,
     "dragValue": {
      "mode": "constant",
-     "value": 0,
-     "min": 0,
-     "max": 0,
+     "value": 1.9,
+     "min": 1.9,
+     "max": 1.9,
      "curve": [
       {
        "x": 0,
@@ -3142,7 +3160,7 @@
     ],
     "opacitySource": "textureAlpha",
     "opacityInvert": false,
-    "texture": "textures/shock.png",
+    "texture": "textures/ember.png",
     "material": null
    },
    "billboard": {
@@ -3151,35 +3169,43 @@
     "sizeEnd": 0.28,
     "sizeValue": {
      "mode": "curve",
-     "value": 0.15,
+     "value": 0.55,
      "min": 0.15,
      "max": 1,
      "curve": [
       {
        "x": 0,
-       "y": 0.15
+       "y": 0.55
       },
       {
-       "x": 0.35,
-       "y": 0.75
+       "x": 0.28,
+       "y": 1
+      },
+      {
+       "x": 0.75,
+       "y": 0.82
       },
       {
        "x": 1,
-       "y": 1
+       "y": 0.15
       }
      ],
      "curveB": [
       {
        "x": 0,
-       "y": 0.15
+       "y": 0.55
       },
       {
-       "x": 0.35,
-       "y": 0.75
+       "x": 0.28,
+       "y": 1
+      },
+      {
+       "x": 0.75,
+       "y": 0.82
       },
       {
        "x": 1,
-       "y": 1
+       "y": 0.15
       }
      ],
      "editorMin": 0.001,
@@ -3190,35 +3216,43 @@
     "sizeEndY": 0.28,
     "sizeValueY": {
      "mode": "curve",
-     "value": 0.15,
+     "value": 0.55,
      "min": 0.15,
      "max": 1,
      "curve": [
       {
        "x": 0,
-       "y": 0.15
+       "y": 0.55
       },
       {
-       "x": 0.35,
-       "y": 0.75
+       "x": 0.28,
+       "y": 1
+      },
+      {
+       "x": 0.75,
+       "y": 0.82
       },
       {
        "x": 1,
-       "y": 1
+       "y": 0.15
       }
      ],
      "curveB": [
       {
        "x": 0,
-       "y": 0.15
+       "y": 0.55
       },
       {
-       "x": 0.35,
-       "y": 0.75
+       "x": 0.28,
+       "y": 1
+      },
+      {
+       "x": 0.75,
+       "y": 0.82
       },
       {
        "x": 1,
-       "y": 1
+       "y": 0.15
       }
      ],
      "editorMin": 0.001,
@@ -3385,8 +3419,8 @@
        "alpha": 1
       },
       {
-       "position": 0.5,
-       "alpha": 0.7
+       "position": 0.45,
+       "alpha": 0.88
       },
       {
        "position": 1,
@@ -3658,9 +3692,9 @@
      },
      "radial": {
       "mode": "constant",
-      "value": 0,
-      "min": 0,
-      "max": 0,
+      "value": 3.213369963369964,
+      "min": 3.213369963369964,
+      "max": 3.213369963369964,
       "curve": [
        {
         "x": 0,
@@ -4141,12 +4175,12 @@
      "vortexStrength": 0
     },
     "noise": {
-     "mode": "sine",
+     "mode": "curl",
      "strength": {
       "mode": "constant",
-      "value": 0,
-      "min": 0,
-      "max": 0,
+      "value": 0.22,
+      "min": 0.22,
+      "max": 0.22,
       "curve": [
        {
         "x": 0,
@@ -4170,8 +4204,8 @@
       "editorMin": 0,
       "editorMax": 8
      },
-     "frequency": 1.5,
-     "speed": 1,
+     "frequency": 2.2,
+     "speed": 2,
      "scroll": [
       1,
       0,
@@ -4627,7 +4661,7 @@
    "name": "emitter-3",
    "enabled": true,
    "mode": "billboard",
-   "maxParticles": 2,
+   "maxParticles": 33,
    "duration": 0.5,
    "loop": false,
    "timeline": {
@@ -4720,18 +4754,19 @@
     "bursts": [
      {
       "time": 0,
-      "count": 1,
+      "count": 27,
       "cycles": 1,
       "interval": 0,
       "probability": 1
      }
     ],
-    "radius": 0,
+    "shape": "circle",
+    "radius": 1.18755,
     "radiusValue": {
      "mode": "constant",
-     "value": 0,
-     "min": 0,
-     "max": 0,
+     "value": 1.18755,
+     "min": 1.18755,
+     "max": 1.18755,
      "curve": [
       {
        "x": 0,
@@ -4761,9 +4796,9 @@
      0
     ],
     "angle": 25,
-    "radiusThickness": 1,
+    "radiusThickness": 0.85,
     "arc": 360,
-    "arcMode": "random",
+    "arcMode": "burstSpread",
     "arcSpread": 0,
     "arcSpeedValue": {
      "mode": "constant",
@@ -4820,9 +4855,9 @@
    },
    "initializeParticle": {
     "lifetime": {
-     "mode": "constant",
-     "value": 1.2,
-     "min": 1.2,
+     "mode": "random",
+     "value": 1.0499999999999998,
+     "min": 0.8999999999999999,
      "max": 1.2,
      "curve": [
       {
@@ -4981,10 +5016,10 @@
      }
     },
     "size": {
-     "mode": "constant",
-     "value": 3.045,
-     "min": 3.045,
-     "max": 3.045,
+     "mode": "random",
+     "value": 0.47,
+     "min": 0.32,
+     "max": 0.62,
      "curve": [
       {
        "x": 0,
@@ -5338,10 +5373,10 @@
       0
      ],
      "speed": {
-      "mode": "constant",
-      "value": 0,
-      "min": 0,
-      "max": 0,
+      "mode": "random",
+      "value": 0.11,
+      "min": 0.04,
+      "max": 0.18,
       "curve": [
        {
         "x": 0,
@@ -5454,35 +5489,43 @@
     "sizeEnd": 0.28,
     "sizeValue": {
      "mode": "curve",
-     "value": 0.55,
-     "min": 0.55,
+     "value": 0.45,
+     "min": 0.25,
      "max": 1,
      "curve": [
       {
        "x": 0,
-       "y": 0.55
+       "y": 0.45
       },
       {
-       "x": 0.12,
+       "x": 0.16,
        "y": 1
+      },
+      {
+       "x": 0.82,
+       "y": 0.92
       },
       {
        "x": 1,
-       "y": 1
+       "y": 0.25
       }
      ],
      "curveB": [
       {
        "x": 0,
-       "y": 0.55
+       "y": 0.45
       },
       {
-       "x": 0.12,
+       "x": 0.16,
        "y": 1
+      },
+      {
+       "x": 0.82,
+       "y": 0.92
       },
       {
        "x": 1,
-       "y": 1
+       "y": 0.25
       }
      ],
      "editorMin": 0.001,
@@ -5493,35 +5536,43 @@
     "sizeEndY": 0.28,
     "sizeValueY": {
      "mode": "curve",
-     "value": 0.55,
-     "min": 0.55,
+     "value": 0.45,
+     "min": 0.25,
      "max": 1,
      "curve": [
       {
        "x": 0,
-       "y": 0.55
+       "y": 0.45
       },
       {
-       "x": 0.12,
+       "x": 0.16,
        "y": 1
+      },
+      {
+       "x": 0.82,
+       "y": 0.92
       },
       {
        "x": 1,
-       "y": 1
+       "y": 0.25
       }
      ],
      "curveB": [
       {
        "x": 0,
-       "y": 0.55
+       "y": 0.45
       },
       {
-       "x": 0.12,
+       "x": 0.16,
        "y": 1
+      },
+      {
+       "x": 0.82,
+       "y": 0.92
       },
       {
        "x": 1,
-       "y": 1
+       "y": 0.25
       }
      ],
      "editorMin": 0.001,
@@ -6930,7 +6981,7 @@
    "name": "emitter-4",
    "enabled": true,
    "mode": "billboard",
-   "maxParticles": 2,
+   "maxParticles": 10,
    "duration": 0.5,
    "loop": false,
    "timeline": {
@@ -7023,18 +7074,19 @@
     "bursts": [
      {
       "time": 0,
-      "count": 1,
+      "count": 6,
       "cycles": 1,
       "interval": 0,
       "probability": 1
      }
     ],
-    "radius": 0,
+    "shape": "circle",
+    "radius": 0.5915999999999999,
     "radiusValue": {
      "mode": "constant",
-     "value": 0,
-     "min": 0,
-     "max": 0,
+     "value": 0.5915999999999999,
+     "min": 0.5915999999999999,
+     "max": 0.5915999999999999,
      "curve": [
       {
        "x": 0,
@@ -7228,9 +7280,9 @@
      },
      "alpha": {
       "mode": "constant",
-      "value": 0.7,
-      "min": 0.7,
-      "max": 0.7,
+      "value": 0.68,
+      "min": 0.68,
+      "max": 0.68,
       "curve": [
        {
         "x": 0,
@@ -7284,10 +7336,10 @@
      }
     },
     "size": {
-     "mode": "constant",
-     "value": 2.465,
-     "min": 2.465,
-     "max": 2.465,
+     "mode": "random",
+     "value": 1.4789999999999999,
+     "min": 1.1708749999999999,
+     "max": 1.7871249999999999,
      "curve": [
       {
        "x": 0,
@@ -9205,7 +9257,7 @@
    "name": "emitter-5",
    "enabled": true,
    "mode": "billboard",
-   "maxParticles": 2,
+   "maxParticles": 5,
    "duration": 0.5,
    "loop": false,
    "timeline": {
@@ -9298,18 +9350,19 @@
     "bursts": [
      {
       "time": 0,
-      "count": 1,
+      "count": 3,
       "cycles": 1,
       "interval": 0,
       "probability": 1
      }
     ],
-    "radius": 0,
+    "shape": "circle",
+    "radius": 0.39875,
     "radiusValue": {
      "mode": "constant",
-     "value": 0,
-     "min": 0,
-     "max": 0,
+     "value": 0.39875,
+     "min": 0.39875,
+     "max": 0.39875,
      "curve": [
       {
        "x": 0,
@@ -9560,9 +9613,9 @@
     },
     "size": {
      "mode": "constant",
-     "value": 3.828,
-     "min": 3.828,
-     "max": 3.828,
+     "value": 2.95075,
+     "min": 2.95075,
+     "max": 2.95075,
      "curve": [
       {
        "x": 0,

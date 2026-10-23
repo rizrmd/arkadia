@@ -21,7 +21,7 @@
    "name": "emitter-1",
    "enabled": true,
    "mode": "billboard",
-   "maxParticles": 66,
+   "maxParticles": 73,
    "duration": 0.46,
    "loop": false,
    "timeline": {
@@ -148,7 +148,7 @@
      0
     ],
     "angle": 25,
-    "radiusThickness": 0.2,
+    "radiusThickness": 0.22,
     "arc": 360,
     "arcMode": "random",
     "arcSpread": 0,
@@ -369,9 +369,9 @@
     },
     "size": {
      "mode": "random",
-     "value": 0.08,
-     "min": 0.05,
-     "max": 0.11,
+     "value": 0.10500000000000001,
+     "min": 0.07,
+     "max": 0.14,
      "curve": [
       {
        "x": 0,

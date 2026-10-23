@@ -9,7 +9,7 @@ import {Fighter,STATS,inReach,swingTargets,turn} from '../characters/combat';
 import type {CharacterMeta} from '../characters/sprites';
 import {COURT,tilePoint} from './terrain';
 import {GATE,SPAWN_DISTANCE_M,METERS_PER_TILE,fromGate,fromCenter,inSafeZone,spawnPoint,meters,type Tile} from './safe-zone';
-import {DISPLAY,cutOut,drawFigureShadow,type Placed,type Pose} from './hero';
+import {DISPLAY,cutOut,drawFigureShadow,prewarmAtlasAlpha,type Placed,type Pose} from './hero';
 import type {Sun} from './daylight';
 import type {Walk} from './controls';
 import {loadImage} from '../app/loader';
@@ -29,6 +29,7 @@ type Hero={
  position():{x:number;y:number};face(sx:number,sy:number):void;respawn():void;teleport(x:number,y:number):boolean;
  blocked(x:number,y:number):boolean;occluders(x:number,y:number,box:number[]):Placed[];
  occlusionAt(px:number,py:number,wx?:number,wy?:number,rad?:number,flat?:boolean,includeHero?:boolean):number;
+ traceWallRay(x0:number,y0:number,x1:number,y1:number):{hit:boolean;x:number;y:number;t:number};
  sun():Sun;hero?:()=>HeroId
 };
 const toTile=(x:number,y:number):Tile=>{const g=unproject(x-COURT.x,y-COURT.y);return {u:g.x,v:g.y};};
@@ -59,6 +60,7 @@ export async function createEncounters(o:{
  const walkable=(p:Tile)=>{const w=tilePoint(p.u,p.v);return !o.hero.blocked(w.x,w.y);};
  const all=await characters(),heroMeta:CharacterMeta=all.hero,meta:CharacterMeta=all.revenant;
  const atlas=await loadImage('/assets/characters/'+meta.image+(meta.revision?`?v=${encodeURIComponent(meta.revision)}`:''));
+ prewarmAtlasAlpha(atlas);
  let seed=(Date.now()>>>0)||1;const random=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;};
  const currentHeroId=():HeroId=>o.hero.hero?.()??DEFAULT_HERO;
  const start=o.hero.position(),h=new Fighter('hero',heroMeta.clips,toTile(start.x,start.y).u,toTile(start.x,start.y).v);
@@ -169,6 +171,8 @@ export async function createEncounters(o:{
   layer:o.worldStage,heroCanvas:o.hero.canvas,backLayer:back,frontLayer:front,
   getHero:()=>({u:h.x,v:h.y,facing:h.facing,back:h.back,vertical:h.vertical,heroId:currentHeroId()}),
   occlusionAt:o.hero.occlusionAt,
+  blocked:o.hero.blocked,
+  traceWallRay:o.hero.traceWallRay,
   getRun:()=>run,
   getFoes:()=>foes,
   onKill:f=>onKill(f as Foe),
@@ -581,14 +585,15 @@ export async function createEncounters(o:{
   drawFigureShadow(fg,atlas,fr,meta.cell,s,dir);
   fg.save();sprite(cell);fg.restore();return fg;
  }
- const looks=new Map<string,HTMLCanvasElement>(),LOOKS=64;
- function compose(f:Foe,v:View,px:number,py:number,box:number[],s:Sun,r:number,hidden:Placed[],baseLook:string){
+ const looks=new Map<string,HTMLCanvasElement>(),LOOKS=128;
+ function compose(f:Foe,v:View,px:number,py:number,box:number[],s:Sun,r:number,hidden:Placed[],baseLook:string,dispW:number,dispH:number){
   let c=looks.get(baseLook);
   if(c){looks.delete(baseLook);looks.set(baseLook,c);}
   else{const oldest=looks.size>=LOOKS?looks.keys().next().value:undefined;if(oldest!==undefined){c=looks.get(oldest)!;looks.delete(oldest);}else c=document.createElement('canvas');paint(f,c,box,s,r);looks.set(baseLook,c);}
   if(v.el.width!==c.width||v.el.height!==c.height){v.el.width=c.width;v.el.height=c.height;}
   v.g.globalCompositeOperation='copy';v.g.setTransform(1,0,0,1,0,0);v.g.drawImage(c,0,0);v.g.globalCompositeOperation='source-over';
   if(hidden.length){v.g.setTransform(r,0,0,r,-box[0]*r,-box[1]*r);cutOut(v.g,hidden,px,py);}
+  v.canvasView.sync(dispW,dispH);
  }
 
  let lastHudSize='',hasRendered=false,lastBox=[-48,-96,48,24];
@@ -630,9 +635,9 @@ export async function createEncounters(o:{
   const shown=foes.filter(f=>{if(f.deadFor>CORPSE-500&&!f.alive)return false;const w=tilePoint(f.x,f.y),s=at(w.x,w.y);return s.x>-80&&s.x<innerWidth+80&&s.y>-40&&s.y<innerHeight+120;});
   const live=new Set<Foe>();
   if(shown.length){
-   const sun=o.hero.sun(),r=Math.round(Math.min(2.25,Math.max(0.75,k*dpr))*4)/4,half=Math.max(pivot.x,meta.cell.w-pivot.x)*DISPLAY,top=-pivot.y*DISPLAY,H0=-top,bottom=(meta.cell.h-pivot.y)*DISPLAY+8;
-   const ends=[-half,half].flatMap(w=>[0,H0].flatMap(h=>[[w+h*sun.dx,h*sun.dy],[w*sun.wx+h*sun.dx,w*sun.wy+h*sun.dy]])),sxs=[-half,half,...ends.map(e=>e[0])],sys=[top,bottom,...ends.map(e=>e[1]-8),...ends.map(e=>e[1]+8)];
-   const box=[Math.floor(Math.min(...sxs))-4,Math.floor(Math.min(...sys))-4,Math.ceil(Math.max(...sxs))+4,Math.ceil(Math.max(...sys))+4];
+   const sun=o.hero.sun(),r=Math.round(Math.min(2.25,Math.max(0.75,k*dpr))*4)/4,half=Math.max(pivot.x,meta.cell.w-pivot.x)*DISPLAY,top=-pivot.y*DISPLAY,H0=(meta.cell.h+18)*DISPLAY,bottom=(meta.cell.h-pivot.y)*DISPLAY+8;
+   const ends=[-half,half].flatMap(w=>[0,H0].flatMap(h=>[[w+h*sun.dx,h*sun.dy],[w*sun.wx+h*sun.dx,w*sun.wy+h*sun.dy]])),sxs=[-half,half,...ends.map(e=>e[0])],sys=[top,bottom,...ends.map(e=>e[1]-12),...ends.map(e=>e[1]+12)];
+   const box=[Math.floor(Math.min(...sxs))-8,Math.floor(Math.min(...sys))-8,Math.ceil(Math.max(...sxs))+8,Math.ceil(Math.max(...sys))+8];
    lastBox=box;
    const light=[ambient,sun.alpha,sun.dx,sun.dy,sun.wx,sun.wy,r,box].join();
    for(const f of shown.sort((a,b)=>tilePoint(a.x,a.y).y-tilePoint(b.x,b.y).y)){
@@ -644,11 +649,10 @@ export async function createEncounters(o:{
     v.canvasView.sprite.zIndex=w.y;
     v.canvasView.sprite.visible=true;
     const baseLook=[f.clip.frames[f.frame()],f.vertical?0:f.facing,f.flash>0,light].join('|');
-    const look=hidden.length?`${baseLook}|${hidden.map(p=>p.x+':'+p.y).join()}@${Math.round(w.x*2)},${Math.round(w.y*2)}`:baseLook;
+    const look=hidden.length?`${baseLook}|${hidden.map(p=>p.x+':'+p.y).join()}@${Math.round(w.x*.5)},${Math.round(w.y*.5)}`:baseLook;
     if(look!==v.look){
      v.look=look;
-     compose(f,v,w.x,w.y,box,sun,r,hidden,baseLook);
-     v.canvasView.sync((box[2]-box[0])*k,(box[3]-box[1])*k);
+     compose(f,v,w.x,w.y,box,sun,r,hidden,baseLook,(box[2]-box[0])*k,(box[3]-box[1])*k);
     }
     v.canvasView.sprite.width=(box[2]-box[0])*k;
     v.canvasView.sprite.height=(box[3]-box[1])*k;
@@ -689,22 +693,34 @@ export async function createEncounters(o:{
   aoeView.sprite.visible=showAoe;
   if(showAoe){
    const aoeHidden=o.hero.occluders(hp.x,hp.y,[-aoePadX,-aoePadY-2,aoePadX,aoePadY-2]);
-   const aoeOccKey=aoeHidden.length?aoeHidden.map(p=>p.x+':'+p.y+':'+(p.occluder?.dataset.frame??'')).join()+'@'+Math.round(hp.x*2)+','+Math.round(hp.y*2):'';
-   const aoeKey=`${rMult.toFixed(2)}:${dpr}:${h.state==='attack'?1:0}:${comboHighlightMs>0?1:0}:${aoeOccKey}`;
+   const aoeOccKey=aoeHidden.length?aoeHidden.map(p=>p.x+':'+p.y+':'+(p.occluder?.dataset.frame??'')).join()+'@'+Math.round(hp.x*.5)+','+Math.round(hp.y*.5):'';
+   const aoeKey=`pixel-v2:${rMult.toFixed(2)}:${dpr}:${h.state==='attack'?1:0}:${comboHighlightMs>0?1:0}:${aoeOccKey}`;
    if(aoe.dataset.key!==aoeKey){
     aoe.dataset.key=aoeKey;aoe.dataset.reach=rMult.toFixed(2);aoe.dataset.radiusPx=String(aoeRx);
-    const wpx=aoePadX*2,hpx=aoePadY*2;aoe.width=Math.ceil(wpx*dpr);aoe.height=Math.ceil(hpx*dpr);
+    const wpx=aoePadX*2,hpx=aoePadY*2,aw=Math.ceil(wpx*dpr),ah=Math.ceil(hpx*dpr);if(aoe.width!==aw||aoe.height!==ah){aoe.width=aw;aoe.height=ah;}
     aoeCtx.setTransform(dpr,0,0,dpr,aoePadX*dpr,aoePadY*dpr);aoeCtx.clearRect(-aoePadX,-aoePadY,wpx,hpx);
+    aoeCtx.imageSmoothingEnabled=false;
+    const pulse=(h.state==='attack'?.05:0)+(comboHighlightMs>0?.08:0);
+    // Warm inner ambient glow + ring of discrete Diablo-like pixel ember particles (no continuous vector stroke)
     aoeCtx.save();aoeCtx.scale(1,.52);
-    const pulse=(h.state==='attack'?.05:0)+(comboHighlightMs>0?.08:0),g=aoeCtx.createRadialGradient(0,0,4,0,0,aoeRx);
-    g.addColorStop(0,`rgba(255,208,138,${(.22+pulse).toFixed(2)})`);
-    g.addColorStop(.68,`rgba(255,180,104,${(.11+pulse*.5).toFixed(2)})`);
+    const g=aoeCtx.createRadialGradient(0,0,4,0,0,aoeRx);
+    g.addColorStop(0,`rgba(255,208,138,${(.18+pulse).toFixed(2)})`);
+    g.addColorStop(.68,`rgba(255,168,84,${(.09+pulse*.5).toFixed(2)})`);
     g.addColorStop(1,'rgba(242,196,107,0)');
     aoeCtx.fillStyle=g;aoeCtx.beginPath();aoeCtx.arc(0,0,aoeRx,0,Math.PI*2);aoeCtx.fill();
-    aoeCtx.strokeStyle=comboHighlightMs>0?'rgba(102,227,255,0.62)':`rgba(242,196,107,${((rMult>1.001?.38:.24)+pulse).toFixed(2)})`;
-    aoeCtx.lineWidth=comboHighlightMs>0?2.2:(rMult>1.001?1.75:1.2);
-    aoeCtx.beginPath();aoeCtx.arc(0,0,aoeRx-1,0,Math.PI*2);aoeCtx.stroke();
     aoeCtx.restore();
+    const beadCount=Math.max(36,Math.round(aoeRx*.72));
+    for(let i=0;i<beadCount;i++){
+     const ang=(i/beadCount)*Math.PI*2,jit=((i*37)%11-5)*.35;
+     const rx=Math.round(Math.cos(ang)*(aoeRx-2+jit)),ry=Math.round(Math.sin(ang)*(aoeRy-1+jit*.52));
+     if(o.hero.blocked(hp.x+rx,hp.y-2+ry))continue;
+     const major=i%3===0,ps=major?3:2;
+     aoeCtx.fillStyle=comboHighlightMs>0
+      ?(major?'rgba(156,240,255,0.88)':'rgba(102,227,255,0.62)')
+      :(major?`rgba(255,228,154,${(.62+pulse).toFixed(2)})`:`rgba(255,166,76,${(.42+pulse).toFixed(2)})`);
+     aoeCtx.fillRect(rx-1,ry-1,ps,ps);
+     if(major){aoeCtx.fillStyle='rgba(255,252,232,0.85)';aoeCtx.fillRect(rx,ry,1,1);}
+    }
     if(aoeHidden.length)cutOut(aoeCtx,aoeHidden,hp.x,hp.y-2);
     aoeView.sync(wpx*k,hpx*k);
    }
@@ -808,6 +824,8 @@ export async function createEncounters(o:{
   hitFoe:(index:number,forceCrit?:boolean)=>{const f=foes[index];if(!f)return null;const r=vfx.applyHitToFoe(f,{forceCrit});render();return r;},
   fxStage:vfx.fx,
   occlusionAt:o.hero.occlusionAt,
+  blocked:o.hero.blocked,
+  traceWallRay:o.hero.traceWallRay,
  };
  (window as any).__STRONGHOLD_COMBAT__=api;
  return api;
