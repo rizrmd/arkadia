@@ -2,7 +2,7 @@ import {chromium} from 'playwright';
 import {spawn} from 'node:child_process';
 import {mkdir,writeFile} from 'node:fs/promises';
 import {launchOptions} from './typography/browser.mjs';
-const out='docs/minimap';await mkdir(out,{recursive:true});
+const out=process.env.MINIMAP_OUT||'docs/minimap';await mkdir(out,{recursive:true});
 const server=process.env.VERIFY_URL?null:spawn('node',['node_modules/vite/bin/vite.js','--host','127.0.0.1','--port','8798'],{stdio:'pipe'});
 let browser;
 try{
@@ -17,6 +17,7 @@ try{
  for(const [name,width,height] of [['portrait',390,844],['narrow',320,568],['landscape',844,390],['desktop',1440,900]]){
   console.log('Checking',name);await page.setViewportSize({width,height});await page.waitForTimeout(650);
   const s=await page.evaluate(()=>{const c=window.__STRONGHOLD_COMBAT__;return {map:c.snapshot().minimap,tr:c.snapshot().topRightHud.screenBounds,player:c.hud.playerConsole.getBounds(),skills:c.snapshot().hudGeometry};});
+  if(!s.map.obstacles?.some(p=>p.kind==='tree')||!s.map.obstacles.some(p=>p.id==='boulders-snow'))throw Error('Missing trees/obstacles');
   const b=s.map.bounds;if(!s.map.visible||b.x<0||b.y<s.tr.bottom||b.x+b.width>width||b.y+b.height>height*.65)throw Error('Map placement: '+JSON.stringify(s));
   if(b.x<s.player.maxX&&b.x+b.width>s.player.minX&&b.y<s.player.maxY&&b.y+b.height>s.player.minY)throw Error('Player overlap');
   for(const socket of s.skills.sockets)if(b.x<socket.x+socket.radius&&b.x+b.width>socket.x-socket.radius&&b.y<socket.y+socket.radius&&b.y+b.height>socket.y-socket.radius)throw Error('Skill overlap');

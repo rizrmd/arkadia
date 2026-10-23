@@ -3,9 +3,15 @@ import {project,unproject} from '../isometric';
 import {MAP,STRONGHOLD_ORIGIN} from '../world/map';
 import {RELIEF} from '../world/relief';
 import {STRONGHOLD} from './prefabs/stronghold';
-import {COURT} from './terrain';
+import {COURT,environmentSprites,LEGACY_LAYOUT} from './terrain';
 import {slots} from './scene';
 import type {Building} from './economy';
+
+// Use exactly the rendered environment set, including legacy props only when that layout is active.
+// Ground dressing (weeds, paving and snow drifts) is not an obstacle.
+export const minimapObstacles=()=>environmentSprites()
+ .filter(p=>p.layer!=='ground'&&p.opacity>=1&&!/^(rampart-|bastion$)/.test(p.id))
+ .map(p=>{const t=unproject(p.x-COURT.x,p.y-COURT.y);return {id:p.id,u:t.x,v:t.y,width:p.width,kind:/fir|spruce|tree/.test(p.id)?'tree' as const:'obstacle' as const};});
 
 // Geometry stays on the GPU. Only its translation and the live marker change per frame.
 // Court-local ground tiles are shared with collision; actor elevation must not move the map marker.
@@ -21,6 +27,7 @@ export class Minimap extends Container {
  private tile={u:0,v:0};
  private built='';
  private count=0;
+ private obstacles=minimapObstacles();
  constructor(){
   super();this.eventMode='none';this.zIndex=9;
   this.viewport.addChild(this.geometry);this.addChild(this.viewport,this.clip,this.frame,this.marker);this.viewport.mask=this.clip;
@@ -38,12 +45,26 @@ export class Minimap extends Container {
   rect(0,0,COURT.size,COURT.size);
   // Real prefab wall locations, omitting decorative ground props.
   for(const p of STRONGHOLD.props){
-   if(p.layout==='legacy')continue;
+   if(p.layout==='legacy'&&!LEGACY_LAYOUT)continue;
    if(p.id==='rampart-se')rect(p.u-2.2,p.v-.2,4.4,.4);
    else if(p.id==='rampart-ne')rect(p.u-.2,p.v-2.2,.4,4.4);
    else if(p.id==='bastion'){
     const q=project(p.u,p.v);g.ellipse(q.x/64,q.y/64,.85,.43).stroke({color:0xe2bf72,width:1/this.pxPerTile});this.count++;
    }
+  }
+  for(const p of this.obstacles){
+   const q=project(p.u,p.v),x=q.x/64,y=q.y/64;
+   // Symbols stay readable at narrow portrait sizes; their anchors remain exact world positions.
+   const r=Math.max(1.4/this.pxPerTile,Math.min(1.1,p.width/256));
+   if(p.kind==='tree'){
+    g.poly([x,y-r,x+r*.75,y+r*.45,x-r*.75,y+r*.45])
+     .fill({color:0x719681,alpha:.55}).stroke({color:0xc5c595,width:.8/this.pxPerTile,alpha:.95});
+    g.moveTo(x,y+r*.45).lineTo(x,y+r*.95).stroke({color:0xd8b66b,width:1/this.pxPerTile});
+   }else{
+    g.poly([x-r,y,x-r*.4,y-r*.5,x+r*.6,y-r*.4,x+r,y+r*.25,x+r*.2,y+r*.55])
+     .closePath().fill({color:0x9c957b,alpha:.22}).stroke({color:0xd8b66b,width:.85/this.pxPerTile,alpha:.85});
+   }
+   this.count++;
   }
   for(const id of built){
    const b=slots[id];if(!b)continue;
@@ -76,5 +97,5 @@ export class Minimap extends Container {
   if(Number.isFinite(dx)&&Math.hypot(dx,dy)>.05)this.marker.rotation=Math.atan2(dy,dx)+Math.PI/2;
   this.last={...world};
  }
- snapshot(){return {visible:this.visible,bounds:{x:this.x,y:this.y,width:this.size,height:this.size},tile:this.tile,mapTile:{u:this.tile.u+STRONGHOLD_ORIGIN.u,v:this.tile.v+STRONGHOLD_ORIGIN.v},geometryCount:this.count,pxPerTile:this.pxPerTile,marker:{x:this.size/2,y:this.size/2,rotation:this.marker.rotation}};}
+ snapshot(){return {visible:this.visible,bounds:{x:this.x,y:this.y,width:this.size,height:this.size},tile:this.tile,mapTile:{u:this.tile.u+STRONGHOLD_ORIGIN.u,v:this.tile.v+STRONGHOLD_ORIGIN.v},geometryCount:this.count,obstacles:this.obstacles,pxPerTile:this.pxPerTile,marker:{x:this.size/2,y:this.size/2,rotation:this.marker.rotation}};}
 }
