@@ -47,6 +47,7 @@ func TestPrefabKeepsCourtGeometry(t *testing.T) {
 	}{
 		{577, 420, true}, {577, 750, true}, {577, 709, true}, {650, 740, false}, {650, 760, false}, {650, 800, true},
 		{577, 900, true}, {-300, 300, false}, {1500, 400, false}, {1500, 700, true},
+		{577, -300, true}, {250, -300, true},
 	} {
 		if got := walkableGround(p.x, p.y); got != p.want {
 			t.Errorf("walkableGround(%v, %v) = %v, want %v", p.x, p.y, got, p.want)
@@ -66,7 +67,7 @@ func TestPrefabWalkableMatchesHardcoded(t *testing.T) {
 		g := unproject(x-577, y+160)
 		court := g.X >= .5 && g.Y >= .5 && g.X <= 14.5 && g.Y <= 14.5
 		d := math.Abs(x - 577)
-		return court || y >= 710 && (d < 36 || d <= 135 && y >= front(d)) || g.X >= 16.5 || g.Y >= 16.5
+		return court || y >= 710 && (d < 36 || d <= 135 && y >= front(d)) || g.X <= -1.5 || g.Y <= -1.5 || g.X >= 16.5 || g.Y >= 16.5
 	}
 	for y := -400.0; y <= 1500; y += 1.5 {
 		for x := -800.0; x <= 2000; x += 1.5 {

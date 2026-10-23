@@ -54,7 +54,9 @@ func walkableGround(x, y float64) bool {
 	court := g.X >= edge && g.Y >= edge && g.X <= courtSize-edge && g.Y <= courtSize-edge
 	d := math.Abs(x - gateSpec.X)
 	passage := y >= gateSpec.PassageFromY && (d < gateSpec.ArchHalfWidth || d <= gateSpec.TowerHalfSpan && y >= gateTowerFront(d))
-	outside := g.X >= snow || g.Y >= snow
+	// Keep the rear and west snow approaches walkable too; otherwise a hero can
+	// leave through the gate but can never route around the stronghold.
+	outside := g.X <= -1.5 || g.Y <= -1.5 || g.X >= snow || g.Y >= snow
 	return court || passage || outside
 }
 

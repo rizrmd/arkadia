@@ -11,7 +11,10 @@ export function walkableGround(x:number,y:number){
  // The strip from the court edge back to the tower fronts is wall masonry: walkable, it let the hero stand on
  // top of the front wall beside each tower, drawn over it.
  const d=Math.abs(x-G.x),passage=y>=G.passageFromY&&(d<G.archHalfWidth||d<=G.towerHalfSpan&&y>=gateTowerFront(d));
- const outside=g.x>=openSnowFrom||g.y>=openSnowFrom;
+ // Snow surrounds the enclosure on all four sides. The old one-sided check
+ // only opened the gate-facing (south/east) edge, leaving the rear of the
+ // stronghold unreachable even after walking around either flank.
+ const outside=g.x<=-1.5||g.y<=-1.5||g.x>=openSnowFrom||g.y>=openSnowFrom;
  return court||passage||outside;
 }
 // Ground line of a gate tower's front face, d px either side of the arch centre (archHalfWidth to towerHalfSpan).
