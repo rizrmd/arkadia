@@ -1,3 +1,4 @@
+import {naturalHillArt} from './natural-hill-art';
 import {tilePoint} from './terrain';
 import {RELIEF,PX_PER_METER,featureHeight,type ReliefFeature} from '../world/relief';
 // Paints each terrain feature (world/relief.ts) once into its own canvas: a snow top lifted by its height, and the
@@ -6,6 +7,7 @@ import {RELIEF,PX_PER_METER,featureHeight,type ReliefFeature} from '../world/rel
 // Seeded, so every client paints the same terrain. World px; RELIEF_RES canvas px per world px.
 export const RELIEF_RES=2;
 export const CLIFF_ART='/modular-stronghold/v2/cliff-snow.png';
+export const NATURAL_CLIFF_ART='/terrain-height/natural/cliff-strip.webp';
 export type ReliefArt={feature:ReliefFeature;canvas:HTMLCanvasElement;left:number;top:number;width:number;height:number;bottom:number};
 type P={x:number;y:number};type Corner={g:P;h:number;t:P};
 function rng(seed:string){let n=[...seed].reduce((s,c)=>Math.imul(s,31)+c.charCodeAt(0)|0,17);return()=>((n=Math.imul(n,1664525)+1013904223|0)>>>0)/4294967296;}
@@ -51,8 +53,9 @@ function paintFace(c:CanvasRenderingContext2D,cliff:HTMLImageElement,g0:P,g1:P,h
  c.save();c.setTransform(1,0,0,1,0,0);c.drawImage(layer,0,0);c.restore();
 }
 
-export function paintRelief(snow:HTMLImageElement,cliff:HTMLImageElement):ReliefArt[]{
+export function paintRelief(snow:HTMLImageElement,cliff:HTMLImageElement,naturalCliff:HTMLImageElement):ReliefArt[]{
  return RELIEF.map(f=>{
+  if(f.type==='hill')return naturalHillArt(f,snow,naturalCliff);
   const random=rng(f.id),{A,B,C,D}=corners(f),all=[A,B,C,D],ramp=f.type==='ramp';
   const pad=28,left=Math.floor(Math.min(...all.map(p=>p.g.x)))-pad,right=Math.ceil(Math.max(...all.map(p=>p.g.x)))+pad;
   const top=Math.floor(Math.min(...all.map(p=>p.t.y)))-pad,bottom=Math.ceil(Math.max(...all.map(p=>p.g.y)))+10;
@@ -96,7 +99,8 @@ export function paintRelief(snow:HTMLImageElement,cliff:HTMLImageElement):Relief
 // height, as the world's own shadows). Null when the feature casts nothing.
 export function paintReliefShadow(f:ReliefFeature,dx:number,dy:number,canvas:HTMLCanvasElement){
  const {A,B,C,D}=corners(f),pts:[number,number][]=[];
- for(const p of [A,B,C,D])pts.push([p.g.x,p.g.y],[p.g.x+p.h*dx,p.g.y+p.h*dy]);
+ const boundary=f.outline?f.outline.map(([u,v])=>({g:tilePoint(u,v),h:featureHeight(f,u,v)*PX_PER_METER})):[A,B,C,D];
+ for(const p of boundary)pts.push([p.g.x,p.g.y],[p.g.x+p.h*dx,p.g.y+p.h*dy]);
  pts.sort((a,b)=>a[0]-b[0]||a[1]-b[1]);
  const cross=(o:number[],a:number[],b:number[])=>(a[0]-o[0])*(b[1]-o[1])-(a[1]-o[1])*(b[0]-o[0]),chain=(list:[number,number][])=>{const h:[number,number][]=[];for(const q of list){while(h.length>1&&cross(h[h.length-2],h[h.length-1],q)<=0)h.pop();h.push(q);}h.pop();return h;};
  const hull=[...chain(pts),...chain([...pts].reverse())],pad=12;

@@ -7,7 +7,7 @@
   "Center to each edge is 5 minutes of walking at hero speed (net/movement.ts: 120 px/s across, 90 px/s up/down = 1.56 tiles/s along a tile edge): 300 s x 1.56 = 468 tiles.",
   "Each prefab's anchor (court-local tile) is placed at its map tile; the Stronghold's court center (7.5, 7.5) sits on the map center.",
   "chunkTiles is the planned chunk size for the chunk renderer (step b) and per-chunk collision (step c): 39 x 39 chunks, the Stronghold inside the center chunk.",
-  "terrain: ground height in meters is the highest feature containing a map tile, else 0. A plateau is a flat raised rectangle [u0, u1) x [v0, v1); a ramp slopes linearly from baseM to topM, rising toward its ascend side (-u, +u, -v or +v). A step that changes height by more than maxStepM is a cliff and is blocked; ramps are walkable. Heights draw at pxPerMeter screen px per meter."
+  "terrain: ground height in meters is the highest feature containing a map tile, else 0. A plateau is a flat raised rectangle [u0, u1) x [v0, v1); a ramp slopes linearly from baseM to topM, rising toward its ascend side (-u, +u, -v or +v). A step that changes height by more than maxStepM is a cliff and is blocked; ramps are walkable. A hill uses an outline polygon and an integrated -v ramp from rampStartV to v1, clamped to topM above the crest. Heights draw at pxPerMeter screen px per meter."
  ],
  "sizeTiles": 936,
  "metersPerTile": 3,
@@ -20,8 +20,7 @@
   "pxPerMeter": 24,
   "maxStepM": 0.4,
   "features": [
-   {"id": "east-ridge", "type": "plateau", "u0": 483.5, "v0": 465.5, "u1": 488.5, "v1": 470.5, "heightM": 3},
-   {"id": "east-ridge-ramp", "type": "ramp", "u0": 484.5, "v0": 470.5, "u1": 486.5, "v1": 473.5, "baseM": 0, "topM": 3, "ascend": "-v"},
+   {"id": "east-ridge", "type": "hill", "u0": 483.5, "v0": 465.5, "u1": 488.5, "v1": 473.5, "heightM": 3, "baseM": 0, "topM": 3, "ascend": "-v", "rampStartV": 470.5, "outline": [[483.5, 466.6], [483.6767, 466.3159], [483.9206, 466.0821], [484.1, 465.8], [484.5056, 465.7225], [484.9003, 465.601], [485.3, 465.5], [485.6696, 465.5908], [486.048, 465.6153], [486.4221, 465.6721], [486.8, 465.7], [487.1793, 465.9164], [487.6039, 466.0241], [488.0, 466.2], [488.1176, 466.589], [488.328, 466.9358], [488.5, 467.3], [488.4444, 467.6492], [488.341, 467.9916], [488.348, 468.3497], [488.3, 468.7], [488.4195, 469.1457], [488.5, 469.6], [488.2752, 469.8419], [488.0563, 470.0896], [487.8, 470.3], [487.3, 470.5], [487.3589, 470.8681], [487.494, 471.2223], [487.5, 471.6], [487.616, 471.9623], [487.7128, 472.3298], [487.8, 472.7], [487.901, 473.0997], [488.0, 473.5], [487.6111, 473.5], [487.2222, 473.5], [486.8333, 473.5], [486.4444, 473.5], [486.0556, 473.5], [485.6667, 473.5], [485.2778, 473.5], [484.8889, 473.5], [484.5, 473.5], [484.5428, 473.0674], [484.5526, 472.6323], [484.6, 472.2], [484.7143, 471.8762], [484.7146, 471.5296], [484.8, 471.2], [484.7717, 470.8469], [484.7, 470.5], [484.2843, 470.463], [483.9, 470.3], [483.7974, 469.8898], [483.6598, 469.4912], [483.5, 469.1], [483.5992, 468.7054], [483.6396, 468.301], [483.7, 467.9], [483.6786, 467.4597], [483.5693, 467.0329]]},
    {"id": "west-terrace", "type": "plateau", "u0": 463.5, "v0": 483.5, "u1": 468.5, "v1": 487.5, "heightM": 1.5},
    {"id": "west-terrace-ramp", "type": "ramp", "u0": 468.5, "v0": 484.5, "u1": 471.5, "v1": 486.5, "baseM": 0, "topM": 1.5, "ascend": "-u"}
   ]

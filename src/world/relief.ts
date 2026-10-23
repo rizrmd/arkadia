@@ -5,17 +5,27 @@ import {STRONGHOLD} from '../stronghold/prefabs/stronghold';
 // ground plane (world px / court tiles); an actor is drawn lifted by its ground height, and a step that changes the
 // height by more than maxStepM is a cliff. Mirrored step for step by server/internal/sim/relief.go.
 export type Ascend='-u'|'+u'|'-v'|'+v';
-export type ReliefFeature={id:string;type:'plateau'|'ramp';u0:number;v0:number;u1:number;v1:number;heightM?:number;baseM?:number;topM?:number;ascend?:Ascend};
+export type ReliefFeature={id:string;type:'plateau'|'ramp'|'hill';u0:number;v0:number;u1:number;v1:number;heightM?:number;baseM?:number;topM?:number;ascend?:Ascend;outline?:[number,number][];rampStartV?:number};
 type Terrain={pxPerMeter:number;maxStepM:number;features:ReliefFeature[]};
 const T=(MAP as unknown as {terrain?:Terrain}).terrain??{pxPerMeter:24,maxStepM:.4,features:[]};
 export const PX_PER_METER=T.pxPerMeter,MAX_STEP_M=T.maxStepM;
 // Features in court-local tiles, the space the game walks in.
-export const RELIEF:ReliefFeature[]=T.features.map(f=>({...f,u0:f.u0-STRONGHOLD_ORIGIN.u,u1:f.u1-STRONGHOLD_ORIGIN.u,v0:f.v0-STRONGHOLD_ORIGIN.v,v1:f.v1-STRONGHOLD_ORIGIN.v}));
+export const RELIEF:ReliefFeature[]=T.features.map(f=>({...f,u0:f.u0-STRONGHOLD_ORIGIN.u,u1:f.u1-STRONGHOLD_ORIGIN.u,v0:f.v0-STRONGHOLD_ORIGIN.v,v1:f.v1-STRONGHOLD_ORIGIN.v,rampStartV:f.rampStartV===undefined?undefined:f.rampStartV-STRONGHOLD_ORIGIN.v,outline:f.outline?.map(([u,v])=>[u-STRONGHOLD_ORIGIN.u,v-STRONGHOLD_ORIGIN.v] as [number,number])}));
 for(const f of RELIEF)if(!(f.u1>f.u0&&f.v1>f.v0)||(f.type==='plateau'?!(f.heightM!>0):!(f.ascend&&f.topM!==undefined&&f.baseM!==undefined)))throw Error('terrain feature '+f.id+' is malformed');
-export const inside=(f:ReliefFeature,u:number,v:number)=>u>=f.u0&&u<f.u1&&v>=f.v0&&v<f.v1;
+export function inside(f:ReliefFeature,u:number,v:number){
+ if(!(u>=f.u0&&u<f.u1&&v>=f.v0&&v<f.v1))return false;
+ if(!f.outline)return true;
+ let hit=false;const p=f.outline;
+ for(let i=0,j=p.length-1;i<p.length;j=i++){
+  const [x,y]=p[i],[a,b]=p[j];
+  if((y>v)!==(b>v)&&u<(a-x)*(v-y)/(b-y)+x)hit=!hit;
+ }
+ return hit;
+}
 // Height of a feature at a tile it contains, in meters.
 export function featureHeight(f:ReliefFeature,u:number,v:number){
  if(f.type==='plateau')return f.heightM!;
+ if(f.type==='hill')return f.topM!*Math.max(0,Math.min(1,(f.v1-v)/(f.v1-f.rampStartV!)));
  const t=f.ascend==='-u'?(f.u1-u)/(f.u1-f.u0):f.ascend==='+u'?(u-f.u0)/(f.u1-f.u0):f.ascend==='-v'?(f.v1-v)/(f.v1-f.v0):(v-f.v0)/(f.v1-f.v0);
  return f.baseM!+(f.topM!-f.baseM!)*t;
 }

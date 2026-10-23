@@ -10,13 +10,15 @@ import (
 // ReliefFeature is a raised piece of terrain (src/world/relief.ts): a flat plateau, or a ramp sloping linearly from
 // BaseM to TopM, rising toward its Ascend side. Rectangles are half-open [U0, U1) x [V0, V1) in court tiles.
 type ReliefFeature struct {
-	ID             string  `json:"id"`
-	Type           string  `json:"type"`
-	U0, V0, U1, V1 float64 `json:"-"`
-	HeightM        float64 `json:"heightM"`
-	BaseM          float64 `json:"baseM"`
-	TopM           float64 `json:"topM"`
-	Ascend         string  `json:"ascend"`
+	ID             string       `json:"id"`
+	Type           string       `json:"type"`
+	U0, V0, U1, V1 float64      `json:"-"`
+	HeightM        float64      `json:"heightM"`
+	BaseM          float64      `json:"baseM"`
+	TopM           float64      `json:"topM"`
+	Ascend         string       `json:"ascend"`
+	Outline        [][2]float64 `json:"outline"`
+	RampStartV     float64      `json:"rampStartV"`
 }
 
 // mapFile is the part of the map definition (src/world/maps/arkodia-01.json) the simulation uses. arkodia-01.json
@@ -63,6 +65,11 @@ func mustRelief(b []byte) ([]ReliefFeature, float64) {
 	for _, f := range m.Terrain.Features {
 		r := f.ReliefFeature
 		r.U0, r.V0, r.U1, r.V1 = f.U0-ou, f.V0-ov, f.U1-ou, f.V1-ov
+		r.RampStartV -= ov
+		for i := range r.Outline {
+			r.Outline[i][0] -= ou
+			r.Outline[i][1] -= ov
+		}
 		if !(r.U1 > r.U0 && r.V1 > r.V0) {
 			panic("terrain feature " + r.ID + " is malformed")
 		}
@@ -72,13 +79,30 @@ func mustRelief(b []byte) ([]ReliefFeature, float64) {
 }
 
 func (f *ReliefFeature) inside(u, v float64) bool {
-	return u >= f.U0 && u < f.U1 && v >= f.V0 && v < f.V1
+	if !(u >= f.U0 && u < f.U1 && v >= f.V0 && v < f.V1) {
+		return false
+	}
+	if len(f.Outline) == 0 {
+		return true
+	}
+	hit := false
+	for i, j := 0, len(f.Outline)-1; i < len(f.Outline); j, i = i, i+1 {
+		x, y := f.Outline[i][0], f.Outline[i][1]
+		a, b := f.Outline[j][0], f.Outline[j][1]
+		if (y > v) != (b > v) && u < (a-x)*(v-y)/(b-y)+x {
+			hit = !hit
+		}
+	}
+	return hit
 }
 
 // height mirrors relief.ts featureHeight, operation for operation.
 func (f *ReliefFeature) height(u, v float64) float64 {
 	if f.Type == "plateau" {
 		return f.HeightM
+	}
+	if f.Type == "hill" {
+		return f.TopM * math.Max(0, math.Min(1, (f.V1-v)/(f.V1-f.RampStartV)))
 	}
 	var t float64
 	switch f.Ascend {
