@@ -63,6 +63,9 @@ echo "Staged $(wc -l < "$list") files, $(du -sh "$STAGE" | cut -f1) in $STAGE"
 
 # Run review, 3D Hero Lab, and both Sprite Player URLs ship with the same character atlas release.
 cp -R public/3d-hero-lab "$STAGE/site/3d-hero-lab"
+mkdir -p "$STAGE/site/docs/3d-heroes" "$STAGE/site/3d-heroes"
+cp docs/3d-heroes/* "$STAGE/site/docs/3d-heroes/" 2>/dev/null || true
+cp docs/3d-heroes/* "$STAGE/site/3d-heroes/" 2>/dev/null || true
 mkdir -p "$STAGE/site/assets/characters"
 cp -R public/assets/characters/3d "$STAGE/site/assets/characters/3d"
 cp -R public/run-cadence "$STAGE/site/run-cadence"

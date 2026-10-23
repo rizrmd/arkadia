@@ -98,6 +98,131 @@ export interface ShadowDrawResult {
   sh: number;
 }
 
+/**
+ * Sanitizes raw 3D hero readback pixels (`w x h x 4` RGBA) against mobile TBDR GPU tile artifacts:
+ * 1. Flood-erases any opaque background garbage connected to the outer 2px canvas perimeter
+ *    (e.g. when a mobile tile renderer skips resolving empty outer tiles, leaving recycled VRAM
+ *    around a transparent moat of resolved hero tiles).
+ * 2. Retains only the contiguous 8-connected hero silhouette seeded from the central spine box.
+ */
+export function sanitizeHeroWorkPixels(
+  pixels: Uint8ClampedArray | Uint8Array,
+  w: number,
+  h: number,
+  bfsQueue?: Int32Array,
+  visited?: Uint8Array
+): void {
+  const total = w * h;
+  const q = bfsQueue && bfsQueue.length >= total ? bfsQueue : new Int32Array(total);
+  const seen = visited && visited.length >= total ? visited : new Uint8Array(total);
+
+  // Step 1: Check left, right, and top 1px borders (never bottom center where boots touch y = h-1).
+  // If outer GPU tiles contain unresolved VRAM garbage, flood-erase them up to the resolved tile moat.
+  let qHead = 0;
+  let qTail = 0;
+  seen.fill(0);
+
+  for (let x = 0; x < w; x++) {
+    if (pixels[x * 4 + 3] > 12) {
+      seen[x] = 1;
+      q[qTail++] = x;
+    }
+  }
+  for (let y = 1; y < h; y++) {
+    const leftIdx = y * w;
+    const rightIdx = y * w + (w - 1);
+    if (pixels[leftIdx * 4 + 3] > 12) {
+      seen[leftIdx] = 1;
+      q[qTail++] = leftIdx;
+    }
+    if (pixels[rightIdx * 4 + 3] > 12) {
+      seen[rightIdx] = 1;
+      q[qTail++] = rightIdx;
+    }
+  }
+
+  while (qHead < qTail) {
+    const idx = q[qHead++];
+    const p = idx * 4;
+    pixels[p] = 0;
+    pixels[p + 1] = 0;
+    pixels[p + 2] = 0;
+    pixels[p + 3] = 0;
+
+    const x = idx % w;
+    const y = (idx - x) / w;
+    const y0 = y > 0 ? y - 1 : 0;
+    const y1 = y + 1 < h ? y + 1 : h - 1;
+    const x0 = x > 0 ? x - 1 : 0;
+    const x1 = x + 1 < w ? x + 1 : w - 1;
+
+    for (let ny = y0; ny <= y1; ny++) {
+      const nRow = ny * w;
+      for (let nx = x0; nx <= x1; nx++) {
+        const nIdx = nRow + nx;
+        if (seen[nIdx] === 0 && pixels[nIdx * 4 + 3] > 12) {
+          seen[nIdx] = 1;
+          q[qTail++] = nIdx;
+        }
+      }
+    }
+  }
+
+  // Step 2: Retain only the hero's connected component seeded from the central hero spine
+  qHead = 0;
+  qTail = 0;
+  seen.fill(0);
+
+  const coreX0 = Math.floor(w * 0.36);
+  const coreX1 = Math.ceil(w * 0.64);
+  const coreY0 = Math.floor(h * 0.24);
+  const coreY1 = Math.ceil(h * 0.95);
+
+  for (let y = coreY0; y <= coreY1; y++) {
+    const row = y * w;
+    for (let x = coreX0; x <= coreX1; x++) {
+      const idx = row + x;
+      if (pixels[idx * 4 + 3] > 16) {
+        seen[idx] = 1;
+        q[qTail++] = idx;
+      }
+    }
+  }
+
+  if (qTail > 0) {
+    while (qHead < qTail) {
+      const idx = q[qHead++];
+      const x = idx % w;
+      const y = (idx - x) / w;
+      const y0 = y > 1 ? y - 2 : 0;
+      const y1 = y + 2 < h ? y + 2 : h - 1;
+      const x0 = x > 1 ? x - 2 : 0;
+      const x1 = x + 2 < w ? x + 2 : w - 1;
+
+      for (let ny = y0; ny <= y1; ny++) {
+        const nRow = ny * w;
+        for (let nx = x0; nx <= x1; nx++) {
+          const nIdx = nRow + nx;
+          if (seen[nIdx] === 0 && pixels[nIdx * 4 + 3] > 16) {
+            seen[nIdx] = 1;
+            q[qTail++] = nIdx;
+          }
+        }
+      }
+    }
+
+    for (let idx = 0; idx < total; idx++) {
+      if (seen[idx] === 0 && pixels[idx * 4 + 3] > 0) {
+        const p = idx * 4;
+        pixels[p] = 0;
+        pixels[p + 1] = 0;
+        pixels[p + 2] = 0;
+        pixels[p + 3] = 0;
+      }
+    }
+  }
+}
+
 interface ThreeHeroInstance {
   canvas: HTMLCanvasElement;
   shadowCanvas: HTMLCanvasElement;
@@ -143,6 +268,9 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
 
   const workImgData = outCtx.createImageData(W, H);
   const workPixels = workImgData.data;
+  const rawGlPixels = new Uint8Array(W * H * 4);
+  const bfsQueue = new Int32Array(W * H);
+  const visitedMask = new Uint8Array(W * H);
 
   // Buffers for 114x103 foot-anchored ground shadow projection
   const cellAlpha = new Uint8Array(CELL_W * CELL_H);
@@ -270,10 +398,29 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
     tint: string,
     night: number
   ): void {
-    outCtx.globalCompositeOperation = 'copy';
-    outCtx.drawImage(srcCanvas, 0, 0);
-    const srcData = outCtx.getImageData(0, 0, W, H).data;
-    workPixels.set(srcData);
+    const gl = renderer?.getContext?.() as WebGLRenderingContext | null;
+    let readDirect = false;
+    if (gl) {
+      try {
+        gl.readPixels(0, 0, W, H, gl.RGBA, gl.UNSIGNED_BYTE, rawGlPixels);
+        const rowBytes = W * 4;
+        for (let y = 0; y < H; y++) {
+          const srcOff = (H - 1 - y) * rowBytes;
+          const dstOff = y * rowBytes;
+          workPixels.set(rawGlPixels.subarray(srcOff, srcOff + rowBytes), dstOff);
+        }
+        readDirect = true;
+      } catch {}
+    }
+    if (!readDirect) {
+      outCtx.globalCompositeOperation = 'copy';
+      outCtx.drawImage(srcCanvas, 0, 0);
+      const srcData = outCtx.getImageData(0, 0, W, H).data;
+      workPixels.set(srcData);
+    }
+
+    // Sanitize against mobile TBDR empty-tile VRAM artifacts & stray background islands
+    sanitizeHeroWorkPixels(workPixels, W, H, bfsQueue, visitedMask);
 
     let tintR = 1;
     let tintG = 1;
@@ -678,16 +825,38 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
 
       renderer = new THREE.WebGLRenderer({
         canvas: glCanvas,
-        antialias: true,
+        antialias: false,
         alpha: true,
+        premultipliedAlpha: false,
+        preserveDrawingBuffer: true,
         powerPreference: 'high-performance'
       });
       renderer.setSize(W, H, false);
+      renderer.setClearColor(0x000000, 0);
+      renderer.autoClear = false;
       renderer.outputColorSpace = THREE.SRGBColorSpace;
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
       renderer.toneMappingExposure = 1.28;
 
       scene = new THREE.Scene();
+
+      // Full-viewport NDC clear quad (renderOrder = -1000, NoBlending, RGBA = 0,0,0,0):
+      // Forces 100% of GPU tiles on mobile Tile-Based Deferred Renderers (Adreno/Mali) to rasterize
+      // and flush transparent (0,0,0,0) instead of skipping empty outer tiles with recycled VRAM data.
+      const clearQuadGeo = new THREE.PlaneGeometry(2, 2);
+      const clearQuadMat = new THREE.ShaderMaterial({
+        vertexShader: `void main() { gl_Position = vec4(position.xy, 0.999, 1.0); }`,
+        fragmentShader: `void main() { gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0); }`,
+        depthTest: false,
+        depthWrite: false,
+        transparent: false,
+        blending: THREE.NoBlending,
+        side: THREE.DoubleSide
+      });
+      const clearQuad = new THREE.Mesh(clearQuadGeo, clearQuadMat);
+      clearQuad.frustumCulled = false;
+      clearQuad.renderOrder = -1000;
+      scene.add(clearQuad);
 
       // Exact 2:1 isometric projection aligned so y=0 (feet) lands directly on pivot (57, 101)
       const ISO_TILT = Math.atan(0.5);
@@ -804,6 +973,8 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
         }
       }
 
+      renderer.setClearColor(0x000000, 0);
+      renderer.clear(true, true, true);
       renderer.render(scene, orthoCam);
 
       // Apply 2D Hand-Painted Sprite Pass (dark ink outline + internal creases + cellAlpha extraction)
