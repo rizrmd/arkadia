@@ -4,7 +4,7 @@ import type {Sun} from './daylight';
 import type {Walk} from './controls';
 import {createCanvasSprite,loadImage} from '../app/loader';
 import {walkStep,fullSpeed} from './net/movement';
-import {characters,atlasUrl,DEFAULT_HERO,isHero,type HeroId} from './heroes';
+import {characters,atlasUrl,DEFAULT_HERO,HEROES,isHero,type HeroId} from './heroes';
 import {measureTracelogPhase} from './tracelog';
 
 export type Column={x:number;w:number;back:number;front:number;height:number};
@@ -21,7 +21,7 @@ export function cutOut(c:CanvasRenderingContext2D,list:readonly Placed[],px:numb
 }
 type FrameShadowProfile={base:Float32Array;bot:Int16Array;vc:number;px:Uint8Array;py:Uint8Array;alpha:Uint8Array};
 const shadowProfiles=new Map<string,FrameShadowProfile>();
-type AlphaMask={w:number;h:number;data:Uint8Array};
+type AlphaMask={w:number;h:number;data:Uint8Array;bot:Float32Array};
 const alphaMasks=new Map<string,AlphaMask>();
 const maskCanvas=document.createElement('canvas'),maskCtx=maskCanvas.getContext('2d',{willReadFrequently:true})!;
 function getAlphaMask(p:Placed):AlphaMask|null{
@@ -34,9 +34,10 @@ function getAlphaMask(p:Placed):AlphaMask|null{
  const mw=Math.min(160,sw),mh=Math.max(1,Math.round(sh*(mw/sw)));
  if(maskCanvas.width<mw||maskCanvas.height<mh){maskCanvas.width=Math.max(maskCanvas.width,mw);maskCanvas.height=Math.max(maskCanvas.height,mh);}
  maskCtx.clearRect(0,0,mw,mh);maskCtx.drawImage(src,0,0,mw,mh);
- const rgba=maskCtx.getImageData(0,0,mw,mh).data,data=new Uint8Array(mw*mh);
+ const rgba=maskCtx.getImageData(0,0,mw,mh).data,data=new Uint8Array(mw*mh),bot=new Float32Array(mw).fill(-1);
  for(let i=0,n=mw*mh;i<n;i++)data[i]=rgba[i*4+3];
- m={w:mw,h:mh,data};alphaMasks.set(key,m);return m;
+ for(let ix=0;ix<mw;ix++)for(let iy=mh-1;iy>=0;iy--)if(data[iy*mw+ix]>48){bot[ix]=(iy+1)/mh;break;}
+ m={w:mw,h:mh,data,bot};alphaMasks.set(key,m);return m;
 }
 function samplePlacedAlpha(p:Placed,wx:number,wy:number):number{
  if(!p.vertical||!p.width||!p.height)return 0;
@@ -49,15 +50,16 @@ function samplePlacedAlpha(p:Placed,wx:number,wy:number):number{
 type AtlasAlphaSheet={w:number;h:number;sx:number;sy:number;alpha:Uint8Array};
 const atlasAlphaSheets=new Map<string,AtlasAlphaSheet>();
 const alphaExtractCanvas=document.createElement('canvas'),alphaExtractCtx=alphaExtractCanvas.getContext('2d',{willReadFrequently:true})!;
-export function prewarmAtlasAlpha(img:HTMLImageElement):AtlasAlphaSheet{
- const key=img.src;
+export function prewarmAtlasAlpha(src:AtlasSource):AtlasAlphaSheet{
+ const key=atlasSrcKey(src);
  let sheet=atlasAlphaSheets.get(key);if(sheet)return sheet;
- const sw=img.naturalWidth||img.width||1,sh=img.naturalHeight||img.height||1;
+ const sw=src instanceof HTMLCanvasElement?src.width:src.naturalWidth||src.width||1;
+ const sh=src instanceof HTMLCanvasElement?src.height:src.naturalHeight||src.height||1;
  const k=Math.min(1,1600/Math.max(sw,sh));
  const w=Math.max(1,Math.round(sw*k)),h=Math.max(1,Math.round(sh*k));
  alphaExtractCanvas.width=w;alphaExtractCanvas.height=h;
  alphaExtractCtx.clearRect(0,0,w,h);
- alphaExtractCtx.drawImage(img,0,0,w,h);
+ alphaExtractCtx.drawImage(src,0,0,w,h);
  const rgba=alphaExtractCtx.getImageData(0,0,w,h).data;
  const alpha=new Uint8Array(w*h);
  for(let i=0,n=w*h;i<n;i++)alpha[i]=rgba[i*4+3];
@@ -74,7 +76,7 @@ function frameShadowProfile(atlas:AtlasSource,f:{x:number;y:number;w:number;h:nu
  const srcKey=atlasSrcKey(atlas);
  const key=`${srcKey}:${f.x},${f.y},${cell.w},${cell.h}`;let prof=shadowProfiles.get(key);if(prof)return prof;
  const bot=new Int16Array(cell.w).fill(-1),alpha=new Uint8Array(cell.w*cell.h);
- const sheet=atlas instanceof HTMLImageElement?prewarmAtlasAlpha(atlas):atlasAlphaSheets.get(srcKey);
+ const sheet=atlasAlphaSheets.get(srcKey)??prewarmAtlasAlpha(atlas);
  if(sheet){
   const {w:sw,h:sh,sx,sy,alpha:sAlpha}=sheet;
   const rx=f.w/cell.w,ry=f.h/cell.h;
@@ -171,6 +173,8 @@ type Meta={image:string;revision?:string;views?:string[];cell:{w:number;h:number
 const KEY='arkadia.stronghold.hero';
 export const DISPLAY=.66;const RADIUS=9,SPAWN={x:590,y:420};
 
+const gpuWarmCanvas=document.createElement('canvas');gpuWarmCanvas.width=16;gpuWarmCanvas.height=16;
+const gpuWarmCtx=gpuWarmCanvas.getContext('2d')!;
 const loadedHeroes=new Map<HeroId,Promise<{id:HeroId;meta:Meta;atlas:HTMLImageElement}>>();
 function loadHeroAtlas(id:HeroId){
  let p=loadedHeroes.get(id);
@@ -179,6 +183,8 @@ function loadHeroAtlas(id:HeroId){
   const all=await characters(),m:Meta=all[id]??all[DEFAULT_HERO];
   const img=await loadImage(atlasUrl(m));
   prewarmAtlasAlpha(img);
+  gpuWarmCtx.drawImage(img,0,0,16,16);
+  if(m.frames[0])frameShadowProfile(img,m.frames[0],m.cell);
   return {id,meta:m,atlas:img};
  })();
  loadedHeroes.set(id,p);
@@ -187,7 +193,10 @@ function loadHeroAtlas(id:HeroId){
 
 export async function createHero<P extends Placed>(o:{layer:Container;lightmap:HTMLCanvasElement;surface:HTMLElement;footprint:(p:P)=>Column[];sun:()=>Sun;direction:()=>Walk;follow:(x:number,y:number,dt:number,walking?:boolean)=>void;pose?:()=>Pose|null;drive?:()=>Drive|null;id?:string;hero?:HeroId}){
  const load=loadHeroAtlas;
- let hero=await load(isHero(o.hero)?o.hero:DEFAULT_HERO),{meta,atlas}=hero,wanted=hero.id;
+ const wanted0=isHero(o.hero)?o.hero:DEFAULT_HERO;
+ const preloadAll=typeof navigator==='undefined'||!navigator.webdriver;
+ let [hero]=await Promise.all([load(wanted0),...(preloadAll?HEROES.map(h=>load(h.id)):[])]);
+ let {meta,atlas}=hero,wanted=hero.id;
  const canvas=document.createElement('canvas'),c=canvas.getContext('2d')!;canvas.id=o.id??'world-hero';const own=!o.id;if(own)(window as any).__WORLD_HERO__=canvas;
  const heroView=createCanvasSprite(canvas);
  heroView.sprite.zIndex=30;
@@ -197,7 +206,7 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
  const lit=document.createElement('canvas');
  const fit=()=>{cell=meta.cell;pivot=cell.pivot;lastLitKey='';const f0=meta.frames[0];lit.width=f0?.w??cell.w;lit.height=f0?.h??cell.h;};fit();
  let objects:P[]=[],blockers:Column[]=[],bounds=new Map<P,number[]>();
- type SceneBound={p:P;x0:number;y0:number;x1:number;y1:number;cols:Column[];maxFront:number;isGate:boolean;isWall:boolean};
+ type SceneBound={p:P;x0:number;y0:number;x1:number;y1:number;cols:Column[];maxFront:number;isGate:boolean;isWall:boolean;isRound:boolean};
  let sceneBounds:SceneBound[]=[],minSceneX=0,minSceneY=0,maxSceneX=0,maxSceneY=0,maxSceneFront=0;
  let minBlockerX=0,maxBlockerX=0,minBlockerY=0,maxBlockerY=0;
  let x=SPAWN.x,y=SPAWN.y,state:'idle'|'move'='idle',t=0,gait=0,facing=1,back=false,vertical=false;
@@ -223,39 +232,57 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
    if(x0<minSceneX)minSceneX=x0;if(y0<minSceneY)minSceneY=y0;if(x1>maxSceneX)maxSceneX=x1;if(y1>maxSceneY)maxSceneY=y1;
    const isGate=Boolean('id' in p&&p.id==='gate');
    const isWall=Boolean('id' in p&&typeof p.id==='string'&&/^(rampart-|bastion|gate-connector|wall-)/.test(p.id));
-   const cols=!isGate&&(p.layer==='world'||isWall)?o.footprint(p):[];
-   let maxFront=isGate?820:p.layer==='foreground'?Math.max(p.y+12,y1):p.y;
+   const isRound=Boolean('id' in p&&typeof p.id==='string'&&/^(spruce-mature|fir-young|brazier)$/.test(p.id));
+   const cols=!isGate&&(p.layer==='world'||isWall||isRound)?o.footprint(p):[];
+   const m=getAlphaMask(p);
+   let maxFront=isGate?820:Math.max(p.y+12,y1);
    for(let i=0;i<cols.length;i++)if(cols[i].front>maxFront)maxFront=cols[i].front;
+   if(m&&!isRound){
+    for(let ix=0;ix<m.w;ix++){
+     const bv=m.bot[ix];if(bv<0)continue;
+     const lx=-p.width*.5+((ix+.5)/m.w)*p.width,by=p.y+p.shear*lx+p.vertical*(bv-p.foot)*p.height;
+     if(by>maxFront)maxFront=by;
+    }
+   }
    if(maxFront>maxSceneFront)maxSceneFront=maxFront;
-   if(!p.occluder)getAlphaMask(p);
-   return {p,x0,y0,x1,y1,cols,maxFront,isGate,isWall};
+   return {p,x0,y0,x1,y1,cols,maxFront,isGate,isWall,isRound};
   });
   bounds=new Map(sceneBounds.map(s=>[s.p,[s.x0,s.y0,s.x1,s.y1]]));
   drawn='';
  }
- function frontBound(sb:SceneBound,px:number,py:number){
-  if(py>=sb.maxFront)return false;
-  if(sb.isGate){const d=Math.abs(px-577);return py<(d<36?775:gateTowerFront(Math.min(135,d)));}
-  const p=sb.p;
-  if(sb.isWall||p.layer==='world'||p.layer==='foreground'){
-   const cols=sb.cols;
-   if(cols.length){
-    let edge=-Infinity;
-    for(let i=0,n=cols.length;i<n;i++){const col=cols[i];if(Math.abs(col.x-px)<=col.w/2+RADIUS&&col.front>edge)edge=col.front;}
-    if(edge>-Infinity)return py<edge;
-   }
-   if(p.layer==='foreground')return py<p.y+12+p.shear*(px-p.x);
-   return false;
+ function frontY(sb:SceneBound,qx:number):number{
+  if(sb.isGate){const d=Math.abs(qx-577);return d<36?775:gateTowerFront(Math.min(135,d));}
+  const p=sb.p,cols=sb.cols;
+  let edge=-Infinity;
+  for(let i=0,n=cols.length;i<n;i++){
+   const col=cols[i];
+   if(Math.abs(col.x-qx)<=col.w/2+RADIUS&&col.front>edge)edge=col.front;
+  }
+  if(sb.isRound)return edge;
+  const m=getAlphaMask(p);
+  let botY=-Infinity;
+  if(m&&qx>=sb.x0&&qx<=sb.x1){
+   const lx=Math.max(-p.width*.5,Math.min(p.width*.5,qx-p.x));
+   const ix=Math.min(m.w-1,Math.max(0,Math.floor(((lx+p.width*.5)/p.width)*m.w)));
+   const bv=m.bot[ix];
+   if(bv>=0)botY=p.y+p.shear*lx+p.vertical*(bv-p.foot)*p.height;
+  }
+  if(sb.isWall)return Math.max(edge,botY);
+  if(p.layer==='world'||p.layer==='foreground'||p.layer==='backdrop'){
+   return Math.max(edge,botY);
+  }
+  return -Infinity;
+ }
+ function frontBound(sb:SceneBound,px:number,py:number,anchorY?:number){
+  const fY=frontY(sb,px);
+  if(py<fY)return true;
+  if(sb.isWall||sb.isGate){
+   if(!walkableGround(px,py))return true;
+   if(anchorY!==undefined&&anchorY<fY-4)return true;
   }
   return false;
  }
- function front(p:P,px:number,py:number){
-  if('id' in p&&p.id==='gate'){const d=Math.abs(px-577);return py<(d<36?775:gateTowerFront(Math.min(135,d)));}
-  if(p.layer==='foreground')return py<p.y+12+p.shear*(px-p.x);if(p.layer!=='world')return false;
-  let edge=-Infinity;for(const col of o.footprint(p))if(Math.abs(col.x-px)<=col.w/2+RADIUS)edge=Math.max(edge,col.front);
-  return py<(edge>-Infinity?edge:p.y);
- }
- // Ray-march from (x0,y0) to (x1,y1) in world pixels to clamp or collide skill VFX against walls & solid buildings.
+ // Ray-march from (x0,y0) to (x1,y1) in world pixels to inspect wall intersections.
  function traceWallRay(x0:number,y0:number,x1:number,y1:number):{hit:boolean;x:number;y:number;t:number}{
   if(y0>850&&y1>850)return {hit:false,x:x1,y:y1,t:1};
   const dx=x1-x0,dy=y1-y0,dist=Math.hypot(dx,dy);
@@ -269,7 +296,15 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
   }
   return {hit:false,x:x1,y:y1,t:1};
  }
- const occluders=(px:number,py:number,b:number[])=>py+b[1]>=maxSceneFront?[]:sceneBounds.filter(sb=>!(sb.x1<px+b[0]||sb.x0>px+b[2]||sb.y1<py+b[1]||sb.y0>py+b[3])&&frontBound(sb,px,py)).map(sb=>sb.p);
+ const occluders=(px:number,py:number,b:number[])=>sceneBounds.filter(sb=>{
+  if(sb.x1<px+b[0]||sb.x0>px+b[2]||sb.y1<py+b[1]||sb.y0>py+b[3])return false;
+  const wideGround=b[2]-b[0]>100&&b[3]-b[1]>40&&b[3]<45;
+  if(wideGround){
+   const qx=Math.max(sb.x0+8,Math.min(sb.x1-8,px));
+   return py+b[1]<frontY(sb,qx);
+  }
+  return frontBound(sb,px,py);
+ }).map(sb=>sb.p);
  function sampleHeroAlpha(wx:number,wy:number):number{
   const dir=meta.views?(vertical?1:facing):(vertical&&!pose?1:facing);
   const hx=(wx-x)/(dir*DISPLAY)+pivot.x,hy=(wy-y)/DISPLAY+pivot.y;
@@ -277,46 +312,46 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
   const prof=frameShadowProfile(atlas,meta.frames[frameIndex()],cell);
   return prof.alpha[Math.floor(hy)*cell.w+Math.floor(hx)]/255;
  }
- function occlusionAt(px:number,py:number,wx=px,wy=py,rad=0,flat=false,includeHero=false):number{
-  if(py>850&&wy>850){
-   if(!includeHero||py>=y-2||wx<x-56||wx>x+56||wy<y-108||wy>y+28)return 1;
-  }
-  // Ground decals and volumetric skill particles cannot enter or pass through perimeter walls (!walkableGround).
-  if(!walkableGround(px,py)||!walkableGround(wx,Math.max(py,wy))||(flat&&blocked(wx,wy)))return 0;
-  const pad=Math.max(2,Math.min(12,rad*.28)),padY=flat?pad*.52:pad;
+ function occlusionAt(px:number,py:number,wx=px,wy=py,rad=0,flat=false,includeHero=false,anchorY?:number):number{
+  const pad=Math.max(3,Math.min(28,rad*.62)),padY=flat?pad*.55:pad;
   const x0=wx-pad,x1=wx+pad,y0=wy-padY,y1=wy+padY;
-  let cA=0,rSum=0,wallHit=false;
-  if(Math.min(py,y0)<maxSceneFront&&y0<=maxSceneY&&y1>=minSceneY&&x0<=maxSceneX&&x1>=minSceneX){
+  let maxA=0;
+  if(y0<=maxSceneY&&y1>=minSceneY&&x0<=maxSceneX&&x1>=minSceneX){
    for(let i=0,n=sceneBounds.length;i<n;i++){
     const sb=sceneBounds[i];
-    if(sb.x1<x0||sb.x0>x1||sb.y1<y0||sb.y0>y1||Math.min(py,wy-padY)>=sb.maxFront)continue;
-    const p=sb.p,fCenter=frontBound(sb,px,py)||(flat&&frontBound(sb,wx,wy));
-    if(fCenter){
-     const a0=samplePlacedAlpha(p,wx,wy);
-     if(a0>cA){cA=a0;if(sb.isWall)wallHit=true;}
-    }
-    if(rad>4&&(fCenter||flat)){
-     const aN=(fCenter||(flat&&frontBound(sb,wx,wy-padY)))?samplePlacedAlpha(p,wx,wy-padY):0;
-     const aS=(fCenter||(flat&&frontBound(sb,wx,wy+padY)))?samplePlacedAlpha(p,wx,wy+padY):0;
-     const aW=(fCenter||(flat&&frontBound(sb,wx-pad,wy)))?samplePlacedAlpha(p,wx-pad,wy):0;
-     const aE=(fCenter||(flat&&frontBound(sb,wx+pad,wy)))?samplePlacedAlpha(p,wx+pad,wy):0;
-     const ar=(aN+aS+aW+aE)*.25;
-     if(ar>rSum){rSum=ar;if(sb.isWall)wallHit=true;}
+    if(sb.x1<x0||sb.x0>x1||sb.y1<y0||sb.y0>y1)continue;
+    const p=sb.p,qx=Math.max(sb.x0+2,Math.min(sb.x1-2,wx));
+    // Flat ground decals lie on z=0 beneath all upright walls, buildings, gates, and trees;
+    // Volumetric world particles are behind sb when frontBound(sb, qx, py, anchorY) is true.
+    const behind=flat||frontBound(sb,qx,py,anchorY);
+    if(!behind)continue;
+    const a0=samplePlacedAlpha(p,wx,wy);
+    if(a0>maxA)maxA=a0;
+    if(rad>2&&maxA<.98){
+     const aN=samplePlacedAlpha(p,wx,wy-padY);
+     const aS=samplePlacedAlpha(p,wx,wy+padY);
+     const aW=samplePlacedAlpha(p,wx-pad,wy);
+     const aE=samplePlacedAlpha(p,wx+pad,wy);
+     const aEdge=Math.max(aN,aS,aW,aE)*.9;
+     if(aEdge>maxA)maxA=aEdge;
     }
    }
   }
-  if(!flat&&!walkableGround(wx,py))wallHit=true;
   if(includeHero&&py<y-2&&x1>=x-44&&x0<=x+44&&y1>=y-96&&y0<=y+16){
-   const ha0=sampleHeroAlpha(wx,wy);if(ha0>cA)cA=ha0;
-   if(rad>4){
-    const har=(sampleHeroAlpha(wx-pad,wy)+sampleHeroAlpha(wx+pad,wy)+sampleHeroAlpha(wx,wy-padY)+sampleHeroAlpha(wx,wy+padY))*.25;
-    if(har>rSum)rSum=har;
+   const ha0=sampleHeroAlpha(wx,wy);if(ha0>maxA)maxA=ha0;
+   if(rad>2&&maxA<.98){
+    const hEdge=Math.max(
+     sampleHeroAlpha(wx-pad,wy),
+     sampleHeroAlpha(wx+pad,wy),
+     sampleHeroAlpha(wx,wy-padY),
+     sampleHeroAlpha(wx,wy+padY)
+    )*.9;
+    if(hEdge>maxA)maxA=hEdge;
    }
   }
-  const a=Math.max(cA,rSum*.75);
-  if(a<=0)return 1;
-  // Rampart walls (isWall) and wall footprints block skill VFX completely (0 bleed-through); gateway/hero/props attenuate to 0.32.
-  return wallHit?Math.max(0,1-10*a):Math.max(.32,1-.68*a);
+  if(maxA<=0)return 1;
+  // Match the hero's cutOut(globalAlpha = 0.68 -> 0.32 residual silhouette opacity) behind walls, buildings, gate, and hero.
+  return Math.max(.32,1-.68*maxA);
  }
  if(own)try{const saved=JSON.parse(localStorage.getItem(KEY)||'null');if(saved&&Number.isFinite(saved.x)&&Number.isFinite(saved.y)){x=saved.x;y=saved.y;}}catch{}
  const view=()=>vertical?(back?'N':'S'):(back?'N':'S')+(facing>0?'E':'W');

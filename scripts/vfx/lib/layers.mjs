@@ -12,9 +12,14 @@ const mix=(base,o={})=>{const {shape,...rest}=o;return {...base,...rest,shape:{.
 const pick=(o,keys)=>Object.fromEntries(Object.entries(o).filter(([k])=>!keys.includes(k)));
 const OWN=['count','spread','reach','radius','height','power','grow'];
 
-// W · Bright flash at the origin: one or two quick glows that bloom and fade.
-export const flash=(P,o={})=>mix({texture:'glow',bursts:[[0,o.count??1]],max:4,life:o.life??.2,size:(o.size??1.2)*.5,
- sizeOverLife:{curve:[[0,.6],[.25,1],[1,1.25]]},color:P.light,intensity:o.intensity??1.6,colorOverLife:grad(P.hot,[[0,1],[.4,.8],[1,0]]),at:o.at},pick(o,['size','intensity','life','count',...OWN]));
+// W · Bright flash at the origin: quick pixel glow motes that bloom and fade without giant single-quad wall bleed.
+export const flash=(P,o={})=>{
+ const raw=(o.size??1.2)*.5,s=Math.min(.58,raw),cnt=o.count??(raw>.68?Math.min(6,Math.ceil(raw*2)):1);
+ return mix({texture:'glow',bursts:[[0,cnt]],max:cnt+2,life:o.life??.2,
+  shape:cnt>1?{type:'circle',radius:Math.min(.42,(raw-.35)*.36),thickness:.9,arcMode:'burstSpread'}:{type:'point'},
+  size:s,sizeOverLife:{curve:[[0,.6],[.25,1],[1,1.25]]},
+  color:P.light,intensity:o.intensity??1.6,colorOverLife:grad(P.hot,[[0,1],[.4,.8],[1,0]]),at:o.at},pick(o,['size','intensity','life','count',...OWN]));
+};
 // W · Lingering hot core that pulses (charge-up, projectile heads, eruption cores).
 export const core=(P,o={})=>mix({texture:'glow',rate:o.rate??30,duration:o.duration??.4,loop:o.loop??false,max:24,life:[.12,.2],size:[(o.size??.8)*.8,(o.size??.8)*1.1],
  color:P.light,intensity:o.intensity??1.6,colorOverLife:grad(P.hot,[[0,0],[.2,1],[1,0]]),local:o.local??true},pick(o,['size','intensity','rate',...OWN]));
@@ -170,27 +175,30 @@ export const magicCircle=(P,o={})=>{
 };
 // G · Backwards-compatible single-layer alias for custom callers; prefer magicCircle() spread for full multi-ring particle circles.
 export const sigil=(P,o={})=>magicCircle(P,o)[0];
-// G · Under-glow: a cluster of warm pixel light motes on the ground (heat, magic charge).
-export const pool=(P,o={})=>mix({texture:'glow',bursts:[[0,3]],max:5,life:o.life??.6,
- shape:{type:'circle',radius:(o.radius??1.2)*.25,thickness:1},
- size:1.85*(o.radius??1.2),sizeOverLife:{curve:[[0,.6],[.3,1],[1,1.05]]},
- color:P.light,intensity:o.intensity??.7,colorOverLife:grad(P.body,[[0,0],[.2,.8],[1,0]])},pick(o,['life','intensity',...OWN]));
+// G · Under-glow: a distributed cluster of warm pixel light motes on the ground (heat, magic charge) so each mote occludes per-pixel behind walls.
+export const pool=(P,o={})=>{
+ const R=o.radius??1.2,cnt=Math.max(14,Math.round(R*16));
+ return mix({texture:'glow',bursts:o.bursts??[[0,cnt]],max:(o.max??cnt)+4,life:o.life??.6,
+  shape:o.shape??{type:'circle',radius:R*.78,thickness:.92,arcMode:'burstSpread'},
+  size:[Math.min(.38,R*.3),Math.min(.52,R*.42)],sizeOverLife:{curve:[[0,.6],[.3,1],[1,1.05]]},
+  color:P.light,intensity:o.intensity??.52,colorOverLife:grad(P.body,[[0,0],[.2,.8],[1,0]])},pick(o,['life','intensity','bursts','max',...OWN]));
+};
 // G · Ground magma/fissure particle clusters that flare bright and cool down (replaces single vector crack image).
 export const cracks=(P,o={})=>{
  const R=o.radius??1.4,life=o.life??1.1,count=o.count??Math.max(22,Math.round(R*18));
  return mix({texture:'crack',blend:'alpha',bursts:[[0,count]],max:count+6,life:[life*.75,life],
   shape:{type:'circle',radius:R*.78,thickness:.85,arcMode:'burstSpread'},
-  speed:[.04,.18],rotation:[0,6.28],size:[.32,.62],
+  speed:[.04,.18],rotation:[0,6.28],size:[.3,.54],
   sizeOverLife:o.sizeOverLife??{curve:[[0,.45],[.16,1],[.82,.92],[1,.25]]},
   color:P.light,intensity:o.intensity??1.15,colorOverLife:grad(flameOf(P),[[0,1],[.25,.9],[1,0]])},pick(o,['life','intensity','sizeOverLife',...OWN]));
 };
-// G · Scorch/dust pixel clusters left behind (alpha-blended, dark).
+// G · Scorch/dust pixel clusters left behind (alpha-blended, dark, distributed for per-particle wall occlusion).
 export const scorch=(P,o={})=>{
- const R=o.radius??.9,count=o.count??6;
+ const R=o.radius??.9,count=o.count??Math.max(14,Math.round(R*14));
  return mix({texture:'scorch',blend:'alpha',bursts:o.bursts??[[0,count]],max:(o.max??count)+4,life:o.life??1.6,
-  shape:o.shape??{type:'circle',radius:R*.48,thickness:1},
-  size:[R*.95,R*1.45],rotation:[0,6.28],
-  color:o.color??'#1a1210',alpha:o.alpha??.68,colorOverLife:{c:[[0,'#ffffff'],[1,'#ffffff']],a:[[0,0],[.06,1],[.7,.8],[1,0]]},order:-5},pick(o,['life','alpha','color','bursts','max',...OWN]));
+  shape:o.shape??{type:'circle',radius:R*.76,thickness:.9,arcMode:'burstSpread'},
+  size:[Math.min(.34,R*.34),Math.min(.5,R*.48)],rotation:[0,6.28],
+  color:o.color??'#1a1210',alpha:o.alpha??.62,colorOverLife:{c:[[0,'#ffffff'],[1,'#ffffff']],a:[[0,0],[.06,1],[.7,.8],[1,0]]},order:-5},pick(o,['life','alpha','color','bursts','max',...OWN]));
 };
 // G · Ground-aligned crescent arc of swirling pixel flame/energy particles toward +X (replaces single vector slash decal).
 export const slashDecal=(P,o={})=>{

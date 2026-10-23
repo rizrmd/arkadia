@@ -181,45 +181,59 @@ try{
  const heroDepthPng=await page.screenshot({type:'png'});
  await sharp(heroDepthPng).webp({quality:90}).toFile(`${OUT}/occlusion-hero-depth.webp`);
 
- // 4. Scenario D: Wall collision & zero wall bleed-through (projectiles, AoE telegraphs, and ground particles stopped by rampart walls)
- const wallCollisionCheck=await page.evaluate(()=>{
+ // 4. Scenario D: Wide skill VFX started away from wall (start position not behind wall, wide area extending behind wall with hero-like ~0.32 reduced opacity)
+ const wallWideCheck=await page.evaluate(()=>{
   const c=window.__STRONGHOLD_COMBAT__;
   const heroEl=window.__WORLD_HERO__;
   for(let i=0;i<60;i++)c.fxStage.frame(0.1,false);
-  // Place hero inside the SW courtyard near the SW rampart wall (u=7.5, v=13.6)
-  let wallSpot=null;
-  for(let v=13.6;v>=12.8;v-=0.1){
-   if(c.teleport(7.5,v)){
-    wallSpot={u:7.5,v:+v.toFixed(2),hx:Number(heroEl.dataset.x||0),hy:Number(heroEl.dataset.y||0)};
-    break;
+  // Place hero inside the courtyard AWAY from the SW rampart wall so start position is NOT occluded by the wall (startOcc === 1)
+  let startSpot=null;
+  for(let v=12.2;v>=10.0;v-=0.2){
+   for(let u=7.5;u<=10.5;u+=0.5){
+    if(c.teleport(u,v)){
+     const behind=Number(heroEl.dataset.behind||0);
+     const hx=Number(heroEl.dataset.x||0),hy=Number(heroEl.dataset.y||0);
+     const startOcc=c.occlusionAt(hx,hy,hx,hy,10,false,false);
+     if(behind===0&&startOcc===1){
+      startSpot={u:+u.toFixed(2),v:+v.toFixed(2),hx,hy,behind,startOcc};
+      break;
+     }
+    }
+   }
+   if(startSpot)break;
+  }
+  if(!startSpot)throw new Error('Could not locate unoccluded start spot near SW rampart wall');
+  // Cast wide-area skills from unoccluded courtyard positions (not right behind the wall) whose wide radius extends behind the SW rampart wall
+  c.fxStage.play('ember-warden/ember-snare.telegraph.ground',{u:startSpot.u,v:13.3,scale:1.55});
+  c.fxStage.play('ember-warden/ember-snare.detonate',{u:startSpot.u,v:13.3,scale:1.55});
+  c.fxStage.play('ember-warden/ember-snare.detonate.ground',{u:startSpot.u,v:13.3,scale:1.55});
+  c.fxStage.play('ember-warden/shockwave.detonate',{u:startSpot.u,v:13.1,scale:1.65});
+  c.fxStage.play('ember-warden/shockwave.detonate.ground',{u:startSpot.u,v:13.1,scale:1.65});
+  c.fxStage.play('ember-warden/flame-fan.cast',{u:startSpot.u,v:13.0,yaw:Math.PI*0.45,scale:1.45});
+  for(let i=0;i<3;i++)c.fxStage.frame(0.03,false);
+  // Verify that the portion of the wide VFX behind the SW rampart wall has hero-like reduced opacity (~0.32), NOT 1.0 and NOT 0
+  let behindWallOcc=1,behindWallGroundOcc=1;
+  for(let wy=520;wy<=700;wy+=10){
+   for(let wx=80;wx<=380;wx+=12){
+    const o=c.occlusionAt(wx,wy,wx,wy,12,false,false,startSpot.hy);
+    if(o<behindWallOcc)behindWallOcc=o;
+    const og=c.occlusionAt(wx,wy,wx,wy,12,true,false,startSpot.hy);
+    if(og<behindWallGroundOcc)behindWallGroundOcc=og;
    }
   }
-  if(!wallSpot)throw new Error('Could not locate walkable tile near SW rampart wall');
-  const beforeSnap=c.snapshot();
-  const prevWallHits=beforeSnap.vfx.totals.wallHits||0;
-  // Fire Flame Fan bolts and cast Ember Snare directly toward an outside tile beyond the solid SW rampart wall (u=7.5, v=17.2)
-  c.resetCooldowns();
-  c.castSkill('flame-fan',{targetU:7.5,targetV:17.2});
-  const snare=c.spawnAoE({kind:'ember-snare',skill:'ember-snare',shape:'circle',u:7.5,v:17.2,radius:1.5,duration:640});
-  c.fxStage.play('ember-warden/ember-snare.detonate',{u:snare.u,v:snare.v,scale:1.15});
-  c.fxStage.play('ember-warden/ember-snare.detonate.ground',{u:snare.u,v:snare.v,scale:1.15});
-  // Step simulation to peak eruption where outer rim particles hit the wall boundary and are occluded to 0
-  for(let i=0;i<2;i++)c.fxStage.frame(0.03,false);
-  // Check ground occlusion inside the non-walkable wall footprint
-  const wallFootOcc=c.occlusionAt(wallSpot.hx-64,wallSpot.hy+32,wallSpot.hx-64,wallSpot.hy+32,12,true,false);
-  const afterSnap=c.snapshot();
   return {
-   wallSpot,
-   snareClamped:{u:+snare.u.toFixed(2),v:+snare.v.toFixed(2)},
-   wallFootOcc,
-   wallHitsDelta:(afterSnap.vfx.totals.wallHits||0)-prevWallHits,
+   startSpot,
+   behindWallOcc,
+   behindWallGroundOcc,
    stats:c.fxStage.stats(),
   };
  });
 
- assert.equal(wallCollisionCheck.wallFootOcc,0,'ground particles on non-walkable wall footprint must have 0 occlusion visibility (no wall bleed-through)');
- assert.ok(wallCollisionCheck.snareClamped.v<=14.6,`AoE target across wall must be clamped before wall, got v=${wallCollisionCheck.snareClamped.v}`);
- assert.ok(wallCollisionCheck.wallHitsDelta>=1,`expected skill cast against wall to register wallHits, got ${wallCollisionCheck.wallHitsDelta}`);
+ assert.equal(wallWideCheck.startSpot.startOcc,1,'skill start position away from wall must be unoccluded (1.0)');
+ assert.ok(wallWideCheck.behindWallOcc>=0.31&&wallWideCheck.behindWallOcc<=0.35,`wide VFX portion behind wall must have hero-like reduced opacity (~0.32), got ${wallWideCheck.behindWallOcc}`);
+ assert.ok(wallWideCheck.behindWallGroundOcc>=0.31&&wallWideCheck.behindWallGroundOcc<=0.35,`ground decal portion behind wall must have hero-like reduced opacity (~0.32), got ${wallWideCheck.behindWallGroundOcc}`);
+ assert.ok(wallWideCheck.stats.occludedParticles>0,`expected wide VFX started away from wall to occlude particles reaching behind wall, got ${wallWideCheck.stats.occludedParticles}`);
+ assert.ok(wallWideCheck.stats.minOcclusion>=0.31&&wallWideCheck.stats.minOcclusion<=0.35,`expected minOcclusion ~0.32 (hero silhouette match), got ${wallWideCheck.stats.minOcclusion}`);
 
  await page.waitForTimeout(36);
  const wallPng=await page.screenshot({type:'png'});
@@ -233,7 +247,7 @@ try{
   gatewayOcclusion:gateCheck,
   buildingOcclusion:buildingCheck,
   heroDepthAndSilhouette:heroDepthCheck,
-  wallCollisionAndOcclusion:wallCollisionCheck,
+  wideSkillWallOcclusion:wallWideCheck,
   screenshots:[
    `${OUT}/occlusion-behind-gateway.webp`,
    `${OUT}/occlusion-behind-building.webp`,

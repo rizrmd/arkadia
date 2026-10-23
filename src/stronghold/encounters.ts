@@ -28,7 +28,7 @@ type Hero={
  canvas:HTMLCanvasElement;
  position():{x:number;y:number};face(sx:number,sy:number):void;respawn():void;teleport(x:number,y:number):boolean;
  blocked(x:number,y:number):boolean;occluders(x:number,y:number,box:number[]):Placed[];
- occlusionAt(px:number,py:number,wx?:number,wy?:number,rad?:number,flat?:boolean,includeHero?:boolean):number;
+ occlusionAt(px:number,py:number,wx?:number,wy?:number,rad?:number,flat?:boolean,includeHero?:boolean,anchorY?:number):number;
  traceWallRay(x0:number,y0:number,x1:number,y1:number):{hit:boolean;x:number;y:number;t:number};
  sun():Sun;hero?:()=>HeroId
 };
@@ -717,7 +717,6 @@ export async function createEncounters(o:{
     for(let i=0;i<beadCount;i++){
      const ang=(i/beadCount)*Math.PI*2,jit=((i*37)%11-5)*.35;
      const rx=Math.round(Math.cos(ang)*(aoeRx-2+jit)),ry=Math.round(Math.sin(ang)*(aoeRy-1+jit*.52));
-     if(o.hero.blocked(hp.x+rx,hp.y-2+ry))continue;
      const major=i%3===0,ps=major?3:2;
      aoeCtx.fillStyle=comboHighlightMs>0
       ?(major?'rgba(156,240,255,0.88)':'rgba(102,227,255,0.62)')

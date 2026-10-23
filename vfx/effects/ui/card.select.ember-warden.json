@@ -21,7 +21,7 @@
    "name": "emitter-1",
    "enabled": true,
    "mode": "billboard",
-   "maxParticles": 4,
+   "maxParticles": 6,
    "duration": 0.5,
    "loop": false,
    "timeline": {
@@ -114,18 +114,19 @@
     "bursts": [
      {
       "time": 0,
-      "count": 1,
+      "count": 4,
       "cycles": 1,
       "interval": 0,
       "probability": 1
      }
     ],
-    "radius": 0,
+    "shape": "circle",
+    "radius": 0.42,
     "radiusValue": {
      "mode": "constant",
-     "value": 0,
-     "min": 0,
-     "max": 0,
+     "value": 0.42,
+     "min": 0.42,
+     "max": 0.42,
      "curve": [
       {
        "x": 0,
@@ -155,9 +156,9 @@
      0
     ],
     "angle": 25,
-    "radiusThickness": 1,
+    "radiusThickness": 0.9,
     "arc": 360,
-    "arcMode": "random",
+    "arcMode": "burstSpread",
     "arcSpread": 0,
     "arcSpeedValue": {
      "mode": "constant",
@@ -376,9 +377,9 @@
     },
     "size": {
      "mode": "constant",
-     "value": 1.6,
-     "min": 1.6,
-     "max": 1.6,
+     "value": 0.58,
+     "min": 0.58,
+     "max": 0.58,
      "curve": [
       {
        "x": 0,
@@ -2425,18 +2426,19 @@
     "bursts": [
      {
       "time": 0,
-      "count": 1,
+      "count": 2,
       "cycles": 1,
       "interval": 0,
       "probability": 1
      }
     ],
-    "radius": 0,
+    "shape": "circle",
+    "radius": 0.126,
     "radiusValue": {
      "mode": "constant",
-     "value": 0,
-     "min": 0,
-     "max": 0,
+     "value": 0.126,
+     "min": 0.126,
+     "max": 0.126,
      "curve": [
       {
        "x": 0,
@@ -2466,9 +2468,9 @@
      0
     ],
     "angle": 25,
-    "radiusThickness": 1,
+    "radiusThickness": 0.9,
     "arc": 360,
-    "arcMode": "random",
+    "arcMode": "burstSpread",
     "arcSpread": 0,
     "arcSpeedValue": {
      "mode": "constant",
@@ -2687,9 +2689,9 @@
     },
     "size": {
      "mode": "constant",
-     "value": 0.7,
-     "min": 0.7,
-     "max": 0.7,
+     "value": 0.58,
+     "min": 0.58,
+     "max": 0.58,
      "curve": [
       {
        "x": 0,
@@ -4736,18 +4738,19 @@
     "bursts": [
      {
       "time": 0,
-      "count": 1,
+      "count": 2,
       "cycles": 1,
       "interval": 0,
       "probability": 1
      }
     ],
-    "radius": 0,
+    "shape": "circle",
+    "radius": 0.126,
     "radiusValue": {
      "mode": "constant",
-     "value": 0,
-     "min": 0,
-     "max": 0,
+     "value": 0.126,
+     "min": 0.126,
+     "max": 0.126,
      "curve": [
       {
        "x": 0,
@@ -4777,9 +4780,9 @@
      0
     ],
     "angle": 25,
-    "radiusThickness": 1,
+    "radiusThickness": 0.9,
     "arc": 360,
-    "arcMode": "random",
+    "arcMode": "burstSpread",
     "arcSpread": 0,
     "arcSpeedValue": {
      "mode": "constant",
@@ -4998,9 +5001,9 @@
     },
     "size": {
      "mode": "constant",
-     "value": 0.7,
-     "min": 0.7,
-     "max": 0.7,
+     "value": 0.58,
+     "min": 0.58,
+     "max": 0.58,
      "curve": [
       {
        "x": 0,

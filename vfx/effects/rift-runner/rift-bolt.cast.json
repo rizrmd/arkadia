@@ -21,7 +21,7 @@
    "name": "emitter-1",
    "enabled": true,
    "mode": "billboard",
-   "maxParticles": 4,
+   "maxParticles": 3,
    "duration": 0.5,
    "loop": false,
    "timeline": {
@@ -120,6 +120,7 @@
       "probability": 1
      }
     ],
+    "shape": "point",
     "radius": 0,
     "radiusValue": {
      "mode": "constant",
@@ -376,9 +377,9 @@
     },
     "size": {
      "mode": "constant",
-     "value": 0.65,
-     "min": 0.65,
-     "max": 0.65,
+     "value": 0.58,
+     "min": 0.58,
+     "max": 0.58,
      "curve": [
       {
        "x": 0,
@@ -2332,7 +2333,7 @@
    "name": "emitter-2",
    "enabled": true,
    "mode": "billboard",
-   "maxParticles": 4,
+   "maxParticles": 3,
    "duration": 0.5,
    "loop": false,
    "timeline": {
@@ -2431,6 +2432,7 @@
       "probability": 1
      }
     ],
+    "shape": "point",
     "radius": 0,
     "radiusValue": {
      "mode": "constant",

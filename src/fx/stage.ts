@@ -30,9 +30,12 @@ const BUNDLE='/vfx/skills.bin',POOL=12;
 const BLOOM=typeof location!=='undefined'&&new URLSearchParams(location.search).get('fxbloom')==='1';
 // The bundle is gzipped JSON (~20x smaller; named .bin because servers treat .gz as an encoding), inflated here
 // since the server sends files uncompressed.
-export async function fetchBundle():Promise<{manifest:unknown;effects:Record<string,unknown>}>{
- const res=await fetch(BUNDLE);if(!res.ok||!res.body)throw Error(`${BUNDLE}: ${res.status}`);
- return new Response(res.body.pipeThrough(new DecompressionStream('gzip'))).json();
+let bundlePromise:Promise<{manifest:unknown;effects:Record<string,unknown>}>|null=null;
+export function fetchBundle():Promise<{manifest:unknown;effects:Record<string,unknown>}>{
+ return bundlePromise??=(async()=>{
+  const res=await fetch(BUNDLE);if(!res.ok||!res.body)throw Error(`${BUNDLE}: ${res.status}`);
+  return new Response(res.body.pipeThrough(new DecompressionStream('gzip'))).json();
+ })();
 }
 // NixieFX (and Pixi, where the page has none yet) loads with the effect bundle, after the first paint.
 const PIXI=()=>import('pixi.js');
@@ -58,7 +61,7 @@ export type FxStageOptions={
  host?:{ground:Container;world:Container};
  depthLayers?:{back:Container;front:Container};
  getHeroWorld?:()=>{x:number;y:number};
- occlusionAt?:(px:number,py:number,wx?:number,wy?:number,rad?:number,flat?:boolean,includeHero?:boolean)=>number;
+ occlusionAt?:(px:number,py:number,wx?:number,wy?:number,rad?:number,flat?:boolean,includeHero?:boolean,anchorY?:number)=>number;
  bloom?:boolean;
 };
 export function createFxStage(o:FxStageOptions){
@@ -95,7 +98,7 @@ export function createFxStage(o:FxStageOptions){
      const src=fx.emitters,step=(src.length-1)/3;
      fx.emitters=[src[0],src[Math.round(step)],src[Math.round(step*2)],src[src.length-1]];
     }
-    const perMax=Math.max(6,Math.min(12,Math.floor(36/Math.max(1,fx.emitters.length))));
+    const perMax=Math.max(8,Math.min(14,Math.floor(40/Math.max(1,fx.emitters.length))));
     for(const e of fx.emitters as any[]){
      e.maxParticles=Math.min(e.maxParticles||perMax,perMax);
      if(e.spawn){
@@ -106,7 +109,7 @@ export function createFxStage(o:FxStageOptions){
        if(typeof rv.min==='number'&&rv.min>perMax)rv.min=perMax;
        if(typeof rv.max==='number'&&rv.max>perMax)rv.max=perMax;
       }
-      if(e.spawn.bursts)for(const b of e.spawn.bursts)if(b.count>6)b.count=Math.min(perMax,Math.ceil(b.count*.28));
+      if(e.spawn.bursts)for(const b of e.spawn.bursts)if(b.count>8)b.count=Math.min(perMax,Math.ceil(b.count*.32));
      }
     }
    }
@@ -192,7 +195,7 @@ export function createFxStage(o:FxStageOptions){
   planes.ground.vfx.update(dt,{timeSeconds:clock});planes.world.vfx.update(dt,{timeSeconds:clock});
   const occFn=o.occlusionAt,heroPos=o.getHeroWorld?.(),layers=o.depthLayers,sc=view.scale||1;
   const hx=heroPos?.x??0,hy=heroPos?.y??0;
-  if(Math.abs(hx-lastOccHx)>2||Math.abs(hy-lastOccHy)>2||occCache.size>2048){
+  if(Math.abs(hx-lastOccHx)>2||Math.abs(hy-lastOccHy)>2||occCache.size>4096){
    occCache.clear();lastOccHx=hx;lastOccHy=hy;
   }
   let occCount=0,occMin=1,occSum=0,occTotal=0,backCnt=0,frontCnt=0;
@@ -208,71 +211,40 @@ export function createFxStage(o:FxStageOptions){
    }
    const a=l.anchor,pos=(l.inst as any).position??[0,0,0],cs=Math.cos(a.yaw),sn=Math.sin(a.yaw),lx=pos[0]*a.scale,lz=pos[2]*a.scale;
    const anchorPt=tilePoint(a.u+lx*cs-lz*sn,a.v+lx*sn+lz*cs),anchorLift=(pos[1]*a.scale+a.h)*UNIT_PX;
-   const flat=l.plane==='ground';
-   let canOcclude=Boolean(occFn);
-   if(canOcclude&&occFn){
-    const ax=anchorPt.x,ay=anchorPt.y;
-    const ak=(((ax*.25)|0)*73856093)^(((ay*.25)|0)*19349663)^(flat?0x55555555:0x33333333);
-    const cachedCan=occCache.get(ak);
-    if(cachedCan!==undefined){
-     canOcclude=cachedCan>0;
-    }else{
-     if(ay>860){
-      canOcclude=!flat&&Boolean(heroPos&&Math.abs(ax-heroPos.x)<=110&&Math.abs(ay-heroPos.y)<=110);
-     }else if(flat){
-      canOcclude=occFn(ax,ay,ax,ay,32,true,false)<1
-       ||occFn(ax-56,ay-32,ax-56,ay-32,28,true,false)<1||occFn(ax+56,ay-32,ax+56,ay-32,28,true,false)<1
-       ||occFn(ax-56,ay+32,ax-56,ay+32,28,true,false)<1||occFn(ax+56,ay+32,ax+56,ay+32,28,true,false)<1
-       ||occFn(ax-112,ay,ax-112,ay,28,true,false)<1||occFn(ax+112,ay,ax+112,ay,28,true,false)<1
-       ||occFn(ax,ay-64,ax,ay-64,28,true,false)<1||occFn(ax,ay+64,ax,ay+64,28,true,false)<1;
-     }else if(!heroPos||Math.hypot(ax-heroPos.x,ay-heroPos.y)>110){
-      canOcclude=occFn(ax,ay,ax,ay-anchorLift*.5,32,false,false)<1
-       ||occFn(ax-56,ay-40,ax-56,ay-40,28,false,false)<1||occFn(ax+56,ay-40,ax+56,ay-40,28,false,false)<1
-       ||occFn(ax-112,ay-24,ax-112,ay-24,28,false,false)<1||occFn(ax+112,ay-24,ax+112,ay-24,28,false,false)<1
-       ||occFn(ax,ay+40,ax,ay+40,28,false,false)<1||occFn(ax,ay+84,ax,ay+84,28,false,false)<1
-       ||occFn(ax-64,ay+56,ax-64,ay+56,28,false,false)<1||occFn(ax+64,ay+56,ax+64,ay+56,28,false,false)<1;
-     }
-     occCache.set(ak,canOcclude?1:0);
-    }
-   }
-   if(flat&&!canOcclude)continue;
+   const flat=l.plane==='ground',anchorY=anchorPt.y,aHashY=((anchorY*.125)|0)*668265263;
+   if(flat&&anchorY>860)continue;
+   const canOcclude=Boolean(occFn)&&(anchorY<=860||(!flat&&Boolean(heroPos&&Math.abs(anchorPt.x-heroPos.x)<=110&&Math.abs(anchorY-heroPos.y)<=110)));
    let sumPy=0,cntPy=0,maxPy=-Infinity;
-   const aHashX=((anchorPt.x*.125)|0)*374761393,aHashY=((anchorPt.y*.125)|0)*668265263;
    const walkInst=(inst:any)=>{
     const views=inst?.emitterViews as any[]|undefined;
     if(views)for(let v=0;v<views.length;v++){
      const ev=views[v],ds=ev.depthSort as {particle:any;depth:number}[]|undefined;
+     const isAdd=ev.container?.blendMode==='add';
      if(ds)for(let j=0;j<ds.length;j++){
       const entry=ds[j],p=entry.particle;
       const py=(-entry.depth-view.y)/sc,px=(p.x-view.x)/sc,wx=px,wy=flat?py:(p.y-view.y)/sc;
       sumPy+=py;cntPy++;if(py>maxPy)maxPy=py;
       if(canOcclude&&occFn){
-       const gk=(((px*.125)|0)*73856093)^(((py*.125)|0)*19349663)^(((wy*.125)|0)*83492791)^aHashX^aHashY^(flat?1:2);
+       const texW=p.texture?.orig?.width??64,rad=Math.abs(p.scaleX)*texW*.5/sc,rBin=(rad*.25)|0;
+       const gk=(((px*.125)|0)*73856093)^(((py*.125)|0)*19349663)^(((wy*.125)|0)*83492791)^(rBin*2654435761)^aHashY^(flat?1:2);
        let occ=occCache.get(gk);
        if(occ===undefined){
-        const texW=p.texture?.orig?.width??64,rad=Math.abs(p.scaleX)*texW*.5/sc;
-        occ=occFn(px,py,wx,wy,rad,flat,!flat);
-        if(occ>0&&anchorPt.y<860&&(Math.abs(px-anchorPt.x)>14||Math.abs(py-anchorPt.y)>14)){
-         const dx=px-anchorPt.x,dy=py-anchorPt.y;
-         if(occFn(anchorPt.x+dx*.33,anchorPt.y+dy*.33,anchorPt.x+dx*.33,anchorPt.y+dy*.33,0,true,false)===0
-          ||occFn(anchorPt.x+dx*.5,anchorPt.y+dy*.5,anchorPt.x+dx*.5,anchorPt.y+dy*.5,0,true,false)===0
-          ||occFn(anchorPt.x+dx*.67,anchorPt.y+dy*.67,anchorPt.x+dx*.67,anchorPt.y+dy*.67,0,true,false)===0)occ=0;
-        }
+        occ=occFn(px,py,wx,wy,rad,flat,!flat,anchorY);
         occCache.set(gk,occ);
        }
        occTotal++;occSum+=occ;if(occ<occMin)occMin=occ;
-       if(occ<.999){p.alpha*=occ;occCount++;}
+       if(occ<.999){p.alpha*=isAdd?occ*.58:occ;occCount++;}
       }
      }
      const tc=ev.trailContainer?.particleChildren as any[]|undefined;
      if(canOcclude&&occFn&&tc?.length)for(let j=0;j<tc.length;j++){
-      const tp=tc[j],px=(tp.x-view.x)/sc,wy=flat?(tp.y*.5-view.y)/sc:(tp.y-view.y)/sc,py=flat?wy:anchorPt.y;
-      const occ=occFn(px,py,px,wy,6,flat,!flat);
+      const tp=tc[j],px=(tp.x-view.x)/sc,wy=flat?(tp.y*.5-view.y)/sc:(tp.y-view.y)/sc,py=flat?wy:anchorY;
+      const occ=occFn(px,py,px,wy,6,flat,!flat,anchorY);
       occTotal++;occSum+=occ;if(occ<occMin)occMin=occ;
-      if(occ<.999){tp.alpha*=occ;occCount++;}
+      if(occ<.999){tp.alpha*=isAdd?occ*.58:occ;occCount++;}
      }
      if(canOcclude&&occFn&&ev.trailMesh?.visible){
-      const occ=occFn(anchorPt.x,anchorPt.y,anchorPt.x,anchorPt.y-anchorLift,12,flat,!flat);
+      const occ=occFn(anchorPt.x,anchorY,anchorPt.x,anchorY-anchorLift,12,flat,!flat,anchorY);
       ev.trailMesh.alpha=occ;
       occTotal++;occSum+=occ;if(occ<occMin)occMin=occ;if(occ<.999)occCount++;
      }
@@ -280,10 +252,10 @@ export function createFxStage(o:FxStageOptions){
     const kids=inst?.childInstances as any[]|undefined;
     if(kids)for(let k=0;k<kids.length;k++)walkInst(kids[k]);
    };
-   if(canOcclude)walkInst(l.inst);
+   if(canOcclude||(l.plane==='world'&&layers&&heroPos))walkInst(l.inst);
    if(l.plane==='world'&&layers&&heroPos){
-    const effY=cntPy>0?sumPy/cntPy:anchorPt.y-anchorLift*.5;
-    const isBehind=!l.follow&&anchorPt.y<heroPos.y-2&&Math.min(anchorPt.y,effY)<heroPos.y-2;
+    const effY=cntPy>0?sumPy/cntPy:anchorY-anchorLift*.5;
+    const isBehind=effY<heroPos.y-2;
     const targetLayer=isBehind?layers.back:layers.front;
     if(l.inst.root.parent!==targetLayer)targetLayer.addChild(l.inst.root);
     l.inst.root.zIndex=effY;

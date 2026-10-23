@@ -97,7 +97,7 @@ export function createCombatVfx(o:{
  backLayer:Container;
  frontLayer:Container;
  getHero:()=>{u:number;v:number;facing:number;back:boolean;vertical:boolean;heroId:HeroId};
- occlusionAt?:(px:number,py:number,wx?:number,wy?:number,rad?:number,flat?:boolean,includeHero?:boolean)=>number;
+ occlusionAt?:(px:number,py:number,wx?:number,wy?:number,rad?:number,flat?:boolean,includeHero?:boolean,anchorY?:number)=>number;
  blocked?:(px:number,py:number)=>boolean;
  traceWallRay?:(x0:number,y0:number,x1:number,y1:number)=>{hit:boolean;x:number;y:number;t:number};
  getRun:()=>Progression;
@@ -282,10 +282,8 @@ export function createCombatVfx(o:{
   const kind=opts.kind??(h.heroId==='ember-warden'?'ember-snare':'rift-trap');
   const shape=opts.shape??(kind==='cleave-cone'||kind==='flame-cone'?'cone':'circle');
   const offset=shape==='cone'?.35:.95;
-  const rawU=opts.u??(h.u+dir.u*offset),rawV=opts.v??(h.v+dir.v*offset);
-  const clamped=clampTargetToWall(h.u,h.v,rawU,rawV);
-  const u=clamped.u,v=clamped.v;
-  if(clamped.hit)totalWallHits++;
+  const u=opts.u??(h.u+dir.u*offset),v=opts.v??(h.v+dir.v*offset);
+  if(clampTargetToWall(h.u,h.v,u,v).hit)totalWallHits++;
   totalAoEs++;
   const skill=opts.skill??AOE_SKILL[kind];
   const aoe:AoETelegraph={

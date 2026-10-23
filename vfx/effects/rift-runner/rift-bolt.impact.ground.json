@@ -2341,7 +2341,7 @@
    "name": "emitter-2",
    "enabled": true,
    "mode": "billboard",
-   "maxParticles": 5,
+   "maxParticles": 18,
    "duration": 0.5,
    "loop": false,
    "timeline": {
@@ -2434,19 +2434,19 @@
     "bursts": [
      {
       "time": 0,
-      "count": 3,
+      "count": 14,
       "cycles": 1,
       "interval": 0,
       "probability": 1
      }
     ],
     "shape": "circle",
-    "radius": 0.1375,
+    "radius": 0.42900000000000005,
     "radiusValue": {
      "mode": "constant",
-     "value": 0.1375,
-     "min": 0.1375,
-     "max": 0.1375,
+     "value": 0.42900000000000005,
+     "min": 0.42900000000000005,
+     "max": 0.42900000000000005,
      "curve": [
       {
        "x": 0,
@@ -2476,9 +2476,9 @@
      0
     ],
     "angle": 25,
-    "radiusThickness": 1,
+    "radiusThickness": 0.92,
     "arc": 360,
-    "arcMode": "random",
+    "arcMode": "burstSpread",
     "arcSpread": 0,
     "arcSpeedValue": {
      "mode": "constant",
@@ -2668,9 +2668,9 @@
      },
      "intensity": {
       "mode": "constant",
-      "value": 0.7,
-      "min": 0.7,
-      "max": 0.7,
+      "value": 0.52,
+      "min": 0.52,
+      "max": 0.52,
       "curve": [
        {
         "x": 0,
@@ -2696,10 +2696,10 @@
      }
     },
     "size": {
-     "mode": "constant",
-     "value": 1.0175,
-     "min": 1.0175,
-     "max": 1.0175,
+     "mode": "random",
+     "value": 0.198,
+     "min": 0.165,
+     "max": 0.231,
      "curve": [
       {
        "x": 0,

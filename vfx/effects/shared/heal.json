@@ -4601,7 +4601,7 @@
    "name": "emitter-3",
    "enabled": true,
    "mode": "billboard",
-   "maxParticles": 4,
+   "maxParticles": 3,
    "duration": 0.5,
    "loop": false,
    "timeline": {
@@ -4700,6 +4700,7 @@
       "probability": 1
      }
     ],
+    "shape": "point",
     "radius": 0,
     "radiusValue": {
      "mode": "constant",

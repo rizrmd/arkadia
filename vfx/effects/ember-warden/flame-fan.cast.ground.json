@@ -13982,7 +13982,7 @@
    "name": "heat",
    "enabled": true,
    "mode": "billboard",
-   "maxParticles": 5,
+   "maxParticles": 23,
    "duration": 0.5,
    "loop": false,
    "timeline": {
@@ -14075,19 +14075,19 @@
     "bursts": [
      {
       "time": 0,
-      "count": 3,
+      "count": 19,
       "cycles": 1,
       "interval": 0,
       "probability": 1
      }
     ],
     "shape": "circle",
-    "radius": 0.3,
+    "radius": 0.9359999999999999,
     "radiusValue": {
      "mode": "constant",
-     "value": 0.3,
-     "min": 0.3,
-     "max": 0.3,
+     "value": 0.9359999999999999,
+     "min": 0.9359999999999999,
+     "max": 0.9359999999999999,
      "curve": [
       {
        "x": 0,
@@ -14117,9 +14117,9 @@
      0
     ],
     "angle": 25,
-    "radiusThickness": 1,
+    "radiusThickness": 0.92,
     "arc": 360,
-    "arcMode": "random",
+    "arcMode": "burstSpread",
     "arcSpread": 0,
     "arcSpeedValue": {
      "mode": "constant",
@@ -14337,10 +14337,10 @@
      }
     },
     "size": {
-     "mode": "constant",
-     "value": 2.22,
-     "min": 2.22,
-     "max": 2.22,
+     "mode": "random",
+     "value": 0.432,
+     "min": 0.36,
+     "max": 0.504,
      "curve": [
       {
        "x": 0,
