@@ -1488,6 +1488,7 @@ export class Hud extends Container {
    this.setHp(this.state.hp, this.state.hpMax);
    this.setGateHp(this.state.gateHp ?? 100, this.state.gateHpMax ?? 100);
    this.setXp(this.state.xp, this.state.xpMax);
+   this.playerConsole?.setPortrait(portrait);
    this.layoutTopRightRibbon();
    this.layoutCrescentArc();
   }
@@ -1516,7 +1517,7 @@ export class Hud extends Container {
    g.pivot.set(px, py);
    g.position.set(x, y);
   };
-  place(this.groups.tl, 0, 0, 0, 0, portrait ? (this.isAltB ? 0.82 : 0.9) : 1);
+  place(this.groups.tl, 0, 0, 0, 0, portrait ? (this.isAltB ? 1.08 : 0.9) : 1);
   place(this.groups.tr, W, 0, width, 0);
   place(this.groups.bc, W / 2, portrait ? 842 : H, width / 2, height);
   place(this.groups.bl, 0, H, 0, height);
