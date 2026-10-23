@@ -20,7 +20,7 @@ try{
   await page.evaluate(()=>window.__STRONGHOLD_COMBAT__.setPreviewMode(true));
   await page.evaluate(initial=>{const a=window.__STRONGHOLD_COMBAT__;a.setPreviewMode(true);a.clearFoes();a.teleport(initial.u,initial.v);},initial);await page.waitForTimeout(2000);
   const shots=name==='desktop'?[['court',null],['ridge-ramp',[25.5,14.2]],['on-ridge',[25.5,7.2]],['ramp-middle',[25.5,11.5]],['ramp-shoulder',[24.5,10.2]],['behind-ridge',[25.5,4.5]],['on-terrace',[5.5,25]]]:name==='phone'?[['court',null],['on-ridge',[25.5,7.2]],['ramp-middle',[25.5,11.5]]]:[['on-ridge',[25.5,7.2]]];
-  for(const [shot,at] of shots.filter(s=>!process.env.COURT_ONLY||s[0]==='court')){
+  for(const [shot,at] of shots.filter(s=>(!process.env.COURT_ONLY||s[0]==='court')&&(!process.env.SHOTS||process.env.SHOTS.split(',').includes(s[0])))){
    if(at){const ok=await page.evaluate(([u,v])=>window.__STRONGHOLD_COMBAT__.teleport(u,v),at);if(!ok)throw Error('teleport failed for '+shot);await page.waitForTimeout(2500);}
    const file=`${OUT}/${name}-${shot}.png`;await page.screenshot({path:file});
    await sharp(file).webp({quality:82}).toFile(file.replace(/\.png$/,'.webp'));

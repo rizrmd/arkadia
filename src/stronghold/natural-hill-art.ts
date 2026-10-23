@@ -40,6 +40,12 @@ export function naturalHillArt(f:ReliefFeature,snow:HTMLImageElement,rock:HTMLIm
   c.fillStyle=random()<.5?'rgba(104,96,81,.22)':'rgba(155,148,130,.27)';c.beginPath();c.ellipse(p.x,y,.7+random()*3,.4+random()*1.2,-.45,0,Math.PI*2);c.fill();
  }
  c.restore();
+ // Feather the last snow bank into the existing ground. This removes the antialiased sprite boundary
+ // without adding a second decal or changing the zero-height collision mouth.
+ const uMid=(f.u0+f.u1)/2,bank=tilePoint(uMid,f.v1-.4),mouth=tilePoint(uMid,f.v1),bankLift=featureHeight(f,uMid,f.v1-.4)*PX_PER_METER;
+ const bankDistance=(-(mouth.x-bank.x)+2*(mouth.y-bank.y+bankLift))/5;
+ const blend=c.createLinearGradient(bank.x,bank.y-bankLift,bank.x-bankDistance,bank.y-bankLift+bankDistance*2);blend.addColorStop(0,'#fff');blend.addColorStop(1,'rgba(255,255,255,0)');
+ c.save();c.globalCompositeOperation='destination-in';c.fillStyle=blend;c.fillRect(left,top,right-left,bottom-top);c.restore();
  // Keep the complete walkable surface above the walls. At concave shoulders, a rear wall can project
  // across the ramp in screen space; compositing it behind the surface prevents the false overlap.
  const surfaceContext=c,wallCanvas=document.createElement('canvas');wallCanvas.width=canvas.width;wallCanvas.height=canvas.height;
