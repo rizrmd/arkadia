@@ -39,13 +39,15 @@ try{
   }
   }else{const prior=JSON.parse(await fs.readFile(`${out}/verification${live?'-live':''}.json`,'utf8'));for(const key of ['sprite','skill','lab']){assert.equal(Object.keys(prior.heroes[hero][key]).length,8);r[key]=prior.heroes[hero][key];}}
   await page.goto(base+`/?offline=1&hero=${hero}&time=0.5`);await page.waitForFunction(()=>window.__WORLD_HERO__?.dataset.hero,null,{timeout:180000});
+  const clearPoint=await page.evaluate(()=>{const c=window.__STRONGHOLD_COMBAT__;for(let u=4;u<=11;u+=2)for(let v=4;v<=11;v+=2){const x=577+(u-v)*64,y=-160+(u+v)*32;let clear=true;for(let dx=-140;dx<=140&&clear;dx+=20)for(let dy=-140;dy<=140;dy+=20)if(dx*dx+dy*dy<=19600&&c.blocked(x+dx,y+dy)){clear=false;break;}if(clear)return {u,v};}throw Error('No clear run-loop test area');});
   const keys={N:['KeyW'],NE:['KeyW','KeyD'],E:['KeyD'],SE:['KeyS','KeyD'],S:['KeyS'],SW:['KeyS','KeyA'],W:['KeyA'],NW:['KeyW','KeyA']};
   for(const dir of dirs){
-   await page.evaluate(()=>window.__STRONGHOLD_COMBAT__.teleport(8.5,8.5));
+   assert.ok(await page.evaluate(p=>window.__STRONGHOLD_COMBAT__.teleport(p.u,p.v),clearPoint));
    for(const key of keys[dir])await page.keyboard.down(key);
    await page.waitForFunction(dir=>window.__WORLD_HERO__?.dataset.state==='move'&&window.__WORLD_HERO__?.dataset.clip===`move-${dir}`,dir,{timeout:8000});const st=await page.evaluate(()=>({...window.__WORLD_HERO__.dataset}));
+   const cycle=await page.evaluate(dir=>new Promise((resolve,reject)=>{const seen=new Set(),started=performance.now();function sample(){const s=window.__WORLD_HERO__.dataset;if(s.clip===`move-${dir}`&&s.state==='move')seen.add(s.frame);if(seen.size===8)return resolve({uniqueFrames:seen.size,elapsedMs:Math.round(performance.now()-started)});if(performance.now()-started>8000)return reject(Error('Runtime loop did not cover eight frames: '+dir+' '+seen.size));requestAnimationFrame(sample);}sample();}),dir);
    for(const key of keys[dir])await page.keyboard.up(key);await page.waitForTimeout(250);
-   assert.equal(st.state,'move',hero+' '+dir+' runtime moving');assert.equal(st.clip,`move-${dir}`,hero+' '+dir+' runtime direction');r.runtime[dir]={clip:st.clip,frame:st.frame};
+   assert.equal(st.state,'move',hero+' '+dir+' runtime moving');assert.equal(st.clip,`move-${dir}`,hero+' '+dir+' runtime direction');r.runtime[dir]={clip:st.clip,frame:st.frame,...cycle};
   }
   await page.screenshot({path:`${out}/${hero}-runtime${live?'-live':''}.webp`});console.log(hero,'Sprite Player, Skill Player, FX Lab and runtime: all eight directions pass');
  }
