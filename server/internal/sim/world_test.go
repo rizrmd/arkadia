@@ -626,3 +626,36 @@ func TestHeldWalkIsNeverLockedInASwing(t *testing.T) {
 		}
 	}
 }
+
+// A phone network that holds packets for 300-400 ms and then delivers them together, while a revenant keeps pace
+// beside the hero: the key held all along keeps the hero out of swings once its first input has arrived (the
+// server held every swing and restarted one in each gap before, 90 of 200 ticks).
+func TestHeldWalkThroughPacketBurstsBesideAChaser(t *testing.T) {
+	for _, gap := range []int{6, 8} {
+		w := newTestWorld(t)
+		p := w.AddPlayer("a", "A", 100)
+		at := Vec{gateTile + 2.5, gateTile + 2.5}
+		px := TilePoint(at.X, at.Y)
+		p.X, p.Y, p.F.Pos = px.X, px.Y, at
+		w.spawnTimer = 1e9
+		e := &Enemy{ID: 1, F: newFighter(Revenant, Vec{at.X + heroReach*.6, at.Y + heroReach*.6}), Home: at}
+		e.F.Cooldown, e.F.Immune = 1e9, 1e9
+		w.Enemies, w.nextEnemy = []*Enemy{e}, 2
+		swings := 0
+		for i := 0; i < 200; i++ {
+			if (i+1)%gap == 0 {
+				for k := 0; k < gap; k++ {
+					p.Queue(Input{Seq: p.nextSeq(), X: right.X, Y: right.Y})
+				}
+			}
+			w.Step()
+			e.F.Pos = Vec{p.F.Pos.X + heroReach*.5, p.F.Pos.Y + heroReach*.5}
+			if p.F.State == Attack {
+				swings++
+			}
+		}
+		if swings >= gap {
+			t.Fatalf("bursts every %d ticks: %d of 200 ticks in a swing under a held key", gap, swings)
+		}
+	}
+}
