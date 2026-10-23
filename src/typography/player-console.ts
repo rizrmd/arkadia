@@ -12,7 +12,6 @@ interface Meter {
  trim: Graphics;
  value: MsdfText;
  label: MsdfText;
- icon: Graphics;
  color: number;
  y: number;
  h: number;
@@ -63,7 +62,6 @@ export class PlayerConsole extends Container {
    const trim = this.addChild(new Graphics());
    const value = this.addChild(new MsdfText({ ...ROLES['hud-value'], font: 'console', size: i === 2 ? 14.5 : 16.5, fill: 0xfff8e7, outline: OUTLINE }, ''));
    const label = this.addChild(new MsdfText({ ...ROLES['hud-name'], font: 'console', size: 13, fill: 0xfff4db, outline: OUTLINE }, labels[i]));
-   const icon = this.addChild(new Graphics());
    this.rows.push({
     plate,
     track,
@@ -73,7 +71,6 @@ export class PlayerConsole extends Container {
     trim,
     value,
     label,
-    icon,
     color,
     y: 0,
     h: 0,
@@ -170,21 +167,7 @@ export class PlayerConsole extends Container {
     }
    }
 
-   placeScaled(row.label, p ? 196 : 198, y + h * (p ? 0.69 : 0.73), 0, labelScale);
-
-   const baseH = i === 2 ? 17 : 24;
-   const iy = y + (h - baseH) / 2;
-   row.icon.clear();
-   if (i === 0) {
-    row.icon.moveTo(180, iy + 10).bezierCurveTo(169, iy - 1, 165, iy + 11, 180, iy + 20).bezierCurveTo(198, iy + 5, 184, iy + 1, 180, iy + 10).fill(0x9d0d18).stroke({ color: 0xffb2a6, width: 0.9 });
-    row.icon.moveTo(169.5, iy + 8).bezierCurveTo(169, iy + 3, 175, iy + 4, 178, iy + 7).stroke({ color: 0xffe5d8, width: 0.65 });
-   } else if (i === 1) {
-    row.icon.moveTo(171, iy + 21).lineTo(171, iy + 10).arc(178, iy + 10, 7, Math.PI, 0).lineTo(185, iy + 21).stroke({ color: 0xaffaff, width: 1.1 });
-    for (let x = 174; x <= 182; x += 2.7) row.icon.moveTo(x, iy + 8).lineTo(x, iy + 21).stroke({ color: 0x7beeff, width: 0.8 });
-    row.icon.moveTo(173, iy + 10).lineTo(183, iy + 10).stroke({ color: 0xe7ffff, width: 0.8 });
-   } else {
-    row.icon.poly([178, iy + 1, 181, iy + 7, 185, iy + 9, 181, iy + 11, 178, iy + 16, 175, iy + 11, 171, iy + 9, 175, iy + 7]).stroke({ color: 0xffe38a, width: 1 });
-   }
+   placeScaled(row.label, p ? 174 : 176, y + h * (p ? 0.69 : 0.73), 0, labelScale);
   });
 
   const bx = p ? 30 : 29;
