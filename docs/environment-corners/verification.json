@@ -5,6 +5,11 @@
       "court": {
         "biome": "court",
         "area": "court",
+        "blurPx": 3,
+        "textureSize": {
+          "w": 320,
+          "h": 380
+        },
         "leftBox": {
           "left": 0,
           "top": 483,
@@ -49,6 +54,11 @@
       "court": {
         "biome": "court",
         "area": "court",
+        "blurPx": 3,
+        "textureSize": {
+          "w": 180,
+          "h": 150
+        },
         "leftBox": {
           "left": 0,
           "top": 0,
@@ -93,6 +103,11 @@
       "court": {
         "biome": "court",
         "area": "court",
+        "blurPx": 3,
+        "textureSize": {
+          "w": 76,
+          "h": 150
+        },
         "leftBox": {
           "left": 0,
           "top": 0,
@@ -173,12 +188,12 @@
   ],
   "mobileFps": {
     "withLayer": {
-      "rafFps": 2,
-      "renderMsPerFrame": 12.988
+      "rafFps": 0.9,
+      "renderMsPerFrame": 80.188
     },
     "withoutLayer": {
-      "rafFps": 0.4,
-      "renderMsPerFrame": 22.542
+      "rafFps": 0.2,
+      "renderMsPerFrame": 63.324
     }
   },
   "consoleErrors": [],
