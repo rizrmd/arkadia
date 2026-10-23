@@ -26,7 +26,7 @@ export class MsdfText extends Container{
   if(this.role.shadow){this.shadowPass=new BitmapText({text:this.shown(),style});this.shadowPass.position.set(this.role.shadow.dx,this.role.shadow.dy);this.addChild(this.shadowPass);}
   this.fillPass=new BitmapText({text:this.shown(),style});this.addChild(this.fillPass);
   this.refresh();
-  this.on('added',()=>live.add(this));this.on('removed',()=>live.delete(this));live.add(this);
+  this.on('added',()=>live.add(this));this.on('removed',()=>live.delete(this));this.on('destroyed',()=>live.delete(this));live.add(this);
  }
  get text(){return this.value;}
  set text(v:string){if(v===this.value)return;this.value=v;for(const p of this.passes())p.text=this.shown();this.refresh();}

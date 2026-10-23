@@ -1,6 +1,7 @@
 package server
 
 import (
+	"bufio"
 	"crypto/rand"
 	"encoding/hex"
 	"encoding/json"
@@ -149,9 +150,41 @@ type tracelogStore struct {
 }
 
 func (s *Server) ensureTracelogStore() *tracelogStore {
-	actual, _ := s.tracelogOnce.LoadOrStore("store", &tracelogStore{
+	if existing, ok := s.tracelogOnce.Load("store"); ok {
+		return existing.(*tracelogStore)
+	}
+	initial := &tracelogStore{
 		entries: make([]TracelogEntry, 0, 32),
-	})
+	}
+	if p := s.tracelogFilePath(); p != "" {
+		if f, err := os.Open(p); err == nil {
+			sc := bufio.NewScanner(f)
+			sc.Buffer(make([]byte, 64*1024), maxTracelogBody*2)
+			for sc.Scan() {
+				line := strings.TrimSpace(sc.Text())
+				if line == "" {
+					continue
+				}
+				var entry TracelogEntry
+				if err := json.Unmarshal([]byte(line), &entry); err == nil && entry.ID != "" {
+					if entry.Seq > initial.seq {
+						initial.seq = entry.Seq
+					} else {
+						initial.seq++
+						entry.Seq = initial.seq
+					}
+					if len(initial.entries) >= maxStoredTracelogs {
+						copy(initial.entries, initial.entries[1:])
+						initial.entries[len(initial.entries)-1] = entry
+					} else {
+						initial.entries = append(initial.entries, entry)
+					}
+				}
+			}
+			_ = f.Close()
+		}
+	}
+	actual, _ := s.tracelogOnce.LoadOrStore("store", initial)
 	return actual.(*tracelogStore)
 }
 

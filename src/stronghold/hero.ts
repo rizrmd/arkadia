@@ -114,7 +114,7 @@ export type Placed={layer:string;x:number;y:number;width:number;height:number;fo
 type Clip={fps:number;loop:boolean;frames:number[];strideScale?:number};
 type Meta={image:string;revision?:string;views?:string[];cell:{w:number;h:number;pivot:{x:number;y:number}};clips:Record<string,Clip>;frames:{x:number;y:number;w:number;h:number}[]};
 const KEY='arkadia.stronghold.hero';
-export const DISPLAY=.72;const RADIUS=9,SPAWN={x:590,y:420};
+export const DISPLAY=.66;const RADIUS=9,SPAWN={x:590,y:420};
 
 export async function createHero<P extends Placed>(o:{layer:Container;lightmap:HTMLCanvasElement;surface:HTMLElement;footprint:(p:P)=>Column[];sun:()=>Sun;direction:()=>Walk;follow:(x:number,y:number,dt:number,walking?:boolean)=>void;pose?:()=>Pose|null;drive?:()=>Drive|null;id?:string;hero?:HeroId}){
  const load=async(id:HeroId)=>{const all=await characters(),m:Meta=all[id]??all[DEFAULT_HERO];return {id,meta:m,atlas:await loadImage(atlasUrl(m))};};
@@ -126,9 +126,10 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
 
  let cell=meta.cell,pivot=cell.pivot;
  const lit=document.createElement('canvas');
- const fit=()=>{cell=meta.cell;pivot=cell.pivot;lit.width=cell.w;lit.height=cell.h;};fit();
+ const fit=()=>{cell=meta.cell;pivot=cell.pivot;const f0=meta.frames[0];lit.width=f0?.w??cell.w;lit.height=f0?.h??cell.h;};fit();
  let objects:P[]=[],blockers:Column[]=[],bounds=new Map<P,number[]>();
- let sceneBounds:{p:P;x0:number;y0:number;x1:number;y1:number}[]=[],minSceneX=0,minSceneY=0,maxSceneX=0,maxSceneY=0;
+ type SceneBound={p:P;x0:number;y0:number;x1:number;y1:number;cols:Column[];maxFront:number;isGate:boolean};
+ let sceneBounds:SceneBound[]=[],minSceneX=0,minSceneY=0,maxSceneX=0,maxSceneY=0,maxSceneFront=0;
  let x=SPAWN.x,y=SPAWN.y,state:'idle'|'move'='idle',t=0,gait=0,facing=1,back=false,vertical=false;
  let pose:Pose|null=null,tint='255,255,255',sampled=-1e9,origin={x:0,y:0,scale:1},k=0,box=[0,0,0,0],drawn='',lastMove=0;
  function blocked(px:number,py:number){
@@ -137,15 +138,30 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
  }
  function setScene(list:P[]){
   objects=list.filter(p=>p.layer!=='ground');blockers=objects.filter(p=>p.opacity>=1).flatMap(p=>o.footprint(p).filter(c=>!('id' in p&&p.id==='gate'&&gatePassageColumn(c.x))));
-  minSceneX=Infinity;minSceneY=Infinity;maxSceneX=-Infinity;maxSceneY=-Infinity;
+  minSceneX=Infinity;minSceneY=Infinity;maxSceneX=-Infinity;maxSceneY=-Infinity;maxSceneFront=-Infinity;
   sceneBounds=objects.map(p=>{
    const xs=[-p.width/2,p.width/2],ys=[-p.height*p.foot,p.height*(1-p.foot)],pts=xs.flatMap(lx=>ys.map(ly=>[p.x+lx,p.y+p.shear*lx+p.vertical*ly]));
    const x0=Math.min(...pts.map(q=>q[0])),y0=Math.min(...pts.map(q=>q[1])),x1=Math.max(...pts.map(q=>q[0])),y1=Math.max(...pts.map(q=>q[1]));
    if(x0<minSceneX)minSceneX=x0;if(y0<minSceneY)minSceneY=y0;if(x1>maxSceneX)maxSceneX=x1;if(y1>maxSceneY)maxSceneY=y1;
-   return {p,x0,y0,x1,y1};
+   const isGate=Boolean('id' in p&&p.id==='gate');
+   const cols=!isGate&&p.layer==='world'?o.footprint(p):[];
+   let maxFront=isGate?820:p.layer==='foreground'?p.y+12:p.y;
+   for(let i=0;i<cols.length;i++)if(cols[i].front>maxFront)maxFront=cols[i].front;
+   if(maxFront>maxSceneFront)maxSceneFront=maxFront;
+   if(!p.occluder)getAlphaMask(p);
+   return {p,x0,y0,x1,y1,cols,maxFront,isGate};
   });
   bounds=new Map(sceneBounds.map(s=>[s.p,[s.x0,s.y0,s.x1,s.y1]]));
   drawn='';
+ }
+ function frontBound(sb:SceneBound,px:number,py:number){
+  if(py>=sb.maxFront)return false;
+  if(sb.isGate){const d=Math.abs(px-577);return py<(d<36?775:gateTowerFront(Math.min(135,d)));}
+  const p=sb.p;
+  if(p.layer==='foreground')return py<p.y+12;if(p.layer!=='world')return false;
+  let edge=-Infinity;const cols=sb.cols;
+  for(let i=0,n=cols.length;i<n;i++){const col=cols[i];if(Math.abs(col.x-px)<=col.w/2+RADIUS&&col.front>edge)edge=col.front;}
+  return py<(edge>-Infinity?edge:p.y);
  }
  function front(p:P,px:number,py:number){
   if('id' in p&&p.id==='gate'){const d=Math.abs(px-577);return py<(d<36?775:gateTowerFront(Math.min(135,d)));}
@@ -153,7 +169,7 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
   let edge=-Infinity;for(const col of o.footprint(p))if(Math.abs(col.x-px)<=col.w/2+RADIUS)edge=Math.max(edge,col.front);
   return py<(edge>-Infinity?edge:p.y);
  }
- const occluders=(px:number,py:number,b:number[])=>objects.filter(p=>{const r=bounds.get(p)!;return !(r[2]<px+b[0]||r[0]>px+b[2]||r[3]<py+b[1]||r[1]>py+b[3])&&front(p,px,py);});
+ const occluders=(px:number,py:number,b:number[])=>sceneBounds.filter(sb=>!(sb.x1<px+b[0]||sb.x0>px+b[2]||sb.y1<py+b[1]||sb.y0>py+b[3])&&frontBound(sb,px,py)).map(sb=>sb.p);
  function sampleHeroAlpha(wx:number,wy:number):number{
   const dir=meta.views?(vertical?1:facing):(vertical&&!pose?1:facing);
   const hx=(wx-x)/(dir*DISPLAY)+pivot.x,hy=(wy-y)/DISPLAY+pivot.y;
@@ -165,17 +181,17 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
   const pad=Math.max(2,Math.min(12,rad*.28)),padY=flat?pad*.52:pad;
   const x0=wx-pad,x1=wx+pad,y0=wy-padY,y1=wy+padY;
   let cA=0,rSum=0;
-  if(y0<=maxSceneY&&y1>=minSceneY&&x0<=maxSceneX&&x1>=minSceneX){
+  if(Math.min(py,y0)<maxSceneFront&&y0<=maxSceneY&&y1>=minSceneY&&x0<=maxSceneX&&x1>=minSceneX){
    for(let i=0,n=sceneBounds.length;i<n;i++){
     const sb=sceneBounds[i];
-    if(sb.x1<x0||sb.x0>x1||sb.y1<y0||sb.y0>y1)continue;
-    const p=sb.p,fCenter=front(p,px,py);
+    if(sb.x1<x0||sb.x0>x1||sb.y1<y0||sb.y0>y1||Math.min(py,wy-padY)>=sb.maxFront)continue;
+    const p=sb.p,fCenter=frontBound(sb,px,py);
     if(fCenter){const a0=samplePlacedAlpha(p,wx,wy);if(a0>cA)cA=a0;}
     if(rad>4&&(fCenter||flat)){
-     const aN=(fCenter||(flat&&front(p,wx,wy-padY)))?samplePlacedAlpha(p,wx,wy-padY):0;
-     const aS=(fCenter||(flat&&front(p,wx,wy+padY)))?samplePlacedAlpha(p,wx,wy+padY):0;
-     const aW=(fCenter||(flat&&front(p,wx-pad,wy)))?samplePlacedAlpha(p,wx-pad,wy):0;
-     const aE=(fCenter||(flat&&front(p,wx+pad,wy)))?samplePlacedAlpha(p,wx+pad,wy):0;
+     const aN=(fCenter||(flat&&frontBound(sb,wx,wy-padY)))?samplePlacedAlpha(p,wx,wy-padY):0;
+     const aS=(fCenter||(flat&&frontBound(sb,wx,wy+padY)))?samplePlacedAlpha(p,wx,wy+padY):0;
+     const aW=(fCenter||(flat&&frontBound(sb,wx-pad,wy)))?samplePlacedAlpha(p,wx-pad,wy):0;
+     const aE=(fCenter||(flat&&frontBound(sb,wx+pad,wy)))?samplePlacedAlpha(p,wx+pad,wy):0;
      const ar=(aN+aS+aW+aE)*.25;
      if(ar>rSum)rSum=ar;
     }
@@ -223,7 +239,7 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
    if(px>=0&&py>=0&&px<o.lightmap.width&&py<o.lightmap.height){probe.clearRect(0,0,1,1);probe.drawImage(o.lightmap,px,py,1,1,0,0,1,1);next=[...probe.getImageData(0,0,1,1).data.slice(0,3)].join();}}
   tint=next;
  }
- const quantizeRes=(scale:number)=>Math.round(Math.min(2.25,Math.max(1,scale*Math.min(devicePixelRatio||1,2)))*4)/4;
+ const quantizeRes=(scale:number)=>Math.round(Math.min(3,Math.max(1,scale*Math.min(devicePixelRatio||1,2.5)))*4)/4;
  function render(){
   const s=o.sun(),f=meta.frames[frameIndex()],res=quantizeRes(origin.scale);
   const night=own?Math.max(0,1-s.alpha/.4):0;
@@ -233,11 +249,12 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
   const hidden=occluders(x,y,b),at=x.toFixed(1)+','+y.toFixed(1);if(canvas.dataset.x+','+canvas.dataset.y!==at)Object.assign(canvas.dataset,{x:x.toFixed(1),y:y.toFixed(1)});
   const key=[hero.id,state,clipName(),f.x,f.y,facing,vertical,tint,night.toFixed(2),s.dx,s.dy,s.wx,s.wy,s.alpha,res,b,hidden.length?hidden.map(p=>p.x+':'+p.y+':'+(p.occluder?.dataset.frame??'')).join()+'@'+Math.round(x*4)+','+Math.round(y*4):'',objects.length].join();if(key===drawn)return;drawn=key;
   if(res!==k||b.some((v,i)=>v!==box[i])){k=res;box=b;canvas.width=Math.ceil((b[2]-b[0])*k);canvas.height=Math.ceil((b[3]-b[1])*k);}
-  const frame=(target:HTMLCanvasElement)=>{const g=target.getContext('2d',{willReadFrequently:target===lit})!;g.globalCompositeOperation='copy';g.drawImage(atlas,f.x,f.y,f.w,f.h,0,0,cell.w,cell.h);g.globalCompositeOperation='source-over';return g;};
-  const g=frame(lit);if(tint!=='255,255,255'){const [r,gr,bl]=tint.split(',').map(v=>Number(v)/255),img=g.getImageData(0,0,cell.w,cell.h),d=img.data;for(let i=0;i<d.length;i+=4){d[i]*=r;d[i+1]*=gr;d[i+2]*=bl;}g.putImageData(img,0,0);}
-  else if(night>0){const img=g.getImageData(0,0,cell.w,cell.h),d=img.data;for(let i=0;i<d.length;i+=4)if(d[i+3]){const lum=.299*d[i]+.587*d[i+1]+.114*d[i+2],k=1+.18*night*Math.min(1,Math.max(0,(lum-28)/70));d[i]=Math.min(255,d[i]*k);d[i+1]=Math.min(255,d[i+1]*(1+(k-1)*.92));d[i+2]=Math.min(255,d[i+2]*(1+(k-1)*.78));}g.putImageData(img,0,0);}
+  const lw=f.w,lh=f.h;if(lit.width!==lw||lit.height!==lh){lit.width=lw;lit.height=lh;}
+  const frame=(target:HTMLCanvasElement)=>{const g=target.getContext('2d',{willReadFrequently:target===lit})!;g.globalCompositeOperation='copy';g.drawImage(atlas,f.x,f.y,f.w,f.h,0,0,lw,lh);g.globalCompositeOperation='source-over';return g;};
+  const g=frame(lit);if(tint!=='255,255,255'){const [r,gr,bl]=tint.split(',').map(v=>Number(v)/255),img=g.getImageData(0,0,lw,lh),d=img.data;for(let i=0;i<d.length;i+=4){d[i]*=r;d[i+1]*=gr;d[i+2]*=bl;}g.putImageData(img,0,0);}
+  else if(night>0){const img=g.getImageData(0,0,lw,lh),d=img.data;for(let i=0;i<d.length;i+=4)if(d[i+3]){const lum=.299*d[i]+.587*d[i+1]+.114*d[i+2],k=1+.18*night*Math.min(1,Math.max(0,(lum-28)/70));d[i]=Math.min(255,d[i]*k);d[i+1]=Math.min(255,d[i+1]*(1+(k-1)*.92));d[i+2]=Math.min(255,d[i+2]*(1+(k-1)*.78));}g.putImageData(img,0,0);}
   const dir=meta.views?(vertical?1:facing):(vertical&&!pose?1:facing);
-  const local=()=>c.setTransform(k,0,0,k,-box[0]*k,-box[1]*k),sprite=(src:HTMLCanvasElement)=>{c.scale(dir*DISPLAY,DISPLAY);c.drawImage(src,-pivot.x,-pivot.y);};
+  const local=()=>c.setTransform(k,0,0,k,-box[0]*k,-box[1]*k),sprite=(src:HTMLCanvasElement)=>{c.scale(dir*DISPLAY,DISPLAY);c.drawImage(src,0,0,src.width,src.height,-pivot.x,-pivot.y,cell.w,cell.h);};
   c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,canvas.width,canvas.height);local();
   if(night>0){
    c.save();c.translate(0,-2);c.scale(1,.52);const pg=c.createRadialGradient(0,0,2,0,0,40);pg.addColorStop(0,`rgba(255,206,136,${(.24*night).toFixed(3)})`);pg.addColorStop(.55,`rgba(255,178,102,${(.1*night).toFixed(3)})`);pg.addColorStop(1,'rgba(255,160,85,0)');c.fillStyle=pg;c.fillRect(-40,-40,80,80);c.restore();

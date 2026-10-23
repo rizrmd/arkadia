@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"net/http"
+	"net/http/httptest"
 	"os"
 	"path/filepath"
 	"testing"
@@ -222,9 +223,13 @@ func TestFPSDropTracelogIngestionAndQuery(t *testing.T) {
 }
 
 func TestTracelogDiskPersistence(t *testing.T) {
-	ts, _ := newTestServer(t)
+	site := t.TempDir()
+	s1 := &Server{Site: site}
+	ts1 := httptest.NewServer(s1.Handler())
+	t.Cleanup(ts1.Close)
+
 	body := []byte(`{"id":"tl-disk-check","reason":"manual","metrics":{"fps":24.5,"maxFrameMs":55.2}}`)
-	res, err := http.Post(ts.URL+"/api/tracelogs", "application/json", bytes.NewReader(body))
+	res, err := http.Post(ts1.URL+"/api/tracelogs", "application/json", bytes.NewReader(body))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -232,14 +237,19 @@ func TestTracelogDiskPersistence(t *testing.T) {
 	if res.StatusCode != http.StatusCreated {
 		t.Fatalf("status=%d", res.StatusCode)
 	}
-	// Verify that getTracelog returns the stored item.
-	getRes, err := http.Get(ts.URL + "/api/tracelogs/tl-disk-check")
+
+	// Simulate server restart pointing at the same Site directory and verify disk reload.
+	s2 := &Server{Site: site}
+	ts2 := httptest.NewServer(s2.Handler())
+	t.Cleanup(ts2.Close)
+
+	getRes, err := http.Get(ts2.URL + "/api/tracelogs/tl-disk-check")
 	if err != nil {
 		t.Fatal(err)
 	}
 	defer getRes.Body.Close()
 	if getRes.StatusCode != http.StatusOK {
-		t.Fatalf("get status=%d", getRes.StatusCode)
+		t.Fatalf("expected persisted tracelog after restart, got status=%d", getRes.StatusCode)
 	}
 	_ = os.RemoveAll(filepath.Join(t.TempDir(), "unused"))
 }

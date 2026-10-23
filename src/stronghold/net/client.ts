@@ -3,6 +3,7 @@ import {walkStep,navBlocker,atGate,gatePassable,gateTick,type Column,type GateGu
 import {createTimeline,type Timed} from './timeline';
 import {DAY_MS} from '../daylight';
 import type {Walk} from '../controls';
+import {measureTracelogPhase} from '../tracelog';
 // The co-op connection. The server owns the world; this client sends one walk input per 50 ms tick and renders
 // snapshots. The own hero is predicted: every input is applied locally with the server's walking rule at once,
 // and each snapshot rebases it on the server's position after the last acknowledged input, replaying the rest.
@@ -64,12 +65,14 @@ export function createNet(o:{direction:()=>Walk;maxHp:()=>number;hero:()=>string
   pred={x,y};
  }
  function receive(raw:string){
-  let m:ServerMessage;try{m=JSON.parse(raw);}catch{return;}
-  stats.bytes+=raw.length;
-  if(m.t==='s'){
-   const s=timeline.push(m,performance.now());latest=s;stats.snapshots++;
-   reconcile(s);for(const f of snapshotListeners)f(s);
-  }else if(m.t==='pong')rtt=performance.now()-m.c;
+  measureTracelogPhase('net',()=>{
+   let m:ServerMessage;try{m=JSON.parse(raw);}catch{return;}
+   stats.bytes+=raw.length;
+   if(m.t==='s'){
+    const s=timeline.push(m,performance.now());latest=s;stats.snapshots++;
+    reconcile(s);for(const f of snapshotListeners)f(s);
+   }else if(m.t==='pong')rtt=performance.now()-m.c;
+  });
  }
  function connect(code:string,who:string){
   return new Promise<Welcome>((resolve,reject)=>{
@@ -116,10 +119,12 @@ export function createNet(o:{direction:()=>Walk;maxHp:()=>number;hero:()=>string
  function frame(now:number){
   const dt=last?Math.min(now-last,250):16;last=now;
   if(you&&(status==='online'||status==='reconnecting')){
-   // Each input still walks one 50 ms step; pacing only changes how often one is sent.
-   const every=TICK_MS*pace;acc+=dt;if(acc>4*every)acc=every;
-   while(acc>=every){acc-=every;tick();}
-   const k=Math.exp(-dt/SMOOTH_MS);err.x*=k;err.y*=k;
+   measureTracelogPhase('net',()=>{
+    // Each input still walks one 50 ms step; pacing only changes how often one is sent.
+    const every=TICK_MS*pace;acc+=dt;if(acc>4*every)acc=every;
+    while(acc>=every){acc-=every;tick();}
+    const k=Math.exp(-dt/SMOOTH_MS);err.x*=k;err.y*=k;
+   });
   }
   requestAnimationFrame(frame);
  }

@@ -89,7 +89,24 @@ export function createFxStage(o:FxStageOptions){
   const [{PixiVfxRenderer,createDerivedAlphaTexture},{loadVfxExportBundle},packed]=await Promise.all([import('nixie-fx/pixi'),import('nixie-fx/export'),fetchBundle()]);
   deriveAlpha=createDerivedAlphaTexture;
   const bundle=loadVfxExportBundle({manifest:packed.manifest,effectsByPath:packed.effects},{requiredBackend:'pixi2d'});
-  for(const fx of bundle.effectsById.values())effects.set((fx.sourceEffectFile??fx.id).replace(/\.json$/,''),fx);
+  for(const fx of bundle.effectsById.values()){
+   if(o.host&&fx.emitters){
+    for(const e of fx.emitters as any[]){
+     e.maxParticles=Math.min(e.maxParticles||16,16);
+     if(e.spawn){
+      if(typeof e.spawn.rate==='number'&&e.spawn.rate>12)e.spawn.rate=12;
+      const rv=e.spawn.rateValue;
+      if(rv){
+       if(typeof rv.value==='number'&&rv.value>12)rv.value=12;
+       if(typeof rv.min==='number'&&rv.min>12)rv.min=12;
+       if(typeof rv.max==='number'&&rv.max>12)rv.max=12;
+      }
+      if(e.spawn.bursts)for(const b of e.spawn.bursts)if(b.count>10)b.count=Math.min(12,Math.ceil(b.count*.22));
+     }
+    }
+   }
+   effects.set((fx.sourceEffectFile??fx.id).replace(/\.json$/,''),fx);
+  }
   await textureProvider.preload!(bundle.manifest.assets.filter((a):a is VfxTextureAssetRef=>a.type==='texture'));
   const {Container,Rectangle}=await PIXI();Rect=Rectangle;
   // The ground plane is drawn as seen from above and squashed to the 2:1 ground (space.ts groundProjection).
@@ -99,20 +116,21 @@ export function createFxStage(o:FxStageOptions){
   else{const [ground,world]=await Promise.all([mountPlane({before:o.under!},'world-fx-ground',''),mountPlane({after:o.over!},'world-fx-over',';z-index:3')]);
    planes={ground:make(ground.stage,ground,true,false),world:make(world.stage,world,false,o.bloom??BLOOM)};}
   resize();addEventListener('resize',resize);
-  // Prewarm effect instances during boot so first combat skill/hit never stalls the frame loop.
+  // Prewarm combat effect pool in small macrotask slices during boot so neither boot frames nor combat frames stall.
   if(o.host&&planes){
-   const dummyAnchor:Anchor={u:0,v:0,h:0,yaw:0,scale:1};
+   let batch=0;
    for(const [key,fx] of effects){
     if(key.startsWith('ui/'))continue;
-    const plane=planeOf(key),P=planes[plane],proj=projection(plane,dummyAnchor);
-    const count=key.startsWith('shared/hit.')||key.endsWith('.impact')||key.endsWith('.impact.ground')||key.endsWith('.bolt')?3:1;
+    const plane=planeOf(key),P=planes[plane],proj=projection(plane,{u:0,v:0,h:0,yaw:0,scale:1});
+    const copies=key.endsWith('.bolt')?3:1;
     const list=pool.get(key)??[];
-    for(let i=0;i<count;i++){
-     const inst=P.vfx.createEffect(fx,{projection:proj,position:[0,0,0],seed:i+1,timeSeconds:0,autoStart:false,addToStage:false});
+    for(let c=0;c<copies;c++){
+     const inst=P.vfx.createEffect(fx,{projection:proj,position:[0,0,0],seed:c+1,timeSeconds:0,autoStart:false,addToStage:false});
      inst.stop();inst.root.visible=false;P.vfx.removeEffect(inst,false);
      list.push(inst);
     }
     pool.set(key,list);
+    if(++batch%5===0)await new Promise(r=>setTimeout(r,0));
    }
   }
   ready=true;
@@ -128,8 +146,23 @@ export function createFxStage(o:FxStageOptions){
   if(!ready||!planes)return null;
   const fx=effects.get(key);if(!fx){console.warn('Unknown NixieFX effect',key);return null;}
   const plane=planeOf(key),anchor:Anchor={u:at.u,v:at.v,h:at.h??0,yaw:at.yaw??0,scale:at.scale??1},proj=projection(plane,anchor),P=planes[plane];
-  let inst=pool.get(key)?.pop();
   const seed=at.seed??((Math.random()*0x7fffffff)|0);
+  if(o.host){
+   const maxSame=key.endsWith('.bolt')?3:1;
+   let sameCount=0,oldest:Live|null=null;
+   for(let i=0;i<live.length;i++){
+    const cand=live[i];
+    if(cand.key===key){if(!oldest||cand.age>oldest.age)oldest=cand;sameCount++;}
+   }
+   if(sameCount>=maxSame&&oldest){
+    oldest.anchor.u=anchor.u;oldest.anchor.v=anchor.v;oldest.anchor.h=anchor.h;oldest.anchor.yaw=anchor.yaw;oldest.anchor.scale=anchor.scale;
+    oldest.follow=at.follow;oldest.age=0;oldest.released=false;
+    oldest.inst.setProjection(proj);oldest.inst.spawn({position:[0,0,0],seed,timeSeconds:clock});oldest.inst.root.visible=true;
+    played++;
+    return oldest.handle;
+   }
+  }
+  let inst=pool.get(key)?.pop();
   if(inst){P.vfx.addEffect(inst,true);inst.setProjection(proj);inst.spawn({position:[0,0,0],seed,timeSeconds:clock});inst.root.visible=true;}
   else inst=P.vfx.createEffect(fx,{projection:proj,position:[0,0,0],seed,timeSeconds:clock});
   played++;
@@ -144,6 +177,7 @@ export function createFxStage(o:FxStageOptions){
  }
 
  // Once per rendered frame, in seconds. render=false advances the simulation only (scripted captures).
+ const occCache=new Map<number,number>();
  function frame(dt:number,render=true){
   if(!planes)return;
   clock+=dt;
@@ -151,6 +185,9 @@ export function createFxStage(o:FxStageOptions){
   for(const l of live){l.age+=dt;if(l.follow){const p=l.follow();l.anchor.u=p.u;l.anchor.v=p.v;}}
   planes.ground.vfx.update(dt,{timeSeconds:clock});planes.world.vfx.update(dt,{timeSeconds:clock});
   const occFn=o.occlusionAt,heroPos=o.getHeroWorld?.(),layers=o.depthLayers,sc=view.scale||1;
+  const activePartCount=planes.world.vfx.stats.activeParticles+planes.ground.vfx.stats.activeParticles;
+  const useGridCache=activePartCount>48;
+  if(useGridCache)occCache.clear();
   let occCount=0,occMin=1,occSum=0,occTotal=0,backCnt=0,frontCnt=0;
   for(let i=live.length-1;i>=0;i--){
    const l=live[i];
@@ -165,6 +202,16 @@ export function createFxStage(o:FxStageOptions){
    const a=l.anchor,pos=(l.inst as any).position??[0,0,0],cs=Math.cos(a.yaw),sn=Math.sin(a.yaw),lx=pos[0]*a.scale,lz=pos[2]*a.scale;
    const anchorPt=tilePoint(a.u+lx*cs-lz*sn,a.v+lx*sn+lz*cs),anchorLift=(pos[1]*a.scale+a.h)*UNIT_PX;
    const flat=l.plane==='ground';
+   let canOcclude=Boolean(occFn);
+   if(canOcclude&&occFn){
+    const ax=anchorPt.x,ay=anchorPt.y;
+    if(flat){
+     canOcclude=occFn(ax,ay,ax,ay,28,true,false)<1||occFn(ax-48,ay-28,ax-48,ay-28,24,true,false)<1||occFn(ax+48,ay-28,ax+48,ay-28,24,true,false)<1||occFn(ax-48,ay+28,ax-48,ay+28,24,true,false)<1||occFn(ax+48,ay+28,ax+48,ay+28,24,true,false)<1;
+    }else if(!heroPos||Math.hypot(ax-heroPos.x,ay-heroPos.y)>88){
+     canOcclude=occFn(ax,ay,ax,ay-anchorLift*.5,28,false,false)<1||occFn(ax-48,ay-36,ax-48,ay-36,24,false,false)<1||occFn(ax+48,ay-36,ax+48,ay-36,24,false,false)<1;
+    }
+   }
+   if(flat&&!canOcclude)continue;
    let sumPy=0,cntPy=0,maxPy=-Infinity;
    const walkInst=(inst:any)=>{
     const views=inst?.emitterViews as any[]|undefined;
@@ -174,21 +221,32 @@ export function createFxStage(o:FxStageOptions){
       const entry=ds[j],p=entry.particle;
       const py=(-entry.depth-view.y)/sc,px=(p.x-view.x)/sc,wx=px,wy=flat?py:(p.y-view.y)/sc;
       sumPy+=py;cntPy++;if(py>maxPy)maxPy=py;
-      if(occFn){
-       const texW=p.texture?.orig?.width??64,rad=Math.abs(p.scaleX)*texW*.5/sc;
-       const occ=occFn(px,py,wx,wy,rad,flat,!flat);
+      if(canOcclude&&occFn){
+       let occ:number|undefined;
+       if(useGridCache){
+        const gk=(((px*.1667)|0)<<16)^(((wy*.1667)|0)&0x7fff)^(flat?0x8000:0);
+        occ=occCache.get(gk);
+        if(occ===undefined){
+         const texW=p.texture?.orig?.width??64,rad=Math.abs(p.scaleX)*texW*.5/sc;
+         occ=occFn(px,py,wx,wy,rad,flat,!flat);
+         occCache.set(gk,occ);
+        }
+       }else{
+        const texW=p.texture?.orig?.width??64,rad=Math.abs(p.scaleX)*texW*.5/sc;
+        occ=occFn(px,py,wx,wy,rad,flat,!flat);
+       }
        occTotal++;occSum+=occ;if(occ<occMin)occMin=occ;
        if(occ<.999){p.alpha*=occ;occCount++;}
       }
      }
      const tc=ev.trailContainer?.particleChildren as any[]|undefined;
-     if(occFn&&tc?.length)for(let j=0;j<tc.length;j++){
+     if(canOcclude&&occFn&&tc?.length)for(let j=0;j<tc.length;j++){
       const tp=tc[j],px=(tp.x-view.x)/sc,wy=flat?(tp.y*.5-view.y)/sc:(tp.y-view.y)/sc,py=flat?wy:anchorPt.y;
       const occ=occFn(px,py,px,wy,6,flat,!flat);
       occTotal++;occSum+=occ;if(occ<occMin)occMin=occ;
       if(occ<.999){tp.alpha*=occ;occCount++;}
      }
-     if(occFn&&ev.trailMesh?.visible){
+     if(canOcclude&&occFn&&ev.trailMesh?.visible){
       const occ=occFn(anchorPt.x,anchorPt.y,anchorPt.x,anchorPt.y-anchorLift,12,flat,!flat);
       ev.trailMesh.alpha=occ;
       occTotal++;occSum+=occ;if(occ<occMin)occMin=occ;if(occ<.999)occCount++;
@@ -197,9 +255,9 @@ export function createFxStage(o:FxStageOptions){
     const kids=inst?.childInstances as any[]|undefined;
     if(kids)for(let k=0;k<kids.length;k++)walkInst(kids[k]);
    };
-   walkInst(l.inst);
+   if(canOcclude)walkInst(l.inst);
    if(l.plane==='world'&&layers&&heroPos){
-    const effY=cntPy>0?sumPy/cntPy:anchorPt.y;
+    const effY=cntPy>0?sumPy/cntPy:anchorPt.y-anchorLift*.5;
     const isBehind=!l.follow&&anchorPt.y<heroPos.y-2&&effY<heroPos.y-2;
     const targetLayer=isBehind?layers.back:layers.front;
     if(l.inst.root.parent!==targetLayer)targetLayer.addChild(l.inst.root);

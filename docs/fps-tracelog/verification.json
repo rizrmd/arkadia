@@ -1,24 +1,53 @@
 {
-  "verifiedAt": "2026-10-23T02:17:52.354Z",
+  "verifiedAt": "2026-10-23T03:55:30.242Z",
   "baseUrl": "http://127.0.0.1:8799",
   "pageErrors": 0,
-  "tracelogPostsCaptured": 3,
-  "serverStoredCount": 3,
+  "combatBenchmark": {
+    "sampleCount": 16,
+    "phasesAvg": {
+      "worldDrawMs": 0,
+      "worldPaintMs": 0,
+      "shadowCastMs": 0,
+      "encountersStepMs": 1.57,
+      "encountersRenderMs": 28.11,
+      "pixiRenderMs": 12.79,
+      "netMs": 0.64,
+      "unaccountedMs": 0
+    },
+    "phasesMax": {
+      "worldDrawMs": 0,
+      "worldPaintMs": 0,
+      "shadowCastMs": 0,
+      "encountersStepMs": 10.5,
+      "encountersRenderMs": 89.2,
+      "pixiRenderMs": 63.2,
+      "netMs": 3.6,
+      "unaccountedMs": 0
+    },
+    "foesRendered": 8,
+    "particles": 375,
+    "peakParticles": 455,
+    "liveEffects": 10,
+    "playedEffects": 21,
+    "activeFloats": 5
+  },
+  "tracelogPostsCaptured": 5,
+  "serverStoredCount": 12,
   "serverSummary": {
     "byReason": {
-      "frame_spike": 2,
-      "sustained_low_fps": 1
+      "frame_spike": 9,
+      "sustained_low_fps": 3
     },
     "byBottleneck": {
-      "encounters-render": 1,
-      "pixi-render": 1,
-      "shadow-cast": 1
+      "encounters-render": 8,
+      "pixi-render": 2,
+      "shadow-cast": 2
     },
-    "lowestFps": 16.88,
-    "worstFrameMs": 583.3
+    "lowestFps": 2.54,
+    "worstFrameMs": 2415.2
   },
   "sustainedDropSample": {
-    "id": "tl-mvkcb8sj-2",
+    "id": "tl-mvkfst0x-4",
     "reason": "sustained_low_fps",
     "fps": 22.07,
     "minFps": 19.05,
@@ -47,15 +76,15 @@
     },
     "scene": {
       "mode": "coop",
-      "room": "USHQJ",
+      "room": "84SS8",
       "playerId": "p1",
-      "rttMs": 1.5,
+      "rttMs": 0.4,
       "hero": "rift-runner",
       "heroState": "idle",
-      "heroU": 11.66,
-      "heroV": 11.46,
+      "heroU": 12.7,
+      "heroV": 12.5,
       "safeZone": true,
-      "level": 1,
+      "level": 4,
       "heroesCount": 1,
       "foesTotal": 8,
       "foesRendered": 8,
@@ -77,7 +106,7 @@
     "frameSampleCount": 60
   },
   "frameSpikeSample": {
-    "id": "tl-mvkcb8v7-3",
+    "id": "tl-mvkfst3p-5",
     "reason": "frame_spike",
     "fps": 50.05,
     "minFps": 8.47,

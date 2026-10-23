@@ -283,8 +283,10 @@ export class Hud extends Container{
  }
 
  setLevel(level:number){
+  const text=String(level);
+  if(this.state.level===level&&this.levelText.text===text)return;
   this.state.level=level;
-  this.levelText.text=String(level);
+  this.levelText.text=text;
   this.levelText.place(57,this.isPortrait?157.5:154.5,.5);
  }
 
@@ -295,8 +297,11 @@ export class Hud extends Container{
   const bar=this.hpFill.children[0] as Container;
   bar.visible=w>2;
   if(w>2)bar.width=Math.max(12,w);
-  this.hpText.text=`${Math.round(hp)} / ${Math.round(max)} HP`;
-  this.hpText.place(this.isPortrait?332:352,this.isPortrait?90.5:92.5,.5);
+  const nextText=`${Math.round(hp)} / ${Math.round(max)} HP`;
+  if(this.hpText.text!==nextText){
+   this.hpText.text=nextText;
+   this.hpText.place(this.isPortrait?332:352,this.isPortrait?90.5:92.5,.5);
+  }
  }
 
  setXp(xp:number,xpMax=this.state.xpMax,overrideRestText?:string){
@@ -305,22 +310,25 @@ export class Hud extends Container{
   const rawW=628*ratio,bar=this.xpFill.children[0] as Container;
   bar.visible=rawW>1;
   if(rawW>1)bar.width=Math.max(12,Math.min(628,rawW));
-  this.xpValue.text=String(Math.floor(xp));
-  this.xpRest.text=overrideRestText??` / ${max} XP`;
-  const w=this.xpValue.advance+this.xpRest.advance,x=Math.round(852-w/2);
-  this.xpValue.place(x,855.5);this.xpRest.place(x+this.xpValue.advance,855.5);
-
+  const valStr=String(Math.floor(xp)),restStr=overrideRestText??` / ${max} XP`;
   const tlRawW=324*ratio,tlBar=this.tlXpFill.children[0] as Container;
   tlBar.visible=tlRawW>1;
   if(tlRawW>1)tlBar.width=Math.max(12,Math.min(324,tlRawW));
-  this.tlXpValue.text=this.xpValue.text;
-  this.tlXpRest.text=this.xpRest.text;
-  const tlW=this.tlXpValue.advance+this.tlXpRest.advance,tlX=Math.round(318-tlW/2);
-  this.tlXpValue.place(tlX,132.5);this.tlXpRest.place(tlX+this.tlXpValue.advance,132.5);
+  if(this.xpValue.text!==valStr||this.xpRest.text!==restStr){
+   this.xpValue.text=valStr;
+   this.xpRest.text=restStr;
+   const w=this.xpValue.advance+this.xpRest.advance,x=Math.round(852-w/2);
+   this.xpValue.place(x,855.5);this.xpRest.place(x+this.xpValue.advance,855.5);
+   this.tlXpValue.text=valStr;
+   this.tlXpRest.text=restStr;
+   const tlW=this.tlXpValue.advance+this.tlXpRest.advance,tlX=Math.round(318-tlW/2);
+   this.tlXpValue.place(tlX,132.5);this.tlXpRest.place(tlX+this.tlXpValue.advance,132.5);
+  }
  }
 
  setGold(labelOrAmount:number|string){
   const text=typeof labelOrAmount==='number'?`${labelOrAmount} Gold`:labelOrAmount;
+  if(this.goldText.text===text)return;
   this.goldText.text=text;
   this.layoutGoldPill();
  }
@@ -418,6 +426,7 @@ export class Hud extends Container{
    centred(this.levelMedallion,57,portrait?152:149);
    this.levelText.place(57,portrait?157.5:154.5,.5);
    this.heroNameText.place(portrait?184:195,52.5);
+   this.hpText.place(portrait?332:352,portrait?90.5:92.5,.5);
    this.setHp(this.state.hp,this.state.hpMax);
   }
   this.tlXpGroup.visible=portrait;

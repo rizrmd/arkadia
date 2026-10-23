@@ -299,7 +299,7 @@ export function createCombatVfx(o:{
   }
  }
 
- function castSkill(id:SkillId,opts:{targetU?:number;targetV?:number;forceCrit?:boolean;comboScale?:number}={}):boolean{
+ function castSkill(id:SkillId,opts:{targetU?:number;targetV?:number;forceCrit?:boolean;comboScale?:number;skipCastCue?:boolean}={}):boolean{
   const h=o.getHero(),run=o.getRun();
   let angle=facingScreenAngle(h);
   let targetU=opts.targetU,targetV=opts.targetV;
@@ -322,7 +322,7 @@ export function createCombatVfx(o:{
   lastSkill=id;
   cooldowns[id]=skillCooldownMs(run,id);
   const dir=tileVec(Math.cos(angle),Math.sin(angle));
-  cue(`${id}.cast`,{u:h.u,v:h.v,yaw:yawOf(dir.u,dir.v),target:targetU!==undefined&&targetV!==undefined?{u:targetU,v:targetV}:undefined,follow:heroAt,radius:1.55*reach(run)*areaMult});
+  if(!opts.skipCastCue)cue(`${id}.cast`,{u:h.u,v:h.v,yaw:yawOf(dir.u,dir.v),target:targetU!==undefined&&targetV!==undefined?{u:targetU,v:targetV}:undefined,follow:heroAt,radius:1.55*reach(run)*areaMult});
 
   switch(id){
    case 'rift-bolt':{
@@ -448,8 +448,9 @@ export function createCombatVfx(o:{
   if(unique.length>=2){
    totalSimultaneousCasts++;
    if(unique.length>=3)totalTrinityCasts++;
+   const hasRecentCombo=combos.some(c=>c.age<180);
    combos.push({id:nextId++,u:h.u,v:h.v,count:unique.length,skills:unique,age:0,duration:960});
-   cue(unique.length>=3?'combo.trinity':'combo.dual',{u:h.u,v:h.v,follow:heroAt});
+   if(!hasRecentCombo)cue(unique.length>=3?'combo.trinity':'combo.dual',{u:h.u,v:h.v,follow:heroAt});
    if(lastComboBannerMs<=0){
     lastComboBannerMs=1100;
     const label=unique.length>=3?'TRINITY AUTO-CAST!':'DUAL AUTO-CAST!';
@@ -459,7 +460,7 @@ export function createCombatVfx(o:{
   }
   lastSimultaneousSkills=unique;
   for(const id of unique){
-   castSkill(id,{...opts,comboScale});
+   castSkill(id,{...opts,comboScale,skipCastCue:unique.length>=2});
   }
   return unique;
  }

@@ -578,8 +578,9 @@ export function startFpsTracelog(opts: FpsTracelogOptions) {
 
  function onFrame(now: number) {
   requestAnimationFrame(onFrame);
+  const frameEnd = performance.now();
   const phases = resetFramePhases();
-  if (document.hidden || now < hiddenUntil) {
+  if (document.hidden || now < hiddenUntil || frameEnd < hiddenUntil) {
    lastNow = 0;
    return;
   }
@@ -588,17 +589,17 @@ export function startFpsTracelog(opts: FpsTracelogOptions) {
    return;
   }
   if (!lastNow) {
-   lastNow = now;
+   lastNow = frameEnd;
    lastSurfacePaints = readSurfaceDataset().surfacePaints;
    return;
   }
-  const dtMs = now - lastNow;
-  lastNow = now;
+  const dtMs = frameEnd - lastNow;
+  lastNow = frameEnd;
   // Ignore multi-second browser tab suspension gaps.
   if (dtMs <= 0 || dtMs >= 2500) {
    return;
   }
-  void pushSample(now, dtMs, phases, true);
+  void pushSample(frameEnd, dtMs, phases, true);
  }
 
  requestAnimationFrame(onFrame);
