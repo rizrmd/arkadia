@@ -17,9 +17,14 @@ export async function mount(app:HTMLElement,progress:Progress){
  canvas.setAttribute('aria-label','Stronghold world. Walk with the arrow keys or WASD, or on a touch screen drag from the bottom third; drag elsewhere to pan. The hero attacks nearby revenants automatically.');
  canvas.tabIndex=0;
 
- const canInteractWorld=(clientX:number,clientY:number)=>{
+ const canInteractWorld=(clientX:number,clientY:number,active=false)=>{
   if(picker?.isOpen()||clock?.isOpen()||lobby?.isOpen()||worldView?.encounters.isModalOpen())return false;
-  const hit=rt.app.renderer.events.rootBoundary.hitTest(clientX,clientY);
+  if(active)return true;
+  const events=rt.app.renderer.events;
+  events.rootBoundary.rootTarget??=rt.app.stage;
+  const pt={x:clientX,y:clientY};
+  events.mapPositionToPoint(pt,clientX,clientY);
+  const hit=events.rootBoundary.hitTest(pt.x,pt.y);
   return !hit;
  };
 
@@ -80,5 +85,5 @@ export async function mount(app:HTMLElement,progress:Progress){
  void picker.picked.then(()=>{if(invited)lobby!.prompt(invited);});
 
  (window as any).__COOP__=net&&{net,stats:()=>({status:net.status(),room:net.room(),you:net.you(),...net.stats,...net.timeline,rtt:net.rtt()})};
- (window as any).__PIXI_UI__={app:rt.app,hud:worldView.hud,clock,lobby,picker};
+ (window as any).__PIXI_UI__={app:rt.app,hud:worldView.hud,clock,lobby,picker,stick:controls.stick};
 }
