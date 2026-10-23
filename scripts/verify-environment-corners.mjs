@@ -96,6 +96,8 @@ try{
    assert.equal(courtState.biome,'court','Hero in safe zone resolves to court');
    assert.equal(courtState.area,'court','Active corner area is court');
    assert.equal(courtState.biomeLabel,'Court','English label for court');
+   assert(courtState.blurPx>0,'Corner art is drawn out of focus (depth-of-field blur)');
+   assert(courtState.textureSize.w<=(vp.mode==='desktop'?320:180),'Blurred corner textures are baked at half resolution');
    await page.waitForTimeout(120);
    await saveWebp(page,`court-${vp.tag}`);
 
@@ -272,7 +274,7 @@ try{
 
    report.viewports[vp.tag]={
     mode:vp.mode,
-    court:{biome:courtState.biome,area:courtState.area,leftBox:courtState.left.box,rightBox:courtState.right.box},
+    court:{biome:courtState.biome,area:courtState.area,blurPx:courtState.blurPx,textureSize:courtState.textureSize,leftBox:courtState.left.box,rightBox:courtState.right.box},
     panCheck,
     gate:{transitionCount:outskirtsCheck.afterFade.transitionCount,activeSlot:outskirtsCheck.afterFade.activeSlot},
     outskirts:{

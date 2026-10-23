@@ -143,7 +143,7 @@ export function createClock(
  o.subscribe(s=>{
   currentT=s.t;
   const label=clockLabel(s.t);
-  hud.setTime(label);
+  hud.setTime(label,true);
   readoutText.text=`${label} · ${s.phase}${s.manual?' (Pinned)':''}`;
   readoutText.place(PANEL_W-26,38,1);
   liveBtn.alpha=!s.manual&&s.mode==='dynamic'?0.48:1;

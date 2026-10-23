@@ -2325,7 +2325,7 @@
    "name": "emitter-2",
    "enabled": true,
    "mode": "billboard",
-   "maxParticles": 52,
+   "maxParticles": 47,
    "duration": 0.8,
    "loop": false,
    "timeline": {
@@ -2357,12 +2357,12 @@
     "customData": false
    },
    "spawn": {
-    "rate": 40,
+    "rate": 48,
     "rateValue": {
      "mode": "constant",
-     "value": 40,
-     "min": 40,
-     "max": 40,
+     "value": 48,
+     "min": 48,
+     "max": 48,
      "curve": [
       {
        "x": 0,
@@ -2452,7 +2452,7 @@
      0
     ],
     "angle": 25,
-    "radiusThickness": 1,
+    "radiusThickness": 0.8,
     "arc": 360,
     "arcMode": "random",
     "arcSpread": 0,
@@ -2512,9 +2512,9 @@
    "initializeParticle": {
     "lifetime": {
      "mode": "random",
-     "value": 0.45000000000000007,
-     "min": 0.34,
-     "max": 0.56,
+     "value": 0.41000000000000003,
+     "min": 0.3,
+     "max": 0.52,
      "curve": [
       {
        "x": 0,
@@ -2673,9 +2673,9 @@
     },
     "size": {
      "mode": "random",
-     "value": 0.8200000000000001,
-     "min": 0.68,
-     "max": 0.96,
+     "value": 0.245,
+     "min": 0.19,
+     "max": 0.3,
      "curve": [
       {
        "x": 0,
@@ -2702,9 +2702,9 @@
     "size3D": {
      "x": {
       "mode": "random",
-      "value": 0.8200000000000001,
-      "min": 0.68,
-      "max": 0.96,
+      "value": 0.245,
+      "min": 0.19,
+      "max": 0.3,
       "curve": [
        {
         "x": 0,
@@ -2730,9 +2730,9 @@
      },
      "y": {
       "mode": "random",
-      "value": 1.2850000000000001,
-      "min": 1.05,
-      "max": 1.52,
+      "value": 0.39,
+      "min": 0.3,
+      "max": 0.48,
       "curve": [
        {
         "x": 0,
@@ -3020,12 +3020,12 @@
      "mode": "vector",
      "min": [
       0,
-      5,
+      1.6,
       0
      ],
      "max": [
       0,
-      8.25,
+      3.8,
       0
      ],
      "speed": {
@@ -3145,13 +3145,13 @@
     "sizeEnd": 0.28,
     "sizeValue": {
      "mode": "curve",
-     "value": 0.42,
-     "min": 0.32,
+     "value": 0.44,
+     "min": 0.3,
      "max": 1,
      "curve": [
       {
        "x": 0,
-       "y": 0.42
+       "y": 0.44
       },
       {
        "x": 0.24,
@@ -3163,13 +3163,13 @@
       },
       {
        "x": 1,
-       "y": 0.32
+       "y": 0.3
       }
      ],
      "curveB": [
       {
        "x": 0,
-       "y": 0.42
+       "y": 0.44
       },
       {
        "x": 0.24,
@@ -3181,46 +3181,54 @@
       },
       {
        "x": 1,
-       "y": 0.32
+       "y": 0.3
       }
      ],
      "editorMin": 0.001,
      "editorMax": 24
     },
-    "separateAxes": true,
+    "separateAxes": false,
     "sizeStartY": 0.28,
     "sizeEndY": 0.28,
     "sizeValueY": {
      "mode": "curve",
-     "value": 0.48,
-     "min": 0.48,
-     "max": 1.14,
+     "value": 0.44,
+     "min": 0.3,
+     "max": 1,
      "curve": [
       {
        "x": 0,
-       "y": 0.48
+       "y": 0.44
       },
       {
-       "x": 0.3,
-       "y": 1.14
+       "x": 0.24,
+       "y": 1
+      },
+      {
+       "x": 0.68,
+       "y": 0.88
       },
       {
        "x": 1,
-       "y": 0.76
+       "y": 0.3
       }
      ],
      "curveB": [
       {
        "x": 0,
-       "y": 0.48
+       "y": 0.44
       },
       {
-       "x": 0.3,
-       "y": 1.14
+       "x": 0.24,
+       "y": 1
+      },
+      {
+       "x": 0.68,
+       "y": 0.88
       },
       {
        "x": 1,
-       "y": 0.76
+       "y": 0.3
       }
      ],
      "editorMin": 0.001,
@@ -4150,9 +4158,9 @@
      "mode": "curl",
      "strength": {
       "mode": "constant",
-      "value": 0.55,
-      "min": 0.55,
-      "max": 0.55,
+      "value": 0.65,
+      "min": 0.65,
+      "max": 0.65,
       "curve": [
        {
         "x": 0,
@@ -4176,8 +4184,8 @@
       "editorMin": 0,
       "editorMax": 8
      },
-     "frequency": 1.8,
-     "speed": 2.2,
+     "frequency": 2,
+     "speed": 2.3,
      "scroll": [
       1,
       0,
@@ -4981,9 +4989,9 @@
     },
     "size": {
      "mode": "random",
-     "value": 0.046,
-     "min": 0.034,
-     "max": 0.058,
+     "value": 0.054000000000000006,
+     "min": 0.04,
+     "max": 0.068,
      "curve": [
       {
        "x": 0,
@@ -7248,9 +7256,9 @@
      },
      "intensity": {
       "mode": "constant",
-      "value": 1.8,
-      "min": 1.8,
-      "max": 1.8,
+      "value": 1.5,
+      "min": 1.5,
+      "max": 1.5,
       "curve": [
        {
         "x": 0,

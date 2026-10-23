@@ -31,6 +31,10 @@ export const BRANCH_PARALLAX_FACTOR=1.5;
 export const MAX_PARALLAX_PX=60;
 export const DESKTOP_OVERSCAN_PX=60;
 export const COMBATANT_FADE_OPACITY=0.5;
+// The corners sit nearer the lens than the court, so they are drawn out of focus: baked once at half resolution
+// with a Gaussian blur of CORNER_BLUR_PX (in baked texels, about 4 CSS px on desktop and 1.5 on phones).
+export const CORNER_BLUR_SCALE=0.5;
+export const CORNER_BLUR_PX=3;
 
 const ASSET_ROOT='/environment-corners/v1/';
 const DEFAULT_SEED='arkadia-01';
@@ -95,6 +99,10 @@ export function biomeAt(u:number,v:number,seed=DEFAULT_SEED):BiomeId{
  return EXPEDITION_BIOME_MAP[raw]??'ash-frontier';
 }
 
+function fastAreaAt(u:number,v:number):CornerArea{
+ return inSafeZone({u,v})?'court':'snow';
+}
+
 /**
  * Maps a resolved BiomeId to an available Phase 1 corner artwork set ('court' | 'snow').
  */
@@ -130,9 +138,33 @@ function assetFile(area:CornerArea,side:CornerSide,mobile:boolean){
  return `${ASSET_ROOT}corner-${area}-${side}${mobile?'-mobile':''}.webp`;
 }
 
-function buildLandscapeStripCanvas(img:HTMLImageElement,side:CornerSide):HTMLCanvasElement{
- const w=img.naturalWidth||img.width||360;
- const h=img.naturalHeight||img.height||300;
+function bakeDepthBlur(img:HTMLImageElement):HTMLCanvasElement{
+ const w=Math.round((img.naturalWidth||img.width)*CORNER_BLUR_SCALE);
+ const h=Math.round((img.naturalHeight||img.height)*CORNER_BLUR_SCALE);
+ const pad=Math.ceil(CORNER_BLUR_PX*3);
+ const padded=document.createElement('canvas');
+ padded.width=w+pad*2;
+ padded.height=h+pad*2;
+ const p=padded.getContext('2d')!;
+ p.drawImage(img,pad,pad,w,h);
+ // Clamp the outermost texels outward so the blur never thins the art where it meets the screen edge
+ p.drawImage(padded,pad,pad,1,h,0,pad,pad,h);
+ p.drawImage(padded,pad+w-1,pad,1,h,pad+w,pad,pad,h);
+ p.drawImage(padded,0,pad,padded.width,1,0,0,padded.width,pad);
+ p.drawImage(padded,0,pad+h-1,padded.width,1,0,pad+h,padded.width,pad);
+ const canvas=document.createElement('canvas');
+ canvas.width=w;
+ canvas.height=h;
+ const ctx=canvas.getContext('2d')!;
+ ctx.filter=`blur(${CORNER_BLUR_PX}px)`;
+ ctx.drawImage(padded,-pad,-pad);
+ ctx.filter='none';
+ return canvas;
+}
+
+function buildLandscapeStripCanvas(img:HTMLCanvasElement,side:CornerSide):HTMLCanvasElement{
+ const w=img.width;
+ const h=img.height;
  const stripW=Math.round(w*0.42);
  const canvas=document.createElement('canvas');
  canvas.width=stripW;
@@ -206,8 +238,10 @@ export async function createParallax(opts:ParallaxOptions){
   const rightFile=assetFile(area,'right',mobile);
   const promise=(async()=>{
    const [leftImg,rightImg]=await Promise.all([loadImage(leftFile),loadImage(rightFile)]);
-   const leftSource=new CanvasSource({resource:leftImg as unknown as HTMLCanvasElement,resolution:1});
-   const rightSource=new CanvasSource({resource:rightImg as unknown as HTMLCanvasElement,resolution:1});
+   const leftBlur=bakeDepthBlur(leftImg);
+   const rightBlur=bakeDepthBlur(rightImg);
+   const leftSource=new CanvasSource({resource:leftBlur,resolution:1});
+   const rightSource=new CanvasSource({resource:rightBlur,resolution:1});
    const leftTex=new Texture({source:leftSource});
    const rightTex=new Texture({source:rightSource});
    if(!mobile){
@@ -225,8 +259,8 @@ export async function createParallax(opts:ParallaxOptions){
     loadingSets.delete(key);
     return created;
    }
-   const leftStripCanvas=buildLandscapeStripCanvas(leftImg,'left');
-   const rightStripCanvas=buildLandscapeStripCanvas(rightImg,'right');
+   const leftStripCanvas=buildLandscapeStripCanvas(leftBlur,'left');
+   const rightStripCanvas=buildLandscapeStripCanvas(rightBlur,'right');
    const leftCropTex=new Texture({source:new CanvasSource({resource:leftStripCanvas,resolution:1})});
    const rightCropTex=new Texture({source:new CanvasSource({resource:rightStripCanvas,resolution:1})});
    const created:AssetSet={
@@ -247,9 +281,9 @@ export async function createParallax(opts:ParallaxOptions){
   return promise;
  }
 
- function unloadDistantSets(keepAreas:Set<CornerArea>,mobile:boolean){
+ function unloadDistantSets(_keepAreas:Set<CornerArea>,mobile:boolean){
   for(const [k,set] of loadedSets){
-   if(set.mobile!==mobile||!keepAreas.has(set.area)){
+   if(set.mobile!==mobile){
     loadedSets.delete(k);
    }
   }
@@ -539,12 +573,20 @@ export async function createParallax(opts:ParallaxOptions){
   layoutSprites();
  }
 
- function stepInternal(u:number,v:number,dtMs:number){
-  heroTile={u,v};
+ let lastBiomeKey='';
+ function updateBiomes(u:number,v:number){
+  const key=`${Math.round(u*2)}:${Math.round(v*2)}`;
+  if(key===lastBiomeKey)return;
+  lastBiomeKey=key;
   currentBiome=biomeAt(u,v);
   const halfSpan=BORDER_SAMPLE_TILES*0.5;
   leftBorderBiome=biomeAt(u-halfSpan,v+halfSpan);
   rightBorderBiome=biomeAt(u+halfSpan,v-halfSpan);
+ }
+
+ function stepInternal(u:number,v:number,dtMs:number){
+  heroTile={u,v};
+  updateBiomes(u,v);
 
   const mobile=mode!=='desktop';
   const gateDist=fromGate({u,v});
@@ -555,7 +597,7 @@ export async function createParallax(opts:ParallaxOptions){
    unloadDistantSets(new Set([activeArea]),mobile);
   }
 
-  const candidate=resolveCornerArea(currentBiome);
+  const candidate=fastAreaAt(u,v);
   const targetBasis=transitioning?slotBArea:activeArea;
   let startedThisStep=false;
 
@@ -619,7 +661,7 @@ export async function createParallax(opts:ParallaxOptions){
    const hw=opts.getHeroWorld();
    const g=unproject(hw.x-COURT.x,hw.y-COURT.y);
    heroTile={u:g.x,v:g.y};
-   currentBiome=biomeAt(g.x,g.y);
+   updateBiomes(g.x,g.y);
   }
   layoutSprites();
  }
@@ -685,6 +727,8 @@ export async function createParallax(opts:ParallaxOptions){
    return {
     enabled,
     mode,
+    blurPx:CORNER_BLUR_PX,
+    textureSize:{w:leftSlotA.texture.width,h:leftSlotA.texture.height},
     reducedMotion:isReducedMotion(),
     heroTile:{u:+heroTile.u.toFixed(2),v:+heroTile.v.toFixed(2)},
     biome:currentBiome,

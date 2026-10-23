@@ -181,6 +181,23 @@ try{
  const heroDepthPng=await page.screenshot({type:'png'});
  await sharp(heroDepthPng).webp({quality:90}).toFile(`${OUT}/occlusion-hero-depth.webp`);
 
+ // Verify default hero AoE fading loop + continuous rotation (must animate smoothly over time, not stay static)
+ const aoeFadeSamples=[];
+ for(let s=0;s<4;s++){
+  const sample=await page.evaluate(()=>{
+   const h=window.__STRONGHOLD_COMBAT__.snapshot().hero;
+   return {outer:h.aoeFadeAlpha,inner:h.aoeInnerFadeAlpha,rotOuter:h.aoeRotationRad,rotInner:h.aoeInnerRotationRad};
+  });
+  aoeFadeSamples.push(sample);
+  await page.waitForTimeout(320);
+ }
+ const outerMin=Math.min(...aoeFadeSamples.map(s=>s.outer));
+ const outerMax=Math.max(...aoeFadeSamples.map(s=>s.outer));
+ const rotMin=Math.min(...aoeFadeSamples.map(s=>s.rotOuter));
+ const rotMax=Math.max(...aoeFadeSamples.map(s=>s.rotOuter));
+ assert.ok(outerMax-outerMin>=0.15,`default AoE outer ring must fade in a loop (expected alpha range >= 0.15 across samples, got ${JSON.stringify(aoeFadeSamples)})`);
+ assert.ok(rotMax-rotMin>=0.10,`default AoE outer ring must rotate continuously (expected rotation delta >= 0.10 rad across samples, got ${JSON.stringify(aoeFadeSamples)})`);
+
  // 4. Scenario D: Wide skill VFX started away from wall (start position not behind wall, wide area extending behind wall with hero-like ~0.32 reduced opacity)
  const wallWideCheck=await page.evaluate(()=>{
   const c=window.__STRONGHOLD_COMBAT__;

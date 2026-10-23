@@ -13,7 +13,6 @@ export function createControls(uiStage:Container,frames:FrameSet,canStartStick?:
 
  const base=new Container();
  base.zIndex=15;
- base.visible=false;
  const ring=base.addChild(frames.frame('thumbstick-ring',RING_RADIUS*2,RING_RADIUS*2));
  ring.position.set(-RING_RADIUS,-RING_RADIUS);
  const knob=base.addChild(frames.frame('thumbstick-cap',54,54));
@@ -22,10 +21,19 @@ export function createControls(uiStage:Container,frames:FrameSet,canStartStick?:
 
  let finger=-1,ox=0,oy=0;const touches=new Set<number>();
 
+ const restStick=()=>{
+  const portrait=innerWidth<innerHeight;
+  base.visible=portrait;
+  base.alpha=portrait?0.78:1;
+  if(portrait)base.position.set(Math.round(Math.max(68,innerWidth*0.18)),Math.round(innerHeight-Math.max(82,innerWidth*0.21)));
+ };
+ restStick();
+ window.addEventListener('resize',()=>{if(finger<0)restStick();});
+
  const release=()=>{
   held.clear();stick={x:0,y:0};finger=-1;
   knob.position.set(-27,-27);
-  base.visible=false;
+  restStick();
  };
  const reset=()=>{touches.clear();release();eased={x:0,y:0};};
  window.addEventListener('blur',reset);
@@ -51,6 +59,7 @@ export function createControls(uiStage:Container,frames:FrameSet,canStartStick?:
   if(finger>=0||pinch||!inZone(e))return;
   take(e);finger=e.pointerId;ox=e.clientX;oy=e.clientY;
   base.position.set(ox,oy);
+  base.alpha=1;
   base.visible=true;
   aim(e);
  },{capture:true});

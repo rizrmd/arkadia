@@ -97,7 +97,7 @@ export function createFxStage(o:FxStageOptions){
    const effKey=(fx.sourceEffectFile??fx.id).replace(/\.json$/,'');
    const isGround=effKey.endsWith('.ground');
    if(o.host&&fx.emitters){
-    const maxEmitters=isGround?14:5;
+    const maxEmitters=isGround?4:3;
     if(fx.emitters.length>maxEmitters){
      const src=fx.emitters.filter((e:any)=>!/(smoke|glint|hand core)/i.test(e.name??''));
      const base=src.length>=maxEmitters?src:fx.emitters;
@@ -108,7 +108,7 @@ export function createFxStage(o:FxStageOptions){
       fx.emitters=base;
      }
     }
-    const perMax=isGround?48:Math.max(10,Math.min(18,Math.floor(60/Math.max(1,fx.emitters.length))));
+    const perMax=isGround?14:Math.max(8,Math.min(12,Math.floor(32/Math.max(1,fx.emitters.length))));
     for(const e of fx.emitters as any[]){
      e.maxParticles=Math.min(e.maxParticles||perMax,perMax);
      if(e.spawn){
@@ -120,8 +120,8 @@ export function createFxStage(o:FxStageOptions){
        if(typeof rv.max==='number'&&rv.max>perMax)rv.max=perMax;
       }
       if(e.spawn.bursts)for(const b of e.spawn.bursts){
-       if(isGround)b.count=Math.min(perMax,b.count);
-       else if(b.count>5)b.count=Math.min(perMax,Math.max(5,Math.ceil(b.count*.55)));
+       if(isGround)b.count=Math.min(8,b.count);
+       else if(b.count>5)b.count=Math.min(perMax,Math.max(5,Math.ceil(b.count*.5)));
       }
      }
     }
@@ -308,6 +308,7 @@ export function createFxStage(o:FxStageOptions){
   keys:()=>[...effects.keys()],
   place(x:number,y:number,scale:number){view.x=x;view.y=y;view.scale=scale;},
   play,frame,
+  particleCount:()=>planes?planes.world.vfx.stats.activeParticles+planes.ground.vfx.stats.activeParticles:0,
   stats:()=>({ready,failed,effects:effects.size,live:live.length,played,peakParticles,
    occludedParticles,minOcclusion,meanOcclusion,backEffects,frontEffects,
    particles:planes?planes.world.vfx.stats.activeParticles+planes.ground.vfx.stats.activeParticles:0,

@@ -7,11 +7,11 @@
  "name": "Shockwave · burst",
  "timeline": {
   "frameRate": 30,
-  "duration": 2.1,
+  "duration": 1.85,
   "loop": {
    "enabled": false,
    "start": 0,
-   "end": 2.1
+   "end": 1.85
   },
   "groups": []
  },
@@ -2681,9 +2681,9 @@
     },
     "size": {
      "mode": "random",
-     "value": 0.049,
-     "min": 0.036,
-     "max": 0.062,
+     "value": 0.056999999999999995,
+     "min": 0.042,
+     "max": 0.072,
      "curve": [
       {
        "x": 0,
@@ -4969,9 +4969,9 @@
     },
     "size": {
      "mode": "random",
-     "value": 0.0475,
-     "min": 0.035,
-     "max": 0.06,
+     "value": 0.054000000000000006,
+     "min": 0.04,
+     "max": 0.068,
      "curve": [
       {
        "x": 0,
@@ -7100,9 +7100,9 @@
    "initializeParticle": {
     "lifetime": {
      "mode": "random",
-     "value": 1.25,
-     "min": 0.9,
-     "max": 1.6,
+     "value": 1.05,
+     "min": 0.75,
+     "max": 1.35,
      "curve": [
       {
        "x": 0,
@@ -7261,9 +7261,9 @@
     },
     "size": {
      "mode": "random",
-     "value": 0.675,
-     "min": 0.5249999999999999,
-     "max": 0.8250000000000001,
+     "value": 0.19,
+     "min": 0.14,
+     "max": 0.24,
      "curve": [
       {
        "x": 0,
@@ -7493,8 +7493,8 @@
     "angularVelocity": {
      "mode": "random",
      "value": 0,
-     "min": -0.8,
-     "max": 0.8,
+     "min": -0.7,
+     "max": 0.7,
      "curve": [
       {
        "x": 0,
@@ -7515,7 +7515,7 @@
        "y": 0
       }
      ],
-     "editorMin": -0.8,
+     "editorMin": -0.7,
      "editorMax": 24
     },
     "angularVelocity3D": {
@@ -7733,27 +7733,27 @@
     "sizeEnd": 0.28,
     "sizeValue": {
      "mode": "curve",
-     "value": 0.45,
-     "min": 0.45,
-     "max": 1.5,
+     "value": 0.5,
+     "min": 0.5,
+     "max": 1.15,
      "curve": [
       {
        "x": 0,
-       "y": 0.45
+       "y": 0.5
       },
       {
        "x": 1,
-       "y": 1.5
+       "y": 1.15
       }
      ],
      "curveB": [
       {
        "x": 0,
-       "y": 0.45
+       "y": 0.5
       },
       {
        "x": 1,
-       "y": 1.5
+       "y": 1.15
       }
      ],
      "editorMin": 0.001,
@@ -7764,27 +7764,27 @@
     "sizeEndY": 0.28,
     "sizeValueY": {
      "mode": "curve",
-     "value": 0.45,
-     "min": 0.45,
-     "max": 1.5,
+     "value": 0.5,
+     "min": 0.5,
+     "max": 1.15,
      "curve": [
       {
        "x": 0,
-       "y": 0.45
+       "y": 0.5
       },
       {
        "x": 1,
-       "y": 1.5
+       "y": 1.15
       }
      ],
      "curveB": [
       {
        "x": 0,
-       "y": 0.45
+       "y": 0.5
       },
       {
        "x": 1,
-       "y": 1.5
+       "y": 1.15
       }
      ],
      "editorMin": 0.001,
@@ -9372,9 +9372,9 @@
    "initializeParticle": {
     "lifetime": {
      "mode": "random",
-     "value": 0.375,
-     "min": 0.25,
-     "max": 0.5,
+     "value": 0.335,
+     "min": 0.22,
+     "max": 0.45,
      "curve": [
       {
        "x": 0,
@@ -9504,9 +9504,9 @@
      },
      "intensity": {
       "mode": "constant",
-      "value": 1.8,
-      "min": 1.8,
-      "max": 1.8,
+      "value": 1.5,
+      "min": 1.5,
+      "max": 1.5,
       "curve": [
        {
         "x": 0,

@@ -265,13 +265,15 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
    if(Math.abs(col.x-qx)<=col.w/2+RADIUS&&col.front>edge)edge=col.front;
   }
   if(sb.isRound)return edge;
-  const m=getAlphaMask(p);
   let botY=-Infinity;
-  if(m&&qx>=sb.x0&&qx<=sb.x1){
-   const lx=Math.max(-p.width*.5,Math.min(p.width*.5,qx-p.x));
-   const ix=Math.min(m.w-1,Math.max(0,Math.floor(((lx+p.width*.5)/p.width)*m.w)));
-   const bv=m.bot[ix];
-   if(bv>=0)botY=p.y+p.shear*lx+p.vertical*(bv-p.foot)*p.height;
+  if(qx>=sb.x0&&qx<=sb.x1){
+   const m=getAlphaMask(p);
+   if(m){
+    const lx=Math.max(-p.width*.5,Math.min(p.width*.5,qx-p.x));
+    const ix=Math.min(m.w-1,Math.max(0,Math.floor(((lx+p.width*.5)/p.width)*m.w)));
+    const bv=m.bot[ix];
+    if(bv>=0)botY=p.y+p.shear*lx+p.vertical*(bv-p.foot)*p.height;
+   }
   }
   if(sb.isWall)return Math.max(edge,botY);
   if(p.layer==='world'||p.layer==='foreground'||p.layer==='backdrop'){
@@ -306,8 +308,6 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
  }
  const occluders=(px:number,py:number,b:number[])=>py+b[1]>=maxSceneFront?[]:sceneBounds.filter(sb=>{
   if(sb.x1<px+b[0]||sb.x0>px+b[2]||sb.y1<py+b[1]||sb.y0>py+b[3])return false;
-  // Flat ground AoE boxes (symmetric around py: |b[1] + b[3]| <= 16) lie on z=0 beneath all upright walls, gates, and buildings.
-  if(Math.abs(b[1]+b[3])<=16)return true;
   return frontBound(sb,px,py);
  }).map(sb=>sb.p);
  function sampleHeroAlpha(wx:number,wy:number):number{
@@ -409,7 +409,7 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
   const b=[Math.floor(Math.min(...sxs))-8,Math.floor(Math.min(...sys))-8,Math.ceil(Math.max(...sxs))+8,Math.ceil(Math.max(...sys))+8];
   const hidden=occluders(x,y,b),at=x.toFixed(1)+','+y.toFixed(1);if(canvas.dataset.x+','+canvas.dataset.y!==at)Object.assign(canvas.dataset,{x:x.toFixed(1),y:y.toFixed(1)});
   const qNight=Math.round(night*20)/20;
-  const key=[hero.id,state,clipName(),f.x,f.y,facing,vertical,tint,qNight.toFixed(2),s.dx,s.dy,s.wx,s.wy,s.alpha,res,b,hidden.length?hidden.map(p=>p.x+':'+p.y+':'+Math.round(Number(p.occluder?.dataset.frame??0)/8)).join()+'@'+Math.round(x)+','+Math.round(y):'',objects.length].join();if(key===drawn)return;drawn=key;
+  const key=[hero.id,state,clipName(),f.x,f.y,facing,vertical,tint,qNight.toFixed(2),s.dx,s.dy,s.wx,s.wy,s.alpha,res,b,hidden.length?hidden.map(p=>p.x+':'+p.y+':'+Math.round(Number(p.occluder?.dataset.frame??0)/8)).join()+'@'+Math.round(x*.25)+','+Math.round(y*.25):'',objects.length].join();if(key===drawn)return;drawn=key;
   if(res!==k||b.some((v,i)=>v!==box[i])){k=res;box=b;canvas.width=Math.ceil((b[2]-b[0])*k);canvas.height=Math.ceil((b[3]-b[1])*k);}
   const lw=cell.w,lh=cell.h,fKey=`${hero.id}:${f.x},${f.y}:${lw}x${lh}:${tint}:${qNight.toFixed(2)}`;
   let fCan=frameCache.get(fKey);

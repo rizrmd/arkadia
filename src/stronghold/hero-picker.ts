@@ -38,6 +38,7 @@ export function createHeroPicker(uiStage:Container,o:{current:()=>HeroId;choose:
   saveHero(id);
   if(id!==o.current())o.choose(id);
   holder.visible=false;
+  view?.stopFx();
   resolvePicked();
  }
  // While open every key belongs to the screen: keys pressed while choosing must not walk the hero.

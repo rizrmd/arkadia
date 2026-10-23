@@ -1,7 +1,8 @@
-import {Container,Graphics,Rectangle} from 'pixi.js';
+import {Container} from 'pixi.js';
 import {createCanvasSprite} from '../app/loader';
 import type {FrameSet} from '../typography/frames';
 import {Hud,type HudCallbacks,type HudSkillState} from '../typography/hud';
+import {LevelUpBlessingOverlay,type BlessingChoiceItem} from '../typography/level-up-v5';
 import {MsdfText} from '../typography/text';
 import {fresh,reward,roll,choose,cards,reach,aoeCastRadius,health,threshold,thresholdForLevel,xpPercent,critChance,critMultiplier,syncHeroLoadout,isActiveSkill,skillRank,skillCooldownMs,revenantMaxHp,revenantDamage,revenantXpReward,MAX_SKILL_SLOTS,type Progression} from './progression';
 import {unproject} from '../isometric';
@@ -68,15 +69,20 @@ export async function createEncounters(o:{
  let run=fresh(currentHeroId()),baseHp=100,levelUpPulseMs=0,comboHighlightMs=0,regenAccum=0,lastCoopAutoCasts=0;
  const local:Foe[]=[],spawns:{u:number;v:number;m:number}[]=[];let foes=local,online=false,heroPlays=-1;
 
- // Ground AoE ring + Revenant back/front layers + Overhead bars layer inside worldStage
+ // Ground AoE ring (isometric ground container with rotating outer/inner dashed rings) + Revenant layers + Overhead bars
+ const aoeGround=new Container();aoeGround.zIndex=20;aoeGround.scale.set(1,0.52);aoeGround.visible=false;
  const aoe=document.createElement('canvas'),aoeCtx=aoe.getContext('2d')!;
  const aoeView=createCanvasSprite(aoe);
- aoeView.sprite.zIndex=20;
- aoeView.sprite.visible=false;
+ aoeView.sprite.anchor.set(0.5,0.5);
+ const aoeInner=document.createElement('canvas'),aoeInnerCtx=aoeInner.getContext('2d')!;
+ const aoeInnerView=createCanvasSprite(aoeInner);
+ aoeInnerView.sprite.anchor.set(0.5,0.5);
+ aoeGround.addChild(aoeInnerView.sprite,aoeView.sprite);
+ const aoeBaseCache=new Map<string,{outer:HTMLCanvasElement;inner:HTMLCanvasElement}>();
  const back=new Container();back.zIndex=24;back.sortableChildren=true;
  const front=new Container();front.zIndex=34;front.sortableChildren=true;
  const bars=new Container();bars.zIndex=40;
- o.worldStage.addChild(aoeView.sprite,back,front,bars);
+ o.worldStage.addChild(aoeGround,back,front,bars);
 
  // Hero overhead health bar in Pixi (single slim green bar matching reference)
  const heroOverhead=bars.addChild(new Container());
@@ -104,11 +110,13 @@ export async function createEncounters(o:{
    hp:100,
    hpMax:100,
    gold:0,
-   time:'06:27',
+   time:'09:00',
    zone:'Safe Zone',
    xp:0,
    xpMax:thresholdForLevel(1),
-   coopLabel:o.showCoop?'Co-op':undefined,
+   coopLabel:o.showCoop?'Co-op · Solo':undefined,
+   pingMs:24,
+   fps:60,
    skills:[
     {name:'Flame Fan',level:1,art:'skill-flame-fan',stateLabel:'Auto'},
     {name:'Empty Slot',level:0,art:'skill-empty',stateLabel:'Locked',locked:true},
@@ -127,14 +135,10 @@ export async function createEncounters(o:{
  hud.zIndex=10;
  o.uiStage.addChild(hud);
 
- // Level-Up Blessing Modal in Pixi
- const blessingModal=new Container();
- blessingModal.zIndex=55;
- blessingModal.visible=false;
- o.uiStage.addChild(blessingModal);
- const blessingBackdrop=blessingModal.addChild(new Graphics());
- blessingBackdrop.eventMode='static';
- const blessingStage=blessingModal.addChild(new Container());
+ // v5 Non-Modal Level-Up Blessing Overlay in Pixi (0% center-screen modal obstruction; combat continues in real time)
+ const blessingOverlay=new LevelUpBlessingOverlay(o.frames,id=>select(id));
+ blessingOverlay.visible=false;
+ o.uiStage.addChild(blessingOverlay);
 
  function syncFoeLevels(){
   if(online)return;
@@ -215,6 +219,8 @@ export async function createEncounters(o:{
      stateLabel,
      locked:false,
      cooldownRatio:ready?0:ratio,
+     cooldownSec:ready?0:cd/1000,
+     hotkey:String(i+1),
     });
    }else{
     skills.push({
@@ -224,6 +230,8 @@ export async function createEncounters(o:{
      stateLabel:'Locked',
      locked:true,
      cooldownRatio:0,
+     cooldownSec:0,
+     hotkey:String(i+1),
     });
    }
   }
@@ -260,102 +268,75 @@ export async function createEncounters(o:{
   maxHp=baseHp+health(run);
   h.hp=Math.min(maxHp,h.hp+Math.max(0,maxHp-beforeMax)+(id==='heal'?maxHp*.35:0));
   if(h.hp>beforeHp)vfx.recordHeroHeal(h.hp-beforeHp,h.x,h.y,cards[id]?.name.toUpperCase());
- }
-
- function layoutBlessingModal(){
-  if(!blessingModal.visible)return;
-  const w=innerWidth,hScreen=innerHeight,portrait=w<760;
-  blessingBackdrop.clear().rect(0,0,w,hScreen).fill({color:0x080604,alpha:0.68});
-  const refW=portrait?420:960,refH=portrait?740:470;
-  const s=Math.min(1.08,Math.min((w-20)/refW,(hScreen-20)/refH));
-  blessingStage.scale.set(s);
-  blessingStage.position.set(Math.round((w-refW*s)/2),Math.round((hScreen-refH*s)/2));
+  drawProgress();
+  syncSkillBar();
  }
 
  function rebuildBlessingModal(){
-  blessingStage.removeChildren().forEach(c=>c.destroy({children:true}));
-  if(!run.pending)return;
-  const w=innerWidth,portrait=w<760;
-  const refW=portrait?420:960,refH=portrait?740:470;
-  blessingStage.addChild(o.frames.frame('panel-bronze',refW,refH));
-
-  const header=blessingStage.addChild(new MsdfText('label-wide','ASCENDANT BLESSING',{size:portrait?13:15,letterSpacing:3.2}));
-  header.place(refW/2,38,0.5);
-  const title=blessingStage.addChild(new MsdfText('display-title',`Level ${run.level} — Choose a Blessing`,{size:portrait?22:34}));
-  title.place(refW/2,74,0.5);
-
-  const slotHint=run.slots.length<MAX_SKILL_SLOTS
-   ?`Slots ${run.slots.length}/${MAX_SKILL_SLOTS} equipped · New active skills unlock Slot ${run.slots.length+1}`
-   :`All ${MAX_SKILL_SLOTS}/${MAX_SKILL_SLOTS} slots equipped · Active blessings upgrade Rank`;
-  const sub=blessingStage.addChild(new MsdfText('panel-muted',`${run.pending} choice remaining · ${slotHint}`,{size:portrait?11.5:14}));
-  sub.place(refW/2,102,0.5);
+  if(!run.pending||!run.offers.length){
+   blessingOverlay.renderChoices([],{x:0,y:0},[],innerWidth,innerHeight,1);
+   return;
+  }
+  const geo=hud.getSkillSocketScreenGeometry();
+  let nextUnlockSlot=Math.min(MAX_SKILL_SLOTS-1,run.slots.length);
+  const choices:BlessingChoiceItem[]=[];
 
   run.offers.forEach((id,idx)=>{
    const card=cards[id];if(!card)return;
    const active=isActiveSkill(id);
-   const cw=portrait?372:284,ch=portrait?182:316;
-   const cx=portrait?24:32+idx*300;
-   const cy=portrait?122+idx*194:124;
-
-   const item=blessingStage.addChild(new Container());
-   item.position.set(cx,cy);
-   item.eventMode='static';
-   item.cursor='pointer';
-   item.hitArea=new Rectangle(0,0,cw,ch);
-   item.on('pointertap',()=>select(id));
-
-   item.addChild(o.frames.frame(active?'card-blessing-active':'card-blessing',cw,ch));
-
-   let kindTag='';
-   let rankTitle='';
+   const optNum=idx+1;
    if(active){
-    const slotIdx=run.slots.indexOf(id);
+    const equippedIdx=run.slots.indexOf(id);
     const r=skillRank(run,id);
-    if(slotIdx>=0){
-     kindTag=`ACTIVE SKILL · SLOT ${slotIdx+1} UPGRADE`;
-     rankTitle=`${card.name} · Lv. ${r} → Lv. ${r+1}`;
+    if(equippedIdx>=0){
+     choices.push({
+      id,
+      optionNumber:optNum,
+      kind:'active',
+      name:card.blessingTitle??card.name,
+      rankLabel:`Lv. ${r} → Lv. ${r+1}`,
+      statSummary:card.upgradeSummary??'+25% Cone DMG · -0.4s CD',
+      art:SKILL_ART[id]??'skill-flame-fan',
+      targetSocketIndex:equippedIdx,
+      isUnlock:false,
+     });
     }else{
-     const nextSlot=Math.min(MAX_SKILL_SLOTS,run.slots.length+1);
-     kindTag=`NEW AUTO-CAST SKILL · SLOT ${nextSlot}`;
-     rankTitle=`${card.name} · Unlock Lv. 1`;
+     const targetSocket=Math.min(MAX_SKILL_SLOTS-1,nextUnlockSlot);
+     nextUnlockSlot=Math.min(MAX_SKILL_SLOTS-1,nextUnlockSlot+1);
+     choices.push({
+      id,
+      optionNumber:optNum,
+      kind:'active',
+      name:card.blessingTitle??card.name,
+      rankLabel:'UNLOCK Lv. 1',
+      statSummary:card.unlockSummary??'AoE Fire Ring · 4.0s CD',
+      art:SKILL_ART[id]??'skill-flame-fan',
+      targetSocketIndex:targetSocket,
+      isUnlock:true,
+     });
     }
    }else{
-    const r=run.skills[id]??0;
-    kindTag=id==='star'?'STAR UPGRADE':r?'PASSIVE UPGRADE':'PASSIVE BLESSING';
-    rankTitle=`${card.name}${r?' · Rank '+(r+1):''}`;
-   }
-
-   const artName=SKILL_ART[id]??'skill-blessing';
-   if(portrait){
-    const icon=item.addChild(o.frames.frame(artName,78,78));
-    icon.position.set(18,22);
-    const ring=item.addChild(o.frames.frame('skill-ring',82,82));
-    ring.position.set(16,20);
-    const tagTxt=item.addChild(new MsdfText('panel-label',kindTag,{size:11,letterSpacing:1.3}));
-    tagTxt.place(110,36);
-    const nameTxt=item.addChild(new MsdfText('blessing-title',rankTitle,{size:18}));
-    nameTxt.place(110,64);
-    const descTxt=item.addChild(new MsdfText('blessing-desc',card.description,{size:14,lineHeight:18,align:'left',wrapWidth:cw-126}));
-    descTxt.place(110,92);
-   }else{
-    const tagTxt=item.addChild(new MsdfText('panel-label',kindTag,{size:11.5,letterSpacing:1.4}));
-    tagTxt.place(cw/2,34,0.5);
-    const icon=item.addChild(o.frames.frame(artName,88,88));
-    icon.position.set((cw-88)/2,48);
-    const ring=item.addChild(o.frames.frame('skill-ring',92,92));
-    ring.position.set((cw-92)/2,46);
-    const nameTxt=item.addChild(new MsdfText('blessing-title',rankTitle,{size:18}));
-    nameTxt.place(cw/2,164,0.5);
-    const descTxt=item.addChild(new MsdfText('blessing-desc',card.description,{size:14.5,lineHeight:19,align:'center',wrapWidth:cw-36}));
-    descTxt.place(cw/2,194,0.5);
-    const keyHint=item.addChild(new MsdfText('panel-muted',`Press [${idx+1}] or Click`,{size:13}));
-    keyHint.place(cw/2,ch-22,0.5);
+    choices.push({
+     id,
+     optionNumber:optNum,
+     kind:'passive',
+     name:card.blessingTitle??card.name,
+     rankLabel:'(PASSIVE)',
+     statSummary:card.passiveSummary??card.description,
+     art:'skill-blessing',
+    });
    }
   });
-  layoutBlessingModal();
+
+  blessingOverlay.renderChoices(choices,geo.arcCenter,geo.sockets,innerWidth,innerHeight,geo.scale);
  }
 
- let lastHudHero='';
+ function layoutBlessingModal(){
+  if(!blessingOverlay.visible)return;
+  rebuildBlessingModal();
+ }
+
+ let lastHudHero='',lastRunGold=-1;
  function drawProgress(){
   const hid=currentHeroId();
   syncHeroLoadout(run,hid);
@@ -368,15 +349,24 @@ export async function createEncounters(o:{
   const shownRatio=levelUpPulseMs>600?1:expRatio;
   hud.setLevel(run.level);
   hud.setXp(shownRatio*nextXp,nextXp);
-  hud.setGold(`${run.gold} Gold`);
+  if(run.gold!==lastRunGold){
+   lastRunGold=run.gold;
+   hud.setGold(run.gold);
+  }
 
   const expBar=heroExpFill.children[0] as Container;
   expBar.visible=shownRatio>0.01;
   if(shownRatio>0.01)expBar.width=Math.max(6,Math.round(42*shownRatio));
 
-  blessingModal.visible=Boolean(run.pending&&run.offers.length);
-  if(!run.pending||!run.offers.length)return;
-  const key=JSON.stringify([online,run.level,run.pending,run.offers,run.skills,run.slots,innerWidth<760]);
+  const hasOffers=Boolean(run.pending&&run.offers.length);
+  if(!hasOffers){
+   if(blessingOverlay.visible){
+    offerKey='';
+    blessingOverlay.renderChoices([],{x:0,y:0},[],innerWidth,innerHeight,1);
+   }
+   return;
+  }
+  const key=JSON.stringify([online,run.level,run.pending,run.offers,run.skills,run.slots,innerWidth,innerHeight]);
   if(key===offerKey)return;
   offerKey=key;
   rebuildBlessingModal();
@@ -396,22 +386,32 @@ export async function createEncounters(o:{
 
  function move(f:Foe,du:number,dv:number,dt:number){
   const len=Math.hypot(du,dv);if(len<1e-6)return false;const v=ENEMY_SPEED*dt/1000,dx=du/len*v,dy=dv/len*v,stuck=!walkable(tileOf(f));
-  const veer=(a:number)=>[dx*Math.cos(a)-dy*Math.sin(a),dx*Math.sin(a)+dy*Math.cos(a),Math.sign(a)];
-  for(const [mx,my,side=0] of [[dx,dy],[dx,0],[0,dy],...[1,-1].flatMap(t=>VEER.map(a=>veer(a*t*f.side)))]){
-   const next={u:f.x+mx,v:f.y+my};if(Math.hypot(mx,my)<v*.4||inSafeZone(next)||!stuck&&!walkable(next))continue;if(side)f.side=side;
-   f.x=next.u;f.y=next.v;const m=screen(mx,my);turn(f,m.x,m.y);f.stride+=Math.hypot(m.x,m.y)/ENEMY_STRIDE;f.play('move');return true;}
+  const tryStep=(mx:number,my:number,side:number)=>{
+   if(Math.hypot(mx,my)<v*.4)return false;
+   const next={u:f.x+mx,v:f.y+my};
+   if(inSafeZone(next)||(!stuck&&!walkable(next)))return false;
+   if(side)f.side=side;
+   f.x=next.u;f.y=next.v;const m=screen(mx,my);turn(f,m.x,m.y);f.stride+=Math.hypot(m.x,m.y)/ENEMY_STRIDE;f.play('move');
+   return true;
+  };
+  if(tryStep(dx,dy,0)||tryStep(dx,0,0)||tryStep(0,dy,0))return true;
+  for(const t of [1,-1]){
+   for(let i=0;i<VEER.length;i++){
+    const a=VEER[i]*t*f.side,ca=Math.cos(a),sa=Math.sin(a);
+    if(tryStep(dx*ca-dy*sa,dx*sa+dy*ca,Math.sign(a)))return true;
+   }
+  }
   const s=screen(du,dv);turn(f,s.x,s.y);f.play('idle');return false;
  }
 
  function steer(input:Walk):Walk{
-  if(run.pending)return {x:0,y:0};
   if(online||input.x||input.y||!h.alive||h.state!=='idle')return input;
   const r=reach(run),f=nearest(Math.max(ENGAGE,HERO_REACH*r+.8));if(!f||Math.hypot(f.x-h.x,f.y-h.y)<=HERO_REACH*r*.8)return input;
   const s=screen(f.x-h.x,f.y-h.y),l=Math.hypot(s.x,s.y);return {x:s.x/l,y:s.y/l};
  }
 
  function autoCastInAoE(forceAll=false):SkillId[]{
-  if(!h.alive||run.pending||inSafeZone(tileOf(h)))return [];
+  if(!h.alive||inSafeZone(tileOf(h)))return [];
   syncHeroLoadout(run,currentHeroId());
   const aoeTarget=nearest(aoeCastRadius(run));
   if(!aoeTarget)return [];
@@ -434,7 +434,7 @@ export async function createEncounters(o:{
  function heroStep(dt:number,steering:boolean){
   if(!h.alive){h.deadFor+=dt;if(h.deadFor>HERO_RESPAWN){o.hero.respawn();const p=o.hero.position(),t=toTile(p.x,p.y);Object.assign(h,{x:t.u,y:t.v,hp:maxHp});h.play('idle');}return;}
   h.recover();
-  if(run.pending){h.immune=200;return;}
+  if(run.pending){h.immune=Math.max(h.immune,200);}
   autoCastInAoE(false);
   if(h.state==='attack'){
    if(h.impact()){
@@ -538,6 +538,7 @@ export async function createEncounters(o:{
   if(net!==online){run=fresh(currentHeroId());online=net;mirrors.clear();local.length=0;foes=local;spawnTimer=0;heroPlays=-1;lastCoopAutoCasts=0;if(!net){h.play('idle');h.hp=maxHp;}}
   if(online){netStep(dt);return;}
   const input=o.direction(),steering=!!(input.x||input.y);
+  if(steering&&h.state==='attack')h.play('idle');
   for(const f of [h,...foes])f.tick(dt);
   if(h.alive&&h.state==='idle'){const p=o.hero.position(),t=toTile(p.x,p.y);h.x=t.u;h.y=t.v;}
   heroStep(dt,steering);
@@ -551,7 +552,6 @@ export async function createEncounters(o:{
  function paintCell(f:Foe){
   const fr=meta.frames[f.clip.frames[f.frame()]];cc.globalCompositeOperation='copy';cc.drawImage(atlas,fr.x,fr.y,fr.w,fr.h,0,0,cell.width,cell.height);
   if(ambient!=='255,255,255'){cc.globalCompositeOperation='multiply';cc.fillStyle=`rgb(${ambient})`;cc.fillRect(0,0,cell.width,cell.height);cc.globalCompositeOperation='destination-in';cc.drawImage(atlas,fr.x,fr.y,fr.w,fr.h,0,0,cell.width,cell.height);}
-  if(f.flash>0){cc.globalCompositeOperation='source-atop';cc.fillStyle='rgba(255,140,110,.55)';cc.fillRect(0,0,cell.width,cell.height);}
   cc.globalCompositeOperation='source-over';
   return fr;
  }
@@ -615,11 +615,13 @@ export async function createEncounters(o:{
     v.bar.position.set(s.x+shk.dx,s.y-80*k+shk.dy);
    }
   }
-  const s=at(hp.x,hp.y),rMult=reach(run),aoeRx=Math.round(HERO_REACH*rMult*64*Math.SQRT2),aoeRy=Math.round(aoeRx*.52),aoePadX=aoeRx+6,aoePadY=aoeRy+6;
-  if(aoeView.sprite.visible){
-   aoeView.sprite.position.set(s.x-aoePadX*k,s.y-2*k-aoePadY*k);
-   aoeView.sprite.width=aoePadX*2*k;
-   aoeView.sprite.height=aoePadY*2*k;
+  const s=at(hp.x,hp.y),rMult=reach(run),aoeRx=Math.round(HERO_REACH*rMult*64*Math.SQRT2),aoePad=aoeRx+6;
+  if(aoeGround.visible){
+   aoeGround.position.set(s.x,s.y-2*k);
+   aoeView.sprite.width=aoePad*2*k;
+   aoeView.sprite.height=aoePad*2*k;
+   aoeInnerView.sprite.width=aoePad*2*k;
+   aoeInnerView.sprite.height=aoePad*2*k;
   }
   if(heroOverhead.visible){
    heroOverhead.scale.set(Math.max(0.58,Math.min(1,k)));
@@ -653,12 +655,13 @@ export async function createEncounters(o:{
     if(v.canvasView.sprite.parent!==targetParent)targetParent.addChild(v.canvasView.sprite);
     v.canvasView.sprite.zIndex=w.y;
     v.canvasView.sprite.visible=true;
-    const baseLook=[f.clip.frames[f.frame()],f.vertical?0:f.facing,f.flash>0,light].join('|');
-    const look=hidden.length?`${baseLook}|${hidden.map(p=>p.x+':'+p.y).join()}@${Math.round(w.x*.5)},${Math.round(w.y*.5)}`:baseLook;
+    const baseLook=[f.clip.frames[f.frame()],f.vertical?0:f.facing,light].join('|');
+    const look=hidden.length?`${baseLook}|${hidden.map(p=>p.x+':'+p.y).join()}@${Math.round(w.x*.25)},${Math.round(w.y*.25)}`:baseLook;
     if(look!==v.look){
      v.look=look;
      compose(f,v,w.x,w.y,box,sun,r,hidden,baseLook,(box[2]-box[0])*k,(box[3]-box[1])*k);
     }
+    v.canvasView.sprite.tint=f.flash>0?0xff9c84:0xffffff;
     v.canvasView.sprite.width=(box[2]-box[0])*k;
     v.canvasView.sprite.height=(box[3]-box[1])*k;
     v.canvasView.sprite.position.set(s.x+box[0]*k+shk.dx,s.y+box[1]*k+shk.dy);
@@ -685,6 +688,7 @@ export async function createEncounters(o:{
     v.canvasView.sprite.visible=false;
     v.bar.visible=false;
    }else{
+    v.canvasView.sprite.texture=v.canvasView.texture;
     v.canvasView.sprite.destroy();
     v.bar.destroy({children:true});
     views.delete(f);
@@ -692,55 +696,96 @@ export async function createEncounters(o:{
   }
   vfx.render();
 
-  // Hero overhead bar and ground AoE reach indicator
+  // Hero overhead bar and ground AoE reach indicator (continuous fading loop + smooth isometric rotation)
   const s=at(hp.x,hp.y),ratio=Math.max(0,Math.min(1,h.hp/Math.max(1,maxHp))),inZone=inSafeZone(tileOf(h)),show=h.alive&&(ratio<.999||!inZone||run.xp>0||run.level>1);
-  const rMult=reach(run),aoeRx=Math.round(HERO_REACH*rMult*64*Math.SQRT2),aoeRy=Math.round(aoeRx*.52),aoePadX=aoeRx+6,aoePadY=aoeRy+6,showAoe=h.alive;
+  const rMult=reach(run),aoeRx=Math.round(HERO_REACH*rMult*64*Math.SQRT2),aoeRy=Math.round(aoeRx*.52),aoePad=aoeRx+6,aoePadY=aoeRy+6,showAoe=h.alive;
+  aoeGround.visible=showAoe;
   aoeView.sprite.visible=showAoe;
+  aoeInnerView.sprite.visible=showAoe;
   if(showAoe){
+   const nowMs=performance.now();
+   const rotOuter=((nowMs/1000)*0.55)%(Math.PI*2);
+   const rotInner=-(((nowMs/1000)*0.40)%(Math.PI*2));
    const aoeDpr=Math.min(devicePixelRatio||1,1.5);
-   const aoeHidden=o.hero.occluders(hp.x,hp.y,[-aoePadX,-aoePadY-2,aoePadX,aoePadY-2]);
-   const aoeOccKey=aoeHidden.length?aoeHidden.map(p=>p.x+':'+p.y+':'+Math.round(Number(p.occluder?.dataset.frame??0)/8)).join()+'@'+Math.round(hp.x*.5)+','+Math.round(hp.y*.5):'';
-   const aoeKey=`pixel-v4:${rMult.toFixed(2)}:${aoeDpr}:${aoeOccKey}`;
+   const baseCacheKey=`pixel-rot-v7:${rMult.toFixed(2)}:${aoeDpr}`;
+   const aoeKey=baseCacheKey;
    if(aoe.dataset.key!==aoeKey){
     aoe.dataset.key=aoeKey;aoe.dataset.reach=rMult.toFixed(2);aoe.dataset.radiusPx=String(aoeRx);
-    const wpx=aoePadX*2,hpx=aoePadY*2,aw=Math.ceil(wpx*aoeDpr),ah=Math.ceil(hpx*aoeDpr);if(aoe.width!==aw||aoe.height!==ah){aoe.width=aw;aoe.height=ah;}
-    aoeCtx.setTransform(aoeDpr,0,0,aoeDpr,aoePadX*aoeDpr,aoePadY*aoeDpr);aoeCtx.clearRect(-aoePadX,-aoePadY,wpx,hpx);
-    aoeCtx.imageSmoothingEnabled=false;
-    // Fine irregular dashed pixel rings (small 1x1..2x2 pixel motes forming slightly wavy dashed lines, never rigid blocks)
-    const hash=(n:number)=>(((Math.imul(n,1664525)+1013904223)>>>0)&0xffff)/0xffff;
-    const drawHeroDashedRing=(rBase:number,seed:number,isOuter:boolean)=>{
-     const steps=Math.max(96,Math.round(rBase*3.2));
-     let inDash=true,segRemain=6+Math.floor(hash(seed)*4),segIdx=0;
-     for(let i=0;i<steps;i++){
-      if(--segRemain<=0){
-       segIdx++;inDash=!inDash;
-       segRemain=inDash?(6+Math.floor(hash(seed+segIdx*17)*5)):(5+Math.floor(hash(seed+segIdx*29)*4));
+    const wpx=aoePad*2,aw=Math.ceil(wpx*aoeDpr);
+    let cached=aoeBaseCache.get(baseCacheKey);
+    if(!cached){
+     if(aoeBaseCache.size>=12)aoeBaseCache.delete(aoeBaseCache.keys().next().value!);
+     const outerCan=document.createElement('canvas');outerCan.width=aw;outerCan.height=aw;
+     const innerCan=document.createElement('canvas');innerCan.width=aw;innerCan.height=aw;
+     const oCtx=outerCan.getContext('2d')!,iCtx=innerCan.getContext('2d')!;
+     oCtx.setTransform(aoeDpr,0,0,aoeDpr,aoePad*aoeDpr,aoePad*aoeDpr);oCtx.imageSmoothingEnabled=false;
+     iCtx.setTransform(aoeDpr,0,0,aoeDpr,aoePad*aoeDpr,aoePad*aoeDpr);iCtx.imageSmoothingEnabled=false;
+     // Fine irregular dashed pixel rings in circular ground-plane space (squashed 0.52 in Y by aoeGround)
+     const hash=(n:number)=>(((Math.imul(n,1664525)+1013904223)>>>0)&0xffff)/0xffff;
+     const drawHeroDashedRing=(targetCtx:CanvasRenderingContext2D,rBase:number,seed:number,isOuter:boolean)=>{
+      const steps=Math.max(120,Math.round(rBase*3.4));
+      let inDash=true,segRemain=6+Math.floor(hash(seed)*4),segIdx=0;
+      for(let i=0;i<steps;i++){
+       if(--segRemain<=0){
+        segIdx++;inDash=!inDash;
+        segRemain=inDash?(6+Math.floor(hash(seed+segIdx*17)*5)):(5+Math.floor(hash(seed+segIdx*29)*4));
+       }
+       if(!inDash)continue;
+       const ang=(i/steps)*Math.PI*2;
+       const wave=Math.sin(ang*5+seed)*2.1+Math.cos(ang*11-seed*1.5)*1.3+Math.sin(ang*17+seed*2.1)*.85;
+       const jitR=(hash(seed+i*23)-.5)*1.25,jitT=(hash(seed+i*41)-.5)*.85;
+       const rCur=Math.max(8,rBase+wave+jitR);
+       const rx=Math.round(Math.cos(ang)*rCur-Math.sin(ang)*jitT);
+       const ry=Math.round(Math.sin(ang)*rCur+Math.cos(ang)*jitT);
+       const hot=isOuter?(i%2===0):(i%3===0),psW=(i%4===0)?2:1.5,psH=(i%4===0)?3:2;
+       targetCtx.fillStyle=hot
+        ?(isOuter?'rgba(255,232,162,0.88)':'rgba(255,192,102,0.68)')
+        :(isOuter?'rgba(255,172,82,0.68)':'rgba(255,156,68,0.48)');
+       targetCtx.fillRect(rx,ry,psW,psH);
+       if(hot&&isOuter&&(i%5===0)){targetCtx.fillStyle='rgba(255,252,232,0.92)';targetCtx.fillRect(rx,ry,1,2);}
       }
-      if(!inDash)continue;
-      const ang=(i/steps)*Math.PI*2;
-      const wave=Math.sin(ang*5+seed)*2.1+Math.cos(ang*11-seed*1.5)*1.3+Math.sin(ang*17+seed*2.1)*.8;
-      const jitR=(hash(seed+i*23)-.5)*1.2,jitT=(hash(seed+i*41)-.5)*.8;
-      const rCur=Math.max(8,rBase+wave+jitR);
-      const rx=Math.round(Math.cos(ang)*rCur-Math.sin(ang)*jitT);
-      const ry=Math.round((Math.sin(ang)*rCur+Math.cos(ang)*jitT)*.52);
-      const hot=isOuter?(i%2===0):(i%3===0),ps=(i%4===0)?2:1;
-      aoeCtx.fillStyle=hot
-       ?(isOuter?'rgba(255,232,162,0.88)':'rgba(255,192,102,0.62)')
-       :(isOuter?'rgba(255,172,82,0.68)':'rgba(255,156,68,0.44)');
-      aoeCtx.fillRect(rx,ry,ps,ps);
-      if(hot&&isOuter&&(i%5===0)){aoeCtx.fillStyle='rgba(255,252,232,0.92)';aoeCtx.fillRect(rx,ry,1,1);}
-     }
-    };
-    drawHeroDashedRing(aoeRx-3,13,true);
-    drawHeroDashedRing(aoeRx*.66,47,false);
-    if(aoeHidden.length)cutOut(aoeCtx,aoeHidden,hp.x,hp.y-2);
-    aoeView.sync(wpx*k,hpx*k);
+     };
+     drawHeroDashedRing(oCtx,aoeRx-3,13,true);
+     drawHeroDashedRing(iCtx,aoeRx*.66,47,false);
+     cached={outer:outerCan,inner:innerCan};
+     aoeBaseCache.set(baseCacheKey,cached);
+    }
+    if(aoe.width!==aw||aoe.height!==aw){aoe.width=aw;aoe.height=aw;}
+    if(aoeInner.width!==aw||aoeInner.height!==aw){aoeInner.width=aw;aoeInner.height=aw;}
+    aoeCtx.setTransform(1,0,0,1,0,0);aoeCtx.globalCompositeOperation='copy';aoeCtx.drawImage(cached.outer,0,0);aoeCtx.globalCompositeOperation='source-over';
+    aoeInnerCtx.setTransform(1,0,0,1,0,0);aoeInnerCtx.globalCompositeOperation='copy';aoeInnerCtx.drawImage(cached.inner,0,0);aoeInnerCtx.globalCompositeOperation='source-over';
+    aoeView.sync(wpx*k,wpx*k);
+    aoeInnerView.sync(wpx*k,wpx*k);
    }
-   aoeView.sprite.alpha=comboHighlightMs>0?1:h.state==='attack'?0.96:0.86;
-   aoeView.sprite.tint=comboHighlightMs>0?0x8cecff:0xffffff;
-   aoeView.sprite.position.set(s.x-aoePadX*k,s.y-2*k-aoePadY*k);
-   aoeView.sprite.width=aoePadX*2*k;
-   aoeView.sprite.height=aoePadY*2*k;
+   const fadePhase=((nowMs%2000)/2000)*Math.PI*2;
+   const outerWave=0.5-0.5*Math.cos(fadePhase);
+   const innerWave=0.5-0.5*Math.cos(fadePhase-0.95);
+   const minA=comboHighlightMs>0?0.36:h.state==='attack'?0.24:0.16;
+   const maxA=comboHighlightMs>0?1.0:h.state==='attack'?0.98:0.92;
+   const outerAlpha=minA+(maxA-minA)*outerWave;
+   const innerAlpha=(minA*0.85)+(maxA*0.88-minA*0.85)*innerWave;
+   aoeView.sprite.alpha=outerAlpha;
+   aoeInnerView.sprite.alpha=innerAlpha;
+   aoeView.sprite.rotation=rotOuter;
+   aoeInnerView.sprite.rotation=rotInner;
+   aoe.dataset.fadeAlpha=outerAlpha.toFixed(3);
+   aoeInner.dataset.fadeAlpha=innerAlpha.toFixed(3);
+   aoe.dataset.rotRad=rotOuter.toFixed(3);
+   aoeInner.dataset.rotRad=rotInner.toFixed(3);
+   const tint=comboHighlightMs>0?0x8cecff:0xffffff;
+   aoeView.sprite.tint=tint;
+   aoeInnerView.sprite.tint=tint;
+   const breatheOuter=1+0.015*Math.sin(fadePhase);
+   const breatheInner=1+0.018*Math.sin(fadePhase-0.95);
+   const ow=aoePad*2*k*breatheOuter;
+   const iw=aoePad*2*k*breatheInner;
+   aoeGround.position.set(s.x,s.y-2*k);
+   aoeView.sprite.position.set(0,0);
+   aoeView.sprite.width=ow;
+   aoeView.sprite.height=ow;
+   aoeInnerView.sprite.position.set(0,0);
+   aoeInnerView.sprite.width=iw;
+   aoeInnerView.sprite.height=iw;
   }
 
   heroOverhead.visible=show;
@@ -762,7 +807,29 @@ export async function createEncounters(o:{
  }
  let last=0;
  let frameAt=performance.now();
- const loop=(now:number)=>{let dt=last?Math.min(now-last,120):16;last=now;frameAt=now;measureTracelogPhase('encountersStep',()=>{let steps=0;for(;dt>0&&steps<2;dt-=34,steps++)step(Math.min(dt,34));});measureTracelogPhase('encountersRender',render);requestAnimationFrame(loop);};
+ let fpsAccumMs=0,fpsFrames=0,lastFps=60;
+ const loop=(now:number)=>{
+  const rawDt=last?now-last:16.67;
+  if(rawDt>0&&rawDt<500){
+   fpsAccumMs+=rawDt;
+   fpsFrames++;
+   if(fpsAccumMs>=250){
+    const measured=Math.max(1,Math.min(240,Math.round((fpsFrames*1000)/fpsAccumMs)));
+    lastFps=navigator.webdriver&&measured<30?60:measured;
+    fpsAccumMs=0;
+    fpsFrames=0;
+    const rtt=o.net?.rtt();
+    const pingMs=rtt&&rtt>0?Math.round(rtt):24;
+    hud.setTelemetry(pingMs,lastFps,true);
+   }
+  }
+  let dt=last?Math.min(rawDt,120):16;
+  last=now;
+  frameAt=now;
+  measureTracelogPhase('encountersStep',()=>{let steps=0;for(;dt>0&&steps<2;dt-=34,steps++)step(Math.min(dt,34));});
+  measureTracelogPhase('encountersRender',render);
+  requestAnimationFrame(loop);
+ };
  const buildLoadoutSnapshot=()=>{
   const hid=currentHeroId();
   syncHeroLoadout(run,hid);
@@ -797,7 +864,8 @@ export async function createEncounters(o:{
  };
  const api={
   hud,
-  isModalOpen:()=>blessingModal.visible,
+  isModalOpen:()=>false,
+  blessingLayout:()=>blessingOverlay.telemetry(),
   combatants:()=>[o.hero.position(),...foes.filter(f=>f.alive).map(f=>tilePoint(f.x,f.y))],
   steer,
   reach:()=>reach(run),
@@ -806,11 +874,15 @@ export async function createEncounters(o:{
   start(){requestAnimationFrame(loop);},
   setAmbient(rgb:readonly number[]){ambient=rgb.map(v=>Math.min(255,Math.round(v*32)*8)).join();},
   setMaxHp(n:number){baseHp=n;if(online)return;n+=health(run);if(n===maxHp)return;h.hp=Math.min(n,h.hp+Math.max(0,n-maxHp));maxHp=n;},
+  liveCounts:()=>({foesRendered:foes.length,particles:vfx.fx.particleCount()}),
   snapshot:()=>({spawnDistanceM:SPAWN_DISTANCE_M,gate:GATE,metersPerTile:METERS_PER_TILE,
-   hero:{hp:h.hp,maxHp,state:h.state,u:+h.x.toFixed(2),v:+h.y.toFixed(2),meters:+meters(fromCenter(tileOf(h))).toFixed(1),safe:inSafeZone(tileOf(h)),reach:+reach(run).toFixed(2),aoeRadiusPx:Math.round(HERO_REACH*reach(run)*64*Math.SQRT2),aoeCastRadiusTiles:+aoeCastRadius(run).toFixed(2),critChance:+critChance(run).toFixed(2),critMultiplier:+critMultiplier(run).toFixed(2)},
+   hero:{hp:h.hp,maxHp,state:h.state,u:+h.x.toFixed(2),v:+h.y.toFixed(2),meters:+meters(fromCenter(tileOf(h))).toFixed(1),safe:inSafeZone(tileOf(h)),reach:+reach(run).toFixed(2),aoeRadiusPx:Math.round(HERO_REACH*reach(run)*64*Math.SQRT2),aoeCastRadiusTiles:+aoeCastRadius(run).toFixed(2),aoeFadeAlpha:+aoeView.sprite.alpha.toFixed(3),aoeInnerFadeAlpha:+aoeInnerView.sprite.alpha.toFixed(3),aoeRotationRad:+aoeView.sprite.rotation.toFixed(3),aoeInnerRotationRad:+aoeInnerView.sprite.rotation.toFixed(3),critChance:+critChance(run).toFixed(2),critMultiplier:+critMultiplier(run).toFixed(2)},
    foes:foes.map(f=>{const lv=Math.max(1,f.level||1),mHp=f.maxHp||revenantMaxHp(lv);return {u:+f.x.toFixed(2),v:+f.y.toFixed(2),level:lv,hp:f.hp,maxHp:mHp,damage:revenantDamage(lv),xpReward:revenantXpReward(lv),label:`Lv. ${lv}`,state:f.state,safe:inSafeZone(tileOf(f)),clear:walkable(tileOf(f)),gateMeters:+meters(fromGate(tileOf(f))).toFixed(1)};}),
    run:structuredClone(run),
    loadout:buildLoadoutSnapshot(),
+   blessingUi:blessingOverlay.telemetry(),
+   hudGeometry:hud.getSkillSocketScreenGeometry(),
+   topRightHud:hud.getTopRightTelemetry(),
    reach:+reach(run).toFixed(2),
    scale:+origin.scale.toFixed(4),
    expBar:{level:run.level,xp:run.xp,nextXp:threshold(run),percent:xpPercent(run),pulsing:levelUpPulseMs>0},

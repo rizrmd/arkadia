@@ -2323,7 +2323,7 @@
    "name": "rift pixel stream",
    "enabled": true,
    "mode": "billboard",
-   "maxParticles": 26,
+   "maxParticles": 32,
    "duration": 0.25,
    "loop": false,
    "timeline": {
@@ -2416,19 +2416,19 @@
     "bursts": [
      {
       "time": 0,
-      "count": 18,
+      "count": 24,
       "cycles": 1,
       "interval": 0,
       "probability": 1
      }
     ],
     "shape": "cone",
-    "radius": 0.06,
+    "radius": 0.08,
     "radiusValue": {
      "mode": "constant",
-     "value": 0.06,
-     "min": 0.06,
-     "max": 0.06,
+     "value": 0.08,
+     "min": 0.08,
+     "max": 0.08,
      "curve": [
       {
        "x": 0,
@@ -2518,9 +2518,9 @@
    "initializeParticle": {
     "lifetime": {
      "mode": "random",
-     "value": 0.33999999999999997,
-     "min": 0.24,
-     "max": 0.44,
+     "value": 0.31,
+     "min": 0.22,
+     "max": 0.4,
      "curve": [
       {
        "x": 0,
@@ -2679,9 +2679,9 @@
     },
     "size": {
      "mode": "random",
-     "value": 0.53,
-     "min": 0.42,
-     "max": 0.64,
+     "value": 0.22000000000000003,
+     "min": 0.17,
+     "max": 0.27,
      "curve": [
       {
        "x": 0,
@@ -2708,9 +2708,9 @@
     "size3D": {
      "x": {
       "mode": "random",
-      "value": 0.53,
-      "min": 0.42,
-      "max": 0.64,
+      "value": 0.22000000000000003,
+      "min": 0.17,
+      "max": 0.27,
       "curve": [
        {
         "x": 0,
@@ -2736,9 +2736,9 @@
      },
      "y": {
       "mode": "random",
-      "value": 0.69,
-      "min": 0.56,
-      "max": 0.82,
+      "value": 0.33999999999999997,
+      "min": 0.26,
+      "max": 0.42,
       "curve": [
        {
         "x": 0,
@@ -3065,12 +3065,12 @@
     }
    },
    "forces": {
-    "gravity": -0.7,
+    "gravity": -0.65,
     "gravityValue": {
      "mode": "constant",
-     "value": -0.7,
-     "min": -0.7,
-     "max": -0.7,
+     "value": -0.65,
+     "min": -0.65,
+     "max": -0.65,
      "curve": [
       {
        "x": 0,
@@ -3091,7 +3091,7 @@
        "y": 0
       }
      ],
-     "editorMin": -0.7,
+     "editorMin": -0.65,
      "editorMax": 80
     },
     "drag": 2.2,
@@ -3151,13 +3151,13 @@
     "sizeEnd": 0.28,
     "sizeValue": {
      "mode": "curve",
-     "value": 0.42,
-     "min": 0.32,
+     "value": 0.44,
+     "min": 0.28,
      "max": 1,
      "curve": [
       {
        "x": 0,
-       "y": 0.42
+       "y": 0.44
       },
       {
        "x": 0.24,
@@ -3169,13 +3169,13 @@
       },
       {
        "x": 1,
-       "y": 0.32
+       "y": 0.28
       }
      ],
      "curveB": [
       {
        "x": 0,
-       "y": 0.42
+       "y": 0.44
       },
       {
        "x": 0.24,
@@ -3187,7 +3187,7 @@
       },
       {
        "x": 1,
-       "y": 0.32
+       "y": 0.28
       }
      ],
      "editorMin": 0.001,
@@ -3198,13 +3198,13 @@
     "sizeEndY": 0.28,
     "sizeValueY": {
      "mode": "curve",
-     "value": 0.42,
-     "min": 0.32,
+     "value": 0.44,
+     "min": 0.28,
      "max": 1,
      "curve": [
       {
        "x": 0,
-       "y": 0.42
+       "y": 0.44
       },
       {
        "x": 0.24,
@@ -3216,13 +3216,13 @@
       },
       {
        "x": 1,
-       "y": 0.32
+       "y": 0.28
       }
      ],
      "curveB": [
       {
        "x": 0,
-       "y": 0.42
+       "y": 0.44
       },
       {
        "x": 0.24,
@@ -3234,7 +3234,7 @@
       },
       {
        "x": 1,
-       "y": 0.32
+       "y": 0.28
       }
      ],
      "editorMin": 0.001,
@@ -3405,7 +3405,7 @@
        "alpha": 1
       },
       {
-       "position": 0.48,
+       "position": 0.5,
        "alpha": 0.92
       },
       {
@@ -4194,7 +4194,7 @@
       "editorMin": 0,
       "editorMax": 8
      },
-     "frequency": 2,
+     "frequency": 2.1,
      "speed": 2.5,
      "scroll": [
       1,
@@ -9598,9 +9598,9 @@
      },
      "intensity": {
       "mode": "constant",
-      "value": 1.6,
-      "min": 1.6,
-      "max": 1.6,
+      "value": 1.5,
+      "min": 1.5,
+      "max": 1.5,
       "curve": [
        {
         "x": 0,
@@ -9627,9 +9627,9 @@
     },
     "size": {
      "mode": "random",
-     "value": 0.044,
-     "min": 0.032,
-     "max": 0.056,
+     "value": 0.053000000000000005,
+     "min": 0.038,
+     "max": 0.068,
      "curve": [
       {
        "x": 0,
