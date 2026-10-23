@@ -5,14 +5,15 @@
 // key-held time it spends locked in a swing. Writes docs/coop/wasd-<label>.json.
 //   node scripts/coop-wasd.mjs [label]                   builds and starts server/
 //   ARKODIA_BIN=path BURST=1 node scripts/coop-wasd.mjs  an already built server, bursty delivery
+//   COOP_URL=wss://host/ws node scripts/coop-wasd.mjs live   a deployed server
 import {spawn,execFileSync} from 'node:child_process';import fs from 'node:fs/promises';
 const label=process.argv[2]||(process.env.BURST==='1'?'burst':'steady');
-const bin=process.env.ARKODIA_BIN||'server/bin/arkodia';if(!process.env.ARKODIA_BIN)execFileSync(process.env.GO||'go',['build','-o','bin/arkodia','./cmd/arkodia'],{cwd:'server',stdio:'inherit',env:{...process.env,CGO_ENABLED:'0'}});
+const live=process.env.COOP_URL,bin=process.env.ARKODIA_BIN||'server/bin/arkodia';if(!live&&!process.env.ARKODIA_BIN)execFileSync(process.env.GO||'go',['build','-o','bin/arkodia','./cmd/arkodia'],{cwd:'server',stdio:'inherit',env:{...process.env,CGO_ENABLED:'0'}});
 const burst=process.env.BURST==='1',port=String(18800+Math.floor(Math.random()*90)),seed=Number(process.env.SEED||1);
 let r=seed;const rand=()=>((r=(r*1103515245+12345)%2147483648)/2147483648);
-const server=spawn(bin,[],{env:{...process.env,PORT:port,SITE_DIR:'/nonexistent'},stdio:['ignore','pipe','inherit']});
-await new Promise((ok,no)=>{server.stdout.on('data',d=>{if(String(d).includes('listening'))ok();});server.on('exit',c=>no(Error('exit '+c)));});
-const ws=new WebSocket(`ws://127.0.0.1:${port}/ws`);let you='',snaps=[];
+const server=live?null:spawn(bin,[],{env:{...process.env,PORT:port,SITE_DIR:'/nonexistent'},stdio:['ignore','pipe','inherit']});
+if(server)await new Promise((ok,no)=>{server.stdout.on('data',d=>{if(String(d).includes('listening'))ok();});server.on('exit',c=>no(Error('exit '+c)));});
+const ws=new WebSocket(live||`ws://127.0.0.1:${port}/ws`);let you='',snaps=[];
 await new Promise((ok,no)=>{ws.onopen=()=>ws.send(JSON.stringify({t:'hello',v:1,name:'Probe',room:'',maxHp:100,hero:'ember-warden'}));
  ws.onmessage=e=>{const m=JSON.parse(e.data);if(m.t==='welcome'){you=m.you;ok();}else if(m.t==='s'){const me=m.players.find(p=>p.id===you);if(me)snaps.push({t:performance.now(),ack:m.ack,x:me.x,y:me.y,st:me.st,k:me.k});}};ws.onerror=no;});
 let dir={x:0,y:0},seq=0,done=false;const queue=[];
@@ -23,7 +24,7 @@ dir={x:0,y:1};await wait(6500);dir={x:0,y:0};
 const phases=[];
 const PRESSES=Number(process.env.PRESSES||30);
 for(let i=0;i<PRESSES;i++){await wait(300+rand()*700);const t0=performance.now(),first=seq+1;dir={x:i%2?-1:1,y:0};await wait(1200);dir={x:0,y:0};phases.push([t0,performance.now(),first]);}
-await wait(300);done=true;clearInterval(tick);ws.close();server.kill();
+await wait(300);done=true;clearInterval(tick);ws.close();server?.kill();
 let held=0,swing=0;const response=[];
 for(const [t0,t1,first] of phases){
  const before=snaps.filter(s=>s.t<t0).at(-1),w=snaps.filter(s=>s.t>=t0&&s.t<=t1);
