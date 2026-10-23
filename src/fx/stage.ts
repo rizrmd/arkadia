@@ -94,12 +94,21 @@ export function createFxStage(o:FxStageOptions){
   deriveAlpha=createDerivedAlphaTexture;
   const bundle=loadVfxExportBundle({manifest:packed.manifest,effectsByPath:packed.effects},{requiredBackend:'pixi2d'});
   for(const fx of bundle.effectsById.values()){
+   const effKey=(fx.sourceEffectFile??fx.id).replace(/\.json$/,'');
+   const isGround=effKey.endsWith('.ground');
    if(o.host&&fx.emitters){
-    if(fx.emitters.length>3){
-     const src=fx.emitters;
-     fx.emitters=[src[0],src[Math.round((src.length-1)/2)],src[src.length-1]];
+    const maxEmitters=isGround?6:5;
+    if(fx.emitters.length>maxEmitters){
+     const src=fx.emitters.filter((e:any)=>!/(smoke|glint|hand core)/i.test(e.name??''));
+     const base=src.length>=maxEmitters?src:fx.emitters;
+     if(base.length>maxEmitters){
+      const step=(base.length-1)/(maxEmitters-1);
+      fx.emitters=Array.from({length:maxEmitters},(_,i)=>base[Math.round(i*step)]);
+     }else{
+      fx.emitters=base;
+     }
     }
-    const perMax=Math.max(6,Math.min(10,Math.floor(28/Math.max(1,fx.emitters.length))));
+    const perMax=isGround?56:Math.max(12,Math.min(20,Math.floor(64/Math.max(1,fx.emitters.length))));
     for(const e of fx.emitters as any[]){
      e.maxParticles=Math.min(e.maxParticles||perMax,perMax);
      if(e.spawn){
@@ -110,11 +119,14 @@ export function createFxStage(o:FxStageOptions){
        if(typeof rv.min==='number'&&rv.min>perMax)rv.min=perMax;
        if(typeof rv.max==='number'&&rv.max>perMax)rv.max=perMax;
       }
-      if(e.spawn.bursts)for(const b of e.spawn.bursts)if(b.count>6)b.count=Math.min(perMax,Math.ceil(b.count*.3));
+      if(e.spawn.bursts)for(const b of e.spawn.bursts){
+       if(isGround)b.count=Math.min(perMax,b.count);
+       else if(b.count>8)b.count=Math.min(perMax,Math.ceil(b.count*.5));
+      }
      }
     }
    }
-   effects.set((fx.sourceEffectFile??fx.id).replace(/\.json$/,''),fx);
+   effects.set(effKey,fx);
   }
   await textureProvider.preload!(bundle.manifest.assets.filter((a):a is VfxTextureAssetRef=>a.type==='texture'));
   const {Container,Rectangle}=await PIXI();Rect=Rectangle;
@@ -179,7 +191,7 @@ export function createFxStage(o:FxStageOptions){
   l.handle={key,
    setLocal:(x,y=0,z=0)=>l.inst.setPosition([x,y,z]),
    moveTo:(u,v)=>{anchor.u=u;anchor.v=v;},
-   release:()=>{if(l.released)return;l.released=true;const runner=(l.inst as any).runner;if(runner?.allowCompletion)runner.allowCompletion();else l.inst.stop();},
+   release:()=>{if(l.released)return;l.released=true;l.inst.stop();l.inst.root.visible=false;},
    get alive(){return live.includes(l);}};
   live.push(l);
   return l.handle;
@@ -234,7 +246,7 @@ export function createFxStage(o:FxStageOptions){
         occCache.set(gk,occ);
        }
        occTotal++;occSum+=occ;if(occ<occMin)occMin=occ;
-       if(occ<.999){p.alpha*=isAdd?occ*.58:occ;occCount++;}
+       if(occ<.999){p.alpha=occ<=.01?0:isAdd?Math.min(occ*.28,p.alpha*occ*.35):p.alpha*occ;occCount++;}
       }
      }
      const tc=ev.trailContainer?.particleChildren as any[]|undefined;
@@ -242,7 +254,7 @@ export function createFxStage(o:FxStageOptions){
       const tp=tc[j],px=(tp.x-view.x)/sc,wy=flat?(tp.y*.5-view.y)/sc:(tp.y-view.y)/sc,py=flat?wy:anchorY;
       const occ=occFn(px,py,px,wy,6,flat,!flat,anchorY);
       occTotal++;occSum+=occ;if(occ<occMin)occMin=occ;
-      if(occ<.999){tp.alpha*=isAdd?occ*.58:occ;occCount++;}
+      if(occ<.999){tp.alpha=occ<=.01?0:isAdd?Math.min(occ*.28,tp.alpha*occ*.35):tp.alpha*occ;occCount++;}
      }
      if(canOcclude&&occFn&&ev.trailMesh?.visible){
       const occ=occFn(anchorPt.x,anchorY,anchorPt.x,anchorY-anchorLift,12,flat,!flat,anchorY);

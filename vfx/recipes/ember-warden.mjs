@@ -28,9 +28,10 @@ export default [
   L.embers(P,{name:'drift embers',at:HAND,count:30,shape:{type:'cone',angle:40,radius:.1},rot:[0,0,-90],speed:[1,3.4]}),
   L.smoke(P,{name:'smoke',at:[.6,.75,0],count:4,size:.5,alpha:.24,delay:.14})]},
  {id:'ember-warden.flame-fan.cast.ground',name:'Flame Fan · burning circle',emitters:[
-  ...L.magicCircle(P,{name:'burning circle',radius:1.35,duration:.54,spin:1.9,count:68}),
-  L.pool(P,{name:'heat',radius:1.2,life:.65,intensity:.75}),
-  L.groundArcs(P,{name:'rim crackle',radius:1.35,rate:22,duration:.48,size:.24,intensity:1.25})]},
+  ...L.magicCircle(P,{name:'burning circle',radius:1.35,duration:.54,spin:1.9,count:48}),
+  L.slashDecal(P,{name:'fan outer arc',radius:2.25,arc:72,life:.56}),
+  L.slashDecal(P,{name:'fan inner arc',radius:1.75,arc:68,life:.52}),
+  L.pool(P,{name:'heat',radius:1.2,life:.65,intensity:.75})]},
  {id:'ember-warden.flame-fan.cast.rim',name:'Flame Fan · rim fire',emitters:[
   L.flames(P,{name:'rim flames',shape:{type:'circle',radius:1.34,thickness:0},rate:56,duration:.46,size:.3,speed:[.4,1.05],gravity:-2,turbulence:1.15,alpha:.85}),
   L.glow(L.flames(P,{name:'rim flame core',shape:{type:'circle',radius:1.34,thickness:0},rate:38,duration:.46,size:.22,speed:[.45,1.15],gravity:-2,turbulence:1.1}),.9),

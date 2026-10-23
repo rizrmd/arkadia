@@ -291,18 +291,17 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
   let lastX=x0,lastY=y0;
   for(let i=1;i<=steps;i++){
    const t=i/steps,wx=x0+dx*t,wy=y0+dy*t;
-   if(blocked(wx,wy))return {hit:true,x:lastX,y:lastY,t:(i-1)/steps};
+   const gd=Math.abs(wx-577);
+   const gateTowerHit=gd>=35&&gd<=135&&wy>=gateTowerFront(gd)-76&&wy<=gateTowerFront(gd)+4;
+   if(blocked(wx,wy)||gateTowerHit)return {hit:true,x:lastX,y:lastY,t:(i-1)/steps};
    lastX=wx;lastY=wy;
   }
   return {hit:false,x:x1,y:y1,t:1};
  }
  const occluders=(px:number,py:number,b:number[])=>py+b[1]>=maxSceneFront?[]:sceneBounds.filter(sb=>{
   if(sb.x1<px+b[0]||sb.x0>px+b[2]||sb.y1<py+b[1]||sb.y0>py+b[3])return false;
-  const wideGround=b[2]-b[0]>100&&b[3]-b[1]>40&&b[3]<45;
-  if(wideGround){
-   const qx=Math.max(sb.x0+8,Math.min(sb.x1-8,px));
-   return py+b[1]<frontY(sb,qx);
-  }
+  // Flat ground AoE boxes (symmetric around py: |b[1] + b[3]| <= 16) lie on z=0 beneath all upright walls, gates, and buildings.
+  if(Math.abs(b[1]+b[3])<=16)return true;
   return frontBound(sb,px,py);
  }).map(sb=>sb.p);
  function sampleHeroAlpha(wx:number,wy:number):number{
@@ -319,8 +318,14 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
   if(Math.min(py,y0,anchorY??py)<=maxSceneFront&&y0<=maxSceneY&&y1>=minSceneY&&x0<=maxSceneX&&x1>=minSceneX){
    for(let i=0,n=sceneBounds.length;i<n;i++){
     const sb=sceneBounds[i];
-    if(sb.x1<x0||sb.x0>x1||sb.y1<y0||sb.y0>y1)continue;
+    if(sb.x1<x0||sb.x0>x1)continue;
     const p=sb.p,qx=Math.max(sb.x0+2,Math.min(sb.x1-2,wx));
+    if(anchorY!==undefined&&(sb.isWall||sb.isGate)){
+     const fY=frontY(sb,qx);
+     // Prevent fast volumetric sparks or ground dots cast behind a wall/gate from popping out at full opacity in front of the wall base.
+     if(anchorY<fY-12&&(py>fY+2||wy>fY+2)&&wy<fY+140)maxA=1;
+    }
+    if(sb.y1<y0||sb.y0>y1)continue;
     // Flat ground decals lie on z=0 beneath all upright walls, buildings, gates, and trees;
     // Volumetric world particles are behind sb when frontBound(sb, qx, py, anchorY) is true.
     const behind=flat||frontBound(sb,qx,py,anchorY);

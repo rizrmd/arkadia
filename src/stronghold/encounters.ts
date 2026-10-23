@@ -172,6 +172,7 @@ export async function createEncounters(o:{
   layer:o.worldStage,heroCanvas:o.hero.canvas,backLayer:back,frontLayer:front,
   getHero:()=>({u:h.x,v:h.y,facing:h.facing,back:h.back,vertical:h.vertical,heroId:currentHeroId()}),
   occlusionAt:o.hero.occlusionAt,
+  occluders:o.hero.occluders,
   blocked:o.hero.blocked,
   traceWallRay:o.hero.traceWallRay,
   getRun:()=>run,
@@ -693,36 +694,43 @@ export async function createEncounters(o:{
 
   // Hero overhead bar and ground AoE reach indicator
   const s=at(hp.x,hp.y),ratio=Math.max(0,Math.min(1,h.hp/Math.max(1,maxHp))),inZone=inSafeZone(tileOf(h)),show=h.alive&&(ratio<.999||!inZone||run.xp>0||run.level>1);
-  const rMult=reach(run),aoeRx=Math.round(HERO_REACH*rMult*64*Math.SQRT2),aoeRy=Math.round(aoeRx*.52),aoePadX=aoeRx+6,aoePadY=aoeRy+6,showAoe=h.alive&&(!inZone||rMult>1.001);
+  const rMult=reach(run),aoeRx=Math.round(HERO_REACH*rMult*64*Math.SQRT2),aoeRy=Math.round(aoeRx*.52),aoePadX=aoeRx+6,aoePadY=aoeRy+6,showAoe=h.alive;
   aoeView.sprite.visible=showAoe;
   if(showAoe){
    const aoeHidden=o.hero.occluders(hp.x,hp.y,[-aoePadX,-aoePadY-2,aoePadX,aoePadY-2]);
    const aoeOccKey=aoeHidden.length?aoeHidden.map(p=>p.x+':'+p.y+':'+(p.occluder?.dataset.frame??'')).join()+'@'+Math.round(hp.x*.5)+','+Math.round(hp.y*.5):'';
-   const aoeKey=`pixel-v2:${rMult.toFixed(2)}:${dpr}:${h.state==='attack'?1:0}:${comboHighlightMs>0?1:0}:${aoeOccKey}`;
+   const aoeKey=`pixel-v3:${rMult.toFixed(2)}:${dpr}:${h.state==='attack'?1:0}:${comboHighlightMs>0?1:0}:${aoeOccKey}`;
    if(aoe.dataset.key!==aoeKey){
     aoe.dataset.key=aoeKey;aoe.dataset.reach=rMult.toFixed(2);aoe.dataset.radiusPx=String(aoeRx);
     const wpx=aoePadX*2,hpx=aoePadY*2,aw=Math.ceil(wpx*dpr),ah=Math.ceil(hpx*dpr);if(aoe.width!==aw||aoe.height!==ah){aoe.width=aw;aoe.height=ah;}
     aoeCtx.setTransform(dpr,0,0,dpr,aoePadX*dpr,aoePadY*dpr);aoeCtx.clearRect(-aoePadX,-aoePadY,wpx,hpx);
     aoeCtx.imageSmoothingEnabled=false;
-    const pulse=(h.state==='attack'?.05:0)+(comboHighlightMs>0?.08:0);
-    // Warm inner ambient glow + ring of discrete Diablo-like pixel ember particles (no continuous vector stroke)
-    aoeCtx.save();aoeCtx.scale(1,.52);
-    const g=aoeCtx.createRadialGradient(0,0,4,0,0,aoeRx);
-    g.addColorStop(0,`rgba(255,208,138,${(.18+pulse).toFixed(2)})`);
-    g.addColorStop(.68,`rgba(255,168,84,${(.09+pulse*.5).toFixed(2)})`);
-    g.addColorStop(1,'rgba(242,196,107,0)');
-    aoeCtx.fillStyle=g;aoeCtx.beginPath();aoeCtx.arc(0,0,aoeRx,0,Math.PI*2);aoeCtx.fill();
-    aoeCtx.restore();
-    const beadCount=Math.max(36,Math.round(aoeRx*.72));
+    const pulse=(h.state==='attack'?.08:0)+(comboHighlightMs>0?.12:0);
+    // Isometric dotted grid inside ground AoE reach + crisp dotted outer boundary (no continuous vector stroke)
+    const stepX=12,stepY=6;
+    for(let gy=-aoeRy+4;gy<=aoeRy-4;gy+=stepY){
+     const rowIdx=Math.round(gy/stepY);
+     for(let gx=-aoeRx+4;gx<=aoeRx-4;gx+=stepX){
+      const colIdx=Math.round(gx/stepX);
+      if(((rowIdx+colIdx)&1)!==0)continue;
+      const dist=Math.hypot(gx,gy/.52);
+      if(dist>aoeRx-5||dist<14)continue;
+      aoeCtx.fillStyle=comboHighlightMs>0
+       ?'rgba(108,224,255,0.45)'
+       :`rgba(255,186,96,${(.34+pulse).toFixed(2)})`;
+      aoeCtx.fillRect(gx-1,gy-1,2,2);
+     }
+    }
+    const beadCount=Math.max(44,Math.round(aoeRx*.85));
     for(let i=0;i<beadCount;i++){
-     const ang=(i/beadCount)*Math.PI*2,jit=((i*37)%11-5)*.35;
-     const rx=Math.round(Math.cos(ang)*(aoeRx-2+jit)),ry=Math.round(Math.sin(ang)*(aoeRy-1+jit*.52));
-     const major=i%3===0,ps=major?3:2;
+     const ang=(i/beadCount)*Math.PI*2;
+     const rx=Math.round(Math.cos(ang)*(aoeRx-2)),ry=Math.round(Math.sin(ang)*(aoeRy-1));
+     const major=i%2===0,ps=major?3:2;
      aoeCtx.fillStyle=comboHighlightMs>0
-      ?(major?'rgba(156,240,255,0.88)':'rgba(102,227,255,0.62)')
-      :(major?`rgba(255,228,154,${(.62+pulse).toFixed(2)})`:`rgba(255,166,76,${(.42+pulse).toFixed(2)})`);
+      ?(major?'rgba(168,244,255,0.92)':'rgba(102,227,255,0.72)')
+      :(major?`rgba(255,232,162,${(.82+pulse).toFixed(2)})`:`rgba(255,168,78,${(.62+pulse).toFixed(2)})`);
      aoeCtx.fillRect(rx-1,ry-1,ps,ps);
-     if(major){aoeCtx.fillStyle='rgba(255,252,232,0.85)';aoeCtx.fillRect(rx,ry,1,1);}
+     if(major){aoeCtx.fillStyle='rgba(255,252,232,0.92)';aoeCtx.fillRect(rx,ry,1,1);}
     }
     if(aoeHidden.length)cutOut(aoeCtx,aoeHidden,hp.x,hp.y-2);
     aoeView.sync(wpx*k,hpx*k);

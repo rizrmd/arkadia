@@ -77,8 +77,8 @@ export function trap(id,P,o={}){const R=o.radius??1.5,c=o.charge??.64,isFire=o.r
    L.glow(L.flames(P,{name:'eruption flame core',shape:{type:'circle',radius:R*.5},count:10,size:.34,speed:[1.1,2.4],gravity:-2.5}),1.15)]),
   L.embers(P,{count:34,radius:R*.6,speed:[.8,2.4]}),
   L.smoke(P,{at:[0,.5,0],count:7,radius:R*.5,size:.9,alpha:.38,delay:.1})],o),
- fx(id,'detonate.ground',title(id)+' · scar',[L.shockRing(P,{radius:R*1.45,life:.45}),L.shockRing(P,{radius:R*1.1,life:.35,delay:.06,intensity:1.6}),
-  L.cracks(P,{radius:R*1.05,life:1.2}),L.scorch(P,{radius:R*.85,life:1.8}),L.pool(P,{radius:R*1.1,life:.5,intensity:1.6})],o)];}
+ fx(id,'detonate.ground',title(id)+' · scar',[...L.magicCircle(P,{name:'detonate circle',radius:R,duration:.55}),
+  L.pool(P,{radius:R*.58,life:.55,intensity:1.1})],o)];}
 
 // Slams around the caster: cracks gather while the blow winds up (telegraph), then the ground bursts (detonate).
 export function slam(id,P,o={}){const R=o.radius??1.65,c=o.charge??.46;return [
@@ -97,8 +97,8 @@ export function slam(id,P,o={}){const R=o.radius??1.65,c=o.charge??.46;return [
   L.radialSkim(P,{radius:R*.25,count:48,speed:[6,10]}),
   L.smoke(P,{name:'dust ring',count:12,shape:{type:'circle',radius:R*.4,thickness:0},spherical:1,speed:[2,3.4],drag:2.6,gravity:-.2,size:.75,alpha:.4,color:o.dust??P.smoke}),
   L.glints(P,{count:4,radius:R*.5,size:.45,at:[0,.3,0]})],o),
- fx(id,'detonate.ground',title(id)+' · shock',[L.shockRing(P,{radius:R*1.3,life:.42,intensity:2.4}),L.shockRing(P,{radius:R*1.6,life:.55,delay:.08,intensity:1.6}),
-  L.cracks(P,{radius:R*1.1,life:1.3}),...(o.molten?[L.glow(L.cracks(P,{radius:R*1.1,life:1.3}),.9)]:[]),L.scorch(P,{radius:R*.9,life:1.6,alpha:.5,color:o.scar??'#2a2018'})],o)];}
+ fx(id,'detonate.ground',title(id)+' · shock',[...L.magicCircle(P,{name:'slam detonate circle',radius:R,duration:.55}),
+  L.pool(P,{radius:R*.58,life:.55,intensity:1.1})],o)];}
 
 // Sweeping cleaves: a crescent wind-up toward the aim (cast) and the blow landing in a cone (detonate).
 export function cleave(id,P,o={}){const R=o.radius??1.55,arc=o.arc??120;return [
