@@ -10,11 +10,11 @@ import {launch} from './browser.mjs';
 
 const SKILLS_BY_HERO={
  'ember-warden':[
-  {id:'flame-fan',ms:220,dir:'SE'},
-  {id:'cinder-step',ms:300,dir:'SE'},
-  {id:'ember-snare',ms:720,dir:'SE'},
-  {id:'cleave',ms:360,dir:'SE'},
-  {id:'shockwave',ms:520,dir:'SE'},
+  {id:'flame-fan',ms:220,dir:'SE',bg:'day'},
+  {id:'cinder-step',ms:300,dir:'SE',bg:'day'},
+  {id:'ember-snare',ms:720,dir:'SE',bg:'day'},
+  {id:'cleave',ms:360,dir:'SE',bg:'day'},
+  {id:'shockwave',ms:520,dir:'SE',bg:'day'},
  ],
  'rift-runner':[
   {id:'rift-bolt',ms:220,dir:'SE',bg:'day'},

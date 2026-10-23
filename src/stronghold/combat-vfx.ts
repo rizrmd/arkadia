@@ -382,12 +382,6 @@ export function createCombatVfx(o:{
    case 'flame-fan':{
     spawnSlash(h.u,h.v,angle,false);
     const offsets=rank>=3?[-0.44,-0.22,0,0.22,0.44]:rank===2?[-0.36,-0.12,0.12,0.36]:[-0.34,0,0.34];
-    impacts.push({
-     id:nextId++,kind:'flame-cone',shape:'cone',u:h.u,v:h.v,
-     radius:2.35*reach(run)*areaMult,angle,
-     spread:rank>=3?1.12:rank===2?0.94:0.84,
-     age:0,duration:640
-    });
     for(const offset of offsets){
      spawnProjectile({
       kind:'flame-bolt',skill:'flame-fan',
@@ -567,16 +561,17 @@ export function createCombatVfx(o:{
      if(!f.alive||p.hitIds.has(f))continue;
      if(Math.hypot(f.x-p.u,f.y-p.v)<=p.radius+.42){
       p.hitIds.add(f);
-      if(p.kind==='rift-bolt'){
+      if(p.kind==='rift-bolt'||p.kind==='flame-bolt'){
        const hitDist=Math.hypot(f.x-p.u,f.y-p.v);
        p.u=f.x;p.v=f.y;p.traveled+=hitDist;
       }
       let sameFrameImpacts=0;
       for(let k=sparks.length-1;k>=0;k--){if(sparks[k].age===0)sameFrameImpacts++;else break;}
       applyHitToFoe(f,{scale:p.damageScale,forceCrit:p.forceCrit,sparkKind:p.kind==='flame-bolt'?'fire':'arcane',angle});
-      if(sameFrameImpacts<2){
+      if(sameFrameImpacts<3){
        cue(`${p.skill}.impact`,{u:p.u,v:p.v,yaw:yawOf(p.vx,p.vy)});
        if(p.skill==='rift-bolt')impacts.push({id:nextId++,kind:'rift-trap',shape:'circle',u:p.u,v:p.v,radius:.96,angle,spread:Math.PI*2,age:0,duration:520});
+       else if(p.skill==='flame-fan')impacts.push({id:nextId++,kind:'ember-snare',shape:'circle',u:p.u,v:p.v,radius:.94,angle,spread:Math.PI*2,age:0,duration:500});
       }
       p.alive=false;
       break;
@@ -586,7 +581,7 @@ export function createCombatVfx(o:{
    for(const h of p.fx)h.setLocal(p.traveled);
    if(!p.alive||p.traveled>=p.range){
     if(p.alive)addSpark(p.kind==='flame-bolt'?'fire':'arcane',p.u,p.v,angle,22);
-    if(p.kind==='rift-bolt'&&!p.alive)lingeringFx.push({fx:p.fx,age:0,duration:220});
+    if((p.kind==='rift-bolt'||p.kind==='flame-bolt')&&!p.alive)lingeringFx.push({fx:p.fx,age:0,duration:p.kind==='rift-bolt'?220:180});
     else for(const h of p.fx)h.release();
     projectiles.splice(i,1);
    }
@@ -614,8 +609,9 @@ export function createCombatVfx(o:{
   // Dotted ground AoE telegraphs & active impact zones (with wall/building cutOut occlusion)
   const activeZoneIds=new Set<number>();
   const zonePalette=(kind:AoEKind)=>{
-   if(kind==='ember-snare'||kind==='flame-cone')return {major:'rgba(255,222,126,0.95)',minor:'rgba(255,126,38,0.82)',grid:'rgba(255,148,54,0.68)',core:'rgba(255,252,224,0.95)'};
-   if(kind==='shockwave')return {major:'rgba(255,232,158,0.94)',minor:'rgba(232,164,68,0.8)',grid:'rgba(242,186,88,0.65)',core:'rgba(255,252,228,0.94)'};
+   if(kind==='ember-snare'||kind==='flame-cone')return {major:'rgba(255,112,24,0.96)',minor:'rgba(208,36,8,0.92)',grid:'rgba(68,14,4,0.90)',core:'rgba(255,216,84,0.98)'};
+   if(kind==='shockwave')return {major:'rgba(255,124,28,0.96)',minor:'rgba(196,40,10,0.92)',grid:'rgba(58,12,4,0.90)',core:'rgba(255,224,104,0.98)'};
+   if(kind==='cleave-cone')return {major:'rgba(84,118,255,0.96)',minor:'rgba(56,28,168,0.94)',grid:'rgba(28,8,88,0.90)',core:'rgba(136,236,255,0.98)'};
    return {major:'rgba(108,52,235,0.96)',minor:'rgba(68,22,180,0.94)',grid:'rgba(34,8,100,0.90)',core:'rgba(164,114,255,0.98)'};
   };
   const renderZone=(id:number,kind:AoEKind,shape:'circle'|'cone',u:number,v:number,radius:number,angle:number,spread:number,age:number,duration:number,isImpact:boolean)=>{
@@ -838,6 +834,7 @@ export function createCombatVfx(o:{
   step,
   render,
   place(x:number,y:number,scale:number){origin={x,y,scale};fx.place(x,y,scale);},
+  setFloatsVisible(visible:boolean){floatsLayer.visible=visible;},
   fx,
   spawnSlash,
   applyHitToFoe,

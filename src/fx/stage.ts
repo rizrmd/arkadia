@@ -96,11 +96,11 @@ export function createFxStage(o:FxStageOptions){
   for(const fx of bundle.effectsById.values()){
    const effKey=(fx.sourceEffectFile??fx.id).replace(/\.json$/,'');
    const isGround=effKey.endsWith('.ground');
-   const isRiftBolt=effKey.includes('rift-bolt');
+   const isHeroSkill=effKey.includes('rift-bolt')||effKey.startsWith('ember-warden/')||effKey.includes('cleave')||effKey.includes('shockwave')||effKey.includes('rift-dash')||effKey.includes('rift-trap');
    if(o.host&&fx.emitters){
-    const maxEmitters=isRiftBolt?16:(isGround?8:5);
+    const maxEmitters=isHeroSkill?22:(isGround?8:5);
     if(fx.emitters.length>maxEmitters){
-     const src=isRiftBolt?fx.emitters:fx.emitters.filter((e:any)=>!/(smoke|glint|hand core)/i.test(e.name??''));
+     const src=isHeroSkill?fx.emitters:fx.emitters.filter((e:any)=>!/(smoke|glint|hand core)/i.test(e.name??''));
      const base=src.length>=maxEmitters?src:fx.emitters;
      if(base.length>maxEmitters){
       const step=(base.length-1)/(maxEmitters-1);
@@ -109,7 +109,7 @@ export function createFxStage(o:FxStageOptions){
       fx.emitters=base;
      }
     }
-    const perMax=isRiftBolt?46:(isGround?38:Math.max(14,Math.min(22,Math.floor(88/Math.max(1,fx.emitters.length)))));
+    const perMax=isHeroSkill?46:(isGround?38:Math.max(14,Math.min(22,Math.floor(88/Math.max(1,fx.emitters.length)))));
     for(const e of fx.emitters as any[]){
      e.maxParticles=Math.min(e.maxParticles||perMax,perMax);
      if(e.spawn){
@@ -121,7 +121,7 @@ export function createFxStage(o:FxStageOptions){
        if(typeof rv.max==='number'&&rv.max>perMax)rv.max=perMax;
       }
       if(e.spawn.bursts)for(const b of e.spawn.bursts){
-       if(isGround)b.count=Math.min(perMax,b.count);
+       if(isGround||isHeroSkill)b.count=Math.min(perMax,b.count);
        else if(b.count>6)b.count=Math.min(perMax,Math.max(10,Math.ceil(b.count*.8)));
       }
      }
@@ -144,7 +144,7 @@ export function createFxStage(o:FxStageOptions){
    for(const [key,fx] of effects){
     if(key.startsWith('ui/'))continue;
     const plane=planeOf(key),P=planes[plane],proj=projection(plane,{u:0,v:0,h:0,yaw:0,scale:1});
-    const copies=key.endsWith('.bolt')?4:key.startsWith('shared/hit.')?2:1;
+    const copies=key.endsWith('.bolt')?5:key.includes('.impact')||key.startsWith('shared/hit.')?3:1;
     const list=pool.get(key)??[];
     for(let c=0;c<copies;c++){
      const inst=P.vfx.createEffect(fx,{projection:proj,position:[0,0,0],seed:c+1,timeSeconds:0,autoStart:false,addToStage:false});
@@ -173,11 +173,12 @@ export function createFxStage(o:FxStageOptions){
   const plane=planeOf(key),anchor:Anchor={u:at.u,v:at.v,h:at.h??0,yaw:at.yaw??0,scale:at.scale??1},proj=projection(plane,anchor),P=planes[plane];
   const seed=at.seed??((Math.random()*0x7fffffff)|0);
   if(o.host){
-   if(live.length>=4&&tilePoint(anchor.u,anchor.v).y>920&&(key.endsWith('.ground')||key.endsWith('.rim'))){
+   const isHeroGround=key.startsWith('ember-warden/')||key.startsWith('rift-runner/')||key.includes('cleave')||key.includes('shockwave');
+   if(!isHeroGround&&live.length>=16&&tilePoint(anchor.u,anchor.v).y>920&&(key.endsWith('.ground')||key.endsWith('.rim'))){
     played++;
     return {key,setLocal:()=>{},moveTo:()=>{},release:()=>{},get alive(){return false;}};
    }
-   const maxSame=key.endsWith('.bolt')?4:key.startsWith('shared/hit.')?2:1;
+   const maxSame=key.endsWith('.bolt')?5:key.includes('.impact')||key.startsWith('shared/hit.')?3:1;
    let sameCount=0,oldest:Live|null=null;
    for(let i=0;i<live.length;i++){
     const cand=live[i];

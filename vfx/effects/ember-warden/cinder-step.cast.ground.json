@@ -7,21 +7,21 @@
  "name": "Cinder Step · trail",
  "timeline": {
   "frameRate": 30,
-  "duration": 1.7,
+  "duration": 1.38,
   "loop": {
    "enabled": false,
    "start": 0,
-   "end": 1.7
+   "end": 1.38
   },
   "groups": []
  },
  "emitters": [
   {
    "id": "emitter-1",
-   "name": "scorch dots",
+   "name": "trail scorch bed",
    "enabled": true,
    "mode": "billboard",
-   "maxParticles": 10,
+   "maxParticles": 8,
    "duration": 0.5,
    "loop": false,
    "timeline": {
@@ -34,7 +34,7 @@
     "velocityOverLifetime": false,
     "limitVelocityOverLifetime": false,
     "inheritVelocity": false,
-    "color": true,
+    "color": false,
     "size": true,
     "rotation": false,
     "lifetimeByEmitterSpeed": false,
@@ -114,7 +114,7 @@
     "bursts": [
      {
       "time": 0,
-      "count": 5,
+      "count": 6,
       "cycles": 1,
       "interval": 0,
       "probability": 1
@@ -151,9 +151,9 @@
      "editorMax": 24
     },
     "box": [
-     1.5,
+     1.42,
      0,
-     0.15
+     0.22
     ],
     "angle": 25,
     "radiusThickness": 1,
@@ -193,7 +193,7 @@
     "meshAsset": null,
     "meshEmitFrom": "surface",
     "position": [
-     0.75,
+     -0.68,
      0,
      0
     ],
@@ -211,14 +211,14 @@
     "alignToDirection": false,
     "randomDirectionAmount": 0,
     "sphericalDirectionAmount": 0,
-    "randomPositionAmount": 0.002
+    "randomPositionAmount": 0
    },
    "initializeParticle": {
     "lifetime": {
      "mode": "constant",
-     "value": 1.2,
-     "min": 1.2,
-     "max": 1.2,
+     "value": 0.88,
+     "min": 0.88,
+     "max": 0.88,
      "curve": [
       {
        "x": 0,
@@ -245,15 +245,15 @@
     "color": {
      "mode": "constant",
      "color": [
-      1,
-      1,
-      1,
+      0.1255,
+      0.0627,
+      0.0392,
       1
      ],
      "colorB": [
-      1,
-      1,
-      1,
+      0.1255,
+      0.0627,
+      0.0392,
       1
      ],
      "gradient": {
@@ -320,9 +320,9 @@
      },
      "alpha": {
       "mode": "constant",
-      "value": 0.92,
-      "min": 0.92,
-      "max": 0.92,
+      "value": 0.74,
+      "min": 0.74,
+      "max": 0.74,
       "curve": [
        {
         "x": 0,
@@ -377,9 +377,9 @@
     },
     "size": {
      "mode": "random",
-     "value": 0.041999999999999996,
-     "min": 0.036,
-     "max": 0.048,
+     "value": 0.99,
+     "min": 0.82,
+     "max": 1.16,
      "curve": [
       {
        "x": 0,
@@ -828,7 +828,7 @@
     "depthTest": false,
     "depthWrite": false,
     "depthInk": false,
-    "orderInLayer": 0,
+    "orderInLayer": -2,
     "sortMode": "none",
     "alignment": "faceCamera",
     "alignAxis": "screen",
@@ -840,7 +840,7 @@
     ],
     "opacitySource": "textureAlpha",
     "opacityInvert": false,
-    "texture": "textures/ember.png",
+    "texture": "textures/scorch.png",
     "material": null
    },
    "billboard": {
@@ -849,12 +849,16 @@
     "sizeEnd": 0.28,
     "sizeValue": {
      "mode": "curve",
-     "value": 1,
+     "value": 0.85,
      "min": 0,
      "max": 1,
      "curve": [
       {
        "x": 0,
+       "y": 0.85
+      },
+      {
+       "x": 0.2,
        "y": 1
       },
       {
@@ -869,6 +873,10 @@
      "curveB": [
       {
        "x": 0,
+       "y": 0.85
+      },
+      {
+       "x": 0.2,
        "y": 1
       },
       {
@@ -888,12 +896,16 @@
     "sizeEndY": 0.28,
     "sizeValueY": {
      "mode": "curve",
-     "value": 1,
+     "value": 0.85,
      "min": 0,
      "max": 1,
      "curve": [
       {
        "x": 0,
+       "y": 0.85
+      },
+      {
+       "x": 0.2,
        "y": 1
       },
       {
@@ -908,6 +920,10 @@
      "curveB": [
       {
        "x": 0,
+       "y": 0.85
+      },
+      {
+       "x": 0.2,
        "y": 1
       },
       {
@@ -1048,40 +1064,16 @@
        "position": 0,
        "color": [
         1,
-        0.949,
-        0.7216
-       ]
-      },
-      {
-       "position": 0.18,
-       "color": [
         1,
-        0.7451,
-        0.2353
-       ]
-      },
-      {
-       "position": 0.48,
-       "color": [
-        1,
-        0.4157,
-        0.0706
-       ]
-      },
-      {
-       "position": 0.78,
-       "color": [
-        0.8314,
-        0.1569,
-        0.0235
+        1
        ]
       },
       {
        "position": 1,
        "color": [
-        0.4784,
-        0.0627,
-        0.0157
+        1,
+        1,
+        1
        ]
       }
      ],
@@ -1091,12 +1083,8 @@
        "alpha": 1
       },
       {
-       "position": 0.78,
-       "alpha": 0.9
-      },
-      {
        "position": 1,
-       "alpha": 0
+       "alpha": 1
       }
      ]
     }
@@ -2330,10 +2318,10 @@
   },
   {
    "id": "emitter-2",
-   "name": "pool dots",
+   "name": "trail magma fissures",
    "enabled": true,
    "mode": "billboard",
-   "maxParticles": 8,
+   "maxParticles": 6,
    "duration": 0.5,
    "loop": false,
    "timeline": {
@@ -2426,7 +2414,7 @@
     "bursts": [
      {
       "time": 0,
-      "count": 3,
+      "count": 4,
       "cycles": 1,
       "interval": 0,
       "probability": 1
@@ -2463,9 +2451,9 @@
      "editorMax": 24
     },
     "box": [
-     1.5,
+     1.32,
      0,
-     0.1
+     0.16
     ],
     "angle": 25,
     "radiusThickness": 1,
@@ -2505,13 +2493,13 @@
     "meshAsset": null,
     "meshEmitFrom": "surface",
     "position": [
-     0.75,
+     -0.68,
      0,
      0
     ],
     "rotation": [
      0,
-     9.6,
+     0,
      0
     ],
     "scale": [
@@ -2523,14 +2511,14 @@
     "alignToDirection": false,
     "randomDirectionAmount": 0,
     "sphericalDirectionAmount": 0,
-    "randomPositionAmount": 0.002
+    "randomPositionAmount": 0
    },
    "initializeParticle": {
     "lifetime": {
      "mode": "constant",
-     "value": 0.35,
-     "min": 0.35,
-     "max": 0.35,
+     "value": 0.8,
+     "min": 0.8,
+     "max": 0.8,
      "curve": [
       {
        "x": 0,
@@ -2632,9 +2620,9 @@
      },
      "alpha": {
       "mode": "constant",
-      "value": 0.96,
-      "min": 0.96,
-      "max": 0.96,
+      "value": 0.88,
+      "min": 0.88,
+      "max": 0.88,
       "curve": [
        {
         "x": 0,
@@ -2689,9 +2677,9 @@
     },
     "size": {
      "mode": "random",
-     "value": 0.045,
-     "min": 0.038,
-     "max": 0.052,
+     "value": 0.86,
+     "min": 0.74,
+     "max": 0.98,
      "curve": [
       {
        "x": 0,
@@ -2803,10 +2791,10 @@
     },
     "startSizeSeparateAxes": false,
     "rotation": {
-     "mode": "constant",
-     "value": 0,
+     "mode": "random",
+     "value": 3.14,
      "min": 0,
-     "max": 0,
+     "max": 6.28,
      "curve": [
       {
        "x": 0,
@@ -3140,7 +3128,7 @@
     "depthTest": false,
     "depthWrite": false,
     "depthInk": false,
-    "orderInLayer": 0,
+    "orderInLayer": -1,
     "sortMode": "none",
     "alignment": "faceCamera",
     "alignAxis": "screen",
@@ -3152,7 +3140,7 @@
     ],
     "opacitySource": "textureAlpha",
     "opacityInvert": false,
-    "texture": "textures/ember.png",
+    "texture": "textures/crack.png",
     "material": null
    },
    "billboard": {
@@ -3161,17 +3149,21 @@
     "sizeEnd": 0.28,
     "sizeValue": {
      "mode": "curve",
-     "value": 1,
+     "value": 0.88,
      "min": 0,
      "max": 1,
      "curve": [
       {
        "x": 0,
+       "y": 0.88
+      },
+      {
+       "x": 0.2,
        "y": 1
       },
       {
-       "x": 0.84,
-       "y": 0.96
+       "x": 0.8,
+       "y": 0.92
       },
       {
        "x": 1,
@@ -3181,11 +3173,15 @@
      "curveB": [
       {
        "x": 0,
+       "y": 0.88
+      },
+      {
+       "x": 0.2,
        "y": 1
       },
       {
-       "x": 0.84,
-       "y": 0.96
+       "x": 0.8,
+       "y": 0.92
       },
       {
        "x": 1,
@@ -3200,17 +3196,21 @@
     "sizeEndY": 0.28,
     "sizeValueY": {
      "mode": "curve",
-     "value": 1,
+     "value": 0.88,
      "min": 0,
      "max": 1,
      "curve": [
       {
        "x": 0,
+       "y": 0.88
+      },
+      {
+       "x": 0.2,
        "y": 1
       },
       {
-       "x": 0.84,
-       "y": 0.96
+       "x": 0.8,
+       "y": 0.92
       },
       {
        "x": 1,
@@ -3220,11 +3220,15 @@
      "curveB": [
       {
        "x": 0,
+       "y": 0.88
+      },
+      {
+       "x": 0.2,
        "y": 1
       },
       {
-       "x": 0.84,
-       "y": 0.96
+       "x": 0.8,
+       "y": 0.92
       },
       {
        "x": 1,
@@ -3360,39 +3364,31 @@
        "position": 0,
        "color": [
         1,
-        0.949,
-        0.7216
+        0.9922,
+        0.949
        ]
       },
       {
-       "position": 0.18,
+       "position": 0.32,
        "color": [
         1,
-        0.7451,
-        0.2353
+        0.8235,
+        0.298
        ]
       },
       {
-       "position": 0.48,
+       "position": 0.68,
        "color": [
         1,
-        0.4157,
-        0.0706
-       ]
-      },
-      {
-       "position": 0.78,
-       "color": [
-        0.8314,
-        0.1569,
-        0.0235
+        0.4078,
+        0.0627
        ]
       },
       {
        "position": 1,
        "color": [
-        0.4784,
-        0.0627,
+        0.4078,
+        0.0549,
         0.0157
        ]
       }
@@ -3400,10 +3396,14 @@
      "alphaStops": [
       {
        "position": 0,
+       "alpha": 0
+      },
+      {
+       "position": 0.1,
        "alpha": 1
       },
       {
-       "position": 0.82,
+       "position": 0.78,
        "alpha": 0.94
       },
       {
@@ -4646,7 +4646,7 @@
    "enabled": true,
    "mode": "billboard",
    "maxParticles": 24,
-   "duration": 0.3,
+   "duration": 0.36,
    "loop": false,
    "timeline": {
     "start": 0,
@@ -4745,12 +4745,12 @@
      }
     ],
     "shape": "circle",
-    "radius": 0.7,
+    "radius": 0.74,
     "radiusValue": {
      "mode": "constant",
-     "value": 0.7,
-     "min": 0.7,
-     "max": 0.7,
+     "value": 0.74,
+     "min": 0.74,
+     "max": 0.74,
      "curve": [
       {
        "x": 0,
@@ -4817,7 +4817,7 @@
     "meshAsset": null,
     "meshEmitFrom": "surface",
     "position": [
-     0,
+     -1.05,
      0,
      0
     ],
@@ -4840,9 +4840,9 @@
    "initializeParticle": {
     "lifetime": {
      "mode": "constant",
-     "value": 0.5800000000000001,
-     "min": 0.5800000000000001,
-     "max": 0.5800000000000001,
+     "value": 0.64,
+     "min": 0.64,
+     "max": 0.64,
      "curve": [
       {
        "x": 0,
@@ -5671,25 +5671,25 @@
       {
        "position": 0,
        "color": [
-        0.2667,
-        0.0863,
-        0.7059
+        0.4784,
+        0.0784,
+        0.0235
        ]
       },
       {
        "position": 0.45,
        "color": [
-        0.1333,
+        0.2196,
         0.0314,
-        0.3922
+        0.0157
        ]
       },
       {
        "position": 1,
        "color": [
-        0.1647,
-        0.1176,
-        0.102
+        0.1412,
+        0.0863,
+        0.0706
        ]
       }
      ],
@@ -6942,7 +6942,7 @@
    "enabled": true,
    "mode": "billboard",
    "maxParticles": 24,
-   "duration": 0.3,
+   "duration": 0.36,
    "loop": false,
    "timeline": {
     "start": 0,
@@ -7041,12 +7041,12 @@
      }
     ],
     "shape": "circle",
-    "radius": 0.7,
+    "radius": 0.74,
     "radiusValue": {
      "mode": "constant",
-     "value": 0.7,
-     "min": 0.7,
-     "max": 0.7,
+     "value": 0.74,
+     "min": 0.74,
+     "max": 0.74,
      "curve": [
       {
        "x": 0,
@@ -7113,7 +7113,7 @@
     "meshAsset": null,
     "meshEmitFrom": "surface",
     "position": [
-     0,
+     -1.05,
      0,
      0
     ],
@@ -7136,9 +7136,9 @@
    "initializeParticle": {
     "lifetime": {
      "mode": "constant",
-     "value": 0.5800000000000001,
-     "min": 0.5800000000000001,
-     "max": 0.5800000000000001,
+     "value": 0.64,
+     "min": 0.64,
+     "max": 0.64,
      "curve": [
       {
        "x": 0,
@@ -7967,25 +7967,25 @@
       {
        "position": 0,
        "color": [
-        0.2667,
-        0.0863,
-        0.7059
+        0.4784,
+        0.0784,
+        0.0235
        ]
       },
       {
        "position": 0.45,
        "color": [
-        0.1333,
+        0.2196,
         0.0314,
-        0.3922
+        0.0157
        ]
       },
       {
        "position": 1,
        "color": [
-        0.1647,
-        0.1176,
-        0.102
+        0.1412,
+        0.0863,
+        0.0706
        ]
       }
      ],
@@ -9238,7 +9238,7 @@
    "enabled": true,
    "mode": "billboard",
    "maxParticles": 24,
-   "duration": 0.3,
+   "duration": 0.36,
    "loop": false,
    "timeline": {
     "start": 0,
@@ -9337,12 +9337,12 @@
      }
     ],
     "shape": "circle",
-    "radius": 0.7,
+    "radius": 0.74,
     "radiusValue": {
      "mode": "constant",
-     "value": 0.7,
-     "min": 0.7,
-     "max": 0.7,
+     "value": 0.74,
+     "min": 0.74,
+     "max": 0.74,
      "curve": [
       {
        "x": 0,
@@ -9409,7 +9409,7 @@
     "meshAsset": null,
     "meshEmitFrom": "surface",
     "position": [
-     0,
+     -1.05,
      0,
      0
     ],
@@ -9432,9 +9432,9 @@
    "initializeParticle": {
     "lifetime": {
      "mode": "constant",
-     "value": 0.5800000000000001,
-     "min": 0.5800000000000001,
-     "max": 0.5800000000000001,
+     "value": 0.64,
+     "min": 0.64,
+     "max": 0.64,
      "curve": [
       {
        "x": 0,
@@ -10264,40 +10264,40 @@
        "position": 0,
        "color": [
         1,
-        0.949,
-        0.7216
+        0.9647,
+        0.8
        ]
       },
       {
        "position": 0.18,
        "color": [
         1,
-        0.7451,
-        0.2353
+        0.7686,
+        0.2196
        ]
       },
       {
-       "position": 0.48,
+       "position": 0.46,
        "color": [
         1,
-        0.4157,
-        0.0706
+        0.4078,
+        0.0627
        ]
       },
       {
-       "position": 0.78,
+       "position": 0.76,
        "color": [
         0.8314,
-        0.1569,
+        0.1412,
         0.0235
        ]
       },
       {
        "position": 1,
        "color": [
-        0.4784,
-        0.0627,
-        0.0157
+        0.4157,
+        0.0471,
+        0.0078
        ]
       }
      ],
@@ -11550,7 +11550,7 @@
    "enabled": true,
    "mode": "billboard",
    "maxParticles": 24,
-   "duration": 0.3,
+   "duration": 0.36,
    "loop": false,
    "timeline": {
     "start": 0,
@@ -11649,12 +11649,12 @@
      }
     ],
     "shape": "circle",
-    "radius": 0.7020999999999998,
+    "radius": 0.7422199999999999,
     "radiusValue": {
      "mode": "constant",
-     "value": 0.7020999999999998,
-     "min": 0.7020999999999998,
-     "max": 0.7020999999999998,
+     "value": 0.7422199999999999,
+     "min": 0.7422199999999999,
+     "max": 0.7422199999999999,
      "curve": [
       {
        "x": 0,
@@ -11721,7 +11721,7 @@
     "meshAsset": null,
     "meshEmitFrom": "surface",
     "position": [
-     0,
+     -1.05,
      0,
      0
     ],
@@ -11744,9 +11744,9 @@
    "initializeParticle": {
     "lifetime": {
      "mode": "constant",
-     "value": 0.5800000000000001,
-     "min": 0.5800000000000001,
-     "max": 0.5800000000000001,
+     "value": 0.64,
+     "min": 0.64,
+     "max": 0.64,
      "curve": [
       {
        "x": 0,
@@ -12576,40 +12576,40 @@
        "position": 0,
        "color": [
         1,
-        0.949,
-        0.7216
+        0.9647,
+        0.8
        ]
       },
       {
        "position": 0.18,
        "color": [
         1,
-        0.7451,
-        0.2353
+        0.7686,
+        0.2196
        ]
       },
       {
-       "position": 0.48,
+       "position": 0.46,
        "color": [
         1,
-        0.4157,
-        0.0706
+        0.4078,
+        0.0627
        ]
       },
       {
-       "position": 0.78,
+       "position": 0.76,
        "color": [
         0.8314,
-        0.1569,
+        0.1412,
         0.0235
        ]
       },
       {
        "position": 1,
        "color": [
-        0.4784,
-        0.0627,
-        0.0157
+        0.4157,
+        0.0471,
+        0.0078
        ]
       }
      ],
@@ -13862,7 +13862,7 @@
    "enabled": true,
    "mode": "billboard",
    "maxParticles": 24,
-   "duration": 0.3,
+   "duration": 0.36,
    "loop": false,
    "timeline": {
     "start": 0,
@@ -13961,12 +13961,12 @@
      }
     ],
     "shape": "circle",
-    "radius": 0.7034999999999999,
+    "radius": 0.7436999999999999,
     "radiusValue": {
      "mode": "constant",
-     "value": 0.7034999999999999,
-     "min": 0.7034999999999999,
-     "max": 0.7034999999999999,
+     "value": 0.7436999999999999,
+     "min": 0.7436999999999999,
+     "max": 0.7436999999999999,
      "curve": [
       {
        "x": 0,
@@ -14033,7 +14033,7 @@
     "meshAsset": null,
     "meshEmitFrom": "surface",
     "position": [
-     0,
+     -1.05,
      0,
      0
     ],
@@ -14056,9 +14056,9 @@
    "initializeParticle": {
     "lifetime": {
      "mode": "constant",
-     "value": 0.5800000000000001,
-     "min": 0.5800000000000001,
-     "max": 0.5800000000000001,
+     "value": 0.64,
+     "min": 0.64,
+     "max": 0.64,
      "curve": [
       {
        "x": 0,
@@ -14888,40 +14888,40 @@
        "position": 0,
        "color": [
         1,
-        0.949,
-        0.7216
+        0.9647,
+        0.8
        ]
       },
       {
        "position": 0.18,
        "color": [
         1,
-        0.7451,
-        0.2353
+        0.7686,
+        0.2196
        ]
       },
       {
-       "position": 0.48,
+       "position": 0.46,
        "color": [
         1,
-        0.4157,
-        0.0706
+        0.4078,
+        0.0627
        ]
       },
       {
-       "position": 0.78,
+       "position": 0.76,
        "color": [
         0.8314,
-        0.1569,
+        0.1412,
         0.0235
        ]
       },
       {
        "position": 1,
        "color": [
-        0.4784,
-        0.0627,
-        0.0157
+        0.4157,
+        0.0471,
+        0.0078
        ]
       }
      ],
@@ -16174,7 +16174,7 @@
    "enabled": true,
    "mode": "billboard",
    "maxParticles": 24,
-   "duration": 0.3,
+   "duration": 0.36,
    "loop": false,
    "timeline": {
     "start": 0,
@@ -16273,12 +16273,12 @@
      }
     ],
     "shape": "circle",
-    "radius": 0.7013999999999999,
+    "radius": 0.74148,
     "radiusValue": {
      "mode": "constant",
-     "value": 0.7013999999999999,
-     "min": 0.7013999999999999,
-     "max": 0.7013999999999999,
+     "value": 0.74148,
+     "min": 0.74148,
+     "max": 0.74148,
      "curve": [
       {
        "x": 0,
@@ -16345,7 +16345,7 @@
     "meshAsset": null,
     "meshEmitFrom": "surface",
     "position": [
-     0,
+     -1.05,
      0,
      0
     ],
@@ -16368,9 +16368,9 @@
    "initializeParticle": {
     "lifetime": {
      "mode": "constant",
-     "value": 0.5800000000000001,
-     "min": 0.5800000000000001,
-     "max": 0.5800000000000001,
+     "value": 0.64,
+     "min": 0.64,
+     "max": 0.64,
      "curve": [
       {
        "x": 0,
@@ -17200,40 +17200,40 @@
        "position": 0,
        "color": [
         1,
-        0.949,
-        0.7216
+        0.9647,
+        0.8
        ]
       },
       {
        "position": 0.18,
        "color": [
         1,
-        0.7451,
-        0.2353
+        0.7686,
+        0.2196
        ]
       },
       {
-       "position": 0.48,
+       "position": 0.46,
        "color": [
         1,
-        0.4157,
-        0.0706
+        0.4078,
+        0.0627
        ]
       },
       {
-       "position": 0.78,
+       "position": 0.76,
        "color": [
         0.8314,
-        0.1569,
+        0.1412,
         0.0235
        ]
       },
       {
        "position": 1,
        "color": [
-        0.4784,
-        0.0627,
-        0.0157
+        0.4157,
+        0.0471,
+        0.0078
        ]
       }
      ],
@@ -18486,7 +18486,7 @@
    "enabled": true,
    "mode": "billboard",
    "maxParticles": 24,
-   "duration": 0.3,
+   "duration": 0.36,
    "loop": false,
    "timeline": {
     "start": 0,
@@ -18585,12 +18585,12 @@
      }
     ],
     "shape": "circle",
-    "radius": 0.6986,
+    "radius": 0.73852,
     "radiusValue": {
      "mode": "constant",
-     "value": 0.6986,
-     "min": 0.6986,
-     "max": 0.6986,
+     "value": 0.73852,
+     "min": 0.73852,
+     "max": 0.73852,
      "curve": [
       {
        "x": 0,
@@ -18657,7 +18657,7 @@
     "meshAsset": null,
     "meshEmitFrom": "surface",
     "position": [
-     0,
+     -1.05,
      0,
      0
     ],
@@ -18680,9 +18680,9 @@
    "initializeParticle": {
     "lifetime": {
      "mode": "constant",
-     "value": 0.5800000000000001,
-     "min": 0.5800000000000001,
-     "max": 0.5800000000000001,
+     "value": 0.64,
+     "min": 0.64,
+     "max": 0.64,
      "curve": [
       {
        "x": 0,
@@ -19512,40 +19512,40 @@
        "position": 0,
        "color": [
         1,
-        0.949,
-        0.7216
+        0.9647,
+        0.8
        ]
       },
       {
        "position": 0.18,
        "color": [
         1,
-        0.7451,
-        0.2353
+        0.7686,
+        0.2196
        ]
       },
       {
-       "position": 0.48,
+       "position": 0.46,
        "color": [
         1,
-        0.4157,
-        0.0706
+        0.4078,
+        0.0627
        ]
       },
       {
-       "position": 0.78,
+       "position": 0.76,
        "color": [
         0.8314,
-        0.1569,
+        0.1412,
         0.0235
        ]
       },
       {
        "position": 1,
        "color": [
-        0.4784,
-        0.0627,
-        0.0157
+        0.4157,
+        0.0471,
+        0.0078
        ]
       }
      ],
@@ -20798,7 +20798,7 @@
    "enabled": true,
    "mode": "billboard",
    "maxParticles": 20,
-   "duration": 0.3,
+   "duration": 0.36,
    "loop": false,
    "timeline": {
     "start": 0,
@@ -20897,12 +20897,12 @@
      }
     ],
     "shape": "circle",
-    "radius": 0.46199999999999997,
+    "radius": 0.4884,
     "radiusValue": {
      "mode": "constant",
-     "value": 0.46199999999999997,
-     "min": 0.46199999999999997,
-     "max": 0.46199999999999997,
+     "value": 0.4884,
+     "min": 0.4884,
+     "max": 0.4884,
      "curve": [
       {
        "x": 0,
@@ -20969,7 +20969,7 @@
     "meshAsset": null,
     "meshEmitFrom": "surface",
     "position": [
-     0,
+     -1.05,
      0,
      0
     ],
@@ -20992,9 +20992,9 @@
    "initializeParticle": {
     "lifetime": {
      "mode": "constant",
-     "value": 0.5800000000000001,
-     "min": 0.5800000000000001,
-     "max": 0.5800000000000001,
+     "value": 0.64,
+     "min": 0.64,
+     "max": 0.64,
      "curve": [
       {
        "x": 0,
@@ -21823,25 +21823,25 @@
       {
        "position": 0,
        "color": [
-        0.2667,
-        0.0863,
-        0.7059
+        0.4784,
+        0.0784,
+        0.0235
        ]
       },
       {
        "position": 0.45,
        "color": [
-        0.1333,
+        0.2196,
         0.0314,
-        0.3922
+        0.0157
        ]
       },
       {
        "position": 1,
        "color": [
-        0.1647,
-        0.1176,
-        0.102
+        0.1412,
+        0.0863,
+        0.0706
        ]
       }
      ],
@@ -23094,7 +23094,7 @@
    "enabled": true,
    "mode": "billboard",
    "maxParticles": 20,
-   "duration": 0.3,
+   "duration": 0.36,
    "loop": false,
    "timeline": {
     "start": 0,
@@ -23193,12 +23193,12 @@
      }
     ],
     "shape": "circle",
-    "radius": 0.46199999999999997,
+    "radius": 0.4884,
     "radiusValue": {
      "mode": "constant",
-     "value": 0.46199999999999997,
-     "min": 0.46199999999999997,
-     "max": 0.46199999999999997,
+     "value": 0.4884,
+     "min": 0.4884,
+     "max": 0.4884,
      "curve": [
       {
        "x": 0,
@@ -23265,7 +23265,7 @@
     "meshAsset": null,
     "meshEmitFrom": "surface",
     "position": [
-     0,
+     -1.05,
      0,
      0
     ],
@@ -23288,9 +23288,9 @@
    "initializeParticle": {
     "lifetime": {
      "mode": "constant",
-     "value": 0.5800000000000001,
-     "min": 0.5800000000000001,
-     "max": 0.5800000000000001,
+     "value": 0.64,
+     "min": 0.64,
+     "max": 0.64,
      "curve": [
       {
        "x": 0,
@@ -24120,40 +24120,40 @@
        "position": 0,
        "color": [
         1,
-        0.949,
-        0.7216
+        0.9647,
+        0.8
        ]
       },
       {
        "position": 0.18,
        "color": [
         1,
-        0.7451,
-        0.2353
+        0.7686,
+        0.2196
        ]
       },
       {
-       "position": 0.48,
+       "position": 0.46,
        "color": [
         1,
-        0.4157,
-        0.0706
+        0.4078,
+        0.0627
        ]
       },
       {
-       "position": 0.78,
+       "position": 0.76,
        "color": [
         0.8314,
-        0.1569,
+        0.1412,
         0.0235
        ]
       },
       {
        "position": 1,
        "color": [
-        0.4784,
-        0.0627,
-        0.0157
+        0.4157,
+        0.0471,
+        0.0078
        ]
       }
      ],
@@ -25406,7 +25406,7 @@
    "enabled": true,
    "mode": "billboard",
    "maxParticles": 20,
-   "duration": 0.3,
+   "duration": 0.36,
    "loop": false,
    "timeline": {
     "start": 0,
@@ -25505,12 +25505,12 @@
      }
     ],
     "shape": "circle",
-    "radius": 0.4648,
+    "radius": 0.49136,
     "radiusValue": {
      "mode": "constant",
-     "value": 0.4648,
-     "min": 0.4648,
-     "max": 0.4648,
+     "value": 0.49136,
+     "min": 0.49136,
+     "max": 0.49136,
      "curve": [
       {
        "x": 0,
@@ -25577,7 +25577,7 @@
     "meshAsset": null,
     "meshEmitFrom": "surface",
     "position": [
-     0,
+     -1.05,
      0,
      0
     ],
@@ -25600,9 +25600,9 @@
    "initializeParticle": {
     "lifetime": {
      "mode": "constant",
-     "value": 0.5800000000000001,
-     "min": 0.5800000000000001,
-     "max": 0.5800000000000001,
+     "value": 0.64,
+     "min": 0.64,
+     "max": 0.64,
      "curve": [
       {
        "x": 0,
@@ -26432,40 +26432,40 @@
        "position": 0,
        "color": [
         1,
-        0.949,
-        0.7216
+        0.9647,
+        0.8
        ]
       },
       {
        "position": 0.18,
        "color": [
         1,
-        0.7451,
-        0.2353
+        0.7686,
+        0.2196
        ]
       },
       {
-       "position": 0.48,
+       "position": 0.46,
        "color": [
         1,
-        0.4157,
-        0.0706
+        0.4078,
+        0.0627
        ]
       },
       {
-       "position": 0.78,
+       "position": 0.76,
        "color": [
         0.8314,
-        0.1569,
+        0.1412,
         0.0235
        ]
       },
       {
        "position": 1,
        "color": [
-        0.4784,
-        0.0627,
-        0.0157
+        0.4157,
+        0.0471,
+        0.0078
        ]
       }
      ],
@@ -27718,7 +27718,7 @@
    "enabled": true,
    "mode": "billboard",
    "maxParticles": 20,
-   "duration": 0.3,
+   "duration": 0.36,
    "loop": false,
    "timeline": {
     "start": 0,
@@ -27817,12 +27817,12 @@
      }
     ],
     "shape": "circle",
-    "radius": 0.4606,
+    "radius": 0.48692,
     "radiusValue": {
      "mode": "constant",
-     "value": 0.4606,
-     "min": 0.4606,
-     "max": 0.4606,
+     "value": 0.48692,
+     "min": 0.48692,
+     "max": 0.48692,
      "curve": [
       {
        "x": 0,
@@ -27889,7 +27889,7 @@
     "meshAsset": null,
     "meshEmitFrom": "surface",
     "position": [
-     0,
+     -1.05,
      0,
      0
     ],
@@ -27912,9 +27912,9 @@
    "initializeParticle": {
     "lifetime": {
      "mode": "constant",
-     "value": 0.5800000000000001,
-     "min": 0.5800000000000001,
-     "max": 0.5800000000000001,
+     "value": 0.64,
+     "min": 0.64,
+     "max": 0.64,
      "curve": [
       {
        "x": 0,
@@ -28744,40 +28744,40 @@
        "position": 0,
        "color": [
         1,
-        0.949,
-        0.7216
+        0.9647,
+        0.8
        ]
       },
       {
        "position": 0.18,
        "color": [
         1,
-        0.7451,
-        0.2353
+        0.7686,
+        0.2196
        ]
       },
       {
-       "position": 0.48,
+       "position": 0.46,
        "color": [
         1,
-        0.4157,
-        0.0706
+        0.4078,
+        0.0627
        ]
       },
       {
-       "position": 0.78,
+       "position": 0.76,
        "color": [
         0.8314,
-        0.1569,
+        0.1412,
         0.0235
        ]
       },
       {
        "position": 1,
        "color": [
-        0.4784,
-        0.0627,
-        0.0157
+        0.4157,
+        0.0471,
+        0.0078
        ]
       }
      ],
@@ -30030,7 +30030,7 @@
    "enabled": true,
    "mode": "billboard",
    "maxParticles": 38,
-   "duration": 0.35,
+   "duration": 0.38,
    "loop": false,
    "timeline": {
     "start": 0,
@@ -30159,9 +30159,9 @@
      "editorMax": 24
     },
     "box": [
-     1.5,
+     1.45,
      0,
-     0.3
+     0.28
     ],
     "angle": 25,
     "radiusThickness": 1,
@@ -30201,7 +30201,7 @@
     "meshAsset": null,
     "meshEmitFrom": "surface",
     "position": [
-     0.75,
+     -0.68,
      0,
      0
     ],
@@ -30224,9 +30224,9 @@
    "initializeParticle": {
     "lifetime": {
      "mode": "constant",
-     "value": 0.55,
-     "min": 0.55,
-     "max": 0.55,
+     "value": 0.5800000000000001,
+     "min": 0.5800000000000001,
+     "max": 0.5800000000000001,
      "curve": [
       {
        "x": 0,
@@ -31056,40 +31056,40 @@
        "position": 0,
        "color": [
         1,
-        0.949,
-        0.7216
+        0.9647,
+        0.8
        ]
       },
       {
        "position": 0.18,
        "color": [
         1,
-        0.7451,
-        0.2353
+        0.7686,
+        0.2196
        ]
       },
       {
-       "position": 0.48,
+       "position": 0.46,
        "color": [
         1,
-        0.4157,
-        0.0706
+        0.4078,
+        0.0627
        ]
       },
       {
-       "position": 0.78,
+       "position": 0.76,
        "color": [
         0.8314,
-        0.1569,
+        0.1412,
         0.0235
        ]
       },
       {
        "position": 1,
        "color": [
-        0.4784,
-        0.0627,
-        0.0157
+        0.4157,
+        0.0471,
+        0.0078
        ]
       }
      ],

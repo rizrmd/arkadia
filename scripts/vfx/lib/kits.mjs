@@ -160,11 +160,49 @@ export function slam(id,P,o={}){const R=o.radius??1.65,c=o.charge??.46;return [
  fx(id,'detonate.ground',title(id)+' · shock',[...L.magicCircle(P,{name:'slam detonate circle',radius:R,duration:.55}),
   L.pool(P,{radius:R,life:.55,intensity:1.1})],o)];}
 
-// Sweeping cleaves: a crescent wind-up toward the aim (cast) and the blow landing in a cone (detonate).
-export function cleave(id,P,o={}){const R=o.radius??1.55,arc=o.arc??120;return [
- fx(id,'cast',title(id),[L.glints(P,{count:7,shape:{type:'circle',radius:R*.8,thickness:.1,arc,arcMode:'burstSpread'},rot:[0,-arc/2,0],at:[0,.35,0],size:.45}),
-  L.sparks(P,{at:[.2,.4,0],count:28,spread:arc/2,speed:[4,8],gravity:2,intensity:2})],o),
- fx(id,'cast.ground',title(id)+' · arc',[L.slashDecal(P,{radius:R*.9,life:.3}),L.slashDecal(P,{radius:R*.7,life:.24,delay:.06,intensity:1.8})],o),
- fx(id,'detonate',title(id)+' · strike',[L.flash(P,{at:[R*.55,.4,0],size:1.8,intensity:3}),
-  L.sparks(P,{at:[.2,.4,0],count:46,spread:arc/2,speed:[6,12],gravity:3}),L.shards(P,{at:[R*.5,.4,0],count:10,speed:[2,5]})],o),
- fx(id,'detonate.ground',title(id)+' · strike ground',[L.slashDecal(P,{radius:R*1.05,life:.32,intensity:3}),L.shockRing(P,{at:[R*.5,0,0],radius:.8,life:.3})],o)];}
+// Sweeping cleaves: a crescent wind-up toward the aim (cast) and a multi-ribbon crescent wave with faceted crystal shards (detonate).
+export function cleave(id,P,o={}){const R=o.radius??1.55,arc=o.arc??120,dark=P.dark??'#1e085c',mid=P.mid??'#381ca8';return [
+ fx(id,'cast',title(id),[
+  {name:'windup dark sheath',texture:'slash',align:'velocity',velocity:{min:[.02,0,0],max:[.02,0,0]},blend:'alpha',alpha:.92,bursts:[[0,2]],max:4,at:[.34,.50,0],life:.34,
+   sizeXY:[1.48,.88],sizeOverLife:{curve:[[0,.72],[.2,1],[.8,.95],[1,.35]]},color:'#ffffff',intensity:1.0,
+   colorOverLife:{c:[[0,mid],[.5,dark],[1,P.smoke]],a:[[0,0],[.1,1],[.78,.94],[1,0]]},order:0},
+  {name:'windup astral blade',texture:'slash',align:'velocity',velocity:{min:[.02,0,0],max:[.02,0,0]},blend:'alpha',alpha:.96,bursts:[[0,2]],max:4,at:[.32,.50,0],life:.32,
+   sizeXY:[1.24,.72],sizeOverLife:{curve:[[0,.76],[.2,1],[.78,.92],[1,.3]]},color:'#ffffff',intensity:1.0,
+   colorOverLife:{c:[[0,'#ffffff'],[.35,P.spark],[.75,P.light],[1,mid]],a:[[0,0],[.1,1],[.76,.94],[1,0]]},order:1},
+  L.glints(P,{count:7,shape:{type:'circle',radius:R*.72,thickness:.1,arc,arcMode:'burstSpread'},rot:[0,-arc/2,0],at:[0,.42,0],size:[.22,.36]}),
+  L.sparks(P,{at:[.24,.46,0],count:28,spread:arc/2,speed:[4.5,9],gravity:2})],o),
+ fx(id,'cast.ground',title(id)+' · arc',[
+  L.slashDecal(P,{radius:R*.92,arc,life:.32}),
+  L.slashDecal(P,{radius:R*.72,arc,life:.26,delay:.04})],o),
+ fx(id,'detonate',title(id)+' · strike',[
+  L.smoke(P,{name:'astral cleave mist',at:[R*.44,.44,0],count:9,radius:.44,size:[.46,.72],life:[.36,.58],speed:[.25,.65],gravity:-.15,alpha:.70,color:[dark,P.smoke],order:-2}),
+  {name:'cleave deep sheath',texture:'slash',align:'velocity',velocity:{min:[.03,0,0],max:[.03,0,0]},blend:'alpha',alpha:.96,bursts:[[0,2]],max:4,at:[R*.48,.46,0],life:.48,
+   sizeXY:[2.36,1.44],sizeOverLife:{curve:[[0,.76],[.16,1.02],[.80,.96],[1,.38]]},color:'#ffffff',intensity:1.0,
+   colorOverLife:{c:[[0,mid],[.48,dark],[1,P.smoke]],a:[[0,0],[.08,1],[.80,.96],[1,0]]},order:0},
+  {name:'cleave royal blade',texture:'slash',align:'velocity',velocity:{min:[.03,0,0],max:[.03,0,0]},blend:'alpha',alpha:.98,bursts:[[0,2]],max:4,at:[R*.46,.46,0],life:.45,
+   sizeXY:[2.10,1.24],sizeOverLife:{curve:[[0,.78],[.16,1],[.78,.94],[1,.34]]},color:'#ffffff',intensity:1.0,
+   colorOverLife:{c:[[0,P.light],[.44,mid],[1,dark]],a:[[0,0],[.08,1],[.78,.96],[1,0]]},order:1},
+  {name:'cleave inner echo arc',texture:'slash',align:'velocity',velocity:{min:[.025,0,0],max:[.025,0,0]},blend:'alpha',alpha:.95,bursts:[[.02,2]],max:4,at:[R*.28,.44,0],life:.43,
+   sizeXY:[1.66,.98],sizeOverLife:{curve:[[0,.78],[.18,1],[.76,.92],[1,.32]]},color:'#ffffff',intensity:1.0,
+   colorOverLife:{c:[[0,P.spark],[.42,P.light],[1,mid]],a:[[0,0],[.08,1],[.76,.94],[1,0]]},order:1},
+  {name:'cleave cyan core edge',texture:'slash',align:'velocity',velocity:{min:[.03,0,0],max:[.03,0,0]},blend:'alpha',alpha:.98,bursts:[[0,2]],max:4,at:[R*.44,.46,0],life:.42,
+   sizeXY:[1.86,1.04],sizeOverLife:{curve:[[0,.80],[.18,1],[.76,.92],[1,.30]]},color:'#ffffff',intensity:1.0,
+   colorOverLife:{c:[[0,'#ffffff'],[.34,P.spark],[.74,P.light],[1,mid]],a:[[0,0],[.08,1],[.74,.95],[1,0]]},order:2},
+  L.flash(P,{name:'cleave apex flash',at:[R*.48,.46,0],size:1.6,life:.30,order:2}),
+  L.shards(P,{name:'astral crystal shards',at:[R*.42,.46,0],count:22,speed:[3.6,8.4],sizeXY:[[.10,.16],[.22,.36]],
+   color:'#ffffff',colorOverLife:{c:[[0,'#ffffff'],[.28,P.spark],[.64,P.light],[1,dark]],a:[[0,1],[.78,.96],[1,0]]},order:3}),
+  L.sparks(P,{name:'cleave streaks',at:[.22,.46,0],count:44,spread:arc/2,speed:[5.8,11.8],gravity:2.6,
+   sizeXY:[[.048,.082],[.18,.34]],color:'#ffffff',
+   colorOverLife:{c:[[0,'#ffffff'],[.30,P.spark],[.68,P.light],[1,dark]],a:[[0,1],[.74,.94],[1,0]]},order:2}),
+  L.glints(P,{name:'astral star flares',at:[R*.48,.48,0],count:10,shape:{type:'circle',radius:R*.62,thickness:.22,arc,arcMode:'burstSpread'},rot:[0,-arc/2,0],
+   size:[.24,.44],life:[.26,.46],color:'#ffffff',
+   colorOverLife:{c:[[0,'#ffffff'],[.42,P.spark],[1,P.light]],a:[[0,0],[.16,1],[.80,.96],[1,0]]},order:4}),
+  L.embers(P,{name:'astral motes',at:[R*.42,.44,0],count:18,radius:.42,speed:[.8,2.4]})],o),
+ fx(id,'detonate.ground',title(id)+' · strike ground',[
+  {name:'cleave ground shadow arc',texture:'slash',align:'velocity',velocity:{min:[.01,0,0],max:[.01,0,0]},blend:'alpha',alpha:.42,bursts:[[0,1]],max:2,at:[R*.44,0,0],life:.52,
+   sizeXY:[2.28,1.38],sizeOverLife:{curve:[[0,.85],[.2,1],[.82,.94],[1,0]]},color:'#ffffff',intensity:1.0,
+   colorOverLife:{c:[[0,mid],[.5,dark],[1,P.smoke]],a:[[0,0],[.1,1],[.8,.94],[1,0]]},order:-2},
+  L.slashDecal(P,{name:'outer cleave arc',radius:R*1.04,arc,life:.46}),
+  L.slashDecal(P,{name:'mid cleave arc',radius:R*.82,arc,life:.42,dashOffset:3.2}),
+  L.slashDecal(P,{name:'inner cleave arc',radius:R*.60,arc,life:.38,dashOffset:6.4}),
+  L.shockRing(P,{at:[R*.42,0,0],radius:.84,life:.42})],o)];}

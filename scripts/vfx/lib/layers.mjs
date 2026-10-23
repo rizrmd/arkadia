@@ -58,14 +58,16 @@ export const smoke=(P,o={})=>mix({texture:'smoke',tiles:[2,2],frames:{random:tru
  shape:{type:'sphere',radius:o.radius??.28},life:[.75,1.35],speed:[.2,.55],spherical:1,gravity:o.gravity??-.45,drag:1.5,
  rotation:[0,6.28],spin:[-.7,.7],size:o.size??[.22,.36],...(o.sizeXY?{sizeXY:o.sizeXY}:{}),sizeOverLife:{curve:[[0,.5],[1,1.15]]},
  color:o.color??P.smoke,alpha:o.alpha??.42,colorOverLife:{c:[[0,'#ffffff'],[1,'#ffffff']],a:[[0,0],[.15,1],[1,0]]},order:-2},pick(o,['size','sizeXY','alpha','color','gravity','delay0',...OWN]));
-// W · Debris chunks thrown up and out; they fall back, bounce on the ground plane and settle as incandescent pixel shards.
-export const debris=(P,o={})=>mix({texture:'ember',blend:'alpha',alpha:.96,bursts:[[0,o.count??16]],max:(o.count??16)+4,
- shape:{type:'hemisphere',radius:o.radius??.3,thickness:1},life:[.55,.95],speed:o.speed??[2.2,4.6],spherical:.6,gravity:o.gravity??11,drag:.4,
- collide:{y:0,bounce:.32,dampen:.55},rotation:[0,6.28],spin:[-9,9],size:[.050,.082],
- color:[P.spark,P.light,P.accent],intensity:1.0,colorOverLife:grad(flameOf(P),[[0,1],[.58,.92],[1,0]]),order:-1},pick(o,['size','sizeXY','speed','gravity','color',...OWN]));
-// W · Molten/energised pixel chunks: like debris but glowing, for eruptions (pixel clusters without ribbon lines).
-export const cinders=(P,o={})=>mix(debris(P,o),{texture:'ember',tiles:undefined,frames:undefined,blend:'alpha',alpha:.96,color:[P.spark,P.light],intensity:1.0,
- colorOverLife:grad(P.hot,[[0,1],[.72,.88],[1,0]]),...pick(o,['count','size','sizeXY','speed','gravity','color',...OWN])});
+// W · Debris chunks thrown up and out; they fall back, bounce on the ground plane and settle as faceted rock chunks.
+export const debris=(P,o={})=>mix({texture:'debris',tiles:[2,2],frames:{random:true,still:true},blend:'alpha',alpha:.96,bursts:[[0,o.count??18]],max:(o.count??18)+4,
+ shape:{type:'hemisphere',radius:o.radius??.34,thickness:1},life:[.55,.95],speed:o.speed??[2.4,5.2],spherical:.65,gravity:o.gravity??10.5,drag:.45,
+ collide:{y:0,bounce:.32,dampen:.55},rotation:[0,6.28],spin:[-8,8],size:o.size??[.14,.25],...(o.sizeXY?{sizeXY:o.sizeXY}:{}),
+ color:o.color??[P.rock,P.dark??P.deep,P.smoke],intensity:1.0,
+ colorOverLife:o.colorOverLife??{c:[[0,'#ffffff'],[.65,'#dcd0c8'],[1,'#7a6a62']],a:[[0,1],[.76,.95],[1,0]]},order:-1},pick(o,['size','sizeXY','speed','gravity','color','colorOverLife',...OWN]));
+// W · Molten/energised rock chunks: like debris but glowing with element heat for volcanic eruptions.
+export const cinders=(P,o={})=>mix(debris(P,o),{texture:'debris',tiles:[2,2],frames:{random:true,still:true},blend:'alpha',alpha:.96,
+ size:o.size??[.11,.20],color:o.color??[P.light,P.deep,P.rock],intensity:1.0,
+ colorOverLife:o.colorOverLife??grad(flameOf(P),[[0,1],[.74,.92],[1,0]]),...pick(o,['count','size','sizeXY','speed','gravity','color','colorOverLife',...OWN])});
 // W · Crackling arcs: fine lightning/flame tendrils flickering over a ring or area.
 export const arcs=(P,o={})=>mix({texture:'arc',tiles:[2,2],frames:{random:true,still:true},blend:'alpha',alpha:.95,rate:o.rate??40,duration:o.duration??.5,max:Math.ceil((o.rate??40)*.35)+10,
  shape:{type:'circle',radius:o.radius??1,thickness:0},life:[.08,.18],rotation:[0,6.28],size:o.size??[.22,.36],...(o.sizeXY?{sizeXY:o.sizeXY}:{}),

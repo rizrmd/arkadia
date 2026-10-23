@@ -4,7 +4,7 @@ import {defineHeroFx} from '../cues';
 const E='ember-warden/';
 export default defineHeroFx({id:'ember-warden',extends:'shared',cues:{
  'attack.swing':[{effect:E+'attack.swing.ground'},{effect:E+'attack.swing'}],
- 'flame-fan.cast':[{effect:E+'flame-fan.cast.ground',follow:true},{effect:E+'flame-fan.cast.rim',follow:true},{effect:E+'flame-fan.cast'}],
+ 'flame-fan.cast':[{effect:E+'flame-fan.cast.ground',follow:true},{effect:E+'flame-fan.cast'}],
  'flame-fan.bolt':[{effect:E+'flame-fan.bolt'}],
  'flame-fan.impact':[{effect:E+'flame-fan.impact.ground'},{effect:E+'flame-fan.impact'}],
  'cinder-step.cast':[{effect:E+'cinder-step.cast.ground'},{effect:E+'cinder-step.cast'}],

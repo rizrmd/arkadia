@@ -395,8 +395,9 @@ export async function createEncounters(o:{
   const s=screen(du,dv);turn(f,s.x,s.y);f.play('idle');return false;
  }
 
+ let previewMode=false;
  function steer(input:Walk):Walk{
-  if(online||input.x||input.y||!h.alive||h.state!=='idle')return input;
+  if(previewMode||online||input.x||input.y||!h.alive||h.state!=='idle')return input;
   const r=reach(run),f=nearest(Math.max(ENGAGE,HERO_REACH*r+.8));if(!f||Math.hypot(f.x-h.x,f.y-h.y)<=HERO_REACH*r*.8)return input;
   const s=screen(f.x-h.x,f.y-h.y),l=Math.hypot(s.x,s.y);return {x:s.x/l,y:s.y/l};
  }
@@ -525,6 +526,10 @@ export async function createEncounters(o:{
   const net=!!o.net?.active();
   if(net!==online){run=fresh(currentHeroId());online=net;mirrors.clear();local.length=0;foes=local;spawnTimer=0;heroPlays=-1;lastCoopAutoCasts=0;if(!net){h.play('idle');h.hp=maxHp;}}
   if(online){netStep(dt);return;}
+  if(previewMode){
+   for(const f of [h,...foes])f.tick(dt);
+   return;
+  }
   const input=o.direction(),steering=!!(input.x||input.y);
   if(steering&&h.state==='attack')h.play('idle');
   for(const f of [h,...foes])f.tick(dt);
@@ -794,6 +799,7 @@ export async function createEncounters(o:{
   teleport(u:number,v:number){const w=tilePoint(u,v);if(!o.hero.teleport(w.x,w.y))return false;h.x=u;h.y=v;return true;},
   clear:(u:number,v:number)=>walkable({u,v}),
   summon(u:number,v:number,level?:number){const at={u,v};if(inSafeZone(at)||!walkable(at))return -1;const lv=Math.max(1,Math.floor(level??run.level)),fMaxHp=revenantMaxHp(lv);const f:Foe=Object.assign(new Fighter('revenant',meta.clips,u,v),{home:at,wander:null,age:500,side:1,level:lv,maxHp:fMaxHp,hp:fMaxHp});f.play('idle');return foes.push(f)-1;},
+  clearFoes(){for(const [,v] of views){v.canvasView.sprite.destroy();v.bar.destroy({children:true});}views.clear();foes.length=0;render();},
   offer(offers?:string[]){localOfferOverride=true;if(run.pending<=0){run.level++;run.pending=1;syncFoeLevels();}if(offers?.length)run.offers=[...offers];else if(!run.offers.length)roll(run,random,currentHeroId());offerKey='';render();return structuredClone(run);},
   choose:(id:string)=>{select(id);render();return structuredClone(run);},
   castSkill:(id:SkillId,opts?:{targetU?:number;targetV?:number;forceCrit?:boolean})=>vfx.castSkill(id,opts),
@@ -809,6 +815,8 @@ export async function createEncounters(o:{
   spawnAoE:vfx.spawnAoE,
   triggerLevelUp:(level?:number)=>{const lv=level??run.level;if(!online&&lv>run.level){run.level=lv;syncFoeLevels();}levelUpPulseMs=1200;vfx.triggerLevelUp(lv,h.x,h.y);render();},
   hitFoe:(index:number,forceCrit?:boolean)=>{const f=foes[index];if(!f)return null;const r=vfx.applyHitToFoe(f,{forceCrit});render();return r;},
+  setHudVisible:(visible:boolean)=>{o.uiStage.visible=visible;bars.visible=visible;vfx.setFloatsVisible(visible);render();},
+  setPreviewMode:(enabled:boolean)=>{previewMode=enabled;},
   fxStage:vfx.fx,
   occlusionAt:o.hero.occlusionAt,
   blocked:o.hero.blocked,

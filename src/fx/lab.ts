@@ -278,7 +278,7 @@ export async function mount(root:HTMLElement,progress:Progress){
 
  function bolt(key:string,offset:number,onEnd?:(at:{u:number;v:number})=>void){
   const yaw=yawOfScreenAngle(aimDeg*Math.PI/180+offset);
-  const speed=key.startsWith('rift-bolt')?16.5:6.5;
+  const speed=key.startsWith('rift-bolt')||key.startsWith('flame-fan')?16.0:6.5;
   bolts.push({h:playCue(stage,hero,key,{...HERO,yaw}),yaw,d:0,speed,hit:false,onEnd});
  }
 

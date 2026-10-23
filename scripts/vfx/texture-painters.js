@@ -89,17 +89,37 @@ P.arc={w:256,h:256,tiles:[2,2],paint(c){const arcStroke=(w,draw)=>{c.save();c.li
  for(let f=0;f<4;f++){const r=rng(100+f),ox=(f%2)*128,oy=Math.floor(f/2)*128;c.save();c.beginPath();c.rect(ox,oy,128,128);c.clip();c.translate(ox,oy);
  const main=jagged(r,6,64,122,64,.55,6);arcStroke(2.2,()=>{path(c,main);c.stroke();});
  for(let b=0;b<3;b++){const i=2+Math.floor(r()*(main.length-6)),[sx,sy]=main[i];const br=jagged(r,sx,sy,sx+20+r()*30,sy+(r()-.5)*60,.5,4);arcStroke(1.3,()=>{path(c,br);c.stroke();});}c.restore();}}};
-// Radial ground cracks with a crumbled rim, for slams and eruptions (glows when tinted and blended additively).
+// Radial & polygonal tectonic ground cracks with a high-contrast rim and glowing inner channel, for volcanic slams and eruptions.
 P.crack={w:512,h:512,paint(c){const r=rng(5),C=256;c.translate(C,C);
- glowStroke(c,10,3,()=>{for(let i=0;i<11;i++){const a=i/11*TAU+r()*.3,len=150+r()*80;const pts=jagged(r,Math.cos(a)*18,Math.sin(a)*18,Math.cos(a)*len,Math.sin(a)*len,.35,5);path(c,pts);c.stroke();
-  for(let b=0;b<2;b++){const k=3+Math.floor(r()*(pts.length-5)),[sx,sy]=pts[k],ba=a+(r()-.5)*1.4,bl=30+r()*50;path(c,jagged(r,sx,sy,sx+Math.cos(ba)*bl,sy+Math.sin(ba)*bl,.4,3));c.stroke();}}
-  c.beginPath();for(let i=0;i<=40;i++){const a=i/40*TAU,rr=34+r()*10;i?c.lineTo(Math.cos(a)*rr,Math.sin(a)*rr):c.moveTo(Math.cos(a)*rr,Math.sin(a)*rr);}c.stroke();});}};
-// Rock debris flipbook, 2x2 frames of 64: irregular lit chunks (alpha-blended, tinted by the emitter).
-P.debris={w:128,h:128,tiles:[2,2],paint(c){for(let f=0;f<4;f++){const r=rng(300+f),cx=(f%2)*64+32,cy=Math.floor(f/2)*64+32,n=6+Math.floor(r()*3),pts=[];
- for(let i=0;i<n;i++){const a=i/n*TAU+r()*.4,rr=14+r()*12;pts.push([cx+Math.cos(a)*rr,cy+Math.sin(a)*rr*.85]);}
- const g=c.createLinearGradient(cx-24,cy-24,cx+20,cy+22);g.addColorStop(0,'#f4efe6');g.addColorStop(.55,'#9a948c');g.addColorStop(1,'#3d3934');
- c.fillStyle=g;path(c,pts);c.closePath();c.fill();c.strokeStyle='rgba(30,26,22,.8)';c.lineWidth=1.5;c.stroke();
- c.strokeStyle='rgba(255,255,255,.55)';c.lineWidth=1.2;c.beginPath();c.moveTo(pts[0][0],pts[0][1]);c.lineTo(cx+(r()-.5)*8,cy+(r()-.5)*8);c.lineTo(pts[3][0],pts[3][1]);c.stroke();}}};
+ const spokes=12,radials=[];
+ for(let i=0;i<spokes;i++){const a=i/spokes*TAU+(r()-.5)*.22,len=165+r()*68;
+  radials.push({a,len,pts:jagged(r,Math.cos(a)*16,Math.sin(a)*16,Math.cos(a)*len,Math.sin(a)*len,.32,5)});}
+ const bridges=[];
+ for(const ringFrac of [.26,.50,.74]){
+  for(let i=0;i<spokes;i++){if(r()<.18)continue;
+   const s0=radials[i].pts,s1=radials[(i+1)%spokes].pts;
+   const idx0=Math.max(1,Math.min(s0.length-2,Math.round(ringFrac*(s0.length-1))+Math.floor((r()-.5)*2)));
+   const idx1=Math.max(1,Math.min(s1.length-2,Math.round(ringFrac*(s1.length-1))+Math.floor((r()-.5)*2)));
+   bridges.push(jagged(r,s0[idx0][0],s0[idx0][1],s1[idx1][0],s1[idx1][1],.28,3));}}
+ const branches=[];
+ for(const sp of radials){for(let b=0;b<2;b++){const k=3+Math.floor(r()*(sp.pts.length-5)),[sx,sy]=sp.pts[k],ba=sp.a+(r()-.5)*1.35,bl=32+r()*48;
+  branches.push(jagged(r,sx,sy,sx+Math.cos(ba)*bl,sy+Math.sin(ba)*bl,.36,3));}}
+ const hub=[];for(let i=0;i<=40;i++){const a=i/40*TAU,rr=28+r()*10;hub.push([Math.cos(a)*rr,Math.sin(a)*rr]);}
+ const crackStroke=(w,draw)=>{c.save();c.lineCap='round';c.lineJoin='round';
+  for(const [col,sh,bl,wd,al] of [['#8c7a72','rgba(110,92,84,.85)',9,w*2.5,.88],['#ded4cc','rgba(225,212,202,.94)',4,w*1.5,.95],['#ffffff','rgba(255,255,255,1)',1.5,w*.85,1]]){
+   c.strokeStyle=col;c.shadowColor=sh;c.shadowBlur=bl;c.globalAlpha=al;c.lineWidth=wd;draw();}c.restore();};
+ crackStroke(3.4,()=>{for(const sp of radials){path(c,sp.pts);c.stroke();}path(c,hub);c.stroke();});
+ crackStroke(2.3,()=>{for(const br of bridges){path(c,br);c.stroke();}for(const b of branches){path(c,b);c.stroke();}});}};
+// Rock debris flipbook, 2x2 frames of 64: angular faceted volcanic/basalt rock chunks with dark silhouette rim and sharp ridge highlights.
+P.debris={w:128,h:128,tiles:[2,2],paint(c){for(let f=0;f<4;f++){const r=rng(300+f),cx=(f%2)*64+32,cy=Math.floor(f/2)*64+32,n=7,pts=[];
+ for(let i=0;i<n;i++){const a=i/n*TAU+(r()-.5)*.28,rr=16+r()*11;pts.push([cx+Math.cos(a)*rr,cy+Math.sin(a)*rr*.88]);}
+ const apex=[cx+(r()-.5)*7,cy+(r()-.5)*7];
+ const g=c.createLinearGradient(cx-24,cy-24,cx+22,cy+24);g.addColorStop(0,'#f6efe4');g.addColorStop(.48,'#9c9288');g.addColorStop(1,'#38302c');
+ c.fillStyle=g;path(c,pts);c.closePath();c.fill();
+ c.fillStyle='rgba(255,250,242,.42)';c.beginPath();c.moveTo(pts[0][0],pts[0][1]);c.lineTo(pts[1][0],pts[1][1]);c.lineTo(pts[2][0],pts[2][1]);c.lineTo(apex[0],apex[1]);c.closePath();c.fill();
+ c.fillStyle='rgba(28,20,18,.48)';c.beginPath();c.moveTo(pts[3][0],pts[3][1]);c.lineTo(pts[4][0],pts[4][1]);c.lineTo(pts[5][0],pts[5][1]);c.lineTo(apex[0],apex[1]);c.closePath();c.fill();
+ c.strokeStyle='rgba(18,12,10,.94)';c.lineWidth=2.2;path(c,pts);c.closePath();c.stroke();
+ c.strokeStyle='rgba(255,255,255,.82)';c.lineWidth=1.4;c.beginPath();c.moveTo(pts[0][0],pts[0][1]);c.lineTo(apex[0],apex[1]);c.lineTo(pts[2][0],pts[2][1]);c.moveTo(apex[0],apex[1]);c.lineTo(pts[5][0],pts[5][1]);c.stroke();}}};
 // Crescent slash: a half ring around the bottom-centre of the texture, bulging toward the top (the aim once the
 // decal is pinned to it), thickest and brightest at its apex with a hot leading edge, tapering to both ends.
 P.slash={w:256,h:128,paint(c){pixels(c,0,0,256,128,(x,y)=>{const px=(x-.5)*2,py=(1-y),r=Math.hypot(px,py),a=Math.atan2(py,px);
@@ -118,13 +138,13 @@ P.wisp={w:64,h:128,paint(c){const n=valueNoise(61,32),n2=valueNoise(89,32);pixel
  const alpha=Math.pow(clamp(body*1.22),1.15);
  const rim=.34+.66*smooth(0,.5,core+body*.45);
  return[rim,rim*(.42+.58*core),rim*(.14+.84*Math.pow(core,1.35)),alpha];});}};
-// Crystal shard: high-contrast faceted diamond splinter with dark outer bevel and bright specular facet for daylight readability.
+// Crystal / volcanic shard: high-contrast neutral faceted diamond splinter with dark outer bevel and bright specular facet, tinted by each palette.
 P.shard={w:64,h:128,paint(c){c.translate(32,64);const fill=(pts,col)=>{c.fillStyle=col;path(c,pts);c.closePath();c.fill();};
- fill([[0,-60],[-20,0],[0,60],[20,0]],'#6e5ec2');
- fill([[0,-56],[-17,0],[0,56]],'#c4b8ff');
+ fill([[0,-60],[-20,0],[0,60],[20,0]],'#807c86');
+ fill([[0,-56],[-17,0],[0,56]],'#dcdad4');
  fill([[0,-56],[-17,0],[0,-4]],'#ffffff');
- fill([[0,-56],[5,0],[0,56],[17,0]],'#8a7ae0');
- c.strokeStyle='rgba(36,20,82,.94)';c.lineWidth=2.4;path(c,[[0,-60],[-20,0],[0,60],[20,0]]);c.closePath();c.stroke();
+ fill([[0,-56],[5,0],[0,56],[17,0]],'#a4a0a8');
+ c.strokeStyle='rgba(22,18,24,.94)';c.lineWidth=2.4;path(c,[[0,-60],[-20,0],[0,60],[20,0]]);c.closePath();c.stroke();
  c.strokeStyle='rgba(255,255,255,.94)';c.lineWidth=1.6;c.beginPath();c.moveTo(0,-56);c.lineTo(0,56);c.moveTo(-17,0);c.lineTo(5,0);c.stroke();}};
 
 window.VFX_TEXTURES=Object.fromEntries(Object.entries(P).map(([name,p])=>[name,{w:p.w,h:p.h,tiles:p.tiles??[1,1],render(){const cv=document.createElement('canvas');cv.width=p.w;cv.height=p.h;const ctx=cv.getContext('2d');p.paint(ctx);return cv.toDataURL('image/png');}}]));
