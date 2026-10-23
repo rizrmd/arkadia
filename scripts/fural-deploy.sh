@@ -37,6 +37,7 @@ mkdir -p "$STAGE/site/torch-placement"; cp docs/torch-placement/*.png docs/torch
 mkdir -p "$STAGE/site/sharp-torches"; cp docs/sharp-torches/*.png docs/sharp-torches/*.json "$STAGE/site/sharp-torches/"
 mkdir -p "$STAGE/site/gateway-lighting"; cp docs/gateway-lighting/*.png docs/gateway-lighting/*.json "$STAGE/site/gateway-lighting/"
 mkdir -p "$STAGE/site/gate-seams"; cp docs/gate-seams/*.png "$STAGE/site/gate-seams/"
+mkdir -p "$STAGE/site/gate-seamless"; cp public/gate-seamless/* "$STAGE/site/gate-seamless/"
 mkdir -p "$STAGE/site/full-gateway"; cp docs/full-gateway/*.json "$STAGE/site/full-gateway/"
 mkdir -p "$STAGE/site/walk-behind"; cp docs/walk-behind/*.webp "$STAGE/site/walk-behind/"
 mkdir -p "$STAGE/site/combat-vfx"; cp docs/combat-vfx/*.webp docs/combat-vfx/*.json "$STAGE/site/combat-vfx/"
