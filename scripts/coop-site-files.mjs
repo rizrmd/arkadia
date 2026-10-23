@@ -2,7 +2,10 @@ import {chromium} from 'playwright';import {spawn} from 'node:child_process';imp
 // Print (one per line) the dist/ files the Stronghold actually loads, so a release stages those and not the
 // 370 MB of documentation renders in public/. Serves dist/ with the built server/bin/arkadia, opens the game in
 // co-op and offline, walks the hero out through the gate, and records every same-origin file fetched.
-const server=spawn('server/bin/arkadia',[],{env:{...process.env,PORT:'8793',SITE_DIR:'dist'},stdio:['ignore','pipe','inherit']});
+const siteDir=process.env.SITE_DIR||'dist';
+const port=process.env.PORT||String(18700+(process.pid%1000));
+const bin=process.env.ARKADIA_BIN||'server/bin/arkadia';
+const server=spawn(bin,[],{env:{...process.env,PORT:port,SITE_DIR:siteDir},stdio:['ignore','pipe','inherit']});
 await new Promise((ok,no)=>{server.stdout.on('data',d=>{if(String(d).includes('listening'))ok();});server.on('exit',c=>no(Error('server exited '+c)));});
 // Single-process Chromium survives only one context, so each visit gets its own browser.
 const launch=()=>chromium.launch({
@@ -15,8 +18,8 @@ try{
  for(const path of ['/?time=0.5','/?offline=1&time=0.9']){
   await browser?.close();browser=await launch();
   const page=await (await browser.newContext({viewport:{width:1280,height:800}})).newPage();
-  page.on('response',r=>{const u=new URL(r.url());if(u.host==='127.0.0.1:8793'&&r.status()===200&&!u.pathname.startsWith('/api/')&&u.pathname!=='/ws')files.add(u.pathname==='/'?'index.html':decodeURIComponent(u.pathname.slice(1)));});
-  await page.goto('http://127.0.0.1:8793'+path);
+  page.on('response',r=>{const u=new URL(r.url());if(u.host===`127.0.0.1:${port}`&&r.status()===200&&!u.pathname.startsWith('/api/')&&u.pathname!=='/ws')files.add(u.pathname==='/'?'index.html':decodeURIComponent(u.pathname.slice(1)));});
+  await page.goto(`http://127.0.0.1:${port}`+path);
   await page.waitForFunction(()=>document.querySelector('#world-canvas')?.dataset.ready==='true',null,{timeout:180000});
   await page.keyboard.down('KeyS');await page.waitForTimeout(6000);await page.keyboard.up('KeyS');await page.waitForTimeout(1500);
   await page.context().close();
@@ -24,15 +27,15 @@ try{
  // The FX Lab (/fx-lab, src/fx/lab.ts) is a page of the same build with its own chunks.
  await browser?.close();browser=await launch();
  const lab=await (await browser.newContext({viewport:{width:1280,height:800}})).newPage();
- lab.on('response',r=>{const u=new URL(r.url());if(u.host==='127.0.0.1:8793'&&r.status()===200&&!u.pathname.startsWith('/api/')&&u.pathname!=='/fx-lab')files.add(decodeURIComponent(u.pathname.slice(1)));});
- await lab.goto('http://127.0.0.1:8793/fx-lab');
+ lab.on('response',r=>{const u=new URL(r.url());if(u.host===`127.0.0.1:${port}`&&r.status()===200&&!u.pathname.startsWith('/api/')&&u.pathname!=='/fx-lab')files.add(decodeURIComponent(u.pathname.slice(1)));});
+ await lab.goto(`http://127.0.0.1:${port}/fx-lab`);
  await lab.waitForFunction(()=>document.body.dataset.fxLab==='ready',null,{timeout:180000});
 }finally{await browser?.close();server.kill();}
 // Every pickable hero's atlas and portrait (src/stronghold/heroes.ts).
-const {characters}=JSON.parse(readFileSync('dist/assets/characters/manifest.json','utf8'));
+const {characters}=JSON.parse(readFileSync(`${siteDir}/assets/characters/manifest.json`,'utf8'));
 for(const m of Object.values(characters))for(const f of [m.image,m.portrait])if(f)files.add('assets/characters/'+f);
 // All @1x/@2x/@3x HUD frames from public/typography/v2/hud/manifest.json and MSDF fonts.
-const hudManifest=JSON.parse(readFileSync('dist/typography/v2/hud/manifest.json','utf8'));
+const hudManifest=JSON.parse(readFileSync(`${siteDir}/typography/v2/hud/manifest.json`,'utf8'));
 files.add('typography/v2/hud/manifest.json');
 for(const name of Object.keys(hudManifest.frames)){
  for(const s of [1,2,3])files.add(`typography/v2/hud/@${s}x/${name}.png`);
@@ -51,9 +54,9 @@ for(const f of [
 ])files.add(f);
 // Choose Your Hero (src/stronghold/choose-hero.ts): every @1x/@2x/@3x UI texture, art and labels from its manifest, and the
 // NixieFX bundle its highlights play from, since the screen loads frames only when it opens at a given scale.
-const chooseHero=JSON.parse(readFileSync('dist/assets/choose-hero/manifest.json','utf8'));
+const chooseHero=JSON.parse(readFileSync(`${siteDir}/assets/choose-hero/manifest.json`,'utf8'));
 for(const f of ['manifest.json','labels.en.json',...Object.values(chooseHero.art).map(a=>a.file),...Object.keys(chooseHero.frames).flatMap(n=>[1,2,3].map(s=>`@${s}x/${n}.png`))])files.add('assets/choose-hero/'+f);
-files.add('vfx/skills.bin');for(const f of readdirSync('dist/vfx/textures'))files.add('vfx/textures/'+f);
-for(const f of readdirSync('dist/environment-corners/v1'))files.add('environment-corners/v1/'+f);
+files.add('vfx/skills.bin');for(const f of readdirSync(`${siteDir}/vfx/textures`))files.add('vfx/textures/'+f);
+for(const f of readdirSync(`${siteDir}/environment-corners/v1`))files.add('environment-corners/v1/'+f);
 if(files.size<20)throw Error('Only '+files.size+' files loaded');
 console.log([...files].sort().join('\n'));

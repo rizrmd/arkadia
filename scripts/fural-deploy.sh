@@ -8,20 +8,23 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 export PATH="$HOME/.local/go/bin:$HOME/.local/bin:$PATH"
-STAGE="$HOME/releases/arkadia-game"
+STAGE="$(mktemp -d)"
+DIST_DIR="$(mktemp -d)"
+list="$(mktemp)"
+trap 'rm -rf "$STAGE" "$DIST_DIR" "$list"' EXIT
 
-npm run build
+npx tsc --noEmit && npx vite build --outDir "$DIST_DIR"
 # The organization shares 1 GiB of RAM across sessions: compile one package at a time under a memory limit.
 export GOFLAGS=-p=1 GOMAXPROCS=2 GOMEMLIMIT=256MiB GOTOOLCHAIN=local
-(cd server && go test ./... && CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -trimpath -ldflags="-s -w" -o bin/arkadia ./cmd/arkadia)
-node scripts/coop-smoke.mjs >/dev/null
+(cd server && go test ./... && CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -trimpath -ldflags="-s -w" -o "$DIST_DIR/arkadia" ./cmd/arkadia)
+cp -f "$DIST_DIR/arkadia" server/bin/arkadia 2>/dev/null || true
+ARKADIA_BIN="$DIST_DIR/arkadia" SITE_DIR="$DIST_DIR" node scripts/coop-smoke.mjs >/dev/null
 
 # Stage the binary and only the files the game loads (dist/ also carries hundreds of MB of documentation renders).
-list="$(mktemp)"; trap 'rm -f "$list"' EXIT
-node scripts/coop-site-files.mjs > "$list"
+SITE_DIR="$DIST_DIR" ARKADIA_BIN="$DIST_DIR/arkadia" node scripts/coop-site-files.mjs > "$list"
 rm -rf "$STAGE"; mkdir -p "$STAGE/site"
-cp server/bin/arkadia "$STAGE/arkadia"
-while IFS= read -r f; do mkdir -p "$STAGE/site/$(dirname "$f")"; cp -p "dist/$f" "$STAGE/site/$f"; done < "$list"
+cp "$DIST_DIR/arkadia" "$STAGE/arkadia"
+while IFS= read -r f; do mkdir -p "$STAGE/site/$(dirname "$f")"; cp -p "$DIST_DIR/$f" "$STAGE/site/$f"; done < "$list"
 SITE_DIR="$STAGE/site" "$STAGE/arkadia" --warm-webp
 # The co-op and hero-picker screenshots, test reports and UI frame sources embedded in Knowledge.
 mkdir -p "$STAGE/site/coop/docs"; cp docs/coop/*.webp docs/coop/*.json "$STAGE/site/coop/docs/"
@@ -51,6 +54,7 @@ mkdir -p "$STAGE/site/ui"; cp assets-src/ui/hero-card-frame*.png "$STAGE/site/ui
 echo "Staged $(wc -l < "$list") files, $(du -sh "$STAGE" | cut -f1) in $STAGE"
 
 # One versioned tarball, uploaded in parts and applied by the gateway at boot (the release also writes www/index.html).
+mkdir -p "$HOME/releases"
 tgz="$HOME/releases/arkadia-game-$(git rev-parse --short HEAD).tgz"
 tar -C "$STAGE" -cz . > "$tgz"
 node scripts/arkadia/publish-layer.mjs --tgz "$tgz" --name "game-$(git rev-parse --short HEAD)"
