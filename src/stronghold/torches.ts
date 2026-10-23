@@ -1,17 +1,11 @@
 import {CanvasSource,Container,Sprite,Texture} from 'pixi.js';
 import {tilePoint} from './terrain';
+import {STRONGHOLD} from './prefabs/stronghold';
 import {phaseOf} from './daylight';
 
-// Wall brackets sit on the outer masonry faces; posts flank the tent and open court.
-export const TORCHES=[
- ...[3,7.5,12].flatMap(n=>[
-  {u:n,v:0,lift:65,wall:true},{u:0,v:n,lift:65,wall:true},
-  {u:n,v:15.5,lift:65,wall:true},{u:15.5,v:n,lift:65,wall:true}
- ]),
- // Clear the whole tent silhouette (including the roof and guy ropes), not
- // just its ground footprint. Keep the approach through the court open.
- ...[[4.5,4.5],[4.5,10.5],[10.5,4.5],[12,12]].map(([u,v])=>({u,v,lift:48,wall:false}))
-].map(t=>({...t,...tilePoint(t.u,t.v)}));
+// Wall brackets sit on the outer masonry faces; posts flank the tent and open court, clear of the whole tent
+// silhouette (roof and guy ropes too) and of the approach through the court (prefabs/stronghold.json lights).
+export const TORCHES=STRONGHOLD.lights.map(t=>({...t,...tilePoint(t.u,t.v)}));
 export const torchesOn=(time:number)=>phaseOf(time)==='Night';
 
 const frames=Array.from({length:4},(_,i)=>{const image=new Image();image.src=`/realistic-torch/frame-${i}.webp`;return image;});

@@ -1,0 +1,18 @@
+{
+ "id": "arkadia-01",
+ "version": 1,
+ "name": "Arkadia 01",
+ "notes": [
+  "A square map of sizeTiles x sizeTiles ground tiles (1 tile = 3 m); map tiles (U, V) run 0..sizeTiles from the top corner.",
+  "Center to each edge is 5 minutes of walking at hero speed (net/movement.ts: 120 px/s across, 90 px/s up/down = 1.56 tiles/s along a tile edge): 300 s x 1.56 = 468 tiles.",
+  "Each prefab's anchor (court-local tile) is placed at its map tile; the Stronghold's court center (7.5, 7.5) sits on the map center.",
+  "chunkTiles is the planned chunk size for the chunk renderer (step b) and per-chunk collision (step c): 39 x 39 chunks, the Stronghold inside the center chunk."
+ ],
+ "sizeTiles": 936,
+ "metersPerTile": 3,
+ "chunkTiles": 24,
+ "seed": "arkadia-01",
+ "prefabs": [
+  {"prefab": "stronghold", "at": {"u": 468, "v": 468}}
+ ]
+}

@@ -44,7 +44,7 @@ const (
 var (
 	enemySpeed = 105 / hypot(64, 32) * .55 // tiles/s, a bit over half the hero's
 	// The hero starts (and respawns) just in front of the tent in the centre of the court.
-	heroSpawn = Vec{590, 420}
+	heroSpawn = stronghold.HeroSpawn
 	// Later players stand beside the first so the party never spawns stacked.
 	spawnOffsets = []Vec{{0, 0}, {-26, 12}, {26, 12}, {0, 26}}
 )
@@ -138,10 +138,10 @@ type Gate struct {
 	Frame int
 }
 
-const gateFrames = 16
+var gateFrames = stronghold.Gate.Frames
 
-// Passable mirrors gate-doors.ts: passable from progress 0.8.
-func (g Gate) Passable() bool { return float64(g.Frame)/(gateFrames-1) >= .8 }
+// Passable mirrors gate-doors.ts: passable from progress passableAt (0.8).
+func (g Gate) Passable() bool { return float64(g.Frame)/float64(gateFrames-1) >= gateSpec.PassableAt }
 
 // World is one room's simulation.
 type World struct {
@@ -931,11 +931,11 @@ func (w *World) updateGate() {
 		if !p.F.Alive() {
 			continue
 		}
-		rx, ry := 48.0, 66.0
+		r := gateSpec.Trigger.Closed
 		if w.Gate.Open {
-			rx, ry = 65, 88
+			r = gateSpec.Trigger.Open
 		}
-		if math.Abs(p.X-577) < rx && math.Abs(p.Y-778) < ry {
+		if math.Abs(p.X-gateSpec.X) < r.X && math.Abs(p.Y-gateSpec.Trigger.Y) < r.Y {
 			near = true
 		}
 	}

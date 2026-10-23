@@ -45,15 +45,16 @@ const heroRadius = 9.0
 // gateColumns mirrors world-view.ts gateFootprint(): both towers always, the closed doors until passable.
 func gateColumns(passable bool) []Column {
 	var cols []Column
+	step, doors := gateSpec.ColumnStep, &gateSpec.Doors
 	for _, side := range []float64{-1, 1} {
-		for d := 36.0; d <= 135; d += 3 {
+		for d := gateSpec.ArchHalfWidth; d <= gateSpec.TowerHalfSpan; d += step {
 			front := gateTowerFront(d)
-			cols = append(cols, Column{X: 577 + side*d, W: 3, Back: front - 34, Front: front})
+			cols = append(cols, Column{X: gateSpec.X + side*d, W: step, Back: front - gateSpec.TowerDepth, Front: front})
 		}
 	}
 	if !passable {
-		for d := -35.0; d <= 35; d += 3 {
-			cols = append(cols, Column{X: 577 + d, W: 3, Back: 771, Front: 783})
+		for d := -doors.HalfWidth; d <= doors.HalfWidth; d += step {
+			cols = append(cols, Column{X: gateSpec.X + d, W: step, Back: doors.Back, Front: doors.Front})
 		}
 	}
 	return cols

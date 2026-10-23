@@ -4,6 +4,7 @@ import type {Sun} from './daylight';
 import type {Walk} from './controls';
 import {createCanvasSprite,loadImage} from '../app/loader';
 import {walkStep,fullSpeed} from './net/movement';
+import {STRONGHOLD} from './prefabs/stronghold';
 import {characters,atlasUrl,DEFAULT_HERO,HEROES,isHero,type HeroId} from './heroes';
 import {measureTracelogPhase} from './tracelog';
 
@@ -185,7 +186,7 @@ export type Placed={layer:string;x:number;y:number;width:number;height:number;fo
 type Clip={fps:number;loop:boolean;frames:number[];strideScale?:number};
 type Meta={image:string;revision?:string;views?:string[];cell:{w:number;h:number;pivot:{x:number;y:number}};clips:Record<string,Clip>;frames:{x:number;y:number;w:number;h:number}[]};
 const KEY='arkadia.stronghold.hero';
-export const DISPLAY=.66;const RADIUS=9,SPAWN={x:590,y:420};
+export const DISPLAY=.66;const RADIUS=9,SPAWN={...STRONGHOLD.heroSpawn},GATE=STRONGHOLD.gate;
 
 const gpuWarmCanvas=document.createElement('canvas');gpuWarmCanvas.width=16;gpuWarmCanvas.height=16;
 const gpuWarmCtx=gpuWarmCanvas.getContext('2d')!;
@@ -257,7 +258,7 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
   drawn='';
  }
  function frontY(sb:SceneBound,qx:number):number{
-  if(sb.isGate){const d=Math.abs(qx-577);return d<36?775:gateTowerFront(Math.min(135,d));}
+  if(sb.isGate){const d=Math.abs(qx-GATE.x);return d<GATE.archHalfWidth?775:gateTowerFront(Math.min(GATE.towerHalfSpan,d));}
   const p=sb.p,cols=sb.cols;
   let edge=-Infinity;
   for(let i=0,n=cols.length;i<n;i++){
@@ -299,8 +300,8 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
   let lastX=x0,lastY=y0;
   for(let i=1;i<=steps;i++){
    const t=i/steps,wx=x0+dx*t,wy=y0+dy*t;
-   const gd=Math.abs(wx-577);
-   const gateTowerHit=gd>=35&&gd<=135&&wy>=gateTowerFront(gd)-76&&wy<=gateTowerFront(gd)+4;
+   const gd=Math.abs(wx-GATE.x);
+   const gateTowerHit=gd>=GATE.doors.halfWidth&&gd<=GATE.towerHalfSpan&&wy>=gateTowerFront(gd)-76&&wy<=gateTowerFront(gd)+4;
    if(blocked(wx,wy)||gateTowerHit)return {hit:true,x:lastX,y:lastY,t:(i-1)/steps};
    lastX=wx;lastY=wy;
   }

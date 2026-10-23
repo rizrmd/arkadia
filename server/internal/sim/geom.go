@@ -9,13 +9,18 @@ import "math"
 // Vec is a 2D point: world px (X, Y) or ground tiles (U in X, V in Y).
 type Vec struct{ X, Y float64 }
 
-// 2:1 dimetric projection (isometric.ts) and the court origin (terrain.ts).
+// 2:1 dimetric projection (isometric.ts).
 const (
-	halfW     = 64.0
-	halfH     = 32.0
-	courtX    = 577.0
-	courtY    = -160.0
-	courtSize = 15.0
+	halfW = 64.0
+	halfH = 32.0
+)
+
+// The court origin and size, from the Stronghold prefab (stronghold.json).
+var (
+	courtX    = stronghold.Court.Origin.X
+	courtY    = stronghold.Court.Origin.Y
+	courtSize = stronghold.Court.Size
+	gateSpec  = &stronghold.Gate
 )
 
 func project(u, v float64) Vec   { return Vec{(u - v) * halfW, (u + v) * halfH} }
@@ -32,30 +37,32 @@ func screen(du, dv float64) Vec { return Vec{(du - dv) * 64, (du + dv) * 32} }
 
 func hypot(x, y float64) float64 { return math.Sqrt(x*x + y*y) }
 
-// gateTowerFront is the ground line of a gate tower's front face, d px either side of the arch centre (36 to 135).
+// gateTowerFront is the ground line of a gate tower's front face, d px either side of the arch centre
+// (archHalfWidth to towerHalfSpan).
 func gateTowerFront(d float64) float64 {
-	if d < 86 {
-		return 782 + (d-36)*.42
+	f := &gateSpec.TowerFront
+	if d < f.Knee {
+		return f.Base + (d-gateSpec.ArchHalfWidth)*f.Rise
 	}
-	return 803 - (d-86)*.62
+	return f.Peak - (d-f.Knee)*f.Fall
 }
 
 // walkableGround mirrors navigation.ts: the court, the gate passage and its apron, and the open snow beyond.
 func walkableGround(x, y float64) bool {
 	g := ToTile(x, y)
-	const edge = .5
+	edge, snow := stronghold.Court.WalkInset, stronghold.Court.OpenSnowFrom
 	court := g.X >= edge && g.Y >= edge && g.X <= courtSize-edge && g.Y <= courtSize-edge
-	d := math.Abs(x - 577)
-	passage := y >= 710 && (d < 36 || d <= 135 && y >= gateTowerFront(d))
-	outside := g.X >= 16.5 || g.Y >= 16.5
+	d := math.Abs(x - gateSpec.X)
+	passage := y >= gateSpec.PassageFromY && (d < gateSpec.ArchHalfWidth || d <= gateSpec.TowerHalfSpan && y >= gateTowerFront(d))
+	outside := g.X >= snow || g.Y >= snow
 	return court || passage || outside
 }
 
-// Safe zone and spawn arc (safe-zone.ts). The court side of the gateway is safe.
-const (
-	metersPerTile  = 3.0
-	spawnDistanceM = 10.0
-	gateTile       = 958.0 / 64
+// Safe zone and spawn arc (safe-zone.ts). The court side of the gateway is safe; the gate tile is the threshold's.
+var (
+	metersPerTile  = stronghold.SafeZone.MetersPerTile
+	spawnDistanceM = stronghold.SafeZone.SpawnDistanceM
+	gateTile       = ToTile(gateSpec.Threshold.X, gateSpec.Threshold.Y).X
 	safeLine       = gateTile * 2
 )
 

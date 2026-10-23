@@ -1,4 +1,22 @@
 {
- "status": "in-progress",
- "task": "Map spec + Stronghold as JSON prefab (step a)"
+ "task": "Map spec + Stronghold as JSON prefab at map center (step a)",
+ "date": "2026-10-23",
+ "prefab": "src/stronghold/prefabs/stronghold.json (server copy server/internal/sim/stronghold.json)",
+ "map": "src/world/maps/arkadia-01.json",
+ "derivedDataDump": {"result": "byte-identical before/after", "covers": ["COURT", "environmentSprites (camp + ?buildings=all)", "enclosure HTML", "WORLD", "slots", "groundEdges", "groundAxes", "placement", "walkableGround grid 372x243", "safe zone grid + 50 seeded spawn points", "gate trigger grid", "gateTowerFront 36..135", "navBlocker grid open/closed", "TORCHES"]},
+ "navExport": {"command": "node scripts/export-coop-nav.mjs", "result": "byte-identical before/after", "columns": 2399, "note": "The committed nav.json (2617 columns) was already stale against world-view.ts before this change; not regenerated (world-view.ts is owned by #CEHXB)."},
+ "goTest": "go test ./... pass (TestPrefabMatchesClient, TestPrefabKeepsCourtGeometry, TestPrefabWalkableMatchesHardcoded)",
+ "build": "tsc --noEmit + vite build pass",
+ "mapSpec": {"command": "node scripts/verify-map-prefab.mjs", "sizeTiles": 936, "tilesPerS": 1.5601, "mPerS": 4.68, "centerToEdgeMin": 5.0, "cornerMin": {"topBottom": 5.55, "leftRight": 8.32, "average": 6.93}, "chunks": "39 x 39 of 24 tiles", "strongholdOrigin": [460.5, 460.5], "centerChunk": [19, 19]},
+ "screenshots": {
+  "url": "/?buildings=all&offline=1&time=.5",
+  "desktop": {"size": "1536x1024", "changedPixels": 868, "changedPct": 0.055, "where": "idle-animated hero sprite only"},
+  "phone": {"size": "390x844", "changedPixels": 1918, "changedPct": 0.583, "where": "idle-animated hero sprite and HUD bar shimmer only"}
+ },
+ "verifyScripts": {
+  "verify-gate-joins": "ran clean: gate/world raster density 1.067 on both axes, no page errors",
+  "verify-wall-clearance": "times out waiting for the retired composited-world renderer (stale script, independent of this change)",
+  "verify-modular-stronghold": "times out waiting for the retired .terrain-canvas (stale script, independent of this change)",
+  "verify-environment-corners": "pass: exit 0, no console or page errors (its docs/environment-corners output was restored, not committed)"
+ }
 }

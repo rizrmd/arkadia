@@ -2,6 +2,9 @@ import type {Container} from 'pixi.js';
 import {createCanvasSprite} from '../app/loader';
 import {TORCH_FRAMES,torchAssetsReady} from './torches';
 import {measureTracelogPhase} from './tracelog';
+import {STRONGHOLD} from './prefabs/stronghold';
+// The gateway sprite's slot (prefabs/stronghold.json): left edge, foot line and pivot of the door sheet.
+const SLOT=STRONGHOLD.buildings.gate,LEFT=SLOT.x-SLOT.width/2,FOOT=SLOT.y,PIVOT=SLOT.pivot;
 
 /** The complete gateway plays as one sprite: both towers, arch and synchronized door leaves share one pivot. */
 export type GateSheet={image:string;columns:number;frames:number;frame:{w:number;h:number};fps:number;region:{x:number;y:number;w:number;h:number};torches?:{left:{x:number;y:number;w:number;h:number};right:{x:number;y:number;w:number;h:number}}};
@@ -100,12 +103,12 @@ export function createGateDoors(worldStage:Container,gateway:HTMLImageElement,sh
  }
  paint();
  return {canvas,sprite:gateView.sprite,refreshLighting:paint,
-  hit(x:number,y:number){const u=(x-442)/region.w,v=(y-(798-height*.97))/region.h;if(u<0||v<0||u>=1||v>=1)return false;return c.getImageData(Math.floor(u*canvas.width),Math.floor(v*canvas.height),1,1).data[3]>40;},
+  hit(x:number,y:number){const u=(x-LEFT)/region.w,v=(y-(FOOT-height*PIVOT))/region.h;if(u<0||v<0||u>=1||v>=1)return false;return c.getImageData(Math.floor(u*canvas.width),Math.floor(v*canvas.height),1,1).data[3]>40;},
   order(inside:boolean){if(inside===behind)return;behind=inside;gateView.sprite.zIndex=inside?14:15;},
   setOpen(open:boolean){target=open?meta.frames-1:0;if(index!==target&&!raf)raf=requestAnimationFrame(tick);},
   place(x:number,y:number,scale:number){
    lastScale=scale;
-   const sx=x+(442+region.x)*scale,sy=y+(798-height*.97+region.y)*scale,sw=region.w*scale,sh=region.h*scale;
+   const sx=x+(LEFT+region.x)*scale,sy=y+(FOOT-height*PIVOT+region.y)*scale,sw=region.w*scale,sh=region.h*scale;
    gateView.sprite.position.set(sx,sy);
    gateView.sprite.width=sw;
    gateView.sprite.height=sh;
