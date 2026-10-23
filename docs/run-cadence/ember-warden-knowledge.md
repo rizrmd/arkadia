@@ -1,8 +1,8 @@
-Integrated candidate; local verification passed, deployment and live verification pending. New NE/E/SE Run artwork is integrated into the game atlas and both players. NW/W/SW mirror the corresponding canonical directions. N/S artwork is preserved and re-ordered into the same complete gait sequence.
+Shipped and verified live. New NE/E/SE Run artwork is integrated into the game atlas and both players. NW/W/SW mirror the corresponding canonical directions. N/S artwork is preserved and re-ordered into the same complete gait sequence.
 
 ## Eight-direction Run
 
-![Ember Warden Run source sheet: N, NE, E, SE, S; eight frames per row](/organizations/ORd5dd6f99b4308d6187031557/sandbox/US4f550b10dab65dc9756fa429/files?file=projects%2Farkadia%2Frun-cadence%2Fpublic%2Frun-cadence%2Fember-warden-run.png)
+![Ember Warden Run source sheet: N, NE, E, SE, S; eight frames per row](https://ark-whachat.fural.space/run-cadence/ember-warden-run.png)
 
 ![Ember Warden animated eight-direction preview](https://ark-whachat.fural.space/sprite-player/sheets/ember-warden-run-preview.webp)
 
@@ -40,34 +40,44 @@ Generated with the built-in imagegen tool from the existing character identity r
 
 ### NE
 
-![Ember Warden NE regenerated eight-frame artwork](/organizations/ORd5dd6f99b4308d6187031557/sandbox/US4f550b10dab65dc9756fa429/files?file=projects%2Farkadia%2Frun-cadence%2Fpublic%2Frun-cadence%2Fsource%2Fember-warden-NE.png)
+![Ember Warden NE regenerated eight-frame artwork](https://ark-whachat.fural.space/run-cadence/source/ember-warden-NE.png)
 
-![Ember Warden NE identity reference](/organizations/ORd5dd6f99b4308d6187031557/sandbox/US4f550b10dab65dc9756fa429/files?file=projects%2Farkadia%2Frun-cadence%2Fpublic%2Frun-cadence%2Fsource%2Fember-warden-NE-identity.png)
+![Ember Warden NE identity reference](https://ark-whachat.fural.space/run-cadence/source/ember-warden-NE-identity.png)
 
 ### E
 
-![Ember Warden E regenerated eight-frame artwork](/organizations/ORd5dd6f99b4308d6187031557/sandbox/US4f550b10dab65dc9756fa429/files?file=projects%2Farkadia%2Frun-cadence%2Fpublic%2Frun-cadence%2Fsource%2Fember-warden-E.png)
+![Ember Warden E regenerated eight-frame artwork](https://ark-whachat.fural.space/run-cadence/source/ember-warden-E.png)
 
-![Ember Warden E identity reference](/organizations/ORd5dd6f99b4308d6187031557/sandbox/US4f550b10dab65dc9756fa429/files?file=projects%2Farkadia%2Frun-cadence%2Fpublic%2Frun-cadence%2Fsource%2Fember-warden-E-identity.png)
+![Ember Warden E identity reference](https://ark-whachat.fural.space/run-cadence/source/ember-warden-E-identity.png)
 
 ### SE
 
-![Ember Warden SE regenerated eight-frame artwork](/organizations/ORd5dd6f99b4308d6187031557/sandbox/US4f550b10dab65dc9756fa429/files?file=projects%2Farkadia%2Frun-cadence%2Fpublic%2Frun-cadence%2Fsource%2Fember-warden-SE.png)
+![Ember Warden SE regenerated eight-frame artwork](https://ark-whachat.fural.space/run-cadence/source/ember-warden-SE.png)
 
-![Ember Warden SE identity reference](/organizations/ORd5dd6f99b4308d6187031557/sandbox/US4f550b10dab65dc9756fa429/files?file=projects%2Farkadia%2Frun-cadence%2Fpublic%2Frun-cadence%2Fsource%2Fember-warden-SE-identity.png)
+![Ember Warden SE identity reference](https://ark-whachat.fural.space/run-cadence/source/ember-warden-SE-identity.png)
 
 ## Verification
 
-Local browser checks passed for both heroes in all eight directions: all 64 Sprite Player cells per hero, all eight packed frames per direction in Skill Player and FX Lab, correct mirrored views, preserved Attack mode, and movement direction selection in Stronghold. Live checks are still pending.
+Local browser checks passed for both heroes in all eight directions: all 64 Sprite Player cells per hero, all eight packed frames per direction in Skill Player and FX Lab, correct mirrored views, preserved Attack mode, and movement direction selection in Stronghold. Live browser checks passed for the same full matrix, with zero page errors and byte-identical deployed character atlases.
 
-[Source phase audit](https://ark-whachat.fural.space/run-cadence/audit.json) · [Non-Run preservation proof](https://ark-whachat.fural.space/run-cadence/atlas-proof.json) · [Local verification](https://ark-whachat.fural.space/run-cadence/verification/verification.json)
+[Source phase audit](https://ark-whachat.fural.space/run-cadence/audit.json) · [Non-Run preservation proof](https://ark-whachat.fural.space/run-cadence/atlas-proof.json) · [Local verification](https://ark-whachat.fural.space/run-cadence/verification/verification.json) · [Live verification](https://ark-whachat.fural.space/run-cadence/verification/verification-live.json)
+
+## Runtime evidence
+
+![Synchronized live comparison of both heroes in all eight directions](https://ark-whachat.fural.space/run-cadence/verification/synchronized-live.webp)
+
+![Ember Warden live Stronghold Run](https://ark-whachat.fural.space/run-cadence/verification/ember-warden-runtime-live.webp)
+
+![Ember Warden packed Run in Skill Player](https://ark-whachat.fural.space/run-cadence/verification/ember-warden-skill-live.webp)
 
 ## Earlier generation candidates
 
 These are retained for the image record and are not the integrated artwork. Multi-direction attempts failed the required grid; the first Ember SE pass required transparent-background extraction.
 
-![Ember Warden earlier unapproved candidate ember-sheet-v1](/organizations/ORd5dd6f99b4308d6187031557/sandbox/US4f550b10dab65dc9756fa429/files?file=projects%2Farkadia%2Frun-cadence%2Fpublic%2Frun-cadence%2Fcandidates%2Fember-sheet-v1.png)
+![Ember Warden earlier unapproved candidate ember-before](https://ark-whachat.fural.space/run-cadence/candidates/ember-before.png)
 
-![Ember Warden earlier unapproved candidate ember-multidir-rejected](/organizations/ORd5dd6f99b4308d6187031557/sandbox/US4f550b10dab65dc9756fa429/files?file=projects%2Farkadia%2Frun-cadence%2Fpublic%2Frun-cadence%2Fcandidates%2Fember-multidir-rejected.png)
+![Ember Warden earlier unapproved candidate ember-sheet-v1](https://ark-whachat.fural.space/run-cadence/candidates/ember-sheet-v1.png)
 
-![Ember Warden earlier unapproved candidate ember-SE-before-alpha](/organizations/ORd5dd6f99b4308d6187031557/sandbox/US4f550b10dab65dc9756fa429/files?file=projects%2Farkadia%2Frun-cadence%2Fpublic%2Frun-cadence%2Fcandidates%2Fember-SE-before-alpha.png)
+![Ember Warden earlier unapproved candidate ember-multidir-rejected](https://ark-whachat.fural.space/run-cadence/candidates/ember-multidir-rejected.png)
+
+![Ember Warden earlier unapproved candidate ember-SE-before-alpha](https://ark-whachat.fural.space/run-cadence/candidates/ember-SE-before-alpha.png)

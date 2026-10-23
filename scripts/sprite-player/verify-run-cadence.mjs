@@ -43,7 +43,7 @@ try{
   for(const dir of dirs){
    await page.evaluate(()=>window.__STRONGHOLD_COMBAT__.teleport(8.5,8.5));
    for(const key of keys[dir])await page.keyboard.down(key);
-   await page.waitForTimeout(600);const st=await page.evaluate(()=>({...window.__WORLD_HERO__.dataset}));
+   await page.waitForFunction(dir=>window.__WORLD_HERO__?.dataset.state==='move'&&window.__WORLD_HERO__?.dataset.clip===`move-${dir}`,dir,{timeout:8000});const st=await page.evaluate(()=>({...window.__WORLD_HERO__.dataset}));
    for(const key of keys[dir])await page.keyboard.up(key);await page.waitForTimeout(250);
    assert.equal(st.state,'move',hero+' '+dir+' runtime moving');assert.equal(st.clip,`move-${dir}`,hero+' '+dir+' runtime direction');r.runtime[dir]={clip:st.clip,frame:st.frame};
   }

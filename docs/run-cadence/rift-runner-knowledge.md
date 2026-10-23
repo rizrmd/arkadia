@@ -1,8 +1,8 @@
-Integrated candidate; local verification passed, deployment and live verification pending. New NE/E/SE Run artwork is integrated into the game atlas and both players. NW/W/SW mirror the corresponding canonical directions. N/S artwork is preserved and re-ordered into the same complete gait sequence.
+Shipped and verified live. New NE/E/SE Run artwork is integrated into the game atlas and both players. NW/W/SW mirror the corresponding canonical directions. N/S artwork is preserved and re-ordered into the same complete gait sequence.
 
 ## Eight-direction Run
 
-![Rift Runner Run source sheet: N, NE, E, SE, S; eight frames per row](/organizations/ORd5dd6f99b4308d6187031557/sandbox/US4f550b10dab65dc9756fa429/files?file=projects%2Farkadia%2Frun-cadence%2Fpublic%2Frun-cadence%2Frift-runner-run.png)
+![Rift Runner Run source sheet: N, NE, E, SE, S; eight frames per row](https://ark-whachat.fural.space/run-cadence/rift-runner-run.png)
 
 ![Rift Runner animated eight-direction preview](https://ark-whachat.fural.space/sprite-player/sheets/rift-runner-run-preview.webp)
 
@@ -40,30 +40,40 @@ Generated with the built-in imagegen tool from the existing character identity r
 
 ### NE
 
-![Rift Runner NE regenerated eight-frame artwork](/organizations/ORd5dd6f99b4308d6187031557/sandbox/US4f550b10dab65dc9756fa429/files?file=projects%2Farkadia%2Frun-cadence%2Fpublic%2Frun-cadence%2Fsource%2Frift-runner-NE.png)
+![Rift Runner NE regenerated eight-frame artwork](https://ark-whachat.fural.space/run-cadence/source/rift-runner-NE.png)
 
-![Rift Runner NE identity reference](/organizations/ORd5dd6f99b4308d6187031557/sandbox/US4f550b10dab65dc9756fa429/files?file=projects%2Farkadia%2Frun-cadence%2Fpublic%2Frun-cadence%2Fsource%2Frift-runner-NE-identity.png)
+![Rift Runner NE identity reference](https://ark-whachat.fural.space/run-cadence/source/rift-runner-NE-identity.png)
 
 ### E
 
-![Rift Runner E regenerated eight-frame artwork](/organizations/ORd5dd6f99b4308d6187031557/sandbox/US4f550b10dab65dc9756fa429/files?file=projects%2Farkadia%2Frun-cadence%2Fpublic%2Frun-cadence%2Fsource%2Frift-runner-E.png)
+![Rift Runner E regenerated eight-frame artwork](https://ark-whachat.fural.space/run-cadence/source/rift-runner-E.png)
 
-![Rift Runner E identity reference](/organizations/ORd5dd6f99b4308d6187031557/sandbox/US4f550b10dab65dc9756fa429/files?file=projects%2Farkadia%2Frun-cadence%2Fpublic%2Frun-cadence%2Fsource%2Frift-runner-E-identity.png)
+![Rift Runner E identity reference](https://ark-whachat.fural.space/run-cadence/source/rift-runner-E-identity.png)
 
 ### SE
 
-![Rift Runner SE regenerated eight-frame artwork](/organizations/ORd5dd6f99b4308d6187031557/sandbox/US4f550b10dab65dc9756fa429/files?file=projects%2Farkadia%2Frun-cadence%2Fpublic%2Frun-cadence%2Fsource%2Frift-runner-SE.png)
+![Rift Runner SE regenerated eight-frame artwork](https://ark-whachat.fural.space/run-cadence/source/rift-runner-SE.png)
 
-![Rift Runner SE identity reference](/organizations/ORd5dd6f99b4308d6187031557/sandbox/US4f550b10dab65dc9756fa429/files?file=projects%2Farkadia%2Frun-cadence%2Fpublic%2Frun-cadence%2Fsource%2Frift-runner-SE-identity.png)
+![Rift Runner SE identity reference](https://ark-whachat.fural.space/run-cadence/source/rift-runner-SE-identity.png)
 
 ## Verification
 
-Local browser checks passed for both heroes in all eight directions: all 64 Sprite Player cells per hero, all eight packed frames per direction in Skill Player and FX Lab, correct mirrored views, preserved Attack mode, and movement direction selection in Stronghold. Live checks are still pending.
+Local browser checks passed for both heroes in all eight directions: all 64 Sprite Player cells per hero, all eight packed frames per direction in Skill Player and FX Lab, correct mirrored views, preserved Attack mode, and movement direction selection in Stronghold. Live browser checks passed for the same full matrix, with zero page errors and byte-identical deployed character atlases.
 
-[Source phase audit](https://ark-whachat.fural.space/run-cadence/audit.json) · [Non-Run preservation proof](https://ark-whachat.fural.space/run-cadence/atlas-proof.json) · [Local verification](https://ark-whachat.fural.space/run-cadence/verification/verification.json)
+[Source phase audit](https://ark-whachat.fural.space/run-cadence/audit.json) · [Non-Run preservation proof](https://ark-whachat.fural.space/run-cadence/atlas-proof.json) · [Local verification](https://ark-whachat.fural.space/run-cadence/verification/verification.json) · [Live verification](https://ark-whachat.fural.space/run-cadence/verification/verification-live.json)
+
+## Runtime evidence
+
+![Synchronized live comparison of both heroes in all eight directions](https://ark-whachat.fural.space/run-cadence/verification/synchronized-live.webp)
+
+![Rift Runner live Stronghold Run](https://ark-whachat.fural.space/run-cadence/verification/rift-runner-runtime-live.webp)
+
+![Rift Runner packed Run in Skill Player](https://ark-whachat.fural.space/run-cadence/verification/rift-runner-skill-live.webp)
 
 ## Earlier generation candidates
 
 These are retained for the image record and are not the integrated artwork. Multi-direction attempts failed the required grid; the first Ember SE pass required transparent-background extraction.
 
-![Rift Runner earlier unapproved candidate rift-multidir-rejected](/organizations/ORd5dd6f99b4308d6187031557/sandbox/US4f550b10dab65dc9756fa429/files?file=projects%2Farkadia%2Frun-cadence%2Fpublic%2Frun-cadence%2Fcandidates%2Frift-multidir-rejected.png)
+![Rift Runner earlier unapproved candidate rift-before](https://ark-whachat.fural.space/run-cadence/candidates/rift-before.png)
+
+![Rift Runner earlier unapproved candidate rift-multidir-rejected](https://ark-whachat.fural.space/run-cadence/candidates/rift-multidir-rejected.png)
