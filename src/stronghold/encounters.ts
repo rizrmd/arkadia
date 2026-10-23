@@ -107,7 +107,7 @@ export async function createEncounters(o:{
    time:'06:27',
    zone:'Safe Zone',
    xp:0,
-   xpMax:20,
+   xpMax:thresholdForLevel(1),
    coopLabel:o.showCoop?'Co-op':undefined,
    skills:[
     {name:'Flame Fan',level:1,art:'skill-flame-fan',stateLabel:'Auto'},

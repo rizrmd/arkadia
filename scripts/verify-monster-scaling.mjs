@@ -72,11 +72,11 @@ try{
  },wildTile);
 
  assert.equal(lv1Check.expBar.level,1,'Hero starts at Level 1');
- assert.equal(lv1Check.expBar.nextXp,20,'Level 1 -> 2 requires 20 XP');
+ assert.equal(lv1Check.expBar.nextXp,100,'Level 1 -> 2 requires 100 XP (10 Lv. 1 kills)');
  assert.deepEqual(
   lv1Check.xpCurve.map(x=>x.nextXp),
-  [20,35,55,80,110,145],
-  'Progressive XP curve matches 20, 35 (+15), 55 (+20), 80 (+25), 110 (+30), 145 (+35)'
+  [100,280,540,880,1300,1800],
+  'Proportional XP curve matches 100, 280, 540, 880, 1300, 1800 (10, 20, 30, 40, 50, 60 same-level kills)'
  );
  assert.ok(lv1Check.visibleBars.length>=2,'Overhead Revenant health bars are visible on living Revenants');
  assert.ok(lv1Check.visibleBars.every(b=>b.badgeText==='Lv. 1'&&b.level===1&&b.maxHp===2),'Level 1 Revenants render Lv. 1 badge and MaxHP=2');
@@ -119,9 +119,9 @@ try{
  },wildTile);
 
  assert.equal(lv4Check.expBar.level,4,'Hero is now Level 4');
- assert.equal(lv4Check.expBar.nextXp,80,'Level 4 -> 5 requires 80 XP on progressive curve');
+ assert.equal(lv4Check.expBar.nextXp,880,'Level 4 -> 5 requires 880 XP (40 Lv. 4 kills) on proportional curve');
  assert.equal(lv4Check.hudLv,'Lv. 4');
- assert.ok(lv4Check.hudXp?.includes('/ 80 XP'),`HUD XP text shows / 80 XP (got ${lv4Check.hudXp})`);
+ assert.ok(lv4Check.hudXp?.includes('/ 880 XP'),`HUD XP text shows / 880 XP (got ${lv4Check.hudXp})`);
  assert.ok(lv4Check.foes.every(f=>f.level===4&&f.maxHp===5&&f.damage===7&&f.xpReward===22&&f.label==='Lv. 4'),'All Revenants scaled to Lv. 4 (MaxHP=5, Damage=7, XP=22)');
  assert.ok(lv4Check.visibleBars.length>=2,'Multiple Lv. 4 Revenant overhead bars visible');
  assert.ok(lv4Check.visibleBars.every(b=>b.badgeText==='Lv. 4'&&b.level===4&&b.maxHp===5),'Every visible overhead bar renders Lv. 4 badge');

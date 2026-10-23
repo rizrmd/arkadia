@@ -53,7 +53,7 @@ try{
  });
  assert.ok(spot.iKill>=0&&spot.iNorm>=0&&spot.iCrit>=0,'summoned test revenants');
 
- // Defeat 1st revenant to advance HUD EXP bar to 10 / 20 XP (50%) at Lv. 1
+ // Defeat 1st revenant to advance HUD EXP bar to 10 / 100 XP (10%) at Lv. 1
  await page.evaluate(({iKill})=>{
   const c=window.__STRONGHOLD_COMBAT__;
   c.hitFoe(iKill,true);
@@ -75,8 +75,8 @@ try{
  assert.equal(combatCheck.hitCrit.crit,true,'crit hit flagged crit');
  assert.equal(combatCheck.snap.expBar.level,1);
  assert.equal(combatCheck.snap.expBar.xp,10);
- assert.equal(combatCheck.snap.expBar.nextXp,20);
- assert.equal(combatCheck.snap.expBar.percent,50);
+ assert.equal(combatCheck.snap.expBar.nextXp,100);
+ assert.equal(combatCheck.snap.expBar.percent,10);
  assert.equal(combatCheck.snap.loadout.slots.length,3,'combat skills bar rendered 3 auto-cast skill slots');
  assert.ok(combatCheck.snap.vfx.activeFloats.length>=2,'active floating damage numbers present');
  assert.ok(combatCheck.snap.vfx.activeFloats.every(f=>f.frameless===true),'all floating damage/crit texts render without bubble/frame');
