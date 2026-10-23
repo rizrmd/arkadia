@@ -10,7 +10,7 @@ try {
  if(server)await new Promise((resolve,reject)=>{server.stdout.on('data',d=>{if(String(d).includes('8796'))resolve();});server.on('exit',reject);});
  console.log('Preview ready; launching browser');
  browser=await chromium.launch(launchOptions());
- const page=await browser.newPage({viewport:{width:1440,height:900},deviceScaleFactor:3});
+ const page=await browser.newPage({viewport:{width:1440,height:900},deviceScaleFactor:Number(process.env.VERIFY_DPR||1)});
  const errors=[];page.on('pageerror',e=>errors.push(e.message));
  page.on('console',m=>{if(m.type()==='error')console.error(m.text());});
  console.log('Opening game');

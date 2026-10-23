@@ -1,19 +1,9 @@
-## Reference and implementation review
+## Replaced after visual feedback
 
-The implementation was pushed in commit `7556abf`. The human confirmed deployment succeeded. Production build and local browser state checks passed, but visual acceptance is **not complete**.
+The earlier version used simple vector inlays, lighter text and an opaque portrait overlay. It has been replaced in commit c059f04 with generated painted portrait/bezel assets, organic raster meter materials and a separate EB Garamond Bold MSDF font.
 
-### Requested reference
+The revised console has been deployed successfully. Local and live browser verification passed for both heroes, desktop, mobile portrait, landscape and resizing, with empty, partial, full and over-maximum values. Both portraits are visible. All 17 live production console assets match the build after lossless WebP decoding; font definitions match exactly.
 
-![Requested portrait and status bars](/organizations/ORd5dd6f99b4308d6187031557/sandbox/US4f550b10dab65dc9756fa429/files?file=projects%2Farkadia%2Frepos%2Farkadia%2Fdocs%2Fplayer-console%2Freference.png)
+The first post-deploy browser visit encountered transient font 404s. Subsequent direct URL checks and the complete live browser run passed. The final live-asset-audit.json and live-verification.json record current evidence.
 
-### Reported deployed result
-
-![Human-reported deployed result with empty portrait](/organizations/ORd5dd6f99b4308d6187031557/sandbox/US4f550b10dab65dc9756fa429/files?file=projects%2Farkadia%2Frepos%2Farkadia%2Fdocs%2Fplayer-console%2Freported-result.png)
-
-The current implementation redraws the meters using Pixi vectors and simple geometric inlays. This differs from the reference’s painted stone/crystal textures, border detail and proportions. The human also reported an empty portrait. A local layer-order correction renders the existing portrait successfully, but the deployed result still requires verification. Do not treat build success as visual acceptance.
-
-### Locally verified result
-
-![Local desktop verification](/organizations/ORd5dd6f99b4308d6187031557/sandbox/US4f550b10dab65dc9756fa429/files?file=projects%2Farkadia%2Frepos%2Farkadia%2Fdocs%2Fplayer-console%2Fdesktop.png)
-
-Next acceptance work: reproduce the reference artwork more faithfully, verify the portrait in the deployed bundle, and compare desktop and mobile output directly with the supplied reference. Deployment is confirmed by the human; the CLI ship call timed out without output.
+The artwork follows the reference’s composition, color and materials; it is generated production art rather than a pixel extraction. The supplied reference, reported earlier result, generated asset masters, and current screenshots are included in the published Knowledge preview.
