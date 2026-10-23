@@ -35,6 +35,10 @@ try{
   const h=await page.evaluate(()=>window.__STRONGHOLD_COMBAT__.snapshot().hero);report.traversal.push({name,from,to:[h.u,h.v]});
   if(name==='ascent'&&!(h.v<10&&h.v>5))throw Error('Live ascent failed');if(name==='descent'&&h.v<13)throw Error('Live descent failed');if(name==='cliff-block'&&(h.u<27.7||h.u>28.05))throw Error('Live cliff failed');console.log(name,h.u,h.v);
  }
+ await page.goto(base+'/?buildings=all&offline=1&hero=ember-warden&time=.79&terrainRelease='+release);
+ await page.waitForFunction(()=>document.querySelector('#world-canvas')?.dataset.ready==='true'&&!document.getElementById('loading-screen')&&window.__STRONGHOLD_COMBAT__,null,{timeout:180000});
+ await page.evaluate(()=>{const a=window.__STRONGHOLD_COMBAT__;a.setPreviewMode(true);a.clearFoes();a.teleport(25.5,7.2);});await page.waitForTimeout(2500);
+ await page.screenshot({path:out+'/phone-dusk.png'});await sharp(out+'/phone-dusk.png').webp({quality:86}).toFile(out+'/phone-dusk.webp');report.shots.push({name:'phone-dusk',court:[25.5,7.2],viewport:[390,844],dpr:2,time:.79});
  report.loadedBundle=await page.evaluate(path=>performance.getEntriesByType('resource').some(r=>r.name.includes(path)),bundlePath);if(!report.loadedBundle)throw Error('Browser loaded a different main bundle');
  if(report.errors.length)throw Error(report.errors.join('\n'));
  await fs.writeFile(out+'/verification.json',JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify(report));

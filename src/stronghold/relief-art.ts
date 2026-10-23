@@ -115,5 +115,11 @@ export function paintReliefShadow(f:ReliefFeature,dx:number,dy:number,canvas:HTM
   ring.forEach(([x,y],i)=>i?c.lineTo(x,y):c.moveTo(x,y));c.closePath();
  }
  c.fill();
+ if(f.outline){
+  // The ground shadow belongs outside the solid hill. Keeping it under the footprint leaks a dark
+  // polygon through the feathered zero-height ramp mouth.
+  c.filter='none';c.globalCompositeOperation='destination-out';c.beginPath();
+  boundary.forEach((p,i)=>i?c.lineTo(p.g.x,p.g.y):c.moveTo(p.g.x,p.g.y));c.closePath();c.fill();
+ }
  return {left,top,width,height};
 }
