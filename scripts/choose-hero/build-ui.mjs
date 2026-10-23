@@ -70,12 +70,12 @@ for(const [name,[W,H]] of Object.entries(FIXED)){
 // hero crop (lowered, see DROP), dark lower fade, rounded window. The kit fits its 320 × 400 frame into that card (contain), so the
 // strip the frame leaves above and below is cropped and the result matches the 324 × 396 frame exactly.
 const svg=(w,h,body)=>Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 320 400" preserveAspectRatio="none">${body}</svg>`);
-for(const [id,color] of [['ember-warden','#962509'],['rift-runner','#07516d']]){
- const S=3,W=320*S,H=400*S;
+for(const [id,color,k,drop,dx] of [['ember-warden','#962509',.88,46,8],['rift-runner','#07516d',1.12,44,0]]){
+ const S=3,W=320*S,H=400*S,rw=Math.round(440*S*k),rh=Math.round(660*S*k),left=Math.round((rw-W)/2+dx*S),cropH=Math.min(rh,H-drop*S);
  const bg=svg(W,H,`<defs><radialGradient id="g"><stop stop-color="${color}"/><stop offset="1" stop-color="#050607"/></radialGradient></defs><rect width="320" height="400" fill="url(#g)"/>`);
  // The kit crops the figure flush with the card top, which cuts the hair under the frame's top rail and crest: the
- // figure starts DROP card pixels lower so the head sits inside the window.
- const DROP=46,hero=await sharp(`${KIT}heroes/${id}.png`).resize(440*S,660*S,{fit:'fill',kernel:'lanczos3'}).extract({left:60*S,top:0,width:W,height:H-DROP*S}).extend({top:DROP*S,background:'#00000000'}).png().toBuffer();
+ // figure starts drop card pixels lower and scales per hero (k) so both heads and shoulders match inside the card window.
+ const hero=await sharp(`${KIT}heroes/${id}.png`).resize(rw,rh,{fit:'fill',kernel:'lanczos3'}).extract({left,top:0,width:W,height:cropH}).extend({top:drop*S,bottom:Math.max(0,H-drop*S-cropH),background:'#00000000'}).png().toBuffer();
  const shade=svg(W,H,'<defs><linearGradient id="s" x2="0" y2="1"><stop offset="0.62" stop-color="#000" stop-opacity="0"/><stop offset="0.9" stop-color="#000" stop-opacity="0.95"/></linearGradient></defs><rect width="320" height="400" fill="url(#s)"/>');
  const window=svg(W,H,'<rect x="19" y="25" width="282" height="348" rx="10" fill="white"/>');
  const card=await sharp(bg).composite([{input:hero},{input:shade},{input:window,blend:'dest-in'}]).png().toBuffer();

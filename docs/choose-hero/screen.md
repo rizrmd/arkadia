@@ -18,69 +18,69 @@ The references are the four Choosing Hero originals. Desktop is compared at 1672
 
 Desktop 1672 × 941 · DPR 1 · Ember Warden · 1672 × 941 device px · desktop layout, frames @1x. The reference is scaled to the same size.
 
-![Desktop, Ember Warden: reference and result side by side](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DAbaf0f38f4f4488ef170e1095)
+![Desktop, Ember Warden: reference and result side by side](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DA519086d72f9916ff4039a909)
 
-![Desktop, Ember Warden: result with the reference overlaid at 50 %](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DAebc724d31dcddd931d9b5228)
+![Desktop, Ember Warden: result with the reference overlaid at 50 %](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DAcf7b643c0e6222d4f4e8bdff)
 
 ### Desktop, Rift Runner
 
 Desktop 1672 × 941 · DPR 1 · Rift Runner · 1672 × 941 device px · desktop layout, frames @1x. The reference is scaled to the same size.
 
-![Desktop, Rift Runner: reference and result side by side](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DA92a53f96d3698eb19c129f79)
+![Desktop, Rift Runner: reference and result side by side](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DA459591692c0aaf2a8c421533)
 
-![Desktop, Rift Runner: result with the reference overlaid at 50 %](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DAc2c0a261b274f81f5b679fc9)
+![Desktop, Rift Runner: result with the reference overlaid at 50 %](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DAd034ba44e7f7f1ec5dba788c)
 
 ### Mobile, Ember Warden
 
 Mobile 432 × 912 CSS px · DPR 2 · Ember Warden · 864 × 1824 device px · portrait layout, frames @1x. The reference is scaled to the same size.
 
-![Mobile, Ember Warden: reference and result side by side](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DAf7d424662cb3d43a48605b95)
+![Mobile, Ember Warden: reference and result side by side](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DA788a59be42ade55344285828)
 
-![Mobile, Ember Warden: result with the reference overlaid at 50 %](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DA9a60159e44edb11fca7b9c37)
+![Mobile, Ember Warden: result with the reference overlaid at 50 %](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DA7888ff752d027161c6e699f8)
 
 ### Mobile, Rift Runner
 
 Mobile 432 × 912 CSS px · DPR 2 · Rift Runner · 864 × 1824 device px · portrait layout, frames @1x. The reference is scaled to the same size.
 
-![Mobile, Rift Runner: reference and result side by side](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DAf4d9f6072cda78076217f42e)
+![Mobile, Rift Runner: reference and result side by side](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DA121e2ffd24cbfce6f7eee8e5)
 
-![Mobile, Rift Runner: result with the reference overlaid at 50 %](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DA92ca853a4ff2949c3c83d366)
+![Mobile, Rift Runner: result with the reference overlaid at 50 %](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DA7c70bed308dd48569d5af607)
 
 ## Layouts and live resize
 
 Three compositions, chosen from the viewport and rebuilt on resize without reloading: **desktop** (1672 × 941 design canvas), **portrait** (864 × 1824, below a 0.85 width/height ratio: phones and upright tablets) and **landscape** (1240 × 600, landscape phones under 560 CSS px tall). The stage scales uniformly and centres; the castle background covers the viewport. Landscape keeps text near 14 CSS px on an 844 × 390 phone, where the desktop composition would shrink body text to 9 px. Hit targets stay at least 44 CSS px (portrait Back: 110 design px × 0.45).
 
-![Desktop 1440 × 900 · DPR 2 · Ember Warden](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DA06cddb5bcff4c61d8b8d7e44)
+![Desktop 1440 × 900 · DPR 2 · Ember Warden](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DAbd91a2839a62def317a03f0d)
 
 Desktop 1440 × 900 · DPR 2 · Ember Warden · desktop layout · stage scale 0.8612 · frames @2x
 
-![Desktop 1280 × 720 · DPR 1 · Rift Runner](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DA6cdafaa996b3dfe462f0512c)
+![Desktop 1280 × 720 · DPR 1 · Rift Runner](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DA0023bca758b5ddb51c3b3f27)
 
 Desktop 1280 × 720 · DPR 1 · Rift Runner · desktop layout · stage scale 0.7651 · frames @1x
 
-![Phone portrait 390 × 844 · DPR 3 · Ember Warden](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DAc168101a4ccbf5f9be310e03)
+![Phone portrait 390 × 844 · DPR 3 · Ember Warden](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DA6f3c3e2daa46acd82b42a818)
 
 Phone portrait 390 × 844 · DPR 3 · Ember Warden · portrait layout · stage scale 0.4514 · frames @2x
 
-![Phone portrait 412 × 915 · DPR 2.625 · Rift Runner](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DAc51af6f8ef1a5c5e899241e6)
+![Phone portrait 412 × 915 · DPR 2.625 · Rift Runner](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DA6d440b780dbbf4eef18dcbc2)
 
 Phone portrait 412 × 915 · DPR 2.625 · Rift Runner · portrait layout · stage scale 0.4769 · frames @2x
 
-![Phone landscape 844 × 390 · DPR 3 · Ember Warden](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DA0aef933fc521408bf4eeee9a)
+![Phone landscape 844 × 390 · DPR 3 · Ember Warden](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DA70b4e76bd237f7d853a7ab8d)
 
 Phone landscape 844 × 390 · DPR 3 · Ember Warden · landscape layout · stage scale 0.65 · frames @2x
 
-![Phone landscape 915 × 412 · DPR 2.625 · Rift Runner](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DA46d861331869c33342659ccc)
+![Phone landscape 915 × 412 · DPR 2.625 · Rift Runner](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DA233997ba772fbb4e593c11dd)
 
 Phone landscape 915 × 412 · DPR 2.625 · Rift Runner · landscape layout · stage scale 0.6867 · frames @2x
 
-![Tablet portrait 820 × 1180 · DPR 2 · Rift Runner](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DAaff099b41144b963f49a35af)
+![Tablet portrait 820 × 1180 · DPR 2 · Rift Runner](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DA6ec221dd7cd210afc6ed0f09)
 
 Tablet portrait 820 × 1180 · DPR 2 · Rift Runner · portrait layout · stage scale 0.6469 · frames @2x
 
 One page resized from phone portrait to landscape to desktop:
 
-![Live resize: 390 × 844 portrait, 844 × 390 landscape, 1280 × 720 desktop](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DA22c775ab6be54b8e5d3a44da)
+![Live resize: 390 × 844 portrait, 844 × 390 landscape, 1280 × 720 desktop](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DA7425e3d02dcf4cc1a4e06c35)
 
 ## Frames: split 9-slices at @1x/@2x/@3x
 
@@ -177,7 +177,7 @@ No console or page errors on any capture page (all shots, comparisons, highlight
 ## Known differences from the references
 
 - The art is the kit's own (castle, hero figures, portraits, frames), so figures, portraits and ornaments differ from the reference paintings. The kit frames' ornaments are heavier, so frame boxes are set so the rails, not the ornament tips, land on the reference rails.
-- The kit fitted Rift Runner's wider master into its canvas at about 0.86× Ember's scale; the screen scales his figure by 750/640 so both heroes stand at the reference size. Card portraits are lowered so the hair is not cut under the top rail.
+- The kit's Ember Warden master has a ~1.27× larger head/face scale than Rift Runner's wider master. Both the main standing figures (`ART_SCALE`: `0.95` for Ember Warden, `1.21` for Rift Runner) and the card portraits (`0.88×` for Ember Warden, `1.12×` for Rift Runner in `build-ui.mjs`) are scaled so both heroes have matching head, face, and shoulder proportions.
 - Both Ember Warden and Rift Runner now use the full portrait detail panel (hero name, description, `LOADOUT` subheader, skill slots, and automatic-cast help line), replacing the earlier compact `LOADOUT`-only header on Ember Warden:
 
   ![Reported issue: Ember Warden mobile previously showed LOADOUT instead of hero name and description](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DA8bff8d4e014f2a4afd286448) ![Target mobile layout reference: Rift Runner displaying hero name, description, LOADOUT and help line](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DAf9020ce478cae6481a4a17c4)

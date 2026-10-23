@@ -10,7 +10,7 @@ fs.mkdirSync(`${root}/cards`,{recursive:true});
 const heroes=[{id:'ember-warden',name:'Ember Warden',skill:'Flame Fan',desc:'Wield flame to strike nearby foes.',color:'#962509',icon:'skill-flame-fan'},{id:'rift-runner',name:'Rift Runner',skill:'Rift Bolt',desc:'Strike enemies with rift energy.',color:'#07516d',icon:'skill-rift-bolt'}];
 for(const h of heroes){
  const bg=svg(320,400,`<defs><radialGradient id="g"><stop stop-color="${h.color}"/><stop offset="1" stop-color="#050607"/></radialGradient></defs><rect width="320" height="400" fill="url(#g)"/>`);
- const hero=await sharp(lookup[h.id]).resize(440,660,{fit:'fill'}).extract({left:60,top:0,width:320,height:400}).png().toBuffer();
+ const k=h.id==='ember-warden'?.88:1.12,rw=Math.round(440*k),rh=Math.round(660*k),left=Math.round((rw-320)/2+(h.id==='ember-warden'?8:0)),hero=await sharp(lookup[h.id]).resize(rw,rh,{fit:'fill'}).extract({left,top:0,width:320,height:400}).png().toBuffer();
  const shade=svg(320,400,'<defs><linearGradient id="s" x2="0" y2="1"><stop offset="0.62" stop-color="#000" stop-opacity="0"/><stop offset="0.9" stop-color="#000" stop-opacity="0.95"/></linearGradient></defs><rect width="320" height="400" fill="url(#s)"/>');
  const portrait=`${root}/cards/${h.id}-portrait.png`;
  await sharp(bg).composite([{input:hero},{input:shade},{input:svg(320,400,'<rect x="19" y="25" width="282" height="348" rx="10" fill="white"/>'),blend:'dest-in'}]).png().toFile(portrait);

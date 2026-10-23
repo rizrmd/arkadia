@@ -19,7 +19,7 @@ export const HEROES:HeroId[]=['ember-warden','rift-runner'];
 const SKILL_ICON:Record<HeroId,string>={'ember-warden':'skill-flame-fan','rift-runner':'skill-rift-bolt'};
 // The kit fitted Rift's wider 1145 × 1374 master into the 1024 × 1536 canvas, so his figure draws smaller than Ember's
 // (hair top to belt: 640 vs 750 px). The references show both at one size, so his art scales up about its top centre.
-const ART_SCALE:Record<HeroId,number>={'ember-warden':1,'rift-runner':750/640};
+const ART_SCALE:Record<HeroId,number>={'ember-warden':.95,'rift-runner':1.21};
 interface Labels{title:string;subtitle:string;back:string;loadout:string;journey:string;selected:string;empty:string;level:string;automatic:string;blessings:string;heroes:Record<HeroId,{name:string;description:string;skill:string}>}
 // Cinzel's lower case is small caps: title case gives the reference's tall initials (EMBER WARDEN, BEGIN JOURNEY).
 const titleCase=(s:string)=>s.toLowerCase().replace(/\b\w/g,c=>c.toUpperCase());

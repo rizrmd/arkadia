@@ -26,7 +26,7 @@ async function openOnce({width,height,dpr=1,touch=false,hero='ember-warden'},fn)
  const browser=await chromium.launch(launchOptions());
  try{
   const ctx=await browser.newContext({viewport:{width,height},deviceScaleFactor:dpr,isMobile:touch,hasTouch:touch});
-  const page=await ctx.newPage(),errors=[];let navigations=0;
+  const page=await ctx.newPage(),errors=[];let navigations=0;await page.route('**/api/tracelogs',r=>r.fulfill({status:204,body:''}));
   page.on('framenavigated',f=>{if(f===page.mainFrame())navigations++;});
   page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
   await page.goto(`http://127.0.0.1:${PORT}/?offline=1&pick=1&time=0.35`);

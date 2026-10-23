@@ -143,7 +143,7 @@ ${E.consoleErrors.length?`Console errors: ${E.consoleErrors.join('; ')}`:'No con
 ## Known differences from the references
 
 - The art is the kit's own (castle, hero figures, portraits, frames), so figures, portraits and ornaments differ from the reference paintings. The kit frames' ornaments are heavier, so frame boxes are set so the rails, not the ornament tips, land on the reference rails.
-- The kit fitted Rift Runner's wider master into its canvas at about 0.86× Ember's scale; the screen scales his figure by 750/640 so both heroes stand at the reference size. Card portraits are lowered so the hair is not cut under the top rail.
+- The kit's Ember Warden master has a ~1.27× larger head/face scale than Rift Runner's wider master. Both the main standing figures (\`ART_SCALE\`: \`0.95\` for Ember Warden, \`1.21\` for Rift Runner) and the card portraits (\`0.88×\` for Ember Warden, \`1.12×\` for Rift Runner in \`build-ui.mjs\`) are scaled so both heroes have matching head, face, and shoulder proportions.
 - Both Ember Warden and Rift Runner now use the full portrait detail panel (hero name, description, \`LOADOUT\` subheader, skill slots, and automatic-cast help line), replacing the earlier compact \`LOADOUT\`-only header on Ember Warden:
 
   ${img('task-attachment-ember-before.jpg','Reported issue: Ember Warden mobile previously showed LOADOUT instead of hero name and description')} ${img('task-attachment-rift-reference.jpg','Target mobile layout reference: Rift Runner displaying hero name, description, LOADOUT and help line')}
