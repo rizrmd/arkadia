@@ -81,7 +81,7 @@ var maxDisplayWidths = map[string]int{
 	"/modular-stronghold/barrel.png":                 256,
 }
 
-const cacheSchemaVersion = "v2"
+const cacheSchemaVersion = "v3"
 
 // webpCacheDir returns the directory where converted WebP files are persisted.
 func (s *Server) webpCacheDir() string {
@@ -105,6 +105,9 @@ func acceptsWebP(r *http.Request) bool {
 	if r.URL.Query().Get("format") == "png" || r.URL.Query().Get("raw") == "1" {
 		return false
 	}
+	if strings.Contains(r.URL.Path, "/fonts/") {
+		return false
+	}
 	accept := r.Header.Get("Accept")
 	if accept == "" {
 		return true
@@ -116,19 +119,28 @@ func acceptsWebP(r *http.Request) bool {
 
 // cleanTransparentNRGBA converts an image to NRGBA and zeroes out RGB values where
 // Alpha == 0. Removing invisible RGB noise under transparent pixels preserves 100%
-// bit-exact visual output while substantially improving lossless VP8L compression.
+// bit-exact visual output for regular sprites while substantially improving lossless
+// VP8L compression.
 func cleanTransparentNRGBA(src image.Image) *image.NRGBA {
+	return toNRGBA(src, false)
+}
+
+func toNRGBA(src image.Image, preserveRGBUnderZeroAlpha bool) *image.NRGBA {
 	b := src.Bounds()
 	w, h := b.Dx(), b.Dy()
 	if nrgba, ok := src.(*image.NRGBA); ok && b.Min.X == 0 && b.Min.Y == 0 && nrgba.Stride == w*4 {
 		clone := image.NewNRGBA(image.Rect(0, 0, w, h))
 		copy(clone.Pix, nrgba.Pix)
-		zeroTransparentPixels(clone.Pix)
+		if !preserveRGBUnderZeroAlpha {
+			zeroTransparentPixels(clone.Pix)
+		}
 		return clone
 	}
 	dst := image.NewNRGBA(image.Rect(0, 0, w, h))
 	draw.Draw(dst, dst.Bounds(), src, b.Min, draw.Src)
-	zeroTransparentPixels(dst.Pix)
+	if !preserveRGBUnderZeroAlpha {
+		zeroTransparentPixels(dst.Pix)
+	}
 	return dst
 }
 
@@ -176,7 +188,10 @@ func ConvertPNGToWebP(cleanURLPath, pngFile, cacheFile string, srcModTime time.T
 		return 0, err
 	}
 
-	nrgba := cleanTransparentNRGBA(img)
+	// MSDF font atlases (/fonts/) encode signed distance fields in R, G, B even when alpha is 0.
+	// Never strip RGB under alpha=0 or convert MSDF font atlases to WebP because WebP lossless
+	// predictors can alter RGB under zero alpha; serve raw PNG for MSDF font atlases.
+	nrgba := toNRGBA(img, strings.Contains(cleanURLPath, "/fonts/"))
 	if maxW, ok := maxDisplayWidths[cleanURLPath]; ok && nrgba.Bounds().Dx() > maxW {
 		nrgba = scaleCatmullRomNRGBA(nrgba, maxW)
 	}

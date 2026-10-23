@@ -1,4 +1,4 @@
-import {Container,Graphics} from 'pixi.js';
+import {Container} from 'pixi.js';
 import {MsdfText} from '../typography/text';
 import {tilePoint} from './terrain';
 import {rollHit,reach,skillRank,skillDamageMultiplier,skillAreaMultiplier,skillCooldownMs,type Progression} from './progression';
@@ -112,11 +112,11 @@ export function createCombatVfx(o:{
  // Live counts for automated verification (scripts read snapshot()).
  const vfxStats:Record<string,string>={};
 
- // Pixi MSDF floating combat text & banner layer
+ // Pixi MSDF floating combat text & banner layer (frameless / bubble-free)
  const floatsLayer=new Container();
  floatsLayer.zIndex=45;
  o.layer.addChild(floatsLayer);
- type FloatView={root:Container;badge:Graphics;main:MsdfText;sub?:MsdfText;kind:FloatKind;text:string;subtext?:string};
+ type FloatView={root:Container;main:MsdfText;sub?:MsdfText;kind:FloatKind;text:string;subtext?:string};
  const floatViews=new Map<number,FloatView>();
 
  let nextId=1,origin={x:0,y:0,scale:1};
@@ -532,48 +532,32 @@ export function createCombatVfx(o:{
   fx.frame(fxDtMs/1000);fxDtMs=0;
   const k=origin.scale;
 
-  // MSDF Floating Combat Text & Level-Up / Trinity Combo Banner
+  // MSDF Floating Combat Text & Level-Up / Trinity Combo Text (frameless, no bubble/badge)
   const activeFloatIds=new Set<number>();
   for(const fl of floats){
    activeFloatIds.add(fl.id);
    let fv=floatViews.get(fl.id);
    if(!fv){
     const root=floatsLayer.addChild(new Container());
-    const badge=root.addChild(new Graphics());
-    if(fl.kind==='crit'){
-     const drawStar=(rx:number,ry:number,pts:number,color:number)=>{
-      const poly:number[]=[];
-      for(let i=0;i<pts*2;i++){
-       const a=(i*Math.PI)/pts-Math.PI/2;
-       const r=i%2===0?1:(i%4===1?.56:.68);
-       poly.push(Math.cos(a)*rx*r,Math.sin(a)*ry*r);
-      }
-      badge.poly(poly,true).fill({color,alpha:0.95}).stroke({color:0x240404,width:2});
-     };
-     drawStar(44,26,12,0xd61f1f);
-     drawStar(34,19,12,0xff9f1c);
-    }else if(fl.kind==='banner'){
-     const hasSub=Boolean(fl.subtext);
-     const bw=hasSub?Math.max(190,Math.min(280,(fl.subtext?.length??0)*6.2+34)):154;
-     const bh=hasSub?44:34;
-     badge.roundRect(-bw/2,-bh/2,bw,bh,8).fill({color:0x140d07,alpha:0.92}).stroke({color:0xe2bd72,width:2});
-    }
     const role=fl.kind==='crit'?'combat-crit':fl.kind==='banner'?'combat-banner':fl.kind==='incoming'?'combat-incoming':fl.kind==='heal'?'combat-heal':'combat-hit';
-    const main=root.addChild(new MsdfText(role,fl.text,fl.kind==='banner'?{size:18}:{size:fl.kind==='crit'?24:18}));
+    const main=root.addChild(new MsdfText(role,fl.text,fl.kind==='banner'?{size:20}:{size:fl.kind==='crit'?26:19}));
     let sub:MsdfText|undefined;
     if(fl.subtext){
      sub=root.addChild(new MsdfText(fl.kind==='crit'?'combat-crit-label':'combat-banner-sub',fl.subtext,fl.kind==='banner'?{size:13}:{size:11}));
     }
     if(fl.kind==='crit'){
-     if(sub)sub.place(0,-10,0.5);
+     if(sub)sub.place(0,-12,0.5);
      main.place(0,8,0.5);
     }else if(fl.kind==='banner'){
      main.place(0,sub?-2:6,0.5);
      if(sub)sub.place(0,14,0.5);
+    }else if(fl.kind==='heal'&&sub){
+     sub.place(0,-9,0.5);
+     main.place(0,7,0.5);
     }else{
      main.place(0,6,0.5);
     }
-    fv={root,badge,main,sub,kind:fl.kind,text:fl.text,subtext:fl.subtext};
+    fv={root,main,sub,kind:fl.kind,text:fl.text,subtext:fl.subtext};
     floatViews.set(fl.id,fv);
    }
    const base=toScreen(fl.u,fl.v),t=fl.age/fl.duration;
@@ -632,7 +616,7 @@ export function createCombatVfx(o:{
   shakeOffset,
   cooldown:(id:SkillId)=>Math.max(0,cooldowns[id]??0),
   snapshot:()=>({
-   activeFloats:floats.map(f=>({kind:f.kind,text:f.text,subtext:f.subtext,u:+f.u.toFixed(2),v:+f.v.toFixed(2),scale:+f.scale.toFixed(2)})),
+   activeFloats:floats.map(f=>{const fv=floatViews.get(f.id);const hasBubbleOrFrame=Boolean(fv&&fv.root.children.some(c=>!(c instanceof MsdfText)));return {kind:f.kind,text:f.text,subtext:f.subtext,u:+f.u.toFixed(2),v:+f.v.toFixed(2),scale:+f.scale.toFixed(2),frameless:!hasBubbleOrFrame};}),
    activeProjectiles:projectiles.map(p=>({id:p.id,kind:p.kind,u:+p.u.toFixed(2),v:+p.v.toFixed(2),vx:+p.vx.toFixed(2),vy:+p.vy.toFixed(2),traveled:+p.traveled.toFixed(2)})),
    activeAoEs:aoes.map(a=>({id:a.id,kind:a.kind,shape:a.shape,u:+a.u.toFixed(2),v:+a.v.toFixed(2),radius:+a.radius.toFixed(2),progress:+(a.age/a.duration).toFixed(2)})),
    activeImpacts:impacts.map(i=>({id:i.id,kind:i.kind,u:+i.u.toFixed(2),v:+i.v.toFixed(2),radius:+i.radius.toFixed(2)})),
