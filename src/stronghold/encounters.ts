@@ -1,4 +1,5 @@
 import {Container} from 'pixi.js';
+import {Minimap} from './minimap';
 import {createCanvasSprite} from '../app/loader';
 import type {FrameSet} from '../typography/frames';
 import {Hud,type HudCallbacks,type HudSkillState} from '../typography/hud';
@@ -127,6 +128,7 @@ export async function createEncounters(o:{
  );
  hud.zIndex=10;
  o.uiStage.addChild(hud);
+ const minimap=new Minimap();o.uiStage.addChild(minimap);
 
  // v5 Non-Modal Level-Up Blessing Overlay in Pixi (0% center-screen modal obstruction; combat continues in real time)
  const blessingOverlay=new LevelUpBlessingOverlay(o.frames,id=>select(id));
@@ -630,6 +632,7 @@ export async function createEncounters(o:{
    hud.layout(sw,sh);
    layoutBlessingModal();
   }
+  minimap.updateMap(o.hero.position(),sw,sh,hud.getTopRightTelemetry().screenBounds.bottom,(document.querySelector<HTMLCanvasElement>('#world-canvas')?.dataset.buildings??'expedition,gate').split(',') as import('./economy').Building[]);
   drawProgress();
   syncSkillBar();
   const dpr=Math.min(devicePixelRatio||1,2),hp=o.hero.position(),k=origin.scale,at=(x:number,y:number)=>({x:origin.x+x*k,y:origin.y+y*k});
@@ -797,6 +800,7 @@ export async function createEncounters(o:{
    blessingUi:blessingOverlay.telemetry(),
    hudGeometry:hud.getSkillSocketScreenGeometry(),
    topRightHud:hud.getTopRightTelemetry(),
+   minimap:minimap.snapshot(),
    reach:+reach(run).toFixed(2),
    scale:+origin.scale.toFixed(4),
    expBar:{level:run.level,xp:run.xp,nextXp:threshold(run),percent:xpPercent(run),pulsing:levelUpPulseMs>0},
