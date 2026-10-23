@@ -7,14 +7,15 @@ const server=process.env.VERIFY_URL?null:spawn('node',['node_modules/vite/bin/vi
 let browser;
 try{
  if(server)await new Promise((resolve,reject)=>{server.stdout.on('data',d=>{if(String(d).includes('8798'))resolve();});server.on('exit',reject);});
- browser=await chromium.launch(launchOptions());const page=await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:2});
- const errors=[];page.on('pageerror',e=>errors.push(String(e)));
+ browser=await chromium.launch(launchOptions());const page=await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:Number(process.env.VERIFY_DPR||1)});
+ const errors=[];page.on('pageerror',e=>{errors.push(String(e));console.log('ERROR',String(e))});
  await page.goto((process.env.VERIFY_URL||'http://127.0.0.1:8798')+'/?offline=1&time=0.35');
- await page.waitForFunction(()=>window.__STRONGHOLD_COMBAT__&&document.querySelector('#world-canvas')?.dataset.ready==='true',null,{timeout:180000});
+ await page.waitForTimeout(15000);console.log('Ready diagnostic',await page.evaluate(()=>({ready:document.querySelector('#world-canvas')?.dataset.ready,combat:!!window.__STRONGHOLD_COMBAT__,text:document.body.innerText.slice(-1000)})));
+ await page.waitForFunction(()=>window.__STRONGHOLD_COMBAT__&&document.querySelector('#world-canvas')?.dataset.ready==='true',null,{timeout:60000,polling:500});
  await page.evaluate(()=>{if(window.__PIXI_UI__?.picker?.isOpen())window.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',code:'Enter'}));});
  const results=[];
  for(const [name,width,height] of [['portrait',390,844],['narrow',320,568],['landscape',844,390],['desktop',1440,900]]){
-  await page.setViewportSize({width,height});await page.waitForTimeout(650);
+  console.log('Checking',name);await page.setViewportSize({width,height});await page.waitForTimeout(650);
   const s=await page.evaluate(()=>{const c=window.__STRONGHOLD_COMBAT__;return {map:c.snapshot().minimap,tr:c.snapshot().topRightHud.screenBounds,player:c.hud.playerConsole.getBounds(),skills:c.snapshot().hudGeometry};});
   const b=s.map.bounds;if(!s.map.visible||b.x<0||b.y<s.tr.bottom||b.x+b.width>width||b.y+b.height>height*.65)throw Error('Map placement: '+JSON.stringify(s));
   if(b.x<s.player.maxX&&b.x+b.width>s.player.minX&&b.y<s.player.maxY&&b.y+b.height>s.player.minY)throw Error('Player overlap');
