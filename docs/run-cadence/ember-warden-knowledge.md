@@ -60,17 +60,17 @@ Generated with the built-in imagegen tool from the existing character identity r
 
 Local browser checks passed for both heroes in all eight directions: all 64 Sprite Player cells per hero, all eight packed frames per direction in Skill Player and FX Lab, correct mirrored views, preserved Attack mode, and eight-frame runtime loop coverage in every Stronghold direction. Live browser checks passed for the same full matrix, with zero page errors and byte-identical deployed character atlases.
 
-[Source phase audit](https://ark-whachat.fural.space/run-cadence/audit.json) · [Non-Run preservation proof](https://ark-whachat.fural.space/run-cadence/atlas-proof.json) · [Local verification](https://ark-whachat.fural.space/run-cadence/verification/verification.json) · [Live verification](https://ark-whachat.fural.space/run-cadence/verification/verification-live.json)
+[Source phase audit](https://ark-whachat.fural.space/run-cadence/audit.json) · [Non-Run preservation proof](https://ark-whachat.fural.space/run-cadence/atlas-proof.json) · [Local verification](https://ark-whachat.fural.space/run-cadence/verified-loops-v1/verification.json) · [Live verification](https://ark-whachat.fural.space/run-cadence/verified-loops-v1/verification-live.json)
 
 ## Runtime evidence
 
-![Synchronized live comparison of both heroes in all eight directions](https://ark-whachat.fural.space/run-cadence/verification/synchronized-live.webp)
+![Synchronized live comparison of both heroes in all eight directions](https://ark-whachat.fural.space/run-cadence/verified-loops-v1/synchronized-live.webp)
 
-![Ember Warden live Stronghold Run](https://ark-whachat.fural.space/run-cadence/verification/ember-warden-runtime-live.webp)
+![Ember Warden live Stronghold Run](https://ark-whachat.fural.space/run-cadence/verified-loops-v1/ember-warden-runtime-live.webp)
 
-![Ember Warden packed Run in Skill Player](https://ark-whachat.fural.space/run-cadence/verification/ember-warden-skill-live.webp)
+![Ember Warden packed Run in Skill Player](https://ark-whachat.fural.space/run-cadence/verified-loops-v1/ember-warden-skill-live.webp)
 
-![Initial Ember Warden live runtime capture](https://ark-whachat.fural.space/run-cadence/verification/ember-warden-initial-runtime-live.webp)
+![Initial Ember Warden live runtime capture](https://ark-whachat.fural.space/run-cadence/verified-loops-v1/ember-warden-initial-runtime-live.webp)
 
 ## Earlier generation candidates
 
