@@ -1,6 +1,6 @@
 {
-  "analyzedAt": "2026-10-23T03:55:30.242Z",
-  "serverTracelogsAnalyzed": 6,
+  "analyzedAt": "2026-10-23T05:15:01.174Z",
+  "serverTracelogsAnalyzed": 50,
   "logs": [
     {
       "seq": 1,
@@ -96,42 +96,111 @@
         "unaccountedMs": 168.9
       },
       "rootCause": "Repeated 8-foe + Trinity Auto-Cast combat session exhibiting identical worldDraw (66.2ms), encountersStep (15.8ms), encountersRender (42.1ms), and pixiRender (81.2ms) bottlenecks."
+    },
+    {
+      "seq": 30,
+      "id": "tl-mvkgbyj9-2",
+      "reason": "frame_spike",
+      "fps": 50.64,
+      "minFps": 4.35,
+      "maxFrameMs": 229.7,
+      "bottleneck": "world-paint",
+      "phasesMaxBefore": {
+        "worldDrawMs": 224.2,
+        "worldPaintMs": 171.7,
+        "shadowCastMs": 45.2,
+        "encountersRenderMs": 4.7,
+        "pixiRenderMs": 3.1
+      },
+      "rootCause": "Selecting a building on mobile triggered worldView.update(state, id) -> paintWorld() which unconditionally re-ran castShadows(false) (45.2ms) and lighting.capture() (52.5ms of 3x Canvas2D blur passes on static torch bloom/halo) even when building layout and levels had not changed."
+    },
+    {
+      "seq": 35,
+      "id": "tl-mvkgg4ca-7",
+      "reason": "frame_spike",
+      "fps": 42.84,
+      "minFps": 5.39,
+      "maxFrameMs": 185.6,
+      "bottleneck": "main-thread-longtask",
+      "phasesMaxBefore": {
+        "worldDrawMs": 0.7,
+        "encountersStepMs": 1.5,
+        "encountersRenderMs": 2.3,
+        "pixiRenderMs": 3.3,
+        "unaccountedMs": 180.7
+      },
+      "rootCause": "Unmeasured hero.loop() and mobile Chrome decoded-image cache eviction on 2932x1606 WebP hero sprite sheets: frameShadowProfile() called profileCtx.drawImage(atlas) + getImageData() on {willReadFrequently: true} canvas when a new animation frame was first visited, triggering synchronous main-thread libwebp re-decode (135-185ms) plus CPU getImageData/putImageData pixel loops on lit in hero.render(). Also gate-doors.ts scheduleFlames() re-ran 4-pass light.shade() every 160ms even when gate was closed or off-screen."
+    },
+    {
+      "seq": 43,
+      "id": "tl-mvkglznr-1",
+      "reason": "frame_spike",
+      "fps": 44.36,
+      "minFps": 4.37,
+      "maxFrameMs": 228.6,
+      "bottleneck": "world-paint",
+      "phasesMaxBefore": {
+        "worldDrawMs": 221.3,
+        "worldPaintMs": 162.8,
+        "shadowCastMs": 49.4,
+        "encountersRenderMs": 4.7,
+        "pixiRenderMs": 3.6
+      },
+      "rootCause": "Redundant second paintWorld() at t=3204ms when Co-op room snapshot arrived: worldView.update() computed layout signature from raw net.layout() instead of resolved nextBuilt, causing a false-positive dirty=true when joining a room with identical default buildings."
+    },
+    {
+      "seq": 44,
+      "id": "tl-mvkgmb3l-2",
+      "reason": "sustained_low_fps",
+      "fps": 26.86,
+      "minFps": 12.15,
+      "maxFrameMs": 82.3,
+      "bottleneck": "encounters-render",
+      "phasesMaxBefore": {
+        "worldDrawMs": 0.7,
+        "encountersStepMs": 1.5,
+        "encountersRenderMs": 31.6,
+        "pixiRenderMs": 4.8,
+        "unaccountedMs": 53.5
+      },
+      "rootCause": "11-foe Co-op combat with new 18-emitter VFX bundle and 64-entry looks cache: synchronized foe animation frame steps exceeded LOOKS=64 and MAX_SHADOW_CACHE=96, while drawFigureShadow ran an extra destination-canvas blur(1px) filter pass and subpixel occluder keys invalidated cutOut caches."
     }
   ],
   "fixesImplemented": [
-    "src/fx/stage.ts: Global alphaTextures cache via textureProvider.getAlphaTexture, macrotask-sliced boot pool prewarming, removeEffect(inst, false) on pooled instances, live effect reuse per key, in-game emitter density cap, and 5-point bounding-box occlusion fast-skip.",
-    "src/stronghold/encounters.ts: Decoupled encounters.place() into fast placeSprites() without duplicate render() + vfx.render() inside worldDraw; quantized foe raster resolution r (0.25 step) and ambient light; guarded pending blessing JSON.stringify.",
-    "src/stronghold/hero.ts: Added 96-entry LRU shadowCache for pre-blurred figure shadows; quantized hero scale res (0.25 step); decoupled hero.place() from render(); added maxSceneFront O(1) Wilds fast-path in occlusionAt.",
-    "src/stronghold/combat-vfx.ts & src/typography/{text,hud}.ts: Pooled FloatView (Container + MsdfText), removed destroyed MsdfText from live Set, guarded HUD text relayouts, and deduplicated simultaneous combo cast ground cues.",
-    "src/stronghold/tracelog.ts & src/stronghold/net/client.ts & server/internal/server/tracelog.go: Fixed 1-frame phase attribution skew in onFrame, instrumented net phase, and reloaded persisted fps-tracelogs.jsonl on Go server startup."
+    "src/fx/stage.ts: Global alphaTextures cache, macrotask-sliced boot pool prewarming, removeEffect(inst, false) on pooled instances, live effect reuse per key, in-game emitter count cap (<=4 emitters/effect) and particle cap, and persistent cross-frame occCache grid.",
+    "src/stronghold/hero.ts: Extracted 1-byte Uint8Array alpha sheet once at load time via prewarmAtlasAlpha(img) so frameShadowProfile never calls drawImage/getImageData during gameplay; cached loaded hero atlases; replaced CPU getImageData/putImageData loop on lit with GPU composite operations; removed redundant blur(1px) filter pass from drawFigureShadow; expanded MAX_SHADOW_CACHE to 192; added blocker bounding-box fast-exit in blocked(); instrumented hero.loop in tracelog.",
+    "src/stronghold/encounters.ts: Prewarmed revenant atlas alpha at load time; expanded looks cache to 128; avoided unnecessary aoe canvas backing-store reallocation; quantized occluder cutout cache keys.",
+    "src/stronghold/world-view.ts & src/stronghold/lighting.ts: Fixed Co-op join signature using resolved nextBuilt to prevent redundant 228ms paintWorld(); separated shadowsDirty from selection changes; cached staticLights in lighting.ts to skip 3x Canvas2D blur passes on building selection; exposed __WORLD_SURFACE__ for telemetry.",
+    "src/stronghold/gate-doors.ts: Cached shaded gateway frame canvas so 160ms torch flame flicker composites only flame sprites without re-running 4-pass light.shade(); paused flame timer when gateway is off-screen.",
+    "src/stronghold/tracelog.ts & server/internal/server/tracelog.go: Fixed 1-frame phase attribution skew, instrumented hero/party/parallax/gate-doors/lighting phases, classified high-unaccounted spikes as main-thread-longtask / browser-compositor, and persisted fps-tracelogs.jsonl across restarts."
   ],
   "benchmarkAfterFix": {
     "sampleCount": 16,
     "phasesAvg": {
-      "worldDrawMs": 0,
+      "worldDrawMs": 0.07,
       "worldPaintMs": 0,
       "shadowCastMs": 0,
-      "encountersStepMs": 1.57,
-      "encountersRenderMs": 28.11,
-      "pixiRenderMs": 12.79,
-      "netMs": 0.64,
+      "encountersStepMs": 4.59,
+      "encountersRenderMs": 5.32,
+      "pixiRenderMs": 9.31,
+      "netMs": 0.41,
       "unaccountedMs": 0
     },
     "phasesMax": {
-      "worldDrawMs": 0,
+      "worldDrawMs": 0.6,
       "worldPaintMs": 0,
       "shadowCastMs": 0,
-      "encountersStepMs": 10.5,
-      "encountersRenderMs": 89.2,
-      "pixiRenderMs": 63.2,
-      "netMs": 3.6,
+      "encountersStepMs": 62.1,
+      "encountersRenderMs": 9.8,
+      "pixiRenderMs": 93.4,
+      "netMs": 4.9,
       "unaccountedMs": 0
     },
     "foesRendered": 8,
-    "particles": 375,
-    "peakParticles": 455,
+    "particles": 113,
+    "peakParticles": 178,
     "liveEffects": 10,
-    "playedEffects": 21,
-    "activeFloats": 5
+    "playedEffects": 20,
+    "activeFloats": 3
   }
 }

@@ -6,6 +6,7 @@ import type {Sun} from './daylight';
 import type {Net} from './net/client';
 import type {PlayerState} from './net/protocol';
 import {DEFAULT_HERO,isHero} from './heroes';
+import {measureTracelogPhase} from './tracelog';
 
 export function createParty<P extends Placed>(o:{
  layer:Container;
@@ -65,25 +66,28 @@ export function createParty<P extends Placed>(o:{
  }
 
  function update(now:number){
-  const list=o.net.active()?o.net.remotes(now):[],seen=new Set<string>(),me=o.own();
-  for(const p of list){
-   seen.add(p.id);const a=allies.get(p.id);if(!a){add(p);continue;}
-   if(p.n!==a.plays){a.plays=p.n;a.clipAt=performance.now();}
-   a.state=p;
-   if(a.nameText.text!==p.name){a.nameText.text=p.name;a.nameText.place(0,-14,0.5);}
-   if(a.hero&&a.hero.hero()!==pick(p))void a.hero.setHero(pick(p));
-   const behind=p.y<me.y;
-   if(a.hero&&behind!==a.behind){a.behind=behind;a.hero.sprite.zIndex=behind?29:31;}
-  }
-  for(const [id,a] of allies)if(!seen.has(id)){a.gone=true;a.hero?.remove();a.tag.destroy({children:true});allies.delete(id);}
-  place();requestAnimationFrame(update);
+  measureTracelogPhase('encountersRender',()=>{
+   const list=o.net.active()?o.net.remotes(now):[],seen=new Set<string>(),me=o.own();
+   for(const p of list){
+    seen.add(p.id);const a=allies.get(p.id);if(!a){add(p);continue;}
+    if(p.n!==a.plays){a.plays=p.n;a.clipAt=performance.now();}
+    a.state=p;
+    if(a.nameText.text!==p.name){a.nameText.text=p.name;a.nameText.place(0,-14,0.5);}
+    if(a.hero&&a.hero.hero()!==pick(p))void a.hero.setHero(pick(p));
+    const behind=p.y<me.y;
+    if(a.hero&&behind!==a.behind){a.behind=behind;a.hero.sprite.zIndex=behind?29:31;}
+   }
+   for(const [id,a] of allies)if(!seen.has(id)){a.gone=true;a.hero?.remove();a.tag.destroy({children:true});allies.delete(id);}
+   place();
+  });
+  requestAnimationFrame(update);
  }
 
  function place(){
   const k=origin.scale;
   for(const a of allies.values()){
    const s=a.state,ratio=Math.max(0,Math.min(1,s.hp/Math.max(1,s.max)));
-   a.tag.position.set(origin.x+s.x*k,origin.y+(s.y-64)*k);
+   a.tag.position.set(origin.x+s.x*k,origin.y+(s.y-80)*k);
    a.tag.alpha=s.st==='die'?0.45:1;
    const low=ratio<0.3;
    a.fillGreen.visible=!low&&ratio>0.02;

@@ -1,6 +1,7 @@
 import type {Container} from 'pixi.js';
 import {createCanvasSprite} from '../app/loader';
 import {TORCH_FRAMES,torchAssetsReady} from './torches';
+import {measureTracelogPhase} from './tracelog';
 
 /** The complete gateway plays as one sprite: both towers, arch and synchronized door leaves share one pivot. */
 export type GateSheet={image:string;columns:number;frames:number;frame:{w:number;h:number};fps:number;region:{x:number;y:number;w:number;h:number};torches?:{left:{x:number;y:number;w:number;h:number};right:{x:number;y:number;w:number;h:number}}};
@@ -18,10 +19,11 @@ export function createGateDoors(worldStage:Container,gateway:HTMLImageElement,sh
 
  const source=document.createElement('canvas');source.width=canvas.width;source.height=canvas.height;const raw=source.getContext('2d')!;
  raw.scale(source.width/frame.w,source.height/frame.h);
- let index=0,target=0,raf=0,last=0,elapsed=0,shown=-1,passable=false,lit=-1,flamePose=0,shownFlame=-1,flameTimer=0,pointerHeld=false,behind:boolean|null=null;
+ const shaded=document.createElement('canvas');shaded.width=canvas.width;shaded.height=canvas.height;
+ let index=0,target=0,raf=0,last=0,elapsed=0,shown=-1,passable=false,lit=-1,flamePose=0,shownFlame=-1,flameTimer=0,pointerHeld=false,behind:boolean|null=null,onScreen=true;
  const reduced=matchMedia('(prefers-reduced-motion: reduce)');
  const torches=meta.torches??{left:{x:Math.round(frame.w*196/768),y:Math.round(frame.h*253/512),w:Math.round(frame.w*70/768),h:Math.round(frame.h*112/512)},right:{x:Math.round(frame.w*502/768),y:Math.round(frame.h*253/512),w:Math.round(frame.w*70/768),h:Math.round(frame.h*112/512)}};
- const pierPatches=[{x:torches.left.x-4,y:torches.left.y-5,w:torches.left.w+8,h:torches.left.h+8},{x:torches.right.x-4,y:torches.right.y-5,w:torches.right.w+8,h:torches.right.h+8}];
+ const pierPatches=[{x:torches.left.x-4,y:torches.left.y-5,w:torches.left.w+8,h:torches.left.h+8},{x:torches.right.x-4,y:torches.right.y-5,w:torches.right.w+8,h:torches.left.h+8}];
  let lastScale=1;
 
  function drawLitTorches(){
@@ -33,38 +35,44 @@ export function createGateDoors(worldStage:Container,gateway:HTMLImageElement,sh
   c.restore();
  }
  function paint(){
-  const torchesLit=!!light.torches?.(),activeFlame=torchesLit?flamePose:-1;
-  if(index!==shown||lit!==light.revision()||activeFlame!==shownFlame){
-   shown=index;lit=light.revision();shownFlame=activeFlame;
-   raw.globalCompositeOperation='copy';
-   if(sheet.complete&&sheet.naturalWidth){
-    const sw=(sheet.naturalWidth||frame.w*meta.columns)/meta.columns,sh=(sheet.naturalHeight||frame.h*rows)/rows;
-    raw.drawImage(sheet,(index%meta.columns)*sw,Math.floor(index/meta.columns)*sh,sw,sh,0,0,frame.w,frame.h);
-   }else if(gateway.complete&&gateway.naturalWidth){
-    raw.drawImage(gateway,0,0,gateway.naturalWidth,gateway.naturalHeight,0,0,frame.w,frame.h);
+  measureTracelogPhase('worldDraw',()=>{
+   const torchesLit=!!light.torches?.(),activeFlame=torchesLit?flamePose:-1;
+   const baseChanged=index!==shown||lit!==light.revision();
+   if(baseChanged||activeFlame!==shownFlame){
+    shown=index;lit=light.revision();shownFlame=activeFlame;
+    if(baseChanged){
+     raw.globalCompositeOperation='copy';
+     if(sheet.complete&&sheet.naturalWidth){
+      const sw=(sheet.naturalWidth||frame.w*meta.columns)/meta.columns,sh=(sheet.naturalHeight||frame.h*rows)/rows;
+      raw.drawImage(sheet,(index%meta.columns)*sw,Math.floor(index/meta.columns)*sh,sw,sh,0,0,frame.w,frame.h);
+     }else if(gateway.complete&&gateway.naturalWidth){
+      raw.drawImage(gateway,0,0,gateway.naturalWidth,gateway.naturalHeight,0,0,frame.w,frame.h);
+     }
+     raw.globalCompositeOperation='source-over';
+     if(gateway.complete&&gateway.naturalWidth){const gx=gateway.naturalWidth/frame.w,gy=gateway.naturalHeight/frame.h;for(const p of pierPatches)raw.drawImage(gateway,p.x*gx,p.y*gy,p.w*gx,p.h*gy,p.x,p.y,p.w,p.h);}
+     if(light.foundation){
+      const {face,pad,fade}=light.foundation,sx=frame.w/region.w,sy=frame.h/region.h;
+      raw.drawImage(face,-pad*sx,-pad*sy,face.width*sx,face.height*sy);
+      if(fade){raw.globalCompositeOperation='destination-in';raw.drawImage(fade,0,0,frame.w,frame.h);raw.globalCompositeOperation='source-over';}
+     }
+     light.shade(source,shaded);
+    }
+    c.globalCompositeOperation='copy';c.drawImage(shaded,0,0);c.globalCompositeOperation='source-over';
+    if(torchesLit)drawLitTorches();
+    if(canvas.dataset.torches!==(torchesLit?'lit':'off'))canvas.dataset.torches=torchesLit?'lit':'off';
+    gateView.sync(region.w*lastScale,region.h*lastScale);
    }
-   raw.globalCompositeOperation='source-over';
-   if(gateway.complete&&gateway.naturalWidth){const gx=gateway.naturalWidth/frame.w,gy=gateway.naturalHeight/frame.h;for(const p of pierPatches)raw.drawImage(gateway,p.x*gx,p.y*gy,p.w*gx,p.h*gy,p.x,p.y,p.w,p.h);}
-   if(light.foundation){
-    const {face,pad,fade}=light.foundation,sx=frame.w/region.w,sy=frame.h/region.h;
-    raw.drawImage(face,-pad*sx,-pad*sy,face.width*sx,face.height*sy);
-    if(fade){raw.globalCompositeOperation='destination-in';raw.drawImage(fade,0,0,frame.w,frame.h);raw.globalCompositeOperation='source-over';}
-   }
-   light.shade(source,canvas);
-   if(torchesLit)drawLitTorches();
-   if(canvas.dataset.torches!==(torchesLit?'lit':'off'))canvas.dataset.torches=torchesLit?'lit':'off';
-   gateView.sync(region.w*lastScale,region.h*lastScale);
-  }
-  const progress=index/(meta.frames-1),fStr=String(index),pStr=progress.toFixed(3),sStr=index===target?(target?'open':'closed'):(target?'opening':'closing');
-  if(canvas.dataset.frame!==fStr)canvas.dataset.frame=fStr;
-  if(canvas.dataset.progress!==pStr)canvas.dataset.progress=pStr;
-  if(canvas.dataset.state!==sStr)canvas.dataset.state=sStr;
-  const next=progress>=.8;if(next!==passable){passable=next;onPassable(next);}
-  scheduleFlames();
+   const progress=index/(meta.frames-1),fStr=String(index),pStr=progress.toFixed(3),sStr=index===target?(target?'open':'closed'):(target?'opening':'closing');
+   if(canvas.dataset.frame!==fStr)canvas.dataset.frame=fStr;
+   if(canvas.dataset.progress!==pStr)canvas.dataset.progress=pStr;
+   if(canvas.dataset.state!==sStr)canvas.dataset.state=sStr;
+   const next=progress>=.8;if(next!==passable){passable=next;onPassable(next);}
+   scheduleFlames();
+  });
  }
  function scheduleFlames(){
   clearTimeout(flameTimer);flameTimer=0;
-  if(!light.torches?.()||index!==target||pointerHeld||document.hidden||reduced.matches||!TORCH_FRAMES[0].complete)return;
+  if(!onScreen||!light.torches?.()||index!==target||pointerHeld||document.hidden||reduced.matches||!TORCH_FRAMES[0].complete)return;
   flameTimer=window.setTimeout(()=>{flamePose=(flamePose+1)%3;paint();},160);
  }
  if(!sheet.complete)sheet.addEventListener('load',()=>{shown=-1;paint();},{once:true});
@@ -85,9 +93,12 @@ export function createGateDoors(worldStage:Container,gateway:HTMLImageElement,sh
   setOpen(open:boolean){target=open?meta.frames-1:0;if(index!==target&&!raf)raf=requestAnimationFrame(tick);},
   place(x:number,y:number,scale:number){
    lastScale=scale;
-   gateView.sprite.position.set(x+(442+region.x)*scale,y+(798-height*.97+region.y)*scale);
-   gateView.sprite.width=region.w*scale;
-   gateView.sprite.height=region.h*scale;
+   const sx=x+(442+region.x)*scale,sy=y+(798-height*.97+region.y)*scale,sw=region.w*scale,sh=region.h*scale;
+   gateView.sprite.position.set(sx,sy);
+   gateView.sprite.width=sw;
+   gateView.sprite.height=sh;
+   const vis=sx+sw>-64&&sx<(innerWidth||1440)+64&&sy+sh>-64&&sy<(innerHeight||900)+64;
+   if(vis!==onScreen){onScreen=vis;if(vis)scheduleFlames();else{clearTimeout(flameTimer);flameTimer=0;}}
   }
  };
 }

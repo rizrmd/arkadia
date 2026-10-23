@@ -232,6 +232,12 @@ func classifyBottleneck(m TracelogMetrics, longTasks []TracelogLongTask) string 
 			best = c
 		}
 	}
+	if m.PhasesMax.UnaccountedMs > math.Max(40, best.ms*2.5) {
+		if len(longTasks) > 0 {
+			return "main-thread-longtask"
+		}
+		return "browser-compositor"
+	}
 	if best.ms >= 2.0 {
 		return best.name
 	}

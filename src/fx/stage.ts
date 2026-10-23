@@ -183,6 +183,7 @@ export function createFxStage(o:FxStageOptions){
 
  // Once per rendered frame, in seconds. render=false advances the simulation only (scripted captures).
  const occCache=new Map<number,number>();
+ let lastOccHx=-1e9,lastOccHy=-1e9;
  function frame(dt:number,render=true){
   if(!planes)return;
   clock+=dt;
@@ -190,9 +191,10 @@ export function createFxStage(o:FxStageOptions){
   for(const l of live){l.age+=dt;if(l.follow){const p=l.follow();l.anchor.u=p.u;l.anchor.v=p.v;}}
   planes.ground.vfx.update(dt,{timeSeconds:clock});planes.world.vfx.update(dt,{timeSeconds:clock});
   const occFn=o.occlusionAt,heroPos=o.getHeroWorld?.(),layers=o.depthLayers,sc=view.scale||1;
-  const activePartCount=planes.world.vfx.stats.activeParticles+planes.ground.vfx.stats.activeParticles;
-  const useGridCache=activePartCount>24;
-  if(useGridCache)occCache.clear();
+  const hx=heroPos?.x??0,hy=heroPos?.y??0;
+  if(Math.abs(hx-lastOccHx)>2||Math.abs(hy-lastOccHy)>2||occCache.size>2048){
+   occCache.clear();lastOccHx=hx;lastOccHy=hy;
+  }
   let occCount=0,occMin=1,occSum=0,occTotal=0,backCnt=0,frontCnt=0;
   for(let i=live.length-1;i>=0;i--){
    const l=live[i];
@@ -210,24 +212,32 @@ export function createFxStage(o:FxStageOptions){
    let canOcclude=Boolean(occFn);
    if(canOcclude&&occFn){
     const ax=anchorPt.x,ay=anchorPt.y;
-    if(ay>860){
-     canOcclude=!flat&&Boolean(heroPos&&Math.abs(ax-heroPos.x)<=110&&Math.abs(ay-heroPos.y)<=110);
-    }else if(flat){
-     canOcclude=occFn(ax,ay,ax,ay,32,true,false)<1
-      ||occFn(ax-56,ay-32,ax-56,ay-32,28,true,false)<1||occFn(ax+56,ay-32,ax+56,ay-32,28,true,false)<1
-      ||occFn(ax-56,ay+32,ax-56,ay+32,28,true,false)<1||occFn(ax+56,ay+32,ax+56,ay+32,28,true,false)<1
-      ||occFn(ax-112,ay,ax-112,ay,28,true,false)<1||occFn(ax+112,ay,ax+112,ay,28,true,false)<1
-      ||occFn(ax,ay-64,ax,ay-64,28,true,false)<1||occFn(ax,ay+64,ax,ay+64,28,true,false)<1;
-    }else if(!heroPos||Math.hypot(ax-heroPos.x,ay-heroPos.y)>110){
-     canOcclude=occFn(ax,ay,ax,ay-anchorLift*.5,32,false,false)<1
-      ||occFn(ax-56,ay-40,ax-56,ay-40,28,false,false)<1||occFn(ax+56,ay-40,ax+56,ay-40,28,false,false)<1
-      ||occFn(ax-112,ay-24,ax-112,ay-24,28,false,false)<1||occFn(ax+112,ay-24,ax+112,ay-24,28,false,false)<1
-      ||occFn(ax,ay+40,ax,ay+40,28,false,false)<1||occFn(ax,ay+84,ax,ay+84,28,false,false)<1
-      ||occFn(ax-64,ay+56,ax-64,ay+56,28,false,false)<1||occFn(ax+64,ay+56,ax+64,ay+56,28,false,false)<1;
+    const ak=(((ax*.25)|0)*73856093)^(((ay*.25)|0)*19349663)^(flat?0x55555555:0x33333333);
+    const cachedCan=occCache.get(ak);
+    if(cachedCan!==undefined){
+     canOcclude=cachedCan>0;
+    }else{
+     if(ay>860){
+      canOcclude=!flat&&Boolean(heroPos&&Math.abs(ax-heroPos.x)<=110&&Math.abs(ay-heroPos.y)<=110);
+     }else if(flat){
+      canOcclude=occFn(ax,ay,ax,ay,32,true,false)<1
+       ||occFn(ax-56,ay-32,ax-56,ay-32,28,true,false)<1||occFn(ax+56,ay-32,ax+56,ay-32,28,true,false)<1
+       ||occFn(ax-56,ay+32,ax-56,ay+32,28,true,false)<1||occFn(ax+56,ay+32,ax+56,ay+32,28,true,false)<1
+       ||occFn(ax-112,ay,ax-112,ay,28,true,false)<1||occFn(ax+112,ay,ax+112,ay,28,true,false)<1
+       ||occFn(ax,ay-64,ax,ay-64,28,true,false)<1||occFn(ax,ay+64,ax,ay+64,28,true,false)<1;
+     }else if(!heroPos||Math.hypot(ax-heroPos.x,ay-heroPos.y)>110){
+      canOcclude=occFn(ax,ay,ax,ay-anchorLift*.5,32,false,false)<1
+       ||occFn(ax-56,ay-40,ax-56,ay-40,28,false,false)<1||occFn(ax+56,ay-40,ax+56,ay-40,28,false,false)<1
+       ||occFn(ax-112,ay-24,ax-112,ay-24,28,false,false)<1||occFn(ax+112,ay-24,ax+112,ay-24,28,false,false)<1
+       ||occFn(ax,ay+40,ax,ay+40,28,false,false)<1||occFn(ax,ay+84,ax,ay+84,28,false,false)<1
+       ||occFn(ax-64,ay+56,ax-64,ay+56,28,false,false)<1||occFn(ax+64,ay+56,ax+64,ay+56,28,false,false)<1;
+     }
+     occCache.set(ak,canOcclude?1:0);
     }
    }
    if(flat&&!canOcclude)continue;
    let sumPy=0,cntPy=0,maxPy=-Infinity;
+   const aHashX=((anchorPt.x*.125)|0)*374761393,aHashY=((anchorPt.y*.125)|0)*668265263;
    const walkInst=(inst:any)=>{
     const views=inst?.emitterViews as any[]|undefined;
     if(views)for(let v=0;v<views.length;v++){
@@ -237,22 +247,9 @@ export function createFxStage(o:FxStageOptions){
       const py=(-entry.depth-view.y)/sc,px=(p.x-view.x)/sc,wx=px,wy=flat?py:(p.y-view.y)/sc;
       sumPy+=py;cntPy++;if(py>maxPy)maxPy=py;
       if(canOcclude&&occFn){
-       let occ:number|undefined;
-       if(useGridCache){
-        const gk=(((px*.1667)|0)*73856093)^(((py*.1667)|0)*19349663)^(((wy*.1667)|0)*83492791)^(flat?1:0);
-        occ=occCache.get(gk);
-        if(occ===undefined){
-         const texW=p.texture?.orig?.width??64,rad=Math.abs(p.scaleX)*texW*.5/sc;
-         occ=occFn(px,py,wx,wy,rad,flat,!flat);
-         if(occ>0&&anchorPt.y<860&&(Math.abs(px-anchorPt.x)>14||Math.abs(py-anchorPt.y)>14)){
-          const dx=px-anchorPt.x,dy=py-anchorPt.y;
-          if(occFn(anchorPt.x+dx*.33,anchorPt.y+dy*.33,anchorPt.x+dx*.33,anchorPt.y+dy*.33,0,true,false)===0
-           ||occFn(anchorPt.x+dx*.5,anchorPt.y+dy*.5,anchorPt.x+dx*.5,anchorPt.y+dy*.5,0,true,false)===0
-           ||occFn(anchorPt.x+dx*.67,anchorPt.y+dy*.67,anchorPt.x+dx*.67,anchorPt.y+dy*.67,0,true,false)===0)occ=0;
-         }
-         occCache.set(gk,occ);
-        }
-       }else{
+       const gk=(((px*.125)|0)*73856093)^(((py*.125)|0)*19349663)^(((wy*.125)|0)*83492791)^aHashX^aHashY^(flat?1:2);
+       let occ=occCache.get(gk);
+       if(occ===undefined){
         const texW=p.texture?.orig?.width??64,rad=Math.abs(p.scaleX)*texW*.5/sc;
         occ=occFn(px,py,wx,wy,rad,flat,!flat);
         if(occ>0&&anchorPt.y<860&&(Math.abs(px-anchorPt.x)>14||Math.abs(py-anchorPt.y)>14)){
@@ -261,6 +258,7 @@ export function createFxStage(o:FxStageOptions){
           ||occFn(anchorPt.x+dx*.5,anchorPt.y+dy*.5,anchorPt.x+dx*.5,anchorPt.y+dy*.5,0,true,false)===0
           ||occFn(anchorPt.x+dx*.67,anchorPt.y+dy*.67,anchorPt.x+dx*.67,anchorPt.y+dy*.67,0,true,false)===0)occ=0;
         }
+        occCache.set(gk,occ);
        }
        occTotal++;occSum+=occ;if(occ<occMin)occMin=occ;
        if(occ<.999){p.alpha*=occ;occCount++;}

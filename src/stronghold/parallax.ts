@@ -5,6 +5,7 @@ import {unproject} from '../isometric';
 import {fromGate,GATE,inSafeZone} from './safe-zone';
 import {WORLD} from './scene';
 import {COURT} from './terrain';
+import {measureTracelogPhase} from './tracelog';
 
 export type BiomeId=
  |'court'
@@ -629,9 +630,11 @@ export async function createParallax(opts:ParallaxOptions){
   const dt=Math.min(100,Math.max(0,now-lastTick));
   lastTick=now;
   if(opts.getHeroWorld&&now>=manualStepLockUntil){
-   const hw=opts.getHeroWorld();
-   const g=unproject(hw.x-COURT.x,hw.y-COURT.y);
-   stepInternal(g.x,g.y,dt);
+   measureTracelogPhase('worldDraw',()=>{
+    const hw=opts.getHeroWorld!();
+    const g=unproject(hw.x-COURT.x,hw.y-COURT.y);
+    stepInternal(g.x,g.y,dt);
+   });
   }
   rafId=requestAnimationFrame(tick);
  }

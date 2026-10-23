@@ -177,6 +177,9 @@ function classifyBottleneck(maxPhases: TracelogPhaseBreakdown, longTasks: Tracel
    bestMs = ms;
   }
  }
+ if (maxPhases.unaccountedMs > Math.max(40, bestMs * 2.5)) {
+  return longTasks.length > 0 ? 'main-thread-longtask' : 'browser-compositor';
+ }
  if (bestMs >= 2.0) return bestName;
  if (longTasks.length > 0) return 'main-thread-longtask';
  return 'browser-compositor';
@@ -259,7 +262,7 @@ export function startFpsTracelog(opts: FpsTracelogOptions) {
  });
 
  function readSurfaceDataset() {
-  const surface = document.querySelector<HTMLElement>('#world-surface');
+  const surface = ((window as any).__WORLD_SURFACE__ as HTMLElement | undefined) ?? document.querySelector<HTMLElement>('#world-surface');
   return {
    lighting: surface?.dataset.lighting || 'on',
    torches: surface?.dataset.torches || 'off',

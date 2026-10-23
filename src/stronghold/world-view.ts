@@ -71,7 +71,7 @@ export async function createWorldView(
  shadow.width=2048;shadow.height=1088;const shadowCtx=shadow.getContext('2d')!;shadowCtx.translate(-shadowLeft,-shadowTop);shadowCtx.strokeStyle='#29392d26';shadowCtx.lineWidth=30;shadowCtx.filter='blur(10px)';shadowCtx.stroke(court);
  let gateOccluder:HTMLCanvasElement|undefined;
  function makeObjects(all=false){return [...environment.map(p=>({...p,selected:false,occluder:undefined as HTMLCanvasElement|undefined})),...buildings.filter(id=>all||built.has(id)).map(id=>{const s=slots[id],c=calibration(id);return {layer:id==='gate'?'foreground' as const:'world' as const,id,...s,foot:s.pivot,shear:c.shear,vertical:c.vertical,depth:s.y,opacity:1,file:spriteFile(id,levels?.[id]||1),selected:id===selected,occluder:id==='gate'?gateOccluder:undefined};})].sort((a,b)=>({ground:0,backdrop:1,world:2,foreground:3})[a.layer]-({ground:0,backdrop:1,world:2,foreground:3})[b.layer]||a.depth-b.depth).map(p=>({...p,image:images.get(p.file)!,height:images.get(p.file)!.height*p.width/images.get(p.file)!.width}));}
- let objects=makeObjects(),signature='';canvas.dataset.buildings=[...built].join(',');
+ let objects=makeObjects(),signature='',lastLayoutSig='';canvas.dataset.buildings=[...built].join(',');
 
  // Infinite snow repeat TilingSprite + offscreen world surface Sprite in Pixi worldStage
  const periodX=1024*1.4,periodY=1024*.7;
@@ -83,7 +83,7 @@ export async function createWorldView(
  snowSprite.zIndex=0;
  worldStage.addChild(snowSprite);
 
- const surface=document.createElement('canvas');surface.id='world-surface';
+ const surface=document.createElement('canvas');surface.id='world-surface';(window as any).__WORLD_SURFACE__=surface;
  const boundsObjects=makeObjects(true).map(p=>({...p,height:p.id==='forge'?Math.max(...[1,2,3].map(l=>{const image=images.get(spriteFile('forge',l))!;return image.height*p.width/image.width;})):p.height}));
  const points=boundsObjects.flatMap(p=>[-p.width/2,p.width/2].flatMap(x=>[-p.height*p.foot,p.height*(1-p.foot)].map(y=>({x:p.x+x,y:p.y+p.shear*x+p.vertical*y}))));
  const corners=[[0,0],[15,0],[15,15],[0,15]].map(([u,v])=>tilePoint(u,v));points.push(...corners);
@@ -187,13 +187,14 @@ export async function createWorldView(
  progress(loaded+=40,steps,'Raising the Stronghold');
 
  const uprights=document.createElement('canvas');uprights.id='world-uprights';uprights.width=surface.width;uprights.height=surface.height;
+ let shadowsDirty=true;
  function paintWorld(){
   measureTracelogPhase('worldPaint',()=>{
    const u=uprights.getContext('2d')!;u.setTransform(1,0,0,1,0,0);u.clearRect(0,0,uprights.width,uprights.height);
    for(const c of [sc,u])c.setTransform(surface.width/worldWidth,0,0,surface.height/worldHeight,-left*surface.width/worldWidth,-top*surface.height/worldHeight);
    sc.fillStyle=snowPattern;sc.fillRect(left,top,worldWidth,worldHeight);sc.fillStyle=pavingPattern;sc.fill(paved);sc.drawImage(apron,apronX,apronY);sc.drawImage(shadow,shadowLeft,shadowTop);
    for(const p of objects){if(p.id==='gate'){sc.save();sc.translate(p.x,p.y);drawFoundation(sc,p,images.get(FOUNDATION_SOIL)!,'under',images.get(FOUNDATION_DRIFT),images.get(FOUNDATION_MOSS));sc.restore();}else drawSprite(p.layer==='ground'?sc:u,p);}
-   castShadows(false);
+   if(shadowsDirty){castShadows(false);shadowsDirty=false;}
    surface.dataset.foundations='soil-moss-v1';dirty=false;surface.dataset.paints=String(Number(surface.dataset.paints||0)+1);lighting.capture(uprights);doors.refreshLighting();
    surfaceView.sync(worldWidth*scale,worldHeight*scale);
   });
@@ -301,9 +302,23 @@ export async function createWorldView(
   hud:encounters.hud,
   encounters,
   parallax,
-  update(state:State,id:Building|null){encounters?.setMaxHp(100+heroBonus(state));const room=net?.active()?net.layout().filter((b):b is Building=>(buildings as readonly string[]).includes(b)):null;
-   const next=buildings.map(b=>state.levels[b]+(isBuilt(state,b)?'':'x')).join(',')+':'+id+':'+(room?.join('+')??'');if(next===signature)return;signature=next;levels=state.levels;selected=id;
-   if(!LEGACY_LAYOUT||room)built=new Set(room??buildings.filter(b=>isBuilt(state,b)));canvas.dataset.buildings=[...built].join(',');objects=makeObjects();lighting.setScene(objects);hero.setScene(objects);party?.setScene(objects);dirty=true;requestDraw();},
+  update(state:State,id:Building|null){
+   encounters?.setMaxHp(100+heroBonus(state));
+   const room=net?.active()?net.layout().filter((b):b is Building=>(buildings as readonly string[]).includes(b)):null;
+   const nextBuilt=(!LEGACY_LAYOUT||room)?new Set(room??buildings.filter(b=>isBuilt(state,b))):new Set(built);
+   const layoutSig=buildings.map(b=>state.levels[b]+(nextBuilt.has(b)?'':'x')).join(',');
+   const next=layoutSig+':'+id;
+   if(next===signature)return;
+   const layoutChanged=layoutSig!==lastLayoutSig;
+   signature=next;lastLayoutSig=layoutSig;levels=state.levels;selected=id;built=nextBuilt;
+   canvas.dataset.buildings=[...built].join(',');
+   objects=makeObjects();
+   if(layoutChanged){
+    hero.setScene(objects);party?.setScene(objects);shadowsDirty=true;
+   }
+   lighting.setScene(objects);dirty=true;
+   requestDraw();
+  },
   focus(id:Building){glideTo(slots[id].x,slots[id].y-60);},
   fit(){stopGlide();chasing=false;vx=vy=0;scale=Math.max(.2,Math.min((w-40)/WORLD.width,(h-120)/WORLD.height));cx=WORLD.width/2;cy=385;requestDraw();},
   setHero:hero.setHero,

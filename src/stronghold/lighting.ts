@@ -3,6 +3,7 @@ import {createCanvasSprite} from '../app/loader';
 import {TORCHES,torchesOn,drawTorches,createTorchFlames,torchAssetsReady} from './torches';
 import {LIGHT_SPRITES as SPRITES,emissive} from './light-anchors';
 import {lightingAt,resolveTime,modeFrom,sunAt,type Lighting,type Mode} from './daylight';
+import {measureTracelogPhase} from './tracelog';
 
 export type LitObject={file:string;image:HTMLImageElement;x:number;y:number;width:number;height:number;foot:number;shear:number;vertical:number;selected:boolean};
 const KEY='arkadia.stronghold.lighting',RES=.35;
@@ -65,20 +66,35 @@ export function createLighting(o:{
  }
  torchHaloView.sync(width,height);
 
+ const staticLights=canvas();
+ let staticSceneKey='',staticLightCount=0;
  function setScene(objects:LitObject[]){
-  const l=lights.getContext('2d')!,h=halo.getContext('2d')!,b=bloom.getContext('2d')!;let count=0;
-  for(const c of [l,h,b]){c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,lights.width,lights.height);world(c);c.globalCompositeOperation='lighter';}
-  for(const p of objects){
-   if(p.selected){const f=point(p,p.image.width/2,p.image.height*p.foot);pool(l,f.x,f.y,p.width*.5,COLOURS.selection,.3);}
-   const list=SPRITES[p.file];if(!list)continue;const m=mask(p),scale=p.width/p.image.width;
-   for(const a of list){const rgb=COLOURS[a.kind]||COLOURS.fire,s=point(p,a.x,a.y),g=point(p,a.x,a.y+(a.drop||0)),k=a.intensity??1,r=Math.max(6,a.size*scale*2.2);count++;
-    if(a.radius){pool(l,g.x,g.y,a.radius,rgb,.75*k);pool(l,s.x,s.y,r*1.6,rgb,.5*k,1);pool(b,g.x,g.y,a.radius*.6,rgb,.18*k);pool(b,s.x,s.y,r*1.8,rgb,.55*k,1);pool(h,s.x,s.y,r*1.4,rgb,.7*k,1);}}
-   sprite(l,p,m.white);
-   for(const [c,blur] of [[b,6],[b,2],[h,3]] as const){c.filter=`blur(${blur}px)`;c.globalAlpha=.8;sprite(c,p,m.colour);c.filter='none';c.globalAlpha=1;}
-  }
-  for(const c of [l,h,b])c.globalCompositeOperation='source-over';
-  haloView.sync(width,height);
-  surface.dataset.lights=String(count);surface.dataset.lightBakes=String(Number(surface.dataset.lightBakes||0)+1);last='';tick();
+  measureTracelogPhase('worldDraw',()=>{
+   const nextStaticKey=objects.map(p=>`${p.file}:${p.x}:${p.y}:${p.width}`).join('|');
+   const l=lights.getContext('2d')!;
+   if(nextStaticKey!==staticSceneKey){
+    staticSceneKey=nextStaticKey;
+    const sl=staticLights.getContext('2d')!,h=halo.getContext('2d')!,b=bloom.getContext('2d')!;let count=0;
+    for(const c of [sl,h,b]){c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,lights.width,lights.height);world(c);c.globalCompositeOperation='lighter';}
+    for(const p of objects){
+     const list=SPRITES[p.file];if(!list)continue;const m=mask(p),scale=p.width/p.image.width;
+     for(const a of list){const rgb=COLOURS[a.kind]||COLOURS.fire,s=point(p,a.x,a.y),g=point(p,a.x,a.y+(a.drop||0)),k=a.intensity??1,r=Math.max(6,a.size*scale*2.2);count++;
+      if(a.radius){pool(sl,g.x,g.y,a.radius,rgb,.75*k);pool(sl,s.x,s.y,r*1.6,rgb,.5*k,1);pool(b,g.x,g.y,a.radius*.6,rgb,.18*k);pool(b,s.x,s.y,r*1.8,rgb,.55*k,1);pool(h,s.x,s.y,r*1.4,rgb,.7*k,1);}}
+     sprite(sl,p,m.white);
+     for(const [c,blur] of [[b,6],[b,2],[h,3]] as const){c.filter=`blur(${blur}px)`;c.globalAlpha=.8;sprite(c,p,m.colour);c.filter='none';c.globalAlpha=1;}
+    }
+    for(const c of [sl,h,b])c.globalCompositeOperation='source-over';
+    haloView.sync(width,height);
+    staticLightCount=count;
+   }
+   l.setTransform(1,0,0,1,0,0);l.globalCompositeOperation='copy';l.drawImage(staticLights,0,0);
+   world(l);l.globalCompositeOperation='lighter';
+   for(const p of objects){
+    if(p.selected){const f=point(p,p.image.width/2,p.image.height*p.foot);pool(l,f.x,f.y,p.width*.5,COLOURS.selection,.3);}
+   }
+   l.globalCompositeOperation='source-over';
+   surface.dataset.lights=String(staticLightCount);surface.dataset.lightBakes=String(Number(surface.dataset.lightBakes||0)+1);last='';tick();
+  });
  }
 
  let live:(()=>number|null)|null=null;
@@ -90,26 +106,28 @@ export function createLighting(o:{
  function drawLightmap(rgb:number[],li:number){spriteRevision++;const m=lightmap.getContext('2d')!;m.setTransform(1,0,0,1,0,0);m.globalAlpha=1;m.fillStyle=`rgb(${rgb})`;m.fillRect(0,0,lightmap.width,lightmap.height);m.globalCompositeOperation='lighter';m.globalAlpha=li;m.drawImage(lights,0,0);m.globalAlpha=1;if(torchesOn(current.t))m.drawImage(torchLight,0,0);m.globalCompositeOperation='source-over';}
 
  function paint(state:Lighting,force=false){
-  const q=(v:number,n:number)=>Math.round(v*n)/n,rgb=state.ambient.map(v=>Math.round(q(v,64)*255)),li=q(state.lights,50),gl=q(state.glow,50),key=rgb+'|'+li+'|'+gl+'|'+torchesOn(state.t);
+  const q=(v:number,n:number)=>Math.round(v*n)/n,rgb=state.ambient.map(v=>Math.round(q(v,32)*255)),li=q(state.lights,25),gl=q(state.glow,25),key=rgb+'|'+li+'|'+gl+'|'+torchesOn(state.t);
   if(key===last||!base.width||(!force&&Date.now()-moving<300))return;last=key;
-  const off=rgb.every(v=>v===255)&&li===0,c=surface.getContext('2d')!;
-  drawLightmap(rgb,li);
-  unlit(c);
-  if(!off){
-   worldSpace(c);
-   c.globalCompositeOperation='multiply';c.drawImage(lightmap,left,top,width,height);
-   if(torchesOn(state.t)){c.globalCompositeOperation='screen';c.drawImage(torchBloom,left,top,width,height);}
-   if(gl){c.globalCompositeOperation='screen';c.globalAlpha=gl;c.drawImage(bloom,left,top,width,height);c.globalAlpha=1;}
-   if(torchesOn(state.t)){c.globalCompositeOperation='source-over';drawTorches(c,true);}
-  }
-  c.globalCompositeOperation='source-over';c.setTransform(1,0,0,1,0,0);
-  tintSnow(rgb,off);
-  flickerGroup.alpha=q(gl*.45,50);
-  flickerGroup.visible=!off&&gl>0;
-  torchHaloView.sprite.visible=torchesOn(state.t);
-  surface.dataset.torches=torchesOn(state.t)?'lit':'off';surface.dataset.torchCount=String(TORCHES.length);
-  surface.dataset.lighting=off?'off':'on';surface.dataset.lightPaints=String(Number(surface.dataset.lightPaints||0)+1);
-  o.onSurfaceUpdate();
+  measureTracelogPhase('worldDraw',()=>{
+   const off=rgb.every(v=>v===255)&&li===0,c=surface.getContext('2d')!;
+   drawLightmap(rgb,li);
+   unlit(c);
+   if(!off){
+    worldSpace(c);
+    c.globalCompositeOperation='multiply';c.drawImage(lightmap,left,top,width,height);
+    if(torchesOn(state.t)){c.globalCompositeOperation='screen';c.drawImage(torchBloom,left,top,width,height);}
+    if(gl){c.globalCompositeOperation='screen';c.globalAlpha=gl;c.drawImage(bloom,left,top,width,height);c.globalAlpha=1;}
+    if(torchesOn(state.t)){c.globalCompositeOperation='source-over';drawTorches(c,true);}
+   }
+   c.globalCompositeOperation='source-over';c.setTransform(1,0,0,1,0,0);
+   tintSnow(rgb,off);
+   flickerGroup.alpha=q(gl*.45,50);
+   flickerGroup.visible=!off&&gl>0;
+   torchHaloView.sprite.visible=torchesOn(state.t);
+   surface.dataset.torches=torchesOn(state.t)?'lit':'off';surface.dataset.torchCount=String(TORCHES.length);
+   surface.dataset.lighting=off?'off':'on';surface.dataset.lightPaints=String(Number(surface.dataset.lightPaints||0)+1);
+   o.onSurfaceUpdate();
+  });
  }
 
  const worldSpace=(c:CanvasRenderingContext2D)=>c.setTransform(surface.width/width,0,0,surface.height/height,-left*surface.width/width,-top*surface.height/height);
