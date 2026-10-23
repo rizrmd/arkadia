@@ -90,14 +90,14 @@ export function createFxStage(o:FxStageOptions){
  };
  const boot=(async()=>{
   // The NixieFX runtime loads with the bundle, off the game's first paint.
-  const [{PixiVfxRenderer,createDerivedAlphaTexture},{loadVfxExportBundle},packed]=await Promise.all([import('nixie-fx/pixi'),import('nixie-fx/export'),fetchBundle()]);
+  const [{PixiVfxRenderer,createDerivedAlphaTexture},{loadVfxExportBundle},{shareParticleEffectDefinition},packed]=await Promise.all([import('nixie-fx/pixi'),import('nixie-fx/export'),import('nixie-fx'),fetchBundle()]);
   deriveAlpha=createDerivedAlphaTexture;
   const bundle=loadVfxExportBundle({manifest:packed.manifest,effectsByPath:packed.effects},{requiredBackend:'pixi2d'});
   for(const fx of bundle.effectsById.values()){
    const effKey=(fx.sourceEffectFile??fx.id).replace(/\.json$/,'');
    const isGround=effKey.endsWith('.ground');
    if(o.host&&fx.emitters){
-    const maxEmitters=isGround?4:3;
+    const maxEmitters=isGround?8:5;
     if(fx.emitters.length>maxEmitters){
      const src=fx.emitters.filter((e:any)=>!/(smoke|glint|hand core)/i.test(e.name??''));
      const base=src.length>=maxEmitters?src:fx.emitters;
@@ -108,7 +108,7 @@ export function createFxStage(o:FxStageOptions){
       fx.emitters=base;
      }
     }
-    const perMax=isGround?14:Math.max(8,Math.min(12,Math.floor(32/Math.max(1,fx.emitters.length))));
+    const perMax=isGround?38:Math.max(14,Math.min(22,Math.floor(88/Math.max(1,fx.emitters.length))));
     for(const e of fx.emitters as any[]){
      e.maxParticles=Math.min(e.maxParticles||perMax,perMax);
      if(e.spawn){
@@ -120,8 +120,8 @@ export function createFxStage(o:FxStageOptions){
        if(typeof rv.max==='number'&&rv.max>perMax)rv.max=perMax;
       }
       if(e.spawn.bursts)for(const b of e.spawn.bursts){
-       if(isGround)b.count=Math.min(8,b.count);
-       else if(b.count>5)b.count=Math.min(perMax,Math.max(5,Math.ceil(b.count*.5)));
+       if(isGround)b.count=Math.min(perMax,b.count);
+       else if(b.count>6)b.count=Math.min(perMax,Math.max(10,Math.ceil(b.count*.8)));
       }
      }
     }
@@ -143,10 +143,12 @@ export function createFxStage(o:FxStageOptions){
    for(const [key,fx] of effects){
     if(key.startsWith('ui/'))continue;
     const plane=planeOf(key),P=planes[plane],proj=projection(plane,{u:0,v:0,h:0,yaw:0,scale:1});
-    const copies=key.endsWith('.bolt')?3:1;
+    const copies=key.endsWith('.bolt')?4:key.startsWith('shared/hit.')?2:1;
     const list=pool.get(key)??[];
     for(let c=0;c<copies;c++){
-     const inst=P.vfx.createEffect(fx,{projection:proj,position:[0,0,0],seed:c+1,timeSeconds:0,autoStart:true,addToStage:false});
+     const inst=P.vfx.createEffect(fx,{projection:proj,position:[0,0,0],seed:c+1,timeSeconds:0,autoStart:false,addToStage:false});
+     shareParticleEffectDefinition(inst.definition);
+     inst.spawn({position:[0,0,0],seed:c+1,timeSeconds:0});
      inst.update(0.08,0.08);
      inst.stop();inst.root.visible=false;P.vfx.removeEffect(inst,false);
      list.push(inst);
@@ -170,7 +172,11 @@ export function createFxStage(o:FxStageOptions){
   const plane=planeOf(key),anchor:Anchor={u:at.u,v:at.v,h:at.h??0,yaw:at.yaw??0,scale:at.scale??1},proj=projection(plane,anchor),P=planes[plane];
   const seed=at.seed??((Math.random()*0x7fffffff)|0);
   if(o.host){
-   const maxSame=key.endsWith('.bolt')?3:1;
+   if(live.length>=4&&tilePoint(anchor.u,anchor.v).y>920&&(key.endsWith('.ground')||key.endsWith('.rim'))){
+    played++;
+    return {key,setLocal:()=>{},moveTo:()=>{},release:()=>{},get alive(){return false;}};
+   }
+   const maxSame=key.endsWith('.bolt')?4:key.startsWith('shared/hit.')?2:1;
    let sameCount=0,oldest:Live|null=null;
    for(let i=0;i<live.length;i++){
     const cand=live[i];
@@ -190,7 +196,11 @@ export function createFxStage(o:FxStageOptions){
   }
   let inst=pool.get(key)?.pop();
   if(inst){P.vfx.addEffect(inst,true);inst.setProjection(proj);inst.spawn({position:[0,0,0],seed,timeSeconds:clock});inst.root.visible=true;}
-  else inst=P.vfx.createEffect(fx,{projection:proj,position:[0,0,0],seed,timeSeconds:clock});
+  else{
+   inst=P.vfx.createEffect(fx,{projection:proj,position:[0,0,0],seed,timeSeconds:clock,autoStart:false});
+   import('nixie-fx').then(m=>m.shareParticleEffectDefinition(inst!.definition)).catch(()=>{});
+   inst.spawn({position:[0,0,0],seed,timeSeconds:clock});
+  }
   played++;
   const l:Live={key,plane,inst,anchor,follow:at.follow,age:0,released:false,handle:null!};
   l.handle={key,
@@ -309,6 +319,7 @@ export function createFxStage(o:FxStageOptions){
   place(x:number,y:number,scale:number){view.x=x;view.y=y;view.scale=scale;},
   play,frame,
   particleCount:()=>planes?planes.world.vfx.stats.activeParticles+planes.ground.vfx.stats.activeParticles:0,
+  liveCount:()=>live.length,
   stats:()=>({ready,failed,effects:effects.size,live:live.length,played,peakParticles,
    occludedParticles,minOcclusion,meanOcclusion,backEffects,frontEffects,
    particles:planes?planes.world.vfx.stats.activeParticles+planes.ground.vfx.stats.activeParticles:0,

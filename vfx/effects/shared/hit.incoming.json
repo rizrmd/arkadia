@@ -320,9 +320,9 @@
      },
      "alpha": {
       "mode": "constant",
-      "value": 0.9,
-      "min": 0.9,
-      "max": 0.9,
+      "value": 0.96,
+      "min": 0.96,
+      "max": 0.96,
       "curve": [
        {
         "x": 0,
@@ -377,9 +377,9 @@
     },
     "size": {
      "mode": "random",
-     "value": 0.06,
-     "min": 0.045,
-     "max": 0.075,
+     "value": 0.0715,
+     "min": 0.055,
+     "max": 0.088,
      "curve": [
       {
        "x": 0,
@@ -1075,8 +1075,8 @@
        "alpha": 1
       },
       {
-       "position": 0.45,
-       "alpha": 0.88
+       "position": 0.55,
+       "alpha": 0.94
       },
       {
        "position": 1,
@@ -2616,9 +2616,9 @@
      },
      "alpha": {
       "mode": "constant",
-      "value": 1,
-      "min": 1,
-      "max": 1,
+      "value": 0.95,
+      "min": 0.95,
+      "max": 0.95,
       "curve": [
        {
         "x": 0,
@@ -2644,9 +2644,9 @@
      },
      "intensity": {
       "mode": "constant",
-      "value": 1.8,
-      "min": 1.8,
-      "max": 1.8,
+      "value": 1,
+      "min": 1,
+      "max": 1,
       "curve": [
        {
         "x": 0,
@@ -2673,9 +2673,9 @@
     },
     "size": {
      "mode": "random",
-     "value": 0.038,
-     "min": 0.028,
-     "max": 0.048,
+     "value": 0.046,
+     "min": 0.034,
+     "max": 0.058,
      "curve": [
       {
        "x": 0,
@@ -2702,9 +2702,9 @@
     "size3D": {
      "x": {
       "mode": "random",
-      "value": 0.038,
-      "min": 0.028,
-      "max": 0.048,
+      "value": 0.046,
+      "min": 0.034,
+      "max": 0.058,
       "curve": [
        {
         "x": 0,
@@ -2730,9 +2730,9 @@
      },
      "y": {
       "mode": "random",
-      "value": 0.11499999999999999,
-      "min": 0.08,
-      "max": 0.15,
+      "value": 0.13,
+      "min": 0.09,
+      "max": 0.17,
       "curve": [
        {
         "x": 0,
@@ -3119,7 +3119,7 @@
     }
    },
    "render": {
-    "blend": "additive",
+    "blend": "alpha",
     "shading": "unlit",
     "depthTest": false,
     "depthWrite": false,
@@ -3155,7 +3155,7 @@
       },
       {
        "x": 0.65,
-       "y": 0.78
+       "y": 0.82
       },
       {
        "x": 1,
@@ -3169,7 +3169,7 @@
       },
       {
        "x": 0.65,
-       "y": 0.78
+       "y": 0.82
       },
       {
        "x": 1,
@@ -3194,7 +3194,7 @@
       },
       {
        "x": 0.65,
-       "y": 0.78
+       "y": 0.82
       },
       {
        "x": 1,
@@ -3208,7 +3208,7 @@
       },
       {
        "x": 0.65,
-       "y": 0.78
+       "y": 0.82
       },
       {
        "x": 1,
@@ -3379,8 +3379,8 @@
        "alpha": 1
       },
       {
-       "position": 0.6,
-       "alpha": 0.9
+       "position": 0.65,
+       "alpha": 0.94
       },
       {
        "position": 1,

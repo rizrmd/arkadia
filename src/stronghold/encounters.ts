@@ -707,7 +707,7 @@ export async function createEncounters(o:{
    const rotOuter=((nowMs/1000)*0.55)%(Math.PI*2);
    const rotInner=-(((nowMs/1000)*0.40)%(Math.PI*2));
    const aoeDpr=Math.min(devicePixelRatio||1,1.5);
-   const baseCacheKey=`pixel-rot-v7:${rMult.toFixed(2)}:${aoeDpr}`;
+   const baseCacheKey=`pixel-rot-v8:${rMult.toFixed(2)}:${aoeDpr}`;
    const aoeKey=baseCacheKey;
    if(aoe.dataset.key!==aoeKey){
     aoe.dataset.key=aoeKey;aoe.dataset.reach=rMult.toFixed(2);aoe.dataset.radiusPx=String(aoeRx);
@@ -720,7 +720,7 @@ export async function createEncounters(o:{
      const oCtx=outerCan.getContext('2d')!,iCtx=innerCan.getContext('2d')!;
      oCtx.setTransform(aoeDpr,0,0,aoeDpr,aoePad*aoeDpr,aoePad*aoeDpr);oCtx.imageSmoothingEnabled=false;
      iCtx.setTransform(aoeDpr,0,0,aoeDpr,aoePad*aoeDpr,aoePad*aoeDpr);iCtx.imageSmoothingEnabled=false;
-     // Fine irregular dashed pixel rings in circular ground-plane space (squashed 0.52 in Y by aoeGround)
+     // Fine irregular dashed pixel rings in circular ground-plane space with dark-umber contrast rim for daytime readability
      const hash=(n:number)=>(((Math.imul(n,1664525)+1013904223)>>>0)&0xffff)/0xffff;
      const drawHeroDashedRing=(targetCtx:CanvasRenderingContext2D,rBase:number,seed:number,isOuter:boolean)=>{
       const steps=Math.max(120,Math.round(rBase*3.4));
@@ -738,11 +738,13 @@ export async function createEncounters(o:{
        const rx=Math.round(Math.cos(ang)*rCur-Math.sin(ang)*jitT);
        const ry=Math.round(Math.sin(ang)*rCur+Math.cos(ang)*jitT);
        const hot=isOuter?(i%2===0):(i%3===0),psW=(i%4===0)?2:1.5,psH=(i%4===0)?3:2;
+       targetCtx.fillStyle=isOuter?'rgba(118,38,8,0.68)':'rgba(98,30,6,0.58)';
+       targetCtx.fillRect(rx-0.5,ry-0.5,psW+1,psH+1);
        targetCtx.fillStyle=hot
-        ?(isOuter?'rgba(255,232,162,0.88)':'rgba(255,192,102,0.68)')
-        :(isOuter?'rgba(255,172,82,0.68)':'rgba(255,156,68,0.48)');
+        ?(isOuter?'rgba(255,224,128,0.98)':'rgba(255,192,96,0.92)')
+        :(isOuter?'rgba(255,156,52,0.94)':'rgba(242,128,36,0.86)');
        targetCtx.fillRect(rx,ry,psW,psH);
-       if(hot&&isOuter&&(i%5===0)){targetCtx.fillStyle='rgba(255,252,232,0.92)';targetCtx.fillRect(rx,ry,1,2);}
+       if(hot&&isOuter&&(i%5===0)){targetCtx.fillStyle='rgba(255,252,232,0.98)';targetCtx.fillRect(rx,ry,1,2);}
       }
      };
      drawHeroDashedRing(oCtx,aoeRx-3,13,true);
@@ -760,8 +762,8 @@ export async function createEncounters(o:{
    const fadePhase=((nowMs%2000)/2000)*Math.PI*2;
    const outerWave=0.5-0.5*Math.cos(fadePhase);
    const innerWave=0.5-0.5*Math.cos(fadePhase-0.95);
-   const minA=comboHighlightMs>0?0.36:h.state==='attack'?0.24:0.16;
-   const maxA=comboHighlightMs>0?1.0:h.state==='attack'?0.98:0.92;
+   const minA=comboHighlightMs>0?0.55:h.state==='attack'?0.48:0.42;
+   const maxA=comboHighlightMs>0?1.0:h.state==='attack'?1.0:0.98;
    const outerAlpha=minA+(maxA-minA)*outerWave;
    const innerAlpha=(minA*0.85)+(maxA*0.88-minA*0.85)*innerWave;
    aoeView.sprite.alpha=outerAlpha;

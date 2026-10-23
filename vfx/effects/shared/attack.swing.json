@@ -320,9 +320,9 @@
      },
      "alpha": {
       "mode": "constant",
-      "value": 1,
-      "min": 1,
-      "max": 1,
+      "value": 0.95,
+      "min": 0.95,
+      "max": 0.95,
       "curve": [
        {
         "x": 0,
@@ -348,9 +348,9 @@
      },
      "intensity": {
       "mode": "constant",
-      "value": 2,
-      "min": 2,
-      "max": 2,
+      "value": 1,
+      "min": 1,
+      "max": 1,
       "curve": [
        {
         "x": 0,
@@ -377,9 +377,9 @@
     },
     "size": {
      "mode": "random",
-     "value": 0.038,
-     "min": 0.028,
-     "max": 0.048,
+     "value": 0.046,
+     "min": 0.034,
+     "max": 0.058,
      "curve": [
       {
        "x": 0,
@@ -406,9 +406,9 @@
     "size3D": {
      "x": {
       "mode": "random",
-      "value": 0.038,
-      "min": 0.028,
-      "max": 0.048,
+      "value": 0.046,
+      "min": 0.034,
+      "max": 0.058,
       "curve": [
        {
         "x": 0,
@@ -434,9 +434,9 @@
      },
      "y": {
       "mode": "random",
-      "value": 0.11499999999999999,
-      "min": 0.08,
-      "max": 0.15,
+      "value": 0.13,
+      "min": 0.09,
+      "max": 0.17,
       "curve": [
        {
         "x": 0,
@@ -823,7 +823,7 @@
     }
    },
    "render": {
-    "blend": "additive",
+    "blend": "alpha",
     "shading": "unlit",
     "depthTest": false,
     "depthWrite": false,
@@ -859,7 +859,7 @@
       },
       {
        "x": 0.65,
-       "y": 0.78
+       "y": 0.82
       },
       {
        "x": 1,
@@ -873,7 +873,7 @@
       },
       {
        "x": 0.65,
-       "y": 0.78
+       "y": 0.82
       },
       {
        "x": 1,
@@ -898,7 +898,7 @@
       },
       {
        "x": 0.65,
-       "y": 0.78
+       "y": 0.82
       },
       {
        "x": 1,
@@ -912,7 +912,7 @@
       },
       {
        "x": 0.65,
-       "y": 0.78
+       "y": 0.82
       },
       {
        "x": 1,
@@ -1083,8 +1083,8 @@
        "alpha": 1
       },
       {
-       "position": 0.6,
-       "alpha": 0.9
+       "position": 0.65,
+       "alpha": 0.94
       },
       {
        "position": 1,
@@ -2624,9 +2624,9 @@
      },
      "alpha": {
       "mode": "constant",
-      "value": 1,
-      "min": 1,
-      "max": 1,
+      "value": 0.92,
+      "min": 0.92,
+      "max": 0.92,
       "curve": [
        {
         "x": 0,
@@ -2652,9 +2652,9 @@
      },
      "intensity": {
       "mode": "constant",
-      "value": 1.5,
-      "min": 1.5,
-      "max": 1.5,
+      "value": 1,
+      "min": 1,
+      "max": 1,
       "curve": [
        {
         "x": 0,
@@ -3127,7 +3127,7 @@
     }
    },
    "render": {
-    "blend": "additive",
+    "blend": "alpha",
     "shading": "unlit",
     "depthTest": false,
     "depthWrite": false,

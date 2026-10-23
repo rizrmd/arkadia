@@ -190,13 +190,24 @@ export async function createWorldView(
  progress(loaded+=40,steps,'Raising the Stronghold');
 
  const uprights=document.createElement('canvas');uprights.id='world-uprights';uprights.width=surface.width;uprights.height=surface.height;
- let shadowsDirty=true;
+ const baseSurface=document.createElement('canvas');baseSurface.width=surface.width;baseSurface.height=surface.height;
+ const baseUprights=document.createElement('canvas');baseUprights.width=surface.width;baseUprights.height=surface.height;
+ let shadowsDirty=true,baseDirty=true;
  function paintWorld(){
   measureTracelogPhase('worldPaint',()=>{
-   const u=uprights.getContext('2d')!;u.setTransform(1,0,0,1,0,0);u.clearRect(0,0,uprights.width,uprights.height);
+   const u=uprights.getContext('2d')!;
+   if(baseDirty){
+    const bs=baseSurface.getContext('2d')!,bu=baseUprights.getContext('2d')!;
+    bu.setTransform(1,0,0,1,0,0);bu.clearRect(0,0,baseUprights.width,baseUprights.height);
+    for(const c of [bs,bu])c.setTransform(surface.width/worldWidth,0,0,surface.height/worldHeight,-left*surface.width/worldWidth,-top*surface.height/worldHeight);
+    bs.fillStyle=snowPattern;bs.fillRect(left,top,worldWidth,worldHeight);bs.fillStyle=pavingPattern;bs.fill(paved);bs.drawImage(apron,apronX,apronY);bs.drawImage(shadow,shadowLeft,shadowTop);
+    for(const p of objects){if(p.id==='gate'){bs.save();bs.translate(p.x,p.y);drawFoundation(bs,p,images.get(FOUNDATION_SOIL)!,'under',images.get(FOUNDATION_DRIFT),images.get(FOUNDATION_MOSS));bs.restore();}else drawSprite(p.layer==='ground'?bs:bu,{...p,selected:false});}
+    baseDirty=false;
+   }
+   sc.setTransform(1,0,0,1,0,0);sc.globalCompositeOperation='copy';sc.drawImage(baseSurface,0,0);sc.globalCompositeOperation='source-over';
+   u.setTransform(1,0,0,1,0,0);u.globalCompositeOperation='copy';u.drawImage(baseUprights,0,0);u.globalCompositeOperation='source-over';
    for(const c of [sc,u])c.setTransform(surface.width/worldWidth,0,0,surface.height/worldHeight,-left*surface.width/worldWidth,-top*surface.height/worldHeight);
-   sc.fillStyle=snowPattern;sc.fillRect(left,top,worldWidth,worldHeight);sc.fillStyle=pavingPattern;sc.fill(paved);sc.drawImage(apron,apronX,apronY);sc.drawImage(shadow,shadowLeft,shadowTop);
-   for(const p of objects){if(p.id==='gate'){sc.save();sc.translate(p.x,p.y);drawFoundation(sc,p,images.get(FOUNDATION_SOIL)!,'under',images.get(FOUNDATION_DRIFT),images.get(FOUNDATION_MOSS));sc.restore();}else drawSprite(p.layer==='ground'?sc:u,p);}
+   for(const p of objects)if(p.selected&&p.id!=='gate')drawSprite(p.layer==='ground'?sc:u,p);
    if(shadowsDirty){castShadows(false);shadowsDirty=false;}
    surface.dataset.foundations='soil-moss-v1';dirty=false;surface.dataset.paints=String(Number(surface.dataset.paints||0)+1);lighting.capture(uprights);doors.refreshLighting();
    surfaceView.sync(worldWidth*scale,worldHeight*scale);
@@ -218,7 +229,7 @@ export async function createWorldView(
    snowSprite.tileScale.set(scale);
    snowSprite.tilePosition.set(x,y);
 
-   const pSnap=parallax.snapshot();
+   const pSnap=parallax.state();
    canvas.dataset.ready='true';canvas.dataset.mode='full-screen';canvas.dataset.renderer='pixi-msdf-world';
    canvas.dataset.zoom='locked';canvas.dataset.scale=scale.toFixed(4);canvas.dataset.targetScale=targetScale().toFixed(4);canvas.dataset.reach=reachFactor().toFixed(2);
    canvas.dataset.biome=pSnap.biome;canvas.dataset.cornerArea=pSnap.area;
@@ -323,13 +334,15 @@ export async function createWorldView(
    const next=layoutSig+':'+id;
    if(next===signature)return;
    const layoutChanged=layoutSig!==lastLayoutSig;
+   const prevSelected=selected;
    signature=next;lastLayoutSig=layoutSig;levels=state.levels;selected=id;built=nextBuilt;
    canvas.dataset.buildings=[...built].join(',');
    objects=makeObjects();
    if(layoutChanged){
-    hero.setScene(objects);party?.setScene(objects);shadowsDirty=true;
+    hero.setScene(objects);party?.setScene(objects);shadowsDirty=true;baseDirty=true;
    }
-   lighting.setScene(objects);dirty=true;
+   lighting.setScene(objects);
+   if(layoutChanged||(prevSelected&&prevSelected!=='gate')||(id&&id!=='gate'))dirty=true;
    requestDraw();
   },
   focus(id:Building){glideTo(slots[id].x,slots[id].y-60);},
