@@ -5,12 +5,13 @@ import sharp from 'sharp';
 import {createHash} from 'node:crypto';
 const ROOT='public/run-cadence',CELL=384,DIRS=['N','NE','E','SE','S'];
 const hash=b=>createHash('sha256').update(b).digest('hex');
-const audit={cell:[384,384],pivot:[192,360],fps:10,cycleMs:800,cyclesPerSheet:1,verticalOrder:[0,2,4,6,1,3,5,7],heroes:{}};
+const audit={cell:[384,384],pivot:[192,360],fps:10,cycleMs:800,cyclesPerSheet:1,verticalOrder:[0,1,2,3,4,5,6,7],heroes:{}};
 async function normalize(file){
  const {data,info}=await sharp(file).ensureAlpha().raw().toBuffer({resolveWithObject:true});
  if(!info||info.channels!==4)throw Error('RGBA required: '+file);
  let transparent=0;for(let i=3;i<data.length;i+=4)if(data[i]<8)transparent++;
  if(transparent<info.width*info.height*.05)throw Error('No transparent backdrop: '+file);
+ if(info.width===CELL*4&&info.height===CELL*2)return Promise.all(Array.from({length:8},(_,f)=>sharp(data,{raw:info}).extract({left:(f%4)*CELL,top:Math.floor(f/4)*CELL,width:CELL,height:CELL}).png().toBuffer()));
  const cells=[];
  for(let f=0;f<8;f++){
   const x0=Math.round(f%4*info.width/4),x1=Math.round((f%4+1)*info.width/4),y0=Math.round(Math.floor(f/4)*info.height/2),y1=Math.round((Math.floor(f/4)+1)*info.height/2),w=x1-x0,h=y1-y0;
