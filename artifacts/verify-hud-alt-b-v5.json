@@ -1,0 +1,474 @@
+{
+  "ok": true,
+  "desktop": {
+    "hudGeometry": {
+      "arcCenter": {
+        "x": 1426.22009569378,
+        "y": 887.0813397129186
+      },
+      "sockets": [
+        {
+          "index": 0,
+          "x": 1264.3062200956938,
+          "y": 742.3923444976076,
+          "radius": 53.397129186602875,
+          "locked": false,
+          "name": "Rift Bolt",
+          "level": 1
+        },
+        {
+          "index": 1,
+          "x": 1371.1004784688996,
+          "y": 676.9377990430622,
+          "radius": 43.0622009569378,
+          "locked": true,
+          "name": "Empty Slot",
+          "level": 0
+        },
+        {
+          "index": 2,
+          "x": 1188.5167464114832,
+          "y": 840.5741626794259,
+          "radius": 43.0622009569378,
+          "locked": true,
+          "name": "Empty Slot",
+          "level": 0
+        }
+      ],
+      "scale": 0.861244019138756
+    },
+    "blessingUi": {
+      "active": true,
+      "nonModal": true,
+      "centerScreenObstructionRatio": 0,
+      "headerCrest": {
+        "text": "LEVEL UP · CHOOSE BLESSING",
+        "rect": {
+          "x": 464,
+          "y": 23,
+          "width": 512,
+          "height": 38
+        },
+        "interactive": false
+      },
+      "passiveBanners": [
+        {
+          "id": "vitality",
+          "optionNumber": 1,
+          "text": "Furnace Heart (PASSIVE) · +25 Max HP · +12% SPD",
+          "rect": {
+            "x": 455,
+            "y": 72,
+            "width": 531,
+            "height": 53
+          },
+          "glowing": true
+        }
+      ],
+      "skillPopovers": [
+        {
+          "id": "rift-dash",
+          "optionNumber": 2,
+          "socketIndex": 1,
+          "width": 241,
+          "height": 102,
+          "polarAngleRad": -1.8273129394392202,
+          "polarAngleDeg": -104.6973192795119,
+          "outwardNormal": {
+            "x": -0.2537126883649393,
+            "y": -0.9672796243913313
+          },
+          "initialCenter": {
+            "x": 1322.1700167271545,
+            "y": 490.39041365265905
+          },
+          "center": {
+            "x": 1308.5,
+            "y": 559.8482296650718
+          },
+          "rect": {
+            "xMin": 1188,
+            "yMin": 508.8482296650718,
+            "xMax": 1429,
+            "yMax": 610.8482296650718,
+            "width": 241,
+            "height": 102
+          },
+          "socketCenter": {
+            "x": 1371.1004784688996,
+            "y": 676.9377990430622
+          },
+          "socketRadius": 43.0622009569378,
+          "nearestBorderPoint": {
+            "x": 1371.1004784688996,
+            "y": 610.8482296650718
+          },
+          "losUnitVector": {
+            "x": 0,
+            "y": 1
+          },
+          "losAngleRad": 1.5707963267948966,
+          "losAngleDeg": 90,
+          "rimApex": {
+            "x": 1371.1004784688996,
+            "y": 631.0334928229665
+          },
+          "tailMode": "cardinal-edge",
+          "edgeOrCorner": "bottom",
+          "cornerDistancePx": 57.89952153110039,
+          "chamferPx": 13.26315789473684,
+          "baseWidthPx": 15.157894736842104,
+          "basePoint1": {
+            "x": 1363.5215311004786,
+            "y": 610.8482296650718
+          },
+          "basePoint2": {
+            "x": 1378.6794258373207,
+            "y": 610.8482296650718
+          },
+          "pointerPolygon": [
+            {
+              "x": 1363.5215311004786,
+              "y": 610.8482296650718
+            },
+            {
+              "x": 1371.1004784688996,
+              "y": 631.0334928229665
+            },
+            {
+              "x": 1378.6794258373207,
+              "y": 610.8482296650718
+            }
+          ],
+          "rimLockNode": {
+            "x": 1371.1004784688996,
+            "y": 631.0334928229665,
+            "radiusPx": 3.789473684210526,
+            "angleRad": 1.5707963267948966
+          }
+        },
+        {
+          "id": "rift-bolt",
+          "optionNumber": 3,
+          "socketIndex": 0,
+          "width": 241,
+          "height": 102,
+          "polarAngleRad": -2.4123152728935215,
+          "polarAngleDeg": -138.21548399174821,
+          "outwardNormal": {
+            "x": -0.745656100617179,
+            "y": -0.6663309835302449
+          },
+          "initialCenter": {
+            "x": 1112.7943496359326,
+            "y": 606.9987581293105
+          },
+          "center": {
+            "x": 1058.0263157894738,
+            "y": 650.6555023923445
+          },
+          "rect": {
+            "xMin": 937.5263157894738,
+            "yMin": 599.6555023923445,
+            "xMax": 1178.5263157894738,
+            "yMax": 701.6555023923445,
+            "width": 241,
+            "height": 102
+          },
+          "socketCenter": {
+            "x": 1264.3062200956938,
+            "y": 742.3923444976076
+          },
+          "socketRadius": 53.397129186602875,
+          "nearestBorderPoint": {
+            "x": 1178.5263157894738,
+            "y": 701.6555023923445
+          },
+          "losUnitVector": {
+            "x": 0.9033126504672215,
+            "y": 0.4289828149307186
+          },
+          "losAngleRad": 0.44336641453244113,
+          "losAngleDeg": 25.403024330556605,
+          "rimApex": {
+            "x": 1213.5046081646328,
+            "y": 718.2666793938006
+          },
+          "tailMode": "oblique-corner-chamfer",
+          "edgeOrCorner": "bottom-right",
+          "cornerDistancePx": 0,
+          "chamferPx": 13.26315789473684,
+          "baseWidthPx": 15.157894736842104,
+          "basePoint1": {
+            "x": 1165.2631578947369,
+            "y": 701.6555023923445
+          },
+          "basePoint2": {
+            "x": 1178.5263157894738,
+            "y": 688.3923444976076
+          },
+          "pointerPolygon": [
+            {
+              "x": 1165.2631578947369,
+              "y": 701.6555023923445
+            },
+            {
+              "x": 1213.5046081646328,
+              "y": 718.2666793938006
+            },
+            {
+              "x": 1178.5263157894738,
+              "y": 688.3923444976076
+            }
+          ],
+          "rimLockNode": {
+            "x": 1213.5046081646328,
+            "y": 718.2666793938006,
+            "radiusPx": 3.789473684210526,
+            "angleRad": 0.44336641453244113
+          }
+        }
+      ]
+    },
+    "movedDistDuringLevelUp": 1.909,
+    "screenshots": [
+      "/home/dev/projects/arkadia/repos/arkadia/artifacts/hud-alt-b-desktop-verify.png",
+      "/home/dev/projects/arkadia/repos/arkadia/artifacts/level-up-v5-desktop-verify.png"
+    ]
+  },
+  "mobilePortrait": {
+    "hudGeometry": {
+      "arcCenter": {
+        "x": 421.8867924528302,
+        "y": 924.3938679245283
+      },
+      "sockets": [
+        {
+          "index": 0,
+          "x": 366.10849056603774,
+          "y": 872.6721698113207,
+          "radius": 34.4811320754717,
+          "locked": false,
+          "name": "Rift Bolt",
+          "level": 1
+        },
+        {
+          "index": 1,
+          "x": 375.2358490566038,
+          "y": 782.4127358490566,
+          "radius": 27.382075471698112,
+          "locked": true,
+          "name": "Empty Slot",
+          "level": 0
+        },
+        {
+          "index": 2,
+          "x": 270.77830188679246,
+          "y": 889.9127358490566,
+          "radius": 27.382075471698112,
+          "locked": true,
+          "name": "Empty Slot",
+          "level": 0
+        }
+      ],
+      "scale": 0.5070754716981132
+    },
+    "blessingUi": {
+      "active": true,
+      "nonModal": true,
+      "centerScreenObstructionRatio": 0,
+      "headerCrest": {
+        "text": "LEVEL UP · CHOOSE BLESSING",
+        "rect": {
+          "x": 68,
+          "y": 163,
+          "width": 294,
+          "height": 23
+        },
+        "interactive": false
+      },
+      "passiveBanners": [
+        {
+          "id": "vitality",
+          "optionNumber": 1,
+          "text": "Furnace Heart (PASSIVE) · +25 Max HP · +12% SPD",
+          "rect": {
+            "x": 48,
+            "y": 193,
+            "width": 334,
+            "height": 31
+          },
+          "glowing": true
+        }
+      ],
+      "skillPopovers": [
+        {
+          "id": "rift-dash",
+          "optionNumber": 2,
+          "socketIndex": 1,
+          "width": 156,
+          "height": 62,
+          "polarAngleRad": -1.8882550620495275,
+          "polarAngleDeg": -108.18904569965132,
+          "outwardNormal": {
+            "x": -0.3121532889704467,
+            "y": -0.95003174904049
+          },
+          "initialCenter": {
+            "x": 336.9557535444,
+            "y": 665.9080973336537
+          },
+          "center": {
+            "x": 345,
+            "y": 710.2348709036743
+          },
+          "rect": {
+            "xMin": 267,
+            "yMin": 679.2348709036743,
+            "xMax": 423,
+            "yMax": 741.2348709036743,
+            "width": 156,
+            "height": 62
+          },
+          "socketCenter": {
+            "x": 375.2358490566038,
+            "y": 782.4127358490566
+          },
+          "socketRadius": 27.382075471698112,
+          "nearestBorderPoint": {
+            "x": 375.2358490566038,
+            "y": 741.2348709036743
+          },
+          "losUnitVector": {
+            "x": 0,
+            "y": 1
+          },
+          "losAngleRad": 1.5707963267948966,
+          "losAngleDeg": 90,
+          "rimApex": {
+            "x": 375.2358490566038,
+            "y": 753.3332919563059
+          },
+          "tailMode": "cardinal-edge",
+          "edgeOrCorner": "bottom",
+          "cornerDistancePx": 47.7641509433962,
+          "chamferPx": 7.921052631578947,
+          "baseWidthPx": 9.052631578947368,
+          "basePoint1": {
+            "x": 370.7095332671301,
+            "y": 741.2348709036743
+          },
+          "basePoint2": {
+            "x": 379.7621648460775,
+            "y": 741.2348709036743
+          },
+          "pointerPolygon": [
+            {
+              "x": 370.7095332671301,
+              "y": 741.2348709036743
+            },
+            {
+              "x": 375.2358490566038,
+              "y": 753.3332919563059
+            },
+            {
+              "x": 379.7621648460775,
+              "y": 741.2348709036743
+            }
+          ],
+          "rimLockNode": {
+            "x": 375.2358490566038,
+            "y": 753.3332919563059,
+            "radiusPx": 2.263157894736842,
+            "angleRad": 1.5707963267948966
+          }
+        },
+        {
+          "id": "rift-bolt",
+          "optionNumber": 3,
+          "socketIndex": 0,
+          "width": 156,
+          "height": 62,
+          "polarAngleRad": -2.3939124426592087,
+          "polarAngleDeg": -137.16107948822636,
+          "outwardNormal": {
+            "x": -0.7332681568382186,
+            "y": -0.6799395636136213
+          },
+          "initialCenter": {
+            "x": 270.98057147052657,
+            "y": 784.4626448318467
+          },
+          "center": {
+            "x": 247.4837388282026,
+            "y": 815.9180734856008
+          },
+          "rect": {
+            "xMin": 169.4837388282026,
+            "yMin": 784.9180734856008,
+            "xMax": 325.4837388282026,
+            "yMax": 846.9180734856008,
+            "width": 156,
+            "height": 62
+          },
+          "socketCenter": {
+            "x": 366.10849056603774,
+            "y": 872.6721698113207
+          },
+          "socketRadius": 34.4811320754717,
+          "nearestBorderPoint": {
+            "x": 325.4837388282026,
+            "y": 846.9180734856008
+          },
+          "losUnitVector": {
+            "x": 0.8445832399290903,
+            "y": 0.5354242717984314
+          },
+          "losAngleRad": 0.5650100117549275,
+          "losAngleDeg": 32.372689056194375,
+          "rimApex": {
+            "x": 335.552735400907,
+            "y": 853.30132252821
+          },
+          "tailMode": "oblique-corner-chamfer",
+          "edgeOrCorner": "bottom-right",
+          "cornerDistancePx": 0,
+          "chamferPx": 7.921052631578947,
+          "baseWidthPx": 9.052631578947368,
+          "basePoint1": {
+            "x": 317.56268619662364,
+            "y": 846.9180734856008
+          },
+          "basePoint2": {
+            "x": 325.4837388282026,
+            "y": 838.9970208540218
+          },
+          "pointerPolygon": [
+            {
+              "x": 317.56268619662364,
+              "y": 846.9180734856008
+            },
+            {
+              "x": 335.552735400907,
+              "y": 853.30132252821
+            },
+            {
+              "x": 325.4837388282026,
+              "y": 838.9970208540218
+            }
+          ],
+          "rimLockNode": {
+            "x": 335.552735400907,
+            "y": 853.30132252821,
+            "radiusPx": 2.263157894736842,
+            "angleRad": 0.5650100117549275
+          }
+        }
+      ]
+    },
+    "screenshots": [
+      "/home/dev/projects/arkadia/repos/arkadia/artifacts/hud-alt-b-mobile-verify.png",
+      "/home/dev/projects/arkadia/repos/arkadia/artifacts/level-up-v5-mobile-verify.png"
+    ]
+  }
+}
