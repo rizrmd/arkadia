@@ -13,7 +13,8 @@ import {ChooseHeroFx,inertSlot,type FxLoop,type FxSlot} from './choose-hero-fx';
 // Highlights are NixieFX (choose-hero-fx.ts): a burst and a looping aura on the selected card, a glint trace on a
 // hovered card, a glow on Begin Journey while hovered or focused and a flash when it is pressed.
 // Input: tap/click a card to select, Begin Journey to confirm, Back to keep the current hero. Keys (key()): arrows or Tab
-// switch hero, Enter or Space begin (pressed while held, confirmed on release), Escape goes back.
+// switch hero, Enter or Space begin (pressed while held, confirmed on release), Escape goes back. Back is drawn only
+// when onBack is set before the first layout; the game's one-time pick (hero-picker.ts) leaves it unset.
 const BASE='/assets/choose-hero/',LOGO='/typography/v2/hero/';
 export const HEROES:HeroId[]=['ember-warden','rift-runner'];
 const SKILL_ICON:Record<HeroId,string>={'ember-warden':'skill-flame-fan','rift-runner':'skill-rift-bolt'};
@@ -181,8 +182,7 @@ export class ChooseHero extends Container{
   for(const c of this.stage.removeChildren())c.destroy({children:true});
   this.texts=[];this.cards=[];this.panel=new Container();this.art=new Sprite();this.button=undefined;
   const L=this.labels,layout=this.layoutName,[W]=DESIGN[layout],st=this.stage;
-  const back=st.addChild(new Container()),backInner=back.addChild(new Container());
-  // The logo's thin gold strokes thin out further when it is scaled down over the bright castle: a soft dark halo
+   // The logo's thin gold strokes thin out further when it is scaled down over the bright castle: a soft dark halo
   // under it keeps it readable, like the shadowed wordmark in the references.
   const logoShadow=st.addChild(new Sprite(this.logo)),logo=st.addChild(new Sprite(this.logo));
   logoShadow.tint=0x000000;logoShadow.alpha=.75;logoShadow.filters=[new BlurFilter({strength:4,quality:3})];
@@ -208,11 +208,15 @@ export class ChooseHero extends Container{
   this.text(st,'title',L.title).place(W/2,title,.5);
   if(layout==='desktop')this.text(st,'subtitle',L.subtitle).place(W/2,117,.5);
   // Back: arrow medallion, plus its label on desktop. Hover brightens it, press sinks it.
-  const [bx,by,bw]=backBox;backInner.pivot.set(bx+bw/2,by+bw/2);backInner.position.set(bx+bw/2,by+bw/2);
-  this.frame(backInner,'back',backBox);
-  if(layout==='desktop')this.text(back,'back',L.back).place(106,123);
-  this.backTarget=backInner;
-  pressable(back,backHit,()=>this.back(),s=>{backInner.scale.set(s==='pressed'?.92:s==='hover'?1.08:1);back.alpha=s==='hover'?1:.96;});
+  this.backTarget=undefined;
+  if(this.onBack){
+   const back=st.addChild(new Container()),backInner=back.addChild(new Container());
+   const [bx,by,bw]=backBox;backInner.pivot.set(bx+bw/2,by+bw/2);backInner.position.set(bx+bw/2,by+bw/2);
+   this.frame(backInner,'back',backBox);
+   if(layout==='desktop')this.text(back,'back',L.back).place(106,123);
+   this.backTarget=backInner;
+   pressable(back,backHit,()=>this.back(),s=>{backInner.scale.set(s==='pressed'?.92:s==='hover'?1.08:1);back.alpha=s==='hover'?1:.96;});
+  }
   st.addChild(this.panel);
   CARDS[layout].boxes.forEach((box,i)=>this.cards.push(this.card(HEROES[i],box)));
   this.button=this.journey();

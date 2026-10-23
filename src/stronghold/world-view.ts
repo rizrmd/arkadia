@@ -27,6 +27,7 @@ export async function createWorldView(
  pick:HeroId=DEFAULT_HERO,
  hudCallbacks?:HudCallbacks,
  canPanCanvas?:(clientX:number,clientY:number)=>boolean,
+ hold:Promise<void>=Promise.resolve(),
 ){
  const canvas=rt.app.canvas;
  const {worldStage,uiStage,frames}=rt;
@@ -308,7 +309,8 @@ export async function createWorldView(
  }
  (window as any).__STRONGHOLD_NAV__=()=>({version:1,layout:[...built],columns:objects.filter(p=>p.layer!=='ground'&&p.opacity>=1&&p.id!=='gate').flatMap(p=>footprint(p).map(c=>({x:+c.x.toFixed(2),w:+c.w.toFixed(2),back:+c.back.toFixed(2),front:+c.front.toFixed(2)})))});
  canvas.dataset.gate='closed';setGateOpen(false);updateGate(hero.position().x,hero.position().y);
- hero.start();encounters.start();parallax.start();
+ // Gameplay (the hero and the revenants) starts once `hold` resolves: on a first visit, after Choose Your Hero.
+ parallax.start();void hold.then(()=>{hero.start();encounters.start();});
  return {
   hud:encounters.hud,
   encounters,

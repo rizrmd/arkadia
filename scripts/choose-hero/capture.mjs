@@ -125,7 +125,7 @@ async function edgeWidth(png){
  return runs?+(total/runs).toFixed(2):null;
 }
 // Text crops are measured; frame crops (larger padding) show the split 9-slices and icons at device resolution.
-const TEXTS=['CHOOSE YOUR HERO','Choose a hero to begin your journey.','Back','Selected','LOADOUT','Lv. 1','Skills cast automatically when enemies enter range. Gain new skills through random level-up blessings.'];
+const TEXTS=['CHOOSE YOUR HERO','Choose a hero to begin your journey.','Selected','LOADOUT','Lv. 1','Skills cast automatically when enemies enter range. Gain new skills through random level-up blessings.'];
 const FRAMES=[['Begin Journey',[60,26,60,26]],['Rift Runner',[60,300,60,40]],['Flame Fan',[12,150,12,40]]];
 if(only==='crisp'||only==='all'){
  evidence.crisp=[];
@@ -150,7 +150,8 @@ if(only==='crisp'||only==='all'){
  const r=await open({width:1672,height:941,dpr:2.625},state);evidence.crisp.push({dpr:2.625,viewport:[1672,941],...r,note:'full desktop composition at DPR 2.625'});console.log('crisp full',JSON.stringify(r));
 }
 
-// Input: mouse hover/press/tap, touch tap, keyboard switch/begin/back; the pick must reach the game.
+// Input: mouse hover/press/tap, touch tap, keyboard switch/begin; the pick must reach the game. The pick is one-time:
+// there is no Back, and Escape or a tap where Back was does not close the screen.
 if(only==='input'||only==='all'){
  const checks=[];const ok=(name,pass,detail='')=>{checks.push({name,pass,detail});console.log(pass?'PASS':'FAIL',name,detail);};
  const targets=p=>p.evaluate(async()=>(await window.__PIXI_UI__.picker.view()).targets());
@@ -182,10 +183,8 @@ if(only==='input'||only==='all'){
   await p.keyboard.up('Enter');await p.waitForTimeout(300);ok('Enter release begins with the selected hero',!(await state(p)).open&&await hero(p)==='ember-warden',`saved hero ${await hero(p)}`);
  });
  await open({width:1672,height:941,dpr:1,hero:'rift-runner'},async p=>{
-  // Back keeps the hero the game is playing (the HUD's), even after another card was selected.
-  const before=await p.evaluate(()=>window.__PIXI_UI__.hud.heroNameText?.text);await p.keyboard.press('ArrowDown');await p.keyboard.press('Escape');await p.waitForTimeout(1200);
-  const after=await p.evaluate(()=>window.__PIXI_UI__.hud.heroNameText?.text);
-  ok('Escape goes back and keeps the playing hero',!(await state(p)).open&&after===before&&await hero(p)==='rift-runner',`HUD ${before} → ${after}, saved ${await hero(p)}`);
+  await p.keyboard.press('Escape');await p.waitForTimeout(600);
+  ok('Escape does not leave the one-time pick',(await state(p)).open&&(await targets(p)).back===null);
  });
  await open({width:390,height:844,dpr:3,touch:true,hero:'ember-warden'},async p=>{
   const t=await targets(p),[cx,cy]=t.cards['rift-runner'];await p.touchscreen.tap(cx,cy);await p.waitForTimeout(200);
@@ -194,8 +193,7 @@ if(only==='input'||only==='all'){
   ok('touch Begin Journey confirms',!(await state(p)).open&&await hero(p)==='rift-runner',`saved hero ${await hero(p)}`);
  });
  await open({width:390,height:844,dpr:3,touch:true,hero:'ember-warden'},async p=>{
-  const b=await p.evaluate(async()=>{const v=await window.__PIXI_UI__.picker.view();return v.stageScale;});
-  await p.touchscreen.tap(24,24);await p.waitForTimeout(300);ok('touch Back closes (hit target ≥ 44 CSS px)',!(await state(p)).open,`Back hit area ${(110*b).toFixed(1)} CSS px`);
+  await p.touchscreen.tap(24,24);await p.waitForTimeout(300);ok('touch where Back was does not close the one-time pick',(await state(p)).open);
  });
  evidence.input=checks;
 }

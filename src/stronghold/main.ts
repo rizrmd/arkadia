@@ -26,12 +26,23 @@ export async function mount(app:HTMLElement,progress:Progress){
  const controls=createControls(rt.uiStage,rt.frames,canInteractWorld);
  let selected:Building|null=null;
  let clock:ReturnType<typeof createClock>|undefined;
- let picker:ReturnType<typeof createHeroPicker>|undefined;
 
  const maxHp=()=>{try{return 100+heroBonus(load(localStorage.getItem(KEY)));}catch{return 100;}};
  let hero:HeroId=savedHero();
  const net=new URLSearchParams(location.search).has('offline')?undefined:createNet({direction:controls.direction,maxHp,hero:()=>hero});
  const lobby=net?createLobby(rt.uiStage,rt.frames,net):null,invited=lobby?.start()??'';
+ // The first visit chooses a hero once, before gameplay: the world loads behind the screen with the hero and the
+ // revenants held until the pick (hero-picker.ts).
+ const picker=createHeroPicker(rt.uiStage,{
+  current:()=>hero,
+  renderer:rt.app.renderer,
+  choose(id){
+   hero=id;
+   saveHero(id);
+   void worldView.setHero(id);
+   net?.setHero(id);
+  },
+ });
 
  const worldView=await createWorldView(
   rt,
@@ -41,12 +52,11 @@ export async function mount(app:HTMLElement,progress:Progress){
   net,
   hero,
   {
-   onHeroClick:()=>{clock?.open(false);lobby?.open(false);void picker?.open();},
-   onMenuClick:()=>{clock?.open(false);lobby?.open(false);void picker?.open();},
    onClockClick:()=>{lobby?.open(false);clock?.toggle();},
    onCoopClick:()=>{clock?.open(false);lobby?.toggle();},
   },
   canInteractWorld,
+  picker.picked,
  );
 
  function render(){try{worldView.update(load(localStorage.getItem(KEY)),selected);}catch(e){console.error(e);}}
@@ -54,17 +64,6 @@ export async function mount(app:HTMLElement,progress:Progress){
  reloadOnNewBuild();
 
  lobby?.bindHud(worldView.hud);
- picker=createHeroPicker(rt.uiStage,{
-  current:()=>hero,
-  renderer:rt.app.renderer,
-  stage:rt.app.stage,
-  choose(id){
-   hero=id;
-   saveHero(id);
-   void worldView.setHero(id);
-   net?.setHero(id);
-  },
- });
  net?.onStatus(render);
  window.addEventListener('storage',render);
  clock=createClock(rt.uiStage,rt.frames,worldView.hud,{
@@ -77,7 +76,8 @@ export async function mount(app:HTMLElement,progress:Progress){
 
  await new Promise<void>(done=>{const check=()=>canvas.dataset.ready==='true'?done():requestAnimationFrame(check);check();});
  startFpsTracelog({rt,getCombatSnapshot:()=>worldView.encounters.snapshot(),net,getHeroId:()=>hero});
- void picker.start().then(()=>{if(invited)lobby!.prompt(invited);});
+ await picker.start();
+ void picker.picked.then(()=>{if(invited)lobby!.prompt(invited);});
 
  (window as any).__COOP__=net&&{net,stats:()=>({status:net.status(),room:net.room(),you:net.you(),...net.stats,...net.timeline,rtt:net.rtt()})};
  (window as any).__PIXI_UI__={app:rt.app,hud:worldView.hud,clock,lobby,picker};

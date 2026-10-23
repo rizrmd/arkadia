@@ -103,7 +103,7 @@ export class Hud extends Container{
   const g=this.groups.tl,f=this.frames,s=this.state;
   const hit=new Container();
   hit.eventMode='static';
-  hit.cursor='pointer';
+  hit.cursor=this.callbacks.onHeroClick?'pointer':'default';
   hit.hitArea=new Rectangle(0,0,545,190);
   hit.on('pointertap',()=>this.callbacks.onHeroClick?.());
   g.addChild(hit);
@@ -257,7 +257,7 @@ export class Hud extends Container{
   ['W','A','S','D'].forEach((k,i)=>{bl.addChild(f.frame('keycap',28,28)).position.set(40+i*30,872);bl.addChild(new MsdfText('hud-key',k)).place(54+i*30,890,.5);});
   bl.addChild(new MsdfText('hud-hint','· Move')).place(166,888);
   br.eventMode='static';
-  br.cursor='pointer';
+  br.cursor=this.callbacks.onMenuClick?'pointer':'default';
   br.hitArea=new Rectangle(1478,853,190,60);
   br.on('pointertap',()=>this.callbacks.onMenuClick?.());
   br.addChild(f.frame('pill-wide',190,60)).position.set(1478,853);

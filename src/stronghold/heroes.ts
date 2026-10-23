@@ -11,7 +11,8 @@ export const isHero=(id:unknown):id is HeroId=>HEROES.some(h=>h.id===id);
 export const heroInfo=(id:HeroId)=>HEROES.find(h=>h.id===id)!;
 const KEY='arkadia.hero',PICKED_KEY='arkadia.hero.picked',POS_KEY='arkadia.stronghold.hero';
 let resetRequested:boolean|null=null;
-// ?hero=reset clears the saved hero pick, session pick and hero position, strips the query param and reopens the picker.
+// ?hero=reset clears the saved hero pick (and the old per-tab pick) and hero position, strips the query param and
+// asks again, as on a first visit.
 export function isHeroReset():boolean{
  if(resetRequested!==null)return resetRequested;
  const u=new URL(location.href);
@@ -32,6 +33,8 @@ export function savedHero():HeroId{
  return DEFAULT_HERO;
 }
 export function saveHero(id:HeroId){try{localStorage.setItem(KEY,id);}catch{}}
+// The pick is made once per device: a saved hero means Choose Your Hero has been passed (hero-picker.ts).
+export function heroChosen():boolean{try{return isHero(localStorage.getItem(KEY));}catch{return false;}}
 // The character manifest, fetched once for the hero, the party and the revenants.
 const BASE='/assets/characters/',MANIFEST_REV='1side-v6';
 let manifest:Promise<{characters:Record<string,any>}>|null=null;

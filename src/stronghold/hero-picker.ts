@@ -1,44 +1,44 @@
 import {Container} from 'pixi.js';
 import {ChooseHero} from './choose-hero';
-import {isHero,isHeroReset,saveHero,type HeroId} from './heroes';
+import {heroChosen,isHero,isHeroReset,saveHero,type HeroId} from './heroes';
 
-// Hero selection over the live world (choose-hero.ts): a new tab opens on it (a reload in the same tab keeps the pick),
-// with the last pick on this device selected; the hero's name in the HUD reopens it at any time. Begin Journey swaps
-// the hero in place, keeping its spot, health and room; Back keeps the current hero.
-const SESSION_KEY='arkadia.hero.picked';
-
-export function createHeroPicker(uiStage:Container,o:{current:()=>HeroId;choose:(id:HeroId)=>void;renderer?:any;stage?:Container}){
+// Choose Your Hero (choose-hero.ts), once per device: the first visit opens on it before gameplay starts (main.ts holds
+// the hero and the revenants until `picked`), and Begin Journey is the only way out: no Back, Escape does nothing, and
+// the HUD does not reopen it. The pick is saved on the device, so later visits and new tabs go straight to the game.
+// ?hero=reset forgets the pick and asks again; a ?hero=<id> link plays that hero for the visit without asking.
+export function createHeroPicker(uiStage:Container,o:{current:()=>HeroId;choose:(id:HeroId)=>void;renderer?:any}){
  const holder=new Container();
  holder.zIndex=70;
  holder.visible=false;
  uiStage.addChild(holder);
 
+ const q=new URLSearchParams(location.search);
+ // Automated browsers play on unless ?pick (or ?hero=reset) asks for the screen.
+ const automated=typeof navigator!=='undefined'&&navigator.webdriver&&!q.has('pick');
+ const needed=isHeroReset()||!heroChosen()&&!isHero(q.get('hero'))&&!automated;
+ let resolvePicked=()=>{};
+ const picked=needed?new Promise<void>(r=>{resolvePicked=r;}):Promise.resolve();
+
  let viewPromise:Promise<ChooseHero>|undefined,view:ChooseHero|undefined;
- let done:(()=>void)|null=null;
  const ensureView=()=>viewPromise??=ChooseHero.load(o.current()).then(async v=>{
   v.onConfirm=id=>pick(id);
-  v.onBack=()=>pick(o.current());
   await v.layout(innerWidth,innerHeight);
   v.warmGpu(o.renderer);
   holder.addChild(v);view=v;
   return v;
  });
- // Warm the screen's assets in the background on user sessions (or when ?pick is requested).
- const skipAutoWarm=typeof navigator!=='undefined'&&navigator.webdriver&&!new URLSearchParams(location.search).has('pick')&&!isHeroReset();
- if(!skipAutoWarm)void ensureView().catch(console.error);
+ // Only the first visit needs the screen: load it while the world loads.
+ if(needed)void ensureView().catch(console.error);
 
  const layout=async()=>{const v=await ensureView();await v.layout(innerWidth,innerHeight);v.warmGpu(o.renderer);};
  window.addEventListener('resize',()=>{if(holder.visible)void layout().catch(console.error);});
 
- function hide(){
-  holder.visible=false;
-  const d=done;done=null;d?.();
- }
  function pick(id:HeroId){
-  try{sessionStorage.setItem(SESSION_KEY,id);}catch{}
+  if(!holder.visible)return;
   saveHero(id);
   if(id!==o.current())o.choose(id);
-  hide();
+  holder.visible=false;
+  resolvePicked();
  }
  // While open every key belongs to the screen: keys pressed while choosing must not walk the hero.
  const onKey=(e:KeyboardEvent)=>{
@@ -49,35 +49,19 @@ export function createHeroPicker(uiStage:Container,o:{current:()=>HeroId;choose:
  window.addEventListener('keydown',onKey,{capture:true});
  window.addEventListener('keyup',onKey,{capture:true});
 
- async function open(){
-  if(holder.visible)return;
-  const v=await ensureView();
-  v.select(o.current());
-  await layout();
-  holder.visible=true;
-  return new Promise<void>(r=>{done=r;});
- }
-
- async function warm(){
-  try{
-   const v=await ensureView();
-   v.warmGpu(o.renderer);
-  }catch(e){
-   console.error(e);
-  }
- }
-
  return {
-  open,
-  warm,
   isOpen:()=>holder.visible,
   view:()=>viewPromise,
-  // A new tab asks once; a reload in the same tab (or a ?hero=<id> link) plays on; ?hero=reset asks again.
-  start(){
-   if(isHeroReset())return open();
-   let picked='';try{picked=sessionStorage.getItem(SESSION_KEY)||'';}catch{}
-   const q=new URLSearchParams(location.search);
-   return picked||isHero(q.get('hero'))||(navigator.webdriver&&!q.has('pick'))?Promise.resolve():open();
+  // Resolves once the hero is chosen (at once when this visit does not ask).
+  picked,
+  needed,
+  // Shows the screen on a first visit; resolves once it is on screen, so the loading screen lifts onto it.
+  async start(){
+   if(!needed||holder.visible)return;
+   const v=await ensureView();
+   v.select(o.current());
+   await layout();
+   holder.visible=true;
   },
  };
 }
