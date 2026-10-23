@@ -1,8 +1,7 @@
 // Rebuilds all 8 Rift Runner and Ember Warden sprite sheets (idle, hurt, death, run)
-// in assets-src/sprite-player/ with consistent 330px standing scale across all 8 directions,
-// stable core-body horizontal registration at (192, 360), monotonic collapse curves,
-// zero silhouette ghosting, and smooth frame-to-frame transitions.
-import fs from 'node:fs/promises';
+// in assets-src/sprite-player/ storing ONLY 1 side (the 5 canonical rows: N, NE, E, SE, S = 3072x1920, 40 cells).
+// Left-facing directions (SW, W, NW) are mirrored at runtime from (SE, E, NE) in both the Sprite Player and the game,
+// saving 37.5% storage space and guaranteeing 100% identical size between E<->W, NE<->NW, and SE<->SW.
 import path from 'node:path';
 import { createHash } from 'node:crypto';
 import sharp from 'sharp';
@@ -11,9 +10,12 @@ sharp.concurrency(1);
 sharp.cache(false);
 
 const CELL = 384;
-const SHEET_SIZE = CELL * 8; // 3072
+const COLS = 8;
+const CANON_DIRS = ['N', 'NE', 'E', 'SE', 'S'];
+const ROWS = CANON_DIRS.length; // 5 stored rows (1 side only!)
+const SHEET_W = CELL * COLS; // 3072
+const SHEET_H = CELL * ROWS; // 1920
 const PIVOT = { x: 192, y: 360 };
-const DIRS = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
 
 const IDLE_SRC_ROOT = '/home/dev/projects/arkadia-idle-preview/public/elegant-idle/sources';
 const ACT_V2_ROOT = '/home/dev/projects/arkadia/worktrees/elegant-actions/public/elegant-actions/v2/sources';
@@ -22,6 +24,24 @@ const OUT_DIR = 'assets-src/sprite-player';
 function smoothstep(edge0, edge1, x) {
   const t = Math.max(0, Math.min(1, (x - edge0) / (edge1 - edge0)));
   return t * t * (3 - 2 * t);
+}
+
+// Mirror a raw panel horizontally before placement (used when sourcing Hurt SE from clean 2x4 Hurt SW)
+function mirrorPanelHorizontal(panel) {
+  const { data, width: w, height: h } = panel;
+  const out = Buffer.alloc(w * h * 4);
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      const sx = w - 1 - x;
+      const si = (y * w + sx) * 4;
+      const di = (y * w + x) * 4;
+      out[di] = data[si];
+      out[di + 1] = data[si + 1];
+      out[di + 2] = data[si + 2];
+      out[di + 3] = data[si + 3];
+    }
+  }
+  return finalizeFigurePanel(out, w, h);
 }
 
 // Bilinear sampling from an RGBA buffer (width x height) with premultiplied alpha
@@ -57,7 +77,7 @@ function sampleBilinear(buf, w, h, fx, fy) {
   return [Math.round(r), Math.round(g), Math.round(b), Math.round(a)];
 }
 
-// Compute tight alpha bounds and robust horizontal core centroid of an extracted figure buffer
+// Compute tight alpha bounds and horizontal core median of a figure panel
 function finalizeFigurePanel(rawBuf, fw, fh) {
   let minx = fw, miny = fh, maxx = 0, maxy = 0;
   for (let y = 0; y < fh; y++) {
@@ -88,7 +108,7 @@ function finalizeFigurePanel(rawBuf, fw, fh) {
     }
   }
 
-  // Compute alpha-weighted horizontal median X across the torso+pelvis band (18%..72% height)
+  // Alpha-weighted horizontal median X across the torso+pelvis band (18%..72% height)
   const yStart = Math.floor(height * 0.18);
   const yEnd = Math.max(yStart + 1, Math.floor(height * 0.72));
   const colWeights = new Float64Array(width);
@@ -113,10 +133,16 @@ function finalizeFigurePanel(rawBuf, fw, fh) {
       }
     }
   }
-  return { data: crop, width, height, coreX };
+
+  return {
+    data: crop,
+    width,
+    height,
+    coreX
+  };
 }
 
-// Connected-component figure extractor across the full source sheet (prevents grid-line clipping in Hurt/Death/Run)
+// Connected-component figure extractor across the full source sheet
 async function extractFiguresFullSheet(filePath, columns = 2, rows = 4) {
   const { data, info } = await sharp(filePath).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
   const { width: w, height: h } = info;
@@ -197,7 +223,7 @@ async function extractFiguresFullSheet(filePath, columns = 2, rows = 4) {
   return panels;
 }
 
-// Extract grid panels for Idle (where figures are arranged in a 4x2 grid)
+// Extract grid panels for Idle (4x2 grid)
 async function extractIdlePanels(filePath) {
   const { data, info } = await sharp(filePath).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
   const panels = [];
@@ -244,8 +270,15 @@ async function extractIdlePanels(filePath) {
   return panels;
 }
 
-// Render a normalized figure into a 384x384 cell with given targetW, targetH, targetCoreX, bottomY
-async function placeInCell(panel, targetW, targetH, targetCoreX, bottomY = 359, anchorMode = 'core') {
+// Compute uniform aspect-ratio-preserving dimensions at the exact target height
+function uniformDims(panel, targetH, maxW = 336) {
+  const h = Math.round(targetH);
+  const w = Math.min(maxW, Math.max(1, Math.round(panel.width * (h / panel.height))));
+  return { targetW: w, targetH: h };
+}
+
+// Render a normalized figure into a 384x384 cell with given targetW, targetH, targetCoreX, and vertical anchor
+async function placeInCell(panel, targetW, targetH, targetCoreX, { bottomY = 359, topY = null, anchorMode = 'core' } = {}) {
   const w = Math.max(1, Math.round(targetW));
   const h = Math.max(1, Math.round(targetH));
   const scaled = await sharp(panel.data, { raw: { width: panel.width, height: panel.height, channels: 4 } })
@@ -258,7 +291,7 @@ async function placeInCell(panel, targetW, targetH, targetCoreX, bottomY = 359, 
   const refX = anchorMode === 'bbox' ? bboxCenterX : anchorMode === 'blend' ? 0.5 * scaledCoreX + 0.5 * bboxCenterX : scaledCoreX;
 
   let left = Math.round(targetCoreX - refX);
-  let top = Math.round(bottomY - h + 1);
+  let top = topY !== null ? Math.round(topY) : Math.round(bottomY - h + 1);
 
   const MARGIN = 12;
   if (left < MARGIN) left = MARGIN;
@@ -287,7 +320,7 @@ async function placeInCell(panel, targetW, targetH, targetCoreX, bottomY = 359, 
 }
 
 function measureCell(cell) {
-  let minx = CELL, miny = CELL, maxx = 0, maxy = 0;
+  let minx = CELL, miny = CELL, maxx = 0, maxy = 0, area = 0;
   const colWeights = new Float64Array(CELL);
   let totalWeight = 0;
   for (let y = 0; y < CELL; y++) {
@@ -299,6 +332,7 @@ function measureCell(cell) {
         if (y < miny) miny = y;
         if (y > maxy) maxy = y;
       }
+      if (a > 64) area++;
     }
   }
   const h = Math.max(1, maxy - miny + 1);
@@ -321,7 +355,7 @@ function measureCell(cell) {
       if (acc >= totalWeight * 0.5) { coreX = x; break; }
     }
   }
-  return { minx, miny, maxx, maxy, width: maxx - minx + 1, height: h, coreX };
+  return { minx, miny, maxx, maxy, width: maxx - minx + 1, height: h, coreX, area };
 }
 
 function warpCellToEnvelope(srcCell, srcMeta, dstMeta) {
@@ -345,8 +379,7 @@ function warpCellToEnvelope(srcCell, srcMeta, dstMeta) {
   return out;
 }
 
-// Ghost-free interior shading smoother: preserves the exact silhouette alpha of each frame (zero ghost halos!)
-// while gently harmonizing interior colors with envelope-aligned neighbor frames where both are opaque.
+// Ghost-free interior shading smoother
 function harmonizeInteriorShading(cells, { loop = false, blendWeight = 0.14 } = {}) {
   const metas = cells.map(measureCell);
   const n = cells.length;
@@ -359,7 +392,7 @@ function harmonizeInteriorShading(cells, { loop = false, blendWeight = 0.14 } = 
     const out = Buffer.from(cell);
     for (let i = 0; i < CELL * CELL * 4; i += 4) {
       const a0 = cell[i + 3];
-      if (a0 < 96) continue; // Strictly preserve transparent background and anti-aliased edge pixels
+      if (a0 < 96) continue;
 
       const aP = prevWarped ? prevWarped[i + 3] : 0;
       const aN = nextWarped ? nextWarped[i + 3] : 0;
@@ -371,233 +404,228 @@ function harmonizeInteriorShading(cells, { loop = false, blendWeight = 0.14 } = 
       out[i] = Math.round(w0 * cell[i] + (prevWarped ? wP * prevWarped[i] : 0) + (nextWarped ? wN * nextWarped[i] : 0));
       out[i + 1] = Math.round(w0 * cell[i + 1] + (prevWarped ? wP * prevWarped[i + 1] : 0) + (nextWarped ? wN * nextWarped[i + 1] : 0));
       out[i + 2] = Math.round(w0 * cell[i + 2] + (prevWarped ? wP * prevWarped[i + 2] : 0) + (nextWarped ? wN * nextWarped[i + 2] : 0));
-      out[i + 3] = a0; // Never alter silhouette alpha
+      out[i + 3] = a0;
     }
     return out;
   });
 }
 
-// 1. IDLE: 8 smooth, periodic harmonic frames per direction at exact 330px standing scale
-async function buildIdleRow(heroKey, dir) {
-  const suffix = ['NW', 'SW'].includes(dir) ? 'final' : 'clean';
-  const srcPath = path.join(IDLE_SRC_ROOT, `${heroKey}-${dir}-${suffix}.png`);
-  const panels = await extractIdlePanels(srcPath);
-
-  const aspects = panels.map(p => p.width / p.height).sort((a, b) => a - b);
-  const medAspect = aspects[4];
-  let bestIdx = 0, bestDiff = Infinity;
-  for (let i = 0; i < panels.length; i++) {
-    const d = Math.abs(panels[i].width / panels[i].height - medAspect);
-    if (d < bestDiff) { bestDiff = d; bestIdx = i; }
-  }
-  const canonPanel = panels[bestIdx];
-  const targetH = 330;
-  const targetW = Math.min(340, Math.round(canonPanel.width * (targetH / canonPanel.height)));
-  const { cell: baseCell } = await placeInCell(canonPanel, targetW, targetH, PIVOT.x, 359, 'core');
-
-  const dirSign = ['E', 'NE', 'SE'].includes(dir) ? 1 : ['W', 'NW', 'SW'].includes(dir) ? -1 : 0;
-  const cells = [];
-
-  for (let f = 0; f < 8; f++) {
-    const theta = (2 * Math.PI * f) / 8;
-    const sinT = Math.sin(theta);
-    const cosT = Math.cos(theta);
-    const out = Buffer.alloc(CELL * CELL * 4);
-
-    for (let y = 12; y < CELL - 8; y++) {
-      const u = Math.max(0, Math.min(1.1, (359 - y) / 330));
-      const bodyLiftMask = smoothstep(0.16, 0.72, u);
-      const swayMask = smoothstep(0.20, 0.85, u);
-      const chestBell = Math.exp(-Math.pow((u - 0.60) / 0.18, 2));
-
-      for (let x = 12; x < CELL - 12; x++) {
-        const dxCenter = x - PIVOT.x;
-        const absDx = Math.abs(dxCenter);
-
-        const dyBreath = -2.0 * bodyLiftMask * sinT;
-        const dxBreath = dxCenter * 0.014 * chestBell * sinT;
-        const dxSway = 1.4 * swayMask * cosT;
-
-        const clothMask = smoothstep(14, 52, absDx) * smoothstep(0.14, 0.34, u) * (1 - 0.65 * smoothstep(0.84, 0.98, u));
-        const phaseLag = 0.035 * absDx + 0.020 * Math.max(0, y - 110);
-        const dxWave = clothMask * (4.6 * Math.sin(theta - phaseLag) + 1.2 * dirSign * cosT);
-        const dyWave = clothMask * (3.0 * Math.cos(theta - phaseLag));
-
-        const sx = x - (dxBreath + dxSway + dxWave);
-        const sy = y - (dyBreath + dyWave);
-
-        const [r0, g0, b0, a0] = sampleBilinear(baseCell, CELL, CELL, sx, sy);
-        if (a0 < 8) continue;
-
-        const glowMod = 1 + 0.02 * Math.sin(theta + u * 2.0);
-        const idx = (y * CELL + x) * 4;
-        out[idx] = Math.min(255, Math.round(r0 * glowMod));
-        out[idx + 1] = Math.min(255, Math.round(g0 * glowMod));
-        out[idx + 2] = Math.min(255, Math.round(b0 * glowMod));
-        out[idx + 3] = a0;
-      }
+// 1. IDLE: Build the 5 canonical rows [N, NE, E, SE, S] at uniform standing height 328px
+async function buildAllIdleRows(heroKey) {
+  const canonRows = [];
+  for (let d = 0; d < ROWS; d++) {
+    const dir = CANON_DIRS[d];
+    const srcPath = path.join(IDLE_SRC_ROOT, `${heroKey}-${dir}-clean.png`);
+    const panels = await extractIdlePanels(srcPath);
+    const aspects = panels.map(p => p.width / p.height).sort((a, b) => a - b);
+    const medAspect = aspects[4];
+    let bestIdx = 0, bestDiff = Infinity;
+    for (let i = 0; i < panels.length; i++) {
+      const diff = Math.abs(panels[i].width / panels[i].height - medAspect);
+      if (diff < bestDiff) { bestDiff = diff; bestIdx = i; }
     }
-    cells.push(out);
-  }
-  return cells;
-}
+    const panel = panels[bestIdx];
+    const { targetW, targetH } = uniformDims(panel, 328, 260);
+    const { cell: baseCell } = await placeInCell(panel, targetW, targetH, PIVOT.x, { bottomY: 359, anchorMode: 'core' });
+    const dirSign = ['E', 'NE', 'SE'].includes(dir) ? 1 : 0;
+    const cells = [];
 
-// 2. HURT: Full-sheet connected-component extraction, normalized to [330, 315, 298, 280, 284, 300, 317, 330]
-async function buildHurtRow(heroKey, dir) {
-  const srcPath = path.join(ACT_V2_ROOT, `${heroKey}-hurt-${dir}.png`);
-  const isSE = dir === 'SE';
-  const panels = await extractFiguresFullSheet(srcPath, isSE ? 4 : 2, isSE ? 2 : 4);
+    for (let f = 0; f < 8; f++) {
+      const theta = (2 * Math.PI * f) / 8;
+      const sinT = Math.sin(theta);
+      const cosT = Math.cos(theta);
+      const out = Buffer.alloc(CELL * CELL * 4);
 
-  const H_HURT = [330, 315, 298, 280, 284, 300, 317, 330];
-  const W_MULT = [1.00, 1.05, 1.09, 1.12, 1.10, 1.06, 1.02, 1.00];
-  const baseStandW = ((panels[0].width * (330 / panels[0].height)) + (panels[7].width * (330 / panels[7].height))) / 2;
+      for (let y = 12; y < CELL - 8; y++) {
+        const u = Math.max(0, Math.min(1.1, (359 - y) / targetH));
+        const bodyLiftMask = smoothstep(0.16, 0.72, u);
+        const swayMask = smoothstep(0.20, 0.85, u);
+        const chestBell = Math.exp(-Math.pow((u - 0.60) / 0.18, 2));
 
-  const recoilSign = ['E', 'NE', 'SE'].includes(dir) ? -1 : ['W', 'NW', 'SW'].includes(dir) ? 1 : 0;
-  const RECOIL_X = [0, 3, 5, 6, 5, 3, 1, 0].map(v => PIVOT.x + v * recoilSign);
+        for (let x = 12; x < CELL - 12; x++) {
+          const dxCenter = x - PIVOT.x;
+          const absDx = Math.abs(dxCenter);
 
-  const rawCells = [];
-  for (let f = 0; f < 8; f++) {
-    const p = panels[f];
-    const targetH = H_HURT[f];
-    const naturalW = p.width * (targetH / p.height);
-    const expectedW = baseStandW * W_MULT[f];
-    const targetW = Math.min(342, Math.round(0.60 * naturalW + 0.40 * expectedW));
-    const { cell } = await placeInCell(p, targetW, targetH, RECOIL_X[f], 359, 'core');
-    rawCells.push(cell);
-  }
+          const dyBreath = -2.0 * bodyLiftMask * sinT;
+          const dxBreath = dxCenter * 0.014 * chestBell * sinT;
+          const dxSway = 1.4 * swayMask * cosT;
 
-  return harmonizeInteriorShading(rawCells, { loop: false, blendWeight: 0.14 });
-}
+          const clothMask = smoothstep(14, 52, absDx) * smoothstep(0.14, 0.34, u) * (1 - 0.65 * smoothstep(0.84, 0.98, u));
+          const phaseLag = 0.035 * absDx + 0.020 * Math.max(0, y - 110);
+          const dxWave = clothMask * (4.6 * Math.sin(theta - phaseLag) + 1.2 * dirSign * cosT);
+          const dyWave = clothMask * (3.0 * Math.cos(theta - phaseLag));
 
-// 3. DEATH: Full-sheet connected-component extraction (zero grid clipping!),
-// strictly monotonic collapse height curve starting at 328px, centered smoothly at X=192
-async function buildDeathRow(heroKey, dir) {
-  const srcPath = path.join(ACT_V2_ROOT, `${heroKey}-death-${dir}.png`);
-  const panels = await extractFiguresFullSheet(srcPath, 2, 4);
+          const sx = x - (dxBreath + dxSway + dxWave);
+          const sy = y - (dyBreath + dyWave);
 
-  const isForeshortened = ['N', 'S'].includes(dir);
-  const H_DEATH = isForeshortened
-    ? [328, 280, 238, 202, 174, 152, 146, 142]
-    : [328, 278, 232, 192, 158, 132, 126, 122];
+          const [r0, g0, b0, a0] = sampleBilinear(baseCell, CELL, CELL, sx, sy);
+          if (a0 < 8) continue;
 
-  // Consistent prone width across frames 6, 7, 8 so the fallen figure never stretches/pops on the ground
-  const proneScale5 = H_DEATH[5] / panels[5].height;
-  const proneW = Math.min(344, Math.max(220, Math.round(panels[5].width * proneScale5)));
-
-  const rawCells = [];
-  for (let f = 0; f < 8; f++) {
-    const p = panels[f];
-    const targetH = H_DEATH[f];
-    let targetW;
-    if (f < 5) {
-      const naturalW = p.width * (targetH / p.height);
-      targetW = Math.min(344, Math.round(naturalW));
-    } else {
-      targetW = Math.min(346, proneW + (f - 5) * 2);
-    }
-    // Use core torso median for upright/kneeling frames (0..3), transitioning smoothly to bbox center for prone frames (5..7)
-    const anchorMode = f <= 2 ? 'core' : f <= 4 ? 'blend' : 'bbox';
-    const { cell } = await placeInCell(p, targetW, targetH, PIVOT.x, 359, anchorMode);
-    rawCells.push(cell);
-  }
-
-  return harmonizeInteriorShading(rawCells, { loop: false, blendWeight: 0.12 });
-}
-
-// 4. RUN: Full 316px running scale across ALL 8 directions (including SW, W, E!)
-// with smooth 2-step vertical run bob, opposing lower-body stride swing, and traveling coat/scarf wave
-async function buildRunRow(heroKey, dir) {
-  const panels = [];
-  for (let pair = 0; pair < 4; pair++) {
-    const srcPath = path.join(ACT_V2_ROOT, `${heroKey}-run-${dir}-pair-${pair}.png`);
-    const pairPanels = await extractFiguresFullSheet(srcPath, 2, 1);
-    panels.push(pairPanels[0], pairPanels[1]);
-  }
-
-  const aspects = panels.map(p => p.width / p.height).sort((a, b) => a - b);
-  const medAspect = aspects[4];
-  let bestIdx = 0, bestDiff = Infinity;
-  for (let i = 0; i < panels.length; i++) {
-    const d = Math.abs(panels[i].width / panels[i].height - medAspect);
-    if (d < bestDiff) { bestDiff = d; bestIdx = i; }
-  }
-  const canonPanel = panels[bestIdx];
-
-  const BASE_H = 316;
-  const targetW = Math.min(332, Math.round(canonPanel.width * (BASE_H / canonPanel.height)));
-  const { cell: baseCell } = await placeInCell(canonPanel, targetW, BASE_H, PIVOT.x, 357, 'core');
-
-  const isLateral = ['NE', 'E', 'SE', 'SW', 'W', 'NW'].includes(dir);
-  const dirSign = ['E', 'NE', 'SE'].includes(dir) ? 1 : ['W', 'NW', 'SW'].includes(dir) ? -1 : 0;
-  const cells = [];
-
-  for (let f = 0; f < 8; f++) {
-    const theta = (2 * Math.PI * f) / 8;
-    const sin1 = Math.sin(theta);
-    const cos1 = Math.cos(theta);
-    const sin2 = Math.sin(2 * theta);
-    const cos2 = Math.cos(2 * theta);
-
-    const dyBob = 3.5 * cos2;
-    const out = Buffer.alloc(CELL * CELL * 4);
-
-    for (let y = 10; y < CELL - 6; y++) {
-      const u = Math.max(0, Math.min(1.1, (357 - y) / BASE_H));
-      const lowerMask = 1 - smoothstep(0.15, 0.52, u);
-      const upperMask = smoothstep(0.45, 0.82, u);
-
-      for (let x = 10; x < CELL - 10; x++) {
-        const dxCenter = x - PIVOT.x;
-        const absDx = Math.abs(dxCenter);
-        const sideSign = Math.tanh(dxCenter / 18);
-
-        let dxStride = 0, dyStride = 0;
-        if (isLateral) {
-          dxStride = lowerMask * (1 - u * 1.4) * 9.5 * sin1 * sideSign + lowerMask * 3.2 * cos1;
-          dyStride = lowerMask * sideSign * 7.5 * sin1;
-        } else {
-          dxStride = lowerMask * 3.0 * sin1;
-          dyStride = lowerMask * sideSign * 8.5 * sin1;
+          const glowMod = 1 + 0.02 * Math.sin(theta + u * 2.0);
+          const idx = (y * CELL + x) * 4;
+          out[idx] = Math.min(255, Math.round(r0 * glowMod));
+          out[idx + 1] = Math.min(255, Math.round(g0 * glowMod));
+          out[idx + 2] = Math.min(255, Math.round(b0 * glowMod));
+          out[idx + 3] = a0;
         }
-
-        const dxUpper = upperMask * (-2.6 * sin1 + 1.8 * dirSign * sin2);
-        const dyUpper = upperMask * (-1.5 * cos2);
-
-        const clothMask = smoothstep(16, 56, absDx) * smoothstep(0.16, 0.45, u) * (1 - 0.65 * smoothstep(0.84, 0.98, u));
-        const phaseLag = 0.038 * absDx + 0.022 * Math.max(0, y - 110);
-        const dxCloth = clothMask * (6.2 * Math.sin(theta - phaseLag) + 2.0 * cos2);
-        const dyCloth = clothMask * (4.4 * Math.cos(theta - phaseLag));
-
-        const sx = x - (dxStride + dxUpper + dxCloth);
-        const sy = y - (dyBob + dyStride + dyUpper + dyCloth);
-
-        const [r0, g0, b0, a0] = sampleBilinear(baseCell, CELL, CELL, sx, sy);
-        if (a0 < 8) continue;
-
-        const glowMod = 1 + 0.02 * Math.sin(theta + u * 2.0);
-        const idx = (y * CELL + x) * 4;
-        out[idx] = Math.min(255, Math.round(r0 * glowMod));
-        out[idx + 1] = Math.min(255, Math.round(g0 * glowMod));
-        out[idx + 2] = Math.min(255, Math.round(b0 * glowMod));
-        out[idx + 3] = a0;
       }
+      cells.push(out);
     }
-    cells.push(out);
+    canonRows.push(cells);
   }
-
-  return cells;
+  return canonRows;
 }
 
-async function packSheet(heroSlug, heroKey, pose, builder) {
+// 2. HURT: Build the 5 canonical rows [N, NE, E, SE (from mirrored SW clean 2x4), S]
+async function buildAllHurtRows(heroKey) {
+  const H_HURT = [328, 314, 297, 280, 284, 300, 316, 328];
+  const canonRows = [];
+
+  for (let d = 0; d < ROWS; d++) {
+    const dir = CANON_DIRS[d];
+    let panels;
+    if (dir === 'SE') {
+      const swPath = path.join(ACT_V2_ROOT, `${heroKey}-hurt-SW.png`);
+      const swPanels = await extractFiguresFullSheet(swPath, 2, 4);
+      panels = swPanels.map(mirrorPanelHorizontal);
+    } else {
+      const srcPath = path.join(ACT_V2_ROOT, `${heroKey}-hurt-${dir}.png`);
+      panels = await extractFiguresFullSheet(srcPath, 2, 4);
+    }
+
+    const recoilSign = ['E', 'NE', 'SE'].includes(dir) ? -1 : 0;
+    const rawCells = [];
+    for (let f = 0; f < 8; f++) {
+      const recoilX = PIVOT.x + [0, 3, 5, 6, 5, 3, 1, 0][f] * recoilSign;
+      const { targetW, targetH } = uniformDims(panels[f], H_HURT[f], 310);
+      const { cell } = await placeInCell(panels[f], targetW, targetH, recoilX, { bottomY: 359, anchorMode: 'core' });
+      rawCells.push(cell);
+    }
+    canonRows.push(harmonizeInteriorShading(rawCells, { loop: false, blendWeight: 0.14 }));
+  }
+  return canonRows;
+}
+
+// 3. DEATH: Build the 5 canonical rows [N, NE, E, SE, S] with monotonic collapse curve
+async function buildAllDeathRows(heroKey) {
+  const H_DEATH_LAT = [328, 278, 232, 192, 158, 132, 126, 122];
+  const H_DEATH_FORE = [328, 280, 238, 202, 174, 152, 146, 142];
+  const canonRows = [];
+
+  for (let d = 0; d < ROWS; d++) {
+    const dir = CANON_DIRS[d];
+    const srcPath = path.join(ACT_V2_ROOT, `${heroKey}-death-${dir}.png`);
+    const panels = await extractFiguresFullSheet(srcPath, 2, 4);
+    const hCurve = ['N', 'S'].includes(dir) ? H_DEATH_FORE : H_DEATH_LAT;
+    const rawCells = [];
+
+    for (let f = 0; f < 8; f++) {
+      const { targetW, targetH } = uniformDims(panels[f], hCurve[f], f < 3 ? 260 : 336);
+      const anchorMode = f <= 2 ? 'core' : f <= 4 ? 'blend' : 'bbox';
+      const { cell } = await placeInCell(panels[f], targetW, targetH, PIVOT.x, { bottomY: 359, anchorMode });
+      rawCells.push(cell);
+    }
+    canonRows.push(harmonizeInteriorShading(rawCells, { loop: false, blendWeight: 0.12 }));
+  }
+  return canonRows;
+}
+
+// 4. RUN: Build the 5 canonical rows [N, NE, E, SE, S] at uniform running height 318px
+async function buildAllRunRows(heroKey) {
+  const canonRows = [];
+  for (let d = 0; d < ROWS; d++) {
+    const dir = CANON_DIRS[d];
+    const panels = [];
+    for (let pair = 0; pair < 4; pair++) {
+      const srcPath = path.join(ACT_V2_ROOT, `${heroKey}-run-${dir}-pair-${pair}.png`);
+      const pairPanels = await extractFiguresFullSheet(srcPath, 2, 1);
+      panels.push(pairPanels[0], pairPanels[1]);
+    }
+    const aspects = panels.map(p => p.width / p.height).sort((a, b) => a - b);
+    const medAspect = aspects[4];
+    let bestIdx = 0, bestDiff = Infinity;
+    for (let i = 0; i < panels.length; i++) {
+      const diff = Math.abs(panels[i].width / panels[i].height - medAspect);
+      if (diff < bestDiff) { bestDiff = diff; bestIdx = i; }
+    }
+    const panel = panels[bestIdx];
+    const { targetW, targetH } = uniformDims(panel, 318, 336);
+    const { cell: baseCell } = await placeInCell(panel, targetW, targetH, PIVOT.x, { bottomY: 355, anchorMode: 'core' });
+
+    const isLateral = ['NE', 'E', 'SE'].includes(dir);
+    const dirSign = isLateral ? 1 : 0;
+    const cells = [];
+
+    for (let f = 0; f < 8; f++) {
+      const theta = (2 * Math.PI * f) / 8;
+      const sin1 = Math.sin(theta);
+      const cos1 = Math.cos(theta);
+      const sin2 = Math.sin(2 * theta);
+      const cos2 = Math.cos(2 * theta);
+
+      const dyBob = 3.5 * cos2;
+      const out = Buffer.alloc(CELL * CELL * 4);
+
+      for (let y = 10; y < CELL - 6; y++) {
+        const u = Math.max(0, Math.min(1.1, (355 - y) / targetH));
+        const lowerMask = 1 - smoothstep(0.15, 0.52, u);
+        const upperMask = smoothstep(0.45, 0.82, u);
+
+        for (let x = 10; x < CELL - 10; x++) {
+          const dxCenter = x - PIVOT.x;
+          const absDx = Math.abs(dxCenter);
+          const sideSign = Math.tanh(dxCenter / 18);
+
+          let dxStride = 0, dyStride = 0;
+          if (isLateral) {
+            dxStride = lowerMask * (1 - u * 1.4) * 9.5 * sin1 * sideSign + lowerMask * 3.2 * cos1;
+            dyStride = lowerMask * sideSign * 7.5 * sin1;
+          } else {
+            dxStride = lowerMask * 3.0 * sin1;
+            dyStride = lowerMask * sideSign * 8.5 * sin1;
+          }
+
+          const dxUpper = upperMask * (-2.6 * sin1 + 1.8 * dirSign * sin2);
+          const dyUpper = upperMask * (-1.5 * cos2);
+
+          const clothMask = smoothstep(16, 56, absDx) * smoothstep(0.16, 0.45, u) * (1 - 0.65 * smoothstep(0.84, 0.98, u));
+          const phaseLag = 0.038 * absDx + 0.022 * Math.max(0, y - 110);
+          const dxCloth = clothMask * (6.2 * Math.sin(theta - phaseLag) + 2.0 * cos2);
+          const dyCloth = clothMask * (4.4 * Math.cos(theta - phaseLag));
+
+          const sx = x - (dxStride + dxUpper + dxCloth);
+          const sy = y - (dyBob + dyStride + dyUpper + dyCloth);
+
+          const [r0, g0, b0, a0] = sampleBilinear(baseCell, CELL, CELL, sx, sy);
+          if (a0 < 8) continue;
+
+          const glowMod = 1 + 0.02 * Math.sin(theta + u * 2.0);
+          const idx = (y * CELL + x) * 4;
+          out[idx] = Math.min(255, Math.round(r0 * glowMod));
+          out[idx + 1] = Math.min(255, Math.round(g0 * glowMod));
+          out[idx + 2] = Math.min(255, Math.round(b0 * glowMod));
+          out[idx + 3] = a0;
+        }
+      }
+      cells.push(out);
+    }
+    canonRows.push(cells);
+  }
+  return canonRows;
+}
+
+async function packSheet(heroSlug, heroKey, pose, allRowsBuilder) {
   const composite = [];
   const hashes = new Set();
   const rowStats = [];
+  const allRows = await allRowsBuilder(heroKey);
 
-  for (let row = 0; row < DIRS.length; row++) {
-    const dir = DIRS[row];
-    const cells = await builder(heroKey, dir);
+  for (let row = 0; row < ROWS; row++) {
+    const dir = CANON_DIRS[row];
+    const cells = allRows[row];
     const heights = [];
-    const coreXs = [];
+    const widths = [];
+    const areas = [];
 
     for (let f = 0; f < 8; f++) {
       const cell = cells[f];
@@ -606,36 +634,37 @@ async function packSheet(heroSlug, heroKey, pose, builder) {
       }
       const meta = measureCell(cell);
       heights.push(meta.height);
-      coreXs.push(Math.round(meta.coreX));
+      widths.push(meta.width);
+      areas.push(meta.area);
 
       const png = await sharp(cell, { raw: { width: CELL, height: CELL, channels: 4 } }).png().toBuffer();
       const sha = createHash('sha256').update(png).digest('hex');
       hashes.add(sha);
       composite.push({ input: png, left: f * CELL, top: row * CELL });
     }
-    rowStats.push({ dir, heights, coreXs });
+    rowStats.push({ dir, h0: heights[0], w0: widths[0], area0: areas[0], area3: areas[3] });
   }
 
   const outFile = path.join(OUT_DIR, `${heroSlug}-${pose}.png`);
   await sharp({
-    create: { width: SHEET_SIZE, height: SHEET_SIZE, channels: 4, background: { r: 0, g: 0, b: 0, alpha: 0 } }
+    create: { width: SHEET_W, height: SHEET_H, channels: 4, background: { r: 0, g: 0, b: 0, alpha: 0 } }
   })
     .composite(composite)
     .png()
     .toFile(outFile);
 
-  console.log(`Packed ${outFile} (${hashes.size}/64 unique cells)`);
+  console.log(`Packed 1-side sheet ${outFile} (${SHEET_W}x${SHEET_H}, ${hashes.size}/40 unique cells; SW/W/NW mirrored at runtime)`);
   for (const s of rowStats) {
-    console.log(`  ${s.dir.padEnd(2)} H:[${s.heights.join(',')}] X:[${s.coreXs.join(',')}]`);
+    console.log(`  ${s.dir.padEnd(2)} f1:[W=${s.w0}, H=${s.h0}, area=${s.area0}] f4:[area=${s.area3}]`);
   }
 }
 
 async function main() {
   for (const [heroSlug, heroKey] of [['rift-runner', 'rift'], ['ember-warden', 'ember']]) {
-    await packSheet(heroSlug, heroKey, 'idle', buildIdleRow);
-    await packSheet(heroSlug, heroKey, 'hurt', buildHurtRow);
-    await packSheet(heroSlug, heroKey, 'death', buildDeathRow);
-    await packSheet(heroSlug, heroKey, 'run', buildRunRow);
+    await packSheet(heroSlug, heroKey, 'idle', buildAllIdleRows);
+    await packSheet(heroSlug, heroKey, 'hurt', buildAllHurtRows);
+    await packSheet(heroSlug, heroKey, 'death', buildAllDeathRows);
+    await packSheet(heroSlug, heroKey, 'run', buildAllRunRows);
   }
 }
 

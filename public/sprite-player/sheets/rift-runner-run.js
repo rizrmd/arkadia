@@ -2,14 +2,35 @@ spritePlayerSheet({
  "name": "Rift Runner — Run",
  "hero": "rift-runner",
  "pose": "run",
- "sheet": "rift-runner-run.webp",
- "sheetHalf": "rift-runner-run@0.5x.webp",
+ "sheet": "rift-runner-run.webp?v=c870903f",
+ "sheetHalf": "rift-runner-run@0.5x.webp?v=c870903f",
  "cell": [
   384,
   384
  ],
  "columns": 8,
  "rows": 8,
+ "storedRows": 5,
+ "rowMap": [
+  0,
+  1,
+  2,
+  3,
+  4,
+  3,
+  2,
+  1
+ ],
+ "mirrorRows": [
+  false,
+  false,
+  false,
+  false,
+  false,
+  true,
+  true,
+  true
+ ],
  "pivot": [
   192,
   360
@@ -29,7 +50,7 @@ spritePlayerSheet({
  "defaultRow": 4,
  "source": {
   "knowledge": "NKBD7b2d30906c8a963483c32888",
-  "attachment": "DA5aa74505c50e3ea9e9b4ce83",
+  "attachment": "DA61c459a00da2c3d875686b51",
   "file": "assets-src/sprite-player/rift-runner-run.png"
  }
 });

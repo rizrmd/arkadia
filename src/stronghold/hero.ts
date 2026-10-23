@@ -74,7 +74,7 @@ export const DISPLAY=.48;const RADIUS=9,SPAWN={x:590,y:420};
 export async function createHero<P extends Placed>(o:{layer:Container;lightmap:HTMLCanvasElement;surface:HTMLElement;footprint:(p:P)=>Column[];sun:()=>Sun;direction:()=>Walk;follow:(x:number,y:number,dt:number,walking?:boolean)=>void;pose?:()=>Pose|null;drive?:()=>Drive|null;id?:string;hero?:HeroId}){
  const load=async(id:HeroId)=>{const all=await characters(),m:Meta=all[id]??all[DEFAULT_HERO];return {id,meta:m,atlas:await loadImage(atlasUrl(m))};};
  let hero=await load(isHero(o.hero)?o.hero:DEFAULT_HERO),{meta,atlas}=hero,wanted=hero.id;
- const canvas=document.createElement('canvas'),c=canvas.getContext('2d')!;canvas.id=o.id??'world-hero';const own=!o.id;
+ const canvas=document.createElement('canvas'),c=canvas.getContext('2d')!;canvas.id=o.id??'world-hero';const own=!o.id;if(own)(window as any).__WORLD_HERO__=canvas;
  const heroView=createCanvasSprite(canvas);
  heroView.sprite.zIndex=30;
  o.layer.addChild(heroView.sprite);
@@ -106,7 +106,7 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
  const view=()=>vertical?(back?'N':'S'):(back?'N':'S')+(facing>0?'E':'W');
  const clipName=()=>meta.views?`${pose?pose.clip:state}-${view()}`:pose?pose.clip:vertical?state+(back?'Up':'Down'):back?state+'Back':state;
  const frameIndex=()=>{const clip=meta.clips[clipName()],n=clip.frames.length,i=pose?Math.floor(pose.t*clip.fps/1000):state==='move'?Math.floor(gait*clip.fps):Math.floor(t*clip.fps/1000);return clip.frames[clip.loop?i%n:Math.min(i,n-1)];};
- function face(sx:number,sy:number){const l=Math.hypot(sx,sy);if(!l)return;vertical=Math.abs(sx)/l<Math.sin((vertical?15:10)*Math.PI/180);if(Math.abs(sy)/l>.15)back=sy<0;if(Math.abs(sx)/l>.15)facing=sx>0?1:-1;}
+ function face(sx:number,sy:number){const l=Math.hypot(sx,sy);if(!l)return;vertical=Math.abs(sx)/l<Math.sin((vertical?15:10)*Math.PI/180);back=Math.abs(sy)/l>.15?sy<0:false;if(Math.abs(sx)/l>.15)facing=sx>0?1:-1;}
  function driven(s:Drive,dt:number){
   const dx=s.x-x,dy=s.y-y;x=s.x;y=s.y;pose=s.pose!==undefined?s.pose:o.pose?.()??null;
   if(s.look){facing=s.look.facing;back=s.look.back;vertical=s.look.vertical;}else if(s.face&&(s.face.x||s.face.y)&&!pose)face(s.face.x,s.face.y);
@@ -146,7 +146,7 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
   const frame=(target:HTMLCanvasElement)=>{const g=target.getContext('2d',{willReadFrequently:target===lit})!;g.globalCompositeOperation='copy';g.drawImage(atlas,f.x,f.y,f.w,f.h,0,0,cell.w,cell.h);g.globalCompositeOperation='source-over';return g;};
   const g=frame(lit);if(tint!=='255,255,255'){const [r,gr,bl]=tint.split(',').map(v=>Number(v)/255),img=g.getImageData(0,0,cell.w,cell.h),d=img.data;for(let i=0;i<d.length;i+=4){d[i]*=r;d[i+1]*=gr;d[i+2]*=bl;}g.putImageData(img,0,0);}
   else if(night>0){const img=g.getImageData(0,0,cell.w,cell.h),d=img.data;for(let i=0;i<d.length;i+=4)if(d[i+3]){const lum=.299*d[i]+.587*d[i+1]+.114*d[i+2],k=1+.18*night*Math.min(1,Math.max(0,(lum-28)/70));d[i]=Math.min(255,d[i]*k);d[i+1]=Math.min(255,d[i+1]*(1+(k-1)*.92));d[i+2]=Math.min(255,d[i+2]*(1+(k-1)*.78));}g.putImageData(img,0,0);}
-  const dir=meta.views||vertical&&!pose?1:facing;
+  const dir=meta.views?(vertical?1:facing):(vertical&&!pose?1:facing);
   const local=()=>c.setTransform(k,0,0,k,-box[0]*k,-box[1]*k),sprite=(src:HTMLCanvasElement)=>{c.scale(dir*DISPLAY,DISPLAY);c.drawImage(src,-pivot.x,-pivot.y);};
   c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,canvas.width,canvas.height);local();
   if(night>0){

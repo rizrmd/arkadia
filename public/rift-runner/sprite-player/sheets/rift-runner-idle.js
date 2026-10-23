@@ -2,14 +2,35 @@ spritePlayerSheet({
  "name": "Rift Runner — Idle",
  "hero": "rift-runner",
  "pose": "idle",
- "sheet": "rift-runner-idle.webp",
- "sheetHalf": "rift-runner-idle@0.5x.webp",
+ "sheet": "rift-runner-idle.webp?v=018dcda3",
+ "sheetHalf": "rift-runner-idle@0.5x.webp?v=018dcda3",
  "cell": [
   384,
   384
  ],
  "columns": 8,
  "rows": 8,
+ "storedRows": 5,
+ "rowMap": [
+  0,
+  1,
+  2,
+  3,
+  4,
+  3,
+  2,
+  1
+ ],
+ "mirrorRows": [
+  false,
+  false,
+  false,
+  false,
+  false,
+  true,
+  true,
+  true
+ ],
  "pivot": [
   192,
   360
@@ -29,7 +50,7 @@ spritePlayerSheet({
  "defaultRow": 4,
  "source": {
   "knowledge": "NKBD5d29155bc5f9d7ba568672e6",
-  "attachment": "DA59302806cec76687789b5184",
+  "attachment": "DA61033b1f2d5cffe17f848835",
   "file": "assets-src/sprite-player/rift-runner-idle.png"
  }
 });

@@ -1,4 +1,5 @@
 // Arkadia sprite player: plays one row of a grid sprite sheet (rows = headings, columns = frames).
+// Supports 1-side 5-row sheets (N, NE, E, SE, S) where SW, W, NW are mirrored horizontally from SE, E, NE at runtime.
 // Built to sit in an iframe. Configure with query parameters:
 //   manifest=sheets/rift-runner-idle.js     sheet description (default); paths inside resolve against it. A .js description
 //                                          calls spritePlayerSheet({...}) and also loads in sandboxed frames; .json needs CORS there
@@ -13,6 +14,7 @@
 const $=id=>document.getElementById(id),params=new URLSearchParams(location.search),dpr=()=>Math.min(window.devicePixelRatio||1,3);
 const player=$('player'),stage=$('stage'),canvas=$('canvas'),ctx=canvas.getContext('2d'),status=$('status');
 const ZOOMS=[0.5,0.75,1,1.25,1.5,2,3,4];
+const DEFAULT_ROW_MAP=[0,1,2,3,4,3,2,1],DEFAULT_MIRROR=[false,false,false,false,false,true,true,true];
 const state={ready:false,playing:true,ended:false,loop:true,zoom:1,pan:[0,0],row:0,frame:0,fps:5,all:false,guides:false,bg:'dark',source:null,drawn:null};
 let sheet,images={},last=0,elapsed=0,raf=0;
 window.spritePlayer={state,get sheet(){return sheet}};
@@ -26,7 +28,7 @@ function resolveManifest(){
  let h=(params.get('hero')||'').toLowerCase().trim(),p=(params.get('pose')||params.get('action')||'').toLowerCase().trim();
  for(const pose of POSES)if(h.endsWith('-'+pose)){p=p||pose;h=h.slice(0,-pose.length-1);break;}
  const hero=HEROES[h]||'rift-runner',pose=POSES.has(p)?p:'idle';
- return `sheets/${hero}-${pose}.js`;
+ return `sheets/${hero}-${pose}.js?v=5`;
 }
 async function loadSheet(){
  if(params.has('sheet')){
@@ -52,18 +54,21 @@ function pickImage(cellDevicePx){
 }
 function drawCell(img,scaleOfSheet,row,frame,x,y,w,h,blend=0){
  const [cw,ch]=sheet.cell,sw=cw*scaleOfSheet,sh=ch*scaleOfSheet,n=frames(),next=state.loop?(frame+1)%n:Math.min(n-1,frame+1);
+ const srcRow=sheet.rowMap?sheet.rowMap[row]??row:row,mirror=!!sheet.mirrorRows?.[row];
+ const pivotFracX=sheet.pivot?sheet.pivot[0]/cw:0.5,pxPivot=x+pivotFracX*w;
+ ctx.save();
+ if(mirror){ctx.translate(2*pxPivot,0);ctx.scale(-1,1);}
  if(blend>0.01&&next!==frame){
   const t=blend*blend*(3-2*blend);
-  ctx.save();
-  ctx.globalAlpha=1-t*0.85;ctx.drawImage(img,frame*sw,row*sh,sw,sh,x,y,w,h);
-  ctx.globalAlpha=t;ctx.drawImage(img,next*sw,row*sh,sw,sh,x,y,w,h);
+  ctx.globalAlpha=1-t*0.85;ctx.drawImage(img,frame*sw,srcRow*sh,sw,sh,x,y,w,h);
+  ctx.globalAlpha=t;ctx.drawImage(img,next*sw,srcRow*sh,sw,sh,x,y,w,h);
   ctx.globalCompositeOperation='destination-over';
-  ctx.globalAlpha=1-t;ctx.drawImage(img,frame*sw,row*sh,sw,sh,x,y,w,h);
-  ctx.restore();
- }else ctx.drawImage(img,frame*sw,row*sh,sw,sh,x,y,w,h);
+  ctx.globalAlpha=1-t;ctx.drawImage(img,frame*sw,srcRow*sh,sw,sh,x,y,w,h);
+ }else ctx.drawImage(img,frame*sw,srcRow*sh,sw,sh,x,y,w,h);
+ ctx.restore();
  if(state.guides&&sheet.pivot){
   const px=Math.round(x+sheet.pivot[0]/cw*w)+.5,py=Math.round(y+sheet.pivot[1]/ch*h)+.5,s=Math.max(4,w*.03);
-  ctx.strokeStyle='rgba(255,196,92,.9)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(x,py);ctx.lineTo(x+w,py);ctx.moveTo(px,py-s);ctx.lineTo(px,py+s);ctx.stroke();
+  ctx.strokeStyle='rgba(255,196,92,.9)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(x,py);ctx.lineTo(x+w,py);ctx.moveTo(px,py-s);ctx.moveTo(px,py-s);ctx.lineTo(px,py+s);ctx.stroke();
   ctx.strokeStyle='rgba(255,255,255,.18)';ctx.strokeRect(Math.round(x)+.5,Math.round(y)+.5,Math.round(w)-1,Math.round(h)-1);
  }
 }
@@ -146,7 +151,10 @@ async function init(){
   if(!sheet.sheet||!(sheet.cell?.[0]>0)||!(sheet.columns>0)||!(sheet.rows>0))throw Error('Sheet description needs sheet, cell, columns and rows');
   const first=await loadImage(sheet.sheetHalf||sheet.sheet);images[sheet.sheetHalf?'half':'full']=first;
   const scale=sheet.sheetHalf?.5:1;
-  if(Math.round(first.naturalWidth/scale)<sheet.cell[0]*sheet.columns||Math.round(first.naturalHeight/scale)<sheet.cell[1]*sheet.rows)throw Error('Sprite sheet is smaller than its cell grid');
+  const actualRows=Math.round((first.naturalHeight/scale)/sheet.cell[1]);
+  if(!sheet.storedRows&&sheet.rows===8&&actualRows===5){sheet.storedRows=5;sheet.rowMap=DEFAULT_ROW_MAP;sheet.mirrorRows=DEFAULT_MIRROR;}
+  const requiredRows=sheet.storedRows||sheet.rows;
+  if(Math.round(first.naturalWidth/scale)<sheet.cell[0]*sheet.columns||Math.round(first.naturalHeight/scale)<sheet.cell[1]*requiredRows)throw Error('Sprite sheet is smaller than its cell grid');
   document.title=`${sheet.name} — Sprite Player`;
   state.fps=+params.get('fps')||sheet.fps||8;state.row=sheet.defaultRow??0;
   state.guides=params.get('guides')==='1';state.all=params.get('all')==='1';state.bg=player.dataset.bg=['dark','light','checker','snow'].includes(params.get('bg'))?params.get('bg'):'dark';
