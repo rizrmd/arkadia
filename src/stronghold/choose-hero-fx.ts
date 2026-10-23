@@ -62,6 +62,12 @@ export class ChooseHeroFx{
  step(seconds:number){for(let t=0;t<seconds-1e-6;t+=1/60)this.advance(Math.min(1/60,seconds-t));}
  private tick(ticker:Ticker){if(!this.manual)this.advance(Math.min(.05,ticker.deltaMS/1000));}
  private advance(dt:number){
+  let anyShown=false;
+  for(const s of this.slots){
+   if(s.root.destroyed){this.slots.delete(s);continue;}
+   if(shown(s.root)){anyShown=true;break;}
+  }
+  if(!anyShown)return;
   this.clock+=dt;
   for(const s of this.slots){
    // Hidden screens keep their particles frozen.
@@ -71,6 +77,12 @@ export class ChooseHeroFx{
    for(let i=s.live.length-1;i>=0;i--){const l=s.live[i];if(l.inst.isActive)continue;
     // Looping highlights replay when their run ends; finished one-shots are removed.
     if(l.loop)l.inst.spawn({position:[0,0,0],seed:(Math.random()*0x7fffffff)|0,timeSeconds:this.clock});else{s.vfx.removeEffect(l.inst,true);s.live.splice(i,1);}}
+  }
+ }
+ stopAll(){
+  for(const s of this.slots){
+   for(const l of s.live){l.loop=false;s.vfx.removeEffect(l.inst,true);}
+   s.live.length=0;
   }
  }
 }

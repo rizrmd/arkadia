@@ -99,6 +99,10 @@ export function biomeAt(u:number,v:number,seed=DEFAULT_SEED):BiomeId{
  return EXPEDITION_BIOME_MAP[raw]??'ash-frontier';
 }
 
+function fastAreaAt(u:number,v:number):CornerArea{
+ return inSafeZone({u,v})?'court':'snow';
+}
+
 /**
  * Maps a resolved BiomeId to an available Phase 1 corner artwork set ('court' | 'snow').
  */
@@ -277,9 +281,9 @@ export async function createParallax(opts:ParallaxOptions){
   return promise;
  }
 
- function unloadDistantSets(keepAreas:Set<CornerArea>,mobile:boolean){
+ function unloadDistantSets(_keepAreas:Set<CornerArea>,mobile:boolean){
   for(const [k,set] of loadedSets){
-   if(set.mobile!==mobile||!keepAreas.has(set.area)){
+   if(set.mobile!==mobile){
     loadedSets.delete(k);
    }
   }
@@ -569,12 +573,20 @@ export async function createParallax(opts:ParallaxOptions){
   layoutSprites();
  }
 
- function stepInternal(u:number,v:number,dtMs:number){
-  heroTile={u,v};
+ let lastBiomeKey='';
+ function updateBiomes(u:number,v:number){
+  const key=`${Math.round(u*2)}:${Math.round(v*2)}`;
+  if(key===lastBiomeKey)return;
+  lastBiomeKey=key;
   currentBiome=biomeAt(u,v);
   const halfSpan=BORDER_SAMPLE_TILES*0.5;
   leftBorderBiome=biomeAt(u-halfSpan,v+halfSpan);
   rightBorderBiome=biomeAt(u+halfSpan,v-halfSpan);
+ }
+
+ function stepInternal(u:number,v:number,dtMs:number){
+  heroTile={u,v};
+  updateBiomes(u,v);
 
   const mobile=mode!=='desktop';
   const gateDist=fromGate({u,v});
@@ -585,7 +597,7 @@ export async function createParallax(opts:ParallaxOptions){
    unloadDistantSets(new Set([activeArea]),mobile);
   }
 
-  const candidate=resolveCornerArea(currentBiome);
+  const candidate=fastAreaAt(u,v);
   const targetBasis=transitioning?slotBArea:activeArea;
   let startedThisStep=false;
 
@@ -649,7 +661,7 @@ export async function createParallax(opts:ParallaxOptions){
    const hw=opts.getHeroWorld();
    const g=unproject(hw.x-COURT.x,hw.y-COURT.y);
    heroTile={u:g.x,v:g.y};
-   currentBiome=biomeAt(g.x,g.y);
+   updateBiomes(g.x,g.y);
   }
   layoutSprites();
  }

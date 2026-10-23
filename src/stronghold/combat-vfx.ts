@@ -556,8 +556,10 @@ export function createCombatVfx(o:{
      if(!f.alive||p.hitIds.has(f))continue;
      if(Math.hypot(f.x-p.u,f.y-p.v)<=p.radius+.42){
       p.hitIds.add(f);
+      let sameFrameImpacts=0;
+      for(let k=sparks.length-1;k>=0;k--){if(sparks[k].age===0)sameFrameImpacts++;else break;}
       applyHitToFoe(f,{scale:p.damageScale,forceCrit:p.forceCrit,sparkKind:p.kind==='flame-bolt'?'fire':'arcane',angle});
-      cue(`${p.skill}.impact`,{u:p.u,v:p.v,yaw:yawOf(p.vx,p.vy)});
+      if(sameFrameImpacts<2)cue(`${p.skill}.impact`,{u:p.u,v:p.v,yaw:yawOf(p.vx,p.vy)});
       p.alive=false;
       break;
      }
@@ -604,10 +606,8 @@ export function createCombatVfx(o:{
    const rx=Math.max(24,Math.round(radius*64*Math.SQRT2/2)*2),ry=Math.max(12,Math.round(rx*.52));
    const padX=rx+8,padY=ry+8,wpx=padX*2,hpx=padY*2;
    const qAngle=shape==='circle'?0:Math.round(angle/(Math.PI/8))*(Math.PI/8);
-   const hidden=o.occluders?o.occluders(w.x,w.y,[-padX,-padY,padX,padY]):[];
-   const occKey=hidden.length?hidden.map(p=>p.x+':'+p.y+':'+Math.round(Number(p.occluder?.dataset.frame??0)/8)).join()+'@'+Math.round(w.x*.5)+','+Math.round(w.y*.5):'';
    const baseKey=`${kind}:${shape}:${rx}:${qAngle.toFixed(2)}:${spread.toFixed(2)}:${zDpr}`;
-   const zKey=`${baseKey}:${occKey}`;
+   const zKey=baseKey;
    let zv=zoneViews.get(id);
    if(!zv){
     const matchIdx=zonePool.findIndex(p=>p.key===zKey);
@@ -701,10 +701,6 @@ export function createCombatVfx(o:{
     ctx.globalCompositeOperation='copy';
     ctx.drawImage(baseCan,0,0);
     ctx.globalCompositeOperation='source-over';
-    if(hidden.length){
-     ctx.setTransform(zDpr,0,0,zDpr,padX*zDpr,padY*zDpr);
-     cutOut(ctx,hidden,w.x,w.y);
-    }
     zv.view.sync(wpx*k,hpx*k);
    }
    const t=age/Math.max(1,duration);

@@ -75,7 +75,7 @@ export async function mount(app:HTMLElement,progress:Progress){
  render();
 
  await new Promise<void>(done=>{const check=()=>canvas.dataset.ready==='true'?done():requestAnimationFrame(check);check();});
- startFpsTracelog({rt,getCombatSnapshot:()=>worldView.encounters.snapshot(),net,getHeroId:()=>hero});
+ startFpsTracelog({rt,getCombatSnapshot:()=>worldView.encounters.snapshot(),getLiveCounts:()=>worldView.encounters.liveCounts(),net,getHeroId:()=>hero});
  await picker.start();
  void picker.picked.then(()=>{if(invited)lobby!.prompt(invited);});
 

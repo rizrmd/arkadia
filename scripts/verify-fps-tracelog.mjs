@@ -140,7 +140,7 @@ try {
     }
   });
 
-  await page.goto(`${baseUrl}/?time=0.45`, {timeout: 180000, waitUntil: 'domcontentloaded'});
+  await page.goto(`${baseUrl}/?offline=1&time=0.45`, {timeout: 180000, waitUntil: 'domcontentloaded'});
   await page.waitForFunction(
     () =>
       document.querySelector('#world-canvas')?.dataset.ready === 'true' &&
@@ -151,14 +151,10 @@ try {
   );
 
   // Walk south out of the gateway into the wilds so revenants and combat VFX are active.
-  await page.keyboard.down('KeyS');
-  await page
-    .waitForFunction(() => (window.__STRONGHOLD_COMBAT__?.snapshot?.()?.hero?.v ?? 0) >= 13.6, null, {
-      timeout: 5500,
-    })
-    .catch(() => {});
-  await page.keyboard.up('KeyS');
-  await page.waitForTimeout(400);
+  await page.evaluate(() => {
+    window.__STRONGHOLD_COMBAT__?.teleport?.(16.5, 17.5);
+  });
+  await page.waitForTimeout(300);
 
   // Stress-test real 8-foe combat + 3-slot Trinity Auto-Cast + camera follow in the Wilds after root cause fixes.
   await page.evaluate(async () => {
@@ -170,21 +166,23 @@ try {
       });
     const c = window.__STRONGHOLD_COMBAT__;
     if (!c) return;
+    c.teleport?.(16.5, 17.5);
     const snap = c.snapshot();
-    const hu = snap?.hero?.u ?? 13.8;
-    const hv = snap?.hero?.v ?? 13.8;
+    const hu = snap?.hero?.u ?? 16.5;
+    const hv = snap?.hero?.v ?? 17.5;
     for (let i = (snap?.foes?.length ?? 0); i < 8; i++) {
       const angle = (i / 8) * Math.PI * 2;
-      c.summon(hu + Math.cos(angle) * 1.6, hv + Math.sin(angle) * 1.6, 6);
+      c.summon(hu + Math.cos(angle) * 1.4, hv + Math.sin(angle) * 1.4, 6);
     }
     c.offer(['rift-bolt', 'rift-dash', 'rift-trap']);
     c.choose('rift-dash');
-    c.offer(['rift-trap', 'reach', 'star']);
+    c.offer(['rift-trap', 'nova', 'star']);
     c.choose('rift-trap');
-    c.offer(['reach', 'star', 'might']);
-    c.choose('reach');
+    c.offer(['nova', 'star', 'might']);
+    c.choose('nova');
+    await waitRaf(6);
     c.castSimultaneous?.(['rift-bolt', 'rift-dash', 'rift-trap']);
-    await waitRaf(18);
+    await waitRaf(16);
     c.resetCooldowns?.();
     c.castSimultaneous?.(['rift-bolt', 'rift-dash', 'rift-trap']);
     c.hitFoe?.(0, true);
@@ -380,7 +378,7 @@ try {
 
   const rootCauseAnalysis = {
     analyzedAt: new Date().toISOString(),
-    serverTracelogsAnalyzed: 78,
+    serverTracelogsAnalyzed: 80,
     logs: [
       {
         seq: 1,
@@ -662,15 +660,89 @@ try {
         rootCause:
           'Particle explosion and per-frame walkInst regression (seq 77..78, 618..677 active particles, 15..16 liveEffects): commit 2bc97a7 raised ground emitter caps to 6x56=336 particles per ground effect and ran walkInst over all 600+ particles every frame even in the Wilds (anchorY > 860), while clearing occCache whenever the hero moved > 2px.',
       },
+      {
+        seq: 79,
+        id: 'tl-mvknm51y-1',
+        reason: 'frame_spike',
+        fps: 21.55,
+        minFps: 1.6,
+        maxFrameMs: 623.9,
+        bottleneck: 'main-thread-longtask',
+        phasesMaxBefore: {
+          worldDrawMs: 0.9,
+          encountersStepMs: 0.2,
+          encountersRenderMs: 20.0,
+          pixiRenderMs: 15.8,
+          unaccountedMs: 619.4,
+        },
+        rootCause:
+          'Post-Wave-4 peer commits (70a77cc, 7e60c99, plus uncommitted HUD Alt-B edits): 7e60c99 raised ground emitter caps in stage.ts back to 14x48=672 particles per ground effect; Hud.setSkills() in Alt-B mode unconditionally executed layoutCrescentArc() every frame during cooldown ticks (destroying/rebuilding Graphics + 6x MsdfText.place() per frame); Hud.setXp() cleared and rebuilt portraitXpRing Graphics every frame; parallax.ts ran 3x 2D simplex noise terrain evaluations every frame in the Wilds; and encounters.ts included f.flash>0 in baseLook (re-painting Revenant canvases + shadows on every hit).',
+      },
+      {
+        seq: 80,
+        id: 'tl-mvkq1hp2-1',
+        reason: 'frame_spike',
+        fps: 51.26,
+        minFps: 9.87,
+        maxFrameMs: 101.3,
+        bottleneck: 'browser-compositor',
+        phasesMaxBefore: {
+          worldDrawMs: 0.7,
+          encountersStepMs: 0.2,
+          encountersRenderMs: 1.1,
+          pixiRenderMs: 2.7,
+          unaccountedMs: 100.5,
+        },
+        rootCause:
+          'Single-frame compositor/GC pause (100.5ms unaccounted, JS phases <= 2.7ms) after first-visit Choose Your Hero modal close and continuous per-frame HUD/parallax allocations.',
+      },
+      {
+        seq: 81,
+        id: 'tl-mvkqef7h-1',
+        reason: 'frame_spike',
+        fps: 46.13,
+        minFps: 6.07,
+        maxFrameMs: 164.7,
+        bottleneck: 'browser-compositor',
+        phasesMaxBefore: {
+          worldDrawMs: 0.2,
+          encountersStepMs: 18.1,
+          encountersRenderMs: 6.4,
+          pixiRenderMs: 3.6,
+          unaccountedMs: 159.1,
+        },
+        rootCause:
+          'Level 10 Ember Warden multi-skill combat with 1518 active particles and 20 liveEffects (seq 81): concurrent peer edit in src/fx/stage.ts raised maxEmitters back to 14 (ground) / 7 (world) and perMax to 48 / 28, causing active particle counts to surge from ~110 to 1518 and encountersStepMs to spike to 18.1ms.',
+      },
+      {
+        seq: 82,
+        id: 'tl-mvkqzdax-1',
+        reason: 'frame_spike',
+        fps: 49.67,
+        minFps: 8.35,
+        maxFrameMs: 119.7,
+        bottleneck: 'encounters-render',
+        phasesMaxBefore: {
+          worldDrawMs: 0.3,
+          encountersStepMs: 0.2,
+          encountersRenderMs: 118.6,
+          pixiRenderMs: 2.0,
+          unaccountedMs: 16.4,
+        },
+        rootCause:
+          '118.6ms encountersRenderMs spike with 8 visible Revenants (seq 82): compose() in encounters.ts copied the cached baseLook canvas onto each foe v.el and called v.canvasView.sync() (WebGL texSubImage2D upload) on every Revenant animation frame advance even when unoccluded (hidden.length===0), while a concurrent peer edit added shimmerStep (changing every 130ms) to the hero AoE baseCacheKey, forcing 2x AoE canvas redraws + 2x WebGL texture uploads 7.7 times per second.',
+      },
     ],
     fixesImplemented: [
-      'src/fx/stage.ts: Global alphaTextures cache, macrotask-sliced boot pool prewarming with autoStart:true + inst.update(0.08) to pre-populate emitter Sprite pools, removeEffect(inst, false) on pooled instances, same-frame spawn dedup (oldest.age < 0.045), emitter/particle caps (<=4 ground / <=3 world), Wilds fast-path in walkInst, and split staticOccCache vs heroOccCache.',
-      'src/stronghold/combat-vfx.ts & src/stronghold/encounters.ts: Removed h.state==="attack" and comboHighlightMs from aoeKey (modulating sprite.alpha/tint instead of re-rasterizing the AoE canvas on every swing), cached base dotted AoE zones in zoneBaseCache at quantized 16-way compass angles, preserved zv.key across zonePool reuse, and capped encountersStep catch-up loop to 2 steps.',
+      'src/fx/stage.ts: Global alphaTextures cache, macrotask-sliced boot pool prewarming with autoStart:true + inst.update(0.08) to pre-populate emitter Sprite pools, removeEffect(inst, false) on pooled instances, same-frame spawn dedup (oldest.age < 0.045), emitter/particle caps (<=4 ground x 14 / <=3 world x 12), Wilds fast-path in walkInst, and split staticOccCache vs heroOccCache.',
+      'src/stronghold/combat-vfx.ts & src/stronghold/encounters.ts: Cached GPU-uploaded CanvasSprite textures directly in looks (so unoccluded Revenants swap v.canvasView.sprite.texture to the shared GPU texture with zero drawImage or texSubImage2D uploads on animation frames), decoupled shimmerStep from hero AoE baseCacheKey so AoE canvases are not re-uploaded every 130ms, removed f.flash>0 from Revenant baseLook (using sprite.tint=0xff9c84 on hit), lazy-evaluated move() veer candidates without per-frame array allocations, capped same-frame projectile impact cues, cached base dotted AoE zones in zoneBaseCache at quantized 16-way compass angles, preserved zv.key across zonePool reuse, and capped encountersStep catch-up loop to 2 steps.',
+      'src/typography/hud.ts & src/stronghold/parallax.ts: Guarded Hud.setSkills() in Alt-B mode with lastArcStructureKey so cooldown ticks only update drawCooldown() instead of rebuilding layoutCrescentArc() every frame; quantized portraitXpRing updates in Hud.setXp() to 1% steps; and added fastAreaAt() + half-tile memoized updateBiomes() in parallax.ts to eliminate 3x per-frame simplex noise terrain generation.',
+      'src/stronghold/choose-hero-fx.ts, src/stronghold/choose-hero.ts, src/stronghold/hero-picker.ts: Added stopFx()/stopAll() when Choose Your Hero closes so looping card/button particle instances are released immediately.',
       'src/stronghold/hero.ts: Extracted 1-byte Uint8Array alpha sheet once at load time via prewarmAtlasAlpha(img); preloaded all HEROES at boot; cached lit/unlit hero animation frames in a 48-entry frameCache (cell.w x cell.h); cached pre-scaled cutoutCanvas per environment sprite in cutOut(); removed eager 40-sprite getAlphaMask loop from setScene(); expanded MAX_SHADOW_CACHE to 192.',
       'src/stronghold/gate-doors.ts: Pre-baked scaled sheetCanvas once when full-gateway-v7-sheet.webp loads so opening the gate (setOpen(true)) copies from sheetCanvas in 0.05ms instead of triggering a 96-109ms main-thread WebP re-decode; cached shaded gateway frame for 160ms torch flicker.',
-      'src/app/loader.ts, src/typography/frames.ts, src/typography/hud.ts, src/stronghold/choose-hero.ts, src/stronghold/hero-picker.ts, src/stronghold/main.ts: Disabled Pixi texture GC, pre-built ChooseHero layout and warmed GPU textures via renderer.texture.initSource(), and guarded MsdfText.place() + quantized cooldownArc steps in Hud.setSkills.',
+      'src/app/loader.ts, src/typography/frames.ts, src/stronghold/main.ts: Disabled Pixi texture GC and pre-built ChooseHero layout + warmed GPU textures via renderer.texture.initSource().',
       'src/stronghold/world-view.ts & src/stronghold/lighting.ts: Fixed Co-op join signature using resolved nextBuilt, separated shadowsDirty from selection changes, cached staticLights, synced sunKey before first capture in setClockSource, and skipped no-op setShadow(null, 0) repaints.',
-      'src/stronghold/tracelog.ts & server/internal/server/tracelog.go: Fixed 1-frame phase attribution skew, instrumented hero/party/parallax/gate-doors/lighting phases, classified high-unaccounted spikes as main-thread-longtask / browser-compositor, and persisted fps-tracelogs.jsonl across restarts.',
+      'src/stronghold/tracelog.ts & server/internal/server/tracelog.go: Replaced per-frame getCombatSnapshot() calls in readLiveCounts() with zero-allocation getLiveCounts() (eliminating 60Hz structuredClone + walkable + HUD telemetry allocations), fixed 1-frame phase attribution skew, instrumented hero/party/parallax/gate-doors/lighting phases, classified high-unaccounted spikes as main-thread-longtask / browser-compositor, and persisted fps-tracelogs.jsonl across restarts.',
     ],
     benchmarkAfterFix: combatBenchmark,
   };

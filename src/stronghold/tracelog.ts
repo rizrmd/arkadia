@@ -188,6 +188,7 @@ function classifyBottleneck(maxPhases: TracelogPhaseBreakdown, longTasks: Tracel
 export interface FpsTracelogOptions {
  rt: SharedPixiRuntime;
  getCombatSnapshot: () => any;
+ getLiveCounts?: () => {foesRendered: number; particles: number};
  net?: Net;
  getHeroId: () => string;
  endpoint?: string;
@@ -274,6 +275,11 @@ export function startFpsTracelog(opts: FpsTracelogOptions) {
  }
 
  function readLiveCounts() {
+  if (opts.getLiveCounts) {
+   try {
+    return opts.getLiveCounts();
+   } catch {}
+  }
   let foesRendered = 0;
   let particles = 0;
   try {

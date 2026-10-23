@@ -590,34 +590,14 @@ export async function createEncounters(o:{
   drawFigureShadow(fg,atlas,fr,meta.cell,s,dir);
   fg.save();sprite(cell);fg.restore();return fg;
  }
- type LookEntry={el:HTMLCanvasElement;cv:ReturnType<typeof createCanvasSprite>;synced:boolean};
- const looks=new Map<string,LookEntry>(),LOOKS=128;
+ const looks=new Map<string,HTMLCanvasElement>(),LOOKS=128;
  function compose(f:Foe,v:View,px:number,py:number,box:number[],s:Sun,r:number,hidden:Placed[],baseLook:string,dispW:number,dispH:number){
-  let entry=looks.get(baseLook);
-  if(entry){looks.delete(baseLook);looks.set(baseLook,entry);}
-  else{
-   const oldest=looks.size>=LOOKS?looks.keys().next().value:undefined;
-   if(oldest!==undefined){entry=looks.get(oldest)!;looks.delete(oldest);}
-   else{const el=document.createElement('canvas');entry={el,cv:createCanvasSprite(el),synced:false};}
-   paint(f,entry.el,box,s,r);
-   entry.synced=false;
-   looks.set(baseLook,entry);
-  }
-  if(!hidden.length){
-   if(!entry.synced){entry.cv.sync(dispW,dispH);entry.synced=true;}
-   if(v.canvasView.sprite.texture!==entry.cv.texture){
-    v.canvasView.sprite.texture=entry.cv.texture;
-    (v.canvasView.sprite as unknown as {onViewUpdate():void}).onViewUpdate();
-   }
-   return;
-  }
-  const c=entry.el;
+  let c=looks.get(baseLook);
+  if(c){looks.delete(baseLook);looks.set(baseLook,c);}
+  else{const oldest=looks.size>=LOOKS?looks.keys().next().value:undefined;if(oldest!==undefined){c=looks.get(oldest)!;looks.delete(oldest);}else c=document.createElement('canvas');paint(f,c,box,s,r);looks.set(baseLook,c);}
   if(v.el.width!==c.width||v.el.height!==c.height){v.el.width=c.width;v.el.height=c.height;}
   v.g.globalCompositeOperation='copy';v.g.setTransform(1,0,0,1,0,0);v.g.drawImage(c,0,0);v.g.globalCompositeOperation='source-over';
-  v.g.setTransform(r,0,0,r,-box[0]*r,-box[1]*r);cutOut(v.g,hidden,px,py);
-  if(v.canvasView.sprite.texture!==v.canvasView.texture){
-   v.canvasView.sprite.texture=v.canvasView.texture;
-  }
+  if(hidden.length){v.g.setTransform(r,0,0,r,-box[0]*r,-box[1]*r);cutOut(v.g,hidden,px,py);}
   v.canvasView.sync(dispW,dispH);
  }
 

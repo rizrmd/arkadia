@@ -135,6 +135,7 @@ export class ChooseHero extends Container{
   setTimeout(()=>{this.confirming=false;this.onConfirm?.(this.hero);},this.fx?CONFIRM_MS:0);
  }
  get highlights(){return this.fx?.keys()??[];}
+ stopFx(){this.fx?.stopAll();this.glow=undefined;for(const c of this.cards){c.aura=undefined;c.hoverFx=undefined;}}
  // Capture hook: freeze the highlight clock (true) and step it by seconds.
  fxClock(manual:boolean,stepSeconds=0){if(!this.fx)return;this.fx.manual=manual;if(stepSeconds)this.fx.step(stepSeconds);}
  back(){this.onBack?.();}
