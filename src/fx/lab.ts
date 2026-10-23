@@ -53,7 +53,7 @@ function resolveSkillParam(hero:HeroId,raw:string|null):SkillId{
  const base=v.split('.')[0] as SkillId;
  if(list.some(s=>s.id===base))return base;
  if(v==='seismic-slam'||v==='slam')return 'shockwave';
- if(v==='astral-cleave')return 'cleave';
+ if(v==='astral-cleave'||v==='molten-cleave')return 'cleave';
  return list[0].id;
 }
 
@@ -345,7 +345,7 @@ export async function mount(root:HTMLElement,progress:Progress){
 
  function syncSimpleUI(){
   const heroObj=HEROES.find(h=>h.id===hero)!;
-  const skillObj=SKILL_CATALOG[activeSkill]??HERO_SKILLS[hero][0];
+  const skillObj=HERO_SKILLS[hero].find(s=>s.id===activeSkill)??SKILL_CATALOG[activeSkill]??HERO_SKILLS[hero][0];
   const cueList=cuesForSkill(hero,activeSkill);
   if(activeCue!=='full'&&!cueList.some(c=>c.id===activeCue))activeCue='full';
 
@@ -477,7 +477,7 @@ export async function mount(root:HTMLElement,progress:Progress){
   $('#fx-stats').textContent=`${s.particles} particles · ${s.live} effects · ${Math.round(fps)} fps${s.missing.length?' · missing '+s.missing.join(','):''}`;
   if(isSimple){
    const heroObj=HEROES.find(h=>h.id===hero)!;
-   const skillObj=SKILL_CATALOG[activeSkill]??HERO_SKILLS[hero][0];
+   const skillObj=HERO_SKILLS[hero].find(s=>s.id===activeSkill)??SKILL_CATALOG[activeSkill]??HERO_SKILLS[hero][0];
    const cueList=cuesForSkill(hero,activeSkill);
    const activeCueLabel=cueList.find(c=>c.id===activeCue)?.label??'Full Sequence';
    $('#sp-badge').textContent=`${heroObj.name} · ${skillObj.name} · ${activeCueLabel} · ${activeDir} · ${s.particles} particles`;

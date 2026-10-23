@@ -5477,7 +5477,23 @@
     "opacitySource": "textureAlpha",
     "opacityInvert": false,
     "texture": "textures/wisp.png",
-    "material": null
+    "material": {
+     "id": "emitter-3-eroded-scroll",
+     "shaderId": "eroded-scroll",
+     "overrides": {
+      "erodeStrength": 0.52,
+      "emissiveBoost": 1.75
+     },
+     "paramOverrides": {
+      "erodeStrength": 0.52,
+      "emissiveBoost": 1.75
+     },
+     "mainTex": {
+      "type": "texture",
+      "id": "wisp",
+      "path": "textures/wisp.png"
+     }
+    }
    },
    "billboard": {
     "shape": "circle",

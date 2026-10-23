@@ -38,8 +38,10 @@ fs.mkdirSync(path.join(OUT,'textures'),{recursive:true});
 const used=new Set(manifest.assets.filter(a=>a.type==='texture').map(a=>a.path));
 for(const p of used){const src=path.join(SRC,p),dst=path.join(OUT,p);if(!fs.existsSync(dst)||!fs.readFileSync(src).equals(fs.readFileSync(dst)))fs.copyFileSync(src,dst);}
 for(const f of fs.readdirSync(path.join(OUT,'textures')))if(!used.has('textures/'+f))fs.rmSync(path.join(OUT,'textures',f));
+const materials={};
+for(const a of manifest.assets.filter(a=>a.type==='material'))materials[a.id]=read(a.path);
 // skills.bin (gzip) is what the game fetches and inflates itself (DecompressionStream): the server sends JSON as is.
 // Not .gz: static servers treat that as a content encoding.
-const json=JSON.stringify({manifest,effects});
+const json=JSON.stringify({manifest,effects,materials});
 fs.writeFileSync(path.join(OUT,'skills.bin'),zlib.gzipSync(json,{level:9}));fs.rmSync(path.join(OUT,'skills.json'),{force:true});
-console.log(`${manifest.effects.length} effects packed: ${(before/1024).toFixed(0)} KB → ${(after/1024).toFixed(0)} KB JSON (${(fs.statSync(path.join(OUT,'skills.bin')).size/1024).toFixed(0)} KB gzip), ${manifest.assets.length} textures.`);
+console.log(`${manifest.effects.length} effects packed: ${(before/1024).toFixed(0)} KB → ${(after/1024).toFixed(0)} KB JSON (${(fs.statSync(path.join(OUT,'skills.bin')).size/1024).toFixed(0)} KB gzip), ${used.size} textures, ${Object.keys(materials).length} materials.`);

@@ -18,10 +18,10 @@ const SKILLS_BY_HERO={
  ],
  'rift-runner':[
   {id:'rift-bolt',ms:220,dir:'SE',bg:'day'},
-  {id:'rift-dash',ms:300,dir:'SE'},
-  {id:'rift-trap',ms:720,dir:'SE'},
-  {id:'cleave',ms:360,dir:'SE'},
-  {id:'shockwave',ms:520,dir:'SE'},
+  {id:'rift-dash',ms:300,dir:'SE',bg:'day'},
+  {id:'rift-trap',ms:720,dir:'SE',bg:'day'},
+  {id:'cleave',ms:360,dir:'SE',bg:'day'},
+  {id:'shockwave',ms:520,dir:'SE',bg:'day'},
  ],
 };
 
