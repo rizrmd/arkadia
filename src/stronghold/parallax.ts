@@ -138,7 +138,7 @@ function assetFile(area:CornerArea,side:CornerSide,mobile:boolean){
  return `${ASSET_ROOT}corner-${area}-${side}${mobile?'-mobile':''}.webp`;
 }
 
-function bakeDepthBlur(img:HTMLImageElement):HTMLCanvasElement{
+function bakeDepthBlur(img:HTMLImageElement,featherTop=false):HTMLCanvasElement{
  const w=Math.round((img.naturalWidth||img.width)*CORNER_BLUR_SCALE);
  const h=Math.round((img.naturalHeight||img.height)*CORNER_BLUR_SCALE);
  const pad=Math.ceil(CORNER_BLUR_PX*3);
@@ -159,6 +159,18 @@ function bakeDepthBlur(img:HTMLImageElement):HTMLCanvasElement{
  ctx.filter=`blur(${CORNER_BLUR_PX}px)`;
  ctx.drawImage(padded,-pad,-pad);
  ctx.filter='none';
+ // Desktop art is bottom-anchored: its opaque source top must blend into the world,
+ // rather than expose the rectangular texture boundary above the blurred tower.
+ // Mobile art is top-anchored and must stay opaque against the viewport edge.
+ if(featherTop){
+  const fade=ctx.createLinearGradient(0,0,0,h*0.16);
+  fade.addColorStop(0,'rgba(0,0,0,0)');
+  fade.addColorStop(1,'rgba(0,0,0,1)');
+  ctx.globalCompositeOperation='destination-in';
+  ctx.fillStyle=fade;
+  ctx.fillRect(0,0,w,h);
+  ctx.globalCompositeOperation='source-over';
+ }
  return canvas;
 }
 
@@ -238,8 +250,8 @@ export async function createParallax(opts:ParallaxOptions){
   const rightFile=assetFile(area,'right',mobile);
   const promise=(async()=>{
    const [leftImg,rightImg]=await Promise.all([loadImage(leftFile),loadImage(rightFile)]);
-   const leftBlur=bakeDepthBlur(leftImg);
-   const rightBlur=bakeDepthBlur(rightImg);
+   const leftBlur=bakeDepthBlur(leftImg,!mobile);
+   const rightBlur=bakeDepthBlur(rightImg,!mobile);
    const leftSource=new CanvasSource({resource:leftBlur,resolution:1});
    const rightSource=new CanvasSource({resource:rightBlur,resolution:1});
    const leftTex=new Texture({source:leftSource});

@@ -1033,15 +1033,7 @@ export class Hud extends Container {
 
  private buildKeys() {
   const f = this.frames;
-  const bl = this.groups.bl;
   const br = this.groups.br;
-  bl.addChild(f.frame('pill-wide', 258, 60)).position.set(6, 853);
-  ['W', 'A', 'S', 'D'].forEach((k, i) => {
-   bl.addChild(f.frame('keycap', 28, 28)).position.set(40 + i * 30, 872);
-   bl.addChild(new MsdfText('hud-key', k)).place(54 + i * 30, 890, 0.5);
-  });
-  bl.addChild(new MsdfText('hud-hint', '· Move')).place(166, 888);
-
   this.brEscGroup = br.addChild(new Container());
   this.brEscGroup.eventMode = 'static';
   this.brEscGroup.cursor = this.callbacks.onMenuClick ? 'pointer' : 'default';
