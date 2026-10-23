@@ -29,7 +29,8 @@ async function register(id,name,layer){
 }
 // Power cycle so the boot script applies pending layers, then wait for the gateway.
 export async function restart(id=sandboxId(),check='/healthz'){
- run(['sandboxes','restart',id]);
+ const state=run(['sandboxes','get',id]);
+ run(['sandboxes',state.enabled===false?'on':'restart',id]);
  for(let i=0;i<60;i++){try{if((await fetch(URL_BASE+check,{signal:AbortSignal.timeout(10000)})).ok){console.log('Live:',URL_BASE+check);return;}}catch{}await new Promise(r=>setTimeout(r,5000));}
  throw Error(`${URL_BASE}${check} did not come back`);
 }

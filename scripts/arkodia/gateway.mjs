@@ -22,15 +22,19 @@ function applyLayers(){
  const pending=fs.existsSync(layers)?fs.readdirSync(layers).filter(n=>n.endsWith('.json')).map(n=>({id:n.slice(0,-5),...JSON.parse(fs.readFileSync(path.join(layers,n),'utf8'))})).sort((a,b)=>a.seq-b.seq):[];
  for(const layer of pending){
   if(!done.includes(layer.id)){
-   const bytes=Buffer.concat(layer.parts.map(n=>fs.readFileSync(path.join(layers,n))));
    if(layer.format==='tgz'){
-    const tmp=path.join(home,'.layer-tmp');fs.rmSync(tmp,{recursive:true,force:true});fs.mkdirSync(tmp);execFileSync('tar',['-xz','-C',tmp],{input:bytes,maxBuffer:1<<30});
+    const tmp=path.join(home,'.layer-tmp');fs.rmSync(tmp,{recursive:true,force:true});fs.mkdirSync(tmp);
+    // Release archives exceed 350 MB. Concatenating their parts doubles that allocation and OOMs the
+    // 768 MB boot workload. Spool with one reusable 1 MiB buffer, then let tar read directly from disk.
+    const archive=path.join(home,'.layer-release.tgz'),buffer=Buffer.allocUnsafe(1<<20),out=fs.openSync(archive,'w');
+    try{for(const part of layer.parts){const input=fs.openSync(path.join(layers,part),'r');try{let n;while((n=fs.readSync(input,buffer,0,buffer.length,null))>0){let at=0;while(at<n)at+=fs.writeSync(out,buffer,at,n-at);}}finally{fs.closeSync(input);}}}finally{fs.closeSync(out);}
+    try{execFileSync('tar',['-xzf',archive,'-C',tmp],{maxBuffer:1<<20});}finally{fs.rmSync(archive,{force:true});}
     // Releases built before the Arkadia → Arkodia rename carry the binary as 'arkadia'.
     const bin=['arkodia','arkadia'].map(n=>path.join(tmp,n)).find(f=>fs.existsSync(f));
     if(bin){fs.mkdirSync(path.dirname(coopBin),{recursive:true});fs.copyFileSync(bin,coopBin);fs.chmodSync(coopBin,0o755);fs.rmSync(legacyCoopBin,{force:true});}
-    const site=path.join(tmp,'site');if(fs.existsSync(site))for(const f of fs.readdirSync(site,{recursive:true})){const src=path.join(site,f),st=fs.statSync(src);if(st.isFile())write(target('/'+f.split(path.sep).join('/'),layer),fs.readFileSync(src),st.mtime);}
+    const site=path.join(tmp,'site');if(fs.existsSync(site))for(const f of fs.readdirSync(site,{recursive:true})){const src=path.join(site,f),st=fs.statSync(src);if(st.isFile()){const dest=target('/'+f.split(path.sep).join('/'),layer);fs.mkdirSync(path.dirname(dest),{recursive:true});fs.copyFileSync(src,dest);fs.utimesSync(dest,st.mtime,st.mtime);}}
     fs.rmSync(tmp,{recursive:true,force:true});
-   }else for(const [key,b64] of Object.entries(JSON.parse(gunzipSync(bytes))))write(target(key,layer),Buffer.from(b64,'base64'));
+   }else{const bytes=Buffer.concat(layer.parts.map(n=>fs.readFileSync(path.join(layers,n))));for(const [key,b64] of Object.entries(JSON.parse(gunzipSync(bytes))))write(target(key,layer),Buffer.from(b64,'base64'));}
    done.push(layer.id);fs.writeFileSync(applied,JSON.stringify(done,null,1));console.log('Applied layer',layer.id);
   }
   for(const n of [...layer.parts,layer.id+'.json'])fs.rmSync(path.join(layers,n),{force:true});
