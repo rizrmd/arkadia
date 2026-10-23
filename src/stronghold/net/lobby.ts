@@ -248,12 +248,16 @@ export function createLobby(uiStage:Container,frames:FrameSet,net:Net){
   }
  });
 
- let lastPlayersKey='';
+ let lastPlayersKey='',lastChipStr='';
  function render(){
   const s=net.status(),online=net.active();
   const countStr=online?`${net.latest()?.players.length??1}/4`:s==='connecting'?'…':'Solo';
   const chipStr=online?`${net.room()} · ${countStr}`:`Co-op · ${countStr}`;
-  hudRef?.setCoop(chipStr);
+  if(chipStr!==lastChipStr){
+   lastChipStr=chipStr;
+   hudRef?.setCoop(chipStr);
+  }
+  if(!panel.visible)return;
 
   pingLabel.text=online&&net.rtt()?`${Math.round(net.rtt())} ms`:s==='reconnecting'?'Reconnecting…':'';
   pingLabel.place(PANEL_W-26,36,1);
@@ -302,14 +306,18 @@ export function createLobby(uiStage:Container,frames:FrameSet,net:Net){
  }
 
  net.onSnapshot(s=>{
-  const next=new Map(s.players.map(p=>[p.id,p.name]));
-  if(roster.size)for(const [id,n] of next)if(!roster.has(id)&&id!==net.you())toast(`${n} joined the room`);
-  for(const [id,n] of roster)if(!next.has(id))toast(`${n} left the room`);
-  roster=next;
-  if(s.tick%10===0)render();
+  if(s.players.length!==roster.size||s.players.some(p=>roster.get(p.id)!==p.name)){
+   const next=new Map(s.players.map(p=>[p.id,p.name]));
+   if(roster.size)for(const [id,n] of next)if(!roster.has(id)&&id!==net.you())toast(`${n} joined the room`);
+   for(const [id,n] of roster)if(!next.has(id))toast(`${n} left the room`);
+   roster=next;
+   render();
+  }else if(panel.visible&&s.tick%10===0){
+   render();
+  }
  });
- net.onStatus(()=>{if(!net.active())roster=new Map();render();});
- setInterval(render,1000);
+ net.onStatus(()=>{if(!net.active())roster=new Map();lastChipStr='';render();});
+ setInterval(()=>{if(panel.visible)render();},1000);
 
  async function join(code:string,name:string){
   errorText='';titleOverride='';store.set(localStorage,NAME_KEY,name);render();
@@ -324,7 +332,7 @@ export function createLobby(uiStage:Container,frames:FrameSet,net:Net){
 
  render();
  return {
-  bindHud(hud:Hud){hudRef=hud;render();layout();},
+  bindHud(hud:Hud){hudRef=hud;lastChipStr='';render();layout();},
   open,
   toggle(){open(!panel.visible);},
   isOpen:()=>panel.visible,

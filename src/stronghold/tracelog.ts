@@ -196,6 +196,9 @@ export interface FpsTracelogOptions {
 
 export function startFpsTracelog(opts: FpsTracelogOptions) {
  const params = new URLSearchParams(location.search);
+ const hasExplicitTracelogParam =
+  params.has('tracelog') || params.has('fpsThreshold') || params.has('fpsSpikeMs') || params.has('fpsCooldownMs');
+ const autoTriggerEnabled = !navigator.webdriver || hasExplicitTracelogParam;
  const config = {
   thresholdFps: Math.max(5, Math.min(58, Number(params.get('fpsThreshold')) || 30)),
   spikeMs: Math.max(34, Math.min(1000, Number(params.get('fpsSpikeMs')) || 85)),
@@ -253,14 +256,17 @@ export function startFpsTracelog(opts: FpsTracelogOptions) {
  let lastSurfacePaints = 0;
  let seqCounter = 0;
 
- document.addEventListener('visibilitychange', () => {
-  if (document.hidden) {
-   lastNow = 0;
-  } else {
-   hiddenUntil = performance.now() + 1500;
-   lastNow = 0;
-  }
- });
+ const resetWindowForVisibility = () => {
+  ring.length = 0;
+  longTasks.length = 0;
+  warmupFrames = 0;
+  lastNow = 0;
+  hiddenUntil = performance.now() + 1500;
+ };
+ document.addEventListener('visibilitychange', resetWindowForVisibility);
+ window.addEventListener('pagehide', resetWindowForVisibility);
+ window.addEventListener('blur', resetWindowForVisibility);
+ window.addEventListener('focus', resetWindowForVisibility);
 
  function readSurfaceDataset() {
   const surface = ((window as any).__WORLD_SURFACE__ as HTMLElement | undefined) ?? document.querySelector<HTMLElement>('#world-surface');
@@ -604,11 +610,15 @@ export function startFpsTracelog(opts: FpsTracelogOptions) {
   }
   const dtMs = frameEnd - lastNow;
   lastNow = frameEnd;
-  // Ignore multi-second browser tab suspension gaps.
+  // Ignore multi-second browser tab suspension gaps and reset pre-suspension window samples.
   if (dtMs <= 0 || dtMs >= 2500) {
+   ring.length = 0;
+   longTasks.length = 0;
+   warmupFrames = 0;
+   hiddenUntil = frameEnd + 1500;
    return;
   }
-  void pushSample(frameEnd, dtMs, phases, true);
+  void pushSample(frameEnd, dtMs, phases, autoTriggerEnabled);
  }
 
  requestAnimationFrame(onFrame);

@@ -183,7 +183,7 @@ export function createLighting(o:{
   c.globalCompositeOperation='destination-in';c.drawImage(source,0,0);c.globalCompositeOperation='source-over';
  }
  let still=0;
- setInterval(tick,1000);document.addEventListener('visibilitychange',()=>{if(!document.hidden)tick();});
+ setInterval(()=>{if(!document.hidden)tick();},1000);document.addEventListener('visibilitychange',()=>{if(!document.hidden)requestAnimationFrame(()=>tick());});
  return {
   lightmap,
   place(x:number,y:number,scale:number){

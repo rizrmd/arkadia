@@ -1078,6 +1078,7 @@ export class Hud extends Container {
  }
 
  setHp(hp: number, hpMax = this.state.hpMax) {
+  if (this.state.hp === hp && this.state.hpMax === hpMax && this.hpText.text) return;
   this.state.hp = hp;
   this.state.hpMax = hpMax;
   this.syncPlayerConsole();
@@ -1095,6 +1096,7 @@ export class Hud extends Container {
  }
 
  setGateHp(gateHp: number, gateHpMax = 100) {
+  if (this.state.gateHp === gateHp && this.state.gateHpMax === gateHpMax && this.gateBarG?.geometry) return;
   this.state.gateHp = gateHp;
   this.state.gateHpMax = gateHpMax;
   this.syncPlayerConsole();
@@ -1118,6 +1120,7 @@ export class Hud extends Container {
  private lastXpArcKey = '';
 
  setXp(xp: number, xpMax = this.state.xpMax, overrideRestText?: string) {
+  if (this.state.xp === xp && this.state.xpMax === xpMax && overrideRestText === undefined && this.xpValue.text) return;
   this.state.xp = xp;
   this.state.xpMax = xpMax;
   this.syncPlayerConsole();
@@ -1216,6 +1219,7 @@ export class Hud extends Container {
  }
 
  setCoop(label: string) {
+  if (this.state.coopLabel === label && this.coopText?.text === label) return;
   this.state.coopLabel = label;
   this.ensureCoopPill(label);
  }

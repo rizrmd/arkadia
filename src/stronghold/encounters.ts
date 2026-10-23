@@ -551,6 +551,7 @@ export async function createEncounters(o:{
   lv:MsdfText;
   fill:Container;
   look:string;
+  coreLook:string;
   hp:string;
  };
  const views=new Map<Foe,View>();
@@ -567,7 +568,7 @@ export async function createEncounters(o:{
   fill.addChild(o.frames.frame('hp-fill',39,4));
   const lv=bar.addChild(new MsdfText('tag-foe','Lv. 1'));
   lv.place(0,-13.5,0.5);
-  v={el,g:el.getContext('2d')!,canvasView,bar,lv,fill,look:'',hp:''};
+  v={el,g:el.getContext('2d')!,canvasView,bar,lv,fill,look:'',coreLook:'',hp:''};
   views.set(f,v);
   return v;
  }
@@ -628,6 +629,7 @@ export async function createEncounters(o:{
    const box=[Math.floor(Math.min(...sxs))-8,Math.floor(Math.min(...sys))-8,Math.ceil(Math.max(...sxs))+8,Math.ceil(Math.max(...sys))+8];
    lastBox=box;
    const light=[ambient,sun.alpha,sun.dx,sun.dy,sun.wx,sun.wy,r,box].join();
+   let lightRefreshes=0;
    for(const f of shown.sort((a,b)=>tilePoint(a.x,a.y).y-tilePoint(b.x,b.y).y)){
     const w=tilePoint(f.x,f.y),s=at(w.x,w.y),shk=vfx.shakeOffset(f);
     const alpha=Math.min(1,f.age/500)*(f.alive?1:Math.max(0,1-(f.deadFor-3500)/900));if(alpha<=0)continue;
@@ -636,11 +638,19 @@ export async function createEncounters(o:{
     if(v.canvasView.sprite.parent!==targetParent)targetParent.addChild(v.canvasView.sprite);
     v.canvasView.sprite.zIndex=w.y;
     v.canvasView.sprite.visible=true;
-    const baseLook=[f.clip.frames[f.frame()],f.vertical?0:f.facing,light].join('|');
-    const look=hidden.length?`${baseLook}|${hidden.map(p=>p.x+':'+p.y).join()}@${Math.round(w.x*.25)},${Math.round(w.y*.25)}`:baseLook;
+    const coreId=`${f.clip.frames[f.frame()]}|${f.vertical?0:f.facing}`;
+    const occKey=hidden.length?`${hidden.map(p=>p.x+':'+p.y).join()}@${Math.round(w.x*.25)},${Math.round(w.y*.25)}`:'';
+    const coreLook=occKey?`${coreId}|${occKey}`:coreId;
+    const baseLook=`${coreId}|${light}`;
+    const look=occKey?`${baseLook}|${occKey}`:baseLook;
     if(look!==v.look){
-     v.look=look;
-     compose(f,v,w.x,w.y,box,sun,r,hidden,baseLook,(box[2]-box[0])*k,(box[3]-box[1])*k);
+     const lightOnly=Boolean(v.look)&&coreLook===v.coreLook;
+     if(!lightOnly||lightRefreshes<2){
+      if(lightOnly)lightRefreshes++;
+      v.look=look;
+      v.coreLook=coreLook;
+      compose(f,v,w.x,w.y,box,sun,r,hidden,baseLook,(box[2]-box[0])*k,(box[3]-box[1])*k);
+     }
     }
     v.canvasView.sprite.tint=f.flash>0?0xff9c84:0xffffff;
     v.canvasView.sprite.width=(box[2]-box[0])*k;
