@@ -10,7 +10,7 @@ import {createEncounters} from './encounters';
 import {setGateOpen,gateTowerFront} from './navigation';
 import {atGate} from './net/movement';
 import {STRONGHOLD} from './prefabs/stronghold';
-import {paintRelief} from './relief-art';
+import {paintRelief,paintReliefShadow,CLIFF_ART} from './relief-art';
 import {createGateDoors,GATE_SHEET,type GateSheet} from './gate-doors';
 import type {Walk} from './controls';
 import {createCanvasSprite,loadImage,expectSizes,downloadedBytes,onDownload,type Progress,type SharedPixiRuntime} from '../app/loader';
@@ -42,7 +42,7 @@ export async function createWorldView(
  let gateOpen=false,gatePassable=false;
  const spriteFile=(id:Building,level:number)=>id==='forge'?`/fortress-ui/forge-${level}.webp`:id==='gate'?'/modular-stronghold/v2/full-gateway-v7-closed.webp':`/assets/${slots[id].asset}.png`;
  const paving='/modular-stronghold/v2/paving-warm-texture.png',snow='/modular-stronghold/v2/snow-soft-texture.png';
- const files=[...new Set([FOUNDATION_SOIL,FOUNDATION_MOSS,FOUNDATION_DRIFT,paving,snow,'/modular-stronghold/v2/full-gateway-v7-closed.webp',...environment.map(p=>p.file),...buildings.flatMap(b=>[1,2,3].map(l=>spriteFile(b,l)))])];
+ const files=[...new Set([FOUNDATION_SOIL,FOUNDATION_MOSS,FOUNDATION_DRIFT,paving,snow,CLIFF_ART,'/modular-stronghold/v2/full-gateway-v7-closed.webp',...environment.map(p=>p.file),...buildings.flatMap(b=>[1,2,3].map(l=>spriteFile(b,l)))])];
  const DOWNLOAD=920,steps=1000,mb=(n:number)=>(n/1e6).toFixed(1);let loaded=DOWNLOAD;
  let queued=0;const report=()=>{queued=0;const {received,expected}=downloadedBytes();progress(Math.floor(DOWNLOAD*received/Math.max(1,expected)),steps,`Loading artwork · ${mb(received)} of ${mb(expected)} MB`);};
  const stopReport=onDownload(()=>{queued||=requestAnimationFrame(report);});progress(0,steps,'Loading artwork');
@@ -58,7 +58,10 @@ export async function createWorldView(
  const snowPattern=material(snow,.7),pavingPattern=material(paving,.22);
  // Raised terrain (world/relief.ts): plateaus and ramps get their own sprites just above the baked surface, tinted
  // like the open snow, and join the hero's scene so they hide actors standing below and behind them.
- const relief=paintRelief(images.get(snow)!).map(r=>{const view=createCanvasSprite(r.canvas);view.sync(r.width,r.height);view.sprite.zIndex=10.5;worldStage.addChild(view.sprite);return {...r,view};});
+ const relief=paintRelief(images.get(snow)!,images.get(CLIFF_ART)!).map(r=>{const view=createCanvasSprite(r.canvas);view.sync(r.width,r.height);view.sprite.zIndex=10.5;worldStage.addChild(view.sprite);return {...r,view};});
+ // Their sun shadows, under them on the ground, repainted with the world's shadows (castShadows).
+ const reliefShadows=relief.map(r=>{const canvas=document.createElement('canvas'),view=createCanvasSprite(canvas);view.sprite.zIndex=10.4;view.sprite.visible=false;worldStage.addChild(view.sprite);return {feature:r.feature,canvas,view,left:0,top:0,width:0,height:0};});
+ function shadeRelief(s:{alpha:number;dx:number;dy:number}){for(const r of reliefShadows){r.view.sprite.visible=s.alpha>0;if(!s.alpha)continue;Object.assign(r,paintReliefShadow(r.feature,s.dx,s.dy,r.canvas));r.view.sync(r.width,r.height);r.view.sprite.alpha=s.alpha;}requestDraw();}
  const reliefScene=relief.map(r=>({layer:'world' as const,id:'relief:'+r.feature.id,x:r.left+r.width/2,y:r.bottom,width:r.width,height:r.height,foot:1,shear:0,vertical:1,depth:r.bottom,opacity:1,file:'relief:'+r.feature.id,selected:false,occluder:undefined as HTMLCanvasElement|undefined,image:r.canvas as unknown as HTMLImageElement,relief:r.feature}));
  const scene=()=>[...objects,...reliefScene];
  const polygon=(corners:number[][])=>{const path=new Path2D();corners.forEach(([u,v],i)=>{const p=tilePoint(u,v);i?path.lineTo(p.x,p.y):path.moveTo(p.x,p.y);});path.closePath();return path;};
@@ -172,7 +175,7 @@ export async function createWorldView(
  const SHADE=.35,mask=document.createElement('canvas'),soft=document.createElement('canvas');mask.width=soft.width=Math.ceil(worldWidth*SHADE);mask.height=soft.height=Math.ceil(worldHeight*SHADE);
  function drawSprite(c:CanvasRenderingContext2D,p:(typeof objects)[number]){c.save();c.globalAlpha=p.opacity;c.translate(p.x,p.y);c.transform(1,p.shear,0,p.vertical,0,0);drawFoundation(c,p,images.get(FOUNDATION_SOIL)!,'under',images.get(FOUNDATION_DRIFT),images.get(FOUNDATION_MOSS));if(p.selected){c.shadowColor='#ffca64';c.shadowBlur=9;}c.drawImage(p.image,-p.width/2,-p.height*p.foot,p.width,p.height);c.shadowBlur=0;drawFoundation(c,p,images.get(FOUNDATION_SOIL)!,'face',images.get(FOUNDATION_DRIFT),images.get(FOUNDATION_MOSS));c.restore();}
  function castShadows(paint=true){
-  const s=lighting.sun();
+  const s=lighting.sun();shadeRelief(s);
   if(!s.alpha){lighting.setShadow(null,0,paint);return;}
   measureTracelogPhase('shadowCast',()=>{
    const m=mask.getContext('2d')!,g=soft.getContext('2d')!;
@@ -234,6 +237,7 @@ export async function createWorldView(
    surfaceView.sprite.width=worldWidth*scale;
    surfaceView.sprite.height=worldHeight*scale;
    surface.style.width=worldWidth*scale+'px';surface.style.height=worldHeight*scale+'px';
+   for(const r of reliefShadows){r.view.sprite.position.set(x+r.left*scale,y+r.top*scale);r.view.sprite.width=r.width*scale;r.view.sprite.height=r.height*scale;}
    for(const r of relief){r.view.sprite.position.set(x+r.left*scale,y+r.top*scale);r.view.sprite.width=r.width*scale;r.view.sprite.height=r.height*scale;}
    lighting.place(x,y,scale);doors.place(x,y,scale);hero.place(x,y,scale);party?.place(x,y,scale);encounters?.place(x,y,scale);
    parallax.place(cx,cy,scale,w,h);

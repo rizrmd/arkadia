@@ -1,0 +1,54 @@
+{
+ "command": "node scripts/capture-relief.mjs",
+ "url": "/?buildings=all&offline=1&time=.5 (dusk: .79)",
+ "shots": {
+  "desktop-court": {
+   "teleport": null
+  },
+  "desktop-ridge-ramp": {
+   "teleport": [
+    25.5,
+    14.2
+   ]
+  },
+  "desktop-on-ridge": {
+   "teleport": [
+    25.5,
+    7.2
+   ]
+  },
+  "desktop-behind-ridge": {
+   "teleport": [
+    25.5,
+    4.5
+   ]
+  },
+  "desktop-on-terrace": {
+   "teleport": [
+    5.5,
+    25
+   ]
+  },
+  "phone-court": {
+   "teleport": null
+  },
+  "phone-on-ridge": {
+   "teleport": [
+    25.5,
+    7.2
+   ]
+  },
+  "dusk-on-ridge": {
+   "teleport": [
+    25.5,
+    7.2
+   ]
+  }
+ },
+ "errors": [],
+ "courtVsPreTerrainBaseline": {
+  "changedPct": 0.176,
+  "where": "idle-animated hero only"
+ },
+ "note": "Captured from the committed tree; a peer's uncommitted hero-3d.ts work in the shared clone hides the hero in headless captures and was excluded."
+}
