@@ -60,7 +60,8 @@ export function naturalHillArt(f:ReliefFeature,snow:HTMLImageElement,rock:HTMLIm
   const x=b.g.x,y=b.g.y,k=dy/dx;
   c.save();c.beginPath();c.moveTo(a.g.x,a.g.y+12);c.lineTo(b.g.x,b.g.y+12);c.lineTo(b.t.x,b.t.y-5);c.lineTo(a.t.x,a.t.y-5);c.closePath();c.clip();
   c.beginPath();c.moveTo(a.g.x,a.g.y+2);c.lineTo(b.g.x,b.g.y+2);c.lineTo(b.t.x,b.t.y+1);c.lineTo(a.t.x,a.t.y+1);c.closePath();
-  c.fillStyle=dy>0?'#a7b1bd':'#8995a8';c.fill();
+  // Alpha above the generated crest reveals packed snow, never a flat gray filler strip.
+  c.fillStyle='#dce5f1';c.fill();
   c.transform(1,k,0,1,x,y);
   // Generated strip has a narrow alpha fringe; crop within its connected rock and snow bank, preserving scale.
   const sw=rock.naturalWidth,sh=rock.naturalHeight,scale=.19;

@@ -106,6 +106,14 @@ export function paintReliefShadow(f:ReliefFeature,dx:number,dy:number,canvas:HTM
  const hull=[...chain(pts),...chain([...pts].reverse())],pad=12;
  const left=Math.floor(Math.min(...hull.map(p=>p[0])))-pad,top=Math.floor(Math.min(...hull.map(p=>p[1])))-pad,width=Math.ceil(Math.max(...hull.map(p=>p[0])))+pad-left,height=Math.ceil(Math.max(...hull.map(p=>p[1])))+pad-top;
  canvas.width=width;canvas.height=height;const c=canvas.getContext('2d')!;
- c.translate(-left,-top);c.filter='blur(3px)';c.fillStyle='rgb(20,28,44)';c.beginPath();hull.forEach(([x,y],i)=>i?c.lineTo(x,y):c.moveTo(x,y));c.closePath();c.fill();
+ c.translate(-left,-top);c.filter='blur(3px)';c.fillStyle='rgb(20,28,44)';c.beginPath();
+ // Preserve a hill's concavities: a convex hull incorrectly shadows the open space beside the ramp.
+ const polygons=f.outline?[boundary.map(p=>[p.g.x,p.g.y] as [number,number]),...boundary.map((a,i)=>{const b=boundary[(i+1)%boundary.length];return [[a.g.x,a.g.y],[b.g.x,b.g.y],[b.g.x+b.h*dx,b.g.y+b.h*dy],[a.g.x+a.h*dx,a.g.y+a.h*dy]] as [number,number][];})]:[hull];
+ for(const polygon of polygons){
+  const area=polygon.reduce((sum,p,i)=>{const q=polygon[(i+1)%polygon.length];return sum+p[0]*q[1]-q[0]*p[1];},0);
+  const ring=area<0?[...polygon].reverse():polygon;
+  ring.forEach(([x,y],i)=>i?c.lineTo(x,y):c.moveTo(x,y));c.closePath();
+ }
+ c.fill();
  return {left,top,width,height};
 }
