@@ -96,7 +96,7 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
   shadowCanvas.height = H;
   const shadowCtx = shadowCanvas.getContext('2d')!;
 
-  let style: ShaderStyle3D = 'stylized';
+  const style = 'stylized' as ShaderStyle3D;
   let THREE: any = null;
   let renderer: any = null;
   let scene: any = null;
@@ -107,12 +107,7 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
 
   const heroEntries = new Map<string, HeroModelEntry>();
   let currentYaw = Math.PI * 0.25;
-  let statusEl: HTMLElement | null = null;
-  let frameCount = 0;
-  let fpsTimer = performance.now();
-  let measuredFps = 60;
   let castHoldUntil = 0;
-  let forcedClip: 'auto' | 'idle_cast' | 'run_cast' = 'auto';
 
   if (typeof window !== 'undefined') {
     window.addEventListener('keydown', (e) => {
@@ -153,87 +148,9 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
     });
   }
 
-  function applyStyle(mode: ShaderStyle3D) {
-    style = mode;
-    if (sharedInstance) sharedInstance.style = mode;
-    for (const entry of heroEntries.values()) {
-      applyStyleToEntry(entry, mode);
-    }
+  if (typeof document !== 'undefined') {
+    document.getElementById('arkadia-3d-hud-pill')?.remove();
   }
-
-  function mountHudPill() {
-    if (typeof document === 'undefined' || document.getElementById('arkadia-3d-hud-pill')) return;
-    const pill = document.createElement('div');
-    pill.id = 'arkadia-3d-hud-pill';
-    pill.style.cssText = [
-      'position:fixed',
-      'bottom:16px',
-      'left:16px',
-      'z-index:9500',
-      'display:flex',
-      'flex-wrap:wrap',
-      'align-items:center',
-      'gap:8px',
-      'padding:7px 12px',
-      'border-radius:10px',
-      'background:rgba(9,13,22,0.88)',
-      'border:1px solid rgba(56,189,248,0.45)',
-      'box-shadow:0 8px 24px rgba(0,0,0,0.65)',
-      'backdrop-filter:blur(8px)',
-      'font:600 12px/1.2 system-ui,-apple-system,sans-serif',
-      'color:#e8eef7',
-      'pointer-events:auto',
-      'user-select:none'
-    ].join(';');
-
-    pill.innerHTML = `
-      <span style="width:8px;height:8px;border-radius:50%;background:#34d399;box-shadow:0 0 8px #34d399;display:inline-block;"></span>
-      <span id="arkadia-3d-hud-text" style="letter-spacing:0.03em;">3D HERO · 60 FPS (Meshy t2.5)</span>
-      <div style="display:flex;gap:4px;margin-left:4px;" id="arkadia-3d-anim-btns">
-        <button data-anim="auto" style="cursor:pointer;padding:4px 8px;border-radius:6px;border:1px solid #34d399;background:rgba(52,211,153,0.22);color:#fff;font:600 11px system-ui;">Auto</button>
-        <button data-anim="idle_cast" style="cursor:pointer;padding:4px 8px;border-radius:6px;border:1px solid rgba(148,163,184,0.3);background:rgba(15,23,42,0.8);color:#cbd5e1;font:600 11px system-ui;">Idle Cast</button>
-        <button data-anim="run_cast" style="cursor:pointer;padding:4px 8px;border-radius:6px;border:1px solid rgba(148,163,184,0.3);background:rgba(15,23,42,0.8);color:#cbd5e1;font:600 11px system-ui;">Run + Cast</button>
-      </div>
-      <div style="display:flex;gap:4px;margin-left:4px;" id="arkadia-3d-style-btns">
-        <button data-mode="stylized" style="cursor:pointer;padding:4px 8px;border-radius:6px;border:1px solid #38bdf8;background:rgba(56,189,248,0.22);color:#fff;font:600 11px system-ui;">Stylized 3D</button>
-        <button data-mode="pbr" style="cursor:pointer;padding:4px 8px;border-radius:6px;border:1px solid rgba(148,163,184,0.3);background:rgba(15,23,42,0.8);color:#cbd5e1;font:600 11px system-ui;">PBR 3D</button>
-        <button data-mode="wireframe" style="cursor:pointer;padding:4px 8px;border-radius:6px;border:1px solid rgba(148,163,184,0.3);background:rgba(15,23,42,0.8);color:#cbd5e1;font:600 11px system-ui;">Wireframe</button>
-        <button data-mode="2d" style="cursor:pointer;padding:4px 8px;border-radius:6px;border:1px solid rgba(148,163,184,0.3);background:rgba(15,23,42,0.8);color:#cbd5e1;font:600 11px system-ui;">2D Sprite</button>
-      </div>
-      <a href="/3d-hero-lab/" target="_blank" style="margin-left:4px;padding:4px 8px;border-radius:6px;border:1px solid rgba(245,158,11,0.45);background:rgba(245,158,11,0.15);color:#fde68a;text-decoration:none;font:600 11px system-ui;">3D Lab ↗</a>
-    `;
-    document.body.appendChild(pill);
-    statusEl = pill.querySelector('#arkadia-3d-hud-text');
-
-    pill.querySelectorAll('#arkadia-3d-anim-btns button').forEach((btn) => {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        forcedClip = (btn as HTMLElement).dataset.anim as 'auto' | 'idle_cast' | 'run_cast';
-        pill.querySelectorAll('#arkadia-3d-anim-btns button').forEach((b) => {
-          const active = b === btn;
-          (b as HTMLElement).style.borderColor = active ? '#34d399' : 'rgba(148,163,184,0.3)';
-          (b as HTMLElement).style.background = active ? 'rgba(52,211,153,0.22)' : 'rgba(15,23,42,0.8)';
-          (b as HTMLElement).style.color = active ? '#fff' : '#cbd5e1';
-        });
-      });
-    });
-
-    pill.querySelectorAll('#arkadia-3d-style-btns button').forEach((btn) => {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const m = (btn as HTMLElement).dataset.mode as ShaderStyle3D;
-        applyStyle(m);
-        pill.querySelectorAll('#arkadia-3d-style-btns button').forEach((b) => {
-          const active = b === btn;
-          (b as HTMLElement).style.borderColor = active ? '#38bdf8' : 'rgba(148,163,184,0.3)';
-          (b as HTMLElement).style.background = active ? 'rgba(56,189,248,0.22)' : 'rgba(15,23,42,0.8)';
-          (b as HTMLElement).style.color = active ? '#fff' : '#cbd5e1';
-        });
-      });
-    });
-  }
-
-  mountHudPill();
 
   function loadHeroModel(loader: any, heroId: string) {
     const entry: HeroModelEntry = {
@@ -379,18 +296,7 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
         rimLight.color.setHex(heroId === 'ember-warden' ? 0xf59e0b : 0x38bdf8);
       }
 
-      frameCount++;
       const now = performance.now();
-      if (now - fpsTimer >= 600 && frameCount > 4) {
-        measuredFps = Math.min(60, Math.round((frameCount * 1000) / (now - fpsTimer)));
-        frameCount = 0;
-        fpsTimer = now;
-        if (statusEl) {
-          const deg = Math.round((((currentYaw * 180) / Math.PI) % 360 + 360) % 360);
-          const heroLabel = heroId === 'ember-warden' ? 'EMBER WARDEN' : 'RIFT RUNNER';
-          statusEl.textContent = `3D ${heroLabel} · ${measuredFps} FPS · ${entry.activeClip.toUpperCase()} (${deg}°)`;
-        }
-      }
 
       if (clip.startsWith('attack') || clip.startsWith('cast')) {
         castHoldUntil = Math.max(castHoldUntil, now + 900);
@@ -398,9 +304,7 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
 
       // Map game state/pose clip + movement into 3D GLB clip ('idle', 'run', 'idle_cast', 'run_cast', 'hit', 'death')
       let targetClip = 'idle';
-      if (forcedClip !== 'auto') {
-        targetClip = forcedClip;
-      } else if (clip.startsWith('die') || clip.startsWith('death')) {
+      if (clip.startsWith('die') || clip.startsWith('death')) {
         targetClip = 'death';
       } else if (clip.startsWith('hit') || clip.startsWith('hurt')) {
         targetClip = 'hit';
