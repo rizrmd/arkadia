@@ -123,6 +123,7 @@ type joinReq struct {
 	client *Client
 	name   string
 	hero   string
+	you    string
 	maxHP  float64
 	reply  chan string
 }
@@ -169,13 +170,17 @@ func (r *Room) Info() Info {
 }
 
 // Join adds a client's hero, returning an error code when refused. On success the welcome is already queued.
-func (r *Room) Join(c *Client, name, hero string, maxHP float64) string {
+func (r *Room) Join(c *Client, name, hero string, maxHP float64, you ...string) string {
 	if r.closed.Load() {
 		return ErrRoomNotFound
 	}
+	resumeID := ""
+	if len(you) > 0 {
+		resumeID = strings.TrimSpace(you[0])
+	}
 	reply := make(chan string, 1)
 	select {
-	case r.join <- joinReq{c, name, hero, maxHP, reply}:
+	case r.join <- joinReq{c, name, hero, resumeID, maxHP, reply}:
 		return <-reply
 	case <-time.After(5 * time.Second):
 		return ErrRoomNotFound
@@ -257,15 +262,31 @@ func (r *Room) run() {
 	for {
 		select {
 		case j := <-r.join:
-			if len(r.clients) >= sim.MaxPlayers {
-				j.reply <- ErrRoomFull
-				continue
+			var p *sim.Player
+			if j.you != "" {
+				for old := range r.clients {
+					if old.player != nil && old.player.ID == j.you {
+						delete(r.clients, old)
+						close(old.Send)
+						p = r.world.ResumePlayer(j.you, j.name, j.maxHP)
+						break
+					}
+				}
+				if p == nil && len(r.clients) < sim.MaxPlayers {
+					p = r.world.ResumePlayer(j.you, j.name, j.maxHP)
+				}
 			}
-			r.nextID++
-			p := r.world.AddPlayer("p"+strconv.Itoa(r.nextID), j.name, j.maxHP)
 			if p == nil {
-				j.reply <- ErrRoomFull
-				continue
+				if len(r.clients) >= sim.MaxPlayers {
+					j.reply <- ErrRoomFull
+					continue
+				}
+				r.nextID++
+				p = r.world.AddPlayer("p"+strconv.Itoa(r.nextID), j.name, j.maxHP)
+				if p == nil {
+					j.reply <- ErrRoomFull
+					continue
+				}
 			}
 			p.SetHero(j.hero)
 			j.client.player = p

@@ -526,3 +526,64 @@ func TestFullSpeedByDirection(t *testing.T) {
 		t.Fatalf("a half push right walked to %.2f,%.2f (%.2f px) in one second, want 60 px", x, y, prog)
 	}
 }
+
+func TestHeroRespawnAndResumeNeverStickOrResetWildsProgress(t *testing.T) {
+	w := newTestWorld(t)
+	w.Enemies = nil
+	p := w.AddPlayer("p1", "Hero", 100)
+	p.SetHero("ember-warden")
+
+	// Walk out through the gate into the Wilds.
+	for i := 0; i < 160; i++ {
+		drive(w, 1, walker{p, down})
+	}
+	if InSafeZone(p.F.Pos) {
+		t.Fatalf("expected hero in the Wilds, got %v", p.F.Pos)
+	}
+	wildX, wildY := p.X, p.Y
+	p.Run.Level = 7
+	p.Run.XP = 42
+	p.Run.Pending = 2
+	w.rollForHero(&p.Run, p.Hero)
+	firstOffer := p.Run.Offers[0]
+
+	// Choosing a blessing while Pending=2 and Level=7 works even if the client sent an earlier level.
+	p.Queue(Input{Seq: p.nextSeq(), Choice: firstOffer, Level: 6})
+	w.Step()
+	if p.Run.Pending != 1 || len(p.Run.Offers) == 0 {
+		t.Fatalf("expected Pending=1 with fresh offers after choosing %q, got pending=%d offers=%v", firstOffer, p.Run.Pending, p.Run.Offers)
+	}
+
+	// Choose the second pending blessing so Pending=0.
+	secondOffer := p.Run.Offers[0]
+	p.Queue(Input{Seq: p.nextSeq(), Choice: secondOffer, Level: 7})
+	w.Step()
+	if p.Run.Pending != 0 {
+		t.Fatalf("expected Pending=0 after second choice, got %d", p.Run.Pending)
+	}
+
+	// Simulate brief disconnect and resume: hero stays in the Wilds at Level 7 and can immediately walk.
+	w.RemovePlayer("p1")
+	resumed := w.ResumePlayer("p1", "Hero", 100)
+	if resumed == nil || resumed.X != wildX || resumed.Y != wildY || resumed.Run.Level != 7 {
+		t.Fatalf("expected resumed hero at (%.1f, %.1f) Lv.7, got %+v", wildX, wildY, resumed)
+	}
+	drive(w, 10, walker{resumed, right})
+	if hypot(resumed.X-wildX, resumed.Y-wildY) < 20 {
+		t.Fatalf("resumed hero failed to walk from (%.1f, %.1f) -> (%.1f, %.1f)", wildX, wildY, resumed.X, resumed.Y)
+	}
+
+	// Now simulate death and respawn at the tent: Plays increments and hero can immediately walk again.
+	resumed.F.Damage(1e6)
+	playsAtDeath := resumed.F.Plays
+	run(w, int(heroRespawn/TickMS)+2)
+	if !resumed.F.Alive() || resumed.F.Plays <= playsAtDeath || !InSafeZone(resumed.F.Pos) {
+		t.Fatalf("expected alive respawn at tent with Plays > %d, got state=%s plays=%d pos=%v", playsAtDeath, resumed.F.State, resumed.F.Plays, resumed.F.Pos)
+	}
+	tentX, tentY := resumed.X, resumed.Y
+	drive(w, 10, walker{resumed, right})
+	if hypot(resumed.X-tentX, resumed.Y-tentY) < 20 {
+		t.Fatalf("respawned hero stuck at tent: (%.1f, %.1f) -> (%.1f, %.1f)", tentX, tentY, resumed.X, resumed.Y)
+	}
+}
+

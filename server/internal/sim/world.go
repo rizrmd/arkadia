@@ -154,20 +154,17 @@ type World struct {
 	spawnTimer float64
 	rng        *rand.Rand
 	nav        *Blocker
+	retired    map[string]*Player
 }
 
 // NewWorld starts a world at a time of day with a deterministic seed.
 func NewWorld(nav *Blocker, clock float64, seed uint64) *World {
-	return &World{Clock: clock - math.Floor(clock), rng: rand.New(rand.NewPCG(seed, seed^0x9e3779b97f4a7c15)), nav: nav, nextEnemy: 1}
+	return &World{Clock: clock - math.Floor(clock), rng: rand.New(rand.NewPCG(seed, seed^0x9e3779b97f4a7c15)), nav: nav, nextEnemy: 1, retired: map[string]*Player{}}
 }
 
 func (w *World) random() float64 { return w.rng.Float64() }
 
-// AddPlayer places a hero at the tent in the first free slot. It returns nil when the room is full.
-func (w *World) AddPlayer(id, name string, maxHP float64) *Player {
-	if len(w.Players) >= MaxPlayers {
-		return nil
-	}
+func (w *World) freeSlot() int {
 	used := map[int]bool{}
 	for _, p := range w.Players {
 		used[p.Slot] = true
@@ -176,9 +173,61 @@ func (w *World) AddPlayer(id, name string, maxHP float64) *Player {
 	for used[slot] {
 		slot++
 	}
-	p := &Player{ID: id, Name: name, Slot: slot, MaxHP: clampMaxHP(maxHP), tokens: 2, Run: newProgression()}
+	return slot
+}
+
+// AddPlayer places a hero at the tent in the first free slot. It returns nil when the room is full.
+func (w *World) AddPlayer(id, name string, maxHP float64) *Player {
+	if len(w.Players) >= MaxPlayers {
+		return nil
+	}
+	p := &Player{ID: id, Name: name, Slot: w.freeSlot(), MaxHP: clampMaxHP(maxHP), tokens: 2, Run: newProgression()}
 	w.place(p)
 	w.Players = append(w.Players, p)
+	return p
+}
+
+// ResumePlayer reclaims an existing or recently disconnected hero in the room so a brief reconnect
+// keeps the hero's world position and progression instead of resetting them to the tent at Level 1.
+func (w *World) ResumePlayer(id, name string, maxHP float64) *Player {
+	if id == "" {
+		return nil
+	}
+	p := w.Player(id)
+	if p == nil {
+		if len(w.Players) >= MaxPlayers || w.retired == nil {
+			return nil
+		}
+		p = w.retired[id]
+		if p == nil {
+			return nil
+		}
+		delete(w.retired, id)
+		p.Slot = w.freeSlot()
+		w.Players = append(w.Players, p)
+	}
+	p.Name = name
+	bonusHP := float64(p.Run.Stars*10 + p.Run.Skills["vitality"]*20)
+	p.MaxHP = clampMaxHP(maxHP) + bonusHP
+	if p.F.HP > p.MaxHP {
+		p.F.HP = p.MaxHP
+	}
+	p.Ack = 0
+	p.Owed = 0
+	p.BaseX, p.BaseY = p.X, p.Y
+	p.queue = nil
+	p.tokens = 2
+	p.steering = false
+	p.Moving = false
+	p.last = Vec{}
+	p.starved = 0
+	if !p.F.Alive() {
+		w.place(p)
+	}
+	if p.Run.Pending > 0 && len(p.Run.Offers) == 0 {
+		w.rollForHero(&p.Run, p.Hero)
+	}
+	w.syncEnemyLevels()
 	return p
 }
 
@@ -195,11 +244,20 @@ func (w *World) place(p *Player) {
 	if o := spawnOffsets[p.Slot%len(spawnOffsets)]; !w.nav.Blocked(at.X+o.X, at.Y+o.Y, w.Gate.Passable()) {
 		at = Vec{at.X + o.X, at.Y + o.Y}
 	}
+	plays := p.F.Plays
+	respawn := p.F.State == Die || plays > 0
 	p.X, p.Y = at.X, at.Y
+	p.BaseX, p.BaseY = at.X, at.Y
 	p.Owed = 0
 	p.F = newFighter(Hero, ToTile(at.X, at.Y))
+	if respawn {
+		p.F.Plays = plays + 1
+	}
 	p.F.HP = p.MaxHP
 	p.Moving = false
+	p.steering = false
+	p.last = Vec{}
+	p.starved = 0
 }
 
 // RemovePlayer drops a hero from the world.
@@ -207,11 +265,22 @@ func (w *World) RemovePlayer(id string) {
 	for i, p := range w.Players {
 		if p.ID == id {
 			w.Players = append(w.Players[:i], w.Players[i+1:]...)
+			if w.retired == nil {
+				w.retired = map[string]*Player{}
+			}
+			if len(w.retired) >= 16 {
+				for k := range w.retired {
+					delete(w.retired, k)
+					break
+				}
+			}
+			w.retired[p.ID] = p
 			for _, e := range w.Enemies {
 				if e.Target == id {
 					e.Target = ""
 				}
 			}
+			w.syncEnemyLevels()
 			return
 		}
 	}
@@ -798,9 +867,12 @@ func (w *World) spawnLevel() int {
 }
 
 func (w *World) syncEnemyLevels() {
+	if len(w.Players) == 0 {
+		return
+	}
 	targetLv := w.spawnLevel()
 	for _, e := range w.Enemies {
-		if e.enemyLevel() < targetLv {
+		if e.enemyLevel() != targetLv {
 			prevMax := e.maxHP()
 			ratio := 1.0
 			if e.F.Alive() && prevMax > 0 {

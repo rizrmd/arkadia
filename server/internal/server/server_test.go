@@ -356,3 +356,56 @@ func TestAutomaticPNGToWebPLosslessConversionAndCache(t *testing.T) {
 	}
 }
 
+func TestReconnectingPlayerResumesInTheWildsWithoutResettingToTent(t *testing.T) {
+	ts, _ := newTestServer(t)
+	a, wa := dial(t, ts, hello("Wanderer", ""))
+	code := wa["room"].(string)
+	you := wa["you"].(string)
+
+	// Walk south out of the stronghold toward the Wilds.
+	for i := 1; i <= 40; i++ {
+		a.send(map[string]any{"t": "in", "seq": i, "x": 0, "y": 1})
+		time.Sleep(15 * time.Millisecond)
+	}
+	s1 := a.snapshot(30)
+	for s1["ack"].(float64) < 40 {
+		s1 = a.snapshot(0)
+	}
+	p1 := s1["players"].([]any)[0].(map[string]any)
+	x1, y1 := p1["x"].(float64), p1["y"].(float64)
+	if y1 <= 450 {
+		t.Fatalf("expected hero to walk south from tent (420), got y=%.1f", y1)
+	}
+
+	// Reconnect with "you" while the old socket is still open (simulating a mobile network drop).
+	reHello := hello("Wanderer", code)
+	reHello["you"] = you
+	b, wb := dial(t, ts, reHello)
+	if wb["t"] != "welcome" || wb["you"] != you {
+		t.Fatalf("expected welcome with same player id %q, got %v", you, wb)
+	}
+	players := wb["state"].(map[string]any)["players"].([]any)
+	if len(players) != 1 {
+		t.Fatalf("expected 1 player (no ghost duplicate), got %d: %v", len(players), players)
+	}
+	resumed := players[0].(map[string]any)
+	if resumed["x"].(float64) != x1 || resumed["y"].(float64) != y1 {
+		t.Fatalf("expected resumed position (%.1f, %.1f), got (%.1f, %.1f)", x1, y1, resumed["x"], resumed["y"])
+	}
+
+	// Continue walking from the resumed position with fresh sequence numbers starting at 1.
+	for i := 1; i <= 10; i++ {
+		b.send(map[string]any{"t": "in", "seq": i, "x": 0, "y": 1})
+		time.Sleep(15 * time.Millisecond)
+	}
+	s2 := b.snapshot(0)
+	for s2["ack"].(float64) < 10 {
+		s2 = b.snapshot(0)
+	}
+	p2 := s2["players"].([]any)[0].(map[string]any)
+	if p2["y"].(float64) <= y1 {
+		t.Fatalf("expected resumed player to keep walking south past %.1f, got %.1f", y1, p2["y"])
+	}
+}
+
+

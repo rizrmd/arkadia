@@ -102,6 +102,7 @@ export function createCombatVfx(o:{
  traceWallRay?:(x0:number,y0:number,x1:number,y1:number)=>{hit:boolean;x:number;y:number;t:number};
  getRun:()=>Progression;
  getFoes:()=>Fighter[];
+ isOnline?:()=>boolean;
  onKill:(f:Fighter)=>void;
  random:()=>number;
 }){
@@ -189,6 +190,11 @@ export function createCombatVfx(o:{
 
  function applyHitToFoe(f:Fighter,opts:{scale?:number;forceCrit?:boolean;sparkKind?:SparkKind;angle?:number}={}){
   if(!f.alive)return {killed:false,crit:false,display:0,damage:0};
+  if(o.isOnline?.()){
+   addSpark(opts.sparkKind??'normal',f.x,f.y,opts.angle??0,26);
+   addShake(f,2.2,110);
+   return {killed:false,crit:false,display:0,damage:0};
+  }
   const run=o.getRun(),roll=rollHit(run,o.random,opts.forceCrit,opts.scale??1);
   const killed=f.damage(roll.damage);
   if(roll.crit){

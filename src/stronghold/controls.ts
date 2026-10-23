@@ -21,7 +21,6 @@ export function createControls(uiStage:Container,frames:FrameSet,canStartStick?:
  uiStage.addChild(base);
 
  let finger=-1,ox=0,oy=0;const touches=new Set<number>();
- let canvas:HTMLCanvasElement|null=null,lastX=0,lastY=0;
 
  const release=()=>{
   held.clear();stick={x:0,y:0};finger=-1;
@@ -42,26 +41,29 @@ export function createControls(uiStage:Container,frames:FrameSet,canStartStick?:
  };
  const take=(e:PointerEvent)=>{e.stopImmediatePropagation();e.preventDefault();};
  window.addEventListener('pointerdown',e=>{
-  if(e.pointerType!=='touch'||!(e.target instanceof HTMLCanvasElement))return;
-  if(canStartStick&&!canStartStick(e.clientX,e.clientY))return;
-  const pinch=touches.size>0;touches.add(e.pointerId);
-  if(finger>=0){
-   const id=finger,target=canvas!;release();
-   target.dispatchEvent(new PointerEvent('pointerdown',{bubbles:true,pointerId:id,pointerType:'touch',clientX:lastX,clientY:lastY,buttons:1}));
+  if(!e.isTrusted||e.pointerType!=='touch'||!(e.target instanceof HTMLCanvasElement))return;
+  if(canStartStick&&!canStartStick(e.clientX,e.clientY)){
+   if(finger>=0)release();
    return;
   }
-  if(pinch||!inZone(e))return;
-  canvas=e.target;lastX=e.clientX;lastY=e.clientY;
+  if(e.isPrimary&&finger<0)touches.clear();
+  const pinch=touches.size>0;touches.add(e.pointerId);
+  if(finger>=0||pinch||!inZone(e))return;
   take(e);finger=e.pointerId;ox=e.clientX;oy=e.clientY;
   base.position.set(ox,oy);
   base.visible=true;
   aim(e);
  },{capture:true});
- window.addEventListener('pointermove',e=>{if(e.pointerId===finger){take(e);lastX=e.clientX;lastY=e.clientY;aim(e);}},{capture:true});
+ window.addEventListener('pointermove',e=>{
+  if(e.pointerId!==finger)return;
+  if(canStartStick&&!canStartStick(ox,oy)){release();return;}
+  take(e);aim(e);
+ },{capture:true});
  const lift=(e:PointerEvent)=>{touches.delete(e.pointerId);if(e.pointerId!==finger)return;take(e);finger=-1;release();};
  window.addEventListener('pointerup',lift,{capture:true});
  window.addEventListener('pointercancel',lift,{capture:true});
  function input():Walk{
+  if(finger>=0&&canStartStick&&!canStartStick(ox,oy))release();
   if(stick.x||stick.y)return stick;let u=0,v=0;for(const code of held){u+=KEYS[code][0];v+=KEYS[code][1];}
   const x=(u-v)*2,y=u+v,d=Math.hypot(x,y);return d?{x:x/d,y:y/d}:{x:0,y:0};
  }

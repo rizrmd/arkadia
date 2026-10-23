@@ -151,6 +151,7 @@ export async function createEncounters(o:{
  }
 
  function onKill(f?:Foe){
+  if(online)return;
   kills++;
   const prevLevel=run.level;
   reward(run,random,currentHeroId(),f?.level??run.level);
@@ -175,6 +176,7 @@ export async function createEncounters(o:{
   traceWallRay:o.hero.traceWallRay,
   getRun:()=>run,
   getFoes:()=>foes,
+  isOnline:()=>online,
   onKill:f=>onKill(f as Foe),
   random
  });
@@ -371,8 +373,8 @@ export async function createEncounters(o:{
   expBar.visible=shownRatio>0.01;
   if(shownRatio>0.01)expBar.width=Math.max(6,Math.round(42*shownRatio));
 
-  blessingModal.visible=Boolean(run.pending);
-  if(!run.pending)return;
+  blessingModal.visible=Boolean(run.pending&&run.offers.length);
+  if(!run.pending||!run.offers.length)return;
   const key=JSON.stringify([online,run.level,run.pending,run.offers,run.skills,run.slots,innerWidth<760]);
   if(key===offerKey)return;
   offerKey=key;
@@ -485,16 +487,17 @@ export async function createEncounters(o:{
  function netStep(dt:number){
   const net=o.net!,me=net.me();
   if(me){
-   const prevHp=h.hp,prevLevel=run.level;
-   if(me.n!==heroPlays){
-    heroPlays=me.n;h.state=me.st as Fighter['state'];h.t=0;
-    if(me.st==='attack')vfx.spawnSlash(h.x,h.y,facingScreenAngle({facing:me.fc,back:me.bk,vertical:me.vt}),false);
+   const prevHp=h.hp,prevLevel=run.level,nextSt=me.st as Fighter['state'];
+   if(me.n!==heroPlays||h.state!==nextSt){
+    if(me.n!==heroPlays&&nextSt==='attack')vfx.spawnSlash(h.x,h.y,facingScreenAngle({facing:me.fc,back:me.bk,vertical:me.vt}),false);
+    heroPlays=me.n;h.state=nextSt;h.t=0;
    }
    if(me.hp<prevHp-.05){h.flash=120;vfx.recordHeroDamage(prevHp-me.hp,h.x,h.y);}
    else if(me.hp>prevHp+.5&&prevHp>0){vfx.recordHeroHeal(me.hp-prevHp,h.x,h.y);}
    Object.assign(h,{hp:me.hp,facing:me.fc,back:me.bk,vertical:me.vt});maxHp=me.max;kills=me.k;
+   if(h.alive)h.deadFor=0;
    if(!localOfferOverride){
-    run=me.run??fresh(currentHeroId());
+    run=me.run?structuredClone(me.run):fresh(currentHeroId());
     syncHeroLoadout(run,currentHeroId());
    }
    if(run.level>prevLevel){levelUpPulseMs=1200;vfx.triggerLevelUp(run.level,h.x,h.y);}
@@ -511,15 +514,16 @@ export async function createEncounters(o:{
   const seen=new Set<number>();
   for(const e of net.enemies(frameAt)){
    seen.add(e.id);
-   const eLv=Math.max(1,e.level??run.level??1),eMax=e.max??revenantMaxHp(eLv);
+   const eLv=Math.max(1,e.level??run.level??1),eMax=e.max??revenantMaxHp(eLv),eSt=e.st as Fighter['state'];
    let f=mirrors.get(e.id);
    if(!f){f=Object.assign(new Fighter('revenant',meta.clips,e.u,e.v),{home:{u:e.u,v:e.v},wander:null,age:0,side:1,level:eLv,maxHp:eMax,gen:e.g,plays:-1});mirrors.set(e.id,f);}
    if(f.gen!==e.g){Object.assign(f,{gen:e.g,age:0,deadFor:0,x:e.u,y:e.v,level:eLv,maxHp:eMax,hp:e.hp});}
    const m=screen(e.u-f.x,e.v-f.y);f.stride+=Math.hypot(m.x,m.y)/ENEMY_STRIDE;
    Object.assign(f,{x:e.u,y:e.v,level:eLv,maxHp:eMax,facing:e.fc,back:e.bk,vertical:e.vt});
-   if(e.n!==f.plays){f.plays=e.n;f.state=e.st as Fighter['state'];f.t=0;}
+   if(e.n!==f.plays||f.state!==eSt){f.plays=e.n;f.state=eSt;f.t=0;}
    if(e.hp<f.hp){f.flash=120;vfx.recordCoopEnemyDamage(f,f.hp-e.hp);}
    f.hp=e.hp;
+   if(f.alive)f.deadFor=0;
    f.tick(dt);f.age+=dt;if(!f.alive)f.deadFor+=dt;
   }
   for(const id of mirrors.keys())if(!seen.has(id))mirrors.delete(id);

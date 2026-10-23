@@ -323,12 +323,16 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
  const clipName=()=>meta.views?`${pose?pose.clip:state}-${view()}`:pose?pose.clip:vertical?state+(back?'Up':'Down'):back?state+'Back':state;
  const frameIndex=()=>{const clip=meta.clips[clipName()],n=clip.frames.length,i=pose?Math.floor(pose.t*clip.fps/1000):state==='move'?Math.floor(gait*clip.fps):Math.floor(t*clip.fps/1000);return clip.frames[clip.loop?i%n:Math.min(i,n-1)];};
  function face(sx:number,sy:number){const l=Math.hypot(sx,sy);if(!l)return;vertical=Math.abs(sx)/l<Math.sin((vertical?15:10)*Math.PI/180);back=Math.abs(sy)/l>.15?sy<0:false;if(Math.abs(sx)/l>.15)facing=sx>0?1:-1;}
+ let jumped=false;
  function driven(s:Drive,dt:number){
-  const dx=s.x-x,dy=s.y-y;x=s.x;y=s.y;pose=s.pose!==undefined?s.pose:o.pose?.()??null;
+  const dx=s.x-x,dy=s.y-y,progress=Math.hypot(dx,dy);
+  jumped=progress>80;
+  x=s.x;y=s.y;pose=s.pose!==undefined?s.pose:o.pose?.()??null;
   if(s.look){facing=s.look.facing;back=s.look.back;vertical=s.look.vertical;}else if(s.face&&(s.face.x||s.face.y)&&!pose)face(s.face.x,s.face.y);
+  if(jumped){state='idle';t=0;drawn='';return true;}
   if(pose){if(state!=='idle'){state='idle';t=0;}return !!(dx||dy);}
   t+=dt;if(!s.look&&!s.face&&(dx||dy))face(dx,dy);
-  const progress=Math.hypot(dx,dy),moving=progress/(dt/1000)>(state==='move'?2:5);if(moving!==(state==='move')){state=moving?'move':'idle';t=0;}
+  const moving=progress/(dt/1000)>(state==='move'?2:5);if(moving!==(state==='move')){state=moving?'move':'idle';t=0;}
   if(moving)gait+=progress/fullSpeed(dx,dy);
   return !!(dx||dy);
  }
@@ -400,13 +404,13 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
  }
  let last=0;
  let stopped=false;
- const loop=(now:number)=>{if(stopped)return;const span=last?Math.min(now-last,120):16;let walking=false;last=now;
+ const loop=(now:number)=>{if(stopped)return;const span=last?Math.min(now-last,120):16;let walking=false;jumped=false;last=now;
   measureTracelogPhase('encountersStep',()=>{
    const s=o.drive?.();
    if(s)walking=driven(s,span);else for(let dt=span;dt>0;dt-=34)walking=step(Math.min(dt,34))||walking;
    sample(now);
   });
-  if(own)o.follow(x,y,span,walking);
+  if(own)o.follow(x,y,jumped?1e4:span,walking);
   measureTracelogPhase('encountersRender',()=>{render();place();});
   requestAnimationFrame(loop);};
  return {

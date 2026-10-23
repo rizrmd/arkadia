@@ -324,7 +324,7 @@ func (w *World) rewardFoe(p *Player, foeLevel int) {
 }
 
 func (p *Player) choose(id string, level int) {
-	if p.Run.Pending == 0 || level != p.Run.Level {
+	if p.Run.Pending <= 0 || level < p.Run.Level-p.Run.Pending+1 || level > p.Run.Level {
 		return
 	}
 	if !containsStr(p.Run.Offers, id) {

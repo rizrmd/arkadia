@@ -40,7 +40,10 @@ export function createNet(o:{direction:()=>Walk;maxHp:()=>number;hero:()=>string
  const block=(pass:boolean)=>(x:number,y:number)=>blocked!(x,y,pass);
  const othersAtGate=(s:Snapshot,open:boolean)=>s.players.some(p=>p.id!==you&&p.st!=='die'&&atGate(p.x,p.y,open));
  function reset(state:Welcome['state']){
-  timeline.reset(you);latest=null;pending=[];margins=[];hold=0;pace=1;seq=0;acc=0;err={x:0,y:0};
+  timeline.reset(you);latest=null;
+  const unsentChoice=pending.find(i=>i.choice);
+  if(unsentChoice&&!choice)choice={choice:unsentChoice.choice!,level:unsentChoice.level??1};
+  pending=[];margins=[];hold=0;pace=1;seq=0;acc=0;err={x:0,y:0};
   const me=state.players.find(p=>p.id===you);if(me){pred={x:me.x,y:me.y};prev={...pred};}gate={open:state.gate.open,frame:state.gate.frame};
  }
  // Rebase the own hero on the server and replay inputs it has not applied yet.
@@ -79,7 +82,7 @@ export function createNet(o:{direction:()=>Walk;maxHp:()=>number;hero:()=>string
    clearTimeout(retryTimer);ws?.close();let settled=false;
    const socket=new WebSocket(o.url??socketUrl());ws=socket;
    const timer=setTimeout(()=>{if(!settled){settled=true;socket.close();reject(fail('timeout','The co-op server did not answer.'));}},8000);
-   socket.onopen=()=>{const hello:Hello={t:'hello',v:PROTOCOL,name:who,room:code,maxHp:o.maxHp(),hero:o.hero()};socket.send(JSON.stringify(hello));};
+   socket.onopen=()=>{const resume=code&&code===room&&you?{you}:{};const hello:Hello={t:'hello',v:PROTOCOL,name:who,room:code,...resume,maxHp:o.maxHp(),hero:o.hero()};socket.send(JSON.stringify(hello));};
    socket.onmessage=e=>{
     if(settled){if(ws===socket)receive(String(e.data));return;}
     let m:ServerMessage;try{m=JSON.parse(String(e.data));}catch{return;}
@@ -130,7 +133,10 @@ export function createNet(o:{direction:()=>Walk;maxHp:()=>number;hero:()=>string
  }
  function tick(){
   const d=o.direction(),input:Input={t:'in',seq:++seq,x:+d.x.toFixed(4),y:+d.y.toFixed(4)};
-  if(ws?.readyState===WebSocket.OPEN){ws.send(JSON.stringify({...input,...choice}));choice=null;stats.inputs++;}
+  if(ws?.readyState===WebSocket.OPEN){
+   if(choice){input.choice=choice.choice;input.level=choice.level;choice=null;}
+   ws.send(JSON.stringify(input));stats.inputs++;
+  }
   pending.push(input);if(pending.length>60)pending.shift();
   prev={...pred};
   if(hold>0)hold--;else if(blocked&&latest){const r=walkStep(block(gatePassable(gate)),pred.x,pred.y,input,TICK_MS);pred={x:r.x,y:r.y};}

@@ -242,6 +242,8 @@ export async function createWorldView(
  function damp(from:number,to:number,v:number,t:number){if(t>=1)return [to,0];const f=2/LAG,x=f*t,e=1/(1+x+.48*x*x+.235*x*x*x),d=from-to,q=(v+f*d)*t;let out=to+(d+q)*e,nv=(v-f*q)*e;
   if(to-from>0===out>to){out=to;nv=0;}return [out,nv];}
  function follow(hx:number,hy:number,dt:number,walking=true){
+  const snap=dt>=1000;
+  if(snap){held.clear();chasing=true;}
   if(walking){updateGate(hx,hy);chasing=true;}
   if(!w)return;
   const r=reachFactor(),ts=targetScale();
@@ -254,7 +256,7 @@ export async function createWorldView(
    vs=Math.abs(ts-scale)<=5e-4&&Math.abs(nvs)<1e-3?0:nvs;
   }
   if(chasing&&!held.size){
-   const snap=dt>=1000,zx=snap?0:w/scale*.16,zy=snap?0:h/scale*.14,fy=hy-40,tx=hx-Math.max(-zx,Math.min(zx,hx-cx)),ty=fy-Math.max(-zy,Math.min(zy,fy-cy));
+   const zx=snap?0:w/scale*.16,zy=snap?0:h/scale*.14,fy=hy-40,tx=hx-Math.max(-zx,Math.min(zx,hx-cx)),ty=fy-Math.max(-zy,Math.min(zy,fy-cy));
    const [nx,nvx]=damp(cx,tx,vx,dt/1000),[ny,nvy]=damp(cy,ty,vy,dt/1000);vx=nvx;vy=nvy;
    if(!walking&&!zooming&&Math.abs(tx-nx)+Math.abs(ty-ny)<.05&&Math.abs(vx)+Math.abs(vy)<1){chasing=false;vx=vy=0;}
    if(Math.abs(nx-cx)+Math.abs(ny-cy)>=.001){stopGlide();cx=nx;cy=ny;changed=true;}
@@ -263,7 +265,8 @@ export async function createWorldView(
  }
  const held=new Map<number,{x:number;y:number}>();let moved=false,down={x:0,y:0};
  canvas.addEventListener('pointerdown',e=>{
-  if(canPanCanvas&&!canPanCanvas(e.clientX,e.clientY))return;
+  if(!e.isTrusted||(canPanCanvas&&!canPanCanvas(e.clientX,e.clientY)))return;
+  if(e.isPrimary&&held.size>0)held.clear();
   stopGlide();chasing=false;vx=vy=0;
   try{canvas.setPointerCapture(e.pointerId);}catch{}
   held.set(e.pointerId,{x:e.clientX,y:e.clientY});down={x:e.clientX,y:e.clientY};moved=false;
@@ -286,6 +289,11 @@ export async function createWorldView(
   if(hit)onSelect(hit);
  });
  canvas.addEventListener('pointercancel',()=>{held.clear();moved=true;});
+ canvas.addEventListener('lostpointercapture',e=>{held.delete(e.pointerId);});
+ window.addEventListener('pointerup',e=>{held.delete(e.pointerId);});
+ window.addEventListener('pointercancel',()=>{held.clear();moved=true;});
+ window.addEventListener('blur',()=>{held.clear();moved=true;});
+ document.addEventListener('visibilitychange',()=>{if(document.hidden){held.clear();moved=true;}});
  canvas.addEventListener('wheel',e=>{e.preventDefault();},{passive:false});
  function updateGate(hx:number,hy:number){
   const d=Math.abs(hx-577),edge=d<36||d>135?778:gateTowerFront(d);

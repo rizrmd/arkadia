@@ -115,6 +115,7 @@ type clientMsg struct {
 	V      int      `json:"v"`
 	Name   string   `json:"name"`
 	Room   string   `json:"room"`
+	You    string   `json:"you"`
 	MaxHP  float64  `json:"maxHp"`
 	Hero   string   `json:"hero"` // hello: the picked hero (clients before heroes send none)
 	H      string   `json:"h"`    // hero: a new pick
@@ -191,7 +192,7 @@ func (s *Server) ws(w http.ResponseWriter, r *http.Request) {
 	}
 	client := room.NewClient()
 	hero, _ := room.CleanHero(hello.Hero)
-	if code := rm.Join(client, name, hero, hello.MaxHP); code != "" {
+	if code := rm.Join(client, name, hero, hello.MaxHP, hello.You); code != "" {
 		fail(code)
 		return
 	}
@@ -213,6 +214,7 @@ func (s *Server) ws(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 		}
+		c.CloseNow()
 	}()
 	defer func() { rm.Leave(client); <-done }()
 

@@ -3,7 +3,7 @@
 // whenever the player picks another hero (heroes.ts). Servers before heroes ignore it and clients default `h`.
 // Server → client: welcome (or error), then a snapshot every tick carrying the last input it applied (ack).
 export const PROTOCOL=1,TICK_MS=50;
-export type Hello={t:'hello';v:number;name:string;room:string;maxHp:number;hero:string};
+export type Hello={t:'hello';v:number;name:string;room:string;you?:string;maxHp:number;hero:string};
 export type HeroPick={t:'hero';h:string};
 export type Input={t:'in';seq:number;x:number;y:number;a?:string[];choice?:string;level?:number};
 export type Ping={t:'ping';c:number};
