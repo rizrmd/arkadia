@@ -10,11 +10,28 @@ const CLIPS = [
   { slug: 'idle', label: 'Idle', loop: true },
   { slug: 'walk', label: 'Walk', loop: true },
   { slug: 'run', label: 'Run', loop: true },
-  { slug: 'attack', label: 'Attack', loop: false },
-  { slug: 'cast', label: 'Rift Bolt Cast', loop: false },
+  { slug: 'idle_cast', label: 'Idle Cast', loop: true },
+  { slug: 'run_cast', label: 'Run While Casting', loop: true },
   { slug: 'hit', label: 'Hit Reaction', loop: false },
   { slug: 'death', label: 'Death', loop: false }
 ];
+
+const HERO_LIST = [
+  { id: 'rift-runner', name: 'Rift Runner' },
+  { id: 'ember-warden', name: 'Ember Warden' }
+];
+
+const LOWER_BODY_BONES = new Set([
+  'Hips',
+  'LeftUpLeg',
+  'LeftLeg',
+  'LeftFoot',
+  'LeftToeBase',
+  'RightUpLeg',
+  'RightLeg',
+  'RightFoot',
+  'RightToeBase'
+]);
 
 function parseGlb(buf) {
   const magic = buf.readUInt32LE(0);
@@ -53,28 +70,65 @@ function buildGlb(json, bin) {
   return Buffer.concat([header, jsonHeader, jsonBuf, binHeader, binBuf]);
 }
 
-async function main() {
-  await fs.mkdir(RAW_DIR, { recursive: true });
-  await fs.mkdir(OUT_DIR, { recursive: true });
+function readFloat32Accessor(glb, accIdx) {
+  const acc = glb.json.accessors[accIdx];
+  const bv = glb.json.bufferViews[acc.bufferView];
+  const start = (bv.byteOffset || 0) + (acc.byteOffset || 0);
+  const numComponents = acc.type === 'SCALAR' ? 1 : acc.type === 'VEC3' ? 3 : acc.type === 'VEC4' ? 4 : 1;
+  const totalFloats = acc.count * numComponents;
+  const out = new Float32Array(totalFloats);
+  for (let i = 0; i < totalFloats; i++) {
+    out[i] = glb.bin.readFloatLE(start + i * 4);
+  }
+  return { floats: out, count: acc.count, numComponents, type: acc.type };
+}
 
-  for (const name of ['tpose', 'rigged', ...CLIPS.map((c) => c.slug)]) {
-    const pubFile = path.join(OUT_DIR, `rift-runner-${name}.glb`);
-    const rawFile = path.join(RAW_DIR, `rift-runner-${name}.glb`);
-    if (existsSync(pubFile) && !existsSync(rawFile)) {
-      await fs.rename(pubFile, rawFile);
-    } else if (existsSync(pubFile) && existsSync(rawFile)) {
-      await fs.unlink(pubFile);
-    }
+function slerpQuat(a, b, t) {
+  let dot = a[0] * b[0] + a[1] * b[1] + a[2] * b[2] + a[3] * b[3];
+  const b2 = [b[0], b[1], b[2], b[3]];
+  if (dot < 0) {
+    dot = -dot;
+    b2[0] = -b2[0];
+    b2[1] = -b2[1];
+    b2[2] = -b2[2];
+    b2[3] = -b2[3];
+  }
+  if (dot > 0.9995) {
+    const rx = a[0] + t * (b2[0] - a[0]);
+    const ry = a[1] + t * (b2[1] - a[1]);
+    const rz = a[2] + t * (b2[2] - a[2]);
+    const rw = a[3] + t * (b2[3] - a[3]);
+    const len = Math.hypot(rx, ry, rz, rw) || 1;
+    return [rx / len, ry / len, rz / len, rw / len];
+  }
+  const theta0 = Math.acos(Math.min(1, Math.max(-1, dot)));
+  const theta = theta0 * t;
+  const sinTheta = Math.sin(theta);
+  const sinTheta0 = Math.sin(theta0);
+  const s0 = Math.cos(theta) - (dot * sinTheta) / sinTheta0;
+  const s1 = sinTheta / sinTheta0;
+  return [
+    s0 * a[0] + s1 * b2[0],
+    s0 * a[1] + s1 * b2[1],
+    s0 * a[2] + s1 * b2[2],
+    s0 * a[3] + s1 * b2[3]
+  ];
+}
+
+async function buildHeroGlb(hero) {
+  const idleRawPath = path.join(RAW_DIR, `${hero.id}-idle.glb`);
+  if (!existsSync(idleRawPath)) {
+    console.log(`Skipping ${hero.id} (missing ${idleRawPath})`);
+    return null;
   }
 
-  const base = parseGlb(await fs.readFile(path.join(RAW_DIR, 'rift-runner-idle.glb')));
+  const base = parseGlb(await fs.readFile(idleRawPath));
   const outJson = structuredClone(base.json);
   const nodeNameToIndex = new Map();
   outJson.nodes.forEach((n, idx) => {
     if (n.name) nodeNameToIndex.set(n.name, idx);
   });
 
-  // Extract existing bufferViews into individual slices so we can replace image bufferViews and append new ones
   const bvBuffers = outJson.bufferViews.map((bv) => {
     const start = bv.byteOffset || 0;
     return Buffer.from(base.bin.subarray(start, start + bv.byteLength));
@@ -88,28 +142,54 @@ async function main() {
         .resize(1024, 1024, { fit: 'inside', withoutEnlargement: true })
         .jpeg({ quality: 86, mozjpeg: true })
         .toBuffer();
-      console.log(`Compressed image bufferView ${img.bufferView}: ${(orig.length / 1024).toFixed(0)} KB -> ${(compressed.length / 1024).toFixed(0)} KB`);
+      console.log(`[${hero.id}] Compressed image bufferView ${img.bufferView}: ${(orig.length / 1024).toFixed(0)} KB -> ${(compressed.length / 1024).toFixed(0)} KB`);
       bvBuffers[img.bufferView] = compressed;
       img.mimeType = 'image/jpeg';
     }
   }
 
-  // Name the base animation 'idle'
-  outJson.animations[0].name = 'idle';
+  function addFloatAccessor(floatArray, count, type) {
+    const buf = Buffer.from(floatArray.buffer, floatArray.byteOffset, floatArray.byteLength);
+    const bvIdx = bvBuffers.length;
+    bvBuffers.push(buf);
+    outJson.bufferViews.push({
+      buffer: 0,
+      byteOffset: 0,
+      byteLength: buf.length
+    });
+    const numComp = type === 'SCALAR' ? 1 : type === 'VEC3' ? 3 : 4;
+    const min = new Array(numComp).fill(Infinity);
+    const max = new Array(numComp).fill(-Infinity);
+    for (let i = 0; i < count; i++) {
+      for (let c = 0; c < numComp; c++) {
+        const v = floatArray[i * numComp + c];
+        if (v < min[c]) min[c] = v;
+        if (v > max[c]) max[c] = v;
+      }
+    }
+    const accIdx = outJson.accessors.length;
+    outJson.accessors.push({
+      bufferView: bvIdx,
+      componentType: 5126,
+      count,
+      type,
+      min,
+      max
+    });
+    return accIdx;
+  }
 
-  // Append animations from the other 6 GLBs
-  for (const clip of CLIPS.slice(1)) {
-    const other = parseGlb(await fs.readFile(path.join(RAW_DIR, `rift-runner-${clip.slug}.glb`)));
-    const srcAnim = other.json.animations?.[0];
-    if (!srcAnim) throw new Error(`Missing animation in ${clip.slug}`);
+  function appendAnimationFromGlb(otherGlb, targetName) {
+    const srcAnim = otherGlb.json.animations?.[0];
+    if (!srcAnim) throw new Error(`Missing animation for ${targetName}`);
 
     const accessorMap = new Map();
     const copyAccessor = (srcAccIdx) => {
       if (accessorMap.has(srcAccIdx)) return accessorMap.get(srcAccIdx);
-      const srcAcc = structuredClone(other.json.accessors[srcAccIdx]);
-      const srcBv = other.json.bufferViews[srcAcc.bufferView];
+      const srcAcc = structuredClone(otherGlb.json.accessors[srcAccIdx]);
+      const srcBv = otherGlb.json.bufferViews[srcAcc.bufferView];
       const start = srcBv.byteOffset || 0;
-      const slice = Buffer.from(other.bin.subarray(start, start + srcBv.byteLength));
+      const slice = Buffer.from(otherGlb.bin.subarray(start, start + srcBv.byteLength));
       const newBvIdx = bvBuffers.length;
       bvBuffers.push(slice);
       outJson.bufferViews.push({
@@ -134,7 +214,7 @@ async function main() {
 
     const channels = [];
     for (const ch of srcAnim.channels) {
-      const srcNodeName = other.json.nodes[ch.target.node]?.name;
+      const srcNodeName = otherGlb.json.nodes[ch.target.node]?.name;
       const dstNodeIdx = srcNodeName !== undefined ? nodeNameToIndex.get(srcNodeName) : ch.target.node;
       if (dstNodeIdx === undefined) continue;
       channels.push({
@@ -147,12 +227,123 @@ async function main() {
     }
 
     outJson.animations.push({
-      name: clip.slug,
+      name: targetName,
       samplers,
       channels
     });
-    console.log(`Merged animation '${clip.slug}' (${channels.length} channels)`);
+    console.log(`[${hero.id}] Merged animation '${targetName}' (${channels.length} channels)`);
   }
+
+  // 1. Base animation is 'idle'
+  outJson.animations[0].name = 'idle';
+
+  // 2. Append 'walk' and 'run'
+  const walkGlb = parseGlb(await fs.readFile(path.join(RAW_DIR, `${hero.id}-walk.glb`)));
+  appendAnimationFromGlb(walkGlb, 'walk');
+
+  const runGlb = parseGlb(await fs.readFile(path.join(RAW_DIR, `${hero.id}-run.glb`)));
+  appendAnimationFromGlb(runGlb, 'run');
+
+  // 3. Append 'idle_cast'
+  const castGlb = parseGlb(await fs.readFile(path.join(RAW_DIR, `${hero.id}-cast.glb`)));
+  appendAnimationFromGlb(castGlb, 'idle_cast');
+
+  // 4. Synthesize 'run_cast' (Run While Casting)
+  {
+    const FRAMES = 60;
+    const DT = 1 / 30;
+    const times = new Float32Array(FRAMES);
+    for (let i = 0; i < FRAMES; i++) {
+      times[i] = (i + 1) * DT;
+    }
+    const timeAccIdx = addFloatAccessor(times, FRAMES, 'SCALAR');
+
+    const runAnim = runGlb.json.animations[0];
+    const castAnim = castGlb.json.animations[0];
+
+    const runChannelMap = new Map();
+    for (const ch of runAnim.channels) {
+      const bone = runGlb.json.nodes[ch.target.node]?.name;
+      if (bone) runChannelMap.set(`${bone}:${ch.target.path}`, ch);
+    }
+
+    const castChannelMap = new Map();
+    for (const ch of castAnim.channels) {
+      const bone = castGlb.json.nodes[ch.target.node]?.name;
+      if (bone) castChannelMap.set(`${bone}:${ch.target.path}`, ch);
+    }
+
+    const samplers = [];
+    const channels = [];
+
+    for (const [key, runCh] of runChannelMap.entries()) {
+      const [bone, propPath] = key.split(':');
+      const dstNodeIdx = nodeNameToIndex.get(bone);
+      if (dstNodeIdx === undefined) continue;
+
+      const isLowerBody = LOWER_BODY_BONES.has(bone);
+      const castCh = castChannelMap.get(key);
+
+      if (isLowerBody || !castCh) {
+        const src = readFloat32Accessor(runGlb, runAnim.samplers[runCh.sampler].output);
+        const nComp = src.numComponents;
+        const outFloats = new Float32Array(FRAMES * nComp);
+        for (let f = 0; f < FRAMES; f++) {
+          const srcFrame = f % src.count;
+          for (let c = 0; c < nComp; c++) {
+            outFloats[f * nComp + c] = src.floats[srcFrame * nComp + c];
+          }
+        }
+        const outAccIdx = addFloatAccessor(outFloats, FRAMES, src.type);
+        const samplerIdx = samplers.length;
+        samplers.push({ input: timeAccIdx, output: outAccIdx, interpolation: 'LINEAR' });
+        channels.push({ sampler: samplerIdx, target: { node: dstNodeIdx, path: propPath } });
+      } else {
+        const src = readFloat32Accessor(castGlb, castAnim.samplers[castCh.sampler].output);
+        const nComp = src.numComponents;
+        const outFloats = new Float32Array(FRAMES * nComp);
+        const startOffset = Math.min(4, Math.max(0, src.count - FRAMES));
+        for (let f = 0; f < FRAMES; f++) {
+          const srcFrame = Math.min(src.count - 1, startOffset + f);
+          for (let c = 0; c < nComp; c++) {
+            outFloats[f * nComp + c] = src.floats[srcFrame * nComp + c];
+          }
+        }
+        const BLEND_LEN = 8;
+        const firstVec = Array.from(outFloats.subarray(0, nComp));
+        for (let b = 0; b < BLEND_LEN; b++) {
+          const f = FRAMES - BLEND_LEN + b;
+          const t = (b + 1) / (BLEND_LEN + 1);
+          const curVec = Array.from(outFloats.subarray(f * nComp, (f + 1) * nComp));
+          const blended =
+            propPath === 'rotation' && nComp === 4
+              ? slerpQuat(curVec, firstVec, t)
+              : curVec.map((v, idx) => v + (firstVec[idx] - v) * t);
+          for (let c = 0; c < nComp; c++) {
+            outFloats[f * nComp + c] = blended[c];
+          }
+        }
+        const outAccIdx = addFloatAccessor(outFloats, FRAMES, src.type);
+        const samplerIdx = samplers.length;
+        samplers.push({ input: timeAccIdx, output: outAccIdx, interpolation: 'LINEAR' });
+        channels.push({ sampler: samplerIdx, target: { node: dstNodeIdx, path: propPath } });
+      }
+    }
+
+    outJson.animations.push({
+      name: 'run_cast',
+      samplers,
+      channels
+    });
+    console.log(`[${hero.id}] Synthesized 'run_cast' (${channels.length} channels, 60 frames / 2.00s)`);
+  }
+
+  // 5. Append 'hit' and 'death'
+  const hitGlb = parseGlb(await fs.readFile(path.join(RAW_DIR, `${hero.id}-hit.glb`)));
+  appendAnimationFromGlb(hitGlb, 'hit');
+
+  const deathGlb = parseGlb(await fs.readFile(path.join(RAW_DIR, `${hero.id}-death.glb`)));
+  appendAnimationFromGlb(deathGlb, 'death');
 
   // Repack all bufferViews with 4-byte alignment
   const chunks = [];
@@ -169,19 +360,37 @@ async function main() {
   const mergedBin = Buffer.concat(chunks);
   outJson.buffers = [{ byteLength: mergedBin.length }];
 
-  const outGlbPath = path.join(OUT_DIR, 'rift-runner.glb');
+  const outGlbPath = path.join(OUT_DIR, `${hero.id}.glb`);
   const outGlbBuf = buildGlb(outJson, mergedBin);
   await fs.writeFile(outGlbPath, outGlbBuf);
   console.log(`Wrote unified ${outGlbPath}: ${(outGlbBuf.length / 1024).toFixed(1)} KB with ${outJson.animations.length} animations!`);
 
-  const manifest = {
-    hero: 'rift-runner',
-    name: 'Rift Runner',
+  return {
+    hero: hero.id,
+    name: hero.name,
     ai_model: 'meshy-t2.5',
     model_type: 'smart-topology',
-    glb: '/assets/characters/3d/rift-runner.glb',
-    thumbnail: '/assets/characters/3d/rift-runner-3d-thumb.png',
+    glb: `/assets/characters/3d/${hero.id}.glb`,
+    thumbnail: `/assets/characters/3d/${hero.id}-3d-thumb.png`,
     fileSizeKB: +(outGlbBuf.length / 1024).toFixed(1),
+    animations: CLIPS
+  };
+}
+
+async function main() {
+  await fs.mkdir(RAW_DIR, { recursive: true });
+  await fs.mkdir(OUT_DIR, { recursive: true });
+
+  const heroesOut = {};
+  for (const h of HERO_LIST) {
+    const res = await buildHeroGlb(h);
+    if (res) heroesOut[h.id] = res;
+  }
+
+  const manifest = {
+    ai_model: 'meshy-t2.5',
+    model_type: 'smart-topology',
+    heroes: heroesOut,
     animations: CLIPS
   };
   await fs.writeFile(path.join(OUT_DIR, 'manifest.json'), JSON.stringify(manifest, null, 2));

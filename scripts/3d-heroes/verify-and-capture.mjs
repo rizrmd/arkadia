@@ -62,18 +62,18 @@ try {
   await page.goto(`http://127.0.0.1:${port}/3d-hero-lab/index.html`, { waitUntil: 'networkidle' });
   await page.waitForFunction(() => window.__LAB_READY__ === true, null, { timeout: 60000 });
 
-  // Capture 1: Overview in Stylized Dark-Fantasy Isometric mode (Run animation, SE facing)
-  await page.evaluate(() => window.__setLabState({ clip: 'run', dir: 'SE', cameraMode: 'iso', shaderMode: 'stylized', time: 0.22 }));
+  // Capture 1: Overview in Stylized Dark-Fantasy Isometric mode (Run While Casting animation, SE facing)
+  await page.evaluate(() => window.__setLabState({ clip: 'run_cast', dir: 'SE', cameraMode: 'iso', shaderMode: 'stylized', time: 0.55 }));
   await page.waitForTimeout(150);
   await page.screenshot({ path: path.join(DOCS_DIR, 'lab-overview-run-se.png') });
 
-  // Capture 2: Attack animation in N (North) facing + 8-direction simultaneous strip
-  await page.evaluate(() => window.__setLabState({ clip: 'attack', dir: 'N', cameraMode: 'iso', shaderMode: 'stylized', time: 0.45 }));
+  // Capture 2: Idle Cast animation in N (North) facing + 8-direction simultaneous strip
+  await page.evaluate(() => window.__setLabState({ clip: 'idle_cast', dir: 'N', cameraMode: 'iso', shaderMode: 'stylized', time: 0.65 }));
   await page.waitForTimeout(150);
   await page.screenshot({ path: path.join(DOCS_DIR, 'lab-attack-north.png') });
 
-  // Capture 3: Rift Bolt Cast animation in SW facing
-  await page.evaluate(() => window.__setLabState({ clip: 'cast', dir: 'SW', cameraMode: 'iso', shaderMode: 'stylized', time: 0.65 }));
+  // Capture 3: Run While Casting animation in SW facing
+  await page.evaluate(() => window.__setLabState({ clip: 'run_cast', dir: 'SW', cameraMode: 'iso', shaderMode: 'stylized', time: 0.72 }));
   await page.waitForTimeout(150);
   await page.screenshot({ path: path.join(DOCS_DIR, 'lab-cast-sw.png') });
 

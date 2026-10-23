@@ -3,18 +3,17 @@ import fs from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 
-const STATE_FILE = path.resolve('assets-src/3d-heroes/rift-runner-state.json');
+const heroArgIdx = process.argv.indexOf('--hero');
+const HERO = heroArgIdx >= 0 ? process.argv[heroArgIdx + 1] : 'ember-warden';
+const STATE_FILE = path.resolve(`assets-src/3d-heroes/${HERO}-state.json`);
+const RAW_DIR = path.resolve('assets-src/3d-heroes/raw');
 const OUT_DIR = path.resolve('public/assets/characters/3d');
 
 async function loadState() {
   if (existsSync(STATE_FILE)) {
     return JSON.parse(await fs.readFile(STATE_FILE, 'utf8'));
   }
-  return {
-    hero: 'rift-runner',
-    ai_model: 'meshy-t2.5',
-    image_to_3d_task_id: '01a1699d-cc20-744a-8765-180778c4f182'
-  };
+  throw new Error(`Missing state file ${STATE_FILE}`);
 }
 
 async function saveState(state) {
@@ -82,14 +81,14 @@ async function callMcpTool(name, args) {
 
 async function waitForTask(taskId, taskType) {
   for (let attempt = 1; attempt <= 20; attempt++) {
-    console.log(`[poll #${attempt}] Waiting on ${taskType} task ${taskId}...`);
+    console.log(`[${HERO} poll #${attempt}] Waiting on ${taskType} task ${taskId}...`);
     const status = await callMcpTool('meshy_get_task_status', {
       task_id: taskId,
       task_type: taskType,
       wait: true,
       timeout_seconds: 180
     });
-    console.log(`[poll #${attempt}] outcome=${status.outcome} status=${status.status} progress=${status.progress}%`);
+    console.log(`[${HERO} poll #${attempt}] outcome=${status.outcome} status=${status.status} progress=${status.progress}%`);
     if (status.outcome === 'SUCCEEDED' || status.status === 'SUCCEEDED') {
       return status;
     }
@@ -113,6 +112,7 @@ async function downloadUrl(url, destPath) {
 }
 
 async function main() {
+  await fs.mkdir(RAW_DIR, { recursive: true });
   await fs.mkdir(OUT_DIR, { recursive: true });
   const state = await loadState();
   await saveState(state);
@@ -124,7 +124,7 @@ async function main() {
     await saveState(state);
   }
 
-  const tposeGlbPath = path.join(OUT_DIR, 'rift-runner-tpose.glb');
+  const tposeGlbPath = path.join(RAW_DIR, `${HERO}-tpose.glb`);
   if (!existsSync(tposeGlbPath)) {
     const glbUrl = state.image_to_3d_result?.model_urls?.glb;
     if (glbUrl) {
@@ -139,14 +139,14 @@ async function main() {
     }
   }
 
-  const thumbPath = path.join(OUT_DIR, 'rift-runner-3d-thumb.png');
+  const thumbPath = path.join(OUT_DIR, `${HERO}-3d-thumb.png`);
   if (!existsSync(thumbPath) && state.image_to_3d_result?.thumbnail_url) {
     await downloadUrl(state.image_to_3d_result.thumbnail_url, thumbPath);
   }
 
   // Step 2: Auto-Rigging (includes free walk & run animations)
   if (!state.rig_task_id) {
-    console.log('Starting meshy_rig for Rift Runner...');
+    console.log(`Starting meshy_rig for ${HERO}...`);
     const rigTask = await callMcpTool('meshy_rig', {
       input_task_id: state.image_to_3d_task_id,
       height_meters: 1.75
@@ -162,24 +162,21 @@ async function main() {
     await saveState(state);
   }
 
-  console.log('Rigging result keys:', Object.keys(state.rig_result?.result || {}));
   const rigOut = state.rig_result?.result || {};
-  if (rigOut.rigged_character_glb_url && !existsSync(path.join(OUT_DIR, 'rift-runner-rigged.glb'))) {
-    await downloadUrl(rigOut.rigged_character_glb_url, path.join(OUT_DIR, 'rift-runner-rigged.glb'));
+  if (rigOut.rigged_character_glb_url && !existsSync(path.join(RAW_DIR, `${HERO}-rigged.glb`))) {
+    await downloadUrl(rigOut.rigged_character_glb_url, path.join(RAW_DIR, `${HERO}-rigged.glb`));
   }
-  if (rigOut.basic_animations?.walking_glb_url && !existsSync(path.join(OUT_DIR, 'rift-runner-walk.glb'))) {
-    await downloadUrl(rigOut.basic_animations.walking_glb_url, path.join(OUT_DIR, 'rift-runner-walk.glb'));
+  if (rigOut.basic_animations?.walking_glb_url && !existsSync(path.join(RAW_DIR, `${HERO}-walk.glb`))) {
+    await downloadUrl(rigOut.basic_animations.walking_glb_url, path.join(RAW_DIR, `${HERO}-walk.glb`));
   }
-  if (rigOut.basic_animations?.running_glb_url && !existsSync(path.join(OUT_DIR, 'rift-runner-run.glb'))) {
-    await downloadUrl(rigOut.basic_animations.running_glb_url, path.join(OUT_DIR, 'rift-runner-run.glb'));
+  if (rigOut.basic_animations?.running_glb_url && !existsSync(path.join(RAW_DIR, `${HERO}-run.glb`))) {
+    await downloadUrl(rigOut.basic_animations.running_glb_url, path.join(RAW_DIR, `${HERO}-run.glb`));
   }
 
-  // Step 3: Generate additional preset animations (Idle, Combat Idle, Attack, Spell Cast, Hit, Death)
-  // Using action_ids to bundle them into a multi-clip GLB, AND individual tasks if needed
+  // Step 3: Generate preset animations (Idle, Spell Cast, Hit, Death)
   const ACTION_SPECS = [
     { id: 0, slug: 'idle', label: 'Idle' },
-    { id: 4, slug: 'attack', label: 'Attack' },
-    { id: 129, slug: 'cast', label: 'Rift Bolt Cast' },
+    { id: 129, slug: 'cast', label: 'Idle Cast' },
     { id: 178, slug: 'hit', label: 'Hit Reaction' },
     { id: 8, slug: 'death', label: 'Death' }
   ];
@@ -187,7 +184,7 @@ async function main() {
   state.animations = state.animations || {};
   for (const act of ACTION_SPECS) {
     if (!state.animations[act.slug]?.task_id) {
-      console.log(`Starting meshy_animate for ${act.slug} (action_id=${act.id})...`);
+      console.log(`Starting meshy_animate for ${HERO} ${act.slug} (action_id=${act.id})...`);
       const animTask = await callMcpTool('meshy_animate', {
         rig_task_id: state.rig_task_id,
         action_id: act.id
@@ -208,13 +205,13 @@ async function main() {
       entry.result?.result?.animation_glb_url ||
       entry.result?.model_urls?.glb ||
       Object.values(entry.result?.result || {}).find((v) => typeof v === 'string' && v.includes('.glb'));
-    const dest = path.join(OUT_DIR, `rift-runner-${act.slug}.glb`);
+    const dest = path.join(RAW_DIR, `${HERO}-${act.slug}.glb`);
     if (animGlbUrl && !existsSync(dest)) {
       await downloadUrl(animGlbUrl, dest);
     }
   }
 
-  console.log('All Rift Runner 3D meshes, rigs, and animations completed!');
+  console.log(`All ${HERO} 3D meshes, rigs, and animations completed!`);
 }
 
 main().catch((err) => {

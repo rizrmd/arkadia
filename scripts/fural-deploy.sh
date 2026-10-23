@@ -59,7 +59,10 @@ mkdir -p "$STAGE/site/thumb-pad"; cp docs/thumb-pad/*.webp docs/thumb-pad/*.json
 mkdir -p "$STAGE/site/hud-telemetry-desktop"; cp docs/hud-telemetry-desktop/*.png "$STAGE/site/hud-telemetry-desktop/"
 echo "Staged $(wc -l < "$list") files, $(du -sh "$STAGE" | cut -f1) in $STAGE"
 
-# Run review and both Sprite Player URLs ship with the same character atlas release.
+# Run review, 3D Hero Lab, and both Sprite Player URLs ship with the same character atlas release.
+cp -R public/3d-hero-lab "$STAGE/site/3d-hero-lab"
+mkdir -p "$STAGE/site/assets/characters"
+cp -R public/assets/characters/3d "$STAGE/site/assets/characters/3d"
 cp -R public/run-cadence "$STAGE/site/run-cadence"
 mkdir -p "$STAGE/site/rift-runner"
 cp -R public/sprite-player "$STAGE/site/sprite-player"
