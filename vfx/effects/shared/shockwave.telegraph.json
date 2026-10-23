@@ -7,11 +7,11 @@
  "name": "Shockwave · wind-up",
  "timeline": {
   "frameRate": 30,
-  "duration": 2.1,
+  "duration": 1.85,
   "loop": {
    "enabled": false,
    "start": 0,
-   "end": 2.1
+   "end": 1.85
   },
   "groups": []
  },
@@ -369,9 +369,9 @@
     },
     "size": {
      "mode": "random",
-     "value": 0.046,
-     "min": 0.034,
-     "max": 0.058,
+     "value": 0.054000000000000006,
+     "min": 0.04,
+     "max": 0.068,
      "curve": [
       {
        "x": 0,
@@ -2504,9 +2504,9 @@
    "initializeParticle": {
     "lifetime": {
      "mode": "random",
-     "value": 1.25,
-     "min": 0.9,
-     "max": 1.6,
+     "value": 1.05,
+     "min": 0.75,
+     "max": 1.35,
      "curve": [
       {
        "x": 0,
@@ -2665,9 +2665,9 @@
     },
     "size": {
      "mode": "random",
-     "value": 0.45,
-     "min": 0.35,
-     "max": 0.55,
+     "value": 0.19,
+     "min": 0.14,
+     "max": 0.24,
      "curve": [
       {
        "x": 0,
@@ -2897,8 +2897,8 @@
     "angularVelocity": {
      "mode": "random",
      "value": 0,
-     "min": -0.8,
-     "max": 0.8,
+     "min": -0.7,
+     "max": 0.7,
      "curve": [
       {
        "x": 0,
@@ -2919,7 +2919,7 @@
        "y": 0
       }
      ],
-     "editorMin": -0.8,
+     "editorMin": -0.7,
      "editorMax": 24
     },
     "angularVelocity3D": {
@@ -3137,27 +3137,27 @@
     "sizeEnd": 0.28,
     "sizeValue": {
      "mode": "curve",
-     "value": 0.45,
-     "min": 0.45,
-     "max": 1.5,
+     "value": 0.5,
+     "min": 0.5,
+     "max": 1.15,
      "curve": [
       {
        "x": 0,
-       "y": 0.45
+       "y": 0.5
       },
       {
        "x": 1,
-       "y": 1.5
+       "y": 1.15
       }
      ],
      "curveB": [
       {
        "x": 0,
-       "y": 0.45
+       "y": 0.5
       },
       {
        "x": 1,
-       "y": 1.5
+       "y": 1.15
       }
      ],
      "editorMin": 0.001,
@@ -3168,27 +3168,27 @@
     "sizeEndY": 0.28,
     "sizeValueY": {
      "mode": "curve",
-     "value": 0.45,
-     "min": 0.45,
-     "max": 1.5,
+     "value": 0.5,
+     "min": 0.5,
+     "max": 1.15,
      "curve": [
       {
        "x": 0,
-       "y": 0.45
+       "y": 0.5
       },
       {
        "x": 1,
-       "y": 1.5
+       "y": 1.15
       }
      ],
      "curveB": [
       {
        "x": 0,
-       "y": 0.45
+       "y": 0.5
       },
       {
        "x": 1,
-       "y": 1.5
+       "y": 1.15
       }
      ],
      "editorMin": 0.001,

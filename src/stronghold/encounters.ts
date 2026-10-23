@@ -69,20 +69,20 @@ export async function createEncounters(o:{
  let run=fresh(currentHeroId()),baseHp=100,levelUpPulseMs=0,comboHighlightMs=0,regenAccum=0,lastCoopAutoCasts=0;
  const local:Foe[]=[],spawns:{u:number;v:number;m:number}[]=[];let foes=local,online=false,heroPlays=-1;
 
- // Ground AoE ring + Revenant back/front layers + Overhead bars layer inside worldStage
+ // Ground AoE ring (isometric ground container with rotating outer/inner dashed rings) + Revenant layers + Overhead bars
+ const aoeGround=new Container();aoeGround.zIndex=20;aoeGround.scale.set(1,0.52);aoeGround.visible=false;
  const aoe=document.createElement('canvas'),aoeCtx=aoe.getContext('2d')!;
  const aoeView=createCanvasSprite(aoe);
- aoeView.sprite.zIndex=20;
- aoeView.sprite.visible=false;
+ aoeView.sprite.anchor.set(0.5,0.5);
  const aoeInner=document.createElement('canvas'),aoeInnerCtx=aoeInner.getContext('2d')!;
  const aoeInnerView=createCanvasSprite(aoeInner);
- aoeInnerView.sprite.zIndex=20;
- aoeInnerView.sprite.visible=false;
+ aoeInnerView.sprite.anchor.set(0.5,0.5);
+ aoeGround.addChild(aoeInnerView.sprite,aoeView.sprite);
  const aoeBaseCache=new Map<string,{outer:HTMLCanvasElement;inner:HTMLCanvasElement}>();
  const back=new Container();back.zIndex=24;back.sortableChildren=true;
  const front=new Container();front.zIndex=34;front.sortableChildren=true;
  const bars=new Container();bars.zIndex=40;
- o.worldStage.addChild(aoeInnerView.sprite,aoeView.sprite,back,front,bars);
+ o.worldStage.addChild(aoeGround,back,front,bars);
 
  // Hero overhead health bar in Pixi (single slim green bar matching reference)
  const heroOverhead=bars.addChild(new Container());
@@ -590,7 +590,7 @@ export async function createEncounters(o:{
   drawFigureShadow(fg,atlas,fr,meta.cell,s,dir);
   fg.save();sprite(cell);fg.restore();return fg;
  }
- type LookEntry={el:HTMLCanvasElement;cv:ReturnType<typeof createCanvasSprite>};
+ type LookEntry={el:HTMLCanvasElement;cv:ReturnType<typeof createCanvasSprite>;synced:boolean};
  const looks=new Map<string,LookEntry>(),LOOKS=128;
  function compose(f:Foe,v:View,px:number,py:number,box:number[],s:Sun,r:number,hidden:Placed[],baseLook:string,dispW:number,dispH:number){
   let entry=looks.get(baseLook);
@@ -598,12 +598,13 @@ export async function createEncounters(o:{
   else{
    const oldest=looks.size>=LOOKS?looks.keys().next().value:undefined;
    if(oldest!==undefined){entry=looks.get(oldest)!;looks.delete(oldest);}
-   else{const el=document.createElement('canvas');entry={el,cv:createCanvasSprite(el)};}
+   else{const el=document.createElement('canvas');entry={el,cv:createCanvasSprite(el),synced:false};}
    paint(f,entry.el,box,s,r);
-   entry.cv.sync(dispW,dispH);
+   entry.synced=false;
    looks.set(baseLook,entry);
   }
   if(!hidden.length){
+   if(!entry.synced){entry.cv.sync(dispW,dispH);entry.synced=true;}
    if(v.canvasView.sprite.texture!==entry.cv.texture){
     v.canvasView.sprite.texture=entry.cv.texture;
     (v.canvasView.sprite as unknown as {onViewUpdate():void}).onViewUpdate();
@@ -634,16 +635,13 @@ export async function createEncounters(o:{
     v.bar.position.set(s.x+shk.dx,s.y-80*k+shk.dy);
    }
   }
-  const s=at(hp.x,hp.y),rMult=reach(run),aoeRx=Math.round(HERO_REACH*rMult*64*Math.SQRT2),aoeRy=Math.round(aoeRx*.52),aoePadX=aoeRx+6,aoePadY=aoeRy+6;
-  if(aoeView.sprite.visible){
-   aoeView.sprite.position.set(s.x-aoePadX*k,s.y-2*k-aoePadY*k);
-   aoeView.sprite.width=aoePadX*2*k;
-   aoeView.sprite.height=aoePadY*2*k;
-  }
-  if(aoeInnerView.sprite.visible){
-   aoeInnerView.sprite.position.set(s.x-aoePadX*k,s.y-2*k-aoePadY*k);
-   aoeInnerView.sprite.width=aoePadX*2*k;
-   aoeInnerView.sprite.height=aoePadY*2*k;
+  const s=at(hp.x,hp.y),rMult=reach(run),aoeRx=Math.round(HERO_REACH*rMult*64*Math.SQRT2),aoePad=aoeRx+6;
+  if(aoeGround.visible){
+   aoeGround.position.set(s.x,s.y-2*k);
+   aoeView.sprite.width=aoePad*2*k;
+   aoeView.sprite.height=aoePad*2*k;
+   aoeInnerView.sprite.width=aoePad*2*k;
+   aoeInnerView.sprite.height=aoePad*2*k;
   }
   if(heroOverhead.visible){
    heroOverhead.scale.set(Math.max(0.58,Math.min(1,k)));
@@ -718,37 +716,34 @@ export async function createEncounters(o:{
   }
   vfx.render();
 
-  // Hero overhead bar and ground AoE reach indicator (continuous fading loop + subtle pixel shimmer/drift)
+  // Hero overhead bar and ground AoE reach indicator (continuous fading loop + smooth isometric rotation)
   const s=at(hp.x,hp.y),ratio=Math.max(0,Math.min(1,h.hp/Math.max(1,maxHp))),inZone=inSafeZone(tileOf(h)),show=h.alive&&(ratio<.999||!inZone||run.xp>0||run.level>1);
-  const rMult=reach(run),aoeRx=Math.round(HERO_REACH*rMult*64*Math.SQRT2),aoeRy=Math.round(aoeRx*.52),aoePadX=aoeRx+6,aoePadY=aoeRy+6,showAoe=h.alive;
+  const rMult=reach(run),aoeRx=Math.round(HERO_REACH*rMult*64*Math.SQRT2),aoeRy=Math.round(aoeRx*.52),aoePad=aoeRx+6,aoePadY=aoeRy+6,showAoe=h.alive;
+  aoeGround.visible=showAoe;
   aoeView.sprite.visible=showAoe;
   aoeInnerView.sprite.visible=showAoe;
   if(showAoe){
    const nowMs=performance.now();
-   const shimmerStep=Math.floor(nowMs/130)%6;
-   aoe.dataset.shimmerStep=String(shimmerStep);
+   const rotOuter=((nowMs/1000)*0.55)%(Math.PI*2);
+   const rotInner=-(((nowMs/1000)*0.40)%(Math.PI*2));
    const aoeDpr=Math.min(devicePixelRatio||1,1.5);
-   const aoeHidden=o.hero.occluders(hp.x,hp.y,[-aoePadX,-aoePadY-2,aoePadX,aoePadY-2]);
-   const aoeOccKey=aoeHidden.length?aoeHidden.map(p=>p.x+':'+p.y+':'+Math.round(Number(p.occluder?.dataset.frame??0)/8)).join()+'@'+Math.round(hp.x*.25)+','+Math.round(hp.y*.25):'';
-   const baseCacheKey=`pixel-v6:${rMult.toFixed(2)}:${aoeDpr}`;
-   const aoeKey=`${baseCacheKey}:${aoeOccKey}`;
+   const baseCacheKey=`pixel-rot-v7:${rMult.toFixed(2)}:${aoeDpr}`;
+   const aoeKey=baseCacheKey;
    if(aoe.dataset.key!==aoeKey){
     aoe.dataset.key=aoeKey;aoe.dataset.reach=rMult.toFixed(2);aoe.dataset.radiusPx=String(aoeRx);
-    const wpx=aoePadX*2,hpx=aoePadY*2,aw=Math.ceil(wpx*aoeDpr),ah=Math.ceil(hpx*aoeDpr);
+    const wpx=aoePad*2,aw=Math.ceil(wpx*aoeDpr);
     let cached=aoeBaseCache.get(baseCacheKey);
     if(!cached){
-     if(aoeBaseCache.size>=24)aoeBaseCache.delete(aoeBaseCache.keys().next().value!);
-     const outerCan=document.createElement('canvas');outerCan.width=aw;outerCan.height=ah;
-     const innerCan=document.createElement('canvas');innerCan.width=aw;innerCan.height=ah;
+     if(aoeBaseCache.size>=12)aoeBaseCache.delete(aoeBaseCache.keys().next().value!);
+     const outerCan=document.createElement('canvas');outerCan.width=aw;outerCan.height=aw;
+     const innerCan=document.createElement('canvas');innerCan.width=aw;innerCan.height=aw;
      const oCtx=outerCan.getContext('2d')!,iCtx=innerCan.getContext('2d')!;
-     oCtx.setTransform(aoeDpr,0,0,aoeDpr,aoePadX*aoeDpr,aoePadY*aoeDpr);oCtx.imageSmoothingEnabled=false;
-     iCtx.setTransform(aoeDpr,0,0,aoeDpr,aoePadX*aoeDpr,aoePadY*aoeDpr);iCtx.imageSmoothingEnabled=false;
-     // Fine irregular dashed pixel rings
+     oCtx.setTransform(aoeDpr,0,0,aoeDpr,aoePad*aoeDpr,aoePad*aoeDpr);oCtx.imageSmoothingEnabled=false;
+     iCtx.setTransform(aoeDpr,0,0,aoeDpr,aoePad*aoeDpr,aoePad*aoeDpr);iCtx.imageSmoothingEnabled=false;
+     // Fine irregular dashed pixel rings in circular ground-plane space (squashed 0.52 in Y by aoeGround)
      const hash=(n:number)=>(((Math.imul(n,1664525)+1013904223)>>>0)&0xffff)/0xffff;
-     const phaseRad=0;
      const drawHeroDashedRing=(targetCtx:CanvasRenderingContext2D,rBase:number,seed:number,isOuter:boolean)=>{
-      const steps=Math.max(96,Math.round(rBase*3.2));
-      const angShift=0;
+      const steps=Math.max(120,Math.round(rBase*3.4));
       let inDash=true,segRemain=6+Math.floor(hash(seed)*4),segIdx=0;
       for(let i=0;i<steps;i++){
        if(--segRemain<=0){
@@ -756,18 +751,18 @@ export async function createEncounters(o:{
         segRemain=inDash?(6+Math.floor(hash(seed+segIdx*17)*5)):(5+Math.floor(hash(seed+segIdx*29)*4));
        }
        if(!inDash)continue;
-       const ang=(i/steps)*Math.PI*2+angShift;
-       const wave=Math.sin(ang*5+seed+phaseRad)*2.1+Math.cos(ang*11-seed*1.5-phaseRad)*1.3+Math.sin(ang*17+seed*2.1+phaseRad)*.85;
+       const ang=(i/steps)*Math.PI*2;
+       const wave=Math.sin(ang*5+seed)*2.1+Math.cos(ang*11-seed*1.5)*1.3+Math.sin(ang*17+seed*2.1)*.85;
        const jitR=(hash(seed+i*23)-.5)*1.25,jitT=(hash(seed+i*41)-.5)*.85;
        const rCur=Math.max(8,rBase+wave+jitR);
        const rx=Math.round(Math.cos(ang)*rCur-Math.sin(ang)*jitT);
-       const ry=Math.round((Math.sin(ang)*rCur+Math.cos(ang)*jitT)*.52);
-       const hot=isOuter?(i%2===0):(i%3===0),ps=(i%4===0)?2:1;
+       const ry=Math.round(Math.sin(ang)*rCur+Math.cos(ang)*jitT);
+       const hot=isOuter?(i%2===0):(i%3===0),psW=(i%4===0)?2:1.5,psH=(i%4===0)?3:2;
        targetCtx.fillStyle=hot
         ?(isOuter?'rgba(255,232,162,0.88)':'rgba(255,192,102,0.68)')
         :(isOuter?'rgba(255,172,82,0.68)':'rgba(255,156,68,0.48)');
-       targetCtx.fillRect(rx,ry,ps,ps);
-       if(hot&&isOuter&&(i%5===0)){targetCtx.fillStyle='rgba(255,252,232,0.92)';targetCtx.fillRect(rx,ry,1,1);}
+       targetCtx.fillRect(rx,ry,psW,psH);
+       if(hot&&isOuter&&(i%5===0)){targetCtx.fillStyle='rgba(255,252,232,0.92)';targetCtx.fillRect(rx,ry,1,2);}
       }
      };
      drawHeroDashedRing(oCtx,aoeRx-3,13,true);
@@ -775,41 +770,42 @@ export async function createEncounters(o:{
      cached={outer:outerCan,inner:innerCan};
      aoeBaseCache.set(baseCacheKey,cached);
     }
-    if(aoe.width!==aw||aoe.height!==ah){aoe.width=aw;aoe.height=ah;}
-    if(aoeInner.width!==aw||aoeInner.height!==ah){aoeInner.width=aw;aoeInner.height=ah;}
+    if(aoe.width!==aw||aoe.height!==aw){aoe.width=aw;aoe.height=aw;}
+    if(aoeInner.width!==aw||aoeInner.height!==aw){aoeInner.width=aw;aoeInner.height=aw;}
     aoeCtx.setTransform(1,0,0,1,0,0);aoeCtx.globalCompositeOperation='copy';aoeCtx.drawImage(cached.outer,0,0);aoeCtx.globalCompositeOperation='source-over';
     aoeInnerCtx.setTransform(1,0,0,1,0,0);aoeInnerCtx.globalCompositeOperation='copy';aoeInnerCtx.drawImage(cached.inner,0,0);aoeInnerCtx.globalCompositeOperation='source-over';
-    if(aoeHidden.length){
-     aoeCtx.setTransform(aoeDpr,0,0,aoeDpr,aoePadX*aoeDpr,aoePadY*aoeDpr);cutOut(aoeCtx,aoeHidden,hp.x,hp.y-2);
-     aoeInnerCtx.setTransform(aoeDpr,0,0,aoeDpr,aoePadX*aoeDpr,aoePadY*aoeDpr);cutOut(aoeInnerCtx,aoeHidden,hp.x,hp.y-2);
-    }
-    aoeView.sync(wpx*k,hpx*k);
-    aoeInnerView.sync(wpx*k,hpx*k);
+    aoeView.sync(wpx*k,wpx*k);
+    aoeInnerView.sync(wpx*k,wpx*k);
    }
    const fadePhase=((nowMs%2000)/2000)*Math.PI*2;
    const outerWave=0.5-0.5*Math.cos(fadePhase);
    const innerWave=0.5-0.5*Math.cos(fadePhase-0.95);
-   const minA=comboHighlightMs>0?0.36:h.state==='attack'?0.24:0.14;
+   const minA=comboHighlightMs>0?0.36:h.state==='attack'?0.24:0.16;
    const maxA=comboHighlightMs>0?1.0:h.state==='attack'?0.98:0.92;
    const outerAlpha=minA+(maxA-minA)*outerWave;
    const innerAlpha=(minA*0.85)+(maxA*0.88-minA*0.85)*innerWave;
    aoeView.sprite.alpha=outerAlpha;
    aoeInnerView.sprite.alpha=innerAlpha;
+   aoeView.sprite.rotation=rotOuter;
+   aoeInnerView.sprite.rotation=rotInner;
    aoe.dataset.fadeAlpha=outerAlpha.toFixed(3);
    aoeInner.dataset.fadeAlpha=innerAlpha.toFixed(3);
+   aoe.dataset.rotRad=rotOuter.toFixed(3);
+   aoeInner.dataset.rotRad=rotInner.toFixed(3);
    const tint=comboHighlightMs>0?0x8cecff:0xffffff;
    aoeView.sprite.tint=tint;
    aoeInnerView.sprite.tint=tint;
    const breatheOuter=1+0.015*Math.sin(fadePhase);
    const breatheInner=1+0.018*Math.sin(fadePhase-0.95);
-   const ow=aoePadX*2*k*breatheOuter,oh=aoePadY*2*k*breatheOuter;
-   const iw=aoePadX*2*k*breatheInner,ih=aoePadY*2*k*breatheInner;
-   aoeView.sprite.position.set(s.x-ow*.5,s.y-2*k-oh*.5);
+   const ow=aoePad*2*k*breatheOuter;
+   const iw=aoePad*2*k*breatheInner;
+   aoeGround.position.set(s.x,s.y-2*k);
+   aoeView.sprite.position.set(0,0);
    aoeView.sprite.width=ow;
-   aoeView.sprite.height=oh;
-   aoeInnerView.sprite.position.set(s.x-iw*.5,s.y-2*k-ih*.5);
+   aoeView.sprite.height=ow;
+   aoeInnerView.sprite.position.set(0,0);
    aoeInnerView.sprite.width=iw;
-   aoeInnerView.sprite.height=ih;
+   aoeInnerView.sprite.height=iw;
   }
 
   heroOverhead.visible=show;
@@ -898,8 +894,9 @@ export async function createEncounters(o:{
   start(){requestAnimationFrame(loop);},
   setAmbient(rgb:readonly number[]){ambient=rgb.map(v=>Math.min(255,Math.round(v*32)*8)).join();},
   setMaxHp(n:number){baseHp=n;if(online)return;n+=health(run);if(n===maxHp)return;h.hp=Math.min(n,h.hp+Math.max(0,n-maxHp));maxHp=n;},
+  liveCounts:()=>({foesRendered:foes.length,particles:vfx.fx.particleCount()}),
   snapshot:()=>({spawnDistanceM:SPAWN_DISTANCE_M,gate:GATE,metersPerTile:METERS_PER_TILE,
-   hero:{hp:h.hp,maxHp,state:h.state,u:+h.x.toFixed(2),v:+h.y.toFixed(2),meters:+meters(fromCenter(tileOf(h))).toFixed(1),safe:inSafeZone(tileOf(h)),reach:+reach(run).toFixed(2),aoeRadiusPx:Math.round(HERO_REACH*reach(run)*64*Math.SQRT2),aoeCastRadiusTiles:+aoeCastRadius(run).toFixed(2),aoeFadeAlpha:+aoeView.sprite.alpha.toFixed(3),aoeInnerFadeAlpha:+aoeInnerView.sprite.alpha.toFixed(3),critChance:+critChance(run).toFixed(2),critMultiplier:+critMultiplier(run).toFixed(2)},
+   hero:{hp:h.hp,maxHp,state:h.state,u:+h.x.toFixed(2),v:+h.y.toFixed(2),meters:+meters(fromCenter(tileOf(h))).toFixed(1),safe:inSafeZone(tileOf(h)),reach:+reach(run).toFixed(2),aoeRadiusPx:Math.round(HERO_REACH*reach(run)*64*Math.SQRT2),aoeCastRadiusTiles:+aoeCastRadius(run).toFixed(2),aoeFadeAlpha:+aoeView.sprite.alpha.toFixed(3),aoeInnerFadeAlpha:+aoeInnerView.sprite.alpha.toFixed(3),aoeRotationRad:+aoeView.sprite.rotation.toFixed(3),aoeInnerRotationRad:+aoeInnerView.sprite.rotation.toFixed(3),critChance:+critChance(run).toFixed(2),critMultiplier:+critMultiplier(run).toFixed(2)},
    foes:foes.map(f=>{const lv=Math.max(1,f.level||1),mHp=f.maxHp||revenantMaxHp(lv);return {u:+f.x.toFixed(2),v:+f.y.toFixed(2),level:lv,hp:f.hp,maxHp:mHp,damage:revenantDamage(lv),xpReward:revenantXpReward(lv),label:`Lv. ${lv}`,state:f.state,safe:inSafeZone(tileOf(f)),clear:walkable(tileOf(f)),gateMeters:+meters(fromGate(tileOf(f))).toFixed(1)};}),
    run:structuredClone(run),
    loadout:buildLoadoutSnapshot(),
