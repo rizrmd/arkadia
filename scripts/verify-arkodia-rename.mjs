@@ -2,7 +2,7 @@
 // and the page title and loading screen use the new name. With SITE_DIR set, the built bundle must not name the game Arkadia.
 //   BASE=http://127.0.0.1:3000 node scripts/verify-arkodia-rename.mjs → docs/arkodia-rename/results.json + page.webp
 import {chromium} from 'playwright';import sharp from 'sharp';import assert from 'node:assert/strict';import fs from 'node:fs/promises';
-const base=process.env.BASE||'http://127.0.0.1:3000',out='docs/arkodia-rename';
+const base=process.env.BASE||'http://127.0.0.1:3000',out=process.env.OUT||'docs/arkodia-rename';
 const browser=await chromium.launch({headless:true,env:{...process.env,LD_LIBRARY_PATH:'/home/dev/.local/browser-libs/usr/lib/x86_64-linux-gnu:/opt/fural-antigravity-glibc'},args:['--no-sandbox','--no-zygote','--single-process']});
 const results={base,checks:[]};const ok=(name,value)=>{results.checks.push({name,value});console.log('ok',name,JSON.stringify(value));};
 try{
