@@ -1,4 +1,4 @@
-import { publishLayer, readDir } from '../arkodia/publish-layer.mjs';
+import { publishLayer, deployGateway, readDir } from '../arkodia/publish-layer.mjs';
 
 const labFiles = await readDir('public/3d-hero-lab');
 const assetFiles = await readDir('public/assets/characters/3d');
@@ -15,6 +15,7 @@ for (const [k, v] of Object.entries(docFiles)) {
   files['/3d-hero-lab/evidence' + k] = v;
 }
 
+await deployGateway();
 await publishLayer({
   name: '3d-hero-lab',
   files,
