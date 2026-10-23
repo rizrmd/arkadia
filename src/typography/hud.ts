@@ -527,27 +527,30 @@ export class Hud extends Container {
   const g = this.trRibbonBg;
   g.clear();
 
-  // Leave a 46px right margin (`1626..1672`) so the plaques and filigree rule never collide
+  // Leave a 46px right margin (`1626..1672`) on desktop so the plaques and filigree rule never collide
   // with the top-right stone bracket & blue banner ornament (`corner-court-right-mobile.webp`).
-  const rightAnchor = 1626;
+  // On mobile portrait, anchor closer to the right edge (`1654`) to maximize top-right HUD proportion.
+  const rightAnchor = this.isPortrait ? 1654 : 1626;
 
   // ---------------------------------------------------------------------------
   // 1. TOP ROW: Twin Circular-Medallion Chamfered Plaques (`0 Gold` & `09:00`)
   // ---------------------------------------------------------------------------
-  const plaqueCy = 42;
-  const plaqueH = 38;
-  const medSize = 54;
+  const plaqueCy = this.isPortrait ? 46 : 42;
+  const plaqueH = this.isPortrait ? 42 : 38;
+  const medSize = this.isPortrait ? 58 : 54;
   const medR = medSize / 2;
   const chamfer = 14;
 
   // Right Plaque (Timer `09:00` — fixed width reserved for `99:59` so digits never shift)
   const clockAdv = Math.ceil(this.trRibbonClockText.advance);
-  const clockSpan = Math.max(128, clockAdv + 56);
+  const clockSpan = this.isPortrait
+   ? Math.max(118, clockAdv + 48)
+   : Math.max(128, clockAdv + 56);
   const clockRightX = rightAnchor;
   const clockMedX = clockRightX - clockSpan;
   drawChamferedPlaque(g, clockMedX, clockRightX, plaqueCy, plaqueH, chamfer, medR);
   centred(this.trRibbonClockMedallion, clockMedX, plaqueCy, medSize, medSize);
-  centred(this.trRibbonClockIcon, clockMedX, plaqueCy, 24, 24);
+  centred(this.trRibbonClockIcon, clockMedX, plaqueCy, this.isPortrait ? 26 : 24, this.isPortrait ? 26 : 24);
   const clockTextCx = (clockMedX + medR + 4 + (clockRightX - chamfer + 2)) / 2;
   this.trRibbonClockText.place(clockTextCx, plaqueCy + 5.5, 0.5);
   this.trRibbonClockHit.hitArea = new Rectangle(
@@ -559,19 +562,21 @@ export class Hud extends Container {
 
   // Left Plaque (Gold `0 Gold` — fixed width reserved for `9,999 Gold` so adjacent plaques never shift)
   const goldAdv = Math.ceil(this.trRibbonGoldText.advance);
-  const goldSpan = Math.max(166, goldAdv + 54);
-  const goldRightX = clockMedX - 51;
+  const goldSpan = this.isPortrait
+   ? Math.max(154, goldAdv + 42)
+   : Math.max(166, goldAdv + 54);
+  const goldRightX = clockMedX - (this.isPortrait ? 38 : 51);
   const goldMedX = goldRightX - goldSpan;
   drawChamferedPlaque(g, goldMedX, goldRightX, plaqueCy, plaqueH, chamfer, medR);
   centred(this.trRibbonGoldMedallion, goldMedX, plaqueCy, medSize, medSize);
-  centred(this.trRibbonGoldIcon, goldMedX, plaqueCy, 30, 22);
+  centred(this.trRibbonGoldIcon, goldMedX, plaqueCy, this.isPortrait ? 32 : 30, this.isPortrait ? 24 : 22);
   const goldTextCx = (goldMedX + medR + 4 + (goldRightX - chamfer + 2)) / 2;
   this.trRibbonGoldText.place(goldTextCx, plaqueCy + 5.5, 0.5);
 
   // ---------------------------------------------------------------------------
   // 2. MIDDLE ROW: Frameless Status Ledger (`Safe Zone ♦ Co-op · Solo`) + Filigree Rule
   // ---------------------------------------------------------------------------
-  const ledgerCy = 84;
+  const ledgerCy = this.isPortrait ? 96 : 84;
   const ledgerTextY = ledgerCy + 5.5;
   const ledgerRightX = rightAnchor - 2;
 
@@ -583,7 +588,7 @@ export class Hud extends Container {
   const coopTextX = ledgerRightX - coopAdv;
   this.trRibbonCoopText.place(coopTextX, ledgerTextY);
   const coopIconCx = coopTextX - 18;
-  centred(this.trRibbonCoopIcon, coopIconCx, ledgerCy - 0.5, 24, 20);
+  centred(this.trRibbonCoopIcon, coopIconCx, ledgerCy - 0.5, this.isPortrait ? 26 : 24, this.isPortrait ? 22 : 20);
   this.trRibbonCoopHit.hitArea = new Rectangle(
    coopIconCx - 16,
    ledgerCy - 16,
@@ -592,19 +597,21 @@ export class Hud extends Container {
   );
 
   // Gold 4-point diamond separator (`♦`) between Zone and Co-op
-  const ledgerSepX = coopIconCx - 25;
-  drawCompassStar(g, ledgerSepX, ledgerCy, 5.2, 5.2, false);
+  const ledgerSepX = coopIconCx - (this.isPortrait ? 22 : 25);
+  drawCompassStar(g, ledgerSepX, ledgerCy, this.isPortrait ? 5.8 : 5.2, this.isPortrait ? 5.8 : 5.2, false);
 
   const zoneAdv = Math.ceil(this.trRibbonZoneText.advance);
-  const zoneTextX = ledgerSepX - 13 - zoneAdv;
+  const zoneTextX = ledgerSepX - (this.isPortrait ? 12 : 13) - zoneAdv;
   this.trRibbonZoneText.place(zoneTextX, ledgerTextY);
   const zoneIconCx = zoneTextX - 15;
-  centred(this.trRibbonZoneIcon, zoneIconCx, ledgerCy - 0.5, 18, 23);
+  centred(this.trRibbonZoneIcon, zoneIconCx, ledgerCy - 0.5, this.isPortrait ? 20 : 18, this.isPortrait ? 25 : 23);
 
   // Delicate antique-gold filigree divider rule with central 4-point star node
-  const ruleY = 103;
+  const ruleY = this.isPortrait ? 118 : 103;
   const ruleRightX = rightAnchor - 2;
-  const ruleLeftX = Math.min(1322, zoneIconCx - 16);
+  const ruleLeftX = this.isPortrait
+   ? Math.min(goldMedX - medR + 10, zoneIconCx - 14)
+   : Math.min(1322, zoneIconCx - 16);
   const ruleMidX = Math.round((ruleLeftX + ruleRightX) / 2);
 
   // Dark ink drop-shadow under rule
@@ -646,7 +653,7 @@ export class Hud extends Container {
   // ---------------------------------------------------------------------------
   // 3. BOTTOM ROW: Iconless High-Contrast Telemetry (`24 MS ♦ 60 FPS`)
   // ---------------------------------------------------------------------------
-  const telCy = 122.5;
+  const telCy = this.isPortrait ? 140 : 122.5;
   const telTextY = telCy + 5.5;
   const telRightX = rightAnchor - 4;
   const fpsAdv = Math.ceil(this.trTelemetryFpsText.advance);
@@ -1059,7 +1066,7 @@ export class Hud extends Container {
  setHp(hp: number, hpMax = this.state.hpMax) {
   this.state.hp = hp;
   this.state.hpMax = hpMax;
-  const maxW = this.isPortrait ? 340 : 320;
+  const maxW = this.isPortrait ? 266 : 320;
   const max = Math.max(1, hpMax);
   const w = Math.max(0, Math.min(maxW, (maxW * Math.max(0, hp)) / max));
   const bar = this.hpFill.children[0] as Container;
@@ -1068,7 +1075,7 @@ export class Hud extends Container {
   const nextText = `${Math.round(hp)} / ${Math.round(max)} HP`;
   if (this.hpText.text !== nextText) {
    this.hpText.text = nextText;
-   this.hpText.place(this.isPortrait ? 332 : 352, this.isPortrait ? 90.5 : 92.5, 0.5);
+   this.hpText.place(this.isPortrait ? 295 : 352, this.isPortrait ? 90.5 : 92.5, 0.5);
   }
  }
 
@@ -1079,7 +1086,7 @@ export class Hud extends Container {
   const ratio = Math.max(0, Math.min(1, gateHp / Math.max(1, gateHpMax)));
   const gx = this.isPortrait ? 162 : 186;
   const gy = this.isPortrait ? 101 : 103;
-  const maxW = this.isPortrait ? 340 : 320;
+  const maxW = this.isPortrait ? 266 : 320;
   this.gateBarG.clear();
   this.gateBarG
    .roundRect(gx, gy, maxW, 4, 2)
@@ -1105,10 +1112,11 @@ export class Hud extends Container {
   if (rawW > 1) bar.width = Math.max(12, Math.min(628, rawW));
   const valStr = String(Math.floor(xp));
   const restStr = overrideRestText ?? ` / ${max} XP`;
-  const tlRawW = 324 * ratio;
+  const tlMaxW = this.isPortrait ? 280 : 324;
+  const tlRawW = tlMaxW * ratio;
   const tlBar = this.tlXpFill.children[0] as Container;
   tlBar.visible = tlRawW > 1;
-  if (tlRawW > 1) tlBar.width = Math.max(12, Math.min(324, tlRawW));
+  if (tlRawW > 1) tlBar.width = Math.max(12, Math.min(tlMaxW, tlRawW));
 
   // Radial portrait XP ring around the hero portrait bezel (Alt B)
   if (this.isAltB && this.portraitXpRing) {
@@ -1221,8 +1229,8 @@ export class Hud extends Container {
  getTopRightTelemetry() {
   const s = this.lastScale;
   const { width: W } = HUD_DESIGN;
-  const trScale = this.isPortrait ? 0.68 : 1;
-  const trOffsetY = this.isPortrait ? 4 : 0;
+  const trScale = this.isPortrait ? 1.06 : 1;
+  const trOffsetY = 0;
   const toScreenX = (dx: number) => this.lastWidth + (dx - W) * trScale * s;
   const toScreenY = (dy: number) => (trOffsetY + dy * trScale) * s;
   const b = this.trDesignBounds;
@@ -1378,7 +1386,7 @@ export class Hud extends Container {
  topRightPopoverAnchor(row: 1 | 3): { x: number; y: number; scale: number } {
   const s = this.lastScale;
   if (this.isAltB) {
-   const designY = this.isPortrait ? 104 : 140;
+   const designY = this.isPortrait ? 168 : 140;
    return { x: this.lastWidth - 18 * s, y: designY * s, scale: s };
   }
   const designY = row === 1 ? 126 : 232;
@@ -1424,12 +1432,13 @@ export class Hud extends Container {
   this.lastScale = s;
   if (portrait !== this.isPortrait) {
    this.isPortrait = portrait;
-   this.heroPlate.width = portrait ? 378 : 388;
+   this.heroPlate.width = portrait ? 308 : 388;
    this.heroPlate.height = portrait || this.isAltB ? 138 : 104;
    this.heroPlate.position.set(portrait ? 144 : 150, portrait ? 22 : 24);
-   this.hpFrame.width = portrait ? 382 : 362;
+   this.hpFrame.width = portrait ? 308 : 362;
    this.hpFrame.position.set(portrait ? 154 : 178, portrait ? 66 : 68);
    this.hpFill.position.set(portrait ? 162 : 186, portrait ? 75 : 77);
+   this.tlXpFrame.width = portrait ? 322 : 366;
    if (this.portraitHolder.children[0]) {
     centred(this.portraitHolder.children[0] as Container, 95, portrait ? 92 : 88);
    }
@@ -1437,10 +1446,11 @@ export class Hud extends Container {
    centred(this.levelMedallion, 57, portrait ? 152 : 149);
    this.levelText.place(57, portrait ? 157.5 : 154.5, 0.5);
    this.heroNameText.place(portrait ? 184 : 195, 52.5);
-   this.hpText.place(portrait ? 332 : 352, portrait ? 90.5 : 92.5, 0.5);
+   this.hpText.place(portrait ? 295 : 352, portrait ? 90.5 : 92.5, 0.5);
    this.setHp(this.state.hp, this.state.hpMax);
    this.setGateHp(this.state.gateHp ?? 100, this.state.gateHpMax ?? 100);
    this.setXp(this.state.xp, this.state.xpMax);
+   this.layoutTopRightRibbon();
    this.layoutCrescentArc();
   }
   this.tlXpGroup.visible = this.isAltB ? true : portrait;
@@ -1453,9 +1463,9 @@ export class Hud extends Container {
    this.brEscGroup.visible = !portrait && !!this.callbacks.onMenuClick;
    this.trRibbonGroup.visible = true;
    this.trStackGroup.visible = false;
-   const trScale = portrait ? 0.68 : 1;
+   const trScale = portrait ? 1.06 : 1;
    this.trRibbonGroup.pivot.set(W, 0);
-   this.trRibbonGroup.position.set(W, portrait ? 4 : 0);
+   this.trRibbonGroup.position.set(W, 0);
    this.trRibbonGroup.scale.set(trScale);
   } else {
    this.groups.br.visible = !portrait;
@@ -1463,12 +1473,12 @@ export class Hud extends Container {
    this.trStackGroup.visible = true;
   }
 
-  const place = (g: Container, px: number, py: number, x: number, y: number) => {
-   g.scale.set(s);
+  const place = (g: Container, px: number, py: number, x: number, y: number, k = 1) => {
+   g.scale.set(s * k);
    g.pivot.set(px, py);
    g.position.set(x, y);
   };
-  place(this.groups.tl, 0, 0, 0, 0);
+  place(this.groups.tl, 0, 0, 0, 0, portrait ? 0.9 : 1);
   place(this.groups.tr, W, 0, width, 0);
   place(this.groups.bc, W / 2, portrait ? 842 : H, width / 2, height);
   place(this.groups.bl, 0, H, 0, height);

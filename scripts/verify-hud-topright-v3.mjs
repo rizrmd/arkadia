@@ -140,13 +140,14 @@ async function main() {
       await page.waitForTimeout(250);
       const mobilePortrait = await page.evaluate(() => {
         const hud = window.__STRONGHOLD_COMBAT__.hud;
+        hud.layout(window.innerWidth, window.innerHeight);
         hud.setGold(0);
         hud.setTime('09:00');
         hud.setZone('Safe Zone');
         hud.setCoop('Co-op · Solo');
         hud.setTelemetry(24, 60);
         const s = window.innerWidth / 848;
-        const tlRightPx = 536 * s;
+        const tlRightPx = 462 * 0.9 * s;
         return {
           telemetry: hud.getTopRightTelemetry(),
           tlRightPx: +tlRightPx.toFixed(2),
@@ -157,6 +158,10 @@ async function main() {
       await page.screenshot({ path: mobilePortraitShot });
 
       assert(
+        mobilePortrait.telemetry.isPortrait === true && mobilePortrait.telemetry.ribbonScale >= 1,
+        `Mobile portrait top-right HUD must use >= 1.0 ribbonScale (got isPortrait=${mobilePortrait.telemetry.isPortrait}, ribbonScale=${mobilePortrait.telemetry.ribbonScale})`,
+      );
+      assert(
         mobilePortrait.telemetry.screenBounds.left > mobilePortrait.tlRightPx + 4,
         `Mobile portrait top-right HUD (${mobilePortrait.telemetry.screenBounds.left}px) must not overlap top-left hero plate (${mobilePortrait.tlRightPx}px)`,
       );
@@ -166,6 +171,7 @@ async function main() {
       await page.waitForTimeout(250);
       const mobileLandscape = await page.evaluate(() => {
         const hud = window.__STRONGHOLD_COMBAT__.hud;
+        hud.layout(window.innerWidth, window.innerHeight);
         hud.setGold(0);
         hud.setTime('09:00');
         hud.setZone('Safe Zone');

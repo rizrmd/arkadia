@@ -51,6 +51,7 @@ mkdir -p "$STAGE/site/loading-screen"; cp docs/loading-screen/*.webp docs/loadin
 mkdir -p "$STAGE/site/pixi-ui"; cp docs/pixi-ui/*.webp docs/pixi-ui/*.json "$STAGE/site/pixi-ui/"
 mkdir -p "$STAGE/site/environment-corners"; cp docs/environment-corners/*.webp docs/environment-corners/*.json "$STAGE/site/environment-corners/"
 mkdir -p "$STAGE/site/typography/v2"; cp docs/typography/v2/*.webp docs/typography/v2/*.json "$STAGE/site/typography/v2/"
+mkdir -p "$STAGE/site/hud-topright-mobile"; cp docs/hud-topright-mobile/*.png "$STAGE/site/hud-topright-mobile/"
 mkdir -p "$STAGE/site/ui"; cp assets-src/ui/hero-card-frame*.png "$STAGE/site/ui/"
 echo "Staged $(wc -l < "$list") files, $(du -sh "$STAGE" | cut -f1) in $STAGE"
 
