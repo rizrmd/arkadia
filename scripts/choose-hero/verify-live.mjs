@@ -6,6 +6,7 @@ import {launchOptions} from '../typography/browser.mjs';
 const URL=(process.argv[2]||'https://ark-whachat.fural.space/').replace(/\/?$/,'/'),OUT='docs/choose-hero';
 const CASES=[
  {name:'desktop',width:1440,height:900,dpr:2,hero:'ember-warden'},
+ {name:'phone-ember',width:390,height:844,dpr:3,touch:true,hero:'ember-warden'},
  {name:'phone',width:390,height:844,dpr:3,touch:true,hero:'rift-runner'},
 ];
 const results=[];

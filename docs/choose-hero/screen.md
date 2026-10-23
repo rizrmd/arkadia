@@ -2,11 +2,13 @@
 
 Choose Your Hero is now the game's own Pixi v8 screen ([src/stronghold/choose-hero.ts](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=src%2Fstronghold%2Fchoose-hero.ts)), opened by [src/stronghold/hero-picker.ts](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=src%2Fstronghold%2Fhero-picker.ts) exactly as before: a new tab asks once, the HUD hero name reopens it, Begin Journey swaps the hero in place and Back keeps the current one. Nothing on it is HTML. Every word is live MSDF text in named roles from [tokens.ts](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=src%2Ftypography%2Ftokens.ts), the ARKADIA logo is an image, and every frame and button is a kit master cut into split 9-slices at @1x/@2x/@3x. Selection and the action button are highlighted with NixieFX particles.
 
-Live: [https://ark-whachat.fural.space/](https://ark-whachat.fural.space/) (open a new tab, or add `?hero=reset` to choose again). Checked 2026-10-22 23:00 UTC: desktop 1440 × 900 DPR 2 (desktop, 0 console errors); phone 390 × 844 DPR 3 (portrait, 0 console errors).
+Live: [https://ark-whachat.fural.space/](https://ark-whachat.fural.space/) (open a new tab, or add `?hero=reset` to choose again). Checked 2026-10-23 02:11 UTC: desktop 1440 × 900 DPR 2 (desktop, 0 console errors); phone-ember 390 × 844 DPR 3 (portrait, 0 console errors); phone 390 × 844 DPR 3 (portrait, 0 console errors).
 
-![Live desktop](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DA4aa34013aae9c5d26f882f45)
+![Live desktop](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DAad77e9a8f95a29892aa7bbb5)
 
-![Live phone](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DA6381e1b35c6f0338748086d5)
+![Live phone-ember](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DA7f03f353810f1bc1c805dbf0)
+
+![Live phone](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DA8801ec5f41a4459beb181af4)
 
 ## Reference vs result
 
