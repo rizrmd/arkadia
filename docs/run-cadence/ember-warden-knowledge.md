@@ -64,6 +64,8 @@ Local browser checks passed for both heroes in all eight directions: all 64 Spri
 
 ## Runtime evidence
 
+![Synchronized live comparison of both heroes in all eight directions](https://ark-whachat.fural.space/run-cadence/verification/synchronized-live.webp)
+
 ![Ember Warden live Stronghold Run](https://ark-whachat.fural.space/run-cadence/verification/ember-warden-runtime-live.webp)
 
 ![Ember Warden packed Run in Skill Player](https://ark-whachat.fural.space/run-cadence/verification/ember-warden-skill-live.webp)

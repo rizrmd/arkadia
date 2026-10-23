@@ -64,6 +64,8 @@ Local browser checks passed for both heroes in all eight directions: all 64 Spri
 
 ## Runtime evidence
 
+![Synchronized live comparison of both heroes in all eight directions](https://ark-whachat.fural.space/run-cadence/verification/synchronized-live.webp)
+
 ![Rift Runner live Stronghold Run](https://ark-whachat.fural.space/run-cadence/verification/rift-runner-runtime-live.webp)
 
 ![Rift Runner packed Run in Skill Player](https://ark-whachat.fural.space/run-cadence/verification/rift-runner-skill-live.webp)
