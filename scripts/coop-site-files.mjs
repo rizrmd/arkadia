@@ -42,6 +42,7 @@ for(const name of Object.keys(hudManifest.frames)){
 }
 for(const f of [
  'typography/v2/fonts/cinzel-semibold.fnt','typography/v2/fonts/cinzel-semibold.png','typography/v2/fonts/Cinzel-OFL.txt',
+ 'typography/v2/fonts/garamond-bold.fnt','typography/v2/fonts/garamond-bold.png',
  'typography/v2/fonts/garamond-medium.fnt','typography/v2/fonts/garamond-medium.png','typography/v2/fonts/EBGaramond-OFL.txt',
  'typography/v2/hero/logo@1x.png','typography/v2/hero/logo@2x.png','typography/v2/hero/logo@3x.png',
  'typography/v2/loading/bg-desktop.webp','typography/v2/loading/bg-mobile.webp','typography/v2/loading/vignette.png',

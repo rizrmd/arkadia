@@ -2,8 +2,9 @@
 // pixels of the screen's reference canvas (1672 × 941 desktop, 864 × 1824 portrait); the scene scale maps them to CSS px.
 // Fonts are MSDF atlases (public/typography/v2/fonts): EB Garamond Medium for body text, Cinzel SemiBold for display caps.
 
-export type FontKey='body'|'display';
+export type FontKey='body'|'display'|'console';
 export const FONTS:Record<FontKey,{family:string;file:string;weight:number;licence:string;capHeight:number}>={
+ console:{family:'EBGaramond-Bold',file:'garamond-bold.fnt',weight:700,licence:'EBGaramond-OFL.txt',capHeight:.65},
  body:{family:'EBGaramond-Medium',file:'garamond-medium.fnt',weight:500,licence:'EBGaramond-OFL.txt',capHeight:.65},
  display:{family:'Cinzel-SemiBold',file:'cinzel-semibold.fnt',weight:600,licence:'Cinzel-OFL.txt',capHeight:.7},
 };

@@ -15,7 +15,7 @@ const src='assets-src/typography/fonts',out='public/typography/v2/fonts';
 const SIZE=64,RANGE=16;
 // Printable ASCII plus the HUD separators. Range 16 at size 64 keeps ±8 atlas px of field: room for a 2–3 px outline and a soft shadow.
 const charset=[...Array(95)].map((_,i)=>String.fromCharCode(32+i)).join('')+'·•’‘“”–—…×';
-const fonts=[{file:'EBGaramond-Medium.ttf',name:'garamond-medium',licence:'EBGaramond-OFL.txt'},{file:'Cinzel-SemiBold.ttf',name:'cinzel-semibold',licence:'Cinzel-OFL.txt'}];
+const fonts=[{file:'EBGaramond-Bold.ttf',name:'garamond-bold',licence:'EBGaramond-OFL.txt'},{file:'EBGaramond-Medium.ttf',name:'garamond-medium',licence:'EBGaramond-OFL.txt'},{file:'Cinzel-SemiBold.ttf',name:'cinzel-semibold',licence:'Cinzel-OFL.txt'}];
 fs.mkdirSync(out,{recursive:true});
 
 async function measureKerning(ttf){
@@ -41,7 +41,7 @@ function toXml(lines,kerning){
   `<kernings count="${kerning.length}">`,...kerning.map(([a,b,k])=>`<kerning first="${a}" second="${b}" amount="${k}"/>`),'</kernings>','</font>',''].join('\n');
 }
 const tmp=fs.mkdtempSync(path.join(os.tmpdir(),'msdf-'));fs.writeFileSync(path.join(tmp,'charset.txt'),charset);
-for(const f of fonts){
+for(const f of fonts.filter(f=>!process.env.FONT_ONLY || f.name===process.env.FONT_ONLY)){
  execFileSync(python,['scripts/typography/remove-overlaps.py',path.join(src,f.file),path.join(tmp,f.file)],{stdio:'inherit'});
  execFileSync(tool,['-f','txt','-o',path.join(tmp,f.name),'-s',String(SIZE),'-r',String(RANGE),'-t','msdf','-p','2','--pot','--smart-size','-m','1024,1024','-i',path.join(tmp,'charset.txt'),path.join(tmp,f.file)],{stdio:['ignore','ignore','inherit']});
  // The tool names the .fnt after the font face.
