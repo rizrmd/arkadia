@@ -6,7 +6,8 @@
   "A square map of sizeTiles x sizeTiles ground tiles (1 tile = 3 m); map tiles (U, V) run 0..sizeTiles from the top corner.",
   "Center to each edge is 5 minutes of walking at hero speed (net/movement.ts: 120 px/s across, 90 px/s up/down = 1.56 tiles/s along a tile edge): 300 s x 1.56 = 468 tiles.",
   "Each prefab's anchor (court-local tile) is placed at its map tile; the Stronghold's court center (7.5, 7.5) sits on the map center.",
-  "chunkTiles is the planned chunk size for the chunk renderer (step b) and per-chunk collision (step c): 39 x 39 chunks, the Stronghold inside the center chunk."
+  "chunkTiles is the planned chunk size for the chunk renderer (step b) and per-chunk collision (step c): 39 x 39 chunks, the Stronghold inside the center chunk.",
+  "terrain: ground height in meters is the highest feature containing a map tile, else 0. A plateau is a flat raised rectangle [u0, u1) x [v0, v1); a ramp slopes linearly from baseM to topM, rising toward its ascend side (-u, +u, -v or +v). A step that changes height by more than maxStepM is a cliff and is blocked; ramps are walkable. Heights draw at pxPerMeter screen px per meter."
  ],
  "sizeTiles": 936,
  "metersPerTile": 3,
@@ -14,5 +15,15 @@
  "seed": "arkadia-01",
  "prefabs": [
   {"prefab": "stronghold", "at": {"u": 468, "v": 468}}
- ]
+ ],
+ "terrain": {
+  "pxPerMeter": 24,
+  "maxStepM": 0.4,
+  "features": [
+   {"id": "east-ridge", "type": "plateau", "u0": 483.5, "v0": 465.5, "u1": 488.5, "v1": 470.5, "heightM": 3},
+   {"id": "east-ridge-ramp", "type": "ramp", "u0": 484.5, "v0": 470.5, "u1": 486.5, "v1": 473.5, "baseM": 0, "topM": 3, "ascend": "-v"},
+   {"id": "west-terrace", "type": "plateau", "u0": 463.5, "v0": 483.5, "u1": 468.5, "v1": 487.5, "heightM": 1.5},
+   {"id": "west-terrace-ramp", "type": "ramp", "u0": 468.5, "v0": 484.5, "u1": 471.5, "v1": 486.5, "baseM": 0, "topM": 1.5, "ascend": "-u"}
+  ]
+ }
 }

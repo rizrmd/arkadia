@@ -10,8 +10,9 @@ import (
 // the court's size and origin, the gateway and the safe zone. stronghold.json is a byte-identical copy of the
 // client's file, embedded here; TestPrefabMatchesClient fails when they differ.
 type Prefab struct {
-	ID      string `json:"id"`
-	Version int    `json:"version"`
+	ID      string                 `json:"id"`
+	Version int                    `json:"version"`
+	Anchor  struct{ U, V float64 } `json:"anchor"`
 	Court   struct {
 		Size         float64 `json:"size"`
 		Origin       Vec     `json:"origin"`

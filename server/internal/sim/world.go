@@ -511,7 +511,7 @@ func WalkStep(nav *Blocker, x, y float64, d Vec, dt float64, gatePassable bool) 
 		if s.X == 0 && s.Y == 0 {
 			continue
 		}
-		if stuck || !nav.Blocked(x+s.X, y+s.Y, gatePassable) {
+		if (stuck || !nav.Blocked(x+s.X, y+s.Y, gatePassable)) && !cliff(x, y, x+s.X, y+s.Y) {
 			return x + s.X, y + s.Y, hypot(s.X, s.Y)
 		}
 	}
@@ -806,7 +806,7 @@ func (w *World) move(e *Enemy, du, dv, dt float64) bool {
 	}
 	for _, t := range tries {
 		next := Vec{f.Pos.X + t.m.X, f.Pos.Y + t.m.Y}
-		if hypot(t.m.X, t.m.Y) < v*.4 || InSafeZone(next) || !stuck && !w.clearTile(next) {
+		if hypot(t.m.X, t.m.Y) < v*.4 || InSafeZone(next) || !stuck && !w.clearTile(next) || cliffTile(f.Pos, next) {
 			continue
 		}
 		if t.side != 0 {

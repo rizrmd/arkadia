@@ -8,6 +8,9 @@ import {sunAt} from './daylight';
 import {createHero} from './hero';
 import {createEncounters} from './encounters';
 import {setGateOpen,gateTowerFront} from './navigation';
+import {atGate} from './net/movement';
+import {STRONGHOLD} from './prefabs/stronghold';
+import {paintRelief} from './relief-art';
 import {createGateDoors,GATE_SHEET,type GateSheet} from './gate-doors';
 import type {Walk} from './controls';
 import {createCanvasSprite,loadImage,expectSizes,downloadedBytes,onDownload,type Progress,type SharedPixiRuntime} from '../app/loader';
@@ -53,23 +56,30 @@ export async function createWorldView(
  let built=new Set<Building>(LEGACY_LAYOUT?buildings:START_BUILT);
  const material=(file:string,size:number)=>{const img=images.get(file)!,s=size*1024/img.width,p=probeCtx.createPattern(img,'repeat')!;p.setTransform(new DOMMatrix([s,s/2,-s,s/2,COURT.x,COURT.y]));return p;};
  const snowPattern=material(snow,.7),pavingPattern=material(paving,.22);
+ // Raised terrain (world/relief.ts): plateaus and ramps get their own sprites just above the baked surface, tinted
+ // like the open snow, and join the hero's scene so they hide actors standing below and behind them.
+ const relief=paintRelief(images.get(snow)!).map(r=>{const view=createCanvasSprite(r.canvas);view.sync(r.width,r.height);view.sprite.zIndex=10.5;worldStage.addChild(view.sprite);return {...r,view};});
+ const reliefScene=relief.map(r=>({layer:'world' as const,id:'relief:'+r.feature.id,x:r.left+r.width/2,y:r.bottom,width:r.width,height:r.height,foot:1,shear:0,vertical:1,depth:r.bottom,opacity:1,file:'relief:'+r.feature.id,selected:false,occluder:undefined as HTMLCanvasElement|undefined,image:r.canvas as unknown as HTMLImageElement,relief:r.feature}));
+ const scene=()=>[...objects,...reliefScene];
  const polygon=(corners:number[][])=>{const path=new Path2D();corners.forEach(([u,v],i)=>{const p=tilePoint(u,v);i?path.lineTo(p.x,p.y):path.moveTo(p.x,p.y);});path.closePath();return path;};
- const court=polygon([[0,0],[15,0],[15,15],[0,15]]),paved=polygon([[-.5,-.5],[15,-.5],[15,15],[-.5,15]]);
+ // Court size, gateway and its apron come from prefabs/stronghold.json.
+ const N=COURT.size,G=STRONGHOLD.gate,A=G.apron,GS=STRONGHOLD.buildings.gate;
+ const court=polygon([[0,0],[N,0],[N,N],[0,N]]),paved=polygon([[-.5,-.5],[N,-.5],[N,N],[-.5,N]]);
 
- const apron=document.createElement('canvas'),apronX=417,apronY=700;
- apron.width=320;apron.height=140;const ac=apron.getContext('2d')!;
+ const apron=document.createElement('canvas'),apronX=A.x,apronY=A.y;
+ apron.width=A.width;apron.height=A.height;const ac=apron.getContext('2d')!;
  ac.translate(-apronX,-apronY);ac.fillStyle=snowPattern;ac.fillRect(apronX,apronY,apron.width,apron.height);
  const snowPixels=ac.getImageData(0,0,apron.width,apron.height);
  for(let y=0;y<apron.height;y++)for(let x=0;x<apron.width;x++){
-  const wx=x+apronX,wy=y+apronY,edge=785-Math.abs(wx-577)*.35;
+  const wx=x+apronX,wy=y+apronY,edge=A.edge-Math.abs(wx-G.x)*A.slope;
   const noise=Math.sin(wx*.37+wy*.23)*5+Math.sin(wx*.91-wy*.71)*2.5;
   const t=Math.max(0,Math.min(1,(wy-edge+20+noise)/40));
   snowPixels.data[(y*apron.width+x)*4+3]=Math.round(255*t*t*(3-2*t));
  }
  ac.putImageData(snowPixels,0,0);
 
- const shadow=document.createElement('canvas'),shadowLeft=COURT.x-15*64-64,shadowTop=COURT.y-64;
- shadow.width=2048;shadow.height=1088;const shadowCtx=shadow.getContext('2d')!;shadowCtx.translate(-shadowLeft,-shadowTop);shadowCtx.strokeStyle='#29392d26';shadowCtx.lineWidth=30;shadowCtx.filter='blur(10px)';shadowCtx.stroke(court);
+ const shadow=document.createElement('canvas'),shadowLeft=COURT.x-N*64-64,shadowTop=COURT.y-64;
+ shadow.width=N*128+128;shadow.height=N*64+128;const shadowCtx=shadow.getContext('2d')!;shadowCtx.translate(-shadowLeft,-shadowTop);shadowCtx.strokeStyle='#29392d26';shadowCtx.lineWidth=30;shadowCtx.filter='blur(10px)';shadowCtx.stroke(court);
  let gateOccluder:HTMLCanvasElement|undefined;
  function makeObjects(all=false){return [...environment.map(p=>({...p,selected:false,occluder:undefined as HTMLCanvasElement|undefined})),...buildings.filter(id=>all||built.has(id)).map(id=>{const s=slots[id],c=calibration(id);return {layer:id==='gate'?'foreground' as const:'world' as const,id,...s,foot:s.pivot,shear:c.shear,vertical:c.vertical,depth:s.y,opacity:1,file:spriteFile(id,levels?.[id]||1),selected:id===selected,occluder:id==='gate'?gateOccluder:undefined};})].sort((a,b)=>({ground:0,backdrop:1,world:2,foreground:3})[a.layer]-({ground:0,backdrop:1,world:2,foreground:3})[b.layer]||a.depth-b.depth).map(p=>({...p,image:images.get(p.file)!,height:images.get(p.file)!.height*p.width/images.get(p.file)!.width}));}
  let objects=makeObjects(),signature='',lastLayoutSig='';canvas.dataset.buildings=[...built].join(',');
@@ -87,7 +97,7 @@ export async function createWorldView(
  const surface=document.createElement('canvas');surface.id='world-surface';(window as any).__WORLD_SURFACE__=surface;
  const boundsObjects=makeObjects(true).map(p=>({...p,height:p.id==='forge'?Math.max(...[1,2,3].map(l=>{const image=images.get(spriteFile('forge',l))!;return image.height*p.width/image.width;})):p.height}));
  const points=boundsObjects.flatMap(p=>[-p.width/2,p.width/2].flatMap(x=>[-p.height*p.foot,p.height*(1-p.foot)].map(y=>({x:p.x+x,y:p.y+p.shear*x+p.vertical*y}))));
- const corners=[[0,0],[15,0],[15,15],[0,15]].map(([u,v])=>tilePoint(u,v));points.push(...corners);
+ const corners=[[0,0],[N,0],[N,N],[0,N]].map(([u,v])=>tilePoint(u,v));points.push(...corners);
  const profiles=new Map<string,{top:Float32Array;bottom:Float32Array}>(),suns=[...Array(96).keys()].map(k=>sunAt(k/96)).filter(s=>s.alpha);
  const reach={left:Math.min(...suns.map(s=>s.dx)),right:Math.max(...suns.map(s=>s.dx)),up:Math.min(...suns.map(s=>s.dy)),down:Math.max(...suns.map(s=>s.dy))};
  for(const p of boundsObjects){if(p.layer==='ground')continue;const {top}=profile(p.image),n=top.length;
@@ -133,14 +143,16 @@ export async function createWorldView(
  }
  function gateFootprint(){
   const cols:Column[]=[];
-  for(const side of [-1,1])for(let d=36;d<=135;d+=3){
+  const step=G.columnStep,D=G.doors,H=G.footprintHeight;
+  for(const side of [-1,1])for(let d=G.archHalfWidth;d<=G.towerHalfSpan;d+=step){
    const front=gateTowerFront(d);
-   cols.push({x:577+side*d,w:3,back:front-34,front,height:110});
+   cols.push({x:G.x+side*d,w:step,back:front-G.towerDepth,front,height:H.tower});
   }
-  if(!gatePassable)for(let d=-35;d<=35;d+=3)cols.push({x:577+d,w:3,back:771,front:783,height:105});
+  if(!gatePassable)for(let d=-D.halfWidth;d<=D.halfWidth;d+=step)cols.push({x:G.x+d,w:step,back:D.back,front:D.front,height:H.doors});
   return cols;
  }
  function footprint(p:(typeof objects)[number]){
+  if((p as {relief?:unknown}).relief)return [];
   const key=p.file+'|'+p.x+'|'+p.y+'|'+p.width;let cols=footprints.get(key);if(cols)return cols;cols=[];
   const {top,bottom}=profile(p.image),n=top.length,filled=[...top.keys()].filter(i=>top[i]>=0);
   const at=(u:number,t:number)=>{const lx=-p.width/2+(u+.5)/n*p.width;return {x:p.x+lx,y:p.y+p.shear*lx+p.vertical*(t-p.foot)*p.height};};
@@ -176,17 +188,18 @@ export async function createWorldView(
 
  progress(loaded,steps,'Waking the hero');
  const sheet:GateSheet=await (await fetch(GATE_SHEET)).json();
- const doors=createGateDoors(worldStage,images.get('/modular-stronghold/v2/full-gateway-v7-closed.webp')!,gateSheetImg,sheet,open=>{gatePassable=open;setGateOpen(open);hero.setScene(objects);party?.setScene(objects);},{raster,foundation:foundationLayers(objects.find(p=>p.id==='gate')!,images.get(FOUNDATION_SOIL)!,images.get(FOUNDATION_DRIFT),images.get(FOUNDATION_MOSS))!,revision:lighting.spriteRevision,torches:lighting.torches,shade:(source,target)=>lighting.shadeSprite(source,target,{left:442,top:798-sheet.region.h*.97,width:270,height:sheet.region.h})});
+ const doors=createGateDoors(worldStage,images.get('/modular-stronghold/v2/full-gateway-v7-closed.webp')!,gateSheetImg,sheet,open=>{gatePassable=open;setGateOpen(open);hero.setScene(scene());party?.setScene(scene());},{raster,foundation:foundationLayers(objects.find(p=>p.id==='gate')!,images.get(FOUNDATION_SOIL)!,images.get(FOUNDATION_DRIFT),images.get(FOUNDATION_MOSS))!,revision:lighting.spriteRevision,torches:lighting.torches,shade:(source,target)=>lighting.shadeSprite(source,target,{left:GS.x-GS.width/2,top:GS.y-sheet.region.h*GS.pivot,width:GS.width,height:sheet.region.h})});
  gateOccluder=doors.canvas;for(const p of objects)if(p.id==='gate')p.occluder=gateOccluder;
  lighting.subscribe(()=>doors.refreshLighting());
 
  let encounters:Awaited<ReturnType<typeof createEncounters>>|undefined;
  const hero=await createHero<(typeof objects)[number]>({hero:pick,layer:worldStage,lightmap:lighting.lightmap,surface,footprint:p=>p.id==='gate'?gateFootprint():footprint(p),sun:lighting.sun,direction:()=>encounters?encounters.steer(direction()):direction(),follow,pose:()=>encounters?.pose()??null,
-  drive:()=>{if(!net?.active())return null;const p=net.position(),me=net.me();return {...p,face:direction(),look:me&&me.st!=='idle'?{facing:me.fc,back:me.bk,vertical:me.vt}:null};}});hero.setScene(objects);
+  drive:()=>{if(!net?.active())return null;const p=net.position(),me=net.me();return {...p,face:direction(),look:me&&me.st!=='idle'?{facing:me.fc,back:me.bk,vertical:me.vt}:null};}});hero.setScene(scene());
  encounters=await createEncounters({worldStage,uiStage,frames,hudCallbacks,showCoop:Boolean(net),hero,direction,net});
- const party=net?createParty<(typeof objects)[number]>({layer:worldStage,frames,lightmap:lighting.lightmap,surface,footprint:p=>p.id==='gate'?gateFootprint():footprint(p),sun:lighting.sun,net,own:()=>hero.position()}):null;party?.setScene(objects);
+ const party=net?createParty<(typeof objects)[number]>({layer:worldStage,frames,lightmap:lighting.lightmap,surface,footprint:p=>p.id==='gate'?gateFootprint():footprint(p),sun:lighting.sun,net,own:()=>hero.position()}):null;party?.setScene(scene());
  const parallax=await createParallax({worldStage,anchorX:WORLD.width/2,anchorY:385,getHeroWorld:()=>hero.position(),getCombatantsWorld:()=>encounters?encounters.combatants():[hero.position()]});
  lighting.setClockSource(()=>net?.active()?net.clock():null);net?.onSnapshot(()=>{const p=hero.position();updateGate(p.x,p.y);});lighting.subscribe(s=>encounters!.setAmbient(s.ambient));
+ lighting.subscribe(s=>{const [r,g,b]=s.ambient.map(v=>Math.round(Math.round(v*32)/32*255));for(const f of relief)f.view.sprite.tint=(r<<16)|(g<<8)|b;});
  progress(loaded+=40,steps,'Raising the Stronghold');
 
  const uprights=document.createElement('canvas');uprights.id='world-uprights';uprights.width=surface.width;uprights.height=surface.height;
@@ -221,6 +234,7 @@ export async function createWorldView(
    surfaceView.sprite.width=worldWidth*scale;
    surfaceView.sprite.height=worldHeight*scale;
    surface.style.width=worldWidth*scale+'px';surface.style.height=worldHeight*scale+'px';
+   for(const r of relief){r.view.sprite.position.set(x+r.left*scale,y+r.top*scale);r.view.sprite.width=r.width*scale;r.view.sprite.height=r.height*scale;}
    lighting.place(x,y,scale);doors.place(x,y,scale);hero.place(x,y,scale);party?.place(x,y,scale);encounters?.place(x,y,scale);
    parallax.place(cx,cy,scale,w,h);
 
@@ -311,9 +325,9 @@ export async function createWorldView(
  document.addEventListener('visibilitychange',()=>{if(document.hidden){held.clear();moved=true;}});
  canvas.addEventListener('wheel',e=>{e.preventDefault();},{passive:false});
  function updateGate(hx:number,hy:number){
-  const d=Math.abs(hx-577),edge=d<36||d>135?778:gateTowerFront(d);
+  const d=Math.abs(hx-G.x),edge=d<G.archHalfWidth||d>G.towerHalfSpan?G.frontY:gateTowerFront(d);
   doors.order(hy<edge);
-  const g=net?.active()?net.gate():null,near=g?g.open:Math.abs(hx-577)<(gateOpen?65:48)&&Math.abs(hy-778)<(gateOpen?88:66);
+  const g=net?.active()?net.gate():null,near=g?g.open:atGate(hx,hy,gateOpen);
   if(near===gateOpen)return;
   gateOpen=near;doors.setOpen(near);
   canvas.dataset.gate=near?'open':'closed';
@@ -339,7 +353,7 @@ export async function createWorldView(
    canvas.dataset.buildings=[...built].join(',');
    objects=makeObjects();
    if(layoutChanged){
-    hero.setScene(objects);party?.setScene(objects);shadowsDirty=true;baseDirty=true;
+    hero.setScene(scene());party?.setScene(scene());shadowsDirty=true;baseDirty=true;
    }
    lighting.setScene(objects);
    if(layoutChanged||(prevSelected&&prevSelected!=='gate')||(id&&id!=='gate'))dirty=true;

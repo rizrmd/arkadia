@@ -10,7 +10,7 @@ export type PrefabLight=UV&{lift:number;wall:boolean};
 export type StrongholdPrefab={
  id:'stronghold';version:1;anchor:UV;world:{width:number;height:number};
  court:{size:number;origin:XY;walkInset:number;openSnowFrom:number};
- gate:{x:number;threshold:XY;passageFromY:number;archHalfWidth:number;towerHalfSpan:number;towerFront:{knee:number;base:number;rise:number;peak:number;fall:number};towerDepth:number;columnStep:number;doors:{halfWidth:number;back:number;front:number};trigger:{y:number;closed:XY;open:XY};frames:number;passableAt:number};
+ gate:{x:number;threshold:XY;passageFromY:number;archHalfWidth:number;towerHalfSpan:number;towerFront:{knee:number;base:number;rise:number;peak:number;fall:number};towerDepth:number;columnStep:number;doors:{halfWidth:number;back:number;front:number};trigger:{y:number;closed:XY;open:XY};frontY:number;footprintHeight:{tower:number;doors:number};apron:{x:number;y:number;width:number;height:number;edge:number;slope:number};frames:number;passableAt:number};
  safeZone:{metersPerTile:number;center:UV;spawnDistanceM:number};
  heroSpawn:XY;
  buildings:Record<'forge'|'barracks'|'altar'|'mage'|'expedition'|'mine'|'gate',PrefabBuilding>;

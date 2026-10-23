@@ -1,6 +1,7 @@
 import {walkableGround,gateTowerFront} from '../navigation';
 import type {Walk} from '../controls';
 import {STRONGHOLD} from '../prefabs/stronghold';
+import {cliff} from '../../world/relief';
 const G=STRONGHOLD.gate;
 // The hero's walking rule, shared by the solo hero (hero.ts) and co-op prediction, and mirrored step for step by
 // the server (server/internal/sim/world.go WalkStep): server and client must land on the same foot position.
@@ -12,11 +13,12 @@ const G=STRONGHOLD.gate;
 export const ACROSS=120,UPDOWN=90,RADIUS=9;
 export const fullSpeed=(sx:number,sy:number)=>{const l=Math.sqrt(sx*sx+sy*sy),a=sx/ACROSS,b=sy/UPDOWN;return l?l/Math.sqrt(a*a+b*b):0;};
 // One step of dt ms: slide along whatever blocks the full step; a hero already overlapping a footprint may walk out.
+// A step up or down a cliff (world/relief.ts) is blocked too; ramps rise gently enough to walk.
 // Returns the new foot and the screen px walked.
 export function walkStep(blocked:(x:number,y:number)=>boolean,x:number,y:number,d:Walk,dt:number){
  const m=Math.sqrt(d.x*d.x+d.y*d.y);if(!m)return {x,y,progress:0};
  const v=fullSpeed(d.x,d.y)*dt/1000,dx=d.x*v,dy=d.y*v,stuck=blocked(x,y);
- for(const [mx,my] of [[dx,dy],[dx,0],[0,dy]])if(mx||my){if(stuck||!blocked(x+mx,y+my))return {x:x+mx,y:y+my,progress:Math.sqrt(mx*mx+my*my)};}
+ for(const [mx,my] of [[dx,dy],[dx,0],[0,dy]])if(mx||my){if((stuck||!blocked(x+mx,y+my))&&!cliff(x,y,x+mx,y+my))return {x:x+mx,y:y+my,progress:Math.sqrt(mx*mx+my*my)};}
  return {x,y,progress:0};
 }
 // The gateway's rule (server/internal/sim/world.go updateGate): open while a living hero stands at the threshold

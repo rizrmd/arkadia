@@ -7,7 +7,8 @@
   "server/internal/sim/stronghold.json is a byte-identical copy embedded in the Go binary; go test fails when they differ.",
   "Props render in this order within equal layer and depth. layer is derived from (u, v): ground ids, rear rows (u or v <= 0) backdrop, front rows (u or v >= court.size) foreground, else world.",
   "Perimeter scenery keeps a snow gap from the enclosure (scripts/verify-wall-clearance.mjs); drifts never lie under a wall line; no braziers at the front corner, the gateway covers them.",
-  "layout: legacy props appear only with ?buildings=all (the old layout); assetSet v1 loads from /modular-stronghold/ instead of /modular-stronghold/v2/."
+  "layout: legacy props appear only with ?buildings=all (the old layout); assetSet v1 loads from /modular-stronghold/ instead of /modular-stronghold/v2/.",
+  "gate.frontY is the walk-behind line under the arch and beyond the towers; gate.apron is the snow-to-paving fade in front of the gateway (edge y = edge - |x - gate.x| * slope); gate.footprintHeight gives the shadow height of the tower and door columns."
  ],
  "anchor": {"u": 7.5, "v": 7.5},
  "world": {"width": 1155, "height": 770},
@@ -23,6 +24,9 @@
   "columnStep": 3,
   "doors": {"halfWidth": 35, "back": 771, "front": 783},
   "trigger": {"y": 778, "closed": {"x": 48, "y": 66}, "open": {"x": 65, "y": 88}},
+  "frontY": 778,
+  "footprintHeight": {"tower": 110, "doors": 105},
+  "apron": {"x": 417, "y": 700, "width": 320, "height": 140, "edge": 785, "slope": 0.35},
   "frames": 16,
   "passableAt": 0.8
  },
