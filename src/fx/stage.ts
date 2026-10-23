@@ -2,7 +2,8 @@ import type {Application,Container,Texture} from 'pixi.js';
 import type {PixiVfxEffectInstance,PixiVfxRenderer,PixiVfxTextureProvider} from 'nixie-fx/pixi';
 import type {VfxExportedEffect} from 'nixie-fx/export';
 import type {VfxTextureAssetRef} from 'nixie-fx';
-import {groundProjection,worldProjection,type Anchor,type View} from './space';
+import {groundProjection,worldProjection,UNIT_PX,type Anchor,type View} from './space';
+import {tilePoint} from '../stronghold/terrain';
 // The NixieFX stage: two planes layered into the world — "ground" under every figure (decals: rune circles, scorch,
 // shock rings) and "world" over them (sparks, flames, smoke) — playing the exported effects of vfx/ (packed by
 // scripts/vfx/pack.mjs into /vfx/skills.bin). In the game the planes are containers of its own Pixi scene
@@ -23,7 +24,7 @@ export type FxHandle={
  readonly alive:boolean;
 };
 type Live={key:string;plane:Plane;inst:PixiVfxEffectInstance;anchor:Anchor;follow?:FxPlay['follow'];age:number;released:boolean;handle:FxHandle};
-const BUNDLE='/vfx/skills.bin',POOL=6;
+const BUNDLE='/vfx/skills.bin',POOL=12;
 // NixieFX bloom also tone-maps every particle (ACES), which dulls saturated fire toward olive over the snow; effects
 // carry their own additive glow layers instead. ?fxbloom=1 turns it on for comparison.
 const BLOOM=typeof location!=='undefined'&&new URLSearchParams(location.search).get('fxbloom')==='1';
@@ -51,24 +52,42 @@ async function mountPlane(host:{before?:Element;after?:Element},id:string,z:stri
  return app;
 }
 
-export type FxStageOptions={under?:Element;over?:Element;host?:{ground:Container;world:Container};bloom?:boolean};
+export type FxStageOptions={
+ under?:Element;
+ over?:Element;
+ host?:{ground:Container;world:Container};
+ depthLayers?:{back:Container;front:Container};
+ getHeroWorld?:()=>{x:number;y:number};
+ occlusionAt?:(px:number,py:number,wx?:number,wy?:number,rad?:number,flat?:boolean,includeHero?:boolean)=>number;
+ bloom?:boolean;
+};
 export function createFxStage(o:FxStageOptions){
  const view:View={x:0,y:0,scale:1};
  const effects=new Map<string,VfxExportedEffect>(),pool=new Map<string,PixiVfxEffectInstance[]>(),live:Live[]=[];
  const pending:{at:number;run:()=>void}[]=[];
  let clock=0,ready=false,failed='',planes:Record<Plane,{app:Application|null;vfx:PixiVfxRenderer;root:Container}>|null=null;
  let Rect:typeof import('pixi.js').Rectangle|null=null;
- let played=0,peakParticles=0,idle=false;
- const textures=new Map<string,Texture>();
+ let played=0,peakParticles=0,idle=false,occludedParticles=0,minOcclusion=1,meanOcclusion=1,backEffects=0,frontEffects=0;
+ const textures=new Map<string,Texture>(),alphaTextures=new Map<string,Texture>();
+ let deriveAlpha:typeof import('nixie-fx/pixi').createDerivedAlphaTexture|null=null;
  const textureProvider:PixiVfxTextureProvider={
   staticAssets:true,
   async preload(refs:VfxTextureAssetRef[]){await Promise.all(refs.map(async ref=>{if(!textures.has(ref.path))textures.set(ref.path,await (await PIXI()).Assets.load<Texture>({src:'/vfx/'+ref.path,data:{scaleMode:'linear'}}));}));},
   getTexture:(ref:VfxTextureAssetRef)=>textures.get(ref.path),
+  getAlphaTexture:(ref,opacitySource,invert)=>{
+   const key=`${ref.path}|${opacitySource}|${invert?1:0}`;
+   const hit=alphaTextures.get(key);if(hit)return hit;
+   const src=textures.get(ref.path);if(!src||!deriveAlpha)return undefined;
+   const derived=deriveAlpha(src,opacitySource,invert)??src;
+   alphaTextures.set(key,derived);
+   return derived;
+  },
   resolveUrl:(ref:VfxTextureAssetRef)=>'/vfx/'+ref.path,
  };
  const boot=(async()=>{
   // The NixieFX runtime loads with the bundle, off the game's first paint.
-  const [{PixiVfxRenderer},{loadVfxExportBundle},packed]=await Promise.all([import('nixie-fx/pixi'),import('nixie-fx/export'),fetchBundle()]);
+  const [{PixiVfxRenderer,createDerivedAlphaTexture},{loadVfxExportBundle},packed]=await Promise.all([import('nixie-fx/pixi'),import('nixie-fx/export'),fetchBundle()]);
+  deriveAlpha=createDerivedAlphaTexture;
   const bundle=loadVfxExportBundle({manifest:packed.manifest,effectsByPath:packed.effects},{requiredBackend:'pixi2d'});
   for(const fx of bundle.effectsById.values())effects.set((fx.sourceEffectFile??fx.id).replace(/\.json$/,''),fx);
   await textureProvider.preload!(bundle.manifest.assets.filter((a):a is VfxTextureAssetRef=>a.type==='texture'));
@@ -79,7 +98,24 @@ export function createFxStage(o:FxStageOptions){
   if(o.host)planes={ground:make(o.host.ground,null,true,false),world:make(o.host.world,null,false,false)};
   else{const [ground,world]=await Promise.all([mountPlane({before:o.under!},'world-fx-ground',''),mountPlane({after:o.over!},'world-fx-over',';z-index:3')]);
    planes={ground:make(ground.stage,ground,true,false),world:make(world.stage,world,false,o.bloom??BLOOM)};}
-  resize();addEventListener('resize',resize);ready=true;
+  resize();addEventListener('resize',resize);
+  // Prewarm effect instances during boot so first combat skill/hit never stalls the frame loop.
+  if(o.host&&planes){
+   const dummyAnchor:Anchor={u:0,v:0,h:0,yaw:0,scale:1};
+   for(const [key,fx] of effects){
+    if(key.startsWith('ui/'))continue;
+    const plane=planeOf(key),P=planes[plane],proj=projection(plane,dummyAnchor);
+    const count=key.startsWith('shared/hit.')||key.endsWith('.impact')||key.endsWith('.impact.ground')||key.endsWith('.bolt')?3:1;
+    const list=pool.get(key)??[];
+    for(let i=0;i<count;i++){
+     const inst=P.vfx.createEffect(fx,{projection:proj,position:[0,0,0],seed:i+1,timeSeconds:0,autoStart:false,addToStage:false});
+     inst.stop();inst.root.visible=false;P.vfx.removeEffect(inst,false);
+     list.push(inst);
+    }
+    pool.set(key,list);
+   }
+  }
+  ready=true;
  })().catch(e=>{failed=String(e?.message??e);console.error('NixieFX stage unavailable; skills play without particle effects.',e);});
 
  function resize(){if(!planes||!Rect)return;const Rectangle=Rect;const w=innerWidth,h=innerHeight;for(const p of Object.values(planes))p.app?.renderer.resize(w,h);
@@ -94,7 +130,7 @@ export function createFxStage(o:FxStageOptions){
   const plane=planeOf(key),anchor:Anchor={u:at.u,v:at.v,h:at.h??0,yaw:at.yaw??0,scale:at.scale??1},proj=projection(plane,anchor),P=planes[plane];
   let inst=pool.get(key)?.pop();
   const seed=at.seed??((Math.random()*0x7fffffff)|0);
-  if(inst){inst.setProjection(proj);inst.spawn({position:[0,0,0],seed,timeSeconds:clock});inst.root.visible=true;}
+  if(inst){P.vfx.addEffect(inst,true);inst.setProjection(proj);inst.spawn({position:[0,0,0],seed,timeSeconds:clock});inst.root.visible=true;}
   else inst=P.vfx.createEffect(fx,{projection:proj,position:[0,0,0],seed,timeSeconds:clock});
   played++;
   const l:Live={key,plane,inst,anchor,follow:at.follow,age:0,released:false,handle:null!};
@@ -114,8 +150,65 @@ export function createFxStage(o:FxStageOptions){
   for(let i=pending.length-1;i>=0;i--)if(pending[i].at<=clock){const p=pending.splice(i,1)[0];p.run();}
   for(const l of live){l.age+=dt;if(l.follow){const p=l.follow();l.anchor.u=p.u;l.anchor.v=p.v;}}
   planes.ground.vfx.update(dt,{timeSeconds:clock});planes.world.vfx.update(dt,{timeSeconds:clock});
-  for(let i=live.length-1;i>=0;i--){const l=live[i];if(l.inst.isActive)continue;live.splice(i,1);
-   const list=pool.get(l.key)??[];if(list.length<POOL){l.inst.stop();l.inst.root.visible=false;list.push(l.inst);pool.set(l.key,list);}else planes[l.plane].vfx.removeEffect(l.inst,true);}
+  const occFn=o.occlusionAt,heroPos=o.getHeroWorld?.(),layers=o.depthLayers,sc=view.scale||1;
+  let occCount=0,occMin=1,occSum=0,occTotal=0,backCnt=0,frontCnt=0;
+  for(let i=live.length-1;i>=0;i--){
+   const l=live[i];
+   if(!l.inst.isActive){
+    live.splice(i,1);
+    l.inst.root.removeFromParent();
+    const list=pool.get(l.key)??[];
+    if(list.length<POOL){l.inst.stop();l.inst.root.visible=false;planes[l.plane].vfx.removeEffect(l.inst,false);list.push(l.inst);pool.set(l.key,list);}
+    else planes[l.plane].vfx.removeEffect(l.inst,true);
+    continue;
+   }
+   const a=l.anchor,pos=(l.inst as any).position??[0,0,0],cs=Math.cos(a.yaw),sn=Math.sin(a.yaw),lx=pos[0]*a.scale,lz=pos[2]*a.scale;
+   const anchorPt=tilePoint(a.u+lx*cs-lz*sn,a.v+lx*sn+lz*cs),anchorLift=(pos[1]*a.scale+a.h)*UNIT_PX;
+   const flat=l.plane==='ground';
+   let sumPy=0,cntPy=0,maxPy=-Infinity;
+   const walkInst=(inst:any)=>{
+    const views=inst?.emitterViews as any[]|undefined;
+    if(views)for(let v=0;v<views.length;v++){
+     const ev=views[v],ds=ev.depthSort as {particle:any;depth:number}[]|undefined;
+     if(ds)for(let j=0;j<ds.length;j++){
+      const entry=ds[j],p=entry.particle;
+      const py=(-entry.depth-view.y)/sc,px=(p.x-view.x)/sc,wx=px,wy=flat?py:(p.y-view.y)/sc;
+      sumPy+=py;cntPy++;if(py>maxPy)maxPy=py;
+      if(occFn){
+       const texW=p.texture?.orig?.width??64,rad=Math.abs(p.scaleX)*texW*.5/sc;
+       const occ=occFn(px,py,wx,wy,rad,flat,!flat);
+       occTotal++;occSum+=occ;if(occ<occMin)occMin=occ;
+       if(occ<.999){p.alpha*=occ;occCount++;}
+      }
+     }
+     const tc=ev.trailContainer?.particleChildren as any[]|undefined;
+     if(occFn&&tc?.length)for(let j=0;j<tc.length;j++){
+      const tp=tc[j],px=(tp.x-view.x)/sc,wy=flat?(tp.y*.5-view.y)/sc:(tp.y-view.y)/sc,py=flat?wy:anchorPt.y;
+      const occ=occFn(px,py,px,wy,6,flat,!flat);
+      occTotal++;occSum+=occ;if(occ<occMin)occMin=occ;
+      if(occ<.999){tp.alpha*=occ;occCount++;}
+     }
+     if(occFn&&ev.trailMesh?.visible){
+      const occ=occFn(anchorPt.x,anchorPt.y,anchorPt.x,anchorPt.y-anchorLift,12,flat,!flat);
+      ev.trailMesh.alpha=occ;
+      occTotal++;occSum+=occ;if(occ<occMin)occMin=occ;if(occ<.999)occCount++;
+     }
+    }
+    const kids=inst?.childInstances as any[]|undefined;
+    if(kids)for(let k=0;k<kids.length;k++)walkInst(kids[k]);
+   };
+   walkInst(l.inst);
+   if(l.plane==='world'&&layers&&heroPos){
+    const effY=cntPy>0?sumPy/cntPy:anchorPt.y;
+    const isBehind=!l.follow&&anchorPt.y<heroPos.y-2&&effY<heroPos.y-2;
+    const targetLayer=isBehind?layers.back:layers.front;
+    if(l.inst.root.parent!==targetLayer)targetLayer.addChild(l.inst.root);
+    l.inst.root.zIndex=effY;
+    if(isBehind)backCnt++;else frontCnt++;
+   }
+  }
+  occludedParticles=occCount;minOcclusion=occTotal?Number(occMin.toFixed(3)):1;meanOcclusion=occTotal?Number((occSum/occTotal).toFixed(3)):1;
+  backEffects=backCnt;frontEffects=frontCnt;
   peakParticles=Math.max(peakParticles,planes.world.vfx.stats.activeParticles+planes.ground.vfx.stats.activeParticles);
   // Own canvases only (a host scene renders itself): nothing playing draws the cleared planes once, then leaves
   // the GPU alone until something plays.
@@ -131,6 +224,7 @@ export function createFxStage(o:FxStageOptions){
   place(x:number,y:number,scale:number){view.x=x;view.y=y;view.scale=scale;},
   play,frame,
   stats:()=>({ready,failed,effects:effects.size,live:live.length,played,peakParticles,
+   occludedParticles,minOcclusion,meanOcclusion,backEffects,frontEffects,
    particles:planes?planes.world.vfx.stats.activeParticles+planes.ground.vfx.stats.activeParticles:0,
    missing:planes?[...planes.world.vfx.stats.missingTextureRefs,...planes.ground.vfx.stats.missingTextureRefs].map(r=>r.path):[],
    unsupported:planes?[...planes.world.vfx.stats.unsupportedFeatures,...planes.ground.vfx.stats.unsupportedFeatures].map(f=>f.featureKey):[],

@@ -1,0 +1,103 @@
+{
+  "checkedAt": "2026-10-23T03:19:13.762Z",
+  "passed": true,
+  "gatewayOcclusion": {
+    "best": {
+      "u": 13.5,
+      "v": 13.899999999999999,
+      "hx": 551.4,
+      "hy": 716.8,
+      "behind": 3
+    },
+    "minSampleOcc": 0.32,
+    "stats": {
+      "ready": true,
+      "failed": "",
+      "effects": 65,
+      "live": 4,
+      "played": 4,
+      "peakParticles": 1035,
+      "occludedParticles": 731,
+      "minOcclusion": 0.32,
+      "meanOcclusion": 0.58,
+      "backEffects": 0,
+      "frontEffects": 3,
+      "particles": 1035,
+      "missing": [],
+      "unsupported": [],
+      "playing": [
+        "ember-warden/ember-snare.telegraph.ground:421",
+        "ember-warden/ember-snare.detonate:271",
+        "ember-warden/flame-fan.cast:208",
+        "ember-warden/shockwave.detonate:135"
+      ]
+    }
+  },
+  "buildingOcclusion": {
+    "spot": {
+      "u": 5.5,
+      "v": 5.75,
+      "hx": 561,
+      "hy": 200,
+      "behind": 1,
+      "minOcc": 0.33066666666666666
+    },
+    "stats": {
+      "ready": true,
+      "failed": "",
+      "effects": 65,
+      "live": 3,
+      "played": 7,
+      "peakParticles": 1035,
+      "occludedParticles": 130,
+      "minOcclusion": 0.32,
+      "meanOcclusion": 0.923,
+      "backEffects": 0,
+      "frontEffects": 2,
+      "particles": 889,
+      "missing": [],
+      "unsupported": [],
+      "playing": [
+        "rift-runner/rift-trap.telegraph.ground:412",
+        "rift-runner/rift-trap.detonate:267",
+        "ember-warden/flame-fan.cast:210"
+      ]
+    }
+  },
+  "heroDepthAndSilhouette": {
+    "open": {
+      "u": 6.5,
+      "v": 8,
+      "hx": 481,
+      "hy": 304
+    },
+    "behindHeroMinOcc": 0.32,
+    "frontOfHeroMinOcc": 1,
+    "stats": {
+      "ready": true,
+      "failed": "",
+      "effects": 65,
+      "live": 3,
+      "played": 10,
+      "peakParticles": 1035,
+      "occludedParticles": 67,
+      "minOcclusion": 0.32,
+      "meanOcclusion": 0.886,
+      "backEffects": 1,
+      "frontEffects": 2,
+      "particles": 289,
+      "missing": [],
+      "unsupported": [],
+      "playing": [
+        "rift-runner/rift-dash.detonate:60",
+        "ember-warden/cinder-step.detonate:94",
+        "ember-warden/shockwave.detonate:135"
+      ]
+    }
+  },
+  "screenshots": [
+    "docs/nixie-fx/occlusion-behind-gateway.webp",
+    "docs/nixie-fx/occlusion-behind-building.webp",
+    "docs/nixie-fx/occlusion-hero-depth.webp"
+  ]
+}

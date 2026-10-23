@@ -33,6 +33,6 @@ export function groundProjection(view:View,a:Anchor):PixiVfxProjection{
  return {
   project(w,out?:PixiVfxProjectionPoint){const p=place(view,a,w),o=out??{x:0,y:0};o.x=p.x;o.y=p.y*2;o.visible=true;return o;},
   pixelsPerWorldUnit:()=>UNIT_PX*view.scale*a.scale,
-  depth:()=>0,
+  depth:w=>-place(view,a,w).y,
  };
 }

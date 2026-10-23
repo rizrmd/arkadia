@@ -27,7 +27,9 @@ type Foe=Fighter&{home:Tile;wander:Tile|null;age:number;side:number;level:number
 type Hero={
  canvas:HTMLCanvasElement;
  position():{x:number;y:number};face(sx:number,sy:number):void;respawn():void;teleport(x:number,y:number):boolean;
- blocked(x:number,y:number):boolean;occluders(x:number,y:number,box:number[]):Placed[];sun():Sun;hero?:()=>HeroId
+ blocked(x:number,y:number):boolean;occluders(x:number,y:number,box:number[]):Placed[];
+ occlusionAt(px:number,py:number,wx?:number,wy?:number,rad?:number,flat?:boolean,includeHero?:boolean):number;
+ sun():Sun;hero?:()=>HeroId
 };
 const toTile=(x:number,y:number):Tile=>{const g=unproject(x-COURT.x,y-COURT.y);return {u:g.x,v:g.y};};
 const screen=(du:number,dv:number)=>({x:(du-dv)*64,y:(du+dv)*32});
@@ -166,6 +168,7 @@ export async function createEncounters(o:{
  const vfx=createCombatVfx({
   layer:o.worldStage,heroCanvas:o.hero.canvas,backLayer:back,frontLayer:front,
   getHero:()=>({u:h.x,v:h.y,facing:h.facing,back:h.back,vertical:h.vertical,heroId:currentHeroId()}),
+  occlusionAt:o.hero.occlusionAt,
   getRun:()=>run,
   getFoes:()=>foes,
   onKill:f=>onKill(f as Foe),
@@ -365,6 +368,7 @@ export async function createEncounters(o:{
   if(shownRatio>0.01)expBar.width=Math.max(6,Math.round(42*shownRatio));
 
   blessingModal.visible=Boolean(run.pending);
+  if(!run.pending)return;
   const key=JSON.stringify([online,run.level,run.pending,run.offers,run.skills,run.slots,innerWidth<760]);
   if(key===offerKey)return;
   offerKey=key;
@@ -577,18 +581,43 @@ export async function createEncounters(o:{
   drawFigureShadow(fg,atlas,fr,meta.cell,s,dir);
   fg.save();sprite(cell);fg.restore();return fg;
  }
- const looks=new Map<string,HTMLCanvasElement>(),LOOKS=48;
- function compose(f:Foe,v:View,px:number,py:number,box:number[],s:Sun,r:number,hidden:Placed[],look:string){
-  if(hidden.length){cutOut(paint(f,v.el,box,s,r),hidden,px,py);return;}
-  let c=looks.get(look);
-  if(c){looks.delete(look);looks.set(look,c);}
-  else{const oldest=looks.size>=LOOKS?looks.keys().next().value:undefined;if(oldest!==undefined){c=looks.get(oldest)!;looks.delete(oldest);}else c=document.createElement('canvas');paint(f,c,box,s,r);looks.set(look,c);}
+ const looks=new Map<string,HTMLCanvasElement>(),LOOKS=64;
+ function compose(f:Foe,v:View,px:number,py:number,box:number[],s:Sun,r:number,hidden:Placed[],baseLook:string){
+  let c=looks.get(baseLook);
+  if(c){looks.delete(baseLook);looks.set(baseLook,c);}
+  else{const oldest=looks.size>=LOOKS?looks.keys().next().value:undefined;if(oldest!==undefined){c=looks.get(oldest)!;looks.delete(oldest);}else c=document.createElement('canvas');paint(f,c,box,s,r);looks.set(baseLook,c);}
   if(v.el.width!==c.width||v.el.height!==c.height){v.el.width=c.width;v.el.height=c.height;}
   v.g.globalCompositeOperation='copy';v.g.setTransform(1,0,0,1,0,0);v.g.drawImage(c,0,0);v.g.globalCompositeOperation='source-over';
+  if(hidden.length){v.g.setTransform(r,0,0,r,-box[0]*r,-box[1]*r);cutOut(v.g,hidden,px,py);}
  }
 
- let lastHudSize='';
+ let lastHudSize='',hasRendered=false,lastBox=[-48,-96,48,24];
+ function placeSprites(){
+  const hp=o.hero.position(),k=origin.scale,at=(x:number,y:number)=>({x:origin.x+x*k,y:origin.y+y*k});
+  for(const [f,v] of views){
+   if(!v.canvasView.sprite.visible)continue;
+   const w=tilePoint(f.x,f.y),s=at(w.x,w.y),shk=vfx.shakeOffset(f);
+   v.canvasView.sprite.width=(lastBox[2]-lastBox[0])*k;
+   v.canvasView.sprite.height=(lastBox[3]-lastBox[1])*k;
+   v.canvasView.sprite.position.set(s.x+lastBox[0]*k+shk.dx,s.y+lastBox[1]*k+shk.dy);
+   if(v.bar.visible){
+    v.bar.scale.set(Math.max(0.58,Math.min(1,k)));
+    v.bar.position.set(s.x+shk.dx,s.y-80*k+shk.dy);
+   }
+  }
+  const s=at(hp.x,hp.y),rMult=reach(run),aoeRx=Math.round(HERO_REACH*rMult*64*Math.SQRT2),aoeRy=Math.round(aoeRx*.52),aoePadX=aoeRx+6,aoePadY=aoeRy+6;
+  if(aoeView.sprite.visible){
+   aoeView.sprite.position.set(s.x-aoePadX*k,s.y-2*k-aoePadY*k);
+   aoeView.sprite.width=aoePadX*2*k;
+   aoeView.sprite.height=aoePadY*2*k;
+  }
+  if(heroOverhead.visible){
+   heroOverhead.scale.set(Math.max(0.58,Math.min(1,k)));
+   heroOverhead.position.set(s.x,s.y-80*k);
+  }
+ }
  function render(){
+  hasRendered=true;
   const sw=innerWidth,sh=innerHeight,sizeKey=`${sw}x${sh}`;
   if(sizeKey!==lastHudSize){
    lastHudSize=sizeKey;
@@ -601,9 +630,10 @@ export async function createEncounters(o:{
   const shown=foes.filter(f=>{if(f.deadFor>CORPSE-500&&!f.alive)return false;const w=tilePoint(f.x,f.y),s=at(w.x,w.y);return s.x>-80&&s.x<innerWidth+80&&s.y>-40&&s.y<innerHeight+120;});
   const live=new Set<Foe>();
   if(shown.length){
-   const sun=o.hero.sun(),r=k*dpr,half=Math.max(pivot.x,meta.cell.w-pivot.x)*DISPLAY,top=-pivot.y*DISPLAY,H0=-top,bottom=(meta.cell.h-pivot.y)*DISPLAY+8;
+   const sun=o.hero.sun(),r=Math.round(Math.min(2.25,Math.max(0.75,k*dpr))*4)/4,half=Math.max(pivot.x,meta.cell.w-pivot.x)*DISPLAY,top=-pivot.y*DISPLAY,H0=-top,bottom=(meta.cell.h-pivot.y)*DISPLAY+8;
    const ends=[-half,half].flatMap(w=>[0,H0].flatMap(h=>[[w+h*sun.dx,h*sun.dy],[w*sun.wx+h*sun.dx,w*sun.wy+h*sun.dy]])),sxs=[-half,half,...ends.map(e=>e[0])],sys=[top,bottom,...ends.map(e=>e[1]-8),...ends.map(e=>e[1]+8)];
    const box=[Math.floor(Math.min(...sxs))-4,Math.floor(Math.min(...sys))-4,Math.ceil(Math.max(...sxs))+4,Math.ceil(Math.max(...sys))+4];
+   lastBox=box;
    const light=[ambient,sun.alpha,sun.dx,sun.dy,sun.wx,sun.wy,r,box].join();
    for(const f of shown.sort((a,b)=>tilePoint(a.x,a.y).y-tilePoint(b.x,b.y).y)){
     const w=tilePoint(f.x,f.y),s=at(w.x,w.y),shk=vfx.shakeOffset(f);
@@ -613,10 +643,11 @@ export async function createEncounters(o:{
     if(v.canvasView.sprite.parent!==targetParent)targetParent.addChild(v.canvasView.sprite);
     v.canvasView.sprite.zIndex=w.y;
     v.canvasView.sprite.visible=true;
-    const look=[f.clip.frames[f.frame()],f.vertical?0:f.facing,f.flash>0,light,hidden.length?hidden.map(p=>p.x+':'+p.y).join()+'@'+w.x.toFixed(1)+','+w.y.toFixed(1):''].join('|');
+    const baseLook=[f.clip.frames[f.frame()],f.vertical?0:f.facing,f.flash>0,light].join('|');
+    const look=hidden.length?`${baseLook}|${hidden.map(p=>p.x+':'+p.y).join()}@${Math.round(w.x*2)},${Math.round(w.y*2)}`:baseLook;
     if(look!==v.look){
      v.look=look;
-     compose(f,v,w.x,w.y,box,sun,r,hidden,look);
+     compose(f,v,w.x,w.y,box,sun,r,hidden,baseLook);
      v.canvasView.sync((box[2]-box[0])*k,(box[3]-box[1])*k);
     }
     v.canvasView.sprite.width=(box[2]-box[0])*k;
@@ -630,7 +661,7 @@ export async function createEncounters(o:{
     if(showBar){
      const barScale=Math.max(0.58,Math.min(1,k));
      v.bar.scale.set(barScale);
-     v.bar.position.set(s.x+shk.dx,s.y-60*k+shk.dy);
+     v.bar.position.set(s.x+shk.dx,s.y-80*k+shk.dy);
      const lvTxt=`Lv. ${fLv}`;
      if(v.lv.text!==lvTxt){v.lv.text=lvTxt;v.lv.place(0,-13.5,0.5);}
      const fillNode=v.fill.children[0] as Container;
@@ -657,7 +688,9 @@ export async function createEncounters(o:{
   const rMult=reach(run),aoeRx=Math.round(HERO_REACH*rMult*64*Math.SQRT2),aoeRy=Math.round(aoeRx*.52),aoePadX=aoeRx+6,aoePadY=aoeRy+6,showAoe=h.alive&&(!inZone||rMult>1.001);
   aoeView.sprite.visible=showAoe;
   if(showAoe){
-   const aoeKey=`${rMult.toFixed(2)}:${dpr}:${h.state==='attack'?1:0}:${comboHighlightMs>0?1:0}`;
+   const aoeHidden=o.hero.occluders(hp.x,hp.y,[-aoePadX,-aoePadY-2,aoePadX,aoePadY-2]);
+   const aoeOccKey=aoeHidden.length?aoeHidden.map(p=>p.x+':'+p.y+':'+(p.occluder?.dataset.frame??'')).join()+'@'+Math.round(hp.x*2)+','+Math.round(hp.y*2):'';
+   const aoeKey=`${rMult.toFixed(2)}:${dpr}:${h.state==='attack'?1:0}:${comboHighlightMs>0?1:0}:${aoeOccKey}`;
    if(aoe.dataset.key!==aoeKey){
     aoe.dataset.key=aoeKey;aoe.dataset.reach=rMult.toFixed(2);aoe.dataset.radiusPx=String(aoeRx);
     const wpx=aoePadX*2,hpx=aoePadY*2;aoe.width=Math.ceil(wpx*dpr);aoe.height=Math.ceil(hpx*dpr);
@@ -672,6 +705,7 @@ export async function createEncounters(o:{
     aoeCtx.lineWidth=comboHighlightMs>0?2.2:(rMult>1.001?1.75:1.2);
     aoeCtx.beginPath();aoeCtx.arc(0,0,aoeRx-1,0,Math.PI*2);aoeCtx.stroke();
     aoeCtx.restore();
+    if(aoeHidden.length)cutOut(aoeCtx,aoeHidden,hp.x,hp.y-2);
     aoeView.sync(wpx*k,hpx*k);
    }
    aoeView.sprite.position.set(s.x-aoePadX*k,s.y-2*k-aoePadY*k);
@@ -683,7 +717,7 @@ export async function createEncounters(o:{
   if(show){
    const barScale=Math.max(0.58,Math.min(1,k));
    heroOverhead.scale.set(barScale);
-   heroOverhead.position.set(s.x,s.y-60*k);
+   heroOverhead.position.set(s.x,s.y-80*k);
    const low=ratio<0.3;
    heroHpGreen.visible=!low&&ratio>0.02;
    heroHpLow.visible=low&&ratio>0.02;
@@ -738,9 +772,9 @@ export async function createEncounters(o:{
   steer,
   reach:()=>reach(run),
   pose:():Pose|null=>h.state==='idle'||h.state==='move'?null:{clip:h.state,t:h.t},
-  place(x:number,y:number,scale:number){origin={x,y,scale};vfx.place(x,y,scale);render();},
+  place(x:number,y:number,scale:number){origin={x,y,scale};vfx.place(x,y,scale);if(!hasRendered)render();else placeSprites();},
   start(){requestAnimationFrame(loop);},
-  setAmbient(rgb:readonly number[]){ambient=rgb.map(v=>Math.round(v*255)).join();},
+  setAmbient(rgb:readonly number[]){ambient=rgb.map(v=>Math.min(255,Math.round(v*32)*8)).join();},
   setMaxHp(n:number){baseHp=n;if(online)return;n+=health(run);if(n===maxHp)return;h.hp=Math.min(n,h.hp+Math.max(0,n-maxHp));maxHp=n;},
   snapshot:()=>({spawnDistanceM:SPAWN_DISTANCE_M,gate:GATE,metersPerTile:METERS_PER_TILE,
    hero:{hp:h.hp,maxHp,state:h.state,u:+h.x.toFixed(2),v:+h.y.toFixed(2),meters:+meters(fromCenter(tileOf(h))).toFixed(1),safe:inSafeZone(tileOf(h)),reach:+reach(run).toFixed(2),aoeRadiusPx:Math.round(HERO_REACH*reach(run)*64*Math.SQRT2),aoeCastRadiusTiles:+aoeCastRadius(run).toFixed(2),critChance:+critChance(run).toFixed(2),critMultiplier:+critMultiplier(run).toFixed(2)},
@@ -771,7 +805,9 @@ export async function createEncounters(o:{
   spawnProjectile:vfx.spawnProjectile,
   spawnAoE:vfx.spawnAoE,
   triggerLevelUp:(level?:number)=>{const lv=level??run.level;if(!online&&lv>run.level){run.level=lv;syncFoeLevels();}levelUpPulseMs=1200;vfx.triggerLevelUp(lv,h.x,h.y);render();},
-  hitFoe:(index:number,forceCrit?:boolean)=>{const f=foes[index];if(!f)return null;const r=vfx.applyHitToFoe(f,{forceCrit});render();return r;}
+  hitFoe:(index:number,forceCrit?:boolean)=>{const f=foes[index];if(!f)return null;const r=vfx.applyHitToFoe(f,{forceCrit});render();return r;},
+  fxStage:vfx.fx,
+  occlusionAt:o.hero.occlusionAt,
  };
  (window as any).__STRONGHOLD_COMBAT__=api;
  return api;

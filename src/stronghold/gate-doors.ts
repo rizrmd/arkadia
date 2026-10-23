@@ -13,7 +13,7 @@ export function createGateDoors(worldStage:Container,gateway:HTMLImageElement,sh
  canvas.dataset.raster=String(light.raster);
  const c=canvas.getContext('2d')!;
  const gateView=createCanvasSprite(canvas);
- gateView.sprite.zIndex=38;
+ gateView.sprite.zIndex=14;
  worldStage.addChild(gateView.sprite);
 
  const source=document.createElement('canvas');source.width=canvas.width;source.height=canvas.height;const raw=source.getContext('2d')!;
@@ -81,7 +81,7 @@ export function createGateDoors(worldStage:Container,gateway:HTMLImageElement,sh
  paint();
  return {canvas,sprite:gateView.sprite,refreshLighting:paint,
   hit(x:number,y:number){const u=(x-442)/region.w,v=(y-(798-height*.97))/region.h;if(u<0||v<0||u>=1||v>=1)return false;return c.getImageData(Math.floor(u*canvas.width),Math.floor(v*canvas.height),1,1).data[3]>40;},
-  order(inside:boolean){if(inside===behind)return;behind=inside;gateView.sprite.zIndex=inside?26:36;},
+  order(inside:boolean){if(inside===behind)return;behind=inside;gateView.sprite.zIndex=inside?14:15;},
   setOpen(open:boolean){target=open?meta.frames-1:0;if(index!==target&&!raf)raf=requestAnimationFrame(tick);},
   place(x:number,y:number,scale:number){
    lastScale=scale;

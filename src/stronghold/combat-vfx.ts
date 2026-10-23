@@ -96,6 +96,7 @@ export function createCombatVfx(o:{
  backLayer:Container;
  frontLayer:Container;
  getHero:()=>{u:number;v:number;facing:number;back:boolean;vertical:boolean;heroId:HeroId};
+ occlusionAt?:(px:number,py:number,wx?:number,wy?:number,rad?:number,flat?:boolean,includeHero?:boolean)=>number;
  getRun:()=>Progression;
  getFoes:()=>Fighter[];
  onKill:(f:Fighter)=>void;
@@ -108,7 +109,12 @@ export function createCombatVfx(o:{
  const groundFx=new Container(),worldFx=new Container();
  groundFx.zIndex=22;worldFx.zIndex=38;
  o.layer.addChild(groundFx,worldFx);
- const fx=createFxStage({host:{ground:groundFx,world:worldFx}});
+ const fx=createFxStage({
+  host:{ground:groundFx,world:worldFx},
+  depthLayers:{back:o.backLayer,front:o.frontLayer},
+  getHeroWorld:()=>{const h=o.getHero();return tilePoint(h.u,h.v);},
+  occlusionAt:o.occlusionAt,
+ });
  // Live counts for automated verification (scripts read snapshot()).
  const vfxStats:Record<string,string>={};
 
@@ -117,7 +123,7 @@ export function createCombatVfx(o:{
  floatsLayer.zIndex=45;
  o.layer.addChild(floatsLayer);
  type FloatView={root:Container;main:MsdfText;sub?:MsdfText;kind:FloatKind;text:string;subtext?:string};
- const floatViews=new Map<number,FloatView>();
+ const floatViews=new Map<number,FloatView>(),floatViewPool=new Map<string,FloatView[]>();
 
  let nextId=1,origin={x:0,y:0,scale:1};
  const floats:FloatingText[]=[],sparks:HitSpark[]=[],slashes:SlashTrail[]=[];
@@ -145,8 +151,10 @@ export function createCombatVfx(o:{
  }
 
  function addSpark(kind:SparkKind,u:number,v:number,angle=0,radius=26){
+  let sameFrameSparks=0;
+  for(let i=sparks.length-1;i>=0;i--){if(sparks[i].age===0)sameFrameSparks++;else break;}
   sparks.push({id:nextId++,kind,u,v,angle,age:0,duration:kind==='crit'?380:270,radius});
-  cue(SPARK_CUE[kind],{u,v,yaw:angle});
+  if(sameFrameSparks<4)cue(SPARK_CUE[kind],{u,v,yaw:angle});
  }
 
  function addShake(target:object,amp=5.5,duration=190){
@@ -538,26 +546,37 @@ export function createCombatVfx(o:{
    activeFloatIds.add(fl.id);
    let fv=floatViews.get(fl.id);
    if(!fv){
-    const root=floatsLayer.addChild(new Container());
-    const role=fl.kind==='crit'?'combat-crit':fl.kind==='banner'?'combat-banner':fl.kind==='incoming'?'combat-incoming':fl.kind==='heal'?'combat-heal':'combat-hit';
-    const main=root.addChild(new MsdfText(role,fl.text,fl.kind==='banner'?{size:20}:{size:fl.kind==='crit'?26:19}));
-    let sub:MsdfText|undefined;
-    if(fl.subtext){
-     sub=root.addChild(new MsdfText(fl.kind==='crit'?'combat-crit-label':'combat-banner-sub',fl.subtext,fl.kind==='banner'?{size:13}:{size:11}));
+    const poolKey=`${fl.kind}:${fl.subtext?1:0}`;
+    const pooled=floatViewPool.get(poolKey)?.pop();
+    if(pooled){
+     fv=pooled;
+     fv.root.visible=true;
+     fv.text=fl.text;
+     fv.subtext=fl.subtext;
+     fv.main.text=fl.text;
+     if(fv.sub&&fl.subtext!==undefined)fv.sub.text=fl.subtext;
+    }else{
+     const root=floatsLayer.addChild(new Container());
+     const role=fl.kind==='crit'?'combat-crit':fl.kind==='banner'?'combat-banner':fl.kind==='incoming'?'combat-incoming':fl.kind==='heal'?'combat-heal':'combat-hit';
+     const main=root.addChild(new MsdfText(role,fl.text,fl.kind==='banner'?{size:20}:{size:fl.kind==='crit'?26:19}));
+     let sub:MsdfText|undefined;
+     if(fl.subtext){
+      sub=root.addChild(new MsdfText(fl.kind==='crit'?'combat-crit-label':'combat-banner-sub',fl.subtext,fl.kind==='banner'?{size:13}:{size:11}));
+     }
+     fv={root,main,sub,kind:fl.kind,text:fl.text,subtext:fl.subtext};
     }
     if(fl.kind==='crit'){
-     if(sub)sub.place(0,-12,0.5);
-     main.place(0,8,0.5);
+     if(fv.sub)fv.sub.place(0,-12,0.5);
+     fv.main.place(0,8,0.5);
     }else if(fl.kind==='banner'){
-     main.place(0,sub?-2:6,0.5);
-     if(sub)sub.place(0,14,0.5);
-    }else if(fl.kind==='heal'&&sub){
-     sub.place(0,-9,0.5);
-     main.place(0,7,0.5);
+     fv.main.place(0,fv.sub?-2:6,0.5);
+     if(fv.sub)fv.sub.place(0,14,0.5);
+    }else if(fl.kind==='heal'&&fv.sub){
+     fv.sub.place(0,-9,0.5);
+     fv.main.place(0,7,0.5);
     }else{
-     main.place(0,6,0.5);
+     fv.main.place(0,6,0.5);
     }
-    fv={root,main,sub,kind:fl.kind,text:fl.text,subtext:fl.subtext};
     floatViews.set(fl.id,fv);
    }
    const base=toScreen(fl.u,fl.v),t=fl.age/fl.duration;
@@ -573,8 +592,16 @@ export function createCombatVfx(o:{
   }
   for(const [id,fv] of floatViews){
    if(!activeFloatIds.has(id)){
-    fv.root.destroy({children:true});
     floatViews.delete(id);
+    const poolKey=`${fv.kind}:${fv.sub?1:0}`;
+    const list=floatViewPool.get(poolKey)??[];
+    if(list.length<16){
+     fv.root.visible=false;
+     list.push(fv);
+     floatViewPool.set(poolKey,list);
+    }else{
+     fv.root.destroy({children:true});
+    }
    }
   }
 
