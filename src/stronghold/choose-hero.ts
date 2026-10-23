@@ -269,15 +269,9 @@ export class ChooseHero extends Container{
    // The paragraph wraps to the panel's dark interior: panel width less 40 px on each side.
    this.text(p,'help',`${L.automatic} ${L.blessings}`,{wrapWidth:485-80}).place(1398,640,.5);
   }else if(layout==='portrait'){
-   // Ember's reference makes Loadout the panel title; Rift's shows the hero, description, Loadout and the help line.
-   // The box reaches past the rails by the corner stars, so the rails sit on the reference's (30–835 px).
-   const compact=this.hero==='ember-warden';
-   this.frame(p,'panel-mobile',[-4,1175,872,compact?456:543]);
-   if(compact){
-    this.text(p,'loadout-title',titleCase(L.loadout)).place(432,1290,.5);
-    this.frame(p,'divider',[170,1298,524,28]);
-    icons([228,430,627],1343,150,1515,25);
-   }else{
+    // Both heroes show the full panel: hero name, description, Loadout, skills and the help line.
+    // The box reaches past the rails by the corner stars, so the rails sit on the reference's (30–835 px).
+    this.frame(p,'panel-mobile',[-4,1175,872,543]);
     this.text(p,'hero-name',titleCase(h.name)).place(432,1284,.5);
     this.frame(p,'divider',[170,1293,524,26]);
     this.text(p,'hero-desc',h.description).place(432,1342,.5);
@@ -286,8 +280,7 @@ export class ChooseHero extends Container{
     icons([228,430,632],1410,140,1572,24);
     this.frame(p,'divider',[140,1600,584,24]);
     this.text(p,'help',L.automatic,{wrapWidth:816-2*70}).place(432,1642,.5);
-   }
-   this.button!.root.y=compact?1562:1655;
+   this.button!.root.y=1655;
   }else{
    this.frame(p,'panel-desktop',[850,88,370,416]);
    this.text(p,'hero-name',titleCase(h.name)).place(1035,166,.5);

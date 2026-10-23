@@ -26,7 +26,7 @@ const repo=(path,label=path)=>`[${label}](/organizations/${ORG}/repositories/${R
 const C=Object.fromEntries(E.compare.map(c=>[c.name,c])),S=Object.fromEntries(E.shots.map(s=>[s.name,s]));
 const compare=(name,title)=>`### ${title}\n\n${C[name].label} · ${C[name].pixels.join(' × ')} device px · ${C[name].layout} layout, frames @${C[name].frameScale}x. The reference is scaled to the same size.\n\n${img(`${name}-side-by-side.webp`,`${title}: reference and result side by side`)}\n\n${img(`${name}-overlay.webp`,`${title}: result with the reference overlaid at 50 %`)}`;
 const shot=name=>`${img(`${name}.webp`,S[name].label)}\n\n${S[name].label} · ${S[name].layout} layout · stage scale ${S[name].stageScale} · frames @${S[name].frameScale}x`;
-const SLOTS={'title':'CHOOSE YOUR HERO','subtitle':'Choose a hero to begin your journey. (desktop only)','back':'Back (desktop label)','card-name':'Card names','card-state':'Selected','hero-name':'Panel hero name','loadout-title':'Loadout as the portrait Ember panel title','hero-desc':'Hero description','loadout':'LOADOUT label','skill':'Skill names, Empty','level':'Lv. 1','help':'Wrapped help paragraph','action':'Begin Journey'};
+const SLOTS={'title':'CHOOSE YOUR HERO','subtitle':'Choose a hero to begin your journey. (desktop only)','back':'Back (desktop label)','card-name':'Card names','card-state':'Selected','hero-name':'Panel hero name','loadout-title':'Legacy compact panel title (unused; both heroes use hero-name)','hero-desc':'Hero description','loadout':'LOADOUT label','skill':'Skill names, Empty','level':'Lv. 1','help':'Wrapped help paragraph','action':'Begin Journey'};
 const hex=c=>'#'+c.toString(16).padStart(6,'0'),fill=f=>Array.isArray(f)?`gold gradient ${f.map(hex).join(' → ')}`:hex(f);
 const roleRows=Object.entries(SLOTS).map(([slot,use])=>{const d=CHOOSE_HERO_TEXT.desktop[slot];
  return `| \`${slot}\` | ${use} | ${FONTS[d.font].family} | ${CHOOSE_HERO_TEXT.desktop[slot].size} | ${CHOOSE_HERO_TEXT.portrait[slot].size} | ${CHOOSE_HERO_TEXT.landscape[slot].size} | ${d.letterSpacing}${d.uppercase?' · caps':''} | ${fill(d.fill)} |`;}).join('\n');
@@ -144,7 +144,9 @@ ${E.consoleErrors.length?`Console errors: ${E.consoleErrors.join('; ')}`:'No con
 
 - The art is the kit's own (castle, hero figures, portraits, frames), so figures, portraits and ornaments differ from the reference paintings. The kit frames' ornaments are heavier, so frame boxes are set so the rails, not the ornament tips, land on the reference rails.
 - The kit fitted Rift Runner's wider master into its canvas at about 0.86× Ember's scale; the screen scales his figure by 750/640 so both heroes stand at the reference size. Card portraits are lowered so the hair is not cut under the top rail.
-- As in the references, the portrait panel differs per hero: Ember shows Loadout as the panel title, Rift shows name, description, Loadout and the help line.
+- Both Ember Warden and Rift Runner now use the full portrait detail panel (hero name, description, \`LOADOUT\` subheader, skill slots, and automatic-cast help line), replacing the earlier compact \`LOADOUT\`-only header on Ember Warden:
+
+  ${img('task-attachment-ember-before.jpg','Reported issue: Ember Warden mobile previously showed LOADOUT instead of hero name and description')} ${img('task-attachment-rift-reference.jpg','Target mobile layout reference: Rift Runner displaying hero name, description, LOADOUT and help line')}
 - Text is the reference's size on mobile (about 11–13 CSS px on a 390 px phone), as the overlay requires; landscape phones get their own larger composition instead.
 
 ## Files and rebuild

@@ -80,7 +80,7 @@ export class HeroSelect extends Container{
    this.sprite('divider',78,172,708,40);
    this.text('display-title',L.title,{size:46.5}).place(432,150,.5);
    // The panel goes under the card row: the cards' lower ornaments overlap its top rail, as in the references.
-   const compact=this.hero==='ember-warden';
+   const compact=false;
    const panelH=compact?358:465,panelY=1222;
    const panel=new NineSliceSprite({texture:this.kit['panel-mobile'],leftWidth:64,topHeight:64,rightWidth:64,bottomHeight:64,width:816,height:panelH});panel.position.set(24,panelY);this.stage.addChild(panel);
    HEROES.forEach((id,i)=>this.card(id,100+i*340,866,324,405,{selected:[1167,1193],plain:1170}));

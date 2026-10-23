@@ -31,7 +31,7 @@ for(const mobile of [false,true]) for(const h of heroes){
   const hi=await sharp(lookup[h.id]).resize(864,1296,{fit:'fill'}).extract({left:0,top:0,width:864,height:1080}).png().toBuffer();layers.push({input:hi,left:0,top:174});elements.push({asset:h.id,x:0,y:174,width:864,height:1080,crop:'top 1080px of 864x1296'});
   await asset('back',20,20,80,80);await asset('compass-crest',386,4,92,92);await asset('divider',78,155,708,46);
   for(let i=0;i<heroes.length;i++) await asset(`cards/${heroes[i].id}-${heroes[i].id===h.id?'selected':'default'}.png`,100+i*340,866,324,405);
-  const compact=h.id==='ember-warden';
+  const compact=false;
   await asset('panel-mobile',24,1255,816,compact?350:425);
   await asset('button-default',24,compact?1605:1660,816,164);
   const labels=[{x:432,y:72,size:52,text:'ARKADIA',tracking:10},{x:432,y:145,size:48,text:'CHOOSE YOUR HERO'}, {x:432,y:compact?1324:1320,size:42,text:compact?'LOADOUT':h.name.toUpperCase()}];
