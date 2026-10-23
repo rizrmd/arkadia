@@ -140,8 +140,11 @@ export function createLighting(o:{
 
  let shade:{mask:HTMLCanvasElement|null;alpha:number}={mask:null,alpha:0};
  function setShadow(mask:HTMLCanvasElement|null,alpha:number,repaint=true){
-  shade=mask&&alpha?{mask,alpha}:{mask:null,alpha:0};surface.dataset.shadowPaints=String(Number(surface.dataset.shadowPaints||0)+1);
-  if(!repaint||!base.width)return;
+  const nextAlpha=mask&&alpha?alpha:0;
+  const changed=nextAlpha!==shade.alpha||Boolean(nextAlpha);
+  shade=nextAlpha?{mask,alpha:nextAlpha}:{mask:null,alpha:0};
+  surface.dataset.shadowPaints=String(Number(surface.dataset.shadowPaints||0)+1);
+  if(!repaint||!base.width||!changed)return;
   last='';paint(current,true);
  }
 
@@ -192,7 +195,12 @@ export function createLighting(o:{
   },
   setScene,capture,setTime,preview,setShadow,shadeSprite,spriteRevision:()=>spriteRevision,
   torches:()=>torchesOn(current.t),
-  setClockSource(f:(()=>number|null)|null){live=f;tick();},
+  setClockSource(f:(()=>number|null)|null){
+   live=f;
+   current=lightingAt(resolveTime(mode,Date.now(),location.search,manual,live?.()??null));
+   if(!base.width){const next=sunStep(current.t);sunKey=next.key;sun=next.sun;surface.dataset.sun=sunKey;}
+   tick();
+  },
   sun:()=>sun,
   subscribe(f:(s:ClockState)=>void){listeners.add(f);f(clockState());return ()=>listeners.delete(f);}
  };

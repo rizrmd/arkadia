@@ -97,7 +97,7 @@ export function createFxStage(o:FxStageOptions){
    const effKey=(fx.sourceEffectFile??fx.id).replace(/\.json$/,'');
    const isGround=effKey.endsWith('.ground');
    if(o.host&&fx.emitters){
-    const maxEmitters=isGround?6:5;
+    const maxEmitters=isGround?4:3;
     if(fx.emitters.length>maxEmitters){
      const src=fx.emitters.filter((e:any)=>!/(smoke|glint|hand core)/i.test(e.name??''));
      const base=src.length>=maxEmitters?src:fx.emitters;
@@ -108,7 +108,7 @@ export function createFxStage(o:FxStageOptions){
       fx.emitters=base;
      }
     }
-    const perMax=isGround?56:Math.max(12,Math.min(20,Math.floor(64/Math.max(1,fx.emitters.length))));
+    const perMax=isGround?18:Math.max(6,Math.min(10,Math.floor(28/Math.max(1,fx.emitters.length))));
     for(const e of fx.emitters as any[]){
      e.maxParticles=Math.min(e.maxParticles||perMax,perMax);
      if(e.spawn){
@@ -120,8 +120,8 @@ export function createFxStage(o:FxStageOptions){
        if(typeof rv.max==='number'&&rv.max>perMax)rv.max=perMax;
       }
       if(e.spawn.bursts)for(const b of e.spawn.bursts){
-       if(isGround)b.count=Math.min(perMax,b.count);
-       else if(b.count>8)b.count=Math.min(perMax,Math.ceil(b.count*.5));
+       if(isGround)b.count=Math.min(perMax,Math.max(6,Math.ceil(b.count*.45)));
+       else if(b.count>5)b.count=Math.min(perMax,Math.max(4,Math.ceil(b.count*.35)));
       }
      }
     }
@@ -146,12 +146,13 @@ export function createFxStage(o:FxStageOptions){
     const copies=key.endsWith('.bolt')?3:1;
     const list=pool.get(key)??[];
     for(let c=0;c<copies;c++){
-     const inst=P.vfx.createEffect(fx,{projection:proj,position:[0,0,0],seed:c+1,timeSeconds:0,autoStart:false,addToStage:false});
+     const inst=P.vfx.createEffect(fx,{projection:proj,position:[0,0,0],seed:c+1,timeSeconds:0,autoStart:true,addToStage:false});
+     inst.update(0.08,0.08);
      inst.stop();inst.root.visible=false;P.vfx.removeEffect(inst,false);
      list.push(inst);
     }
     pool.set(key,list);
-    if(++batch%20===0)await new Promise(r=>setTimeout(r,0));
+    if(++batch%12===0)await new Promise(r=>setTimeout(r,0));
    }
   }
   ready=true;
@@ -177,8 +178,12 @@ export function createFxStage(o:FxStageOptions){
    }
    if(sameCount>=maxSame&&oldest){
     oldest.anchor.u=anchor.u;oldest.anchor.v=anchor.v;oldest.anchor.h=anchor.h;oldest.anchor.yaw=anchor.yaw;oldest.anchor.scale=anchor.scale;
-    oldest.follow=at.follow;oldest.age=0;oldest.released=false;
-    oldest.inst.setProjection(proj);oldest.inst.spawn({position:[0,0,0],seed,timeSeconds:clock});oldest.inst.root.visible=true;
+    oldest.follow=at.follow;
+    oldest.inst.setProjection(proj);
+    if(oldest.age>=0.045||oldest.released){
+     oldest.age=0;oldest.released=false;
+     oldest.inst.spawn({position:[0,0,0],seed,timeSeconds:clock});oldest.inst.root.visible=true;
+    }
     played++;
     return oldest.handle;
    }
@@ -198,7 +203,7 @@ export function createFxStage(o:FxStageOptions){
  }
 
  // Once per rendered frame, in seconds. render=false advances the simulation only (scripted captures).
- const occCache=new Map<number,number>();
+ const staticOccCache=new Map<number,number>(),heroOccCache=new Map<number,number>();
  let lastOccHx=-1e9,lastOccHy=-1e9;
  function frame(dt:number,render=true){
   if(!planes)return;
@@ -208,9 +213,10 @@ export function createFxStage(o:FxStageOptions){
   planes.ground.vfx.update(dt,{timeSeconds:clock});planes.world.vfx.update(dt,{timeSeconds:clock});
   const occFn=o.occlusionAt,heroPos=o.getHeroWorld?.(),layers=o.depthLayers,sc=view.scale||1;
   const hx=heroPos?.x??0,hy=heroPos?.y??0;
-  if(Math.abs(hx-lastOccHx)>2||Math.abs(hy-lastOccHy)>2||occCache.size>4096){
-   occCache.clear();lastOccHx=hx;lastOccHy=hy;
+  if(Math.abs(hx-lastOccHx)>2||Math.abs(hy-lastOccHy)>2||heroOccCache.size>2048){
+   heroOccCache.clear();lastOccHx=hx;lastOccHy=hy;
   }
+  if(staticOccCache.size>8192)staticOccCache.clear();
   let occCount=0,occMin=1,occSum=0,occTotal=0,backCnt=0,frontCnt=0;
   for(let i=live.length-1;i>=0;i--){
    const l=live[i];
@@ -238,12 +244,18 @@ export function createFxStage(o:FxStageOptions){
       const py=(-entry.depth-view.y)/sc,px=(p.x-view.x)/sc,wx=px,wy=flat?py:(p.y-view.y)/sc;
       sumPy+=py;cntPy++;if(py>maxPy)maxPy=py;
       if(canOcclude&&occFn){
+       const nearHero=!flat&&py<hy-2&&Math.abs(wx-hx)<=64&&wy>=hy-116&&wy<=hy+36;
+       if(anchorY>850&&py>850&&wy>850&&!nearHero){
+        occTotal++;occSum+=1;
+        continue;
+       }
        const texW=p.texture?.orig?.width??64,rad=Math.abs(p.scaleX)*texW*.5/sc,rBin=(rad*.25)|0;
        const gk=(((px*.125)|0)*73856093)^(((py*.125)|0)*19349663)^(((wy*.125)|0)*83492791)^(rBin*2654435761)^aHashY^(flat?1:2);
-       let occ=occCache.get(gk);
+       const cache=nearHero?heroOccCache:staticOccCache;
+       let occ=cache.get(gk);
        if(occ===undefined){
-        occ=occFn(px,py,wx,wy,rad,flat,!flat,anchorY);
-        occCache.set(gk,occ);
+        occ=occFn(px,py,wx,wy,rad,flat,nearHero,anchorY);
+        cache.set(gk,occ);
        }
        occTotal++;occSum+=occ;if(occ<occMin)occMin=occ;
        if(occ<.999){p.alpha=occ<=.01?0:isAdd?Math.min(occ*.28,p.alpha*occ*.35):p.alpha*occ;occCount++;}
@@ -252,7 +264,12 @@ export function createFxStage(o:FxStageOptions){
      const tc=ev.trailContainer?.particleChildren as any[]|undefined;
      if(canOcclude&&occFn&&tc?.length)for(let j=0;j<tc.length;j++){
       const tp=tc[j],px=(tp.x-view.x)/sc,wy=flat?(tp.y*.5-view.y)/sc:(tp.y-view.y)/sc,py=flat?wy:anchorY;
-      const occ=occFn(px,py,px,wy,6,flat,!flat,anchorY);
+      const nearHero=!flat&&py<hy-2&&Math.abs(px-hx)<=64&&wy>=hy-116&&wy<=hy+36;
+      if(anchorY>850&&py>850&&wy>850&&!nearHero){
+       occTotal++;occSum+=1;
+       continue;
+      }
+      const occ=occFn(px,py,px,wy,6,flat,nearHero,anchorY);
       occTotal++;occSum+=occ;if(occ<occMin)occMin=occ;
       if(occ<.999){tp.alpha=occ<=.01?0:isAdd?Math.min(occ*.28,tp.alpha*occ*.35):tp.alpha*occ;occCount++;}
      }
@@ -265,7 +282,7 @@ export function createFxStage(o:FxStageOptions){
     const kids=inst?.childInstances as any[]|undefined;
     if(kids)for(let k=0;k<kids.length;k++)walkInst(kids[k]);
    };
-   if(canOcclude||(l.plane==='world'&&layers&&heroPos))walkInst(l.inst);
+   if(canOcclude)walkInst(l.inst);
    if(l.plane==='world'&&layers&&heroPos){
     const effY=cntPy>0?sumPy/cntPy:anchorY-anchorLift*.5;
     const isBehind=effY<heroPos.y-2;

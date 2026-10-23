@@ -119,7 +119,7 @@ export function createCombatVfx(o:{
  groundFx.zIndex=22;worldFx.zIndex=38;
  o.layer.addChild(groundZonesLayer,groundFx,worldFx);
  type ZoneView={el:HTMLCanvasElement;ctx:CanvasRenderingContext2D;view:ReturnType<typeof createCanvasSprite>;key:string};
- const zoneViews=new Map<number,ZoneView>(),zonePool:ZoneView[]=[];
+ const zoneViews=new Map<number,ZoneView>(),zonePool:ZoneView[]=[],zoneBaseCache=new Map<string,HTMLCanvasElement>();
  const fx=createFxStage({
   host:{ground:groundFx,world:worldFx},
   depthLayers:{back:o.backLayer,front:o.frontLayer},
@@ -599,10 +599,20 @@ export function createCombatVfx(o:{
   };
   const renderZone=(id:number,kind:AoEKind,shape:'circle'|'cone',u:number,v:number,radius:number,angle:number,spread:number,age:number,duration:number,isImpact:boolean)=>{
    activeZoneIds.add(id);
+   const w=tilePoint(u,v),s=toScreen(u,v);
+   const zDpr=1;
+   const rx=Math.max(24,Math.round(radius*64*Math.SQRT2/2)*2),ry=Math.max(12,Math.round(rx*.52));
+   const padX=rx+8,padY=ry+8,wpx=padX*2,hpx=padY*2;
+   const qAngle=shape==='circle'?0:Math.round(angle/(Math.PI/8))*(Math.PI/8);
+   const hidden=o.occluders?o.occluders(w.x,w.y,[-padX,-padY,padX,padY]):[];
+   const occKey=hidden.length?hidden.map(p=>p.x+':'+p.y+':'+Math.round(Number(p.occluder?.dataset.frame??0)/8)).join()+'@'+Math.round(w.x*.5)+','+Math.round(w.y*.5):'';
+   const baseKey=`${kind}:${shape}:${rx}:${qAngle.toFixed(2)}:${spread.toFixed(2)}:${zDpr}`;
+   const zKey=`${baseKey}:${occKey}`;
    let zv=zoneViews.get(id);
    if(!zv){
-    zv=zonePool.pop();
-    if(zv){zv.view.sprite.visible=true;zv.key='';}
+    const matchIdx=zonePool.findIndex(p=>p.key===zKey);
+    zv=matchIdx>=0?zonePool.splice(matchIdx,1)[0]:zonePool.pop();
+    if(zv){zv.view.sprite.visible=true;}
     else{
      const el=document.createElement('canvas');
      const view=createCanvasSprite(el);
@@ -611,77 +621,85 @@ export function createCombatVfx(o:{
     }
     zoneViews.set(id,zv);
    }
-   const w=tilePoint(u,v),s=toScreen(u,v);
-   const rx=Math.max(24,Math.round(radius*64*Math.SQRT2)),ry=Math.max(12,Math.round(rx*.52));
-   const padX=rx+8,padY=ry+8,wpx=padX*2,hpx=padY*2;
-   const hidden=o.occluders?o.occluders(w.x,w.y,[-padX,-padY,padX,padY]):[];
-   const occKey=hidden.length?hidden.map(p=>p.x+':'+p.y).join()+'@'+Math.round(w.x)+','+Math.round(w.y):'';
-   const zKey=`${kind}:${shape}:${rx}:${angle.toFixed(2)}:${spread.toFixed(2)}:${dpr}:${occKey}`;
    if(zv.key!==zKey){
     zv.key=zKey;
-    const aw=Math.ceil(wpx*dpr),ah=Math.ceil(hpx*dpr);
+    const aw=Math.ceil(wpx*zDpr),ah=Math.ceil(hpx*zDpr);
+    let baseCan=zoneBaseCache.get(baseKey);
+    if(!baseCan){
+     if(zoneBaseCache.size>=32)zoneBaseCache.delete(zoneBaseCache.keys().next().value!);
+     baseCan=document.createElement('canvas');
+     baseCan.width=aw;baseCan.height=ah;
+     const bctx=baseCan.getContext('2d')!;
+     bctx.setTransform(zDpr,0,0,zDpr,padX*zDpr,padY*zDpr);
+     bctx.imageSmoothingEnabled=false;
+     const pal=zonePalette(kind);
+     const halfSpread=Math.max(0.28,spread*.55);
+     // 1. Interior isometric dotted pattern on the ground
+     const stepX=10,stepY=5;
+     for(let gy=-ry+4;gy<=ry-4;gy+=stepY){
+      const rowIdx=Math.round(gy/stepY);
+      for(let gx=-rx+4;gx<=rx-4;gx+=stepX){
+       const colIdx=Math.round(gx/stepX);
+       if(((rowIdx+colIdx)&1)!==0)continue;
+       const isoY=gy/.52,dist=Math.hypot(gx,isoY);
+       if(dist>rx-5)continue;
+       if(shape==='cone'){
+        if(dist<10)continue;
+        const ang=Math.atan2(isoY,gx);
+        let diff=ang-qAngle;while(diff>Math.PI)diff-=Math.PI*2;while(diff<-Math.PI)diff+=Math.PI*2;
+        if(Math.abs(diff)>halfSpread)continue;
+       }
+       const major=((rowIdx*3+colIdx)&3)===0;
+       bctx.fillStyle=major?pal.minor:pal.grid;
+       bctx.fillRect(gx-1,gy-1,major?3:2,major?2:2);
+       if(major){bctx.fillStyle=pal.core;bctx.fillRect(gx,gy,1,1);}
+      }
+     }
+     // 2. Dotted boundary perimeter (cone or circle)
+     if(shape==='cone'){
+      const arcLen=rx*halfSpread*2,arcDots=Math.max(18,Math.round(arcLen/6.5));
+      for(let i=0;i<=arcDots;i++){
+       const ang=qAngle-halfSpread+(i/arcDots)*(halfSpread*2);
+       const px=Math.round(Math.cos(ang)*rx),py=Math.round(Math.sin(ang)*ry);
+       const major=i%2===0;
+       bctx.fillStyle=major?pal.major:pal.minor;
+       bctx.fillRect(px-1,py-1,major?3:2,major?3:2);
+       if(major){bctx.fillStyle=pal.core;bctx.fillRect(px,py,1,1);}
+      }
+      const rayDots=Math.max(8,Math.round(rx/8.5));
+      for(const side of [-1,1]){
+       const ang=qAngle+side*halfSpread;
+       for(let i=1;i<rayDots;i++){
+        const rFrac=i/rayDots;
+        const px=Math.round(Math.cos(ang)*rx*rFrac),py=Math.round(Math.sin(ang)*ry*rFrac);
+        const major=i%2===0;
+        bctx.fillStyle=major?pal.major:pal.minor;
+        bctx.fillRect(px-1,py-1,major?3:2,major?3:2);
+       }
+      }
+     }else{
+      const beadCount=Math.max(36,Math.round(rx*.82));
+      for(let i=0;i<beadCount;i++){
+       const ang=(i/beadCount)*Math.PI*2;
+       const px=Math.round(Math.cos(ang)*rx),py=Math.round(Math.sin(ang)*ry);
+       const major=i%2===0;
+       bctx.fillStyle=major?pal.major:pal.minor;
+       bctx.fillRect(px-1,py-1,major?3:2,major?3:2);
+       if(major){bctx.fillStyle=pal.core;bctx.fillRect(px,py,1,1);}
+      }
+     }
+     zoneBaseCache.set(baseKey,baseCan);
+    }
     if(zv.el.width!==aw||zv.el.height!==ah){zv.el.width=aw;zv.el.height=ah;}
     const ctx=zv.ctx;
-    ctx.setTransform(dpr,0,0,dpr,padX*dpr,padY*dpr);
-    ctx.clearRect(-padX,-padY,wpx,hpx);
-    ctx.imageSmoothingEnabled=false;
-    const pal=zonePalette(kind);
-    const halfSpread=Math.max(0.28,spread*.55);
-    // 1. Interior isometric dotted pattern on the ground
-    const stepX=10,stepY=5;
-    for(let gy=-ry+4;gy<=ry-4;gy+=stepY){
-     const rowIdx=Math.round(gy/stepY);
-     for(let gx=-rx+4;gx<=rx-4;gx+=stepX){
-      const colIdx=Math.round(gx/stepX);
-      if(((rowIdx+colIdx)&1)!==0)continue;
-      const isoY=gy/.52,dist=Math.hypot(gx,isoY);
-      if(dist>rx-5)continue;
-      if(shape==='cone'){
-       if(dist<10)continue;
-       const ang=Math.atan2(isoY,gx);
-       let diff=ang-angle;while(diff>Math.PI)diff-=Math.PI*2;while(diff<-Math.PI)diff+=Math.PI*2;
-       if(Math.abs(diff)>halfSpread)continue;
-      }
-      const major=((rowIdx*3+colIdx)&3)===0;
-      ctx.fillStyle=major?pal.minor:pal.grid;
-      ctx.fillRect(gx-1,gy-1,major?3:2,major?2:2);
-      if(major){ctx.fillStyle=pal.core;ctx.fillRect(gx,gy,1,1);}
-     }
+    ctx.setTransform(1,0,0,1,0,0);
+    ctx.globalCompositeOperation='copy';
+    ctx.drawImage(baseCan,0,0);
+    ctx.globalCompositeOperation='source-over';
+    if(hidden.length){
+     ctx.setTransform(zDpr,0,0,zDpr,padX*zDpr,padY*zDpr);
+     cutOut(ctx,hidden,w.x,w.y);
     }
-    // 2. Dotted boundary perimeter (cone or circle)
-    if(shape==='cone'){
-     const arcLen=rx*halfSpread*2,arcDots=Math.max(18,Math.round(arcLen/6.5));
-     for(let i=0;i<=arcDots;i++){
-      const ang=angle-halfSpread+(i/arcDots)*(halfSpread*2);
-      const px=Math.round(Math.cos(ang)*rx),py=Math.round(Math.sin(ang)*ry);
-      const major=i%2===0;
-      ctx.fillStyle=major?pal.major:pal.minor;
-      ctx.fillRect(px-1,py-1,major?3:2,major?3:2);
-      if(major){ctx.fillStyle=pal.core;ctx.fillRect(px,py,1,1);}
-     }
-     const rayDots=Math.max(8,Math.round(rx/8.5));
-     for(const side of [-1,1]){
-      const ang=angle+side*halfSpread;
-      for(let i=1;i<rayDots;i++){
-       const rFrac=i/rayDots;
-       const px=Math.round(Math.cos(ang)*rx*rFrac),py=Math.round(Math.sin(ang)*ry*rFrac);
-       const major=i%2===0;
-       ctx.fillStyle=major?pal.major:pal.minor;
-       ctx.fillRect(px-1,py-1,major?3:2,major?3:2);
-      }
-     }
-    }else{
-     const beadCount=Math.max(36,Math.round(rx*.82));
-     for(let i=0;i<beadCount;i++){
-      const ang=(i/beadCount)*Math.PI*2;
-      const px=Math.round(Math.cos(ang)*rx),py=Math.round(Math.sin(ang)*ry);
-      const major=i%2===0;
-      ctx.fillStyle=major?pal.major:pal.minor;
-      ctx.fillRect(px-1,py-1,major?3:2,major?3:2);
-      if(major){ctx.fillStyle=pal.core;ctx.fillRect(px,py,1,1);}
-     }
-    }
-    if(hidden.length)cutOut(ctx,hidden,w.x,w.y);
     zv.view.sync(wpx*k,hpx*k);
    }
    const t=age/Math.max(1,duration);

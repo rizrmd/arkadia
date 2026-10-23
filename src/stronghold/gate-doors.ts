@@ -20,6 +20,18 @@ export function createGateDoors(worldStage:Container,gateway:HTMLImageElement,sh
  const source=document.createElement('canvas');source.width=canvas.width;source.height=canvas.height;const raw=source.getContext('2d')!;
  raw.scale(source.width/frame.w,source.height/frame.h);
  const shaded=document.createElement('canvas');shaded.width=canvas.width;shaded.height=canvas.height;
+ let sheetCanvas:HTMLCanvasElement|null=null;
+ function ensureSheetCanvas():HTMLCanvasElement|null{
+  if(sheetCanvas)return sheetCanvas;
+  if(!sheet.complete||!sheet.naturalWidth)return null;
+  const sc=document.createElement('canvas');
+  sc.width=canvas.width*meta.columns;
+  sc.height=canvas.height*rows;
+  sc.getContext('2d')!.drawImage(sheet,0,0,sc.width,sc.height);
+  sheetCanvas=sc;
+  return sc;
+ }
+ if(sheet.complete&&sheet.naturalWidth)ensureSheetCanvas();
  let index=0,target=0,raf=0,last=0,elapsed=0,shown=-1,passable=false,lit=-1,flamePose=0,shownFlame=-1,flameTimer=0,pointerHeld=false,behind:boolean|null=null,onScreen=true;
  const reduced=matchMedia('(prefers-reduced-motion: reduce)');
  const torches=meta.torches??{left:{x:Math.round(frame.w*196/768),y:Math.round(frame.h*253/512),w:Math.round(frame.w*70/768),h:Math.round(frame.h*112/512)},right:{x:Math.round(frame.w*502/768),y:Math.round(frame.h*253/512),w:Math.round(frame.w*70/768),h:Math.round(frame.h*112/512)}};
@@ -42,9 +54,9 @@ export function createGateDoors(worldStage:Container,gateway:HTMLImageElement,sh
     shown=index;lit=light.revision();shownFlame=activeFlame;
     if(baseChanged){
      raw.globalCompositeOperation='copy';
-     if(sheet.complete&&sheet.naturalWidth){
-      const sw=(sheet.naturalWidth||frame.w*meta.columns)/meta.columns,sh=(sheet.naturalHeight||frame.h*rows)/rows;
-      raw.drawImage(sheet,(index%meta.columns)*sw,Math.floor(index/meta.columns)*sh,sw,sh,0,0,frame.w,frame.h);
+     const sc=ensureSheetCanvas();
+     if(sc){
+      raw.drawImage(sc,(index%meta.columns)*canvas.width,Math.floor(index/meta.columns)*canvas.height,canvas.width,canvas.height,0,0,frame.w,frame.h);
      }else if(gateway.complete&&gateway.naturalWidth){
       raw.drawImage(gateway,0,0,gateway.naturalWidth,gateway.naturalHeight,0,0,frame.w,frame.h);
      }
@@ -75,7 +87,7 @@ export function createGateDoors(worldStage:Container,gateway:HTMLImageElement,sh
   if(!onScreen||!light.torches?.()||index!==target||pointerHeld||document.hidden||reduced.matches||!TORCH_FRAMES[0].complete)return;
   flameTimer=window.setTimeout(()=>{flamePose=(flamePose+1)%3;paint();},160);
  }
- if(!sheet.complete)sheet.addEventListener('load',()=>{shown=-1;paint();},{once:true});
+ if(!sheet.complete)sheet.addEventListener('load',()=>{Promise.resolve(typeof sheet.decode==='function'?sheet.decode():undefined).catch(()=>{}).then(()=>{ensureSheetCanvas();shown=-1;paint();});},{once:true});
  torchAssetsReady.then(()=>{shownFlame=-2;paint();}).catch(()=>{});
  window.addEventListener('pointerdown',()=>{pointerHeld=true;clearTimeout(flameTimer);flameTimer=0;},{passive:true});
  window.addEventListener('pointerup',()=>{pointerHeld=false;scheduleFlames();},{passive:true});

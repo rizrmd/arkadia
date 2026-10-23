@@ -380,7 +380,7 @@ try {
 
   const rootCauseAnalysis = {
     analyzedAt: new Date().toISOString(),
-    serverTracelogsAnalyzed: 58,
+    serverTracelogsAnalyzed: 78,
     logs: [
       {
         seq: 1,
@@ -590,14 +590,86 @@ try {
         rootCause:
           'Switching hero from rift-runner to ember-warden via Begin Journey at t=61.7s: createHero only loaded the initial hero at boot, so setHero("ember-warden") lazily fetched and decoded ember-warden.webp (2852x1364) during gameplay—spending 65.5ms in prewarmAtlasAlpha (SoftwareImageDecodeCache) and 58.0ms on the first GPU-accelerated 2D canvas drawImage (GpuImageDecodeCache).',
       },
+      {
+        seq: 61,
+        id: 'tl-mvklf7w8-1',
+        reason: 'frame_spike',
+        fps: 43.39,
+        minFps: 7.51,
+        maxFrameMs: 133.2,
+        bottleneck: 'world-draw',
+        phasesMaxBefore: {
+          worldDrawMs: 96.2,
+          encountersStepMs: 0.7,
+          encountersRenderMs: 3.1,
+          pixiRenderMs: 2.3,
+          unaccountedMs: 27.6,
+        },
+        rootCause:
+          'Walking up to the Stronghold gate (doors.setOpen(true)): full-gateway-v7-sheet.webp (3072x2048, 25.1 MB RGBA) sat unused while closed and was evicted from the browser decoded-image cache; stepping to frame 1 blocked the main thread for 96.2ms (and 108.8ms in seq 76) re-decoding the 3072x2048 sheet and running getAlphaMask on all 16 gate frames.',
+      },
+      {
+        seq: 70,
+        id: 'tl-mvkna9g9-7',
+        reason: 'frame_spike',
+        fps: 28.08,
+        minFps: 3.3,
+        maxFrameMs: 303.0,
+        bottleneck: 'encounters-step',
+        phasesMaxBefore: {
+          worldDrawMs: 1.0,
+          encountersStepMs: 276.0,
+          encountersRenderMs: 25.0,
+          pixiRenderMs: 3.0,
+          unaccountedMs: 2.0,
+        },
+        rootCause:
+          'First combat casts in Firefox 158 (seq 69..74): boot prewarm used autoStart: false without advancing inst.update(0.08), leaving EmitterView Sprite pools empty until the first combat spawn, while multi-hit cues in the same frame called oldest.inst.spawn() (and synchronous drawParticleViews) repeatedly inside encountersStep, compounded by 4x catch-up sub-steps.',
+      },
+      {
+        seq: 71,
+        id: 'tl-mvknaigv-8',
+        reason: 'frame_spike',
+        fps: 28.72,
+        minFps: 4.5,
+        maxFrameMs: 222.0,
+        bottleneck: 'encounters-render',
+        phasesMaxBefore: {
+          worldDrawMs: 2.0,
+          encountersStepMs: 19.6,
+          encountersRenderMs: 194.2,
+          pixiRenderMs: 7.0,
+          unaccountedMs: 9.0,
+        },
+        rootCause:
+          'Per-swing and per-cast Canvas2D re-rasterization + WebGL texture uploads (seq 67..75): aoeKey included h.state==="attack" and comboHighlightMs>0, invalidating the 800x440 ground AoE reach canvas on every melee swing, while renderZone reset zv.key="" on pool pop and keyed by unquantized angle.toFixed(2) at dpr=2, re-running nested Math.hypot/Math.atan2 dot loops on every skill cast.',
+      },
+      {
+        seq: 77,
+        id: 'tl-mvknsg4f-2',
+        reason: 'frame_spike',
+        fps: 42.19,
+        minFps: 4.03,
+        maxFrameMs: 248.3,
+        bottleneck: 'main-thread-longtask',
+        phasesMaxBefore: {
+          worldDrawMs: 0.7,
+          encountersStepMs: 6.7,
+          encountersRenderMs: 21.1,
+          pixiRenderMs: 9.5,
+          unaccountedMs: 241.6,
+        },
+        rootCause:
+          'Particle explosion and per-frame walkInst regression (seq 77..78, 618..677 active particles, 15..16 liveEffects): commit 2bc97a7 raised ground emitter caps to 6x56=336 particles per ground effect and ran walkInst over all 600+ particles every frame even in the Wilds (anchorY > 860), while clearing occCache whenever the hero moved > 2px.',
+      },
     ],
     fixesImplemented: [
-      'src/fx/stage.ts: Global alphaTextures cache, macrotask-sliced boot pool prewarming, removeEffect(inst, false) on pooled instances, live effect reuse per key, in-game emitter count cap (<=3 emitters/effect) and particle cap, and persistent cross-frame occCache grid.',
-      'src/stronghold/hero.ts: Extracted 1-byte Uint8Array alpha sheet once at load time via prewarmAtlasAlpha(img); preloaded all HEROES at boot; warmed GpuImageDecodeCache via gpuWarmCtx.drawImage(img, 0, 0, 16, 16) and precomputed frame 0 shadow profile at load time; replaced CPU getImageData/putImageData loop on lit with GPU composite operations; removed redundant blur(1px) filter pass from drawFigureShadow; expanded MAX_SHADOW_CACHE to 192; added maxSceneFront fast-exit in occluders() and occlusionAt().',
-      'src/app/loader.ts, src/typography/frames.ts, src/stronghold/choose-hero.ts, src/stronghold/hero-picker.ts, src/stronghold/main.ts: Disabled Pixi texture GC (gcActive: false & source.autoGarbageCollect = false), pre-built ChooseHero layout in the background, and warmed all FrameSet & ChooseHero textures on the WebGL renderer via renderer.texture.initSource() so opening Choose Your Hero is zero-spike.',
-      'src/stronghold/encounters.ts: Prewarmed revenant atlas alpha at load time; expanded looks cache to 128; avoided unnecessary aoe canvas backing-store reallocation; quantized occluder cutout cache keys.',
-      'src/stronghold/world-view.ts & src/stronghold/lighting.ts: Fixed Co-op join signature using resolved nextBuilt to prevent redundant 228ms paintWorld(); separated shadowsDirty from selection changes; cached staticLights in lighting.ts to skip 3x Canvas2D blur passes on building selection; exposed __WORLD_SURFACE__ for telemetry.',
-      'src/stronghold/gate-doors.ts: Cached shaded gateway frame canvas so 160ms torch flame flicker composites only flame sprites without re-running 4-pass light.shade(); paused flame timer when gateway is off-screen.',
+      'src/fx/stage.ts: Global alphaTextures cache, macrotask-sliced boot pool prewarming with autoStart:true + inst.update(0.08) to pre-populate emitter Sprite pools, removeEffect(inst, false) on pooled instances, same-frame spawn dedup (oldest.age < 0.045), emitter/particle caps (<=4 ground / <=3 world), Wilds fast-path in walkInst, and split staticOccCache vs heroOccCache.',
+      'src/stronghold/combat-vfx.ts & src/stronghold/encounters.ts: Removed h.state==="attack" and comboHighlightMs from aoeKey (modulating sprite.alpha/tint instead of re-rasterizing the AoE canvas on every swing), cached base dotted AoE zones in zoneBaseCache at quantized 16-way compass angles, preserved zv.key across zonePool reuse, and capped encountersStep catch-up loop to 2 steps.',
+      'src/stronghold/hero.ts: Extracted 1-byte Uint8Array alpha sheet once at load time via prewarmAtlasAlpha(img); preloaded all HEROES at boot; cached lit/unlit hero animation frames in a 48-entry frameCache (cell.w x cell.h); cached pre-scaled cutoutCanvas per environment sprite in cutOut(); removed eager 40-sprite getAlphaMask loop from setScene(); expanded MAX_SHADOW_CACHE to 192.',
+      'src/stronghold/gate-doors.ts: Pre-baked scaled sheetCanvas once when full-gateway-v7-sheet.webp loads so opening the gate (setOpen(true)) copies from sheetCanvas in 0.05ms instead of triggering a 96-109ms main-thread WebP re-decode; cached shaded gateway frame for 160ms torch flicker.',
+      'src/app/loader.ts, src/typography/frames.ts, src/typography/hud.ts, src/stronghold/choose-hero.ts, src/stronghold/hero-picker.ts, src/stronghold/main.ts: Disabled Pixi texture GC, pre-built ChooseHero layout and warmed GPU textures via renderer.texture.initSource(), and guarded MsdfText.place() + quantized cooldownArc steps in Hud.setSkills.',
+      'src/stronghold/world-view.ts & src/stronghold/lighting.ts: Fixed Co-op join signature using resolved nextBuilt, separated shadowsDirty from selection changes, cached staticLights, synced sunKey before first capture in setClockSource, and skipped no-op setShadow(null, 0) repaints.',
       'src/stronghold/tracelog.ts & server/internal/server/tracelog.go: Fixed 1-frame phase attribution skew, instrumented hero/party/parallax/gate-doors/lighting phases, classified high-unaccounted spikes as main-thread-longtask / browser-compositor, and persisted fps-tracelogs.jsonl across restarts.',
     ],
     benchmarkAfterFix: combatBenchmark,

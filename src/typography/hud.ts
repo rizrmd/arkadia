@@ -45,6 +45,7 @@ interface SkillSlotView{
  artHolder:Container;
  currentArt:string;
  cooldownArc:Graphics;
+ lastCooldownStep?:number;
  levelText:MsdfText;
  stateBadge:Container;
  stateText:MsdfText;
@@ -363,16 +364,24 @@ export class Hud extends Container{
     view.artHolder.addChild(centred(this.frames.frame(sk.art),view.cx,view.cy));
    }
    view.artHolder.alpha=sk.locked?0.45:1;
-   view.levelText.text=sk.locked?'—':`Lv. ${sk.level}`;
-   view.levelText.place(view.cx,751.5,.5);
-   view.stateText.text=sk.stateLabel??(sk.locked?'Locked':'Auto');
-   const bw=Math.max(84,Math.round(view.stateText.advance+36));
-   view.stateBadge.width=bw;
-   view.stateBadge.position.set(view.cx-bw/2,761);
-   view.stateText.place(view.cx,779,.5);
-   view.nameText.text=sk.name;
-   view.nameText.place(view.cx,811,.5);
-   this.drawCooldown(view,sk.cooldownRatio??0,sk.stateLabel);
+   const nextLv=sk.locked?'—':`Lv. ${sk.level}`;
+   if(view.levelText.text!==nextLv){
+    view.levelText.text=nextLv;
+    view.levelText.place(view.cx,751.5,.5);
+   }
+   const nextState=sk.stateLabel??(sk.locked?'Locked':'Auto');
+   if(view.stateText.text!==nextState){
+    view.stateText.text=nextState;
+    const bw=Math.max(84,Math.round(view.stateText.advance+36));
+    view.stateBadge.width=bw;
+    view.stateBadge.position.set(view.cx-bw/2,761);
+    view.stateText.place(view.cx,779,.5);
+   }
+   if(view.nameText.text!==sk.name){
+    view.nameText.text=sk.name;
+    view.nameText.place(view.cx,811,.5);
+   }
+   this.drawCooldown(view,sk.cooldownRatio??0);
   });
  }
 
@@ -383,15 +392,19 @@ export class Hud extends Container{
  }
 
  private drawCooldown(view:SkillSlotView,ratio:number,stateLabel?:string){
-  view.cooldownArc.clear();
-  if(ratio>0.01){
-   const r=43,start=-Math.PI/2,end=start+Math.PI*2*Math.min(1,ratio);
-   view.cooldownArc.moveTo(view.cx,view.cy);
-   view.cooldownArc.arc(view.cx,view.cy,r,start,end);
-   view.cooldownArc.closePath();
-   view.cooldownArc.fill({color:0x060402,alpha:0.68});
+  const step=ratio>0.01?Math.max(1,Math.round(Math.min(1,ratio)*40)):0;
+  if(view.lastCooldownStep!==step){
+   view.lastCooldownStep=step;
+   view.cooldownArc.clear();
+   if(step>0){
+    const r=43,start=-Math.PI/2,end=start+Math.PI*2*(step/40);
+    view.cooldownArc.moveTo(view.cx,view.cy);
+    view.cooldownArc.arc(view.cx,view.cy,r,start,end);
+    view.cooldownArc.closePath();
+    view.cooldownArc.fill({color:0x060402,alpha:0.68});
+   }
   }
-  if(stateLabel!==undefined){
+  if(stateLabel!==undefined&&view.stateText.text!==stateLabel){
    view.stateText.text=stateLabel;
    const bw=Math.max(84,Math.round(view.stateText.advance+36));
    view.stateBadge.width=bw;

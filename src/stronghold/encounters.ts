@@ -227,7 +227,7 @@ export async function createEncounters(o:{
     });
    }
   }
-  const sig=skills.map(s=>`${s.name}:${s.level}:${s.art}:${s.stateLabel}:${(s.cooldownRatio??0).toFixed(2)}`).join('|');
+  const sig=skills.map(s=>`${s.name}:${s.level}:${s.art}:${s.stateLabel}:${Math.round((s.cooldownRatio??0)*25)}`).join('|');
   if(sig!==lastSkillSig){
    lastSkillSig=sig;
    hud.setSkills(skills);
@@ -697,15 +697,15 @@ export async function createEncounters(o:{
   const rMult=reach(run),aoeRx=Math.round(HERO_REACH*rMult*64*Math.SQRT2),aoeRy=Math.round(aoeRx*.52),aoePadX=aoeRx+6,aoePadY=aoeRy+6,showAoe=h.alive;
   aoeView.sprite.visible=showAoe;
   if(showAoe){
+   const aoeDpr=Math.min(devicePixelRatio||1,1.5);
    const aoeHidden=o.hero.occluders(hp.x,hp.y,[-aoePadX,-aoePadY-2,aoePadX,aoePadY-2]);
-   const aoeOccKey=aoeHidden.length?aoeHidden.map(p=>p.x+':'+p.y+':'+(p.occluder?.dataset.frame??'')).join()+'@'+Math.round(hp.x*.5)+','+Math.round(hp.y*.5):'';
-   const aoeKey=`pixel-v3:${rMult.toFixed(2)}:${dpr}:${h.state==='attack'?1:0}:${comboHighlightMs>0?1:0}:${aoeOccKey}`;
+   const aoeOccKey=aoeHidden.length?aoeHidden.map(p=>p.x+':'+p.y+':'+Math.round(Number(p.occluder?.dataset.frame??0)/8)).join()+'@'+Math.round(hp.x*.5)+','+Math.round(hp.y*.5):'';
+   const aoeKey=`pixel-v3:${rMult.toFixed(2)}:${aoeDpr}:${aoeOccKey}`;
    if(aoe.dataset.key!==aoeKey){
     aoe.dataset.key=aoeKey;aoe.dataset.reach=rMult.toFixed(2);aoe.dataset.radiusPx=String(aoeRx);
-    const wpx=aoePadX*2,hpx=aoePadY*2,aw=Math.ceil(wpx*dpr),ah=Math.ceil(hpx*dpr);if(aoe.width!==aw||aoe.height!==ah){aoe.width=aw;aoe.height=ah;}
-    aoeCtx.setTransform(dpr,0,0,dpr,aoePadX*dpr,aoePadY*dpr);aoeCtx.clearRect(-aoePadX,-aoePadY,wpx,hpx);
+    const wpx=aoePadX*2,hpx=aoePadY*2,aw=Math.ceil(wpx*aoeDpr),ah=Math.ceil(hpx*aoeDpr);if(aoe.width!==aw||aoe.height!==ah){aoe.width=aw;aoe.height=ah;}
+    aoeCtx.setTransform(aoeDpr,0,0,aoeDpr,aoePadX*aoeDpr,aoePadY*aoeDpr);aoeCtx.clearRect(-aoePadX,-aoePadY,wpx,hpx);
     aoeCtx.imageSmoothingEnabled=false;
-    const pulse=(h.state==='attack'?.08:0)+(comboHighlightMs>0?.12:0);
     // Isometric dotted grid inside ground AoE reach + crisp dotted outer boundary (no continuous vector stroke)
     const stepX=12,stepY=6;
     for(let gy=-aoeRy+4;gy<=aoeRy-4;gy+=stepY){
@@ -715,9 +715,7 @@ export async function createEncounters(o:{
       if(((rowIdx+colIdx)&1)!==0)continue;
       const dist=Math.hypot(gx,gy/.52);
       if(dist>aoeRx-5||dist<14)continue;
-      aoeCtx.fillStyle=comboHighlightMs>0
-       ?'rgba(108,224,255,0.45)'
-       :`rgba(255,186,96,${(.34+pulse).toFixed(2)})`;
+      aoeCtx.fillStyle='rgba(255,186,96,0.38)';
       aoeCtx.fillRect(gx-1,gy-1,2,2);
      }
     }
@@ -726,15 +724,15 @@ export async function createEncounters(o:{
      const ang=(i/beadCount)*Math.PI*2;
      const rx=Math.round(Math.cos(ang)*(aoeRx-2)),ry=Math.round(Math.sin(ang)*(aoeRy-1));
      const major=i%2===0,ps=major?3:2;
-     aoeCtx.fillStyle=comboHighlightMs>0
-      ?(major?'rgba(168,244,255,0.92)':'rgba(102,227,255,0.72)')
-      :(major?`rgba(255,232,162,${(.82+pulse).toFixed(2)})`:`rgba(255,168,78,${(.62+pulse).toFixed(2)})`);
+     aoeCtx.fillStyle=major?'rgba(255,232,162,0.86)':'rgba(255,168,78,0.66)';
      aoeCtx.fillRect(rx-1,ry-1,ps,ps);
      if(major){aoeCtx.fillStyle='rgba(255,252,232,0.92)';aoeCtx.fillRect(rx,ry,1,1);}
     }
     if(aoeHidden.length)cutOut(aoeCtx,aoeHidden,hp.x,hp.y-2);
     aoeView.sync(wpx*k,hpx*k);
    }
+   aoeView.sprite.alpha=comboHighlightMs>0?1:h.state==='attack'?0.96:0.86;
+   aoeView.sprite.tint=comboHighlightMs>0?0x8cecff:0xffffff;
    aoeView.sprite.position.set(s.x-aoePadX*k,s.y-2*k-aoePadY*k);
    aoeView.sprite.width=aoePadX*2*k;
    aoeView.sprite.height=aoePadY*2*k;
@@ -759,7 +757,7 @@ export async function createEncounters(o:{
  }
  let last=0;
  let frameAt=performance.now();
- const loop=(now:number)=>{let dt=last?Math.min(now-last,120):16;last=now;frameAt=now;measureTracelogPhase('encountersStep',()=>{for(;dt>0;dt-=34)step(Math.min(dt,34));});measureTracelogPhase('encountersRender',render);requestAnimationFrame(loop);};
+ const loop=(now:number)=>{let dt=last?Math.min(now-last,120):16;last=now;frameAt=now;measureTracelogPhase('encountersStep',()=>{let steps=0;for(;dt>0&&steps<2;dt-=34,steps++)step(Math.min(dt,34));});measureTracelogPhase('encountersRender',render);requestAnimationFrame(loop);};
  const buildLoadoutSnapshot=()=>{
   const hid=currentHeroId();
   syncHeroLoadout(run,hid);
