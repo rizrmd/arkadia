@@ -1,4 +1,4 @@
-# Arkadia skill VFX (NixieFX)
+# Arkodia skill VFX (NixieFX)
 
 Every skill, hit, level-up and combo effect in the Stronghold is a [NixieFX](https://nixiefx.com/) particle effect.
 This folder is the NixieFX editor project (`vfx-editor.prj`): open it with **Open Folder** in the

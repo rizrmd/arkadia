@@ -43,7 +43,7 @@ const smoke=fs.existsSync(`${D}/coop-smoke.json`)?JSON.parse(fs.readFileSync(`${
 
 const md=`## Result
 
-Choose Your Hero is now the game's own Pixi v8 screen (${repo('src/stronghold/choose-hero.ts')}), opened by ${repo('src/stronghold/hero-picker.ts')} exactly as before: a new tab asks once, the HUD hero name reopens it, Begin Journey swaps the hero in place and Back keeps the current one. Nothing on it is HTML. Every word is live MSDF text in named roles from ${repo('src/typography/tokens.ts','tokens.ts')}, the ARKADIA logo is an image, and every frame and button is a kit master cut into split 9-slices at @1x/@2x/@3x. Selection and the action button are highlighted with NixieFX particles.
+Choose Your Hero is now the game's own Pixi v8 screen (${repo('src/stronghold/choose-hero.ts')}), opened by ${repo('src/stronghold/hero-picker.ts')} exactly as before: a new tab asks once, the HUD hero name reopens it, Begin Journey swaps the hero in place and Back keeps the current one. Nothing on it is HTML. Every word is live MSDF text in named roles from ${repo('src/typography/tokens.ts','tokens.ts')}, the ARKODIA logo is an image, and every frame and button is a kit master cut into split 9-slices at @1x/@2x/@3x. Selection and the action button are highlighted with NixieFX particles.
 
 Live: [${LIVE}](${LIVE}) (open a new tab, or add \`?hero=reset\` to choose again).${live?` Checked ${live.checked.slice(0,16).replace('T',' ')} UTC: ${live.results.map(r=>`${r.name} ${r.viewport.join(' × ')} DPR ${r.dpr} (${r.layout}, ${r.errors} console errors)`).join('; ')}.`:''}
 

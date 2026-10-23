@@ -1,4 +1,4 @@
-// High-resolution ARKADIA compass logo (extracted from the generated master in assets-src/loading/logo-source.jpg)
+// High-resolution ARKODIA compass logo (extracted from the generated master in assets-src/loading/logo-source.jpg)
 // plus the loading screen background artwork and sleek antique-gold progress bar assets at @1x, @2x and @3x.
 //   node scripts/typography/build-logo.mjs
 import fs from 'node:fs';
@@ -10,7 +10,7 @@ fs.mkdirSync(HERO_OUT,{recursive:true});
 fs.mkdirSync(LOAD_OUT,{recursive:true});
 fs.mkdirSync('assets-src/typography',{recursive:true});
 
-// 1. Extract straight-alpha high-resolution ARKADIA logo from assets-src/loading/logo-source.jpg
+// 1. Extract straight-alpha high-resolution ARKODIA logo from assets-src/loading/logo-source.jpg
 const {data,info}=await sharp('assets-src/loading/logo-source.jpg').raw().toBuffer({resolveWithObject:true});
 const W=info.width,H=info.height,ch=info.channels;
 const fg=Buffer.alloc(W*H*4);
@@ -75,7 +75,7 @@ const masterLogo=await sharp({create:{width:cw,height:ch2+6,channels:4,backgroun
  .png({compressionLevel:9})
  .toBuffer();
 
-await sharp(masterLogo).toFile('assets-src/typography/arkadia-logo-master.png');
+await sharp(masterLogo).toFile('assets-src/typography/arkodia-logo-master.png');
 
 // Export hero logo (@1x: 270 x 70) and loading screen centerpiece logo (@1x: 390 x 120)
 const HERO_W=270,HERO_H=70;
@@ -150,7 +150,7 @@ const trackSvg=`<svg xmlns="http://www.w3.org/2000/svg" width="${TRACK_W*3}" hei
   <!-- Center top & bottom small compass diamond ticks -->
   ${star(TRACK_W/2,5.5,3.2,3.2)}
   ${star(TRACK_W/2,22.5,3.2,3.2)}
-  <!-- Left & right ornate compass finials with teal crystal center matching the ARKADIA logo -->
+  <!-- Left & right ornate compass finials with teal crystal center matching the ARKODIA logo -->
   ${star(11,14,10,7,2.4,'#146678')}
   ${star(TRACK_W-11,14,10,7,2.4,'#146678')}
  </g>
@@ -299,7 +299,7 @@ const inlineCrestSvg=minifySvg(
   .replaceAll('url(#star)','url(#ld-cr-star)'),
 );
 
-const indexHtml=`<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Arkadia · Stronghold</title>
+const indexHtml=`<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Arkodia · Stronghold</title>
 <link rel="preload" as="image" href="/typography/v2/loading/bg-mobile.webp" media="(orientation: portrait)" fetchpriority="high">
 <link rel="preload" as="image" href="/typography/v2/loading/bg-desktop.webp" media="(orientation: landscape)" fetchpriority="high">
 <style>
@@ -334,12 +334,12 @@ canvas{display:block;width:100%;height:100%}
 #loading-retry{width:168px;height:42px;flex-shrink:0;display:none;align-items:center;justify-content:center;cursor:pointer;pointer-events:auto;border:1.5px solid #d9ab55;border-radius:4px;background:linear-gradient(180deg,#2d1c0d 0%,#160d06 100%);box-shadow:0 3px 10px rgba(0,0,0,0.85),inset 0 1px 0 rgba(255,240,196,0.35);font:600 15px/1 "Cinzel","EB Garamond",Georgia,serif;color:#f5e4bc;letter-spacing:0.04em;text-shadow:0 1px 2px #000}
 #loading-retry:hover{filter:brightness(1.12)}
 </style></head><body><div id="app"></div>
-<div id="loading-screen" role="status" aria-live="polite" aria-label="Loading Arkadia" aria-valuenow="1" data-state="loading">
+<div id="loading-screen" role="status" aria-live="polite" aria-label="Loading Arkodia" aria-valuenow="1" data-state="loading">
  <div id="loading-bg"></div>
  <div id="loading-dim"></div>
  <div id="loading-stage">
   <div id="loading-vignette"></div>
-  <img id="loading-logo" alt="ARKADIA" width="390" height="120" src="${logoInlineData}">
+  <img id="loading-logo" alt="ARKODIA" width="390" height="120" src="${logoInlineData}">
   ${inlineDivSvg}
   <div id="loading-bar-wrap">
    ${inlineTrackSvg}
@@ -482,4 +482,4 @@ canvas{display:block;width:100%;height:100%}
 `;
 
 fs.writeFileSync('index.html',indexHtml);
-console.log('Built high-res ARKADIA logo, loading backgrounds, loading bar assets, and pure HTML index.html in',HERO_OUT,'and',LOAD_OUT);
+console.log('Built high-res ARKODIA logo, loading backgrounds, loading bar assets, and pure HTML index.html in',HERO_OUT,'and',LOAD_OUT);

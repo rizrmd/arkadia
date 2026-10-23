@@ -14,13 +14,13 @@ function assert(cond, msg) {
 
 async function main() {
   await mkdir(OUT_DIR, { recursive: true });
-  execFileSync(process.env.GO || 'go', ['build', '-o', 'bin/arkadia', './cmd/arkadia'], {
+  execFileSync(process.env.GO || 'go', ['build', '-o', 'bin/arkodia', './cmd/arkodia'], {
     cwd: 'server',
     stdio: 'inherit',
     env: { ...process.env, CGO_ENABLED: '0' },
   });
 
-  const server = spawn('server/bin/arkadia', [], {
+  const server = spawn('server/bin/arkodia', [], {
     env: { ...process.env, PORT, SITE_DIR: 'dist' },
     stdio: ['ignore', 'pipe', 'inherit'],
   });

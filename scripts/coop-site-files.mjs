@@ -1,10 +1,10 @@
 import {chromium} from 'playwright';import {spawn} from 'node:child_process';import {readFileSync,readdirSync} from 'node:fs';
 // Print (one per line) the dist/ files the Stronghold actually loads, so a release stages those and not the
-// 370 MB of documentation renders in public/. Serves dist/ with the built server/bin/arkadia, opens the game in
+// 370 MB of documentation renders in public/. Serves dist/ with the built server/bin/arkodia, opens the game in
 // co-op and offline, walks the hero out through the gate, and records every same-origin file fetched.
 const siteDir=process.env.SITE_DIR||'dist';
 const port=process.env.PORT||String(18700+(process.pid%1000));
-const bin=process.env.ARKADIA_BIN||'server/bin/arkadia';
+const bin=process.env.ARKODIA_BIN||'server/bin/arkodia';
 const server=spawn(bin,[],{env:{...process.env,PORT:port,SITE_DIR:siteDir},stdio:['ignore','pipe','inherit']});
 await new Promise((ok,no)=>{server.stdout.on('data',d=>{if(String(d).includes('listening'))ok();});server.on('exit',c=>no(Error('server exited '+c)));});
 // Single-process Chromium survives only one context, so each visit gets its own browser.

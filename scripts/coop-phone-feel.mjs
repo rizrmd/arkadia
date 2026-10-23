@@ -15,8 +15,8 @@ import {chromium} from 'playwright';import {spawn,execFileSync} from 'node:child
 // NET=burst: a phone radio in power save, releasing held packets together at its wake-ups every 100 ms.
 const CPU=Number(process.env.CPU||1),NET=process.env.NET||'cell',net={base:40,jitter:50,spike:.03,spikeMs:120,wake:100,stall:.025,stallMs:[250,500]};
 const out='docs/coop',root=process.env.ROOT||'.';await fs.mkdir(out,{recursive:true});
-if(!process.env.ROOT&&!process.env.NOBUILD)execFileSync(process.env.GO||'go',['build','-o','bin/arkadia','./cmd/arkadia'],{cwd:'server',stdio:'inherit',env:{...process.env,CGO_ENABLED:'0'}});
-const server=spawn(root+'/server/bin/arkadia',[],{env:{...process.env,PORT:'8796',SITE_DIR:root+'/dist'},stdio:['ignore','pipe','inherit']});
+if(!process.env.ROOT&&!process.env.NOBUILD)execFileSync(process.env.GO||'go',['build','-o','bin/arkodia','./cmd/arkodia'],{cwd:'server',stdio:'inherit',env:{...process.env,CGO_ENABLED:'0'}});
+const server=spawn(root+'/server/bin/arkodia',[],{env:{...process.env,PORT:'8796',SITE_DIR:root+'/dist'},stdio:['ignore','pipe','inherit']});
 await new Promise((ok,no)=>{server.stdout.on('data',d=>{if(String(d).includes('listening'))ok();});server.on('exit',c=>no(Error('server exited '+c)));});
 const url='http://127.0.0.1:8796';
 const launch=()=>chromium.launch({headless:true,env:{...process.env,LD_LIBRARY_PATH:'/home/dev/.local/browser-libs/usr/lib/x86_64-linux-gnu:/opt/fural-antigravity-glibc'},args:['--no-sandbox','--no-zygote','--single-process']});
@@ -38,7 +38,7 @@ function frames(samples){const d=[];for(let i=1;i<samples.length;i++)d.push(samp
 async function run(mode){
  const browser=await launch(),ctx=await browser.newContext({viewport:{width:390,height:844},deviceScaleFactor:2,isMobile:true,hasTouch:true});const page=await ctx.newPage();
  if(mode==='coop')await page.routeWebSocket('**/ws',ws=>{const srv=ws.connectToServer(),up=pipe(),down=pipe();ws.onMessage(m=>up(()=>srv.send(m)));srv.onMessage(m=>down(()=>ws.send(m)));});
- await page.addInitScript(()=>{try{localStorage.setItem('arkadia.coop.name','Phone');localStorage.removeItem('arkadia.stronghold.hero');}catch{}});
+ await page.addInitScript(()=>{try{localStorage.setItem('arkodia.coop.name','Phone');localStorage.removeItem('arkodia.stronghold.hero');}catch{}});
  await page.goto(url+(mode==='coop'?'/?time=0.42':'/?offline&time=0.42'));await ready(page);
  if(mode==='coop')await page.waitForFunction(()=>window.__COOP__?.stats().status==='online',null,{timeout:30000}).catch(async e=>{console.error(await page.evaluate(()=>JSON.stringify(window.__COOP__?.stats())),await page.evaluate(()=>document.querySelector('.coop-error')?.textContent));throw e;});
  const cdp=await ctx.newCDPSession(page);await (CPU>1&&cdp.send('Emulation.setCPUThrottlingRate',{rate:CPU}));await page.waitForTimeout(2000);

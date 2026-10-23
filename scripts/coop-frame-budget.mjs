@@ -10,8 +10,8 @@ import {chromium} from 'playwright';import {spawn,execFileSync} from 'node:child
 // Headless Chromium on a shared CPU without a GPU: compare runs with each other, not with a real phone.
 const phone=!!process.env.PHONE,offline=!!process.env.OFFLINE,tag=process.env.TAG||'fixed',root=process.env.ROOT||'.',bots=offline?0:+(process.env.BOTS||3);
 const out='docs/coop';await fs.mkdir(out,{recursive:true});
-if(!process.env.ROOT&&!process.env.NOBUILD)execFileSync(process.env.GO||'go',['build','-o','bin/arkadia','./cmd/arkadia'],{cwd:'server',stdio:'inherit',env:{...process.env,CGO_ENABLED:'0'}});
-const server=spawn(root+'/server/bin/arkadia',[],{env:{...process.env,PORT:'8797',SITE_DIR:root+'/dist'},stdio:['ignore','pipe','inherit']});
+if(!process.env.ROOT&&!process.env.NOBUILD)execFileSync(process.env.GO||'go',['build','-o','bin/arkodia','./cmd/arkodia'],{cwd:'server',stdio:'inherit',env:{...process.env,CGO_ENABLED:'0'}});
+const server=spawn(root+'/server/bin/arkodia',[],{env:{...process.env,PORT:'8797',SITE_DIR:root+'/dist'},stdio:['ignore','pipe','inherit']});
 await new Promise((ok,no)=>{server.stdout.on('data',d=>{if(String(d).includes('listening'))ok();});server.on('exit',c=>no(Error('server exited '+c)));});
 const url='http://127.0.0.1:8797',sockets=[],timers=[];
 const browser=await chromium.launch({headless:true,env:{...process.env,LD_LIBRARY_PATH:'/home/dev/.local/browser-libs/usr/lib/x86_64-linux-gnu:/opt/fural-antigravity-glibc'},args:['--no-sandbox','--no-zygote','--single-process']});

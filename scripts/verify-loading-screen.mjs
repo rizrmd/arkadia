@@ -1,5 +1,5 @@
 // Verify and capture the pure HTML instant loading screen (renders immediately from index.html at t=0ms
-// before JS/Pixi download, with full-bleed background artwork, high-resolution ARKADIA compass logo,
+// before JS/Pixi download, with full-bleed background artwork, high-resolution ARKODIA compass logo,
 // inline SVG antique-gold progress bar, and clean DOM removal once loading finishes).
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -56,7 +56,7 @@ try{
     };
    });
    assert.equal(instantHtmlAudit.screenVisible,true,'#loading-screen must be visible at domcontentloaded before JS loads');
-   assert.equal(instantHtmlAudit.logoDecodedAt0ms,true,'Inline @1x ARKADIA logo must be decoded at 0ms without JS');
+   assert.equal(instantHtmlAudit.logoDecodedAt0ms,true,'Inline @1x ARKODIA logo must be decoded at 0ms without JS');
    assert.equal(instantHtmlAudit.trackVisible,true,'Inline SVG progress bar track must be visible at 0ms');
    assert.equal(instantHtmlAudit.fillVisible,true,'Inline SVG progress bar fill must be visible at 0ms');
    assert.equal(instantHtmlAudit.noPixiCanvasYet,true,'Verified pure HTML render before Pixi canvas exists');

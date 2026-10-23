@@ -14,7 +14,7 @@ The saved level still selects new/repaired/upgraded forge sprites, and the ruine
 
 ## Live game
 
-[Open Stronghold](https://ark-whachat.fural.space/) · [Open through the main Arkadia host](https://ark-whachat.fural.space/).
+[Open Stronghold](https://ark-whachat.fural.space/) · [Open through the main Arkodia host](https://ark-whachat.fural.space/).
 
 ## Human images
 

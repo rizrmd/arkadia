@@ -1,6 +1,6 @@
-// Command arkadia serves the built Stronghold client and runs its co-op rooms.
+// Command arkodia serves the built Stronghold client and runs its co-op rooms.
 //
-//	PORT=3000 SITE_DIR=dist ./arkadia
+//	PORT=3000 SITE_DIR=dist ./arkodia
 package main
 
 import (
@@ -57,7 +57,7 @@ func main() {
 		defer cancel()
 		srv.Shutdown(shutdown)
 	}()
-	log.Info("Arkadia listening", "addr", srv.Addr, "site", s.Site, "columns", len(nav.Columns))
+	log.Info("Arkodia listening", "addr", srv.Addr, "site", s.Site, "columns", len(nav.Columns))
 	if err := srv.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 		log.Error("serve", "err", err)
 		os.Exit(1)

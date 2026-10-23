@@ -1,4 +1,4 @@
-export const SNOW_KEY='arkadia-snow-expedition-v1';
+export const SNOW_KEY='arkodia-snow-expedition-v1';
 export const CAMP={x:1.6,y:7.6};
 export const CACHES=[{id:'outpost',name:'Lost outpost',x:3,y:6},{id:'ridge',name:'Frozen ridge',x:6.5,y:2},{id:'trail',name:'Eastern trail',x:8,y:7.5}];
 export const PATROL=[{x:4,y:4},{x:5,y:4},{x:7,y:2},{x:8,y:3},{x:7,y:7},{x:8,y:7}];

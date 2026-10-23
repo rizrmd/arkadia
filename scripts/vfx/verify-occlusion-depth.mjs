@@ -8,7 +8,7 @@ import {launchOptions} from '../typography/browser.mjs';
 const OUT='docs/nixie-fx';
 await fs.mkdir(OUT,{recursive:true});
 
-execFileSync(process.env.GO||'go',['build','-o','bin/arkadia','./cmd/arkadia'],{
+execFileSync(process.env.GO||'go',['build','-o','bin/arkodia','./cmd/arkodia'],{
  cwd:'server',
  stdio:'inherit',
  env:{...process.env,CGO_ENABLED:'0'},
@@ -16,7 +16,7 @@ execFileSync(process.env.GO||'go',['build','-o','bin/arkadia','./cmd/arkadia'],{
 
 const port=String(8910+Math.floor(Math.random()*80));
 const base=process.env.DEMO_URL||`http://127.0.0.1:${port}`;
-const server=process.env.DEMO_URL?null:spawn('server/bin/arkadia',[],{
+const server=process.env.DEMO_URL?null:spawn('server/bin/arkodia',[],{
  env:{...process.env,PORT:port,SITE_DIR:'dist'},
  stdio:['ignore','pipe','inherit'],
 });

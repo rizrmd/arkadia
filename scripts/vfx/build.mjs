@@ -9,7 +9,7 @@ import path from 'node:path';
 import {effect} from './lib/nixie.mjs';
 const ROOT='vfx',EFFECTS=path.join(ROOT,'effects'),LEDGER=path.join(ROOT,'generated-effects.json'),CLI='node_modules/nixie-fx/dist/cli.js';
 const prj=path.join(ROOT,'vfx-editor.prj');
-if(!fs.existsSync(prj))fs.writeFileSync(prj,JSON.stringify({app:'vfx-editor',kind:'project',version:1,id:'arkadia-skill-vfx',name:'Arkadia Skill VFX',
+if(!fs.existsSync(prj))fs.writeFileSync(prj,JSON.stringify({app:'vfx-editor',kind:'project',version:1,id:'arkodia-skill-vfx',name:'Arkodia Skill VFX',
  settings:{effectDataPath:'effects',outputPath:'out/vfx',assetRootPath:'assets',materialsFolder:'materials',allowExternalOutput:false,lastEffectFile:'ember-warden/flame-fan.cast.json'},
  createdAt:'2026-10-22T00:00:00.000Z',updatedAt:'2026-10-22T00:00:00.000Z'},null,2)+'\n');
 fs.mkdirSync(path.join(ROOT,'assets/materials'),{recursive:true});

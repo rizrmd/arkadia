@@ -2,7 +2,7 @@
  "task": "Map spec + Stronghold as JSON prefab at map center (step a)",
  "date": "2026-10-23",
  "prefab": "src/stronghold/prefabs/stronghold.json (server copy server/internal/sim/stronghold.json)",
- "map": "src/world/maps/arkadia-01.json",
+ "map": "src/world/maps/arkodia-01.json",
  "derivedDataDump": {"result": "byte-identical before/after", "covers": ["COURT", "environmentSprites (camp + ?buildings=all)", "enclosure HTML", "WORLD", "slots", "groundEdges", "groundAxes", "placement", "walkableGround grid 372x243", "safe zone grid + 50 seeded spawn points", "gate trigger grid", "gateTowerFront 36..135", "navBlocker grid open/closed", "TORCHES"]},
  "navExport": {"command": "node scripts/export-coop-nav.mjs", "result": "byte-identical before/after", "columns": 2399, "note": "The committed nav.json (2617 columns) was already stale against world-view.ts before this change; not regenerated (world-view.ts is owned by #CEHXB)."},
  "goTest": "go test ./... pass (TestPrefabMatchesClient, TestPrefabKeepsCourtGeometry, TestPrefabWalkableMatchesHardcoded)",

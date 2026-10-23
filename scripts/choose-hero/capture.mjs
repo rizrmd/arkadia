@@ -155,7 +155,7 @@ if(only==='crisp'||only==='all'){
 if(only==='input'||only==='all'){
  const checks=[];const ok=(name,pass,detail='')=>{checks.push({name,pass,detail});console.log(pass?'PASS':'FAIL',name,detail);};
  const targets=p=>p.evaluate(async()=>(await window.__PIXI_UI__.picker.view()).targets());
- const hero=p=>p.evaluate(()=>localStorage.getItem('arkadia.hero'));
+ const hero=p=>p.evaluate(()=>localStorage.getItem('arkodia.hero'));
  await open({width:1672,height:941,dpr:1,hero:'rift-runner'},async p=>{
   // The game starts as Rift Runner (the default), so choosing Ember proves the pick reaches the game.
   const t=await targets(p),[cx,cy]=t.cards['ember-warden'],cardClip={x:40,y:125,width:320,height:410};

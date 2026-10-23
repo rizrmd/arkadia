@@ -8,14 +8,14 @@ import {launchOptions} from './typography/browser.mjs';
 const OUT='docs/environment-corners';
 await fs.mkdir(OUT,{recursive:true});
 
-const TMP_SITE=`/tmp/arkadia-corners-dist-${process.pid}`;
-const TMP_BIN=`/tmp/arkadia-server-${process.pid}`;
+const TMP_SITE=`/tmp/arkodia-corners-dist-${process.pid}`;
+const TMP_BIN=`/tmp/arkodia-server-${process.pid}`;
 
 execFileSync('npx',['vite','build','--outDir',TMP_SITE],{
  stdio:'inherit',
 });
 
-execFileSync(process.env.GO||'go',['build','-o',TMP_BIN,'./cmd/arkadia'],{
+execFileSync(process.env.GO||'go',['build','-o',TMP_BIN,'./cmd/arkodia'],{
  cwd:'server',
  stdio:'inherit',
  env:{...process.env,CGO_ENABLED:'0'},

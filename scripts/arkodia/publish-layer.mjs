@@ -1,11 +1,11 @@
 import fs from 'node:fs/promises';import {readFileSync} from 'node:fs';import os from 'node:os';import path from 'node:path';import {gzipSync} from 'node:zlib';import {createHash} from 'node:crypto';import {execFileSync} from 'node:child_process';import {fileURLToPath} from 'node:url';
-// Release into the one Arkadia sandbox (https://ark-whachat.fural.space, served by gateway.mjs).
+// Release into the one Arkodia sandbox (https://ark-whachat.fural.space, served by gateway.mjs).
 // A layer is a set of files at a URL prefix; the gateway applies new layers in order when the sandbox boots.
-//   node scripts/arkadia/publish-layer.mjs --dir public/ember-warden/v1 --prefix /ember-warden-review --name ember
-//   node scripts/arkadia/publish-layer.mjs --tgz release.tgz --name game        (game release from scripts/fural-deploy.sh: arkadia binary +
+//   node scripts/arkodia/publish-layer.mjs --dir public/ember-warden/v1 --prefix /ember-warden-review --name ember
+//   node scripts/arkodia/publish-layer.mjs --tgz release.tgz --name game        (game release from scripts/fural-deploy.sh: arkodia binary +
 //                                                                                site/, plus this commit's gateway and boot script)
-//   node scripts/arkadia/publish-layer.mjs --gateway                             (gateway.mjs and the boot script only)
-// From code: import {publishLayer} from './arkadia/publish-layer.mjs'; await publishLayer({name, files: {'/path': base64}, prefix}).
+//   node scripts/arkodia/publish-layer.mjs --gateway                             (gateway.mjs and the boot script only)
+// From code: import {publishLayer} from './arkodia/publish-layer.mjs'; await publishLayer({name, files: {'/path': base64}, prefix}).
 // The game itself ships only as a release: review and evidence layers take a prefix and never carry /index.html.
 const run=args=>{try{return JSON.parse(execFileSync('fural-agent',args,{encoding:'utf8',timeout:180000,maxBuffer:8e6,stdio:['ignore','pipe','pipe']}));}catch(e){throw Error((e.stderr||e.stdout||e.message).toString().slice(0,1800));}};
 export const SANDBOX='arkadia',URL_BASE='https://ark-whachat.fural.space',PROJECT='PJ8758f22f61165f3d3215e454',MEMBER=process.env.FURAL_PUBLISH_MEMBER||(()=>{try{return run(['whoami']).user_id;}catch{return '';}})()||'US4f550b10dab65dc9756fa429';
@@ -14,7 +14,7 @@ if [ ! -f www/.seeded ] && ls seed/www.tgz.* >/dev/null 2>&1; then rm -rf www bu
 exec node gateway.mjs
 `;
 export function sandboxId(){const s=run(['sandboxes','list']),list=Array.isArray(s)?s:s.sandboxes||s.items||[],b=list.find(x=>x.name===SANDBOX);if(!b)throw Error(`Custom sandbox ${SANDBOX} not found`);return b.id;}
-const stage=path.join(os.homedir(),'releases/arkadia-layers');
+const stage=path.join(os.homedir(),'releases/arkodia-layers');
 
 // Upload bytes as content-named parts under layers/, so a retry skips parts already there.
 async function upload(id,bytes,name,size=4e6){

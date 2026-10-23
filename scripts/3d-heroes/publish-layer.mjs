@@ -1,4 +1,4 @@
-import { publishLayer, readDir } from '../arkadia/publish-layer.mjs';
+import { publishLayer, readDir } from '../arkodia/publish-layer.mjs';
 
 const labFiles = await readDir('public/3d-hero-lab');
 const assetFiles = await readDir('public/assets/characters/3d');

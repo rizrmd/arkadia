@@ -1,4 +1,4 @@
-import data from './maps/arkadia-01.json';
+import data from './maps/arkodia-01.json';
 import {STRONGHOLD} from '../stronghold/prefabs/stronghold';
 // A map is a square of ground tiles with prefabs placed on it (maps/*.json). The runtime still renders and walks
 // the Stronghold court in court-local tiles; these helpers convert to map tiles and chunks for steps (b) to (d).

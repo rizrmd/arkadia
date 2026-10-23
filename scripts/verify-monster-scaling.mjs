@@ -7,7 +7,7 @@ import sharp from 'sharp';
 const port=String(8870+Math.floor(Math.random()*80));
 const base=process.env.DEMO_URL||`http://127.0.0.1:${port}`;
 const outDir='docs/monster-scaling';
-const server=process.env.DEMO_URL?null:spawn('server/bin/arkadia',[],{
+const server=process.env.DEMO_URL?null:spawn('server/bin/arkodia',[],{
  env:{...process.env,PORT:port,SITE_DIR:'dist'},
  stdio:['ignore','pipe','inherit']
 });

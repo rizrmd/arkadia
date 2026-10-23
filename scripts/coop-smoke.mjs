@@ -9,7 +9,7 @@ import {spawn,execFileSync} from 'node:child_process';import assert from 'node:a
 const SECONDS=Number(process.env.SECONDS||40),TICK=50,STEP=120*TICK/1000;
 let server=null,url=process.env.COOP_URL;
 if(!url){
- const bin=process.env.ARKADIA_BIN||'server/bin/arkadia';if(!process.env.ARKADIA_BIN)execFileSync(process.env.GO||'go',['build','-o','bin/arkadia','./cmd/arkadia'],{cwd:'server',stdio:'inherit',env:{...process.env,CGO_ENABLED:'0'}});
+ const bin=process.env.ARKODIA_BIN||'server/bin/arkodia';if(!process.env.ARKODIA_BIN)execFileSync(process.env.GO||'go',['build','-o','bin/arkodia','./cmd/arkodia'],{cwd:'server',stdio:'inherit',env:{...process.env,CGO_ENABLED:'0'}});
  const port=process.env.PORT||String(18600+(process.pid%1000));
  server=spawn(bin,[],{env:{...process.env,PORT:port,SITE_DIR:process.env.SITE_DIR||'dist'},stdio:['ignore','pipe','inherit']});
  await new Promise((ok,no)=>{server.stdout.on('data',d=>{if(String(d).includes('listening'))ok();});server.on('exit',c=>no(Error('server exited '+c)));});

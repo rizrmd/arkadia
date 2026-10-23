@@ -1,0 +1,36 @@
+{
+ "base": "http://127.0.0.1:3917",
+ "checks": [
+  {
+   "name": "title",
+   "value": "Arkodia · Stronghold"
+  },
+  {
+   "name": "loading screen",
+   "value": {
+    "label": "Loading Arkodia",
+    "logo": "ARKODIA"
+   }
+  },
+  {
+   "name": "storage after reload",
+   "value": {
+    "local": {
+     "arkodia-stronghold-v1": "{\"legacy\":true}",
+     "arkodia.coop.name": "New",
+     "arkodia.hero": "rift-runner",
+     "arkodia.stronghold.hero": "{\"x\":590,\"y\":420}"
+    },
+    "session": {
+     "arkodia.coop.room": "C8246",
+     "arkodia.hero.picked": "1"
+    }
+   }
+  },
+  {
+   "name": "Arkadia in built bundle",
+   "value": []
+  }
+ ],
+ "ok": true
+}

@@ -1,3 +1,4 @@
+import './storage-rename';
 import {Application,Container,Sprite,Graphics,Assets,Texture} from 'pixi.js';
 import {FrameSet,pickFrameScale} from './typography/frames';
 import {installMsdfFx,loadFonts} from './typography/msdf';
@@ -52,7 +53,7 @@ function draw(){
  arena?.attach(props);
  let h=0;for(const c of layout.join('|'))h=Math.imul(h,31)+c.charCodeAt(0)|0;hash=(h>>>0).toString(16);
  if(statsText){statsText.text=`100 TILES · ${n} PROPS · SEED ${hash}`;statsText.place(innerWidth-20,62,1);}
- (window as any).__ARKADIA__={pixi:app.renderer.type,seed,hash,tiles:100,props:n,sorted:true,layout,previewUsed:false,assets:manifest.assets.length,wallAlignment:'ground-contacts-v1',probeY:probe.y};
+ (window as any).__ARKODIA__={pixi:app.renderer.type,seed,hash,tiles:100,props:n,sorted:true,layout,previewUsed:false,assets:manifest.assets.length,wallAlignment:'ground-contacts-v1',probeY:probe.y};
 }
 
 async function start(){
@@ -83,9 +84,9 @@ async function start(){
  const refreshEquipment=await mountEquipment(uiStage,frames,chars.manifest.equipment,arena);
  const refreshHud=hud(uiStage,frames,arena);
  app.ticker.add(t=>{arena!.update(t.deltaMS);refreshHud();refreshEquipment();});
- (window as any).__ARKADIA_ARENA__=arena;
- (window as any).__ARKADIA_CHARACTERS__=()=>arena!.snapshot();
- (window as any).__ARKADIA_APP__=app;
- (window as any).__ARKADIA_WALLS__=wallSources;
+ (window as any).__ARKODIA_ARENA__=arena;
+ (window as any).__ARKODIA_CHARACTERS__=()=>arena!.snapshot();
+ (window as any).__ARKODIA_APP__=app;
+ (window as any).__ARKODIA_WALLS__=wallSources;
 }
 void start();

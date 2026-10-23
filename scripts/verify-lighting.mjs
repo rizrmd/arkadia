@@ -83,8 +83,8 @@ try{
  await page.click('text=Midnight');await page.waitForTimeout(700);c=await stats(page);assert.equal(c.phase,'Night');assert.equal(c.sun,'none');assert.equal(c.state,'on');
  await page.click('text=Noon');await page.waitForTimeout(700);await open(page);c=await stats(page);assert.equal(c.phase,'Day');assert.equal(c.sun,'0.5000');
  await page.click('.clock-chip');await page.click('.clock-live');await page.waitForTimeout(500);
- assert.deepEqual(await page.evaluate(()=>[document.querySelector('#day-clock').dataset.clock,localStorage.getItem('arkadia.stronghold.lighting')]),['live','{"mode":"dynamic"}']);
- await page.evaluate(()=>localStorage.removeItem('arkadia.stronghold.lighting'));
+ assert.deepEqual(await page.evaluate(()=>[document.querySelector('#day-clock').dataset.clock,localStorage.getItem('arkodia.stronghold.lighting')]),['live','{"mode":"dynamic"}']);
+ await page.evaluate(()=>localStorage.removeItem('arkodia.stronghold.lighting'));
  pass('in-game clock: slider and presets relight, sun shadows by day only, pinned hour remembered, Live restores the cycle');
  page=await fresh();
  // 5c. Dragging the clock previews over the unlit world: no world re-raster or snow re-encode per step,
@@ -101,9 +101,9 @@ try{
  page=await fresh();
  // 6. ?lighting=night is remembered (no menu in the world-only view); ?lighting=dynamic restores the clock.
  await open(page,'?lighting=night');assert.equal((await stats(page)).phase,'Night');
- await open(page);const kept=await page.evaluate(()=>[document.querySelector('#world-layers').dataset.lightingMode,localStorage.getItem('arkadia.stronghold.lighting')]);assert.equal((await stats(page)).phase,'Night');assert.deepEqual(kept,['night','{"mode":"night"}']);
+ await open(page);const kept=await page.evaluate(()=>[document.querySelector('#world-layers').dataset.lightingMode,localStorage.getItem('arkodia.stronghold.lighting')]);assert.equal((await stats(page)).phase,'Night');assert.deepEqual(kept,['night','{"mode":"night"}']);
  await open(page,'?lighting=day');assert.equal((await stats(page)).phase,'Day');
- await open(page,'?lighting=dynamic');assert.equal(await page.evaluate(()=>document.querySelector('#world-layers').dataset.lightingMode),'dynamic');await page.evaluate(()=>localStorage.removeItem('arkadia.stronghold.lighting'));
+ await open(page,'?lighting=dynamic');assert.equal(await page.evaluate(()=>document.querySelector('#world-layers').dataset.lightingMode),'dynamic');await page.evaluate(()=>localStorage.removeItem('arkodia.stronghold.lighting'));
  pass('?lighting=night|day persists across reloads, ?lighting=dynamic restores the clock');
  page=await fresh();
  // 7. Night hit-testing on the forge roof still selects the building; drag still pans.

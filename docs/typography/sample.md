@@ -1,6 +1,6 @@
 ## Result
 
-The HUD sample and a new Choose Your Hero sample now share one Pixi v8 typography module: MSDF BitmapText in two self-hosted OFL fonts, named text-role tokens, and an effect shader for gradients, outlines, glow and soft shadows. HUD frames are bronze bitmaps generated as @3x masters with @2x/@1x downscales and drawn as 9-slices. Every word on both screens is live MSDF text. The ARKADIA logo stays an image. Extras that are not in the reference, such as CRITICAL 248, are removed.
+The HUD sample and a new Choose Your Hero sample now share one Pixi v8 typography module: MSDF BitmapText in two self-hosted OFL fonts, named text-role tokens, and an effect shader for gradients, outlines, glow and soft shadows. HUD frames are bronze bitmaps generated as @3x masters with @2x/@1x downscales and drawn as 9-slices. Every word on both screens is live MSDF text. The ARKODIA logo stays an image. Extras that are not in the reference, such as CRITICAL 248, are removed.
 
 Live sample: [https://ark-whachat.fural.space/typography/](https://ark-whachat.fural.space/typography/) ([Choose Your Hero](https://ark-whachat.fural.space/typography/?screen=hero)). Toolbar: screen, hero, glow, and a reference-overlay slider.
 
@@ -220,7 +220,7 @@ During play, `div#app` holds only:
 
 #### 1. Loading Screen (`src/app/loader.ts`)
 
-Replaced `#loading-screen` in `index.html` with a Pixi v8 stage displaying the `ARKADIA` logo (`@1x/@2x/@3x`), `MsdfText` status and progress readouts (`panel-title`, `panel-muted`), and a 9-slice bronze progress bar (`xp-frame` + `xp-fill`).
+Replaced `#loading-screen` in `index.html` with a Pixi v8 stage displaying the `ARKODIA` logo (`@1x/@2x/@3x`), `MsdfText` status and progress readouts (`panel-title`, `panel-muted`), and a 9-slice bronze progress bar (`xp-frame` + `xp-fill`).
 
 ![Loading screen before (HTML/CSS) and after (Pixi v8 + MSDF) on desktop (1440×900 DPR 1)](/api/rooms/DRcf2ef6dd892ac62cb18a5766/attachments/DA1cc539f54cbeb5d29da01c6e)
 

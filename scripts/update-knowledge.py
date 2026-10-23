@@ -1,11 +1,11 @@
 import json,subprocess,pathlib
-root=pathlib.Path('/home/dev/arkadia')
+root=pathlib.Path('/home/dev/arkodia')
 current=json.loads((root/'knowledge-current.json').read_text())
 append='''
 
 ## Demo runtime PixiJS — 20 Oktober 2026
 
-Demo live: [Buka Arkadia — Perbatasan Abu](https://arkadia-whachat.fural.space/).
+Demo live: [Buka Arkodia — Perbatasan Abu](https://arkadia-whachat.fural.space/).
 
 Implementasi memakai **PixiJS 8 dan WebGL**, bukan gambar arena preview sebagai background. Kit asli yang diperiksa adalah attachment `DA0679ae3e0624f52236ea60ea`; `DA3593cef66dddda720f68862b` adalah preview AI dan tidak dimuat oleh aplikasi. Sumber kit utuh dapat dilihat melalui tombol **View original kit + extracted assets** dan [file sumber publik](https://arkadia-whachat.fural.space/assets/source-kit.png). [Manifest ekstraksi](https://arkadia-whachat.fural.space/assets/manifest.json) menyimpan crop, ukuran, pivot dan jumlah piksel alpha yang dibersihkan.
 
@@ -36,7 +36,7 @@ Urutan layer setelah koreksi masukan manusia: **lantai → grid → prop + probe
 - Semua 12 PNG hasil crop berisi piksel nontransparan sekaligus piksel alpha nol; HTML, manifest dan semua sprite berhasil disajikan.
 - Browser Chromium dengan WebGL di URL publik: 13 pemeriksaan lulus, 0 assertion gagal. Cakupan: urutan grid di bawah prop, jumlah sprite dan sumber kit, seed yang sama stabil, seed berbeda berubah, seed dipulihkan identik, grid geometry, sorting dapat dimatikan, urutan ground-Y menaik, probe keyboard, handler pan/zoom, floor-only dan transparency checker. Pemeriksaan kamera akhir memakai event sintetis; tidak mengklaim uji sentuhan perangkat nyata.
 - Screenshot di atas diambil dari halaman publik yang benar-benar merender arena, bukan hasil generasi AI. Browser terkelola awal hanya menampilkan loading; itu tidak dipakai sebagai bukti runtime. Verifikasi akhir memakai Chromium langsung dengan library yang dipasang di HOME. Konfigurasi organization runtime diperkuat agar dependensi browser dapat direproduksi.
-- Custom sandbox **arkadia**, port **3000**, boot foreground **node app.mjs**, proses diawasi platform dan tetap berjalan setelah panggilan deploy. URL publik memberikan **HTTP 200**. Paket deploy satu file memuat hasil build dan aset agar proses penyalinan banyak file tidak terkena gateway timeout. Beberapa panggilan publish mengembalikan 504 walau boot akhirnya berjalan; hasilnya diverifikasi dari proses aktual, versi bundle publik dan browser. Satu respons 521 sementara juga teramati; permintaan berikutnya kembali 200, tanpa resource incident atau boot crash.
+- Custom sandbox **arkodia**, port **3000**, boot foreground **node app.mjs**, proses diawasi platform dan tetap berjalan setelah panggilan deploy. URL publik memberikan **HTTP 200**. Paket deploy satu file memuat hasil build dan aset agar proses penyalinan banyak file tidak terkena gateway timeout. Beberapa panggilan publish mengembalikan 504 walau boot akhirnya berjalan; hasilnya diverifikasi dari proses aktual, versi bundle publik dan browser. Satu respons 521 sementara juga teramati; permintaan berikutnya kembali 200, tanpa resource incident atau boot crash.
 
 ### Keterbatasan kualitas yang terlihat
 

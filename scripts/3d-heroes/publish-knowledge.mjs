@@ -10,7 +10,7 @@ const repoLink = (label, relPath) =>
 
 const markdown = `## Real-Time 60 FPS WebGL 3D Hero & Animation Player
 
-<iframe src="https://ark-whachat.fural.space/3d-hero-lab/index.html?embed=1&clip=run&dir=SE" title="Arkadia Real-Time 60 FPS 3D Hero & Animation Lab — Rift Runner (Meshy t2.5)" height="680"></iframe>
+<iframe src="https://ark-whachat.fural.space/3d-hero-lab/index.html?embed=1&clip=run&dir=SE" title="Arkodia Real-Time 60 FPS 3D Hero & Animation Lab — Rift Runner (Meshy t2.5)" height="680"></iframe>
 
 - **Live 60 FPS WebGL Studio**: [https://ark-whachat.fural.space/3d-hero-lab/](https://ark-whachat.fural.space/3d-hero-lab/)
 - **Direct 60 FPS WebGL Presets**:
@@ -70,7 +70,7 @@ ref -> gen -> rig -> anim -> merge
 | **Hit Reaction** | \`meshy_animate\` | \`action_id: 178\` (\`Hit_Reaction\`) | \`01a169a0-78f3-77e5-899e-5dc94cad280d\` | 60 FPS Skeletal Clip |
 | **Death** | \`meshy_animate\` | \`action_id: 8\` (\`Dead\`) | \`01a169a0-7fc5-7021-9b21-e3da63f0b786\` | 60 FPS Skeletal Clip |
 
-## Why Real-Time 60 FPS 3D Solves Arkadia's 2D Sprite Challenges
+## Why Real-Time 60 FPS 3D Solves Arkodia's 2D Sprite Challenges
 
 1. **True 60 FPS Motion vs 8–10 FPS Stepped Frames**: Instead of flipping between 8 static PNG drawings per second, \`THREE.AnimationMixer\` interpolates all 26 humanoid bones at 60 FPS (\`16.67 ms\` intervals) with smooth crossfade transitions between states.
 2. **Zero North/South Hopping ("Engkle")**: One 3D skeletal run cycle naturally alternates left and right legs from every camera angle (\`N, NE, E, SE, S, SW, W, NW\`) and across continuous 360° headings.

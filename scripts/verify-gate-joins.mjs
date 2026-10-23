@@ -10,7 +10,7 @@ try {
  await new Promise(r=>setTimeout(r,1200));
  browser=await chromium.launch(launchOptions());
  const page=await browser.newPage({viewport:{width:1100,height:900},deviceScaleFactor:Number(process.env.PIXEL_RATIO||1)});
- await page.addInitScript(()=>localStorage.setItem('arkadia.stronghold.hero',JSON.stringify({x:577,y:700})));
+ await page.addInitScript(()=>localStorage.setItem('arkodia.stronghold.hero',JSON.stringify({x:577,y:700})));
  await page.goto(base+'/?time='+ (process.env.TIME||'.5') +'&offline=1');
  await page.waitForFunction(()=>document.querySelector('#world-canvas')?.dataset.ready==='true'&&Boolean(window.__WORLD_GATE_DOORS__||document.querySelector('#world-gate-doors')));
  await page.waitForTimeout(1000);

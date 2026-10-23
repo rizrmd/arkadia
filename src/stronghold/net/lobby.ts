@@ -5,7 +5,7 @@ import {MsdfText} from '../../typography/text';
 import type {Net,JoinError} from './client';
 import {DEFAULT_HERO,heroInfo,isHero} from '../heroes';
 
-const NAME_KEY='arkadia.coop.name',ROOM_KEY='arkadia.coop.room';
+const NAME_KEY='arkodia.coop.name',ROOM_KEY='arkodia.coop.room';
 const store={get:(s:Storage,k:string)=>{try{return s.getItem(k)||'';}catch{return '';}},set:(s:Storage,k:string,v:string)=>{try{s.setItem(k,v);}catch{}}};
 export const normalizeCode=(c:string|null)=>(c||'').toUpperCase().replace(/[\s-]/g,'').slice(0,8);
 const guestName=()=>'Guest '+String(Math.floor(1000+Math.random()*9000));
@@ -191,7 +191,7 @@ export function createLobby(uiStage:Container,frames:FrameSet,net:Net){
   const link=invite();
   try{
    if(navigator.share&&matchMedia('(pointer:coarse)').matches){
-    await navigator.share({title:'Join my Arkadia Stronghold',url:link});
+    await navigator.share({title:'Join my Arkodia Stronghold',url:link});
    }else{
     await navigator.clipboard.writeText(link);
     copyLabel='Link Copied';

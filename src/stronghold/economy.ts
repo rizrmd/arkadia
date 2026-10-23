@@ -1,4 +1,4 @@
-export const KEY='arkadia-stronghold-v1';
+export const KEY='arkodia-stronghold-v1';
 export const BALANCE={hours:10,goldPerHour:120,manaPerHour:12,start:{gold:600,mana:80,souls:20},maxLevel:3,upgradeBase:100,heroCost:10,trainingCost:80,craftCost:60,rerollCost:30,skillCost:30};
 export const buildings=['mine','altar','barracks','forge','mage','expedition','gate'] as const;
 export type Building=typeof buildings[number];

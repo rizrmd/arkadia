@@ -18,7 +18,7 @@ const envGo = {
 };
 
 if (!process.env.NOBUILD) {
-  execFileSync('go', ['build', '-o', 'bin/arkadia', './cmd/arkadia'], {
+  execFileSync('go', ['build', '-o', 'bin/arkodia', './cmd/arkodia'], {
     cwd: 'server',
     stdio: 'inherit',
     env: envGo,
@@ -30,7 +30,7 @@ const baseUrl = process.env.DEMO_URL || `http://127.0.0.1:${port}`;
 let server = null;
 
 if (!process.env.DEMO_URL) {
-  server = spawn('server/bin/arkadia', [], {
+  server = spawn('server/bin/arkodia', [], {
     env: {...process.env, PORT: port, SITE_DIR: process.env.SITE_DIR || 'dist'},
     stdio: ['ignore', 'pipe', 'inherit'],
   });

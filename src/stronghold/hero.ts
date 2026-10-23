@@ -186,7 +186,7 @@ export type Drive={x:number;y:number;pose?:Pose|null;face?:Walk|null;look?:{faci
 export type Placed={layer:string;x:number;y:number;width:number;height:number;foot:number;shear:number;vertical:number;opacity:number;image:HTMLImageElement;occluder?:HTMLCanvasElement};
 type Clip={fps:number;loop:boolean;frames:number[];strideScale?:number};
 type Meta={image:string;revision?:string;views?:string[];cell:{w:number;h:number;pivot:{x:number;y:number}};clips:Record<string,Clip>;frames:{x:number;y:number;w:number;h:number}[]};
-const KEY='arkadia.stronghold.hero';
+const KEY='arkodia.stronghold.hero';
 export const DISPLAY=.66;const RADIUS=9,SPAWN={...STRONGHOLD.heroSpawn},GATE=STRONGHOLD.gate;
 
 const gpuWarmCanvas=document.createElement('canvas');gpuWarmCanvas.width=16;gpuWarmCanvas.height=16;

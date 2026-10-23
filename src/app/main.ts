@@ -1,5 +1,6 @@
+import '../storage-rename';
 import {loadingScreen,type Progress} from './loader';
-// Arkadia is one page: the server answers every page path with index.html and this router picks the view.
+// Arkodia is one page: the server answers every page path with index.html and this router picks the view.
 // The Stronghold is the game; any other path (including the retired /stronghold.html) lands on it.
 type View={mount(root:HTMLElement,progress:Progress):Promise<void>};
 // /fx-lab previews every hero's skill FX (src/fx/lab.ts).
@@ -9,5 +10,5 @@ if(path!==location.pathname)history.replaceState(history.state,'',path+location.
 const screen=loadingScreen();
 void (async()=>{
  try{screen.progress(0,1,'Loading the game');const view=await routes[path]();await view.mount(document.querySelector('#app')!,screen.progress);screen.done();}
- catch(e){console.error('Unable to load Arkadia.',e);screen.fail('The Stronghold could not load. Check your connection and try again.');}
+ catch(e){console.error('Unable to load Arkodia.',e);screen.fail('The Stronghold could not load. Check your connection and try again.');}
 })();

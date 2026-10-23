@@ -4,7 +4,7 @@ Implementasi terpisah dari arena asset lab: `expedition.html`, `src/expedition/`
 
 ### Menjalankan
 
-Dari folder arkadia: `node_modules/.bin/vite --host 0.0.0.0 --port 3002`, buka `/expedition.html`. Build terpisah: `node_modules/.bin/tsc --noEmit` lalu `node_modules/.bin/vite build --config vite.expedition.config.ts`. Folder hasil `expedition-dist` tidak menimpa arena `dist`.
+Dari folder arkodia: `node_modules/.bin/vite --host 0.0.0.0 --port 3002`, buka `/expedition.html`. Build terpisah: `node_modules/.bin/tsc --noEmit` lalu `node_modules/.bin/vite build --config vite.expedition.config.ts`. Folder hasil `expedition-dist` tidak menimpa arena `dist`.
 
 Panah/WASD bergerak; klik peta memilih tujuan, periksa rute lalu ikuti rute aktif. Batas risiko menghalangi perjalanan berbahaya; sungai harus dilintasi melalui jalan/jembatan. Kotak menandai landmark; inspektor memuat koordinat, identitas, bioma, elevasi, kelembapan, jalan, tanda ancaman dan arah aliran. Clear aktif adalah tombol simulasi penyelesaian encounter pada increment ini; belum terhubung ke combat arena.
 

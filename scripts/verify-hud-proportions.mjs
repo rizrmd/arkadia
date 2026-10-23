@@ -3,7 +3,7 @@ import { existsSync } from 'node:fs';
 import { spawn } from 'node:child_process';
 import { writeFile } from 'node:fs/promises';
 import { launchOptions } from './typography/browser.mjs';
-const server = spawn(existsSync('server/bin/arkodia') ? 'server/bin/arkodia' : 'server/bin/arkadia', [], {env:{...process.env,PORT:'8807',SITE_DIR:'dist'},stdio:'ignore'});
+const server = spawn(existsSync('server/bin/arkodia') ? 'server/bin/arkodia' : 'server/bin/arkodia', [], {env:{...process.env,PORT:'8807',SITE_DIR:'dist'},stdio:'ignore'});
 let browser;
 try {
  for(let i=0;i<80;i++){try{if((await fetch('http://127.0.0.1:8807')).ok)break;}catch{} await new Promise(r=>setTimeout(r,100));}

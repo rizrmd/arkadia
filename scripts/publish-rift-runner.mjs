@@ -1,4 +1,4 @@
-import fs from 'node:fs/promises';import {createHash} from 'node:crypto';import {publishLayer,SANDBOX,URL_BASE} from './arkadia/publish-layer.mjs';
+import fs from 'node:fs/promises';import {createHash} from 'node:crypto';import {publishLayer,SANDBOX,URL_BASE} from './arkodia/publish-layer.mjs';
 // Static task-only overlay. Never replace gameplay HTML, bundles, or unrelated assets.
 const files={};
 async function collect(base){for(const e of await fs.readdir(base,{withFileTypes:true})){const f=base+'/'+e.name;if(e.isDirectory())await collect(f);else files['/'+f.slice('public/'.length)]=(await fs.readFile(f)).toString('base64')}}
@@ -8,7 +8,7 @@ const allFiles={...files},hashes=Object.fromEntries(Object.entries(allFiles).map
 let previous={};try{previous=JSON.parse(await fs.readFile('docs/rift-runner-v1/deployment.json','utf8')).resources||{}}catch{}
 for(const p of Object.keys(files))if(previous[p]===hashes[p])delete files[p];
 if(!Object.keys(files).length){console.log('No changed task resources to deploy');process.exit(0)}
-// A layer of the one Arkadia sandbox (scripts/arkadia/publish-layer.mjs); the gateway serves the review folders.
+// A layer of the one Arkodia sandbox (scripts/arkodia/publish-layer.mjs); the gateway serves the review folders.
 const version=createHash('sha256').update(JSON.stringify(files)).digest('hex').slice(0,12);
 await publishLayer({name:'rift-runner-v1',files,check:'/rift-runner/v1/'});
 await fs.writeFile('docs/rift-runner-v1/deployment.json',JSON.stringify({prefix:'/rift-runner/v1/',version,url:URL_BASE+'/rift-runner/v1/',sandbox:SANDBOX,changedResources:Object.keys(files),resources:hashes},null,2));console.log(JSON.stringify({version,resources:Object.keys(files).length,url:URL_BASE+'/rift-runner/v1/'}));

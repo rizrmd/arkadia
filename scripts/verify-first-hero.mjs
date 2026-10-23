@@ -30,7 +30,7 @@ await ctx.route('**/api/tracelogs',r=>r.fulfill({status:204,body:''}));
 const errors=[];
 const loaded=async p=>{
  await p.waitForFunction(()=>!document.querySelector('#loading-screen')&&window.__PIXI_UI__,null,{timeout:240000});
- return p.evaluate(()=>({open:window.__PIXI_UI__.picker.isOpen(),saved:localStorage.getItem('arkadia.hero')}));
+ return p.evaluate(()=>({open:window.__PIXI_UI__.picker.isOpen(),saved:localStorage.getItem('arkodia.hero')}));
 };
 const snap=p=>p.evaluate(()=>{const s=window.__STRONGHOLD_COMBAT__.snapshot();return {hero:[s.hero.u,s.hero.v,s.hero.state],foes:s.foes.map(f=>[f.u,f.v,f.state]).join('|'),spawns:s.spawns.length};});
 const shot=async(p,name)=>sharp(await p.screenshot({timeout:180000})).webp({quality:88}).toFile(`${OUT}/${name}.webp`);
@@ -63,7 +63,7 @@ try{
  await p.waitForTimeout(1500);
  const w=await walks(p,'d');
  ok('Begin Journey starts gameplay (hero walks)',w.moved,JSON.stringify(w));
- const saved=await p.evaluate(()=>localStorage.getItem('arkadia.hero'));
+ const saved=await p.evaluate(()=>localStorage.getItem('arkodia.hero'));
  ok('pick saved on the device and shown in the HUD',saved==='ember-warden'&&/ember/i.test(await hud(p)),`saved=${saved} hud=${await hud(p)}`);
  await shot(p,'after-pick');
  // 3. The HUD hero panel and the Esc pill no longer reopen it; reload and new tab play on.

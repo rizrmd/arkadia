@@ -6,7 +6,7 @@ import {lightingAt,resolveTime,modeFrom,sunAt,type Lighting,type Mode} from './d
 import {measureTracelogPhase} from './tracelog';
 
 export type LitObject={file:string;image:HTMLImageElement;x:number;y:number;width:number;height:number;foot:number;shear:number;vertical:number;selected:boolean};
-const KEY='arkadia.stronghold.lighting',RES=.35;
+const KEY='arkodia.stronghold.lighting',RES=.35;
 const COLOURS:Record<string,string>={fire:'255,150,70',window:'255,190,110',candle:'255,205,140',holy:'255,236,190',arcane:'110,150,255',selection:'255,226,180'};
 
 function lightingSettings(){let stored:{mode?:unknown;time?:unknown}={};try{stored=JSON.parse(localStorage.getItem(KEY)||'{}')||{};}catch{}const mode=modeFrom(location.search,stored.mode),url=new URLSearchParams(location.search).has('lighting');if(url)try{localStorage.setItem(KEY,JSON.stringify({mode}));}catch{}return {mode,manual:!url&&typeof stored.time==='number'&&stored.time>=0&&stored.time<1?stored.time:null};}

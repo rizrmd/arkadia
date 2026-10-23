@@ -2,7 +2,7 @@
 // and checks every deployed byte.
 //   node scripts/sprite-player/publish.mjs            (--check: only re-verify the deployed bytes and rewrite the receipt)
 // Writes docs/sprite-player/deployment.json.
-import fs from 'node:fs/promises';import {readFileSync} from 'node:fs';import {createHash} from 'node:crypto';import {execFileSync} from 'node:child_process';import {publishLayer,readDir,sandboxId,BOOT,URL_BASE} from '../arkadia/publish-layer.mjs';
+import fs from 'node:fs/promises';import {readFileSync} from 'node:fs';import {createHash} from 'node:crypto';import {execFileSync} from 'node:child_process';import {publishLayer,readDir,sandboxId,BOOT,URL_BASE} from '../arkodia/publish-layer.mjs';
 const root='public/sprite-player',legacyRoot='public/rift-runner/sprite-player',prefix='/sprite-player',legacyPrefix='/rift-runner/sprite-player',hash=b=>createHash('sha256').update(b).digest('hex');
 const ACCEPT={png:'image/png',webp:'image/webp',jpg:'image/jpeg'},accept=p=>ACCEPT[p.split('?')[0].split('.').pop()]||'*/*';
 const get=async(p,tries=6)=>{const r=await fetch(URL_BASE+p,{headers:{Accept:accept(p)},signal:AbortSignal.timeout(30000)});if(r.status>=500&&tries>1){await new Promise(f=>setTimeout(f,5000));return get(p,tries-1);}if(!r.ok)throw Error(`${p}: ${r.status}`);return Buffer.from(await r.arrayBuffer());};
@@ -10,7 +10,7 @@ await fs.cp(legacyRoot,root,{recursive:true});
 const gameBefore=hash(await get('/'));
 const files=await readDir(root);
 if(!process.argv.includes('--check')){
- const id=sandboxId(),gw=readFileSync('scripts/arkadia/gateway.mjs','utf8');
+ const id=sandboxId(),gw=readFileSync('scripts/arkodia/gateway.mjs','utf8');
  execFileSync('fural-agent',['organization','home-files','write','--custom-sandbox',id,'--path','gateway.mjs','--content',gw]);
  execFileSync('fural-agent',['sandboxes','update',id,'--boot-script',BOOT]);
  await publishLayer({name:'sprite-player-legacy',files,prefix:legacyPrefix,check:legacyPrefix+'/'});

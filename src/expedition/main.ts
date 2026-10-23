@@ -1,3 +1,4 @@
+import '../storage-rename';
 import {Application,Container,Graphics,Rectangle} from 'pixi.js';
 import '../stronghold/expedition-link';
 import {translate} from '../stronghold/english';
@@ -27,7 +28,7 @@ async function start(){
  const [,frames]=await Promise.all([loadFonts('/typography/v2/fonts/'),FrameSet.load('/typography/v2/hud/',pickFrameScale(window.devicePixelRatio||1))]);
 
  let world:World;
- try{world=World.load(localStorage.getItem('arkadia-expedition-v1')??'');}catch{world=new World('arkadia-01');}
+ try{world=World.load(localStorage.getItem('arkodia-expedition-v1')??'');}catch{world=new World('arkadia-01');}
  let target:Point={...world.position},route:Point[]=[];
  world.visit(world.position);
  const riskLimit=60;
@@ -36,7 +37,7 @@ async function start(){
  side.position.set(16,16);
  side.addChild(frames.frame('panel-bronze',340,560));
 
- side.addChild(new MsdfText('panel-label','ARKADIA · EXPEDITION')).place(24,38);
+ side.addChild(new MsdfText('panel-label','ARKODIA · EXPEDITION')).place(24,38);
  side.addChild(new MsdfText('display-title','Ruins Map',{size:32})).place(24,78);
  const posText=side.addChild(new MsdfText('panel-body',''));
  posText.place(24,114);
@@ -76,7 +77,7 @@ async function start(){
   route=[];draw();
  });
 
- function persist(){localStorage.setItem('arkadia-expedition-v1',world.save());}
+ function persist(){localStorage.setItem('arkodia-expedition-v1',world.save());}
  function draw(){
   const ox=world.position.x-12,oy=world.position.y-12;
   mapGraphics.clear();

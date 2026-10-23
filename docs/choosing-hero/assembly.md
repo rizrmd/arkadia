@@ -11,7 +11,7 @@ The kit contains **31 reusable runtime PNG assets**, 19 generated production mas
 | Visible component | Reusable deliverable | Desktop | Mobile |
 |---|---|---|---|
 | Castle arches, banners, braziers, stairs and embedded embers | Separate desktop/mobile backgrounds | Full bleed | Portrait full bleed |
-| ARKADIA wordmark and compass | wordmark label + compass-crest | Upper left | Top center |
+| ARKODIA wordmark and compass | wordmark label + compass-crest | Upper left | Top center |
 | Hero heading, rules and subtitle | title label + divider + live subtitle | Centered across stage | Title above hero; no subtitle in reference |
 | Back navigation | back arrow + Back label | Arrow and text | Arrow only |
 | Main selected hero and elemental glow | ember-warden / rift-runner transparent layers | Central figure | Large upper figure |

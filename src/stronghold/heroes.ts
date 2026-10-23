@@ -9,7 +9,7 @@ export type HeroId=(typeof HEROES)[number]['id'];
 export const DEFAULT_HERO:HeroId='rift-runner';
 export const isHero=(id:unknown):id is HeroId=>HEROES.some(h=>h.id===id);
 export const heroInfo=(id:HeroId)=>HEROES.find(h=>h.id===id)!;
-const KEY='arkadia.hero',PICKED_KEY='arkadia.hero.picked',POS_KEY='arkadia.stronghold.hero';
+const KEY='arkodia.hero',PICKED_KEY='arkodia.hero.picked',POS_KEY='arkodia.stronghold.hero';
 let resetRequested:boolean|null=null;
 // ?hero=reset clears the saved hero pick (and the old per-tab pick) and hero position, strips the query param and
 // asks again, as on a first visit.

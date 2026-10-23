@@ -9,7 +9,7 @@ The reported phone screenshot showed the old 3D Ember portrait. The painted rede
 
 The game now packs the painted v2 directional idle/run art and v3 animation atlas into its actual character assets. The picker portrait is regenerated from the painted front idle and has a versioned URL. The atlas has a content revision. Local players and co-op allies use the same updated character manifest.
 
-[Play Arkadia](${base}/?pick=1) · [Live browser verification](${base}/ember-warden-review/game-fix/live.json)
+[Play Arkodia](${base}/?pick=1) · [Live browser verification](${base}/ember-warden-review/game-fix/live.json)
 
 ### Verification
 

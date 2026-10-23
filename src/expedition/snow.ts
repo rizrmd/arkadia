@@ -1,3 +1,4 @@
+import '../storage-rename';
 import {Application,Container,Sprite,Graphics,Assets,TilingSprite,Rectangle,type Texture} from 'pixi.js';
 import {FrameSet,pickFrameScale} from '../typography/frames';
 import {installMsdfFx,loadFonts} from '../typography/msdf';
@@ -57,7 +58,7 @@ async function start(){
  const modalBox=uiStage.addChild(new Container());
  modalBox.position.set(Math.max(16,(innerWidth-420)/2),Math.max(24,(innerHeight-280)/2));
  modalBox.addChild(frames.frame('panel-bronze',420,280));
- modalBox.addChild(new MsdfText('label-wide','ARKADIA · SNOW FRONTIER',{size:13})).place(210,38,0.5);
+ modalBox.addChild(new MsdfText('label-wide','ARKODIA · SNOW FRONTIER',{size:13})).place(210,38,0.5);
  const modalTitle=modalBox.addChild(new MsdfText('display-title','Frostpass',{size:32}));
  modalTitle.place(210,76,0.5);
  const modalBody=modalBox.addChild(new MsdfText('panel-muted','Recover three supply caches, defeat six revenants, then return to camp.',{wrapWidth:364,lineHeight:20,align:'center'}));

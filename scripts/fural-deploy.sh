@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# Release the game as one deployable into the one Arkadia sandbox (https://ark-whachat.fural.space): the
-# Go game server (server/) with the built Vite client, behind scripts/arkadia/gateway.mjs, which also serves every
-# review page. Published as a release layer (scripts/arkadia/publish-layer.mjs) with this commit's gateway.
+# Release the game as one deployable into the one Arkodia sandbox (https://ark-whachat.fural.space): the
+# Go game server (server/) with the built Vite client, behind scripts/arkodia/gateway.mjs, which also serves every
+# review page. Published as a release layer (scripts/arkodia/publish-layer.mjs) with this commit's gateway.
 #   scripts/fural-deploy.sh                      (also what `fural-agent repos ship` runs)
 # Needs Node (npm ci done), Go 1.25 (organization runtime installs it in ~/.local/go) and the Playwright Chromium
 # that scripts/organization-setup.sh prepares (used to list the files the game loads).
@@ -16,16 +16,16 @@ trap 'rm -rf "$STAGE" "$DIST_DIR" "$list"' EXIT
 npx tsc --noEmit && npx vite build --outDir "$DIST_DIR"
 # The organization shares 1 GiB of RAM across sessions: compile one package at a time under a memory limit.
 export GOFLAGS=-p=1 GOMAXPROCS=2 GOMEMLIMIT=256MiB GOTOOLCHAIN=local
-(cd server && go test ./... && CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -trimpath -ldflags="-s -w" -o "$DIST_DIR/arkadia" ./cmd/arkadia)
-cp -f "$DIST_DIR/arkadia" server/bin/arkadia 2>/dev/null || true
-ARKADIA_BIN="$DIST_DIR/arkadia" SITE_DIR="$DIST_DIR" node scripts/coop-smoke.mjs >/dev/null
+(cd server && go test ./... && CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -trimpath -ldflags="-s -w" -o "$DIST_DIR/arkodia" ./cmd/arkodia)
+cp -f "$DIST_DIR/arkodia" server/bin/arkodia 2>/dev/null || true
+ARKODIA_BIN="$DIST_DIR/arkodia" SITE_DIR="$DIST_DIR" node scripts/coop-smoke.mjs >/dev/null
 
 # Stage the binary and only the files the game loads (dist/ also carries hundreds of MB of documentation renders).
-SITE_DIR="$DIST_DIR" ARKADIA_BIN="$DIST_DIR/arkadia" node scripts/coop-site-files.mjs > "$list"
+SITE_DIR="$DIST_DIR" ARKODIA_BIN="$DIST_DIR/arkodia" node scripts/coop-site-files.mjs > "$list"
 rm -rf "$STAGE"; mkdir -p "$STAGE/site"
-cp "$DIST_DIR/arkadia" "$STAGE/arkadia"
+cp "$DIST_DIR/arkodia" "$STAGE/arkodia"
 while IFS= read -r f; do mkdir -p "$STAGE/site/$(dirname "$f")"; cp -p "$DIST_DIR/$f" "$STAGE/site/$f"; done < "$list"
-SITE_DIR="$STAGE/site" "$STAGE/arkadia" --warm-webp
+SITE_DIR="$STAGE/site" "$STAGE/arkodia" --warm-webp
 # The co-op and hero-picker screenshots, test reports and UI frame sources embedded in Knowledge.
 mkdir -p "$STAGE/site/coop/docs"; cp docs/coop/*.webp docs/coop/*.json "$STAGE/site/coop/docs/"
 mkdir -p "$STAGE/site/hero-select"; cp docs/hero-select/*.webp docs/hero-select/*.json "$STAGE/site/hero-select/"
@@ -69,6 +69,6 @@ cp docs/run-cadence/*.json docs/run-cadence/*.webp "$STAGE/site/run-cadence/veri
 
 # One versioned tarball, uploaded in parts and applied by the gateway at boot (the release also writes www/index.html).
 mkdir -p "$HOME/releases"
-tgz="$HOME/releases/arkadia-game-$(git rev-parse --short HEAD).tgz"
+tgz="$HOME/releases/arkodia-game-$(git rev-parse --short HEAD).tgz"
 tar -C "$STAGE" -cz . > "$tgz"
-node scripts/arkadia/publish-layer.mjs --tgz "$tgz" --name "game-$(git rev-parse --short HEAD)"
+node scripts/arkodia/publish-layer.mjs --tgz "$tgz" --name "game-$(git rev-parse --short HEAD)"

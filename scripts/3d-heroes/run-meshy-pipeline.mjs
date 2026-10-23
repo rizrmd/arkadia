@@ -64,7 +64,7 @@ async function callMcpTool(name, args) {
         params: {
           protocolVersion: '2024-11-05',
           capabilities: {},
-          clientInfo: { name: 'arkadia-3d-pipeline', version: '1.0.0' }
+          clientInfo: { name: 'arkodia-3d-pipeline', version: '1.0.0' }
         }
       }),
       JSON.stringify({ jsonrpc: '2.0', method: 'notifications/initialized' }),

@@ -17,7 +17,7 @@ const CASES = [
 ];
 
 await mkdir(OUT, { recursive: true });
-const server = spawn('server/bin/arkadia', [], {
+const server = spawn('server/bin/arkodia', [], {
   env: { ...process.env, PORT, SITE_DIR: process.env.SITE_DIR || 'dist' },
   stdio: ['ignore', 'pipe', 'inherit'],
 });

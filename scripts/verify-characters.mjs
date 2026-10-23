@@ -18,9 +18,9 @@ try {
   await new Promise(r => setTimeout(r, server ? 600 : 0));
   const res = await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 20000 });
   assert.equal(res.status(), 200);
-  await page.waitForFunction(() => window.__ARKADIA_CHARACTERS__, {}, { timeout: 20000 });
+  await page.waitForFunction(() => window.__ARKODIA_CHARACTERS__, {}, { timeout: 20000 });
   await page.waitForTimeout(800);
-  const snap = () => page.evaluate(() => window.__ARKADIA_CHARACTERS__());
+  const snap = () => page.evaluate(() => window.__ARKODIA_CHARACTERS__());
   const arena = (fn, arg) => page.evaluate(fn, arg);
   const key = async (k, ms) => { await page.keyboard.down(k); await page.waitForTimeout(ms); await page.keyboard.up(k); };
 
@@ -32,7 +32,7 @@ try {
 
   await check('atlas frames match manifest rects, shared anchor, gutters inside atlas', async () => {
     const r = await arena(async () => {
-      const m = await (await fetch('/assets/characters/manifest.json')).json(), a = window.__ARKADIA_ARENA__, out = {};
+      const m = await (await fetch('/assets/characters/manifest.json')).json(), a = window.__ARKODIA_ARENA__, out = {};
       for (const id of ['hero', 'revenant']) {
         const c = m.characters[id], set = a.actors.find(x => x.kind === (id === 'hero' ? 'hero' : 'revenant')).set;
         const tex = Object.entries(set.clips).flatMap(([n, list]) => list.map((t, i) => ({ t, f: c.frames[c.clips[n].frames[i]] })));
@@ -48,15 +48,15 @@ try {
 
   // Isolate the hero: no enemies, manual control.
   await page.selectOption('#crowd', '0'); await page.uncheck('#auto');
-  await arena(() => { const a = window.__ARKADIA_ARENA__; a.respawnHero(); document.activeElement?.blur(); });
+  await arena(() => { const a = window.__ARKODIA_ARENA__; a.respawnHero(); document.activeElement?.blur(); });
 
   // Clip logic is checked on a deterministic 60 Hz simulation (ticker paused): headless SwiftShader renders only a few
   // fps, which would otherwise make frame coverage depend on test-machine speed. Rendering is checked separately.
   await arena(() => {
-    const app = window.__ARKADIA_APP__, a = window.__ARKADIA_ARENA__; app.ticker.stop();
+    const app = window.__ARKODIA_APP__, a = window.__ARKODIA_ARENA__; app.ticker.stop();
     window.__SIM__ = (ms, probe) => { const out = []; for (let t = 0; t < ms; t += 1000 / 60) { a.update(1000 / 60); out.push(probe(a)); } app.render(); return out; };
   });
-  const sim = (ms, probe, before = '') => arena(([ms, probe, before]) => { new Function('a', before)(window.__ARKADIA_ARENA__); return window.__SIM__(ms, new Function('a', 'return ' + probe)); }, [ms, probe, before]);
+  const sim = (ms, probe, before = '') => arena(([ms, probe, before]) => { new Function('a', before)(window.__ARKODIA_ARENA__); return window.__SIM__(ms, new Function('a', 'return ' + probe)); }, [ms, probe, before]);
   const H = '({state:a.hero.state,frame:a.hero.frame(),t:a.hero.t,x:a.hero.x,y:a.hero.y,vx:a.hero.view.x,vy:a.hero.view.y,ax:a.hero.sprite.anchor.x,ay:a.hero.sprite.anchor.y,back:a.hero.back,textureClip:a.hero.textureClip,stride:a.hero.stride,facing:a.hero.facing,sx:a.hero.sprite.scale.x,tex:a.hero.sprite.texture.frame.x+","+a.hero.sprite.texture.frame.y})';
 
   await check('idle playback: time-based frames, stable position and anchor (no jitter)', async () => {
@@ -68,7 +68,7 @@ try {
     assert.ok(changes >= 11 && changes <= 12, '6 fps over 2 s → 12 texture swaps, got ' + changes);
     assert.equal(new Set(s.map(v => v.tex)).size, 6);
     // real rendered frames: anchor and integer screen position hold while idle
-    const real = await arena(() => new Promise(done => { const app = window.__ARKADIA_APP__, h = window.__ARKADIA_ARENA__.hero, out = []; app.ticker.start(); const s0 = performance.now();
+    const real = await arena(() => new Promise(done => { const app = window.__ARKODIA_APP__, h = window.__ARKODIA_ARENA__.hero, out = []; app.ticker.start(); const s0 = performance.now();
       const tick = () => { out.push(`${h.view.x},${h.view.y},${h.sprite.anchor.x},${h.sprite.anchor.y}`); performance.now() - s0 < 1500 ? requestAnimationFrame(tick) : (app.ticker.stop(), done(out)); }; requestAnimationFrame(tick); }));
     assert.equal(new Set(real).size, 1, 'rendered idle samples ' + real.length);
   });
@@ -94,10 +94,10 @@ try {
       assert.equal(stopped.back,back); assert.equal(stopped.facing,facing);
     }
     await page.keyboard.down('w'); await sim(200,H); await page.keyboard.up('w');
-    await arena(() => { const app=window.__ARKADIA_APP__, h=window.__ARKADIA_ARENA__.hero, w=app.stage.children[0], v=document.querySelector('#viewport'); w.scale.set(3); w.position.set(v.clientWidth/2-h.view.x*3,v.clientHeight/2-(h.view.y-45)*3); app.render(); });
+    await arena(() => { const app=window.__ARKODIA_APP__, h=window.__ARKODIA_ARENA__.hero, w=app.stage.children[0], v=document.querySelector('#viewport'); w.scale.set(3); w.position.set(v.clientWidth/2-h.view.x*3,v.clientHeight/2-(h.view.y-45)*3); app.render(); });
     await page.screenshot({path:`${OUT}/direction-back.png`});
     await page.keyboard.down('s'); await sim(200,H); await page.keyboard.up('s');
-    await arena(() => window.__ARKADIA_APP__.render());
+    await arena(() => window.__ARKODIA_APP__.render());
     await page.screenshot({path:`${OUT}/direction-front.png`});
     await arena(() => document.querySelector('#reset').click());
     await sim(1,H,'a.respawnHero()');
@@ -105,7 +105,7 @@ try {
 
   await check('step cadence follows actual distance, equal projected speed, no walking at blocked edge', async () => {
     const r=await arena(() => {
-      const a=window.__ARKADIA_ARENA__, h=a.hero, out=[];
+      const a=window.__ARKODIA_ARENA__, h=a.hero, out=[];
       for (const k of ['d','w']) {
         a.keys.clear();a.respawnHero();a.keys.add(k);a.update(1);
         const x=h.view.x,y=h.view.y,s=h.stride;
@@ -123,7 +123,7 @@ try {
 
   await check('enemy chase selects back/up and front/down art independently of hero', async () => {
     const r=await arena(() => {
-      const a=window.__ARKADIA_ARENA__; a.respawnHero();a.spawn(1);const e=a.enemies[0],out=[];
+      const a=window.__ARKODIA_ARENA__; a.respawnHero();a.spawn(1);const e=a.enemies[0],out=[];
       for(const v of [6,4]) { e.x=v;e.y=v;e.play('idle');a.update(50);out.push({state:e.state,back:e.back,clip:e.textureClip,texture:e.sprite.texture.frame.y}); }
       a.spawn(0);return out;
     });
@@ -149,7 +149,7 @@ try {
 
   await check('equipment UI: 12 atlas icons, potion heals', async () => {
     const r = await arena(() => {
-      const slots = [...document.querySelectorAll('#equipment .slot')], h = window.__ARKADIA_ARENA__.hero; h.hp = 40;
+      const slots = [...document.querySelectorAll('#equipment .slot')], h = window.__ARKODIA_ARENA__.hero; h.hp = 40;
       document.querySelector('[data-item="potion"]').click();
       return { n: slots.length, atlas: slots.every(s => s.style.backgroundImage.includes('/assets/characters/equipment.png')), ids: slots.map(s => s.dataset.item), hp: h.hp, potions: document.querySelector('[data-count="potion"]').textContent };
     });
@@ -160,7 +160,7 @@ try {
   await check('crowded arena (36): all hero/enemy states occur, kills counted, depth-sorted', async () => {
     await page.selectOption('#crowd', '36'); await page.check('#auto');
     const r = await arena(() => {
-      const a = window.__ARKADIA_ARENA__, app = window.__ARKADIA_APP__, enemy = new Set(), hero = new Set(); let unsorted = 0;
+      const a = window.__ARKODIA_ARENA__, app = window.__ARKODIA_APP__, enemy = new Set(), hero = new Set(); let unsorted = 0;
       for (let i = 0; i < 60 * 25; i++) {
         a.update(1000 / 60); for (const e of a.enemies) enemy.add(e.state); hero.add(a.hero.state);
         if (i % 30 === 0) { app.render(); const p = app.stage.children[0].children[2].children; for (let k = 1; k < p.length; k++) if (p[k - 1].zIndex > p[k].zIndex) unsorted++; }
@@ -171,10 +171,10 @@ try {
     for (const s of ['idle', 'move', 'attack', 'hit', 'die']) assert.ok(r.enemy.includes(s), 'enemy state ' + s);
     for (const s of ['idle', 'move', 'attack']) assert.ok(r.hero.includes(s), 'hero state ' + s);
     assert.ok(r.kills > 0); assert.equal(r.unsorted, 0);
-    await arena(() => window.__ARKADIA_APP__.ticker.start());
+    await arena(() => window.__ARKODIA_APP__.ticker.start());
   });
   await page.screenshot({ path: `${OUT}/smoke-arena-36.png` });
-  await arena(() => { const w = window.__ARKADIA_APP__.stage.children[0], h = window.__ARKADIA_ARENA__.hero, v = document.querySelector('#viewport');
+  await arena(() => { const w = window.__ARKODIA_APP__.stage.children[0], h = window.__ARKODIA_ARENA__.hero, v = document.querySelector('#viewport');
     w.scale.set(2.2); w.position.set(v.clientWidth / 2 - h.view.x * 2.2, v.clientHeight / 2 - (h.view.y - 50) * 2.2); });
   await page.waitForTimeout(300);
   await page.screenshot({ path: `${OUT}/smoke-arena-closeup.png` });
@@ -192,7 +192,7 @@ try {
   await page.screenshot({ path: `${OUT}/smoke-provenance-dialog.png` });
   await arena(() => document.querySelector('#close').click());
   await check('no page errors', async () => assert.deepEqual(errors, []));
-  const report = { url, at: new Date().toISOString(), renderer: await arena(() => window.__ARKADIA_APP__.renderer.name ?? window.__ARKADIA_APP__.renderer.type), results };
+  const report = { url, at: new Date().toISOString(), renderer: await arena(() => window.__ARKODIA_APP__.renderer.name ?? window.__ARKODIA_APP__.renderer.type), results };
   await fs.writeFile(`${OUT}/smoke-${process.env.DEMO_URL ? 'live' : 'local'}.json`, JSON.stringify(report, null, 1));
   console.log('ALL PASSED', results.length);
 } finally { await browser.close(); server?.kill(); }

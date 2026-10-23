@@ -8,7 +8,7 @@ const out = 'docs/go-webp-cache';
 await fs.mkdir(out, {recursive: true});
 
 const port = '8798';
-const server = spawn('server/bin/arkadia', [], {
+const server = spawn('server/bin/arkodia', [], {
   env: {...process.env, PORT: port, SITE_DIR: 'dist'},
   stdio: ['ignore', 'pipe', 'inherit']
 });

@@ -35,12 +35,12 @@ const repo=(path,label=path)=>`[${label}](/organizations/${ORG}/repositories/${R
 
 const md=`## Overview
 
-The Arkadia loading screen (${repo('index.html')} + ${repo('src/app/loader.ts')}) renders **instantly at \`t = 0 ms\` in pure HTML, CSS, and inline SVG** directly inside ${repo('index.html')} before any JavaScript bundle, WebGL context, MSDF font atlas, or Pixi texture finishes downloading:
+The Arkodia loading screen (${repo('index.html')} + ${repo('src/app/loader.ts')}) renders **instantly at \`t = 0 ms\` in pure HTML, CSS, and inline SVG** directly inside ${repo('index.html')} before any JavaScript bundle, WebGL context, MSDF font atlas, or Pixi texture finishes downloading:
 
 - **Zero Blank Screen on Initial Load**: Previously, rendering the loading screen inside Pixi required downloading the JS bundle, initializing WebGL, loading \`788 KB\` of MSDF font atlases, \`30+\` HUD frame PNGs, and \`8\` loading screen textures before a single pixel appeared — leaving the viewport blank until \`96%\` (\`Raising the Stronghold\`).
 - **Pure HTML/CSS/SVG First-Packet Shell (${repo('index.html')})**:
   - Embeds ultra-compact base64 WebP low-quality image placeholders (LQIPs, \`~650 B\` each) behind \`<link rel="preload" as="image" fetchpriority="high">\` full-bleed background paintings (${repo('public/typography/v2/loading/bg-mobile.webp')} on portrait and ${repo('public/typography/v2/loading/bg-desktop.webp')} on landscape).
-  - Embeds the \`@1x\` transparent \`ARKADIA\` compass logo as an inline WebP data URI (\`10 KB\`) so it decodes synchronously at \`0 ms\` with zero network wait, then atomically upgrades to \`@2x\` / \`@3x\` (${repo('public/typography/v2/loading/logo@3x.png')}) once decoded in memory.
+  - Embeds the \`@1x\` transparent \`ARKODIA\` compass logo as an inline WebP data URI (\`10 KB\`) so it decodes synchronously at \`0 ms\` with zero network wait, then atomically upgrades to \`@2x\` / \`@3x\` (${repo('public/typography/v2/loading/logo@3x.png')}) once decoded in memory.
   - Embeds the antique-gold compass divider, ornate progress bar track, recessed obsidian channel, masked molten-gold fill, and glowing four-point compass spark crest as **inline vector SVGs** in ${repo('index.html')} (\`0\` HTTP requests, infinite crispness at every DPR).
   - Includes an inline bootstrap controller (\`window.__LOADING_SCREEN__\`) that advances progress smoothly from \`1%\` (\`Loading the game\`) → \`14%\` (\`Loading interface & fonts\`) → \`18%–92%\` (\`Loading artwork · X.X of Y.Y MB\`) → \`96%\` (\`Raising the Stronghold\`) → \`100%\` (\`Ready\`), then fades out over \`180 ms\` and removes \`#loading-screen\` from the DOM so only \`#world-canvas\` remains during play.
 
@@ -50,15 +50,15 @@ Live game: [https://ark-whachat.fural.space/](https://ark-whachat.fural.space/) 
 
 ### Reference 1 — Previous Loading Screen Issue
 
-The previous loading screen rendered inside a bronze modal box (\`panel-bronze\`) with \`ARKADIA\` and \`STRONGHOLD\` text, a hard-edged circular backdrop overlay, and an oversized 24 px orange fill bar (\`xp-fill\`) that overflowed onto the ornamental finials of \`xp-frame\`:
+The previous loading screen rendered inside a bronze modal box (\`panel-bronze\`) with \`ARKODIA\` and \`STRONGHOLD\` text, a hard-edged circular backdrop overlay, and an oversized 24 px orange fill bar (\`xp-fill\`) that overflowed onto the ornamental finials of \`xp-frame\`:
 
 ![Task Reference 1: Previous loading screen with modal box, STRONGHOLD title, and overflowing orange progress bar](/api/organizations/${ORG}/task-attachments/TAc040108c78d79a2ef66c4732)
 
-### Reference 2 — Target ARKADIA Compass Wordmark
+### Reference 2 — Target ARKODIA Compass Wordmark
 
-The target \`ARKADIA\` wordmark replaces the second \`A\` with an ornate eight-point gold compass rose emblem set with a deep-cyan faceted crystal gem:
+The target \`ARKODIA\` wordmark replaces the second \`A\` with an ornate eight-point gold compass rose emblem set with a deep-cyan faceted crystal gem:
 
-![Task Reference 2: Target ARKADIA compass logo reference](/api/organizations/${ORG}/task-attachments/TAe7b6b4f075968d30b1d28732)
+![Task Reference 2: Target ARKODIA compass logo reference](/api/organizations/${ORG}/task-attachments/TAe7b6b4f075968d30b1d28732)
 
 ### Reference 3 — Mobile Delayed Pixi Loading Screen Appearing Only at 96%
 
@@ -98,17 +98,17 @@ ${img('docs/loading-screen/loading-mobile-instant-0ms.webp','Instant pure HTML l
 
 ## Before vs. After Comparison
 
-${img('docs/loading-screen/compare-before-after.webp','Before and after comparison of the Arkadia loading screen at 96% (Raising the Stronghold)')}
+${img('docs/loading-screen/compare-before-after.webp','Before and after comparison of the Arkodia loading screen at 96% (Raising the Stronghold)')}
 
 ## Generated High-Resolution Assets
 
 All loading screen assets and the pure HTML ${repo('index.html')} shell are built reproducibly via ${repo('scripts/typography/build-logo.mjs')} from the generated masters in ${repo('assets-src/loading/logo-source.jpg')}, ${repo('assets-src/loading/bg-desktop.jpg')}, and ${repo('assets-src/loading/bg-mobile.jpg')}:
 
-### 1. High-Resolution ARKADIA Compass Logo (\`@1x\`, \`@2x\`, \`@3x\`)
+### 1. High-Resolution ARKODIA Compass Logo (\`@1x\`, \`@2x\`, \`@3x\`)
 
-Extracted at straight alpha (\`1280 × 397\` master in ${repo('assets-src/typography/arkadia-logo-master.png')}) with a soft multi-layer drop shadow and exported at \`@1x\` (\`390 × 120\`, inlined as WebP in ${repo('index.html')} for \`0 ms\` render), \`@2x\` (\`780 × 240\`), and \`@3x\` (\`1170 × 360\`) in ${repo('public/typography/v2/loading/logo@3x.png')}, as well as updating ${repo('public/typography/v2/hero/logo@3x.png')}:
+Extracted at straight alpha (\`1280 × 397\` master in ${repo('assets-src/typography/arkodia-logo-master.png')}) with a soft multi-layer drop shadow and exported at \`@1x\` (\`390 × 120\`, inlined as WebP in ${repo('index.html')} for \`0 ms\` render), \`@2x\` (\`780 × 240\`), and \`@3x\` (\`1170 × 360\`) in ${repo('public/typography/v2/loading/logo@3x.png')}, as well as updating ${repo('public/typography/v2/hero/logo@3x.png')}:
 
-${img('public/typography/v2/loading/logo@3x.png','High-resolution transparent ARKADIA compass logo (@3x, 1170 × 360)')}
+${img('public/typography/v2/loading/logo@3x.png','High-resolution transparent ARKODIA compass logo (@3x, 1170 × 360)')}
 
 ### 2. Full-Bleed Stronghold Background Artwork (Desktop 16:9 & Mobile 9:16)
 
@@ -123,7 +123,7 @@ ${img('public/typography/v2/loading/bg-mobile.webp','Generated 9:16 twilight str
 ### 3. Sleek Antique-Gold Progress Bar Track, Masked Molten-Gold Fill & Compass Spark
 
 Embedded directly as inline vector SVGs in ${repo('index.html')} (and exported at \`@1x..@3x\` in ${repo('public/typography/v2/loading/bar-track@3x.png')} and ${repo('public/typography/v2/loading/bar-fill@3x.png')}):
-- Features chamfered double antique-gold rails, 25 % / 50 % / 75 % groove tick marks, center diamond ticks, and left/right eight-point compass finials with teal crystal cores matching the \`ARKADIA\` logo.
+- Features chamfered double antique-gold rails, 25 % / 50 % / 75 % groove tick marks, center diamond ticks, and left/right eight-point compass finials with teal crystal cores matching the \`ARKODIA\` logo.
 - The \`408 × 10\` molten-gold progress fill sits strictly inside the recessed obsidian channel (\`x = 26..434, y = 9..19\`) and is clipped by \`#loading-fill-clip\` (\`overflow: hidden; border-radius: 1.5px\`) so it never overlaps the frame rails or finials at any percentage.
 - A glowing four-point compass spark crest (\`#loading-crest\`) rides the leading tip of the progress fill.
 
@@ -175,7 +175,7 @@ app_loader -> html_shell: "Drives progress synchronously & removes DOM node on d
 ## Verification
 
 - **Automated 0 ms Pure HTML, Visual & DOM Cleanup Verification** (${repo('scripts/verify-loading-screen.mjs')} → ${repo('docs/loading-screen/verification.json')}):
-  - Verified that with \`/src/app/main.ts\` blocked (zero module/Pixi JS loaded), \`#loading-screen\`, the inline \`@1x\` \`ARKADIA\` logo, and the inline SVG progress bar render immediately at \`domcontentloaded\`.
+  - Verified that with \`/src/app/main.ts\` blocked (zero module/Pixi JS loaded), \`#loading-screen\`, the inline \`@1x\` \`ARKODIA\` logo, and the inline SVG progress bar render immediately at \`domcontentloaded\`.
   - Verified across desktop (\`1440 × 900\`), mobile portrait (\`390 × 844\`), and mobile landscape (\`844 × 390\`) with \`0\` console errors and \`0\` page errors.
   - Verified that \`#loading-screen\` fades out and is completely removed from \`document.body\` once \`done()\` fires.
 `;
@@ -183,10 +183,10 @@ app_loader -> html_shell: "Drives progress synchronously & removes DOM node on d
 const pages=cli(['knowledge','list','--project',PROJECT]);
 let existing=pages.find(p=>p.parent_id===TYPO_PARENT&&p.title.startsWith('Loading Screen'));
 if(existing){
- cli(['knowledge','update',existing.id,'--title','Loading Screen — High-Res ARKADIA Logo, Background Artwork & Ornate Progress Bar','--markdown',md]);
+ cli(['knowledge','update',existing.id,'--title','Loading Screen — High-Res ARKODIA Logo, Background Artwork & Ornate Progress Bar','--markdown',md]);
  console.log('Updated Knowledge page',existing.id);
 }else{
- existing=cli(['knowledge','create','--project',PROJECT,'--parent',TYPO_PARENT,'--sort-order','20','--title','Loading Screen — High-Res ARKADIA Logo, Background Artwork & Ornate Progress Bar','--markdown',md]);
+ existing=cli(['knowledge','create','--project',PROJECT,'--parent',TYPO_PARENT,'--sort-order','20','--title','Loading Screen — High-Res ARKODIA Logo, Background Artwork & Ornate Progress Bar','--markdown',md]);
  console.log('Created Knowledge page',existing.id);
 }
 

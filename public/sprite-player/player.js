@@ -1,4 +1,4 @@
-// Arkadia sprite player: plays one row of a grid sprite sheet (rows = headings, columns = frames).
+// Arkodia sprite player: plays one row of a grid sprite sheet (rows = headings, columns = frames).
 // Supports 1-side 5-row sheets (N, NE, E, SE, S) where SW, W, NW are mirrored horizontally from SE, E, NE at runtime.
 // Built to sit in an iframe. Configure with query parameters:
 //   manifest=sheets/rift-runner-idle.js     sheet description (default); paths inside resolve against it. A .js description

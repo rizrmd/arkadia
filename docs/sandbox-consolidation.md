@@ -2,7 +2,7 @@
 
 Use https://ark-whachat.fural.space/ for the arena, `/stronghold.html` for Stronghold, and `/expedition.html` for Expedition.
 
-On 20 October 2026 the three custom sandboxes were consolidated into `arkadia-stronghold` (`CS13a31c114a666008eb9cafa5`), the last-created sandbox with the latest character release. The original `arkadia` and incomplete `arkadia-expedition` were deleted. They were separate preview environments for successive feature work; Expedition had no boot process or HTML entry.
+On 20 October 2026 the three custom sandboxes were consolidated into `arkodia-stronghold` (`CS13a31c114a666008eb9cafa5`), the last-created sandbox with the latest character release. The original `arkodia` and incomplete `arkodia-expedition` were deleted. They were separate preview environments for successive feature work; Expedition had no boot process or HTML entry.
 
 The two active previews had identical HTML entries. Stronghold retained its later character overlays. Before deletion, 28 resources unique to the old main preview were transferred in `consolidated-legacy.gz` and loaded by the retained boot script. All 191 resulting public resources were fetched and checked against SHA-256 manifests. Knowledge links were updated to the retained host.
 

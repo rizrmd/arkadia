@@ -19,13 +19,13 @@ opacity), `capture=1` (hide toolbar), `fix=0` (Pixi's stock MSDF edge width, for
 |---|---|---|
 | MSDF fonts | `node scripts/typography/build-fonts.mjs` | `v2/fonts/*.fnt` (BMFont XML) + atlas PNG + OFL licences |
 | HUD frames, icons, skill art | `node scripts/typography/build-frames.mjs` | `v2/hud/@{1,2,3}x/*.png`, `v2/hud/manifest.json` |
-| ARKADIA logo image | `node scripts/typography/build-logo.mjs` | `v2/hero/logo@{1,2,3}x.png` |
+| ARKODIA logo image | `node scripts/typography/build-logo.mjs` | `v2/hero/logo@{1,2,3}x.png` |
 | HUD clean plate | `node scripts/typography/build-backdrop.mjs` | `v2/backdrops/hud-clean.jpg` |
 | Evidence | `node scripts/typography/capture.mjs [compare\|crisp\|fx] [name]` | `docs/typography/v2/*`, `evidence.json` |
 | Live check (after deploy) | `node scripts/typography/verify-live.mjs` | `docs/typography/v2/live-*.webp`, `live.json` |
 | Knowledge page | `node scripts/typography/publish-knowledge.mjs` | Typography Rendering Sample, `docs/typography/sample.md` |
 
-Deploy: `npx vite build -c vite.typography.config.ts`, then `node scripts/arkadia/publish-layer.mjs --dir dist/typography-sample --prefix /typography --name typography-v2` (the gateway opens `/typography/`).
+Deploy: `npx vite build -c vite.typography.config.ts`, then `node scripts/arkodia/publish-layer.mjs --dir dist/typography-sample --prefix /typography --name typography-v2` (the gateway opens `/typography/`).
 
 Font sources and licences: `assets-src/typography/fonts/` (EB Garamond Medium, Cinzel SemiBold; SIL OFL 1.1).
 

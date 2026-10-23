@@ -34,7 +34,7 @@ for(const mobile of [false,true]) for(const h of heroes){
   const compact=false;
   await asset('panel-mobile',24,1255,816,compact?350:425);
   await asset('button-default',24,compact?1605:1660,816,164);
-  const labels=[{x:432,y:72,size:52,text:'ARKADIA',tracking:10},{x:432,y:145,size:48,text:'CHOOSE YOUR HERO'}, {x:432,y:compact?1324:1320,size:42,text:compact?'LOADOUT':h.name.toUpperCase()}];
+  const labels=[{x:432,y:72,size:52,text:'ARKODIA',tracking:10},{x:432,y:145,size:48,text:'CHOOSE YOUR HERO'}, {x:432,y:compact?1324:1320,size:42,text:compact?'LOADOUT':h.name.toUpperCase()}];
   if(!compact){labels.push({x:432,y:1372,size:25,text:h.desc},{x:432,y:1408,size:29,text:'LOADOUT'});await asset('divider',140,1328,584,42);}
   const iy=compact?1350:1420;const iconSize=compact?150:136;
   for(let i=0;i<3;i++){await asset(i===0?h.icon:'skill-empty',150+i*208+(150-iconSize)/2,iy,iconSize,iconSize);labels.push({x:225+i*208,y:iy+(compact?174:158),size:26,text:i===0?h.skill:'Empty'});}
@@ -47,7 +47,7 @@ for(const mobile of [false,true]) for(const h of heroes){
   await asset('back',42,92,56,56);await asset('compass-crest',152,7,66,66);await asset('divider',420,68,820,55);
   for(let i=0;i<heroes.length;i++)await asset(`cards/${heroes[i].id}-${heroes[i].id===h.id?'selected':'default'}.png`,60,158+i*350,270,338);
   await asset('panel-desktop',1155,130,485,660);await asset('button-default',1155,744,485,97);await asset('divider',1200,256,395,28);
-  const labels=[{x:180,y:61,size:42,text:'ARKADIA',tracking:7},{x:110,y:129,size:24,text:'Back',anchor:'start'},{x:830,y:73,size:57,text:'CHOOSE YOUR HERO'},{x:830,y:122,size:28,text:'Choose a hero to begin your journey.'},{x:1398,y:239,size:42,text:h.name.toUpperCase()},{x:1398,y:310,size:23,text:h.desc},{x:1205,y:394,size:26,text:'LOADOUT',anchor:'start'}];
+  const labels=[{x:180,y:61,size:42,text:'ARKODIA',tracking:7},{x:110,y:129,size:24,text:'Back',anchor:'start'},{x:830,y:73,size:57,text:'CHOOSE YOUR HERO'},{x:830,y:122,size:28,text:'Choose a hero to begin your journey.'},{x:1398,y:239,size:42,text:h.name.toUpperCase()},{x:1398,y:310,size:23,text:h.desc},{x:1205,y:394,size:26,text:'LOADOUT',anchor:'start'}];
   await asset('divider',1330,375,260,30);
   for(let i=0;i<3;i++){await asset(i===0?h.icon:'skill-empty',1194+i*139,427,126,126);labels.push({x:1257+i*139,y:580,size:23,text:i===0?h.skill:'Empty'});}
   labels.push({x:1257,y:609,size:22,text:'Lv. 1',color:'#ffdc65'},{x:1398,y:650,size:18,text:'Skills cast automatically when enemies'},{x:1398,y:677,size:18,text:'enter range. Gain new skills through'},{x:1398,y:704,size:18,text:'random level-up blessings.'},{x:1398,y:804,size:35,text:'BEGIN JOURNEY'});

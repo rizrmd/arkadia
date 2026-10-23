@@ -23,17 +23,17 @@ function aabbsOverlapWithGap(a, b, gap = -0.5) {
 
 async function main() {
   await mkdir(OUT_DIR, { recursive: true });
-  const siteDir = '/tmp/arkadia-dist-alt-b-v5';
+  const siteDir = '/tmp/arkodia-dist-alt-b-v5';
   execFileSync('npx', ['vite', 'build', '--outDir', siteDir, '--emptyOutDir'], {
     stdio: 'inherit',
   });
-  execFileSync(process.env.GO || 'go', ['build', '-o', 'bin/arkadia-verify', './cmd/arkadia'], {
+  execFileSync(process.env.GO || 'go', ['build', '-o', 'bin/arkodia-verify', './cmd/arkodia'], {
     cwd: 'server',
     stdio: 'inherit',
     env: { ...process.env, CGO_ENABLED: '0' },
   });
 
-  const server = spawn('server/bin/arkadia-verify', [], {
+  const server = spawn('server/bin/arkodia-verify', [], {
     env: { ...process.env, PORT, SITE_DIR: siteDir },
     stdio: ['ignore', 'pipe', 'inherit'],
   });

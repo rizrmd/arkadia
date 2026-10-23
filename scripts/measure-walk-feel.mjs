@@ -6,12 +6,12 @@ import fs from 'node:fs/promises';
 // stop take, and the walk clip's frame rate. Every frame is sampled after the game's loops. Walks come in
 // out-and-back pairs from the spawn in front of the tent, so the hero never runs into a wall.
 //   npm run build && node scripts/measure-walk-feel.mjs           solo (?offline=1), static server on dist/
-//   MODE=coop node scripts/measure-walk-feel.mjs                  co-op through server/bin/arkadia (go build first)
+//   MODE=coop node scripts/measure-walk-feel.mjs                  co-op through server/bin/arkodia (go build first)
 //   ROOT=/other/checkout …   measure that checkout's dist/ and server binary (A/B runs)
 //   VERIFY_URL=https://…     measure a deployed host;  CPU_RATE=4 throttles;  REPORT=file.json saves the report
 const mode=process.env.MODE||'solo',root=process.env.ROOT||'.',rate=Number(process.env.CPU_RATE||1),port=3074;
 const server=process.env.VERIFY_URL?null:mode==='coop'
- ?spawn(root+'/server/bin/arkadia',[],{env:{...process.env,PORT:String(port),SITE_DIR:root+'/dist'},stdio:'ignore'})
+ ?spawn(root+'/server/bin/arkodia',[],{env:{...process.env,PORT:String(port),SITE_DIR:root+'/dist'},stdio:'ignore'})
  :spawn('node',['server.mjs'],{env:{...process.env,PORT:String(port),SITE_DIR:root+'/dist'},stdio:'ignore'});
 const url=process.env.VERIFY_URL?.replace(/\/$/,'')||'http://127.0.0.1:'+port;let browser;
 try{
@@ -19,7 +19,7 @@ try{
  browser=await chromium.launch({headless:true,env:{...process.env,LD_LIBRARY_PATH:'/home/dev/.local/browser-libs/usr/lib/x86_64-linux-gnu:/opt/fural-antigravity-glibc'},args:['--no-sandbox','--no-zygote','--single-process']});
  const page=await browser.newPage({viewport:{width:390,height:844},hasTouch:true,isMobile:true}),errors=[];page.on('pageerror',e=>errors.push(e.message));
  if(rate>1)await (await page.context().newCDPSession(page)).send('Emulation.setCPUThrottlingRate',{rate});
- await page.addInitScript(()=>{try{localStorage.setItem('arkadia.stronghold.hero',JSON.stringify({x:590,y:420}));}catch{}});
+ await page.addInitScript(()=>{try{localStorage.setItem('arkodia.stronghold.hero',JSON.stringify({x:590,y:420}));}catch{}});
  await page.goto(url+'/?hero=rift-runner&time=0.5'+(mode==='coop'?'':'&offline=1'));
  await page.waitForFunction(()=>document.querySelector('#world-canvas')?.dataset.ready==='true'&&!document.querySelector('#loading-screen'),null,{timeout:180000});
  if(mode==='coop')await page.waitForFunction(()=>window.__COOP__?.stats().status==='online',null,{timeout:30000});
