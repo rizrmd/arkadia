@@ -320,9 +320,9 @@
      },
      "alpha": {
       "mode": "constant",
-      "value": 0.9,
-      "min": 0.9,
-      "max": 0.9,
+      "value": 0.96,
+      "min": 0.96,
+      "max": 0.96,
       "curve": [
        {
         "x": 0,
@@ -377,9 +377,9 @@
     },
     "size": {
      "mode": "random",
-     "value": 0.06,
-     "min": 0.045,
-     "max": 0.075,
+     "value": 0.0715,
+     "min": 0.055,
+     "max": 0.088,
      "curve": [
       {
        "x": 0,
@@ -1047,33 +1047,41 @@
       {
        "position": 0,
        "color": [
-        0.9569,
-        0.9412,
+        0.902,
+        0.8471,
         1
        ]
       },
       {
-       "position": 0.3,
+       "position": 0.22,
        "color": [
-        0.7333,
-        0.6588,
+        0.6431,
+        0.4471,
         1
        ]
       },
       {
-       "position": 0.6,
+       "position": 0.55,
        "color": [
-        0.549,
-        0.3922,
-        1
+        0.4235,
+        0.2039,
+        0.9216
+       ]
+      },
+      {
+       "position": 0.82,
+       "color": [
+        0.2667,
+        0.0863,
+        0.7059
        ]
       },
       {
        "position": 1,
        "color": [
-        0.3529,
-        0.2118,
-        0.8784
+        0.1333,
+        0.0314,
+        0.3922
        ]
       }
      ],
@@ -1083,8 +1091,8 @@
        "alpha": 1
       },
       {
-       "position": 0.45,
-       "alpha": 0.88
+       "position": 0.55,
+       "alpha": 0.94
       },
       {
        "position": 1,
@@ -2624,9 +2632,9 @@
      },
      "alpha": {
       "mode": "constant",
-      "value": 0.9,
-      "min": 0.9,
-      "max": 0.9,
+      "value": 0.96,
+      "min": 0.96,
+      "max": 0.96,
       "curve": [
        {
         "x": 0,
@@ -2681,9 +2689,9 @@
     },
     "size": {
      "mode": "random",
-     "value": 0.06,
-     "min": 0.045,
-     "max": 0.075,
+     "value": 0.0715,
+     "min": 0.055,
+     "max": 0.088,
      "curve": [
       {
        "x": 0,
@@ -3387,8 +3395,8 @@
        "alpha": 1
       },
       {
-       "position": 0.45,
-       "alpha": 0.88
+       "position": 0.55,
+       "alpha": 0.94
       },
       {
        "position": 1,
@@ -4928,9 +4936,9 @@
      },
      "alpha": {
       "mode": "constant",
-      "value": 0.9,
-      "min": 0.9,
-      "max": 0.9,
+      "value": 0.96,
+      "min": 0.96,
+      "max": 0.96,
       "curve": [
        {
         "x": 0,
@@ -4985,9 +4993,9 @@
     },
     "size": {
      "mode": "random",
-     "value": 0.06,
-     "min": 0.045,
-     "max": 0.075,
+     "value": 0.0715,
+     "min": 0.055,
+     "max": 0.088,
      "curve": [
       {
        "x": 0,
@@ -5691,8 +5699,8 @@
        "alpha": 1
       },
       {
-       "position": 0.45,
-       "alpha": 0.88
+       "position": 0.55,
+       "alpha": 0.94
       },
       {
        "position": 1,
@@ -7232,9 +7240,9 @@
      },
      "alpha": {
       "mode": "constant",
-      "value": 1,
-      "min": 1,
-      "max": 1,
+      "value": 0.92,
+      "min": 0.92,
+      "max": 0.92,
       "curve": [
        {
         "x": 0,
@@ -7260,9 +7268,9 @@
      },
      "intensity": {
       "mode": "constant",
-      "value": 1.8,
-      "min": 1.8,
-      "max": 1.8,
+      "value": 1,
+      "min": 1,
+      "max": 1,
       "curve": [
        {
         "x": 0,
@@ -7735,7 +7743,7 @@
     }
    },
    "render": {
-    "blend": "additive",
+    "blend": "alpha",
     "shading": "unlit",
     "depthTest": false,
     "depthWrite": false,
@@ -9540,9 +9548,9 @@
      },
      "alpha": {
       "mode": "constant",
-      "value": 1,
-      "min": 1,
-      "max": 1,
+      "value": 0.92,
+      "min": 0.92,
+      "max": 0.92,
       "curve": [
        {
         "x": 0,
@@ -9568,9 +9576,9 @@
      },
      "intensity": {
       "mode": "constant",
-      "value": 1.8,
-      "min": 1.8,
-      "max": 1.8,
+      "value": 1,
+      "min": 1,
+      "max": 1,
       "curve": [
        {
         "x": 0,
@@ -10043,7 +10051,7 @@
     }
    },
    "render": {
-    "blend": "additive",
+    "blend": "alpha",
     "shading": "unlit",
     "depthTest": false,
     "depthWrite": false,
@@ -11848,9 +11856,9 @@
      },
      "alpha": {
       "mode": "constant",
-      "value": 1,
-      "min": 1,
-      "max": 1,
+      "value": 0.92,
+      "min": 0.92,
+      "max": 0.92,
       "curve": [
        {
         "x": 0,
@@ -11876,9 +11884,9 @@
      },
      "intensity": {
       "mode": "constant",
-      "value": 1.8,
-      "min": 1.8,
-      "max": 1.8,
+      "value": 1,
+      "min": 1,
+      "max": 1,
       "curve": [
        {
         "x": 0,
@@ -12351,7 +12359,7 @@
     }
    },
    "render": {
-    "blend": "additive",
+    "blend": "alpha",
     "shading": "unlit",
     "depthTest": false,
     "depthWrite": false,
@@ -14156,9 +14164,9 @@
      },
      "alpha": {
       "mode": "constant",
-      "value": 1,
-      "min": 1,
-      "max": 1,
+      "value": 0.92,
+      "min": 0.92,
+      "max": 0.92,
       "curve": [
        {
         "x": 0,
@@ -14184,9 +14192,9 @@
      },
      "intensity": {
       "mode": "constant",
-      "value": 1.8,
-      "min": 1.8,
-      "max": 1.8,
+      "value": 1,
+      "min": 1,
+      "max": 1,
       "curve": [
        {
         "x": 0,
@@ -14659,7 +14667,7 @@
     }
    },
    "render": {
-    "blend": "additive",
+    "blend": "alpha",
     "shading": "unlit",
     "depthTest": false,
     "depthWrite": false,
@@ -16389,15 +16397,15 @@
     "color": {
      "mode": "random",
      "color": [
-      0.6118,
-      0.9412,
+      0.4078,
+      0.8471,
       1,
       1
      ],
      "colorB": [
-      0.4902,
-      0.3608,
-      1,
+      0.4157,
+      0.2588,
+      0.9569,
       1
      ],
      "gradient": {
@@ -16464,9 +16472,9 @@
      },
      "alpha": {
       "mode": "constant",
-      "value": 1,
-      "min": 1,
-      "max": 1,
+      "value": 0.95,
+      "min": 0.95,
+      "max": 0.95,
       "curve": [
        {
         "x": 0,
@@ -16492,9 +16500,9 @@
      },
      "intensity": {
       "mode": "constant",
-      "value": 1.8,
-      "min": 1.8,
-      "max": 1.8,
+      "value": 1,
+      "min": 1,
+      "max": 1,
       "curve": [
        {
         "x": 0,
@@ -16967,7 +16975,7 @@
     }
    },
    "render": {
-    "blend": "additive",
+    "blend": "alpha",
     "shading": "unlit",
     "depthTest": false,
     "depthWrite": false,
@@ -17003,7 +17011,7 @@
       },
       {
        "x": 0.65,
-       "y": 0.78
+       "y": 0.82
       },
       {
        "x": 1,
@@ -17017,7 +17025,7 @@
       },
       {
        "x": 0.65,
-       "y": 0.78
+       "y": 0.82
       },
       {
        "x": 1,
@@ -17042,7 +17050,7 @@
       },
       {
        "x": 0.65,
-       "y": 0.78
+       "y": 0.82
       },
       {
        "x": 1,
@@ -17056,7 +17064,7 @@
       },
       {
        "x": 0.65,
-       "y": 0.78
+       "y": 0.82
       },
       {
        "x": 1,
@@ -17191,41 +17199,41 @@
       {
        "position": 0,
        "color": [
-        1,
-        1,
+        0.9333,
+        0.9725,
         1
        ]
       },
       {
        "position": 0.2,
        "color": [
-        0.902,
-        0.9647,
+        0.4549,
+        0.8627,
         1
        ]
       },
       {
-       "position": 0.45,
+       "position": 0.48,
        "color": [
-        0.5608,
-        0.902,
+        0.4706,
+        0.2824,
         1
        ]
       },
       {
-       "position": 0.75,
+       "position": 0.78,
        "color": [
-        0.5451,
-        0.3843,
-        1
+        0.2824,
+        0.0941,
+        0.7373
        ]
       },
       {
        "position": 1,
        "color": [
-        0.2902,
-        0.1059,
-        0.7216
+        0.1255,
+        0.0235,
+        0.3765
        ]
       }
      ],
@@ -17235,8 +17243,8 @@
        "alpha": 1
       },
       {
-       "position": 0.6,
-       "alpha": 0.9
+       "position": 0.65,
+       "alpha": 0.94
       },
       {
        "position": 1,
@@ -18701,15 +18709,15 @@
     "color": {
      "mode": "random",
      "color": [
-      0.6118,
-      0.9412,
+      0.4078,
+      0.8471,
       1,
       1
      ],
      "colorB": [
-      0.851,
-      0.9843,
-      1,
+      0.4157,
+      0.2588,
+      0.9569,
       1
      ],
      "gradient": {
@@ -18776,9 +18784,9 @@
      },
      "alpha": {
       "mode": "constant",
-      "value": 1,
-      "min": 1,
-      "max": 1,
+      "value": 0.95,
+      "min": 0.95,
+      "max": 0.95,
       "curve": [
        {
         "x": 0,
@@ -18804,9 +18812,9 @@
      },
      "intensity": {
       "mode": "constant",
-      "value": 2,
-      "min": 2,
-      "max": 2,
+      "value": 1,
+      "min": 1,
+      "max": 1,
       "curve": [
        {
         "x": 0,
@@ -19279,7 +19287,7 @@
     }
    },
    "render": {
-    "blend": "additive",
+    "blend": "alpha",
     "shading": "unlit",
     "depthTest": false,
     "depthWrite": false,
@@ -19487,41 +19495,41 @@
       {
        "position": 0,
        "color": [
-        1,
-        1,
+        0.9333,
+        0.9725,
         1
        ]
       },
       {
        "position": 0.2,
        "color": [
-        0.902,
-        0.9647,
+        0.4549,
+        0.8627,
         1
        ]
       },
       {
-       "position": 0.45,
+       "position": 0.48,
        "color": [
-        0.5608,
-        0.902,
+        0.4706,
+        0.2824,
         1
        ]
       },
       {
-       "position": 0.75,
+       "position": 0.78,
        "color": [
-        0.5451,
-        0.3843,
-        1
+        0.2824,
+        0.0941,
+        0.7373
        ]
       },
       {
        "position": 1,
        "color": [
-        0.2902,
-        0.1059,
-        0.7216
+        0.1255,
+        0.0235,
+        0.3765
        ]
       }
      ],
@@ -19536,15 +19544,15 @@
       },
       {
        "position": 0.5,
-       "alpha": 0.85
+       "alpha": 0.92
       },
       {
        "position": 0.7,
-       "alpha": 0.35
+       "alpha": 0.55
       },
       {
        "position": 0.8,
-       "alpha": 0.9
+       "alpha": 0.95
       },
       {
        "position": 1,
@@ -21009,14 +21017,14 @@
     "color": {
      "mode": "random",
      "color": [
-      0.851,
-      0.9843,
+      0.6588,
+      0.9255,
       1,
       1
      ],
      "colorB": [
-      0.6118,
-      0.9412,
+      0.4078,
+      0.8471,
       1,
       1
      ],
@@ -21084,9 +21092,9 @@
      },
      "alpha": {
       "mode": "constant",
-      "value": 1,
-      "min": 1,
-      "max": 1,
+      "value": 0.95,
+      "min": 0.95,
+      "max": 0.95,
       "curve": [
        {
         "x": 0,
@@ -21112,9 +21120,9 @@
      },
      "intensity": {
       "mode": "constant",
-      "value": 1.4,
-      "min": 1.4,
-      "max": 1.4,
+      "value": 1,
+      "min": 1,
+      "max": 1,
       "curve": [
        {
         "x": 0,
@@ -21141,9 +21149,9 @@
     },
     "size": {
      "mode": "random",
-     "value": 0.041999999999999996,
-     "min": 0.032,
-     "max": 0.052,
+     "value": 0.047,
+     "min": 0.036,
+     "max": 0.058,
      "curve": [
       {
        "x": 0,
@@ -21170,9 +21178,9 @@
     "size3D": {
      "x": {
       "mode": "random",
-      "value": 0.041999999999999996,
-      "min": 0.032,
-      "max": 0.052,
+      "value": 0.047,
+      "min": 0.036,
+      "max": 0.058,
       "curve": [
        {
         "x": 0,
@@ -21198,9 +21206,9 @@
      },
      "y": {
       "mode": "random",
-      "value": 0.1,
-      "min": 0.075,
-      "max": 0.125,
+      "value": 0.10750000000000001,
+      "min": 0.08,
+      "max": 0.135,
       "curve": [
        {
         "x": 0,
@@ -21587,7 +21595,7 @@
     }
    },
    "render": {
-    "blend": "additive",
+    "blend": "alpha",
     "shading": "unlit",
     "depthTest": false,
     "depthWrite": false,
@@ -21795,41 +21803,41 @@
       {
        "position": 0,
        "color": [
-        1,
-        1,
+        0.9333,
+        0.9725,
         1
        ]
       },
       {
        "position": 0.2,
        "color": [
-        0.902,
-        0.9647,
+        0.4549,
+        0.8627,
         1
        ]
       },
       {
-       "position": 0.45,
+       "position": 0.48,
        "color": [
-        0.5608,
-        0.902,
+        0.4706,
+        0.2824,
         1
        ]
       },
       {
-       "position": 0.75,
+       "position": 0.78,
        "color": [
-        0.5451,
-        0.3843,
-        1
+        0.2824,
+        0.0941,
+        0.7373
        ]
       },
       {
        "position": 1,
        "color": [
-        0.2902,
-        0.1059,
-        0.7216
+        0.1255,
+        0.0235,
+        0.3765
        ]
       }
      ],
@@ -23293,15 +23301,15 @@
     "color": {
      "mode": "random",
      "color": [
-      0.6118,
-      0.9412,
+      0.4078,
+      0.8471,
       1,
       1
      ],
      "colorB": [
-      0.4902,
-      0.3608,
-      1,
+      0.4157,
+      0.2588,
+      0.9569,
       1
      ],
      "gradient": {
@@ -23368,9 +23376,9 @@
      },
      "alpha": {
       "mode": "constant",
-      "value": 1,
-      "min": 1,
-      "max": 1,
+      "value": 0.92,
+      "min": 0.92,
+      "max": 0.92,
       "curve": [
        {
         "x": 0,
@@ -23396,9 +23404,9 @@
      },
      "intensity": {
       "mode": "constant",
-      "value": 1.5,
-      "min": 1.5,
-      "max": 1.5,
+      "value": 1,
+      "min": 1,
+      "max": 1,
       "curve": [
        {
         "x": 0,
@@ -23871,7 +23879,7 @@
     }
    },
    "render": {
-    "blend": "additive",
+    "blend": "alpha",
     "shading": "unlit",
     "depthTest": false,
     "depthWrite": false,
@@ -24079,41 +24087,41 @@
       {
        "position": 0,
        "color": [
-        1,
-        1,
+        0.9333,
+        0.9725,
         1
        ]
       },
       {
        "position": 0.2,
        "color": [
-        0.902,
-        0.9647,
+        0.4549,
+        0.8627,
         1
        ]
       },
       {
-       "position": 0.45,
+       "position": 0.48,
        "color": [
-        0.5608,
-        0.902,
+        0.4706,
+        0.2824,
         1
        ]
       },
       {
-       "position": 0.75,
+       "position": 0.78,
        "color": [
-        0.5451,
-        0.3843,
-        1
+        0.2824,
+        0.0941,
+        0.7373
        ]
       },
       {
        "position": 1,
        "color": [
-        0.2902,
-        0.1059,
-        0.7216
+        0.1255,
+        0.0235,
+        0.3765
        ]
       }
      ],

@@ -320,9 +320,9 @@
      },
      "alpha": {
       "mode": "constant",
-      "value": 0.9,
-      "min": 0.9,
-      "max": 0.9,
+      "value": 0.96,
+      "min": 0.96,
+      "max": 0.96,
       "curve": [
        {
         "x": 0,
@@ -377,9 +377,9 @@
     },
     "size": {
      "mode": "random",
-     "value": 0.06,
-     "min": 0.045,
-     "max": 0.075,
+     "value": 0.0715,
+     "min": 0.055,
+     "max": 0.088,
      "curve": [
       {
        "x": 0,
@@ -1083,8 +1083,8 @@
        "alpha": 1
       },
       {
-       "position": 0.45,
-       "alpha": 0.88
+       "position": 0.55,
+       "alpha": 0.94
       },
       {
        "position": 1,
@@ -2624,9 +2624,9 @@
      },
      "alpha": {
       "mode": "constant",
-      "value": 0.9,
-      "min": 0.9,
-      "max": 0.9,
+      "value": 0.96,
+      "min": 0.96,
+      "max": 0.96,
       "curve": [
        {
         "x": 0,
@@ -2681,9 +2681,9 @@
     },
     "size": {
      "mode": "random",
-     "value": 0.056999999999999995,
-     "min": 0.042,
-     "max": 0.072,
+     "value": 0.066,
+     "min": 0.05,
+     "max": 0.082,
      "curve": [
       {
        "x": 0,
@@ -3371,8 +3371,8 @@
        "alpha": 1
       },
       {
-       "position": 0.55,
-       "alpha": 0.85
+       "position": 0.58,
+       "alpha": 0.92
       },
       {
        "position": 1,
@@ -4912,9 +4912,9 @@
      },
      "alpha": {
       "mode": "constant",
-      "value": 0.9,
-      "min": 0.9,
-      "max": 0.9,
+      "value": 0.95,
+      "min": 0.95,
+      "max": 0.95,
       "curve": [
        {
         "x": 0,
@@ -4969,9 +4969,9 @@
     },
     "size": {
      "mode": "random",
-     "value": 0.054000000000000006,
-     "min": 0.04,
-     "max": 0.068,
+     "value": 0.063,
+     "min": 0.048,
+     "max": 0.078,
      "curve": [
       {
        "x": 0,
@@ -9476,9 +9476,9 @@
      },
      "alpha": {
       "mode": "constant",
-      "value": 1,
-      "min": 1,
-      "max": 1,
+      "value": 0.92,
+      "min": 0.92,
+      "max": 0.92,
       "curve": [
        {
         "x": 0,
@@ -9504,9 +9504,9 @@
      },
      "intensity": {
       "mode": "constant",
-      "value": 1.5,
-      "min": 1.5,
-      "max": 1.5,
+      "value": 1,
+      "min": 1,
+      "max": 1,
       "curve": [
        {
         "x": 0,
@@ -9979,7 +9979,7 @@
     }
    },
    "render": {
-    "blend": "additive",
+    "blend": "alpha",
     "shading": "unlit",
     "depthTest": false,
     "depthWrite": false,

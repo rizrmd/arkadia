@@ -8,16 +8,16 @@
 //   deep  — the darkest hue, for the tail of long-lived particles
 //   smoke — alpha-blended residue (smoke, dust); rock — debris chunks
 export const EMBER={
- flame:{c:[[0,'#fffdf4'],[.22,'#ffe696'],[.52,'#ff9a2a'],[.82,'#f25216'],[1,'#d42c0a']]},
- hot:{c:[[0,'#fffef6'],[.2,'#ffe99c'],[.48,'#ffa236'],[.78,'#f45618'],[1,'#c82808']]},
- body:{c:[[0,'#fff4c8'],[.24,'#ffbe4a'],[.54,'#ff7218'],[.82,'#dc340c'],[1,'#7a1204']]},
- light:'#ff922e',spark:'#ffde8c',deep:'#b8260c',accent:'#fff3c4',smoke:'#2a1e1a',rock:'#4a2a1e',
+ flame:{c:[[0,'#fff2b8'],[.18,'#ffbe3c'],[.48,'#ff6a12'],[.78,'#d42806'],[1,'#7a1004']]},
+ hot:{c:[[0,'#fff6cc'],[.18,'#ffc848'],[.46,'#ff7418'],[.76,'#d82c08'],[1,'#7a1004']]},
+ body:{c:[[0,'#ffe8a4'],[.22,'#ffa834'],[.52,'#f45c12'],[.80,'#c82608'],[1,'#680e04']]},
+ light:'#ff7c1c',spark:'#ffc654',deep:'#9e1e08',accent:'#ffe294',smoke:'#2a1e1a',rock:'#4a2a1e',
 };
 export const RIFT={
- flame:{c:[[0,'#f4f0ff'],[.3,'#bba8ff'],[.6,'#8c64ff'],[1,'#5a36e0']]},
- hot:{c:[[0,'#ffffff'],[.2,'#e6f6ff'],[.45,'#8fe6ff'],[.75,'#8b62ff'],[1,'#4a1bb8']]},
- body:{c:[[0,'#f2ecff'],[.25,'#b9a2ff'],[.55,'#7d4dff'],[.85,'#4a1fc0'],[1,'#1c0a5a']]},
- light:'#7d5cff',spark:'#9cf0ff',deep:'#3b1aa0',accent:'#d9fbff',smoke:'#1d1838',rock:'#2a2450',
+ flame:{c:[[0,'#e6d8ff'],[.22,'#a472ff'],[.55,'#6c34eb'],[.82,'#4416b4'],[1,'#220864']]},
+ hot:{c:[[0,'#eef8ff'],[.20,'#74dcff'],[.48,'#7848ff'],[.78,'#4818bc'],[1,'#200660']]},
+ body:{c:[[0,'#e2d2ff'],[.24,'#9c68ff'],[.54,'#642ce4'],[.82,'#3c12a4'],[1,'#18064c']]},
+ light:'#6a42f4',spark:'#68d8ff',deep:'#32128e',accent:'#a8ecff',smoke:'#1d1838',rock:'#2a2450',
 };
 export const SEISMIC={
  flame:{c:[[0,'#fff6dc'],[.3,'#ffd986'],[.7,'#e0a448'],[1,'#b07a32']]},

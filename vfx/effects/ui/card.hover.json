@@ -320,9 +320,9 @@
      },
      "alpha": {
       "mode": "constant",
-      "value": 1,
-      "min": 1,
-      "max": 1,
+      "value": 0.92,
+      "min": 0.92,
+      "max": 0.92,
       "curve": [
        {
         "x": 0,
@@ -348,9 +348,9 @@
      },
      "intensity": {
       "mode": "constant",
-      "value": 1.7,
-      "min": 1.7,
-      "max": 1.7,
+      "value": 1,
+      "min": 1,
+      "max": 1,
       "curve": [
        {
         "x": 0,
@@ -823,7 +823,7 @@
     }
    },
    "render": {
-    "blend": "additive",
+    "blend": "alpha",
     "shading": "unlit",
     "depthTest": false,
     "depthWrite": false,
@@ -2628,9 +2628,9 @@
      },
      "alpha": {
       "mode": "constant",
-      "value": 1,
-      "min": 1,
-      "max": 1,
+      "value": 0.92,
+      "min": 0.92,
+      "max": 0.92,
       "curve": [
        {
         "x": 0,
@@ -2656,9 +2656,9 @@
      },
      "intensity": {
       "mode": "constant",
-      "value": 1.7,
-      "min": 1.7,
-      "max": 1.7,
+      "value": 1,
+      "min": 1,
+      "max": 1,
       "curve": [
        {
         "x": 0,
@@ -3131,7 +3131,7 @@
     }
    },
    "render": {
-    "blend": "additive",
+    "blend": "alpha",
     "shading": "unlit",
     "depthTest": false,
     "depthWrite": false,
@@ -4936,9 +4936,9 @@
      },
      "alpha": {
       "mode": "constant",
-      "value": 1,
-      "min": 1,
-      "max": 1,
+      "value": 0.92,
+      "min": 0.92,
+      "max": 0.92,
       "curve": [
        {
         "x": 0,
@@ -4964,9 +4964,9 @@
      },
      "intensity": {
       "mode": "constant",
-      "value": 1.7,
-      "min": 1.7,
-      "max": 1.7,
+      "value": 1,
+      "min": 1,
+      "max": 1,
       "curve": [
        {
         "x": 0,
@@ -5439,7 +5439,7 @@
     }
    },
    "render": {
-    "blend": "additive",
+    "blend": "alpha",
     "shading": "unlit",
     "depthTest": false,
     "depthWrite": false,
@@ -7244,9 +7244,9 @@
      },
      "alpha": {
       "mode": "constant",
-      "value": 1,
-      "min": 1,
-      "max": 1,
+      "value": 0.92,
+      "min": 0.92,
+      "max": 0.92,
       "curve": [
        {
         "x": 0,
@@ -7272,9 +7272,9 @@
      },
      "intensity": {
       "mode": "constant",
-      "value": 1.7,
-      "min": 1.7,
-      "max": 1.7,
+      "value": 1,
+      "min": 1,
+      "max": 1,
       "curve": [
        {
         "x": 0,
@@ -7747,7 +7747,7 @@
     }
    },
    "render": {
-    "blend": "additive",
+    "blend": "alpha",
     "shading": "unlit",
     "depthTest": false,
     "depthWrite": false,
