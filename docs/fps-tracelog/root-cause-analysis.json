@@ -1,5 +1,5 @@
 {
-  "analyzedAt": "2026-10-23T09:54:24.541Z",
+  "analyzedAt": "2026-10-23T10:22:09.361Z",
   "serverTracelogsAnalyzed": 80,
   "logs": [
     {
@@ -350,30 +350,30 @@
   "benchmarkAfterFix": {
     "sampleCount": 16,
     "phasesAvg": {
-      "worldDrawMs": 0.28,
+      "worldDrawMs": 0.06,
       "worldPaintMs": 0,
       "shadowCastMs": 0,
-      "encountersStepMs": 8.77,
-      "encountersRenderMs": 12.18,
-      "pixiRenderMs": 13.71,
+      "encountersStepMs": 0.25,
+      "encountersRenderMs": 11.23,
+      "pixiRenderMs": 14.88,
       "netMs": 0,
       "unaccountedMs": 0
     },
     "phasesMax": {
-      "worldDrawMs": 3.5,
+      "worldDrawMs": 0.2,
       "worldPaintMs": 0,
       "shadowCastMs": 0,
-      "encountersStepMs": 109.6,
-      "encountersRenderMs": 33,
-      "pixiRenderMs": 87.6,
+      "encountersStepMs": 0.7,
+      "encountersRenderMs": 62,
+      "pixiRenderMs": 52.6,
       "netMs": 0,
       "unaccountedMs": 0
     },
     "foesRendered": 8,
-    "particles": 144,
-    "peakParticles": 309,
+    "particles": 91,
+    "peakParticles": 361,
     "liveEffects": 13,
-    "playedEffects": 92,
-    "activeFloats": 8
+    "playedEffects": 100,
+    "activeFloats": 13
   }
 }

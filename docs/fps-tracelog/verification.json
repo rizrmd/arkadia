@@ -1,53 +1,53 @@
 {
-  "verifiedAt": "2026-10-23T09:54:24.541Z",
-  "baseUrl": "http://127.0.0.1:8951",
+  "verifiedAt": "2026-10-23T10:22:09.360Z",
+  "baseUrl": "http://127.0.0.1:8955",
   "pageErrors": 0,
   "combatBenchmark": {
     "sampleCount": 16,
     "phasesAvg": {
-      "worldDrawMs": 0.28,
+      "worldDrawMs": 0.06,
       "worldPaintMs": 0,
       "shadowCastMs": 0,
-      "encountersStepMs": 8.77,
-      "encountersRenderMs": 12.18,
-      "pixiRenderMs": 13.71,
+      "encountersStepMs": 0.25,
+      "encountersRenderMs": 11.23,
+      "pixiRenderMs": 14.88,
       "netMs": 0,
       "unaccountedMs": 0
     },
     "phasesMax": {
-      "worldDrawMs": 3.5,
+      "worldDrawMs": 0.2,
       "worldPaintMs": 0,
       "shadowCastMs": 0,
-      "encountersStepMs": 109.6,
-      "encountersRenderMs": 33,
-      "pixiRenderMs": 87.6,
+      "encountersStepMs": 0.7,
+      "encountersRenderMs": 62,
+      "pixiRenderMs": 52.6,
       "netMs": 0,
       "unaccountedMs": 0
     },
     "foesRendered": 8,
-    "particles": 144,
-    "peakParticles": 309,
+    "particles": 91,
+    "peakParticles": 361,
     "liveEffects": 13,
-    "playedEffects": 92,
-    "activeFloats": 8
+    "playedEffects": 100,
+    "activeFloats": 13
   },
-  "tracelogPostsCaptured": 4,
-  "serverStoredCount": 4,
+  "tracelogPostsCaptured": 5,
+  "serverStoredCount": 8,
   "serverSummary": {
     "byReason": {
-      "frame_spike": 3,
-      "sustained_low_fps": 1
+      "frame_spike": 4,
+      "sustained_low_fps": 4
     },
     "byBottleneck": {
-      "encounters-render": 1,
-      "main-thread-longtask": 2,
+      "encounters-render": 2,
+      "main-thread-longtask": 5,
       "shadow-cast": 1
     },
-    "lowestFps": 1.46,
-    "worstFrameMs": 2410.5
+    "lowestFps": 2.66,
+    "worstFrameMs": 2171.3
   },
   "sustainedDropSample": {
-    "id": "tl-mvksmc1f-3",
+    "id": "tl-mvktlxxx-3",
     "reason": "sustained_low_fps",
     "fps": 22.07,
     "minFps": 19.05,
@@ -78,16 +78,16 @@
       "mode": "solo",
       "hero": "rift-runner",
       "heroState": "idle",
-      "heroU": 16.45,
-      "heroV": 17.66,
+      "heroU": 16.5,
+      "heroV": 16.81,
       "safeZone": false,
       "level": 4,
       "heroesCount": 1,
       "foesTotal": 8,
       "foesRendered": 8,
-      "particles": 89,
-      "liveEffects": 9,
-      "activeFloats": 4,
+      "particles": 5,
+      "liveEffects": 2,
+      "activeFloats": 2,
       "projectiles": 0,
       "aoes": 0,
       "scale": 1.15,
@@ -103,7 +103,7 @@
     "frameSampleCount": 60
   },
   "frameSpikeSample": {
-    "id": "tl-mvksmc5f-4",
+    "id": "tl-mvktly3i-4",
     "reason": "frame_spike",
     "fps": 50.05,
     "minFps": 8.47,

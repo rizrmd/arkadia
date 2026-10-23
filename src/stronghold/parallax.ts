@@ -636,14 +636,16 @@ export async function createParallax(opts:ParallaxOptions){
    }
   }
 
-  computeCombatantOverlap();
+  layoutSprites();
   const fadeRate=isReducedMotion()?1:Math.min(1,Math.max(0.05,dtMs/180));
   leftAlpha+=((leftTargetAlpha-leftAlpha)*fadeRate);
   rightAlpha+=((rightTargetAlpha-rightAlpha)*fadeRate);
   if(Math.abs(leftTargetAlpha-leftAlpha)<0.01)leftAlpha=leftTargetAlpha;
   if(Math.abs(rightTargetAlpha-rightAlpha)<0.01)rightAlpha=rightTargetAlpha;
-
-  layoutSprites();
+  if(!transitioning){
+   leftSlotA.alpha=leftAlpha;
+   rightSlotA.alpha=rightAlpha;
+  }
  }
 
  function step(u:number,v:number,dtMs:number){
@@ -719,6 +721,9 @@ export async function createParallax(opts:ParallaxOptions){
    pendingMs=0;
    applyTexturesToSlot('A',area);
    layoutSprites();
+  },
+  state(){
+   return {biome:currentBiome,area:activeArea};
   },
   snapshot(){
    const mobile=mode!=='desktop';

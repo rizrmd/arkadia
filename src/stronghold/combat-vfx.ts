@@ -190,9 +190,12 @@ export function createCombatVfx(o:{
  function spawnSlash(u:number,v:number,angle:number,crit=false){
   const run=o.getRun(),novaRank=run.skills.nova??0,reachScale=reach(run);
   const {heroId}=o.getHero();
+  const hasSameFrameSlash=slashes.length>0&&slashes[slashes.length-1].age===0;
   slashes.push({id:nextId++,u,v,angle,reachScale,novaRank,hero:heroId,crit,age:0,duration:crit?340:260});
-  const d=tileVec(Math.cos(angle),Math.sin(angle));
-  cue('attack.swing',{u,v,yaw:yawOf(d.u,d.v),radius:reachScale});
+  if(!hasSameFrameSlash){
+   const d=tileVec(Math.cos(angle),Math.sin(angle));
+   cue('attack.swing',{u,v,yaw:yawOf(d.u,d.v),radius:reachScale});
+  }
  }
 
  function applyHitToFoe(f:Fighter,opts:{scale?:number;forceCrit?:boolean;sparkKind?:SparkKind;angle?:number}={}){
@@ -792,21 +795,27 @@ export function createCombatVfx(o:{
 
 
   // Expose live state on dataset for automated verification
-  vfxStats.floats=String(floats.length);
-  vfxStats.projectiles=String(projectiles.length);
-  vfxStats.aoes=String(aoes.length);
-  vfxStats.impacts=String(impacts.length);
-  vfxStats.levelups=String(levelUps.length);
-  vfxStats.slashes=String(slashes.length);
-  vfxStats.combos=String(combos.length);
-  vfxStats.totalCrits=String(totalCrits);
-  vfxStats.totalNormals=String(totalNormals);
-  vfxStats.totalAutoCasts=String(totalAutoCasts);
-  vfxStats.totalSimultaneousCasts=String(totalSimultaneousCasts);
-  vfxStats.totalTrinityCasts=String(totalTrinityCasts);
-  vfxStats.lastSkill=lastSkill;
-  vfxStats.lastSimultaneous=lastSimultaneousSkills.join(',');
-  const fs=fx.stats();vfxStats.fx=fs.ready?'ready':fs.failed?'failed':'loading';vfxStats.fxParticles=String(fs.particles);vfxStats.fxLive=String(fs.live);
+  const fxState=fx.ready()?'ready':fx.failed()?'failed':'loading';
+  const fxPart=fx.particleCount(),fxLv=fx.liveCount();
+  const nextStatsKey=`${floats.length}|${projectiles.length}|${aoes.length}|${impacts.length}|${levelUps.length}|${slashes.length}|${combos.length}|${totalCrits}|${totalNormals}|${totalAutoCasts}|${totalSimultaneousCasts}|${totalTrinityCasts}|${lastSkill}|${lastSimultaneousSkills.length}|${fxState}|${fxPart}|${fxLv}`;
+  if(vfxStats._statsKey!==nextStatsKey){
+   vfxStats._statsKey=nextStatsKey;
+   vfxStats.floats=String(floats.length);
+   vfxStats.projectiles=String(projectiles.length);
+   vfxStats.aoes=String(aoes.length);
+   vfxStats.impacts=String(impacts.length);
+   vfxStats.levelups=String(levelUps.length);
+   vfxStats.slashes=String(slashes.length);
+   vfxStats.combos=String(combos.length);
+   vfxStats.totalCrits=String(totalCrits);
+   vfxStats.totalNormals=String(totalNormals);
+   vfxStats.totalAutoCasts=String(totalAutoCasts);
+   vfxStats.totalSimultaneousCasts=String(totalSimultaneousCasts);
+   vfxStats.totalTrinityCasts=String(totalTrinityCasts);
+   vfxStats.lastSkill=lastSkill;
+   vfxStats.lastSimultaneous=lastSimultaneousSkills.join(',');
+   vfxStats.fx=fxState;vfxStats.fxParticles=String(fxPart);vfxStats.fxLive=String(fxLv);
+  }
  }
 
  return {
