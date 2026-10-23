@@ -33,8 +33,8 @@ export function savedHero():HeroId{
 }
 export function saveHero(id:HeroId){try{localStorage.setItem(KEY,id);}catch{}}
 // The character manifest, fetched once for the hero, the party and the revenants.
-const BASE='/assets/characters/';
+const BASE='/assets/characters/',MANIFEST_REV='1side-v6';
 let manifest:Promise<{characters:Record<string,any>}>|null=null;
-export const characters=async()=>(await (manifest??=fetch(BASE+'manifest.json').then(r=>{if(!r.ok)throw Error('Character manifest missing');return r.json();}))).characters;
+export const characters=async()=>(await (manifest??=fetch(`${BASE}manifest.json?v=${MANIFEST_REV}`).then(r=>{if(!r.ok)throw Error('Character manifest missing');return r.json();}))).characters;
 export const atlasUrl=(m:{image:string;revision?:string})=>BASE+m.image+(m.revision?`?v=${encodeURIComponent(m.revision)}`:'');
-export const portraitUrl=(id:HeroId)=>`${BASE}portraits/${id}.webp?v=${id==='ember-warden'?'painted-v4':'1'}`;
+export const portraitUrl=(id:HeroId)=>`${BASE}portraits/${id}.webp?v=${id==='ember-warden'?'painted-v5':'1'}`;

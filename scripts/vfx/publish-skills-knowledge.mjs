@@ -78,7 +78,7 @@ ${rankRows}
 Use the interactive controls along the bottom bar to inspect every stage and angle of **${skillTitle}**:
 
 - **Skill & Cue / Stage Switcher**: Switch between **Full Sequence** and individual NixieFX stages (${cues.map(c=>`**${c.stage}**`).join(', ')}), or compare against other ${heroName} skills.
-- **8-Direction Switcher** (**N**, **NE**, **E**, **SE**, **S**, **SW**, **W**, **NW**): Rotate the hero sprite, target Revenant dummy, and isometric 2:1 particle projection across all eight compass headings.
+- **8-Direction Switcher** (**N**, **NE**, **E**, **SE**, **S**, **SW**, **W**, **NW**): Rotate the hero sprite (${repoLink(`assets-src/sprite-player/${heroId}-attack.png`,`assets-src/sprite-player/${heroId}-attack.png`)} packed into ${repoLink(`public/assets/characters/${heroId}.webp`,`public/assets/characters/${heroId}.webp`)} via ${repoLink('scripts/pack-heroes.mjs','scripts/pack-heroes.mjs')}, \`MANIFEST_REV = '1side-v6'\`), target Revenant dummy, and isometric 2:1 particle projection across all eight compass headings.
 - **Play / Replay**: Trigger an immediate fresh cast of the selected sequence or cue.
 - **Loop / Once**: Toggle continuous auto-repeat (**Loop**, every \`2.2 s\`) or single-shot playback (**Once**).
 - **Background Switcher** (**Night** / **Day**): Compare additive thermal/arcane glow on the night courtyard against crisp daylight snow.
@@ -465,7 +465,11 @@ const emberParentMarkdown=`The Ember Warden commands a five-skill close- and mid
 
 <iframe src="${HOST}/skill-player/?hero=ember-warden&skill=flame-fan&dir=SE&controls=simple" title="Ember Warden — Interactive Skill Player" width="100%" height="520" loading="lazy"></iframe>
 
-Use the **Skill** dropdown (**Flame Fan**, **Cinder Step**, **Ember Snare**, **Astral Cleave**, **Seismic Slam**) and the **Cue / Stage Switcher** (**Full Sequence**, **Cast**, **Projectile / Bolt**, **Telegraph**, **Detonate**, **Impact**) along with the **8-Direction Switcher** (**N**–**NW**), **Play / Replay**, **Loop / Once**, and **Night / Day** background toggle to inspect every skill interactively.
+Use the **Skill** dropdown (**Flame Fan**, **Cinder Step**, **Ember Snare**, **Astral Cleave**, **Seismic Slam**) and the **Cue / Stage Switcher** (**Full Sequence**, **Cast**, **Projectile / Bolt**, **Telegraph**, **Detonate**, **Impact**) along with the **8-Direction Switcher** (**N**–**NW**), **Play / Replay**, **Loop / Once**, and **Night / Day** background toggle to inspect every skill interactively. Both the Skill Player (${repoLink('src/fx/lab.ts','src/fx/lab.ts')}) and the Stronghold runtime (${repoLink('src/stronghold/hero.ts','src/stronghold/hero.ts')}) render the 8-direction **Attack** sprite sheet (${repoLink('assets-src/sprite-player/ember-warden-attack.png','assets-src/sprite-player/ember-warden-attack.png')}, packed into ${repoLink('public/assets/characters/ember-warden.webp','public/assets/characters/ember-warden.webp')} via ${repoLink('scripts/pack-heroes.mjs','scripts/pack-heroes.mjs')}, \`MANIFEST_REV = '1side-v6'\`).
+
+![Ember Warden 8-direction Attack animation in the Skill Player across N, NE, E, SE, S, SW, W, NW](${HOST}/nixie-fx/skill-attack-8dir-ember-warden.webp)
+
+![Ember Warden Attack animation in Stronghold game runtime combat](${HOST}/nixie-fx/game-attack-ember-warden.webp)
 
 ## Skill previews
 
@@ -534,7 +538,11 @@ const riftParentMarkdown=`The Rift Runner commands a five-skill ranged arcane an
 
 <iframe src="${HOST}/skill-player/?hero=rift-runner&skill=rift-bolt&dir=SE&controls=simple" title="Rift Runner — Interactive Skill Player" width="100%" height="520" loading="lazy"></iframe>
 
-Use the **Skill** dropdown (**Rift Bolt**, **Rift Dash**, **Rift Trap**, **Astral Cleave**, **Seismic Slam**) and the **Cue / Stage Switcher** (**Full Sequence**, **Cast**, **Projectile / Bolt**, **Telegraph**, **Detonate**, **Impact**) along with the **8-Direction Switcher** (**N**–**NW**), **Play / Replay**, **Loop / Once**, and **Night / Day** background toggle to inspect every skill interactively.
+Use the **Skill** dropdown (**Rift Bolt**, **Rift Dash**, **Rift Trap**, **Astral Cleave**, **Seismic Slam**) and the **Cue / Stage Switcher** (**Full Sequence**, **Cast**, **Projectile / Bolt**, **Telegraph**, **Detonate**, **Impact**) along with the **8-Direction Switcher** (**N**–**NW**), **Play / Replay**, **Loop / Once**, and **Night / Day** background toggle to inspect every skill interactively. Both the Skill Player (${repoLink('src/fx/lab.ts','src/fx/lab.ts')}) and the Stronghold runtime (${repoLink('src/stronghold/hero.ts','src/stronghold/hero.ts')}) render the 8-direction **Attack** sprite sheet (${repoLink('assets-src/sprite-player/rift-runner-attack.png','assets-src/sprite-player/rift-runner-attack.png')}, packed into ${repoLink('public/assets/characters/rift-runner.webp','public/assets/characters/rift-runner.webp')} via ${repoLink('scripts/pack-heroes.mjs','scripts/pack-heroes.mjs')}, \`MANIFEST_REV = '1side-v6'\`).
+
+![Rift Runner 8-direction Attack animation in the Skill Player across N, NE, E, SE, S, SW, W, NW](${HOST}/nixie-fx/skill-attack-8dir-rift-runner.webp)
+
+![Rift Runner Attack animation in Stronghold game runtime combat](${HOST}/nixie-fx/game-attack-rift-runner.webp)
 
 ## Skill previews
 

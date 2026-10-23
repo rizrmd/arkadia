@@ -176,7 +176,8 @@ export async function mount(root:HTMLElement,progress:Progress){
  await stage.loaded;
 
  let view={x:0,y:0,scale:1};
- let simTime=0,paused=false,castAnimUntil=0,again=0;
+ let simTime=0,paused=false,castAnimStart=0,castAnimUntil=0,again=0;
+ let lastHeroClip='',lastHeroFrame=0,lastHeroFlip=false;
  const targetDist=()=>{
   const s=activeCue==='full'?activeSkill:(activeCue.split('.')[0] as SkillId);
   return isSimple&&SELF_SKILLS.has(s)?1.25:3.2;
@@ -184,12 +185,14 @@ export async function mount(root:HTMLElement,progress:Progress){
  const target=(dist=3.2)=>{const yaw=yawOfScreenAngle(aimDeg*Math.PI/180);return {u:HERO.u+Math.cos(yaw)*dist,v:HERO.v+Math.sin(yaw)*dist};};
  const screen=(u:number,v:number)=>{const p=tilePoint(u,v);return {x:view.x+p.x*view.scale,y:view.y+p.y*view.scale};};
 
- function heroClipForDir(m:any,dir:CompassDir,attacking:boolean):{clip:any;flip:boolean}{
+ function heroClipForDir(m:any,dir:CompassDir,attacking:boolean):{clipName:string;clip:any;flip:boolean}{
   const prefix=attacking?'attack':'idle';
-  const viewKey=dir==='E'?'SE':dir==='W'?'SW':dir;
+  const fallbackDir=dir==='E'?'SE':dir==='W'?'SW':dir;
+  const viewKey=m.clips?.[`${prefix}-${dir}`]?dir:fallbackDir;
   const flip=dir==='SW'||dir==='W'||dir==='NW';
-  const clip=m.clips?.[`${prefix}-${viewKey}`]??m.clips?.[`idle-${viewKey}`]??m.clips?.idle;
-  return {clip,flip};
+  const clipName=m.clips?.[`${prefix}-${viewKey}`]?`${prefix}-${viewKey}`:m.clips?.[`idle-${viewKey}`]?`idle-${viewKey}`:'idle';
+  const clip=m.clips?.[clipName]??m.clips?.idle;
+  return {clipName,clip,flip};
  }
 
  function layout(){
@@ -232,8 +235,13 @@ export async function mount(root:HTMLElement,progress:Progress){
     const hc=heroClipForDir(m,activeDir,attacking);
     const frames=hc.clip?.frames??[0];
     const fps=hc.clip?.fps??6;
-    frameIdx=frames[Math.floor(simTime*fps)%frames.length]??0;
+    const animIdx=attacking?Math.min(frames.length-1,Math.floor(Math.max(0,simTime-castAnimStart)*fps)):(Math.floor(simTime*fps)%frames.length);
+    frameIdx=frames[animIdx]??0;
     flip=hc.flip;
+    lastHeroClip=hc.clipName;
+    lastHeroFrame=frameIdx;
+    lastHeroFlip=flip;
+    Object.assign(figCv.dataset,{hero:c.id,clip:hc.clipName,frame:String(frameIdx),flip:String(flip),dir:activeDir});
    }else{
     const revClip=m.clips?.idle;
     const frames=revClip?.frames??[0];
@@ -241,7 +249,8 @@ export async function mount(root:HTMLElement,progress:Progress){
     flip=Math.cos(aimDeg*Math.PI/180)>=0;
    }
    const fr=m.frames[frameIdx]??m.frames[0];
-   const s=1.25*UNIT_PX*view.scale/fr.h,p=screen(c.u,c.v);
+   const cw=m.cell?.w??fr.w,ch=m.cell?.h??fr.h;
+   const s=1.25*UNIT_PX*view.scale/ch,p=screen(c.u,c.v);
    f.save();f.translate(p.x,p.y);
    if(bgMode==='night'&&c.isHero){
     const pg=f.createRadialGradient(0,-8*view.scale,2,0,-8*view.scale,44*view.scale);
@@ -249,7 +258,7 @@ export async function mount(root:HTMLElement,progress:Progress){
     f.fillStyle=pg;f.beginPath();f.ellipse(0,0,44*view.scale,22*view.scale,0,0,Math.PI*2);f.fill();
    }
    f.fillStyle='rgba(16,22,30,.34)';f.beginPath();f.ellipse(0,0,28*view.scale,10*view.scale,0,0,Math.PI*2);f.fill();
-   f.scale(flip?-s:s,s);f.drawImage(img,fr.x,fr.y,fr.w,fr.h,-m.cell.pivot.x,-m.cell.pivot.y,fr.w,fr.h);f.restore();
+   f.scale(flip?-s:s,s);f.drawImage(img,fr.x,fr.y,fr.w,fr.h,-m.cell.pivot.x,-m.cell.pivot.y,cw,ch);f.restore();
   }
  }
 
@@ -267,7 +276,7 @@ export async function mount(root:HTMLElement,progress:Progress){
  }
 
  function cue(key:string){
-  last='cue:'+key;again=0;castAnimUntil=simTime+0.45;
+  last='cue:'+key;again=0;castAnimStart=simTime;castAnimUntil=simTime+0.55;
   const skill=key.split('.')[0] as SkillId;
   const isSelf=SELF_SKILLS.has(skill);
   const at=key.startsWith('hit.')||(/\.(impact|detonate|telegraph)$/.test(key)&&!isSelf)?target(3.2):HERO;
@@ -277,7 +286,7 @@ export async function mount(root:HTMLElement,progress:Progress){
  }
 
  function sequence(skill:SkillId){
-  last='skill:'+skill;again=0;castAnimUntil=simTime+0.52;
+  last='skill:'+skill;again=0;castAnimStart=simTime;castAnimUntil=simTime+0.55;
   const keys=cueKeys(hero),has=(p:string)=>keys.includes(`${skill}.${p}`),radius=RADIUS[skill];
   const self=SELF_SKILLS.has(skill),spot=self?HERO:target(3.2);
   if(has('cast'))playCue(stage,hero,`${skill}.cast`,ctx(HERO,{radius}));
@@ -493,7 +502,7 @@ export async function mount(root:HTMLElement,progress:Progress){
   setAim:(d:number)=>{aimDeg=d;activeDir=nearestCompassDir(d);panel();layout();},
   setLoop:(on:boolean)=>{repeat=on;syncSimpleUI();},
   setBg:(bg:'night'|'day')=>{bgMode=bg;layout();syncSimpleUI();},
-  state:()=>({hero,skill:activeSkill,cue:activeCue,dir:activeDir,aimDeg,repeat,bg:bgMode,paused}),
+  state:()=>({hero,skill:activeSkill,cue:activeCue,dir:activeDir,aimDeg,repeat,bg:bgMode,paused,heroClip:lastHeroClip,heroFrame:lastHeroFrame,heroFlip:lastHeroFlip}),
   stats:()=>stage.stats(),
   hide:()=>{$('#fx-lab-panel').style.display='none';},
  };

@@ -117,6 +117,14 @@ try{
    // Test interactive controls: 8-direction switcher, Cue switcher, Loop/Once, Night/Day, Play/Replay
    const interactionCheck=await page.evaluate(()=>{
     const P=window.skillPlayer;
+    const dirClips={};
+    for(const d of ['N','NE','E','SE','S','SW','W','NW']){
+     document.querySelector(`#dir-${d}`).click();
+     P.pause(true);
+     P.advance(250);
+     const st=P.state();
+     dirClips[d]={clip:st.heroClip,frame:st.heroFrame,flip:st.heroFlip};
+    }
     document.querySelector('#dir-NW').click();
     const afterDir=P.state().dir;
     const cueBtns=[...document.querySelectorAll('#sp-cues button')];
@@ -132,9 +140,13 @@ try{
     const afterNight=P.state().bg;
     document.querySelector('#sp-play').click();
     P.advance(120);
-    return {afterDir,afterCue,afterOnce,afterLoop,afterDay,afterNight,particlesAfterReplay:P.stats().particles};
+    return {dirClips,afterDir,afterCue,afterOnce,afterLoop,afterDay,afterNight,particlesAfterReplay:P.stats().particles};
    });
 
+   for(const d of ['N','NE','E','SE','S','SW','W','NW']){
+    assert.equal(interactionCheck.dirClips[d].clip,`attack-${d}`,`Expected attack-${d} in ${hero} ${item.id}`);
+    assert.equal(interactionCheck.dirClips[d].flip,d==='SW'||d==='W'||d==='NW',`Expected flip=${d==='SW'||d==='W'||d==='NW'} for ${d}`);
+   }
    assert.equal(interactionCheck.afterDir,'NW');
    assert.notEqual(interactionCheck.afterCue,'full');
    assert.equal(interactionCheck.afterOnce,false);
