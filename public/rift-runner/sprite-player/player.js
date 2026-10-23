@@ -4,7 +4,7 @@
 //   manifest=sheets/rift-runner-idle.js     sheet description (default); paths inside resolve against it. A .js description
 //                                          calls spritePlayerSheet({...}) and also loads in sandboxed frames; .json needs CORS there
 //   hero=ember-warden|rift-runner           built-in hero selector (ember / ember-warden / rift / rift-runner)
-//   pose=idle|hurt|death|run                built-in pose selector (also accepts action=idle|hurt|death|run or hero=ember-warden-hurt)
+//   pose=idle|hurt|death|run|attack         built-in pose selector (also accepts action=idle|hurt|death|run|attack or hero=ember-warden-hurt)
 //   sheet=URL&cell=384[,384]&cols=8&rows=8&pivot=192,360&fps=5&labels=N,NE,E,SE,S,SW,W,NW   a sheet without a manifest
 //   row=S|4  fps=5  frame=0  bg=dark|light|checker|snow  guides=1  all=1  autoplay=0  loop=0|1 (override pose default)
 //   zoom=1.5   start zoomed (0.5–4); drag pans when zoomed, Ctrl+wheel / +, −, 0 zoom and reset
@@ -22,13 +22,13 @@ window.spritePlayer={state,get sheet(){return sheet}};
 const fail=message=>{status.textContent=message;status.classList.add('error');state.error=message;};
 const list=(v,fn=Number)=>v==null||v===''?null:String(v).split(',').map(s=>fn(s.trim()));
 const HEROES={ember:'ember-warden','ember-warden':'ember-warden',rift:'rift-runner','rift-runner':'rift-runner'};
-const POSES=new Set(['idle','hurt','death','run']);
+const POSES=new Set(['idle','hurt','death','run','attack']);
 function resolveManifest(){
  if(params.get('manifest'))return params.get('manifest');
  let h=(params.get('hero')||'').toLowerCase().trim(),p=(params.get('pose')||params.get('action')||'').toLowerCase().trim();
  for(const pose of POSES)if(h.endsWith('-'+pose)){p=p||pose;h=h.slice(0,-pose.length-1);break;}
  const hero=HEROES[h]||'rift-runner',pose=POSES.has(p)?p:'idle';
- return `sheets/${hero}-${pose}.js?v=5`;
+ return `sheets/${hero}-${pose}.js?v=6`;
 }
 async function loadSheet(){
  if(params.has('sheet')){

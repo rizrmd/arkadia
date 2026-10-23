@@ -7,16 +7,18 @@ Built-in pose samples from Knowledge (`Art Direction › Characters › Rift Run
 - **Rift Runner — Hurt** (`NKBDd93e7ee52b19d68efa7907c6`, attachment `DA8500d2aa02f2d22c68d1610a`): 8 headings × 8 frames, 384 × 384 cells, foot pivot (192, 360), 8 fps, Once (holds final frame).
 - **Rift Runner — Death** (`NKBDc0435b17089590ebf758c5b0`, attachment `DA9dc6c5997e83e261128fb23c`): 8 headings × 8 frames, 384 × 384 cells, foot pivot (192, 360), 8 fps, Once (holds final frame).
 - **Rift Runner — Run** (`NKBD7b2d30906c8a963483c32888`, attachment `DA491cd29951c4bbf15d80f1dd`): 8 headings × 8 frames, 384 × 384 cells, foot pivot (192, 360), 10 fps, Loop.
+- **Rift Runner — Attack** (`NKBDdb705923ddce75978796abda`, attachment `DA8febf57281c0e2ef1bbbbe98`): 8 headings × 8 frames, 384 × 384 cells, foot pivot (192, 360), 10 fps, Loop.
 - **Ember Warden — Idle** (`NKBD9c1df4ae8524e49a749059f3`, attachment `DA643ce3d7b15fb6e943e49c3c`): 8 headings × 8 frames, 384 × 384 cells, foot pivot (192, 360), 5 fps, Loop.
 - **Ember Warden — Hurt** (`NKBD3acc769cfee0487d59def5e6`, attachment `DAeed87d064b6d95538b4794cd`): 8 headings × 8 frames, 384 × 384 cells, foot pivot (192, 360), 8 fps, Once (holds final frame).
 - **Ember Warden — Death** (`NKBD3c1f34f5ca7b63f32516d2e9`, attachment `DAf848defd25fb17b5fa37b2c1`): 8 headings × 8 frames, 384 × 384 cells, foot pivot (192, 360), 8 fps, Once (holds final frame).
 - **Ember Warden — Run** (`NKBDf18fa50ee1a4cc98cc5d2106`, attachment `DA9fd2331401c246424a7402bf`): 8 headings × 8 frames, 384 × 384 cells, foot pivot (192, 360), 10 fps, Loop.
+- **Ember Warden — Attack** (`NKBD903bcee333c2137d8b04adba`, attachment `DA051186c3aeb2539350a5eb30`): 8 headings × 8 frames, 384 × 384 cells, foot pivot (192, 360), 10 fps, Loop.
 
-`node scripts/sprite-player/prepare-sample.mjs` writes the full and half-size WebP atlases, the sheet descriptions (`.json`, plus `.js`) and animated 8-heading previews for all 8 hero/pose sheets. Frames are copied from the sheet, not redrawn or interpolated.
+`node scripts/sprite-player/prepare-sample.mjs` writes the full and half-size WebP atlases, the sheet descriptions (`.json`, plus `.js`) and animated 8-heading previews for all 10 hero/pose sheets. Frames are copied from the sheet, not redrawn or interpolated.
 
 ### Embedding
 
-Knowledge pages render `<iframe>` from `*.fural.space` hosts in a preview card (sandbox `allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox`, lazy, no referrer). Each per-pose Knowledge page under `Sprites & Animation` (`Idle`, `Hurt`, `Death`, `Run`) embeds its dedicated pose player directly.
+Knowledge pages render `<iframe>` from `*.fural.space` hosts in a preview card (sandbox `allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox`, lazy, no referrer). Each per-pose Knowledge page under `Sprites & Animation` (`Idle`, `Hurt`, `Death`, `Run`, `Attack`) embeds its dedicated pose player directly.
 
 ```html
 <iframe src="https://ark-whachat.fural.space/sprite-player/?hero=rift-runner&pose=idle&row=S&controls=simple" title="Rift Runner — Idle sprite player" width="100%" height="560"></iframe>
@@ -26,8 +28,8 @@ Knowledge pages render `<iframe>` from `*.fural.space` hosts in a preview card (
 | Parameter | Effect |
 | --- | --- |
 | `hero=ember-warden\|rift-runner` | Select built-in hero (`ember`, `ember-warden`, `rift` or `rift-runner`) |
-| `pose=idle\|hurt\|death\|run` | Select built-in pose (`action=` also accepted; `Idle` & `Run` default to Loop; `Hurt` & `Death` default to Once / hold final frame) |
-| `manifest=sheets/x.js` | Explicit sheet description (`sheets/{rift-runner,ember-warden}-{idle,hurt,death,run}.js`). Use the `.js` form inside Knowledge design frames |
+| `pose=idle\|hurt\|death\|run\|attack` | Select built-in pose (`action=` also accepted; `Idle`, `Run` & `Attack` default to Loop; `Hurt` & `Death` default to Once / hold final frame) |
+| `manifest=sheets/x.js` | Explicit sheet description (`sheets/{rift-runner,ember-warden}-{idle,hurt,death,run,attack}.js`). Use the `.js` form inside Knowledge design frames |
 | `sheet=URL&cell=384&cols=8&rows=8&pivot=192,360&fps=5&labels=N,NE,…` | Any sheet without a description |
 | `row=S` or `row=4` | Starting heading (`N`, `NE`, `E`, `SE`, `S`, `SW`, `W`, `NW`) |
 | `fps`, `frame`, `bg=dark\|light\|checker\|snow`, `guides=1`, `all=1`, `autoplay=0` | Playback and display |

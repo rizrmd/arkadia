@@ -91,16 +91,18 @@ try{
  test(s.ready&&!s.error&&s.row===4,'plays inside a Knowledge page iframe (fural.space sandbox card)');await page.waitForTimeout(700);
  test((await knowledge.evaluate(()=>window.spritePlayer.state.frame))!==s.frame,'Knowledge page iframe playback advances');await page.screenshot({path:`${OUT}/knowledge-iframe.png`});
 
- // Verify all 8 hero/pose manifests (Rift Runner & Ember Warden × Idle, Hurt, Death, Run) in simple embed mode.
+ // Verify all 10 hero/pose manifests (Rift Runner & Ember Warden × Idle, Hurt, Death, Run, Attack) in simple embed mode.
  const POSE_CASES=[
   {hero:'rift-runner',pose:'idle',name:'Rift Runner — Idle',fps:5,loop:true},
   {hero:'rift-runner',pose:'hurt',name:'Rift Runner — Hurt',fps:8,loop:false},
   {hero:'rift-runner',pose:'death',name:'Rift Runner — Death',fps:8,loop:false},
   {hero:'rift-runner',pose:'run',name:'Rift Runner — Run',fps:10,loop:true},
+  {hero:'rift-runner',pose:'attack',name:'Rift Runner — Attack',fps:10,loop:true},
   {hero:'ember-warden',pose:'idle',name:'Ember Warden — Idle',fps:5,loop:true},
   {hero:'ember-warden',pose:'hurt',name:'Ember Warden — Hurt',fps:8,loop:false},
   {hero:'ember-warden',pose:'death',name:'Ember Warden — Death',fps:8,loop:false},
-  {hero:'ember-warden',pose:'run',name:'Ember Warden — Run',fps:10,loop:true}
+  {hero:'ember-warden',pose:'run',name:'Ember Warden — Run',fps:10,loop:true},
+  {hero:'ember-warden',pose:'attack',name:'Ember Warden — Attack',fps:10,loop:true}
  ];
  for(const c of POSE_CASES){
   ({frame,state}=await open(`?hero=${c.hero}&pose=${c.pose}&row=S&controls=simple`,560,560));s=await state();
