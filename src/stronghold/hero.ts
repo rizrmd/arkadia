@@ -208,11 +208,14 @@ function loadHeroAtlas(id:HeroId){
  return p;
 }
 
+export function preloadHeroAtlas(id:HeroId){
+ return loadHeroAtlas(id);
+}
+
 export async function createHero<P extends Placed>(o:{layer:Container;lightmap:HTMLCanvasElement;surface:HTMLElement;footprint:(p:P)=>Column[];sun:()=>Sun;direction:()=>Walk;follow:(x:number,y:number,dt:number,walking?:boolean)=>void;pose?:()=>Pose|null;drive?:()=>Drive|null;id?:string;hero?:HeroId}){
  const load=loadHeroAtlas;
  const wanted0=isHero(o.hero)?o.hero:DEFAULT_HERO;
- const preloadAll=typeof navigator==='undefined'||!navigator.webdriver;
- let [hero]=await Promise.all([load(wanted0),...(preloadAll?HEROES.map(h=>load(h.id)):[])]);
+ let hero=await load(wanted0);
  let {meta,atlas}=hero,wanted=hero.id;
  const canvas=document.createElement('canvas'),c=canvas.getContext('2d')!;canvas.id=o.id??'world-hero';const own=!o.id;if(own)(window as any).__WORLD_HERO__=canvas;
  const heroView=createCanvasSprite(canvas);

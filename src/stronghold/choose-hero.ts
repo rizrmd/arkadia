@@ -78,7 +78,7 @@ export class ChooseHero extends Container{
  private enterDown=false;
  private loading=0;
  private cache=new Map<string,Promise<[FrameSet,Texture]>>();
- private constructor(private labels:Labels,private artTex:Record<string,Texture>,private fx:ChooseHeroFx|null,hero:HeroId){
+ private constructor(private labels:Labels,private artTex:Record<string,Texture>,private artFiles:Record<string,{file:string}>,private fx:ChooseHeroFx|null,hero:HeroId){
   super();this.hero=hero;
   // The whole viewport takes pointer input, so nothing behind the screen reacts while it is open.
   this.eventMode='static';this.addChild(this.bg,this.stage);
@@ -86,8 +86,10 @@ export class ChooseHero extends Container{
  static async load(hero:HeroId){
   const v='?v=6';
   const [labels,manifest]=await Promise.all([fetch(BASE+'labels.en.json'+v).then(r=>r.json() as Promise<Labels>),fetch(BASE+'manifest.json'+v).then(r=>r.json() as Promise<{art:Record<string,{file:string}>}>)]);
-  const names=Object.keys(manifest.art),[art,fx]=await Promise.all([Promise.all(names.map(n=>Assets.load<Texture>({src:BASE+manifest.art[n].file+v,data:{autoGenerateMipmaps:true}}))),ChooseHeroFx.load()]);
-  return new ChooseHero(labels,Object.fromEntries(names.map((n,i)=>[n,art[i]])),fx,hero);
+  const w=typeof innerWidth!=='undefined'&&innerWidth?innerWidth:1440,h=typeof innerHeight!=='undefined'&&innerHeight?innerHeight:900;
+  const initBg=chooseLayout(w,h)==='portrait'?'castle-mobile':'castle-desktop';
+  const names=Object.keys(manifest.art).filter(n=>!n.startsWith('castle-')||n===initBg),[art,fx]=await Promise.all([Promise.all(names.map(n=>Assets.load<Texture>({src:BASE+manifest.art[n].file+v,data:{autoGenerateMipmaps:true}}))),ChooseHeroFx.load()]);
+  return new ChooseHero(labels,Object.fromEntries(names.map((n,i)=>[n,art[i]])),manifest.art,fx,hero);
  }
  // Frames for one layout and scale: only the panel that layout draws (the textured panels are the heaviest files).
  private assets(layout:ChooseLayout,scale:FrameScale){
@@ -100,13 +102,17 @@ export class ChooseHero extends Container{
  async layout(width:number,height:number){
   const layout=chooseLayout(width,height),[W,H]=DESIGN[layout],s=Math.min(width/W,height/H),scale=pickFrameScale(devicePixelRatio||1,s);
   this.hitArea=new Rectangle(0,0,width,height);
+  const bgKey=layout==='portrait'?'castle-mobile':'castle-desktop';
+  if(!this.artTex[bgKey]&&this.artFiles[bgKey]){
+   this.artTex[bgKey]=await Assets.load<Texture>({src:BASE+this.artFiles[bgKey].file+'?v=6',data:{autoGenerateMipmaps:true}});
+  }
   if(layout!==this.layoutName||scale!==this.frameScale||!this.frames){
    const token=++this.loading,[frames,logo]=await this.assets(layout,scale);
    if(token!==this.loading)return;
    this.frames=frames;this.logo=logo;this.layoutName=layout;this.frameScale=scale;this.build();
   }
   this.stage.scale.set(s);this.stage.position.set((width-W*s)/2,(height-H*s)/2);
-  const bg=this.bg;bg.texture=this.artTex[layout==='portrait'?'castle-mobile':'castle-desktop'];
+  const bg=this.bg;bg.texture=this.artTex[bgKey];
   bg.scale.set(Math.max(width/bg.texture.width,height/bg.texture.height));bg.position.set((width-bg.width)/2,(height-bg.height)/2);
   // Effect and edge widths follow the world scale, which Pixi reads only when a text changes.
   for(const t of this.texts)t.refresh();

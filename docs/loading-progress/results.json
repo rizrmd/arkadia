@@ -1,696 +1,270 @@
 {
  "url": "http://127.0.0.1:3081",
- "mbps": 10,
- "durationMs": 30844,
- "artworkMs": 21789,
+ "mbps": 40,
+ "durationMs": 15668,
+ "artworkMs": 5693,
  "totals": [
-  "27.2 MB"
+  "27.4 MB"
  ],
  "bands": [
-  11,
-  11,
-  11,
-  10,
-  10,
-  11,
-  10,
-  11,
-  10,
-  10
+  0,
+  6,
+  3,
+  2,
+  3,
+  0,
+  3,
+  2,
+  3,
+  3
  ],
- "longestFlatMs": 205,
+ "longestFlatMs": 1063,
  "errors": [],
  "monotonic": true,
  "finalState": "done",
  "samples": [
   {
-   "t": 333,
-   "state": "",
-   "percent": 0,
+   "t": 647,
+   "state": "loading",
+   "percent": 5,
    "label": "Loading the game"
   },
   {
-   "t": 540,
-   "state": "",
-   "percent": 0,
+   "t": 851,
+   "state": "loading",
+   "percent": 8,
+   "label": "Loading the game"
+  },
+  {
+   "t": 1114,
+   "state": "loading",
+   "percent": 14,
+   "label": "Loading interface & fonts"
+  },
+  {
+   "t": 1328,
+   "state": "loading",
+   "percent": 14,
+   "label": "Loading interface & fonts"
+  },
+  {
+   "t": 1543,
+   "state": "loading",
+   "percent": 14,
+   "label": "Loading interface & fonts"
+  },
+  {
+   "t": 1753,
+   "state": "loading",
+   "percent": 14,
+   "label": "Loading interface & fonts"
+  },
+  {
+   "t": 1960,
+   "state": "loading",
+   "percent": 14,
+   "label": "Loading interface & fonts"
+  },
+  {
+   "t": 2171,
+   "state": "loading",
+   "percent": 14,
+   "label": "Loading interface & fonts"
+  },
+  {
+   "t": 2391,
+   "state": "loading",
+   "percent": 14,
+   "label": "Loading interface & fonts"
+  },
+  {
+   "t": 2611,
+   "state": "loading",
+   "percent": 14,
+   "label": "Loading interface & fonts"
+  },
+  {
+   "t": 2817,
+   "state": "loading",
+   "percent": 18,
    "label": "Loading artwork"
   },
   {
-   "t": 742,
-   "state": "",
-   "percent": 0,
-   "label": "Loading artwork · 0.1 of 27.2 MB"
-  },
-  {
-   "t": 944,
-   "state": "",
-   "percent": 1,
-   "label": "Loading artwork · 0.3 of 27.2 MB"
-  },
-  {
-   "t": 1147,
-   "state": "",
-   "percent": 2,
-   "label": "Loading artwork · 0.6 of 27.2 MB"
-  },
-  {
-   "t": 1349,
-   "state": "",
-   "percent": 3,
-   "label": "Loading artwork · 0.8 of 27.2 MB"
-  },
-  {
-   "t": 1553,
-   "state": "",
-   "percent": 4,
-   "label": "Loading artwork · 1.1 of 27.2 MB"
-  },
-  {
-   "t": 1755,
-   "state": "",
-   "percent": 4,
-   "label": "Loading artwork · 1.3 of 27.2 MB"
-  },
-  {
-   "t": 1957,
-   "state": "",
-   "percent": 5,
-   "label": "Loading artwork · 1.6 of 27.2 MB"
-  },
-  {
-   "t": 2159,
-   "state": "",
-   "percent": 6,
-   "label": "Loading artwork · 1.8 of 27.2 MB"
-  },
-  {
-   "t": 2360,
-   "state": "",
-   "percent": 7,
-   "label": "Loading artwork · 2.1 of 27.2 MB"
-  },
-  {
-   "t": 2562,
-   "state": "",
-   "percent": 8,
-   "label": "Loading artwork · 2.3 of 27.2 MB"
-  },
-  {
-   "t": 2763,
-   "state": "",
-   "percent": 9,
-   "label": "Loading artwork · 2.6 of 27.2 MB"
-  },
-  {
-   "t": 2964,
-   "state": "",
-   "percent": 10,
-   "label": "Loading artwork · 2.8 of 27.2 MB"
-  },
-  {
-   "t": 3165,
-   "state": "",
-   "percent": 10,
-   "label": "Loading artwork · 3.1 of 27.2 MB"
-  },
-  {
-   "t": 3365,
-   "state": "",
-   "percent": 11,
-   "label": "Loading artwork · 3.3 of 27.2 MB"
-  },
-  {
-   "t": 3565,
-   "state": "",
-   "percent": 12,
-   "label": "Loading artwork · 3.6 of 27.2 MB"
-  },
-  {
-   "t": 3766,
-   "state": "",
-   "percent": 13,
-   "label": "Loading artwork · 3.8 of 27.2 MB"
-  },
-  {
-   "t": 3967,
-   "state": "",
-   "percent": 14,
-   "label": "Loading artwork · 4.1 of 27.2 MB"
-  },
-  {
-   "t": 4168,
-   "state": "",
-   "percent": 15,
-   "label": "Loading artwork · 4.3 of 27.2 MB"
-  },
-  {
-   "t": 4370,
-   "state": "",
-   "percent": 16,
-   "label": "Loading artwork · 4.6 of 27.2 MB"
-  },
-  {
-   "t": 4571,
-   "state": "",
-   "percent": 16,
-   "label": "Loading artwork · 4.8 of 27.2 MB"
-  },
-  {
-   "t": 4772,
-   "state": "",
-   "percent": 17,
-   "label": "Loading artwork · 5.1 of 27.2 MB"
-  },
-  {
-   "t": 4974,
-   "state": "",
+   "t": 3019,
+   "state": "loading",
    "percent": 18,
-   "label": "Loading artwork · 5.3 of 27.2 MB"
+   "label": "Loading artwork · 0.0 of 27.4 MB"
   },
   {
-   "t": 5176,
-   "state": "",
-   "percent": 19,
-   "label": "Loading artwork · 5.6 of 27.2 MB"
+   "t": 3228,
+   "state": "loading",
+   "percent": 18,
+   "label": "Loading artwork · 0.9 of 27.4 MB"
   },
   {
-   "t": 5376,
-   "state": "",
-   "percent": 20,
-   "label": "Loading artwork · 5.8 of 27.2 MB"
+   "t": 3443,
+   "state": "loading",
+   "percent": 18,
+   "label": "Loading artwork · 2.0 of 27.4 MB"
   },
   {
-   "t": 5578,
-   "state": "",
+   "t": 3654,
+   "state": "loading",
+   "percent": 18,
+   "label": "Loading artwork · 3.0 of 27.4 MB"
+  },
+  {
+   "t": 3866,
+   "state": "loading",
+   "percent": 18,
+   "label": "Loading artwork · 4.0 of 27.4 MB"
+  },
+  {
+   "t": 4082,
+   "state": "loading",
+   "percent": 18,
+   "label": "Loading artwork · 5.1 of 27.4 MB"
+  },
+  {
+   "t": 4290,
+   "state": "loading",
    "percent": 21,
-   "label": "Loading artwork · 6.1 of 27.2 MB"
+   "label": "Loading artwork · 6.1 of 27.4 MB"
   },
   {
-   "t": 5779,
-   "state": "",
-   "percent": 21,
-   "label": "Loading artwork · 6.4 of 27.2 MB"
-  },
-  {
-   "t": 5981,
-   "state": "",
-   "percent": 22,
-   "label": "Loading artwork · 6.6 of 27.2 MB"
-  },
-  {
-   "t": 6182,
-   "state": "",
-   "percent": 23,
-   "label": "Loading artwork · 6.9 of 27.2 MB"
-  },
-  {
-   "t": 6383,
-   "state": "",
+   "t": 4491,
+   "state": "loading",
    "percent": 24,
-   "label": "Loading artwork · 7.1 of 27.2 MB"
+   "label": "Loading artwork · 7.1 of 27.4 MB"
   },
   {
-   "t": 6585,
-   "state": "",
-   "percent": 25,
-   "label": "Loading artwork · 7.4 of 27.2 MB"
-  },
-  {
-   "t": 6786,
-   "state": "",
-   "percent": 26,
-   "label": "Loading artwork · 7.6 of 27.2 MB"
-  },
-  {
-   "t": 6987,
-   "state": "",
+   "t": 4692,
+   "state": "loading",
    "percent": 27,
-   "label": "Loading artwork · 7.9 of 27.2 MB"
+   "label": "Loading artwork · 8.1 of 27.4 MB"
   },
   {
-   "t": 7192,
-   "state": "",
-   "percent": 27,
-   "label": "Loading artwork · 8.1 of 27.2 MB"
-  },
-  {
-   "t": 7393,
-   "state": "",
-   "percent": 28,
-   "label": "Loading artwork · 8.4 of 27.2 MB"
-  },
-  {
-   "t": 7597,
-   "state": "",
-   "percent": 29,
-   "label": "Loading artwork · 8.6 of 27.2 MB"
-  },
-  {
-   "t": 7820,
-   "state": "",
-   "percent": 30,
-   "label": "Loading artwork · 8.9 of 27.2 MB"
-  },
-  {
-   "t": 8022,
-   "state": "",
+   "t": 4901,
+   "state": "loading",
    "percent": 31,
-   "label": "Loading artwork · 9.1 of 27.2 MB"
+   "label": "Loading artwork · 9.2 of 27.4 MB"
   },
   {
-   "t": 8224,
-   "state": "",
-   "percent": 32,
-   "label": "Loading artwork · 9.4 of 27.2 MB"
-  },
-  {
-   "t": 8426,
-   "state": "",
-   "percent": 33,
-   "label": "Loading artwork · 9.7 of 27.2 MB"
-  },
-  {
-   "t": 8629,
-   "state": "",
+   "t": 5107,
+   "state": "loading",
    "percent": 34,
-   "label": "Loading artwork · 9.9 of 27.2 MB"
+   "label": "Loading artwork · 10.2 of 27.4 MB"
   },
   {
-   "t": 8831,
-   "state": "",
-   "percent": 34,
-   "label": "Loading artwork · 10.2 of 27.2 MB"
-  },
-  {
-   "t": 9031,
-   "state": "",
-   "percent": 35,
-   "label": "Loading artwork · 10.4 of 27.2 MB"
-  },
-  {
-   "t": 9233,
-   "state": "",
-   "percent": 36,
-   "label": "Loading artwork · 10.7 of 27.2 MB"
-  },
-  {
-   "t": 9434,
-   "state": "",
-   "percent": 37,
-   "label": "Loading artwork · 10.9 of 27.2 MB"
-  },
-  {
-   "t": 9636,
-   "state": "",
+   "t": 5322,
+   "state": "loading",
    "percent": 38,
-   "label": "Loading artwork · 11.2 of 27.2 MB"
+   "label": "Loading artwork · 11.3 of 27.4 MB"
   },
   {
-   "t": 9838,
-   "state": "",
-   "percent": 39,
-   "label": "Loading artwork · 11.4 of 27.2 MB"
-  },
-  {
-   "t": 10039,
-   "state": "",
-   "percent": 39,
-   "label": "Loading artwork · 11.7 of 27.2 MB"
-  },
-  {
-   "t": 10240,
-   "state": "",
-   "percent": 40,
-   "label": "Loading artwork · 11.9 of 27.2 MB"
-  },
-  {
-   "t": 10442,
-   "state": "",
+   "t": 5529,
+   "state": "loading",
    "percent": 41,
-   "label": "Loading artwork · 12.2 of 27.2 MB"
+   "label": "Loading artwork · 12.3 of 27.4 MB"
   },
   {
-   "t": 10645,
-   "state": "",
-   "percent": 42,
-   "label": "Loading artwork · 12.4 of 27.2 MB"
-  },
-  {
-   "t": 10856,
-   "state": "",
-   "percent": 43,
-   "label": "Loading artwork · 12.7 of 27.2 MB"
-  },
-  {
-   "t": 11060,
-   "state": "",
-   "percent": 44,
-   "label": "Loading artwork · 12.9 of 27.2 MB"
-  },
-  {
-   "t": 11261,
-   "state": "",
+   "t": 5735,
+   "state": "loading",
    "percent": 45,
-   "label": "Loading artwork · 13.2 of 27.2 MB"
+   "label": "Loading artwork · 13.3 of 27.4 MB"
   },
   {
-   "t": 11804,
-   "state": "",
-   "percent": 47,
-   "label": "Loading artwork · 13.9 of 27.2 MB"
-  },
-  {
-   "t": 12005,
-   "state": "",
-   "percent": 48,
-   "label": "Loading artwork · 14.1 of 27.2 MB"
-  },
-  {
-   "t": 12206,
-   "state": "",
-   "percent": 49,
-   "label": "Loading artwork · 14.4 of 27.2 MB"
-  },
-  {
-   "t": 12407,
-   "state": "",
-   "percent": 49,
-   "label": "Loading artwork · 14.6 of 27.2 MB"
-  },
-  {
-   "t": 12608,
-   "state": "",
-   "percent": 50,
-   "label": "Loading artwork · 14.9 of 27.2 MB"
-  },
-  {
-   "t": 12813,
-   "state": "",
-   "percent": 51,
-   "label": "Loading artwork · 15.1 of 27.2 MB"
-  },
-  {
-   "t": 13019,
-   "state": "",
-   "percent": 52,
-   "label": "Loading artwork · 15.4 of 27.2 MB"
-  },
-  {
-   "t": 13221,
-   "state": "",
-   "percent": 53,
-   "label": "Loading artwork · 15.6 of 27.2 MB"
-  },
-  {
-   "t": 13422,
-   "state": "",
-   "percent": 54,
-   "label": "Loading artwork · 15.9 of 27.2 MB"
-  },
-  {
-   "t": 13623,
-   "state": "",
-   "percent": 55,
-   "label": "Loading artwork · 16.2 of 27.2 MB"
-  },
-  {
-   "t": 13826,
-   "state": "",
-   "percent": 55,
-   "label": "Loading artwork · 16.4 of 27.2 MB"
-  },
-  {
-   "t": 14026,
-   "state": "",
-   "percent": 56,
-   "label": "Loading artwork · 16.6 of 27.2 MB"
-  },
-  {
-   "t": 14228,
-   "state": "",
+   "t": 6468,
+   "state": "loading",
    "percent": 57,
-   "label": "Loading artwork · 16.9 of 27.2 MB"
+   "label": "Loading artwork · 17.0 of 27.4 MB"
   },
   {
-   "t": 14429,
-   "state": "",
-   "percent": 58,
-   "label": "Loading artwork · 17.2 of 27.2 MB"
-  },
-  {
-   "t": 14631,
-   "state": "",
-   "percent": 59,
-   "label": "Loading artwork · 17.4 of 27.2 MB"
-  },
-  {
-   "t": 14834,
-   "state": "",
+   "t": 6684,
+   "state": "loading",
    "percent": 60,
-   "label": "Loading artwork · 17.7 of 27.2 MB"
+   "label": "Loading artwork · 18.0 of 27.4 MB"
   },
   {
-   "t": 15037,
-   "state": "",
-   "percent": 61,
-   "label": "Loading artwork · 17.9 of 27.2 MB"
-  },
-  {
-   "t": 15238,
-   "state": "",
-   "percent": 61,
-   "label": "Loading artwork · 18.2 of 27.2 MB"
-  },
-  {
-   "t": 15439,
-   "state": "",
-   "percent": 62,
-   "label": "Loading artwork · 18.4 of 27.2 MB"
-  },
-  {
-   "t": 15641,
-   "state": "",
-   "percent": 63,
-   "label": "Loading artwork · 18.7 of 27.2 MB"
-  },
-  {
-   "t": 15843,
-   "state": "",
+   "t": 6885,
+   "state": "loading",
    "percent": 64,
-   "label": "Loading artwork · 18.9 of 27.2 MB"
+   "label": "Loading artwork · 19.1 of 27.4 MB"
   },
   {
-   "t": 16048,
-   "state": "",
-   "percent": 65,
-   "label": "Loading artwork · 19.2 of 27.2 MB"
-  },
-  {
-   "t": 16250,
-   "state": "",
-   "percent": 66,
-   "label": "Loading artwork · 19.4 of 27.2 MB"
-  },
-  {
-   "t": 16451,
-   "state": "",
-   "percent": 66,
-   "label": "Loading artwork · 19.7 of 27.2 MB"
-  },
-  {
-   "t": 16654,
-   "state": "",
+   "t": 7090,
+   "state": "loading",
    "percent": 67,
-   "label": "Loading artwork · 19.9 of 27.2 MB"
+   "label": "Loading artwork · 20.0 of 27.4 MB"
   },
   {
-   "t": 16858,
-   "state": "",
-   "percent": 68,
-   "label": "Loading artwork · 20.2 of 27.2 MB"
-  },
-  {
-   "t": 17060,
-   "state": "",
-   "percent": 69,
-   "label": "Loading artwork · 20.4 of 27.2 MB"
-  },
-  {
-   "t": 17262,
-   "state": "",
-   "percent": 70,
-   "label": "Loading artwork · 20.7 of 27.2 MB"
-  },
-  {
-   "t": 17464,
-   "state": "",
+   "t": 7291,
+   "state": "loading",
    "percent": 71,
-   "label": "Loading artwork · 20.9 of 27.2 MB"
+   "label": "Loading artwork · 21.0 of 27.4 MB"
   },
   {
-   "t": 17665,
-   "state": "",
-   "percent": 72,
-   "label": "Loading artwork · 21.2 of 27.2 MB"
-  },
-  {
-   "t": 17866,
-   "state": "",
-   "percent": 72,
-   "label": "Loading artwork · 21.4 of 27.2 MB"
-  },
-  {
-   "t": 18067,
-   "state": "",
-   "percent": 73,
-   "label": "Loading artwork · 21.7 of 27.2 MB"
-  },
-  {
-   "t": 18320,
-   "state": "",
+   "t": 7502,
+   "state": "loading",
    "percent": 74,
-   "label": "Loading artwork · 21.9 of 27.2 MB"
+   "label": "Loading artwork · 22.1 of 27.4 MB"
   },
   {
-   "t": 18534,
-   "state": "",
-   "percent": 75,
-   "label": "Loading artwork · 22.2 of 27.2 MB"
-  },
-  {
-   "t": 18744,
-   "state": "",
-   "percent": 76,
-   "label": "Loading artwork · 22.5 of 27.2 MB"
-  },
-  {
-   "t": 18946,
-   "state": "",
-   "percent": 77,
-   "label": "Loading artwork · 22.8 of 27.2 MB"
-  },
-  {
-   "t": 19148,
-   "state": "",
+   "t": 7703,
+   "state": "loading",
    "percent": 78,
-   "label": "Loading artwork · 23.0 of 27.2 MB"
+   "label": "Loading artwork · 23.1 of 27.4 MB"
   },
   {
-   "t": 19351,
-   "state": "",
-   "percent": 79,
-   "label": "Loading artwork · 23.3 of 27.2 MB"
-  },
-  {
-   "t": 19552,
-   "state": "",
-   "percent": 79,
-   "label": "Loading artwork · 23.5 of 27.2 MB"
-  },
-  {
-   "t": 19754,
-   "state": "",
-   "percent": 80,
-   "label": "Loading artwork · 23.8 of 27.2 MB"
-  },
-  {
-   "t": 19955,
-   "state": "",
+   "t": 7904,
+   "state": "loading",
    "percent": 81,
-   "label": "Loading artwork · 24.0 of 27.2 MB"
+   "label": "Loading artwork · 24.1 of 27.4 MB"
   },
   {
-   "t": 20158,
-   "state": "",
-   "percent": 82,
-   "label": "Loading artwork · 24.3 of 27.2 MB"
-  },
-  {
-   "t": 20360,
-   "state": "",
-   "percent": 83,
-   "label": "Loading artwork · 24.5 of 27.2 MB"
-  },
-  {
-   "t": 20623,
-   "state": "",
+   "t": 8105,
+   "state": "loading",
    "percent": 84,
-   "label": "Loading artwork · 24.8 of 27.2 MB"
+   "label": "Loading artwork · 25.1 of 27.4 MB"
   },
   {
-   "t": 20824,
-   "state": "",
-   "percent": 85,
-   "label": "Loading artwork · 25.0 of 27.2 MB"
-  },
-  {
-   "t": 21028,
-   "state": "",
-   "percent": 86,
-   "label": "Loading artwork · 25.3 of 27.2 MB"
-  },
-  {
-   "t": 21231,
-   "state": "",
-   "percent": 86,
-   "label": "Loading artwork · 25.6 of 27.2 MB"
-  },
-  {
-   "t": 21434,
-   "state": "",
+   "t": 8305,
+   "state": "loading",
    "percent": 87,
-   "label": "Loading artwork · 25.9 of 27.2 MB"
+   "label": "Loading artwork · 26.0 of 27.4 MB"
   },
   {
-   "t": 21636,
-   "state": "",
-   "percent": 88,
-   "label": "Loading artwork · 26.1 of 27.2 MB"
-  },
-  {
-   "t": 21838,
-   "state": "",
-   "percent": 89,
-   "label": "Loading artwork · 26.3 of 27.2 MB"
-  },
-  {
-   "t": 22058,
-   "state": "",
+   "t": 8507,
+   "state": "loading",
    "percent": 90,
-   "label": "Loading artwork · 26.6 of 27.2 MB"
+   "label": "Loading artwork · 27.0 of 27.4 MB"
   },
   {
-   "t": 22295,
-   "state": "",
-   "percent": 91,
-   "label": "Loading artwork · 26.9 of 27.2 MB"
-  },
-  {
-   "t": 22531,
-   "state": "",
+   "t": 8712,
+   "state": "loading",
    "percent": 92,
-   "label": "Loading artwork · 27.1 of 27.2 MB"
+   "label": "Loading artwork · 27.4 of 27.4 MB"
   },
   {
-   "t": 25065,
-   "state": "",
+   "t": 10837,
+   "state": "loading",
    "percent": 92,
    "label": "Waking the hero"
   },
   {
-   "t": 26442,
-   "state": "",
+   "t": 11196,
+   "state": "loading",
    "percent": 92,
    "label": "Waking the hero"
   },
   {
-   "t": 28548,
-   "state": "",
+   "t": 14513,
+   "state": "loading",
    "percent": 96,
    "label": "Raising the Stronghold"
   },
   {
-   "t": 30844,
+   "t": 15668,
    "state": "done",
    "percent": 100,
    "label": "Ready"

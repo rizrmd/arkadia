@@ -138,6 +138,19 @@ function assetFile(area:CornerArea,side:CornerSide,mobile:boolean){
  return `${ASSET_ROOT}corner-${area}-${side}${mobile?'-mobile':''}.webp`;
 }
 
+export function initialParallaxFiles(
+ width=typeof innerWidth!=='undefined'&&innerWidth?innerWidth:1440,
+ height=typeof innerHeight!=='undefined'&&innerHeight?innerHeight:900,
+):string[]{
+ const mobile=viewportModeFor(width,height)!=='desktop';
+ return [
+  assetFile('court','left',mobile),
+  assetFile('court','right',mobile),
+  assetFile('snow','left',mobile),
+  assetFile('snow','right',mobile),
+ ];
+}
+
 function bakeDepthBlur(img:HTMLImageElement,featherTop=false):HTMLCanvasElement{
  const w=Math.round((img.naturalWidth||img.width)*CORNER_BLUR_SCALE);
  const h=Math.round((img.naturalHeight||img.height)*CORNER_BLUR_SCALE);

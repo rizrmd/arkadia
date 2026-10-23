@@ -467,9 +467,8 @@ canvas{display:block;width:100%;height:100%}
  }
  var isPortrait=(window.innerWidth||390)<(window.innerHeight||844);
  var primaryBg=isPortrait?'/typography/v2/loading/bg-mobile.webp':'/typography/v2/loading/bg-desktop.webp';
- var secondaryBg=isPortrait?'/typography/v2/loading/bg-desktop.webp':'/typography/v2/loading/bg-mobile.webp';
  var logoP=preloadImg('/typography/v2/loading/logo@'+scale+'x.png',function(im){if(logo)logo.src=im.src;});
- var bgP=preloadImg(primaryBg).then(function(){return preloadImg(secondaryBg);});
+ var bgP=preloadImg(primaryBg);
  Promise.race([
   Promise.all([logoP,bgP]),
   new Promise(function(r){setTimeout(r,4000);})

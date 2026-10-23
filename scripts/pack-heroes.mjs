@@ -85,7 +85,7 @@ async function pack(hero){
   parts.push({input:await sharp(scaled).extract({left:cl,top:ct,width:cw,height:ch}).toBuffer(),left:x+Math.max(0,left),top:y+Math.max(0,top)});
   frames.push({x,y,w:fw,h:fh});
  }
- const image=await sharp({create:{width,height,channels:4,background:{r:0,g:0,b:0,alpha:0}}}).composite(parts).webp({quality:94,alphaQuality:100,effort:6}).toBuffer();
+ const image=await sharp({create:{width,height,channels:4,background:{r:0,g:0,b:0,alpha:0}}}).composite(parts).webp({quality:86,alphaQuality:90,effort:6}).toBuffer();
  const file=hero.id+'.webp';await fs.writeFile(OUT+file,image);
  // Picker portrait: the front idle, trimmed, 200 px tall for every hero.
  const front=hero.frames(hero.actions.idle,'S').list[0],ps=200/(stand.b-stand.t),[px,py,pw,ph]=front.rect;

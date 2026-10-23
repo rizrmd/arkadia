@@ -1,22 +1,22 @@
 {
-  "verifiedAt": "2026-10-22T16:50:41.917Z",
-  "initialLoadingMB": 6.3,
-  "pngFilesConverted": 23,
-  "totalOriginalMB": 25.66,
-  "totalWebpMB": 4.77,
-  "savedMB": 20.89,
-  "savedPercent": 81.4,
+  "verifiedAt": "2026-10-23T23:02:23.548Z",
+  "initialLoadingMB": 7.1,
+  "pngFilesConverted": 66,
+  "totalOriginalMB": 28.2,
+  "totalWebpMB": 6.86,
+  "savedMB": 21.34,
+  "savedPercent": 75.7,
   "sampleLoadingLabels": [
     "Loading the game",
+    "Loading interface & fonts",
     "Loading artwork",
-    "Loading artwork · 0.0 of 6.3 MB",
-    "Loading artwork · 0.1 of 6.3 MB",
-    "Loading artwork · 1.3 of 6.3 MB",
-    "Loading artwork · 1.6 of 6.3 MB",
-    "Loading artwork · 2.0 of 6.3 MB",
-    "Loading artwork · 2.3 of 6.3 MB",
-    "Loading artwork · 3.1 of 6.3 MB",
-    "Loading artwork · 4.3 of 6.3 MB"
+    "Loading artwork · 0.0 of 7.1 MB",
+    "Loading artwork · 1.0 of 7.1 MB",
+    "Loading artwork · 1.3 of 7.1 MB",
+    "Loading artwork · 4.9 of 7.1 MB",
+    "Loading artwork · 7.1 of 7.1 MB",
+    "Waking the hero",
+    "Raising the Stronghold"
   ],
   "assets": [
     {
@@ -60,14 +60,6 @@
       "webpBytes": 156556
     },
     {
-      "path": "/modular-stronghold/v2/rampart-ne.png",
-      "contentType": "image/webp",
-      "format": "webp-lossless",
-      "cache": "HIT",
-      "originalBytes": 1674493,
-      "webpBytes": 278048
-    },
-    {
       "path": "/modular-stronghold/v2/wall-broken.png",
       "contentType": "image/webp",
       "format": "webp-lossless",
@@ -76,12 +68,20 @@
       "webpBytes": 68402
     },
     {
+      "path": "/modular-stronghold/v2/rampart-ne.png",
+      "contentType": "image/webp",
+      "format": "webp-lossless",
+      "cache": "HIT",
+      "originalBytes": 1412589,
+      "webpBytes": 225414
+    },
+    {
       "path": "/modular-stronghold/v2/rampart-se.png",
       "contentType": "image/webp",
       "format": "webp-lossless",
       "cache": "HIT",
-      "originalBytes": 1409080,
-      "webpBytes": 228106
+      "originalBytes": 1410530,
+      "webpBytes": 223680
     },
     {
       "path": "/modular-stronghold/v2/paving-worn.png",
@@ -172,6 +172,46 @@
       "webpBytes": 293662
     },
     {
+      "path": "/vfx/textures/rift-crack.png",
+      "contentType": "image/webp",
+      "format": "webp-lossless",
+      "cache": "HIT",
+      "originalBytes": 442364,
+      "webpBytes": 324678
+    },
+    {
+      "path": "/vfx/textures/crack.png",
+      "contentType": "image/webp",
+      "format": "webp-lossless",
+      "cache": "HIT",
+      "originalBytes": 437291,
+      "webpBytes": 340738
+    },
+    {
+      "path": "/vfx/textures/rift-burst.png",
+      "contentType": "image/webp",
+      "format": "webp-lossless",
+      "cache": "HIT",
+      "originalBytes": 388656,
+      "webpBytes": 337538
+    },
+    {
+      "path": "/vfx/textures/explosion.png",
+      "contentType": "image/webp",
+      "format": "webp-lossless",
+      "cache": "HIT",
+      "originalBytes": 375307,
+      "webpBytes": 310610
+    },
+    {
+      "path": "/vfx/textures/flame.png",
+      "contentType": "image/webp",
+      "format": "webp-lossless",
+      "cache": "HIT",
+      "originalBytes": 354562,
+      "webpBytes": 229934
+    },
+    {
       "path": "/foundation-transitions/soil-moss.png",
       "contentType": "image/webp",
       "format": "webp-lossless",
@@ -180,20 +220,12 @@
       "webpBytes": 6632
     },
     {
-      "path": "/modular-stronghold/v2/gate-connector-left-v3.png",
+      "path": "/vfx/textures/noise.png",
       "contentType": "image/webp",
       "format": "webp-lossless",
       "cache": "HIT",
-      "originalBytes": 125318,
-      "webpBytes": 84364
-    },
-    {
-      "path": "/modular-stronghold/v2/gate-connector-right-v3.png",
-      "contentType": "image/webp",
-      "format": "webp-lossless",
-      "cache": "HIT",
-      "originalBytes": 125260,
-      "webpBytes": 84004
+      "originalBytes": 160958,
+      "webpBytes": 148468
     },
     {
       "path": "/foundation-transitions/moss.png",
@@ -202,6 +234,318 @@
       "cache": "HIT",
       "originalBytes": 91209,
       "webpBytes": 8406
+    },
+    {
+      "path": "/vfx/textures/smoke.png",
+      "contentType": "image/webp",
+      "format": "webp-lossless",
+      "cache": "HIT",
+      "originalBytes": 67201,
+      "webpBytes": 35342
+    },
+    {
+      "path": "/vfx/textures/shock.png",
+      "contentType": "image/webp",
+      "format": "webp-lossless",
+      "cache": "HIT",
+      "originalBytes": 58920,
+      "webpBytes": 30168
+    },
+    {
+      "path": "/vfx/textures/scorch.png",
+      "contentType": "image/webp",
+      "format": "webp-lossless",
+      "cache": "HIT",
+      "originalBytes": 53913,
+      "webpBytes": 29182
+    },
+    {
+      "path": "/typography/v2/hud/@1x/console-portrait-ember-warden.png",
+      "contentType": "image/webp",
+      "format": "webp-lossless",
+      "cache": "HIT",
+      "originalBytes": 52408,
+      "webpBytes": 41802
+    },
+    {
+      "path": "/vfx/textures/arc.png",
+      "contentType": "image/webp",
+      "format": "webp-lossless",
+      "cache": "HIT",
+      "originalBytes": 51625,
+      "webpBytes": 37072
+    },
+    {
+      "path": "/typography/v2/hud/@1x/console-portrait-rift-runner.png",
+      "contentType": "image/webp",
+      "format": "webp-lossless",
+      "cache": "HIT",
+      "originalBytes": 50594,
+      "webpBytes": 41290
+    },
+    {
+      "path": "/typography/v2/hud/@1x/portrait-rift-runner.png",
+      "contentType": "image/webp",
+      "format": "webp-lossless",
+      "cache": "HIT",
+      "originalBytes": 38967,
+      "webpBytes": 28612
+    },
+    {
+      "path": "/typography/v2/hud/@1x/portrait-ember-warden.png",
+      "contentType": "image/webp",
+      "format": "webp-lossless",
+      "cache": "HIT",
+      "originalBytes": 37702,
+      "webpBytes": 28650
+    },
+    {
+      "path": "/typography/v2/loading/logo@1x.png",
+      "contentType": "image/webp",
+      "format": "webp-lossless",
+      "cache": "HIT",
+      "originalBytes": 36533,
+      "webpBytes": 29820
+    },
+    {
+      "path": "/vfx/textures/slash.png",
+      "contentType": "image/webp",
+      "format": "webp-lossless",
+      "cache": "HIT",
+      "originalBytes": 33915,
+      "webpBytes": 16588
+    },
+    {
+      "path": "/typography/v2/hud/@1x/skill-rift-bolt.png",
+      "contentType": "image/webp",
+      "format": "webp-lossless",
+      "cache": "HIT",
+      "originalBytes": 32355,
+      "webpBytes": 29212
+    },
+    {
+      "path": "/typography/v2/hud/@1x/skill-flame-fan.png",
+      "contentType": "image/webp",
+      "format": "webp-lossless",
+      "cache": "HIT",
+      "originalBytes": 29188,
+      "webpBytes": 26688
+    },
+    {
+      "path": "/typography/v2/hud/@1x/skill-seismic-slam.png",
+      "contentType": "image/webp",
+      "format": "webp-lossless",
+      "cache": "HIT",
+      "originalBytes": 24937,
+      "webpBytes": 17078
+    },
+    {
+      "path": "/typography/v2/hud/@1x/skill-empty.png",
+      "contentType": "image/webp",
+      "format": "webp-lossless",
+      "cache": "HIT",
+      "originalBytes": 22501,
+      "webpBytes": 16620
+    },
+    {
+      "path": "/typography/v2/hud/@1x/skill-rift-trap.png",
+      "contentType": "image/webp",
+      "format": "webp-lossless",
+      "cache": "HIT",
+      "originalBytes": 21715,
+      "webpBytes": 14304
+    },
+    {
+      "path": "/typography/v2/hud/@1x/console-xp-material.png",
+      "contentType": "image/webp",
+      "format": "webp-lossless",
+      "cache": "HIT",
+      "originalBytes": 21573,
+      "webpBytes": 15076
+    },
+    {
+      "path": "/vfx/textures/orb.png",
+      "contentType": "image/webp",
+      "format": "webp-lossless",
+      "cache": "HIT",
+      "originalBytes": 19187,
+      "webpBytes": 10122
+    },
+    {
+      "path": "/typography/v2/hud/@1x/skill-blessing.png",
+      "contentType": "image/webp",
+      "format": "webp-lossless",
+      "cache": "HIT",
+      "originalBytes": 18369,
+      "webpBytes": 12482
+    },
+    {
+      "path": "/typography/v2/hud/@1x/console-hp-material.png",
+      "contentType": "image/webp",
+      "format": "webp-lossless",
+      "cache": "HIT",
+      "originalBytes": 17600,
+      "webpBytes": 14094
+    },
+    {
+      "path": "/typography/v2/hud/@1x/portrait-ring.png",
+      "contentType": "image/webp",
+      "format": "webp-lossless",
+      "cache": "HIT",
+      "originalBytes": 17276,
+      "webpBytes": 16866
+    },
+    {
+      "path": "/typography/v2/hud/@1x/console-gate-material.png",
+      "contentType": "image/webp",
+      "format": "webp-lossless",
+      "cache": "HIT",
+      "originalBytes": 17204,
+      "webpBytes": 12438
+    },
+    {
+      "path": "/typography/v2/hud/@1x/skill-ring.png",
+      "contentType": "image/webp",
+      "format": "webp-lossless",
+      "cache": "HIT",
+      "originalBytes": 16471,
+      "webpBytes": 15922
+    },
+    {
+      "path": "/vfx/textures/debris.png",
+      "contentType": "image/webp",
+      "format": "webp-lossless",
+      "cache": "HIT",
+      "originalBytes": 16157,
+      "webpBytes": 9712
+    },
+    {
+      "path": "/typography/v2/hud/@1x/skill-ember-snare.png",
+      "contentType": "image/webp",
+      "format": "webp-lossless",
+      "cache": "HIT",
+      "originalBytes": 15613,
+      "webpBytes": 13074
+    },
+    {
+      "path": "/typography/v2/hud/@1x/skill-cinder-step.png",
+      "contentType": "image/webp",
+      "format": "webp-lossless",
+      "cache": "HIT",
+      "originalBytes": 14800,
+      "webpBytes": 10516
+    },
+    {
+      "path": "/typography/v2/hud/@1x/skill-rift-dash.png",
+      "contentType": "image/webp",
+      "format": "webp-lossless",
+      "cache": "HIT",
+      "originalBytes": 13978,
+      "webpBytes": 11200
+    },
+    {
+      "path": "/vfx/textures/flare.png",
+      "contentType": "image/webp",
+      "format": "webp-lossless",
+      "cache": "HIT",
+      "originalBytes": 13928,
+      "webpBytes": 7548
+    },
+    {
+      "path": "/vfx/textures/glow.png",
+      "contentType": "image/webp",
+      "format": "webp-lossless",
+      "cache": "HIT",
+      "originalBytes": 13648,
+      "webpBytes": 6804
+    },
+    {
+      "path": "/typography/v2/hud/@1x/skill-cleave.png",
+      "contentType": "image/webp",
+      "format": "webp-lossless",
+      "cache": "HIT",
+      "originalBytes": 12098,
+      "webpBytes": 10538
+    },
+    {
+      "path": "/typography/v2/hud/@1x/corner.png",
+      "contentType": "image/webp",
+      "format": "webp-lossless",
+      "cache": "HIT",
+      "originalBytes": 8413,
+      "webpBytes": 6880
+    },
+    {
+      "path": "/vfx/textures/wisp.png",
+      "contentType": "image/webp",
+      "format": "webp-lossless",
+      "cache": "HIT",
+      "originalBytes": 7820,
+      "webpBytes": 4402
+    },
+    {
+      "path": "/typography/v2/hud/@1x/panel-bronze.png",
+      "contentType": "image/webp",
+      "format": "webp-lossless",
+      "cache": "HIT",
+      "originalBytes": 6042,
+      "webpBytes": 4130
+    },
+    {
+      "path": "/typography/v2/hud/@1x/card-blessing-active.png",
+      "contentType": "image/webp",
+      "format": "webp-lossless",
+      "cache": "HIT",
+      "originalBytes": 5565,
+      "webpBytes": 3692
+    },
+    {
+      "path": "/typography/v2/hud/@1x/thumbstick-cap.png",
+      "contentType": "image/webp",
+      "format": "webp-lossless",
+      "cache": "HIT",
+      "originalBytes": 5290,
+      "webpBytes": 4768
+    },
+    {
+      "path": "/vfx/textures/ember.png",
+      "contentType": "image/webp",
+      "format": "webp-lossless",
+      "cache": "HIT",
+      "originalBytes": 4564,
+      "webpBytes": 2660
+    },
+    {
+      "path": "/typography/v2/hud/@1x/card-blessing.png",
+      "contentType": "image/webp",
+      "format": "webp-lossless",
+      "cache": "HIT",
+      "originalBytes": 4558,
+      "webpBytes": 3170
+    },
+    {
+      "path": "/vfx/textures/streak.png",
+      "contentType": "image/webp",
+      "format": "webp-lossless",
+      "cache": "HIT",
+      "originalBytes": 4500,
+      "webpBytes": 2962
+    },
+    {
+      "path": "/vfx/textures/shard.png",
+      "contentType": "image/webp",
+      "format": "webp-lossless",
+      "cache": "HIT",
+      "originalBytes": 3085,
+      "webpBytes": 1900
+    },
+    {
+      "path": "/typography/v2/hud/@1x/hero-plate.png",
+      "contentType": "image/webp",
+      "format": "webp-lossless",
+      "cache": "HIT",
+      "originalBytes": 2189,
+      "webpBytes": 1602
     }
   ]
 }

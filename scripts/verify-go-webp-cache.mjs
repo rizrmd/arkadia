@@ -51,7 +51,7 @@ try {
 
   page.on('response', r => {
     const u = new URL(r.url());
-    if (u.pathname.endsWith('.png') && r.status() === 200) {
+    if (u.pathname.endsWith('.png') && r.headers()['x-asset-format'] === 'webp-lossless' && r.status() === 200) {
       pngResponses.push({
         path: u.pathname,
         contentType: r.headers()['content-type'],

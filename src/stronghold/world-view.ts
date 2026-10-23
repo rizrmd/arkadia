@@ -19,7 +19,7 @@ import type {Net} from './net/client';
 import {createParty} from './party';
 import {characters,atlasUrl,DEFAULT_HERO,type HeroId} from './heroes';
 import {measureTracelogPhase} from './tracelog';
-import {createParallax} from './parallax';
+import {createParallax,initialParallaxFiles} from './parallax';
 
 export async function createWorldView(
  rt:SharedPixiRuntime,
@@ -46,12 +46,12 @@ export async function createWorldView(
  const DOWNLOAD=920,steps=1000,mb=(n:number)=>(n/1e6).toFixed(1);let loaded=DOWNLOAD;
  let queued=0;const report=()=>{queued=0;const {received,expected}=downloadedBytes();progress(Math.floor(DOWNLOAD*received/Math.max(1,expected)),steps,`Loading artwork · ${mb(received)} of ${mb(expected)} MB`);};
  const stopReport=onDownload(()=>{queued||=requestAnimationFrame(report);});progress(0,steps,'Loading artwork');
- const [atlas]=await Promise.all([characters() as Promise<Record<string,{image:string;revision?:string}>>,expectSizes()]),artwork=files.map(async file=>{images.set(file,await loadImage(file));});
+ const [atlas]=await Promise.all([characters() as Promise<Record<string,{image:string;revision?:string}>>,expectSizes()]),artwork=files.map(async file=>{images.set(file,await loadImage(file));}),parallaxPreload=initialParallaxFiles().map(file=>loadImage(file));
  try{
-  await Promise.all([...artwork,...[atlas[pick]??atlas[DEFAULT_HERO],atlas.revenant].map(m=>loadImage(atlasUrl(m)))]);
+  await Promise.all([...artwork,...parallaxPreload,...[atlas[pick]??atlas[DEFAULT_HERO],atlas.revenant].map(m=>loadImage(atlasUrl(m)))]);
  }finally{stopReport();cancelAnimationFrame(queued);}
  report();
- const gateSheetImg=new Image();gateSheetImg.src='/modular-stronghold/v2/full-gateway-v7-sheet.webp';
+ const gateSheetImg=new Image(),ensureGateSheet=()=>{if(!gateSheetImg.src)gateSheetImg.src='/modular-stronghold/v2/full-gateway-v7-sheet.webp';};
  let w=0,h=0,dpr=1,scale=1,cx=WORLD.width/2,cy=385,selected:Building|null=null,levels:State['levels']|undefined;
  let built=new Set<Building>(LEGACY_LAYOUT?buildings:START_BUILT);
  const material=(file:string,size:number)=>{const img=images.get(file)!,s=size*1024/img.width,p=probeCtx.createPattern(img,'repeat')!;p.setTransform(new DOMMatrix([s,s/2,-s,s/2,COURT.x,COURT.y]));return p;};
@@ -332,6 +332,7 @@ export async function createWorldView(
   const d=Math.abs(hx-G.x),edge=d<G.archHalfWidth||d>G.towerHalfSpan?G.frontY:gateTowerFront(d);
   doors.order(hy<edge);
   const g=net?.active()?net.gate():null,near=g?g.open:atGate(hx,hy,gateOpen);
+  if(near)ensureGateSheet();
   if(near===gateOpen)return;
   gateOpen=near;doors.setOpen(near);
   canvas.dataset.gate=near?'open':'closed';
@@ -339,7 +340,8 @@ export async function createWorldView(
  (window as any).__STRONGHOLD_NAV__=()=>({version:1,layout:[...built],columns:objects.filter(p=>p.layer!=='ground'&&p.opacity>=1&&p.id!=='gate').flatMap(p=>footprint(p).map(c=>({x:+c.x.toFixed(2),w:+c.w.toFixed(2),back:+c.back.toFixed(2),front:+c.front.toFixed(2)})))});
  canvas.dataset.gate='closed';setGateOpen(false);updateGate(hero.position().x,hero.position().y);
  // Gameplay (the hero and the revenants) starts once `hold` resolves: on a first visit, after Choose Your Hero.
- parallax.start();void hold.then(()=>{hero.start();encounters.start();});
+ const loadGateAfterDone=()=>{const s=document.querySelector<HTMLElement>('#loading-screen');if(s&&s.dataset.state!=='done'){setTimeout(loadGateAfterDone,120);return;}ensureGateSheet();};
+ parallax.start();void hold.then(()=>{hero.start();encounters.start();setTimeout(loadGateAfterDone,120);});
  return {
   hud:encounters.hud,
   encounters,

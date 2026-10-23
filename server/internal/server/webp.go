@@ -37,6 +37,7 @@ var startupPNGs = []string{
 	"/modular-stronghold/v2/spruce-mature.png",
 	"/modular-stronghold/v2/fir-young.png",
 	"/modular-stronghold/v2/cliff-snow.png",
+	"/modular-stronghold/v2/natural-hill-atlas.png",
 	"/modular-stronghold/v2/boulders-snow.png",
 	"/modular-stronghold/v2/weeds-edge.png",
 	"/modular-stronghold/v2/paving-worn.png",
@@ -265,8 +266,8 @@ func (s *Server) servePNGAsWebP(w http.ResponseWriter, r *http.Request, cleanURL
 		return false
 	}
 	cacheFile, cacheStat, hit, err := s.ensureWebP(cleanURLPath, pngFile, srcStat)
-	if err != nil {
-		if s.Log != nil {
+	if err != nil || cacheStat.Size() >= srcStat.Size() {
+		if err != nil && s.Log != nil {
 			s.Log.Warn("webp conversion fallback to png", "path", cleanURLPath, "err", err)
 		}
 		return false
@@ -359,7 +360,7 @@ func (s *Server) serveAssetSizes(w http.ResponseWriter, r *http.Request) {
 				continue
 			}
 			cacheFile := filepath.Join(cacheRoot, filepath.FromSlash(rel)+".webp")
-			if cst, err := os.Stat(cacheFile); err == nil && !cst.IsDir() && cst.Size() > 0 && cst.ModTime().Unix() == srcStat.ModTime().Unix() {
+			if cst, err := os.Stat(cacheFile); err == nil && !cst.IsDir() && cst.Size() > 0 && cst.Size() < srcStat.Size() && cst.ModTime().Unix() == srcStat.ModTime().Unix() {
 				sizes[urlPath] = cst.Size()
 			}
 		}

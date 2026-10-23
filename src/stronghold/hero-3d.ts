@@ -831,6 +831,22 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
     );
   }
 
+  let gltfLoader: any = null;
+  function ensureHeroModel(heroId: string) {
+    if (gltfLoader && !heroEntries.has(heroId)) {
+      loadHeroModel(gltfLoader, heroId);
+    }
+  }
+  const initialHeroId = (() => {
+    try {
+      const q = new URLSearchParams(location.search).get('hero');
+      if (q === 'ember-warden' || q === 'rift-runner') return q;
+      const s = localStorage.getItem('arkodia.hero');
+      if (s === 'ember-warden' || s === 'rift-runner') return s;
+    } catch {}
+    return 'rift-runner';
+  })();
+
   (async () => {
     try {
       const [threeMod, gltfMod] = await Promise.all([
@@ -896,9 +912,8 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
       rimLight.position.set(-3.0, 2.4, -2.8);
       scene.add(rimLight);
 
-      const loader = new GLTFLoader();
-      loadHeroModel(loader, 'rift-runner');
-      loadHeroModel(loader, 'ember-warden');
+      gltfLoader = new GLTFLoader();
+      ensureHeroModel(initialHeroId);
     } catch (e) {
       console.warn('3D hero renderer load error:', e);
     }
@@ -909,9 +924,11 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
     shadowCanvas,
     style,
     isHeroReady(heroId: string) {
+      ensureHeroModel(heroId);
       return Boolean(heroEntries.get(heroId)?.ready && style !== '2d');
     },
     updateAndRender({ heroId, clip, moving, yaw, dt, tint, night, sun, cell }) {
+      ensureHeroModel(heroId);
       const entry = heroEntries.get(heroId);
       if (!entry || !entry.ready || !renderer || style === '2d') return null;
 
