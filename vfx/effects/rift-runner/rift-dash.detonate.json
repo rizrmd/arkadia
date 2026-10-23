@@ -4646,7 +4646,7 @@
     "sizeBySpeed": false,
     "rotationBySpeed": false,
     "externalForces": false,
-    "noise": false,
+    "noise": true,
     "collision": false,
     "triggers": false,
     "subEmitters": false,
@@ -5037,9 +5037,9 @@
      },
      "y": {
       "mode": "random",
-      "value": 0.45999999999999996,
-      "min": 0.3,
-      "max": 0.62,
+      "value": 0.43,
+      "min": 0.28,
+      "max": 0.58,
       "curve": [
        {
         "x": 0,
@@ -5453,7 +5453,7 @@
     "sizeValue": {
      "mode": "curve",
      "value": 1,
-     "min": 0.15,
+     "min": 0.12,
      "max": 1,
      "curve": [
       {
@@ -5461,8 +5461,12 @@
        "y": 1
       },
       {
+       "x": 0.65,
+       "y": 0.7
+      },
+      {
        "x": 1,
-       "y": 0.15
+       "y": 0.12
       }
      ],
      "curveB": [
@@ -5471,8 +5475,12 @@
        "y": 1
       },
       {
+       "x": 0.65,
+       "y": 0.7
+      },
+      {
        "x": 1,
-       "y": 0.15
+       "y": 0.12
       }
      ],
      "editorMin": 0.001,
@@ -5484,7 +5492,7 @@
     "sizeValueY": {
      "mode": "curve",
      "value": 1,
-     "min": 0.15,
+     "min": 0.12,
      "max": 1,
      "curve": [
       {
@@ -5492,8 +5500,12 @@
        "y": 1
       },
       {
+       "x": 0.65,
+       "y": 0.7
+      },
+      {
        "x": 1,
-       "y": 0.15
+       "y": 0.12
       }
      ],
      "curveB": [
@@ -5502,8 +5514,12 @@
        "y": 1
       },
       {
+       "x": 0.65,
+       "y": 0.7
+      },
+      {
        "x": 1,
-       "y": 0.15
+       "y": 0.12
       }
      ],
      "editorMin": 0.001,
@@ -6434,12 +6450,12 @@
      "vortexStrength": 0
     },
     "noise": {
-     "mode": "sine",
+     "mode": "curl",
      "strength": {
       "mode": "constant",
-      "value": 0,
-      "min": 0,
-      "max": 0,
+      "value": 0.85,
+      "min": 0.85,
+      "max": 0.85,
       "curve": [
        {
         "x": 0,
@@ -6463,8 +6479,8 @@
       "editorMin": 0,
       "editorMax": 8
      },
-     "frequency": 1.5,
-     "speed": 1,
+     "frequency": 2.2,
+     "speed": 2.5,
      "scroll": [
       1,
       0,
@@ -7219,9 +7235,9 @@
      },
      "alpha": {
       "mode": "constant",
-      "value": 0.3,
-      "min": 0.3,
-      "max": 0.3,
+      "value": 0.28,
+      "min": 0.28,
+      "max": 0.28,
       "curve": [
        {
         "x": 0,

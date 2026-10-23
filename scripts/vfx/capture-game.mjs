@@ -21,14 +21,14 @@ try{
   throw Error('no clear tile');});
  await fs.mkdir(OUT,{recursive:true});
  const moments=msArg.split(',').map(Number),shots=[];
- await page.clock.pauseAt(await page.evaluate(()=>Date.now()+1500));
+ await page.clock.pauseAt(Date.now()+200);
  await page.evaluate(()=>{const c=window.__STRONGHOLD_COMBAT__;while(c.isModalOpen()&&c.snapshot().run.offers[0])c.choose(c.snapshot().run.offers[0]);c.resetCooldowns();});
+ await page.clock.runFor(32);
  await page.evaluate(([s,u,v])=>window.__STRONGHOLD_COMBAT__.castSkill(s,{targetU:u+2.6,targetV:v}),[skill,spot.u,spot.v]);
  let at=0;
  for(const ms of moments){
-  await page.clock.runFor(Math.max(0,ms-at-16));
+  await page.clock.runFor(ms-at);at=ms;
   await page.evaluate(()=>{const c=window.__STRONGHOLD_COMBAT__;while(c.isModalOpen()&&c.snapshot().run.offers[0])c.choose(c.snapshot().run.offers[0]);});
-  await page.clock.runFor(16);at=ms;
   const file=`${OUT}/game-${hero}-${skill}-${time.replace('.','')}-${ms}.png`;await page.screenshot({path:file});
   shots.push({file,fx:await page.evaluate(()=>window.__STRONGHOLD_COMBAT__.snapshot().vfx.fx)});
  }

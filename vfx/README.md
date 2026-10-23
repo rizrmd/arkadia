@@ -34,13 +34,11 @@ aim and can scale it by the skill's radius (`scale:'radius'` over `baseRadius`),
 Ground effects are drawn as seen from above and squashed 2:1, so billboards become flat, correctly spinning decals.
 NixieFX velocity alignment points a texture's **top** along the motion, so every motion texture is painted head-up.
 
-## Blending
+## Blending and particle magic circles
 
-Snow is bright by day, where additive light washes out to white. Soft bodies (flames, fire streams, rings, runes,
-cracks) are therefore alpha-blended in saturated colours with intensity ≤ 1, and only thin highlights (sparks, embers,
-glints, arcs, cores) are additive. Additive particles add light without writing alpha (a blend override in
-`stage.ts`), so they brighten the world under the canvas instead of covering it. NixieFX bloom is off by default:
-it tone-maps every particle and dulls saturated fire (`?fxbloom=1` to compare).
+Snow is bright by day, where additive light washes out to white. Soft bodies (flames, fire streams, cracks, outer magic circle beds) are therefore alpha-blended in saturated colours with intensity ≤ 1, and only thin highlights (sparks, embers, glints, arcs, cores, inner magic circle streaks) are additive. Additive particles add light without writing alpha (a blend override in `stage.ts`), so they brighten the world under the canvas instead of covering it. NixieFX bloom is off by default: it tone-maps every particle and dulls saturated fire (`?fxbloom=1` to compare).
+
+Every magic circle and shock ring (`L.magicCircle`, `L.sigil`, `L.ring` in `scripts/vfx/lib/layers.mjs`) is constructed entirely from orbiting and expanding particle emitters (`streak`, `ember`, `flare`, `dot` with `shape: {type: 'circle', arcMode: 'burstSpread'}` and tangential `orbit`) rather than predefined vector or ring images.
 
 ## Adding a skill or a hero
 
