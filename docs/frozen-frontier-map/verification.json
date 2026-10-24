@@ -1,12 +1,12 @@
 {
- "base": "http://127.0.0.1:5272",
+ "base": "http://127.0.0.1:5297",
  "shots": {
-  "desktop-gate-road": {
+  "desktop-frontier-road": {
    "teleport": [
-    18.6,
-    19.9
+    21,
+    21.6
    ],
-   "visible": 67,
+   "visible": 207,
    "drawCalls": {
     "shown": 102.7,
     "hidden": 102.7,
@@ -18,19 +18,7 @@
     21,
     23.6
    ],
-   "visible": 82,
-   "drawCalls": {
-    "shown": 102.7,
-    "hidden": 102.7,
-    "added": 0
-   }
-  },
-  "desktop-through-ruined-gate": {
-   "teleport": [
-    21,
-    27
-   ],
-   "visible": 81,
+   "visible": 216,
    "drawCalls": {
     "shown": 102.7,
     "hidden": 102.7,
@@ -42,7 +30,7 @@
     20.6,
     31.6
    ],
-   "visible": 69,
+   "visible": 152,
    "drawCalls": {
     "shown": 102.7,
     "hidden": 102.7,
@@ -51,10 +39,22 @@
   },
   "desktop-settlement": {
    "teleport": [
-    17.6,
-    31
+    17.48,
+    30.78
    ],
-   "visible": 66,
+   "visible": 158,
+   "drawCalls": {
+    "shown": 102.7,
+    "hidden": 102.7,
+    "added": 0
+   }
+  },
+  "desktop-settlement-east": {
+   "teleport": [
+    24.4,
+    30.4
+   ],
+   "visible": 159,
    "drawCalls": {
     "shown": 102.7,
     "hidden": 102.7,
@@ -66,19 +66,7 @@
     28.4,
     18.9
    ],
-   "visible": 41,
-   "drawCalls": {
-    "shown": 102.7,
-    "hidden": 102.7,
-    "added": 0
-   }
-  },
-  "desktop-behind-watchtower": {
-   "teleport": [
-    28.9,
-    13.4
-   ],
-   "visible": 24,
+   "visible": 115,
    "drawCalls": {
     "shown": 102.7,
     "hidden": 102.7,
@@ -90,7 +78,55 @@
     0.9,
     28
    ],
-   "visible": 35,
+   "visible": 86,
+   "drawCalls": {
+    "shown": 102.7,
+    "hidden": 102.7,
+    "added": 0
+   }
+  },
+  "desktop-shrine-trail": {
+   "teleport": [
+    8,
+    21.6
+   ],
+   "visible": 85,
+   "drawCalls": {
+    "shown": 102.7,
+    "hidden": 102.7,
+    "added": 0
+   }
+  },
+  "desktop-gate-road": {
+   "teleport": [
+    18.6,
+    19.9
+   ],
+   "visible": 197,
+   "drawCalls": {
+    "shown": 102.7,
+    "hidden": 102.7,
+    "added": 0
+   }
+  },
+  "desktop-through-ruined-gate": {
+   "teleport": [
+    21,
+    27
+   ],
+   "visible": 215,
+   "drawCalls": {
+    "shown": 102.7,
+    "hidden": 102.7,
+    "added": 0
+   }
+  },
+  "desktop-behind-watchtower": {
+   "teleport": [
+    28.9,
+    13.4
+   ],
+   "visible": 61,
    "drawCalls": {
     "shown": 102.7,
     "hidden": 102.7,
@@ -114,7 +150,7 @@
     6.5,
     -9.5
    ],
-   "visible": 29,
+   "visible": 27,
    "drawCalls": {
     "shown": 102.7,
     "hidden": 102.7,
@@ -126,10 +162,22 @@
     29.5,
     29
    ],
-   "visible": 59,
+   "visible": 113,
    "drawCalls": {
     "shown": 102.7,
     "hidden": 102.7,
+    "added": 0
+   }
+  },
+  "portrait-frontier-road": {
+   "teleport": [
+    21,
+    21.6
+   ],
+   "visible": 105,
+   "drawCalls": {
+    "shown": 86.3,
+    "hidden": 86.3,
     "added": 0
    }
   },
@@ -138,7 +186,43 @@
     21,
     23.6
    ],
-   "visible": 43,
+   "visible": 121,
+   "drawCalls": {
+    "shown": 86.3,
+    "hidden": 86.3,
+    "added": 0
+   }
+  },
+  "portrait-pillar-courtyard": {
+   "teleport": [
+    20.6,
+    31.6
+   ],
+   "visible": 57,
+   "drawCalls": {
+    "shown": 86.3,
+    "hidden": 86.3,
+    "added": 0
+   }
+  },
+  "portrait-settlement": {
+   "teleport": [
+    17.48,
+    30.78
+   ],
+   "visible": 55,
+   "drawCalls": {
+    "shown": 86.3,
+    "hidden": 86.3,
+    "added": 0
+   }
+  },
+  "portrait-settlement-east": {
+   "teleport": [
+    24.4,
+    30.4
+   ],
+   "visible": 84,
    "drawCalls": {
     "shown": 86.3,
     "hidden": 86.3,
@@ -150,7 +234,7 @@
     28.4,
     18.9
    ],
-   "visible": 19,
+   "visible": 47,
    "drawCalls": {
     "shown": 86.3,
     "hidden": 86.3,
@@ -162,7 +246,43 @@
     0.9,
     28
    ],
+   "visible": 55,
+   "drawCalls": {
+    "shown": 86.3,
+    "hidden": 86.3,
+    "added": 0
+   }
+  },
+  "portrait-shrine-trail": {
+   "teleport": [
+    8,
+    21.6
+   ],
    "visible": 22,
+   "drawCalls": {
+    "shown": 86.3,
+    "hidden": 86.3,
+    "added": 0
+   }
+  },
+  "landscape-frontier-road": {
+   "teleport": [
+    21,
+    21.6
+   ],
+   "visible": 168,
+   "drawCalls": {
+    "shown": 86.3,
+    "hidden": 86.3,
+    "added": 0
+   }
+  },
+  "landscape-ruined-gate": {
+   "teleport": [
+    21,
+    23.6
+   ],
+   "visible": 176,
    "drawCalls": {
     "shown": 86.3,
     "hidden": 86.3,
@@ -174,7 +294,31 @@
     20.6,
     31.6
    ],
-   "visible": 51,
+   "visible": 112,
+   "drawCalls": {
+    "shown": 86.3,
+    "hidden": 86.3,
+    "added": 0
+   }
+  },
+  "landscape-settlement": {
+   "teleport": [
+    17.48,
+    30.78
+   ],
+   "visible": 95,
+   "drawCalls": {
+    "shown": 86.3,
+    "hidden": 86.3,
+    "added": 0
+   }
+  },
+  "landscape-settlement-east": {
+   "teleport": [
+    24.4,
+    30.4
+   ],
+   "visible": 103,
    "drawCalls": {
     "shown": 86.3,
     "hidden": 86.3,
@@ -186,7 +330,7 @@
     28.4,
     18.9
    ],
-   "visible": 25,
+   "visible": 73,
    "drawCalls": {
     "shown": 86.3,
     "hidden": 86.3,
@@ -198,7 +342,19 @@
     0.9,
     28
    ],
-   "visible": 32,
+   "visible": 78,
+   "drawCalls": {
+    "shown": 86.3,
+    "hidden": 86.3,
+    "added": 0
+   }
+  },
+  "landscape-shrine-trail": {
+   "teleport": [
+    8,
+    21.6
+   ],
+   "visible": 52,
    "drawCalls": {
     "shown": 86.3,
     "hidden": 86.3,
@@ -209,14 +365,15 @@
  "errors": [],
  "console": [],
  "frontier": {
-  "props": 249,
-  "uprights": 166,
-  "columns": 2032,
+  "props": 475,
+  "uprights": 207,
+  "columns": 2374,
   "atlas": "/frozen-frontier/game/atlas.webp",
   "loaded": true,
   "failed": false,
-  "occlusionImages": 25,
-  "sprites": 29,
+  "kit": 39,
+  "occlusionImages": 35,
+  "sprites": 38,
   "visible": 0,
   "assets": [
    "arch-ne",
@@ -226,9 +383,19 @@
    "corner-s",
    "dead-snag",
    "dead-tree",
+   "drift-mound",
+   "drift-ne",
+   "drift-se",
+   "flagstones-a",
+   "flagstones-b",
+   "flagstones-c",
+   "flagstones-d",
+   "floor-sunk",
    "foundation",
    "grass-patch",
    "grass-tussock",
+   "ground-scuff-a",
+   "ground-scuff-b",
    "paving",
    "pillar-broken",
    "pillar-intact",
@@ -241,16 +408,55 @@
    "ruined-gate",
    "shrub-juniper",
    "shrub-twigs",
-   "snow-cap-ne",
-   "snow-cap-se",
    "snowy-shrine",
    "stairs-ne",
    "stairs-nw",
+   "stone-chips-a",
+   "stone-chips-b",
    "wall-ne",
    "wall-se"
   ]
  },
  "traversal": [
+  {
+   "label": "road-through-ruined-gate",
+   "from": [
+    21,
+    24.4
+   ],
+   "to": [
+    21,
+    27.4
+   ],
+   "blocked": [],
+   "pass": true
+  },
+  {
+   "label": "road-to-temple-stairs",
+   "from": [
+    21.1,
+    29.2
+   ],
+   "to": [
+    20.6,
+    32
+   ],
+   "blocked": [],
+   "pass": true
+  },
+  {
+   "label": "road-to-watchtower-stairs",
+   "from": [
+    27.6,
+    17.4
+   ],
+   "to": [
+    29,
+    17
+   ],
+   "blocked": [],
+   "pass": true
+  },
   {
    "label": "into-watchtower",
    "from": [
@@ -258,8 +464,8 @@
     17.4
    ],
    "to": [
-    28.1,
-    15.5
+    29.29,
+    16.69
    ],
    "pass": true
   },
@@ -270,8 +476,8 @@
     6
    ],
    "to": [
-    -11.37,
-    7.87
+    -11.55,
+    8.05
    ],
    "pass": true
   },
@@ -283,7 +489,7 @@
    ],
    "to": [
     21,
-    27.27
+    28.06
    ],
    "pass": true
   }
