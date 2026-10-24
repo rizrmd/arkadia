@@ -22,18 +22,19 @@ export function createControls(uiStage:Container,frames:FrameSet,canStartStick?:
  knob.position.set(-27,-27);
  uiStage.addChild(base);
 
- let finger=-1,ox=0,oy=0;const touches=new Set<number>();
+ let finger=-1,ox=0,oy=0;
 
  const release=()=>{
   held.clear();stick={x:0,y:0};finger=-1;
   knob.position.set(-27,-27);
   base.visible=false;
  };
- const reset=()=>{touches.clear();release();eased={x:0,y:0};};
+ const reset=()=>{release();eased={x:0,y:0};};
  window.addEventListener('blur',reset);
  document.addEventListener('visibilitychange',()=>{if(document.hidden)reset();});
 
- const inZone=(e:PointerEvent)=>e.clientY>=innerHeight*2/3;
+ // A touch that lands in the bottom half opens the stick; one in the top half only pans.
+ const inZone=(e:PointerEvent)=>e.clientY>=innerHeight/2;
  const isStickPointer=(e:PointerEvent)=>e.pointerType==='touch'||(innerWidth<innerHeight&&e.button===0);
  const aim=(e:PointerEvent)=>{
   const radius=RING_RADIUS,dx=e.clientX-ox,dy=e.clientY-oy,d=Math.hypot(dx,dy),k=Math.min(1,d/(radius*.62));
@@ -49,11 +50,8 @@ export function createControls(uiStage:Container,frames:FrameSet,canStartStick?:
    if(finger>=0&&!canStartStick(ox,oy,true))release();
    return;
   }
-  if(e.isPrimary&&finger<0)touches.clear();
-  const pinch=e.pointerType==='touch'&&touches.size>0;
-  if(e.pointerType==='touch')touches.add(e.pointerId);
-  if(finger>=0){release();return;}
-  if(pinch||!inZone(e))return;
+  // Each finger is independent: while the thumb holds the stick, any other finger pans the camera, even in the bottom half.
+  if(finger>=0||!inZone(e))return;
   take(e);finger=e.pointerId;ox=e.clientX;oy=e.clientY;
   base.position.set(ox,oy);
   base.alpha=1;
@@ -65,7 +63,7 @@ export function createControls(uiStage:Container,frames:FrameSet,canStartStick?:
   if(canStartStick&&!canStartStick(ox,oy,true)){release();return;}
   take(e);aim(e);
  },{capture:true});
- const lift=(e:PointerEvent)=>{touches.delete(e.pointerId);if(e.pointerId!==finger)return;take(e);finger=-1;release();};
+ const lift=(e:PointerEvent)=>{if(e.pointerId!==finger)return;take(e);finger=-1;release();};
  window.addEventListener('pointerup',lift,{capture:true});
  window.addEventListener('pointercancel',lift,{capture:true});
  function input():Walk{

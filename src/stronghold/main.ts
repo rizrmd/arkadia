@@ -14,7 +14,7 @@ import {startFpsTracelog} from './tracelog';
 export async function mount(app:HTMLElement,progress:Progress){
  const rt=await ensurePixiRuntime(app);
  const canvas=rt.app.canvas;
- canvas.setAttribute('aria-label','Stronghold world. Walk with the arrow keys or WASD, or on a touch screen drag from the bottom third; drag elsewhere to pan. The hero attacks nearby revenants automatically.');
+ canvas.setAttribute('aria-label','Stronghold world. Walk with the arrow keys or WASD, or on a touch screen drag from the bottom half; drag in the top half, or with a second finger while walking, to pan. The hero attacks nearby revenants automatically.');
  canvas.tabIndex=0;
 
  const canInteractWorld=(clientX:number,clientY:number,active=false)=>{
