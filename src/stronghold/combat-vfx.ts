@@ -361,12 +361,6 @@ export function createCombatVfx(o:{
    case 'rift-bolt':{
     spawnSlash(h.u,h.v,angle,false,true);
     const offsets=rank>=3?[-0.22,0,0.22]:rank===2?[-0.12,0.12]:[0];
-    impacts.push({
-     id:nextId++,kind:'rift-trap',shape:'circle',u:h.u,v:h.v,
-     radius:1.08*reach(run)*areaMult,angle,
-     spread:Math.PI*2,
-     age:0,duration:640
-    });
     for(const off of offsets){
      spawnProjectile({
       kind:'rift-bolt',skill:'rift-bolt',
@@ -573,7 +567,6 @@ export function createCombatVfx(o:{
       applyHitToFoe(f,{scale:p.damageScale,forceCrit:p.forceCrit,sparkKind:p.kind==='flame-bolt'?'fire':'arcane',angle});
       if(sameFrameImpacts<3){
        cue(`${p.skill}.impact`,{u:p.u,v:p.v,yaw:yawOf(p.vx,p.vy)});
-       if(p.skill==='rift-bolt')impacts.push({id:nextId++,kind:'rift-trap',shape:'circle',u:p.u,v:p.v,radius:.96,angle,spread:Math.PI*2,age:0,duration:520});
       }
       p.alive=false;
       break;
