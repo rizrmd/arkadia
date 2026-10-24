@@ -163,8 +163,13 @@ func (s *Server) ensureTracelogStore() *tracelogStore {
 	initial := &tracelogStore{
 		entries: make([]TracelogEntry, 0, 32),
 	}
+	// The rotated file (older entries) is read first so the newest entries win the 200-entry window.
 	if p := s.tracelogFilePath(); p != "" {
-		if f, err := os.Open(p); err == nil {
+		for _, path := range []string{p + ".1", p} {
+			f, err := os.Open(path)
+			if err != nil {
+				continue
+			}
 			sc := bufio.NewScanner(f)
 			sc.Buffer(make([]byte, 64*1024), maxTracelogBody*2)
 			for sc.Scan() {
@@ -270,8 +275,10 @@ func (s *Server) appendTracelogToDisk(entry TracelogEntry) {
 	if err := os.MkdirAll(filepath.Dir(p), 0o755); err != nil {
 		return
 	}
+	// Rotate instead of deleting, so a full file never wipes the whole history (logs are now sent for any
+	// drop below 60 fps, which fills the file much faster).
 	if st, err := os.Stat(p); err == nil && st.Size() > maxTracelogFileSz {
-		_ = os.Remove(p)
+		_ = os.Rename(p, p+".1")
 	}
 	f, err := os.OpenFile(p, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0o644)
 	if err != nil {

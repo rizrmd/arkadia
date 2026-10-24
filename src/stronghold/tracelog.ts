@@ -212,7 +212,9 @@ export function startFpsTracelog(opts: FpsTracelogOptions) {
   params.has('tracelog') || params.has('fpsThreshold') || params.has('fpsSpikeMs') || params.has('fpsCooldownMs');
  const autoTriggerEnabled = !navigator.webdriver || hasExplicitTracelogParam;
  const config = {
-  thresholdFps: Math.max(5, Math.min(58, Number(params.get('fpsThreshold')) || 30)),
+  // Any drop below the 60 fps target is reported: one missed vsync in the 30-frame window averages ~58 fps.
+  // 59 (not 60) keeps rAF timing jitter on a steady 60 Hz display from triggering; the cooldown limits volume.
+  thresholdFps: Math.max(5, Math.min(59.5, Number(params.get('fpsThreshold')) || 59)),
   spikeMs: Math.max(34, Math.min(1000, Number(params.get('fpsSpikeMs')) || 85)),
   cooldownMs: Math.max(500, Number(params.get('fpsCooldownMs')) || 10000),
   windowFrames: 30,
@@ -687,6 +689,8 @@ export function startFpsTracelog(opts: FpsTracelogOptions) {
    phase?: TracelogPhaseName;
    phaseMs?: number;
    reason?: 'sustained_low_fps' | 'frame_spike';
+   // false: only the real trigger may send (to test whether a window counts as a drop)
+   force?: boolean;
   }) {
    const count = Math.max(1, simOpts?.frames ?? 24);
    const dtMs = simOpts?.dtMs ?? (simOpts?.reason === 'frame_spike' ? 120 : 52);
@@ -727,6 +731,7 @@ export function startFpsTracelog(opts: FpsTracelogOptions) {
    if (triggered) {
     return await triggered;
    }
+   if (simOpts?.force === false) return null;
    return await triggerTracelog(simOpts?.reason ?? 'sustained_low_fps', true);
   },
  };

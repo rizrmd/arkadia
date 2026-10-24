@@ -296,3 +296,47 @@ func TestTracelogRenderSubPhasesRoundTrip(t *testing.T) {
 		t.Fatalf("frame sub-phases lost: %+v", e.Frames)
 	}
 }
+
+// A full log file is rotated to .1 rather than deleted, and both files are reloaded after a restart.
+func TestTracelogRotationKeepsHistory(t *testing.T) {
+	site := t.TempDir()
+	s1 := &Server{Site: site}
+	ts1 := httptest.NewServer(s1.Handler())
+	t.Cleanup(ts1.Close)
+	post := func(id string) {
+		body := []byte(`{"id":"` + id + `","reason":"sustained_low_fps","metrics":{"fps":52.1,"maxFrameMs":33.4}}`)
+		res, err := http.Post(ts1.URL+"/api/tracelogs", "application/json", bytes.NewReader(body))
+		if err != nil {
+			t.Fatal(err)
+		}
+		res.Body.Close()
+	}
+	post("tl-before-rotation")
+	p := s1.tracelogFilePath()
+	// Pad the file past the limit so the next write rotates it.
+	f, err := os.OpenFile(p, os.O_APPEND|os.O_WRONLY, 0o644)
+	if err != nil {
+		t.Fatal(err)
+	}
+	f.Write(bytes.Repeat([]byte(" "), maxTracelogFileSz+1))
+	f.Write([]byte("\n"))
+	f.Close()
+	post("tl-after-rotation")
+	if _, err := os.Stat(p + ".1"); err != nil {
+		t.Fatalf("expected rotated file: %v", err)
+	}
+
+	s2 := &Server{Site: site}
+	ts2 := httptest.NewServer(s2.Handler())
+	t.Cleanup(ts2.Close)
+	for _, id := range []string{"tl-before-rotation", "tl-after-rotation"} {
+		res, err := http.Get(ts2.URL + "/api/tracelogs/" + id)
+		if err != nil {
+			t.Fatal(err)
+		}
+		res.Body.Close()
+		if res.StatusCode != http.StatusOK {
+			t.Fatalf("%s lost after rotation + restart: status=%d", id, res.StatusCode)
+		}
+	}
+}
