@@ -78,7 +78,9 @@ export function ensurePixiRuntime(host?:HTMLElement):Promise<SharedPixiRuntime>{
    backgroundColor:0x0b0e12,
    antialias:true,
    autoDensity:true,
-   resolution:window.devicePixelRatio||1,
+   // Capped at 2 like the FX stage and world canvas: at DPR 3.25 the full-density backbuffer was ~3M pixels of
+   // fill and MSAA resolve per frame, and phone tracelogs showed combat frames missing vsync with only ~8 ms of JS.
+   resolution:Math.min(window.devicePixelRatio||1,2),
    gcActive:false,
   });
   app.canvas.id='world-canvas';

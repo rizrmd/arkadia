@@ -413,15 +413,21 @@ export function createFxStage(o:FxStageOptions){
   else{const [ground,world]=await Promise.all([mountPlane({before:o.under!},'world-fx-ground',''),mountPlane({after:o.over!},'world-fx-over',';z-index:3')]);
    planes={ground:make(ground.stage,ground,true,false),world:make(world.stage,world,false,o.bloom??BLOOM)};}
   resize();addEventListener('resize',resize);
-  // Prewarm combat effect pool in small macrotask slices during boot so neither boot frames nor combat frames stall.
+  // Prewarm the combat effect pool in idle time after boot. One instance costs ~10-40 ms (material graph, curve
+  // freezing), and batches of 12 per task blocked phones for 300-800 ms right after the loading screen lifted, so
+  // work is sliced to ~6 ms and runs in requestIdleCallback (250 ms timeout keeps it progressing in busy fights).
+  // play() works meanwhile: an effect not pooled yet is created on demand once.
   if(o.host&&planes){
-   let batch=0;
+   const idle=()=>new Promise<void>(r=>typeof requestIdleCallback==='function'?requestIdleCallback(()=>r(),{timeout:250}):setTimeout(r,0));
+   let slice=performance.now();
    for(const [key,fx] of effects){
     if(key.startsWith('ui/'))continue;
     const plane=planeOf(key),P=planes[plane],proj=projection(plane,{u:0,v:0,h:0,yaw:0,scale:1});
     const copies=key.endsWith('.bolt')?5:key.includes('.impact')||key.startsWith('shared/hit.')?3:1;
     const list=pool.get(key)??[];
+    pool.set(key,list);
     for(let c=0;c<copies;c++){
+     if(performance.now()-slice>6){await idle();slice=performance.now();}
      const inst=P.vfx.createEffect(fx,{projection:proj,position:[0,0,0],seed:c+1,timeSeconds:0,autoStart:false,addToStage:false});
      shareParticleEffectDefinition(inst.definition);
      inst.spawn({position:[0,0,0],seed:c+1,timeSeconds:0});
@@ -429,8 +435,6 @@ export function createFxStage(o:FxStageOptions){
      inst.stop();inst.root.visible=false;P.vfx.removeEffect(inst,false);
      list.push(inst);
     }
-    pool.set(key,list);
-    if(++batch%12===0)await new Promise(r=>setTimeout(r,0));
    }
   }
   ready=true;
@@ -443,7 +447,7 @@ export function createFxStage(o:FxStageOptions){
  function play(key:string,at:FxPlay,delayMs=0):FxHandle|null{
   if(delayMs>0){let h:FxHandle|null=null;const proxy:FxHandle={key,setLocal:(x,y,z)=>h?.setLocal(x,y,z),moveTo:(u,v)=>h?.moveTo(u,v),release:()=>{h?h.release():(cancel=true);},get alive(){return h?h.alive:!cancel;}};
    let cancel=false;pending.push({at:clock+delayMs/1000,run:()=>{if(!cancel)h=play(key,at);}});return proxy;}
-  if(!ready||!planes)return null;
+  if(!planes)return null;
   const fx=effects.get(key);if(!fx){console.warn('Unknown NixieFX effect',key);return null;}
   const plane=planeOf(key),anchor:Anchor={u:at.u,v:at.v,h:at.h??0,yaw:at.yaw??0,scale:at.scale??1},proj=projection(plane,anchor),P=planes[plane];
   const seed=at.seed??((Math.random()*0x7fffffff)|0);
@@ -604,6 +608,8 @@ export function createFxStage(o:FxStageOptions){
 
  return {
   ready:()=>ready,
+  // Effects can play (pool may still be warming in idle time); ready() means the pool is fully warm.
+  playable:()=>Boolean(planes)&&!failed,
   loaded:boot,
   failed:()=>failed,
   has:(key:string)=>effects.has(key),

@@ -2,7 +2,8 @@
 // spawns are identical between runs however slow headless rendering is), the hero is made unkillable, 8 sturdy
 // revenants surround it, and a CDP CPU profile reports busy (non-idle) main-thread ms per frame with a breakdown.
 //   node scripts/fps-profile/bench-combat.mjs [frames=360] [query=''] [root=.]
-// root lets the same benchmark run another checkout (e.g. a `git worktree` of the previous commit).
+// root lets the same benchmark run another checkout (e.g. a `git worktree` of the previous commit). DSF=3.25 renders
+// at a phone's device pixel ratio (fill cost matters there).
 import {createServer} from 'vite';
 import path from 'node:path';
 import {launch} from '../vfx/browser.mjs';
@@ -13,7 +14,7 @@ await vite.listen();const GAME=vite.resolvedUrls.local[0].replace(/\/$/,'');
 const browser=await launch();
 const key=f=>`${f.functionName||'(anon)'} ${(f.url||'').split('/').slice(-1)[0].split('?')[0]}`;
 try{
- const page=await browser.newPage({viewport:{width:394,height:734}});
+ const page=await browser.newPage({viewport:{width:394,height:734},deviceScaleFactor:Number(process.env.DSF||1)});
  await page.routeWebSocket('**/*',()=>{});
  await page.clock.install();
  await page.goto(`${GAME}/?offline=1&hero=ember-warden&time=0.5${QUERY?'&'+QUERY:''}`);
@@ -35,10 +36,12 @@ try{
  await cdp.send('Profiler.enable');await cdp.send('Profiler.setSamplingInterval',{interval:250});
  const particles=[];
  await cdp.send('Profiler.start');
+ const w0=Date.now();
  for(let i=0;i<FRAMES;i++){
   await page.clock.runFor(16.7);
   if(i%10===0)particles.push(await page.evaluate(()=>window.__STRONGHOLD_COMBAT__.liveCounts().particles));
  }
+ const wall=Date.now()-w0;
  const {profile}=await cdp.send('Profiler.stop');
  const fx=await page.evaluate(()=>window.__STRONGHOLD_COMBAT__.fxStage.stats());
  const byId=new Map(profile.nodes.map(n=>[n.id,n])),parent=new Map();for(const n of profile.nodes)for(const c of n.children||[])parent.set(c,n.id);
@@ -51,7 +54,7 @@ try{
   busy+=d;for(const k of chain)if(!seen.has(k)){seen.add(k);incl.set(k,(incl.get(k)||0)+d);}
  });
  const pick=(re)=>[...incl].filter(([k])=>re.test(k)).sort((a,b)=>b[1]-a[1])[0]?.[1]??0;
- const out={frames:FRAMES,query:QUERY,root:ROOT,setup,busyMsPerFrame:+(busy/FRAMES).toFixed(2),
+ const out={frames:FRAMES,query:QUERY,root:ROOT,dsf:Number(process.env.DSF||1),wallMsPerFrame:+(wall/FRAMES).toFixed(1),setup,busyMsPerFrame:+(busy/FRAMES).toFixed(2),
   heroRenderMs:+(pick(/^render hero\.ts/)/FRAMES).toFixed(2),
   hero3dMs:+(pick(/^updateAndRender hero-3d/)/FRAMES).toFixed(2),
   vfxMs:+(pick(/^render combat-vfx/)/FRAMES).toFixed(2),

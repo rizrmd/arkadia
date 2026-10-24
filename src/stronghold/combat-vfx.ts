@@ -720,7 +720,7 @@ export function createCombatVfx(o:{
    zv.view.sprite.height=hpx*k;
    zv.view.sprite.alpha=alpha;
   };
-  const skipHeroZones=fx.ready()&&(o.getHero().heroId==='ember-warden'||o.getHero().heroId==='rift-runner');
+  const skipHeroZones=fx.playable()&&(o.getHero().heroId==='ember-warden'||o.getHero().heroId==='rift-runner');
   if(!skipHeroZones){
    for(const a of aoes){
     renderZone(a.id,a.kind,a.shape,a.u,a.v,a.radius,a.angle,a.spread,a.age,a.duration,false);
