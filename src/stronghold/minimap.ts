@@ -64,6 +64,13 @@ export function drawMapGeometry(g:Graphics,built:Building[],z:number,obstacles:R
 // Geometry stays on the GPU. Only its translation and the live marker change per frame.
 // Court-local ground tiles are shared with collision; actor elevation must not move the map marker.
 export class Minimap extends Container {
+// Desktop only: the player's own minimap size and place, kept as the gap to the right edge and the top edge.
+type Custom={size:number;right:number;top:number};
+const LAYOUT_KEY='arkodia.minimap.layout.v1',MIN_SIZE=120,CORNER=16;
+const loadCustom=():Custom|null=>{
+ try{const v=JSON.parse(localStorage.getItem(LAYOUT_KEY)??'null');return v&&[v.size,v.right,v.top].every(Number.isFinite)?{size:v.size,right:v.right,top:v.top}:null;}catch{return null;}
+};
+
  private geometry=new Graphics();
  private viewport=new Container();
  private clip=new Graphics();
@@ -85,24 +92,80 @@ export class Minimap extends Container {
  // Tapping the minimap opens the full map (world-map.ts).
  onOpen?:()=>void;
  constructor(){
-  super();this.eventMode='static';this.interactiveChildren=false;this.cursor='pointer';this.zIndex=9;
-  this.on('pointertap',()=>this.onOpen?.());
+ // Desktop resize/move: four corner grips resize around the opposite corner, dragging the map moves it, and holding
+ // Shift while resizing moves it instead, so one drag can do both.
+ private grips=new Container();
+ private custom:Custom|null=loadCustom();
+ private screen={width:0,height:0};
+ private suppressTap=false;
+  super();this.eventMode='static';this.interactiveChildren=true;this.cursor='pointer';this.zIndex=9;
+  this.on('pointertap',()=>{if(!this.suppressTap)this.onOpen?.();});
+  this.on('pointerdown',e=>{if(!this.mobile)this.drag(e.clientX,e.clientY,0,0);});
   this.viewport.addChild(this.geometry,this.route);this.addChild(this.viewport,this.clip,this.frame,this.marker);this.viewport.mask=this.clip;
   this.marker.poly([0,-6,4.5,5,0,2.5,-4.5,5]).fill(0x50ecff).stroke({color:0x10282e,width:1.3});
  }
  private rebuild(built:Building[]){this.geometry.clear();this.count=drawMapGeometry(this.geometry,built,this.pxPerTile,this.obstacles);}
  updateMap(world:{x:number;y:number},width:number,height:number,telemetryBottom:number,built:Building[]){
+  this.addChild(this.grips);
+  for(const [sx,sy] of [[-1,-1],[1,-1],[-1,1],[1,1]]){
+   const grip=new Graphics();grip.eventMode='static';grip.cursor=sx*sy>0?'nwse-resize':'nesw-resize';
+   let lastTap=0;
+   grip.on('pointerdown',e=>{e.stopPropagation();this.drag(e.clientX,e.clientY,sx,sy);});
+   // Double-click a grip to return to the default size and place.
+   grip.on('pointertap',e=>{e.stopPropagation();const now=performance.now();if(now-lastTap<400)this.resetLayout();lastTap=now;});
+   (grip as Graphics&{sign:number[]}).sign=[sx,sy];this.grips.addChild(grip);
+  }
+ }
+ // Left edge, top edge and size of the player's layout, clamped to the screen.
+ private place(width:number,height:number,c:Custom){
+  const size=Math.round(Math.max(MIN_SIZE,Math.min(c.size,width*.6,height*.85)));
+  const left=Math.max(0,Math.min(width-size,width-size-c.right)),top=Math.max(0,Math.min(height-size,c.top));
+  return {size,left,top};
+ }
+ resetLayout(){this.custom=null;try{localStorage.removeItem(LAYOUT_KEY);}catch{}}
+ // One pointer drag from (x0,y0): sx,sy are the grip's corner (-1/+1), or 0,0 to move the whole map.
+ private drag(x0:number,y0:number,sx:number,sy:number){
+  const {width,height}=this.screen;if(this.mobile||!width)return;
+  const resize=sx!==0;let shift=false;
+  const snap=(x:number,y:number)=>({...this.place(width,height,this.custom??{size:this.size,right:width-this.x-this.size,top:this.y}),x,y});
+  let base=snap(x0,y0),moved=false;
+  const last={x:x0,y:y0};
+  const apply=(shiftKey:boolean)=>{
+   if(shiftKey!==shift){shift=shiftKey;base=snap(last.x,last.y);}
+   const dx=last.x-base.x,dy=last.y-base.y;
+   if(Math.hypot(last.x-x0,last.y-y0)>4)moved=true;
+   if(!moved)return;
+   let size=base.size,left=base.left,top=base.top;
+   if(resize&&!shift){
+    size=Math.round(Math.max(MIN_SIZE,Math.min(base.size+(sx*dx+sy*dy)/2,width*.6,height*.85)));
+    // The opposite corner stays where it was, so the map drifts toward the grip as it grows.
+    left=sx>0?base.left:base.left+base.size-size;top=sy>0?base.top:base.top+base.size-size;
+   }else{left=base.left+dx;top=base.top+dy;}
+   left=Math.max(0,Math.min(width-size,left));top=Math.max(0,Math.min(height-size,top));
+   this.custom={size,right:width-left-size,top};
+  };
+  const track=(e:PointerEvent)=>{last.x=e.clientX;last.y=e.clientY;apply(e.shiftKey);};
+  const key=(e:KeyboardEvent)=>{if(e.key==='Shift')apply(e.type==='keydown');};
+  const end=()=>{
+   removeEventListener('pointermove',track);removeEventListener('pointerup',end);removeEventListener('pointercancel',end);
+   removeEventListener('keydown',key);removeEventListener('keyup',key);
+   if(moved){this.suppressTap=true;setTimeout(()=>{this.suppressTap=false;},0);if(this.custom)try{localStorage.setItem(LAYOUT_KEY,JSON.stringify(this.custom));}catch{}}
+  };
+  addEventListener('pointermove',track);addEventListener('pointerup',end);addEventListener('pointercancel',end);
+  addEventListener('keydown',key);addEventListener('keyup',key);
   const mobile=width<1024,safe=mobileHudLayout(width);
-  const desktop=desktopNavigationLayout(width,height);
-  const size=mobile?safe.mapSize:desktop.width;
-  const top=mobile?safe.mapY:Math.ceil(telemetryBottom+desktop.gap),right=mobile?safe.right+8:desktop.right;
+  const desktop=desktopNavigationLayout(width,height);this.screen={width,height};
+  const mine=!mobile&&this.custom?this.place(width,height,this.custom):null;
+  const size=mine?mine.size:mobile?safe.mapSize:desktop.width;
+  const top=mine?mine.top:mobile?safe.mapY:Math.ceil(telemetryBottom+desktop.gap),right=mine?width-mine.left-size:mobile?safe.right+8:desktop.right;
   if(!this.mobileFrame){const texture=Assets.get('/mobile-hud/v1/map-frame.png');if(texture){this.mobileFrame=this.addChild(new Sprite(texture));this.setChildIndex(this.mobileFrame,this.children.length-2);}}
   if(this.mobileFrame){this.mobileFrame.visible=mobile;this.mobileFrame.width=size+4;this.mobileFrame.height=size+4;this.mobileFrame.position.set(-2,-2);}
   this.frame.alpha=mobile?.42:1;
   if(!this.mobileArrow){const texture=Assets.get('/mobile-hud/v1/arrow.png');if(texture){this.mobileArrow=this.addChild(new Sprite(texture));this.mobileArrow.anchor.set(.5);this.mobileArrow.width=12;this.mobileArrow.height=15;}}
   if(this.mobileArrow)this.mobileArrow.visible=mobile;
   this.marker.visible=!mobile||!this.mobileArrow;
-  this.visible=top+size<height*.65;
+  this.visible=mine?true:top+size<height*.65;
+  this.grips.visible=!mobile;
   if(size!==this.size||mobile!==this.mobile){
    this.mobile=mobile;
    this.size=size;this.pxPerTile=(size-14)/32;this.built='';
@@ -116,6 +179,13 @@ export class Minimap extends Container {
   }
   this.position.set(width-size-right,top);
   const key=built.join(',');if(key!==this.built){this.built=key;this.rebuild(built);}
+   for(const g of this.grips.children as (Graphics&{sign:number[]})[]){
+    const [sx,sy]=g.sign,cx=sx<0?0:size,cy=sy<0?0:size;
+    g.clear().rect(cx-(sx<0?0:CORNER),cy-(sy<0?0:CORNER),CORNER,CORNER).fill({color:0xffffff,alpha:.001});
+    // A small notch tucked into the corner shows where to grab.
+    const ax=cx-sx*4,ay=cy-sy*4;
+    g.moveTo(ax-sx*7,ay).lineTo(ax,ay).lineTo(ax,ay-sy*7).stroke({color:0xf2d590,width:1.2,alpha:.8});
+   }
   const t=unproject(world.x-COURT.x,world.y-COURT.y);this.tile={u:t.x,v:t.y};
   const p=project(t.x,t.y),k=this.pxPerTile/64;
   this.geometry.position.set(size/2-p.x*k,size/2-p.y*k);this.route.position.copyFrom(this.geometry.position);
