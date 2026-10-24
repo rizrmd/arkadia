@@ -51,6 +51,9 @@ export async function mount(app:HTMLElement,progress:Progress){
   },
  });
 
+ // Gameplay waits for the loading screen too: on a return visit the pick is already made, and the hero and revenant
+ // loops would otherwise render frame after frame behind the screen, starving the last load steps of the main thread.
+ let loaded=()=>{};const mounted=new Promise<void>(r=>{loaded=r;});
  const worldView=await createWorldView(
   rt,
   selectBuilding,
@@ -63,8 +66,11 @@ export async function mount(app:HTMLElement,progress:Progress){
    onCoopClick:()=>{clock?.open(false);lobby?.toggle();},
   },
   canInteractWorld,
-  picker.picked,
+  Promise.all([picker.picked,mounted]).then(()=>{}),
  );
+ // Apply the saved layout before the first frame, so the world is painted once (not once as the default layout and
+ // again for the saved one).
+ render();
 
  function render(){try{worldView.update(load(localStorage.getItem(KEY)),selected);}catch(e){console.error(e);}}
  function selectBuilding(id:Building){selected=id;render();worldView.focus(id);}
@@ -78,12 +84,14 @@ export async function mount(app:HTMLElement,progress:Progress){
   preview:worldView.previewClock,
   subscribe:worldView.subscribeClock,
  });
- await transact(()=>{}).catch(console.error);
- render();
+ // Saving the welcome-home state waits for a Web Lock, which the browser grants only between the first frames' long
+ // paint and upload tasks; the screen does not need it, so it lands in the background.
+ void transact(()=>{}).then(render,console.error);
 
  await new Promise<void>(done=>{const check=()=>canvas.dataset.ready==='true'?done():requestAnimationFrame(check);check();});
  startFpsTracelog({rt,getCombatSnapshot:()=>worldView.encounters.snapshot(),getLiveCounts:()=>worldView.encounters.liveCounts(),net,getHeroId:()=>hero});
  await picker.start();
+ loaded();
  void picker.picked.then(()=>{if(invited)lobby!.prompt(invited);});
 
  (window as any).__COOP__=net&&{net,stats:()=>({status:net.status(),room:net.room(),you:net.you(),...net.stats,...net.timeline,rtt:net.rtt()})};

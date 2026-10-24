@@ -339,7 +339,10 @@ export async function createWorldView(
  }
  (window as any).__STRONGHOLD_NAV__=()=>({version:1,layout:[...built],columns:objects.filter(p=>p.layer!=='ground'&&p.opacity>=1&&p.id!=='gate').flatMap(p=>footprint(p).map(c=>({x:+c.x.toFixed(2),w:+c.w.toFixed(2),back:+c.back.toFixed(2),front:+c.front.toFixed(2)})))});
  canvas.dataset.gate='closed';setGateOpen(false);updateGate(hero.position().x,hero.position().y);
- // Gameplay (the hero and the revenants) starts once `hold` resolves: on a first visit, after Choose Your Hero.
+ // Open on the hero (as follow() frames it) without drawing: the first paint waits for the saved layout (main.ts).
+ {const a=hero.anchor();cx=a.x;cy=a.y-40;}
+ // Gameplay (the hero and the revenants) starts once `hold` resolves: after the loading screen, and on a first visit
+ // after Choose Your Hero. Until then the camera already frames the hero.
  const loadGateAfterDone=()=>{const s=document.querySelector<HTMLElement>('#loading-screen');if(s&&s.dataset.state!=='done'){setTimeout(loadGateAfterDone,120);return;}ensureGateSheet();};
  parallax.start();void hold.then(()=>{hero.start();encounters.start();setTimeout(loadGateAfterDone,120);});
  return {

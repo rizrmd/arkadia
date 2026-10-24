@@ -502,6 +502,8 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
   blocked,occluders,occlusionAt,traceWallRay,sun:o.sun,
   place(ox:number,oy:number,scale:number){origin={x:ox,y:oy,scale};if(!drawn||quantizeRes(scale)!==k)render();place();},
   start(){if(blocked(x,y)&&!blocked(SPAWN.x,SPAWN.y)){x=SPAWN.x;y=SPAWN.y;}requestAnimationFrame(loop);},
+  // The point the camera follows (the hero's feet, raised onto terrain).
+  anchor:()=>({x,y:y-liftAt(x,y)}),
   position:()=>({x,y}),
   face,
   respawn(){x=SPAWN.x;y=SPAWN.y;back=false;vertical=false;horizontal=false;facing=1;drawn='';o.follow(x,y-liftAt(x,y),1e4);},
