@@ -131,7 +131,6 @@ export function trap(id,P,o={}){const R=o.radius??1.5,c=o.charge??.64,isFire=o.r
   L.glow(L.pillar(P,{name:'pillar core',radius:R*.24,count:12,power:(o.power??4.5)*1.1}),1.1),
   L.sparks(P,{at:[0,.2,0],rot:[0,0,0],spread:55,count:70,speed:[4,10],gravity:7,shape:{type:'cone',angle:55,radius:R*.3}}),
   L.radialSkim(P,{radius:R*.3,count:40,speed:[5,9]}),
-  ...(o.rock===false?[]:[L.cinders(P,{count:14,radius:R*.4,speed:[2.5,5.5]})]),
   ...(o.flames===false?[]:[
    L.flames(P,{shape:{type:'circle',radius:R*.68},count:14,size:.46,speed:[.9,2.2],gravity:-2.4,turbulence:1.3}),
    L.glow(L.flames(P,{name:'eruption flame core',shape:{type:'circle',radius:R*.5},count:10,size:.34,speed:[1.1,2.4],gravity:-2.5}),1.15)]),
@@ -149,9 +148,7 @@ export function slam(id,P,o={}){const R=o.radius??1.65,c=o.charge??.46;return [
   L.cracks(P,{radius:R,life:c+.05,intensity:1.2}),
   L.pool(P,{radius:R,life:c,intensity:.8})],o),
  fx(id,'detonate',title(id)+' · burst',[L.flash(P,{at:[0,.3,0],size:2.6*R,intensity:3,life:.24}),
-  L.debris(P,{count:o.debris??26,radius:R*.45,speed:[2.6,5.4]}),
   ...(o.molten?[
-   L.cinders(P,{count:20,radius:R*.45,speed:[2.5,5.2]}),
    L.flames(P,{shape:{type:'circle',radius:R*.62,thickness:.45},count:14,size:.4,speed:[.7,1.8],gravity:-2.2,turbulence:1.3}),
    L.glow(L.flames(P,{name:'molten flame core',shape:{type:'circle',radius:R*.52,thickness:.4},count:10,size:.28,speed:[.8,2],gravity:-2.4}),1.15)]:[]),
   L.radialSkim(P,{radius:R*.25,count:48,speed:[6,10]}),

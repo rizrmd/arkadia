@@ -17,7 +17,7 @@ export default [
   L.embers(EMBER,{at:HIT,count:8,radius:.16})]},
  {id:'shared.hit.arcane',name:'Hit · arcane',emitters:[L.flash(RIFT,{at:HIT,size:1,intensity:3,life:.16}),burst(RIFT,{count:12,speed:[2,6],gravity:1}),L.shards(RIFT,{at:HIT,count:6,speed:[2,4]})]},
  {id:'shared.hit.seismic',name:'Hit · seismic',emitters:[L.flash(SEISMIC,{at:HIT,size:.9,intensity:2.6,life:.14}),burst(SEISMIC,{count:10,speed:[2,5],gravity:6}),
-  L.debris(SEISMIC,{at:[0,.3,0],count:6,radius:.1,speed:[1.5,3]}),L.smoke(SEISMIC,{at:[0,.3,0],count:2,size:.4,alpha:.3})]},
+  L.smoke(SEISMIC,{at:[0,.3,0],count:2,size:.4,alpha:.3})]},
  {id:'shared.heal',name:'Heal',emitters:[L.vortex(LIFE,{radius:.45,rate:40,duration:.5,lift:1.4,swirl:3,pull:-.2}),L.glints(LIFE,{at:[0,.9,0],count:3,radius:.35,size:.35}),L.flash(LIFE,{at:[0,.5,0],size:1,intensity:1.8,life:.3})]},
  {id:'shared.level-up',name:'Level up · light',emitters:[L.flash(GOLD,{at:[0,.6,0],size:2.4,intensity:3.4,life:.35}),
   L.pillar(GOLD,{radius:.3,rate:40,duration:.8,power:5,intensity:2}),L.vortex(GOLD,{radius:.8,rate:70,duration:1,lift:1.8,swirl:3.4,pull:-.5}),

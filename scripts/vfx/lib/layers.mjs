@@ -59,6 +59,7 @@ export const smoke=(P,o={})=>mix({texture:'smoke',tiles:[2,2],frames:{random:tru
  rotation:[0,6.28],spin:[-.7,.7],size:o.size??[.22,.36],...(o.sizeXY?{sizeXY:o.sizeXY}:{}),sizeOverLife:{curve:[[0,.5],[1,1.15]]},
  color:o.color??P.smoke,alpha:o.alpha??.42,colorOverLife:{c:[[0,'#ffffff'],[1,'#ffffff']],a:[[0,0],[.15,1],[1,0]]},order:-2},pick(o,['size','sizeXY','alpha','color','gravity','delay0',...OWN]));
 // W · Debris chunks thrown up and out; they fall back, bounce on the ground plane and settle as faceted rock chunks.
+// Keep it for chunks that rest on the ground (speed 0): tumbling grey chunks in the air read as a swarm of flies at game zoom.
 export const debris=(P,o={})=>mix({texture:'debris',tiles:[2,2],frames:{random:true,still:true},blend:'alpha',alpha:.96,bursts:[[0,o.count??18]],max:(o.count??18)+4,
  shape:{type:'hemisphere',radius:o.radius??.34,thickness:1},life:[.55,.95],speed:o.speed??[2.4,5.2],spherical:.65,gravity:o.gravity??10.5,drag:.45,
  collide:{y:0,bounce:.32,dampen:.55},rotation:[0,6.28],spin:[-8,8],size:o.size??[.14,.25],...(o.sizeXY?{sizeXY:o.sizeXY}:{}),
