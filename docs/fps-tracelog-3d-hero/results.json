@@ -1,0 +1,98 @@
+{
+ "analyzedAt": "2026-10-24",
+ "source": "GET https://ark-whachat.fural.space/api/tracelogs (34 logs, 2026-10-24 03:38-03:51 UTC)",
+ "device": {
+  "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Mobile Safari/537.36",
+  "viewport": "394x734",
+  "dpr": 3.25,
+  "cores": 8,
+  "memoryGb": 8
+ },
+ "phoneSymptom": {
+  "logs": 34,
+  "sustainedLowFps": 31,
+  "frameSpike": 3,
+  "bottleneck": "encounters-render (31/34)",
+  "typicalFps": "28-38",
+  "encountersRenderAvgMs": "20.6-30.6 of a 16.7ms budget",
+  "idleNoCombatEncountersRenderMs": "10-14 (3D hero alone)"
+ },
+ "phoneRenderCostByParticles": [
+  {
+   "particles": "0-0",
+   "frames": 230,
+   "medianEncountersRenderMs": 13.0
+  },
+  {
+   "particles": "1-199",
+   "frames": 195,
+   "medianEncountersRenderMs": 17.5
+  },
+  {
+   "particles": "200-399",
+   "frames": 323,
+   "medianEncountersRenderMs": 23.6
+  },
+  {
+   "particles": "400-599",
+   "frames": 304,
+   "medianEncountersRenderMs": 25.4
+  },
+  {
+   "particles": "600-799",
+   "frames": 337,
+   "medianEncountersRenderMs": 26.4
+  },
+  {
+   "particles": "800-999",
+   "frames": 371,
+   "medianEncountersRenderMs": 27.7
+  },
+  {
+   "particles": "1000-1399",
+   "frames": 194,
+   "medianEncountersRenderMs": 31.2
+  }
+ ],
+ "rootCauses": [
+  {
+   "id": "hero3d-readback",
+   "what": "The 3D Ember Warden was rendered in WebGL every frame, read back with a synchronous gl.readPixels (GPU pipeline stall), then run through three 47k-pixel JS loops (TBDR sanitize flood fill, ink outline/crease/tint, foot shadow projection) and putImageData before being drawn into the hero canvas.",
+   "fix": "All passes moved to the GPU: copyFramebufferToTexture + a fragment-shader port of the ink/crease/tint pass, and the foot-anchored shadow ported to 4 GPU passes (per-column foot line, sole/base-line params, point scatter with MAX blending + contact ellipses, 3x3 feather) written below the sprite in the same WebGL canvas. No readback remains."
+  },
+  {
+   "id": "vfx-particle-load",
+   "what": "Each live NixieFX particle costs ~14us of main-thread time on the phone (regression over 1959 frames); a level-8 fight peaks near 1000 particles, mostly decorative hit sparks and flame-fan impacts that are exempt from per-effect caps.",
+   "fix": "Adaptive particle budget in src/fx/stage.ts: on devices that cannot hold ~50+ fps while particles are live, the budget shrinks (min 260) and secondary bursts (hit sparks except incoming, impacts, cast/swing ground glows) are skipped when they would exceed it. Casts, bolts, detonations, telegraphs, level-up and incoming-hit feedback always play. Devices holding 60 fps keep full VFX."
+  }
+ ],
+ "parity": {
+  "script": "scripts/fps-profile/hero3d-parity.mjs",
+  "poses": 6,
+  "spriteMaxChannelDiff": 1,
+  "spriteDiffPx": 0,
+  "shadowDiffPx(>2 alpha)": 0
+ },
+ "benchmark": {
+  "script": "scripts/fps-profile/bench-combat.mjs 240",
+  "note": "Headless SwiftShader (software GPU, 2D canvas not accelerated) on a loaded 10-core host; JS phases are the meaningful numbers, total frame time is GPU-emulation bound.",
+  "before": {
+   "hero3dMsPerFrame": 176.44,
+   "heroRenderMsPerFrame": 177.11,
+   "particlesAvg": 300,
+   "particlesMax": 836
+  },
+  "after": {
+   "hero3dMsPerFrame": 1.53,
+   "heroRenderMsPerFrame": 3.38,
+   "particlesAvgAutoBudget": 173,
+   "particlesMaxAutoBudget": 454
+  },
+  "afterBudget260": {
+   "hero3dMsPerFrame": 1.39,
+   "particlesAvg": 146,
+   "particlesMax": 341
+  }
+ },
+ "telemetry": "Tracelogs now carry phasesAvg/phasesMax/frames hero3dMs and vfxMs (sub-phases of encountersRender) and scene.particleBudget."
+}

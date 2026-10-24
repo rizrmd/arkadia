@@ -90,157 +90,19 @@ interface HeroModelEntry {
   activeAction: any;
 }
 
+/** Shadow drawn from `canvas` at (sx, sy, sw, sh), placed `ox`/`oy` cell px up-left of the foot pivot. */
 export interface ShadowDrawResult {
   canvas: HTMLCanvasElement;
+  sx: number;
+  sy: number;
   ox: number;
   oy: number;
   sw: number;
   sh: number;
 }
 
-/**
- * Sanitizes raw 3D hero readback pixels (`w x h x 4` RGBA) against mobile TBDR GPU tile artifacts:
- * 1. Flood-erases any opaque background garbage connected to the outer 2px canvas perimeter
- *    (e.g. when a mobile tile renderer skips resolving empty outer tiles, leaving recycled VRAM
- *    around a transparent moat of resolved hero tiles).
- * 2. Retains only the contiguous 8-connected hero silhouette seeded from the central spine box.
- */
-export function sanitizeHeroWorkPixels(
-  pixels: Uint8ClampedArray | Uint8Array,
-  w: number,
-  h: number,
-  bfsQueue?: Int32Array,
-  visited?: Uint8Array
-): void {
-  const total = w * h;
-  const q = bfsQueue && bfsQueue.length >= total ? bfsQueue : new Int32Array(total);
-  const seen = visited && visited.length >= total ? visited : new Uint8Array(total);
-
-  const coreX0 = Math.floor(w * 0.36);
-  const coreX1 = Math.ceil(w * 0.64);
-  const coreY0 = Math.floor(h * 0.24);
-  const coreY1 = Math.ceil(h * 0.95);
-
-  // Step 1: Check left, right, and top 1px borders (never bottom center where boots touch y = h-1).
-  // Only flood-erase when outer GPU tiles contain unresolved VRAM garbage (opaque corners or widespread
-  // perimeter tile fill), and never flood-erase into the central hero spine box so a raised casting hand
-  // or staff brushing the top border can never erase the hero!
-  let qHead = 0;
-  let qTail = 0;
-  seen.fill(0);
-
-  for (let x = 0; x < w; x++) {
-    if (pixels[x * 4 + 3] > 12) {
-      seen[x] = 1;
-      q[qTail++] = x;
-    }
-  }
-  for (let y = 1; y < h; y++) {
-    const leftIdx = y * w;
-    const rightIdx = y * w + (w - 1);
-    if (pixels[leftIdx * 4 + 3] > 12) {
-      seen[leftIdx] = 1;
-      q[qTail++] = leftIdx;
-    }
-    if (pixels[rightIdx * 4 + 3] > 12) {
-      seen[rightIdx] = 1;
-      q[qTail++] = rightIdx;
-    }
-  }
-
-  const cornerOpaque = pixels[3] > 12 || pixels[(w - 1) * 4 + 3] > 12;
-  if (cornerOpaque || qTail > 96) {
-    while (qHead < qTail) {
-      const idx = q[qHead++];
-      const p = idx * 4;
-      pixels[p] = 0;
-      pixels[p + 1] = 0;
-      pixels[p + 2] = 0;
-      pixels[p + 3] = 0;
-
-      const x = idx % w;
-      const y = (idx - x) / w;
-      const y0 = y > 0 ? y - 1 : 0;
-      const y1 = y + 1 < h ? y + 1 : h - 1;
-      const x0 = x > 0 ? x - 1 : 0;
-      const x1 = x + 1 < w ? x + 1 : w - 1;
-
-      for (let ny = y0; ny <= y1; ny++) {
-        const nRow = ny * w;
-        for (let nx = x0; nx <= x1; nx++) {
-          if (nx >= coreX0 && nx <= coreX1 && ny >= coreY0 && ny <= coreY1) continue;
-          const nIdx = nRow + nx;
-          if (seen[nIdx] === 0 && pixels[nIdx * 4 + 3] > 12) {
-            seen[nIdx] = 1;
-            q[qTail++] = nIdx;
-          }
-        }
-      }
-    }
-  } else {
-    // Clear only the 1px outer top/left/right border pixels without flood-erasing the connected hero
-    for (let i = 0; i < qTail; i++) {
-      const p = q[i] * 4;
-      pixels[p] = 0;
-      pixels[p + 1] = 0;
-      pixels[p + 2] = 0;
-      pixels[p + 3] = 0;
-    }
-  }
-
-  // Step 2: Retain only the hero's connected component seeded from the central hero spine
-  qHead = 0;
-  qTail = 0;
-  seen.fill(0);
-
-  for (let y = coreY0; y <= coreY1; y++) {
-    const row = y * w;
-    for (let x = coreX0; x <= coreX1; x++) {
-      const idx = row + x;
-      if (pixels[idx * 4 + 3] > 16) {
-        seen[idx] = 1;
-        q[qTail++] = idx;
-      }
-    }
-  }
-
-  if (qTail > 0) {
-    while (qHead < qTail) {
-      const idx = q[qHead++];
-      const x = idx % w;
-      const y = (idx - x) / w;
-      const y0 = y > 1 ? y - 2 : 0;
-      const y1 = y + 2 < h ? y + 2 : h - 1;
-      const x0 = x > 1 ? x - 2 : 0;
-      const x1 = x + 2 < w ? x + 2 : w - 1;
-
-      for (let ny = y0; ny <= y1; ny++) {
-        const nRow = ny * w;
-        for (let nx = x0; nx <= x1; nx++) {
-          const nIdx = nRow + nx;
-          if (seen[nIdx] === 0 && pixels[nIdx * 4 + 3] > 16) {
-            seen[nIdx] = 1;
-            q[qTail++] = nIdx;
-          }
-        }
-      }
-    }
-
-    for (let idx = 0; idx < total; idx++) {
-      if (seen[idx] === 0 && pixels[idx * 4 + 3] > 0) {
-        const p = idx * 4;
-        pixels[p] = 0;
-        pixels[p + 1] = 0;
-        pixels[p + 2] = 0;
-        pixels[p + 3] = 0;
-      }
-    }
-  }
-}
-
 interface ThreeHeroInstance {
   canvas: HTMLCanvasElement;
-  shadowCanvas: HTMLCanvasElement;
   style: ShaderStyle3D;
   isHeroReady(heroId: string): boolean;
   updateAndRender(opts: {
@@ -253,7 +115,13 @@ interface ThreeHeroInstance {
     night: number;
     sun?: Sun;
     cell?: { w: number; h: number; pivot: { x: number; y: number } };
-  }): { sprite: HTMLCanvasElement; shadow: ShadowDrawResult | null; activeClip: string } | null;
+  }): {
+    sprite: HTMLCanvasElement;
+    spriteW: number;
+    spriteH: number;
+    shadow: ShadowDrawResult | null;
+    activeClip: string;
+  } | null;
 }
 
 let sharedInstance: ThreeHeroInstance | null = null;
@@ -269,36 +137,31 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
   const W = CELL_W * SCALE; // 228
   const H = CELL_H * SCALE; // 206
 
+  // One WebGL canvas holds both outputs that hero.ts composites: the hand-painted sprite (top W x H) and the
+  // foot-anchored ground shadow (below it, at 1x cell scale). Every pass runs on the GPU and nothing is read back,
+  // so the main thread never waits for the GPU (the former readPixels + per-pixel JS passes cost ~10ms a frame
+  // on mid-range phones).
+  const SHADOW_W = 320; // |sun.dx| <= 1.7 and |sun.dy| <= .85 keep the projected shadow inside 304 x 208
+  const SHADOW_H = 224;
+  const CANVAS_W = Math.max(W, SHADOW_W);
+  const CANVAS_H = H + SHADOW_H;
+
   const glCanvas = document.createElement('canvas');
-  glCanvas.width = W;
-  glCanvas.height = H;
+  glCanvas.width = CANVAS_W;
+  glCanvas.height = CANVAS_H;
 
-  const outCanvas = document.createElement('canvas');
-  outCanvas.width = W;
-  outCanvas.height = H;
-  const outCtx = outCanvas.getContext('2d', { willReadFrequently: true })!;
-  const outImgData = outCtx.createImageData(W, H);
-  const outPixels = outImgData.data;
-  const outU32 = new Uint32Array(outImgData.data.buffer);
-
-  const workImgData = outCtx.createImageData(W, H);
-  const workPixels = workImgData.data;
-  const rawGlPixels = new Uint8Array(W * H * 4);
-  const bfsQueue = new Int32Array(W * H);
-  const visitedMask = new Uint8Array(W * H);
-
-  // Buffers for 114x103 foot-anchored ground shadow projection
-  const cellAlpha = new Uint8Array(CELL_W * CELL_H);
-  const botCol = new Int16Array(CELL_W);
-  const baseCol = new Float32Array(CELL_W);
-
-  const shadowCanvas = document.createElement('canvas');
-  shadowCanvas.width = 260;
-  shadowCanvas.height = 220;
-  const shadowCtx = shadowCanvas.getContext('2d')!;
-  let shadowImgData = shadowCtx.createImageData(shadowCanvas.width, shadowCanvas.height);
-  let shadowU32 = new Uint32Array(shadowImgData.data.buffer);
-  let shadowDensity = new Uint8Array(shadowCanvas.width * shadowCanvas.height);
+  let srcTex: any = null;
+  let postScene: any = null;
+  let postTint: any = null;
+  let botRT: any = null;
+  let botScene: any = null;
+  let paramRT: any = null;
+  let paramScene: any = null;
+  let densRT: any = null;
+  let scatterScene: any = null;
+  let featherScene: any = null;
+  let shadowU: Record<string, { value: any }> = {};
+  let copyAt: any = null;
 
   const style = 'stylized' as ShaderStyle3D;
   let THREE: any = null;
@@ -403,40 +266,277 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
   }
 
   /**
-   * Post-processes the rendered 228x206 3D image into a crisp Hand-Painted 2D Sprite:
-   * 1. Adds a warm dark-ink silhouette outline (#140d0a, 1.5px) around the outer boundary
-   * 2. Adds subtle internal dark-ink crease lines on armor/cloak edges
-   * 3. Downsamples alpha to 114x103 `cellAlpha` for exact foot-anchored shadow generation
+   * GPU port of the Hand-Painted 2D Sprite pass (same thresholds as the former per-pixel CPU loop, in 0-255 units):
+   * 1. Warm dark-ink silhouette outline (#140d0a) around the outer boundary
+   * 2. Subtle internal dark-ink crease lines on armor/cloak edges below the collar
+   * 3. Tint / night grading and the foot-to-head vertical gradient
+   * `y` below is top-down like the old ImageData loop; GL rows are bottom-up.
    */
-  function applyHandPaintedSpritePass(
-    srcCanvas: HTMLCanvasElement,
-    tint: string,
-    night: number
-  ): void {
-    const gl = renderer?.getContext?.() as WebGLRenderingContext | null;
-    let readDirect = false;
-    if (gl) {
-      try {
-        gl.readPixels(0, 0, W, H, gl.RGBA, gl.UNSIGNED_BYTE, rawGlPixels);
-        const rowBytes = W * 4;
-        for (let y = 0; y < H; y++) {
-          const srcOff = (H - 1 - y) * rowBytes;
-          const dstOff = y * rowBytes;
-          workPixels.set(rawGlPixels.subarray(srcOff, srcOff + rowBytes), dstOff);
+  const POST_FRAG = `
+    uniform sampler2D tSrc;
+    uniform vec2 uSize;
+    uniform vec2 uOrigin;
+    uniform vec3 uTint;
+    const vec3 INK = vec3(20.0, 13.0, 10.0);
+    const vec3 LUM = vec3(0.3, 0.59, 0.11);
+    vec4 px(vec2 p) { return texelFetch(tSrc, ivec2(p), 0) * 255.0; }
+    void main() {
+      vec2 p = floor(gl_FragCoord.xy) - uOrigin;
+      float y = uSize.y - 1.0 - p.y;
+      if (p.x < 1.0 || p.x > uSize.x - 2.0 || y < 1.0 || y > uSize.y - 2.0) { gl_FragColor = vec4(0.0); return; }
+      vec4 c = px(p);
+      vec4 l = px(p + vec2(-1.0, 0.0));
+      vec4 r = px(p + vec2(1.0, 0.0));
+      vec4 u = px(p + vec2(0.0, 1.0));
+      vec4 d = px(p + vec2(0.0, -1.0));
+      if (c.a > 28.0) {
+        vec3 rgb = c.rgb;
+        float minN = min(min(l.a, r.a), min(u.a, d.a));
+        if (minN < 80.0) {
+          rgb = mix(rgb, INK, min(0.82, (80.0 - minN) / 80.0 * 0.78));
+        } else if (y > 68.0) {
+          float lumC = dot(c.rgb, LUM);
+          float diff = max(abs(lumC - dot(r.rgb, LUM)), abs(lumC - dot(d.rgb, LUM)));
+          if (diff > 56.0) rgb = mix(rgb, INK, min(0.22, (diff - 56.0) * 0.0045));
         }
-        readDirect = true;
-      } catch {}
-    }
-    if (!readDirect) {
-      outCtx.globalCompositeOperation = 'copy';
-      outCtx.drawImage(srcCanvas, 0, 0);
-      const srcData = outCtx.getImageData(0, 0, W, H).data;
-      workPixels.set(srcData);
-    }
+        float vGrad = y > 155.0 ? max(0.76, 1.0 - (y - 155.0) * 0.0055) : 1.03;
+        gl_FragColor = vec4(min(vec3(255.0), rgb * uTint * vGrad), min(255.0, c.a * 1.15)) / 255.0;
+        return;
+      }
+      float max4 = max(max(l.a, r.a), max(u.a, d.a));
+      if (max4 > 42.0) { gl_FragColor = vec4(INK, min(235.0, floor(max4 * 0.92 + 0.5))) / 255.0; return; }
+      float maxDiag = max(
+        max(px(p + vec2(-1.0, 1.0)).a, px(p + vec2(1.0, 1.0)).a),
+        max(px(p + vec2(-1.0, -1.0)).a, px(p + vec2(1.0, -1.0)).a)
+      );
+      gl_FragColor = maxDiag > 90.0 ? vec4(INK, min(150.0, floor(maxDiag * 0.52 + 0.5))) / 255.0 : vec4(0.0);
+    }`;
 
-    // Sanitize against mobile TBDR empty-tile VRAM artifacts & stray background islands
-    sanitizeHeroWorkPixels(workPixels, W, H, bfsQueue, visitedMask);
+  /*
+   * Foot-anchored ground shadow, a GPU port of the former CPU projection (cell px, top-down y):
+   *  - cellA(x, y): 2x2 max alpha of the raw 3D pass (the 114x103 cell mask)
+   *  - BOT pass   (114x1): lowest opaque row per column (botCol)
+   *  - PARAM pass (114x2): row 0 = per-column ground line baseCol / botCol / sole flag,
+   *                        row 1 = foot centre x and lowest opaque row (maxAllB) in every texel
+   *  - SCATTER    : one point per opaque cell pixel, projected from its column's ground line along the sun and
+   *                 tapered toward the feet, plus a contact ellipse under every grounded sole (MAX blend density)
+   *  - FEATHER    : 3x3 soften into the warm dark ground shadow colour, written below the sprite in glCanvas
+   * Fractions travel through RGBA8 as (floor / 255, fract).
+   */
+  const SHADOW_COMMON = `
+    uniform sampler2D tSrc;
+    const int CELL_W = ${CELL_W};
+    const int CELL_H = ${CELL_H};
+    const int SRC_H = ${H};
+    float cellA(int x, int y) {
+      int sx = 2 * x;
+      int sy = SRC_H - 1 - 2 * y;
+      return max(
+        max(texelFetch(tSrc, ivec2(sx, sy), 0).a, texelFetch(tSrc, ivec2(sx + 1, sy), 0).a),
+        max(texelFetch(tSrc, ivec2(sx, sy - 1), 0).a, texelFetch(tSrc, ivec2(sx + 1, sy - 1), 0).a)
+      ) * 255.0;
+    }
+    float byteAt(float v) { return floor(v * 255.0 + 0.5); }
+  `;
 
+  const BOT_FRAG = `${SHADOW_COMMON}
+    void main() {
+      int x = int(gl_FragCoord.x);
+      float bot = -1.0;
+      for (int y = CELL_H - 1; y >= 0; y--) {
+        if (cellA(x, y) > 42.0) { bot = float(y); break; }
+      }
+      gl_FragColor = vec4((bot + 1.0) / 255.0, 0.0, 0.0, 1.0);
+    }`;
+
+  const PARAM_FRAG = `${SHADOW_COMMON}
+    uniform sampler2D tBot;
+    uniform float uPivotX;
+    float bot(int x) { return byteAt(texelFetch(tBot, ivec2(x, 0), 0).r) - 1.0; }
+    void main() {
+      int x = int(gl_FragCoord.x);
+      float maxAllB = -1.0;
+      for (int i = 0; i < CELL_W; i++) maxAllB = max(maxAllB, bot(i));
+      // Grounded boot soles: within 4px of the lowest point and inside the central 18px foot stance
+      float thr = maxAllB - 4.0;
+      bool stance = false;
+      for (int i = 0; i < CELL_W; i++) if (abs(float(i) - uPivotX) <= 18.0 && bot(i) >= thr) stance = true;
+      float cnt = 0.0, sumX = 0.0, sumY = 0.0, firstX = 0.0, firstY = 0.0, lastX = 0.0, lastY = 0.0;
+      float prevX = -1.0, prevY = 0.0, nextX = -1.0, nextY = 0.0;
+      bool sole = false;
+      for (int i = 0; i < CELL_W; i++) {
+        float b = bot(i);
+        float fi = float(i);
+        if (b < thr || (stance && abs(fi - uPivotX) > 18.0)) continue;
+        if (cnt == 0.0) { firstX = fi; firstY = b; }
+        lastX = fi; lastY = b;
+        cnt += 1.0; sumX += fi; sumY += b;
+        if (i <= x) { prevX = fi; prevY = b; }
+        if (i > x && nextX < 0.0) { nextX = fi; nextY = b; }
+        if (i == x) sole = true;
+      }
+      float fx = float(x);
+      float footCenterX = cnt > 0.0 ? sumX / cnt : uPivotX;
+      float groundY = cnt > 0.0 ? sumY / cnt : maxAllB;
+      // Ground contact line: interpolated between neighbouring soles, clamped to the outer soles
+      float base = groundY;
+      if (cnt >= 2.0) {
+        if (fx <= firstX) base = firstY;
+        else if (fx >= lastX) base = lastY;
+        else if (prevX == fx || nextX < 0.0) base = prevY;
+        else base = prevY + (nextY - prevY) * (fx - prevX) / (nextX - prevX);
+      }
+      base = max(base, 0.0);
+      bool valid = maxAllB >= 0.0;
+      if (int(gl_FragCoord.y) == 0) {
+        gl_FragColor = vec4(floor(base) / 255.0, fract(base), (bot(x) + 1.0) / 255.0, valid && sole ? 1.0 : 0.0);
+      } else {
+        gl_FragColor = vec4(floor(footCenterX) / 255.0, fract(footCenterX), (maxAllB + 1.0) / 255.0, 1.0);
+      }
+    }`;
+
+  const SCATTER_VERT = `${SHADOW_COMMON}
+    uniform sampler2D tParam;
+    uniform vec2 uSun;
+    uniform vec2 uPivot;
+    uniform vec2 uOff;
+    uniform vec2 uRegion;
+    uniform vec2 uDens;
+    varying float vDens;
+    varying float vAo;
+    void hide() { gl_Position = vec4(2.0, 2.0, 2.0, 1.0); gl_PointSize = 1.0; vDens = 0.0; vAo = 0.0; }
+    void main() {
+      vAo = 0.0;
+      vec4 g = texelFetch(tParam, ivec2(0, 1), 0);
+      float maxAllB = byteAt(g.b) - 1.0;
+      if (gl_VertexID >= CELL_W * CELL_H) {
+        // Tight contact ambient-occlusion ellipse (9x5) under a grounded boot sole
+        int x = gl_VertexID - CELL_W * CELL_H;
+        vec4 c = texelFetch(tParam, ivec2(x, 0), 0);
+        if (c.a < 0.5) { hide(); return; }
+        vec2 at = vec2(float(x) - uPivot.x + uOff.x, byteAt(c.b) - 1.0 - uPivot.y + uOff.y);
+        gl_PointSize = 9.0;
+        gl_Position = vec4((at.x + 0.5) / uDens.x * 2.0 - 1.0, (uDens.y - at.y - 0.5) / uDens.y * 2.0 - 1.0, 0.0, 1.0);
+        vDens = 0.0;
+        vAo = 1.0;
+        return;
+      }
+      int x = gl_VertexID % CELL_W;
+      int y = gl_VertexID / CELL_W;
+      if (maxAllB < 0.0 || cellA(x, y) <= 42.0) { hide(); return; }
+      vec4 c = texelFetch(tParam, ivec2(x, 0), 0);
+      float gY = byteAt(c.r) + c.g;
+      float botX = byteAt(c.b) - 1.0;
+      float footCenterX = byteAt(g.r) + g.g;
+      float fx = float(x);
+      float ht = max(0.0, gY - float(y));
+      bool boot = abs(fx - uPivot.x) <= 18.0 && botX >= maxAllB - 4.0 && ht <= 6.0;
+      float spread = boot ? 1.0 : min(0.82, 0.35 + (ht / 52.0) * 0.47);
+      float relX = boot ? fx - uPivot.x : footCenterX - uPivot.x + (fx - footCenterX) * spread;
+      float sx = floor(relX + ht * uSun.x + 0.5) + uOff.x;
+      float sy = floor(gY - uPivot.y + ht * uSun.y + 0.5) + uOff.y;
+      if (sx < 0.0 || sx + 1.0 >= uRegion.x || sy < 0.0 || sy + 1.0 >= uRegion.y) { hide(); return; }
+      // Darkest right at the boot contact (ht=0), softly attenuating toward the head/cape tip; 2x2 splat
+      vDens = min(240.0, floor(240.0 * max(0.28, 1.0 - (ht / 85.0) * 0.68) + 0.5)) / 255.0;
+      gl_PointSize = 2.0;
+      gl_Position = vec4((sx + 1.0) / uDens.x * 2.0 - 1.0, (uDens.y - sy - 1.0) / uDens.y * 2.0 - 1.0, 0.0, 1.0);
+    }`;
+
+  const SCATTER_FRAG = `
+    uniform vec2 uRegion;
+    uniform vec2 uDens;
+    varying float vDens;
+    varying float vAo;
+    void main() {
+      if (floor(gl_FragCoord.x) >= uRegion.x || uDens.y - 1.0 - floor(gl_FragCoord.y) >= uRegion.y) discard;
+      if (vAo > 0.5) {
+        float dx = floor(gl_PointCoord.x * 9.0) - 4.0;
+        float dy = floor(gl_PointCoord.y * 9.0) - 4.0;
+        float d2 = (dx * dx) / 16.0 + (dy * dy) / 4.0;
+        if (abs(dy) > 2.0 || d2 > 1.0) discard;
+        gl_FragColor = vec4(floor(255.0 * (1.0 - d2 * 0.45) + 0.5) / 255.0, 0.0, 0.0, 1.0);
+        return;
+      }
+      gl_FragColor = vec4(vDens, 0.0, 0.0, 1.0);
+    }`;
+
+  const FEATHER_FRAG = `
+    uniform sampler2D tDens;
+    uniform vec2 uRegion;
+    uniform float uTop;
+    float dens(int x, int y) { return floor(texelFetch(tDens, ivec2(x, ${SHADOW_H} - 1 - y), 0).r * 255.0 + 0.5); }
+    void main() {
+      int x = int(gl_FragCoord.x);
+      int y = int(uTop - 1.0 - floor(gl_FragCoord.y));
+      if (x < 1 || float(x) > uRegion.x - 2.0 || y < 1 || float(y) > uRegion.y - 2.0) { gl_FragColor = vec4(0.0); return; }
+      float blurred = floor((dens(x, y) * 4.0 + dens(x - 1, y) + dens(x + 1, y) + dens(x, y - 1) + dens(x, y + 1)) / 8.0);
+      gl_FragColor = blurred > 14.0 ? vec4(20.0, 28.0, 36.0, min(255.0, blurred)) / 255.0 : vec4(0.0);
+    }`;
+
+  function createSpritePipeline() {
+    srcTex = new THREE.FramebufferTexture(W, H);
+    const material = (fragmentShader: string, uniforms: Record<string, { value: any }>, vertexShader?: string) =>
+      new THREE.ShaderMaterial({
+        uniforms,
+        vertexShader: vertexShader ?? `void main() { gl_Position = vec4(position.xy, 0.0, 1.0); }`,
+        fragmentShader,
+        depthTest: false,
+        depthWrite: false,
+        blending: THREE.NoBlending,
+        toneMapped: false
+      });
+    const sceneOf = (obj: any) => {
+      obj.frustumCulled = false;
+      const sc = new THREE.Scene();
+      sc.add(obj);
+      return sc;
+    };
+    const quad = (fragmentShader: string, uniforms: Record<string, { value: any }>) =>
+      sceneOf(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), material(fragmentShader, uniforms)));
+    const target = (w: number, h: number) =>
+      new THREE.WebGLRenderTarget(w, h, {
+        depthBuffer: false,
+        minFilter: THREE.NearestFilter,
+        magFilter: THREE.NearestFilter
+      });
+
+    postTint = new THREE.Vector3(1, 1, 1);
+    postScene = quad(POST_FRAG, {
+      tSrc: { value: srcTex },
+      uSize: { value: new THREE.Vector2(W, H) },
+      uOrigin: { value: new THREE.Vector2(0, SHADOW_H) },
+      uTint: { value: postTint }
+    });
+
+    botRT = target(CELL_W, 1);
+    paramRT = target(CELL_W, 2);
+    densRT = target(SHADOW_W, SHADOW_H);
+    shadowU = {
+      tSrc: { value: srcTex },
+      tBot: { value: botRT.texture },
+      tParam: { value: paramRT.texture },
+      tDens: { value: densRT.texture },
+      uPivotX: { value: 57 },
+      uPivot: { value: new THREE.Vector2(57, 101) },
+      uSun: { value: new THREE.Vector2() },
+      uOff: { value: new THREE.Vector2() },
+      uRegion: { value: new THREE.Vector2() },
+      uDens: { value: new THREE.Vector2(SHADOW_W, SHADOW_H) },
+      uTop: { value: SHADOW_H }
+    };
+    botScene = quad(BOT_FRAG, shadowU);
+    paramScene = quad(PARAM_FRAG, shadowU);
+    featherScene = quad(FEATHER_FRAG, shadowU);
+    const points = new THREE.BufferGeometry();
+    points.setAttribute('position', new THREE.BufferAttribute(new Float32Array((CELL_W * CELL_H + CELL_W) * 3), 3));
+    const scatterMat = material(SCATTER_FRAG, shadowU, SCATTER_VERT);
+    scatterMat.blending = THREE.CustomBlending;
+    scatterMat.blendEquation = THREE.MaxEquation;
+    scatterMat.blendEquationAlpha = THREE.MaxEquation;
+    scatterScene = sceneOf(new THREE.Points(points, scatterMat));
+  }
+
+  function applyHandPaintedSpritePass(tint: string, night: number): void {
     let tintR = 1;
     let tintG = 1;
     let tintB = 1;
@@ -452,112 +552,9 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
       tintG = 1 - night * 0.10;
       tintB = 1 - night * 0.04;
     }
-
-    // Warm dark-fantasy ink color (#140d0a)
-    const INK_R = 20;
-    const INK_G = 13;
-    const INK_B = 10;
-
-    outU32.fill(0);
-
-    for (let y = 1; y < H - 1; y++) {
-      const row = y * W;
-      // Vertical foot-to-head gradient (slightly darker near boots y > 165, brighter at chest/head)
-      const vGrad = y > 155 ? Math.max(0.76, 1 - (y - 155) * 0.0055) : 1.03;
-      const mulR = tintR * vGrad;
-      const mulG = tintG * vGrad;
-      const mulB = tintB * vGrad;
-
-      for (let x = 1; x < W - 1; x++) {
-        const idx = row + x;
-        const p = idx * 4;
-        const a = workPixels[p + 3];
-
-        if (a > 28) {
-          let r = workPixels[p];
-          let g = workPixels[p + 1];
-          let b = workPixels[p + 2];
-
-          // Check 4-connected neighbors for silhouette boundary or internal crease
-          const aL = workPixels[p - 4 + 3];
-          const aR = workPixels[p + 4 + 3];
-          const aU = workPixels[p - W * 4 + 3];
-          const aD = workPixels[p + W * 4 + 3];
-          const minNeighborA = Math.min(aL, aR, aU, aD);
-
-          if (minNeighborA < 80) {
-            // Inner edge of silhouette: blend strongly toward dark ink for crisp 2D linework
-            const inkMix = Math.min(0.82, ((80 - minNeighborA) / 80) * 0.78);
-            r = r * (1 - inkMix) + INK_R * inkMix;
-            g = g * (1 - inkMix) + INK_G * inkMix;
-            b = b * (1 - inkMix) + INK_B * inkMix;
-          } else if (y > 68) {
-            // Subtle internal crease line detection below face/collar (avoids dark ink speckles on face/eyes)
-            const lumC = r * 0.3 + g * 0.59 + b * 0.11;
-            const lumR = workPixels[p + 4] * 0.3 + workPixels[p + 5] * 0.59 + workPixels[p + 6] * 0.11;
-            const lumD =
-              workPixels[p + W * 4] * 0.3 +
-              workPixels[p + W * 4 + 1] * 0.59 +
-              workPixels[p + W * 4 + 2] * 0.11;
-            const diff = Math.max(Math.abs(lumC - lumR), Math.abs(lumC - lumD));
-            if (diff > 56) {
-              const crease = Math.min(0.22, (diff - 56) * 0.0045);
-              r = r * (1 - crease) + INK_R * crease;
-              g = g * (1 - crease) + INK_G * crease;
-              b = b * (1 - crease) + INK_B * crease;
-            }
-          }
-
-          outPixels[p] = Math.min(255, Math.round(r * mulR));
-          outPixels[p + 1] = Math.min(255, Math.round(g * mulG));
-          outPixels[p + 2] = Math.min(255, Math.round(b * mulB));
-          outPixels[p + 3] = Math.min(255, Math.round(a * 1.15));
-        } else {
-          // Transparent pixel: check 8-neighborhood for outer dark-ink silhouette outline
-          const aL = workPixels[p - 4 + 3];
-          const aR = workPixels[p + 4 + 3];
-          const aU = workPixels[p - W * 4 + 3];
-          const aD = workPixels[p + W * 4 + 3];
-          const max4 = Math.max(aL, aR, aU, aD);
-          if (max4 > 42) {
-            const outlineAlpha = Math.min(235, Math.round(max4 * 0.92));
-            outPixels[p] = INK_R;
-            outPixels[p + 1] = INK_G;
-            outPixels[p + 2] = INK_B;
-            outPixels[p + 3] = outlineAlpha;
-          } else {
-            const aUL = workPixels[p - W * 4 - 4 + 3];
-            const aUR = workPixels[p - W * 4 + 4 + 3];
-            const aDL = workPixels[p + W * 4 - 4 + 3];
-            const aDR = workPixels[p + W * 4 + 4 + 3];
-            const maxDiag = Math.max(aUL, aUR, aDL, aDR);
-            if (maxDiag > 90) {
-              outPixels[p] = INK_R;
-              outPixels[p + 1] = INK_G;
-              outPixels[p + 2] = INK_B;
-              outPixels[p + 3] = Math.min(150, Math.round(maxDiag * 0.52));
-            }
-          }
-        }
-      }
-    }
-
-    outCtx.putImageData(outImgData, 0, 0);
-
-    // Downsample alpha to 114x103 `cellAlpha` for exact foot-contact shadow projection
-    for (let cy = 0; cy < CELL_H; cy++) {
-      const sy0 = cy * SCALE * W;
-      const sy1 = (cy * SCALE + 1) * W;
-      const cRow = cy * CELL_W;
-      for (let cx = 0; cx < CELL_W; cx++) {
-        const sx = cx * SCALE;
-        const a0 = workPixels[(sy0 + sx) * 4 + 3];
-        const a1 = workPixels[(sy0 + sx + 1) * 4 + 3];
-        const a2 = workPixels[(sy1 + sx) * 4 + 3];
-        const a3 = workPixels[(sy1 + sx + 1) * 4 + 3];
-        cellAlpha[cRow + cx] = Math.max(a0, a1, a2, a3);
-      }
-    }
+    postTint.set(tintR, tintG, tintB);
+    renderer.setViewport(0, SHADOW_H, W, H);
+    renderer.render(postScene, orthoCam);
   }
 
   /**
@@ -568,181 +565,36 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
   function renderFootAnchoredShadow(
     s: Sun,
     cell: { w: number; h: number; pivot: { x: number; y: number } }
-  ): ShadowDrawResult | null {
+  ): ShadowDrawResult {
     const cw = CELL_W;
-    const ch = CELL_H;
-    const pivot = cell.pivot;
-
     // Even at night (s.alpha === 0), cast a subtle moonlight/torch ground shadow so the hero is grounded
     const hasSun = Boolean(s && s.alpha > 0.02);
     const sdx = hasSun ? s.dx * 0.58 : 0.28;
     const sdy = hasSun ? s.dy * 0.58 : 0.22;
-
-    botCol.fill(-1);
-    let maxAllB = -1;
-
-    for (let x = 0; x < cw; x++) {
-      for (let y = ch - 1; y >= 0; y--) {
-        if (cellAlpha[y * cw + x] > 42) {
-          botCol[x] = y;
-          if (y > maxAllB) maxAllB = y;
-          break;
-        }
-      }
-    }
-
-    if (maxAllB < 0) return null;
-
-    // Identify ONLY the grounded boot soles (within 4px of the lowest point and within the central foot stance)
-    // so flying capes, coat tails, and lifted legs project onto the ground plane rather than anchoring in mid-air!
-    const footSoleThreshold = maxAllB - 4;
-    const stanceHalfWidth = 18;
-    const soleCols: [number, number][] = [];
-    let sumSoleX = 0;
-    let sumSoleY = 0;
-
-    for (let x = 0; x < cw; x++) {
-      if (Math.abs(x - pivot.x) <= stanceHalfWidth && botCol[x] >= footSoleThreshold) {
-        soleCols.push([x, botCol[x]]);
-        sumSoleX += x;
-        sumSoleY += botCol[x];
-      }
-    }
-
-    if (soleCols.length === 0) {
-      for (let x = 0; x < cw; x++) {
-        if (botCol[x] >= footSoleThreshold) {
-          soleCols.push([x, botCol[x]]);
-          sumSoleX += x;
-          sumSoleY += botCol[x];
-        }
-      }
-    }
-
-    const footCenterX = soleCols.length > 0 ? sumSoleX / soleCols.length : pivot.x;
-    const groundY = soleCols.length > 0 ? sumSoleY / soleCols.length : maxAllB;
-
-    // Smooth ground contact height across the stance between left and right boots, clamped to groundY outside boots
-    baseCol.fill(groundY);
-    if (soleCols.length >= 2) {
-      const firstX = soleCols[0][0];
-      const firstY = soleCols[0][1];
-      const lastX = soleCols[soleCols.length - 1][0];
-      const lastY = soleCols[soleCols.length - 1][1];
-      for (let x = 0; x <= firstX; x++) baseCol[x] = firstY;
-      for (let i = 0; i < soleCols.length - 1; i++) {
-        const [x0, y0] = soleCols[i];
-        const [x1, y1] = soleCols[i + 1];
-        for (let x = x0; x <= x1; x++) {
-          baseCol[x] = y0 + ((y1 - y0) * (x - x0)) / (x1 - x0 || 1);
-        }
-      }
-      for (let x = lastX; x < cw; x++) baseCol[x] = lastY;
-    }
-
     const pad = 16;
-    const reachH = ch + 16;
+    const reachH = CELL_H + 16;
     const ox = Math.ceil(cw * 0.65 + (sdx < 0 ? reachH * -sdx : 0) + pad);
     const oy = Math.ceil(cw * 0.5 + (sdy < 0 ? reachH * -sdy : 0) + pad);
-    const sw = Math.ceil(ox + cw * 0.65 + (sdx > 0 ? reachH * sdx : 0) + pad);
-    const sh = Math.ceil(oy + cw * 0.5 + (sdy > 0 ? reachH * sdy : 0) + pad);
+    const sw = Math.min(SHADOW_W, Math.ceil(ox + cw * 0.65 + (sdx > 0 ? reachH * sdx : 0) + pad));
+    const sh = Math.min(SHADOW_H, Math.ceil(oy + cw * 0.5 + (sdy > 0 ? reachH * sdy : 0) + pad));
 
-    if (shadowCanvas.width < sw || shadowCanvas.height < sh) {
-      shadowCanvas.width = Math.max(shadowCanvas.width, sw);
-      shadowCanvas.height = Math.max(shadowCanvas.height, sh);
-      shadowImgData = shadowCtx.createImageData(shadowCanvas.width, shadowCanvas.height);
-      shadowU32 = new Uint32Array(shadowImgData.data.buffer);
-      shadowDensity = new Uint8Array(shadowCanvas.width * shadowCanvas.height);
-    }
+    shadowU.uPivotX.value = cell.pivot.x;
+    shadowU.uPivot.value.set(cell.pivot.x, cell.pivot.y);
+    shadowU.uSun.value.set(sdx, sdy);
+    shadowU.uOff.value.set(ox, oy);
+    shadowU.uRegion.value.set(sw, sh);
 
-    const stride = shadowCanvas.width;
-    for (let y = 0; y < sh; y++) {
-      const rowOff = y * stride;
-      shadowU32.fill(0, rowOff, rowOff + sw);
-      shadowDensity.fill(0, rowOff, rowOff + sw);
-    }
-
-    // 1. Project every opaque character pixel onto the ground plane starting from the grounded boot soles:
-    //    - On a grounded boot (y === baseCol[x]), ht === 0 -> shadow pixel is at (x - pivot.x, baseCol[x] - pivot.y),
-    //      touching the exact boot pixels with 0px gap!
-    //    - For upper body / cape / coat tails (ht > 0), horizontal spread (x - footCenterX) is softly tapered
-    //      near the legs and fans out on the ground along (ht * sdx, ht * sdy).
-    for (let y = 0; y < ch; y++) {
-      const row = y * cw;
-      for (let x = 0; x < cw; x++) {
-        if (cellAlpha[row + x] <= 42) continue;
-
-        const gY = baseCol[x];
-        const ht = Math.max(0, gY - y);
-
-        const isGroundedBoot =
-          Math.abs(x - pivot.x) <= stanceHalfWidth && botCol[x] >= footSoleThreshold && ht <= 6;
-        const spreadScale = isGroundedBoot
-          ? 1.0
-          : Math.min(0.82, 0.35 + (ht / 52) * 0.47);
-        const relX = isGroundedBoot
-          ? x - pivot.x
-          : footCenterX - pivot.x + (x - footCenterX) * spreadScale;
-
-        const sx = Math.round(relX + ht * sdx) + ox;
-        const sy = Math.round(gY - pivot.y + ht * sdy) + oy;
-
-        // Darkest right at the boot contact (ht=0), softly attenuating toward the head/cape tip
-        const atten = Math.max(0.28, 1 - (ht / 85) * 0.68);
-        const dens = Math.min(240, Math.round(240 * atten));
-
-        if (sx >= 0 && sx + 1 < sw && sy >= 0 && sy + 1 < sh) {
-          const idx = sy * stride + sx;
-          if (dens > shadowDensity[idx]) shadowDensity[idx] = dens;
-          if (dens > shadowDensity[idx + 1]) shadowDensity[idx + 1] = dens;
-          if (dens > shadowDensity[idx + stride]) shadowDensity[idx + stride] = dens;
-          if (dens > shadowDensity[idx + stride + 1]) shadowDensity[idx + stride + 1] = dens;
-        }
-      }
-    }
-
-    // 2. Tight contact ambient-occlusion ellipse directly under ONLY the grounded boot soles
-    for (const [fx, fy] of soleCols) {
-      const cx = fx - pivot.x + ox;
-      const cy = fy - pivot.y + oy;
-      for (let dy = -2; dy <= 2; dy++) {
-        const py = cy + dy;
-        if (py < 0 || py >= sh) continue;
-        for (let dx = -4; dx <= 4; dx++) {
-          const px = cx + dx;
-          if (px < 0 || px >= sw) continue;
-          const d2 = (dx * dx) / 16 + (dy * dy) / 4;
-          if (d2 <= 1) {
-            const ao = Math.round(255 * (1 - d2 * 0.45));
-            const idx = py * stride + px;
-            if (ao > shadowDensity[idx]) shadowDensity[idx] = ao;
-          }
-        }
-      }
-    }
-
-    // 3. Soft 3x3 feathering into warm dark-fantasy ground shadow (#141c24)
-    for (let y = 1; y < sh - 1; y++) {
-      const row = y * stride;
-      for (let x = 1; x < sw - 1; x++) {
-        const idx = row + x;
-        const c0 = shadowDensity[idx];
-        const sum =
-          c0 * 4 +
-          shadowDensity[idx - 1] +
-          shadowDensity[idx + 1] +
-          shadowDensity[idx - stride] +
-          shadowDensity[idx + stride];
-        const blurred = sum >> 3;
-        if (blurred > 14) {
-          const a = Math.min(255, blurred);
-          shadowU32[idx] = (a << 24) | 0x00241c14;
-        }
-      }
-    }
-
-    shadowCtx.putImageData(shadowImgData, 0, 0, 0, 0, sw, sh);
-    return { canvas: shadowCanvas, ox, oy, sw, sh };
+    renderer.setRenderTarget(botRT);
+    renderer.render(botScene, orthoCam);
+    renderer.setRenderTarget(paramRT);
+    renderer.render(paramScene, orthoCam);
+    renderer.setRenderTarget(densRT);
+    renderer.clear(true, false, false);
+    renderer.render(scatterScene, orthoCam);
+    renderer.setRenderTarget(null);
+    renderer.setViewport(0, SHADOW_H - sh, sw, sh);
+    renderer.render(featherScene, orthoCam);
+    return { canvas: glCanvas, sx: 0, sy: H, ox, oy, sw, sh };
   }
 
   function loadHeroModel(loader: any, heroId: string) {
@@ -864,12 +716,15 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
         preserveDrawingBuffer: true,
         powerPreference: 'high-performance'
       });
-      renderer.setSize(W, H, false);
+      renderer.setSize(CANVAS_W, CANVAS_H, false);
       renderer.setClearColor(0x000000, 0);
       renderer.autoClear = false;
       renderer.outputColorSpace = THREE.SRGBColorSpace;
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
       renderer.toneMappingExposure = 1.28;
+
+      createSpritePipeline();
+      copyAt = new THREE.Vector2(0, SHADOW_H);
 
       scene = new THREE.Scene();
 
@@ -920,8 +775,7 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
   })();
 
   sharedInstance = {
-    canvas: outCanvas,
-    shadowCanvas,
+    canvas: glCanvas,
     style,
     isHeroReady(heroId: string) {
       ensureHeroModel(heroId);
@@ -1020,17 +874,19 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
       }
 
       renderer.setClearColor(0x000000, 0);
+      renderer.setRenderTarget(null);
       renderer.clear(true, true, true);
+      renderer.setViewport(0, SHADOW_H, W, H);
       renderer.render(scene, orthoCam);
-
-      // Apply 2D Hand-Painted Sprite Pass (dark ink outline + internal creases + cellAlpha extraction)
-      applyHandPaintedSpritePass(glCanvas, tint, night);
+      renderer.copyFramebufferToTexture(srcTex, copyAt);
 
       // Project realistic ground shadow anchored directly at the boots (ht = 0 at y = botCol[x])
-      const shadow =
-        sun && cell ? renderFootAnchoredShadow(sun, cell) : null;
+      const shadow = sun && cell ? renderFootAnchoredShadow(sun, cell) : null;
 
-      return { sprite: outCanvas, shadow, activeClip: entry.activeClip };
+      // Apply 2D Hand-Painted Sprite Pass (dark ink outline + internal creases) over the raw 3D pass
+      applyHandPaintedSpritePass(tint, night);
+
+      return { sprite: glCanvas, spriteW: W, spriteH: H, shadow, activeClip: entry.activeClip };
     }
   };
 

@@ -8,7 +8,10 @@ export type TracelogPhaseName =
  | 'encountersStep'
  | 'encountersRender'
  | 'pixiRender'
- | 'net';
+ | 'net'
+ // Sub-phases of encountersRender (already inside its time, so never added to the frame sum)
+ | 'hero3d'
+ | 'vfx';
 
 export type TracelogReason = 'sustained_low_fps' | 'frame_spike' | 'manual';
 
@@ -21,6 +24,8 @@ export interface TracelogPhaseBreakdown {
  pixiRenderMs: number;
  netMs: number;
  unaccountedMs: number;
+ hero3dMs?: number;
+ vfxMs?: number;
 }
 
 export interface TracelogFrameSample {
@@ -34,6 +39,8 @@ export interface TracelogFrameSample {
  encountersRenderMs?: number;
  pixiRenderMs?: number;
  netMs?: number;
+ hero3dMs?: number;
+ vfxMs?: number;
  foesRendered?: number;
  particles?: number;
  surfaceRepainted?: boolean;
@@ -104,6 +111,7 @@ export interface TracelogEntry {
   surfacePaints: number;
   lightPaints: number;
   shadowPaints: number;
+ particleBudget?: number;
  };
  frames: TracelogFrameSample[];
  longTasks?: TracelogLongTask[];
@@ -128,6 +136,8 @@ const currentFramePhases: Record<TracelogPhaseName, number> = {
  encountersRender: 0,
  pixiRender: 0,
  net: 0,
+ hero3d: 0,
+ vfx: 0,
 };
 
 export function recordTracelogPhase(phase: TracelogPhaseName, durationMs: number): void {
@@ -156,6 +166,8 @@ function resetFramePhases(): Record<TracelogPhaseName, number> {
  currentFramePhases.encountersRender = 0;
  currentFramePhases.pixiRender = 0;
  currentFramePhases.net = 0;
+ currentFramePhases.hero3d = 0;
+ currentFramePhases.vfx = 0;
  return snap;
 }
 
@@ -350,6 +362,8 @@ export function startFpsTracelog(opts: FpsTracelogOptions) {
    pixiRenderMs: 0,
    netMs: 0,
    unaccountedMs: 0,
+   hero3dMs: 0,
+   vfxMs: 0,
   };
   const maxPhases: TracelogPhaseBreakdown = {...sumPhases};
 
@@ -361,6 +375,8 @@ export function startFpsTracelog(opts: FpsTracelogOptions) {
    const er = s.encountersRenderMs || 0;
    const pr = s.pixiRenderMs || 0;
    const nt = s.netMs || 0;
+   const h3 = s.hero3dMs || 0;
+   const fx = s.vfxMs || 0;
    const accounted = wd + es + er + pr + nt;
    const unacc = Math.max(0, s.dtMs - accounted);
 
@@ -372,6 +388,8 @@ export function startFpsTracelog(opts: FpsTracelogOptions) {
    sumPhases.pixiRenderMs += pr;
    sumPhases.netMs += nt;
    sumPhases.unaccountedMs += unacc;
+   sumPhases.hero3dMs! += h3;
+   sumPhases.vfxMs! += fx;
 
    if (wd > maxPhases.worldDrawMs) maxPhases.worldDrawMs = wd;
    if (wp > maxPhases.worldPaintMs) maxPhases.worldPaintMs = wp;
@@ -381,6 +399,8 @@ export function startFpsTracelog(opts: FpsTracelogOptions) {
    if (pr > maxPhases.pixiRenderMs) maxPhases.pixiRenderMs = pr;
    if (nt > maxPhases.netMs) maxPhases.netMs = nt;
    if (unacc > maxPhases.unaccountedMs) maxPhases.unaccountedMs = unacc;
+   if (h3 > maxPhases.hero3dMs!) maxPhases.hero3dMs = h3;
+   if (fx > maxPhases.vfxMs!) maxPhases.vfxMs = fx;
   }
 
   const phasesAvg: TracelogPhaseBreakdown = {
@@ -392,6 +412,8 @@ export function startFpsTracelog(opts: FpsTracelogOptions) {
    pixiRenderMs: round2(sumPhases.pixiRenderMs / n),
    netMs: round2(sumPhases.netMs / n),
    unaccountedMs: round2(sumPhases.unaccountedMs / n),
+   hero3dMs: round2(sumPhases.hero3dMs! / n),
+   vfxMs: round2(sumPhases.vfxMs! / n),
   };
   const phasesMaxRounded: TracelogPhaseBreakdown = {
    worldDrawMs: round2(maxPhases.worldDrawMs),
@@ -402,6 +424,8 @@ export function startFpsTracelog(opts: FpsTracelogOptions) {
    pixiRenderMs: round2(maxPhases.pixiRenderMs),
    netMs: round2(maxPhases.netMs),
    unaccountedMs: round2(maxPhases.unaccountedMs),
+   hero3dMs: round2(maxPhases.hero3dMs!),
+   vfxMs: round2(maxPhases.vfxMs!),
   };
 
   const recentStart = samples[0]?.t ?? 0;
@@ -459,6 +483,7 @@ export function startFpsTracelog(opts: FpsTracelogOptions) {
    foesTotal: coopActive ? latest?.enemies?.length ?? foesList.length : foesList.length,
    foesRendered: foesOnScreen,
    particles: Number(vfxSnap?.fx?.particles || 0),
+   particleBudget: Number(vfxSnap?.fx?.particleBudget || 0) || undefined,
    liveEffects: Number(vfxSnap?.fx?.live || 0),
    activeFloats: Array.isArray(vfxSnap?.activeFloats) ? vfxSnap.activeFloats.length : 0,
    projectiles: Array.isArray(vfxSnap?.activeProjectiles) ? vfxSnap.activeProjectiles.length : 0,
@@ -560,6 +585,8 @@ export function startFpsTracelog(opts: FpsTracelogOptions) {
    encountersRenderMs: phases.encountersRender > 0.05 ? round2(phases.encountersRender) : undefined,
    pixiRenderMs: phases.pixiRender > 0.05 ? round2(phases.pixiRender) : undefined,
    netMs: phases.net > 0.05 ? round2(phases.net) : undefined,
+   hero3dMs: phases.hero3d > 0.05 ? round2(phases.hero3d) : undefined,
+   vfxMs: phases.vfx > 0.05 ? round2(phases.vfx) : undefined,
    foesRendered: foesRendered || undefined,
    particles: particles || undefined,
    surfaceRepainted: repainted || undefined,
@@ -673,7 +700,7 @@ export function startFpsTracelog(opts: FpsTracelogOptions) {
     pushSample(
      tCursor,
      16.6,
-     {worldDraw: 1.2, worldPaint: 0, shadowCast: 0, encountersStep: 1.5, encountersRender: 2.1, pixiRender: 3.1, net: 0.3},
+     {worldDraw: 1.2, worldPaint: 0, shadowCast: 0, encountersStep: 1.5, encountersRender: 2.1, pixiRender: 3.1, net: 0.3, hero3d: 0, vfx: 0},
      false,
     );
    }
@@ -689,6 +716,8 @@ export function startFpsTracelog(opts: FpsTracelogOptions) {
      encountersRender: 3.2,
      pixiRender: 4.1,
      net: 0.4,
+     hero3d: 0,
+     vfx: 0,
     };
     phases[dominantPhase] = dominantMs;
     const isLast = i === count - 1;

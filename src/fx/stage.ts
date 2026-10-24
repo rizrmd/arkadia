@@ -319,6 +319,28 @@ export function createFxStage(o:FxStageOptions){
  let clock=0,ready=false,failed='',planes:Record<Plane,{app:Application|null;vfx:PixiVfxRenderer;root:Container}>|null=null;
  let Rect:typeof import('pixi.js').Rectangle|null=null;
  let played=0,peakParticles=0,idle=false,occludedParticles=0,minOcclusion=1,meanOcclusion=1,backEffects=0,frontEffects=0;
+ // Adaptive particle budget (game scene only). Every live particle costs CPU each frame (simulation, curl noise,
+ // colour sampling), and a level-8 fight peaks near 1000 of them, which alone held a mid-range phone at ~30 fps.
+ // When real frames run long the budget shrinks; while the live count is over it, decorative secondary bursts
+ // (hit sparks, impacts, cast/swing ground glows) are skipped. Casts, bolts, detonations, telegraphs, level-up and
+ // incoming-hit feedback always play, and a device that holds 60 fps never reaches the gate.
+ // ?fxbudget=N pins the budget (QA / benchmarks).
+ const BUDGET_MIN=260,BUDGET_MAX=1400,pinnedBudget=Number(new URLSearchParams(location.search).get('fxbudget'))||0;
+ let budget=pinnedBudget||BUDGET_MAX,frameEma=1000/60,lastFrameAt=0,budgetAt=0,budgetSkipped=0;
+ const secondary=(key:string)=>(key.startsWith('shared/hit.')&&key!=='shared/hit.incoming')||key.includes('.impact')||/\.(cast|swing)\.ground$/.test(key);
+ // Typical particles one instance of an effect peaks at, so a burst is refused before it overshoots the budget.
+ // Bursts granted since the last simulation step are reserved, so a skill hitting several foes in one frame cannot
+ // overshoot the budget before its particles exist.
+ const burstCost=new Map<string,number>();
+ let reserved=0;
+ const activeParticles=()=>planes?planes.world.vfx.stats.activeParticles+planes.ground.vfx.stats.activeParticles:0;
+ const overBudget=(key:string)=>{
+  if(!secondary(key))return false;
+  const cost=burstCost.get(key)??0;
+  if(activeParticles()+reserved+cost>budget)return true;
+  reserved+=cost;
+  return false;
+ };
  const textures=new Map<string,Texture>(),alphaTextures=new Map<string,Texture>();
  let deriveAlpha:typeof import('nixie-fx/pixi').createDerivedAlphaTexture|null=null;
  const textureProvider:PixiVfxTextureProvider={
@@ -426,6 +448,10 @@ export function createFxStage(o:FxStageOptions){
   const plane=planeOf(key),anchor:Anchor={u:at.u,v:at.v,h:at.h??0,yaw:at.yaw??0,scale:at.scale??1},proj=projection(plane,anchor),P=planes[plane];
   const seed=at.seed??((Math.random()*0x7fffffff)|0);
   if(o.host){
+   if(overBudget(key)){
+    played++;budgetSkipped++;
+    return {key,setLocal:()=>{},moveTo:()=>{},release:()=>{},get alive(){return false;}};
+   }
    const isHeroGround=key.startsWith('ember-warden/')||key.startsWith('rift-runner/')||key.includes('cleave')||key.includes('shockwave');
    if(!isHeroGround&&live.length>=16&&tilePoint(anchor.u,anchor.v).y>920&&(key.endsWith('.ground')||key.endsWith('.rim'))){
     played++;
@@ -441,7 +467,7 @@ export function createFxStage(o:FxStageOptions){
     oldest.anchor.u=anchor.u;oldest.anchor.v=anchor.v;oldest.anchor.h=anchor.h;oldest.anchor.yaw=anchor.yaw;oldest.anchor.scale=anchor.scale;
     oldest.follow=at.follow;
     oldest.inst.setProjection(proj);
-    if(oldest.age>=0.045||oldest.released){
+    if((oldest.age>=0.045||oldest.released)&&!overBudget(key)){
      oldest.age=0;oldest.released=false;
      oldest.inst.spawn({position:[0,0,0],seed,timeSeconds:clock});oldest.inst.root.visible=true;
     }
@@ -473,9 +499,20 @@ export function createFxStage(o:FxStageOptions){
  function frame(dt:number,render=true){
   if(!planes)return;
   clock+=dt;
+  if(render&&o.host&&!pinnedBudget){
+   const now=performance.now();
+   if(lastFrameAt)frameEma+=(Math.min(100,now-lastFrameAt)-frameEma)*.08;
+   lastFrameAt=now;
+   if(now-budgetAt>500){
+    budgetAt=now;
+    // Shrink only while particles are a plausible cause (slow loading frames with nothing playing do not count).
+    if(frameEma>20&&activeParticles()>120)budget=Math.max(BUDGET_MIN,Math.round(budget*.8));
+    else if(frameEma<17.5)budget=Math.min(BUDGET_MAX,Math.round(budget*1.1)+10);
+   }
+  }
   for(let i=pending.length-1;i>=0;i--)if(pending[i].at<=clock){const p=pending.splice(i,1)[0];p.run();}
-  for(const l of live){l.age+=dt;if(l.follow){const p=l.follow();l.anchor.u=p.u;l.anchor.v=p.v;}}
-  planes.ground.vfx.update(dt,{timeSeconds:clock});planes.world.vfx.update(dt,{timeSeconds:clock});
+  for(const l of live){l.age+=dt;if(l.follow){const p=l.follow();l.anchor.u=p.u;l.anchor.v=p.v;}const n=l.inst.stats.activeParticles,c=burstCost.get(l.key)??0;burstCost.set(l.key,n>c?n:c-(c-n)*.002);}
+  planes.ground.vfx.update(dt,{timeSeconds:clock});planes.world.vfx.update(dt,{timeSeconds:clock});reserved=0;
   const occFn=o.occlusionAt,heroPos=o.getHeroWorld?.(),layers=o.depthLayers,sc=view.scale||1;
   const hx=heroPos?.x??0,hy=heroPos?.y??0;
   if(Math.abs(hx-lastOccHx)>2||Math.abs(hy-lastOccHy)>2||heroOccCache.size>2048){
@@ -573,9 +610,9 @@ export function createFxStage(o:FxStageOptions){
   keys:()=>[...effects.keys()],
   place(x:number,y:number,scale:number){view.x=x;view.y=y;view.scale=scale;},
   play,frame,
-  particleCount:()=>planes?planes.world.vfx.stats.activeParticles+planes.ground.vfx.stats.activeParticles:0,
+  particleCount:activeParticles,
   liveCount:()=>live.length,
-  stats:()=>({ready,failed,effects:effects.size,live:live.length,played,peakParticles,
+  stats:()=>({ready,failed,effects:effects.size,live:live.length,played,peakParticles,particleBudget:budget,budgetSkipped,frameMs:+frameEma.toFixed(1),
    occludedParticles,minOcclusion,meanOcclusion,backEffects,frontEffects,
    particles:planes?planes.world.vfx.stats.activeParticles+planes.ground.vfx.stats.activeParticles:0,
    missing:planes?[...planes.world.vfx.stats.missingTextureRefs,...planes.ground.vfx.stats.missingTextureRefs].map(r=>r.path):[],

@@ -253,3 +253,46 @@ func TestTracelogDiskPersistence(t *testing.T) {
 	}
 	_ = os.RemoveAll(filepath.Join(t.TempDir(), "unused"))
 }
+
+// The 3D hero / NixieFX sub-phases and the adaptive particle budget survive ingestion and come back from GET.
+func TestTracelogRenderSubPhasesRoundTrip(t *testing.T) {
+	ts, _ := newTestServer(t)
+	payload := map[string]any{
+		"id":     "tl-subphases",
+		"reason": "sustained_low_fps",
+		"metrics": map[string]any{
+			"fps":       28.4,
+			"phasesAvg": map[string]any{"encountersRenderMs": 24.1, "hero3dMs": 1.6, "vfxMs": 11.2},
+			"phasesMax": map[string]any{"encountersRenderMs": 31.5, "hero3dMs": 2.4, "vfxMs": 16.8},
+		},
+		"scene":  map[string]any{"mode": "solo", "hero": "ember-warden", "particles": 412, "particleBudget": 330},
+		"frames": []map[string]any{{"t": 10, "dtMs": 35.2, "encountersRenderMs": 24.1, "hero3dMs": 1.6, "vfxMs": 11.2}},
+	}
+	b, _ := json.Marshal(payload)
+	res, err := http.Post(ts.URL+"/api/tracelogs", "application/json", bytes.NewReader(b))
+	if err != nil {
+		t.Fatal(err)
+	}
+	res.Body.Close()
+	if res.StatusCode != http.StatusCreated {
+		t.Fatalf("expected 201 Created, got %d", res.StatusCode)
+	}
+	got, err := http.Get(ts.URL + "/api/tracelogs/tl-subphases")
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer got.Body.Close()
+	var e TracelogEntry
+	if err := json.NewDecoder(got.Body).Decode(&e); err != nil {
+		t.Fatal(err)
+	}
+	if e.Metrics.PhasesAvg.Hero3DMs != 1.6 || e.Metrics.PhasesMax.VfxMs != 16.8 {
+		t.Fatalf("sub-phases lost: avg %+v max %+v", e.Metrics.PhasesAvg, e.Metrics.PhasesMax)
+	}
+	if e.Scene.ParticleBudget != 330 {
+		t.Fatalf("particleBudget lost: %d", e.Scene.ParticleBudget)
+	}
+	if len(e.Frames) != 1 || e.Frames[0].Hero3DMs != 1.6 || e.Frames[0].VfxMs != 11.2 {
+		t.Fatalf("frame sub-phases lost: %+v", e.Frames)
+	}
+}

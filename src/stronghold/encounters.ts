@@ -700,7 +700,7 @@ export async function createEncounters(o:{
     views.delete(f);
    }
   }
-  vfx.render();
+  measureTracelogPhase('vfx',vfx.render);
 
   // Hero overhead bar
   const s=at(hp.x,hp.y-liftAt(hp.x,hp.y)),ratio=Math.max(0,Math.min(1,h.hp/Math.max(1,maxHp))),inZone=inSafeZone(tileOf(h)),show=h.alive&&(ratio<.999||!inZone||run.xp>0||run.level>1);

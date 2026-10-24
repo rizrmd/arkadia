@@ -44,6 +44,9 @@ type TracelogPhaseBreakdown struct {
 	PixiRenderMs       float64 `json:"pixiRenderMs"`
 	NetMs              float64 `json:"netMs"`
 	UnaccountedMs      float64 `json:"unaccountedMs"`
+	// Sub-phases of EncountersRenderMs (the 3D hero pass and NixieFX), not added to the frame sum.
+	Hero3DMs float64 `json:"hero3dMs,omitempty"`
+	VfxMs    float64 `json:"vfxMs,omitempty"`
 }
 
 // TracelogMetrics summarizes the FPS drop window and identifies the primary bottleneck.
@@ -95,6 +98,8 @@ type TracelogScene struct {
 	SurfacePaints int     `json:"surfacePaints"`
 	LightPaints   int     `json:"lightPaints"`
 	ShadowPaints  int     `json:"shadowPaints"`
+	// Adaptive NixieFX particle budget at the time of the drop (shrinks on devices that cannot hold 60 fps).
+	ParticleBudget int `json:"particleBudget,omitempty"`
 }
 
 // TracelogFrameSample is a single animation frame sample leading up to and during the FPS drop.
@@ -109,6 +114,8 @@ type TracelogFrameSample struct {
 	EncountersRenderMs float64 `json:"encountersRenderMs,omitempty"`
 	PixiRenderMs       float64 `json:"pixiRenderMs,omitempty"`
 	NetMs              float64 `json:"netMs,omitempty"`
+	Hero3DMs           float64 `json:"hero3dMs,omitempty"`
+	VfxMs              float64 `json:"vfxMs,omitempty"`
 	FoesRendered       int     `json:"foesRendered,omitempty"`
 	Particles          int     `json:"particles,omitempty"`
 	SurfaceRepainted   bool    `json:"surfaceRepainted,omitempty"`
@@ -335,6 +342,8 @@ func (s *Server) postTracelog(w http.ResponseWriter, r *http.Request) {
 			f.EncountersRenderMs = cleanFloat(f.EncountersRenderMs)
 			f.PixiRenderMs = cleanFloat(f.PixiRenderMs)
 			f.NetMs = cleanFloat(f.NetMs)
+			f.Hero3DMs = cleanFloat(f.Hero3DMs)
+			f.VfxMs = cleanFloat(f.VfxMs)
 			sumDt += f.DtMs
 			if f.DtMs > maxDt {
 				maxDt = f.DtMs

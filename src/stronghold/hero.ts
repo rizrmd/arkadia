@@ -456,18 +456,18 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
   }
   const dirInput=o.direction();
   const isMovingNow=state==='move'||Math.hypot(dirInput.x,dirInput.y)>.05;
-  const res3d=active3d?r3d!.updateAndRender({heroId:hero.id,clip:pose?pose.clip:state,moving:isMovingNow,yaw:yaw3d,dt:lastDt,tint,night,sun:s,cell}):null;
+  const res3d=active3d?measureTracelogPhase('hero3d',()=>r3d!.updateAndRender({heroId:hero.id,clip:pose?pose.clip:state,moving:isMovingNow,yaw:yaw3d,dt:lastDt,tint,night,sun:s,cell})):null;
   if(res3d){
    if(res3d.shadow){
     const sh=res3d.shadow;
     c.save();
     c.globalAlpha=Math.max(.34,s.alpha);
     c.scale(DISPLAY,DISPLAY);
-    c.drawImage(sh.canvas,0,0,sh.sw,sh.sh,-sh.ox,-sh.oy,sh.sw,sh.sh);
+    c.drawImage(sh.canvas,sh.sx,sh.sy,sh.sw,sh.sh,-sh.ox,-sh.oy,sh.sw,sh.sh);
     c.restore();
    }
    c.save();c.scale(DISPLAY,DISPLAY);
-   c.drawImage(res3d.sprite,0,0,res3d.sprite.width,res3d.sprite.height,-pivot.x,-pivot.y,cell.w,cell.h);
+   c.drawImage(res3d.sprite,0,0,res3d.spriteW,res3d.spriteH,-pivot.x,-pivot.y,cell.w,cell.h);
    c.restore();
   }else if(fCan){
    drawFigureShadow(c,atlas,f,cell,s,dir);
