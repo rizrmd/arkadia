@@ -275,11 +275,12 @@ async function buildHeroGlb(hero) {
             const rx = x - cx;
             const rz = z - cz;
             const rLen = Math.hypot(rx, rz) || 1;
-            const push = 0.045 * skirtBand;
+            const push = 0.058 * skirtBand;
             x += (rx / rLen) * push;
             z += (rz / rLen) * push;
             if (z < cz) {
-              z -= 0.048 * skirtBand;
+              z -= 0.068 * skirtBand;
+              y += 0.022 * skirtBand;
             }
           }
 
@@ -375,15 +376,14 @@ async function buildHeroGlb(hero) {
               wHip = s3;
               tLeft = vPart === 1 ? 1.0 : 0.0;
             } else {
-              // Coat Skirt & upper hip transition: 0% Foot/Toe weight, continuous bell-skirt drape over wide stride
-              const s2 = smoothstep(0.34, 0.62, y);
-              const s3 = smoothstep(0.80, 0.94, y);
+              // Coat Skirt & upper hip transition: 0% Foot/Toe/Leg weight so the back seam never shears or pinches between scissoring legs!
+              const s3 = smoothstep(0.76, 0.94, y);
               wToe = 0;
               wFoot = 0;
-              wLeg = 0.62 * (1 - s2);
-              wUp = (1 - s3) - wLeg;
-              wHip = s3;
-              tLeft = 0.16 + 0.68 * smoothstep(-0.14, 0.11, x);
+              wLeg = 0;
+              wUp = 0.26 * (1 - s3);
+              wHip = 1 - wUp;
+              tLeft = 0.35 + 0.30 * smoothstep(-0.18, 0.18, x);
             }
             const tRight = 1 - tLeft;
 
@@ -520,11 +520,18 @@ async function buildHeroGlb(hero) {
     console.log(`[${hero.id}] Merged animation '${targetName}' (${channels.length} channels)`);
   }
 
-  // Helper to synthesize Ember Warden's biomechanical 'run' (25 frames = 24 intervals, 0.72s)
-  // and 'run_cast' (49 frames = 48 intervals = 2 full run cycles, 1.44s) directly on her rig.
-  function buildEmberRunClip(clipName, intervals, isCastingMode) {
-    const frameCount = intervals + 1; // Frame 0 (t=0.00s) and Frame N (t=N*0.03s) are identical for 0-gap looping
-    const dt = 0.03;
+  // Helper to build Ember Warden's mocap-driven 'run' (20 frames = 19 intervals, 0.63s),
+  // 'run_cast' (39 frames = 38 intervals = 2 full run cycles, 1.27s), and 'idle_cast' (49 frames = 48 intervals, 1.60s):
+  // - Lower body & pelvis in 'run'/'run_cast' use the true motion-captured running cycle from ember-warden-run.glb
+  //   (high-knee drive, ~90-deg recovery heel kick-up in mid-air, and 6.5cm flight bounce -> true 'lari', not 'jalan cepat').
+  // - Arms in 'run' use fluid, close-to-torso whip/follow-through kinematics ('luwes', 'ada animasi nya').
+  // - Casting arm in 'run_cast' & 'idle_cast' performs a 4-phase horizontal crescent / underhand arcane spell-weave
+  //   (Gather Across Chest -> Wide Side-Sweep Whip -> Low Hip Follow-Through -> Underhand Scoop) with a low elbow (never a straight-arm salute!).
+  function buildEmberActionClip(srcGlb, clipName, intervals, mode) {
+    const isIdleCast = mode === 'idle_cast';
+    const isCastingMode = mode === 'run_cast' || mode === 'idle_cast';
+    const frameCount = intervals + 1; // Frame 0 and Frame N are identical for 0-gap looping
+    const dt = 1 / 30;
     const times = new Float32Array(frameCount);
     for (let k = 0; k < frameCount; k++) {
       times[k] = k * dt;
@@ -552,6 +559,27 @@ async function buildHeroGlb(hero) {
     });
     const byName = new Map(threeNodes.map((o) => [o.name, o]));
 
+    const srcAnim = srcGlb.json.animations[0];
+    const mocapTracks = new Map();
+    for (const ch of srcAnim.channels) {
+      const bName = srcGlb.json.nodes[ch.target.node]?.name;
+      if (bName) {
+        mocapTracks.set(`${bName}:${ch.target.path}`, readFloat32Accessor(srcGlb, srcAnim.samplers[ch.sampler].output));
+      }
+    }
+    const getMocapQuat = (bName, fIdx) => {
+      const tr = mocapTracks.get(`${bName}:rotation`);
+      if (!tr) return bindQuats.get(bName).clone();
+      const idx = Math.min(tr.count - 1, fIdx) * 4;
+      return new THREE.Quaternion(tr.floats[idx], tr.floats[idx + 1], tr.floats[idx + 2], tr.floats[idx + 3]);
+    };
+    const getMocapTrans = (bName, fIdx) => {
+      const tr = mocapTracks.get(`${bName}:translation`);
+      if (!tr) return bindTrans.get(bName) || [0, 100, 0];
+      const idx = Math.min(tr.count - 1, fIdx) * 3;
+      return [tr.floats[idx], tr.floats[idx + 1], tr.floats[idx + 2]];
+    };
+
     const deg = (d) => (d * Math.PI) / 180;
     const setRelEuler = (name, rx, ry, rz, baseOverrideQ = null) => {
       const obj = byName.get(name);
@@ -562,7 +590,7 @@ async function buildHeroGlb(hero) {
 
     const orientBoneWorldY = (name, targetDirWorld, rollDeg = 0) => {
       const boneObj = byName.get(name);
-      boneObj.parent.updateMatrixWorld(true);
+      threeNodes[0].updateMatrixWorld(true);
       const parentWorldQ = new THREE.Quaternion();
       boneObj.parent.getWorldQuaternion(parentWorldQ);
       const bindLocalQ = bindQuats.get(name).clone();
@@ -576,6 +604,7 @@ async function buildHeroGlb(hero) {
         newWorldQ = rollQ.multiply(newWorldQ);
       }
       boneObj.quaternion.copy(parentWorldQ.clone().invert().multiply(newWorldQ));
+      threeNodes[0].updateMatrixWorld(true);
     };
 
     const trackedBones = [
@@ -605,12 +634,12 @@ async function buildHeroGlb(hero) {
 
     const rotTracks = new Map(trackedBones.map((b) => [b, new Float32Array(frameCount * 4)]));
     const hipsTransTrack = new Float32Array(frameCount * 3);
-    const symFootBase = new THREE.Quaternion(-0.365, 0, 0, 0.931).normalize();
     const baseHipsT = bindTrans.get('Hips') || [-1.51, 106.23, 7.12];
+    const mocapHips0 = getMocapTrans('Hips', 0);
 
     for (let k = 0; k < frameCount; k++) {
-      // 24 intervals per full two-step run stride
-      const th = (2 * Math.PI * (k % 24)) / 24;
+      const mFrame = isIdleCast ? k % intervals : k % 19;
+      const th = isIdleCast ? (2 * Math.PI * (k % intervals)) / intervals : (2 * Math.PI * mFrame) / 19;
       const castTh = (2 * Math.PI * (k % intervals)) / intervals;
 
       // Reset all nodes to bind pose before solving frame k
@@ -618,67 +647,142 @@ async function buildHeroGlb(hero) {
         byName.get(bName).quaternion.copy(bq);
       }
 
-      // 1. Pelvis (Hips) vertical rhythm (2 cycles per stride: lowest at mid-stance k=6,18, highest at wide flight k=0,12)
-      const hipsY = 100.5 + 3.2 * Math.cos(2 * th);
-      const hipsX = baseHipsT[0] + 0.7 * Math.sin(th);
-      const hipsZ = baseHipsT[2] + 1.2 * Math.sin(2 * th);
-      byName.get('Hips').position.set(hipsX, hipsY, hipsZ);
-      hipsTransTrack[k * 3] = hipsX;
-      hipsTransTrack[k * 3 + 1] = hipsY;
-      hipsTransTrack[k * 3 + 2] = hipsZ;
+      if (isIdleCast) {
+        // 1A. Idle Cast Lower Body & Pelvis: grounded combat-casting stance with subtle breathing/weight shift
+        const hipsX = baseHipsT[0] + 0.8 * Math.sin(castTh);
+        const hipsY = baseHipsT[1] - 1.2 + 1.1 * Math.cos(castTh);
+        const hipsZ = baseHipsT[2] + 0.9 * Math.sin(castTh - 0.4);
+        byName.get('Hips').position.set(hipsX, hipsY, hipsZ);
+        hipsTransTrack[k * 3] = hipsX;
+        hipsTransTrack[k * 3 + 1] = hipsY;
+        hipsTransTrack[k * 3 + 2] = hipsZ;
 
-      setRelEuler('Hips', 6.5 + 1.5 * Math.sin(2 * th), 7.5 * Math.cos(th), 3.0 * Math.sin(th));
+        setRelEuler('Hips', 2.0 * Math.sin(castTh), -6.0 * Math.cos(castTh), 1.5 * Math.sin(castTh));
+        const castYaw = -10.0 * Math.cos(castTh - 0.3);
+        setRelEuler('Spine02', 3.0 * Math.sin(castTh - 0.2), castYaw * 0.35, -1.5 * Math.sin(castTh));
+        setRelEuler('Spine01', 2.5 * Math.sin(castTh - 0.2), castYaw * 0.35, -1.2 * Math.sin(castTh));
+        setRelEuler('Spine', 2.0 * Math.sin(castTh - 0.2), castYaw * 0.30, 0);
+        setRelEuler('neck', -2.0 * Math.sin(castTh - 0.2), -castYaw * 0.45, 0);
+        setRelEuler('Head', -3.0 * Math.sin(castTh - 0.2), -castYaw * 0.55, 1.5 * Math.cos(castTh));
 
-      // 2. Spine & Head: dynamic forward run lean (~11 deg total) + counter-rotation opposing pelvis + level gaze
-      const castChestYaw = isCastingMode ? -5.0 - 2.5 * Math.sin(castTh) : 0;
-      setRelEuler('Spine02', 4.5 + 0.8 * Math.cos(2 * th), -3.2 * Math.cos(th) + castChestYaw * 0.3, -1.5 * Math.sin(th));
-      setRelEuler('Spine01', 3.8 + 0.6 * Math.cos(2 * th), -3.8 * Math.cos(th) + castChestYaw * 0.35, -1.2 * Math.sin(th));
-      setRelEuler('Spine', 2.5, -3.5 * Math.cos(th) + castChestYaw * 0.35, 0);
-      setRelEuler('neck', -3.5, 1.8 * Math.cos(th) - castChestYaw * 0.4, 0);
-      setRelEuler('Head', -6.5 - 0.8 * Math.cos(2 * th), 2.2 * Math.cos(th) - castChestYaw * 0.6, 1.0 * Math.sin(th));
+        for (const side of ['Left', 'Right']) {
+          for (const limb of ['UpLeg', 'Leg', 'Foot', 'ToeBase']) {
+            const bName = `${side}${limb}`;
+            byName.get(bName).quaternion.copy(getMocapQuat(bName, mFrame));
+          }
+        }
+      } else {
+        // 1B. Run & Run_Cast Pelvis (Hips), Spine & Lower Body from ember-warden-run.glb:
+        //     True running ('lari') with 6.5cm flight bounce, wide high-knee drive, and mid-air recovery heel kick-up
+        const mHipsT = getMocapTrans('Hips', mFrame);
+        const hipsX = baseHipsT[0] + (mHipsT[0] - mocapHips0[0]) * 0.35;
+        const hipsY = mHipsT[1] - 1.8;
+        const hipsZ = baseHipsT[2] + (mHipsT[2] - mocapHips0[2]) * 0.35;
+        byName.get('Hips').position.set(hipsX, hipsY, hipsZ);
+        hipsTransTrack[k * 3] = hipsX;
+        hipsTransTrack[k * 3 + 1] = hipsY;
+        hipsTransTrack[k * 3 + 2] = hipsZ;
 
-      // 3. Wide, dynamic Left & Right Leg running stride (-48 deg front reach to +26 deg rear push-off, / \ split)
-      const solveLeg = (side, psi) => {
-        const sign = side === 'Left' ? 1 : -1;
-        const hipPitch = -11 - 37 * Math.cos(psi) + 3 * Math.sin(psi);
-        const kneeBend = 20 - 10 * Math.cos(2 * psi) - 10 * Math.sin(psi);
-        const footPitch = -4 - 12 * Math.cos(psi - 0.25) + 6 * Math.sin(psi);
-        setRelEuler(`${side}UpLeg`, hipPitch, 0, sign * 1.5);
-        setRelEuler(`${side}Leg`, kneeBend, 0, 0);
-        setRelEuler(`${side}Foot`, footPitch, 0, 0, symFootBase);
-        setRelEuler(`${side}ToeBase`, Math.max(0, 7 * Math.sin(psi - 0.5)), 0, 0);
+        byName.get('Hips').quaternion.copy(getMocapQuat('Hips', mFrame));
+
+        const castYaw = isCastingMode ? deg(-8 * Math.cos(castTh - 0.3)) : 0;
+        for (const spBone of ['Spine02', 'Spine01', 'Spine']) {
+          const mq = getMocapQuat(spBone, mFrame);
+          const leanQ = new THREE.Quaternion().setFromEuler(new THREE.Euler(deg(1.8), castYaw * 0.35, 0, 'XYZ'));
+          byName.get(spBone).quaternion.copy(mq.multiply(leanQ));
+        }
+        for (const hdBone of ['neck', 'Head']) {
+          const mq = getMocapQuat(hdBone, mFrame);
+          const compQ = new THREE.Quaternion().setFromEuler(new THREE.Euler(deg(-2.2), -castYaw * 0.45, 0, 'XYZ'));
+          byName.get(hdBone).quaternion.copy(mq.multiply(compQ));
+        }
+
+        for (const side of ['Left', 'Right']) {
+          const bqUp = bindQuats.get(`${side}UpLeg`);
+          const mqUp = getMocapQuat(`${side}UpLeg`, mFrame);
+          byName.get(`${side}UpLeg`).quaternion.copy(bqUp.clone().slerp(mqUp, 1.08));
+
+          const bqLeg = bindQuats.get(`${side}Leg`);
+          const mqLeg = getMocapQuat(`${side}Leg`, mFrame);
+          byName.get(`${side}Leg`).quaternion.copy(bqLeg.clone().slerp(mqLeg, 0.65));
+
+          const bqFoot = bindQuats.get(`${side}Foot`);
+          const mqFoot = getMocapQuat(`${side}Foot`, mFrame);
+          byName.get(`${side}Foot`).quaternion.copy(bqFoot.clone().slerp(mqFoot, 0.85));
+
+          const bqToe = bindQuats.get(`${side}ToeBase`);
+          const mqToe = getMocapQuat(`${side}ToeBase`, mFrame);
+          byName.get(`${side}ToeBase`).quaternion.copy(bqToe.clone().slerp(mqToe, 0.85));
+        }
+      }
+
+      // 2. Fluid, Graceful ('luwes'), Visibly Animated ('ada animasi nya') Arms:
+      const phi = th - (3.5 / 19) * 2 * Math.PI;
+      const lPhase = phi + Math.PI;
+      const rPhase = phi;
+
+      const solveFluidRunArm = (side, p) => {
+        const sideSign = side === 'Left' ? 1 : -1;
+        const swing = Math.cos(p);          // +1 at front of swing, -1 at back of swing
+        const whip = Math.cos(p - 0.50);    // phase-lagged forearm flexion/extension wave (overlapping action)
+        const u = Math.max(0, Math.min(1, 0.5 + 0.5 * whip));
+
+        setRelEuler(`${side}Shoulder`, -3 - 2 * swing, sideSign * (5 * swing), -sideSign * 3);
+
+        // Upper arm stays anchored low along ribcage (y = -0.80..-0.95), swinging from behind hip to waist
+        const upperX = sideSign * (0.24 * (1 - u) + 0.20 * u);
+        const upperY = -0.78 * (1 - u) - 0.95 * u;
+        const upperZ = -0.54 * (1 - (0.5 + 0.5 * swing)) + 0.14 * (0.5 + 0.5 * swing);
+        orientBoneWorldY(`${side}Arm`, new THREE.Vector3(upperX, upperY, upperZ));
+
+        // Forearm sweeps from open behind the hip (u=0) to curved inward across the waist (u=1) — never pointing straight out!
+        const foreX = sideSign * (0.20 * (1 - u) - 0.34 * u);
+        const foreY = -0.88 * (1 - u) - 0.58 * u;
+        const foreZ = -0.42 * (1 - u) + 0.74 * u;
+        orientBoneWorldY(`${side}ForeArm`, new THREE.Vector3(foreX, foreY, foreZ));
+
+        const wristWave = Math.cos(p - 1.0);
+        setRelEuler(`${side}Hand`, -10 * wristWave, sideSign * 8 * wristWave, sideSign * 10 * Math.sin(p - 0.8));
       };
-      solveLeg('Left', th);
-      solveLeg('Right', th + Math.PI);
 
-      // 4. Arms: elongated, non-elbow-bent arm swing (~172 deg straightness, zero L-shape elbow!)
-      const lSwing = -Math.cos(th - 0.10); // +1 when Right leg is forward (th = PI), -1 when Left leg is forward (th = 0)
-      const rSwing = Math.cos(th - 0.10);  // +1 when Left leg is forward (th = 0), -1 when Right leg is forward (th = PI)
-
-      setRelEuler('LeftShoulder', -3, 5 * lSwing, -2);
-      const lUpperDir = new THREE.Vector3(0.22, -0.82, 0.54 * lSwing);
-      const lForeDir = new THREE.Vector3(0.16, -0.82 + 0.06 * lSwing, 0.54 * lSwing + 0.12);
-      orientBoneWorldY('LeftArm', lUpperDir);
-      orientBoneWorldY('LeftForeArm', lForeDir);
-      setRelEuler('LeftHand', 0, 0, 0);
+      if (isIdleCast) {
+        // Left arm in idle_cast: graceful arcane counterbalance wave at waist/rib level
+        const lw = 0.5 + 0.5 * Math.sin(castTh);
+        setRelEuler('LeftShoulder', -2, -4 * Math.cos(castTh), -2);
+        orientBoneWorldY('LeftArm', new THREE.Vector3(0.24 + 0.08 * lw, -0.92, -0.10 + 0.18 * (1 - lw)));
+        orientBoneWorldY('LeftForeArm', new THREE.Vector3(0.28 * lw - 0.12 * (1 - lw), -0.68 - 0.18 * lw, 0.68));
+        setRelEuler('LeftHand', 12 * Math.sin(castTh), 10 * Math.cos(castTh), 0);
+      } else {
+        solveFluidRunArm('Left', lPhase);
+      }
 
       if (!isCastingMode) {
-        setRelEuler('RightShoulder', -3, -5 * rSwing, 2);
-        const rUpperDir = new THREE.Vector3(-0.22, -0.82, 0.54 * rSwing);
-        const rForeDir = new THREE.Vector3(-0.16, -0.82 + 0.06 * rSwing, 0.54 * rSwing + 0.12);
-        orientBoneWorldY('RightArm', rUpperDir);
-        orientBoneWorldY('RightForeArm', rForeDir);
-        setRelEuler('RightHand', 0, 0, 0);
+        solveFluidRunArm('Right', rPhase);
       } else {
-        // In 'run_cast', Right Ember Gauntlet extends forward in a sleek, straight casting reach (zero L-shape elbow)
-        const pulse = Math.sin(castTh);
-        const strideBob = 0.04 * Math.cos(2 * th);
-        setRelEuler('RightShoulder', -4, -6 - 3 * pulse, 2);
-        const rUpperDir = new THREE.Vector3(-0.18 + 0.02 * pulse, -0.34 + 0.05 * pulse + strideBob, 0.92);
-        const rForeDir = new THREE.Vector3(-0.08 + 0.02 * pulse, -0.22 + 0.06 * pulse + strideBob, 0.97);
+        // 4-Pose Curved-Elbow Arcane Conjuration & Throw Cycle on Right Arm (Ember Gauntlet):
+        // Pose 0 (castTh = 0):       Wind-up charge at chest (elbow drawn back-low, forearm bent 85 deg inward to heart)
+        // Pose 1 (castTh = PI/2):    Curved sidearm whip forward (elbow angled down-outward, forearm curved 60 deg inward)
+        // Pose 2 (castTh = PI):      Cross-body downward follow-through slash
+        // Pose 3 (castTh = 3*PI/2):  Low underhand ember scoop back toward chest
+        // Crucially: Elbow is ALWAYS bent (55..85 deg) and upper arm always points down-outward -> NEVER a straight-arm salute!
+        const c = Math.cos(castTh);
+        const s = Math.sin(castTh);
+        const c2 = Math.cos(2 * castTh);
+        setRelEuler('RightShoulder', -3 - 4 * c + 3 * s, -8 * s + 5 * c, 3 * c);
+
+        const rUpperDir = new THREE.Vector3(
+          -0.39 + 0.12 * c - 0.10 * s - 0.03 * c2,
+          -0.845 - 0.02 * c + 0.07 * s + 0.005 * c2,
+          -0.02 - 0.29 * c + 0.35 * s - 0.09 * c2
+        );
+        const rForeDir = new THREE.Vector3(
+          0.02 + 0.68 * c - 0.16 * s - 0.02 * c2,
+          -0.03 + 0.30 * c + 0.50 * s + 0.05 * c2,
+          0.7575 - 0.01 * c + 0.055 * s - 0.0875 * c2
+        );
         orientBoneWorldY('RightArm', rUpperDir);
         orientBoneWorldY('RightForeArm', rForeDir);
-        setRelEuler('RightHand', -4 + 4 * pulse, 0, 0);
+        setRelEuler('RightHand', 20 * s - 10 * c, -16 * c, 24 * Math.sin(castTh - 0.4));
       }
 
       for (const bName of trackedBones) {
@@ -716,7 +820,7 @@ async function buildHeroGlb(hero) {
       samplers,
       channels
     });
-    console.log(`[${hero.id}] Synthesized biomechanical '${clipName}' (${channels.length} channels, ${frameCount} frames / ${(intervals * dt).toFixed(2)}s)`);
+    console.log(`[${hero.id}] Built mocap-stride + fluid-arm '${clipName}' (${channels.length} channels, ${frameCount} frames / ${(intervals * dt).toFixed(2)}s)`);
   }
 
   // 1. Base animation is 'idle'
@@ -725,18 +829,22 @@ async function buildHeroGlb(hero) {
   // 2. Append or synthesize 'run'
   const runGlb = parseGlb(await fs.readFile(path.join(RAW_DIR, `${hero.id}-run.glb`)));
   if (hero.id === 'ember-warden') {
-    buildEmberRunClip('run', 24, false);
+    buildEmberActionClip(runGlb, 'run', 19, 'run');
   } else {
     appendAnimationFromGlb(runGlb, 'run');
   }
 
-  // 3. Append 'idle_cast'
+  // 3. Append or synthesize 'idle_cast'
   const castGlb = parseGlb(await fs.readFile(path.join(RAW_DIR, `${hero.id}-cast.glb`)));
-  appendAnimationFromGlb(castGlb, 'idle_cast');
+  if (hero.id === 'ember-warden') {
+    buildEmberActionClip(base, 'idle_cast', 48, 'idle_cast');
+  } else {
+    appendAnimationFromGlb(castGlb, 'idle_cast');
+  }
 
   // 4. Synthesize 'run_cast' (Run While Casting)
   if (hero.id === 'ember-warden') {
-    buildEmberRunClip('run_cast', 48, true);
+    buildEmberActionClip(runGlb, 'run_cast', 38, 'run_cast');
   } else {
     const FRAMES = 60;
     const DT = 1 / 30;
@@ -907,8 +1015,8 @@ async function buildHeroGlb(hero) {
     }
 
     for (const anim of outJson.animations) {
-      if (hero.id === 'ember-warden' && (anim.name === 'run' || anim.name === 'run_cast')) {
-        // Already synthesized with exact biomechanical gait & centered Hips
+      if (hero.id === 'ember-warden' && (anim.name === 'run' || anim.name === 'run_cast' || anim.name === 'idle_cast')) {
+        // Already synthesized with exact biomechanical gait, fluid casting arm & centered Hips
         continue;
       }
       const isCast = anim.name === 'idle_cast' || anim.name === 'run_cast';
@@ -922,7 +1030,8 @@ async function buildHeroGlb(hero) {
         const { arr, count, nComp } = outData;
         let modified = false;
 
-        // Cast overhead arm tailoring ('idle_cast' & Rift Runner 'run_cast'): keep casting arm aimed forward inside canvas frame
+        // Cast overhead arm tailoring ('idle_cast' & Rift Runner 'run_cast'):
+        // Temper overhead reach while preserving continuous fluid ('luwes') arm & forearm motion (never freezing to a static straight-arm pose)
         if (
           isCast &&
           ch.target.path === 'rotation' &&
@@ -935,34 +1044,26 @@ async function buildHeroGlb(hero) {
             bone === 'Spine01' ||
             bone === 'Spine02')
         ) {
-          const targetT = anim.name === 'run_cast' ? 0.20 : 0.33;
-          let anchorF = 0;
-          let bestDist = Infinity;
-          for (let f = 0; f < count; f++) {
-            const d = Math.abs(inData.arr[f] - targetT);
-            if (d < bestDist) {
-              bestDist = d;
-              anchorF = f;
-            }
-          }
-          const anchorQ = [
-            arr[anchorF * 4],
-            arr[anchorF * 4 + 1],
-            arr[anchorF * 4 + 2],
-            arr[anchorF * 4 + 3]
-          ];
-          const tStart = anim.name === 'run_cast' ? 0.17 : 0.30;
-          const tPeak0 = anim.name === 'run_cast' ? 0.39 : 0.52;
-          const tPeak1 = anim.name === 'run_cast' ? 1.17 : 1.29;
-          const tEnd = anim.name === 'run_cast' ? 1.49 : 1.62;
-          const maxW = bone.startsWith('Spine') ? 0.55 : 0.88;
+          // Reference two distinct curved-elbow keyframes (f=4 wind-up and f=42 release) so the arm keeps moving through an arc
+          const fA = Math.min(count - 1, 4);
+          const fB = Math.min(count - 1, 42);
+          const qA = [arr[fA * 4], arr[fA * 4 + 1], arr[fA * 4 + 2], arr[fA * 4 + 3]];
+          const qB = [arr[fB * 4], arr[fB * 4 + 1], arr[fB * 4 + 2], arr[fB * 4 + 3]];
+
+          const tStart = anim.name === 'run_cast' ? 0.17 : 0.26;
+          const tPeak0 = anim.name === 'run_cast' ? 0.39 : 0.48;
+          const tPeak1 = anim.name === 'run_cast' ? 1.17 : 1.18;
+          const tEnd = anim.name === 'run_cast' ? 1.49 : 1.52;
+          const maxW = bone.startsWith('Spine') ? 0.50 : bone === 'RightForeArm' ? 0.78 : 0.68;
 
           for (let f = 0; f < count; f++) {
             const t = inData.arr[f];
             const w = maxW * smoothArch(t, tStart, tPeak0, tPeak1, tEnd);
             if (w > 1e-4) {
+              const sweep = 0.5 + 0.5 * Math.sin(((t - tStart) / Math.max(0.1, tEnd - tStart)) * Math.PI * 1.5 - 0.4);
+              const dynTargetQ = slerpQuat(qA, qB, Math.max(0, Math.min(1, sweep)));
               const curQ = [arr[f * 4], arr[f * 4 + 1], arr[f * 4 + 2], arr[f * 4 + 3]];
-              const q = slerpQuat(curQ, anchorQ, w);
+              const q = slerpQuat(curQ, dynTargetQ, w);
               arr[f * 4] = q[0];
               arr[f * 4 + 1] = q[1];
               arr[f * 4 + 2] = q[2];
