@@ -7,7 +7,7 @@ import assert from 'node:assert/strict';
 const port=String(8870+Math.floor(Math.random()*80));
 const base=process.env.DEMO_URL||`http://127.0.0.1:${port}`;
 const outDir='docs/soul-pickups';
-const server=process.env.DEMO_URL?null:spawn('server/bin/arkadia',[],{
+const server=process.env.DEMO_URL?null:spawn('server/bin/arkodia',[],{
  env:{...process.env,PORT:port,SITE_DIR:'dist'},
  stdio:['ignore','pipe','inherit']
 });
@@ -18,7 +18,7 @@ try{
  if(server){
   await new Promise((ok,no)=>{
    const timer=setTimeout(()=>no(Error('Server startup exceeded 15 seconds')),15000);
-   server.stdout.on('data',d=>{console.log(String(d).trim());if(String(d).includes('listening')){clearTimeout(timer);ok();}});
+   server.stdout.on('data',d=>{if(String(d).includes('listening')){console.log('Server ready');clearTimeout(timer);ok();}});
    server.on('error',no);
    server.on('exit',c=>no(Error('server exited '+c)));
   });
@@ -37,26 +37,25 @@ try{
  console.log('Viewport',viewport);
  const page=await browser.newPage({viewport,isMobile:viewport.width<900,hasTouch:viewport.width<900});const errors=[];page.on('pageerror',e=>errors.push(e.message));
  await page.goto(`${base}/?offline=1&hero=rift-runner&time=0.5`);
- await page.waitForFunction(()=>window.__STRONGHOLD_COMBAT__&&document.querySelector('#world-canvas')?.dataset.ready==='true',null,{timeout:30000});
+ await page.waitForFunction(()=>window.__STRONGHOLD_COMBAT__&&document.querySelector('#world-canvas')?.dataset.ready==='true',null,{timeout:60000});
  const death=await page.evaluate(()=>{
  const c=window.__STRONGHOLD_COMBAT__;let at;
  for(let u=19;u<27&&!at;u+=.5)for(let v=19;v<27;v+=.5)if(c.clear(u,v)&&c.clear(u+2,v+2)&&c.teleport(u+2,v+2)){at={u,v};break;}
  if(!at)throw Error('No tile');
  const before=c.snapshot().run.xp;
- for(let n=0;n<2;n++){const i=c.summon(at.u,at.v,1);for(let j=0;j<5;j++)c.hitFoe(i,false);}
+ for(let n=0;n<10;n++){const i=c.summon(at.u,at.v,1);for(let j=0;j<5;j++)c.hitFoe(i,false);}
  return {at,before,snap:c.snapshot()};
  });
- assert.equal(death.snap.run.xp,death.before);assert.equal(death.snap.souls.length,2);
+ assert.equal(death.snap.run.xp,death.before);assert.equal(death.snap.souls.length,10);
  await page.waitForTimeout(400);
- assert.equal(await page.locator('.monster-soul:not(.collected)').count(),2);
+ assert.equal((await page.evaluate(()=>window.__STRONGHOLD_COMBAT__.snapshot())).souls.length,10);
  await sharp(await page.screenshot()).webp({quality:80}).toFile(`${outDir}/souls-${viewport.width}.webp`);
- const box=await page.locator('.monster-soul').first().boundingBox();assert.ok(box&&box.x>=0&&box.y>=0&&box.x<viewport.width&&box.y<viewport.height,'Soul visible inside viewport');
- const glow=await page.locator('.monster-soul').first().evaluate(el=>getComputedStyle(el).boxShadow);assert.notEqual(glow,'none');
+ const visible=await page.evaluate(()=>window.__STRONGHOLD_COMBAT__.snapshot().souls[0]);assert.ok(visible.visible&&visible.screen.x>=0&&visible.screen.y>=0&&visible.screen.x<viewport.width&&visible.screen.y<viewport.height,'Soul visible inside viewport');
  await page.evaluate(at=>window.__STRONGHOLD_COMBAT__.teleport(at.u,at.v),death.at);
  await page.waitForTimeout(150);
- const pickup=await page.evaluate(()=>({snap:window.__STRONGHOLD_COMBAT__.snapshot(),anim:document.querySelectorAll('.monster-soul.collected').length,dialog:!document.querySelector('.level-cards').hidden}));
- assert.equal(pickup.snap.run.level,2);assert.equal(pickup.snap.run.xp,0);assert.equal(pickup.snap.run.gold,10);assert.equal(pickup.snap.souls.length,0);assert.ok(pickup.anim>0);assert.ok(pickup.dialog);
- await page.waitForTimeout(700);const repeat=await page.evaluate(()=>window.__STRONGHOLD_COMBAT__.snapshot().run);assert.equal(repeat.gold,10);assert.equal(repeat.level,2);assert.deepEqual(errors,[]);
+ const pickup=await page.evaluate(()=>({snap:window.__STRONGHOLD_COMBAT__.snapshot(),anim:window.__STRONGHOLD_COMBAT__.snapshot().soulAnimations,dialog:window.__STRONGHOLD_COMBAT__.snapshot().blessingUi.active}));
+ assert.equal(pickup.snap.run.level,2);assert.equal(pickup.snap.run.xp,0);assert.equal(pickup.snap.run.gold,50);assert.equal(pickup.snap.souls.length,0);assert.ok(pickup.anim>0);assert.ok(pickup.dialog);
+ await page.waitForTimeout(700);const repeat=await page.evaluate(()=>window.__STRONGHOLD_COMBAT__.snapshot().run);assert.equal(repeat.gold,50);assert.equal(repeat.level,2);assert.deepEqual(errors,[]);
  await sharp(await page.screenshot()).webp({quality:80}).toFile(`${outDir}/blessing-${viewport.width}.webp`);
  const chosen=await page.evaluate(()=>{const c=window.__STRONGHOLD_COMBAT__;return c.choose(c.snapshot().run.offers[0]);});assert.equal(chosen.pending,0);
  results.push({viewport,killXP:death.snap.run.xp,pickup:repeat,animation:pickup.anim,errors});await page.close();

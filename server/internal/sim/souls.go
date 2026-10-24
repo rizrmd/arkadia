@@ -22,7 +22,7 @@ func (w *World) collectSouls() {
 		s.Age += TickMS
 		collected := false
 		for _, p := range w.Players {
-			if p.ID == s.Owner && p.F.Alive() && p.Run.Pending == 0 && s.Age >= 350 && hypot(p.F.Pos.X-s.U, p.F.Pos.Y-s.V) <= .85 {
+			if p.ID == s.Owner && p.F.Alive() && s.Age >= 350 && hypot(p.F.Pos.X-s.U, p.F.Pos.Y-s.V) <= .85 {
 				w.awardSoulXP(p, s.Level)
 				collected = true
 				break

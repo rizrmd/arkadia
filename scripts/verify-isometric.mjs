@@ -36,10 +36,10 @@ try{
  await page.screenshot({path:out+'/barracks-guides.png',clip});
  await page.locator('#angle-guides').evaluate(e=>e.remove());
  await page.setViewportSize({width:390,height:844});await page.reload();await page.waitForFunction(()=>[...document.images].every(i=>i.complete&&i.naturalWidth>0));await page.evaluate(()=>{document.body.scrollLeft=220;});await page.mouse.move(0,0);await page.screenshot({path:out+'/mobile.png'});assert(await page.evaluate(()=>document.documentElement.scrollHeight<=innerHeight));
- await page.setViewportSize({width:1536,height:1024});await page.goto(base+'/');await page.waitForFunction(()=>window.__ARKADIA_ARENA__&&window.__ARKADIA_APP__);
+ await page.setViewportSize({width:1536,height:1024});await page.goto(base+'/');await page.waitForFunction(()=>window.__ARKODIA_ARENA__&&window.__ARKODIA_APP__);
  await page.selectOption('#crowd','12');await page.uncheck('#auto');await page.check('#grid');await page.check('#pivots');await page.uncheck('#inspect');
  const arena=await page.evaluate(()=>{
-  const app=window.__ARKADIA_APP__,arena=window.__ARKADIA_ARENA__,world=app.stage.children[0];app.ticker.stop();
+  const app=window.__ARKODIA_APP__,arena=window.__ARKODIA_ARENA__,world=app.stage.children[0];app.ticker.stop();
   const floor=world.children[0].children.map(s=>({x:s.x,y:s.y,width:s.width,height:s.height}));
   const props=world.children[2].children.filter(s=>s.anchor).map(s=>({label:s.label,x:s.x,y:s.y,depth:s.zIndex,anchor:[s.anchor.x,s.anchor.y]}));
   const actors=arena.actors.map(a=>({kind:a.kind,anchor:[a.sprite.anchor.x,a.sprite.anchor.y],expected:[a.set.anchor.x,a.set.anchor.y],clips:Object.values(a.set.meta.clips).map(c=>c.frames.length)}));

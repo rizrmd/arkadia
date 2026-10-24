@@ -64,7 +64,7 @@ The verifier exercises all eight directions and pose dialogs, sees all four run 
 
 The home-installed Chromium times out on direct navigation to the public hostname. The public browser check therefore fulfills Chromium requests with actual public HTTPS responses fetched by Node. This verifies the deployed page's execution and interactions, but is not a direct browser-network or physical-device test.
 
-The scoped deployment uses the existing Arkadia gateway layer mechanism at `/ember-warden-review/v2/`. It does not alter gateway code, game bundles, or the other session's hero-selection work.
+The scoped deployment uses the existing Arkodia gateway layer mechanism at `/ember-warden-review/v2/`. It does not alter gateway code, game bundles, or the other session's hero-selection work.
 
 
 ### Generated originals

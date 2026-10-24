@@ -1,0 +1,540 @@
+{
+ "id": "rift-polar-shockwave",
+ "name": "Rift Polar Shockwave (Polar Coordinates + Arcane Radial Scroll + Voronoi Dissolve)",
+ "blend": "normal",
+ "shadingModel": "unlit",
+ "opacityMaskClipValue": 0.005,
+ "params": [
+  {
+   "name": "MainTex",
+   "type": "texture",
+   "group": "Textures",
+   "default": "",
+   "scope": "per-material",
+   "builtinRole": "mainTex"
+  },
+  {
+   "name": "NoiseTex",
+   "type": "texture",
+   "group": "Textures",
+   "default": "textures/noise.png",
+   "scope": "per-material"
+  },
+  {
+   "name": "RadialSpeed",
+   "type": "vec2",
+   "group": "Polar",
+   "default": [
+    -1.08,
+    0.48,
+    0,
+    0
+   ],
+   "scope": "per-material"
+  }
+ ],
+ "nodes": [
+  {
+   "id": "uv0",
+   "type": "uv",
+   "inputs": {},
+   "params": {},
+   "position": {
+    "x": 0,
+    "y": 0
+   }
+  },
+  {
+   "id": "polar",
+   "type": "polarCoordinates",
+   "inputs": {
+    "UV": "rp-uv0"
+   },
+   "params": {
+    "center": [
+     0.5,
+     0.5,
+     0,
+     0
+    ],
+    "radialScale": 1.25,
+    "lengthScale": 2
+   },
+   "position": {
+    "x": 160,
+    "y": 0
+   }
+  },
+  {
+   "id": "rand",
+   "type": "particleRandom",
+   "inputs": {},
+   "params": {},
+   "position": {
+    "x": 160,
+    "y": 100
+   }
+  },
+  {
+   "id": "polarRand",
+   "type": "add",
+   "inputs": {
+    "a": "rp-polar",
+    "b": "rp-rand"
+   },
+   "params": {},
+   "position": {
+    "x": 320,
+    "y": 40
+   }
+  },
+  {
+   "id": "polarPan",
+   "type": "panner",
+   "inputs": {
+    "uv": "rp-polarRand"
+   },
+   "params": {
+    "speed": [
+     -1.08,
+     0.48
+    ]
+   },
+   "position": {
+    "x": 480,
+    "y": 40
+   }
+  },
+  {
+   "id": "mainTex",
+   "type": "textureSample",
+   "inputs": {
+    "uv": "rp-main-uv"
+   },
+   "params": {
+    "tex": ""
+   },
+   "position": {
+    "x": 480,
+    "y": 200
+   }
+  },
+  {
+   "id": "polarNoise",
+   "type": "textureSample",
+   "inputs": {
+    "uv": "rp-pan"
+   },
+   "params": {
+    "tex": "textures/noise.png"
+   },
+   "position": {
+    "x": 640,
+    "y": 20
+   }
+  },
+  {
+   "id": "polarVoronoi",
+   "type": "noise",
+   "inputs": {
+    "Position": "rp-pan-vor"
+   },
+   "params": {
+    "function": "voronoi",
+    "scale": 6,
+    "seed": 41,
+    "outputMin": 0.22,
+    "outputMax": 1
+   },
+   "position": {
+    "x": 640,
+    "y": 120
+   }
+  },
+  {
+   "id": "streakMix",
+   "type": "lerp",
+   "inputs": {
+    "a": "rp-noise-b",
+    "b": "rp-noise-g"
+   },
+   "params": {
+    "t": 0.5
+   },
+   "position": {
+    "x": 800,
+    "y": 40
+   }
+  },
+  {
+   "id": "polarPattern",
+   "type": "multiply",
+   "inputs": {
+    "a": "rp-streakMix",
+    "b": "rp-voronoi"
+   },
+   "params": {},
+   "position": {
+    "x": 960,
+    "y": 80
+   }
+  },
+  {
+   "id": "patternRemap",
+   "type": "remap",
+   "inputs": {
+    "in": "rp-pattern"
+   },
+   "params": {
+    "inMin": 0,
+    "inMax": 0.84,
+    "outMin": 0.5,
+    "outMax": 1.34
+   },
+   "position": {
+    "x": 1120,
+    "y": 80
+   }
+  },
+  {
+   "id": "relTime",
+   "type": "particleRelativeTime",
+   "inputs": {},
+   "params": {},
+   "position": {
+    "x": 800,
+    "y": 220
+   }
+  },
+  {
+   "id": "dynParam",
+   "type": "dynamicParameter",
+   "inputs": {},
+   "params": {},
+   "position": {
+    "x": 800,
+    "y": 300
+   }
+  },
+  {
+   "id": "lifeDrive",
+   "type": "subtract",
+   "inputs": {
+    "a": "rp-relTime",
+    "b": "rp-dynParam"
+   },
+   "params": {},
+   "position": {
+    "x": 960,
+    "y": 260
+   }
+  },
+  {
+   "id": "maskPolar",
+   "type": "multiply",
+   "inputs": {
+    "a": "rp-main-a",
+    "b": "rp-remap"
+   },
+   "params": {},
+   "position": {
+    "x": 1280,
+    "y": 140
+   }
+  },
+  {
+   "id": "erodedPolar",
+   "type": "multiply",
+   "inputs": {
+    "a": "rp-maskPolar",
+    "b": "rp-lifeDrive"
+   },
+   "params": {},
+   "position": {
+    "x": 1440,
+    "y": 180
+   }
+  },
+  {
+   "id": "polarStep",
+   "type": "smoothstep",
+   "inputs": {
+    "in": "rp-erodedPolar"
+   },
+   "params": {
+    "edge0": 0.13,
+    "edge1": 0.43
+   },
+   "position": {
+    "x": 1600,
+    "y": 180
+   }
+  },
+  {
+   "id": "finalAlpha",
+   "type": "multiply",
+   "inputs": {
+    "a": "rp-polarStep",
+    "b": "rp-main-a2"
+   },
+   "params": {},
+   "position": {
+    "x": 1760,
+    "y": 220
+   }
+  },
+  {
+   "id": "coreBoost",
+   "type": "remap",
+   "inputs": {
+    "in": "rp-polarStep-boost"
+   },
+   "params": {
+    "inMin": 0,
+    "inMax": 1,
+    "outMin": 0.72,
+    "outMax": 1.28
+   },
+   "position": {
+    "x": 1760,
+    "y": 80
+   }
+  },
+  {
+   "id": "shadedRgb",
+   "type": "multiply",
+   "inputs": {
+    "a": "rp-main-rgb",
+    "b": "rp-coreBoost"
+   },
+   "params": {},
+   "position": {
+    "x": 1920,
+    "y": 100
+   }
+  },
+  {
+   "id": "premultBase",
+   "type": "multiply",
+   "inputs": {
+    "a": "rp-shadedRgb",
+    "b": "rp-finalAlpha-rgb"
+   },
+   "params": {},
+   "position": {
+    "x": 2080,
+    "y": 140
+   }
+  }
+ ],
+ "edges": [
+  {
+   "id": "rp-uv0",
+   "source": "uv0",
+   "sourceHandle": "out",
+   "target": "polar",
+   "targetHandle": "UV"
+  },
+  {
+   "id": "rp-polar",
+   "source": "polar",
+   "sourceHandle": "out",
+   "target": "polarRand",
+   "targetHandle": "a"
+  },
+  {
+   "id": "rp-rand",
+   "source": "rand",
+   "sourceHandle": "out",
+   "target": "polarRand",
+   "targetHandle": "b"
+  },
+  {
+   "id": "rp-polarRand",
+   "source": "polarRand",
+   "sourceHandle": "out",
+   "target": "polarPan",
+   "targetHandle": "uv"
+  },
+  {
+   "id": "rp-main-uv",
+   "source": "uv0",
+   "sourceHandle": "out",
+   "target": "mainTex",
+   "targetHandle": "uv"
+  },
+  {
+   "id": "rp-pan",
+   "source": "polarPan",
+   "sourceHandle": "out",
+   "target": "polarNoise",
+   "targetHandle": "uv"
+  },
+  {
+   "id": "rp-pan-vor",
+   "source": "polarPan",
+   "sourceHandle": "out",
+   "target": "polarVoronoi",
+   "targetHandle": "Position"
+  },
+  {
+   "id": "rp-noise-b",
+   "source": "polarNoise",
+   "sourceHandle": "B",
+   "target": "streakMix",
+   "targetHandle": "a"
+  },
+  {
+   "id": "rp-noise-g",
+   "source": "polarNoise",
+   "sourceHandle": "G",
+   "target": "streakMix",
+   "targetHandle": "b"
+  },
+  {
+   "id": "rp-streakMix",
+   "source": "streakMix",
+   "sourceHandle": "out",
+   "target": "polarPattern",
+   "targetHandle": "a"
+  },
+  {
+   "id": "rp-voronoi",
+   "source": "polarVoronoi",
+   "sourceHandle": "out",
+   "target": "polarPattern",
+   "targetHandle": "b"
+  },
+  {
+   "id": "rp-pattern",
+   "source": "polarPattern",
+   "sourceHandle": "out",
+   "target": "patternRemap",
+   "targetHandle": "in"
+  },
+  {
+   "id": "rp-relTime",
+   "source": "relTime",
+   "sourceHandle": "out",
+   "target": "lifeDrive",
+   "targetHandle": "a"
+  },
+  {
+   "id": "rp-dynParam",
+   "source": "dynParam",
+   "sourceHandle": "Param1",
+   "target": "lifeDrive",
+   "targetHandle": "b"
+  },
+  {
+   "id": "rp-main-a",
+   "source": "mainTex",
+   "sourceHandle": "A",
+   "target": "maskPolar",
+   "targetHandle": "a"
+  },
+  {
+   "id": "rp-remap",
+   "source": "patternRemap",
+   "sourceHandle": "out",
+   "target": "maskPolar",
+   "targetHandle": "b"
+  },
+  {
+   "id": "rp-maskPolar",
+   "source": "maskPolar",
+   "sourceHandle": "out",
+   "target": "erodedPolar",
+   "targetHandle": "a"
+  },
+  {
+   "id": "rp-lifeDrive",
+   "source": "lifeDrive",
+   "sourceHandle": "out",
+   "target": "erodedPolar",
+   "targetHandle": "b"
+  },
+  {
+   "id": "rp-erodedPolar",
+   "source": "erodedPolar",
+   "sourceHandle": "out",
+   "target": "polarStep",
+   "targetHandle": "in"
+  },
+  {
+   "id": "rp-polarStep",
+   "source": "polarStep",
+   "sourceHandle": "out",
+   "target": "finalAlpha",
+   "targetHandle": "a"
+  },
+  {
+   "id": "rp-main-a2",
+   "source": "mainTex",
+   "sourceHandle": "A",
+   "target": "finalAlpha",
+   "targetHandle": "b"
+  },
+  {
+   "id": "rp-polarStep-boost",
+   "source": "polarStep",
+   "sourceHandle": "out",
+   "target": "coreBoost",
+   "targetHandle": "in"
+  },
+  {
+   "id": "rp-main-rgb",
+   "source": "mainTex",
+   "sourceHandle": "out",
+   "target": "shadedRgb",
+   "targetHandle": "a"
+  },
+  {
+   "id": "rp-coreBoost",
+   "source": "coreBoost",
+   "sourceHandle": "out",
+   "target": "shadedRgb",
+   "targetHandle": "b"
+  },
+  {
+   "id": "rp-shadedRgb",
+   "source": "shadedRgb",
+   "sourceHandle": "out",
+   "target": "premultBase",
+   "targetHandle": "a"
+  },
+  {
+   "id": "rp-finalAlpha-rgb",
+   "source": "finalAlpha",
+   "sourceHandle": "out",
+   "target": "premultBase",
+   "targetHandle": "b"
+  },
+  {
+   "id": "rp-out-base",
+   "source": "premultBase",
+   "sourceHandle": "out",
+   "target": "output",
+   "targetHandle": "baseColor"
+  },
+  {
+   "id": "rp-out-alpha",
+   "source": "finalAlpha",
+   "sourceHandle": "out",
+   "target": "output",
+   "targetHandle": "opacity"
+  },
+  {
+   "id": "rp-out-mask",
+   "source": "finalAlpha",
+   "sourceHandle": "out",
+   "target": "output",
+   "targetHandle": "opacityMask"
+  }
+ ],
+ "outputs": {
+  "baseColor": "rp-out-base",
+  "opacity": "rp-out-alpha",
+  "opacityMask": "rp-out-mask"
+ }
+}

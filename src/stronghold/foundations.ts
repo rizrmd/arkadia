@@ -1,7 +1,7 @@
 /** Static, alpha-fitted foundation dressing. No work is performed on pan frames. */
 export const FOUNDATION_SOIL='/foundation-transitions/soil-moss.png';
 type Sprite={id:string;image:HTMLImageElement;width:number;height:number;foot:number;layer?:string};
-const structural=/^(forge|barracks|altar|mage|mine|gate|bastion|rampart-ne|rampart-se|gateway-grand|wall-broken)$/;
+const structural=/^(forge|barracks|altar|mage|mine|gate|bastion|gateway-grand|wall-broken)$/;
 export const FOUNDATION_MOSS='/foundation-transitions/moss.png';
 export const FOUNDATION_DRIFT='/modular-stronghold/v2/snowdrift-edge.png';
 const cache=new Map<string,{under:HTMLCanvasElement;face:HTMLCanvasElement;pad:number;fade?:HTMLCanvasElement}>();
@@ -18,11 +18,12 @@ export function foundationLayers(p:Sprite,soil:HTMLImageElement,snow?:HTMLImageE
  const under=document.createElement('canvas'),face=document.createElement('canvas');under.width=face.width=width+pad*2;under.height=face.height=height+pad*2;
  const ground=under.getContext('2d')!,moss=face.getContext('2d')!;ground.translate(pad,pad);moss.translate(pad,pad);
  const rng=random([...p.id].reduce((s,c)=>s*31+c.charCodeAt(0),17));
- const dry=p.id==='expedition'||p.id==='forge'||p.id==='mine',gate=p.id==='gate'||p.id==='gateway-grand';
- for(let x=4;x<width-4;x+=9){
+ const connector=p.id==='gate-connector',rampart=/^rampart-/.test(p.id);
+ const dry=p.id==='expedition'||p.id==='forge'||p.id==='mine',gate=p.id==='gate'||p.id==='gateway-grand'||connector;
+ for(let x=rampart?22:4;x<width-(rampart?22:4);x+=9){
   const ys=bottom.slice(Math.max(0,x-3),x+4).filter(y=>y>=0).sort((a,b)=>a-b);if(ys.length<5)continue;const y=ys[Math.floor(ys.length/2)];
   // Keep the center approach clear. Entrances must never acquire a green sill.
-  const approach=gate&&Math.abs(x-width*.5)<width*.2;
+  const approach=gate&&!connector&&Math.abs(x-width*.5)<width*.2;
   const length=34+rng()*22,depth=approach?7:14+rng()*11;
   ground.globalAlpha=approach?.16:gate?.25:dry?.5:.6;
   ground.drawImage(soil,x-length/2,y-depth*.35,length,depth);
@@ -49,7 +50,7 @@ export function foundationLayers(p:Sprite,soil:HTMLImageElement,snow?:HTMLImageE
   fade=document.createElement('canvas');fade.width=width;fade.height=height;
   const f=fade.getContext('2d')!,pixels=f.createImageData(width,height);
   for(let y=0;y<height;y++)for(let x=0;x<width;x++){
-   const edge=bottom[x],tower=Math.abs(x-width*.5)>width*.18;
+   const edge=bottom[x],tower=connector||Math.abs(x-width*.5)>width*.18;
    const grain=Math.sin(x*1.71+y*2.39)*.65+Math.sin(x*.43)*1.3;
    const t=tower&&edge>=0?Math.max(0,Math.min(1,(edge-y+grain)/3.5)):1;
    const i=(y*width+x)*4;pixels.data[i]=pixels.data[i+1]=pixels.data[i+2]=255;

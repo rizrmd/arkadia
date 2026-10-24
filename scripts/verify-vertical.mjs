@@ -12,10 +12,10 @@ try {
  const page=await browser.newPage({viewport:{width:1440,height:1000}});
  const atlasRequests=[];page.on('request',r=>{if(/\/assets\/characters\/(hero|revenant)\.png/.test(r.url()))atlasRequests.push(r.url())});
  const errors=[];page.on('pageerror',e=>errors.push(e.message));
- await page.goto(url);await page.waitForFunction(()=>window.__ARKADIA_ARENA__);
+ await page.goto(url);await page.waitForFunction(()=>window.__ARKODIA_ARENA__);
  const results=await page.evaluate(()=>{
-  window.__ARKADIA_APP__.ticker.stop();
-  const a=window.__ARKADIA_ARENA__,out=[];
+  window.__ARKODIA_APP__.ticker.stop();
+  const a=window.__ARKODIA_ARENA__,out=[];
   const check=(name,ok)=>out.push({name,passed:!!ok});
   a.auto=false;a.spawn(1);
   for(const actor of a.actors) {
@@ -25,7 +25,7 @@ try {
     for(let i=0;i<90;i++){
      a.moves.clear();a.move(actor,d,1000/60);a.finishMoves(1000/60);a.sync();
      if(!frames.has(actor.frame())) {
-      const {pixels}=window.__ARKADIA_APP__.renderer.extract.pixels(actor.sprite.texture);
+      const {pixels}=window.__ARKODIA_APP__.renderer.extract.pixels(actor.sprite.texture);
       let opaque=0;for(let p=3;p<pixels.length;p+=4)if(pixels[p]>16)opaque++;
       out.push({name:actor.kind+' '+name+' frame '+actor.frame()+' opaque pixels '+opaque,passed:opaque>500});
       visible=visible&&opaque>500;
@@ -69,15 +69,15 @@ try {
   a.spawn(3);
   const dirs=[{x:-1,y:-1},{x:0,y:-1},{x:1,y:1},{x:1,y:0}];
   a.actors.forEach((actor,i)=>{actor.x=3+i;actor.y=5;a.face(actor,dirs[i]);actor.play('move');actor.stride=.3});
-  a.attach(a.hero.view.parent);a.sync();window.__ARKADIA_APP__.render();
+  a.attach(a.hero.view.parent);a.sync();window.__ARKODIA_APP__.render();
   return out;
  });
  await fs.mkdir(output,{recursive:true});
  await page.screenshot({path:output+'/runtime.png'});
  for(const keys of [['w'],['s'],['w','a'],['w','d'],['s','a'],['s','d']]) {
-  await page.evaluate(()=>{const a=window.__ARKADIA_ARENA__;a.keys.clear();a.spawn(0);a.respawnHero();a.hero.stride=0});
+  await page.evaluate(()=>{const a=window.__ARKODIA_ARENA__;a.keys.clear();a.spawn(0);a.respawnHero();a.hero.stride=0});
   for(const k of keys)await page.keyboard.down(k);
-  const distinct=await page.evaluate(vertical=>{const a=window.__ARKADIA_ARENA__;a.update(100);window.__ARKADIA_APP__.render();const h=a.hero;return h.vertical===vertical&&h.set.meta.frames[h.clip.frames[h.frame()]].source.file===(vertical?'vertical-v3.png':'locomotion-v2.png')},keys.length===1);
+  const distinct=await page.evaluate(vertical=>{const a=window.__ARKODIA_ARENA__;a.update(100);window.__ARKODIA_APP__.render();const h=a.hero;return h.vertical===vertical&&h.set.meta.frames[h.clip.frames[h.frame()]].source.file===(vertical?'vertical-v3.png':'locomotion-v2.png')},keys.length===1);
   await page.screenshot({path:output+'/'+keys.join('-')+'.png'});
   for(const k of keys)await page.keyboard.up(k);
   results.push({name:'browser key events '+keys.join('+')+' select '+(keys.length===1?'vertical':'diagonal')+' artwork',passed:distinct});

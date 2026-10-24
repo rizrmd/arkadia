@@ -65,7 +65,7 @@ A clock chip in the top-right corner shows the Stronghold hour, its phase and wh
 - **Presets**: Midnight 00:00, Dawn 06:00, Morning 09:00, Noon 12:00, Golden hour 17:00, Dusk 18:45.
 - **Return to live clock**: unpins the hour and goes back to the cycle.
 
-A pinned hour is remembered in this browser (`arkadia.stronghold.lighting` = `{"mode":"dynamic","time":0.708}`). Picking an hour also takes over from the `?time` / `?daySpeed` QA parameters by removing them from the URL. Escape closes the panel.
+A pinned hour is remembered in this browser (`arkodia.stronghold.lighting` = `{"mode":"dynamic","time":0.708}`). Picking an hour also takes over from the `?time` / `?daySpeed` QA parameters by removing them from the URL. Escape closes the panel.
 
 ![Clock panel open at 17:00 (desktop)](https://ark-whachat.fural.space/lighting-plan/clock-desktop.webp)
 

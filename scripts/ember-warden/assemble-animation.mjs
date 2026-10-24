@@ -54,7 +54,7 @@ for(let row=0;row<definitions.length;row++){
  tags.push({name:id,from:row*8,to:row*8+7,direction:'forward',repeat:loop?0:1});clips.push(clip);
 }
 await sharp({create:{width:CELL*8,height:CELL*8,channels:4,background:'#00000000'}}).composite(atlasOverlays).png().toFile(root+'/ember-warden-SE.png');
-const atlas={frames:textureFrames,animations:Object.fromEntries(clips.map(c=>[c.action,c.frames.map(f=>`${c.action}-SE-${String(f.index).padStart(3,'0')}`)])),animationSettings:Object.fromEntries(clips.map(c=>[c.action,{fps:c.fps,loop:c.loop,holdLastFrame:c.holdLastFrame,next:c.next}])),meta:{app:'Arkadia Ember Warden animation export',version:'3',image:'ember-warden-SE.png',format:'RGBA8888',size:{w:CELL*8,h:CELL*8},scale:'1',frameTags:tags}};
+const atlas={frames:textureFrames,animations:Object.fromEntries(clips.map(c=>[c.action,c.frames.map(f=>`${c.action}-SE-${String(f.index).padStart(3,'0')}`)])),animationSettings:Object.fromEntries(clips.map(c=>[c.action,{fps:c.fps,loop:c.loop,holdLastFrame:c.holdLastFrame,next:c.next}])),meta:{app:'Arkodia Ember Warden animation export',version:'3',image:'ember-warden-SE.png',format:'RGBA8888',size:{w:CELL*8,h:CELL*8},scale:'1',frameTags:tags}};
 await fs.writeFile(root+'/atlas.json',JSON.stringify(atlas,null,2)+'\n');
 const resources={};for(const dir of ['source','sheets','previews'])for(const file of await fs.readdir(root+'/'+dir))resources[dir+'/'+file]=hash(await fs.readFile(root+'/'+dir+'/'+file));
 for(const file of ['ember-warden-SE.png','atlas.json'])resources[file]=hash(await fs.readFile(root+'/'+file));

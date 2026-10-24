@@ -177,10 +177,13 @@ func (p *Progression) eligibleActiveSkills(hero string) []string {
 	return out
 }
 
+// KillsForLevel is how many same-level revenants a hero must defeat to clear a level: 10 at Lv.1, growing by 10
+// per level (progression.ts), so ThresholdForLevel stays proportional to the scaled XP reward.
+func KillsForLevel(level int) int { return 10 * max(1, level) }
+
 func ThresholdForLevel(level int) int {
 	lv := max(1, level)
-	n := lv - 1
-	return 20 + 10*n + (5*n*(n+1))/2
+	return KillsForLevel(lv) * RevenantXPReward(lv)
 }
 
 func RevenantMaxHP(level int) float64 {
@@ -332,7 +335,7 @@ func (w *World) awardSoulXP(p *Player, foeLevel int) {
 }
 
 func (p *Player) choose(id string, level int) {
-	if p.Run.Pending == 0 || level != p.Run.Level {
+	if p.Run.Pending <= 0 || level < p.Run.Level-p.Run.Pending+1 || level > p.Run.Level {
 		return
 	}
 	if !containsStr(p.Run.Offers, id) {

@@ -217,10 +217,11 @@ func TestABacklogAfterAStallDrains(t *testing.T) {
 	}
 }
 
-// HoldTicks, sent to the client with every snapshot, is exactly the number of inputs a hit stun or a swing uses
-// up without walking, counted from the tick it started: the client's prediction skips that many and no more.
+// HoldTicks, sent to the client with every snapshot, is exactly the number of inputs a hit stun uses up without
+// walking, counted from the tick it started: the client's prediction skips that many and no more. (A swing uses
+// none: TestHeldWalkIsNeverLockedInASwing.)
 func TestHoldTicksCountTheInputsAPoseUsesUp(t *testing.T) {
-	for _, state := range []string{Hit, Attack} {
+	for _, state := range []string{Hit} {
 		w := newTestWorld(t)
 		w.Enemies = nil
 		p := w.AddPlayer("a", "A", 100)
@@ -558,5 +559,137 @@ func TestFullSpeedByDirection(t *testing.T) {
 	w := newTestWorld(t)
 	if x, y, prog := WalkStep(w.nav, heroSpawn.X, heroSpawn.Y, Vec{.5, 0}, 1000, false); math.Abs(x-heroSpawn.X-60) > .01 || y != heroSpawn.Y || math.Abs(prog-60) > .01 {
 		t.Fatalf("a half push right walked to %.2f,%.2f (%.2f px) in one second, want 60 px", x, y, prog)
+	}
+}
+
+func TestHeroRespawnAndResumeNeverStickOrResetWildsProgress(t *testing.T) {
+	w := newTestWorld(t)
+	w.Enemies = nil
+	p := w.AddPlayer("p1", "Hero", 100)
+	p.SetHero("ember-warden")
+
+	// Walk out through the gate into the Wilds.
+	for i := 0; i < 160; i++ {
+		drive(w, 1, walker{p, down})
+	}
+	if InSafeZone(p.F.Pos) {
+		t.Fatalf("expected hero in the Wilds, got %v", p.F.Pos)
+	}
+	wildX, wildY := p.X, p.Y
+	p.Run.Level = 7
+	p.Run.XP = 42
+	p.Run.Pending = 2
+	w.rollForHero(&p.Run, p.Hero)
+	firstOffer := p.Run.Offers[0]
+
+	// Choosing a blessing while Pending=2 and Level=7 works even if the client sent an earlier level.
+	p.Queue(Input{Seq: p.nextSeq(), Choice: firstOffer, Level: 6})
+	w.Step()
+	if p.Run.Pending != 1 || len(p.Run.Offers) == 0 {
+		t.Fatalf("expected Pending=1 with fresh offers after choosing %q, got pending=%d offers=%v", firstOffer, p.Run.Pending, p.Run.Offers)
+	}
+
+	// Choose the second pending blessing so Pending=0.
+	secondOffer := p.Run.Offers[0]
+	p.Queue(Input{Seq: p.nextSeq(), Choice: secondOffer, Level: 7})
+	w.Step()
+	if p.Run.Pending != 0 {
+		t.Fatalf("expected Pending=0 after second choice, got %d", p.Run.Pending)
+	}
+
+	// Simulate brief disconnect and resume: hero stays in the Wilds at Level 7 and can immediately walk.
+	w.RemovePlayer("p1")
+	resumed := w.ResumePlayer("p1", "Hero", 100)
+	if resumed == nil || resumed.X != wildX || resumed.Y != wildY || resumed.Run.Level != 7 {
+		t.Fatalf("expected resumed hero at (%.1f, %.1f) Lv.7, got %+v", wildX, wildY, resumed)
+	}
+	drive(w, 10, walker{resumed, right})
+	if hypot(resumed.X-wildX, resumed.Y-wildY) < 20 {
+		t.Fatalf("resumed hero failed to walk from (%.1f, %.1f) -> (%.1f, %.1f)", wildX, wildY, resumed.X, resumed.Y)
+	}
+
+	// Now simulate death and respawn at the tent: Plays increments and hero can immediately walk again.
+	resumed.F.Damage(1e6)
+	playsAtDeath := resumed.F.Plays
+	run(w, int(heroRespawn/TickMS)+2)
+	if !resumed.F.Alive() || resumed.F.Plays <= playsAtDeath || !InSafeZone(resumed.F.Pos) {
+		t.Fatalf("expected alive respawn at tent with Plays > %d, got state=%s plays=%d pos=%v", playsAtDeath, resumed.F.State, resumed.F.Plays, resumed.F.Pos)
+	}
+	tentX, tentY := resumed.X, resumed.Y
+	drive(w, 10, walker{resumed, right})
+	if hypot(resumed.X-tentX, resumed.Y-tentY) < 20 {
+		t.Fatalf("respawned hero stuck at tent: (%.1f, %.1f) -> (%.1f, %.1f)", tentX, tentY, resumed.X, resumed.Y)
+	}
+}
+
+// A hero walking past a revenant keeps walking: one input arriving a tick late (network jitter) must not let the
+// auto attack start a swing under a held key, and a key pressed during a swing cancels it at once, as solo play
+// does (encounters.ts step).
+func TestHeldWalkIsNeverLockedInASwing(t *testing.T) {
+	w := newTestWorld(t)
+	p := w.AddPlayer("a", "A", 100)
+	at := Vec{gateTile + 2.5, gateTile + 2.5}
+	px := TilePoint(at.X, at.Y)
+	p.X, p.Y, p.F.Pos = px.X, px.Y, at
+	w.spawnTimer = 1e9
+	e := &Enemy{ID: 1, F: newFighter(Revenant, Vec{at.X + heroReach*.6, at.Y + heroReach*.6}), Home: at}
+	e.F.Cooldown, e.F.Immune = 1e9, 1e9
+	w.Enemies, w.nextEnemy = []*Enemy{e}, 2
+	// Standing still beside it, the hero swings.
+	run(w, 2)
+	if p.F.State != Attack {
+		t.Fatalf("idle hero beside a revenant is %q, want a swing", p.F.State)
+	}
+	// Pressing a key mid-swing walks on this very input.
+	x, y := p.X, p.Y
+	drive(w, 1, walker{p, right})
+	if p.X == x && p.Y == y {
+		t.Fatalf("a held key did not cancel the swing (state %q)", p.F.State)
+	}
+	if p.HoldTicks() != 0 {
+		t.Fatalf("a swing holds %d inputs, but a walk cancels it", p.HoldTicks())
+	}
+	// Jittery inputs: every third tick nothing arrives, the next brings two. The hero never swings again.
+	for i := 0; i < 60; i++ {
+		if i%3 != 2 {
+			p.Queue(Input{Seq: p.nextSeq(), X: right.X, Y: right.Y})
+		}
+		w.Step()
+		if p.F.State == Attack {
+			t.Fatalf("tick %d: hero holding a key started a swing", i)
+		}
+	}
+}
+
+// A phone network that holds packets for 300-400 ms and then delivers them together, while a revenant keeps pace
+// beside the hero: the key held all along keeps the hero out of swings once its first input has arrived (the
+// server held every swing and restarted one in each gap before, 90 of 200 ticks).
+func TestHeldWalkThroughPacketBurstsBesideAChaser(t *testing.T) {
+	for _, gap := range []int{6, 8} {
+		w := newTestWorld(t)
+		p := w.AddPlayer("a", "A", 100)
+		at := Vec{gateTile + 2.5, gateTile + 2.5}
+		px := TilePoint(at.X, at.Y)
+		p.X, p.Y, p.F.Pos = px.X, px.Y, at
+		w.spawnTimer = 1e9
+		e := &Enemy{ID: 1, F: newFighter(Revenant, Vec{at.X + heroReach*.6, at.Y + heroReach*.6}), Home: at}
+		e.F.Cooldown, e.F.Immune = 1e9, 1e9
+		w.Enemies, w.nextEnemy = []*Enemy{e}, 2
+		swings := 0
+		for i := 0; i < 200; i++ {
+			if (i+1)%gap == 0 {
+				for k := 0; k < gap; k++ {
+					p.Queue(Input{Seq: p.nextSeq(), X: right.X, Y: right.Y})
+				}
+			}
+			w.Step()
+			e.F.Pos = Vec{p.F.Pos.X + heroReach*.5, p.F.Pos.Y + heroReach*.5}
+			if p.F.State == Attack {
+				swings++
+			}
+		}
+		if swings >= gap {
+			t.Fatalf("bursts every %d ticks: %d of 200 ticks in a swing under a held key", gap, swings)
+		}
 	}
 }

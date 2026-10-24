@@ -11,8 +11,8 @@ const PROFILES={lan:{base:0,jitter:0,spike:0,spikeMs:0},mobile:{base:40,jitter:5
 const name=process.env.PROFILE||'mobile',net=PROFILES[name];
 const out='docs/coop';await fs.mkdir(out,{recursive:true});
 const root=process.env.ROOT||'.';
-if(!process.env.ROOT&&!process.env.NOBUILD)execFileSync(process.env.GO||'go',['build','-o','bin/arkadia','./cmd/arkadia'],{cwd:'server',stdio:'inherit',env:{...process.env,CGO_ENABLED:'0'}});
-const server=spawn(root+'/server/bin/arkadia',[],{env:{...process.env,PORT:'8795',SITE_DIR:root+'/dist'},stdio:['ignore','pipe','inherit']});
+if(!process.env.ROOT&&!process.env.NOBUILD)execFileSync(process.env.GO||'go',['build','-o','bin/arkodia','./cmd/arkodia'],{cwd:'server',stdio:'inherit',env:{...process.env,CGO_ENABLED:'0'}});
+const server=spawn(root+'/server/bin/arkodia',[],{env:{...process.env,PORT:'8795',SITE_DIR:root+'/dist'},stdio:['ignore','pipe','inherit']});
 await new Promise((ok,no)=>{server.stdout.on('data',d=>{if(String(d).includes('listening'))ok();});server.on('exit',c=>no(Error('server exited '+c)));});
 const url='http://127.0.0.1:8795';
 const launch=()=>chromium.launch({headless:true,env:{...process.env,LD_LIBRARY_PATH:'/home/dev/.local/browser-libs/usr/lib/x86_64-linux-gnu:/opt/fural-antigravity-glibc'},args:['--no-sandbox','--no-zygote','--single-process']});

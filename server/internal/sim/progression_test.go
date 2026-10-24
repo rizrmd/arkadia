@@ -18,7 +18,9 @@ func TestRunRewardsAndChoices(t *testing.T) {
 	if p.Run.Gold != 5 || p.Run.XP != 10 || p.Run.Level != 1 {
 		t.Fatal(p.Run)
 	}
-	w.reward(p)
+	for i := 1; i < KillsForLevel(1); i++ {
+		w.reward(p)
+	}
 	if p.Run.Level != 2 || p.Run.Pending != 1 || len(p.Run.Offers) != 3 {
 		t.Fatal(p.Run)
 	}
@@ -40,7 +42,7 @@ func TestRunRewardsAndChoices(t *testing.T) {
 		t.Fatal("did not consume choice")
 	}
 	p.choose(id, 2)
-	for i := 0; i < 100; i++ {
+	for i := 0; i < 500; i++ {
 		w.reward(p)
 	}
 	if p.Run.Level < 10 || p.Run.Pending < 2 {
@@ -132,12 +134,12 @@ func TestThreeSlotLoadoutAndSimultaneousAoEAutoCast(t *testing.T) {
 
 func TestProgressiveXPCurveAndMonsterLevelScaling(t *testing.T) {
 	wantThresholds := map[int]int{
-		1: 20,
-		2: 35,
-		3: 55,
-		4: 80,
-		5: 110,
-		6: 145,
+		1: 100,
+		2: 280,
+		3: 540,
+		4: 880,
+		5: 1300,
+		6: 1800,
 	}
 	prevDelta := 0
 	for lv := 1; lv <= 6; lv++ {
@@ -166,11 +168,16 @@ func TestProgressiveXPCurveAndMonsterLevelScaling(t *testing.T) {
 		}
 	}
 
-	// Level hero up from Lv.1 -> Lv.2 (needs 20 XP = 2 Lv.1 kills)
+	// Level hero up from Lv.1 -> Lv.2 (needs 100 XP = 10 Lv.1 kills)
+	for i := 0; i < 9; i++ {
+		w.rewardFoe(p, 1)
+	}
+	if p.Run.Level != 1 {
+		t.Fatalf("9 Lv.1 kills must not clear Lv.1 yet, got lv=%d xp=%d", p.Run.Level, p.Run.XP)
+	}
 	w.rewardFoe(p, 1)
-	w.rewardFoe(p, 1)
-	if p.Run.Level != 2 || p.Run.threshold() != 35 {
-		t.Fatalf("expected Hero Lv.2 with next threshold 35 XP, got lv=%d threshold=%d", p.Run.Level, p.Run.threshold())
+	if p.Run.Level != 2 || p.Run.threshold() != 280 {
+		t.Fatalf("expected Hero Lv.2 with next threshold 280 XP, got lv=%d threshold=%d", p.Run.Level, p.Run.threshold())
 	}
 	for _, e := range w.Enemies {
 		if e.enemyLevel() != 2 || e.maxHP() != 3 || e.damage() != 5 {

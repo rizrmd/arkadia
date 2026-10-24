@@ -10,7 +10,7 @@ Built-in imagegen, transparent background. Prompt: two separated vegetation spri
 
 ## Validation and release
 
-TypeScript/Vite build, eight economy/save tests and browser checks at 1440, 390 and 320 pixels pass. Browser checks confirm six dirt trails, painted meadow clumps, 35 crop clumps, seven building selections, assets loading and no horizontal overflow or page errors. Repeated against the public Stronghold host. Both existing Arkadia hosts updated. Compressed binary asset packages keep publishing below the platform size limit.
+TypeScript/Vite build, eight economy/save tests and browser checks at 1440, 390 and 320 pixels pass. Browser checks confirm six dirt trails, painted meadow clumps, 35 crop clumps, seven building selections, assets loading and no horizontal overflow or page errors. Repeated against the public Stronghold host. Both existing Arkodia hosts updated. Compressed binary asset packages keep publishing below the platform size limit.
 
 [Open Stronghold](https://ark-whachat.fural.space/)
 

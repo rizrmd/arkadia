@@ -59,7 +59,7 @@ The shared working tree fails the repository TypeScript build because its unrela
 4. `DEMO_URL=https://ark-whachat.fural.space/ember-warden-review/v3/ node scripts/ember-warden/verify-animation.mjs`
 5. Publish the final evidence, then `node scripts/ember-warden/publish-animation-knowledge.mjs`.
 
-The scoped deployment adds `/ember-warden-review/v3/` to the existing Arkadia gateway without changing the game page, gateway, server or another session's files.
+The scoped deployment adds `/ember-warden-review/v3/` to the existing Arkodia gateway without changing the game page, gateway, server or another session's files.
 
 
 ## Animation sheets and playback

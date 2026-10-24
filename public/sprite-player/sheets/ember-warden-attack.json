@@ -1,0 +1,56 @@
+{
+ "name": "Ember Warden — Attack",
+ "hero": "ember-warden",
+ "pose": "attack",
+ "sheet": "ember-warden-attack.webp?v=4a965384",
+ "sheetHalf": "ember-warden-attack@0.5x.webp?v=4a965384",
+ "cell": [
+  384,
+  384
+ ],
+ "columns": 8,
+ "rows": 8,
+ "storedRows": 8,
+ "rowMap": [
+  0,
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7
+ ],
+ "mirrorRows": [
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false
+ ],
+ "pivot": [
+  192,
+  360
+ ],
+ "fps": 10,
+ "loop": true,
+ "rowLabels": [
+  "N",
+  "NE",
+  "E",
+  "SE",
+  "S",
+  "SW",
+  "W",
+  "NW"
+ ],
+ "defaultRow": 4,
+ "source": {
+  "knowledge": "NKBD903bcee333c2137d8b04adba",
+  "attachment": "DA051186c3aeb2539350a5eb30",
+  "file": "assets-src/sprite-player/ember-warden-attack.png"
+ }
+}

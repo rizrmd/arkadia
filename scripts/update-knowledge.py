@@ -1,11 +1,11 @@
 import json,subprocess,pathlib
-root=pathlib.Path('/home/dev/arkadia')
+root=pathlib.Path('/home/dev/arkodia')
 current=json.loads((root/'knowledge-current.json').read_text())
 append='''
 
 ## Demo runtime PixiJS — 20 Oktober 2026
 
-Demo live: [Buka Arkadia — Perbatasan Abu](https://arkadia-whachat.fural.space/).
+Demo live: [Buka Arkodia — Perbatasan Abu](https://arkadia-whachat.fural.space/).
 
 Implementasi memakai **PixiJS 8 dan WebGL**, bukan gambar arena preview sebagai background. Kit asli yang diperiksa adalah attachment `DA0679ae3e0624f52236ea60ea`; `DA3593cef66dddda720f68862b` adalah preview AI dan tidak dimuat oleh aplikasi. Sumber kit utuh dapat dilihat melalui tombol **View original kit + extracted assets** dan [file sumber publik](https://arkadia-whachat.fural.space/assets/source-kit.png). [Manifest ekstraksi](https://arkadia-whachat.fural.space/assets/manifest.json) menyimpan crop, ukuran, pivot dan jumlah piksel alpha yang dibersihkan.
 

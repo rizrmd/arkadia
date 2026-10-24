@@ -1,0 +1,69 @@
+{
+  "viewports": {},
+  "domAudit": {
+    "desktop": {
+      "appChildren": [
+        {
+          "tag": "CANVAS",
+          "id": "world-canvas",
+          "ariaHidden": null
+        },
+        {
+          "tag": "INPUT",
+          "id": "coop-keyboard-proxy",
+          "ariaHidden": "true"
+        }
+      ],
+      "bodyChildren": [
+        {
+          "tag": "DIV",
+          "id": "app"
+        },
+        {
+          "tag": "SCRIPT",
+          "id": ""
+        }
+      ],
+      "stylesheets": 0
+    },
+    "mobile": {
+      "appChildren": [
+        {
+          "tag": "CANVAS",
+          "id": "world-canvas",
+          "ariaHidden": null
+        },
+        {
+          "tag": "INPUT",
+          "id": "coop-keyboard-proxy",
+          "ariaHidden": "true"
+        }
+      ],
+      "bodyChildren": [
+        {
+          "tag": "DIV",
+          "id": "app"
+        },
+        {
+          "tag": "SCRIPT",
+          "id": ""
+        }
+      ],
+      "stylesheets": 0
+    }
+  },
+  "interactions": {
+    "desktop": {
+      "heroPicker": true,
+      "clockEscape": true,
+      "blessingSlotUnlock": true
+    },
+    "mobile": {
+      "heroPicker": true,
+      "clockEscape": true,
+      "blessingSlotUnlock": true
+    }
+  },
+  "consoleErrors": [],
+  "pageErrors": []
+}

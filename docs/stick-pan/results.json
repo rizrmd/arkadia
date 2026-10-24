@@ -1,0 +1,86 @@
+{
+ "viewport": "390x844",
+ "cases": {
+  "top-half-pan": {
+   "stick": false,
+   "cameraPanPx": {
+    "x": -120.0,
+    "y": 120.0
+   }
+  },
+  "half-split": {
+   "below": true,
+   "above": false
+  },
+  "thumb-then-pan-top": {
+   "thumbFirst": true,
+   "panFingerAt": [
+    200,
+    300
+   ],
+   "heroWalkDuringPan": 364,
+   "cameraPanPx": {
+    "x": -120,
+    "y": 120
+   },
+   "stickDuringPan": true,
+   "stickAfterPanLift": true,
+   "stickAfterThumbLift": false,
+   "start": {
+    "x": 590,
+    "y": 420
+   },
+   "end": {
+    "x": 1272,
+    "y": 420
+   }
+  },
+  "thumb-then-pan-bottom": {
+   "thumbFirst": true,
+   "panFingerAt": [
+    300,
+    560
+   ],
+   "heroWalkDuringPan": 369.6,
+   "cameraPanPx": {
+    "x": -120,
+    "y": 120
+   },
+   "stickDuringPan": true,
+   "stickAfterPanLift": true,
+   "stickAfterThumbLift": false,
+   "start": {
+    "x": 1272,
+    "y": 420
+   },
+   "end": {
+    "x": 536.2,
+    "y": 420
+   }
+  },
+  "pan-then-thumb": {
+   "thumbFirst": false,
+   "panFingerAt": [
+    200,
+    300
+   ],
+   "heroWalkDuringPan": 401.1,
+   "cameraPanPx": {
+    "x": -120,
+    "y": 120
+   },
+   "stickDuringPan": true,
+   "stickAfterPanLift": true,
+   "stickAfterThumbLift": false,
+   "start": {
+    "x": 536.2,
+    "y": 420
+   },
+   "end": {
+    "x": 1266.1,
+    "y": 420
+   }
+  }
+ },
+ "errors": []
+}

@@ -11,12 +11,12 @@ export type CharacterManifest = { alphaThreshold: number; characters: Record<str
 
 export type SpriteSet = { meta: CharacterMeta; anchor: { x: number; y: number }; clips: Record<TextureClipName, Texture[]> };
 
-const BASE = '/assets/characters/';
+const BASE = '/assets/characters/', MANIFEST_REV = '1side-v6';
 
 // One texture per frame, cut on the exact padded cell rectangle; every cell shares the same pivot pixel,
 // so the sprite anchor never changes between frames or clips (no anchor-induced jitter).
 export async function loadCharacters() {
-  const manifest: CharacterManifest = await (await fetch(`${BASE}manifest.json`)).json();
+  const manifest: CharacterManifest = await (await fetch(`${BASE}manifest.json?v=${MANIFEST_REV}`)).json();
   const sets: Record<string, SpriteSet> = {};
   for (const meta of Object.values(manifest.characters)) {
     // Bind cached image bytes to the manifest that defines their frame rectangles.

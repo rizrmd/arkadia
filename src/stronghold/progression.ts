@@ -16,7 +16,11 @@ export type Progression={
 export type HitRoll={damage:number;display:number;crit:boolean;multiplier:number};
 export type CardDef={
  name:string;
+ blessingTitle?:string;
  description:string;
+ unlockSummary?:string;
+ upgradeSummary?:string;
+ passiveSummary?:string;
  kind:'active'|'passive';
  badge:string;
  icon:string;
@@ -55,7 +59,10 @@ export const cards:Record<string,CardDef>={
  // Active Skill Blessings (Slot 1 default at Lv.1; Slot 2 & Slot 3 unlocked via level-up blessings; duplicates upgrade Rank)
  'rift-bolt':{
   name:'Rift Bolt',
+  blessingTitle:'Rift Bolt',
   description:'Auto-cast piercing arcane bolts at foes inside AoE. Each Rank adds bolt volleys, +25% skill damage, and -8% cooldown.',
+  unlockSummary:'Arcane Bolt Volley · 1.4s CD',
+  upgradeSummary:'+25% Bolt DMG · -0.3s CD',
   kind:'active',
   badge:'BOLT',
   icon:'⚡',
@@ -64,7 +71,10 @@ export const cards:Record<string,CardDef>={
  },
  'flame-fan':{
   name:'Flame Fan',
+  blessingTitle:'Flame Fan',
   description:'Auto-cast a blazing fan of fireballs at foes inside AoE. Each Rank adds fireballs, +25% skill damage, and -8% cooldown.',
+  unlockSummary:'Cone Fire Fan · 1.4s CD',
+  upgradeSummary:'+25% Cone DMG · -0.4s CD',
   kind:'active',
   badge:'FAN',
   icon:'🔥',
@@ -73,7 +83,10 @@ export const cards:Record<string,CardDef>={
  },
  'rift-dash':{
   name:'Rift Dash',
+  blessingTitle:'Rift Dash',
   description:'Auto-unleash warp afterimages and a phase slash across foes in AoE. Each Rank adds +25% damage, wider AoE, and -8% cooldown.',
+  unlockSummary:'Phase Warp Slash · 1.4s CD',
+  upgradeSummary:'+25% Slash DMG · -0.3s CD',
   kind:'active',
   badge:'DASH',
   icon:'💨',
@@ -82,7 +95,10 @@ export const cards:Record<string,CardDef>={
  },
  'cinder-step':{
   name:'Cinder Step',
+  blessingTitle:'Ember Nova',
   description:'Auto-ignite molten cinder rings and scorching strikes inside AoE. Each Rank adds +25% damage, wider AoE, and -8% cooldown.',
+  unlockSummary:'AoE Fire Ring · 4.0s CD',
+  upgradeSummary:'+25% Ring DMG · -0.4s CD',
   kind:'active',
   badge:'STEP',
   icon:'☄️',
@@ -91,7 +107,10 @@ export const cards:Record<string,CardDef>={
  },
  'rift-trap':{
   name:'Rift Trap',
+  blessingTitle:'Rift Trap',
   description:'Auto-detonate a 2:1 isometric dimensional rune trap under foes in AoE. Each Rank adds +25% damage, +18% radius, and -8% cooldown.',
+  unlockSummary:'Arcane Rune Trap · 2.8s CD',
+  upgradeSummary:'+25% Trap DMG · +18% AoE',
   kind:'active',
   badge:'TRAP',
   icon:'🔮',
@@ -100,7 +119,10 @@ export const cards:Record<string,CardDef>={
  },
  'ember-snare':{
   name:'Ember Snare',
+  blessingTitle:'Ember Snare',
   description:'Auto-erupt a 2:1 isometric volcanic snare beneath foes in AoE. Each Rank adds +25% damage, +18% radius, and -8% cooldown.',
+  unlockSummary:'Volcanic Fire Seal · 2.8s CD',
+  upgradeSummary:'+25% Seal DMG · +18% AoE',
   kind:'active',
   badge:'SNARE',
   icon:'🌋',
@@ -109,7 +131,10 @@ export const cards:Record<string,CardDef>={
  },
  cleave:{
   name:'Astral Cleave',
+  blessingTitle:'Astral Cleave',
   description:'Auto-sweep a wide crescent cleave cone across foes in AoE. Each Rank widens cone arc, adds +25% damage, and -8% cooldown.',
+  unlockSummary:'Crescent Cleave Arc · 2.1s CD',
+  upgradeSummary:'+25% Cone DMG · -0.3s CD',
   kind:'active',
   badge:'ARC',
   icon:'🌙',
@@ -118,7 +143,10 @@ export const cards:Record<string,CardDef>={
  },
  shockwave:{
   name:'Seismic Slam',
+  blessingTitle:'Seismic Slam',
   description:'Auto-detonate a ground-shattering shockwave ring inside AoE. Each Rank expands radius by +20%, adds +25% damage, and -8% cooldown.',
+  unlockSummary:'Shockwave Ring · 2.8s CD',
+  upgradeSummary:'+25% Slam DMG · +20% AoE',
   kind:'active',
   badge:'SLAM',
   icon:'💥',
@@ -126,13 +154,13 @@ export const cards:Record<string,CardDef>={
   cooldownMs:2800
  },
  // Passive Blessings
- might:{name:'Titan Strike',description:'+0.5 attack damage and +4% critical chance per rank.',kind:'passive',badge:'MIGHT',icon:'⚔️'},
- nova:{name:'Arc Nova',description:'Unlock a wider AoE detection & slash arc. Each rank adds 20% reach.',kind:'passive',badge:'REACH',icon:'🌀'},
- haste:{name:'Chrono Surge',description:'Reduce all auto-cast skill cooldowns by 12% per rank.',kind:'passive',badge:'HASTE',icon:'⏱️'},
- leech:{name:'Soul Feast',description:'Restore 2 health per rank on each kill.',kind:'passive',badge:'LEECH',icon:'🩸'},
- star:{name:'Ascendant Star',description:'+0.25 damage, +10 maximum health, and +4% critical chance.',kind:'passive',badge:'STAR',icon:'⭐'},
- vitality:{name:'Vitality',description:'+20 maximum health and restore 20 health.',kind:'passive',badge:'VITAL',icon:'🛡️'},
- heal:{name:'Second Wind',description:'Restore 35% of maximum health.',kind:'passive',badge:'HEAL',icon:'✨'}
+ might:{name:'Titan Strike',blessingTitle:'Titan Strike',description:'+0.5 attack damage and +4% critical chance per rank.',passiveSummary:'+0.5 ATK · +4% CRIT',kind:'passive',badge:'MIGHT',icon:'⚔️'},
+ nova:{name:'Arc Nova',blessingTitle:'Arc Nova',description:'Unlock a wider AoE detection & slash arc. Each rank adds 20% reach.',passiveSummary:'+20% AoE Reach · +12% SPD',kind:'passive',badge:'REACH',icon:'🌀'},
+ haste:{name:'Chrono Surge',blessingTitle:'Chrono Surge',description:'Reduce all auto-cast skill cooldowns by 12% per rank.',passiveSummary:'-12% Skill CD · +10% SPD',kind:'passive',badge:'HASTE',icon:'⏱️'},
+ leech:{name:'Soul Feast',blessingTitle:'Soul Feast',description:'Restore 2 health per rank on each kill.',passiveSummary:'+2 HP on Kill · +10% Sustain',kind:'passive',badge:'LEECH',icon:'🩸'},
+ star:{name:'Ascendant Star',blessingTitle:'Ascendant Star',description:'+0.25 damage, +10 maximum health, and +4% critical chance.',passiveSummary:'+10 Max HP · +4% CRIT',kind:'passive',badge:'STAR',icon:'⭐'},
+ vitality:{name:'Furnace Heart',blessingTitle:'Furnace Heart',description:'+25 maximum health and +12% movement speed.',passiveSummary:'+25 Max HP · +12% SPD',kind:'passive',badge:'VITAL',icon:'🛡️'},
+ heal:{name:'Second Wind',blessingTitle:'Second Wind',description:'Restore 35% of maximum health.',passiveSummary:'Restore 35% Max HP',kind:'passive',badge:'HEAL',icon:'✨'}
 };
 
 export function fresh(hero:HeroKind='rift-runner'):Progression{
@@ -182,13 +210,18 @@ export function syncHeroLoadout(p:Progression,hero:HeroKind):Progression{
  if(Array.isArray(p.offers)&&p.offers.length){
   p.offers=p.offers.map(id=>HERO_SKILL_SWAP[id]?.[hero]??id);
  }
+ if(Array.isArray(p.lastCast)&&p.lastCast.length){
+  p.lastCast=p.lastCast.map(id=>HERO_SKILL_SWAP[id]?.[hero]??id);
+ }
  return p;
 }
 
+// Proportional XP curve: each level costs a set number of same-level revenant kills, growing by 10 per level
+// (Lv.1→2: 10 kills, Lv.5→6: 50, Lv.10→11: 100), so the XP bar fills in steadily longer stretches as foes scale.
+export const killsForLevel=(level:number)=>10*Math.max(1,Math.floor(level));
 export function thresholdForLevel(level:number):number{
  const lv=Math.max(1,Math.floor(level));
- const n=lv-1;
- return 20+10*n+(5*n*(n+1))/2;
+ return killsForLevel(lv)*revenantXpReward(lv);
 }
 export const threshold=(p:Progression)=>thresholdForLevel(p.level);
 export const xpPercent=(p:Progression)=>Math.max(0,Math.min(100,Math.round(p.xp/Math.max(1,threshold(p))*100)));
@@ -218,23 +251,20 @@ export function roll(p:Progression,random:()=>number,hero?:HeroKind){
   const idx=Math.floor(random()*avail.length);
   chosen.push(avail[idx]);
  };
- // Always include at least 1 Active Skill Blessing (new slot unlock or rank upgrade) and 1 Passive Blessing,
- // plus a 3rd card from the combined eligible pool. When slots < 3, prioritize offering at least one new active skill.
+ // Always include 1 Passive Blessing (Option 1 at top-center) and 2 Active Skill Blessings
+ // (Option 2 unlocking a secondary socket when slots < 3, and Option 3 upgrading an equipped skill).
+ take(passivePool);
  if(p.slots.length<MAX_SKILL_SLOTS){
   const unequipped=activePool.filter(id=>!p.slots.includes(id));
   take(unequipped.length?unequipped:activePool);
+  const equipped=activePool.filter(id=>p.slots.includes(id));
+  take(equipped.length?equipped:activePool);
  }else{
   take(activePool);
+  take(activePool);
  }
- take(passivePool);
- take([...activePool,...passivePool]);
  while(chosen.length<3){
   take([...activePool,...passivePool]);
- }
- // Deterministic Fisher-Yates shuffle of the 3 offered blessing cards
- for(let i=chosen.length-1;i>0;i--){
-  const j=Math.floor(random()*(i+1));
-  const tmp=chosen[i];chosen[i]=chosen[j];chosen[j]=tmp;
  }
  p.offers=chosen;
 }

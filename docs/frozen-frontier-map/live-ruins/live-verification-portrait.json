@@ -1,0 +1,159 @@
+{
+ "base": "https://ark-whachat.fural.space",
+ "shots": {
+  "portrait-frontier-road": {
+   "teleport": [
+    21,
+    21.6
+   ],
+   "visible": 105,
+   "drawCalls": {
+    "shown": 86.3,
+    "hidden": 86.3,
+    "added": 0
+   }
+  },
+  "portrait-ruined-gate": {
+   "teleport": [
+    21,
+    23.6
+   ],
+   "visible": 121,
+   "drawCalls": {
+    "shown": 86.3,
+    "hidden": 86.3,
+    "added": 0
+   }
+  },
+  "portrait-pillar-courtyard": {
+   "teleport": [
+    20.6,
+    31.6
+   ],
+   "visible": 57,
+   "drawCalls": {
+    "shown": 86.3,
+    "hidden": 86.3,
+    "added": 0
+   }
+  },
+  "portrait-settlement": {
+   "teleport": [
+    17.48,
+    30.78
+   ],
+   "visible": 55,
+   "drawCalls": {
+    "shown": 86.3,
+    "hidden": 86.3,
+    "added": 0
+   }
+  },
+  "portrait-settlement-east": {
+   "teleport": [
+    24.4,
+    30.4
+   ],
+   "visible": 84,
+   "drawCalls": {
+    "shown": 86.3,
+    "hidden": 86.3,
+    "added": 0
+   }
+  },
+  "portrait-watchtower": {
+   "teleport": [
+    28.4,
+    18.9
+   ],
+   "visible": 47,
+   "drawCalls": {
+    "shown": 86.3,
+    "hidden": 86.3,
+    "added": 0
+   }
+  },
+  "portrait-snowy-shrine": {
+   "teleport": [
+    0.9,
+    28
+   ],
+   "visible": 55,
+   "drawCalls": {
+    "shown": 86.3,
+    "hidden": 86.3,
+    "added": 0
+   }
+  },
+  "portrait-shrine-trail": {
+   "teleport": [
+    8,
+    21.6
+   ],
+   "visible": 22,
+   "drawCalls": {
+    "shown": 86.3,
+    "hidden": 86.3,
+    "added": 0
+   }
+  }
+ },
+ "errors": [],
+ "console": [],
+ "frontier": {
+  "props": 475,
+  "uprights": 207,
+  "columns": 2374,
+  "atlas": "/frozen-frontier/game/atlas.webp",
+  "loaded": true,
+  "failed": false,
+  "kit": 39,
+  "occlusionImages": 36,
+  "sprites": 38,
+  "visible": 0,
+  "assets": [
+   "arch-ne",
+   "arch-se",
+   "broken-watchtower",
+   "corner-n",
+   "corner-s",
+   "dead-snag",
+   "dead-tree",
+   "drift-mound",
+   "drift-ne",
+   "drift-se",
+   "flagstones-a",
+   "flagstones-b",
+   "flagstones-c",
+   "flagstones-d",
+   "floor-sunk",
+   "foundation",
+   "grass-patch",
+   "grass-tussock",
+   "ground-scuff-a",
+   "ground-scuff-b",
+   "paving",
+   "pillar-broken",
+   "pillar-intact",
+   "pine-broad",
+   "pine-sapling",
+   "pine-tall",
+   "rock-boulders",
+   "rock-scatter",
+   "rubble",
+   "ruined-gate",
+   "shrub-juniper",
+   "shrub-twigs",
+   "snowy-shrine",
+   "stairs-ne",
+   "stairs-nw",
+   "stone-chips-a",
+   "stone-chips-b",
+   "wall-ne",
+   "wall-se"
+  ]
+ },
+ "traversal": [],
+ "ok": true,
+ "live": true
+}

@@ -15,12 +15,12 @@ try {
   await fs.mkdir(outDir, {recursive: true});
 
   if (!process.env.VERIFY_URL) {
-    execFileSync(process.env.GO || '/home/dev/.local/go/bin/go', ['build', '-o', 'bin/arkadia', './cmd/arkadia'], {
+    execFileSync(process.env.GO || '/home/dev/.local/go/bin/go', ['build', '-o', 'bin/arkodia', './cmd/arkodia'], {
       cwd: 'server',
       stdio: 'inherit',
       env: {...process.env, CGO_ENABLED: '0', GOFLAGS: '-p=1', GOMAXPROCS: '2', GOMEMLIMIT: '256MiB'}
     });
-    server = spawn('server/bin/arkadia', [], {
+    server = spawn('server/bin/arkodia', [], {
       env: {...process.env, PORT: port, SITE_DIR: 'dist'},
       stdio: ['ignore', 'pipe', 'inherit']
     });
@@ -53,7 +53,7 @@ try {
   page.on('pageerror', e => errors.push(e.message));
 
   await page.addInitScript(() => {
-    localStorage.setItem('arkadia.stronghold.hero.id', 'ember-warden');
+    localStorage.setItem('arkodia.stronghold.hero.id', 'ember-warden');
   });
 
   // 19:27 time-of-day = (19 + 27/60) / 24 = 0.8104

@@ -13,6 +13,7 @@ import (
 	"path"
 	"path/filepath"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/coder/websocket"
@@ -22,9 +23,12 @@ import (
 
 // Server routes HTTP requests.
 type Server struct {
-	Rooms *room.Registry
-	Site  string // directory of the built client
-	Log   *slog.Logger
+	Rooms        *room.Registry
+	Site         string // directory of the built client
+	CacheDir     string // directory for cached lossless WebP conversions (defaults to <Site>/.webp-cache)
+	Log          *slog.Logger
+	webpLocks    sync.Map
+	tracelogOnce sync.Map
 }
 
 // Handler returns the HTTP routes.
@@ -32,6 +36,10 @@ func (s *Server) Handler() http.Handler {
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /ws", s.ws)
 	mux.HandleFunc("GET /api/rooms/{code}", s.roomInfo)
+	mux.HandleFunc("POST /api/tracelogs", s.postTracelog)
+	mux.HandleFunc("GET /api/tracelogs", s.listTracelogs)
+	mux.HandleFunc("GET /api/tracelogs/{id}", s.getTracelog)
+	mux.HandleFunc("GET /asset-sizes.json", s.serveAssetSizes)
 	mux.HandleFunc("GET /healthz", func(w http.ResponseWriter, _ *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(map[string]any{"ok": true, "rooms": s.Rooms.Count(), "protocol": room.Version})
@@ -65,18 +73,24 @@ func (s *Server) static(w http.ResponseWriter, r *http.Request) {
 	}
 	file := filepath.Join(s.Site, filepath.FromSlash(path.Clean(p)))
 	if !strings.HasPrefix(file, filepath.Clean(s.Site)+string(filepath.Separator)) {
+		w.Header().Set("Cache-Control", "no-store")
 		http.Error(w, "Forbidden", http.StatusForbidden)
 		return
 	}
 	f, err := os.Open(file)
 	if err != nil {
+		w.Header().Set("Cache-Control", "no-store")
 		http.Error(w, "Not found", http.StatusNotFound)
 		return
 	}
 	defer f.Close()
 	st, err := f.Stat()
 	if err != nil || st.IsDir() {
+		w.Header().Set("Cache-Control", "no-store")
 		http.Error(w, "Not found", http.StatusNotFound)
+		return
+	}
+	if strings.EqualFold(path.Ext(p), ".png") && s.servePNGAsWebP(w, r, p, file, st) {
 		return
 	}
 	if strings.HasPrefix(p, "/assets/") && strings.Contains(path.Base(p), "-") && (path.Ext(p) == ".js" || path.Ext(p) == ".css") {
@@ -101,6 +115,7 @@ type clientMsg struct {
 	V      int      `json:"v"`
 	Name   string   `json:"name"`
 	Room   string   `json:"room"`
+	You    string   `json:"you"`
 	MaxHP  float64  `json:"maxHp"`
 	Hero   string   `json:"hero"` // hello: the picked hero (clients before heroes send none)
 	H      string   `json:"h"`    // hero: a new pick
@@ -177,7 +192,7 @@ func (s *Server) ws(w http.ResponseWriter, r *http.Request) {
 	}
 	client := room.NewClient()
 	hero, _ := room.CleanHero(hello.Hero)
-	if code := rm.Join(client, name, hero, hello.MaxHP); code != "" {
+	if code := rm.Join(client, name, hero, hello.MaxHP, hello.You); code != "" {
 		fail(code)
 		return
 	}
@@ -199,6 +214,7 @@ func (s *Server) ws(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 		}
+		c.CloseNow()
 	}()
 	defer func() { rm.Leave(client); <-done }()
 

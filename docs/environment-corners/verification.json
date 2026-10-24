@@ -1,0 +1,201 @@
+{
+  "viewports": {
+    "1440x900": {
+      "mode": "desktop",
+      "court": {
+        "biome": "court",
+        "area": "court",
+        "blurPx": 3,
+        "textureSize": {
+          "w": 320,
+          "h": 380
+        },
+        "leftBox": {
+          "left": 0,
+          "top": 483,
+          "right": 317,
+          "bottom": 900
+        },
+        "rightBox": {
+          "left": 1123,
+          "top": 483,
+          "right": 1440,
+          "bottom": 900
+        }
+      },
+      "panCheck": {
+        "panOffset": {
+          "dx": -60,
+          "dy": -24.75
+        },
+        "reducedOffset": {
+          "dx": 0,
+          "dy": 0
+        }
+      },
+      "gate": {
+        "transitionCount": 1,
+        "activeSlot": "B"
+      },
+      "outskirts": {
+        "biome": "snow",
+        "area": "snow",
+        "combatantFadeAlpha": 0.5
+      },
+      "hudClearance": {
+        "parallaxInWorld": true,
+        "hudInUi": true,
+        "parallaxEventMode": "none",
+        "parallaxInteractiveChildren": false
+      }
+    },
+    "390x844": {
+      "mode": "mobile-portrait",
+      "court": {
+        "biome": "court",
+        "area": "court",
+        "blurPx": 3,
+        "textureSize": {
+          "w": 180,
+          "h": 150
+        },
+        "leftBox": {
+          "left": 0,
+          "top": 0,
+          "right": 70,
+          "bottom": 58
+        },
+        "rightBox": {
+          "left": 320,
+          "top": 0,
+          "right": 390,
+          "bottom": 58
+        }
+      },
+      "panCheck": {
+        "panOffset": {
+          "dx": 0,
+          "dy": 0
+        },
+        "reducedOffset": {
+          "dx": 0,
+          "dy": 0
+        }
+      },
+      "gate": {
+        "transitionCount": 1,
+        "activeSlot": "B"
+      },
+      "outskirts": {
+        "biome": "snow",
+        "area": "snow",
+        "combatantFadeAlpha": 0.5
+      },
+      "hudClearance": {
+        "parallaxInWorld": true,
+        "hudInUi": true,
+        "parallaxEventMode": "none",
+        "parallaxInteractiveChildren": false
+      }
+    },
+    "844x390": {
+      "mode": "mobile-landscape",
+      "court": {
+        "biome": "court",
+        "area": "court",
+        "blurPx": 3,
+        "textureSize": {
+          "w": 76,
+          "h": 150
+        },
+        "leftBox": {
+          "left": 0,
+          "top": 0,
+          "right": 59,
+          "bottom": 125
+        },
+        "rightBox": {
+          "left": 785,
+          "top": 0,
+          "right": 844,
+          "bottom": 125
+        }
+      },
+      "panCheck": {
+        "panOffset": {
+          "dx": 0,
+          "dy": 0
+        },
+        "reducedOffset": {
+          "dx": 0,
+          "dy": 0
+        }
+      },
+      "gate": {
+        "transitionCount": 1,
+        "activeSlot": "B"
+      },
+      "outskirts": {
+        "biome": "snow",
+        "area": "snow",
+        "combatantFadeAlpha": 0.5
+      },
+      "hudClearance": {
+        "parallaxInWorld": true,
+        "hudInUi": true,
+        "parallaxEventMode": "none",
+        "parallaxInteractiveChildren": false
+      }
+    }
+  },
+  "biomeResolution": [
+    {
+      "u": 7.5,
+      "v": 7.5,
+      "biome": "court",
+      "label": "Court"
+    },
+    {
+      "u": 16.5,
+      "v": 16.5,
+      "biome": "snow",
+      "label": "Snow Outskirts"
+    },
+    {
+      "u": 8,
+      "v": 40,
+      "biome": "swamp",
+      "label": "Swamp"
+    },
+    {
+      "u": 22,
+      "v": 45,
+      "biome": "mountains",
+      "label": "Mountains"
+    },
+    {
+      "u": 35,
+      "v": 42,
+      "biome": "ash-frontier",
+      "label": "Ash Frontier"
+    },
+    {
+      "u": 50,
+      "v": 50,
+      "biome": "relic-forest",
+      "label": "Relic Forest"
+    }
+  ],
+  "mobileFps": {
+    "withLayer": {
+      "rafFps": 0.9,
+      "renderMsPerFrame": 80.188
+    },
+    "withoutLayer": {
+      "rafFps": 0.2,
+      "renderMsPerFrame": 63.324
+    }
+  },
+  "consoleErrors": [],
+  "pageErrors": []
+}

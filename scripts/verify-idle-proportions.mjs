@@ -10,9 +10,9 @@ try {
  browser=await chromium.launch({headless:true,env:{...process.env,LD_LIBRARY_PATH:'/home/dev/.local/browser-libs/usr/lib/x86_64-linux-gnu:/opt/fural-antigravity-glibc'},args:['--no-sandbox','--enable-unsafe-swiftshader','--no-zygote','--single-process']});
  const page=await browser.newPage({viewport:{width:1440,height:1100}}), errors=[];
  page.on('pageerror',e=>errors.push(e.message));
- await page.goto(url);await page.waitForFunction(()=>window.__ARKADIA_ARENA__);
+ await page.goto(url);await page.waitForFunction(()=>window.__ARKODIA_ARENA__);
  const report=await page.evaluate(()=>{
-  const app=window.__ARKADIA_APP__,a=window.__ARKADIA_ARENA__,results=[],measurements=[];
+  const app=window.__ARKODIA_APP__,a=window.__ARKODIA_ARENA__,results=[],measurements=[];
   app.ticker.stop();a.auto=false;a.spawn(1);
   const check=(name,passed)=>results.push({name,passed:!!passed});
   const measure=texture=>{
@@ -67,7 +67,7 @@ try {
  });
  await page.screenshot({path:'public/idle-proportions/comparison.png'});
  await page.locator('#proportion-proof').evaluate(e=>e.remove());
- await page.evaluate(()=>{const a=window.__ARKADIA_ARENA__;a.spawn(12);a.respawnHero();a.sync();window.__ARKADIA_APP__.render();});
+ await page.evaluate(()=>{const a=window.__ARKODIA_ARENA__;a.spawn(12);a.respawnHero();a.sync();window.__ARKODIA_APP__.render();});
  await page.screenshot({path:'public/idle-proportions/runtime.png'});
  await fs.writeFile(`docs/idle-proportions/${process.env.DEMO_URL?'live':'local'}.json`,JSON.stringify({url,...report,errors},null,2));
  for(const m of report.measurements)console.log(m.kind,m.direction,'head ratio',m.headRatio.toFixed(3),'height ratio',m.heightRatio.toFixed(3),'drift',m.idleHeadDrift,'head shift',m.headShift.toFixed(2));

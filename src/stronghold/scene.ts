@@ -1,34 +1,23 @@
 import type {Building} from './economy';
-import {modularEnclosure,LEGACY_LAYOUT} from './terrain';
+import {modularEnclosure} from './terrain';
+import {STRONGHOLD,type PrefabBuilding} from './prefabs/stronghold';
 import {groundCalibration,project,unproject} from '../isometric';
 
+const LEGACY_LAYOUT=typeof location!=='undefined'&&new URLSearchParams(location.search).get('buildings')==='all';
+
 // 3:2 is the canvas aspect ratio, not the ground projection. Ground is 2:1.
-export const WORLD = {width:1155,height:770};
-export const slots:Record<Building,{x:number;y:number;width:number;pivot:number;asset:string}>= {
- forge:{x:235,y:348,width:345,pivot:.95,asset:'stronghold/forge'},
- barracks:{x:600,y:270,width:300,pivot:.95,asset:'stronghold/barracks'},
- altar:{x:950,y:390,width:245,pivot:.95,asset:'stronghold/altar'},
- mage:{x:245,y:605,width:225,pivot:.95,asset:'stronghold/mage'},
- // The tent stands in the centre of the court (tile 7.5, 7.5), where a new game starts; the old layout keeps it by the gate.
- expedition:{...LEGACY_LAYOUT?{x:565,y:500}:{x:577,y:320},width:210,pivot:.95,asset:'stronghold/expedition-tent'},
- mine:{x:905,y:620,width:330,pivot:.95,asset:'stronghold/mine'},
- gate:{x:577,y:790,width:270,pivot:.97,asset:'stronghold/gate'}
-};
+export const WORLD = {...STRONGHOLD.world};
+// Building slots from prefabs/stronghold.json. The tent stands in the centre of the court (tile 7.5, 7.5), where a
+// new game starts; the old layout keeps it by the gate.
+const B=STRONGHOLD.buildings;
+export const slots=Object.fromEntries(Object.entries(B).map(([id,{x,y,legacy,width,pivot,asset}])=>[id,{...LEGACY_LAYOUT&&legacy?legacy:{x,y},width,pivot,asset}])) as Record<Building,{x:number;y:number;width:number;pivot:number;asset:string}>;
 export function ground(){return '';}
 export function enclosure(){return modularEnclosure();}
 // Source-pixel landmarks on masonry bases/table edges, never roof diagonals.
 // Each pair is [left endpoint, right endpoint]. Keep these auditable: the old
 // hand-entered slopes missed the Barracks facade (~-.35, rather than -.43).
-export const groundEdges = {
- forge: {rising:[[278,420],[510,296]],falling:[[27,285],[278,420]]},
- barracks: {rising:[[228,386],[555,269]],falling:[[20,305],[216,399]]},
- altar: {rising:[[362,621],[615,522]],falling:[[12,497],[362,621]]},
- mage: {rising:[[304,631],[380,604]],falling:[[272,617],[304,631]]},
- expedition: {rising:[[760,920],[1350,600]],falling:[[400,800],[760,920]]},
- mine: {rising:[[393,402],[499,363]],falling:[[245,282],[466,402]]},
- // Standalone gate sprite; ground facade measured from its generated base.
- gate: {rising:[[0,1],[2,0]],falling:[[0,0],[2,1]]}
-} as const;
+// The gate is a standalone sprite; its ground facade is measured from its generated base.
+export const groundEdges=Object.fromEntries(Object.entries(B).map(([id,b])=>[id,b.groundEdges])) as Record<Building,PrefabBuilding['groundEdges']>;
 function slope(edge:readonly [readonly [number,number],readonly [number,number]]) {
  return (edge[1][1]-edge[0][1])/(edge[1][0]-edge[0][0]);
 }

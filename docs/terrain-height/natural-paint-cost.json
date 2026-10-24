@@ -1,0 +1,56 @@
+{
+  "before": {
+    "medianPaintMs": 299.2999999523163,
+    "sprites": 3,
+    "canvasRGBABytes": 12451072,
+    "canvases": [
+      {
+        "id": "east-ridge",
+        "size": [
+          1392,
+          860
+        ]
+      },
+      {
+        "id": "west-terrace",
+        "size": [
+          1648,
+          916
+        ]
+      },
+      {
+        "id": "east-ridge-ramp",
+        "size": [
+          752,
+          540
+        ]
+      }
+    ]
+  },
+  "after": {
+    "medianPaintMs": 84.39999985694885,
+    "sprites": 2,
+    "canvasRGBABytes": 13175808,
+    "canvases": [
+      {
+        "id": "west-terrace",
+        "size": [
+          1518,
+          992
+        ]
+      },
+      {
+        "id": "east-ridge",
+        "size": [
+          1608,
+          1112
+        ]
+      }
+    ]
+  },
+  "asset": {
+    "width": 1536,
+    "height": 2048,
+    "rgbaBytes": 12582912
+  }
+}

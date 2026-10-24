@@ -7,7 +7,7 @@ const out='docs/walk-behind';await fs.mkdir(out,{recursive:true});
 const base=process.env.DEMO_URL?.replace(/\/$/,'');const server=base?null:spawn('node',['server.mjs'],{env:{...process.env,PORT:'3065'}});const url=base||'http://127.0.0.1:3065';let browser;
 try{await new Promise(r=>setTimeout(r,600));browser=await chromium.launch({headless:true,env:{...process.env,LD_LIBRARY_PATH:'/home/dev/.local/browser-libs/usr/lib/x86_64-linux-gnu:/opt/fural-antigravity-glibc'},args:['--no-sandbox','--no-zygote','--disable-dev-shm-usage']});
  const page=await (await browser.newContext({viewport:{width:1440,height:1000}})).newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));
- await page.addInitScript(()=>localStorage.setItem('arkadia.stronghold.buildings',JSON.stringify(['expedition','gate','mage'])));
+ await page.addInitScript(()=>localStorage.setItem('arkodia.stronghold.buildings',JSON.stringify(['expedition','gate','mage'])));
  // 2x close-up around the resting hero. It stands hidden behind the sprite, so a gold ring marks its feet
  // (screen = surface translation - raster left/top * scale + world position * scale).
  const shot=async name=>{const b=await page.evaluate(()=>{const d=document.querySelector('#world-hero').dataset,[l,t]=document.querySelector('#world-lightmap').dataset.origin.split(',').map(Number);
@@ -16,7 +16,7 @@ try{await new Promise(r=>setTimeout(r,600));browser=await chromium.launch({headl
   await fs.writeFile(`${out}/${name}.webp`,await sharp(await sharp(await page.screenshot()).extract({left,top,width:440,height:400}).composite([{input:ring}]).toBuffer()).resize(880).webp({quality:82}).toBuffer());};
  const hero=()=>page.evaluate(()=>{const d=document.querySelector('#world-hero').dataset;return {x:+d.x,y:+d.y};});
  // Saved position -> reload -> hold a key until the hero rests.
- const walk=async(x,y,key,stopAtGate=false)=>{await page.evaluate(p=>localStorage.setItem('arkadia.stronghold.hero',JSON.stringify(p)),{x,y});await page.reload();await page.waitForFunction(()=>document.querySelector('#world-hero')?.dataset.x,null,{timeout:90000});await page.waitForTimeout(500);
+ const walk=async(x,y,key,stopAtGate=false)=>{await page.evaluate(p=>localStorage.setItem('arkodia.stronghold.hero',JSON.stringify(p)),{x,y});await page.reload();await page.waitForFunction(()=>document.querySelector('#world-hero')?.dataset.x,null,{timeout:90000});await page.waitForTimeout(500);
   const start=await hero();assert.deepEqual([start.x,start.y],[x,y],'start position is free');await page.keyboard.down(key);let last=start;for(;;){await page.waitForTimeout(stopAtGate?150:700);const now=await hero();if(stopAtGate&&now.y>750)break;if(Math.hypot(now.x-last.x,now.y-last.y)<.5)break;last=now;}await page.keyboard.up(key);return await hero();};
  await page.goto(url+'/?time=0.5&buildings=all');await page.waitForFunction(()=>document.querySelector('#world-hero')?.dataset.x,null,{timeout:90000});
  // Gateway: straight south across its doors reaches its back wall (y ~754) and towers (y ~735), as a walk along it from the east does.

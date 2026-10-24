@@ -18,10 +18,11 @@ Combat hits now distinguish normal blows, Ragnarok Online style critical hits, i
 
 | Event Type | Visual Treatment | Mechanics & Scaling |
 | --- | --- | --- |
-| **Normal Hit** | Crisp white integer (`10`) with bold dark outline (`#120b07`), short parabolic upward/sideways hop, and 6-ray white/amber hit spark sprite | Base `1.0x` hero attack damage (`damage(run)`) |
-| **Critical Hit (RO Style)** | Spiky 12-point crimson/gold burst badge behind larger yellow-gold gradient numbers (`15!`) with `CRITICAL` header, `1.42x -> 1.0x` pop-in scale, micro hit-shake on target, and twin crimson/gold cross-slash burst sprite | Base `15%` `critChance(run)` (`+4%` per *Titan Strike* or *Ascendant Star* rank, `+10%` per `crit` rank) and `1.5x–2.0x` `critMultiplier(run)` |
-| **Incoming Hero Damage** | Crisp red numbers (`-4`) with dark crimson outline + red impact spark | Triggered when revenant melee attacks land |
-| **Heal & Lifesteal** | Emerald green `+HP` numbers (`+2 HP`, `+35 HP`, `+8 HP`) floating upward | Triggered on *Soul Feast* kill sustain, *Second Wind* / *Vitality* / *Ascendant Star* picks, and Safe Zone regeneration |
+| **Normal Hit** | Crisp frameless MSDF gold-ivory integer (`10`) with dark outline (`#1a0c04`) and drop shadow, short parabolic upward/sideways hop, and 6-ray white/amber hit spark | Base `1.0x` hero attack damage (`damage(run)`) |
+| **Critical Hit (RO Style)** | Frameless (no bubble/starburst frame) larger yellow-gold gradient MSDF numbers (`15!`) with floating `CRITICAL` header, `1.42x -> 1.0x` pop-in scale, micro hit-shake on target, and twin crimson/gold cross-slash burst | Base `15%` `critChance(run)` (`+4%` per *Titan Strike* or *Ascendant Star* rank, `+10%` per `crit` rank) and `1.5x–2.0x` `critMultiplier(run)` |
+| **Combo / Level-Up Text** | Frameless gold-gradient MSDF floating text (`TRINITY AUTO-CAST!`, `DUAL AUTO-CAST!`, `LEVEL UP!`) with ivory subtext (`RIFT BOLT + RIFT DASH + RIFT TRAP`, `LV. X`), rendered without any background box or border bubble | Triggered on simultaneous multi-slot auto-casts and level progression |
+| **Incoming Hero Damage** | Crisp frameless red MSDF numbers (`-4`) with dark crimson outline + red impact spark | Triggered when revenant melee attacks land |
+| **Heal & Lifesteal** | Emerald green frameless `+HP` MSDF numbers (`+2 HP`, `+35 HP`, `+8 HP`) floating upward | Triggered on *Soul Feast* kill sustain, *Second Wind* / *Vitality* / *Ascendant Star* picks, and Safe Zone regeneration |
 
 ## Combat Architecture, Projectiles & 2:1 Isometric AoE Layers
 

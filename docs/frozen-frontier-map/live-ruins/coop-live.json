@@ -1,0 +1,111 @@
+{
+ "base": "https://ark-whachat.fural.space",
+ "errors": [],
+ "console": [],
+ "frontier": {
+  "props": 475,
+  "uprights": 207,
+  "columns": 2374,
+  "atlas": "/frozen-frontier/game/atlas.webp",
+  "loaded": true,
+  "failed": false,
+  "kit": 39,
+  "occlusionImages": 0,
+  "sprites": 38,
+  "visible": 0,
+  "assets": [
+   "arch-ne",
+   "arch-se",
+   "broken-watchtower",
+   "corner-n",
+   "corner-s",
+   "dead-snag",
+   "dead-tree",
+   "drift-mound",
+   "drift-ne",
+   "drift-se",
+   "flagstones-a",
+   "flagstones-b",
+   "flagstones-c",
+   "flagstones-d",
+   "floor-sunk",
+   "foundation",
+   "grass-patch",
+   "grass-tussock",
+   "ground-scuff-a",
+   "ground-scuff-b",
+   "paving",
+   "pillar-broken",
+   "pillar-intact",
+   "pine-broad",
+   "pine-sapling",
+   "pine-tall",
+   "rock-boulders",
+   "rock-scatter",
+   "rubble",
+   "ruined-gate",
+   "shrub-juniper",
+   "shrub-twigs",
+   "snowy-shrine",
+   "stairs-ne",
+   "stairs-nw",
+   "stone-chips-a",
+   "stone-chips-b",
+   "wall-ne",
+   "wall-se"
+  ]
+ },
+ "start": {
+  "x": 590,
+  "y": 420
+ },
+ "path": [
+  {
+   "keys": "KeyS",
+   "at": {
+    "x": 590,
+    "y": 587.9
+   },
+   "tile": [
+    11.79,
+    11.58
+   ]
+  },
+  {
+   "keys": "KeyS+KeyA",
+   "at": {
+    "x": 505.2,
+    "y": 634.8
+   },
+   "tile": [
+    11.86,
+    12.98
+   ]
+  },
+  {
+   "keys": "KeyS",
+   "at": {
+    "x": 500.2,
+    "y": 711.4
+   },
+   "tile": [
+    13.01,
+    14.22
+   ]
+  }
+ ],
+ "end": {
+  "x": 500.2,
+  "y": 713.8
+ },
+ "coop": {
+  "status": "online",
+  "room": "4973A",
+  "snapshots": 840,
+  "corrections": 1,
+  "maxCorrection": 13.411200000000008,
+  "rtt": 305.39999985694885
+ },
+ "moved": 307.2173172202374,
+ "ok": true
+}

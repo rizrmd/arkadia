@@ -9,10 +9,11 @@ import {spawn,execFileSync} from 'node:child_process';import assert from 'node:a
 const SECONDS=Number(process.env.SECONDS||40),TICK=50,STEP=120*TICK/1000;
 let server=null,url=process.env.COOP_URL;
 if(!url){
- const bin='server/bin/arkadia';execFileSync(process.env.GO||'go',['build','-o','bin/arkadia','./cmd/arkadia'],{cwd:'server',stdio:'inherit',env:{...process.env,CGO_ENABLED:'0'}});
- server=spawn(bin,[],{env:{...process.env,PORT:'8791',SITE_DIR:'dist'},stdio:['ignore','pipe','inherit']});
+ const bin=process.env.ARKODIA_BIN||'server/bin/arkodia';if(!process.env.ARKODIA_BIN)execFileSync(process.env.GO||'go',['build','-o','bin/arkodia','./cmd/arkodia'],{cwd:'server',stdio:'inherit',env:{...process.env,CGO_ENABLED:'0'}});
+ const port=process.env.PORT||String(18600+(process.pid%1000));
+ server=spawn(bin,[],{env:{...process.env,PORT:port,SITE_DIR:process.env.SITE_DIR||'dist'},stdio:['ignore','pipe','inherit']});
  await new Promise((ok,no)=>{server.stdout.on('data',d=>{if(String(d).includes('listening'))ok();});server.on('exit',c=>no(Error('server exited '+c)));});
- url='ws://127.0.0.1:8791/ws';
+ url=`ws://127.0.0.1:${port}/ws`;
 }
 function client(name,room){
  return new Promise((resolve,reject)=>{
@@ -57,7 +58,7 @@ try{
  const kills=last.players.reduce((k,p)=>k+p.k,0),hurt=[...a.ticks.values()].some(s=>s.players.some(p=>p.hp<p.max)),killed=[...a.ticks.values()].some(s=>s.enemies.some(e=>e.st==='die'));
  assert(kills>0&&killed,'the heroes killed revenants');
  // Gold remains a kill reward. XP is awarded only for collected souls; outstanding souls carry the rest.
- for(const p of last.players){const r=p.run;assert(r,'snapshot carries run progression');let xp=r.xp;for(let l=1;l<r.level;l++){const n=l-1;xp+=20+10*n+(5*n*(n+1))/2;}assert.equal(r.gold,5*p.k,p.name+' gold matches kills');const outstanding=(last.souls??[]).filter(s=>s.owner===p.id).reduce((n,s)=>n+10+Math.max(0,s.level-1)*4,0);assert(xp+outstanding>=10*p.k,p.name+' XP plus uncollected souls matches kills');}
+ for(const p of last.players){const r=p.run;assert(r,'snapshot carries run progression');let xp=r.xp;for(let l=1;l<r.level;l++)xp+=10*l*(10+(l-1)*4);assert.equal(r.gold,5*p.k,p.name+' gold matches kills');const outstanding=(last.souls??[]).filter(s=>s.owner===p.id).reduce((n,s)=>n+10+Math.max(0,s.level-1)*4,0);assert(xp+outstanding>=10*p.k,p.name+' XP plus uncollected souls matches kills');}
  // The cheat never outruns two hero steps per tick (the server's catch-up after a stall) and its forged messages
  // changed nothing: it stays connected, every revenant hp is a server value and both honest views agree.
  const id=cheat.welcome.you;let maxStep=0;const seq=[...a.ticks.keys()].sort((p,q)=>p-q);

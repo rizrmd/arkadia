@@ -1,0 +1,216 @@
+{
+  "source": "assets-src/mobile-hud/v1/mobile-hud-atlas.png",
+  "sourceSize": [
+    1216,
+    1294
+  ],
+  "prompt": "Transparent antique-gold mobile HUD component atlas based on the approved mobile portrait concept. No labels or numeric values. Crimson, cyan and amber crystal materials, filigree minimap, skill sockets, plaques and utility symbols.",
+  "frames": {
+    "mobile-map-frame": {
+      "width": 356,
+      "height": 344,
+      "bounds": [
+        847,
+        34,
+        356,
+        344
+      ],
+      "file": "map-frame.png",
+      "scale": 1
+    },
+    "mobile-skill-ring": {
+      "width": 260,
+      "height": 253,
+      "bounds": [
+        15,
+        635,
+        260,
+        253
+      ],
+      "file": "skill-ring.png",
+      "scale": 1
+    },
+    "mobile-skill-plate": {
+      "width": 414,
+      "height": 91,
+      "bounds": [
+        789,
+        669,
+        414,
+        91
+      ],
+      "file": "skill-plate.png",
+      "scale": 1
+    },
+    "mobile-level-plate": {
+      "width": 219,
+      "height": 74,
+      "bounds": [
+        798,
+        787,
+        219,
+        74
+      ],
+      "file": "level-plate.png",
+      "scale": 1
+    },
+    "mobile-coin": {
+      "width": 109,
+      "height": 99,
+      "bounds": [
+        744,
+        385,
+        109,
+        99
+      ],
+      "file": "coin.png",
+      "scale": 1
+    },
+    "mobile-clock": {
+      "width": 91,
+      "height": 95,
+      "bounds": [
+        856,
+        385,
+        91,
+        95
+      ],
+      "file": "clock.png",
+      "scale": 1
+    },
+    "mobile-pin": {
+      "width": 72,
+      "height": 95,
+      "bounds": [
+        962,
+        386,
+        72,
+        95
+      ],
+      "file": "pin.png",
+      "scale": 1
+    },
+    "mobile-arrow": {
+      "width": 73,
+      "height": 92,
+      "bounds": [
+        1042,
+        390,
+        73,
+        92
+      ],
+      "file": "arrow.png",
+      "scale": 1
+    },
+    "mobile-upgrade": {
+      "width": 139,
+      "height": 127,
+      "bounds": [
+        1040,
+        767,
+        139,
+        127
+      ],
+      "file": "upgrade.png",
+      "scale": 1
+    },
+    "mobile-hp-material": {
+      "width": 170,
+      "height": 39,
+      "bounds": [
+        66,
+        540,
+        170,
+        39
+      ],
+      "file": "hp-material.png",
+      "scale": 1
+    },
+    "mobile-gate-material": {
+      "width": 170,
+      "height": 39,
+      "bounds": [
+        329,
+        540,
+        170,
+        39
+      ],
+      "file": "gate-material.png",
+      "scale": 1
+    },
+    "mobile-xp-material": {
+      "width": 170,
+      "height": 39,
+      "bounds": [
+        589,
+        540,
+        170,
+        39
+      ],
+      "file": "xp-material.png",
+      "scale": 1
+    }
+  },
+  "qa": {
+    "map-frame": {
+      "transparentPixels": 107664,
+      "antialiasedPixels": 14800,
+      "totalPixels": 122464
+    },
+    "skill-ring": {
+      "transparentPixels": 55451,
+      "antialiasedPixels": 10288,
+      "totalPixels": 65780
+    },
+    "skill-plate": {
+      "transparentPixels": 6116,
+      "antialiasedPixels": 31550,
+      "totalPixels": 37674
+    },
+    "level-plate": {
+      "transparentPixels": 3735,
+      "antialiasedPixels": 12364,
+      "totalPixels": 16206
+    },
+    "coin": {
+      "transparentPixels": 4661,
+      "antialiasedPixels": 6120,
+      "totalPixels": 10791
+    },
+    "clock": {
+      "transparentPixels": 2232,
+      "antialiasedPixels": 6405,
+      "totalPixels": 8645
+    },
+    "pin": {
+      "transparentPixels": 3127,
+      "antialiasedPixels": 3702,
+      "totalPixels": 6840
+    },
+    "arrow": {
+      "transparentPixels": 4344,
+      "antialiasedPixels": 2372,
+      "totalPixels": 6716
+    },
+    "upgrade": {
+      "transparentPixels": 6345,
+      "antialiasedPixels": 11282,
+      "totalPixels": 17653
+    },
+    "hp-material": {
+      "transparentPixels": 0,
+      "antialiasedPixels": 6630,
+      "totalPixels": 6630
+    },
+    "gate-material": {
+      "transparentPixels": 0,
+      "antialiasedPixels": 6630,
+      "totalPixels": 6630
+    },
+    "xp-material": {
+      "transparentPixels": 0,
+      "antialiasedPixels": 6630,
+      "totalPixels": 6630
+    }
+  }
+}

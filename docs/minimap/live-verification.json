@@ -1,0 +1,503 @@
+{
+  "performanceCheck": null,
+  "results": [
+    {
+      "name": "portrait",
+      "width": 390,
+      "height": 844,
+      "map": {
+        "visible": true,
+        "bounds": {
+          "x": 279,
+          "y": 85,
+          "width": 103,
+          "height": 103
+        },
+        "tile": {
+          "u": 9.1640625,
+          "v": 8.9609375
+        },
+        "mapTile": {
+          "u": 469.6640625,
+          "v": 469.4609375
+        },
+        "geometryCount": 22,
+        "pxPerTile": 2.78125,
+        "marker": {
+          "x": 51.5,
+          "y": 51.5,
+          "rotation": 0
+        }
+      },
+      "tr": {
+        "left": 235.95,
+        "top": 6.34,
+        "right": 384.64,
+        "bottom": 76.54,
+        "width": 148.69,
+        "height": 70.2
+      },
+      "player": {
+        "minX": 2.925,
+        "minY": 4.714734375,
+        "maxX": 192.09822227887037,
+        "maxY": 80.34975,
+        "matrix": {
+          "array": null,
+          "a": 0.4875,
+          "b": 0,
+          "c": 0,
+          "d": 0.4875,
+          "tx": 10.6107421875,
+          "ty": 52.071093749999996
+        }
+      },
+      "skills": {
+        "arcCenter": {
+          "x": 382.64150943396226,
+          "y": 837.1014150943396
+        },
+        "sockets": [
+          {
+            "index": 0,
+            "x": 332.0518867924528,
+            "y": 790.191037735849,
+            "radius": 31.273584905660375,
+            "locked": false,
+            "name": "Rift Bolt",
+            "level": 1
+          },
+          {
+            "index": 1,
+            "x": 340.3301886792453,
+            "y": 708.3278301886793,
+            "radius": 24.83490566037736,
+            "locked": true,
+            "name": "Empty Slot",
+            "level": 0
+          },
+          {
+            "index": 2,
+            "x": 245.58962264150944,
+            "y": 805.8278301886793,
+            "radius": 24.83490566037736,
+            "locked": true,
+            "name": "Empty Slot",
+            "level": 0
+          }
+        ],
+        "scale": 0.45990566037735847
+      }
+    },
+    {
+      "name": "narrow",
+      "width": 320,
+      "height": 568,
+      "map": {
+        "visible": true,
+        "bounds": {
+          "x": 227,
+          "y": 71,
+          "width": 85,
+          "height": 85
+        },
+        "tile": {
+          "u": 9.1640625,
+          "v": 8.9609375
+        },
+        "mapTile": {
+          "u": 469.6640625,
+          "v": 469.4609375
+        },
+        "geometryCount": 22,
+        "pxPerTile": 2.21875,
+        "marker": {
+          "x": 42.5,
+          "y": 42.5,
+          "rotation": 0
+        }
+      },
+      "tr": {
+        "left": 193.6,
+        "top": 5.2,
+        "right": 315.6,
+        "bottom": 62.8,
+        "width": 122,
+        "height": 57.6
+      },
+      "player": {
+        "minX": 2.4000000000000004,
+        "minY": 3.8685000000000005,
+        "maxX": 157.61905417753468,
+        "maxY": 65.928,
+        "matrix": {
+          "array": null,
+          "a": 0.4,
+          "b": 0,
+          "c": 0,
+          "d": 0.4,
+          "tx": 8.70625,
+          "ty": 42.725
+        }
+      },
+      "skills": {
+        "arcCenter": {
+          "x": 313.9622641509434,
+          "y": 562.3396226415094
+        },
+        "sockets": [
+          {
+            "index": 0,
+            "x": 272.45283018867923,
+            "y": 523.8490566037735,
+            "radius": 25.660377358490567,
+            "locked": false,
+            "name": "Rift Bolt",
+            "level": 1
+          },
+          {
+            "index": 1,
+            "x": 279.2452830188679,
+            "y": 456.6792452830189,
+            "radius": 20.37735849056604,
+            "locked": true,
+            "name": "Empty Slot",
+            "level": 0
+          },
+          {
+            "index": 2,
+            "x": 201.50943396226415,
+            "y": 536.6792452830189,
+            "radius": 20.37735849056604,
+            "locked": true,
+            "name": "Empty Slot",
+            "level": 0
+          }
+        ],
+        "scale": 0.37735849056603776
+      }
+    },
+    {
+      "name": "landscape",
+      "width": 844,
+      "height": 390,
+      "map": {
+        "visible": true,
+        "bounds": {
+          "x": 727,
+          "y": 71,
+          "width": 109,
+          "height": 109
+        },
+        "tile": {
+          "u": 9.1640625,
+          "v": 8.9609375
+        },
+        "mapTile": {
+          "u": 469.6640625,
+          "v": 469.4609375
+        },
+        "geometryCount": 22,
+        "pxPerTile": 2.96875,
+        "marker": {
+          "x": 54.5,
+          "y": 54.5,
+          "rotation": 0
+        }
+      },
+      "tr": {
+        "left": 700.6,
+        "top": 5.39,
+        "right": 827.84,
+        "bottom": 63,
+        "width": 127.24,
+        "height": 57.61
+      },
+      "player": {
+        "minX": 2.9011689691817213,
+        "minY": 4.753254516471839,
+        "maxX": 232.2069368512134,
+        "maxY": 66.31243358129649,
+        "matrix": {
+          "array": null,
+          "a": 0.41445270988310307,
+          "b": 0,
+          "c": 0,
+          "d": 0.41445270988310307,
+          "tx": 8.606369553666312,
+          "ty": 42.61091923485653
+        }
+      },
+      "skills": {
+        "arcCenter": {
+          "x": 837.3687566418704,
+          "y": 383.78320935175344
+        },
+        "sockets": [
+          {
+            "index": 0,
+            "x": 759.451647183847,
+            "y": 314.15515409139215,
+            "radius": 25.69606801275239,
+            "locked": false,
+            "name": "Rift Bolt",
+            "level": 1
+          },
+          {
+            "index": 1,
+            "x": 810.8437832093517,
+            "y": 282.6567481402763,
+            "radius": 20.722635494155153,
+            "locked": true,
+            "name": "Empty Slot",
+            "level": 0
+          },
+          {
+            "index": 2,
+            "x": 722.9798087141339,
+            "y": 361.4027630180659,
+            "radius": 20.722635494155153,
+            "locked": true,
+            "name": "Empty Slot",
+            "level": 0
+          }
+        ],
+        "scale": 0.41445270988310307
+      }
+    },
+    {
+      "name": "desktop",
+      "width": 1440,
+      "height": 900,
+      "map": {
+        "visible": true,
+        "bounds": {
+          "x": 1284,
+          "y": 139,
+          "width": 148,
+          "height": 148
+        },
+        "tile": {
+          "u": 9.1640625,
+          "v": 8.9609375
+        },
+        "mapTile": {
+          "u": 469.6640625,
+          "v": 469.4609375
+        },
+        "geometryCount": 22,
+        "pxPerTile": 4.1875,
+        "marker": {
+          "x": 74,
+          "y": 74,
+          "rotation": 0
+        }
+      },
+      "tr": {
+        "left": 1142.01,
+        "top": 11.2,
+        "right": 1406.41,
+        "bottom": 130.91,
+        "width": 264.4,
+        "height": 119.71
+      },
+      "player": {
+        "minX": 6.028708133971293,
+        "minY": 9.877392344497608,
+        "maxX": 482.5323391468351,
+        "maxY": 137.79904306220095,
+        "matrix": {
+          "array": null,
+          "a": 0.861244019138756,
+          "b": 0,
+          "c": 0,
+          "d": 0.861244019138756,
+          "tx": 17.88427033492823,
+          "ty": 88.54665071770336
+        }
+      },
+      "skills": {
+        "arcCenter": {
+          "x": 1426.22009569378,
+          "y": 887.0813397129186
+        },
+        "sockets": [
+          {
+            "index": 0,
+            "x": 1264.3062200956938,
+            "y": 742.3923444976076,
+            "radius": 53.397129186602875,
+            "locked": false,
+            "name": "Rift Bolt",
+            "level": 1
+          },
+          {
+            "index": 1,
+            "x": 1371.1004784688996,
+            "y": 676.9377990430622,
+            "radius": 43.0622009569378,
+            "locked": true,
+            "name": "Empty Slot",
+            "level": 0
+          },
+          {
+            "index": 2,
+            "x": 1188.5167464114832,
+            "y": 840.5741626794259,
+            "radius": 43.0622009569378,
+            "locked": true,
+            "name": "Empty Slot",
+            "level": 0
+          }
+        ],
+        "scale": 0.861244019138756
+      }
+    }
+  ],
+  "movement": {
+    "before": {
+      "visible": true,
+      "bounds": {
+        "x": 279,
+        "y": 85,
+        "width": 103,
+        "height": 103
+      },
+      "tile": {
+        "u": 9.1640625,
+        "v": 8.9609375
+      },
+      "mapTile": {
+        "u": 469.6640625,
+        "v": 469.4609375
+      },
+      "geometryCount": 22,
+      "pxPerTile": 2.78125,
+      "marker": {
+        "x": 51.5,
+        "y": 51.5,
+        "rotation": 0
+      }
+    },
+    "after": {
+      "visible": true,
+      "bounds": {
+        "x": 279,
+        "y": 85,
+        "width": 103,
+        "height": 103
+      },
+      "tile": {
+        "u": 10.173011975814504,
+        "v": 9.969886975814504
+      },
+      "mapTile": {
+        "u": 470.6730119758145,
+        "v": 470.4698869758145
+      },
+      "geometryCount": 22,
+      "pxPerTile": 2.78125,
+      "marker": {
+        "x": 51.5,
+        "y": 51.5,
+        "rotation": 3.141592653589793
+      }
+    }
+  },
+  "edges": [
+    {
+      "requested": {
+        "u": -460,
+        "v": 470
+      },
+      "ok": true,
+      "map": {
+        "visible": true,
+        "bounds": {
+          "x": 279,
+          "y": 85,
+          "width": 103,
+          "height": 103
+        },
+        "tile": {
+          "u": -460,
+          "v": 470
+        },
+        "mapTile": {
+          "u": 0.5,
+          "v": 930.5
+        },
+        "geometryCount": 22,
+        "pxPerTile": 2.78125,
+        "marker": {
+          "x": 51.5,
+          "y": 51.5,
+          "rotation": -1.565344400121751
+        }
+      }
+    },
+    {
+      "requested": {
+        "u": 470,
+        "v": -460
+      },
+      "ok": true,
+      "map": {
+        "visible": true,
+        "bounds": {
+          "x": 279,
+          "y": 85,
+          "width": 103,
+          "height": 103
+        },
+        "tile": {
+          "u": 470,
+          "v": -460
+        },
+        "mapTile": {
+          "u": 930.5,
+          "v": 0.5
+        },
+        "geometryCount": 22,
+        "pxPerTile": 2.78125,
+        "marker": {
+          "x": 51.5,
+          "y": 51.5,
+          "rotation": 1.5707963267948966
+        }
+      }
+    },
+    {
+      "requested": {
+        "u": 470,
+        "v": 470
+      },
+      "ok": true,
+      "map": {
+        "visible": true,
+        "bounds": {
+          "x": 279,
+          "y": 85,
+          "width": 103,
+          "height": 103
+        },
+        "tile": {
+          "u": 470,
+          "v": 470
+        },
+        "mapTile": {
+          "u": 930.5,
+          "v": 930.5
+        },
+        "geometryCount": 22,
+        "pxPerTile": 2.78125,
+        "marker": {
+          "x": 51.5,
+          "y": 51.5,
+          "rotation": 4.2487413713838835
+        }
+      }
+    }
+  ],
+  "errors": []
+}

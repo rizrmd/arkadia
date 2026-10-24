@@ -1,6 +1,6 @@
 ## Playable stronghold
 
-Open `/stronghold.html` in the existing Arkadia Vite build. `npm run build` typechecks and builds the stronghold, arena and expedition pages together. Arena and expedition have return links. The arena study remains at `/index.html`.
+Open `/stronghold.html` in the existing Arkodia Vite build. `npm run build` typechecks and builds the stronghold, arena and expedition pages together. Arena and expedition have return links. The arena study remains at `/index.html`.
 
 ## Economy and provisional balance
 
@@ -22,7 +22,7 @@ Run entry creates a unique current run ID. A return claim must match that ID, ha
 
 ## Save and transaction model
 
-`arkadia-stronghold-v1` in browser localStorage stores balances, production timestamps/fractions, levels, Warden, training, weapon/affix, skills and run reward IDs. Each mutation acquires a same-origin Web Lock, reads the latest save, validates it, settles idle output, applies the action and writes one complete snapshot. UI updates only after the write. This prevents repeated click and concurrent-tab claims. Unsupported browsers show a transaction error. JSON backup export/import is available; imports intentionally replace local progress. Invalid saves are retained and reported rather than silently reset.
+`arkodia-stronghold-v1` in browser localStorage stores balances, production timestamps/fractions, levels, Warden, training, weapon/affix, skills and run reward IDs. Each mutation acquires a same-origin Web Lock, reads the latest save, validates it, settles idle output, applies the action and writes one complete snapshot. UI updates only after the write. This prevents repeated click and concurrent-tab claims. Unsupported browsers show a transaction error. JSON backup export/import is available; imports intentionally replace local progress. Invalid saves are retained and reported rather than silently reset.
 
 This is local single-player persistence using the device clock. Browser save edits, importing old backups and clock-forward cheating are not prevented. There is no server authority, account sync, multi-device merge or anti-cheat guarantee.
 
@@ -47,4 +47,4 @@ Verified public preview: https://ark-whachat.fural.space/
 
 Custom sandbox `arkadia-stronghold` has a persisted, supervised boot script serving the three-page build from its own `dist` directory. It is independent of this AgentSession. The `/` route opens the stronghold; `/index.html` opens the existing arena. `sandboxes serve` was used to publish build outputs. Large uploads hit the platform's 30-second gateway timeout and left partial files; completing smaller batches through the same supported command resolved it. Public browser smoke passed after the final code upload. Screenshots and the public browser report are also served under `/evidence/stronghold/`.
 
-Peer movement changes remained in the separate legacy `~/arkadia` clone. This task uses the registered linked clone and branch `feat/stronghold`; no peer character, sprite, movement, or extraction files were changed or committed.
+Peer movement changes remained in the separate legacy `~/arkodia` clone. This task uses the registered linked clone and branch `feat/stronghold`; no peer character, sprite, movement, or extraction files were changed or committed.

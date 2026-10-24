@@ -2,7 +2,7 @@ import {chromium} from 'playwright';import {spawn} from 'node:child_process';imp
 const server=process.env.DEMO_URL?null:spawn('node',['server.mjs'],{env:{...process.env,PORT:'3071'}});let browser;
 try{await new Promise(r=>setTimeout(r,600));browser=await chromium.launch({headless:true,env:{...process.env,LD_LIBRARY_PATH:'/home/dev/.local/browser-libs/usr/lib/x86_64-linux-gnu:/opt/fural-antigravity-glibc'},args:['--no-sandbox','--no-zygote','--single-process']});
  const page=await browser.newPage({viewport:{width:1000,height:900},deviceScaleFactor:2});
- await page.addInitScript(()=>localStorage.setItem('arkadia.stronghold.hero',JSON.stringify({x:577,y:700})));
+ await page.addInitScript(()=>localStorage.setItem('arkodia.stronghold.hero',JSON.stringify({x:577,y:700})));
  await page.goto((process.env.DEMO_URL||'http://127.0.0.1:3071')+'/?time=0.5');await page.waitForFunction(()=>document.querySelector('#world-canvas')?.dataset.ready==='true');await page.waitForTimeout(1000);
  await fs.mkdir('docs/full-gateway',{recursive:true});
  const shot=async name=>{const clip=await page.locator('#world-gate-doors').evaluate(e=>{const r=e.getBoundingClientRect();return {x:Math.max(0,r.x-25),y:Math.max(0,r.y-20),width:Math.min(r.width+50,innerWidth-r.x+25),height:Math.min(r.height+70,innerHeight-r.y+20)};});await page.screenshot({path:'docs/full-gateway/'+name+'.png',clip});};

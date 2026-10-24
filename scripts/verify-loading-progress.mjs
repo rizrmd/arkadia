@@ -23,7 +23,7 @@ try{
   if(Date.now()-t0>300000)throw new Error('Loading did not finish in 5 minutes');
   await new Promise(r=>setTimeout(r,200));
  }
- await page.waitForFunction(()=>document.querySelector('#world-canvas')?.dataset.ready==='true'&&document.querySelector('#world-hero'),null,{timeout:60000});
+ await page.waitForFunction(()=>document.querySelector('#world-canvas')?.dataset.ready==='true'&&(document.querySelector('#world-hero')||window.__WORLD_HERO__),null,{timeout:60000});
  await page.waitForTimeout(800);await page.screenshot({path:out+'/loaded.png'});
  const artwork=samples.filter(s=>s.label.startsWith('Loading artwork ·')),totals=new Set(artwork.map(s=>s.label.split(' of ')[1]));
  // Fraction of the artwork phase spent at each 10% band: byte-proportional progress spreads time evenly.

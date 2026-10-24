@@ -1,0 +1,56 @@
+spritePlayerSheet({
+ "name": "Ember Warden — Death",
+ "hero": "ember-warden",
+ "pose": "death",
+ "sheet": "ember-warden-death.webp?v=fca96cb7",
+ "sheetHalf": "ember-warden-death@0.5x.webp?v=fca96cb7",
+ "cell": [
+  384,
+  384
+ ],
+ "columns": 8,
+ "rows": 8,
+ "storedRows": 5,
+ "rowMap": [
+  0,
+  1,
+  2,
+  3,
+  4,
+  3,
+  2,
+  1
+ ],
+ "mirrorRows": [
+  false,
+  false,
+  false,
+  false,
+  false,
+  true,
+  true,
+  true
+ ],
+ "pivot": [
+  192,
+  360
+ ],
+ "fps": 8,
+ "loop": false,
+ "rowLabels": [
+  "N",
+  "NE",
+  "E",
+  "SE",
+  "S",
+  "SW",
+  "W",
+  "NW"
+ ],
+ "defaultRow": 4,
+ "source": {
+  "knowledge": "NKBD3c1f34f5ca7b63f32516d2e9",
+  "attachment": "DAf3c5c12f8b5016b9708c6c3e",
+  "file": "assets-src/sprite-player/ember-warden-death.png"
+ }
+});

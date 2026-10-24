@@ -6,7 +6,7 @@ const server=process.env.DEMO_URL?null:spawn('node',['server.mjs'],{env:{...proc
 try{await new Promise(r=>setTimeout(r,600));
  browser=await chromium.launch({headless:true,env:{...process.env,LD_LIBRARY_PATH:'/home/dev/.local/browser-libs/usr/lib/x86_64-linux-gnu:/opt/fural-antigravity-glibc'},args:['--no-sandbox','--no-zygote','--single-process']});
  const page=await browser.newPage({viewport:{width:1440,height:1000},deviceScaleFactor:2});
- await page.addInitScript(()=>localStorage.setItem('arkadia.stronghold.hero',JSON.stringify({x:577,y:640})));
+ await page.addInitScript(()=>localStorage.setItem('arkodia.stronghold.hero',JSON.stringify({x:577,y:640})));
  await page.goto((process.env.DEMO_URL||'http://127.0.0.1:3069')+'/?time=0.5');await page.waitForFunction(()=>document.querySelector('#world-canvas')?.dataset.ready==='true');await page.waitForTimeout(1200);
  const shot=async(name,frames)=>{await page.waitForFunction(f=>f.includes(+document.querySelector('#world-gate-doors').dataset.frame),frames,{polling:16,timeout:15000});
   const r=await page.evaluate(()=>{const b=document.querySelector('#world-gate-doors').getBoundingClientRect();return {x:b.x,y:b.y,w:b.width,h:b.height};});

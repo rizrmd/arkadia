@@ -2,7 +2,7 @@
 
 The lower-left and lower-right tower bases now blend into the surrounding ground with feathered snow, textured soil and moss, matching the adjoining walls. The foundation face is cached and composited into every animated frame before ambient lighting. The central doorway stays clear.
 
-[Play Arkadia](https://ark-whachat.fural.space/)
+[Play Arkodia](https://ark-whachat.fural.space/)
 
 Implementation `d2cab2d` is pushed and deployed. Production build, Go tests and co-op smoke checks passed. Public HTTPS browser checks passed for two-way passage, tower collision, animation reversal and a 390 × 844 viewport at 4× CPU slowdown. Animation p95 was 83.3 ms, with unchanged world/light/shadow rebuild counts and no browser errors. Traversal tests use offline mode so a co-op server spawn cannot override their saved starting position.
 

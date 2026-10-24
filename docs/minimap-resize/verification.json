@@ -1,0 +1,144 @@
+{
+  "checks": [
+    {
+      "name": "resize grows the minimap",
+      "pass": true,
+      "data": {
+        "from": 259,
+        "to": 379
+      }
+    },
+    {
+      "name": "resize keeps the opposite (top-right) corner",
+      "pass": true,
+      "data": {
+        "b0": {
+          "x": 1161,
+          "y": 130,
+          "width": 259,
+          "height": 259
+        },
+        "mid": {
+          "x": 1041,
+          "y": 130,
+          "width": 379,
+          "height": 379
+        }
+      }
+    },
+    {
+      "name": "shift while resizing moves without resizing",
+      "pass": true,
+      "data": {
+        "mid": {
+          "x": 1041,
+          "y": 130,
+          "width": 379,
+          "height": 379
+        },
+        "moving": {
+          "x": 841,
+          "y": 130,
+          "width": 379,
+          "height": 379
+        }
+      }
+    },
+    {
+      "name": "release keeps the layout",
+      "pass": true,
+      "data": {
+        "after": {
+          "x": 841,
+          "y": 130,
+          "width": 379,
+          "height": 379
+        }
+      }
+    },
+    {
+      "name": "stays square and on-screen",
+      "pass": true,
+      "data": {
+        "after": {
+          "x": 841,
+          "y": 130,
+          "width": 379,
+          "height": 379
+        }
+      }
+    },
+    {
+      "name": "dragging the body moves it",
+      "pass": true,
+      "data": {
+        "after": {
+          "x": 841,
+          "y": 130,
+          "width": 379,
+          "height": 379
+        },
+        "dragged": {
+          "x": 761,
+          "y": 210,
+          "width": 379,
+          "height": 379
+        }
+      }
+    },
+    {
+      "name": "layout saved",
+      "pass": true,
+      "data": {
+        "saved": "{\"size\":379,\"right\":300,\"top\":210}"
+      }
+    },
+    {
+      "name": "layout restored after reload",
+      "pass": true,
+      "data": {
+        "dragged": {
+          "x": 761,
+          "y": 210,
+          "width": 379,
+          "height": 379
+        },
+        "reloaded": {
+          "x": 761,
+          "y": 210,
+          "width": 379,
+          "height": 379
+        }
+      }
+    },
+    {
+      "name": "double-click grip resets to default",
+      "pass": true,
+      "data": {
+        "b0": {
+          "x": 1161,
+          "y": 130,
+          "width": 259,
+          "height": 259
+        },
+        "reset": {
+          "x": 1161,
+          "y": 130,
+          "width": 259,
+          "height": 259
+        }
+      }
+    },
+    {
+      "name": "mobile unaffected",
+      "pass": true,
+      "data": {
+        "x": 279,
+        "y": 10,
+        "width": 103,
+        "height": 103
+      }
+    }
+  ],
+  "errors": []
+}
