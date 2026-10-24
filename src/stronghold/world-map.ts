@@ -19,6 +19,8 @@ export class WorldMap extends Container {
  private shade=new Graphics();
  private panel=new Container();
  private art:Container|undefined;
+ private artMask=new Graphics();
+ private backing=new Graphics();
  private view=new Container();
  private clip=new Graphics();
  private content=new Container();
@@ -49,9 +51,9 @@ export class WorldMap extends Container {
   this.panel.eventMode='static';
   this.view.eventMode='static';this.view.cursor='crosshair';
   this.content.addChild(this.ground,this.geometry);
-  this.view.addChild(this.clip,this.content,this.overlay,this.courtLabel);this.content.mask=this.clip;
+  this.view.addChild(this.backing,this.clip,this.content,this.overlay,this.courtLabel);this.content.mask=this.clip;
   this.addChild(this.shade,this.panel);
-  this.panel.addChild(this.view,this.title,this.readout,this.hint);
+  this.panel.addChild(this.artMask,this.view,this.title,this.readout,this.hint);
   this.button(36,(g,w)=>{g.moveTo(w/2-6,10).lineTo(w/2+6,22).moveTo(w/2+6,10).lineTo(w/2-6,22).stroke({color:0xf2d590,width:2});},()=>this.open(false));
   this.button(36,(g,w)=>{g.moveTo(w/2-7,16).lineTo(w/2+7,16).stroke({color:0xf2d590,width:2});},()=>this.zoomAt(1/1.5));
   this.button(36,(g,w)=>{g.moveTo(w/2-7,16).lineTo(w/2+7,16).moveTo(w/2,9).lineTo(w/2,23).stroke({color:0xf2d590,width:2});},()=>this.zoomAt(1.5));
@@ -106,11 +108,15 @@ export class WorldMap extends Container {
  private layout(){
   const W=innerWidth,H=innerHeight,m=W<1024?8:24;
   this.w=Math.min(W-m*2,1180);this.h=Math.min(H-m*2,820);
-  this.shade.clear().rect(0,0,W,H).fill({color:0x05080a,alpha:.62});
+  // Semi-transparent: the live game shows through the dim and through the map itself.
+  this.shade.clear().rect(0,0,W,H).fill({color:0x05080a,alpha:.3});
   this.panel.position.set(Math.round((W-this.w)/2),Math.round((H-this.h)/2));
   this.panel.hitArea=new Rectangle(0,0,this.w,this.h);
-  this.art?.destroy();this.art=this.panel.addChildAt(this.frames.frame('panel-bronze',this.w,this.h),0);
   this.vw=this.w-INSET*2;this.vh=this.h-HEADER-FOOTER;
+  // The bronze panel keeps its header and footer solid for the text; a hole over the map lets the world through.
+  this.art?.destroy();this.art=this.panel.addChildAt(this.frames.frame('panel-bronze',this.w,this.h),0);
+  this.artMask.clear().rect(0,0,this.w,this.h).fill(0xffffff).roundRect(INSET,HEADER,this.vw,this.vh,8).cut();this.art.mask=this.artMask;
+  this.backing.clear().roundRect(0,0,this.vw,this.vh,8).fill({color:0x0b1216,alpha:.34}).stroke({color:0xd8b66b,width:1,alpha:.55});
   this.view.position.set(INSET,HEADER);this.view.hitArea=new Rectangle(0,0,this.vw,this.vh);
   this.clip.clear().roundRect(0,0,this.vw,this.vh,8).fill(0xffffff);
   this.title.place(22,35);
@@ -150,7 +156,7 @@ export class WorldMap extends Container {
  }
  private rebuild(built:Building[]){
   const z=this.z,g=this.ground,n=MAP.sizeTiles,o=O,chunk=MAP.chunkTiles;
-  g.clear().poly(MAP_CORNERS.flatMap(p=>{const q=unit(p);return [q.x,q.y];})).fill(0x1d2a31);
+  g.clear().poly(MAP_CORNERS.flatMap(p=>{const q=unit(p);return [q.x,q.y];})).fill({color:0x1d2a31,alpha:.42});
   // Chunk lines (24 tiles) give the eye something to hold while dragging across open snow.
   for(let t=chunk;t<n;t+=chunk){
    const a=project(t-o.u,-o.v),b=project(t-o.u,n-o.v),c=project(-o.u,t-o.v),d=project(n-o.u,t-o.v);
