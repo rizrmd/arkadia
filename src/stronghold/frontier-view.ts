@@ -6,8 +6,8 @@ import type {Column} from './hero';
 // caps in a depth-sorted layer above the raised terrain, both culled to the camera, each layer one batch. Actors are
 // drawn above everything and cut out where a prop stands in front (hero.ts occluders), so the props join the hero's
 // scene: from the first frame for collision, and for occlusion once the art has arrived, as one image per sprite
-// cropped from the atlas (hero.ts keys its alpha masks by image src). The atlas (1.2 MB WebP) loads alongside the
-// loading screen without holding it up.
+// cropped from the atlas (hero.ts keys its alpha masks by image src). The atlas (1.2 MB WebP) is fetched once play
+// starts (load()), after the loading screen, so it never competes with the game's own start-up.
 export type FrontierPlaced={layer:'world';id:string;x:number;y:number;width:number;height:number;foot:number;shear:number;vertical:number;depth:number;opacity:number;file:string;selected:boolean;occluder:undefined;image:HTMLImageElement;frontier:FrontierProp};
 export function createFrontier(worldStage:Container){
  const ground=new Container(),upright=new Container();
@@ -23,6 +23,7 @@ export function createFrontier(worldStage:Container){
  const views:View[]=FRONTIER_PROPS.map(p=>({prop:p,sprite:null,x0:p.x-p.width*p.pivot[0],x1:p.x+p.width*(1-p.pivot[0]),y0:p.y-p.lift-p.height*p.pivot[1],y1:p.y-p.lift+p.height*(1-p.pivot[1])}));
  let loaded=false,failed=false,visible=0,cull='';
  const atlas=new Image();atlas.decoding='async';
+ let start=()=>{};
  const ready=new Promise<void>(done=>{
   atlas.onerror=()=>{failed=true;done();};
   atlas.onload=()=>{atlas.decode().catch(()=>{}).then(()=>{
@@ -37,7 +38,7 @@ export function createFrontier(worldStage:Container){
    for(const [asset,img] of images){const f=FRONTIER_PROPS.find(p=>p.asset===asset)!.frame,c=document.createElement('canvas');c.width=f[2];c.height=f[3];
     c.getContext('2d')!.drawImage(atlas,f[0],f[1],f[2],f[3],0,0,f[2],f[3]);c.toBlob(b=>{if(b)img.src=URL.createObjectURL(b);});}
   });};
-  atlas.src=FRONTIER_ATLAS;
+  start=()=>{if(!atlas.src)atlas.src=FRONTIER_ATLAS;};
  });
  function place(x:number,y:number,scale:number,w:number,h:number){
   for(const c of [ground,upright]){c.position.set(x,y);c.scale.set(scale);}
@@ -49,10 +50,10 @@ export function createFrontier(worldStage:Container){
  function setAmbient(rgb:number){ground.tint=rgb;upright.tint=rgb;}
  const stats=()=>({props:FRONTIER_PROPS.length,uprights:scene.length,columns:FRONTIER_COLUMNS.length,atlas:FRONTIER_ATLAS,loaded,failed,
   occlusionImages:[...images.values()].filter(i=>i.complete&&i.naturalWidth>0).length,sprites:images.size,visible,assets:[...images.keys()].sort()});
- (window as any).__FROZEN_FRONTIER__={stats,columns:()=>FRONTIER_COLUMNS,props:()=>FRONTIER_PROPS.map(p=>({asset:p.asset,zone:p.zone,u:p.u,v:p.v,x:p.x,y:p.y,layer:p.layer,solid:p.blocks.length>0})),ready,
+ (window as any).__FROZEN_FRONTIER__={stats,load:()=>start(),columns:()=>FRONTIER_COLUMNS,props:()=>FRONTIER_PROPS.map(p=>({asset:p.asset,zone:p.zone,u:p.u,v:p.v,x:p.x,y:p.y,layer:p.layer,solid:p.blocks.length>0})),ready,
   // QA: hide the scenery to measure what it costs (scripts/frozen-frontier-map/verify.mjs).
   setVisible:(on:boolean)=>{ground.visible=upright.visible=on;}};
- return {scene,ready,place,setAmbient,stats,
+ return {scene,ready,place,setAmbient,stats,load:()=>start(),
   // Footprint columns for a frontier prop in the hero's scene, else undefined.
   columns:(p:{id?:unknown})=>typeof p.id==='string'?columns.get(p.id):undefined};
 }

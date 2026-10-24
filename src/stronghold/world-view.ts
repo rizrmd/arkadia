@@ -356,7 +356,7 @@ export async function createWorldView(
  // Gameplay (the hero and the revenants) starts once `hold` resolves: after the loading screen, and on a first visit
  // after Choose Your Hero. Until then the camera already frames the hero.
  const loadGateAfterDone=()=>{const s=document.querySelector<HTMLElement>('#loading-screen');if(s&&s.dataset.state!=='done'){setTimeout(loadGateAfterDone,120);return;}ensureGateSheet();};
- parallax.start();void hold.then(()=>{hero.start();encounters.start();setTimeout(loadGateAfterDone,120);});
+ parallax.start();void hold.then(()=>{hero.start();encounters.start();frontier.load();setTimeout(loadGateAfterDone,120);});
  (window as any).__WORLD_MAP__={map:worldMap,walker,open:(v=true)=>worldMap.open(v),walkTo:(x:number,y:number)=>walker!.goTo(x,y),route:()=>walker!.route(),snapshot:()=>worldMap.snapshot(),screenOf:(x:number,y:number)=>worldMap.screenOf({x,y})};
  return {
   hud:encounters.hud,
