@@ -8,7 +8,7 @@ try{
  browser=await chromium.launch({headless:true,env:{...process.env,LD_LIBRARY_PATH:'/home/dev/.local/browser-libs/usr/lib/x86_64-linux-gnu:/opt/fural-antigravity-glibc'},args:['--no-sandbox','--no-zygote','--single-process']});
  const page=await browser.newPage({viewport:{width:390,height:844}}),errors=[];page.on('pageerror',e=>errors.push(e.message));
  const cdp=await page.context().newCDPSession(page);await cdp.send('Emulation.setCPUThrottlingRate',{rate:4});
- await page.addInitScript(()=>localStorage.setItem('arkadia.stronghold.hero',JSON.stringify({x:577,y:700})));
+ await page.addInitScript(()=>localStorage.setItem('arkodia.stronghold.hero',JSON.stringify({x:577,y:700})));
  await page.goto((process.env.DEMO_URL||'http://127.0.0.1:3068')+'/?time=0.5&offline=1');
  await page.waitForFunction(()=>document.querySelector('#world-canvas')?.dataset.ready==='true');await page.waitForTimeout(1200);
  const centerAlpha=()=>page.locator('#world-gate-doors').evaluate(e=>e.getContext('2d').getImageData(Math.floor(e.width/2),Math.floor(e.height*.65),1,1).data[3]);

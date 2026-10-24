@@ -1,0 +1,1114 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Arkodia — Real-Time 60 FPS 3D Hero &amp; Animation Lab (Rift Runner · Meshy t2.5)</title>
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "./vendor/three.module.min.js"
+    }
+  }
+  </script>
+  <style>
+    :root {
+      --bg: #0c0f16;
+      --panel: #131824;
+      --panel-border: #253047;
+      --text: #e8ecf4;
+      --muted: #93a1bd;
+      --accent: #38bdf8;
+      --accent-glow: rgba(56, 189, 248, 0.22);
+      --gold: #f59e0b;
+      --ok: #34d399;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 18px;
+      background: rgba(19, 24, 36, 0.92);
+      border-bottom: 1px solid var(--panel-border);
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .badge {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: var(--accent-glow);
+      color: var(--accent);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+    }
+    .badge.gold {
+      background: rgba(245, 158, 11, 0.16);
+      color: var(--gold);
+      border-color: rgba(245, 158, 11, 0.4);
+    }
+    .badge.ok {
+      background: rgba(52, 211, 153, 0.16);
+      color: var(--ok);
+      border-color: rgba(52, 211, 153, 0.4);
+    }
+    h1 {
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+    .meta-stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .meta-stats strong { color: var(--text); }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 14px;
+      padding: 14px;
+      flex: 1;
+      min-height: 0;
+    }
+    @media (max-width: 1024px) {
+      .layout { grid-template-columns: 1fr; }
+    }
+
+    .main-column {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .stage-card {
+      position: relative;
+      background: radial-gradient(circle at 50% 42%, #1b2436 0%, #0d111a 78%);
+      border: 1px solid var(--panel-border);
+      border-radius: 12px;
+      overflow: hidden;
+      height: 450px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #stage-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+      cursor: grab;
+    }
+    #stage-canvas:active { cursor: grabbing; }
+
+    .stage-overlay-top {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      right: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      pointer-events: none;
+      gap: 8px;
+    }
+    .hud-pill {
+      pointer-events: auto;
+      background: rgba(12, 15, 22, 0.82);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--panel-border);
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+    .hud-pill .title {
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 2px;
+    }
+
+    .stage-overlay-bottom {
+      position: absolute;
+      bottom: 12px;
+      left: 12px;
+      right: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      pointer-events: none;
+    }
+    .compass-bar {
+      pointer-events: auto;
+      display: flex;
+      gap: 4px;
+      background: rgba(12, 15, 22, 0.86);
+      border: 1px solid var(--panel-border);
+      padding: 4px;
+      border-radius: 8px;
+    }
+    .btn {
+      background: #1b2334;
+      color: var(--text);
+      border: 1px solid #2d3a54;
+      border-radius: 6px;
+      padding: 6px 10px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.14s ease;
+    }
+    .btn:hover { border-color: var(--accent); color: #fff; }
+    .btn.active {
+      background: rgba(56, 189, 248, 0.2);
+      border-color: var(--accent);
+      color: var(--accent);
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.18);
+    }
+
+    .grid-card {
+      position: relative;
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+      border-radius: 12px;
+      padding: 12px;
+    }
+    .grid-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      font-size: 13px;
+    }
+    .grid-header h2 {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+    }
+    .octant-wrap {
+      position: relative;
+      width: 100%;
+      height: 190px;
+      background: #0d111a;
+      border: 1px solid #1f293d;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    #octant-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .octant-labels {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      pointer-events: none;
+    }
+    .octant-cell-label {
+      border-left: 1px solid rgba(31, 41, 61, 0.75);
+      padding: 6px 8px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--muted);
+    }
+    .octant-cell-label:first-child { border-left: none; }
+    .octant-cell-label.active {
+      color: var(--accent);
+      background: rgba(56, 189, 248, 0.07);
+    }
+
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+      border-radius: 12px;
+      padding: 14px;
+    }
+    .panel h3 {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+    .anim-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px;
+    }
+    .anim-btn {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      text-align: left;
+      padding: 8px 10px;
+    }
+    .anim-btn .tag {
+      font-size: 10px;
+      padding: 1px 5px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.07);
+      color: var(--muted);
+    }
+
+    .control-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 10px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    input[type="range"] {
+      flex: 1;
+      accent-color: var(--accent);
+    }
+
+    .comparison-list {
+      font-size: 12px;
+      line-height: 1.55;
+      color: var(--muted);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .comparison-list li {
+      list-style: none;
+      padding-left: 14px;
+      position: relative;
+    }
+    .comparison-list li::before {
+      content: "•";
+      color: var(--ok);
+      font-weight: bold;
+      position: absolute;
+      left: 0;
+    }
+    .comparison-list strong { color: var(--text); }
+
+    #loading-banner {
+      position: absolute;
+      inset: 0;
+      background: rgba(12, 15, 22, 0.88);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      z-index: 20;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--accent);
+    }
+    body.embed-mode header,
+    body.embed-mode .comparison-panel {
+      display: none;
+    }
+    body.embed-mode .layout {
+      grid-template-columns: 1fr 300px;
+      padding: 8px;
+      gap: 8px;
+    }
+    body.embed-mode .stage-card {
+      height: 330px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <span class="badge">Meshy MCP · meshy-t2.5</span>
+      <span class="badge gold">High-Detail Topology · 31.6k Tris · 4K PBR</span>
+      <span class="badge ok">Real-Time WebGL · 60 FPS</span>
+      <h1 id="header-title">Arkodia — Real-Time 3D Hero &amp; Animation Lab (Rift Runner &amp; Ember Warden)</h1>
+    </div>
+    <div class="meta-stats">
+      <span id="asset-readout">Unified Asset: <strong>rift-runner.glb (2.37 MB)</strong></span>
+      <span>Skeleton: <strong>26 Bones · 60Hz Keyframe Interpolation</strong></span>
+      <span>Animations: <strong>6 Clips (Idle, Run, Idle Cast, Run + Cast, Hit, Death)</strong></span>
+      <span id="live-fps">Render: <strong>60 FPS (Real-Time WebGL)</strong></span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <div class="main-column">
+      <div class="stage-card">
+        <div id="loading-banner">
+          <div id="loading-text">Loading Real-Time 3D Hero (.glb) &amp; 7 Skeletal Animations...</div>
+        </div>
+        <canvas id="stage-canvas"></canvas>
+
+        <div class="stage-overlay-top">
+          <div class="hud-pill">
+            <div class="title" id="hud-clip-title">Hero: RIFT RUNNER · Clip: RUN_CAST (60 FPS Real-Time 3D)</div>
+            <div id="hud-clip-meta">Facing: SE (45°) · Camera: Isometric 2:1 Orthographic</div>
+            <div style="color: var(--muted); font-size: 11px; margin-top: 2px;">WASD / Arrows: Live 360° Run · Space: Idle Cast · E: Run While Casting · Drag: Orbit</div>
+          </div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <div class="compass-bar" id="hero-buttons">
+              <button class="btn active" data-hero="rift-runner">Rift Runner</button>
+              <button class="btn" data-hero="ember-warden">Ember Warden</button>
+            </div>
+            <div class="compass-bar" id="cam-buttons">
+              <button class="btn active" id="cam-iso-btn" data-cam="iso">Isometric 2:1 (Game)</button>
+              <button class="btn" id="cam-orbit-btn" data-cam="orbit">360° Free Perspective</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="stage-overlay-bottom">
+          <div class="compass-bar" id="dir-buttons">
+            <button class="btn" data-dir="N">N</button>
+            <button class="btn" data-dir="NE">NE</button>
+            <button class="btn" data-dir="E">E</button>
+            <button class="btn active" data-dir="SE">SE</button>
+            <button class="btn" data-dir="S">S</button>
+            <button class="btn" data-dir="SW">SW</button>
+            <button class="btn" data-dir="W">W</button>
+            <button class="btn" data-dir="NW">NW</button>
+            <button class="btn" id="turntable-btn">Turntable 360°</button>
+          </div>
+
+          <div class="compass-bar" id="shader-buttons">
+            <button class="btn active" data-shader="stylized">Stylized Dark-Fantasy</button>
+            <button class="btn" data-shader="pbr">Raw PBR</button>
+            <button class="btn" data-shader="wireframe">Smart Topology Wire</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-card">
+        <div class="grid-header">
+          <h2>Simultaneous 8-Direction Real-Time WebGL Viewports (60 FPS Multi-Scissor)</h2>
+          <span style="color: var(--ok); font-weight: 600; font-size: 12px;">✓ Pure WebGL (Zero 2D Copy) · ✓ True Left/Right Stride · ✓ Right-Hand Gauntlet</span>
+        </div>
+        <div class="octant-wrap">
+          <canvas id="octant-canvas"></canvas>
+          <div class="octant-labels" id="octant-labels">
+            <div class="octant-cell-label" data-cell="N">N</div>
+            <div class="octant-cell-label" data-cell="NE">NE</div>
+            <div class="octant-cell-label" data-cell="E">E</div>
+            <div class="octant-cell-label active" data-cell="SE">SE</div>
+            <div class="octant-cell-label" data-cell="S">S</div>
+            <div class="octant-cell-label" data-cell="SW">SW</div>
+            <div class="octant-cell-label" data-cell="W">W</div>
+            <div class="octant-cell-label" data-cell="NW">NW</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar">
+      <div class="panel">
+        <h3>Real-Time 60 FPS Skeletal Clips (6)</h3>
+        <div class="anim-grid" id="anim-buttons">
+          <button class="btn anim-btn" data-clip="idle"><span>Idle</span><span class="tag">ID 0</span></button>
+          <button class="btn anim-btn active" data-clip="run"><span>Run</span><span class="tag">Rig</span></button>
+          <button class="btn anim-btn" data-clip="idle_cast"><span>Idle Cast</span><span class="tag">ID 129</span></button>
+          <button class="btn anim-btn" data-clip="run_cast"><span>Run + Cast</span><span class="tag">Blend</span></button>
+          <button class="btn anim-btn" data-clip="hit"><span>Hit React</span><span class="tag">ID 178</span></button>
+          <button class="btn anim-btn" data-clip="death"><span>Death</span><span class="tag">ID 8</span></button>
+        </div>
+
+        <div class="control-row">
+          <button class="btn" id="play-pause-btn" style="min-width: 68px;">Pause</button>
+          <input type="range" id="timeline-slider" min="0" max="1" step="0.005" value="0" />
+          <span id="time-readout" style="min-width: 48px; text-align: right; font-variant-numeric: tabular-nums;">0.00s</span>
+        </div>
+
+        <div class="control-row">
+          <span>Speed</span>
+          <div class="compass-bar" id="speed-buttons">
+            <button class="btn" data-speed="0.25">0.25×</button>
+            <button class="btn" data-speed="0.5">0.5×</button>
+            <button class="btn active" data-speed="1">1×</button>
+            <button class="btn" data-speed="1.5">1.5×</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3>Play Live in Stronghold Game (60 FPS)</h3>
+        <p id="launch-stronghold-desc" style="font-size: 12px; color: var(--muted); line-height: 1.5; margin-bottom: 10px;">
+          Rift Runner's 3D rigged mesh &amp; 60 FPS skeletal animations (<code>idle_cast</code> &amp; <code>run_cast</code>) are wired directly into the Stronghold game engine (<code>?3d=1</code>) with full 360° rotation, dynamic sun shadows, and wall occlusion:
+        </p>
+        <a id="launch-stronghold-link" href="/?hero=rift-runner&amp;3d=1" target="_top" class="btn active" style="display: block; text-align: center; text-decoration: none; padding: 9px 12px;">
+          Launch Stronghold in Real-Time 3D Mode (60 FPS) →
+        </a>
+      </div>
+
+      <div class="panel comparison-panel">
+        <h3>Why Real-Time 60 FPS 3D Wins</h3>
+        <ul class="comparison-list">
+          <li><strong>Upper/Lower Body Skeletal Blending (<code>run_cast</code>):</strong> Lower-body bones run at full stride while upper-body spine &amp; right crystal gauntlet cast spells simultaneously.</li>
+          <li><strong>Smooth Crossfade Blending:</strong> Transitions between <code>Idle</code>, <code>Run</code>, <code>Idle Cast</code>, and <code>Run + Cast</code> blend smoothly over 160ms at 60 FPS.</li>
+          <li><strong>No N/S Hopping ("Engkle") or Mirror Flip:</strong> One 3D rig rotates continuously through 360° with accurate anatomy and right-hand crystal gauntlet.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import * as THREE from './vendor/three.module.min.js';
+    import { GLTFLoader } from './vendor/GLTFLoader.js';
+    import { OrbitControls } from './vendor/OrbitControls.js';
+    import * as SkeletonUtils from './vendor/SkeletonUtils.js';
+
+    if (new URLSearchParams(location.search).get('embed') === '1') {
+      document.body.classList.add('embed-mode');
+    }
+
+    const DIRECTIONS = [
+      { id: 'N',  yaw: Math.PI },
+      { id: 'NE', yaw: Math.PI * 0.75 },
+      { id: 'E',  yaw: Math.PI * 0.5 },
+      { id: 'SE', yaw: Math.PI * 0.25 },
+      { id: 'S',  yaw: 0 },
+      { id: 'SW', yaw: -Math.PI * 0.25 },
+      { id: 'W',  yaw: -Math.PI * 0.5 },
+      { id: 'NW', yaw: -Math.PI * 0.75 }
+    ];
+
+    const state = {
+      clip: 'run',
+      dir: 'SE',
+      yaw: Math.PI * 0.25,
+      turntable: false,
+      cameraMode: 'iso',
+      shaderMode: 'stylized',
+      playing: true,
+      speed: 1.0,
+      heroPos: { x: 0, z: 0 },
+      keys: new Set()
+    };
+
+    const stageCanvas = document.getElementById('stage-canvas');
+    const renderer = new THREE.WebGLRenderer({
+      canvas: stageCanvas,
+      antialias: true,
+      alpha: false,
+      powerPreference: 'high-performance',
+      preserveDrawingBuffer: true
+    });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.25;
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x0e131d);
+
+    const ISO_TILT = Math.atan(0.5); // 26.565 deg (2:1 isometric)
+    const ISO_DIST = 6.0;
+    const orthoSize = 1.45;
+    const orthoCam = new THREE.OrthographicCamera(-orthoSize, orthoSize, orthoSize, -orthoSize, 0.1, 50);
+    const perspCam = new THREE.PerspectiveCamera(34, 1, 0.1, 50);
+    perspCam.position.set(0, 1.85, 4.2);
+
+    const orbit = new OrbitControls(perspCam, stageCanvas);
+    orbit.target.set(0, 0.9, 0);
+    orbit.enableDamping = true;
+    orbit.enabled = false;
+
+    const ambient = new THREE.HemisphereLight(0xdbeafe, 0x1e293b, 1.35);
+    scene.add(ambient);
+
+    const sunLight = new THREE.DirectionalLight(0xfff3d6, 2.6);
+    sunLight.position.set(3.2, 5.4, 2.8);
+    sunLight.castShadow = true;
+    sunLight.shadow.mapSize.set(1024, 1024);
+    sunLight.shadow.camera.near = 0.5;
+    sunLight.shadow.camera.far = 16;
+    const sc = 2.6;
+    sunLight.shadow.camera.left = -sc;
+    sunLight.shadow.camera.right = sc;
+    sunLight.shadow.camera.top = sc;
+    sunLight.shadow.camera.bottom = -sc;
+    sunLight.shadow.bias = -0.0005;
+    scene.add(sunLight);
+
+    const rimLight = new THREE.DirectionalLight(0x38bdf8, 1.65);
+    rimLight.position.set(-3.0, 2.4, -2.8);
+    scene.add(rimLight);
+
+    function createCourtyardTexture() {
+      const c = document.createElement('canvas');
+      c.width = 512;
+      c.height = 512;
+      const ctx = c.getContext('2d');
+      ctx.fillStyle = '#182030';
+      ctx.fillRect(0, 0, 512, 512);
+      const step = 64;
+      for (let y = 0; y < 512; y += step) {
+        for (let x = 0; x < 512; x += step) {
+          const odd = ((x / step) + (y / step)) % 2 === 1;
+          ctx.fillStyle = odd ? '#1e283b' : '#161e2e';
+          ctx.fillRect(x + 2, y + 2, step - 4, step - 4);
+          ctx.strokeStyle = 'rgba(148, 163, 184, 0.14)';
+          ctx.lineWidth = 1;
+          ctx.strokeRect(x + 2, y + 2, step - 4, step - 4);
+        }
+      }
+      const tex = new THREE.CanvasTexture(c);
+      tex.wrapS = THREE.RepeatWrapping;
+      tex.wrapT = THREE.RepeatWrapping;
+      tex.repeat.set(4, 4);
+      tex.colorSpace = THREE.SRGBColorSpace;
+      return tex;
+    }
+
+    const groundGeo = new THREE.CircleGeometry(3.4, 64);
+    groundGeo.rotateX(-Math.PI / 2);
+    const groundMat = new THREE.MeshStandardMaterial({
+      map: createCourtyardTexture(),
+      roughness: 0.88,
+      metalness: 0.08
+    });
+    const groundMesh = new THREE.Mesh(groundGeo, groundMat);
+    groundMesh.receiveShadow = true;
+    groundMesh.rotation.y = Math.PI / 4;
+    scene.add(groundMesh);
+
+    const ringGeo = new THREE.RingGeometry(0.34, 0.39, 48);
+    ringGeo.rotateX(-Math.PI / 2);
+    const ringMat = new THREE.MeshBasicMaterial({
+      color: 0x38bdf8,
+      transparent: true,
+      opacity: 0.55,
+      side: THREE.DoubleSide
+    });
+    const heroRing = new THREE.Mesh(ringGeo, ringMat);
+    heroRing.position.y = 0.006;
+    scene.add(heroRing);
+
+    // Pure WebGL Multi-Viewport Renderer for the 8-direction simultaneous strip (zero 2D drawImage copies!)
+    const octantCanvas = document.getElementById('octant-canvas');
+    const octRenderer = new THREE.WebGLRenderer({
+      canvas: octantCanvas,
+      antialias: true,
+      alpha: false,
+      powerPreference: 'high-performance',
+      preserveDrawingBuffer: true
+    });
+    octRenderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    octRenderer.outputColorSpace = THREE.SRGBColorSpace;
+    octRenderer.toneMapping = THREE.ACESFilmicToneMapping;
+    octRenderer.toneMappingExposure = 1.25;
+    octRenderer.setScissorTest(true);
+
+    const octScene = new THREE.Scene();
+    octScene.add(new THREE.HemisphereLight(0xdbeafe, 0x1e293b, 1.4));
+    const octSun = new THREE.DirectionalLight(0xfff3d6, 2.5);
+    octSun.position.set(3, 5, 3);
+    octScene.add(octSun);
+    const octRim = new THREE.DirectionalLight(0x38bdf8, 1.5);
+    octRim.position.set(-3, 2.2, -2.5);
+    octScene.add(octRim);
+
+    const octShadowDisc = new THREE.Mesh(
+      new THREE.CircleGeometry(0.34, 32).rotateX(-Math.PI / 2),
+      new THREE.MeshBasicMaterial({ color: 0x05070b, transparent: true, opacity: 0.55 })
+    );
+    octShadowDisc.position.y = 0.002;
+    octScene.add(octShadowDisc);
+
+    const octH = 1.78;
+    const octW = octH * (140 / 220);
+    const octCam = new THREE.OrthographicCamera(-octW * 0.5, octW * 0.5, octH * 0.5, -octH * 0.5, 0.1, 20);
+    octCam.position.set(0, 0.74 + Math.sin(ISO_TILT) * 6, Math.cos(ISO_TILT) * 6);
+    octCam.lookAt(0, 0.74, 0);
+
+    let heroRoot = null;
+    let rawHeroMesh = null;
+    let mixer = null;
+    const actions = new Map();
+    let activeAction = null;
+
+    let octModel = null;
+    let rawOctMesh = null;
+    let octMixer = null;
+    const octActions = new Map();
+    let octActiveAction = null;
+
+    function applyShaderMode(root, mode) {
+      if (!root) return;
+      const isEmber = state.hero === 'ember-warden';
+      root.traverse((obj) => {
+        if (!obj.isMesh) return;
+        if (!obj.userData.origMaterial) {
+          obj.userData.origMaterial = obj.material.clone();
+        }
+        const orig = obj.userData.origMaterial;
+        if (mode === 'pbr') {
+          obj.material = orig.clone();
+          obj.material.wireframe = false;
+        } else if (mode === 'wireframe') {
+          const mat = orig.clone();
+          mat.wireframe = true;
+          mat.emissive = new THREE.Color(isEmber ? 0xf59e0b : 0x38bdf8);
+          mat.emissiveIntensity = 0.28;
+          obj.material = mat;
+        } else {
+          const mat = orig.clone();
+          mat.roughness = 0.72;
+          mat.metalness = 0.08;
+          mat.emissive = new THREE.Color(isEmber ? 0x1a0b04 : 0x071526);
+          mat.emissiveIntensity = isEmber ? 0.22 : 0.30;
+          mat.wireframe = false;
+          obj.material = mat;
+        }
+      });
+    }
+
+    function normalizeModelToGround(model, heroId) {
+      model.updateMatrixWorld(true);
+      const box = new THREE.Box3().setFromObject(model);
+      const size = new THREE.Vector3();
+      const center = new THREE.Vector3();
+      box.getSize(size);
+      box.getCenter(center);
+      const targetHeight = heroId === 'ember-warden' ? 1.56 : 1.52;
+      const scaleY = targetHeight / (size.y || 1);
+      const scaleXZ = heroId === 'ember-warden' ? scaleY * 0.90 : scaleY * 0.96;
+      model.scale.set(scaleXZ, scaleY, scaleXZ);
+      model.updateMatrixWorld(true);
+      const scaledBox = new THREE.Box3().setFromObject(model);
+      model.position.set(-center.x * scaleXZ, -scaledBox.min.y, -center.z * scaleXZ);
+    }
+
+    const loader = new GLTFLoader();
+    state.hero = new URLSearchParams(location.search).get('hero') === 'ember-warden' ? 'ember-warden' : 'rift-runner';
+
+    function loadHero(heroId, onDone) {
+      state.hero = heroId;
+      const isEmber = heroId === 'ember-warden';
+      if (rimLight) rimLight.color.setHex(isEmber ? 0xf59e0b : 0x38bdf8);
+      if (octRim) octRim.color.setHex(isEmber ? 0xf59e0b : 0x38bdf8);
+      if (heroRing) heroRing.material.color.setHex(isEmber ? 0xf59e0b : 0x38bdf8);
+      document.querySelectorAll('#hero-buttons .btn').forEach((b) => {
+        b.classList.toggle('active', b.dataset.hero === heroId);
+      });
+      const assetReadout = document.getElementById('asset-readout');
+      if (assetReadout) {
+        const sizeLabel = isEmber ? '3.52 MB · 31,594 Tris' : '2.68 MB · 15,929 Tris';
+        assetReadout.innerHTML = `Unified Asset: <strong>${heroId}.glb (${sizeLabel})</strong>`;
+      }
+      const launchDesc = document.getElementById('launch-stronghold-desc');
+      if (launchDesc) {
+        const heroTitle = isEmber ? 'Ember Warden' : 'Rift Runner';
+        launchDesc.innerHTML = `${heroTitle}'s 3D rigged mesh &amp; 60 FPS skeletal animations (<code>idle_cast</code> &amp; <code>run_cast</code>) are wired directly into the Stronghold game engine (<code>?3d=1</code>) with full 360° rotation, dynamic sun shadows, and wall occlusion:`;
+      }
+      const launchLink = document.getElementById('launch-stronghold-link');
+      if (launchLink) {
+        launchLink.href = `/?hero=${heroId}&3d=1`;
+      }
+      document.getElementById('loading-banner').style.display = 'flex';
+      loader.load(`/assets/characters/3d/${heroId}.glb`, (gltf) => {
+        if (heroRoot) scene.remove(heroRoot);
+        if (octModel) octScene.remove(octModel);
+        actions.clear();
+        octActions.clear();
+
+        rawHeroMesh = gltf.scene;
+        rawHeroMesh.traverse((c) => {
+          if (c.isMesh) {
+            c.castShadow = true;
+            c.receiveShadow = true;
+          }
+        });
+
+        heroRoot = new THREE.Group();
+        heroRoot.add(rawHeroMesh);
+        normalizeModelToGround(rawHeroMesh, heroId);
+        scene.add(heroRoot);
+
+        mixer = new THREE.AnimationMixer(rawHeroMesh);
+        for (const clip of gltf.animations) {
+          const act = mixer.clipAction(clip);
+          act.setLoop(THREE.LoopRepeat, Infinity);
+          actions.set(clip.name, act);
+        }
+
+        rawOctMesh = SkeletonUtils.clone(rawHeroMesh);
+        octModel = new THREE.Group();
+        octModel.add(rawOctMesh);
+        octScene.add(octModel);
+        octMixer = new THREE.AnimationMixer(rawOctMesh);
+        for (const clip of gltf.animations) {
+          const act = octMixer.clipAction(clip);
+          act.setLoop(THREE.LoopRepeat, Infinity);
+          octActions.set(clip.name, act);
+        }
+
+        applyShaderMode(rawHeroMesh, state.shaderMode);
+        applyShaderMode(rawOctMesh, state.shaderMode);
+        playClip(state.clip || 'run_cast', true);
+        renderFrame(0);
+
+        document.getElementById('loading-banner').style.display = 'none';
+        window.__LAB_READY__ = true;
+        if (onDone) onDone();
+      });
+    }
+
+    {
+      const qp = new URLSearchParams(location.search);
+      if (qp.get('pause_raf') === '1') window.__PAUSE_RAF__ = true;
+      const qDir = qp.get('dir');
+      if (qDir) setDirection(qDir.toUpperCase());
+      const qStyle = qp.get('style');
+      if (qStyle && ['stylized', 'pbr', 'wireframe'].includes(qStyle)) {
+        state.shaderMode = qStyle;
+        document.querySelectorAll('#shader-buttons .btn').forEach((b) => {
+          b.classList.toggle('active', b.dataset.shader === qStyle);
+        });
+      }
+      const qCam = qp.get('cam');
+      if (qCam && ['iso', 'orbit'].includes(qCam)) {
+        state.cameraMode = qCam;
+        document.querySelectorAll('#cam-buttons .btn').forEach((b) => {
+          b.classList.toggle('active', b.dataset.cam === qCam);
+        });
+      }
+      if (qp.get('turntable') === '1') {
+        state.turntable = true;
+        document.getElementById('turntable-btn').classList.add('active');
+      }
+      const qClip = qp.get('clip');
+      if (qClip) state.clip = qClip;
+      loadHero(state.hero);
+    }
+
+    document.querySelectorAll('#hero-buttons .btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        if (btn.dataset.hero && btn.dataset.hero !== state.hero) {
+          loadHero(btn.dataset.hero);
+        }
+      });
+    });
+
+    function resolveClipName(name) {
+      if (actions.has(name)) return name;
+      if (name === 'walk' || name === 'move') return 'run';
+      if (name === 'attack') return 'idle_cast';
+      if (name === 'cast') return 'run_cast';
+      return 'run';
+    }
+
+    function playClip(rawName, instant = false) {
+      const name = resolveClipName(rawName);
+      if (!actions.has(name)) return;
+      state.clip = name;
+      const next = actions.get(name);
+      if (instant || !state.playing || !activeAction || activeAction === next) {
+        mixer.stopAllAction();
+        next.reset().play();
+      } else {
+        activeAction.fadeOut(0.16);
+        next.reset().fadeIn(0.16).play();
+      }
+      activeAction = next;
+
+      const octNext = octActions.get(name);
+      if (octNext) {
+        octMixer.stopAllAction();
+        octNext.reset().play();
+        octActiveAction = octNext;
+      }
+
+      document.querySelectorAll('#anim-buttons .btn').forEach((b) => {
+        b.classList.toggle('active', b.dataset.clip === name);
+      });
+      updateHudText();
+    }
+
+    function setDirection(dirId) {
+      const found = DIRECTIONS.find((d) => d.id === dirId);
+      if (!found) return;
+      state.dir = found.id;
+      state.yaw = found.yaw;
+      state.turntable = false;
+      document.getElementById('turntable-btn').classList.remove('active');
+      document.querySelectorAll('#dir-buttons .btn[data-dir]').forEach((b) => {
+        b.classList.toggle('active', b.dataset.dir === dirId);
+      });
+      document.querySelectorAll('#octant-labels .octant-cell-label').forEach((el) => {
+        el.classList.toggle('active', el.dataset.cell === dirId);
+      });
+      updateHudText();
+    }
+
+    function updateHudText() {
+      const deg = Math.round((((state.yaw * 180) / Math.PI) % 360 + 360) % 360);
+      const camLabel = state.cameraMode === 'iso' ? 'Isometric 2:1 Orthographic' : '360° Free Orbit Perspective';
+      const heroLabel = state.hero === 'ember-warden' ? 'EMBER WARDEN' : 'RIFT RUNNER';
+      document.getElementById('hud-clip-title').textContent = `Hero: ${heroLabel} · Clip: ${state.clip.toUpperCase()} (60 FPS Real-Time 3D)`;
+      document.getElementById('hud-clip-meta').textContent = `Facing: ${state.dir} (${deg}°) · Style: ${state.shaderMode.toUpperCase()} · Camera: ${camLabel}`;
+    }
+
+    function resizeStage() {
+      const rect = stageCanvas.parentElement.getBoundingClientRect();
+      const w = Math.max(1, Math.floor(rect.width));
+      const h = Math.max(1, Math.floor(rect.height));
+      renderer.setSize(w, h, false);
+      const aspect = w / h;
+      orthoCam.left = -orthoSize * aspect;
+      orthoCam.right = orthoSize * aspect;
+      orthoCam.top = orthoSize;
+      orthoCam.bottom = -orthoSize;
+      orthoCam.updateProjectionMatrix();
+      perspCam.aspect = aspect;
+      perspCam.updateProjectionMatrix();
+
+      const octRect = octantCanvas.parentElement.getBoundingClientRect();
+      octRenderer.setSize(Math.max(1, Math.floor(octRect.width)), Math.max(1, Math.floor(octRect.height)), false);
+    }
+    window.addEventListener('resize', resizeStage);
+    resizeStage();
+
+    const bgNormal = new THREE.Color(0x0d111a);
+    const bgActive = new THREE.Color(0x132033);
+
+    function renderOctantStrip() {
+      if (!octModel) return;
+      const fullW = octantCanvas.clientWidth || 1120;
+      const fullH = octantCanvas.clientHeight || 190;
+      const cellW = fullW / 8;
+      const cellAspect = cellW / fullH;
+      octCam.left = -octH * cellAspect * 0.5;
+      octCam.right = octH * cellAspect * 0.5;
+      octCam.top = octH * 0.5;
+      octCam.bottom = -octH * 0.5;
+      octCam.updateProjectionMatrix();
+
+      for (let i = 0; i < DIRECTIONS.length; i++) {
+        const d = DIRECTIONS[i];
+        const x0 = Math.floor(i * cellW);
+        const w = Math.floor((i + 1) * cellW) - x0;
+        octModel.rotation.y = d.yaw;
+        octScene.background = d.id === state.dir && !state.turntable ? bgActive : bgNormal;
+        octRenderer.setViewport(x0, 0, w, fullH);
+        octRenderer.setScissor(x0, 0, w, fullH);
+        octRenderer.render(octScene, octCam);
+      }
+    }
+
+    document.querySelectorAll('#anim-buttons .btn').forEach((btn) => {
+      btn.addEventListener('click', () => playClip(btn.dataset.clip, false));
+    });
+
+    document.querySelectorAll('#dir-buttons .btn[data-dir]').forEach((btn) => {
+      btn.addEventListener('click', () => setDirection(btn.dataset.dir));
+    });
+
+    document.getElementById('turntable-btn').addEventListener('click', (e) => {
+      state.turntable = !state.turntable;
+      e.currentTarget.classList.toggle('active', state.turntable);
+    });
+
+    document.querySelectorAll('[data-cam]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        state.cameraMode = btn.dataset.cam;
+        orbit.enabled = state.cameraMode === 'orbit';
+        document.querySelectorAll('[data-cam]').forEach((b) => b.classList.toggle('active', b === btn));
+        updateHudText();
+      });
+    });
+
+    document.querySelectorAll('#shader-buttons .btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        state.shaderMode = btn.dataset.shader;
+        document.querySelectorAll('#shader-buttons .btn').forEach((b) => b.classList.toggle('active', b === btn));
+        if (rawHeroMesh) applyShaderMode(rawHeroMesh, state.shaderMode);
+        if (rawOctMesh) applyShaderMode(rawOctMesh, state.shaderMode);
+        updateHudText();
+      });
+    });
+
+    document.querySelectorAll('#speed-buttons .btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        state.speed = parseFloat(btn.dataset.speed);
+        document.querySelectorAll('#speed-buttons .btn').forEach((b) => b.classList.toggle('active', b === btn));
+      });
+    });
+
+    const playPauseBtn = document.getElementById('play-pause-btn');
+    playPauseBtn.addEventListener('click', () => {
+      state.playing = !state.playing;
+      playPauseBtn.textContent = state.playing ? 'Pause' : 'Play';
+    });
+
+    const slider = document.getElementById('timeline-slider');
+    slider.addEventListener('input', () => {
+      if (!activeAction) return;
+      state.playing = false;
+      playPauseBtn.textContent = 'Play';
+      const dur = activeAction.getClip().duration || 1;
+      const t = parseFloat(slider.value) * dur;
+      activeAction.time = t;
+      mixer.update(0);
+      if (octActiveAction) {
+        octActiveAction.time = t;
+        octMixer.update(0);
+      }
+      document.getElementById('time-readout').textContent = t.toFixed(2) + 's';
+    });
+
+    window.addEventListener('keydown', (e) => {
+      const k = e.key.toLowerCase();
+      if (['w', 'a', 's', 'd', 'arrowup', 'arrowdown', 'arrowleft', 'arrowright'].includes(k)) {
+        state.keys.add(k);
+      } else if (k === ' ') {
+        e.preventDefault();
+        playClip(state.keys.size > 0 ? 'run_cast' : 'idle_cast', false);
+      } else if (k === 'e') {
+        playClip('run_cast', false);
+      }
+    });
+    window.addEventListener('keyup', (e) => {
+      state.keys.delete(e.key.toLowerCase());
+    });
+
+    window.__setLabState = ({ clip, dir, cameraMode, shaderMode, time, turntable }) => {
+      window.__PAUSE_RAF__ = true;
+      if (shaderMode) {
+        state.shaderMode = shaderMode;
+        document.querySelectorAll('#shader-buttons .btn').forEach((b) => b.classList.toggle('active', b.dataset.shader === shaderMode));
+        if (rawHeroMesh) applyShaderMode(rawHeroMesh, shaderMode);
+        if (rawOctMesh) applyShaderMode(rawOctMesh, shaderMode);
+      }
+      if (cameraMode) {
+        state.cameraMode = cameraMode;
+        orbit.enabled = cameraMode === 'orbit';
+        document.querySelectorAll('[data-cam]').forEach((b) => b.classList.toggle('active', b.dataset.cam === cameraMode));
+      }
+      if (clip) playClip(clip, true);
+      if (dir) setDirection(dir);
+      if (typeof turntable === 'boolean') state.turntable = turntable;
+      if (typeof time === 'number' && activeAction) {
+        state.playing = false;
+        playPauseBtn.textContent = 'Play';
+        activeAction.time = time;
+        mixer.update(0);
+        if (octActiveAction) {
+          octActiveAction.time = time;
+          octMixer.update(0);
+        }
+      }
+      renderFrame(0);
+    };
+
+    let lastTime = performance.now();
+    let frames = 0;
+    let fpsClock = performance.now();
+
+    function renderFrame(dt) {
+      if (heroRoot) {
+        let dx = 0, dz = 0;
+        if (state.keys.has('w') || state.keys.has('arrowup')) dz -= 1;
+        if (state.keys.has('s') || state.keys.has('arrowdown')) dz += 1;
+        if (state.keys.has('a') || state.keys.has('arrowleft')) dx -= 1;
+        if (state.keys.has('d') || state.keys.has('arrowright')) dx += 1;
+
+        if (dx !== 0 || dz !== 0) {
+          const len = Math.hypot(dx, dz);
+          dx /= len;
+          dz /= len;
+          state.heroPos.x = Math.max(-1.8, Math.min(1.8, state.heroPos.x + dx * dt * 1.45));
+          state.heroPos.z = Math.max(-1.8, Math.min(1.8, state.heroPos.z + dz * dt * 1.45));
+          state.yaw = Math.atan2(dx, dz);
+          if (state.clip === 'idle') playClip('run', false);
+          else if (state.clip === 'idle_cast') playClip('run_cast', false);
+        } else if (state.turntable) {
+          state.yaw += dt * 0.85;
+          updateHudText();
+        }
+
+        heroRoot.position.set(state.heroPos.x, 0, state.heroPos.z);
+        heroRoot.rotation.y = state.yaw;
+        heroRing.position.set(state.heroPos.x, 0.006, state.heroPos.z);
+      }
+
+      if (mixer && state.playing) {
+        mixer.update(dt * state.speed);
+        if (octMixer) octMixer.update(dt * state.speed);
+        if (activeAction) {
+          const dur = activeAction.getClip().duration || 1;
+          slider.value = String((activeAction.time % dur) / dur);
+          document.getElementById('time-readout').textContent = activeAction.time.toFixed(2) + 's';
+        }
+      }
+
+      if (state.cameraMode === 'iso') {
+        const tx = state.heroPos.x;
+        const tz = state.heroPos.z;
+        orthoCam.position.set(
+          tx,
+          0.78 + Math.sin(ISO_TILT) * ISO_DIST,
+          tz + Math.cos(ISO_TILT) * ISO_DIST
+        );
+        orthoCam.lookAt(tx, 0.78, tz);
+        renderer.render(scene, orthoCam);
+      } else {
+        orbit.update();
+        renderer.render(scene, perspCam);
+      }
+
+      renderOctantStrip();
+    }
+
+    function animate(now) {
+      if (window.__PAUSE_RAF__) {
+        requestAnimationFrame(animate);
+        return;
+      }
+      const dt = Math.min(0.1, (now - lastTime) / 1000);
+      lastTime = now;
+      frames++;
+      if (now - fpsClock >= 500 && frames > 5) {
+        const fps = Math.round((frames * 1000) / (now - fpsClock));
+        document.getElementById('live-fps').innerHTML = `Render: <strong>${fps} FPS (Real-Time WebGL)</strong>`;
+        frames = 0;
+        fpsClock = now;
+      }
+      renderFrame(dt);
+      requestAnimationFrame(animate);
+    }
+    requestAnimationFrame(animate);
+  </script>
+</body>
+</html>

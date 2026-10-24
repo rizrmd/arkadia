@@ -1,0 +1,292 @@
+{
+ "base": "http://127.0.0.1:5272",
+ "shots": {
+  "desktop-gate-road": {
+   "teleport": [
+    18.6,
+    19.9
+   ],
+   "visible": 67,
+   "drawCalls": {
+    "shown": 102.7,
+    "hidden": 102.7,
+    "added": 0
+   }
+  },
+  "desktop-ruined-gate": {
+   "teleport": [
+    21,
+    23.6
+   ],
+   "visible": 82,
+   "drawCalls": {
+    "shown": 102.7,
+    "hidden": 102.7,
+    "added": 0
+   }
+  },
+  "desktop-through-ruined-gate": {
+   "teleport": [
+    21,
+    27
+   ],
+   "visible": 81,
+   "drawCalls": {
+    "shown": 102.7,
+    "hidden": 102.7,
+    "added": 0
+   }
+  },
+  "desktop-pillar-courtyard": {
+   "teleport": [
+    20.6,
+    31.6
+   ],
+   "visible": 69,
+   "drawCalls": {
+    "shown": 102.7,
+    "hidden": 102.7,
+    "added": 0
+   }
+  },
+  "desktop-settlement": {
+   "teleport": [
+    17.6,
+    31
+   ],
+   "visible": 66,
+   "drawCalls": {
+    "shown": 102.7,
+    "hidden": 102.7,
+    "added": 0
+   }
+  },
+  "desktop-watchtower": {
+   "teleport": [
+    28.4,
+    18.9
+   ],
+   "visible": 41,
+   "drawCalls": {
+    "shown": 102.7,
+    "hidden": 102.7,
+    "added": 0
+   }
+  },
+  "desktop-behind-watchtower": {
+   "teleport": [
+    28.9,
+    13.4
+   ],
+   "visible": 24,
+   "drawCalls": {
+    "shown": 102.7,
+    "hidden": 102.7,
+    "added": 0
+   }
+  },
+  "desktop-snowy-shrine": {
+   "teleport": [
+    0.9,
+    28
+   ],
+   "visible": 35,
+   "drawCalls": {
+    "shown": 102.7,
+    "hidden": 102.7,
+    "added": 0
+   }
+  },
+  "desktop-north-west-grove": {
+   "teleport": [
+    -9.5,
+    6
+   ],
+   "visible": 30,
+   "drawCalls": {
+    "shown": 102.7,
+    "hidden": 102.7,
+    "added": 0
+   }
+  },
+  "desktop-north-east-grove": {
+   "teleport": [
+    6.5,
+    -9.5
+   ],
+   "visible": 29,
+   "drawCalls": {
+    "shown": 102.7,
+    "hidden": 102.7,
+    "added": 0
+   }
+  },
+  "desktop-frozen-steppe": {
+   "teleport": [
+    29.5,
+    29
+   ],
+   "visible": 59,
+   "drawCalls": {
+    "shown": 102.7,
+    "hidden": 102.7,
+    "added": 0
+   }
+  },
+  "portrait-ruined-gate": {
+   "teleport": [
+    21,
+    23.6
+   ],
+   "visible": 43,
+   "drawCalls": {
+    "shown": 86.3,
+    "hidden": 86.3,
+    "added": 0
+   }
+  },
+  "portrait-watchtower": {
+   "teleport": [
+    28.4,
+    18.9
+   ],
+   "visible": 19,
+   "drawCalls": {
+    "shown": 86.3,
+    "hidden": 86.3,
+    "added": 0
+   }
+  },
+  "portrait-snowy-shrine": {
+   "teleport": [
+    0.9,
+    28
+   ],
+   "visible": 22,
+   "drawCalls": {
+    "shown": 86.3,
+    "hidden": 86.3,
+    "added": 0
+   }
+  },
+  "landscape-pillar-courtyard": {
+   "teleport": [
+    20.6,
+    31.6
+   ],
+   "visible": 51,
+   "drawCalls": {
+    "shown": 86.3,
+    "hidden": 86.3,
+    "added": 0
+   }
+  },
+  "landscape-watchtower": {
+   "teleport": [
+    28.4,
+    18.9
+   ],
+   "visible": 25,
+   "drawCalls": {
+    "shown": 86.3,
+    "hidden": 86.3,
+    "added": 0
+   }
+  },
+  "landscape-snowy-shrine": {
+   "teleport": [
+    0.9,
+    28
+   ],
+   "visible": 32,
+   "drawCalls": {
+    "shown": 86.3,
+    "hidden": 86.3,
+    "added": 0
+   }
+  }
+ },
+ "errors": [],
+ "console": [],
+ "frontier": {
+  "props": 249,
+  "uprights": 166,
+  "columns": 2032,
+  "atlas": "/frozen-frontier/game/atlas.webp",
+  "loaded": true,
+  "failed": false,
+  "occlusionImages": 25,
+  "sprites": 29,
+  "visible": 0,
+  "assets": [
+   "arch-ne",
+   "arch-se",
+   "broken-watchtower",
+   "corner-n",
+   "corner-s",
+   "dead-snag",
+   "dead-tree",
+   "foundation",
+   "grass-patch",
+   "grass-tussock",
+   "paving",
+   "pillar-broken",
+   "pillar-intact",
+   "pine-broad",
+   "pine-sapling",
+   "pine-tall",
+   "rock-boulders",
+   "rock-scatter",
+   "rubble",
+   "ruined-gate",
+   "shrub-juniper",
+   "shrub-twigs",
+   "snow-cap-ne",
+   "snow-cap-se",
+   "snowy-shrine",
+   "stairs-ne",
+   "stairs-nw",
+   "wall-ne",
+   "wall-se"
+  ]
+ },
+ "traversal": [
+  {
+   "label": "into-watchtower",
+   "from": [
+    30,
+    17.4
+   ],
+   "to": [
+    28.1,
+    15.5
+   ],
+   "pass": true
+  },
+  {
+   "label": "into-pine-wall",
+   "from": [
+    -9.5,
+    6
+   ],
+   "to": [
+    -11.37,
+    7.87
+   ],
+   "pass": true
+  },
+  {
+   "label": "through-ruined-gate",
+   "from": [
+    21,
+    23.4
+   ],
+   "to": [
+    21,
+    27.27
+   ],
+   "pass": true
+  }
+ ],
+ "ok": true
+}

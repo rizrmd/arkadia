@@ -8,8 +8,8 @@ import {chromium} from 'playwright';import {spawn,execFileSync} from 'node:child
 const out='docs/hero-select';await fs.mkdir(out,{recursive:true});
 const base=process.env.DEMO_URL?.replace(/\/$/,'');let server=null;
 if(!base){
- execFileSync(process.env.GO||'go',['build','-o','bin/arkadia','./cmd/arkadia'],{cwd:'server',stdio:'inherit',env:{...process.env,CGO_ENABLED:'0'}});
- server=spawn('server/bin/arkadia',[],{env:{...process.env,PORT:'8794',SITE_DIR:'dist'},stdio:['ignore','pipe','inherit']});
+ execFileSync(process.env.GO||'go',['build','-o','bin/arkodia','./cmd/arkodia'],{cwd:'server',stdio:'inherit',env:{...process.env,CGO_ENABLED:'0'}});
+ server=spawn('server/bin/arkodia',[],{env:{...process.env,PORT:'8794',SITE_DIR:'dist'},stdio:['ignore','pipe','inherit']});
  await new Promise((ok,no)=>{server.stdout.on('data',d=>{if(String(d).includes('listening'))ok();});server.on('exit',c=>no(Error('server exited '+c)));});
 }
 const url=base||'http://127.0.0.1:8794',suffix=base?'-live':'';
@@ -41,7 +41,7 @@ try{
  // 2. A reload in the same tab keeps the pick and does not ask again; ?hero=reset clears the pick and position and reopens the picker.
  await phone.reload();await ready(phone);await heroIs(phone,'ember-warden');await phone.waitForTimeout(800);
  results.reloadAsks=await phone.isVisible('#hero-picker');assert.equal(results.reloadAsks,false);
- await phone.evaluate(()=>localStorage.setItem('arkadia.stronghold.hero',JSON.stringify({x:640,y:450})));
+ await phone.evaluate(()=>localStorage.setItem('arkodia.stronghold.hero',JSON.stringify({x:640,y:450})));
  await phone.goto(url+'/?hero=reset&offline=1&time=0.5');await ready(phone);
  await phone.waitForSelector('#hero-picker:not([hidden])');
  results.shots.push(await shot(phone,'7-reset-picker'));
@@ -51,9 +51,9 @@ try{
   hero:document.querySelector('#world-hero')?.dataset.hero,
   x:+document.querySelector('#world-hero')?.dataset.x,
   y:+document.querySelector('#world-hero')?.dataset.y,
-  savedHero:localStorage.getItem('arkadia.hero'),
-  pickedSession:sessionStorage.getItem('arkadia.hero.picked'),
-  savedPos:localStorage.getItem('arkadia.stronghold.hero'),
+  savedHero:localStorage.getItem('arkodia.hero'),
+  pickedSession:sessionStorage.getItem('arkodia.hero.picked'),
+  savedPos:localStorage.getItem('arkodia.stronghold.hero'),
   urlHero:new URL(location.href).searchParams.get('hero')
  }));
  assert.deepEqual(results.reset,{first:'true',focused:'rift-runner',hero:'rift-runner',x:590,y:420,savedHero:null,pickedSession:null,savedPos:null,urlHero:null});

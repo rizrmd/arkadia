@@ -1,0 +1,68 @@
+{
+ "shots": {
+  "desktop-ramp-middle": {
+   "teleport": [
+    25.5,
+    11.5
+   ]
+  },
+  "desktop-on-terrace": {
+   "teleport": [
+    5.5,
+    25
+   ]
+  }
+ },
+ "errors": [],
+ "traversal": [
+  {
+   "label": "ascent",
+   "from": [
+    25.5,
+    13.5
+   ],
+   "to": [
+    25.5,
+    9.38
+   ]
+  },
+  {
+   "label": "descent",
+   "from": [
+    25.5,
+    9.5
+   ],
+   "to": [
+    25.5,
+    13.43
+   ]
+  },
+  {
+   "label": "cliff-block",
+   "from": [
+    29,
+    7.5
+   ],
+   "to": [
+    28.25,
+    7.5
+   ]
+  }
+ ],
+ "performance": [
+  {
+   "camera": "desktop",
+   "frameIntervalMs": {
+    "p50": 1166.7000000000116,
+    "p95": 1783.2999999999884
+   },
+   "resources": [
+    {
+     "name": "http://127.0.0.1:5746/terrain-height/natural/cliff-strip-v2.webp",
+     "transferSize": 1069510,
+     "decodedBodySize": 1069210
+    }
+   ]
+  }
+ ]
+}

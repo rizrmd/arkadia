@@ -1,9 +1,12 @@
+import {unproject} from '../isometric';
+import {STRONGHOLD} from './prefabs/stronghold';
 // Distances use the square ground grid, not the isometric screen projection.
-// The gate threshold is at world (577, 790), with COURT origin (577, -160).
-export const METERS_PER_TILE=3;
-export const CENTER={u:7.5,v:7.5};
-export const GATE={u:950/64,v:950/64};
-export const SPAWN_DISTANCE_M=10;
+// The gate threshold is at world (577, 798), with COURT origin (577, -160): both from prefabs/stronghold.json.
+const {safeZone,gate,court}=STRONGHOLD,threshold=unproject(gate.threshold.x-court.origin.x,gate.threshold.y-court.origin.y);
+export const METERS_PER_TILE=safeZone.metersPerTile;
+export const CENTER={...safeZone.center};
+export const GATE={u:threshold.x,v:threshold.y};
+export const SPAWN_DISTANCE_M=safeZone.spawnDistanceM;
 export type Tile={u:number;v:number};
 export const meters=(tiles:number)=>tiles*METERS_PER_TILE;
 export const fromCenter=(p:Tile)=>Math.hypot(p.u-CENTER.u,p.v-CENTER.v);

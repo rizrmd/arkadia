@@ -5,7 +5,7 @@ const url=process.env.VERIFY_URL||'http://127.0.0.1:3072',server=process.env.VER
 try{await new Promise(r=>setTimeout(r,600));
  browser=await chromium.launch({headless:true,env:{...process.env,LD_LIBRARY_PATH:'/home/dev/.local/browser-libs/usr/lib/x86_64-linux-gnu:/opt/fural-antigravity-glibc'},args:['--no-sandbox','--no-zygote','--single-process']});
  const page=await browser.newPage({viewport:{width:1280,height:800}}),errors=[];page.on('pageerror',e=>errors.push(e.message));
- await page.addInitScript(()=>localStorage.setItem('arkadia.stronghold.hero',JSON.stringify({x:590,y:420})));
+ await page.addInitScript(()=>localStorage.setItem('arkodia.stronghold.hero',JSON.stringify({x:590,y:420})));
  await page.goto(url+'/?time=0.5');await page.waitForFunction(()=>document.querySelector('#world-canvas')?.dataset.ready==='true');await page.waitForTimeout(1200);
  const cam=()=>page.locator('#world-surface').evaluate(e=>e.style.transform);
  // Walk, stop, then drag away while the camera is still settling: the drag wins and the camera stays put.

@@ -1,0 +1,57 @@
+{
+ "what": "Loading-screen time from \"Raising the Stronghold\" (96%) to done, returning visit",
+ "method": "Local Vite dev build, headless Chromium (SwiftShader), 412x880 mobile viewport, CPU profiler on; 5 alternating pairs of base (199d1e5 tree) and fix (a5d3723). Absolute numbers are inflated by software rendering; compare pairs.",
+ "base": [
+  {
+   "raisingToDoneMs": 5406,
+   "totalMs": 15163
+  },
+  {
+   "raisingToDoneMs": 6468,
+   "totalMs": 17005
+  },
+  {
+   "raisingToDoneMs": 5349,
+   "totalMs": 18172
+  },
+  {
+   "raisingToDoneMs": 2508,
+   "totalMs": 7887
+  },
+  {
+   "raisingToDoneMs": 2236,
+   "totalMs": 5987
+  }
+ ],
+ "fixed": [
+  {
+   "raisingToDoneMs": 4208,
+   "totalMs": 16181
+  },
+  {
+   "raisingToDoneMs": 3907,
+   "totalMs": 12935
+  },
+  {
+   "raisingToDoneMs": 2775,
+   "totalMs": 10137
+  },
+  {
+   "raisingToDoneMs": 1663,
+   "totalMs": 5556
+  },
+  {
+   "raisingToDoneMs": 1516,
+   "totalMs": 5158
+  }
+ ],
+ "medianRaisingToDoneMs": {
+  "base": 5349,
+  "fixed": 2775
+ },
+ "worldPaintsDuringLoadAndReveal": {
+  "base": 2,
+  "fixed": 1
+ },
+ "liveDeviceTracelogs": "5 sustained_low_fps reports from the reporter phone (Android 10, DPR 3.25) start 3.7-5.7 s after navigation with 100-400 ms main-thread tasks, bottleneck encounters-render (the 3D hero), the loop that used to run behind the loading screen."
+}

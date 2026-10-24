@@ -1,5 +1,5 @@
 import {chromium} from 'playwright';import {spawn} from 'node:child_process';import fs from 'node:fs/promises';import assert from 'node:assert/strict';
-const base=process.env.DEMO_URL||'http://127.0.0.1:8796';const server=process.env.DEMO_URL?null:spawn('server/bin/arkadia',[],{env:{...process.env,PORT:'8796',SITE_DIR:'dist'},stdio:['ignore','pipe','inherit']});let browser;
+const base=process.env.DEMO_URL||'http://127.0.0.1:8796';const server=process.env.DEMO_URL?null:spawn('server/bin/arkodia',[],{env:{...process.env,PORT:'8796',SITE_DIR:'dist'},stdio:['ignore','pipe','inherit']});let browser;
 try{
  if(server)await new Promise((ok,no)=>{server.stdout.on('data',d=>{if(String(d).includes('listening'))ok()});server.on('exit',c=>no(Error('server '+c)))});
  browser=await chromium.launch({headless:true,env:{...process.env,LD_LIBRARY_PATH:'/home/dev/.local/browser-libs/usr/lib/x86_64-linux-gnu:/opt/fural-antigravity-glibc'},args:['--no-sandbox','--no-zygote','--single-process']});

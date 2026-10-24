@@ -19,7 +19,7 @@ try{
  await page.keyboard.down('d');await page.waitForTimeout(1600);await page.keyboard.up('d');await page.waitForTimeout(300);const aside=await pos();assert(aside.x>blocked.x+100,'can walk around tent');
  // The open doorway is not walkable, and from the north the tent covers the hero.
  // Reload first: a page that just stopped walking saves the hero's position 400 ms later, over the seeded one.
- const walk=async(from,key)=>{await page.reload();await page.evaluate(p=>localStorage.setItem('arkadia.stronghold.hero',JSON.stringify(p)),from);await page.reload();
+ const walk=async(from,key)=>{await page.reload();await page.evaluate(p=>localStorage.setItem('arkodia.stronghold.hero',JSON.stringify(p)),from);await page.reload();
   await page.waitForFunction(()=>document.querySelector('#world-hero')?.dataset.x&&!document.querySelector('#loading-screen'));
   await page.keyboard.down(key);await page.waitForTimeout(2400);await page.keyboard.up(key);await page.waitForTimeout(300);
   return page.evaluate(()=>{const d=document.querySelector('#world-hero').dataset;return{x:+d.x,y:+d.y,behind:+d.behind};});};

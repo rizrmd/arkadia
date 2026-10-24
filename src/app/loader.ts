@@ -1,21 +1,131 @@
-// Drives the loading screen that index.html paints before any script runs.
-// A view reports progress as done/total steps; the bar never moves backwards.
+import {Application,BitmapTextPipe,CanvasSource,Container,extensions,GraphicsPipe,NineSliceSpritePipe,Sprite,Texture,TilingSpritePipe} from 'pixi.js';
+import {FrameSet,pickFrameScale} from '../typography/frames';
+import {installMsdfFx,loadFonts} from '../typography/msdf';
+
+extensions.add(TilingSpritePipe,NineSliceSpritePipe,BitmapTextPipe,GraphicsPipe);
+
+// Drives the instant pure-HTML loading screen in index.html and owns the shared Pixi Application + MSDF
+// typography resources so the DOM holds only the single Pixi canvas (#world-canvas) once loading finishes.
 export type Progress=(done:number,total:number,label:string)=>void;
-export function loadingScreen(){
- const screen=document.querySelector<HTMLElement>('#loading-screen')!,q=<T extends Element>(s:string)=>screen.querySelector(s) as T;
- const fill=q<HTMLElement>('.loading-fill'),label=q<HTMLElement>('.loading-label'),percent=q<HTMLElement>('.loading-percent');
- // Artwork still in flight after a failure keeps reporting; it must not overwrite the error.
- let shown=0,failed=false;
- const progress:Progress=(done,total,text)=>{if(failed)return;
-  shown=Math.max(shown,Math.round(100*Math.min(1,done/Math.max(1,total))));
-  fill.style.transform=`scaleX(${shown/100})`;screen.setAttribute('aria-valuenow',String(shown));label.textContent=text;percent.textContent=shown+'%';
- };
- return {progress,
-  done(){progress(1,1,'Ready');screen.dataset.state='done';setTimeout(()=>screen.remove(),600);},
-  // Failed loads keep the screen up with the reason and a reload, instead of leaving a blank world.
-  fail(message:string){failed=true;screen.dataset.state='error';label.textContent=message;percent.textContent='';
-   const retry=document.createElement('button');retry.type='button';retry.className='loading-retry';retry.textContent='Try again';retry.onclick=()=>location.reload();q('.loading-card').append(retry);}};
+
+interface HtmlLoadingScreenApi{
+ set(pct:number,text?:string):void;
+ progress(done:number,total:number,text:string):void;
+ done():void;
+ fail(message:string):void;
 }
+
+declare global{
+ interface Window{
+  __LOADING_READY__?:boolean;
+  __LOADING_SCREEN__?:HtmlLoadingScreenApi;
+ }
+}
+
+export function createCanvasSprite(canvas:HTMLCanvasElement){
+ if(!canvas.width)canvas.width=1;
+ if(!canvas.height)canvas.height=1;
+ const source=new CanvasSource({resource:canvas,resolution:1});
+ const texture=new Texture({source,dynamic:true});
+ const sprite=new Sprite(texture);
+ return {
+  sprite,
+  source,
+  texture,
+  sync(logicalW=canvas.width,logicalH=canvas.height){
+   let resized=false;
+   if(source.pixelWidth!==canvas.width||source.pixelHeight!==canvas.height){
+    source.resize(canvas.width,canvas.height,1);
+    resized=true;
+   }
+   if(texture.frame.width!==source.width||texture.frame.height!==source.height||texture.orig.width!==source.width||texture.orig.height!==source.height){
+    texture.frame.width=source.width;
+    texture.frame.height=source.height;
+    texture.orig.width=source.width;
+    texture.orig.height=source.height;
+    resized=true;
+   }
+   if(resized){
+    texture.updateUvs();
+    texture.update();
+    (sprite as unknown as {onViewUpdate():void}).onViewUpdate();
+   }
+   source.update();
+   sprite.width=logicalW;
+   sprite.height=logicalH;
+  },
+ };
+}
+
+export interface SharedPixiRuntime{
+ app:Application;
+ frames:FrameSet;
+ worldStage:Container;
+ uiStage:Container;
+ loadingStage:Container;
+}
+
+let runtimePromise:Promise<SharedPixiRuntime>|undefined;
+
+export function ensurePixiRuntime(host?:HTMLElement):Promise<SharedPixiRuntime>{
+ if(runtimePromise)return runtimePromise;
+ runtimePromise=(async()=>{
+  window.__LOADING_SCREEN__?.progress(8,100,'Loading the game');
+  const app=new Application();
+  await app.init({
+   preference:'webgl',
+   resizeTo:window,
+   backgroundColor:0x0b0e12,
+   antialias:true,
+   autoDensity:true,
+   // Capped at 2 like the FX stage and world canvas: at DPR 3.25 the full-density backbuffer was ~3M pixels of
+   // fill and MSAA resolve per frame, and phone tracelogs showed combat frames missing vsync with only ~8 ms of JS.
+   resolution:Math.min(window.devicePixelRatio||1,2),
+   gcActive:false,
+  });
+  app.canvas.id='world-canvas';
+  const mountTarget=host??document.querySelector<HTMLElement>('#app')??document.body;
+  if(app.canvas.parentElement!==mountTarget){
+   mountTarget.prepend(app.canvas);
+  }
+  installMsdfFx(app.renderer);
+  window.__LOADING_SCREEN__?.progress(14,100,'Loading');
+  const interfaceProgress={done:0,total:0},fontProgress={done:0,total:3};
+  const reportInterface=()=>{
+   const done=interfaceProgress.done+fontProgress.done,total=interfaceProgress.total+fontProgress.total;
+   // Reserve a separate range for interface assets; artwork continues from 32%, never from zero.
+   window.__LOADING_SCREEN__?.progress(14+18*(interfaceProgress.total?done/Math.max(1,total):0),100,
+    `Loading · ${interfaceProgress.done}/${interfaceProgress.total||'…'} interface · ${fontProgress.done}/${fontProgress.total} fonts`);
+  };
+  const [,frames]=await Promise.all([
+   loadFonts('/typography/v2/fonts/',(done,total)=>{Object.assign(fontProgress,{done,total});reportInterface();}),
+   FrameSet.load('/typography/v2/hud/',pickFrameScale(window.devicePixelRatio||1),undefined,(done,total)=>{Object.assign(interfaceProgress,{done,total});reportInterface();}),
+  ]);
+  window.__LOADING_SCREEN__?.progress(32,100,'Loading artwork');
+  const worldStage=new Container();
+  const uiStage=new Container();
+  const loadingStage=new Container();
+  app.stage.addChild(worldStage,uiStage,loadingStage);
+  return {app,frames,worldStage,uiStage,loadingStage};
+ })();
+ return runtimePromise;
+}
+
+export function loadingScreen(){
+ // Connects to the pure HTML loading screen already rendered in index.html at t=0ms.
+ return {
+  progress(done:number,total:number,text:string){
+   window.__LOADING_SCREEN__?.progress(done,total,text);
+  },
+  done(){
+   window.__LOADING_SCREEN__?.done();
+  },
+  fail(message:string){
+   window.__LOADING_SCREEN__?.fail(message);
+  },
+ };
+}
+
 // Artwork downloads count received bytes, so the bar moves with the transfer instead of with finished files:
 // a few large textures arriving last no longer hold it near the end. Each URL is fetched once; a view asks
 // for the same image again (the hero and revenant atlases) and shares the download.

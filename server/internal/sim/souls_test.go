@@ -27,11 +27,13 @@ func TestSoulAuthorityAndExactlyOnce(t *testing.T) {
 	if p.Run.XP != 10 {
 		t.Fatal("duplicate reward")
 	}
-	w.dropSoul(p, at, 1)
+	for i := 0; i < 9; i++ {
+		w.dropSoul(p, at, 1)
+	}
 	for i := 0; i < 8; i++ {
 		w.collectSouls()
 	}
-	if p.Run.Level != 2 || p.Run.Pending != 1 || len(p.Run.Offers) != 3 || p.Run.Gold != 10 {
+	if p.Run.Level != 2 || p.Run.Pending != 1 || len(p.Run.Offers) != 3 || p.Run.Gold != 50 {
 		t.Fatalf("progression failed: %+v", p.Run)
 	}
 	w.dropSoul(p, at, 3)

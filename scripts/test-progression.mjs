@@ -17,10 +17,11 @@ assert.equal(m.critMultiplier(p),1.5);
 assert.equal(m.xpPercent(p),0);
 const normHit=m.rollHit(p,random,false);assert.equal(normHit.crit,false);assert.equal(normHit.display,10);
 const critHit=m.rollHit(p,random,true);assert.equal(critHit.crit,true);assert.equal(critHit.display,15);
-m.reward(p,random);assert.equal(m.xpPercent(p),50);
-m.reward(p,random);assert.equal(p.gold,10);assert.equal(p.level,2);assert.equal(new Set(p.offers).size,3);
+m.reward(p,random);assert.equal(m.xpPercent(p),10);
+for(let i=1;i<9;i++)m.reward(p,random);assert.equal(p.level,1,'9 Lv.1 kills must not clear Lv.1');
+m.reward(p,random);assert.equal(p.gold,50);assert.equal(p.level,2);assert.equal(new Set(p.offers).size,3);
 assert.equal(m.choose(p,'forged',random),false);assert.equal(m.choose(p,p.offers[0],random),true);assert.equal(p.pending,0);
-for(let i=0;i<100;i++)m.reward(p,random);assert.ok(p.level>10);const pending=p.pending;for(let i=0;i<pending;i++)assert.ok(m.choose(p,p.offers[0],random));assert.equal(p.pending,0);
+for(let i=0;i<500;i++)m.reward(p,random);assert.ok(p.level>=10);const pending=p.pending;for(let i=0;i<pending;i++)assert.ok(m.choose(p,p.offers[0],random));assert.equal(p.pending,0);
 assert.ok(m.critChance(p)>0.15);assert.ok(m.critMultiplier(p)>1.5);
 
 // 2. Test 3-Slot Unlock Progression (Slot 1 default -> Slot 2 -> Slot 3 -> Rank Upgrades Only)
@@ -60,12 +61,14 @@ for(let i=0;i<40;i++){
  }
 }
 
-// 3. Test Progressive XP Curve (increasing delta per level: 20, 35 [+15], 55 [+20], 80 [+25], 110 [+30], 145 [+35])
-const expectedThresholds={1:20,2:35,3:55,4:80,5:110,6:145};
+// 3. Test Proportional XP Curve (10 kills per level, +10 kills each level, at the scaled same-level XP reward)
+const expectedThresholds={1:100,2:280,3:540,4:880,5:1300,6:1800};
 let prevDelta=0;
 for(let lv=1;lv<=6;lv++){
  const t=m.thresholdForLevel(lv);
  assert.equal(t,expectedThresholds[lv],`Level ${lv} threshold should be ${expectedThresholds[lv]}`);
+ assert.equal(t/m.revenantXpReward(lv),m.killsForLevel(lv),`Level ${lv} costs ${m.killsForLevel(lv)} same-level kills`);
+ assert.equal(m.killsForLevel(lv),10*lv);
  if(lv>1){
   const delta=t-m.thresholdForLevel(lv-1);
   assert.ok(delta>prevDelta,`XP increment at level ${lv} (+${delta}) must exceed previous increment (+${prevDelta})`);

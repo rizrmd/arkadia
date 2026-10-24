@@ -52,7 +52,7 @@ try {
   // 1. Measure noon hero luminance vs midnight hero luminance at the same courtyard spot.
   await page.goto(url + '/?offline=1&hero=rift-runner&time=0.5');
   await page.waitForFunction(() => document.querySelector('#world-hero')?.dataset.x);
-  await page.evaluate(() => localStorage.removeItem('arkadia.stronghold.hero'));
+  await page.evaluate(() => localStorage.removeItem('arkodia.stronghold.hero'));
   await page.reload();
   await page.waitForFunction(() => document.querySelector('#world-hero')?.dataset.x);
   await page.waitForTimeout(800);
@@ -64,7 +64,7 @@ try {
 
   await page.goto(url + '/?offline=1&hero=rift-runner&time=0');
   await page.waitForFunction(() => document.querySelector('#world-hero')?.dataset.x);
-  await page.evaluate(() => localStorage.removeItem('arkadia.stronghold.hero'));
+  await page.evaluate(() => localStorage.removeItem('arkodia.stronghold.hero'));
   await page.reload();
   await page.waitForFunction(() => document.querySelector('#world-hero')?.dataset.x);
   await page.waitForTimeout(800);
@@ -142,7 +142,7 @@ try {
   await fs.writeFile(`${out}/wilds-night.webp`, await sharp(wildsBuf).webp({quality: 88}).toBuffer());
 
   // 3. Ember Warden in the courtyard at night.
-  await page.evaluate(() => localStorage.removeItem('arkadia.stronghold.hero'));
+  await page.evaluate(() => localStorage.removeItem('arkodia.stronghold.hero'));
   await page.goto(url + '/?offline=1&hero=ember-warden&time=0');
   await page.waitForFunction(() => document.querySelector('#world-hero')?.dataset.x);
   await page.waitForTimeout(800);

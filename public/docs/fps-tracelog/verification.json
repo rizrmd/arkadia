@@ -1,0 +1,127 @@
+{
+  "verifiedAt": "2026-10-23T06:12:24.872Z",
+  "baseUrl": "http://127.0.0.1:8849",
+  "pageErrors": 0,
+  "combatBenchmark": {
+    "sampleCount": 16,
+    "phasesAvg": {
+      "worldDrawMs": 0.08,
+      "worldPaintMs": 0,
+      "shadowCastMs": 0,
+      "encountersStepMs": 1.36,
+      "encountersRenderMs": 3.17,
+      "pixiRenderMs": 9.17,
+      "netMs": 0.71,
+      "unaccountedMs": 0
+    },
+    "phasesMax": {
+      "worldDrawMs": 0.6,
+      "worldPaintMs": 0,
+      "shadowCastMs": 0,
+      "encountersStepMs": 11,
+      "encountersRenderMs": 5.9,
+      "pixiRenderMs": 43.3,
+      "netMs": 2.2,
+      "unaccountedMs": 0
+    },
+    "foesRendered": 8,
+    "particles": 12,
+    "peakParticles": 119,
+    "liveEffects": 2,
+    "playedEffects": 36,
+    "activeFloats": 1
+  },
+  "tracelogPostsCaptured": 4,
+  "serverStoredCount": 4,
+  "serverSummary": {
+    "byReason": {
+      "frame_spike": 3,
+      "sustained_low_fps": 1
+    },
+    "byBottleneck": {
+      "encounters-render": 1,
+      "main-thread-longtask": 1,
+      "pixi-render": 1,
+      "shadow-cast": 1
+    },
+    "lowestFps": 3.44,
+    "worstFrameMs": 1019.5
+  },
+  "sustainedDropSample": {
+    "id": "tl-mvkkovr7-3",
+    "reason": "sustained_low_fps",
+    "fps": 22.07,
+    "minFps": 19.05,
+    "p95FrameMs": 52.5,
+    "maxFrameMs": 52.5,
+    "bottleneck": "encounters-render",
+    "phasesAvg": {
+      "worldDrawMs": 1.36,
+      "worldPaintMs": 0,
+      "shadowCastMs": 0,
+      "encountersStepMs": 1.98,
+      "encountersRenderMs": 31.14,
+      "pixiRenderMs": 3.9,
+      "netMs": 0.38,
+      "unaccountedMs": 6.56
+    },
+    "phasesMax": {
+      "worldDrawMs": 1.4,
+      "worldPaintMs": 0,
+      "shadowCastMs": 0,
+      "encountersStepMs": 2.1,
+      "encountersRenderMs": 38.4,
+      "pixiRenderMs": 4.1,
+      "netMs": 0.4,
+      "unaccountedMs": 8.4
+    },
+    "scene": {
+      "mode": "coop",
+      "room": "BTGWQ",
+      "playerId": "p1",
+      "rttMs": 0.8,
+      "hero": "rift-runner",
+      "heroState": "idle",
+      "heroU": 11.43,
+      "heroV": 11.23,
+      "safeZone": true,
+      "level": 4,
+      "heroesCount": 1,
+      "foesTotal": 8,
+      "foesRendered": 8,
+      "particles": 0,
+      "liveEffects": 0,
+      "activeFloats": 0,
+      "projectiles": 0,
+      "aoes": 0,
+      "scale": 1.35,
+      "camera": "idle",
+      "gate": "closed",
+      "lighting": "off",
+      "torches": "off",
+      "sun": "0.4479",
+      "surfacePaints": 1,
+      "lightPaints": 4,
+      "shadowPaints": 1
+    },
+    "frameSampleCount": 60
+  },
+  "frameSpikeSample": {
+    "id": "tl-mvkkovtx-4",
+    "reason": "frame_spike",
+    "fps": 50.05,
+    "minFps": 8.47,
+    "maxFrameMs": 118,
+    "bottleneck": "shadow-cast",
+    "phasesMax": {
+      "worldDrawMs": 1.4,
+      "worldPaintMs": 0,
+      "shadowCastMs": 84.2,
+      "encountersStepMs": 2.1,
+      "encountersRenderMs": 3.2,
+      "pixiRenderMs": 4.1,
+      "netMs": 0.4,
+      "unaccountedMs": 106.8
+    }
+  }
+}

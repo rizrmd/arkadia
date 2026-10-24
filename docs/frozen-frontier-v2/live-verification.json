@@ -1,0 +1,129 @@
+{
+  "mode": "live",
+  "base": "https://ark-whachat.fural.space/environment-corners/frozen-frontier/v2/",
+  "assets": 14,
+  "compositions": 3,
+  "placementsPerScene": 64,
+  "alpha": [
+    {
+      "id": "ruined-gate",
+      "clear": 431923,
+      "solid": 278021,
+      "transparentPadding": 24,
+      "pivotInBounds": true
+    },
+    {
+      "id": "broken-watchtower",
+      "clear": 373551,
+      "solid": 575483,
+      "transparentPadding": 24,
+      "pivotInBounds": true
+    },
+    {
+      "id": "snowy-shrine",
+      "clear": 508816,
+      "solid": 535739,
+      "transparentPadding": 24,
+      "pivotInBounds": true
+    },
+    {
+      "id": "pine-tall",
+      "clear": 531103,
+      "solid": 311131,
+      "transparentPadding": 24,
+      "pivotInBounds": true
+    },
+    {
+      "id": "pine-broad",
+      "clear": 209698,
+      "solid": 142464,
+      "transparentPadding": 24,
+      "pivotInBounds": true
+    },
+    {
+      "id": "pine-sapling",
+      "clear": 503572,
+      "solid": 190458,
+      "transparentPadding": 24,
+      "pivotInBounds": true
+    },
+    {
+      "id": "dead-tree",
+      "clear": 279994,
+      "solid": 85978,
+      "transparentPadding": 24,
+      "pivotInBounds": true
+    },
+    {
+      "id": "dead-snag",
+      "clear": 381646,
+      "solid": 180729,
+      "transparentPadding": 24,
+      "pivotInBounds": true
+    },
+    {
+      "id": "shrub-juniper",
+      "clear": 150245,
+      "solid": 112754,
+      "transparentPadding": 24,
+      "pivotInBounds": true
+    },
+    {
+      "id": "shrub-twigs",
+      "clear": 172489,
+      "solid": 47593,
+      "transparentPadding": 24,
+      "pivotInBounds": true
+    },
+    {
+      "id": "grass-tussock",
+      "clear": 188869,
+      "solid": 99783,
+      "transparentPadding": 24,
+      "pivotInBounds": true
+    },
+    {
+      "id": "grass-patch",
+      "clear": 88816,
+      "solid": 45791,
+      "transparentPadding": 24,
+      "pivotInBounds": true
+    },
+    {
+      "id": "rock-boulders",
+      "clear": 117818,
+      "solid": 92050,
+      "transparentPadding": 24,
+      "pivotInBounds": true
+    },
+    {
+      "id": "rock-scatter",
+      "clear": 84496,
+      "solid": 58403,
+      "transparentPadding": 24,
+      "pivotInBounds": true
+    }
+  ],
+  "browser": {
+    "errors": [],
+    "failed": [],
+    "viewports": [
+      {
+        "width": 390,
+        "height": 844,
+        "overflow": false
+      },
+      {
+        "width": 844,
+        "height": 390,
+        "overflow": false
+      }
+    ],
+    "spritePivots": true,
+    "scenePivots": true,
+    "sharedScale": true,
+    "categoryFilter": true,
+    "backgroundToggle": true
+  },
+  "gameplayImports": 0
+}

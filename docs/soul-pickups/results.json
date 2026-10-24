@@ -1,5 +1,5 @@
 {
-  "base": "http://127.0.0.1:8927",
+  "base": "http://127.0.0.1:8920",
   "results": [
     {
       "viewport": {
@@ -10,12 +10,12 @@
       "pickup": {
         "level": 2,
         "xp": 0,
-        "gold": 10,
+        "gold": 50,
         "pending": 1,
         "offers": [
-          "might",
-          "cleave",
-          "heal"
+          "leech",
+          "rift-trap",
+          "rift-bolt"
         ],
         "skills": {
           "rift-bolt": 1
@@ -24,11 +24,13 @@
         "slots": [
           "rift-bolt"
         ],
-        "autoCasts": 0,
+        "autoCasts": 1,
         "trinityCasts": 0,
-        "lastCast": []
+        "lastCast": [
+          "rift-bolt"
+        ]
       },
-      "animation": 2,
+      "animation": 10,
       "errors": []
     },
     {
@@ -40,12 +42,12 @@
       "pickup": {
         "level": 2,
         "xp": 0,
-        "gold": 10,
+        "gold": 50,
         "pending": 1,
         "offers": [
-          "heal",
-          "vitality",
-          "cleave"
+          "leech",
+          "cleave",
+          "rift-bolt"
         ],
         "skills": {
           "rift-bolt": 1
@@ -58,7 +60,7 @@
         "trinityCasts": 0,
         "lastCast": []
       },
-      "animation": 2,
+      "animation": 10,
       "errors": []
     },
     {
@@ -70,12 +72,12 @@
       "pickup": {
         "level": 2,
         "xp": 0,
-        "gold": 10,
+        "gold": 50,
         "pending": 1,
         "offers": [
-          "shockwave",
-          "might",
-          "haste"
+          "nova",
+          "rift-dash",
+          "rift-bolt"
         ],
         "skills": {
           "rift-bolt": 1
@@ -88,7 +90,7 @@
         "trinityCasts": 0,
         "lastCast": []
       },
-      "animation": 2,
+      "animation": 10,
       "errors": []
     }
   ]

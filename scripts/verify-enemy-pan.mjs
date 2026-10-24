@@ -31,7 +31,7 @@ try {
  const errors = [];
  page.on('pageerror', e => errors.push(e.message));
  await page.addInitScript(() => {
-  localStorage.setItem('arkadia.stronghold.hero.id', 'rift-runner');
+  localStorage.setItem('arkodia.stronghold.hero.id', 'rift-runner');
  });
  await page.goto(url + '/?offline=1&time=0.5');
  await page.waitForFunction(() => document.querySelector('#world-canvas')?.dataset.ready === 'true' && window.__STRONGHOLD_COMBAT__, null, {timeout: 60000});

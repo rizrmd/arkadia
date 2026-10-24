@@ -14,7 +14,7 @@ const idle=page=>page.waitForFunction(()=>document.querySelector('#world-hero').
 const hold=async(page,key,ms)=>{await page.keyboard.down(key);await page.waitForTimeout(ms);const during=await hero(page);await page.keyboard.up(key);await idle(page);return during;};
 const stickShown=page=>page.evaluate(()=>{const el=document.querySelector('#move-stick'),r=el.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2,visible:getComputedStyle(el).visibility==='visible'};});
 const desktop=await browser.newContext({viewport:{width:1440,height:1000}});
-let page=await open(desktop,'?time=0.5');await page.evaluate(()=>localStorage.removeItem('arkadia.stronghold.hero'));await page.reload();await page.waitForFunction(()=>document.querySelector('#world-hero')?.dataset.x);await page.waitForTimeout(500);
+let page=await open(desktop,'?time=0.5');await page.evaluate(()=>localStorage.removeItem('arkodia.stronghold.hero'));await page.reload();await page.waitForFunction(()=>document.querySelector('#world-hero')?.dataset.x);await page.waitForTimeout(500);
 const start=await hero(page);console.log('spawn',start);assert.equal(start.state,'idle');
 assert(!(await stickShown(page)).visible,'no thumbstick on a mouse-only screen');
 await shot(page,'1-spawn-noon');
@@ -48,7 +48,7 @@ assert.deepEqual([(await hero(page)).x,(await hero(page)).y],[before.x,before.y]
 // Position survives a reload (saved once the hero has rested 400 ms).
 const rest=await hero(page);await page.waitForTimeout(800);await page.goto(url+'/?offline=1&hero=rift-runner&time=0.5');await page.waitForFunction(()=>document.querySelector('#world-hero')?.dataset.x);await page.waitForTimeout(300);const reloaded=await hero(page);console.log('reloaded',reloaded);assert(Math.hypot(reloaded.x-rest.x,reloaded.y-rest.y)<2,'saved position');
 // Walk back to the court centre for the lighting shots.
-await page.evaluate(()=>localStorage.removeItem('arkadia.stronghold.hero'));
+await page.evaluate(()=>localStorage.removeItem('arkodia.stronghold.hero'));
 // Walking speed in every key direction, measured once the hero is up to speed.
 await page.goto(url+'/?offline=1&hero=rift-runner&time=0.5');await page.waitForFunction(()=>document.querySelector('#world-hero')?.dataset.x);await page.waitForTimeout(800);
 // Each run starts on open court west of the tent, so repeated runs never end against the tent or a wall.
@@ -67,7 +67,7 @@ console.table(rates.map(r=>({keys:r.keys,'tiles/s':r.tiles.toFixed(3),'screen px
 const expect={KeyD:120,KeyA:120,ArrowRight:120,KeyW:90,KeyS:90,ArrowUp:90,'KeyW+KeyD':111.6,'KeyS+KeyA':111.6};
 for(const r of rates)assert(Math.abs(r.screen/expect[r.keys]-1)<.08,`${r.keys} walks ${r.screen.toFixed(1)} screen px/s, expected ${expect[r.keys]}`);
 const up=rates.find(r=>r.keys==='KeyW'),right=rates.find(r=>r.keys==='KeyD');assert(Math.abs(up.screen/right.screen-.75)<.06,'straight up moves three quarters of the screen speed of straight across');
-await page.evaluate(()=>localStorage.removeItem('arkadia.stronghold.hero'));
+await page.evaluate(()=>localStorage.removeItem('arkodia.stronghold.hero'));
 for(const [time,name] of [['0.31','4-morning-shadow'],['0','5-night-tint']]){const p=page;await p.goto(url+'/?offline=1&hero=rift-runner&time='+time);await p.waitForFunction(()=>document.querySelector('#world-hero')?.dataset.x);await p.waitForTimeout(1200);await hold(p,'KeyA',700);const h=await hero(p);console.log(name,h);
  if(time==='0'){assert.equal(h.tint,'255,255,255','night keeps the own hero untinted and bright, got '+h.tint);assert.equal(h.night,1,'night aura active on own hero');}
  const box=await p.evaluate(()=>{const r=document.querySelector('#world-hero').getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height};});

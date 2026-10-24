@@ -8,8 +8,8 @@ import {chromium} from 'playwright';import {spawn,execFileSync} from 'node:child
 const out='docs/coop';await fs.mkdir(out,{recursive:true});
 const base=process.env.DEMO_URL?.replace(/\/$/,'');let server=null;
 if(!base){
- execFileSync(process.env.GO||'go',['build','-o','bin/arkadia','./cmd/arkadia'],{cwd:'server',stdio:'inherit',env:{...process.env,CGO_ENABLED:'0'}});
- server=spawn('server/bin/arkadia',[],{env:{...process.env,PORT:'8792',SITE_DIR:'dist'},stdio:['ignore','pipe','inherit']});
+ execFileSync(process.env.GO||'go',['build','-o','bin/arkodia','./cmd/arkodia'],{cwd:'server',stdio:'inherit',env:{...process.env,CGO_ENABLED:'0'}});
+ server=spawn('server/bin/arkodia',[],{env:{...process.env,PORT:'8792',SITE_DIR:'dist'},stdio:['ignore','pipe','inherit']});
  await new Promise((ok,no)=>{server.stdout.on('data',d=>{if(String(d).includes('listening'))ok();});server.on('exit',c=>no(Error('server exited '+c)));});
 }
 const url=base||'http://127.0.0.1:8792',suffix=base?'-live':'';

@@ -1,0 +1,35 @@
+{
+ "analyzedAt": "2026-10-24",
+ "source": "GET /api/tracelogs, 23 phone logs 07:41-07:48 UTC after d80ed7c",
+ "afterFirstFix": {
+  "encountersRenderAvgMs": "3.4-5.6 (was 20-30)",
+  "hero3dAvgMs": "0.4-0.7",
+  "vfxAvgMs": "1.0-4.5",
+  "fps": "44-58 (was 28-38)",
+  "frameDtDistribution": {
+   "<18ms": 901,
+   "18-25ms": 216,
+   "25-36ms": 84,
+   "36-55ms": 40,
+   ">=55ms": 11
+  },
+  "slowCombatFrames": "25-40 ms frames had only ~8 ms of JS and median 440 particles vs 81 on on-time frames: GPU fill",
+  "startupSpikes": "80-970 ms long tasks in the first ~7 s after load: NixieFX pool prewarm (12 instances per task)"
+ },
+ "fixes": {
+  "pixiResolutionCap": "min(devicePixelRatio,2): DPR 3.25 backbuffer 1281x2386 -> 788x1468",
+  "prewarm": "requestIdleCallback slices of ~6 ms; play() works during warm-up"
+ },
+ "benchmarks": {
+  "pixiRenderMsPerFrameDpr325": {
+   "before": 1015.3,
+   "after": 547.3,
+   "note": "headless SwiftShader: GPU fill emulated on CPU, so this is proportional to pixel count"
+  },
+  "longTaskMsAfterLoadingScreen": {
+   "before": 3187,
+   "after": 830,
+   "note": "remaining: one ~190 ms gate-door repaint and emulated-GPU waits"
+  }
+ }
+}

@@ -17,7 +17,7 @@ WASD/arrows move, Space attacks and E interacts. The screen also provides a move
 
 The first clear grants **150 Gold, 30 Mana and 5 Souls**. Existing Stronghold equipment/training/hero bonuses add health at entry. Reward history is stored separately from arena-run history, so pruning old arena entries cannot make the first-clear reward repeat. Resource credit uses the existing Web Locks transaction. Earlier Stronghold saves remain valid.
 
-Progress, defeated enemies, recovered caches, health and position are checkpointed in this browser under `arkadia-snow-expedition-v1`. Death opens a defeat/retry screen. Restart clears only this expedition checkpoint and suppresses the page-exit save that would otherwise restore it. Returning home keeps the checkpoint. Completion can be replayed, but grants no second first-clear reward.
+Progress, defeated enemies, recovered caches, health and position are checkpointed in this browser under `arkodia-snow-expedition-v1`. Death opens a defeat/retry screen. Restart clears only this expedition checkpoint and suppresses the page-exit save that would otherwise restore it. Returning home keeps the checkpoint. Completion can be replayed, but grants no second first-clear reward.
 
 This first level is a bounded ten-by-ten clearing with a follow camera and decorative forest/rock perimeter. The terrain kit remains reusable; the level is not a generated campaign or backend-authoritative multiplayer state.
 

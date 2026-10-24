@@ -1,0 +1,84 @@
+{
+  "base": "https://arkodia.online",
+  "release": "f8c3ddd",
+  "bundle": {
+    "path": "assets/main-ehWPsPzW.js",
+    "sha256": "70aa262e0edeb0268a38cfa9a4f6250f1eef23e83978e47369b4c09f2d2dfb37",
+    "liveMatches": true
+  },
+  "errors": [],
+  "shots": [
+    {
+      "name": "phone-ramp-middle",
+      "court": [
+        25.5,
+        11.5
+      ],
+      "viewport": [
+        390,
+        844
+      ],
+      "dpr": 2
+    },
+    {
+      "name": "phone-ramp-shoulder",
+      "court": [
+        24.5,
+        10.2
+      ],
+      "viewport": [
+        390,
+        844
+      ],
+      "dpr": 2
+    },
+    {
+      "name": "phone-on-ridge",
+      "court": [
+        25.5,
+        7.2
+      ],
+      "viewport": [
+        390,
+        844
+      ],
+      "dpr": 2
+    }
+  ],
+  "traversal": [
+    {
+      "name": "ascent",
+      "from": [
+        25.5,
+        13.5
+      ],
+      "to": [
+        25.43,
+        8.92
+      ]
+    },
+    {
+      "name": "descent",
+      "from": [
+        25.5,
+        9.5
+      ],
+      "to": [
+        25.56,
+        13.74
+      ]
+    },
+    {
+      "name": "cliff-block",
+      "from": [
+        29,
+        7.5
+      ],
+      "to": [
+        27.89,
+        7.35
+      ]
+    }
+  ],
+  "loadedBundle": true
+}

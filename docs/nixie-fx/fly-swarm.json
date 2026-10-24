@@ -1,0 +1,17 @@
+{
+  "task": "qkshhxvrhgtnmyeyfcmitowy",
+  "date": "2026-10-24",
+  "problem": "Grey faceted rock chunks (texture 'debris') were thrown into the air, tumbled and vanished. At game zoom they read as a swarm of flies arriving and leaving.",
+  "removed": [
+    "ember-warden.cinder-step.cast: dash ground cinder pebbles",
+    "ember-warden.cinder-step.detonate: wake ground cinder pebbles",
+    "ember-warden.ember-snare.detonate: eruption perimeter volcanic rocks",
+    "ember-warden.shockwave.detonate: perimeter basalt boulders",
+    "ember-warden.cleave.detonate: trailing volcanic cinder rocks",
+    "shared.hit.seismic: debris",
+    "shared.shockwave.detonate (kits.slam): debris; kits.trap / kits.slam molten cinders"
+  ],
+  "kept": "Static rim pebbles on the ground decals (speed 0) and every fire, spark, ember, smoke and shard layer.",
+  "verify": {"script": "scripts/vfx/verify.mjs", "passed": true, "cues": 54, "effects": 76, "peakParticles": 952},
+  "evidence": ["fly-swarm-ember-snare-before-after.webp", "fly-swarm-seismic-slam-before-after.webp"]
+}

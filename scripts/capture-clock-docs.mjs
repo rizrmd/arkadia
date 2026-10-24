@@ -8,7 +8,7 @@ const server=process.env.PREVIEW_URL?null:spawn('node',['server.mjs'],{env:{...p
 const launch=()=>chromium.launch({headless:true,env:{...process.env,LD_LIBRARY_PATH:'/home/dev/.local/browser-libs/usr/lib/x86_64-linux-gnu:/opt/fural-antigravity-glibc'},args:['--no-sandbox','--no-zygote','--single-process']});
 async function shot(vp,hour,openPanel=false){
  const browser=await launch();try{const page=await browser.newPage(vp);await page.goto(base+'/stronghold.html');await page.waitForSelector('#day-clock .clock-time');
-  await page.evaluate(t=>localStorage.setItem('arkadia.stronghold.lighting',JSON.stringify({mode:'dynamic',time:t})),hour/24);await page.reload();
+  await page.evaluate(t=>localStorage.setItem('arkodia.stronghold.lighting',JSON.stringify({mode:'dynamic',time:t})),hour/24);await page.reload();
   await page.waitForFunction(()=>document.querySelector('#world-surface')?.dataset.lighting&&document.querySelector('#world-canvas')?.dataset.ready==='true');
   if(openPanel)await page.click('.clock-chip');await page.waitForTimeout(900);return await page.screenshot();}finally{await browser.close();}
 }

@@ -1,0 +1,443 @@
+{
+ "id": "rift-lut",
+ "name": "Rift 1D Color Ramp LUT (Void Abyss Edge -> Electric Violet/Indigo -> Cyan-White Core)",
+ "blend": "normal",
+ "shadingModel": "unlit",
+ "opacityMaskClipValue": 0.005,
+ "params": [
+  {
+   "name": "MainTex",
+   "type": "texture",
+   "group": "Textures",
+   "default": "",
+   "scope": "per-material",
+   "builtinRole": "mainTex"
+  },
+  {
+   "name": "SingularityBoost",
+   "type": "float",
+   "group": "LUT",
+   "default": 1.08,
+   "sliderMin": 0.5,
+   "sliderMax": 2,
+   "scope": "per-material"
+  }
+ ],
+ "nodes": [
+  {
+   "id": "uv0",
+   "type": "uv",
+   "inputs": {},
+   "params": {},
+   "position": {
+    "x": 0,
+    "y": 0
+   }
+  },
+  {
+   "id": "mainTex",
+   "type": "textureSample",
+   "inputs": {
+    "uv": "rl-uv0"
+   },
+   "params": {
+    "tex": ""
+   },
+   "position": {
+    "x": 160,
+    "y": 0
+   }
+  },
+  {
+   "id": "relTime",
+   "type": "particleRelativeTime",
+   "inputs": {},
+   "params": {},
+   "position": {
+    "x": 160,
+    "y": 140
+   }
+  },
+  {
+   "id": "dynParam",
+   "type": "dynamicParameter",
+   "inputs": {},
+   "params": {},
+   "position": {
+    "x": 160,
+    "y": 220
+   }
+  },
+  {
+   "id": "lifeDrive",
+   "type": "subtract",
+   "inputs": {
+    "a": "rl-relTime",
+    "b": "rl-dynParam"
+   },
+   "params": {},
+   "position": {
+    "x": 320,
+    "y": 180
+   }
+  },
+  {
+   "id": "heatBase",
+   "type": "multiply",
+   "inputs": {
+    "a": "rl-main-r",
+    "b": "rl-main-a"
+   },
+   "params": {},
+   "position": {
+    "x": 320,
+    "y": 40
+   }
+  },
+  {
+   "id": "heatLife",
+   "type": "remap",
+   "inputs": {
+    "in": "rl-lifeDrive"
+   },
+   "params": {
+    "inMin": 0,
+    "inMax": 1,
+    "outMin": 0.64,
+    "outMax": 1.14
+   },
+   "position": {
+    "x": 480,
+    "y": 140
+   }
+  },
+  {
+   "id": "heatSignal",
+   "type": "multiply",
+   "inputs": {
+    "a": "rl-heatBase",
+    "b": "rl-heatLife"
+   },
+   "params": {},
+   "position": {
+    "x": 640,
+    "y": 80
+   }
+  },
+  {
+   "id": "lutRamp",
+   "type": "gradientRamp",
+   "inputs": {
+    "t": "rl-heatSignal"
+   },
+   "params": {
+    "stops": [
+     {
+      "position": 0,
+      "color": [
+       0.08,
+       0.02,
+       0.22,
+       1
+      ]
+     },
+     {
+      "position": 0.24,
+      "color": [
+       0.24,
+       0.08,
+       0.62,
+       1
+      ]
+     },
+     {
+      "position": 0.52,
+      "color": [
+       0.52,
+       0.24,
+       0.94,
+       1
+      ]
+     },
+     {
+      "position": 0.78,
+      "color": [
+       0.42,
+       0.84,
+       1,
+       1
+      ]
+     },
+     {
+      "position": 1,
+      "color": [
+       0.94,
+       0.98,
+       1,
+       1
+      ]
+     }
+    ]
+   },
+   "position": {
+    "x": 820,
+    "y": 80
+   }
+  },
+  {
+   "id": "rand",
+   "type": "particleRandom",
+   "inputs": {},
+   "params": {},
+   "position": {
+    "x": 640,
+    "y": 220
+   }
+  },
+  {
+   "id": "randWeight",
+   "type": "remap",
+   "inputs": {
+    "in": "rl-rand"
+   },
+   "params": {
+    "inMin": 0,
+    "inMax": 1,
+    "outMin": 0.96,
+    "outMax": 1.04
+   },
+   "position": {
+    "x": 820,
+    "y": 220
+   }
+  },
+  {
+   "id": "tintedLut",
+   "type": "multiply",
+   "inputs": {
+    "a": "rl-lutRamp",
+    "b": "rl-randWeight"
+   },
+   "params": {},
+   "position": {
+    "x": 980,
+    "y": 120
+   }
+  },
+  {
+   "id": "alphaDrive",
+   "type": "multiply",
+   "inputs": {
+    "a": "rl-main-a2",
+    "b": "rl-lifeDrive2"
+   },
+   "params": {},
+   "position": {
+    "x": 820,
+    "y": 320
+   }
+  },
+  {
+   "id": "erodedAlpha",
+   "type": "smoothstep",
+   "inputs": {
+    "in": "rl-alphaDrive"
+   },
+   "params": {
+    "edge0": 0.05,
+    "edge1": 0.28
+   },
+   "position": {
+    "x": 980,
+    "y": 320
+   }
+  },
+  {
+   "id": "finalAlpha",
+   "type": "multiply",
+   "inputs": {
+    "a": "rl-erodedAlpha",
+    "b": "rl-main-a3"
+   },
+   "params": {},
+   "position": {
+    "x": 1140,
+    "y": 280
+   }
+  },
+  {
+   "id": "premultBase",
+   "type": "multiply",
+   "inputs": {
+    "a": "rl-tintedLut",
+    "b": "rl-finalAlpha-rgb"
+   },
+   "params": {},
+   "position": {
+    "x": 1300,
+    "y": 160
+   }
+  }
+ ],
+ "edges": [
+  {
+   "id": "rl-uv0",
+   "source": "uv0",
+   "sourceHandle": "out",
+   "target": "mainTex",
+   "targetHandle": "uv"
+  },
+  {
+   "id": "rl-relTime",
+   "source": "relTime",
+   "sourceHandle": "out",
+   "target": "lifeDrive",
+   "targetHandle": "a"
+  },
+  {
+   "id": "rl-dynParam",
+   "source": "dynParam",
+   "sourceHandle": "Param1",
+   "target": "lifeDrive",
+   "targetHandle": "b"
+  },
+  {
+   "id": "rl-main-r",
+   "source": "mainTex",
+   "sourceHandle": "R",
+   "target": "heatBase",
+   "targetHandle": "a"
+  },
+  {
+   "id": "rl-main-a",
+   "source": "mainTex",
+   "sourceHandle": "A",
+   "target": "heatBase",
+   "targetHandle": "b"
+  },
+  {
+   "id": "rl-lifeDrive",
+   "source": "lifeDrive",
+   "sourceHandle": "out",
+   "target": "heatLife",
+   "targetHandle": "in"
+  },
+  {
+   "id": "rl-heatBase",
+   "source": "heatBase",
+   "sourceHandle": "out",
+   "target": "heatSignal",
+   "targetHandle": "a"
+  },
+  {
+   "id": "rl-heatLife",
+   "source": "heatLife",
+   "sourceHandle": "out",
+   "target": "heatSignal",
+   "targetHandle": "b"
+  },
+  {
+   "id": "rl-heatSignal",
+   "source": "heatSignal",
+   "sourceHandle": "out",
+   "target": "lutRamp",
+   "targetHandle": "t"
+  },
+  {
+   "id": "rl-rand",
+   "source": "rand",
+   "sourceHandle": "out",
+   "target": "randWeight",
+   "targetHandle": "in"
+  },
+  {
+   "id": "rl-lutRamp",
+   "source": "lutRamp",
+   "sourceHandle": "out",
+   "target": "tintedLut",
+   "targetHandle": "a"
+  },
+  {
+   "id": "rl-randWeight",
+   "source": "randWeight",
+   "sourceHandle": "out",
+   "target": "tintedLut",
+   "targetHandle": "b"
+  },
+  {
+   "id": "rl-main-a2",
+   "source": "mainTex",
+   "sourceHandle": "A",
+   "target": "alphaDrive",
+   "targetHandle": "a"
+  },
+  {
+   "id": "rl-lifeDrive2",
+   "source": "lifeDrive",
+   "sourceHandle": "out",
+   "target": "alphaDrive",
+   "targetHandle": "b"
+  },
+  {
+   "id": "rl-alphaDrive",
+   "source": "alphaDrive",
+   "sourceHandle": "out",
+   "target": "erodedAlpha",
+   "targetHandle": "in"
+  },
+  {
+   "id": "rl-erodedAlpha",
+   "source": "erodedAlpha",
+   "sourceHandle": "out",
+   "target": "finalAlpha",
+   "targetHandle": "a"
+  },
+  {
+   "id": "rl-main-a3",
+   "source": "mainTex",
+   "sourceHandle": "A",
+   "target": "finalAlpha",
+   "targetHandle": "b"
+  },
+  {
+   "id": "rl-tintedLut",
+   "source": "tintedLut",
+   "sourceHandle": "out",
+   "target": "premultBase",
+   "targetHandle": "a"
+  },
+  {
+   "id": "rl-finalAlpha-rgb",
+   "source": "finalAlpha",
+   "sourceHandle": "out",
+   "target": "premultBase",
+   "targetHandle": "b"
+  },
+  {
+   "id": "rl-out-base",
+   "source": "premultBase",
+   "sourceHandle": "out",
+   "target": "output",
+   "targetHandle": "baseColor"
+  },
+  {
+   "id": "rl-out-alpha",
+   "source": "finalAlpha",
+   "sourceHandle": "out",
+   "target": "output",
+   "targetHandle": "opacity"
+  },
+  {
+   "id": "rl-out-mask",
+   "source": "finalAlpha",
+   "sourceHandle": "out",
+   "target": "output",
+   "targetHandle": "opacityMask"
+  }
+ ],
+ "outputs": {
+  "baseColor": "rl-out-base",
+  "opacity": "rl-out-alpha",
+  "opacityMask": "rl-out-mask"
+ }
+}

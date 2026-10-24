@@ -1,29 +1,134 @@
+import '../storage-rename';
+import {Application,Container,Graphics,Rectangle} from 'pixi.js';
 import '../stronghold/expedition-link';
-import { World, type Point } from './world';
-import './style.css';
-const root=document.querySelector<HTMLDivElement>('#expedition')!;
-root.innerHTML=`<aside><small>ARKADIA / EXPEDITION WORLD</small><h1>Paths among<br>the ruins.</h1><label>Seed <input id="seed" value="arkadia-01"></label><button id="new">Open seed</button><p>Arrow keys / WASD explore. Click the map to inspect destinations. Cross water only at road bridges.</p><div id="position"></div><label>Risk limit <input id="risk" type="number" min="0" max="100" value="60"></label><button id="route">Check route</button><button id="walk">Follow active route</button><button id="clear">Actively clear current location</button><p id="detail"></p><label>Idle duration <select id="hours"><option>1</option><option>4</option><option>8</option></select> hours</label><button id="idle">Dispatch through cleared locations</button><button id="claim">Claim completed expedition</button><button id="save">Save</button><button id="load">Reload save</button><button id="export">Download JSON save</button><label>Import save <input type="file" id="import" accept="application/json"></label><p id="message" role="status"></p><p id="jobs"></p></aside><main><h2>Travel map</h2><p>● You · ◎ Destination · gold: route · brown: road · blue: river · square: landmark</p><canvas width="720" height="720" aria-label="Expedition map; use arrow keys to navigate"></canvas><p id="stats"></p><p>Local prototype: idle uses the device clock. Browser/JSON saves; no backend or authoritative server timer.</p></main>`;
-const el=(id:string)=>document.getElementById(id)!;
-const input=(id:string)=>(el(id) as HTMLInputElement).value;
-const canvas=document.querySelector('canvas')!,ctx=canvas.getContext('2d')!;
-let world:World;try{world=World.load(localStorage.getItem('arkadia-expedition-v1')??'');}catch{world=new World('arkadia-01');}
-let target:Point={...world.position},route:Point[]=[];world.visit(world.position);
-const colors:Record<string,string>={'Sungai':'#436f86','Pegunungan':'#93908c','Rawa':'#4d6555','Hutan Relik':'#364f40','Perbatasan Abu':'#746c5e'};
-function persist(){localStorage.setItem('arkadia-expedition-v1',world.save());}
-function draw(){const ox=world.position.x-12,oy=world.position.y-12;ctx.clearRect(0,0,720,720);for(let j=0;j<25;j++)for(let i=0;i<25;i++){const p={x:ox+i,y:oy+j},t=world.tile(p),s=world.condition(p),x=i*28,y=j*28;ctx.fillStyle=colors[t.biome];ctx.fillRect(x,y,27,27);if(t.road){ctx.fillStyle='#b39b73';ctx.fillRect(x+10,y,6,28);ctx.fillRect(x,y+10,28,6);}if(t.landmark){ctx.strokeStyle=t.landmark==='Sarang'?'#ff897c':'#eee2b7';ctx.lineWidth=2;ctx.strokeRect(x+6,y+6,15,15);}if(s.cleared){ctx.fillStyle='#d9e8ba';ctx.fillRect(x+2,y+2,4,4);}if(t.risk>45){ctx.fillStyle='#c67d9e';ctx.beginPath();ctx.arc(x+23,y+23,3,0,7);ctx.fill();}}
-ctx.strokeStyle='#ffd47e';ctx.lineWidth=3;ctx.beginPath();route.forEach((p,i)=>{const x=(p.x-ox)*28+14,y=(p.y-oy)*28+14;i?ctx.lineTo(x,y):ctx.moveTo(x,y);});ctx.stroke();for(const [p,c,r] of [[world.position,'#fff8dc',7],[target,'#ffb86a',11]] as const){ctx.strokeStyle=c;ctx.lineWidth=3;ctx.beginPath();ctx.arc((p.x-ox)*28+14,(p.y-oy)*28+14,r,0,7);ctx.stroke();}
-const t=world.tile(target);el('detail').textContent=`${t.name} (${t.x}, ${t.y}) · ${t.biome} · elevation ${t.elevation.toFixed(2)} · moisture ${t.moisture.toFixed(2)} · ${t.road?'road/bridge':'no road'} · risk ${world.risk(target)} · ${t.faction}: ${t.signs.join(', ')}${t.flow?` · flow → ${t.flow.x},${t.flow.y}`:''}`;el('position').textContent=`You: ${world.position.x}, ${world.position.y} · ${world.condition(world.position).cleared?'Actively cleared':'Uncleared'}`;el('stats').textContent=`${Object.keys(world.chunks).length} saved chunks · ${world.materials} materials · ${world.xp} XP`;el('jobs').textContent=world.jobs.map((j,i)=>`#${i+1} ${j.goal} · ${j.hours} hours · ${j.claimed?'claimed':Date.now()>=j.started+j.hours*3600000?'ready':'in progress'}`).join(' / ');}
-function act(fn:()=>void){try{fn();draw();persist();el('message').textContent='Saved.';}catch(e){el('message').textContent=(e as Error).message;}}
-function move(p:Point){const t=world.tile(p);if(t.river&&!t.road)throw Error('Find a road bridge');if(world.risk(p)>Number(input('risk')))throw Error('Risk exceeds limit');world.visit(p);route=[];}
-canvas.onclick=e=>{const r=canvas.getBoundingClientRect();const x=Math.floor((e.clientX-r.left)*720/r.width/28),y=Math.floor((e.clientY-r.top)*720/r.height/28);if(x>=25||y>=25)return;target={x:world.position.x-12+x,y:world.position.y-12+y};route=[];draw();};
-window.addEventListener('keydown',e=>{if((e.target as HTMLElement).matches('input,select'))return;const d:Record<string,Point>={ArrowUp:{x:0,y:-1},w:{x:0,y:-1},ArrowDown:{x:0,y:1},s:{x:0,y:1},ArrowLeft:{x:-1,y:0},a:{x:-1,y:0},ArrowRight:{x:1,y:0},d:{x:1,y:0}};if(d[e.key]){e.preventDefault();act(()=>move({x:world.position.x+d[e.key].x,y:world.position.y+d[e.key].y}));}});
-el('new').onclick=()=>act(()=>{if(!input('seed').trim())throw Error('Enter a seed');world=new World(input('seed'));world.visit(world.position);target={...world.position};route=[];});
-el('route').onclick=()=>act(()=>{route=world.route(target,Number(input('risk')));});
-el('walk').onclick=()=>act(()=>{const path=world.route(target,Number(input('risk')));for(const p of path)world.visit(p);route=[];});
-el('clear').onclick=()=>act(()=>world.clear(world.position));
-el('idle').onclick=()=>act(()=>{world.dispatch(target,Number(input('risk')),Number(input('hours')),Date.now());});
-el('claim').onclick=()=>act(()=>{const i=world.jobs.findIndex(j=>!j.claimed&&Date.now()>=j.started+j.hours*3600000);world.claim(i,Date.now());});
-el('save').onclick=()=>act(()=>persist());el('load').onclick=()=>act(()=>{world=World.load(localStorage.getItem('arkadia-expedition-v1')??'');target={...world.position};route=[];});
-el('export').onclick=()=>{const url=URL.createObjectURL(new Blob([world.save()],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='arkadia-world.json';a.click();URL.revokeObjectURL(url);};
-el('import').onchange=async()=>{const file=(el('import') as HTMLInputElement).files?.[0];if(file){const raw=await file.text();act(()=>{world=World.load(raw);target={...world.position};route=[];});}};
-draw();persist();
+import {translate} from '../stronghold/english';
+import {FrameSet,pickFrameScale} from '../typography/frames';
+import {installMsdfFx,loadFonts} from '../typography/msdf';
+import {MsdfText} from '../typography/text';
+import {World,type Point} from './world';
+
+const colors:Record<string,number>={
+ River:0x436f86,
+ Mountains:0x93908c,
+ Swamp:0x4d6555,
+ 'Relic Forest':0x364f40,
+ 'Ash Frontier':0x746c5e,
+ Sungai:0x436f86,
+ Pegunungan:0x93908c,
+ Rawa:0x4d6555,
+ 'Hutan Relik':0x364f40,
+ 'Perbatasan Abu':0x746c5e,
+};
+
+async function start(){
+ const app=new Application();
+ await app.init({resizeTo:window,backgroundColor:0x11191e,antialias:true,autoDensity:true,resolution:window.devicePixelRatio||1});
+ (document.getElementById('expedition')??document.getElementById('app')??document.body).appendChild(app.canvas);
+ installMsdfFx(app.renderer);
+ const [,frames]=await Promise.all([loadFonts('/typography/v2/fonts/'),FrameSet.load('/typography/v2/hud/',pickFrameScale(window.devicePixelRatio||1))]);
+
+ let world:World;
+ try{world=World.load(localStorage.getItem('arkodia-expedition-v1')??'');}catch{world=new World('arkadia-01');}
+ let target:Point={...world.position},route:Point[]=[];
+ world.visit(world.position);
+ const riskLimit=60;
+
+ const side=app.stage.addChild(new Container());
+ side.position.set(16,16);
+ side.addChild(frames.frame('panel-bronze',340,560));
+
+ side.addChild(new MsdfText('panel-label','ARKODIA · EXPEDITION')).place(24,38);
+ side.addChild(new MsdfText('display-title','Ruins Map',{size:32})).place(24,78);
+ const posText=side.addChild(new MsdfText('panel-body',''));
+ posText.place(24,114);
+ const detailText=side.addChild(new MsdfText('panel-muted','',{wrapWidth:292,lineHeight:18}));
+ detailText.place(24,142);
+ const statsText=side.addChild(new MsdfText('panel-muted',''));
+ statsText.place(24,234);
+ const msgText=side.addChild(new MsdfText('panel-body',''));
+ msgText.place(24,524);
+
+ const addBtn=(label:string,y:number,fn:()=>void)=>{
+  const b=side.addChild(new Container());
+  b.position.set(24,y);
+  b.eventMode='static';b.cursor='pointer';b.hitArea=new Rectangle(0,0,292,38);
+  b.addChild(frames.frame('button-bronze',292,38));
+  b.addChild(new MsdfText('panel-title',label,{size:13.5})).place(146,24,0.5);
+  b.on('pointertap',()=>act(fn));
+ };
+
+ addBtn('Check Route',264,()=>{route=world.route(target,riskLimit);});
+ addBtn('Follow Active Route',310,()=>{for(const p of world.route(target,riskLimit))world.visit(p);route=[];});
+ addBtn('Clear Current Location',356,()=>world.clear(world.position));
+ addBtn('Dispatch Idle Expedition',402,()=>world.dispatch(target,riskLimit,4,Date.now()));
+ addBtn('Claim Completed Expedition',448,()=>{const i=world.jobs.findIndex(j=>!j.claimed&&Date.now()>=j.started+j.hours*3600000);world.claim(i,Date.now());});
+
+ const mapWrap=app.stage.addChild(new Container());
+ mapWrap.position.set(376,16);
+ const mapGraphics=mapWrap.addChild(new Graphics());
+ mapGraphics.eventMode='static';
+ mapGraphics.cursor='pointer';
+ mapGraphics.hitArea=new Rectangle(0,0,700,700);
+ mapGraphics.on('pointertap',e=>{
+  const local=mapWrap.toLocal(e.global);
+  const x=Math.floor(local.x/28),y=Math.floor(local.y/28);
+  if(x<0||y<0||x>=25||y>=25)return;
+  target={x:world.position.x-12+x,y:world.position.y-12+y};
+  route=[];draw();
+ });
+
+ function persist(){localStorage.setItem('arkodia-expedition-v1',world.save());}
+ function draw(){
+  const ox=world.position.x-12,oy=world.position.y-12;
+  mapGraphics.clear();
+  for(let j=0;j<25;j++)for(let i=0;i<25;i++){
+   const p={x:ox+i,y:oy+j},t=world.tile(p),s=world.condition(p),x=i*28,y=j*28;
+   mapGraphics.rect(x,y,27,27).fill(colors[t.biome]??0x364f40);
+   if(t.road){
+    mapGraphics.rect(x+10,y,6,28).fill(0xb39b73);
+    mapGraphics.rect(x,y+10,28,6).fill(0xb39b73);
+   }
+   if(t.landmark){
+    mapGraphics.rect(x+6,y+6,15,15).stroke({color:t.landmark==='Lair'||t.landmark==='Sarang'?0xff897c:0xeee2b7,width:2});
+   }
+   if(s.cleared){
+    mapGraphics.rect(x+2,y+2,4,4).fill(0xd9e8ba);
+   }
+  }
+  if(route.length>1){
+   route.forEach((p,idx)=>{
+    const x=(p.x-ox)*28+14,y=(p.y-oy)*28+14;
+    if(idx===0)mapGraphics.moveTo(x,y);else mapGraphics.lineTo(x,y);
+   });
+   mapGraphics.stroke({color:0xffd47e,width:3});
+  }
+  mapGraphics.circle((world.position.x-ox)*28+14,(world.position.y-oy)*28+14,7).stroke({color:0xfff8dc,width:3});
+  mapGraphics.circle((target.x-ox)*28+14,(target.y-oy)*28+14,11).stroke({color:0xffb86a,width:3});
+
+  const t=world.tile(target);
+  posText.text=`You: (${world.position.x}, ${world.position.y}) · ${world.condition(world.position).cleared?'Cleared':'Uncleared'}`;
+  posText.place(24,114);
+  detailText.text=translate(`${t.name} (${t.x}, ${t.y}) · ${t.biome} · risk ${world.risk(target)} · ${t.faction}`);
+  detailText.place(24,142);
+  statsText.text=`${Object.keys(world.chunks).length} chunks · ${world.materials} materials · ${world.xp} XP`;
+  statsText.place(24,234);
+ }
+ function act(fn:()=>void){
+  try{fn();draw();persist();msgText.text='Saved.';msgText.place(24,524);}
+  catch(e){msgText.text=translate((e as Error).message);msgText.place(24,524);}
+ }
+ window.addEventListener('keydown',e=>{
+  const d:Record<string,Point>={ArrowUp:{x:0,y:-1},w:{x:0,y:-1},ArrowDown:{x:0,y:1},s:{x:0,y:1},ArrowLeft:{x:-1,y:0},a:{x:-1,y:0},ArrowRight:{x:1,y:0},d:{x:1,y:0}};
+  if(d[e.key]){
+   e.preventDefault();
+   act(()=>{
+    const next={x:world.position.x+d[e.key].x,y:world.position.y+d[e.key].y};
+    const t=world.tile(next);
+    if(t.river&&!t.road)throw Error('Find a road bridge');
+    world.visit(next);route=[];
+   });
+  }
+ });
+ draw();persist();
+}
+void start();

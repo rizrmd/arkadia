@@ -1,0 +1,88 @@
+{
+ "checkedAt": "2026-10-23T18:11:51.570Z",
+ "runs": {
+  "solo-desktop": {
+   "url": "/?time=0.42",
+   "viewport": {
+    "width": 1440,
+    "height": 900,
+    "dpr": 1,
+    "mobile": false
+   },
+   "websockets": [],
+   "coopNet": false,
+   "lobby": false,
+   "coopLabel": null,
+   "pingLabel": null,
+   "fpsLabel": "60 fps",
+   "zoneLabel": "Safe Zone",
+   "ribbonCoopVisible": false,
+   "ribbonPingVisible": false,
+   "legacyCoopPill": false,
+   "variant": "concept-3-medallion-plaques-ledger"
+  },
+  "solo-mobile": {
+   "url": "/?time=0.42",
+   "viewport": {
+    "width": 390,
+    "height": 844,
+    "dpr": 2,
+    "mobile": true
+   },
+   "websockets": [],
+   "coopNet": false,
+   "lobby": false,
+   "coopLabel": null,
+   "pingLabel": null,
+   "fpsLabel": "60 fps",
+   "zoneLabel": "Safe Zone",
+   "ribbonCoopVisible": false,
+   "ribbonPingVisible": false,
+   "legacyCoopPill": false,
+   "variant": "concept-3-medallion-plaques-ledger"
+  },
+  "solo-invite-link": {
+   "url": "/?room=ABCD&time=0.42",
+   "viewport": {
+    "width": 1440,
+    "height": 900,
+    "dpr": 1,
+    "mobile": false
+   },
+   "websockets": [],
+   "coopNet": false,
+   "lobby": false,
+   "coopLabel": null,
+   "pingLabel": null,
+   "fpsLabel": "60 fps",
+   "zoneLabel": "Safe Zone",
+   "ribbonCoopVisible": false,
+   "ribbonPingVisible": false,
+   "legacyCoopPill": false,
+   "variant": "concept-3-medallion-plaques-ledger"
+  },
+  "coop-opt-in-desktop": {
+   "url": "/?coop&time=0.42",
+   "viewport": {
+    "width": 1440,
+    "height": 900,
+    "dpr": 1,
+    "mobile": false
+   },
+   "websockets": [
+    "ws://127.0.0.1:8797/ws"
+   ],
+   "coopNet": true,
+   "lobby": true,
+   "coopLabel": "N2P5V · 1/4",
+   "pingLabel": "9775 ms",
+   "fpsLabel": "60 fps",
+   "zoneLabel": "Safe Zone",
+   "ribbonCoopVisible": true,
+   "ribbonPingVisible": true,
+   "legacyCoopPill": true,
+   "variant": "concept-3-medallion-plaques-ledger"
+  }
+ },
+ "pass": true
+}

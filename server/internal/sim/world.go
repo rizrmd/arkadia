@@ -44,7 +44,7 @@ const (
 var (
 	enemySpeed = 105 / hypot(64, 32) * .55 // tiles/s, a bit over half the hero's
 	// The hero starts (and respawns) just in front of the tent in the centre of the court.
-	heroSpawn = Vec{590, 420}
+	heroSpawn = stronghold.HeroSpawn
 	// Later players stand beside the first so the party never spawns stacked.
 	spawnOffsets = []Vec{{0, 0}, {-26, 12}, {26, 12}, {0, 26}}
 )
@@ -138,10 +138,10 @@ type Gate struct {
 	Frame int
 }
 
-const gateFrames = 16
+var gateFrames = stronghold.Gate.Frames
 
-// Passable mirrors gate-doors.ts: passable from progress 0.8.
-func (g Gate) Passable() bool { return float64(g.Frame)/(gateFrames-1) >= .8 }
+// Passable mirrors gate-doors.ts: passable from progress passableAt (0.8).
+func (g Gate) Passable() bool { return float64(g.Frame)/float64(gateFrames-1) >= gateSpec.PassableAt }
 
 // World is one room's simulation.
 type World struct {
@@ -156,20 +156,17 @@ type World struct {
 	spawnTimer float64
 	rng        *rand.Rand
 	nav        *Blocker
+	retired    map[string]*Player
 }
 
 // NewWorld starts a world at a time of day with a deterministic seed.
 func NewWorld(nav *Blocker, clock float64, seed uint64) *World {
-	return &World{Clock: clock - math.Floor(clock), rng: rand.New(rand.NewPCG(seed, seed^0x9e3779b97f4a7c15)), nav: nav, nextEnemy: 1}
+	return &World{Clock: clock - math.Floor(clock), rng: rand.New(rand.NewPCG(seed, seed^0x9e3779b97f4a7c15)), nav: nav, nextEnemy: 1, retired: map[string]*Player{}}
 }
 
 func (w *World) random() float64 { return w.rng.Float64() }
 
-// AddPlayer places a hero at the tent in the first free slot. It returns nil when the room is full.
-func (w *World) AddPlayer(id, name string, maxHP float64) *Player {
-	if len(w.Players) >= MaxPlayers {
-		return nil
-	}
+func (w *World) freeSlot() int {
 	used := map[int]bool{}
 	for _, p := range w.Players {
 		used[p.Slot] = true
@@ -178,9 +175,61 @@ func (w *World) AddPlayer(id, name string, maxHP float64) *Player {
 	for used[slot] {
 		slot++
 	}
-	p := &Player{ID: id, Name: name, Slot: slot, MaxHP: clampMaxHP(maxHP), tokens: 2, Run: newProgression()}
+	return slot
+}
+
+// AddPlayer places a hero at the tent in the first free slot. It returns nil when the room is full.
+func (w *World) AddPlayer(id, name string, maxHP float64) *Player {
+	if len(w.Players) >= MaxPlayers {
+		return nil
+	}
+	p := &Player{ID: id, Name: name, Slot: w.freeSlot(), MaxHP: clampMaxHP(maxHP), tokens: 2, Run: newProgression()}
 	w.place(p)
 	w.Players = append(w.Players, p)
+	return p
+}
+
+// ResumePlayer reclaims an existing or recently disconnected hero in the room so a brief reconnect
+// keeps the hero's world position and progression instead of resetting them to the tent at Level 1.
+func (w *World) ResumePlayer(id, name string, maxHP float64) *Player {
+	if id == "" {
+		return nil
+	}
+	p := w.Player(id)
+	if p == nil {
+		if len(w.Players) >= MaxPlayers || w.retired == nil {
+			return nil
+		}
+		p = w.retired[id]
+		if p == nil {
+			return nil
+		}
+		delete(w.retired, id)
+		p.Slot = w.freeSlot()
+		w.Players = append(w.Players, p)
+	}
+	p.Name = name
+	bonusHP := float64(p.Run.Stars*10 + p.Run.Skills["vitality"]*20)
+	p.MaxHP = clampMaxHP(maxHP) + bonusHP
+	if p.F.HP > p.MaxHP {
+		p.F.HP = p.MaxHP
+	}
+	p.Ack = 0
+	p.Owed = 0
+	p.BaseX, p.BaseY = p.X, p.Y
+	p.queue = nil
+	p.tokens = 2
+	p.steering = false
+	p.Moving = false
+	p.last = Vec{}
+	p.starved = 0
+	if !p.F.Alive() {
+		w.place(p)
+	}
+	if p.Run.Pending > 0 && len(p.Run.Offers) == 0 {
+		w.rollForHero(&p.Run, p.Hero)
+	}
+	w.syncEnemyLevels()
 	return p
 }
 
@@ -197,11 +246,20 @@ func (w *World) place(p *Player) {
 	if o := spawnOffsets[p.Slot%len(spawnOffsets)]; !w.nav.Blocked(at.X+o.X, at.Y+o.Y, w.Gate.Passable()) {
 		at = Vec{at.X + o.X, at.Y + o.Y}
 	}
+	plays := p.F.Plays
+	respawn := p.F.State == Die || plays > 0
 	p.X, p.Y = at.X, at.Y
+	p.BaseX, p.BaseY = at.X, at.Y
 	p.Owed = 0
 	p.F = newFighter(Hero, ToTile(at.X, at.Y))
+	if respawn {
+		p.F.Plays = plays + 1
+	}
 	p.F.HP = p.MaxHP
 	p.Moving = false
+	p.steering = false
+	p.last = Vec{}
+	p.starved = 0
 }
 
 // RemovePlayer drops a hero from the world.
@@ -216,11 +274,22 @@ func (w *World) RemovePlayer(id string) {
 	for i, p := range w.Players {
 		if p.ID == id {
 			w.Players = append(w.Players[:i], w.Players[i+1:]...)
+			if w.retired == nil {
+				w.retired = map[string]*Player{}
+			}
+			if len(w.retired) >= 16 {
+				for k := range w.retired {
+					delete(w.retired, k)
+					break
+				}
+			}
+			w.retired[p.ID] = p
 			for _, e := range w.Enemies {
 				if e.Target == id {
 					e.Target = ""
 				}
 			}
+			w.syncEnemyLevels()
 			return
 		}
 	}
@@ -319,15 +388,20 @@ const (
 	maxOwed   = 3
 	backlog   = 2
 	maxTokens = 8
+	quiet     = 20
 )
 
 func (w *World) walkInputs(p *Player, dt float64) {
+	// Steering (which holds off the auto attack) follows the player's last real input, not the vector walked this
+	// tick: a key held through a late input still steers, so the hero is not locked into a swing by a gap in the
+	// network. A client quiet for a second has let go.
+	defer func() { p.steering = (p.last.X != 0 || p.last.Y != 0) && p.starved <= quiet }()
 	p.tokens = math.Min(p.tokens+1, maxTokens)
 	if p.Owed > 0 && len(p.queue) > 0 {
 		p.starved = 0
 		k := min(p.Owed, len(p.queue))
-		// A hero held in a swing or hit since keeps its place; those inputs are only acknowledged.
-		replay := !posed(p)
+		// A hero held in a hit since keeps its place; those inputs are only acknowledged.
+		replay := !held(p)
 		if replay {
 			p.X, p.Y = p.BaseX, p.BaseY
 		}
@@ -374,7 +448,7 @@ func (w *World) walkInputs(p *Player, dt float64) {
 		return
 	}
 	p.starved++
-	if p.starved <= maxOwed && p.Owed < maxOwed && p.tokens >= 1 && (p.last.X != 0 || p.last.Y != 0) && !posed(p) {
+	if p.starved <= maxOwed && p.Owed < maxOwed && p.tokens >= 1 && (p.last.X != 0 || p.last.Y != 0) && !held(p) {
 		if p.Owed == 0 {
 			p.BaseX, p.BaseY = p.X, p.Y
 		}
@@ -385,23 +459,22 @@ func (w *World) walkInputs(p *Player, dt float64) {
 	}
 	// A client that went quiet (a background tab, a dropped connection) stops; its guessed steps stand and its
 	// prediction rebases on wherever the server left the hero.
-	if p.starved > 20 {
+	if p.starved > quiet {
 		p.Owed = 0
 	}
 	w.walk(p, Vec{}, dt)
 }
 
-// posed: a swing, hit stun or death holds the hero in place.
-func posed(p *Player) bool { return p.F.State != Idle }
+// held: a hit stun or death holds the hero in place. A swing does not: walking cancels it (walk), as in solo play.
+func held(p *Player) bool { return p.F.State != Idle && p.F.State != Attack }
 
-// HoldTicks is how many more ticks a swing or hit stun holds the hero in place (a death: until it respawns). The
-// input applied in each of them is used up without walking, so the client skips as many of the inputs it has
-// sent since the acknowledged one instead of walking them in its prediction.
+// HoldTicks is how many more ticks a hit stun holds the hero in place (a death: until it respawns). The input
+// applied in each of them is used up without walking, so the client skips as many of the inputs it has sent since
+// the acknowledged one instead of walking them in its prediction. A swing holds none: a walking input cancels it
+// and walks, and a still one stands anyway.
 func (p *Player) HoldTicks() int {
 	s := kinds[p.F.Kind]
 	switch p.F.State {
-	case Attack:
-		return max(0, int(math.Ceil((s.attackMs-p.F.T)/TickMS)))
 	case Hit:
 		return max(0, int(math.Ceil((s.hitMs-p.F.T)/TickMS)))
 	case Die:
@@ -412,8 +485,10 @@ func (p *Player) HoldTicks() int {
 
 // walk moves a hero one tick along a screen-space vector, sliding along whatever blocks the full step (hero.ts).
 func (w *World) walk(p *Player, input Vec, dt float64) {
-	p.steering = input.X != 0 || input.Y != 0
-	if posed(p) {
+	if p.F.State == Attack && (input.X != 0 || input.Y != 0) {
+		p.F.Play(Idle)
+	}
+	if p.F.State != Idle {
 		p.Moving = false
 		return
 	}
@@ -446,7 +521,7 @@ func WalkStep(nav *Blocker, x, y float64, d Vec, dt float64, gatePassable bool) 
 		if s.X == 0 && s.Y == 0 {
 			continue
 		}
-		if stuck || !nav.Blocked(x+s.X, y+s.Y, gatePassable) {
+		if (stuck || !nav.Blocked(x+s.X, y+s.Y, gatePassable)) && !cliff(x, y, x+s.X, y+s.Y) {
 			return x + s.X, y + s.Y, hypot(s.X, s.Y)
 		}
 	}
@@ -741,7 +816,7 @@ func (w *World) move(e *Enemy, du, dv, dt float64) bool {
 	}
 	for _, t := range tries {
 		next := Vec{f.Pos.X + t.m.X, f.Pos.Y + t.m.Y}
-		if hypot(t.m.X, t.m.Y) < v*.4 || InSafeZone(next) || !stuck && !w.clearTile(next) {
+		if hypot(t.m.X, t.m.Y) < v*.4 || InSafeZone(next) || !stuck && !w.clearTile(next) || cliffTile(f.Pos, next) {
 			continue
 		}
 		if t.side != 0 {
@@ -808,9 +883,12 @@ func (w *World) spawnLevel() int {
 }
 
 func (w *World) syncEnemyLevels() {
+	if len(w.Players) == 0 {
+		return
+	}
 	targetLv := w.spawnLevel()
 	for _, e := range w.Enemies {
-		if e.enemyLevel() < targetLv {
+		if e.enemyLevel() != targetLv {
 			prevMax := e.maxHP()
 			ratio := 1.0
 			if e.F.Alive() && prevMax > 0 {
@@ -869,11 +947,11 @@ func (w *World) updateGate() {
 		if !p.F.Alive() {
 			continue
 		}
-		rx, ry := 48.0, 66.0
+		r := gateSpec.Trigger.Closed
 		if w.Gate.Open {
-			rx, ry = 65, 88
+			r = gateSpec.Trigger.Open
 		}
-		if math.Abs(p.X-577) < rx && math.Abs(p.Y-770) < ry {
+		if math.Abs(p.X-gateSpec.X) < r.X && math.Abs(p.Y-gateSpec.Trigger.Y) < r.Y {
 			near = true
 		}
 	}

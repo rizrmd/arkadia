@@ -1,0 +1,81 @@
+Shipped and verified live. New NE/E/SE Run artwork is integrated into the game atlas and both players. NW/W/SW mirror the corresponding canonical directions. N/S artwork is preserved and re-ordered into the same complete gait sequence.
+
+## Eight-direction Run
+
+![Rift Runner Run source sheet: N, NE, E, SE, S; eight frames per row](https://ark-whachat.fural.space/run-cadence/rift-runner-run.png)
+
+![Rift Runner animated eight-direction preview](https://ark-whachat.fural.space/sprite-player/sheets/rift-runner-run-preview.webp)
+
+| Property | Value |
+| --- | --- |
+| Stored sheet | 3072 × 1920, five rows: N, NE, E, SE, S |
+| Logical directions | N, NE, E, SE, S, SW, W, NW |
+| Cells / foot pivot | 384 × 384, transparent / (192, 360) |
+| Cycle | Eight unique stored frames per direction, one complete gait at 10 fps (800 ms) |
+| Left-facing views | NW from NE, W from E, SW from SE, mirrored horizontally |
+
+## Cadence diagnosis and integration
+
+The original vertical rows rapidly alternated opposing leg phases, while side rows grouped similar contacts. Exact frame hashes were unique, so a duplicate-file check alone could not explain the apparent speed difference. The repair regenerates the side artwork and orders both vertical rows into comparable gait phases. Frame counts and playback rates match in every direction. Gameplay movement speeds are unchanged.
+
+Stronghold previously selected SE/SW during horizontal movement. It now selects E/W with angle hysteresis and keeps the continuous distance-normalized gait clock when direction changes. Sprite Player uses regenerated full/half sheets and content revisions. Skill Player and FX Lab offer a **Run** pose, using the packed game atlas. Choose **Skill** to return to Attack playback.
+
+Only 40 Run cells changed in each character atlas. All 130 non-Run frames per hero, including Attack from a9ec0af, were checked against the pre-edit decoded atlas and remain pixel-identical.
+
+## Sprite Player
+
+<iframe src="https://ark-whachat.fural.space/sprite-player/?hero=rift-runner&amp;pose=run&amp;row=S&amp;controls=simple&amp;v=run-cadence-v7" title="Rift Runner Run Sprite Player" height="560"></iframe>
+
+Use the eight heading buttons, Play/Pause, Loop/Once and frame scrubber to inspect the loop and last-to-first transition.
+
+## Packed atlas in Skill Player
+
+<iframe src="https://ark-whachat.fural.space/skill-player/?hero=rift-runner&amp;pose=run&amp;dir=SE&amp;controls=simple&amp;autoplay=0" title="Rift Runner Run from game atlas" height="560"></iframe>
+
+[Open FX Lab in Run mode](https://ark-whachat.fural.space/fx-lab?hero=rift-runner&pose=run) · [Compare all sixteen hero/direction combinations](https://ark-whachat.fural.space/run-cadence/)
+
+## Regenerated directional artwork
+
+Generated with the built-in imagegen tool from the existing character identity references. Each final direction has eight authored poses in a 4 × 2 source grid; normalization retains the established game cell and pivot.
+
+### NE
+
+![Rift Runner NE regenerated eight-frame artwork](https://ark-whachat.fural.space/run-cadence/source/rift-runner-NE.png)
+
+![Rift Runner NE identity reference](https://ark-whachat.fural.space/run-cadence/source/rift-runner-NE-identity.png)
+
+### E
+
+![Rift Runner E regenerated eight-frame artwork](https://ark-whachat.fural.space/run-cadence/source/rift-runner-E.png)
+
+![Rift Runner E identity reference](https://ark-whachat.fural.space/run-cadence/source/rift-runner-E-identity.png)
+
+### SE
+
+![Rift Runner SE regenerated eight-frame artwork](https://ark-whachat.fural.space/run-cadence/source/rift-runner-SE.png)
+
+![Rift Runner SE identity reference](https://ark-whachat.fural.space/run-cadence/source/rift-runner-SE-identity.png)
+
+## Verification
+
+Local browser checks passed for both heroes in all eight directions: all 64 Sprite Player cells per hero, all eight packed frames per direction in Skill Player and FX Lab, correct mirrored views, preserved Attack mode, and eight-frame runtime loop coverage in every Stronghold direction. Live browser checks passed for the same full matrix, with zero page errors and byte-identical deployed character atlases.
+
+[Source phase audit](https://ark-whachat.fural.space/run-cadence/audit.json) · [Non-Run preservation proof](https://ark-whachat.fural.space/run-cadence/atlas-proof.json) · [Local verification](https://ark-whachat.fural.space/run-cadence/verified-loops-v1/verification.json) · [Live verification](https://ark-whachat.fural.space/run-cadence/verified-loops-v1/verification-live.json)
+
+## Runtime evidence
+
+![Synchronized live comparison of both heroes in all eight directions](https://ark-whachat.fural.space/run-cadence/verified-loops-v1/synchronized-live.webp)
+
+![Rift Runner live Stronghold Run](https://ark-whachat.fural.space/run-cadence/verified-loops-v1/rift-runner-runtime-live.webp)
+
+![Rift Runner packed Run in Skill Player](https://ark-whachat.fural.space/run-cadence/verified-loops-v1/rift-runner-skill-live.webp)
+
+![Initial Ember Warden live runtime capture](https://ark-whachat.fural.space/run-cadence/verified-loops-v1/ember-warden-initial-runtime-live.webp)
+
+## Earlier generation candidates
+
+These are retained for the image record and are not the integrated artwork. Multi-direction attempts failed the required grid; the first Ember SE pass required transparent-background extraction.
+
+![Rift Runner earlier unapproved candidate rift-before](https://ark-whachat.fural.space/run-cadence/candidates/rift-before.png)
+
+![Rift Runner earlier unapproved candidate rift-multidir-rejected](https://ark-whachat.fural.space/run-cadence/candidates/rift-multidir-rejected.png)

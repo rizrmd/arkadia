@@ -1,5 +1,8 @@
 import {walkableGround,gateTowerFront} from '../navigation';
 import type {Walk} from '../controls';
+import {STRONGHOLD} from '../prefabs/stronghold';
+import {cliff} from '../../world/relief';
+const G=STRONGHOLD.gate;
 // The hero's walking rule, shared by the solo hero (hero.ts) and co-op prediction, and mirrored step for step by
 // the server (server/internal/sim/world.go WalkStep): server and client must land on the same foot position.
 // Full speed is screen px/s straight across (ACROSS) and straight up/down (UPDOWN), on an ellipse between them.
@@ -10,11 +13,12 @@ import type {Walk} from '../controls';
 export const ACROSS=120,UPDOWN=90,RADIUS=9;
 export const fullSpeed=(sx:number,sy:number)=>{const l=Math.sqrt(sx*sx+sy*sy),a=sx/ACROSS,b=sy/UPDOWN;return l?l/Math.sqrt(a*a+b*b):0;};
 // One step of dt ms: slide along whatever blocks the full step; a hero already overlapping a footprint may walk out.
+// A step up or down a cliff (world/relief.ts) is blocked too; ramps rise gently enough to walk.
 // Returns the new foot and the screen px walked.
 export function walkStep(blocked:(x:number,y:number)=>boolean,x:number,y:number,d:Walk,dt:number){
  const m=Math.sqrt(d.x*d.x+d.y*d.y);if(!m)return {x,y,progress:0};
  const v=fullSpeed(d.x,d.y)*dt/1000,dx=d.x*v,dy=d.y*v,stuck=blocked(x,y);
- for(const [mx,my] of [[dx,dy],[dx,0],[0,dy]])if(mx||my){if(stuck||!blocked(x+mx,y+my))return {x:x+mx,y:y+my,progress:Math.sqrt(mx*mx+my*my)};}
+ for(const [mx,my] of [[dx,dy],[dx,0],[0,dy]])if(mx||my){if((stuck||!blocked(x+mx,y+my))&&!cliff(x,y,x+mx,y+my))return {x:x+mx,y:y+my,progress:Math.sqrt(mx*mx+my*my)};}
  return {x,y,progress:0};
 }
 // The gateway's rule (server/internal/sim/world.go updateGate): open while a living hero stands at the threshold
@@ -22,17 +26,17 @@ export function walkStep(blocked:(x:number,y:number)=>boolean,x:number,y:number,
 // Prediction runs it once per input from the server's state, so the doors give way when the own hero reaches them,
 // as the server will when it walks the same inputs, instead of a snapshot later.
 export type GateGuess={open:boolean;frame:number};
-const GATE_FRAMES=16;
-export const atGate=(x:number,y:number,open:boolean)=>Math.abs(x-577)<(open?65:48)&&Math.abs(y-770)<(open?88:66);
-export const gatePassable=(g:GateGuess)=>g.frame/(GATE_FRAMES-1)>=.8;
+const GATE_FRAMES=G.frames;
+export const atGate=(x:number,y:number,open:boolean)=>{const r=open?G.trigger.open:G.trigger.closed;return Math.abs(x-G.x)<r.x&&Math.abs(y-G.trigger.y)<r.y;};
+export const gatePassable=(g:GateGuess)=>g.frame/(GATE_FRAMES-1)>=G.passableAt;
 export const gateTick=(g:GateGuess,near:boolean):GateGuess=>({open:near,frame:near?Math.min(GATE_FRAMES-1,g.frame+1):Math.max(0,g.frame-1)});
 // Co-op collision: the footprints the server embeds (public/coop/nav.json, scripts/export-coop-nav.mjs) plus the
 // gateway's towers and, until its leaves are 80% open, its doors. Bucketed by 32 px of x.
 export type Column={x:number;w:number;back:number;front:number};
 const BUCKET=32;
 function buckets(cols:Column[]){const m=new Map<number,Column[]>();for(const c of cols){const r=c.w/2+RADIUS;for(let k=Math.floor((c.x-r)/BUCKET);k<=Math.floor((c.x+r)/BUCKET);k++){let list=m.get(k);if(!list)m.set(k,list=[]);list.push(c);}}return m;}
-function gateColumns(passable:boolean){const cols:Column[]=[];for(const side of [-1,1])for(let d=36;d<=135;d+=3){const front=gateTowerFront(d);cols.push({x:577+side*d,w:3,back:front-34,front});}
- if(!passable)for(let d=-35;d<=35;d+=3)cols.push({x:577+d,w:3,back:763,front:775});return cols;}
+function gateColumns(passable:boolean){const cols:Column[]=[],step=G.columnStep,D=G.doors;for(const side of [-1,1])for(let d=G.archHalfWidth;d<=G.towerHalfSpan;d+=step){const front=gateTowerFront(d);cols.push({x:G.x+side*d,w:step,back:front-G.towerDepth,front});}
+ if(!passable)for(let d=-D.halfWidth;d<=D.halfWidth;d+=step)cols.push({x:G.x+d,w:step,back:D.back,front:D.front});return cols;}
 export function navBlocker(columns:Column[]){
  const fixed=buckets(columns),open=buckets(gateColumns(true)),closed=buckets(gateColumns(false));
  const hits=(m:Map<number,Column[]>,x:number,y:number)=>{for(const b of m.get(Math.floor(x/BUCKET))||[])if(Math.abs(x-b.x)<b.w/2+RADIUS&&y>b.back-RADIUS*.5&&y<b.front+RADIUS*.5)return true;return false;};

@@ -1,0 +1,62 @@
+[
+  {
+    "name": "1-game-coop",
+    "url": "https://ark-whachat.fural.space/",
+    "status": 200,
+    "script": "/assets/index-BOJyr4XB.js",
+    "sockets": [
+      "wss://ark-whachat.fural.space/ws"
+    ],
+    "errors": [],
+    "state": {
+      "canvas": true,
+      "title": "Arkodia · Stronghold"
+    }
+  },
+  {
+    "name": "2-game-offline",
+    "url": "https://ark-whachat.fural.space/?offline=1",
+    "status": 200,
+    "script": "/assets/index-BOJyr4XB.js",
+    "sockets": [],
+    "errors": [],
+    "state": {
+      "canvas": true,
+      "title": "Arkodia · Stronghold"
+    }
+  },
+  {
+    "name": "3-ember-warden-review",
+    "url": "https://ark-whachat.fural.space/ember-warden-review/",
+    "status": 200,
+    "script": null,
+    "sockets": [],
+    "errors": [],
+    "state": {
+      "title": "Ember Warden · Animation Review",
+      "info": "idle · action · 64 observed body frames · 1×"
+    }
+  },
+  {
+    "name": "4-rift-runner-v1",
+    "url": "https://ark-whachat.fural.space/rift-runner/v1/",
+    "status": 200,
+    "script": null,
+    "sockets": [],
+    "errors": [],
+    "state": {
+      "title": "Rift Runner animation review"
+    }
+  },
+  {
+    "name": "5-enemies",
+    "url": "https://ark-whachat.fural.space/enemies/v1/",
+    "status": 200,
+    "script": null,
+    "sockets": [],
+    "errors": [],
+    "state": {
+      "title": "Ashfang & Mire Imp — Animation Review"
+    }
+  }
+]

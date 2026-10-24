@@ -12,10 +12,10 @@ try {
   const errors = [];
   page.on('pageerror', e => errors.push(e.message));
   await page.goto(url);
-  await page.waitForFunction(() => window.__ARKADIA_ARENA__);
+  await page.waitForFunction(() => window.__ARKODIA_ARENA__);
   const results = await page.evaluate(() => {
-    window.__ARKADIA_APP__.ticker.stop();
-    const a = window.__ARKADIA_ARENA__, out = [];
+    window.__ARKODIA_APP__.ticker.stop();
+    const a = window.__ARKODIA_ARENA__, out = [];
     const check = (name, ok, details) => out.push({ name, passed: !!ok, details });
     a.auto = false; a.spawn(2); a.hero.x = 1; a.hero.y = 1;
     const [left, right] = a.enemies;
@@ -63,7 +63,7 @@ try {
     const excluded = a.enemies[8]; a.engaged = new Set(a.enemies.slice(0, 8));
     excluded.x = 6.99; excluded.y = 5; a.update(1);
     check('engagement selection retains incumbents under small crowd displacement', !a.engaged.has(excluded) && a.engaged.size === 8);
-    window.__ARKADIA_APP__.render();
+    window.__ARKODIA_APP__.render();
     return out;
   });
   for (const r of results) console.log(r.passed ? 'PASS' : 'FAIL', r.name, r.details ?? '');

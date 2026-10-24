@@ -1,15 +1,17 @@
 import {PROTOCOL,TICK_MS,type EnemyState,type Hello,type HeroPick,type Input,type PlayerState,type ServerMessage,type Snapshot,type Welcome} from './protocol';
+import {FRONTIER_COLUMNS} from '../../world/frontier';
 import {walkStep,navBlocker,atGate,gatePassable,gateTick,type Column,type GateGuess} from './movement';
 import {createTimeline,type Timed} from './timeline';
 import {DAY_MS} from '../daylight';
 import type {Walk} from '../controls';
+import {measureTracelogPhase} from '../tracelog';
 // The co-op connection. The server owns the world; this client sends one walk input per 50 ms tick and renders
 // snapshots. The own hero is predicted: every input is applied locally with the server's walking rule at once,
 // and each snapshot rebases it on the server's position after the last acknowledged input, replaying the rest.
 // Steps the server guessed ahead of late inputs are not part of that position (it sends the one under them):
 // it walks them again with the real inputs when they arrive, as this prediction already has.
-// A swing, hit stun or death holds the hero for the next few inputs the server applies (hd), not from the moment
-// this client hears of it, so prediction skips exactly those and walks the rest. A mismatch that remains (an
+// A hit stun or death holds the hero for the next few inputs the server applies (hd), not from the moment this
+// client hears of it, so prediction skips exactly those and walks the rest; a walking input cancels a swing. A mismatch that remains (an
 // auto-step, inputs used up by a hit before this client knew of it) is blended out over ~90 ms instead of
 // snapping. Other heroes and every revenant are drawn slightly in the past on an adaptive render clock with
 // bounded extrapolation (timeline.ts).
@@ -33,13 +35,16 @@ export function createNet(o:{direction:()=>Walk;maxHp:()=>number;hero:()=>string
  const stats={snapshots:0,inputs:0,corrections:0,maxCorrection:0,lastCorrection:0,totalCorrection:0,bytes:0,pace:1,margin:0};
  const snapshotListeners=new Set<(s:Snapshot)=>void>(),statusListeners=new Set<(s:NetStatus)=>void>();
  const setStatus=(s:NetStatus)=>{if(s===status)return;status=s;for(const f of statusListeners)f(s);};
- const navReady=fetch('/coop/nav.json').then(r=>{if(!r.ok)throw Error('Co-op collision data missing');return r.json();}).then((n:{columns:Column[]})=>{blocked=navBlocker(n.columns);});
+ const navReady=fetch('/coop/nav.json').then(r=>{if(!r.ok)throw Error('Co-op collision data missing');return r.json();}).then((n:{columns:Column[]})=>{blocked=navBlocker([...n.columns,...FRONTIER_COLUMNS]);});
  navReady.catch(()=>{});
  const mine=(s:Snapshot|null)=>s?.players.find(p=>p.id===you)??null;
  const block=(pass:boolean)=>(x:number,y:number)=>blocked!(x,y,pass);
  const othersAtGate=(s:Snapshot,open:boolean)=>s.players.some(p=>p.id!==you&&p.st!=='die'&&atGate(p.x,p.y,open));
  function reset(state:Welcome['state']){
-  timeline.reset(you);latest=null;pending=[];margins=[];hold=0;pace=1;seq=0;acc=0;err={x:0,y:0};
+  timeline.reset(you);latest=null;
+  const unsentChoice=pending.find(i=>i.choice);
+  if(unsentChoice&&!choice)choice={choice:unsentChoice.choice!,level:unsentChoice.level??1};
+  pending=[];margins=[];hold=0;pace=1;seq=0;acc=0;err={x:0,y:0};
   const me=state.players.find(p=>p.id===you);if(me){pred={x:me.x,y:me.y};prev={...pred};}gate={open:state.gate.open,frame:state.gate.frame};
  }
  // Rebase the own hero on the server and replay inputs it has not applied yet.
@@ -49,8 +54,9 @@ export function createNet(o:{direction:()=>Walk;maxHp:()=>number;hero:()=>string
   // Under any steps the server guessed ahead of late inputs (sim.Player.Owed): where the last applied input left it.
   // A hero held in a swing or hit keeps the guessed steps.
   const idle=me.st==='idle';let x=idle?s.bx??me.x:me.x,y=idle?s.by??me.y:me.y;
-  // The next hd inputs the server applies are used up by the swing, hit stun or death (a server without hd: all).
-  hold=s.hd??(idle?0:1e9);
+  // The next hd inputs the server applies are used up by a hit stun or death. A swing holds none: a walking input
+  // cancels it on the server as in solo play, so a missing hd (omitted when 0) never freezes the prediction.
+  hold=s.hd??0;
   margins.push((s.q??0)-(s.ow??0));if(margins.length>PACE_WINDOW)margins.shift();
   const margin=Math.min(...margins);pace=margin<1?1-PACE:margin>2?1+PACE:1;stats.pace=pace;stats.margin=margin;
   // The gateway as it will stand for each input (its doors move once per server tick, after that tick's walk).
@@ -64,19 +70,21 @@ export function createNet(o:{direction:()=>Walk;maxHp:()=>number;hero:()=>string
   pred={x,y};
  }
  function receive(raw:string){
-  let m:ServerMessage;try{m=JSON.parse(raw);}catch{return;}
-  stats.bytes+=raw.length;
-  if(m.t==='s'){
-   const s=timeline.push(m,performance.now());latest=s;stats.snapshots++;
-   reconcile(s);for(const f of snapshotListeners)f(s);
-  }else if(m.t==='pong')rtt=performance.now()-m.c;
+  measureTracelogPhase('net',()=>{
+   let m:ServerMessage;try{m=JSON.parse(raw);}catch{return;}
+   stats.bytes+=raw.length;
+   if(m.t==='s'){
+    const s=timeline.push(m,performance.now());latest=s;stats.snapshots++;
+    reconcile(s);for(const f of snapshotListeners)f(s);
+   }else if(m.t==='pong')rtt=performance.now()-m.c;
+  });
  }
  function connect(code:string,who:string){
   return new Promise<Welcome>((resolve,reject)=>{
    clearTimeout(retryTimer);ws?.close();let settled=false;
    const socket=new WebSocket(o.url??socketUrl());ws=socket;
    const timer=setTimeout(()=>{if(!settled){settled=true;socket.close();reject(fail('timeout','The co-op server did not answer.'));}},8000);
-   socket.onopen=()=>{const hello:Hello={t:'hello',v:PROTOCOL,name:who,room:code,maxHp:o.maxHp(),hero:o.hero()};socket.send(JSON.stringify(hello));};
+   socket.onopen=()=>{const resume=code&&code===room&&you?{you}:{};const hello:Hello={t:'hello',v:PROTOCOL,name:who,room:code,...resume,maxHp:o.maxHp(),hero:o.hero()};socket.send(JSON.stringify(hello));};
    socket.onmessage=e=>{
     if(settled){if(ws===socket)receive(String(e.data));return;}
     let m:ServerMessage;try{m=JSON.parse(String(e.data));}catch{return;}
@@ -116,16 +124,21 @@ export function createNet(o:{direction:()=>Walk;maxHp:()=>number;hero:()=>string
  function frame(now:number){
   const dt=last?Math.min(now-last,250):16;last=now;
   if(you&&(status==='online'||status==='reconnecting')){
-   // Each input still walks one 50 ms step; pacing only changes how often one is sent.
-   const every=TICK_MS*pace;acc+=dt;if(acc>4*every)acc=every;
-   while(acc>=every){acc-=every;tick();}
-   const k=Math.exp(-dt/SMOOTH_MS);err.x*=k;err.y*=k;
+   measureTracelogPhase('net',()=>{
+    // Each input still walks one 50 ms step; pacing only changes how often one is sent.
+    const every=TICK_MS*pace;acc+=dt;if(acc>4*every)acc=every;
+    while(acc>=every){acc-=every;tick();}
+    const k=Math.exp(-dt/SMOOTH_MS);err.x*=k;err.y*=k;
+   });
   }
   requestAnimationFrame(frame);
  }
  function tick(){
   const d=o.direction(),input:Input={t:'in',seq:++seq,x:+d.x.toFixed(4),y:+d.y.toFixed(4)};
-  if(ws?.readyState===WebSocket.OPEN){ws.send(JSON.stringify({...input,...choice}));choice=null;stats.inputs++;}
+  if(ws?.readyState===WebSocket.OPEN){
+   if(choice){input.choice=choice.choice;input.level=choice.level;choice=null;}
+   ws.send(JSON.stringify(input));stats.inputs++;
+  }
   pending.push(input);if(pending.length>60)pending.shift();
   prev={...pred};
   if(hold>0)hold--;else if(blocked&&latest){const r=walkStep(block(gatePassable(gate)),pred.x,pred.y,input,TICK_MS);pred={x:r.x,y:r.y};}

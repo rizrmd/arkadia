@@ -1,0 +1,150 @@
+{
+  "generator": "Built-in image_gen, one independent call per sprite, transparent_background=true",
+  "mode": "built-in",
+  "transparentBackground": true,
+  "reference": "Frozen Frontier v1 kit; Knowledge NKBD792cbcfd038e50c7842b69a9",
+  "note": "Exact built-in generation prompts are recorded per asset. Original artifacts are unchanged in assets-src and sources/.",
+  "common": "Use case: stylized-concept. Single reusable transparent game sprite. Orthographic 2:1 dimetric camera; ground axes slopes ±0.5. Realistic painterly textured 3D medieval game art matching Frozen Frontier ruins. Upper-left soft daylight, ivory snow, muted slate blue shadows, desaturated winter palette, grey beige weathered limestone and ochre lichen where applicable. Complete isolated silhouette with generous transparent margins and subtle contact shadow. No ground tile, backdrop, people, text or unrelated objects.",
+  "assets": [
+    {
+      "id": "ruined-gate",
+      "prompt": "Use case: stylized-concept. Generate a reusable game sprite: one snowy ruined medieval limestone gate, broad broken arch with two uneven ruined piers and sparse fallen stones at base. Entire single object isolated on genuinely transparent background, no ground tile, no backdrop, no text, no characters, no vegetation. Orthographic 2:1 dimetric isometric game camera, ground axes slope ±0.5. Hand-painted realistic textured 3D game asset, grey beige weathered limestone, ochre lichen, ivory snow caps, muted slate blue shadows; soft upper-left daylight, shadows lower right. Match Frozen Frontier ruined stone kit. Gate approx 5m wide and 4m high, human door clearance 2.5m. Keep complete silhouette and soft contact shadow within generous transparent margins. Save image artifact.",
+      "subject": "Broad broken limestone arch with two uneven ruined piers and fallen stones.",
+      "heightM": 4,
+      "footprintM": [
+        5,
+        1.5
+      ]
+    },
+    {
+      "id": "broken-watchtower",
+      "prompt": "Use case: stylized-concept. One reusable transparent game sprite of a broken snowy medieval watchtower, squat round weathered limestone tower with collapsed jagged upper wall, exposed timber floor and a few fallen blocks at base. No ground tile, vegetation, backdrop, characters or text. Orthographic 2:1 dimetric camera with ground slopes ±0.5, textured painterly realistic 3D game art. Grey beige limestone, ochre lichen, ivory snow, slate blue shadows, soft upper-left daylight. 4m diameter, 6m remaining height. Entire isolated object including contact shadow within generous transparent margins. Match Frozen Frontier snowy ruins.",
+      "subject": "Squat round limestone watchtower, collapsed jagged upper wall and exposed timber floor.",
+      "heightM": 6,
+      "footprintM": [
+        4,
+        4
+      ]
+    },
+    {
+      "id": "snowy-shrine",
+      "prompt": "Use case: stylized-concept. Single reusable transparent game sprite: snowy ancient shrine of weathered grey beige limestone, small raised octagonal stepped plinth with a carved standing stone and broken protective canopy on two pillars, quiet unlit altar, ochre lichen and thick ivory snow caps. Orthographic 2:1 dimetric isometric camera, ground axes ±0.5; soft upper-left daylight, muted slate blue shadows; detailed painterly realistic 3D medieval game art matching Frozen Frontier ruins. 3m wide, 3m tall. Complete isolated object with generous transparent margins and subtle contact shadow. No environment, ground tile, vegetation, people, text or magical effects.",
+      "subject": "Octagonal stepped plinth, carved standing stone and broken canopy on two pillars.",
+      "heightM": 3,
+      "footprintM": [
+        3,
+        3
+      ]
+    },
+    {
+      "id": "pine-tall",
+      "prompt": "Use case: stylized-concept. One reusable transparent game sprite, a tall narrow alpine pine, irregular layered dark desaturated evergreen needles bearing heavy ivory snow, visible brown trunk base, 7m tall. Orthographic 2:1 dimetric game camera, ground axes ±0.5, realistic painterly textured 3D game art. Soft daylight from upper left, slate blue shadows, muted winter palette to match Frozen Frontier limestone ruins. Entire tree isolated with generous transparent margins, subtle short contact shadow. No ground tile, background, other objects, people or text.",
+      "subject": "Tall narrow alpine pine, irregular layered dark evergreen needles, heavy snow and visible trunk.",
+      "heightM": 7,
+      "footprintM": [
+        2.5,
+        2.5
+      ]
+    },
+    {
+      "id": "pine-broad",
+      "prompt": "Use case: stylized-concept. One reusable transparent game sprite: broad mature alpine pine, asymmetrical spreading boughs, dense dark desaturated green needles under thick irregular ivory snow pillows, sturdy visible brown trunk, 5m tall and 3.8m broad. Orthographic 2:1 dimetric game camera with ground slopes ±0.5. Realistic textured painterly 3D game art, upper-left soft daylight, slate blue shadows, muted winter palette matching Frozen Frontier limestone ruins. Whole silhouette and subtle contact shadow within generous transparent margins. No ground tile, environment, other objects, characters or text.",
+      "subject": "Broad mature alpine pine with asymmetrical spreading boughs, snow pillows and sturdy trunk.",
+      "heightM": 5,
+      "footprintM": [
+        3.8,
+        3.8
+      ]
+    },
+    {
+      "id": "pine-sapling",
+      "prompt": "Use case: stylized-concept. One transparent reusable game sprite of a young alpine pine sapling, 1.8m tall, sparse irregular layered green boughs with ivory snow and a slender brown trunk visible below. Orthographic 2:1 dimetric game view, ground axes ±0.5, detailed realistic painterly 3D art. Upper-left soft daylight, muted slate blue shadow, desaturated winter colors matching Frozen Frontier ruins. Whole isolated plant and very subtle contact shadow surrounded by transparent margins. No ground tile, backdrop, text, people, or other plants.",
+      "subject": "Young alpine pine sapling with sparse irregular green boughs, snow and slender trunk.",
+      "heightM": 1.8,
+      "footprintM": [
+        1,
+        1
+      ]
+    },
+    {
+      "id": "dead-tree",
+      "prompt": "Use case: stylized-concept. Single transparent reusable isometric game sprite: winter dead tree, 4m tall, twisted weathered grey brown trunk and elegant bare branching silhouette, a few ivory snow deposits on upper branches and roots. No leaves. Orthographic 2:1 dimetric ground axes ±0.5, realistic painterly textured 3D game art matching Frozen Frontier ruins, upper-left soft daylight, desaturated winter palette and slate blue shadows. Whole object and subtle contact shadow within transparent margins. No ground tile, scene, other objects, people or text.",
+      "subject": "Twisted weathered grey brown dead tree with bare branches, snow deposits and roots.",
+      "heightM": 4,
+      "footprintM": [
+        2,
+        2
+      ]
+    },
+    {
+      "id": "dead-snag",
+      "prompt": "Use case: stylized-concept. Single transparent reusable game sprite of a broken dead pine snag: 2.5m tall jagged grey brown trunk, several snapped lateral branches, exposed roots, patches of ivory snow. Orthographic 2:1 dimetric game view, ground slopes ±0.5. Realistic painterly textured 3D asset, soft upper-left daylight, slate blue shadows, desaturated winter palette matching Frozen Frontier ruins. Entire isolated object with transparent margins and tiny contact shadow. No ground tile, other objects, people, text or background.",
+      "subject": "Broken dead pine snag with jagged trunk, snapped branches, exposed roots and snow.",
+      "heightM": 2.5,
+      "footprintM": [
+        1.2,
+        1.2
+      ]
+    },
+    {
+      "id": "shrub-juniper",
+      "prompt": "Use case: stylized-concept. One transparent reusable game sprite: low winter juniper shrub, irregular dense rounded desaturated blue green foliage with scattered ivory snow pillows and small exposed woody stems, 0.8m tall, 1.3m wide. Orthographic 2:1 dimetric ground slopes ±0.5, realistic painterly textured 3D game art, soft upper-left daylight and slate blue shadows matching Frozen Frontier snow ruins. Isolated complete plant with transparent margins, tiny contact shadow. No ground tile, backdrop, other objects, people or text.",
+      "subject": "Low irregular winter juniper shrub, blue green foliage, snow pillows and woody stems.",
+      "heightM": 0.8,
+      "footprintM": [
+        1.3,
+        1
+      ]
+    },
+    {
+      "id": "shrub-twigs",
+      "prompt": "Use case: stylized-concept. Single reusable transparent game sprite: leafless winter shrub, fine tangled reddish grey brown twigs spreading from low woody roots, sparse ivory snow on branches, 0.9m tall 1.2m wide. Orthographic 2:1 dimetric ground slopes ±0.5, realistic painterly textured 3D art, upper-left soft daylight and slate blue shadow. Muted winter palette matching Frozen Frontier ruins. Complete isolated shrub, generous transparent margins, tiny contact shadow. No terrain tile, backdrop, other plants, people or text.",
+      "subject": "Leafless winter shrub, tangled reddish grey brown twigs and sparse snow.",
+      "heightM": 0.9,
+      "footprintM": [
+        1.2,
+        1
+      ]
+    },
+    {
+      "id": "grass-tussock",
+      "prompt": "Use case: stylized-concept. One transparent reusable game sprite of a winter dry grass tussock, fine curled ochre straw blades with a few tall seed heads, small natural ivory snow at roots, 0.55m tall, 0.65m wide. Orthographic 2:1 dimetric game camera ground slopes ±0.5, realistic painterly textured 3D asset, upper-left soft daylight, slate blue shadows and desaturated winter palette matching Frozen Frontier ruins. Complete isolated tuft on transparent background with generous margins. No ground tile, other objects, people or text.",
+      "subject": "Dry grass tussock, curled ochre straw blades, tall seed heads and snow at roots.",
+      "heightM": 0.55,
+      "footprintM": [
+        0.65,
+        0.65
+      ]
+    },
+    {
+      "id": "grass-patch",
+      "prompt": "Use case: stylized-concept. Single reusable transparent game sprite: low sprawling patch of winter dry grass, several connected sparse straw ochre clumps bent by wind with ivory snow between root bases, 1.3m wide and 0.25m tall. Orthographic 2:1 dimetric ground slopes ±0.5, realistic painterly textured 3D game art, upper-left soft daylight, muted slate blue shadows matching Frozen Frontier ruins. Whole isolated grass patch within generous transparent margins. No terrain tile, backdrop, other plants, people or text.",
+      "subject": "Low sprawling sparse dry grass patch, wind bent ochre clumps and snow between roots.",
+      "heightM": 0.25,
+      "footprintM": [
+        1.3,
+        0.7
+      ]
+    },
+    {
+      "id": "rock-boulders",
+      "prompt": "Use case: stylized-concept. One transparent reusable game sprite: cluster of three angular weathered grey beige boulders with ochre lichen, thick ivory snow on upper faces, small pebbles at base, 2m wide and 0.9m high. Orthographic 2:1 dimetric camera ground slopes ±0.5, realistic painterly textured 3D game asset matching Frozen Frontier limestone ruins. Soft upper-left daylight, muted slate blue shadows. Complete isolated cluster and subtle contact shadow with generous transparent margins. No ground tile, backdrop, vegetation, people or text.",
+      "subject": "Three angular grey beige boulders, ochre lichen, thick snow caps and small pebbles.",
+      "heightM": 0.9,
+      "footprintM": [
+        2,
+        1.4
+      ]
+    },
+    {
+      "id": "rock-scatter",
+      "prompt": "Use case: stylized-concept. One reusable transparent game sprite: low scattered snowy rock cluster, irregular flat weathered grey beige stones and pebbles in a loose natural crescent, ivory snow patches, sparse ochre lichen, 1.4m wide 0.3m high. Orthographic 2:1 dimetric game camera ground slopes ±0.5, realistic painterly textured 3D art matching Frozen Frontier limestone ruins, soft upper-left daylight with slate blue shadows. Entire isolated cluster with transparent gaps and generous transparent outside margins. No terrain tile, background, plants, characters or text.",
+      "subject": "Low loose crescent of flat weathered stones and pebbles, snow patches and lichen.",
+      "heightM": 0.3,
+      "footprintM": [
+        1.4,
+        0.8
+      ]
+    }
+  ]
+}

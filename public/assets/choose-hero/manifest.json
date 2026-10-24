@@ -1,0 +1,363 @@
+{
+ "version": 1,
+ "source": "Choosing Hero kit, commit 1a413f1 (read only)",
+ "frames": {
+  "card-frame.tl": {
+   "width": 162,
+   "height": 198,
+   "slice": [
+    55,
+    59,
+    39,
+    8
+   ]
+  },
+  "card-frame.tr": {
+   "width": 162,
+   "height": 198,
+   "slice": [
+    39,
+    59,
+    55,
+    8
+   ]
+  },
+  "card-frame.bl": {
+   "width": 162,
+   "height": 198,
+   "slice": [
+    55,
+    8,
+    39,
+    59
+   ]
+  },
+  "card-frame.br": {
+   "width": 162,
+   "height": 198,
+   "slice": [
+    39,
+    8,
+    55,
+    59
+   ]
+  },
+  "card-frame-selected.tl": {
+   "width": 162,
+   "height": 198,
+   "slice": [
+    55,
+    63,
+    32,
+    32
+   ]
+  },
+  "card-frame-selected.tr": {
+   "width": 162,
+   "height": 198,
+   "slice": [
+    32,
+    63,
+    55,
+    32
+   ]
+  },
+  "card-frame-selected.bl": {
+   "width": 162,
+   "height": 198,
+   "slice": [
+    55,
+    32,
+    32,
+    63
+   ]
+  },
+  "card-frame-selected.br": {
+   "width": 162,
+   "height": 198,
+   "slice": [
+    32,
+    32,
+    55,
+    63
+   ]
+  },
+  "panel-desktop.tl": {
+   "width": 243,
+   "height": 318,
+   "slice": [
+    73,
+    108,
+    78,
+    29
+   ]
+  },
+  "panel-desktop.tr": {
+   "width": 243,
+   "height": 318,
+   "slice": [
+    78,
+    108,
+    73,
+    29
+   ]
+  },
+  "panel-desktop.bl": {
+   "width": 243,
+   "height": 318,
+   "slice": [
+    73,
+    29,
+    78,
+    83
+   ]
+  },
+  "panel-desktop.br": {
+   "width": 243,
+   "height": 318,
+   "slice": [
+    78,
+    29,
+    73,
+    83
+   ]
+  },
+  "panel-mobile.tl": {
+   "width": 408,
+   "height": 178,
+   "slice": [
+    90,
+    93,
+    65,
+    0
+   ]
+  },
+  "panel-mobile.tr": {
+   "width": 408,
+   "height": 178,
+   "slice": [
+    65,
+    93,
+    90,
+    0
+   ]
+  },
+  "panel-mobile.bl": {
+   "width": 408,
+   "height": 178,
+   "slice": [
+    90,
+    0,
+    65,
+    93
+   ]
+  },
+  "panel-mobile.br": {
+   "width": 408,
+   "height": 178,
+   "slice": [
+    65,
+    0,
+    90,
+    93
+   ]
+  },
+  "button-default.l": {
+   "width": 322,
+   "height": 164,
+   "slice": [
+    84,
+    0,
+    48,
+    0
+   ]
+  },
+  "button-default.r": {
+   "width": 322,
+   "height": 164,
+   "slice": [
+    48,
+    0,
+    84,
+    0
+   ]
+  },
+  "button-hover.l": {
+   "width": 322,
+   "height": 164,
+   "slice": [
+    84,
+    0,
+    48,
+    0
+   ]
+  },
+  "button-hover.r": {
+   "width": 322,
+   "height": 164,
+   "slice": [
+    48,
+    0,
+    84,
+    0
+   ]
+  },
+  "button-pressed.l": {
+   "width": 322,
+   "height": 164,
+   "slice": [
+    84,
+    0,
+    48,
+    0
+   ]
+  },
+  "button-pressed.r": {
+   "width": 322,
+   "height": 164,
+   "slice": [
+    48,
+    0,
+    84,
+    0
+   ]
+  },
+  "button-disabled.l": {
+   "width": 322,
+   "height": 164,
+   "slice": [
+    84,
+    0,
+    48,
+    0
+   ]
+  },
+  "button-disabled.r": {
+   "width": 322,
+   "height": 164,
+   "slice": [
+    48,
+    0,
+    84,
+    0
+   ]
+  },
+  "divider.l": {
+   "width": 228,
+   "height": 40,
+   "slice": [
+    55,
+    0,
+    34,
+    0
+   ]
+  },
+  "divider.r": {
+   "width": 228,
+   "height": 40,
+   "slice": [
+    34,
+    0,
+    55,
+    0
+   ]
+  },
+  "back": {
+   "width": 80,
+   "height": 80
+  },
+  "selected-badge": {
+   "width": 66,
+   "height": 66
+  },
+  "skill-flame-fan": {
+   "width": 150,
+   "height": 150
+  },
+  "skill-rift-bolt": {
+   "width": 150,
+   "height": 150
+  },
+  "skill-empty": {
+   "width": 150,
+   "height": 150
+  },
+  "portrait-ember-warden": {
+   "width": 324,
+   "height": 396
+  },
+  "portrait-rift-runner": {
+   "width": 324,
+   "height": 396
+  }
+ },
+ "ornate": {
+  "card-frame": {
+   "width": 324,
+   "height": 396,
+   "split": "quad"
+  },
+  "card-frame-selected": {
+   "width": 324,
+   "height": 396,
+   "split": "quad"
+  },
+  "panel-desktop": {
+   "width": 486,
+   "height": 636,
+   "split": "quad"
+  },
+  "panel-mobile": {
+   "width": 816,
+   "height": 356,
+   "split": "quad"
+  },
+  "button-default": {
+   "width": 644,
+   "height": 164,
+   "split": "halves"
+  },
+  "button-hover": {
+   "width": 644,
+   "height": 164,
+   "split": "halves"
+  },
+  "button-pressed": {
+   "width": 644,
+   "height": 164,
+   "split": "halves"
+  },
+  "button-disabled": {
+   "width": 644,
+   "height": 164,
+   "split": "halves"
+  },
+  "divider": {
+   "width": 456,
+   "height": 40,
+   "split": "halves"
+  }
+ },
+ "art": {
+  "castle-desktop": {
+   "file": "art/castle-desktop.png",
+   "width": 1672,
+   "height": 941
+  },
+  "castle-mobile": {
+   "file": "art/castle-mobile.png",
+   "width": 913,
+   "height": 1722
+  },
+  "ember-warden": {
+   "file": "art/ember-warden.png",
+   "width": 1024,
+   "height": 1536
+  },
+  "rift-runner": {
+   "file": "art/rift-runner.png",
+   "width": 1024,
+   "height": 1536
+  }
+ }
+}

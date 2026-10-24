@@ -12,10 +12,10 @@ try{
  page.on('pageerror',e=>errors.push(e.message));
  if(server)await new Promise(r=>setTimeout(r,500));
  const response=await page.goto(url,{waitUntil:'domcontentloaded',timeout:30000});assert.equal(response.status(),200);
- await page.waitForFunction(()=>window.__ARKADIA_WALLS__,{},{timeout:30000});
+ await page.waitForFunction(()=>window.__ARKODIA_WALLS__,{},{timeout:30000});
  const regression=JSON.parse(await page.evaluate(await fs.readFile('scripts/check-browser.js','utf8')));assert.deepEqual(regression.failures,[]);
  const geometry=await page.evaluate(()=>{
-  const world=window.__ARKADIA_APP__.stage.children[0],sources=window.__ARKADIA_WALLS__;
+  const world=window.__ARKODIA_APP__.stage.children[0],sources=window.__ARKODIA_WALLS__;
   return world.children[2].children.filter(s=>sources[s.label]).map(s=>{
    const points=sources[s.label].feet.map(([x,y])=>world.toLocal(s.toGlobal({x:x-s.anchor.x*s.texture.width,y:y-s.anchor.y*s.texture.height})));
    return {id:s.label,position:[s.x,s.y],points,depth:s.zIndex};
@@ -34,15 +34,15 @@ try{
   return [[400,400],[500,500],[900,250],[200,900]].map(([x,y])=>c.getImageData(x,y,1,1).data[3]);
  });assert.deepEqual(alpha,[0,0,0,0]);
  await page.selectOption('#crowd','0');await page.uncheck('#auto');await page.uncheck('#inspect');await page.uncheck('#grid');
- await page.evaluate(()=>{window.__ARKADIA_APP__.ticker.stop();window.__ARKADIA_APP__.render();});
+ await page.evaluate(()=>{window.__ARKODIA_APP__.ticker.stop();window.__ARKODIA_APP__.render();});
  await page.screenshot({path:out+'/arena.png'});
  await page.check('#grid');await page.check('#checker');
- await page.evaluate(()=>window.__ARKADIA_APP__.render());await page.screenshot({path:out+'/grid-checker.png'});
+ await page.evaluate(()=>window.__ARKODIA_APP__.render());await page.screenshot({path:out+'/grid-checker.png'});
  await page.uncheck('#checker');await page.uncheck('#grid');await page.click('#source');
  const newImages=page.locator('#gallery img[src*="/walls/"]');assert.equal(await newImages.count(),3);
  for(const img of await newImages.all())assert.equal(await img.evaluate(i=>i.complete&&i.naturalWidth===1536),true);
  await page.click('#close');
- const character=await page.evaluate(()=>{const a=window.__ARKADIA_ARENA__;a.respawnHero();const x=a.hero.x;a.keys.add('d');for(let i=0;i<10;i++)a.update(1000/60);a.keys.clear();return {moved:a.hero.x>x,state:a.hero.state};});assert.ok(character.moved);assert.equal(character.state,'move');
+ const character=await page.evaluate(()=>{const a=window.__ARKODIA_ARENA__;a.respawnHero();const x=a.hero.x;a.keys.add('d');for(let i=0;i<10;i++)a.update(1000/60);a.keys.clear();return {moved:a.hero.x>x,state:a.hero.state};});assert.ok(character.moved);assert.equal(character.state,'move');
  assert.deepEqual(errors,[]);
  const result={url,at:new Date().toISOString(),regression:regression.checks,geometry,transparentHaloPixels:alpha,character,errors};
  await fs.writeFile(out+`/${process.env.DEMO_URL?'live':'local'}.json`,JSON.stringify(result,null,2));console.log(JSON.stringify({passed:true,url,regression:regression.checks.length,walls:geometry.length,transparentHaloPixels:alpha,character}));

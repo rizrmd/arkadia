@@ -1,0 +1,34 @@
+{
+ "shots": {
+  "phone-on-ridge": {
+   "teleport": [
+    25.5,
+    7.2
+   ]
+  },
+  "phone-ramp-middle": {
+   "teleport": [
+    25.5,
+    11.5
+   ]
+  }
+ },
+ "errors": [],
+ "traversal": [],
+ "performance": [
+  {
+   "camera": "phone",
+   "frameIntervalMs": {
+    "p50": 416.59999999999127,
+    "p95": 800.0999999999985
+   },
+   "resources": [
+    {
+     "name": "http://127.0.0.1:5408/terrain-height/natural/cliff-strip-v2.webp",
+     "transferSize": 1069510,
+     "decodedBodySize": 1069210
+    }
+   ]
+  }
+ ]
+}
