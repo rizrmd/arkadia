@@ -56,16 +56,17 @@ try{
   await page.evaluate(()=>window.__PIXI_UI__.app.ticker.start());
  }
  await page.setViewportSize({width:390,height:844});await page.waitForTimeout(300);
+ await writeFile(`${out}/states-interim.json`,JSON.stringify({states,results},null,2));
  const context=page.context(),cdp=await context.newCDPSession(page);
  const touch=(type,points)=>cdp.send('Input.dispatchTouchEvent',{type,touchPoints:points.map(([x,y],id)=>({x,y,id:id+1}))});
  await page.evaluate(()=>window.__STRONGHOLD_COMBAT__.teleport(9.2,9));await page.waitForTimeout(200);
  const beforeTouch=await page.evaluate(()=>window.__STRONGHOLD_COMBAT__.snapshot().hero);
- await touch('touchStart',[[90,720]]);await touch('touchMove',[[140,700]]);await page.waitForTimeout(650);
+ await touch('touchStart',[[90,720]]);for(let i=1;i<=12;i++){await touch('touchMove',[[90+i*4,720-i*2]]);await page.waitForTimeout(30);}await page.waitForTimeout(500);
  const activeTouch=await page.evaluate(()=>({hero:window.__STRONGHOLD_COMBAT__.snapshot().hero,visible:window.__PIXI_UI__.stick.visible}));
  await page.screenshot({path:`${out}/${process.env.VERIFY_URL?'live-':''}touch.png`});
  await touch('touchEnd',[]);await page.waitForTimeout(100);
  const released=await page.evaluate(()=>window.__PIXI_UI__.stick.visible);
- if(!activeTouch.visible||released||Math.hypot(activeTouch.hero.u-beforeTouch.u,activeTouch.hero.v-beforeTouch.v)<.1)throw Error('Touch movement failed');
+ if(!activeTouch.visible||released||Math.hypot(activeTouch.hero.u-beforeTouch.u,activeTouch.hero.v-beforeTouch.v)<.1)throw Error('Touch movement failed '+JSON.stringify({beforeTouch,activeTouch,released}));
  const socket=await page.evaluate(()=>window.__STRONGHOLD_COMBAT__.hud.getSkillSocketScreenGeometry().sockets[0]);
  await touch('touchStart',[[socket.x,socket.y]]);
  if(await page.evaluate(()=>window.__PIXI_UI__.stick.visible))throw Error('Skill touch spawned joystick');

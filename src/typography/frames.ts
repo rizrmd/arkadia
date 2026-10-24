@@ -23,10 +23,11 @@ export class FrameSet{
   const loaded=Object.fromEntries(names.map((n,i)=>[n,textures[i]]));
   if(base.includes('/hud/')){
    const mobile=await (await fetch('/mobile-hud/v1/manifest.json')).json();
-   for(const [name,m] of Object.entries(mobile.frames) as [string,{width:number;height:number;file:string}][]){
+   const used=new Set(['map-frame','skill-ring','coin','clock','pin','arrow','hp-material','gate-material','xp-material'].map(n=>'mobile-'+n));
+   await Promise.all((Object.entries(mobile.frames) as [string,{width:number;height:number;file:string}][]).filter(([name])=>used.has(name)).map(async ([name,m])=>{
     manifest.frames[name]={width:m.width,height:m.height};
     loaded[name]=await Assets.load<Texture>({src:'/mobile-hud/v1/'+m.file,data:{autoGenerateMipmaps:true}});
-   }
+   }));
   }
   return new FrameSet(scale,manifest,loaded);
  }
