@@ -68,6 +68,13 @@ func TestCliffsBlockAndRampsClimb(t *testing.T) {
 	if g := walk(w, Vec{25.5, 11.5}, down, 3); g.X > 27.3+.05 || HeightAtTile(g) < .4 {
 		t.Errorf("walked off the ramp's side: ended at %v (height %v)", g, HeightAtTile(g))
 	}
+	// Up and down the West Terrace organic hill ramp.
+	if g := walk(w, Vec{11.8, 25}, up, 4); HeightAtTile(g) != 1.5 || g.X > 7.8 {
+		t.Errorf("terrace ramp climb ended at %v (height %v), want on top of terrace", g, HeightAtTile(g))
+	}
+	if g := walk(w, Vec{7.5, 25}, down, 5); HeightAtTile(g) != 0 || g.X <= 11 {
+		t.Errorf("terrace ramp descent ended at %v", g)
+	}
 	// Flat ground is untouched: the court walk is unchanged.
 	if g := walk(w, Vec{7.5, 9}, right, .5); HeightAtTile(g) != 0 || math.Abs(g.Y-9) < .5 {
 		t.Errorf("court walk changed: ended at %v", g)

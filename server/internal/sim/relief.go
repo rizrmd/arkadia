@@ -19,6 +19,7 @@ type ReliefFeature struct {
 	Ascend         string       `json:"ascend"`
 	Outline        [][2]float64 `json:"outline"`
 	RampStartV     float64      `json:"rampStartV"`
+	RampStartU     float64      `json:"rampStartU"`
 }
 
 // mapFile is the part of the map definition (src/world/maps/arkodia-01.json) the simulation uses. arkodia-01.json
@@ -66,6 +67,7 @@ func mustRelief(b []byte) ([]ReliefFeature, float64) {
 		r := f.ReliefFeature
 		r.U0, r.V0, r.U1, r.V1 = f.U0-ou, f.V0-ov, f.U1-ou, f.V1-ov
 		r.RampStartV -= ov
+		r.RampStartU -= ou
 		for i := range r.Outline {
 			r.Outline[i][0] -= ou
 			r.Outline[i][1] -= ov
@@ -102,6 +104,9 @@ func (f *ReliefFeature) height(u, v float64) float64 {
 		return f.HeightM
 	}
 	if f.Type == "hill" {
+		if f.Ascend == "-u" {
+			return f.TopM * math.Max(0, math.Min(1, (f.U1-u)/(f.U1-f.RampStartU)))
+		}
 		return f.TopM * math.Max(0, math.Min(1, (f.V1-v)/(f.V1-f.RampStartV)))
 	}
 	var t float64

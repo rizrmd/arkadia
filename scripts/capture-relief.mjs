@@ -16,7 +16,7 @@ try{
   await page.goto(`http://127.0.0.1:${port}/?buildings=all&offline=1&time=${time}`);
   await page.waitForFunction(()=>document.querySelector('#world-canvas')?.dataset.ready==='true'&&!document.getElementById('loading-screen')&&window.__STRONGHOLD_COMBAT__,null,{timeout:300000});
   await page.waitForTimeout(3000);
-  const shots=name==='desktop'?[['court',null],['ridge-ramp',[25.5,14.2]],['on-ridge',[25.5,7.2]],['behind-ridge',[25.5,4.5]],['on-terrace',[5.5,25]]]:name==='phone'?[['court',null],['on-ridge',[25.5,7.2]]]:[['on-ridge',[25.5,7.2]]];
+  const shots=name==='desktop'?[['court',null],['ridge-ramp',[25.5,14.2]],['on-ridge',[25.5,7.2]],['behind-ridge',[25.5,4.5]],['on-terrace',[5.5,25]],['terrace-ramp',[11.6,25]]]:name==='phone'?[['court',null],['on-ridge',[25.5,7.2]]]:[['on-ridge',[25.5,7.2]]];
   for(const [shot,at] of shots){
    if(at){const ok=await page.evaluate(([u,v])=>window.__STRONGHOLD_COMBAT__.teleport(u,v),at);if(!ok)throw Error('teleport failed for '+shot);await page.waitForTimeout(2500);}
    const file=`${OUT}/${name}-${shot}.png`;await page.screenshot({path:file});

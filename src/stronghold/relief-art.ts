@@ -73,12 +73,8 @@ export function paintRelief(snow:HTMLImageElement,cliff:HTMLImageElement,natural
   const vol=c.createLinearGradient(A.t.x,A.t.y,C.t.x,C.t.y);vol.addColorStop(0,'rgba(120,140,175,.28)');vol.addColorStop(.45,'rgba(150,165,195,.06)');vol.addColorStop(1,'rgba(255,255,255,.18)');
   c.fillStyle=vol;c.fillRect(left,top,right-left,bottom-top);
   if(ramp){
-   // Slope shading (brighter where it faces the camera most), a trodden path and kerb stones along both sides.
    const hi=[A,B,C,D].reduce((a,b)=>b.h>a.h?b:a),lo=[A,B,C,D].reduce((a,b)=>b.h<a.h?b:a),g=c.createLinearGradient(hi.t.x,hi.t.y,lo.t.x,lo.t.y);
    g.addColorStop(0,'rgba(120,132,160,.18)');g.addColorStop(1,'rgba(255,255,255,0)');c.fillStyle=g;c.fillRect(left,top,right-left,bottom-top);
-   const across=f.ascend==='-v'||f.ascend==='+v',mid=(a:Corner,b:Corner)=>({x:(a.t.x+b.t.x)/2,y:(a.t.y+b.t.y)/2});
-   const [p0,p1]=across?[mid(A,B),mid(D,C)]:[mid(A,D),mid(B,C)];
-   for(let i=0;i<=90;i++){const t=i/90,x=p0.x+(p1.x-p0.x)*t+(random()-.5)*18,y=p0.y+(p1.y-p0.y)*t+(random()-.5)*9;c.fillStyle=random()<.5?'rgba(116,104,86,.42)':'rgba(146,134,116,.34)';c.beginPath();c.ellipse(x,y,13+random()*10,5+random()*3,-.46,0,Math.PI*2);c.fill();}
   }
   c.restore();
   // The far edges: a soft dark lip where the top drops away behind.
@@ -86,11 +82,6 @@ export function paintRelief(snow:HTMLImageElement,cliff:HTMLImageElement,natural
   // Faces: the +v face (D to C) in shade, the +u face (C to B) lit.
   paintFace(c,cliff,D.g,C.g,D.h,C.h,'shade',random,ramp);
   paintFace(c,cliff,C.g,B.g,C.h,B.h,'lit',random,ramp);
-  if(ramp){
-   // Kerb stones along the ramp's two long edges.
-   const across=f.ascend==='-v'||f.ascend==='+v',sides:[Corner,Corner][]=across?[[A,D],[B,C]]:[[A,B],[D,C]];
-   for(const [a,b] of sides)for(let i=0;i<=10;i++){const t=i/10,x=a.t.x+(b.t.x-a.t.x)*t,y=a.t.y+(b.t.y-a.t.y)*t,r=4.5+random()*3.5;c.fillStyle='#4f4b45';c.beginPath();c.ellipse(x,y+1,r*1.4,r*.9,0,0,Math.PI*2);c.fill();c.fillStyle='#7c776e';c.beginPath();c.ellipse(x-.6,y-.4,r*1.1,r*.65,0,0,Math.PI*2);c.fill();c.fillStyle='#eef2f6';c.beginPath();c.ellipse(x-1,y-r*.45,r*.8,r*.3,0,0,Math.PI*2);c.fill();}
-  }
   return {feature:f,canvas,left,top,width:right-left,height:bottom-top,bottom};
  }).sort((a,b)=>a.bottom-b.bottom);
 }
@@ -118,8 +109,8 @@ export function paintReliefShadow(f:ReliefFeature,dx:number,dy:number,canvas:HTM
  if(f.outline){
   // The ground shadow belongs outside the solid hill. Keeping it under the footprint leaks a dark
   // polygon through the feathered zero-height ramp mouth.
-  c.filter='none';c.globalCompositeOperation='destination-out';c.beginPath();
-  boundary.forEach((p,i)=>i?c.lineTo(p.g.x,p.g.y):c.moveTo(p.g.x,p.g.y));c.closePath();c.fill();
+  c.globalCompositeOperation='destination-out';c.lineJoin='round';c.lineWidth=12;c.beginPath();
+  boundary.forEach((p,i)=>i?c.lineTo(p.g.x,p.g.y):c.moveTo(p.g.x,p.g.y));c.closePath();c.fill();c.stroke();
  }
  return {left,top,width,height};
 }

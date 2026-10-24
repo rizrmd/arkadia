@@ -22,7 +22,9 @@ try{
  g=walk(25.5,9.5,{x:-64,y:32},5);assert.ok(heightAtTile(g.u,g.v)===0&&g.v>13,"ramp descent ended at "+JSON.stringify(g));
  g=walk(25.5,6,left,3);assert.ok(heightAtTile(g.u,g.v)===3&&g.v>=5-.05,'walked off the back edge: '+JSON.stringify(g));
  g=walk(25.5,11.5,down,3);assert.ok(g.u<=27.3+.05&&heightAtTile(g.u,g.v)>=.4,'walked off the ramp side: '+JSON.stringify(g));
- assert.ok(cliffTile(29,7.5,27.7,7.5)&&!cliffTile(25,12.9,25,12.8));
+ g=walk(11.8,25,up,4);assert.ok(heightAtTile(g.u,g.v)===1.5&&g.u<=7.8,'terrace ramp climb ended at '+JSON.stringify(g));
+ g=walk(7.5,25,down,5);assert.ok(heightAtTile(g.u,g.v)===0&&g.u>11,'terrace ramp descent ended at '+JSON.stringify(g));
+ assert.ok(cliffTile(29,7.5,27.7,7.5)&&!cliffTile(25,12.9,25,12.8)&&!cliffTile(10.9,25,10.8,25));
  console.log(JSON.stringify({features:RELIEF.map(f=>({id:f.id,type:f.type,court:[f.u0,f.v0,f.u1,f.v1],topM:f.heightM??f.topM})),pxPerMeter:PX_PER_METER,maxStepM:MAX_STEP_M,rampClimbEnd:top},null,1));
  // Dense cross-language golden includes polygon corners and every ramp height at 0.05 tile spacing.
  const hash=createHash('sha256');

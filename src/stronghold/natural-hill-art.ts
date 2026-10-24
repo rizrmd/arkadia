@@ -1,79 +1,173 @@
 import {tilePoint} from './terrain';
 import {featureHeight,PX_PER_METER,type ReliefFeature} from '../world/relief';
-// One cached mesh-like canvas per hill. The outer ring is the collision ring; the ramp is part of the same
-// surface and outer wall, with no internal cliff or sprite overlap at the crest. Vertical texture columns stay vertical.
-export function naturalHillArt(f:ReliefFeature,snow:HTMLImageElement,rock:HTMLImageElement){
- const ring=f.outline!.map(([u,v])=>{const g=tilePoint(u,v),h=featureHeight(f,u,v)*PX_PER_METER;return {u,v,g,h,t:{x:g.x,y:g.y-h}};});
- const pad=24,left=Math.floor(Math.min(...ring.map(p=>p.g.x)))-pad,right=Math.ceil(Math.max(...ring.map(p=>p.g.x)))+pad;
- const top=Math.floor(Math.min(...ring.map(p=>p.t.y)))-pad,bottom=Math.ceil(Math.max(...ring.map(p=>p.g.y)))+pad;
- const canvas=document.createElement('canvas');canvas.width=(right-left)*2;canvas.height=(bottom-top)*2;
- (canvas as unknown as {src:string}).src='relief:'+f.id;
- let c=canvas.getContext('2d',{willReadFrequently:true})!;c.scale(2,2);c.translate(-left,-top);
- const path=new Path2D();ring.forEach((p,i)=>i?path.lineTo(p.t.x,p.t.y):path.moveTo(p.t.x,p.t.y));path.closePath();
- // Plateau and ramp use the same ground texture coordinates, projected at their actual height.
- // The ramp matrix stretches only its downhill axis; at the zero-height mouth it matches the ground exactly.
- c.save();c.clip(path);const s=.7*1024/snow.width,o=tilePoint(0,0),crest=f.rampStartV!,drop=f.topM!*PX_PER_METER,k=drop/(f.v1-crest);
- c.fillStyle='#ccd8e8';c.fillRect(left,top,right-left,bottom-top);
- const zone=(upper:boolean)=>{
-  const pts=f.outline!,out:[number,number][]=[];
-  for(let i=0;i<pts.length;i++){
-   const a=pts[i],b=pts[(i+1)%pts.length],ia=upper?a[1]<=crest:a[1]>=crest,ib=upper?b[1]<=crest:b[1]>=crest;
-   if(ia)out.push(a);if(ia!==ib){const t=(crest-a[1])/(b[1]-a[1]);out.push([a[0]+(b[0]-a[0])*t,crest]);}
-  }
-  const p=new Path2D();out.forEach(([u,v],i)=>{const g=tilePoint(u,v),y=g.y-featureHeight(f,u,v)*PX_PER_METER;i?p.lineTo(g.x,y):p.moveTo(g.x,y);});p.closePath();return p;
- };
- for(const upper of [true,false]){
-  const pattern=c.createPattern(snow,'repeat')!;pattern.setTransform(upper?new DOMMatrix([s,s/2,-s,s/2,o.x,o.y-drop]):new DOMMatrix([s,s/2,-s,s/2+k*s/64,o.x,o.y-k*f.v1]));
-  c.save();c.clip(zone(upper));c.fillStyle=pattern;c.fillRect(left,top,right-left,bottom-top);
-  if(upper)c.fillStyle='rgba(236,241,248,.28)';else{
-   const u=(f.u0+f.u1)/2,a=tilePoint(u,crest),b=tilePoint(u,f.v1),distance=(-(b.x-a.x)+2*(b.y-a.y+drop))/5,fade=c.createLinearGradient(a.x,a.y-drop,a.x-distance,a.y-drop+distance*2);
-   fade.addColorStop(0,'rgba(236,241,248,.28)');fade.addColorStop(1,'rgba(236,241,248,0)');c.fillStyle=fade;
-  }
-  c.fillRect(left,top,right-left,bottom-top);c.restore();
- }
- // Fine granular wear spreads from the flared ramp onto the plateau; no painted ribbon or circular kerbs.
- let seed=[...f.id].reduce((n,c)=>Math.imul(n,31)+c.charCodeAt(0)|0,71513);const random=()=>((seed=Math.imul(seed,1664525)+1013904223|0)>>>0)/4294967296;
- for(let i=0;i<4400;i++){
-  const span=f.u1-f.u0,depth=f.v1-f.v0,crest=f.rampStartV!,u=f.u0+random()*span,v=f.v0+random()*depth,center=f.u0+span*.51+.18*Math.sin(v-f.v0),width=v>crest-1?span*.21:span*.12+(crest-1-v)*.12;
-  if(Math.abs(u-center)>width||random()>Math.min(1,(v-f.v0)*.24))continue;
-  const p=tilePoint(u,v),y=p.y-featureHeight(f,u,v)*PX_PER_METER;
-  c.fillStyle=random()<.5?'rgba(104,96,81,.22)':'rgba(155,148,130,.27)';c.beginPath();c.ellipse(p.x,y,.7+random()*3,.4+random()*1.2,-.45,0,Math.PI*2);c.fill();
- }
- c.restore();
- // Feather the last snow bank into the existing ground. This removes the antialiased sprite boundary
- // without adding a second decal or changing the zero-height collision mouth.
- const uMid=(f.u0+f.u1)/2,bank=tilePoint(uMid,f.v1-.4),mouth=tilePoint(uMid,f.v1),bankLift=featureHeight(f,uMid,f.v1-.4)*PX_PER_METER;
- const bankDistance=(-(mouth.x-bank.x)+2*(mouth.y-bank.y+bankLift))/5;
- const blend=c.createLinearGradient(bank.x,bank.y-bankLift,bank.x-bankDistance,bank.y-bankLift+bankDistance*2);blend.addColorStop(0,'#fff');blend.addColorStop(1,'rgba(255,255,255,0)');
- c.save();c.globalCompositeOperation='destination-in';c.fillStyle=blend;c.fillRect(left,top,right-left,bottom-top);c.restore();
- // Keep the complete walkable surface above the walls. At concave shoulders, a rear wall can project
- // across the ramp in screen space; compositing it behind the surface prevents the false overlap.
- const surfaceContext=c,wallCanvas=document.createElement('canvas');wallCanvas.width=canvas.width;wallCanvas.height=canvas.height;
- c=wallCanvas.getContext('2d',{willReadFrequently:true})!;c.setTransform(surfaceContext.getTransform());
- // Face texture spans connected wall panels. Every junction shares its exact top and foot vertices.
- const contact=new Path2D();for(let i=0;i<ring.length;i++){const a=ring[i],b=ring[(i+1)%ring.length];if(b.g.x<a.g.x&&Math.max(a.h,b.h)>.5){contact.moveTo(a.g.x,a.g.y);contact.lineTo(b.g.x,b.g.y);}}
- c.save();c.strokeStyle='rgba(45,56,76,.13)';c.lineWidth=7;c.lineCap='round';c.filter='blur(3px)';c.stroke(contact);c.restore();
- let offset=0;
- for(let i=0;i<ring.length;i++){
-  const a=ring[i],b=ring[(i+1)%ring.length],dx=b.g.x-a.g.x,dy=b.g.y-a.g.y;
-  const len=Math.abs(dx),H=Math.max(a.h,b.h);if(dx>=0||len<.1||H<.5)continue;
-  const x=b.g.x,y=b.g.y,k=dy/dx;
-  c.save();c.beginPath();c.moveTo(a.g.x,a.g.y+12);c.lineTo(b.g.x,b.g.y+12);c.lineTo(b.t.x,b.t.y-5);c.lineTo(a.t.x,a.t.y-5);c.closePath();c.clip();
-  c.beginPath();c.moveTo(a.g.x,a.g.y+2);c.lineTo(b.g.x,b.g.y+2);c.lineTo(b.t.x,b.t.y+1);c.lineTo(a.t.x,a.t.y+1);c.closePath();
-  // Alpha above the generated crest reveals packed snow, never a flat gray filler strip.
-  c.fillStyle='#dce5f1';c.fill();
-  c.transform(1,k,0,1,x,y);
-  // Generated strip has a narrow alpha fringe; crop within its connected rock and snow bank, preserving scale.
-  const sw=rock.naturalWidth,sh=rock.naturalHeight,scale=.19;
-  // Crop to this panel before drawing. Drawing the full strip behind dozens of tiny clips is expensive
-  // in software renderers; the phase at each shared vertex still remains continuous.
-  const phase=((-(offset+len)/scale)%sw+sw)%sw,sourceWidth=len/scale,first=Math.min(sourceWidth,sw-phase);
-  c.drawImage(rock,phase,sh*.045,first,sh*.93,0,-H-6,first*scale,H+20);
-  if(first<sourceWidth)c.drawImage(rock,0,sh*.045,sourceWidth-first,sh*.93,first*scale,-H-6,(sourceWidth-first)*scale,H+20);
-  c.fillStyle=dy>0?'rgba(252,235,213,.04)':'rgba(34,48,73,.18)';c.fillRect(0,-H,len,H+4);
-  c.restore();offset+=len;
 
+// Multi-Layer Isometric Stamp Kit coordinates in public/terrain-height/natural/cliff-strip.webp (1536x2048):
+// Master Hill Reference Frame: RX0 = 135, RY0 = 18, RW = 1510, RH = 832
+// - Row 0 (y: 0..512): Continuous fissured cliff & snow lip strip (1536x512)
+// - Row 1 (y: 512..832): 4 discrete 3D-angled stepped rock buttress modules B0..B3 (384x320 each)
+// - Row 2 (y: 832..1024): 4 thick rounded snow lip overhang modules O0..O3 (384x192 each)
+// - Row 3 (y: 1024..1280): Walkable splat trail spine (x: 0..768, 768x256) + 4 skirt/talus props T0,T1,S0,S1 (192x256 each)
+// - Row 4 (y: 1280..2048): Organic hill core underlay stamp (1536x768)
+
+const RX0=135,RY0=18,RW=1510,RH=832;
+
+type StampSpec={
+ atlas:{x:number;y:number;w:number;h:number};
+ ref:{x:number;y:number;w:number;h:number};
+ alpha:number;
+};
+
+const BUTTRESS_SPECS:readonly StampSpec[]=[
+ // B0: Upper-shoulder 3D stepped rock buttress
+ {atlas:{x:0,y:512,w:384,h:320},ref:{x:560,y:90,w:330,h:265},alpha:0.92},
+ // B1: Mid/lower inner-shoulder stepped ramp rock buttresses
+ {atlas:{x:384,y:512,w:384,h:320},ref:{x:340,y:270,w:365,h:275},alpha:0.92},
+ // B2: Main high cliff 3D faceted granite buttress
+ {atlas:{x:768,y:512,w:384,h:320},ref:{x:1090,y:230,w:500,h:410},alpha:0.95},
+ // B3: Outer-shoulder stepped ramp rock buttresses
+ {atlas:{x:1152,y:512,w:384,h:320},ref:{x:640,y:425,w:515,h:360},alpha:0.94},
+];
+
+const OVERHANG_SPECS:readonly StampSpec[]=[
+ // O0: Upper-left shoulder snow lip overhang
+ {atlas:{x:0,y:832,w:384,h:192},ref:{x:630,y:80,w:280,h:145},alpha:0.90},
+ // O1: Main cliff thick rounded snow lip overhang
+ {atlas:{x:384,y:832,w:384,h:192},ref:{x:1150,y:255,w:340,h:155},alpha:0.92},
+ // O2: Ramp shoulder snow lip overhang
+ {atlas:{x:768,y:832,w:384,h:192},ref:{x:865,y:380,w:300,h:155},alpha:0.90},
+ // O3: Far cliff corner snow lip overhang
+ {atlas:{x:1152,y:832,w:384,h:192},ref:{x:1280,y:110,w:245,h:155},alpha:0.88},
+];
+
+const PROP_SPECS:readonly StampSpec[]=[
+ // T0: Inner ramp foot talus boulder & shrub cluster
+ {atlas:{x:768,y:1024,w:192,h:256},ref:{x:175,y:495,w:245,h:190},alpha:0.92},
+ // T1: Outer ramp foot talus boulder & gravel cluster
+ {atlas:{x:960,y:1024,w:192,h:256},ref:{x:455,y:660,w:335,h:175},alpha:0.92},
+ // S0: Plateau rim winter shrubs & dry alpine brush
+ {atlas:{x:1152,y:1024,w:192,h:256},ref:{x:760,y:40,w:230,h:145},alpha:0.90},
+ // S1: Cliff snowdrift skirt & winter pine shrub
+ {atlas:{x:1344,y:1024,w:192,h:256},ref:{x:1235,y:170,w:225,h:135},alpha:0.90},
+];
+
+const TRAIL_ATLAS={x:0,y:1024,w:768,h:256} as const;
+const HILL_BASE_ATLAS={x:0,y:1280,w:1536,h:768} as const;
+
+function drawAlignedSpec(
+ c:CanvasRenderingContext2D,
+ rock:HTMLImageElement,
+ spec:StampSpec,
+ centerX:number,
+ centerY:number,
+ spanX:number,
+ spanY:number,
+ flipX:number
+){
+ const nu=(spec.ref.x-RX0)/RW;
+ const nv=(spec.ref.y-RY0)/RH;
+ const nw=spec.ref.w/RW;
+ const nh=spec.ref.h/RH;
+ const cx=centerX+flipX*(nu+nw*0.5-0.5)*spanX;
+ const cy=centerY+(nv+nh*0.5-0.5)*spanY;
+ const dw=nw*spanX;
+ const dh=nh*spanY;
+ c.save();
+ c.globalAlpha=spec.alpha;
+ c.translate(cx,cy);
+ if(flipX<0)c.scale(-1,1);
+ c.drawImage(rock,spec.atlas.x,spec.atlas.y,spec.atlas.w,spec.atlas.h,-dw*0.5,-dh*0.5,dw,dh);
+ c.restore();
+}
+
+export function naturalHillArt(f:ReliefFeature,_snow:HTMLImageElement,rock:HTMLImageElement){
+ const ring=f.outline!.map(([u,v])=>{
+  const g=tilePoint(u,v),h=featureHeight(f,u,v)*PX_PER_METER;
+  return {u,v,g,h,t:{x:g.x,y:g.y-h}};
+ });
+ const pad=56;
+ const ringMinX=Math.min(...ring.map(p=>p.g.x));
+ const ringMaxX=Math.max(...ring.map(p=>p.g.x));
+ const ringMinY=Math.min(...ring.map(p=>p.t.y));
+ const ringMaxY=Math.max(...ring.map(p=>p.g.y));
+
+ const left=Math.floor(ringMinX)-pad;
+ const right=Math.ceil(ringMaxX)+pad;
+ const top=Math.floor(ringMinY)-pad;
+ const bottom=Math.ceil(ringMaxY)+pad;
+
+ const canvas=document.createElement('canvas');
+ canvas.width=(right-left)*2;
+ canvas.height=(bottom-top)*2;
+ (canvas as unknown as {src:string}).src='relief:'+f.id;
+
+ const c=canvas.getContext('2d')!;
+ c.scale(2,2);
+ c.translate(-left,-top);
+
+ const isU=f.ascend==='-u';
+ const flipX=isU?-1:1;
+
+ // Span of the organic hill stamp covering the collision ring + soft talus skirt margin
+ const spanX=(ringMaxX-ringMinX)*1.12;
+ const spanY=(ringMaxY-ringMinY)*1.13;
+ const centerX=(ringMinX+ringMaxX)*0.5+flipX*spanX*0.01;
+ const centerY=(ringMinY+ringMaxY)*0.5+spanY*0.005;
+
+ const hasFullKit=rock.naturalHeight>=1800;
+ if(!hasFullKit)return {feature:f,canvas,left,top,width:right-left,height:bottom-top,bottom};
+
+ // ==========================================================================
+ // 1. Organic Snow Mound & Base Skirt Layer
+ // ==========================================================================
+ c.save();
+ c.translate(centerX,centerY);
+ if(flipX<0)c.scale(-1,1);
+ c.drawImage(rock,HILL_BASE_ATLAS.x,HILL_BASE_ATLAS.y,HILL_BASE_ATLAS.w,HILL_BASE_ATLAS.h,-spanX*0.5,-spanY*0.5,spanX,spanY);
+ c.restore();
+
+ // ==========================================================================
+ // 2. Walkable Splat Trail Layer (muddy/stony worn snow spine from foot to crest)
+ // Exact spine endpoints in reference space: foot (230, 745) -> crest (1160, 145)
+ // ==========================================================================
+ const footNu=(230-RX0)/RW,footNv=(745-RY0)/RH;
+ const crestNu=(1160-RX0)/RW,crestNv=(145-RY0)/RH;
+ const fx=centerX+flipX*(footNu-0.5)*spanX,fy=centerY+(footNv-0.5)*spanY;
+ const kx=centerX+flipX*(crestNu-0.5)*spanX,ky=centerY+(crestNv-0.5)*spanY;
+ const dx=(kx-fx)*flipX,dy=ky-fy;
+ const trailLen=Math.hypot(dx,dy);
+ const trailW=(280/RH)*spanY;
+ const trailAngle=Math.atan2(dy,dx);
+ c.save();
+ c.globalAlpha=0.88;
+ c.translate((fx+kx)*0.5,(fy+ky)*0.5);
+ if(flipX<0)c.scale(-1,1);
+ c.rotate(trailAngle);
+ c.drawImage(rock,TRAIL_ATLAS.x,TRAIL_ATLAS.y,TRAIL_ATLAS.w,TRAIL_ATLAS.h,-trailLen*0.5,-trailW*0.5,trailLen,trailW);
+ c.restore();
+
+ // ==========================================================================
+ // 3. Stepped 3D Rock Buttresses (stepping down topM -> 0 along cliff & ramp)
+ // Sorted in back-to-front painter's order by screen y
+ // ==========================================================================
+ const sortedButtresses=[...BUTTRESS_SPECS].sort((a,b)=>(a.ref.y+a.ref.h*0.5)-(b.ref.y+b.ref.h*0.5));
+ for(const spec of sortedButtresses){
+  drawAlignedSpec(c,rock,spec,centerX,centerY,spanX,spanY,flipX);
  }
- surfaceContext.save();surfaceContext.setTransform(1,0,0,1,0,0);surfaceContext.globalCompositeOperation='destination-over';surfaceContext.drawImage(wallCanvas,0,0);surfaceContext.restore();
+
+ // ==========================================================================
+ // 4. Thick Rounded Snow Lip Overhangs (draping over cliff & ramp crests)
+ // ==========================================================================
+ for(const spec of OVERHANG_SPECS){
+  drawAlignedSpec(c,rock,spec,centerX,centerY,spanX,spanY,flipX);
+ }
+
+ // ==========================================================================
+ // 5. Depth-Sorted Skirt & Talus Props (boulders, gravel, snowdrifts, shrubs)
+ // ==========================================================================
+ const sortedProps=[...PROP_SPECS].sort((a,b)=>(a.ref.y+a.ref.h)-(b.ref.y+b.ref.h));
+ for(const spec of sortedProps){
+  drawAlignedSpec(c,rock,spec,centerX,centerY,spanX,spanY,flipX);
+ }
+
  return {feature:f,canvas,left,top,width:right-left,height:bottom-top,bottom};
 }

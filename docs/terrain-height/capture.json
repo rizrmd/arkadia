@@ -1,6 +1,4 @@
 {
- "command": "node scripts/capture-relief.mjs",
- "url": "/?buildings=all&offline=1&time=.5 (dusk: .79)",
  "shots": {
   "desktop-court": {
    "teleport": null
@@ -29,6 +27,12 @@
     25
    ]
   },
+  "desktop-terrace-ramp": {
+   "teleport": [
+    11.6,
+    25
+   ]
+  },
   "phone-court": {
    "teleport": null
   },
@@ -45,10 +49,5 @@
    ]
   }
  },
- "errors": [],
- "courtVsPreTerrainBaseline": {
-  "changedPct": 0.176,
-  "where": "idle-animated hero only"
- },
- "note": "Captured from the committed tree; a peer's uncommitted hero-3d.ts work in the shared clone hides the hero in headless captures and was excluded."
+ "errors": []
 }

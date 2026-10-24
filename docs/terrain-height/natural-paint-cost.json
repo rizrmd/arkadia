@@ -1,28 +1,21 @@
 {
   "before": {
-    "medianPaintMs": 277.40000009536743,
-    "sprites": 4,
-    "canvasRGBABytes": 11481088,
+    "medianPaintMs": 299.2999999523163,
+    "sprites": 3,
+    "canvasRGBABytes": 12451072,
     "canvases": [
-      {
-        "id": "west-terrace",
-        "size": [
-          1264,
-          724
-        ]
-      },
-      {
-        "id": "west-terrace-ramp",
-        "size": [
-          752,
-          468
-        ]
-      },
       {
         "id": "east-ridge",
         "size": [
           1392,
           860
+        ]
+      },
+      {
+        "id": "west-terrace",
+        "size": [
+          1648,
+          916
         ]
       },
       {
@@ -35,36 +28,29 @@
     ]
   },
   "after": {
-    "medianPaintMs": 224.70000004768372,
-    "sprites": 3,
-    "canvasRGBABytes": 10893568,
+    "medianPaintMs": 84.39999985694885,
+    "sprites": 2,
+    "canvasRGBABytes": 13175808,
     "canvases": [
       {
         "id": "west-terrace",
         "size": [
-          1264,
-          724
-        ]
-      },
-      {
-        "id": "west-terrace-ramp",
-        "size": [
-          752,
-          468
+          1518,
+          992
         ]
       },
       {
         "id": "east-ridge",
         "size": [
-          1480,
-          984
+          1608,
+          1112
         ]
       }
     ]
   },
   "asset": {
     "width": 1536,
-    "height": 512,
-    "rgbaBytes": 3145728
+    "height": 2048,
+    "rgbaBytes": 12582912
   }
 }
