@@ -1,0 +1,31 @@
+{
+  "overallTaskComplete": false,
+  "visualDirection": "Superseded by human-confirmed Option B Multi-Layer Isometric Stamp Kit for BOTH East Ridge and West Terrace",
+  "implementationOwnerSession": "LS6e3a5b7d2e97015577e735ef",
+  "interimLiveRelease": "c9e4d6f",
+  "runtime": {
+    "enabled": true,
+    "bootRunning": true
+  },
+  "passed": [
+    "client/Go 21901-sample height parity",
+    "Go test ./... during deployment",
+    "map dimensions and speed invariants",
+    "ramp ascent/descent and cliff blocking on earlier f8c3ddd live build",
+    "shadow pixel regression: internal mouth/gap alpha 0, external sun shadow alpha 255",
+    "96 MiB compressed archive application below 100 MiB Node RSS"
+  ],
+  "latestLiveVerification": {
+    "phoneDPR": 2,
+    "captures": 3,
+    "complete": false,
+    "reason": "900-second terminal timeout after three captures; final keyboard and dusk stages did not complete"
+  },
+  "deploymentFix": {
+    "commit": "c9e4d6f",
+    "cause": "Archive part buffers plus Buffer.concat exceeded 768 MiB boot allocation",
+    "boundedBufferBytes": 1048576,
+    "fixtureNodePeakRSSKiB": 54004
+  },
+  "knowledgePage": "NKBD2fddfffe911bb2f5328e5d33"
+}
