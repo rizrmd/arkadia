@@ -150,6 +150,8 @@ type World struct {
 	Players    []*Player
 	Enemies    []*Enemy
 	Gate       Gate
+	Souls      []Soul
+	nextSoul   int
 	nextEnemy  int
 	spawnTimer float64
 	rng        *rand.Rand
@@ -204,6 +206,13 @@ func (w *World) place(p *Player) {
 
 // RemovePlayer drops a hero from the world.
 func (w *World) RemovePlayer(id string) {
+	kept := w.Souls[:0]
+	for _, s := range w.Souls {
+		if s.Owner != id {
+			kept = append(kept, s)
+		}
+	}
+	w.Souls = kept
 	for i, p := range w.Players {
 		if p.ID == id {
 			w.Players = append(w.Players[:i], w.Players[i+1:]...)
@@ -288,6 +297,7 @@ func (w *World) Step() {
 		w.spawnTimer = spawnEvery
 		w.spawn(nil)
 	}
+	w.collectSouls()
 	w.updateGate()
 	w.Clock += dt / DayMS
 	w.Clock -= math.Floor(w.Clock)
@@ -542,7 +552,7 @@ func (w *World) autoCastInAoE(p *Player) {
 			if e == target || hypot(e.F.Pos.X-target.F.Pos.X, e.F.Pos.Y-target.F.Pos.Y) <= splashR {
 				if e.F.Damage(dmg) {
 					p.Kills++
-					w.rewardFoe(p, e.enemyLevel())
+					w.dropSoul(p, e.F.Pos, e.enemyLevel())
 				}
 				hits++
 				if hits >= cleave {
@@ -589,7 +599,7 @@ func (w *World) heroStep(p *Player, dt float64) {
 			for _, f := range swingTargets(h, w.enemyFighters(), heroReach*p.Run.reach(), side) {
 				if f.Damage(p.Run.damage()) {
 					p.Kills++
-					w.rewardFoe(p, w.enemyLevelOf(f))
+					w.dropSoul(p, f.Pos, w.enemyLevelOf(f))
 				}
 			}
 		}

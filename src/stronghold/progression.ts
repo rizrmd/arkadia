@@ -242,7 +242,11 @@ export function roll(p:Progression,random:()=>number,hero?:HeroKind){
 export function reward(p:Progression,random:()=>number,hero?:HeroKind,foeLevel?:number){
  const lv=Math.max(1,Math.floor(foeLevel??p.level));
  p.gold+=5;
- p.xp+=revenantXpReward(lv);
+ awardSoulXp(p,random,hero,lv);
+}
+
+export function awardSoulXp(p:Progression,random:()=>number,hero:HeroKind|undefined,foeLevel:number){
+ p.xp+=revenantXpReward(foeLevel);
  while(p.xp>=threshold(p)){
   p.xp-=threshold(p);
   p.level++;

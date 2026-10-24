@@ -75,3 +75,6 @@
  .blessing-row{gap:6px}
  .blessing-row button{padding:10px 8px;gap:6px;min-height:164px;font-size:12px}
 }
+
+.monster-soul{position:absolute;left:0;top:0;width:15px;height:19px;margin:-10px -8px;border-radius:55% 55% 45% 45%;pointer-events:none;z-index:35;background:radial-gradient(ellipse at 45% 35%,#fff 0%,#c4ffff 24%,#64eaff 48%,#557cff 76%,transparent 100%);box-shadow:0 0 9px 4px #7dedffb0,0 0 25px 8px #528dff60;will-change:transform;}
+.monster-soul.collected{transition:transform .4s ease-in,opacity .4s;opacity:0;box-shadow:0 0 28px 14px #c5ffff;}

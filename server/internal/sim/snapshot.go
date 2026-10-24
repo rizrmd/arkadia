@@ -46,6 +46,7 @@ type GateState struct {
 
 // State is everything a snapshot carries except the per-client acknowledgement.
 type State struct {
+	Souls   []Soul        `json:"souls"`
 	Tick    uint64        `json:"tick"`
 	Clock   float64       `json:"clock"`
 	Gate    GateState     `json:"gate"`
@@ -57,7 +58,7 @@ func round(v, unit float64) float64 { return math.Round(v/unit) * unit }
 
 // State captures the world for a snapshot.
 func (w *World) State() State {
-	s := State{Tick: w.Tick, Clock: round(w.Clock, 1e-6), Gate: GateState{w.Gate.Open, w.Gate.Frame, w.Gate.Passable()},
+	s := State{Souls: append([]Soul{}, w.Souls...), Tick: w.Tick, Clock: round(w.Clock, 1e-6), Gate: GateState{w.Gate.Open, w.Gate.Frame, w.Gate.Passable()},
 		Players: make([]PlayerState, 0, len(w.Players)), Enemies: make([]EnemyState, 0, len(w.Enemies))}
 	for _, p := range w.Players {
 		s.Players = append(s.Players, PlayerState{ID: p.ID, Name: p.Name, Hero: p.Hero, X: round(p.X, .01), Y: round(p.Y, .01), HP: round(p.F.HP, .1), Max: p.MaxHP,

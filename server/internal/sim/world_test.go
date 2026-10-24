@@ -345,6 +345,9 @@ func TestAutoAttackKillsAndRespawnsRevenants(t *testing.T) {
 	if e.F.Alive() || p.Kills != 1 {
 		t.Fatalf("revenant alive=%v hp=%v kills=%d", e.F.Alive(), e.F.HP, p.Kills)
 	}
+	if p.Run.XP != 0 || p.Run.Level != 1 || len(w.Souls) != 1 {
+		t.Fatalf("kill must drop one soul without XP: run=%+v souls=%+v", p.Run, w.Souls)
+	}
 	gen := e.Gen
 	run(w, int(corpse/TickMS)+2)
 	if !e.F.Alive() || e.Gen != gen+1 || e.F.HP != kinds[Revenant].hp {

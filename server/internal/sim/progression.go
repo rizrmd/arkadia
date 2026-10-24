@@ -303,8 +303,17 @@ func (w *World) reward(p *Player) {
 }
 
 func (w *World) rewardFoe(p *Player, foeLevel int) {
-	prevLevel := p.Run.Level
+	w.rewardKill(p)
+	w.awardSoulXP(p, foeLevel)
+}
+
+func (w *World) rewardKill(p *Player) {
 	p.Run.Gold += 5
+	p.F.HP = math.Min(p.MaxHP, p.F.HP+float64(p.Run.Skills["leech"])*2)
+}
+
+func (w *World) awardSoulXP(p *Player, foeLevel int) {
+	prevLevel := p.Run.Level
 	p.Run.XP += RevenantXPReward(max(1, foeLevel))
 	for p.Run.XP >= p.Run.threshold() {
 		p.Run.XP -= p.Run.threshold()
@@ -320,7 +329,6 @@ func (w *World) rewardFoe(p *Player, foeLevel int) {
 	if p.Run.Pending > 0 {
 		p.F.Immune = 200
 	}
-	p.F.HP = math.Min(p.MaxHP, p.F.HP+float64(p.Run.Skills["leech"])*2)
 }
 
 func (p *Player) choose(id string, level int) {
