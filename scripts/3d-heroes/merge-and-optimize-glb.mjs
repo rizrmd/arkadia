@@ -268,18 +268,18 @@ async function buildHeroGlb(hero) {
             x *= 1 - 0.08 * waistWeight;
             z *= 1 - 0.06 * waistWeight;
           }
-          const skirtBand = smoothstep(0.15, 0.26, y) * (1 - smoothstep(0.76, 0.90, y));
+          const skirtBand = smoothstep(0.15, 0.28, y) * (1 - smoothstep(0.74, 0.90, y));
           if (skirtBand > 0 && part[i] === 3) {
             const cx = -0.0165;
             const cz = 0.068;
             const rx = x - cx;
             const rz = z - cz;
             const rLen = Math.hypot(rx, rz) || 1;
-            const push = 0.022 * skirtBand;
+            const push = 0.045 * skirtBand;
             x += (rx / rLen) * push;
             z += (rz / rLen) * push;
             if (z < cz) {
-              z -= 0.018 * skirtBand;
+              z -= 0.048 * skirtBand;
             }
           }
 
@@ -375,15 +375,15 @@ async function buildHeroGlb(hero) {
               wHip = s3;
               tLeft = vPart === 1 ? 1.0 : 0.0;
             } else {
-              // Coat Skirt & upper hip transition: 0% Foot/Toe weight, cohesive fabric drape over thighs & shins
-              const s2 = smoothstep(0.36, 0.62, y);
+              // Coat Skirt & upper hip transition: 0% Foot/Toe weight, continuous bell-skirt drape over wide stride
+              const s2 = smoothstep(0.34, 0.62, y);
               const s3 = smoothstep(0.80, 0.94, y);
               wToe = 0;
               wFoot = 0;
-              wLeg = 0.72 * (1 - s2);
+              wLeg = 0.62 * (1 - s2);
               wUp = (1 - s3) - wLeg;
               wHip = s3;
-              tLeft = 0.10 + 0.80 * smoothstep(-0.12, 0.09, x);
+              tLeft = 0.16 + 0.68 * smoothstep(-0.14, 0.11, x);
             }
             const tRight = 1 - tLeft;
 
@@ -618,69 +618,67 @@ async function buildHeroGlb(hero) {
         byName.get(bName).quaternion.copy(bq);
       }
 
-      // 1. Pelvis (Hips) vertical rhythm (2 cycles per stride: lowest at stance k=5,17, highest at flight k=0,12)
-      const hipsY = 102.2 + 2.2 * Math.cos(2 * (th - 0.35));
-      const hipsX = baseHipsT[0] + 0.6 * Math.sin(th);
-      const hipsZ = baseHipsT[2] + 0.8 * Math.sin(2 * (th - 0.35));
+      // 1. Pelvis (Hips) vertical rhythm (2 cycles per stride: lowest at mid-stance k=6,18, highest at wide flight k=0,12)
+      const hipsY = 100.5 + 3.2 * Math.cos(2 * th);
+      const hipsX = baseHipsT[0] + 0.7 * Math.sin(th);
+      const hipsZ = baseHipsT[2] + 1.2 * Math.sin(2 * th);
       byName.get('Hips').position.set(hipsX, hipsY, hipsZ);
       hipsTransTrack[k * 3] = hipsX;
       hipsTransTrack[k * 3 + 1] = hipsY;
       hipsTransTrack[k * 3 + 2] = hipsZ;
 
-      setRelEuler('Hips', 4.5 + 1.2 * Math.sin(2 * th), 5.0 * Math.cos(th), 2.5 * Math.sin(th));
+      setRelEuler('Hips', 6.5 + 1.5 * Math.sin(2 * th), 7.5 * Math.cos(th), 3.0 * Math.sin(th));
 
-      // 2. Spine & Head: athletic forward run lean (~8.0 deg total) + counter-rotation opposing pelvis + level gaze
+      // 2. Spine & Head: dynamic forward run lean (~11 deg total) + counter-rotation opposing pelvis + level gaze
       const castChestYaw = isCastingMode ? -5.0 - 2.5 * Math.sin(castTh) : 0;
-      setRelEuler('Spine02', 3.2 + 0.7 * Math.cos(2 * th), -2.2 * Math.cos(th) + castChestYaw * 0.3, -1.2 * Math.sin(th));
-      setRelEuler('Spine01', 2.8 + 0.5 * Math.cos(2 * th), -2.8 * Math.cos(th) + castChestYaw * 0.35, -1.0 * Math.sin(th));
-      setRelEuler('Spine', 2.0, -2.5 * Math.cos(th) + castChestYaw * 0.35, 0);
-      setRelEuler('neck', -2.5, 1.2 * Math.cos(th) - castChestYaw * 0.4, 0);
-      setRelEuler('Head', -5.0 - 0.7 * Math.cos(2 * th), 1.5 * Math.cos(th) - castChestYaw * 0.6, 0.8 * Math.sin(th));
+      setRelEuler('Spine02', 4.5 + 0.8 * Math.cos(2 * th), -3.2 * Math.cos(th) + castChestYaw * 0.3, -1.5 * Math.sin(th));
+      setRelEuler('Spine01', 3.8 + 0.6 * Math.cos(2 * th), -3.8 * Math.cos(th) + castChestYaw * 0.35, -1.2 * Math.sin(th));
+      setRelEuler('Spine', 2.5, -3.5 * Math.cos(th) + castChestYaw * 0.35, 0);
+      setRelEuler('neck', -3.5, 1.8 * Math.cos(th) - castChestYaw * 0.4, 0);
+      setRelEuler('Head', -6.5 - 0.8 * Math.cos(2 * th), 2.2 * Math.cos(th) - castChestYaw * 0.6, 1.0 * Math.sin(th));
 
-      // 3. Symmetric Left & Right Leg gait (0% sideways twist, balanced stride & knee flexion inside battle coat)
+      // 3. Wide, dynamic Left & Right Leg running stride (-48 deg front reach to +26 deg rear push-off, / \ split)
       const solveLeg = (side, psi) => {
         const sign = side === 'Left' ? 1 : -1;
-        const hipPitch = -5 - 24 * Math.cos(psi) + 3 * Math.sin(psi);
-        const kneeBend = 30 - 16 * Math.sin(psi - 0.35) - 7 * Math.cos(2 * (psi - 0.25));
-        const footPitch = -4 - 10 * Math.cos(psi - 0.3) + 5 * Math.sin(psi);
-        setRelEuler(`${side}UpLeg`, hipPitch, 0, sign * 1.2);
+        const hipPitch = -11 - 37 * Math.cos(psi) + 3 * Math.sin(psi);
+        const kneeBend = 20 - 10 * Math.cos(2 * psi) - 10 * Math.sin(psi);
+        const footPitch = -4 - 12 * Math.cos(psi - 0.25) + 6 * Math.sin(psi);
+        setRelEuler(`${side}UpLeg`, hipPitch, 0, sign * 1.5);
         setRelEuler(`${side}Leg`, kneeBend, 0, 0);
         setRelEuler(`${side}Foot`, footPitch, 0, 0, symFootBase);
-        setRelEuler(`${side}ToeBase`, Math.max(0, 5 * Math.sin(psi - 0.6)), 0, 0);
+        setRelEuler(`${side}ToeBase`, Math.max(0, 7 * Math.sin(psi - 0.5)), 0, 0);
       };
       solveLeg('Left', th);
       solveLeg('Right', th + Math.PI);
 
-      // 4. Arms: natural sagittal runner swing (hands drop past hips on back-swing and rise to lower chest on front-swing)
-      const lSwing = -Math.cos(th - 0.15); // +1 when Right leg is forward (th = PI), -1 when Left leg is forward (th = 0)
-      const rSwing = Math.cos(th - 0.15);  // +1 when Left leg is forward (th = 0), -1 when Right leg is forward (th = PI)
-      const uL = 0.5 * (lSwing + 1);       // 0 at back-swing, 1 at front-swing
-      const uR = 0.5 * (rSwing + 1);
+      // 4. Arms: elongated, non-elbow-bent arm swing (~172 deg straightness, zero L-shape elbow!)
+      const lSwing = -Math.cos(th - 0.10); // +1 when Right leg is forward (th = PI), -1 when Left leg is forward (th = 0)
+      const rSwing = Math.cos(th - 0.10);  // +1 when Left leg is forward (th = 0), -1 when Right leg is forward (th = PI)
 
-      setRelEuler('LeftShoulder', -4, 4 * lSwing, -2);
-      const lUpperDir = new THREE.Vector3(0.21, -0.93, -0.30 + 0.56 * uL);
-      const lForeDir = new THREE.Vector3(-(0.14 + 0.08 * uL), -0.76 + 0.72 * uL, 0.62 + 0.34 * uL);
+      setRelEuler('LeftShoulder', -3, 5 * lSwing, -2);
+      const lUpperDir = new THREE.Vector3(0.22, -0.82, 0.54 * lSwing);
+      const lForeDir = new THREE.Vector3(0.16, -0.82 + 0.06 * lSwing, 0.54 * lSwing + 0.12);
       orientBoneWorldY('LeftArm', lUpperDir);
       orientBoneWorldY('LeftForeArm', lForeDir);
       setRelEuler('LeftHand', 0, 0, 0);
 
       if (!isCastingMode) {
-        setRelEuler('RightShoulder', -4, -4 * rSwing, 2);
-        const rUpperDir = new THREE.Vector3(-0.21, -0.93, -0.30 + 0.56 * uR);
-        const rForeDir = new THREE.Vector3(0.14 + 0.08 * uR, -0.76 + 0.72 * uR, 0.62 + 0.34 * uR);
+        setRelEuler('RightShoulder', -3, -5 * rSwing, 2);
+        const rUpperDir = new THREE.Vector3(-0.22, -0.82, 0.54 * rSwing);
+        const rForeDir = new THREE.Vector3(-0.16, -0.82 + 0.06 * rSwing, 0.54 * rSwing + 0.12);
         orientBoneWorldY('RightArm', rUpperDir);
         orientBoneWorldY('RightForeArm', rForeDir);
         setRelEuler('RightHand', 0, 0, 0);
       } else {
-        // In 'run_cast', Right Ember Gauntlet channels & aims forward at waist-to-chest height in rhythm with the stride
+        // In 'run_cast', Right Ember Gauntlet extends forward in a sleek, straight casting reach (zero L-shape elbow)
         const pulse = Math.sin(castTh);
         const strideBob = 0.04 * Math.cos(2 * th);
-        setRelEuler('RightShoulder', -5, -6 - 3 * pulse, 3);
-        const rUpperDir = new THREE.Vector3(-0.21 + 0.03 * pulse, -0.74 + 0.06 * pulse + strideBob, 0.56 + 0.08 * pulse);
-        const rForeDir = new THREE.Vector3(0.12 + 0.04 * pulse, -0.06 + 0.10 * pulse + strideBob, 0.98);
+        setRelEuler('RightShoulder', -4, -6 - 3 * pulse, 2);
+        const rUpperDir = new THREE.Vector3(-0.18 + 0.02 * pulse, -0.34 + 0.05 * pulse + strideBob, 0.92);
+        const rForeDir = new THREE.Vector3(-0.08 + 0.02 * pulse, -0.22 + 0.06 * pulse + strideBob, 0.97);
         orientBoneWorldY('RightArm', rUpperDir);
         orientBoneWorldY('RightForeArm', rForeDir);
-        setRelEuler('RightHand', -6 + 5 * pulse, 0, 0);
+        setRelEuler('RightHand', -4 + 4 * pulse, 0, 0);
       }
 
       for (const bName of trackedBones) {

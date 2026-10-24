@@ -94,7 +94,7 @@ try {
     document.querySelector('#hero-buttons .btn[data-hero="ember-warden"]')?.click();
   });
   await page.waitForFunction(() => window.__LAB_READY__ === true, null, { timeout: 60000 });
-  await page.evaluate(() => window.__setLabState({ clip: 'run_cast', dir: 'SE', cameraMode: 'iso', shaderMode: 'stylized', time: 0.45 }));
+  await page.evaluate(() => window.__setLabState({ clip: 'run_cast', dir: 'SE', cameraMode: 'iso', shaderMode: 'stylized', time: 0.36 }));
   await page.waitForTimeout(180);
   await page.screenshot({ path: path.join(DOCS_DIR, 'ember-lab-overview-se.png') });
 
@@ -102,7 +102,7 @@ try {
   await page.waitForTimeout(180);
   await page.screenshot({ path: path.join(DOCS_DIR, 'ember-lab-wireframe.png') });
 
-  await page.evaluate(() => window.__setLabState({ clip: 'run', dir: 'S', cameraMode: 'iso', shaderMode: 'stylized', time: 0.22 }));
+  await page.evaluate(() => window.__setLabState({ clip: 'run', dir: 'S', cameraMode: 'iso', shaderMode: 'stylized', time: 0.36 }));
   await page.waitForTimeout(180);
   const emberOctEl = await page.$('.grid-card');
   await emberOctEl.screenshot({ path: path.join(DOCS_DIR, 'ember-octant-strip.png') });
