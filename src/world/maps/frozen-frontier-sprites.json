@@ -1,0 +1,650 @@
+{
+ "version": 2,
+ "atlas": "/frozen-frontier/game/atlas.webp",
+ "size": [
+  2048,
+  2048
+ ],
+ "density": 2.5,
+ "bytes": 1183734,
+ "assets": {
+  "wall-ne": {
+   "kit": "v1",
+   "frame": [
+    1178,
+    1521,
+    360,
+    238
+   ],
+   "world": [
+    144,
+    95.25
+   ],
+   "pivot": [
+    0.5,
+    0.75
+   ],
+   "heightM": 2.4,
+   "footprintM": [
+    3,
+    0.45
+   ]
+  },
+  "wall-se": {
+   "kit": "v1",
+   "frame": [
+    816,
+    1521,
+    360,
+    239
+   ],
+   "world": [
+    144,
+    95.44
+   ],
+   "pivot": [
+    0.5,
+    0.7505
+   ],
+   "heightM": 2.4,
+   "footprintM": [
+    3,
+    0.45
+   ]
+  },
+  "corner-n": {
+   "kit": "v1",
+   "frame": [
+    0,
+    1521,
+    360,
+    245
+   ],
+   "world": [
+    144,
+    98.06
+   ],
+   "pivot": [
+    0.5,
+    0.7591
+   ],
+   "heightM": 2.4,
+   "footprintM": [
+    1.5,
+    1.5
+   ]
+  },
+  "corner-s": {
+   "kit": "v1",
+   "frame": [
+    454,
+    1521,
+    360,
+    240
+   ],
+   "world": [
+    144,
+    95.81
+   ],
+   "pivot": [
+    0.5,
+    0.7593
+   ],
+   "heightM": 2.4,
+   "footprintM": [
+    1.5,
+    1.5
+   ]
+  },
+  "arch-ne": {
+   "kit": "v1",
+   "frame": [
+    818,
+    1122,
+    390,
+    352
+   ],
+   "world": [
+    156,
+    140.97
+   ],
+   "pivot": [
+    0.5,
+    0.8501
+   ],
+   "heightM": 3.6,
+   "footprintM": [
+    3,
+    0.65
+   ]
+  },
+  "arch-se": {
+   "kit": "v1",
+   "frame": [
+    426,
+    1122,
+    390,
+    385
+   ],
+   "world": [
+    156,
+    154.17
+   ],
+   "pivot": [
+    0.5,
+    0.8498
+   ],
+   "heightM": 3.6,
+   "footprintM": [
+    3,
+    0.65
+   ]
+  },
+  "pillar-intact": {
+   "kit": "v1",
+   "frame": [
+    362,
+    1521,
+    90,
+    242
+   ],
+   "world": [
+    36,
+    96.94
+   ],
+   "pivot": [
+    0.5,
+    0.94
+   ],
+   "heightM": 2.4,
+   "footprintM": [
+    0.65,
+    0.65
+   ]
+  },
+  "pillar-broken": {
+   "kit": "v1",
+   "frame": [
+    377,
+    1768,
+    80,
+    142
+   ],
+   "world": [
+    32,
+    56.79
+   ],
+   "pivot": [
+    0.5,
+    0.8701
+   ],
+   "heightM": 1.1,
+   "footprintM": [
+    0.65,
+    0.65
+   ]
+  },
+  "stairs-ne": {
+   "kit": "v1",
+   "frame": [
+    0,
+    1768,
+    275,
+    207
+   ],
+   "world": [
+    110,
+    82.79
+   ],
+   "pivot": [
+    0.5,
+    0.6696
+   ],
+   "heightM": 0.75,
+   "footprintM": [
+    1.5,
+    1.5
+   ]
+  },
+  "stairs-nw": {
+   "kit": "v1",
+   "frame": [
+    1540,
+    1521,
+    275,
+    236
+   ],
+   "world": [
+    110,
+    94.53
+   ],
+   "pivot": [
+    0.5,
+    0.6697
+   ],
+   "heightM": 0.75,
+   "footprintM": [
+    1.5,
+    1.5
+   ]
+  },
+  "foundation": {
+   "kit": "v1",
+   "frame": [
+    1249,
+    679,
+    640,
+    423
+   ],
+   "world": [
+    256,
+    169
+   ],
+   "pivot": [
+    0.5,
+    0.5602
+   ],
+   "heightM": 0.3,
+   "footprintM": [
+    6,
+    6
+   ]
+  },
+  "paving": {
+   "kit": "v1",
+   "frame": [
+    0,
+    679,
+    640,
+    441
+   ],
+   "world": [
+    256,
+    176.33
+   ],
+   "pivot": [
+    0.5,
+    0.5009
+   ],
+   "heightM": 0,
+   "footprintM": [
+    6,
+    6
+   ]
+  },
+  "rubble": {
+   "kit": "v1",
+   "frame": [
+    821,
+    1768,
+    215,
+    118
+   ],
+   "world": [
+    86,
+    47.03
+   ],
+   "pivot": [
+    0.5,
+    0.719
+   ],
+   "heightM": 0.5,
+   "footprintM": [
+    1.5,
+    1
+   ]
+  },
+  "snow-cap-ne": {
+   "kit": "v1",
+   "frame": [
+    459,
+    1768,
+    360,
+    132
+   ],
+   "world": [
+    144,
+    52.88
+   ],
+   "pivot": [
+    0.5,
+    0.5
+   ],
+   "heightM": 0.08,
+   "footprintM": [
+    3,
+    0.5
+   ]
+  },
+  "snow-cap-se": {
+   "kit": "v1",
+   "frame": [
+    1315,
+    1768,
+    360,
+    113
+   ],
+   "world": [
+    144,
+    45.38
+   ],
+   "pivot": [
+    0.5,
+    0.5
+   ],
+   "heightM": 0.08,
+   "footprintM": [
+    3,
+    0.5
+   ]
+  },
+  "ruined-gate": {
+   "kit": "v2",
+   "frame": [
+    642,
+    679,
+    605,
+    428
+   ],
+   "world": [
+    241.82,
+    171.08
+   ],
+   "pivot": [
+    0.5,
+    0.868
+   ],
+   "heightM": 4,
+   "footprintM": [
+    5,
+    1.5
+   ]
+  },
+  "broken-watchtower": {
+   "kit": "v2",
+   "frame": [
+    318,
+    0,
+    651,
+    648
+   ],
+   "world": [
+    260.35,
+    259.27
+   ],
+   "pivot": [
+    0.5104,
+    0.8583
+   ],
+   "heightM": 6,
+   "footprintM": [
+    4,
+    4
+   ]
+  },
+  "snowy-shrine": {
+   "kit": "v2",
+   "frame": [
+    1210,
+    1122,
+    288,
+    324
+   ],
+   "world": [
+    114.93,
+    129.48
+   ],
+   "pivot": [
+    0.5,
+    0.8591
+   ],
+   "heightM": 3,
+   "footprintM": [
+    3,
+    3
+   ]
+  },
+  "pine-tall": {
+   "kit": "v2",
+   "frame": [
+    0,
+    0,
+    316,
+    677
+   ],
+   "world": [
+    126.36,
+    270.58
+   ],
+   "pivot": [
+    0.5,
+    0.9587
+   ],
+   "heightM": 7,
+   "footprintM": [
+    2.5,
+    2.5
+   ]
+  },
+  "pine-broad": {
+   "kit": "v2",
+   "frame": [
+    971,
+    0,
+    527,
+    495
+   ],
+   "world": [
+    210.49,
+    197.75
+   ],
+   "pivot": [
+    0.5,
+    0.9388
+   ],
+   "heightM": 5,
+   "footprintM": [
+    3.8,
+    3.8
+   ]
+  },
+  "pine-sapling": {
+   "kit": "v2",
+   "frame": [
+    277,
+    1768,
+    98,
+    176
+   ],
+   "world": [
+    39.13,
+    70.37
+   ],
+   "pivot": [
+    0.5,
+    0.9482
+   ],
+   "heightM": 1.8,
+   "footprintM": [
+    1,
+    1
+   ]
+  },
+  "dead-tree": {
+   "kit": "v2",
+   "frame": [
+    0,
+    1122,
+    424,
+    397
+   ],
+   "world": [
+    169.29,
+    158.52
+   ],
+   "pivot": [
+    0.5,
+    0.937
+   ],
+   "heightM": 4,
+   "footprintM": [
+    2,
+    2
+   ]
+  },
+  "dead-snag": {
+   "kit": "v2",
+   "frame": [
+    1500,
+    1122,
+    192,
+    253
+   ],
+   "world": [
+    76.77,
+    101.08
+   ],
+   "pivot": [
+    0.4705,
+    0.9175
+   ],
+   "heightM": 2.5,
+   "footprintM": [
+    1.2,
+    1.2
+   ]
+  },
+  "shrub-juniper": {
+   "kit": "v2",
+   "frame": [
+    1827,
+    1768,
+    154,
+    90
+   ],
+   "world": [
+    61.49,
+    36.09
+   ],
+   "pivot": [
+    0.5,
+    0.8254
+   ],
+   "heightM": 0.8,
+   "footprintM": [
+    1.3,
+    1
+   ]
+  },
+  "shrub-twigs": {
+   "kit": "v2",
+   "frame": [
+    1677,
+    1768,
+    148,
+    94
+   ],
+   "world": [
+    59.08,
+    37.34
+   ],
+   "pivot": [
+    0.5,
+    0.8968
+   ],
+   "heightM": 0.9,
+   "footprintM": [
+    1.2,
+    1
+   ]
+  },
+  "grass-tussock": {
+   "kit": "v2",
+   "frame": [
+    0,
+    1977,
+    75,
+    57
+   ],
+   "world": [
+    29.85,
+    22.81
+   ],
+   "pivot": [
+    0.5,
+    0.8963
+   ],
+   "heightM": 0.55,
+   "footprintM": [
+    0.65,
+    0.65
+   ]
+  },
+  "grass-patch": {
+   "kit": "v2",
+   "frame": [
+    256,
+    1977,
+    107,
+    32
+   ],
+   "world": [
+    42.55,
+    12.62
+   ],
+   "pivot": [
+    0.5,
+    0.7435
+   ],
+   "heightM": 0.25,
+   "footprintM": [
+    1.3,
+    0.7
+   ]
+  },
+  "rock-boulders": {
+   "kit": "v2",
+   "frame": [
+    1038,
+    1768,
+    275,
+    117
+   ],
+   "world": [
+    109.98,
+    46.96
+   ],
+   "pivot": [
+    0.5,
+    0.7164
+   ],
+   "heightM": 0.9,
+   "footprintM": [
+    2,
+    1.4
+   ]
+  },
+  "rock-scatter": {
+   "kit": "v2",
+   "frame": [
+    77,
+    1977,
+    177,
+    47
+   ],
+   "world": [
+    70.78,
+    18.68
+   ],
+   "pivot": [
+    0.5,
+    0.6059
+   ],
+   "heightM": 0.3,
+   "footprintM": [
+    1.4,
+    0.8
+   ]
+  }
+ }
+}

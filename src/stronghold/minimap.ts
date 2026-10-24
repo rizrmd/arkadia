@@ -4,6 +4,7 @@ import {mobileHudLayout} from '../typography/mobile-layout';
 import {project,unproject} from '../isometric';
 import {MAP,STRONGHOLD_ORIGIN} from '../world/map';
 import {RELIEF} from '../world/relief';
+import {FRONTIER_PROPS} from '../world/frontier';
 import {STRONGHOLD} from './prefabs/stronghold';
 import {COURT,environmentSprites,LEGACY_LAYOUT} from './terrain';
 import {slots} from './scene';
@@ -14,7 +15,9 @@ import type {Route} from './auto-walk';
 // Ground dressing (weeds, paving and snow drifts) is not an obstacle.
 export const minimapObstacles=()=>environmentSprites()
  .filter(p=>p.layer!=='ground'&&p.opacity>=1&&!/^(rampart-|bastion$)/.test(p.id))
- .map(p=>{const t=unproject(p.x-COURT.x,p.y-COURT.y);return {id:p.id,u:t.x,v:t.y,width:p.width,kind:/fir|spruce|tree/.test(p.id)?'tree' as const:'obstacle' as const};});
+ .map(p=>{const t=unproject(p.x-COURT.x,p.y-COURT.y);return {id:p.id,u:t.x,v:t.y,width:p.width,kind:/fir|spruce|tree/.test(p.id)?'tree' as const:'obstacle' as const};})
+ // The Frozen Frontier's solid props (world/frontier.ts): its ruins, landmarks, trees and boulders.
+ .concat(FRONTIER_PROPS.filter(p=>p.blocks.length).map(p=>({id:'ff:'+p.asset,u:p.u,v:p.v,width:p.width,kind:/pine|tree|snag/.test(p.asset)?'tree' as const:'obstacle' as const})));
 
 // The map's symbols in court units ((world px - COURT) / 64, the ground plane as the game draws it), with line widths
 // for z screen px per unit. Shared by the minimap and the full map (world-map.ts). Returns the shapes drawn.
@@ -61,9 +64,6 @@ export function drawMapGeometry(g:Graphics,built:Building[],z:number,obstacles:R
  return count;
 }
 
-// Geometry stays on the GPU. Only its translation and the live marker change per frame.
-// Court-local ground tiles are shared with collision; actor elevation must not move the map marker.
-export class Minimap extends Container {
 // Desktop only: the player's own minimap size and place, kept as the gap to the right edge and the top edge.
 type Custom={size:number;right:number;top:number};
 const LAYOUT_KEY='arkodia.minimap.layout.v1',MIN_SIZE=120,CORNER=16;
@@ -71,6 +71,9 @@ const loadCustom=():Custom|null=>{
  try{const v=JSON.parse(localStorage.getItem(LAYOUT_KEY)??'null');return v&&[v.size,v.right,v.top].every(Number.isFinite)?{size:v.size,right:v.right,top:v.top}:null;}catch{return null;}
 };
 
+// Geometry stays on the GPU. Only its translation and the live marker change per frame.
+// Court-local ground tiles are shared with collision; actor elevation must not move the map marker.
+export class Minimap extends Container {
  private geometry=new Graphics();
  private viewport=new Container();
  private clip=new Graphics();
@@ -89,23 +92,20 @@ const loadCustom=():Custom|null=>{
  private route=new Graphics();
  private walk:Route|null=null;
  private drawnRoute='';
- // Tapping the minimap opens the full map (world-map.ts).
- onOpen?:()=>void;
- constructor(){
  // Desktop resize/move: four corner grips resize around the opposite corner, dragging the map moves it, and holding
  // Shift while resizing moves it instead, so one drag can do both.
  private grips=new Container();
  private custom:Custom|null=loadCustom();
  private screen={width:0,height:0};
  private suppressTap=false;
+ // Tapping the minimap opens the full map (world-map.ts).
+ onOpen?:()=>void;
+ constructor(){
   super();this.eventMode='static';this.interactiveChildren=true;this.cursor='pointer';this.zIndex=9;
   this.on('pointertap',()=>{if(!this.suppressTap)this.onOpen?.();});
   this.on('pointerdown',e=>{if(!this.mobile)this.drag(e.clientX,e.clientY,0,0);});
   this.viewport.addChild(this.geometry,this.route);this.addChild(this.viewport,this.clip,this.frame,this.marker);this.viewport.mask=this.clip;
   this.marker.poly([0,-6,4.5,5,0,2.5,-4.5,5]).fill(0x50ecff).stroke({color:0x10282e,width:1.3});
- }
- private rebuild(built:Building[]){this.geometry.clear();this.count=drawMapGeometry(this.geometry,built,this.pxPerTile,this.obstacles);}
- updateMap(world:{x:number;y:number},width:number,height:number,telemetryBottom:number,built:Building[]){
   this.addChild(this.grips);
   for(const [sx,sy] of [[-1,-1],[1,-1],[-1,1],[1,1]]){
    const grip=new Graphics();grip.eventMode='static';grip.cursor=sx*sy>0?'nwse-resize':'nesw-resize';
@@ -153,6 +153,9 @@ const loadCustom=():Custom|null=>{
   };
   addEventListener('pointermove',track);addEventListener('pointerup',end);addEventListener('pointercancel',end);
   addEventListener('keydown',key);addEventListener('keyup',key);
+ }
+ private rebuild(built:Building[]){this.geometry.clear();this.count=drawMapGeometry(this.geometry,built,this.pxPerTile,this.obstacles);}
+ updateMap(world:{x:number;y:number},width:number,height:number,telemetryBottom:number,built:Building[]){
   const mobile=width<1024,safe=mobileHudLayout(width);
   const desktop=desktopNavigationLayout(width,height);this.screen={width,height};
   const mine=!mobile&&this.custom?this.place(width,height,this.custom):null;
@@ -176,9 +179,6 @@ const loadCustom=():Custom|null=>{
    this.frame.moveTo(size/2-3,10).lineTo(size/2,5).lineTo(size/2+3,10).stroke({color:0xf2d590,width:1});
    this.geometry.scale.set(this.pxPerTile);this.route.scale.set(this.pxPerTile);
    this.hitArea=new Rectangle(0,0,size,size);this.drawnRoute='';
-  }
-  this.position.set(width-size-right,top);
-  const key=built.join(',');if(key!==this.built){this.built=key;this.rebuild(built);}
    for(const g of this.grips.children as (Graphics&{sign:number[]})[]){
     const [sx,sy]=g.sign,cx=sx<0?0:size,cy=sy<0?0:size;
     g.clear().rect(cx-(sx<0?0:CORNER),cy-(sy<0?0:CORNER),CORNER,CORNER).fill({color:0xffffff,alpha:.001});
@@ -186,6 +186,9 @@ const loadCustom=():Custom|null=>{
     const ax=cx-sx*4,ay=cy-sy*4;
     g.moveTo(ax-sx*7,ay).lineTo(ax,ay).lineTo(ax,ay-sy*7).stroke({color:0xf2d590,width:1.2,alpha:.8});
    }
+  }
+  this.position.set(width-size-right,top);
+  const key=built.join(',');if(key!==this.built){this.built=key;this.rebuild(built);}
   const t=unproject(world.x-COURT.x,world.y-COURT.y);this.tile={u:t.x,v:t.y};
   const p=project(t.x,t.y),k=this.pxPerTile/64;
   this.geometry.position.set(size/2-p.x*k,size/2-p.y*k);this.route.position.copyFrom(this.geometry.position);

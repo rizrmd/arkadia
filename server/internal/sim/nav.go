@@ -79,9 +79,10 @@ func buckets(cols []Column) map[int][]Column {
 	return m
 }
 
-// NewBlocker prepares the static columns plus both gate states.
+// NewBlocker prepares the static columns (the court's plus the Frozen Frontier's) and both gate states.
 func NewBlocker(n *Nav) *Blocker {
-	return &Blocker{static: buckets(n.Columns), open: buckets(gateColumns(true)), closed: buckets(gateColumns(false))}
+	static := append(append([]Column{}, n.Columns...), frontierColumns...)
+	return &Blocker{static: buckets(static), open: buckets(gateColumns(true)), closed: buckets(gateColumns(false))}
 }
 
 func hits(cols map[int][]Column, x, y float64) bool {

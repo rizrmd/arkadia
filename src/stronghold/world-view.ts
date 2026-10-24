@@ -22,6 +22,7 @@ import {measureTracelogPhase} from './tracelog';
 import {createParallax,initialParallaxFiles} from './parallax';
 import {createAutoWalk,type AutoWalk} from './auto-walk';
 import {WorldMap} from './world-map';
+import {createFrontier} from './frontier-view';
 
 export async function createWorldView(
  rt:SharedPixiRuntime,
@@ -65,7 +66,10 @@ export async function createWorldView(
  const reliefShadows=relief.map(r=>{const canvas=document.createElement('canvas'),view=createCanvasSprite(canvas);view.sprite.zIndex=10.4;view.sprite.visible=false;worldStage.addChild(view.sprite);return {feature:r.feature,canvas,view,left:0,top:0,width:0,height:0};});
  function shadeRelief(s:{alpha:number;dx:number;dy:number}){for(const r of reliefShadows){r.view.sprite.visible=s.alpha>0;if(!s.alpha)continue;Object.assign(r,paintReliefShadow(r.feature,s.dx,s.dy,r.canvas));r.view.sync(r.width,r.height);r.view.sprite.alpha=s.alpha;}requestDraw();}
  const reliefScene=relief.map(r=>({layer:'world' as const,id:'relief:'+r.feature.id,x:r.left+r.width/2,y:r.bottom,width:r.width,height:r.height,foot:1,shear:0,vertical:1,depth:r.bottom,opacity:1,file:'relief:'+r.feature.id,selected:false,occluder:undefined as HTMLCanvasElement|undefined,image:r.canvas as unknown as HTMLImageElement,relief:r.feature}));
- const scene=()=>[...objects,...reliefScene];
+ // The Frozen Frontier's ruins, landmarks and plants on the snow beyond (world/frontier.ts, frontier-view.ts).
+ const frontier=createFrontier(worldStage);
+ const frontierScene=frontier.scene as unknown as typeof reliefScene;
+ const scene=()=>[...objects,...reliefScene,...frontierScene];
  const polygon=(corners:number[][])=>{const path=new Path2D();corners.forEach(([u,v],i)=>{const p=tilePoint(u,v);i?path.lineTo(p.x,p.y):path.moveTo(p.x,p.y);});path.closePath();return path;};
  // Court size, gateway and its apron come from prefabs/stronghold.json.
  const N=COURT.size,G=STRONGHOLD.gate,A=G.apron,GS=STRONGHOLD.buildings.gate;
@@ -158,6 +162,7 @@ export async function createWorldView(
  }
  function footprint(p:(typeof objects)[number]){
   if((p as {relief?:unknown}).relief)return [];
+  const ff=frontier.columns(p);if(ff)return ff;
   const key=p.file+'|'+p.x+'|'+p.y+'|'+p.width;let cols=footprints.get(key);if(cols)return cols;cols=[];
   const {top,bottom}=profile(p.image),n=top.length,filled=[...top.keys()].filter(i=>top[i]>=0);
   const at=(u:number,t:number)=>{const lx=-p.width/2+(u+.5)/n*p.width;return {x:p.x+lx,y:p.y+p.shear*lx+p.vertical*(t-p.foot)*p.height};};
@@ -209,7 +214,7 @@ export async function createWorldView(
  const party=net?createParty<(typeof objects)[number]>({layer:worldStage,frames,lightmap:lighting.lightmap,surface,footprint:p=>p.id==='gate'?gateFootprint():footprint(p),sun:lighting.sun,net,own:()=>hero.position()}):null;party?.setScene(scene());
  const parallax=await createParallax({worldStage,anchorX:WORLD.width/2,anchorY:385,getHeroWorld:()=>hero.position(),getCombatantsWorld:()=>encounters?encounters.combatants():[hero.position()]});
  lighting.setClockSource(()=>net?.active()?net.clock():null);net?.onSnapshot(()=>{const p=hero.position();updateGate(p.x,p.y);});lighting.subscribe(s=>encounters!.setAmbient(s.ambient));
- lighting.subscribe(s=>{const [r,g,b]=s.ambient.map(v=>Math.round(Math.round(v*32)/32*255));for(const f of relief)f.view.sprite.tint=(r<<16)|(g<<8)|b;});
+ lighting.subscribe(s=>{const [r,g,b]=s.ambient.map(v=>Math.round(Math.round(v*32)/32*255));for(const f of relief)f.view.sprite.tint=(r<<16)|(g<<8)|b;frontier.setAmbient((r<<16)|(g<<8)|b);});
  progress(loaded+=40,steps,'Raising the Stronghold');
 
  const uprights=document.createElement('canvas');uprights.id='world-uprights';uprights.width=surface.width;uprights.height=surface.height;
@@ -246,7 +251,7 @@ export async function createWorldView(
    surface.style.width=worldWidth*scale+'px';surface.style.height=worldHeight*scale+'px';
    for(const r of reliefShadows){r.view.sprite.position.set(x+r.left*scale,y+r.top*scale);r.view.sprite.width=r.width*scale;r.view.sprite.height=r.height*scale;}
    for(const r of relief){r.view.sprite.position.set(x+r.left*scale,y+r.top*scale);r.view.sprite.width=r.width*scale;r.view.sprite.height=r.height*scale;}
-   lighting.place(x,y,scale);doors.place(x,y,scale);hero.place(x,y,scale);party?.place(x,y,scale);encounters?.place(x,y,scale);
+   frontier.place(x,y,scale,w,h);lighting.place(x,y,scale);doors.place(x,y,scale);hero.place(x,y,scale);party?.place(x,y,scale);encounters?.place(x,y,scale);
    parallax.place(cx,cy,scale,w,h);
 
    snowSprite.width=w;

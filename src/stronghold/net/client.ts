@@ -1,4 +1,5 @@
 import {PROTOCOL,TICK_MS,type EnemyState,type Hello,type HeroPick,type Input,type PlayerState,type ServerMessage,type Snapshot,type Welcome} from './protocol';
+import {FRONTIER_COLUMNS} from '../../world/frontier';
 import {walkStep,navBlocker,atGate,gatePassable,gateTick,type Column,type GateGuess} from './movement';
 import {createTimeline,type Timed} from './timeline';
 import {DAY_MS} from '../daylight';
@@ -34,7 +35,7 @@ export function createNet(o:{direction:()=>Walk;maxHp:()=>number;hero:()=>string
  const stats={snapshots:0,inputs:0,corrections:0,maxCorrection:0,lastCorrection:0,totalCorrection:0,bytes:0,pace:1,margin:0};
  const snapshotListeners=new Set<(s:Snapshot)=>void>(),statusListeners=new Set<(s:NetStatus)=>void>();
  const setStatus=(s:NetStatus)=>{if(s===status)return;status=s;for(const f of statusListeners)f(s);};
- const navReady=fetch('/coop/nav.json').then(r=>{if(!r.ok)throw Error('Co-op collision data missing');return r.json();}).then((n:{columns:Column[]})=>{blocked=navBlocker(n.columns);});
+ const navReady=fetch('/coop/nav.json').then(r=>{if(!r.ok)throw Error('Co-op collision data missing');return r.json();}).then((n:{columns:Column[]})=>{blocked=navBlocker([...n.columns,...FRONTIER_COLUMNS]);});
  navReady.catch(()=>{});
  const mine=(s:Snapshot|null)=>s?.players.find(p=>p.id===you)??null;
  const block=(pass:boolean)=>(x:number,y:number)=>blocked!(x,y,pass);

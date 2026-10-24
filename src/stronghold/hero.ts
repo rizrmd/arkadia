@@ -228,20 +228,34 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
  let objects:P[]=[],blockers:Column[]=[],bounds=new Map<P,number[]>();
  type SceneBound={p:P;x0:number;y0:number;x1:number;y1:number;cols:Column[];maxFront:number;isGate:boolean;isWall:boolean;isRound:boolean};
  let sceneBounds:SceneBound[]=[],minSceneX=0,minSceneY=0,maxSceneX=0,maxSceneY=0,maxSceneFront=0;
+ // The scene spans the court and the Frozen Frontier around it (hundreds of props): footprint columns are bucketed by
+ // 32 px of x like net/movement.ts navBlocker, scene bounds by 192 px, so a check scans only its neighbours.
+ const BLOCK_BUCKET=32,SCENE_BUCKET=192;
+ let blockerBuckets=new Map<number,Column[]>(),sceneBuckets=new Map<number,SceneBound[]>(),sceneMark=new Map<SceneBound,number>(),sceneStamp=0;
+ const nearBuffer:SceneBound[]=[];
+ // Scene bounds overlapping screen x [x0, x1], each once (a shared buffer, consumed before the next call).
+ function sceneNear(x0:number,x1:number):SceneBound[]{
+  nearBuffer.length=0;sceneStamp++;
+  for(let k=Math.floor(x0/SCENE_BUCKET),e=Math.floor(x1/SCENE_BUCKET);k<=e;k++){const list=sceneBuckets.get(k);if(!list)continue;
+   for(let i=0,n=list.length;i<n;i++){const sb=list[i];if(sceneMark.get(sb)!==sceneStamp){sceneMark.set(sb,sceneStamp);nearBuffer.push(sb);}}}
+  return nearBuffer;
+ }
  let minBlockerX=0,maxBlockerX=0,minBlockerY=0,maxBlockerY=0;
  let x=SPAWN.x,y=SPAWN.y,state:'idle'|'move'='idle',t=0,gait=0,facing=1,back=false,vertical=false,horizontal=false;
  let pose:Pose|null=null,tint='255,255,255',sampled=-1e9,origin={x:0,y:0,scale:1},k=0,box=[0,0,0,0],drawn='',lastMove=0;
  function blocked(px:number,py:number){
   if(!walkableGround(px,py))return true;
   if(py>maxBlockerY||py<minBlockerY||px<minBlockerX||px>maxBlockerX)return false;
-  for(let i=0,n=blockers.length;i<n;i++){const b=blockers[i];if(Math.abs(px-b.x)<b.w/2+RADIUS&&py>b.back-RADIUS*.5&&py<b.front+RADIUS*.5)return true;}
+  const near=blockerBuckets.get(Math.floor(px/BLOCK_BUCKET));if(!near)return false;
+  for(let i=0,n=near.length;i<n;i++){const b=near[i];if(Math.abs(px-b.x)<b.w/2+RADIUS&&py>b.back-RADIUS*.5&&py<b.front+RADIUS*.5)return true;}
   return false;
  }
  function setScene(list:P[]){
   objects=list.filter(p=>p.layer!=='ground');blockers=objects.filter(p=>p.opacity>=1).flatMap(p=>o.footprint(p).filter(c=>!('id' in p&&p.id==='gate'&&gatePassageColumn(c.x))));
-  minBlockerX=Infinity;maxBlockerX=-Infinity;minBlockerY=Infinity;maxBlockerY=-Infinity;
+  minBlockerX=Infinity;maxBlockerX=-Infinity;minBlockerY=Infinity;maxBlockerY=-Infinity;blockerBuckets=new Map();
   for(let i=0,n=blockers.length;i<n;i++){
    const b=blockers[i],bx0=b.x-b.w*.5-RADIUS,bx1=b.x+b.w*.5+RADIUS,by0=b.back-RADIUS*.5,by1=b.front+RADIUS*.5;
+   for(let k=Math.floor(bx0/BLOCK_BUCKET),e=Math.floor(bx1/BLOCK_BUCKET);k<=e;k++){let list=blockerBuckets.get(k);if(!list)blockerBuckets.set(k,list=[]);list.push(b);}
    if(bx0<minBlockerX)minBlockerX=bx0;if(bx1>maxBlockerX)maxBlockerX=bx1;
    if(by0<minBlockerY)minBlockerY=by0;if(by1>maxBlockerY)maxBlockerY=by1;
   }
@@ -260,6 +274,8 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
    return {p,x0,y0,x1,y1,cols,maxFront,isGate,isWall,isRound};
   });
   bounds=new Map(sceneBounds.map(s=>[s.p,[s.x0,s.y0,s.x1,s.y1]]));
+  sceneBuckets=new Map();sceneMark=new Map();
+  for(const sb of sceneBounds)for(let k=Math.floor(sb.x0/SCENE_BUCKET),e=Math.floor(sb.x1/SCENE_BUCKET);k<=e;k++){let list=sceneBuckets.get(k);if(!list)sceneBuckets.set(k,list=[]);list.push(sb);}
   drawn='';
  }
  function frontY(sb:SceneBound,qx:number):number{
@@ -315,7 +331,7 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
   return {hit:false,x:x1,y:y1,t:1};
  }
  // (px, py) is the actor's ground point; lift raises its drawn box (the actor stands on raised terrain).
- const occluders=(px:number,py:number,b:number[],lift=0)=>py-lift+b[1]>=maxSceneFront?[]:sceneBounds.filter(sb=>{
+ const occluders=(px:number,py:number,b:number[],lift=0)=>py-lift+b[1]>=maxSceneFront?[]:sceneNear(px+b[0],px+b[2]).filter(sb=>{
   if(sb.x1<px+b[0]||sb.x0>px+b[2]||sb.y1<py-lift+b[1]||sb.y0>py-lift+b[3])return false;
   return frontBound(sb,px,py);
  }).map(sb=>sb.p);
@@ -331,8 +347,9 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
   const x0=wx-pad,x1=wx+pad,y0=wy-padY,y1=wy+padY;
   let maxA=0;
   if(Math.min(py,y0,anchorY??py)<=maxSceneFront&&y0<=maxSceneY&&y1>=minSceneY&&x0<=maxSceneX&&x1>=minSceneX){
-   for(let i=0,n=sceneBounds.length;i<n;i++){
-    const sb=sceneBounds[i];
+   const near=sceneNear(x0,x1);
+   for(let i=0,n=near.length;i<n;i++){
+    const sb=near[i];
     if(sb.x1<x0||sb.x0>x1)continue;
     const p=sb.p,qx=Math.max(sb.x0+2,Math.min(sb.x1-2,wx));
     if(anchorY!==undefined&&(sb.isWall||sb.isGate)){
@@ -376,7 +393,9 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
  if(own)try{const saved=JSON.parse(localStorage.getItem(KEY)||'null');if(saved&&Number.isFinite(saved.x)&&Number.isFinite(saved.y)){x=saved.x;y=saved.y;}}catch{}
  const view=()=>vertical?(back?'N':'S'):horizontal?(facing>0?'E':'W'):(back?'N':'S')+(facing>0?'E':'W');
  const clipName=()=>meta.views?`${pose?pose.clip:state}-${view()}`:pose?pose.clip:vertical?state+(back?'Up':'Down'):back?state+'Back':state;
- const frameIndex=()=>{const clip=meta.clips[clipName()],n=clip.frames.length,i=pose?Math.floor(pose.t*clip.fps/1000):state==='move'?Math.floor(gait*clip.fps):Math.floor(t*clip.fps/1000);return clip.frames[clip.loop?i%n:Math.min(i,n-1)];};
+ // A pose that starts a moment ahead of this frame (negative t) or a non-finite gait holds the first frame instead of
+ // indexing past the clip (render read f.x of undefined).
+ const frameIndex=()=>{const clip=meta.clips[clipName()],n=clip.frames.length,raw=pose?Math.floor(pose.t*clip.fps/1000):state==='move'?Math.floor(gait*clip.fps):Math.floor(t*clip.fps/1000),i=Number.isFinite(raw)?Math.max(0,raw):0;return clip.frames[clip.loop?i%n:Math.min(i,n-1)];};
  let yaw3d=Math.PI*.25,lastDt=.016;
  const r3d=is3dHeroEnabled()?get3dHeroRenderer():null;
  function face(sx:number,sy:number){const l=Math.hypot(sx,sy);if(!l)return;yaw3d=Math.atan2(sx,sy);vertical=Math.abs(sx)/l<Math.sin((vertical?15:10)*Math.PI/180);horizontal=Math.abs(sy)/l<Math.sin((horizontal?15:10)*Math.PI/180);back=Math.abs(sy)/l>.15?sy<0:false;if(Math.abs(sx)/l>.15)facing=sx>0?1:-1;}
@@ -390,14 +409,14 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
   if(pose&&(!r3d||pose.clip==='die')){if(state!=='idle'){state='idle';t=0;}return !!(dx||dy);}
   t+=dt;if(!s.look&&!s.face&&(dx||dy))face(dx,dy);
   const moving=progress/(dt/1000)>(state==='move'?2:5);if(moving!==(state==='move')){state=moving?'move':'idle';t=0;}
-  if(moving)gait+=progress/fullSpeed(dx,dy);
+  const sp=fullSpeed(dx,dy);if(moving&&sp)gait+=progress/sp;
   return !!(dx||dy);
  }
  function step(dt:number){
   pose=o.pose?.()??null;if(pose&&(!r3d||pose.clip==='die')){if(state!=='idle'){state='idle';t=0;}return false;}
   const d=o.direction(),m=Math.hypot(d.x,d.y);t+=dt;let progress=0;
   if(m>0){
-   face(d.x,d.y);const r=walkStep(blocked,x,y,d,dt);if(r.progress)gait+=r.progress/fullSpeed(r.x-x,r.y-y);x=r.x;y=r.y;progress=r.progress;
+   face(d.x,d.y);const r=walkStep(blocked,x,y,d,dt);const sp=fullSpeed(r.x-x,r.y-y);if(r.progress&&sp)gait+=r.progress/sp;x=r.x;y=r.y;progress=r.progress;
   }
   const moving=progress/(dt/1000)>(state==='move'?2:5);if(moving!==(state==='move')){state=moving?'move':'idle';t=0;}
   if(moving)lastMove=performance.now();
