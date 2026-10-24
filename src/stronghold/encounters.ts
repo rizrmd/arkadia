@@ -27,9 +27,9 @@ const HERO_REACH=STATS.hero.reach*SCALE,ENEMY_REACH=STATS.revenant.reach*SCALE,S
 // so the hero can always outrun a pack back to the safe zone.
 const ENEMY_SPEED=105/Math.hypot(64,32)*.55,ENEMY_STRIDE=76*DISPLAY/1.1;
 // Tiles: a revenant hunts the hero within AGGRO (packs spawn inside it, so they come straight for a hero in the wilds);
-// the idle hero steps in to swing at one within ENGAGE. Packs of one to three surround the hero, and a swing only
+// the idle hero never walks toward one: it swings in place once one is at its maximum reach. Packs of one to three surround the hero, and a swing only
 // reaches the side it faces, so the ones behind land their blows.
-const VEER=[.4,.8,1.2,1.6,2,2.4],AGGRO=13,ENGAGE=2,MAX_ENEMIES=8,PACK=3,SPAWN_EVERY=2000,REGEN=8,HERO_RESPAWN=3500,CORPSE=4400;
+const VEER=[.4,.8,1.2,1.6,2,2.4],AGGRO=13,MAX_ENEMIES=8,PACK=3,SPAWN_EVERY=2000,REGEN=8,HERO_RESPAWN=3500,CORPSE=4400;
 const SIMULTANEOUS_SYNC_WINDOW_MS=340;
 type Foe=Fighter&{home:Tile;wander:Tile|null;age:number;side:number;level:number;maxHp:number};
 type Hero={position():{x:number;y:number};face(sx:number,sy:number):void;respawn():void;teleport(x:number,y:number):boolean;
@@ -335,12 +335,10 @@ export async function createEncounters(o:{layer:HTMLElement;hud:HTMLElement;hero
    f.x=next.u;f.y=next.v;const m=screen(mx,my);turn(f,m.x,m.y);f.stride+=Math.hypot(m.x,m.y)/ENEMY_STRIDE;f.play('move');return true;}
   const s=screen(du,dv);turn(f,s.x,s.y);f.play('idle');return false;
  }
- // The hero, when nobody steers: swing at a revenant in reach, or step in toward one a few paces away.
+ // The hero walks only where the player steers it. It never chases a revenant: while idle it swings in place, and only
+ // once a revenant is inside its maximum reach (heroStep), so the player stays free to walk away from the fight.
  function steer(input:Walk):Walk{
-  if(run.pending)return {x:0,y:0};
-  if(online||input.x||input.y||!h.alive||h.state!=='idle')return input;
-  const r=reach(run),f=nearest(Math.max(ENGAGE,HERO_REACH*r+.8));if(!f||Math.hypot(f.x-h.x,f.y-h.y)<=HERO_REACH*r*.8)return input;
-  const s=screen(f.x-h.x,f.y-h.y),l=Math.hypot(s.x,s.y);return {x:s.x/l,y:s.y/l};
+  return run.pending?{x:0,y:0}:input;
  }
 
  // Vampire Survivors / Archero style Simultaneous Auto-Cast when any Revenant is inside the Hero's AoE radius

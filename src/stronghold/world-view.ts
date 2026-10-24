@@ -176,7 +176,7 @@ export async function createWorldView(canvas:HTMLCanvasElement,onSelect:(id:Buil
  const doors=createGateDoors(viewport,images.get('/modular-stronghold/v2/full-gateway-v6-closed.webp')!,images.get('/modular-stronghold/v2/full-gateway-v6-sheet.webp')!,sheet,open=>{gatePassable=open;setGateOpen(open);hero.setScene(objects);party?.setScene(objects);},{foundation:foundationLayers(objects.find(p=>p.id==='gate')!,images.get(FOUNDATION_SOIL)!,images.get(FOUNDATION_DRIFT),images.get(FOUNDATION_MOSS))!,revision:lighting.spriteRevision,torches:lighting.torches,shade:(source,target)=>lighting.shadeSprite(source,target,{left:442,top:790-sheet.region.h*.97,width:270,height:sheet.region.h})});
  gateOccluder=doors.canvas;for(const p of objects)if(p.id==='gate')p.occluder=gateOccluder;
  lighting.subscribe(()=>doors.refreshLighting());
- // Combat (encounters.ts) steers the idle hero toward a revenant in reach and plays its swing, hit and death clips.
+ // Combat (encounters.ts) swings the idle hero in place at a revenant at its maximum reach (it never chases) and plays its swing, hit and death clips.
  let encounters:Awaited<ReturnType<typeof createEncounters>>|undefined;
  const hero=await createHero<(typeof objects)[number]>({hero:pick,layer:viewport,lightmap:viewport.querySelector<HTMLCanvasElement>('#world-lightmap')!,surface,footprint:p=>p.id==='gate'?gateFootprint():footprint(p),sun:lighting.sun,direction:()=>encounters?encounters.steer(direction()):direction(),follow,pose:()=>encounters?.pose()??null,
   // In a co-op room the hero stands where prediction puts it (net/client.ts) and faces the walk keys; while the

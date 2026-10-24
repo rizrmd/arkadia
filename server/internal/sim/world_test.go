@@ -358,6 +358,37 @@ func TestAutoAttackKillsAndRespawnsRevenants(t *testing.T) {
 	}
 }
 
+// An idle hero never walks toward a revenant: it stays put while the revenant is out of reach, and its auto
+// attack starts only once the revenant is inside the maximum reach.
+func TestIdleHeroDoesNotChaseRevenants(t *testing.T) {
+	w := newTestWorld(t)
+	p := w.AddPlayer("a", "A", 100)
+	at := Vec{gateTile + 2.5, gateTile + 2.5}
+	px := TilePoint(at.X, at.Y)
+	p.X, p.Y, p.F.Pos = px.X, px.Y, at
+	w.spawnTimer = 1e9
+	d := heroReach * 3 // beyond reach, inside the old 2-tile step-in range
+	e := &Enemy{ID: 1, F: newFighter(Revenant, Vec{at.X + d, at.Y}), Home: at}
+	e.F.Cooldown = 1e9
+	e.F.HP = 1e6 // the auto-cast skills reach further than a swing; keep it alive to watch the swing alone
+	w.Enemies, w.nextEnemy = []*Enemy{e}, 2
+	// Keep the revenant where it is so only the hero's behaviour is observed.
+	for i := 0; i < 40; i++ {
+		e.F.Pos = Vec{at.X + d, at.Y}
+		w.Step()
+	}
+	if p.X != px.X || p.Y != px.Y || p.F.State == Attack {
+		t.Fatalf("idle hero chased or swung at a revenant out of reach: pos=(%v,%v) from (%v,%v) state=%v", p.X, p.Y, px.X, px.Y, p.F.State)
+	}
+	for i := 0; i < 3 && p.F.State != Attack; i++ {
+		e.F.Pos = Vec{at.X + heroReach*.9, at.Y}
+		w.Step()
+	}
+	if p.F.State != Attack || p.X != px.X || p.Y != px.Y {
+		t.Fatalf("hero must swing in place at max reach: state=%v pos=(%v,%v)", p.F.State, p.X, p.Y)
+	}
+}
+
 func TestRevenantsWoundHeroesWhoRespawnAndHealInTheZone(t *testing.T) {
 	w := newTestWorld(t)
 	p := w.AddPlayer("a", "A", 100)

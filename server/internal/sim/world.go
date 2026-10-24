@@ -23,7 +23,6 @@ const (
 	side        = .35 * figure
 	spacing     = .72 * figure
 	aggro       = 13.0
-	engage      = 2.0
 	pack        = 3
 	spawnEvery  = 2000.0
 	regen       = 8.0
@@ -417,7 +416,7 @@ func (w *World) walk(p *Player, input Vec, dt float64) {
 		p.Moving = false
 		return
 	}
-	d := w.steer(p, input)
+	d := input
 	m := hypot(d.X, d.Y)
 	progress := 0.0
 	if m > 0 {
@@ -462,20 +461,6 @@ func (w *World) nearestEnemy(p *Player, rng float64) *Enemy {
 		}
 	}
 	return best
-}
-
-// steer: when nobody steers, an idle hero steps in toward a revenant a few paces away.
-func (w *World) steer(p *Player, input Vec) Vec {
-	if input.X != 0 || input.Y != 0 || !p.F.Alive() || p.F.State != Idle {
-		return input
-	}
-	e := w.nearestEnemy(p, engage)
-	if e == nil || hypot(e.F.Pos.X-p.F.Pos.X, e.F.Pos.Y-p.F.Pos.Y) <= heroReach*.8 {
-		return input
-	}
-	s := screen(e.F.Pos.X-p.F.Pos.X, e.F.Pos.Y-p.F.Pos.Y)
-	l := hypot(s.X, s.Y)
-	return Vec{s.X / l, s.Y / l}
 }
 
 func (w *World) enemyFighters() []*Fighter {
