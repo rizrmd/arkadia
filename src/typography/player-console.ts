@@ -114,19 +114,22 @@ export class PlayerConsole extends Container {
 
  private rebuildLayout() {
   const p = this.isPortrait;
-  const rightTop = p ? 392 : 558;
-  const rightBot = p ? 378 : 544;
-  const trackRightTop = p ? 389 : 555;
-  const trackRightBot = p ? 375 : 541;
-  const valueX = p ? 370 : 536;
-  const valueScale = p ? 1.18 : 1;
-  const labelScale = p ? 1.06 : 1;
+  const rightTop = p ? 430 : 558;
+  const rightBot = p ? 416 : 544;
+  const trackRightTop = p ? 427 : 555;
+  const trackRightBot = p ? 413 : 541;
+  const valueX = p ? 410 : 536;
+  const valueScale = p ? 1.48 : 1;
+  const labelScale = p ? 1.4 : 1;
   const left = p ? 246 : 244;
   const bottomLeft = p ? 232 : 230;
 
+  this.nameText.visible = !p;
   this.rows.forEach((row, i) => {
-   const y = p ? [56, 93, 130][i] : [64, 97, 130][i];
-   const h = p ? (i === 2 ? 26 : 31) : (i === 2 ? 20 : 24);
+   const texture=this.frames.texture(p ? ['mobile-hp-material','mobile-gate-material','mobile-xp-material'][i] : ['console-hp-material','console-gate-material','console-xp-material'][i]);
+   row.track.texture=texture;row.fill.texture=texture;
+   const y = p ? [24, 63, 102][i] : [64, 97, 130][i];
+   const h = p ? 33 : (i === 2 ? 20 : 24);
    const path = [left, y + 1.5, trackRightTop, y + 1.5, trackRightBot, y + h - 1.5, bottomLeft, y + h - 1.5];
 
    row.y = y;
@@ -142,7 +145,7 @@ export class PlayerConsole extends Container {
    row.plate.clear();
    row.plate.poly([169, y + 1, rightTop, y + 1, rightBot, y + h + 2, 154, y + h + 2]).fill({ color: 0x000000, alpha: 0.55 });
    row.plate.poly([169, y, rightTop, y, rightBot, y + h, 155, y + h]).fill(0x0b0c0d).stroke({ color: INK, width: 2.1 });
-   row.plate.poly([170, y + 1, rightTop - 2, y + 1, rightBot - 1, y + h - 1, 157, y + h - 1]).stroke({ color: i === 2 ? 0x987526 : 0x99968b, width: 0.65 });
+   row.plate.poly([170, y + 1, rightTop - 2, y + 1, rightBot - 1, y + h - 1, 157, y + h - 1]).stroke({ color: p ? 0xd4ac52 : (i === 2 ? 0x987526 : 0x99968b), width: 0.65 });
 
    row.track.position.set(bottomLeft, y);
    row.track.width = 326;

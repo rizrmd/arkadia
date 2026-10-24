@@ -1,4 +1,5 @@
-import {Container,Graphics} from 'pixi.js';
+import {Assets,Container,Graphics,Sprite} from 'pixi.js';
+import {mobileHudLayout} from '../typography/mobile-layout';
 import {project,unproject} from '../isometric';
 import {MAP,STRONGHOLD_ORIGIN} from '../world/map';
 import {RELIEF} from '../world/relief';
@@ -21,6 +22,9 @@ export class Minimap extends Container {
  private clip=new Graphics();
  private frame=new Graphics();
  private marker=new Graphics();
+ private mobileFrame:Sprite | undefined;
+ private mobile=false;
+ private mobileArrow:Sprite | undefined;
  private size=0;
  private pxPerTile=1;
  private last={x:NaN,y:NaN};
@@ -75,13 +79,21 @@ export class Minimap extends Container {
   for(const f of RELIEF)line(f.outline??[[f.u0,f.v0],[f.u1,f.v0],[f.u1,f.v1],[f.u0,f.v1]],true,f.type==='ramp'?.45:.75);
  }
  updateMap(world:{x:number;y:number},width:number,height:number,telemetryBottom:number,built:Building[]){
-  const size=Math.round(width<height?Math.min(112,width*.265):Math.min(148,height*.28));
-  const top=Math.ceil(telemetryBottom+8),right=8;
+  const mobile=width<1024,safe=mobileHudLayout(width);
+  const size=mobile?safe.mapSize:Math.round(Math.min(148,height*.28));
+  const top=mobile?safe.mapY:Math.ceil(telemetryBottom+8),right=mobile?safe.right+8:8;
+  if(!this.mobileFrame){const texture=Assets.get('/mobile-hud/v1/map-frame.png');if(texture){this.mobileFrame=this.addChild(new Sprite(texture));this.setChildIndex(this.mobileFrame,this.children.length-2);}}
+  if(this.mobileFrame){this.mobileFrame.visible=mobile;this.mobileFrame.width=size+4;this.mobileFrame.height=size+4;this.mobileFrame.position.set(-2,-2);}
+  this.frame.alpha=mobile?.42:1;
+  if(!this.mobileArrow){const texture=Assets.get('/mobile-hud/v1/arrow.png');if(texture){this.mobileArrow=this.addChild(new Sprite(texture));this.mobileArrow.anchor.set(.5);this.mobileArrow.width=12;this.mobileArrow.height=15;}}
+  if(this.mobileArrow)this.mobileArrow.visible=mobile;
+  this.marker.visible=!mobile||!this.mobileArrow;
   this.visible=top+size<height*.65;
-  if(size!==this.size){
+  if(size!==this.size||mobile!==this.mobile){
+   this.mobile=mobile;
    this.size=size;this.pxPerTile=(size-14)/32;this.built='';
    this.clip.clear().roundRect(2,2,size-4,size-4,8).fill(0xffffff);
-   this.frame.clear().roundRect(0,0,size,size,9).fill({color:0x172127,alpha:.16}).stroke({color:0xd8b66b,width:1,alpha:.95});
+   this.frame.clear().roundRect(0,0,size,size,9).fill({color:0x172127,alpha:mobile?.045:.16}).stroke({color:0xd8b66b,width:1,alpha:.95});
    this.frame.roundRect(3,3,size-6,size-6,7).stroke({color:0xd8b66b,width:.5,alpha:.45});
    // North points up in the same ground-plane orientation as the game.
    this.frame.moveTo(size/2-3,10).lineTo(size/2,5).lineTo(size/2+3,10).stroke({color:0xf2d590,width:1});
@@ -95,6 +107,7 @@ export class Minimap extends Container {
   this.marker.position.set(size/2,size/2);
   const dx=world.x-this.last.x,dy=world.y-this.last.y;
   if(Number.isFinite(dx)&&Math.hypot(dx,dy)>.05)this.marker.rotation=Math.atan2(dy,dx)+Math.PI/2;
+  if(this.mobileArrow){this.mobileArrow.position.copyFrom(this.marker.position);this.mobileArrow.rotation=this.marker.rotation;}
   this.last={...world};
  }
  snapshot(){return {visible:this.visible,bounds:{x:this.x,y:this.y,width:this.size,height:this.size},tile:this.tile,mapTile:{u:this.tile.u+STRONGHOLD_ORIGIN.u,v:this.tile.v+STRONGHOLD_ORIGIN.v},geometryCount:this.count,obstacles:this.obstacles,pxPerTile:this.pxPerTile,marker:{x:this.size/2,y:this.size/2,rotation:this.marker.rotation}};}

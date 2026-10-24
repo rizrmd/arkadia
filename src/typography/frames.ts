@@ -20,7 +20,15 @@ export class FrameSet{
   const names=Object.keys(manifest.frames).filter(n=>!only||only(n.replace(/\.(tl|tr|bl|br|l|r)$/,'')));
   // The resolution makes texture sizes read in @1x units, so layouts and slice borders are scale-independent.
   const textures=await Promise.all(names.map(n=>Assets.load<Texture>({src:`${base}@${scale}x/${n}.png${v}`,data:{resolution:scale,autoGenerateMipmaps:true}})));
-  return new FrameSet(scale,manifest,Object.fromEntries(names.map((n,i)=>[n,textures[i]])));
+  const loaded=Object.fromEntries(names.map((n,i)=>[n,textures[i]]));
+  if(base.includes('/hud/')){
+   const mobile=await (await fetch('/mobile-hud/v1/manifest.json')).json();
+   for(const [name,m] of Object.entries(mobile.frames) as [string,{width:number;height:number;file:string}][]){
+    manifest.frames[name]={width:m.width,height:m.height};
+    loaded[name]=await Assets.load<Texture>({src:'/mobile-hud/v1/'+m.file,data:{autoGenerateMipmaps:true}});
+   }
+  }
+  return new FrameSet(scale,manifest,loaded);
  }
  texture(name:string){const t=this.textures[name];if(!t)throw Error(`Unknown frame ${name}`);return t;}
  warmGpu(renderer?:{texture?:{initSource?:(s:any)=>void}}){

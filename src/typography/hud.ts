@@ -1,5 +1,6 @@
 import { Container, Graphics, Rectangle, Sprite, type Texture } from 'pixi.js';
 import type { FrameSet } from './frames';
+import { mobileHudLayout } from './mobile-layout';
 import { PlayerConsole } from './player-console';
 import { MsdfText } from './text';
 import { ROLES, type TextRole } from './tokens';
@@ -266,11 +267,11 @@ const ALT_B_SLOTS_DESKTOP = [
 
 const ALT_B_SLOTS_PORTRAIT = [
  // Slot 0: Primary active skill nested in the bottom-right thumb corner
- { cx: 1546, cy: 824, ringSize: 140, artSize: 102, radius: 68, hotkey: '1' },
+ { cx: 1570, cy: 820, ringSize: 140, artSize: 112, radius: 68, hotkey: '1' },
  // Slot 1: Upper-Right secondary socket on 115-deg arc
- { cx: 1564, cy: 646, ringSize: 112, artSize: 82, radius: 54, hotkey: '2' },
+ { cx: 1570, cy: 638, ringSize: 140, artSize: 112, radius: 68, hotkey: '2' },
  // Slot 2: Lower-Left secondary socket on 115-deg arc
- { cx: 1358, cy: 858, ringSize: 112, artSize: 82, radius: 54, hotkey: '3' },
+ { cx: 1395, cy: 820, ringSize: 130, artSize: 104, radius: 63, hotkey: '3' },
 ] as const;
 
 export class Hud extends Container {
@@ -307,6 +308,7 @@ export class Hud extends Container {
  private portraitRing!: Container;
  private currentPortrait = '';
  private isPortrait = false;
+ private isMobile = false;
  // Desktop (landscape, >= 1024 CSS px wide) draws the `24 MS ♦ 60 FPS` telemetry row smaller than mobile.
  private isDesktopTelemetry = false;
 
@@ -538,6 +540,13 @@ export class Hud extends Container {
   if (!this.trRibbonGroup) return;
   const g = this.trRibbonBg;
   g.clear();
+  if (this.isMobile) { this.layoutMobileRibbon(); return; }
+  (this.trRibbonGoldIcon as Sprite).texture=this.frames.texture('icon-coins');
+  (this.trRibbonClockIcon as Sprite).texture=this.frames.texture('icon-clock');
+  (this.trRibbonZoneIcon as Sprite).texture=this.frames.texture('icon-pin');
+  this.trRibbonGoldMedallion.visible=true;this.trRibbonClockMedallion.visible=true;
+  this.trRibbonZoneIcon.visible=true;this.trRibbonZoneText.visible=true;
+
 
   // Leave a 46px right margin (`1626..1672`) on desktop so the plaques and filigree rule never collide
   // with the top-right stone bracket & blue banner ornament (`corner-court-right-mobile.webp`).
@@ -701,6 +710,42 @@ export class Hud extends Container {
    filigreeRule: { leftX: ruleLeftX, midX: ruleMidX, rightX: ruleRightX, y: ruleY },
    telemetry: { leftX: pingX, sepX: telSepX, rightX: telRightX, cy: telCy },
   };
+ }
+
+ private layoutMobileRibbon() {
+  const g=this.trRibbonBg,w=this.lastWidth;
+  (this.trRibbonGoldIcon as Sprite).texture=this.frames.texture('mobile-coin');
+  (this.trRibbonClockIcon as Sprite).texture=this.frames.texture('mobile-clock');
+  (this.trRibbonZoneIcon as Sprite).texture=this.frames.texture('mobile-pin');
+  const layout=mobileHudLayout(w),k=layout.scale*1.22;
+  const left=layout.left+6+156*k,right=layout.left+6+430*k,top=layout.top+3+143*k,h=34*k;
+  const mid=left+(right-left)*0.55;
+  g.roundRect(left,top,right-left,h, h/2).fill({color:0x090909,alpha:.95}).stroke({color:0xd5af52,width:1});
+  g.moveTo(mid,top+4).lineTo(mid,top+h-4).stroke({color:0xd5af52,width:.8});
+  this.trRibbonGoldMedallion.visible=false;this.trRibbonClockMedallion.visible=false;
+  centred(this.trRibbonGoldIcon,left+12*k,top+h/2,24*k,20*k);
+  centred(this.trRibbonClockIcon,mid+15*k,top+h/2,24*k,24*k);
+  const fit=(t:MsdfText,x:number,y:number,max:number,size:number)=>{
+   const scale=Math.min(size, max/Math.max(1,t.advance));t.scale.set(scale);
+   t.position.set(x,y-t.metrics().baseline*scale);
+  };
+  fit(this.trRibbonGoldText,left+28*k,top+h*.69,mid-left-34*k,.94*k);
+  fit(this.trRibbonClockText,mid+31*k,top+h*.69,right-mid-36*k,.94*k);
+  this.trRibbonClockHit.hitArea=new Rectangle(mid,top,right-mid,h);
+  const {mapSize,mapX,mapY}=layout;
+  const baseline=mapY+mapSize+13;
+  centred(this.trRibbonZoneIcon,mapX+4,baseline-4,9,13);
+  this.trRibbonZoneIcon.visible=true;
+  fit(this.trRibbonZoneText,mapX+11,baseline,mapSize*.58-11,.47);
+  const fpsWidth=mapSize*.40;
+  fit(this.trTelemetryFpsText,mapX+mapSize-fpsWidth,baseline,fpsWidth,.48);
+  this.trTelemetryPingText.visible=false;
+  this.trRibbonCoopHit.visible=this.state.coopLabel!==undefined;
+  if(this.trRibbonCoopHit.visible){
+   centred(this.trRibbonCoopIcon,mapX+5,baseline+11,9,8);
+   fit(this.trRibbonCoopText,mapX+12,baseline+15,mapSize-12,.42);
+   this.trRibbonCoopHit.hitArea=new Rectangle(mapX,baseline+2,mapSize,20);
+  }
  }
 
  private layoutGoldPill() {
@@ -911,10 +956,11 @@ export class Hud extends Container {
 
  private layoutCrescentArc() {
   if (!this.isAltB || !this.crescentArcG) return;
-  const slotsCfg = this.isPortrait ? ALT_B_SLOTS_PORTRAIT : ALT_B_SLOTS_DESKTOP;
+  const slotsCfg = this.isMobile ? ALT_B_SLOTS_PORTRAIT : ALT_B_SLOTS_DESKTOP;
   const g = this.crescentArcG;
   g.clear();
 
+  if (!this.isMobile) {
   // Draw the 115-degree Crescent Action Arc tracks around ALT_B_ARC_CENTER = (1656, 926)
   const ac = ALT_B_ARC_CENTER;
   const arcR = this.isPortrait ? 288 : 268;
@@ -939,7 +985,9 @@ export class Hud extends Container {
    alpha: 0.72,
   });
 
+  }
   this.skillViews.forEach((view, i) => {
+   (view.ringSprite as Sprite).texture = this.frames.texture(this.isMobile ? "mobile-skill-ring" : "skill-ring");
    const cfg = slotsCfg[i] ?? slotsCfg[0];
    const sk = this.state.skills[i] ?? { name: 'Empty Slot', level: 0, art: 'skill-empty', locked: true };
    view.cx = cfg.cx;
@@ -1006,8 +1054,8 @@ export class Hud extends Container {
    }
 
    // Desktop Hotkey Badge (`[1]` / `[2]` / `[3]`) on upper-left of socket bezel
-   view.hotkeyBadge.visible = !this.isPortrait;
-   if (!this.isPortrait) {
+   view.hotkeyBadge.visible = !this.isMobile;
+   if (!this.isMobile) {
     const hkLabel = sk.hotkey ?? `${i + 1}`;
     view.hotkeyText.text = hkLabel;
     const hkw = Math.max(22, Math.round(view.hotkeyText.advance + 12));
@@ -1024,7 +1072,7 @@ export class Hud extends Container {
 
    // Mobile Portrait golden `+` rank medallion on primary socket upper-right bezel
    view.plusBadge.clear();
-   if (this.isPortrait && i === 0 && !sk.locked) {
+   if (this.isMobile && i === 0 && !sk.locked) {
     const px = cfg.cx + cfg.radius * 0.72;
     const py = cfg.cy - cfg.radius * 0.72;
     view.plusBadge
@@ -1035,6 +1083,7 @@ export class Hud extends Container {
     view.plusBadge.roundRect(px - 1.8, py - 7, 3.6, 14, 1).fill({ color: 0xffe484, alpha: 0.98 });
    }
 
+   view.lastCooldownStep=undefined;
    this.drawCooldown(view, sk.cooldownRatio ?? 0, sk.stateLabel, sk.cooldownSec);
   });
  }
@@ -1272,6 +1321,10 @@ export class Hud extends Container {
   const designRight = Math.max(b.clockPlaque.rightX + 7, b.filigreeRule.rightX + 8);
   const designTop = b.goldPlaque.cy - b.goldPlaque.medR;
   const designBottom = b.telemetry.cy + 14;
+  if(this.isMobile){
+   const b=this.trRibbonGroup.getBounds();
+   return {variant:'approved-mobile',isPortrait:this.isPortrait,goldLabel:this.trRibbonGoldText.text,timeLabel:this.trRibbonClockText.text,zoneLabel:this.trRibbonZoneText.text,fpsLabel:this.trTelemetryFpsText.text,screenBounds:{left:b.minX,top:b.minY,right:b.maxX,bottom:b.maxY,width:b.width,height:b.height}};
+  }
   return {
    variant: this.isAltB ? 'concept-3-medallion-plaques-ledger' : 'legacy-4-pill-stack',
    isPortrait: this.isPortrait,
@@ -1310,7 +1363,7 @@ export class Hud extends Container {
     if (!view) return;
     if (view.currentArt !== sk.art) {
      view.currentArt = sk.art;
-     const slotsCfg = this.isPortrait ? ALT_B_SLOTS_PORTRAIT : ALT_B_SLOTS_DESKTOP;
+     const slotsCfg = this.isMobile ? ALT_B_SLOTS_PORTRAIT : ALT_B_SLOTS_DESKTOP;
      const cfg = slotsCfg[i] ?? slotsCfg[0];
      view.artHolder.removeChildren();
      view.artHolder.addChild(
@@ -1394,6 +1447,7 @@ export class Hud extends Container {
     (stateLabel && stateLabel.endsWith('s') ? Number.parseFloat(stateLabel) : 0);
    if (step > 0 && sec > 0.05) {
     view.cooldownText.visible = true;
+    view.cooldownText.place(view.cx, view.cy + 7, 0.5);
     const txt = `${sec.toFixed(1)}s`;
     if (view.cooldownText.text !== txt) {
      view.cooldownText.text = txt;
@@ -1417,6 +1471,7 @@ export class Hud extends Container {
  topRightPopoverAnchor(row: 1 | 3): { x: number; y: number; scale: number } {
   const s = this.lastScale;
   if (this.isAltB) {
+   if(this.isMobile){const safe=mobileHudLayout(this.lastWidth),k=safe.scale*1.22;return {x:safe.left+6+430*k,y:safe.top+3+180*k,scale:k};}
    const designY = this.isPortrait ? 172 : 162;
    return { x: this.lastWidth - 18 * s, y: designY * s, scale: s };
   }
@@ -1430,11 +1485,11 @@ export class Hud extends Container {
   sockets: SkillSocketGeometry[];
   scale: number;
  } {
-  const s = this.lastScale;
+  const s = this.groups.br.scale.x;
   const { width: W, height: H } = HUD_DESIGN;
   const toScreen = (dx: number, dy: number): Point2D => ({
-   x: this.lastWidth + (dx - W) * s,
-   y: this.lastHeight + (dy - H) * s,
+   x: this.groups.br.x + (dx - W) * s,
+   y: this.groups.br.y + (dy - H) * s,
   });
   const arcCenter = toScreen(ALT_B_ARC_CENTER.x, ALT_B_ARC_CENTER.y);
   const sockets: SkillSocketGeometry[] = this.skillViews.map((v, index) => {
@@ -1459,6 +1514,9 @@ export class Hud extends Container {
   this.lastHeight = height;
   const { width: W, height: H } = HUD_DESIGN;
   const portrait = width < height;
+  const mobile = width < 1024;
+  const mobileChanged = mobile !== this.isMobile;
+  this.isMobile = mobile;
   const s = portrait ? width / 848 : Math.min(width / W, height / H);
   this.lastScale = s;
   const desktopTelemetry = !portrait && width >= 1024;
@@ -1466,7 +1524,7 @@ export class Hud extends Container {
    this.isDesktopTelemetry = desktopTelemetry;
    this.layoutTopRightRibbon();
   }
-  if (portrait !== this.isPortrait) {
+  if (portrait !== this.isPortrait || mobileChanged) {
    this.isPortrait = portrait;
    this.isDesktopTelemetry = desktopTelemetry;
    this.heroPlate.width = portrait ? 308 : 388;
@@ -1487,7 +1545,7 @@ export class Hud extends Container {
    this.setHp(this.state.hp, this.state.hpMax);
    this.setGateHp(this.state.gateHp ?? 100, this.state.gateHpMax ?? 100);
    this.setXp(this.state.xp, this.state.xpMax);
-   this.playerConsole?.setPortrait(portrait);
+   this.playerConsole?.setPortrait(mobile);
    this.layoutTopRightRibbon();
    this.layoutCrescentArc();
   }
@@ -1521,6 +1579,15 @@ export class Hud extends Container {
   place(this.groups.bc, W / 2, portrait ? 842 : H, width / 2, height);
   place(this.groups.bl, 0, H, 0, height);
   place(this.groups.br, W, H, width, height);
+  if (mobile && this.isAltB) {
+   const safe=mobileHudLayout(width),k=safe.scale;
+   place(this.groups.tl,0,0,safe.left+6,safe.top+3,k/s*1.22);
+   place(this.groups.tr,0,0,0,0,1/s);
+   this.trRibbonGroup.pivot.set(0,0);this.trRibbonGroup.position.set(0,0);this.trRibbonGroup.scale.set(1);
+   place(this.groups.br,W,H,width-safe.right-10,height-safe.bottom-12,k/s*1.04);
+   this.groups.bl.visible=false;this.brEscGroup.visible=false;
+  }
+  this.layoutTopRightRibbon();
   for (const img of [this.backdrop, this.overlay]) {
    if (!img) continue;
    const c = Math.max(width / W, height / H);
