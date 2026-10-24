@@ -87,13 +87,13 @@ export function ensurePixiRuntime(host?:HTMLElement):Promise<SharedPixiRuntime>{
    mountTarget.prepend(app.canvas);
   }
   installMsdfFx(app.renderer);
-  window.__LOADING_SCREEN__?.progress(14,100,'Loading interface & fonts');
+  window.__LOADING_SCREEN__?.progress(14,100,'Loading');
   const interfaceProgress={done:0,total:0},fontProgress={done:0,total:3};
   const reportInterface=()=>{
    const done=interfaceProgress.done+fontProgress.done,total=interfaceProgress.total+fontProgress.total;
    // Reserve a separate range for interface assets; artwork continues from 32%, never from zero.
    window.__LOADING_SCREEN__?.progress(14+18*(interfaceProgress.total?done/Math.max(1,total):0),100,
-    `Loading interface & fonts · ${interfaceProgress.done}/${interfaceProgress.total||'…'} interface · ${fontProgress.done}/${fontProgress.total} fonts`);
+    `Loading · ${interfaceProgress.done}/${interfaceProgress.total||'…'} interface · ${fontProgress.done}/${fontProgress.total} fonts`);
   };
   const [,frames]=await Promise.all([
    loadFonts('/typography/v2/fonts/',(done,total)=>{Object.assign(fontProgress,{done,total});reportInterface();}),
