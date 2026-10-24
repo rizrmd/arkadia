@@ -1,3 +1,4 @@
+import {desktopNavigationLayout} from '../typography/desktop-layout';
 import {Assets,Container,Graphics,Sprite} from 'pixi.js';
 import {mobileHudLayout} from '../typography/mobile-layout';
 import {project,unproject} from '../isometric';
@@ -80,8 +81,9 @@ export class Minimap extends Container {
  }
  updateMap(world:{x:number;y:number},width:number,height:number,telemetryBottom:number,built:Building[]){
   const mobile=width<1024,safe=mobileHudLayout(width);
-  const size=mobile?safe.mapSize:Math.round(Math.min(148,height*.28));
-  const top=mobile?safe.mapY:Math.ceil(telemetryBottom+8),right=mobile?safe.right+8:8;
+  const desktop=desktopNavigationLayout(width,height);
+  const size=mobile?safe.mapSize:desktop.width;
+  const top=mobile?safe.mapY:Math.ceil(telemetryBottom+desktop.gap),right=mobile?safe.right+8:desktop.right;
   if(!this.mobileFrame){const texture=Assets.get('/mobile-hud/v1/map-frame.png');if(texture){this.mobileFrame=this.addChild(new Sprite(texture));this.setChildIndex(this.mobileFrame,this.children.length-2);}}
   if(this.mobileFrame){this.mobileFrame.visible=mobile;this.mobileFrame.width=size+4;this.mobileFrame.height=size+4;this.mobileFrame.position.set(-2,-2);}
   this.frame.alpha=mobile?.42:1;

@@ -1,0 +1,2965 @@
+{
+  "errors": [],
+  "results": [
+    {
+      "width": 1440,
+      "height": 900,
+      "gold": 75,
+      "hud": {
+        "variant": "desktop-navigation-column",
+        "isPortrait": false,
+        "goldLabel": "75 Gold",
+        "timeLabel": "08:23",
+        "zoneLabel": "Safe Zone",
+        "coopLabel": null,
+        "pingLabel": null,
+        "fpsLabel": "60 fps",
+        "telemetryTextScale": 0.7,
+        "ribbonScale": 0.8274760383386581,
+        "designBounds": {
+          "goldPlaque": {
+            "medX": 1351,
+            "rightX": 1477,
+            "cy": 40,
+            "h": 38,
+            "medR": 27
+          },
+          "clockPlaque": {
+            "medX": 1516,
+            "rightX": 1626,
+            "cy": 40,
+            "h": 38,
+            "medR": 27
+          },
+          "ledger": {
+            "leftX": 1510,
+            "sepX": 1623,
+            "rightX": 1623,
+            "cy": 82
+          },
+          "filigreeRule": {
+            "leftX": 1336,
+            "midX": 1480,
+            "rightX": 1623,
+            "y": 103
+          },
+          "telemetry": {
+            "leftX": 1578,
+            "sepX": 1578,
+            "rightX": 1623,
+            "cy": 124
+          }
+        },
+        "screenBounds": {
+          "left": 1161,
+          "right": 1420,
+          "top": 16,
+          "bottom": 119.43450479233226,
+          "width": 259,
+          "height": 103.43450479233226
+        }
+      },
+      "map": {
+        "visible": true,
+        "bounds": {
+          "x": 1161,
+          "y": 128,
+          "width": 259,
+          "height": 259
+        },
+        "tile": {
+          "u": 9.1640625,
+          "v": 8.9609375
+        },
+        "mapTile": {
+          "u": 469.6640625,
+          "v": 469.4609375
+        },
+        "geometryCount": 42,
+        "obstacles": [
+          {
+            "id": "fir-young",
+            "u": -3,
+            "v": 3,
+            "width": 135,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": -3,
+            "v": 5,
+            "width": 154,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": -3,
+            "v": 9,
+            "width": 173,
+            "kind": "tree"
+          },
+          {
+            "id": "fir-young",
+            "u": 2,
+            "v": -3,
+            "width": 192,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": 5,
+            "v": -3,
+            "width": 135,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": 9,
+            "v": -3,
+            "width": 154,
+            "kind": "tree"
+          },
+          {
+            "id": "fir-young",
+            "u": 13,
+            "v": -3,
+            "width": 173,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": 20,
+            "v": 4,
+            "width": 192,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": 20,
+            "v": 10,
+            "width": 135,
+            "kind": "tree"
+          },
+          {
+            "id": "fir-young",
+            "u": 4,
+            "v": 20,
+            "width": 154,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": 10,
+            "v": 20,
+            "width": 173,
+            "kind": "tree"
+          },
+          {
+            "id": "cliff-snow",
+            "u": -3.8,
+            "v": 4,
+            "width": 320,
+            "kind": "obstacle"
+          },
+          {
+            "id": "cliff-snow",
+            "u": 4,
+            "v": -3.8000000000000003,
+            "width": 320,
+            "kind": "obstacle"
+          },
+          {
+            "id": "cliff-snow",
+            "u": 11,
+            "v": -3.8000000000000003,
+            "width": 320,
+            "kind": "obstacle"
+          },
+          {
+            "id": "cliff-snow",
+            "u": 19.5,
+            "v": 7,
+            "width": 320,
+            "kind": "obstacle"
+          },
+          {
+            "id": "cliff-snow",
+            "u": 7,
+            "v": 19.5,
+            "width": 320,
+            "kind": "obstacle"
+          },
+          {
+            "id": "boulders-snow",
+            "u": -3,
+            "v": 11,
+            "width": 185,
+            "kind": "obstacle"
+          },
+          {
+            "id": "boulders-snow",
+            "u": 11,
+            "v": -3,
+            "width": 185,
+            "kind": "obstacle"
+          },
+          {
+            "id": "boulders-snow",
+            "u": 18,
+            "v": 11,
+            "width": 185,
+            "kind": "obstacle"
+          },
+          {
+            "id": "boulders-snow",
+            "u": 11,
+            "v": 18,
+            "width": 185,
+            "kind": "obstacle"
+          },
+          {
+            "id": "wall-broken",
+            "u": 1.5,
+            "v": 14.7,
+            "width": 170,
+            "kind": "obstacle"
+          }
+        ],
+        "pxPerTile": 7.65625,
+        "marker": {
+          "x": 129.5,
+          "y": 129.5,
+          "rotation": 0
+        }
+      },
+      "actual": {
+        "minX": 1163.358306709265,
+        "minY": 16,
+        "maxX": 1421.709026574024,
+        "maxY": 112.0203194888179,
+        "matrix": {
+          "array": null,
+          "a": 0.5792332268370607,
+          "b": 0,
+          "c": 0,
+          "d": 0.5792332268370607,
+          "tx": 1374.4888178913736,
+          "ty": 95.68413238817892
+        }
+      },
+      "anchor": {
+        "x": 1420,
+        "y": 127.43450479233226,
+        "scale": 0.8274760383386581
+      },
+      "textScale": 1
+    },
+    {
+      "width": 1440,
+      "height": 900,
+      "gold": 1234567,
+      "hud": {
+        "variant": "desktop-navigation-column",
+        "isPortrait": false,
+        "goldLabel": "1,234,567 Gold",
+        "timeLabel": "08:23",
+        "zoneLabel": "Safe Zone",
+        "coopLabel": null,
+        "pingLabel": null,
+        "fpsLabel": "60 fps",
+        "telemetryTextScale": 0.7,
+        "ribbonScale": 0.6692506459948321,
+        "designBounds": {
+          "goldPlaque": {
+            "medX": 1277,
+            "rightX": 1477,
+            "cy": 40,
+            "h": 38,
+            "medR": 27
+          },
+          "clockPlaque": {
+            "medX": 1516,
+            "rightX": 1626,
+            "cy": 40,
+            "h": 38,
+            "medR": 27
+          },
+          "ledger": {
+            "leftX": 1510,
+            "sepX": 1623,
+            "rightX": 1623,
+            "cy": 82
+          },
+          "filigreeRule": {
+            "leftX": 1262,
+            "midX": 1443,
+            "rightX": 1623,
+            "y": 103
+          },
+          "telemetry": {
+            "leftX": 1578,
+            "sepX": 1578,
+            "rightX": 1623,
+            "cy": 124
+          }
+        },
+        "screenBounds": {
+          "left": 1161,
+          "right": 1420,
+          "top": 16,
+          "bottom": 99.65633074935401,
+          "width": 259,
+          "height": 83.65633074935401
+        }
+      },
+      "map": {
+        "visible": true,
+        "bounds": {
+          "x": 1161,
+          "y": 128,
+          "width": 259,
+          "height": 259
+        },
+        "tile": {
+          "u": 9.1640625,
+          "v": 8.9609375
+        },
+        "mapTile": {
+          "u": 469.6640625,
+          "v": 469.4609375
+        },
+        "geometryCount": 42,
+        "obstacles": [
+          {
+            "id": "fir-young",
+            "u": -3,
+            "v": 3,
+            "width": 135,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": -3,
+            "v": 5,
+            "width": 154,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": -3,
+            "v": 9,
+            "width": 173,
+            "kind": "tree"
+          },
+          {
+            "id": "fir-young",
+            "u": 2,
+            "v": -3,
+            "width": 192,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": 5,
+            "v": -3,
+            "width": 135,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": 9,
+            "v": -3,
+            "width": 154,
+            "kind": "tree"
+          },
+          {
+            "id": "fir-young",
+            "u": 13,
+            "v": -3,
+            "width": 173,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": 20,
+            "v": 4,
+            "width": 192,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": 20,
+            "v": 10,
+            "width": 135,
+            "kind": "tree"
+          },
+          {
+            "id": "fir-young",
+            "u": 4,
+            "v": 20,
+            "width": 154,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": 10,
+            "v": 20,
+            "width": 173,
+            "kind": "tree"
+          },
+          {
+            "id": "cliff-snow",
+            "u": -3.8,
+            "v": 4,
+            "width": 320,
+            "kind": "obstacle"
+          },
+          {
+            "id": "cliff-snow",
+            "u": 4,
+            "v": -3.8000000000000003,
+            "width": 320,
+            "kind": "obstacle"
+          },
+          {
+            "id": "cliff-snow",
+            "u": 11,
+            "v": -3.8000000000000003,
+            "width": 320,
+            "kind": "obstacle"
+          },
+          {
+            "id": "cliff-snow",
+            "u": 19.5,
+            "v": 7,
+            "width": 320,
+            "kind": "obstacle"
+          },
+          {
+            "id": "cliff-snow",
+            "u": 7,
+            "v": 19.5,
+            "width": 320,
+            "kind": "obstacle"
+          },
+          {
+            "id": "boulders-snow",
+            "u": -3,
+            "v": 11,
+            "width": 185,
+            "kind": "obstacle"
+          },
+          {
+            "id": "boulders-snow",
+            "u": 11,
+            "v": -3,
+            "width": 185,
+            "kind": "obstacle"
+          },
+          {
+            "id": "boulders-snow",
+            "u": 18,
+            "v": 11,
+            "width": 185,
+            "kind": "obstacle"
+          },
+          {
+            "id": "boulders-snow",
+            "u": 11,
+            "v": 18,
+            "width": 185,
+            "kind": "obstacle"
+          },
+          {
+            "id": "wall-broken",
+            "u": 1.5,
+            "v": 14.7,
+            "width": 170,
+            "kind": "obstacle"
+          }
+        ],
+        "pxPerTile": 7.65625,
+        "marker": {
+          "x": 129.5,
+          "y": 129.5,
+          "rotation": 0
+        }
+      },
+      "actual": {
+        "minX": 1162.9073643410852,
+        "minY": 16,
+        "maxX": 1421.3822359629703,
+        "maxY": 93.65984496124031,
+        "matrix": {
+          "array": null,
+          "a": 0.4684754521963824,
+          "b": 0,
+          "c": 0,
+          "d": 0.4684754521963824,
+          "tx": 1383.1912144702842,
+          "ty": 80.44737322351422
+        }
+      },
+      "anchor": {
+        "x": 1420,
+        "y": 107.65633074935401,
+        "scale": 0.6692506459948321
+      },
+      "textScale": 1
+    },
+    {
+      "width": 1920,
+      "height": 1080,
+      "gold": 75,
+      "hud": {
+        "variant": "desktop-navigation-column",
+        "isPortrait": false,
+        "goldLabel": "75 Gold",
+        "timeLabel": "08:23",
+        "zoneLabel": "Safe Zone",
+        "coopLabel": null,
+        "pingLabel": null,
+        "fpsLabel": "60 fps",
+        "telemetryTextScale": 0.7,
+        "ribbonScale": 0.8306709265175719,
+        "designBounds": {
+          "goldPlaque": {
+            "medX": 1351,
+            "rightX": 1477,
+            "cy": 40,
+            "h": 38,
+            "medR": 27
+          },
+          "clockPlaque": {
+            "medX": 1516,
+            "rightX": 1626,
+            "cy": 40,
+            "h": 38,
+            "medR": 27
+          },
+          "ledger": {
+            "leftX": 1510,
+            "sepX": 1623,
+            "rightX": 1623,
+            "cy": 82
+          },
+          "filigreeRule": {
+            "leftX": 1336,
+            "midX": 1480,
+            "rightX": 1623,
+            "y": 103
+          },
+          "telemetry": {
+            "leftX": 1578,
+            "sepX": 1578,
+            "rightX": 1623,
+            "cy": 124
+          }
+        },
+        "screenBounds": {
+          "left": 1640,
+          "right": 1900,
+          "top": 16,
+          "bottom": 119.8338658146965,
+          "width": 260,
+          "height": 103.8338658146965
+        }
+      },
+      "map": {
+        "visible": true,
+        "bounds": {
+          "x": 1640,
+          "y": 128,
+          "width": 260,
+          "height": 260
+        },
+        "tile": {
+          "u": 9.1640625,
+          "v": 8.9609375
+        },
+        "mapTile": {
+          "u": 469.6640625,
+          "v": 469.4609375
+        },
+        "geometryCount": 42,
+        "obstacles": [
+          {
+            "id": "fir-young",
+            "u": -3,
+            "v": 3,
+            "width": 135,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": -3,
+            "v": 5,
+            "width": 154,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": -3,
+            "v": 9,
+            "width": 173,
+            "kind": "tree"
+          },
+          {
+            "id": "fir-young",
+            "u": 2,
+            "v": -3,
+            "width": 192,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": 5,
+            "v": -3,
+            "width": 135,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": 9,
+            "v": -3,
+            "width": 154,
+            "kind": "tree"
+          },
+          {
+            "id": "fir-young",
+            "u": 13,
+            "v": -3,
+            "width": 173,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": 20,
+            "v": 4,
+            "width": 192,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": 20,
+            "v": 10,
+            "width": 135,
+            "kind": "tree"
+          },
+          {
+            "id": "fir-young",
+            "u": 4,
+            "v": 20,
+            "width": 154,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": 10,
+            "v": 20,
+            "width": 173,
+            "kind": "tree"
+          },
+          {
+            "id": "cliff-snow",
+            "u": -3.8,
+            "v": 4,
+            "width": 320,
+            "kind": "obstacle"
+          },
+          {
+            "id": "cliff-snow",
+            "u": 4,
+            "v": -3.8000000000000003,
+            "width": 320,
+            "kind": "obstacle"
+          },
+          {
+            "id": "cliff-snow",
+            "u": 11,
+            "v": -3.8000000000000003,
+            "width": 320,
+            "kind": "obstacle"
+          },
+          {
+            "id": "cliff-snow",
+            "u": 19.5,
+            "v": 7,
+            "width": 320,
+            "kind": "obstacle"
+          },
+          {
+            "id": "cliff-snow",
+            "u": 7,
+            "v": 19.5,
+            "width": 320,
+            "kind": "obstacle"
+          },
+          {
+            "id": "boulders-snow",
+            "u": -3,
+            "v": 11,
+            "width": 185,
+            "kind": "obstacle"
+          },
+          {
+            "id": "boulders-snow",
+            "u": 11,
+            "v": -3,
+            "width": 185,
+            "kind": "obstacle"
+          },
+          {
+            "id": "boulders-snow",
+            "u": 18,
+            "v": 11,
+            "width": 185,
+            "kind": "obstacle"
+          },
+          {
+            "id": "boulders-snow",
+            "u": 11,
+            "v": 18,
+            "width": 185,
+            "kind": "obstacle"
+          },
+          {
+            "id": "wall-broken",
+            "u": 1.5,
+            "v": 14.7,
+            "width": 170,
+            "kind": "obstacle"
+          }
+        ],
+        "pxPerTile": 7.6875,
+        "marker": {
+          "x": 130,
+          "y": 130,
+          "rotation": 0
+        }
+      },
+      "actual": {
+        "minX": 1642.367412140575,
+        "minY": 16,
+        "maxX": 1901.715625132225,
+        "maxY": 112.39105431309903,
+        "matrix": {
+          "array": null,
+          "a": 0.5814696485623003,
+          "b": 0,
+          "c": 0,
+          "d": 0.5814696485623003,
+          "tx": 1854.3130990415336,
+          "ty": 95.99179313099042
+        }
+      },
+      "anchor": {
+        "x": 1900,
+        "y": 127.8338658146965,
+        "scale": 0.8306709265175719
+      },
+      "textScale": 1
+    },
+    {
+      "width": 1920,
+      "height": 1080,
+      "gold": 1234567,
+      "hud": {
+        "variant": "desktop-navigation-column",
+        "isPortrait": false,
+        "goldLabel": "1,234,567 Gold",
+        "timeLabel": "08:23",
+        "zoneLabel": "Safe Zone",
+        "coopLabel": null,
+        "pingLabel": null,
+        "fpsLabel": "60 fps",
+        "telemetryTextScale": 0.7,
+        "ribbonScale": 0.6718346253229974,
+        "designBounds": {
+          "goldPlaque": {
+            "medX": 1277,
+            "rightX": 1477,
+            "cy": 40,
+            "h": 38,
+            "medR": 27
+          },
+          "clockPlaque": {
+            "medX": 1516,
+            "rightX": 1626,
+            "cy": 40,
+            "h": 38,
+            "medR": 27
+          },
+          "ledger": {
+            "leftX": 1510,
+            "sepX": 1623,
+            "rightX": 1623,
+            "cy": 82
+          },
+          "filigreeRule": {
+            "leftX": 1262,
+            "midX": 1443,
+            "rightX": 1623,
+            "y": 103
+          },
+          "telemetry": {
+            "leftX": 1578,
+            "sepX": 1578,
+            "rightX": 1623,
+            "cy": 124
+          }
+        },
+        "screenBounds": {
+          "left": 1640,
+          "right": 1900,
+          "top": 16,
+          "bottom": 99.97932816537468,
+          "width": 260,
+          "height": 83.97932816537468
+        }
+      },
+      "map": {
+        "visible": true,
+        "bounds": {
+          "x": 1640,
+          "y": 108,
+          "width": 260,
+          "height": 260
+        },
+        "tile": {
+          "u": 9.1640625,
+          "v": 8.9609375
+        },
+        "mapTile": {
+          "u": 469.6640625,
+          "v": 469.4609375
+        },
+        "geometryCount": 42,
+        "obstacles": [
+          {
+            "id": "fir-young",
+            "u": -3,
+            "v": 3,
+            "width": 135,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": -3,
+            "v": 5,
+            "width": 154,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": -3,
+            "v": 9,
+            "width": 173,
+            "kind": "tree"
+          },
+          {
+            "id": "fir-young",
+            "u": 2,
+            "v": -3,
+            "width": 192,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": 5,
+            "v": -3,
+            "width": 135,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": 9,
+            "v": -3,
+            "width": 154,
+            "kind": "tree"
+          },
+          {
+            "id": "fir-young",
+            "u": 13,
+            "v": -3,
+            "width": 173,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": 20,
+            "v": 4,
+            "width": 192,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": 20,
+            "v": 10,
+            "width": 135,
+            "kind": "tree"
+          },
+          {
+            "id": "fir-young",
+            "u": 4,
+            "v": 20,
+            "width": 154,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": 10,
+            "v": 20,
+            "width": 173,
+            "kind": "tree"
+          },
+          {
+            "id": "cliff-snow",
+            "u": -3.8,
+            "v": 4,
+            "width": 320,
+            "kind": "obstacle"
+          },
+          {
+            "id": "cliff-snow",
+            "u": 4,
+            "v": -3.8000000000000003,
+            "width": 320,
+            "kind": "obstacle"
+          },
+          {
+            "id": "cliff-snow",
+            "u": 11,
+            "v": -3.8000000000000003,
+            "width": 320,
+            "kind": "obstacle"
+          },
+          {
+            "id": "cliff-snow",
+            "u": 19.5,
+            "v": 7,
+            "width": 320,
+            "kind": "obstacle"
+          },
+          {
+            "id": "cliff-snow",
+            "u": 7,
+            "v": 19.5,
+            "width": 320,
+            "kind": "obstacle"
+          },
+          {
+            "id": "boulders-snow",
+            "u": -3,
+            "v": 11,
+            "width": 185,
+            "kind": "obstacle"
+          },
+          {
+            "id": "boulders-snow",
+            "u": 11,
+            "v": -3,
+            "width": 185,
+            "kind": "obstacle"
+          },
+          {
+            "id": "boulders-snow",
+            "u": 18,
+            "v": 11,
+            "width": 185,
+            "kind": "obstacle"
+          },
+          {
+            "id": "boulders-snow",
+            "u": 11,
+            "v": 18,
+            "width": 185,
+            "kind": "obstacle"
+          },
+          {
+            "id": "wall-broken",
+            "u": 1.5,
+            "v": 14.7,
+            "width": 170,
+            "kind": "obstacle"
+          }
+        ],
+        "pxPerTile": 7.6875,
+        "marker": {
+          "x": 130,
+          "y": 130,
+          "rotation": 0
+        }
+      },
+      "actual": {
+        "minX": 1641.9147286821706,
+        "minY": 16,
+        "maxX": 1901.3875727813602,
+        "maxY": 93.95968992248062,
+        "matrix": {
+          "array": null,
+          "a": 0.4702842377260982,
+          "b": 0,
+          "c": 0,
+          "d": 0.4702842377260982,
+          "tx": 1863.0490956072351,
+          "ty": 80.69620478036175
+        }
+      },
+      "anchor": {
+        "x": 1900,
+        "y": 107.97932816537468,
+        "scale": 0.6718346253229974
+      },
+      "textScale": 1
+    },
+    {
+      "width": 1470,
+      "height": 583,
+      "gold": 75,
+      "hud": {
+        "variant": "desktop-navigation-column",
+        "isPortrait": false,
+        "goldLabel": "75 Gold",
+        "timeLabel": "08:23",
+        "zoneLabel": "Safe Zone",
+        "coopLabel": null,
+        "pingLabel": null,
+        "fpsLabel": "60 fps",
+        "telemetryTextScale": 0.7,
+        "ribbonScale": 0.670926517571885,
+        "designBounds": {
+          "goldPlaque": {
+            "medX": 1351,
+            "rightX": 1477,
+            "cy": 40,
+            "h": 38,
+            "medR": 27
+          },
+          "clockPlaque": {
+            "medX": 1516,
+            "rightX": 1626,
+            "cy": 40,
+            "h": 38,
+            "medR": 27
+          },
+          "ledger": {
+            "leftX": 1510,
+            "sepX": 1623,
+            "rightX": 1623,
+            "cy": 82
+          },
+          "filigreeRule": {
+            "leftX": 1336,
+            "midX": 1480,
+            "rightX": 1623,
+            "y": 103
+          },
+          "telemetry": {
+            "leftX": 1578,
+            "sepX": 1578,
+            "rightX": 1623,
+            "cy": 124
+          }
+        },
+        "screenBounds": {
+          "left": 1240,
+          "right": 1450,
+          "top": 16,
+          "bottom": 99.86581469648563,
+          "width": 210,
+          "height": 83.86581469648563
+        }
+      },
+      "map": {
+        "visible": true,
+        "bounds": {
+          "x": 1240,
+          "y": 108,
+          "width": 210,
+          "height": 210
+        },
+        "tile": {
+          "u": 9.1640625,
+          "v": 8.9609375
+        },
+        "mapTile": {
+          "u": 469.6640625,
+          "v": 469.4609375
+        },
+        "geometryCount": 42,
+        "obstacles": [
+          {
+            "id": "fir-young",
+            "u": -3,
+            "v": 3,
+            "width": 135,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": -3,
+            "v": 5,
+            "width": 154,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": -3,
+            "v": 9,
+            "width": 173,
+            "kind": "tree"
+          },
+          {
+            "id": "fir-young",
+            "u": 2,
+            "v": -3,
+            "width": 192,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": 5,
+            "v": -3,
+            "width": 135,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": 9,
+            "v": -3,
+            "width": 154,
+            "kind": "tree"
+          },
+          {
+            "id": "fir-young",
+            "u": 13,
+            "v": -3,
+            "width": 173,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": 20,
+            "v": 4,
+            "width": 192,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": 20,
+            "v": 10,
+            "width": 135,
+            "kind": "tree"
+          },
+          {
+            "id": "fir-young",
+            "u": 4,
+            "v": 20,
+            "width": 154,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": 10,
+            "v": 20,
+            "width": 173,
+            "kind": "tree"
+          },
+          {
+            "id": "cliff-snow",
+            "u": -3.8,
+            "v": 4,
+            "width": 320,
+            "kind": "obstacle"
+          },
+          {
+            "id": "cliff-snow",
+            "u": 4,
+            "v": -3.8000000000000003,
+            "width": 320,
+            "kind": "obstacle"
+          },
+          {
+            "id": "cliff-snow",
+            "u": 11,
+            "v": -3.8000000000000003,
+            "width": 320,
+            "kind": "obstacle"
+          },
+          {
+            "id": "cliff-snow",
+            "u": 19.5,
+            "v": 7,
+            "width": 320,
+            "kind": "obstacle"
+          },
+          {
+            "id": "cliff-snow",
+            "u": 7,
+            "v": 19.5,
+            "width": 320,
+            "kind": "obstacle"
+          },
+          {
+            "id": "boulders-snow",
+            "u": -3,
+            "v": 11,
+            "width": 185,
+            "kind": "obstacle"
+          },
+          {
+            "id": "boulders-snow",
+            "u": 11,
+            "v": -3,
+            "width": 185,
+            "kind": "obstacle"
+          },
+          {
+            "id": "boulders-snow",
+            "u": 18,
+            "v": 11,
+            "width": 185,
+            "kind": "obstacle"
+          },
+          {
+            "id": "boulders-snow",
+            "u": 11,
+            "v": 18,
+            "width": 185,
+            "kind": "obstacle"
+          },
+          {
+            "id": "wall-broken",
+            "u": 1.5,
+            "v": 14.7,
+            "width": 170,
+            "kind": "obstacle"
+          }
+        ],
+        "pxPerTile": 6.125,
+        "marker": {
+          "x": 105,
+          "y": 105,
+          "rotation": 0
+        }
+      },
+      "actual": {
+        "minX": 1241.9121405750798,
+        "minY": 16,
+        "maxX": 1451.3856972221815,
+        "maxY": 93.85431309904153,
+        "matrix": {
+          "array": null,
+          "a": 0.4696485623003195,
+          "b": 0,
+          "c": 0,
+          "d": 0.4696485623003195,
+          "tx": 1413.0990415335464,
+          "ty": 80.60875599041533
+        }
+      },
+      "anchor": {
+        "x": 1450,
+        "y": 107.86581469648563,
+        "scale": 0.670926517571885
+      },
+      "textScale": 1
+    },
+    {
+      "width": 1470,
+      "height": 583,
+      "gold": 1234567,
+      "hud": {
+        "variant": "desktop-navigation-column",
+        "isPortrait": false,
+        "goldLabel": "1,234,567 Gold",
+        "timeLabel": "08:23",
+        "zoneLabel": "Safe Zone",
+        "coopLabel": null,
+        "pingLabel": null,
+        "fpsLabel": "60 fps",
+        "telemetryTextScale": 0.7,
+        "ribbonScale": 0.5426356589147286,
+        "designBounds": {
+          "goldPlaque": {
+            "medX": 1277,
+            "rightX": 1477,
+            "cy": 40,
+            "h": 38,
+            "medR": 27
+          },
+          "clockPlaque": {
+            "medX": 1516,
+            "rightX": 1626,
+            "cy": 40,
+            "h": 38,
+            "medR": 27
+          },
+          "ledger": {
+            "leftX": 1510,
+            "sepX": 1623,
+            "rightX": 1623,
+            "cy": 82
+          },
+          "filigreeRule": {
+            "leftX": 1262,
+            "midX": 1443,
+            "rightX": 1623,
+            "y": 103
+          },
+          "telemetry": {
+            "leftX": 1578,
+            "sepX": 1578,
+            "rightX": 1623,
+            "cy": 124
+          }
+        },
+        "screenBounds": {
+          "left": 1240,
+          "right": 1450,
+          "top": 16,
+          "bottom": 83.82945736434108,
+          "width": 210,
+          "height": 67.82945736434108
+        }
+      },
+      "map": {
+        "visible": true,
+        "bounds": {
+          "x": 1240,
+          "y": 92,
+          "width": 210,
+          "height": 210
+        },
+        "tile": {
+          "u": 9.1640625,
+          "v": 8.9609375
+        },
+        "mapTile": {
+          "u": 469.6640625,
+          "v": 469.4609375
+        },
+        "geometryCount": 42,
+        "obstacles": [
+          {
+            "id": "fir-young",
+            "u": -3,
+            "v": 3,
+            "width": 135,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": -3,
+            "v": 5,
+            "width": 154,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": -3,
+            "v": 9,
+            "width": 173,
+            "kind": "tree"
+          },
+          {
+            "id": "fir-young",
+            "u": 2,
+            "v": -3,
+            "width": 192,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": 5,
+            "v": -3,
+            "width": 135,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": 9,
+            "v": -3,
+            "width": 154,
+            "kind": "tree"
+          },
+          {
+            "id": "fir-young",
+            "u": 13,
+            "v": -3,
+            "width": 173,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": 20,
+            "v": 4,
+            "width": 192,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": 20,
+            "v": 10,
+            "width": 135,
+            "kind": "tree"
+          },
+          {
+            "id": "fir-young",
+            "u": 4,
+            "v": 20,
+            "width": 154,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": 10,
+            "v": 20,
+            "width": 173,
+            "kind": "tree"
+          },
+          {
+            "id": "cliff-snow",
+            "u": -3.8,
+            "v": 4,
+            "width": 320,
+            "kind": "obstacle"
+          },
+          {
+            "id": "cliff-snow",
+            "u": 4,
+            "v": -3.8000000000000003,
+            "width": 320,
+            "kind": "obstacle"
+          },
+          {
+            "id": "cliff-snow",
+            "u": 11,
+            "v": -3.8000000000000003,
+            "width": 320,
+            "kind": "obstacle"
+          },
+          {
+            "id": "cliff-snow",
+            "u": 19.5,
+            "v": 7,
+            "width": 320,
+            "kind": "obstacle"
+          },
+          {
+            "id": "cliff-snow",
+            "u": 7,
+            "v": 19.5,
+            "width": 320,
+            "kind": "obstacle"
+          },
+          {
+            "id": "boulders-snow",
+            "u": -3,
+            "v": 11,
+            "width": 185,
+            "kind": "obstacle"
+          },
+          {
+            "id": "boulders-snow",
+            "u": 11,
+            "v": -3,
+            "width": 185,
+            "kind": "obstacle"
+          },
+          {
+            "id": "boulders-snow",
+            "u": 18,
+            "v": 11,
+            "width": 185,
+            "kind": "obstacle"
+          },
+          {
+            "id": "boulders-snow",
+            "u": 11,
+            "v": 18,
+            "width": 185,
+            "kind": "obstacle"
+          },
+          {
+            "id": "wall-broken",
+            "u": 1.5,
+            "v": 14.7,
+            "width": 170,
+            "kind": "obstacle"
+          }
+        ],
+        "pxPerTile": 6.125,
+        "marker": {
+          "x": 105,
+          "y": 105,
+          "rotation": 0
+        }
+      },
+      "actual": {
+        "minX": 1241.546511627907,
+        "minY": 16,
+        "maxX": 1451.1207318618676,
+        "maxY": 78.96744186046512,
+        "matrix": {
+          "array": null,
+          "a": 0.37984496124031003,
+          "b": 0,
+          "c": 0,
+          "d": 0.37984496124031003,
+          "tx": 1420.15503875969,
+          "ty": 68.2546269379845
+        }
+      },
+      "anchor": {
+        "x": 1450,
+        "y": 91.82945736434108,
+        "scale": 0.5426356589147286
+      },
+      "textScale": 1
+    },
+    {
+      "width": 1024,
+      "height": 768,
+      "gold": 75,
+      "hud": {
+        "variant": "desktop-navigation-column",
+        "isPortrait": false,
+        "goldLabel": "75 Gold",
+        "timeLabel": "08:23",
+        "zoneLabel": "Safe Zone",
+        "coopLabel": null,
+        "pingLabel": null,
+        "fpsLabel": "60 fps",
+        "telemetryTextScale": 0.7,
+        "ribbonScale": 0.5878594249201278,
+        "designBounds": {
+          "goldPlaque": {
+            "medX": 1351,
+            "rightX": 1477,
+            "cy": 40,
+            "h": 38,
+            "medR": 27
+          },
+          "clockPlaque": {
+            "medX": 1516,
+            "rightX": 1626,
+            "cy": 40,
+            "h": 38,
+            "medR": 27
+          },
+          "ledger": {
+            "leftX": 1510,
+            "sepX": 1623,
+            "rightX": 1623,
+            "cy": 82
+          },
+          "filigreeRule": {
+            "leftX": 1336,
+            "midX": 1480,
+            "rightX": 1623,
+            "y": 103
+          },
+          "telemetry": {
+            "leftX": 1578,
+            "sepX": 1578,
+            "rightX": 1623,
+            "cy": 124
+          }
+        },
+        "screenBounds": {
+          "left": 820,
+          "right": 1004,
+          "top": 16,
+          "bottom": 89.48242811501598,
+          "width": 184,
+          "height": 73.48242811501598
+        }
+      },
+      "map": {
+        "visible": true,
+        "bounds": {
+          "x": 820,
+          "y": 98,
+          "width": 184,
+          "height": 184
+        },
+        "tile": {
+          "u": 9.1640625,
+          "v": 8.9609375
+        },
+        "mapTile": {
+          "u": 469.6640625,
+          "v": 469.4609375
+        },
+        "geometryCount": 42,
+        "obstacles": [
+          {
+            "id": "fir-young",
+            "u": -3,
+            "v": 3,
+            "width": 135,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": -3,
+            "v": 5,
+            "width": 154,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": -3,
+            "v": 9,
+            "width": 173,
+            "kind": "tree"
+          },
+          {
+            "id": "fir-young",
+            "u": 2,
+            "v": -3,
+            "width": 192,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": 5,
+            "v": -3,
+            "width": 135,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": 9,
+            "v": -3,
+            "width": 154,
+            "kind": "tree"
+          },
+          {
+            "id": "fir-young",
+            "u": 13,
+            "v": -3,
+            "width": 173,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": 20,
+            "v": 4,
+            "width": 192,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": 20,
+            "v": 10,
+            "width": 135,
+            "kind": "tree"
+          },
+          {
+            "id": "fir-young",
+            "u": 4,
+            "v": 20,
+            "width": 154,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": 10,
+            "v": 20,
+            "width": 173,
+            "kind": "tree"
+          },
+          {
+            "id": "cliff-snow",
+            "u": -3.8,
+            "v": 4,
+            "width": 320,
+            "kind": "obstacle"
+          },
+          {
+            "id": "cliff-snow",
+            "u": 4,
+            "v": -3.8000000000000003,
+            "width": 320,
+            "kind": "obstacle"
+          },
+          {
+            "id": "cliff-snow",
+            "u": 11,
+            "v": -3.8000000000000003,
+            "width": 320,
+            "kind": "obstacle"
+          },
+          {
+            "id": "cliff-snow",
+            "u": 19.5,
+            "v": 7,
+            "width": 320,
+            "kind": "obstacle"
+          },
+          {
+            "id": "cliff-snow",
+            "u": 7,
+            "v": 19.5,
+            "width": 320,
+            "kind": "obstacle"
+          },
+          {
+            "id": "boulders-snow",
+            "u": -3,
+            "v": 11,
+            "width": 185,
+            "kind": "obstacle"
+          },
+          {
+            "id": "boulders-snow",
+            "u": 11,
+            "v": -3,
+            "width": 185,
+            "kind": "obstacle"
+          },
+          {
+            "id": "boulders-snow",
+            "u": 18,
+            "v": 11,
+            "width": 185,
+            "kind": "obstacle"
+          },
+          {
+            "id": "boulders-snow",
+            "u": 11,
+            "v": 18,
+            "width": 185,
+            "kind": "obstacle"
+          },
+          {
+            "id": "wall-broken",
+            "u": 1.5,
+            "v": 14.7,
+            "width": 170,
+            "kind": "obstacle"
+          }
+        ],
+        "pxPerTile": 5.3125,
+        "marker": {
+          "x": 92,
+          "y": 92,
+          "rotation": 0
+        }
+      },
+      "actual": {
+        "minX": 821.6753993610224,
+        "minY": 16,
+        "maxX": 1005.2141347089591,
+        "maxY": 84.21520766773162,
+        "matrix": {
+          "array": null,
+          "a": 0.41150159744408943,
+          "b": 0,
+          "c": 0,
+          "d": 0.41150159744408943,
+          "tx": 971.6677316293931,
+          "ty": 72.6095766773163
+        }
+      },
+      "anchor": {
+        "x": 1004,
+        "y": 97.48242811501598,
+        "scale": 0.5878594249201278
+      },
+      "textScale": 1
+    },
+    {
+      "width": 1024,
+      "height": 768,
+      "gold": 1234567,
+      "hud": {
+        "variant": "desktop-navigation-column",
+        "isPortrait": false,
+        "goldLabel": "1,234,567 Gold",
+        "timeLabel": "08:23",
+        "zoneLabel": "Safe Zone",
+        "coopLabel": null,
+        "pingLabel": null,
+        "fpsLabel": "60 fps",
+        "telemetryTextScale": 0.7,
+        "ribbonScale": 0.4754521963824289,
+        "designBounds": {
+          "goldPlaque": {
+            "medX": 1277,
+            "rightX": 1477,
+            "cy": 40,
+            "h": 38,
+            "medR": 27
+          },
+          "clockPlaque": {
+            "medX": 1516,
+            "rightX": 1626,
+            "cy": 40,
+            "h": 38,
+            "medR": 27
+          },
+          "ledger": {
+            "leftX": 1510,
+            "sepX": 1623,
+            "rightX": 1623,
+            "cy": 82
+          },
+          "filigreeRule": {
+            "leftX": 1262,
+            "midX": 1443,
+            "rightX": 1623,
+            "y": 103
+          },
+          "telemetry": {
+            "leftX": 1578,
+            "sepX": 1578,
+            "rightX": 1623,
+            "cy": 124
+          }
+        },
+        "screenBounds": {
+          "left": 820,
+          "right": 1004,
+          "top": 16,
+          "bottom": 75.4315245478036,
+          "width": 184,
+          "height": 59.43152454780361
+        }
+      },
+      "map": {
+        "visible": true,
+        "bounds": {
+          "x": 820,
+          "y": 98,
+          "width": 184,
+          "height": 184
+        },
+        "tile": {
+          "u": 9.1640625,
+          "v": 8.9609375
+        },
+        "mapTile": {
+          "u": 469.6640625,
+          "v": 469.4609375
+        },
+        "geometryCount": 42,
+        "obstacles": [
+          {
+            "id": "fir-young",
+            "u": -3,
+            "v": 3,
+            "width": 135,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": -3,
+            "v": 5,
+            "width": 154,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": -3,
+            "v": 9,
+            "width": 173,
+            "kind": "tree"
+          },
+          {
+            "id": "fir-young",
+            "u": 2,
+            "v": -3,
+            "width": 192,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": 5,
+            "v": -3,
+            "width": 135,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": 9,
+            "v": -3,
+            "width": 154,
+            "kind": "tree"
+          },
+          {
+            "id": "fir-young",
+            "u": 13,
+            "v": -3,
+            "width": 173,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": 20,
+            "v": 4,
+            "width": 192,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": 20,
+            "v": 10,
+            "width": 135,
+            "kind": "tree"
+          },
+          {
+            "id": "fir-young",
+            "u": 4,
+            "v": 20,
+            "width": 154,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": 10,
+            "v": 20,
+            "width": 173,
+            "kind": "tree"
+          },
+          {
+            "id": "cliff-snow",
+            "u": -3.8,
+            "v": 4,
+            "width": 320,
+            "kind": "obstacle"
+          },
+          {
+            "id": "cliff-snow",
+            "u": 4,
+            "v": -3.8000000000000003,
+            "width": 320,
+            "kind": "obstacle"
+          },
+          {
+            "id": "cliff-snow",
+            "u": 11,
+            "v": -3.8000000000000003,
+            "width": 320,
+            "kind": "obstacle"
+          },
+          {
+            "id": "cliff-snow",
+            "u": 19.5,
+            "v": 7,
+            "width": 320,
+            "kind": "obstacle"
+          },
+          {
+            "id": "cliff-snow",
+            "u": 7,
+            "v": 19.5,
+            "width": 320,
+            "kind": "obstacle"
+          },
+          {
+            "id": "boulders-snow",
+            "u": -3,
+            "v": 11,
+            "width": 185,
+            "kind": "obstacle"
+          },
+          {
+            "id": "boulders-snow",
+            "u": 11,
+            "v": -3,
+            "width": 185,
+            "kind": "obstacle"
+          },
+          {
+            "id": "boulders-snow",
+            "u": 18,
+            "v": 11,
+            "width": 185,
+            "kind": "obstacle"
+          },
+          {
+            "id": "boulders-snow",
+            "u": 11,
+            "v": 18,
+            "width": 185,
+            "kind": "obstacle"
+          },
+          {
+            "id": "wall-broken",
+            "u": 1.5,
+            "v": 14.7,
+            "width": 170,
+            "kind": "obstacle"
+          }
+        ],
+        "pxPerTile": 5.3125,
+        "marker": {
+          "x": 92,
+          "y": 92,
+          "rotation": 0
+        }
+      },
+      "actual": {
+        "minX": 821.3550387596898,
+        "minY": 16,
+        "maxX": 1004.9819745837317,
+        "maxY": 71.17147286821705,
+        "matrix": {
+          "array": null,
+          "a": 0.33281653746770024,
+          "b": 0,
+          "c": 0,
+          "d": 0.33281653746770024,
+          "tx": 977.8501291989663,
+          "ty": 61.78500645994832
+        }
+      },
+      "anchor": {
+        "x": 1004,
+        "y": 83.4315245478036,
+        "scale": 0.4754521963824289
+      },
+      "textScale": 1
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "gold": 75,
+      "hud": {
+        "variant": "approved-mobile",
+        "isPortrait": true,
+        "goldLabel": "75 Gold",
+        "timeLabel": "08:23",
+        "zoneLabel": "Safe Zone",
+        "fpsLabel": "60 fps",
+        "screenBounds": {
+          "left": 93.02924528301885,
+          "top": 80.7391465396521,
+          "right": 371.48775,
+          "bottom": 128.5,
+          "width": 278.45850471698117,
+          "height": 47.7608534603479
+        }
+      },
+      "map": {
+        "visible": true,
+        "bounds": {
+          "x": 279,
+          "y": 10,
+          "width": 103,
+          "height": 103
+        },
+        "tile": {
+          "u": 9.1640625,
+          "v": 8.9609375
+        },
+        "mapTile": {
+          "u": 469.6640625,
+          "v": 469.4609375
+        },
+        "geometryCount": 42,
+        "obstacles": [
+          {
+            "id": "fir-young",
+            "u": -3,
+            "v": 3,
+            "width": 135,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": -3,
+            "v": 5,
+            "width": 154,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": -3,
+            "v": 9,
+            "width": 173,
+            "kind": "tree"
+          },
+          {
+            "id": "fir-young",
+            "u": 2,
+            "v": -3,
+            "width": 192,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": 5,
+            "v": -3,
+            "width": 135,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": 9,
+            "v": -3,
+            "width": 154,
+            "kind": "tree"
+          },
+          {
+            "id": "fir-young",
+            "u": 13,
+            "v": -3,
+            "width": 173,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": 20,
+            "v": 4,
+            "width": 192,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": 20,
+            "v": 10,
+            "width": 135,
+            "kind": "tree"
+          },
+          {
+            "id": "fir-young",
+            "u": 4,
+            "v": 20,
+            "width": 154,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": 10,
+            "v": 20,
+            "width": 173,
+            "kind": "tree"
+          },
+          {
+            "id": "cliff-snow",
+            "u": -3.8,
+            "v": 4,
+            "width": 320,
+            "kind": "obstacle"
+          },
+          {
+            "id": "cliff-snow",
+            "u": 4,
+            "v": -3.8000000000000003,
+            "width": 320,
+            "kind": "obstacle"
+          },
+          {
+            "id": "cliff-snow",
+            "u": 11,
+            "v": -3.8000000000000003,
+            "width": 320,
+            "kind": "obstacle"
+          },
+          {
+            "id": "cliff-snow",
+            "u": 19.5,
+            "v": 7,
+            "width": 320,
+            "kind": "obstacle"
+          },
+          {
+            "id": "cliff-snow",
+            "u": 7,
+            "v": 19.5,
+            "width": 320,
+            "kind": "obstacle"
+          },
+          {
+            "id": "boulders-snow",
+            "u": -3,
+            "v": 11,
+            "width": 185,
+            "kind": "obstacle"
+          },
+          {
+            "id": "boulders-snow",
+            "u": 11,
+            "v": -3,
+            "width": 185,
+            "kind": "obstacle"
+          },
+          {
+            "id": "boulders-snow",
+            "u": 18,
+            "v": 11,
+            "width": 185,
+            "kind": "obstacle"
+          },
+          {
+            "id": "boulders-snow",
+            "u": 11,
+            "v": 18,
+            "width": 185,
+            "kind": "obstacle"
+          },
+          {
+            "id": "wall-broken",
+            "u": 1.5,
+            "v": 14.7,
+            "width": 170,
+            "kind": "obstacle"
+          }
+        ],
+        "pxPerTile": 2.78125,
+        "marker": {
+          "x": 51.5,
+          "y": 51.5,
+          "rotation": 0
+        }
+      },
+      "actual": {
+        "minX": 93.02924528301885,
+        "minY": 80.7391465396521,
+        "maxX": 371.48775,
+        "maxY": 128.5,
+        "matrix": {
+          "array": null,
+          "a": 0.48,
+          "b": 0,
+          "c": 0,
+          "d": 0.48,
+          "tx": 340.8,
+          "ty": 113.4225
+        }
+      },
+      "anchor": {
+        "x": 247.26650943396223,
+        "y": 103.99528301886791,
+        "scale": 0.5610849056603773
+      },
+      "textScale": 0.5274198113207547
+    },
+    {
+      "width": 844,
+      "height": 390,
+      "gold": 75,
+      "hud": {
+        "variant": "approved-mobile",
+        "isPortrait": false,
+        "goldLabel": "75 Gold",
+        "timeLabel": "08:23",
+        "zoneLabel": "Safe Zone",
+        "fpsLabel": "60 fps",
+        "screenBounds": {
+          "left": 108.2728,
+          "top": 94.27771790625002,
+          "right": 821.8877500000001,
+          "bottom": 137.5,
+          "width": 713.6149500000001,
+          "height": 43.22228209374998
+        }
+      },
+      "map": {
+        "visible": true,
+        "bounds": {
+          "x": 724,
+          "y": 10,
+          "width": 112,
+          "height": 112
+        },
+        "tile": {
+          "u": 9.1640625,
+          "v": 8.9609375
+        },
+        "mapTile": {
+          "u": 469.6640625,
+          "v": 469.4609375
+        },
+        "geometryCount": 42,
+        "obstacles": [
+          {
+            "id": "fir-young",
+            "u": -3,
+            "v": 3,
+            "width": 135,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": -3,
+            "v": 5,
+            "width": 154,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": -3,
+            "v": 9,
+            "width": 173,
+            "kind": "tree"
+          },
+          {
+            "id": "fir-young",
+            "u": 2,
+            "v": -3,
+            "width": 192,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": 5,
+            "v": -3,
+            "width": 135,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": 9,
+            "v": -3,
+            "width": 154,
+            "kind": "tree"
+          },
+          {
+            "id": "fir-young",
+            "u": 13,
+            "v": -3,
+            "width": 173,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": 20,
+            "v": 4,
+            "width": 192,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": 20,
+            "v": 10,
+            "width": 135,
+            "kind": "tree"
+          },
+          {
+            "id": "fir-young",
+            "u": 4,
+            "v": 20,
+            "width": 154,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": 10,
+            "v": 20,
+            "width": 173,
+            "kind": "tree"
+          },
+          {
+            "id": "cliff-snow",
+            "u": -3.8,
+            "v": 4,
+            "width": 320,
+            "kind": "obstacle"
+          },
+          {
+            "id": "cliff-snow",
+            "u": 4,
+            "v": -3.8000000000000003,
+            "width": 320,
+            "kind": "obstacle"
+          },
+          {
+            "id": "cliff-snow",
+            "u": 11,
+            "v": -3.8000000000000003,
+            "width": 320,
+            "kind": "obstacle"
+          },
+          {
+            "id": "cliff-snow",
+            "u": 19.5,
+            "v": 7,
+            "width": 320,
+            "kind": "obstacle"
+          },
+          {
+            "id": "cliff-snow",
+            "u": 7,
+            "v": 19.5,
+            "width": 320,
+            "kind": "obstacle"
+          },
+          {
+            "id": "boulders-snow",
+            "u": -3,
+            "v": 11,
+            "width": 185,
+            "kind": "obstacle"
+          },
+          {
+            "id": "boulders-snow",
+            "u": 11,
+            "v": -3,
+            "width": 185,
+            "kind": "obstacle"
+          },
+          {
+            "id": "boulders-snow",
+            "u": 18,
+            "v": 11,
+            "width": 185,
+            "kind": "obstacle"
+          },
+          {
+            "id": "boulders-snow",
+            "u": 11,
+            "v": 18,
+            "width": 185,
+            "kind": "obstacle"
+          },
+          {
+            "id": "wall-broken",
+            "u": 1.5,
+            "v": 14.7,
+            "width": 170,
+            "kind": "obstacle"
+          }
+        ],
+        "pxPerTile": 3.0625,
+        "marker": {
+          "x": 56,
+          "y": 56,
+          "rotation": 0
+        }
+      },
+      "actual": {
+        "minX": 108.2728,
+        "minY": 94.27771790625002,
+        "maxX": 821.8877500000001,
+        "maxY": 137.5,
+        "matrix": {
+          "array": null,
+          "a": 0.48,
+          "b": 0,
+          "c": 0,
+          "d": 0.48,
+          "tx": 791.2,
+          "ty": 122.4225
+        }
+      },
+      "anchor": {
+        "x": 289.28400000000005,
+        "y": 121.584,
+        "scale": 0.6588
+      },
+      "textScale": 0.619272
+    },
+    {
+      "width": 1440,
+      "height": 900,
+      "gold": 75,
+      "hud": {
+        "variant": "desktop-navigation-column",
+        "isPortrait": false,
+        "goldLabel": "75 Gold",
+        "timeLabel": "08:23",
+        "zoneLabel": "Safe Zone",
+        "coopLabel": null,
+        "pingLabel": null,
+        "fpsLabel": "60 fps",
+        "telemetryTextScale": 0.7,
+        "ribbonScale": 0.8274760383386581,
+        "designBounds": {
+          "goldPlaque": {
+            "medX": 1351,
+            "rightX": 1477,
+            "cy": 40,
+            "h": 38,
+            "medR": 27
+          },
+          "clockPlaque": {
+            "medX": 1516,
+            "rightX": 1626,
+            "cy": 40,
+            "h": 38,
+            "medR": 27
+          },
+          "ledger": {
+            "leftX": 1510,
+            "sepX": 1623,
+            "rightX": 1623,
+            "cy": 82
+          },
+          "filigreeRule": {
+            "leftX": 1336,
+            "midX": 1480,
+            "rightX": 1623,
+            "y": 103
+          },
+          "telemetry": {
+            "leftX": 1578,
+            "sepX": 1578,
+            "rightX": 1623,
+            "cy": 124
+          }
+        },
+        "screenBounds": {
+          "left": 1161,
+          "right": 1420,
+          "top": 16,
+          "bottom": 119.43450479233226,
+          "width": 259,
+          "height": 103.43450479233226
+        }
+      },
+      "map": {
+        "visible": true,
+        "bounds": {
+          "x": 1161,
+          "y": 128,
+          "width": 259,
+          "height": 259
+        },
+        "tile": {
+          "u": 9.1640625,
+          "v": 8.9609375
+        },
+        "mapTile": {
+          "u": 469.6640625,
+          "v": 469.4609375
+        },
+        "geometryCount": 42,
+        "obstacles": [
+          {
+            "id": "fir-young",
+            "u": -3,
+            "v": 3,
+            "width": 135,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": -3,
+            "v": 5,
+            "width": 154,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": -3,
+            "v": 9,
+            "width": 173,
+            "kind": "tree"
+          },
+          {
+            "id": "fir-young",
+            "u": 2,
+            "v": -3,
+            "width": 192,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": 5,
+            "v": -3,
+            "width": 135,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": 9,
+            "v": -3,
+            "width": 154,
+            "kind": "tree"
+          },
+          {
+            "id": "fir-young",
+            "u": 13,
+            "v": -3,
+            "width": 173,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": 20,
+            "v": 4,
+            "width": 192,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": 20,
+            "v": 10,
+            "width": 135,
+            "kind": "tree"
+          },
+          {
+            "id": "fir-young",
+            "u": 4,
+            "v": 20,
+            "width": 154,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": 10,
+            "v": 20,
+            "width": 173,
+            "kind": "tree"
+          },
+          {
+            "id": "cliff-snow",
+            "u": -3.8,
+            "v": 4,
+            "width": 320,
+            "kind": "obstacle"
+          },
+          {
+            "id": "cliff-snow",
+            "u": 4,
+            "v": -3.8000000000000003,
+            "width": 320,
+            "kind": "obstacle"
+          },
+          {
+            "id": "cliff-snow",
+            "u": 11,
+            "v": -3.8000000000000003,
+            "width": 320,
+            "kind": "obstacle"
+          },
+          {
+            "id": "cliff-snow",
+            "u": 19.5,
+            "v": 7,
+            "width": 320,
+            "kind": "obstacle"
+          },
+          {
+            "id": "cliff-snow",
+            "u": 7,
+            "v": 19.5,
+            "width": 320,
+            "kind": "obstacle"
+          },
+          {
+            "id": "boulders-snow",
+            "u": -3,
+            "v": 11,
+            "width": 185,
+            "kind": "obstacle"
+          },
+          {
+            "id": "boulders-snow",
+            "u": 11,
+            "v": -3,
+            "width": 185,
+            "kind": "obstacle"
+          },
+          {
+            "id": "boulders-snow",
+            "u": 18,
+            "v": 11,
+            "width": 185,
+            "kind": "obstacle"
+          },
+          {
+            "id": "boulders-snow",
+            "u": 11,
+            "v": 18,
+            "width": 185,
+            "kind": "obstacle"
+          },
+          {
+            "id": "wall-broken",
+            "u": 1.5,
+            "v": 14.7,
+            "width": 170,
+            "kind": "obstacle"
+          }
+        ],
+        "pxPerTile": 7.65625,
+        "marker": {
+          "x": 129.5,
+          "y": 129.5,
+          "rotation": 0
+        }
+      },
+      "actual": {
+        "minX": 1163.358306709265,
+        "minY": 16,
+        "maxX": 1421.709026574024,
+        "maxY": 112.0203194888179,
+        "matrix": {
+          "array": null,
+          "a": 0.5792332268370607,
+          "b": 0,
+          "c": 0,
+          "d": 0.5792332268370607,
+          "tx": 1374.4888178913736,
+          "ty": 95.68413238817892
+        }
+      },
+      "anchor": {
+        "x": 1420,
+        "y": 127.43450479233226,
+        "scale": 0.8274760383386581
+      },
+      "textScale": 1
+    },
+    {
+      "width": 1440,
+      "height": 900,
+      "gold": 1234567,
+      "hud": {
+        "variant": "desktop-navigation-column",
+        "isPortrait": false,
+        "goldLabel": "1,234,567 Gold",
+        "timeLabel": "08:23",
+        "zoneLabel": "Safe Zone",
+        "coopLabel": null,
+        "pingLabel": null,
+        "fpsLabel": "60 fps",
+        "telemetryTextScale": 0.7,
+        "ribbonScale": 0.6692506459948321,
+        "designBounds": {
+          "goldPlaque": {
+            "medX": 1277,
+            "rightX": 1477,
+            "cy": 40,
+            "h": 38,
+            "medR": 27
+          },
+          "clockPlaque": {
+            "medX": 1516,
+            "rightX": 1626,
+            "cy": 40,
+            "h": 38,
+            "medR": 27
+          },
+          "ledger": {
+            "leftX": 1510,
+            "sepX": 1623,
+            "rightX": 1623,
+            "cy": 82
+          },
+          "filigreeRule": {
+            "leftX": 1262,
+            "midX": 1443,
+            "rightX": 1623,
+            "y": 103
+          },
+          "telemetry": {
+            "leftX": 1578,
+            "sepX": 1578,
+            "rightX": 1623,
+            "cy": 124
+          }
+        },
+        "screenBounds": {
+          "left": 1161,
+          "right": 1420,
+          "top": 16,
+          "bottom": 99.65633074935401,
+          "width": 259,
+          "height": 83.65633074935401
+        }
+      },
+      "map": {
+        "visible": true,
+        "bounds": {
+          "x": 1161,
+          "y": 108,
+          "width": 259,
+          "height": 259
+        },
+        "tile": {
+          "u": 9.1640625,
+          "v": 8.9609375
+        },
+        "mapTile": {
+          "u": 469.6640625,
+          "v": 469.4609375
+        },
+        "geometryCount": 42,
+        "obstacles": [
+          {
+            "id": "fir-young",
+            "u": -3,
+            "v": 3,
+            "width": 135,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": -3,
+            "v": 5,
+            "width": 154,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": -3,
+            "v": 9,
+            "width": 173,
+            "kind": "tree"
+          },
+          {
+            "id": "fir-young",
+            "u": 2,
+            "v": -3,
+            "width": 192,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": 5,
+            "v": -3,
+            "width": 135,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": 9,
+            "v": -3,
+            "width": 154,
+            "kind": "tree"
+          },
+          {
+            "id": "fir-young",
+            "u": 13,
+            "v": -3,
+            "width": 173,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": 20,
+            "v": 4,
+            "width": 192,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": 20,
+            "v": 10,
+            "width": 135,
+            "kind": "tree"
+          },
+          {
+            "id": "fir-young",
+            "u": 4,
+            "v": 20,
+            "width": 154,
+            "kind": "tree"
+          },
+          {
+            "id": "spruce-mature",
+            "u": 10,
+            "v": 20,
+            "width": 173,
+            "kind": "tree"
+          },
+          {
+            "id": "cliff-snow",
+            "u": -3.8,
+            "v": 4,
+            "width": 320,
+            "kind": "obstacle"
+          },
+          {
+            "id": "cliff-snow",
+            "u": 4,
+            "v": -3.8000000000000003,
+            "width": 320,
+            "kind": "obstacle"
+          },
+          {
+            "id": "cliff-snow",
+            "u": 11,
+            "v": -3.8000000000000003,
+            "width": 320,
+            "kind": "obstacle"
+          },
+          {
+            "id": "cliff-snow",
+            "u": 19.5,
+            "v": 7,
+            "width": 320,
+            "kind": "obstacle"
+          },
+          {
+            "id": "cliff-snow",
+            "u": 7,
+            "v": 19.5,
+            "width": 320,
+            "kind": "obstacle"
+          },
+          {
+            "id": "boulders-snow",
+            "u": -3,
+            "v": 11,
+            "width": 185,
+            "kind": "obstacle"
+          },
+          {
+            "id": "boulders-snow",
+            "u": 11,
+            "v": -3,
+            "width": 185,
+            "kind": "obstacle"
+          },
+          {
+            "id": "boulders-snow",
+            "u": 18,
+            "v": 11,
+            "width": 185,
+            "kind": "obstacle"
+          },
+          {
+            "id": "boulders-snow",
+            "u": 11,
+            "v": 18,
+            "width": 185,
+            "kind": "obstacle"
+          },
+          {
+            "id": "wall-broken",
+            "u": 1.5,
+            "v": 14.7,
+            "width": 170,
+            "kind": "obstacle"
+          }
+        ],
+        "pxPerTile": 7.65625,
+        "marker": {
+          "x": 129.5,
+          "y": 129.5,
+          "rotation": 0
+        }
+      },
+      "actual": {
+        "minX": 1162.9073643410852,
+        "minY": 16,
+        "maxX": 1421.3822359629703,
+        "maxY": 93.65984496124031,
+        "matrix": {
+          "array": null,
+          "a": 0.4684754521963824,
+          "b": 0,
+          "c": 0,
+          "d": 0.4684754521963824,
+          "tx": 1383.1912144702842,
+          "ty": 80.44737322351422
+        }
+      },
+      "anchor": {
+        "x": 1420,
+        "y": 107.65633074935401,
+        "scale": 0.6692506459948321
+      },
+      "textScale": 1
+    }
+  ]
+}

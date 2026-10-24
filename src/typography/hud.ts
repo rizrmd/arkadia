@@ -1,3 +1,4 @@
+import {desktopNavigationLayout} from './desktop-layout';
 import { Container, Graphics, Rectangle, Sprite, type Texture } from 'pixi.js';
 import type { FrameSet } from './frames';
 import { mobileHudLayout } from './mobile-layout';
@@ -541,6 +542,8 @@ export class Hud extends Container {
   const g = this.trRibbonBg;
   g.clear();
   if (this.isMobile) { this.layoutMobileRibbon(); return; }
+  // Mobile fits text per slot; restore its desktop scale before measuring or placing.
+  for (const text of [this.trRibbonGoldText, this.trRibbonClockText, this.trRibbonZoneText, this.trRibbonCoopText]) text.scale.set(1);
   (this.trRibbonGoldIcon as Sprite).texture=this.frames.texture('icon-coins');
   (this.trRibbonClockIcon as Sprite).texture=this.frames.texture('icon-clock');
   (this.trRibbonZoneIcon as Sprite).texture=this.frames.texture('icon-pin');
@@ -599,7 +602,7 @@ export class Hud extends Container {
   // ---------------------------------------------------------------------------
   // 2. MIDDLE ROW: Frameless Status Ledger (`Safe Zone ♦ Co-op · Solo`) + Filigree Rule
   // ---------------------------------------------------------------------------
-  const ledgerCy = this.isPortrait ? 95 : 92;
+  const ledgerCy = this.isPortrait ? 95 : 82;
   const ledgerTextY = ledgerCy + 5.2;
   const ledgerRightX = rightAnchor - 3;
 
@@ -634,7 +637,7 @@ export class Hud extends Container {
   centred(this.trRibbonZoneIcon, zoneIconCx, ledgerCy - 0.5, this.isPortrait ? 20 : 18, this.isPortrait ? 25 : 23);
 
   // Delicate antique-gold filigree divider rule with central 4-point star node
-  const ruleY = this.isPortrait ? 119 : 115;
+  const ruleY = this.isPortrait ? 119 : 103;
   const ruleRightX = rightAnchor - 3;
   const ruleLeftX = Math.min(goldMedX - medR + 12, zoneIconCx - 14);
   const ruleMidX = Math.round((ruleLeftX + ruleRightX) / 2);
@@ -679,7 +682,7 @@ export class Hud extends Container {
   // 3. BOTTOM ROW: Iconless High-Contrast Telemetry (`24 MS ♦ 60 FPS`)
   // ---------------------------------------------------------------------------
   const telK = this.isDesktopTelemetry ? 0.7 : 1;
-  const telCy = this.isPortrait ? 143 : 138;
+  const telCy = this.isPortrait ? 143 : 124;
   const telTextY = telCy + 5.2 * telK;
   const telRightX = rightAnchor - 3;
   const placeTel = (t: MsdfText, x: number) => {
@@ -710,6 +713,25 @@ export class Hud extends Container {
    filigreeRule: { leftX: ruleLeftX, midX: ruleMidX, rightX: ruleRightX, y: ruleY },
    telemetry: { leftX: pingX, sepX: telSepX, rightX: telRightX, cy: telCy },
   };
+  this.layoutDesktopNavigation();
+ }
+
+ private layoutDesktopNavigation() {
+  if (!this.isMobile && this.isAltB) {
+   const panel = desktopNavigationLayout(this.lastWidth, this.lastHeight);
+   const b = this.trDesignBounds;
+   const left = Math.min(b.goldPlaque.medX - b.goldPlaque.medR, b.ledger.leftX, b.filigreeRule.leftX - 16);
+   const right = Math.max(b.clockPlaque.rightX + 7, b.filigreeRule.rightX + 8);
+   const top = b.goldPlaque.cy - b.goldPlaque.medR;
+   const scale = panel.width / (right - left);
+   // Use screen pixels so wide and short monitors retain the same readable column.
+   this.groups.tr.scale.set(1);
+   this.groups.tr.pivot.set(0, 0);
+   this.groups.tr.position.set(this.lastWidth - panel.right - panel.width, panel.top);
+   this.trRibbonGroup.pivot.set(left, top);
+   this.trRibbonGroup.position.set(0, 0);
+   this.trRibbonGroup.scale.set(scale);
+  }
  }
 
  private layoutMobileRibbon() {
@@ -1334,6 +1356,21 @@ export class Hud extends Container {
    const b=this.trRibbonGroup.getBounds();
    return {variant:'approved-mobile',isPortrait:this.isPortrait,goldLabel:this.trRibbonGoldText.text,timeLabel:this.trRibbonClockText.text,zoneLabel:this.trRibbonZoneText.text,fpsLabel:this.trTelemetryFpsText.text,screenBounds:{left:b.minX,top:b.minY,right:b.maxX,bottom:b.maxY,width:b.width,height:b.height}};
   }
+  if (this.isAltB) {
+   const panel = desktopNavigationLayout(this.lastWidth, this.lastHeight);
+   const scale = panel.width / (designRight - designLeft);
+   return {
+    variant: 'desktop-navigation-column', isPortrait: this.isPortrait,
+    goldLabel: this.trRibbonGoldText.text, timeLabel: this.trRibbonClockText.text,
+    zoneLabel: this.trRibbonZoneText.text, coopLabel: this.state.coopLabel ?? null,
+    pingLabel: this.state.coopLabel === undefined ? null : this.trTelemetryPingText.text,
+    fpsLabel: this.trTelemetryFpsText.text, telemetryTextScale: this.trTelemetryPingText.scale.x,
+    ribbonScale: scale, designBounds: b,
+    screenBounds: {left: this.lastWidth-panel.right-panel.width, right: this.lastWidth-panel.right,
+     top: panel.top, bottom: panel.top+(designBottom-designTop)*scale,
+     width: panel.width, height: (designBottom-designTop)*scale},
+   };
+  }
   return {
    variant: this.isAltB ? 'concept-3-medallion-plaques-ledger' : 'legacy-4-pill-stack',
    isPortrait: this.isPortrait,
@@ -1481,8 +1518,8 @@ export class Hud extends Container {
   const s = this.lastScale;
   if (this.isAltB) {
    if(this.isMobile){const safe=mobileHudLayout(this.lastWidth),k=safe.scale*1.22;return {x:safe.left+6+430*k,y:safe.top+3+180*k,scale:k};}
-   const designY = this.isPortrait ? 172 : 162;
-   return { x: this.lastWidth - 18 * s, y: designY * s, scale: s };
+   const t = this.getTopRightTelemetry();
+   return {x: t.screenBounds.right, y: t.screenBounds.bottom + 8, scale: this.trRibbonGroup.scale.x};
   }
   const designY = row === 1 ? 126 : 232;
   return { x: this.lastWidth - 12 * s, y: designY * s, scale: s };
@@ -1597,6 +1634,7 @@ export class Hud extends Container {
    this.groups.bl.visible=false;this.brEscGroup.visible=false;
   }
   this.layoutTopRightRibbon();
+  this.layoutDesktopNavigation();
   for (const img of [this.backdrop, this.overlay]) {
    if (!img) continue;
    const c = Math.max(width / W, height / H);
