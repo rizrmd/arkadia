@@ -13,10 +13,10 @@ const report={base,shots:{},errors:[],console:[],frontier:null,traversal:[],ok:t
 const SPOTS={
  'gate-road':[18.6,19.9],'frontier-road':[21.0,21.6],'ruined-gate':[21.0,23.6],'through-ruined-gate':[21.0,27.0],'pillar-courtyard':[20.6,31.6],'settlement':[17.6,31.0],
  'settlement-east':[24.4,30.4],'shrine-trail':[8.0,21.6],
- 'watchtower':[28.4,18.9],'behind-watchtower':[28.9,13.4],'snowy-shrine':[0.9,28.0],'north-west-grove':[-9.5,6.0],'north-east-grove':[6.5,-9.5],'frozen-steppe':[29.5,29.0],
+ 'watchtower':[28.4,18.9],'watchtower-stairs':[29.5,17.6],'shrine-forecourt':[1.6,33.3],'behind-watchtower':[28.9,13.4],'snowy-shrine':[0.9,28.0],'north-west-grove':[-9.5,6.0],'north-east-grove':[6.5,-9.5],'frozen-steppe':[29.5,29.0],
 };
 // Every ruin area and a stretch of each path, on desktop and both phone orientations (before/after comparisons).
-const RUINS=['frontier-road','ruined-gate','pillar-courtyard','settlement','settlement-east','watchtower','snowy-shrine','shrine-trail'];
+const RUINS=['frontier-road','ruined-gate','pillar-courtyard','settlement','settlement-east','watchtower','watchtower-stairs','snowy-shrine','shrine-forecourt','shrine-trail'];
 const VIEWS=[['desktop',1440,900,false,[...RUINS,'gate-road','through-ruined-gate','behind-watchtower','north-west-grove','north-east-grove','frozen-steppe']],
  ['portrait',390,844,true,RUINS],['landscape',844,390,true,RUINS]];
 try{
@@ -63,8 +63,13 @@ try{
     ['through-ruined-gate',[21.0,23.4],['KeyS','KeyA'],9000,h=>h.v>26.6],
    ]){
     await page.evaluate(([u,v])=>{const a=window.__STRONGHOLD_COMBAT__;a.setPreviewMode(false);a.clearFoes();a.teleport(u,v);},from);await page.waitForTimeout(800);
-    for(const k of keys)await page.keyboard.down(k);await page.waitForTimeout(ms);for(const k of keys)await page.keyboard.up(k);await page.waitForTimeout(400);
-    const hero=await page.evaluate(()=>window.__STRONGHOLD_COMBAT__.snapshot().hero),pass=check?check(hero):true;
+    // Walks with a goal hold the keys until it is reached (up to 25 s: headless frames on a loaded box crawl); a walk
+    // into a wall holds them for its time and must end against it.
+    const hero0=()=>page.evaluate(()=>window.__STRONGHOLD_COMBAT__.snapshot().hero);
+    for(const k of keys)await page.keyboard.down(k);
+    if(check&&label.startsWith('through')){const t0=Date.now();while(Date.now()-t0<25000&&!check(await hero0()))await page.waitForTimeout(500);}else await page.waitForTimeout(ms);
+    for(const k of keys)await page.keyboard.up(k);await page.waitForTimeout(400);
+    const hero=await hero0(),pass=check?check(hero):true;
     report.traversal.push({label,from,to:[+hero.u.toFixed(2),+hero.v.toFixed(2)],pass});console.log(label,hero.u.toFixed(2),hero.v.toFixed(2),pass);
     if(!pass)report.ok=false;
    }

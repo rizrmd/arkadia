@@ -26,7 +26,8 @@ const baked=[];
 for(const e of prefab.props){if(e.layout==='legacy')continue;const file=`public/modular-stronghold/${e.assetSet==='v1'?'':'v2/'}${e.id}.png`,m=await sharp(file).metadata(),h=m.height*e.width/m.width,foot=e.foot??.97,p=W(e.u,e.v);
  baked.push({id:e.id,ground:['snowdrift-edge','weeds-edge','paving-worn'].includes(e.id),x0:p.x-e.width/2,x1:p.x+e.width/2,y0:p.y-h*foot,y1:p.y+h*(1-foot),y:p.y});}
 {const g=prefab.buildings.gate;baked.push({id:'gate',ground:false,x0:g.x-g.width/2,x1:g.x+g.width/2,y0:g.y-320,y1:g.y+10,y:g.y});}
-const rnd=(seed=>()=>{seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;})(20261024);
+const stream=seed=>()=>{seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};
+let rnd=stream(20261024);
 
 // Kit entries for the grounded v3 decals (scripts/frozen-frontier-map/ground-kit.mjs), and draw bands: trampled snow
 // lies under the floors and flagstones, loose stones and plant patches on top of them. Drifts are uprights without a
@@ -39,6 +40,17 @@ Object.assign(data.kit,{
  'drift-ne':{layer:'upright',block:[]},'drift-se':{layer:'upright',block:[]},'drift-mound':{layer:'upright',block:[]},
 });
 data.kit['grass-patch'].band=data.kit['rock-scatter'].band='over';
+// The 2:1 isometric pillars, stairs and fallen columns (ground-kit.mjs ISO): footprints are the modelled blocks.
+// stairs-nw climbs toward -u (approached from +u), stairs-ne toward -v (approached from +v); the pivot is the middle
+// of the flight on the ground, so its top edge is at -run/2 on the climbing axis.
+const STAIRS={'stairs-nw':{axis:'u',run:.6,w:1.2,rise:25.3},'stairs-ne':{axis:'v',run:.84,w:.56,rise:46}};
+Object.assign(data.kit,{
+ 'pillar-intact':{layer:'upright',block:[[-.15,-.15,.15,.15]]},'pillar-broken':{layer:'upright',block:[[-.15,-.15,.15,.15]]},
+ 'stairs-nw':{layer:'upright',block:[[-.3,-.6,.3,.6]]},'stairs-ne':{layer:'upright',block:[[-.28,-.42,.28,.42]]},
+ 'column-fallen':{layer:'upright',block:[[-.42,-.11,.47,.12]]},'column-fallen-v':{layer:'upright',block:[[-.11,-.42,.12,.47]]},
+});
+// A flight's pivot for a top edge at `edge` on its climbing axis, centred on `mid` along the other.
+const flightAt=(a,edge,mid)=>{const f=STAIRS[a],c=edge+f.run/2;return f.axis==='u'?[c,mid]:[mid,c];};
 
 const placed=[],paths=[],solids=[],errors=[],reserved=[];
 const CLEAR={u:17,v:17,r:4.6};
@@ -64,7 +76,9 @@ function problems(a,u,v,s=1,opts={}){
  return [...new Set(out)];
 }
 // o: s size, f mirror, r ground-plane turn (deg, ground decals), lift (px above the ground pivot), on (a cap's wall).
+const scattered=new Set();
 function put(a,u,v,o={}){const s=o.s??1,bad=problems(a,u,v,s,o);if(bad.length){if(!o.scatter)errors.push(`${a} at (${u.toFixed(2)}, ${v.toFixed(2)}): ${bad.join(', ')}`);return false;}
+ if(o.scatter)scattered.add(placed.length);
  placed.push({a,u:+(u+OU).toFixed(2),v:+(v+OV).toFixed(2),...(s!==1?{s:+s.toFixed(3)}:{}),...(o.lift?{lift:o.lift}:{}),...(o.on?{on:o.on}:{}),...(o.f?{f:1}:{}),...(o.r?{r:Math.round(o.r)}:{}),zone:o.zone});
  solids.push(...rects(a,u,v,s,!!o.f));return true;}
 // Keep scattered plants and rocks out of a ruin's footprint (court-local tile rectangle).
@@ -97,7 +111,12 @@ function trail(zone,pts,o={}){
 // ---- Paths: gate -> ruined gate -> the old village; branch east to the watchtower; branch west to the shrine.
 trail('Frontier road',[[17.4,17.6],[19.6,19.4],[20.8,22.2],[21.0,24.4],[21.0,27.2],[21.1,29.2],[20.9,31.0],[20.6,32.4]]);
 trail('Watch road',[[19.6,19.4],[22.4,18.6],[25.4,18.1],[27.6,17.4],[29.3,16.95]]);
-trail('Shrine trail',[[17.4,17.6],[15.0,20.4],[12.0,21.4],[8.0,21.3],[4.0,21.4],[1.4,22.4],[0.8,25.0],[2.6,26.9],[5.0,28.6],[5.4,30.3],[3.4,30.4]]);
+// The shrine trail ends at the front of the shrine's forecourt, which lies before its steps (they face +v). It was
+// re-routed there on 2026-10-24; its route draws from its own stream, and the main stream skips the 998 draws the old
+// route took, so every placement scattered after it stays where it was.
+{const main=rnd;rnd=stream(20261025);
+trail('Shrine trail',[[17.4,17.6],[15.0,20.4],[12.0,21.4],[8.0,21.3],[4.0,21.4],[1.4,22.4],[0.8,25.0],[2.6,26.9],[5.0,28.6],[5.3,30.4],[4.5,32.8],[3.0,34.3],[1.58,34.4],[1.58,32.6]]);
+rnd=main;for(let i=0;i<998;i++)rnd();}
 
 // ---- Ruined gate: the frontier's entrance, straddling the road between its piers. Its curtain wall still joins the
 // east pier and trails off into rubble; to the west it has fallen, leaving a broken stub bridged by rubble.
@@ -110,15 +129,20 @@ put('rock-boulders',23.6,23.4,{zone:'Ruined gate',s:.85});
 put('dead-snag',17.7,23.1,{zone:'Ruined gate'});
 reserve(17.3,24.9,25.4,26.6);
 
-// ---- Temple (pillar courtyard): a raised podium half buried in snow, entered by stairs on its east side, with a
-// colonnade along both long edges standing on the podium; fallen columns lie where pillars are missing.
-const POD={u:18.4,v0:31.0,h:25};
+// ---- Temple (pillar courtyard): a raised podium half buried in snow, entered by stairs on its +u side, where the
+// road arrives, with a colonnade along both long edges standing on the podium; fallen columns lie where pillars are
+// missing. The podium is two foundations, 2 x 2 tiles each (top face: the v1 diamond's half width 376 px at 1/3 world
+// px per px = 0.979 tiles, lifted 25.3 px); the stairs climb -u, flush onto its +u edge, as high as its lift.
+const POD={u:18.4,v0:31.0,h:25,half:.979};
 put('ground-scuff-a',18.5,32.0,{zone:'Temple',s:1.15,r:20});
 put('foundation',POD.u,POD.v0,{zone:'Temple'});put('foundation',POD.u,POD.v0+2,{zone:'Temple',f:true});
-put('stairs-nw',19.86,32.0,{zone:'Temple',onPath:true});
+put('stairs-nw',...flightAt('stairs-nw',POD.u+POD.half,POD.v0+1),{zone:'Temple',onPath:true});
 // Both rows leave a wider bay at the middle, the entrance the stairs climb to.
 for(const [a,du,v] of [['pillar-intact',-.78,30.2],['pillar-intact',-.78,31.1],['pillar-broken',-.78,32.9],['pillar-intact',-.78,33.8],
  ['pillar-intact',.78,30.2],['pillar-broken',.78,31.05],['pillar-intact',.78,32.95],['pillar-intact',.78,33.8]])put(a,POD.u+du,v,{zone:'Temple',lift:POD.h,s:a==='pillar-intact'?1.06:1});
+// One shaft fell from the broken pillar of the -u row across the podium; another lies in the snow below the +u row.
+put('column-fallen',18.35,33.3,{zone:'Temple',lift:POD.h});
+put('column-fallen-v',19.95,30.15,{zone:'Temple'});
 foot('Temple',0,0,[['rubble',17.0,32.5,.9],['rubble',19.75,30.0,.75],['stone-chips-a',20.3,31.0],['stone-chips-b',19.6,34.6],['drift-ne',19.95,33.3,.85],
  ['drift-mound',17.3,34.6],['grass-tussock',16.95,31.1],['shrub-juniper',17.1,34.9,.8],['grass-patch',20.3,33.4],['grass-tussock',19.9,34.75,.8]]);
 reserve(16.6,29.3,20.4,35.2);
@@ -148,8 +172,12 @@ reserve(23.8,28.9,29.2,33.5);
 
 // ---- Broken watchtower by the east ridge: stairs climb to its door, and its yard wall runs south from the tower to the
 // yard's front corner, breached once (rubble fills the gap), its front wall fallen.
+// The tower's door (v2 art) is 26.7 px left of its pivot with its sill 42 px above it; the ground under the door, at
+// the wall, is (30.25, 15.67), 46 px below the sill. The stairs climb -v (the road arrives from +v) flush to that
+// wall, as high as the sill, their +u cheek against the yard wall.
+const DOOR={u:30.2,v:15.67};
 put('broken-watchtower',30.4,15.4,{zone:'Watchtower'});
-put('stairs-ne',29.45,16.2,{zone:'Watchtower',s:.9,join:true,onPath:true});
+put('stairs-ne',...flightAt('stairs-ne',DOOR.v,DOOR.u),{zone:'Watchtower',join:true,onPath:true});
 put('wall-ne',30.75,15.85,{zone:'Watchtower',join:true});
 put('wall-ne',31.0,18.35,{zone:'Watchtower',join:true});
 put('corner-n',31.3,20.35,{zone:'Watchtower',join:true});
@@ -158,14 +186,19 @@ foot('Watchtower',0,0,[['rubble',30.8,17.05,.8],['stone-chips-a',31.45,17.2],['r
 put('dead-snag',26.6,20.6,{zone:'Watchtower'});
 reserve(28.2,13.0,33.6,21.2);
 
-// ---- Snowy shrine: the exploration goal at the end of the western trail. The trail ends in a flagstone forecourt
-// before the shrine's steps, lined by two pairs of columns.
+// ---- Snowy shrine: the exploration goal at the end of the western trail. Its steps face +v: their bottom edge (v2
+// art: 164 px left of and 70 px below its pivot, at 0.119 world px per px) lies along u at v 30.88, centred on u 1.58.
+// The trail ends in a square flagstone forecourt laid on the grid, its back edge tucked under that bottom step, lined
+// by two pairs of columns, one fallen.
+const STEP={u:1.58,v:30.88};
 put('snowy-shrine',1.6,30.6,{zone:'Snowy shrine'});
-put('ground-scuff-a',3.1,30.2,{zone:'Snowy shrine',s:.9,r:60});
-put('paving',2.95,30.4,{zone:'Snowy shrine',s:.78,r:8});
-for(const [a,u,v] of [['pillar-intact',2.65,29.5],['pillar-intact',3.85,29.55],['pillar-intact',2.7,31.3],['pillar-broken',3.9,31.25]])put(a,u,v,{zone:'Snowy shrine'});
-foot('Snowy shrine',0,0,[['rubble',4.55,31.75,.75],['stone-chips-b',4.6,29.4],['drift-mound',2.25,31.85,.8],['shrub-juniper',-0.6,31.4],['shrub-juniper',4.6,28.4,.85],
- ['grass-tussock',2.0,32.5],['dead-tree',5.3,33.9],['grass-patch',4.2,31.9,.8],['rock-scatter',0.6,29.3]]);
+put('ground-scuff-a',STEP.u+.2,STEP.v+.95,{zone:'Snowy shrine',s:.9,r:45});
+put('paving',STEP.u,STEP.v+.78,{zone:'Snowy shrine',s:.95});
+// The columns stand out along the approach (+v), clear of the shrine's screen column, so none hides its steps.
+for(const [a,u,v] of [['pillar-intact',STEP.u-.8,STEP.v+1.4],['pillar-intact',STEP.u+.8,STEP.v+1.4],['pillar-intact',STEP.u-.8,STEP.v+2.2],['pillar-broken',STEP.u+.8,STEP.v+2.2]])put(a,u,v,{zone:'Snowy shrine'});
+put('column-fallen-v',STEP.u-1.5,STEP.v+1.9,{zone:'Snowy shrine'});
+foot('Snowy shrine',0,0,[['rubble',4.55,31.75,.75],['stone-chips-b',4.6,29.4],['drift-mound',-0.1,32.2,.8],['shrub-juniper',-0.6,31.4],['shrub-juniper',4.6,28.4,.85],
+ ['grass-tussock',0.4,32.9],['dead-tree',5.3,33.9],['grass-patch',3.4,30.9,.8],['rock-scatter',0.6,29.3]]);
 reserve(-1.0,27.8,5.2,33.4);
 
 // ---- Plants and rocks: dense groves behind the Stronghold, thinner woods to the sides, sparse open snow in front.
@@ -186,12 +219,17 @@ for(const z of zones){const pool=Object.entries(z.mix).flatMap(([a,w])=>Array(w)
   if(put(a,u,v,{s:lo+rnd()*(hi-lo),f:rnd()<.5,zone:z.zone,scatter:true}))made++;}}
 
 if(errors.length){console.error(errors.join('\n'));process.exit(1);}
-data.placements=placed;
+// Trails are scattered before the ruins stand, so a plant or drift may have landed inside a flight of stairs or a
+// fallen column (they have no footprint of their own); those are dropped.
+const ruinRects=placed.filter(p=>/^(stairs|column-fallen)/.test(p.a)).flatMap(p=>rects(p.a,p.u-OU,p.v-OV,p.s??1,!!p.f));
+const inRuin=(p,i)=>scattered.has(i)&&data.kit[p.a].layer!=='ground'&&!data.kit[p.a].block.length&&ruinRects.some(r=>p.u-OU>r[0]&&p.u-OU<r[2]&&p.v-OV>r[1]&&p.v-OV<r[3]);
+const dropped=placed.filter(inRuin);if(dropped.length)console.log('dropped inside stairs/columns:',dropped.map(p=>`${p.a} (${p.u}, ${p.v})`).join('; '));
+data.placements=placed.filter((p,i)=>!inRuin(p,i));
 // One kit sprite and one placement per line keeps the file reviewable.
 const line=o=>JSON.stringify(o).replace(/,"/g,', "').replace(/":/g,'": ').replace(/\],\[/g,'], [').replace(/,(-?\d)/g,', $1');
 const json=['{',` "id": "${data.id}",`,` "version": ${data.version},`,` "map": "${data.map}",`,' "notes": ['+data.notes.map(n=>'\n  '+JSON.stringify(n)).join(',')+'\n ],',
- ' "kit": {',Object.entries(data.kit).map(([k,v])=>`  ${JSON.stringify(k)}: ${line(v)}`).join(',\n'),' },',' "placements": [',placed.map(p=>'  '+line(p)).join(',\n'),' ]','}'].join('\n');
+ ' "kit": {',Object.entries(data.kit).map(([k,v])=>`  ${JSON.stringify(k)}: ${line(v)}`).join(',\n'),' },',' "placements": [',data.placements.map(p=>'  '+line(p)).join(',\n'),' ]','}'].join('\n');
 await fs.writeFile(FILE,json+'\n');
-const used=new Set(placed.map(p=>p.a)),missing=Object.keys(data.kit).filter(a=>!used.has(a));
-console.log(placed.length,'placements;',used.size,'of',Object.keys(data.kit).length,'sprites used',missing.length?'· MISSING '+missing:'');
-const byZone={};for(const p of placed)byZone[p.zone]=(byZone[p.zone]||0)+1;console.log(byZone);
+const used=new Set(data.placements.map(p=>p.a)),missing=Object.keys(data.kit).filter(a=>!used.has(a));
+console.log(data.placements.length,'placements;',used.size,'of',Object.keys(data.kit).length,'sprites used',missing.length?'· MISSING '+missing:'');
+const byZone={};for(const p of data.placements)byZone[p.zone]=(byZone[p.zone]||0)+1;console.log(byZone);

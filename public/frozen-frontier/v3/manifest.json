@@ -12,7 +12,7 @@
   "halfHeight": 32
  },
  "lighting": "Soft upper-left daylight, matching v1/v2",
- "note": "Grounded v1 modules replace their v1 exports in the game atlas (same ids, same ground pivot and footprint); the rest are new ground decals. Recipe parameters are recorded per asset.",
+ "note": "Grounded v1 modules replace their v1 exports in the game atlas (same ids, same ground pivot and footprint). The pillars, stairs and fallen columns are modelled in true 2:1 isometric (recipe.iso; their footprints are set in layout.mjs); the rest are new ground decals. Recipe parameters are recorded per asset.",
  "assets": [
   {
    "id": "wall-ne",
@@ -200,120 +200,146 @@
    "id": "pillar-intact",
    "file": "assets/pillar-intact.png",
    "size": [
-    206,
-    416
+    213,
+    457
    ],
    "pivot": {
-    "x": 94,
-    "y": 364.5
+    "x": 98.1,
+    "y": 392.4
    },
    "scale": 0.25,
-   "widthWorld": 51.5,
-   "heightM": 2.4,
+   "widthWorld": 53.25,
+   "heightM": 2.42,
    "footprintM": [
-    0.65,
-    0.65
+    0.88,
+    0.88
    ],
-   "source": "public/frozen-frontier/v1/assets/pillar-intact.png",
+   "source": "procedural 2:1 isometric blocks (iso-solid.mjs), stone from v1 pillar-intact and paving",
    "recipe": {
     "kind": "grounded",
     "bank": [
-     5,
-     8
+     3,
+     6
     ],
     "spill": 3,
     "tail": 6,
-    "band": 16
+    "band": 16,
+    "cap": false,
+    "iso": {
+     "boxes": 6
+    }
    }
   },
   {
    "id": "pillar-broken",
    "file": "assets/pillar-broken.png",
    "size": [
-    191,
-    254
+    213,
+    297
    ],
    "pivot": {
-    "x": 87,
-    "y": 197.7
+    "x": 98.1,
+    "y": 233.2
    },
    "scale": 0.25,
-   "widthWorld": 47.75,
-   "heightM": 1.1,
+   "widthWorld": 53.25,
+   "heightM": 1.3,
    "footprintM": [
-    0.65,
-    0.65
+    0.88,
+    0.88
    ],
-   "source": "public/frozen-frontier/v1/assets/pillar-broken.png",
+   "source": "procedural 2:1 isometric blocks (iso-solid.mjs), stone from v1 pillar-intact and paving",
    "recipe": {
     "kind": "grounded",
     "bank": [
-     5,
-     9
+     2,
+     4
     ],
     "spill": 3,
     "tail": 6,
-    "band": 14
+    "band": 14,
+    "cap": false,
+    "iso": {
+     "boxes": 7
+    }
    }
   },
   {
    "id": "stairs-ne",
    "file": "assets/stairs-ne.png",
    "size": [
-    509,
-    359
+    447,
+    385
    ],
    "pivot": {
-    "x": 249,
-    "y": 221.7
+    "x": 214.3,
+    "y": 266
    },
    "scale": 0.25,
-   "widthWorld": 127.25,
-   "heightM": 0.75,
+   "widthWorld": 111.75,
+   "heightM": 1.13,
    "footprintM": [
-    1.5,
-    1.5
+    1.98,
+    2.34
    ],
-   "source": "public/frozen-frontier/v1/assets/stairs-ne.png",
+   "source": "procedural 2:1 isometric blocks (iso-solid.mjs), stone from v1 pillar-intact and paving",
    "recipe": {
     "kind": "grounded",
     "bank": [
-     5,
-     10
+     2,
+     4
     ],
     "spill": 4,
     "tail": 8,
-    "band": 16
+    "band": 10,
+    "cap": false,
+    "iso": {
+     "boxes": 18,
+     "climbs": "-v",
+     "n": 6,
+     "H": 39,
+     "run": 0.78,
+     "w": 0.66
+    }
    }
   },
   {
    "id": "stairs-nw",
    "file": "assets/stairs-nw.png",
    "size": [
-    511,
-    406
+    539,
+    374
    ],
    "pivot": {
-    "x": 250,
-    "y": 253.2
+    "x": 268.1,
+    "y": 234.2
    },
    "scale": 0.25,
-   "widthWorld": 127.75,
-   "heightM": 0.75,
+   "widthWorld": 134.75,
+   "heightM": 0.77,
    "footprintM": [
-    1.5,
-    1.5
+    1.8,
+    3.6
    ],
-   "source": "public/frozen-frontier/v1/assets/stairs-nw.png",
+   "source": "procedural 2:1 isometric blocks (iso-solid.mjs), stone from v1 pillar-intact and paving",
    "recipe": {
     "kind": "grounded",
     "bank": [
-     5,
-     10
+     2,
+     4
     ],
     "spill": 4,
     "tail": 8,
-    "band": 16
+    "band": 10,
+    "cap": false,
+    "iso": {
+     "boxes": 12,
+     "climbs": "-u",
+     "n": 4,
+     "H": 25.3,
+     "run": 0.6,
+     "w": 1.2
+    }
    }
   },
   {
@@ -798,6 +824,74 @@
     "b": 46,
     "grass": 34,
     "pebbles": 12
+   }
+  },
+  {
+   "id": "column-fallen",
+   "file": "assets/column-fallen.png",
+   "size": [
+    332,
+    225
+   ],
+   "pivot": {
+    "x": 147,
+    "y": 126.9
+   },
+   "scale": 0.25,
+   "widthWorld": 83,
+   "heightM": 0.5,
+   "footprintM": [
+    2.66,
+    0.7
+   ],
+   "source": "procedural 2:1 isometric blocks (iso-solid.mjs), stone from v1 pillar-intact and paving",
+   "recipe": {
+    "kind": "grounded",
+    "bank": [
+     1.5,
+     3.5
+    ],
+    "spill": 3,
+    "tail": 5,
+    "band": 8,
+    "cap": false,
+    "iso": {
+     "boxes": 4
+    }
+   }
+  },
+  {
+   "id": "column-fallen-v",
+   "file": "assets/column-fallen-v.png",
+   "size": [
+    332,
+    224
+   ],
+   "pivot": {
+    "x": 163.2,
+    "y": 126.9
+   },
+   "scale": 0.25,
+   "widthWorld": 83,
+   "heightM": 0.5,
+   "footprintM": [
+    0.7,
+    2.66
+   ],
+   "source": "procedural 2:1 isometric blocks (iso-solid.mjs), stone from v1 pillar-intact and paving",
+   "recipe": {
+    "kind": "grounded",
+    "bank": [
+     1.5,
+     3.5
+    ],
+    "spill": 3,
+    "tail": 5,
+    "band": 8,
+    "cap": false,
+    "iso": {
+     "boxes": 4
+    }
    }
   }
  ]

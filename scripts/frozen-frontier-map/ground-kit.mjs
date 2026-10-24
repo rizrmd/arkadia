@@ -1,4 +1,4 @@
-import sharp from 'sharp';import fs from 'node:fs/promises';
+import sharp from 'sharp';import fs from 'node:fs/promises';import {M,PX_M,renderBoxes,faceTexture,sample,swapUV} from './iso-solid.mjs';
 // Frozen Frontier v3 "grounded" kit: makes the reviewed v1 ruins sit in the snow the way the v2 landmarks already do
 // (their art has snow piled at the base and a soft contact shadow; the v1 modules were generated with neither, so
 // they looked like stages and props placed on top of the map). Everything is derived from the v1 art itself, so the
@@ -13,6 +13,7 @@ import sharp from 'sharp';import fs from 'node:fs/promises';
 //  - flagstone clusters for paths and loose stone chips for their edges, cut from the paving texture;
 //  - snow drifts (lit as a small heightfield) and trampled-snow scuffs, the snow/ground transition under ruins and
 //    along trails.
+// Pillars, stairs and fallen columns are not reworked v1 art but modelled in true 2:1 isometric (ISO below).
 // Seeded and deterministic. Output: public/frozen-frontier/v3/assets/*.png, manifest.json (same format as v1/v2,
 // read by build-assets.mjs) and contact-sheet.webp.
 //   node scripts/frozen-frontier-map/ground-kit.mjs
@@ -74,13 +75,17 @@ const GROUNDED={
  'wall-ne':{bank:[7,15],spill:4,tail:12,band:22},'wall-se':{bank:[7,15],spill:4,tail:12,band:22},
  'corner-n':{bank:[8,15],spill:4,tail:10,band:22},'corner-s':{bank:[8,15],spill:4,tail:10,band:22},
  'arch-ne':{bank:[7,13],spill:4,tail:9,band:22,gaps:true},'arch-se':{bank:[7,13],spill:4,tail:9,band:22,gaps:true},
- 'pillar-intact':{bank:[5,8],spill:3,tail:6,band:16},'pillar-broken':{bank:[5,9],spill:3,tail:6,band:14},
- 'stairs-ne':{bank:[5,10],spill:4,tail:8,band:16},'stairs-nw':{bank:[5,10],spill:4,tail:8,band:16},
+ // Modelled in 2:1 isometric (ISO below); they keep their place here, so every module keeps its noise seed.
+ // Their snow cap lies on their top faces (stoneTop): the strip cap combs on 2:1 sloped silhouettes.
+ 'pillar-intact':{bank:[3,6],spill:3,tail:6,band:16,cap:false},'pillar-broken':{bank:[2,4],spill:3,tail:6,band:14,cap:false},
+ 'stairs-ne':{bank:[2,4],spill:4,tail:8,band:10,cap:false},'stairs-nw':{bank:[2,4],spill:4,tail:8,band:10,cap:false},
  'rubble':{bank:[4,8],spill:3,tail:7,band:12},'foundation':{bank:[12,21],spill:5,tail:10,band:20},
 };
 let seed=11;
-async function grounded(id,o){
- const a=v1.find(x=>x.id===id),k=a.scale*R,src=await load(`${V1}/${a.file}`,k),L=8*R,RP=24*R,B=12*R,w=src.w+L+RP,h=src.h+B,s=seed+=101;
+// iso: a piece modelled in true 2:1 isometric (isoPieces below) instead of a v1 export: {img, pivot, heightM, footprintM}.
+async function grounded(id,o,iso){
+ const a=iso?{scale:1/R,pivot:{x:iso.pivot[0],y:iso.pivot[1]},heightM:iso.heightM,footprintM:iso.footprintM}:v1.find(x=>x.id===id),k=a.scale*R,
+  src=iso?iso.img:await load(`${V1}/${a.file}`,k),L=8*R,RP=24*R,B=12*R,w=src.w+L+RP,h=src.h+B,s=seed+=101;
  const sprite=blank(w,h);over(sprite,src,L,0);const pivot=[a.pivot.x*k+L,a.pivot.y*k];
  const A=i=>sprite.d[i*4+3];
  if(o.cap!==false)snowCap(sprite,s);
@@ -119,7 +124,7 @@ async function grounded(id,o){
    const t=(y-top)/span,n=fbm(x/(3*R),y/(3*R),s+13),rim=y-top<1.2*R?.5*(1-(y-top)/(1.2*R)):0;
    let c=mix(snowAt(t,n),[253,254,255],rim);c=mix(c,SNOW.shade,clamp(sh[y*w+x]*.55));c=c.map(v=>v+(hash(x,y,s)-.5)*6);put(out,x,y,c,al);}}
  const {img,pivot:p}=crop(out,pivot);await save(img,`${OUT}/assets/${id}.png`);
- record(id,img,p,{heightM:a.heightM,footprintM:a.footprintM,source:`${V1}/${a.file}`,recipe:{kind:'grounded',...o}});
+ record(id,img,p,{heightM:a.heightM,footprintM:a.footprintM,source:iso?iso.source:`${V1}/${a.file}`,recipe:{kind:'grounded',...o,...(iso?{iso:iso.recipe}:{})}});
 }
 
 // ---- Sunk floors: the top face only, eroded to an irregular outline under a snow lip.
@@ -232,7 +237,71 @@ async function scuff(id,o){
  record(id,img,p,{heightM:0,footprintM:[o.a*2/43,o.b/43],density:1.2,source:'procedural',recipe:{kind:'scuff',...o}});
 }
 
-for(const [id,o] of Object.entries(GROUNDED))await grounded(id,o);
+// ---- Pillars, stairs and fallen columns in true 2:1 isometric (iso-solid.mjs). The v1 pillars were drawn face-on
+// (one flat front, a rectangular plinth) and the v1 stairs in perspective (steep, non-parallel step edges), so they
+// read as cut-outs beside the 2:1 walls and floors. They are modelled here as stone blocks on the map grid instead:
+// a square shaft with two visible faces on diamond plinths and capital, flights whose step edges run parallel to the
+// edge they climb onto, and fallen shaft pieces. The stone is the v1 pillar's own (its face-on shaft and carved
+// capital band), the top faces the paving's, lit like the walls (iso-solid.mjs LIGHT); grounded() then adds the same
+// snow bank, contact shadow and snow cap as every other upright.
+const pillarArt=await load(`${V1}/assets/pillar-intact.png`,1);
+// Face-on windows of the v1 pillar: the shaft's front face (its right edge is the shaft's corner) and the carved band.
+const SHAFT=faceTexture(pillarArt,{x0:160,x1:422,yt:470,yb:1592,ppm:500}),SHAFT_BARE=faceTexture(pillarArt,{x0:160,x1:422,yt:470,yb:1592,ppm:500,desnow:true}),ORNAMENT=faceTexture(pillarArt,{x0:142,x1:438,yt:302,yb:418,ppm:480});
+const tri=(x,a)=>{let m=(x+a)%(4*a);if(m<0)m+=4*a;return m<2*a?m-a:3*a-m;};
+// Top faces sample the paving (already a 2:1 ground-plane texture) at the face's own map position, with snow lying
+// on them: snow sets the cover, back (m) piles more against the back edges, where wind leaves it and nobody treads.
+// Snow settles thickest along the back edges, where it crests (the walls' cap seen from above).
+const stoneTop=(snow,s,{back=0,off=[0,0]}={})=>(u,v,b)=>{
+ const x=(u-v)*64*R+off[0],y=(u+v)*32*R+off[1],n=fbm(u*26+s%9,v*26,s),m=fbm(u*70,v*70,s+3);
+ const c=jointSnow(sample(pave.im,pave.C[0]+tri(x,300),pave.C[1]+tri(y,140)).slice(0,3),m);
+ const e=Math.min(u-b.u0,v-b.v0)*64,bk=back?clamp(1-Math.min(u-b.u0,v-b.v0)/M/back):0,cov=smooth(.5,.62,snow+(n-.5)*.8+bk*.4+(e<1.2?.25:0));
+ return mix(c,snowAt(e<.8?0:.12+.45*(1-bk)*m,m),cov);};
+const side=(tex,{dt=0,ds=0,k=1}={})=>(f,s,t)=>tex(s+ds,t+dt).slice(0,3).map(x=>x*k);
+// A square block centred on the pivot: half side h (m), from z0 to z1 (m); texture t counts from its own foot.
+const sq=(h,z0,z1,o)=>({u0:-h*M,v0:-h*M,u1:h*M,v1:h*M,z0:z0*PX_M,z1:z1*PX_M,tref:z0*PX_M,...o});
+function pillar(broken){
+ const base=[sq(.44,0,.17,{side:side(SHAFT,{dt:.31}),top:stoneTop(.3,71,{back:.1})}),sq(.36,.17,.32,{side:side(SHAFT,{dt:.62}),top:stoneTop(.3,73,{back:.1})})];
+ if(!broken)return [...base,sq(.27,.32,2.0,{side:side(SHAFT),top:stoneTop(.9,75)}),sq(.31,2.0,2.06,{side:side(SHAFT,{dt:.95,k:1.04}),top:stoneTop(.55,77)}),
+  sq(.31,2.06,2.27,{side:side(ORNAMENT),top:stoneTop(.6,79)}),sq(.39,2.27,2.42,{side:side(SHAFT,{dt:.4}),top:stoneTop(.62,81,{back:.25})})];
+ // The broken shaft: whole courses below, then what is left of the upper ones, fallen away from the front corner:
+ // [u0, v0, u1, v1 (m, the shaft spans ±.27), z0, z1 (m)].
+ const COURSES=[[-.27,-.27,.27,.27,.32,.8],[-.27,-.27,0,.27,.8,1.17],[0,-.27,.27,0,.8,1.12],[0,0,.27,.27,.8,.96],[-.27,-.27,0,.06,1.17,1.42]];
+ const cells=COURSES.map(([u0,v0,u1,v1,z0,z1],k)=>({u0:u0*M,v0:v0*M,u1:u1*M,v1:v1*M,z0:z0*PX_M,z1:z1*PX_M,tref:.32*PX_M,sref:.27*M,
+  side:(f,s,t,b)=>{const outer=f==='pv'?b.v1>=.27*M-1e-9:b.u1>=.27*M-1e-9;return SHAFT(s,t).slice(0,3).map(x=>x*(outer?1:.8));},top:stoneTop(.55,83+k*5,{back:.1})}));
+ return [...base,...cells];
+}
+// A flight climbing toward -u onto an edge at u = -run/2 (tiles), centred on v = 0: n steps rising H (world px)
+// over run, width w, with stepped cheek walls cw wide standing ch px proud of the treads. Treads and cheeks are
+// columns from the ground, so every riser, tread and cheek edge lies on the grid; one texture runs across them.
+function flight({n,H,run,w,cw,ch}){
+ const t=run/n,out=[];
+ for(let i=0;i<n;i++){const u1=run/2-i*t,u0=u1-t-(i===n-1?.03:0),z=H*(i+1)/n;
+  out.push({u0,u1,v0:-w/2+cw,v1:w/2-cw,z0:0,z1:z,sref:1,side:side(SHAFT,{dt:.4+i*.23}),top:stoneTop(.34,91+i,{back:.18})});
+  for(const sd of [-1,1])out.push({u0,u1,v0:sd<0?-w/2:w/2-cw,v1:sd<0?-w/2+cw:w/2,z0:0,z1:z+ch,sref:1,side:side(SHAFT,{dt:.1}),top:stoneTop(.62,97+i)});}
+ return out;
+}
+// A fallen column lying along u: the shaft broke into drums as it fell (each the shaft's square section, the last
+// half sunk into the snow, the middle one knocked a little off line), with the carved capital at its +u end.
+function fallen(){
+ const drum=(u0,u1,v0,v1,z1,dt)=>({u0:u0*M,u1:u1*M,v0:v0*M,v1:v1*M,z0:0,z1:z1*PX_M,side:(f,s,t,b)=>(f==='pv'?SHAFT_BARE(t+.05,(b.u1-b.u0)/M-s+dt):SHAFT_BARE(s+.1,t+dt+.6).map(x=>x*.9)).slice(0,3),
+  // Snow lies evenly on a lying block, thinning only at its front arrises.
+  top:(u,v,b)=>{const p=SHAFT_BARE((v-b.v0)/M,(b.u1-u)/M+dt).slice(0,3),n=fbm(u*30,v*30,401+dt*10),e=Math.min(b.u1-u,b.v1-v)*57.2;return mix(p,snowAt(.15+.3*n,n),e<.9?.55:.97);}});
+ return [drum(-1.25,-.6,-.29,.25,.4,.2),drum(-.53,.18,-.24,.3,.54,.9),drum(.25,.85,-.27,.27,.54,1.5),
+  {u0:.93*M,u1:1.38*M,v0:-.31*M,v1:.31*M,z0:0,z1:.3*PX_M,side:side(ORNAMENT,{ds:.05}),top:stoneTop(.9,405,{back:.12})}];
+}
+const ISO={
+ 'pillar-intact':{boxes:pillar(false),rough:.7,heightM:2.42,footprintM:[.88,.88]},
+ 'pillar-broken':{boxes:pillar(true),rough:1,heightM:1.3,footprintM:[.88,.88]},
+ // Temple: climbs onto the podium's +u edge, rising its lift (25.3 px: the v1 foundation's top face sits 76/3 px above
+ // its pivot). Watchtower: climbs -v to the tower door's sill (39 px above the tower's pivot ground).
+ 'stairs-nw':{rough:.8,boxes:flight({n:4,H:25.3,run:.6,w:1.2,cw:.11,ch:3}),heightM:.77,footprintM:[1.8,3.6],params:{climbs:'-u',n:4,H:25.3,run:.6,w:1.2}},
+ 'stairs-ne':{rough:.8,boxes:flight({n:6,H:39,run:.78,w:.66,cw:.09,ch:3}).map(swapUV),heightM:1.13,footprintM:[1.98,2.34],params:{climbs:'-v',n:6,H:39,run:.78,w:.66}},
+ 'column-fallen':{boxes:fallen(),rough:1,heightM:.5,footprintM:[2.66,.7],grounded:{bank:[1.5,3.5],spill:3,tail:5,band:8,cap:false}},
+ 'column-fallen-v':{boxes:fallen().map(swapUV),rough:1,heightM:.5,footprintM:[.7,2.66],grounded:{bank:[1.5,3.5],spill:3,tail:5,band:8,cap:false}},
+};
+const isoSource=id=>{const o=ISO[id],{img,pivot}=renderBoxes(o.boxes.map(b=>({rough:o.rough,...b})),{R});
+ return {img,pivot,heightM:o.heightM,footprintM:o.footprintM,source:'procedural 2:1 isometric blocks (iso-solid.mjs), stone from v1 pillar-intact and paving',recipe:{boxes:o.boxes.length,...o.params}};};
+for(const [id,o] of Object.entries(GROUNDED))await grounded(id,o,ISO[id]&&isoSource(id));
 // The raised foundation's top face is the diamond (384, 208) ±376 x ±196 in its 768 px export; the paving's spans
 // the whole export but is drawn steeper than 2:1, so it is squashed first.
 await sunk('floor-sunk',{from:'foundation',face:[384,208,376,196],edge:[.9,.16],bites:[[.55,-.3,.2,.32],[-.2,.62,.16,.3]],holes:.7,footprintM:[6,6]});
@@ -248,10 +317,12 @@ await drift('drift-se',{a:46,b:15,axis:'se',hmax:8});
 await drift('drift-mound',{a:24,b:20,axis:'round',hmax:6});
 await scuff('ground-scuff-a',{a:110,b:84,grass:70,pebbles:24});
 await scuff('ground-scuff-b',{a:70,b:46,grass:34,pebbles:12});
+// New pieces go last, so the modules and decals above keep their seeds.
+for(const id of ['column-fallen','column-fallen-v'])await grounded(id,ISO[id].grounded,isoSource(id));
 
 await fs.writeFile(`${OUT}/manifest.json`,JSON.stringify({version:3,status:'in-game',retired:['snow-cap-ne','snow-cap-se'],generator:'scripts/frozen-frontier-map/ground-kit.mjs (deterministic, derived from the v1 kit art)',
  camera:{projection:'2:1 dimetric',halfWidth:64,halfHeight:32},lighting:'Soft upper-left daylight, matching v1/v2',
- note:'Grounded v1 modules replace their v1 exports in the game atlas (same ids, same ground pivot and footprint); the rest are new ground decals. Recipe parameters are recorded per asset.',assets:manifest},null,1)+'\n');
+ note:'Grounded v1 modules replace their v1 exports in the game atlas (same ids, same ground pivot and footprint). The pillars, stairs and fallen columns are modelled in true 2:1 isometric (recipe.iso; their footprints are set in layout.mjs); the rest are new ground decals. Recipe parameters are recorded per asset.',assets:manifest},null,1)+'\n');
 // Contact sheet on the game's snow colour.
 {const cell=360,cols=6,rows=Math.ceil(manifest.length/cols),sheet=await Promise.all(manifest.map(async(m,i)=>{const im=sharp(`${OUT}/${m.file}`),meta=await im.metadata(),k=Math.min((cell-40)/meta.width,(cell-50)/meta.height,1);
   return [{input:await im.resize(Math.max(1,Math.round(meta.width*k)),Math.max(1,Math.round(meta.height*k))).png().toBuffer(),left:(i%cols)*cell+20,top:Math.floor(i/cols)*cell+30},
