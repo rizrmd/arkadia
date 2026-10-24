@@ -10,6 +10,7 @@ import {createLobby} from './net/lobby';
 import {savedHero,saveHero,type HeroId} from './heroes';
 import {createHeroPicker} from './hero-picker';
 import {startFpsTracelog} from './tracelog';
+import {showFrameCapHint} from './frame-cap';
 
 export async function mount(app:HTMLElement,progress:Progress){
  const rt=await ensurePixiRuntime(app);
@@ -94,6 +95,7 @@ export async function mount(app:HTMLElement,progress:Progress){
  void transact(()=>{}).then(render,console.error);
 
  await new Promise<void>(done=>{const check=()=>canvas.dataset.ready==='true'?done():requestAnimationFrame(check);check();});
+ showFrameCapHint(rt.uiStage,rt.frames);
  startFpsTracelog({rt,getCombatSnapshot:()=>worldView.encounters.snapshot(),getLiveCounts:()=>worldView.encounters.liveCounts(),net,getHeroId:()=>hero});
  await picker.start();
  loaded();

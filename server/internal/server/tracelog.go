@@ -32,6 +32,14 @@ type TracelogClient struct {
 	DPR                 float64 `json:"dpr"`
 	HardwareConcurrency int     `json:"hardwareConcurrency,omitempty"`
 	DeviceMemoryGB      float64 `json:"deviceMemoryGb,omitempty"`
+	// Battery state, when the browser exposes it: Chrome's Energy Saver caps the page at 30 fps on battery.
+	Battery *TracelogBattery `json:"battery,omitempty"`
+}
+
+// TracelogBattery is navigator.getBattery() at send time (level 0..1).
+type TracelogBattery struct {
+	Charging bool    `json:"charging"`
+	Level    float64 `json:"level"`
 }
 
 // TracelogPhaseBreakdown breaks down frame time across game subsystems in milliseconds.

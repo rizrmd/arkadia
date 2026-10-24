@@ -5,6 +5,7 @@ import type {VfxTextureAssetRef} from 'nixie-fx';
 import type {ShaderGraph} from 'nixie-fx/materials';
 import {groundProjection,worldProjection,UNIT_PX,type Anchor,type View} from './space';
 import {tilePoint} from '../stronghold/terrain';
+import {frameCapHz} from '../stronghold/frame-cap';
 // The NixieFX stage: two planes layered into the world — "ground" under every figure (decals: rune circles, scorch,
 // shock rings) and "world" over them (sparks, flames, smoke) — playing the exported effects of vfx/ (packed by
 // scripts/vfx/pack.mjs into /vfx/skills.bin). In the game the planes are containers of its own Pixi scene
@@ -510,8 +511,11 @@ export function createFxStage(o:FxStageOptions){
    if(now-budgetAt>500){
     budgetAt=now;
     // Shrink only while particles are a plausible cause (slow loading frames with nothing playing do not count).
-    if(frameEma>20&&activeParticles()>120)budget=Math.max(BUDGET_MIN,Math.round(budget*.8));
-    else if(frameEma<17.5)budget=Math.min(BUDGET_MAX,Math.round(budget*1.1)+10);
+    // A browser capping rAF at 30 fps (Energy Saver, frame-cap.ts) gives long frames with light work: fewer
+    // particles cannot bring 60 back, so the budget holds and recovers instead.
+    const capped=frameCapHz()>0;
+    if(frameEma>20&&!capped&&activeParticles()>120)budget=Math.max(BUDGET_MIN,Math.round(budget*.8));
+    else if(frameEma<17.5||capped)budget=Math.min(BUDGET_MAX,Math.round(budget*1.1)+10);
    }
   }
   for(let i=pending.length-1;i>=0;i--)if(pending[i].at<=clock){const p=pending.splice(i,1)[0];p.run();}

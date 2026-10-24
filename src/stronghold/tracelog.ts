@@ -1,5 +1,6 @@
 import type {SharedPixiRuntime} from '../app/loader';
 import type {Net} from './net/client';
+import {batteryState,frameCapHz,noteFrame,resetFrameCap} from './frame-cap';
 
 export type TracelogPhaseName =
  | 'worldDraw'
@@ -64,6 +65,7 @@ export interface TracelogEntry {
   dpr: number;
   hardwareConcurrency?: number;
   deviceMemoryGb?: number;
+  battery?: {charging: boolean; level: number};
  };
  metrics: {
   fps: number;
@@ -172,6 +174,8 @@ function resetFramePhases(): Record<TracelogPhaseName, number> {
 }
 
 function classifyBottleneck(maxPhases: TracelogPhaseBreakdown, longTasks: TracelogLongTask[]): string {
+ // Frames locked at ~33 ms with light work: the browser (Energy Saver) is capping rAF at 30 fps (frame-cap.ts).
+ if (frameCapHz()) return 'browser-frame-cap';
  const candidates: [string, number][] = [
   ['world-paint', maxPhases.worldPaintMs],
   ['shadow-cast', maxPhases.shadowCastMs],
@@ -276,6 +280,7 @@ export function startFpsTracelog(opts: FpsTracelogOptions) {
   warmupFrames = 0;
   lastNow = 0;
   hiddenUntil = performance.now() + 1500;
+  resetFrameCap();
  };
  document.addEventListener('visibilitychange', resetWindowForVisibility);
  window.addEventListener('pagehide', resetWindowForVisibility);
@@ -522,6 +527,7 @@ export function startFpsTracelog(opts: FpsTracelogOptions) {
     dpr: round2(window.devicePixelRatio || 1),
     hardwareConcurrency: navigator.hardwareConcurrency || undefined,
     deviceMemoryGb: (navigator as any).deviceMemory || undefined,
+    battery: batteryState(),
    },
    metrics,
    scene: buildSceneSnapshot(),
@@ -647,6 +653,7 @@ export function startFpsTracelog(opts: FpsTracelogOptions) {
    hiddenUntil = frameEnd + 1500;
    return;
   }
+  noteFrame(frameEnd, dtMs, phases.worldDraw + phases.encountersStep + phases.encountersRender + phases.pixiRender + phases.net);
   void pushSample(frameEnd, dtMs, phases, autoTriggerEnabled);
  }
 
