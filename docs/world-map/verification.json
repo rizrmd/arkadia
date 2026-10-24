@@ -1,0 +1,144 @@
+{
+ "checks": {
+  "desktop: tapping the minimap opens the full map": {
+   "ok": true,
+   "minimap": {
+    "x": 1161,
+    "y": 130,
+    "width": 259,
+    "height": 259
+   },
+   "view": {
+    "x": 144,
+    "y": 94,
+    "width": 1152,
+    "height": 716
+   }
+  },
+  "desktop: dragging pans the map": {
+   "ok": true,
+   "cameraMovedPx": 1088.4,
+   "follow": false
+  },
+  "desktop: scrolling out shows the whole map": {
+   "ok": true,
+   "zoom": 0.5661538461538462,
+   "minZoom": 0.5661538461538462
+  },
+  "desktop: M reopens the map on the hero": {
+   "ok": true
+  },
+  "desktop: tapping the map plans a route through the gateway": {
+   "ok": true,
+   "start": {
+    "x": 590,
+    "y": 420
+   },
+   "target": {
+    "x": 667,
+    "y": 940
+   },
+   "tapped": {
+    "x": 666.9999525282118,
+    "y": 940.0000339084202
+   },
+   "legs": 3,
+   "points": [
+    [
+     590,
+     420
+    ],
+    [
+     600,
+     792
+    ],
+    [
+     667,
+     940
+    ]
+   ]
+  },
+  "desktop: the hero walks there": {
+   "ok": true,
+   "done": true,
+   "left": 3.0463217095809876,
+   "hero": {
+    "x": 665.8,
+    "y": 937.2
+   },
+   "seconds": 69.297
+  },
+  "desktop: a far (120 tile) route plans in one short step": {
+   "ok": true,
+   "ms": 202.6,
+   "route": {
+    "legs": 15,
+    "partial": false,
+    "expanded": 730,
+    "planMs": 202.5
+   }
+  },
+  "desktop: a key press drops the route": {
+   "ok": true
+  },
+  "desktop: the minimap shows the route": {
+   "ok": true
+  },
+  "phone: tapping the minimap opens the full map": {
+   "ok": true,
+   "minimap": {
+    "x": 279,
+    "y": 10,
+    "width": 103,
+    "height": 103
+   },
+   "view": {
+    "x": 22,
+    "y": 66,
+    "width": 346,
+    "height": 716
+   }
+  },
+  "phone: tapping the map plans a route through the gateway": {
+   "ok": true,
+   "start": {
+    "x": 590,
+    "y": 420
+   },
+   "target": {
+    "x": 517,
+    "y": 800
+   },
+   "tapped": {
+    "x": 528,
+    "y": 804
+   },
+   "legs": 3,
+   "points": [
+    [
+     590,
+     420
+    ],
+    [
+     552,
+     792
+    ],
+    [
+     528,
+     804
+    ]
+   ]
+  },
+  "phone: the hero walks there": {
+   "ok": true,
+   "done": true,
+   "left": 4.440720662234935,
+   "hero": {
+    "x": 531.6,
+    "y": 801.4
+   },
+   "seconds": 25.486
+  }
+ },
+ "errors": []
+}

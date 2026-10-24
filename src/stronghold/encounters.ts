@@ -781,6 +781,7 @@ export async function createEncounters(o:{
  };
  const api={
   hud,
+  minimap,
   isModalOpen:()=>false,
   blessingLayout:()=>blessingOverlay.telemetry(),
   combatants:()=>[o.hero.position(),...foes.filter(f=>f.alive).map(f=>tilePoint(f.x,f.y))],

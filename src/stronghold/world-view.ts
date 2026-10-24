@@ -20,6 +20,8 @@ import {createParty} from './party';
 import {characters,atlasUrl,DEFAULT_HERO,type HeroId} from './heroes';
 import {measureTracelogPhase} from './tracelog';
 import {createParallax,initialParallaxFiles} from './parallax';
+import {createAutoWalk,type AutoWalk} from './auto-walk';
+import {WorldMap} from './world-map';
 
 export async function createWorldView(
  rt:SharedPixiRuntime,
@@ -196,9 +198,14 @@ export async function createWorldView(
  lighting.subscribe(()=>doors.refreshLighting());
 
  let encounters:Awaited<ReturnType<typeof createEncounters>>|undefined;
- const hero=await createHero<(typeof objects)[number]>({hero:pick,layer:worldStage,lightmap:lighting.lightmap,surface,footprint:p=>p.id==='gate'?gateFootprint():footprint(p),sun:lighting.sun,direction:()=>encounters?encounters.steer(direction()):direction(),follow,pose:()=>encounters?.pose()??null,
+ // Keys and the stick, or else a tap-to-walk route from the full map (auto-walk.ts).
+ let walker:AutoWalk|undefined;const input=()=>walker?walker.input(direction()):direction();
+ const hero=await createHero<(typeof objects)[number]>({hero:pick,layer:worldStage,lightmap:lighting.lightmap,surface,footprint:p=>p.id==='gate'?gateFootprint():footprint(p),sun:lighting.sun,direction:()=>encounters?encounters.steer(input()):input(),follow,pose:()=>encounters?.pose()??null,
   drive:()=>{if(!net?.active())return null;const p=net.position(),me=net.me();return {...p,face:direction(),look:me&&me.st!=='idle'?{facing:me.fc,back:me.bk,vertical:me.vt}:null};}});hero.setScene(scene());
- encounters=await createEncounters({worldStage,uiStage,frames,hudCallbacks,showCoop:Boolean(net),hero,direction,net});
+ encounters=await createEncounters({worldStage,uiStage,frames,hudCallbacks,showCoop:Boolean(net),hero,direction:input,net});
+ const worldMap=new WorldMap(frames,{hero:hero.position,built:()=>[...built],route:()=>walker?.route()??null,walk:(x,y)=>walker?.goTo(x,y)??false});
+ walker=createAutoWalk({blocked:hero.blocked,position:hero.position,onChange:r=>encounters!.minimap.setRoute(r)});
+ uiStage.addChild(worldMap);encounters.minimap.onOpen=()=>worldMap.toggle();
  const party=net?createParty<(typeof objects)[number]>({layer:worldStage,frames,lightmap:lighting.lightmap,surface,footprint:p=>p.id==='gate'?gateFootprint():footprint(p),sun:lighting.sun,net,own:()=>hero.position()}):null;party?.setScene(scene());
  const parallax=await createParallax({worldStage,anchorX:WORLD.width/2,anchorY:385,getHeroWorld:()=>hero.position(),getCombatantsWorld:()=>encounters?encounters.combatants():[hero.position()]});
  lighting.setClockSource(()=>net?.active()?net.clock():null);net?.onSnapshot(()=>{const p=hero.position();updateGate(p.x,p.y);});lighting.subscribe(s=>encounters!.setAmbient(s.ambient));
@@ -345,10 +352,14 @@ export async function createWorldView(
  // after Choose Your Hero. Until then the camera already frames the hero.
  const loadGateAfterDone=()=>{const s=document.querySelector<HTMLElement>('#loading-screen');if(s&&s.dataset.state!=='done'){setTimeout(loadGateAfterDone,120);return;}ensureGateSheet();};
  parallax.start();void hold.then(()=>{hero.start();encounters.start();setTimeout(loadGateAfterDone,120);});
+ (window as any).__WORLD_MAP__={map:worldMap,walker,open:(v=true)=>worldMap.open(v),walkTo:(x:number,y:number)=>walker!.goTo(x,y),route:()=>walker!.route(),snapshot:()=>worldMap.snapshot(),screenOf:(x:number,y:number)=>worldMap.screenOf({x,y})};
  return {
   hud:encounters.hud,
   encounters,
   parallax,
+  worldMap,
+  // The hero's walk input (keys, stick or a map route), for co-op (main.ts) to send.
+  direction:input,
   update(state:State,id:Building|null){
    encounters?.setMaxHp(100+heroBonus(state));
    const room=net?.active()?net.layout().filter((b):b is Building=>(buildings as readonly string[]).includes(b)):null;

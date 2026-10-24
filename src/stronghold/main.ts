@@ -19,6 +19,8 @@ export async function mount(app:HTMLElement,progress:Progress){
 
  const canInteractWorld=(clientX:number,clientY:number,active=false)=>{
   if(picker?.isOpen()||clock?.isOpen()||lobby?.isOpen()||worldView?.encounters.isModalOpen())return false;
+  // The full map holds the screen: its own drag pans the map, not the world, and no stick opens under it.
+  if(worldView?.worldMap.isOpen())return false;
   if(active)return true;
   const events=rt.app.renderer.events;
   events.rootBoundary.rootTarget??=rt.app.stage;
@@ -36,7 +38,9 @@ export async function mount(app:HTMLElement,progress:Progress){
  let hero:HeroId=savedHero();
  // Co-op is temporarily disabled: the game plays solo and offline, with no co-op UI. `?coop` opts back in for netcode testing.
  const coop=new URLSearchParams(location.search).has('coop');
- const net=coop?createNet({direction:controls.direction,maxHp,hero:()=>hero}):undefined;
+ // Co-op sends the world's walk input once it exists: keys and the stick, or a route from the full map.
+ let walk=controls.direction;
+ const net=coop?createNet({direction:()=>walk(),maxHp,hero:()=>hero}):undefined;
  const lobby=net?createLobby(rt.uiStage,rt.frames,net):null,invited=lobby?.start()??'';
  // The first visit chooses a hero once, before gameplay: the world loads behind the screen with the hero and the
  // revenants held until the pick (hero-picker.ts).
@@ -68,6 +72,7 @@ export async function mount(app:HTMLElement,progress:Progress){
   canInteractWorld,
   Promise.all([picker.picked,mounted]).then(()=>{}),
  );
+ walk=worldView.direction;
  // Apply the saved layout before the first frame, so the world is painted once (not once as the default layout and
  // again for the saved one).
  render();
