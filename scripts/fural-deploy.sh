@@ -81,6 +81,10 @@ mkdir -p "$HOME/releases"
 # Concurrent sessions can release the same commit. Never let one tar writer replace a file
 # another publisher is reading; retain a unique completed archive for each invocation.
 tgz="$(mktemp "$HOME/releases/arkodia-game-$(git rev-parse --short HEAD)-XXXXXXXX.tgz")"
-tar --format=ustar -C "$STAGE" -cz . > "$tgz"
+python3 - "$STAGE" "$tgz" <<'PY'
+import sys, tarfile
+with tarfile.open(sys.argv[2], 'w:gz', format=tarfile.USTAR_FORMAT) as archive:
+    archive.add(sys.argv[1], arcname='.')
+PY
 tar -tzf "$tgz" >/dev/null
 node scripts/arkodia/publish-layer.mjs --tgz "$tgz" --name "game-$(git rev-parse --short HEAD)"
