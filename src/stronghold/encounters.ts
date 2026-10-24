@@ -1,11 +1,11 @@
-import {Container} from 'pixi.js';
+import {Container,Sprite,Texture} from 'pixi.js';
 import {Minimap} from './minimap';
 import {createCanvasSprite} from '../app/loader';
 import type {FrameSet} from '../typography/frames';
 import {Hud,type HudCallbacks,type HudSkillState} from '../typography/hud';
 import {LevelUpBlessingOverlay,type BlessingChoiceItem} from '../typography/level-up-v5';
 import {MsdfText} from '../typography/text';
-import {fresh,reward,roll,choose,cards,reach,aoeCastRadius,health,threshold,thresholdForLevel,xpPercent,critChance,critMultiplier,syncHeroLoadout,isActiveSkill,skillRank,skillCooldownMs,revenantMaxHp,revenantDamage,revenantXpReward,MAX_SKILL_SLOTS,type Progression} from './progression';
+import {fresh,awardSoulXp,roll,choose,cards,reach,aoeCastRadius,health,threshold,thresholdForLevel,xpPercent,critChance,critMultiplier,syncHeroLoadout,isActiveSkill,skillRank,skillCooldownMs,revenantMaxHp,revenantDamage,revenantXpReward,MAX_SKILL_SLOTS,type Progression} from './progression';
 import {unproject} from '../isometric';
 import {Fighter,STATS,inReach,swingTargets,turn} from '../characters/combat';
 import type {CharacterMeta} from '../characters/sprites';
@@ -149,22 +149,55 @@ export async function createEncounters(o:{
   }
  }
 
+ // Shared raster glow keeps all souls in one Pixi texture batch.
+ const soulCanvas=document.createElement('canvas');soulCanvas.width=soulCanvas.height=64;
+ const soulCtx=soulCanvas.getContext('2d')!;
+ const glow=soulCtx.createRadialGradient(32,32,1,32,32,32);
+ glow.addColorStop(0,'#ffffff');glow.addColorStop(.12,'#e0ffff');glow.addColorStop(.25,'#6deeff');glow.addColorStop(.45,'#48bcff99');glow.addColorStop(1,'#437aff00');
+ soulCtx.fillStyle=glow;soulCtx.fillRect(0,0,64,64);
+ const soulTexture=Texture.from(soulCanvas),soulLayer=new Container();soulLayer.zIndex=36;o.worldStage.addChild(soulLayer);
+ type Soul={id:number;u:number;v:number;level:number;age:number;sprite:Sprite};
+ const souls=new Map<number,Soul>(),collecting:(Soul&{elapsed:number})[]=[];let soulId=0;
+ function addSoul(id:number,u:number,v:number,level:number,age=0){
+  const sprite=new Sprite(soulTexture);sprite.anchor.set(.5);sprite.eventMode='none';soulLayer.addChild(sprite);
+  souls.set(id,{id,u,v,level,age,sprite});
+ }
+ function clearSouls(){for(const s of [...souls.values(),...collecting])s.sprite.destroy();souls.clear();collecting.length=0;}
+ function collectSoul(s:Soul){souls.delete(s.id);collecting.push({...s,elapsed:0});}
+ function placeSoul(s:Soul,progress=0){
+  const u=s.u+(h.x-s.u)*progress,v=s.v+(h.y-s.v)*progress,p=tilePoint(u,v),k=origin.scale;
+  s.sprite.position.set(origin.x+p.x*k,origin.y+(p.y-liftAtTile(u,v)-14-Math.sin(s.age/240)*4-30*progress)*k);
+  s.sprite.scale.set(k*(1-progress)*(.85+Math.sin(s.age/160)*.08));s.sprite.alpha=1-progress;
+ }
+ function renderSouls(){for(const s of souls.values())placeSoul(s);for(const s of collecting)placeSoul(s,Math.min(1,s.elapsed/400));}
+ function stepSouls(dt:number){
+  for(let i=collecting.length-1;i>=0;i--){const s=collecting[i];s.elapsed+=dt;if(s.elapsed>=400){s.sprite.destroy();collecting.splice(i,1);}}
+  for(const s of souls.values()){
+   s.age+=dt;
+   if(!online&&h.alive&&s.age>=350&&Math.hypot(h.x-s.u,h.y-s.v)<=.85){collectSoul(s);onPickup(s.level);}
+  }
+ }
  function onKill(f?:Foe){
   if(online)return;
   kills++;
+  run.gold+=5;
+  const leech=(run.skills.leech??0)*2;
+  if(leech>0){
+   const before=h.hp;h.hp=Math.min(maxHp,h.hp+leech);
+   if(h.hp>before)vfx.recordHeroHeal(h.hp-before,h.x,h.y,'SOUL FEAST');
+  }
+  if(f)addSoul(++soulId,f.x,f.y,f.level??run.level);
+ }
+ function onPickup(level:number){
   const prevLevel=run.level;
-  reward(run,random,currentHeroId(),f?.level??run.level);
+  awardSoulXp(run,random,currentHeroId(),level);
   if(run.level>prevLevel){
    syncFoeLevels();
    levelUpPulseMs=1200;
    vfx.triggerLevelUp(run.level,h.x,h.y);
   }
   if(run.pending)h.immune=200;
-  const leech=(run.skills.leech??0)*2;
-  if(leech>0){
-   const before=h.hp;h.hp=Math.min(maxHp,h.hp+leech);
-   if(h.hp>before)vfx.recordHeroHeal(h.hp-before,h.x,h.y,'SOUL FEAST');
-  }
+
  }
 
  const vfx=createCombatVfx({
@@ -483,6 +516,11 @@ export async function createEncounters(o:{
  type Mirror=Foe&{gen:number;plays:number};const mirrors=new Map<number,Mirror>();
  function netStep(dt:number){
   const net=o.net!,me=net.me();
+  const available=(net.latest()?.souls??[]).filter(s=>s.owner===me?.id);
+  const ids=new Set(available.map(s=>s.id));
+  for(const s of souls.values())if(!ids.has(s.id))collectSoul(s);
+  for(const s of available)if(!souls.has(s.id))addSoul(s.id,s.u,s.v,s.level,s.age);
+
   const seen=new Set<number>();
   for(const e of net.enemies(frameAt)){
    seen.add(e.id);
@@ -533,8 +571,8 @@ export async function createEncounters(o:{
   levelUpPulseMs=Math.max(0,levelUpPulseMs-dt);
   vfx.step(dt);
   const net=!!o.net?.active();
-  if(net!==online){run=fresh(currentHeroId());online=net;mirrors.clear();local.length=0;foes=local;spawnTimer=0;heroPlays=-1;lastCoopAutoCasts=0;if(!net){h.play('idle');h.hp=maxHp;}}
-  if(online){netStep(dt);return;}
+  if(net!==online){run=fresh(currentHeroId());online=net;clearSouls();mirrors.clear();local.length=0;foes=local;spawnTimer=0;heroPlays=-1;lastCoopAutoCasts=0;if(!net){h.play('idle');h.hp=maxHp;}}
+  if(online){netStep(dt);stepSouls(dt);return;}
   if(previewMode){
    for(const f of [h,...foes])f.tick(dt);
    return;
@@ -543,6 +581,7 @@ export async function createEncounters(o:{
   if(steering&&h.state==='attack')h.play('idle');
   for(const f of [h,...foes])f.tick(dt);
   if(h.alive&&h.state==='idle'){const p=o.hero.position(),t=toTile(p.x,p.y);h.x=t.u;h.y=t.v;}
+  stepSouls(dt);
   heroStep(dt,steering);
   const heroSafe=inSafeZone(tileOf(h));
   for(const f of foes)foeStep(f,dt,heroSafe);
@@ -606,6 +645,7 @@ export async function createEncounters(o:{
 
  let lastHudSize='',hasRendered=false,lastBox=[-48,-96,48,24];
  function placeSprites(){
+  renderSouls();
   const hp=o.hero.position(),k=origin.scale,at=(x:number,y:number)=>({x:origin.x+x*k,y:origin.y+y*k});
   for(const [f,v] of views){
    if(!v.canvasView.sprite.visible)continue;
@@ -625,6 +665,7 @@ export async function createEncounters(o:{
   }
  }
  function render(){
+  renderSouls();
   hasRendered=true;
   const sw=innerWidth,sh=innerHeight,sizeKey=`${sw}x${sh}`;
   if(sizeKey!==lastHudSize){
@@ -796,6 +837,8 @@ export async function createEncounters(o:{
   snapshot:()=>({spawnDistanceM:SPAWN_DISTANCE_M,gate:GATE,metersPerTile:METERS_PER_TILE,
    hero:{hp:h.hp,maxHp,state:h.state,u:+h.x.toFixed(2),v:+h.y.toFixed(2),meters:+meters(fromCenter(tileOf(h))).toFixed(1),safe:inSafeZone(tileOf(h)),reach:+reach(run).toFixed(2),aoeCastRadiusTiles:+aoeCastRadius(run).toFixed(2),critChance:+critChance(run).toFixed(2),critMultiplier:+critMultiplier(run).toFixed(2)},
    foes:foes.map(f=>{const lv=Math.max(1,f.level||1),mHp=f.maxHp||revenantMaxHp(lv);return {u:+f.x.toFixed(2),v:+f.y.toFixed(2),level:lv,hp:f.hp,maxHp:mHp,damage:revenantDamage(lv),xpReward:revenantXpReward(lv),label:`Lv. ${lv}`,state:f.state,safe:inSafeZone(tileOf(f)),clear:walkable(tileOf(f)),gateMeters:+meters(fromGate(tileOf(f))).toFixed(1)};}),
+   soulAnimations:collecting.length,
+   souls:[...souls.values()].map(({sprite,...s})=>({...s,screen:{x:sprite.x,y:sprite.y},visible:sprite.visible})),
    run:structuredClone(run),
    loadout:buildLoadoutSnapshot(),
    blessingUi:blessingOverlay.telemetry(),
