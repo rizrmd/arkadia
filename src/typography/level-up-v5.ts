@@ -1,4 +1,4 @@
-import { Container, Graphics, Rectangle } from 'pixi.js';
+import { Circle, Container, Graphics, Rectangle } from 'pixi.js';
 import type { FrameSet } from './frames';
 import { MsdfText } from './text';
 import { ROLES, type TextRole } from './tokens';
@@ -496,9 +496,22 @@ export class LevelUpBlessingOverlay extends Container {
   const rimLayer = this.addChild(new Graphics());
   rimLayer.eventMode = 'none';
 
+  // Keep socket targets below the cards so a card always selects its own offer.
+  const socketTargets = this.addChild(new Container());
+  socketTargets.eventMode = 'passive';
+
   for (const pop of resolvedPopovers) {
    const choice = activeChoices.find((c) => c.optionNumber === pop.optionNumber) ?? activeChoices[0];
    if (!choice) continue;
+
+   const socketTarget = socketTargets.addChild(new Container());
+   socketTarget.eventMode = 'static';
+   socketTarget.cursor = 'pointer';
+   socketTarget.hitArea = new Circle(pop.socketCenter.x, pop.socketCenter.y, pop.socketRadius);
+   socketTarget.on('pointertap', (event) => {
+    event.stopPropagation();
+    this.onSelect(choice.id);
+   });
 
    const item = this.addChild(new Container());
    item.eventMode = 'static';
