@@ -20,8 +20,9 @@ let dir={x:0,y:0},seq=0;const tick=setInterval(()=>ws.send(JSON.stringify({t:'in
 const wait=ms=>new Promise(r=>setTimeout(r,ms));
 while(!me)await wait(50);const start={x:me.x,y:me.y};
 dir={x:0,y:1};await wait(7000);const outside={x:me.x,y:me.y};
-// Steer at the tower's centre for 25 s; the last seconds push against its wall.
-const track=[];let last=null,still=0;for(let i=0;i<250;i++){const dx=target.x-me.x,dy=target.y-me.y,l=Math.hypot(dx,dy)||1;dir={x:dx/l,y:dy/l};await wait(100);if(i%25===0)track.push({x:+me.x.toFixed(1),y:+me.y.toFixed(1)});still=last&&Math.hypot(me.x-last.x,me.y-last.y)<.5?still+1:0;last={x:me.x,y:me.y};}
+// Steer at the tower's centre for 25 s; the last seconds push against its wall (held = moving under 2 px per 100 ms:
+// pushing into a column edge jitters by about a pixel).
+const track=[];let last=null,still=0;for(let i=0;i<250;i++){const dx=target.x-me.x,dy=target.y-me.y,l=Math.hypot(dx,dy)||1;dir={x:dx/l,y:dy/l};await wait(100);if(i%25===0)track.push({x:+me.x.toFixed(1),y:+me.y.toFixed(1)});still=last&&Math.hypot(me.x-last.x,me.y-last.y)<2?still+1:0;last={x:me.x,y:me.y};}
 dir={x:0,y:0};await wait(300);clearInterval(tick);ws.close();
 const end={x:me.x,y:me.y},t=tile(end.x,end.y);
 // Every solid footprint rectangle, in court tiles, with its sprite (mirrored placements swap u and v).

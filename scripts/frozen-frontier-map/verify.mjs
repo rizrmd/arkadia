@@ -58,7 +58,7 @@ try{
    }
    // Real keyboard walks: into the watchtower (stops at its wall), and through the ruined gate along the road.
    for(const [label,from,keys,ms,check] of [
-    ['into-watchtower',[30.0,17.4],['KeyW'],5000,h=>h.v>15.4&&h.v<17],
+    ['into-watchtower',[30.0,17.4],['KeyW'],9000,h=>h.v>15.4&&h.v<17],
     ['into-pine-wall',[-9.5,6.0],['KeyA'],5000,null],
     ['through-ruined-gate',[21.0,23.4],['KeyS','KeyA'],9000,h=>h.v>26.6],
    ]){
