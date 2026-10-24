@@ -199,4 +199,6 @@ Local browser verification passed at 1440 px desktop, 390 px portrait and 844 px
 
 [Local validation](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=docs%2Ffrozen-frontier-v2%2Fverification.json) · [Live validation](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=docs%2Ffrozen-frontier-v2%2Flive-verification.json)
 
+Live verification also passed all gallery checks. The game browser smoke test reached a ready world with zero page errors and zero requests for v2 review assets. Before/after SHA-256 checks confirmed the game HTML, all referenced game JavaScript, v1 gallery and installed gateway were unchanged; /healthz returned 200.
+
 Deployment uses the supported prefix-only review layer at /environment-corners/frozen-frontier/v2. It preserves the installed combined game and gateway, including peer loading and memory fixes. No game source, map placement or asset preload was changed.
