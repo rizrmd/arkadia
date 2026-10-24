@@ -21,6 +21,7 @@ type frontierFile struct {
 		U float64  `json:"u"`
 		V float64  `json:"v"`
 		S *float64 `json:"s"`
+		F int      `json:"f"`
 	} `json:"placements"`
 }
 
@@ -91,6 +92,10 @@ func mustFrontier(b, mapBytes []byte) []Column {
 			s = *p.S
 		}
 		for _, r := range k.Block {
+			// A mirrored sprite swaps its u and v offsets (frontier.ts footprint).
+			if p.F != 0 {
+				r = [4]float64{r[1], r[0], r[3], r[2]}
+			}
 			cols = append(cols, rectColumns(p.U-ou, p.V-ov, s, r)...)
 		}
 	}

@@ -10,11 +10,15 @@ import {STRONGHOLD} from '../stronghold/prefabs/stronghold';
 export type FrontierLayer='ground'|'upright'|'cap';
 export type FrontierColumn={x:number;w:number;back:number;front:number};
 type Rect=[number,number,number,number];
-type Kit={layer:FrontierLayer;block:Rect[]};
-type Placement={a:string;u:number;v:number;s?:number;lift?:number;on?:string;zone:string};
+// band orders ground decals: 'under' (trampled snow) below everything, 'over' (drifts, loose stones) above floors.
+type Kit={layer:FrontierLayer;block:Rect[];band?:'under'|'over'};
+type Placement={a:string;u:number;v:number;s?:number;lift?:number;on?:string;f?:number;r?:number;zone:string};
 type Sprite={frame:[number,number,number,number];world:[number,number];pivot:[number,number]};
 export type FrontierProp={key:string;asset:string;zone:string;layer:FrontierLayer;u:number;v:number;x:number;y:number;s:number;lift:number;
  frame:[number,number,number,number];width:number;height:number;pivot:[number,number];
+ // flip mirrors the sprite left to right (and its footprint across the u = v diagonal); rot turns a ground decal
+ // in the ground plane, in degrees; band is a ground decal's draw band (-1 under, 0, 1 over).
+ flip:boolean;rot:number;band:number;
  // Solid footprint (empty for walk-through plants and decals) and the footprint that decides draw order against
  // actors (a snow cap uses its wall's).
  blocks:FrontierColumn[];depthColumns:FrontierColumn[]};
@@ -33,14 +37,17 @@ export function rectColumns(u:number,v:number,s:number,r:Rect):FrontierColumn[]{
  }
  return cols;
 }
-const footprint=(kit:Kit,u:number,v:number,s:number)=>kit.block.flatMap(r=>rectColumns(u,v,s,r));
+// Mirroring a sprite on screen swaps its u and v offsets, so a flipped footprint rectangle swaps its axes.
+const footprint=(kit:Kit,u:number,v:number,s:number,flip=false)=>kit.block.flatMap(r=>rectColumns(u,v,s,flip?[r[1],r[0],r[3],r[2]]:r));
 export const FRONTIER_PROPS:FrontierProp[]=(data.placements as Placement[]).map((p,i)=>{
  const kit=KIT[p.a],sprite=SPRITES[p.a];if(!kit||!sprite)throw Error('frozen-frontier.json: unknown sprite '+p.a);
- const u=p.u-STRONGHOLD_ORIGIN.u,v=p.v-STRONGHOLD_ORIGIN.v,s=p.s??1,{x,y}=world(u,v),blocks=kit.layer==='cap'?[]:footprint(kit,u,v,s);
+ const u=p.u-STRONGHOLD_ORIGIN.u,v=p.v-STRONGHOLD_ORIGIN.v,s=p.s??1,flip=!!p.f,{x,y}=world(u,v),blocks=kit.layer==='cap'?[]:footprint(kit,u,v,s,flip);
  return {key:`ff:${p.a}:${i}`,asset:p.a,zone:p.zone,layer:kit.layer,u,v,x,y,s,lift:p.lift??0,frame:sprite.frame,width:sprite.world[0]*s,height:sprite.world[1]*s,pivot:sprite.pivot,
-  blocks,depthColumns:kit.layer==='cap'&&p.on?footprint(KIT[p.on],u,v,s):blocks};
+  flip,rot:kit.layer==='ground'?p.r??0:0,band:kit.band==='under'?-1:kit.band==='over'?1:0,
+  blocks,depthColumns:kit.layer==='cap'&&p.on?footprint(KIT[p.on],u,v,s,flip):blocks};
 });
 // Every solid column, for the co-op prediction's collision (net/client.ts) and the parity export.
 export const FRONTIER_COLUMNS:FrontierColumn[]=FRONTIER_PROPS.flatMap(p=>p.blocks);
+export const FRONTIER_KIT_SIZE=Object.keys(KIT).length;
 // All the art is one atlas (scripts/frozen-frontier-map/build-assets.mjs).
 export const FRONTIER_ATLAS=sprites.atlas;

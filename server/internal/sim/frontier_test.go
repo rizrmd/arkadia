@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"math"
 	"os"
+	"strings"
 	"testing"
 )
 
@@ -47,6 +48,15 @@ type frontierPlacement struct {
 	A, Zone string
 	U, V    float64
 	S       float64
+	Flip    bool
+}
+
+// block is a placement's footprint rectangle r, mirrored when the sprite is.
+func (p frontierPlacement) block(r [4]float64) [4]float64 {
+	if p.Flip {
+		return [4]float64{r[1], r[0], r[3], r[2]}
+	}
+	return r
 }
 
 func frontierPlacements(t *testing.T) ([]frontierPlacement, frontierFile) {
@@ -73,7 +83,7 @@ func frontierPlacements(t *testing.T) ([]frontierPlacement, frontierFile) {
 		if q.S != nil {
 			s = *q.S
 		}
-		out = append(out, frontierPlacement{A: q.A, Zone: p.Zone, U: q.U - ou, V: q.V - ov, S: s})
+		out = append(out, frontierPlacement{A: q.A, Zone: p.Zone, U: q.U - ou, V: q.V - ov, S: s, Flip: q.F != 0})
 	}
 	return out, f
 }
@@ -86,6 +96,7 @@ func TestFrontierOffRelief(t *testing.T) {
 			t.Errorf("%s at (%.2f, %.2f) stands %.2f m up", p.A, p.U, p.V, h)
 		}
 		for _, r := range f.Kit[p.A].Block {
+			r = p.block(r)
 			for _, c := range [][2]float64{{r[0], r[1]}, {r[2], r[1]}, {r[2], r[3]}, {r[0], r[3]}} {
 				if h := HeightAtTile(Vec{p.U + c[0]*p.S, p.V + c[1]*p.S}); h != 0 {
 					t.Errorf("%s footprint at (%.2f, %.2f) reaches raised terrain", p.A, p.U, p.V)
@@ -108,16 +119,17 @@ func TestFrontierCollision(t *testing.T) {
 	for _, p := range ps {
 		k := f.Kit[p.A]
 		for _, r := range k.Block {
+			r = p.block(r)
 			c := TilePoint(p.U+(r[0]+r[2])/2*p.S, p.V+(r[1]+r[3])/2*p.S)
 			if !b.Blocked(c.X, c.Y, true) {
 				t.Errorf("%s at (%.2f, %.2f): footprint centre is walkable", p.A, p.U, p.V)
 			}
 			solid++
 		}
-		if p.A == "paving" && (p.Zone == "Frontier road" || p.Zone == "Watch road" || p.Zone == "Shrine trail") {
+		if strings.HasPrefix(p.A, "flagstones-") && (p.Zone == "Frontier road" || p.Zone == "Watch road" || p.Zone == "Shrine trail") {
 			c := TilePoint(p.U, p.V)
 			if b.Blocked(c.X, c.Y, true) {
-				t.Errorf("path slab at (%.2f, %.2f) is blocked", p.U, p.V)
+				t.Errorf("flagstones at (%.2f, %.2f) are blocked", p.U, p.V)
 			}
 			paths++
 		}

@@ -8,7 +8,7 @@ const sprites=JSON.parse(await fs.readFile('src/world/maps/frozen-frontier-sprit
 const map=JSON.parse(await fs.readFile('src/world/maps/arkodia-01.json','utf8'));
 const prefab=JSON.parse(await fs.readFile('src/stronghold/prefabs/stronghold.json','utf8'));
 const OU=map.prefabs[0].at.u-prefab.anchor.u,OV=map.prefabs[0].at.v-prefab.anchor.v;
-const items=data.placements.map(p=>({...p,u:p.u-OU,v:p.v-OV,s:p.s??1,layer:data.kit[p.a].layer,block:data.kit[p.a].block,sprite:sprites[p.a]}));
+const items=data.placements.map(p=>{const k=data.kit[p.a];return {...p,u:p.u-OU,v:p.v-OV,s:p.s??1,layer:k.layer,band:k.band==='under'?-1:k.band==='over'?1:0,block:k.block.map(r=>p.f?[r[1],r[0],r[3],r[2]]:r),sprite:sprites[p.a]};});
 const atlas='file://'+path.resolve('public')+JSON.parse(await fs.readFile('src/world/maps/frozen-frontier-sprites.json','utf8')).atlas;
 const relief=map.terrain.features.map(f=>(f.outline??[]).map(([u,v])=>[u-OU,v-OV]));
 const html=`<!doctype html><body style="margin:0"><canvas id=c></canvas><script>
@@ -22,8 +22,11 @@ g.strokeStyle='rgba(120,140,160,.25)';g.lineWidth=1.5;for(let t=-20;t<=45;t+=1){
 poly([[0,0],[N,0],[N,N],[0,N]],'rgba(176,150,110,.35)','#7a6040',5);
 for(const r of relief)poly(r,'rgba(150,160,175,.45)','#5a6878',4);
 const atlas=new Image();new Promise(r=>{atlas.onload=r;atlas.src=${JSON.stringify(atlas)};}).then(()=>{
- const draw=it=>{const [x,y]=P(it.u,it.v),w=it.sprite.world[0]*it.s,h=it.sprite.world[1]*it.s;g.drawImage(atlas,...it.sprite.frame,x-w*it.sprite.pivot[0],y-(it.lift||0)-h*it.sprite.pivot[1],w,h);};
- items.filter(i=>i.layer==='ground').sort((a,b)=>a.u+a.v-b.u-b.v).forEach(draw);
+ // As frontier-view.ts draws them: mirrored, ground decals turned in the ground plane and sorted in their bands.
+ const draw=it=>{const [x,y]=P(it.u,it.v),w=it.sprite.world[0]*it.s,h=it.sprite.world[1]*it.s;g.save();g.translate(x,y-(it.lift||0));
+  if(it.layer==='ground'&&it.r){const r=it.r*Math.PI/180;g.transform(Math.cos(r),.5*Math.sin(r),-2*Math.sin(r),Math.cos(r),0,0);}
+  if(it.f)g.scale(-1,1);g.drawImage(atlas,...it.sprite.frame,-w*it.sprite.pivot[0],-h*it.sprite.pivot[1],w,h);g.restore();};
+ items.filter(i=>i.layer==='ground').sort((a,b)=>a.band-b.band||a.u+a.v-b.u-b.v).forEach(draw);
  for(const it of items)for(const [a,b,cc,d] of it.block)poly([[it.u+a*it.s,it.v+b*it.s],[it.u+cc*it.s,it.v+b*it.s],[it.u+cc*it.s,it.v+d*it.s],[it.u+a*it.s,it.v+d*it.s]],'rgba(220,30,30,.35)',null);
  items.filter(i=>i.layer!=='ground').sort((a,b)=>a.u+a.v-b.u-b.v||(a.layer==='cap')-(b.layer==='cap')).forEach(draw);
  const zones={};for(const it of items){(zones[it.zone]??=[]).push(it);}

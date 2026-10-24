@@ -24,8 +24,8 @@ dir={x:0,y:1};await wait(7000);const outside={x:me.x,y:me.y};
 const track=[];let last=null,still=0;for(let i=0;i<250;i++){const dx=target.x-me.x,dy=target.y-me.y,l=Math.hypot(dx,dy)||1;dir={x:dx/l,y:dy/l};await wait(100);if(i%25===0)track.push({x:+me.x.toFixed(1),y:+me.y.toFixed(1)});still=last&&Math.hypot(me.x-last.x,me.y-last.y)<.5?still+1:0;last={x:me.x,y:me.y};}
 dir={x:0,y:0};await wait(300);clearInterval(tick);ws.close();
 const end={x:me.x,y:me.y},t=tile(end.x,end.y);
-// Every solid footprint rectangle, in court tiles, with its sprite.
-const solids=data.placements.flatMap(p=>data.kit[p.a].layer==='cap'?[]:data.kit[p.a].block.map(([a,b,c,d])=>{const s=p.s??1,u=p.u-OU,v=p.v-OV;return {a:p.a,r:[u+a*s,v+b*s,u+c*s,v+d*s]};}));
+// Every solid footprint rectangle, in court tiles, with its sprite (mirrored placements swap u and v).
+const solids=data.placements.flatMap(p=>data.kit[p.a].layer==='cap'?[]:data.kit[p.a].block.map(r=>p.f?[r[1],r[0],r[3],r[2]]:r).map(([a,b,c,d])=>{const s=p.s??1,u=p.u-OU,v=p.v-OV;return {a:p.a,r:[u+a*s,v+b*s,u+c*s,v+d*s]};}));
 const dist=r=>Math.hypot(Math.max(r[0]-t.u,0,t.u-r[2]),Math.max(r[1]-t.v,0,t.v-r[3]));
 const inside=solids.some(q=>t.u>q.r[0]&&t.u<q.r[2]&&t.v>q.r[1]&&t.v<q.r[3]),near=solids.map(q=>({a:q.a,d:dist(q.r)})).sort((x,y)=>x.d-y.d)[0];
 const fromCore=Math.hypot(t.u-core.u,t.v-core.v);

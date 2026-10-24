@@ -4,18 +4,21 @@ import {chromium} from 'playwright';import {createServer} from 'vite';import fs 
 // parity test, teleports the hero around each landmark for screenshots, walks into solid props and along the paths
 // with the real keyboard, and records page errors.
 //   node scripts/frozen-frontier-map/verify.mjs            ONLY=desktop|portrait|landscape  SHOTS=a,b  OUT=dir
-const OUT=process.env.OUT||'docs/frozen-frontier-map',port=String(5200+process.pid%700);
+const OUT=process.env.OUT||'docs/frozen-frontier-map',PARITY=process.env.PARITY||'docs/frozen-frontier-map/columns-parity.json',port=String(5200+process.pid%700);
 await fs.mkdir(OUT,{recursive:true});
 // No file watching or HMR: peers editing the shared clone must not reload the page mid-capture.
 const vite=process.env.BASE_URL?null:await createServer({server:{host:'127.0.0.1',port:+port,strictPort:true,hmr:false,watch:null},logLevel:'error'});await vite?.listen();
 const base=process.env.BASE_URL||`http://127.0.0.1:${port}`;
 const report={base,shots:{},errors:[],console:[],frontier:null,traversal:[],ok:true};let browser;
 const SPOTS={
- 'gate-road':[18.6,19.9],'ruined-gate':[21.0,23.6],'through-ruined-gate':[21.0,27.0],'pillar-courtyard':[20.6,31.6],'settlement':[17.6,31.0],
+ 'gate-road':[18.6,19.9],'frontier-road':[21.0,21.6],'ruined-gate':[21.0,23.6],'through-ruined-gate':[21.0,27.0],'pillar-courtyard':[20.6,31.6],'settlement':[17.6,31.0],
+ 'settlement-east':[24.4,30.4],'shrine-trail':[8.0,21.6],
  'watchtower':[28.4,18.9],'behind-watchtower':[28.9,13.4],'snowy-shrine':[0.9,28.0],'north-west-grove':[-9.5,6.0],'north-east-grove':[6.5,-9.5],'frozen-steppe':[29.5,29.0],
 };
-const VIEWS=[['desktop',1440,900,false,['gate-road','ruined-gate','through-ruined-gate','pillar-courtyard','settlement','watchtower','behind-watchtower','snowy-shrine','north-west-grove','north-east-grove','frozen-steppe']],
- ['portrait',390,844,true,['ruined-gate','watchtower','snowy-shrine']],['landscape',844,390,true,['pillar-courtyard','watchtower','snowy-shrine']]];
+// Every ruin area and a stretch of each path, on desktop and both phone orientations (before/after comparisons).
+const RUINS=['frontier-road','ruined-gate','pillar-courtyard','settlement','settlement-east','watchtower','snowy-shrine','shrine-trail'];
+const VIEWS=[['desktop',1440,900,false,[...RUINS,'gate-road','through-ruined-gate','behind-watchtower','north-west-grove','north-east-grove','frozen-steppe']],
+ ['portrait',390,844,true,RUINS],['landscape',844,390,true,RUINS]];
 try{
  for(const [name,w,h,mobile,spots] of VIEWS.filter(v=>!process.env.ONLY||process.env.ONLY.split(',').includes(v[0]))){
   browser=await chromium.launch(launchOptions());
@@ -30,10 +33,10 @@ try{
   await page.evaluate(()=>window.__FROZEN_FRONTIER__.ready);await page.waitForTimeout(1500);
   const stats=await page.evaluate(()=>window.__FROZEN_FRONTIER__.stats());console.log(name,JSON.stringify(stats));
   if(!report.frontier){report.frontier=stats;
-   if(!vite)report.live=true;else{const columns=await page.evaluate(()=>window.__FROZEN_FRONTIER__.columns());await fs.writeFile(`${OUT}/columns-parity.json`,JSON.stringify({version:1,columns})+'\n');}}
+   if(!vite)report.live=true;else{const columns=await page.evaluate(()=>window.__FROZEN_FRONTIER__.columns());await fs.writeFile(PARITY,JSON.stringify({version:1,columns})+'\n');}}
   await page.waitForFunction(()=>{const s=window.__FROZEN_FRONTIER__.stats();return s.occlusionImages===s.sprites;},null,{timeout:60000}).catch(()=>{});
   const art=await page.evaluate(()=>window.__FROZEN_FRONTIER__.stats());
-  if(!art.loaded||art.failed||art.assets.length!==29||art.occlusionImages!==29){report.ok=false;report.errors.push(`${name}: frontier atlas loaded=${art.loaded}, ${art.occlusionImages}/29 occlusion images, ${art.assets.length} sprites placed`);}
+  if(!art.loaded||art.failed||art.assets.length!==art.kit||art.occlusionImages!==art.sprites){report.ok=false;report.errors.push(`${name}: frontier atlas loaded=${art.loaded}, ${art.occlusionImages}/${art.sprites} occlusion images, ${art.assets.length}/${art.kit} sprites placed`);}
   await page.evaluate(()=>{const a=window.__STRONGHOLD_COMBAT__;a.setPreviewMode(true);a.clearFoes();});
   for(const shot of spots.filter(s=>!process.env.SHOTS||process.env.SHOTS.split(',').includes(s))){
    // The first free foot position at or around the spot (a plant may stand on it).
@@ -47,11 +50,17 @@ try{
    report.shots[`${name}-${shot}`]={teleport:at,visible:(await page.evaluate(()=>window.__FROZEN_FRONTIER__.stats().visible)),drawCalls:draws};console.log('captured',name,shot);
   }
   if(name==='desktop'&&!process.env.SHOTS){
+   // Walkability, independent of how fast headless frames run: every step of these lines must be a free foot position
+   // (teleport refuses blocked ones): the road through the ruined gate, and up to the temple and watchtower stairs.
+   for(const [label,a,b] of [['road-through-ruined-gate',[21.0,24.4],[21.0,27.4]],['road-to-temple-stairs',[21.1,29.2],[20.6,32.0]],['road-to-watchtower-stairs',[27.6,17.4],[29.0,17.0]]]){
+    const free=await page.evaluate(([a,b])=>{const c=window.__STRONGHOLD_COMBAT__,bad=[];for(let i=0;i<=20;i++){const u=a[0]+(b[0]-a[0])*i/20,v=a[1]+(b[1]-a[1])*i/20;if(!c.teleport(u,v))bad.push([+u.toFixed(2),+v.toFixed(2)]);}return bad;},[a,b]);
+    report.traversal.push({label,from:a,to:b,blocked:free,pass:!free.length});console.log(label,free.length?'blocked at '+JSON.stringify(free):'clear');if(free.length)report.ok=false;
+   }
    // Real keyboard walks: into the watchtower (stops at its wall), and through the ruined gate along the road.
    for(const [label,from,keys,ms,check] of [
     ['into-watchtower',[30.0,17.4],['KeyW'],5000,h=>h.v>15.4&&h.v<17],
     ['into-pine-wall',[-9.5,6.0],['KeyA'],5000,null],
-    ['through-ruined-gate',[21.0,23.4],['KeyS','KeyA'],6000,h=>h.v>26.6],
+    ['through-ruined-gate',[21.0,23.4],['KeyS','KeyA'],9000,h=>h.v>26.6],
    ]){
     await page.evaluate(([u,v])=>{const a=window.__STRONGHOLD_COMBAT__;a.setPreviewMode(false);a.clearFoes();a.teleport(u,v);},from);await page.waitForTimeout(800);
     for(const k of keys)await page.keyboard.down(k);await page.waitForTimeout(ms);for(const k of keys)await page.keyboard.up(k);await page.waitForTimeout(400);

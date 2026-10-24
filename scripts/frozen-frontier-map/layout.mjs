@@ -28,107 +28,145 @@ for(const e of prefab.props){if(e.layout==='legacy')continue;const file=`public/
 {const g=prefab.buildings.gate;baked.push({id:'gate',ground:false,x0:g.x-g.width/2,x1:g.x+g.width/2,y0:g.y-320,y1:g.y+10,y:g.y});}
 const rnd=(seed=>()=>{seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;})(20261024);
 
-const placed=[],paths=[],solids=[],errors=[];
+// Kit entries for the grounded v3 decals (scripts/frozen-frontier-map/ground-kit.mjs), and draw bands: trampled snow
+// lies under the floors and flagstones, loose stones and plant patches on top of them. Drifts are uprights without a
+// footprint, so one standing in front of a prop banks snow over its base.
+Object.assign(data.kit,{
+ 'floor-sunk':{layer:'ground',block:[]},
+ 'flagstones-a':{layer:'ground',block:[]},'flagstones-b':{layer:'ground',block:[]},'flagstones-c':{layer:'ground',block:[]},'flagstones-d':{layer:'ground',block:[]},
+ 'stone-chips-a':{layer:'ground',block:[],band:'over'},'stone-chips-b':{layer:'ground',block:[],band:'over'},
+ 'ground-scuff-a':{layer:'ground',block:[],band:'under'},'ground-scuff-b':{layer:'ground',block:[],band:'under'},
+ 'drift-ne':{layer:'upright',block:[]},'drift-se':{layer:'upright',block:[]},'drift-mound':{layer:'upright',block:[]},
+});
+data.kit['grass-patch'].band=data.kit['rock-scatter'].band='over';
+
+const placed=[],paths=[],solids=[],errors=[],reserved=[];
 const CLEAR={u:17,v:17,r:4.6};
+const j=a=>(rnd()-.5)*2*a,pick=l=>l[Math.floor(rnd()*l.length)];
 function box(a,u,v,s=1){const k=sprites[a],p=W(u,v),w=k.world[0]*s,h=k.world[1]*s;return {x0:p.x-w*k.pivot[0],x1:p.x+w*(1-k.pivot[0]),y0:p.y-h*k.pivot[1],y1:p.y+h*(1-k.pivot[1]),y:p.y,x:p.x};}
 const overlap=(a,b,shrink=0)=>{const sx=(a.x1-a.x0)*shrink/2,sy=(a.y1-a.y0)*shrink/2;return a.x0+sx<b.x1&&a.x1-sx>b.x0&&a.y0+sy<b.y1&&a.y1-sy>b.y0;};
-function rects(a,u,v,s=1){return data.kit[a].block.map(([u0,v0,u1,v1])=>[u+u0*s,v+v0*s,u+u1*s,v+v1*s]);}
+// A mirrored sprite swaps its footprint's u and v offsets (frontier.ts footprint).
+function rects(a,u,v,s=1,f=false){return data.kit[a].block.map(r=>f?[r[1],r[0],r[3],r[2]]:r).map(([u0,v0,u1,v1])=>[u+u0*s,v+v0*s,u+u1*s,v+v1*s]);}
 const rectHit=(r,q,m=0)=>r[0]-m<q[2]&&r[2]+m>q[0]&&r[1]-m<q[3]&&r[3]+m>q[1];
 const rectDist=(r,u,v)=>Math.hypot(Math.max(r[0]-u,0,u-r[2]),Math.max(r[1]-v,0,v-r[3]));
 function problems(a,u,v,s=1,opts={}){
- const k=data.kit[a],b=box(a,u,v,s),out=[],rs=rects(a,u,v,s);
+ const k=data.kit[a],b=box(a,u,v,s),out=[],rs=rects(a,u,v,s,!!opts.f);
  if(nearRelief(u,v,k.layer==='ground'?1.3:.9)||rs.some(r=>nearRelief((r[0]+r[2])/2,(r[1]+r[3])/2,.6+Math.max(r[2]-r[0],r[3]-r[1])/2)))out.push('on raised terrain');
  for(const r of relief)if(overlap(b,{x0:r.x0,x1:r.x1,y0:r.y0,y1:r.y1},.2)&&(k.layer==='ground'||b.y<r.front(b.x)+6))out.push('behind/under '+r.id);
  for(const c of baked){if(c.ground)continue;if(overlap(b,c,k.layer==='ground'?0:.25)&&(k.layer==='ground'||b.y<c.y+4))out.push('over court '+c.id);}
  if(rs.length){
   if(Math.hypot(u-CLEAR.u,v-CLEAR.v)<CLEAR.r)out.push('in combat clearing');
   if(!opts.onPath)for(const p of paths)if(rs.some(r=>rectDist(r,p.u,p.v)<p.r))out.push('blocks path');
-  for(const q of solids)if(rs.some(r=>rectHit(r,q,opts.tight?0:.12)))out.push('overlaps solid');
+  // Joined modules (a wall meeting its corner, a wall against a gate pier) may share their join.
+  if(!opts.join)for(const q of solids)if(rs.some(r=>rectHit(r,q,opts.tight?0:.12)))out.push('overlaps solid');
  }
+ if(opts.scatter&&reserved.some(r=>u>r[0]&&u<r[2]&&v>r[1]&&v<r[3]))out.push('in a ruin');
  return [...new Set(out)];
 }
-function put(a,u,v,o={}){const s=o.s??1,bad=problems(a,u,v,s,o);if(bad.length){if(!o.scatter)errors.push(`${a} at (${u}, ${v}): ${bad.join(', ')}`);return false;}
- placed.push({a,u:+(u+OU).toFixed(2),v:+(v+OV).toFixed(2),...(s!==1?{s:+s.toFixed(3)}:{}),...(o.lift?{lift:o.lift}:{}),...(o.on?{on:o.on}:{}),zone:o.zone});
- solids.push(...rects(a,u,v,s));return true;}
-// A path: worn flagstones (small paving slabs) stepping from point to point with a little wander, some missing,
-// edged with loose stones and dry grass; it keeps a corridor free of solid props.
-function path(zone,pts,step=.82){
- for(let i=0;i+1<pts.length;i++){const [u0,v0]=pts[i],[u1,v1]=pts[i+1],n=Math.max(1,Math.round(Math.hypot(u1-u0,v1-v0)/step)),l=Math.hypot(u1-u0,v1-v0)||1,nu=(v1-v0)/l,nv=-(u1-u0)/l;
-  for(let j=i?1:0;j<=n;j++){const t=j/n,side=(rnd()-.5)*.3,u=u0+(u1-u0)*t+nu*side,v=v0+(v1-v0)*t+nv*side;paths.push({u,v,r:.58});
-   if(rnd()>.08)put('paving',u,v,{s:.25+rnd()*.06,zone,scatter:true});
-   if(rnd()<.22){const k=rnd()<.5?-1:1;put(rnd()<.55?'rock-scatter':'grass-patch',u+nu*k*.62,v+nv*k*.62,{s:.7+rnd()*.3,zone,scatter:true});}}}
+// o: s size, f mirror, r ground-plane turn (deg, ground decals), lift (px above the ground pivot), on (a cap's wall).
+function put(a,u,v,o={}){const s=o.s??1,bad=problems(a,u,v,s,o);if(bad.length){if(!o.scatter)errors.push(`${a} at (${u.toFixed(2)}, ${v.toFixed(2)}): ${bad.join(', ')}`);return false;}
+ placed.push({a,u:+(u+OU).toFixed(2),v:+(v+OV).toFixed(2),...(s!==1?{s:+s.toFixed(3)}:{}),...(o.lift?{lift:o.lift}:{}),...(o.on?{on:o.on}:{}),...(o.f?{f:1}:{}),...(o.r?{r:Math.round(o.r)}:{}),zone:o.zone});
+ solids.push(...rects(a,u,v,s,!!o.f));return true;}
+// Keep scattered plants and rocks out of a ruin's footprint (court-local tile rectangle).
+const reserve=(u0,v0,u1,v1)=>reserved.push([u0,v0,u1,v1]);
+// Every grounded wall module carries the same baked snow cap, so the separate v1 cap strips are retired.
+delete data.kit['snow-cap-ne'];delete data.kit['snow-cap-se'];
+// What collects at a ruin's foot: fallen blocks, loose stones, snow banked against it, dry grass and shrubs growing
+// out of the joints. Each entry is [sprite, du, dv, size]; plants and stones get a random mirror.
+function foot(zone,u,v,items){for(const [a,du,dv,s=1] of items)put(a,u+du,v+dv,{zone,s:s*(.9+rnd()*.2),f:!/^(rubble|stairs|wall|arch|corner|pillar)/.test(a)&&rnd()<.5,r:data.kit[a].layer==='ground'?rnd()*360:0,scatter:true});}
+
+// A trail: trampled snow along its whole length, overlapping worn flagstone clusters on a gentle wander (turned,
+// mirrored and sized at random, the odd one missing), and broken stones, dry grass and rocks along the edges. It keeps
+// a corridor free of solid props.
+const FLAGS=['flagstones-a','flagstones-b','flagstones-c','flagstones-d'];
+function trail(zone,pts,o={}){
+ const segs=[];let total=0;for(let i=0;i+1<pts.length;i++){const [u0,v0]=pts[i],[u1,v1]=pts[i+1],l=Math.hypot(u1-u0,v1-v0);segs.push({u0,v0,u1,v1,l,at:total});total+=l;}
+ const at=d=>{const s=segs.find(q=>d<=q.at+q.l)??segs[segs.length-1],t=Math.min(1,(d-s.at)/s.l),nu=(s.v1-s.v0)/s.l,nv=-(s.u1-s.u0)/s.l;return [s.u0+(s.u1-s.u0)*t,s.v0+(s.v1-s.v0)*t,nu,nv];};
+ const ph=rnd()*6.28,wander=d=>Math.sin(d*1.1+ph)*.13+Math.sin(d*2.7+ph*2)*.05;
+ for(let d=0;d<=total;d+=.4){const [u,v]=at(d);paths.push({u,v,r:.58});}
+ for(let d=.2;d<total;d+=.6+rnd()*.25){const [u,v,nu,nv]=at(d),k=wander(d)+j(.08);put(rnd()<.6?'ground-scuff-b':'ground-scuff-a',u+nu*k,v+nv*k,{s:.6+rnd()*.25,r:rnd()*360,f:rnd()<.5,zone,scatter:true});}
+ for(let d=o.from??0;d<=total-(o.to??0);d+=.3+rnd()*.08){if(rnd()<.05)continue;const [u,v,nu,nv]=at(d),k=wander(d)+j(.07);
+  put(pick(FLAGS),u+nu*k,v+nv*k,{s:.95+rnd()*.3,r:rnd()*360,f:rnd()<.5,zone,scatter:true});}
+ for(let d=.4;d<total;d+=.75+rnd()*.7){const [u,v,nu,nv]=at(d),side=rnd()<.5?-1:1,off=.5+rnd()*.22,x=u+nu*side*off,y=v+nv*side*off,q=rnd();
+  if(q<.4)put(rnd()<.5?'stone-chips-a':'stone-chips-b',x,y,{s:.8+rnd()*.4,r:rnd()*360,f:rnd()<.5,zone,scatter:true});
+  else if(q<.62)put('grass-patch',x+nu*side*.1,y+nv*side*.1,{s:.6+rnd()*.35,f:rnd()<.5,zone,scatter:true});
+  else if(q<.8)put('rock-scatter',x+nu*side*.12,y+nv*side*.12,{s:.65+rnd()*.3,f:rnd()<.5,zone,scatter:true});
+  else put('grass-tussock',x+nu*side*.2,y+nv*side*.2,{s:.75+rnd()*.35,f:rnd()<.5,zone,scatter:true});}
 }
-// Snow caps sit on their wall's ledge: same ground pivot, drawn `lift` px higher, hidden and shown with the wall.
-const capped=(wall,u,v,zone,lift=46)=>{put(wall,u,v,{zone});put(wall==='wall-ne'?'snow-cap-ne':'snow-cap-se',u,v,{lift,on:wall,zone,onPath:true});};
 
-// ---- Paths: gate -> ruined gate -> ruins; branch east to the watchtower; branch west to the shrine.
-path('Frontier road',[[17.4,17.6],[19.6,19.4],[20.8,22.2],[21.0,24.4],[21.0,27.2],[20.7,29.3]]);
-path('Watch road',[[19.6,19.4],[22.4,18.6],[25.4,18.1],[28.0,17.4]]);
-path('Shrine trail',[[17.4,17.6],[15.0,20.4],[12.0,21.4],[8.0,21.3],[4.0,21.4],[1.4,22.4],[0.8,25.0],[0.9,28.0]]);
+// ---- Paths: gate -> ruined gate -> the old village; branch east to the watchtower; branch west to the shrine.
+trail('Frontier road',[[17.4,17.6],[19.6,19.4],[20.8,22.2],[21.0,24.4],[21.0,27.2],[21.1,29.2],[20.9,31.0],[20.6,32.4]]);
+trail('Watch road',[[19.6,19.4],[22.4,18.6],[25.4,18.1],[27.6,17.4],[29.3,16.95]]);
+trail('Shrine trail',[[17.4,17.6],[15.0,20.4],[12.0,21.4],[8.0,21.3],[4.0,21.4],[1.4,22.4],[0.8,25.0],[2.6,26.9],[5.0,28.6],[5.4,30.3],[3.4,30.4]]);
 
-// ---- Ruined gate: the frontier's entrance, straddling the road; the road passes between its piers.
-// The piers stand either side of the road (TestFrontierCollision walks the passage); they may sit closer to the
-// path corridor than other props.
+// ---- Ruined gate: the frontier's entrance, straddling the road between its piers. Its curtain wall still joins the
+// east pier and trails off into rubble; to the west it has fallen, leaving a broken stub bridged by rubble.
 put('ruined-gate',21.15,25.75,{zone:'Ruined gate',onPath:true});
-put('rubble',22.9,25.1,{zone:'Ruined gate',s:.9});
-put('pillar-broken',19.0,26.4,{zone:'Ruined gate'});
+put('wall-se',23.33,25.55,{zone:'Ruined gate',join:true});
+foot('Ruined gate',0,0,[['rubble',24.75,25.25],['stone-chips-a',25.2,25.75],['drift-se',23.5,25.92,.9],['grass-tussock',22.7,26.05,.8],['shrub-twigs',25.3,24.6,.8]]);
+put('wall-se',18.5,25.95,{zone:'Ruined gate'});
+foot('Ruined gate',0,0,[['rubble',19.75,25.85,.85],['stone-chips-b',19.6,26.35],['drift-mound',18.2,26.25,.9],['grass-patch',17.6,26.1],['drift-mound',21.95,26.2,.7]]);
 put('rock-boulders',23.6,23.4,{zone:'Ruined gate',s:.85});
 put('dead-snag',17.7,23.1,{zone:'Ruined gate'});
-put('grass-tussock',22.4,26.9,{zone:'Ruined gate'});
-put('grass-tussock',19.6,27.2,{zone:'Ruined gate'});
+reserve(17.3,24.9,25.4,26.6);
 
-// ---- Pillar courtyard: four foundation slabs ringed by pillars, beyond the ruined gate.
-for(const [du,dv] of [[0,0],[2,0],[0,2],[2,2]])put('foundation',19.6+du,30.6+dv,{zone:'Pillar courtyard'});
-put('pillar-intact',18.35,29.45,{zone:'Pillar courtyard'});
-put('pillar-intact',22.85,29.45,{zone:'Pillar courtyard'});
-put('pillar-broken',18.35,33.95,{zone:'Pillar courtyard'});
-put('pillar-intact',22.85,33.95,{zone:'Pillar courtyard'});
-put('pillar-intact',18.3,31.7,{zone:'Pillar courtyard'});
-put('pillar-broken',22.95,31.75,{zone:'Pillar courtyard'});
-put('rubble',21.6,34.7,{zone:'Pillar courtyard'});
-put('stairs-nw',20.6,35.0,{zone:'Pillar courtyard'});
-put('rubble',17.2,32.9,{zone:'Pillar courtyard',s:.85});
+// ---- Temple (pillar courtyard): a raised podium half buried in snow, entered by stairs on its east side, with a
+// colonnade along both long edges standing on the podium; fallen columns lie where pillars are missing.
+const POD={u:18.4,v0:31.0,h:25};
+put('ground-scuff-a',18.5,32.0,{zone:'Temple',s:1.15,r:20});
+put('foundation',POD.u,POD.v0,{zone:'Temple'});put('foundation',POD.u,POD.v0+2,{zone:'Temple',f:true});
+put('stairs-nw',19.86,32.0,{zone:'Temple',onPath:true});
+// Both rows leave a wider bay at the middle, the entrance the stairs climb to.
+for(const [a,du,v] of [['pillar-intact',-.78,30.2],['pillar-intact',-.78,31.1],['pillar-broken',-.78,32.9],['pillar-intact',-.78,33.8],
+ ['pillar-intact',.78,30.2],['pillar-broken',.78,31.05],['pillar-intact',.78,32.95],['pillar-intact',.78,33.8]])put(a,POD.u+du,v,{zone:'Temple',lift:POD.h,s:a==='pillar-intact'?1.06:1});
+foot('Temple',0,0,[['rubble',17.0,32.5,.9],['rubble',19.75,30.0,.75],['stone-chips-a',20.3,31.0],['stone-chips-b',19.6,34.6],['drift-ne',19.95,33.3,.85],
+ ['drift-mound',17.3,34.6],['grass-tussock',16.95,31.1],['shrub-juniper',17.1,34.9,.8],['grass-patch',20.3,33.4],['grass-tussock',19.9,34.75,.8]]);
+reserve(16.6,29.3,20.4,35.2);
 
-// ---- Settlement foundations: two ruined houses either side of the courtyard.
-// West house (open to the north-west): front corner, two walls with snow caps, an arched doorway.
-put('foundation',14.4,32.0,{zone:'Settlement'});
-put('corner-n',15.15,32.85,{zone:'Settlement'});
-capped('wall-se',13.25,33.15,'Settlement');
-capped('wall-ne',15.45,30.95,'Settlement');
-put('arch-se',13.0,30.0,{zone:'Settlement'});
-put('rubble',12.1,32.1,{zone:'Settlement',s:.9});
-put('stairs-ne',16.5,34.2,{zone:'Settlement'});
-// East house: a broken front corner, a wall, an arch facing the road, rubble where the rest fell.
-put('foundation',26.2,31.0,{zone:'Settlement'});
-put('corner-s',27.0,31.9,{zone:'Settlement'});
-capped('wall-ne',27.3,29.95,'Settlement');
-put('arch-ne',24.7,32.4,{zone:'Settlement'});
-put('rubble',25.3,29.3,{zone:'Settlement'});
-put('pillar-broken',28.6,33.2,{zone:'Settlement'});
-put('paving',24.0,34.6,{zone:'Settlement',s:.7});
-put('paving',16.6,29.4,{zone:'Settlement',s:.65});
+// ---- Settlement: two ruined houses on sunk floors. Each keeps its back corner (the walls' clean ends meet), its
+// front walls have fallen into rubble, and a doorway arch stands joined to what is left.
+// West house, interior u 13.0-15.5, v 30.6-33.3: back walls, a front corner and an arched door facing the temple.
+put('ground-scuff-a',14.2,32.1,{zone:'Settlement',s:1.0,r:-15});
+put('floor-sunk',14.25,31.95,{zone:'Settlement',s:1.38});
+put('wall-ne',13.0,31.44,{zone:'Settlement'});
+put('wall-se',13.9,30.6,{zone:'Settlement',join:true});
+put('arch-ne',15.62,31.5,{zone:'Settlement',join:true});
+put('corner-n',15.5,33.3,{zone:'Settlement',join:true});
+foot('Settlement',0,0,[['rubble',15.25,30.45,.8],['rubble',13.6,33.55,.95],['stone-chips-a',12.9,33.0],['stone-chips-b',14.4,33.85],['drift-ne',13.25,32.55,.8],
+ ['drift-se',14.6,30.85,.75],['drift-mound',15.95,32.9,.7],['grass-tussock',12.6,30.3],['shrub-twigs',12.3,32.6,.85],['grass-patch',14.9,32.4,.8],['grass-tussock',16.0,30.75,.7]]);
+reserve(12.0,29.8,16.4,34.2);
+// East house, interior u 24.9-27.75, v 29.7-32.5: back corner, an arched door in the front wall, a corner beside it.
+put('ground-scuff-a',26.3,31.1,{zone:'Settlement',s:1.0,r:35,f:true});
+put('floor-sunk',26.35,31.1,{zone:'Settlement',s:1.35,f:true});
+put('wall-ne',24.9,30.54,{zone:'Settlement'});
+put('wall-se',25.8,29.7,{zone:'Settlement',join:true});
+put('arch-se',26.0,32.45,{zone:'Settlement'});
+put('corner-s',27.75,32.5,{zone:'Settlement',join:true});
+foot('Settlement',0,0,[['rubble',27.25,29.65,.9],['rubble',28.1,30.8,.8],['rubble',24.75,31.85,.75],['stone-chips-a',28.4,31.6],['stone-chips-b',25.3,33.0],
+ ['drift-ne',25.15,31.5,.75],['drift-se',26.8,29.95,.8],['pillar-broken',28.5,29.4],['grass-tussock',28.75,32.6],['shrub-juniper',24.3,29.6,.8],['grass-patch',26.9,31.5,.8],['grass-tussock',24.4,32.8,.75]]);
+reserve(23.8,28.9,29.2,33.5);
 
-// ---- Broken watchtower by the east ridge, with the outpost's fallen walls.
+// ---- Broken watchtower by the east ridge: stairs climb to its door, and its yard wall runs south from the tower to the
+// yard's front corner, breached once (rubble fills the gap), its front wall fallen.
 put('broken-watchtower',30.4,15.4,{zone:'Watchtower'});
-capped('wall-se',29.9,18.7,'Watchtower');
-put('rubble',31.4,17.9,{zone:'Watchtower'});
-put('stairs-ne',27.6,15.9,{zone:'Watchtower',s:.9});
-put('pillar-broken',32.1,13.2,{zone:'Watchtower'});
-put('rock-boulders',33.0,16.4,{zone:'Watchtower'});
+put('stairs-ne',29.45,16.2,{zone:'Watchtower',s:.9,join:true,onPath:true});
+put('wall-ne',30.75,15.85,{zone:'Watchtower',join:true});
+put('wall-ne',31.0,18.35,{zone:'Watchtower',join:true});
+put('corner-n',31.3,20.35,{zone:'Watchtower',join:true});
+foot('Watchtower',0,0,[['rubble',30.8,17.05,.8],['stone-chips-a',31.45,17.2],['rubble',30.0,20.45,.85],['stone-chips-b',29.4,20.6],['drift-ne',31.2,19.0,.8],['drift-mound',29.0,16.85,.7],
+ ['rock-boulders',33.0,16.4],['grass-tussock',31.9,18.6],['shrub-twigs',32.2,15.0,.8],['grass-patch',30.3,18.9],['grass-tussock',31.75,20.8,.8]]);
 put('dead-snag',26.6,20.6,{zone:'Watchtower'});
-put('corner-s',33.6,19.4,{zone:'Watchtower'});
+reserve(28.2,13.0,33.6,21.2);
 
-// ---- Snowy shrine: the exploration goal at the end of the western trail, framed by pillars and pines.
+// ---- Snowy shrine: the exploration goal at the end of the western trail. The trail ends in a flagstone forecourt
+// before the shrine's steps, lined by two pairs of columns.
 put('snowy-shrine',1.6,30.6,{zone:'Snowy shrine'});
-put('paving',1.0,28.7,{zone:'Snowy shrine',s:.75});
-put('pillar-intact',-0.2,28.0,{zone:'Snowy shrine'});
-put('pillar-intact',2.3,27.6,{zone:'Snowy shrine'});
-put('pillar-broken',3.3,30.6,{zone:'Snowy shrine'});
-put('dead-tree',4.0,32.8,{zone:'Snowy shrine'});
-put('shrub-juniper',-0.6,31.4,{zone:'Snowy shrine'});
-put('shrub-juniper',3.0,29.0,{zone:'Snowy shrine',s:.85});
-put('grass-tussock',2.2,32.6,{zone:'Snowy shrine'});
-put('rock-scatter',0.4,29.6,{zone:'Snowy shrine'});
+put('ground-scuff-a',3.1,30.2,{zone:'Snowy shrine',s:.9,r:60});
+put('paving',2.95,30.4,{zone:'Snowy shrine',s:.78,r:8});
+for(const [a,u,v] of [['pillar-intact',2.65,29.5],['pillar-intact',3.85,29.55],['pillar-intact',2.7,31.3],['pillar-broken',3.9,31.25]])put(a,u,v,{zone:'Snowy shrine'});
+foot('Snowy shrine',0,0,[['rubble',4.55,31.75,.75],['stone-chips-b',4.6,29.4],['drift-mound',2.25,31.85,.8],['shrub-juniper',-0.6,31.4],['shrub-juniper',4.6,28.4,.85],
+ ['grass-tussock',2.0,32.5],['dead-tree',5.3,33.9],['grass-patch',4.2,31.9,.8],['rock-scatter',0.6,29.3]]);
+reserve(-1.0,27.8,5.2,33.4);
 
 // ---- Plants and rocks: dense groves behind the Stronghold, thinner woods to the sides, sparse open snow in front.
 const zones=[
@@ -145,7 +183,7 @@ for(const z of zones){const pool=Object.entries(z.mix).flatMap(([a,w])=>Array(w)
  for(let tries=0;made<z.n&&tries<z.n*40;tries++){const a=pool[Math.floor(rnd()*pool.length)],u=z.u[0]+rnd()*(z.u[1]-z.u[0]),v=z.v[0]+rnd()*(z.v[1]-z.v[0]),[lo,hi]=scale[a]??[.85,1.15];
   if(u>-5.5&&u<21.5&&v>-5.5&&v<21.5&&z.zone!=='Gate meadow')continue;
   if(placed.some(p=>Math.hypot(p.u-OU-u,p.v-OV-v)<(data.kit[a].block.length?1.1:.6)))continue;
-  if(put(a,u,v,{s:lo+rnd()*(hi-lo),zone:z.zone,scatter:true}))made++;}}
+  if(put(a,u,v,{s:lo+rnd()*(hi-lo),f:rnd()<.5,zone:z.zone,scatter:true}))made++;}}
 
 if(errors.length){console.error(errors.join('\n'));process.exit(1);}
 data.placements=placed;
