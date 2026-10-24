@@ -60,6 +60,7 @@ mkdir -p "$STAGE/site/map-prefab"; cp docs/map-prefab/*.webp docs/map-prefab/*.j
 mkdir -p "$STAGE/site/terrain-height"; cp docs/terrain-height/*.webp docs/terrain-height/*.json "$STAGE/site/terrain-height/"
 mkdir -p "$STAGE/site/minimap"; cp docs/minimap/*.png docs/minimap/*.json "$STAGE/site/minimap/"
 mkdir -p "$STAGE/site/thumb-pad"; cp docs/thumb-pad/*.webp docs/thumb-pad/*.json "$STAGE/site/thumb-pad/"
+mkdir -p "$STAGE/site/stick-pan"; cp docs/stick-pan/*.webp docs/stick-pan/*.json "$STAGE/site/stick-pan/"
 mkdir -p "$STAGE/site/hud-telemetry-desktop"; cp docs/hud-telemetry-desktop/*.png "$STAGE/site/hud-telemetry-desktop/"
 echo "Staged $(wc -l < "$list") files, $(du -sh "$STAGE" | cut -f1) in $STAGE"
 
