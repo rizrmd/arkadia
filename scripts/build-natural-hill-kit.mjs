@@ -7,6 +7,7 @@ const REF_PATH = fs.existsSync('/home/dev/attachments/DAc4524f9e253a59fb918d9ade
   : 'docs/terrain-height/concept-reference.png';
 
 const OUT_WEBP = path.resolve('public/terrain-height/natural/cliff-strip.webp');
+const OUT_VERSIONED_WEBP = path.resolve('public/terrain-height/natural/cliff-strip-v2.webp');
 
 function clamp(v, lo, hi) {
   return v < lo ? lo : v > hi ? hi : v;
@@ -392,9 +393,10 @@ async function main() {
   await sharp(out, { raw: { width: W, height: H, channels: 4 } })
     .webp({ quality: 94, alphaQuality: 96, effort: 4 })
     .toFile(OUT_WEBP);
+  await fs.promises.copyFile(OUT_WEBP, OUT_VERSIONED_WEBP);
 
   const stat = await fs.promises.stat(OUT_WEBP);
-  console.log(`Built ${OUT_WEBP} (${W}x${H}, ${(stat.size / 1024).toFixed(1)} KB)`);
+  console.log(`Built ${OUT_WEBP} & ${OUT_VERSIONED_WEBP} (${W}x${H}, ${(stat.size / 1024).toFixed(1)} KB)`);
 }
 
 main().catch((err) => {

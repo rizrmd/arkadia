@@ -79,7 +79,7 @@ function drawAlignedSpec(
  c.restore();
 }
 
-export function naturalHillArt(f:ReliefFeature,_snow:HTMLImageElement,rock:HTMLImageElement){
+export function naturalHillArt(f:ReliefFeature,snow:HTMLImageElement,rock:HTMLImageElement){
  const ring=f.outline!.map(([u,v])=>{
   const g=tilePoint(u,v),h=featureHeight(f,u,v)*PX_PER_METER;
   return {u,v,g,h,t:{x:g.x,y:g.y-h}};
@@ -114,7 +114,20 @@ export function naturalHillArt(f:ReliefFeature,_snow:HTMLImageElement,rock:HTMLI
  const centerY=(ringMinY+ringMaxY)*0.5+spanY*0.005;
 
  const hasFullKit=rock.naturalHeight>=1800;
- if(!hasFullKit)return {feature:f,canvas,left,top,width:right-left,height:bottom-top,bottom};
+ if(!hasFullKit){
+  const topPath=new Path2D();
+  ring.forEach((p,i)=>i?topPath.lineTo(p.t.x,p.t.y):topPath.moveTo(p.t.x,p.t.y));
+  topPath.closePath();
+  c.save();
+  c.clip(topPath);
+  const pat=c.createPattern(snow,'repeat');
+  if(pat){c.fillStyle=pat;c.fillRect(left,top,right-left,bottom-top);}
+  c.fillStyle='rgba(235,242,250,0.65)';
+  c.fillRect(left,top,right-left,bottom-top);
+  c.restore();
+  c.drawImage(rock,0,0,rock.naturalWidth,rock.naturalHeight,centerX-spanX*0.48,centerY-spanY*0.35,spanX*0.96,spanY*0.7);
+  return {feature:f,canvas,left,top,width:right-left,height:bottom-top,bottom};
+ }
 
  // ==========================================================================
  // 1. Organic Snow Mound & Base Skirt Layer

@@ -7,7 +7,7 @@ import {RELIEF,PX_PER_METER,featureHeight,type ReliefFeature} from '../world/rel
 // Seeded, so every client paints the same terrain. World px; RELIEF_RES canvas px per world px.
 export const RELIEF_RES=2;
 export const CLIFF_ART='/modular-stronghold/v2/cliff-snow.png';
-export const NATURAL_CLIFF_ART='/terrain-height/natural/cliff-strip.webp';
+export const NATURAL_CLIFF_ART='/terrain-height/natural/cliff-strip-v2.webp';
 export type ReliefArt={feature:ReliefFeature;canvas:HTMLCanvasElement;left:number;top:number;width:number;height:number;bottom:number};
 type P={x:number;y:number};type Corner={g:P;h:number;t:P};
 function rng(seed:string){let n=[...seed].reduce((s,c)=>Math.imul(s,31)+c.charCodeAt(0)|0,17);return()=>((n=Math.imul(n,1664525)+1013904223|0)>>>0)/4294967296;}
