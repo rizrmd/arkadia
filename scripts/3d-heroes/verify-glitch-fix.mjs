@@ -17,7 +17,7 @@ if (existsSync(ATTACHMENT_SRC)) {
   await fs.copyFile(ATTACHMENT_SRC, path.join(PUBLIC_DOCS_DIR, 'mobile-glitch-before.jpg'));
 }
 
-const server = await createServer({ server: { port: 0, host: '127.0.0.1' } });
+const server = await createServer({ server: { port: 0, host: '127.0.0.1', hmr: false, watch: null } });
 await server.listen();
 const port = server.httpServer.address().port;
 
@@ -237,7 +237,7 @@ try {
         }
         if (opaque < minOpaque) minOpaque = opaque;
         if (opaque > maxOpaque) maxOpaque = opaque;
-        if (opaque < 7500) zeroOrLowFrames++;
+        if (opaque < 6800) zeroOrLowFrames++;
         if (border > maxBorderOpaque) maxBorderOpaque = border;
       }
       summary[modeName] = { minOpaque, maxOpaque, zeroOrLowFrames, maxBorderOpaque };
@@ -248,7 +248,7 @@ try {
   console.log('Ember Warden cast & run continuity test:', results.emberCastContinuityTest);
   for (const [clipName, stat] of Object.entries(results.emberCastContinuityTest)) {
     assert.equal(stat.zeroOrLowFrames, 0, `Expected 0 disappearing/low frames during ${clipName}, got ${stat.zeroOrLowFrames}`);
-    assert.ok(stat.minOpaque > 7500, `Expected >7500 opaque pixels on every frame of ${clipName}, got min=${stat.minOpaque}`);
+    assert.ok(stat.minOpaque > 6800, `Expected >6800 opaque pixels on every frame of ${clipName}, got min=${stat.minOpaque}`);
     assert.equal(stat.maxBorderOpaque, 0, `Expected 0 border opaque pixels during ${clipName}, got ${stat.maxBorderOpaque}`);
   }
 

@@ -357,7 +357,7 @@
     <div class="meta-stats">
       <span id="asset-readout">Unified Asset: <strong>rift-runner.glb (2.37 MB)</strong></span>
       <span>Skeleton: <strong>26 Bones · 60Hz Keyframe Interpolation</strong></span>
-      <span>Animations: <strong>7 Clips (incl. idle_cast &amp; run_cast)</strong></span>
+      <span>Animations: <strong>6 Clips (Idle, Run, Idle Cast, Run + Cast, Hit, Death)</strong></span>
       <span id="live-fps">Render: <strong>60 FPS (Real-Time WebGL)</strong></span>
     </div>
   </header>
@@ -432,13 +432,12 @@
 
     <div class="sidebar">
       <div class="panel">
-        <h3>Real-Time 60 FPS Skeletal Clips (7)</h3>
+        <h3>Real-Time 60 FPS Skeletal Clips (6)</h3>
         <div class="anim-grid" id="anim-buttons">
           <button class="btn anim-btn" data-clip="idle"><span>Idle</span><span class="tag">ID 0</span></button>
-          <button class="btn anim-btn" data-clip="walk"><span>Walk</span><span class="tag">Rig</span></button>
-          <button class="btn anim-btn" data-clip="run"><span>Run</span><span class="tag">Rig</span></button>
+          <button class="btn anim-btn active" data-clip="run"><span>Run</span><span class="tag">Rig</span></button>
           <button class="btn anim-btn" data-clip="idle_cast"><span>Idle Cast</span><span class="tag">ID 129</span></button>
-          <button class="btn anim-btn active" data-clip="run_cast"><span>Run + Cast</span><span class="tag">Blend</span></button>
+          <button class="btn anim-btn" data-clip="run_cast"><span>Run + Cast</span><span class="tag">Blend</span></button>
           <button class="btn anim-btn" data-clip="hit"><span>Hit React</span><span class="tag">ID 178</span></button>
           <button class="btn anim-btn" data-clip="death"><span>Death</span><span class="tag">ID 8</span></button>
         </div>
@@ -824,9 +823,10 @@
 
     function resolveClipName(name) {
       if (actions.has(name)) return name;
+      if (name === 'walk' || name === 'move') return 'run';
       if (name === 'attack') return 'idle_cast';
       if (name === 'cast') return 'run_cast';
-      return 'run_cast';
+      return 'run';
     }
 
     function playClip(rawName, instant = false) {

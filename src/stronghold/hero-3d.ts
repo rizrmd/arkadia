@@ -968,10 +968,18 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
 
       if (targetClip !== entry.activeClip && entry.actions.has(targetClip)) {
         const next = entry.actions.get(targetClip)!;
+        const prevClip = entry.activeClip;
+        const prevTime = entry.activeAction ? Number(entry.activeAction.time || 0) : 0;
         if (entry.activeAction && entry.activeAction !== next) {
-          entry.activeAction.fadeOut(0.12);
+          entry.activeAction.fadeOut(0.14);
         }
-        next.reset().fadeIn(0.12).play();
+        next.reset();
+        // Phase-lock stride time when switching between 'run' and 'run_cast' so legs & left arm never skip a beat
+        if ((prevClip === 'run' && targetClip === 'run_cast') || (prevClip === 'run_cast' && targetClip === 'run')) {
+          const dur = next.getClip?.()?.duration || 0;
+          if (dur > 0) next.time = prevTime % dur;
+        }
+        next.fadeIn(0.14).play();
         entry.activeAction = next;
         entry.activeClip = targetClip;
       }
@@ -991,7 +999,8 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
 
       entry.mixer.update(dt);
 
-      // Dynamically ground the lowest foot/toe bone to y = 0 so the boots always touch the ground pivot
+      // Dynamically ground the lowest foot/toe bone to y = 0 so the boots never sink below the ground pivot
+      // while preserving natural upward flight bounce during 'run' and 'run_cast'
       if (entry.footBones.length > 0 && THREE) {
         entry.rawModel.position.y = entry.baseOffsetY;
         entry.heroRoot.updateMatrixWorld(true);
@@ -1002,8 +1011,11 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
           if (tmpPos.y < minFootY) minFootY = tmpPos.y;
         }
         if (Number.isFinite(minFootY)) {
-          // Offset so the sole of the boot (slightly below ankle/toe bone center) sits right at y = 0
-          entry.rawModel.position.y = entry.baseOffsetY - (minFootY - 0.035);
+          const isRunningClip = entry.activeClip === 'run' || entry.activeClip === 'run_cast';
+          const deltaY = minFootY - 0.032;
+          // Prevent any downward ground penetration (deltaY < 0), while allowing 70% of natural upward flight lift during run
+          const offset = isRunningClip && deltaY > 0 ? deltaY * 0.30 : deltaY;
+          entry.rawModel.position.y = entry.baseOffsetY - offset;
         }
       }
 

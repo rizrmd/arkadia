@@ -2,13 +2,13 @@ import fs from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 import sharp from 'sharp';
+import * as THREE from '../../public/3d-hero-lab/vendor/three.module.min.js';
 
 const RAW_DIR = path.resolve('assets-src/3d-heroes/raw');
 const OUT_DIR = path.resolve('public/assets/characters/3d');
 
 const CLIPS = [
   { slug: 'idle', label: 'Idle', loop: true },
-  { slug: 'walk', label: 'Walk', loop: true },
   { slug: 'run', label: 'Run', loop: true },
   { slug: 'idle_cast', label: 'Idle Cast', loop: true },
   { slug: 'run_cast', label: 'Run While Casting', loop: true },
@@ -151,6 +151,98 @@ async function buildHeroGlb(hero) {
           return t * t * (3 - 2 * t);
         };
 
+        // Classify lower-body vertices below y = 0.88m by exact triangle-mesh connected components:
+        //   part = 1 -> Left Leg & Boot (2,408 verts, minY < 0.05, avgX > -0.015)
+        //   part = 2 -> Right Leg & Boot (2,343 verts, minY < 0.05, avgX <= -0.015)
+        //   part = 3 -> Outer Coat Skirt (minY >= 0.05)
+        const part = new Uint8Array(posAcc.count);
+        if (prim.indices !== undefined) {
+          const idxAcc = outJson.accessors[prim.indices];
+          const idxBuf = bvBuffers[idxAcc.bufferView];
+          const idxBase = idxAcc.byteOffset || 0;
+          const isU16 = idxAcc.componentType === 5123;
+
+          const posKeyToRep = new Map();
+          const vertToRep = new Int32Array(posAcc.count);
+          const rawCoords = new Float32Array(posAcc.count * 3);
+          for (let i = 0; i < posAcc.count; i++) {
+            const off = baseOff + i * stride;
+            const x = buf.readFloatLE(off);
+            const y = buf.readFloatLE(off + 4);
+            const z = buf.readFloatLE(off + 8);
+            rawCoords[i * 3] = x;
+            rawCoords[i * 3 + 1] = y;
+            rawCoords[i * 3 + 2] = z;
+            const key = `${Math.round(x * 1000)},${Math.round(y * 1000)},${Math.round(z * 1000)}`;
+            let rep = posKeyToRep.get(key);
+            if (rep === undefined) {
+              rep = i;
+              posKeyToRep.set(key, rep);
+            }
+            vertToRep[i] = rep;
+          }
+
+          const cutY = 0.88;
+          const parent = new Int32Array(posAcc.count).fill(-1);
+          for (let i = 0; i < posAcc.count; i++) {
+            if (rawCoords[i * 3 + 1] < cutY) {
+              parent[vertToRep[i]] = vertToRep[i];
+            }
+          }
+          const find = (a) => {
+            while (parent[a] !== a) {
+              parent[a] = parent[parent[a]];
+              a = parent[a];
+            }
+            return a;
+          };
+          const union = (a, b) => {
+            const ra = find(a);
+            const rb = find(b);
+            if (ra !== rb) parent[ra] = rb;
+          };
+
+          for (let t = 0; t < idxAcc.count; t += 3) {
+            const r0 = isU16 ? idxBuf.readUInt16LE(idxBase + t * 2) : idxBuf.readUInt32LE(idxBase + t * 4);
+            const r1 = isU16 ? idxBuf.readUInt16LE(idxBase + (t + 1) * 2) : idxBuf.readUInt32LE(idxBase + (t + 1) * 4);
+            const r2 = isU16 ? idxBuf.readUInt16LE(idxBase + (t + 2) * 2) : idxBuf.readUInt32LE(idxBase + (t + 2) * 4);
+            const i0 = vertToRep[r0];
+            const i1 = vertToRep[r1];
+            const i2 = vertToRep[r2];
+            if (parent[i0] >= 0 && parent[i1] >= 0) union(i0, i1);
+            if (parent[i1] >= 0 && parent[i2] >= 0) union(i1, i2);
+            if (parent[i0] >= 0 && parent[i2] >= 0) union(i0, i2);
+          }
+
+          const compStats = new Map();
+          for (let i = 0; i < posAcc.count; i++) {
+            if (rawCoords[i * 3 + 1] < cutY) {
+              const r = find(vertToRep[i]);
+              let s = compStats.get(r);
+              if (!s) {
+                s = { minY: Infinity, sumX: 0, n: 0 };
+                compStats.set(r, s);
+              }
+              const x = rawCoords[i * 3];
+              const y = rawCoords[i * 3 + 1];
+              if (y < s.minY) s.minY = y;
+              s.sumX += x;
+              s.n++;
+            }
+          }
+
+          for (let i = 0; i < posAcc.count; i++) {
+            if (rawCoords[i * 3 + 1] < cutY) {
+              const s = compStats.get(find(vertToRep[i]));
+              if (s && s.minY < 0.05) {
+                part[i] = s.sumX / s.n > -0.015 ? 1 : 2;
+              } else {
+                part[i] = 3;
+              }
+            }
+          }
+        }
+
         for (let i = 0; i < posAcc.count; i++) {
           const off = baseOff + i * stride;
           let x = buf.readFloatLE(off);
@@ -169,30 +261,25 @@ async function buildHeroGlb(hero) {
             z *= sXZ;
           }
 
-          // 2. Tailor waist/corset & give outer skirt subtle outward clearance around legs so legs never clip skirt
+          // 2. Tailor waist/corset & give the topological Coat Skirt (part === 3) outward/backward clearance
+          //    around the legs so full-stride knee flexion never clips through the skirt.
           const waistWeight = smoothstep(0.92, 1.08, y) * (1 - smoothstep(1.22, 1.34, y)) * (1 - smoothstep(0.18, 0.26, Math.abs(x)));
           if (waistWeight > 0) {
             x *= 1 - 0.08 * waistWeight;
             z *= 1 - 0.06 * waistWeight;
           }
           const skirtBand = smoothstep(0.15, 0.26, y) * (1 - smoothstep(0.76, 0.90, y));
-          if (skirtBand > 0) {
-            const dLeft = Math.hypot(x - 0.045, z - 0.068);
-            const dRight = Math.hypot(x + 0.078, z - 0.068);
-            const dLeg = Math.min(dLeft, dRight);
-            const isOuterSkirt = smoothstep(0.085, 0.14, dLeg);
-            if (isOuterSkirt > 0) {
-              const cx = -0.0165;
-              const cz = 0.068;
-              const rx = x - cx;
-              const rz = z - cz;
-              const rLen = Math.hypot(rx, rz) || 1;
-              const push = 0.016 * skirtBand * isOuterSkirt;
-              x += (rx / rLen) * push;
-              z += (rz / rLen) * push;
-              if (z < cz) {
-                z -= 0.012 * skirtBand * isOuterSkirt;
-              }
+          if (skirtBand > 0 && part[i] === 3) {
+            const cx = -0.0165;
+            const cz = 0.068;
+            const rx = x - cx;
+            const rz = z - cz;
+            const rLen = Math.hypot(rx, rz) || 1;
+            const push = 0.022 * skirtBand;
+            x += (rx / rLen) * push;
+            z += (rz / rLen) * push;
+            if (z < cz) {
+              z -= 0.018 * skirtBand;
             }
           }
 
@@ -210,8 +297,10 @@ async function buildHeroGlb(hero) {
         posAcc.max = max;
         console.log(`[${hero.id}] Refined bind-pose proportions (${posAcc.count} vertices, maxY=${max[1].toFixed(3)}m)`);
 
-        // 3. Harmonize lower-body skinning weights (JOINTS_0 / WEIGHTS_0) so outer skirt and inner leg at any (x, y)
-        //    share an identical partition-of-unity bone blend and can never cross or clip through each other during run.
+        // 3. Harmonize lower-body skinning weights (JOINTS_0 / WEIGHTS_0) using topological component isolation:
+        //    - Left Leg/Boot (part === 1) gets 100% Left leg bones (0% Right leg bleed -> zero inner-boot spike!)
+        //    - Right Leg/Boot (part === 2) gets 100% Right leg bones (0% Left leg bleed)
+        //    - Coat Skirt (part === 3) gets 0% Foot/Toe weights (hem never twists with ankles) and smooth lateral blend
         if (prim.attributes?.JOINTS_0 !== undefined && prim.attributes?.WEIGHTS_0 !== undefined && outJson.skins?.[0]?.joints) {
           const skinJoints = outJson.skins[0].joints;
           const jointIdxByName = new Map();
@@ -265,21 +354,37 @@ async function buildHeroGlb(hero) {
             }
             if (lowerWeightSum < 0.05) continue;
 
-            // Partition of unity in Y across non-overlapping smoothstep bands:
-            // [0.03..0.09] Toe->Foot, [0.13..0.22] Foot->Leg, [0.48..0.64] Leg->UpLeg (at knee y=0.59m), [0.88..0.96] UpLeg->Hips
-            const s0 = smoothstep(0.03, 0.09, y);
-            const s1 = smoothstep(0.13, 0.22, y);
-            const s2 = smoothstep(0.48, 0.64, y);
-            const s3 = smoothstep(0.88, 0.96, y);
+            const vPart = part[i];
+            let wToe = 0;
+            let wFoot = 0;
+            let wLeg = 0;
+            let wUp = 0;
+            let wHip = 0;
+            let tLeft = 0.5;
 
-            const wToe = 1 - s0;
-            const wFoot = s0 - s1;
-            const wLeg = s1 - s2;
-            const wUp = s2 - s3;
-            const wHip = s3;
-
-            // Clean sagittal split centered at x = -0.0165 (midpoint between LeftUpLeg +0.033 and RightUpLeg -0.066)
-            const tLeft = smoothstep(-0.032, 0.000, x);
+            if (vPart === 1 || vPart === 2) {
+              // Pure topological leg/boot component: 100% single-side leg chain
+              const s0 = smoothstep(0.03, 0.08, y);
+              const s1 = smoothstep(0.12, 0.20, y);
+              const s2 = smoothstep(0.48, 0.64, y);
+              const s3 = smoothstep(0.86, 0.95, y);
+              wToe = 1 - s0;
+              wFoot = s0 - s1;
+              wLeg = s1 - s2;
+              wUp = s2 - s3;
+              wHip = s3;
+              tLeft = vPart === 1 ? 1.0 : 0.0;
+            } else {
+              // Coat Skirt & upper hip transition: 0% Foot/Toe weight, cohesive fabric drape over thighs & shins
+              const s2 = smoothstep(0.36, 0.62, y);
+              const s3 = smoothstep(0.80, 0.94, y);
+              wToe = 0;
+              wFoot = 0;
+              wLeg = 0.72 * (1 - s2);
+              wUp = (1 - s3) - wLeg;
+              wHip = s3;
+              tLeft = 0.10 + 0.80 * smoothstep(-0.12, 0.09, x);
+            }
             const tRight = 1 - tLeft;
 
             const candidates = [...upperInfluences];
@@ -415,27 +520,231 @@ async function buildHeroGlb(hero) {
     console.log(`[${hero.id}] Merged animation '${targetName}' (${channels.length} channels)`);
   }
 
+  // Helper to synthesize Ember Warden's biomechanical 'run' (25 frames = 24 intervals, 0.72s)
+  // and 'run_cast' (49 frames = 48 intervals = 2 full run cycles, 1.44s) directly on her rig.
+  function buildEmberRunClip(clipName, intervals, isCastingMode) {
+    const frameCount = intervals + 1; // Frame 0 (t=0.00s) and Frame N (t=N*0.03s) are identical for 0-gap looping
+    const dt = 0.03;
+    const times = new Float32Array(frameCount);
+    for (let k = 0; k < frameCount; k++) {
+      times[k] = k * dt;
+    }
+    const timeAccIdx = addFloatAccessor(times, frameCount, 'SCALAR');
+
+    const bindQuats = new Map();
+    const bindTrans = new Map();
+    const threeNodes = outJson.nodes.map((n) => {
+      const o = new THREE.Object3D();
+      o.name = n.name || '';
+      if (n.translation) {
+        o.position.set(...n.translation);
+        if (n.name) bindTrans.set(n.name, [...n.translation]);
+      }
+      if (n.rotation) {
+        o.quaternion.set(...n.rotation);
+        if (n.name) bindQuats.set(n.name, new THREE.Quaternion(...n.rotation));
+      }
+      if (n.scale) o.scale.set(...n.scale);
+      return o;
+    });
+    outJson.nodes.forEach((n, idx) => {
+      for (const c of n.children || []) threeNodes[idx].add(threeNodes[c]);
+    });
+    const byName = new Map(threeNodes.map((o) => [o.name, o]));
+
+    const deg = (d) => (d * Math.PI) / 180;
+    const setRelEuler = (name, rx, ry, rz, baseOverrideQ = null) => {
+      const obj = byName.get(name);
+      const bq = (baseOverrideQ || bindQuats.get(name)).clone();
+      const dq = new THREE.Quaternion().setFromEuler(new THREE.Euler(deg(rx), deg(ry), deg(rz), 'XYZ'));
+      obj.quaternion.copy(bq.multiply(dq));
+    };
+
+    const orientBoneWorldY = (name, targetDirWorld, rollDeg = 0) => {
+      const boneObj = byName.get(name);
+      boneObj.parent.updateMatrixWorld(true);
+      const parentWorldQ = new THREE.Quaternion();
+      boneObj.parent.getWorldQuaternion(parentWorldQ);
+      const bindLocalQ = bindQuats.get(name).clone();
+      const bindWorldQ = parentWorldQ.clone().multiply(bindLocalQ);
+      const curY = new THREE.Vector3(0, 1, 0).applyQuaternion(bindWorldQ).normalize();
+      const tgtY = targetDirWorld.clone().normalize();
+      const rotWorld = new THREE.Quaternion().setFromUnitVectors(curY, tgtY);
+      let newWorldQ = rotWorld.multiply(bindWorldQ);
+      if (rollDeg !== 0) {
+        const rollQ = new THREE.Quaternion().setFromAxisAngle(tgtY, deg(rollDeg));
+        newWorldQ = rollQ.multiply(newWorldQ);
+      }
+      boneObj.quaternion.copy(parentWorldQ.clone().invert().multiply(newWorldQ));
+    };
+
+    const trackedBones = [
+      'Hips',
+      'Spine02',
+      'Spine01',
+      'Spine',
+      'neck',
+      'Head',
+      'LeftShoulder',
+      'LeftArm',
+      'LeftForeArm',
+      'LeftHand',
+      'RightShoulder',
+      'RightArm',
+      'RightForeArm',
+      'RightHand',
+      'LeftUpLeg',
+      'LeftLeg',
+      'LeftFoot',
+      'LeftToeBase',
+      'RightUpLeg',
+      'RightLeg',
+      'RightFoot',
+      'RightToeBase'
+    ];
+
+    const rotTracks = new Map(trackedBones.map((b) => [b, new Float32Array(frameCount * 4)]));
+    const hipsTransTrack = new Float32Array(frameCount * 3);
+    const symFootBase = new THREE.Quaternion(-0.365, 0, 0, 0.931).normalize();
+    const baseHipsT = bindTrans.get('Hips') || [-1.51, 106.23, 7.12];
+
+    for (let k = 0; k < frameCount; k++) {
+      // 24 intervals per full two-step run stride
+      const th = (2 * Math.PI * (k % 24)) / 24;
+      const castTh = (2 * Math.PI * (k % intervals)) / intervals;
+
+      // Reset all nodes to bind pose before solving frame k
+      for (const [bName, bq] of bindQuats.entries()) {
+        byName.get(bName).quaternion.copy(bq);
+      }
+
+      // 1. Pelvis (Hips) vertical rhythm (2 cycles per stride: lowest at stance k=5,17, highest at flight k=0,12)
+      const hipsY = 102.2 + 2.2 * Math.cos(2 * (th - 0.35));
+      const hipsX = baseHipsT[0] + 0.6 * Math.sin(th);
+      const hipsZ = baseHipsT[2] + 0.8 * Math.sin(2 * (th - 0.35));
+      byName.get('Hips').position.set(hipsX, hipsY, hipsZ);
+      hipsTransTrack[k * 3] = hipsX;
+      hipsTransTrack[k * 3 + 1] = hipsY;
+      hipsTransTrack[k * 3 + 2] = hipsZ;
+
+      setRelEuler('Hips', 4.5 + 1.2 * Math.sin(2 * th), 5.0 * Math.cos(th), 2.5 * Math.sin(th));
+
+      // 2. Spine & Head: athletic forward run lean (~8.0 deg total) + counter-rotation opposing pelvis + level gaze
+      const castChestYaw = isCastingMode ? -5.0 - 2.5 * Math.sin(castTh) : 0;
+      setRelEuler('Spine02', 3.2 + 0.7 * Math.cos(2 * th), -2.2 * Math.cos(th) + castChestYaw * 0.3, -1.2 * Math.sin(th));
+      setRelEuler('Spine01', 2.8 + 0.5 * Math.cos(2 * th), -2.8 * Math.cos(th) + castChestYaw * 0.35, -1.0 * Math.sin(th));
+      setRelEuler('Spine', 2.0, -2.5 * Math.cos(th) + castChestYaw * 0.35, 0);
+      setRelEuler('neck', -2.5, 1.2 * Math.cos(th) - castChestYaw * 0.4, 0);
+      setRelEuler('Head', -5.0 - 0.7 * Math.cos(2 * th), 1.5 * Math.cos(th) - castChestYaw * 0.6, 0.8 * Math.sin(th));
+
+      // 3. Symmetric Left & Right Leg gait (0% sideways twist, balanced stride & knee flexion inside battle coat)
+      const solveLeg = (side, psi) => {
+        const sign = side === 'Left' ? 1 : -1;
+        const hipPitch = -5 - 24 * Math.cos(psi) + 3 * Math.sin(psi);
+        const kneeBend = 30 - 16 * Math.sin(psi - 0.35) - 7 * Math.cos(2 * (psi - 0.25));
+        const footPitch = -4 - 10 * Math.cos(psi - 0.3) + 5 * Math.sin(psi);
+        setRelEuler(`${side}UpLeg`, hipPitch, 0, sign * 1.2);
+        setRelEuler(`${side}Leg`, kneeBend, 0, 0);
+        setRelEuler(`${side}Foot`, footPitch, 0, 0, symFootBase);
+        setRelEuler(`${side}ToeBase`, Math.max(0, 5 * Math.sin(psi - 0.6)), 0, 0);
+      };
+      solveLeg('Left', th);
+      solveLeg('Right', th + Math.PI);
+
+      // 4. Arms: natural sagittal runner swing (hands drop past hips on back-swing and rise to lower chest on front-swing)
+      const lSwing = -Math.cos(th - 0.15); // +1 when Right leg is forward (th = PI), -1 when Left leg is forward (th = 0)
+      const rSwing = Math.cos(th - 0.15);  // +1 when Left leg is forward (th = 0), -1 when Right leg is forward (th = PI)
+      const uL = 0.5 * (lSwing + 1);       // 0 at back-swing, 1 at front-swing
+      const uR = 0.5 * (rSwing + 1);
+
+      setRelEuler('LeftShoulder', -4, 4 * lSwing, -2);
+      const lUpperDir = new THREE.Vector3(0.21, -0.93, -0.30 + 0.56 * uL);
+      const lForeDir = new THREE.Vector3(-(0.14 + 0.08 * uL), -0.76 + 0.72 * uL, 0.62 + 0.34 * uL);
+      orientBoneWorldY('LeftArm', lUpperDir);
+      orientBoneWorldY('LeftForeArm', lForeDir);
+      setRelEuler('LeftHand', 0, 0, 0);
+
+      if (!isCastingMode) {
+        setRelEuler('RightShoulder', -4, -4 * rSwing, 2);
+        const rUpperDir = new THREE.Vector3(-0.21, -0.93, -0.30 + 0.56 * uR);
+        const rForeDir = new THREE.Vector3(0.14 + 0.08 * uR, -0.76 + 0.72 * uR, 0.62 + 0.34 * uR);
+        orientBoneWorldY('RightArm', rUpperDir);
+        orientBoneWorldY('RightForeArm', rForeDir);
+        setRelEuler('RightHand', 0, 0, 0);
+      } else {
+        // In 'run_cast', Right Ember Gauntlet channels & aims forward at waist-to-chest height in rhythm with the stride
+        const pulse = Math.sin(castTh);
+        const strideBob = 0.04 * Math.cos(2 * th);
+        setRelEuler('RightShoulder', -5, -6 - 3 * pulse, 3);
+        const rUpperDir = new THREE.Vector3(-0.21 + 0.03 * pulse, -0.74 + 0.06 * pulse + strideBob, 0.56 + 0.08 * pulse);
+        const rForeDir = new THREE.Vector3(0.12 + 0.04 * pulse, -0.06 + 0.10 * pulse + strideBob, 0.98);
+        orientBoneWorldY('RightArm', rUpperDir);
+        orientBoneWorldY('RightForeArm', rForeDir);
+        setRelEuler('RightHand', -6 + 5 * pulse, 0, 0);
+      }
+
+      for (const bName of trackedBones) {
+        const q = byName.get(bName).quaternion;
+        const dst = rotTracks.get(bName);
+        dst[k * 4] = q.x;
+        dst[k * 4 + 1] = q.y;
+        dst[k * 4 + 2] = q.z;
+        dst[k * 4 + 3] = q.w;
+      }
+    }
+
+    const samplers = [];
+    const channels = [];
+
+    const hipsIdx = nodeNameToIndex.get('Hips');
+    if (hipsIdx !== undefined) {
+      const transAccIdx = addFloatAccessor(hipsTransTrack, frameCount, 'VEC3');
+      const sIdx = samplers.length;
+      samplers.push({ input: timeAccIdx, output: transAccIdx, interpolation: 'LINEAR' });
+      channels.push({ sampler: sIdx, target: { node: hipsIdx, path: 'translation' } });
+    }
+
+    for (const bName of trackedBones) {
+      const nodeIdx = nodeNameToIndex.get(bName);
+      if (nodeIdx === undefined) continue;
+      const rotAccIdx = addFloatAccessor(rotTracks.get(bName), frameCount, 'VEC4');
+      const sIdx = samplers.length;
+      samplers.push({ input: timeAccIdx, output: rotAccIdx, interpolation: 'LINEAR' });
+      channels.push({ sampler: sIdx, target: { node: nodeIdx, path: 'rotation' } });
+    }
+
+    outJson.animations.push({
+      name: clipName,
+      samplers,
+      channels
+    });
+    console.log(`[${hero.id}] Synthesized biomechanical '${clipName}' (${channels.length} channels, ${frameCount} frames / ${(intervals * dt).toFixed(2)}s)`);
+  }
+
   // 1. Base animation is 'idle'
   outJson.animations[0].name = 'idle';
 
-  // 2. Append 'walk' and 'run'
-  const walkGlb = parseGlb(await fs.readFile(path.join(RAW_DIR, `${hero.id}-walk.glb`)));
-  appendAnimationFromGlb(walkGlb, 'walk');
-
+  // 2. Append or synthesize 'run'
   const runGlb = parseGlb(await fs.readFile(path.join(RAW_DIR, `${hero.id}-run.glb`)));
-  appendAnimationFromGlb(runGlb, 'run');
+  if (hero.id === 'ember-warden') {
+    buildEmberRunClip('run', 24, false);
+  } else {
+    appendAnimationFromGlb(runGlb, 'run');
+  }
 
   // 3. Append 'idle_cast'
   const castGlb = parseGlb(await fs.readFile(path.join(RAW_DIR, `${hero.id}-cast.glb`)));
   appendAnimationFromGlb(castGlb, 'idle_cast');
 
   // 4. Synthesize 'run_cast' (Run While Casting)
-  {
+  if (hero.id === 'ember-warden') {
+    buildEmberRunClip('run_cast', 48, true);
+  } else {
     const FRAMES = 60;
     const DT = 1 / 30;
     const times = new Float32Array(FRAMES);
     for (let i = 0; i < FRAMES; i++) {
-      times[i] = (i + 1) * DT;
+      times[i] = i * DT;
     }
     const timeAccIdx = addFloatAccessor(times, FRAMES, 'SCALAR');
 
@@ -468,9 +777,10 @@ async function buildHeroGlb(hero) {
       if (isLowerBody || !castCh) {
         const src = readFloat32Accessor(runGlb, runAnim.samplers[runCh.sampler].output);
         const nComp = src.numComponents;
+        const cycleLen = Math.max(1, src.count - 1);
         const outFloats = new Float32Array(FRAMES * nComp);
         for (let f = 0; f < FRAMES; f++) {
-          const srcFrame = f % src.count;
+          const srcFrame = f % cycleLen;
           for (let c = 0; c < nComp; c++) {
             outFloats[f * nComp + c] = src.floats[srcFrame * nComp + c];
           }
@@ -527,11 +837,8 @@ async function buildHeroGlb(hero) {
   appendAnimationFromGlb(deathGlb, 'death');
 
   // 6. Post-process animation channels in outJson.animations:
-  //    - For Ember Warden 'run', 'run_cast', and 'walk': temper extreme marathon back-kick on LeftLeg/RightLeg
-  //      and LeftUpLeg/RightUpLeg so her boots/shins stride cleanly inside her floor-length skirt without folding
-  //      or poking through the coat.
-  //    - For 'idle_cast' and 'run_cast': temper overhead arm spike (t = 0.50s..1.35s) toward the forward-aimed
-  //      cast pose so RightForeArm/RightHand stay inside the 228x206 isometric camera frame and loop seamlessly.
+  //    - Normalize all sampler input timestamps to start at t = 0.000s (eliminates 33ms loop clamp dead-zone).
+  //    - For 'idle_cast' (and Rift Runner 'run_cast'): temper overhead arm spike toward forward-aimed cast pose.
   //    - For 'idle_cast', 'hit', and 'death': anchor horizontal Hips X/Z root-motion drift so the hero stays centered.
   {
     const smoothArch = (t, t0, t1, t2, t3) => {
@@ -572,15 +879,24 @@ async function buildHeroGlb(hero) {
       acc.max = max;
     };
 
-    // Extract true symmetric bind-pose rotations from outJson.nodes (where skin deformation is identity)
-    // and baseline Hips height from 'idle'
-    const idleAnim = outJson.animations[0];
-    const bindRot = new Map();
-    for (const n of outJson.nodes) {
-      if (n.name && Array.isArray(n.rotation) && n.rotation.length === 4) {
-        bindRot.set(n.name, [...n.rotation]);
+    // Normalize all animation input time accessors so t[0] === 0.000s
+    const shiftedTimeAccessors = new Set();
+    for (const anim of outJson.animations) {
+      for (const s of anim.samplers) {
+        if (shiftedTimeAccessors.has(s.input)) continue;
+        shiftedTimeAccessors.add(s.input);
+        const inData = readOutAcc(s.input);
+        if (inData.count > 0 && inData.arr[0] > 1e-4) {
+          const t0 = inData.arr[0];
+          for (let i = 0; i < inData.count; i++) {
+            inData.arr[i] = Math.max(0, inData.arr[i] - t0);
+          }
+          writeOutAcc(inData);
+        }
       }
     }
+
+    const idleAnim = outJson.animations[0];
     let idleHipsPos = [0, 99, 8];
     for (const ch of idleAnim.channels) {
       const bone = outJson.nodes[ch.target.node]?.name;
@@ -593,8 +909,10 @@ async function buildHeroGlb(hero) {
     }
 
     for (const anim of outJson.animations) {
-      const isRunLike = anim.name === 'run' || anim.name === 'run_cast';
-      const isWalk = anim.name === 'walk';
+      if (hero.id === 'ember-warden' && (anim.name === 'run' || anim.name === 'run_cast')) {
+        // Already synthesized with exact biomechanical gait & centered Hips
+        continue;
+      }
       const isCast = anim.name === 'idle_cast' || anim.name === 'run_cast';
 
       for (const ch of anim.channels) {
@@ -606,34 +924,7 @@ async function buildHeroGlb(hero) {
         const { arr, count, nComp } = outData;
         let modified = false;
 
-        // A. Ember Warden lower-body stride tailoring (slerp from symmetric bind-pose rotation so legs/boots
-        //    stride cleanly forward/back inside her floor-length skirt with zero sideways twist or clipping)
-        if (hero.id === 'ember-warden' && (isRunLike || isWalk) && ch.target.path === 'rotation' && nComp === 4) {
-          const baseQ = bindRot.get(bone);
-          if (baseQ) {
-            let keepFactor = null;
-            if (bone === 'LeftLeg' || bone === 'RightLeg') {
-              keepFactor = isRunLike ? 0.24 : 0.45;
-            } else if (bone === 'LeftUpLeg' || bone === 'RightUpLeg') {
-              keepFactor = isRunLike ? 0.62 : 0.78;
-            } else if (bone === 'LeftFoot' || bone === 'RightFoot') {
-              keepFactor = isRunLike ? 0.50 : 0.70;
-            }
-            if (keepFactor !== null) {
-              for (let f = 0; f < count; f++) {
-                const curQ = [arr[f * 4], arr[f * 4 + 1], arr[f * 4 + 2], arr[f * 4 + 3]];
-                const q = slerpQuat(baseQ, curQ, keepFactor);
-                arr[f * 4] = q[0];
-                arr[f * 4 + 1] = q[1];
-                arr[f * 4 + 2] = q[2];
-                arr[f * 4 + 3] = q[3];
-              }
-              modified = true;
-            }
-          }
-        }
-
-        // B. Cast overhead arm tailoring ('idle_cast' & 'run_cast'): keep casting arm aimed forward inside canvas frame
+        // Cast overhead arm tailoring ('idle_cast' & Rift Runner 'run_cast'): keep casting arm aimed forward inside canvas frame
         if (
           isCast &&
           ch.target.path === 'rotation' &&
@@ -646,8 +937,7 @@ async function buildHeroGlb(hero) {
             bone === 'Spine01' ||
             bone === 'Spine02')
         ) {
-          // Find frame closest to t = 0.36s (compact forward-aimed cast pose before overhead/wide swing)
-          const targetT = anim.name === 'run_cast' ? 0.23 : 0.36;
+          const targetT = anim.name === 'run_cast' ? 0.20 : 0.33;
           let anchorF = 0;
           let bestDist = Infinity;
           for (let f = 0; f < count; f++) {
@@ -663,10 +953,10 @@ async function buildHeroGlb(hero) {
             arr[anchorF * 4 + 2],
             arr[anchorF * 4 + 3]
           ];
-          const tStart = anim.name === 'run_cast' ? 0.20 : 0.33;
-          const tPeak0 = anim.name === 'run_cast' ? 0.42 : 0.55;
-          const tPeak1 = anim.name === 'run_cast' ? 1.20 : 1.32;
-          const tEnd = anim.name === 'run_cast' ? 1.52 : 1.65;
+          const tStart = anim.name === 'run_cast' ? 0.17 : 0.30;
+          const tPeak0 = anim.name === 'run_cast' ? 0.39 : 0.52;
+          const tPeak1 = anim.name === 'run_cast' ? 1.17 : 1.29;
+          const tEnd = anim.name === 'run_cast' ? 1.49 : 1.62;
           const maxW = bone.startsWith('Spine') ? 0.55 : 0.88;
 
           for (let f = 0; f < count; f++) {
@@ -684,7 +974,7 @@ async function buildHeroGlb(hero) {
           }
         }
 
-        // C. Anchor Hips translation horizontal drift so cast / hit / death / run stay inside the sprite frame
+        // Anchor Hips translation horizontal drift so cast / hit / death / run stay inside the sprite frame
         if (bone === 'Hips' && ch.target.path === 'translation' && nComp === 3 && anim.name !== 'idle') {
           const [bx, by, bz] = idleHipsPos;
           const maxHoriz = anim.name === 'hit' || anim.name === 'death' ? 5.0 : 2.5;
@@ -693,16 +983,14 @@ async function buildHeroGlb(hero) {
             const dz = Math.max(-maxHoriz, Math.min(maxHoriz, (arr[f * 3 + 2] - bz) * 0.35));
             arr[f * 3] = bx + dx;
             arr[f * 3 + 2] = bz + dz;
-            if (isRunLike && hero.id === 'ember-warden') {
-              arr[f * 3 + 1] = by + (arr[f * 3 + 1] - by) * 0.55;
-            } else if (anim.name === 'idle_cast') {
+            if (anim.name === 'idle_cast') {
               arr[f * 3 + 1] = by + (arr[f * 3 + 1] - by) * 0.50;
             }
           }
           modified = true;
         }
 
-        // D. Seamless end-of-clip loop blend on 'idle_cast' so the end of the cast animation never pops
+        // Seamless end-of-clip loop blend on 'idle_cast' so the end of the cast animation never pops
         if (anim.name === 'idle_cast' && count >= 16) {
           const blendLen = 10;
           const firstVec = Array.from(arr.subarray(0, nComp));
