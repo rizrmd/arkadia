@@ -79,5 +79,5 @@ cp docs/run-cadence/*.json docs/run-cadence/*.webp "$STAGE/site/run-cadence/veri
 # One versioned tarball, uploaded in parts and applied by the gateway at boot (the release also writes www/index.html).
 mkdir -p "$HOME/releases"
 tgz="$HOME/releases/arkodia-game-$(git rev-parse --short HEAD).tgz"
-tar -C "$STAGE" -cz . > "$tgz"
+tar --format=ustar -C "$STAGE" -cz . > "$tgz"
 node scripts/arkodia/publish-layer.mjs --tgz "$tgz" --name "game-$(git rev-parse --short HEAD)"

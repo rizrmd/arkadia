@@ -31,7 +31,7 @@ function applyLayers(){
     try{execFileSync('tar',['-xzf',archive,'-C',tmp],{maxBuffer:1<<20});}finally{fs.rmSync(archive,{force:true});}
     // Releases built before the Arkadia → Arkodia rename carry the binary as 'arkadia'.
     const bin=['arkodia','arkadia'].map(n=>path.join(tmp,n)).find(f=>fs.existsSync(f));
-    if(bin){fs.mkdirSync(path.dirname(coopBin),{recursive:true});fs.copyFileSync(bin,coopBin);fs.chmodSync(coopBin,0o755);fs.rmSync(legacyCoopBin,{force:true});}
+    if(bin){fs.mkdirSync(path.dirname(coopBin),{recursive:true});fs.copyFileSync(bin,coopBin);fs.chmodSync(coopBin,0o755);if(legacyCoopBin!==coopBin)fs.rmSync(legacyCoopBin,{force:true});}
     const site=path.join(tmp,'site');if(fs.existsSync(site))for(const f of fs.readdirSync(site,{recursive:true})){const src=path.join(site,f),st=fs.statSync(src);if(st.isFile()){const dest=target('/'+f.split(path.sep).join('/'),layer);fs.mkdirSync(path.dirname(dest),{recursive:true});fs.copyFileSync(src,dest);fs.utimesSync(dest,st.mtime,st.mtime);}}
     fs.rmSync(tmp,{recursive:true,force:true});
    }else{const bytes=Buffer.concat(layer.parts.map(n=>fs.readFileSync(path.join(layers,n))));for(const [key,b64] of Object.entries(JSON.parse(gunzipSync(bytes))))write(target(key,layer),Buffer.from(b64,'base64'));}
