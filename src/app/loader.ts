@@ -88,11 +88,18 @@ export function ensurePixiRuntime(host?:HTMLElement):Promise<SharedPixiRuntime>{
   }
   installMsdfFx(app.renderer);
   window.__LOADING_SCREEN__?.progress(14,100,'Loading interface & fonts');
+  const interfaceProgress={done:0,total:0},fontProgress={done:0,total:3};
+  const reportInterface=()=>{
+   const done=interfaceProgress.done+fontProgress.done,total=interfaceProgress.total+fontProgress.total;
+   // Reserve a separate range for interface assets; artwork continues from 32%, never from zero.
+   window.__LOADING_SCREEN__?.progress(14+18*(interfaceProgress.total?done/Math.max(1,total):0),100,
+    `Loading interface & fonts · ${interfaceProgress.done}/${interfaceProgress.total||'…'} interface · ${fontProgress.done}/${fontProgress.total} fonts`);
+  };
   const [,frames]=await Promise.all([
-   loadFonts('/typography/v2/fonts/'),
-   FrameSet.load('/typography/v2/hud/',pickFrameScale(window.devicePixelRatio||1)),
+   loadFonts('/typography/v2/fonts/',(done,total)=>{Object.assign(fontProgress,{done,total});reportInterface();}),
+   FrameSet.load('/typography/v2/hud/',pickFrameScale(window.devicePixelRatio||1),undefined,(done,total)=>{Object.assign(interfaceProgress,{done,total});reportInterface();}),
   ]);
-  window.__LOADING_SCREEN__?.progress(18,100,'Loading artwork');
+  window.__LOADING_SCREEN__?.progress(32,100,'Loading artwork');
   const worldStage=new Container();
   const uiStage=new Container();
   const loadingStage=new Container();

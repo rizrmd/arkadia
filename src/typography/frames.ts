@@ -14,21 +14,28 @@ interface Manifest{frames:Record<string,{width:number;height:number;slice?:[numb
 export class FrameSet{
  private constructor(readonly scale:FrameScale,private manifest:Manifest,private textures:Record<string,Texture>){}
  // only: load just the frames these names select (an ornate frame's name selects its parts).
- static async load(base:string,scale:FrameScale,only?:(name:string)=>boolean){
+ static async load(base:string,scale:FrameScale,only?:(name:string)=>boolean,onProgress?:(done:number,total:number)=>void){
   const v='?v=6';
-  const manifest=await (await fetch(base+'manifest.json'+v)).json() as Manifest;
+  const [manifest,mobile]=await Promise.all([
+   fetch(base+'manifest.json'+v).then(r=>{if(!r.ok)throw Error(`Interface manifest answered ${r.status}`);return r.json() as Promise<Manifest>;}),
+   base.includes('/hud/')?fetch('/mobile-hud/v1/manifest.json').then(r=>{if(!r.ok)throw Error(`Mobile interface manifest answered ${r.status}`);return r.json();}):null,
+  ]);
   const names=Object.keys(manifest.frames).filter(n=>!only||only(n.replace(/\.(tl|tr|bl|br|l|r)$/,'')));
-  // The resolution makes texture sizes read in @1x units, so layouts and slice borders are scale-independent.
-  const textures=await Promise.all(names.map(n=>Assets.load<Texture>({src:`${base}@${scale}x/${n}.png${v}`,data:{resolution:scale,autoGenerateMipmaps:true}})));
-  const loaded=Object.fromEntries(names.map((n,i)=>[n,textures[i]]));
-  if(base.includes('/hud/')){
-   const mobile=await (await fetch('/mobile-hud/v1/manifest.json')).json();
-   const used=new Set(['map-frame','skill-ring','coin','clock','pin','arrow','hp-material','gate-material','xp-material'].map(n=>'mobile-'+n));
-   await Promise.all((Object.entries(mobile.frames) as [string,{width:number;height:number;file:string}][]).filter(([name])=>used.has(name)).map(async ([name,m])=>{
+  const used=new Set(['map-frame','skill-ring','coin','clock','pin','arrow','hp-material','gate-material','xp-material'].map(n=>'mobile-'+n));
+  const mobileFrames=mobile?(Object.entries(mobile.frames) as [string,{width:number;height:number;file:string}][]).filter(([name])=>used.has(name)):[];
+  let done=0;const total=names.length+mobileFrames.length;
+  const completed=()=>onProgress?.(++done,total);
+  onProgress?.(0,total);
+  const loaded:Record<string,Texture>={};
+  // Start both sets together, including mobile art; do not wait for desktop frames before downloading it.
+  // Resolution keeps texture sizes in @1x units, so layouts and slice borders are scale-independent.
+  await Promise.all([
+   ...names.map(async n=>{loaded[n]=await Assets.load<Texture>({src:`${base}@${scale}x/${n}.png${v}`,data:{resolution:scale,autoGenerateMipmaps:true}});completed();}),
+   ...mobileFrames.map(async ([name,m])=>{
     manifest.frames[name]={width:m.width,height:m.height};
-    loaded[name]=await Assets.load<Texture>({src:'/mobile-hud/v1/'+m.file,data:{autoGenerateMipmaps:true}});
-   }));
-  }
+    loaded[name]=await Assets.load<Texture>({src:'/mobile-hud/v1/'+m.file,data:{autoGenerateMipmaps:true}});completed();
+   }),
+  ]);
   return new FrameSet(scale,manifest,loaded);
  }
  texture(name:string){const t=this.textures[name];if(!t)throw Error(`Unknown frame ${name}`);return t;}

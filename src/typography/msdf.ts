@@ -90,6 +90,7 @@ export function installMsdfFx(renderer:Renderer,options:{fixResolution?:boolean}
 }
 const worldScale=(t:BitmapText)=>{const {a,b,c,d}=t.groupTransform;return (Math.hypot(a,b)+Math.hypot(c,d))/2;};
 
-export async function loadFonts(base:string){
- await Promise.all((Object.keys(FONTS) as FontKey[]).map(k=>Assets.load(base+FONTS[k].file)));
+export async function loadFonts(base:string,onProgress?:(done:number,total:number)=>void){
+ const keys=Object.keys(FONTS) as FontKey[];let done=0;onProgress?.(0,keys.length);
+ await Promise.all(keys.map(async k=>{await Assets.load(base+FONTS[k].file);onProgress?.(++done,keys.length);}));
 }
