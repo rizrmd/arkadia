@@ -1,0 +1,562 @@
+{
+  "version": 1,
+  "status": "concept-kit-review",
+  "generator": "built-in image_gen; separate call per asset",
+  "camera": {
+    "projection": "2:1 dimetric",
+    "halfWidth": 64,
+    "halfHeight": 32,
+    "tileMeters": 3,
+    "groundSlope": 0.5
+  },
+  "lighting": "Soft upper-left daylight; no mirrored variants",
+  "heroReference": {
+    "heightM": 1.8,
+    "displayHeightWorld": 66.66,
+    "note": "Approximate existing 3D hero 101px foot pivot × DISPLAY .66; composition uses 37 world px per vertical meter."
+  },
+  "placement": "draw at (x-pivot.x*scale,y-pivot.y*scale), dimensions=size*scale; snow-cap pivot is attachment center, offset upward to wall ledge",
+  "limitations": "Generated silhouettes vary from exact 2:1; initial art kit requires join, collision and occlusion calibration before gameplay placement. Not loaded by the game.",
+  "assets": [
+    {
+      "id": "wall-ne",
+      "file": "assets/wall-ne.png",
+      "source": "assets-src/frozen-frontier/v1/wall-ne.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "sourceCrop": {
+        "left": 101,
+        "top": 82,
+        "width": 1335,
+        "height": 883
+      },
+      "size": [
+        768,
+        508
+      ],
+      "pivot": {
+        "x": 384,
+        "y": 381
+      },
+      "widthWorld": 144,
+      "scale": 0.1875,
+      "footprintM": [
+        3,
+        0.45
+      ],
+      "heightM": 2.4,
+      "alpha": {
+        "clearPixels": 1027075,
+        "solidPixels": 521693
+      },
+      "orientation": "ne",
+      "pivotStatus": "review placement reference; refine collision/joins during later integration"
+    },
+    {
+      "id": "wall-se",
+      "file": "assets/wall-se.png",
+      "source": "assets-src/frozen-frontier/v1/wall-se.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "sourceCrop": {
+        "left": 110,
+        "top": 95,
+        "width": 1322,
+        "height": 877
+      },
+      "size": [
+        768,
+        509
+      ],
+      "pivot": {
+        "x": 384,
+        "y": 382
+      },
+      "widthWorld": 144,
+      "scale": 0.1875,
+      "footprintM": [
+        3,
+        0.45
+      ],
+      "heightM": 2.4,
+      "alpha": {
+        "clearPixels": 973678,
+        "solidPixels": 574362
+      },
+      "orientation": "se",
+      "pivotStatus": "review placement reference; refine collision/joins during later integration"
+    },
+    {
+      "id": "corner-n",
+      "file": "assets/corner-n.png",
+      "source": "assets-src/frozen-frontier/v1/corner-n.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "sourceCrop": {
+        "left": 151,
+        "top": 92,
+        "width": 1235,
+        "height": 841
+      },
+      "size": [
+        768,
+        523
+      ],
+      "pivot": {
+        "x": 384,
+        "y": 397
+      },
+      "widthWorld": 144,
+      "scale": 0.1875,
+      "footprintM": [
+        1.5,
+        1.5
+      ],
+      "heightM": 2.4,
+      "alpha": {
+        "clearPixels": 906560,
+        "solidPixels": 639943
+      },
+      "orientation": "n",
+      "pivotStatus": "review placement reference; refine collision/joins during later integration"
+    },
+    {
+      "id": "corner-s",
+      "file": "assets/corner-s.png",
+      "source": "assets-src/frozen-frontier/v1/corner-s.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "sourceCrop": {
+        "left": 75,
+        "top": 41,
+        "width": 1389,
+        "height": 925
+      },
+      "size": [
+        768,
+        511
+      ],
+      "pivot": {
+        "x": 384,
+        "y": 388
+      },
+      "widthWorld": 144,
+      "scale": 0.1875,
+      "footprintM": [
+        1.5,
+        1.5
+      ],
+      "heightM": 2.4,
+      "alpha": {
+        "clearPixels": 938482,
+        "solidPixels": 603796
+      },
+      "orientation": "s",
+      "pivotStatus": "review placement reference; refine collision/joins during later integration"
+    },
+    {
+      "id": "arch-ne",
+      "file": "assets/arch-ne.png",
+      "source": "assets-src/frozen-frontier/v1/arch-ne.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "sourceCrop": {
+        "left": 233,
+        "top": 28,
+        "width": 1070,
+        "height": 967
+      },
+      "size": [
+        768,
+        694
+      ],
+      "pivot": {
+        "x": 384,
+        "y": 590
+      },
+      "widthWorld": 156,
+      "scale": 0.203125,
+      "footprintM": [
+        3,
+        0.65
+      ],
+      "heightM": 3.6,
+      "alpha": {
+        "clearPixels": 1061446,
+        "solidPixels": 480496
+      },
+      "orientation": "ne",
+      "pivotStatus": "review placement reference; refine collision/joins during later integration"
+    },
+    {
+      "id": "arch-se",
+      "file": "assets/arch-se.png",
+      "source": "assets-src/frozen-frontier/v1/arch-se.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "sourceCrop": {
+        "left": 278,
+        "top": 21,
+        "width": 993,
+        "height": 981
+      },
+      "size": [
+        768,
+        759
+      ],
+      "pivot": {
+        "x": 384,
+        "y": 645
+      },
+      "widthWorld": 156,
+      "scale": 0.203125,
+      "footprintM": [
+        3,
+        0.65
+      ],
+      "heightM": 3.6,
+      "alpha": {
+        "clearPixels": 1076343,
+        "solidPixels": 469318
+      },
+      "orientation": "se",
+      "pivotStatus": "review placement reference; refine collision/joins during later integration"
+    },
+    {
+      "id": "pillar-intact",
+      "file": "assets/pillar-intact.png",
+      "source": "assets-src/frozen-frontier/v1/pillar-intact.png",
+      "sourceSize": [
+        1024,
+        1536
+      ],
+      "sourceCrop": {
+        "left": 263,
+        "top": 89,
+        "width": 504,
+        "height": 1357
+      },
+      "size": [
+        768,
+        2068
+      ],
+      "pivot": {
+        "x": 384,
+        "y": 1944
+      },
+      "widthWorld": 36,
+      "scale": 0.046875,
+      "footprintM": [
+        0.65,
+        0.65
+      ],
+      "heightM": 2.4,
+      "alpha": {
+        "clearPixels": 1120259,
+        "solidPixels": 431628
+      },
+      "orientation": "intact",
+      "pivotStatus": "review placement reference; refine collision/joins during later integration"
+    },
+    {
+      "id": "pillar-broken",
+      "file": "assets/pillar-broken.png",
+      "source": "assets-src/frozen-frontier/v1/pillar-broken.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "sourceCrop": {
+        "left": 513,
+        "top": 40,
+        "width": 510,
+        "height": 905
+      },
+      "size": [
+        768,
+        1363
+      ],
+      "pivot": {
+        "x": 384,
+        "y": 1186
+      },
+      "widthWorld": 32,
+      "scale": 0.041666666666666664,
+      "footprintM": [
+        0.65,
+        0.65
+      ],
+      "heightM": 1.1,
+      "alpha": {
+        "clearPixels": 1236444,
+        "solidPixels": 323133
+      },
+      "orientation": "broken",
+      "pivotStatus": "review placement reference; refine collision/joins during later integration"
+    },
+    {
+      "id": "stairs-ne",
+      "file": "assets/stairs-ne.png",
+      "source": "assets-src/frozen-frontier/v1/stairs-ne.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "sourceCrop": {
+        "left": 227,
+        "top": 96,
+        "width": 1132,
+        "height": 852
+      },
+      "size": [
+        768,
+        578
+      ],
+      "pivot": {
+        "x": 384,
+        "y": 387
+      },
+      "widthWorld": 110,
+      "scale": 0.14322916666666666,
+      "footprintM": [
+        1.5,
+        1.5
+      ],
+      "heightM": 0.75,
+      "alpha": {
+        "clearPixels": 978663,
+        "solidPixels": 571854
+      },
+      "orientation": "ne",
+      "pivotStatus": "review placement reference; refine collision/joins during later integration"
+    },
+    {
+      "id": "stairs-nw",
+      "file": "assets/stairs-nw.png",
+      "source": "assets-src/frozen-frontier/v1/stairs-nw.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "sourceCrop": {
+        "left": 264,
+        "top": 61,
+        "width": 1015,
+        "height": 872
+      },
+      "size": [
+        768,
+        660
+      ],
+      "pivot": {
+        "x": 384,
+        "y": 442
+      },
+      "widthWorld": 110,
+      "scale": 0.14322916666666666,
+      "footprintM": [
+        1.5,
+        1.5
+      ],
+      "heightM": 0.75,
+      "alpha": {
+        "clearPixels": 978987,
+        "solidPixels": 577236
+      },
+      "orientation": "nw",
+      "pivotStatus": "review placement reference; refine collision/joins during later integration"
+    },
+    {
+      "id": "foundation",
+      "file": "assets/foundation.png",
+      "source": "assets-src/frozen-frontier/v1/foundation.png",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "sourceCrop": {
+        "left": 59,
+        "top": 256,
+        "width": 1142,
+        "height": 754
+      },
+      "size": [
+        768,
+        507
+      ],
+      "pivot": {
+        "x": 384,
+        "y": 284
+      },
+      "widthWorld": 256,
+      "scale": 0.3333333333333333,
+      "footprintM": [
+        6,
+        6
+      ],
+      "heightM": 0.3,
+      "alpha": {
+        "clearPixels": 1100674,
+        "solidPixels": 453587
+      },
+      "orientation": "foundation",
+      "pivotStatus": "review placement reference; refine collision/joins during later integration"
+    },
+    {
+      "id": "paving",
+      "file": "assets/paving.png",
+      "source": "assets-src/frozen-frontier/v1/paving.png",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "sourceCrop": {
+        "left": 44,
+        "top": 234,
+        "width": 1174,
+        "height": 809
+      },
+      "size": [
+        768,
+        529
+      ],
+      "pivot": {
+        "x": 384,
+        "y": 265
+      },
+      "widthWorld": 256,
+      "scale": 0.3333333333333333,
+      "footprintM": [
+        6,
+        6
+      ],
+      "heightM": 0,
+      "alpha": {
+        "clearPixels": 1056923,
+        "solidPixels": 490956
+      },
+      "orientation": "paving",
+      "pivotStatus": "review placement reference; refine collision/joins during later integration"
+    },
+    {
+      "id": "rubble",
+      "file": "assets/rubble.png",
+      "source": "assets-src/frozen-frontier/v1/rubble.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "sourceCrop": {
+        "left": 67,
+        "top": 129,
+        "width": 1402,
+        "height": 766
+      },
+      "size": [
+        768,
+        420
+      ],
+      "pivot": {
+        "x": 384,
+        "y": 302
+      },
+      "widthWorld": 86,
+      "scale": 0.11197916666666667,
+      "footprintM": [
+        1.5,
+        1
+      ],
+      "heightM": 0.5,
+      "alpha": {
+        "clearPixels": 980980,
+        "solidPixels": 554849
+      },
+      "orientation": "rubble",
+      "pivotStatus": "review placement reference; refine collision/joins during later integration"
+    },
+    {
+      "id": "snow-cap-ne",
+      "file": "assets/snow-cap-ne.png",
+      "source": "assets-src/frozen-frontier/v1/snow-cap-ne.png",
+      "sourceSize": [
+        1774,
+        887
+      ],
+      "sourceCrop": {
+        "left": 111,
+        "top": 200,
+        "width": 1595,
+        "height": 586
+      },
+      "size": [
+        768,
+        282
+      ],
+      "pivot": {
+        "x": 384,
+        "y": 141
+      },
+      "widthWorld": 144,
+      "scale": 0.1875,
+      "footprintM": [
+        3,
+        0.5
+      ],
+      "heightM": 0.08,
+      "alpha": {
+        "clearPixels": 1359938,
+        "solidPixels": 195986
+      },
+      "orientation": "ne",
+      "pivotStatus": "review placement reference; refine collision/joins during later integration"
+    },
+    {
+      "id": "snow-cap-se",
+      "file": "assets/snow-cap-se.png",
+      "source": "assets-src/frozen-frontier/v1/snow-cap-se.png",
+      "sourceSize": [
+        1774,
+        887
+      ],
+      "sourceCrop": {
+        "left": 83,
+        "top": 225,
+        "width": 1634,
+        "height": 514
+      },
+      "size": [
+        768,
+        242
+      ],
+      "pivot": {
+        "x": 384,
+        "y": 121
+      },
+      "widthWorld": 144,
+      "scale": 0.1875,
+      "footprintM": [
+        3,
+        0.5
+      ],
+      "heightM": 0.08,
+      "alpha": {
+        "clearPixels": 1312734,
+        "solidPixels": 238944
+      },
+      "orientation": "se",
+      "pivotStatus": "review placement reference; refine collision/joins during later integration"
+    }
+  ]
+}
