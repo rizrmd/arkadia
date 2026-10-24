@@ -50,6 +50,7 @@ mkdir -p "$STAGE/site/locked-zoom-aoe"; cp docs/locked-zoom-aoe/*.webp docs/lock
 mkdir -p "$STAGE/site/go-webp-cache"; cp docs/go-webp-cache/*.webp docs/go-webp-cache/*.json "$STAGE/site/go-webp-cache/"
 mkdir -p "$STAGE/site/fps-tracelog"; cp docs/fps-tracelog/*.webp docs/fps-tracelog/*.json "$STAGE/site/fps-tracelog/"
 mkdir -p "$STAGE/site/fps-tracelog-3d-hero"; cp docs/fps-tracelog-3d-hero/*.webp docs/fps-tracelog-3d-hero/*.json "$STAGE/site/fps-tracelog-3d-hero/"
+mkdir -p "$STAGE/site/frame-cap"; cp docs/frame-cap/*.webp docs/frame-cap/*.json "$STAGE/site/frame-cap/"
 mkdir -p "$STAGE/site/loading-screen"; cp docs/loading-screen/*.webp docs/loading-screen/*.json "$STAGE/site/loading-screen/"
 mkdir -p "$STAGE/site/pixi-ui"; cp docs/pixi-ui/*.webp docs/pixi-ui/*.json "$STAGE/site/pixi-ui/"
 mkdir -p "$STAGE/site/environment-corners"; cp docs/environment-corners/*.webp docs/environment-corners/*.json "$STAGE/site/environment-corners/"
