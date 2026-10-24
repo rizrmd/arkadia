@@ -249,7 +249,6 @@ interface SkillSlotView {
  hotkeyBadge: Container;
  hotkeyBg: Graphics;
  hotkeyText: MsdfText;
- plusBadge: Graphics;
  cx: number;
  cy: number;
  radius: number;
@@ -872,7 +871,6 @@ export class Hud extends Container {
     hotkeyBadge.visible = false;
     const hotkeyBg = hotkeyBadge.addChild(new Graphics());
     const hotkeyText = hotkeyBadge.addChild(new MsdfText(HOTKEY_ROLE, ''));
-    const plusBadge = slot.addChild(new Graphics());
 
     this.skillViews.push({
      root: slot,
@@ -891,7 +889,6 @@ export class Hud extends Container {
      hotkeyBadge,
      hotkeyBg,
      hotkeyText,
-     plusBadge,
      cx,
      cy,
      radius: 64,
@@ -946,7 +943,6 @@ export class Hud extends Container {
    const hotkeyBg = hotkeyBadge.addChild(new Graphics());
    const hotkeyText = hotkeyBadge.addChild(new MsdfText(HOTKEY_ROLE, cfg.hotkey));
 
-   const plusBadge = slot.addChild(new Graphics());
 
    const view: SkillSlotView = {
     root: slot,
@@ -965,7 +961,6 @@ export class Hud extends Container {
     hotkeyBadge,
     hotkeyBg,
     hotkeyText,
-    plusBadge,
     cx: cfg.cx,
     cy: cfg.cy,
     radius: cfg.radius,
@@ -1099,19 +1094,6 @@ export class Hud extends Container {
      .fill({ color: 0x120e09, alpha: 0.94 })
      .stroke({ color: 0xd4a448, width: 1.2, alpha: 0.9 });
     view.hotkeyText.place(hkx, hky + 4.5, 0.5);
-   }
-
-   // Mobile Portrait golden `+` rank medallion on primary socket upper-right bezel
-   view.plusBadge.clear();
-   if (this.isMobile && i === 0 && !sk.locked) {
-    const px = cfg.cx + cfg.radius * 0.72;
-    const py = cfg.cy - cfg.radius * 0.72;
-    view.plusBadge
-     .circle(px, py, 16)
-     .fill({ color: 0x1a1309, alpha: 0.96 })
-     .stroke({ color: 0xffe07d, width: 2, alpha: 0.96 });
-    view.plusBadge.roundRect(px - 7, py - 1.8, 14, 3.6, 1).fill({ color: 0xffe484, alpha: 0.98 });
-    view.plusBadge.roundRect(px - 1.8, py - 7, 3.6, 14, 1).fill({ color: 0xffe484, alpha: 0.98 });
    }
 
    view.lastCooldownStep=undefined;
