@@ -436,6 +436,8 @@ export async function createEncounters(o:{
  }
  // The hero walks only where the player steers it. It never chases a revenant: while idle it swings in place, and only
  // once a revenant is inside its maximum reach (heroStep), so the player stays free to walk away from the fight.
+ // Preview mode is set by the hero-picker previews (setPreviewMode below); steering never chases either way.
+ let previewMode=false;
  function steer(input:Walk):Walk{
   return run.pending?{x:0,y:0}:input;
  }
