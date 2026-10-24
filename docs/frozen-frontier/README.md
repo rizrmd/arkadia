@@ -1,6 +1,6 @@
 ## Deliverables
 
-Frozen Frontier Ruins concept sheet and initial 15-sprite transparent kit, generated with the built-in image_gen tool. Review gallery: https://ark-whachat.fural.space/frozen-frontier/v1/
+Frozen Frontier Ruins concept sheet and initial 15-sprite transparent kit, generated with the built-in image_gen tool. Review gallery: https://ark-whachat.fural.space/environment-corners/frozen-frontier/v1/
 
 The kit contains NE/SE ruined walls, two L corners, NE/SE broken arches, intact/broken pillars, NE/NW stairs, foundation, paving, rubble and NE/SE detachable snow caps. Source PNGs are preserved in `assets-src/frozen-frontier/v1/`; individual exports and pivot/scale metadata are in `public/frozen-frontier/v1/`. Two rejected snow-cap candidates are retained for provenance; final caps contain snow only.
 

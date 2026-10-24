@@ -2,7 +2,7 @@
 
 Concept and initial 15-sprite snowy ruins kit, ready for human art review. Full-map dressing is a later decision. No gameplay placement or asset preload was added.
 
-[Open interactive gallery](https://ark-whachat.fural.space/frozen-frontier/v1/) · [Asset manifest](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=public%2Ffrozen-frontier%2Fv1%2Fmanifest.json) · [Prompts](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=docs%2Ffrozen-frontier%2Fprompts.json) · [Validation report](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=docs%2Ffrozen-frontier%2Fverification.json)
+[Open interactive gallery](https://ark-whachat.fural.space/environment-corners/frozen-frontier/v1/) · [Asset manifest](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=public%2Ffrozen-frontier%2Fv1%2Fmanifest.json) · [Prompts](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=docs%2Ffrozen-frontier%2Fprompts.json) · [Validation report](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=docs%2Ffrozen-frontier%2Fverification.json)
 
 ## Concept sheet
 
@@ -12,11 +12,11 @@ Concept and initial 15-sprite snowy ruins kit, ready for human art review. Full-
 
 This courtyard uses the delivered PNG sprites and manifest pivots. The 1.8 m human silhouette is approximately 67 world pixels, based on the existing hero display. Cyan crosses indicate footprint centers; snow caps attach at their centers.
 
-![Assembly from delivered sprites](https://ark-whachat.fural.space/frozen-frontier/v1/assembled-preview.png)
+![Assembly from delivered sprites](https://ark-whachat.fural.space/environment-corners/frozen-frontier/v1/assembled-preview.png)
 
 ## Kit overview
 
-![Transparent kit on checkerboard](https://ark-whachat.fural.space/frozen-frontier/v1/kit-preview.png)
+![Transparent kit on checkerboard](https://ark-whachat.fural.space/environment-corners/frozen-frontier/v1/kit-preview.png)
 
 ## Placement and scale
 
@@ -48,91 +48,91 @@ These are initial design dimensions and placement references. Painted geometry v
 
 ### wall-ne
 
-![wall-ne transparent sprite](https://ark-whachat.fural.space/frozen-frontier/v1/assets/wall-ne.png)
+![wall-ne transparent sprite](https://ark-whachat.fural.space/environment-corners/frozen-frontier/v1/assets/wall-ne.png)
 
 [PNG source export](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=public%2Ffrozen-frontier%2Fv1%2Fassets%2Fwall-ne.png)
 
 ### wall-se
 
-![wall-se transparent sprite](https://ark-whachat.fural.space/frozen-frontier/v1/assets/wall-se.png)
+![wall-se transparent sprite](https://ark-whachat.fural.space/environment-corners/frozen-frontier/v1/assets/wall-se.png)
 
 [PNG source export](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=public%2Ffrozen-frontier%2Fv1%2Fassets%2Fwall-se.png)
 
 ### corner-n
 
-![corner-n transparent sprite](https://ark-whachat.fural.space/frozen-frontier/v1/assets/corner-n.png)
+![corner-n transparent sprite](https://ark-whachat.fural.space/environment-corners/frozen-frontier/v1/assets/corner-n.png)
 
 [PNG source export](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=public%2Ffrozen-frontier%2Fv1%2Fassets%2Fcorner-n.png)
 
 ### corner-s
 
-![corner-s transparent sprite](https://ark-whachat.fural.space/frozen-frontier/v1/assets/corner-s.png)
+![corner-s transparent sprite](https://ark-whachat.fural.space/environment-corners/frozen-frontier/v1/assets/corner-s.png)
 
 [PNG source export](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=public%2Ffrozen-frontier%2Fv1%2Fassets%2Fcorner-s.png)
 
 ### arch-ne
 
-![arch-ne transparent sprite](https://ark-whachat.fural.space/frozen-frontier/v1/assets/arch-ne.png)
+![arch-ne transparent sprite](https://ark-whachat.fural.space/environment-corners/frozen-frontier/v1/assets/arch-ne.png)
 
 [PNG source export](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=public%2Ffrozen-frontier%2Fv1%2Fassets%2Farch-ne.png)
 
 ### arch-se
 
-![arch-se transparent sprite](https://ark-whachat.fural.space/frozen-frontier/v1/assets/arch-se.png)
+![arch-se transparent sprite](https://ark-whachat.fural.space/environment-corners/frozen-frontier/v1/assets/arch-se.png)
 
 [PNG source export](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=public%2Ffrozen-frontier%2Fv1%2Fassets%2Farch-se.png)
 
 ### pillar-intact
 
-![pillar-intact transparent sprite](https://ark-whachat.fural.space/frozen-frontier/v1/assets/pillar-intact.png)
+![pillar-intact transparent sprite](https://ark-whachat.fural.space/environment-corners/frozen-frontier/v1/assets/pillar-intact.png)
 
 [PNG source export](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=public%2Ffrozen-frontier%2Fv1%2Fassets%2Fpillar-intact.png)
 
 ### pillar-broken
 
-![pillar-broken transparent sprite](https://ark-whachat.fural.space/frozen-frontier/v1/assets/pillar-broken.png)
+![pillar-broken transparent sprite](https://ark-whachat.fural.space/environment-corners/frozen-frontier/v1/assets/pillar-broken.png)
 
 [PNG source export](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=public%2Ffrozen-frontier%2Fv1%2Fassets%2Fpillar-broken.png)
 
 ### stairs-ne
 
-![stairs-ne transparent sprite](https://ark-whachat.fural.space/frozen-frontier/v1/assets/stairs-ne.png)
+![stairs-ne transparent sprite](https://ark-whachat.fural.space/environment-corners/frozen-frontier/v1/assets/stairs-ne.png)
 
 [PNG source export](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=public%2Ffrozen-frontier%2Fv1%2Fassets%2Fstairs-ne.png)
 
 ### stairs-nw
 
-![stairs-nw transparent sprite](https://ark-whachat.fural.space/frozen-frontier/v1/assets/stairs-nw.png)
+![stairs-nw transparent sprite](https://ark-whachat.fural.space/environment-corners/frozen-frontier/v1/assets/stairs-nw.png)
 
 [PNG source export](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=public%2Ffrozen-frontier%2Fv1%2Fassets%2Fstairs-nw.png)
 
 ### foundation
 
-![foundation transparent sprite](https://ark-whachat.fural.space/frozen-frontier/v1/assets/foundation.png)
+![foundation transparent sprite](https://ark-whachat.fural.space/environment-corners/frozen-frontier/v1/assets/foundation.png)
 
 [PNG source export](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=public%2Ffrozen-frontier%2Fv1%2Fassets%2Ffoundation.png)
 
 ### paving
 
-![paving transparent sprite](https://ark-whachat.fural.space/frozen-frontier/v1/assets/paving.png)
+![paving transparent sprite](https://ark-whachat.fural.space/environment-corners/frozen-frontier/v1/assets/paving.png)
 
 [PNG source export](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=public%2Ffrozen-frontier%2Fv1%2Fassets%2Fpaving.png)
 
 ### rubble
 
-![rubble transparent sprite](https://ark-whachat.fural.space/frozen-frontier/v1/assets/rubble.png)
+![rubble transparent sprite](https://ark-whachat.fural.space/environment-corners/frozen-frontier/v1/assets/rubble.png)
 
 [PNG source export](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=public%2Ffrozen-frontier%2Fv1%2Fassets%2Frubble.png)
 
 ### snow-cap-ne
 
-![snow-cap-ne transparent sprite](https://ark-whachat.fural.space/frozen-frontier/v1/assets/snow-cap-ne.png)
+![snow-cap-ne transparent sprite](https://ark-whachat.fural.space/environment-corners/frozen-frontier/v1/assets/snow-cap-ne.png)
 
 [PNG source export](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=public%2Ffrozen-frontier%2Fv1%2Fassets%2Fsnow-cap-ne.png)
 
 ### snow-cap-se
 
-![snow-cap-se transparent sprite](https://ark-whachat.fural.space/frozen-frontier/v1/assets/snow-cap-se.png)
+![snow-cap-se transparent sprite](https://ark-whachat.fural.space/environment-corners/frozen-frontier/v1/assets/snow-cap-se.png)
 
 [PNG source export](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=public%2Ffrozen-frontier%2Fv1%2Fassets%2Fsnow-cap-se.png)
 
