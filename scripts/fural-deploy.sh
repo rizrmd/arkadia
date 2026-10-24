@@ -78,6 +78,9 @@ cp docs/run-cadence/*.json docs/run-cadence/*.webp "$STAGE/site/run-cadence/veri
 
 # One versioned tarball, uploaded in parts and applied by the gateway at boot (the release also writes www/index.html).
 mkdir -p "$HOME/releases"
-tgz="$HOME/releases/arkodia-game-$(git rev-parse --short HEAD).tgz"
+# Concurrent sessions can release the same commit. Never let one tar writer replace a file
+# another publisher is reading; retain a unique completed archive for each invocation.
+tgz="$(mktemp "$HOME/releases/arkodia-game-$(git rev-parse --short HEAD)-XXXXXXXX.tgz")"
 tar --format=ustar -C "$STAGE" -cz . > "$tgz"
+tar -tzf "$tgz" >/dev/null
 node scripts/arkodia/publish-layer.mjs --tgz "$tgz" --name "game-$(git rev-parse --short HEAD)"
