@@ -34,6 +34,18 @@ export class MsdfText extends Container{
  setWrapWidth(width:number){this.options.wrapWidth=width;for(const p of this.passes()){p.style.wordWrap=true;p.style.wordWrapWidth=width;}this.refresh();}
  // Advance width of the widest line (not ink bounds), in local units.
  get advance(){return this.fillPass.width;}
+ // BitmapText bounds describe the line box, including leading; use glyph quads for optical centering.
+ inkCenterY(){
+  const font=Cache.get(`${FONTS[this.role.font].family}-bitmap`) as BitmapFont;
+  const scale=this.size/font.fontMetrics.fontSize;
+  let shift=(font.lineHeight-font.fontMetrics.fontSize)/2;
+  if(shift-font.baseLineOffset<0)shift=0;
+  const glyphs=[...this.shown()].filter(c=>c.trim()).map(c=>font.chars[c]).filter(c=>c?.texture);
+  if(!glyphs.length)return this.metrics().baseline/2;
+  const top=Math.min(...glyphs.map(c=>Math.round(font.baseLineOffset+c.yOffset+shift)));
+  const bottom=Math.max(...glyphs.map(c=>Math.round(font.baseLineOffset+c.yOffset+shift)+c.texture!.orig.height));
+  return (top+bottom)*scale/2;
+ }
  // x is the left, centre or right edge (ax 0, .5, 1); y is the first line's baseline.
  place(x:number,baseline:number,ax=0){this.position.set(x-this.advance*ax,baseline-this.metrics().baseline);return this;}
  private shown(){return this.role.uppercase?this.value.toUpperCase():this.value;}

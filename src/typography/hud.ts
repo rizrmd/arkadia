@@ -736,7 +736,7 @@ export class Hud extends Container {
   const labelScale=Math.min(.94*k,(mid-left-56*k)/Math.max(1,goldInk.width),(right-mid-56*k)/Math.max(1,timeInk.width));
   const centerLabel=(t:MsdfText,x:number,b:{x:number;y:number;height:number})=>{
    t.scale.set(labelScale);
-   t.position.set(x-b.x*labelScale,top+h/2-(b.y+b.height/2)*labelScale);
+   t.position.set(x-b.x*labelScale,top+h/2-t.inkCenterY()*labelScale);
   };
   centerLabel(this.trRibbonGoldText,left+44*k,goldInk);
   centerLabel(this.trRibbonClockText,mid+44*k,timeInk);
