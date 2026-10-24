@@ -1,0 +1,133 @@
+{
+  "at": "2026-10-24T05:25:38.275Z",
+  "http": {
+    "/": {
+      "status": 200,
+      "sha256": "ab52a83e1f04400aface34609de9c9d4adf83db6f97e2f3e4307c5996ccedabc",
+      "bytes": 35531
+    },
+    "/healthz": {
+      "status": 200,
+      "sha256": "dd96d39e95cf41d5b74364e2f4e1189987f0de4ae5d67a6f783c3ed7b2ca1c5c",
+      "bytes": 35
+    },
+    "/environment-corners/frozen-frontier/v1/": {
+      "status": 200,
+      "sha256": "d9f43aa6fb61e51d8e69c06949839c058bc3474ebf0e07f14be0a3a635273318",
+      "bytes": 5907
+    }
+  },
+  "gameScripts": [
+    {
+      "path": "/assets/index-CFXmjf3b.js",
+      "status": 200,
+      "sha256": "1415b6456b3eb7072aec9bfb159831f6d147a4f433928f474e5e9ebad5fe3583"
+    },
+    {
+      "path": "/assets/CanvasPool-Bfa7zDPb.js",
+      "status": 200,
+      "sha256": "9b69da51f7aabbf1ca5c24dd37d7631c4e476a5086e494b986102ff6c1982537"
+    },
+    {
+      "path": "/assets/Filter-D6JpcDm_.js",
+      "status": 200,
+      "sha256": "25e10efb3f0b01b54c1d60ceb69b13fda60b387a593d271f0c78aa068fa3f16b"
+    },
+    {
+      "path": "/assets/canvasUtils-Bu0orRzg.js",
+      "status": 200,
+      "sha256": "fcf3bd5ff34234ce593106a049fe712c03c514e43d9b6370ca6b758caae026e9"
+    },
+    {
+      "path": "/assets/Cache-CyEoNiYK.js",
+      "status": 200,
+      "sha256": "a59e52743f0ba9f91c012ba29cf71377740ffd45c77cab6dc679498925d16b93"
+    },
+    {
+      "path": "/assets/FilterSystem-ZO3YGeXt.js",
+      "status": 200,
+      "sha256": "1a042a41f5a533b194af6c912cff72e059c0dff4ebdb5aa23adf7ec15deb9f4c"
+    },
+    {
+      "path": "/assets/FederatedEventTarget-BrLgCaUp.js",
+      "status": 200,
+      "sha256": "37713c26bdf952531c7301c41ee2f4c67fc092b2e2cc7a14b720f1c0eb1cc98b"
+    },
+    {
+      "path": "/assets/GCManagedHash-Bz8k4ITX.js",
+      "status": 200,
+      "sha256": "0cfbe03c3ff0ce0baffbbacb08bbc0ffb4c621d93942ddd9683b1ff327b8ec5c"
+    },
+    {
+      "path": "/assets/RenderTargetSystem-CCfFNQoA.js",
+      "status": 200,
+      "sha256": "db0c82c2220f92d914addafa4e87392179a852b8bb4ded749450f1e097a96800"
+    },
+    {
+      "path": "/assets/getTextureBatchBindGroup-4-qaOig9.js",
+      "status": 200,
+      "sha256": "1745923239b87080b1b93725c2b08f6e2207363ada606b9ca3d23dc981447b66"
+    },
+    {
+      "path": "/assets/GraphicsContext-IuTlWSRp.js",
+      "status": 200,
+      "sha256": "f970983ceb47e32784806e3a03760a8c130c3bc28f7ba839273b5f56ca5cbb61"
+    },
+    {
+      "path": "/assets/CanvasRenderer-y8oAwFd7.js",
+      "status": 200,
+      "sha256": "051026aa50688418085134662f23955acc6143e65147a93b182f9ea066053bfb"
+    },
+    {
+      "path": "/assets/getTexelRangeRects-HELK1Cbk.js",
+      "status": 200,
+      "sha256": "64692cb59666204f98ca49f19a219c22964eed69d8550ae5497bbdb69f4fa267"
+    },
+    {
+      "path": "/assets/BitmapFont-D_8ZH2MN.js",
+      "status": 200,
+      "sha256": "6571e0dda0cb3fb49a42f4b4febbc98106819cacab290eb13816479e5d21dae3"
+    },
+    {
+      "path": "/assets/WebGLRenderer-B_IlfM4X.js",
+      "status": 200,
+      "sha256": "fcc27efb59e9dec0297ee2087303d0dd4cb78aa5b3f47fdee27d50d76ae44533"
+    },
+    {
+      "path": "/assets/WebGPURenderer-Cz_C_QSf.js",
+      "status": 200,
+      "sha256": "d82db35c184e699a8f565cda2cecee3313945cfcb8c43c8ade15a7984653e777"
+    },
+    {
+      "path": "/assets/lib-rI5Rr7SD.js",
+      "status": 200,
+      "sha256": "758488ecf0e13093eb84013ee9176d682026a4c2febc27826698bc8412c08992"
+    }
+  ],
+  "gateway.mjs": {
+    "sha256": "d0b374c68f162f20a2f12ed85e7803b2a7da12b7aca81163fcba65be89270416",
+    "data": {
+      "content": "// The one public Arkodia sandbox (https://ark-whachat.fural.space). Serves every preview from disk on :3000:\n//   /                       the game (one build: solo, or co-op rooms via /?room=CODE)\n//   /ws /api/ /healthz      proxied to the co-op Go server (coop/arkodia on 127.0.0.1:3001)\n//   /ember-warden-review/   the Ember Warden animation review\n//   /enemies/ /rift-runner/ and every other review folder from the former split sandboxes\n//   /typography/            the MSDF typography rendering sample (HUD and Choose Your Hero)\n// Releases arrive as layers (see publish-layer.mjs) and are applied once at boot, oldest first.\nimport http from 'node:http';import net from 'node:net';import fs from 'node:fs';import path from 'node:path';import {gunzipSync} from 'node:zlib';import {spawn,execFileSync} from 'node:child_process';\nconst home=process.cwd(),www=path.join(home,'www'),layers=path.join(home,'layers'),coopBin=path.join(home,'coop/arkodia'),legacyCoopBin=path.join(home,'coop/arkadia'),applied=path.join(home,'applied.json');\nconst PORT=+(process.env.PORT||3000),COOP_PORT=+(process.env.COOP_PORT||3001);\n// Folders with their own pages (directory index and .html allowed); any other .html is a retired page and redirects home.\nconst OPEN=['/3d-hero-lab/','/run-cadence/','/sprite-player/','/environment-corners/','/typography/','/rift-runner/','/enemies/','/ember-warden-review/','/knight-footfalls/review.html'];\n// Former sandbox roots, now folders.\nconst MOVED={'/3d-hero-lab':'/3d-hero-lab/','/ember-warden-review':'/ember-warden-review/','/typography':'/typography/','/enemies':'/enemies/v1/','/enemies/':'/enemies/v1/'};\n\nfunction write(dest,bytes,mtime){fs.mkdirSync(path.dirname(dest),{recursive:true});fs.writeFileSync(dest,bytes);if(mtime)try{fs.utimesSync(dest,mtime,mtime);}catch{}}\nfunction target(key,layer){return path.join(www,path.normalize((layer.prefix||'')+key));}\n// A layer is layers/<id>.json: {seq, parts, format: 'gzjson' (gzip JSON {path: base64}) | 'tgz' (game release: arkodia + site/), prefix?}.\n// A layer without a prefix that carries /index.html is a game release: that file is the game page.\nfunction applyLayers(){\n const done=fs.existsSync(applied)?JSON.parse(fs.readFileSync(applied,'utf8')):[];\n const pending=fs.existsSync(layers)?fs.readdirSync(layers).filter(n=>n.endsWith('.json')).map(n=>({id:n.slice(0,-5),...JSON.parse(fs.readFileSync(path.join(layers,n),'utf8'))})).sort((a,b)=>a.seq-b.seq):[];\n for(const layer of pending){\n  if(!done.includes(layer.id)){\n   if(layer.format==='tgz'){\n    const tmp=path.join(home,'.layer-tmp');fs.rmSync(tmp,{recursive:true,force:true});fs.mkdirSync(tmp);\n    // Release archives exceed 350 MB. Concatenating their parts doubles that allocation and OOMs the\n    // 768 MB boot workload. Spool with one reusable 1 MiB buffer, then let tar read directly from disk.\n    const archive=path.join(home,'.layer-release.tgz'),buffer=Buffer.allocUnsafe(1<<20),out=fs.openSync(archive,'w');\n    try{for(const part of layer.parts){const input=fs.openSync(path.join(layers,part),'r');try{let n;while((n=fs.readSync(input,buffer,0,buffer.length,null))>0){let at=0;while(at<n)at+=fs.writeSync(out,buffer,at,n-at);}}finally{fs.closeSync(input);}}}finally{fs.closeSync(out);}\n    try{execFileSync('tar',['-xzf',archive,'-C',tmp],{maxBuffer:1<<20});}finally{fs.rmSync(archive,{force:true});}\n    // Releases built before the Arkadia → Arkodia rename carry the binary as 'arkadia'.\n    const bin=['arkodia','arkadia'].map(n=>path.join(tmp,n)).find(f=>fs.existsSync(f));\n    if(bin){fs.mkdirSync(path.dirname(coopBin),{recursive:true});fs.copyFileSync(bin,coopBin);fs.chmodSync(coopBin,0o755);if(legacyCoopBin!==coopBin)fs.rmSync(legacyCoopBin,{force:true});}\n    const site=path.join(tmp,'site');if(fs.existsSync(site))for(const f of fs.readdirSync(site,{recursive:true})){const src=path.join(site,f),st=fs.statSync(src);if(st.isFile()){const dest=target('/'+f.split(path.sep).join('/'),layer);fs.mkdirSync(path.dirname(dest),{recursive:true});fs.copyFileSync(src,dest);fs.utimesSync(dest,st.mtime,st.mtime);}}\n    fs.rmSync(tmp,{recursive:true,force:true});\n   }else{const bytes=Buffer.concat(layer.parts.map(n=>fs.readFileSync(path.join(layers,n))));for(const [key,b64] of Object.entries(JSON.parse(gunzipSync(bytes))))write(target(key,layer),Buffer.from(b64,'base64'));}\n   done.push(layer.id);fs.writeFileSync(applied,JSON.stringify(done,null,1));console.log('Applied layer',layer.id);\n  }\n  for(const n of [...layer.parts,layer.id+'.json'])fs.rmSync(path.join(layers,n),{force:true});\n }\n}\n\n// The co-op server only answers /ws, /api and /healthz here; restart it if it exits.\nlet coop;\nfunction startCoop(){\n // Until the first release after the rename lands, the binary is still at its pre-rename path.\n const bin=[coopBin,legacyCoopBin].find(f=>fs.existsSync(f));\n if(!bin){console.log('No co-op server binary yet');return;}\n const child=coop=spawn(bin,{env:{...process.env,PORT:String(COOP_PORT),SITE_DIR:www},stdio:'inherit'});\n child.on('exit',code=>{console.log('Co-op server exited',code);if(coop===child)setTimeout(startCoop,2000);});\n}\nfor(const sig of ['SIGTERM','SIGINT'])process.on(sig,()=>{const c=coop;coop=null;c?.kill();process.exit(0);});\n\nconst TYPES={html:'text/html; charset=utf-8',js:'text/javascript; charset=utf-8',mjs:'text/javascript; charset=utf-8',css:'text/css; charset=utf-8',json:'application/json',md:'text/markdown; charset=utf-8',png:'image/png',webp:'image/webp',jpg:'image/jpeg',svg:'image/svg+xml',webm:'video/webm',zip:'application/zip',glb:'model/gltf-binary'};\nconst isOpen=p=>OPEN.some(o=>p.startsWith(o));\n// Errors and redirects must not stick at the CDN edge (it cached header-less 404s for 4 hours, hiding files published later).\nconst NO_STORE={'Cache-Control':'no-store'};\nfunction cookie(req,name){return (req.headers.cookie||'').split(/;\\s*/).map(c=>c.split('=')).find(([k])=>k===name)?.[1];}\n// The game page; a cookie left by the retired two-build switch is cleared.\nfunction gamePage(req,res){\n const headers={'Content-Type':TYPES.html,'Cache-Control':'no-cache'};\n if(cookie(req,'arkadia_build'))headers['Set-Cookie']='arkadia_build=; Path=/; Max-Age=0; SameSite=Lax';\n fs.readFile(path.join(www,'index.html'),(err,b)=>err?res.writeHead(503,NO_STORE).end('Game build missing'):res.writeHead(200,headers).end(b));\n}\nfunction sendFile(req,res,file,p){\n fs.stat(file,(err,st)=>{\n  if(err||!st.isFile()){res.writeHead(404,NO_STORE).end('Not found');return;}\n  const headers={'Content-Type':TYPES[path.extname(file).slice(1)]||'application/octet-stream','Accept-Ranges':'bytes','Cache-Control':/^\\/assets\\/[^/]+-[^/]+\\.(js|css)$/.test(p)?'public, max-age=31536000, immutable':'no-cache','X-Content-Type-Options':'nosniff'};\n  const range=/^bytes=(\\d*)-(\\d*)$/.exec(req.headers.range||'');\n  if(range&&(range[1]||range[2])){\n   const start=range[1]?+range[1]:Math.max(0,st.size-range[2]),end=range[1]&&range[2]?Math.min(+range[2],st.size-1):st.size-1;\n   if(start>end){res.writeHead(416,{...NO_STORE,'Content-Range':`bytes */${st.size}`}).end();return;}\n   res.writeHead(206,{...headers,'Content-Range':`bytes ${start}-${end}/${st.size}`,'Content-Length':end-start+1});fs.createReadStream(file,{start,end}).pipe(res);return;\n  }\n  res.writeHead(200,{...headers,'Content-Length':st.size});if(req.method==='HEAD')res.end();else fs.createReadStream(file).pipe(res);\n });\n}\nconst toCoop=p=>p==='/ws'||p==='/healthz'||p==='/asset-sizes.json'||p.startsWith('/api/')||(p.toLowerCase().endsWith('.png')&&fs.existsSync(path.join(www,p)));\nfunction proxy(req,res,fallback){\n const up=http.request({host:'127.0.0.1',port:COOP_PORT,method:req.method,path:req.url,headers:req.headers},r=>{res.writeHead(r.statusCode,r.headers);r.pipe(res);});\n up.on('error',()=>res.headersSent?res.destroy():fallback?fallback():res.writeHead(502,NO_STORE).end('Co-op server unavailable'));req.pipe(up);\n}\n\napplyLayers();startCoop();\n// builds/ held the two game pages of the retired build switch.\nfs.rmSync(path.join(home,'builds'),{recursive:true,force:true});\nconst server=http.createServer((req,res)=>{\n let u,p;try{u=new URL(req.url,'http://local');p=decodeURIComponent(u.pathname);}catch{res.writeHead(400,NO_STORE).end();return;}\n if(p.includes('\\0')||p.split('/').includes('..')){res.writeHead(400,NO_STORE).end();return;}\n if(toCoop(p))return proxy(req,res,p.toLowerCase().endsWith('.png')||p==='/asset-sizes.json'?()=>sendFile(req,res,path.join(www,p),p):null);\n if(MOVED[p]){res.writeHead(302,{...NO_STORE,Location:MOVED[p]+u.search}).end();return;}\n if(p.endsWith('/')&&p!=='/'&&isOpen(p)&&fs.existsSync(path.join(www,p,'index.html')))return sendFile(req,res,path.join(www,p,'index.html'),p);\n if(p.endsWith('.html')&&p!=='/index.html'&&!isOpen(p)){res.writeHead(302,{...NO_STORE,Location:'/'+u.search}).end();return;}\n if(p==='/index.html'||p.endsWith('/')||!path.extname(p))return gamePage(req,res);\n sendFile(req,res,path.join(www,p),p);\n});\n// Co-op WebSocket: hand the upgrade straight to the Go server. Both legs send at once (no Nagle): a 40-byte input\n// held back until the previous one is acknowledged reached the server a tick late.\nserver.on('upgrade',(req,socket,head)=>{\n if(new URL(req.url,'http://local').pathname!=='/ws'){socket.destroy();return;}\n socket.setNoDelay(true);\n const up=net.connect({port:COOP_PORT,host:'127.0.0.1',noDelay:true},()=>{let lines=`${req.method} ${req.url} HTTP/1.1\\r\\n`;for(let i=0;i<req.rawHeaders.length;i+=2)lines+=`${req.rawHeaders[i]}: ${req.rawHeaders[i+1]}\\r\\n`;up.write(lines+'\\r\\n');up.write(head);socket.pipe(up).pipe(socket);});\n up.on('error',()=>socket.destroy());socket.on('error',()=>up.destroy());\n});\nserver.listen(PORT,'0.0.0.0',()=>console.log('Arkodia gateway listening on',PORT));\n",
+      "custom_sandbox_id": "CS3d5f22197da69327e209c1c5",
+      "encoding": "utf-8",
+      "name": "gateway.mjs",
+      "organization_id": "ORd5dd6f99b4308d6187031557",
+      "path": "gateway.mjs",
+      "scope": "custom",
+      "size": 9764
+    }
+  },
+  "applied.json": {
+    "sha256": "f5623c994618083cd971625c5cea38b349cf7a88be81ba91f7b16fb22c78b79a",
+    "data": {
+      "content": "[\n \"1792604187734-enemies-a340182efed1\",\n \"1792604193171-coop-69a1f7fb5991\",\n \"1792604524957-ember-85441211d810\",\n \"1792604563975-legacy-evidence-956b12b08655\",\n \"1792604591923-arkadia-sandbox-docs-414ce11050c4\",\n \"1792624910758-game-c01202a-34529583f123\",\n \"1792625270547-ember-61796ed69534\",\n \"1792625402368-arkadia-sandbox-docs-6e02132cb5fc\",\n \"1792625405782-coop-docs-ef3222b6f371\",\n \"1792625615022-coop-docs-1d6b4bb9a0f9\",\n \"1792627677757-game-e24bd3f-ef47d304b2f0\",\n \"1792627857280-hero-select-d9cabb233737\",\n \"1792634767548-ember-painted-8a7ea01b292b\",\n \"1792634885231-game-e97c345-2c84acae7e07\",\n \"1792634958372-sharp-torches-5e4b7665f525\",\n \"1792635012703-ember-painted-9efc0cef4d07\",\n \"1792635764308-game-c0ea00f-fdb267f0dfbe\",\n \"1792635806515-walk-feel-1cdab5db4fdf\",\n \"1792636676168-ember-animation-a59d3b39d9c2\",\n \"1792636824872-ember-animation-c0d53a7825c7\",\n \"1792636845121-ember-painted-3578930e8479\",\n \"1792637046032-ember-animation-5ccd0f52584e\",\n \"1792637392636-game-510fa19-31130fd041df\",\n \"1792638818594-game-d54eca5-24d2789731b8\",\n \"1792638883687-ember-game-fix-evidence-c9db1c6736a3\",\n \"1792648811035-game-c1fb03b-4935b02ec174\",\n \"1792658682263-game-40a7094-52caf5c53154\",\n \"1792659241874-game-bf5443f-a24b96edb6e9\",\n \"1792659253404-hero-picker-size-f8e516497cbc\",\n \"1792659309284-hero-picker-size-966a22701065\",\n \"1792665060102-game-a364b96-e6a848fcc7c5\",\n \"1792665238063-game-9b84d2a-7c9f75c0ab37\",\n \"1792665255775-hero-select-frames-50b393923137\",\n \"1792665259764-hero-picker-frames-e74a85bf1419\",\n \"1792667413207-ember-painted-4f993752b148\",\n \"1792667442680-ember-animation-e0b3d20ed83b\",\n \"1792667561836-ember-painted-6a6990500cc3\",\n \"1792667573740-ember-animation-a69329e96a0a\",\n \"1792667781409-game-fe487aa-c6df980b9fa9\",\n \"1792668294839-game-27980aa-3f0695b33bf2\",\n \"1792670480302-game-aa1a3df-c4af89923ef0\",\n \"1792670608626-game-aa1a3df-eeb90d29b460\",\n \"1792671655836-game-ba16679-d9d3ec343505\",\n \"1792671744420-ember-painted-352c705481fb\",\n \"1792671757648-ember-animation-13570fdaf63a\",\n \"1792672668284-game-5f86d90-e06dc880e27a\",\n \"1792673878786-game-caeae36-da72f6ceabd9\",\n \"1792675309970-game-7d47ccc-d34fe3dc6cbc\",\n \"1792675759124-game-6970d39-3a48f2826583\",\n \"1792676533634-elegant-idle-4d4bf334ca8b\",\n \"1792676722767-elegant-idle-4d4bf334ca8b\",\n \"1792676807527-game-c51ef40-385970997f46\",\n \"1792677617175-game-bf850b7-0a1538a294cb\",\n \"1792677709843-gate-seams-evidence-8870c27668ec\",\n \"1792678102991-game-aa874d5-58ae56078282\",\n \"1792680919471-game-d2cab2d-5f8bfc57fe77\",\n \"1792681044095-gate-foundation-evidence-ae0b2f2e8ff8\",\n \"1792682072104-game-2074545-21afb72d5d2e\",\n \"1792682097455-thumbstick-art-7702099e333e\",\n \"1792682182646-game-2074545-69c0615d3ef6\",\n \"1792682944060-game-7ef4401-933187a42bf5\",\n \"1792683061072-gate-seamless-evidence-eda2be46c6ae\",\n \"1792683544866-game-8eabd7a-d1d595140d21\",\n \"1792683915602-game-04eb526-a59ba65f1963\",\n \"1792683965662-environment-corners-v1-a6a7790331a7\",\n \"1792684109699-environment-corners-v1-a6a7790331a7\",\n \"1792684549807-game-471ad60-e6a1ab176b02\",\n \"1792684564825-sprite-player-74f2ed1c4084\",\n \"1792684720890-sprite-player-3230f6e55d2e\",\n \"1792684786558-sprite-player-87aaeb6c9835\",\n \"1792684976502-game-c71587e-6d416c9ca9f8\",\n \"1792685061406-game-c71587e-1c0167c8f778\",\n \"1792685527658-game-c09dc2c-a714a5bb4721\",\n \"1792685699256-gateway-final-evidence-599c268e7de4\",\n \"1792687117280-game-770ccb2-ee9cf0d4c516\",\n \"1792688000407-game-d569c96-aa256526abd5\",\n \"1792688025603-sprite-player-2af4aec81825\",\n \"1792688043477-sprite-player-2af4aec81825\",\n \"1792688180272-sprite-player-2af4aec81825\",\n \"1792688196059-sprite-player-2af4aec81825\",\n \"1792688957162-typography-v2-16b63e669b77\",\n \"1792689476697-game-bf2c1a7-4944276e3f03\",\n \"1792689913924-elegant-actions-2a94a4c9c81f\",\n \"1792692360368-game-9e3540c-e32975003972\",\n \"1792692873942-game-ddebe51-4dd320dfbb38\",\n \"1792693027777-sprite-player-ad51b679b021\",\n \"1792693068634-elegant-actions-v2-ecd5d43f7a38\",\n \"1792694818541-elegant-actions-v2-f11360619187\",\n \"1792695382050-elegant-actions-v2-b272f17ffe77\",\n \"1792695894328-game-6ef8ea9-1dc9637b9e40\",\n \"1792700959244-elegant-actions-v2-4e80b8321d34\",\n \"1792705968066-game-c1e4226-fce04481afdf\",\n \"1792707309442-sprite-player-bd83cd919b4c\",\n \"1792708389674-game-b249d33-47352f0a3c59\",\n \"1792708408946-sprite-player-legacy-bd83cd919b4c\",\n \"1792708424853-sprite-player-bd83cd919b4c\",\n \"1792708517042-game-b249d33-ccaea712ee60\",\n \"1792709874612-game-4a729e4-fd5c823b8a09\",\n \"1792711013163-game-d2c144c-48c0f594c3d7\",\n \"1792711028720-sprite-player-legacy-937b3fa2f7ce\",\n \"1792711039009-sprite-player-937b3fa2f7ce\",\n \"1792711373221-sprite-player-legacy-b3dab9f74191\",\n \"1792711382927-sprite-player-b3dab9f74191\",\n \"1792719410501-game-026e414-8fb14e40e65f\",\n \"1792719721000-sprite-player-legacy-5142f230427e\",\n \"1792719731750-sprite-player-5142f230427e\",\n \"1792720164446-game-867adbb-939814e731ef\",\n \"1792720761507-loading-fix-dc34a9a-a7dd35e65aa2\",\n \"1792720959683-sprite-player-legacy-1b09645e0683\",\n \"1792720970869-sprite-player-1b09645e0683\",\n \"1792721102654-game-81ea796-d00c6e0a9405\",\n \"1792721588749-game-1side-mirror-ee8da5653a0a\",\n \"1792722121076-game-d104509-414989150b1a\",\n \"1792722161200-game-0ddac7a-1fcc3682d7e7\",\n \"1792723723943-game-fix-uvs-842f2b168d4e\",\n \"1792724348700-game-a92c8b5-4cd3a1a23701\",\n \"1792725629288-game-adcdd14-398c8a5f3d1b\",\n \"1792726175782-game-adcdd14-398c8a5f3d1b\",\n \"1792726312540-game-2540420-a71abbedf26c\",\n \"1792726828775-game-8b30c95-6aa062321abb\",\n \"1792727236013-game-8b30c95-660d3c9ac5f6\",\n \"1792727666976-game-8b30c95-8d9f6f5a4f50\",\n \"1792728113619-game-33303db-cdfb36e3c288\",\n \"1792729960247-game-33303db-48db10d89969\",\n \"1792732299364-game-6cc6005-966c3f7d16b7\",\n \"1792732831621-game-d9c66a5-4782dcd60236\",\n \"1792734488723-game-01b79cb-0eb446bffdb4\",\n \"1792734941050-sprite-player-legacy-6dd5098e2d1c\",\n \"1792734955288-sprite-player-6dd5098e2d1c\",\n \"1792735428590-game-2586ec7-efed33f19aad\",\n \"1792735667006-game-f5c8fbe-2ed84e239de5\",\n \"1792736254856-game-e6522ad-10ceabb3ee8e\",\n \"1792739841984-game-2bc97a7-16895d0c6d80\",\n \"1792739915757-game-1c29afc-2b116ce42dea\",\n \"1792740657966-game-1c29afc-2b116ce42dea\",\n \"1792740690693-gate-seamless-v2-dc977cf589ab\",\n \"1792742782628-game-8781d1e-b683e5d07cc9\",\n \"1792744672784-game-7e60c99-51575b4abc9c\",\n \"1792744832448-game-7e60c99-fbddd1f0c11e\",\n \"1792746624840-game-7e60c99-954e19201cbf\",\n \"1792747424944-game-01c7e5f-a1c93a907b9b\",\n \"1792747964316-game-db01ba8-deb4639925ea\",\n \"1792749011877-game-5b8638b-d33b39da3a06\",\n \"1792749050948-first-hero-d8e36a3aa06e\",\n \"1792749172749-first-hero-186dfe8a2981\",\n \"1792749182042-game-5b8638b-87bfa27fc685\",\n \"1792749493330-game-52f1c58-004050c80865\",\n \"1792749655055-game-8cd23b5-cda5bb84ee60\",\n \"1792749967541-game-8ec2adc-37157384fe3b\",\n \"1792750212898-game-8ec2adc-46a702bfb4b8\",\n \"1792750766662-run-cadence-evidence-7ac086e542d3\",\n \"1792751405636-run-cadence-evidence-c68634b407d2\",\n \"1792751443440-game-79533dd-33ced4a58544\",\n \"1792751591879-game-9cc8601-97618421f15a\",\n \"1792751646969-game-9cc8601-c14eca23be94\",\n \"1792751671545-run-cadence-evidence-9b98e92c74a1\",\n \"1792751941765-first-hero-28c7cb88f25a\",\n \"1792753276510-game-a2714b6-cc0dc1827914\",\n \"1792753490720-game-902503f-1119b6c5c9fd\",\n \"1792754028374-game-2390514-7fb40fa338d9\",\n \"1792754283187-game-7556abf-b6388e2966f0\",\n \"1792755260173-game-2aee78e-d4a4a43443c8\",\n \"1792755448094-game-744dc27-3039bedf7600\",\n \"1792755813369-game-c059f04-2d2d4aaa092a\",\n \"1792755888146-game-c059f04-ead06950e259\",\n \"1792756345785-player-console-evidence-725182ffa914\",\n \"1792756407909-game-5962369-ed20ae24d454\",\n \"1792759309753-game-dd9f147-7effc7a4ef5b\",\n \"1792766707796-game-e6c0d93-21b0254811a0\",\n \"1792766842693-player-console-evidence-70549b1fec24\",\n \"1792768740462-game-d9bdb5c-2dbdc89ff7b5\",\n \"1792774087805-game-74e8ebd-0a4cf9a157ee\",\n \"1792774179577-game-74e8ebd-0bf00f32464e\",\n \"1792774202051-player-console-evidence-b77e8d240d88\",\n \"1792774394465-3d-hero-lab-472b85001b99\",\n \"1792774466018-3d-hero-lab-c3ddbd2e0fa4\",\n \"1792774617495-game-3136649-ee0e96f925ea\",\n \"1792775109757-3d-hero-lab-76bb865e25f8\",\n \"1792775303549-3d-hero-lab-c3943097182f\",\n \"1792775996796-game-16e2f76-e7d3fb9f75e3\",\n \"1792776090221-game-16e2f76-e3da4785817e\",\n \"1792776151242-arkodia-rename-5e3f2fdd0662\",\n \"1792776520691-game-bdbd0fe-d898f6f99d84\",\n \"1792777234975-3d-hero-game-dea2dda4c997\",\n \"1792777479256-game-cea50fe-42142b14d6e9\",\n \"1792777856373-3d-hero-game-1ebc0af009d1\",\n \"1792778707688-3d-hero-game-3e776e9f9f72\",\n \"1792779252045-3d-hero-game-94d1db9089dd\",\n \"1792779766654-game-e5171c5-5d5faa97b16b\",\n \"1792779947254-3d-hero-game-a5b1362ecabf\",\n \"1792780734011-3d-hero-game-a31b6312d533\",\n \"1792781143645-game-2df31b9-b13a5e2ef94b\",\n \"1792781929687-game-8519ef5-e48cf61f987f\",\n \"1792785890006-game-c615829-f21c54315c9f\",\n \"1792786544379-game-040b3db-9ea990271765\",\n \"1792787600139-3d-hero-game-344f75a85d3c\",\n \"1792795524777-3d-hero-game-c265cbd3d511\",\n \"1792797105027-game-e05586e-845b2bd30fd2\",\n \"1792797165483-game-e05586e-7bd87ce5edf5\",\n \"1792797743396-game-4e42377-31974d1248d6\",\n \"1792797790967-game-7843e34-7e2994e7e9fb\",\n \"1792797874058-player-console-evidence-9373a55892e3\",\n \"1792798003919-game-26a370c-203b657e847b\",\n \"1792798309538-minimap-evidence-85e76fec75bc\",\n \"1792798581319-game-f8c3ddd-1914b30c7d83\",\n \"1792799129838-game-cea2901-fe147e1d6059\",\n \"1792799155739-game-05adfbc-e66e806e1487\",\n \"1792799452083-minimap-obstacles-evidence-fddaee5307e2\",\n \"1792799648547-game-609db5e-a89f10c0d201\",\n \"1792799651058-game-466637f-aba8711570e9\",\n \"1792800305934-game-c9e4d6f-dc57c52f754f\",\n \"1792800911089-game-8e7be5b-af637ea76954\",\n \"1792801200065-game-f2f57cf-7b5b813c3bf2\",\n \"1792801501522-mobile-hud-evidence-v1-e2d0f3136f01\",\n \"1792801625113-game-aeebf9f-002692ecafcc\",\n \"1792809406070-game-9f23c86-54b39ce16c19\",\n \"1792809990343-game-a4a0102-4e13ddc4b647\",\n \"1792809992147-game-05a7cf2-6910b67a4eba\",\n \"1792810425903-desktop-26fb7f8-c24f9d4ffe33\",\n \"1792810534679-ember-run-a4a0102-23693013c330\",\n \"1792810796254-mobile-hud-padding-cd6a3bb55deb\",\n \"1792811096353-game-9f09bef-73d292dac2de\",\n \"1792811203136-game-9f09bef-9b177a9ebd90\",\n \"1792813015633-game-cffa7aa-f9ad23f8d904\",\n \"1792813610598-ember-run-28ce37e-08932f6a450b\",\n \"1792813620942-ember-docs-28ce37e-5e4d6f879a72\",\n \"1792814079840-game-199d1e5-0d64c3caf6e1\",\n \"1792817041438-frozen-frontier-v1-cb32a62a5f60\",\n \"1792817130660-frozen-frontier-v1-cb32a62a5f60\",\n \"1792819144841-game-60fd716-d9ead6155da8\"\n]",
+      "custom_sandbox_id": "CS3d5f22197da69327e209c1c5",
+      "encoding": "utf-8",
+      "name": "applied.json",
+      "organization_id": "ORd5dd6f99b4308d6187031557",
+      "path": "applied.json",
+      "scope": "custom",
+      "size": 10453
+    }
+  }
+}
