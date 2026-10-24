@@ -1,3 +1,4 @@
+import {desktopNavigationLayout} from './desktop-layout';
 import { Container, Graphics, Rectangle, Sprite, type Texture } from 'pixi.js';
 import type { FrameSet } from './frames';
 import { mobileHudLayout } from './mobile-layout';
@@ -718,19 +719,28 @@ export class Hud extends Container {
   (this.trRibbonClockIcon as Sprite).texture=this.frames.texture('mobile-clock');
   (this.trRibbonZoneIcon as Sprite).texture=this.frames.texture('mobile-pin');
   const layout=mobileHudLayout(w),k=layout.scale*1.22;
-  const left=layout.left+6+156*k,right=layout.left+6+430*k,top=layout.top+3+143*k,h=34*k;
-  const mid=left+(right-left)*0.55;
+  const left=layout.left+6+156*k,right=layout.left+6+430*k,top=layout.top+3+143*k,h=44*k;
+  const mid=left+(right-left)*0.60;
   g.roundRect(left,top,right-left,h, h/2).fill({color:0x090909,alpha:.95}).stroke({color:0xd5af52,width:1});
   g.moveTo(mid,top+4).lineTo(mid,top+h-4).stroke({color:0xd5af52,width:.8});
   this.trRibbonGoldMedallion.visible=false;this.trRibbonClockMedallion.visible=false;
-  centred(this.trRibbonGoldIcon,left+12*k,top+h/2,24*k,20*k);
-  centred(this.trRibbonClockIcon,mid+15*k,top+h/2,24*k,24*k);
+  centred(this.trRibbonGoldIcon,left+22*k,top+h/2,24*k,24*k);
+  centred(this.trRibbonClockIcon,mid+22*k,top+h/2,24*k,24*k);
   const fit=(t:MsdfText,x:number,y:number,max:number,size:number)=>{
    const scale=Math.min(size, max/Math.max(1,t.advance));t.scale.set(scale);
    t.position.set(x,y-t.metrics().baseline*scale);
   };
-  fit(this.trRibbonGoldText,left+28*k,top+h*.69,mid-left-34*k,.94*k);
-  fit(this.trRibbonClockText,mid+31*k,top+h*.69,right-mid-36*k,.94*k);
+  // Inset both icons by 10 design units and leave another 10 before their labels.
+  // Center the rendered text bounds on the icon axis, rather than guessing a font baseline.
+  const goldInk=this.trRibbonGoldText.getLocalBounds();
+  const timeInk=this.trRibbonClockText.getLocalBounds();
+  const labelScale=Math.min(.94*k,(mid-left-56*k)/Math.max(1,goldInk.width),(right-mid-56*k)/Math.max(1,timeInk.width));
+  const centerLabel=(t:MsdfText,x:number,b:{x:number;y:number;height:number})=>{
+   t.scale.set(labelScale);
+   t.position.set(x-b.x*labelScale,top+h/2-(b.y+b.height/2)*labelScale);
+  };
+  centerLabel(this.trRibbonGoldText,left+44*k,goldInk);
+  centerLabel(this.trRibbonClockText,mid+44*k,timeInk);
   this.trRibbonClockHit.hitArea=new Rectangle(mid,top,right-mid,h);
   const {mapSize,mapX,mapY}=layout;
   const baseline=mapY+mapSize+13;
@@ -1325,6 +1335,21 @@ export class Hud extends Container {
    const b=this.trRibbonGroup.getBounds();
    return {variant:'approved-mobile',isPortrait:this.isPortrait,goldLabel:this.trRibbonGoldText.text,timeLabel:this.trRibbonClockText.text,zoneLabel:this.trRibbonZoneText.text,fpsLabel:this.trTelemetryFpsText.text,screenBounds:{left:b.minX,top:b.minY,right:b.maxX,bottom:b.maxY,width:b.width,height:b.height}};
   }
+  if (this.isAltB) {
+   const panel = desktopNavigationLayout(this.lastWidth, this.lastHeight);
+   const scale = panel.width / (designRight - designLeft);
+   return {
+    variant: 'desktop-navigation-column', isPortrait: this.isPortrait,
+    goldLabel: this.trRibbonGoldText.text, timeLabel: this.trRibbonClockText.text,
+    zoneLabel: this.trRibbonZoneText.text, coopLabel: this.state.coopLabel ?? null,
+    pingLabel: this.state.coopLabel === undefined ? null : this.trTelemetryPingText.text,
+    fpsLabel: this.trTelemetryFpsText.text, telemetryTextScale: this.trTelemetryPingText.scale.x,
+    ribbonScale: scale, designBounds: b,
+    screenBounds: {left: this.lastWidth-panel.right-panel.width, right: this.lastWidth-panel.right,
+     top: panel.top, bottom: panel.top+(designBottom-designTop)*scale,
+     width: panel.width, height: (designBottom-designTop)*scale},
+   };
+  }
   return {
    variant: this.isAltB ? 'concept-3-medallion-plaques-ledger' : 'legacy-4-pill-stack',
    isPortrait: this.isPortrait,
@@ -1588,6 +1613,19 @@ export class Hud extends Container {
    this.groups.bl.visible=false;this.brEscGroup.visible=false;
   }
   this.layoutTopRightRibbon();
+  if (!mobile && this.isAltB) {
+   const panel = desktopNavigationLayout(width, height);
+   const b = this.trDesignBounds;
+   const left = Math.min(b.goldPlaque.medX - b.goldPlaque.medR, b.ledger.leftX, b.filigreeRule.leftX - 16);
+   const right = Math.max(b.clockPlaque.rightX + 7, b.filigreeRule.rightX + 8);
+   const top = b.goldPlaque.cy - b.goldPlaque.medR;
+   const scale = panel.width / (right - left);
+   // Use screen pixels so wide and short monitors retain the same readable column.
+   place(this.groups.tr, 0, 0, width - panel.right - panel.width, panel.top, 1 / s);
+   this.trRibbonGroup.pivot.set(left, top);
+   this.trRibbonGroup.position.set(0, 0);
+   this.trRibbonGroup.scale.set(scale);
+  }
   for (const img of [this.backdrop, this.overlay]) {
    if (!img) continue;
    const c = Math.max(width / W, height / H);
