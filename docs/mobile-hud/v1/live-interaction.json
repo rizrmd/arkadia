@@ -1,0 +1,419 @@
+{
+  "actualHero": {
+    "name": "Ember Warden",
+    "portrait": "portrait-ember-warden",
+    "skills": [
+      {
+        "name": "Flame Fan",
+        "level": 1,
+        "art": "skill-flame-fan",
+        "stateLabel": "Auto",
+        "locked": false,
+        "cooldownRatio": 0,
+        "cooldownSec": 0,
+        "hotkey": "1"
+      },
+      {
+        "name": "Empty Slot",
+        "level": 0,
+        "art": "skill-empty",
+        "stateLabel": "Locked",
+        "locked": true,
+        "cooldownRatio": 0,
+        "cooldownSec": 0,
+        "hotkey": "2"
+      },
+      {
+        "name": "Empty Slot",
+        "level": 0,
+        "art": "skill-empty",
+        "stateLabel": "Locked",
+        "locked": true,
+        "cooldownRatio": 0,
+        "cooldownSec": 0,
+        "hotkey": "3"
+      }
+    ]
+  },
+  "interactions": [
+    {
+      "width": 320,
+      "height": 568,
+      "taps": [
+        0,
+        1,
+        2
+      ],
+      "sockets": [
+        {
+          "index": 0,
+          "x": 269.96981132075473,
+          "y": 508.5132075471698,
+          "radius": 26.68679245283019,
+          "locked": false,
+          "name": "Flame Fan",
+          "level": 1
+        },
+        {
+          "index": 1,
+          "x": 269.96981132075473,
+          "y": 437.0867924528302,
+          "radius": 26.68679245283019,
+          "locked": true,
+          "name": "Empty Slot",
+          "level": 0
+        },
+        {
+          "index": 2,
+          "x": 201.29056603773586,
+          "y": 508.5132075471698,
+          "radius": 24.724528301886792,
+          "locked": true,
+          "name": "Empty Slot",
+          "level": 0
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "taps": [
+        0,
+        1,
+        2
+      ],
+      "sockets": [
+        {
+          "index": 0,
+          "x": 331.2132075471698,
+          "y": 774.1254716981132,
+          "radius": 32.52452830188679,
+          "locked": false,
+          "name": "Flame Fan",
+          "level": 1
+        },
+        {
+          "index": 1,
+          "x": 331.2132075471698,
+          "y": 687.0745283018869,
+          "radius": 32.52452830188679,
+          "locked": true,
+          "name": "Empty Slot",
+          "level": 0
+        },
+        {
+          "index": 2,
+          "x": 247.51037735849056,
+          "y": 774.1254716981132,
+          "radius": 30.13301886792453,
+          "locked": true,
+          "name": "Empty Slot",
+          "level": 0
+        }
+      ]
+    },
+    {
+      "width": 430,
+      "height": 932,
+      "taps": [
+        0,
+        1,
+        2
+      ],
+      "sockets": [
+        {
+          "index": 0,
+          "x": 366.20943396226414,
+          "y": 856.1896226415095,
+          "radius": 35.86037735849056,
+          "locked": false,
+          "name": "Flame Fan",
+          "level": 1
+        },
+        {
+          "index": 1,
+          "x": 366.20943396226414,
+          "y": 760.2103773584906,
+          "radius": 35.86037735849056,
+          "locked": true,
+          "name": "Empty Slot",
+          "level": 0
+        },
+        {
+          "index": 2,
+          "x": 273.9216981132075,
+          "y": 856.1896226415095,
+          "radius": 33.223584905660374,
+          "locked": true,
+          "name": "Empty Slot",
+          "level": 0
+        }
+      ]
+    },
+    {
+      "width": 844,
+      "height": 390,
+      "taps": [
+        0,
+        1,
+        2
+      ],
+      "sockets": [
+        {
+          "index": 0,
+          "x": 776.7168,
+          "y": 310.0464,
+          "radius": 38.18880000000001,
+          "locked": false,
+          "name": "Flame Fan",
+          "level": 1
+        },
+        {
+          "index": 1,
+          "x": 776.7168,
+          "y": 207.83519999999996,
+          "radius": 38.18880000000001,
+          "locked": true,
+          "name": "Empty Slot",
+          "level": 0
+        },
+        {
+          "index": 2,
+          "x": 678.4368,
+          "y": 310.0464,
+          "radius": 35.38080000000001,
+          "locked": true,
+          "name": "Empty Slot",
+          "level": 0
+        }
+      ]
+    }
+  ],
+  "safe": {
+    "console": {
+      "minX": 25.090283018867925,
+      "minY": 29.56105713443396,
+      "maxX": 244.44995842746633,
+      "maxY": 107.8900745283019,
+      "matrix": {
+        "array": null,
+        "a": 0.5150471698113208,
+        "b": 0,
+        "c": 0,
+        "d": 0.5150471698113208,
+        "tx": 33.21032355542453,
+        "ty": 78.0134758254717
+      }
+    },
+    "skills": {
+      "arcCenter": {
+        "x": 356.9750943396226,
+        "y": 801.4141509433962
+      },
+      "sockets": [
+        {
+          "index": 0,
+          "x": 319.21622641509435,
+          "y": 754.8741509433962,
+          "radius": 29.855849056603777,
+          "locked": false,
+          "name": "Flame Fan",
+          "level": 1
+        },
+        {
+          "index": 1,
+          "x": 319.21622641509435,
+          "y": 674.9658490566037,
+          "radius": 29.855849056603777,
+          "locked": true,
+          "name": "Empty Slot",
+          "level": 0
+        },
+        {
+          "index": 2,
+          "x": 242.38132075471697,
+          "y": 754.8741509433962,
+          "radius": 27.66056603773585,
+          "locked": true,
+          "name": "Empty Slot",
+          "level": 0
+        }
+      ],
+      "scale": 0.43905660377358496
+    }
+  },
+  "map": {
+    "visible": true,
+    "bounds": {
+      "x": 271,
+      "y": 30,
+      "width": 95,
+      "height": 95
+    },
+    "tile": {
+      "u": 9.1640625,
+      "v": 8.9609375
+    },
+    "mapTile": {
+      "u": 469.6640625,
+      "v": 469.4609375
+    },
+    "geometryCount": 43,
+    "obstacles": [
+      {
+        "id": "fir-young",
+        "u": -3,
+        "v": 3,
+        "width": 135,
+        "kind": "tree"
+      },
+      {
+        "id": "spruce-mature",
+        "u": -3,
+        "v": 5,
+        "width": 154,
+        "kind": "tree"
+      },
+      {
+        "id": "spruce-mature",
+        "u": -3,
+        "v": 9,
+        "width": 173,
+        "kind": "tree"
+      },
+      {
+        "id": "fir-young",
+        "u": 2,
+        "v": -3,
+        "width": 192,
+        "kind": "tree"
+      },
+      {
+        "id": "spruce-mature",
+        "u": 5,
+        "v": -3,
+        "width": 135,
+        "kind": "tree"
+      },
+      {
+        "id": "spruce-mature",
+        "u": 9,
+        "v": -3,
+        "width": 154,
+        "kind": "tree"
+      },
+      {
+        "id": "fir-young",
+        "u": 13,
+        "v": -3,
+        "width": 173,
+        "kind": "tree"
+      },
+      {
+        "id": "spruce-mature",
+        "u": 20,
+        "v": 4,
+        "width": 192,
+        "kind": "tree"
+      },
+      {
+        "id": "spruce-mature",
+        "u": 20,
+        "v": 10,
+        "width": 135,
+        "kind": "tree"
+      },
+      {
+        "id": "fir-young",
+        "u": 4,
+        "v": 20,
+        "width": 154,
+        "kind": "tree"
+      },
+      {
+        "id": "spruce-mature",
+        "u": 10,
+        "v": 20,
+        "width": 173,
+        "kind": "tree"
+      },
+      {
+        "id": "cliff-snow",
+        "u": -3.8,
+        "v": 4,
+        "width": 320,
+        "kind": "obstacle"
+      },
+      {
+        "id": "cliff-snow",
+        "u": 4,
+        "v": -3.8000000000000003,
+        "width": 320,
+        "kind": "obstacle"
+      },
+      {
+        "id": "cliff-snow",
+        "u": 11,
+        "v": -3.8000000000000003,
+        "width": 320,
+        "kind": "obstacle"
+      },
+      {
+        "id": "cliff-snow",
+        "u": 19.5,
+        "v": 7,
+        "width": 320,
+        "kind": "obstacle"
+      },
+      {
+        "id": "cliff-snow",
+        "u": 7,
+        "v": 19.5,
+        "width": 320,
+        "kind": "obstacle"
+      },
+      {
+        "id": "boulders-snow",
+        "u": -3,
+        "v": 11,
+        "width": 185,
+        "kind": "obstacle"
+      },
+      {
+        "id": "boulders-snow",
+        "u": 11,
+        "v": -3,
+        "width": 185,
+        "kind": "obstacle"
+      },
+      {
+        "id": "boulders-snow",
+        "u": 18,
+        "v": 11,
+        "width": 185,
+        "kind": "obstacle"
+      },
+      {
+        "id": "boulders-snow",
+        "u": 11,
+        "v": 18,
+        "width": 185,
+        "kind": "obstacle"
+      },
+      {
+        "id": "wall-broken",
+        "u": 1.5,
+        "v": 14.7,
+        "width": 170,
+        "kind": "obstacle"
+      }
+    ],
+    "pxPerTile": 2.53125,
+    "marker": {
+      "x": 47.5,
+      "y": 47.5,
+      "rotation": 0
+    }
+  },
+  "errors": []
+}
