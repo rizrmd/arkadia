@@ -15,15 +15,19 @@ try{
  // Walk like the Go test: a held direction in 50 ms ticks. Footprints are not needed here; ground walkability is.
  const tile=(x,y)=>{const g=unproject(x-577,y+160);return {u:g.x,v:g.y};};
  const walk=(u,v,d,seconds)=>{let p=tilePoint(u,v);const l=Math.hypot(d.x,d.y);for(let i=0;i<seconds*20;i++)p=walkStep((x,y)=>!walkableGround(x,y),p.x,p.y,{x:d.x/l,y:d.y/l},50);return tile(p.x,p.y);};
- const up={x:-64,y:-32},down={x:64,y:32},left={x:64,y:-32};
+ const up={x:-64,y:-32},down={x:64,y:32},left={x:64,y:-32},right={x:-64,y:32};
  let g=walk(29.5,7.5,up,3);assert.ok(g.u>=27.8&&heightAtTile(g.u,g.v)===0,'walked into the cliff face: '+JSON.stringify(g));
  g=walk(25.5,13.8,left,4);assert.ok(heightAtTile(g.u,g.v)===3&&g.v<=9.5,'ramp climb ended at '+JSON.stringify(g));
  const top=g;
- g=walk(25.5,9.5,{x:-64,y:32},5);assert.ok(heightAtTile(g.u,g.v)===0&&g.v>13,"ramp descent ended at "+JSON.stringify(g));
+ g=walk(25.5,9.5,right,5);assert.ok(heightAtTile(g.u,g.v)===0&&g.v>13,"ramp descent ended at "+JSON.stringify(g));
  g=walk(25.5,6,left,3);assert.ok(heightAtTile(g.u,g.v)===3&&g.v>=5-.05,'walked off the back edge: '+JSON.stringify(g));
  g=walk(25.5,11.5,down,3);assert.ok(g.u<=27.3+.05&&heightAtTile(g.u,g.v)>=.4,'walked off the ramp side: '+JSON.stringify(g));
  g=walk(11.8,25,up,4);assert.ok(heightAtTile(g.u,g.v)===1.5&&g.u<=7.8,'terrace ramp climb ended at '+JSON.stringify(g));
  g=walk(7.5,25,down,5);assert.ok(heightAtTile(g.u,g.v)===0&&g.u>11,'terrace ramp descent ended at '+JSON.stringify(g));
+ // Ground & summit cliff-wall checks on West Terrace and East Ridge shoulders:
+ g=walk(5.5,28,left,3);assert.ok(g.v>=26.8&&heightAtTile(g.u,g.v)===0,'walked into west-terrace front cliff from ground: '+JSON.stringify(g));
+ g=walk(5.5,25,right,3);assert.ok(g.v<=25.85&&heightAtTile(g.u,g.v)===1.5,'walked onto west-terrace cliff face from summit: '+JSON.stringify(g));
+ g=walk(22.2,9.8,down,3);assert.ok(g.u<=23.6&&heightAtTile(g.u,g.v)===0,'walked into east-ridge left shoulder cliff: '+JSON.stringify(g));
  assert.ok(cliffTile(29,7.5,27.7,7.5)&&!cliffTile(25,12.9,25,12.8)&&!cliffTile(10.9,25,10.8,25));
  console.log(JSON.stringify({features:RELIEF.map(f=>({id:f.id,type:f.type,court:[f.u0,f.v0,f.u1,f.v1],topM:f.heightM??f.topM})),pxPerMeter:PX_PER_METER,maxStepM:MAX_STEP_M,rampClimbEnd:top},null,1));
  // Dense cross-language golden includes polygon corners and every ramp height at 0.05 tile spacing.

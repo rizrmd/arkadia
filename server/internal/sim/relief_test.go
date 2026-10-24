@@ -75,6 +75,16 @@ func TestCliffsBlockAndRampsClimb(t *testing.T) {
 	if g := walk(w, Vec{7.5, 25}, down, 5); HeightAtTile(g) != 0 || g.X <= 11 {
 		t.Errorf("terrace ramp descent ended at %v", g)
 	}
+	// Ground & summit cliff-wall checks on West Terrace and East Ridge shoulders:
+	if g := walk(w, Vec{5.5, 28}, left, 3); g.Y < 26.8 || HeightAtTile(g) != 0 {
+		t.Errorf("walked into west-terrace front cliff from ground: ended at %v (height %v)", g, HeightAtTile(g))
+	}
+	if g := walk(w, Vec{5.5, 25}, right, 3); g.Y > 25.85 || HeightAtTile(g) != 1.5 {
+		t.Errorf("walked onto west-terrace cliff face from summit: ended at %v (height %v)", g, HeightAtTile(g))
+	}
+	if g := walk(w, Vec{22.2, 9.8}, down, 3); g.X > 23.6 || HeightAtTile(g) != 0 {
+		t.Errorf("walked into east-ridge left shoulder cliff: ended at %v (height %v)", g, HeightAtTile(g))
+	}
 	// Flat ground is untouched: the court walk is unchanged.
 	if g := walk(w, Vec{7.5, 9}, right, .5); HeightAtTile(g) != 0 || math.Abs(g.Y-9) < .5 {
 		t.Errorf("court walk changed: ended at %v", g)

@@ -105,7 +105,13 @@ func (f *ReliefFeature) height(u, v float64) float64 {
 	}
 	if f.Type == "hill" {
 		if f.Ascend == "-u" {
+			if v < f.V0+.6 || v > f.V0+2.8 || (u > f.RampStartU && v < f.V0+1.3) {
+				return f.TopM + 1
+			}
 			return f.TopM * math.Max(0, math.Min(1, (f.U1-u)/(f.U1-f.RampStartU)))
+		}
+		if (v > f.V0+1.2 && u < f.U0+.85) || u > f.U0+4.65 || (v > f.V0+3.6 && u > f.U0+4) || (v > f.RampStartV && (u < f.U0+1.4 || u > f.U0+3.5)) {
+			return f.TopM + 1
 		}
 		return f.TopM * math.Max(0, math.Min(1, (f.V1-v)/(f.V1-f.RampStartV)))
 	}

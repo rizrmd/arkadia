@@ -11,8 +11,12 @@ export const NATURAL_CLIFF_ART='/terrain-height/natural/cliff-strip-v2.webp';
 export type ReliefArt={feature:ReliefFeature;canvas:HTMLCanvasElement;left:number;top:number;width:number;height:number;bottom:number};
 type P={x:number;y:number};type Corner={g:P;h:number;t:P};
 function rng(seed:string){let n=[...seed].reduce((s,c)=>Math.imul(s,31)+c.charCodeAt(0)|0,17);return()=>((n=Math.imul(n,1664525)+1013904223|0)>>>0)/4294967296;}
+function visualHeight(f:ReliefFeature,u:number,v:number){
+ if(f.type==='hill')return f.topM!*Math.max(0,Math.min(1,f.ascend==='-u'?(f.u1-u)/(f.u1-f.rampStartU!):(f.v1-v)/(f.v1-f.rampStartV!)));
+ return featureHeight(f,u,v);
+}
 // Corner height in px; a ramp's corners take its slope at the rectangle's edges.
-function cornerLift(f:ReliefFeature,u:number,v:number){const e=1e-6;return featureHeight(f,Math.min(f.u1-e,u),Math.min(f.v1-e,v))*PX_PER_METER;}
+function cornerLift(f:ReliefFeature,u:number,v:number){const e=1e-6;return visualHeight(f,Math.min(f.u1-e,u),Math.min(f.v1-e,v))*PX_PER_METER;}
 function corners(f:ReliefFeature){const at=(u:number,v:number):Corner=>{const g=tilePoint(u,v),h=cornerLift(f,u,v);return {g,h,t:{x:g.x,y:g.y-h}};};return {A:at(f.u0,f.v0),B:at(f.u1,f.v0),C:at(f.u1,f.v1),D:at(f.u0,f.v1)};}
 
 // A horizontal band of rock cut from both masses of the cliff art, alternately mirrored so repeats do not read.
@@ -90,7 +94,7 @@ export function paintRelief(snow:HTMLImageElement,cliff:HTMLImageElement,natural
 // height, as the world's own shadows). Null when the feature casts nothing.
 export function paintReliefShadow(f:ReliefFeature,dx:number,dy:number,canvas:HTMLCanvasElement){
  const {A,B,C,D}=corners(f),pts:[number,number][]=[];
- const boundary=f.outline?f.outline.map(([u,v])=>({g:tilePoint(u,v),h:featureHeight(f,u,v)*PX_PER_METER})):[A,B,C,D];
+ const boundary=f.outline?f.outline.map(([u,v])=>({g:tilePoint(u,v),h:visualHeight(f,u,v)*PX_PER_METER})):[A,B,C,D];
  for(const p of boundary)pts.push([p.g.x,p.g.y],[p.g.x+p.h*dx,p.g.y+p.h*dy]);
  pts.sort((a,b)=>a[0]-b[0]||a[1]-b[1]);
  const cross=(o:number[],a:number[],b:number[])=>(a[0]-o[0])*(b[1]-o[1])-(a[1]-o[1])*(b[0]-o[0]),chain=(list:[number,number][])=>{const h:[number,number][]=[];for(const q of list){while(h.length>1&&cross(h[h.length-2],h[h.length-1],q)<=0)h.pop();h.push(q);}h.pop();return h;};
@@ -109,8 +113,10 @@ export function paintReliefShadow(f:ReliefFeature,dx:number,dy:number,canvas:HTM
  if(f.outline){
   // The ground shadow belongs outside the solid hill. Keeping it under the footprint leaks a dark
   // polygon through the feathered zero-height ramp mouth.
-  c.globalCompositeOperation='destination-out';c.lineJoin='round';c.lineWidth=12;c.beginPath();
-  boundary.forEach((p,i)=>i?c.lineTo(p.g.x,p.g.y):c.moveTo(p.g.x,p.g.y));c.closePath();c.fill();c.stroke();
+  const cx=boundary.reduce((s,p)=>s+p.g.x,0)/boundary.length,cy=boundary.reduce((s,p)=>s+p.g.y,0)/boundary.length;
+  c.globalCompositeOperation='destination-out';c.beginPath();
+  boundary.forEach((p,i)=>{const vx=p.g.x-cx,vy=p.g.y-cy,l=Math.hypot(vx,vy)||1,x=p.g.x-vx/l*4,y=p.g.y-vy/l*4;if(i)c.lineTo(x,y);else c.moveTo(x,y);});
+  c.closePath();c.fill();
  }
  return {left,top,width,height};
 }
