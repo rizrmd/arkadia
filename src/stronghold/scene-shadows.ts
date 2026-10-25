@@ -5,7 +5,7 @@ import {CanvasSource,Container,Filter,GlProgram,Rectangle,Texture,UniformGroup,t
 import type {ShadowSun,ShadowBounds} from './shadow-field';
 import type {PackedShadowMap,ShadowView} from './shadow-map-builder';
 import {sampleSurface,type ShadowSurface} from './shadow-surfaces';
-const vertex=`in vec2 aPosition;out vec2 vTextureCoord;out vec2 vScreen;uniform vec4 uInputSize;uniform vec4 uOutputFrame;uniform vec4 uOutputTexture;
+export const shadowFilterVertex=`in vec2 aPosition;out vec2 vTextureCoord;out vec2 vScreen;uniform vec4 uInputSize;uniform vec4 uOutputFrame;uniform vec4 uOutputTexture;
 void main(){vec2 p=aPosition*uOutputFrame.zw+uOutputFrame.xy;vScreen=p;gl_Position=vec4(p.x*2.0/uOutputTexture.x-1.0,p.y*(2.0*uOutputTexture.z/uOutputTexture.y)-uOutputTexture.z,0.0,1.0);vTextureCoord=aPosition*uOutputFrame.zw*uInputSize.zw;}`;
 const fragment=`in vec2 vTextureCoord;in vec2 vScreen;out vec4 finalColor;uniform sampler2D uTexture;uniform sampler2D uHeight;uniform sampler2D uDynamicHeight;uniform vec4 uHeightBounds;uniform vec4 uDynamicHeightBounds;
 ${SHADOW_SAMPLING_GLSL}
@@ -24,13 +24,14 @@ export function createSceneShadows(stage:Container,onUpdate:()=>void=()=>{},rend
  const stats={surfaces:0,samples:0,rebuilds:0,buildMs:0,bytes:0,receiverPixels:0,depthPixels:0,ready:false,error:'',sun:{dx:0,dy:0,alpha:0},model:'original alpha, explicit billboard/relief geometry; light-space depth compare'};
  let sun:ShadowSun={dx:0,dy:0,alpha:0},key='',depthTex:MapTexture|null=null,heightTex:MapTexture|null=null,secondTex:MapTexture|null=null;
  let view:ShadowView|undefined,viewKey='';
+ let auditSurfaces:ShadowSurface[]=[];
  let revision=0,id=0,inFlight=false,queued=false,hasScene=false;
  const worker=new Worker(new URL('./shadow-field-worker.ts',import.meta.url),{type:'module'});
  const empty=()=>pixelsTexture({bounds:{left:0,top:0,step:1,width:1,height:1},pixels:new Uint8ClampedArray(4)});
  depthTex=empty();heightTex=empty();secondTex=empty();
  const dynamicMaps={uDynamicDepth:empty(),uDynamicSecond:empty(),uDynamicHeight:empty()};
  const uniforms=new UniformGroup({uDynamicSun:{value:new Float32Array(4),type:'vec4<f32>'},uDynamicLightBounds:{value:region(dynamicMaps.uDynamicDepth.bounds),type:'vec4<f32>'},uDynamicHeightBounds:{value:region(dynamicMaps.uDynamicHeight.bounds),type:'vec4<f32>'},uLightBounds:{value:region(depthTex.bounds),type:'vec4<f32>'},uHeightBounds:{value:region(heightTex.bounds),type:'vec4<f32>'},uCamera:{value:new Float32Array([0,0,1,0]),type:'vec4<f32>'},uSun:{value:new Float32Array(4),type:'vec4<f32>'}});
- const filter=new Filter({glProgram:GlProgram.from({name:'scene-depth-shadows',vertex,fragment}),resources:{shadowUniforms:uniforms,uDepth:depthTex.source,uHeight:heightTex.source,uSecondDepth:secondTex.source,uDynamicDepth:dynamicMaps.uDynamicDepth.source,uDynamicSecond:dynamicMaps.uDynamicSecond.source,uDynamicHeight:dynamicMaps.uDynamicHeight.source},resolution:1,padding:0});
+ const filter=new Filter({glProgram:GlProgram.from({name:'scene-depth-shadows',vertex:shadowFilterVertex,fragment}),resources:{shadowUniforms:uniforms,uDepth:depthTex.source,uHeight:heightTex.source,uSecondDepth:secondTex.source,uDynamicDepth:dynamicMaps.uDynamicDepth.source,uDynamicSecond:dynamicMaps.uDynamicSecond.source,uDynamicHeight:dynamicMaps.uDynamicHeight.source},resolution:1,padding:0});
  const live=renderer&&root?createLiveShadowField(renderer,root,()=>{uniforms.uniforms.uDynamicSun=live!.sun();uniforms.uniforms.uDynamicLightBounds=live!.bounds();uniforms.uniforms.uDynamicHeightBounds=live!.heightBounds();}):null;
  if(live){filter.resources.uDynamicDepth=live.primary;filter.resources.uDynamicSecond=live.second;filter.resources.uDynamicHeight=live.height;}
  stage.filters=[filter];const area=new Rectangle();stage.filterArea=area;
@@ -43,6 +44,7 @@ export function createSceneShadows(stage:Container,onUpdate:()=>void=()=>{},rend
  };
  worker.onerror=e=>{stats.error=e.message;console.error('Scene shadow worker:',e.message);};
  function setScene(surfaces:ShadowSurface[]){
+  auditSurfaces=surfaces.map(p=>({...p}));
   const sampled=surfaces.map((p,i)=>{const s=sampleSurface(p,2);for(const q of s.samples)q.owner=i+1;return s;});
   const total=sampled.reduce((n,s)=>n+s.samples.length,0),packed=new Float32Array(total*18);let j=0;for(const s of sampled)for(const q of s.samples){packed[j++]=q.x;packed[j++]=q.y;packed[j++]=q.z;packed[j++]=q.alpha;packed[j++]=q.owner!;packed[j++]=s.surface.cast===false?0:1;packed.set(q.quad!,j);j+=12;}
   revision++;hasScene=true;stats.surfaces=surfaces.length;stats.ready=false;worker.postMessage({type:'scene',packed},[packed.buffer]);queued=true;queueMicrotask(()=>{if(!inFlight&&queued)request();});
@@ -67,5 +69,5 @@ export function createSceneShadows(stage:Container,onUpdate:()=>void=()=>{},rend
  }
  const actorBindings=()=>({uCamera:uniforms.uniforms.uCamera,uSun:uniforms.uniforms.uSun,uDynamicSun:uniforms.uniforms.uDynamicSun,uLightBounds:uniforms.uniforms.uLightBounds,uDynamicLightBounds:uniforms.uniforms.uDynamicLightBounds,textures:[depthTex!.source,secondTex!.source,live?.primary??dynamicMaps.uDynamicDepth.source,live?.second??dynamicMaps.uDynamicSecond.source]});
  const restoreActors=renderer?installActorShadowReceivers(renderer,actorBindings):()=>{};
- return {setScene,setSun,setDynamic,place,runLiveFixture:()=>import('./shadow-live-fixture').then(m=>m.runLiveShadowFixture()),runFixture:()=>import('./shadow-fixture').then(m=>m.runIsolatedShadowReceiverFixture()),destroy:()=>{restoreActors();if(stage.filters?.includes(filter))stage.filters=stage.filters.filter(f=>f!==filter);live?.destroy();worker.terminate();dynamicWorker?.terminate();for(const t of [depthTex,heightTex,secondTex,...Object.values(dynamicMaps)])t?.texture.destroy(true);filter.destroy();},stats:()=>({...stats,dynamic:live?live.stats():{...dynamicStats}}),sample:(x:number,y:number,z:number)=>({x,y,z}),filter};
+ return {setScene,setSun,setDynamic,place,auditSurfaces:()=>auditSurfaces.map(p=>({...p,frame:p.frame&&[...p.frame],pivot:[...p.pivot],ground:p.ground&&[...p.ground]})),listFamilyAudit:(supplement=false)=>import('./shadow-family-audit').then(async m=>m.familyAuditInventory(supplement?await m.supplementalAuditSurfaces(auditSurfaces):auditSurfaces).map(({surface,...entry})=>entry)),runFamilyAudit:(offset=0,limit=6,supplement=false)=>import('./shadow-family-audit').then(async m=>m.auditShadowFamilies(supplement?await m.supplementalAuditSurfaces(auditSurfaces):auditSurfaces,offset,limit)),runLiveFixture:()=>import('./shadow-live-fixture').then(m=>m.runLiveShadowFixture()),runFixture:()=>import('./shadow-fixture').then(m=>m.runIsolatedShadowReceiverFixture()),destroy:()=>{restoreActors();if(stage.filters?.includes(filter))stage.filters=stage.filters.filter(f=>f!==filter);live?.destroy();worker.terminate();dynamicWorker?.terminate();for(const t of [depthTex,heightTex,secondTex,...Object.values(dynamicMaps)])t?.texture.destroy(true);filter.destroy();},stats:()=>({...stats,dynamic:live?live.stats():{...dynamicStats}}),sample:(x:number,y:number,z:number)=>({x,y,z}),filter};
 }

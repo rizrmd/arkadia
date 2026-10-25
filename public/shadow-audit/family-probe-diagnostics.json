@@ -1,0 +1,118 @@
+{
+  "superseded": true,
+  "cause": "CPU-selected edge texels were not the same rendered GPU pixel after float32 camera reconstruction. Final tests select actual GPU receiver pixels and test higher/lower independent casters. No renderer pixel failure is claimed from these four old probes.",
+  "cases": [
+    {
+      "key": "ff:rock-boulders:763",
+      "tests": [
+        {
+          "sun": {
+            "dx": 1.594,
+            "dy": 0.092,
+            "alpha": 0.55
+          },
+          "darkPixels": 3511,
+          "cast": true,
+          "maxHeight": 44.86616597445614,
+          "receiver": {
+            "status": "no unoccluded probe outside source bounds"
+          },
+          "receive": {
+            "status": "needs inspection",
+            "receiverHeight": 43.5,
+            "pixel": [
+              74,
+              12
+            ],
+            "highRed": 255,
+            "lowRed": 255
+          }
+        }
+      ]
+    },
+    {
+      "key": "ff:wall-ne:305",
+      "tests": [
+        {
+          "sun": {
+            "dx": 0.278,
+            "dy": 0.307,
+            "alpha": 0.55
+          },
+          "darkPixels": 7201,
+          "cast": true,
+          "maxHeight": 57.570247321855575,
+          "receiver": {
+            "status": "no unoccluded probe outside source bounds"
+          },
+          "receive": {
+            "status": "needs inspection",
+            "receiverHeight": 55.5,
+            "pixel": [
+              196,
+              13
+            ],
+            "highRed": 255,
+            "lowRed": 255
+          }
+        }
+      ]
+    },
+    {
+      "key": "ff:rubble:309",
+      "tests": [
+        {
+          "sun": {
+            "dx": 1.594,
+            "dy": 0.092,
+            "alpha": 0.55
+          },
+          "darkPixels": 4760,
+          "cast": true,
+          "maxHeight": 41.02171175306122,
+          "receiver": {
+            "status": "no unoccluded probe outside source bounds"
+          },
+          "receive": {
+            "status": "needs inspection",
+            "receiverHeight": 39.5,
+            "pixel": [
+              99,
+              12
+            ],
+            "highRed": 255,
+            "lowRed": 255
+          }
+        }
+      ]
+    },
+    {
+      "key": "ff:drift-se:272",
+      "tests": [
+        {
+          "sun": {
+            "dx": 0.278,
+            "dy": 0.307,
+            "alpha": 0.55
+          },
+          "darkPixels": 5795,
+          "cast": true,
+          "maxHeight": 18.916705241729325,
+          "receiver": {
+            "status": "no unoccluded probe outside source bounds"
+          },
+          "receive": {
+            "status": "needs inspection",
+            "receiverHeight": 16,
+            "pixel": [
+              112,
+              18
+            ],
+            "highRed": 255,
+            "lowRed": 255
+          }
+        }
+      ]
+    }
+  ]
+}

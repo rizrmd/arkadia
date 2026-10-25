@@ -26,4 +26,4 @@ export function reconstructProxy(p:{asset:string;x:number;y:number;width:number;
  const z=g.model==='constant-height-slab'?g.heightPx!*p.width/g.world[0]:sy*(base-v);
  return {x:p.x+lx,y:p.y+p.shear*lx+localY+z,z:p.lift+z};
 }
-export const shadowCompanionStats=()=>({version:companions.version,atlas:companions.atlas,families:Object.keys(proxies).length,model:companions.model,receivers:'snow plus temple top; no general object receivers'});
+export const shadowCompanionStats=()=>({version:companions.version,atlas:companions.atlas,families:Object.keys(proxies).length,model:companions.model,receivers:'WebGL terrain and object height proxies; Canvas ground-only'});
