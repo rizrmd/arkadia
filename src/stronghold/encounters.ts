@@ -440,7 +440,8 @@ export async function createEncounters(o:{
  // Preview mode is set by the hero-picker previews (setPreviewMode below); steering never chases either way.
  let previewMode=false;
  function steer(input:Walk):Walk{
-  return run.pending?{x:0,y:0}:input;
+  // Blessing choices are non-modal: keep keyboard, touch and route movement active while choosing.
+  return input;
  }
 
  function autoCastInAoE(forceAll=false):SkillId[]{
