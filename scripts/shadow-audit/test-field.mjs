@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';import fs from 'node:fs/promises';import ts from 'typescript';
 const source=await fs.readFile('src/stronghold/shadow-field.ts','utf8'),js=ts.transpileModule(source,{compilerOptions:{module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ES2022}}).outputText;
-const {makeField,visibilityAt,receiverPoint,encodeDepth,decodeDepth,lightPoint}=await import('data:text/javascript;base64,'+Buffer.from(js).toString('base64'));
+const {makeField,visibilityAt,receiverPoint,encodeDepth,decodeDepth,encodeGeometry,decodeGeometry,writeGeometry,fieldBounds,lightPoint}=await import('data:text/javascript;base64,'+Buffer.from(js).toString('base64'));
 let checks=0;
 for(const dx of [-1.6,-.25,.2,1.6])for(const dy of [-.5,.05,.7]){
  const sun={dx,dy,alpha:.4},caster={x:100,y:200,z:80,alpha:1},field=makeField([caster],sun,1),ray=lightPoint(caster,sun);
@@ -17,4 +17,17 @@ for(let z=0;z<4000;z+=.37){const [r,g]=encodeDepth(z);assert.ok(Math.abs(decodeD
 const sun={dx:1,dy:.5,alpha:.4},a={x:0,y:0,z:80,alpha:1},b={x:40,y:20,z:40,alpha:1},r={x:80,y:40,z:0,alpha:1};
 assert.equal(visibilityAt(makeField([a,b],sun,1),r,sun),1);assert.equal(visibilityAt(makeField([b,a],sun,1),r,sun),1);checks+=2;
 const self=makeField([{x:0,y:0,z:80,alpha:1,owner:2}],sun,1);assert.equal(visibilityAt(self,{...r,owner:2},sun),0);const mutual=makeField([{x:0,y:0,z:80,alpha:1,owner:2},{x:20,y:10,z:60,alpha:1,owner:3}],sun,1);assert.equal(visibilityAt(mutual,{...r,owner:2},sun),1);checks+=2;
-console.log(JSON.stringify({ok:true,checks,coverage:['12 light vectors','snow and elevated receivers','above-caster rejection','transparent holes and partial-alpha coverage','depth order independence','16-bit height precision']}));
+// Regression: an opaque source-cell mesh must not tear into a dot lattice when
+// an oblique sun stretches sample spacing beyond the former 2x2 point splat.
+const mesh=[];for(let x=0;x<50;x+=2)for(let z=0;z<50;z+=2)mesh.push({x:x+1,y:100+2*(x+1),z:z+1+2*(x+1),alpha:1,owner:7,quad:new Float32Array([x,100+2*x,z+2+2*x,x+2,100+2*(x+2),z+2+2*(x+2),x+2,100+2*(x+2),z+2*(x+2),x,100+2*x,z+2*x])});
+let oldPointHoles=0;for(const dx of [-1.7,-.3,.3,1.7])for(const dy of [-.7,.09,.7]){
+ const light={dx,dy,alpha:.4},continuous=makeField(mesh,light,1.25),points=makeField(mesh.map(({quad,...p})=>p),light,1.25);let holes=0;
+ for(let u=4;u<=46;u++)for(let z=8;z<=46;z++){const p={x:u+dx*(z+2*u),y:100+2*u+dy*(z+2*u),z:0,alpha:1};if(!visibilityAt(continuous,p,light,1))holes++;if(!visibilityAt(points,p,light,1))oldPointHoles++;checks++;}
+ assert.equal(holes,0,`opaque quad coverage tore at sun ${dx},${dy}`);
+}
+assert.ok(oldPointHoles>0,'Regression fixture must expose old point-splat holes');
+const cutout=mesh.filter(p=>!(p.x>18&&p.x<32&&p.z-2*p.x>18&&p.z-2*p.x<32)),holeSun={dx:1.7,dy:.7,alpha:.4},holeField=makeField(cutout,holeSun,1.25);
+assert.equal(visibilityAt(holeField,{x:25+1.7*75,y:150+.7*75,z:0,alpha:1},holeSun,1),0,'Triangle coverage must preserve real alpha apertures');checks++;
+for(let owner=1;owner<=4095;owner+=137)for(let z=0;z<2047.5;z+=3.7){const [r,g,b,a]=encodeGeometry(z,owner,128),q=decodeGeometry(r,g,b);assert.equal(q.owner,owner);assert.ok(Math.abs(q.z-z)<=.25001);assert.equal(a,128);const buffer=new Uint8ClampedArray(8);writeGeometry(buffer,4,z,owner,128);assert.deepEqual(Array.from(buffer.slice(4)),[r,g,b,a]);checks++;}
+assert.throws(()=>encodeGeometry(2048,1));assert.throws(()=>encodeGeometry(1,4096));const huge=fieldBounds([{x:0,y:0,z:0,alpha:1},{x:1e9,y:1,z:0,alpha:1}],{dx:0,dy:0,alpha:1});assert.ok(huge.width<=4096&&huge.height<=4096);checks+=3;
+console.log(JSON.stringify({ok:true,checks,oldPointHoles,coverage:['12 light vectors','snow and elevated receivers','above-caster rejection','transparent holes and partial-alpha coverage','depth order independence','16-bit height precision','gap-free projected source-cell triangles','real alpha aperture preserved','packed instance/height/alpha precision','4096 texture dimension bound']}));

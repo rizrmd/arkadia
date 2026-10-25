@@ -1,3 +1,7 @@
+## Current runtime
+
+The renderer now uses an original-alpha light-space depth field, reconstructed static receiver heights, and batched actor receivers. See [runtime integration](depth-integration.md) and [sampling-tear correction](tear-rasterization.md). The sections below record the original audited baseline and its limitations before this integration.
+
 ## Renderer contract and integration limits
 
 This records the actual implementation, not a proposal for a physically complete shadow renderer. The generated companions model the **existing piecewise vertical billboard**. A photograph/sprite and its alpha cannot uniquely determine volumetric depth. No RGB brightness is interpreted as height. AI raster generation would not establish registration or measured geometry, so it is not used for these numeric companions.

@@ -1,11 +1,11 @@
-import {encodeGeometry,fieldBounds,makeField,type ShadowBounds,type ShadowPixels,type ShadowSample,type ShadowSun} from './shadow-field';
+import {writeGeometry,fieldBounds,makeField,rasterSample,type ShadowBounds,type ShadowPixels,type ShadowSample,type ShadowSun} from './shadow-field';
 export type PackedShadowMap={bounds:ShadowBounds;pixels:Uint8ClampedArray};
 export function packMap(map:ShadowPixels):PackedShadowMap{
- const pixels=new Uint8ClampedArray(map.depth.length*4);for(let k=0;k<map.depth.length;k++)pixels.set(encodeGeometry(map.depth[k],map.owner?.[k]??0,map.coverage[k]),k*4);return {bounds:map.bounds,pixels};
+ const pixels=new Uint8ClampedArray(map.depth.length*4);for(let k=0;k<map.depth.length;k++)if(map.coverage[k])writeGeometry(pixels,k*4,map.depth[k],map.owner?.[k]??0,map.coverage[k]);return {bounds:map.bounds,pixels};
 }
 export function receiverMap(samples:ShadowSample[],step=3){
  const b=fieldBounds(samples,{dx:0,dy:-1,alpha:1},step),n=b.width*b.height,depth=new Float32Array(n),coverage=new Uint8Array(n),owner=new Uint16Array(n);
- for(const p of samples){if(p.alpha<.5)continue;const x=Math.floor((p.x-b.left)/b.step),y=Math.floor((p.y-p.z-b.top)/b.step);for(let j=0;j<2;j++)for(let i=0;i<2;i++){const xx=x+i,yy=y+j;if(xx<0||yy<0||xx>=b.width||yy>=b.height)continue;const k=yy*b.width+xx;depth[k]=p.z;coverage[k]=255;owner[k]=p.owner??0;}}
+ for(const p of samples)if(p.alpha>=.5)rasterSample(p,{dx:0,dy:-1,alpha:1},b,(k,z,_a,id)=>{depth[k]=z;coverage[k]=255;owner[k]=id;});
  return packMap({bounds:b,depth,coverage,owner});
 }
 export function casterMaps(samples:ShadowSample[],sun:ShadowSun,step=3){const field=makeField(samples,sun,step);return {depth:packMap(field),second:packMap({bounds:field.bounds,depth:field.secondDepth!,coverage:field.secondCoverage!,owner:field.secondOwner})};}

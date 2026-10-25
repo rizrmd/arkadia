@@ -20,7 +20,8 @@ export function surfacePoint(p:ShadowSurface,u:number,v:number,ground=p.ground??
 export function sampleSurface(surface:ShadowSurface,step=2):SampledSurface{
  const p=surface,w=Math.max(1,Math.ceil(p.width/step)),h=Math.max(1,Math.ceil(p.height*(p.vertical??1)/step)),c=document.createElement('canvas');c.width=w;c.height=h;
  const ctx=c.getContext('2d',{willReadFrequently:true})!,f=p.frame??[0,0,p.sourceWidth,p.sourceHeight];ctx.drawImage(p.source,f[0],f[1],f[2],f[3],0,0,w,h);const data=ctx.getImageData(0,0,w,h).data,g=p.ground??measuredGround(data,w,h),samples:ShadowSample[]=[];
+ const vertices=new Float32Array((w+1)*(h+1)*3);for(let y=0;y<=h;y++)for(let x=0;x<=w;x++){const q=surfacePoint(p,x/w,y/h,g),i=(y*(w+1)+x)*3;vertices[i]=q.x;vertices[i+1]=q.y;vertices[i+2]=q.z;}
  let left=Infinity,top=Infinity,right=-Infinity,bottom=-Infinity;
- for(let y=0;y<h;y++)for(let x=0;x<w;x++){const a=data[(y*w+x)*4+3];if(!a)continue;const q=surfacePoint(p,(x+.5)/w,(y+.5)/h,g);q.alpha=a/255;samples.push(q);left=Math.min(left,q.x);right=Math.max(right,q.x);top=Math.min(top,q.y-q.z);bottom=Math.max(bottom,q.y-q.z);}
+ for(let y=0;y<h;y++)for(let x=0;x<w;x++){const a=data[(y*w+x)*4+3];if(!a)continue;const q:ShadowSample=surfacePoint(p,(x+.5)/w,(y+.5)/h,g);q.alpha=a/255;const quad=new Float32Array(12);for(const [j,offset] of [y*(w+1)+x,y*(w+1)+x+1,(y+1)*(w+1)+x+1,(y+1)*(w+1)+x].entries())quad.set(vertices.subarray(offset*3,offset*3+3),j*3);q.quad=quad;samples.push(q);left=Math.min(left,q.x);right=Math.max(right,q.x);top=Math.min(top,q.y-q.z);bottom=Math.max(bottom,q.y-q.z);}
  c.width=c.height=1;return {surface:{...p,ground:g},samples,bounds:{left,top,right,bottom},step};
 }

@@ -41,7 +41,7 @@ export function createSceneShadows(stage:Container,onUpdate:()=>void=()=>{},rend
  worker.onerror=e=>{stats.error=e.message;console.error('Scene shadow worker:',e.message);};
  function setScene(surfaces:ShadowSurface[]){
   const sampled=surfaces.map((p,i)=>{const s=sampleSurface(p,2);for(const q of s.samples)q.owner=i+1;return s;});
-  const total=sampled.reduce((n,s)=>n+s.samples.length,0),packed=new Float32Array(total*6);let j=0;for(const s of sampled)for(const q of s.samples){packed[j++]=q.x;packed[j++]=q.y;packed[j++]=q.z;packed[j++]=q.alpha;packed[j++]=q.owner!;packed[j++]=s.surface.cast===false?0:1;}
+  const total=sampled.reduce((n,s)=>n+s.samples.length,0),packed=new Float32Array(total*18);let j=0;for(const s of sampled)for(const q of s.samples){packed[j++]=q.x;packed[j++]=q.y;packed[j++]=q.z;packed[j++]=q.alpha;packed[j++]=q.owner!;packed[j++]=s.surface.cast===false?0:1;packed.set(q.quad!,j);j+=12;}
   revision++;hasScene=true;stats.surfaces=surfaces.length;stats.ready=false;worker.postMessage({type:'scene',packed},[packed.buffer]);queued=true;queueMicrotask(()=>{if(!inFlight&&queued)request();});
  }
  function setSun(s:ShadowSun){const next=s.alpha?[s.dx,s.dy,s.alpha].map(n=>n.toFixed(3)).join():'night';sun={dx:s.dx,dy:s.dy,alpha:s.alpha};if(next===key)return;if(dynamicScene.length){dynamicRevision++;dynamicQueued=true;if(!dynamicInFlight)updateDynamic();}key=next;queued=true;queueMicrotask(()=>{if(!inFlight&&queued)request();});}
@@ -49,7 +49,7 @@ export function createSceneShadows(stage:Container,onUpdate:()=>void=()=>{},rend
  let dynamicRevision=0,dynamicInFlight=false,dynamicQueued=false,dynamicScene:ShadowSurface[]=[];
  const dynamicStats={updates:0,surfaces:0,buildMs:0,ready:false};
  function updateDynamic(){if(dynamicInFlight||!dynamicScene.length){dynamicQueued=true;return;}dynamicInFlight=true;dynamicQueued=false;const sampled=dynamicScene.map((p,i)=>{const a=sampleSurface(p,1.5);for(const q of a.samples)q.owner=4000+i;return a;});
-  const packed=new Float32Array(sampled.reduce((n,s)=>n+s.samples.length,0)*6);let j=0;for(const s of sampled)for(const q of s.samples){packed[j++]=q.x;packed[j++]=q.y;packed[j++]=q.z;packed[j++]=q.alpha;packed[j++]=q.owner!;packed[j++]=s.surface.cast===false?0:1;}
+  const packed=new Float32Array(sampled.reduce((n,s)=>n+s.samples.length,0)*18);let j=0;for(const s of sampled)for(const q of s.samples){packed[j++]=q.x;packed[j++]=q.y;packed[j++]=q.z;packed[j++]=q.alpha;packed[j++]=q.owner!;packed[j++]=s.surface.cast===false?0:1;packed.set(q.quad!,j);j+=12;}
   dynamicWorker.postMessage({type:'scene',packed},[packed.buffer]);dynamicWorker.postMessage({type:'build',id:dynamicRevision,revision:dynamicRevision,sun});
  }
  dynamicWorker.onmessage=({data})=>{dynamicInFlight=false;if(data.error){stats.error=data.error;console.error('Dynamic scene shadow:',data.error);return;}
