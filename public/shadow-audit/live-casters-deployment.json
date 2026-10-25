@@ -1,0 +1,28 @@
+{
+  "codeCommits": [
+    "8470959f",
+    "b5837c44"
+  ],
+  "gameLayer": "1792947617120-game-b5837c44-151ee9301777",
+  "url": "https://ark-whachat.fural.space",
+  "supportedDeployment": "scripts/fural-deploy.sh -> scripts/arkodia/publish-layer.mjs",
+  "pipeline": [
+    "TypeScript and Vite production build",
+    "Go server tests",
+    "co-op smoke",
+    "47683 static field assertions",
+    "49358 geometry/frame alignment samples",
+    "Android particle and scenery alpha parity tests"
+  ],
+  "finalLive": {
+    "view": "emulated mobile",
+    "spot": "cemetery",
+    "time": 0.3,
+    "browserErrors": [],
+    "staticFixture": true,
+    "dynamicFixture": true,
+    "rendererIsolation": true,
+    "sharedCanvasOwner": 3002
+  },
+  "acceptance": "Partial: dynamic integration shipped and verified. All-family visual and physical-device performance acceptance remain open."
+}

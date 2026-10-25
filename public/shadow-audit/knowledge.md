@@ -1,3 +1,24 @@
+## Verified dynamic integration delivery
+
+### Frame ownership and fixture lifecycle correction
+
+Party members share the Three body canvas. Each published frame now uploads immediately to a private GPU source owned by that actor, before another actor can overwrite the canvas. A regression renders an alpha opening for the first actor and a solid second frame into the same canvas; the first actor retains its opening while the second remains solid. There is no CPU canvas snapshot or runtime pixel readback.
+
+Live verification of the first integration passed every numeric receiver assertion but captured `Cannot read properties of null (reading ids)` after fixture cleanup. A normal live cemetery run without fixtures had no errors. The stack identified a HUD nine-slice retaining a pooled batch destroyed by the QA Application's global cleanup. Fixture renderers now stop their tickers, use independent GPU state and explicitly retain global resources when destroyed. A control deliberately retires a batch then destroys another renderer with global release; it reproduces the same error. Cleanup without global release passes the same check and preserves rendering. No Pixi prototype patch is used.
+
+The corrected local settlement run at afternoon `.72`, with both fixtures enabled, completes with zero console/page errors. Initial failing reports are retained under `live-casters-live` and `live-casters-isolated-local`; corrected evidence is `live-casters-isolated-fixed`. Source-level batching and collision behavior remain intact.
+
+### Final live delivery
+
+Code commits `8470959f` and `b5837c44` were pushed. Supported game layer `1792947617120-game-b5837c44-151ee9301777` passed its health check. The final live cemetery test uses the morning sun `.3` and emulated phone viewport; it passes both GPU fixtures and records zero console/page errors. The dynamic fixture confirms private shared-canvas ownership and renderer isolation on the deployed build. The build also includes the committed tent/UI changes present in `b5837c44`; later peer ground-plane changes are a separate delivery and are not overwritten by this evidence layer.
+
+The final software sample remains slow: eight RAF intervals, median 3816.6 ms, p95 23924.4 ms and 616 total draw calls. It does not establish physical-device performance or isolate the cost of shadows. Do not infer a performance pass from the GPU submission timing.
+
+![Final live cemetery with both GPU fixtures verified](https://ark-whachat.fural.space/shadow-audit/live-casters-final-live/mobile-cemetery-0.3.png)
+
+[Final live report](live-casters-final-live/verification.json), [final live GPU assertions](live-casters-final-live/gpu-live-fixture.json), [deployment record](live-casters-deployment.json).
+
+
 ## Dynamic casting checklist
 
 - [x] Same-frame actor and gateway GPU depth integration.
@@ -6,7 +27,7 @@
 - [x] Refresh 547 tracked inventory dispositions.
 - [ ] Complete all-family multi-angle visual acceptance.
 - [ ] Complete dense-combat and physical-device performance acceptance.
-- [ ] Push, deploy and verify this dynamic integration live (in progress).
+- [x] Push, deploy and verify dynamic integration live; final cemetery run passes both GPU fixtures with zero browser errors.
 
 ## Same-frame dynamic shadow integration
 
