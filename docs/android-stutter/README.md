@@ -20,3 +20,9 @@ This is a bounded first step: the packed FX definitions and main scenery atlas s
 - `node scripts/android-stutter/verify.mjs`: Android hints, 4x CPU throttling during loading, then a scripted combat burst. Only 13/44 masks and 36/76 effect definitions were prepared at startup; no page errors or mask/effect-construction operations were recorded in the inspected playable frames.
 
 The headless browser uses a software GPU. Combat runs without CPU throttling and with `shadowField=0` to isolate loading/CPU behaviour from software shadow rasterization. Its FPS is not an Adreno benchmark; physical-device smoothness still needs fresh post-deploy Android tracelogs. `before-particle-limits.json` is an intermediate diagnostic run with different throttling/shadow settings and must not be used as an FPS baseline.
+
+## Published release
+
+Code commit `8ae24f1f` was pushed and deployed through `scripts/fural-deploy.sh` from an isolated clean worktree. Production build, Go tests, co-op smoke tests, shadow tests and mask parity checks passed. The game is live at https://ark-whachat.fural.space/.
+
+The first automated live loading check timed out at 300 seconds. A diagnostic run subsequently reached readiness in about 30 seconds without missing assets or page errors; the complete verification rerun passed in 38 seconds. The first timeout was not reproduced, so its cause is not established. `live-verification.json` records the successful production check (13 masks, 36 prepared effects, Auto 30 FPS, no recorded construction work in sampled combat frames). Real Adreno performance remains a physical-device follow-up.
