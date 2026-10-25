@@ -893,6 +893,146 @@
      "boxes": 4
     }
    }
+  },
+  {
+   "id": "grave-headstone",
+   "file": "assets/grave-headstone.png",
+   "size": [
+    296,
+    368
+   ],
+   "pivot": {
+    "x": 136.8,
+    "y": 282.8
+   },
+   "scale": 0.25,
+   "widthWorld": 74,
+   "heightM": 1.59,
+   "footprintM": [
+    1.08,
+    1.68
+   ],
+   "source": "procedural 2:1 isometric blocks (iso-solid.mjs), stone from v1 pillar-intact",
+   "recipe": {
+    "kind": "grounded",
+    "bank": [
+     3.5,
+     6
+    ],
+    "spill": 3,
+    "tail": 5,
+    "band": 10,
+    "cap": false,
+    "gaps": true,
+    "iso": {
+     "boxes": 4
+    }
+   }
+  },
+  {
+   "id": "grave-cross",
+   "file": "assets/grave-cross.png",
+   "size": [
+    296,
+    397
+   ],
+   "pivot": {
+    "x": 136.8,
+    "y": 311.8
+   },
+   "scale": 0.25,
+   "widthWorld": 74,
+   "heightM": 1.84,
+   "footprintM": [
+    1.08,
+    1.68
+   ],
+   "source": "procedural 2:1 isometric blocks (iso-solid.mjs), stone from v1 pillar-intact",
+   "recipe": {
+    "kind": "grounded",
+    "bank": [
+     3.5,
+     6
+    ],
+    "spill": 3,
+    "tail": 5,
+    "band": 10,
+    "cap": false,
+    "gaps": true,
+    "iso": {
+     "boxes": 3
+    }
+   }
+  },
+  {
+   "id": "grave-sarcophagus",
+   "file": "assets/grave-sarcophagus.png",
+   "size": [
+    402,
+    347
+   ],
+   "pivot": {
+    "x": 193.1,
+    "y": 236
+   },
+   "scale": 0.25,
+   "widthWorld": 100.5,
+   "heightM": 1,
+   "footprintM": [
+    1.44,
+    2.52
+   ],
+   "source": "procedural 2:1 isometric blocks (iso-solid.mjs), stone from v1 pillar-intact",
+   "recipe": {
+    "kind": "grounded",
+    "bank": [
+     4,
+     7
+    ],
+    "spill": 3,
+    "tail": 5,
+    "band": 10,
+    "cap": false,
+    "gaps": true,
+    "iso": {
+     "boxes": 3
+    }
+   }
+  },
+  {
+   "id": "grave-memorial",
+   "file": "assets/grave-memorial.png",
+   "size": [
+    571,
+    572
+   ],
+   "pivot": {
+    "x": 275,
+    "y": 417.5
+   },
+   "scale": 0.25,
+   "widthWorld": 142.75,
+   "heightM": 2.51,
+   "footprintM": [
+    3,
+    3
+   ],
+   "source": "procedural 2:1 isometric blocks (iso-solid.mjs), stone from v1 pillar-intact",
+   "recipe": {
+    "kind": "grounded",
+    "bank": [
+     3.5,
+     6
+    ],
+    "spill": 3,
+    "tail": 5,
+    "band": 10,
+    "cap": false,
+    "gaps": true,
+    "iso": {
+     "boxes": 5
+    }
+   }
   }
  ]
 }

@@ -319,6 +319,22 @@ await scuff('ground-scuff-a',{a:110,b:84,grass:70,pebbles:24});
 await scuff('ground-scuff-b',{a:70,b:46,grass:34,pebbles:12});
 // New pieces go last, so the modules and decals above keep their seeds.
 for(const id of ['column-fallen','column-fallen-v'])await grounded(id,ISO[id].grounded,isoSource(id));
+// Cemetery stones (were cemetery-kit.mjs's v4 kit): the same 2:1 blocks in the bare shaft stone, with an engraved
+// panel on the faces. They used to stand on the snow with only a faint halo, so they read as floating; grounded()
+// banks snow against their plinths and gives them the kit's contact shadow, like the pillars beside them.
+const grave=(u0,v0,u1,v1,z0,z1,k)=>({u0,v0,u1,v1,z0,z1,rough:.45,top:stoneTop(.72,501+k*7,{back:.12}),
+ side:(_f,s,t)=>{const engraving=t>.45&&t<.68&&s>.15&&s<.48?.65:1;return SHAFT_BARE(s,t).slice(0,3).map(x=>x*engraving);}});
+const plinth=()=>grave(-.18,-.28,.18,.28,0,9,0);
+const GRAVES={
+ 'grave-headstone':{boxes:[plinth(),grave(-.14,-.25,.14,-.08,9,52,1),grave(-.1,-.25,.1,-.08,52,59,2),grave(-.16,-.27,.16,-.06,9,14,3)],bank:[3.5,6]},
+ 'grave-cross':{boxes:[plinth(),grave(-.055,-.24,.055,-.08,9,68,1),grave(-.18,-.24,.18,-.08,45,55,2)],bank:[3.5,6]},
+ 'grave-sarcophagus':{boxes:[grave(-.24,-.42,.24,.42,0,8,0),grave(-.2,-.38,.2,.38,8,30,1),grave(-.25,-.43,.25,.43,30,37,2)],bank:[4,7]},
+ 'grave-memorial':{boxes:[grave(-.5,-.5,.5,.5,0,7,0),grave(-.37,-.37,.37,.37,7,14,1),grave(-.23,-.23,.23,.23,14,35,2),grave(-.11,-.11,.11,.11,35,88,3),grave(-.17,-.17,.17,.17,88,93,4)],bank:[3.5,6]},
+};
+for(const [id,o] of Object.entries(GRAVES)){const {img,pivot}=renderBoxes(o.boxes,{R}),b=o.boxes[0];
+ // gaps: the sarcophagus lid overhangs its chest; no snow under the overhang.
+ await grounded(id,{bank:o.bank,spill:3,tail:5,band:10,cap:false,gaps:true},{img,pivot,heightM:+(Math.max(...o.boxes.map(q=>q.z1))/37).toFixed(2),footprintM:[+((b.u1-b.u0)*3).toFixed(2),+((b.v1-b.v0)*3).toFixed(2)],
+  source:'procedural 2:1 isometric blocks (iso-solid.mjs), stone from v1 pillar-intact',recipe:{boxes:o.boxes.length}});}
 
 await fs.writeFile(`${OUT}/manifest.json`,JSON.stringify({version:3,status:'in-game',retired:['snow-cap-ne','snow-cap-se'],generator:'scripts/frozen-frontier-map/ground-kit.mjs (deterministic, derived from the v1 kit art)',
  camera:{projection:'2:1 dimetric',halfWidth:64,halfHeight:32},lighting:'Soft upper-left daylight, matching v1/v2',

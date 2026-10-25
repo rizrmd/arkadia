@@ -63,6 +63,7 @@ mkdir -p "$STAGE/site/terrain-height"; cp docs/terrain-height/*.webp docs/terrai
 mkdir -p "$STAGE/site/frozen-frontier-map"; cp docs/frozen-frontier-map/*.webp docs/frozen-frontier-map/*.json "$STAGE/site/frozen-frontier-map/"
 mkdir -p "$STAGE/site/frontier-rendering"; cp docs/frontier-rendering/*.webp docs/frontier-rendering/reference.png docs/frontier-rendering/verification.json "$STAGE/site/frontier-rendering/"
 mkdir -p "$STAGE/site/southern-cemetery"; cp docs/southern-cemetery/*.webp docs/southern-cemetery/*.json "$STAGE/site/southern-cemetery/"
+mkdir -p "$STAGE/site/frontier-shadows"; cp docs/frontier-shadows/*.webp docs/frontier-shadows/*.json "$STAGE/site/frontier-shadows/"
 mkdir -p "$STAGE/site/minimap"; cp docs/minimap/*.png docs/minimap/*.json "$STAGE/site/minimap/"
 mkdir -p "$STAGE/site/thumb-pad"; cp docs/thumb-pad/*.webp docs/thumb-pad/*.json "$STAGE/site/thumb-pad/"
 mkdir -p "$STAGE/site/stick-pan"; cp docs/stick-pan/*.webp docs/stick-pan/*.json "$STAGE/site/stick-pan/"

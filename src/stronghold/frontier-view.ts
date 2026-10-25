@@ -1,4 +1,4 @@
-import {Container,Matrix,Rectangle,Sprite,Texture} from 'pixi.js';
+import {BlurFilter,ColorMatrixFilter,Container,Matrix,Rectangle,Sprite,Texture} from 'pixi.js';
 import {FRONTIER_PROPS,FRONTIER_COLUMNS,FRONTIER_ATLAS,FRONTIER_KIT_SIZE,type FrontierProp} from '../world/frontier';
 import type {Column} from './hero';
 // The Frozen Frontier on screen (world/frontier.ts). Its props stand outside the court, beyond the baked world
@@ -8,15 +8,36 @@ import type {Column} from './hero';
 // and may be turned in the ground plane. Actors are drawn above everything and cut out where a prop stands in front
 // (hero.ts occluders), so the props join the hero's scene: from the first frame for collision, and for occlusion once
 // the art has arrived, as one image per sprite (and mirror) cropped from the atlas (hero.ts keys its alpha masks by
-// image src). The atlas (1.1 MB WebP) is fetched once play starts (load()), after the loading screen, so it never
+// image src). Every upright also casts a sun shadow (setSun, daylight.ts sunAt), like the court, the hero and the
+// enemies: its sprite again, laid onto the ground in vertical strips, each pixel moved from the ground line below it
+// (build-assets.mjs groundLine) by its height along the sun's offset; one filter flattens the layer to the shadow
+// colour at the sun's alpha, so overlapping shadows do not darken each other. The atlas (1.1 MB WebP) is fetched once play starts (load()), after the loading screen, so it never
 // competes with the game's own start-up.
 export type FrontierPlaced={layer:'world';id:string;x:number;y:number;width:number;height:number;foot:number;shear:number;vertical:number;depth:number;opacity:number;file:string;selected:boolean;occluder:undefined;image:HTMLImageElement;frontier:FrontierProp};
 // A ground decal turned by deg in the ground plane, drawn in the 2:1 projection: P·R·P⁻¹ with P = diag(1, 1/2).
 function groundMatrix(deg:number,sx:number,sy:number,x:number,y:number){const r=deg*Math.PI/180,c=Math.cos(r),s=Math.sin(r);return new Matrix(c*sx,.5*s*sx,-2*s*sy,c*sy,x,y);}
+// Strips per upright shadow: about one per 40 world px of width, so a wall's slope or a corner's V stays on its base.
+const stripsOf=(p:FrontierProp)=>Math.max(1,Math.min(8,Math.round(p.width/40)));
+// The ground line's height (sprite px from the top) at frame x.
+function groundAt(p:FrontierProp,fx:number){const g=p.ground,n=g.length-1,t=Math.max(0,Math.min(n,fx/p.frame[2]*n)),i=Math.min(n-1,Math.floor(t));return (n?g[i]+(g[i+1]-g[i])*(t-i):g[0])*p.frame[3];}
+type Sun={alpha:number;dx:number;dy:number};
+// A sun along the screen x axis (dy near 0) would flatten a shadow to a line; a little depth keeps it a shape.
+const depthOf=(s:Sun)=>(s.dy<0?-1:1)*Math.max(Math.abs(s.dy),.12);
+// Shadow strip i of n for sun s: the strip's frame px (u, v) to world px. A pixel h px above the ground line lands
+// h·(dx, dy) from the ground below it.
+function stripMatrix(p:FrontierProp,i:number,n:number,s:Sun){
+ const fw=p.frame[2],f0=Math.round(fw*i/n),f1=Math.round(fw*(i+1)/n),b0=groundAt(p,f0),k=(groundAt(p,f1)-b0)/Math.max(1,f1-f0);
+ const sx=p.width/fw*(p.flip?-1:1),sy=p.height/p.frame[3],ax=p.pivot[0]*fw,ay=p.pivot[1]*p.frame[3],dx=s.dx,dy=depthOf(s);
+ return new Matrix(sx+dx*sy*k,p.shear*sx+sy*k*(1+dy),-dx*sy,-dy*sy,p.x+sx*(f0-ax)+dx*sy*b0,p.y-p.lift+p.shear*sx*(f0-ax)+sy*(b0-ay)+dy*sy*b0);
+}
 export function createFrontier(worldStage:Container){
- const ground=new Container(),upright=new Container();
- ground.zIndex=10.05;upright.zIndex=10.6;ground.sortableChildren=upright.sortableChildren=true;
- worldStage.addChild(ground,upright);
+ const ground=new Container(),shade=new Container(),upright=new Container();
+ ground.zIndex=10.05;shade.zIndex=10.08;upright.zIndex=10.6;ground.sortableChildren=upright.sortableChildren=true;
+ // Shadows take the court's colour, rgb(20, 28, 44), softened like the court's (world-view.ts castShadows); both
+ // passes run at half resolution.
+ const shadeFilter=new ColorMatrixFilter({resolution:.5}),shadeArea=new Rectangle();
+ shade.filters=[shadeFilter,new BlurFilter({strength:1.5,quality:1,resolution:.5})];shade.filterArea=shadeArea;shade.visible=false;
+ worldStage.addChild(ground,shade,upright);
  // Until the atlas arrives these images are empty (no natural size), which hero.ts treats as nothing to cut out.
  const imageKey=(p:FrontierProp)=>p.asset+(p.flip?':flip':'');
  const images=new Map(FRONTIER_PROPS.filter(p=>p.layer!=='ground').map(p=>[imageKey(p),new Image()]));
@@ -33,6 +54,16 @@ export function createFrontier(worldStage:Container){
   // A turned decal stays inside the circle around its pivot through its farthest corner (squashed 2:1 on screen).
   if(p.rot){const r=Math.hypot(Math.max(p.pivot[0],1-p.pivot[0])*p.width,2*Math.max(p.pivot[1],1-p.pivot[1])*p.height);return {prop:p,sprite:null,x0:p.x-r,x1:p.x+r,y0:p.y-r/2,y1:p.y+r/2};}
   const a=share(p),dy=[-p.width*a*p.shear,p.width*(1-a)*p.shear];return {prop:p,sprite:null,x0:p.x-p.width*a,x1:p.x+p.width*(1-a),y0:p.y-p.lift-p.height*p.pivot[1]+Math.min(...dy),y1:p.y-p.lift+p.height*(1-p.pivot[1])+Math.max(...dy)};});
+ // Shadow strips of the uprights, and the box their shadow covers under the current sun (with the prop's own).
+ type Shadow={view:View;strips:Sprite[];x0:number;y0:number;x1:number;y1:number};
+ const shadows:Shadow[]=views.filter(v=>v.prop.layer!=='ground').map(view=>({view,strips:[],x0:view.x0,y0:view.y0,x1:view.x1,y1:view.y1}));
+ let sun:Sun={alpha:0,dx:0,dy:0},sunKey='',shown=0;
+ function castShadows(){
+  const dy=depthOf(sun);
+  for(const sh of shadows){const p=sh.view.prop,v=sh.view,n=sh.strips.length,h=p.height;
+   sh.strips.forEach((st,i)=>st.setFromMatrix(stripMatrix(p,i,n,sun)));
+   sh.x0=v.x0+Math.min(0,h*sun.dx);sh.x1=v.x1+Math.max(0,h*sun.dx);sh.y0=Math.min(v.y0,v.y1+h*Math.min(0,dy));sh.y1=v.y1+Math.max(0,h*dy);}
+ }
  let loaded=false,failed=false,visible=0,cull='';
  const atlas=new Image();atlas.decoding='async';
  let start=()=>{};
@@ -50,6 +81,11 @@ export function createFrontier(worldStage:Container){
     // Caps draw just in front of their wall; equal depths keep placement order. Ground bands keep trampled snow
     // under the floors and drifts over them.
     s.zIndex=p.layer==='ground'?p.band*1e6+p.y:p.y+(p.layer==='cap'?.05:0);s.visible=false;v.sprite=s;(p.layer==='ground'?ground:upright).addChild(s);}
+   for(const sh of shadows){const p=sh.view.prop,n=stripsOf(p),fw=p.frame[2];
+    for(let i=0;i<n;i++){const f0=Math.round(fw*i/n),f1=Math.round(fw*(i+1)/n),key=`${p.asset}:${n}:${i}`;let texture=textures.get(key);
+     if(!texture)textures.set(key,texture=new Texture({source,frame:new Rectangle(p.frame[0]+f0,p.frame[1],Math.max(1,f1-f0),p.frame[3])}));
+     const st=new Sprite(texture);st.visible=false;sh.strips.push(st);shade.addChild(st);}}
+   castShadows();
    loaded=true;cull='';done();
    // Occlusion images, cropped off the critical path (a CPU canvas, so no GPU readback). Only the solid art cuts
    // actors out: the translucent contact shadows baked around the grounded modules are dropped.
@@ -64,19 +100,31 @@ export function createFrontier(worldStage:Container){
   start=()=>{if(!atlas.src)atlas.src=FRONTIER_ATLAS;};
  });
  function place(x:number,y:number,scale:number,w:number,h:number){
-  for(const c of [ground,upright]){c.position.set(x,y);c.scale.set(scale);}
+  for(const c of [ground,shade,upright]){c.position.set(x,y);c.scale.set(scale);}
+  // The filter covers the screen (in the layer's world px), so Pixi never measures the bounds of every strip. An
+  // area off the screen would make Pixi skip the filter and draw the strips as plain sprites.
+  shadeArea.x=-x/scale-16;shadeArea.y=-y/scale-16;shadeArea.width=w/scale+32;shadeArea.height=h/scale+32;
   // Camera rectangle in world px, with a margin so props slide in already drawn.
-  const m=96,l=(-x)/scale-m,t=(-y)/scale-m,r=(w-x)/scale+m,b=(h-y)/scale+m,key=[l,t,r,b].map(n=>Math.round(n/24)).join()+':'+loaded;
-  if(key===cull)return;cull=key;visible=0;
+  const m=96,l=(-x)/scale-m,t=(-y)/scale-m,r=(w-x)/scale+m,b=(h-y)/scale+m,key=[l,t,r,b].map(n=>Math.round(n/24)).join()+':'+loaded+':'+sunKey;
+  if(key===cull)return;cull=key;visible=0;shown=0;
   for(const v of views){if(!v.sprite)continue;const on=v.x1>l&&v.x0<r&&v.y1>t&&v.y0<b;v.sprite.visible=on;if(on)visible++;}
+  for(const sh of shadows){const on=sun.alpha>0&&sh.x1>l&&sh.x0<r&&sh.y1>t&&sh.y0<b;for(const st of sh.strips)st.visible=on;if(on&&sh.strips.length)shown++;}
+  shade.visible=shown>0;
+ }
+ // The sun (daylight.ts sunAt) moves in steps; each step re-lays every shadow strip (a few hundred props, cheap).
+ function setSun(s:Sun){
+  const key=s.alpha?[s.alpha,s.dx,s.dy].map(n=>n.toFixed(3)).join():'none';if(key===sunKey)return;sunKey=key;sun={alpha:s.alpha,dx:s.dx,dy:s.dy};
+  shadeFilter.matrix=[0,0,0,0,20/255, 0,0,0,0,28/255, 0,0,0,0,44/255, 0,0,0,s.alpha,0];
+  castShadows();cull='';
  }
  function setAmbient(rgb:number){ground.tint=rgb;upright.tint=rgb;}
  const stats=()=>({props:FRONTIER_PROPS.length,uprights:scene.length,columns:FRONTIER_COLUMNS.length,atlas:FRONTIER_ATLAS,loaded,failed,kit:FRONTIER_KIT_SIZE,
-  occlusionImages:[...images.values()].filter(i=>i.complete&&i.naturalWidth>0).length,sprites:images.size,visible,assets:[...new Set(FRONTIER_PROPS.map(p=>p.asset))].sort()});
+  occlusionImages:[...images.values()].filter(i=>i.complete&&i.naturalWidth>0).length,sprites:images.size,visible,
+  shadows:{casters:shadows.length,strips:shadows.reduce((n,sh)=>n+sh.strips.length,0),shown,alpha:sun.alpha,dx:+sun.dx.toFixed(3),dy:+sun.dy.toFixed(3)},assets:[...new Set(FRONTIER_PROPS.map(p=>p.asset))].sort()});
  (window as any).__FROZEN_FRONTIER__={stats,load:()=>start(),columns:()=>FRONTIER_COLUMNS,props:()=>FRONTIER_PROPS.map(p=>({asset:p.asset,zone:p.zone,u:p.u,v:p.v,x:p.x,y:p.y,layer:p.layer,solid:p.blocks.length>0,flip:p.flip,rot:p.rot,shear:p.shear})),ready,
   // QA: hide the scenery to measure what it costs (scripts/frozen-frontier-map/verify.mjs).
-  setVisible:(on:boolean)=>{ground.visible=upright.visible=on;}};
- return {scene,ready,place,setAmbient,stats,load:()=>start(),
+  setVisible:(on:boolean)=>{ground.visible=upright.visible=on;shade.renderable=on;}};
+ return {scene,ready,place,setAmbient,setSun,stats,load:()=>start(),
   // Footprint columns for a frontier prop in the hero's scene, else undefined.
   columns:(p:{id?:unknown})=>typeof p.id==='string'?columns.get(p.id):undefined};
 }

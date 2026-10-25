@@ -13,12 +13,15 @@ type Rect=[number,number,number,number];
 // band orders ground decals: 'under' (trampled snow) below everything, 'over' (drifts, loose stones) above floors.
 type Kit={layer:FrontierLayer;block:Rect[];band?:'under'|'over'};
 type Placement={a:string;u:number;v:number;s?:number;lift?:number;on?:string;f?:number;r?:number;zone:string};
-type Sprite={frame:[number,number,number,number];world:[number,number];pivot:[number,number];shear?:number};
+type Sprite={frame:[number,number,number,number];world:[number,number];pivot:[number,number];shear?:number;ground?:number[]};
 export type FrontierProp={key:string;asset:string;zone:string;layer:FrontierLayer;u:number;v:number;x:number;y:number;s:number;lift:number;
  frame:[number,number,number,number];width:number;height:number;pivot:[number,number];
  // flip mirrors the sprite left to right (and its footprint across the u = v diagonal); rot turns a ground decal
  // in the ground plane, in degrees; band is a ground decal's draw band (-1 under, 0, 1 over).
  flip:boolean;rot:number;band:number;shear:number;
+ // Where the sprite meets the ground (build-assets.mjs groundLine): heights as fractions of the sprite's height,
+ // evenly across its unmirrored width. The sun shadow is projected from it (frontier-view.ts).
+ ground:number[];
  // Solid footprint (empty for walk-through plants and decals) and the footprint that decides draw order against
  // actors (a snow cap uses its wall's).
  blocks:FrontierColumn[];depthColumns:FrontierColumn[]};
@@ -43,7 +46,7 @@ export const FRONTIER_PROPS:FrontierProp[]=(data.placements as Placement[]).map(
  const kit=KIT[p.a],sprite=SPRITES[p.a];if(!kit||!sprite)throw Error('frozen-frontier.json: unknown sprite '+p.a);
  const u=p.u-STRONGHOLD_ORIGIN.u,v=p.v-STRONGHOLD_ORIGIN.v,s=p.s??1,flip=!!p.f,{x,y}=world(u,v),blocks=kit.layer==='cap'?[]:footprint(kit,u,v,s,flip);
  return {key:`ff:${p.a}:${i}`,asset:p.a,zone:p.zone,layer:kit.layer,u,v,x,y,s,lift:p.lift??0,frame:sprite.frame,width:sprite.world[0]*s,height:sprite.world[1]*s,pivot:sprite.pivot,
-  flip,rot:kit.layer==='ground'?p.r??0:0,band:kit.band==='under'?-1:kit.band==='over'?1:0,shear:(sprite.shear??0)*(flip?-1:1),
+  flip,rot:kit.layer==='ground'?p.r??0:0,band:kit.band==='under'?-1:kit.band==='over'?1:0,shear:(sprite.shear??0)*(flip?-1:1),ground:sprite.ground??[sprite.pivot[1]],
   blocks,depthColumns:kit.layer==='cap'&&p.on?footprint(KIT[p.on],u,v,s,flip):blocks};
 });
 // Every solid column, for the co-op prediction's collision (net/client.ts) and the parity export.

@@ -7,12 +7,12 @@ import sharp from 'sharp';import fs from 'node:fs/promises';import {createHash} 
 // one request. The pivot moves with the trim.
 // Output: public/frozen-frontier/game/atlas-<hash>.webp and src/world/maps/frozen-frontier-sprites.json (frames, pivots).
 //   node scripts/frozen-frontier-map/build-assets.mjs
-const OUT='public/frozen-frontier/game',CATALOG='src/world/maps/frozen-frontier-sprites.json',SIZE=2048,PAD=2;
+const OUT='public/frozen-frontier/game',CATALOG='src/world/maps/frozen-frontier-sprites.json',SIZE=2048,PAD=2,GROUND=16;
 await fs.mkdir(OUT,{recursive:true});
 const parts=[];let sourceBytes=0;
 // v3 retires the v1 snow-cap strips (every grounded module carries its own snow cap now).
 const retired=new Set(JSON.parse(await fs.readFile('public/frozen-frontier/v3/manifest.json','utf8')).retired??[]);
-for(const kit of ['v1','v2','v3','v4']){
+for(const kit of ['v1','v2','v3']){
  const manifest=JSON.parse(await fs.readFile(`public/frozen-frontier/${kit}/manifest.json`,'utf8'));
  for(const a of manifest.assets){
   if(retired.has(a.id))continue;
@@ -22,8 +22,25 @@ for(const kit of ['v1','v2','v3','v4']){
   for(let y=0;y<info.height;y++)for(let x=0;x<info.width;x++)if(data[(y*info.width+x)*4+3]>8){if(x<x0)x0=x;if(x>x1)x1=x;if(y<y0)y0=y;if(y>y1)y1=y;}
   const pad=2;x0=Math.max(0,x0-pad);y0=Math.max(0,y0-pad);x1=Math.min(info.width-1,x1+pad);y1=Math.min(info.height-1,y1+pad);
   const old=parts.findIndex(p=>p.id===a.id);if(old>=0){sourceBytes-=parts[old].bytes;parts.splice(old,1);}
-  parts.push({id:a.id,kit,bytes:(await fs.stat(file)).size,maxDensity:a.density??Infinity,file,crop:{left:x0,top:y0,width:x1-x0+1,height:y1-y0+1},scale:a.scale,pivot:[(a.pivot.x-x0)/(x1-x0+1),(a.pivot.y-y0)/(y1-y0+1)],heightM:a.heightM,footprintM:a.footprintM});
+  parts.push({id:a.id,kit,bytes:(await fs.stat(file)).size,maxDensity:a.density??Infinity,file,crop:{left:x0,top:y0,width:x1-x0+1,height:y1-y0+1},scale:a.scale,pivot:[(a.pivot.x-x0)/(x1-x0+1),(a.pivot.y-y0)/(y1-y0+1)],heightM:a.heightM,footprintM:a.footprintM,
+   ground:groundLine(data,info.width,{left:x0,top:y0,width:x1-x0+1,height:y1-y0+1},a.scale)});
  }
+}
+// Where a sprite meets the ground, for its sun shadow (frontier-view.ts projects each pixel from the ground below it):
+// GROUND+1 heights (fractions of the trimmed sprite's height) evenly across its width. A column stands on the ground
+// when its lowest solid pixel lies within the 2:1 slope (plus a margin) of the sprite's lowest point, so a wall's
+// diagonal base and a corner's V count but a tree's canopy, an arch's opening or an overhang does not; the ground
+// runs straight across those and stays level past the outermost grounded columns. Translucent baked contact shadows
+// and snow halos are not solid.
+function groundLine(data,stride,c,scale){
+ const bot=new Float32Array(c.width).fill(-1);
+ for(let x=0;x<c.width;x++)for(let y=c.height-1;y>=0;y--)if(data[((y+c.top)*stride+x+c.left)*4+3]>160){bot[x]=y;break;}
+ const med=Float32Array.from(bot,(b,x)=>{if(b<0)return -1;const w=[];for(let i=-3;i<=3;i++)if(bot[x+i]>=0)w.push(bot[x+i]);return w.sort((p,q)=>p-q)[w.length>>1];});
+ let low=-1;for(let x=0;x<c.width;x++)if(med[x]>=0&&(low<0||med[x]>med[low]))low=x;
+ if(low<0)return Array(GROUND+1).fill(1);
+ const pts=[];for(let x=0;x<c.width;x++)if(med[x]>=0&&med[x]>=med[low]-.5*Math.abs(x-low)-10/scale)pts.push([x,med[x]]);
+ const at=x=>{if(x<=pts[0][0])return pts[0][1];const l=pts[pts.length-1];if(x>=l[0])return l[1];let i=1;while(pts[i][0]<x)i++;const [a,b]=[pts[i-1],pts[i]];return a[1]+(b[1]-a[1])*(x-a[0])/((b[0]-a[0])||1);};
+ return [...Array(GROUND+1).keys()].map(i=>+((at(i/GROUND*(c.width-1))+1)/c.height).toFixed(4));
 }
 // Shelf packing, tallest first; lower the density until everything fits one SIZE x SIZE page.
 function pack(density){
@@ -50,7 +67,7 @@ const catalog={version:3,atlas:`/frozen-frontier/game/${name}`,sha256:hash,size:
 // these two modules; the landmark gate already follows the ground and stays unchanged.
 const shear={'arch-ne':-.25,'arch-se':.29};
 for(const p of parts)catalog.assets[p.id]={kit:p.kit,frame:[p.x,p.y,p.w,p.h],world:[+(p.crop.width*p.scale).toFixed(2),+(p.crop.height*p.scale).toFixed(2)],
- pivot:[+p.pivot[0].toFixed(4),+p.pivot[1].toFixed(4)],...(shear[p.id]?{shear:shear[p.id]}:{}),heightM:p.heightM,footprintM:p.footprintM};
+ pivot:[+p.pivot[0].toFixed(4),+p.pivot[1].toFixed(4)],...(shear[p.id]?{shear:shear[p.id]}:{}),heightM:p.heightM,footprintM:p.footprintM,ground:p.ground};
 const pending=`${CATALOG}.${process.pid}.tmp`;
 await fs.writeFile(pending,JSON.stringify(catalog,null,1)+'\n');await fs.rename(pending,CATALOG);
 console.log(parts.length,'sprites in one',SIZE+'px atlas at',density,'px/world px:',(bytes/1e6).toFixed(2),'MB (sources',(sourceBytes/1e6).toFixed(1),'MB)');

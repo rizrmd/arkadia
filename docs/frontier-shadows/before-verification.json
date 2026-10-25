@@ -1,0 +1,118 @@
+{
+ "base": "http://127.0.0.1:5244",
+ "runs": [
+  {
+   "view": "portrait",
+   "time": 0.52,
+   "shots": {
+    "cemetery-gardens": {
+     "teleport": [
+      34,
+      44
+     ],
+     "visible": 163,
+     "shadows": null
+    }
+   }
+  },
+  {
+   "view": "desktop",
+   "time": 0.52,
+   "shots": {
+    "cemetery-gardens": {
+     "teleport": [
+      34,
+      44
+     ],
+     "visible": 276,
+     "shadows": null
+    },
+    "cemetery-memorial": {
+     "teleport": [
+      34,
+      54.5
+     ],
+     "visible": 171,
+     "shadows": null
+    },
+    "pillar-courtyard": {
+     "teleport": [
+      20.6,
+      31.6
+     ],
+     "visible": 176,
+     "shadows": null
+    },
+    "watchtower": {
+     "teleport": [
+      28.4,
+      18.9
+     ],
+     "visible": 120,
+     "shadows": null
+    },
+    "north-west-grove": {
+     "teleport": [
+      -9.5,
+      6
+     ],
+     "visible": 30,
+     "shadows": null
+    }
+   }
+  },
+  {
+   "view": "desktop",
+   "time": 0.3,
+   "shots": {
+    "cemetery-gardens": {
+     "teleport": [
+      34,
+      44
+     ],
+     "visible": 276,
+     "shadows": null
+    },
+    "north-west-grove": {
+     "teleport": [
+      -9.5,
+      6
+     ],
+     "visible": 30,
+     "shadows": null
+    }
+   }
+  },
+  {
+   "view": "desktop",
+   "time": 0.72,
+   "shots": {
+    "cemetery-gardens": {
+     "teleport": [
+      34,
+      44
+     ],
+     "visible": 276,
+     "shadows": null
+    }
+   }
+  },
+  {
+   "view": "desktop",
+   "time": 0,
+   "shots": {
+    "cemetery-gardens": {
+     "teleport": [
+      34,
+      44
+     ],
+     "visible": 276,
+     "shadows": null
+    }
+   }
+  }
+ ],
+ "errors": [],
+ "console": [],
+ "ok": true
+}

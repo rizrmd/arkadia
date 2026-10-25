@@ -183,7 +183,7 @@ export async function createWorldView(
  const SHADE=.35,mask=document.createElement('canvas'),soft=document.createElement('canvas');mask.width=soft.width=Math.ceil(worldWidth*SHADE);mask.height=soft.height=Math.ceil(worldHeight*SHADE);
  function drawSprite(c:CanvasRenderingContext2D,p:(typeof objects)[number]){c.save();c.globalAlpha=p.opacity;c.translate(p.x,p.y);c.transform(1,p.shear,0,p.vertical,0,0);drawFoundation(c,p,images.get(FOUNDATION_SOIL)!,'under',images.get(FOUNDATION_DRIFT),images.get(FOUNDATION_MOSS));if(p.selected){c.shadowColor='#ffca64';c.shadowBlur=9;}c.drawImage(p.image,-p.width/2,-p.height*p.foot,p.width,p.height);c.shadowBlur=0;drawFoundation(c,p,images.get(FOUNDATION_SOIL)!,'face',images.get(FOUNDATION_DRIFT),images.get(FOUNDATION_MOSS));c.restore();}
  function castShadows(paint=true){
-  const s=lighting.sun();shadeRelief(s);
+  const s=lighting.sun();shadeRelief(s);frontier.setSun(s);
   if(!s.alpha){lighting.setShadow(null,0,paint);return;}
   measureTracelogPhase('shadowCast',()=>{
    const m=mask.getContext('2d')!,g=soft.getContext('2d')!;

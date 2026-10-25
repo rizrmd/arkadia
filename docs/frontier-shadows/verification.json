@@ -1,0 +1,188 @@
+{
+ "base": "http://127.0.0.1:5332",
+ "runs": [
+  {
+   "view": "portrait",
+   "time": 0.52,
+   "shots": {
+    "cemetery-gardens": {
+     "teleport": [
+      34,
+      44
+     ],
+     "visible": 163,
+     "shadows": {
+      "casters": 297,
+      "strips": 589,
+      "shown": 26,
+      "alpha": 0.4,
+      "dx": 0.278,
+      "dy": 0.307
+     }
+    }
+   }
+  },
+  {
+   "view": "desktop",
+   "time": 0.52,
+   "shots": {
+    "cemetery-gardens": {
+     "teleport": [
+      34,
+      44
+     ],
+     "visible": 276,
+     "shadows": {
+      "casters": 297,
+      "strips": 589,
+      "shown": 60,
+      "alpha": 0.4,
+      "dx": 0.278,
+      "dy": 0.307
+     }
+    },
+    "cemetery-memorial": {
+     "teleport": [
+      34,
+      54.5
+     ],
+     "visible": 171,
+     "shadows": {
+      "casters": 297,
+      "strips": 589,
+      "shown": 51,
+      "alpha": 0.4,
+      "dx": 0.278,
+      "dy": 0.307
+     }
+    },
+    "pillar-courtyard": {
+     "teleport": [
+      20.6,
+      31.6
+     ],
+     "visible": 176,
+     "shadows": {
+      "casters": 297,
+      "strips": 589,
+      "shown": 64,
+      "alpha": 0.4,
+      "dx": 0.278,
+      "dy": 0.307
+     }
+    },
+    "watchtower": {
+     "teleport": [
+      28.4,
+      18.9
+     ],
+     "visible": 120,
+     "shadows": {
+      "casters": 297,
+      "strips": 589,
+      "shown": 28,
+      "alpha": 0.4,
+      "dx": 0.278,
+      "dy": 0.307
+     }
+    },
+    "north-west-grove": {
+     "teleport": [
+      -9.5,
+      6
+     ],
+     "visible": 30,
+     "shadows": {
+      "casters": 297,
+      "strips": 589,
+      "shown": 30,
+      "alpha": 0.4,
+      "dx": 0.278,
+      "dy": 0.307
+     }
+    }
+   }
+  },
+  {
+   "view": "desktop",
+   "time": 0.3,
+   "shots": {
+    "cemetery-gardens": {
+     "teleport": [
+      34,
+      44
+     ],
+     "visible": 276,
+     "shadows": {
+      "casters": 297,
+      "strips": 589,
+      "shown": 65,
+      "alpha": 0.4,
+      "dx": 1.594,
+      "dy": 0.092
+     }
+    },
+    "north-west-grove": {
+     "teleport": [
+      -9.5,
+      6
+     ],
+     "visible": 30,
+     "shadows": {
+      "casters": 297,
+      "strips": 589,
+      "shown": 30,
+      "alpha": 0.4,
+      "dx": 1.594,
+      "dy": 0.092
+     }
+    }
+   }
+  },
+  {
+   "view": "desktop",
+   "time": 0.72,
+   "shots": {
+    "cemetery-gardens": {
+     "teleport": [
+      34,
+      44
+     ],
+     "visible": 276,
+     "shadows": {
+      "casters": 297,
+      "strips": 589,
+      "shown": 65,
+      "alpha": 0.4,
+      "dx": -0.826,
+      "dy": 0.743
+     }
+    }
+   }
+  },
+  {
+   "view": "desktop",
+   "time": 0,
+   "shots": {
+    "cemetery-gardens": {
+     "teleport": [
+      34,
+      44
+     ],
+     "visible": 276,
+     "shadows": {
+      "casters": 297,
+      "strips": 589,
+      "shown": 0,
+      "alpha": 0,
+      "dx": 0,
+      "dy": 0
+     }
+    }
+   }
+  }
+ ],
+ "errors": [],
+ "console": [],
+ "ok": true
+}
