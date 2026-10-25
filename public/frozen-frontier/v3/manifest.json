@@ -112,8 +112,8 @@
     410
    ],
    "pivot": {
-    "x": 320,
-    "y": 291
+    "x": 332.5,
+    "y": 312
    },
    "scale": 0.25,
    "widthWorld": 161.75,
@@ -122,16 +122,35 @@
     1.5,
     1.5
    ],
-   "source": "public/frozen-frontier/v1/assets/corner-s.png",
+   "source": "assets-src/frozen-frontier/v4/corner-s.png",
    "recipe": {
-    "kind": "grounded",
-    "bank": [
-     8,
-     15
-    ],
-    "spill": 4,
-    "tail": 10,
-    "band": 22
+    "kind": "generated-grounded-corner",
+    "projection": "2:1 dimetric",
+    "leftPlaneShear": 0.1,
+    "centralArrisX": 810,
+    "baselineSamples": {
+     "left": [
+      [
+       65,
+       408
+      ],
+      [
+       810,
+       855
+      ]
+     ],
+     "right": [
+      [
+       810,
+       855
+      ],
+      [
+       1515,
+       499
+      ]
+     ]
+    },
+    "note": "Built-in image_gen; same limestone and snow, calibrated left wall to the floor grid; snow bank included."
    }
   },
   {

@@ -339,6 +339,8 @@ for(const [id,o] of Object.entries(GRAVES)){const {img,pivot}=renderBoxes(o.boxe
 await fs.writeFile(`${OUT}/manifest.json`,JSON.stringify({version:3,status:'in-game',retired:['snow-cap-ne','snow-cap-se'],generator:'scripts/frozen-frontier-map/ground-kit.mjs (deterministic, derived from the v1 kit art)',
  camera:{projection:'2:1 dimetric',halfWidth:64,halfHeight:32},lighting:'Soft upper-left daylight, matching v1/v2',
  note:'Grounded v1 modules replace their v1 exports in the game atlas (same ids, same ground pivot and footprint). The pillars, stairs and fallen columns are modelled in true 2:1 isometric (recipe.iso; their footprints are set in layout.mjs); the rest are new ground decals. Recipe parameters are recorded per asset.',assets:manifest},null,1)+'\n');
+// The reviewed regenerated front corner replaces its legacy export on every rebuild.
+await (await import('./build-lower-corner.mjs')).buildLowerCorner();
 // Contact sheet on the game's snow colour.
 {const cell=360,cols=6,rows=Math.ceil(manifest.length/cols),sheet=await Promise.all(manifest.map(async(m,i)=>{const im=sharp(`${OUT}/${m.file}`),meta=await im.metadata(),k=Math.min((cell-40)/meta.width,(cell-50)/meta.height,1);
   return [{input:await im.resize(Math.max(1,Math.round(meta.width*k)),Math.max(1,Math.round(meta.height*k))).png().toBuffer(),left:(i%cols)*cell+20,top:Math.floor(i/cols)*cell+30},
