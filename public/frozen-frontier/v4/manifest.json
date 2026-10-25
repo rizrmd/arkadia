@@ -1,0 +1,78 @@
+{
+ "version": 4,
+ "generator": "scripts/frozen-frontier-map/cemetery-kit.mjs",
+ "assets": [
+  {
+   "id": "grave-headstone",
+   "file": "assets/grave-headstone.png",
+   "size": [
+    268,
+    278
+   ],
+   "pivot": {
+    "x": 133.76,
+    "y": 203.51999999999998
+   },
+   "scale": 0.25,
+   "heightM": 0.972972972972973,
+   "footprintM": [
+    1.08,
+    1.6800000000000002
+   ]
+  },
+  {
+   "id": "grave-cross",
+   "file": "assets/grave-cross.png",
+   "size": [
+    268,
+    299
+   ],
+   "pivot": {
+    "x": 133.76,
+    "y": 224.48
+   },
+   "scale": 0.25,
+   "heightM": 1.162162162162162,
+   "footprintM": [
+    1.08,
+    1.6800000000000002
+   ]
+  },
+  {
+   "id": "grave-sarcophagus",
+   "file": "assets/grave-sarcophagus.png",
+   "size": [
+    380,
+    296
+   ],
+   "pivot": {
+    "x": 190.07999999999998,
+    "y": 195.04
+   },
+   "scale": 0.25,
+   "heightM": 0.6216216216216216,
+   "footprintM": [
+    1.44,
+    2.52
+   ]
+  },
+  {
+   "id": "grave-memorial",
+   "file": "assets/grave-memorial.png",
+   "size": [
+    544,
+    576
+   ],
+   "pivot": {
+    "x": 272,
+    "y": 431.52
+   },
+   "scale": 0.25,
+   "heightM": 2.5135135135135136,
+   "footprintM": [
+    3,
+    3
+   ]
+  }
+ ]
+}

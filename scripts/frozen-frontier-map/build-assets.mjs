@@ -12,7 +12,7 @@ await fs.mkdir(OUT,{recursive:true});
 const parts=[];let sourceBytes=0;
 // v3 retires the v1 snow-cap strips (every grounded module carries its own snow cap now).
 const retired=new Set(JSON.parse(await fs.readFile('public/frozen-frontier/v3/manifest.json','utf8')).retired??[]);
-for(const kit of ['v1','v2','v3']){
+for(const kit of ['v1','v2','v3','v4']){
  const manifest=JSON.parse(await fs.readFile(`public/frozen-frontier/${kit}/manifest.json`,'utf8'));
  for(const a of manifest.assets){
   if(retired.has(a.id))continue;

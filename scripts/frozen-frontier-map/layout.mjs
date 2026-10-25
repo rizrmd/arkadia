@@ -201,6 +201,37 @@ foot('Snowy shrine',0,0,[['rubble',4.55,31.75,.75],['stone-chips-b',4.6,29.4],['
  ['grass-tussock',0.4,32.9],['dead-tree',5.3,33.9],['grass-patch',3.4,30.9,.8],['rock-scatter',0.6,29.3]]);
 reserve(-1.0,27.8,5.2,33.4);
 
+// ---- Southern cemetery: 48 x 48 metres beyond the village ruins. The approach joins
+// the east side of the old village; two broad axes divide six burial gardens.
+Object.assign(data.kit,{
+ 'grave-headstone':{layer:'upright',block:[[-.18,-.28,.18,.28]]},
+ 'grave-cross':{layer:'upright',block:[[-.18,-.28,.18,.28]]},
+ 'grave-sarcophagus':{layer:'upright',block:[[-.25,-.43,.25,.43]]},
+ 'grave-memorial':{layer:'upright',block:[[-.5,-.5,.5,.5]]},
+});
+const sceneryRandom=rnd;rnd=stream(20261025);
+trail('Cemetery approach',[[24.0,34.5],[27.0,36.5],[31.0,37.0],[34.0,39.0],[34.0,46.5]]);
+trail('Cemetery avenue',[[34.0,46.5],[34.0,54.5]]);
+trail('Cemetery crosswalk',[[26.5,46.5],[41.5,46.5]]);
+const cemetery='Southern cemetery';
+for(const v of [41,43,45,49,51,53])for(const u of [28,30,32,36,38,40]){
+ const a=(u+v)%4===1?'grave-cross':'grave-headstone';
+ put(a,u,v,{zone:cemetery});
+ put('ground-scuff-b',u,v+.35,{zone:cemetery,s:.42});
+ if((u+v)%4===3)put('grass-tussock',u+.4,v+.25,{zone:cemetery,s:.55});
+}
+for(const u of [29,31,37,39])put('grave-sarcophagus',u,55.5,{zone:cemetery});
+put('grave-memorial',34,56,{zone:cemetery});
+put('paving',34,56,{zone:cemetery,s:.7});
+// Gate piers and interrupted perimeter markers leave generous entrances and exits.
+for(const [u,v] of [[32,40],[36,40],[26,39],[42,39],[26,48],[42,48],[26,56],[42,56]])put('pillar-broken',u,v,{zone:cemetery,s:1.15});
+for(const [u,v] of [[26,42],[26,51],[42,42],[42,51],[28,57],[40,57]]){
+ put('dead-snag',u,v,{zone:cemetery,s:.9});
+ put('drift-mound',u+.5,v+.3,{zone:cemetery,s:.8});
+}
+reserve(25,38,43,58);
+rnd=sceneryRandom;
+
 // ---- Plants and rocks: dense groves behind the Stronghold, thinner woods to the sides, sparse open snow in front.
 const zones=[
  {zone:'North-west grove',u:[-15,-6],v:[-2,15],n:30,mix:{'pine-tall':5,'pine-broad':3,'pine-sapling':3,'shrub-juniper':2,'rock-boulders':1,'grass-tussock':1}},
