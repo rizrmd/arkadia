@@ -22,7 +22,7 @@ const point=(u:number,v:number)=>{const p=tilePoint(u,v);return {x:view.x+p.x*vi
 function sync(){
  const spec=riftBoltLevel(level);levelSelect.value=String(level);
  $('rank-name').textContent=`LV. ${level} / ${spec.name}`;
- $('description').textContent=`${spec.offsets.length} piercing ${spec.offsets.length===1?'spear':'spears'} · ${spec.area.toFixed(2)}× cast ring`;
+ $('description').textContent=`${spec.offsets.length} ${spec.offsets.length===1?'target':'targets'} · ${spec.projectileScale.toFixed(2)}× bolt · ${spec.impactScale.toFixed(2)}× impact${spec.onHitAoE?' · On-hit AoE':''}`;
  playBtn.textContent=paused?'Play':'Pause';playBtn.setAttribute('aria-pressed',String(!paused));
  $('loop').setAttribute('aria-pressed',String(loop));
 }
@@ -34,8 +34,14 @@ function replay(){
 }
 function layout(){
  const w=viewEl.clientWidth,h=viewEl.clientHeight,dpr=Math.min(devicePixelRatio,2);
+ // FxStage renders at window dimensions. Preserve CSS pixel scale inside the shorter stage;
+ // stretching its canvases to 100% of the stage shifts all particles away from the figures.
+ for(const id of ['world-fx-ground','world-fx-over']){
+  const cv=viewEl.querySelector<HTMLCanvasElement>('#'+id);
+  if(cv){cv.style.width=innerWidth+'px';cv.style.height=innerHeight+'px';}
+ }
  // Fit the full 5.2 tile path and the largest ring on narrow screens.
- const scale=Math.min(1.5,(w-32)/600,(h-64)/280);
+ const scale=Math.min(1.5,(w-32)/800,(h-64)/280);
  const focus=tilePoint(origin.u+Math.cos(yaw)*2.35,origin.v+Math.sin(yaw)*2.35);
  view={x:w/2-focus.x*scale,y:h*.64-focus.y*scale,scale};stage.place(view.x,view.y,view.scale);
  for(const cv of [ground,figures]){cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);}
@@ -50,6 +56,7 @@ function drawFigures(){
  const f=figures.getContext('2d')!,dpr=Math.min(devicePixelRatio,2),time=animation?.time??0;
  f.setTransform(1,0,0,1,0,0);f.clearRect(0,0,figures.width,figures.height);f.setTransform(dpr,0,0,dpr,0,0);
  const actors=[{id:'rift-runner',...origin,hero:true},...riftBoltLevel(level).offsets.map(off=>{const a=yawOfScreenAngle(off);return {id:'revenant',u:origin.u+Math.cos(a)*5.2,v:origin.v+Math.sin(a)*5.2,hero:false};})];
+ figures.dataset.targets=String(actors.filter(a=>!a.hero).length);
  for(const a of actors){
   const m=manifest[a.id],img=images.get(a.id);if(!m||!img)continue;
   const casting=a.hero&&time<.68;
@@ -73,10 +80,11 @@ async function boot(){
  manifest=await characters();
  await Promise.all(['rift-runner','revenant'].map(id=>new Promise<void>((resolve,reject)=>{const img=new Image();img.onload=()=>{images.set(id,img);resolve();};img.onerror=()=>reject(Error('Failed to load '+id));img.src=atlasUrl(manifest[id]);})));
  await stage.loaded;if(stage.failed()||!stage.playable())throw Error('NixieFX renderer failed to initialize');
+ layout();
  const startPaused=paused;replay();paused=startPaused;sync();playBtn.disabled=false;$<HTMLButtonElement>('replay').disabled=false;
  let previous=0;
  function frame(now:number){
-  const dt=previous?Math.min(.05,(now-previous)/1000):0;previous=now;
+  const dt=previous?Math.min(.25,(now-previous)/1000):0;previous=now;
   if(!paused&&!document.hidden&&animation){
    animation.advance(dt);stage.frame(dt);drawFigures();
    if(animation.complete){if(loop)replay();else{paused=true;sync();}}
@@ -87,7 +95,7 @@ async function boot(){
   requestAnimationFrame(frame);
  }
  requestAnimationFrame(frame);
- (window as any).__RIFT_BOLT__={state:()=>({level,loop,paused,time:animation?.time,phase:animation?.phase,cycles,spec:riftBoltLevel(level),stats:stage.stats()}),
+ (window as any).__RIFT_BOLT__={state:()=>({level,loop,paused,targetCount:Number(figures.dataset.targets),time:animation?.time,phase:animation?.phase,cycles,spec:riftBoltLevel(level),stats:stage.stats()}),
   seek:(seconds:number)=>{replay();paused=true;for(let t=0;t<seconds;t+=1/120){animation!.advance(1/120);stage.frame(1/120,false);}stage.frame(0);drawFigures();sync();}};
 }
 boot().catch(error=>{$('phase').textContent='Unable to load animation';$('description').textContent=String(error);console.error(error);});
