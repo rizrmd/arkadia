@@ -363,7 +363,7 @@ export class SkillTree{
    const plateY=n.kind==='passive'?rr*.62:rr*.9;
    plate.position.set(-plateW/2,plateY-plateH/2);
    const level=box.addChild(new MsdfText(LEVEL_ROLE,'Lv. 1',{size:Math.max(11.5,u*.15)}));
-   const name=box.addChild(new MsdfText(NAME_ROLE,n.name,{size:nameSize}));
+   const name=box.addChild(new MsdfText(NAME_ROLE,n.name,{size:nameSize,align:'center'}));
    const nameY=(n.kind==='passive'?rr*.95:rr*1.08)+nameSize*.92;
    name.place(0,nameY,.5);
    const pips:Sprite[]=[];
@@ -397,7 +397,11 @@ export class SkillTree{
    if(v.ring)v.ring.tint=learned?0xffffff:0x9c8a74;
    v.plate.visible=v.level.visible=learned||!!locked;
    v.plate.alpha=v.level.alpha=learned?1:.78;
-   if(v.plate.visible){v.level.text=learned?`Lv. ${lv}`:locked;v.level.place(0,v.plate.y+v.plate.height/2+v.level.size*.36,.5);}
+   if(v.plate.visible){
+    v.level.text=learned?`Lv. ${lv}`:locked;
+    // place() uses a baseline; center the actual glyph ink inside the plate instead.
+    v.level.position.set(-v.level.advance/2,v.plate.y+v.plate.height/2-v.level.inkCenterY());
+   }
    v.name.alpha=learned?1:.62;
    v.pips.forEach((p,i)=>{p.texture=f.texture(i<Math.min(MAX_PIPS,lv)?'pip-on':'pip-off');p.alpha=learned?1:.7;});
    if(v.badge){v.badge.visible=slot>=0&&slot<3;if(v.badge.visible)v.badge.texture=f.texture(`slot-${slot+1}`);}
