@@ -21,6 +21,10 @@ const stripsOf=(p:FrontierProp)=>Math.max(1,Math.min(8,Math.round(p.width/40)));
 // The ground line's height (sprite px from the top) at frame x.
 function groundAt(p:FrontierProp,fx:number){const g=p.ground,n=g.length-1,t=Math.max(0,Math.min(n,fx/p.frame[2]*n)),i=Math.min(n-1,Math.floor(t));return (n?g[i]+(g[i+1]-g[i])*(t-i):g[0])*p.frame[3];}
 type Sun={alpha:number;dx:number;dy:number};
+// Raised floors among the ground decals, by the height of their top face (world px at scale 1; the temple podium's
+// top sits 25.3 px up, ground-kit.mjs). They cast their silhouette shifted by that height along the sun.
+const SLABS:Record<string,number>={foundation:25.3};
+const isSlab=(p:FrontierProp)=>p.layer==='ground'&&!p.rot&&p.asset in SLABS;
 // A sun along the screen x axis (dy near 0) would flatten a shadow to a line; a little depth keeps it a shape.
 const depthOf=(s:Sun)=>(s.dy<0?-1:1)*Math.max(Math.abs(s.dy),.12);
 // Shadow strip i of n for sun s: the strip's frame px (u, v) to world px. A pixel h px above the ground line lands
@@ -54,14 +58,18 @@ export function createFrontier(worldStage:Container){
   // A turned decal stays inside the circle around its pivot through its farthest corner (squashed 2:1 on screen).
   if(p.rot){const r=Math.hypot(Math.max(p.pivot[0],1-p.pivot[0])*p.width,2*Math.max(p.pivot[1],1-p.pivot[1])*p.height);return {prop:p,sprite:null,x0:p.x-r,x1:p.x+r,y0:p.y-r/2,y1:p.y+r/2};}
   const a=share(p),dy=[-p.width*a*p.shear,p.width*(1-a)*p.shear];return {prop:p,sprite:null,x0:p.x-p.width*a,x1:p.x+p.width*(1-a),y0:p.y-p.lift-p.height*p.pivot[1]+Math.min(...dy),y1:p.y-p.lift+p.height*(1-p.pivot[1])+Math.max(...dy)};});
- // Shadow strips of the uprights, and the box their shadow covers under the current sun (with the prop's own).
- type Shadow={view:View;strips:Sprite[];x0:number;y0:number;x1:number;y1:number};
- const shadows:Shadow[]=views.filter(v=>v.prop.layer!=='ground').map(view=>({view,strips:[],x0:view.x0,y0:view.y0,x1:view.x1,y1:view.y1}));
+ // Shadow strips of the uprights and raised floors, and the box their shadow covers under the current sun (with the
+ // prop's own). A raised floor lies in the ground layer under the shadows, so a copy of it erases its own shadow off
+ // its top (drawn after the floors' shadows, before the uprights', so pillars still shade the podium).
+ type Shadow={view:View;strips:Sprite[];lift:number;eraser:Sprite|null;x0:number;y0:number;x1:number;y1:number};
+ const shadows:Shadow[]=views.filter(v=>v.prop.layer!=='ground'||isSlab(v.prop)).sort((a,b)=>Number(isSlab(b.prop))-Number(isSlab(a.prop)))
+  .map(view=>({view,strips:[],lift:isSlab(view.prop)?SLABS[view.prop.asset]*view.prop.s:0,eraser:null,x0:view.x0,y0:view.y0,x1:view.x1,y1:view.y1}));
  let sun:Sun={alpha:0,dx:0,dy:0},sunKey='',shown=0;
  function castShadows(){
   const dy=depthOf(sun);
-  for(const sh of shadows){const p=sh.view.prop,v=sh.view,n=sh.strips.length,h=p.height;
-   sh.strips.forEach((st,i)=>st.setFromMatrix(stripMatrix(p,i,n,sun)));
+  for(const sh of shadows){const p=sh.view.prop,v=sh.view,n=sh.strips.length,h=sh.lift||p.height;
+   if(sh.lift)for(const st of sh.strips)st.position.set(p.x+h*sun.dx,p.y-p.lift+h*dy);
+   else sh.strips.forEach((st,i)=>st.setFromMatrix(stripMatrix(p,i,n,sun)));
    sh.x0=v.x0+Math.min(0,h*sun.dx);sh.x1=v.x1+Math.max(0,h*sun.dx);sh.y0=Math.min(v.y0,v.y1+h*Math.min(0,dy));sh.y1=v.y1+Math.max(0,h*dy);}
  }
  let loaded=false,failed=false,visible=0,cull='';
@@ -81,7 +89,11 @@ export function createFrontier(worldStage:Container){
     // Caps draw just in front of their wall; equal depths keep placement order. Ground bands keep trampled snow
     // under the floors and drifts over them.
     s.zIndex=p.layer==='ground'?p.band*1e6+p.y:p.y+(p.layer==='cap'?.05:0);s.visible=false;v.sprite=s;(p.layer==='ground'?ground:upright).addChild(s);}
-   for(const sh of shadows){const p=sh.view.prop,n=stripsOf(p),fw=p.frame[2];
+   const slabs=shadows.filter(sh=>sh.lift);
+   for(const sh of slabs){const p=sh.view.prop,copy=()=>{const c=new Sprite(textures.get(p.asset));c.anchor.set(p.pivot[0],p.pivot[1]);c.scale.set(p.width/p.frame[2]*(p.flip?-1:1),p.height/p.frame[3]);c.visible=false;return c;};
+    sh.strips.push(copy());sh.eraser=copy();sh.eraser.position.set(p.x,p.y-p.lift);sh.eraser.blendMode='erase';shade.addChild(sh.strips[0]);}
+   for(const sh of slabs)shade.addChild(sh.eraser!);
+   for(const sh of shadows){if(sh.lift)continue;const p=sh.view.prop,n=stripsOf(p),fw=p.frame[2];
     for(let i=0;i<n;i++){const f0=Math.round(fw*i/n),f1=Math.round(fw*(i+1)/n),key=`${p.asset}:${n}:${i}`;let texture=textures.get(key);
      if(!texture)textures.set(key,texture=new Texture({source,frame:new Rectangle(p.frame[0]+f0,p.frame[1],Math.max(1,f1-f0),p.frame[3])}));
      const st=new Sprite(texture);st.visible=false;sh.strips.push(st);shade.addChild(st);}}
@@ -108,7 +120,7 @@ export function createFrontier(worldStage:Container){
   const m=96,l=(-x)/scale-m,t=(-y)/scale-m,r=(w-x)/scale+m,b=(h-y)/scale+m,key=[l,t,r,b].map(n=>Math.round(n/24)).join()+':'+loaded+':'+sunKey;
   if(key===cull)return;cull=key;visible=0;shown=0;
   for(const v of views){if(!v.sprite)continue;const on=v.x1>l&&v.x0<r&&v.y1>t&&v.y0<b;v.sprite.visible=on;if(on)visible++;}
-  for(const sh of shadows){const on=sun.alpha>0&&sh.x1>l&&sh.x0<r&&sh.y1>t&&sh.y0<b;for(const st of sh.strips)st.visible=on;if(on&&sh.strips.length)shown++;}
+  for(const sh of shadows){const on=sun.alpha>0&&sh.x1>l&&sh.x0<r&&sh.y1>t&&sh.y0<b;for(const st of sh.strips)st.visible=on;if(sh.eraser)sh.eraser.visible=on;if(on&&sh.strips.length)shown++;}
   shade.visible=shown>0;
  }
  // The sun (daylight.ts sunAt) moves in steps; each step re-lays every shadow strip (a few hundred props, cheap).
