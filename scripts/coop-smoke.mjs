@@ -36,7 +36,11 @@ try{
  const t0=Date.now();let n=0;
  await new Promise(done=>{const timer=setInterval(()=>{
   const s=(Date.now()-t0)/1000;n++;
-  const y=s<6?1:s>20&&s<26?-1:0;
+  // Walk out for 6 s, or longer (up to 16 s) until both heroes are well into the snow: on a throttled machine this
+  // timer fires late, fewer inputs arrive, and 6 s alone can leave the heroes standing in the arch.
+  const out=a.ticks.size?[...a.ticks.values()].at(-1).players.filter(p=>p.name==='Ayu'||p.name==='Bima'):[];
+  const outbound=s<6||(s<16&&out.some(p=>p.y<1000));
+  const y=outbound?1:s>20&&s<26?-1:0;
   a.walk(0,y);b.walk(s<6?.05:0,y);
   cheat.walk(50,50);cheat.walk(50,50);
   if(n%20===0){cheat.send({t:'damage',target:1,amount:99});cheat.send({t:'s',tick:1,enemies:[]});cheat.send({t:'kill',id:2});cheat.send({t:'in',seq:-5,x:1e9,y:NaN});}
