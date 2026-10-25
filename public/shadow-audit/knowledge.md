@@ -1,4 +1,16 @@
-## Latest shadow coverage correction — validated, deployment pending
+## Live evidence for commit 49806970
+
+Release `1792958638651-game-49806970-3aa6a0d53eee` is live at [Arkodia](https://ark-whachat.fural.space). The served entry is `/assets/index-BH7qfnRe.js`; the shadow runtime is `/assets/main-Bo0oRiol.js`, matched to the clean-worktree build. Health is HTTP 200. Desktop and emulated mobile cemetery at sun time 0.3 passed both isolated static and live GPU fixtures, including 24,576 exact packed-byte comparisons, with no browser errors.
+
+[Live verification report](https://ark-whachat.fural.space/shadow-audit/live-49806970/verification.json) · [Release identity](https://ark-whachat.fural.space/shadow-audit/live-49806970/deployment.json)
+
+![Live desktop cemetery after coverage correction](https://ark-whachat.fural.space/shadow-audit/live-49806970/desktop-cemetery-0.3.png)
+
+![Live emulated mobile cemetery after coverage correction](https://ark-whachat.fural.space/shadow-audit/live-49806970/mobile-cemetery-0.3.png)
+
+The software GPU run measured 806 draw calls over eight desktop frames and 610 over eight emulated mobile frames. Median RAF intervals were 166.7 ms and 766.6 ms respectively, with substantial stalls. These are constrained headless software measurements and **do not establish acceptable desktop or mobile hardware performance**. Controlled dense-scene hardware profiling and full actor/gateway frame proof remain open; the task is not complete.
+
+## Latest shadow coverage correction — deployed and live-verified
 
 - [x] Replace Canvas2D numeric texture staging with direct RGBA byte uploads. The old control corrupts 6,206 RGB bytes; 24,576 GPU channel checks now match exactly.
 - [x] Preserve lower opaque occlusion behind a partial-alpha upper caster.
@@ -6,7 +18,7 @@
 - [x] Separate receiver pixel-center rasterization from conservative caster coverage.
 - [x] Repeat all 293 static geometry variants: 879 directional receive controls pass; 296 upright receiver/color entries have zero order mismatches.
 - [x] Pass 47,691 field assertions, 49,358 companion projection checks, and isolated static/dynamic GPU fixtures without browser errors.
-- [ ] Deploy this exact runtime and verify the live cemetery and asset gallery.
+- [x] Deploy runtime `49806970` and verify live desktop/mobile cemetery and both isolated GPU fixtures without browser errors.
 - [ ] Complete every actor/gateway frame and mirror GPU audit, dense-scene profiling, and controlled physical desktop/mobile measurements.
 
 The broad hollow crate/barrel projections are corrected. Residual outline disagreements remain in the coarse receiver control (crate 25- and 5-pixel enclosed white components; the ground-only solid control has none). The fallen-column control retains one four-pixel component, potentially a real source opening. These are recorded rather than claiming perfect silhouettes or full task acceptance. Collision and pillar/stair geometry are unchanged.
