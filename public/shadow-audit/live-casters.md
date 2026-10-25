@@ -36,3 +36,11 @@ Remaining acceptance: per-family visual review at all requested angles/variants/
 ![Emulated phone cemetery, morning sun](https://ark-whachat.fural.space/shadow-audit/live-casters-mobile/mobile-cemetery-0.3.png)
 
 [GPU live fixture](live-casters-local/gpu-live-fixture.json), [desktop report](live-casters-local/verification.json), [phone report](live-casters-mobile/verification.json).
+
+### Frame ownership and fixture lifecycle correction
+
+Party members share the Three body canvas. Each published frame now uploads immediately to a private GPU source owned by that actor, before another actor can overwrite the canvas. A regression renders an alpha opening for the first actor and a solid second frame into the same canvas; the first actor retains its opening while the second remains solid. There is no CPU canvas snapshot or runtime pixel readback.
+
+Live verification of the first integration passed every numeric receiver assertion but captured `Cannot read properties of null (reading ids)` after fixture cleanup. A normal live cemetery run without fixtures had no errors. The stack identified a HUD nine-slice retaining a pooled batch destroyed by the QA Application's global cleanup. Fixture renderers now stop their tickers, use independent GPU state and explicitly retain global resources when destroyed. A control deliberately retires a batch then destroys another renderer with global release; it reproduces the same error. Cleanup without global release passes the same check and preserves rendering. No Pixi prototype patch is used.
+
+The corrected local settlement run at afternoon `.72`, with both fixtures enabled, completes with zero console/page errors. Initial failing reports are retained under `live-casters-live` and `live-casters-isolated-local`; corrected evidence is `live-casters-isolated-fixed`. Source-level batching and collision behavior remain intact.

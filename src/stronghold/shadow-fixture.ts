@@ -1,5 +1,5 @@
 import {registerActorShadowSprite} from './shadow-actor-batch';
-import {Container,Sprite,Texture,type Renderer} from 'pixi.js';
+import {Application,Container,Sprite,Texture,type Renderer} from 'pixi.js';
 import {createSceneShadows} from './scene-shadows';
 import type {ShadowSurface} from './shadow-surfaces';
 // QA only, loaded lazily. Tests the actual GPU filter against an analytically
@@ -24,3 +24,6 @@ export async function runShadowReceiverFixture(renderer:Renderer){
   return {ok:true,actorReceive,raisedBlocked,groundBlocked,alphaHole,mirroredHole,mirroredSolid,aboveCaster,assertions:['GPU raised-object receive','GPU snow-plane receive','original alpha hole preserved','receiver above caster rejected','mirrored original-alpha registration','native actor batch shadow reception'],stats:field.stats()};
  }finally{stage.filters=[];field.destroy();stage.destroy({children:true,texture:true,textureSource:true});}
 }
+
+// A fixture must not replace receiver providers or batch state on the running game renderer.
+export async function runIsolatedShadowReceiverFixture(){const app=new Application();await app.init({width:320,height:240,preference:'webgl',antialias:false});app.stop();try{return await runShadowReceiverFixture(app.renderer);}finally{app.destroy({removeView:true,releaseGlobalResources:false},{children:true});}}
