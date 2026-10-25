@@ -28,6 +28,11 @@ export async function runLiveShadowFixture(){
   c.fillRect(0,76,20,4);publish(1);
   publish(2,true);p=read();expect('same-frame mirror hole',p(125,90),false);expect('same-frame mirror solid',p(115,90),true);
   c.fillRect(0,0,20,80);publish(3);p=read();expect('same-frame animation fills former hole',p(115,90),true);
+  // Same owner, two crossed body planes: a faint front sample must not
+  // erase the opaque body behind it during depth peeling.
+  field.setScene([]);await wait();c.clearRect(0,40,9,18);c.fillStyle='rgba(255,255,255,.2)';c.fillRect(0,40,9,18);publish(201,false,8);p=read();expect('same-owner partial alpha preserves opaque body',p(121,110),true);if(Math.abs(p(121,110)[0]-checks['actor casts on ground'][0])>3)throw Error('same-owner partial alpha preserves opaque body: '+JSON.stringify(p(121,110)));
+  c.clearRect(0,40,9,18);c.fillStyle='rgba(255,255,255,.004)';c.fillRect(0,40,9,18);publish(202,false,8);p=read();expect('same-owner near-zero alpha preserves opaque body',p(121,110),true);if(Math.abs(p(121,110)[0]-checks['actor casts on ground'][0])>3)throw Error('same-owner near-zero alpha preserves opaque body: '+JSON.stringify(p(121,110)));
+  c.fillStyle='white';c.fillRect(0,0,20,80);publish(203);
   field.setScene([surface(100)]);await wait();p=read();expect('receiver above actor stays lit',p(140,100),false);
   // A second owner behind the first proves depth peeling. With the front owner
   // as receiver owner, the shared sampler must still see this rear caster.

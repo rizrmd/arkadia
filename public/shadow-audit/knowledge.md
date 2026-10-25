@@ -1,3 +1,23 @@
+## Actor atlas frame acceptance and dynamic alpha correction — deployment pending
+
+- [x] Audit every one of 445 original atlas frames, both mirrors and three suns: 2,670 GPU casting cases pass.
+- [x] Match all 445 decoded original-alpha hashes to the tracked inventory.
+- [x] Check 728,988 stable opaque, 135,862 partial-alpha and 34,649,331 clear caster/receiver probes, with zero coverage/depth failures. Bounds account for the measured GPU raster subpixel grid and exact bilinear extrema over its UV footprint.
+- [x] Native actor-batch receiving passes every frame/mirror with a higher caster plane and rejects a lower plane. These are 890 frame/mirror control pairs; they are not 2,670 independent directional reception tests.
+- [x] Reproduce a genuine overlap regression on the original 33a61b6f shader: a partial-alpha front body plane yields RGB 155/159/165 instead of the opaque control 137/142/150. The corrected shader matches the opaque control, including near-zero source alpha.
+- [x] Repeat all 293 static geometry variants after the shader precision change: 879 directional controls pass; 296 receiver/color entries match.
+- [ ] Push/deploy this correction and exercise the compiled actor-frame diagnostic live.
+- [ ] Audit the 16 stabilized gateway frames and 12 GLB animation clips/poses through their actual runtime producers.
+- [ ] Complete controlled dense-scene and physical desktop/mobile performance evidence, and remaining explicit caster exclusions.
+
+The GPU caster rejects alpha that would quantize to zero before writing depth. Its second pass retains a more opaque rear sample from the same physical body, instead of discarding every sample with that owner. Numeric shadow shaders explicitly use highp float precision. No new render pass or field sampler is added; original alpha, atlas frames, source art, collision, color occlusion and native batching remain intact.
+
+The renderer still stores only two depth/alpha envelopes. More eligible translucent layers, including combinations of partial self coverage and other actors, can exceed that bound; full multilayer transmission and volumetric self-shadowing are not implemented. The 445-frame proof covers the declared 2D/crossed-body proxy, not GLB mesh depth or every continuous 3D pose. The partial-alpha bounds are a raster-support acceptance interval, not a claim of exact subpixel equality.
+
+[Per-frame report](https://ark-whachat.fural.space/shadow-audit/actor-frames-final/report.json) · [Actor frame inspector](https://ark-whachat.fural.space/shadow-audit/actor-frame-gallery.html) · [Targeted regression](https://ark-whachat.fural.space/shadow-audit/actor-fixture/gpu-live-fixture.json)
+
+![Four source actor families and actual two-layer GPU caster fields](sandbox://LS6016e1117dfed3e1902e0f2c/projects/arkadia/repos/arkadia/docs/shadow-audit/actor-frames-final/frames-0.png)
+
 ## Live native-geometry cemetery correction — 33a61b6f
 
 The native-face correction is deployed as release `1792960385498-game-33a61b6f-a27de720abe2`. Desktop and emulated mobile cemetery load without browser errors and pass both isolated GPU cast/receive fixtures. Visual comparison at the same camera confirms that the broad torn grave-shadow streaks in 49806970 are absent in 33a61b6f; the new shadows are solid and retain the cross profile. The live entry/chunk identity matches the clean-worktree build. The 293-variant / 879-directional-control audit was repeated on this geometry. Full animation-frame proof and controlled hardware profiling remain open.

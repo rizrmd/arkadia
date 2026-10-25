@@ -1,3 +1,11 @@
+## Dynamic alpha envelopes and frame-level GPU proof
+
+Numeric shadow fragments use highp precision. Dynamic source coverage below half an RGBA8 alpha step is discarded before depth writes; otherwise an invisible rounded-zero sample can obscure solid geometry. The second dynamic pass accepts a more opaque sample of the same owner (`coverage > primaryAlpha + .5/255`), retaining opaque rear body coverage. Both field layers are tested against receiver height; a receiver above the lower layer receives only the eligible upper layer. Runtime still uses two caster passes and the existing four field samplers in native actor batches.
+
+The per-frame GPU checker covers all 445 original atlas frames at DISPLAY=.66, their manifest pivots, three sun vectors and both mirrors. Revenants use the production ±9 px crossed-body span; 2D hero sources use the production zero span. Every decoded source-frame alpha hash matches inventory. CPU inverse triangles include vertex height quantization; edge acceptance uses measured raster SUBPIXEL_BITS and exact bilinear support bounds. 2,670 cast cases pass. Native batch receiving independently checks high/low planes for both orientations of all frames. These do not prove GLB pose depth.
+
+Two envelopes remain a bounded occlusion approximation; arbitrary translucent overlap and volumetric self-shadowing remain unavailable. Preserve this limit in acceptance reporting rather than presenting the frame checks as a fully volumetric renderer.
+
 ## Native cemetery faces and source-space solid proxies
 
 Four cemetery families and both fallen-column orientations now use the actual numeric box recipes from `ground-kit.mjs`. Their source-camera projection is `(64(u-v),32(u+v)-z)`. These source shapes use **37 world pixels per authored metre**, while terrain relief uses 24; the boxes already store world-pixel `z`, so no metre conversion is applied again. Placement horizontal/vertical scale, mirror, lift and shear are applied once, using the catalog frame and pivot.
