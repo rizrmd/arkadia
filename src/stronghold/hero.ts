@@ -1,3 +1,4 @@
+import {renderQuality} from '../app/render-quality';
 import {requestGameFrame as requestAnimationFrame} from '../app/frame-scheduler';
 import type {Container} from 'pixi.js';
 import {walkableGround,gatePassageColumn,gateTowerFront} from './navigation';
@@ -431,7 +432,8 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
    if(px>=0&&py>=0&&px<o.lightmap.width&&py<o.lightmap.height){probe.clearRect(0,0,1,1);probe.drawImage(o.lightmap,px,py,1,1,0,0,1,1);next=[...probe.getImageData(0,0,1,1).data.slice(0,3)].map(v=>Math.min(255,Math.round(v/8)*8)).join();}}
   tint=next;
  }
- const quantizeRes=(scale:number)=>Math.round(Math.min(3,Math.max(1,scale*Math.min(devicePixelRatio||1,2.5)))*4)/4;
+ const quantizeRes=(scale:number)=>Math.round(Math.min(renderQuality.get().tier==='low'?1.25:3,Math.max(1,scale*Math.min(devicePixelRatio||1,2.5)))*4)/4;
+ let last3dRevision=-1,lastCompositeKey='';
  function render(){
   const s=o.sun(),f=meta.frames[frameIndex()],res=quantizeRes(origin.scale);
   const night=own?Math.max(0,1-s.alpha/.4):0;
@@ -469,14 +471,16 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
    }
   }
   const dir=meta.views?(vertical?1:facing):(vertical&&!pose?1:facing);
+  const dirInput=o.direction();
+  const isMovingNow=state==='move'||Math.hypot(dirInput.x,dirInput.y)>.05;
+  const res3d=active3d?measureTracelogPhase('hero3d',()=>r3d!.updateAndRender({heroId:hero.id,clip:pose?pose.clip:state,moving:isMovingNow,yaw:yaw3d,dt:lastDt,tint,night,sun:s,cell})):null;
+  if(res3d&&res3d.revision===last3dRevision&&key===lastCompositeKey)return;
+  last3dRevision=res3d?.revision??-1;lastCompositeKey=key;
   const local=()=>c.setTransform(k,0,0,k,-box[0]*k,-box[1]*k);
   c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,canvas.width,canvas.height);local();
   if(qNight>0){
    c.save();c.translate(0,-2);c.scale(1,.52);const pg=c.createRadialGradient(0,0,2,0,0,40);pg.addColorStop(0,`rgba(255,206,136,${(.24*qNight).toFixed(3)})`);pg.addColorStop(.55,`rgba(255,178,102,${(.1*qNight).toFixed(3)})`);pg.addColorStop(1,'rgba(255,160,85,0)');c.fillStyle=pg;c.fillRect(-40,-40,80,80);c.restore();
   }
-  const dirInput=o.direction();
-  const isMovingNow=state==='move'||Math.hypot(dirInput.x,dirInput.y)>.05;
-  const res3d=active3d?measureTracelogPhase('hero3d',()=>r3d!.updateAndRender({heroId:hero.id,clip:pose?pose.clip:state,moving:isMovingNow,yaw:yaw3d,dt:lastDt,tint,night,sun:s,cell})):null;
   if(res3d){
    if(res3d.shadow){
     const sh=res3d.shadow;
@@ -497,7 +501,7 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
   }
   cutOut(c,hidden,x,y-lift);
   heroView.sync((box[2]-box[0])*origin.scale,(box[3]-box[1])*origin.scale);
-  Object.assign(canvas.dataset,{hero:hero.id,state,clip:clipName(),clip3d:res3d?.activeClip??'',frame:String(frameIndex()),facing:String(facing),behind:String(hidden.length),tint,night:night.toFixed(2),mode:active3d?'3d-60fps':'2d'});
+  Object.assign(canvas.dataset,{hero:hero.id,state,clip:clipName(),clip3d:res3d?.activeClip??'',frame:String(frameIndex()),facing:String(facing),behind:String(hidden.length),tint,night:night.toFixed(2),mode:active3d?'3d-60fps':'2d',targetFps:String(renderQuality.get().targetFps),shadow:renderQuality.get().simpleShadow?'contact':'projected'});
  }
  function place(){
   heroView.sprite.position.set(origin.x+(x+box[0])*origin.scale,origin.y+(y-liftAt(x,y)+box[1])*origin.scale);

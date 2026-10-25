@@ -1,4 +1,4 @@
-import {MAX_FPS} from './frame-scheduler';
+import {renderQuality} from './render-quality';
 import {Application,BitmapTextPipe,CanvasSource,Container,extensions,GraphicsPipe,NineSliceSpritePipe,Sprite,Texture,TilingSpritePipe} from 'pixi.js';
 import {FrameSet,pickFrameScale} from '../typography/frames';
 import {installMsdfFx,loadFonts} from '../typography/msdf';
@@ -77,14 +77,19 @@ export function ensurePixiRuntime(host?:HTMLElement):Promise<SharedPixiRuntime>{
    preference:'webgl',
    resizeTo:window,
    backgroundColor:0x0b0e12,
-   antialias:true,
+   antialias:renderQuality.get().tier==='high',
    autoDensity:true,
-   // Capped at 2 like the FX stage and world canvas: at DPR 3.25 the full-density backbuffer was ~3M pixels of
-   // fill and MSAA resolve per frame, and phone tracelogs showed combat frames missing vsync with only ~8 ms of JS.
-   resolution:Math.min(window.devicePixelRatio||1,2),
+   // Low-spec phones use a 1x backbuffer and no MSAA; stronger devices can use up to 2x.
+   resolution:Math.min(window.devicePixelRatio||1,renderQuality.get().resolution),
    gcActive:false,
   });
-  app.ticker.maxFPS=MAX_FPS;
+  const applyQuality=()=>{
+   const q=renderQuality.get();app.ticker.maxFPS=q.targetFps;
+   const resolution=Math.min(window.devicePixelRatio||1,q.resolution);
+   if(app.renderer.resolution!==resolution)app.renderer.resize(innerWidth,innerHeight,resolution);
+   Object.assign(app.canvas.dataset,{quality:q.tier,targetFps:String(q.targetFps),renderResolution:String(resolution)});
+  };
+  applyQuality();renderQuality.subscribe(applyQuality);
   app.canvas.id='world-canvas';
   const mountTarget=host??document.querySelector<HTMLElement>('#app')??document.body;
   if(app.canvas.parentElement!==mountTarget){

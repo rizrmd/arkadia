@@ -1,3 +1,4 @@
+import {renderQuality} from '../app/render-quality';
 import {Container} from 'pixi.js';
 import type {FrameSet} from '../typography/frames';
 import {MsdfText} from '../typography/text';
@@ -12,6 +13,7 @@ let capHz=0,lockedSince=0;
 const listeners=new Set<(hz:number)=>void>();
 
 export function noteFrame(now:number,dtMs:number,workMs:number){
+ if(renderQuality.get().targetFps===30){resetFrameCap();return;}
  dts.push(dtMs);works.push(workMs);
  if(dts.length>WINDOW){dts.shift();works.shift();}
  if(dts.length<WINDOW)return;

@@ -1,3 +1,5 @@
+import {measureRenderDetail} from '../app/render-diagnostics';
+import {renderQuality} from '../app/render-quality';
 import type {Application,Container,Texture} from 'pixi.js';
 import type {PixiVfxEffectInstance,PixiVfxRenderer,PixiVfxTextureProvider} from 'nixie-fx/pixi';
 import type {VfxExportedEffect} from 'nixie-fx/export';
@@ -326,8 +328,9 @@ export function createFxStage(o:FxStageOptions){
  // (hit sparks, impacts, cast/swing ground glows) are skipped. Casts, bolts, detonations, telegraphs, level-up and
  // incoming-hit feedback always play, and a device that holds 60 fps never reaches the gate.
  // ?fxbudget=N pins the budget (QA / benchmarks).
- const BUDGET_MIN=260,BUDGET_MAX=1400,pinnedBudget=Number(new URLSearchParams(location.search).get('fxbudget'))||0;
- let budget=pinnedBudget||BUDGET_MAX,frameEma=1000/60,lastFrameAt=0,budgetAt=0,budgetSkipped=0;
+ const BUDGET_MIN=260,pinnedBudget=Number(new URLSearchParams(location.search).get('fxbudget'))||0;
+ let budget=pinnedBudget||renderQuality.get().particleLimit,frameEma=1000/60,lastFrameAt=0,budgetAt=0,budgetSkipped=0;
+ renderQuality.subscribe(q=>{if(!pinnedBudget)budget=Math.min(budget,q.particleLimit);});
  const secondary=(key:string)=>(key.startsWith('shared/hit.')&&key!=='shared/hit.incoming')||key.includes('.impact')||/\.(cast|swing)\.ground$/.test(key);
  // Typical particles one instance of an effect peaks at, so a burst is refused before it overshoots the budget.
  // Bursts granted since the last simulation step are reserved, so a skill hitting several foes in one frame cannot
@@ -429,10 +432,10 @@ export function createFxStage(o:FxStageOptions){
     pool.set(key,list);
     for(let c=0;c<copies;c++){
      if(performance.now()-slice>6){await idle();slice=performance.now();}
-     const inst=P.vfx.createEffect(fx,{projection:proj,position:[0,0,0],seed:c+1,timeSeconds:0,autoStart:false,addToStage:false});
+     const inst=measureRenderDetail('fxCreate',()=>P.vfx.createEffect(fx,{projection:proj,position:[0,0,0],seed:c+1,timeSeconds:0,autoStart:false,addToStage:false}));
      shareParticleEffectDefinition(inst.definition);
      inst.spawn({position:[0,0,0],seed:c+1,timeSeconds:0});
-     inst.update(0.08,0.08);
+     measureRenderDetail('fxWarmup',()=>inst.update(0.08,0.08));
      inst.stop();inst.root.visible=false;P.vfx.removeEffect(inst,false);
      list.push(inst);
     }
@@ -483,7 +486,7 @@ export function createFxStage(o:FxStageOptions){
   let inst=pool.get(key)?.pop();
   if(inst){P.vfx.addEffect(inst,true);inst.setProjection(proj);inst.spawn({position:[0,0,0],seed,timeSeconds:clock});inst.root.visible=true;}
   else{
-   inst=P.vfx.createEffect(fx,{projection:proj,position:[0,0,0],seed,timeSeconds:clock,autoStart:false});
+   inst=measureRenderDetail('fxCreate',()=>P.vfx.createEffect(fx,{projection:proj,position:[0,0,0],seed,timeSeconds:clock,autoStart:false}));
    import('nixie-fx').then(m=>m.shareParticleEffectDefinition(inst!.definition)).catch(()=>{});
    inst.spawn({position:[0,0,0],seed,timeSeconds:clock});
   }
@@ -514,8 +517,8 @@ export function createFxStage(o:FxStageOptions){
     // A browser capping rAF at 30 fps (Energy Saver, frame-cap.ts) gives long frames with light work: fewer
     // particles cannot bring 60 back, so the budget holds and recovers instead.
     const capped=frameCapHz()>0;
-    if(frameEma>20&&!capped&&activeParticles()>120)budget=Math.max(BUDGET_MIN,Math.round(budget*.8));
-    else if(frameEma<17.5||capped)budget=Math.min(BUDGET_MAX,Math.round(budget*1.1)+10);
+    if(frameEma>1000/renderQuality.get().targetFps*1.2&&!capped&&activeParticles()>120)budget=Math.max(BUDGET_MIN,Math.round(budget*.8));
+    else if(frameEma<1000/renderQuality.get().targetFps*1.05||capped)budget=Math.min(renderQuality.get().particleLimit,Math.round(budget*1.1)+10);
    }
   }
   for(let i=pending.length-1;i>=0;i--)if(pending[i].at<=clock){const p=pending.splice(i,1)[0];p.run();}

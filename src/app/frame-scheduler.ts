@@ -1,10 +1,12 @@
-// Share one 60 Hz cadence across game loops so skipped display refreshes do no game work.
+import {renderQuality} from './render-quality';
+// Share the selected 30/60 Hz cadence across game loops so skipped refreshes do no game work.
 export const MAX_FPS=60;
-const interval=1000/MAX_FPS;
+
 const pending=new Map<number,FrameRequestCallback>();
 let nextId=0,raf=0,nextFrame=0;
 function tick(now:number){
  raf=0;
+ const interval=1000/renderQuality.get().targetFps;
  if(now+0.01>=nextFrame){
   // Preserve the fractional cadence on 120/144/240 Hz displays, without catch-up bursts after a pause.
   nextFrame=now+interval-Math.max(0,(now-nextFrame)%interval);

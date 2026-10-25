@@ -9,6 +9,8 @@
 //    directional sun shadows starting at ht=0 directly from each boot's contact pixels (zero foot-shadow gap).
 
 import type { Sun } from './daylight';
+import {renderQuality} from '../app/render-quality';
+import {measureRenderDetail} from '../app/render-diagnostics';
 
 const dynImport = new Function('u', 'return import(u)') as (url: string) => Promise<any>;
 
@@ -125,6 +127,7 @@ interface ThreeHeroInstance {
     spriteH: number;
     /** Headroom rows (sprite px) above the cell; the cell itself starts at this row. */
     spriteTop: number;
+    revision: number;
     shadow: ShadowDrawResult | null;
     activeClip: string;
   } | null;
@@ -138,26 +141,27 @@ export const HERO_3D_HEADROOM = 22;
 export function get3dHeroRenderer(): ThreeHeroInstance {
   if (sharedInstance) return sharedInstance;
 
-  // Render at 2x cell resolution (228x206 for 114x103 cell) so the hand-painted ink outline and tonal
-  // stepping match the crisp pixel density of the 2D isometric sprites while staying <0.3ms per frame.
+  // Use 1x cell resolution on low-spec devices and 2x on stronger devices. The same
+  // hand-painted shader, headroom and foot pivot apply at either resolution.
   const CELL_W = 114;
   const CELL_H = 103;
-  const SCALE = 2;
-  const W = CELL_W * SCALE; // 228
-  const H = CELL_H * SCALE; // 206
+  let SCALE = renderQuality.get().heroScale;
+  (window as any).__HERO_3D_SCALE__=SCALE;
+  let W = CELL_W * SCALE; // 228
+  let H = CELL_H * SCALE; // 206
   // Transparent rows above the cell so a hand raised over the head while casting is not cut off. The cell maths
   // (pivot, foot shadow) still use the 114x103 cell below it.
-  const TOP = HERO_3D_HEADROOM * SCALE;
-  const HS = H + TOP;
+  let TOP = HERO_3D_HEADROOM * SCALE;
+  let HS = H + TOP;
 
   // One WebGL canvas holds both outputs that hero.ts composites: the hand-painted sprite (top W x HS) and the
   // foot-anchored ground shadow (below it, at 1x cell scale). Every pass runs on the GPU and nothing is read back,
   // so the main thread never waits for the GPU (the former readPixels + per-pixel JS passes cost ~10ms a frame
   // on mid-range phones).
-  const SHADOW_W = 320; // |sun.dx| <= 1.7 and |sun.dy| <= .85 keep the projected shadow inside 304 x 208
-  const SHADOW_H = 224;
-  const CANVAS_W = Math.max(W, SHADOW_W);
-  const CANVAS_H = HS + SHADOW_H;
+  let SHADOW_W = renderQuality.get().simpleShadow?0:320; // |sun.dx| <= 1.7 and |sun.dy| <= .85 keep the projected shadow inside 304 x 208
+  let SHADOW_H = renderQuality.get().simpleShadow?0:224;
+  let CANVAS_W = Math.max(W, SHADOW_W);
+  let CANVAS_H = HS + SHADOW_H;
 
   const glCanvas = document.createElement('canvas');
   glCanvas.width = CANVAS_W;
@@ -285,6 +289,7 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
    * 3. Tint / night grading and the foot-to-head vertical gradient
    * `y` below is top-down like the old ImageData loop; GL rows are bottom-up.
    */
+  function createSpritePipeline() {
   const POST_FRAG = `
     uniform sampler2D tSrc;
     uniform vec2 uSize;
@@ -307,12 +312,12 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
         float minN = min(min(l.a, r.a), min(u.a, d.a));
         if (minN < 80.0) {
           rgb = mix(rgb, INK, min(0.82, (80.0 - minN) / 80.0 * 0.78));
-        } else if (y > ${68 + TOP}.0) {
+        } else if (y > ${34*SCALE + TOP}.0) {
           float lumC = dot(c.rgb, LUM);
           float diff = max(abs(lumC - dot(r.rgb, LUM)), abs(lumC - dot(d.rgb, LUM)));
           if (diff > 56.0) rgb = mix(rgb, INK, min(0.22, (diff - 56.0) * 0.0045));
         }
-        float vGrad = y > ${155 + TOP}.0 ? max(0.76, 1.0 - (y - ${155 + TOP}.0) * 0.0055) : 1.03;
+        float vGrad = y > ${77.5*SCALE + TOP} ? max(0.76, 1.0 - (y - ${77.5*SCALE + TOP}) * ${.011/SCALE}) : 1.03;
         gl_FragColor = vec4(min(vec3(255.0), rgb * uTint * vGrad), min(255.0, c.a * 1.15)) / 255.0;
         return;
       }
@@ -486,7 +491,6 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
       gl_FragColor = blurred > 14.0 ? vec4(20.0, 28.0, 36.0, min(255.0, blurred)) / 255.0 : vec4(0.0);
     }`;
 
-  function createSpritePipeline() {
     srcTex = new THREE.FramebufferTexture(W, HS);
     const material = (fragmentShader: string, uniforms: Record<string, { value: any }>, vertexShader?: string) =>
       new THREE.ShaderMaterial({
@@ -521,6 +525,8 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
       uTint: { value: postTint }
     });
 
+    // Low/balanced use a cached contact shadow: do not allocate or compile four projection passes.
+    if(renderQuality.get().simpleShadow)return;
     botRT = target(CELL_W, 1);
     paramRT = target(CELL_W, 2);
     densRT = target(SHADOW_W, SHADOW_H);
@@ -575,10 +581,18 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
    * bottom pixels of BOTH of the character's boots (`ht = 0` at `y = footY[x]`), eliminating
    * any gap between either boot and its shadow while projecting smoothly along the sun vector.
    */
+  const contactCanvas=document.createElement('canvas');contactCanvas.width=64;contactCanvas.height=20;
+  const contactCtx=contactCanvas.getContext('2d')!;
+  contactCtx.setTransform(1,0,0,.3,32,8);
+  const contactGradient=contactCtx.createRadialGradient(0,0,3,0,0,26);
+  contactGradient.addColorStop(0,'rgba(20,28,36,.85)');contactGradient.addColorStop(1,'rgba(20,28,36,0)');
+  contactCtx.fillStyle=contactGradient;contactCtx.fillRect(-32,-27,64,67);
+  const contactShadow:ShadowDrawResult={canvas:contactCanvas,sx:0,sy:0,ox:32,oy:8,sw:64,sh:20};
   function renderFootAnchoredShadow(
     s: Sun,
     cell: { w: number; h: number; pivot: { x: number; y: number } }
   ): ShadowDrawResult {
+    if(renderQuality.get().simpleShadow)return contactShadow;
     const cw = CELL_W;
     // Even at night (s.alpha === 0), cast a subtle moonlight/torch ground shadow so the hero is grounded
     const hasSun = Boolean(s && s.alpha > 0.02);
@@ -850,6 +864,23 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
     }
   })();
 
+  let pipelineSimple=renderQuality.get().simpleShadow;
+  function syncPipelineQuality(){
+    const quality=renderQuality.get();
+    if(SCALE===quality.heroScale&&pipelineSimple===quality.simpleShadow)return;
+    // A downgrade is one-way for this page load. Release the old targets instead of retaining both quality sets.
+    for(const pass of [postScene,botScene,paramScene,scatterScene,featherScene])pass?.traverse((obj:any)=>{obj.geometry?.dispose();obj.material?.dispose();});
+    for(const target of [srcTex,botRT,paramRT,densRT])target?.dispose();
+    postScene=botScene=paramScene=scatterScene=featherScene=null;botRT=paramRT=densRT=null;
+    SCALE=quality.heroScale;pipelineSimple=quality.simpleShadow;
+    W=CELL_W*SCALE;H=CELL_H*SCALE;TOP=HERO_3D_HEADROOM*SCALE;HS=H+TOP;
+    SHADOW_W=pipelineSimple?0:320;SHADOW_H=pipelineSimple?0:224;
+    CANVAS_W=Math.max(W,SHADOW_W);CANVAS_H=HS+SHADOW_H;
+    renderer.setSize(CANVAS_W,CANVAS_H,false);createSpritePipeline();copyAt.set(0,SHADOW_H);
+    (window as any).__HERO_3D_SCALE__=SCALE;cachedResult=null;
+  }
+  let revision=0,lastRenderedAt=-Infinity,lastRenderKey='',pendingDt=0;
+  let cachedResult:ReturnType<ThreeHeroInstance['updateAndRender']>=null;
   sharedInstance = {
     canvas: glCanvas,
     style,
@@ -861,6 +892,7 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
       ensureHeroModel(heroId);
       const entry = heroEntries.get(heroId);
       if (!entry || !entry.ready || !renderer || style === '2d') return null;
+      measureRenderDetail('heroQualityChange',syncPipelineQuality);
 
       for (const [id, other] of heroEntries.entries()) {
         if (other.heroRoot) other.heroRoot.visible = id === heroId;
@@ -927,12 +959,16 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
         sunLight.color.setHex(night > 0.3 ? 0xffcfa3 : 0xfff0cc);
       }
 
-      entry.mixer.update(dt);
+      pendingDt+=dt;
+      const cacheKey=[heroId,targetClip,currentYaw.toFixed(3),tint,Math.round(night*50),sun?.alpha.toFixed(2),sun?.dx.toFixed(2),sun?.dy.toFixed(2),renderQuality.get().tier].join('|');
+      if(cachedResult&&targetClip==='idle'&&!moving&&cacheKey===lastRenderKey&&now-lastRenderedAt<1000/renderQuality.get().idleFps)return cachedResult;
+      const renderDt=pendingDt;pendingDt=0;lastRenderedAt=now;lastRenderKey=cacheKey;
+      measureRenderDetail('heroAnimation',()=>entry.mixer.update(renderDt));
 
       // Casting raises one hand overhead instead of the clips' forward reach. It is laid over the evaluated clip
       // (every cast clip keys these bones each frame), so the legs, torso and other arm keep their authored motion.
       const raiseTo = entry.activeClip === 'idle_cast' || entry.activeClip === 'run_cast' ? 1 : 0;
-      entry.castRaise += (raiseTo - entry.castRaise) * Math.min(1, dt * (raiseTo ? 10 : 7));
+      entry.castRaise += (raiseTo - entry.castRaise) * Math.min(1, renderDt * (raiseTo ? 10 : 7));
       if (entry.castRaise > 0.003) raiseCastingArm(entry, now / 1000);
 
       // Dynamically ground the lowest foot/toe bone to y = 0 so the boots never sink below the ground pivot
@@ -959,16 +995,18 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
       renderer.setRenderTarget(null);
       renderer.clear(true, true, true);
       renderer.setViewport(0, SHADOW_H, W, HS);
-      renderer.render(scene, orthoCam);
-      renderer.copyFramebufferToTexture(srcTex, copyAt);
+      measureRenderDetail('heroDraw',()=>renderer.render(scene, orthoCam));
+      measureRenderDetail('heroCopy',()=>renderer.copyFramebufferToTexture(srcTex, copyAt));
 
       // Project realistic ground shadow anchored directly at the boots (ht = 0 at y = botCol[x])
-      const shadow = sun && cell ? renderFootAnchoredShadow(sun, cell) : null;
+      const shadow = sun && cell ? measureRenderDetail('heroShadow',()=>renderFootAnchoredShadow(sun, cell)) : null;
 
       // Apply 2D Hand-Painted Sprite Pass (dark ink outline + internal creases) over the raw 3D pass
-      applyHandPaintedSpritePass(tint, night);
+      measureRenderDetail('heroPost',()=>applyHandPaintedSpritePass(tint, night));
 
-      return { sprite: glCanvas, spriteW: W, spriteH: HS, spriteTop: TOP, shadow, activeClip: entry.activeClip };
+      cachedResult={ sprite: glCanvas, spriteW: W, spriteH: HS, spriteTop: TOP, revision:++revision, shadow, activeClip: entry.activeClip };
+      glCanvas.dataset.heroScale=String(SCALE);glCanvas.dataset.shadow=renderQuality.get().simpleShadow?'contact':'projected';
+      return cachedResult;
     }
   };
 

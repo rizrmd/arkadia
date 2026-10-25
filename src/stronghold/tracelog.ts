@@ -1,3 +1,5 @@
+import {renderQuality} from '../app/render-quality';
+import {recordRenderOperation,measureRenderDetail,takeRenderDetails,recentRenderOperations,type RenderOperation} from '../app/render-diagnostics';
 import {requestGameFrame as requestAnimationFrame} from '../app/frame-scheduler';
 import type {SharedPixiRuntime} from '../app/loader';
 import type {Net} from './net/client';
@@ -31,6 +33,7 @@ export interface TracelogPhaseBreakdown {
 }
 
 export interface TracelogFrameSample {
+ details?:Record<string,number>;
  t: number;
  dtMs: number;
  fps: number;
@@ -67,6 +70,9 @@ export interface TracelogEntry {
   hardwareConcurrency?: number;
   deviceMemoryGb?: number;
   battery?: {charging: boolean; level: number};
+  build?:string;
+  gpu?:string;
+  renderQuality?:ReturnType<typeof renderQuality.snapshot>&{resolution:number;antialias:boolean;heroScale?:number};
  };
  metrics: {
   fps: number;
@@ -118,6 +124,7 @@ export interface TracelogEntry {
  };
  frames: TracelogFrameSample[];
  longTasks?: TracelogLongTask[];
+ renderOperations?:RenderOperation[];
 }
 
 export interface TracelogSendResult {
@@ -217,9 +224,9 @@ export function startFpsTracelog(opts: FpsTracelogOptions) {
   params.has('tracelog') || params.has('fpsThreshold') || params.has('fpsSpikeMs') || params.has('fpsCooldownMs');
  const autoTriggerEnabled = !navigator.webdriver || hasExplicitTracelogParam;
  const config = {
-  // Any drop below the 60 fps target is reported: one missed vsync in the 30-frame window averages ~58 fps.
-  // 59 (not 60) keeps rAF timing jitter on a steady 60 Hz display from triggering; the cooldown limits volume.
-  thresholdFps: Math.max(5, Math.min(59.5, Number(params.get('fpsThreshold')) || 59)),
+  // Report drops relative to the selected 30/60 FPS target. A deliberate 30 FPS mode
+  // must not fill production logs with false low-FPS or browser-cap reports.
+  thresholdFps: Math.max(5, Math.min(59.5, Number(params.get('fpsThreshold')) || renderQuality.get().targetFps-1)),
   spikeMs: Math.max(34, Math.min(1000, Number(params.get('fpsSpikeMs')) || 85)),
   cooldownMs: Math.max(500, Number(params.get('fpsCooldownMs')) || 10000),
   windowFrames: 30,
@@ -229,6 +236,14 @@ export function startFpsTracelog(opts: FpsTracelogOptions) {
 
  const {rt} = opts;
  const canvas = rt.app.canvas;
+ const gl=(rt.app.renderer as any).gl as WebGL2RenderingContext|undefined;
+ let gpu='';
+ if(gl){
+  try{const ext=gl.getExtension('WEBGL_debug_renderer_info');gpu=String(gl.getParameter(ext?.UNMASKED_RENDERER_WEBGL??gl.RENDERER)).slice(0,256);}catch{}
+  // Timing source.update() only measures marking a texture dirty. The actual upload happens here in Pixi's GL pass.
+  for(const key of ['texImage2D','texSubImage2D'] as const){const original=gl[key];(gl as any)[key]=function(...args:any[]){return measureRenderDetail('textureUpload',()=>original.apply(gl,args as any));};}
+ }
+ const build=document.querySelector<HTMLScriptElement>('script[type="module"][src*="/assets/"]')?.getAttribute('src')??'development';
 
  // Instrument PixiJS renderer.render pass duration per frame.
  const renderer = rt.app.renderer as any;
@@ -265,6 +280,15 @@ export function startFpsTracelog(opts: FpsTracelogOptions) {
   }
  }
 
+ // Chrome exposes the scripts responsible for long animation frames without running a profiler.
+ try{
+  if(PerformanceObserver.supportedEntryTypes.includes('long-animation-frame')){
+   const observer=new PerformanceObserver(list=>{for(const frame of list.getEntries())for(const script of (frame as any).scripts??[]){
+    if(script.duration>=8)recordRenderOperation({phase:'script',startTime:script.executionStart??script.startTime,duration:script.duration,sourceURL:String(script.sourceURL??'').slice(0,512),sourceFunctionName:String(script.sourceFunctionName??script.invoker??'').slice(0,160)});
+   }});
+   observer.observe({type:'long-animation-frame',buffered:true});
+  }
+ }catch{}
  const ring: TracelogFrameSample[] = [];
  const history: TracelogSendResult[] = [];
  let inFlight: Promise<TracelogSendResult | null> | null = null;
@@ -274,6 +298,10 @@ export function startFpsTracelog(opts: FpsTracelogOptions) {
  let warmupFrames = 0;
  let lastSurfacePaints = 0;
  let seqCounter = 0;
+ renderQuality.subscribe(()=>{
+  ring.length=0;warmupFrames=0;lastNow=0;resetFrameCap();
+  if(!params.has('fpsThreshold'))config.thresholdFps=renderQuality.get().targetFps-1;
+ });
 
  const resetWindowForVisibility = () => {
   ring.length = 0;
@@ -331,19 +359,19 @@ export function startFpsTracelog(opts: FpsTracelogOptions) {
     unaccountedMs: 0,
    };
    return {
-    fps: 60,
-    minFps: 60,
-    targetFps: 60,
+    fps: renderQuality.get().targetFps,
+    minFps: renderQuality.get().targetFps,
+    targetFps: renderQuality.get().targetFps,
     thresholdFps: config.thresholdFps,
     windowMs: 0,
     sampleCount: 0,
     slowFrames: 0,
     droppedFrames: 0,
-    avgFrameMs: 16.67,
-    p50FrameMs: 16.67,
-    p95FrameMs: 16.67,
-    p99FrameMs: 16.67,
-    maxFrameMs: 16.67,
+    avgFrameMs: round2(1000/renderQuality.get().targetFps),
+    p50FrameMs: round2(1000/renderQuality.get().targetFps),
+    p95FrameMs: round2(1000/renderQuality.get().targetFps),
+    p99FrameMs: round2(1000/renderQuality.get().targetFps),
+    maxFrameMs: round2(1000/renderQuality.get().targetFps),
     phasesAvg: zeroPhases,
     phasesMax: {...zeroPhases},
     bottleneck: 'none',
@@ -358,8 +386,8 @@ export function startFpsTracelog(opts: FpsTracelogOptions) {
   const maxFrameMs = round2(dts[dts.length - 1]);
   const fps = round2(windowMs > 0 ? (1000 * n) / windowMs : 60);
   const minFps = round2(maxFrameMs > 0 ? 1000 / maxFrameMs : 60);
-  const slowFrames = samples.filter(s => s.dtMs > 33.4).length;
-  const droppedFrames = samples.reduce((acc, s) => acc + Math.max(0, Math.floor(s.dtMs / 16.67) - 1), 0);
+  const slowFrames = samples.filter(s => s.dtMs > 2000/renderQuality.get().targetFps+.1).length;
+  const droppedFrames = samples.reduce((acc, s) => acc + Math.max(0, Math.floor(s.dtMs / (1000/renderQuality.get().targetFps)+.01) - 1), 0);
 
   const sumPhases: TracelogPhaseBreakdown = {
    worldDrawMs: 0,
@@ -443,7 +471,7 @@ export function startFpsTracelog(opts: FpsTracelogOptions) {
   return {
    fps,
    minFps,
-   targetFps: 60,
+   targetFps: renderQuality.get().targetFps,
    thresholdFps: config.thresholdFps,
    windowMs: round2(windowMs),
    sampleCount: n,
@@ -529,11 +557,14 @@ export function startFpsTracelog(opts: FpsTracelogOptions) {
     hardwareConcurrency: navigator.hardwareConcurrency || undefined,
     deviceMemoryGb: (navigator as any).deviceMemory || undefined,
     battery: batteryState(),
+    build,gpu,
+    renderQuality:{...renderQuality.snapshot(),resolution:rt.app.renderer.resolution,antialias:gl?.getContextAttributes()?.antialias??false,heroScale:(window as any).__HERO_3D_SCALE__},
    },
    metrics,
    scene: buildSceneSnapshot(),
    frames: recentFrames,
    longTasks: relevantLongTasks.length ? relevantLongTasks : undefined,
+   renderOperations:recentRenderOperations().filter(op=>op.startTime+op.duration>=recentStart-250),
   };
  }
 
@@ -584,6 +615,7 @@ export function startFpsTracelog(opts: FpsTracelogOptions) {
   const {foesRendered, particles} = readLiveCounts();
 
   const sample: TracelogFrameSample = {
+   details:takeRenderDetails(),
    t: round2(now),
    dtMs: round2(dtMs),
    fps: round2(dtMs > 0 ? 1000 / dtMs : 60),
@@ -619,7 +651,7 @@ export function startFpsTracelog(opts: FpsTracelogOptions) {
 
   // 2. Sustained low FPS over the active window
   if (windowSamples.length >= 20 && windowSumMs >= 500) {
-   const slowCount = windowSamples.filter(s => s.dtMs > 33.4).length;
+   const slowCount = windowSamples.filter(s => s.dtMs > 2000/renderQuality.get().targetFps+.1).length;
    if (rollingFps < config.thresholdFps || slowCount >= 8) {
     return triggerTracelog('sustained_low_fps');
    }
@@ -632,11 +664,11 @@ export function startFpsTracelog(opts: FpsTracelogOptions) {
   const frameEnd = performance.now();
   const phases = resetFramePhases();
   if (document.hidden || now < hiddenUntil || frameEnd < hiddenUntil) {
-   lastNow = 0;
+   takeRenderDetails();lastNow = 0;
    return;
   }
   if (canvas.dataset.ready !== 'true' || document.querySelector('#loading-screen')) {
-   lastNow = 0;
+   takeRenderDetails();lastNow = 0;
    return;
   }
   if (!lastNow) {
@@ -654,6 +686,7 @@ export function startFpsTracelog(opts: FpsTracelogOptions) {
    hiddenUntil = frameEnd + 1500;
    return;
   }
+  renderQuality.noteFrame(frameEnd,dtMs,frameCapHz()>0);
   noteFrame(frameEnd, dtMs, phases.worldDraw + phases.encountersStep + phases.encountersRender + phases.pixiRender + phases.net);
   void pushSample(frameEnd, dtMs, phases, autoTriggerEnabled);
  }
@@ -708,10 +741,10 @@ export function startFpsTracelog(opts: FpsTracelogOptions) {
    warmupFrames = Math.max(warmupFrames, 20);
    let tCursor = (ring[ring.length - 1]?.t ?? performance.now()) + 16;
    for (let k = 0; k < config.windowFrames; k++) {
-    tCursor += 16.6;
+    tCursor += 1000/renderQuality.get().targetFps;
     pushSample(
      tCursor,
-     16.6,
+     1000/renderQuality.get().targetFps,
      {worldDraw: 1.2, worldPaint: 0, shadowCast: 0, encountersStep: 1.5, encountersRender: 2.1, pixiRender: 3.1, net: 0.3, hero3d: 0, vfx: 0},
      false,
     );

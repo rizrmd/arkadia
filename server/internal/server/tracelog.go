@@ -23,15 +23,40 @@ const (
 	maxTracelogFileSz  = 2 * 1024 * 1024
 )
 
+// TracelogRenderQuality records the selected profile and actual renderer configuration.
+type TracelogRenderQuality struct {
+	Tier          string  `json:"tier"`
+	TargetFPS     int     `json:"targetFps"`
+	Resolution    float64 `json:"resolution"`
+	Antialias     bool    `json:"antialias"`
+	HeroScale     int     `json:"heroScale"`
+	IdleFPS       int     `json:"idleFps"`
+	SimpleShadow  bool    `json:"simpleShadow"`
+	ParticleLimit int     `json:"particleLimit"`
+	Reason        string  `json:"reason"`
+	Pinned        bool    `json:"pinned"`
+}
+
+type TracelogRenderOperation struct {
+	Phase              string  `json:"phase"`
+	StartTime          float64 `json:"startTime"`
+	Duration           float64 `json:"duration"`
+	SourceURL          string  `json:"sourceURL,omitempty"`
+	SourceFunctionName string  `json:"sourceFunctionName,omitempty"`
+}
+
 // TracelogClient describes the browser environment that experienced the FPS drop.
 type TracelogClient struct {
-	URL                 string  `json:"url"`
-	UserAgent           string  `json:"userAgent"`
-	ViewportWidth       int     `json:"viewportWidth"`
-	ViewportHeight      int     `json:"viewportHeight"`
-	DPR                 float64 `json:"dpr"`
-	HardwareConcurrency int     `json:"hardwareConcurrency,omitempty"`
-	DeviceMemoryGB      float64 `json:"deviceMemoryGb,omitempty"`
+	Build               string                 `json:"build,omitempty"`
+	GPU                 string                 `json:"gpu,omitempty"`
+	RenderQuality       *TracelogRenderQuality `json:"renderQuality,omitempty"`
+	URL                 string                 `json:"url"`
+	UserAgent           string                 `json:"userAgent"`
+	ViewportWidth       int                    `json:"viewportWidth"`
+	ViewportHeight      int                    `json:"viewportHeight"`
+	DPR                 float64                `json:"dpr"`
+	HardwareConcurrency int                    `json:"hardwareConcurrency,omitempty"`
+	DeviceMemoryGB      float64                `json:"deviceMemoryGb,omitempty"`
 	// Battery state, when the browser exposes it: Chrome's Energy Saver caps the page at 30 fps on battery.
 	Battery *TracelogBattery `json:"battery,omitempty"`
 }
@@ -112,21 +137,22 @@ type TracelogScene struct {
 
 // TracelogFrameSample is a single animation frame sample leading up to and during the FPS drop.
 type TracelogFrameSample struct {
-	T                  float64 `json:"t"`
-	DtMs               float64 `json:"dtMs"`
-	FPS                float64 `json:"fps"`
-	WorldDrawMs        float64 `json:"worldDrawMs,omitempty"`
-	WorldPaintMs       float64 `json:"worldPaintMs,omitempty"`
-	ShadowCastMs       float64 `json:"shadowCastMs,omitempty"`
-	EncountersStepMs   float64 `json:"encountersStepMs,omitempty"`
-	EncountersRenderMs float64 `json:"encountersRenderMs,omitempty"`
-	PixiRenderMs       float64 `json:"pixiRenderMs,omitempty"`
-	NetMs              float64 `json:"netMs,omitempty"`
-	Hero3DMs           float64 `json:"hero3dMs,omitempty"`
-	VfxMs              float64 `json:"vfxMs,omitempty"`
-	FoesRendered       int     `json:"foesRendered,omitempty"`
-	Particles          int     `json:"particles,omitempty"`
-	SurfaceRepainted   bool    `json:"surfaceRepainted,omitempty"`
+	Details            map[string]float64 `json:"details,omitempty"`
+	T                  float64            `json:"t"`
+	DtMs               float64            `json:"dtMs"`
+	FPS                float64            `json:"fps"`
+	WorldDrawMs        float64            `json:"worldDrawMs,omitempty"`
+	WorldPaintMs       float64            `json:"worldPaintMs,omitempty"`
+	ShadowCastMs       float64            `json:"shadowCastMs,omitempty"`
+	EncountersStepMs   float64            `json:"encountersStepMs,omitempty"`
+	EncountersRenderMs float64            `json:"encountersRenderMs,omitempty"`
+	PixiRenderMs       float64            `json:"pixiRenderMs,omitempty"`
+	NetMs              float64            `json:"netMs,omitempty"`
+	Hero3DMs           float64            `json:"hero3dMs,omitempty"`
+	VfxMs              float64            `json:"vfxMs,omitempty"`
+	FoesRendered       int                `json:"foesRendered,omitempty"`
+	Particles          int                `json:"particles,omitempty"`
+	SurfaceRepainted   bool               `json:"surfaceRepainted,omitempty"`
 }
 
 // TracelogLongTask records a browser PerformanceObserver longtask (>50ms main thread block).
@@ -138,16 +164,17 @@ type TracelogLongTask struct {
 
 // TracelogEntry is a complete FPS drop diagnostic tracelog stored on the server.
 type TracelogEntry struct {
-	ID         string                `json:"id"`
-	ReceivedAt string                `json:"receivedAt"`
-	ClientTime string                `json:"clientTime,omitempty"`
-	Reason     string                `json:"reason"`
-	Seq        int                   `json:"seq"`
-	Client     TracelogClient        `json:"client"`
-	Metrics    TracelogMetrics       `json:"metrics"`
-	Scene      TracelogScene         `json:"scene"`
-	Frames     []TracelogFrameSample `json:"frames"`
-	LongTasks  []TracelogLongTask    `json:"longTasks,omitempty"`
+	RenderOperations []TracelogRenderOperation `json:"renderOperations,omitempty"`
+	ID               string                    `json:"id"`
+	ReceivedAt       string                    `json:"receivedAt"`
+	ClientTime       string                    `json:"clientTime,omitempty"`
+	Reason           string                    `json:"reason"`
+	Seq              int                       `json:"seq"`
+	Client           TracelogClient            `json:"client"`
+	Metrics          TracelogMetrics           `json:"metrics"`
+	Scene            TracelogScene             `json:"scene"`
+	Frames           []TracelogFrameSample     `json:"frames"`
+	LongTasks        []TracelogLongTask        `json:"longTasks,omitempty"`
 }
 
 // TracelogSummary aggregates received FPS drop tracelogs by reason and bottleneck.
@@ -338,11 +365,35 @@ func (s *Server) postTracelog(w http.ResponseWriter, r *http.Request) {
 		entry.LongTasks = entry.LongTasks[len(entry.LongTasks)-maxLongTasks:]
 	}
 
+	entry.Client.Build = truncStr(entry.Client.Build, 512)
+	entry.Client.GPU = truncStr(entry.Client.GPU, 256)
+	if len(entry.RenderOperations) > 32 {
+		entry.RenderOperations = entry.RenderOperations[len(entry.RenderOperations)-32:]
+	}
+	for i := range entry.RenderOperations {
+		op := &entry.RenderOperations[i]
+		op.Phase = truncStr(op.Phase, 64)
+		op.StartTime = cleanFloat(op.StartTime)
+		op.Duration = cleanFloat(op.Duration)
+		op.SourceURL = truncStr(op.SourceURL, 512)
+		op.SourceFunctionName = truncStr(op.SourceFunctionName, 160)
+	}
 	// Derive metrics from frames if omitted or sanitize numbers.
 	if len(entry.Frames) > 0 {
 		var sumDt, maxDt, minFps float64
 		for i := range entry.Frames {
 			f := &entry.Frames[i]
+			if len(f.Details) > 16 {
+				f.Details = nil
+			} else {
+				for key, value := range f.Details {
+					if len(key) > 64 {
+						delete(f.Details, key)
+					} else {
+						f.Details[key] = cleanFloat(value)
+					}
+				}
+			}
 			f.T = cleanFloat(f.T)
 			f.DtMs = cleanFloat(f.DtMs)
 			if f.FPS <= 0 && f.DtMs > 0 {

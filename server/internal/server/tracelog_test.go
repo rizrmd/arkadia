@@ -340,3 +340,40 @@ func TestTracelogRotationKeepsHistory(t *testing.T) {
 		}
 	}
 }
+
+func TestTracelogRetainsLowSpecRenderDiagnostics(t *testing.T) {
+	ts, _ := newTestServer(t)
+	payload := `{"id":"tl-low-spec","reason":"manual","client":{"build":"/assets/index-test.js","gpu":"Test GPU","renderQuality":{"tier":"low","targetFps":30,"resolution":1,"antialias":false,"heroScale":1,"simpleShadow":true}},"metrics":{"fps":30,"targetFps":30,"thresholdFps":29},"frames":[{"t":100,"dtMs":33.33,"details":{"heroDraw":2.5,"textureUpload":1.25}}],"renderOperations":[{"phase":"script","startTime":1,"duration":250,"sourceURL":"/assets/main-test.js","sourceFunctionName":"loadArt"}]}`
+	res, err := http.Post(ts.URL+"/api/tracelogs", "application/json", bytes.NewBufferString(payload))
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer res.Body.Close()
+	if res.StatusCode != 201 {
+		t.Fatalf("post status %d", res.StatusCode)
+	}
+	got, err := http.Get(ts.URL + "/api/tracelogs/tl-low-spec")
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer got.Body.Close()
+	var entry TracelogEntry
+	if err = json.NewDecoder(got.Body).Decode(&entry); err != nil {
+		t.Fatal(err)
+	}
+	if entry.Client.RenderQuality == nil || entry.Client.RenderQuality.TargetFPS != 30 || entry.Client.RenderQuality.HeroScale != 1 || entry.Client.RenderQuality.Antialias {
+		t.Fatalf("lost render quality: %+v", entry.Client)
+	}
+	if entry.Client.Build != "/assets/index-test.js" || entry.Client.GPU != "Test GPU" {
+		t.Fatalf("lost build/GPU: %+v", entry.Client)
+	}
+	if len(entry.Frames) != 1 || entry.Frames[0].Details["textureUpload"] != 1.25 {
+		t.Fatalf("lost frame details: %+v", entry.Frames)
+	}
+	if len(entry.RenderOperations) != 1 || entry.RenderOperations[0].SourceFunctionName != "loadArt" {
+		t.Fatalf("lost operation attribution: %+v", entry.RenderOperations)
+	}
+	if entry.Metrics.TargetFPS != 30 {
+		t.Fatalf("wrong target: %+v", entry.Metrics)
+	}
+}
