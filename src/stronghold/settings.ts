@@ -1,12 +1,14 @@
+import type {Container} from 'pixi.js';
+import {createHudActionButton,hudActionPosition} from './hud-action-button';
 import {audioSnapshot} from '../app/game-audio';
 import './settings.css';
 import {gameSettings,type GameSettings} from '../app/settings-state';
 import {setGamePaused} from '../app/frame-scheduler';
 import {resetProgression,RESET_EXPLANATION} from './reset-progression';
 
-type Options={bounds:()=>{x:number;y:number;width:number;height:number};showFps:(show:boolean)=>void;solo:boolean;pause:(paused:boolean)=>void;canOpen:()=>boolean};
+type Options={stage:Container;bounds:()=>{x:number;y:number;width:number;height:number};showFps:(show:boolean)=>void;solo:boolean;pause:(paused:boolean)=>void;canOpen:()=>boolean};
 export function createSettings(o:Options){
- const gear=document.createElement('button');gear.className='settings-gear';gear.innerHTML='<img class="settings-icon settings-icon-gear" src="/ui/hud-actions/settings.webp" width="40" height="40" alt="" aria-hidden="true" draggable="false">';gear.title='Settings';gear.setAttribute('aria-label','Open Settings');
+ const gear=createHudActionButton(o.stage,'/ui/hud-actions/settings.webp','Open Settings',show);
  const overlay=document.createElement('div');overlay.className='settings-overlay';overlay.hidden=true;
  overlay.innerHTML=`<section class="settings-panel" role="dialog" aria-modal="true" aria-labelledby="settings-title" tabindex="-1"><header><h2 id="settings-title">Settings</h2><button class="settings-close" aria-label="Close Settings">×</button></header>
  <div class="settings-section"><div class="settings-row"><span>Visual Quality</span><div class="settings-group" role="group" aria-label="Visual Quality">${['auto','low','high'].map(v=>`<button data-quality="${v}" aria-pressed="false">${v[0].toUpperCase()+v.slice(1)}</button>`).join('')}</div><p class="settings-help">Low reduces shadows and effects.</p></div></div>
@@ -18,7 +20,7 @@ export function createSettings(o:Options){
  const confirm=document.createElement('div');confirm.className='settings-overlay';confirm.hidden=true;
  confirm.innerHTML='<section class="settings-panel settings-confirm" role="alertdialog" aria-modal="true" aria-labelledby="reset-title" aria-describedby="reset-description"><header><h2 id="reset-title">Reset progression?</h2></header><p id="reset-description"></p><footer><button data-cancel>Cancel</button><button data-confirm class="settings-danger">Reset Progression</button></footer><p role="status" class="settings-status"></p></section>';
  confirm.querySelector('#reset-description')!.textContent=RESET_EXPLANATION;
- document.body.append(gear,overlay,confirm);
+ document.body.append(overlay,confirm);
  (window as any).__SETTINGS__={snapshot:()=>gameSettings.get(),audio:audioSnapshot};
  const panel=overlay.querySelector<HTMLElement>('.settings-panel')!;
  let open=false,busy=false,previous:HTMLElement|null=null;
@@ -34,7 +36,7 @@ export function createSettings(o:Options){
  gameSettings.subscribe(update);update(gameSettings.get());
  const cancel=()=>{if(busy)return;confirm.hidden=true;panel.inert=false;overlay.querySelector<HTMLButtonElement>('[data-reset]')!.focus();};
  const close=()=>{if(busy)return;confirm.hidden=true;overlay.hidden=true;panel.inert=false;open=false;if(o.solo){setGamePaused(false);o.pause(false);}previous?.focus();};
- gear.onclick=()=>{if(!o.canOpen())return;previous=document.activeElement as HTMLElement;open=true;overlay.hidden=false;if(o.solo){setGamePaused(true);o.pause(true);}overlay.querySelector<HTMLButtonElement>('.settings-close')!.focus();};
+ function show(){if(!o.canOpen())return;previous=document.activeElement as HTMLElement;open=true;overlay.hidden=false;if(o.solo){setGamePaused(true);o.pause(true);}overlay.querySelector<HTMLButtonElement>('.settings-close')!.focus();}
  overlay.querySelector<HTMLButtonElement>('.settings-close')!.onclick=close;
  overlay.querySelector<HTMLButtonElement>('.settings-resume')!.onclick=close;
  overlay.onclick=e=>{if(e.target===overlay)close();};
@@ -61,7 +63,7 @@ export function createSettings(o:Options){
   // Prevent game hotkeys and movement handlers from consuming form keys.
   e.stopImmediatePropagation();
  },true);
- function position(){const b=o.bounds();gear.style.left=`${Math.round(Math.max(8,Math.min(innerWidth-54,b.x+b.width-46)))}px`;gear.style.top=`${Math.round(Math.max(8,Math.min(innerHeight-54,b.y+b.height+(innerWidth<=600?27:8))))}px`;}
+ function position(){const {x,y}=hudActionPosition(o.bounds());gear.position(x,y);}
  position();const timer=setInterval(position,250);
- return {isOpen:()=>open,close,destroy(){clearInterval(timer);gear.remove();overlay.remove();confirm.remove();}};
+ return {isOpen:()=>open,close,destroy(){clearInterval(timer);gear.destroy();overlay.remove();confirm.remove();}};
 }

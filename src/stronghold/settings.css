@@ -1,4 +1,3 @@
-.settings-gear{position:fixed;z-index:80;width:46px;height:46px;border:0;border-radius:0;background:transparent;padding:3px;color:#edc966;font-size:30px;line-height:1;cursor:pointer;box-shadow:none}
 .settings-overlay{position:fixed;inset:0;z-index:100;background:#0008;display:grid;place-items:center;padding:max(12px,env(safe-area-inset-top)) max(12px,env(safe-area-inset-right)) max(12px,env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left));box-sizing:border-box;font:17px Georgia,serif;color:#f4ead3;touch-action:pan-y}
 .settings-overlay[hidden]{display:none}.settings-panel{box-sizing:border-box;width:min(540px,100%);max-height:100%;overflow:auto;background:radial-gradient(ellipse at top,#171c1d,#080b0d 75%);border:2px solid #d5af4b;outline:1px solid #69542b;outline-offset:-7px;border-radius:10px;padding:18px 30px 20px;box-shadow:0 12px 50px #000b,inset 0 0 30px #000;scrollbar-color:#c6a04b #141819}
 .settings-panel header{position:relative;text-align:center;border-bottom:1px solid #ae8846;margin-bottom:14px;padding-bottom:13px}.settings-panel h2{font-size:30px;margin:0;text-shadow:0 2px #000}.settings-close{position:absolute;right:-10px;top:-9px;font:38px Georgia!important;color:#e7be59!important;background:none!important;border:0!important;width:44px;height:44px;padding:0!important}
@@ -25,10 +24,5 @@
 
 /* Generated bitmap icons retain the existing button and form hit targets. */
 .settings-icon{display:block;object-fit:contain;pointer-events:none;user-select:none;flex:none}
-.settings-gear{display:grid;place-items:center}
 .settings-icon-gear{width:28px;height:28px}
-.settings-gear .settings-icon-gear{width:40px;height:40px;filter:drop-shadow(0 2px 2px #0009)}
-.settings-gear:hover img{filter:brightness(1.15) drop-shadow(0 2px 2px #0009)}
-.settings-gear:active img{transform:scale(.94)}
-.settings-gear:focus-visible{outline:3px solid #7bedff;outline-offset:3px}
 .settings-icon-audio{width:20px;height:20px}
