@@ -154,3 +154,11 @@ No map/collision files changed; pillar/stair strip policy is preserved. General 
 
 
 Compatibility: the depth-field path is enabled only on WebGL. The newly added Canvas renderer fallback retains the legacy ground-shadow path; depth-based object receiving is unavailable there.
+
+## Live verification of the torn-shadow correction
+
+Correction `7b8719ba` was pushed and deployed in game release `bf62a635`, layer `1792941854890-game-bf62a635-29aa0b8b31d9`. Build, Go tests and deployment co-op smoke passed. Live desktop settlement/enclosure at afternoon (.72) loaded the depth field and completed the GPU fixture with zero page/console errors. Raised/ground/actor receivers, mirrored alpha holes and above-caster rejection pass. The initial live attempt encountered transient manifest/worker HTTP 502 responses; it is archived separately rather than counted as a pass. A fresh retry after both endpoints returned 200 passed.
+
+![Verified live: continuous enclosure and platform shadows, with true arch openings retained](https://ark-whachat.fural.space/shadow-audit/tears-live/desktop-settlement-0.72.png)
+
+The full task remains active: dynamic actors casting onto object receivers, gate-frame latency, inventory refresh/full-family visual coverage and performance work are still open.
