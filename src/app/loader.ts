@@ -75,7 +75,11 @@ export function ensurePixiRuntime(host?:HTMLElement):Promise<SharedPixiRuntime>{
   window.__LOADING_SCREEN__?.progress(8,100,'Loading the game');
   const app=new Application();
   await app.init({
-   preference:'webgl',
+   // Keep WebGL as the fast path, but let Pixi select its Canvas renderer when
+   // the device/browser cannot create a WebGL context. Without the fallback,
+   // Application.init rejects after the loading artwork has finished and the
+   // player is left on the generic "Stronghold could not load" screen.
+   preference:['webgl','canvas'],
    resizeTo:window,
    backgroundColor:0x0b0e12,
    antialias:renderQuality.get().tier==='high',
