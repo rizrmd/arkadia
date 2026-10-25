@@ -71,6 +71,7 @@ export const ROLES={
  'combat-crit-label':{font:'display',size:12,letterSpacing:1.6,fill:0xffdf7a,outline:{color:0x220c02,alpha:.95,width:1.2},shadow:{color:0x000000,alpha:.85,dx:0,dy:1.5,softness:1.2},uppercase:true},
  'combat-incoming':{font:'display',size:21,letterSpacing:.3,fill:0xff6452,outline:{color:0x1a0404,alpha:.95,width:1.4},shadow:{color:0x000000,alpha:.85,dx:0,dy:2,softness:1.4}},
  'combat-heal':{font:'display',size:20,letterSpacing:.3,fill:0x8effa8,outline:{color:0x061a0a,alpha:.95,width:1.3},shadow:{color:0x000000,alpha:.85,dx:0,dy:2,softness:1.4}},
+ 'combat-xp':{font:'display',size:20,letterSpacing:.3,fill:GOLD,outline:{color:0x261603,alpha:.95,width:1.3},shadow:{color:0x000000,alpha:.85,dx:0,dy:2,softness:1.4}},
  'combat-banner':{font:'display',size:28,letterSpacing:2.4,fill:GOLD_GRADIENT,outline:{color:0x1e0e03,alpha:.96,width:1.5},shadow:{color:0x000000,alpha:.88,dx:0,dy:2.2,softness:1.5},glow:warmGlow,uppercase:true},
  'combat-banner-sub':{font:'body',size:16,letterSpacing:.6,fill:IVORY,outline:{color:0x0e0703,alpha:.92,width:1.1},shadow:{color:0x000000,alpha:.82,dx:0,dy:1.5,softness:1.2}},
  // Popover panels, modals, blessings & loading screen.

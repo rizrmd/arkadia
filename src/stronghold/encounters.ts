@@ -194,6 +194,7 @@ export async function createEncounters(o:{
  function onPickup(level:number){
   const prevLevel=run.level;
   awardSoulXp(run,random,currentHeroId(),level);
+  vfx.recordHeroXp(revenantXpReward(level),h.x,h.y);
   if(run.level>prevLevel){
    syncFoeLevels();
    levelUpPulseMs=1200;

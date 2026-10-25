@@ -10,7 +10,7 @@ import {cutOut,type Placed} from './hero';
 import {notifyHeroCast} from './hero-3d';
 import {createFxStage,playCue,type CueContext,type FxHandle} from '../fx';
 
-export type FloatKind='normal'|'crit'|'incoming'|'heal'|'banner';
+export type FloatKind='normal'|'crit'|'incoming'|'heal'|'xp'|'banner';
 export type FloatingText={
  id:number;kind:FloatKind;text:string;subtext?:string;
  u:number;v:number;ox:number;oy:number;vx:number;vy:number;
@@ -165,9 +165,9 @@ export function createCombatVfx(o:{
 
  function addFloat(kind:FloatKind,text:string,u:number,v:number,subtext?:string){
   const spread=(o.random()-.5)*38;
-  const vy=kind==='crit'?-112:kind==='banner'?-54:kind==='heal'?-68:-92;
-  const vx=kind==='banner'||kind==='heal'?spread*.25:spread;
-  const duration=kind==='crit'?1150:kind==='banner'?1650:kind==='heal'?980:860;
+  const vy=kind==='crit'?-112:kind==='banner'?-54:kind==='heal'?-68:kind==='xp'?-76:-92;
+  const vx=kind==='banner'||kind==='heal'||kind==='xp'?spread*.25:spread;
+  const duration=kind==='crit'?1150:kind==='banner'?1650:kind==='heal'?980:kind==='xp'?1050:860;
   const scale=kind==='crit'?1.42:kind==='banner'?1.35:1;
   floats.push({id:nextId++,kind,text,subtext,u,v,ox:(o.random()-.5)*10,oy:0,vx,vy,age:0,duration,scale});
  }
@@ -245,6 +245,11 @@ export function createCombatVfx(o:{
   addFloat('incoming',`-${val}`,u,v);
   addSpark('incoming',u,v,0,28);
  }
+
+ function recordHeroXp(amount:number,u:number,v:number){
+  const val=Math.max(1,Math.round(amount));
+  addFloat('xp',`+${val} XP`,u,v);
+}
 
  function recordHeroHeal(amount:number,u:number,v:number,label?:string){
   const val=Math.max(1,Math.round(amount));
@@ -755,7 +760,7 @@ export function createCombatVfx(o:{
      if(fv.sub&&fl.subtext!==undefined)fv.sub.text=fl.subtext;
     }else{
      const root=floatsLayer.addChild(new Container());
-     const role=fl.kind==='crit'?'combat-crit':fl.kind==='banner'?'combat-banner':fl.kind==='incoming'?'combat-incoming':fl.kind==='heal'?'combat-heal':'combat-hit';
+     const role=fl.kind==='crit'?'combat-crit':fl.kind==='banner'?'combat-banner':fl.kind==='incoming'?'combat-incoming':fl.kind==='heal'?'combat-heal':fl.kind==='xp'?'combat-xp':'combat-hit';
      const main=root.addChild(new MsdfText(role,fl.text,fl.kind==='banner'?{size:20}:{size:fl.kind==='crit'?26:19}));
      let sub:MsdfText|undefined;
      if(fl.subtext){
@@ -839,6 +844,7 @@ export function createCombatVfx(o:{
   recordCoopEnemyDamage,
   recordHeroDamage,
   recordHeroHeal,
+  recordHeroXp,
   triggerLevelUp,
   spawnProjectile,
   spawnAoE,
