@@ -80,3 +80,11 @@ Revision `a0eae6d0` was pushed and deployed from a clean detached worktree throu
 The corrected live cast probe teleports outside the safe zone before casting. It observes an active Flame Fan with `backend: pixi-render-texture`, clipping samples and no page errors. The earlier probe stayed in the safe zone, where combat effects are cleared, and did not establish the backend. Reproduce with `node scripts/android-stutter/verify-live-gameplay.mjs`; synthetic trace uploads are intercepted. Native visual parity remains covered by the isolated browser test; the production combat profile is recorded separately in `default-gameplay-profile-live-gpu.json`. The first live probe timed out after 45 seconds; corrected gameplay verification completed.
 
 Physical trace inspection still finds only older builds: newest Mali trace at 2026-10-26 00:04 WIB, with `/assets/index-DjrEquqd.js`. No current-build physical Android sample is available. The zero-frame-drop objective is not verified and remains active.
+
+## Hero canvas upload area
+
+Profiling still showed hero canvas upload costs. At dawn (`time=0.2`) the low-quality 3D hero allocated 300×184 pixels despite using a small cached contact shadow. Hero composition now omits projected sun padding when a unified shadow renderer owns the shadow, or when an active 3D hero uses the low/balanced contact shadow. Legacy 2D projected shadows and high-quality standalone projections keep their existing bounds. Body, casting headroom, night glow, world anchor and occlusion remain in the same coordinate system.
+
+`verify-hero-bounds.mjs` mirrors actual hero Canvas drawing operations into an oversized reference target. On the tested dawn/Ember/low idle and cast frames, baseline and new code both have exact alpha and zero visible pixels outside their allocated canvas. The reference's integer translation/backing store introduces a maximum 1.898/255 premultiplied color difference on both baseline and new code. The test keeps a two-level premultiplied tolerance while requiring exact alpha and zero escaped pixels. The baseline is pinned to 60ee0643. Reports: `hero-bounds-before.json`, `hero-bounds-after.json`.
+
+The tested canvas shrinks to 140×168: 57.4% fewer pixels per upload. This is a bandwidth/area reduction, not a measured physical-device FPS claim. Wider physical Android gameplay acceptance remains pending.

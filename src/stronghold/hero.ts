@@ -450,12 +450,15 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
  function render(){
   const s=o.sun(),f=meta.frames[frameIndex()],res=quantizeRes(origin.scale);
   const night=own?Math.max(0,1-s.alpha/.4):0;
+  const active3d=Boolean(r3d?.isHeroReady(hero.id));
   const half=Math.max((pivot.x>cell.w-pivot.x?pivot.x:cell.w-pivot.x)*DISPLAY,night?48:0),top=-(pivot.y+(r3d?HERO_3D_HEADROOM:0))*DISPLAY-(night?14:0),bottom=(cell.h-pivot.y)*DISPLAY+(night?20:8),H=(cell.h+18)*DISPLAY;
-  const ends=[-half,half].flatMap(w=>[0,H].flatMap(h=>[[w+h*s.dx,h*s.dy],[w*s.wx+h*s.dx,w*s.wy+h*s.dy]])),sxs=[-half,half,...ends.map(e=>e[0])],sys=[top,bottom,...ends.map(e=>e[1]-12),...ends.map(e=>e[1]+12)];
+  // Unified shadows render outside this canvas. The 3D low/balanced contact shadow
+  // fits inside the body/glow bounds; only legacy/projected shadows need sun padding.
+  const projected=!unifiedActorShadowsActive()&&(!active3d||!renderQuality.get().simpleShadow);
+  const ends=projected?[-half,half].flatMap(w=>[0,H].flatMap(h=>[[w+h*s.dx,h*s.dy],[w*s.wx+h*s.dx,w*s.wy+h*s.dy]])):[],sxs=[-half,half,...ends.map(e=>e[0])],sys=[top,bottom,...ends.map(e=>e[1]-12),...ends.map(e=>e[1]+12)];
   const b=[Math.floor(Math.min(...sxs))-8,Math.floor(Math.min(...sys))-8,Math.ceil(Math.max(...sxs))+8,Math.ceil(Math.max(...sys))+8];
   const lift=liftAt(x,y),hidden=occluders(x,y,b,lift),at=x.toFixed(1)+','+y.toFixed(1);if(canvas.dataset.x+','+canvas.dataset.y!==at)Object.assign(canvas.dataset,{x:x.toFixed(1),y:y.toFixed(1)});
   const qNight=Math.round(night*20)/20;
-  const active3d=Boolean(r3d?.isHeroReady(hero.id));
   const key=[actorShadowModeRevision(),hero.id,state,clipName(),f.x,f.y,facing,vertical,tint,qNight.toFixed(2),s.dx,s.dy,s.wx,s.wy,s.alpha,res,b,hidden.length?hidden.map(p=>p.x+':'+p.y+':'+Math.round(Number(p.occluder?.dataset.frame??0)/8)).join()+'@'+Math.round(x*.25)+','+Math.round((y-lift)*.25):'',objects.length].join();if(!active3d&&key===drawn)return;drawn=key;
   if(res!==k||b.some((v,i)=>v!==box[i])){k=res;box=b;canvas.width=Math.ceil((b[2]-b[0])*k);canvas.height=Math.ceil((b[3]-b[1])*k);}
   const lw=cell.w,lh=cell.h,fKey=`${hero.id}:${f.x},${f.y}:${lw}x${lh}:${tint}:${qNight.toFixed(2)}`;
