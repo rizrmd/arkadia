@@ -316,7 +316,7 @@ export class SkillTree{
   // Extents: rings reach their studs (r·1.12) above; labels and pips hang below, about .25 em per character to a side.
   const nameSize=Math.max(12,u*.18);
   let x0=Infinity,y0=Infinity,x1=-Infinity,y1=-Infinity;
-  for(const n of this.defs){const p=raw.get(n.id)!,rr=r(n),half=Math.max(rr*1.12,n.name.length*nameSize*.25);x0=Math.min(x0,p.x-half);x1=Math.max(x1,p.x+half);y0=Math.min(y0,p.y-rr*1.14);y1=Math.max(y1,p.y+rr+u*.42);}
+  for(const n of this.defs){const p=raw.get(n.id)!,rr=r(n),half=Math.max(rr*1.12,n.name.length*nameSize*.25);x0=Math.min(x0,p.x-half);x1=Math.max(x1,p.x+half);y0=Math.min(y0,p.y-rr*1.14);y1=Math.max(y1,p.y+rr+u*.55);}
   const pad=this.ember?(vt?24:48):u*.28,ox=-x0+pad,oy=-y0+pad;
   // Centre a tree that is smaller than the viewport along its cross axis (and its scroll axis when it fits).
   const w=x1-x0+pad*2,h=y1-y0+pad*2,vw=this.view.width,vh=this.view.height;
@@ -369,7 +369,7 @@ export class SkillTree{
    const pips:Sprite[]=[];
    if(n.kind!=='passive'){
     const ps=Math.max(9,u*.13),gap=ps*1.32;
-    for(let i=0;i<MAX_PIPS;i++){const s=box.addChild(new Sprite(f.texture('pip-off')));s.anchor.set(.5);s.width=s.height=ps;s.position.set((i-(MAX_PIPS-1)/2)*gap,nameY+ps*.95+(n.name.includes('\n')?nameSize*1.4:0));pips.push(s);}
+    for(let i=0;i<MAX_PIPS;i++){const s=box.addChild(new Sprite(f.texture('pip-off')));s.anchor.set(.5);s.width=s.height=ps;s.position.set((i-(MAX_PIPS-1)/2)*gap,nameY+ps*1.5+(n.name.includes('\n')?nameSize*1.4:0));pips.push(s);}
    }
    let badge:Sprite|undefined;
    if(n.kind==='active'){badge=box.addChild(new Sprite(f.texture('slot-1')));badge.anchor.set(.5);badge.width=badge.height=Math.max(22,u*.3);badge.position.set(rr*.74,-rr*.74);badge.visible=false;}
