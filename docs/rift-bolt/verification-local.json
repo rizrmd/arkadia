@@ -1,0 +1,66 @@
+{
+  "passed": true,
+  "url": "local",
+  "results": [
+    {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "levels": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "phases": [
+        "Casting",
+        "Projectile travel",
+        "Impact"
+      ],
+      "controls": "passed"
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "levels": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "phases": [
+        "Casting",
+        "Projectile travel",
+        "Impact"
+      ],
+      "controls": "passed"
+    },
+    {
+      "viewport": {
+        "width": 320,
+        "height": 560
+      },
+      "levels": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "phases": [
+        "Casting",
+        "Projectile travel",
+        "Impact"
+      ],
+      "controls": "passed"
+    }
+  ],
+  "iframe": "loaded, level selector works",
+  "pageErrors": [],
+  "httpFailures": []
+}
