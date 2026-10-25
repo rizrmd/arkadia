@@ -1,0 +1,1223 @@
+{
+  "base": "https://ark-whachat.fural.space",
+  "scope": "Compiled production actor-frame diagnostic in live game; software GPU; no physical-device performance claim.",
+  "errors": [],
+  "runs": [
+    {
+      "rows": [
+        {
+          "id": "actor:hero:0",
+          "source": "/assets/characters/hero.png",
+          "revision": "a2750639f0e49585",
+          "alphaSha256": "af610eaf189228abd391e7b9a18792c9b9a08c05ff29431dac0dadae2f5736d8",
+          "frame": [
+            4,
+            4,
+            200,
+            150
+          ],
+          "pivot": [
+            0.5,
+            0.8666666666666667
+          ],
+          "displayScale": 0.66,
+          "depthSpan": 0,
+          "clips": [],
+          "cases": [
+            {
+              "flip": false,
+              "angle": 0,
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "opaqueProbes": 74,
+              "clearProbes": 14094,
+              "depthErrors": 0,
+              "alphaErrors": 0,
+              "clearErrors": 0,
+              "partialProbes": 2,
+              "visibilityErrors": 0,
+              "receivePixels": 1504,
+              "receiveErrors": 0,
+              "lowerErrors": 0,
+              "examples": []
+            },
+            {
+              "flip": false,
+              "angle": 1,
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "opaqueProbes": 263,
+              "clearProbes": 13686,
+              "depthErrors": 0,
+              "alphaErrors": 0,
+              "clearErrors": 0,
+              "partialProbes": 53,
+              "visibilityErrors": 0,
+              "receivePixels": 1504,
+              "receiveErrors": 0,
+              "lowerErrors": 0,
+              "examples": []
+            },
+            {
+              "flip": false,
+              "angle": 2,
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "opaqueProbes": 671,
+              "clearProbes": 24434,
+              "depthErrors": 0,
+              "alphaErrors": 0,
+              "clearErrors": 0,
+              "partialProbes": 143,
+              "visibilityErrors": 0,
+              "receivePixels": 1504,
+              "receiveErrors": 0,
+              "lowerErrors": 0,
+              "examples": []
+            },
+            {
+              "flip": true,
+              "angle": 0,
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "opaqueProbes": 80,
+              "clearProbes": 14090,
+              "depthErrors": 0,
+              "alphaErrors": 0,
+              "clearErrors": 0,
+              "partialProbes": 2,
+              "visibilityErrors": 0,
+              "receivePixels": 1504,
+              "receiveErrors": 0,
+              "lowerErrors": 0,
+              "examples": []
+            },
+            {
+              "flip": true,
+              "angle": 1,
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "opaqueProbes": 273,
+              "clearProbes": 13685,
+              "depthErrors": 0,
+              "alphaErrors": 0,
+              "clearErrors": 0,
+              "partialProbes": 57,
+              "visibilityErrors": 0,
+              "receivePixels": 1504,
+              "receiveErrors": 0,
+              "lowerErrors": 0,
+              "examples": []
+            },
+            {
+              "flip": true,
+              "angle": 2,
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "opaqueProbes": 661,
+              "clearProbes": 24428,
+              "depthErrors": 0,
+              "alphaErrors": 0,
+              "clearErrors": 0,
+              "partialProbes": 137,
+              "visibilityErrors": 0,
+              "receivePixels": 1504,
+              "receiveErrors": 0,
+              "lowerErrors": 0,
+              "examples": []
+            }
+          ]
+        },
+        {
+          "id": "actor:hero:1",
+          "source": "/assets/characters/hero.png",
+          "revision": "a2750639f0e49585",
+          "alphaSha256": "0786c6a7f49a5a97c41b2739422a2976c9417d3b39ac30053e612ae7232a02ca",
+          "frame": [
+            208,
+            4,
+            200,
+            150
+          ],
+          "pivot": [
+            0.5,
+            0.8666666666666667
+          ],
+          "displayScale": 0.66,
+          "depthSpan": 0,
+          "clips": [],
+          "cases": [
+            {
+              "flip": false,
+              "angle": 0,
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "opaqueProbes": 74,
+              "clearProbes": 14087,
+              "depthErrors": 0,
+              "alphaErrors": 0,
+              "clearErrors": 0,
+              "partialProbes": 0,
+              "visibilityErrors": 0,
+              "receivePixels": 1537,
+              "receiveErrors": 0,
+              "lowerErrors": 0,
+              "examples": []
+            },
+            {
+              "flip": false,
+              "angle": 1,
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "opaqueProbes": 267,
+              "clearProbes": 13678,
+              "depthErrors": 0,
+              "alphaErrors": 0,
+              "clearErrors": 0,
+              "partialProbes": 46,
+              "visibilityErrors": 0,
+              "receivePixels": 1537,
+              "receiveErrors": 0,
+              "lowerErrors": 0,
+              "examples": []
+            },
+            {
+              "flip": false,
+              "angle": 2,
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "opaqueProbes": 695,
+              "clearProbes": 24395,
+              "depthErrors": 0,
+              "alphaErrors": 0,
+              "clearErrors": 0,
+              "partialProbes": 156,
+              "visibilityErrors": 0,
+              "receivePixels": 1537,
+              "receiveErrors": 0,
+              "lowerErrors": 0,
+              "examples": []
+            },
+            {
+              "flip": true,
+              "angle": 0,
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "opaqueProbes": 78,
+              "clearProbes": 14083,
+              "depthErrors": 0,
+              "alphaErrors": 0,
+              "clearErrors": 0,
+              "partialProbes": 2,
+              "visibilityErrors": 0,
+              "receivePixels": 1537,
+              "receiveErrors": 0,
+              "lowerErrors": 0,
+              "examples": []
+            },
+            {
+              "flip": true,
+              "angle": 1,
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "opaqueProbes": 270,
+              "clearProbes": 13678,
+              "depthErrors": 0,
+              "alphaErrors": 0,
+              "clearErrors": 0,
+              "partialProbes": 51,
+              "visibilityErrors": 0,
+              "receivePixels": 1537,
+              "receiveErrors": 0,
+              "lowerErrors": 0,
+              "examples": []
+            },
+            {
+              "flip": true,
+              "angle": 2,
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "opaqueProbes": 688,
+              "clearProbes": 24397,
+              "depthErrors": 0,
+              "alphaErrors": 0,
+              "clearErrors": 0,
+              "partialProbes": 153,
+              "visibilityErrors": 0,
+              "receivePixels": 1537,
+              "receiveErrors": 0,
+              "lowerErrors": 0,
+              "examples": []
+            }
+          ]
+        }
+      ],
+      "failures": [],
+      "image": "frames-0.png",
+      "scope": "Every selected original atlas frame, both mirrors and three light vectors through production GPU crossed-body caster. Independent source-alpha/quantized-triangle inverse probes with measured GPU raster subpixel bounds and exact bilinear extrema over that source-UV footprint; both caster layers checked on ground and raised receivers; production native actor batch receives higher plane and rejects lower plane. Software GPU, not device performance.",
+      "caseCount": 12
+    },
+    {
+      "rows": [
+        {
+          "id": "actor:revenant:0",
+          "source": "/assets/characters/revenant.png",
+          "revision": "b5fd563155bc98d1",
+          "alphaSha256": "cab95b6fbea7b4c113ebff57c1df5339b3d4a6c7e35844e2ef867c801b70107e",
+          "frame": [
+            4,
+            4,
+            126,
+            120
+          ],
+          "pivot": [
+            0.5873015873015873,
+            0.95
+          ],
+          "displayScale": 0.66,
+          "depthSpan": 9,
+          "clips": [
+            "idle"
+          ],
+          "cases": [
+            {
+              "flip": false,
+              "angle": 0,
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "opaqueProbes": 191,
+              "clearProbes": 18489,
+              "depthErrors": 0,
+              "alphaErrors": 0,
+              "clearErrors": 0,
+              "partialProbes": 19,
+              "visibilityErrors": 0,
+              "receivePixels": 1459,
+              "receiveErrors": 0,
+              "lowerErrors": 0,
+              "examples": []
+            },
+            {
+              "flip": false,
+              "angle": 1,
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "opaqueProbes": 320,
+              "clearProbes": 9151,
+              "depthErrors": 0,
+              "alphaErrors": 0,
+              "clearErrors": 0,
+              "partialProbes": 64,
+              "visibilityErrors": 0,
+              "receivePixels": 1459,
+              "receiveErrors": 0,
+              "lowerErrors": 0,
+              "examples": []
+            },
+            {
+              "flip": false,
+              "angle": 2,
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "opaqueProbes": 753,
+              "clearProbes": 18041,
+              "depthErrors": 0,
+              "alphaErrors": 0,
+              "clearErrors": 0,
+              "partialProbes": 154,
+              "visibilityErrors": 0,
+              "receivePixels": 1459,
+              "receiveErrors": 0,
+              "lowerErrors": 0,
+              "examples": []
+            },
+            {
+              "flip": true,
+              "angle": 0,
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "opaqueProbes": 182,
+              "clearProbes": 18539,
+              "depthErrors": 0,
+              "alphaErrors": 0,
+              "clearErrors": 0,
+              "partialProbes": 15,
+              "visibilityErrors": 0,
+              "receivePixels": 1459,
+              "receiveErrors": 0,
+              "lowerErrors": 0,
+              "examples": []
+            },
+            {
+              "flip": true,
+              "angle": 1,
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "opaqueProbes": 323,
+              "clearProbes": 11347,
+              "depthErrors": 0,
+              "alphaErrors": 0,
+              "clearErrors": 0,
+              "partialProbes": 60,
+              "visibilityErrors": 0,
+              "receivePixels": 1459,
+              "receiveErrors": 0,
+              "lowerErrors": 0,
+              "examples": []
+            },
+            {
+              "flip": true,
+              "angle": 2,
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "opaqueProbes": 774,
+              "clearProbes": 17990,
+              "depthErrors": 0,
+              "alphaErrors": 0,
+              "clearErrors": 0,
+              "partialProbes": 163,
+              "visibilityErrors": 0,
+              "receivePixels": 1459,
+              "receiveErrors": 0,
+              "lowerErrors": 0,
+              "examples": []
+            }
+          ]
+        },
+        {
+          "id": "actor:revenant:1",
+          "source": "/assets/characters/revenant.png",
+          "revision": "b5fd563155bc98d1",
+          "alphaSha256": "fdbbfc9e557622c71a739cb35941cd81a85fc9752694a1b5e73ca9528340fcba",
+          "frame": [
+            134,
+            4,
+            126,
+            120
+          ],
+          "pivot": [
+            0.5873015873015873,
+            0.95
+          ],
+          "displayScale": 0.66,
+          "depthSpan": 9,
+          "clips": [
+            "idle"
+          ],
+          "cases": [
+            {
+              "flip": false,
+              "angle": 0,
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "opaqueProbes": 198,
+              "clearProbes": 18488,
+              "depthErrors": 0,
+              "alphaErrors": 0,
+              "clearErrors": 0,
+              "partialProbes": 27,
+              "visibilityErrors": 0,
+              "receivePixels": 1474,
+              "receiveErrors": 0,
+              "lowerErrors": 0,
+              "examples": []
+            },
+            {
+              "flip": false,
+              "angle": 1,
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "opaqueProbes": 332,
+              "clearProbes": 9138,
+              "depthErrors": 0,
+              "alphaErrors": 0,
+              "clearErrors": 0,
+              "partialProbes": 66,
+              "visibilityErrors": 0,
+              "receivePixels": 1474,
+              "receiveErrors": 0,
+              "lowerErrors": 0,
+              "examples": []
+            },
+            {
+              "flip": false,
+              "angle": 2,
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "opaqueProbes": 768,
+              "clearProbes": 18010,
+              "depthErrors": 0,
+              "alphaErrors": 0,
+              "clearErrors": 0,
+              "partialProbes": 154,
+              "visibilityErrors": 0,
+              "receivePixels": 1474,
+              "receiveErrors": 0,
+              "lowerErrors": 0,
+              "examples": []
+            },
+            {
+              "flip": true,
+              "angle": 0,
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "opaqueProbes": 181,
+              "clearProbes": 18535,
+              "depthErrors": 0,
+              "alphaErrors": 0,
+              "clearErrors": 0,
+              "partialProbes": 15,
+              "visibilityErrors": 0,
+              "receivePixels": 1474,
+              "receiveErrors": 0,
+              "lowerErrors": 0,
+              "examples": []
+            },
+            {
+              "flip": true,
+              "angle": 1,
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "opaqueProbes": 322,
+              "clearProbes": 11337,
+              "depthErrors": 0,
+              "alphaErrors": 0,
+              "clearErrors": 0,
+              "partialProbes": 63,
+              "visibilityErrors": 0,
+              "receivePixels": 1474,
+              "receiveErrors": 0,
+              "lowerErrors": 0,
+              "examples": []
+            },
+            {
+              "flip": true,
+              "angle": 2,
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "opaqueProbes": 780,
+              "clearProbes": 17961,
+              "depthErrors": 0,
+              "alphaErrors": 0,
+              "clearErrors": 0,
+              "partialProbes": 172,
+              "visibilityErrors": 0,
+              "receivePixels": 1474,
+              "receiveErrors": 0,
+              "lowerErrors": 0,
+              "examples": []
+            }
+          ]
+        }
+      ],
+      "failures": [],
+      "image": "frames-57.png",
+      "scope": "Every selected original atlas frame, both mirrors and three light vectors through production GPU crossed-body caster. Independent source-alpha/quantized-triangle inverse probes with measured GPU raster subpixel bounds and exact bilinear extrema over that source-UV footprint; both caster layers checked on ground and raised receivers; production native actor batch receives higher plane and rejects lower plane. Software GPU, not device performance.",
+      "caseCount": 12
+    },
+    {
+      "rows": [
+        {
+          "id": "actor:rift-runner:0",
+          "source": "/assets/characters/rift-runner.webp",
+          "revision": "2968c6c80c398701",
+          "alphaSha256": "e4c30b35c6c76b64d5c146839e152762a7f1e2a802bb787c86510871207e1964",
+          "frame": [
+            4,
+            4,
+            181,
+            166
+          ],
+          "pivot": [
+            0.504424778761062,
+            0.9807692307692307
+          ],
+          "displayScale": 0.66,
+          "depthSpan": 0,
+          "clips": [
+            "idle-SE",
+            "idle-SW"
+          ],
+          "cases": [
+            {
+              "flip": false,
+              "angle": 0,
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "opaqueProbes": 47,
+              "clearProbes": 9978,
+              "depthErrors": 0,
+              "alphaErrors": 0,
+              "clearErrors": 0,
+              "partialProbes": 0,
+              "visibilityErrors": 0,
+              "receivePixels": 1180,
+              "receiveErrors": 0,
+              "lowerErrors": 0,
+              "examples": []
+            },
+            {
+              "flip": false,
+              "angle": 1,
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "opaqueProbes": 225,
+              "clearProbes": 9517,
+              "depthErrors": 0,
+              "alphaErrors": 0,
+              "clearErrors": 0,
+              "partialProbes": 20,
+              "visibilityErrors": 0,
+              "receivePixels": 1180,
+              "receiveErrors": 0,
+              "lowerErrors": 0,
+              "examples": []
+            },
+            {
+              "flip": false,
+              "angle": 2,
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "opaqueProbes": 528,
+              "clearProbes": 15983,
+              "depthErrors": 0,
+              "alphaErrors": 0,
+              "clearErrors": 0,
+              "partialProbes": 104,
+              "visibilityErrors": 0,
+              "receivePixels": 1180,
+              "receiveErrors": 0,
+              "lowerErrors": 0,
+              "examples": []
+            },
+            {
+              "flip": true,
+              "angle": 0,
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "opaqueProbes": 50,
+              "clearProbes": 9984,
+              "depthErrors": 0,
+              "alphaErrors": 0,
+              "clearErrors": 0,
+              "partialProbes": 0,
+              "visibilityErrors": 0,
+              "receivePixels": 1180,
+              "receiveErrors": 0,
+              "lowerErrors": 0,
+              "examples": []
+            },
+            {
+              "flip": true,
+              "angle": 1,
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "opaqueProbes": 218,
+              "clearProbes": 9520,
+              "depthErrors": 0,
+              "alphaErrors": 0,
+              "clearErrors": 0,
+              "partialProbes": 31,
+              "visibilityErrors": 0,
+              "receivePixels": 1180,
+              "receiveErrors": 0,
+              "lowerErrors": 0,
+              "examples": []
+            },
+            {
+              "flip": true,
+              "angle": 2,
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "opaqueProbes": 532,
+              "clearProbes": 15990,
+              "depthErrors": 0,
+              "alphaErrors": 0,
+              "clearErrors": 0,
+              "partialProbes": 100,
+              "visibilityErrors": 0,
+              "receivePixels": 1180,
+              "receiveErrors": 0,
+              "lowerErrors": 0,
+              "examples": []
+            }
+          ]
+        },
+        {
+          "id": "actor:rift-runner:1",
+          "source": "/assets/characters/rift-runner.webp",
+          "revision": "2968c6c80c398701",
+          "alphaSha256": "c5977ff73ea288d85777c9b02f34c24525606850b7626ab5b9bd41cf55e1c4b1",
+          "frame": [
+            189,
+            4,
+            181,
+            166
+          ],
+          "pivot": [
+            0.504424778761062,
+            0.9807692307692307
+          ],
+          "displayScale": 0.66,
+          "depthSpan": 0,
+          "clips": [
+            "idle-SE",
+            "idle-SW"
+          ],
+          "cases": [
+            {
+              "flip": false,
+              "angle": 0,
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "opaqueProbes": 49,
+              "clearProbes": 9973,
+              "depthErrors": 0,
+              "alphaErrors": 0,
+              "clearErrors": 0,
+              "partialProbes": 0,
+              "visibilityErrors": 0,
+              "receivePixels": 1203,
+              "receiveErrors": 0,
+              "lowerErrors": 0,
+              "examples": []
+            },
+            {
+              "flip": false,
+              "angle": 1,
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "opaqueProbes": 227,
+              "clearProbes": 9514,
+              "depthErrors": 0,
+              "alphaErrors": 0,
+              "clearErrors": 0,
+              "partialProbes": 33,
+              "visibilityErrors": 0,
+              "receivePixels": 1203,
+              "receiveErrors": 0,
+              "lowerErrors": 0,
+              "examples": []
+            },
+            {
+              "flip": false,
+              "angle": 2,
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "opaqueProbes": 538,
+              "clearProbes": 15984,
+              "depthErrors": 0,
+              "alphaErrors": 0,
+              "clearErrors": 0,
+              "partialProbes": 90,
+              "visibilityErrors": 0,
+              "receivePixels": 1203,
+              "receiveErrors": 0,
+              "lowerErrors": 0,
+              "examples": []
+            },
+            {
+              "flip": true,
+              "angle": 0,
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "opaqueProbes": 50,
+              "clearProbes": 9983,
+              "depthErrors": 0,
+              "alphaErrors": 0,
+              "clearErrors": 0,
+              "partialProbes": 0,
+              "visibilityErrors": 0,
+              "receivePixels": 1203,
+              "receiveErrors": 0,
+              "lowerErrors": 0,
+              "examples": []
+            },
+            {
+              "flip": true,
+              "angle": 1,
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "opaqueProbes": 224,
+              "clearProbes": 9512,
+              "depthErrors": 0,
+              "alphaErrors": 0,
+              "clearErrors": 0,
+              "partialProbes": 34,
+              "visibilityErrors": 0,
+              "receivePixels": 1203,
+              "receiveErrors": 0,
+              "lowerErrors": 0,
+              "examples": []
+            },
+            {
+              "flip": true,
+              "angle": 2,
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "opaqueProbes": 541,
+              "clearProbes": 15981,
+              "depthErrors": 0,
+              "alphaErrors": 0,
+              "clearErrors": 0,
+              "partialProbes": 107,
+              "visibilityErrors": 0,
+              "receivePixels": 1203,
+              "receiveErrors": 0,
+              "lowerErrors": 0,
+              "examples": []
+            }
+          ]
+        }
+      ],
+      "failures": [],
+      "image": "frames-105.png",
+      "scope": "Every selected original atlas frame, both mirrors and three light vectors through production GPU crossed-body caster. Independent source-alpha/quantized-triangle inverse probes with measured GPU raster subpixel bounds and exact bilinear extrema over that source-UV footprint; both caster layers checked on ground and raised receivers; production native actor batch receives higher plane and rejects lower plane. Software GPU, not device performance.",
+      "caseCount": 12
+    },
+    {
+      "rows": [
+        {
+          "id": "actor:ember-warden:0",
+          "source": "/assets/characters/ember-warden.webp",
+          "revision": "f858949eedd77c6c",
+          "alphaSha256": "eecaefb246d0b9aeea3beb2250cd43c2575b4699b45cfe8d5a6991242fa8b3d3",
+          "frame": [
+            4,
+            4,
+            178,
+            166
+          ],
+          "pivot": [
+            0.5135135135135135,
+            0.9807692307692307
+          ],
+          "displayScale": 0.66,
+          "depthSpan": 0,
+          "clips": [
+            "idle-SE",
+            "idle-SW"
+          ],
+          "cases": [
+            {
+              "flip": false,
+              "angle": 0,
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "opaqueProbes": 42,
+              "clearProbes": 9990,
+              "depthErrors": 0,
+              "alphaErrors": 0,
+              "clearErrors": 0,
+              "partialProbes": 0,
+              "visibilityErrors": 0,
+              "receivePixels": 1077,
+              "receiveErrors": 0,
+              "lowerErrors": 0,
+              "examples": []
+            },
+            {
+              "flip": false,
+              "angle": 1,
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "opaqueProbes": 199,
+              "clearProbes": 9539,
+              "depthErrors": 0,
+              "alphaErrors": 0,
+              "clearErrors": 0,
+              "partialProbes": 41,
+              "visibilityErrors": 0,
+              "receivePixels": 1077,
+              "receiveErrors": 0,
+              "lowerErrors": 0,
+              "examples": []
+            },
+            {
+              "flip": false,
+              "angle": 2,
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "opaqueProbes": 469,
+              "clearProbes": 16031,
+              "depthErrors": 0,
+              "alphaErrors": 0,
+              "clearErrors": 0,
+              "partialProbes": 116,
+              "visibilityErrors": 0,
+              "receivePixels": 1077,
+              "receiveErrors": 0,
+              "lowerErrors": 0,
+              "examples": []
+            },
+            {
+              "flip": true,
+              "angle": 0,
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "opaqueProbes": 39,
+              "clearProbes": 9994,
+              "depthErrors": 0,
+              "alphaErrors": 0,
+              "clearErrors": 0,
+              "partialProbes": 0,
+              "visibilityErrors": 0,
+              "receivePixels": 1077,
+              "receiveErrors": 0,
+              "lowerErrors": 0,
+              "examples": []
+            },
+            {
+              "flip": true,
+              "angle": 1,
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "opaqueProbes": 192,
+              "clearProbes": 9529,
+              "depthErrors": 0,
+              "alphaErrors": 0,
+              "clearErrors": 0,
+              "partialProbes": 44,
+              "visibilityErrors": 0,
+              "receivePixels": 1077,
+              "receiveErrors": 0,
+              "lowerErrors": 0,
+              "examples": []
+            },
+            {
+              "flip": true,
+              "angle": 2,
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "opaqueProbes": 471,
+              "clearProbes": 16037,
+              "depthErrors": 0,
+              "alphaErrors": 0,
+              "clearErrors": 0,
+              "partialProbes": 111,
+              "visibilityErrors": 0,
+              "receivePixels": 1077,
+              "receiveErrors": 0,
+              "lowerErrors": 0,
+              "examples": []
+            }
+          ]
+        },
+        {
+          "id": "actor:ember-warden:1",
+          "source": "/assets/characters/ember-warden.webp",
+          "revision": "f858949eedd77c6c",
+          "alphaSha256": "93c9ef60e020cbb6514e98bb45df9b005696e828c2cb5b70152d69661b7b5e1d",
+          "frame": [
+            186,
+            4,
+            178,
+            166
+          ],
+          "pivot": [
+            0.5135135135135135,
+            0.9807692307692307
+          ],
+          "displayScale": 0.66,
+          "depthSpan": 0,
+          "clips": [
+            "idle-SE",
+            "idle-SW"
+          ],
+          "cases": [
+            {
+              "flip": false,
+              "angle": 0,
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "opaqueProbes": 42,
+              "clearProbes": 9994,
+              "depthErrors": 0,
+              "alphaErrors": 0,
+              "clearErrors": 0,
+              "partialProbes": 0,
+              "visibilityErrors": 0,
+              "receivePixels": 1083,
+              "receiveErrors": 0,
+              "lowerErrors": 0,
+              "examples": []
+            },
+            {
+              "flip": false,
+              "angle": 1,
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "opaqueProbes": 197,
+              "clearProbes": 9533,
+              "depthErrors": 0,
+              "alphaErrors": 0,
+              "clearErrors": 0,
+              "partialProbes": 50,
+              "visibilityErrors": 0,
+              "receivePixels": 1083,
+              "receiveErrors": 0,
+              "lowerErrors": 0,
+              "examples": []
+            },
+            {
+              "flip": false,
+              "angle": 2,
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "opaqueProbes": 489,
+              "clearProbes": 16020,
+              "depthErrors": 0,
+              "alphaErrors": 0,
+              "clearErrors": 0,
+              "partialProbes": 107,
+              "visibilityErrors": 0,
+              "receivePixels": 1083,
+              "receiveErrors": 0,
+              "lowerErrors": 0,
+              "examples": []
+            },
+            {
+              "flip": true,
+              "angle": 0,
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "opaqueProbes": 42,
+              "clearProbes": 9996,
+              "depthErrors": 0,
+              "alphaErrors": 0,
+              "clearErrors": 0,
+              "partialProbes": 0,
+              "visibilityErrors": 0,
+              "receivePixels": 1083,
+              "receiveErrors": 0,
+              "lowerErrors": 0,
+              "examples": []
+            },
+            {
+              "flip": true,
+              "angle": 1,
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "opaqueProbes": 193,
+              "clearProbes": 9524,
+              "depthErrors": 0,
+              "alphaErrors": 0,
+              "clearErrors": 0,
+              "partialProbes": 39,
+              "visibilityErrors": 0,
+              "receivePixels": 1083,
+              "receiveErrors": 0,
+              "lowerErrors": 0,
+              "examples": []
+            },
+            {
+              "flip": true,
+              "angle": 2,
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "opaqueProbes": 481,
+              "clearProbes": 16021,
+              "depthErrors": 0,
+              "alphaErrors": 0,
+              "clearErrors": 0,
+              "partialProbes": 105,
+              "visibilityErrors": 0,
+              "receivePixels": 1083,
+              "receiveErrors": 0,
+              "lowerErrors": 0,
+              "examples": []
+            }
+          ]
+        }
+      ],
+      "failures": [],
+      "image": "frames-275.png",
+      "scope": "Every selected original atlas frame, both mirrors and three light vectors through production GPU crossed-body caster. Independent source-alpha/quantized-triangle inverse probes with measured GPU raster subpixel bounds and exact bilinear extrema over that source-UV footprint; both caster layers checked on ground and raised receivers; production native actor batch receives higher plane and rejects lower plane. Software GPU, not device performance.",
+      "caseCount": 12
+    }
+  ],
+  "assets": [
+    "https://ark-whachat.fural.space/assets/index-D-RM3c1d.js",
+    "https://ark-whachat.fural.space/assets/main-CZA4gFJl.js",
+    "https://ark-whachat.fural.space/assets/shadow-actor-frame-audit-DoZAhW23.js"
+  ],
+  "stats": {
+    "surfaces": 447,
+    "samples": 340406,
+    "rebuilds": 2,
+    "buildMs": 1740.5,
+    "bytes": 16051188,
+    "receiverPixels": 1105675,
+    "depthPixels": 1453561,
+    "ready": true,
+    "error": "",
+    "sun": {
+      "dx": 1.59394236711567,
+      "dy": 0.09168415256286729,
+      "alpha": 0.4
+    },
+    "model": "original alpha, explicit billboard/relief geometry; light-space depth compare",
+    "uploadMs": 4071.5,
+    "dynamic": {
+      "updates": 19,
+      "actors": 1,
+      "extraSurfaces": 1,
+      "drawnVertices": 59,
+      "pixels": 3038208,
+      "bytes": 51191808,
+      "renderMs": 0.40000009536743164,
+      "ready": true,
+      "step": 0.5
+    }
+  },
+  "health": 200,
+  "release": {
+    "commit": "3d4b8655e0800ba885e27f7981c0c809d58ad50b",
+    "layer": "1792963225332-game-3d4b8655-e8afeaa28f55",
+    "compiledAssetsMatchedBuild": true
+  }
+}

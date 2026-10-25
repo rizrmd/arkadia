@@ -1,4 +1,14 @@
-## Actor atlas frame acceptance and dynamic alpha correction — deployment pending
+## Live actor coverage correction — 3d4b8655
+
+Release `1792963225332-game-3d4b8655-e8afeaa28f55` is live. Its entry, game module and actor-audit chunk match the clean-worktree build: `index-D-RM3c1d.js`, `main-CZA4gFJl.js`, `shadow-actor-frame-audit-DoZAhW23.js`. HTTP health is 200. The compiled diagnostic passes eight sample frames / 48 cases from all four source atlases, verifies their original-alpha hashes and leaves the main game renderer working, with no browser errors.
+
+[Live compiled-frame report](https://ark-whachat.fural.space/shadow-audit/actor-live-3d4b8655/report.json) · [All 445 frames](https://ark-whachat.fural.space/shadow-audit/actor-frame-gallery.html)
+
+![Live cemetery after isolated actor diagnostics](https://ark-whachat.fural.space/shadow-audit/actor-live-3d4b8655/cemetery-after-diagnostics.png)
+
+Atlas-frame acceptance is now proven for its declared 2D/crossed-body geometry. The remaining checklist still includes the stabilized gateway producer, all GLB clips/poses, explicit exclusions and hardware performance. No claim of full task completion is made.
+
+## Actor atlas frame acceptance and dynamic alpha correction — deployed, live-verified
 
 - [x] Audit every one of 445 original atlas frames, both mirrors and three suns: 2,670 GPU casting cases pass.
 - [x] Match all 445 decoded original-alpha hashes to the tracked inventory.
@@ -6,7 +16,7 @@
 - [x] Native actor-batch receiving passes every frame/mirror with a higher caster plane and rejects a lower plane. These are 890 frame/mirror control pairs; they are not 2,670 independent directional reception tests.
 - [x] Reproduce a genuine overlap regression on the original 33a61b6f shader: a partial-alpha front body plane yields RGB 155/159/165 instead of the opaque control 137/142/150. The corrected shader matches the opaque control, including near-zero source alpha.
 - [x] Repeat all 293 static geometry variants after the shader precision change: 879 directional controls pass; 296 receiver/color entries match.
-- [ ] Push/deploy this correction and exercise the compiled actor-frame diagnostic live.
+- [x] Push/deploy 3d4b8655 and exercise its compiled diagnostic live: eight frames, 48 casting cases, all source-alpha hashes match, no browser errors. Main game renderer remains operational after isolated GPU diagnostics.
 - [ ] Audit the 16 stabilized gateway frames and 12 GLB animation clips/poses through their actual runtime producers.
 - [ ] Complete controlled dense-scene and physical desktop/mobile performance evidence, and remaining explicit caster exclusions.
 
@@ -16,7 +26,7 @@ The renderer still stores only two depth/alpha envelopes. More eligible transluc
 
 [Per-frame report](https://ark-whachat.fural.space/shadow-audit/actor-frames-final/report.json) · [Actor frame inspector](https://ark-whachat.fural.space/shadow-audit/actor-frame-gallery.html) · [Targeted regression](https://ark-whachat.fural.space/shadow-audit/actor-fixture/gpu-live-fixture.json)
 
-![Four source actor families and actual two-layer GPU caster fields](sandbox://LS6016e1117dfed3e1902e0f2c/projects/arkadia/repos/arkadia/docs/shadow-audit/actor-frames-final/frames-0.png)
+![Four source actor families and actual two-layer GPU caster fields](https://ark-whachat.fural.space/shadow-audit/actor-frames-final/frames-0.png)
 
 ## Live native-geometry cemetery correction — 33a61b6f
 
