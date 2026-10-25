@@ -83,7 +83,10 @@ interface HeroModelEntry {
   baseOffsetY: number;
   baseOffsetZ: number;
   footBones: any[];
-  castArmBones: any[];
+  /** Raised casting arm: shoulder → upper arm → forearm → hand, with each bone's bind-pose local rotation. */
+  castArm: { bone: any; bind: any }[];
+  /** 0..1 blend of the raised casting arm over the authored clip (eases in/out instead of popping). */
+  castRaise: number;
   mixer: any;
   actions: Map<string, any>;
   originalMaterials: Map<string, any>;
@@ -120,12 +123,17 @@ interface ThreeHeroInstance {
     sprite: HTMLCanvasElement;
     spriteW: number;
     spriteH: number;
+    /** Headroom rows (sprite px) above the cell; the cell itself starts at this row. */
+    spriteTop: number;
     shadow: ShadowDrawResult | null;
     activeClip: string;
   } | null;
 }
 
 let sharedInstance: ThreeHeroInstance | null = null;
+
+/** Cell px of headroom the 3D sprite carries above its 114x103 cell (room for the raised casting hand). */
+export const HERO_3D_HEADROOM = 22;
 
 export function get3dHeroRenderer(): ThreeHeroInstance {
   if (sharedInstance) return sharedInstance;
@@ -137,15 +145,19 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
   const SCALE = 2;
   const W = CELL_W * SCALE; // 228
   const H = CELL_H * SCALE; // 206
+  // Transparent rows above the cell so a hand raised over the head while casting is not cut off. The cell maths
+  // (pivot, foot shadow) still use the 114x103 cell below it.
+  const TOP = HERO_3D_HEADROOM * SCALE;
+  const HS = H + TOP;
 
-  // One WebGL canvas holds both outputs that hero.ts composites: the hand-painted sprite (top W x H) and the
+  // One WebGL canvas holds both outputs that hero.ts composites: the hand-painted sprite (top W x HS) and the
   // foot-anchored ground shadow (below it, at 1x cell scale). Every pass runs on the GPU and nothing is read back,
   // so the main thread never waits for the GPU (the former readPixels + per-pixel JS passes cost ~10ms a frame
   // on mid-range phones).
   const SHADOW_W = 320; // |sun.dx| <= 1.7 and |sun.dy| <= .85 keep the projected shadow inside 304 x 208
   const SHADOW_H = 224;
   const CANVAS_W = Math.max(W, SHADOW_W);
-  const CANVAS_H = H + SHADOW_H;
+  const CANVAS_H = HS + SHADOW_H;
 
   const glCanvas = document.createElement('canvas');
   glCanvas.width = CANVAS_W;
@@ -295,12 +307,12 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
         float minN = min(min(l.a, r.a), min(u.a, d.a));
         if (minN < 80.0) {
           rgb = mix(rgb, INK, min(0.82, (80.0 - minN) / 80.0 * 0.78));
-        } else if (y > 68.0) {
+        } else if (y > ${68 + TOP}.0) {
           float lumC = dot(c.rgb, LUM);
           float diff = max(abs(lumC - dot(r.rgb, LUM)), abs(lumC - dot(d.rgb, LUM)));
           if (diff > 56.0) rgb = mix(rgb, INK, min(0.22, (diff - 56.0) * 0.0045));
         }
-        float vGrad = y > 155.0 ? max(0.76, 1.0 - (y - 155.0) * 0.0055) : 1.03;
+        float vGrad = y > ${155 + TOP}.0 ? max(0.76, 1.0 - (y - ${155 + TOP}.0) * 0.0055) : 1.03;
         gl_FragColor = vec4(min(vec3(255.0), rgb * uTint * vGrad), min(255.0, c.a * 1.15)) / 255.0;
         return;
       }
@@ -475,7 +487,7 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
     }`;
 
   function createSpritePipeline() {
-    srcTex = new THREE.FramebufferTexture(W, H);
+    srcTex = new THREE.FramebufferTexture(W, HS);
     const material = (fragmentShader: string, uniforms: Record<string, { value: any }>, vertexShader?: string) =>
       new THREE.ShaderMaterial({
         uniforms,
@@ -504,7 +516,7 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
     postTint = new THREE.Vector3(1, 1, 1);
     postScene = quad(POST_FRAG, {
       tSrc: { value: srcTex },
-      uSize: { value: new THREE.Vector2(W, H) },
+      uSize: { value: new THREE.Vector2(W, HS) },
       uOrigin: { value: new THREE.Vector2(0, SHADOW_H) },
       uTint: { value: postTint }
     });
@@ -554,7 +566,7 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
       tintB = 1 - night * 0.04;
     }
     postTint.set(tintR, tintG, tintB);
-    renderer.setViewport(0, SHADOW_H, W, H);
+    renderer.setViewport(0, SHADOW_H, W, HS);
     renderer.render(postScene, orthoCam);
   }
 
@@ -595,7 +607,57 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
     renderer.setRenderTarget(null);
     renderer.setViewport(0, SHADOW_H - sh, sw, sh);
     renderer.render(featherScene, orthoCam);
-    return { canvas: glCanvas, sx: 0, sy: H, ox, oy, sw, sh };
+    return { canvas: glCanvas, sx: 0, sy: HS, ox, oy, sw, sh };
+  }
+
+  /*
+   * Raised casting arm. Each bone is aimed at a model-space direction (glTF model space: +Y up, +Z the way the
+   * hero faces, -X the hero's right) starting from its bind rotation under the current parent, so the arm keeps
+   * a stable twist whatever the clip was doing, then blended over the clip by `castRaise`. Mixamo-style bones
+   * point along their local +Y. The hand rises above the head, into the sprite's HEADROOM.
+   */
+  const CAST_ARM_CHAIN = ['Shoulder', 'Arm', 'ForeArm', 'Hand'];
+  let castTmp: { inv: any; m: any; p: any; s: any; qParent: any; q: any; qd: any; v: any; dir: any } | null = null;
+
+  function raiseCastingArm(entry: HeroModelEntry, t: number) {
+    if (entry.castArm.length !== CAST_ARM_CHAIN.length) return;
+    castTmp ??= {
+      inv: new THREE.Matrix4(),
+      m: new THREE.Matrix4(),
+      p: new THREE.Vector3(),
+      s: new THREE.Vector3(),
+      qParent: new THREE.Quaternion(),
+      q: new THREE.Quaternion(),
+      qd: new THREE.Quaternion(),
+      v: new THREE.Vector3(),
+      dir: new THREE.Vector3()
+    };
+    const k = castTmp;
+    const w = entry.castRaise * entry.castRaise * (3 - 2 * entry.castRaise);
+    // Slow channelling sway so the raised hand is alive rather than a frozen pose.
+    const ph = t * Math.PI * 2 * 0.85;
+    const sw = Math.sin(ph);
+    const cw = Math.cos(ph);
+    const targets = [
+      [-0.62, 0.56, 0.06], // shoulder: clavicle shrugs up with the arm
+      [-0.5 - 0.04 * cw, 0.86, 0.12 + 0.08 * sw], // upper arm: up and out, clear of the head and hair
+      [-0.14 - 0.06 * sw, 0.96, 0.26 + 0.1 * cw], // forearm: elbow slightly bent, hand above the shoulder
+      [-0.02, 0.84, 0.5 + 0.12 * sw] // hand: fingers tipped forward, palm to the sky
+    ];
+    entry.rawModel.updateMatrixWorld(true);
+    k.inv.copy(entry.rawModel.matrixWorld).invert();
+    for (let i = 0; i < entry.castArm.length; i++) {
+      const { bone, bind } = entry.castArm[i];
+      k.m.multiplyMatrices(k.inv, bone.parent.matrixWorld).decompose(k.p, k.qParent, k.s);
+      k.q.multiplyQuaternions(k.qParent, bind);
+      k.v.set(0, 1, 0).applyQuaternion(k.q);
+      k.dir.fromArray(targets[i]).normalize();
+      k.qd.setFromUnitVectors(k.v, k.dir);
+      k.q.premultiply(k.qd);
+      k.q.premultiply(k.qParent.invert());
+      bone.quaternion.slerp(k.q, i === 0 ? w * 0.7 : w);
+      bone.updateMatrixWorld(true);
+    }
   }
 
   function loadHeroModel(loader: any, heroId: string) {
@@ -608,7 +670,8 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
       baseOffsetY: 0,
       baseOffsetZ: 0,
       footBones: [],
-      castArmBones: [],
+      castArm: [],
+      castRaise: 0,
       mixer: null,
       actions: new Map(),
       originalMaterials: new Map(),
@@ -643,17 +706,20 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
           if (obj.isBone && /foot|toe/i.test(obj.name)) {
             entry.footBones.push(obj);
           }
-          // The source cast clips drive both arms forward. Keep one arm clearly
-          // overhead during every cast so the silhouette reads as spellcasting.
-          if (obj.isBone && /^(Right|Left)(Shoulder|Arm|ForeArm|Hand)$/i.test(obj.name)) {
-            const raiseRight = heroId === 'ember-warden';
-            const side = obj.name.startsWith('Right');
-            if (side === raiseRight) entry.castArmBones.push(obj);
-          }
           if (obj.isMesh && obj.material) {
             entry.originalMaterials.set(obj.uuid, obj.material.clone());
           }
         });
+
+        // Both heroes cast with the right arm (Ember's gauntlet, Rift's rift hand); it is the one raised overhead.
+        for (const part of CAST_ARM_CHAIN) {
+          const bone = model.getObjectByName(`Right${part}`);
+          if (!bone?.isBone) {
+            entry.castArm = [];
+            break;
+          }
+          entry.castArm.push({ bone, bind: bone.quaternion.clone() });
+        }
 
         applyHandPaintedShaderToEntry(entry);
 
@@ -761,7 +827,8 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
       const halfH = 0.752;
       const halfW = halfH * (W / H);
       const targetY = 0.74;
-      orthoCam = new THREE.OrthographicCamera(-halfW, halfW, halfH, -halfH, 0.1, 20);
+      // The frustum grows upward by the headroom rows at the same world-per-pixel scale, so the cell is unchanged.
+      orthoCam = new THREE.OrthographicCamera(-halfW, halfW, halfH + (2 * halfH * TOP) / H, -halfH, 0.1, 20);
       orthoCam.position.set(0, targetY + Math.sin(ISO_TILT) * ISO_DIST, Math.cos(ISO_TILT) * ISO_DIST);
       orthoCam.lookAt(0, targetY, 0);
 
@@ -862,18 +929,11 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
 
       entry.mixer.update(dt);
 
-      // Apply the overhead casting pose after animation evaluation. The arm
-      // chain is deliberately additive only for the selected side; the other
-      // arm and the rest of the animation retain their authored motion.
-      if (isCasting && entry.castArmBones.length > 0) {
-        for (const bone of entry.castArmBones) {
-          const n = String(bone.name);
-          const sign = n.startsWith('Right') ? -1 : 1;
-          if (/Shoulder|Arm$/i.test(n)) bone.rotation.set(0, 0, sign * 1.28);
-          else if (/ForeArm$/i.test(n)) bone.rotation.set(0, 0, sign * 0.72);
-          else bone.rotation.set(0, 0, sign * 0.35);
-        }
-      }
+      // Casting raises one hand overhead instead of the clips' forward reach. It is laid over the evaluated clip
+      // (every cast clip keys these bones each frame), so the legs, torso and other arm keep their authored motion.
+      const raiseTo = entry.activeClip === 'idle_cast' || entry.activeClip === 'run_cast' ? 1 : 0;
+      entry.castRaise += (raiseTo - entry.castRaise) * Math.min(1, dt * (raiseTo ? 10 : 7));
+      if (entry.castRaise > 0.003) raiseCastingArm(entry, now / 1000);
 
       // Dynamically ground the lowest foot/toe bone to y = 0 so the boots never sink below the ground pivot
       // while preserving natural upward flight bounce during 'run' and 'run_cast'
@@ -898,7 +958,7 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
       renderer.setClearColor(0x000000, 0);
       renderer.setRenderTarget(null);
       renderer.clear(true, true, true);
-      renderer.setViewport(0, SHADOW_H, W, H);
+      renderer.setViewport(0, SHADOW_H, W, HS);
       renderer.render(scene, orthoCam);
       renderer.copyFramebufferToTexture(srcTex, copyAt);
 
@@ -908,7 +968,7 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
       // Apply 2D Hand-Painted Sprite Pass (dark ink outline + internal creases) over the raw 3D pass
       applyHandPaintedSpritePass(tint, night);
 
-      return { sprite: glCanvas, spriteW: W, spriteH: H, shadow, activeClip: entry.activeClip };
+      return { sprite: glCanvas, spriteW: W, spriteH: HS, spriteTop: TOP, shadow, activeClip: entry.activeClip };
     }
   };
 

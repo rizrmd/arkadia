@@ -9,7 +9,7 @@ import {STRONGHOLD} from './prefabs/stronghold';
 import {liftAt,reliefHides,type ReliefFeature} from '../world/relief';
 import {characters,atlasUrl,DEFAULT_HERO,HEROES,isHero,type HeroId} from './heroes';
 import {measureTracelogPhase} from './tracelog';
-import {is3dHeroEnabled,get3dHeroRenderer} from './hero-3d';
+import {is3dHeroEnabled,get3dHeroRenderer,HERO_3D_HEADROOM} from './hero-3d';
 
 export type Column={x:number;w:number;back:number;front:number;height:number};
 export type Pose={clip:string;t:number};
@@ -435,7 +435,7 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
  function render(){
   const s=o.sun(),f=meta.frames[frameIndex()],res=quantizeRes(origin.scale);
   const night=own?Math.max(0,1-s.alpha/.4):0;
-  const half=Math.max((pivot.x>cell.w-pivot.x?pivot.x:cell.w-pivot.x)*DISPLAY,night?48:0),top=-pivot.y*DISPLAY-(night?14:0),bottom=(cell.h-pivot.y)*DISPLAY+(night?20:8),H=(cell.h+18)*DISPLAY;
+  const half=Math.max((pivot.x>cell.w-pivot.x?pivot.x:cell.w-pivot.x)*DISPLAY,night?48:0),top=-(pivot.y+(r3d?HERO_3D_HEADROOM:0))*DISPLAY-(night?14:0),bottom=(cell.h-pivot.y)*DISPLAY+(night?20:8),H=(cell.h+18)*DISPLAY;
   const ends=[-half,half].flatMap(w=>[0,H].flatMap(h=>[[w+h*s.dx,h*s.dy],[w*s.wx+h*s.dx,w*s.wy+h*s.dy]])),sxs=[-half,half,...ends.map(e=>e[0])],sys=[top,bottom,...ends.map(e=>e[1]-12),...ends.map(e=>e[1]+12)];
   const b=[Math.floor(Math.min(...sxs))-8,Math.floor(Math.min(...sys))-8,Math.ceil(Math.max(...sxs))+8,Math.ceil(Math.max(...sys))+8];
   const lift=liftAt(x,y),hidden=occluders(x,y,b,lift),at=x.toFixed(1)+','+y.toFixed(1);if(canvas.dataset.x+','+canvas.dataset.y!==at)Object.assign(canvas.dataset,{x:x.toFixed(1),y:y.toFixed(1)});
@@ -487,7 +487,7 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
     c.restore();
    }
    c.save();c.scale(DISPLAY,DISPLAY);
-   c.drawImage(res3d.sprite,0,0,res3d.spriteW,res3d.spriteH,-pivot.x,-pivot.y,cell.w,cell.h);
+   const top3d=res3d.spriteTop*cell.h/(res3d.spriteH-res3d.spriteTop);c.drawImage(res3d.sprite,0,0,res3d.spriteW,res3d.spriteH,-pivot.x,-pivot.y-top3d,cell.w,cell.h+top3d);
    c.restore();
   }else if(fCan){
    drawFigureShadow(c,atlas,f,cell,s,dir);

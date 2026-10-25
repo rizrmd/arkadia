@@ -1,0 +1,15 @@
+{
+  "task": "lylhrpkmpqbazdztyimvcpso",
+  "date": "2026-10-25",
+  "cause": "75fcd4b overwrote RightShoulder/Arm/ForeArm/Hand (Rift: Left*) with absolute Euler (0,0,±1.28/0.72/0.35), discarding the rig's bind rotations (shoulders sit ~115° off identity), and its /Shoulder|Arm$/ test also matched ForeArm. The arm twisted instead of rising. The 3D sprite also ended ~0.08 world units above the head, so a raised hand would have been clipped.",
+  "fix": [
+    "hero-3d.ts raiseCastingArm: during idle_cast/run_cast, aim the right shoulder, upper arm, forearm and hand at model-space directions (up, slightly out and forward). Each bone starts from its bind rotation under the current parent, so the twist stays stable, and is slerped over the evaluated clip by castRaise (eases in ~0.1 s, out ~0.15 s) with a slow 0.85 Hz channelling sway.",
+    "HERO_3D_HEADROOM = 22 cell px of transparent rows above the 114x103 cell: camera frustum, framebuffer copy, outline pass (thresholds shifted) and shadow canvas offset; hero.ts draws with spriteTop and widens its canvas bounds."
+  ],
+  "checks": {
+    "harness": "real src/stronghold/hero-3d.ts through Vite, idle_cast/run_cast at yaws 0.79, 2.36, -0.79, -2.36 for both heroes, plus cast-end easing",
+    "inGame": "Stronghold boot with ?hero=…&3d=1, __notifyHeroCast(60000): clip3d=idle_cast for both, hero canvas 119x143, 0 opaque px in its top 2 rows (raised hand not clipped), no page errors",
+    "typecheck": "tsc --noEmit: no errors in hero.ts / hero-3d.ts"
+  },
+  "images": ["before-after.webp", "in-game-hero-canvas.webp", "in-game-ember-casting.webp", "in-game-rift-casting.webp"]
+}

@@ -49,6 +49,7 @@ mkdir -p "$STAGE/site/monster-scaling"; cp docs/monster-scaling/*.webp docs/mons
 mkdir -p "$STAGE/site/locked-zoom-aoe"; cp docs/locked-zoom-aoe/*.webp docs/locked-zoom-aoe/*.json docs/assets/locked-zoom-aoe-ref.png "$STAGE/site/locked-zoom-aoe/"
 mkdir -p "$STAGE/site/soul-pickups"; cp docs/soul-pickups/*.webp docs/soul-pickups/*.json "$STAGE/site/soul-pickups/"
 mkdir -p "$STAGE/site/go-webp-cache"; cp docs/go-webp-cache/*.webp docs/go-webp-cache/*.json "$STAGE/site/go-webp-cache/"
+mkdir -p "$STAGE/site/cast-raise"; cp docs/cast-raise/*.webp docs/cast-raise/*.json "$STAGE/site/cast-raise/"
 mkdir -p "$STAGE/site/fps-tracelog"; cp docs/fps-tracelog/*.webp docs/fps-tracelog/*.json "$STAGE/site/fps-tracelog/"
 mkdir -p "$STAGE/site/fps-tracelog-3d-hero"; cp docs/fps-tracelog-3d-hero/*.webp docs/fps-tracelog-3d-hero/*.json "$STAGE/site/fps-tracelog-3d-hero/"
 mkdir -p "$STAGE/site/frame-cap"; cp docs/frame-cap/*.webp docs/frame-cap/*.json "$STAGE/site/frame-cap/"
