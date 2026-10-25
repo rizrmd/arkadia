@@ -1,0 +1,32 @@
+{
+  "base": "http://127.0.0.1:5587",
+  "views": {
+    "mobile": {
+      "viewport": [
+        390,
+        844
+      ],
+      "saved": {
+        "quality": "low",
+        "frameRate": 30,
+        "music": 23,
+        "soundEffects": 41,
+        "screenShake": false,
+        "showFps": false
+      },
+      "audio": {
+        "state": "running",
+        "music": 0.004139999859035015,
+        "soundEffects": 0.018449999392032623
+      },
+      "confirmation": "Cancel, Escape, backdrop preserve; second confirmation resets allowlist",
+      "bounds": {
+        "x": 12,
+        "y": 124,
+        "width": 366,
+        "height": 596
+      }
+    }
+  },
+  "errors": []
+}

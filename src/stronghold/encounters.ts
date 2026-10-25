@@ -903,7 +903,8 @@ export async function createEncounters(o:{
    return {undo(){h.hp=hp;if(id==='stronghold-scroll'){o.hero.teleport(old.x,old.y);h.x=u;h.y=v;try{localStorage.setItem('arkodia.stronghold.hero',JSON.stringify(old));}catch{}}render();}};
   },
   minimap,
-  isModalOpen:()=>skillTree.isOpen()||blessingOverlay.visible,
+  isModalOpen:()=>skillTree.isOpen(),
+  inventoryAvailable:()=>!run.pending&&!blessingOverlay.visible&&!skillTree.isOpen(),
   skillTree:{open:(slot?:number)=>openSkillTree(slot),close:()=>skillTree.open(false),snapshot:()=>skillTree.snapshot(),tree:skillTree},
   blessingLayout:()=>blessingOverlay.telemetry(),
   combatants:()=>[o.hero.position(),...foes.filter(f=>f.alive).map(f=>tilePoint(f.x,f.y))],

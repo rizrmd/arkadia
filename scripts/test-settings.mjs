@@ -1,0 +1,18 @@
+import assert from 'node:assert/strict';
+import {createServer} from 'vite';
+const server=await createServer({server:{middlewareMode:true},appType:'custom'});
+const {readSettings,DEFAULT_SETTINGS,SETTINGS_KEY}=await server.ssrLoadModule('/src/app/settings-state.ts');
+const {createQualityController}=await server.ssrLoadModule('/src/app/render-quality.ts');
+assert.deepEqual(readSettings('{oops'),DEFAULT_SETTINGS);
+assert.deepEqual(readSettings('null'),DEFAULT_SETTINGS);
+assert.equal(readSettings('{"music":999,"soundEffects":-4}').music,100);
+assert.equal(readSettings('{"music":999,"soundEffects":-4}').soundEffects,0);
+const q=createQualityController({mobile:true,memory:2});q.configure('high',30);assert.equal(q.get().tier,'high');assert.equal(q.get().targetFps,30);q.configure('low',60);assert.equal(q.get().resolution,1);assert.equal(q.get().targetFps,60);q.configure('auto',30);assert.equal(q.get().tier,'low');
+const data=new Map([[SETTINGS_KEY,'preferences'],['unrelated','keep'],['arkodia.hero','ember-warden'],['arkodia.minimap.layout.v1','layout'],['arkodia-stronghold-v1','old'],['arkodia-snow-expedition-v1','old'],['arkodia-expedition-v1','old'],['arkodia.stronghold.hero','old']]);
+globalThis.localStorage={getItem:k=>data.get(k)??null,setItem:(k,v)=>data.set(k,v),removeItem:k=>data.delete(k)};
+Object.defineProperty(globalThis,'navigator',{value:{locks:{request:async(k,fn)=>fn()}},configurable:true});
+const {resetProgression,PROGRESSION_KEYS}=await server.ssrLoadModule('/src/stronghold/reset-progression.ts');
+await resetProgression();for(const k of PROGRESSION_KEYS)if(k!=='arkodia-stronghold-v1')assert(!data.has(k));assert.equal(JSON.parse(data.get('arkodia-stronghold-v1')).gold,600);for(const k of [SETTINGS_KEY,'unrelated','arkodia.hero','arkodia.minimap.layout.v1'])assert(data.has(k));
+console.log('PASS settings validation, quality/frame independence, reset allowlist and preserved unrelated storage');
+
+await server.close();

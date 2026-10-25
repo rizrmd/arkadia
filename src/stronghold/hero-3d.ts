@@ -317,7 +317,7 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
           float diff = max(abs(lumC - dot(r.rgb, LUM)), abs(lumC - dot(d.rgb, LUM)));
           if (diff > 56.0) rgb = mix(rgb, INK, min(0.22, (diff - 56.0) * 0.0045));
         }
-        float vGrad = y > ${77.5*SCALE + TOP} ? max(0.76, 1.0 - (y - ${77.5*SCALE + TOP}) * ${.011/SCALE}) : 1.03;
+        float vGrad = y > ${(77.5*SCALE + TOP).toFixed(1)} ? max(0.76, 1.0 - (y - ${(77.5*SCALE + TOP).toFixed(1)}) * ${.011/SCALE}) : 1.03;
         gl_FragColor = vec4(min(vec3(255.0), rgb * uTint * vGrad), min(255.0, c.a * 1.15)) / 255.0;
         return;
       }

@@ -1,3 +1,5 @@
+import {playSkillSound} from '../app/game-audio';
+import {gameSettings} from '../app/settings-state';
 import {Container} from 'pixi.js';
 import {createCanvasSprite} from '../app/loader';
 import {MsdfText} from '../typography/text';
@@ -161,7 +163,7 @@ export function createCombatVfx(o:{
   const t=worldToTile(r.x,r.y);
   return {hit:true,u:t.u,v:t.v,t:r.t};
  };
- function cue(key:string,c:CueContext){return playCue(fx,o.getHero().heroId,key,c);}
+ function cue(key:string,c:CueContext){if(key.includes('cast'))playSkillSound();return playCue(fx,o.getHero().heroId,key,c);}
 
  function addFloat(kind:FloatKind,text:string,u:number,v:number,subtext?:string){
   const spread=(o.random()-.5)*38;
@@ -184,6 +186,7 @@ export function createCombatVfx(o:{
  }
 
  function shakeOffset(target:object):{dx:number;dy:number}{
+  if(!gameSettings.get().screenShake)return {dx:0,dy:0};
   const s=shakes.get(target);if(!s||s.age>=s.duration)return {dx:0,dy:0};
   const decay=1-s.age/s.duration,phase=s.age*.09+s.seed;
   return {dx:Math.cos(phase)*s.amp*decay,dy:Math.sin(phase*1.3)*s.amp*.6*decay};

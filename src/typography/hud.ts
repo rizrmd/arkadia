@@ -1347,6 +1347,8 @@ export class Hud extends Container {
   this.setTelemetry(pingMs, this.state.fps ?? 60);
  }
 
+ setShowFps(show:boolean){this.trTelemetryFpsText.visible=show;}
+
  setFps(fps: number) {
   this.setTelemetry(this.state.pingMs ?? 24, fps);
  }

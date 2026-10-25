@@ -1,3 +1,4 @@
+import './render-settings';
 import {renderQuality} from './render-quality';
 import {Application,BitmapTextPipe,CanvasSource,Container,extensions,GraphicsPipe,NineSliceSpritePipe,Sprite,Texture,TilingSpritePipe} from 'pixi.js';
 import {FrameSet,pickFrameScale} from '../typography/frames';
