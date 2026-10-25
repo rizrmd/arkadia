@@ -250,12 +250,30 @@ export function eligibleActiveSkills(p:Progression,hero?:HeroKind):ActiveSkillId
 
 // Rift Runner Ascension Tree gates (Knowledge: "Rift Runner — Ascension Tree Concept", Tiers). A card's tier opens once
 // enough points are spent, and every level-up card taken is one point. Rift Bolt is learned at Lv. 1; Ascendant Star is
-// the capstone, offered from Lv. 20 only (and as the passive card of the Lv. 20 offer). Ember Warden has no gates.
+// the capstone, offered from Lv. 20 only (and as the passive card of the Lv. 20 offer). Ember uses the matching mapping below.
 export const RIFT_TIER_POINTS:Record<string,number>={
  'rift-bolt':0,'rift-dash':0,'rift-trap':0,heal:0,might:0,
  cleave:4,shockwave:4,nova:4,leech:4,
  haste:8,vitality:8
 };
+// Final Ember Stage 1 mapping: the same shared blessings, Ember-specific root and foundations.
+export const EMBER_TIER_POINTS:Record<string,number>={
+ 'flame-fan':0,'cinder-step':0,'ember-snare':0,heal:0,might:0,
+ cleave:4,shockwave:4,nova:4,leech:4,haste:8,vitality:8
+};
+export const EMBER_MAX_ACTIVE_RANK=5;
+export function emberCardUnlocked(p:Progression,id:string):boolean{
+ if(id==='star')return offerLevel(p)>=CAPSTONE_LEVEL;
+ const gate=EMBER_TIER_POINTS[id];
+ return gate!=null&&(owned(p,id)||pointsSpent(p)>=gate);
+}
+// Acquisition gates and rank/learned limits are separate: owned skills bypass tiers, never rank caps.
+export function emberCardEligible(p:Progression,id:string):boolean{
+ if(!emberCardUnlocked(p,id))return false;
+ if(!isActiveSkill(id))return true;
+ return (p.skills[id]??0)<EMBER_MAX_ACTIVE_RANK&&
+  (owned(p,id)||learnedActives(p,'ember-warden').length<MAX_LEARNED_ACTIVES);
+}
 export const CAPSTONE_LEVEL=20;
 // Points spent = level-up cards taken: every pick adds one rank (Second Wind included) or one star; the free Lv. 1
 // skill is not a pick.
@@ -278,39 +296,15 @@ export function riftCardUnlocked(p:Progression,id:string):boolean{
 export function roll(p:Progression,random:()=>number,hero?:HeroKind){
  const h=hero??inferHero(p);
  syncHeroLoadout(p,h);
- if(h==='rift-runner'){rollGated(p,random);return;}
- const activePool=[...eligibleActiveSkills(p,h)];
- const passivePool=[...PASSIVE_BLESSING_IDS];
- const chosen:string[]=[];
- const take=(pool:string[])=>{
-  const avail=pool.filter(id=>!chosen.includes(id));
-  if(!avail.length)return;
-  const idx=Math.floor(random()*avail.length);
-  chosen.push(avail[idx]);
- };
- // Always include 1 Passive Blessing (Option 1 at top-center) and 2 Active Skill Blessings
- // (Option 2 unlocking a secondary socket when slots < 3, and Option 3 upgrading an equipped skill).
- take(passivePool);
- if(p.slots.length<MAX_SKILL_SLOTS){
-  const unequipped=activePool.filter(id=>!p.slots.includes(id));
-  take(unequipped.length?unequipped:activePool);
-  const equipped=activePool.filter(id=>p.slots.includes(id));
-  take(equipped.length?equipped:activePool);
- }else{
-  take(activePool);
-  take(activePool);
- }
- while(chosen.length<3){
-  take([...activePool,...passivePool]);
- }
- p.offers=chosen;
+ rollGated(p,random,h);
 }
 
-// The Rift Runner's offer: the same 1 passive + 2 active shape, drawn only from open tiers and owned skills. When a
+// Both heroes reuse the offer shape: the same 1 passive + 2 active shape, drawn only from open tiers and owned skills. When a
 // gated pool runs short, the card is filled from the other gated pool, never from a locked tier and never left blank.
-function rollGated(p:Progression,random:()=>number){
- const activePool=eligibleActiveSkills(p,'rift-runner').filter(id=>riftCardUnlocked(p,id));
- const passivePool=PASSIVE_BLESSING_IDS.filter(id=>riftCardUnlocked(p,id));
+function rollGated(p:Progression,random:()=>number,hero:HeroKind){
+ const eligible=(id:string)=>hero==='ember-warden'?emberCardEligible(p,id):riftCardUnlocked(p,id);
+ const activePool=eligibleActiveSkills(p,hero).filter(eligible);
+ const passivePool=PASSIVE_BLESSING_IDS.filter(eligible);
  const chosen:string[]=[];
  const take=(pool:string[])=>{
   const avail=pool.filter(id=>!chosen.includes(id));
@@ -353,6 +347,7 @@ export function choose(p:Progression,id:string,random:()=>number,hero?:HeroKind)
  if(!p.pending||!p.offers.includes(id))return false;
  const h=hero??inferHero(p);
  syncHeroLoadout(p,h);
+ if(h==='ember-warden'&&!emberCardEligible(p,id))return false;
  if(isActiveSkill(id)){
   const learned=learnedActives(p,h);
   if(learned.includes(id)){

@@ -250,11 +250,41 @@ func (w *World) roll(p *Progression) {
 
 // Rift Runner Ascension Tree gates (progression.ts, RIFT_TIER_POINTS): a card's tier opens once enough points are
 // spent, and every level-up card taken is one point. Ascendant Star is offered from Lv. 20 only, as the passive card
-// of the Lv. 20 offer. Ember Warden has no gates.
+// of the Lv. 20 offer. Ember uses the matching mapping below.
 var riftTierPoints = map[string]int{
 	"rift-bolt": 0, "rift-dash": 0, "rift-trap": 0, "heal": 0, "might": 0,
 	"cleave": 4, "shockwave": 4, "nova": 4, "leech": 4,
 	"haste": 8, "vitality": 8,
+}
+
+// Ember matches the finalized Stage 1 contract. Rift's pools and limits remain unchanged.
+var emberTierPoints = map[string]int{
+	"flame-fan": 0, "cinder-step": 0, "ember-snare": 0, "heal": 0, "might": 0,
+	"cleave": 4, "shockwave": 4, "nova": 4, "leech": 4, "haste": 8, "vitality": 8,
+}
+
+const EmberMaxActiveRank = 5
+const EmberMaxLearnedActives = 4
+
+func (p *Progression) emberLearnedActives() []string {
+	out := []string{}
+	for _, id := range heroActivePools["ember-warden"] {
+		if p.Skills[id] > 0 || containsStr(p.Slots, id) {
+			out = append(out, id)
+		}
+	}
+	return out
+}
+func (p *Progression) emberCardEligible(id string) bool {
+	if id == "star" {
+		return p.offerLevel() >= CapstoneLevel
+	}
+	gate, ok := emberTierPoints[id]
+	owned := p.Skills[id] > 0 || containsStr(p.Slots, id)
+	if !ok || (!owned && p.pointsSpent() < gate) {
+		return false
+	}
+	return !isActiveSkill(id) || (p.Skills[id] < EmberMaxActiveRank && (owned || len(p.emberLearnedActives()) < EmberMaxLearnedActives))
 }
 
 const CapstoneLevel = 20
@@ -298,67 +328,34 @@ func (p *Progression) riftUnlocked(pool []string) []string {
 }
 
 func (w *World) rollForHero(p *Progression, hero string) {
-	if h := hero; h == "rift-runner" || (h != "ember-warden" && p.inferHero(h) == "rift-runner") {
-		w.rollGated(p)
-		return
+	h := p.inferHero(hero)
+	if hero == "rift-runner" || hero == "ember-warden" {
+		h = hero
 	}
-	activePool := p.eligibleActiveSkills(hero)
-	passivePool := make([]string, len(passiveBlessingIDs))
-	copy(passivePool, passiveBlessingIDs)
-
-	chosen := make([]string, 0, 3)
-	take := func(pool []string) {
-		avail := make([]string, 0, len(pool))
-		for _, id := range pool {
-			if !containsStr(chosen, id) {
-				avail = append(avail, id)
-			}
-		}
-		if len(avail) == 0 {
-			return
-		}
-		idx := int(w.random() * float64(len(avail)))
-		if idx >= len(avail) {
-			idx = len(avail) - 1
-		}
-		chosen = append(chosen, avail[idx])
-	}
-
-	if len(p.Slots) < MaxSkillSlots {
-		unequipped := make([]string, 0, len(activePool))
-		for _, id := range activePool {
-			if !containsStr(p.Slots, id) {
-				unequipped = append(unequipped, id)
-			}
-		}
-		if len(unequipped) > 0 {
-			take(unequipped)
-		} else {
-			take(activePool)
-		}
-	} else {
-		take(activePool)
-	}
-	take(passivePool)
-	combined := append(append([]string{}, activePool...), passivePool...)
-	for len(chosen) < 3 {
-		take(combined)
-	}
-	for i := len(chosen) - 1; i > 0; i-- {
-		j := int(w.random() * float64(i+1))
-		if j > i {
-			j = i
-		}
-		chosen[i], chosen[j] = chosen[j], chosen[i]
-	}
-	p.Offers = chosen
+	p.SyncHero(h)
+	w.rollGated(p, h)
 }
 
-// rollGated is the Rift Runner's offer: one passive and two active cards, drawn only from open tiers and owned
+// rollGated is the shared offer builder: one passive and two active cards, drawn only from open tiers and owned
 // skills. A short pool is filled from the other gated pool, never from a locked tier.
-func (w *World) rollGated(p *Progression) {
-	activePool := p.riftUnlocked(p.eligibleActiveSkills("rift-runner"))
-	passivePool := p.riftUnlocked(passiveBlessingIDs)
+func (w *World) rollGated(p *Progression, hero string) {
+	var activePool, passivePool []string
+	if hero == "ember-warden" {
+		activePool, passivePool = []string{}, []string{}
+		for _, id := range heroActivePools[hero] {
+			if p.emberCardEligible(id) {
+				activePool = append(activePool, id)
+			}
+		}
+		for _, id := range passiveBlessingIDs {
+			if p.emberCardEligible(id) {
+				passivePool = append(passivePool, id)
+			}
+		}
+	} else {
+		activePool = p.riftUnlocked(p.eligibleActiveSkills("rift-runner"))
+		passivePool = p.riftUnlocked(passiveBlessingIDs)
+	}
 	chosen := make([]string, 0, 3)
 	take := func(pool []string) bool {
 		avail := make([]string, 0, len(pool))
@@ -447,12 +444,18 @@ func (p *Player) choose(id string, level int) {
 		return
 	}
 	p.Run.SyncHero(p.Hero)
+	ember := p.Hero == "ember-warden" || p.Run.inferHero(p.Hero) == "ember-warden"
+	if ember && !p.Run.emberCardEligible(id) {
+		return
+	}
 	if isActiveSkill(id) {
-		if containsStr(p.Run.Slots, id) {
+		if containsStr(p.Run.Slots, id) || (ember && p.Run.Skills[id] > 0) {
 			p.Run.Skills[id] = max(1, p.Run.Skills[id]) + 1
 		} else if len(p.Run.Slots) < MaxSkillSlots {
 			p.Run.Slots = append(p.Run.Slots, id)
 			p.Run.Skills[id] = max(1, p.Run.Skills[id]+1)
+		} else if ember && len(p.Run.emberLearnedActives()) < EmberMaxLearnedActives {
+			p.Run.Skills[id] = 1
 		} else {
 			return
 		}

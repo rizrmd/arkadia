@@ -1,0 +1,31 @@
+{
+  "ok": true,
+  "baseline": "2de5e4d",
+  "seeds": 400,
+  "strategies": [
+    "random",
+    "passive",
+    "rank",
+    "active"
+  ],
+  "emberOffersChecked": 30769,
+  "validFallbackOffers": 1612,
+  "riftOffersIdentical": 30400,
+  "goSeededOffers": 22800,
+  "goClientParityCases": 608,
+  "boundaryPoints": [
+    0,
+    3,
+    4,
+    7,
+    8
+  ],
+  "checks": [
+    "batched pending capstone",
+    "owned rank-up bypass",
+    "rank five cap",
+    "four learned/three equipped",
+    "all-actives-capped passive fallback",
+    "stale choice rejection"
+  ]
+}
