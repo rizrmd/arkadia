@@ -1,0 +1,55 @@
+{
+  "release": "5b4daf65fd805aa58abac27294b5e140c3e413b6",
+  "layer": "1792919544044-game-5b4daf6-b90275c01bc4",
+  "base": "https://ark-whachat.fural.space",
+  "expected_index_sha256": "cb5a78340d6e32da697b1d920cfe2b0f1e6ec2a90f25c906c8da783e7f10fb57",
+  "live_index_sha256": "7c923a12a55acc8ebc3aea42407a73391fa06dd3cb2bf3b0a6e5d4d030e04517",
+  "indexMatches": false,
+  "checks": {
+    "/healthz": {
+      "status": 200,
+      "bytes": 35
+    },
+    "/items/health-potion.svg": {
+      "status": 200,
+      "bytes": 1304
+    },
+    "/items/stronghold-scroll.svg": {
+      "status": 200,
+      "bytes": 1048
+    },
+    "/rift-runner/rift-bolt-levels/": {
+      "status": 200,
+      "bytes": 1267
+    },
+    "/ember-warden-review/tree-stage1/": {
+      "status": 200,
+      "bytes": 8656
+    }
+  },
+  "note": "Peer deployments subsequently integrated the inventory release into this newer committed game release. Live inventory usage/layout/save-load smoke passed against that integration; the original archive HTML hash is expected to differ.",
+  "expected_entry_assets": [
+    "/assets/index-DKpAZ23e.js",
+    "/assets/CanvasPool-Bfa7zDPb.js",
+    "/assets/Filter-D6JpcDm_.js",
+    "/assets/canvasUtils-Bu0orRzg.js",
+    "/assets/GCManagedHash-Bz8k4ITX.js",
+    "/assets/RenderTargetSystem-CCfFNQoA.js",
+    "/assets/getTextureBatchBindGroup-4-qaOig9.js",
+    "/assets/GraphicsContext-IuTlWSRp.js"
+  ],
+  "live_entry_assets": [
+    "/assets/index-CujZprs2.js",
+    "/assets/CanvasPool-Bfa7zDPb.js",
+    "/assets/Filter-D6JpcDm_.js",
+    "/assets/canvasUtils-Bu0orRzg.js",
+    "/assets/GCManagedHash-Bz8k4ITX.js",
+    "/assets/RenderTargetSystem-CCfFNQoA.js",
+    "/assets/getTextureBatchBindGroup-4-qaOig9.js",
+    "/assets/GraphicsContext-IuTlWSRp.js"
+  ],
+  "live_integration_commit": "ade07d2ffc043373de288f8dc1f29c19b26a1069",
+  "live_integration_layer": "1792919754727-game-ade07d2-ae20577e0f18",
+  "inventory_commit_is_ancestor": true,
+  "live_integration_index_matches": true
+}
