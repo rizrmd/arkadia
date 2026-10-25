@@ -49,7 +49,7 @@ TypeScript and production builds, all Go tests (including Flame Fan sector and L
 
 [Live player report](${preview}evidence/verification-live.json) · [Alternate URL report](${evidence}legacy-player-live.json).
 
-The supported clean-checkout game pipeline built the committed code and preserved peer WIP. Game layer: \`1792939846632-game-e6bfc959-b2a6b2f4027b\`. The first upload stopped before registration after a TLS handshake timeout; the same archive resumed through the supported release publisher. Immutable part transfers now have bounded transient retries; registrations and restarts are not blindly retried. No fast deployment or host injection was used.
+The supported clean-checkout game pipeline built the committed code and preserved peer WIP. Game layer: \`1792939846632-game-e6bfc959-b2a6b2f4027b\`. The first upload stopped before registration after a TLS handshake timeout; the same archive resumed through the supported release publisher. Immutable part transfers now have bounded transient retries; registrations and restarts are not blindly retried. The first evidence package exceeded the gateway boot memory budget before application and caused OOM/502. Only its unprocessed manifest was quarantined; peer game manifests were preserved and the service recovered. Evidence now uses layers bounded to 8 MiB of decoded JSON with one restart after all batches register. Batch byte bounds and exact reconstruction are tested. No fast deployment or host injection was used.
 
 ## Live automatic gameplay evidence
 
@@ -70,7 +70,7 @@ const update=`## Current controls — automatic skills\n\nUpdated for gameplay c
 let tree=oldTree.markdown.replace(/^## Current controls — automatic skills[\s\S]*?(?=## Flame Fan AoE correction)/,'');
 tree=tree.replace(/For \*\*Ember\*\*, tap\/left-click casts[^\n]*/g,'For **both heroes**, tap/left-click a HUD skill or press 1/2/3 to open the skill tree for that slot. Tap a learned active node to equip or swap it. Skills cast automatically on nearby enemies when ready; HUD and tree taps do not cast. Hold (450 ms on touch/pen) or right-click remains an alternate inspection gesture. K toggles; X, Escape and outside close. Co-op retains server authority.');
 tree=tree.replace(/quick-tap casting/g,'quick-tap tree opening').replace(/Tap\/left click must still cast[^.\n]*\./g,'Tap/left click opens the skill tree; equipped skills cast automatically.');
-tree=update+tree;
+tree=(update+tree).trim();body=body.trim();
 await fs.writeFile('docs/flame-fan-gameplay/knowledge.md',body);await fs.writeFile('docs/flame-fan-preview/knowledge.md',body);await fs.writeFile('docs/flame-fan-gameplay/tree-knowledge.md',tree);
 if(process.argv.includes('--publish')){
  cli(['knowledge','update',id,'--markdown',body]);cli(['knowledge','update',treeId,'--markdown',tree]);

@@ -40,5 +40,6 @@
       "failures": []
     }
   },
-  "transferRetryTests": "Transient recovery, existing-part resume, permission rejection and five-attempt bound passed"
+  "transferRetryTests": "Transient recovery, existing-part resume, permission rejection and five-attempt bound passed",
+  "batchTests": "8 MiB decoded JSON budget, exact reconstruction, empty input and oversize rejection pass"
 }

@@ -45,10 +45,10 @@ export async function restart(id=sandboxId(),check='/healthz'){
  for(let i=0;i<60;i++){try{if((await fetch(URL_BASE+check,{signal:AbortSignal.timeout(10000)})).ok){console.log('Live:',URL_BASE+check);return;}}catch{}await new Promise(r=>setTimeout(r,5000));}
  throw Error(`${URL_BASE}${check} did not come back`);
 }
-export async function publishLayer({name,files,prefix='',check}){
+export async function publishLayer({name,files,prefix='',check,deferRestart=false,targetSandbox}){
  if(!prefix&&'/index.html' in files)throw Error('The game page ships only as a release (scripts/fural-deploy.sh)');
- const id=sandboxId(),{hash,parts}=await upload(id,gzipSync(JSON.stringify(files)),name);
- await register(id,name,{hash,parts,format:'gzjson',prefix});await restart(id,check||(prefix?prefix+'/':'/'));
+ const id=targetSandbox||sandboxId(),{hash,parts}=await upload(id,gzipSync(JSON.stringify(files)),name);
+ const layerId=await register(id,name,{hash,parts,format:'gzjson',prefix});if(!deferRestart)await restart(id,check||(prefix?prefix+'/':'/'));return layerId;
 }
 // Write this commit's gateway and boot script; they take effect at the next restart.
 function installGateway(id){

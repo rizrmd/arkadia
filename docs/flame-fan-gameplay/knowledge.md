@@ -36,7 +36,7 @@ TypeScript and production builds, all Go tests (including Flame Fan sector and L
 
 [Live player report](https://ark-whachat.fural.space/ember-warden-review/flame-fan-preview/evidence/verification-live.json) · [Alternate URL report](https://ark-whachat.fural.space/ember-warden-review/flame-fan-gameplay/legacy-player-live.json).
 
-The supported clean-checkout game pipeline built the committed code and preserved peer WIP. Game layer: `1792939846632-game-e6bfc959-b2a6b2f4027b`. The first upload stopped before registration after a TLS handshake timeout; the same archive resumed through the supported release publisher. Immutable part transfers now have bounded transient retries; registrations and restarts are not blindly retried. No fast deployment or host injection was used.
+The supported clean-checkout game pipeline built the committed code and preserved peer WIP. Game layer: `1792939846632-game-e6bfc959-b2a6b2f4027b`. The first upload stopped before registration after a TLS handshake timeout; the same archive resumed through the supported release publisher. Immutable part transfers now have bounded transient retries; registrations and restarts are not blindly retried. The first evidence package exceeded the gateway boot memory budget before application and caused OOM/502. Only its unprocessed manifest was quarantined; peer game manifests were preserved and the service recovered. Evidence now uses layers bounded to 8 MiB of decoded JSON with one restart after all batches register. Batch byte bounds and exact reconstruction are tested. No fast deployment or host injection was used.
 
 ## Live automatic gameplay evidence
 
@@ -151,4 +151,3 @@ Previous inline image links are retained below. The shared-player images now sho
 ![Flame Fan evidence — local-1440-lv1-flame.png](https://ark-whachat.fural.space/ember-warden-review/flame-fan-levels/evidence/local-1440-lv1-flame.png)
 
 ![Flame Fan evidence — local-game-390-lv1.png](https://ark-whachat.fural.space/ember-warden-review/flame-fan-levels/evidence/local-game-390-lv1.png)
-

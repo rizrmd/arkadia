@@ -24,5 +24,15 @@
   ],
   "pipeline": "Supported clean-checkout game pipeline; terminal failed receipt after partial upload; same built archive resumed by supported publish-layer --tgz with immutable transfer retries. Live automatic tests passed on released game.",
   "evidencePipeline": "scripts/flame-fan-gameplay/publish-evidence.mjs",
-  "scope": "Chromium emulation; existing co-op solo-only loadout restriction retained; no real-device GPU benchmark"
+  "scope": "Chromium emulation; existing co-op solo-only loadout restriction retained; no real-device GPU benchmark",
+  "evidenceRecovery": {
+    "quarantinedUnprocessedLayer": "1792941090080-flame-fan-automatic-evidence-e7b835c00e3c",
+    "cause": "Unbounded decoded gzjson evidence exceeded boot memory budget",
+    "fix": "Evidence layers bounded to 8 MiB decoded JSON, staged before one restart",
+    "preservedPeerLayers": [
+      "1792941330590-game-7b8719ba-d5d370a507cb",
+      "1792941370464-game-4c77a1c2-8e0b585e469b"
+    ],
+    "recoveryHealth": 200
+  }
 }

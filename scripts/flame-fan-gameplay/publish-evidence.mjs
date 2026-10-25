@@ -1,6 +1,12 @@
+import {partitionLayerFiles} from './batch-files.mjs';
 import fs from 'node:fs/promises';
-import {readDir,publishLayer} from '../arkodia/publish-layer.mjs';
+import {readDir,publishLayer,restart,sandboxId} from '../arkodia/publish-layer.mjs';
 const files={};
 for(const [name,data] of Object.entries(await readDir('dist-flame-fan-preview')))files['/flame-fan-preview'+name]=data;
 for(const [dir,prefix] of [['docs/flame-fan-preview','/flame-fan-preview/evidence/'],['docs/flame-fan-gameplay','/flame-fan-gameplay/']])for(const name of await fs.readdir(dir))if(/\.(png|json|md)$/.test(name))files[prefix+name]=(await fs.readFile(dir+'/'+name)).toString('base64');
-await publishLayer({name:'flame-fan-automatic-evidence',files,prefix:'/ember-warden-review',check:'/ember-warden-review/flame-fan-preview/'});
+const batches=partitionLayerFiles(files),ids=[],sandbox=sandboxId(),start=Number(process.env.START_BATCH||1);
+if(!Number.isInteger(start)||start<1||start>batches.length)throw Error('Invalid resume batch');
+console.log('Publishing batches',start,'through',batches.length);
+for(let i=start-1;i<batches.length;i++)ids.push(await publishLayer({name:'flame-fan-evidence-'+(i+1),files:batches[i],prefix:'/ember-warden-review',deferRestart:true,targetSandbox:sandbox}));
+console.log('Bounded evidence layers:',JSON.stringify(ids));
+await restart(sandbox,'/ember-warden-review/flame-fan-preview/');
