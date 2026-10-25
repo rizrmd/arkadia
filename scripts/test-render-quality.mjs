@@ -4,8 +4,20 @@ const low=createQualityController({mobile:true,memory:4,cores:8});
 assert.equal(low.get().targetFps,30);
 assert.equal(low.get().resolution,1);
 assert.equal(low.get().heroScale,1);
+low.configure('auto',60);
+assert.equal(low.get().targetFps,30,'saved default 60 is a ceiling in Auto on low-spec phones');
+low.configure('low',60);
+assert.equal(low.get().targetFps,60,'explicit Low + 60 remains available');
+low.configure('auto',30);
+assert.equal(low.get().targetFps,30);
 const fast=createQualityController({mobile:true,memory:8,cores:8});
+fast.configure('auto',60);
 assert.equal(fast.get().targetFps,60);
+{
+ for(let t=100;t<10100;t+=40)fast.noteFrame(t,40);
+ assert.equal(fast.get().tier,'low');
+ assert.equal(fast.get().targetFps,30,'automatic downgrade must also lower the cadence with saved 60');
+}
 const unknown=createQualityController({mobile:true,cores:8});
 assert.equal(unknown.get().tier,'balanced');
 const desktop=createQualityController({mobile:false,memory:4,cores:8});

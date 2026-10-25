@@ -15,6 +15,7 @@ trap 'rm -rf "$STAGE" "$DIST_DIR" "$list"' EXIT
 
 node scripts/shadow-audit/test.mjs
 node scripts/shadow-audit/test-field.mjs
+node scripts/android-stutter/test.mjs
 npx tsc --noEmit && npx vite build --outDir "$DIST_DIR"
 # The organization shares 1 GiB of RAM across sessions: compile one package at a time under a memory limit.
 export GOFLAGS=-p=1 GOMAXPROCS=2 GOMEMLIMIT=256MiB GOTOOLCHAIN=local

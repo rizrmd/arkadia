@@ -13,7 +13,9 @@ export function createQualityController(hints:{mobile:boolean;memory?:number;cor
  let reason=pinned?'explicit':hints.mobile?'device-hint':'default',since=0,last=0,count=0,slow=0;
  const listeners=new Set<(q:RenderQuality)=>void>();
  let frameRate:30|60|undefined;
- const get=()=>frameRate?{...QUALITY_PROFILES[tier],targetFps:frameRate}:QUALITY_PROFILES[tier];
+ // Auto treats the FPS preference as a ceiling. A saved default of 60 must not undo
+ // the low-device profile (or a subsequent automatic downgrade to that profile).
+ const get=()=>frameRate?{...QUALITY_PROFILES[tier],targetFps:(pinned?frameRate:Math.min(frameRate,QUALITY_PROFILES[tier].targetFps)) as 30|60}:QUALITY_PROFILES[tier];
  function reset(){since=last=count=slow=0;}
  return {
   get,configure(quality:'auto'|'low'|'high',fps:30|60){

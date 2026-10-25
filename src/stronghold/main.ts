@@ -51,13 +51,14 @@ export async function mount(app:HTMLElement,progress:Progress){
  const lobby=net?createLobby(rt.uiStage,rt.frames,net):null,invited=lobby?.start()??'';
  // The first visit chooses a hero once, before gameplay: the world loads behind the screen with the hero and the
  // revenants held until the pick (hero-picker.ts).
+ let heroPrepared=Promise.resolve();
  const picker=createHeroPicker(rt.uiStage,{
   current:()=>hero,
   renderer:rt.app.renderer,
   choose(id){
    hero=id;
    saveHero(id);
-   void worldView.setHero(id);
+   heroPrepared=worldView.setHero(id);
    net?.setHero(id);
   },
  });
@@ -77,7 +78,7 @@ export async function mount(app:HTMLElement,progress:Progress){
    onCoopClick:()=>{clock?.open(false);lobby?.toggle();},
   },
   canInteractWorld,
-  Promise.all([picker.picked,mounted]).then(()=>{}),
+  Promise.all([picker.picked,mounted]).then(()=>heroPrepared),
  );
  walk=worldView.direction;
  settings=createSettings({stage:rt.uiStage,solo:!coop,pause:paused=>{if(paused)rt.app.ticker.stop();else rt.app.ticker.start();},canOpen:()=>!inventory?.isOpen()&&!picker.isOpen()&&!clock?.isOpen()&&!lobby?.isOpen()&&!worldView.encounters.isModalOpen()&&!worldView.worldMap.isOpen(),bounds:()=>worldView.encounters.minimap.snapshot().bounds,showFps:show=>worldView.hud.setShowFps(show)});
@@ -105,6 +106,9 @@ export async function mount(app:HTMLElement,progress:Progress){
  await new Promise<void>(done=>{const check=()=>canvas.dataset.ready==='true'?done():requestAnimationFrame(check);check();});
  showFrameCapHint(rt.uiStage,rt.frames);
  startFpsTracelog({rt,getCombatSnapshot:()=>worldView.encounters.snapshot(),getLiveCounts:()=>worldView.encounters.liveCounts(),net,getHeroId:()=>hero});
+ // Effect construction is indivisible and can take >100 ms on older Android CPUs.
+ // Finish the existing sliced pool warmup while gameplay is still behind loading.
+ await Promise.all([worldView.encounters.fxStage.loaded,worldView.visibleMasksReady()]);
  await picker.start();
  loaded();
  void picker.picked.then(()=>{

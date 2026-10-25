@@ -1,6 +1,6 @@
 import type {ShadowSurface} from './shadow-surfaces';
 import {proxyGroundAt,validateShadowCompanions,shadowCompanionStats} from './shadow-geometry';
-import {measureRenderDetail} from '../app/render-diagnostics';
+import occlusionMasks from '../world/maps/frontier-occlusion.json';
 import {BlurFilter,ColorMatrixFilter,Container,Graphics,Matrix,Rectangle,Sprite,Texture} from 'pixi.js';
 import {FRONTIER_PROPS,FRONTIER_COLUMNS,FRONTIER_ATLAS,FRONTIER_KIT_SIZE,type FrontierProp} from '../world/frontier';
 import {RELIEF,PX_PER_METER} from '../world/relief';
@@ -14,7 +14,7 @@ import type {Column} from './hero';
 // and may be turned in the ground plane. Actors are drawn above everything and cut out where a prop stands in front
 // (hero.ts occluders), so the props join the hero's scene: from the first frame for collision, and for occlusion once
 // the art has arrived, as one image per sprite (and mirror) cropped from the atlas (hero.ts keys its alpha masks by
-// image src). Every upright also casts a sun shadow (setSun, daylight.ts sunAt), like the court, the hero and the
+// image src). Alpha-only companion crops are fetched near the camera, two at a time. Every upright also casts a sun shadow (setSun, daylight.ts sunAt), like the court, the hero and the
 // enemies: its sprite again, laid onto the ground in vertical strips, each pixel moved from the ground line below it
 // (build-assets.mjs groundLine) by its height along the sun's offset; one filter flattens the layer to the shadow
 // colour at the sun's alpha, so overlapping shadows do not darken each other. The decoded atlas is part of
@@ -66,6 +66,17 @@ export function createFrontier(worldStage:Container,atlas:HTMLImageElement){
  // Until the atlas arrives these images are empty (no natural size), which hero.ts treats as nothing to cut out.
  const imageKey=(p:FrontierProp)=>p.asset+(p.flip?':flip':'');
  const images=new Map(FRONTIER_PROPS.filter(p=>p.layer!=='ground'||isSlab(p)).map(p=>[imageKey(p),new Image()]));
+ const maskJobs=new Map<string,Promise<void>>(),maskLanes=[Promise.resolve(),Promise.resolve()];let nextMaskLane=0;
+ function prepareMask(p:FrontierProp){
+  const key=imageKey(p),img=images.get(key);if(!img||maskJobs.has(key))return;
+  const lane=nextMaskLane++%maskLanes.length;
+  const job=maskLanes[lane].then(async()=>{
+   const src=(occlusionMasks as Record<string,string>)[key];
+   if(!src)throw new Error(`Missing scenery occlusion mask: ${key}`);
+   img.src=src;await img.decode();
+  });
+  maskJobs.set(key,job);maskLanes[lane]=job.catch(error=>console.error('Scenery occlusion unavailable',error));
+ }
  // Ground pivot to the hero's Placed convention: x is the sprite's horizontal centre, foot the pivot's height share.
  const share=(p:FrontierProp)=>p.flip?1-p.pivot[0]:p.pivot[0];
  const scene:FrontierPlaced[]=FRONTIER_PROPS.filter(p=>p.layer!=='ground'||isSlab(p)).map(p=>({layer:'world',id:p.key,x:p.x+p.width*(.5-share(p)),y:p.y,width:p.width,height:p.height,
@@ -118,16 +129,9 @@ export function createFrontier(worldStage:Container,atlas:HTMLImageElement){
      if(!texture)textures.set(key,texture=new Texture({source,frame:new Rectangle(p.frame[0]+f0,p.frame[1],Math.max(1,f1-f0),p.frame[3])}));
      const st=new Sprite(texture);st.visible=false;sh.strips.push(st);(sh.receiverLift?topShade:groundShade).addChild(st);}}
    castShadows();
+   // place() requests offline alpha masks only near the camera. Android never
+   // reads back the large atlas or PNG-encodes crops in playable frames.
    loaded=true;cull='';done();
-   // Occlusion images, cropped off the critical path (a CPU canvas, so no GPU readback). Only the solid art cuts
-   // actors out: the translucent contact shadows baked around the grounded modules are dropped.
-   // Resolving ready does not yield the main thread. Give each crop its own task so
-   // alpha readbacks and PNG encodes cannot monopolize the first playable frames.
-   const yieldTask=()=>new Promise<void>(resolve=>setTimeout(resolve,0));
-   for(const [key,img] of images){await yieldTask();const p=FRONTIER_PROPS.find(q=>imageKey(q)===key)!,f=p.frame,c=document.createElement('canvas');c.width=f[2];c.height=f[3];
-    measureRenderDetail('sceneryMask',()=>{const g=c.getContext('2d',{willReadFrequently:true})!;if(p.flip){g.translate(f[2],0);g.scale(-1,1);}g.drawImage(atlas,f[0],f[1],f[2],f[3],0,0,f[2],f[3]);
-    const px=g.getImageData(0,0,f[2],f[3]);for(let i=3;i<px.data.length;i+=4)if(px.data[i]<150)px.data[i]=0;g.setTransform(1,0,0,1,0,0);g.putImageData(px,0,0);});
-    await new Promise<void>(resolve=>c.toBlob(b=>{if(b){const url=URL.createObjectURL(b);img.onload=img.onerror=()=>URL.revokeObjectURL(url);img.src=url;}resolve();}));}
   })().catch(error=>{failed=true;reject(error);});
  });
  function place(x:number,y:number,scale:number,w:number,h:number){
@@ -138,7 +142,9 @@ export function createFrontier(worldStage:Container,atlas:HTMLImageElement){
   // Camera rectangle in world px, with a margin so props slide in already drawn.
   const m=96,l=(-x)/scale-m,t=(-y)/scale-m,r=(w-x)/scale+m,b=(h-y)/scale+m,key=[l,t,r,b].map(n=>Math.round(n/24)).join()+':'+loaded+':'+sunKey;
   if(key===cull)return;cull=key;visible=0;shown=0;
-  for(const v of views){if(!v.sprite)continue;const on=v.x1>l&&v.x0<r&&v.y1>t&&v.y0<b;v.sprite.visible=on;if(on)visible++;}
+  for(const v of views){if(!v.sprite)continue;const on=v.x1>l&&v.x0<r&&v.y1>t&&v.y0<b;v.sprite.visible=on;if(on)visible++;
+   if(v.x1>l-512&&v.x0<r+512&&v.y1>t-512&&v.y0<b+512)prepareMask(v.prop);
+  }
   for(const sh of shadows){const on=sun.alpha>0&&sh.x1>l&&sh.x0<r&&sh.y1>t&&sh.y0<b;for(const st of sh.strips)st.visible=on;if(sh.eraser)sh.eraser.visible=on;if(on&&sh.strips.length)shown++;}
   shade.visible=shown>0;
  }
@@ -155,7 +161,7 @@ export function createFrontier(worldStage:Container,atlas:HTMLImageElement){
  (window as any).__FROZEN_FRONTIER__={stats,load:()=>ready,columns:()=>FRONTIER_COLUMNS,props:()=>FRONTIER_PROPS.map(p=>({asset:p.asset,zone:p.zone,u:p.u,v:p.v,x:p.x,y:p.y,layer:p.layer,solid:p.blocks.length>0,flip:p.flip,rot:p.rot,shear:p.shear})),ready,
   // QA: hide the scenery to measure what it costs (scripts/frozen-frontier-map/verify.mjs).
   setVisible:(on:boolean)=>{ground.visible=upright.visible=on;shade.renderable=on;}};
- return {scene,ready,place,setAmbient,setSun,stats,load:()=>ready,
+ return {scene,ready,place,setAmbient,setSun,stats,load:()=>ready,visibleMasksReady:()=>Promise.all([...maskJobs.values()]),
   setLegacyShadows:(on:boolean)=>{shade.renderable=on;},
   shadowSurfaces:():ShadowSurface[]=>FRONTIER_PROPS.filter(p=>!p.rot).map(p=>({key:p.key,source:atlas,sourceWidth:atlas.naturalWidth,sourceHeight:atlas.naturalHeight,frame:p.frame,x:p.x,y:p.y,width:p.width,height:p.height,pivot:p.pivot,flip:p.flip,shear:p.shear,lift:p.lift,ground:p.ground,depth:p.y,cast:p.layer!=='ground'||isSlab(p),...(p.layer==='ground'?{constantHeight:isSlab(p)?SLABS[p.asset]*p.s:0}:{})})),
   // Footprint columns for a frontier prop in the hero's scene, else undefined.

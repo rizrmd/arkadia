@@ -11,7 +11,7 @@ import type {Fighter} from '../characters/combat';
 import type {HeroId} from './heroes';
 import {cutOut,type Placed} from './hero';
 import {notifyHeroCast} from './hero-3d';
-import {createFxStage,playCue,type CueContext,type FxHandle} from '../fx';
+import {createFxStage,playCue,cueKeys,resolveCue,type CueContext,type FxHandle} from '../fx';
 
 export type FloatKind='normal'|'crit'|'incoming'|'heal'|'xp'|'banner';
 export type FloatingText={
@@ -127,6 +127,7 @@ export function createCombatVfx(o:{
  const zoneViews=new Map<number,ZoneView>(),zonePool:ZoneView[]=[],zoneBaseCache=new Map<string,HTMLCanvasElement>();
  const fx=createFxStage({
   host:{ground:groundFx,world:worldFx},
+  effectKeys:()=>cueKeys(o.getHero().heroId).flatMap(key=>resolveCue(o.getHero().heroId,key)?.cue.layers.map(l=>l.effect)??[]),
   depthLayers:{back:o.backLayer,front:o.frontLayer},
   getHeroWorld:()=>{const h=o.getHero();return tilePoint(h.u,h.v);},
   occlusionAt:o.occlusionAt,

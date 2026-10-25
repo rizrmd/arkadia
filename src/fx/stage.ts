@@ -1,5 +1,6 @@
 import {measureRenderDetail} from '../app/render-diagnostics';
 import {renderQuality} from '../app/render-quality';
+import {limitLowCostEffect} from './low-cost';
 import type {Application,Container,Texture} from 'pixi.js';
 import type {PixiVfxEffectInstance,PixiVfxRenderer,PixiVfxTextureProvider} from 'nixie-fx/pixi';
 import type {VfxExportedEffect} from 'nixie-fx/export';
@@ -310,6 +311,7 @@ export type FxStageOptions={
  under?:Element;
  over?:Element;
  host?:{ground:Container;world:Container};
+ effectKeys?:()=>string[];
  depthLayers?:{back:Container;front:Container};
  getHeroWorld?:()=>{x:number;y:number};
  occlusionAt?:(px:number,py:number,wx?:number,wy?:number,rad?:number,flat?:boolean,includeHero?:boolean,anchorY?:number)=>number;
@@ -321,6 +323,7 @@ export function createFxStage(o:FxStageOptions){
  const pending:{at:number;run:()=>void}[]=[];
  let clock=0,ready=false,failed='',planes:Record<Plane,{app:Application|null;vfx:PixiVfxRenderer;root:Container}>|null=null;
  let Rect:typeof import('pixi.js').Rectangle|null=null;
+ let prepareSelected=async()=>{};const preparedKeys=new Set<string>();
  let played=0,peakParticles=0,idle=false,occludedParticles=0,minOcclusion=1,meanOcclusion=1,backEffects=0,frontEffects=0;
  // Adaptive particle budget (game scene only). Every live particle costs CPU each frame (simulation, curl noise,
  // colour sampling), and a level-8 fight peaks near 1000 of them, which alone held a mid-range phone at ~30 fps.
@@ -364,7 +367,7 @@ export function createFxStage(o:FxStageOptions){
  };
  const boot=(async()=>{
   // The NixieFX runtime loads with the bundle, off the game's first paint.
-  const [{PixiVfxRenderer,createDerivedAlphaTexture},{loadVfxExportBundle},{shareParticleEffectDefinition},{normalizeShaderGraph},packed]=await Promise.all([import('nixie-fx/pixi'),import('nixie-fx/export'),import('nixie-fx'),import('nixie-fx/materials'),fetchBundle()]);
+  const [{PixiVfxRenderer,createDerivedAlphaTexture,collectPixiVfxEffectTextureRefs},{loadVfxExportBundle},{shareParticleEffectDefinition},{normalizeShaderGraph},packed]=await Promise.all([import('nixie-fx/pixi'),import('nixie-fx/export'),import('nixie-fx'),import('nixie-fx/materials'),fetchBundle()]);
   deriveAlpha=createDerivedAlphaTexture;
   const materialGraphs=new Map<string,ShaderGraph>();
   for(const [id,raw] of Object.entries({...BUILTIN_MATERIALS,...(packed.materials??{})})){
@@ -406,9 +409,12 @@ export function createFxStage(o:FxStageOptions){
      }
     }
    }
+   if(o.host&&renderQuality.get().tier==='low'&&!effKey.startsWith('ui/'))limitLowCostEffect(fx);
    effects.set(effKey,fx);
   }
-  await textureProvider.preload!(bundle.manifest.assets.filter((a):a is VfxTextureAssetRef=>a.type==='texture'));
+  // Hosted gameplay requests only the current hero's resolved cue dependencies.
+  // The lab still loads the complete bundle for browsing.
+  if(!o.effectKeys)await textureProvider.preload!(bundle.manifest.assets.filter((a):a is VfxTextureAssetRef=>a.type==='texture'));
   const {Container,Rectangle}=await PIXI();Rect=Rectangle;
   // The ground plane is drawn as seen from above and squashed to the 2:1 ground (space.ts groundProjection).
   const make=(parent:Container,app:Application|null,flat:boolean,bloom:boolean)=>{const root=new Container();if(flat)root.scale.set(1,.5);parent.addChild(root);
@@ -417,14 +423,18 @@ export function createFxStage(o:FxStageOptions){
   else{const [ground,world]=await Promise.all([mountPlane({before:o.under!},'world-fx-ground',''),mountPlane({after:o.over!},'world-fx-over',';z-index:3')]);
    planes={ground:make(ground.stage,ground,true,false),world:make(world.stage,world,false,o.bloom??BLOOM)};}
   resize();addEventListener('resize',resize);
-  // Prewarm the combat effect pool in idle time after boot. One instance costs ~10-40 ms (material graph, curve
-  // freezing), and batches of 12 per task blocked phones for 300-800 ms right after the loading screen lifted, so
-  // work is sliced to ~6 ms and runs in requestIdleCallback (250 ms timeout keeps it progressing in busy fights).
-  // play() works meanwhile: an effect not pooled yet is created on demand once.
-  if(o.host&&planes){
+  // Only warm the selected hero's resolved effects. Construction is indivisible,
+  // so yield between instances and finish this work behind loading/hero selection.
+  // Unrelated hero effects stay cold until prepare() is requested on a hero change.
+  prepareSelected=async()=>{
+   if(!o.host||!planes)return;
+   const keys=o.effectKeys?new Set(o.effectKeys()):new Set(effects.keys());
+   const selected=[...effects].filter(([key])=>keys.has(key)&&!key.startsWith('ui/')&&!preparedKeys.has(key));
+   const refs=selected.flatMap(([,fx])=>collectPixiVfxEffectTextureRefs(fx,materialGraphProvider));
+   await textureProvider.preload!([...new Map(refs.map(ref=>[ref.path,ref])).values()]);
    const idle=()=>new Promise<void>(r=>typeof requestIdleCallback==='function'?requestIdleCallback(()=>r(),{timeout:250}):setTimeout(r,0));
    let slice=performance.now();
-   for(const [key,fx] of effects){
+   for(const [key,fx] of selected){
     if(key.startsWith('ui/'))continue;
     const plane=planeOf(key),P=planes[plane],proj=projection(plane,{u:0,v:0,h:0,yaw:0,scale:1});
     const copies=key.endsWith('.bolt')?5:key.includes('.impact')||key.startsWith('shared/hit.')?3:1;
@@ -439,8 +449,10 @@ export function createFxStage(o:FxStageOptions){
      inst.stop();inst.root.visible=false;P.vfx.removeEffect(inst,false);
      list.push(inst);
     }
+    preparedKeys.add(key);
    }
-  }
+  };
+  await prepareSelected();
   ready=true;
  })().catch(e=>{failed=String(e?.message??e);console.error('NixieFX stage unavailable; skills play without particle effects.',e);});
 
@@ -618,6 +630,7 @@ export function createFxStage(o:FxStageOptions){
   // Effects can play (pool may still be warming in idle time); ready() means the pool is fully warm.
   playable:()=>Boolean(planes)&&!failed,
   loaded:boot,
+  prepare:async()=>{await boot;await prepareSelected();},
   failed:()=>failed,
   has:(key:string)=>effects.has(key),
   keys:()=>[...effects.keys()],
@@ -625,7 +638,7 @@ export function createFxStage(o:FxStageOptions){
   play,frame,
   particleCount:activeParticles,
   liveCount:()=>live.length,
-  stats:()=>({ready,failed,effects:effects.size,live:live.length,played,peakParticles,particleBudget:budget,budgetSkipped,frameMs:+frameEma.toFixed(1),
+  stats:()=>({ready,failed,effects:effects.size,preparedEffects:preparedKeys.size,loadedTextures:textures.size,live:live.length,played,peakParticles,particleBudget:budget,budgetSkipped,frameMs:+frameEma.toFixed(1),
    occludedParticles,minOcclusion,meanOcclusion,backEffects,frontEffects,
    particles:planes?planes.world.vfx.stats.activeParticles+planes.ground.vfx.stats.activeParticles:0,
    missing:planes?[...planes.world.vfx.stats.missingTextureRefs,...planes.ground.vfx.stats.missingTextureRefs].map(r=>r.path):[],
