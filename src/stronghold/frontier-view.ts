@@ -1,3 +1,4 @@
+import {proxyGroundAt,validateShadowCompanions,shadowCompanionStats} from './shadow-geometry';
 import {measureRenderDetail} from '../app/render-diagnostics';
 import {BlurFilter,ColorMatrixFilter,Container,Graphics,Matrix,Rectangle,Sprite,Texture} from 'pixi.js';
 import {FRONTIER_PROPS,FRONTIER_COLUMNS,FRONTIER_ATLAS,FRONTIER_KIT_SIZE,type FrontierProp} from '../world/frontier';
@@ -25,7 +26,7 @@ function groundMatrix(deg:number,sx:number,sy:number,x:number,y:number){const r=
 // lowest points, so use each measured segment for these small hard-edged bases.
 const stripsOf=(p:FrontierProp)=>(p.asset.startsWith('grave-')||p.asset.startsWith('pillar-')||p.asset.startsWith('stairs-'))?Math.max(1,p.ground.length-1):Math.max(1,Math.min(8,Math.round(p.width/40)));
 // The ground line's height (sprite px from the top) at frame x.
-function groundAt(p:FrontierProp,fx:number){const g=p.ground,n=g.length-1,t=Math.max(0,Math.min(n,fx/p.frame[2]*n)),i=Math.min(n-1,Math.floor(t));return (n?g[i]+(g[i+1]-g[i])*(t-i):g[0])*p.frame[3];}
+const groundAt=(p:FrontierProp,fx:number)=>proxyGroundAt(p.asset,fx);
 type Sun={alpha:number;dx:number;dy:number};
 // Raised floors among the ground decals, by the height of their top face (world px at scale 1; the temple podium's
 // top sits 25.3 px up, ground-kit.mjs). They cast their silhouette shifted by that height along the sun.
@@ -41,6 +42,7 @@ function stripMatrix(p:FrontierProp,i:number,n:number,s:Sun,receiverLift=0){
  return new Matrix(sx+dx*sy*k,p.shear*sx+sy*k*(1+dy),-dx*sy,-dy*sy,p.x+sx*(f0-ax)+dx*sy*b0+dx*drop,p.y-p.lift+p.shear*sx*(f0-ax)+sy*(b0-ay)+dy*sy*b0+(1+dy)*drop);
 }
 export function createFrontier(worldStage:Container,atlas:HTMLImageElement){
+ validateShadowCompanions();
  const ground=new Container(),shade=new Container(),upright=new Container();
  ground.zIndex=10.05;shade.zIndex=10.08;upright.zIndex=10.6;ground.sortableChildren=upright.sortableChildren=true;
  // Shadows take the court's colour, rgb(20, 28, 44), softened like the court's (world-view.ts castShadows); both
@@ -147,7 +149,7 @@ export function createFrontier(worldStage:Container,atlas:HTMLImageElement){
  }
  function setAmbient(rgb:number){ground.tint=rgb;upright.tint=rgb;}
  const stats=()=>({props:FRONTIER_PROPS.length,uprights:scene.length,columns:FRONTIER_COLUMNS.length,atlas:FRONTIER_ATLAS,loaded,failed,kit:FRONTIER_KIT_SIZE,
-  occlusionImages:[...images.values()].filter(i=>i.complete&&i.naturalWidth>0).length,sprites:images.size,visible,
+  companions:shadowCompanionStats(),occlusionImages:[...images.values()].filter(i=>i.complete&&i.naturalWidth>0).length,sprites:images.size,visible,
   shadows:{casters:new Set(shadows.map(sh=>sh.view)).size,strips:shadows.reduce((n,sh)=>n+sh.strips.length,0),shown,alpha:sun.alpha,dx:+sun.dx.toFixed(3),dy:+sun.dy.toFixed(3)},assets:[...new Set(FRONTIER_PROPS.map(p=>p.asset))].sort()});
  (window as any).__FROZEN_FRONTIER__={stats,load:()=>ready,columns:()=>FRONTIER_COLUMNS,props:()=>FRONTIER_PROPS.map(p=>({asset:p.asset,zone:p.zone,u:p.u,v:p.v,x:p.x,y:p.y,layer:p.layer,solid:p.blocks.length>0,flip:p.flip,rot:p.rot,shear:p.shear})),ready,
   // QA: hide the scenery to measure what it costs (scripts/frozen-frontier-map/verify.mjs).
