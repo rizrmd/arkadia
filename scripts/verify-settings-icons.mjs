@@ -11,15 +11,17 @@ const report={base:remote||'http://127.0.0.1:5598',views:[],errors:[]};
 await fs.mkdir('docs/settings-icons',{recursive:true});
 try {
  for(const [name,width,height,mobile] of [['desktop',1440,900,false],['mobile',390,844,true],['landscape',844,390,true]]){
+  if(process.env.ONLY&&process.env.ONLY!==name)continue;
   console.log('START',name);
   const options=launchOptions();options.args=options.args.filter(x=>x!=='--single-process');browser=await chromium.launch(options);
   const context=await browser.newContext({viewport:{width,height},isMobile:mobile,hasTouch:mobile});
-  const page=await context.newPage();page.on('pageerror',e=>report.errors.push(e.message));
+  const page=await context.newPage();page.on('pageerror',e=>{report.errors.push(e.message);console.log('PAGE ERROR',e.message);});page.on('response',r=>{if(r.status()>=400)console.log('HTTP ERROR',r.status(),r.url());});
   await page.addInitScript(()=>{localStorage.setItem('arkodia.hero','rift-runner');localStorage.setItem('arkodia.settings.v1',JSON.stringify({quality:'low',frameRate:30,music:70,soundEffects:80,screenShake:true,showFps:false}));});
   await page.goto(report.base+'/?offline=1&hero=rift-runner&time=.45&3d=0',{waitUntil:'domcontentloaded',timeout:90000});
   await page.waitForFunction(()=>document.querySelector('#world-canvas')?.dataset.ready==='true'&&!document.querySelector('#loading-screen')&&window.__SETTINGS__,null,{timeout:300000,polling:500});
   const gear=page.getByRole('button',{name:'Open Settings',exact:true});
   const b=await gear.boundingBox();assert(b.width>=44&&b.height>=44);
+  await page.screenshot({timeout:90000,animations:'disabled',path:`docs/settings-icons/${remote?'live':'local'}-${name}-hud.png`});
   await gear.click();await page.getByRole('dialog',{name:'Settings',exact:true}).waitFor();
   await page.waitForFunction(()=>[...document.querySelectorAll('.settings-icon')].every(i=>i.complete&&i.naturalWidth===128));
   const icons=await page.locator('.settings-icon').evaluateAll(els=>els.map(i=>({src:new URL(i.src).pathname,width:i.width,height:i.height,alt:i.alt,hidden:i.getAttribute('aria-hidden'),naturalWidth:i.naturalWidth})));
@@ -37,4 +39,4 @@ try {
   await context.close();await browser.close();console.log('PASS',name);
  }
  assert.deepEqual(report.errors,[]);
-}finally{await fs.writeFile(`docs/settings-icons/${remote?'live':'local'}-results.json`,JSON.stringify(report,null,2));await browser?.close();await server?.close();}
+}finally{await fs.writeFile(`docs/settings-icons/${remote?'live':'local'}${process.env.ONLY?'-'+process.env.ONLY:''}-results.json`,JSON.stringify(report,null,2));await browser?.close();await server?.close();}
