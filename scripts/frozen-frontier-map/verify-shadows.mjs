@@ -30,7 +30,7 @@ try{
    const at=await page.evaluate(([u,v])=>{for(let r=0;r<=1.5;r+=.25)for(let a=0;a<6.28;a+=r?.7:7){const p=[+(u+Math.cos(a)*r).toFixed(2),+(v+Math.sin(a)*r).toFixed(2)];if(window.__STRONGHOLD_COMBAT__.teleport(...p))return p;}return null;},SPOTS[shot]);
    if(!at){report.ok=false;report.errors.push(`${name}: teleport to ${shot} blocked`);continue;}
    await page.waitForTimeout(2500);
-   const file=`${OUT}/${PREFIX}${name}-${shot}-t${String(time).replace('.','')}.png`;await page.screenshot({path:file});
+   const file=`${OUT}/${PREFIX}${name}-${shot}-t${String(time).replace('.','')}.png`;await page.screenshot({path:file,timeout:120000});
    await sharp(file).webp({quality:80}).toFile(file.replace(/\.png$/,'.webp'));await fs.unlink(file);
    const stats=await page.evaluate(()=>window.__FROZEN_FRONTIER__.stats());
    run.shots[shot]={teleport:at,visible:stats.visible,shadows:stats.shadows??null};

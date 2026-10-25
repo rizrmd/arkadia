@@ -18,7 +18,9 @@ export type FrontierPlaced={layer:'world';id:string;x:number;y:number;width:numb
 // A ground decal turned by deg in the ground plane, drawn in the 2:1 projection: P·R·P⁻¹ with P = diag(1, 1/2).
 function groundMatrix(deg:number,sx:number,sy:number,x:number,y:number){const r=deg*Math.PI/180,c=Math.cos(r),s=Math.sin(r);return new Matrix(c*sx,.5*s*sx,-2*s*sy,c*sy,x,y);}
 // Strips per upright shadow: about one per 40 world px of width, so a wall's slope or a corner's V stays on its base.
-const stripsOf=(p:FrontierProp)=>Math.max(1,Math.min(8,Math.round(p.width/40)));
+// Small grave plinths have a sharp V-shaped ground contour. Two wide strips
+// bridge over its lowest point and detach the shadow from the snow-covered base.
+const stripsOf=(p:FrontierProp)=>p.asset.startsWith('grave-')?Math.max(1,p.ground.length-1):Math.max(1,Math.min(8,Math.round(p.width/40)));
 // The ground line's height (sprite px from the top) at frame x.
 function groundAt(p:FrontierProp,fx:number){const g=p.ground,n=g.length-1,t=Math.max(0,Math.min(n,fx/p.frame[2]*n)),i=Math.min(n-1,Math.floor(t));return (n?g[i]+(g[i+1]-g[i])*(t-i):g[0])*p.frame[3];}
 type Sun={alpha:number;dx:number;dy:number};
