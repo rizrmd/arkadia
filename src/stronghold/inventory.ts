@@ -5,7 +5,7 @@ import {inventorySnapshot,useItem,addItems,removeItems,type ItemEffect} from './
 type Options={renderPause?:(paused:boolean)=>void;solo:boolean;canOpen:()=>boolean;bounds:()=>{x:number;y:number;width:number;height:number};reason:(id:ItemId)=>string;apply:(id:ItemId)=>ItemEffect};
 export function createInventory(o:Options){
  const bag=document.createElement('button');bag.className='inventory-bag';bag.setAttribute('aria-label','Open Inventory');bag.title='Inventory (I)';
- bag.innerHTML='<img src="/inventory/v2/bag.webp" alt="" draggable="false">';
+ bag.innerHTML='<img src="/ui/hud-actions/inventory.webp" alt="" draggable="false">';
  const overlay=document.createElement('div');overlay.className='inventory-overlay';overlay.hidden=true;
  overlay.innerHTML='<section class="inventory-panel" role="dialog" aria-modal="true" aria-labelledby="inventory-title"><header><h2 id="inventory-title">Inventory</h2><button class="inventory-close" aria-label="Close Inventory">×</button></header><div class="inventory-body"><div class="inventory-grid" role="group" aria-label="Inventory slots"></div><section class="inventory-details" aria-labelledby="inventory-item-name"><img alt=""><div><h3 id="inventory-item-name"></h3><p class="inventory-description"></p><p class="inventory-count"></p></div><button class="inventory-use">Use</button><p class="inventory-status" role="status" aria-live="polite"></p></section></div><footer>Consumables <span class="inventory-capacity"></span><span class="inventory-hint">I / Esc to close</span></footer></section>';
  document.body.append(bag,overlay);

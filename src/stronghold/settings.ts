@@ -6,7 +6,7 @@ import {resetProgression,RESET_EXPLANATION} from './reset-progression';
 
 type Options={bounds:()=>{x:number;y:number;width:number;height:number};showFps:(show:boolean)=>void;solo:boolean;pause:(paused:boolean)=>void;canOpen:()=>boolean};
 export function createSettings(o:Options){
- const gear=document.createElement('button');gear.className='settings-gear';gear.innerHTML='<img class="settings-icon settings-icon-gear" src="/ui/settings/gear.webp" width="28" height="28" alt="" aria-hidden="true" draggable="false">';gear.title='Settings';gear.setAttribute('aria-label','Open Settings');
+ const gear=document.createElement('button');gear.className='settings-gear';gear.innerHTML='<img class="settings-icon settings-icon-gear" src="/ui/hud-actions/settings.webp" width="40" height="40" alt="" aria-hidden="true" draggable="false">';gear.title='Settings';gear.setAttribute('aria-label','Open Settings');
  const overlay=document.createElement('div');overlay.className='settings-overlay';overlay.hidden=true;
  overlay.innerHTML=`<section class="settings-panel" role="dialog" aria-modal="true" aria-labelledby="settings-title" tabindex="-1"><header><h2 id="settings-title">Settings</h2><button class="settings-close" aria-label="Close Settings">×</button></header>
  <div class="settings-section"><div class="settings-row"><span>Visual Quality</span><div class="settings-group" role="group" aria-label="Visual Quality">${['auto','low','high'].map(v=>`<button data-quality="${v}" aria-pressed="false">${v[0].toUpperCase()+v.slice(1)}</button>`).join('')}</div><p class="settings-help">Low reduces shadows and effects.</p></div></div>
