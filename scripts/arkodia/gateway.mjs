@@ -9,7 +9,7 @@ import http from 'node:http';import net from 'node:net';import fs from 'node:fs'
 const home=process.cwd(),www=path.join(home,'www'),layers=path.join(home,'layers'),coopBin=path.join(home,'coop/arkodia'),legacyCoopBin=path.join(home,'coop/arkadia'),applied=path.join(home,'applied.json');
 const PORT=+(process.env.PORT||3000),COOP_PORT=+(process.env.COOP_PORT||3001);
 // Folders with their own pages (directory index and .html allowed); any other .html is a retired page and redirects home.
-const OPEN=['/3d-hero-lab/','/run-cadence/','/sprite-player/','/environment-corners/','/typography/','/rift-runner/','/enemies/','/ember-warden-review/','/knight-footfalls/review.html'];
+const OPEN=['/shadow-audit/','/3d-hero-lab/','/run-cadence/','/sprite-player/','/environment-corners/','/typography/','/rift-runner/','/enemies/','/ember-warden-review/','/knight-footfalls/review.html'];
 // Former sandbox roots, now folders.
 const MOVED={'/3d-hero-lab':'/3d-hero-lab/','/ember-warden-review':'/ember-warden-review/','/typography':'/typography/','/enemies':'/enemies/v1/','/enemies/':'/enemies/v1/'};
 
