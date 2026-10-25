@@ -1,54 +1,98 @@
 {
-  "checkedAt": "2026-10-25T19:20:19.962Z",
+  "checkedAt": "2026-10-25T19:22:54.351Z",
   "errors": [],
   "result": {
-    "flameSheets": [],
-    "activeFloats": [],
-    "activeProjectiles": [],
-    "activeAoEs": [],
-    "activeImpacts": [],
-    "activeLevelUps": [],
-    "activeCombos": [],
-    "activeSlashes": 0,
-    "activeSparks": 0,
-    "totals": {
-      "crits": 0,
-      "normals": 0,
-      "projectiles": 0,
-      "aoes": 1,
-      "levelUps": 0,
-      "wallHits": 0,
-      "autoCasts": 0,
-      "simultaneousCasts": 0,
-      "trinityCasts": 0
+    "spot": {
+      "u": 18,
+      "v": 18
     },
-    "lastSkill": "",
-    "lastSimultaneousSkills": [],
-    "fx": {
-      "ready": true,
-      "failed": "",
-      "effects": 76,
-      "preparedEffects": 36,
-      "loadedTextures": 15,
-      "gpuPreparation": {
-        "compiledPrograms": 4,
-        "uploadedTextures": 15
+    "hero": {
+      "hp": 100,
+      "maxHp": 100,
+      "state": "idle",
+      "u": 18,
+      "v": 18,
+      "meters": 44.5,
+      "safe": false,
+      "reach": 1,
+      "aoeCastRadiusTiles": 2.2,
+      "critChance": 0.15,
+      "critMultiplier": 1.5
+    },
+    "vfx": {
+      "flameSheets": [
+        {
+          "u": 18.348562622263696,
+          "v": 18.03168751111488,
+          "yaw": 0.09065988720074515,
+          "radius": 1.45,
+          "rank": 1,
+          "age": 0.068,
+          "layers": 1,
+          "opacity": 0.385,
+          "bloom": 0,
+          "height": 0,
+          "material": "connected-sheet",
+          "backend": "pixi-render-texture",
+          "maskedSamples": 34,
+          "projectiles": 0
+        }
+      ],
+      "activeFloats": [],
+      "activeProjectiles": [],
+      "activeAoEs": [],
+      "activeImpacts": [
+        {
+          "id": 2,
+          "kind": "flame-cone",
+          "u": 18.35,
+          "v": 18.03,
+          "radius": 1.45
+        }
+      ],
+      "activeLevelUps": [],
+      "activeCombos": [],
+      "activeSlashes": 0,
+      "activeSparks": 0,
+      "totals": {
+        "crits": 0,
+        "normals": 0,
+        "projectiles": 0,
+        "aoes": 1,
+        "levelUps": 0,
+        "wallHits": 0,
+        "autoCasts": 0,
+        "simultaneousCasts": 0,
+        "trinityCasts": 0
       },
-      "live": 0,
-      "played": 0,
-      "peakParticles": 0,
-      "particleBudget": 1400,
-      "budgetSkipped": 0,
-      "frameMs": 99.9,
-      "occludedParticles": 0,
-      "minOcclusion": 1,
-      "meanOcclusion": 1,
-      "backEffects": 0,
-      "frontEffects": 0,
-      "particles": 0,
-      "missing": [],
-      "unsupported": [],
-      "playing": []
+      "lastSkill": "",
+      "lastSimultaneousSkills": [],
+      "fx": {
+        "ready": true,
+        "failed": "",
+        "effects": 76,
+        "preparedEffects": 36,
+        "loadedTextures": 15,
+        "gpuPreparation": {
+          "compiledPrograms": 4,
+          "uploadedTextures": 15
+        },
+        "live": 0,
+        "played": 0,
+        "peakParticles": 0,
+        "particleBudget": 1400,
+        "budgetSkipped": 0,
+        "frameMs": 31.5,
+        "occludedParticles": 0,
+        "minOcclusion": 1,
+        "meanOcclusion": 1,
+        "backEffects": 0,
+        "frontEffects": 0,
+        "particles": 0,
+        "missing": [],
+        "unsupported": [],
+        "playing": []
+      }
     }
   }
 }
