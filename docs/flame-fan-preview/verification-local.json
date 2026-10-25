@@ -1,0 +1,45 @@
+{
+  "passed": true,
+  "url": "local",
+  "checks": [
+    {
+      "width": 1440,
+      "levels": 5,
+      "phases": [
+        0.4,
+        0.95,
+        1.65,
+        2.2
+      ],
+      "controls": "pass",
+      "overflow": false
+    },
+    {
+      "width": 390,
+      "levels": 5,
+      "phases": [
+        0.4,
+        0.95,
+        1.65,
+        2.2
+      ],
+      "controls": "pass",
+      "overflow": false
+    },
+    {
+      "width": 320,
+      "levels": 5,
+      "phases": [
+        0.4,
+        0.95,
+        1.65,
+        2.2
+      ],
+      "controls": "pass",
+      "overflow": false
+    }
+  ],
+  "iframe": "cross-origin playback and level selection passed",
+  "errors": [],
+  "failures": []
+}
