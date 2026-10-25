@@ -77,6 +77,7 @@ export function createControls(uiStage:Container,frames:FrameSet,canStartStick?:
    eased={x:eased.x+(raw.x-eased.x)*k,y:eased.y+(raw.y-eased.y)*k};
    if(!on&&Math.hypot(eased.x,eased.y)<.03)eased={x:0,y:0};return eased;
   },
+  reset,
   stick:base
  };
 }

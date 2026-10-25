@@ -81,7 +81,7 @@ export async function mount(app:HTMLElement,progress:Progress){
  );
  walk=worldView.direction;
  settings=createSettings({stage:rt.uiStage,solo:!coop,pause:paused=>{if(paused)rt.app.ticker.stop();else rt.app.ticker.start();},canOpen:()=>!inventory?.isOpen()&&!picker.isOpen()&&!clock?.isOpen()&&!lobby?.isOpen()&&!worldView.encounters.isModalOpen()&&!worldView.worldMap.isOpen(),bounds:()=>worldView.encounters.minimap.snapshot().bounds,showFps:show=>worldView.hud.setShowFps(show)});
- inventory=createInventory({stage:rt.uiStage,renderPause:paused=>paused?rt.app.stop():rt.app.start(),solo:!coop,canOpen:()=>!document.querySelector('.settings-overlay:not([hidden])')&&!picker.isOpen()&&!clock?.isOpen()&&!lobby?.isOpen()&&worldView.encounters.inventoryAvailable()&&!worldView.encounters.isModalOpen()&&!worldView.worldMap.isOpen(),bounds:()=>worldView.encounters.minimap.getBounds(),reason:worldView.encounters.itemUseReason,apply:worldView.encounters.applyItem});
+ inventory=createInventory({stage:rt.uiStage,releaseInput:controls.reset,redraw:()=>rt.app.render(),renderPause:paused=>paused?rt.app.stop():rt.app.start(),solo:!coop,canOpen:()=>!document.querySelector('.settings-overlay:not([hidden])')&&!picker.isOpen()&&!clock?.isOpen()&&!lobby?.isOpen()&&worldView.encounters.inventoryAvailable()&&!worldView.encounters.isModalOpen()&&!worldView.worldMap.isOpen(),bounds:()=>worldView.encounters.minimap.getBounds(),reason:worldView.encounters.itemUseReason,apply:worldView.encounters.applyItem});
  // Apply the saved layout before the first frame, so the world is painted once (not once as the default layout and
  // again for the saved one).
  render();

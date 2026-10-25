@@ -1,0 +1,37 @@
+import {chromium} from 'playwright';import {createServer} from 'vite';import {launchOptions} from './typography/browser.mjs';import assert from 'node:assert/strict';import fs from 'node:fs/promises';
+const remote=process.env.VERIFY_URL,tag=remote?'live':'local',port=5594,dir='docs/inventory-pixi';await fs.mkdir(dir,{recursive:true});
+const server=remote?null:await createServer({server:{host:'127.0.0.1',port,strictPort:true,hmr:false,watch:null},logLevel:'error'});await server?.listen();
+const report={base:remote||`http://127.0.0.1:${port}`,views:{},errors:[]};const browser=await chromium.launch({...launchOptions(),args:launchOptions().args.filter(a=>a!=='--single-process')});
+const page=await browser.newPage({viewport:{width:1440,height:900},hasTouch:true});page.on('pageerror',e=>report.errors.push(e.message));page.setDefaultTimeout(90000);
+const save=()=>fs.writeFile(`${dir}/${tag}-results.json`,JSON.stringify(report,null,2));const note=async s=>{console.log(s);await save();};
+const ready=()=>page.waitForFunction(()=>document.querySelector('#world-canvas')?.dataset.ready==='true'&&!document.querySelector('#loading-screen')&&window.__INVENTORY__?.renderer==='pixi',null,{timeout:300000,polling:500});
+const bounds=label=>page.evaluate(label=>{const i=window.__INVENTORY__;const find=c=>c.label===label?c:c.children?.map(find).find(Boolean);const c=label==='Open Inventory'?i.bag:label==='Open Settings'?find(window.__PIXI_UI__.app.stage):find(i.overlay);if(!c)throw Error('Missing Pixi control '+label);const b=c.getBounds();return {x:b.x,y:b.y,width:b.width,height:b.height};},label);
+const click=async(label,touch=false)=>{const b=await bounds(label);await (touch?page.touchscreen.tap(b.x+b.width/2,b.y+b.height/2):page.mouse.click(b.x+b.width/2,b.y+b.height/2));};
+const isOpen=()=>page.evaluate(()=>window.__INVENTORY__.isOpen());
+try{
+ await page.addInitScript(()=>{localStorage.setItem('arkodia.hero','rift-runner');localStorage.setItem('arkodia.settings.v1',JSON.stringify({quality:'low',frameRate:30,music:0,soundEffects:0,screenShake:true,showFps:true}));});
+ await page.goto(report.base+'/?offline=1&hero=rift-runner&time=.45&3d=0',{waitUntil:'domcontentloaded',timeout:180000});await ready();await note('World loaded with Pixi inventory.');
+ await page.keyboard.press('i');assert(await isOpen());await page.waitForTimeout(1000);
+ assert.equal(await page.locator('.inventory-overlay,.inventory-panel,.inventory-slot').count(),0);
+ assert(await page.evaluate(()=>window.__INVENTORY__.overlay.children.length>0));
+ await click('Use');assert.equal(await page.evaluate(()=>window.__INVENTORY__.snapshot()['health-potion']),5,'full-health use retains potion');
+ await click('Open Settings');assert(await page.locator('.settings-overlay:not([hidden])').count()===0,'inventory blocks Settings');
+ await page.keyboard.press('Escape');await click('Open Settings');await page.getByRole('dialog',{name:'Settings',exact:true}).waitFor();await page.keyboard.press('i');assert(!(await isOpen()),'Settings blocks inventory');await page.keyboard.press('Escape');await page.keyboard.press('i');report.settingsExclusion=true;
+ for(const [name,width,height] of [['desktop',1440,900],['portrait',390,844],['landscape',844,390],['small-landscape',667,375],['small-portrait',320,568]]){
+  await page.keyboard.press('Escape');await page.setViewportSize({width,height});await page.waitForTimeout(600);await click('Open Inventory',true);assert(await isOpen());
+  for(const item of ['Health Potion','Stronghold Teleport Scroll']){await click(item,true);await page.waitForTimeout(150);await page.screenshot({path:`${dir}/${tag}-${name}-${item==='Health Potion'?'potion':'scroll'}.png`});}
+  const controls={};for(const label of ['Close Inventory','Health Potion','Stronghold Teleport Scroll','Use']){const b=await bounds(label);assert(b.x>=0&&b.y>=0&&b.x+b.width<=width+1&&b.y+b.height<=height+1,`${name} ${label} fits`);assert(b.width>=44&&b.height>=44,`${name} ${label} touch size`);controls[label]=b;}
+  report.views[name]={viewport:[width,height],controls};await note(name+' Pixi mouse/touch layout passed.');
+ }
+ await page.keyboard.press('Escape');await page.setViewportSize({width:1440,height:900});await page.waitForTimeout(500);
+ await page.evaluate(()=>{const c=window.__STRONGHOLD_COMBAT__;let at;for(let u=20;u<27&&!at;u+=.5)for(let v=20;v<27;v+=.5)if(c.clear(u,v)&&c.clear(u+.5,v)&&c.teleport(u,v)){at={u,v};break;}if(!at)throw Error('No clear tile');c.clearFoes();for(const [du,dv] of [[.25,0],[0,.25],[-.25,0],[0,-.25]])c.summon(at.u+du,at.v+dv,5);});
+ await page.waitForFunction(()=>{const h=window.__STRONGHOLD_COMBAT__.snapshot().hero;return h.hp>0&&h.hp<h.maxHp;},null,{timeout:90000,polling:100});
+ await page.keyboard.press('i');await click('Health Potion');const before=await page.evaluate(()=>window.__STRONGHOLD_COMBAT__.snapshot().hero.hp);await click('Use');await page.waitForFunction(()=>window.__INVENTORY__.snapshot()['health-potion']===4);const healed=await page.evaluate(()=>window.__STRONGHOLD_COMBAT__.snapshot().hero);assert(Math.abs(healed.hp-Math.min(healed.maxHp,before+healed.maxHp*.4))<.01);report.healing={before,after:healed.hp};
+ await click('Stronghold Teleport Scroll');await click('Use');await page.waitForFunction(()=>window.__INVENTORY__.snapshot()['stronghold-scroll']===1);assert(await page.evaluate(()=>window.__STRONGHOLD_COMBAT__.snapshot().hero.safe));await click('Use');assert.equal(await page.evaluate(()=>window.__INVENTORY__.snapshot()['stronghold-scroll']),1);await note('Real damage, potion healing and success-only scroll consumption passed.');
+ const frozen=await page.evaluate(()=>window.__STRONGHOLD_COMBAT__.snapshot().hero);await page.keyboard.press('w');await page.keyboard.press('1');await page.waitForTimeout(500);assert.deepEqual(await page.evaluate(()=>window.__STRONGHOLD_COMBAT__.snapshot().hero),frozen);
+ await page.keyboard.press('Escape');assert(!(await isOpen()));await page.reload({waitUntil:'domcontentloaded',timeout:180000});await ready();assert.deepEqual(await page.evaluate(()=>window.__INVENTORY__.snapshot()),{'health-potion':4,'stronghold-scroll':1});
+ await page.evaluate(async()=>{await window.__INVENTORY__.add('health-potion',3);await window.__INVENTORY__.remove('health-potion',2);});assert.equal(await page.evaluate(()=>window.__INVENTORY__.snapshot()['health-potion']),5);
+ await page.keyboard.press('i');await page.keyboard.press('Tab');await page.keyboard.press('ArrowRight');await page.keyboard.press('Enter');assert(await isOpen());await page.keyboard.press('Escape');
+ await page.evaluate(()=>window.__STRONGHOLD_COMBAT__.offer());await click('Open Inventory');assert(!(await isOpen()));await page.evaluate(()=>{const c=window.__STRONGHOLD_COMBAT__;c.choose(c.snapshot().run.offers[0]);});
+ assert.deepEqual(report.errors,[]);report.passed=true;await note('PASS: Pixi drawing, no DOM inventory, persistence, stacking, input isolation and blessing guard.');
+}finally{await save();await browser.close();await server?.close();}
