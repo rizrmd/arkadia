@@ -1,0 +1,171 @@
+{
+  "base": "http://127.0.0.1:5594",
+  "views": {
+    "desktop": {
+      "viewport": [
+        1440,
+        900
+      ],
+      "controls": {
+        "Close Inventory": {
+          "x": 1020,
+          "y": 240,
+          "width": 44,
+          "height": 44
+        },
+        "Health Potion": {
+          "x": 380,
+          "y": 300,
+          "width": 80,
+          "height": 80
+        },
+        "Stronghold Teleport Scroll": {
+          "x": 468,
+          "y": 300,
+          "width": 80,
+          "height": 80
+        },
+        "Use": {
+          "x": 772,
+          "y": 542,
+          "width": 270,
+          "height": 44
+        }
+      }
+    },
+    "portrait": {
+      "viewport": [
+        390,
+        844
+      ],
+      "controls": {
+        "Close Inventory": {
+          "x": 318,
+          "y": 174,
+          "width": 44,
+          "height": 44
+        },
+        "Health Potion": {
+          "x": 32,
+          "y": 234,
+          "width": 75.5,
+          "height": 75.5
+        },
+        "Stronghold Teleport Scroll": {
+          "x": 115.5,
+          "y": 234,
+          "width": 75.5,
+          "height": 75.5
+        },
+        "Use": {
+          "x": 50,
+          "y": 552,
+          "width": 290,
+          "height": 44
+        }
+      }
+    },
+    "landscape": {
+      "viewport": [
+        844,
+        390
+      ],
+      "controls": {
+        "Close Inventory": {
+          "x": 722,
+          "y": 27,
+          "width": 44,
+          "height": 44
+        },
+        "Health Potion": {
+          "x": 82,
+          "y": 81,
+          "width": 52,
+          "height": 52
+        },
+        "Stronghold Teleport Scroll": {
+          "x": 142,
+          "y": 81,
+          "width": 52,
+          "height": 52
+        },
+        "Use": {
+          "x": 374,
+          "y": 245,
+          "width": 370,
+          "height": 44
+        }
+      }
+    },
+    "small-landscape": {
+      "viewport": [
+        667,
+        375
+      ],
+      "controls": {
+        "Close Inventory": {
+          "x": 595,
+          "y": 20,
+          "width": 44,
+          "height": 44
+        },
+        "Health Potion": {
+          "x": 32,
+          "y": 74,
+          "width": 52,
+          "height": 52
+        },
+        "Stronghold Teleport Scroll": {
+          "x": 92,
+          "y": 74,
+          "width": 52,
+          "height": 52
+        },
+        "Use": {
+          "x": 324,
+          "y": 237,
+          "width": 293,
+          "height": 44
+        }
+      }
+    },
+    "small-portrait": {
+      "viewport": [
+        320,
+        568
+      ],
+      "controls": {
+        "Close Inventory": {
+          "x": 248,
+          "y": 36,
+          "width": 44,
+          "height": 44
+        },
+        "Health Potion": {
+          "x": 32,
+          "y": 96,
+          "width": 58,
+          "height": 58
+        },
+        "Stronghold Teleport Scroll": {
+          "x": 98,
+          "y": 96,
+          "width": 58,
+          "height": 58
+        },
+        "Use": {
+          "x": 50,
+          "y": 414,
+          "width": 220,
+          "height": 44
+        }
+      }
+    }
+  },
+  "errors": [],
+  "healing": {
+    "before": 84,
+    "after": 100
+  },
+  "passed": true
+}

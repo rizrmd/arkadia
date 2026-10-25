@@ -10,7 +10,7 @@ const click=async(label,touch=false)=>{const b=await bounds(label);await (touch?
 const isOpen=()=>page.evaluate(()=>window.__INVENTORY__.isOpen());
 try{
  await page.addInitScript(()=>{localStorage.setItem('arkodia.hero','rift-runner');localStorage.setItem('arkodia.settings.v1',JSON.stringify({quality:'low',frameRate:30,music:0,soundEffects:0,screenShake:true,showFps:true}));});
- await page.goto(report.base+'/?offline=1&hero=rift-runner&time=.45&3d=0',{waitUntil:'domcontentloaded',timeout:180000});await ready();await note('World loaded with Pixi inventory.');
+ let response;report.navigation=[];for(let attempt=0;attempt<5;attempt++){response=await page.goto(report.base+'/?offline=1&hero=rift-runner&time=.45&3d=0',{waitUntil:'domcontentloaded',timeout:180000});report.navigation.push(response.status());if(response.status()===200)break;await page.waitForTimeout(3000);}assert.equal(response.status(),200,'game page HTTP');await ready();await note('World loaded with Pixi inventory.');
  await page.keyboard.press('i');assert(await isOpen());await page.waitForTimeout(1000);
  assert.equal(await page.locator('.inventory-overlay,.inventory-panel,.inventory-slot').count(),0);
  assert(await page.evaluate(()=>window.__INVENTORY__.overlay.children.length>0));
@@ -34,4 +34,4 @@ try{
  await page.keyboard.press('i');await page.keyboard.press('Tab');await page.keyboard.press('ArrowRight');await page.keyboard.press('Enter');assert(await isOpen());await page.keyboard.press('Escape');
  await page.evaluate(()=>window.__STRONGHOLD_COMBAT__.offer());await click('Open Inventory');assert(!(await isOpen()));await page.evaluate(()=>{const c=window.__STRONGHOLD_COMBAT__;c.choose(c.snapshot().run.offers[0]);});
  assert.deepEqual(report.errors,[]);report.passed=true;await note('PASS: Pixi drawing, no DOM inventory, persistence, stacking, input isolation and blessing guard.');
-}finally{await save();await browser.close();await server?.close();}
+}catch(error){report.failure={message:error.message,page:await page.evaluate(()=>({title:document.title,text:document.body.innerText.slice(-1500),ready:document.querySelector('#world-canvas')?.dataset.ready,inventory:window.__INVENTORY__?.renderer})).catch(()=>null)};throw error;}finally{await save();await browser.close();await server?.close();}
