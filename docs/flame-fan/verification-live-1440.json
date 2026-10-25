@@ -16,10 +16,17 @@
       ],
       "targetCounts": [
         3,
-        4,
-        5,
-        5,
-        5
+        3,
+        3,
+        3,
+        3
+      ],
+      "projectileCounts": [
+        0,
+        0,
+        0,
+        0,
+        0
       ],
       "damageMultipliers": [
         1,
@@ -35,24 +42,17 @@
         1090,
         1003
       ],
-      "castScales": [
+      "areaScales": [
         1,
         1.18,
         1.36,
         1.54,
         1.72
       ],
-      "visualOnlyImpactScales": [
-        1,
-        1.045,
-        1.09,
-        1.135,
-        1.18
-      ],
       "phases": [
         "Casting",
-        "Projectile travel",
-        "Impact"
+        "Flame area",
+        "Dissipating"
       ],
       "controls": "passed"
     }

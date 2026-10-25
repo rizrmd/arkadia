@@ -1,62 +1,72 @@
-## Level 1–5 animation player
+<iframe src="https://ark-whachat.fural.space/ember-warden-review/flame-fan-levels/" title="Flame Fan Level 1–5 AoE Animation Player" height="560"></iframe>
 
-<iframe src="https://ark-whachat.fural.space/ember-warden-review/flame-fan-levels/" title="Flame Fan Level 1–5 Animation Player" height="560"></iframe>
+[Open AoE player](https://ark-whachat.fural.space/ember-warden-review/flame-fan-levels/) · [Live game checks](https://ark-whachat.fural.space/ember-warden-review/flame-fan-levels/evidence/game-live.json) · [Live player checks](https://ark-whachat.fural.space/ember-warden-review/flame-fan-levels/evidence/verification-live.json).
 
-[Open the level animation player](https://ark-whachat.fural.space/ember-warden-review/flame-fan-levels/) · [Live verification report](https://ark-whachat.fural.space/ember-warden-review/flame-fan-levels/evidence/verification-live.json).
+## Confirmed mechanics
 
-Level selector, Play/Pause, Replay, Loop and Day/Night use the shipped Rift Bolt player pattern. This is a rendering preview using the actual Ember cast, fireball and impact assets, not a static mockup.
+Flame Fan is a forward **108° flame sector from Lv.1 through Lv.5**, with **no fireball projectiles**. It hits every living target in the sector once per cast, including multiple targets at Lv.1. Targets behind the caster, outside its range/angle, or behind blocking walls are excluded. Radius includes the existing 0.38-tile target collision allowance.
 
-## Flame Fan level animation player
-
-Reuses the shipped Rift Bolt player's responsive controls, CSS layout, character atlases and NixieFX stage, with the existing Ember cast, bolt, ground and impact recipes. Rendering-only animation adapter: `src/fx/flame-fan-levels.ts`. No combat or progression files changed.
-
-| Level | Fireballs | Skill damage | Cooldown without haste | Cast scale |
+| Rank | Radius (tiles) | Damage multiplier | Cooldown (ms) | Projectiles |
 |---|---:|---:|---:|---:|
-| 1 | 3 | 1.00× | 1400 ms | 1.00× |
-| 2 | 4 | 1.25× | 1288 ms | 1.18× |
-| 3 | 5 | 1.50× | 1185 ms | 1.36× |
-| 4 | 5 | 1.75× | 1090 ms | 1.54× |
-| 5 | 5 | 2.00× | 1003 ms | 1.72× |
+| 1 | 4.400 | 1.00× | 1400 | 0 |
+| 2 | 5.192 | 1.25× | 1288 | 0 |
+| 3 | 5.984 | 1.50× | 1185 | 0 |
+| 4 | 6.776 | 1.75× | 1090 | 0 |
+| 5 | 7.568 | 2.00× | 1003 | 0 |
 
-Offsets match `combat-vfx.ts`: ±0.34/0 at Lv.1; ±0.36/±0.12 at Lv.2; ±0.44/±0.22/0 at Lv.3–5. Range 4.4 tiles, speed 6.4 tiles/s. Per-fireball base damage remains 0.78× the displayed skill multiplier. Cast scale follows `skillAreaMultiplier`; it does not increase projectile range. Impact sprite scale increases by 4.5% per rank as a visual-only damage cue; ground footprint stays fixed. No extra projectiles, on-hit AoE unlock, burn status, evolution, ultimate or rank-3 fork is added.
+Each target receives 0.78× base skill damage multiplied by rank and existing combo modifiers. Existing server rounding, critical-hit handling and health accounting remain in place. The authoritative server uses the same radius, sector, rank multipliers and unlimited target count; other skills keep their existing target limits. Offline damage resolves after a 420 ms cast; online damage remains on the existing authoritative auto-cast tick and the client renders that cast. This does not introduce a new network timing protocol.
 
-The scene is a staged cast at fixed 0.42 s, followed by flight and illustrative target impacts. The 2.6 s review loop includes effect recovery and is not the gameplay cooldown. Target dummies demonstrate each fan ray, not an increased target limit. Pause freezes simulation, Replay clears prior effects, Loop off holds the complete frame. Day/Night changes contrast. Query parameters: `level=1..5`, `autoplay=0`, `loop=0`.
+## Animation and controls
 
-Build: `node scripts/flame-fan/build.mjs`. Verify locally: `node scripts/flame-fan/verify.mjs`. Deploy the additive layer: `node scripts/flame-fan/deploy.mjs`; it retains the Stage 3 game deployment. Verify public URL with `VERIFY_URL=https://ark-whachat.fural.space/ember-warden-review/flame-fan-levels/ node scripts/flame-fan/verify.mjs`.
+The actual NixieFX effect fills the forward sector with overlapping stationary flame tongues. There is no moving projectile emitter, comet head or projectile-travel phase. Rank changes expand the flame area. The caster uses the existing attack animation; preview target recoil is illustrative, while the actual game applies damage.
 
-Verification covers actual live fireball emitter counts, cast/travel/impact particles, no missing effects, damage/cooldown values, pause/resume, Replay at zero, once stopping, loop replay, accessible controls and overflow at 1440×900, 390×844 and 320×560, plus a working cross-origin iframe. Screenshots and JSON are in this folder.
+The English player provides Lv.1–5 selection, Play/Pause, Replay, Loop, Day/Night and iframe playback. Phases are Casting, Flame area and Dissipating. It is delivered in the same supported game release pipeline so the player and game load matching VFX.
+
+## Verification
+
+Local actual-game checks at 1440×900 and 390×844 pass for all five ranks: three forward targets take damage, the rear target is excluded, exactly one AoE and zero projectiles are emitted. Player checks also pass at 320×560, all ranks/phases, controls and iframe, with no browser errors or failed requests. Go sector and six-target Lv.1 auto-cast tests pass. Progression and seeded Ember/Rift gate parity regressions pass. Live results are recorded separately after deployment.
+
+Existing tier gates, Settings, inventory and Rift integrations are preserved. Solar Fan and other concept skills remain unimplemented.
 
 
-### Live verification
+## Live delivery
 
-TypeScript and production build pass. All five levels, all three animation phases, actual emitter counts, pause/resume, replay, loop on/off and cross-origin iframe controls pass locally and live at 1440 × 900, 390 × 844 and 320 × 560. Zero page errors, missing effects or failed HTTP requests. Screenshots below are simulation-paused checkpoints. Published as an additive review layer over the delivered Stage 3 game; peer work is preserved. Implementation commit: f23ee5b.
+Actual game desktop and touch/mobile tests pass for every rank, including three forward targets damaged at Lv.1, rear-target exclusion and zero projectiles. Player tests pass on desktop, portrait mobile and compact mobile with all controls and iframe playback. Zero page errors. The release includes the latest committed inventory and Settings integration.
 
 ### Desktop evidence
 
-![Flame Fan live 1440px Lv.1 casting](https://ark-whachat.fural.space/ember-warden-review/flame-fan-levels/evidence/live-1440-lv1-casting.png)
+![Live 1440px Flame Fan Lv.1 flame area](https://ark-whachat.fural.space/ember-warden-review/flame-fan-levels/evidence/live-1440-lv1-flame.png)
 
-![Flame Fan live 1440px Lv.2 projectile](https://ark-whachat.fural.space/ember-warden-review/flame-fan-levels/evidence/live-1440-lv2-projectile.png)
+![Live 1440px Flame Fan Lv.2 flame area](https://ark-whachat.fural.space/ember-warden-review/flame-fan-levels/evidence/live-1440-lv2-flame.png)
 
-![Flame Fan live 1440px Lv.3 projectile](https://ark-whachat.fural.space/ember-warden-review/flame-fan-levels/evidence/live-1440-lv3-projectile.png)
+![Live 1440px Flame Fan Lv.3 flame area](https://ark-whachat.fural.space/ember-warden-review/flame-fan-levels/evidence/live-1440-lv3-flame.png)
 
-![Flame Fan live 1440px Lv.4 projectile](https://ark-whachat.fural.space/ember-warden-review/flame-fan-levels/evidence/live-1440-lv4-projectile.png)
+![Live 1440px Flame Fan Lv.4 flame area](https://ark-whachat.fural.space/ember-warden-review/flame-fan-levels/evidence/live-1440-lv4-flame.png)
 
-![Flame Fan live 1440px Lv.5 impact](https://ark-whachat.fural.space/ember-warden-review/flame-fan-levels/evidence/live-1440-lv5-impact.png)
+![Live 1440px Flame Fan Lv.5 flame area](https://ark-whachat.fural.space/ember-warden-review/flame-fan-levels/evidence/live-1440-lv5-flame.png)
 
-### Mobile portrait evidence
+![Live actual game 1440px Flame Fan Lv.1](https://ark-whachat.fural.space/ember-warden-review/flame-fan-levels/evidence/live-game-1440-lv1.png)
 
-![Flame Fan live 390px Lv.1 casting](https://ark-whachat.fural.space/ember-warden-review/flame-fan-levels/evidence/live-390-lv1-casting.png)
+![Live actual game 1440px Flame Fan Lv.5](https://ark-whachat.fural.space/ember-warden-review/flame-fan-levels/evidence/live-game-1440-lv5.png)
 
-![Flame Fan live 390px Lv.2 projectile](https://ark-whachat.fural.space/ember-warden-review/flame-fan-levels/evidence/live-390-lv2-projectile.png)
+### Mobile evidence
 
-![Flame Fan live 390px Lv.3 projectile](https://ark-whachat.fural.space/ember-warden-review/flame-fan-levels/evidence/live-390-lv3-projectile.png)
+![Live 390px Flame Fan Lv.1 flame area](https://ark-whachat.fural.space/ember-warden-review/flame-fan-levels/evidence/live-390-lv1-flame.png)
 
-![Flame Fan live 390px Lv.4 projectile](https://ark-whachat.fural.space/ember-warden-review/flame-fan-levels/evidence/live-390-lv4-projectile.png)
+![Live 390px Flame Fan Lv.2 flame area](https://ark-whachat.fural.space/ember-warden-review/flame-fan-levels/evidence/live-390-lv2-flame.png)
 
-![Flame Fan live 390px Lv.5 impact](https://ark-whachat.fural.space/ember-warden-review/flame-fan-levels/evidence/live-390-lv5-impact.png)
+![Live 390px Flame Fan Lv.3 flame area](https://ark-whachat.fural.space/ember-warden-review/flame-fan-levels/evidence/live-390-lv3-flame.png)
 
-### Local visual review
+![Live 390px Flame Fan Lv.4 flame area](https://ark-whachat.fural.space/ember-warden-review/flame-fan-levels/evidence/live-390-lv4-flame.png)
 
-![Local mobile Lv.5 projectile review](https://ark-whachat.fural.space/ember-warden-review/flame-fan-levels/evidence/local-390-lv5-projectile.png)
+![Live 390px Flame Fan Lv.5 flame area](https://ark-whachat.fural.space/ember-warden-review/flame-fan-levels/evidence/live-390-lv5-flame.png)
 
-![Local desktop Lv.1 impact review](https://ark-whachat.fural.space/ember-warden-review/flame-fan-levels/evidence/local-1440-lv1-impact.png)
+![Live actual game 390px Flame Fan Lv.1](https://ark-whachat.fural.space/ember-warden-review/flame-fan-levels/evidence/live-game-390-lv1.png)
+
+![Live actual game 390px Flame Fan Lv.5](https://ark-whachat.fural.space/ember-warden-review/flame-fan-levels/evidence/live-game-390-lv5.png)
+
+## Local visual review
+
+![Local desktop corrected flame sector](https://ark-whachat.fural.space/ember-warden-review/flame-fan-levels/evidence/local-1440-lv1-flame.png)
+
+![Local mobile actual-game multi-target check](https://ark-whachat.fural.space/ember-warden-review/flame-fan-levels/evidence/local-game-390-lv1.png)
