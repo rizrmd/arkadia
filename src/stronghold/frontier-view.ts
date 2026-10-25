@@ -38,7 +38,7 @@ export function createFrontier(worldStage:Container){
  let start=()=>{};
  const ready=new Promise<void>(done=>{
   atlas.onerror=()=>{failed=true;done();};
-  atlas.onload=()=>{atlas.decode().catch(()=>{}).then(()=>{
+  atlas.onload=()=>{atlas.decode().catch(()=>{}).then(async()=>{
    const source=Texture.from(atlas).source,textures=new Map<string,Texture>();
    for(const v of views){const p=v.prop;let texture=textures.get(p.asset);
     if(!texture)textures.set(p.asset,texture=new Texture({source,frame:new Rectangle(...p.frame)}));
@@ -53,10 +53,13 @@ export function createFrontier(worldStage:Container){
    loaded=true;cull='';done();
    // Occlusion images, cropped off the critical path (a CPU canvas, so no GPU readback). Only the solid art cuts
    // actors out: the translucent contact shadows baked around the grounded modules are dropped.
-   for(const [key,img] of images){const p=FRONTIER_PROPS.find(q=>imageKey(q)===key)!,f=p.frame,c=document.createElement('canvas');c.width=f[2];c.height=f[3];
+   // Resolving ready does not yield the main thread. Give each crop its own task so
+   // alpha readbacks and PNG encodes cannot monopolize the first playable frames.
+   const yieldTask=()=>new Promise<void>(resolve=>setTimeout(resolve,0));
+   for(const [key,img] of images){await yieldTask();const p=FRONTIER_PROPS.find(q=>imageKey(q)===key)!,f=p.frame,c=document.createElement('canvas');c.width=f[2];c.height=f[3];
     const g=c.getContext('2d',{willReadFrequently:true})!;if(p.flip){g.translate(f[2],0);g.scale(-1,1);}g.drawImage(atlas,f[0],f[1],f[2],f[3],0,0,f[2],f[3]);
     const px=g.getImageData(0,0,f[2],f[3]);for(let i=3;i<px.data.length;i+=4)if(px.data[i]<150)px.data[i]=0;g.setTransform(1,0,0,1,0,0);g.putImageData(px,0,0);
-    c.toBlob(b=>{if(b)img.src=URL.createObjectURL(b);});}
+    await new Promise<void>(resolve=>c.toBlob(b=>{if(b){const url=URL.createObjectURL(b);img.onload=img.onerror=()=>URL.revokeObjectURL(url);img.src=url;}resolve();}));}
   });};
   start=()=>{if(!atlas.src)atlas.src=FRONTIER_ATLAS;};
  });

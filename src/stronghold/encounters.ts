@@ -686,7 +686,12 @@ export async function createEncounters(o:{
   const shown=foes.filter(f=>{if(f.deadFor>CORPSE-500&&!f.alive)return false;const w=tilePoint(f.x,f.y),s=at(w.x,w.y);return s.x>-80&&s.x<innerWidth+80&&s.y>-40&&s.y<innerHeight+120;});
   const live=new Set<Foe>();
   if(shown.length){
-   const sun=o.hero.sun(),r=Math.round(Math.min(2.25,Math.max(0.75,k*dpr))*4)/4,half=Math.max(pivot.x,meta.cell.w-pivot.x)*DISPLAY,top=-pivot.y*DISPLAY,H0=(meta.cell.h+18)*DISPLAY,bottom=(meta.cell.h-pivot.y)*DISPLAY+8;
+   // Keep raster lighting stable below a pixel of shadow movement. Raw daylight
+   // floats changed the cache key every frame, forcing canvas copies and GPU uploads
+   // for idle enemies even though their appearance had not visibly changed.
+   const rawSun=o.hero.sun(),q=(v:number)=>Math.round(v*100)/100;
+   const sun:Sun={...rawSun,alpha:q(rawSun.alpha),dx:q(rawSun.dx),dy:q(rawSun.dy),wx:q(rawSun.wx),wy:q(rawSun.wy)};
+   const r=Math.round(Math.min(2.25,Math.max(0.75,k*dpr))*4)/4,half=Math.max(pivot.x,meta.cell.w-pivot.x)*DISPLAY,top=-pivot.y*DISPLAY,H0=(meta.cell.h+18)*DISPLAY,bottom=(meta.cell.h-pivot.y)*DISPLAY+8;
    const ends=[-half,half].flatMap(w=>[0,H0].flatMap(h=>[[w+h*sun.dx,h*sun.dy],[w*sun.wx+h*sun.dx,w*sun.wy+h*sun.dy]])),sxs=[-half,half,...ends.map(e=>e[0])],sys=[top,bottom,...ends.map(e=>e[1]-12),...ends.map(e=>e[1]+12)];
    const box=[Math.floor(Math.min(...sxs))-8,Math.floor(Math.min(...sys))-8,Math.ceil(Math.max(...sxs))+8,Math.ceil(Math.max(...sys))+8];
    lastBox=box;
