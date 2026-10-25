@@ -1,4 +1,20 @@
-## Cemetery geometry correction — validated, deployment pending
+## Live native-geometry cemetery correction — 33a61b6f
+
+The native-face correction is deployed as release `1792960385498-game-33a61b6f-a27de720abe2`. Desktop and emulated mobile cemetery load without browser errors and pass both isolated GPU cast/receive fixtures. Visual comparison at the same camera confirms that the broad torn grave-shadow streaks in 49806970 are absent in 33a61b6f; the new shadows are solid and retain the cross profile. The live entry/chunk identity matches the clean-worktree build. The 293-variant / 879-directional-control audit was repeated on this geometry. Full animation-frame proof and controlled hardware profiling remain open.
+
+[Release identity](https://ark-whachat.fural.space/shadow-audit/live-33a61b6f/deployment.json) · [Live verification](https://ark-whachat.fural.space/shadow-audit/live-33a61b6f/verification.json) · [Latest family gallery](https://ark-whachat.fural.space/shadow-audit/family-gallery.html)
+
+### Before: folded grave projections in 49806970
+
+![Before, live mobile cemetery](https://ark-whachat.fural.space/shadow-audit/live-49806970/mobile-cemetery-0.3.png)
+
+### After: source-authored faces clipped to original alpha
+
+![After, live mobile cemetery](https://ark-whachat.fural.space/shadow-audit/live-33a61b6f/mobile-cemetery-0.3.png)
+
+![After, live desktop cemetery](https://ark-whachat.fural.space/shadow-audit/live-33a61b6f/desktop-cemetery-0.3.png)
+
+## Cemetery geometry correction — deployed, live-verified
 
 Live screenshot review of `49806970` exposed remaining tears on grave shadows despite passing cast/receive controls. Those controls verified reception, not solid volume correctness. The correction now uses the actual source-authored box faces for all four grave families and both fallen columns; an eight-vertex authored proxy also closes the crate. Original alpha clips the geometry, preserving real openings and broken-piece separation. Pillar/stair art and collision are unchanged.
 
@@ -8,16 +24,16 @@ Live screenshot review of `49806970` exposed remaining tears on grave shadows de
 - [x] Native source recipe/hash alignment, 49,491 field assertions, 49,358 companion checks and isolated static/dynamic GPU fixtures pass.
 - [x] Re-run all 293 static variants: 879 directional receiving controls pass, 296 receiver/color entries match.
 - [x] Scoped morning control finds no enclosed bright components >=4 pixels for crate, barrel or any of the four cemetery families. The alternate fallen column retains a four-pixel component at a real piece separation.
-- [ ] Push/deploy this native-face correction and inspect live cemetery screenshots.
+- [x] Push/deploy the native-face correction; live desktop/mobile GPU fixtures pass. Screenshot review is recorded in this page.
 - [ ] Complete every animation-frame/mirror GPU proof and controlled hardware performance evidence.
 
-![Native faces compared with folded source proxies](sandbox://LS6016e1117dfed3e1902e0f2c/projects/arkadia/repos/arkadia/docs/shadow-audit/native-volume-control/control.png)
+![Native faces compared with folded source proxies](https://ark-whachat.fural.space/shadow-audit/native-volume-control/control.png)
 
 ## Native cemetery volume experiment
 
 The actual authored box recipes now supply per-ray front/back height intervals for all four cemetery families and both fallen-column orientations. This replaces inferred height on these families. The control remains under visual review; original alpha and collision are unchanged.
 
-![Native cemetery and fallen-column control](sandbox://LS6016e1117dfed3e1902e0f2c/projects/arkadia/repos/arkadia/docs/shadow-audit/native-volume-control/control.png)
+![Native cemetery and fallen-column control](https://ark-whachat.fural.space/shadow-audit/native-volume-control/control.png)
 
 ## Live evidence for commit 49806970
 
@@ -46,13 +62,13 @@ The broad hollow crate/barrel projections are corrected. Residual outline disagr
 
 [Latest 293-variant GPU report](https://ark-whachat.fural.space/shadow-audit/family-solid-final/report.json) · [GPU byte and cast/receive fixture](https://ark-whachat.fural.space/shadow-audit/solid-volume-control/gpu-live-fixture.json) · [Family gallery](https://ark-whachat.fural.space/shadow-audit/family-gallery.html)
 
-![Original, ground-only, closed-solid and solid-ground controls](sandbox://LS6016e1117dfed3e1902e0f2c/projects/arkadia/repos/arkadia/docs/shadow-audit/solid-volume-control/control.png)
+![Original, ground-only, closed-solid and solid-ground controls](https://ark-whachat.fural.space/shadow-audit/solid-volume-control/control.png)
 
 ## Closed volume experiment (not yet accepted)
 
 The latest comparison uses the original folded surface, a ground-only receiver control, and a closed alpha-solid volume. Small enclosed bright regions remain; this experiment is not yet a complete fix.
 
-![Closed solid volume comparison](sandbox://LS6016e1117dfed3e1902e0f2c/projects/arkadia/repos/arkadia/docs/shadow-audit/solid-volume-control/control.png)
+![Closed solid volume comparison](https://ark-whachat.fural.space/shadow-audit/solid-volume-control/control.png)
 
 ## Solid-prop geometry review
 
