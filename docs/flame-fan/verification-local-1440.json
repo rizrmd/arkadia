@@ -1,0 +1,62 @@
+{
+  "passed": true,
+  "url": "local",
+  "results": [
+    {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "levels": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "targetCounts": [
+        3,
+        4,
+        5,
+        5,
+        5
+      ],
+      "damageMultipliers": [
+        1,
+        1.25,
+        1.5,
+        1.75,
+        2
+      ],
+      "cooldownsMs": [
+        1400,
+        1288,
+        1185,
+        1090,
+        1003
+      ],
+      "castScales": [
+        1,
+        1.18,
+        1.36,
+        1.54,
+        1.72
+      ],
+      "visualOnlyImpactScales": [
+        1,
+        1.045,
+        1.09,
+        1.135,
+        1.18
+      ],
+      "phases": [
+        "Casting",
+        "Projectile travel",
+        "Impact"
+      ],
+      "controls": "passed"
+    }
+  ],
+  "pageErrors": [],
+  "httpFailures": []
+}
