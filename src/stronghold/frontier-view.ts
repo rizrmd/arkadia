@@ -23,13 +23,16 @@ export function createFrontier(worldStage:Container){
  // Ground pivot to the hero's Placed convention: x is the sprite's horizontal centre, foot the pivot's height share.
  const share=(p:FrontierProp)=>p.flip?1-p.pivot[0]:p.pivot[0];
  const scene:FrontierPlaced[]=FRONTIER_PROPS.filter(p=>p.layer!=='ground').map(p=>({layer:'world',id:p.key,x:p.x+p.width*(.5-share(p)),y:p.y,width:p.width,height:p.height,
-  foot:(p.lift+p.height*p.pivot[1])/p.height,shear:0,vertical:1,depth:p.y,opacity:1,file:'frozen-frontier:'+imageKey(p),selected:false,occluder:undefined,image:images.get(imageKey(p))!,frontier:p}));
+  foot:(p.lift+p.height*p.pivot[1])/p.height,shear:p.shear,vertical:1,depth:p.y,opacity:1,file:'frozen-frontier:'+imageKey(p),selected:false,occluder:undefined,image:images.get(imageKey(p))!,frontier:p}));
+ // Hero cutouts use the image centre; GPU sprites use the ground pivot. Account for
+ // that difference so the doorway opening and both piers occlude at the drawn pixels.
+ for(const s of scene)s.y+=s.shear*(s.x-s.frontier.x);
  const columns=new Map<string,Column[]>(scene.map(s=>[s.id,s.frontier.depthColumns.map(c=>({...c,height:s.height*s.foot}))]));
  type View={prop:FrontierProp;sprite:Sprite|null;x0:number;y0:number;x1:number;y1:number};
  const views:View[]=FRONTIER_PROPS.map(p=>{
   // A turned decal stays inside the circle around its pivot through its farthest corner (squashed 2:1 on screen).
   if(p.rot){const r=Math.hypot(Math.max(p.pivot[0],1-p.pivot[0])*p.width,2*Math.max(p.pivot[1],1-p.pivot[1])*p.height);return {prop:p,sprite:null,x0:p.x-r,x1:p.x+r,y0:p.y-r/2,y1:p.y+r/2};}
-  const a=share(p);return {prop:p,sprite:null,x0:p.x-p.width*a,x1:p.x+p.width*(1-a),y0:p.y-p.lift-p.height*p.pivot[1],y1:p.y-p.lift+p.height*(1-p.pivot[1])};});
+  const a=share(p),dy=[-p.width*a*p.shear,p.width*(1-a)*p.shear];return {prop:p,sprite:null,x0:p.x-p.width*a,x1:p.x+p.width*(1-a),y0:p.y-p.lift-p.height*p.pivot[1]+Math.min(...dy),y1:p.y-p.lift+p.height*(1-p.pivot[1])+Math.max(...dy)};});
  let loaded=false,failed=false,visible=0,cull='';
  const atlas=new Image();atlas.decoding='async';
  let start=()=>{};
@@ -41,7 +44,9 @@ export function createFrontier(worldStage:Container){
     if(!texture)textures.set(p.asset,texture=new Texture({source,frame:new Rectangle(...p.frame)}));
     const s=new Sprite(texture);s.anchor.set(p.pivot[0],p.pivot[1]);
     const sx=p.width/p.frame[2]*(p.flip?-1:1),sy=p.height/p.frame[3];
-    if(p.rot)s.setFromMatrix(groundMatrix(p.rot,sx,sy,p.x,p.y-p.lift));else{s.position.set(p.x,p.y-p.lift);s.scale.set(sx,sy);}
+    if(p.rot)s.setFromMatrix(groundMatrix(p.rot,sx,sy,p.x,p.y-p.lift));
+    else if(p.shear)s.setFromMatrix(new Matrix(sx,p.shear*sx,0,sy,p.x,p.y-p.lift));
+    else{s.position.set(p.x,p.y-p.lift);s.scale.set(sx,sy);}
     // Caps draw just in front of their wall; equal depths keep placement order. Ground bands keep trampled snow
     // under the floors and drifts over them.
     s.zIndex=p.layer==='ground'?p.band*1e6+p.y:p.y+(p.layer==='cap'?.05:0);s.visible=false;v.sprite=s;(p.layer==='ground'?ground:upright).addChild(s);}
@@ -65,7 +70,7 @@ export function createFrontier(worldStage:Container){
  function setAmbient(rgb:number){ground.tint=rgb;upright.tint=rgb;}
  const stats=()=>({props:FRONTIER_PROPS.length,uprights:scene.length,columns:FRONTIER_COLUMNS.length,atlas:FRONTIER_ATLAS,loaded,failed,kit:FRONTIER_KIT_SIZE,
   occlusionImages:[...images.values()].filter(i=>i.complete&&i.naturalWidth>0).length,sprites:images.size,visible,assets:[...new Set(FRONTIER_PROPS.map(p=>p.asset))].sort()});
- (window as any).__FROZEN_FRONTIER__={stats,load:()=>start(),columns:()=>FRONTIER_COLUMNS,props:()=>FRONTIER_PROPS.map(p=>({asset:p.asset,zone:p.zone,u:p.u,v:p.v,x:p.x,y:p.y,layer:p.layer,solid:p.blocks.length>0,flip:p.flip,rot:p.rot})),ready,
+ (window as any).__FROZEN_FRONTIER__={stats,load:()=>start(),columns:()=>FRONTIER_COLUMNS,props:()=>FRONTIER_PROPS.map(p=>({asset:p.asset,zone:p.zone,u:p.u,v:p.v,x:p.x,y:p.y,layer:p.layer,solid:p.blocks.length>0,flip:p.flip,rot:p.rot,shear:p.shear})),ready,
   // QA: hide the scenery to measure what it costs (scripts/frozen-frontier-map/verify.mjs).
   setVisible:(on:boolean)=>{ground.visible=upright.visible=on;}};
  return {scene,ready,place,setAmbient,stats,load:()=>start(),

@@ -61,6 +61,7 @@ mkdir -p "$STAGE/site/ui"; cp assets-src/ui/hero-card-frame*.png "$STAGE/site/ui
 mkdir -p "$STAGE/site/map-prefab"; cp docs/map-prefab/*.webp docs/map-prefab/*.json "$STAGE/site/map-prefab/"
 mkdir -p "$STAGE/site/terrain-height"; cp docs/terrain-height/*.webp docs/terrain-height/*.json "$STAGE/site/terrain-height/"
 mkdir -p "$STAGE/site/frozen-frontier-map"; cp docs/frozen-frontier-map/*.webp docs/frozen-frontier-map/*.json "$STAGE/site/frozen-frontier-map/"
+mkdir -p "$STAGE/site/frontier-rendering"; cp docs/frontier-rendering/*.webp docs/frontier-rendering/reference.png docs/frontier-rendering/verification.json "$STAGE/site/frontier-rendering/"
 mkdir -p "$STAGE/site/southern-cemetery"; cp docs/southern-cemetery/*.webp docs/southern-cemetery/*.json "$STAGE/site/southern-cemetery/"
 mkdir -p "$STAGE/site/minimap"; cp docs/minimap/*.png docs/minimap/*.json "$STAGE/site/minimap/"
 mkdir -p "$STAGE/site/thumb-pad"; cp docs/thumb-pad/*.webp docs/thumb-pad/*.json "$STAGE/site/thumb-pad/"

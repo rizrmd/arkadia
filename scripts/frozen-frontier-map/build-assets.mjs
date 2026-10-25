@@ -1,11 +1,11 @@
-import sharp from 'sharp';import fs from 'node:fs/promises';
+import sharp from 'sharp';import fs from 'node:fs/promises';import {createHash} from 'node:crypto';
 // Build the in-game Frozen Frontier atlas from the reviewed kits (public/frozen-frontier/v1 and v2) and the grounded
 // v3 kit derived from them (ground-kit.mjs; a v3 export replaces the v1 export with the same id): each export is
 // trimmed to its opaque pixels and resized to DENSITY px per world px (locked zoom 1.35 x DPR 1.75 = 2.36 screen px
 // per world px, plus headroom for placements scaled up a little; soft decals that set their own lower density get
 // that), then all are shelf-packed into one 2048 px WebP, so the scenery draws in one batch per layer and loads in
 // one request. The pivot moves with the trim.
-// Output: public/frozen-frontier/game/atlas.webp and src/world/maps/frozen-frontier-sprites.json (frames, pivots).
+// Output: public/frozen-frontier/game/atlas-<hash>.webp and src/world/maps/frozen-frontier-sprites.json (frames, pivots).
 //   node scripts/frozen-frontier-map/build-assets.mjs
 const OUT='public/frozen-frontier/game',CATALOG='src/world/maps/frozen-frontier-sprites.json',SIZE=2048,PAD=2;
 await fs.mkdir(OUT,{recursive:true});
@@ -34,11 +34,23 @@ function pack(density){
 }
 let density=2.5;while(!pack(density))density=+(density-.05).toFixed(2);
 const layers=await Promise.all(parts.map(async p=>({input:await sharp(p.file).extract(p.crop).resize(p.w,p.h,{kernel:'lanczos3'}).png().toBuffer(),left:p.x,top:p.y})));
-const atlas=`${OUT}/atlas.webp`;
-await sharp({create:{width:SIZE,height:SIZE,channels:4,background:{r:0,g:0,b:0,alpha:0}}}).composite(layers).webp({quality:88,alphaQuality:90,effort:6}).toFile(atlas);
-const bytes=(await fs.stat(atlas)).size;
-const catalog={version:2,atlas:'/frozen-frontier/game/atlas.webp',size:[SIZE,SIZE],density,bytes,assets:{}};
+// Frames and pixels must belong to the same release. Repacking moves unrelated sprites too;
+// an open tab must never fetch a newer atlas using its older frame coordinates.
+const pixels=await sharp({create:{width:SIZE,height:SIZE,channels:4,background:{r:0,g:0,b:0,alpha:0}}}).composite(layers).webp({quality:88,alphaQuality:90,effort:6}).toBuffer();
+const hash=createHash('sha256').update(pixels).digest('hex'),name=`atlas-${hash.slice(0,16)}.webp`;
+try{await fs.writeFile(`${OUT}/${name}`,pixels,{flag:'wx'});}catch(e){
+ if(e.code!=='EEXIST')throw e;
+ if(createHash('sha256').update(await fs.readFile(`${OUT}/${name}`)).digest('hex')!==hash)throw Error('Existing content-addressed atlas is corrupt');
+}
+// Keep the legacy atlas untouched for clients built before content-addressed atlases.
+// Retain older hashed atlases as well: existing tabs may load scenery after a deployment.
+const bytes=pixels.length;
+const catalog={version:3,atlas:`/frozen-frontier/game/${name}`,sha256:hash,size:[SIZE,SIZE],density,bytes,assets:{}};
+// The generated doorway art has a shallower baseline than the 2:1 map. Calibrate only
+// these two modules; the landmark gate already follows the ground and stays unchanged.
+const shear={'arch-ne':-.25,'arch-se':.29};
 for(const p of parts)catalog.assets[p.id]={kit:p.kit,frame:[p.x,p.y,p.w,p.h],world:[+(p.crop.width*p.scale).toFixed(2),+(p.crop.height*p.scale).toFixed(2)],
- pivot:[+p.pivot[0].toFixed(4),+p.pivot[1].toFixed(4)],heightM:p.heightM,footprintM:p.footprintM};
-await fs.writeFile(CATALOG,JSON.stringify(catalog,null,1)+'\n');
+ pivot:[+p.pivot[0].toFixed(4),+p.pivot[1].toFixed(4)],...(shear[p.id]?{shear:shear[p.id]}:{}),heightM:p.heightM,footprintM:p.footprintM};
+const pending=`${CATALOG}.${process.pid}.tmp`;
+await fs.writeFile(pending,JSON.stringify(catalog,null,1)+'\n');await fs.rename(pending,CATALOG);
 console.log(parts.length,'sprites in one',SIZE+'px atlas at',density,'px/world px:',(bytes/1e6).toFixed(2),'MB (sources',(sourceBytes/1e6).toFixed(1),'MB)');
