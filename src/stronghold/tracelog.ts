@@ -247,6 +247,8 @@ export function startFpsTracelog(opts: FpsTracelogOptions) {
    const height=source?.naturalHeight??source?.height??args[key==='texImage2D'?4:5];
    return {sourceURL:String(source?.currentSrc||source?.src||'').slice(0,512),sourceFunctionName:`${key} ${source?.constructor?.name??'pixels'}${source?.id?'#'+source.id:''} ${width}x${height}`};
   });};}
+  const getProgramParameter=gl.getProgramParameter;
+  gl.getProgramParameter=function(program,pname){return measureRenderDetail('shaderQuery',()=>getProgramParameter.call(gl,program,pname),()=>({sourceFunctionName:`getProgramParameter ${pname===gl.LINK_STATUS?'LINK_STATUS':pname===gl.ACTIVE_UNIFORMS?'ACTIVE_UNIFORMS':pname===gl.ACTIVE_ATTRIBUTES?'ACTIVE_ATTRIBUTES':pname}`}));};
  }
  const build=document.querySelector<HTMLScriptElement>('script[type="module"][src*="/assets/"]')?.getAttribute('src')??'development';
 

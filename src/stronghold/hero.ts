@@ -44,22 +44,28 @@ type FrameShadowProfile={base:Float32Array;bot:Int16Array;vc:number;px:Uint8Arra
 const shadowProfiles=new Map<string,FrameShadowProfile>();
 type AlphaMask={w:number;h:number;data:Uint8Array;bot:Float32Array};
 const alphaMasks=new Map<string,AlphaMask>();
+const alphaMasksByImage=new WeakMap<HTMLImageElement,AlphaMask>();
 const maskCanvas=document.createElement('canvas'),maskCtx=maskCanvas.getContext('2d',{willReadFrequently:true})!;
 function getAlphaMask(p:Placed):AlphaMask|null{
+ if(!p.occluder){const cached=alphaMasksByImage.get(p.image);if(cached)return cached;}
  const src=p.occluder??p.image;
+ const key=p.occluder?`gate:${Math.round(Number(p.occluder.dataset.frame??0)/8)}`:src instanceof HTMLCanvasElement?'':`img:${p.image.src}`;
+ let m=key?alphaMasks.get(key):undefined;
+ if(m){if(!p.occluder)alphaMasksByImage.set(p.image,m);return m;}
  const sw=src instanceof HTMLCanvasElement?src.width:src.naturalWidth||src.width;
  const sh=src instanceof HTMLCanvasElement?src.height:src.naturalHeight||src.height;
  if(!sw||!sh)return null;
- const key=p.occluder?`gate:${Math.round(Number(p.occluder.dataset.frame??0)/8)}`:`img:${p.image.src}`;
- let m=alphaMasks.get(key);if(m)return m;
  const mw=Math.min(160,sw),mh=Math.max(1,Math.round(sh*(mw/sw)));
  if(maskCanvas.width<mw||maskCanvas.height<mh){maskCanvas.width=Math.max(maskCanvas.width,mw);maskCanvas.height=Math.max(maskCanvas.height,mh);}
  maskCtx.clearRect(0,0,mw,mh);maskCtx.drawImage(src,0,0,mw,mh);
  const rgba=maskCtx.getImageData(0,0,mw,mh).data,data=new Uint8Array(mw*mh),bot=new Float32Array(mw).fill(-1);
  for(let i=0,n=mw*mh;i<n;i++)data[i]=rgba[i*4+3];
  for(let ix=0;ix<mw;ix++)for(let iy=mh-1;iy>=0;iy--)if(data[iy*mw+ix]>48){bot[ix]=(iy+1)/mh;break;}
- m={w:mw,h:mh,data,bot};alphaMasks.set(key,m);return m;
+ m={w:mw,h:mh,data,bot};if(key)alphaMasks.set(key,m);if(!p.occluder)alphaMasksByImage.set(p.image,m);return m;
 }
+// Prefetch callers run this as a separate loading task, before an area enters
+// active combat. Alpha extraction must not be a first-cast surprise.
+export function prewarmOcclusionAlpha(p:Placed){return getAlphaMask(p);}
 function samplePlacedAlpha(p:Placed,wx:number,wy:number):number{
  if(!p.vertical||!p.width||!p.height)return 0;
  const lx=wx-p.x,ly=(wy-p.y-p.shear*lx)/p.vertical;
@@ -239,8 +245,12 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
  const nearBuffer:SceneBound[]=[];
  // Scene bounds overlapping screen x [x0, x1], each once (a shared buffer, consumed before the next call).
  function sceneNear(x0:number,x1:number):SceneBound[]{
+  const first=Math.floor(x0/SCENE_BUCKET),last=Math.floor(x1/SCENE_BUCKET);
+  // Point/alpha probes almost always fit one bucket. Its entries are already
+  // unique; avoid re-marking every prop for each pixel of an area-effect mask.
+  if(first===last){const list=sceneBuckets.get(first);if(list)return list;nearBuffer.length=0;return nearBuffer;}
   nearBuffer.length=0;sceneStamp++;
-  for(let k=Math.floor(x0/SCENE_BUCKET),e=Math.floor(x1/SCENE_BUCKET);k<=e;k++){const list=sceneBuckets.get(k);if(!list)continue;
+  for(let k=first;k<=last;k++){const list=sceneBuckets.get(k);if(!list)continue;
    for(let i=0,n=list.length;i<n;i++){const sb=list[i];if(sceneMark.get(sb)!==sceneStamp){sceneMark.set(sb,sceneStamp);nearBuffer.push(sb);}}}
   return nearBuffer;
  }

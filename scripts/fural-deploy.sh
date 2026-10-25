@@ -17,6 +17,8 @@ node scripts/shadow-audit/test.mjs
 node scripts/shadow-audit/test-field.mjs
 node scripts/android-stutter/test.mjs
 node scripts/android-stutter/test-cadence.mjs
+node scripts/android-stutter/verify-flame-gpu.mjs
+node scripts/android-stutter/verify-alpha-cache.mjs
 npx tsc --noEmit && npx vite build --outDir "$DIST_DIR"
 # The organization shares 1 GiB of RAM across sessions: compile one package at a time under a memory limit.
 export GOFLAGS=-p=1 GOMAXPROCS=2 GOMEMLIMIT=256MiB GOTOOLCHAIN=local

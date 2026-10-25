@@ -9,7 +9,7 @@ import {slots,calibration,WORLD} from './scene';
 import {buildings,isBuilt,heroBonus,START_BUILT,type Building,type State} from './economy';
 import {createLighting} from './lighting';
 import {sunAt} from './daylight';
-import {createHero} from './hero';
+import {createHero,prewarmOcclusionAlpha} from './hero';
 import {createEncounters} from './encounters';
 import {setGateOpen,gateTowerFront} from './navigation';
 import {atGate} from './net/movement';
@@ -24,6 +24,7 @@ import {createParty} from './party';
 import {characters,atlasUrl,DEFAULT_HERO,type HeroId} from './heroes';
 import {measureTracelogPhase} from './tracelog';
 import {measureRenderDetail} from '../app/render-diagnostics';
+import {createGpuPreparation} from '../app/gpu-preparation';
 import {createParallax,initialParallaxFiles} from './parallax';
 import {createAutoWalk,type AutoWalk} from './auto-walk';
 import {WorldMap} from './world-map';
@@ -80,6 +81,15 @@ export async function createWorldView(
  const frontier=createFrontier(staticStage,images.get(FRONTIER_ATLAS)!);frontier.setLegacyShadows(!useDepthShadows);
  await frontier.ready;
  const frontierScene=frontier.scene as unknown as typeof reliefScene;
+ const alphaPrepared=new WeakSet<HTMLImageElement>(),alphaJobs=new Set<Promise<void>>();
+ const prepareAlpha=(placed:(typeof frontierScene)[number])=>{
+  const image=placed.image;if(alphaPrepared.has(image)||!image.complete||!image.naturalWidth)return;
+  alphaPrepared.add(image);
+  const job=new Promise<void>(resolve=>setTimeout(resolve,0)).then(()=>{prewarmOcclusionAlpha(placed);});
+  alphaJobs.add(job);void job.then(()=>alphaJobs.delete(job),error=>{alphaJobs.delete(job);console.error('Occlusion alpha preparation failed',error);});
+ };
+ const alphaImages=new Set<HTMLImageElement>();
+ for(const placed of frontierScene)if(!alphaImages.has(placed.image)){alphaImages.add(placed.image);placed.image.addEventListener('load',()=>prepareAlpha(placed),{once:true});prepareAlpha(placed);}
  const scene=()=>[...objects,...reliefScene,...frontierScene];
  const polygon=(corners:number[][])=>{const path=new Path2D();corners.forEach(([u,v],i)=>{const p=tilePoint(u,v);i?path.lineTo(p.x,p.y):path.moveTo(p.x,p.y);});path.closePath();return path;};
  // Court size, gateway and its apron come from prefabs/stronghold.json.
@@ -225,7 +235,7 @@ export async function createWorldView(
  const sheet:GateSheet=await (await fetch(GATE_SHEET)).json();
  const gateP=objects.find(p=>p.id==='gate')!;const gateProxy=useDepthShadows?sampleSurface({key:'gate',source:gateP.image,sourceWidth:gateP.image.naturalWidth,sourceHeight:gateP.image.naturalHeight,x:gateP.x,y:gateP.y,width:gateP.width,height:gateP.height,pivot:[.5,gateP.foot],shear:gateP.shear,vertical:gateP.vertical},1.5).surface:null;
  const doors=createGateDoors(staticStage,images.get('/modular-stronghold/v2/full-gateway-v7-closed.webp')!,gateSheetImg,sheet,open=>{gatePassable=open;setGateOpen(open);hero.setScene(scene());party?.setScene(scene());},{raster,onShadowFrame:(source,index)=>{if(gateProxy)sceneShadows?.setDynamic([{...gateProxy,key:'gateway-frame:'+index,source,sourceWidth:source.width,sourceHeight:source.height}]);},foundation:foundationLayers(objects.find(p=>p.id==='gate')!,images.get(FOUNDATION_SOIL)!,images.get(FOUNDATION_DRIFT),images.get(FOUNDATION_MOSS))!,revision:lighting.spriteRevision,torches:lighting.torches,shade:(source,target)=>lighting.shadeSprite(source,target,{left:GS.x-GS.width/2,top:GS.y-sheet.region.h*GS.pivot,width:GS.width,height:sheet.region.h})});
- gateOccluder=doors.canvas;for(const p of objects)if(p.id==='gate')p.occluder=gateOccluder;
+ gateOccluder=doors.canvas;for(const p of objects)if(p.id==='gate'){p.occluder=gateOccluder;prewarmOcclusionAlpha(p);}
  lighting.subscribe(()=>doors.refreshLighting());
  // Combat (encounters.ts) swings the idle hero in place at a revenant at its maximum reach (it never chases) and plays its swing, hit and death clips.
  let encounters:Awaited<ReturnType<typeof createEncounters>>|undefined;
@@ -233,7 +243,7 @@ export async function createWorldView(
  let walker:AutoWalk|undefined;const input=()=>walker?walker.input(direction()):direction();
  const hero=await createHero<(typeof objects)[number]>({hero:pick,layer:worldStage,lightmap:lighting.lightmap,surface,footprint:p=>p.id==='gate'?gateFootprint():footprint(p),sun:lighting.sun,direction:()=>encounters?encounters.steer(input()):input(),follow,pose:()=>encounters?.pose()??null,
   drive:()=>{if(!net?.active())return null;const p=net.position(),me=net.me();return {...p,face:direction(),look:me&&me.st!=='idle'?{facing:me.fc,back:me.bk,vertical:me.vt}:null};}});hero.setScene(scene());
- encounters=await createEncounters({worldStage,uiStage,frames,hudCallbacks,showCoop:Boolean(net),cancelRoute:()=>walker?.cancel(),hero,direction:input,net});
+ encounters=await createEncounters({renderer:rt.app.renderer,worldStage,uiStage,frames,hudCallbacks,showCoop:Boolean(net),cancelRoute:()=>walker?.cancel(),hero,direction:input,net});
  const worldMap=new WorldMap(frames,{hero:hero.position,built:()=>[...built],route:()=>walker?.route()??null,walk:(x,y)=>walker?.goTo(x,y)??false});
  walker=createAutoWalk({blocked:hero.blocked,position:hero.position,onChange:r=>encounters!.minimap.setRoute(r)});
  uiStage.addChild(worldMap);encounters.minimap.onOpen=()=>worldMap.toggle();
@@ -391,6 +401,7 @@ export async function createWorldView(
  parallax.start();void hold.then(()=>{hero.start();encounters.start();setTimeout(loadGateAfterDone,120);});
  (window as any).__WORLD_MAP__={map:worldMap,walker,open:(v=true)=>worldMap.open(v),walkTo:(x:number,y:number)=>walker!.goTo(x,y),route:()=>walker!.route(),snapshot:()=>worldMap.snapshot(),screenOf:(x:number,y:number)=>worldMap.screenOf({x,y})};
  return {
+  prepareGpu:()=>createGpuPreparation(rt.app.renderer).prepare(worldStage,useDepthShadows?['shadow-actors']:[]),
   hud:encounters.hud,
   encounters,
   parallax,
@@ -418,7 +429,7 @@ export async function createWorldView(
   },
   focus(id:Building){glideTo(slots[id].x,slots[id].y-60);},
   fit(){stopGlide();chasing=false;vx=vy=0;scale=Math.max(.2,Math.min((w-40)/WORLD.width,(h-120)/WORLD.height));cx=WORLD.width/2;cy=385;requestDraw();},
-  visibleMasksReady:frontier.visibleMasksReady,
+  async visibleMasksReady(){await frontier.visibleMasksReady();for(const placed of frontierScene)prepareAlpha(placed);await Promise.all([...alphaJobs]);},
   async setHero(id:HeroId){await hero.setHero(id);await encounters.fxStage.prepare();},
   setTime:lighting.setTime,
   previewClock:lighting.preview,

@@ -1,0 +1,119 @@
+{
+  "baseline": true,
+  "prepared": {
+    "ready": true,
+    "failed": "",
+    "effects": 76,
+    "preparedEffects": 36,
+    "loadedTextures": 15,
+    "live": 0,
+    "played": 0,
+    "peakParticles": 0,
+    "particleBudget": 400,
+    "budgetSkipped": 0,
+    "frameMs": 28,
+    "occludedParticles": 0,
+    "minOcclusion": 1,
+    "meanOcclusion": 1,
+    "backEffects": 0,
+    "frontEffects": 0,
+    "particles": 0,
+    "missing": [],
+    "unsupported": [],
+    "playing": []
+  },
+  "result": {
+    "linkedPrograms": [
+      {
+        "names": [
+          "pixi-program-vertex",
+          "pixi-program-fragment"
+        ]
+      },
+      {
+        "names": [
+          "vfx-tier2-mat-9f2bc505-vertex",
+          "vfx-tier2-mat-9f2bc505-fragment"
+        ]
+      },
+      {
+        "names": [
+          "vfx-tier2-mat-ad1ecd10-vertex",
+          "vfx-tier2-mat-ad1ecd10-fragment"
+        ]
+      },
+      {
+        "names": [
+          "vfx-tier2-mat-2d93c636-vertex",
+          "vfx-tier2-mat-2d93c636-fragment"
+        ]
+      },
+      {
+        "names": [
+          "flame-fan-connected-vertex",
+          "flame-fan-connected-fragment"
+        ]
+      }
+    ],
+    "fx": {
+      "ready": true,
+      "failed": "",
+      "effects": 76,
+      "preparedEffects": 36,
+      "loadedTextures": 15,
+      "live": 11,
+      "played": 14,
+      "peakParticles": 460,
+      "particleBudget": 260,
+      "budgetSkipped": 0,
+      "frameMs": 48.9,
+      "occludedParticles": 2,
+      "minOcclusion": 0.325,
+      "meanOcclusion": 0.997,
+      "backEffects": 2,
+      "frontEffects": 4,
+      "particles": 414,
+      "missing": [],
+      "unsupported": [],
+      "playing": [
+        "shared/level-up.ground:102",
+        "shared/level-up:17",
+        "shared/combo.trinity.ground:110",
+        "ember-warden/flame-fan.cast:9",
+        "ember-warden/ember-snare.telegraph.ground:27",
+        "ember-warden/ember-snare.telegraph:13",
+        "ember-warden/cinder-step.cast.ground:3",
+        "ember-warden/cinder-step.cast:14",
+        "ember-warden/cinder-step.detonate:15",
+        "ember-warden/ember-snare.detonate.ground:27",
+        "ember-warden/ember-snare.detonate:77"
+      ]
+    }
+  },
+  "vfxLinks": [
+    {
+      "names": [
+        "vfx-tier2-mat-9f2bc505-vertex",
+        "vfx-tier2-mat-9f2bc505-fragment"
+      ]
+    },
+    {
+      "names": [
+        "vfx-tier2-mat-ad1ecd10-vertex",
+        "vfx-tier2-mat-ad1ecd10-fragment"
+      ]
+    },
+    {
+      "names": [
+        "vfx-tier2-mat-2d93c636-vertex",
+        "vfx-tier2-mat-2d93c636-fragment"
+      ]
+    }
+  ],
+  "actorCache": {
+    "sameProgram": true,
+    "independentUniforms": true,
+    "differentSamplerCounts": true
+  },
+  "errors": []
+}

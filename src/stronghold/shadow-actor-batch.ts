@@ -4,11 +4,16 @@ import {actorAnchorForSprite,actorAnchorForTexture} from './shadow-actor-sources
 export {registerActorShadowSprite} from './shadow-actor-sources';
 export type {ActorAnchor} from './shadow-actor-sources';
 export type ActorShadowBindings={uCamera:Float32Array;uSun:Float32Array;uDynamicSun:Float32Array;uLightBounds:Float32Array;uDynamicLightBounds:Float32Array;textures:TextureSource[]};
+// Each render group needs independent uniforms, but its identical shader program
+// must not be linked again when another group or enemy batch first appears.
+const actorPrograms=new Map<number,ReturnType<typeof compileHighShaderGlProgram>>();
 class ActorShadowShader extends Shader{
  readonly count:number;
  constructor(count:number){
   const bit={name:'actor-shadow-receive',vertex:{header:'out vec2 vShadowScreen;',end:'vShadowScreen=(worldTransformMatrix*modelMatrix*vec3(position,1.0)).xy;'},fragment:{header:`in vec2 vShadowScreen;uniform vec4 uActorAnchors[${count}];${SHADOW_SAMPLING_GLSL}`,end:`vec4 anchor;${Array.from({length:count},(_,i)=>`${i?'else ':''}${i<count-1?`if(vTextureId<${i}.5)`:''}anchor=uActorAnchors[${i}];`).join('')} if(anchor.w>.5&&uSun.z>0.0&&finalColor.a>.003){vec2 world=(vShadowScreen-uCamera.xy)/uCamera.z;float h=max(anchor.y,anchor.x-world.y),shade=shadowCoverage(world,h,anchor.z)*uSun.z;finalColor.rgb=mix(finalColor.rgb,finalColor.a*vec3(.078431,.109804,.172549),shade);}`}};
-  super({glProgram:compileHighShaderGlProgram({name:'actor-shadow-batch',bits:[colorBitGl,generateTextureBatchBitGl(count),roundPixelsBitGl,bit]}),resources:{batchSamplers:getBatchSamplersUniformGroup(count),actorUniforms:new UniformGroup({
+  let program=actorPrograms.get(count);
+  if(!program){program=compileHighShaderGlProgram({name:'actor-shadow-batch',bits:[colorBitGl,generateTextureBatchBitGl(count),roundPixelsBitGl,bit]});actorPrograms.set(count,program);}
+  super({glProgram:program,resources:{batchSamplers:getBatchSamplersUniformGroup(count),actorUniforms:new UniformGroup({
    uActorAnchors:{value:new Float32Array(count*4),type:'vec4<f32>',size:count},uCamera:{value:new Float32Array([0,0,1,0]),type:'vec4<f32>'},uSun:{value:new Float32Array(4),type:'vec4<f32>'},uDynamicSun:{value:new Float32Array(4),type:'vec4<f32>'},uLightBounds:{value:new Float32Array([0,0,1,1]),type:'vec4<f32>'},uDynamicLightBounds:{value:new Float32Array([0,0,1,1]),type:'vec4<f32>'},uDepth:{value:count,type:'i32'},uSecondDepth:{value:count+1,type:'i32'},uDynamicDepth:{value:count+2,type:'i32'},uDynamicSecond:{value:count+3,type:'i32'},
   })}});this.count=count;
  }

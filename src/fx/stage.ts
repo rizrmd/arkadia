@@ -1,7 +1,8 @@
 import {measureRenderDetail} from '../app/render-diagnostics';
 import {renderQuality} from '../app/render-quality';
 import {limitLowCostEffect} from './low-cost';
-import type {Application,Container,Texture} from 'pixi.js';
+import {createGpuPreparation} from '../app/gpu-preparation';
+import type {Application,Container,Texture,Renderer} from 'pixi.js';
 import type {PixiVfxEffectInstance,PixiVfxRenderer,PixiVfxTextureProvider} from 'nixie-fx/pixi';
 import type {VfxExportedEffect} from 'nixie-fx/export';
 import type {VfxTextureAssetRef} from 'nixie-fx';
@@ -312,12 +313,15 @@ export type FxStageOptions={
  over?:Element;
  host?:{ground:Container;world:Container};
  effectKeys?:()=>string[];
+ renderer?:Renderer;
+ prepareExtra?:()=>Promise<void>;
  depthLayers?:{back:Container;front:Container};
  getHeroWorld?:()=>{x:number;y:number};
  occlusionAt?:(px:number,py:number,wx?:number,wy?:number,rad?:number,flat?:boolean,includeHero?:boolean,anchorY?:number)=>number;
  bloom?:boolean;
 };
 export function createFxStage(o:FxStageOptions){
+ const gpuPreparation=createGpuPreparation(o.renderer);
  const view:View={x:0,y:0,scale:1};
  const effects=new Map<string,VfxExportedEffect>(),pool=new Map<string,PixiVfxEffectInstance[]>(),live:Live[]=[];
  const pending:{at:number;run:()=>void}[]=[];
@@ -415,7 +419,7 @@ export function createFxStage(o:FxStageOptions){
   // Hosted gameplay requests only the current hero's resolved cue dependencies.
   // The lab still loads the complete bundle for browsing.
   if(!o.effectKeys)await textureProvider.preload!(bundle.manifest.assets.filter((a):a is VfxTextureAssetRef=>a.type==='texture'));
-  const {Container,Rectangle}=await PIXI();Rect=Rectangle;
+  const {Container,Rectangle,RendererType,RenderTexture}=await PIXI();Rect=Rectangle;
   // The ground plane is drawn as seen from above and squashed to the 2:1 ground (space.ts groundProjection).
   const make=(parent:Container,app:Application|null,flat:boolean,bloom:boolean)=>{const root=new Container();if(flat)root.scale.set(1,.5);parent.addChild(root);
    return {app,root,vfx:new PixiVfxRenderer({parent:root,textureProvider,materialGraphProvider,pixiRenderer:bloom&&app?app.renderer:undefined,bloom:bloom&&app?{enabled:true,quality:'low',threshold:1,intensity:1.6,radius:22}:undefined})};};
@@ -432,8 +436,11 @@ export function createFxStage(o:FxStageOptions){
    const selected=[...effects].filter(([key])=>keys.has(key)&&!key.startsWith('ui/')&&!preparedKeys.has(key));
    const refs=selected.flatMap(([,fx])=>collectPixiVfxEffectTextureRefs(fx,materialGraphProvider));
    await textureProvider.preload!([...new Map(refs.map(ref=>[ref.path,ref])).values()]);
+   await gpuPreparation.prepareTextures([...textures.values()].map(texture=>texture.source));
    const idle=()=>new Promise<void>(r=>typeof requestIdleCallback==='function'?requestIdleCallback(()=>r(),{timeout:250}):setTimeout(r,0));
+   const gpuTarget=o.renderer?.type===RendererType.WEBGL?RenderTexture.create({width:1,height:1,resolution:1,antialias:false}):undefined;
    let slice=performance.now();
+   try{
    for(const [key,fx] of selected){
     if(key.startsWith('ui/'))continue;
     const plane=planeOf(key),P=planes[plane],proj=projection(plane,{u:0,v:0,h:0,yaw:0,scale:1});
@@ -444,15 +451,23 @@ export function createFxStage(o:FxStageOptions){
      if(performance.now()-slice>6){await idle();slice=performance.now();}
      const inst=measureRenderDetail('fxCreate',()=>P.vfx.createEffect(fx,{projection:proj,position:[0,0,0],seed:c+1,timeSeconds:0,autoStart:false,addToStage:false}));
      shareParticleEffectDefinition(inst.definition);
+     if(c===0)await gpuPreparation.prepare(inst.root,[],true);
      inst.spawn({position:[0,0,0],seed:c+1,timeSeconds:0});
      measureRenderDetail('fxWarmup',()=>inst.update(0.08,0.08));
+     if(c===0&&gpuTarget&&o.renderer){
+      const wasGroup=inst.root.isRenderGroup;
+      try{measureRenderDetail('fxGpuWarmup',()=>o.renderer!.render({container:inst.root,target:gpuTarget,clear:true}));}
+      finally{if(!wasGroup)inst.root.disableRenderGroup();}
+     }
      inst.stop();inst.root.visible=false;P.vfx.removeEffect(inst,false);
      list.push(inst);
     }
     preparedKeys.add(key);
    }
+   }finally{gpuTarget?.destroy(true);}
   };
   await prepareSelected();
+  await o.prepareExtra?.();
   ready=true;
  })().catch(e=>{failed=String(e?.message??e);console.error('NixieFX stage unavailable; skills play without particle effects.',e);});
 
@@ -630,7 +645,7 @@ export function createFxStage(o:FxStageOptions){
   // Effects can play (pool may still be warming in idle time); ready() means the pool is fully warm.
   playable:()=>Boolean(planes)&&!failed,
   loaded:boot,
-  prepare:async()=>{await boot;await prepareSelected();},
+  prepare:async()=>{await boot;await prepareSelected();await o.prepareExtra?.();},
   failed:()=>failed,
   has:(key:string)=>effects.has(key),
   keys:()=>[...effects.keys()],
@@ -638,7 +653,7 @@ export function createFxStage(o:FxStageOptions){
   play,frame,
   particleCount:activeParticles,
   liveCount:()=>live.length,
-  stats:()=>({ready,failed,effects:effects.size,preparedEffects:preparedKeys.size,loadedTextures:textures.size,live:live.length,played,peakParticles,particleBudget:budget,budgetSkipped,frameMs:+frameEma.toFixed(1),
+  stats:()=>({ready,failed,effects:effects.size,preparedEffects:preparedKeys.size,loadedTextures:textures.size,gpuPreparation:gpuPreparation.stats(),live:live.length,played,peakParticles,particleBudget:budget,budgetSkipped,frameMs:+frameEma.toFixed(1),
    occludedParticles,minOcclusion,meanOcclusion,backEffects,frontEffects,
    particles:planes?planes.world.vfx.stats.activeParticles+planes.ground.vfx.stats.activeParticles:0,
    missing:planes?[...planes.world.vfx.stats.missingTextureRefs,...planes.ground.vfx.stats.missingTextureRefs].map(r=>r.path):[],

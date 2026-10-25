@@ -3,7 +3,7 @@ import {registerActorShadowSprite} from './shadow-actor-batch';
 import {STRONGHOLD} from './prefabs/stronghold';
 import type {ItemId} from './items';
 import {requestGameFrame as requestAnimationFrame} from '../app/frame-scheduler';
-import {Container,Sprite,Texture} from 'pixi.js';
+import {Container,Sprite,Texture,type Renderer} from 'pixi.js';
 import {Minimap} from './minimap';
 import {createCanvasSprite} from '../app/loader';
 import type {FrameSet} from '../typography/frames';
@@ -61,6 +61,7 @@ const SKILL_ART:Record<string,string>={
 };
 
 export async function createEncounters(o:{
+ renderer?:Renderer;
  worldStage:Container;
  uiStage:Container;
  frames:FrameSet;
@@ -245,6 +246,7 @@ export async function createEncounters(o:{
  }
 
  const vfx=createCombatVfx({
+  renderer:o.renderer,
   layer:o.worldStage,heroCanvas:o.hero.canvas,backLayer:back,frontLayer:front,
   getHero:()=>({u:h.x,v:h.y,facing:h.facing,back:h.back,vertical:h.vertical,heroId:currentHeroId()}),
   occlusionAt:o.hero.occlusionAt,

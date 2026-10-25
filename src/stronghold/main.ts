@@ -108,7 +108,7 @@ export async function mount(app:HTMLElement,progress:Progress){
  startFpsTracelog({rt,getCombatSnapshot:()=>worldView.encounters.snapshot(),getLiveCounts:()=>worldView.encounters.liveCounts(),net,getHeroId:()=>hero});
  // Effect construction is indivisible and can take >100 ms on older Android CPUs.
  // Finish the existing sliced pool warmup while gameplay is still behind loading.
- await Promise.all([worldView.encounters.fxStage.loaded,worldView.visibleMasksReady()]);
+ await Promise.all([worldView.encounters.fxStage.loaded,worldView.visibleMasksReady(),worldView.prepareGpu()]);
  await picker.start();
  loaded();
  void picker.picked.then(()=>{

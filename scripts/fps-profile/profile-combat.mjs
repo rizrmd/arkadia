@@ -10,12 +10,14 @@ const [FOES=8,SECONDS=6,THROTTLE=1]=process.argv.slice(2).map(Number);
 const OUT=process.env.OUT||'';
 let vite=null,GAME=process.env.GAME||'';
 if(!GAME){
- vite=await createServer({server:{host:'127.0.0.1',port:18000+(process.pid%900),strictPort:true,hmr:false,watch:null},logLevel:'error'});
+ vite=await createServer({cacheDir:`/tmp/combat-profile-${process.pid}`,server:{host:'127.0.0.1',port:18000+(process.pid%900),strictPort:true,hmr:false,watch:null},logLevel:'error'});
  await vite.listen();GAME=vite.resolvedUrls.local[0].replace(/\/$/,'');
 }
 const browser=await launch();
 try{
  const page=await browser.newPage({viewport:{width:394,height:734},deviceScaleFactor:1});
+ // Profiling must not displace real device evidence in the production trace ring.
+ await page.route('**/api/tracelogs',r=>r.request().method()==='POST'?r.fulfill({status:201,contentType:'application/json',body:'{"ok":true,"id":"cpu-profile"}'}):r.continue());
  await page.routeWebSocket('**/*',()=>{});
  await page.addInitScript(()=>{
   const W=window;W.__PROF__={};
@@ -29,6 +31,7 @@ try{
   wrap(WebGL2RenderingContext.prototype,'getBufferSubData','gl2.getBufferSubData');
   wrap(WebGL2RenderingContext.prototype,'clientWaitSync','gl2.clientWaitSync');
   wrap(WebGL2RenderingContext.prototype,'texSubImage2D','gl2.texSubImage2D');
+  wrap(WebGL2RenderingContext.prototype,'getProgramParameter','gl2.getProgramParameter');
   wrap(WebGLRenderingContext.prototype,'texImage2D','gl1.texImage2D');
   let n=0;const tick=()=>{n++;W.__FRAMES__=n;requestAnimationFrame(tick);};requestAnimationFrame(tick);
  });

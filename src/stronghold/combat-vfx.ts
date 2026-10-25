@@ -1,7 +1,7 @@
 import {createGameplayFlameFan} from '../fx/flame-fan-gameplay';
 import {playSkillSound} from '../app/game-audio';
 import {gameSettings} from '../app/settings-state';
-import {Container} from 'pixi.js';
+import {Container,type Renderer} from 'pixi.js';
 import {createCanvasSprite} from '../app/loader';
 import {MsdfText} from '../typography/text';
 import {COURT,tilePoint} from './terrain';
@@ -98,6 +98,7 @@ export function facingScreenAngle(f:{facing:number;back:boolean;vertical:boolean
 }
 
 export function createCombatVfx(o:{
+ renderer?:Renderer;
  layer:Container;
  heroCanvas:HTMLCanvasElement;
  backLayer:Container;
@@ -120,12 +121,14 @@ export function createCombatVfx(o:{
  const groundZonesLayer=new Container();
  groundZonesLayer.zIndex=21;
  const groundFx=new Container(),worldFx=new Container();
- const flameSheets=createGameplayFlameFan(groundFx,o.traceWallRay,o.occlusionAt);
+ const flameSheets=createGameplayFlameFan(groundFx,o.traceWallRay,o.occlusionAt,o.renderer);
  groundFx.zIndex=22;worldFx.zIndex=38;
  o.layer.addChild(groundZonesLayer,groundFx,worldFx);
  type ZoneView={el:HTMLCanvasElement;ctx:CanvasRenderingContext2D;view:ReturnType<typeof createCanvasSprite>;key:string};
  const zoneViews=new Map<number,ZoneView>(),zonePool:ZoneView[]=[],zoneBaseCache=new Map<string,HTMLCanvasElement>();
  const fx=createFxStage({
+  renderer:o.renderer,
+  prepareExtra:()=>o.getHero().heroId==='ember-warden'?flameSheets.prepare():Promise.resolve(),
   host:{ground:groundFx,world:worldFx},
   effectKeys:()=>cueKeys(o.getHero().heroId).flatMap(key=>resolveCue(o.getHero().heroId,key)?.cue.layers.map(l=>l.effect)??[]),
   depthLayers:{back:o.backLayer,front:o.frontLayer},
