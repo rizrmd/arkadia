@@ -23,6 +23,7 @@ import type {Net} from './net/client';
 import {createParty} from './party';
 import {characters,atlasUrl,DEFAULT_HERO,type HeroId} from './heroes';
 import {measureTracelogPhase} from './tracelog';
+import {measureRenderDetail} from '../app/render-diagnostics';
 import {createParallax,initialParallaxFiles} from './parallax';
 import {createAutoWalk,type AutoWalk} from './auto-walk';
 import {WorldMap} from './world-map';
@@ -276,8 +277,14 @@ export async function createWorldView(
    surface.style.width=worldWidth*scale+'px';surface.style.height=worldHeight*scale+'px';
    for(const r of reliefShadows){r.view.sprite.position.set(x+r.left*scale,y+r.top*scale);r.view.sprite.width=r.width*scale;r.view.sprite.height=r.height*scale;}
    for(const r of relief){r.view.sprite.position.set(x+r.left*scale,y+r.top*scale);r.view.sprite.width=r.width*scale;r.view.sprite.height=r.height*scale;}
-   sceneShadows?.place(x,y,scale,w,h);frontier.place(x,y,scale,w,h);lighting.place(x,y,scale);doors.place(x,y,scale);hero.place(x,y,scale);party?.place(x,y,scale);encounters?.place(x,y,scale);
-   parallax.place(cx,cy,scale,w,h);
+   measureRenderDetail('shadowFieldPlace',()=>sceneShadows?.place(x,y,scale,w,h));
+   measureRenderDetail('frontierPlace',()=>frontier.place(x,y,scale,w,h));
+   measureRenderDetail('lightingPlace',()=>lighting.place(x,y,scale));
+   measureRenderDetail('gatePlace',()=>doors.place(x,y,scale));
+   measureRenderDetail('heroPlace',()=>hero.place(x,y,scale));
+   measureRenderDetail('partyPlace',()=>party?.place(x,y,scale));
+   measureRenderDetail('encountersPlace',()=>encounters?.place(x,y,scale));
+   measureRenderDetail('parallaxPlace',()=>parallax.place(cx,cy,scale,w,h));
 
    snowSprite.width=w;
    snowSprite.height=h;

@@ -1,6 +1,6 @@
 import {renderQuality} from '../app/render-quality';
 import {recordRenderOperation,measureRenderDetail,takeRenderDetails,recentRenderOperations,type RenderOperation} from '../app/render-diagnostics';
-import {requestGameFrame as requestAnimationFrame} from '../app/frame-scheduler';
+import {requestGameFrame as requestAnimationFrame,gamePauseRevision} from '../app/frame-scheduler';
 import type {SharedPixiRuntime} from '../app/loader';
 import type {Net} from './net/client';
 import {batteryState,frameCapHz,noteFrame,resetFrameCap} from './frame-cap';
@@ -241,7 +241,12 @@ export function startFpsTracelog(opts: FpsTracelogOptions) {
  if(gl){
   try{const ext=gl.getExtension('WEBGL_debug_renderer_info');gpu=String(gl.getParameter(ext?.UNMASKED_RENDERER_WEBGL??gl.RENDERER)).slice(0,256);}catch{}
   // Timing source.update() only measures marking a texture dirty. The actual upload happens here in Pixi's GL pass.
-  for(const key of ['texImage2D','texSubImage2D'] as const){const original=gl[key];(gl as any)[key]=function(...args:any[]){return measureRenderDetail('textureUpload',()=>original.apply(gl,args as any));};}
+  for(const key of ['texImage2D','texSubImage2D'] as const){const original=gl[key];(gl as any)[key]=function(...args:any[]){return measureRenderDetail('textureUpload',()=>original.apply(gl,args as any),()=>{
+   const source=args.find(a=>a&&typeof a==='object'&&('naturalWidth' in a||'width' in a));
+   const width=source?.naturalWidth??source?.width??args[key==='texImage2D'?3:4];
+   const height=source?.naturalHeight??source?.height??args[key==='texImage2D'?4:5];
+   return {sourceURL:String(source?.currentSrc||source?.src||''),sourceFunctionName:`${key} ${source?.constructor?.name??'pixels'}${source?.id?'#'+source.id:''} ${width}x${height}`};
+  });};}
  }
  const build=document.querySelector<HTMLScriptElement>('script[type="module"][src*="/assets/"]')?.getAttribute('src')??'development';
 
@@ -293,6 +298,7 @@ export function startFpsTracelog(opts: FpsTracelogOptions) {
  const history: TracelogSendResult[] = [];
  let inFlight: Promise<TracelogSendResult | null> | null = null;
  let lastNow = 0;
+ let pauseVersion = gamePauseRevision();
  let lastSentAt = -1e9;
  let hiddenUntil = 0;
  let warmupFrames = 0;
@@ -663,7 +669,14 @@ export function startFpsTracelog(opts: FpsTracelogOptions) {
   requestAnimationFrame(onFrame);
   const frameEnd = performance.now();
   const phases = resetFramePhases();
-  if (document.hidden || now < hiddenUntil || frameEnd < hiddenUntil) {
+  // The scheduler intentionally stops all game callbacks during solo menu pauses.
+  // Wall-clock time across that gap is not a rendered frame or a compositor stall.
+  const currentPauseVersion=gamePauseRevision();
+  if(currentPauseVersion!==pauseVersion){
+   pauseVersion=currentPauseVersion;ring.length=0;longTasks.length=0;warmupFrames=0;lastNow=0;resetFrameCap();takeRenderDetails();return;
+  }
+  // now is game time (pauses subtracted); hiddenUntil uses performance.now().
+  if (document.hidden || frameEnd < hiddenUntil) {
    takeRenderDetails();lastNow = 0;
    return;
   }

@@ -26,3 +26,15 @@ The headless browser uses a software GPU. Combat runs without CPU throttling and
 Code commit `8ae24f1f` was pushed and deployed through `scripts/fural-deploy.sh` from an isolated clean worktree. Production build, Go tests, co-op smoke tests, shadow tests and mask parity checks passed. The game is live at https://ark-whachat.fural.space/.
 
 The first automated live loading check timed out at 300 seconds. A diagnostic run subsequently reached readiness in about 30 seconds without missing assets or page errors; the complete verification rerun passed in 38 seconds. The first timeout was not reproduced, so its cause is not established. `live-verification.json` records the successful production check (13 masks, 36 prepared effects, Auto 30 FPS, no recorded construction work in sampled combat frames). Real Adreno performance remains a physical-device follow-up.
+
+## Second pass: remaining drops (2026-10-26)
+
+The next Android samples still contain a 186 ms GL upload and 204 ms world draw, plus two 2.30–2.32 second gaps without comparable measured work. They are Mali-G925 / explicit High / 60 FPS samples; no fresh post-fix Adreno 612 sample was available in this inspection.
+
+Changes: reset the telemetry window after an explicit scheduler pause, use browser wall time consistently for visibility suppression, record slow upload source type/dimensions/ID, and record individual world placement phases. Unpaused stalls remain visible. Gateway sheet resizing now uses asynchronous ImageBitmap preparation, with a frame-by-frame fallback, instead of resizing the complete sheet inside paint.
+
+The isolated before/after browser regression uses the same 2.3-second pause and a separate active 500 ms gap. The old code reports a 2342 ms resume frame; the new code reports 32 ms, while retaining the active gap (524 ms). Gateway construction measured 579 ms before and 66 ms after in the software browser. The resized sheet differs from the old Canvas resize by a mean 0.00366 channel values out of 255; the animation reaches its open frame without page errors. These timings are not a physical Android benchmark and do not prove zero frame drops.
+
+Verification: TypeScript, mask alpha parity and quality-controller tests pass. Reproduce the targeted comparison with `BASELINE=1 node scripts/android-stutter/verify-pause-and-gate.mjs` before committing the implementation, then run without BASELINE. The baseline reads HEAD versions of the three tested modules, so subsequent reruns must use the previous implementation commit for a historical comparison. Reports: `pause-gate-before.json`, `pause-gate-after.json`.
+
+The zero-frame-drop goal remains active. Remaining work includes real gameplay profiling with the enriched upload/placement data, removal of remaining upload/render stalls, and verification on the actual low-spec device.

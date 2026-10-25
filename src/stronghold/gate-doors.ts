@@ -25,18 +25,33 @@ export function createGateDoors(worldStage:Container,gateway:HTMLImageElement,sh
  raw.scale(source.width/frame.w,source.height/frame.h);
  const shaded=document.createElement('canvas');shaded.width=canvas.width;shaded.height=canvas.height;
  let shadowFrame=-1;
- let sheetCanvas:HTMLCanvasElement|null=null;
- function ensureSheetCanvas():HTMLCanvasElement|null{
+ let sheetCanvas:HTMLCanvasElement|ImageBitmap|null=null,sheetPreparing=false;
+ function ensureSheetCanvas():HTMLCanvasElement|ImageBitmap|null{
   if(sheetCanvas)return sheetCanvas;
-  if(!sheet.complete||!sheet.naturalWidth)return null;
-  const sc=document.createElement('canvas');
-  sc.width=canvas.width*meta.columns;
-  sc.height=canvas.height*rows;
-  sc.getContext('2d')!.drawImage(sheet,0,0,sc.width,sc.height);
-  sheetCanvas=sc;
-  return sc;
+  if(sheetPreparing||!sheet.complete||!sheet.naturalWidth)return null;
+  sheetPreparing=true;
+  canvas.dataset.sheetState='preparing';
+  const width=canvas.width*meta.columns,height=canvas.height*rows;
+  // Resizing the entire 16-frame sheet in a paint callback stalls older phones.
+  // Let the browser prepare it asynchronously; no new work runs in paint().
+  void (async()=>{
+   if(typeof createImageBitmap==='function'){
+    try{sheetCanvas=await createImageBitmap(sheet,{resizeWidth:width,resizeHeight:height,resizeQuality:'low'});}catch{}
+   }
+   if(!sheetCanvas){
+    const sc=document.createElement('canvas');sc.width=width;sc.height=height;
+    const ctx=sc.getContext('2d',{willReadFrequently:true})!;
+    // Bounded fallback for browsers without bitmap resize support: one frame per task.
+    for(let i=0;i<meta.frames;i++){
+     await new Promise<void>(r=>setTimeout(r,0));
+     ctx.drawImage(sheet,(i%meta.columns)*frame.w,Math.floor(i/meta.columns)*frame.h,frame.w,frame.h,(i%meta.columns)*canvas.width,Math.floor(i/meta.columns)*canvas.height,canvas.width,canvas.height);
+    }
+    sheetCanvas=sc;
+   }
+   canvas.dataset.sheetState='ready';shown=-1;paint();
+  })().catch(error=>{sheetPreparing=false;console.error('Gateway sheet preparation failed',error);});
+  return null;
  }
- if(sheet.complete&&sheet.naturalWidth)ensureSheetCanvas();
  let index=0,target=0,raf=0,last=0,elapsed=0,shown=-1,passable=false,lit=-1,flamePose=0,shownFlame=-1,flameTimer=0,pointerHeld=false,behind:boolean|null=null,onScreen=true;
  const reduced=matchMedia('(prefers-reduced-motion: reduce)');
  const torches=meta.torches??{left:{x:Math.round(frame.w*196/768),y:Math.round(frame.h*253/512),w:Math.round(frame.w*70/768),h:Math.round(frame.h*112/512)},right:{x:Math.round(frame.w*502/768),y:Math.round(frame.h*253/512),w:Math.round(frame.w*70/768),h:Math.round(frame.h*112/512)}};

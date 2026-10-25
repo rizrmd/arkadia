@@ -4,9 +4,10 @@ export const MAX_FPS=60;
 
 const pending=new Map<number,FrameRequestCallback>();
 let nextId=0,raf=0,nextFrame=0;
-let paused=false,pauseAt=0,pausedMs=0;
-export function setGamePaused(value:boolean){if(value===paused)return;if(value)pauseAt=performance.now();else pausedMs+=performance.now()-pauseAt;paused=value;nextFrame=0;}
+let paused=false,pauseAt=0,pausedMs=0,pauseRevision=0;
+export function setGamePaused(value:boolean){if(value===paused)return;if(value)pauseAt=performance.now();else pausedMs+=performance.now()-pauseAt;paused=value;pauseRevision++;nextFrame=0;}
 export const isGamePaused=()=>paused;
+export const gamePauseRevision=()=>pauseRevision;
 function tick(now:number){
  raf=0;
  const interval=1000/renderQuality.get().targetFps;
