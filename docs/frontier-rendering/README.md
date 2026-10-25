@@ -33,3 +33,15 @@ The report showed fragmented scenery and a doorway that appeared misaligned. The
 ## Implementation
 
 [Atlas builder](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=scripts%2Ffrozen-frontier-map%2Fbuild-assets.mjs) · [Scenery renderer](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=src%2Fstronghold%2Ffrontier-view.ts) · [Artifact validation](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=scripts%2Ffrozen-frontier-map%2Fverify-artifacts.mjs)
+
+## Live release verification
+
+Implementation commit `f1ac6fc` was pushed and deployed through the official repository release script. The client/server build, Go tests and co-op smoke test passed; the release health check returned HTTP 200. Both doorways and the entrance gate were inspected in the live browser with no page errors.
+
+A later cemetery release repacked the atlas while verification was in progress. The existing tab continued to use its original hashed atlas successfully; a fresh browser loaded the new hashed atlas and both calibrated doorways remained correct. All 45 sprites and all 43 occlusion images loaded in both sessions. HTTP checks verified the new atlas bytes against its catalog hash and confirmed that the legacy atlas stayed unchanged.
+
+![East arch in the current live game](https://ark-whachat.fural.space/frontier-rendering/live-east.webp)
+
+![West arch in the current live game](https://ark-whachat.fural.space/frontier-rendering/live-west.webp)
+
+[Live verification report](https://ark-whachat.fural.space/frontier-rendering/live-verification.json)

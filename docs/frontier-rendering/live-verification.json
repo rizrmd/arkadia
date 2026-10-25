@@ -1,0 +1,245 @@
+{
+  "ok": true,
+  "implementationCommit": "f1ac6fc",
+  "releaseLayer": "1792890144066-game-f1ac6fc-953a9e39795e",
+  "current": {
+    "stats": {
+      "props": 836,
+      "uprights": 297,
+      "columns": 3148,
+      "atlas": "/frozen-frontier/game/atlas-02d34bd751eb79ca.webp",
+      "loaded": true,
+      "failed": false,
+      "kit": 45,
+      "occlusionImages": 43,
+      "sprites": 43,
+      "visible": 200,
+      "assets": [
+        "arch-ne",
+        "arch-se",
+        "broken-watchtower",
+        "column-fallen",
+        "column-fallen-v",
+        "corner-n",
+        "corner-s",
+        "dead-snag",
+        "dead-tree",
+        "drift-mound",
+        "drift-ne",
+        "drift-se",
+        "flagstones-a",
+        "flagstones-b",
+        "flagstones-c",
+        "flagstones-d",
+        "floor-sunk",
+        "foundation",
+        "grass-patch",
+        "grass-tussock",
+        "grave-cross",
+        "grave-headstone",
+        "grave-memorial",
+        "grave-sarcophagus",
+        "ground-scuff-a",
+        "ground-scuff-b",
+        "paving",
+        "pillar-broken",
+        "pillar-intact",
+        "pine-broad",
+        "pine-sapling",
+        "pine-tall",
+        "rock-boulders",
+        "rock-scatter",
+        "rubble",
+        "ruined-gate",
+        "shrub-juniper",
+        "shrub-twigs",
+        "snowy-shrine",
+        "stairs-ne",
+        "stairs-nw",
+        "stone-chips-a",
+        "stone-chips-b",
+        "wall-ne",
+        "wall-se"
+      ]
+    },
+    "shots": {
+      "west-doorway": [
+        15.6,
+        31.5
+      ],
+      "east-doorway": [
+        26,
+        32.45
+      ]
+    },
+    "requests": [
+      {
+        "url": "https://ark-whachat.fural.space/frozen-frontier/game/atlas-02d34bd751eb79ca.webp",
+        "status": 200
+      }
+    ],
+    "errors": [],
+    "arches": [
+      {
+        "asset": "arch-ne",
+        "zone": "Settlement",
+        "u": 15.620000000000005,
+        "v": 31.5,
+        "x": -439.3199999999997,
+        "y": 1347.8400000000001,
+        "layer": "upright",
+        "solid": true,
+        "flip": false,
+        "rot": 0,
+        "shear": -0.25
+      },
+      {
+        "asset": "arch-se",
+        "zone": "Settlement",
+        "u": 26,
+        "v": 32.44999999999999,
+        "x": 164.20000000000073,
+        "y": 1710.3999999999996,
+        "layer": "upright",
+        "solid": true,
+        "flip": false,
+        "rot": 0,
+        "shear": 0.29
+      }
+    ]
+  },
+  "earlierTab": {
+    "stats": {
+      "props": 836,
+      "uprights": 297,
+      "columns": 3148,
+      "atlas": "/frozen-frontier/game/atlas-e24b5f733b283708.webp",
+      "loaded": true,
+      "failed": false,
+      "kit": 45,
+      "occlusionImages": 43,
+      "sprites": 43,
+      "visible": 199,
+      "assets": [
+        "arch-ne",
+        "arch-se",
+        "broken-watchtower",
+        "column-fallen",
+        "column-fallen-v",
+        "corner-n",
+        "corner-s",
+        "dead-snag",
+        "dead-tree",
+        "drift-mound",
+        "drift-ne",
+        "drift-se",
+        "flagstones-a",
+        "flagstones-b",
+        "flagstones-c",
+        "flagstones-d",
+        "floor-sunk",
+        "foundation",
+        "grass-patch",
+        "grass-tussock",
+        "grave-cross",
+        "grave-headstone",
+        "grave-memorial",
+        "grave-sarcophagus",
+        "ground-scuff-a",
+        "ground-scuff-b",
+        "paving",
+        "pillar-broken",
+        "pillar-intact",
+        "pine-broad",
+        "pine-sapling",
+        "pine-tall",
+        "rock-boulders",
+        "rock-scatter",
+        "rubble",
+        "ruined-gate",
+        "shrub-juniper",
+        "shrub-twigs",
+        "snowy-shrine",
+        "stairs-ne",
+        "stairs-nw",
+        "stone-chips-a",
+        "stone-chips-b",
+        "wall-ne",
+        "wall-se"
+      ]
+    },
+    "shots": {
+      "ruined-gate": [
+        21,
+        23.6
+      ],
+      "west-doorway": [
+        15.6,
+        31.5
+      ],
+      "east-doorway": [
+        26,
+        32.45
+      ],
+      "east-doorway-back": [
+        26,
+        31.85
+      ]
+    },
+    "requests": [
+      {
+        "url": "https://ark-whachat.fural.space/frozen-frontier/game/atlas-e24b5f733b283708.webp",
+        "status": 200
+      }
+    ],
+    "errors": []
+  },
+  "http": {
+    "ok": true,
+    "checkedAt": "2026-10-25T01:05:52.353Z",
+    "checks": [
+      {
+        "path": "/healthz",
+        "status": 200,
+        "bytes": 35,
+        "sha256": "dd96d39e95cf41d5b74364e2f4e1189987f0de4ae5d67a6f783c3ed7b2ca1c5c"
+      },
+      {
+        "path": "/frozen-frontier/game/atlas-02d34bd751eb79ca.webp",
+        "status": 200,
+        "bytes": 1189710,
+        "sha256": "02d34bd751eb79cad0c9c1bb504fae643984847309fe98bc49bfae7423ec884b"
+      },
+      {
+        "path": "/frozen-frontier/game/atlas.webp",
+        "status": 200,
+        "bytes": 1132504,
+        "sha256": "472491ba52afa378b05695f672faddfc0712130b420f0e631cf438cbc2fa5e50"
+      },
+      {
+        "path": "/frontier-rendering/desktop-east.webp",
+        "status": 200,
+        "bytes": 352650,
+        "sha256": "2a7cf8489c07d4750a7b02c77a39f3c17075cdd6475207656ebcd57625ab8e92"
+      },
+      {
+        "path": "/frontier-rendering/portrait-east.webp",
+        "status": 200,
+        "bytes": 231148,
+        "sha256": "1a332efe6a409509d6d1b7c7c3c7ca428559f6fd4f83c26ccbe3cd2f2939478e"
+      },
+      {
+        "path": "/frontier-rendering/reference.png",
+        "status": 200,
+        "bytes": 1354882,
+        "sha256": "9fe908331aa58cd07b46b8c1b0f40063930cd2d7bce4664f2ba1bb782ae546b8"
+      },
+      {
+        "path": "/frontier-rendering/verification.json",
+        "status": 200,
+        "bytes": 4318,
+        "sha256": "3973482104e3ff216bf964e7bfea033df5697f7a3e50c80b8de6ff8b28641e01"
+      }
+    ]
+  }
+}
