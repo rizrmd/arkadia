@@ -1,19 +1,29 @@
-## Gateway torn-shadow correction — verified locally, deployment pending
+## Live gateway correction — 5876e868
+
+Release `1792968206526-game-5876e868-6dac5aed0c22` is live at https://ark-whachat.fural.space. Compiled assets: `index-Cj7owwmL.js`, `main-CSaVr5aT.js`, `shadow-gateway-frame-audit-Dwkwb-r5.js`. Health HTTP 200. Live isolated diagnostics pass six source frames / 18 directional cases across desktop/mobile captures, including previously failing morning frames 3–5. No browser errors; the main renderer survives diagnostic teardown. Actual animation producer recapture validates all 16 frame publications, 88 observations and unchanged collision threshold. Cemetery dynamic stats show `extraSurfaces: 0`, `casterPasses: 2`, `opaqueEnvelope: false`, four field samplers.
+
+[Compiled live diagnostic report](https://ark-whachat.fural.space/shadow-audit/gateway-live-5876e868/report.json) · [Live animation and navigation report](https://ark-whachat.fural.space/shadow-audit/gateway-producer-live-5876e868/report.json)
+
+![Live game after gateway diagnostic teardown](https://ark-whachat.fural.space/shadow-audit/gateway-live-5876e868/cemetery-after-diagnostics.png)
+
+Full task acceptance remains incomplete: actual GLB pose/clip depth, remaining explicit exclusions and physical-device performance evidence remain open. The software GPU numbers are not hardware performance claims.
+
+## Gateway torn-shadow correction — deployed and live-verified
 
 - [x] Capture all 16 actual stabilized pre-light producer frames on desktop and mobile; preserve the original sheet-alpha hashes separately.
 - [x] Validate 48 directional cases per source set: source-alpha hashes, caster depth/coverage, animated door camera receivers, independent high/low object reception and production filter against a controlled terrain plane. Zero errors.
 - [x] Confirm all 16 displayed frame/navigation pairs preserve the existing 80% door-open threshold.
 - [x] Repeat all 445 actor frames, both mirrors and three suns after this correction: 2,670 cases pass. Companion/field tests, TypeScript and isolated GPU fixture pass.
-- [ ] Verify this correction in the deployed compiled game.
+- [x] Verify compiled live diagnostics: six frames / 18 directional cases, no browser errors, renderer survives diagnostics. Repeat actual live producer: 16 frames, 88 observations, zero collision mismatches.
 - [ ] Complete actual GLB pose/clip audit, explicit remaining exclusions and physical desktop/mobile performance acceptance.
 
 The original two-envelope runtime loses solid coverage behind multiple partial-alpha gateway layers: the frozen actual producer regression fails five morning cases (frames 3–7). The fix retains the highest near-opaque sample (source coverage at least 250/255) in the lower half of the existing secondary texture. Original alpha remains unchanged. This adds a third caster pass only for relevant gateway geometry, no additional field sampler. Actor-only fields retain two passes. The packed target uses two-thirds of the logical pixel budget and half the maximum logical height, bounding memory/texture dimensions. Offscreen gateway geometry is culled only when neither its receivers nor light-space casting bounds can affect the view. Collision, source art and pillar/stair geometry are unchanged.
 
 The contract uses a W × 2H secondary atlas: top H contains the ordinary second depth/alpha envelope, bottom H the near-opaque envelope; dynamic sun uniform z > 1.5 selects this layout. Each pass is clipped to its logical row range. Static fields and CPU fallback retain the ordinary layout. This is bounded coverage, not arbitrary multilayer transmission or volumetric self-shadowing. Headless software GPU timings do not establish hardware performance.
 
-![Desktop actual gateway frames and GPU cast/receive diagnostics](sandbox://LS6016e1117dfed3e1902e0f2c/projects/arkadia/repos/arkadia/docs/shadow-audit/gateway-frames-final/frames.png)
+![Desktop actual gateway frames and GPU cast/receive diagnostics](https://ark-whachat.fural.space/shadow-audit/gateway-frames-final/frames.png)
 
-![Mobile-captured gateway frames and GPU cast/receive diagnostics](sandbox://LS6016e1117dfed3e1902e0f2c/projects/arkadia/repos/arkadia/docs/shadow-audit/gateway-mobile-frames-final/frames.png)
+![Mobile-captured gateway frames and GPU cast/receive diagnostics](https://ark-whachat.fural.space/shadow-audit/gateway-mobile-frames-final/frames.png)
 
 ## Live actor coverage correction — 3d4b8655
 

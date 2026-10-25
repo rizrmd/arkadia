@@ -1,0 +1,1157 @@
+{
+  "base": "https://ark-whachat.fural.space",
+  "scope": "Compiled production gateway-frame diagnostic in live game; software GPU; no physical-device performance claim.",
+  "errors": [],
+  "runs": [
+    {
+      "rows": [
+        {
+          "index": 3,
+          "key": "gateway-frame:3",
+          "source": "frame-3.png",
+          "alphaSha256": "e61256498e4cd934b40a8347481f2df920da55cc030d8fc7b324d4ed3b586b7d",
+          "sourceSet": "gateway-producer-frames",
+          "sourceSize": [
+            389,
+            259
+          ],
+          "pivot": [
+            0.5,
+            0.97
+          ],
+          "ground": [
+            0.8333333333333334,
+            0.83828125,
+            0.8947916666666667,
+            0.95,
+            0.9104166666666667,
+            0.875,
+            0.825,
+            0.825,
+            0.825,
+            0.825,
+            0.825,
+            0.875,
+            0.9166666666666666,
+            0.95,
+            0.8947916666666667,
+            0.8348958333333333,
+            0.8166666666666667
+          ],
+          "tests": [
+            {
+              "angle": 0,
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "opaque": 2705,
+              "partial": 55,
+              "clear": 16564,
+              "coverageErrors": 0,
+              "depthErrors": 0,
+              "productionFilter": {
+                "receiver": "controlled terrain plane; camera map checked independently",
+                "probes": 57344,
+                "opaqueEnvelopeContributes": 6,
+                "errors": 0
+              },
+              "cameraReceiver": {
+                "opaque": 13236,
+                "clear": 7137,
+                "animatedOpaque": 1614,
+                "animatedClear": 275,
+                "errors": 0
+              },
+              "gpu": {
+                "updates": 1,
+                "actors": 0,
+                "extraSurfaces": 1,
+                "drawnVertices": 51,
+                "pixels": 250880,
+                "bytes": 8257536,
+                "renderMs": 191.40000009536743,
+                "ready": true,
+                "casterPasses": 3,
+                "fieldSamplers": 4,
+                "opaqueEnvelope": true,
+                "step": 0.5
+              },
+              "receiver": {
+                "x": 93,
+                "y": 93,
+                "z": 75,
+                "highRed": 126,
+                "lowRed": 255,
+                "pass": true
+              },
+              "examples": []
+            },
+            {
+              "angle": 1,
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "opaque": 2517,
+              "partial": 89,
+              "clear": 13902,
+              "coverageErrors": 0,
+              "depthErrors": 0,
+              "productionFilter": {
+                "receiver": "controlled terrain plane; camera map checked independently",
+                "probes": 51840,
+                "opaqueEnvelopeContributes": 0,
+                "errors": 0
+              },
+              "cameraReceiver": {
+                "opaque": 13236,
+                "clear": 7137,
+                "animatedOpaque": 1614,
+                "animatedClear": 275,
+                "errors": 0
+              },
+              "gpu": {
+                "updates": 2,
+                "actors": 0,
+                "extraSurfaces": 1,
+                "drawnVertices": 51,
+                "pixels": 211968,
+                "bytes": 7323648,
+                "renderMs": 1.0999999046325684,
+                "ready": true,
+                "casterPasses": 3,
+                "fieldSamplers": 4,
+                "opaqueEnvelope": true,
+                "step": 0.5
+              },
+              "receiver": {
+                "x": 93,
+                "y": 93,
+                "z": 75,
+                "highRed": 126,
+                "lowRed": 255,
+                "pass": true
+              },
+              "examples": []
+            },
+            {
+              "angle": 2,
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "opaque": 6146,
+              "partial": 181,
+              "clear": 23342,
+              "coverageErrors": 0,
+              "depthErrors": 0,
+              "productionFilter": {
+                "receiver": "controlled terrain plane; camera map checked independently",
+                "probes": 68224,
+                "opaqueEnvelopeContributes": 0,
+                "errors": 0
+              },
+              "cameraReceiver": {
+                "opaque": 13236,
+                "clear": 7137,
+                "animatedOpaque": 1614,
+                "animatedClear": 275,
+                "errors": 0
+              },
+              "gpu": {
+                "updates": 3,
+                "actors": 0,
+                "extraSurfaces": 1,
+                "drawnVertices": 51,
+                "pixels": 386048,
+                "bytes": 11501568,
+                "renderMs": 0.7999999523162842,
+                "ready": true,
+                "casterPasses": 3,
+                "fieldSamplers": 4,
+                "opaqueEnvelope": true,
+                "step": 0.5
+              },
+              "receiver": {
+                "x": 93,
+                "y": 93,
+                "z": 75,
+                "highRed": 126,
+                "lowRed": 255,
+                "pass": true
+              },
+              "examples": []
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "key": "gateway-frame:4",
+          "source": "frame-4.png",
+          "alphaSha256": "547e7874a3184c232da0dea8bc8a371f5b1fde6cbc26b0a2e538a0cd9f614573",
+          "sourceSet": "gateway-producer-frames",
+          "sourceSize": [
+            389,
+            259
+          ],
+          "pivot": [
+            0.5,
+            0.97
+          ],
+          "ground": [
+            0.8333333333333334,
+            0.83828125,
+            0.8947916666666667,
+            0.95,
+            0.9104166666666667,
+            0.875,
+            0.825,
+            0.825,
+            0.825,
+            0.825,
+            0.825,
+            0.875,
+            0.9166666666666666,
+            0.95,
+            0.8947916666666667,
+            0.8348958333333333,
+            0.8166666666666667
+          ],
+          "tests": [
+            {
+              "angle": 0,
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "opaque": 2702,
+              "partial": 50,
+              "clear": 16564,
+              "coverageErrors": 0,
+              "depthErrors": 0,
+              "productionFilter": {
+                "receiver": "controlled terrain plane; camera map checked independently",
+                "probes": 57344,
+                "opaqueEnvelopeContributes": 3,
+                "errors": 0
+              },
+              "cameraReceiver": {
+                "opaque": 13063,
+                "clear": 7319,
+                "animatedOpaque": 1449,
+                "animatedClear": 454,
+                "errors": 0
+              },
+              "gpu": {
+                "updates": 4,
+                "actors": 0,
+                "extraSurfaces": 1,
+                "drawnVertices": 51,
+                "pixels": 250880,
+                "bytes": 8257536,
+                "renderMs": 4.800000190734863,
+                "ready": true,
+                "casterPasses": 3,
+                "fieldSamplers": 4,
+                "opaqueEnvelope": true,
+                "step": 0.5
+              },
+              "receiver": {
+                "x": 93,
+                "y": 93,
+                "z": 75,
+                "highRed": 126,
+                "lowRed": 255,
+                "pass": true
+              },
+              "examples": []
+            },
+            {
+              "angle": 1,
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "opaque": 2492,
+              "partial": 90,
+              "clear": 13922,
+              "coverageErrors": 0,
+              "depthErrors": 0,
+              "productionFilter": {
+                "receiver": "controlled terrain plane; camera map checked independently",
+                "probes": 51840,
+                "opaqueEnvelopeContributes": 0,
+                "errors": 0
+              },
+              "cameraReceiver": {
+                "opaque": 13063,
+                "clear": 7319,
+                "animatedOpaque": 1449,
+                "animatedClear": 454,
+                "errors": 0
+              },
+              "gpu": {
+                "updates": 5,
+                "actors": 0,
+                "extraSurfaces": 1,
+                "drawnVertices": 51,
+                "pixels": 211968,
+                "bytes": 7323648,
+                "renderMs": 0.8999998569488525,
+                "ready": true,
+                "casterPasses": 3,
+                "fieldSamplers": 4,
+                "opaqueEnvelope": true,
+                "step": 0.5
+              },
+              "receiver": {
+                "x": 93,
+                "y": 93,
+                "z": 75,
+                "highRed": 126,
+                "lowRed": 255,
+                "pass": true
+              },
+              "examples": []
+            },
+            {
+              "angle": 2,
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "opaque": 6074,
+              "partial": 185,
+              "clear": 23404,
+              "coverageErrors": 0,
+              "depthErrors": 0,
+              "productionFilter": {
+                "receiver": "controlled terrain plane; camera map checked independently",
+                "probes": 68224,
+                "opaqueEnvelopeContributes": 0,
+                "errors": 0
+              },
+              "cameraReceiver": {
+                "opaque": 13063,
+                "clear": 7319,
+                "animatedOpaque": 1449,
+                "animatedClear": 454,
+                "errors": 0
+              },
+              "gpu": {
+                "updates": 6,
+                "actors": 0,
+                "extraSurfaces": 1,
+                "drawnVertices": 51,
+                "pixels": 386048,
+                "bytes": 11501568,
+                "renderMs": 0.6000001430511475,
+                "ready": true,
+                "casterPasses": 3,
+                "fieldSamplers": 4,
+                "opaqueEnvelope": true,
+                "step": 0.5
+              },
+              "receiver": {
+                "x": 93,
+                "y": 93,
+                "z": 75,
+                "highRed": 126,
+                "lowRed": 255,
+                "pass": true
+              },
+              "examples": []
+            }
+          ]
+        },
+        {
+          "index": 5,
+          "key": "gateway-frame:5",
+          "source": "frame-5.png",
+          "alphaSha256": "8b8f9dc1acd65739460916fbc40bea46801c72159bc5759201ea064d2283435e",
+          "sourceSet": "gateway-producer-frames",
+          "sourceSize": [
+            389,
+            259
+          ],
+          "pivot": [
+            0.5,
+            0.97
+          ],
+          "ground": [
+            0.8333333333333334,
+            0.83828125,
+            0.8947916666666667,
+            0.95,
+            0.9104166666666667,
+            0.875,
+            0.825,
+            0.825,
+            0.825,
+            0.825,
+            0.825,
+            0.875,
+            0.9166666666666666,
+            0.95,
+            0.8947916666666667,
+            0.8348958333333333,
+            0.8166666666666667
+          ],
+          "tests": [
+            {
+              "angle": 0,
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "opaque": 2693,
+              "partial": 56,
+              "clear": 16566,
+              "coverageErrors": 0,
+              "depthErrors": 0,
+              "productionFilter": {
+                "receiver": "controlled terrain plane; camera map checked independently",
+                "probes": 57344,
+                "opaqueEnvelopeContributes": 6,
+                "errors": 0
+              },
+              "cameraReceiver": {
+                "opaque": 12830,
+                "clear": 7476,
+                "animatedOpaque": 1216,
+                "animatedClear": 611,
+                "errors": 0
+              },
+              "gpu": {
+                "updates": 7,
+                "actors": 0,
+                "extraSurfaces": 1,
+                "drawnVertices": 51,
+                "pixels": 250880,
+                "bytes": 8257536,
+                "renderMs": 5.299999952316284,
+                "ready": true,
+                "casterPasses": 3,
+                "fieldSamplers": 4,
+                "opaqueEnvelope": true,
+                "step": 0.5
+              },
+              "receiver": {
+                "x": 93,
+                "y": 93,
+                "z": 75,
+                "highRed": 126,
+                "lowRed": 255,
+                "pass": true
+              },
+              "examples": []
+            },
+            {
+              "angle": 1,
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "opaque": 2449,
+              "partial": 90,
+              "clear": 13951,
+              "coverageErrors": 0,
+              "depthErrors": 0,
+              "productionFilter": {
+                "receiver": "controlled terrain plane; camera map checked independently",
+                "probes": 51840,
+                "opaqueEnvelopeContributes": 0,
+                "errors": 0
+              },
+              "cameraReceiver": {
+                "opaque": 12830,
+                "clear": 7476,
+                "animatedOpaque": 1216,
+                "animatedClear": 611,
+                "errors": 0
+              },
+              "gpu": {
+                "updates": 8,
+                "actors": 0,
+                "extraSurfaces": 1,
+                "drawnVertices": 51,
+                "pixels": 211968,
+                "bytes": 7323648,
+                "renderMs": 2.200000047683716,
+                "ready": true,
+                "casterPasses": 3,
+                "fieldSamplers": 4,
+                "opaqueEnvelope": true,
+                "step": 0.5
+              },
+              "receiver": {
+                "x": 93,
+                "y": 93,
+                "z": 75,
+                "highRed": 126,
+                "lowRed": 255,
+                "pass": true
+              },
+              "examples": []
+            },
+            {
+              "angle": 2,
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "opaque": 5974,
+              "partial": 186,
+              "clear": 23476,
+              "coverageErrors": 0,
+              "depthErrors": 0,
+              "productionFilter": {
+                "receiver": "controlled terrain plane; camera map checked independently",
+                "probes": 68224,
+                "opaqueEnvelopeContributes": 0,
+                "errors": 0
+              },
+              "cameraReceiver": {
+                "opaque": 12830,
+                "clear": 7476,
+                "animatedOpaque": 1216,
+                "animatedClear": 611,
+                "errors": 0
+              },
+              "gpu": {
+                "updates": 9,
+                "actors": 0,
+                "extraSurfaces": 1,
+                "drawnVertices": 51,
+                "pixels": 386048,
+                "bytes": 11501568,
+                "renderMs": 0.7000000476837158,
+                "ready": true,
+                "casterPasses": 3,
+                "fieldSamplers": 4,
+                "opaqueEnvelope": true,
+                "step": 0.5
+              },
+              "receiver": {
+                "x": 93,
+                "y": 93,
+                "z": 75,
+                "highRed": 126,
+                "lowRed": 255,
+                "pass": true
+              },
+              "examples": []
+            }
+          ]
+        }
+      ],
+      "failures": [],
+      "image": "gateway-producer-frames.png",
+      "scope": "All selected live-published stabilized gateway frames. Actual production GPU dynamic gateway mesh, primary/secondary fields, actual receiver-height map and stage filter. Three light vectors; independent inverse geometry/alpha bounds on ground and raised receivers. Original live navigation threshold checked during capture. Software GPU only."
+    },
+    {
+      "rows": [
+        {
+          "index": 3,
+          "key": "gateway-frame:3",
+          "source": "frame-3.png",
+          "alphaSha256": "e61256498e4cd934b40a8347481f2df920da55cc030d8fc7b324d4ed3b586b7d",
+          "sourceSet": "gateway-producer-mobile-frames",
+          "sourceSize": [
+            389,
+            259
+          ],
+          "pivot": [
+            0.5,
+            0.97
+          ],
+          "ground": [
+            0.8333333333333334,
+            0.83828125,
+            0.8947916666666667,
+            0.95,
+            0.9104166666666667,
+            0.875,
+            0.825,
+            0.825,
+            0.825,
+            0.825,
+            0.825,
+            0.875,
+            0.9166666666666666,
+            0.95,
+            0.8947916666666667,
+            0.8348958333333333,
+            0.8166666666666667
+          ],
+          "tests": [
+            {
+              "angle": 0,
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "opaque": 2705,
+              "partial": 55,
+              "clear": 16564,
+              "coverageErrors": 0,
+              "depthErrors": 0,
+              "productionFilter": {
+                "receiver": "controlled terrain plane; camera map checked independently",
+                "probes": 57344,
+                "opaqueEnvelopeContributes": 6,
+                "errors": 0
+              },
+              "cameraReceiver": {
+                "opaque": 13236,
+                "clear": 7137,
+                "animatedOpaque": 1614,
+                "animatedClear": 275,
+                "errors": 0
+              },
+              "gpu": {
+                "updates": 1,
+                "actors": 0,
+                "extraSurfaces": 1,
+                "drawnVertices": 51,
+                "pixels": 250880,
+                "bytes": 8257536,
+                "renderMs": 188.70000004768372,
+                "ready": true,
+                "casterPasses": 3,
+                "fieldSamplers": 4,
+                "opaqueEnvelope": true,
+                "step": 0.5
+              },
+              "receiver": {
+                "x": 93,
+                "y": 93,
+                "z": 75,
+                "highRed": 126,
+                "lowRed": 255,
+                "pass": true
+              },
+              "examples": []
+            },
+            {
+              "angle": 1,
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "opaque": 2517,
+              "partial": 89,
+              "clear": 13902,
+              "coverageErrors": 0,
+              "depthErrors": 0,
+              "productionFilter": {
+                "receiver": "controlled terrain plane; camera map checked independently",
+                "probes": 51840,
+                "opaqueEnvelopeContributes": 0,
+                "errors": 0
+              },
+              "cameraReceiver": {
+                "opaque": 13236,
+                "clear": 7137,
+                "animatedOpaque": 1614,
+                "animatedClear": 275,
+                "errors": 0
+              },
+              "gpu": {
+                "updates": 2,
+                "actors": 0,
+                "extraSurfaces": 1,
+                "drawnVertices": 51,
+                "pixels": 211968,
+                "bytes": 7323648,
+                "renderMs": 0.7000000476837158,
+                "ready": true,
+                "casterPasses": 3,
+                "fieldSamplers": 4,
+                "opaqueEnvelope": true,
+                "step": 0.5
+              },
+              "receiver": {
+                "x": 93,
+                "y": 93,
+                "z": 75,
+                "highRed": 126,
+                "lowRed": 255,
+                "pass": true
+              },
+              "examples": []
+            },
+            {
+              "angle": 2,
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "opaque": 6146,
+              "partial": 181,
+              "clear": 23342,
+              "coverageErrors": 0,
+              "depthErrors": 0,
+              "productionFilter": {
+                "receiver": "controlled terrain plane; camera map checked independently",
+                "probes": 68224,
+                "opaqueEnvelopeContributes": 0,
+                "errors": 0
+              },
+              "cameraReceiver": {
+                "opaque": 13236,
+                "clear": 7137,
+                "animatedOpaque": 1614,
+                "animatedClear": 275,
+                "errors": 0
+              },
+              "gpu": {
+                "updates": 3,
+                "actors": 0,
+                "extraSurfaces": 1,
+                "drawnVertices": 51,
+                "pixels": 386048,
+                "bytes": 11501568,
+                "renderMs": 0.5,
+                "ready": true,
+                "casterPasses": 3,
+                "fieldSamplers": 4,
+                "opaqueEnvelope": true,
+                "step": 0.5
+              },
+              "receiver": {
+                "x": 93,
+                "y": 93,
+                "z": 75,
+                "highRed": 126,
+                "lowRed": 255,
+                "pass": true
+              },
+              "examples": []
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "key": "gateway-frame:4",
+          "source": "frame-4.png",
+          "alphaSha256": "547e7874a3184c232da0dea8bc8a371f5b1fde6cbc26b0a2e538a0cd9f614573",
+          "sourceSet": "gateway-producer-mobile-frames",
+          "sourceSize": [
+            389,
+            259
+          ],
+          "pivot": [
+            0.5,
+            0.97
+          ],
+          "ground": [
+            0.8333333333333334,
+            0.83828125,
+            0.8947916666666667,
+            0.95,
+            0.9104166666666667,
+            0.875,
+            0.825,
+            0.825,
+            0.825,
+            0.825,
+            0.825,
+            0.875,
+            0.9166666666666666,
+            0.95,
+            0.8947916666666667,
+            0.8348958333333333,
+            0.8166666666666667
+          ],
+          "tests": [
+            {
+              "angle": 0,
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "opaque": 2702,
+              "partial": 50,
+              "clear": 16564,
+              "coverageErrors": 0,
+              "depthErrors": 0,
+              "productionFilter": {
+                "receiver": "controlled terrain plane; camera map checked independently",
+                "probes": 57344,
+                "opaqueEnvelopeContributes": 3,
+                "errors": 0
+              },
+              "cameraReceiver": {
+                "opaque": 13063,
+                "clear": 7319,
+                "animatedOpaque": 1449,
+                "animatedClear": 454,
+                "errors": 0
+              },
+              "gpu": {
+                "updates": 4,
+                "actors": 0,
+                "extraSurfaces": 1,
+                "drawnVertices": 51,
+                "pixels": 250880,
+                "bytes": 8257536,
+                "renderMs": 14.200000047683716,
+                "ready": true,
+                "casterPasses": 3,
+                "fieldSamplers": 4,
+                "opaqueEnvelope": true,
+                "step": 0.5
+              },
+              "receiver": {
+                "x": 93,
+                "y": 93,
+                "z": 75,
+                "highRed": 126,
+                "lowRed": 255,
+                "pass": true
+              },
+              "examples": []
+            },
+            {
+              "angle": 1,
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "opaque": 2492,
+              "partial": 90,
+              "clear": 13922,
+              "coverageErrors": 0,
+              "depthErrors": 0,
+              "productionFilter": {
+                "receiver": "controlled terrain plane; camera map checked independently",
+                "probes": 51840,
+                "opaqueEnvelopeContributes": 0,
+                "errors": 0
+              },
+              "cameraReceiver": {
+                "opaque": 13063,
+                "clear": 7319,
+                "animatedOpaque": 1449,
+                "animatedClear": 454,
+                "errors": 0
+              },
+              "gpu": {
+                "updates": 5,
+                "actors": 0,
+                "extraSurfaces": 1,
+                "drawnVertices": 51,
+                "pixels": 211968,
+                "bytes": 7323648,
+                "renderMs": 3.6000001430511475,
+                "ready": true,
+                "casterPasses": 3,
+                "fieldSamplers": 4,
+                "opaqueEnvelope": true,
+                "step": 0.5
+              },
+              "receiver": {
+                "x": 93,
+                "y": 93,
+                "z": 75,
+                "highRed": 126,
+                "lowRed": 255,
+                "pass": true
+              },
+              "examples": []
+            },
+            {
+              "angle": 2,
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "opaque": 6074,
+              "partial": 185,
+              "clear": 23404,
+              "coverageErrors": 0,
+              "depthErrors": 0,
+              "productionFilter": {
+                "receiver": "controlled terrain plane; camera map checked independently",
+                "probes": 68224,
+                "opaqueEnvelopeContributes": 0,
+                "errors": 0
+              },
+              "cameraReceiver": {
+                "opaque": 13063,
+                "clear": 7319,
+                "animatedOpaque": 1449,
+                "animatedClear": 454,
+                "errors": 0
+              },
+              "gpu": {
+                "updates": 6,
+                "actors": 0,
+                "extraSurfaces": 1,
+                "drawnVertices": 51,
+                "pixels": 386048,
+                "bytes": 11501568,
+                "renderMs": 0.5999999046325684,
+                "ready": true,
+                "casterPasses": 3,
+                "fieldSamplers": 4,
+                "opaqueEnvelope": true,
+                "step": 0.5
+              },
+              "receiver": {
+                "x": 93,
+                "y": 93,
+                "z": 75,
+                "highRed": 126,
+                "lowRed": 255,
+                "pass": true
+              },
+              "examples": []
+            }
+          ]
+        },
+        {
+          "index": 5,
+          "key": "gateway-frame:5",
+          "source": "frame-5.png",
+          "alphaSha256": "8b8f9dc1acd65739460916fbc40bea46801c72159bc5759201ea064d2283435e",
+          "sourceSet": "gateway-producer-mobile-frames",
+          "sourceSize": [
+            389,
+            259
+          ],
+          "pivot": [
+            0.5,
+            0.97
+          ],
+          "ground": [
+            0.8333333333333334,
+            0.83828125,
+            0.8947916666666667,
+            0.95,
+            0.9104166666666667,
+            0.875,
+            0.825,
+            0.825,
+            0.825,
+            0.825,
+            0.825,
+            0.875,
+            0.9166666666666666,
+            0.95,
+            0.8947916666666667,
+            0.8348958333333333,
+            0.8166666666666667
+          ],
+          "tests": [
+            {
+              "angle": 0,
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "opaque": 2693,
+              "partial": 56,
+              "clear": 16566,
+              "coverageErrors": 0,
+              "depthErrors": 0,
+              "productionFilter": {
+                "receiver": "controlled terrain plane; camera map checked independently",
+                "probes": 57344,
+                "opaqueEnvelopeContributes": 6,
+                "errors": 0
+              },
+              "cameraReceiver": {
+                "opaque": 12830,
+                "clear": 7476,
+                "animatedOpaque": 1216,
+                "animatedClear": 611,
+                "errors": 0
+              },
+              "gpu": {
+                "updates": 7,
+                "actors": 0,
+                "extraSurfaces": 1,
+                "drawnVertices": 51,
+                "pixels": 250880,
+                "bytes": 8257536,
+                "renderMs": 8.200000047683716,
+                "ready": true,
+                "casterPasses": 3,
+                "fieldSamplers": 4,
+                "opaqueEnvelope": true,
+                "step": 0.5
+              },
+              "receiver": {
+                "x": 93,
+                "y": 93,
+                "z": 75,
+                "highRed": 126,
+                "lowRed": 255,
+                "pass": true
+              },
+              "examples": []
+            },
+            {
+              "angle": 1,
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "opaque": 2449,
+              "partial": 90,
+              "clear": 13951,
+              "coverageErrors": 0,
+              "depthErrors": 0,
+              "productionFilter": {
+                "receiver": "controlled terrain plane; camera map checked independently",
+                "probes": 51840,
+                "opaqueEnvelopeContributes": 0,
+                "errors": 0
+              },
+              "cameraReceiver": {
+                "opaque": 12830,
+                "clear": 7476,
+                "animatedOpaque": 1216,
+                "animatedClear": 611,
+                "errors": 0
+              },
+              "gpu": {
+                "updates": 8,
+                "actors": 0,
+                "extraSurfaces": 1,
+                "drawnVertices": 51,
+                "pixels": 211968,
+                "bytes": 7323648,
+                "renderMs": 11.799999952316284,
+                "ready": true,
+                "casterPasses": 3,
+                "fieldSamplers": 4,
+                "opaqueEnvelope": true,
+                "step": 0.5
+              },
+              "receiver": {
+                "x": 93,
+                "y": 93,
+                "z": 75,
+                "highRed": 126,
+                "lowRed": 255,
+                "pass": true
+              },
+              "examples": []
+            },
+            {
+              "angle": 2,
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "opaque": 5974,
+              "partial": 186,
+              "clear": 23476,
+              "coverageErrors": 0,
+              "depthErrors": 0,
+              "productionFilter": {
+                "receiver": "controlled terrain plane; camera map checked independently",
+                "probes": 68224,
+                "opaqueEnvelopeContributes": 0,
+                "errors": 0
+              },
+              "cameraReceiver": {
+                "opaque": 12830,
+                "clear": 7476,
+                "animatedOpaque": 1216,
+                "animatedClear": 611,
+                "errors": 0
+              },
+              "gpu": {
+                "updates": 9,
+                "actors": 0,
+                "extraSurfaces": 1,
+                "drawnVertices": 51,
+                "pixels": 386048,
+                "bytes": 11501568,
+                "renderMs": 0.9000000953674316,
+                "ready": true,
+                "casterPasses": 3,
+                "fieldSamplers": 4,
+                "opaqueEnvelope": true,
+                "step": 0.5
+              },
+              "receiver": {
+                "x": 93,
+                "y": 93,
+                "z": 75,
+                "highRed": 126,
+                "lowRed": 255,
+                "pass": true
+              },
+              "examples": []
+            }
+          ]
+        }
+      ],
+      "failures": [],
+      "image": "gateway-producer-mobile-frames.png",
+      "scope": "All selected live-published stabilized gateway frames. Actual production GPU dynamic gateway mesh, primary/secondary fields, actual receiver-height map and stage filter. Three light vectors; independent inverse geometry/alpha bounds on ground and raised receivers. Original live navigation threshold checked during capture. Software GPU only."
+    }
+  ],
+  "assets": [
+    "https://ark-whachat.fural.space/assets/index-Cj7owwmL.js",
+    "https://ark-whachat.fural.space/assets/main-CSaVr5aT.js",
+    "https://ark-whachat.fural.space/assets/shadow-gateway-frame-audit-Dwkwb-r5.js"
+  ],
+  "stats": {
+    "surfaces": 447,
+    "samples": 340406,
+    "rebuilds": 2,
+    "buildMs": 2700.4000000953674,
+    "bytes": 16051188,
+    "receiverPixels": 1105675,
+    "depthPixels": 1453561,
+    "ready": true,
+    "error": "",
+    "sun": {
+      "dx": 1.59394236711567,
+      "dy": 0.09168415256286729,
+      "alpha": 0.4
+    },
+    "model": "original alpha, explicit billboard/relief geometry; light-space depth compare",
+    "uploadMs": 2402.4000000953674,
+    "dynamic": {
+      "updates": 19,
+      "actors": 1,
+      "extraSurfaces": 0,
+      "drawnVertices": 8,
+      "pixels": 87040,
+      "bytes": 1392648,
+      "renderMs": 0.40000009536743164,
+      "ready": true,
+      "casterPasses": 2,
+      "fieldSamplers": 4,
+      "opaqueEnvelope": false,
+      "step": 0.5
+    }
+  },
+  "health": 200
+}
