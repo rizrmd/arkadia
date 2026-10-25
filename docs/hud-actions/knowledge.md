@@ -138,3 +138,15 @@ The Inventory pouch and Settings cog use new painted leather and aged brass artw
 ![Frameless mobile HUD](/organizations/ORd5dd6f99b4308d6187031557/sandbox/US4f550b10dab65dc9756fa429/files?file=projects%2Farkadia%2Frepos%2Farkadia%2Fdocs%2Fhud-actions%2Flocal-portrait.png)
 
 Build and desktop, portrait and landscape interaction checks passed. The check verifies transparent backgrounds, zero borders and box shadows, decoded new assets, touch target dimensions, and opening both panels.
+
+### Live verification — October 25, 2026
+
+Verified at https://ark-whachat.fural.space after the shared game release. Desktop (1440 × 900), mobile portrait (390 × 844), and touch landscape (844 × 390) all passed. Both new icons decoded successfully and matched the repository bytes. Both buttons have transparent backgrounds, no background image, zero border and no box shadow, with 46 × 46 CSS-pixel targets. Inventory and Settings opened and closed correctly.
+
+The standalone ship attempt returned a truncated deploy-script failure; the subsequent shared game release delivered these changes. Acceptance is based on direct live browser checks and matching asset bytes.
+
+![Live desktop frameless HUD](/organizations/ORd5dd6f99b4308d6187031557/sandbox/US4f550b10dab65dc9756fa429/files?file=projects%2Farkadia%2Frepos%2Farkadia%2Fdocs%2Fhud-actions%2Flive-desktop.png)
+
+![Live portrait frameless HUD](/organizations/ORd5dd6f99b4308d6187031557/sandbox/US4f550b10dab65dc9756fa429/files?file=projects%2Farkadia%2Frepos%2Farkadia%2Fdocs%2Fhud-actions%2Flive-portrait.png)
+
+![Live landscape frameless HUD](/organizations/ORd5dd6f99b4308d6187031557/sandbox/US4f550b10dab65dc9756fa429/files?file=projects%2Farkadia%2Frepos%2Farkadia%2Fdocs%2Fhud-actions%2Flive-landscape.png)
