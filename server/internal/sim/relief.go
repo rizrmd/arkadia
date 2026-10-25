@@ -10,6 +10,7 @@ import (
 // ReliefFeature is a raised piece of terrain (src/world/relief.ts): a flat plateau, or a ramp sloping linearly from
 // BaseM to TopM, rising toward its Ascend side. Rectangles are half-open [U0, U1) x [V0, V1) in court tiles.
 type ReliefFeature struct {
+	Visual         string       `json:"visual"`
 	ID             string       `json:"id"`
 	Type           string       `json:"type"`
 	U0, V0, U1, V1 float64      `json:"-"`
@@ -61,6 +62,20 @@ func mustRelief(b []byte) ([]ReliefFeature, float64) {
 	}
 	if !found {
 		panic("arkodia-01.json: no stronghold placement")
+	}
+	// Scenery supplies its own artwork but uses the same heights and movement rules.
+	var scenery struct {
+		Terrain json.RawMessage `json:"terrain"`
+	}
+	if err := json.Unmarshal(frontierJSON, &scenery); err != nil {
+		panic(err)
+	}
+	if len(scenery.Terrain) > 0 {
+		var extra = m.Terrain.Features[:0:0]
+		if err := json.Unmarshal(scenery.Terrain, &extra); err != nil {
+			panic(err)
+		}
+		m.Terrain.Features = append(m.Terrain.Features, extra...)
 	}
 	var out []ReliefFeature
 	for _, f := range m.Terrain.Features {

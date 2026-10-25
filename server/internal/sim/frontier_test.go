@@ -88,17 +88,26 @@ func frontierPlacements(t *testing.T) ([]frontierPlacement, frontierFile) {
 	return out, f
 }
 
-// Scenery stands on flat snow: no prop on a plateau, hill or ramp (they draw over the scenery layer).
+// Scenery stays off natural hills; a scenery-rendered podium may explicitly support props.
 func TestFrontierOffRelief(t *testing.T) {
 	ps, f := frontierPlacements(t)
+	naturalHeight := func(t Vec) float64 {
+		h := 0.0
+		for _, r := range relief {
+			if r.Visual != "scenery" && r.inside(t.X, t.Y) {
+				h = math.Max(h, r.height(t.X, t.Y))
+			}
+		}
+		return h
+	}
 	for _, p := range ps {
-		if h := HeightAtTile(Vec{p.U, p.V}); h != 0 {
+		if h := naturalHeight(Vec{p.U, p.V}); h != 0 {
 			t.Errorf("%s at (%.2f, %.2f) stands %.2f m up", p.A, p.U, p.V, h)
 		}
 		for _, r := range f.Kit[p.A].Block {
 			r = p.block(r)
 			for _, c := range [][2]float64{{r[0], r[1]}, {r[2], r[1]}, {r[2], r[3]}, {r[0], r[3]}} {
-				if h := HeightAtTile(Vec{p.U + c[0]*p.S, p.V + c[1]*p.S}); h != 0 {
+				if h := naturalHeight(Vec{p.U + c[0]*p.S, p.V + c[1]*p.S}); h != 0 {
 					t.Errorf("%s footprint at (%.2f, %.2f) reaches raised terrain", p.A, p.U, p.V)
 				}
 			}

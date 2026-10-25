@@ -58,7 +58,7 @@ function paintFace(c:CanvasRenderingContext2D,cliff:HTMLImageElement,g0:P,g1:P,h
 }
 
 export function paintRelief(snow:HTMLImageElement,cliff:HTMLImageElement,naturalCliff:HTMLImageElement):ReliefArt[]{
- return RELIEF.map(f=>{
+ return RELIEF.filter(f=>f.visual!=='scenery').map(f=>{
   if(f.type==='hill')return naturalHillArt(f,snow,naturalCliff);
   const random=rng(f.id),{A,B,C,D}=corners(f),all=[A,B,C,D],ramp=f.type==='ramp';
   const pad=28,left=Math.floor(Math.min(...all.map(p=>p.g.x)))-pad,right=Math.ceil(Math.max(...all.map(p=>p.g.x)))+pad;
