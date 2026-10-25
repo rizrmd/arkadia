@@ -248,9 +248,37 @@ export function eligibleActiveSkills(p:Progression,hero?:HeroKind):ActiveSkillId
  return [...HERO_ACTIVE_POOL[h]];
 }
 
+// Rift Runner Ascension Tree gates (Knowledge: "Rift Runner — Ascension Tree Concept", Tiers). A card's tier opens once
+// enough points are spent, and every level-up card taken is one point. Rift Bolt is learned at Lv. 1; Ascendant Star is
+// the capstone, offered from Lv. 20 only (and as the passive card of the Lv. 20 offer). Ember Warden has no gates.
+export const RIFT_TIER_POINTS:Record<string,number>={
+ 'rift-bolt':0,'rift-dash':0,'rift-trap':0,heal:0,might:0,
+ cleave:4,shockwave:4,nova:4,leech:4,
+ haste:8,vitality:8
+};
+export const CAPSTONE_LEVEL=20;
+// Points spent = level-up cards taken: every pick adds one rank (Second Wind included) or one star; the free Lv. 1
+// skill is not a pick.
+export function pointsSpent(p:Progression):number{
+ const ranks=Object.values(p.skills??{}).reduce((a,r)=>a+Math.max(0,r|0),0);
+ return Math.max(0,ranks+(p.stars??0)-1);
+}
+// The level the pending pick belongs to (several level-ups at once are picked one by one, lowest first).
+export const offerLevel=(p:Progression)=>p.pending>0?p.level-p.pending+1:p.level;
+const owned=(p:Progression,id:string)=>id==='star'?(p.stars??0)>0:(p.skills?.[id]??0)>0||p.slots?.includes(id);
+// Whether the Rift Runner may be offered card `id`: its tier is open, or it is a rank-up of a skill already owned.
+// Ascendant Star is gated by level alone, even if owned.
+export function riftCardUnlocked(p:Progression,id:string):boolean{
+ if(id==='star')return offerLevel(p)>=CAPSTONE_LEVEL;
+ const gate=RIFT_TIER_POINTS[id];
+ if(gate==null)return false;
+ return owned(p,id)||pointsSpent(p)>=gate;
+}
+
 export function roll(p:Progression,random:()=>number,hero?:HeroKind){
  const h=hero??inferHero(p);
  syncHeroLoadout(p,h);
+ if(h==='rift-runner'){rollGated(p,random);return;}
  const activePool=[...eligibleActiveSkills(p,h)];
  const passivePool=[...PASSIVE_BLESSING_IDS];
  const chosen:string[]=[];
@@ -275,6 +303,33 @@ export function roll(p:Progression,random:()=>number,hero?:HeroKind){
  while(chosen.length<3){
   take([...activePool,...passivePool]);
  }
+ p.offers=chosen;
+}
+
+// The Rift Runner's offer: the same 1 passive + 2 active shape, drawn only from open tiers and owned skills. When a
+// gated pool runs short, the card is filled from the other gated pool, never from a locked tier and never left blank.
+function rollGated(p:Progression,random:()=>number){
+ const activePool=eligibleActiveSkills(p,'rift-runner').filter(id=>riftCardUnlocked(p,id));
+ const passivePool=PASSIVE_BLESSING_IDS.filter(id=>riftCardUnlocked(p,id));
+ const chosen:string[]=[];
+ const take=(pool:string[])=>{
+  const avail=pool.filter(id=>!chosen.includes(id));
+  if(!avail.length)return false;
+  chosen.push(avail[Math.floor(random()*avail.length)]);
+  return true;
+ };
+ if(offerLevel(p)===CAPSTONE_LEVEL&&passivePool.includes('star'))chosen.push('star');
+ else take(passivePool);
+ if(p.slots.length<MAX_SKILL_SLOTS){
+  const unequipped=activePool.filter(id=>!p.slots.includes(id));
+  take(unequipped.length?unequipped:activePool);
+  const equipped=activePool.filter(id=>p.slots.includes(id));
+  take(equipped.length?equipped:activePool);
+ }else{
+  take(activePool);
+  take(activePool);
+ }
+ while(chosen.length<3&&take([...activePool,...passivePool])){}
  p.offers=chosen;
 }
 

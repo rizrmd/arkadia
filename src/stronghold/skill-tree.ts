@@ -3,7 +3,7 @@ import {Container,Graphics,Rectangle,Sprite,TilingSprite} from 'pixi.js';
 import {FrameSet,pickFrameScale} from '../typography/frames';
 import {MsdfText} from '../typography/text';
 import {ROLES,type TextRole} from '../typography/tokens';
-import type {Progression} from './progression';
+import {CAPSTONE_LEVEL,RIFT_TIER_POINTS,pointsSpent,riftCardUnlocked,type Progression} from './progression';
 
 // Rift Runner Skill Tree (Knowledge: "Rift Runner — Ascension Tree Concept", revised progression): a gold-framed panel in
 // front of the dimmed world with the HUD left uncovered. Portrait screens stack the tree bottom to top (Rift Bolt at the
@@ -56,7 +56,7 @@ const LEVEL_ROLE:TextRole={...ROLES['hud-badge'],fill:0xfbe7b5};
 const SIZE:Record<Kind,number>={active:1,ultimate:1.08,passive:.9};
 const ICON_IN_RING=94/128,GLOW=1.7;
 
-type NodeView={def:NodeDef;root:Container;glow:Sprite;icon:Sprite;ring?:Sprite;plate:Container;level:MsdfText;name:MsdfText;pips:Sprite[];badge?:Sprite;x:number;y:number;r:number;state:string};
+type NodeView={def:NodeDef;root:Container;glow:Sprite;icon:Sprite;ring?:Sprite;plate:Container;level:MsdfText;name:MsdfText;pips:Sprite[];badge?:Sprite;x:number;y:number;r:number;state:string;lock:string};
 type Rect={x:number;y:number;width:number;height:number};
 type Pt={x:number;y:number};
 
@@ -322,28 +322,31 @@ export class SkillTree{
    }
    let badge:Sprite|undefined;
    if(n.kind==='active'){badge=box.addChild(new Sprite(f.texture('slot-1')));badge.anchor.set(.5);badge.width=badge.height=Math.max(22,u*.3);badge.position.set(rr*.74,-rr*.74);badge.visible=false;}
-   this.views.set(n.id,{def:n,root:box,glow,icon,ring,plate,level,name,pips,badge,x:p.x,y:p.y,r:rr,state:''});
+   this.views.set(n.id,{def:n,root:box,glow,icon,ring,plate,level,name,pips,badge,x:p.x,y:p.y,r:rr,state:'',lock:''});
   }
   this.refresh(true);
  }
 
  // Learned nodes are in colour with their level plate; unlearned ones are grey and dim. Equipped actives show 1/2/3.
+ // Unlearned nodes in a locked tier show their requirement on the plate instead ("4 pts", or "Lv. 20" for the capstone).
  private refresh(force=false){
   const f=this.frames;if(!f||!this.views.size)return;
   const run=this.o.run(),slots=run.slots??[];
   const rank=(n:NodeDef)=>!n.game?0:n.game==='star'?run.stars??0:Math.max(0,run.skills?.[n.game]??(slots.includes(n.game)?1:0));
-  const key=TREE_NODES.map(n=>`${rank(n)}:${n.game?slots.indexOf(n.game):-1}`).join('|');
+  const lock=(n:NodeDef)=>!n.game||riftCardUnlocked(run,n.game)?'':n.game==='star'?`Lv. ${CAPSTONE_LEVEL}`:`${RIFT_TIER_POINTS[n.game]} pts`;
+  const key=TREE_NODES.map(n=>`${rank(n)}:${n.game?slots.indexOf(n.game):-1}:${lock(n)}`).join('|');
   if(!force&&key===this.stateKey)return;
   this.stateKey=key;
   for(const v of this.views.values()){
-   const n=v.def,lv=rank(n),learned=lv>0,slot=n.game?slots.indexOf(n.game):-1,state=`${lv}:${slot}`;
+   const n=v.def,lv=rank(n),learned=lv>0,slot=n.game?slots.indexOf(n.game):-1,locked=learned?'':lock(n),state=`${lv}:${slot}:${locked}`;
    if(!force&&state===v.state)continue;
-   v.state=state;
+   v.state=state;v.lock=locked;
    v.icon.texture=f.texture(learned?`icon-${n.id}`:`icon-${n.id}-dim`);
-   v.icon.tint=learned?0xffffff:0x8c8680;
+   v.icon.tint=learned?0xffffff:locked?0x6e6964:0x8c8680;
    if(v.ring)v.ring.tint=learned?0xffffff:0x9c8a74;
-   v.plate.visible=v.level.visible=learned;
-   if(learned){v.level.text=`Lv. ${lv}`;v.level.place(0,v.plate.y+v.plate.height/2+v.level.size*.36,.5);}
+   v.plate.visible=v.level.visible=learned||!!locked;
+   v.plate.alpha=v.level.alpha=learned?1:.78;
+   if(v.plate.visible){v.level.text=learned?`Lv. ${lv}`:locked;v.level.place(0,v.plate.y+v.plate.height/2+v.level.size*.36,.5);}
    v.name.alpha=learned?1:.62;
    v.pips.forEach((p,i)=>{p.texture=f.texture(i<Math.min(MAX_PIPS,lv)?'pip-on':'pip-off');p.alpha=learned?1:.7;});
    if(v.badge){v.badge.visible=slot>=0&&slot<3;if(v.badge.visible)v.badge.texture=f.texture(`slot-${slot+1}`);}
@@ -390,9 +393,14 @@ export class SkillTree{
  // A tapped node is highlighted; in slot mode a learned active skill is equipped to that slot (swapping if needed).
  private choose(v:NodeView){
   const n=v.def;this.highlight(n.id);
+  if(v.lock){
+   const run=this.o.run();
+   this.say(n.game==='star'?`${n.name} unlocks at Lv. ${CAPSTONE_LEVEL}`:`${n.name} unlocks at ${RIFT_TIER_POINTS[n.game!]} points (${pointsSpent(run)} spent)`);
+   return;
+  }
   if(n.kind==='passive'){this.say(`${n.name} is a passive: always active once learned`);return;}
   if(!n.game){this.say(`${n.name} is not in the game yet`);return;}
-  if(!v.plate.visible){this.say(`${n.name} is not learned yet`);return;}
+  if(!this.learned(v)){this.say(`${n.name} is not learned yet`);return;}
   if(this.slot==null){this.say(this.prompt());return;}
   const slots=this.o.run().slots??[],at=slots.indexOf(n.game);
   if(at===this.slot||(at>=0&&this.slot>=slots.length&&at===slots.length-1)){this.say(`${n.name} is already on Skill ${at+1}`);return;}
@@ -420,12 +428,14 @@ export class SkillTree{
  snapshot(){
   const nodes=[...this.views.values()].map(v=>{
    const g=this.content.toGlobal({x:v.x,y:v.y});
-   return {id:v.def.id,name:v.def.name,kind:v.def.kind,placeholder:!v.def.game,learned:v.plate.visible,level:v.plate.visible?Number(v.level.text.replace(/\D+/g,'')):0,
+   const learned=this.learned(v);
+   return {id:v.def.id,name:v.def.name,kind:v.def.kind,placeholder:!v.def.game,learned,level:learned?Number(v.level.text.replace(/\D+/g,'')):0,locked:v.lock||null,
     pips:v.pips.filter(p=>p.texture===this.frames?.texture('pip-on')).length,slot:v.badge?.visible?this.slotOf(v):0,
     screen:{x:+g.x.toFixed(1),y:+g.y.toFixed(1),r:+v.r.toFixed(1)},inView:this.inView(g.x,g.y),highlighted:this.highlighted===v.def.id};
   });
   const c=this.close?.getBounds();
   return {open:this.openState,slot:this.slot,hint:this.hint.text,vertical:this.vertical,u:+this.u.toFixed(1),panel:{...this.rect},view:{...this.view},close:c?{x:c.x+c.width/2,y:c.y+c.height/2}:null,scroll:+this.scroll.toFixed(1),maxScroll:+this.maxScroll.toFixed(1),highlighted:this.highlighted,nodes};
  }
+ private learned(v:NodeView){return v.plate.visible&&!v.lock;}
  private slotOf(v:NodeView){const s=this.o.run().slots??[];return v.def.game?s.indexOf(v.def.game)+1:0;}
 }
