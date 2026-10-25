@@ -8,6 +8,10 @@
   "placements: a = kit sprite, u/v = ground pivot in map tiles (same space as arkodia-01.json terrain), s = optional size factor, lift = a snow cap's height above its wall's ground pivot in world px, on = the wall a cap sits on (its footprint orders the cap against actors), zone = the area it dresses. Written by scripts/frozen-frontier-map/layout.mjs, which keeps props off raised terrain, paths and the combat clearing before the gate.",
   "Collision: src/world/frontier.ts turns every block rectangle into 4 px footprint columns, the same column rule as the court's sprites (hero.ts blocked, net/movement.ts navBlocker). server/internal/sim/frontier.go reads a byte-identical copy of this file and builds the same columns; TestFrontierMatchesClient fails when the copies differ."
  ],
+ "terrain": [
+  {"id": "temple-podium", "type": "plateau", "visual": "scenery", "u0": 477.921, "v0": 490.521, "u1": 479.879, "v1": 494.479, "heightM": 1.0541666666666667},
+  {"id": "temple-stairs", "type": "ramp", "connectsTo": "temple-podium", "visual": "scenery", "u0": 479.879, "v0": 492.01, "u1": 480.479, "v1": 492.99, "baseM": 0, "topM": 1.0541666666666667, "ascend": "-u"}
+ ],
  "kit": {
   "wall-ne": {"layer": "upright", "block": [[-0.28, -1.12, 0, 0.95]]},
   "wall-se": {"layer": "upright", "block": [[-1.18, -0.28, 0.95, 0]]},
@@ -18,7 +22,7 @@
   "pillar-intact": {"layer": "upright", "block": [[-0.15, -0.15, 0.15, 0.15]]},
   "pillar-broken": {"layer": "upright", "block": [[-0.15, -0.15, 0.15, 0.15]]},
   "stairs-ne": {"layer": "upright", "block": [[-0.28, -0.42, 0.28, 0.42]]},
-  "stairs-nw": {"layer": "upright", "block": [[-0.3, -0.6, 0.3, 0.6]]},
+  "stairs-nw": {"layer": "upright", "block": [[-0.3, -0.6, 0.3, -0.49], [-0.3, 0.49, 0.3, 0.6]]},
   "foundation": {"layer": "ground", "block": []},
   "paving": {"layer": "ground", "block": []},
   "rubble": {"layer": "upright", "block": [[-0.3, -0.22, 0.3, 0.22]]},
@@ -355,7 +359,6 @@
   {"a": "rubble", "u": 477.5, "v": 493, "s": 0.848, "zone": "Temple"},
   {"a": "stone-chips-a", "u": 480.8, "v": 491.5, "s": 0.994, "f": 1, "r": 155, "zone": "Temple"},
   {"a": "stone-chips-b", "u": 480.1, "v": 495.1, "s": 0.975, "r": 12, "zone": "Temple"},
-  {"a": "drift-ne", "u": 480.45, "v": 493.8, "s": 0.822, "zone": "Temple"},
   {"a": "drift-mound", "u": 477.8, "v": 495.1, "s": 1.002, "zone": "Temple"},
   {"a": "grass-tussock", "u": 477.45, "v": 491.6, "s": 1.035, "f": 1, "zone": "Temple"},
   {"a": "shrub-juniper", "u": 477.6, "v": 495.4, "s": 0.734, "f": 1, "zone": "Temple"},

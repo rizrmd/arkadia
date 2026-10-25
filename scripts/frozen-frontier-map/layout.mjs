@@ -46,7 +46,7 @@ data.kit['grass-patch'].band=data.kit['rock-scatter'].band='over';
 const STAIRS={'stairs-nw':{axis:'u',run:.6,w:1.2,rise:25.3},'stairs-ne':{axis:'v',run:.84,w:.56,rise:46}};
 Object.assign(data.kit,{
  'pillar-intact':{layer:'upright',block:[[-.15,-.15,.15,.15]]},'pillar-broken':{layer:'upright',block:[[-.15,-.15,.15,.15]]},
- 'stairs-nw':{layer:'upright',block:[[-.3,-.6,.3,.6]]},'stairs-ne':{layer:'upright',block:[[-.28,-.42,.28,.42]]},
+ 'stairs-nw':{layer:'upright',block:[[-.3,-.6,.3,-.49],[-.3,.49,.3,.6]]},'stairs-ne':{layer:'upright',block:[[-.28,-.42,.28,.42]]},
  'column-fallen':{layer:'upright',block:[[-.42,-.11,.47,.12]]},'column-fallen-v':{layer:'upright',block:[[-.11,-.42,.12,.47]]},
 });
 // A flight's pivot for a top edge at `edge` on its climbing axis, centred on `mid` along the other.
@@ -143,7 +143,7 @@ for(const [a,du,v] of [['pillar-intact',-.78,30.2],['pillar-intact',-.78,31.1],[
 // One shaft fell from the broken pillar of the -u row across the podium; another lies in the snow below the +u row.
 put('column-fallen',18.35,33.3,{zone:'Temple',lift:POD.h});
 put('column-fallen-v',19.95,30.15,{zone:'Temple'});
-foot('Temple',0,0,[['rubble',17.0,32.5,.9],['rubble',19.75,30.0,.75],['stone-chips-a',20.3,31.0],['stone-chips-b',19.6,34.6],['drift-ne',19.95,33.3,.85],
+foot('Temple',0,0,[['rubble',17.0,32.5,.9],['rubble',19.75,30.0,.75],['stone-chips-a',20.3,31.0],['stone-chips-b',19.6,34.6],
  ['drift-mound',17.3,34.6],['grass-tussock',16.95,31.1],['shrub-juniper',17.1,34.9,.8],['grass-patch',20.3,33.4],['grass-tussock',19.9,34.75,.8]]);
 reserve(16.6,29.3,20.4,35.2);
 
@@ -259,7 +259,7 @@ data.placements=placed.filter((p,i)=>!inRuin(p,i));
 // One kit sprite and one placement per line keeps the file reviewable.
 const line=o=>JSON.stringify(o).replace(/,"/g,', "').replace(/":/g,'": ').replace(/\],\[/g,'], [').replace(/,(-?\d)/g,', $1');
 const json=['{',` "id": "${data.id}",`,` "version": ${data.version},`,` "map": "${data.map}",`,' "notes": ['+data.notes.map(n=>'\n  '+JSON.stringify(n)).join(',')+'\n ],',
- ' "kit": {',Object.entries(data.kit).map(([k,v])=>`  ${JSON.stringify(k)}: ${line(v)}`).join(',\n'),' },',' "placements": [',data.placements.map(p=>'  '+line(p)).join(',\n'),' ]','}'].join('\n');
+ ' "terrain": '+JSON.stringify(data.terrain??[])+',',' "kit": {',Object.entries(data.kit).map(([k,v])=>`  ${JSON.stringify(k)}: ${line(v)}`).join(',\n'),' },',' "placements": [',data.placements.map(p=>'  '+line(p)).join(',\n'),' ]','}'].join('\n');
 await fs.writeFile(FILE,json+'\n');
 const used=new Set(data.placements.map(p=>p.a)),missing=Object.keys(data.kit).filter(a=>!used.has(a));
 console.log(data.placements.length,'placements;',used.size,'of',Object.keys(data.kit).length,'sprites used',missing.length?'· MISSING '+missing:'');

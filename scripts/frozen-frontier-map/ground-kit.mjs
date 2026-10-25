@@ -79,7 +79,7 @@ const GROUNDED={
  // Their snow cap lies on their top faces (stoneTop): the strip cap combs on 2:1 sloped silhouettes.
  'pillar-intact':{bank:[3,6],spill:3,tail:6,band:16,cap:false},'pillar-broken':{bank:[2,4],spill:3,tail:6,band:14,cap:false},
  'stairs-ne':{bank:[2,4],spill:4,tail:8,band:10,cap:false},'stairs-nw':{bank:[2,4],spill:4,tail:8,band:10,cap:false},
- 'rubble':{bank:[4,8],spill:3,tail:7,band:12},'foundation':{bank:[12,21],spill:5,tail:10,band:20},
+ 'rubble':{bank:[4,8],spill:3,tail:7,band:12},'foundation':{bank:[2,4],spill:2,tail:3,band:8,cap:false},
 };
 let seed=11;
 // iso: a piece modelled in true 2:1 isometric (isoPieces below) instead of a v1 export: {img, pivot, heightM, footprintM}.

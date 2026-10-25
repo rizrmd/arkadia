@@ -395,15 +395,15 @@
    "id": "foundation",
    "file": "assets/foundation.png",
    "size": [
-    1095,
+    1071,
     702
    ],
    "pivot": {
-    "x": 544,
+    "x": 521,
     "y": 378.7
    },
    "scale": 0.25,
-   "widthWorld": 273.75,
+   "widthWorld": 267.75,
    "heightM": 0.3,
    "footprintM": [
     6,
@@ -413,12 +413,13 @@
    "recipe": {
     "kind": "grounded",
     "bank": [
-     12,
-     21
+     2,
+     4
     ],
-    "spill": 5,
-    "tail": 10,
-    "band": 20
+    "spill": 2,
+    "tail": 3,
+    "band": 8,
+    "cap": false
    }
   },
   {
