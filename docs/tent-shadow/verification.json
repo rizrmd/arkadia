@@ -1,0 +1,102 @@
+{
+  "base": "http://127.0.0.1:5643",
+  "errors": [],
+  "runs": [
+    {
+      "time": ".3",
+      "stats": {
+        "surfaces": 447,
+        "samples": 83362,
+        "rebuilds": 1,
+        "buildMs": 775,
+        "bytes": 8924600,
+        "receiverPixels": 584548,
+        "depthPixels": 823301,
+        "ready": true,
+        "error": "",
+        "sun": {
+          "dx": 1.59394236711567,
+          "dy": 0.09168415256286729,
+          "alpha": 0.4
+        },
+        "model": "original alpha, explicit billboard/relief geometry; light-space depth compare",
+        "uploadMs": 55.09999990463257,
+        "dynamic": {
+          "updates": 5,
+          "actors": 1,
+          "extraSurfaces": 1,
+          "drawnVertices": 59,
+          "pixels": 166656,
+          "bytes": 3079680,
+          "renderMs": 0.7000000476837158,
+          "ready": true
+        }
+      },
+      "image": "after-.3.png"
+    },
+    {
+      "time": ".52",
+      "stats": {
+        "surfaces": 447,
+        "samples": 65144,
+        "rebuilds": 1,
+        "buildMs": 673.6000001430511,
+        "bytes": 7913104,
+        "receiverPixels": 584548,
+        "depthPixels": 696864,
+        "ready": true,
+        "error": "",
+        "sun": {
+          "dx": 0.2783514542531099,
+          "dy": 0.3071673753819102,
+          "alpha": 0.4
+        },
+        "model": "original alpha, explicit billboard/relief geometry; light-space depth compare",
+        "uploadMs": 12,
+        "dynamic": {
+          "updates": 5,
+          "actors": 1,
+          "extraSurfaces": 1,
+          "drawnVertices": 59,
+          "pixels": 117115,
+          "bytes": 2287024,
+          "renderMs": 0.5999999046325684,
+          "ready": true
+        }
+      },
+      "image": "after-.52.png"
+    },
+    {
+      "time": ".72",
+      "stats": {
+        "surfaces": 447,
+        "samples": 74490,
+        "rebuilds": 1,
+        "buildMs": 706.7000000476837,
+        "bytes": 8796272,
+        "receiverPixels": 584548,
+        "depthPixels": 807260,
+        "ready": true,
+        "error": "",
+        "sun": {
+          "dx": -0.8257977693177783,
+          "dy": 0.742976790382745,
+          "alpha": 0.4
+        },
+        "model": "original alpha, explicit billboard/relief geometry; light-space depth compare",
+        "uploadMs": 11.200000047683716,
+        "dynamic": {
+          "updates": 5,
+          "actors": 1,
+          "extraSurfaces": 1,
+          "drawnVertices": 59,
+          "pixels": 166656,
+          "bytes": 3079680,
+          "renderMs": 0.5999999046325684,
+          "ready": true
+        }
+      },
+      "image": "after-.72.png"
+    }
+  ]
+}

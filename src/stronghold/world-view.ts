@@ -1,3 +1,4 @@
+import {withTentGeometry} from './tent-shadow';
 import {createSceneShadows} from './scene-shadows';
 import {sampleSurface,type ShadowSurface} from './shadow-surfaces';
 import {requestGameFrame as requestAnimationFrame,cancelGameFrame as cancelAnimationFrame} from '../app/frame-scheduler';
@@ -191,11 +192,12 @@ export async function createWorldView(
  const SHADE=.35,mask=document.createElement('canvas'),soft=document.createElement('canvas');mask.width=soft.width=Math.ceil(worldWidth*SHADE);mask.height=soft.height=Math.ceil(worldHeight*SHADE);
  function drawSprite(c:CanvasRenderingContext2D,p:(typeof objects)[number]){c.save();c.globalAlpha=p.opacity;c.translate(p.x,p.y);c.transform(1,p.shear,0,p.vertical,0,0);drawFoundation(c,p,images.get(FOUNDATION_SOIL)!,'under',images.get(FOUNDATION_DRIFT),images.get(FOUNDATION_MOSS));if(p.selected){c.shadowColor='#ffca64';c.shadowBlur=9;}c.drawImage(p.image,-p.width/2,-p.height*p.foot,p.width,p.height);c.shadowBlur=0;drawFoundation(c,p,images.get(FOUNDATION_SOIL)!,'face',images.get(FOUNDATION_DRIFT),images.get(FOUNDATION_MOSS));c.restore();}
  let shadowSceneKey='';
+ let tentShadowSamples:ReturnType<typeof sampleSurface>['samples']|undefined;
  function shadowSurfaces():ShadowSurface[]{
   const court:ShadowSurface[]=objects.filter(p=>p.id!=='gate').map(p=>({key:p.id+':'+p.file,source:p.image,sourceWidth:p.image.naturalWidth,sourceHeight:p.image.naturalHeight,x:p.x,y:p.y,width:p.width,height:p.height,pivot:[.5,p.foot],shear:p.shear,vertical:p.vertical,depth:p.depth,cast:p.layer!=='ground'&&p.opacity>=1,...(p.layer==='ground'?{constantHeight:0}:{})}));
   const ff=frontier.shadowSurfaces();
   const terrain:ShadowSurface[]=relief.map(r=>({key:'relief:'+r.feature.id,source:r.canvas,sourceWidth:r.canvas.width,sourceHeight:r.canvas.height,x:r.left+r.width/2,y:r.bottom,width:r.width,height:r.height,pivot:[.5,1],heightAtScreen:(x,y)=>reliefShadowHeight(r.feature,x,y)}));
-  return [...court,...ff.filter(p=>p.constantHeight!==undefined),...terrain,...ff.filter(p=>p.constantHeight===undefined)];
+  return [...court.map(p=>p.key.startsWith('expedition:')?withTentGeometry(p):p),...ff.filter(p=>p.constantHeight!==undefined),...terrain,...ff.filter(p=>p.constantHeight===undefined)];
  }
  function castShadows(paint=true){
   const s=lighting.sun();frontier.setSun(s);
@@ -206,6 +208,10 @@ export async function createWorldView(
    const m=mask.getContext('2d')!,g=soft.getContext('2d')!;
    m.setTransform(1,0,0,1,0,0);m.clearRect(0,0,mask.width,mask.height);m.setTransform(SHADE,0,0,SHADE,-left*SHADE,-top*SHADE);m.fillStyle='rgb(20,28,44)';
    for(const p of objects){if(p.layer==='ground'||p.opacity<1)continue;
+    if(p.id==='expedition'){
+     tentShadowSamples??=sampleSurface(withTentGeometry({key:p.id,source:p.image,sourceWidth:p.image.naturalWidth,sourceHeight:p.image.naturalHeight,x:p.x,y:p.y,width:p.width,height:p.height,pivot:[.5,p.foot],shear:p.shear,vertical:p.vertical}),2).samples;
+     for(const q of tentShadowSamples){if(q.alpha<.5)continue;const v=q.quad!;m.beginPath();for(let i=0;i<12;i+=3){const x=v[i]+s.dx*v[i+2],y=v[i+1]+s.dy*v[i+2];if(i)m.lineTo(x,y);else m.moveTo(x,y);}m.closePath();m.fill();}continue;
+    }
     for(const c of footprint(p)){const vx=c.height*s.dx,vy=c.height*s.dy,a=c.x-c.w/2,b=c.x+c.w/2;
      const h=hull([[a,c.back],[b,c.back],[a,c.front],[b,c.front],[a+vx,c.back+vy],[b+vx,c.back+vy],[a+vx,c.front+vy],[b+vx,c.front+vy]]);
      m.beginPath();h.forEach(([x,y],i)=>i?m.lineTo(x,y):m.moveTo(x,y));m.fill();}}
