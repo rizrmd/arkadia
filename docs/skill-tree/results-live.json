@@ -1,0 +1,182 @@
+{
+ "base": "https://ark-whachat.fural.space",
+ "views": {
+  "mobile": {
+   "viewport": [
+    390,
+    844
+   ],
+   "shots": [
+    "live-mobile-long-press-astral-cleave.webp",
+    "live-mobile-scrolled-capstone.webp",
+    "live-mobile-long-press-rift-bolt.webp"
+   ],
+   "run": {
+    "level": 7,
+    "xp": 0,
+    "gold": 0,
+    "pending": 0,
+    "offers": [],
+    "skills": {
+     "rift-bolt": 3,
+     "rift-dash": 1,
+     "cleave": 1,
+     "heal": 1,
+     "might": 1
+    },
+    "stars": 0,
+    "slots": [
+     "rift-bolt",
+     "rift-dash",
+     "cleave"
+    ],
+    "autoCasts": 0,
+    "trinityCasts": 0,
+    "lastCast": []
+   },
+   "tapCast": {
+    "cooldownMs": 1049,
+    "treeOpen": false
+   },
+   "longPress": {
+    "highlighted": "astral-cleave",
+    "cast": 0,
+    "node": {
+     "id": "astral-cleave",
+     "name": "Astral Cleave",
+     "kind": "active",
+     "placeholder": false,
+     "learned": true,
+     "level": 1,
+     "pips": 1,
+     "slot": 3,
+     "screen": {
+      "x": 77.1,
+      "y": 411.5,
+      "r": 32.3
+     },
+     "inView": true,
+     "highlighted": true
+    }
+   },
+   "layout": {
+    "panel": {
+     "x": 9,
+     "y": 139,
+     "width": 372,
+     "height": 504
+    },
+    "skillTop": 654.5500000000001,
+    "u": 64.6,
+    "maxScroll": 286.1
+   },
+   "states": {
+    "learned": [
+     "Rift Bolt Lv. 3",
+     "Rift Dash Lv. 1",
+     "Second Wind Lv. 1",
+     "Titan Strike Lv. 1",
+     "Astral Cleave Lv. 1"
+    ],
+    "slots": [
+     "1: Rift Bolt",
+     "2: Rift Dash",
+     "3: Astral Cleave"
+    ],
+    "placeholders": [
+     "Phantom Legion",
+     "Event Horizon",
+     "Rift Lance"
+    ]
+   },
+   "drag": {
+    "scroll": 0,
+    "starInView": true
+   },
+   "pass": true
+  },
+  "desktop": {
+   "viewport": [
+    1440,
+    900
+   ],
+   "shots": [
+    "live-desktop-fresh-run.webp",
+    "live-desktop-right-click-rift-dash.webp",
+    "live-desktop-right-click-astral-cleave.webp",
+    "live-desktop-scrolled-capstone.webp"
+   ],
+   "fresh": {
+    "learned": [
+     "Rift Bolt"
+    ]
+   },
+   "run": {
+    "level": 7,
+    "xp": 0,
+    "gold": 0,
+    "pending": 0,
+    "offers": [],
+    "skills": {
+     "rift-bolt": 3,
+     "rift-dash": 1,
+     "cleave": 1,
+     "heal": 1,
+     "might": 1
+    },
+    "stars": 0,
+    "slots": [
+     "rift-bolt",
+     "rift-dash",
+     "cleave"
+    ],
+    "autoCasts": 0,
+    "trinityCasts": 0,
+    "lastCast": []
+   },
+   "clickCast": {
+    "cooldownMs": 1117,
+    "treeOpen": false
+   },
+   "rightClick": {
+    "node": {
+     "id": "rift-dash",
+     "name": "Rift Dash",
+     "kind": "active",
+     "placeholder": false,
+     "learned": true,
+     "level": 1,
+     "pips": 1,
+     "slot": 2,
+     "screen": {
+      "x": 406.1,
+      "y": 302,
+      "r": 52.9
+     },
+     "inView": true,
+     "highlighted": true
+    },
+    "cast": 0
+   },
+   "layout": {
+    "panel": {
+     "x": 20,
+     "y": 148,
+     "width": 1109,
+     "height": 732
+    },
+    "skillLeft": 1145.4545454545453,
+    "u": 105.9,
+    "maxScroll": 484
+   },
+   "wheel": {
+    "scroll": 484,
+    "maxScroll": 484,
+    "starInView": true
+   },
+   "pass": true
+  }
+ },
+ "errors": [],
+ "pass": true
+}

@@ -21,7 +21,7 @@ const tree=page=>page.evaluate(()=>window.__STRONGHOLD_COMBAT__.skillTree.snapsh
 const sockets=page=>page.evaluate(()=>window.__STRONGHOLD_COMBAT__.hud.getSkillSocketScreenGeometry().sockets);
 const cooldown=(page,i)=>page.evaluate(i=>window.__STRONGHOLD_COMBAT__.snapshot().loadout.slots[i].cooldownMs,i);
 const settle=(page,ms=1800)=>page.waitForTimeout(ms);
-async function shot(page,name){const png=`${OUT}/${name}.png`;await page.screenshot({path:png});await sharp(png).webp({quality:84}).toFile(png.replace(/\.png$/,'.webp'));await fs.rm(png);return `${name}.webp`;}
+async function shot(page,name){if(remote)name=`live-${name}`;const png=`${OUT}/${name}.png`;await page.screenshot({path:png});await sharp(png).webp({quality:84}).toFile(png.replace(/\.png$/,'.webp'));await fs.rm(png);return `${name}.webp`;}
 function checkOpen(t,id,label){
  assert.equal(t.open,true,`${label}: tree open`);assert.equal(t.highlighted,id,`${label}: ${id} highlighted`);
  const n=t.nodes.find(n=>n.id===id);assert(n.inView,`${label}: ${id} scrolled into view`);return n;
