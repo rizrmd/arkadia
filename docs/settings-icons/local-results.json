@@ -1,0 +1,165 @@
+{
+  "base": "http://127.0.0.1:5598",
+  "views": [
+    {
+      "name": "desktop",
+      "viewport": [
+        1440,
+        900
+      ],
+      "gear": {
+        "x": 1374,
+        "y": 397,
+        "width": 46,
+        "height": 46
+      },
+      "panel": {
+        "x": 450,
+        "y": 131,
+        "width": 540,
+        "height": 638
+      },
+      "icons": [
+        {
+          "src": "/ui/settings/gear.webp",
+          "width": 28,
+          "height": 28,
+          "alt": "",
+          "hidden": "true",
+          "naturalWidth": 128
+        },
+        {
+          "src": "/ui/settings/music.webp",
+          "width": 20,
+          "height": 20,
+          "alt": "",
+          "hidden": "true",
+          "naturalWidth": 128
+        },
+        {
+          "src": "/ui/settings/sound-effects.webp",
+          "width": 20,
+          "height": 20,
+          "alt": "",
+          "hidden": "true",
+          "naturalWidth": 128
+        }
+      ],
+      "checks": [
+        "images decoded and HTTP 200",
+        "touch target >=44px",
+        "panel inside viewport",
+        "reset confirmation focused Cancel",
+        "Escape preserved progression",
+        "resume and keyboard reopen"
+      ]
+    },
+    {
+      "name": "mobile",
+      "viewport": [
+        390,
+        844
+      ],
+      "gear": {
+        "x": 336,
+        "y": 140,
+        "width": 46,
+        "height": 46
+      },
+      "panel": {
+        "x": 12,
+        "y": 120,
+        "width": 366,
+        "height": 604
+      },
+      "icons": [
+        {
+          "src": "/ui/settings/gear.webp",
+          "width": 28,
+          "height": 28,
+          "alt": "",
+          "hidden": "true",
+          "naturalWidth": 128
+        },
+        {
+          "src": "/ui/settings/music.webp",
+          "width": 20,
+          "height": 20,
+          "alt": "",
+          "hidden": "true",
+          "naturalWidth": 128
+        },
+        {
+          "src": "/ui/settings/sound-effects.webp",
+          "width": 20,
+          "height": 20,
+          "alt": "",
+          "hidden": "true",
+          "naturalWidth": 128
+        }
+      ],
+      "checks": [
+        "images decoded and HTTP 200",
+        "touch target >=44px",
+        "panel inside viewport",
+        "reset confirmation focused Cancel",
+        "Escape preserved progression",
+        "resume and keyboard reopen"
+      ]
+    },
+    {
+      "name": "landscape",
+      "viewport": [
+        844,
+        390
+      ],
+      "gear": {
+        "x": 790,
+        "y": 130,
+        "width": 46,
+        "height": 46
+      },
+      "panel": {
+        "x": 237,
+        "y": 12,
+        "width": 370,
+        "height": 366
+      },
+      "icons": [
+        {
+          "src": "/ui/settings/gear.webp",
+          "width": 28,
+          "height": 28,
+          "alt": "",
+          "hidden": "true",
+          "naturalWidth": 128
+        },
+        {
+          "src": "/ui/settings/music.webp",
+          "width": 20,
+          "height": 20,
+          "alt": "",
+          "hidden": "true",
+          "naturalWidth": 128
+        },
+        {
+          "src": "/ui/settings/sound-effects.webp",
+          "width": 20,
+          "height": 20,
+          "alt": "",
+          "hidden": "true",
+          "naturalWidth": 128
+        }
+      ],
+      "checks": [
+        "images decoded and HTTP 200",
+        "touch target >=44px",
+        "panel inside viewport",
+        "reset confirmation focused Cancel",
+        "Escape preserved progression",
+        "resume and keyboard reopen"
+      ]
+    }
+  ],
+  "errors": []
+}

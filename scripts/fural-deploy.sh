@@ -71,6 +71,8 @@ mkdir -p "$STAGE/site/stick-pan"; cp docs/stick-pan/*.webp docs/stick-pan/*.json
 mkdir -p "$STAGE/site/world-map"; cp docs/world-map/*.webp docs/world-map/*.json "$STAGE/site/world-map/"
 mkdir -p "$STAGE/site/hud-telemetry-desktop"; cp docs/hud-telemetry-desktop/*.png "$STAGE/site/hud-telemetry-desktop/"
 mkdir -p "$STAGE/site/skill-tree"; cp docs/skill-tree/*.webp docs/skill-tree/*.png docs/skill-tree/*.json "$STAGE/site/skill-tree/"
+# Settings audio icons load only when the menu opens.
+mkdir -p "$STAGE/site/ui/settings"; cp public/ui/settings/*.webp "$STAGE/site/ui/settings/"
 # Inspection loads lazily; the desktop scan cannot discover phone/tablet DPR variants.
 cp -R public/skill-tree/. "$STAGE/site/skill-tree/"
 mkdir -p "$STAGE/site/ember-warden-review/tree-implementation"; cp docs/ember-tree/*.webp docs/ember-tree/*.png docs/ember-tree/*.json "$STAGE/site/ember-warden-review/tree-implementation/"
