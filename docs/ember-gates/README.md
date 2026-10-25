@@ -18,7 +18,7 @@ Results: `verification.json`, `browser-local.json`, and after deployment `browse
 
 ## Live release
 
-Game commit 2e57aaf deployed through the actual game release publisher; registered layer `1792921364604-game-2e57aaf-4689545a7d4c`. Public health returned 200. Live desktop and mobile checks passed all 19 offers with zero page errors; all eight local/live screenshots are retained here and embedded in Ember Knowledge.
+Initial game commit 2e57aaf deployed successfully. Final combined game commit **5c39b81** deployed through the actual game release publisher; registered layer `1792921891013-game-5c39b81-0269278915fe`. Public health returned 200. Live desktop and mobile checks passed all 19 offers with zero page errors; all eight local/live screenshots are retained here and embedded in Ember Knowledge.
 
 Live game: https://ark-whachat.fural.space/?offline=1&hero=ember-warden
 Evidence: https://ark-whachat.fural.space/ember-warden-review/tier-gates/browser-live.json
