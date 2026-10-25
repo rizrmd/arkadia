@@ -110,7 +110,10 @@ node scripts/flame-fan-preview/build.mjs
 mkdir -p "$STAGE/site/ember-warden-review/flame-fan-preview/evidence" "$STAGE/site/ember-warden-review/flame-fan-gameplay"
 cp -R dist-flame-fan-preview/. "$STAGE/site/ember-warden-review/flame-fan-preview/"
 cp docs/flame-fan-preview/*.png docs/flame-fan-preview/*.json docs/flame-fan-preview/*.md "$STAGE/site/ember-warden-review/flame-fan-preview/evidence/"
-cp docs/flame-fan-gameplay/*.png docs/flame-fan-gameplay/*.json docs/flame-fan-gameplay/*.md "$STAGE/site/ember-warden-review/flame-fan-gameplay/"
+for f in docs/flame-fan-gameplay/*.png docs/flame-fan-gameplay/*.json docs/flame-fan-gameplay/*.md; do
+ [[ -f "$f" ]] || continue
+ cp "$f" "$STAGE/site/ember-warden-review/flame-fan-gameplay/"
+done
 
 # One versioned tarball, uploaded in parts and applied by the gateway at boot (the release also writes www/index.html).
 mkdir -p "$HOME/releases"
