@@ -1,44 +1,72 @@
-## Connected Flame Fan — review preview
+## Revised combat preview
 
-The human approved the generated fan-shaped reference on 2026-10-25 and requested this animated NixieFX preview. **Preview only: the live game and previous game VFX have not been replaced by this revision.** The earlier particle presentation was rejected because it resembled red confetti. Review the new connected flame sheet below before game integration.
+Revised on 2026-10-25 after human approval to make Lv.1–5 visibly distinct and show Ember Warden with enemies. **This is the separate review preview; the new candidate is not integrated into game VFX.**
 
-<iframe src="https://ark-whachat.fural.space/ember-warden-review/flame-fan-preview/" title="Flame Fan NixieFX Preview" height="560"></iframe>
+<iframe src="https://ark-whachat.fural.space/ember-warden-review/flame-fan-preview/" title="Flame Fan NixieFX Preview" height="820"></iframe>
 
-[Open playable preview](https://ark-whachat.fural.space/ember-warden-review/flame-fan-preview/) · [Live verification](https://ark-whachat.fural.space/ember-warden-review/flame-fan-preview/evidence/verification-live.json) · [Local verification](https://ark-whachat.fural.space/ember-warden-review/flame-fan-preview/evidence/verification-local.json)
+[Open playable preview](https://ark-whachat.fural.space/ember-warden-review/flame-fan-preview/) · [Live checks](https://ark-whachat.fural.space/ember-warden-review/flame-fan-preview/evidence/verification-live.json) · [Local checks](https://ark-whachat.fural.space/ember-warden-review/flame-fan-preview/evidence/verification-local.json)
 
-Play/Pause, Replay, Loop, timeline scrubbing, Lv.1–5 and Day/Night are available. The fan starts at a narrow source, opens into a connected 108° sector, and ends in a curved turbulent rim. There are no fireball projectiles. Rank selection changes visual extent for review; this player does not simulate damage.
+### Combat context and comparison
+
+The preview uses the actual game Ember Warden atlas with attack-E and idle-E clips, plus three Revenants using idle and hit clips. Cast animation precedes the 0.42-second flame release. Target recoil, contact glow and impact rings begin after the opening flame reaches the target group. Reactions are illustrative, not a damage simulation. Actors render above the sheet so they remain visible for review.
+
+The selected large view and five side-by-side scenes share one clock, camera, target layout and scale (49 pixels per tile before responsive resizing). Pause or scrub to compare identical phases. Selecting a rank/card preserves the current time and pause state. Desktop shows all five ranks; mobile scrolls the card row horizontally. Play/Pause, Replay, Loop and Day/Night are available in English.
+
+| Rank | Flame treatment | Existing radius | Damage | Cooldown |
+|---|---|---:|---:|---:|
+| Lv.1 | One lean orange layer; small contact flare | 4.400 tiles | 1.00× | 1400 ms |
+| Lv.2 | Two curled folds; stronger gold contact flare | 5.192 tiles | 1.25× | 1288 ms |
+| Lv.3 | Three tongue strata; brighter gold core and impacts | 5.984 tiles | 1.50× | 1185 ms |
+| Lv.4 | Four dense folds; hotter seams and layered impacts | 6.776 tiles | 1.75× | 1090 ms |
+| Lv.5 | Five tongue strata; broad gold/ivory core and strongest contacts | 7.568 tiles | 2.00× | 1003 ms |
+
+All ranks retain a connected **108° AoE fan from Lv.1**, narrow at Ember and widening to a turbulent curved rim, with **zero fireball projectiles**. Extent follows the existing shared gameplay rank contract; no range, angle, damage, cooldown or tier-gate changes were introduced by this preview revision.
 
 ### Approved reference
 
-![Approved fan-shaped Flame Fan reference](/api/rooms/DRe6a2c6f1487f8fcbeed0d6b5/attachments/DAe091fce2f57db19172f44833)
+![Approved connected Flame Fan reference](/api/rooms/DRe6a2c6f1487f8fcbeed0d6b5/attachments/DAe091fce2f57db19172f44833)
 
-### Implementation and limits
+### Implementation and validation
 
-Uses the existing installed NixieFX/Pixi runtime and normalized effect contract with one stationary sheet billboard. A preview-specific procedural WebGL material animates polar flame turbulence into its texture. This produces connected flowing fire rather than scattered particles. It is a procedural interpretation of the approved painted reference; exact painted curls, caster animation, game projection/occlusion and gameplay integration are not part of this preview. WebGL is required. No new AI-generated raster is claimed.
+Uses the installed NixieFX/Pixi renderer with one stationary sheet billboard and a preview-specific procedural polar flame material. Increasing curled strata, density and heat are part of the rendered fire, beyond rank labels and radius changes. Actor atlas copies and a reduced manifest are packaged under the preview prefix, with no edits to shared game sprites. Material rendering uses 300×200 pixels, composited with 600×400 actor/UI scenes and a 30-frame/s scheduling cap to limit comparison cost. WebGL is required. This is a procedural interpretation of the painted reference; exact painted curls and actual game projection/occlusion are outside this candidate.
 
-TypeScript and Vite production builds pass. Local/live headless Chromium checks pass at 1440×900, 390×844 and 320×560: five ranks, opening/full/late/fade phases, controls, no horizontal overflow, and cross-origin iframe playback/level selection. Zero browser errors and failed HTTP requests in final checks. Earlier repeated-navigation runs stalled; fresh-browser reruns passed, and the verifier now isolates each viewport. This is not a real-device GPU performance benchmark.
+TypeScript and Vite production builds pass. Existing Go Flame Fan sector tests at every rank and the Lv.1 multi-target auto-cast test pass. Final local and public Chromium runs pass at 1440×900, 390×844 and 320×560: all five ranks at casting/opening/impact/fade phases (0.20/0.58/0.95/2.20 seconds), loaded actor assets, shared comparison clock/scale, controls and loop completion, rank/card selection, Day/Night, mobile horizontal scrolling, no document overflow, and cross-origin iframe playback. Zero browser errors and HTTP failures in the final reports. Visual review covered local/live desktop and mobile scenes, all five synchronized ranks, casting, opening, hits and fading. This is browser emulation, not a real-device GPU benchmark.
 
-Published as an additive layer under its own preview prefix using the supported Arkodia publisher. Existing game, Ember gates, inventory, Settings, Rift and peer assets are preserved.
+Rendered image checks at 1.35 seconds confirm increasing flame coverage and gold/bright-core coverage for every adjacent rank. Public flame-colored pixel counts at the common 600×400 scene size are 19,574 / 27,436 / 38,002 / 50,292 / 63,971; gold/bright counts are 399 / 410 / 514 / 1,313 / 5,584. These support visual progression; they do not represent damage or a hardware performance result.
 
-### Desktop animation phases
+Code commit: `447ea13` on `feat/stronghold`, pushed to origin. Published through the supported additive preview pipeline. Shadow task #IPLAM was inspected before edits/deployment; its recorded deployed work and shared uncommitted files were preserved. The preview layer updates only its own URL prefix. No game release, gateway change or unrelated integration change was made.
 
-![Opening fan at Lv.1](https://ark-whachat.fural.space/ember-warden-review/flame-fan-preview/evidence/live-1440-lv1-0.4.png)
+### Desktop evidence
 
-![Connected flame sheet at Lv.1](https://ark-whachat.fural.space/ember-warden-review/flame-fan-preview/evidence/live-1440-lv1-0.95.png)
+![Ember casting with three actual Revenants before flame release](https://ark-whachat.fural.space/ember-warden-review/flame-fan-preview/evidence/live-1440-lv3-0.2.png)
 
-![Lv.5 late flame sheet](https://ark-whachat.fural.space/ember-warden-review/flame-fan-preview/evidence/live-1440-lv5-1.65.png)
+![Lv.1 flame impact and synchronized Lv.1–5 comparison](https://ark-whachat.fural.space/ember-warden-review/flame-fan-preview/evidence/live-1440-lv1-0.95.png)
 
-![Fading connected flame](https://ark-whachat.fural.space/ember-warden-review/flame-fan-preview/evidence/live-1440-lv1-2.2.png)
+![Lv.2 two-layer flame with combat actors](https://ark-whachat.fural.space/ember-warden-review/flame-fan-preview/evidence/live-1440-lv2-0.95.png)
 
-### Mobile animation phases
+![Lv.3 three-layer flame with combat actors](https://ark-whachat.fural.space/ember-warden-review/flame-fan-preview/evidence/live-1440-lv3-0.95.png)
 
-![Mobile Lv.1 fan](https://ark-whachat.fural.space/ember-warden-review/flame-fan-preview/evidence/live-390-lv1-0.95.png)
+![Lv.4 dense folds and hotter impact effects](https://ark-whachat.fural.space/ember-warden-review/flame-fan-preview/evidence/live-1440-lv4-0.95.png)
 
-![Mobile Lv.5 fan](https://ark-whachat.fural.space/ember-warden-review/flame-fan-preview/evidence/live-390-lv5-1.65.png)
+![Lv.5 layered flame and strongest contacts](https://ark-whachat.fural.space/ember-warden-review/flame-fan-preview/evidence/live-1440-lv5-0.95.png)
 
-![Mobile fading fan](https://ark-whachat.fural.space/ember-warden-review/flame-fan-preview/evidence/live-390-lv1-2.2.png)
+![Opening Lv.1 fan before the hit reactions](https://ark-whachat.fural.space/ember-warden-review/flame-fan-preview/evidence/live-1440-lv1-0.58.png)
 
-![Compact mobile Lv.5 fan](https://ark-whachat.fural.space/ember-warden-review/flame-fan-preview/evidence/live-320-lv5-0.95.png)
+![Fading Lv.5 fan with visible recovered actors](https://ark-whachat.fural.space/ember-warden-review/flame-fan-preview/evidence/live-1440-lv5-2.2.png)
+
+### Mobile evidence
+
+![Mobile Lv.1 opening fan and scrollable comparison](https://ark-whachat.fural.space/ember-warden-review/flame-fan-preview/evidence/live-390-lv1-0.58.png)
+
+![Mobile Lv.5 impact with Ember and enemies](https://ark-whachat.fural.space/ember-warden-review/flame-fan-preview/evidence/live-390-lv5-0.95.png)
+
+![Compact mobile fading Lv.5](https://ark-whachat.fural.space/ember-warden-review/flame-fan-preview/evidence/live-320-lv5-2.2.png)
+
+![Local mobile Lv.5 visual verification](https://ark-whachat.fural.space/ember-warden-review/flame-fan-preview/evidence/local-390-lv5-0.95.png)
+
+![Local casting visual verification](https://ark-whachat.fural.space/ember-warden-review/flame-fan-preview/evidence/local-1440-lv3-0.2.png)
+
+![Local Lv.1 combat and comparison verification](https://ark-whachat.fural.space/ember-warden-review/flame-fan-preview/evidence/local-1440-lv1-0.95.png)
 
 ## Previous gameplay release — historical evidence
 

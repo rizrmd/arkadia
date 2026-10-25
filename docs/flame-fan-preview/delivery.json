@@ -1,0 +1,36 @@
+{
+  "codeCommit": "447ea13c7de2ab7e6e83ee66fbfd8fd04895c5cd",
+  "url": "https://ark-whachat.fural.space/ember-warden-review/flame-fan-preview/",
+  "initialLayer": "1792931992798-flame-fan-preview-40ee04680872",
+  "previewOnly": true,
+  "knowledgeId": "NKBDbd185330904c8926506f945e",
+  "knowledgeVerified": true,
+  "tests": {
+    "typescript": true,
+    "vite": true,
+    "goFlameFanSectorAndMultiTarget": true,
+    "local": true,
+    "live": true
+  },
+  "actorAssets": {
+    "ember-warden": {
+      "image": "ember-warden.webp",
+      "sha256": "f858949eedd77c6c9bda48538523503abf31f13c2b8c282162e8f997a94420f0"
+    },
+    "revenant": {
+      "image": "revenant.png",
+      "sha256": "b5fd563155bc98d1219eed9a7fdbb91da3212eedd3873fbbbb2be7efb100a615"
+    }
+  },
+  "peers": {
+    "shadowTask": "iplamihcnvhozzjuqutyehoq",
+    "board": "review",
+    "preserved": true
+  },
+  "limits": [
+    "Preview only; no new game VFX integration",
+    "Illustrative hit reactions; not damage simulation",
+    "Procedural interpretation; not exact painted reference reproduction",
+    "Browser emulation; no hardware mobile performance benchmark"
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "passed": true,
+  "url": "local",
+  "checks": [
+    {
+      "width": 320,
+      "rankPixels": [
+        {
+          "hot": 400,
+          "flame": 19602
+        },
+        {
+          "hot": 410,
+          "flame": 27465
+        },
+        {
+          "hot": 515,
+          "flame": 38031
+        },
+        {
+          "hot": 1315,
+          "flame": 50326
+        },
+        {
+          "hot": 5586,
+          "flame": 64000
+        }
+      ],
+      "actors": 2,
+      "targets": 3,
+      "synchronized": true,
+      "levels": 5,
+      "phases": [
+        0.2,
+        0.58,
+        0.95,
+        2.2
+      ],
+      "controls": "pass",
+      "overflow": false
+    }
+  ],
+  "iframe": "cross-origin playback and level selection passed",
+  "errors": [],
+  "failures": []
+}

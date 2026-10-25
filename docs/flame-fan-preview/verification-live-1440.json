@@ -4,11 +4,36 @@
   "checks": [
     {
       "width": 1440,
+      "rankPixels": [
+        {
+          "hot": 399,
+          "flame": 19574
+        },
+        {
+          "hot": 410,
+          "flame": 27436
+        },
+        {
+          "hot": 514,
+          "flame": 38002
+        },
+        {
+          "hot": 1313,
+          "flame": 50292
+        },
+        {
+          "hot": 5584,
+          "flame": 63971
+        }
+      ],
+      "actors": 2,
+      "targets": 3,
+      "synchronized": true,
       "levels": 5,
       "phases": [
-        0.4,
+        0.2,
+        0.58,
         0.95,
-        1.65,
         2.2
       ],
       "controls": "pass",
