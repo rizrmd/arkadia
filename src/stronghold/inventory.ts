@@ -5,7 +5,7 @@ import {inventorySnapshot,useItem,addItems,removeItems,type ItemEffect} from './
 type Options={renderPause?:(paused:boolean)=>void;solo:boolean;canOpen:()=>boolean;bounds:()=>{x:number;y:number;width:number;height:number};reason:(id:ItemId)=>string;apply:(id:ItemId)=>ItemEffect};
 export function createInventory(o:Options){
  const bag=document.createElement('button');bag.className='inventory-bag';bag.setAttribute('aria-label','Open Inventory');bag.title='Inventory (I)';
- bag.innerHTML='<svg viewBox="0 0 48 48" aria-hidden="true"><path d="m18 6 6 2 6-2-3 10c8 6 14 11 12 21-2 9-28 9-30 0-2-10 4-15 12-21Z" fill="#a77939" stroke="#edca7a" stroke-width="2"/><path d="M18 17q6 4 12 0M24 22v13m-4-9h7m-7 6h7" fill="none" stroke="#ffe2a2" stroke-width="2"/></svg>';
+ bag.innerHTML='<img src="/inventory/v2/bag.webp" alt="" draggable="false">';
  const overlay=document.createElement('div');overlay.className='inventory-overlay';overlay.hidden=true;
  overlay.innerHTML='<section class="inventory-panel" role="dialog" aria-modal="true" aria-labelledby="inventory-title"><header><h2 id="inventory-title">Inventory</h2><button class="inventory-close" aria-label="Close Inventory">×</button></header><div class="inventory-body"><div class="inventory-grid" role="group" aria-label="Inventory slots"></div><section class="inventory-details" aria-labelledby="inventory-item-name"><img alt=""><div><h3 id="inventory-item-name"></h3><p class="inventory-description"></p><p class="inventory-count"></p></div><button class="inventory-use">Use</button><p class="inventory-status" role="status" aria-live="polite"></p></section></div><footer>Consumables <span class="inventory-capacity"></span><span class="inventory-hint">I / Esc to close</span></footer></section>';
  document.body.append(bag,overlay);
@@ -14,7 +14,7 @@ export function createInventory(o:Options){
  const slots=Array.from({length:INVENTORY_SLOTS},(_,i)=>{
   const el=document.createElement(i<2?'button':'div');el.className='inventory-slot';
   if(i<2){const id=ITEM_IDS[i];el.dataset.item=id;el.innerHTML=`<img src="${ITEMS[id].icon}" alt=""><span></span>`;el.onclick=()=>{selected=id;status.textContent='';refresh();};}
-  else{el.setAttribute('aria-hidden','true');el.textContent='✧';}
+  else{el.setAttribute('aria-hidden','true');el.textContent='';}
   grid.append(el);return el;
  });
  function refresh(){

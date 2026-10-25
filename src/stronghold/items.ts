@@ -4,8 +4,8 @@ export type Inventory=Record<ItemId,number>;
 export const STACK_LIMIT=99;
 export const INVENTORY_SLOTS=8;
 export const ITEMS:Record<ItemId,{name:string;description:string;icon:string}>={
- 'health-potion':{name:'Health Potion',description:'Restores 40% of maximum health. Cannot be used at full health.',icon:'/items/health-potion.svg'},
- 'stronghold-scroll':{name:'Stronghold Teleport Scroll',description:'Return to the Stronghold. Consumed only after a successful teleport.',icon:'/items/stronghold-scroll.svg'}
+ 'health-potion':{name:'Health Potion',description:'Restores 40% of maximum health. Cannot be used at full health.',icon:'/inventory/v2/health-potion.webp'},
+ 'stronghold-scroll':{name:'Stronghold Teleport Scroll',description:'Return to the Stronghold. Consumed only after a successful teleport.',icon:'/inventory/v2/stronghold-scroll.webp'}
 };
 export const starterInventory=():Inventory=>({'health-potion':5,'stronghold-scroll':2});
 export function readInventory(value:unknown):Inventory{

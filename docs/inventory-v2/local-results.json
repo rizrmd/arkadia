@@ -1,0 +1,144 @@
+{
+  "base": "http://127.0.0.1:5593",
+  "views": {
+    "desktop": {
+      "viewport": [
+        1440,
+        900
+      ],
+      "bounds": {
+        "x": 360,
+        "y": 173,
+        "width": 720,
+        "height": 554
+      },
+      "geometry": {
+        "bag": {
+          "x": 1320,
+          "y": 397,
+          "w": 46,
+          "h": 46
+        },
+        "gear": {
+          "x": 1374,
+          "y": 397,
+          "w": 46,
+          "h": 46
+        },
+        "use": {
+          "x": 809.1875,
+          "y": 572,
+          "w": 228.796875,
+          "h": 48
+        }
+      },
+      "slots": [
+        {
+          "w": 92,
+          "h": 92
+        },
+        {
+          "w": 92,
+          "h": 92
+        }
+      ]
+    },
+    "portrait": {
+      "viewport": [
+        390,
+        844
+      ],
+      "bounds": {
+        "x": 12,
+        "y": 160,
+        "width": 366,
+        "height": 482.625
+      },
+      "geometry": {
+        "bag": {
+          "x": 282,
+          "y": 140,
+          "w": 46,
+          "h": 46
+        },
+        "gear": {
+          "x": 336,
+          "y": 140,
+          "w": 46,
+          "h": 46
+        },
+        "use": {
+          "x": 41,
+          "y": 516.375,
+          "w": 308,
+          "h": 48
+        }
+      },
+      "slots": [
+        {
+          "w": 77,
+          "h": 64
+        },
+        {
+          "w": 77,
+          "h": 64
+        }
+      ]
+    },
+    "landscape": {
+      "viewport": [
+        844,
+        390
+      ],
+      "bounds": {
+        "x": 237,
+        "y": 12,
+        "width": 370,
+        "height": 366
+      },
+      "geometry": {
+        "bag": {
+          "x": 736,
+          "y": 130,
+          "w": 46,
+          "h": 46
+        },
+        "gear": {
+          "x": 790,
+          "y": 130,
+          "w": 46,
+          "h": 46
+        },
+        "use": {
+          "x": 261,
+          "y": 275.59375,
+          "w": 322,
+          "h": 44
+        }
+      },
+      "slots": [
+        {
+          "w": 81,
+          "h": 48
+        },
+        {
+          "w": 81,
+          "h": 48
+        }
+      ]
+    }
+  },
+  "errors": [],
+  "healing": {
+    "hpBefore": 84,
+    "hpAfter": 100,
+    "max": 100
+  },
+  "persisted": {
+    "health-potion": 4,
+    "stronghold-scroll": 1
+  },
+  "settingsExclusion": true,
+  "blessingTransition": true,
+  "passed": true
+}

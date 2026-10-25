@@ -13,7 +13,8 @@ const launch=()=>chromium.launch({
  env:{...process.env,LD_LIBRARY_PATH:'/home/dev/.local/browser-libs/usr/lib/x86_64-linux-gnu:/opt/fural-antigravity-glibc'},
  args:['--no-sandbox','--no-zygote','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader'],
 });
-const files=new Set(['index.html','items/health-potion.svg','items/stronghold-scroll.svg']);let browser=null;
+// Inventory textures load when its overlay opens, after the release crawler has finished.
+const files=new Set(['index.html',...['bag','health-potion','stronghold-scroll','panel','slot','button'].map(name=>`inventory/v2/${name}.webp`)]);let browser=null;
 try{
  for(const path of ['/?time=0.5','/?offline=1&time=0.9']){
   console.error('Collecting release files:',path);
