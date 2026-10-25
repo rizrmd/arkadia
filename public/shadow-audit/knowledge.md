@@ -151,3 +151,6 @@ No map/collision files changed; pillar/stair strip policy is preserved. General 
 ![Geometry proxy diagnostic; not measured depth](https://ark-whachat.fural.space/shadow-audit/live/geometry-preview.png)
 
 ![Geometry proxy diagnostic; not measured depth](https://ark-whachat.fural.space/shadow-audit/live/geometry-mirrored-preview.png)
+
+
+Compatibility: the depth-field path is enabled only on WebGL. The newly added Canvas renderer fallback retains the legacy ground-shadow path; depth-based object receiving is unavailable there.

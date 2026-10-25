@@ -12,3 +12,6 @@ Each sampled source cell now carries all four geometry corners. Two triangles co
 - TypeScript passes. Original sprites/atlas alpha, collision, authored map geometry and pillar/stair assets are unchanged.
 
 Performance remains under investigation: the captured environment uses SwiftShader and is not hardware desktop/mobile proof. This correction resolves the reported sampling tears; it does not claim the entire broader shadow task is finished.
+
+
+Compatibility: the depth-field path is enabled only on WebGL. The newly added Canvas renderer fallback retains the legacy ground-shadow path; depth-based object receiving is unavailable there.

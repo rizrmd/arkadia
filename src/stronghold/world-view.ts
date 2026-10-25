@@ -1,7 +1,7 @@
 import {createSceneShadows} from './scene-shadows';
 import {sampleSurface,type ShadowSurface} from './shadow-surfaces';
 import {requestGameFrame as requestAnimationFrame,cancelGameFrame as cancelAnimationFrame} from '../app/frame-scheduler';
-import {Container,CanvasSource,Texture,TilingSprite} from 'pixi.js';
+import {Container,CanvasSource,RendererType,Texture,TilingSprite} from 'pixi.js';
 import {FOUNDATION_SOIL,FOUNDATION_MOSS,FOUNDATION_DRIFT,drawFoundation,foundationLayers} from './foundations';
 import {environmentSprites,COURT,tilePoint,LEGACY_LAYOUT} from './terrain';
 import {slots,calibration,WORLD} from './scene';
@@ -43,8 +43,8 @@ export async function createWorldView(
  const {worldStage,uiStage,frames}=rt;
  worldStage.sortableChildren=true;
  const staticStage=new Container();staticStage.sortableChildren=true;staticStage.zIndex=10;worldStage.addChild(staticStage);
- const useDepthShadows=new URLSearchParams(location.search).get('shadowField')!=='0';
- const sceneShadows=createSceneShadows(staticStage,()=>requestDraw(),rt.app.renderer);if(!useDepthShadows)staticStage.filters=[];
+ const useDepthShadows=rt.app.renderer.type===RendererType.WEBGL&&new URLSearchParams(location.search).get('shadowField')!=='0';
+ const sceneShadows=useDepthShadows?createSceneShadows(staticStage,()=>requestDraw(),rt.app.renderer):null;
  (window as any).__SCENE_SHADOWS__=useDepthShadows?sceneShadows:null;
  uiStage.sortableChildren=true;
 
@@ -199,7 +199,7 @@ export async function createWorldView(
  }
  function castShadows(paint=true){
   const s=lighting.sun();frontier.setSun(s);
-  if(useDepthShadows){const sig=objects.map(p=>p.id+':'+p.file+':'+p.width).join('|');if(sig!==shadowSceneKey){shadowSceneKey=sig;sceneShadows.setScene(shadowSurfaces());}sceneShadows.setSun(s);lighting.setShadow(null,0,paint);return;}
+  if(useDepthShadows){const sig=objects.map(p=>p.id+':'+p.file+':'+p.width).join('|');if(sig!==shadowSceneKey){shadowSceneKey=sig;sceneShadows?.setScene(shadowSurfaces());}sceneShadows?.setSun(s);lighting.setShadow(null,0,paint);return;}
   shadeRelief(s);
   if(!s.alpha){lighting.setShadow(null,0,paint);return;}
   measureTracelogPhase('shadowCast',()=>{
@@ -217,7 +217,7 @@ export async function createWorldView(
  progress(loaded,steps,'Waking the hero');
  const sheet:GateSheet=await (await fetch(GATE_SHEET)).json();
  const gateP=objects.find(p=>p.id==='gate')!;const gateProxy=useDepthShadows?sampleSurface({key:'gate',source:gateP.image,sourceWidth:gateP.image.naturalWidth,sourceHeight:gateP.image.naturalHeight,x:gateP.x,y:gateP.y,width:gateP.width,height:gateP.height,pivot:[.5,gateP.foot],shear:gateP.shear,vertical:gateP.vertical},1.5).surface:null;
- const doors=createGateDoors(staticStage,images.get('/modular-stronghold/v2/full-gateway-v7-closed.webp')!,gateSheetImg,sheet,open=>{gatePassable=open;setGateOpen(open);hero.setScene(scene());party?.setScene(scene());},{raster,onShadowFrame:(source,index)=>{if(gateProxy)sceneShadows.setDynamic([{...gateProxy,key:'gateway-frame:'+index,source,sourceWidth:source.width,sourceHeight:source.height}]);},foundation:foundationLayers(objects.find(p=>p.id==='gate')!,images.get(FOUNDATION_SOIL)!,images.get(FOUNDATION_DRIFT),images.get(FOUNDATION_MOSS))!,revision:lighting.spriteRevision,torches:lighting.torches,shade:(source,target)=>lighting.shadeSprite(source,target,{left:GS.x-GS.width/2,top:GS.y-sheet.region.h*GS.pivot,width:GS.width,height:sheet.region.h})});
+ const doors=createGateDoors(staticStage,images.get('/modular-stronghold/v2/full-gateway-v7-closed.webp')!,gateSheetImg,sheet,open=>{gatePassable=open;setGateOpen(open);hero.setScene(scene());party?.setScene(scene());},{raster,onShadowFrame:(source,index)=>{if(gateProxy)sceneShadows?.setDynamic([{...gateProxy,key:'gateway-frame:'+index,source,sourceWidth:source.width,sourceHeight:source.height}]);},foundation:foundationLayers(objects.find(p=>p.id==='gate')!,images.get(FOUNDATION_SOIL)!,images.get(FOUNDATION_DRIFT),images.get(FOUNDATION_MOSS))!,revision:lighting.spriteRevision,torches:lighting.torches,shade:(source,target)=>lighting.shadeSprite(source,target,{left:GS.x-GS.width/2,top:GS.y-sheet.region.h*GS.pivot,width:GS.width,height:sheet.region.h})});
  gateOccluder=doors.canvas;for(const p of objects)if(p.id==='gate')p.occluder=gateOccluder;
  lighting.subscribe(()=>doors.refreshLighting());
  // Combat (encounters.ts) swings the idle hero in place at a revenant at its maximum reach (it never chases) and plays its swing, hit and death clips.
@@ -270,7 +270,7 @@ export async function createWorldView(
    surface.style.width=worldWidth*scale+'px';surface.style.height=worldHeight*scale+'px';
    for(const r of reliefShadows){r.view.sprite.position.set(x+r.left*scale,y+r.top*scale);r.view.sprite.width=r.width*scale;r.view.sprite.height=r.height*scale;}
    for(const r of relief){r.view.sprite.position.set(x+r.left*scale,y+r.top*scale);r.view.sprite.width=r.width*scale;r.view.sprite.height=r.height*scale;}
-   sceneShadows.place(x,y,scale,w,h);frontier.place(x,y,scale,w,h);lighting.place(x,y,scale);doors.place(x,y,scale);hero.place(x,y,scale);party?.place(x,y,scale);encounters?.place(x,y,scale);
+   sceneShadows?.place(x,y,scale,w,h);frontier.place(x,y,scale,w,h);lighting.place(x,y,scale);doors.place(x,y,scale);hero.place(x,y,scale);party?.place(x,y,scale);encounters?.place(x,y,scale);
    parallax.place(cx,cy,scale,w,h);
 
    snowSprite.width=w;
