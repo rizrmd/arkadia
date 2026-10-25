@@ -1,3 +1,4 @@
+import './chunked-texture-upload';
 import './render-settings';
 import {renderQuality} from './render-quality';
 import {installTickerCadence} from './frame-cadence';

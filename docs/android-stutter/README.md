@@ -90,3 +90,17 @@ Profiling still showed hero canvas upload costs. At dawn (`time=0.2`) the low-qu
 The tested canvas shrinks to 140×168: 57.4% fewer pixels per upload. This is a bandwidth/area reduction, not a measured physical-device FPS claim. Wider physical Android gameplay acceptance remains pending.
 
 Revision `381a2700` is pushed and deployed through the supported release script. All deployment gates passed and healthz reports ok. The live entry `/assets/index-CSSUao2K.js` confirms the 140×168 low-quality dawn hero canvas, contact shadow, and no page errors (`hero-bounds-live.json`). Deployment log: `hero-bounds-deployment.log` (local ignored log).
+
+## Resumed Android evidence and staged shadow map uploads
+
+A new physical-device session supplied 23 traces on `/assets/index-D-RM3c1d.js`, Mali-G925, explicit High/60 FPS. Reported worst window frame is 35.1 ms. Remaining upload operations include a 15.7 ms `texSubImage2D` at 735×940, and 8.3/12.3 ms `texImage2D` calls around 731×941/839. Full entries carry these operations even when the list response omits them. This is new evidence, but still not low-spec Adreno acceptance. See `resumed-android-analysis.json`.
+
+The scene shadow map update path previously passed complete packed multi-megabyte buffers to Pixi synchronously. It now stages a complete map bundle offscreen. A registered Pixi GL uploader allocates storage with null data and uploads at most 64 KiB of complete rows per call; one shared two-millisecond/eight-operation budget yields between frames. Only after all required maps finish do source bindings, bounds and sun uniforms change together. Existing maps remain active while staging. Revision changes and destruction cancel unpublished sources. Dynamic actor targets remain on their existing GPU path. Context restoration restores complete raw bytes, with a full recovery transfer rather than a partially initialized texture.
+
+A receiver-map acknowledgement revision ensures that a canceled worker response cannot consume the only receiver copy: the next request asks for the cached receiver bytes again until committed.
+
+`verify-chunked-upload.mjs` validates three 731×941 packed maps by raw GL readback: zero byte mismatches across all channels, zero restoration mismatches, maximum normal transfer 64,328 bytes, and cancellation. A transaction fixture verifies no partial publication, no mixed-map frames, cancellation on camera revision, atomic commit, and the real worker's receiver cache/resend protocol. The test gates deployment. Reports: `chunked-upload-verification.json`.
+
+This removes large synchronous buffer-copy calls from this update path, but GPU storage allocation and context recovery can still take time. Staging adds several frames before a complete shadow bundle becomes available, using the previous coherent bundle during that interval. These facts and the software-GPU test do not establish zero physical-device frame drops.
+
+The full local game also reaches ready scene shadows (447 surfaces / 65,975 samples), ready hero FX and no page errors with the staged uploader. The software GPU takes 2.2 seconds of wall time to stage this initial bundle while rendering the scene; this is a latency limitation of frame-budgeted preparation under that slow renderer, not a phone timing claim. Production-device staging latency still requires measurement. The separate combat profile remains dominated by software GPU waits and must not be used as a physical FPS benchmark (`chunked-gameplay-readiness.json`, `chunked-gameplay-profile.json`).

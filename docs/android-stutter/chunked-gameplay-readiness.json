@@ -1,0 +1,38 @@
+{
+  "result": {
+    "shadows": {
+      "surfaces": 447,
+      "samples": 65975,
+      "rebuilds": 1,
+      "buildMs": 317.90000009536743,
+      "bytes": 7949168,
+      "receiverPixels": 584548,
+      "depthPixels": 701372,
+      "ready": true,
+      "error": "",
+      "sun": {
+        "dx": 0.3333333333333335,
+        "dy": 0.2886751345948129,
+        "alpha": 0.4
+      },
+      "model": "original alpha, explicit billboard/relief geometry; light-space depth compare",
+      "uploadMs": 2200.0999999046326,
+      "dynamic": {
+        "updates": 5,
+        "actors": 1,
+        "extraSurfaces": 1,
+        "drawnVertices": 59,
+        "pixels": 730112,
+        "bytes": 20103168,
+        "renderMs": 2.200000047683716,
+        "ready": true,
+        "casterPasses": 3,
+        "fieldSamplers": 4,
+        "opaqueEnvelope": true,
+        "step": 0.5
+      }
+    },
+    "fx": true
+  },
+  "errors": []
+}

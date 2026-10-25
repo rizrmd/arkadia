@@ -1,0 +1,593 @@
+{
+ "frames": 14,
+ "ms": 9789.899999856949,
+ "prof": {
+  "gl2.texImage2D": {
+   "ms": 0.19999980926513672,
+   "n": 8
+  },
+  "gl2.texSubImage2D": {
+   "ms": 10.100001096725464,
+   "n": 214
+  },
+  "2d.drawImage": {
+   "ms": 46.00000023841858,
+   "n": 149
+  },
+  "2d.putImageData": {
+   "ms": 0.20000004768371582,
+   "n": 1
+  }
+ },
+ "snap": {
+  "foes": 8,
+  "alive": 8,
+  "particles": 86,
+  "hero": "idle",
+  "heroMode": "3d-60fps"
+ },
+ "self": [
+  [
+   "(idle) :0",
+   5247.934000000017
+  ],
+  [
+   "(garbage collector) :0",
+   199.97300000000004
+  ],
+  [
+   "collectRenderablesSimple Filter-B3Ta1z3x.js:379",
+   79.68200000000003
+  ],
+  [
+   "uniform1f :0",
+   69.577
+  ],
+  [
+   "updateUniformGroup lib-Ddgq7cyz.js:29900",
+   66.31
+  ],
+  [
+   "packQuadAttributes GCManagedHash-BoMhMrVg.js:1094",
+   57.23
+  ],
+  [
+   "applyNoiseDisplacement chunk-NKQMBJ4W-C8BATpNk.js:95",
+   54.528999999999996
+  ],
+  [
+   "updateMatrixWorld three.module.min.js:6",
+   37.591
+  ],
+  [
+   "(program) :0",
+   21.252000000000002
+  ],
+  [
+   "cornerGradient chunk-DDYEJ3XB-DZ63mDls.js:487",
+   17.828999999999997
+  ],
+  [
+   "(anon) :1",
+   13.368
+  ],
+  [
+   "updateParticle nixie-fx_pixi.js:2234",
+   9.024000000000001
+  ],
+  [
+   "drawImage :0",
+   8.856
+  ],
+  [
+   "emit CanvasPool-DwJf6kUs.js:386",
+   7.991
+  ],
+  [
+   "spawn flame-fan-gameplay.ts:64",
+   7.341999999999998
+  ],
+  [
+   "texSubImage2D :0",
+   6.115000000000001
+  ],
+  [
+   "sampleParticleGradientColor chunk-WCBGJP2D-XEF-xIeY.js:2375",
+   5.7780000000000005
+  ],
+  [
+   "getContext :0",
+   4.838
+  ],
+  [
+   "update chunk-WCBGJP2D-XEF-xIeY.js:2976",
+   4.557
+  ],
+  [
+   "update lib-Ddgq7cyz.js:36523",
+   4.437
+  ],
+  [
+   "sampleParticleSimulationMotion chunk-WCBGJP2D-XEF-xIeY.js:3399",
+   4.202
+  ],
+  [
+   "_update three.module.min.js:6",
+   3.954
+  ],
+  [
+   "render hero.ts:708",
+   3.9059999999999997
+  ],
+  [
+   "actorSprites shadow-live-field.ts:223",
+   3.167
+  ],
+  [
+   "sampleRuntimeParticleColor nixie-fx_pixi.js:2598",
+   3.1310000000000002
+  ],
+  [
+   "refreshStats nixie-fx_pixi.js:2018",
+   2.785
+  ],
+  [
+   "compose encounters.ts:1038",
+   2.784
+  ],
+  [
+   "collectRenderables Filter-B3Ta1z3x.js:372",
+   2.634
+  ],
+  [
+   "onSourceUpdate lib-Ddgq7cyz.js:30987",
+   2.633
+  ],
+  [
+   "frontY hero.ts:453",
+   2.6240000000000006
+  ],
+  [
+   "evaluate three.module.min.js:6",
+   2.544
+  ],
+  [
+   "occlusionAt hero.ts:541",
+   2.5090000000000003
+  ],
+  [
+   "apply msdf.ts:134",
+   2.4690000000000003
+  ],
+  [
+   "measureRenderDetail render-diagnostics.ts:3",
+   2.355
+  ],
+  [
+   "drawElements :0",
+   2.327
+  ],
+  [
+   "worldScale msdf.ts:176",
+   2.268
+  ],
+  [
+   "gradientNoise3DGradientInto chunk-DDYEJ3XB-DZ63mDls.js:495",
+   2.22
+  ],
+  [
+   "render shadow-live-field.ts:450",
+   2.186
+  ],
+  [
+   "break RenderTargetSystem-H8GNUAjd.js:682",
+   2.14
+  ],
+  [
+   "createParticleEvent chunk-WCBGJP2D-XEF-xIeY.js:3299",
+   2.093
+  ],
+  [
+   "get position Filter-B3Ta1z3x.js:1858",
+   2.016
+  ],
+  [
+   "bufferSubData :0",
+   2.011
+  ],
+  [
+   "getVao lib-Ddgq7cyz.js:28301",
+   2.009
+  ],
+  [
+   "get CanvasPool-DwJf6kUs.js:7000",
+   1.815
+  ],
+  [
+   "rgb msdf.ts:154",
+   1.754
+  ],
+  [
+   "setTransform :0",
+   1.742
+  ],
+  [
+   "onChildUpdate Filter-B3Ta1z3x.js:1288",
+   1.677
+  ],
+  [
+   "break GCManagedHash-BoMhMrVg.js:281",
+   1.576
+  ],
+  [
+   "emit RenderTargetSystem-H8GNUAjd.js:59",
+   1.557
+  ],
+  [
+   "project isometric.ts:8",
+   1.556
+  ],
+  [
+   "wrapper shadow-live-field.ts:521",
+   1.54
+  ],
+  [
+   "detonateAoE combat-vfx.ts:500",
+   1.5190000000000001
+  ],
+  [
+   "getAlphaMask hero.ts:48",
+   1.489
+  ],
+  [
+   "tilePoint terrain.ts:11",
+   1.486
+  ],
+  [
+   "addEffect nixie-fx_pixi.js:1929",
+   1.468
+  ],
+  [
+   "toArray CanvasPool-DwJf6kUs.js:839",
+   1.417
+  ],
+  [
+   "packAttributes GCManagedHash-BoMhMrVg.js:1061",
+   1.4
+  ],
+  [
+   "bindVertexArray :0",
+   1.38
+  ],
+  [
+   "traceWallRay hero.ts:493",
+   1.362
+  ],
+  [
+   "uniformMatrix3fv :0",
+   1.301
+  ]
+ ],
+ "incl": [
+  [
+   "(root) :0",
+   6069.327000000034
+  ],
+  [
+   "(idle) :0",
+   5247.934000000017
+  ],
+  [
+   "renderer.render tracelog.ts:119",
+   360.7929999999997
+  ],
+  [
+   "wrapper shadow-live-field.ts:521",
+   360.5539999999997
+  ],
+  [
+   "render lib-Ddgq7cyz.js:4371",
+   360.00899999999973
+  ],
+  [
+   "emit Filter-B3Ta1z3x.js:2950",
+   360.00899999999973
+  ],
+  [
+   "update Filter-B3Ta1z3x.js:3385",
+   360.00899999999973
+  ],
+  [
+   "ticker.update frame-cadence.ts:33",
+   360.00899999999973
+  ],
+  [
+   "_tick Filter-B3Ta1z3x.js:3108",
+   360.00899999999973
+  ],
+  [
+   "render RenderTargetSystem-H8GNUAjd.js:193",
+   351.67199999999974
+  ],
+  [
+   "emit RenderTargetSystem-H8GNUAjd.js:59",
+   351.56099999999975
+  ],
+  [
+   "render RenderTargetSystem-H8GNUAjd.js:1485",
+   349.8839999999998
+  ],
+  [
+   "tick frame-scheduler.ts:20",
+   234.66500000000008
+  ],
+  [
+   "measureTracelogPhase tracelog.ts:21",
+   233.03500000000005
+  ],
+  [
+   "(garbage collector) :0",
+   199.97300000000004
+  ],
+  [
+   "executeInstructions RenderTargetSystem-H8GNUAjd.js:1113",
+   183.78299999999996
+  ],
+  [
+   "loop encounters.ts:1257",
+   167.568
+  ],
+  [
+   "_updateRenderGroups RenderTargetSystem-H8GNUAjd.js:1548",
+   165.31999999999985
+  ],
+  [
+   "_buildInstructions RenderTargetSystem-H8GNUAjd.js:1573",
+   163.42899999999983
+  ],
+  [
+   "collectRenderablesSimple Filter-B3Ta1z3x.js:379",
+   162.13899999999984
+  ],
+  [
+   "collectRenderablesWithEffects Filter-B3Ta1z3x.js:384",
+   162.13899999999984
+  ],
+  [
+   "collectRenderables Filter-B3Ta1z3x.js:372",
+   161.57199999999983
+  ],
+  [
+   "execute lib-Ddgq7cyz.js:18330",
+   147.00599999999997
+  ],
+  [
+   "render encounters.ts:1095",
+   146.67100000000005
+  ],
+  [
+   "(anon) :1",
+   146.23399999999998
+  ],
+  [
+   "execute lib-Ddgq7cyz.js:31188",
+   145.718
+  ],
+  [
+   "bind lib-Ddgq7cyz.js:29629",
+   141.881
+  ],
+  [
+   "updateUniformGroup lib-Ddgq7cyz.js:29900",
+   141.696
+  ],
+  [
+   "render combat-vfx.ts:908",
+   117.42900000000003
+  ],
+  [
+   "frame stage.ts:2087",
+   115.56800000000004
+  ],
+  [
+   "update nixie-fx_pixi.js:1974",
+   111.28400000000002
+  ],
+  [
+   "update nixie-fx_pixi.js:1232",
+   108.49900000000002
+  ],
+  [
+   "draw nixie-fx_pixi.js:1250",
+   101.20700000000002
+  ],
+  [
+   "drawEmitterView nixie-fx_pixi.js:2110",
+   100.953
+  ],
+  [
+   "drawParticleViews nixie-fx_pixi.js:1343",
+   100.953
+  ],
+  [
+   "updateParticle nixie-fx_pixi.js:2234",
+   96.61700000000002
+  ],
+  [
+   "collectRenderablesSimple Filter-B3Ta1z3x.js:2531",
+   75.68199999999999
+  ],
+  [
+   "applyNoiseDisplacement chunk-NKQMBJ4W-C8BATpNk.js:95",
+   74.83999999999996
+  ],
+  [
+   "uniform1f :0",
+   69.577
+  ],
+  [
+   "loop hero.ts:903",
+   64.886
+  ],
+  [
+   "(anon) hero.ts:917",
+   64.40899999999999
+  ],
+  [
+   "render hero.ts:708",
+   64.137
+  ],
+  [
+   "break RenderTargetSystem-H8GNUAjd.js:682",
+   62.759
+  ],
+  [
+   "break GCManagedHash-BoMhMrVg.js:281",
+   62.165
+  ],
+  [
+   "measureRenderDetail render-diagnostics.ts:3",
+   59.224
+  ],
+  [
+   "addRenderable lib-Ddgq7cyz.js:36652",
+   57.979
+  ],
+  [
+   "evaluateDisplacedPosition chunk-NKQMBJ4W-C8BATpNk.js:191",
+   57.79699999999999
+  ],
+  [
+   "computeEffectiveAlignmentVelocity chunk-NKQMBJ4W-C8BATpNk.js:181",
+   57.79699999999999
+  ],
+  [
+   "packQuadAttributes GCManagedHash-BoMhMrVg.js:1094",
+   57.23
+  ],
+  [
+   "(anon) hero.ts:806",
+   54.217999999999996
+  ],
+  [
+   "updateAndRender hero-3d.ts:809",
+   53.937999999999995
+  ],
+  [
+   "render three.module.min.js:6",
+   41.901999999999994
+  ],
+  [
+   "updateMatrixWorld three.module.min.js:6",
+   38.155
+  ],
+  [
+   "applyHandPaintedSpritePass hero-3d.ts:444",
+   37.976
+  ],
+  [
+   "(anon) hero-3d.ts:918",
+   37.976
+  ],
+  [
+   "(program) :0",
+   21.252000000000002
+  ],
+  [
+   "step encounters.ts:915",
+   20.633000000000003
+  ],
+  [
+   "(anon) encounters.ts:1275",
+   20.633000000000003
+  ],
+  [
+   "step combat-vfx.ts:764",
+   20.141000000000005
+  ],
+  [
+   "compose encounters.ts:1038",
+   20.022
+  ],
+  [
+   "sampleCurlNoise3 chunk-DDYEJ3XB-DZ63mDls.js:561",
+   19.790999999999993
+  ],
+  [
+   "gradientNoise3DGradientInto chunk-DDYEJ3XB-DZ63mDls.js:495",
+   19.782999999999994
+  ],
+  [
+   "detonateAoE combat-vfx.ts:500",
+   19.616000000000003
+  ],
+  [
+   "execute lib-Ddgq7cyz.js:36668",
+   18.94
+  ],
+  [
+   "cornerGradient chunk-DDYEJ3XB-DZ63mDls.js:487",
+   17.828999999999997
+  ],
+  [
+   "emit CanvasPool-DwJf6kUs.js:386",
+   17.323
+  ],
+  [
+   "spawn flame-fan-gameplay.ts:64",
+   16.072999999999997
+  ],
+  [
+   "update lib-Ddgq7cyz.js:36523",
+   15.753
+  ],
+  [
+   "render shadow-live-field.ts:450",
+   15.573999999999998
+  ],
+  [
+   "proto.<computed> :4",
+   15.238999999999997
+  ],
+  [
+   "execute RenderTargetSystem-H8GNUAjd.js:706",
+   15.216
+  ],
+  [
+   "addRenderable lib-Ddgq7cyz.js:25114",
+   13.338000000000003
+  ],
+  [
+   "sampleRuntimeParticleColor nixie-fx_pixi.js:2598",
+   10.794999999999998
+  ],
+  [
+   "renderPass shadow-live-field.ts:411",
+   10.790999999999999
+  ],
+  [
+   "start lib-Ddgq7cyz.js:26536",
+   10.790999999999999
+  ],
+  [
+   "paint encounters.ts:1017",
+   9.404
+  ],
+  [
+   "onSourceUpdate lib-Ddgq7cyz.js:30987",
+   9.331999999999999
+  ],
+  [
+   "update three.module.min.js:6",
+   8.891
+  ],
+  [
+   "drawImage :0",
+   8.856
+  ],
+  [
+   "(anon) hero-3d.ts:884",
+   8.626
+  ]
+ ]
+}

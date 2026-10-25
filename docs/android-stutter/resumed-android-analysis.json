@@ -1,0 +1,939 @@
+{
+  "checkedAt": "2026-10-25T22:48:57.760Z",
+  "build": "/assets/index-D-RM3c1d.js",
+  "device": "Mali-G925 / explicit High 60 FPS",
+  "traces": 23,
+  "maxFrameMs": 35.1,
+  "results": [
+    {
+      "id": "tl-mvocn5n8-n",
+      "receivedAt": "2026-10-25T21:38:07.188772424Z",
+      "fps": 58.29,
+      "maxFrameMs": 25.2,
+      "slowFrames": 0,
+      "droppedFrames": 0,
+      "scene": {
+        "hero": "ember-warden",
+        "safe": true,
+        "particles": 0
+      },
+      "renderOperations": [],
+      "slowest": {
+        "details": {
+          "heroAnimation": 0.1,
+          "heroCopy": 0.1,
+          "heroDraw": 0.2,
+          "heroPost": 0,
+          "heroQualityChange": 0,
+          "textureUpload": 0.1
+        },
+        "t": 309226,
+        "dtMs": 25.3,
+        "fps": 39.53,
+        "worldDrawMs": 0.1,
+        "encountersRenderMs": 0.9,
+        "pixiRenderMs": 1.5,
+        "hero3dMs": 0.4,
+        "foesRendered": 8
+      }
+    },
+    {
+      "id": "tl-mvoclx1q-m",
+      "receivedAt": "2026-10-25T21:37:09.380941272Z",
+      "fps": 58.26,
+      "maxFrameMs": 33.6,
+      "slowFrames": 1,
+      "droppedFrames": 1,
+      "scene": {
+        "hero": "ember-warden",
+        "safe": true,
+        "particles": 0
+      },
+      "renderOperations": [],
+      "slowest": {
+        "details": {
+          "heroQualityChange": 0
+        },
+        "t": 252166.7,
+        "dtMs": 33.6,
+        "fps": 29.76,
+        "encountersStepMs": 0.1,
+        "encountersRenderMs": 0.3,
+        "pixiRenderMs": 3.4,
+        "foesRendered": 8
+      }
+    },
+    {
+      "id": "tl-mvoclntb-l",
+      "receivedAt": "2026-10-25T21:36:57.410219106Z",
+      "fps": 58.24,
+      "maxFrameMs": 33.7,
+      "slowFrames": 1,
+      "droppedFrames": 1,
+      "scene": {
+        "hero": "ember-warden",
+        "safe": true,
+        "particles": 0
+      },
+      "renderOperations": [],
+      "slowest": {
+        "details": {
+          "encountersPlace": 0,
+          "frontierPlace": 0.1,
+          "gatePlace": 0,
+          "heroAnimation": 0,
+          "heroCopy": 0,
+          "heroDraw": 0.3,
+          "heroPlace": 0,
+          "heroPost": 0,
+          "heroQualityChange": 0,
+          "lightingPlace": 0,
+          "parallaxPlace": 0,
+          "partyPlace": 0,
+          "shadowFieldPlace": 0.1,
+          "textureUpload": 0.3
+        },
+        "t": 240199.9,
+        "dtMs": 33.7,
+        "fps": 29.67,
+        "worldDrawMs": 0.3,
+        "encountersStepMs": 0.1,
+        "encountersRenderMs": 1.3,
+        "pixiRenderMs": 3.6,
+        "hero3dMs": 0.4,
+        "foesRendered": 8
+      }
+    },
+    {
+      "id": "tl-mvoclen5-k",
+      "receivedAt": "2026-10-25T21:36:45.540427475Z",
+      "fps": 58.48,
+      "maxFrameMs": 23.6,
+      "slowFrames": 0,
+      "droppedFrames": 0,
+      "scene": {
+        "hero": "ember-warden",
+        "safe": true,
+        "particles": 0
+      },
+      "renderOperations": [],
+      "slowest": {
+        "details": {
+          "encountersPlace": 0,
+          "frontierPlace": 0,
+          "gatePlace": 0,
+          "heroAnimation": 0,
+          "heroCopy": 0,
+          "heroDraw": 0.1,
+          "heroPlace": 0,
+          "heroPost": 0,
+          "heroQualityChange": 0,
+          "lightingPlace": 0.1,
+          "parallaxPlace": 0,
+          "partyPlace": 0,
+          "shadowFieldPlace": 0,
+          "textureUpload": 0.1
+        },
+        "t": 228281.2,
+        "dtMs": 23.6,
+        "fps": 42.37,
+        "worldDrawMs": 0.2,
+        "encountersRenderMs": 0.6,
+        "pixiRenderMs": 1.8,
+        "hero3dMs": 0.2,
+        "foesRendered": 8
+      }
+    },
+    {
+      "id": "tl-mvocl26m-j",
+      "receivedAt": "2026-10-25T21:36:29.385683298Z",
+      "fps": 58.88,
+      "maxFrameMs": 29.3,
+      "slowFrames": 0,
+      "droppedFrames": 0,
+      "scene": {
+        "hero": "ember-warden",
+        "safe": true,
+        "particles": 0
+      },
+      "renderOperations": [
+        {
+          "phase": "textureUpload",
+          "startTime": 211064.9,
+          "duration": 8.2,
+          "sourceFunctionName": "texImage2D pixels 736x940"
+        }
+      ],
+      "slowest": {
+        "details": {
+          "encountersPlace": 0.1,
+          "frontierPlace": 0,
+          "gatePlace": 0.1,
+          "heroAnimation": 0.1,
+          "heroCopy": 0,
+          "heroDraw": 0.2,
+          "heroPlace": 0,
+          "heroPost": 0,
+          "heroQualityChange": 0,
+          "lightingPlace": 0,
+          "parallaxPlace": 0,
+          "partyPlace": 0,
+          "shadowFieldPlace": 0,
+          "textureUpload": 6.4
+        },
+        "t": 212167.4,
+        "dtMs": 29.3,
+        "fps": 34.13,
+        "worldDrawMs": 0.2,
+        "encountersStepMs": 0.1,
+        "encountersRenderMs": 1.1,
+        "pixiRenderMs": 1.8,
+        "hero3dMs": 0.5,
+        "vfxMs": 0.1,
+        "foesRendered": 8
+      }
+    },
+    {
+      "id": "tl-mvockua9-i",
+      "receivedAt": "2026-10-25T21:36:19.147170901Z",
+      "fps": 58.46,
+      "maxFrameMs": 24.9,
+      "slowFrames": 0,
+      "droppedFrames": 0,
+      "scene": {
+        "hero": "ember-warden",
+        "safe": true,
+        "particles": 0
+      },
+      "renderOperations": [],
+      "slowest": {
+        "details": {
+          "encountersPlace": 0,
+          "frontierPlace": 0,
+          "gatePlace": 0,
+          "heroAnimation": 0.1,
+          "heroCopy": 0,
+          "heroDraw": 0.1,
+          "heroPlace": 0.1,
+          "heroPost": 0,
+          "heroQualityChange": 0,
+          "lightingPlace": 0.1,
+          "parallaxPlace": 0,
+          "partyPlace": 0,
+          "shadowFieldPlace": 0,
+          "textureUpload": 0.1
+        },
+        "t": 201858,
+        "dtMs": 24.9,
+        "fps": 40.16,
+        "worldDrawMs": 0.2,
+        "encountersStepMs": 0.1,
+        "encountersRenderMs": 0.5,
+        "pixiRenderMs": 1.3,
+        "hero3dMs": 0.2,
+        "foesRendered": 8
+      }
+    },
+    {
+      "id": "tl-mvockl32-h",
+      "receivedAt": "2026-10-25T21:36:07.261604493Z",
+      "fps": 58.28,
+      "maxFrameMs": 32.7,
+      "slowFrames": 0,
+      "droppedFrames": 0,
+      "scene": {
+        "hero": "ember-warden",
+        "safe": true,
+        "particles": 0
+      },
+      "renderOperations": [
+        {
+          "phase": "textureUpload",
+          "startTime": 189518.4,
+          "duration": 8.3,
+          "sourceFunctionName": "texImage2D pixels 731x941"
+        },
+        {
+          "phase": "textureUpload",
+          "startTime": 189993.8,
+          "duration": 12.3,
+          "sourceFunctionName": "texImage2D pixels 731x839"
+        }
+      ],
+      "slowest": {
+        "details": {
+          "encountersPlace": 0,
+          "frontierPlace": 0,
+          "gatePlace": 0.1,
+          "heroAnimation": 0.2,
+          "heroCopy": 0,
+          "heroDraw": 0.4,
+          "heroPlace": 0,
+          "heroPost": 0,
+          "heroQualityChange": 0,
+          "lightingPlace": 0,
+          "parallaxPlace": 0,
+          "partyPlace": 0,
+          "shadowFieldPlace": 0,
+          "textureUpload": 15.2
+        },
+        "t": 190007,
+        "dtMs": 32.7,
+        "fps": 30.58,
+        "worldDrawMs": 0.1,
+        "encountersStepMs": 0.3,
+        "encountersRenderMs": 12.4,
+        "pixiRenderMs": 4,
+        "hero3dMs": 0.7,
+        "foesRendered": 8
+      }
+    },
+    {
+      "id": "tl-mvockbw2-g",
+      "receivedAt": "2026-10-25T21:35:55.316262196Z",
+      "fps": 58.49,
+      "maxFrameMs": 33,
+      "slowFrames": 0,
+      "droppedFrames": 0,
+      "scene": {
+        "hero": "ember-warden",
+        "safe": true,
+        "particles": 0
+      },
+      "renderOperations": [],
+      "slowest": {
+        "details": {
+          "encountersPlace": 0,
+          "frontierPlace": 0,
+          "gatePlace": 0.1,
+          "heroAnimation": 0.1,
+          "heroCopy": 0,
+          "heroDraw": 0.2,
+          "heroPlace": 0,
+          "heroPost": 0,
+          "heroQualityChange": 0,
+          "lightingPlace": 0,
+          "parallaxPlace": 0,
+          "partyPlace": 0,
+          "shadowFieldPlace": 0,
+          "textureUpload": 0.2
+        },
+        "t": 177874.9,
+        "dtMs": 33,
+        "fps": 30.3,
+        "worldDrawMs": 0.2,
+        "encountersStepMs": 0.1,
+        "encountersRenderMs": 1.6,
+        "pixiRenderMs": 3.7,
+        "hero3dMs": 0.4,
+        "foesRendered": 8
+      }
+    },
+    {
+      "id": "tl-mvock3s9-f",
+      "receivedAt": "2026-10-25T21:35:44.817551587Z",
+      "fps": 58.39,
+      "maxFrameMs": 30.8,
+      "slowFrames": 0,
+      "droppedFrames": 0,
+      "scene": {
+        "hero": "ember-warden",
+        "safe": true,
+        "particles": 0
+      },
+      "renderOperations": [],
+      "slowest": {
+        "details": {
+          "encountersPlace": 0.1,
+          "frontierPlace": 0,
+          "gatePlace": 0,
+          "heroAnimation": 0.1,
+          "heroCopy": 0.1,
+          "heroDraw": 0.1,
+          "heroPlace": 0,
+          "heroPost": 0,
+          "heroQualityChange": 0,
+          "lightingPlace": 0.1,
+          "parallaxPlace": 0,
+          "partyPlace": 0,
+          "shadowFieldPlace": 0,
+          "textureUpload": 0.3
+        },
+        "t": 167586.4,
+        "dtMs": 30.8,
+        "fps": 32.47,
+        "worldDrawMs": 0.2,
+        "encountersStepMs": 0.2,
+        "encountersRenderMs": 1.1,
+        "pixiRenderMs": 4.6,
+        "hero3dMs": 0.4,
+        "foesRendered": 8
+      }
+    },
+    {
+      "id": "tl-mvocjv62-e",
+      "receivedAt": "2026-10-25T21:35:33.626350652Z",
+      "fps": 59,
+      "maxFrameMs": 26.1,
+      "slowFrames": 0,
+      "droppedFrames": 0,
+      "scene": {
+        "hero": "ember-warden",
+        "safe": true,
+        "particles": 0
+      },
+      "renderOperations": [],
+      "slowest": {
+        "details": {
+          "encountersPlace": 0.1,
+          "frontierPlace": 0,
+          "gatePlace": 0,
+          "heroAnimation": 0.1,
+          "heroCopy": 0.1,
+          "heroDraw": 0.2,
+          "heroPlace": 0,
+          "heroPost": 0,
+          "heroQualityChange": 0,
+          "lightingPlace": 0.1,
+          "parallaxPlace": 0,
+          "partyPlace": 0,
+          "shadowFieldPlace": 0,
+          "textureUpload": 0.4
+        },
+        "t": 155571.8,
+        "dtMs": 27.2,
+        "fps": 36.76,
+        "worldDrawMs": 0.3,
+        "encountersStepMs": 0.1,
+        "encountersRenderMs": 1.3,
+        "pixiRenderMs": 2.9,
+        "hero3dMs": 0.4,
+        "vfxMs": 0.1,
+        "foesRendered": 8
+      }
+    },
+    {
+      "id": "tl-mvocjnga-d",
+      "receivedAt": "2026-10-25T21:35:23.63530116Z",
+      "fps": 58.3,
+      "maxFrameMs": 32.1,
+      "slowFrames": 0,
+      "droppedFrames": 0,
+      "scene": {
+        "hero": "ember-warden",
+        "safe": false,
+        "particles": 0
+      },
+      "renderOperations": [],
+      "slowest": {
+        "details": {
+          "encountersPlace": 0.1,
+          "frontierPlace": 0,
+          "gatePlace": 0,
+          "heroAnimation": 0.3,
+          "heroCopy": 0,
+          "heroDraw": 0.2,
+          "heroPlace": 0,
+          "heroPost": 0.1,
+          "heroQualityChange": 0,
+          "lightingPlace": 0.1,
+          "parallaxPlace": 0,
+          "partyPlace": 0,
+          "shadowFieldPlace": 0,
+          "textureUpload": 0.2
+        },
+        "t": 145969.8,
+        "dtMs": 32.1,
+        "fps": 31.15,
+        "worldDrawMs": 0.3,
+        "encountersStepMs": 0.4,
+        "encountersRenderMs": 1.3,
+        "pixiRenderMs": 3.5,
+        "hero3dMs": 0.6,
+        "foesRendered": 8
+      }
+    },
+    {
+      "id": "tl-mvocjfq4-c",
+      "receivedAt": "2026-10-25T21:35:13.615577581Z",
+      "fps": 57.86,
+      "maxFrameMs": 27.2,
+      "slowFrames": 0,
+      "droppedFrames": 0,
+      "scene": {
+        "hero": "ember-warden",
+        "safe": false,
+        "particles": 0
+      },
+      "renderOperations": [],
+      "slowest": {
+        "details": {
+          "encountersPlace": 0,
+          "frontierPlace": 0.4,
+          "gatePlace": 0,
+          "heroAnimation": 0.1,
+          "heroCopy": 0,
+          "heroDraw": 0.2,
+          "heroPlace": 0,
+          "heroPost": 0,
+          "heroQualityChange": 0,
+          "lightingPlace": 0.1,
+          "parallaxPlace": 0,
+          "partyPlace": 0,
+          "shadowFieldPlace": 0,
+          "textureUpload": 0.3
+        },
+        "t": 136405.3,
+        "dtMs": 27.2,
+        "fps": 36.76,
+        "worldDrawMs": 0.6,
+        "encountersRenderMs": 1.1,
+        "pixiRenderMs": 3.4,
+        "hero3dMs": 0.4,
+        "foesRendered": 8
+      }
+    },
+    {
+      "id": "tl-mvocj7ky-b",
+      "receivedAt": "2026-10-25T21:35:03.067286126Z",
+      "fps": 58.92,
+      "maxFrameMs": 26.2,
+      "slowFrames": 0,
+      "droppedFrames": 0,
+      "scene": {
+        "hero": "ember-warden",
+        "safe": false,
+        "particles": 437
+      },
+      "renderOperations": [],
+      "slowest": {
+        "details": {
+          "encountersPlace": 0,
+          "frontierPlace": 0.3,
+          "gatePlace": 0.1,
+          "heroAnimation": 0.2,
+          "heroCopy": 0,
+          "heroDraw": 0.1,
+          "heroPlace": 0,
+          "heroPost": 0,
+          "heroQualityChange": 0,
+          "lightingPlace": 0,
+          "parallaxPlace": 0,
+          "partyPlace": 0,
+          "shadowFieldPlace": 0,
+          "textureUpload": 0.2
+        },
+        "t": 125566.6,
+        "dtMs": 26.2,
+        "fps": 38.17,
+        "worldDrawMs": 0.4,
+        "encountersStepMs": 0.1,
+        "encountersRenderMs": 0.7,
+        "pixiRenderMs": 2.3,
+        "hero3dMs": 0.3,
+        "foesRendered": 8
+      }
+    },
+    {
+      "id": "tl-mvocizs2-a",
+      "receivedAt": "2026-10-25T21:34:52.952372801Z",
+      "fps": 58.69,
+      "maxFrameMs": 25.9,
+      "slowFrames": 0,
+      "droppedFrames": 0,
+      "scene": {
+        "hero": "ember-warden",
+        "safe": false,
+        "particles": 0
+      },
+      "renderOperations": [],
+      "slowest": {
+        "details": {
+          "encountersPlace": 0,
+          "frontierPlace": 0,
+          "gatePlace": 0.1,
+          "heroAnimation": 0.1,
+          "heroCopy": 0,
+          "heroDraw": 0.2,
+          "heroPlace": 0,
+          "heroPost": 0,
+          "heroQualityChange": 0,
+          "lightingPlace": 0,
+          "parallaxPlace": 0,
+          "partyPlace": 0,
+          "shadowFieldPlace": 0,
+          "textureUpload": 0.3
+        },
+        "t": 115403.2,
+        "dtMs": 25.9,
+        "fps": 38.61,
+        "worldDrawMs": 0.2,
+        "encountersRenderMs": 1.2,
+        "pixiRenderMs": 3,
+        "hero3dMs": 0.4,
+        "foesRendered": 8
+      }
+    },
+    {
+      "id": "tl-mvocirze-9",
+      "receivedAt": "2026-10-25T21:34:42.878107332Z",
+      "fps": 58.35,
+      "maxFrameMs": 32.9,
+      "slowFrames": 0,
+      "droppedFrames": 0,
+      "scene": {
+        "hero": "ember-warden",
+        "safe": false,
+        "particles": 0
+      },
+      "renderOperations": [],
+      "slowest": {
+        "details": {
+          "heroAnimation": 0.1,
+          "heroCopy": 0.1,
+          "heroDraw": 0.1,
+          "heroPost": 0,
+          "heroQualityChange": 0,
+          "textureUpload": 0.3
+        },
+        "t": 105203.7,
+        "dtMs": 32.9,
+        "fps": 30.4,
+        "encountersStepMs": 0.1,
+        "encountersRenderMs": 1.4,
+        "pixiRenderMs": 2.3,
+        "hero3dMs": 0.4,
+        "vfxMs": 0.1,
+        "foesRendered": 8
+      }
+    },
+    {
+      "id": "tl-mvocik9g-8",
+      "receivedAt": "2026-10-25T21:34:32.840787475Z",
+      "fps": 58.96,
+      "maxFrameMs": 26.1,
+      "slowFrames": 0,
+      "droppedFrames": 0,
+      "scene": {
+        "hero": "ember-warden",
+        "safe": false,
+        "particles": 0
+      },
+      "renderOperations": [],
+      "slowest": {
+        "details": {
+          "encountersPlace": 0.1,
+          "frontierPlace": 0,
+          "gatePlace": 0,
+          "heroAnimation": 0.1,
+          "heroCopy": 0,
+          "heroDraw": 0.1,
+          "heroPlace": 0,
+          "heroPost": 0,
+          "heroQualityChange": 0,
+          "lightingPlace": 0,
+          "parallaxPlace": 0,
+          "partyPlace": 0,
+          "shadowFieldPlace": 0,
+          "textureUpload": 0.1
+        },
+        "t": 95146.6,
+        "dtMs": 26.1,
+        "fps": 38.31,
+        "worldDrawMs": 0.4,
+        "encountersStepMs": 0.2,
+        "encountersRenderMs": 1.6,
+        "pixiRenderMs": 4.5,
+        "hero3dMs": 0.3,
+        "vfxMs": 0.4,
+        "foesRendered": 8,
+        "particles": 4
+      }
+    },
+    {
+      "id": "tl-mvocib5o-7",
+      "receivedAt": "2026-10-25T21:34:21.041367371Z",
+      "fps": 58.97,
+      "maxFrameMs": 26.2,
+      "slowFrames": 0,
+      "droppedFrames": 0,
+      "scene": {
+        "hero": "ember-warden",
+        "safe": false,
+        "particles": 0
+      },
+      "renderOperations": [],
+      "slowest": {
+        "details": {
+          "encountersPlace": 0.1,
+          "frontierPlace": 0,
+          "gatePlace": 0,
+          "heroAnimation": 0,
+          "heroCopy": 0,
+          "heroDraw": 0.1,
+          "heroPlace": 0,
+          "heroPost": 0.1,
+          "heroQualityChange": 0,
+          "lightingPlace": 0,
+          "parallaxPlace": 0,
+          "partyPlace": 0,
+          "shadowFieldPlace": 0.1,
+          "textureUpload": 0
+        },
+        "t": 83594.8,
+        "dtMs": 26.2,
+        "fps": 38.17,
+        "worldDrawMs": 0.2,
+        "encountersStepMs": 0.1,
+        "encountersRenderMs": 0.9,
+        "pixiRenderMs": 3.2,
+        "hero3dMs": 0.3,
+        "vfxMs": 0.1,
+        "foesRendered": 8
+      }
+    },
+    {
+      "id": "tl-mvoci13v-6",
+      "receivedAt": "2026-10-25T21:34:08.018028425Z",
+      "fps": 58.81,
+      "maxFrameMs": 26.6,
+      "slowFrames": 0,
+      "droppedFrames": 0,
+      "scene": {
+        "hero": "ember-warden",
+        "safe": false,
+        "particles": 0
+      },
+      "renderOperations": [],
+      "slowest": {
+        "details": {
+          "encountersPlace": 0.1,
+          "frontierPlace": 0.3,
+          "gatePlace": 0,
+          "heroAnimation": 0.1,
+          "heroCopy": 0,
+          "heroDraw": 0.1,
+          "heroPlace": 0,
+          "heroPost": 0.1,
+          "heroQualityChange": 0.1,
+          "lightingPlace": 0,
+          "parallaxPlace": 0,
+          "partyPlace": 0,
+          "shadowFieldPlace": 0,
+          "textureUpload": 0.2
+        },
+        "t": 70701.3,
+        "dtMs": 26.6,
+        "fps": 37.59,
+        "worldDrawMs": 0.5,
+        "encountersStepMs": 0.1,
+        "encountersRenderMs": 1.1,
+        "pixiRenderMs": 3.7,
+        "hero3dMs": 0.4,
+        "vfxMs": 0.1,
+        "foesRendered": 8
+      }
+    },
+    {
+      "id": "tl-mvochsjc-5",
+      "receivedAt": "2026-10-25T21:33:56.905656691Z",
+      "fps": 58.81,
+      "maxFrameMs": 25.8,
+      "slowFrames": 0,
+      "droppedFrames": 0,
+      "scene": {
+        "hero": "ember-warden",
+        "safe": false,
+        "particles": 0
+      },
+      "renderOperations": [
+        {
+          "phase": "textureUpload",
+          "startTime": 58786.7,
+          "duration": 15.7,
+          "sourceFunctionName": "texSubImage2D pixels 735x940"
+        }
+      ],
+      "slowest": {
+        "details": {
+          "encountersPlace": 0,
+          "frontierPlace": 0,
+          "gatePlace": 0,
+          "heroAnimation": 0,
+          "heroCopy": 0,
+          "heroDraw": 0.2,
+          "heroPlace": 0,
+          "heroPost": 0,
+          "heroQualityChange": 0,
+          "lightingPlace": 0.1,
+          "parallaxPlace": 0,
+          "partyPlace": 0,
+          "shadowFieldPlace": 0,
+          "textureUpload": 18.9
+        },
+        "t": 58803.7,
+        "dtMs": 32.3,
+        "fps": 30.96,
+        "worldDrawMs": 0.2,
+        "encountersStepMs": 0.2,
+        "encountersRenderMs": 0.8,
+        "pixiRenderMs": 3.3,
+        "hero3dMs": 0.3,
+        "foesRendered": 8
+      }
+    },
+    {
+      "id": "tl-mvochkgw-4",
+      "receivedAt": "2026-10-25T21:33:46.507210313Z",
+      "fps": 59,
+      "maxFrameMs": 24.6,
+      "slowFrames": 0,
+      "droppedFrames": 0,
+      "scene": {
+        "hero": "ember-warden",
+        "safe": false,
+        "particles": 207
+      },
+      "renderOperations": [],
+      "slowest": {
+        "details": {
+          "heroAnimation": 0.2,
+          "heroCopy": 0,
+          "heroDraw": 0.2,
+          "heroPost": 0,
+          "heroQualityChange": 0,
+          "textureUpload": 0.3
+        },
+        "t": 49217,
+        "dtMs": 24.6,
+        "fps": 40.65,
+        "worldDrawMs": 0.1,
+        "encountersStepMs": 0.2,
+        "encountersRenderMs": 2.3,
+        "pixiRenderMs": 3.5,
+        "hero3dMs": 0.5,
+        "vfxMs": 0.8,
+        "foesRendered": 8,
+        "particles": 59
+      }
+    },
+    {
+      "id": "tl-mvochc75-3",
+      "receivedAt": "2026-10-25T21:33:35.730182117Z",
+      "fps": 57.79,
+      "maxFrameMs": 27.3,
+      "slowFrames": 0,
+      "droppedFrames": 0,
+      "scene": {
+        "hero": "ember-warden",
+        "safe": false,
+        "particles": 73
+      },
+      "renderOperations": [],
+      "slowest": {
+        "details": {
+          "heroAnimation": 0,
+          "heroCopy": 0,
+          "heroDraw": 0.1,
+          "heroPost": 0,
+          "heroQualityChange": 0,
+          "textureUpload": 0.3
+        },
+        "t": 38122.5,
+        "dtMs": 27.3,
+        "fps": 36.63,
+        "encountersStepMs": 0.1,
+        "encountersRenderMs": 3,
+        "pixiRenderMs": 3.7,
+        "hero3dMs": 0.5,
+        "vfxMs": 1.6,
+        "foesRendered": 8,
+        "particles": 89
+      }
+    },
+    {
+      "id": "tl-mvoch4gu-2",
+      "receivedAt": "2026-10-25T21:33:25.721946789Z",
+      "fps": 58.11,
+      "maxFrameMs": 35.1,
+      "slowFrames": 1,
+      "droppedFrames": 1,
+      "scene": {
+        "hero": "ember-warden",
+        "safe": true,
+        "particles": 0
+      },
+      "renderOperations": [],
+      "slowest": {
+        "details": {
+          "heroAnimation": 0.1,
+          "heroCopy": 0,
+          "heroDraw": 0.2,
+          "heroPost": 0.1,
+          "heroQualityChange": 0,
+          "textureUpload": 0.2
+        },
+        "t": 28503.4,
+        "dtMs": 35.1,
+        "fps": 28.49,
+        "worldDrawMs": 0.1,
+        "encountersStepMs": 0.2,
+        "encountersRenderMs": 1.1,
+        "pixiRenderMs": 2.3,
+        "hero3dMs": 0.5,
+        "foesRendered": 8
+      }
+    },
+    {
+      "id": "tl-mvocgwgd-1",
+      "receivedAt": "2026-10-25T21:33:15.420807505Z",
+      "fps": 58.97,
+      "maxFrameMs": 22.7,
+      "slowFrames": 0,
+      "droppedFrames": 0,
+      "scene": {
+        "hero": "ember-warden",
+        "safe": true,
+        "particles": 0
+      },
+      "renderOperations": [
+        {
+          "phase": "shaderQuery",
+          "startTime": 16986.2,
+          "duration": 56.6,
+          "sourceFunctionName": "getProgramParameter LINK_STATUS"
+        },
+        {
+          "phase": "shaderPrepare",
+          "startTime": 16986.1,
+          "duration": 57.7
+        },
+        {
+          "phase": "script",
+          "startTime": 16985.1,
+          "duration": 58.8
+        }
+      ],
+      "slowest": {
+        "details": {
+          "heroAnimation": 0.1,
+          "heroCopy": 0,
+          "heroDraw": 0.3,
+          "heroPost": 0,
+          "heroQualityChange": 0,
+          "textureUpload": 0.3
+        },
+        "t": 18030.5,
+        "dtMs": 22.7,
+        "fps": 44.05,
+        "worldDrawMs": 0.1,
+        "encountersStepMs": 0.3,
+        "encountersRenderMs": 1.6,
+        "pixiRenderMs": 3,
+        "hero3dMs": 0.7,
+        "vfxMs": 0.1,
+        "foesRendered": 1
+      }
+    }
+  ]
+}
