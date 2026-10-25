@@ -1,3 +1,4 @@
+import {publishActorShadowFrame,unifiedActorShadowsActive,actorShadowModeRevision} from './shadow-actor-sources';
 import {registerActorShadowSprite} from './shadow-actor-batch';
 import {renderQuality} from '../app/render-quality';
 import {requestGameFrame as requestAnimationFrame} from '../app/frame-scheduler';
@@ -144,7 +145,7 @@ function frameShadowProfile(atlas:AtlasSource,f:{x:number;y:number;w:number;h:nu
 type CachedShadow={canvas:HTMLCanvasElement;ox:number;oy:number;sw:number;sh:number};
 const shadowCache=new Map<string,CachedShadow>(),MAX_SHADOW_CACHE=192;
 export function drawFigureShadow(c:CanvasRenderingContext2D,atlas:AtlasSource,f:{x:number;y:number;w:number;h:number},cell:{w:number;h:number;pivot:{x:number;y:number}},s:Sun,dir:number){
- if(!s.alpha)return;
+ if(!s.alpha||unifiedActorShadowsActive())return;
  const cacheKey=`${atlasSrcKey(atlas)}:${f.x},${f.y},${cell.w},${cell.h}:${dir}:${s.dx.toFixed(2)},${s.dy.toFixed(2)},${s.wx.toFixed(2)},${s.wy.toFixed(2)}`;
  let entry=shadowCache.get(cacheKey);
  if(entry){
@@ -245,7 +246,7 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
  }
  let minBlockerX=0,maxBlockerX=0,minBlockerY=0,maxBlockerY=0;
  let x=SPAWN.x,y=SPAWN.y,state:'idle'|'move'='idle',t=0,gait=0,facing=1,back=false,vertical=false,horizontal=false;
- registerActorShadowSprite(heroView.sprite,()=>({groundY:y,lift:liftAt(x,y),owner:3900}));
+ registerActorShadowSprite(heroView.sprite,()=>({groundX:x,groundY:y,lift:liftAt(x,y)}));
  let pose:Pose|null=null,tint='255,255,255',sampled=-1e9,origin={x:0,y:0,scale:1},k=0,box=[0,0,0,0],drawn='',lastMove=0;
  function blocked(px:number,py:number){
   if(!walkableGround(px,py))return true;
@@ -445,7 +446,7 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
   const lift=liftAt(x,y),hidden=occluders(x,y,b,lift),at=x.toFixed(1)+','+y.toFixed(1);if(canvas.dataset.x+','+canvas.dataset.y!==at)Object.assign(canvas.dataset,{x:x.toFixed(1),y:y.toFixed(1)});
   const qNight=Math.round(night*20)/20;
   const active3d=Boolean(r3d?.isHeroReady(hero.id));
-  const key=[hero.id,state,clipName(),f.x,f.y,facing,vertical,tint,qNight.toFixed(2),s.dx,s.dy,s.wx,s.wy,s.alpha,res,b,hidden.length?hidden.map(p=>p.x+':'+p.y+':'+Math.round(Number(p.occluder?.dataset.frame??0)/8)).join()+'@'+Math.round(x*.25)+','+Math.round((y-lift)*.25):'',objects.length].join();if(!active3d&&key===drawn)return;drawn=key;
+  const key=[actorShadowModeRevision(),hero.id,state,clipName(),f.x,f.y,facing,vertical,tint,qNight.toFixed(2),s.dx,s.dy,s.wx,s.wy,s.alpha,res,b,hidden.length?hidden.map(p=>p.x+':'+p.y+':'+Math.round(Number(p.occluder?.dataset.frame??0)/8)).join()+'@'+Math.round(x*.25)+','+Math.round((y-lift)*.25):'',objects.length].join();if(!active3d&&key===drawn)return;drawn=key;
   if(res!==k||b.some((v,i)=>v!==box[i])){k=res;box=b;canvas.width=Math.ceil((b[2]-b[0])*k);canvas.height=Math.ceil((b[3]-b[1])*k);}
   const lw=cell.w,lh=cell.h,fKey=`${hero.id}:${f.x},${f.y}:${lw}x${lh}:${tint}:${qNight.toFixed(2)}`;
   let fCan=frameCache.get(fKey);
@@ -476,6 +477,8 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
   const dirInput=o.direction();
   const isMovingNow=state==='move'||Math.hypot(dirInput.x,dirInput.y)>.05;
   const res3d=active3d?measureTracelogPhase('hero3d',()=>r3d!.updateAndRender({heroId:hero.id,clip:pose?pose.clip:state,moving:isMovingNow,yaw:yaw3d,dt:lastDt,tint,night,sun:s,cell})):null;
+  const shadowTop=res3d?res3d.spriteTop*cell.h/(res3d.spriteH-res3d.spriteTop):0;
+  publishActorShadowFrame(heroView.sprite,{source:res3d?.sprite??atlas,frame:res3d?[0,0,res3d.spriteW,res3d.spriteH]:[f.x,f.y,f.w,f.h],width:cell.w*DISPLAY,height:(cell.h+shadowTop)*DISPLAY,pivot:[pivot.x/cell.w,(pivot.y+shadowTop)/(cell.h+shadowTop)],flip:!res3d&&dir<0,revision:res3d?.revision??`${f.x},${f.y}`});
   if(res3d&&res3d.revision===last3dRevision&&key===lastCompositeKey)return;
   last3dRevision=res3d?.revision??-1;lastCompositeKey=key;
   const local=()=>c.setTransform(k,0,0,k,-box[0]*k,-box[1]*k);
@@ -484,7 +487,7 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
    c.save();c.translate(0,-2);c.scale(1,.52);const pg=c.createRadialGradient(0,0,2,0,0,40);pg.addColorStop(0,`rgba(255,206,136,${(.24*qNight).toFixed(3)})`);pg.addColorStop(.55,`rgba(255,178,102,${(.1*qNight).toFixed(3)})`);pg.addColorStop(1,'rgba(255,160,85,0)');c.fillStyle=pg;c.fillRect(-40,-40,80,80);c.restore();
   }
   if(res3d){
-   if(res3d.shadow){
+   if(res3d.shadow&&!unifiedActorShadowsActive()){
     const sh=res3d.shadow;
     c.save();
     c.globalAlpha=Math.max(.34,s.alpha);

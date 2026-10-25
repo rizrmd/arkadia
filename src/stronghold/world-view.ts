@@ -44,7 +44,7 @@ export async function createWorldView(
  worldStage.sortableChildren=true;
  const staticStage=new Container();staticStage.sortableChildren=true;staticStage.zIndex=10;worldStage.addChild(staticStage);
  const useDepthShadows=rt.app.renderer.type===RendererType.WEBGL&&new URLSearchParams(location.search).get('shadowField')!=='0';
- const sceneShadows=useDepthShadows?createSceneShadows(staticStage,()=>requestDraw(),rt.app.renderer):null;
+ const sceneShadows=useDepthShadows?createSceneShadows(staticStage,()=>requestDraw(),rt.app.renderer,rt.app.stage):null;
  (window as any).__SCENE_SHADOWS__=useDepthShadows?sceneShadows:null;
  uiStage.sortableChildren=true;
 

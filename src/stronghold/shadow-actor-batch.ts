@@ -1,9 +1,9 @@
 import {DefaultBatcher,Shader,UniformGroup,compileHighShaderGlProgram,colorBitGl,generateTextureBatchBitGl,getBatchSamplersUniformGroup,roundPixelsBitGl,extensions,ExtensionType,type BatcherOptions,type Renderer,type Sprite,type TextureSource,type Batch} from 'pixi.js';
 import {SHADOW_SAMPLING_GLSL} from './shadow-sampling';
-export type ActorAnchor={groundY:number;lift:number;owner?:number};
+import {actorAnchorForSprite,actorAnchorForTexture} from './shadow-actor-sources';
+export {registerActorShadowSprite} from './shadow-actor-sources';
+export type {ActorAnchor} from './shadow-actor-sources';
 export type ActorShadowBindings={uCamera:Float32Array;uSun:Float32Array;uDynamicSun:Float32Array;uLightBounds:Float32Array;uDynamicLightBounds:Float32Array;textures:TextureSource[]};
-const actors=new WeakMap<Sprite,()=>ActorAnchor>(),sources=new WeakMap<TextureSource,()=>ActorAnchor>();
-export function registerActorShadowSprite(sprite:Sprite,anchor:()=>ActorAnchor){actors.set(sprite,anchor);sources.set(sprite.texture.source,anchor);}
 class ActorShadowShader extends Shader{
  readonly count:number;
  constructor(count:number){
@@ -27,11 +27,11 @@ export function installActorShadowReceivers(renderer:Renderer,provider:Provider)
  if(!installed.has(renderer)){
   installed.add(renderer);
   const pipe=(renderer.renderPipes as any).sprite,get=pipe._getGpuSprite.bind(pipe);
-  pipe._getGpuSprite=(sprite:Sprite)=>{const gpu=get(sprite);if(actors.has(sprite))gpu.batcherName='shadow-actors';return gpu;};
+  pipe._getGpuSprite=(sprite:Sprite)=>{const gpu=get(sprite);if(actorAnchorForSprite(sprite))gpu.batcherName='shadow-actors';return gpu;};
   const adaptor=(renderer.renderPipes as any).batch._adaptor,execute=adaptor.execute.bind(adaptor);
   adaptor.execute=(batchPipe:any,batch:Batch)=>{
    const shader=batch.batcher.shader;
-   if(shader instanceof ActorShadowShader){const binding=providers.get(renderer)?.();if(binding){const group=shader.resources.actorUniforms as UniformGroup,uniforms=group.uniforms,anchors=uniforms.uActorAnchors as Float32Array;anchors.fill(0);for(let i=0;i<batch.textures.count;i++){const anchor=sources.get(batch.textures.textures[i])?.();if(anchor)anchors.set([anchor.groundY,anchor.lift,anchor.owner??3900,1],i*4);}
+   if(shader instanceof ActorShadowShader){const binding=providers.get(renderer)?.();if(binding){const group=shader.resources.actorUniforms as UniformGroup,uniforms=group.uniforms,anchors=uniforms.uActorAnchors as Float32Array;anchors.fill(0);for(let i=0;i<batch.textures.count;i++){const anchor=actorAnchorForTexture(batch.textures.textures[i])?.();if(anchor)anchors.set([anchor.groundY,anchor.lift,anchor.owner??3900,1],i*4);}
      for(const name of ['uCamera','uSun','uDynamicSun','uLightBounds','uDynamicLightBounds'] as const)uniforms[name]=binding[name];
      (renderer as any).shader.updateUniformGroup(group);
      // Stock adaptor overwrites only units 0..batch.count-1. The four field

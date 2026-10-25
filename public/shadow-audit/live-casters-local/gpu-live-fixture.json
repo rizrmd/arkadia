@@ -1,0 +1,94 @@
+{
+  "result": {
+    "ok": true,
+    "checks": {
+      "actor casts on raised receiver": [
+        137,
+        142,
+        150,
+        255
+      ],
+      "actor casts on ground": [
+        137,
+        142,
+        150,
+        255
+      ],
+      "original alpha opening": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "same-frame mirror hole": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "same-frame mirror solid": [
+        137,
+        142,
+        150,
+        255
+      ],
+      "same-frame animation fills former hole": [
+        137,
+        142,
+        150,
+        255
+      ],
+      "receiver above actor stays lit": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "overlapping actors remain opaque": [
+        137,
+        142,
+        150,
+        255
+      ],
+      "gateway mesh casts on raised receiver": [
+        137,
+        142,
+        150,
+        255
+      ],
+      "removed dynamic caster leaves no stale shadow": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "gateway receives static caster": [
+        137,
+        142,
+        150,
+        255
+      ],
+      "gateway above caster stays lit": [
+        255,
+        255,
+        255,
+        255
+      ]
+    },
+    "primaryOwner": 3000,
+    "secondOwner": 3001,
+    "nearHorizontalShadowPixels": 813,
+    "dynamic": {
+      "updates": 9,
+      "actors": 2,
+      "extraSurfaces": 0,
+      "drawnVertices": 16,
+      "pixels": 9024,
+      "bytes": 144392,
+      "renderMs": 0.5,
+      "ready": true
+    },
+    "scope": "Actual Pixi WebGL casts/receivers; software GPU. Runtime has no readback."
+  },
+  "errors": []
+}

@@ -1,0 +1,77 @@
+{
+  "ok": true,
+  "actorReceive": [
+    137,
+    142,
+    150,
+    255
+  ],
+  "raisedBlocked": [
+    137,
+    142,
+    150,
+    255
+  ],
+  "groundBlocked": [
+    137,
+    142,
+    150,
+    255
+  ],
+  "alphaHole": [
+    255,
+    255,
+    255,
+    255
+  ],
+  "mirroredHole": [
+    255,
+    255,
+    255,
+    255
+  ],
+  "mirroredSolid": [
+    137,
+    142,
+    150,
+    255
+  ],
+  "aboveCaster": [
+    255,
+    255,
+    255,
+    255
+  ],
+  "assertions": [
+    "GPU raised-object receive",
+    "GPU snow-plane receive",
+    "original alpha hole preserved",
+    "receiver above caster rejected",
+    "mirrored original-alpha registration",
+    "native actor batch shadow reception"
+  ],
+  "stats": {
+    "surfaces": 2,
+    "samples": 340,
+    "rebuilds": 4,
+    "buildMs": 4.5,
+    "bytes": 72556,
+    "receiverPixels": 8633,
+    "depthPixels": 4753,
+    "ready": true,
+    "error": "",
+    "sun": {
+      "dx": 1,
+      "dy": 0.5,
+      "alpha": 0.5
+    },
+    "model": "original alpha, explicit billboard/relief geometry; light-space depth compare",
+    "uploadMs": 0.5999999046325684,
+    "dynamic": {
+      "updates": 0,
+      "surfaces": 0,
+      "buildMs": 0,
+      "ready": false
+    }
+  }
+}

@@ -1,3 +1,4 @@
+import {unifiedActorShadowsActive} from './shadow-actor-sources';
 // Real-time 60 FPS 3D character renderer for Stronghold (ENABLED BY DEFAULT for both Rift Runner & Ember Warden;
 // pass ?3d=0 to fall back to legacy 2D spritesheets).
 // Features:
@@ -960,7 +961,7 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
       }
 
       pendingDt+=dt;
-      const cacheKey=[heroId,targetClip,currentYaw.toFixed(3),tint,Math.round(night*50),sun?.alpha.toFixed(2),sun?.dx.toFixed(2),sun?.dy.toFixed(2),renderQuality.get().tier].join('|');
+      const cacheKey=[unifiedActorShadowsActive(),heroId,targetClip,currentYaw.toFixed(3),tint,Math.round(night*50),sun?.alpha.toFixed(2),sun?.dx.toFixed(2),sun?.dy.toFixed(2),renderQuality.get().tier].join('|');
       if(cachedResult&&targetClip==='idle'&&!moving&&cacheKey===lastRenderKey&&now-lastRenderedAt<1000/renderQuality.get().idleFps)return cachedResult;
       const renderDt=pendingDt;pendingDt=0;lastRenderedAt=now;lastRenderKey=cacheKey;
       measureRenderDetail('heroAnimation',()=>entry.mixer.update(renderDt));
@@ -999,7 +1000,7 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
       measureRenderDetail('heroCopy',()=>renderer.copyFramebufferToTexture(srcTex, copyAt));
 
       // Project realistic ground shadow anchored directly at the boots (ht = 0 at y = botCol[x])
-      const shadow = sun && cell ? measureRenderDetail('heroShadow',()=>renderFootAnchoredShadow(sun, cell)) : null;
+      const shadow = sun && cell && !unifiedActorShadowsActive() ? measureRenderDetail('heroShadow',()=>renderFootAnchoredShadow(sun, cell)) : null;
 
       // Apply 2D Hand-Painted Sprite Pass (dark ink outline + internal creases) over the raw 3D pass
       measureRenderDetail('heroPost',()=>applyHandPaintedSpritePass(tint, night));

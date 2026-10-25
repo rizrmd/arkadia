@@ -1,3 +1,4 @@
+import {publishActorShadowFrame,actorShadowModeRevision} from './shadow-actor-sources';
 import {registerActorShadowSprite} from './shadow-actor-batch';
 import {STRONGHOLD} from './prefabs/stronghold';
 import type {ItemId} from './items';
@@ -661,7 +662,7 @@ export async function createEncounters(o:{
  function view(f:Foe){
   let v=views.get(f);if(v)return v;
   const el=document.createElement('canvas');
-  const canvasView=createCanvasSprite(el);registerActorShadowSprite(canvasView.sprite,()=>{const p=tilePoint(f.x,f.y);return {groundY:p.y,lift:liftAtTile(f.x,f.y),owner:3901};});
+  const canvasView=createCanvasSprite(el);registerActorShadowSprite(canvasView.sprite,()=>{const p=tilePoint(f.x,f.y);return {groundX:p.x,groundY:p.y,lift:liftAtTile(f.x,f.y)};});
   const bar=bars.addChild(new Container());
   bar.visible=false;
   const barTrack=bar.addChild(o.frames.frame('overhead-bar',44,8));
@@ -727,7 +728,8 @@ export async function createEncounters(o:{
   drawProgress();
   syncSkillBar();
   const dpr=Math.min(devicePixelRatio||1,2),hp=o.hero.position(),k=origin.scale,at=(x:number,y:number)=>({x:origin.x+x*k,y:origin.y+y*k});
-  const shown=foes.filter(f=>{if(f.deadFor>CORPSE-500&&!f.alive)return false;const w=tilePoint(f.x,f.y),s=at(w.x,w.y);return s.x>-80&&s.x<innerWidth+80&&s.y>-40&&s.y<innerHeight+120;});
+  const casterSun=o.hero.sun(),reach=(meta.cell.h+24)*DISPLAY,marginX=80+Math.abs(casterSun.dx)*reach*k,marginY=120+Math.abs(casterSun.dy)*reach*k;
+  const shown=foes.filter(f=>{if(f.deadFor>CORPSE-500&&!f.alive)return false;const w=tilePoint(f.x,f.y),s=at(w.x,w.y);return s.x>-marginX&&s.x<innerWidth+marginX&&s.y>-marginY&&s.y<innerHeight+marginY;});
   const live=new Set<Foe>();
   if(shown.length){
    // Keep raster lighting stable below a pixel of shadow movement. Raw daylight
@@ -739,7 +741,7 @@ export async function createEncounters(o:{
    const ends=[-half,half].flatMap(w=>[0,H0].flatMap(h=>[[w+h*sun.dx,h*sun.dy],[w*sun.wx+h*sun.dx,w*sun.wy+h*sun.dy]])),sxs=[-half,half,...ends.map(e=>e[0])],sys=[top,bottom,...ends.map(e=>e[1]-12),...ends.map(e=>e[1]+12)];
    const box=[Math.floor(Math.min(...sxs))-8,Math.floor(Math.min(...sys))-8,Math.ceil(Math.max(...sxs))+8,Math.ceil(Math.max(...sys))+8];
    lastBox=box;
-   const light=[ambient,sun.alpha,sun.dx,sun.dy,sun.wx,sun.wy,r,box].join();
+   const light=[actorShadowModeRevision(),ambient,sun.alpha,sun.dx,sun.dy,sun.wx,sun.wy,r,box].join();
    let lightRefreshes=0;
    for(const f of shown.sort((a,b)=>tilePoint(a.x,a.y).y-tilePoint(b.x,b.y).y)){
     const w=tilePoint(f.x,f.y),lift=liftAtTile(f.x,f.y),s=at(w.x,w.y-lift),shk=vfx.shakeOffset(f);
@@ -749,6 +751,8 @@ export async function createEncounters(o:{
     if(v.canvasView.sprite.parent!==targetParent)targetParent.addChild(v.canvasView.sprite);
     v.canvasView.sprite.zIndex=w.y;
     v.canvasView.sprite.visible=true;
+    const frameIndex=f.clip.frames[f.frame()],frame=meta.frames[frameIndex];
+    publishActorShadowFrame(v.canvasView.sprite,{source:atlas,frame:[frame.x,frame.y,frame.w,frame.h],width:meta.cell.w*DISPLAY,height:meta.cell.h*DISPLAY,pivot:[pivot.x/meta.cell.w,pivot.y/meta.cell.h],flip:!f.vertical&&f.facing<0,revision:frameIndex});
     const coreId=`${f.clip.frames[f.frame()]}|${f.vertical?0:f.facing}`;
     const occKey=hidden.length?`${hidden.map(p=>p.x+':'+p.y).join()}@${Math.round(w.x*.25)},${Math.round((w.y-lift)*.25)}`:'';
     const coreLook=occKey?`${coreId}|${occKey}`:coreId;
