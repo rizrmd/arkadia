@@ -30,8 +30,8 @@ try{
   await page.goto(`${report.base}/?offline=1&time=${time}`,{timeout:120000});
   await page.waitForFunction(()=>window.__SCENE_SHADOWS__?.stats().ready&&!document.querySelector('#loading-screen'),null,{timeout:120000});
   await page.waitForTimeout(700);
-  const stats=await page.evaluate(()=>window.__SCENE_SHADOWS__.stats());assert.equal(stats.error,'');
-  const image=`${process.env.PREFIX||'after'}-${time}.png`;await page.screenshot({path:out+'/'+image});report.runs.push({time,stats,image});
+  const stats=await page.evaluate(()=>window.__SCENE_SHADOWS__.stats());assert.equal(stats.error,'');console.log(JSON.stringify({time,ready:stats.ready,error:stats.error}));
+  const image=`${process.env.PREFIX||'after'}-${time}.png`;await page.screenshot({path:out+'/'+image,timeout:120000});report.runs.push({time,stats,image});
  }
  assert.deepEqual(report.errors,[]);
 }finally{await browser?.close();await vite?.close();await fs.writeFile(out+'/verification.json',JSON.stringify(report,null,2)+'\n');}

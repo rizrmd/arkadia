@@ -1,0 +1,114 @@
+{
+  "ok": true,
+  "base": "https://ark-whachat.fural.space",
+  "implementationCommit": "56e11b9a",
+  "deploymentRelease": "1792947873240-game-b5837c44-8551fce12253",
+  "checks": [
+    "Explicit ridge and eave heights",
+    "Ground contact at wall feet and rope stakes",
+    "Scale, vertical scale and shear reconstruction",
+    "Three live light angles with ready shadow renderer and no page errors"
+  ],
+  "runs": [
+    {
+      "time": ".3",
+      "stats": {
+        "surfaces": 447,
+        "samples": 83301,
+        "rebuilds": 1,
+        "buildMs": 1895.4000000953674,
+        "bytes": 8908072,
+        "receiverPixels": 584548,
+        "depthPixels": 821235,
+        "ready": true,
+        "error": "",
+        "sun": {
+          "dx": 1.59394236711567,
+          "dy": 0.09168415256286729,
+          "alpha": 0.4
+        },
+        "model": "original alpha, explicit billboard/relief geometry; light-space depth compare",
+        "uploadMs": 11,
+        "dynamic": {
+          "updates": 5,
+          "actors": 1,
+          "extraSurfaces": 1,
+          "drawnVertices": 59,
+          "pixels": 155008,
+          "bytes": 2893312,
+          "renderMs": 0.9000000953674316,
+          "ready": true
+        }
+      },
+      "image": "live-.3.png"
+    },
+    {
+      "time": ".5416667",
+      "stats": {
+        "surfaces": 447,
+        "samples": 64155,
+        "rebuilds": 1,
+        "buildMs": 932.2999999523163,
+        "bytes": 7871624,
+        "receiverPixels": 584548,
+        "depthPixels": 691679,
+        "ready": true,
+        "error": "",
+        "sun": {
+          "dx": 0.22436934685047463,
+          "dy": 0.33048539087674106,
+          "alpha": 0.4
+        },
+        "model": "original alpha, explicit billboard/relief geometry; light-space depth compare",
+        "uploadMs": 26,
+        "dynamic": {
+          "updates": 4,
+          "actors": 1,
+          "extraSurfaces": 1,
+          "drawnVertices": 59,
+          "pixels": 117115,
+          "bytes": 2287024,
+          "renderMs": 0.7999999523162842,
+          "ready": true
+        }
+      },
+      "image": "live-.5416667.png"
+    },
+    {
+      "time": ".72",
+      "stats": {
+        "surfaces": 447,
+        "samples": 74308,
+        "rebuilds": 1,
+        "buildMs": 1594.6000001430511,
+        "bytes": 8796272,
+        "receiverPixels": 584548,
+        "depthPixels": 807260,
+        "ready": true,
+        "error": "",
+        "sun": {
+          "dx": -0.8257977693177783,
+          "dy": 0.742976790382745,
+          "alpha": 0.4
+        },
+        "model": "original alpha, explicit billboard/relief geometry; light-space depth compare",
+        "uploadMs": 11.399999856948853,
+        "dynamic": {
+          "updates": 7,
+          "actors": 1,
+          "extraSurfaces": 1,
+          "drawnVertices": 59,
+          "pixels": 166656,
+          "bytes": 3079680,
+          "renderMs": 0.6999998092651367,
+          "ready": true
+        }
+      },
+      "image": "live-.72.png"
+    }
+  ],
+  "notes": [
+    "The first live attempt encountered a sandbox OOM incident. The next run captured morning and 13:00 before a concurrent release interrupted the evening load. Evening was rerun separately and passed.",
+    "Screenshots use desktop Chromium with a 430x932 viewport and software WebGL; this is not a hardware phone performance measurement."
+  ]
+}

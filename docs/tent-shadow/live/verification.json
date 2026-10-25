@@ -1,0 +1,70 @@
+{
+  "base": "https://ark-whachat.fural.space",
+  "errors": [],
+  "runs": [
+    {
+      "time": ".3",
+      "stats": {
+        "surfaces": 447,
+        "samples": 83301,
+        "rebuilds": 1,
+        "buildMs": 1895.4000000953674,
+        "bytes": 8908072,
+        "receiverPixels": 584548,
+        "depthPixels": 821235,
+        "ready": true,
+        "error": "",
+        "sun": {
+          "dx": 1.59394236711567,
+          "dy": 0.09168415256286729,
+          "alpha": 0.4
+        },
+        "model": "original alpha, explicit billboard/relief geometry; light-space depth compare",
+        "uploadMs": 11,
+        "dynamic": {
+          "updates": 5,
+          "actors": 1,
+          "extraSurfaces": 1,
+          "drawnVertices": 59,
+          "pixels": 155008,
+          "bytes": 2893312,
+          "renderMs": 0.9000000953674316,
+          "ready": true
+        }
+      },
+      "image": "live-.3.png"
+    },
+    {
+      "time": ".5416667",
+      "stats": {
+        "surfaces": 447,
+        "samples": 64155,
+        "rebuilds": 1,
+        "buildMs": 932.2999999523163,
+        "bytes": 7871624,
+        "receiverPixels": 584548,
+        "depthPixels": 691679,
+        "ready": true,
+        "error": "",
+        "sun": {
+          "dx": 0.22436934685047463,
+          "dy": 0.33048539087674106,
+          "alpha": 0.4
+        },
+        "model": "original alpha, explicit billboard/relief geometry; light-space depth compare",
+        "uploadMs": 26,
+        "dynamic": {
+          "updates": 4,
+          "actors": 1,
+          "extraSurfaces": 1,
+          "drawnVertices": 59,
+          "pixels": 117115,
+          "bytes": 2287024,
+          "renderMs": 0.7999999523162842,
+          "ready": true
+        }
+      },
+      "image": "live-.5416667.png"
+    }
+  ]
+}

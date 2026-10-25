@@ -1,0 +1,38 @@
+{
+  "base": "https://ark-whachat.fural.space",
+  "errors": [],
+  "runs": [
+    {
+      "time": ".72",
+      "stats": {
+        "surfaces": 447,
+        "samples": 74308,
+        "rebuilds": 1,
+        "buildMs": 1594.6000001430511,
+        "bytes": 8796272,
+        "receiverPixels": 584548,
+        "depthPixels": 807260,
+        "ready": true,
+        "error": "",
+        "sun": {
+          "dx": -0.8257977693177783,
+          "dy": 0.742976790382745,
+          "alpha": 0.4
+        },
+        "model": "original alpha, explicit billboard/relief geometry; light-space depth compare",
+        "uploadMs": 11.399999856948853,
+        "dynamic": {
+          "updates": 7,
+          "actors": 1,
+          "extraSurfaces": 1,
+          "drawnVertices": 59,
+          "pixels": 166656,
+          "bytes": 3079680,
+          "renderMs": 0.6999998092651367,
+          "ready": true
+        }
+      },
+      "image": "live-.72.png"
+    }
+  ]
+}
