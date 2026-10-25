@@ -1,0 +1,232 @@
+{
+ "version": 1,
+ "atlasSha256": "5083a8ebd8c8bb4bb4fccc0dcaaa9f71deb9821af1648fbf053506c37617961c",
+ "heightUnit": "Fraction of the logical source-frame height; vertical placement scale is applied once.",
+ "alphaPolicy": "Original alpha supplies every occupied source cell. No RGB value is used as height or depth.",
+ "assets": {
+  "court:crate": {
+   "model": "closed alpha solid with capped front and back camera-ray intervals",
+   "source": "/modular-stronghold/crate.png",
+   "sourceSize": [
+    619,
+    640
+   ],
+   "frame": [
+    0,
+    0,
+    619,
+    640
+   ],
+   "sourceSha256": "62baacbeec9d1efdfd40574d361d75266af3d310da737abf27601af68931e04f",
+   "alphaSha256": "53ebbdda564f9ca49c67cc366212636baf8e9e716ceb526c1ec84a8c0f393cec",
+   "capHeightFraction": 0.56,
+   "frontGround": [
+    0.751563,
+    0.775977,
+    0.803236,
+    0.833266,
+    0.863296,
+    0.893326,
+    0.923356,
+    0.953418,
+    0.989062,
+    0.978711,
+    0.965625,
+    0.965625,
+    0.965625,
+    0.965625,
+    0.965625,
+    0.965625,
+    0.965625
+   ],
+   "backGround": [
+    0.775625,
+    0.738711,
+    0.717812,
+    0.69125,
+    0.663125,
+    0.63793,
+    0.610391,
+    0.570352,
+    0.570937,
+    0.599063,
+    0.616641,
+    0.635,
+    0.655312,
+    0.675625,
+    0.695937,
+    0.71,
+    0.736563
+   ],
+   "reason": "Closed box. Visible front roof seam is near v=.43 and front foot near v=.99; use a level cap and camera-ray body depth."
+  },
+  "court:barrel": {
+   "model": "closed alpha solid with capped front and back camera-ray intervals",
+   "source": "/modular-stronghold/barrel.png",
+   "sourceSize": [
+    463,
+    640
+   ],
+   "frame": [
+    0,
+    0,
+    463,
+    640
+   ],
+   "sourceSha256": "054016da47bf8bb38a288753daf2d1cec85f454881769a2b214a6cf8faf26e12",
+   "alphaSha256": "953a08f9a425d41731653ab14cf8b93af3ec32aaa500637e71f0b7b44818c0b3",
+   "capHeightFraction": 0.745,
+   "frontGround": [
+    0.878125,
+    0.878125,
+    0.886328,
+    0.939063,
+    0.965625,
+    0.98125,
+    0.992188,
+    0.996875,
+    0.998437,
+    0.996875,
+    0.990625,
+    0.98125,
+    0.964844,
+    0.938477,
+    0.886328,
+    0.83125,
+    0.83125
+   ],
+   "backGround": [
+    1.17,
+    0.900664,
+    0.807891,
+    0.783086,
+    0.767656,
+    0.758086,
+    0.75125,
+    0.748125,
+    0.746563,
+    0.748125,
+    0.752422,
+    0.759063,
+    0.768438,
+    0.784063,
+    0.807891,
+    0.895586,
+    1.166875
+   ],
+   "reason": "Closed cask. Front lid rim is near v=.25 and front foot near v=.995; preserve the opaque lid and side volume."
+  },
+  "frontier:column-fallen": {
+   "model": "closed alpha solid with capped front and back camera-ray intervals",
+   "source": "/frozen-frontier/game/atlas-5083a8ebd8c8bb4b.webp",
+   "sourceSize": [
+    2048,
+    2048
+   ],
+   "frame": [
+    1531,
+    1655,
+    186,
+    126
+   ],
+   "sourceSha256": "5083a8ebd8c8bb4bb4fccc0dcaaa9f71deb9821af1648fbf053506c37617961c",
+   "alphaSha256": "13a13f184ffdbf7d83e9d29ebcd9842f7c865cc007479931a967afb9ad8b71a7",
+   "capHeightFraction": 0.22,
+   "frontGround": [
+    0.3767,
+    0.4126,
+    0.4484,
+    0.5,
+    0.5605,
+    0.6166,
+    0.6637,
+    0.6771,
+    0.7444,
+    0.7892,
+    0.8475,
+    0.8946,
+    0.9058,
+    0.8632,
+    0.8117,
+    0.7668,
+    0.7668
+   ],
+   "backGround": [
+    0.56127,
+    0.330119,
+    0.298373,
+    0.24381,
+    0.281508,
+    0.315238,
+    0.294405,
+    0.339048,
+    0.386667,
+    0.457103,
+    0.458095,
+    0.521587,
+    0.745794,
+    0.738353,
+    0.790437,
+    0.958095,
+    0.958095
+   ],
+   "reason": "Low solid fallen beam. The visible side wall is about .22 of this source frame; this does not alter standing pillars or stairs."
+  },
+  "frontier:column-fallen-v": {
+   "model": "closed alpha solid with capped front and back camera-ray intervals",
+   "source": "/frozen-frontier/game/atlas-5083a8ebd8c8bb4b.webp",
+   "sourceSize": [
+    2048,
+    2048
+   ],
+   "frame": [
+    1719,
+    1655,
+    186,
+    125
+   ],
+   "sourceSha256": "5083a8ebd8c8bb4bb4fccc0dcaaa9f71deb9821af1648fbf053506c37617961c",
+   "alphaSha256": "e9ff17c7e4bd2431a0aa294ce5e805500799cc49f5b861c1893e2d5331285d0f",
+   "capHeightFraction": 0.22,
+   "frontGround": [
+    0.7783,
+    0.817,
+    0.8733,
+    0.914,
+    0.9038,
+    0.8552,
+    0.7992,
+    0.7692,
+    0.7059,
+    0.6787,
+    0.6335,
+    0.5837,
+    0.5158,
+    0.4706,
+    0.4299,
+    0.3801,
+    0.3801
+   ],
+   "backGround": [
+    0.956,
+    0.8165,
+    0.756,
+    0.7295,
+    0.514,
+    0.468,
+    0.444,
+    0.396,
+    0.336,
+    0.2915,
+    0.324,
+    0.2745,
+    0.236,
+    0.284,
+    0.348,
+    0.564,
+    0.564
+   ],
+   "reason": "Low solid fallen beam, alternate source orientation. Original gaps between broken pieces remain in alpha."
+  }
+ }
+}

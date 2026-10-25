@@ -1,0 +1,10 @@
+{
+ "version":1,
+ "units":"Fraction of the logical source-frame height; vertical placement scale is applied once.",
+ "rules":{
+  "court:crate":{"source":"/modular-stronghold/crate.png","capHeightFraction":0.56,"reason":"Closed box. Visible front roof seam is near v=.43 and front foot near v=.99; use a level cap and camera-ray body depth."},
+  "court:barrel":{"source":"/modular-stronghold/barrel.png","capHeightFraction":0.745,"reason":"Closed cask. Front lid rim is near v=.25 and front foot near v=.995; preserve the opaque lid and side volume."},
+  "frontier:column-fallen":{"asset":"column-fallen","capHeightFraction":0.22,"reason":"Low solid fallen beam. The visible side wall is about .22 of this source frame; this does not alter standing pillars or stairs."},
+  "frontier:column-fallen-v":{"asset":"column-fallen-v","capHeightFraction":0.22,"reason":"Low solid fallen beam, alternate source orientation. Original gaps between broken pieces remain in alpha."}
+ }
+}

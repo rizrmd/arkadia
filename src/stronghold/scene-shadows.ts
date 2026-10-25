@@ -1,7 +1,8 @@
+import {withSolidShadowGeometry} from './solid-shadow-geometry';
 import {createLiveShadowField} from './shadow-live-field';
 import {SHADOW_SAMPLING_GLSL} from './shadow-sampling';
 import {installActorShadowReceivers} from './shadow-actor-batch';
-import {CanvasSource,Container,Filter,GlProgram,Rectangle,Texture,UniformGroup,type Renderer} from 'pixi.js';
+import {BufferImageSource,Container,Filter,GlProgram,Rectangle,Texture,UniformGroup,type Renderer} from 'pixi.js';
 import type {ShadowSun,ShadowBounds} from './shadow-field';
 import type {PackedShadowMap,ShadowView} from './shadow-map-builder';
 import {sampleSurface,type ShadowSurface} from './shadow-surfaces';
@@ -11,13 +12,14 @@ const fragment=`in vec2 vTextureCoord;in vec2 vScreen;out vec4 finalColor;unifor
 ${SHADOW_SAMPLING_GLSL}
 void main(){vec4 color=texture(uTexture,vTextureCoord);if(uSun.z<=0.0){finalColor=color;return;}vec2 world=(vScreen-uCamera.xy)/uCamera.z;vec4 receiver=texAt(uHeight,world,uHeightBounds);vec4 dynamicHeight=texAt(uDynamicHeight,world,uDynamicHeightBounds);if(dynamicHeight.a>.5)receiver=dynamicHeight;float h=zOf(receiver),own=ownerOf(receiver);float shade=shadowCoverage(world,h,own)*uSun.z;finalColor=vec4(mix(color.rgb,color.a*vec3(.078431,.109804,.172549),shade),color.a);}`;
 
-type MapTexture={canvas:HTMLCanvasElement;source:CanvasSource;texture:Texture;bounds:ShadowBounds};
+// Packed owner/height bytes must never pass through Canvas2D. Its internal
+// premultiplied storage rounds RGB when alpha <255, corrupting height/owner.
+type MapTexture={source:BufferImageSource;texture:Texture;bounds:ShadowBounds};
 function pixelsTexture(map:PackedShadowMap):MapTexture{
- const b=map.bounds,canvas=document.createElement('canvas');canvas.width=b.width;canvas.height=b.height;const c=canvas.getContext('2d')!,data=c.createImageData(b.width,b.height);data.data.set(map.pixels);c.putImageData(data,0,0);
- const source=new CanvasSource({resource:canvas,scaleMode:'nearest',autoGenerateMipmaps:false,alphaMode:'no-premultiply-alpha'}),texture=new Texture({source});return {canvas,source,texture,bounds:b};
+ const b=map.bounds,source=new BufferImageSource({resource:map.pixels,width:b.width,height:b.height,format:'rgba8unorm',scaleMode:'nearest',autoGenerateMipmaps:false,alphaMode:'no-premultiply-alpha'}),texture=new Texture({source});return {source,texture,bounds:b};
 }
 function updateMapTexture(target:MapTexture,map:PackedShadowMap){
- const b=map.bounds;if(target.canvas.width!==b.width||target.canvas.height!==b.height){target.canvas.width=b.width;target.canvas.height=b.height;}const c=target.canvas.getContext('2d')!,image=c.createImageData(b.width,b.height);image.data.set(map.pixels);c.putImageData(image,0,0);target.bounds=b;target.source.update();
+ const b=map.bounds;target.source.resource=map.pixels;target.source.resize(b.width,b.height);target.bounds=b;target.source.update();
 }
 const region=(b:ShadowBounds)=>new Float32Array([b.left,b.top,b.width*b.step,b.height*b.step]);
 export function createSceneShadows(stage:Container,onUpdate:()=>void=()=>{},renderer?:Renderer,root?:Container){
@@ -38,15 +40,16 @@ export function createSceneShadows(stage:Container,onUpdate:()=>void=()=>{},rend
  function replace(which:'uDepth'|'uHeight'|'uSecondDepth',map:PackedShadowMap){updateMapTexture((which==='uDepth'?depthTex:which==='uHeight'?heightTex:secondTex)!,map);}
  function request(){if(inFlight||!hasScene){queued=true;return;}inFlight=true;queued=false;worker.postMessage({type:'build',id:++id,revision,sun,view});}
  worker.onmessage=({data})=>{inFlight=false;if(data.error){stats.error=data.error;console.error('Scene shadow worker:',data.error);return;}
-  if(data.revision===revision){const upload=performance.now();replace('uDepth',data.depth);replace('uSecondDepth',data.second);if(data.height)replace('uHeight',data.height);uniforms.uniforms.uLightBounds=region(data.depth.bounds);uniforms.uniforms.uHeightBounds=region(heightTex!.bounds);uniforms.uniforms.uSun=new Float32Array([data.sun.dx,data.sun.dy,data.sun.alpha,data.depth.bounds.step]);
+  if(data.revision===revision){const upload=performance.now();replace('uDepth',data.depth);replace('uSecondDepth',data.second);if(data.height)replace('uHeight',data.height);uniforms.uniforms.uCamera[3]=auditSurfaces.length*2;uniforms.uniforms.uLightBounds=region(data.depth.bounds);uniforms.uniforms.uHeightBounds=region(heightTex!.bounds);uniforms.uniforms.uSun=new Float32Array([data.sun.dx,data.sun.dy,data.sun.alpha,data.depth.bounds.step]);
    const n=data.depth.bounds.width*data.depth.bounds.height,h=heightTex!.bounds.width*heightTex!.bounds.height;Object.assign(stats,{ready:true,samples:data.samples,rebuilds:stats.rebuilds+1,buildMs:data.buildMs,uploadMs:performance.now()-upload,bytes:(n*2+h)*4,receiverPixels:h,depthPixels:n,sun:data.sun});onUpdate();}
   if(queued)request();
  };
  worker.onerror=e=>{stats.error=e.message;console.error('Scene shadow worker:',e.message);};
  function setScene(surfaces:ShadowSurface[]){
-  auditSurfaces=surfaces.map(p=>({...p}));
+  surfaces=surfaces.map(withSolidShadowGeometry);auditSurfaces=surfaces.map(p=>({...p}));
   const sampled=surfaces.map((p,i)=>{const s=sampleSurface(p,2);for(const q of s.samples)q.owner=i+1;return s;});
-  const total=sampled.reduce((n,s)=>n+s.samples.length,0),packed=new Float32Array(total*18);let j=0;for(const s of sampled)for(const q of s.samples){packed[j++]=q.x;packed[j++]=q.y;packed[j++]=q.z;packed[j++]=q.alpha;packed[j++]=q.owner!;packed[j++]=s.surface.cast===false?0:1;packed.set(q.quad!,j);j+=12;}
+  const aliases=surfaces.map((p,i)=>p.backGround?surfaces.length*2+i+1:0);if(Math.max(surfaces.length,...aliases)>=3000)throw Error('Static shadow owner pool overlaps actor owners');
+  const total=sampled.reduce((n,s)=>n+s.samples.length,0),packed=new Float32Array(total*18);let j=0;for(const [index,s] of sampled.entries())for(const q of s.samples){packed[j++]=q.x;packed[j++]=q.y;packed[j++]=q.z;packed[j++]=q.alpha;packed[j++]=q.opaqueProxy?aliases[index]:q.owner!;packed[j++]=(s.surface.cast===false?0:1)|(q.receive===false?0:2);packed.set(q.quad!,j);j+=12;}
   revision++;hasScene=true;stats.surfaces=surfaces.length;stats.ready=false;worker.postMessage({type:'scene',packed},[packed.buffer]);queued=true;queueMicrotask(()=>{if(!inFlight&&queued)request();});
  }
  function setSun(s:ShadowSun){live?.setSun(s);const next=s.alpha?[s.dx,s.dy,s.alpha].map(n=>n.toFixed(3)).join():'night';sun={dx:s.dx,dy:s.dy,alpha:s.alpha};if(next===key)return;if(!live&&dynamicScene.length){dynamicRevision++;dynamicQueued=true;if(!dynamicInFlight)updateDynamic();}key=next;queued=true;queueMicrotask(()=>{if(!inFlight&&queued)request();});}
@@ -54,7 +57,8 @@ export function createSceneShadows(stage:Container,onUpdate:()=>void=()=>{},rend
  let dynamicRevision=0,dynamicInFlight=false,dynamicQueued=false,dynamicScene:ShadowSurface[]=[];
  const dynamicStats={updates:0,surfaces:0,buildMs:0,ready:false};
  function updateDynamic(){if(dynamicInFlight||!dynamicScene.length){dynamicQueued=true;return;}dynamicInFlight=true;dynamicQueued=false;const sampled=dynamicScene.map((p,i)=>{const a=sampleSurface(p,1.5);for(const q of a.samples)q.owner=4000+i;return a;});
-  const packed=new Float32Array(sampled.reduce((n,s)=>n+s.samples.length,0)*18);let j=0;for(const s of sampled)for(const q of s.samples){packed[j++]=q.x;packed[j++]=q.y;packed[j++]=q.z;packed[j++]=q.alpha;packed[j++]=q.owner!;packed[j++]=s.surface.cast===false?0:1;packed.set(q.quad!,j);j+=12;}
+  if(4000+sampled.length*2>4095)throw Error('Dynamic shadow owner pool exhausted');const aliases=sampled.map((_,i)=>4000+sampled.length+i);
+  const packed=new Float32Array(sampled.reduce((n,s)=>n+s.samples.length,0)*18);let j=0;for(const [index,s] of sampled.entries())for(const q of s.samples){packed[j++]=q.x;packed[j++]=q.y;packed[j++]=q.z;packed[j++]=q.alpha;packed[j++]=q.opaqueProxy?aliases[index]:q.owner!;packed[j++]=(s.surface.cast===false?0:1)|(q.receive===false?0:2);packed.set(q.quad!,j);j+=12;}
   dynamicWorker?.postMessage({type:'scene',packed},[packed.buffer]);dynamicWorker?.postMessage({type:'build',id:dynamicRevision,revision:dynamicRevision,sun});
  }
  if(dynamicWorker)dynamicWorker.onmessage=({data})=>{dynamicInFlight=false;if(data.error){stats.error=data.error;console.error('Dynamic scene shadow:',data.error);return;}
@@ -64,7 +68,7 @@ export function createSceneShadows(stage:Container,onUpdate:()=>void=()=>{},rend
  };
  if(dynamicWorker)dynamicWorker.onerror=e=>{stats.error=e.message;console.error('Dynamic scene shadow:',e.message);};
  function setDynamic(surfaces:ShadowSurface[]){if(live){live.setExtra(surfaces);return;}dynamicScene=surfaces;dynamicRevision++;dynamicQueued=true;if(!dynamicInFlight)updateDynamic();}
- function place(x:number,y:number,scale:number,w:number,h:number){uniforms.uniforms.uCamera=new Float32Array([x,y,scale,0]);area.x=0;area.y=0;area.width=w;area.height=h;
+ function place(x:number,y:number,scale:number,w:number,h:number){uniforms.uniforms.uCamera=new Float32Array([x,y,scale,uniforms.uniforms.uCamera[3]]);area.x=0;area.y=0;area.width=w;area.height=h;
   const next={left:Math.floor(-x/scale/128)*128-192,top:Math.floor(-y/scale/128)*128-192,right:Math.ceil((w-x)/scale/128)*128+192,bottom:Math.ceil((h-y)/scale/128)*128+192,step:1.25},sig=JSON.stringify(next);if(sig!==viewKey){viewKey=sig;view=next;live?.setView(next);revision++;queued=true;queueMicrotask(()=>{if(!inFlight&&queued)request();});}
  }
  const actorBindings=()=>({uCamera:uniforms.uniforms.uCamera,uSun:uniforms.uniforms.uSun,uDynamicSun:uniforms.uniforms.uDynamicSun,uLightBounds:uniforms.uniforms.uLightBounds,uDynamicLightBounds:uniforms.uniforms.uDynamicLightBounds,textures:[depthTex!.source,secondTex!.source,live?.primary??dynamicMaps.uDynamicDepth.source,live?.second??dynamicMaps.uDynamicSecond.source]});

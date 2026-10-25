@@ -1,7 +1,7 @@
 // Screen-world light-space depth field. All heights are explicit geometry units;
 // alpha controls coverage only. No colour channel is ever interpreted as height.
 export type ShadowSun={dx:number;dy:number;alpha:number};
-export type ShadowSample={x:number;y:number;z:number;alpha:number;owner?:number;quad?:Float32Array};
+export type ShadowSample={x:number;y:number;z:number;alpha:number;owner?:number;quad?:Float32Array;receive?:boolean;opaqueProxy?:boolean};
 export type ShadowBounds={left:number;top:number;step:number;width:number;height:number};
 export type ShadowPixels={bounds:ShadowBounds;depth:Float32Array;coverage:Uint8Array;owner?:Uint16Array;secondDepth?:Float32Array;secondCoverage?:Uint8Array;secondOwner?:Uint16Array};
 export function lightPoint(p:ShadowSample,s:ShadowSun){return {x:p.x+s.dx*p.z,y:p.y+s.dy*p.z};}
@@ -19,16 +19,16 @@ export function fieldBounds(samples:readonly ShadowSample[],sun:ShadowSun,step=3
 // leave periodic holes when sun/shear stretches adjacent samples farther than
 // two shadow texels. Shared source-cell corners form a continuous triangle mesh.
 const projectedQuad=new Float64Array(12),quadTriangles=[[0,1,2],[0,2,3]] as const;
-export function rasterSample(p:ShadowSample,sun:ShadowSun,b:ShadowBounds,write:(index:number,z:number,alpha:number,owner:number)=>void){
+export function rasterSample(p:ShadowSample,sun:ShadowSun,b:ShadowBounds,write:(index:number,z:number,alpha:number,owner:number)=>void,conservative=true){
  const alpha=Math.round(p.alpha*255),owner=p.owner??1;
  if(!p.quad){const q=lightPoint(p,sun),x=Math.floor((q.x-b.left)/b.step),y=Math.floor((q.y-b.top)/b.step);for(let j=0;j<2;j++)for(let i=0;i<2;i++){const xx=x+i,yy=y+j;if(xx>=0&&yy>=0&&xx<b.width&&yy<b.height)write(yy*b.width+xx,p.z,alpha,owner);}return;}
  const q=p.quad,v=projectedQuad;for(let i=0;i<12;i+=3){v[i]=(q[i]+sun.dx*q[i+2]-b.left)/b.step;v[i+1]=(q[i+1]+sun.dy*q[i+2]-b.top)/b.step;v[i+2]=q[i+2];}
  for(const ids of quadTriangles){const ai=ids[0]*3;let di=ids[1]*3,ci=ids[2]*3;const ax=v[ai],ay=v[ai+1],az=v[ai+2];let area=(v[di]-ax)*(v[ci+1]-ay)-(v[di+1]-ay)*(v[ci]-ax);if(Math.abs(area)<1e-8)continue;if(area<0){[di,ci]=[ci,di];area=-area;}
   const dx=v[di],dy=v[di+1],dz=v[di+2],cx=v[ci],cy=v[ci+1],cz=v[ci+2];
   const x0=Math.max(0,Math.floor(Math.min(ax,dx,cx))),x1=Math.min(b.width-1,Math.floor(Math.max(ax,dx,cx))),y0=Math.max(0,Math.floor(Math.min(ay,dy,cy))),y1=Math.min(b.height-1,Math.floor(Math.max(ay,dy,cy)));
-  const A0=dy-cy,B0=cx-dx,C0=(cy-dy)*dx-(cx-dx)*dy,T0=(Math.abs(A0)+Math.abs(B0))*.5+1e-6;
-  const A1=cy-ay,B1=ax-cx,C1=(ay-cy)*cx-(ax-cx)*cy,T1=(Math.abs(A1)+Math.abs(B1))*.5+1e-6;
-  const A2=ay-dy,B2=dx-ax,C2=(dy-ay)*ax-(dx-ax)*ay,T2=(Math.abs(A2)+Math.abs(B2))*.5+1e-6;
+  const A0=dy-cy,B0=cx-dx,C0=(cy-dy)*dx-(cx-dx)*dy,T0=(Math.abs(A0)+Math.abs(B0))*(conservative?.5:0)+1e-6;
+  const A1=cy-ay,B1=ax-cx,C1=(ay-cy)*cx-(ax-cx)*cy,T1=(Math.abs(A1)+Math.abs(B1))*(conservative?.5:0)+1e-6;
+  const A2=ay-dy,B2=dx-ax,C2=(dy-ay)*ax-(dx-ax)*ay,T2=(Math.abs(A2)+Math.abs(B2))*(conservative?.5:0)+1e-6;
   // Clip each scanline against the triangle's three conservative half-planes.
   // Thin oblique quads then cost covered pixels, not their large bounding box.
   for(let y=y0;y<=y1;y++){const py=y+.5;let lo=x0+.5,hi=x1+.5;
@@ -55,10 +55,11 @@ export function makeField(samples:readonly ShadowSample[],sun:ShadowSun,step=3):
 
  return {bounds,depth,coverage,owner,secondDepth,secondCoverage,secondOwner};
 }
-export function visibilityAt(field:ShadowPixels,p:ShadowSample,sun:ShadowSun,bias=3){
+export function visibilityAt(field:ShadowPixels,p:ShadowSample,sun:ShadowSun,bias=3,aliasOffset=0){
  const q=lightPoint(p,sun),b=field.bounds,x=Math.floor((q.x-b.left)/b.step),y=Math.floor((q.y-b.top)/b.step);
  if(x<0||y<0||x>=b.width||y>=b.height)return 0;
- const k=y*b.width+x,own=p.owner&&field.owner?.[k]===p.owner,z=own?field.secondDepth?.[k]??-1:field.depth[k],a=own?field.secondCoverage?.[k]??0:field.coverage[k];return z>p.z+bias?a/255:0;
+ const same=(id:number|undefined)=>!!p.owner&&(id===p.owner||(aliasOffset>0&&p.owner<=aliasOffset/2&&id===p.owner+aliasOffset));const k=y*b.width+x,firstOwn=p.z>2&&same(field.owner?.[k]),secondOwn=p.z>2&&same(field.secondOwner?.[k]);
+ const first=!firstOwn&&field.depth[k]>p.z+bias?field.coverage[k]/255:0,second=!secondOwn&&(field.secondDepth?.[k]??-1)>p.z+bias?(field.secondCoverage?.[k]??0)/255:0;return Math.max(first,second);
 }
 // Millimetre-like precision in world px (1/16 px), up to 4095 px height. Texture
 // sources use nearest sampling: interpolation must never cross packed-byte wraps.

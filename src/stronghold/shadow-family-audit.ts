@@ -1,10 +1,10 @@
-import {Application,Container,Sprite,Texture,Filter,GlProgram} from 'pixi.js';
+import {Application,Container,Sprite,Texture,Filter,GlProgram,ImageSource,CanvasSource,Rectangle,Matrix,type TextureSource} from 'pixi.js';
 import {createSceneShadows,shadowFilterVertex} from './scene-shadows';
 import {sampleSurface,type ShadowSurface} from './shadow-surfaces';
 import type {ShadowSun} from './shadow-field';
 const suns:ShadowSun[]=[{dx:1.594,dy:.092,alpha:.55},{dx:.278,dy:.307,alpha:.55},{dx:-.826,dy:.743,alpha:.55}];
 const family=(p:ShadowSurface)=>p.key.startsWith('ff:')?p.key.split(':').slice(0,2).join(':'):p.key;
-export const surfaceAuditSignature=(p:ShadowSurface)=>JSON.stringify([family(p),p.frame,p.width,p.height,p.pivot,p.flip,p.shear,p.vertical,p.lift,p.ground,p.constantHeight,p.cast,!!p.heightAtScreen]);
+export const surfaceAuditSignature=(p:ShadowSurface)=>{const base=[family(p),p.frame,p.width,p.height,p.pivot,p.flip,p.shear,p.vertical,p.lift,p.ground,p.constantHeight,p.cast,!!p.heightAtScreen];return JSON.stringify(p.backGround?[...base,p.capHeight,p.backGround]:base);};
 export function familyAuditInventory(surfaces:ShadowSurface[]){
  const groups=new Map<string,{id:string;signature:string;family:string;surface:ShadowSurface;placements:{key:string;x:number;y:number}[]}>();
  for(const p of surfaces){const signature=surfaceAuditSignature(p),placement={key:p.key,x:p.x,y:p.y},existing=groups.get(signature);if(existing)existing.placements.push(placement);else groups.set(signature,{id:'variant:'+groups.size,signature,family:family(p),surface:p,placements:[placement]});}
@@ -23,20 +23,22 @@ export async function auditShadowFamilies(surfaces:ShadowSurface[],offset=0,limi
  const all=familyAuditInventory(surfaces),variants=all.slice(offset,offset+limit),size=256,app=new Application();await app.init({width:size,height:size,preference:'webgl',antialias:false});app.stop();
  const stage=app.stage.addChild(new Container()),white=document.createElement('canvas');white.width=white.height=1;white.getContext('2d')!.fillStyle='white';white.getContext('2d')!.fillRect(0,0,1,1);const bg=stage.addChild(new Sprite(Texture.from(white)));bg.width=bg.height=size;
  const field=createSceneShadows(stage,()=>{},app.renderer),sheet=document.createElement('canvas');sheet.width=size*3;sheet.height=(size+40)*variants.length;const ctx=sheet.getContext('2d')!,rows:any[]=[],failures:string[]=[];
+ let art:Sprite|null=null;const ownSources=new Map<CanvasImageSource,TextureSource>();
+ const readPixels=()=>app.renderer.extract.pixels({target:stage,resolution:1,frame:new Rectangle(0,0,size,size)});
  const heightDiagnostic=new Filter({glProgram:GlProgram.from({name:'audit-receiver-height',vertex:shadowFilterVertex,fragment:'in vec2 vScreen;out vec4 finalColor;uniform sampler2D uHeight;uniform vec4 uHeightBounds;uniform vec4 uCamera;void main(){vec2 world=(vScreen-uCamera.xy)/uCamera.z,uv=(world-uHeightBounds.xy)/uHeightBounds.zw;finalColor=any(lessThan(uv,vec2(0.0)))||any(greaterThanEqual(uv,vec2(1.0)))?vec4(0.0):texture(uHeight,uv);}'}),resources:{shadowUniforms:field.filter.resources.shadowUniforms,uHeight:field.filter.resources.uHeight},resolution:1,padding:0});
  const wait=async(before:number)=>{const start=performance.now();while(!field.stats().ready||field.stats().rebuilds<=before){if(field.stats().error)throw Error(field.stats().error);if(performance.now()-start>30000)throw Error('Family audit Worker timeout');await new Promise(r=>setTimeout(r,5));}};
- const render=async(scene:ShadowSurface[],sun:ShadowSun)=>{const before=field.stats().rebuilds;field.setScene(scene);field.setSun(sun);await wait(before);return app.renderer.extract.pixels({target:stage,resolution:1});};
+ const render=async(scene:ShadowSurface[],sun:ShadowSun)=>{const before=field.stats().rebuilds;field.setScene(scene);field.setSun(sun);await wait(before);return readPixels();};
  try{for(const [row,entry] of variants.entries()){
   const p=entry.surface,sampled=sampleSurface(p,2),points=sampled.samples;let maxHeight=0;for(const q of points){maxHeight=Math.max(maxHeight,q.z);for(const v of [q.x,q.y,q.z,...q.quad!])if(!Number.isFinite(v))throw Error('Nonfinite geometry '+p.key);}
+  art?.destroy({texture:true,textureSource:false});let imageSource=ownSources.get(p.source);if(!imageSource){imageSource=p.source instanceof HTMLCanvasElement?new CanvasSource({resource:p.source}):new ImageSource({resource:p.source as HTMLImageElement});ownSources.set(p.source,imageSource);}const frame=p.frame??[0,0,p.sourceWidth,p.sourceHeight];art=stage.addChild(new Sprite(new Texture({source:imageSource,frame:new Rectangle(...frame as [number,number,number,number])})));art.anchor.set(...p.pivot as [number,number]);art.visible=false;
   const tests=[];
   for(const [column,sun] of suns.entries()){
    let left=sampled.bounds.left,top=sampled.bounds.top,right=sampled.bounds.right,bottom=sampled.bounds.bottom;
    for(const q of points){const x=q.x+sun.dx*q.z,y=q.y+sun.dy*q.z;left=Math.min(left,x);top=Math.min(top,y);right=Math.max(right,x);bottom=Math.max(bottom,y);}
    const zoom=Math.min((size-24)/Math.max(1,right-left),(size-24)/Math.max(1,bottom-top)),ox=12-left*zoom,oy=12-top*zoom;field.place(ox,oy,zoom,size,size);
-   const pixels=await render([p],sun);let dark=0;for(let i=0;i<pixels.pixels.length;i+=4)if(pixels.pixels[i]<250)dark++;
-   const image=document.createElement('canvas');image.width=image.height=size;image.getContext('2d')!.putImageData(new ImageData(new Uint8ClampedArray(pixels.pixels),size,size),0,0);
-   const g=image.getContext('2d')!,f=p.frame??[0,0,p.sourceWidth,p.sourceHeight],sx=p.width/f[2]*(p.flip?-1:1),sy=p.height/f[3]*(p.vertical??1),shear=p.shear??0;
-   g.setTransform(zoom*sx,zoom*sx*shear,0,zoom*sy,ox+zoom*(p.x-sx*p.pivot[0]*f[2]),oy+zoom*(p.y-(p.lift??0)-sx*shear*p.pivot[0]*f[2]-sy*p.pivot[1]*f[3]));g.drawImage(p.source,f[0],f[1],f[2],f[3],0,0,f[2],f[3]);g.resetTransform();
+   art.visible=false;const pixels=await render([p],sun);let dark=0;for(let i=0;i<pixels.pixels.length;i+=4)if(pixels.pixels[i]<250)dark++;
+   const f=p.frame??[0,0,p.sourceWidth,p.sourceHeight],sx=p.width/f[2]*(p.flip?-1:1),sy=p.height/f[3]*(p.vertical??1),shear=p.shear??0;art.setFromMatrix(new Matrix(zoom*sx,zoom*sx*shear,0,zoom*sy,ox+zoom*p.x,oy+zoom*(p.y-(p.lift??0))));art.visible=true;const colored=readPixels();art.visible=false;
+   const image=document.createElement('canvas');image.width=image.height=size;image.getContext('2d')!.putImageData(new ImageData(new Uint8ClampedArray(colored.pixels),size,size),0,0);
    ctx.drawImage(image,column*size,row*(size+40));ctx.fillStyle='#101820';ctx.fillRect(column*size,row*(size+40)+size,size,40);ctx.fillStyle='white';ctx.font='12px sans-serif';ctx.fillText(entry.family.slice(0,36),column*size+5,row*(size+40)+size+15);ctx.fillText(`${p.flip?'mirrored':'original'} / sun ${column+1} / ${dark} shadow px`,column*size+5,row*(size+40)+size+31);
    if(p.cast===false&&dark)failures.push(entry.id+' excluded caster produced '+dark+' dark pixels');
    const h=Math.min(24,maxHeight*.25),candidate=p.cast===false?null:points.filter(q=>q.alpha>.99&&q.z>h+3).sort((a,b)=>b.z-a.z).find(q=>{const x=q.x+sun.dx*(q.z-h),y=q.y-h+sun.dy*(q.z-h);return x<sampled.bounds.left-Math.max(5,3/zoom)||x>sampled.bounds.right+Math.max(5,3/zoom)||y<sampled.bounds.top-Math.max(5,3/zoom)||y>sampled.bounds.bottom+Math.max(5,3/zoom);});
@@ -50,7 +52,7 @@ export async function auditShadowFamilies(surfaces:ShadowSurface[],offset=0,limi
    // stays hidden inside its art bounds. Read the CPU-packed receiver height
    // at an actual GPU pixel, then place an independent caster on that ray.
    await render([{...p,cast:false}],sun);
-   stage.filters=[heightDiagnostic];const packed=app.renderer.extract.pixels({target:stage,resolution:1}).pixels;stage.filters=[field.filter];
+   stage.filters=[heightDiagnostic];const packed=readPixels().pixels;stage.filters=[field.filter];
    let chosen:{px:number;py:number;x:number;y:number;z:number}|null=null;
    const owner=(k:number)=>packed[k]*16+Math.floor(packed[k+1]/16),height=(k:number)=>((packed[k+1]%16)*256+packed[k+2])*.5;
    for(let pass=0;pass<2&&!chosen;pass++)for(let py=2;py<size-2;py++)for(let px=2;px<size-2;px++){const k=(py*size+px)*4;if(owner(k)!==1||packed[k+3]<200)continue;const z=height(k);if(chosen&&z<=chosen.z)continue;let interior=true;if(!pass)for(let yy=py-1;yy<=py+1;yy++)for(let xx=px-1;xx<=px+1;xx++){const j=(yy*size+xx)*4;if(owner(j)!==1||Math.abs(height(j)-z)>4)interior=false;}if(!interior)continue;const x=Math.fround(Math.fround(px+.5-Math.fround(ox))/Math.fround(zoom)),y=Math.fround(Math.fround(py+.5-Math.fround(oy))/Math.fround(zoom));chosen={px,py,x,y,z};}
@@ -61,8 +63,8 @@ export async function auditShadowFamilies(surfaces:ShadowSurface[],offset=0,limi
    }
    tests.push({sun,darkPixels:dark,cast:p.cast!==false,maxHeight,receiver,receive});
   }
-  rows.push({id:entry.id,signature:entry.signature,family:entry.family,key:p.key,placements:entry.placements,width:p.width,height:p.height,flip:!!p.flip,lift:p.lift??0,frame:p.frame,explicitHeight:!!p.heightAtScreen,tests});
+  rows.push({id:entry.id,signature:entry.signature,family:entry.family,key:p.key,placements:entry.placements,width:p.width,height:p.height,flip:!!p.flip,lift:p.lift??0,frame:p.frame,explicitHeight:!!p.heightAtScreen,solidBody:!!p.solidBody,capHeight:p.capHeight,tests});
  }
  return {offset,totalVariants:all.length,totalPlacements:surfaces.length,rows,failures,image:sheet.toDataURL('image/png'),probeSampling:'GPU packed receiver height at actual rendered pixel; float32 camera reconstruction',scope:'Actual registered static geometry plus explicitly labeled catalog/building fixtures, production GPU filter and Worker; three light vectors. Contact sheets show one representative per distinct geometry variant. Probe cases outside source bounds test visible raised receiving and above-caster rejection.'};
- }finally{heightDiagnostic.destroy();field.destroy();const gl=(app.renderer as any).gl as WebGLRenderingContext;app.destroy({removeView:true,releaseGlobalResources:false},{children:true,texture:true,textureSource:true});if(!gl.isContextLost())gl.getExtension('WEBGL_lose_context')?.loseContext();}
+ }finally{heightDiagnostic.destroy();field.destroy();const whiteSource=bg.texture.source;const gl=(app.renderer as any).gl as WebGLRenderingContext;app.destroy({removeView:true,releaseGlobalResources:false},{children:true,texture:true,textureSource:false});whiteSource.destroy();for(const source of ownSources.values())source.destroy();if(!gl.isContextLost())gl.getExtension('WEBGL_lose_context')?.loseContext();}
 }

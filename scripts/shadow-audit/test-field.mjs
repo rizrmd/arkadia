@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';import fs from 'node:fs/promises';import ts from 'typescript';
 const source=await fs.readFile('src/stronghold/shadow-field.ts','utf8'),js=ts.transpileModule(source,{compilerOptions:{module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ES2022}}).outputText;
-const {makeField,visibilityAt,receiverPoint,encodeDepth,decodeDepth,encodeGeometry,decodeGeometry,writeGeometry,fieldBounds,lightPoint}=await import('data:text/javascript;base64,'+Buffer.from(js).toString('base64'));
+const {makeField,visibilityAt,receiverPoint,encodeDepth,decodeDepth,encodeGeometry,decodeGeometry,writeGeometry,fieldBounds,lightPoint,rasterSample}=await import('data:text/javascript;base64,'+Buffer.from(js).toString('base64'));
 let checks=0;
 for(const dx of [-1.6,-.25,.2,1.6])for(const dy of [-.5,.05,.7]){
  const sun={dx,dy,alpha:.4},caster={x:100,y:200,z:80,alpha:1},field=makeField([caster],sun,1),ray=lightPoint(caster,sun);
@@ -16,7 +16,9 @@ for(let z=0;z<4000;z+=.37){const [r,g]=encodeDepth(z);assert.ok(Math.abs(decodeD
 // Depth, not source/placement iteration order, selects the nearest light-facing surface.
 const sun={dx:1,dy:.5,alpha:.4},a={x:0,y:0,z:80,alpha:1},b={x:40,y:20,z:40,alpha:1},r={x:80,y:40,z:0,alpha:1};
 assert.equal(visibilityAt(makeField([a,b],sun,1),r,sun),1);assert.equal(visibilityAt(makeField([b,a],sun,1),r,sun),1);checks+=2;
-const self=makeField([{x:0,y:0,z:80,alpha:1,owner:2}],sun,1);assert.equal(visibilityAt(self,{...r,owner:2},sun),0);const mutual=makeField([{x:0,y:0,z:80,alpha:1,owner:2},{x:20,y:10,z:60,alpha:1,owner:3}],sun,1);assert.equal(visibilityAt(mutual,{...r,owner:2},sun),1);checks+=2;
+const elevated={x:60,y:30,z:20,alpha:1,owner:2},self=makeField([{x:0,y:0,z:80,alpha:1,owner:2}],sun,1);assert.equal(visibilityAt(self,elevated,sun),0);assert.equal(visibilityAt(self,{...r,owner:2},sun),1,'contact region retains self shadow, matching the GPU contract');const mutual=makeField([{x:0,y:0,z:80,alpha:1,owner:2},{x:20,y:10,z:60,alpha:1,owner:3}],sun,1);assert.equal(visibilityAt(mutual,elevated,sun),1);checks+=3;
+const partialOverSolid=makeField([{...a,owner:2,alpha:.2},{...b,owner:3}],sun,1);assert.equal(visibilityAt(partialOverSolid,r,sun,1),1,'partial front must not hide opaque lower caster');assert.ok(Math.abs(visibilityAt(partialOverSolid,{x:20,y:10,z:60,alpha:1},sun,1)-.2)<.005,'receiver above opaque lower layer receives only partial upper shadow');checks+=2;
+const aliased=makeField([{...a,owner:2,alpha:.2},{...b,owner:10}],sun,1);assert.equal(visibilityAt(aliased,elevated,sun,1,8),0,'physical owner ignores its own opaque volume proxy');assert.equal(visibilityAt(aliased,{...r,owner:2},sun,1,8),1,'opaque volume still shades the ground');checks+=2;
 // Regression: an opaque source-cell mesh must not tear into a dot lattice when
 // an oblique sun stretches sample spacing beyond the former 2x2 point splat.
 const mesh=[];for(let x=0;x<50;x+=2)for(let z=0;z<50;z+=2)mesh.push({x:x+1,y:100+2*(x+1),z:z+1+2*(x+1),alpha:1,owner:7,quad:new Float32Array([x,100+2*x,z+2+2*x,x+2,100+2*(x+2),z+2+2*(x+2),x+2,100+2*(x+2),z+2*(x+2),x,100+2*x,z+2*x])});
@@ -30,4 +32,8 @@ const cutout=mesh.filter(p=>!(p.x>18&&p.x<32&&p.z-2*p.x>18&&p.z-2*p.x<32)),holeS
 assert.equal(visibilityAt(holeField,{x:25+1.7*75,y:150+.7*75,z:0,alpha:1},holeSun,1),0,'Triangle coverage must preserve real alpha apertures');checks++;
 for(let owner=1;owner<=4095;owner+=137)for(let z=0;z<2047.5;z+=3.7){const [r,g,b,a]=encodeGeometry(z,owner,128),q=decodeGeometry(r,g,b);assert.equal(q.owner,owner);assert.ok(Math.abs(q.z-z)<=.25001);assert.equal(a,128);const buffer=new Uint8ClampedArray(8);writeGeometry(buffer,4,z,owner,128);assert.deepEqual(Array.from(buffer.slice(4)),[r,g,b,a]);checks++;}
 assert.throws(()=>encodeGeometry(2048,1));assert.throws(()=>encodeGeometry(1,4096));const huge=fieldBounds([{x:0,y:0,z:0,alpha:1},{x:1e9,y:1,z:0,alpha:1}],{dx:0,dy:0,alpha:1});assert.ok(huge.width<=4096&&huge.height<=4096);checks+=3;
-console.log(JSON.stringify({ok:true,checks,oldPointHoles,coverage:['12 light vectors','snow and elevated receivers','above-caster rejection','transparent holes and partial-alpha coverage','depth order independence','16-bit height precision','gap-free projected source-cell triangles','real alpha aperture preserved','packed instance/height/alpha precision','4096 texture dimension bound']}));
+// Casters cover intersected texels; receivers must not grow beyond visible
+// geometry and accidentally suppress their own shadow beside the sprite.
+const receiverQuad={x:10.6,y:10.6,z:0,alpha:1,quad:new Float32Array([10.6,10.6,0,12.4,10.6,0,12.4,12.4,0,10.6,12.4,0])},rb={left:0,top:0,step:1,width:24,height:24},castCells=new Set(),receiveCells=new Set();
+rasterSample(receiverQuad,{dx:0,dy:0,alpha:1},rb,k=>castCells.add(k));rasterSample(receiverQuad,{dx:0,dy:0,alpha:1},rb,k=>receiveCells.add(k),false);assert.ok(castCells.has(10*24+10));assert.ok(!receiveCells.has(10*24+10));assert.ok(receiveCells.has(11*24+11));checks+=3;
+console.log(JSON.stringify({ok:true,checks,oldPointHoles,coverage:['12 light vectors','snow and elevated receivers','above-caster rejection','transparent holes and partial-alpha coverage','depth order independence','partial-over-opaque occlusion','GPU-matched contact self-shadow policy','16-bit height precision','gap-free projected source-cell triangles','real alpha aperture preserved','packed instance/height/alpha precision','4096 texture dimension bound']}));

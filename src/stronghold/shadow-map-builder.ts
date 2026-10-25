@@ -5,7 +5,7 @@ export function packMap(map:ShadowPixels):PackedShadowMap{
 }
 export function receiverMap(samples:ShadowSample[],step=3){
  const b=fieldBounds(samples,{dx:0,dy:-1,alpha:1},step),n=b.width*b.height,depth=new Float32Array(n),coverage=new Uint8Array(n),owner=new Uint16Array(n);
- for(const p of samples)if(p.alpha>=.5)rasterSample(p,{dx:0,dy:-1,alpha:1},b,(k,z,_a,id)=>{depth[k]=z;coverage[k]=255;owner[k]=id;});
+ for(const p of samples)if(p.alpha>=.5&&p.receive!==false)rasterSample(p,{dx:0,dy:-1,alpha:1},b,(k,z,_a,id)=>{depth[k]=z;coverage[k]=255;owner[k]=id;},false);
  return packMap({bounds:b,depth,coverage,owner});
 }
 export function casterMaps(samples:ShadowSample[],sun:ShadowSun,step=3){const field=makeField(samples,sun,step);return {depth:packMap(field),second:packMap({bounds:field.bounds,depth:field.secondDepth!,coverage:field.secondCoverage!,owner:field.secondOwner})};}

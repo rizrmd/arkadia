@@ -5748,10 +5748,10 @@
      "rotation": 0
     }
    ],
-   "cast": "WebGL original-alpha triangle depth field",
-   "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "integrated explicit geometry companion; per-family visual acceptance pending",
-   "companion": "src/world/maps/shadow-companions.json#column-fallen",
+   "cast": "WebGL original-alpha closed solid volume",
+   "receive": "front visible capped surface only",
+   "disposition": "authored cap and camera-ray interval; original alpha coverage retained; multi-angle visual acceptance pending",
+   "companion": "src/world/maps/solid-shadow-companions.json#frontier:column-fallen",
    "owner": "this task"
   },
   {
@@ -5792,10 +5792,10 @@
      "rotation": 0
     }
    ],
-   "cast": "WebGL original-alpha triangle depth field",
-   "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "integrated explicit geometry companion; per-family visual acceptance pending",
-   "companion": "src/world/maps/shadow-companions.json#column-fallen-v",
+   "cast": "WebGL original-alpha closed solid volume",
+   "receive": "front visible capped surface only",
+   "disposition": "authored cap and camera-ray interval; original alpha coverage retained; multi-angle visual acceptance pending",
+   "companion": "src/world/maps/solid-shadow-companions.json#frontier:column-fallen-v",
    "owner": "this task"
   },
   {
@@ -6917,9 +6917,10 @@
      "layout": "legacy"
     }
    ],
-   "cast": "WebGL original-alpha folded-billboard depth field",
-   "receive": "WebGL explicit proxy-height receiver",
-   "disposition": "integrated alpha proxy; per-family visual acceptance pending"
+   "cast": "WebGL original-alpha closed solid volume",
+   "receive": "front visible capped surface only",
+   "disposition": "authored cap and camera-ray interval; original alpha coverage retained; multi-angle visual acceptance pending",
+   "companion": "src/world/maps/solid-shadow-companions.json#court:crate"
   },
   {
    "id": "court:barrel",
@@ -6949,9 +6950,10 @@
      "layout": "legacy"
     }
    ],
-   "cast": "WebGL original-alpha folded-billboard depth field",
-   "receive": "WebGL explicit proxy-height receiver",
-   "disposition": "integrated alpha proxy; per-family visual acceptance pending"
+   "cast": "WebGL original-alpha closed solid volume",
+   "receive": "front visible capped surface only",
+   "disposition": "authored cap and camera-ray interval; original alpha coverage retained; multi-angle visual acceptance pending",
+   "companion": "src/world/maps/solid-shadow-companions.json#court:barrel"
   },
   {
    "id": "building:forge:1",

@@ -82,6 +82,7 @@ mkdir -p "$STAGE/site/hud-telemetry-desktop"; cp docs/hud-telemetry-desktop/*.pn
 mkdir -p "$STAGE/site/skill-tree"; cp docs/skill-tree/*.webp docs/skill-tree/*.png docs/skill-tree/*.json "$STAGE/site/skill-tree/"
 # Shadow audit data and inspector ship with their matching companion/atlas release.
 cp -R public/shadow-audit "$STAGE/site/shadow-audit"
+node scripts/shadow-audit/stage-sources.mjs "$STAGE/site"
 # Settings audio icons load only when the menu opens.
 mkdir -p "$STAGE/site/ui/settings"; cp public/ui/settings/*.webp "$STAGE/site/ui/settings/"
 # Inspection loads lazily; the desktop scan cannot discover phone/tablet DPR variants.

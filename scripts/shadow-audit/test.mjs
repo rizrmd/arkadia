@@ -1,5 +1,7 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
+import {createHash} from 'node:crypto';
+import sharp from 'sharp';
 import ts from 'typescript';
 const read=async p=>JSON.parse(await fs.readFile(p,'utf8'));
 const companions=await read('src/world/maps/shadow-companions.json'),catalog=await read('src/world/maps/frozen-frontier-sprites.json');
@@ -32,3 +34,7 @@ for(const [id,c] of Object.entries((await read('public/assets/characters/manifes
 const before=catalog.sha256;companions.atlasSha256='stale';assert.throws(validateShadowCompanions,/revision mismatch/);companions.atlasSha256=before;
 const first=Object.keys(companions.assets)[0],old=companions.assets[first].frame;companions.assets[first].frame=[0,0,1,1];assert.throws(validateShadowCompanions,/frame mismatch/);companions.assets[first].frame=old;
 console.log(JSON.stringify({ok:true,samples,rows:inventory.rows.length,checks:['baseline parity','screen reconstruction','mirror/scale/shear/lift','three light vectors/two receiver heights finite','all alpha frames nonempty/in bounds','clip indices','stale atlas/frame rejection']}));
+
+const solids=await read('src/world/maps/solid-shadow-companions.json');assert.equal(solids.atlasSha256,catalog.sha256);assert.equal(Object.keys(solids.assets).length,4);
+for(const [id,m] of Object.entries(solids.assets)){const bytes=await fs.readFile('public'+m.source);assert.equal(createHash('sha256').update(bytes).digest('hex'),m.sourceSha256,id+' stale source');const {data,info}=await sharp(bytes).ensureAlpha().raw().toBuffer({resolveWithObject:true});assert.deepEqual(m.sourceSize,[info.width,info.height]);const [x,y,w,h]=m.frame,a=Buffer.alloc(w*h);for(let j=0;j<h;j++)for(let i=0;i<w;i++)a[j*w+i]=data[((y+j)*info.width+x+i)*4+3];assert.equal(createHash('sha256').update(a).digest('hex'),m.alphaSha256,id+' stale alpha/frame');assert.equal(m.frontGround.length,17);assert.equal(m.backGround.length,17);assert.ok(m.capHeightFraction>0&&m.capHeightFraction<1);for(const v of [...m.frontGround,...m.backGround])assert.ok(Number.isFinite(v));assert.equal(inventory.rows.find(r=>r.id===id).cast,'WebGL original-alpha closed solid volume');}
+console.log(JSON.stringify({solidModels:4,checks:['source SHA','atlas SHA','source dimensions','frame alpha SHA','front/back profiles','authored cap range','inventory disposition']}));

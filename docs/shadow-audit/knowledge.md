@@ -1,3 +1,36 @@
+## Latest shadow coverage correction — validated, deployment pending
+
+- [x] Replace Canvas2D numeric texture staging with direct RGBA byte uploads. The old control corrupts 6,206 RGB bytes; 24,576 GPU channel checks now match exactly.
+- [x] Preserve lower opaque occlusion behind a partial-alpha upper caster.
+- [x] Add authored closed alpha-solid companions for crate, barrel and both fallen-column orientations, with source/alpha/frame hashes.
+- [x] Separate receiver pixel-center rasterization from conservative caster coverage.
+- [x] Repeat all 293 static geometry variants: 879 directional receive controls pass; 296 upright receiver/color entries have zero order mismatches.
+- [x] Pass 47,691 field assertions, 49,358 companion projection checks, and isolated static/dynamic GPU fixtures without browser errors.
+- [ ] Deploy this exact runtime and verify the live cemetery and asset gallery.
+- [ ] Complete every actor/gateway frame and mirror GPU audit, dense-scene profiling, and controlled physical desktop/mobile measurements.
+
+The broad hollow crate/barrel projections are corrected. Residual outline disagreements remain in the coarse receiver control (crate 25- and 5-pixel enclosed white components; the ground-only solid control has none). The fallen-column control retains one four-pixel component, potentially a real source opening. These are recorded rather than claiming perfect silhouettes or full task acceptance. Collision and pillar/stair geometry are unchanged.
+
+[Latest 293-variant GPU report](https://ark-whachat.fural.space/shadow-audit/family-solid-final/report.json) · [GPU byte and cast/receive fixture](https://ark-whachat.fural.space/shadow-audit/solid-volume-control/gpu-live-fixture.json) · [Family gallery](https://ark-whachat.fural.space/shadow-audit/family-gallery.html)
+
+![Original, ground-only, closed-solid and solid-ground controls](sandbox://LS6016e1117dfed3e1902e0f2c/projects/arkadia/repos/arkadia/docs/shadow-audit/solid-volume-control/control.png)
+
+## Closed volume experiment (not yet accepted)
+
+The latest comparison uses the original folded surface, a ground-only receiver control, and a closed alpha-solid volume. Small enclosed bright regions remain; this experiment is not yet a complete fix.
+
+![Closed solid volume comparison](sandbox://LS6016e1117dfed3e1902e0f2c/projects/arkadia/repos/arkadia/docs/shadow-audit/solid-volume-control/control.png)
+
+## Solid-prop geometry review
+
+Visual review identified hollow projections on the solid crate and barrel, and a thin/hollow projection on fallen columns. A ground-only receiver control shows almost no wrongly suppressed shadow pixels outside the art (crate 4 of 4,152, barrel 1 of 5,632, fallen column 0 of 1,667). This points to the folded-billboard geometry rather than a broad receiver-alpha masking failure. Authored cap/side geometry is being evaluated; original alpha will remain the silhouette mask.
+
+![Original crate source](https://ark-whachat.fural.space/modular-stronghold/crate.png)
+
+![Original barrel source](https://ark-whachat.fural.space/modular-stronghold/barrel.png)
+
+![Original frontier atlas used for fallen-column landmarks](https://ark-whachat.fural.space/frozen-frontier/game/atlas-5083a8ebd8c8bb4b.webp)
+
 ## Static family acceptance
 
 The current layout registers 447 static surfaces. Its 285 distinct geometry variants, including explicit unused foundation and forge-level fixtures, pass 855 directional cases. The all-building/legacy layout registers 456 static surfaces; 293 distinct variants including the supplements pass 879 directional cases. Every case uses the production GPU filter, Worker, original alpha and registered geometry. Each visible asset receives an independent higher caster and rejects a lower caster at an actual GPU receiver pixel. Ground-cast coverage, exclusions and available raised-receiver probes are checked separately.

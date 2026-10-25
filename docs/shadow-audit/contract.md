@@ -1,3 +1,15 @@
+## Exact-byte depth uploads and closed solids
+
+The current static field uploads packed RGBA bytes using `BufferImageSource` with `rgba8unorm`, nearest sampling and no alpha premultiplication. Canvas2D is unsuitable for numeric RGB with partial alpha: its internal premultiplied representation damaged 6,206 RGB bytes in the 4,096-texel regression control. The direct buffer preserves all 24,576 RGB/alpha channel comparisons on the GPU, including every alpha byte. Both primary and second fields use this path.
+
+`solid-shadow-companions.json` adds authored cap heights and front/back camera-ray intervals for crate, barrel and both fallen-column orientations. Source/alpha/frame hashes and atlas revision are tracked. Height is geometric; no RGB brightness is interpreted as depth. Local cap height is multiplied by logical frame height and vertical scale once. Source alpha supplies each occupied cell and its unchanged coverage. Back and connecting faces cast only; visible front faces receive. Original openings are retained. This remains an explicit proxy, not reconstructed mesh depth.
+
+The 18-float Worker record uses flag bit 0 for cast and bit 1 for receive. Physical static owner is index+1. Near-opaque samples (alpha >=240, retaining the original value) also contribute a second envelope at owner `2*N + physicalOwner`; source interiors are frequently 250–253. Actual IDs must stay below 3000, where live actor IDs begin. `uCamera.w=2*N` is updated only when that scene revision is applied and survives camera placement. The shader treats those aliases as the same caster only for physical static owners, suppressing volumetric self-shadow above height 2 while retaining ground/contact shadow. Dynamic actors cannot alias static geometry.
+
+Both eligible depth layers contribute the maximum alpha coverage; a partial upper layer cannot erase a lower opaque caster. Two envelopes are still a bounded approximation: more overlapping translucent layers are not fully integrated. Receiver triangles use pixel-center coverage; conservative triangle expansion is reserved for casters to prevent tears. The coarse receiver grid can still differ from the displayed alpha at a few outline pixels; zero visual error is not claimed.
+
+The latest all-building audit covers 456 registered surfaces plus three supplements, 293 geometry variants and 879 directional receiving controls. All 296 upright receiver entries match color painter order. Contact sheets render the source art through the actual GPU filter. These controls are not a proof of every animation frame or physical mobile performance.
+
 ## Current runtime
 
 The renderer now uses an original-alpha light-space depth field, reconstructed static receiver heights, and batched actor receivers. See [runtime integration](depth-integration.md) and [sampling-tear correction](tear-rasterization.md). The sections below record the original audited baseline and its limitations before this integration.

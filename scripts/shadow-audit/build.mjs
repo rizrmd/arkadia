@@ -1,3 +1,4 @@
+import {generateSolidCompanions} from './solid-models.mjs';
 import fs from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 import sharp from 'sharp';
@@ -44,6 +45,8 @@ for(const f of [...main.terrain.features,...map.terrain])rows.push({id:'terrain:
 const coverage=[{entry:'src/world/maps/arkodia-01.json',kind:'gameplay map',included:['stronghold prefab','frozen-frontier overlay','relief','actors']},{entry:'src/expedition/app.ts',kind:'procedural strategic map',disposition:'Graphics map markers; no world object sprite/shadow renderer'},{entry:'src/main.ts',kind:'asset placement lab',disposition:'review tool; wall sources and asset catalog not world gameplay inventory'},{entry:'src/characters/arena.ts',kind:'character review arena',disposition:'contact ellipse only; not gameplay shadow validation'}];
 const companion={version:1,atlas:catalog.atlas,atlasSha256:catalog.sha256,model:'explicit geometry proxy; NOT measured volumetric depth',heightUnit:'world pixel; 24 px/m for relief; sprite scale applied once',assets};
 await fs.writeFile('src/world/maps/shadow-companions.json',JSON.stringify(companion,null,1)+'\n');
+const solids=await generateSolidCompanions({catalog,image,alpha});
+for(const row of rows){const model=solids.assets[row.id];if(model){row.cast='WebGL original-alpha closed solid volume';row.receive='front visible capped surface only';row.companion='src/world/maps/solid-shadow-companions.json#'+row.id;row.disposition='authored cap and camera-ray interval; original alpha coverage retained; multi-angle visual acceptance pending';}}
 const report={version:2,acceptance:'incomplete: WebGL cast/receive integrated; all-family visual and physical-device performance acceptance pending',fallback:'Canvas retains legacy ground projection without GPU receiver reconstruction',coverage,counts:{rows:rows.length,frontierFamilies:Object.keys(assets).length,actorFrames:Object.values(chars.characters).reduce((n,c)=>n+c.frames.length,0)},rows,errors};
 await fs.writeFile('docs/shadow-audit/inventory.json',JSON.stringify(report,null,1)+'\n');
 await fs.writeFile('public/shadow-audit/inventory.json',JSON.stringify(report)+'\n');
