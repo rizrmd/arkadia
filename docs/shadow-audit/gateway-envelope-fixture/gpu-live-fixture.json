@@ -1,0 +1,268 @@
+{
+  "baseline": {
+    "error": "Cannot read properties of null (reading 'ids')"
+  },
+  "staticFixture": {
+    "ok": true,
+    "oldCanvasCorruptedBytes": 6206,
+    "packedByteChecks": 24576,
+    "partialOnly": [
+      232,
+      232,
+      234,
+      255
+    ],
+    "partialOverOpaque": [
+      137,
+      142,
+      150,
+      255
+    ],
+    "aboveOpaquePartial": [
+      232,
+      232,
+      234,
+      255
+    ],
+    "overlappingHigh": [
+      255,
+      255,
+      255,
+      255
+    ],
+    "overlappingLow": [
+      137,
+      142,
+      150,
+      255
+    ],
+    "actorReceive": [
+      137,
+      142,
+      150,
+      255
+    ],
+    "raisedBlocked": [
+      137,
+      142,
+      150,
+      255
+    ],
+    "groundBlocked": [
+      137,
+      142,
+      150,
+      255
+    ],
+    "alphaHole": [
+      255,
+      255,
+      255,
+      255
+    ],
+    "mirroredHole": [
+      255,
+      255,
+      255,
+      255
+    ],
+    "mirroredSolid": [
+      137,
+      142,
+      150,
+      255
+    ],
+    "aboveCaster": [
+      255,
+      255,
+      255,
+      255
+    ],
+    "assertions": [
+      "GPU raised-object receive",
+      "GPU snow-plane receive",
+      "original alpha hole preserved",
+      "receiver above caster rejected",
+      "mirrored original-alpha registration",
+      "native actor batch shadow reception",
+      "overlapping receiver painter order",
+      "partial alpha above opaque caster preserves occlusion",
+      "receiver above lower opaque caster retains partial alpha"
+    ],
+    "stats": {
+      "surfaces": 2,
+      "samples": 340,
+      "rebuilds": 9,
+      "buildMs": 0.6000001430511475,
+      "bytes": 72556,
+      "receiverPixels": 8633,
+      "depthPixels": 4753,
+      "ready": true,
+      "error": "",
+      "sun": {
+        "dx": 1,
+        "dy": 0.5,
+        "alpha": 0.5
+      },
+      "model": "original alpha, explicit billboard/relief geometry; light-space depth compare",
+      "uploadMs": 0.10000014305114746,
+      "dynamic": {
+        "updates": 0,
+        "surfaces": 0,
+        "buildMs": 0,
+        "ready": false
+      }
+    }
+  },
+  "result": {
+    "ok": true,
+    "visibleExtra": {
+      "updates": 1,
+      "actors": 2,
+      "extraSurfaces": 1,
+      "drawnVertices": 22,
+      "pixels": 56320,
+      "bytes": 1638400,
+      "renderMs": 50.200000047683716,
+      "ready": true,
+      "casterPasses": 3,
+      "fieldSamplers": 4,
+      "opaqueEnvelope": true,
+      "step": 0.5
+    },
+    "culledExtra": {
+      "updates": 2,
+      "actors": 2,
+      "extraSurfaces": 0,
+      "drawnVertices": 16,
+      "pixels": 1,
+      "bytes": 24,
+      "renderMs": 0.20000004768371582,
+      "ready": true,
+      "casterPasses": 2,
+      "fieldSamplers": 4,
+      "opaqueEnvelope": false,
+      "step": 1.25
+    },
+    "rendererIsolation": true,
+    "retirementFaultInjected": true,
+    "checks": {
+      "actor casts on raised receiver": [
+        137,
+        142,
+        150,
+        255
+      ],
+      "actor casts on ground": [
+        137,
+        142,
+        150,
+        255
+      ],
+      "original alpha opening": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "atlas pivot reproduces detached shadow": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "camera ground row keeps shadow at the feet": [
+        167,
+        170,
+        176,
+        255
+      ],
+      "same-frame mirror hole": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "same-frame mirror solid": [
+        137,
+        142,
+        150,
+        255
+      ],
+      "same-frame animation fills former hole": [
+        137,
+        142,
+        150,
+        255
+      ],
+      "same-owner partial alpha preserves opaque body": [
+        137,
+        142,
+        150,
+        255
+      ],
+      "same-owner near-zero alpha preserves opaque body": [
+        137,
+        142,
+        150,
+        255
+      ],
+      "receiver above actor stays lit": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "overlapping actors remain opaque": [
+        137,
+        142,
+        150,
+        255
+      ],
+      "gateway mesh casts on raised receiver": [
+        137,
+        142,
+        150,
+        255
+      ],
+      "removed dynamic caster leaves no stale shadow": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "gateway receives static caster": [
+        137,
+        142,
+        150,
+        255
+      ],
+      "gateway above caster stays lit": [
+        255,
+        255,
+        255,
+        255
+      ]
+    },
+    "primaryOwner": 3000,
+    "secondOwner": 3001,
+    "sharedCanvasOwner": 3001,
+    "nearHorizontalShadowPixels": 878,
+    "dynamic": {
+      "updates": 14,
+      "actors": 2,
+      "extraSurfaces": 0,
+      "drawnVertices": 16,
+      "pixels": 56320,
+      "bytes": 901128,
+      "renderMs": 0.40000009536743164,
+      "ready": true,
+      "casterPasses": 2,
+      "fieldSamplers": 4,
+      "opaqueEnvelope": false,
+      "step": 0.5
+    },
+    "scope": "Actual Pixi WebGL casts/receivers; software GPU. Runtime has no readback."
+  },
+  "errors": []
+}

@@ -1,0 +1,170 @@
+{
+  "baseline": "3d4b8655 original two-envelope runtime, current inverse checker and captured production source frames",
+  "rows": [
+    {
+      "index": 3,
+      "key": "gateway-frame:3",
+      "source": "frame-3.png",
+      "alphaSha256": "e61256498e4cd934b40a8347481f2df920da55cc030d8fc7b324d4ed3b586b7d",
+      "sourceSize": [
+        389,
+        259
+      ],
+      "pivot": [
+        0.5,
+        0.97
+      ],
+      "ground": [
+        0.8333333333333334,
+        0.83828125,
+        0.8947916666666667,
+        0.95,
+        0.9104166666666667,
+        0.875,
+        0.825,
+        0.825,
+        0.825,
+        0.825,
+        0.825,
+        0.875,
+        0.9166666666666666,
+        0.95,
+        0.8947916666666667,
+        0.8348958333333333,
+        0.8166666666666667
+      ],
+      "tests": [
+        {
+          "angle": 0,
+          "sun": {
+            "dx": 1.594,
+            "dy": 0.092,
+            "alpha": 0.55
+          },
+          "opaque": 2705,
+          "partial": 55,
+          "clear": 16564,
+          "coverageErrors": 2,
+          "depthErrors": 0,
+          "gpu": {
+            "updates": 1,
+            "actors": 0,
+            "extraSurfaces": 1,
+            "drawnVertices": 51,
+            "pixels": 250880,
+            "bytes": 6250496,
+            "renderMs": 79.79999995231628,
+            "ready": true,
+            "step": 0.5
+          },
+          "receiver": {
+            "x": 93,
+            "y": 93,
+            "z": 75,
+            "highRed": 126,
+            "lowRed": 255,
+            "pass": true
+          },
+          "examples": [
+            {
+              "x": 581,
+              "y": 81,
+              "kind": "coverage",
+              "receiver": 0,
+              "lo": 0.988235294117647,
+              "hi": 0.9921568627450982,
+              "actual": 0.9215686274509803,
+              "z1": 74.5,
+              "z2": 53.5,
+              "z3": 0,
+              "a3": 0
+            },
+            {
+              "x": 586,
+              "y": 81,
+              "kind": "coverage",
+              "receiver": 0,
+              "lo": 0.9888904711853354,
+              "hi": 0.9921568627450981,
+              "actual": 0.8196078431372549,
+              "z1": 74.5,
+              "z2": 55.5,
+              "z3": 0,
+              "a3": 0
+            }
+          ]
+        },
+        {
+          "angle": 1,
+          "sun": {
+            "dx": 0.278,
+            "dy": 0.307,
+            "alpha": 0.55
+          },
+          "opaque": 2517,
+          "partial": 89,
+          "clear": 13902,
+          "coverageErrors": 0,
+          "depthErrors": 0,
+          "gpu": {
+            "updates": 2,
+            "actors": 0,
+            "extraSurfaces": 1,
+            "drawnVertices": 51,
+            "pixels": 211968,
+            "bytes": 5627904,
+            "renderMs": 1.1000001430511475,
+            "ready": true,
+            "step": 0.5
+          },
+          "receiver": {
+            "x": 93,
+            "y": 93,
+            "z": 75,
+            "highRed": 126,
+            "lowRed": 255,
+            "pass": true
+          },
+          "examples": []
+        },
+        {
+          "angle": 2,
+          "sun": {
+            "dx": -0.826,
+            "dy": 0.743,
+            "alpha": 0.55
+          },
+          "opaque": 6146,
+          "partial": 181,
+          "clear": 23342,
+          "coverageErrors": 0,
+          "depthErrors": 0,
+          "gpu": {
+            "updates": 3,
+            "actors": 0,
+            "extraSurfaces": 1,
+            "drawnVertices": 51,
+            "pixels": 386048,
+            "bytes": 8413184,
+            "renderMs": 0.7999999523162842,
+            "ready": true,
+            "step": 0.5
+          },
+          "receiver": {
+            "x": 93,
+            "y": 93,
+            "z": 75,
+            "highRed": 126,
+            "lowRed": 255,
+            "pass": true
+          },
+          "examples": []
+        }
+      ]
+    }
+  ],
+  "failures": [
+    "gateway:3:angle=0:{\"angle\":0,\"sun\":{\"dx\":1.594,\"dy\":0.092,\"alpha\":0.55},\"opaque\":2705,\"partial\":55,\"clear\":16564,\"coverageErrors\":2,\"depthErrors\":0,\"gpu\":{\"updates\":1,\"actors\":0,\"extraSurfaces\":1,\"drawnVertices\":51,\"pixels\":250880,\"bytes\":6250496,\"renderMs\":79.79999995231628,\"ready\":true,\"step\":0.5},\"receiver\":{\"x\":93,\"y\":93,\"z\":75,\"highRed\":126,\"lowRed\":255,\"pass\":true},\"examples\":[{\"x\":581,\"y\":81,\"kind\":\"coverage\",\"receiver\":0,\"lo\":0.988235294117647,\"hi\":0.9921568627450982,\"actual\":0.9215686274509803,\"z1\":74.5,\"z2\":53.5,\"z3\":0,\"a3\":0},{\"x\":586,\"y\":81,\"kind\":\"coverage\",\"receiver\":0,\"lo\":0.9888904711853354,\"hi\":0.9921568627450981,\"actual\":0.8196078431372549,\"z1\":74.5,\"z2\":55.5,\"z3\":0,\"a3\":0}]}"
+  ],
+  "scope": "All selected live-published stabilized gateway frames. Actual production GPU dynamic gateway mesh, primary/secondary fields, actual receiver-height map and stage filter. Three light vectors; independent inverse geometry/alpha bounds on ground and raised receivers. Original live navigation threshold checked during capture. Software GPU only."
+}
