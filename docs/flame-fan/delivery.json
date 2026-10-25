@@ -1,0 +1,83 @@
+{
+  "url": "https://ark-whachat.fural.space/ember-warden-review/flame-fan-levels/",
+  "iframe": "<iframe src=\"https://ark-whachat.fural.space/ember-warden-review/flame-fan-levels/\" title=\"Flame Fan Level 1–5 Animation Player\" height=\"560\"></iframe>",
+  "implementation_commit": "f23ee5b",
+  "evidence_commit": "0f8389f",
+  "knowledge_id": "NKBDbd185330904c8926506f945e",
+  "tree_knowledge_id": "NKBDd961f11ef4da28d4544d39f2",
+  "room_id": "DRe6a2c6f1487f8fcbeed0d6b5",
+  "message_id": "DMc7d64c0ec3fdcca32f7a5ad8",
+  "message_body": "Flame Fan Lv.1–5 animation player is live. Select a level, Play/Pause, Replay, or toggle Loop.\n\n<iframe src=\"https://ark-whachat.fural.space/ember-warden-review/flame-fan-levels/\" title=\"Flame Fan Level 1–5 Animation Player\" height=\"560\"></iframe>\n\nhttps://ark-whachat.fural.space/ember-warden-review/flame-fan-levels/\n\nExisting progression is preserved: 3 / 4 / 5 / 5 / 5 fireballs; higher ranks show the existing cast scale and damage/cooldown values. The small impact intensity increase is visual only. Desktop and mobile live checks passed at 1440×900, 390×844 and 320×560, including all phases, controls and cross-origin iframe playback, with zero page errors. English Flame Fan and Ember tree Knowledge include the player, rank differences and inline verification images.",
+  "http_status": 200,
+  "x_frame_options": null,
+  "content_security_policy": null,
+  "verified_viewports": [
+    "1440x900",
+    "390x844",
+    "320x560"
+  ],
+  "checks": [
+    {
+      "url": "https://ark-whachat.fural.space/ember-warden-review/flame-fan-levels/",
+      "status": 200
+    },
+    {
+      "url": "https://ark-whachat.fural.space/ember-warden-review/flame-fan-levels/evidence/verification-live.json",
+      "status": 200
+    },
+    {
+      "url": "https://ark-whachat.fural.space/healthz",
+      "status": 200
+    },
+    {
+      "url": "https://ark-whachat.fural.space/ember-warden-review/flame-fan-levels/evidence/live-1440-lv1-casting.png",
+      "status": 200
+    },
+    {
+      "url": "https://ark-whachat.fural.space/ember-warden-review/flame-fan-levels/evidence/live-1440-lv2-projectile.png",
+      "status": 200
+    },
+    {
+      "url": "https://ark-whachat.fural.space/ember-warden-review/flame-fan-levels/evidence/live-1440-lv3-projectile.png",
+      "status": 200
+    },
+    {
+      "url": "https://ark-whachat.fural.space/ember-warden-review/flame-fan-levels/evidence/live-1440-lv4-projectile.png",
+      "status": 200
+    },
+    {
+      "url": "https://ark-whachat.fural.space/ember-warden-review/flame-fan-levels/evidence/live-1440-lv5-impact.png",
+      "status": 200
+    },
+    {
+      "url": "https://ark-whachat.fural.space/ember-warden-review/flame-fan-levels/evidence/live-390-lv1-casting.png",
+      "status": 200
+    },
+    {
+      "url": "https://ark-whachat.fural.space/ember-warden-review/flame-fan-levels/evidence/live-390-lv2-projectile.png",
+      "status": 200
+    },
+    {
+      "url": "https://ark-whachat.fural.space/ember-warden-review/flame-fan-levels/evidence/live-390-lv3-projectile.png",
+      "status": 200
+    },
+    {
+      "url": "https://ark-whachat.fural.space/ember-warden-review/flame-fan-levels/evidence/live-390-lv4-projectile.png",
+      "status": 200
+    },
+    {
+      "url": "https://ark-whachat.fural.space/ember-warden-review/flame-fan-levels/evidence/live-390-lv5-impact.png",
+      "status": 200
+    },
+    {
+      "url": "https://ark-whachat.fural.space/ember-warden-review/flame-fan-levels/evidence/local-390-lv5-projectile.png",
+      "status": 200
+    },
+    {
+      "url": "https://ark-whachat.fural.space/ember-warden-review/flame-fan-levels/evidence/local-1440-lv1-impact.png",
+      "status": 200
+    }
+  ],
+  "browser_evidence": "verification-live.json",
+  "layer_log": "Registered layer 1792923422507-flame-fan-levels-65e765d241f8 in \u001b[33m6\u001b[39m parts\n(node:5123) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\nLive: https://ark-whachat.fural.space/ember-warden-review/flame-fan-levels/\n"
+}
