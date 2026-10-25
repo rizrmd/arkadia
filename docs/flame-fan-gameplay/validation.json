@@ -14,5 +14,31 @@
     "go": "?   \tgithub.com/rizrmd/arkadia/server/cmd/arkodia\t[no test files]\nok  \tgithub.com/rizrmd/arkadia/server/internal/room\t(cached)\nok  \tgithub.com/rizrmd/arkadia/server/internal/server\t(cached)\nok  \tgithub.com/rizrmd/arkadia/server/internal/sim\t(cached)\n",
     "progression": "(node:4177) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\nProgression 3-slot loadout, slot 2/3 unlock, rank scaling, 3/3 pool restriction, progressive XP curve, monster stat scaling, EXP percent, and RO crit stats passed\n",
     "parity": "(node:4133) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\nok  \tgithub.com/rizrmd/arkadia/server/internal/sim\t0.630s\n\n{\n  \"ok\": true,\n  \"baseline\": \"2de5e4d\",\n  \"seeds\": 400,\n  \"strategies\": [\n    \"random\",\n    \"passive\",\n    \"rank\",\n    \"active\"\n  ],\n  \"emberOffersChecked\": 30769,\n  \"validFallbackOffers\": 1612,\n  \"riftOffersIdentical\": 30400,\n  \"goSeededOffers\": 22800,\n  \"goClientParityCases\": 608,\n  \"boundaryPoints\": [\n    0,\n    3,\n    4,\n    7,\n    8\n  ],\n  \"checks\": [\n    \"batched pending capstone\",\n    \"owned rank-up bypass\",\n    \"rank five cap\",\n    \"four learned/three equipped\",\n    \"all-actives-capped passive fallback\",\n    \"stale choice rejection\"\n  ]\n}\n"
-  }
+  },
+  "live": {
+    "automatic-live-1440": {
+      "passed": true,
+      "errors": []
+    },
+    "automatic-live-390": {
+      "passed": true,
+      "errors": []
+    },
+    "legacy-player-live": {
+      "passed": true,
+      "errors": []
+    },
+    "player": {
+      "passed": true,
+      "viewports": [
+        1440,
+        390,
+        320
+      ],
+      "iframe": "cross-origin playback and level selection passed",
+      "errors": [],
+      "failures": []
+    }
+  },
+  "transferRetryTests": "Transient recovery, existing-part resume, permission rejection and five-attempt bound passed"
 }

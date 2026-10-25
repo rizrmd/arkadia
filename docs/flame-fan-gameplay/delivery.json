@@ -1,0 +1,28 @@
+{
+  "codeCommit": "e6bfc95940114c6cf60fb1493c65571dad13a71e",
+  "branch": "feat/stronghold",
+  "game": "https://ark-whachat.fural.space/?offline=1&hero=ember-warden",
+  "gameLayer": "1792939846632-game-e6bfc959-b2a6b2f4027b",
+  "controlFlow": "HUD click/touch and keys 1\u20133 open skill tree; learned nodes equip/swap; equipped skills auto-cast on nearby enemies",
+  "manualCastUsedByAcceptance": false,
+  "actualGameplayLocalAndLive": [
+    "1440x900",
+    "390x844 touch"
+  ],
+  "ranks": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "damageAndRadiusAndCooldownAndGates": "unchanged",
+  "projectiles": 0,
+  "knowledgePages": [
+    "NKBDbd185330904c8926506f945e",
+    "NKBDd961f11ef4da28d4544d39f2"
+  ],
+  "pipeline": "Supported clean-checkout game pipeline; terminal failed receipt after partial upload; same built archive resumed by supported publish-layer --tgz with immutable transfer retries. Live automatic tests passed on released game.",
+  "evidencePipeline": "scripts/flame-fan-gameplay/publish-evidence.mjs",
+  "scope": "Chromium emulation; existing co-op solo-only loadout restriction retained; no real-device GPU benchmark"
+}

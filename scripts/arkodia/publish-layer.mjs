@@ -16,11 +16,22 @@ exec node gateway.mjs
 export function sandboxId(){const s=run(['sandboxes','list']),list=Array.isArray(s)?s:s.sandboxes||s.items||[],b=list.find(x=>x.name===SANDBOX);if(!b)throw Error(`Custom sandbox ${SANDBOX} not found`);return b.id;}
 const stage=path.join(os.homedir(),'releases/arkodia-layers');
 
+export async function retryPartTransfer(transfer,wait=ms=>new Promise(r=>setTimeout(r,ms))){
+ for(let attempt=0;;attempt++){
+  try{return transfer();}catch(e){
+   if(/already exists/i.test(e.message))return;
+   const transient=/TLS handshake timeout|connection reset|client_timeout|transport error|unexpected EOF|temporary failure|i\/o timeout/i.test(e.message);
+   if(!transient||attempt>=4)throw e;
+   await wait(500*(attempt+1));
+  }
+ }
+}
+
 // Upload bytes as content-named parts under layers/, so a retry skips parts already there.
 async function upload(id,bytes,name,size=4e6){
  const hash=createHash('sha256').update(bytes).digest('hex').slice(0,12),parts=[];await fs.mkdir(stage,{recursive:true});
  for(let i=0;i<bytes.length;i+=size){const n=`${name}-${hash}-${parts.length}.part`;await fs.writeFile(path.join(stage,n),bytes.subarray(i,i+size));parts.push(n);}
- for(const n of parts)try{run(['organization','home-files','transfer','--from-member',MEMBER,'--from',path.relative(os.homedir(),path.join(stage,n)),'--to-custom-sandbox',id,'--to','layers/'+n]);}catch(e){if(!e.message.includes('already exists'))throw e;}
+ for(const n of parts)await retryPartTransfer(()=>run(['organization','home-files','transfer','--from-member',MEMBER,'--from',path.relative(os.homedir(),path.join(stage,n)),'--to-custom-sandbox',id,'--to','layers/'+n]));
  return {hash,parts};
 }
 async function register(id,name,layer){
