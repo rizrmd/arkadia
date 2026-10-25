@@ -1,0 +1,42 @@
+[
+  {
+    "mobile": false,
+    "snapshot": {
+      "engine": "@pixi/sound",
+      "state": "running",
+      "music": 0.7,
+      "soundEffects": 0.8,
+      "musicPlaying": false,
+      "loaded": true,
+      "loadError": false,
+      "activeVoices": 0,
+      "maxVoices": 3,
+      "played": 1,
+      "dropped": 0
+    },
+    "nodes": {
+      "oscillators": 0,
+      "started": 0
+    }
+  },
+  {
+    "mobile": true,
+    "snapshot": {
+      "engine": "@pixi/sound",
+      "state": "running",
+      "music": 0.7,
+      "soundEffects": 0.8,
+      "musicPlaying": false,
+      "loaded": true,
+      "loadError": false,
+      "activeVoices": 0,
+      "maxVoices": 3,
+      "played": 1,
+      "dropped": 0
+    },
+    "nodes": {
+      "oscillators": 0,
+      "started": 0
+    }
+  }
+]

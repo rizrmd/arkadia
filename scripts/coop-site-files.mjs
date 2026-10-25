@@ -55,7 +55,7 @@ for(const f of [
  'typography/v2/loading/bar-track@1x.png','typography/v2/loading/bar-track@2x.png','typography/v2/loading/bar-track@3x.png',
  'typography/v2/loading/bar-fill@1x.png','typography/v2/loading/bar-fill@2x.png','typography/v2/loading/bar-fill@3x.png',
  'typography/v2/loading/bar-crest@1x.png','typography/v2/loading/bar-crest@2x.png','typography/v2/loading/bar-crest@3x.png',
- 'modular-stronghold/v2/full-gateway-v7-open.webp','modular-stronghold/v2/full-gateway-v7-sheet.webp',
+ 'modular-stronghold/v2/full-gateway-v7-sheet.json','modular-stronghold/v2/full-gateway-v7-open.webp','modular-stronghold/v2/full-gateway-v7-sheet.webp',
 ])files.add(f);
 // Choose Your Hero (src/stronghold/choose-hero.ts): every @1x/@2x/@3x UI texture, art and labels from its manifest, and the
 // NixieFX bundle its highlights play from, since the screen loads frames only when it opens at a given scale.

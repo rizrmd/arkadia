@@ -10,11 +10,11 @@ const results=[];
 try{
  for(const mobile of [false,true]){
  const context=await browser.newContext({viewport:mobile?{width:390,height:844}:{width:1280,height:800},isMobile:mobile,hasTouch:mobile});
- const page=await context.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));
+ const page=await context.newPage();const errors=[];page.on('pageerror',e=>{errors.push(e.message);console.log('PAGE ERROR',e.message);});page.on('response',r=>{if(r.status()>=400)console.log('HTTP',r.status(),r.url());});
  await page.addInitScript(()=>{window.__audioNodes={oscillators:0,started:0};const p=AudioContext.prototype;const old=p.createOscillator;p.createOscillator=function(...args){window.__audioNodes.oscillators++;return old.apply(this,args);};});
  await page.goto((live||'http://127.0.0.1:5199')+'/?offline=1&hero=ember-warden&quality=low&time=.45');
- await page.waitForFunction(()=>window.__STRONGHOLD_COMBAT__?.snapshot().vfx.fx.ready&&!document.querySelector('#loading-screen'),null,{timeout:180000});
- await page.keyboard.press('Shift');
+ await page.waitForFunction(()=>window.__STRONGHOLD_COMBAT__?.snapshot().vfx.fx.ready&&!document.querySelector('#loading-screen'),null,{timeout:180000}).catch(async e=>{console.log(await page.evaluate(()=>({url:location.href,text:document.body.innerText,settings:window.__SETTINGS__?.audio(),combat:!!window.__STRONGHOLD_COMBAT__})));throw e;});
+ if(mobile)await page.touchscreen.tap(20,400);else await page.keyboard.press('Shift');
  await page.waitForFunction(()=>window.__SETTINGS__?.audio().loaded===true,null,{timeout:30000});
  if(!live){
  await page.evaluate(()=>{window.__STRONGHOLD_COMBAT__?.setPreviewMode(true);window.__STRONGHOLD_COMBAT__?.clearFoes();});
@@ -31,9 +31,9 @@ try{
  return {initial,spam,quiet,muted,hidden,visible,disposed};});
  console.log(JSON.stringify(checked));assert.equal(checked.initial.state,'running');assert(checked.spam.activeVoices<=3);assert(checked.spam.dropped>=24);assert.equal(checked.quiet.activeVoices,0);assert.equal(checked.muted.music,.31);assert.equal(checked.muted.activeVoices,0);assert.equal(checked.hidden.activeVoices,0);assert.equal(checked.disposed.state,'disposed');results.push({mobile,checked});
  }else{
- await page.keyboard.down('KeyS');await page.waitForTimeout(8000);await page.keyboard.up('KeyS');
+ await page.evaluate(()=>{const c=window.__STRONGHOLD_COMBAT__;c.setPreviewMode(true);c.clearFoes();for(let u=18;u<42;u+=2)for(let v=18;v<42;v+=2){if(c.teleport(u,v)&&c.summon(u+2,v,25)>=0){c.resetCooldowns();c.setPreviewMode(false);return;}}});await page.waitForTimeout(8000);
  results.push({mobile,snapshot:await page.evaluate(()=>window.__SETTINGS__.audio())});
- assert.equal(results.at(-1).snapshot.engine,'@pixi/sound');assert.equal(results.at(-1).snapshot.loadError,false);
+ assert.equal(results.at(-1).snapshot.engine,'@pixi/sound');assert.equal(results.at(-1).snapshot.loadError,false);assert(results.at(-1).snapshot.played>0,'Actual automatic casts must play SFX');
  }
  const nodes=await page.evaluate(()=>window.__audioNodes);assert.equal(nodes.oscillators,0);assert.deepEqual(errors,[]);results.at(-1).nodes=nodes;await context.close();
  }
