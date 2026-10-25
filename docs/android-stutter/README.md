@@ -35,7 +35,7 @@ Changes: reset the telemetry window after an explicit scheduler pause, use brows
 
 The isolated before/after browser regression uses the same 2.3-second pause and a separate active 500 ms gap. The old code reports a 2342 ms resume frame; the new code reports 32 ms, while retaining the active gap (524 ms). Gateway construction measured 579 ms before and 66 ms after in the software browser. The resized sheet differs from the old Canvas resize by a mean 0.00366 channel values out of 255; the animation reaches its open frame without page errors. These timings are not a physical Android benchmark and do not prove zero frame drops.
 
-Verification: TypeScript, mask alpha parity and quality-controller tests pass. Reproduce the targeted comparison with `BASELINE=1 node scripts/android-stutter/verify-pause-and-gate.mjs` before committing the implementation, then run without BASELINE. The baseline reads HEAD versions of the three tested modules, so subsequent reruns must use the previous implementation commit for a historical comparison. Reports: `pause-gate-before.json`, `pause-gate-after.json`.
+Verification: TypeScript, mask alpha parity and quality-controller tests pass. Reproduce the historical comparison with `BASELINE=1 BASELINE_REF=2150b3e0 node scripts/android-stutter/verify-pause-and-gate.mjs`, then run without BASELINE. The baseline reference is explicit so later commits do not silently change the comparison. Reports: `pause-gate-before.json`, `pause-gate-after.json`.
 
 The zero-frame-drop goal remains active. Remaining work includes real gameplay profiling with the enriched upload/placement data, removal of remaining upload/render stalls, and verification on the actual low-spec device.
 
@@ -50,3 +50,9 @@ Pause accounting now subtracts exactly the scheduler's accumulated pause duratio
 When a gateway sheet finishes preparing after the door animation already reached its final index, that same-index shadow is invalidated and refreshed. A separate browser test checks this delayed completion and forces the frame-by-frame fallback; fallback and bitmap output have a mean channel error of 0.454/255, with no page errors.
 
 The first second-pass code, `b87f912a`, has been deployed; `live-verification.json` records its production loading/combat regression check. Software rendering still drops frames in that environment and is not proof of device smoothness. The fractional pacing revision requires its own deployed validation; the full zero-frame-drop goal remains unproven.
+
+## Current published verification
+
+`72db7f15` was pushed and deployed through the full supported release script from an isolated clean worktree. The deployment passed production TypeScript/Vite build, Go tests, co-op smoke, shadow geometry/field tests, exact mask alpha checks and the cadence replay. The live build is `/assets/index-B3OsDNbU.js`; the loading/combat regression has no page errors or missing/unsupported VFX references.
+
+This remains partial progress toward the requested zero-frame-drop objective. The software-GPU browser still records slow frames and cannot prove physical Android smoothness. The latest available physical-device traces, rechecked after this deployment, were still from older builds (newest Mali trace 2026-10-26 00:04 WIB; newest Adreno 612 trace 2026-10-25 22:36 WIB). Fresh physical-device evidence on the current build and broader active-gameplay analysis remain necessary. The native goal remains active.
