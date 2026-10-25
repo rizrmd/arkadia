@@ -3,7 +3,7 @@ import {Container,Graphics,Rectangle,Sprite,TilingSprite} from 'pixi.js';
 import {FrameSet,pickFrameScale} from '../typography/frames';
 import {MsdfText} from '../typography/text';
 import {ROLES,type TextRole} from '../typography/tokens';
-import type {HeroKind,Progression} from './progression';
+import {CAPSTONE_LEVEL,RIFT_TIER_POINTS,pointsSpent,riftCardUnlocked,type HeroKind,type Progression} from './progression';
 
 // Rift Runner Skill Tree (Knowledge: "Rift Runner — Ascension Tree Concept", revised progression): a gold-framed panel in
 // front of the dimmed world with the HUD left uncovered. Portrait screens stack the tree bottom to top (Rift Bolt at the
@@ -352,7 +352,7 @@ export class SkillTree{
   const f=this.frames;if(!f||!this.views.size)return;
   const run=this.o.run(),slots=run.slots??[];
   const rank=(n:NodeDef)=>!n.game?0:n.game==='star'?run.stars??0:Math.max(0,run.skills?.[n.game]??(slots.includes(n.game)?1:0));
-  const lock=(_n:NodeDef)=>'';
+  const lock=(n:NodeDef)=>this.ember||!n.game||riftCardUnlocked(run,n.game)?'':n.game==='star'?`Lv. ${CAPSTONE_LEVEL}`:`${RIFT_TIER_POINTS[n.game]} pts`;
   const key=this.defs.map(n=>`${rank(n)}:${n.game?slots.indexOf(n.game):-1}:${lock(n)}`).join('|');
   if(!force&&key===this.stateKey)return;
   this.stateKey=key;
@@ -412,6 +412,11 @@ export class SkillTree{
  // A tapped node is highlighted; in slot mode a learned active skill is equipped to that slot (swapping if needed).
  private choose(v:NodeView){
   const n=v.def;this.highlight(n.id);
+  if(v.lock){
+   const run=this.o.run();
+   this.say(n.game==='star'?`${n.name} unlocks at Lv. ${CAPSTONE_LEVEL}`:`${n.name} unlocks at ${RIFT_TIER_POINTS[n.game!]} points (${pointsSpent(run)} spent)`);
+   return;
+  }
   if(n.kind==='passive'){this.say(`${n.name} is a passive: always active once learned`);return;}
   if(!n.game){this.say(`${n.name}: Concept only; not in the game yet`);return;}
   if(!this.learned(v)){this.say(`${n.name} is not learned yet`);return;}

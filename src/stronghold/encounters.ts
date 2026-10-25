@@ -1,3 +1,5 @@
+import {STRONGHOLD} from './prefabs/stronghold';
+import type {ItemId} from './items';
 import {requestGameFrame as requestAnimationFrame} from '../app/frame-scheduler';
 import {Container,Sprite,Texture} from 'pixi.js';
 import {Minimap} from './minimap';
@@ -62,6 +64,7 @@ export async function createEncounters(o:{
  frames:FrameSet;
  hudCallbacks?:HudCallbacks;
  showCoop?:boolean;
+ cancelRoute?:()=>void;
  hero:Hero;
  direction:()=>Walk;
  net?:Net;
@@ -873,10 +876,34 @@ export async function createEncounters(o:{
    })
   };
  };
+ const itemUseReason=(id:ItemId)=>{
+  if(online||o.showCoop)return 'Consumables are available in solo play.';
+  if(!h.alive)return 'Wait until you respawn.';
+  if(run.pending>0||blessingOverlay.visible||skillTree.isOpen())return 'Finish the current choice first.';
+  if(id==='health-potion'&&h.hp>=maxHp)return 'Health is already full.';
+  if(id==='stronghold-scroll'&&inSafeZone(tileOf(h)))return 'You are already in the Stronghold.';
+  return '';
+ };
  const api={
   hud,
+  itemUseReason,
+  applyItem(id:ItemId){
+   const reason=itemUseReason(id);if(reason)throw Error(reason);
+   const hp=h.hp,old=o.hero.position(),u=h.x,v=h.y;
+   if(id==='health-potion'){h.hp=Math.min(maxHp,h.hp+maxHp*.4);}
+   else{
+    // Use the normal validated teleport API and existing respawn destination.
+    const at=STRONGHOLD.heroSpawn,tile=toTile(at.x,at.y);
+    if(!inSafeZone(tile)||!o.hero.teleport(at.x,at.y))throw Error('Stronghold destination is unavailable. Scroll retained.');
+    h.x=tile.u;h.y=tile.v;h.play('idle');
+    try{localStorage.setItem('arkodia.stronghold.hero',JSON.stringify(at));}catch(error){o.hero.teleport(old.x,old.y);h.x=u;h.y=v;throw error;}
+   }
+   if(id==='stronghold-scroll')o.cancelRoute?.();
+   render();
+   return {undo(){h.hp=hp;if(id==='stronghold-scroll'){o.hero.teleport(old.x,old.y);h.x=u;h.y=v;try{localStorage.setItem('arkodia.stronghold.hero',JSON.stringify(old));}catch{}}render();}};
+  },
   minimap,
-  isModalOpen:()=>skillTree.isOpen(),
+  isModalOpen:()=>skillTree.isOpen()||blessingOverlay.visible,
   skillTree:{open:(slot?:number)=>openSkillTree(slot),close:()=>skillTree.open(false),snapshot:()=>skillTree.snapshot(),tree:skillTree},
   blessingLayout:()=>blessingOverlay.telemetry(),
   combatants:()=>[o.hero.position(),...foes.filter(f=>f.alive).map(f=>tilePoint(f.x,f.y))],

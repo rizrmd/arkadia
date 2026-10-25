@@ -4,16 +4,19 @@ export const MAX_FPS=60;
 
 const pending=new Map<number,FrameRequestCallback>();
 let nextId=0,raf=0,nextFrame=0;
+let paused=false,pauseAt=0,pausedMs=0;
+export function setGamePaused(value:boolean){if(value===paused)return;if(value)pauseAt=performance.now();else pausedMs+=performance.now()-pauseAt;paused=value;nextFrame=0;}
+export const isGamePaused=()=>paused;
 function tick(now:number){
  raf=0;
  const interval=1000/renderQuality.get().targetFps;
- if(now+0.01>=nextFrame){
+ if(!paused&&now+0.01>=nextFrame){
   // Preserve the fractional cadence on 120/144/240 Hz displays, without catch-up bursts after a pause.
   nextFrame=now+interval-Math.max(0,(now-nextFrame)%interval);
   const batch=[...pending];
   for(const [id,callback] of batch){
    if(!pending.delete(id))continue;
-   try{callback(now);}catch(error){reportError(error);}
+   try{callback(now-pausedMs);}catch(error){reportError(error);}
   }
  }
  if(pending.size&&!raf)raf=window.requestAnimationFrame(tick);

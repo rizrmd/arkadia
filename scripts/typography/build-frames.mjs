@@ -157,25 +157,8 @@ const pin=(w,h)=>svg(w,h,`<path d="M${w/2},${h-1.5} C${w/2-3},${h-8} 2,${h*.5} 2
 const users=(w,h)=>svg(w,h,`<circle cx="${w*.36}" cy="${h*.34}" r="4.2" fill="url(#star)" stroke="${C.ink}" stroke-width=".8"/><path d="M${w*.12},${h-3} C${w*.12},${h*.58} ${w*.6},${h*.58} ${w*.6},${h-3} Z" fill="url(#star)" stroke="${C.ink}" stroke-width=".8"/>`+
  `<circle cx="${w*.66}" cy="${h*.38}" r="3.6" fill="url(#star)" stroke="${C.ink}" stroke-width=".8"/><path d="M${w*.46},${h-3} C${w*.46},${h*.64} ${w*.88},${h*.64} ${w*.88},${h-3} Z" fill="url(#star)" stroke="${C.ink}" stroke-width=".8"/>`);
 
-// Skill art inside the rings: Flame Fan & Rift Bolt reuse kit masters; the others are painted here.
-const riftTrap=s=>{const c=s/2,sp=(x,y,r)=>`<path d="M${x},${y-r} L${x+r*.22},${y-r*.22} L${x+r},${y} L${x+r*.22},${y+r*.22} L${x},${y+r} L${x-r*.22},${y+r*.22} L${x-r},${y} L${x-r*.22},${y-r*.22} Z" fill="#f6e8ff"/>`;
- return svg(s,s,`<radialGradient id="bg" cx=".5" cy=".5" r=".55"><stop offset="0" stop-color="#5b2bd0"/><stop offset=".55" stop-color="#2a0f78"/><stop offset="1" stop-color="#0c0526"/></radialGradient>
- <radialGradient id="orb" cx=".38" cy=".32" r=".72"><stop offset="0" stop-color="#f4e9ff"/><stop offset=".18" stop-color="#c49bff"/><stop offset=".55" stop-color="#7b3cf0"/><stop offset=".85" stop-color="#3d12a8"/><stop offset="1" stop-color="#1c0660"/></radialGradient>
- <radialGradient id="halo" cx=".5" cy=".5" r=".5"><stop offset=".55" stop-color="#b98cff" stop-opacity=".0"/><stop offset=".7" stop-color="#b98cff" stop-opacity=".55"/><stop offset="1" stop-color="#b98cff" stop-opacity="0"/></radialGradient>
- <rect width="${s}" height="${s}" fill="url(#bg)"/><circle cx="${c}" cy="${c}" r="${s*.46}" fill="url(#halo)"/>`+
- [...Array(7)].map((_,i)=>`<path d="M${c},${c} m${-s*.42},0 a${s*.42},${s*.3} ${i*26} 0 1 ${s*.84},0" fill="none" stroke="#a678ff" stroke-opacity="${.12+.04*i}" stroke-width=".9" transform="rotate(${i*26} ${c} ${c})"/>`).join('')+
- `<circle cx="${c}" cy="${c}" r="${s*.33}" fill="url(#orb)"/><circle cx="${c}" cy="${c}" r="${s*.33}" fill="none" stroke="#e7d4ff" stroke-opacity=".7" stroke-width="1.2"/><ellipse cx="${c-s*.1}" cy="${c-s*.13}" rx="${s*.11}" ry="${s*.065}" fill="#ffffff" fill-opacity=".75" transform="rotate(-35 ${c-s*.1} ${c-s*.13})"/>`+
- `<path d="M${c+s*.02},${c-s*.18} c${s*.08},${s*.05} ${s*.12},${s*.15} ${s*.06},${s*.27}" fill="none" stroke="#f2e6ff" stroke-opacity=".45" stroke-width="1.6"/>`+
- sp(c+s*.15,c-s*.08,4.5)+sp(c-s*.05,c+s*.12,3)+sp(c+s*.3,c+s*.28,3.4)+sp(c-s*.32,c-s*.28,2.8)+sp(c+s*.34,c-s*.33,2.2));};
-const seismicSlam=s=>{const c=s/2,rays=[...Array(18)].map((_,i)=>{const a=i/18*Math.PI*2+.1,l=s*(.42+.12*(i%3===0)),w=.09;return `<path d="M${c},${c+s*.08} L${c+l*Math.cos(a-w)},${c+s*.08+l*Math.sin(a-w)} L${c+l*Math.cos(a+w)},${c+s*.08+l*Math.sin(a+w)} Z" fill="#fff0b0" fill-opacity="${.25+.2*(i%2)}"/>`;}).join('');
- const rock=(pts,shade)=>{const P=pts.map(([x,y])=>[c+x*s,c+y*s]),top=P.slice(0,3).map(p=>p.join(',')).join(' L');
-  return `<polygon points="${P.map(p=>p.join(',')).join(' ')}" fill="${shade}" stroke="#1a0a03" stroke-width=".8" stroke-linejoin="round"/><path d="M${top}" fill="none" stroke="#ffcf7a" stroke-opacity=".75" stroke-width=".9" stroke-linecap="round"/>`;};
- return svg(s,s,`<radialGradient id="bg" cx=".5" cy=".58" r=".6"><stop offset="0" stop-color="#fff2b8"/><stop offset=".18" stop-color="#ffc24a"/><stop offset=".45" stop-color="#e57a12"/><stop offset=".8" stop-color="#7a2c04"/><stop offset="1" stop-color="#2a0c02"/></radialGradient>
- <rect width="${s}" height="${s}" fill="url(#bg)"/>${rays}<circle cx="${c}" cy="${c+s*.08}" r="${s*.1}" fill="#fffbe6" fill-opacity=".85"/>`+
- rock([[-.36,.22],[-.27,.12],[-.15,.15],[-.11,.27],[-.22,.34],[-.35,.31]],'#4a2610')+rock([[-.13,.24],[-.04,.13],[.07,.16],[.13,.27],[.03,.35],[-.1,.34]],'#5c3014')+rock([[.1,.2],[.2,.1],[.33,.17],[.37,.28],[.25,.34],[.13,.31]],'#43220d')+
- rock([[-.27,.01],[-.2,-.07],[-.12,-.04],[-.13,.04],[-.22,.06]],'#6a3a17')+rock([[.15,-.03],[.23,-.13],[.31,-.06],[.28,.03],[.19,.04]],'#5a3012')+rock([[.02,-.17],[.07,-.23],[.12,-.17],[.08,-.12]],'#5a3012')+
- rock([[-.46,.36],[-.36,.3],[-.27,.34],[-.3,.44],[-.44,.45]],'#3a1c0a')+rock([[.27,.37],[.37,.31],[.46,.35],[.44,.45],[.3,.45]],'#3a1c0a')+rock([[-.06,.38],[.03,.35],[.1,.4],[.04,.47],[-.06,.46]],'#2e1607')+
- [[-.3,-.3,1.8],[.32,-.26,1.5],[-.05,-.38,1.4],[.4,.05,1.2],[-.42,.02,1.3]].map(([x,y,r])=>`<circle cx="${c+x*s}" cy="${c+y*s}" r="${r}" fill="#ffe7a0"/>`).join(''));};
+// Skill art inside the rings: Flame Fan reuses its kit master, the Rift Runner skills their Skill Tree icons (treeArt);
+// the remaining Ember Warden skills and the blessing orb are painted here.
 const cinderStep=s=>{const c=s/2;
  return svg(s,s,`<radialGradient id="bg" cx=".5" cy=".55" r=".58"><stop offset="0" stop-color="#fff4c2"/><stop offset=".28" stop-color="#ff8c24"/><stop offset=".65" stop-color="#9e1f06"/><stop offset="1" stop-color="#240502"/></radialGradient>
  <rect width="${s}" height="${s}" fill="url(#bg)"/>`+
@@ -186,14 +169,6 @@ const emberSnare=s=>{const c=s/2;
  <rect width="${s}" height="${s}" fill="url(#bg)"/>`+
  `<ellipse cx="${c}" cy="${c+6}" rx="${s*.36}" ry="${s*.2}" fill="none" stroke="#ffd269" stroke-width="2.4"/><ellipse cx="${c}" cy="${c+6}" rx="${s*.24}" ry="${s*.13}" fill="none" stroke="#fff3c4" stroke-width="1.6"/>`+
  `<path d="M${c-s*.18},${c+8} L${c-s*.06},${c-s*.28} L${c},${c-s*.08} L${c+s*.08},${c-s*.32} L${c+s*.2},${c+8} Z" fill="#ffae36" stroke="#fff4c2" stroke-width="1.1"/>`);};
-const riftDash=s=>{const c=s/2;
- return svg(s,s,`<radialGradient id="bg" cx=".5" cy=".5" r=".58"><stop offset="0" stop-color="#d6f8ff"/><stop offset=".32" stop-color="#38b6ff"/><stop offset=".72" stop-color="#28166f"/><stop offset="1" stop-color="#09041f"/></radialGradient>
- <rect width="${s}" height="${s}" fill="url(#bg)"/>`+
- `<path d="M${c-s*.32},${c+s*.2} L${c+s*.28},${c-s*.24} L${c+s*.06},${c+s*.04} L${c+s*.34},${c+s*.02} L${c-s*.22},${c+s*.3} Z" fill="#e8fcff" stroke="#5ce1e6" stroke-width="1.5"/>`);};
-const astralCleave=s=>{const c=s/2;
- return svg(s,s,`<radialGradient id="bg" cx=".5" cy=".5" r=".58"><stop offset="0" stop-color="#eef8ff"/><stop offset=".35" stop-color="#7b68ee"/><stop offset=".75" stop-color="#22124d"/><stop offset="1" stop-color="#0b051c"/></radialGradient>
- <rect width="${s}" height="${s}" fill="url(#bg)"/>`+
- `<path d="M${c-s*.26},${c-s*.24} A${s*.36},${s*.36} 0 1 1 ${c-s*.24},${c+s*.28} A${s*.26},${s*.26} 0 1 0 ${c-s*.26},${c-s*.24} Z" fill="#fff4c8" stroke="#ffd36a" stroke-width="1.6"/>`);};
 const blessingOrb=s=>{const c=s/2;
  return svg(s,s,`<radialGradient id="bg" cx=".5" cy=".45" r=".58"><stop offset="0" stop-color="#fff4cc"/><stop offset=".35" stop-color="#d99b38"/><stop offset=".75" stop-color="#4f290a"/><stop offset="1" stop-color="#170b03"/></radialGradient>
  <rect width="${s}" height="${s}" fill="url(#bg)"/>`+star(c,c,s*.36,s*.36,null,true));};
@@ -206,6 +181,8 @@ async function circleArt(file,[cx,cy,r],size,underlay){
  const mask=Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${px}" height="${px}"><circle cx="${px/2}" cy="${px/2}" r="${px/2}" fill="#fff"/></svg>`);
  return sharp(base).ensureAlpha().composite([{input:await sharp(mask).png().toBuffer(),blend:'dest-in'}]).png().toBuffer();
 }
+// Rift Runner skills show the same painted icon as their Skill Tree node (scripts/skill-tree/build-assets.mjs; run it first).
+const treeArt=id=>async()=>circleMask(await sharp(`public/skill-tree/v1/@3x/icon-${id}.png`).resize(ORB*3,ORB*3,{kernel:'lanczos3'}).png().toBuffer(),ORB);
 const circleMask=async(buf,size)=>{const px=size*3,mask=Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${px}" height="${px}"><circle cx="${px/2}" cy="${px/2}" r="${px/2}" fill="#fff"/></svg>`);return sharp(buf).resize(px,px).ensureAlpha().composite([{input:await sharp(mask).png().toBuffer(),blend:'dest-in'}]).png().toBuffer();};
 const redUnderlay=`<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><radialGradient id="r" cx=".5" cy=".45" r=".6"><stop offset="0" stop-color="#ff5a2e"/><stop offset=".55" stop-color="#b3150a"/><stop offset="1" stop-color="#3c0503"/></radialGradient><rect width="100" height="100" fill="url(#r)"/></svg>`;
 const riftUnderlay=`<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><radialGradient id="r" cx=".5" cy=".45" r=".6"><stop offset="0" stop-color="#6246ea"/><stop offset=".55" stop-color="#2b1478"/><stop offset="1" stop-color="#0d0529"/></radialGradient><rect width="100" height="100" fill="url(#r)"/></svg>`;
@@ -245,14 +222,14 @@ const assets={
  'portrait-ember-warden':[ART,ART,()=>circleArt('ember-warden.png',[560,245,190],ART,redUnderlay),null],
  'portrait-rift-runner':[ART,ART,()=>circleArt('rift-runner.png',[570,230,190],ART,riftUnderlay),null],
  'skill-flame-fan':[ORB,ORB,()=>circleArt('skill-flame-fan.png',[628,612,352],ORB),null],
- 'skill-rift-bolt':[ORB,ORB,()=>circleArt('skill-rift-bolt.png',[627,625,352],ORB),null],
+ 'skill-rift-bolt':[ORB,ORB,treeArt('rift-bolt'),null],
  'skill-empty':[ORB,ORB,()=>circleArt('skill-empty.png',[647,592,340],ORB),null],
- 'skill-rift-trap':[ORB,ORB,async()=>circleMask(await sharp(Buffer.from(riftTrap(ORB))).png().toBuffer(),ORB),null],
- 'skill-seismic-slam':[ORB,ORB,async()=>circleMask(await sharp(Buffer.from(seismicSlam(ORB))).png().toBuffer(),ORB),null],
+ 'skill-rift-trap':[ORB,ORB,treeArt('rift-trap'),null],
+ 'skill-seismic-slam':[ORB,ORB,treeArt('seismic-slam'),null],
  'skill-cinder-step':[ORB,ORB,async()=>circleMask(await sharp(Buffer.from(cinderStep(ORB))).png().toBuffer(),ORB),null],
  'skill-ember-snare':[ORB,ORB,async()=>circleMask(await sharp(Buffer.from(emberSnare(ORB))).png().toBuffer(),ORB),null],
- 'skill-rift-dash':[ORB,ORB,async()=>circleMask(await sharp(Buffer.from(riftDash(ORB))).png().toBuffer(),ORB),null],
- 'skill-cleave':[ORB,ORB,async()=>circleMask(await sharp(Buffer.from(astralCleave(ORB))).png().toBuffer(),ORB),null],
+ 'skill-rift-dash':[ORB,ORB,treeArt('rift-dash'),null],
+ 'skill-cleave':[ORB,ORB,treeArt('astral-cleave'),null],
  'skill-blessing':[ORB,ORB,async()=>circleMask(await sharp(Buffer.from(blessingOrb(ORB))).png().toBuffer(),ORB),null],
 };
 

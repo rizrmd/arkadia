@@ -248,7 +248,60 @@ func (w *World) roll(p *Progression) {
 	w.rollForHero(p, p.inferHero("rift-runner"))
 }
 
+// Rift Runner Ascension Tree gates (progression.ts, RIFT_TIER_POINTS): a card's tier opens once enough points are
+// spent, and every level-up card taken is one point. Ascendant Star is offered from Lv. 20 only, as the passive card
+// of the Lv. 20 offer. Ember Warden has no gates.
+var riftTierPoints = map[string]int{
+	"rift-bolt": 0, "rift-dash": 0, "rift-trap": 0, "heal": 0, "might": 0,
+	"cleave": 4, "shockwave": 4, "nova": 4, "leech": 4,
+	"haste": 8, "vitality": 8,
+}
+
+const CapstoneLevel = 20
+
+// pointsSpent is the number of level-up cards taken: every pick adds one rank (Second Wind included) or one star.
+func (p *Progression) pointsSpent() int {
+	n := p.Stars - 1
+	for _, r := range p.Skills {
+		n += max(0, r)
+	}
+	return max(0, n)
+}
+
+// offerLevel is the level the pending pick belongs to (several level-ups are picked one by one, lowest first).
+func (p *Progression) offerLevel() int {
+	if p.Pending > 0 {
+		return p.Level - p.Pending + 1
+	}
+	return p.Level
+}
+
+func (p *Progression) riftCardUnlocked(id string) bool {
+	if id == "star" {
+		return p.offerLevel() >= CapstoneLevel
+	}
+	gate, ok := riftTierPoints[id]
+	if !ok {
+		return false
+	}
+	return p.Skills[id] > 0 || containsStr(p.Slots, id) || p.pointsSpent() >= gate
+}
+
+func (p *Progression) riftUnlocked(pool []string) []string {
+	out := make([]string, 0, len(pool))
+	for _, id := range pool {
+		if p.riftCardUnlocked(id) {
+			out = append(out, id)
+		}
+	}
+	return out
+}
+
 func (w *World) rollForHero(p *Progression, hero string) {
+	if h := hero; h == "rift-runner" || (h != "ember-warden" && p.inferHero(h) == "rift-runner") {
+		w.rollGated(p)
+		return
+	}
 	activePool := p.eligibleActiveSkills(hero)
 	passivePool := make([]string, len(passiveBlessingIDs))
 	copy(passivePool, passiveBlessingIDs)
@@ -297,6 +350,58 @@ func (w *World) rollForHero(p *Progression, hero string) {
 			j = i
 		}
 		chosen[i], chosen[j] = chosen[j], chosen[i]
+	}
+	p.Offers = chosen
+}
+
+// rollGated is the Rift Runner's offer: one passive and two active cards, drawn only from open tiers and owned
+// skills. A short pool is filled from the other gated pool, never from a locked tier.
+func (w *World) rollGated(p *Progression) {
+	activePool := p.riftUnlocked(p.eligibleActiveSkills("rift-runner"))
+	passivePool := p.riftUnlocked(passiveBlessingIDs)
+	chosen := make([]string, 0, 3)
+	take := func(pool []string) bool {
+		avail := make([]string, 0, len(pool))
+		for _, id := range pool {
+			if !containsStr(chosen, id) {
+				avail = append(avail, id)
+			}
+		}
+		if len(avail) == 0 {
+			return false
+		}
+		idx := min(int(w.random()*float64(len(avail))), len(avail)-1)
+		chosen = append(chosen, avail[idx])
+		return true
+	}
+	if p.offerLevel() == CapstoneLevel && containsStr(passivePool, "star") {
+		chosen = append(chosen, "star")
+	} else {
+		take(passivePool)
+	}
+	if len(p.Slots) < MaxSkillSlots {
+		unequipped, equipped := []string{}, []string{}
+		for _, id := range activePool {
+			if containsStr(p.Slots, id) {
+				equipped = append(equipped, id)
+			} else {
+				unequipped = append(unequipped, id)
+			}
+		}
+		if len(unequipped) == 0 {
+			unequipped = activePool
+		}
+		if len(equipped) == 0 {
+			equipped = activePool
+		}
+		take(unequipped)
+		take(equipped)
+	} else {
+		take(activePool)
+		take(activePool)
+	}
+	combined := append(append([]string{}, activePool...), passivePool...)
+	for len(chosen) < 3 && take(combined) {
 	}
 	p.Offers = chosen
 }
@@ -363,7 +468,9 @@ func (p *Player) choose(id string, level int) {
 			p.MaxHP += 20
 			p.F.HP = math.Min(p.MaxHP, p.F.HP+20)
 		case "heal":
+			// Heals once when taken; the count marks it learned in the skill tree and counts as a tier point.
 			p.F.HP = math.Min(p.MaxHP, p.F.HP+p.MaxHP*.35)
+			p.Run.Skills[id]++
 		default:
 			p.Run.Skills[id]++
 		}
