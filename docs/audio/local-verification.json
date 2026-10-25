@@ -1,0 +1,202 @@
+[
+  {
+    "mobile": false,
+    "checked": {
+      "initial": {
+        "engine": "@pixi/sound",
+        "state": "running",
+        "music": 0.7,
+        "soundEffects": 0.8,
+        "musicPlaying": false,
+        "loaded": true,
+        "loadError": false,
+        "activeVoices": 0,
+        "maxVoices": 3,
+        "played": 0,
+        "dropped": 0
+      },
+      "spam": {
+        "engine": "@pixi/sound",
+        "state": "running",
+        "music": 0.7,
+        "soundEffects": 0.8,
+        "musicPlaying": false,
+        "loaded": true,
+        "loadError": false,
+        "activeVoices": 1,
+        "maxVoices": 3,
+        "played": 1,
+        "dropped": 24
+      },
+      "quiet": {
+        "engine": "@pixi/sound",
+        "state": "running",
+        "music": 0.7,
+        "soundEffects": 0.8,
+        "musicPlaying": false,
+        "loaded": true,
+        "loadError": false,
+        "activeVoices": 0,
+        "maxVoices": 3,
+        "played": 1,
+        "dropped": 24
+      },
+      "muted": {
+        "engine": "@pixi/sound",
+        "state": "running",
+        "music": 0.31,
+        "soundEffects": 0,
+        "musicPlaying": false,
+        "loaded": true,
+        "loadError": false,
+        "activeVoices": 0,
+        "maxVoices": 3,
+        "played": 1,
+        "dropped": 24
+      },
+      "hidden": {
+        "engine": "@pixi/sound",
+        "state": "running",
+        "music": 0.31,
+        "soundEffects": 0.8,
+        "musicPlaying": false,
+        "loaded": true,
+        "loadError": false,
+        "activeVoices": 0,
+        "maxVoices": 3,
+        "played": 1,
+        "dropped": 24
+      },
+      "visible": {
+        "engine": "@pixi/sound",
+        "state": "running",
+        "music": 0.31,
+        "soundEffects": 0.8,
+        "musicPlaying": false,
+        "loaded": true,
+        "loadError": false,
+        "activeVoices": 0,
+        "maxVoices": 3,
+        "played": 1,
+        "dropped": 24
+      },
+      "disposed": {
+        "engine": "@pixi/sound",
+        "state": "disposed",
+        "music": 0.31,
+        "soundEffects": 0.8,
+        "musicPlaying": false,
+        "loaded": false,
+        "loadError": false,
+        "activeVoices": 0,
+        "maxVoices": 3,
+        "played": 1,
+        "dropped": 24
+      }
+    },
+    "nodes": {
+      "oscillators": 0,
+      "started": 0
+    }
+  },
+  {
+    "mobile": true,
+    "checked": {
+      "initial": {
+        "engine": "@pixi/sound",
+        "state": "running",
+        "music": 0.7,
+        "soundEffects": 0.8,
+        "musicPlaying": false,
+        "loaded": true,
+        "loadError": false,
+        "activeVoices": 0,
+        "maxVoices": 3,
+        "played": 0,
+        "dropped": 0
+      },
+      "spam": {
+        "engine": "@pixi/sound",
+        "state": "running",
+        "music": 0.7,
+        "soundEffects": 0.8,
+        "musicPlaying": false,
+        "loaded": true,
+        "loadError": false,
+        "activeVoices": 1,
+        "maxVoices": 3,
+        "played": 1,
+        "dropped": 24
+      },
+      "quiet": {
+        "engine": "@pixi/sound",
+        "state": "running",
+        "music": 0.7,
+        "soundEffects": 0.8,
+        "musicPlaying": false,
+        "loaded": true,
+        "loadError": false,
+        "activeVoices": 0,
+        "maxVoices": 3,
+        "played": 1,
+        "dropped": 24
+      },
+      "muted": {
+        "engine": "@pixi/sound",
+        "state": "running",
+        "music": 0.31,
+        "soundEffects": 0,
+        "musicPlaying": false,
+        "loaded": true,
+        "loadError": false,
+        "activeVoices": 0,
+        "maxVoices": 3,
+        "played": 1,
+        "dropped": 24
+      },
+      "hidden": {
+        "engine": "@pixi/sound",
+        "state": "running",
+        "music": 0.31,
+        "soundEffects": 0.8,
+        "musicPlaying": false,
+        "loaded": true,
+        "loadError": false,
+        "activeVoices": 0,
+        "maxVoices": 3,
+        "played": 1,
+        "dropped": 24
+      },
+      "visible": {
+        "engine": "@pixi/sound",
+        "state": "running",
+        "music": 0.31,
+        "soundEffects": 0.8,
+        "musicPlaying": false,
+        "loaded": true,
+        "loadError": false,
+        "activeVoices": 0,
+        "maxVoices": 3,
+        "played": 1,
+        "dropped": 24
+      },
+      "disposed": {
+        "engine": "@pixi/sound",
+        "state": "disposed",
+        "music": 0.31,
+        "soundEffects": 0.8,
+        "musicPlaying": false,
+        "loaded": false,
+        "loadError": false,
+        "activeVoices": 0,
+        "maxVoices": 3,
+        "played": 1,
+        "dropped": 24
+      }
+    },
+    "nodes": {
+      "oscillators": 0,
+      "started": 0
+    }
+  }
+]

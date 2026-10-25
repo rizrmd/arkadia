@@ -1,0 +1,1 @@
+Original skill swoosh created for Arkodia, licensed CC0-1.0. No third-party recordings or samples. Reproduce with `node scripts/audio/generate.mjs`. Mono PCM WAV, 22,050 Hz, 220 ms, tapered noise burst with silent endpoints; no continuous tone or loop. Playback uses @pixi/sound (MIT).
