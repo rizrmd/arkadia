@@ -1,3 +1,24 @@
+## Cemetery geometry correction — validated, deployment pending
+
+Live screenshot review of `49806970` exposed remaining tears on grave shadows despite passing cast/receive controls. Those controls verified reception, not solid volume correctness. The correction now uses the actual source-authored box faces for all four grave families and both fallen columns; an eight-vertex authored proxy also closes the crate. Original alpha clips the geometry, preserving real openings and broken-piece separation. Pillar/stair art and collision are unchanged.
+
+- [x] Establish the source 64/32 projection and world-pixel heights (37 px per authored metre for these shapes; distinct from 24 px/m relief).
+- [x] Clip actual faces to original-alpha source cells; avoid interpolating source-camera depth to zero across silhouette edges.
+- [x] Keep nearest visible native face within one receiver, preserving painter order across objects.
+- [x] Native source recipe/hash alignment, 49,491 field assertions, 49,358 companion checks and isolated static/dynamic GPU fixtures pass.
+- [x] Re-run all 293 static variants: 879 directional receiving controls pass, 296 receiver/color entries match.
+- [x] Scoped morning control finds no enclosed bright components >=4 pixels for crate, barrel or any of the four cemetery families. The alternate fallen column retains a four-pixel component at a real piece separation.
+- [ ] Push/deploy this native-face correction and inspect live cemetery screenshots.
+- [ ] Complete every animation-frame/mirror GPU proof and controlled hardware performance evidence.
+
+![Native faces compared with folded source proxies](sandbox://LS6016e1117dfed3e1902e0f2c/projects/arkadia/repos/arkadia/docs/shadow-audit/native-volume-control/control.png)
+
+## Native cemetery volume experiment
+
+The actual authored box recipes now supply per-ray front/back height intervals for all four cemetery families and both fallen-column orientations. This replaces inferred height on these families. The control remains under visual review; original alpha and collision are unchanged.
+
+![Native cemetery and fallen-column control](sandbox://LS6016e1117dfed3e1902e0f2c/projects/arkadia/repos/arkadia/docs/shadow-audit/native-volume-control/control.png)
+
 ## Live evidence for commit 49806970
 
 Release `1792958638651-game-49806970-3aa6a0d53eee` is live at [Arkodia](https://ark-whachat.fural.space). The served entry is `/assets/index-BH7qfnRe.js`; the shadow runtime is `/assets/main-Bo0oRiol.js`, matched to the clean-worktree build. Health is HTTP 200. Desktop and emulated mobile cemetery at sun time 0.3 passed both isolated static and live GPU fixtures, including 24,576 exact packed-byte comparisons, with no browser errors.

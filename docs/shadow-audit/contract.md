@@ -1,3 +1,13 @@
+## Native cemetery faces and source-space solid proxies
+
+Four cemetery families and both fallen-column orientations now use the actual numeric box recipes from `ground-kit.mjs`. Their source-camera projection is `(64(u-v),32(u+v)-z)`. These source shapes use **37 world pixels per authored metre**, while terrain relief uses 24; the boxes already store world-pixel `z`, so no metre conversion is applied again. Placement horizontal/vertical scale, mirror, lift and shear are applied once, using the catalog frame and pivot.
+
+Each box face is clipped to occupied original-alpha source cells in camera space before being projected into light space. This avoids the false curtains produced by interpolating a sampled silhouette depth to zero. Top, +u and +v faces receive; all six closed faces cast. Among faces of one visible object, the receiver map keeps the greatest height along the camera ray; different objects still follow production painter order. Actual gaps between broken column pieces are retained. Standing pillars and stairs are untouched.
+
+The crate uses an authored eight-vertex closed proxy measured in normalized source-frame coordinates; the barrel retains its authored cap and camera-ray volume. Neither proxy derives heights from RGB. The current control has zero enclosed bright components of four or more pixels on all four cemetery families, crate and barrel. The alternate fallen column retains a four-pixel component at a real separation between pieces. These scoped controls do not prove perfect subpixel edge agreement on every frame.
+
+The latest 293-variant GPU audit passes all 879 directional receiving controls, with zero color/receiver order mismatches. Native box projection regression also checks mirrors, vertical scale, shear, lift, three lights, below/above receivers; total field assertions are now 49,491.
+
 ## Exact-byte depth uploads and closed solids
 
 The current static field uploads packed RGBA bytes using `BufferImageSource` with `rgba8unorm`, nearest sampling and no alpha premultiplication. Canvas2D is unsuitable for numeric RGB with partial alpha: its internal premultiplied representation damaged 6,206 RGB bytes in the 4,096-texel regression control. The direct buffer preserves all 24,576 RGB/alpha channel comparisons on the GPU, including every alpha byte. Both primary and second fields use this path.

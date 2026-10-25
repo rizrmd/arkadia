@@ -1,5 +1,6 @@
+import {sampleNativeBoxes} from './native-shadow-sampling';
 import {type ShadowSample} from './shadow-field';
-export type ShadowSurface={key:string;source:CanvasImageSource;sourceWidth:number;sourceHeight:number;frame?:number[];x:number;y:number;width:number;height:number;pivot:number[];flip?:boolean;shear?:number;vertical?:number;lift?:number;ground?:number[];constantHeight?:number;depth?:number;cast?:boolean;solidBody?:boolean;capHeight?:number;backGround?:number[];heightAtScreen?:(x:number,y:number)=>number};
+export type ShadowSurface={key:string;source:CanvasImageSource;sourceWidth:number;sourceHeight:number;frame?:number[];x:number;y:number;width:number;height:number;pivot:number[];flip?:boolean;shear?:number;vertical?:number;lift?:number;ground?:number[];constantHeight?:number;depth?:number;cast?:boolean;solidBody?:boolean;nativeGeometry?:{boxes?:number[][];world?:number[];pivot?:number[];vertices?:number[][]};geometryModel?:string;heightInterval?:(u:number,v:number)=>{near:number;far:number};capHeight?:number;backGround?:number[];heightAtScreen?:(x:number,y:number)=>number};
 export type SampledSurface={surface:ShadowSurface;samples:ShadowSample[];bounds:{left:number;top:number;right:number;bottom:number};step:number};
 // Ground contact measured from alpha, with the same 2:1 support constraint as the
 // frontier kit builder. This is an explicitly declared folded billboard proxy.
@@ -14,14 +15,15 @@ export function measuredGround(alpha:Uint8ClampedArray,w:number,h:number){
 export function baseline(ground:number[],u:number){const n=ground.length-1,t=Math.max(0,Math.min(n,u*n)),i=Math.min(n-1,Math.floor(t));return n?ground[i]+(ground[i+1]-ground[i])*(t-i):ground[0];}
 export function surfacePoint(p:ShadowSurface,u:number,v:number,ground=p.ground??[p.pivot[1]]){
  const lx=(u-p.pivot[0])*p.width*(p.flip?-1:1),sy=(p.vertical??1)*p.height,screenY=p.y-(p.lift??0)+(p.shear??0)*lx+(v-p.pivot[1])*sy;
- const raw=p.constantHeight??Math.max(0,(baseline(ground,u)-v)*sy),local=p.capHeight===undefined?raw:Math.min(p.capHeight,raw),z=p.heightAtScreen?p.heightAtScreen(p.x+lx,screenY):(p.lift??0)+local;
+ const raw=p.heightInterval?.(u,v).near??p.constantHeight??Math.max(0,(baseline(ground,u)-v)*sy),local=p.capHeight===undefined?raw:Math.min(p.capHeight,raw),z=p.heightAtScreen?p.heightAtScreen(p.x+lx,screenY):(p.lift??0)+local;
  return {x:p.x+lx,y:screenY+z,z,alpha:1};
 }
 export function sampleSurface(surface:ShadowSurface,step=2):SampledSurface{
  const p=surface,w=Math.max(1,Math.ceil(p.width/step)),h=Math.max(1,Math.ceil(p.height*(p.vertical??1)/step)),c=document.createElement('canvas');c.width=w;c.height=h;
  const ctx=c.getContext('2d',{willReadFrequently:true})!,f=p.frame??[0,0,p.sourceWidth,p.sourceHeight];ctx.drawImage(p.source,f[0],f[1],f[2],f[3],0,0,w,h);const data=ctx.getImageData(0,0,w,h).data,g=p.ground??measuredGround(data,w,h),samples:ShadowSample[]=[];
- const volume=!!p.backGround&&p.solidBody!==false&&p.cast!==false,back=volume?new Float32Array((w+1)*(h+1)*3):null;
- const vertices=new Float32Array((w+1)*(h+1)*3);for(let y=0;y<=h;y++)for(let x=0;x<=w;x++){const q=surfacePoint(p,x/w,y/h,g),i=(y*(w+1)+x)*3;vertices[i]=q.x;vertices[i+1]=q.y;vertices[i+2]=q.z;if(back){const screen=q.y-q.z,z=(p.lift??0)+Math.min(q.z-(p.lift??0),Math.max(0,(baseline(p.backGround!,x/w)-y/h)*p.height*(p.vertical??1)));back[i]=q.x;back[i+1]=screen+z;back[i+2]=z;}}
+ if(p.nativeGeometry&&p.solidBody!==false){const result=sampleNativeBoxes(p,data,w,h,step);c.width=c.height=1;return result;}
+ const volume=!!(p.backGround||p.heightInterval)&&p.solidBody!==false&&p.cast!==false,back=volume?new Float32Array((w+1)*(h+1)*3):null;
+ const vertices=new Float32Array((w+1)*(h+1)*3);for(let y=0;y<=h;y++)for(let x=0;x<=w;x++){const q=surfacePoint(p,x/w,y/h,g),i=(y*(w+1)+x)*3;vertices[i]=q.x;vertices[i+1]=q.y;vertices[i+2]=q.z;if(back){const screen=q.y-q.z,z=(p.lift??0)+Math.min(q.z-(p.lift??0),p.heightInterval?p.heightInterval(x/w,y/h).far:Math.max(0,(baseline(p.backGround!,x/w)-y/h)*p.height*(p.vertical??1)));back[i]=q.x;back[i+1]=screen+z;back[i+2]=z;}}
  let left=Infinity,top=Infinity,right=-Infinity,bottom=-Infinity;
  for(let y=0;y<h;y++)for(let x=0;x<w;x++){const a=data[(y*w+x)*4+3];if(!a)continue;const q:ShadowSample=surfacePoint(p,(x+.5)/w,(y+.5)/h,g);q.alpha=a/255;const quad=new Float32Array(12);for(const [j,offset] of [y*(w+1)+x,y*(w+1)+x+1,(y+1)*(w+1)+x+1,(y+1)*(w+1)+x].entries())quad.set(vertices.subarray(offset*3,offset*3+3),j*3);q.quad=quad;samples.push(q);
   if(back){const far=new Float32Array(12);for(const [j,offset] of [y*(w+1)+x,y*(w+1)+x+1,(y+1)*(w+1)+x+1,(y+1)*(w+1)+x].entries())far.set(back.subarray(offset*3,offset*3+3),j*3);

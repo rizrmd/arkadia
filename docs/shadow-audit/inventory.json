@@ -5749,8 +5749,8 @@
     }
    ],
    "cast": "WebGL original-alpha closed solid volume",
-   "receive": "front visible capped surface only",
-   "disposition": "authored cap and camera-ray interval; original alpha coverage retained; multi-angle visual acceptance pending",
+   "receive": "native visible-face geometric receiver",
+   "disposition": "actual source-authored box faces clipped to original alpha; multi-angle visual acceptance pending",
    "companion": "src/world/maps/solid-shadow-companions.json#frontier:column-fallen",
    "owner": "this task"
   },
@@ -5793,8 +5793,8 @@
     }
    ],
    "cast": "WebGL original-alpha closed solid volume",
-   "receive": "front visible capped surface only",
-   "disposition": "authored cap and camera-ray interval; original alpha coverage retained; multi-angle visual acceptance pending",
+   "receive": "native visible-face geometric receiver",
+   "disposition": "actual source-authored box faces clipped to original alpha; multi-angle visual acceptance pending",
    "companion": "src/world/maps/solid-shadow-companions.json#frontier:column-fallen-v",
    "owner": "this task"
   },
@@ -5835,10 +5835,10 @@
      "rotation": 0
     }
    ],
-   "cast": "WebGL original-alpha triangle depth field",
-   "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "integrated explicit geometry companion; per-family visual acceptance pending",
-   "companion": "src/world/maps/shadow-companions.json#grave-headstone",
+   "cast": "WebGL original-alpha closed solid volume",
+   "receive": "native visible-face geometric receiver",
+   "disposition": "actual source-authored box faces clipped to original alpha; multi-angle visual acceptance pending",
+   "companion": "src/world/maps/solid-shadow-companions.json#frontier:grave-headstone",
    "owner": "this task"
   },
   {
@@ -5878,10 +5878,10 @@
      "rotation": 0
     }
    ],
-   "cast": "WebGL original-alpha triangle depth field",
-   "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "integrated explicit geometry companion; per-family visual acceptance pending",
-   "companion": "src/world/maps/shadow-companions.json#grave-cross",
+   "cast": "WebGL original-alpha closed solid volume",
+   "receive": "native visible-face geometric receiver",
+   "disposition": "actual source-authored box faces clipped to original alpha; multi-angle visual acceptance pending",
+   "companion": "src/world/maps/solid-shadow-companions.json#frontier:grave-cross",
    "owner": "this task"
   },
   {
@@ -5921,10 +5921,10 @@
      "rotation": 0
     }
    ],
-   "cast": "WebGL original-alpha triangle depth field",
-   "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "integrated explicit geometry companion; per-family visual acceptance pending",
-   "companion": "src/world/maps/shadow-companions.json#grave-sarcophagus",
+   "cast": "WebGL original-alpha closed solid volume",
+   "receive": "native visible-face geometric receiver",
+   "disposition": "actual source-authored box faces clipped to original alpha; multi-angle visual acceptance pending",
+   "companion": "src/world/maps/solid-shadow-companions.json#frontier:grave-sarcophagus",
    "owner": "this task"
   },
   {
@@ -5964,10 +5964,10 @@
      "rotation": 0
     }
    ],
-   "cast": "WebGL original-alpha triangle depth field",
-   "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "integrated explicit geometry companion; per-family visual acceptance pending",
-   "companion": "src/world/maps/shadow-companions.json#grave-memorial",
+   "cast": "WebGL original-alpha closed solid volume",
+   "receive": "native visible-face geometric receiver",
+   "disposition": "actual source-authored box faces clipped to original alpha; multi-angle visual acceptance pending",
+   "companion": "src/world/maps/solid-shadow-companions.json#frontier:grave-memorial",
    "owner": "this task"
   },
   {
@@ -6918,8 +6918,8 @@
     }
    ],
    "cast": "WebGL original-alpha closed solid volume",
-   "receive": "front visible capped surface only",
-   "disposition": "authored cap and camera-ray interval; original alpha coverage retained; multi-angle visual acceptance pending",
+   "receive": "native visible-face geometric receiver",
+   "disposition": "authored closed source-space face proxy clipped to original alpha; multi-angle visual acceptance pending",
    "companion": "src/world/maps/solid-shadow-companions.json#court:crate"
   },
   {

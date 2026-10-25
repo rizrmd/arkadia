@@ -4,7 +4,7 @@ import {sampleSurface,type ShadowSurface} from './shadow-surfaces';
 import type {ShadowSun} from './shadow-field';
 const suns:ShadowSun[]=[{dx:1.594,dy:.092,alpha:.55},{dx:.278,dy:.307,alpha:.55},{dx:-.826,dy:.743,alpha:.55}];
 const family=(p:ShadowSurface)=>p.key.startsWith('ff:')?p.key.split(':').slice(0,2).join(':'):p.key;
-export const surfaceAuditSignature=(p:ShadowSurface)=>{const base=[family(p),p.frame,p.width,p.height,p.pivot,p.flip,p.shear,p.vertical,p.lift,p.ground,p.constantHeight,p.cast,!!p.heightAtScreen];return JSON.stringify(p.backGround?[...base,p.capHeight,p.backGround]:base);};
+export const surfaceAuditSignature=(p:ShadowSurface)=>{const base=[family(p),p.frame,p.width,p.height,p.pivot,p.flip,p.shear,p.vertical,p.lift,p.ground,p.constantHeight,p.cast,!!p.heightAtScreen];return JSON.stringify((p.backGround||p.geometryModel)?[...base,p.capHeight,p.backGround,p.geometryModel]:base);};
 export function familyAuditInventory(surfaces:ShadowSurface[]){
  const groups=new Map<string,{id:string;signature:string;family:string;surface:ShadowSurface;placements:{key:string;x:number;y:number}[]}>();
  for(const p of surfaces){const signature=surfaceAuditSignature(p),placement={key:p.key,x:p.x,y:p.y},existing=groups.get(signature);if(existing)existing.placements.push(placement);else groups.set(signature,{id:'variant:'+groups.size,signature,family:family(p),surface:p,placements:[placement]});}
@@ -63,7 +63,7 @@ export async function auditShadowFamilies(surfaces:ShadowSurface[],offset=0,limi
    }
    tests.push({sun,darkPixels:dark,cast:p.cast!==false,maxHeight,receiver,receive});
   }
-  rows.push({id:entry.id,signature:entry.signature,family:entry.family,key:p.key,placements:entry.placements,width:p.width,height:p.height,flip:!!p.flip,lift:p.lift??0,frame:p.frame,explicitHeight:!!p.heightAtScreen,solidBody:!!p.solidBody,capHeight:p.capHeight,tests});
+  rows.push({id:entry.id,signature:entry.signature,family:entry.family,key:p.key,placements:entry.placements,width:p.width,height:p.height,flip:!!p.flip,lift:p.lift??0,frame:p.frame,explicitHeight:!!p.heightAtScreen,solidBody:!!p.solidBody,capHeight:p.capHeight,geometryModel:p.geometryModel,tests});
  }
  return {offset,totalVariants:all.length,totalPlacements:surfaces.length,rows,failures,image:sheet.toDataURL('image/png'),probeSampling:'GPU packed receiver height at actual rendered pixel; float32 camera reconstruction',scope:'Actual registered static geometry plus explicitly labeled catalog/building fixtures, production GPU filter and Worker; three light vectors. Contact sheets show one representative per distinct geometry variant. Probe cases outside source bounds test visible raised receiving and above-caster rejection.'};
  }finally{heightDiagnostic.destroy();field.destroy();const whiteSource=bg.texture.source;const gl=(app.renderer as any).gl as WebGLRenderingContext;app.destroy({removeView:true,releaseGlobalResources:false},{children:true,texture:true,textureSource:false});whiteSource.destroy();for(const source of ownSources.values())source.destroy();if(!gl.isContextLost())gl.getExtension('WEBGL_lose_context')?.loseContext();}
