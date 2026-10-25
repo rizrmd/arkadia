@@ -3,7 +3,9 @@ import {Assets,Container,Rectangle,Sprite,type FederatedPointerEvent} from 'pixi
 // Keep the original 46px utility target independent from the smaller artwork.
 export function createHudActionButton(stage:Container,icon:string,label:string,activate:()=>void){
  const button=new Container({label,eventMode:'static',cursor:'pointer'});
- button.zIndex=80;
+ // Utility actions belong to the HUD, below the clock popup (40), skill tree
+ // (44.5), full map/lobby (45), and hero picker (70).
+ button.zIndex=20;
  button.hitArea=new Rectangle(0,0,46,46);
  const art=button.addChild(new Sprite());
  art.anchor.set(.5);art.position.set(23,23);art.eventMode='none';
