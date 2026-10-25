@@ -8,6 +8,8 @@
 
 ## Mechanical specification
 
+The table below records the existing combat runtime. The human-corrected animation and targeting specification is documented in **Level 1–5 animation player** below: one primary target through Lv. 3, on-hit AoE at Lv. 3, two targets at Lv. 4 and three at Lv. 5. Applying those targeting and splash-damage rules to combat is outside this animation preview implementation.
+
 | Property | Value |
 | --- | --- |
 | **Hero** | Rift Runner (`rift-runner`) |
@@ -32,38 +34,39 @@
 
 <iframe src="https://ark-whachat.fural.space/rift-runner/rift-bolt-levels/" title="Rift Bolt Level 1–5 Animation Player" height="560"></iframe>
 
-[Open the live player](https://ark-whachat.fural.space/rift-runner/rift-bolt-levels/). Choose **Lv. 1–5**, use **Play / Pause** to freeze or resume the whole animation, **Replay** for a fresh take, and **Loop** to repeat. The English controls fit desktop and phone screens. A progress bar and stage label show casting, projectile travel and impact; Day and Night backdrops support contrast review.
+[Open the revised live player](https://ark-whachat.fural.space/rift-runner/rift-bolt-levels/). Select **Lv. 1–5** and use **Play / Pause**, **Replay** and **Loop**. English controls, phase labels, progress and Day/Night backdrops work on desktop and phones.
 
-### Rank visuals
+### Corrected targeting and visual progression
 
-| Level | Volley angles (radians) | Cast ring scale | Visual identity |
-| --- | --- | --- | --- |
-| 1 | 0 | 1.00× | Single cyan-violet spear |
-| 2 | −0.12, +0.12 | 1.18× | Twin volley |
-| 3 | −0.22, 0, +0.22 | 1.36× | Triad volley |
-| 4 | −0.22, 0, +0.22 | 1.54× | Expanded cast ring and stronger impact |
-| 5 | −0.22, 0, +0.22 | 1.72× | Maximum cast ring and impact accent |
+The human correction supersedes the earlier preview's 1/2/3/3/3 volley schedule. **Lv. 1–3 aim at one primary target. Lv. 3 adds area damage on hit, not additional aimed targets. Additional primary targets start at Lv. 4.**
 
-Offsets match the existing combat code and ring scaling follows the existing skill area formula. Spear count stays capped at three. This ships animation and a preview player only; combat damage, cooldowns, hit radius, range and progression are unchanged. The Rank 3 fork and Rift Lance in the Ascension Tree remain proposals. The 2.6-second review sequence separates a 0.42-second casting wind-up, travel at 7.5 tiles/s across 5.2 tiles, and the impact tail; it does not define the combat cooldown. Endpoint Revenants are preview dummies for individual spears.
+| Level | Primary targets / projectiles | Projectile size | Impact size | On-hit behavior |
+| --- | --- | --- | --- | --- |
+| 1 | 1 / 1 | 1.00× | 1.00× | Focused impact |
+| 2 | 1 / 1 | 1.22× | 1.30× | Stronger focused impact |
+| 3 | 1 / 1 | 1.48× | 1.65× | AoE blast around the primary target |
+| 4 | 2 / 2 | 1.48× | 1.65× | Twin volley with on-hit AoE |
+| 5 | 3 / 3 | 1.60× | 1.80× | Triad volley with on-hit AoE |
+
+Casting also grows across ranks: 1.00×, 1.18×, 1.36×, 1.54×, 1.72×. Lv. 1–2 remain focused hits. From Lv. 3, a ground shockwave and fracture field appear **only after the projectile hits**. The animation keeps one primary enemy at Lv. 3; its surrounding blast communicates splash damage. The preview specifies targeting and the damage area's appearance; it does not calculate combat damage or change the game's hit detection, cooldowns, progression or balance.
 
 ### Reusable implementation
 
-The player renders real NixieFX particle effects from the game's `skills.bin`: `rift-runner/rift-bolt.cast`, `.bolt`, and `.impact`, including the existing cyan-violet LUT, ShaderGraph materials, animated Sub-UV bursts, ribbons and crystalline shards. Caster and targets use the existing game character atlases and animation clips. No static mockup is used as an animation.
+The real NixieFX `rift-bolt.cast`, `.cast.ground`, `.bolt`, `.impact` and `.impact.ground` effects render the sequence using the game's ShaderGraph materials, cyan-violet LUT, animated Sub-UV bursts, ribbons, shards and ground fractures. Hero and target sprites use existing game atlases and animation clips. There are no static mockups in the animation.
 
-The visual adapter exports `riftBoltLevel()`, `RIFT_BOLT_TIMING` and `createRiftBoltAnimation(stage, rank, origin)`. Call `advance(dt)` with simulation time, inspect `phase` / `complete`, then `dispose()` when replacing it. Pause stops particle simulation and sprite animation together. Replay drains released particles before a new take. Gameplay does not yet call this preview adapter.
+`riftBoltLevel()` supplies primary-target offsets, projectile and impact scales and the `onHitAoE` flag. `createRiftBoltAnimation(stage, rank, origin)` advances with simulation time, triggers ground AoE only at hit time, and exposes phase/completion and disposal. Projectile travel is compensated for visual scale so stronger bolts still reach their targets. The review sequence remains 2.6 seconds. Pause freezes both sprites and particles; Replay clears the previous take. Pixel alignment and extra camera space keep the effects at the actual hit points on phones.
 
 - [Reusable animation module](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=src%2Ffx%2Frift-bolt-levels.ts)
 - [Player source](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=src%2Ffx%2Frift-bolt-player.ts)
-- [Build, test, deployment and integration documentation](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=docs%2Frift-bolt%2FREADME.md)
+- [Build, test and integration documentation](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=docs%2Frift-bolt%2FREADME.md)
 - [Browser verification script](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=scripts%2Frift-bolt%2Fverify.mjs)
+- [Live verification report](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=docs%2Frift-bolt%2Fverification-live.json)
 
-Build with `node scripts/rift-bolt/build.mjs`. Deploy the additive review layer with `node scripts/rift-bolt/deploy.mjs`. It runs in the durable Arkodia custom sandbox under the gateway's supported `/rift-runner/` route, preserving the current game and peer releases. The player uses game assets on the same origin. Query parameters: `level=1..5`, `loop=0|1`, `autoplay=0|1`.
+Build with `node scripts/rift-bolt/build.mjs`; publish with `node scripts/rift-bolt/deploy.mjs`. The supported durable Arkodia gateway serves the additive review layer under `/rift-runner/`, preserving gameplay and peer releases. The player uses the existing same-origin game assets. Query parameters: `level=1..5`, `loop=0|1`, `autoplay=0|1`.
 
 ### Live verification
 
-Passed at **1440×900**, **390×844**, and **320×560**. Every level produces particles at casting, travel and impact with no missing textures. Browser checks passed for Pause, Resume, Replay, single-shot completion, Loop repetition, Day backdrop, visible controls and no horizontal overflow. **Zero page errors and zero failed HTTP responses.** The live page returns HTTP 200 without frame-blocking headers, and a cross-origin iframe loaded the actual player and operated its level selector.
-
-[Live verification report](/organizations/ORd5dd6f99b4308d6187031557/repositories/RPe11327fbfe413dbeba246526/files?file=docs%2Frift-bolt%2Fverification-live.json).
+Passed at **1440×900**, **390×844** and **320×560**, with **zero page errors and zero failed HTTP requests**. Tests check actual rendered primary-target counts and live projectile emitters at **1/1/1/2/3**, on-hit AoE only from Lv. 3 and only after impact, casting/travel/impact particles, Pause/Resume, Replay resetting to zero, single-shot completion, Loop repetition, Day backdrop, controls, overflow and FX/figure pixel alignment. The real cross-origin iframe loads and its level selector works.
 
 | Level | Casting | Projectile travel | Impact |
 | --- | --- | --- | --- |
@@ -73,21 +76,27 @@ Passed at **1440×900**, **390×844**, and **320×560**. Every level produces pa
 | 4 | ![Lv. 4 casting](https://ark-whachat.fural.space/rift-runner/rift-bolt-levels/evidence/live-1440-lv4-casting.png) | ![Lv. 4 projectile](https://ark-whachat.fural.space/rift-runner/rift-bolt-levels/evidence/live-1440-lv4-projectile.png) | ![Lv. 4 impact](https://ark-whachat.fural.space/rift-runner/rift-bolt-levels/evidence/live-1440-lv4-impact.png) |
 | 5 | ![Lv. 5 casting](https://ark-whachat.fural.space/rift-runner/rift-bolt-levels/evidence/live-1440-lv5-casting.png) | ![Lv. 5 projectile](https://ark-whachat.fural.space/rift-runner/rift-bolt-levels/evidence/live-1440-lv5-projectile.png) | ![Lv. 5 impact](https://ark-whachat.fural.space/rift-runner/rift-bolt-levels/evidence/live-1440-lv5-impact.png) |
 
-#### Phone verification
+#### Lv. 3: one primary target, on-hit AoE
 
-![Phone preview, Lv. 1 projectile travel](https://ark-whachat.fural.space/rift-runner/rift-bolt-levels/evidence/live-390-lv1-projectile.png)
+![Phone Lv. 3: one primary target with ground shockwave and area blast centered on impact](https://ark-whachat.fural.space/rift-runner/rift-bolt-levels/evidence/live-390-lv3-impact.png)
 
-![Phone preview, Lv. 2 projectile travel](https://ark-whachat.fural.space/rift-runner/rift-bolt-levels/evidence/live-390-lv2-projectile.png)
+#### Phone progression
 
-![Phone preview, Lv. 3 projectile travel](https://ark-whachat.fural.space/rift-runner/rift-bolt-levels/evidence/live-390-lv3-projectile.png)
+![Phone Lv. 1 projectile travel](https://ark-whachat.fural.space/rift-runner/rift-bolt-levels/evidence/live-390-lv1-projectile.png)
 
-![Phone preview, Lv. 4 projectile travel](https://ark-whachat.fural.space/rift-runner/rift-bolt-levels/evidence/live-390-lv4-projectile.png)
+![Phone Lv. 2 projectile travel](https://ark-whachat.fural.space/rift-runner/rift-bolt-levels/evidence/live-390-lv2-projectile.png)
 
-![Phone preview, Lv. 5 projectile travel](https://ark-whachat.fural.space/rift-runner/rift-bolt-levels/evidence/live-390-lv5-projectile.png)
+![Phone Lv. 3 projectile travel](https://ark-whachat.fural.space/rift-runner/rift-bolt-levels/evidence/live-390-lv3-projectile.png)
 
-#### Local visual baseline
+![Phone Lv. 4 projectile travel](https://ark-whachat.fural.space/rift-runner/rift-bolt-levels/evidence/live-390-lv4-projectile.png)
 
-![Local desktop Lv. 5 triad used for visual inspection](https://ark-whachat.fural.space/rift-runner/rift-bolt-levels/evidence/local-1440-lv5-projectile.png)
+![Phone Lv. 5 projectile travel](https://ark-whachat.fural.space/rift-runner/rift-bolt-levels/evidence/live-390-lv5-projectile.png)
+
+#### Local development captures (before final mobile framing)
+
+![Local Lv. 3 on-hit AoE](https://ark-whachat.fural.space/rift-runner/rift-bolt-levels/evidence/local-390-lv3-impact.png)
+
+![Local desktop Lv. 5 triad](https://ark-whachat.fural.space/rift-runner/rift-bolt-levels/evidence/local-1440-lv5-projectile.png)
 
 ## Interactive Skill Player
 

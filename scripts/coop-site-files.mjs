@@ -21,7 +21,8 @@ try{
   const page=await (await browser.newContext({viewport:{width:1280,height:800}})).newPage();
   page.on('response',r=>{const u=new URL(r.url());if(u.host===`127.0.0.1:${port}`&&r.status()===200&&!u.pathname.startsWith('/api/')&&u.pathname!=='/ws')files.add(u.pathname==='/'?'index.html':decodeURIComponent(u.pathname.slice(1)));});
   await page.goto(`http://127.0.0.1:${port}`+path);
-  await page.waitForFunction(()=>document.querySelector('#world-canvas')?.dataset.ready==='true',null,{timeout:60000});
+  // A loaded sandbox takes over a minute to bring the headless game up (66 s seen at load average 30).
+  await page.waitForFunction(()=>document.querySelector('#world-canvas')?.dataset.ready==='true',null,{timeout:180000});
   await page.keyboard.down('KeyS');await page.waitForTimeout(6000);await page.keyboard.up('KeyS');await page.waitForTimeout(1500);
   await page.context().close();
  }

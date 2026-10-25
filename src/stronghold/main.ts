@@ -78,7 +78,7 @@ export async function mount(app:HTMLElement,progress:Progress){
   Promise.all([picker.picked,mounted]).then(()=>{}),
  );
  walk=worldView.direction;
- inventory=createInventory({solo:!coop,canOpen:()=>!document.querySelector('.settings-overlay:not([hidden])')&&!picker.isOpen()&&!clock?.isOpen()&&!lobby?.isOpen()&&!worldView.encounters.isModalOpen()&&!worldView.worldMap.isOpen(),bounds:()=>worldView.encounters.minimap.getBounds(),reason:worldView.encounters.itemUseReason,apply:worldView.encounters.applyItem});
+ inventory=createInventory({renderPause:paused=>paused?rt.app.stop():rt.app.start(),solo:!coop,canOpen:()=>!document.querySelector('.settings-overlay:not([hidden])')&&!picker.isOpen()&&!clock?.isOpen()&&!lobby?.isOpen()&&!worldView.encounters.isModalOpen()&&!worldView.worldMap.isOpen(),bounds:()=>worldView.encounters.minimap.getBounds(),reason:worldView.encounters.itemUseReason,apply:worldView.encounters.applyItem});
  // Apply the saved layout before the first frame, so the world is painted once (not once as the default layout and
  // again for the saved one).
  render();

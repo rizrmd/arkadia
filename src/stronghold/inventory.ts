@@ -2,7 +2,7 @@ import './inventory.css';
 import {setGamePaused} from '../app/frame-scheduler';
 import {ITEM_IDS,ITEMS,INVENTORY_SLOTS,type ItemId} from './items';
 import {inventorySnapshot,useItem,addItems,removeItems,type ItemEffect} from './inventory-store';
-type Options={solo:boolean;canOpen:()=>boolean;bounds:()=>{x:number;y:number;width:number;height:number};reason:(id:ItemId)=>string;apply:(id:ItemId)=>ItemEffect};
+type Options={renderPause?:(paused:boolean)=>void;solo:boolean;canOpen:()=>boolean;bounds:()=>{x:number;y:number;width:number;height:number};reason:(id:ItemId)=>string;apply:(id:ItemId)=>ItemEffect};
 export function createInventory(o:Options){
  const bag=document.createElement('button');bag.className='inventory-bag';bag.setAttribute('aria-label','Open Inventory');bag.title='Inventory (I)';
  bag.innerHTML='<svg viewBox="0 0 48 48" aria-hidden="true"><path d="m18 6 6 2 6-2-3 10c8 6 14 11 12 21-2 9-28 9-30 0-2-10 4-15 12-21Z" fill="#a77939" stroke="#edca7a" stroke-width="2"/><path d="M18 17q6 4 12 0M24 22v13m-4-9h7m-7 6h7" fill="none" stroke="#ffe2a2" stroke-width="2"/></svg>';
@@ -31,8 +31,8 @@ export function createInventory(o:Options){
    if(reason&&!busy)status.textContent=reason;
   }catch(e){status.textContent=e instanceof Error?e.message:'Inventory unavailable.';use.disabled=true;}
  }
- function close(){if(busy)return;open=false;overlay.hidden=true;if(o.solo)setGamePaused(false);previous?.focus();}
- function show(){if(open||!o.canOpen())return;previous=document.activeElement as HTMLElement;open=true;status.textContent='';overlay.hidden=false;if(o.solo)setGamePaused(true);refresh();overlay.querySelector<HTMLButtonElement>('.inventory-close')!.focus();}
+ function close(){if(busy)return;open=false;overlay.hidden=true;if(o.solo){setGamePaused(false);o.renderPause?.(false);}previous?.focus();}
+ function show(){if(open||!o.canOpen())return;previous=document.activeElement as HTMLElement;open=true;status.textContent='';overlay.hidden=false;if(o.solo){setGamePaused(true);o.renderPause?.(true);}refresh();overlay.querySelector<HTMLButtonElement>('.inventory-close')!.focus();}
  bag.onclick=show;overlay.querySelector<HTMLButtonElement>('.inventory-close')!.onclick=close;
  overlay.onclick=e=>{if(e.target===overlay)close();};
  use.onclick=async()=>{
