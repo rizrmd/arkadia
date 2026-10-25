@@ -83,6 +83,7 @@ interface HeroModelEntry {
   baseOffsetY: number;
   baseOffsetZ: number;
   footBones: any[];
+  castArmBones: any[];
   mixer: any;
   actions: Map<string, any>;
   originalMaterials: Map<string, any>;
@@ -607,6 +608,7 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
       baseOffsetY: 0,
       baseOffsetZ: 0,
       footBones: [],
+      castArmBones: [],
       mixer: null,
       actions: new Map(),
       originalMaterials: new Map(),
@@ -640,6 +642,13 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
         model.traverse((obj: any) => {
           if (obj.isBone && /foot|toe/i.test(obj.name)) {
             entry.footBones.push(obj);
+          }
+          // The source cast clips drive both arms forward. Keep one arm clearly
+          // overhead during every cast so the silhouette reads as spellcasting.
+          if (obj.isBone && /^(Right|Left)(Shoulder|Arm|ForeArm|Hand)$/i.test(obj.name)) {
+            const raiseRight = heroId === 'ember-warden';
+            const side = obj.name.startsWith('Right');
+            if (side === raiseRight) entry.castArmBones.push(obj);
           }
           if (obj.isMesh && obj.material) {
             entry.originalMaterials.set(obj.uuid, obj.material.clone());
@@ -852,6 +861,19 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
       }
 
       entry.mixer.update(dt);
+
+      // Apply the overhead casting pose after animation evaluation. The arm
+      // chain is deliberately additive only for the selected side; the other
+      // arm and the rest of the animation retain their authored motion.
+      if (isCasting && entry.castArmBones.length > 0) {
+        for (const bone of entry.castArmBones) {
+          const n = String(bone.name);
+          const sign = n.startsWith('Right') ? -1 : 1;
+          if (/Shoulder|Arm$/i.test(n)) bone.rotation.set(0, 0, sign * 1.28);
+          else if (/ForeArm$/i.test(n)) bone.rotation.set(0, 0, sign * 0.72);
+          else bone.rotation.set(0, 0, sign * 0.35);
+        }
+      }
 
       // Dynamically ground the lowest foot/toe bone to y = 0 so the boots never sink below the ground pivot
       // while preserving natural upward flight bounce during 'run' and 'run_cast'
