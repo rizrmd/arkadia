@@ -1053,6 +1053,42 @@
      "boxes": 5
     }
    }
+  },
+  {
+   "id": "temple-podium",
+   "file": "assets/temple-podium.png",
+   "size": [
+    1154,
+    671
+   ],
+   "pivot": {
+    "x": 576.936,
+    "y": 377.868
+   },
+   "scale": 0.3333333333333333,
+   "widthWorld": 384.6666666666667,
+   "heightM": 1.0541666666666667,
+   "footprintM": [
+    5.874,
+    11.874
+   ],
+   "source": "continuous 2:1 stone podium, textured from the reviewed foundation and pillar",
+   "recipe": {
+    "kind": "temple-podium",
+    "height": 25.3,
+    "u": [
+     -0.979,
+     0.979
+    ],
+    "v": [
+     -1.979,
+     1.979
+    ],
+    "entrance": [
+     -0.6,
+     0.6
+    ]
+   }
   }
  ]
 }

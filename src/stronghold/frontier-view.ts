@@ -29,7 +29,7 @@ function groundAt(p:FrontierProp,fx:number){const g=p.ground,n=g.length-1,t=Math
 type Sun={alpha:number;dx:number;dy:number};
 // Raised floors among the ground decals, by the height of their top face (world px at scale 1; the temple podium's
 // top sits 25.3 px up, ground-kit.mjs). They cast their silhouette shifted by that height along the sun.
-const SLABS:Record<string,number>={foundation:25.3};
+const SLABS:Record<string,number>={foundation:25.3,'temple-podium':25.3};
 const isSlab=(p:FrontierProp)=>p.layer==='ground'&&!p.rot&&p.asset in SLABS;
 // A sun along the screen x axis (dy near 0) would flatten a shadow to a line; a little depth keeps it a shape.
 const depthOf=(s:Sun)=>(s.dy<0?-1:1)*Math.max(Math.abs(s.dy),.12);

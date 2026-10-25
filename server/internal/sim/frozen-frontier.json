@@ -13,6 +13,7 @@
   {"id": "temple-stairs", "type": "ramp", "connectsTo": "temple-podium", "visual": "scenery", "u0": 479.879, "v0": 492.01, "u1": 480.479, "v1": 492.99, "baseM": 0, "topM": 1.0541666666666667, "ascend": "-u"}
  ],
  "kit": {
+  "temple-podium": {"layer": "ground", "block": []},
   "wall-ne": {"layer": "upright", "block": [[-0.28, -1.12, 0, 0.95]]},
   "wall-se": {"layer": "upright", "block": [[-1.18, -0.28, 0.95, 0]]},
   "corner-n": {"layer": "upright", "block": [[-0.8, 0.02, 0.31, 0.31], [0.02, -0.8, 0.31, 0.31]]},
@@ -343,8 +344,7 @@
   {"a": "rock-boulders", "u": 484.1, "v": 483.9, "s": 0.85, "zone": "Ruined gate"},
   {"a": "dead-snag", "u": 478.2, "v": 483.6, "zone": "Ruined gate"},
   {"a": "ground-scuff-a", "u": 479, "v": 492.5, "s": 1.15, "r": 20, "zone": "Temple"},
-  {"a": "foundation", "u": 478.9, "v": 491.5, "zone": "Temple"},
-  {"a": "foundation", "u": 478.9, "v": 493.5, "f": 1, "zone": "Temple"},
+  {"a": "temple-podium", "u": 478.9, "v": 492.5, "zone": "Temple"},
   {"a": "stairs-nw", "u": 480.18, "v": 492.5, "zone": "Temple"},
   {"a": "pillar-intact", "u": 478.12, "v": 490.7, "s": 1.06, "lift": 25, "zone": "Temple"},
   {"a": "pillar-intact", "u": 478.12, "v": 491.6, "s": 1.06, "lift": 25, "zone": "Temple"},

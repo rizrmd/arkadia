@@ -336,6 +336,7 @@ for(const [id,o] of Object.entries(GRAVES)){const {img,pivot}=renderBoxes(o.boxe
  await grounded(id,{bank:o.bank,spill:3,tail:5,band:10,cap:false,gaps:true},{img,pivot,heightM:+(Math.max(...o.boxes.map(q=>q.z1))/37).toFixed(2),footprintM:[+((b.u1-b.u0)*3).toFixed(2),+((b.v1-b.v0)*3).toFixed(2)],
   source:'procedural 2:1 isometric blocks (iso-solid.mjs), stone from v1 pillar-intact',recipe:{boxes:o.boxes.length}});}
 
+manifest.push(await (await import('./temple-podium.mjs')).buildTemplePodium());
 await fs.writeFile(`${OUT}/manifest.json`,JSON.stringify({version:3,status:'in-game',retired:['snow-cap-ne','snow-cap-se'],generator:'scripts/frozen-frontier-map/ground-kit.mjs (deterministic, derived from the v1 kit art)',
  camera:{projection:'2:1 dimetric',halfWidth:64,halfHeight:32},lighting:'Soft upper-left daylight, matching v1/v2',
  note:'Grounded v1 modules replace their v1 exports in the game atlas (same ids, same ground pivot and footprint). The pillars, stairs and fallen columns are modelled in true 2:1 isometric (recipe.iso; their footprints are set in layout.mjs); the rest are new ground decals. Recipe parameters are recorded per asset.',assets:manifest},null,1)+'\n');

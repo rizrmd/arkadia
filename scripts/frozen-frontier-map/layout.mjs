@@ -33,6 +33,7 @@ let rnd=stream(20261024);
 // lies under the floors and flagstones, loose stones and plant patches on top of them. Drifts are uprights without a
 // footprint, so one standing in front of a prop banks snow over its base.
 Object.assign(data.kit,{
+ 'temple-podium':{layer:'ground',block:[]},
  'floor-sunk':{layer:'ground',block:[]},
  'flagstones-a':{layer:'ground',block:[]},'flagstones-b':{layer:'ground',block:[]},'flagstones-c':{layer:'ground',block:[]},'flagstones-d':{layer:'ground',block:[]},
  'stone-chips-a':{layer:'ground',block:[],band:'over'},'stone-chips-b':{layer:'ground',block:[],band:'over'},
@@ -131,11 +132,11 @@ reserve(17.3,24.9,25.4,26.6);
 
 // ---- Temple (pillar courtyard): a raised podium half buried in snow, entered by stairs on its +u side, where the
 // road arrives, with a colonnade along both long edges standing on the podium; fallen columns lie where pillars are
-// missing. The podium is two foundations, 2 x 2 tiles each (top face: the v1 diamond's half width 376 px at 1/3 world
-// px per px = 0.979 tiles, lifted 25.3 px); the stairs climb -u, flush onto its +u edge, as high as its lift.
+// missing. A continuous podium replaces the two bordered foundations, leaving an open stair mouth.
+// Its footprint and 25.3 px top still match the shared relief; stairs climb -u flush onto its +u edge.
 const POD={u:18.4,v0:31.0,h:25,half:.979};
 put('ground-scuff-a',18.5,32.0,{zone:'Temple',s:1.15,r:20});
-put('foundation',POD.u,POD.v0,{zone:'Temple'});put('foundation',POD.u,POD.v0+2,{zone:'Temple',f:true});
+put('temple-podium',POD.u,POD.v0+1,{zone:'Temple'});
 put('stairs-nw',...flightAt('stairs-nw',POD.u+POD.half,POD.v0+1),{zone:'Temple',onPath:true});
 // Both rows leave a wider bay at the middle, the entrance the stairs climb to.
 for(const [a,du,v] of [['pillar-intact',-.78,30.2],['pillar-intact',-.78,31.1],['pillar-broken',-.78,32.9],['pillar-intact',-.78,33.8],

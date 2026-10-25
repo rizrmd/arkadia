@@ -15,12 +15,16 @@ try{
   await page.goto(base+'/temple-check');
   report.geometry=await page.evaluate(async()=>{
    const {heightAtTile,liftAtTile,cliffTile}=await import('/src/world/relief.ts');
-   const {FRONTIER_COLUMNS}=await import('/src/world/frontier.ts');
+   const {FRONTIER_COLUMNS,FRONTIER_PROPS}=await import('/src/world/frontier.ts');
    const {tilePoint}=await import('/src/stronghold/terrain.ts');
    const {unproject}=await import('/src/isometric.ts');
    const {walkStep,navBlocker}=await import('/src/stronghold/net/movement.ts');
    const blocked=navBlocker(FRONTIER_COLUMNS),checks=[];
    const check=(name,ok)=>{checks.push({name,ok});if(!ok)throw Error(name);};
+   const temple=FRONTIER_PROPS.filter(p=>p.zone==='Temple');
+   check('one continuous podium replaces bordered foundation pair',temple.filter(p=>p.asset==='temple-podium').length===1&&!temple.some(p=>p.asset==='foundation'));
+   const slab=temple.find(p=>p.asset==='temple-podium'),stairs=temple.find(p=>p.asset==='stairs-nw');
+   check('stair top joins podium edge within map rounding',Math.abs(stairs.u-.3-(slab.u+.979))<.002&&stairs.v===slab.v);
    check('podium top is 25.3 px',Math.abs(liftAtTile(18.4,32)-25.3)<1e-8);
    check('stair midpoint is half height',Math.abs(liftAtTile(19.679,32)-12.65)<1e-8);
    check('snow outside is zero height',heightAtTile(20.1,32)===0);
