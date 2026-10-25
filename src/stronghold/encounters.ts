@@ -6,7 +6,7 @@ import type {FrameSet} from '../typography/frames';
 import {Hud,type HudCallbacks,type HudSkillState} from '../typography/hud';
 import {LevelUpBlessingOverlay,type BlessingChoiceItem} from '../typography/level-up-v5';
 import {MsdfText} from '../typography/text';
-import {fresh,awardSoulXp,roll,choose,cards,reach,aoeCastRadius,health,threshold,thresholdForLevel,xpPercent,critChance,critMultiplier,syncHeroLoadout,isActiveSkill,skillRank,skillCooldownMs,revenantMaxHp,revenantDamage,revenantXpReward,MAX_SKILL_SLOTS,type Progression} from './progression';
+import {fresh,awardSoulXp,roll,choose,equip,cards,reach,aoeCastRadius,health,threshold,thresholdForLevel,xpPercent,critChance,critMultiplier,syncHeroLoadout,isActiveSkill,skillRank,skillCooldownMs,revenantMaxHp,revenantDamage,revenantXpReward,MAX_SKILL_SLOTS,type Progression} from './progression';
 import {unproject} from '../isometric';
 import {Fighter,STATS,inReach,swingTargets,turn} from '../characters/combat';
 import type {CharacterMeta} from '../characters/sprites';
@@ -125,12 +125,8 @@ export async function createEncounters(o:{
   {},
   {
    ...o.hudCallbacks,
-   onSkillClick:(idx)=>{
-    const sid=run.slots[idx] as SkillId|undefined;
-    if(sid&&h.alive)vfx.castSkill(sid);
-   },
-   // Tap casts; long-press (touch) or right-click opens the Rift Runner skill tree on that slot's skill.
-   onSkillInspect:(idx)=>openSkillTree(idx),
+   // Skills only auto-cast: a tap on a slot opens the skill tree to choose the skill equipped there.
+   onSkillClick:(idx)=>openSkillTree(idx),
   },
  );
  hud.zIndex=10;
@@ -138,7 +134,13 @@ export async function createEncounters(o:{
  const minimap=new Minimap();o.uiStage.addChild(minimap);
 
  // Rift Runner Skill Tree (skill-tree.ts): sits in the space the HUD leaves free, so the HUD stays uncovered.
- const skillTree=new SkillTree(o.uiStage,{run:()=>run,region:skillTreeRegion});
+ const skillTree=new SkillTree(o.uiStage,{run:()=>run,region:skillTreeRegion,equip:(slot,id)=>{
+  // Co-op runs come from the server, which would put the old loadout straight back.
+  if(online)return 'Skills can be changed in solo play';
+  if(!equip(run,slot,id,currentHeroId()))return 'That skill cannot go in this slot';
+  lastSkillSig='';syncSkillBar();
+  return true;
+ }});
  function skillTreeRegion(){
   const W=innerWidth,H=innerHeight,portrait=W<H,m=Math.round(Math.max(8,Math.min(W,H)*.022));
   const tl=hud.getTopLeftScreenBounds(),tr=hud.getTopRightTelemetry().screenBounds,mm=minimap.snapshot(),map=mm.bounds;
@@ -158,7 +160,7 @@ export async function createEncounters(o:{
  function openSkillTree(slot?:number){
   if(currentHeroId()!=='rift-runner')return;
   const focus=nodeForSkill(run.slots[slot??0])??(slot==null?'rift-bolt':undefined);
-  void skillTree.show(focus);
+  void skillTree.show(focus,slot??null);
  }
  // Fetch the tree art once the world is up, so the first long-press opens it at once.
  setTimeout(()=>{if(currentHeroId()==='rift-runner')void skillTree.preload();},4000);
@@ -314,8 +316,8 @@ export async function createEncounters(o:{
    select(run.offers[idx]);
    return;
   }
-  const sid=run.slots[idx] as SkillId|undefined;
-  if(sid&&!run.pending)vfx.castSkill(sid);
+  // No manual casting: 1/2/3 open the skill tree on that slot, like a tap on it.
+  if(!run.pending)openSkillTree(idx);
  });
 
  let offerKey='';
@@ -351,7 +353,8 @@ export async function createEncounters(o:{
    if(active){
     const equippedIdx=run.slots.indexOf(id);
     const r=skillRank(run,id);
-    if(equippedIdx>=0){
+    // A learned skill ranks up whether or not it is equipped (the fourth learned skill waits in the skill tree).
+    if(equippedIdx>=0||r>0){
      choices.push({
       id,
       optionNumber:optNum,
@@ -360,10 +363,11 @@ export async function createEncounters(o:{
       rankLabel:`Lv. ${r} → Lv. ${r+1}`,
       statSummary:card.upgradeSummary??'+25% Cone DMG · -0.4s CD',
       art:SKILL_ART[id]??'skill-flame-fan',
-      targetSocketIndex:equippedIdx,
+      targetSocketIndex:equippedIdx>=0?equippedIdx:undefined,
       isUnlock:false,
      });
     }else{
+     const slotsFull=run.slots.length>=MAX_SKILL_SLOTS;
      const targetSocket=Math.min(MAX_SKILL_SLOTS-1,nextUnlockSlot);
      nextUnlockSlot=Math.min(MAX_SKILL_SLOTS-1,nextUnlockSlot+1);
      choices.push({
@@ -371,10 +375,11 @@ export async function createEncounters(o:{
       optionNumber:optNum,
       kind:'active',
       name:card.blessingTitle??card.name,
-      rankLabel:'UNLOCK Lv. 1',
-      statSummary:card.unlockSummary??'AoE Fire Ring · 4.0s CD',
+      // With every slot full a new skill is learned unequipped; the player swaps it in from the skill tree.
+      rankLabel:slotsFull?'LEARN Lv. 1':'UNLOCK Lv. 1',
+      statSummary:slotsFull?'Equip it from the Skill Tree':card.unlockSummary??'AoE Fire Ring · 4.0s CD',
       art:SKILL_ART[id]??'skill-flame-fan',
-      targetSocketIndex:targetSocket,
+      targetSocketIndex:slotsFull?undefined:targetSocket,
       isUnlock:true,
      });
     }

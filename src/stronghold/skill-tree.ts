@@ -9,6 +9,8 @@ import type {Progression} from './progression';
 // front of the dimmed world with the HUD left uncovered. Portrait screens stack the tree bottom to top (Rift Bolt at the
 // bottom) and scroll vertically; wider screens run it left to right and scroll horizontally. Active skills are round gold
 // rings with five rank pips, passives are borderless emblems, equipped actives carry their Skill 1/2/3 badge.
+// Skills only auto-cast: tapping a HUD skill slot opens the tree for that slot, and tapping a learned active skill there
+// equips it to the slot (an equipped one swaps places).
 // Art: public/skill-tree/v1 (scripts/skill-tree/build-assets.mjs).
 
 export type TreeNodeId='rift-bolt'|'rift-dash'|'rift-trap'|'astral-cleave'|'seismic-slam'|'phantom-legion'|'event-horizon'|'rift-lance'|
@@ -46,6 +48,7 @@ export const PLACEHOLDER_NODES=TREE_NODES.filter(n=>!n.game).map(n=>n.id);
 const MAX_PIPS=5,TAP=8,LEVEL_PLATE='level-plate';
 const NAME_ROLE:TextRole={...ROLES['panel-body'],outline:{color:0x0a0604,alpha:.85,width:1}};
 const TITLE_ROLE:TextRole={...ROLES['display-title']};
+const HINT_ROLE:TextRole={...ROLES['panel-muted'],fill:0xe8d3a2};
 const LEVEL_ROLE:TextRole={...ROLES['hud-badge'],fill:0xfbe7b5};
 // Diameters relative to u: ring frame, icon disc inside it, passive emblem, highlight halo.
 const SIZE:Record<Kind,number>={active:1,ultimate:1.08,passive:.9};
@@ -81,10 +84,13 @@ export class SkillTree{
  private size={width:0,height:0};
  private scroll=0;private maxScroll=0;private velocity=0;private target:number|null=null;
  private highlighted:TreeNodeId|null=null;private pulse=0;
+ // The HUD slot (0-2) the tree was opened from: tapping a learned active skill equips it there.
+ private slot:number|null=null;
+ private hint=new MsdfText(HINT_ROLE,'');private hintTimer=0;
  private press:{x:number;y:number;at:number;last:number;moved:boolean;id:number}|null=null;
  private frame=0;private lastTick=0;private stateKey='';private layoutKey='';
  private openState=false;
- constructor(private uiStage:Container,private o:{run:()=>Progression;region:()=>{rect:Rect;vertical:boolean};onClose?:()=>void}){
+ constructor(private uiStage:Container,private o:{run:()=>Progression;region:()=>{rect:Rect;vertical:boolean};equip:(slot:number,id:string)=>true|string;onClose?:()=>void}){
   this.shade.zIndex=-1;this.shade.visible=false;this.shade.eventMode='static';
   this.shade.on('pointertap',()=>this.open(false));
   // Above the first-visit movement hint (44), under the world map (45) and the level-up offer (55).
@@ -129,13 +135,15 @@ export class SkillTree{
   }
   return this.loading;
  }
- // Opens the tree (or retargets it while open) and scrolls to `focus`, which pulses gold until another node is tapped.
- async show(focus?:TreeNodeId){
+ // Opens the tree (or retargets it while open) for HUD slot `slot`, scrolled to `focus`, which pulses gold.
+ async show(focus?:TreeNodeId,slot:number|null=null){
   await this.preload();
   const wasOpen=this.openState;
   this.openState=true;this.shade.visible=this.panel.visible=true;
+  this.slot=slot;
   this.layout(!wasOpen);
   this.highlight(focus??null);
+  this.say(this.prompt(),0);
   if(focus)this.scrollTo(focus,wasOpen);
   if(!wasOpen){this.lastTick=0;cancelAnimationFrame(this.frame);const tick=(now:number)=>{if(!this.openState)return;this.update(now);this.frame=requestAnimationFrame(tick);};this.frame=requestAnimationFrame(tick);}
  }
@@ -146,7 +154,16 @@ export class SkillTree{
   cancelAnimationFrame(this.frame);
   this.o.onClose?.();
  }
- toggle(focus?:TreeNodeId){if(this.openState)this.open(false);else void this.show(focus);}
+ toggle(focus?:TreeNodeId,slot:number|null=null){if(this.openState)this.open(false);else void this.show(focus,slot);}
+ // The line under the title: what a tap does, then what the last tap did (back to the prompt after a few seconds).
+ private say(text:string,holdMs=4000){
+  this.hint.text=text;this.placeHint();
+  clearTimeout(this.hintTimer);
+  if(holdMs)this.hintTimer=window.setTimeout(()=>this.say(this.prompt(),0),holdMs);
+ }
+ private prompt(){return this.slot==null?'Tap a skill slot on the HUD to change its skill':`Skill ${this.slot+1}: tap a learned skill to equip it`;}
+ private hintY=0;
+ private placeHint(){this.hint.place(this.rect.width/2,this.hintY,.5);}
  private axis(p:Pt){return this.vertical?p.y:p.x;}
  private inView(x:number,y:number){const v=this.view;return x>=v.x&&y>=v.y&&x<=v.x+v.width&&y<=v.y+v.height;}
 
@@ -162,7 +179,7 @@ export class SkillTree{
   this.panel.position.set(Math.round(rect.x),Math.round(rect.y));
   this.panel.hitArea=new Rectangle(0,0,rect.width,rect.height);
   const compact=rect.width<520||rect.height<420;
-  const header=compact?52:64,inset=compact?11:20,bar=compact?10:12;
+  const header=compact?52:64,hintH=compact?22:28,top=header+hintH,inset=compact?11:20,bar=compact?10:12;
   // Frame, corner ornaments, title rule, finial and close button.
   this.frameArt?.destroy({children:true});this.frameArt=this.panel.addChildAt(f.frame('panel-frame',rect.width,rect.height),0);
   this.ornaments.removeChildren().forEach(c=>c.destroy());
@@ -178,9 +195,11 @@ export class SkillTree{
   close.addChild(f.frame('button-close',cb,cb));close.position.set(rect.width-cb-(compact?8:12),(header-cb)/2+(compact?1:2));
   close.eventMode='static';close.cursor='pointer';close.hitArea=new Rectangle(-6,-6,cb+12,cb+12);close.label='skill-tree-close';
   close.on('pointertap',e=>{e.stopPropagation();this.open(false);});
+  this.hint.destroy();this.hint=this.panel.addChild(new MsdfText(HINT_ROLE,this.hint.text,{size:compact?13:15.5}));
+  this.hintY=header+hintH*.62;this.placeHint();
   // Scroll viewport below the header; the scrollbar runs along the right (portrait) or the bottom (landscape).
-  this.view=vertical?{x:inset,y:header,width:rect.width-inset*2-bar-4,height:rect.height-header-inset}
-   :{x:inset,y:header,width:rect.width-inset*2,height:rect.height-header-inset-bar-6};
+  this.view=vertical?{x:inset,y:top,width:rect.width-inset*2-bar-4,height:rect.height-top-inset}
+   :{x:inset,y:top,width:rect.width-inset*2,height:rect.height-top-inset-bar-6};
   const v=this.view;
   this.viewport.position.set(v.x,v.y);this.viewport.hitArea=new Rectangle(0,0,v.width,v.height);
   this.clip.clear().rect(0,0,v.width,v.height).fill(0xffffff);
@@ -209,7 +228,7 @@ export class SkillTree{
   this.chevronA.on('pointertap',e=>{e.stopPropagation();this.target=Math.max(0,Math.min(this.maxScroll,this.scroll+(vertical?-page():page())));});
   this.chevronB.on('pointertap',e=>{e.stopPropagation();this.target=Math.max(0,Math.min(this.maxScroll,this.scroll+(vertical?page():-page())));});
   if(vertical){
-   this.track=this.panel.addChild(f.frame('scroll-track-v',10,v.height-16));this.track.position.set(rect.width-inset-bar+2,header+8);
+   this.track=this.panel.addChild(f.frame('scroll-track-v',10,v.height-16));this.track.position.set(rect.width-inset-bar+2,top+8);
    this.thumb=this.panel.addChild(f.frame('scroll-thumb-v',10,40));
   }else{
    this.track=this.panel.addChild(f.frame('scroll-track-h',v.width-16,10));this.track.position.set(inset+8,rect.height-inset-bar+2);
@@ -353,7 +372,22 @@ export class SkillTree{
  private tap(x:number,y:number){
   if(!this.inView(x,y))return;
   const p=this.content.toLocal({x,y});
-  for(const v of this.views.values())if(Math.hypot(p.x-v.x,p.y-v.y)<=v.r*1.05){this.highlight(v.def.id);return;}
+  for(const v of this.views.values())if(Math.hypot(p.x-v.x,p.y-v.y)<=v.r*1.05){this.choose(v);return;}
+ }
+ // A tapped node is highlighted; in slot mode a learned active skill is equipped to that slot (swapping if needed).
+ private choose(v:NodeView){
+  const n=v.def;this.highlight(n.id);
+  if(n.kind==='passive'){this.say(`${n.name} is a passive: always active once learned`);return;}
+  if(!n.game){this.say(`${n.name} is not in the game yet`);return;}
+  if(!v.plate.visible){this.say(`${n.name} is not learned yet`);return;}
+  if(this.slot==null){this.say(this.prompt());return;}
+  const slots=this.o.run().slots??[],at=slots.indexOf(n.game);
+  if(at===this.slot||(at>=0&&this.slot>=slots.length&&at===slots.length-1)){this.say(`${n.name} is already on Skill ${at+1}`);return;}
+  const r=this.o.equip(this.slot,n.game);
+  if(r!==true){this.say(r);return;}
+  this.refresh(true);
+  const now=(this.o.run().slots??[]).indexOf(n.game);
+  this.say(`${n.name} equipped to Skill ${now+1}`);
  }
  private update(now:number){
   const dt=this.lastTick?Math.min(64,now-this.lastTick):16;this.lastTick=now;
@@ -378,7 +412,7 @@ export class SkillTree{
     screen:{x:+g.x.toFixed(1),y:+g.y.toFixed(1),r:+v.r.toFixed(1)},inView:this.inView(g.x,g.y),highlighted:this.highlighted===v.def.id};
   });
   const c=this.close?.getBounds();
-  return {open:this.openState,vertical:this.vertical,u:+this.u.toFixed(1),panel:{...this.rect},view:{...this.view},close:c?{x:c.x+c.width/2,y:c.y+c.height/2}:null,scroll:+this.scroll.toFixed(1),maxScroll:+this.maxScroll.toFixed(1),highlighted:this.highlighted,nodes};
+  return {open:this.openState,slot:this.slot,hint:this.hint.text,vertical:this.vertical,u:+this.u.toFixed(1),panel:{...this.rect},view:{...this.view},close:c?{x:c.x+c.width/2,y:c.y+c.height/2}:null,scroll:+this.scroll.toFixed(1),maxScroll:+this.maxScroll.toFixed(1),highlighted:this.highlighted,nodes};
  }
  private slotOf(v:NodeView){const s=this.o.run().slots??[];return v.def.game?s.indexOf(v.def.game)+1:0;}
 }

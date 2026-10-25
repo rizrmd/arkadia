@@ -1,24 +1,19 @@
 {
- "base": "http://127.0.0.1:5418",
+ "base": "http://127.0.0.1:5890",
  "views": {
-  "desktop": {
+  "mobile": {
    "viewport": [
-    1440,
-    900
+    390,
+    844
    ],
    "shots": [
-    "desktop-fresh-run.webp",
-    "desktop-right-click-rift-dash.webp",
-    "desktop-right-click-astral-cleave.webp",
-    "desktop-scrolled-capstone.webp"
+    "mobile-tap-skill-2.webp",
+    "mobile-equip-rift-trap.webp",
+    "mobile-scrolled-capstone.webp",
+    "mobile-tap-skill-1.webp"
    ],
-   "fresh": {
-    "learned": [
-     "Rift Bolt"
-    ]
-   },
    "run": {
-    "level": 7,
+    "level": 8,
     "xp": 0,
     "gold": 0,
     "pending": 0,
@@ -27,6 +22,7 @@
      "rift-bolt": 3,
      "rift-dash": 1,
      "cleave": 1,
+     "rift-trap": 1,
      "heal": 1,
      "might": 1
     },
@@ -40,29 +36,97 @@
     "trinityCasts": 0,
     "lastCast": []
    },
-   "clickCast": {
-    "cooldownMs": 1117,
-    "treeOpen": false
-   },
-   "rightClick": {
-    "node": {
-     "id": "rift-dash",
-     "name": "Rift Dash",
-     "kind": "active",
-     "placeholder": false,
-     "learned": true,
-     "level": 1,
-     "pips": 1,
-     "slot": 2,
-     "screen": {
-      "x": 406.1,
-      "y": 302,
-      "r": 52.9
-     },
-     "inView": true,
-     "highlighted": true
+   "layout": {
+    "panel": {
+     "x": 9,
+     "y": 139,
+     "width": 372,
+     "height": 504
     },
-    "cast": 0
+    "skillTop": 654.5500000000001,
+    "u": 64.6,
+    "maxScroll": 308.1
+   },
+   "opened": {
+    "hint": "Skill 2: tap a learned skill to equip it",
+    "slot": 1,
+    "highlighted": "rift-dash"
+   },
+   "equipTrap": {
+    "slots": [
+     "rift-bolt",
+     "rift-trap",
+     "cleave"
+    ],
+    "hud": [
+     "Rift Bolt",
+     "Rift Trap",
+     "Astral Cleave"
+    ],
+    "hint": "Rift Trap equipped to Skill 2"
+   },
+   "swap": {
+    "slots": [
+     "rift-bolt",
+     "cleave",
+     "rift-trap"
+    ],
+    "hint": "Astral Cleave equipped to Skill 2"
+   },
+   "unlearned": {
+    "slots": [
+     "rift-bolt",
+     "cleave",
+     "rift-trap"
+    ],
+    "hint": "Seismic Slam is not learned yet"
+   },
+   "drag": {
+    "scroll": 0,
+    "maxScroll": 308.1
+   },
+   "pass": true
+  },
+  "desktop": {
+   "viewport": [
+    1440,
+    900
+   ],
+   "shots": [
+    "desktop-fresh-run.webp",
+    "desktop-click-skill-2.webp",
+    "desktop-equip-rift-trap.webp",
+    "desktop-scrolled-capstone.webp"
+   ],
+   "fresh": {
+    "learned": [
+     "Rift Bolt"
+    ],
+    "hint": "Tap a skill slot on the HUD to change its skill"
+   },
+   "run": {
+    "level": 8,
+    "xp": 0,
+    "gold": 0,
+    "pending": 0,
+    "offers": [],
+    "skills": {
+     "rift-bolt": 3,
+     "rift-dash": 1,
+     "cleave": 1,
+     "rift-trap": 1,
+     "heal": 1,
+     "might": 1
+    },
+    "stars": 0,
+    "slots": [
+     "rift-bolt",
+     "rift-dash",
+     "cleave"
+    ],
+    "autoCasts": 0,
+    "trinityCasts": 0,
+    "lastCast": []
    },
    "layout": {
     "panel": {
@@ -72,13 +136,25 @@
      "height": 732
     },
     "skillLeft": 1145.4545454545453,
-    "u": 105.9,
-    "maxScroll": 484
+    "u": 101.2,
+    "maxScroll": 415
+   },
+   "equipTrap": {
+    "slots": [
+     "rift-bolt",
+     "rift-trap",
+     "cleave"
+    ],
+    "hud": [
+     "Rift Bolt",
+     "Rift Trap",
+     "Astral Cleave"
+    ],
+    "hint": "Rift Trap equipped to Skill 2"
    },
    "wheel": {
-    "scroll": 484,
-    "maxScroll": 484,
-    "starInView": true
+    "scroll": 415,
+    "maxScroll": 415
    },
    "pass": true
   }

@@ -29,6 +29,9 @@ export type CardDef={
 };
 
 export const MAX_SKILL_SLOTS=3;
+// Learned active skills, Rift Bolt included (Ascension Tree design): three are equipped to Skill 1/2/3 and auto-cast;
+// a fourth stays learned and can be swapped into a slot from the skill tree.
+export const MAX_LEARNED_ACTIVES=4;
 export const AOE_CAST_RADIUS_TILES=2.2;
 
 export const DEFAULT_HERO_SKILL:Record<HeroKind,ActiveSkillId>={
@@ -230,12 +233,18 @@ export const revenantMaxHp=(level=1)=>2+Math.max(0,Math.floor(level)-1);
 export const revenantDamage=(level=1)=>4+Math.max(0,Math.floor(level)-1);
 export const revenantXpReward=(level=1)=>10+Math.max(0,Math.floor(level)-1)*4;
 
+// Learned actives (equipped or not), in pool order.
+export function learnedActives(p:Progression,hero?:HeroKind):ActiveSkillId[]{
+ const h=hero??inferHero(p);
+ return HERO_ACTIVE_POOL[h].filter(id=>(p.skills?.[id]??0)>0||p.slots?.includes(id));
+}
+
 export function eligibleActiveSkills(p:Progression,hero?:HeroKind):ActiveSkillId[]{
  const h=hero??inferHero(p);
  syncHeroLoadout(p,h);
- if(p.slots.length>=MAX_SKILL_SLOTS){
-  return p.slots.slice(0,MAX_SKILL_SLOTS).filter(isActiveSkill);
- }
+ // Once every learned-active place is taken, active cards only rank up what is learned.
+ const learned=learnedActives(p,h);
+ if(learned.length>=MAX_LEARNED_ACTIVES)return learned;
  return [...HERO_ACTIVE_POOL[h]];
 }
 
@@ -290,11 +299,15 @@ export function choose(p:Progression,id:string,random:()=>number,hero?:HeroKind)
  const h=hero??inferHero(p);
  syncHeroLoadout(p,h);
  if(isActiveSkill(id)){
-  if(p.slots.includes(id)){
-   p.skills[id]=(p.skills[id]??1)+1;
+  const learned=learnedActives(p,h);
+  if(learned.includes(id)){
+   p.skills[id]=Math.max(1,p.skills[id]??1)+1;
   }else if(p.slots.length<MAX_SKILL_SLOTS){
    p.slots.push(id);
    p.skills[id]=Math.max(1,(p.skills[id]??0)+1);
+  }else if(learned.length<MAX_LEARNED_ACTIVES){
+   // Learned but not equipped: the player swaps it into a slot from the skill tree.
+   p.skills[id]=1;
   }else{
    return false;
   }
@@ -309,6 +322,21 @@ export function choose(p:Progression,id:string,random:()=>number,hero?:HeroKind)
  p.pending--;
  p.offers=[];
  if(p.pending)roll(p,random,h);
+ return true;
+}
+
+// Puts a learned active skill into Skill slot `slot` (0-2). One already equipped elsewhere swaps places with the
+// skill in that slot; one not equipped replaces it (the replaced skill stays learned). Slots stay contiguous.
+export function equip(p:Progression,slot:number,id:string,hero?:HeroKind):boolean{
+ const h=hero??inferHero(p);
+ syncHeroLoadout(p,h);
+ if(!isActiveSkill(id)||!learnedActives(p,h).includes(id)||slot<0||slot>=MAX_SKILL_SLOTS)return false;
+ const at=Math.min(slot,p.slots.length-(p.slots.includes(id)?1:0));
+ const from=p.slots.indexOf(id);
+ if(from===at)return false;
+ if(from>=0)[p.slots[from],p.slots[at]]=[p.slots[at],p.slots[from]];
+ else if(at<p.slots.length)p.slots[at]=id;
+ else p.slots.push(id);
  return true;
 }
 
