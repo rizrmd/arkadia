@@ -7,12 +7,13 @@
     844
    ],
    "shots": [
-    "live-mobile-long-press-astral-cleave.webp",
+    "live-mobile-tap-skill-2.webp",
+    "live-mobile-equip-rift-trap.webp",
     "live-mobile-scrolled-capstone.webp",
-    "live-mobile-long-press-rift-bolt.webp"
+    "live-mobile-tap-skill-1.webp"
    ],
    "run": {
-    "level": 7,
+    "level": 8,
     "xp": 0,
     "gold": 0,
     "pending": 0,
@@ -21,6 +22,7 @@
      "rift-bolt": 3,
      "rift-dash": 1,
      "cleave": 1,
+     "rift-trap": 1,
      "heal": 1,
      "might": 1
     },
@@ -33,31 +35,6 @@
     "autoCasts": 0,
     "trinityCasts": 0,
     "lastCast": []
-   },
-   "tapCast": {
-    "cooldownMs": 1049,
-    "treeOpen": false
-   },
-   "longPress": {
-    "highlighted": "astral-cleave",
-    "cast": 0,
-    "node": {
-     "id": "astral-cleave",
-     "name": "Astral Cleave",
-     "kind": "active",
-     "placeholder": false,
-     "learned": true,
-     "level": 1,
-     "pips": 1,
-     "slot": 3,
-     "screen": {
-      "x": 77.1,
-      "y": 411.5,
-      "r": 32.3
-     },
-     "inView": true,
-     "highlighted": true
-    }
    },
    "layout": {
     "panel": {
@@ -68,30 +45,45 @@
     },
     "skillTop": 654.5500000000001,
     "u": 64.6,
-    "maxScroll": 286.1
+    "maxScroll": 308.1
    },
-   "states": {
-    "learned": [
-     "Rift Bolt Lv. 3",
-     "Rift Dash Lv. 1",
-     "Second Wind Lv. 1",
-     "Titan Strike Lv. 1",
-     "Astral Cleave Lv. 1"
-    ],
+   "opened": {
+    "hint": "Skill 2: tap a learned skill to equip it",
+    "slot": 1,
+    "highlighted": "rift-dash"
+   },
+   "equipTrap": {
     "slots": [
-     "1: Rift Bolt",
-     "2: Rift Dash",
-     "3: Astral Cleave"
+     "rift-bolt",
+     "rift-trap",
+     "cleave"
     ],
-    "placeholders": [
-     "Phantom Legion",
-     "Event Horizon",
-     "Rift Lance"
-    ]
+    "hud": [
+     "Rift Bolt",
+     "Rift Trap",
+     "Astral Cleave"
+    ],
+    "hint": "Rift Trap equipped to Skill 2"
+   },
+   "swap": {
+    "slots": [
+     "rift-bolt",
+     "cleave",
+     "rift-trap"
+    ],
+    "hint": "Astral Cleave equipped to Skill 2"
+   },
+   "unlearned": {
+    "slots": [
+     "rift-bolt",
+     "cleave",
+     "rift-trap"
+    ],
+    "hint": "Seismic Slam is not learned yet"
    },
    "drag": {
     "scroll": 0,
-    "starInView": true
+    "maxScroll": 308.1
    },
    "pass": true
   },
@@ -102,17 +94,18 @@
    ],
    "shots": [
     "live-desktop-fresh-run.webp",
-    "live-desktop-right-click-rift-dash.webp",
-    "live-desktop-right-click-astral-cleave.webp",
+    "live-desktop-click-skill-2.webp",
+    "live-desktop-equip-rift-trap.webp",
     "live-desktop-scrolled-capstone.webp"
    ],
    "fresh": {
     "learned": [
      "Rift Bolt"
-    ]
+    ],
+    "hint": "Tap a skill slot on the HUD to change its skill"
    },
    "run": {
-    "level": 7,
+    "level": 8,
     "xp": 0,
     "gold": 0,
     "pending": 0,
@@ -121,6 +114,7 @@
      "rift-bolt": 3,
      "rift-dash": 1,
      "cleave": 1,
+     "rift-trap": 1,
      "heal": 1,
      "might": 1
     },
@@ -134,30 +128,6 @@
     "trinityCasts": 0,
     "lastCast": []
    },
-   "clickCast": {
-    "cooldownMs": 1117,
-    "treeOpen": false
-   },
-   "rightClick": {
-    "node": {
-     "id": "rift-dash",
-     "name": "Rift Dash",
-     "kind": "active",
-     "placeholder": false,
-     "learned": true,
-     "level": 1,
-     "pips": 1,
-     "slot": 2,
-     "screen": {
-      "x": 406.1,
-      "y": 302,
-      "r": 52.9
-     },
-     "inView": true,
-     "highlighted": true
-    },
-    "cast": 0
-   },
    "layout": {
     "panel": {
      "x": 20,
@@ -166,13 +136,25 @@
      "height": 732
     },
     "skillLeft": 1145.4545454545453,
-    "u": 105.9,
-    "maxScroll": 484
+    "u": 101.2,
+    "maxScroll": 415
+   },
+   "equipTrap": {
+    "slots": [
+     "rift-bolt",
+     "rift-trap",
+     "cleave"
+    ],
+    "hud": [
+     "Rift Bolt",
+     "Rift Trap",
+     "Astral Cleave"
+    ],
+    "hint": "Rift Trap equipped to Skill 2"
    },
    "wheel": {
-    "scroll": 484,
-    "maxScroll": 484,
-    "starInView": true
+    "scroll": 415,
+    "maxScroll": 415
    },
    "pass": true
   }

@@ -1,5 +1,5 @@
 import {requestGameFrame as requestAnimationFrame,cancelGameFrame as cancelAnimationFrame} from '../app/frame-scheduler';
-import {Container,Graphics,Rectangle,Sprite} from 'pixi.js';
+import {Container,Graphics,Rectangle,Sprite,TilingSprite} from 'pixi.js';
 import {FrameSet,pickFrameScale} from '../typography/frames';
 import {MsdfText} from '../typography/text';
 import {ROLES,type TextRole} from '../typography/tokens';
@@ -45,6 +45,8 @@ const TIERS:TreeNodeId[][]=[['rift-dash','rift-trap','second-wind','titan-strike
 export const nodeForSkill=(id:string|undefined)=>TREE_NODES.find(n=>n.game===id)?.id;
 export const PLACEHOLDER_NODES=TREE_NODES.filter(n=>!n.game).map(n=>n.id);
 
+// The stone's opacity: the dimmed world shows faintly through the panel.
+const BACKDROP_ALPHA=.86;
 const MAX_PIPS=5,TAP=8,LEVEL_PLATE='level-plate';
 const NAME_ROLE:TextRole={...ROLES['panel-body'],outline:{color:0x0a0604,alpha:.85,width:1}};
 const TITLE_ROLE:TextRole={...ROLES['display-title']};
@@ -65,6 +67,9 @@ export class SkillTree{
  private frames?:FrameSet;
  private loading?:Promise<FrameSet>;
  private frameArt?:Container;
+ // Painted backdrop under the frame rails: charcoal stone (semi-transparent, the world shows faintly through), edge
+ // vignette and faint gold astrolabes in the corners.
+ private backdrop=new Container();
  private ornaments=new Container();
  private title=new MsdfText(TITLE_ROLE,'Skill Tree');
  private rule?:Container;private finial?:Container;private close?:Container;
@@ -98,7 +103,7 @@ export class SkillTree{
   this.viewport.eventMode='static';
   this.content.addChild(this.lines,this.nodesLayer);this.content.mask=this.clip;
   this.viewport.addChild(this.clip,this.content);
-  this.panel.addChild(this.ornaments,this.viewport,this.title);
+  this.panel.addChild(this.backdrop,this.ornaments,this.viewport,this.title);
   uiStage.addChild(this.shade,this.panel);
   this.viewport.on('pointerdown',e=>{
    if(this.press)return;
@@ -181,10 +186,18 @@ export class SkillTree{
   const compact=rect.width<520||rect.height<420;
   const header=compact?52:64,hintH=compact?22:28,top=header+hintH,inset=compact?11:20,bar=compact?10:12;
   // Frame, corner ornaments, title rule, finial and close button.
-  this.frameArt?.destroy({children:true});this.frameArt=this.panel.addChildAt(f.frame('panel-frame',rect.width,rect.height),0);
+  this.backdrop.removeChildren().forEach(c=>c.destroy());
+  const bx=8,bw=rect.width-bx*2,bh=rect.height-bx*2;
+  const stone=this.backdrop.addChild(new TilingSprite({texture:f.texture('panel-stone'),width:bw,height:bh}));stone.position.set(bx,bx);stone.alpha=BACKDROP_ALPHA;
+  const shade=this.backdrop.addChild(f.frame('panel-vignette',bw,bh));shade.position.set(bx,bx);
+  this.frameArt?.destroy({children:true});this.frameArt=this.panel.addChildAt(f.frame('panel-frame',rect.width,rect.height),this.panel.getChildIndex(this.ornaments)+1);
   this.ornaments.removeChildren().forEach(c=>c.destroy());
-  const cs=Math.min(140,rect.width*.32,rect.height*.32);
-  for(const [x,y] of [[inset,header],[rect.width-inset-cs,rect.height-inset-cs]] as const){const s=this.ornaments.addChild(f.frame('panel-compass',cs,cs));s.position.set(x,y);s.alpha=.32;}
+  // Astrolabes centred on two opposite corners, cut by the frame like the mockups' corner drawings; a smaller pair on the others.
+  const big=Math.min(420,Math.max(rect.width,rect.height)*.42),small=big*.62;
+  for(const [x,y,d,a] of [[0,0,big,.42],[rect.width,rect.height,big,.42],[rect.width,0,small,.26],[0,rect.height,small,.26]] as const){
+   const s=this.ornaments.addChild(new Sprite(f.texture('panel-arcane')));s.anchor.set(.5);s.width=s.height=d;s.position.set(x+(x?-1:1)*d*.18,y+(y?-1:1)*d*.18);s.alpha=a;
+  }
+  const clip=this.ornaments.addChild(new Graphics().rect(bx,bx,bw,bh).fill(0xffffff));this.ornaments.mask=clip;
   const titleSize=compact?24:30;
   this.title.destroy();this.title=this.panel.addChild(new MsdfText(TITLE_ROLE,'Skill Tree',{size:titleSize}));
   this.title.place(rect.width/2,header*.5+titleSize*.36,.5);

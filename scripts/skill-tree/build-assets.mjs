@@ -77,8 +77,8 @@ const lineV=svg(8,24,`<rect x="1.6" y="0" width="4.8" height="24" fill="${C.ink}
 const junction=svg(20,20,diamond(10,10,8,9));
 const stud=svg(12,12,diamond(6,6,4.6,5.2));
 
-// Panel frame: charcoal plate, double gold rail, filigree corner brackets, a diamond finial at the top centre;
-// 9-sliced so the corners never stretch.
+// Panel frame: double gold rail, filigree corner brackets, a diamond finial at the top centre; 9-sliced so the corners
+// never stretch. The inside is clear: the painted backdrop (panel-stone, panel-vignette, panel-arcane) shows through.
 const PF=160,PC=44;
 function panelFrame(){
  const o=6,i=12;
@@ -87,7 +87,7 @@ function panelFrame(){
   return rail(`M${t(4,34)} L${t(4,4)} L${t(34,4)}`,2)+rail(`M${t(12,26)} Q${t(12,12)} ${t(26,12)}`,1.1)+
    rail(`M${t(4,20)} C${t(-1,13)} ${t(13,-1)} ${t(20,4)}`,1)+star4(x+sx*7,y+sy*7,5.2);
  };
- return svg(PF,PF,`<rect x="${o}" y="${o}" width="${PF-2*o}" height="${PF-2*o}" rx="4" fill="url(#plate)"/>`+
+ return svg(PF,PF,`<rect x="${i+1}" y="${i+1}" width="${PF-2*i-2}" height="${PF-2*i-2}" fill="none" stroke="#000" stroke-opacity=".55" stroke-width="3"/>`+
   rail(`M${o},${o} H${PF-o} V${PF-o} H${o} Z`,2.2)+rail(`M${i},${i} H${PF-i} V${PF-i} H${i} Z`,1)+hair(`M${i+3},${i+3} H${PF-i-3}`,.2)+
   corner(0,0,1,1)+corner(PF,0,-1,1)+corner(0,PF,1,-1)+corner(PF,PF,-1,-1));
 }
@@ -118,6 +118,53 @@ function compass(s){
  const spokes=[0,45,90,135].map(a=>{const t=a*Math.PI/180,dx=Math.cos(t)*s*.48,dy=Math.sin(t)*s*.48;return `M${c-dx},${c-dy} L${c+dx},${c+dy}`;}).join(' ');
  return svg(s,s,`<g fill="none" stroke="${C.gold}" stroke-opacity=".5" stroke-width=".9"><path d="${circle(c,c,R)}"/><path d="${circle(c,c,R*.62)}"/><path d="${spokes}" stroke-opacity=".32"/>`+
   `<path d="M${c},${c-R*1.3} L${c+R*.16},${c-R*.16} L${c+R*1.3},${c} L${c+R*.16},${c+R*.16} L${c},${c+R*1.3} L${c-R*.16},${c+R*.16} L${c-R*1.3},${c} L${c-R*.16},${c-R*.16} Z" stroke-opacity=".7"/></g>`);
+}
+
+// Backdrop, like the mockups' charcoal stone: soft low-contrast mottling and faint hairline cracks, plus fine grain.
+// librsvg's stitchTiles leaves a visible band at tile edges, so each layer is rendered `o` px larger than the tile and
+// the overflow is cross-faded back into the opposite edge (x, then y), which makes the tile wrap exactly.
+async function seamless(svgText,w,o){
+ const n=w+o,{data}=await sharp(Buffer.from(svgText)).ensureAlpha().raw().toBuffer({resolveWithObject:true});
+ const pass=(src,sw,sh,horizontal)=>{
+  const ow=horizontal?sw-o:sw,oh=horizontal?sh:sh-o,out=Buffer.alloc(ow*oh*4);
+  for(let y=0;y<oh;y++)for(let x=0;x<ow;x++){
+   const t=horizontal?x:y,k=t<o?t/o:1,i=(y*sw+x)*4,j=horizontal?(y*sw+x+ow)*4:((y+oh)*sw+x)*4,d=(y*ow+x)*4;
+   for(let c=0;c<4;c++)out[d+c]=Math.round(src[i+c]*k+(t<o?src[j+c]*(1-k):0));
+  }
+  return out;
+ };
+ const tile=pass(pass(data,n,n,true),w,n,false);
+ return sharp(tile,{raw:{width:w,height:w,channels:4}}).png().toBuffer();
+}
+async function stone(s){
+ const raw=(w,body)=>`<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${w}" viewBox="0 0 ${w} ${w}">${body}</svg>`;
+ const o=48,n=s+o,g=s*3,go=96;
+ const low=await seamless(raw(n,`<filter id="mottle" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="${4/s}" numOctaves="4" seed="3"/><feColorMatrix type="matrix" values="0 0 0 0 .16  0 0 0 0 .14  0 0 0 0 .115  0 0 0 -1.6 1.05"/></filter>`+
+  `<filter id="cracks" x="0" y="0" width="100%" height="100%"><feTurbulence type="turbulence" baseFrequency="${8/s}" numOctaves="2" seed="11"/><feColorMatrix type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -9 0 0 0 1.05"/><feComponentTransfer><feFuncA type="table" tableValues="0 0 .5 .85"/></feComponentTransfer></filter>`+
+  `<rect width="${n}" height="${n}" fill="#0c0b0a"/><rect width="${n}" height="${n}" filter="url(#mottle)" opacity=".5"/><rect width="${n}" height="${n}" filter="url(#cracks)" opacity=".3"/>`),s,o);
+ const grain=await seamless(raw(g+go,`<filter id="grain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".3" numOctaves="2" seed="7"/><feColorMatrix type="matrix" values="0 0 0 0 .5  0 0 0 0 .46  0 0 0 0 .4  0 0 0 -1.2 .95"/></filter><rect width="${g+go}" height="${g+go}" filter="url(#grain)" opacity=".1"/>`),g,go);
+ // Upscale a 3 × 3 tiling and keep the middle, so the resampling wraps across the tile edges too.
+ const big=await sharp({create:{width:s*3,height:s*3,channels:4,background:'#000'}}).composite([{input:low,tile:true,left:0,top:0}]).png().toBuffer();
+ const base=await sharp(await sharp(big).resize(s*9,s*9,{kernel:'cubic'}).png().toBuffer()).extract({left:s*3,top:s*3,width:s*3,height:s*3}).png().toBuffer();
+ return sharp(base).composite([{input:grain}]).png().toBuffer();
+}
+// Edge darkening over the backdrop: clear in the middle, near black at the rails.
+const vignette=svg(128,128,`<radialGradient id="vg" cx=".5" cy=".5" r=".72"><stop offset=".45" stop-color="#000" stop-opacity="0"/><stop offset=".8" stop-color="#000" stop-opacity=".45"/><stop offset="1" stop-color="#000" stop-opacity=".85"/></radialGradient><rect width="128" height="128" fill="url(#vg)"/>`);
+// Arcane astrolabe drawn faintly in gold behind the tree (corners of the panel): graduated rings, crosshairs that run
+// past the rim, an eight-point star, a few star-chart dots and offset arcs.
+function arcane(s){
+ const c=s/2,R=s*.3,ln=(a,r0,r1)=>{const t=a*Math.PI/180;return `M${(c+r0*Math.cos(t)).toFixed(1)},${(c+r0*Math.sin(t)).toFixed(1)} L${(c+r1*Math.cos(t)).toFixed(1)},${(c+r1*Math.sin(t)).toFixed(1)}`;};
+ const ticks=Array.from({length:72},(_,i)=>ln(i*5,R*(i%6?1.02:.96),R*1.1)).join(' ');
+ const rays=[0,45,90,135,180,225,270,315].map(a=>ln(a,R*.2,a%90?R*1.25:s*.5)).join(' ');
+ const k=R*.14,st=(r)=>[[0,-r],[k,-k],[r,0],[k,k],[0,r],[-k,k],[-r,0],[-k,-k]].map(([x,y])=>`${(c+x).toFixed(1)},${(c+y).toFixed(1)}`).join(' ');
+ const dots=[[.18,.22,1.6],[.8,.16,1.2],[.86,.7,1.8],[.24,.84,1.3],[.62,.9,1],[.1,.55,1.1],[.7,.32,.9]].map(([x,y,r])=>`<circle cx="${x*s}" cy="${y*s}" r="${r}" fill="${C.pale}" fill-opacity=".8"/>`).join('');
+ return svg(s,s,`<g fill="none" stroke="${C.gold}" stroke-linecap="round">`+
+  `<circle cx="${c}" cy="${c}" r="${R*1.1}" stroke-width="1.1" stroke-opacity=".7"/><circle cx="${c}" cy="${c}" r="${R}" stroke-width=".7" stroke-opacity=".6"/>`+
+  `<circle cx="${c}" cy="${c}" r="${R*.62}" stroke-width=".8" stroke-opacity=".55"/><circle cx="${c}" cy="${c}" r="${R*.3}" stroke-width=".6" stroke-opacity=".5"/>`+
+  `<path d="${ticks}" stroke-width=".6" stroke-opacity=".55"/><path d="${rays}" stroke-width=".6" stroke-opacity=".38"/>`+
+  `<circle cx="${c+R*.55}" cy="${c-R*.35}" r="${R*.85}" stroke-width=".5" stroke-opacity=".28" stroke-dasharray="3 5"/><circle cx="${c-R*.7}" cy="${c+R*.6}" r="${R*.45}" stroke-width=".5" stroke-opacity=".3"/>`+
+  `<polygon points="${st(R*.95)}" stroke-width=".9" stroke-opacity=".75"/><polygon points="${st(R*.55)}" transform="rotate(45 ${c} ${c})" stroke-width=".7" stroke-opacity=".55"/>`+
+  `<path d="M${c-s*.48},${c+R*1.42} H${c+s*.48} M${c-R*1.42},${c-s*.48} V${c+s*.48}" stroke-width=".5" stroke-opacity=".3"/></g>${dots}`);
 }
 
 // Gradient maps (grey → colour) per node, dark to light.
@@ -158,15 +205,22 @@ const NODES={
 };
 const ICON_ACTIVE=94,ICON_PASSIVE=112;
 const disc=px=>Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${px}" height="${px}"><circle cx="${px/2}" cy="${px/2}" r="${px/2}" fill="#fff"/></svg>`);
-// Passives have no frame: a soft radial fade lifts the emblem off the mockup's background without a hard edge.
-const feather=px=>Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${px}" height="${px}"><radialGradient id="f"><stop offset=".56" stop-color="#fff"/><stop offset=".74" stop-color="#fff" stop-opacity=".55"/><stop offset=".88" stop-color="#fff" stop-opacity="0"/></radialGradient><circle cx="${px/2}" cy="${px/2}" r="${px/2}" fill="url(#f)"/></svg>`);
 async function icon(id){
  const n=NODES[id],size=n.kind==='active'?ICON_ACTIVE:ICON_PASSIVE,px=size*3;
  const [file,cx,cy,r]=n.master??[path.join(src,n.crop[0]),...n.crop.slice(1)];
  const cut=await sharp(file).extract({left:cx-r,top:cy-r,width:2*r,height:2*r}).resize(px,px,{kernel:'lanczos3'}).removeAlpha().toBuffer();
- const mask=await sharp(n.kind==='active'?disc(px):feather(px)).png().toBuffer();
- const finish=async rgb=>sharp(rgb,{raw:{width:px,height:px,channels:3}}).png().toBuffer().then(b=>sharp(b).ensureAlpha().composite([{input:mask,blend:'dest-in'}]).png().toBuffer());
  const grey=await sharp(cut).greyscale().raw().toBuffer();
+ // Actives: a hard disc under the ring. Passives (no frame): the radial feather times a brightness key, so the mockup's
+ // dark backing fades to a soft shadow on the stone backdrop while the glow and the silhouettes stay.
+ const mask=n.kind==='active'?await sharp(disc(px)).extractChannel(0).raw().toBuffer():(()=>{
+  const m=Buffer.alloc(px*px),c=(px-1)/2,ramp=(v,a,b)=>Math.max(0,Math.min(1,(v-a)/(b-a)));
+  for(let y=0;y<px;y++)for(let x=0;x<px;x++){
+   const r=Math.hypot(x-c,y-c)/(px/2),edge=r<.56?1:r<.74?1-.45*ramp(r,.56,.74):r<.88?.55*(1-ramp(r,.74,.88)):0;
+   const key=.42+.58*ramp(grey[y*px+x],6,70);
+   m[y*px+x]=Math.round(255*edge*key);
+  }
+  return m;})();
+ const finish=async rgb=>{const out=Buffer.alloc(px*px*4);for(let i=0;i<px*px;i++){out[i*4]=rgb[i*3];out[i*4+1]=rgb[i*3+1];out[i*4+2]=rgb[i*3+2];out[i*4+3]=mask[i];}return sharp(out,{raw:{width:px,height:px,channels:4}}).png().toBuffer();};
  const rgbGrey=Buffer.alloc(px*px*3);for(let i=0;i<px*px;i++)rgbGrey[i*3]=rgbGrey[i*3+1]=rgbGrey[i*3+2]=grey[i];
  let colour;
  if(n.color==='native')colour=await sharp(cut).raw().toBuffer();
@@ -192,6 +246,9 @@ const frames={
  'panel-title-rule':[320,20,titleRule(320,20),[40,0,40,0]],
  'panel-finial':[44,26,finial,null],
  'panel-compass':[140,140,compass(140),null],
+ 'panel-stone':[256,256,()=>stone(256),null],
+ 'panel-vignette':[128,128,vignette,[0,0,0,0]],
+ 'panel-arcane':[320,320,arcane(320),null],
  'button-close':[48,48,close,null],
  'scroll-track-v':[10,40,trackV,[0,6,0,6]],
  'scroll-thumb-v':[10,40,thumbV,[0,6,0,6]],
@@ -209,7 +266,7 @@ async function write(name,w,h,master,slice){
  for(const s of SCALES)await (s===3?sharp(master):sharp(master).resize(w*s,h*s,{kernel:'lanczos3'})).png({compressionLevel:9}).toFile(path.join(out,`@${s}x`,name+'.png'));
  manifest.frames[name]=slice?{width:w,height:h,slice}:{width:w,height:h};
 }
-for(const [name,[w,h,art,slice]] of Object.entries(frames))await write(name,w,h,await sharp(Buffer.from(art)).png().toBuffer(),slice);
+for(const [name,[w,h,art,slice]] of Object.entries(frames))await write(name,w,h,typeof art==='function'?await art():await sharp(Buffer.from(art)).png().toBuffer(),slice);
 for(const id of Object.keys(NODES)){
  const {size,colour,grey}=await icon(id);
  await write(`icon-${id}`,size,size,colour,null);
