@@ -14,6 +14,7 @@ list="$(mktemp)"
 trap 'rm -rf "$STAGE" "$DIST_DIR" "$list"' EXIT
 
 node scripts/shadow-audit/test.mjs
+node scripts/shadow-audit/test-field.mjs
 npx tsc --noEmit && npx vite build --outDir "$DIST_DIR"
 # The organization shares 1 GiB of RAM across sessions: compile one package at a time under a memory limit.
 export GOFLAGS=-p=1 GOMAXPROCS=2 GOMEMLIMIT=256MiB GOTOOLCHAIN=local
@@ -26,6 +27,9 @@ SITE_DIR="$DIST_DIR" ARKODIA_BIN="$DIST_DIR/arkodia" node scripts/coop-site-file
 rm -rf "$STAGE"; mkdir -p "$STAGE/site"
 cp "$DIST_DIR/arkodia" "$STAGE/arkodia"
 while IFS= read -r f; do mkdir -p "$STAGE/site/$(dirname "$f")"; cp -p "$DIST_DIR/$f" "$STAGE/site/$f"; done < "$list"
+# Keep lazy compiled diagnostics available alongside their matching runtime.
+mkdir -p "$STAGE/site/assets"
+for f in "$DIST_DIR"/assets/*.js "$DIST_DIR"/assets/*.css; do [[ -f "$f" ]] || continue; cp "$f" "$STAGE/site/assets/"; done
 SITE_DIR="$STAGE/site" "$STAGE/arkodia" --warm-webp
 # The co-op and hero-picker screenshots, test reports and UI frame sources embedded in Knowledge.
 mkdir -p "$STAGE/site/coop/docs"; cp docs/coop/*.webp docs/coop/*.json "$STAGE/site/coop/docs/"
@@ -100,6 +104,13 @@ node scripts/flame-fan/build.mjs
 mkdir -p "$STAGE/site/ember-warden-review/flame-fan-levels/evidence"
 cp -R dist-flame-fan/. "$STAGE/site/ember-warden-review/flame-fan-levels/"
 cp docs/flame-fan/*.png docs/flame-fan/*.json docs/flame-fan/*.md "$STAGE/site/ember-warden-review/flame-fan-levels/evidence/"
+
+# The compact connected sheet player and actual-game scale evidence ship with combat.
+node scripts/flame-fan-preview/build.mjs
+mkdir -p "$STAGE/site/ember-warden-review/flame-fan-preview/evidence" "$STAGE/site/ember-warden-review/flame-fan-gameplay"
+cp -R dist-flame-fan-preview/. "$STAGE/site/ember-warden-review/flame-fan-preview/"
+cp docs/flame-fan-preview/*.png docs/flame-fan-preview/*.json docs/flame-fan-preview/*.md "$STAGE/site/ember-warden-review/flame-fan-preview/evidence/"
+cp docs/flame-fan-gameplay/*.png docs/flame-fan-gameplay/*.json docs/flame-fan-gameplay/*.md "$STAGE/site/ember-warden-review/flame-fan-gameplay/"
 
 # One versioned tarball, uploaded in parts and applied by the gateway at boot (the release also writes www/index.html).
 mkdir -p "$HOME/releases"

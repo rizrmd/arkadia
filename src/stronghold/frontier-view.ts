@@ -1,3 +1,4 @@
+import type {ShadowSurface} from './shadow-surfaces';
 import {proxyGroundAt,validateShadowCompanions,shadowCompanionStats} from './shadow-geometry';
 import {measureRenderDetail} from '../app/render-diagnostics';
 import {BlurFilter,ColorMatrixFilter,Container,Graphics,Matrix,Rectangle,Sprite,Texture} from 'pixi.js';
@@ -155,6 +156,8 @@ export function createFrontier(worldStage:Container,atlas:HTMLImageElement){
   // QA: hide the scenery to measure what it costs (scripts/frozen-frontier-map/verify.mjs).
   setVisible:(on:boolean)=>{ground.visible=upright.visible=on;shade.renderable=on;}};
  return {scene,ready,place,setAmbient,setSun,stats,load:()=>ready,
+  setLegacyShadows:(on:boolean)=>{shade.renderable=on;},
+  shadowSurfaces:():ShadowSurface[]=>FRONTIER_PROPS.filter(p=>!p.rot).map(p=>({key:p.key,source:atlas,sourceWidth:atlas.naturalWidth,sourceHeight:atlas.naturalHeight,frame:p.frame,x:p.x,y:p.y,width:p.width,height:p.height,pivot:p.pivot,flip:p.flip,shear:p.shear,lift:p.lift,ground:p.ground,depth:p.y,cast:p.layer!=='ground'||isSlab(p),...(p.layer==='ground'?{constantHeight:isSlab(p)?SLABS[p.asset]*p.s:0}:{})})),
   // Footprint columns for a frontier prop in the hero's scene, else undefined.
   columns:(p:{id?:unknown})=>typeof p.id==='string'?columns.get(p.id):undefined};
 }

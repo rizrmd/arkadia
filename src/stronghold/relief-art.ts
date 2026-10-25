@@ -1,3 +1,5 @@
+import {unproject} from '../isometric';
+import {inside} from '../world/relief';
 import {naturalHillArt} from './natural-hill-art';
 import {tilePoint} from './terrain';
 import {RELIEF,PX_PER_METER,featureHeight,type ReliefFeature} from '../world/relief';
@@ -119,4 +121,12 @@ export function paintReliefShadow(f:ReliefFeature,dx:number,dy:number,canvas:HTM
   c.closePath();c.fill();
  }
  return {left,top,width,height};
+}
+
+// Camera-ray intersection with the authored solid relief proxy. Unlike texture
+// brightness, this follows actual plateau/ramp/hill geometry in world units.
+export function reliefShadowHeight(f:ReliefFeature,x:number,y:number){
+ const o=tilePoint(0,0),max=Math.max(f.heightM??0,f.topM??0)*PX_PER_METER;
+ for(let z=max;z>=0;z-=1.5){const p=unproject(x-o.x,y+z-o.y);if(inside(f,p.x,p.y)&&visualHeight(f,p.x,p.y)*PX_PER_METER>=z-.01)return z;}
+ return 0;
 }

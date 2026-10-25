@@ -1,3 +1,4 @@
+import {registerActorShadowSprite} from './shadow-actor-batch';
 import {renderQuality} from '../app/render-quality';
 import {requestGameFrame as requestAnimationFrame} from '../app/frame-scheduler';
 import type {Container} from 'pixi.js';
@@ -244,6 +245,7 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
  }
  let minBlockerX=0,maxBlockerX=0,minBlockerY=0,maxBlockerY=0;
  let x=SPAWN.x,y=SPAWN.y,state:'idle'|'move'='idle',t=0,gait=0,facing=1,back=false,vertical=false,horizontal=false;
+ registerActorShadowSprite(heroView.sprite,()=>({groundY:y,lift:liftAt(x,y),owner:3900}));
  let pose:Pose|null=null,tint='255,255,255',sampled=-1e9,origin={x:0,y:0,scale:1},k=0,box=[0,0,0,0],drawn='',lastMove=0;
  function blocked(px:number,py:number){
   if(!walkableGround(px,py))return true;

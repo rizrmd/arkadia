@@ -1,3 +1,4 @@
+import {registerActorShadowSprite} from './shadow-actor-batch';
 import {STRONGHOLD} from './prefabs/stronghold';
 import type {ItemId} from './items';
 import {requestGameFrame as requestAnimationFrame} from '../app/frame-scheduler';
@@ -664,7 +665,7 @@ export async function createEncounters(o:{
  function view(f:Foe){
   let v=views.get(f);if(v)return v;
   const el=document.createElement('canvas');
-  const canvasView=createCanvasSprite(el);
+  const canvasView=createCanvasSprite(el);registerActorShadowSprite(canvasView.sprite,()=>{const p=tilePoint(f.x,f.y);return {groundY:p.y,lift:liftAtTile(f.x,f.y),owner:3901};});
   const bar=bars.addChild(new Container());
   bar.visible=false;
   const barTrack=bar.addChild(o.frames.frame('overhead-bar',44,8));

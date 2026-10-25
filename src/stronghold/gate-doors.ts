@@ -11,7 +11,7 @@ const SLOT=STRONGHOLD.buildings.gate,LEFT=SLOT.x-SLOT.width/2,FOOT=SLOT.y,PIVOT=
 export type GateSheet={image:string;columns:number;frames:number;frame:{w:number;h:number};fps:number;region:{x:number;y:number;w:number;h:number};torches?:{left:{x:number;y:number;w:number;h:number};right:{x:number;y:number;w:number;h:number}}};
 export const GATE_SHEET='/modular-stronghold/v2/full-gateway-v7-sheet.json';
 
-export function createGateDoors(worldStage:Container,gateway:HTMLImageElement,sheet:HTMLImageElement,meta:GateSheet,onPassable:(open:boolean)=>void,light:{raster:number;foundation?:{face:HTMLCanvasElement;pad:number;fade?:HTMLCanvasElement};revision:()=>number;torches?:()=>boolean;shade:(source:HTMLCanvasElement,target:HTMLCanvasElement)=>void}){
+export function createGateDoors(worldStage:Container,gateway:HTMLImageElement,sheet:HTMLImageElement,meta:GateSheet,onPassable:(open:boolean)=>void,light:{raster:number;foundation?:{face:HTMLCanvasElement;pad:number;fade?:HTMLCanvasElement};revision:()=>number;torches?:()=>boolean;shade:(source:HTMLCanvasElement,target:HTMLCanvasElement)=>void;onShadowFrame?:(source:HTMLCanvasElement,index:number)=>void}){
  const {region,frame}=meta,rows=Math.ceil(meta.frames/meta.columns),height=region.h,canvas=document.createElement('canvas');
  canvas.id='world-gate-doors';canvas.dataset.renderer='gateway-lightmap-v3';(window as any).__WORLD_GATE_DOORS__=canvas;
  canvas.width=Math.round(region.w*light.raster);canvas.height=Math.round(region.h*light.raster);
@@ -24,6 +24,7 @@ export function createGateDoors(worldStage:Container,gateway:HTMLImageElement,sh
  const source=document.createElement('canvas');source.width=canvas.width;source.height=canvas.height;const raw=source.getContext('2d')!;
  raw.scale(source.width/frame.w,source.height/frame.h);
  const shaded=document.createElement('canvas');shaded.width=canvas.width;shaded.height=canvas.height;
+ let shadowFrame=-1;
  let sheetCanvas:HTMLCanvasElement|null=null;
  function ensureSheetCanvas():HTMLCanvasElement|null{
   if(sheetCanvas)return sheetCanvas;
@@ -71,6 +72,7 @@ export function createGateDoors(worldStage:Container,gateway:HTMLImageElement,sh
       raw.drawImage(face,-pad*sx,-pad*sy,face.width*sx,face.height*sy);
       if(fade){raw.globalCompositeOperation='destination-in';raw.drawImage(fade,0,0,frame.w,frame.h);raw.globalCompositeOperation='source-over';}
      }
+     if(shadowFrame!==index){shadowFrame=index;light.onShadowFrame?.(source,index);}
      light.shade(source,shaded);
     }
     c.globalCompositeOperation='copy';c.drawImage(shaded,0,0);c.globalCompositeOperation='source-over';

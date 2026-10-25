@@ -1,5 +1,7 @@
+import {createSceneShadows} from './scene-shadows';
+import {sampleSurface,type ShadowSurface} from './shadow-surfaces';
 import {requestGameFrame as requestAnimationFrame,cancelGameFrame as cancelAnimationFrame} from '../app/frame-scheduler';
-import {CanvasSource,Texture,TilingSprite} from 'pixi.js';
+import {Container,CanvasSource,Texture,TilingSprite} from 'pixi.js';
 import {FOUNDATION_SOIL,FOUNDATION_MOSS,FOUNDATION_DRIFT,drawFoundation,foundationLayers} from './foundations';
 import {environmentSprites,COURT,tilePoint,LEGACY_LAYOUT} from './terrain';
 import {slots,calibration,WORLD} from './scene';
@@ -11,7 +13,7 @@ import {createEncounters} from './encounters';
 import {setGateOpen,gateTowerFront} from './navigation';
 import {atGate} from './net/movement';
 import {STRONGHOLD} from './prefabs/stronghold';
-import {paintRelief,paintReliefShadow,CLIFF_ART,NATURAL_CLIFF_ART} from './relief-art';
+import {paintRelief,paintReliefShadow,reliefShadowHeight,CLIFF_ART,NATURAL_CLIFF_ART} from './relief-art';
 import {createGateDoors,GATE_SHEET,type GateSheet} from './gate-doors';
 import type {Walk} from './controls';
 import {createCanvasSprite,loadImage,expectSizes,downloadedBytes,onDownload,type Progress,type SharedPixiRuntime} from '../app/loader';
@@ -40,6 +42,10 @@ export async function createWorldView(
  const canvas=rt.app.canvas;
  const {worldStage,uiStage,frames}=rt;
  worldStage.sortableChildren=true;
+ const staticStage=new Container();staticStage.sortableChildren=true;staticStage.zIndex=10;worldStage.addChild(staticStage);
+ const useDepthShadows=new URLSearchParams(location.search).get('shadowField')!=='0';
+ const sceneShadows=createSceneShadows(staticStage,()=>requestDraw(),rt.app.renderer);if(!useDepthShadows)staticStage.filters=[];
+ (window as any).__SCENE_SHADOWS__=useDepthShadows?sceneShadows:null;
  uiStage.sortableChildren=true;
 
  const probeCtx=document.createElement('canvas').getContext('2d')!;
@@ -63,13 +69,13 @@ export async function createWorldView(
  const snowPattern=material(snow,.7),pavingPattern=material(paving,.22);
  // Raised terrain (world/relief.ts): plateaus and ramps get their own sprites just above the baked surface, tinted
  // like the open snow, and join the hero's scene so they hide actors standing below and behind them.
- const relief=paintRelief(images.get(snow)!,images.get(CLIFF_ART)!,images.get(NATURAL_CLIFF_ART)!).map(r=>{const view=createCanvasSprite(r.canvas);view.sync(r.width,r.height);view.sprite.zIndex=10.5;worldStage.addChild(view.sprite);return {...r,view};});
+ const relief=paintRelief(images.get(snow)!,images.get(CLIFF_ART)!,images.get(NATURAL_CLIFF_ART)!).map(r=>{const view=createCanvasSprite(r.canvas);view.sync(r.width,r.height);view.sprite.zIndex=10.5;staticStage.addChild(view.sprite);return {...r,view};});
  // Their sun shadows, under them on the ground, repainted with the world's shadows (castShadows).
- const reliefShadows=relief.map(r=>{const canvas=document.createElement('canvas'),view=createCanvasSprite(canvas);view.sprite.zIndex=10.4;view.sprite.visible=false;worldStage.addChild(view.sprite);return {feature:r.feature,canvas,view,left:0,top:0,width:0,height:0};});
+ const reliefShadows=relief.map(r=>{const canvas=document.createElement('canvas'),view=createCanvasSprite(canvas);view.sprite.zIndex=10.4;view.sprite.visible=false;staticStage.addChild(view.sprite);return {feature:r.feature,canvas,view,left:0,top:0,width:0,height:0};});
  function shadeRelief(s:{alpha:number;dx:number;dy:number}){for(const r of reliefShadows){r.view.sprite.visible=s.alpha>0;if(!s.alpha)continue;Object.assign(r,paintReliefShadow(r.feature,s.dx,s.dy,r.canvas));r.view.sync(r.width,r.height);r.view.sprite.alpha=s.alpha;}requestDraw();}
  const reliefScene=relief.map(r=>({layer:'world' as const,id:'relief:'+r.feature.id,x:r.left+r.width/2,y:r.bottom,width:r.width,height:r.height,foot:1,shear:0,vertical:1,depth:r.bottom,opacity:1,file:'relief:'+r.feature.id,selected:false,occluder:undefined as HTMLCanvasElement|undefined,image:r.canvas as unknown as HTMLImageElement,relief:r.feature}));
  // The Frozen Frontier's ruins, landmarks and plants on the snow beyond (world/frontier.ts, frontier-view.ts).
- const frontier=createFrontier(worldStage,images.get(FRONTIER_ATLAS)!);
+ const frontier=createFrontier(staticStage,images.get(FRONTIER_ATLAS)!);frontier.setLegacyShadows(!useDepthShadows);
  await frontier.ready;
  const frontierScene=frontier.scene as unknown as typeof reliefScene;
  const scene=()=>[...objects,...reliefScene,...frontierScene];
@@ -104,7 +110,7 @@ export async function createWorldView(
  repeatSource.update();
  const snowSprite=new TilingSprite({texture:new Texture({source:repeatSource}),width:innerWidth||1440,height:innerHeight||900});
  snowSprite.zIndex=0;
- worldStage.addChild(snowSprite);
+ staticStage.addChild(snowSprite);
 
  const surface=document.createElement('canvas');surface.id='world-surface';(window as any).__WORLD_SURFACE__=surface;
  const boundsObjects=makeObjects(true).map(p=>({...p,height:p.id==='forge'?Math.max(...[1,2,3].map(l=>{const image=images.get(spriteFile('forge',l))!;return image.height*p.width/image.width;})):p.height}));
@@ -121,11 +127,11 @@ export async function createWorldView(
  surface.width=Math.floor(worldWidth*raster);surface.height=Math.floor(worldHeight*raster);
  const surfaceView=createCanvasSprite(surface);
  surfaceView.sprite.zIndex=10;
- worldStage.addChild(surfaceView.sprite);
+ staticStage.addChild(surfaceView.sprite);
 
  const sc=surface.getContext('2d')!;let dirty=true,frame=0;
  const lighting=createLighting({
-  worldStage,
+  worldStage:staticStage,
   surface,
   snowSprite,
   left,
@@ -184,8 +190,17 @@ export async function createWorldView(
  const hull=(points:[number,number][])=>{points.sort((a,b)=>a[0]-b[0]||a[1]-b[1]);const cross=(o:number[],a:number[],b:number[])=>(a[0]-o[0])*(b[1]-o[1])-(a[1]-o[1])*(b[0]-o[0]),chain=(list:[number,number][])=>{const h:[number,number][]=[];for(const q of list){while(h.length>1&&cross(h[h.length-2],h[h.length-1],q)<=0)h.pop();h.push(q);}h.pop();return h;};return [...chain(points),...chain([...points].reverse())];};
  const SHADE=.35,mask=document.createElement('canvas'),soft=document.createElement('canvas');mask.width=soft.width=Math.ceil(worldWidth*SHADE);mask.height=soft.height=Math.ceil(worldHeight*SHADE);
  function drawSprite(c:CanvasRenderingContext2D,p:(typeof objects)[number]){c.save();c.globalAlpha=p.opacity;c.translate(p.x,p.y);c.transform(1,p.shear,0,p.vertical,0,0);drawFoundation(c,p,images.get(FOUNDATION_SOIL)!,'under',images.get(FOUNDATION_DRIFT),images.get(FOUNDATION_MOSS));if(p.selected){c.shadowColor='#ffca64';c.shadowBlur=9;}c.drawImage(p.image,-p.width/2,-p.height*p.foot,p.width,p.height);c.shadowBlur=0;drawFoundation(c,p,images.get(FOUNDATION_SOIL)!,'face',images.get(FOUNDATION_DRIFT),images.get(FOUNDATION_MOSS));c.restore();}
+ let shadowSceneKey='';
+ function shadowSurfaces():ShadowSurface[]{
+  const court:ShadowSurface[]=objects.filter(p=>p.id!=='gate').map(p=>({key:p.id+':'+p.file,source:p.image,sourceWidth:p.image.naturalWidth,sourceHeight:p.image.naturalHeight,x:p.x,y:p.y,width:p.width,height:p.height,pivot:[.5,p.foot],shear:p.shear,vertical:p.vertical,depth:p.depth,cast:p.layer!=='ground'&&p.opacity>=1,...(p.layer==='ground'?{constantHeight:0}:{})}));
+  const ff=frontier.shadowSurfaces();
+  const terrain:ShadowSurface[]=relief.map(r=>({key:'relief:'+r.feature.id,source:r.canvas,sourceWidth:r.canvas.width,sourceHeight:r.canvas.height,x:r.left+r.width/2,y:r.bottom,width:r.width,height:r.height,pivot:[.5,1],heightAtScreen:(x,y)=>reliefShadowHeight(r.feature,x,y)}));
+  return [...court,...ff.filter(p=>p.constantHeight!==undefined),...terrain,...ff.filter(p=>p.constantHeight===undefined)];
+ }
  function castShadows(paint=true){
-  const s=lighting.sun();shadeRelief(s);frontier.setSun(s);
+  const s=lighting.sun();frontier.setSun(s);
+  if(useDepthShadows){const sig=objects.map(p=>p.id+':'+p.file+':'+p.width).join('|');if(sig!==shadowSceneKey){shadowSceneKey=sig;sceneShadows.setScene(shadowSurfaces());}sceneShadows.setSun(s);lighting.setShadow(null,0,paint);return;}
+  shadeRelief(s);
   if(!s.alpha){lighting.setShadow(null,0,paint);return;}
   measureTracelogPhase('shadowCast',()=>{
    const m=mask.getContext('2d')!,g=soft.getContext('2d')!;
@@ -201,7 +216,8 @@ export async function createWorldView(
 
  progress(loaded,steps,'Waking the hero');
  const sheet:GateSheet=await (await fetch(GATE_SHEET)).json();
- const doors=createGateDoors(worldStage,images.get('/modular-stronghold/v2/full-gateway-v7-closed.webp')!,gateSheetImg,sheet,open=>{gatePassable=open;setGateOpen(open);hero.setScene(scene());party?.setScene(scene());},{raster,foundation:foundationLayers(objects.find(p=>p.id==='gate')!,images.get(FOUNDATION_SOIL)!,images.get(FOUNDATION_DRIFT),images.get(FOUNDATION_MOSS))!,revision:lighting.spriteRevision,torches:lighting.torches,shade:(source,target)=>lighting.shadeSprite(source,target,{left:GS.x-GS.width/2,top:GS.y-sheet.region.h*GS.pivot,width:GS.width,height:sheet.region.h})});
+ const gateP=objects.find(p=>p.id==='gate')!;const gateProxy=useDepthShadows?sampleSurface({key:'gate',source:gateP.image,sourceWidth:gateP.image.naturalWidth,sourceHeight:gateP.image.naturalHeight,x:gateP.x,y:gateP.y,width:gateP.width,height:gateP.height,pivot:[.5,gateP.foot],shear:gateP.shear,vertical:gateP.vertical},1.5).surface:null;
+ const doors=createGateDoors(staticStage,images.get('/modular-stronghold/v2/full-gateway-v7-closed.webp')!,gateSheetImg,sheet,open=>{gatePassable=open;setGateOpen(open);hero.setScene(scene());party?.setScene(scene());},{raster,onShadowFrame:(source,index)=>{if(gateProxy)sceneShadows.setDynamic([{...gateProxy,key:'gateway-frame:'+index,source,sourceWidth:source.width,sourceHeight:source.height}]);},foundation:foundationLayers(objects.find(p=>p.id==='gate')!,images.get(FOUNDATION_SOIL)!,images.get(FOUNDATION_DRIFT),images.get(FOUNDATION_MOSS))!,revision:lighting.spriteRevision,torches:lighting.torches,shade:(source,target)=>lighting.shadeSprite(source,target,{left:GS.x-GS.width/2,top:GS.y-sheet.region.h*GS.pivot,width:GS.width,height:sheet.region.h})});
  gateOccluder=doors.canvas;for(const p of objects)if(p.id==='gate')p.occluder=gateOccluder;
  lighting.subscribe(()=>doors.refreshLighting());
  // Combat (encounters.ts) swings the idle hero in place at a revenant at its maximum reach (it never chases) and plays its swing, hit and death clips.
@@ -254,7 +270,7 @@ export async function createWorldView(
    surface.style.width=worldWidth*scale+'px';surface.style.height=worldHeight*scale+'px';
    for(const r of reliefShadows){r.view.sprite.position.set(x+r.left*scale,y+r.top*scale);r.view.sprite.width=r.width*scale;r.view.sprite.height=r.height*scale;}
    for(const r of relief){r.view.sprite.position.set(x+r.left*scale,y+r.top*scale);r.view.sprite.width=r.width*scale;r.view.sprite.height=r.height*scale;}
-   frontier.place(x,y,scale,w,h);lighting.place(x,y,scale);doors.place(x,y,scale);hero.place(x,y,scale);party?.place(x,y,scale);encounters?.place(x,y,scale);
+   sceneShadows.place(x,y,scale,w,h);frontier.place(x,y,scale,w,h);lighting.place(x,y,scale);doors.place(x,y,scale);hero.place(x,y,scale);party?.place(x,y,scale);encounters?.place(x,y,scale);
    parallax.place(cx,cy,scale,w,h);
 
    snowSprite.width=w;

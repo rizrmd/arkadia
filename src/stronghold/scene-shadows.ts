@@ -1,0 +1,68 @@
+import {SHADOW_SAMPLING_GLSL} from './shadow-sampling';
+import {installActorShadowReceivers} from './shadow-actor-batch';
+import {CanvasSource,Container,Filter,GlProgram,Rectangle,Texture,UniformGroup,type Renderer} from 'pixi.js';
+import type {ShadowSun,ShadowBounds} from './shadow-field';
+import type {PackedShadowMap,ShadowView} from './shadow-map-builder';
+import {sampleSurface,type ShadowSurface} from './shadow-surfaces';
+const vertex=`in vec2 aPosition;out vec2 vTextureCoord;out vec2 vScreen;uniform vec4 uInputSize;uniform vec4 uOutputFrame;uniform vec4 uOutputTexture;
+void main(){vec2 p=aPosition*uOutputFrame.zw+uOutputFrame.xy;vScreen=p;gl_Position=vec4(p.x*2.0/uOutputTexture.x-1.0,p.y*(2.0*uOutputTexture.z/uOutputTexture.y)-uOutputTexture.z,0.0,1.0);vTextureCoord=aPosition*uOutputFrame.zw*uInputSize.zw;}`;
+const fragment=`in vec2 vTextureCoord;in vec2 vScreen;out vec4 finalColor;uniform sampler2D uTexture;uniform sampler2D uHeight;uniform sampler2D uDynamicHeight;uniform vec4 uHeightBounds;uniform vec4 uDynamicHeightBounds;
+${SHADOW_SAMPLING_GLSL}
+void main(){vec4 color=texture(uTexture,vTextureCoord);if(uSun.z<=0.0){finalColor=color;return;}vec2 world=(vScreen-uCamera.xy)/uCamera.z;vec4 receiver=texAt(uHeight,world,uHeightBounds);vec4 dynamicHeight=texAt(uDynamicHeight,world,uDynamicHeightBounds);if(dynamicHeight.a>.5)receiver=dynamicHeight;float h=zOf(receiver),own=ownerOf(receiver);float shade=shadowCoverage(world,h,own)*uSun.z;finalColor=vec4(mix(color.rgb,color.a*vec3(.078431,.109804,.172549),shade),color.a);}`;
+
+type MapTexture={canvas:HTMLCanvasElement;source:CanvasSource;texture:Texture;bounds:ShadowBounds};
+function pixelsTexture(map:PackedShadowMap):MapTexture{
+ const b=map.bounds,canvas=document.createElement('canvas');canvas.width=b.width;canvas.height=b.height;const c=canvas.getContext('2d')!,data=c.createImageData(b.width,b.height);data.data.set(map.pixels);c.putImageData(data,0,0);
+ const source=new CanvasSource({resource:canvas,scaleMode:'nearest',autoGenerateMipmaps:false,alphaMode:'no-premultiply-alpha'}),texture=new Texture({source});return {canvas,source,texture,bounds:b};
+}
+function updateMapTexture(target:MapTexture,map:PackedShadowMap){
+ const b=map.bounds;if(target.canvas.width!==b.width||target.canvas.height!==b.height){target.canvas.width=b.width;target.canvas.height=b.height;}const c=target.canvas.getContext('2d')!,image=c.createImageData(b.width,b.height);image.data.set(map.pixels);c.putImageData(image,0,0);target.bounds=b;target.source.update();
+}
+const region=(b:ShadowBounds)=>new Float32Array([b.left,b.top,b.width*b.step,b.height*b.step]);
+export function createSceneShadows(stage:Container,onUpdate:()=>void=()=>{},renderer?:Renderer){
+ const stats={surfaces:0,samples:0,rebuilds:0,buildMs:0,bytes:0,receiverPixels:0,depthPixels:0,ready:false,error:'',sun:{dx:0,dy:0,alpha:0},model:'original alpha, explicit billboard/relief geometry; light-space depth compare'};
+ let sun:ShadowSun={dx:0,dy:0,alpha:0},key='',depthTex:MapTexture|null=null,heightTex:MapTexture|null=null,secondTex:MapTexture|null=null;
+ let view:ShadowView|undefined,viewKey='';
+ let revision=0,id=0,inFlight=false,queued=false,hasScene=false;
+ const worker=new Worker(new URL('./shadow-field-worker.ts',import.meta.url),{type:'module'});
+ const empty=()=>pixelsTexture({bounds:{left:0,top:0,step:1,width:1,height:1},pixels:new Uint8ClampedArray(4)});
+ depthTex=empty();heightTex=empty();secondTex=empty();
+ const dynamicMaps={uDynamicDepth:empty(),uDynamicSecond:empty(),uDynamicHeight:empty()};
+ const uniforms=new UniformGroup({uDynamicSun:{value:new Float32Array(4),type:'vec4<f32>'},uDynamicLightBounds:{value:region(dynamicMaps.uDynamicDepth.bounds),type:'vec4<f32>'},uDynamicHeightBounds:{value:region(dynamicMaps.uDynamicHeight.bounds),type:'vec4<f32>'},uLightBounds:{value:region(depthTex.bounds),type:'vec4<f32>'},uHeightBounds:{value:region(heightTex.bounds),type:'vec4<f32>'},uCamera:{value:new Float32Array([0,0,1,0]),type:'vec4<f32>'},uSun:{value:new Float32Array(4),type:'vec4<f32>'}});
+ const filter=new Filter({glProgram:GlProgram.from({name:'scene-depth-shadows',vertex,fragment}),resources:{shadowUniforms:uniforms,uDepth:depthTex.source,uHeight:heightTex.source,uSecondDepth:secondTex.source,uDynamicDepth:dynamicMaps.uDynamicDepth.source,uDynamicSecond:dynamicMaps.uDynamicSecond.source,uDynamicHeight:dynamicMaps.uDynamicHeight.source},resolution:1,padding:0});
+ stage.filters=[filter];const area=new Rectangle();stage.filterArea=area;
+ function replace(which:'uDepth'|'uHeight'|'uSecondDepth',map:PackedShadowMap){updateMapTexture((which==='uDepth'?depthTex:which==='uHeight'?heightTex:secondTex)!,map);}
+ function request(){if(inFlight||!hasScene){queued=true;return;}inFlight=true;queued=false;worker.postMessage({type:'build',id:++id,revision,sun,view});}
+ worker.onmessage=({data})=>{inFlight=false;if(data.error){stats.error=data.error;console.error('Scene shadow worker:',data.error);return;}
+  if(data.revision===revision){const upload=performance.now();replace('uDepth',data.depth);replace('uSecondDepth',data.second);if(data.height)replace('uHeight',data.height);uniforms.uniforms.uLightBounds=region(data.depth.bounds);uniforms.uniforms.uHeightBounds=region(heightTex!.bounds);uniforms.uniforms.uSun=new Float32Array([data.sun.dx,data.sun.dy,data.sun.alpha,data.depth.bounds.step]);
+   const n=data.depth.bounds.width*data.depth.bounds.height,h=heightTex!.bounds.width*heightTex!.bounds.height;Object.assign(stats,{ready:true,samples:data.samples,rebuilds:stats.rebuilds+1,buildMs:data.buildMs,uploadMs:performance.now()-upload,bytes:(n*2+h)*4,receiverPixels:h,depthPixels:n,sun:data.sun});onUpdate();}
+  if(queued)request();
+ };
+ worker.onerror=e=>{stats.error=e.message;console.error('Scene shadow worker:',e.message);};
+ function setScene(surfaces:ShadowSurface[]){
+  const sampled=surfaces.map((p,i)=>{const s=sampleSurface(p,2);for(const q of s.samples)q.owner=i+1;return s;});
+  const total=sampled.reduce((n,s)=>n+s.samples.length,0),packed=new Float32Array(total*6);let j=0;for(const s of sampled)for(const q of s.samples){packed[j++]=q.x;packed[j++]=q.y;packed[j++]=q.z;packed[j++]=q.alpha;packed[j++]=q.owner!;packed[j++]=s.surface.cast===false?0:1;}
+  revision++;hasScene=true;stats.surfaces=surfaces.length;stats.ready=false;worker.postMessage({type:'scene',packed},[packed.buffer]);queued=true;queueMicrotask(()=>{if(!inFlight&&queued)request();});
+ }
+ function setSun(s:ShadowSun){const next=s.alpha?[s.dx,s.dy,s.alpha].map(n=>n.toFixed(3)).join():'night';sun={dx:s.dx,dy:s.dy,alpha:s.alpha};if(next===key)return;if(dynamicScene.length){dynamicRevision++;dynamicQueued=true;if(!dynamicInFlight)updateDynamic();}key=next;queued=true;queueMicrotask(()=>{if(!inFlight&&queued)request();});}
+ const dynamicWorker=new Worker(new URL('./shadow-field-worker.ts',import.meta.url),{type:'module'});
+ let dynamicRevision=0,dynamicInFlight=false,dynamicQueued=false,dynamicScene:ShadowSurface[]=[];
+ const dynamicStats={updates:0,surfaces:0,buildMs:0,ready:false};
+ function updateDynamic(){if(dynamicInFlight||!dynamicScene.length){dynamicQueued=true;return;}dynamicInFlight=true;dynamicQueued=false;const sampled=dynamicScene.map((p,i)=>{const a=sampleSurface(p,1.5);for(const q of a.samples)q.owner=4000+i;return a;});
+  const packed=new Float32Array(sampled.reduce((n,s)=>n+s.samples.length,0)*6);let j=0;for(const s of sampled)for(const q of s.samples){packed[j++]=q.x;packed[j++]=q.y;packed[j++]=q.z;packed[j++]=q.alpha;packed[j++]=q.owner!;packed[j++]=s.surface.cast===false?0:1;}
+  dynamicWorker.postMessage({type:'scene',packed},[packed.buffer]);dynamicWorker.postMessage({type:'build',id:dynamicRevision,revision:dynamicRevision,sun});
+ }
+ dynamicWorker.onmessage=({data})=>{dynamicInFlight=false;if(data.error){stats.error=data.error;console.error('Dynamic scene shadow:',data.error);return;}
+  if(data.revision===dynamicRevision){for(const [name,map] of Object.entries({uDynamicDepth:data.depth,uDynamicSecond:data.second,uDynamicHeight:data.height}) as [keyof typeof dynamicMaps,PackedShadowMap][]){if(!map)continue;updateMapTexture(dynamicMaps[name],map);}
+   uniforms.uniforms.uDynamicSun=new Float32Array([data.sun.dx,data.sun.dy,data.sun.alpha,data.depth.bounds.step]);uniforms.uniforms.uDynamicLightBounds=region(data.depth.bounds);uniforms.uniforms.uDynamicHeightBounds=region(dynamicMaps.uDynamicHeight.bounds);Object.assign(dynamicStats,{ready:true,updates:dynamicStats.updates+1,surfaces:dynamicScene.length,buildMs:data.buildMs});onUpdate();}
+  if(dynamicQueued)updateDynamic();
+ };
+ dynamicWorker.onerror=e=>{stats.error=e.message;console.error('Dynamic scene shadow:',e.message);};
+ function setDynamic(surfaces:ShadowSurface[]){dynamicScene=surfaces;dynamicRevision++;dynamicQueued=true;if(!dynamicInFlight)updateDynamic();}
+ function place(x:number,y:number,scale:number,w:number,h:number){uniforms.uniforms.uCamera=new Float32Array([x,y,scale,0]);area.x=0;area.y=0;area.width=w;area.height=h;
+  const next={left:Math.floor(-x/scale/128)*128-192,top:Math.floor(-y/scale/128)*128-192,right:Math.ceil((w-x)/scale/128)*128+192,bottom:Math.ceil((h-y)/scale/128)*128+192,step:1.25},sig=JSON.stringify(next);if(sig!==viewKey){viewKey=sig;view=next;revision++;queued=true;queueMicrotask(()=>{if(!inFlight&&queued)request();});}
+ }
+ const actorBindings=()=>({uCamera:uniforms.uniforms.uCamera,uSun:uniforms.uniforms.uSun,uDynamicSun:uniforms.uniforms.uDynamicSun,uLightBounds:uniforms.uniforms.uLightBounds,uDynamicLightBounds:uniforms.uniforms.uDynamicLightBounds,textures:[depthTex!.source,secondTex!.source,dynamicMaps.uDynamicDepth.source,dynamicMaps.uDynamicSecond.source]});
+ const restoreActors=renderer?installActorShadowReceivers(renderer,actorBindings):()=>{};
+ return {setScene,setSun,setDynamic,place,runFixture:()=>import('./shadow-fixture').then(m=>m.runShadowReceiverFixture(renderer!)),destroy:()=>{restoreActors();worker.terminate();dynamicWorker.terminate();for(const t of [depthTex,heightTex,secondTex,...Object.values(dynamicMaps)])t?.texture.destroy(true);filter.destroy();},stats:()=>({...stats,dynamic:{...dynamicStats}}),sample:(x:number,y:number,z:number)=>({x,y,z}),filter};
+}
