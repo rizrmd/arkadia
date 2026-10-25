@@ -92,6 +92,12 @@ cp -R public/rift-runner/sprite-player "$STAGE/site/rift-runner/sprite-player"
 mkdir -p "$STAGE/site/run-cadence/verification"
 cp docs/run-cadence/*.json docs/run-cadence/*.webp "$STAGE/site/run-cadence/verification/"
 
+# Flame Fan player and its evidence travel with the matching gameplay/VFX release.
+node scripts/flame-fan/build.mjs
+mkdir -p "$STAGE/site/ember-warden-review/flame-fan-levels/evidence"
+cp -R dist-flame-fan/. "$STAGE/site/ember-warden-review/flame-fan-levels/"
+cp docs/flame-fan/*.png docs/flame-fan/*.json docs/flame-fan/*.md "$STAGE/site/ember-warden-review/flame-fan-levels/evidence/"
+
 # One versioned tarball, uploaded in parts and applied by the gateway at boot (the release also writes www/index.html).
 mkdir -p "$HOME/releases"
 # Concurrent sessions can release the same commit. Never let one tar writer replace a file

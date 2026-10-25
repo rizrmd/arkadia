@@ -8,8 +8,8 @@ import './flame-fan-player.css';
 
 const root=document.querySelector<HTMLElement>('#player')!;
 root.innerHTML=`<header><div><p class="eyebrow">ARKODIA / EMBER WARDEN</p><h1>Flame Fan <span>Animation Player</span></h1></div><span class="tag">LIVE NIXIEFX</span></header>
-<section id="viewport" aria-label="Flame Fan animation stage"><canvas id="ground"></canvas><canvas id="figures"></canvas><div class="stage-top"><span id="rank-name"></span><span id="phase" role="status">Loading</span></div><div class="stage-bottom"><span>CASTER</span><span>FIREBALL FAN → IMPACT</span></div></section>
-<section class="controls" aria-label="Playback controls"><div class="level-row"><label for="level">Skill level</label><select id="level" aria-label="Skill level">${[1,2,3,4,5].map(n=>`<option value="${n}">Lv. ${n}</option>`).join('')}</select><p id="description"></p></div><div class="transport"><button id="play" disabled>Pause</button><button id="replay" disabled>Replay</button><button id="loop" aria-pressed="true">Loop</button><label class="background">Backdrop <select id="background"><option value="night">Night</option><option value="day">Day</option></select></label><output id="elapsed">0.00 / 2.60 s</output></div><progress id="timeline" max="2.6" value="0" aria-label="Animation progress"></progress><p class="hint">Casting · Projectile travel · Impact <span>Cast scale follows rank · impact intensity is visual only</span></p></section>`;
+<section id="viewport" aria-label="Flame Fan animation stage"><canvas id="ground"></canvas><canvas id="figures"></canvas><div class="stage-top"><span id="rank-name"></span><span id="phase" role="status">Loading</span></div><div class="stage-bottom"><span>CASTER</span><span>FORWARD FLAME AREA</span></div></section>
+<section class="controls" aria-label="Playback controls"><div class="level-row"><label for="level">Skill level</label><select id="level" aria-label="Skill level">${[1,2,3,4,5].map(n=>`<option value="${n}">Lv. ${n}</option>`).join('')}</select><p id="description"></p></div><div class="transport"><button id="play" disabled>Pause</button><button id="replay" disabled>Replay</button><button id="loop" aria-pressed="true">Loop</button><label class="background">Backdrop <select id="background"><option value="night">Night</option><option value="day">Day</option></select></label><output id="elapsed">0.00 / 2.60 s</output></div><progress id="timeline" max="2.6" value="0" aria-label="Animation progress"></progress><p class="hint">Casting · Flame area · Dissipating <span>Every target in the fan is hit · No projectiles</span></p></section>`;
 const $=<T extends HTMLElement>(id:string)=>document.getElementById(id) as T;
 const viewEl=$('viewport'),ground=$<HTMLCanvasElement>('ground'),figures=$<HTMLCanvasElement>('figures');
 const playBtn=$<HTMLButtonElement>('play'),levelSelect=$<HTMLSelectElement>('level');
@@ -23,7 +23,7 @@ const point=(u:number,v:number)=>{const p=tilePoint(u,v);return {x:view.x+p.x*vi
 function sync(){
  const spec=flameFanLevel(level);levelSelect.value=String(level);
  $('rank-name').textContent=`LV. ${level} / ${spec.name}`;
- $('description').textContent=`${spec.offsets.length} fireballs · ${spec.damage.toFixed(2)}× skill damage · ${spec.cooldownMs} ms cooldown`;
+ $('description').textContent=`108° flame area · ${spec.radius.toFixed(2)} tile radius · ${spec.damage.toFixed(2)}× skill damage · ${spec.cooldownMs} ms cooldown`;
  playBtn.textContent=paused?'Play':'Pause';playBtn.setAttribute('aria-pressed',String(!paused));
  $('loop').setAttribute('aria-pressed',String(loop));
 }
@@ -42,7 +42,7 @@ function layout(){
   if(cv){cv.style.width=innerWidth+'px';cv.style.height=innerHeight+'px';}
  }
  // Fit the full 4.4 tile path and the largest ring on narrow screens.
- const scale=Math.min(1.5,(w-32)/800,(h-64)/280);
+ const scale=Math.min(1.5,(w-32)/1100,(h-64)/280);
  const focus=tilePoint(origin.u+Math.cos(yaw)*2.0,origin.v+Math.sin(yaw)*2.0);
  view={x:w/2-focus.x*scale,y:h*.64-focus.y*scale,scale};stage.place(view.x,view.y,view.scale);
  for(const cv of [ground,figures]){cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);}
@@ -56,7 +56,7 @@ function layout(){
 function drawFigures(){
  const f=figures.getContext('2d')!,dpr=Math.min(devicePixelRatio,2),time=animation?.time??0;
  f.setTransform(1,0,0,1,0,0);f.clearRect(0,0,figures.width,figures.height);f.setTransform(dpr,0,0,dpr,0,0);
- const actors=[{id:'ember-warden',...origin,hero:true},...flameFanLevel(level).offsets.map(off=>{const a=yawOfScreenAngle(off);return {id:'revenant',u:origin.u+Math.cos(a)*4.4,v:origin.v+Math.sin(a)*4.4,hero:false};})];
+ const actors=[{id:'ember-warden',...origin,hero:true},...[-.65,0,.65].map(off=>{const a=yaw+off;return {id:'revenant',u:origin.u+Math.cos(a)*2.6,v:origin.v+Math.sin(a)*2.6,hero:false};})];
  figures.dataset.targets=String(actors.filter(a=>!a.hero).length);
  for(const a of actors){
   const m=manifest[a.id],img=images.get(a.id);if(!m||!img)continue;

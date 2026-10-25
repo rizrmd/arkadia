@@ -15,10 +15,10 @@ import type {Progress} from '../app/loader';
 //   bg=night|day
 //   controls=simple|full (defaults to simple on /skill-player, full on /fx-lab)
 const HERO={u:20,v:20};
-const CHARGE:Partial<Record<SkillId,number>>={'rift-trap':640,'ember-snare':640,shockwave:460,cleave:320,'cinder-step':260,'rift-dash':260};
-const RADIUS:Partial<Record<SkillId,number>>={'rift-trap':1.45,'ember-snare':1.5,shockwave:1.65,cleave:1.55,'cinder-step':1.35,'rift-dash':1.35};
-const BOLTS:Partial<Record<SkillId,number[]>>={'flame-fan':[-.34,0,.34],'rift-bolt':[0]};
-const SELF_SKILLS=new Set<SkillId>(['shockwave','cleave','cinder-step','rift-dash']);
+const CHARGE:Partial<Record<SkillId,number>>={'flame-fan':420,'rift-trap':640,'ember-snare':640,shockwave:460,cleave:320,'cinder-step':260,'rift-dash':260};
+const RADIUS:Partial<Record<SkillId,number>>={'flame-fan':4.4,'rift-trap':1.45,'ember-snare':1.5,shockwave:1.65,cleave:1.55,'cinder-step':1.35,'rift-dash':1.35};
+const BOLTS:Partial<Record<SkillId,number[]>>={'rift-bolt':[0]};
+const SELF_SKILLS=new Set<SkillId>(['flame-fan','shockwave','cleave','cinder-step','rift-dash']);
 
 export const DIRS=['N','NE','E','SE','S','SW','W','NW'] as const;
 export type CompassDir=(typeof DIRS)[number];

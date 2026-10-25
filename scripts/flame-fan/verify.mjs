@@ -33,14 +33,14 @@ try{
   assert(await page.evaluate(()=>['world-fx-ground','world-fx-over'].every(id=>{const r=document.getElementById(id).getBoundingClientRect();return Math.abs(r.width-innerWidth)<1&&Math.abs(r.height-innerHeight)<1;})),'FX planes preserve CSS pixel alignment with figures');
   for(let level=1;level<=5;level++){
    await page.selectOption('#level',String(level));
-   for(const [time,phase] of [[.22,'Casting'],[.72,'Projectile travel'],[1.3,'Impact']]){
+   for(const [time,phase] of [[.22,'Casting'],[.72,'Flame area'],[1.3,'Dissipating']]){
     await page.evaluate(t=>window.__FLAME_FAN__.seek(t),time);
     const state=await page.evaluate(()=>window.__FLAME_FAN__.state());
-    assert.equal(state.level,level);assert.equal(state.phase,phase);assert.equal(state.spec.offsets.length,[3,4,5,5,5][level-1]);assert.equal(state.targetCount,[3,4,5,5,5][level-1],'Actual rendered target count');
-    if(phase==='Projectile travel')assert.equal(state.stats.playing.filter(k=>k.startsWith('ember-warden/flame-fan.bolt:')).length,[3,4,5,5,5][level-1],'Live projectile emitter count');
+    assert.equal(state.level,level);assert.equal(state.phase,phase);assert.equal(state.targetCount,3,'Actual rendered target count');
+    assert.equal(state.stats.playing.filter(k=>k.includes('flame-fan.bolt')).length,0,'No projectile emitter at any rank');
     assert.equal(state.spec.cooldownMs,[1400,1288,1185,1090,1003][level-1]);
     assert.equal(state.spec.damage,1+(level-1)*.25);
-    if(phase==='Impact')assert(state.stats.playing.some(k=>k.startsWith('ember-warden/flame-fan.impact.ground:')),'Impact ground layers');
+    if(phase==='Flame area')assert(state.stats.playing.some(k=>k.startsWith('ember-warden/flame-fan.area:')),'Continuous flame area');
     assert(state.stats.particles>0,`Particles at ${level} ${phase}`);assert.deepEqual(state.stats.missing,[]);
     if(viewport.width!==320)await page.screenshot({path:`${out}/${external?'live':'local'}-${viewport.width}-lv${level}-${phase.split(' ')[0].toLowerCase()}.png`});
    }
@@ -63,7 +63,7 @@ try{
   for(const selector of ['#level','#play','#replay','#loop']){
    const b=await page.locator(selector).boundingBox();assert(b&&b.height>=42&&b.x>=0&&b.x+b.width<=viewport.width,'Accessible controls '+selector);
   }
-  console.log('Verified',viewport.width);results.push({viewport,levels:[1,2,3,4,5],targetCounts:[3,4,5,5,5],damageMultipliers:[1,1.25,1.5,1.75,2],cooldownsMs:[1400,1288,1185,1090,1003],castScales:[1,1.18,1.36,1.54,1.72],visualOnlyImpactScales:[1,1.045,1.09,1.135,1.18],phases:['Casting','Projectile travel','Impact'],controls:'passed'});
+  console.log('Verified',viewport.width);results.push({viewport,levels:[1,2,3,4,5],targetCounts:[3,3,3,3,3],projectileCounts:[0,0,0,0,0],damageMultipliers:[1,1.25,1.5,1.75,2],cooldownsMs:[1400,1288,1185,1090,1003],areaScales:[1,1.18,1.36,1.54,1.72],phases:['Casting','Flame area','Dissipating'],controls:'passed'});
   await fs.writeFile(`${out}/verification-${external?'live':'local'}-${viewport.width}.json`,JSON.stringify({passed:true,url:external||'local',results:[results.at(-1)],pageErrors:errors,httpFailures:failures},null,2));
  }
  const embed=page;

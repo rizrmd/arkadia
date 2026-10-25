@@ -6,7 +6,7 @@ const E='ember-warden/';
 export default defineHeroFx({id:'ember-warden',extends:'shared',cues:{
  'attack.swing':[{effect:E+'attack.swing.ground'},{effect:E+'attack.swing'}],
  'flame-fan.cast':[{effect:E+'flame-fan.cast.ground',follow:true},{effect:E+'flame-fan.cast'}],
- 'flame-fan.bolt':[{effect:E+'flame-fan.bolt'}],
+ 'flame-fan.detonate':{baseRadius:4.4,layers:[{effect:E+'flame-fan.area',scale:'radius'}]},
  'flame-fan.impact':[{effect:E+'flame-fan.impact.ground'},{effect:E+'flame-fan.impact'}],
  'cinder-step.cast':[{effect:E+'cinder-step.cast.ground'},{effect:E+'cinder-step.cast'}],
  'cinder-step.detonate':{baseRadius:1.35,layers:[{effect:E+'cinder-step.detonate.ground',scale:'radius'},{effect:E+'cinder-step.detonate',scale:'radius'}]},

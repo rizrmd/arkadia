@@ -85,3 +85,16 @@ func spawnPoint(random func() float64, clear func(Vec) bool) (Vec, bool) {
 	}
 	return Vec{}, false
 }
+
+// Flame Fan uses a 108 degree ground sector, matching the client and effect recipe.
+func flameFanContains(origin, aim, target Vec, area float64) bool {
+	dx, dy := target.X-origin.X, target.Y-origin.Y
+	if hypot(dx, dy) > 4.4*area+.38 {
+		return false
+	}
+	if hypot(dx, dy) < 1e-4 {
+		return true
+	}
+	diff := math.Remainder(math.Atan2(dy, dx)-math.Atan2(aim.Y-origin.Y, aim.X-origin.X), 2*math.Pi)
+	return math.Abs(diff) <= math.Pi*.3
+}

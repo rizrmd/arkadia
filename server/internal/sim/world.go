@@ -602,20 +602,28 @@ func (w *World) autoCastInAoE(p *Player) {
 	for _, idx := range readyIndices {
 		skillID := p.Run.Slots[idx]
 		p.slotCD[idx] = p.Run.skillCooldownMs(skillID)
-		dmg := math.Max(1, math.Round(p.Run.damage()*p.Run.skillDamageMultiplier(skillID)*comboMult))
+		scale := 1.0
+		if skillID == "flame-fan" {
+			scale = .78
+		}
+		dmg := math.Max(1, math.Round(p.Run.damage()*p.Run.skillDamageMultiplier(skillID)*comboMult*scale))
 		splashR := 1.35 * p.Run.reach() * p.Run.skillAreaMultiplier(skillID)
 		hits := 0
 		for _, e := range w.Enemies {
 			if !e.F.Alive() || (e.Gen > 0 && e.Age < 250) {
 				continue
 			}
-			if e == target || hypot(e.F.Pos.X-target.F.Pos.X, e.F.Pos.Y-target.F.Pos.Y) <= splashR {
+			eligible := e == target || hypot(e.F.Pos.X-target.F.Pos.X, e.F.Pos.Y-target.F.Pos.Y) <= splashR
+			if skillID == "flame-fan" {
+				eligible = flameFanContains(p.F.Pos, target.F.Pos, e.F.Pos, p.Run.skillAreaMultiplier(skillID)) && w.flameFanVisible(p.F.Pos, e.F.Pos)
+			}
+			if eligible {
 				if e.F.Damage(dmg) {
 					p.Kills++
 					w.dropSoul(p, e.F.Pos, e.enemyLevel())
 				}
 				hits++
-				if hits >= cleave {
+				if skillID != "flame-fan" && hits >= cleave {
 					break
 				}
 			}
@@ -947,4 +955,17 @@ func (w *World) updateGate() {
 	case !near && w.Gate.Frame > 0:
 		w.Gate.Frame--
 	}
+}
+
+// Sample the same ground ray used by client wall clipping.
+func (w *World) flameFanVisible(a, b Vec) bool {
+	steps := int(math.Ceil(hypot(b.X-a.X, b.Y-a.Y) / .08))
+	for i := 1; i <= steps; i++ {
+		t := float64(i) / float64(steps)
+		p := TilePoint(a.X+(b.X-a.X)*t, a.Y+(b.Y-a.Y)*t)
+		if w.nav.Blocked(p.X, p.Y, w.Gate.Passable()) {
+			return false
+		}
+	}
+	return true
 }

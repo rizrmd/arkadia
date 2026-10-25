@@ -75,9 +75,9 @@ export const cards:Record<string,CardDef>={
  'flame-fan':{
   name:'Flame Fan',
   blessingTitle:'Flame Fan',
-  description:'Auto-cast a blazing fan of fireballs at foes inside AoE. Each Rank adds fireballs, +25% skill damage, and -8% cooldown.',
+  description:'Auto-cast a forward flame area that hits every foe in the fan from Lv.1. No projectiles. Each Rank adds +25% damage, +18% radius, and -8% cooldown.',
   unlockSummary:'Cone Fire Fan · 1.4s CD',
-  upgradeSummary:'+25% Cone DMG · -0.4s CD',
+  upgradeSummary:'+25% DMG · +18% radius · -8% CD',
   kind:'active',
   badge:'FAN',
   icon:'🔥',

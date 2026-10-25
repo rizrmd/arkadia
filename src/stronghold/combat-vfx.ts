@@ -331,8 +331,9 @@ export function createCombatVfx(o:{
    if(dist>a.radius+.38)continue;
    if(a.shape==='cone'&&dist>1e-4){
     const s=screenVec(du,dv),fa=Math.atan2(s.y,s.x);
-    let diff=fa-a.angle;while(diff>Math.PI)diff-=Math.PI*2;while(diff<-Math.PI)diff+=Math.PI*2;
-    if(Math.abs(diff)>a.spread*.55)continue;
+    const aim=tileVec(Math.cos(a.angle),Math.sin(a.angle));
+    let diff=a.skill==='flame-fan'?Math.atan2(dv,du)-yawOf(aim.u,aim.v):fa-a.angle;while(diff>Math.PI)diff-=Math.PI*2;while(diff<-Math.PI)diff+=Math.PI*2;
+    if(Math.abs(diff)>a.spread*(a.skill==='flame-fan'?.5:.55))continue;
    }
    if(clampTargetToWall(a.u,a.v,f.x,f.y).hit)continue;
    applyHitToFoe(f,{scale:a.damageScale,forceCrit:a.forceCrit,sparkKind,angle:a.angle});
@@ -385,19 +386,9 @@ export function createCombatVfx(o:{
    }
    case 'flame-fan':{
     spawnSlash(h.u,h.v,angle,false,true);
-    const offsets=rank>=3?[-0.44,-0.22,0,0.22,0.44]:rank===2?[-0.36,-0.12,0.12,0.36]:[-0.34,0,0.34];
-    for(const offset of offsets){
-     spawnProjectile({
-      kind:'flame-bolt',skill:'flame-fan',
-      u:h.u+dir.u*.22,
-      v:h.v+dir.v*.22,
-      angle:angle+offset,
-      speed:6.4,
-      range:4.4,
-      damageScale:.78*dmgMult,
-      forceCrit:opts.forceCrit
-     });
-    }
+    spawnAoE({kind:'flame-cone',skill:id,shape:'cone',u:h.u,v:h.v,angle,
+     radius:4.4*areaMult,spread:Math.PI*.6,duration:420,
+     damageScale:.78*dmgMult,forceCrit:opts.forceCrit});
     return true;
    }
    case 'rift-dash':
