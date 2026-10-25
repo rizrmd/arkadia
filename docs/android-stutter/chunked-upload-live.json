@@ -1,0 +1,759 @@
+{
+  "checkedAt": "2026-10-25T23:01:24.769Z",
+  "result": {
+    "build": "https://ark-whachat.fural.space/assets/index-CWCjU2kk.js",
+    "shadows": {
+      "surfaces": 447,
+      "samples": 44864,
+      "rebuilds": 2,
+      "buildMs": 678.0999999046326,
+      "bytes": 8470736,
+      "receiverPixels": 595960,
+      "depthPixels": 760862,
+      "ready": true,
+      "error": "",
+      "sun": {
+        "dx": 0.3333333333333335,
+        "dy": 0.2886751345948129,
+        "alpha": 0.4
+      },
+      "model": "original alpha, explicit billboard/relief geometry; light-space depth compare",
+      "uploadMs": 13056.5,
+      "dynamic": {
+        "updates": 25,
+        "actors": 2,
+        "extraSurfaces": 1,
+        "drawnVertices": 67,
+        "pixels": 470016,
+        "bytes": 13860864,
+        "renderMs": 6,
+        "ready": true,
+        "casterPasses": 3,
+        "fieldSamplers": 4,
+        "opaqueEnvelope": true,
+        "step": 0.5
+      }
+    },
+    "sources": [
+      {
+        "name": "uDepth",
+        "label": "scene-shadow-uDepth",
+        "method": "shadow-rows",
+        "width": 683,
+        "height": 1114
+      },
+      {
+        "name": "uSecondDepth",
+        "label": "scene-shadow-uSecondDepth",
+        "method": "shadow-rows",
+        "width": 683,
+        "height": 1114
+      },
+      {
+        "name": "uHeight",
+        "label": "scene-shadow-uHeight",
+        "method": "shadow-rows",
+        "width": 634,
+        "height": 940
+      }
+    ],
+    "transfers": [
+      {
+        "name": "texImage2D",
+        "label": "scene-shadow-uDepth",
+        "bytes": 0
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uDepth",
+        "bytes": 27320
+      },
+      {
+        "name": "texImage2D",
+        "label": "scene-shadow-uSecondDepth",
+        "bytes": 0
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uSecondDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uSecondDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uSecondDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uSecondDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uSecondDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uSecondDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uSecondDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uSecondDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uSecondDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uSecondDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uSecondDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uSecondDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uSecondDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uSecondDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uSecondDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uSecondDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uSecondDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uSecondDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uSecondDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uSecondDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uSecondDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uSecondDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uSecondDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uSecondDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uSecondDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uSecondDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uSecondDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uSecondDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uSecondDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uSecondDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uSecondDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uSecondDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uSecondDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uSecondDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uSecondDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uSecondDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uSecondDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uSecondDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uSecondDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uSecondDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uSecondDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uSecondDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uSecondDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uSecondDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uSecondDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uSecondDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uSecondDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uSecondDepth",
+        "bytes": 62836
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uSecondDepth",
+        "bytes": 27320
+      },
+      {
+        "name": "texImage2D",
+        "label": "scene-shadow-uHeight",
+        "bytes": 0
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uHeight",
+        "bytes": 63400
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uHeight",
+        "bytes": 63400
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uHeight",
+        "bytes": 63400
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uHeight",
+        "bytes": 63400
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uHeight",
+        "bytes": 63400
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uHeight",
+        "bytes": 63400
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uHeight",
+        "bytes": 63400
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uHeight",
+        "bytes": 63400
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uHeight",
+        "bytes": 63400
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uHeight",
+        "bytes": 63400
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uHeight",
+        "bytes": 63400
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uHeight",
+        "bytes": 63400
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uHeight",
+        "bytes": 63400
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uHeight",
+        "bytes": 63400
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uHeight",
+        "bytes": 63400
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uHeight",
+        "bytes": 63400
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uHeight",
+        "bytes": 63400
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uHeight",
+        "bytes": 63400
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uHeight",
+        "bytes": 63400
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uHeight",
+        "bytes": 63400
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uHeight",
+        "bytes": 63400
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uHeight",
+        "bytes": 63400
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uHeight",
+        "bytes": 63400
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uHeight",
+        "bytes": 63400
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uHeight",
+        "bytes": 63400
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uHeight",
+        "bytes": 63400
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uHeight",
+        "bytes": 63400
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uHeight",
+        "bytes": 63400
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uHeight",
+        "bytes": 63400
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uHeight",
+        "bytes": 63400
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uHeight",
+        "bytes": 63400
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uHeight",
+        "bytes": 63400
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uHeight",
+        "bytes": 63400
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uHeight",
+        "bytes": 63400
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uHeight",
+        "bytes": 63400
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uHeight",
+        "bytes": 63400
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uHeight",
+        "bytes": 63400
+      },
+      {
+        "name": "texSubImage2D",
+        "label": "scene-shadow-uHeight",
+        "bytes": 38040
+      }
+    ]
+  },
+  "errors": []
+}
