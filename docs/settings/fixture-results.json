@@ -1,0 +1,84 @@
+{
+  "base": "http://127.0.0.1:5587",
+  "views": {
+    "desktop": {
+      "viewport": [
+        1440,
+        900
+      ],
+      "saved": {
+        "quality": "low",
+        "frameRate": 30,
+        "music": 23,
+        "soundEffects": 41,
+        "screenShake": false,
+        "showFps": false
+      },
+      "audio": {
+        "state": "running",
+        "music": 0.004487514961510897,
+        "soundEffects": 0.018489593639969826
+      },
+      "confirmation": "Cancel, Escape, backdrop preserve; second confirmation resets allowlist",
+      "bounds": {
+        "x": 450,
+        "y": 134,
+        "width": 540,
+        "height": 632
+      }
+    },
+    "mobile": {
+      "viewport": [
+        390,
+        844
+      ],
+      "saved": {
+        "quality": "low",
+        "frameRate": 30,
+        "music": 23,
+        "soundEffects": 41,
+        "screenShake": false,
+        "showFps": false
+      },
+      "audio": {
+        "state": "running",
+        "music": 0.004863610956817865,
+        "soundEffects": 0.018475620076060295
+      },
+      "confirmation": "Cancel, Escape, backdrop preserve; second confirmation resets allowlist",
+      "bounds": {
+        "x": 12,
+        "y": 124,
+        "width": 366,
+        "height": 596
+      }
+    },
+    "landscape": {
+      "viewport": [
+        844,
+        390
+      ],
+      "saved": {
+        "quality": "low",
+        "frameRate": 30,
+        "music": 23,
+        "soundEffects": 41,
+        "screenShake": false,
+        "showFps": false
+      },
+      "audio": {
+        "state": "running",
+        "music": 0.004139999859035015,
+        "soundEffects": 0.018449999392032623
+      },
+      "confirmation": "Cancel, Escape, backdrop preserve; second confirmation resets allowlist",
+      "bounds": {
+        "x": 237,
+        "y": 12,
+        "width": 370,
+        "height": 366
+      }
+    }
+  },
+  "errors": []
+}

@@ -8,14 +8,19 @@ export const QUALITY_PROFILES:Record<QualityTier,RenderQuality>={
  high:{tier:'high',targetFps:60,resolution:2,heroScale:2,idleFps:60,simpleShadow:false,particleLimit:1400},
 };
 export function createQualityController(hints:{mobile:boolean;memory?:number;cores?:number},override:string|null=null){
- const pinned=override==='low'||override==='balanced'||override==='high';
- let tier:QualityTier=pinned?override:hints.mobile?((hints.memory!==undefined&&hints.memory<=4)||(hints.cores!==undefined&&hints.cores<=4)?'low':'balanced'):'high';
+ let pinned=override==='low'||override==='balanced'||override==='high';
+ let tier:QualityTier=pinned?override as QualityTier:hints.mobile?((hints.memory!==undefined&&hints.memory<=4)||(hints.cores!==undefined&&hints.cores<=4)?'low':'balanced'):'high';
  let reason=pinned?'explicit':hints.mobile?'device-hint':'default',since=0,last=0,count=0,slow=0;
  const listeners=new Set<(q:RenderQuality)=>void>();
- const get=()=>QUALITY_PROFILES[tier];
+ let frameRate:30|60|undefined;
+ const get=()=>frameRate?{...QUALITY_PROFILES[tier],targetFps:frameRate}:QUALITY_PROFILES[tier];
  function reset(){since=last=count=slow=0;}
  return {
-  get,snapshot:()=>({...get(),reason,pinned}),reset,
+  get,configure(quality:'auto'|'low'|'high',fps:30|60){
+   pinned=quality!=='auto';frameRate=fps;
+   tier=pinned?quality as QualityTier:hints.mobile?((hints.memory!==undefined&&hints.memory<=4)||(hints.cores!==undefined&&hints.cores<=4)?'low':'balanced'):'high';
+   reason=pinned?'settings':'device-hint';reset();for(const fn of listeners)fn(get());
+  },snapshot:()=>({...get(),reason,pinned}),reset,
   subscribe(fn:(q:RenderQuality)=>void){listeners.add(fn);return ()=>listeners.delete(fn);},
   noteFrame(now:number,dt:number,browserCapped=false){
    if(pinned||tier==='low'||browserCapped){reset();return;}
@@ -32,3 +37,4 @@ export function createQualityController(hints:{mobile:boolean;memory?:number;cor
 const nav=typeof navigator==='undefined'?undefined:navigator;
 export const renderQuality=createQualityController({mobile:Boolean(nav&&(/Android|iPhone|iPad|iPod/i.test(nav.userAgent)||nav.platform==='MacIntel'&&nav.maxTouchPoints>1)),memory:(nav as Navigator&{deviceMemory?:number}|undefined)?.deviceMemory,cores:nav?.hardwareConcurrency},typeof location==='undefined'?null:new URLSearchParams(location.search).get('quality'));
 if(typeof document!=='undefined')document.addEventListener('visibilitychange',()=>renderQuality.reset());
+
