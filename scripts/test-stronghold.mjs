@@ -1,5 +1,5 @@
 import {strict as a} from 'node:assert';
-import {fresh,settle,claim,upgrade,action,load,rewardRun,BALANCE} from '../src/stronghold/economy.ts';
+import {fresh,settle,claim,upgrade,action,load,rewardRun,BALANCE} from './economy-test-module.mjs';
 const hour=3600000;let tests=0;const test=(name,fn)=>{fn();tests++;console.log('PASS',name);};
 test('offline cap, overflow loss and claim idempotency',()=>{const s=fresh(0);settle(s,48*hour);a.equal(s.storedGold,1200);a.equal(s.storedMana,120);const before=s.gold;claim(s);a.equal(s.gold,before+1200);claim(s);a.equal(s.gold,before+1200);settle(s,48*hour);a.equal(s.storedGold,0);settle(s,49*hour);a.equal(s.storedGold,120);});
 test('clock rollback cannot duplicate production',()=>{const s=fresh(hour);settle(s,0);a.equal(s.at,hour);settle(s,hour);a.equal(s.storedGold,0);});
