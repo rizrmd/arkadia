@@ -1,3 +1,4 @@
+import {requestGameFrame as requestAnimationFrame,cancelGameFrame as cancelAnimationFrame} from '../app/frame-scheduler';
 import {CanvasSource,Container,Sprite,Texture} from 'pixi.js';
 import {loadImage} from '../app/loader';
 import {Generator} from '../expedition/world';

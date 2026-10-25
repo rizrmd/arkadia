@@ -1,3 +1,4 @@
+import {requestGameFrame as requestAnimationFrame} from '../app/frame-scheduler';
 import {Container,Sprite,Texture} from 'pixi.js';
 import {Minimap} from './minimap';
 import {createCanvasSprite} from '../app/loader';

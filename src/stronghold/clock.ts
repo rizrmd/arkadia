@@ -1,3 +1,4 @@
+import {requestGameFrame as requestAnimationFrame,cancelGameFrame as cancelAnimationFrame} from '../app/frame-scheduler';
 import {Container,Rectangle} from 'pixi.js';
 import type {FrameSet} from '../typography/frames';
 import type {Hud} from '../typography/hud';

@@ -1,3 +1,4 @@
+import {requestGameFrame as requestAnimationFrame} from '../app/frame-scheduler';
 import {Container, type TilingSprite} from 'pixi.js';
 import {createCanvasSprite} from '../app/loader';
 import {TORCHES,torchesOn,drawTorches,createTorchFlames,torchAssetsReady} from './torches';

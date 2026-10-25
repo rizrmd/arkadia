@@ -1,3 +1,4 @@
+import {MAX_FPS} from './frame-scheduler';
 import {Application,BitmapTextPipe,CanvasSource,Container,extensions,GraphicsPipe,NineSliceSpritePipe,Sprite,Texture,TilingSpritePipe} from 'pixi.js';
 import {FrameSet,pickFrameScale} from '../typography/frames';
 import {installMsdfFx,loadFonts} from '../typography/msdf';
@@ -83,6 +84,7 @@ export function ensurePixiRuntime(host?:HTMLElement):Promise<SharedPixiRuntime>{
    resolution:Math.min(window.devicePixelRatio||1,2),
    gcActive:false,
   });
+  app.ticker.maxFPS=MAX_FPS;
   app.canvas.id='world-canvas';
   const mountTarget=host??document.querySelector<HTMLElement>('#app')??document.body;
   if(app.canvas.parentElement!==mountTarget){

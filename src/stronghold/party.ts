@@ -1,3 +1,4 @@
+import {requestGameFrame as requestAnimationFrame} from '../app/frame-scheduler';
 import {Container} from 'pixi.js';
 import type {FrameSet} from '../typography/frames';
 import {MsdfText} from '../typography/text';

@@ -1,3 +1,4 @@
+import {requestGameFrame as requestAnimationFrame} from '../app/frame-scheduler';
 import type {SharedPixiRuntime} from '../app/loader';
 import type {Net} from './net/client';
 import {batteryState,frameCapHz,noteFrame,resetFrameCap} from './frame-cap';

@@ -1,3 +1,4 @@
+import {requestGameFrame as requestAnimationFrame} from '../app/frame-scheduler';
 import type {Container} from 'pixi.js';
 import {walkableGround,gatePassageColumn,gateTowerFront} from './navigation';
 import type {Sun} from './daylight';

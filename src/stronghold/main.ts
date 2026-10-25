@@ -1,3 +1,4 @@
+import {requestGameFrame as requestAnimationFrame} from '../app/frame-scheduler';
 import {createWorldView} from './world-view';
 import {KEY,load,heroBonus,type Building} from './economy';
 import {transact} from './store';

@@ -1,3 +1,4 @@
+import {requestGameFrame as requestAnimationFrame} from '../../app/frame-scheduler';
 import {PROTOCOL,TICK_MS,type EnemyState,type Hello,type HeroPick,type Input,type PlayerState,type ServerMessage,type Snapshot,type Welcome} from './protocol';
 import {FRONTIER_COLUMNS} from '../../world/frontier';
 import {walkStep,navBlocker,atGate,gatePassable,gateTick,type Column,type GateGuess} from './movement';

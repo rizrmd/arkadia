@@ -1,3 +1,4 @@
+import {requestGameFrame as requestAnimationFrame,cancelGameFrame as cancelAnimationFrame} from '../app/frame-scheduler';
 import {CanvasSource,Texture,TilingSprite} from 'pixi.js';
 import {FOUNDATION_SOIL,FOUNDATION_MOSS,FOUNDATION_DRIFT,drawFoundation,foundationLayers} from './foundations';
 import {environmentSprites,COURT,tilePoint,LEGACY_LAYOUT} from './terrain';

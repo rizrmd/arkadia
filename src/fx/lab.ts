@@ -1,3 +1,4 @@
+import {requestGameFrame as requestAnimationFrame} from '../app/frame-scheduler';
 import {createFxStage,playCue,cueKeys,yawOfScreenAngle,UNIT_PX,type FxHandle} from './index';
 import {tilePoint} from '../stronghold/terrain';
 import {HERO_SKILLS,SKILL_CATALOG,type SkillId} from '../stronghold/combat-vfx';
