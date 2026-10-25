@@ -84,81 +84,9 @@
    "drag": {
     "scroll": 0,
     "maxScroll": 308.1
-   },
-   "pass": true
-  },
-  "desktop": {
-   "viewport": [
-    1440,
-    900
-   ],
-   "shots": [
-    "live-desktop-fresh-run.webp",
-    "live-desktop-click-skill-2.webp",
-    "live-desktop-equip-rift-trap.webp",
-    "live-desktop-scrolled-capstone.webp"
-   ],
-   "fresh": {
-    "learned": [
-     "Rift Bolt"
-    ],
-    "hint": "Tap a skill slot on the HUD to change its skill"
-   },
-   "run": {
-    "level": 8,
-    "xp": 0,
-    "gold": 0,
-    "pending": 0,
-    "offers": [],
-    "skills": {
-     "rift-bolt": 3,
-     "rift-dash": 1,
-     "cleave": 1,
-     "rift-trap": 1,
-     "heal": 1,
-     "might": 1
-    },
-    "stars": 0,
-    "slots": [
-     "rift-bolt",
-     "rift-dash",
-     "cleave"
-    ],
-    "autoCasts": 0,
-    "trinityCasts": 0,
-    "lastCast": []
-   },
-   "layout": {
-    "panel": {
-     "x": 20,
-     "y": 148,
-     "width": 1109,
-     "height": 732
-    },
-    "skillLeft": 1145.4545454545453,
-    "u": 101.2,
-    "maxScroll": 415
-   },
-   "equipTrap": {
-    "slots": [
-     "rift-bolt",
-     "rift-trap",
-     "cleave"
-    ],
-    "hud": [
-     "Rift Bolt",
-     "Rift Trap",
-     "Astral Cleave"
-    ],
-    "hint": "Rift Trap equipped to Skill 2"
-   },
-   "wheel": {
-    "scroll": 415,
-    "maxScroll": 415
-   },
-   "pass": true
+   }
   }
  },
  "errors": [],
- "pass": true
+ "failure": "AssertionError [ERR_ASSERTION]: X closes\n\ntrue !== false\n\n    at file:///home/dev/projects/arkadia/repos/arkadia/scripts/skill-tree/verify.mjs:89:65"
 }

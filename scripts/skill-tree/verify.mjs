@@ -25,7 +25,9 @@ const hudNames=page=>page.evaluate(()=>window.__STRONGHOLD_COMBAT__.hud.getSkill
 const cooldowns=page=>page.evaluate(()=>window.__STRONGHOLD_COMBAT__.snapshot().loadout.slots.map(s=>s.cooldownMs));
 const settle=(page,ms=1800)=>page.waitForTimeout(ms);
 const node=(t,id)=>t.nodes.find(n=>n.id===id);
-async function shot(page,name){if(remote)name=`live-${name}`;const png=`${OUT}/${name}.png`;await page.screenshot({path:png});await sharp(png).webp({quality:84}).toFile(png.replace(/\.png$/,'.webp'));await fs.rm(png);return `${name}.webp`;}
+async function shot(page,name){if(remote)name=`live-${name}`;const png=`${OUT}/${name}.png`;await page.screenshot({path:png,timeout:120000});await sharp(png).webp({quality:84}).toFile(png.replace(/\.png$/,'.webp'));await fs.rm(png);return `${name}.webp`;}
+// Nothing on the page (DOM HUD buttons included) may sit over the tree's close button.
+const closeClear=(page,t)=>page.evaluate(([x,y])=>document.elementFromPoint(x,y)?.id==='world-canvas',[t.close.x,t.close.y]);
 function checkOpen(t,id,slot,label){
  assert.equal(t.open,true,`${label}: tree open`);assert.equal(t.highlighted,id,`${label}: ${id} highlighted`);assert.equal(t.slot,slot,`${label}: slot mode`);
  const n=node(t,id);assert(n.inView,`${label}: ${id} scrolled into view`);return n;
@@ -85,6 +87,7 @@ try{
    // Tap Skill 1: back at the root with Rift Bolt highlighted; X closes.
    await tap(s[0].x,s[0].y);await settle(page,2500);
    t=await tree(page);checkOpen(t,'rift-bolt',0,'tap Skill 1');await noCast(page,'tap Skill 1');
+   assert(await closeClear(page,t),'mobile: X is not covered');
    r.shots.push(await shot(page,'mobile-tap-skill-1'));
    await tap(t.close.x,t.close.y);await settle(page,900);assert.equal((await tree(page)).open,false,'X closes');
    r.pass=true;
@@ -120,6 +123,7 @@ try{
    for(let k=0;k<8;k++){await page.mouse.wheel(0,240);await page.waitForTimeout(120);}
    await settle(page,2000);t=await tree(page);r.wheel={scroll:t.scroll,maxScroll:t.maxScroll};
    assert(node(t,'ascendant-star').inView,'wheel reaches Ascendant Star');
+   assert(await closeClear(page,t),'desktop: X is not covered');
    r.shots.push(await shot(page,'desktop-scrolled-capstone'));
    await page.mouse.click(t.close.x,t.close.y);await settle(page,900);assert.equal((await tree(page)).open,false,'X closes');
    r.pass=true;

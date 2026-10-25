@@ -22,3 +22,9 @@
 .settings-volume input::-moz-range-track{height:5px;border-radius:5px;background:#303337}
 .settings-volume input::-moz-range-progress{height:5px;border-radius:5px;background:#2ed7e9}
 .settings-volume input::-moz-range-thumb{width:18px;height:18px;border:1px solid #f4d789;border-radius:50%;background:linear-gradient(#ffe69e,#bd8a22)}
+
+/* Generated bitmap icons retain the existing button and form hit targets. */
+.settings-icon{display:block;object-fit:contain;pointer-events:none;user-select:none;flex:none}
+.settings-gear{display:grid;place-items:center}
+.settings-icon-gear{width:28px;height:28px}
+.settings-icon-audio{width:20px;height:20px}

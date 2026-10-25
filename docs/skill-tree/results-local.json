@@ -1,5 +1,5 @@
 {
- "base": "http://127.0.0.1:5353",
+ "base": "http://127.0.0.1:5270",
  "views": {
   "mobile": {
    "viewport": [
@@ -39,13 +39,13 @@
    "layout": {
     "panel": {
      "x": 9,
-     "y": 139,
+     "y": 196,
      "width": 372,
-     "height": 504
+     "height": 447
     },
     "skillTop": 654.5500000000001,
     "u": 64.6,
-    "maxScroll": 308.1
+    "maxScroll": 365.1
    },
    "opened": {
     "hint": "Skill 2: tap a learned skill to equip it",
@@ -83,7 +83,7 @@
    },
    "drag": {
     "scroll": 0,
-    "maxScroll": 308.1
+    "maxScroll": 365.1
    },
    "pass": true
   },

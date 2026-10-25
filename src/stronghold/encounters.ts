@@ -155,13 +155,15 @@ export async function createEncounters(o:{
   const mapBottom=mm.visible?map.y+map.height:0,mapLeft=mm.visible?map.x:W;
   const sockets=hud.getSkillSocketScreenGeometry().sockets;
   const skillTop=Math.min(H,...sockets.map(s=>s.y-s.radius)),skillLeft=Math.min(W,...sockets.map(s=>s.x-s.radius));
+  // The Settings gear and Inventory bag are DOM buttons pinned under the minimap; they count as HUD too.
+  const dom=[...document.querySelectorAll<HTMLElement>('.settings-gear,.inventory-bag')].map(e=>e.getBoundingClientRect()).filter(r=>r.width>0&&r.height>0);
   if(portrait){
-   // Under the portrait, bars and minimap; above the skill arc. A short screen lets the panel cover the arc instead.
-   const top=Math.round(Math.max(tl.bottom,tr.bottom,mapBottom)+10),bottom=Math.round(skillTop-12);
+   // Under the portrait, bars, minimap and buttons; above the skill arc. A short screen lets the panel cover the arc instead.
+   const top=Math.round(Math.max(tl.bottom,tr.bottom,mapBottom,...dom.map(r=>r.bottom))+10),bottom=Math.round(skillTop-12);
    return {vertical:true,rect:{x:m,y:top,width:W-m*2,height:bottom-top>=360?bottom-top:H-top-m}};
   }
-  // Landscape: under the top-left HUD, left of the minimap and the skill arc; small screens get the whole screen.
-  const top=Math.round(tl.bottom+10),right=Math.round(Math.min(skillLeft,mapLeft)-16);
+  // Landscape: under the top-left HUD, left of the minimap, its buttons and the skill arc; small screens get the whole screen.
+  const top=Math.round(tl.bottom+10),right=Math.round(Math.min(skillLeft,mapLeft,...dom.filter(r=>r.bottom>top).map(r=>r.left))-16);
   if(right-m>=520&&H-top-m>=320)return {vertical:false,rect:{x:m,y:top,width:right-m,height:H-top-m}};
   return {vertical:false,rect:{x:m,y:m,width:W-m*2,height:H-m*2}};
  }
