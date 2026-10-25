@@ -1,9 +1,9 @@
 ## Rift Bolt level animation player
 
-Live: https://ark-whachat.fural.space/rift-bolt-levels/
+Live: https://ark-whachat.fural.space/rift-runner/rift-bolt-levels/
 
 ```html
-<iframe src="https://ark-whachat.fural.space/rift-bolt-levels/" title="Rift Bolt Level 1–5 Animation Player" height="560"></iframe>
+<iframe src="https://ark-whachat.fural.space/rift-runner/rift-bolt-levels/" title="Rift Bolt Level 1–5 Animation Player" height="560"></iframe>
 ```
 
 The responsive English player provides levels 1–5, Play/Pause, Replay, Loop, a progress bar and day/night backdrops. Query parameters: `level=1..5`, `loop=0|1`, `autoplay=0|1`. The sequence is 2.6 seconds: casting wind-up to 0.42 s, travel for 5.2 / 7.5 seconds, then impact and dissipating particles. The longer review timeline separates phases; it is not a combat cooldown change.
@@ -32,8 +32,8 @@ Run from repository root with dependencies installed:
 
 - `node scripts/rift-bolt/build.mjs` — TypeScript check and standalone Vite bundle.
 - `node scripts/rift-bolt/verify.mjs` — temporary foreground test server and Chromium; it closes both before exiting.
-- `node scripts/rift-bolt/deploy.mjs` — supported durable Arkodia gateway review layer at `/rift-bolt-levels/`, preserving current gameplay and peer releases.
-- `VERIFY_URL=https://ark-whachat.fural.space/rift-bolt-levels/ node scripts/rift-bolt/verify.mjs` — repeat against production, including cross-origin iframe loading.
+- `node scripts/rift-bolt/deploy.mjs` — supported durable Arkodia gateway review layer at `/rift-runner/rift-bolt-levels/`, preserving current gameplay and peer releases.
+- `VERIFY_URL=https://ark-whachat.fural.space/rift-runner/rift-bolt-levels/ node scripts/rift-bolt/verify.mjs` — repeat against production, including cross-origin iframe loading.
 
 The page depends on the existing Arkodia game asset paths on the same origin. Deployment uses the repository's supported layer publisher and custom sandbox boot process, never a background member server. Keep this prefix when publishing a new game release.
 

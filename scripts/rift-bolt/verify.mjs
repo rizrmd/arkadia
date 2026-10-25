@@ -10,10 +10,10 @@ const server=http.createServer(async(req,res)=>{
  try{
   const u=new URL(req.url,'http://localhost');
   if(u.pathname==='/embed-test'){
-   res.setHeader('Content-Type','text/html');res.end(`<iframe src="${external||'http://127.0.0.1:3938/rift-bolt-levels/'}" title="Rift Bolt Level 1–5 Animation Player" height="560" style="width:100%;border:0"></iframe>`);return;
+   res.setHeader('Content-Type','text/html');res.end(`<iframe src="${external||'http://127.0.0.1:3938/rift-runner/rift-bolt-levels/'}" title="Rift Bolt Level 1–5 Animation Player" height="560" style="width:100%;border:0"></iframe>`);return;
   }
-  const rel=decodeURIComponent(u.pathname).replace(/^\/rift-bolt-levels\//,'');
-  const base=u.pathname.startsWith('/rift-bolt-levels/')?'dist-rift-bolt':'public';
+  const rel=decodeURIComponent(u.pathname).replace(/^\/rift-runner\/rift-bolt-levels\//,'');
+  const base=u.pathname.startsWith('/rift-runner/rift-bolt-levels/')?'dist-rift-bolt':'public';
   const file=path.resolve(base,rel==='/'||rel===''?'index.html':rel.replace(/^\//,''));
   if(!file.startsWith(path.resolve(base)+path.sep))throw Error('invalid path');
   const bytes=await fs.readFile(file);res.setHeader('Content-Type',mime[path.extname(file)]||'application/octet-stream');res.end(bytes);
@@ -27,7 +27,7 @@ page.on('response',r=>{if(r.status()>=400)failures.push([r.status(),r.url()]);})
 try{
  for(const viewport of [{width:1440,height:900},{width:390,height:844},{width:320,height:560}]){
   await page.setViewportSize(viewport);
-  await page.goto(external||'http://127.0.0.1:3938/rift-bolt-levels/');
+  await page.goto(external||'http://127.0.0.1:3938/rift-runner/rift-bolt-levels/');
   await page.waitForFunction(()=>window.__RIFT_BOLT__,null,{timeout:60000});
   assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'No horizontal overflow');
   for(let level=1;level<=5;level++){
