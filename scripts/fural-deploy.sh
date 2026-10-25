@@ -71,6 +71,7 @@ mkdir -p "$STAGE/site/stick-pan"; cp docs/stick-pan/*.webp docs/stick-pan/*.json
 mkdir -p "$STAGE/site/world-map"; cp docs/world-map/*.webp docs/world-map/*.json "$STAGE/site/world-map/"
 mkdir -p "$STAGE/site/hud-telemetry-desktop"; cp docs/hud-telemetry-desktop/*.png "$STAGE/site/hud-telemetry-desktop/"
 mkdir -p "$STAGE/site/skill-tree"; cp docs/skill-tree/*.webp docs/skill-tree/*.png docs/skill-tree/*.json "$STAGE/site/skill-tree/"
+mkdir -p "$STAGE/site/ember-warden-review/tree-implementation"; cp docs/ember-tree/*.webp docs/ember-tree/*.png docs/ember-tree/*.json "$STAGE/site/ember-warden-review/tree-implementation/"
 echo "Staged $(wc -l < "$list") files, $(du -sh "$STAGE" | cut -f1) in $STAGE"
 
 # Run review, 3D Hero Lab, and both Sprite Player URLs ship with the same character atlas release.

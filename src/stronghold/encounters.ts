@@ -128,7 +128,7 @@ export async function createEncounters(o:{
   {},
   {
    ...o.hudCallbacks,
-   // Skills only auto-cast: a tap on a slot opens the skill tree to choose the skill equipped there.
+   // Rift uses tap-to-equip; Ember retains tap casting and inspects by hold/right-click.
    onSkillClick:(idx)=>{
     if(currentHeroId()==='rift-runner'){openSkillTree(idx);return;}
     const sid=run.slots[idx] as SkillId|undefined;
@@ -326,7 +326,7 @@ export async function createEncounters(o:{
    select(run.offers[idx]);
    return;
   }
-  // No manual casting: 1/2/3 open the skill tree on that slot, like a tap on it.
+  // Match each hero's HUD tap behavior for 1/2/3.
   if(!run.pending){if(currentHeroId()==='rift-runner')openSkillTree(idx);else{const sid=run.slots[idx] as SkillId|undefined;if(sid)vfx.castSkill(sid);}}
  });
 
