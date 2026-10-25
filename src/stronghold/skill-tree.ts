@@ -85,6 +85,12 @@ export class SkillTree{
  private get rootId():TreeNodeId{return this.ember?'flame-fan':'rift-bolt';}
  private iconTexture(name:string){return (this.ember?this.emberFrames:this.frames)!.texture(name);}
  private loading?:Promise<FrameSet>;
+ private request=0;
+ private loadState:'idle'|'loading'|'error'='idle';
+ private statusPanel=new Container();
+ private statusBackground=new Graphics();
+ private statusText=new MsdfText(HINT_ROLE,'Loading skills…');
+ private statusClose=new MsdfText(HINT_ROLE,'Close');
  private frameArt?:Container;
  // Painted backdrop under the frame rails: charcoal stone (semi-transparent, the world shows faintly through), edge
  // vignette and faint gold astrolabes in the corners.
@@ -123,7 +129,11 @@ export class SkillTree{
   this.content.addChild(this.lines,this.nodesLayer);this.content.mask=this.clip;
   this.viewport.addChild(this.clip,this.content);
   this.panel.addChild(this.backdrop,this.ornaments,this.viewport,this.title);
-  uiStage.addChild(this.shade,this.panel);
+  this.statusPanel.zIndex=44.5;this.statusPanel.visible=false;this.statusPanel.eventMode='static';this.statusPanel.label='skill-tree-loading';
+  this.statusPanel.addChild(this.statusBackground,this.statusText,this.statusClose);
+  this.statusText.eventMode='static';this.statusText.on('pointertap',()=>{if(this.loadState==='error')void this.show(this.highlighted??undefined,this.slot);});
+  this.statusClose.eventMode='static';this.statusClose.cursor='pointer';this.statusClose.on('pointertap',()=>this.open(false));
+  uiStage.addChild(this.shade,this.panel,this.statusPanel);
   this.viewport.on('pointerdown',e=>{
    if(this.press)return;
    this.press={x:e.global.x,y:e.global.y,at:this.scroll,last:this.axis(e.global),moved:false,id:e.pointerId};this.velocity=0;this.target=null;
@@ -161,19 +171,40 @@ export class SkillTree{
  }
  // Opens the tree (or retargets it while open) for HUD slot `slot`, scrolled to `focus`, which pulses gold.
  async show(focus?:TreeNodeId,slot:number|null=null){
-  await this.preload();
-  const wasOpen=this.openState;
-  this.openState=true;this.shade.visible=this.panel.visible=true;
-  this.slot=slot;
-  this.layout(!wasOpen);
+  const request=++this.request,wasOpen=this.openState;
+  this.openState=true;this.shade.visible=true;this.slot=slot;
+  if(!this.frames||!this.emberFrames){
+   this.loadState='loading';this.highlighted=focus??null;
+   this.panel.visible=false;this.statusPanel.visible=true;
+   this.statusText.text='Loading skills…';this.statusText.cursor='default';this.layoutStatus();
+   try{await this.preload();}catch{
+    if(request!==this.request||!this.openState)return;
+    this.loadState='error';this.statusText.text='Could not load skills. Tap to retry.';this.statusText.cursor='pointer';this.layoutStatus();return;
+   }
+   if(request!==this.request||!this.openState)return;
+  }
+  this.loadState='idle';this.statusPanel.visible=false;this.panel.visible=true;
+  this.layout(true);
   this.highlight(focus??null);
   this.say(this.prompt(),0);
   if(focus)this.scrollTo(focus,wasOpen);
-  if(!wasOpen){this.lastTick=0;cancelAnimationFrame(this.frame);const tick=(now:number)=>{if(!this.openState)return;this.update(now);this.frame=requestAnimationFrame(tick);};this.frame=requestAnimationFrame(tick);}
+  this.lastTick=0;cancelAnimationFrame(this.frame);const tick=(now:number)=>{if(!this.openState)return;this.update(now);this.frame=requestAnimationFrame(tick);};this.frame=requestAnimationFrame(tick);
  }
+ private layoutStatus(){
+  const {rect}=this.o.region();this.rect=rect;
+  this.shade.clear().rect(0,0,innerWidth,innerHeight).fill({color:0x04050a,alpha:.55});
+  this.statusPanel.position.set(Math.round(rect.x),Math.round(rect.y));
+  this.statusPanel.hitArea=new Rectangle(0,0,rect.width,rect.height);
+  this.statusBackground.clear().roundRect(0,0,rect.width,rect.height,8).fill({color:0x17151b,alpha:.96}).stroke({color:0xb59b61,width:2});
+  this.statusText.setWrapWidth(Math.max(100,rect.width-32));this.statusText.place(rect.width/2,rect.height/2,.5);
+  this.statusClose.place(rect.width/2,rect.height/2+52,.5);
+  this.statusClose.hitArea=new Rectangle(-12,-8,this.statusClose.advance+24,44);
+ }
+
  open(v:boolean){
   if(v){void this.show();return;}
   if(!this.openState)return;
+  ++this.request;this.loadState='idle';this.statusPanel.visible=false;
   this.openState=false;this.shade.visible=this.panel.visible=false;this.press=null;this.velocity=0;this.target=null;
   cancelAnimationFrame(this.frame);
   this.o.onClose?.();
@@ -193,6 +224,7 @@ export class SkillTree{
 
  // Layout: the region the HUD leaves free decides the panel; the panel height (landscape) or width (portrait) decides u.
  private layout(force=false){
+  if(this.loadState!=='idle'){this.layoutStatus();return;}
   const f=this.frames;if(!f)return;
   const W=innerWidth,H=innerHeight,{rect,vertical}=this.o.region();
   const key=[W,H,rect.x,rect.y,rect.width,rect.height,vertical].map(n=>Math.round(+n)).join();
@@ -453,7 +485,7 @@ export class SkillTree{
     screen:{x:+g.x.toFixed(1),y:+g.y.toFixed(1),r:+v.r.toFixed(1)},inView:this.inView(g.x,g.y),highlighted:this.highlighted===v.def.id};
   });
   const c=this.close?.getBounds();
-  return {open:this.openState,slot:this.slot,hint:this.hint.text,vertical:this.vertical,u:+this.u.toFixed(1),panel:{...this.rect},view:{...this.view},close:c?{x:c.x+c.width/2,y:c.y+c.height/2}:null,scroll:+this.scroll.toFixed(1),maxScroll:+this.maxScroll.toFixed(1),highlighted:this.highlighted,nodes};
+  return {open:this.openState,loadState:this.loadState,loadingVisible:this.statusPanel.visible,loadingMessage:this.statusText.text,slot:this.slot,hint:this.hint.text,vertical:this.vertical,u:+this.u.toFixed(1),panel:{...this.rect},view:{...this.view},close:c?{x:c.x+c.width/2,y:c.y+c.height/2}:null,scroll:+this.scroll.toFixed(1),maxScroll:+this.maxScroll.toFixed(1),highlighted:this.highlighted,nodes};
  }
  private learned(v:NodeView){return v.plate.visible&&!v.lock;}
  private slotOf(v:NodeView){const s=this.o.run().slots??[];return v.def.game?s.indexOf(v.def.game)+1:0;}
