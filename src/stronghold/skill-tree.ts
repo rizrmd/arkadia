@@ -369,7 +369,7 @@ export class SkillTree{
    const pips:Sprite[]=[];
    if(n.kind!=='passive'){
     const ps=Math.max(9,u*.13),gap=ps*1.32;
-    for(let i=0;i<MAX_PIPS;i++){const s=box.addChild(new Sprite(f.texture('pip-off')));s.anchor.set(.5);s.width=s.height=ps;s.position.set((i-(MAX_PIPS-1)/2)*gap,nameY+ps*1.5+(n.name.includes('\n')?nameSize*1.4:0));pips.push(s);}
+    for(let i=0;i<MAX_PIPS;i++){const s=box.addChild(new Sprite(f.texture('pip-off')));s.anchor.set(.5);s.width=s.height=ps;s.position.set((i-(MAX_PIPS-1)/2)*gap,nameY+ps*.95+2+(n.name.includes('\n')?nameSize*1.4:0));pips.push(s);}
    }
    let badge:Sprite|undefined;
    if(n.kind==='active'){badge=box.addChild(new Sprite(f.texture('slot-1')));badge.anchor.set(.5);badge.width=badge.height=Math.max(22,u*.3);badge.position.set(rr*.74,-rr*.74);badge.visible=false;}
