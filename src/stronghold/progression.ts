@@ -300,7 +300,10 @@ export function choose(p:Progression,id:string,random:()=>number,hero?:HeroKind)
   }
  }else if(id==='star'){
   p.stars++;
- }else if(id!=='heal'){
+ }else if(id==='heal'){
+  // Second Wind heals once when taken; the count only marks it learned in the skill tree.
+  p.skills.heal=(p.skills.heal??0)+1;
+ }else{
   p.skills[id]=(p.skills[id]??0)+1;
  }
  p.pending--;

@@ -64,6 +64,10 @@ for(const f of readdirSync(`${siteDir}/environment-corners/v1`))files.add('envir
 // The Frozen Frontier scenery around the Stronghold (src/stronghold/frontier-view.ts) loads without holding the
 // loading screen, so a short visit may not have fetched every sprite yet.
 for(const f of readdirSync(`${siteDir}/frozen-frontier/game`))files.add('frozen-frontier/game/'+f);
+// The Rift Runner Skill Tree kit (src/stronghold/skill-tree.ts) loads seconds after the world, or on the first long-press.
+const skillTree=JSON.parse(readFileSync(`${siteDir}/skill-tree/v1/manifest.json`,'utf8'));
+files.add('skill-tree/v1/manifest.json');
+for(const name of Object.keys(skillTree.frames))for(const s of [1,2,3])files.add(`skill-tree/v1/@${s}x/${name}.png`);
 console.error('Release file scan complete:',files.size);
 if(files.size<20)throw Error('Only '+files.size+' files loaded');
 console.log([...files].sort().join('\n'));

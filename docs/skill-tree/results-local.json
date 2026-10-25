@@ -1,0 +1,88 @@
+{
+ "base": "http://127.0.0.1:5418",
+ "views": {
+  "desktop": {
+   "viewport": [
+    1440,
+    900
+   ],
+   "shots": [
+    "desktop-fresh-run.webp",
+    "desktop-right-click-rift-dash.webp",
+    "desktop-right-click-astral-cleave.webp",
+    "desktop-scrolled-capstone.webp"
+   ],
+   "fresh": {
+    "learned": [
+     "Rift Bolt"
+    ]
+   },
+   "run": {
+    "level": 7,
+    "xp": 0,
+    "gold": 0,
+    "pending": 0,
+    "offers": [],
+    "skills": {
+     "rift-bolt": 3,
+     "rift-dash": 1,
+     "cleave": 1,
+     "heal": 1,
+     "might": 1
+    },
+    "stars": 0,
+    "slots": [
+     "rift-bolt",
+     "rift-dash",
+     "cleave"
+    ],
+    "autoCasts": 0,
+    "trinityCasts": 0,
+    "lastCast": []
+   },
+   "clickCast": {
+    "cooldownMs": 1117,
+    "treeOpen": false
+   },
+   "rightClick": {
+    "node": {
+     "id": "rift-dash",
+     "name": "Rift Dash",
+     "kind": "active",
+     "placeholder": false,
+     "learned": true,
+     "level": 1,
+     "pips": 1,
+     "slot": 2,
+     "screen": {
+      "x": 406.1,
+      "y": 302,
+      "r": 52.9
+     },
+     "inView": true,
+     "highlighted": true
+    },
+    "cast": 0
+   },
+   "layout": {
+    "panel": {
+     "x": 20,
+     "y": 148,
+     "width": 1109,
+     "height": 732
+    },
+    "skillLeft": 1145.4545454545453,
+    "u": 105.9,
+    "maxScroll": 484
+   },
+   "wheel": {
+    "scroll": 484,
+    "maxScroll": 484,
+    "starInView": true
+   },
+   "pass": true
+  }
+ },
+ "errors": [],
+ "pass": true
+}

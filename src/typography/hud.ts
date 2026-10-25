@@ -199,8 +199,13 @@ export interface HudCallbacks {
  onClockClick?: () => void;
  onCoopClick?: () => void;
  onSkillClick?: (index: number) => void;
+ // Long-press (touch) or right-click on a skill slot: inspect it (the skill tree) without casting.
+ onSkillInspect?: (index: number) => void;
  onMenuClick?: () => void;
 }
+
+// A press held this long on a skill slot inspects it instead of casting it on release.
+export const SKILL_LONG_PRESS_MS = 450;
 
 export const DEFAULT_HUD: HudState = {
  name: 'Ember Warden',
@@ -377,6 +382,9 @@ export class Hud extends Container {
    this.overlay.alpha = 0;
    this.addChild(this.overlay);
   }
+  addEventListener('contextmenu', (e) => {
+   if (performance.now() < this.contextGuardUntil) e.preventDefault();
+  });
   this.buildHero();
   this.buildStats();
   this.buildSkills();
@@ -826,6 +834,36 @@ export class Hud extends Container {
   }
  }
 
+ // A tap casts (onSkillClick); a long-press or a right-click inspects (onSkillInspect) and the release does not cast.
+ // The browser's context menu (right-click, or Android's touch long-press) is held back while a slot is pressed.
+ private contextGuardUntil = 0;
+ private bindSkillPress(slot: Container, i: number) {
+  let timer = 0;
+  let inspected = false;
+  const inspect = () => {
+   inspected = true;
+   this.callbacks.onSkillInspect?.(i);
+  };
+  slot.on('pointerdown', (e) => {
+   clearTimeout(timer);
+   inspected = false;
+   if (!this.callbacks.onSkillInspect) return;
+   this.contextGuardUntil = performance.now() + 2000;
+   // Mouse: right-click inspects, a held left button still casts. Touch and pen: long-press.
+   if (e.button === 2) inspect();
+   else if (e.pointerType !== 'mouse') timer = window.setTimeout(inspect, SKILL_LONG_PRESS_MS);
+  });
+  for (const ev of ['pointerup', 'pointerupoutside', 'pointercancel', 'pointerleave'] as const) slot.on(ev, () => clearTimeout(timer));
+  slot.on('pointertap', (e) => {
+   clearTimeout(timer);
+   if (inspected || e.button === 2) {
+    inspected = false;
+    return;
+   }
+   this.callbacks.onSkillClick?.(i);
+  });
+ }
+
  private buildSkills() {
   const f = this.frames;
   this.skillViews = [];
@@ -840,7 +878,7 @@ export class Hud extends Container {
     slot.eventMode = 'static';
     slot.cursor = 'pointer';
     slot.hitArea = new Rectangle(cx - 68, cy - 62, 136, 192);
-    slot.on('pointertap', () => this.callbacks.onSkillClick?.(i));
+    this.bindSkillPress(slot, i);
 
     const socketBg = slot.addChild(new Graphics());
     const artHolder = slot.addChild(new Container());
@@ -965,7 +1003,7 @@ export class Hud extends Container {
     cy: cfg.cy,
     radius: cfg.radius,
    };
-   slot.on('pointertap', () => this.callbacks.onSkillClick?.(i));
+   this.bindSkillPress(slot, i);
    this.skillViews.push(view);
   });
 
@@ -1505,6 +1543,12 @@ export class Hud extends Container {
   }
   const designY = row === 1 ? 126 : 232;
   return { x: this.lastWidth - 12 * s, y: designY * s, scale: s };
+ }
+
+ // Screen bounds (CSS px) of the top-left portrait, name and bars; overlays use it to stay clear of the HUD.
+ getTopLeftScreenBounds() {
+  const b = this.groups.tl.getBounds();
+  return { left: b.minX, top: b.minY, right: b.maxX, bottom: b.maxY };
  }
 
  // Returns exact screen-space geometry (in CSS px) of the Bottom-Right Crescent Action Arc and its 3 skill sockets.

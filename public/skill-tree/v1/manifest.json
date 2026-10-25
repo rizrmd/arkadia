@@ -1,0 +1,294 @@
+{
+ "frames": {
+  "ring-active": {
+   "width": 128,
+   "height": 128
+  },
+  "ring-evolution": {
+   "width": 128,
+   "height": 128
+  },
+  "node-glow": {
+   "width": 192,
+   "height": 192
+  },
+  "pip-on": {
+   "width": 14,
+   "height": 14
+  },
+  "pip-off": {
+   "width": 14,
+   "height": 14
+  },
+  "slot-1": {
+   "width": 36,
+   "height": 36
+  },
+  "slot-2": {
+   "width": 36,
+   "height": 36
+  },
+  "slot-3": {
+   "width": 36,
+   "height": 36
+  },
+  "level-plate": {
+   "width": 56,
+   "height": 22,
+   "slice": [
+    10,
+    0,
+    10,
+    0
+   ]
+  },
+  "line-h": {
+   "width": 24,
+   "height": 8,
+   "slice": [
+    4,
+    0,
+    4,
+    0
+   ]
+  },
+  "line-v": {
+   "width": 8,
+   "height": 24,
+   "slice": [
+    0,
+    4,
+    0,
+    4
+   ]
+  },
+  "line-junction": {
+   "width": 20,
+   "height": 20
+  },
+  "line-stud": {
+   "width": 12,
+   "height": 12
+  },
+  "panel-frame": {
+   "width": 160,
+   "height": 160,
+   "slice": [
+    44,
+    44,
+    44,
+    44
+   ]
+  },
+  "panel-title-rule": {
+   "width": 320,
+   "height": 20,
+   "slice": [
+    40,
+    0,
+    40,
+    0
+   ]
+  },
+  "panel-finial": {
+   "width": 44,
+   "height": 26
+  },
+  "panel-compass": {
+   "width": 140,
+   "height": 140
+  },
+  "button-close": {
+   "width": 48,
+   "height": 48
+  },
+  "scroll-track-v": {
+   "width": 10,
+   "height": 40,
+   "slice": [
+    0,
+    6,
+    0,
+    6
+   ]
+  },
+  "scroll-thumb-v": {
+   "width": 10,
+   "height": 40,
+   "slice": [
+    0,
+    6,
+    0,
+    6
+   ]
+  },
+  "scroll-track-h": {
+   "width": 40,
+   "height": 10,
+   "slice": [
+    6,
+    0,
+    6,
+    0
+   ]
+  },
+  "scroll-thumb-h": {
+   "width": 40,
+   "height": 10,
+   "slice": [
+    6,
+    0,
+    6,
+    0
+   ]
+  },
+  "chevron-up": {
+   "width": 36,
+   "height": 22
+  },
+  "chevron-right": {
+   "width": 22,
+   "height": 36
+  },
+  "fade-v": {
+   "width": 8,
+   "height": 48,
+   "slice": [
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  "fade-h": {
+   "width": 48,
+   "height": 8,
+   "slice": [
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  "icon-rift-bolt": {
+   "width": 94,
+   "height": 94
+  },
+  "icon-rift-bolt-dim": {
+   "width": 94,
+   "height": 94
+  },
+  "icon-rift-dash": {
+   "width": 94,
+   "height": 94
+  },
+  "icon-rift-dash-dim": {
+   "width": 94,
+   "height": 94
+  },
+  "icon-rift-trap": {
+   "width": 94,
+   "height": 94
+  },
+  "icon-rift-trap-dim": {
+   "width": 94,
+   "height": 94
+  },
+  "icon-astral-cleave": {
+   "width": 94,
+   "height": 94
+  },
+  "icon-astral-cleave-dim": {
+   "width": 94,
+   "height": 94
+  },
+  "icon-seismic-slam": {
+   "width": 94,
+   "height": 94
+  },
+  "icon-seismic-slam-dim": {
+   "width": 94,
+   "height": 94
+  },
+  "icon-phantom-legion": {
+   "width": 94,
+   "height": 94
+  },
+  "icon-phantom-legion-dim": {
+   "width": 94,
+   "height": 94
+  },
+  "icon-event-horizon": {
+   "width": 94,
+   "height": 94
+  },
+  "icon-event-horizon-dim": {
+   "width": 94,
+   "height": 94
+  },
+  "icon-rift-lance": {
+   "width": 94,
+   "height": 94
+  },
+  "icon-rift-lance-dim": {
+   "width": 94,
+   "height": 94
+  },
+  "icon-second-wind": {
+   "width": 112,
+   "height": 112
+  },
+  "icon-second-wind-dim": {
+   "width": 112,
+   "height": 112
+  },
+  "icon-titan-strike": {
+   "width": 112,
+   "height": 112
+  },
+  "icon-titan-strike-dim": {
+   "width": 112,
+   "height": 112
+  },
+  "icon-arc-nova": {
+   "width": 112,
+   "height": 112
+  },
+  "icon-arc-nova-dim": {
+   "width": 112,
+   "height": 112
+  },
+  "icon-soul-feast": {
+   "width": 112,
+   "height": 112
+  },
+  "icon-soul-feast-dim": {
+   "width": 112,
+   "height": 112
+  },
+  "icon-chrono-surge": {
+   "width": 112,
+   "height": 112
+  },
+  "icon-chrono-surge-dim": {
+   "width": 112,
+   "height": 112
+  },
+  "icon-furnace-heart": {
+   "width": 112,
+   "height": 112
+  },
+  "icon-furnace-heart-dim": {
+   "width": 112,
+   "height": 112
+  },
+  "icon-ascendant-star": {
+   "width": 112,
+   "height": 112
+  },
+  "icon-ascendant-star-dim": {
+   "width": 112,
+   "height": 112
+  }
+ }
+}

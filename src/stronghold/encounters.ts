@@ -22,6 +22,7 @@ import type {Net} from './net/client';
 import {characters,DEFAULT_HERO,heroInfo,type HeroId} from './heroes';
 import {createCombatVfx,facingScreenAngle,SKILL_CATALOG,type SkillId} from './combat-vfx';
 import {measureTracelogPhase} from './tracelog';
+import {SkillTree,nodeForSkill} from './skill-tree';
 
 const SCALE=DISPLAY/1.1;
 const HERO_REACH=STATS.hero.reach*SCALE,ENEMY_REACH=STATS.revenant.reach*SCALE,SIDE=.35*SCALE,SPACING=.72*SCALE;
@@ -128,11 +129,39 @@ export async function createEncounters(o:{
     const sid=run.slots[idx] as SkillId|undefined;
     if(sid&&h.alive)vfx.castSkill(sid);
    },
+   // Tap casts; long-press (touch) or right-click opens the Rift Runner skill tree on that slot's skill.
+   onSkillInspect:(idx)=>openSkillTree(idx),
   },
  );
  hud.zIndex=10;
  o.uiStage.addChild(hud);
  const minimap=new Minimap();o.uiStage.addChild(minimap);
+
+ // Rift Runner Skill Tree (skill-tree.ts): sits in the space the HUD leaves free, so the HUD stays uncovered.
+ const skillTree=new SkillTree(o.uiStage,{run:()=>run,region:skillTreeRegion});
+ function skillTreeRegion(){
+  const W=innerWidth,H=innerHeight,portrait=W<H,m=Math.round(Math.max(8,Math.min(W,H)*.022));
+  const tl=hud.getTopLeftScreenBounds(),tr=hud.getTopRightTelemetry().screenBounds,mm=minimap.snapshot(),map=mm.bounds;
+  const mapBottom=mm.visible?map.y+map.height:0,mapLeft=mm.visible?map.x:W;
+  const sockets=hud.getSkillSocketScreenGeometry().sockets;
+  const skillTop=Math.min(H,...sockets.map(s=>s.y-s.radius)),skillLeft=Math.min(W,...sockets.map(s=>s.x-s.radius));
+  if(portrait){
+   // Under the portrait, bars and minimap; above the skill arc. A short screen lets the panel cover the arc instead.
+   const top=Math.round(Math.max(tl.bottom,tr.bottom,mapBottom)+10),bottom=Math.round(skillTop-12);
+   return {vertical:true,rect:{x:m,y:top,width:W-m*2,height:bottom-top>=360?bottom-top:H-top-m}};
+  }
+  // Landscape: under the top-left HUD, left of the minimap and the skill arc; small screens get the whole screen.
+  const top=Math.round(tl.bottom+10),right=Math.round(Math.min(skillLeft,mapLeft)-16);
+  if(right-m>=520&&H-top-m>=320)return {vertical:false,rect:{x:m,y:top,width:right-m,height:H-top-m}};
+  return {vertical:false,rect:{x:m,y:m,width:W-m*2,height:H-m*2}};
+ }
+ function openSkillTree(slot?:number){
+  if(currentHeroId()!=='rift-runner')return;
+  const focus=nodeForSkill(run.slots[slot??0])??(slot==null?'rift-bolt':undefined);
+  void skillTree.show(focus);
+ }
+ // Fetch the tree art once the world is up, so the first long-press opens it at once.
+ setTimeout(()=>{if(currentHeroId()==='rift-runner')void skillTree.preload();},4000);
 
  // v5 Non-Modal Level-Up Blessing Overlay in Pixi (0% center-screen modal obstruction; combat continues in real time)
  const blessingOverlay=new LevelUpBlessingOverlay(o.frames,id=>select(id));
@@ -278,6 +307,7 @@ export async function createEncounters(o:{
  window.addEventListener('keydown',e=>{
   if(!h.alive||e.repeat)return;
   const tag=(e.target as HTMLElement|null)?.tagName;if(tag==='INPUT'||tag==='TEXTAREA')return;
+  if(e.code==='KeyK'&&!e.ctrlKey&&!e.metaKey&&!e.altKey){if(skillTree.isOpen())skillTree.open(false);else openSkillTree();return;}
   const idx=['1','2','3'].indexOf(e.key);
   if(idx<0)return;
   if(run.pending&&run.offers[idx]){
@@ -834,7 +864,8 @@ export async function createEncounters(o:{
  const api={
   hud,
   minimap,
-  isModalOpen:()=>false,
+  isModalOpen:()=>skillTree.isOpen(),
+  skillTree:{open:(slot?:number)=>openSkillTree(slot),close:()=>skillTree.open(false),snapshot:()=>skillTree.snapshot(),tree:skillTree},
   blessingLayout:()=>blessingOverlay.telemetry(),
   combatants:()=>[o.hero.position(),...foes.filter(f=>f.alive).map(f=>tilePoint(f.x,f.y))],
   steer,
