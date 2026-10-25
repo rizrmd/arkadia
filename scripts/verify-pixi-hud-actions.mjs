@@ -16,20 +16,14 @@ try{
   await page.addInitScript(()=>{localStorage.setItem('arkodia.hero','rift-runner');localStorage.setItem('arkodia.settings.v1',JSON.stringify({quality:'low',frameRate:30}));});
   await page.goto((remote||'http://127.0.0.1:5598')+'/?offline=1&hero=rift-runner&3d=0&time=.45');
   await page.waitForFunction(()=>document.querySelector('#world-canvas')?.dataset.ready==='true'&&!document.querySelector('#loading-screen'),null,{timeout:300000});
-  if(!remote){
-   await page.evaluate(async()=>{window.__actionStage=(await (await import('/src/app/loader.ts')).ensurePixiRuntime()).uiStage;});
-   await page.waitForFunction(()=>window.__actionStage?.children.filter(c=>['Open Inventory','Open Settings'].includes(c.label)).every(c=>c.children[0].texture.width>1));
-  }else{
-   const local=JSON.parse(await fs.readFile(`${out}/local-results.json`,'utf8')).find(r=>r.name===name);
-   assert.equal(await page.locator('.inventory-bag,.settings-gear').count(),0);
-   for(const [i,dialog] of ['Inventory','Settings'].entries()){
-    const {x,y}=local.results[i].rest;await page.mouse.click(x+2,y+2);
-    await page.getByRole('dialog',{name:dialog,exact:true}).waitFor();await page.keyboard.press('Escape');
-   }
-   await page.screenshot({path:`${out}/live-${name}.png`,timeout:90000});
-   report.push({name,edgeClicksOpenBothDialogs:true,htmlUtilityButtons:0});
-   await browser.close();browser=null;console.log('PASS live',name);continue;
-  }
+  if(!remote)await page.evaluate(async()=>{window.__actionStage=(await (await import('/src/app/loader.ts')).ensurePixiRuntime()).uiStage;});
+  else await page.evaluate(async()=>{
+   const src=document.querySelector('script[type="module"][src*="/assets/index-"]').src;
+   const module=await import(src);
+   // This release exports the shared runtime getter as r. Assert its shape before inspecting it.
+   const rt=await module.r();if(!rt.uiStage)throw Error('Live runtime export changed');window.__actionStage=rt.uiStage;
+  });
+  await page.waitForFunction(()=>window.__actionStage?.children.filter(c=>['Open Inventory','Open Settings'].includes(c.label)).every(c=>c.children[0].texture.width>1));
   const results=[];
   for(const [label,dialog] of [['Open Inventory','Inventory'],['Open Settings','Settings']]){
    const inspect=()=>page.evaluate(label=>{const b=window.__actionStage.children.find(c=>c.label===label),a=b.children[0];return {x:b.x,y:b.y,hit:{x:b.hitArea.x,y:b.hitArea.y,width:b.hitArea.width,height:b.hitArea.height},art:{width:a.width,height:a.height,y:a.y,tint:a.tint}};},label);
