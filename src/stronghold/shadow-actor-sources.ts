@@ -1,6 +1,6 @@
 import type {Sprite,TextureSource} from 'pixi.js';
 export type ActorAnchor={groundX?:number;groundY:number;lift:number;owner?:number};
-export type ActorShadowFrame={source:HTMLImageElement|HTMLCanvasElement;frame:[number,number,number,number];width:number;height:number;pivot:[number,number];flip:boolean;revision:number|string;depthSpan?:number};
+export type ActorShadowFrame={source:HTMLImageElement|HTMLCanvasElement;frame:[number,number,number,number];width:number;height:number;pivot:[number,number];flip:boolean;revision:number|string;groundOffsetY?:number;depthSpan?:number};
 export type ActorShadowSource={sprite:Sprite;anchor:()=>ActorAnchor;frame:ActorShadowFrame|null;owner:number};
 const actors=new Map<Sprite,ActorShadowSource>(),sources=new WeakMap<TextureSource,()=>ActorAnchor>(),free:number[]=[];
 const listeners=new Set<(actor:ActorShadowSource)=>void>();

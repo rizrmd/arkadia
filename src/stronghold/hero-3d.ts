@@ -128,6 +128,8 @@ interface ThreeHeroInstance {
     spriteH: number;
     /** Headroom rows (sprite px) above the cell; the cell itself starts at this row. */
     spriteTop: number;
+    /** Ground plane in cell pixels; the orthographic camera does not place it at the atlas pivot. */
+    groundY: number;
     revision: number;
     shadow: ShadowDrawResult | null;
     activeClip: string;
@@ -1005,7 +1007,9 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
       // Apply 2D Hand-Painted Sprite Pass (dark ink outline + internal creases) over the raw 3D pass
       measureRenderDetail('heroPost',()=>applyHandPaintedSpritePass(tint, night));
 
-      cachedResult={ sprite: glCanvas, spriteW: W, spriteH: HS, spriteTop: TOP, revision:++revision, shadow, activeClip: entry.activeClip };
+      const groundNdc = new THREE.Vector3(0, 0, 0).project(orthoCam);
+      const groundY = (1-groundNdc.y)*HS*.5-TOP;
+      cachedResult={ groundY: groundY / SCALE, sprite: glCanvas, spriteW: W, spriteH: HS, spriteTop: TOP, revision:++revision, shadow, activeClip: entry.activeClip };
       glCanvas.dataset.heroScale=String(SCALE);glCanvas.dataset.shadow=renderQuality.get().simpleShadow?'contact':'projected';
       return cachedResult;
     }

@@ -11,7 +11,7 @@ export async function runLiveShadowFixture(){
  const root=app.stage,stage=root.addChild(new Container()),white=document.createElement('canvas');white.width=320;white.height=240;white.getContext('2d')!.fillStyle='white';white.getContext('2d')!.fillRect(0,0,320,240);stage.addChild(new Sprite(Texture.from(white)));
  const caster=document.createElement('canvas');caster.width=20;caster.height=80;const c=caster.getContext('2d')!;c.fillStyle='white';c.fillRect(0,0,20,80);c.clearRect(0,30,12,20);
  const actor=root.addChild(new Sprite(Texture.from(caster)));actor.position.set(-500,-500);registerActorShadowSprite(actor,()=>({groundX:100,groundY:100,lift:0}));
- const publish=(revision:number,flip=false,depthSpan=0)=>publishActorShadowFrame(actor,{source:caster,frame:[0,0,20,80],width:20,height:80,pivot:[.5,1],flip,revision,depthSpan});publish(1);
+ const publish=(revision:number,flip=false,depthSpan=0,groundOffsetY=0)=>publishActorShadowFrame(actor,{source:caster,frame:[0,0,20,80],width:20,height:80,pivot:[.5,1],flip,revision,depthSpan,groundOffsetY});publish(1);
  const receiver=document.createElement('canvas');receiver.width=80;receiver.height=40;receiver.getContext('2d')!.fillStyle='white';receiver.getContext('2d')!.fillRect(0,0,80,40);
  const surface=(h:number):ShadowSurface=>({key:'receiver-'+h,source:receiver,sourceWidth:80,sourceHeight:40,x:140,y:100,width:80,height:40,pivot:[.5,.5],constantHeight:h,cast:false});
  let destroyed=false;const field=createSceneShadows(stage,()=>{},app.renderer,root);field.place(0,0,1,320,240);field.setSun({dx:1,dy:.5,alpha:.5});
@@ -20,6 +20,12 @@ export async function runLiveShadowFixture(){
  const checks:Record<string,number[]>={};const expect=(name:string,p:number[],dark:boolean)=>{checks[name]=p;if(dark?p[0]>210:p[0]<240)throw Error(name+': '+JSON.stringify(p));};
  try{
   field.setScene([surface(20)]);await wait();let p=read();expect('actor casts on raised receiver',p(140,100),true);expect('actor casts on ground',p(160,130),true);expect('original alpha opening',p(115,90),false);
+  // Transparent padding below a 3D camera's ground row must not become caster height.
+  c.clearRect(0,76,20,4);publish(100);p=read();
+  expect('atlas pivot reproduces detached shadow',p(95,98),false);
+  publish(101,false,0,-4);p=read();
+  expect('camera ground row keeps shadow at the feet',p(95,98),true);
+  c.fillRect(0,76,20,4);publish(1);
   publish(2,true);p=read();expect('same-frame mirror hole',p(125,90),false);expect('same-frame mirror solid',p(115,90),true);
   c.fillRect(0,0,20,80);publish(3);p=read();expect('same-frame animation fills former hole',p(115,90),true);
   field.setScene([surface(100)]);await wait();p=read();expect('receiver above actor stays lit',p(140,100),false);
