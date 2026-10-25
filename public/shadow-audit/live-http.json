@@ -1,0 +1,41 @@
+[
+  {
+    "path": "/healthz",
+    "status": 200,
+    "bytes": 35,
+    "sha256": "dd96d39e95cf41d5b74364e2f4e1189987f0de4ae5d67a6f783c3ed7b2ca1c5c"
+  },
+  {
+    "path": "/",
+    "status": 200,
+    "bytes": 34821,
+    "sha256": "6a37d0c96a5cf9a4b68a0d6effc65218780f8ddb7f85566fead61c85d7b75651"
+  },
+  {
+    "path": "/shadow-audit/",
+    "status": 200,
+    "bytes": 3601,
+    "sha256": "b8bae3eb3938dc10407a4b9c0b733d7a225a96489a68ca86047ec84abb16e963",
+    "correctPage": true
+  },
+  {
+    "path": "/shadow-audit/companions.json",
+    "status": 200,
+    "bytes": 15736,
+    "sha256": "05a361f6c9f91712bbc4e2e2d7fd9f12b7f5f1b502f8ac9231fceefa9de20d2c",
+    "matchesCommitted": true
+  },
+  {
+    "path": "/shadow-audit/inventory.json",
+    "status": 200,
+    "bytes": 425134,
+    "sha256": "c1d5674a70daf15d9b9c7833d63bbac9ffe5842b8db7dda5652dbc9b930d78aa",
+    "matchesCommitted": true
+  },
+  {
+    "path": "/shadow-audit/local/mobile-cemetery-0.52.png",
+    "status": 200,
+    "bytes": 1423540,
+    "sha256": "d62db52289260679a345a8584dd159ab25870c22d9d89e8f4b8392f56ce66bac"
+  }
+]

@@ -71,4 +71,19 @@ The inventory contains 547 rows, including 445 sprite actor frames and 12 live 3
 
 ![Local mobile cemetery at time 0; cast-shadow diagnostic, not receiver acceptance](https://ark-whachat.fural.space/shadow-audit/local/mobile-cemetery-0.png)
 
-Deployment and live verification pending. Task remains incomplete.
+Game release `1806122` was pushed and deployed from a clean worktree using `scripts/fural-deploy.sh`; layer `1792929563738-game-1806122-c3cf9f721a70`. Companion checks, TypeScript/Vite, all Go tests (including simulation parity), and co-op smoke passed. Gateway route fix: `3276e37`, deployed with the supported gateway publisher. A commit API attempt returned Cloudflare 524; the route fix was subsequently committed locally using the configured human identity.
+
+Live desktop and mobile cemetery noon checks passed with no page errors, 297 casters and 1,619 strips. Inspector selected all 46 families and exercised mirror/sun controls without page errors. JSON SHA256 checks match the committed companion and inventory data. Software frame timings remain unsuitable for hardware performance acceptance.
+
+No map/collision files changed; pillar/stair strip policy is preserved. General object receiving, court/gateway alpha caster integration, full exclusion audit and full-family visual/hardware validation remain open. **Task status: review, not done.**
+
+
+## Live and companion previews
+
+![Live cemetery cast-only validation](https://ark-whachat.fural.space/shadow-audit/live/desktop-cemetery-0.52.png)
+
+![Live cemetery cast-only validation](https://ark-whachat.fural.space/shadow-audit/live/mobile-cemetery-0.52.png)
+
+![Geometry proxy diagnostic; not measured depth](https://ark-whachat.fural.space/shadow-audit/live/geometry-preview.png)
+
+![Geometry proxy diagnostic; not measured depth](https://ark-whachat.fural.space/shadow-audit/live/geometry-mirrored-preview.png)
