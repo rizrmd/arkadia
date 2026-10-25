@@ -12,6 +12,6 @@ The tree shows 4 pts, 8 pts and Lv.20 requirements. Rift's card rules and random
 - Go Rift regression: 5,700 seeded states match the digest captured from commit 2de5e4d.
 - `node scripts/ember-gates/smoke.mjs`: production bundle at 1440x900 and touch 390x844; real roll/choose functions through Lv.20, first offer, tree gate labels, concepts excluded, no page errors. Diagnostic `offer()` advances a level without injecting card contents; deterministic checks separately exercise XP reward progression.
 - `VERIFY_URL=https://ark-whachat.fural.space node scripts/ember-gates/smoke.mjs`: repeat against deployed game.
-- TypeScript and all Go tests pass. Actual deployment uses `scripts/fural-deploy.sh` and publishes evidence at `/ember-warden-review/tier-gates/`.
+- TypeScript and all Go tests pass. Actual game deployment uses `scripts/fural-deploy.sh`; a separate review layer publishes evidence at `/ember-warden-review/tier-gates/`.
 
 Results: `verification.json`, `browser-local.json`, and after deployment `browser-live.json`.
