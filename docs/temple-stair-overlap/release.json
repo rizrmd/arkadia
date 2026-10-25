@@ -1,0 +1,14 @@
+{
+  "commit": "79847bdce2396af959af3f234a4b18a6c023e668",
+  "live": "https://arkodia.online",
+  "atlas": "/frozen-frontier/game/atlas-5083a8ebd8c8bb4b.webp",
+  "checks": {
+    "typescript": true,
+    "productionBuild": true,
+    "allGoPackages": true,
+    "coopSmoke": true,
+    "geometryAssertions": 9,
+    "liveMobileAndDesktop": true,
+    "browserErrors": []
+  }
+}
