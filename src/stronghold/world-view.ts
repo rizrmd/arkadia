@@ -24,6 +24,7 @@ import {createParallax,initialParallaxFiles} from './parallax';
 import {createAutoWalk,type AutoWalk} from './auto-walk';
 import {WorldMap} from './world-map';
 import {createFrontier} from './frontier-view';
+import {FRONTIER_ATLAS} from '../world/frontier';
 
 export async function createWorldView(
  rt:SharedPixiRuntime,
@@ -46,7 +47,7 @@ export async function createWorldView(
  let gateOpen=false,gatePassable=false;
  const spriteFile=(id:Building,level:number)=>id==='forge'?`/fortress-ui/forge-${level}.webp`:id==='gate'?'/modular-stronghold/v2/full-gateway-v7-closed.webp':`/assets/${slots[id].asset}.png`;
  const paving='/modular-stronghold/v2/paving-warm-texture.png',snow='/modular-stronghold/v2/snow-soft-texture.png';
- const files=[...new Set([FOUNDATION_SOIL,FOUNDATION_MOSS,FOUNDATION_DRIFT,paving,snow,CLIFF_ART,NATURAL_CLIFF_ART,'/modular-stronghold/v2/full-gateway-v7-closed.webp',...environment.map(p=>p.file),...buildings.flatMap(b=>[1,2,3].map(l=>spriteFile(b,l)))])];
+ const files=[...new Set([FRONTIER_ATLAS,FOUNDATION_SOIL,FOUNDATION_MOSS,FOUNDATION_DRIFT,paving,snow,CLIFF_ART,NATURAL_CLIFF_ART,'/modular-stronghold/v2/full-gateway-v7-closed.webp',...environment.map(p=>p.file),...buildings.flatMap(b=>[1,2,3].map(l=>spriteFile(b,l)))])];
  const DOWNLOAD=920,steps=1000,mb=(n:number)=>(n/1e6).toFixed(1);let loaded=DOWNLOAD;
  let queued=0;const report=()=>{queued=0;const {received,expected}=downloadedBytes();progress(320+Math.floor((DOWNLOAD-320)*received/Math.max(1,expected)),steps,`Loading artwork · ${mb(received)} of ${mb(expected)} MB`);};
  const stopReport=onDownload(()=>{queued||=requestAnimationFrame(report);});progress(320,steps,'Loading artwork');
@@ -68,7 +69,8 @@ export async function createWorldView(
  function shadeRelief(s:{alpha:number;dx:number;dy:number}){for(const r of reliefShadows){r.view.sprite.visible=s.alpha>0;if(!s.alpha)continue;Object.assign(r,paintReliefShadow(r.feature,s.dx,s.dy,r.canvas));r.view.sync(r.width,r.height);r.view.sprite.alpha=s.alpha;}requestDraw();}
  const reliefScene=relief.map(r=>({layer:'world' as const,id:'relief:'+r.feature.id,x:r.left+r.width/2,y:r.bottom,width:r.width,height:r.height,foot:1,shear:0,vertical:1,depth:r.bottom,opacity:1,file:'relief:'+r.feature.id,selected:false,occluder:undefined as HTMLCanvasElement|undefined,image:r.canvas as unknown as HTMLImageElement,relief:r.feature}));
  // The Frozen Frontier's ruins, landmarks and plants on the snow beyond (world/frontier.ts, frontier-view.ts).
- const frontier=createFrontier(worldStage);
+ const frontier=createFrontier(worldStage,images.get(FRONTIER_ATLAS)!);
+ await frontier.ready;
  const frontierScene=frontier.scene as unknown as typeof reliefScene;
  const scene=()=>[...objects,...reliefScene,...frontierScene];
  const polygon=(corners:number[][])=>{const path=new Path2D();corners.forEach(([u,v],i)=>{const p=tilePoint(u,v);i?path.lineTo(p.x,p.y):path.moveTo(p.x,p.y);});path.closePath();return path;};
@@ -357,7 +359,7 @@ export async function createWorldView(
  // Gameplay (the hero and the revenants) starts once `hold` resolves: after the loading screen, and on a first visit
  // after Choose Your Hero. Until then the camera already frames the hero.
  const loadGateAfterDone=()=>{const s=document.querySelector<HTMLElement>('#loading-screen');if(s&&s.dataset.state!=='done'){setTimeout(loadGateAfterDone,120);return;}ensureGateSheet();};
- parallax.start();void hold.then(()=>{hero.start();encounters.start();frontier.load();setTimeout(loadGateAfterDone,120);});
+ parallax.start();void hold.then(()=>{hero.start();encounters.start();setTimeout(loadGateAfterDone,120);});
  (window as any).__WORLD_MAP__={map:worldMap,walker,open:(v=true)=>worldMap.open(v),walkTo:(x:number,y:number)=>walker!.goTo(x,y),route:()=>walker!.route(),snapshot:()=>worldMap.snapshot(),screenOf:(x:number,y:number)=>worldMap.screenOf({x,y})};
  return {
   hud:encounters.hud,

@@ -11,8 +11,8 @@ import type {Column} from './hero';
 // image src). Every upright also casts a sun shadow (setSun, daylight.ts sunAt), like the court, the hero and the
 // enemies: its sprite again, laid onto the ground in vertical strips, each pixel moved from the ground line below it
 // (build-assets.mjs groundLine) by its height along the sun's offset; one filter flattens the layer to the shadow
-// colour at the sun's alpha, so overlapping shadows do not darken each other. The atlas (1.1 MB WebP) is fetched once play starts (load()), after the loading screen, so it never
-// competes with the game's own start-up.
+// colour at the sun's alpha, so overlapping shadows do not darken each other. The decoded atlas is part of
+// startup artwork; ready resolves after sprites exist, before the loading screen reveals the world.
 export type FrontierPlaced={layer:'world';id:string;x:number;y:number;width:number;height:number;foot:number;shear:number;vertical:number;depth:number;opacity:number;file:string;selected:boolean;occluder:undefined;image:HTMLImageElement;frontier:FrontierProp};
 // A ground decal turned by deg in the ground plane, drawn in the 2:1 projection: P·R·P⁻¹ with P = diag(1, 1/2).
 function groundMatrix(deg:number,sx:number,sy:number,x:number,y:number){const r=deg*Math.PI/180,c=Math.cos(r),s=Math.sin(r);return new Matrix(c*sx,.5*s*sx,-2*s*sy,c*sy,x,y);}
@@ -34,7 +34,7 @@ function stripMatrix(p:FrontierProp,i:number,n:number,s:Sun){
  const sx=p.width/fw*(p.flip?-1:1),sy=p.height/p.frame[3],ax=p.pivot[0]*fw,ay=p.pivot[1]*p.frame[3],dx=s.dx,dy=depthOf(s);
  return new Matrix(sx+dx*sy*k,p.shear*sx+sy*k*(1+dy),-dx*sy,-dy*sy,p.x+sx*(f0-ax)+dx*sy*b0,p.y-p.lift+p.shear*sx*(f0-ax)+sy*(b0-ay)+dy*sy*b0);
 }
-export function createFrontier(worldStage:Container){
+export function createFrontier(worldStage:Container,atlas:HTMLImageElement){
  const ground=new Container(),shade=new Container(),upright=new Container();
  ground.zIndex=10.05;shade.zIndex=10.08;upright.zIndex=10.6;ground.sortableChildren=upright.sortableChildren=true;
  // Shadows take the court's colour, rgb(20, 28, 44), softened like the court's (world-view.ts castShadows); both
@@ -73,11 +73,8 @@ export function createFrontier(worldStage:Container){
    sh.x0=v.x0+Math.min(0,h*sun.dx);sh.x1=v.x1+Math.max(0,h*sun.dx);sh.y0=Math.min(v.y0,v.y1+h*Math.min(0,dy));sh.y1=v.y1+Math.max(0,h*dy);}
  }
  let loaded=false,failed=false,visible=0,cull='';
- const atlas=new Image();atlas.decoding='async';
- let start=()=>{};
- const ready=new Promise<void>(done=>{
-  atlas.onerror=()=>{failed=true;done();};
-  atlas.onload=()=>{atlas.decode().catch(()=>{}).then(async()=>{
+ const ready=new Promise<void>((done,reject)=>{
+  void (async()=>{
    const source=Texture.from(atlas).source,textures=new Map<string,Texture>();
    for(const v of views){const p=v.prop;let texture=textures.get(p.asset);
     if(!texture)textures.set(p.asset,texture=new Texture({source,frame:new Rectangle(...p.frame)}));
@@ -108,8 +105,7 @@ export function createFrontier(worldStage:Container){
     const g=c.getContext('2d',{willReadFrequently:true})!;if(p.flip){g.translate(f[2],0);g.scale(-1,1);}g.drawImage(atlas,f[0],f[1],f[2],f[3],0,0,f[2],f[3]);
     const px=g.getImageData(0,0,f[2],f[3]);for(let i=3;i<px.data.length;i+=4)if(px.data[i]<150)px.data[i]=0;g.setTransform(1,0,0,1,0,0);g.putImageData(px,0,0);
     await new Promise<void>(resolve=>c.toBlob(b=>{if(b){const url=URL.createObjectURL(b);img.onload=img.onerror=()=>URL.revokeObjectURL(url);img.src=url;}resolve();}));}
-  });};
-  start=()=>{if(!atlas.src)atlas.src=FRONTIER_ATLAS;};
+  })().catch(error=>{failed=true;reject(error);});
  });
  function place(x:number,y:number,scale:number,w:number,h:number){
   for(const c of [ground,shade,upright]){c.position.set(x,y);c.scale.set(scale);}
@@ -133,10 +129,10 @@ export function createFrontier(worldStage:Container){
  const stats=()=>({props:FRONTIER_PROPS.length,uprights:scene.length,columns:FRONTIER_COLUMNS.length,atlas:FRONTIER_ATLAS,loaded,failed,kit:FRONTIER_KIT_SIZE,
   occlusionImages:[...images.values()].filter(i=>i.complete&&i.naturalWidth>0).length,sprites:images.size,visible,
   shadows:{casters:shadows.length,strips:shadows.reduce((n,sh)=>n+sh.strips.length,0),shown,alpha:sun.alpha,dx:+sun.dx.toFixed(3),dy:+sun.dy.toFixed(3)},assets:[...new Set(FRONTIER_PROPS.map(p=>p.asset))].sort()});
- (window as any).__FROZEN_FRONTIER__={stats,load:()=>start(),columns:()=>FRONTIER_COLUMNS,props:()=>FRONTIER_PROPS.map(p=>({asset:p.asset,zone:p.zone,u:p.u,v:p.v,x:p.x,y:p.y,layer:p.layer,solid:p.blocks.length>0,flip:p.flip,rot:p.rot,shear:p.shear})),ready,
+ (window as any).__FROZEN_FRONTIER__={stats,load:()=>ready,columns:()=>FRONTIER_COLUMNS,props:()=>FRONTIER_PROPS.map(p=>({asset:p.asset,zone:p.zone,u:p.u,v:p.v,x:p.x,y:p.y,layer:p.layer,solid:p.blocks.length>0,flip:p.flip,rot:p.rot,shear:p.shear})),ready,
   // QA: hide the scenery to measure what it costs (scripts/frozen-frontier-map/verify.mjs).
   setVisible:(on:boolean)=>{ground.visible=upright.visible=on;shade.renderable=on;}};
- return {scene,ready,place,setAmbient,setSun,stats,load:()=>start(),
+ return {scene,ready,place,setAmbient,setSun,stats,load:()=>ready,
   // Footprint columns for a frontier prop in the hero's scene, else undefined.
   columns:(p:{id?:unknown})=>typeof p.id==='string'?columns.get(p.id):undefined};
 }
