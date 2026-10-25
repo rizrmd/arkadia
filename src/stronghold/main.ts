@@ -1,3 +1,4 @@
+import {createInventory} from './inventory';
 import {requestGameFrame as requestAnimationFrame} from '../app/frame-scheduler';
 import {createWorldView} from './world-view';
 import {KEY,load,heroBonus,type Building} from './economy';
@@ -21,7 +22,7 @@ export async function mount(app:HTMLElement,progress:Progress){
  canvas.tabIndex=0;
 
  const canInteractWorld=(clientX:number,clientY:number,active=false)=>{
-  if(picker?.isOpen()||clock?.isOpen()||lobby?.isOpen()||worldView?.encounters.isModalOpen())return false;
+  if(inventory?.isOpen()||picker?.isOpen()||clock?.isOpen()||lobby?.isOpen()||worldView?.encounters.isModalOpen())return false;
   // The full map holds the screen: its own drag pans the map, not the world, and no stick opens under it.
   if(worldView?.worldMap.isOpen())return false;
   if(active)return true;
@@ -34,6 +35,7 @@ export async function mount(app:HTMLElement,progress:Progress){
  };
 
  const controls=createControls(rt.uiStage,rt.frames,canInteractWorld);
+ let inventory:ReturnType<typeof createInventory>|undefined;
  let selected:Building|null=null;
  let clock:ReturnType<typeof createClock>|undefined;
 
@@ -76,6 +78,7 @@ export async function mount(app:HTMLElement,progress:Progress){
   Promise.all([picker.picked,mounted]).then(()=>{}),
  );
  walk=worldView.direction;
+ inventory=createInventory({solo:!coop,canOpen:()=>!document.querySelector('.settings-overlay:not([hidden])')&&!picker.isOpen()&&!clock?.isOpen()&&!lobby?.isOpen()&&!worldView.encounters.isModalOpen()&&!worldView.worldMap.isOpen(),bounds:()=>worldView.encounters.minimap.getBounds(),reason:worldView.encounters.itemUseReason,apply:worldView.encounters.applyItem});
  // Apply the saved layout before the first frame, so the world is painted once (not once as the default layout and
  // again for the saved one).
  render();

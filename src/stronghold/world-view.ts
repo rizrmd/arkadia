@@ -210,7 +210,7 @@ export async function createWorldView(
  let walker:AutoWalk|undefined;const input=()=>walker?walker.input(direction()):direction();
  const hero=await createHero<(typeof objects)[number]>({hero:pick,layer:worldStage,lightmap:lighting.lightmap,surface,footprint:p=>p.id==='gate'?gateFootprint():footprint(p),sun:lighting.sun,direction:()=>encounters?encounters.steer(input()):input(),follow,pose:()=>encounters?.pose()??null,
   drive:()=>{if(!net?.active())return null;const p=net.position(),me=net.me();return {...p,face:direction(),look:me&&me.st!=='idle'?{facing:me.fc,back:me.bk,vertical:me.vt}:null};}});hero.setScene(scene());
- encounters=await createEncounters({worldStage,uiStage,frames,hudCallbacks,showCoop:Boolean(net),hero,direction:input,net});
+ encounters=await createEncounters({worldStage,uiStage,frames,hudCallbacks,showCoop:Boolean(net),cancelRoute:()=>walker?.cancel(),hero,direction:input,net});
  const worldMap=new WorldMap(frames,{hero:hero.position,built:()=>[...built],route:()=>walker?.route()??null,walk:(x,y)=>walker?.goTo(x,y)??false});
  walker=createAutoWalk({blocked:hero.blocked,position:hero.position,onChange:r=>encounters!.minimap.setRoute(r)});
  uiStage.addChild(worldMap);encounters.minimap.onOpen=()=>worldMap.toggle();
