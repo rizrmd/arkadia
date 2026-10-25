@@ -185,7 +185,7 @@ export class SkillTree{
   clearTimeout(this.hintTimer);
   if(holdMs)this.hintTimer=window.setTimeout(()=>this.say(this.prompt(),0),holdMs);
  }
- private prompt(){return this.slot==null?(this.ember?'Hold or right-click a HUD skill to inspect it':'Tap a skill slot on the HUD to change its skill'):`Skill ${this.slot+1}: tap a learned skill to equip it`;}
+ private prompt(){return this.slot==null?'Tap a skill slot on the HUD to change its skill':`Skill ${this.slot+1}: tap a learned skill to equip it`;}
  private hintY=0;
  private placeHint(){this.hint.place(this.rect.width/2,this.hintY,.5);}
  private axis(p:Pt){return this.vertical?p.y:p.x;}

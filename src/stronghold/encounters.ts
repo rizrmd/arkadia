@@ -129,12 +129,8 @@ export async function createEncounters(o:{
   {},
   {
    ...o.hudCallbacks,
-   // Rift uses tap-to-equip; Ember retains tap casting and inspects by hold/right-click.
-   onSkillClick:(idx)=>{
-    if(currentHeroId()==='rift-runner'){openSkillTree(idx);return;}
-    const sid=run.slots[idx] as SkillId|undefined;
-    if(sid&&h.alive)vfx.castSkill(sid);
-   },
+   // Both heroes auto-cast equipped skills; HUD interaction opens the loadout tree.
+   onSkillClick:(idx)=>openSkillTree(idx),
    onSkillInspect:(idx)=>openSkillTree(idx),
   },
  );
@@ -142,7 +138,7 @@ export async function createEncounters(o:{
  o.uiStage.addChild(hud);
  const minimap=new Minimap();o.uiStage.addChild(minimap);
 
- // Rift Runner Skill Tree (skill-tree.ts): sits in the space the HUD leaves free, so the HUD stays uncovered.
+ // Hero Skill Tree (skill-tree.ts): sits in the space the HUD leaves free, so the HUD stays uncovered.
  const skillTree=new SkillTree(o.uiStage,{run:()=>run,hero:currentHeroId,region:skillTreeRegion,equip:(slot,id)=>{
   // Co-op runs come from the server, which would put the old loadout straight back.
   if(online)return 'Skills can be changed in solo play';
@@ -330,7 +326,7 @@ export async function createEncounters(o:{
    return;
   }
   // Match each hero's HUD tap behavior for 1/2/3.
-  if(!run.pending){if(currentHeroId()==='rift-runner')openSkillTree(idx);else{const sid=run.slots[idx] as SkillId|undefined;if(sid)vfx.castSkill(sid);}}
+  if(!run.pending)openSkillTree(idx);
  });
 
  let offerKey='';

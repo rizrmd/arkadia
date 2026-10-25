@@ -1,3 +1,4 @@
+import {createGameplayFlameFan} from '../fx/flame-fan-gameplay';
 import {playSkillSound} from '../app/game-audio';
 import {gameSettings} from '../app/settings-state';
 import {Container} from 'pixi.js';
@@ -119,6 +120,7 @@ export function createCombatVfx(o:{
  const groundZonesLayer=new Container();
  groundZonesLayer.zIndex=21;
  const groundFx=new Container(),worldFx=new Container();
+ const flameSheets=createGameplayFlameFan(groundFx,o.traceWallRay,o.occlusionAt);
  groundFx.zIndex=22;worldFx.zIndex=38;
  o.layer.addChild(groundZonesLayer,groundFx,worldFx);
  type ZoneView={el:HTMLCanvasElement;ctx:CanvasRenderingContext2D;view:ReturnType<typeof createCanvasSprite>;key:string};
@@ -174,11 +176,11 @@ export function createCombatVfx(o:{
   floats.push({id:nextId++,kind,text,subtext,u,v,ox:(o.random()-.5)*10,oy:0,vx,vy,age:0,duration,scale});
  }
 
- function addSpark(kind:SparkKind,u:number,v:number,angle=0,radius=26){
+ function addSpark(kind:SparkKind,u:number,v:number,angle=0,radius=26,fxScale=1){
   let sameFrameSparks=0;
   for(let i=sparks.length-1;i>=0;i--){if(sparks[i].age===0)sameFrameSparks++;else break;}
   sparks.push({id:nextId++,kind,u,v,angle,age:0,duration:kind==='crit'?380:270,radius});
-  if(sameFrameSparks<4)cue(SPARK_CUE[kind],{u,v,yaw:angle});
+  if(sameFrameSparks<4){if(fxScale!==1)fx.play('shared/'+SPARK_CUE[kind],{u,v,yaw:angle,scale:fxScale});else cue(SPARK_CUE[kind],{u,v,yaw:angle});}
  }
 
  function addShake(target:object,amp=5.5,duration=190){
@@ -203,10 +205,10 @@ export function createCombatVfx(o:{
   }
  }
 
- function applyHitToFoe(f:Fighter,opts:{scale?:number;forceCrit?:boolean;sparkKind?:SparkKind;angle?:number}={}){
+ function applyHitToFoe(f:Fighter,opts:{scale?:number;forceCrit?:boolean;sparkKind?:SparkKind;angle?:number;fxScale?:number}={}){
   if(!f.alive)return {killed:false,crit:false,display:0,damage:0};
   if(o.isOnline?.()){
-   addSpark(opts.sparkKind??'normal',f.x,f.y,opts.angle??0,26);
+   addSpark(opts.sparkKind??'normal',f.x,f.y,opts.angle??0,26,opts.fxScale??1);
    addShake(f,2.2,110);
    return {killed:false,crit:false,display:0,damage:0};
   }
@@ -215,12 +217,12 @@ export function createCombatVfx(o:{
   if(roll.crit){
    totalCrits++;
    addFloat('crit',`${roll.display}!`,f.x,f.y,'CRITICAL');
-   addSpark('crit',f.x,f.y,opts.angle??0,38);
+   addSpark('crit',f.x,f.y,opts.angle??0,38,opts.fxScale??1);
    addShake(f,6,210);
   }else{
    totalNormals++;
    addFloat('normal',String(roll.display),f.x,f.y);
-   addSpark(opts.sparkKind??'normal',f.x,f.y,opts.angle??0,26);
+   addSpark(opts.sparkKind??'normal',f.x,f.y,opts.angle??0,26,opts.fxScale??1);
    addShake(f,2.2,110);
   }
   if(killed)o.onKill(f);
@@ -323,7 +325,8 @@ export function createCombatVfx(o:{
   a.detonated=true;
   impacts.push({id:nextId++,kind:a.kind,shape:a.shape,u:a.u,v:a.v,radius:a.radius,angle:a.angle,spread:a.spread,age:0,duration:640});
   const d=tileVec(Math.cos(a.angle),Math.sin(a.angle));
-  cue(`${a.skill}.detonate`,{u:a.u,v:a.v,yaw:yawOf(d.u,d.v),radius:a.radius});
+  if(a.skill==='flame-fan')flameSheets.spawn(a.u,a.v,yawOf(d.u,d.v),a.radius,Math.max(1,skillRank(o.getRun(),'flame-fan')));
+  else cue(`${a.skill}.detonate`,{u:a.u,v:a.v,yaw:yawOf(d.u,d.v),radius:a.radius});
   const sparkKind:SparkKind=a.kind==='ember-snare'||a.kind==='flame-cone'||(a.kind==='cleave-cone'&&o.getHero().heroId==='ember-warden')?'fire':a.kind==='shockwave'?'seismic':'arcane';
   for(const f of o.getFoes()){
    if(!f.alive)continue;
@@ -336,7 +339,7 @@ export function createCombatVfx(o:{
     if(Math.abs(diff)>a.spread*(a.skill==='flame-fan'?.5:.55))continue;
    }
    if(clampTargetToWall(a.u,a.v,f.x,f.y).hit)continue;
-   applyHitToFoe(f,{scale:a.damageScale,forceCrit:a.forceCrit,sparkKind,angle:a.angle});
+   applyHitToFoe(f,{scale:a.damageScale,forceCrit:a.forceCrit,sparkKind,angle:a.angle,fxScale:a.skill==='flame-fan'?.28:1});
   }
  }
 
@@ -597,7 +600,7 @@ export function createCombatVfx(o:{
  }
 
  function render(){
-  fx.frame(fxDtMs/1000);fxDtMs=0;
+  flameSheets.frame(fxDtMs/1000,origin);fx.frame(fxDtMs/1000);fxDtMs=0;
   const k=origin.scale,dpr=Math.min(devicePixelRatio||1,2);
 
   // Dotted ground AoE telegraphs & active impact zones (with wall/building cutOut occlusion)
@@ -848,6 +851,7 @@ export function createCombatVfx(o:{
   shakeOffset,
   cooldown:(id:SkillId)=>Math.max(0,cooldowns[id]??0),
   snapshot:()=>({
+   flameSheets:flameSheets.snapshot(),
    activeFloats:floats.map(f=>{const fv=floatViews.get(f.id);const hasBubbleOrFrame=Boolean(fv&&fv.root.children.some(c=>!(c instanceof MsdfText)));return {kind:f.kind,text:f.text,subtext:f.subtext,u:+f.u.toFixed(2),v:+f.v.toFixed(2),scale:+f.scale.toFixed(2),frameless:!hasBubbleOrFrame};}),
    activeProjectiles:projectiles.map(p=>({id:p.id,kind:p.kind,u:+p.u.toFixed(2),v:+p.v.toFixed(2),vx:+p.vx.toFixed(2),vy:+p.vy.toFixed(2),traveled:+p.traveled.toFixed(2)})),
    activeAoEs:aoes.map(a=>({id:a.id,kind:a.kind,shape:a.shape,u:+a.u.toFixed(2),v:+a.v.toFixed(2),radius:+a.radius.toFixed(2),progress:+(a.age/a.duration).toFixed(2)})),

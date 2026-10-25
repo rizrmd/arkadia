@@ -1,76 +1,11 @@
+// Both URLs share one player; verify the legacy URL's packaged actors, ranks and controls.
 import fs from 'node:fs/promises';
-import path from 'node:path';
 import http from 'node:http';
+import path from 'node:path';
 import assert from 'node:assert/strict';
 import {launch} from '../vfx/browser.mjs';
-const external=process.env.VERIFY_URL;
-const out='docs/flame-fan';await fs.mkdir(out,{recursive:true});
-const mime={'.html':'text/html','.js':'text/javascript','.css':'text/css','.json':'application/json','.png':'image/png','.webp':'image/webp','.bin':'application/octet-stream'};
-const server=http.createServer(async(req,res)=>{
- try{
-  const u=new URL(req.url,'http://localhost');
-  if(u.pathname==='/embed-test'){
-   res.setHeader('Content-Type','text/html');res.end(`<iframe src="${external||'http://127.0.0.1:3948/ember-warden-review/flame-fan-levels/'}" title="Flame Fan Level 1–5 Animation Player" height="560" style="width:100%;border:0"></iframe>`);return;
-  }
-  const rel=decodeURIComponent(u.pathname).replace(/^\/ember-warden-review\/flame-fan-levels\//,'');
-  const base=u.pathname.startsWith('/ember-warden-review/flame-fan-levels/')?'dist-flame-fan':'public';
-  const file=path.resolve(base,rel==='/'||rel===''?'index.html':rel.replace(/^\//,''));
-  if(!file.startsWith(path.resolve(base)+path.sep))throw Error('invalid path');
-  const bytes=await fs.readFile(file);res.setHeader('Content-Type',mime[path.extname(file)]||'application/octet-stream');res.end(bytes);
- }catch{res.statusCode=404;res.end('Missing');}
-});
-await new Promise(r=>server.listen(3948,'127.0.0.1',r));
-const browser=await launch(),errors=[],failures=[],results=[];
-const page=await browser.newPage();
-page.on('pageerror',e=>errors.push(String(e)));
-page.on('response',r=>{if(r.status()>=400)failures.push([r.status(),r.url()]);});
-try{
- for(const viewport of [{width:1440,height:900},{width:390,height:844},{width:320,height:560}].filter(v=>!process.env.VERIFY_WIDTHS||process.env.VERIFY_WIDTHS.split(',').includes(String(v.width)))){
-  await page.setViewportSize(viewport);
-  await page.goto(external||'http://127.0.0.1:3948/ember-warden-review/flame-fan-levels/');
-  await page.waitForFunction(()=>window.__FLAME_FAN__,null,{timeout:60000});
-  assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'No horizontal overflow');
-  assert(await page.evaluate(()=>['world-fx-ground','world-fx-over'].every(id=>{const r=document.getElementById(id).getBoundingClientRect();return Math.abs(r.width-innerWidth)<1&&Math.abs(r.height-innerHeight)<1;})),'FX planes preserve CSS pixel alignment with figures');
-  for(let level=1;level<=5;level++){
-   await page.selectOption('#level',String(level));
-   for(const [time,phase] of [[.22,'Casting'],[.72,'Flame area'],[1.3,'Dissipating']]){
-    await page.evaluate(t=>window.__FLAME_FAN__.seek(t),time);
-    const state=await page.evaluate(()=>window.__FLAME_FAN__.state());
-    assert.equal(state.level,level);assert.equal(state.phase,phase);assert.equal(state.targetCount,3,'Actual rendered target count');
-    assert.equal(state.stats.playing.filter(k=>k.includes('flame-fan.bolt')).length,0,'No projectile emitter at any rank');
-    assert.equal(state.spec.cooldownMs,[1400,1288,1185,1090,1003][level-1]);
-    assert.equal(state.spec.damage,1+(level-1)*.25);
-    if(phase==='Flame area')assert(state.stats.playing.some(k=>k.startsWith('ember-warden/flame-fan.area:')),'Continuous flame area');
-    assert(state.stats.particles>0,`Particles at ${level} ${phase}`);assert.deepEqual(state.stats.missing,[]);
-    if(viewport.width!==320)await page.screenshot({path:`${out}/${external?'live':'local'}-${viewport.width}-lv${level}-${phase.split(' ')[0].toLowerCase()}.png`});
-   }
-  }
-  await page.selectOption('#level','1');
-  await page.evaluate(()=>window.__FLAME_FAN__.seek(.6));
-  const before=await page.evaluate(()=>window.__FLAME_FAN__.state().time);await page.waitForTimeout(200);
-  assert.equal(await page.evaluate(()=>window.__FLAME_FAN__.state().time),before,'Pause freezes time');
-  await page.click('#play');await page.waitForTimeout(180);assert((await page.evaluate(()=>window.__FLAME_FAN__.state().time))>before,'Play resumes');
-  await page.click('#play');assert((await page.evaluate(()=>window.__FLAME_FAN__.state().paused)),'Pause button');
-  await page.evaluate(()=>document.getElementById('replay').addEventListener('click',()=>queueMicrotask(()=>{window.__REPLAY_CHECK__=window.__FLAME_FAN__.state();}),{once:true}));
-  await page.click('#replay');assert.equal(await page.evaluate(()=>window.__REPLAY_CHECK__.time),0,'Replay restarts at zero before the next frame');
-  if((await page.evaluate(()=>window.__FLAME_FAN__.state().loop)))await page.click('#loop');
-  await page.waitForFunction(()=>window.__FLAME_FAN__.state().phase==='Complete',null,{timeout:45000});
-  assert((await page.evaluate(()=>window.__FLAME_FAN__.state().paused)),'Once stops');
-  await page.click('#loop');await page.click('#replay');
-  const cycles=await page.evaluate(()=>window.__FLAME_FAN__.state().cycles);
-  await page.waitForFunction(n=>window.__FLAME_FAN__.state().cycles>n,cycles,{timeout:45000});
-  await page.selectOption('#background','day');
-  for(const selector of ['#level','#play','#replay','#loop']){
-   const b=await page.locator(selector).boundingBox();assert(b&&b.height>=42&&b.x>=0&&b.x+b.width<=viewport.width,'Accessible controls '+selector);
-  }
-  console.log('Verified',viewport.width);results.push({viewport,levels:[1,2,3,4,5],targetCounts:[3,3,3,3,3],projectileCounts:[0,0,0,0,0],damageMultipliers:[1,1.25,1.5,1.75,2],cooldownsMs:[1400,1288,1185,1090,1003],areaScales:[1,1.18,1.36,1.54,1.72],phases:['Casting','Flame area','Dissipating'],controls:'passed'});
-  await fs.writeFile(`${out}/verification-${external?'live':'local'}-${viewport.width}.json`,JSON.stringify({passed:true,url:external||'local',results:[results.at(-1)],pageErrors:errors,httpFailures:failures},null,2));
- }
- const embed=page;
- await embed.goto('http://127.0.0.1:3948/embed-test');
- const frame=embed.frameLocator('iframe');await frame.locator('#play:not([disabled])').waitFor({timeout:60000});
- await frame.locator('#level').selectOption('5');assert.equal(await frame.locator('#level').inputValue(),'5');
- assert.deepEqual(errors,[]);assert.deepEqual(failures,[]);
- const report={passed:true,url:external||'local',results,iframe:'loaded, level selector works',pageErrors:errors,httpFailures:failures};
- await fs.writeFile(`${out}/verification-${external?'live':'local'}.json`,JSON.stringify(report,null,2));console.log(JSON.stringify(report));
-}finally{await browser.close();await new Promise(r=>server.close(r));}
+const external=process.env.VERIFY_URL,prefix='/ember-warden-review/flame-fan-levels/';
+const server=external?null:http.createServer(async(req,res)=>{try{const rel=new URL(req.url,'http://local').pathname.replace(prefix,'');const file=path.resolve('dist-flame-fan',rel||'index.html');if(!file.startsWith(path.resolve('dist-flame-fan')+'/'))throw Error('Invalid path');res.setHeader('Content-Type',({'.html':'text/html','.js':'text/javascript','.css':'text/css','.json':'application/json','.png':'image/png','.webp':'image/webp'})[path.extname(file)]||'application/octet-stream');res.end(await fs.readFile(file));}catch{res.statusCode=404;res.end();}});
+if(server)await new Promise(r=>server.listen(3957,'127.0.0.1',r));
+const errors=[],checks=[];
+try{for(const width of [1440,390]){const browser=await launch();try{const page=await browser.newPage({viewport:{width,height:844}});page.on('pageerror',e=>errors.push(e.message));page.on('response',r=>{if(r.status()>=400)errors.push(`HTTP ${r.status()} ${r.url()}`);});await page.goto(external||'http://127.0.0.1:3957'+prefix);await page.waitForFunction(()=>window.__FAN_PREVIEW__,null,{timeout:60000});for(let rank=1;rank<=5;rank++){await page.selectOption('#level',String(rank));await page.evaluate(()=>window.__FAN_PREVIEW__.seek(.95));const s=await page.evaluate(()=>window.__FAN_PREVIEW__.state());assert.equal(s.level,rank);assert.equal(s.actorsLoaded,2);assert.equal(s.projectiles,0);assert(s.comparison.every(c=>c.scale===38));}await page.click('#replay');assert(!(await page.evaluate(()=>window.__FAN_PREVIEW__.state().paused)));assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));checks.push({width,ranks:5,actors:2,projectiles:0,controls:true,overflow:false});}finally{await browser.close();}}assert.deepEqual(errors,[]);await fs.writeFile(`docs/flame-fan-gameplay/legacy-player-${external?'live':'local'}.json`,JSON.stringify({passed:true,checks,errors},null,2));console.log('Legacy player PASS',checks);}finally{if(server){server.closeAllConnections();await new Promise(r=>server.close(r));}}

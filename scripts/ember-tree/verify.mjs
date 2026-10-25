@@ -62,10 +62,10 @@ try{
    await page.keyboard.press('k');await settle(page);assert((await t(page)).open);await page.keyboard.press('k');await settle(page);assert(!(await t(page)).open);
    await page.evaluate(()=>window.__STRONGHOLD_COMBAT__.skillTree.open());await settle(page);s=await t(page);await page.mouse.click(20,s.panel.y+s.panel.height+15);await settle(page);assert(!(await t(page)).open);
    r.checks.push('X, Esc, K and outside close; concept remains unlearned; capstone reachable');
-   // Quick tap still calls the pre-existing Ember cast renderer, unlike inspection.
+   // Quick tap opens the loadout tree; equipped skills cast automatically in gameplay.
    await page.evaluate(()=>window.__STRONGHOLD_COMBAT__.resetCooldowns());
-   if(mobile){await Promise.all([touch('touchStart',sockets[0].x,sockets[0].y),touch('touchEnd')]);}else await page.mouse.click(sockets[0].x,sockets[0].y);
-   assert(!(await t(page)).open);assert((await page.evaluate(()=>window.__STRONGHOLD_COMBAT__.snapshot().loadout.slots[0].cooldownMs))>0);r.checks.push('Tap casts Ember and does not open tree');r.pass=true;
+   if(mobile){await touch('touchStart',sockets[0].x,sockets[0].y);await page.waitForTimeout(100);await touch('touchEnd');}else await page.mouse.click(sockets[0].x,sockets[0].y,{delay:100});await settle(page);
+   assert((await t(page)).open);assert.equal((await t(page)).slot,0);assert.equal((await page.evaluate(()=>window.__STRONGHOLD_COMBAT__.snapshot().loadout.slots[0].cooldownMs)),0);r.checks.push('Tap opens Ember skill tree without casting');r.pass=true;
   }finally{await browser.close();}
  }
  assert.deepEqual(report.errors,[]);
