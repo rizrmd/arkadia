@@ -22,7 +22,7 @@ import type {Net} from './net/client';
 import {characters,DEFAULT_HERO,heroInfo,type HeroId} from './heroes';
 import {createCombatVfx,facingScreenAngle,SKILL_CATALOG,type SkillId} from './combat-vfx';
 import {measureTracelogPhase} from './tracelog';
-import {SkillTree,nodeForSkill} from './skill-tree';
+import {SkillTree,nodeForSkill,emberNodeForSkill} from './skill-tree';
 
 const SCALE=DISPLAY/1.1;
 const HERO_REACH=STATS.hero.reach*SCALE,ENEMY_REACH=STATS.revenant.reach*SCALE,SIDE=.35*SCALE,SPACING=.72*SCALE;
@@ -126,7 +126,12 @@ export async function createEncounters(o:{
   {
    ...o.hudCallbacks,
    // Skills only auto-cast: a tap on a slot opens the skill tree to choose the skill equipped there.
-   onSkillClick:(idx)=>openSkillTree(idx),
+   onSkillClick:(idx)=>{
+    if(currentHeroId()==='rift-runner'){openSkillTree(idx);return;}
+    const sid=run.slots[idx] as SkillId|undefined;
+    if(sid&&h.alive)vfx.castSkill(sid);
+   },
+   onSkillInspect:(idx)=>openSkillTree(idx),
   },
  );
  hud.zIndex=10;
@@ -134,7 +139,7 @@ export async function createEncounters(o:{
  const minimap=new Minimap();o.uiStage.addChild(minimap);
 
  // Rift Runner Skill Tree (skill-tree.ts): sits in the space the HUD leaves free, so the HUD stays uncovered.
- const skillTree=new SkillTree(o.uiStage,{run:()=>run,region:skillTreeRegion,equip:(slot,id)=>{
+ const skillTree=new SkillTree(o.uiStage,{run:()=>run,hero:currentHeroId,region:skillTreeRegion,equip:(slot,id)=>{
   // Co-op runs come from the server, which would put the old loadout straight back.
   if(online)return 'Skills can be changed in solo play';
   if(!equip(run,slot,id,currentHeroId()))return 'That skill cannot go in this slot';
@@ -158,12 +163,12 @@ export async function createEncounters(o:{
   return {vertical:false,rect:{x:m,y:m,width:W-m*2,height:H-m*2}};
  }
  function openSkillTree(slot?:number){
-  if(currentHeroId()!=='rift-runner')return;
-  const focus=nodeForSkill(run.slots[slot??0])??(slot==null?'rift-bolt':undefined);
+  const ember=currentHeroId()==='ember-warden';
+  const focus=(ember?emberNodeForSkill:nodeForSkill)(run.slots[slot??0])??(slot==null?(ember?'flame-fan':'rift-bolt'):undefined);
   void skillTree.show(focus,slot??null);
  }
  // Fetch the tree art once the world is up, so the first long-press opens it at once.
- setTimeout(()=>{if(currentHeroId()==='rift-runner')void skillTree.preload();},4000);
+ setTimeout(()=>{void skillTree.preload();},4000);
 
  // v5 Non-Modal Level-Up Blessing Overlay in Pixi (0% center-screen modal obstruction; combat continues in real time)
  const blessingOverlay=new LevelUpBlessingOverlay(o.frames,id=>select(id));
@@ -260,6 +265,8 @@ export async function createEncounters(o:{
  }
 
  let lastSkillSig='';
+ // Ember names share combat ids with Rift; presentation must follow the selected hero.
+ const skillName=(id:string,fallback:string)=>currentHeroId()==='ember-warden'?({'cinder-step':'Cinder Step',cleave:'Molten Cleave',shockwave:'Seismic Slam (Molten)'} as Record<string,string>)[id]??fallback:fallback;
  function syncSkillBar(){
   const hid=currentHeroId();
   syncHeroLoadout(run,hid);
@@ -277,7 +284,7 @@ export async function createEncounters(o:{
     const ready=cd<=40;
     const stateLabel=ready?(foeInAoe?'Firing':'Auto'):`${(cd/1000).toFixed(1)}s`;
     skills.push({
-     name:def.name,
+     name:skillName(sid,def.name),
      level:rank,
      art:SKILL_ART[sid]??'skill-flame-fan',
      stateLabel,
@@ -317,7 +324,7 @@ export async function createEncounters(o:{
    return;
   }
   // No manual casting: 1/2/3 open the skill tree on that slot, like a tap on it.
-  if(!run.pending)openSkillTree(idx);
+  if(!run.pending){if(currentHeroId()==='rift-runner')openSkillTree(idx);else{const sid=run.slots[idx] as SkillId|undefined;if(sid)vfx.castSkill(sid);}}
  });
 
  let offerKey='';
@@ -359,7 +366,7 @@ export async function createEncounters(o:{
       id,
       optionNumber:optNum,
       kind:'active',
-      name:card.blessingTitle??card.name,
+      name:skillName(id,card.blessingTitle??card.name),
       rankLabel:`Lv. ${r} → Lv. ${r+1}`,
       statSummary:card.upgradeSummary??'+25% Cone DMG · -0.4s CD',
       art:SKILL_ART[id]??'skill-flame-fan',
@@ -374,7 +381,7 @@ export async function createEncounters(o:{
       id,
       optionNumber:optNum,
       kind:'active',
-      name:card.blessingTitle??card.name,
+      name:skillName(id,card.blessingTitle??card.name),
       // With every slot full a new skill is learned unequipped; the player swaps it in from the skill tree.
       rankLabel:slotsFull?'LEARN Lv. 1':'UNLOCK Lv. 1',
       statSummary:slotsFull?'Equip it from the Skill Tree':card.unlockSummary??'AoE Fire Ring · 4.0s CD',
@@ -388,7 +395,7 @@ export async function createEncounters(o:{
      id,
      optionNumber:optNum,
      kind:'passive',
-     name:card.blessingTitle??card.name,
+     name:skillName(id,card.blessingTitle??card.name),
      rankLabel:'(PASSIVE)',
      statSummary:card.passiveSummary??card.description,
      art:'skill-blessing',

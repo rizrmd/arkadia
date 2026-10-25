@@ -1,0 +1,44 @@
+{
+  "base": "http://127.0.0.1:5731",
+  "views": {
+    "desktop": {
+      "viewport": [
+        1440,
+        900
+      ],
+      "checks": [
+        "Fresh run: Flame Fan Lv.1 only; 15 nodes, 3 concepts; five active pips, borderless passives",
+        "Inspect gesture focuses and scrolls without casting; real ranks, passive count, 1/2/3 badges and learned unequipped node",
+        "Drag/wheel scroll works",
+        "X, Esc, K and outside close; concept remains unlearned; capstone reachable",
+        "Tap casts Ember and does not open tree"
+      ],
+      "screenshots": [
+        "docs/ember-tree/local-desktop-fresh.webp",
+        "docs/ember-tree/local-desktop-inspect.webp",
+        "docs/ember-tree/local-desktop-concept.webp"
+      ],
+      "pass": true
+    },
+    "mobile": {
+      "viewport": [
+        390,
+        844
+      ],
+      "checks": [
+        "Fresh run: Flame Fan Lv.1 only; 15 nodes, 3 concepts; five active pips, borderless passives",
+        "Inspect gesture focuses and scrolls without casting; real ranks, passive count, 1/2/3 badges and learned unequipped node",
+        "Drag/wheel scroll works",
+        "X, Esc, K and outside close; concept remains unlearned; capstone reachable",
+        "Tap casts Ember and does not open tree"
+      ],
+      "screenshots": [
+        "docs/ember-tree/local-mobile-fresh.webp",
+        "docs/ember-tree/local-mobile-inspect.webp",
+        "docs/ember-tree/local-mobile-concept.webp"
+      ],
+      "pass": true
+    }
+  },
+  "errors": []
+}

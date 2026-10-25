@@ -3,7 +3,7 @@ import {Container,Graphics,Rectangle,Sprite,TilingSprite} from 'pixi.js';
 import {FrameSet,pickFrameScale} from '../typography/frames';
 import {MsdfText} from '../typography/text';
 import {ROLES,type TextRole} from '../typography/tokens';
-import type {Progression} from './progression';
+import type {HeroKind,Progression} from './progression';
 
 // Rift Runner Skill Tree (Knowledge: "Rift Runner — Ascension Tree Concept", revised progression): a gold-framed panel in
 // front of the dimmed world with the HUD left uncovered. Portrait screens stack the tree bottom to top (Rift Bolt at the
@@ -14,6 +14,7 @@ import type {Progression} from './progression';
 // Art: public/skill-tree/v1 (scripts/skill-tree/build-assets.mjs).
 
 export type TreeNodeId='rift-bolt'|'rift-dash'|'rift-trap'|'astral-cleave'|'seismic-slam'|'phantom-legion'|'event-horizon'|'rift-lance'|
+ 'flame-fan'|'cinder-step'|'ember-snare'|'molten-cleave'|'molten-slam'|'inferno-avatar'|'caldera-eruption'|'solar-fan'|
  'second-wind'|'titan-strike'|'arc-nova'|'soul-feast'|'chrono-surge'|'furnace-heart'|'ascendant-star';
 type Kind='active'|'ultimate'|'passive';
 // game: the progression id the node reads its rank from; nodes without one are not in the game yet and always show unlearned.
@@ -45,6 +46,18 @@ const TIERS:TreeNodeId[][]=[['rift-dash','rift-trap','second-wind','titan-strike
 export const nodeForSkill=(id:string|undefined)=>TREE_NODES.find(n=>n.game===id)?.id;
 export const PLACEHOLDER_NODES=TREE_NODES.filter(n=>!n.game).map(n=>n.id);
 
+// Ember uses the same renderer and frame kit, with its own node identities, art and roomier two-column portrait rows.
+const EMBER_IDS:Partial<Record<TreeNodeId,TreeNodeId>>={'rift-bolt':'flame-fan','rift-dash':'cinder-step','rift-trap':'ember-snare','astral-cleave':'molten-cleave','seismic-slam':'molten-slam','phantom-legion':'inferno-avatar','event-horizon':'caldera-eruption','rift-lance':'solar-fan'};
+const EMBER_NAMES:Record<string,string>={'flame-fan':'Flame Fan','cinder-step':'Cinder Step','ember-snare':'Ember Snare','molten-cleave':'Molten Cleave','molten-slam':'Seismic Slam\n(Molten)','inferno-avatar':'Inferno Avatar','caldera-eruption':'Caldera Eruption','solar-fan':'Solar Fan'};
+const EMBER_ROWS:Record<string,[number,number]>={'flame-fan':[0,0],'cinder-step':[-1.15,3.1],'ember-snare':[1.15,3.1],'second-wind':[-1.15,6.2],'titan-strike':[1.15,6.2],'molten-cleave':[-1.15,9.3],'molten-slam':[1.15,9.3],'arc-nova':[-1.15,12.4],'soul-feast':[1.15,12.4],'inferno-avatar':[-1.15,15.5],'caldera-eruption':[1.15,15.5],'chrono-surge':[-1.15,18.6],'furnace-heart':[1.15,18.6],'solar-fan':[0,21.7],'ascendant-star':[0,24.8]};
+export const EMBER_TREE_NODES:NodeDef[]=TREE_NODES.map(n=>{
+ const id=EMBER_IDS[n.id]??n.id;
+ const game=n.game==='rift-bolt'?'flame-fan':n.game==='rift-dash'?'cinder-step':n.game==='rift-trap'?'ember-snare':n.game;
+ return {...n,id,name:EMBER_NAMES[id]??n.name,game,v:EMBER_ROWS[id],h:[n.h[0]*1.25,n.h[1]*1.32]};
+});
+const EMBER_TIERS:TreeNodeId[][]=[['cinder-step','ember-snare'],['second-wind','titan-strike'],['molten-cleave','molten-slam'],['arc-nova','soul-feast'],['inferno-avatar','caldera-eruption'],['chrono-surge','furnace-heart'],['solar-fan']];
+export const emberNodeForSkill=(id:string|undefined)=>EMBER_TREE_NODES.find(n=>n.game===id)?.id;
+
 // The stone's opacity: the dimmed world shows faintly through the panel.
 const BACKDROP_ALPHA=.86;
 const MAX_PIPS=5,TAP=8,LEVEL_PLATE='level-plate';
@@ -56,7 +69,7 @@ const LEVEL_ROLE:TextRole={...ROLES['hud-badge'],fill:0xfbe7b5};
 const SIZE:Record<Kind,number>={active:1,ultimate:1.08,passive:.9};
 const ICON_IN_RING=94/128,GLOW=1.7;
 
-type NodeView={def:NodeDef;root:Container;glow:Sprite;icon:Sprite;ring?:Sprite;plate:Container;level:MsdfText;name:MsdfText;pips:Sprite[];badge?:Sprite;x:number;y:number;r:number;state:string};
+type NodeView={def:NodeDef;root:Container;glow:Sprite;icon:Sprite;ring?:Sprite;plate:Container;level:MsdfText;name:MsdfText;pips:Sprite[];badge?:Sprite;x:number;y:number;r:number;state:string;lock:string};
 type Rect={x:number;y:number;width:number;height:number};
 type Pt={x:number;y:number};
 
@@ -65,6 +78,12 @@ export class SkillTree{
  readonly shade=new Graphics();
  readonly panel=new Container();
  private frames?:FrameSet;
+ private emberFrames?:FrameSet;
+ private get ember(){return this.o.hero?.()==='ember-warden';}
+ private get defs(){return this.ember?EMBER_TREE_NODES:TREE_NODES;}
+ private get tiers(){return this.ember?EMBER_TIERS:TIERS;}
+ private get rootId():TreeNodeId{return this.ember?'flame-fan':'rift-bolt';}
+ private iconTexture(name:string){return (this.ember?this.emberFrames:this.frames)!.texture(name);}
  private loading?:Promise<FrameSet>;
  private frameArt?:Container;
  // Painted backdrop under the frame rails: charcoal stone (semi-transparent, the world shows faintly through), edge
@@ -95,7 +114,7 @@ export class SkillTree{
  private press:{x:number;y:number;at:number;last:number;moved:boolean;id:number}|null=null;
  private frame=0;private lastTick=0;private stateKey='';private layoutKey='';
  private openState=false;
- constructor(private uiStage:Container,private o:{run:()=>Progression;region:()=>{rect:Rect;vertical:boolean};equip:(slot:number,id:string)=>true|string;onClose?:()=>void}){
+ constructor(private uiStage:Container,private o:{run:()=>Progression;hero?:()=>HeroKind;region:()=>{rect:Rect;vertical:boolean};equip:(slot:number,id:string)=>true|string;onClose?:()=>void}){
   this.shade.zIndex=-1;this.shade.visible=false;this.shade.eventMode='static';
   this.shade.on('pointertap',()=>this.open(false));
   // Above the first-visit movement hint (44), under the world map (45) and the level-up offer (55).
@@ -135,7 +154,7 @@ export class SkillTree{
  preload(){
   if(!this.loading){
    const scale=pickFrameScale(Math.min(devicePixelRatio||1,3),.9);
-   this.loading=FrameSet.load('/skill-tree/v1/',scale).then(f=>{this.frames=f;return f;});
+   this.loading=Promise.all([FrameSet.load('/skill-tree/v1/',scale),FrameSet.load('/skill-tree/ember-v1/',scale)]).then(([f,e])=>{this.frames=f;this.emberFrames=e;return f;});
    this.loading.catch(e=>{console.error('Skill tree art failed to load',e);this.loading=undefined;});
   }
   return this.loading;
@@ -166,7 +185,7 @@ export class SkillTree{
   clearTimeout(this.hintTimer);
   if(holdMs)this.hintTimer=window.setTimeout(()=>this.say(this.prompt(),0),holdMs);
  }
- private prompt(){return this.slot==null?'Tap a skill slot on the HUD to change its skill':`Skill ${this.slot+1}: tap a learned skill to equip it`;}
+ private prompt(){return this.slot==null?(this.ember?'Hold or right-click a HUD skill to inspect it':'Tap a skill slot on the HUD to change its skill'):`Skill ${this.slot+1}: tap a learned skill to equip it`;}
  private hintY=0;
  private placeHint(){this.hint.place(this.rect.width/2,this.hintY,.5);}
  private axis(p:Pt){return this.vertical?p.y:p.x;}
@@ -218,7 +237,7 @@ export class SkillTree{
   this.clip.clear().rect(0,0,v.width,v.height).fill(0xffffff);
   this.view={x:rect.x+v.x,y:rect.y+v.y,width:v.width,height:v.height};
   // u: portrait fits the four columns across; landscape fits the tallest column (Tier I/II: four nodes) down.
-  this.u=vertical?Math.min(84,v.width/5.2):Math.min(118,v.height/5.95);
+  this.u=this.ember?(vertical?Math.min(64,v.width/4.5):Math.min(72,v.height/7.8)):(vertical?Math.min(84,v.width/5.2):Math.min(118,v.height/5.95));
   this.build(f);
   // Edge fades, chevrons and the scrollbar sit over the content.
   for(const c of [this.fadeA,this.fadeB,this.chevronA,this.chevronB,this.track,this.thumb])c?.destroy();
@@ -260,30 +279,30 @@ export class SkillTree{
   this.nodesLayer.removeChildren().forEach(c=>c.destroy({children:true}));
   this.views.clear();this.stateKey='';
   const u=this.u,vt=this.vertical;
-  const raw=new Map(TREE_NODES.map(n=>[n.id,vt?{x:n.v[0]*u,y:-n.v[1]*u}:{x:n.h[0]*u,y:n.h[1]*u}]));
-  const r=(n:NodeDef)=>SIZE[n.kind]*u/2*(n.id==='rift-bolt'?1.12:1);
+  const raw=new Map(this.defs.map(n=>[n.id,vt?{x:n.v[0]*u,y:-n.v[1]*u}:{x:n.h[0]*u,y:n.h[1]*u}]));
+  const r=(n:NodeDef)=>SIZE[n.kind]*u/2*(n.id===this.rootId?1.12:1);
   // Extents: rings reach their studs (r·1.12) above; labels and pips hang below, about .25 em per character to a side.
   const nameSize=Math.max(12,u*.18);
   let x0=Infinity,y0=Infinity,x1=-Infinity,y1=-Infinity;
-  for(const n of TREE_NODES){const p=raw.get(n.id)!,rr=r(n),half=Math.max(rr*1.12,n.name.length*nameSize*.25);x0=Math.min(x0,p.x-half);x1=Math.max(x1,p.x+half);y0=Math.min(y0,p.y-rr*1.14);y1=Math.max(y1,p.y+rr+u*.42);}
-  const pad=u*.28,ox=-x0+pad,oy=-y0+pad;
+  for(const n of this.defs){const p=raw.get(n.id)!,rr=r(n),half=Math.max(rr*1.12,n.name.length*nameSize*.25);x0=Math.min(x0,p.x-half);x1=Math.max(x1,p.x+half);y0=Math.min(y0,p.y-rr*1.14);y1=Math.max(y1,p.y+rr+u*.42);}
+  const pad=this.ember?(vt?24:48):u*.28,ox=-x0+pad,oy=-y0+pad;
   // Centre a tree that is smaller than the viewport along its cross axis (and its scroll axis when it fits).
   const w=x1-x0+pad*2,h=y1-y0+pad*2,vw=this.view.width,vh=this.view.height;
   const cx=Math.max(0,(vw-w)/2),cy=Math.max(0,(vh-h)/2);
   this.size={width:Math.max(w,vw),height:Math.max(h,vh)};
   const at=(id:TreeNodeId)=>{const p=raw.get(id)!;return {x:p.x+ox+cx,y:p.y+oy+cy};};
-  const node=(id:TreeNodeId)=>TREE_NODES.find(n=>n.id===id)!;
+  const node=(id:TreeNodeId)=>this.defs.find(n=>n.id===id)!;
   // Connectors: 9-sliced gold rails meeting at right angles, diamond junctions where a tier leaves the trunk.
   const lw=Math.max(5,u*.075);
   const hLine=(xa:number,xb:number,y:number)=>{if(Math.abs(xb-xa)<1)return;const s=this.lines.addChild(f.frame('line-h',Math.abs(xb-xa)+lw*.5,lw));s.position.set(Math.min(xa,xb)-lw*.25,y-lw/2);};
   const vLine=(x:number,ya:number,yb:number)=>{if(Math.abs(yb-ya)<1)return;const s=this.lines.addChild(f.frame('line-v',lw,Math.abs(yb-ya)+lw*.5));s.position.set(x-lw/2,Math.min(ya,yb)-lw*.25);};
   const gem=(name:string,x:number,y:number,d:number)=>{const s=this.lines.addChild(f.frame(name,d,d));s.position.set(x-d/2,y-d/2);};
-  const root=at('rift-bolt'),cap=at('ascendant-star');
+  const root=at(this.rootId),cap=at('ascendant-star');
   // Edge of a node facing the trunk side its connector comes from: top (portrait) or left (landscape).
   const edge=(id:TreeNodeId)=>{const n=node(id),rr=r(n);return n.kind==='passive'?rr*.82:rr*1.06;};
-  if(vt)vLine(root.x,root.y-edge('rift-bolt'),cap.y+edge('ascendant-star'));
-  else hLine(root.x+edge('rift-bolt'),cap.x-edge('ascendant-star'),root.y);
-  for(const tier of TIERS){
+  if(vt)vLine(root.x,root.y-edge(this.rootId),cap.y+edge('ascendant-star'));
+  else hLine(root.x+edge(this.rootId),cap.x-edge('ascendant-star'),root.y);
+  for(const tier of this.tiers){
    const pts=tier.map(id=>({id,...at(id)}));
    if(vt){
     const y=Math.min(...pts.map(p=>p.y-r(node(p.id))))-u*.2,xs=pts.map(p=>p.x);
@@ -299,11 +318,11 @@ export class SkillTree{
   }
   if(!vt)gem('line-stud',cap.x-edge('ascendant-star')-u*.04,cap.y,u*.15);
   // Nodes.
-  for(const n of TREE_NODES){
+  for(const n of this.defs){
    const p=at(n.id),rr=r(n),d=rr*2,box=this.nodesLayer.addChild(new Container());
    box.position.set(p.x,p.y);box.label=`skill-node-${n.id}`;
    const glow=box.addChild(new Sprite(f.texture('node-glow')));glow.anchor.set(.5);glow.width=glow.height=d*GLOW;glow.visible=false;
-   const icon=box.addChild(new Sprite(f.texture(`icon-${n.id}-dim`)));icon.anchor.set(.5);
+   const icon=box.addChild(new Sprite(this.iconTexture(`icon-${n.id}-dim`)));icon.anchor.set(.5);
    icon.width=icon.height=n.kind==='passive'?d:d*ICON_IN_RING;
    let ring:Sprite|undefined;
    if(n.kind!=='passive'){ring=box.addChild(new Sprite(f.texture(n.evolution?'ring-evolution':'ring-active')));ring.anchor.set(.5);ring.width=ring.height=d;}
@@ -318,32 +337,35 @@ export class SkillTree{
    const pips:Sprite[]=[];
    if(n.kind!=='passive'){
     const ps=Math.max(9,u*.13),gap=ps*1.32;
-    for(let i=0;i<MAX_PIPS;i++){const s=box.addChild(new Sprite(f.texture('pip-off')));s.anchor.set(.5);s.width=s.height=ps;s.position.set((i-(MAX_PIPS-1)/2)*gap,nameY+ps*.95);pips.push(s);}
+    for(let i=0;i<MAX_PIPS;i++){const s=box.addChild(new Sprite(f.texture('pip-off')));s.anchor.set(.5);s.width=s.height=ps;s.position.set((i-(MAX_PIPS-1)/2)*gap,nameY+ps*.95+(n.name.includes('\n')?nameSize*1.4:0));pips.push(s);}
    }
    let badge:Sprite|undefined;
    if(n.kind==='active'){badge=box.addChild(new Sprite(f.texture('slot-1')));badge.anchor.set(.5);badge.width=badge.height=Math.max(22,u*.3);badge.position.set(rr*.74,-rr*.74);badge.visible=false;}
-   this.views.set(n.id,{def:n,root:box,glow,icon,ring,plate,level,name,pips,badge,x:p.x,y:p.y,r:rr,state:''});
+   this.views.set(n.id,{def:n,root:box,glow,icon,ring,plate,level,name,pips,badge,x:p.x,y:p.y,r:rr,state:'',lock:''});
   }
   this.refresh(true);
  }
 
  // Learned nodes are in colour with their level plate; unlearned ones are grey and dim. Equipped actives show 1/2/3.
+ // Unlearned nodes in a locked tier show their requirement on the plate instead ("4 pts", or "Lv. 20" for the capstone).
  private refresh(force=false){
   const f=this.frames;if(!f||!this.views.size)return;
   const run=this.o.run(),slots=run.slots??[];
   const rank=(n:NodeDef)=>!n.game?0:n.game==='star'?run.stars??0:Math.max(0,run.skills?.[n.game]??(slots.includes(n.game)?1:0));
-  const key=TREE_NODES.map(n=>`${rank(n)}:${n.game?slots.indexOf(n.game):-1}`).join('|');
+  const lock=(_n:NodeDef)=>'';
+  const key=this.defs.map(n=>`${rank(n)}:${n.game?slots.indexOf(n.game):-1}:${lock(n)}`).join('|');
   if(!force&&key===this.stateKey)return;
   this.stateKey=key;
   for(const v of this.views.values()){
-   const n=v.def,lv=rank(n),learned=lv>0,slot=n.game?slots.indexOf(n.game):-1,state=`${lv}:${slot}`;
+   const n=v.def,lv=rank(n),learned=lv>0,slot=n.game?slots.indexOf(n.game):-1,locked=learned?'':lock(n),state=`${lv}:${slot}:${locked}`;
    if(!force&&state===v.state)continue;
-   v.state=state;
-   v.icon.texture=f.texture(learned?`icon-${n.id}`:`icon-${n.id}-dim`);
-   v.icon.tint=learned?0xffffff:0x8c8680;
+   v.state=state;v.lock=locked;
+   v.icon.texture=this.iconTexture(learned?`icon-${n.id}`:`icon-${n.id}-dim`);
+   v.icon.tint=learned?0xffffff:locked?0x6e6964:0x8c8680;
    if(v.ring)v.ring.tint=learned?0xffffff:0x9c8a74;
-   v.plate.visible=v.level.visible=learned;
-   if(learned){v.level.text=`Lv. ${lv}`;v.level.place(0,v.plate.y+v.plate.height/2+v.level.size*.36,.5);}
+   v.plate.visible=v.level.visible=learned||!!locked;
+   v.plate.alpha=v.level.alpha=learned?1:.78;
+   if(v.plate.visible){v.level.text=learned?`Lv. ${lv}`:locked;v.level.place(0,v.plate.y+v.plate.height/2+v.level.size*.36,.5);}
    v.name.alpha=learned?1:.62;
    v.pips.forEach((p,i)=>{p.texture=f.texture(i<Math.min(MAX_PIPS,lv)?'pip-on':'pip-off');p.alpha=learned?1:.7;});
    if(v.badge){v.badge.visible=slot>=0&&slot<3;if(v.badge.visible)v.badge.texture=f.texture(`slot-${slot+1}`);}
@@ -391,8 +413,8 @@ export class SkillTree{
  private choose(v:NodeView){
   const n=v.def;this.highlight(n.id);
   if(n.kind==='passive'){this.say(`${n.name} is a passive: always active once learned`);return;}
-  if(!n.game){this.say(`${n.name} is not in the game yet`);return;}
-  if(!v.plate.visible){this.say(`${n.name} is not learned yet`);return;}
+  if(!n.game){this.say(`${n.name}: Concept only; not in the game yet`);return;}
+  if(!this.learned(v)){this.say(`${n.name} is not learned yet`);return;}
   if(this.slot==null){this.say(this.prompt());return;}
   const slots=this.o.run().slots??[],at=slots.indexOf(n.game);
   if(at===this.slot||(at>=0&&this.slot>=slots.length&&at===slots.length-1)){this.say(`${n.name} is already on Skill ${at+1}`);return;}
@@ -420,12 +442,14 @@ export class SkillTree{
  snapshot(){
   const nodes=[...this.views.values()].map(v=>{
    const g=this.content.toGlobal({x:v.x,y:v.y});
-   return {id:v.def.id,name:v.def.name,kind:v.def.kind,placeholder:!v.def.game,learned:v.plate.visible,level:v.plate.visible?Number(v.level.text.replace(/\D+/g,'')):0,
-    pips:v.pips.filter(p=>p.texture===this.frames?.texture('pip-on')).length,slot:v.badge?.visible?this.slotOf(v):0,
+   const learned=this.learned(v);
+   return {id:v.def.id,name:v.def.name,kind:v.def.kind,placeholder:!v.def.game,learned,level:learned?Number(v.level.text.replace(/\D+/g,'')):0,locked:v.lock||null,
+    pipCount:v.pips.length,ring:!!v.ring,pips:v.pips.filter(p=>p.texture===this.frames?.texture('pip-on')).length,slot:v.badge?.visible?this.slotOf(v):0,
     screen:{x:+g.x.toFixed(1),y:+g.y.toFixed(1),r:+v.r.toFixed(1)},inView:this.inView(g.x,g.y),highlighted:this.highlighted===v.def.id};
   });
   const c=this.close?.getBounds();
   return {open:this.openState,slot:this.slot,hint:this.hint.text,vertical:this.vertical,u:+this.u.toFixed(1),panel:{...this.rect},view:{...this.view},close:c?{x:c.x+c.width/2,y:c.y+c.height/2}:null,scroll:+this.scroll.toFixed(1),maxScroll:+this.maxScroll.toFixed(1),highlighted:this.highlighted,nodes};
  }
+ private learned(v:NodeView){return v.plate.visible&&!v.lock;}
  private slotOf(v:NodeView){const s=this.o.run().slots??[];return v.def.game?s.indexOf(v.def.game)+1:0;}
 }

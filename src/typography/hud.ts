@@ -200,8 +200,11 @@ export interface HudCallbacks {
  onCoopClick?: () => void;
  // Tap or click on a skill slot (the game opens the skill tree on that slot; skills only auto-cast).
  onSkillClick?: (index: number) => void;
+ onSkillInspect?: (index: number) => void;
  onMenuClick?: () => void;
 }
+
+export const SKILL_LONG_PRESS_MS=450;
 
 export const DEFAULT_HUD: HudState = {
  name: 'Ember Warden',
@@ -378,6 +381,7 @@ export class Hud extends Container {
    this.overlay.alpha = 0;
    this.addChild(this.overlay);
   }
+  addEventListener('contextmenu',e=>{if(performance.now()<this.contextGuardUntil)e.preventDefault();});
   this.buildHero();
   this.buildStats();
   this.buildSkills();
@@ -827,6 +831,34 @@ export class Hud extends Container {
   }
  }
 
+ private contextGuardUntil = 0;
+ private bindSkillPress(slot: Container, i: number) {
+  let timer = 0;
+  let inspected = false;
+  const inspect = () => {
+   inspected = true;
+   this.callbacks.onSkillInspect?.(i);
+  };
+  slot.on('pointerdown', (e) => {
+   clearTimeout(timer);
+   inspected = false;
+   if (!this.callbacks.onSkillInspect) return;
+   this.contextGuardUntil = performance.now() + 2000;
+   // Mouse: right-click inspects, a held left button still casts. Touch and pen: long-press.
+   if (e.button === 2) inspect();
+   else if (e.pointerType !== 'mouse') timer = window.setTimeout(inspect, SKILL_LONG_PRESS_MS);
+  });
+  for (const ev of ['pointerup', 'pointerupoutside', 'pointercancel', 'pointerleave'] as const) slot.on(ev, () => clearTimeout(timer));
+  slot.on('pointertap', (e) => {
+   clearTimeout(timer);
+   if (inspected || e.button === 2) {
+    inspected = false;
+    return;
+   }
+   this.callbacks.onSkillClick?.(i);
+  });
+ }
+
  private buildSkills() {
   const f = this.frames;
   this.skillViews = [];
@@ -841,7 +873,7 @@ export class Hud extends Container {
     slot.eventMode = 'static';
     slot.cursor = 'pointer';
     slot.hitArea = new Rectangle(cx - 68, cy - 62, 136, 192);
-    slot.on('pointertap', () => this.callbacks.onSkillClick?.(i));
+    this.bindSkillPress(slot, i);
 
     const socketBg = slot.addChild(new Graphics());
     const artHolder = slot.addChild(new Container());
@@ -966,7 +998,7 @@ export class Hud extends Container {
     cy: cfg.cy,
     radius: cfg.radius,
    };
-   slot.on('pointertap', () => this.callbacks.onSkillClick?.(i));
+   this.bindSkillPress(slot, i);
    this.skillViews.push(view);
   });
 
