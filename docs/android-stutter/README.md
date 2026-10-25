@@ -72,3 +72,11 @@ Browser pixel tests cover all five ranks, four animation times, full/partial mas
 Occlusion alpha is prefetched with already-requested camera-neighbourhood mask images. Repeated static lookups use image identity instead of DOM dimensions/URL reads. Single-bucket point probes reuse their already-unique candidate list. A browser test performs 10,000 cached alpha lookups with zero DOM property reads, exact alpha parity, distinct Canvas masks and correct gate-frame invalidation; it also gates deployment.
 
 Reports: gpu-preparation-before.json / gpu-preparation-after.json, flame-gpu-verification.json, alpha-cache-verification.json and default-gameplay-profile*.json. The zero-frame-drop goal remains active: these checks establish specific removed stalls and visual parity, not physical-device smoothness across all gameplay.
+
+## Published GPU release verification
+
+Revision `a0eae6d0` was pushed and deployed from a clean detached worktree through `scripts/fural-deploy.sh`. The production entry is `/assets/index-iXFD5qMw.js`; deployment build, required regression guards and health check succeeded. The live readiness probe reports four prepared programs, fifteen uploaded textures, no missing/unsupported effect references, and no page errors (`gpu-live-verification.json`).
+
+The live cast probe is inconclusive: the diagnostic AoE was accepted but no active sheet was observed during its sampling window. It therefore does not establish the native Flame Fan backend in live gameplay. Native rendering and visual parity remain covered by the isolated browser test; the production combat profile is recorded separately in `default-gameplay-profile-live-gpu.json`. The first live probe timed out after 45 seconds; the repeated readiness probe completed.
+
+Physical trace inspection still finds only older builds: newest Mali trace at 2026-10-26 00:04 WIB, with `/assets/index-DjrEquqd.js`. No current-build physical Android sample is available. The zero-frame-drop objective is not verified and remains active.
