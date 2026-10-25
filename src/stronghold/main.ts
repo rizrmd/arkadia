@@ -12,6 +12,7 @@ import {savedHero,saveHero,type HeroId} from './heroes';
 import {createHeroPicker} from './hero-picker';
 import {startFpsTracelog} from './tracelog';
 import {showFrameCapHint} from './frame-cap';
+import {showMovementHint} from './movement-hint';
 
 export async function mount(app:HTMLElement,progress:Progress){
  const rt=await ensurePixiRuntime(app);
@@ -100,7 +101,10 @@ export async function mount(app:HTMLElement,progress:Progress){
  startFpsTracelog({rt,getCombatSnapshot:()=>worldView.encounters.snapshot(),getLiveCounts:()=>worldView.encounters.liveCounts(),net,getHeroId:()=>hero});
  await picker.start();
  loaded();
- void picker.picked.then(()=>{if(invited)lobby!.prompt(invited);});
+ void picker.picked.then(()=>{
+  if(invited)lobby!.prompt(invited);
+  else showMovementHint(rt.uiStage,rt.frames,hero);
+ });
 
  (window as any).__COOP__=net&&{net,stats:()=>({status:net.status(),room:net.room(),you:net.you(),...net.stats,...net.timeline,rtt:net.rtt()})};
  (window as any).__PIXI_UI__={app:rt.app,hud:worldView.hud,clock,lobby,picker,stick:controls.stick};
