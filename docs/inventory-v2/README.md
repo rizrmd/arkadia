@@ -7,3 +7,9 @@ Prompts requested smooth non-pixel 2D illustration, strong simple silhouettes re
 The existing inventory store and gameplay effects remain unchanged. Responsive layouts, safe areas, 44 px minimum controls, selected/focus states and disabled Use states remain native. Item images fit within each slot, including short landscape layouts.
 
 Verification: `node scripts/test-inventory.mjs`, `node scripts/verify-inventory-layout.mjs`, `node scripts/verify-inventory-v2.mjs`; `VERIFY_URL=https://ark-whachat.fural.space node scripts/verify-inventory-v2.mjs` for live. The full-game check covers actual enemy damage/healing, successful return consuming one scroll, persistence, add/remove, keyboard and Settings/blessing guards at desktop/portrait/landscape.
+
+## Release
+
+Implementation commit `1a9d931` deployed from a clean committed checkout as layer `1792924887127-game-1a9d931-4f36ca046ed7`. Production build, all Go tests and deployment co-op smoke passed. Live gameplay checks passed at all three viewports, with zero page errors. All six served raster files match committed bytes (browser-origin asset verifier; raw Python HTTP is denied by the gateway). The peer's uncommitted Flame Fan changes remain excluded and untouched.
+
+Live game: https://ark-whachat.fural.space/ . Live evidence: https://ark-whachat.fural.space/inventory-v2-verification/live-results.json . `node scripts/verify-inventory-assets.mjs` verifies every raster asset hash and health/review availability.
