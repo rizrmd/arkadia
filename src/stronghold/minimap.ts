@@ -103,7 +103,7 @@ export class Minimap extends Container {
  constructor(){
   super();this.eventMode='static';this.interactiveChildren=true;this.cursor='pointer';this.zIndex=9;
   this.on('pointertap',()=>{if(!this.suppressTap)this.onOpen?.();});
-  this.on('pointerdown',e=>{if(!this.mobile)this.drag(e.clientX,e.clientY,0,0);});
+  this.on('pointerdown',e=>{this.suppressTap=false;if(!this.mobile)this.drag(e.clientX,e.clientY,0,0);});
   this.viewport.addChild(this.geometry,this.route);this.addChild(this.viewport,this.clip,this.frame,this.marker);this.viewport.mask=this.clip;
   this.marker.poly([0,-6,4.5,5,0,2.5,-4.5,5]).fill(0x50ecff).stroke({color:0x10282e,width:1.3});
   this.addChild(this.grips);
@@ -125,6 +125,8 @@ export class Minimap extends Container {
  resetLayout(){this.custom=null;try{localStorage.removeItem(LAYOUT_KEY);}catch{}}
  // One pointer drag from (x0,y0): sx,sy are the grip's corner (-1/+1), or 0,0 to move the whole map.
  private drag(x0:number,y0:number,sx:number,sy:number){
+  // Keep a completed drag suppressed until the next press, regardless of Pixi's pointertap/up order.
+  this.suppressTap=false;
   const {width,height}=this.screen;if(this.mobile||!width)return;
   const resize=sx!==0;let shift=false;
   const snap=(x:number,y:number)=>({...this.place(width,height,this.custom??{size:this.size,right:width-this.x-this.size,top:this.y}),x,y});
@@ -133,7 +135,7 @@ export class Minimap extends Container {
   const apply=(shiftKey:boolean)=>{
    if(shiftKey!==shift){shift=shiftKey;base=snap(last.x,last.y);}
    const dx=last.x-base.x,dy=last.y-base.y;
-   if(Math.hypot(last.x-x0,last.y-y0)>4)moved=true;
+   if(Math.hypot(last.x-x0,last.y-y0)>4){moved=true;this.suppressTap=true;}
    if(!moved)return;
    let size=base.size,left=base.left,top=base.top;
    if(resize&&!shift){
@@ -149,7 +151,7 @@ export class Minimap extends Container {
   const end=()=>{
    removeEventListener('pointermove',track);removeEventListener('pointerup',end);removeEventListener('pointercancel',end);
    removeEventListener('keydown',key);removeEventListener('keyup',key);
-   if(moved){this.suppressTap=true;setTimeout(()=>{this.suppressTap=false;},0);if(this.custom)try{localStorage.setItem(LAYOUT_KEY,JSON.stringify(this.custom));}catch{}}
+   if(moved&&this.custom)try{localStorage.setItem(LAYOUT_KEY,JSON.stringify(this.custom));}catch{}
   };
   addEventListener('pointermove',track);addEventListener('pointerup',end);addEventListener('pointercancel',end);
   addEventListener('keydown',key);addEventListener('keyup',key);

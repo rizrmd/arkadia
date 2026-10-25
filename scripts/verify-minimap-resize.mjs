@@ -15,7 +15,7 @@ try{
  await page.evaluate(()=>{localStorage.removeItem('arkodia.minimap.layout.v1');if(window.__PIXI_UI__?.picker?.isOpen())window.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',code:'Enter'}));});
  await page.waitForTimeout(800);
  const snap=()=>page.evaluate(()=>window.__STRONGHOLD_COMBAT__.snapshot().minimap.bounds);
- const mapOpen=()=>page.evaluate(()=>!!window.__STRONGHOLD_COMBAT__&&document.querySelector('canvas')&&true);
+ const mapOpen=()=>page.evaluate(()=>window.__WORLD_MAP__.snapshot().open);
  const b0=await snap();console.log('default',b0);
  const checks=[];const ok=(name,cond,data)=>{checks.push({name,pass:!!cond,data});console.log(cond?'PASS':'FAIL',name,JSON.stringify(data));};
  // 1) resize from the bottom-left grip: drag down-left grows, top-right corner stays.
@@ -36,12 +36,16 @@ try{
  ok('shift while resizing moves without resizing',moving.width===mid.width&&moving.x<mid.x-100,{mid,moving});
  ok('release keeps the layout',after.x===moving.x&&after.width===moving.width,{after});
  ok('stays square and on-screen',after.x>=0&&after.y>=0&&after.x+after.width<=1440&&after.y+after.height<=900,{after});
- const open=await page.evaluate(()=>document.body.innerText.includes('Full map')||false);
+ ok('resizing does not open the full map',!await mapOpen());
  // 3) drag the body moves it.
  await page.mouse.move(after.x+after.width/2,after.y+after.height/2);await page.mouse.down();
  for(let i=1;i<=8;i++)await page.mouse.move(after.x+after.width/2-i*10,after.y+after.height/2+i*10);
  await page.mouse.up();await page.waitForTimeout(100);
  const dragged=await snap();
+ ok('dragging does not open the full map',!await mapOpen());
+ await page.mouse.click(dragged.x+dragged.width/2,dragged.y+dragged.height/2);
+ ok('a fresh click after dragging opens the full map',await mapOpen());
+ await page.evaluate(()=>window.__WORLD_MAP__.open(false));
  ok('dragging the body moves it',dragged.x<after.x-60&&dragged.y>after.y+60&&dragged.width===after.width,{after,dragged});
  await page.screenshot({path:`${out}/4-moved.png`});
  // 4) layout persists across reload.
