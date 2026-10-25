@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises';import {execFileSync} from 'node:child_process';import sharp from 'sharp';import {createHash} from 'node:crypto';
 execFileSync('npx',['vite','build','--config','vite.flame-fan-flipbook.config.ts'],{stdio:'inherit'});
 const out='dist-flame-fan-flipbook';await fs.copyFile(out+'/flame-fan-flipbook.html',out+'/index.html');
-for(const n of ['hand-ignition-source.png','approved-reference.png'])await fs.copyFile('public/flame-fan-flipbook/'+n,out+'/'+n);
+for(const n of ['hand-ignition-source.png','approved-reference.png','rolling-fan-v2.png','eroded-core-v2.png','smoke-v2.png'])await fs.copyFile('public/flame-fan-flipbook/'+n,out+'/'+n);
 await fs.mkdir(out+'/actors',{recursive:true});
 // Read committed actors, not shared-clone WIP.
 const manifest=JSON.parse(execFileSync('git',['show','HEAD:public/assets/characters/manifest.json']));
