@@ -4,7 +4,7 @@
 //   rank-ups of skills already owned,
 // - Ascendant Star never appears before Lv. 20, and is the passive card of the Lv. 20 offer,
 // - every offer is 1 passive + 2 actives, three distinct, known cards (no blank card),
-// - Ember Warden offers are identical to the pre-gate progression.ts (git BASELINE_REF), seed for seed.
+// - Ember Warden now has its own gates, verified by scripts/ember-gates/verify.mjs (Stage 3).
 // Usage: node scripts/skill-tree/verify-gates.mjs [--seeds N]  (writes docs/skill-tree/verify-gates.json)
 import ts from 'typescript';import fs from 'node:fs';import {execFileSync} from 'node:child_process';import assert from 'node:assert/strict';
 
@@ -75,19 +75,8 @@ for(const [name,pick] of Object.entries(STRATEGIES)){
  }
 }
 
-// Ember Warden: offers and picks must match the baseline exactly.
-let emberOffers=0,emberMismatch=null;
-for(const [name,pick] of Object.entries(STRATEGIES)){
- for(let seed=1;seed<=SEEDS&&!emberMismatch;seed++){
-  const a=run(base,'ember-warden',seed,pick).seen,b=run(cur,'ember-warden',seed,pick).seen;
-  if(a.length!==b.length){emberMismatch=`${name} seed ${seed}: ${a.length} vs ${b.length} offers`;break;}
-  for(let i=0;i<a.length;i++){
-   emberOffers++;
-   if(a[i].offers.join()!==b[i].offers.join()){emberMismatch=`${name} seed ${seed} Lv.${a[i].level}: baseline [${a[i].offers}] vs now [${b[i].offers}]`;break;}
-  }
- }
-}
-if(emberMismatch)fail(`Ember Warden changed: ${emberMismatch}`);
+// Ember gating intentionally supersedes the earlier unchanged-Ember invariant. Its independent seeded,
+// rank-cap, fallback and TS/Go parity checks live in scripts/ember-gates/verify.mjs.
 
 // The baseline reproduces the bug: an ungated Rift Runner offers Tier II/III or Ascendant Star cards on the first level-up.
 let baselineLocked=0;
@@ -102,7 +91,7 @@ const result={
  seeds:SEEDS,strategies:Object.keys(STRATEGIES),
  riftRunner:{offersChecked,lockedTierOffers:failures.filter(f=>f.includes('needs')).length,ascendantStarOffers:starOffers,offersUsingFallback:fallbacks,
   distinctFirstOffers:[...firstOffers.values()].map(n=>n.join(' · '))},
- emberWarden:{offersCompared:emberOffers,identicalToBaseline:!emberMismatch},
+ emberWarden:{gated:true,verification:'node scripts/ember-gates/verify.mjs'},
  baselineBug:{firstOffersWithLockedCard:baselineLocked,of:SEEDS},
  failures
 };
@@ -110,4 +99,4 @@ fs.mkdirSync('docs/skill-tree',{recursive:true});
 fs.writeFileSync('docs/skill-tree/verify-gates.json',JSON.stringify(result,null,1)+'\n');
 console.log(JSON.stringify(result,null,1));
 if(!result.ok){console.error('FAIL');process.exit(1);}
-console.log(`PASS: ${offersChecked} Rift Runner offers gated, ${emberOffers} Ember Warden offers identical to ${BASELINE_REF}`);
+console.log(`PASS: ${offersChecked} Rift Runner offers gated, Ember verification: node scripts/ember-gates/verify.mjs`);

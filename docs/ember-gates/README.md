@@ -15,3 +15,10 @@ The tree shows 4 pts, 8 pts and Lv.20 requirements. Rift's card rules and random
 - TypeScript and all Go tests pass. Actual game deployment uses `scripts/fural-deploy.sh`; a separate review layer publishes evidence at `/ember-warden-review/tier-gates/`.
 
 Results: `verification.json`, `browser-local.json`, and after deployment `browser-live.json`.
+
+## Live release
+
+Game commit 2e57aaf deployed through the actual game release publisher; registered layer `1792921364604-game-2e57aaf-4689545a7d4c`. Public health returned 200. Live desktop and mobile checks passed all 19 offers with zero page errors; all eight local/live screenshots are retained here and embedded in Ember Knowledge.
+
+Live game: https://ark-whachat.fural.space/?offline=1&hero=ember-warden
+Evidence: https://ark-whachat.fural.space/ember-warden-review/tier-gates/browser-live.json
