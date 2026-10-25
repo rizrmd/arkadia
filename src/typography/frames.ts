@@ -15,7 +15,7 @@ export class FrameSet{
  private constructor(readonly scale:FrameScale,private manifest:Manifest,private textures:Record<string,Texture>){}
  // only: load just the frames these names select (an ornate frame's name selects its parts).
  static async load(base:string,scale:FrameScale,only?:(name:string)=>boolean,onProgress?:(done:number,total:number)=>void){
-  const v='?v=6';
+  const v=`?v=${__HUD_REVISION__}`;
   const [manifest,mobile]=await Promise.all([
    fetch(base+'manifest.json'+v).then(r=>{if(!r.ok)throw Error(`Interface manifest answered ${r.status}`);return r.json() as Promise<Manifest>;}),
    base.includes('/hud/')?fetch('/mobile-hud/v1/manifest.json').then(r=>{if(!r.ok)throw Error(`Mobile interface manifest answered ${r.status}`);return r.json();}):null,
