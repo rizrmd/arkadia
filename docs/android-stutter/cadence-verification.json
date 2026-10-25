@@ -1,0 +1,150 @@
+{
+  "results": [
+    {
+      "target": 30,
+      "hz": 60,
+      "before": {
+        "count": 298,
+        "maxGap": 50
+      },
+      "after": {
+        "count": 300,
+        "maxGap": 33.33333333333394
+      }
+    },
+    {
+      "target": 30,
+      "hz": 90,
+      "before": {
+        "count": 298,
+        "maxGap": 44.44444444444434
+      },
+      "after": {
+        "count": 300,
+        "maxGap": 33.33333333333394
+      }
+    },
+    {
+      "target": 30,
+      "hz": 120,
+      "before": {
+        "count": 298,
+        "maxGap": 41.666666666666515
+      },
+      "after": {
+        "count": 300,
+        "maxGap": 33.33333333333394
+      }
+    },
+    {
+      "target": 30,
+      "hz": 144,
+      "before": {
+        "count": 296,
+        "maxGap": 34.722222222222626
+      },
+      "after": {
+        "count": 300,
+        "maxGap": 34.722222222222626
+      }
+    },
+    {
+      "target": 30,
+      "hz": 240,
+      "before": {
+        "count": 298,
+        "maxGap": 37.5
+      },
+      "after": {
+        "count": 300,
+        "maxGap": 33.33333333333394
+      }
+    },
+    {
+      "target": 60,
+      "hz": 60,
+      "before": {
+        "count": 593,
+        "maxGap": 33.33333333333326
+      },
+      "after": {
+        "count": 600,
+        "maxGap": 16.66666666666788
+      }
+    },
+    {
+      "target": 60,
+      "hz": 90,
+      "before": {
+        "count": 582,
+        "maxGap": 22.222222222222626
+      },
+      "after": {
+        "count": 600,
+        "maxGap": 22.222222222222626
+      }
+    },
+    {
+      "target": 60,
+      "hz": 120,
+      "before": {
+        "count": 593,
+        "maxGap": 25
+      },
+      "after": {
+        "count": 600,
+        "maxGap": 16.66666666666788
+      }
+    },
+    {
+      "target": 60,
+      "hz": 144,
+      "before": {
+        "count": 592,
+        "maxGap": 20.83333333333394
+      },
+      "after": {
+        "count": 600,
+        "maxGap": 20.83333333333394
+      }
+    },
+    {
+      "target": 60,
+      "hz": 240,
+      "before": {
+        "count": 594,
+        "maxGap": 20.833333333333314
+      },
+      "after": {
+        "count": 600,
+        "maxGap": 16.66666666666788
+      }
+    },
+    {
+      "target": 60,
+      "hz": 60,
+      "jitterMs": 0.04,
+      "after": {
+        "count": 600,
+        "maxGap": 16.726768118350265
+      }
+    },
+    {
+      "target": 60,
+      "hz": 120,
+      "jitterMs": 0.04,
+      "after": {
+        "count": 600,
+        "maxGap": 16.7459997177034
+      }
+    }
+  ],
+  "checks": [
+    "30/60 FPS at five refresh rates",
+    "fractional precision",
+    "no catch-up bursts",
+    "quality changes",
+    "clock reset",
+    "invalid time"
+  ]
+}

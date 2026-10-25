@@ -1,19 +1,19 @@
 import {renderQuality} from './render-quality';
+import {createFrameCadence} from './frame-cadence';
 // Share the selected 30/60 Hz cadence across game loops so skipped refreshes do no game work.
 export const MAX_FPS=60;
 
 const pending=new Map<number,FrameRequestCallback>();
-let nextId=0,raf=0,nextFrame=0;
+let nextId=0,raf=0;
+const cadence=createFrameCadence();
 let paused=false,pauseAt=0,pausedMs=0,pauseRevision=0;
-export function setGamePaused(value:boolean){if(value===paused)return;if(value)pauseAt=performance.now();else pausedMs+=performance.now()-pauseAt;paused=value;pauseRevision++;nextFrame=0;}
+export function setGamePaused(value:boolean){if(value===paused)return;if(value)pauseAt=performance.now();else pausedMs+=performance.now()-pauseAt;paused=value;pauseRevision++;cadence.reset();}
 export const isGamePaused=()=>paused;
 export const gamePauseRevision=()=>pauseRevision;
+export const gamePausedDuration=()=>pausedMs;
 function tick(now:number){
  raf=0;
- const interval=1000/renderQuality.get().targetFps;
- if(!paused&&now+0.01>=nextFrame){
-  // Preserve the fractional cadence on 120/144/240 Hz displays, without catch-up bursts after a pause.
-  nextFrame=now+interval-Math.max(0,(now-nextFrame)%interval);
+ if(!paused&&cadence.take(now,renderQuality.get().targetFps)){
   const batch=[...pending];
   for(const [id,callback] of batch){
    if(!pending.delete(id))continue;
@@ -29,5 +29,5 @@ export function requestGameFrame(callback:FrameRequestCallback):number{
 }
 export function cancelGameFrame(id:number){
  pending.delete(id);
- if(!pending.size&&raf){window.cancelAnimationFrame(raf);raf=0;nextFrame=0;}
+ if(!pending.size&&raf){window.cancelAnimationFrame(raf);raf=0;cadence.reset();}
 }

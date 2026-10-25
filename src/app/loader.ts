@@ -1,5 +1,6 @@
 import './render-settings';
 import {renderQuality} from './render-quality';
+import {installTickerCadence} from './frame-cadence';
 import {Application,BitmapTextPipe,CanvasSource,Container,extensions,GraphicsPipe,NineSliceSpritePipe,Sprite,Texture,TilingSpritePipe} from 'pixi.js';
 import {FrameSet,pickFrameScale} from '../typography/frames';
 import {installMsdfFx,loadFonts} from '../typography/msdf';
@@ -88,8 +89,9 @@ export function ensurePixiRuntime(host?:HTMLElement):Promise<SharedPixiRuntime>{
    resolution:Math.min(window.devicePixelRatio||1,renderQuality.get().resolution),
    gcActive:false,
   });
+  installTickerCadence(app.ticker,()=>renderQuality.get().targetFps);
   const applyQuality=()=>{
-   const q=renderQuality.get();app.ticker.maxFPS=q.targetFps;
+   const q=renderQuality.get();
    const resolution=Math.min(window.devicePixelRatio||1,q.resolution);
    if(app.renderer.resolution!==resolution)app.renderer.resize(innerWidth,innerHeight,resolution);
    Object.assign(app.canvas.dataset,{quality:q.tier,targetFps:String(q.targetFps),renderResolution:String(resolution)});

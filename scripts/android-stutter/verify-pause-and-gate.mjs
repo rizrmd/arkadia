@@ -5,8 +5,9 @@ import {createServer} from 'vite';
 import {launch} from '../vfx/browser.mjs';
 
 const baseline=process.env.BASELINE==='1';
+const baselineRef=process.env.BASELINE_REF||'2150b3e0';
 const vite=await createServer({cacheDir:`/tmp/android-stutter-vite-${process.pid}`,optimizeDeps:{include:['pixi.js','nixie-fx','nixie-fx/pixi','nixie-fx/export','nixie-fx/materials','@pixi/sound']},plugins:baseline?[{name:'baseline-pause-and-gate',enforce:'pre',load(id){
- for(const rel of ['src/app/frame-scheduler.ts','src/stronghold/tracelog.ts','src/stronghold/gate-doors.ts'])if(id.endsWith('/'+rel))return execFileSync('git',['show','HEAD:'+rel],{encoding:'utf8'});
+ for(const rel of ['src/app/frame-scheduler.ts','src/stronghold/tracelog.ts','src/stronghold/gate-doors.ts'])if(id.endsWith('/'+rel))return execFileSync('git',['show',baselineRef+':'+rel],{encoding:'utf8'});
 }}]:[],server:{host:'127.0.0.1',port:18147,strictPort:true,hmr:false,watch:null},logLevel:'error'});
 await vite.listen();const browser=await launch();
 try{
@@ -28,6 +29,13 @@ try{
  await page.clock.runFor(2000);await page.clock.fastForward(500);
  const realGap=await page.evaluate(()=>window.__FPS_TRACELOG__.stats());
  assert.ok(realGap.maxFrameMs>=400,`unpaused stalls must remain visible: ${JSON.stringify(realGap)}`);
+ await page.clock.runFor(1500);
+ await page.evaluate(()=>window.__PAUSE_TEST__.setGamePaused(true));
+ await page.clock.runFor(2300);
+ await page.evaluate(()=>window.__PAUSE_TEST__.setGamePaused(false));
+ await page.clock.fastForward(500);
+ const firstResumeGap=await page.evaluate(()=>window.__FPS_TRACELOG__.stats());
+ if(!baseline)assert.ok(firstResumeGap.maxFrameMs>=400&&firstResumeGap.maxFrameMs<1500,`first resumed frame must retain real stalls: ${JSON.stringify(firstResumeGap)}`);
  await page.clock.resume();
  const gate=await page.evaluate(async()=>{
   const {createGateDoors}=await import('/src/stronghold/gate-doors.ts');
@@ -58,7 +66,7 @@ try{
  });
  if(!baseline){assert.equal(gate.asynchronous,true);assert.equal(gate.sheetState,'ready');assert.ok(gate.resizeMeanError<1,'bitmap resize must preserve the old sheet appearance');}
  assert.equal(gate.state,'open');assert.ok(gate.visible>1000,'gateway must still render');assert.deepEqual(errors,[]);
- const result={baseline,resume,realGap,gate,errors};
- await fs.writeFile(`docs/android-stutter/pause-gate-${baseline?'before':'after'}.json`,JSON.stringify(result,null,2)+'\n');
- console.log(JSON.stringify({baseline,resumeMaxMs:resume.maxFrameMs,unpausedGapMs:realGap.maxFrameMs,gate,errors}));
+ const result={baseline,baselineRef:baseline?baselineRef:undefined,resume,realGap,firstResumeGap,gate,errors};
+ await fs.writeFile(process.env.REPORT||`docs/android-stutter/pause-gate-${baseline?'before':'after'}.json`,JSON.stringify(result,null,2)+'\n');
+ console.log(JSON.stringify({baseline,resumeMaxMs:resume.maxFrameMs,unpausedGapMs:realGap.maxFrameMs,firstResumeGapMs:firstResumeGap.maxFrameMs,gate,errors}));
 }finally{await browser.close();await vite.close();}

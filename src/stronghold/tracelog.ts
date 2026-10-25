@@ -1,6 +1,6 @@
 import {renderQuality} from '../app/render-quality';
 import {recordRenderOperation,measureRenderDetail,takeRenderDetails,recentRenderOperations,type RenderOperation} from '../app/render-diagnostics';
-import {requestGameFrame as requestAnimationFrame,gamePauseRevision} from '../app/frame-scheduler';
+import {requestGameFrame as requestAnimationFrame,gamePauseRevision,gamePausedDuration} from '../app/frame-scheduler';
 import type {SharedPixiRuntime} from '../app/loader';
 import type {Net} from './net/client';
 import {batteryState,frameCapHz,noteFrame,resetFrameCap} from './frame-cap';
@@ -245,7 +245,7 @@ export function startFpsTracelog(opts: FpsTracelogOptions) {
    const source=args.find(a=>a&&typeof a==='object'&&('naturalWidth' in a||'width' in a));
    const width=source?.naturalWidth??source?.width??args[key==='texImage2D'?3:4];
    const height=source?.naturalHeight??source?.height??args[key==='texImage2D'?4:5];
-   return {sourceURL:String(source?.currentSrc||source?.src||''),sourceFunctionName:`${key} ${source?.constructor?.name??'pixels'}${source?.id?'#'+source.id:''} ${width}x${height}`};
+   return {sourceURL:String(source?.currentSrc||source?.src||'').slice(0,512),sourceFunctionName:`${key} ${source?.constructor?.name??'pixels'}${source?.id?'#'+source.id:''} ${width}x${height}`};
   });};}
  }
  const build=document.querySelector<HTMLScriptElement>('script[type="module"][src*="/assets/"]')?.getAttribute('src')??'development';
@@ -299,6 +299,7 @@ export function startFpsTracelog(opts: FpsTracelogOptions) {
  let inFlight: Promise<TracelogSendResult | null> | null = null;
  let lastNow = 0;
  let pauseVersion = gamePauseRevision();
+ let measuredPauseDuration = gamePausedDuration();
  let lastSentAt = -1e9;
  let hiddenUntil = 0;
  let warmupFrames = 0;
@@ -672,8 +673,10 @@ export function startFpsTracelog(opts: FpsTracelogOptions) {
   // The scheduler intentionally stops all game callbacks during solo menu pauses.
   // Wall-clock time across that gap is not a rendered frame or a compositor stall.
   const currentPauseVersion=gamePauseRevision();
+  const totalPausedDuration=gamePausedDuration(),pausedSinceLastFrame=totalPausedDuration-measuredPauseDuration;
+  measuredPauseDuration=totalPausedDuration;
   if(currentPauseVersion!==pauseVersion){
-   pauseVersion=currentPauseVersion;ring.length=0;longTasks.length=0;warmupFrames=0;lastNow=0;resetFrameCap();takeRenderDetails();return;
+   pauseVersion=currentPauseVersion;ring.length=0;longTasks.length=0;warmupFrames=0;resetFrameCap();
   }
   // now is game time (pauses subtracted); hiddenUntil uses performance.now().
   if (document.hidden || frameEnd < hiddenUntil) {
@@ -689,7 +692,9 @@ export function startFpsTracelog(opts: FpsTracelogOptions) {
    lastSurfacePaints = readSurfaceDataset().surfacePaints;
    return;
   }
-  const dtMs = frameEnd - lastNow;
+  // Subtract only intentional pause time. Keep real work/delays in the very first
+  // resumed frame rather than discarding that complete frame as a warmup gap.
+  const dtMs = frameEnd - lastNow - pausedSinceLastFrame;
   lastNow = frameEnd;
   // Ignore multi-second browser tab suspension gaps and reset pre-suspension window samples.
   if (dtMs <= 0 || dtMs >= 2500) {

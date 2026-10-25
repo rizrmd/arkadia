@@ -48,7 +48,7 @@ export function createGateDoors(worldStage:Container,gateway:HTMLImageElement,sh
     }
     sheetCanvas=sc;
    }
-   canvas.dataset.sheetState='ready';shown=-1;paint();
+   canvas.dataset.sheetState='ready';shown=-1;shadowFrame=-1;paint();
   })().catch(error=>{sheetPreparing=false;console.error('Gateway sheet preparation failed',error);});
   return null;
  }

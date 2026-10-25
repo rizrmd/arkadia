@@ -38,3 +38,15 @@ The isolated before/after browser regression uses the same 2.3-second pause and 
 Verification: TypeScript, mask alpha parity and quality-controller tests pass. Reproduce the targeted comparison with `BASELINE=1 node scripts/android-stutter/verify-pause-and-gate.mjs` before committing the implementation, then run without BASELINE. The baseline reads HEAD versions of the three tested modules, so subsequent reruns must use the previous implementation commit for a historical comparison. Reports: `pause-gate-before.json`, `pause-gate-after.json`.
 
 The zero-frame-drop goal remains active. Remaining work includes real gameplay profiling with the enriched upload/placement data, removal of remaining upload/render stalls, and verification on the actual low-spec device.
+
+## Fractional frame pacing and resume fidelity
+
+A deterministic replay through the real Pixi Ticker reproduces avoidable skipped render opportunities: its maxFPS limiter truncates elapsed milliseconds. At 60 Hz / target 60, the original ticker emits 593 callbacks over 600 refresh opportunities and occasionally waits 33.33 ms. At target 30 it emits 298 of 300 and reaches 50 ms gaps.
+
+The shared game scheduler and the Pixi application now use the same fractional cadence implementation. Pixi's integer limiter is disabled, but the new gate still caps renderer updates to the selected target. start/stop and ticker listeners continue to work. Fractional deadlines retain a bounded early-vsync tolerance, avoiding artificial skipped frames under 0.04 ms timestamp jitter, without catch-up render bursts. Tests cover 30/60 FPS on 60/90/120/144/240 Hz inputs; all emit the expected 300/600 callbacks over ten seconds. 90/144 Hz displays naturally quantize presentation intervals; the test does not pretend those can present every 60 FPS frame at identical intervals.
+
+Pause accounting now subtracts exactly the scheduler's accumulated pause duration. It retains genuine work/delay in the first resumed frame. The stronger browser test keeps a 521 ms active delay immediately after resume while excluding a separate intentional 2.3-second pause. It also keeps later active delays.
+
+When a gateway sheet finishes preparing after the door animation already reached its final index, that same-index shadow is invalidated and refreshed. A separate browser test checks this delayed completion and forces the frame-by-frame fallback; fallback and bitmap output have a mean channel error of 0.454/255, with no page errors.
+
+The first second-pass code, `b87f912a`, has been deployed; `live-verification.json` records its production loading/combat regression check. Software rendering still drops frames in that environment and is not proof of device smoothness. The fractional pacing revision requires its own deployed validation; the full zero-frame-drop goal remains unproven.
