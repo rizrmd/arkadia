@@ -1,0 +1,40 @@
+{
+  "sources": {
+    "src/app/main.ts": "9e740638744a489f1b6a91ac54c772c353cc615b5cd911f30bba2cc7b5183444",
+    "vite.config.ts": "ae442153a9ba85d91e44bcd57b7cf3c5d7fdb78abfb211426e5b8a864a91b3d7",
+    "scripts/arkodia/gateway.mjs": "faf608d251803dfb4f15bd31fbdc84ce33c0bb8f3e0b0a351191a5f29f7fb571",
+    "src/expedition/snow.ts": "fe84385aae0d7caac4db202f7a2686ec63e05ad545e8e1eecbd36529bb83adb4"
+  },
+  "routes": [
+    {
+      "path": "/snow-expedition.html",
+      "status": 302,
+      "location": "/"
+    },
+    {
+      "path": "/arena.html",
+      "status": 302,
+      "location": "/"
+    },
+    {
+      "path": "/expedition.html",
+      "status": 302,
+      "location": "/"
+    }
+  ],
+  "activeGameplay": {
+    "entry": "src/app/main.ts -> src/stronghold/main.ts",
+    "maps": [
+      "src/world/maps/arkodia-01.json",
+      "src/world/maps/frozen-frontier.json"
+    ],
+    "note": "Base map and frontier overlay share the same live world; FX Lab is a skill preview route."
+  },
+  "frostpass": {
+    "status": "retired source, not a production gameplay route",
+    "source": "src/expedition/snow.ts",
+    "renderer": "Archived arena has contact ellipses and no scene depth receiver. Reactivating it requires directional integration.",
+    "assetsAudited": true
+  },
+  "scope": "Authoritative SPA/build/gateway sources plus live HTTP redirects; source presence alone does not imply a playable production map."
+}

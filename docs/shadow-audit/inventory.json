@@ -5,13 +5,13 @@
  "coverage": [
   {
    "entry": "src/expedition/snow.ts",
-   "kind": "playable Frostpass expedition",
+   "kind": "retired Frostpass source",
    "included": [
-    "nine scenery families",
-    "three physical supply caches",
-    "hero/revenant arena sprites"
+    "nine archived scenery families",
+    "three archived physical supply caches",
+    "shared hero/revenant source atlases"
    ],
-   "disposition": "Missing directional cast and receiver integration; must not classify this playable map as review-only"
+   "disposition": "Source and original alpha audited. Production route redirects home; active SPA does not import this source. Archived renderer lacks directional cast/receive; see entrypoints/report.json."
   },
   {
    "entry": "src/world/maps/arkodia-01.json",
@@ -26609,7 +26609,9 @@
      "shadow-packed-copy.ts": "2752dfa3a683ed36d316dc582a61a4ae1946224b7088798d797bb8b5356b808f",
      "shadow-live-field.ts": "2ab989ffbcb744abfa5c923b53264f6dda15d33ea250bb17542e75c7a3f71cad",
      "shadow-sampling.ts": "852ccfef4e7a78493ac0adb6ccdd4fdc035300db4f09ea470236ff8b61fafc4d",
-     "shadow-actor-batch.ts": "cc54946671013fdeaeaa82e6047627d02b288429f964c33d20be9296d6ec367a"
+     "shadow-actor-batch.ts": "b561ecaf7105fc927bb8deca0f1e21b5ef7ac8722bb7316852c3998f60f1f052",
+     "shadow-actor-sources.ts": "9efa6dd3535fd6ed4a2fba65d09500c0fc1dde5e136b3e52b7874915f4bf0c3d",
+     "shadow-program.ts": "7f29279852819349ed2e946141b454fedb3718f193d226f84c69e079c0af5f9d"
     }
    },
    "disposition": "Six production-cell poses, two headings and three suns pass low-quality cast/camera/alpha and high/middle/low receiver controls. Continuous animation blends, full heading matrix and hardware performance remain open."
@@ -26649,7 +26651,9 @@
      "shadow-packed-copy.ts": "2752dfa3a683ed36d316dc582a61a4ae1946224b7088798d797bb8b5356b808f",
      "shadow-live-field.ts": "2ab989ffbcb744abfa5c923b53264f6dda15d33ea250bb17542e75c7a3f71cad",
      "shadow-sampling.ts": "852ccfef4e7a78493ac0adb6ccdd4fdc035300db4f09ea470236ff8b61fafc4d",
-     "shadow-actor-batch.ts": "cc54946671013fdeaeaa82e6047627d02b288429f964c33d20be9296d6ec367a"
+     "shadow-actor-batch.ts": "b561ecaf7105fc927bb8deca0f1e21b5ef7ac8722bb7316852c3998f60f1f052",
+     "shadow-actor-sources.ts": "9efa6dd3535fd6ed4a2fba65d09500c0fc1dde5e136b3e52b7874915f4bf0c3d",
+     "shadow-program.ts": "7f29279852819349ed2e946141b454fedb3718f193d226f84c69e079c0af5f9d"
     }
    },
    "disposition": "Six production-cell poses, two headings and three suns pass low-quality cast/camera/alpha and high/middle/low receiver controls. Continuous animation blends, full heading matrix and hardware performance remain open."
@@ -26689,7 +26693,9 @@
      "shadow-packed-copy.ts": "2752dfa3a683ed36d316dc582a61a4ae1946224b7088798d797bb8b5356b808f",
      "shadow-live-field.ts": "2ab989ffbcb744abfa5c923b53264f6dda15d33ea250bb17542e75c7a3f71cad",
      "shadow-sampling.ts": "852ccfef4e7a78493ac0adb6ccdd4fdc035300db4f09ea470236ff8b61fafc4d",
-     "shadow-actor-batch.ts": "cc54946671013fdeaeaa82e6047627d02b288429f964c33d20be9296d6ec367a"
+     "shadow-actor-batch.ts": "b561ecaf7105fc927bb8deca0f1e21b5ef7ac8722bb7316852c3998f60f1f052",
+     "shadow-actor-sources.ts": "9efa6dd3535fd6ed4a2fba65d09500c0fc1dde5e136b3e52b7874915f4bf0c3d",
+     "shadow-program.ts": "7f29279852819349ed2e946141b454fedb3718f193d226f84c69e079c0af5f9d"
     }
    },
    "disposition": "Six production-cell poses, two headings and three suns pass low-quality cast/camera/alpha and high/middle/low receiver controls. Continuous animation blends, full heading matrix and hardware performance remain open."
@@ -26729,7 +26735,9 @@
      "shadow-packed-copy.ts": "2752dfa3a683ed36d316dc582a61a4ae1946224b7088798d797bb8b5356b808f",
      "shadow-live-field.ts": "2ab989ffbcb744abfa5c923b53264f6dda15d33ea250bb17542e75c7a3f71cad",
      "shadow-sampling.ts": "852ccfef4e7a78493ac0adb6ccdd4fdc035300db4f09ea470236ff8b61fafc4d",
-     "shadow-actor-batch.ts": "cc54946671013fdeaeaa82e6047627d02b288429f964c33d20be9296d6ec367a"
+     "shadow-actor-batch.ts": "b561ecaf7105fc927bb8deca0f1e21b5ef7ac8722bb7316852c3998f60f1f052",
+     "shadow-actor-sources.ts": "9efa6dd3535fd6ed4a2fba65d09500c0fc1dde5e136b3e52b7874915f4bf0c3d",
+     "shadow-program.ts": "7f29279852819349ed2e946141b454fedb3718f193d226f84c69e079c0af5f9d"
     }
    },
    "disposition": "Six production-cell poses, two headings and three suns pass low-quality cast/camera/alpha and high/middle/low receiver controls. Continuous animation blends, full heading matrix and hardware performance remain open."
@@ -26769,7 +26777,9 @@
      "shadow-packed-copy.ts": "2752dfa3a683ed36d316dc582a61a4ae1946224b7088798d797bb8b5356b808f",
      "shadow-live-field.ts": "2ab989ffbcb744abfa5c923b53264f6dda15d33ea250bb17542e75c7a3f71cad",
      "shadow-sampling.ts": "852ccfef4e7a78493ac0adb6ccdd4fdc035300db4f09ea470236ff8b61fafc4d",
-     "shadow-actor-batch.ts": "cc54946671013fdeaeaa82e6047627d02b288429f964c33d20be9296d6ec367a"
+     "shadow-actor-batch.ts": "b561ecaf7105fc927bb8deca0f1e21b5ef7ac8722bb7316852c3998f60f1f052",
+     "shadow-actor-sources.ts": "9efa6dd3535fd6ed4a2fba65d09500c0fc1dde5e136b3e52b7874915f4bf0c3d",
+     "shadow-program.ts": "7f29279852819349ed2e946141b454fedb3718f193d226f84c69e079c0af5f9d"
     }
    },
    "disposition": "Six production-cell poses, two headings and three suns pass low-quality cast/camera/alpha and high/middle/low receiver controls. Continuous animation blends, full heading matrix and hardware performance remain open."
@@ -26809,7 +26819,9 @@
      "shadow-packed-copy.ts": "2752dfa3a683ed36d316dc582a61a4ae1946224b7088798d797bb8b5356b808f",
      "shadow-live-field.ts": "2ab989ffbcb744abfa5c923b53264f6dda15d33ea250bb17542e75c7a3f71cad",
      "shadow-sampling.ts": "852ccfef4e7a78493ac0adb6ccdd4fdc035300db4f09ea470236ff8b61fafc4d",
-     "shadow-actor-batch.ts": "cc54946671013fdeaeaa82e6047627d02b288429f964c33d20be9296d6ec367a"
+     "shadow-actor-batch.ts": "b561ecaf7105fc927bb8deca0f1e21b5ef7ac8722bb7316852c3998f60f1f052",
+     "shadow-actor-sources.ts": "9efa6dd3535fd6ed4a2fba65d09500c0fc1dde5e136b3e52b7874915f4bf0c3d",
+     "shadow-program.ts": "7f29279852819349ed2e946141b454fedb3718f193d226f84c69e079c0af5f9d"
     }
    },
    "disposition": "Six production-cell poses, two headings and three suns pass low-quality cast/camera/alpha and high/middle/low receiver controls. Continuous animation blends, full heading matrix and hardware performance remain open."
@@ -26849,7 +26861,9 @@
      "shadow-packed-copy.ts": "2752dfa3a683ed36d316dc582a61a4ae1946224b7088798d797bb8b5356b808f",
      "shadow-live-field.ts": "2ab989ffbcb744abfa5c923b53264f6dda15d33ea250bb17542e75c7a3f71cad",
      "shadow-sampling.ts": "852ccfef4e7a78493ac0adb6ccdd4fdc035300db4f09ea470236ff8b61fafc4d",
-     "shadow-actor-batch.ts": "cc54946671013fdeaeaa82e6047627d02b288429f964c33d20be9296d6ec367a"
+     "shadow-actor-batch.ts": "b561ecaf7105fc927bb8deca0f1e21b5ef7ac8722bb7316852c3998f60f1f052",
+     "shadow-actor-sources.ts": "9efa6dd3535fd6ed4a2fba65d09500c0fc1dde5e136b3e52b7874915f4bf0c3d",
+     "shadow-program.ts": "7f29279852819349ed2e946141b454fedb3718f193d226f84c69e079c0af5f9d"
     }
    },
    "disposition": "Six production-cell poses, two headings and three suns pass low-quality cast/camera/alpha and high/middle/low receiver controls. Continuous animation blends, full heading matrix and hardware performance remain open."
@@ -26889,7 +26903,9 @@
      "shadow-packed-copy.ts": "2752dfa3a683ed36d316dc582a61a4ae1946224b7088798d797bb8b5356b808f",
      "shadow-live-field.ts": "2ab989ffbcb744abfa5c923b53264f6dda15d33ea250bb17542e75c7a3f71cad",
      "shadow-sampling.ts": "852ccfef4e7a78493ac0adb6ccdd4fdc035300db4f09ea470236ff8b61fafc4d",
-     "shadow-actor-batch.ts": "cc54946671013fdeaeaa82e6047627d02b288429f964c33d20be9296d6ec367a"
+     "shadow-actor-batch.ts": "b561ecaf7105fc927bb8deca0f1e21b5ef7ac8722bb7316852c3998f60f1f052",
+     "shadow-actor-sources.ts": "9efa6dd3535fd6ed4a2fba65d09500c0fc1dde5e136b3e52b7874915f4bf0c3d",
+     "shadow-program.ts": "7f29279852819349ed2e946141b454fedb3718f193d226f84c69e079c0af5f9d"
     }
    },
    "disposition": "Six production-cell poses, two headings and three suns pass low-quality cast/camera/alpha and high/middle/low receiver controls. Continuous animation blends, full heading matrix and hardware performance remain open."
@@ -26929,7 +26945,9 @@
      "shadow-packed-copy.ts": "2752dfa3a683ed36d316dc582a61a4ae1946224b7088798d797bb8b5356b808f",
      "shadow-live-field.ts": "2ab989ffbcb744abfa5c923b53264f6dda15d33ea250bb17542e75c7a3f71cad",
      "shadow-sampling.ts": "852ccfef4e7a78493ac0adb6ccdd4fdc035300db4f09ea470236ff8b61fafc4d",
-     "shadow-actor-batch.ts": "cc54946671013fdeaeaa82e6047627d02b288429f964c33d20be9296d6ec367a"
+     "shadow-actor-batch.ts": "b561ecaf7105fc927bb8deca0f1e21b5ef7ac8722bb7316852c3998f60f1f052",
+     "shadow-actor-sources.ts": "9efa6dd3535fd6ed4a2fba65d09500c0fc1dde5e136b3e52b7874915f4bf0c3d",
+     "shadow-program.ts": "7f29279852819349ed2e946141b454fedb3718f193d226f84c69e079c0af5f9d"
     }
    },
    "disposition": "Six production-cell poses, two headings and three suns pass low-quality cast/camera/alpha and high/middle/low receiver controls. Continuous animation blends, full heading matrix and hardware performance remain open."
@@ -26969,7 +26987,9 @@
      "shadow-packed-copy.ts": "2752dfa3a683ed36d316dc582a61a4ae1946224b7088798d797bb8b5356b808f",
      "shadow-live-field.ts": "2ab989ffbcb744abfa5c923b53264f6dda15d33ea250bb17542e75c7a3f71cad",
      "shadow-sampling.ts": "852ccfef4e7a78493ac0adb6ccdd4fdc035300db4f09ea470236ff8b61fafc4d",
-     "shadow-actor-batch.ts": "cc54946671013fdeaeaa82e6047627d02b288429f964c33d20be9296d6ec367a"
+     "shadow-actor-batch.ts": "b561ecaf7105fc927bb8deca0f1e21b5ef7ac8722bb7316852c3998f60f1f052",
+     "shadow-actor-sources.ts": "9efa6dd3535fd6ed4a2fba65d09500c0fc1dde5e136b3e52b7874915f4bf0c3d",
+     "shadow-program.ts": "7f29279852819349ed2e946141b454fedb3718f193d226f84c69e079c0af5f9d"
     }
    },
    "disposition": "Six production-cell poses, two headings and three suns pass low-quality cast/camera/alpha and high/middle/low receiver controls. Continuous animation blends, full heading matrix and hardware performance remain open."
@@ -27009,7 +27029,9 @@
      "shadow-packed-copy.ts": "2752dfa3a683ed36d316dc582a61a4ae1946224b7088798d797bb8b5356b808f",
      "shadow-live-field.ts": "2ab989ffbcb744abfa5c923b53264f6dda15d33ea250bb17542e75c7a3f71cad",
      "shadow-sampling.ts": "852ccfef4e7a78493ac0adb6ccdd4fdc035300db4f09ea470236ff8b61fafc4d",
-     "shadow-actor-batch.ts": "cc54946671013fdeaeaa82e6047627d02b288429f964c33d20be9296d6ec367a"
+     "shadow-actor-batch.ts": "b561ecaf7105fc927bb8deca0f1e21b5ef7ac8722bb7316852c3998f60f1f052",
+     "shadow-actor-sources.ts": "9efa6dd3535fd6ed4a2fba65d09500c0fc1dde5e136b3e52b7874915f4bf0c3d",
+     "shadow-program.ts": "7f29279852819349ed2e946141b454fedb3718f193d226f84c69e079c0af5f9d"
     }
    },
    "disposition": "Six production-cell poses, two headings and three suns pass low-quality cast/camera/alpha and high/middle/low receiver controls. Continuous animation blends, full heading matrix and hardware performance remain open."
@@ -27049,7 +27071,9 @@
      "shadow-packed-copy.ts": "2752dfa3a683ed36d316dc582a61a4ae1946224b7088798d797bb8b5356b808f",
      "shadow-live-field.ts": "2ab989ffbcb744abfa5c923b53264f6dda15d33ea250bb17542e75c7a3f71cad",
      "shadow-sampling.ts": "852ccfef4e7a78493ac0adb6ccdd4fdc035300db4f09ea470236ff8b61fafc4d",
-     "shadow-actor-batch.ts": "cc54946671013fdeaeaa82e6047627d02b288429f964c33d20be9296d6ec367a"
+     "shadow-actor-batch.ts": "b561ecaf7105fc927bb8deca0f1e21b5ef7ac8722bb7316852c3998f60f1f052",
+     "shadow-actor-sources.ts": "9efa6dd3535fd6ed4a2fba65d09500c0fc1dde5e136b3e52b7874915f4bf0c3d",
+     "shadow-program.ts": "7f29279852819349ed2e946141b454fedb3718f193d226f84c69e079c0af5f9d"
     }
    },
    "disposition": "Six production-cell poses, two headings and three suns pass low-quality cast/camera/alpha and high/middle/low receiver controls. Continuous animation blends, full heading matrix and hardware performance remain open."
@@ -27600,7 +27624,7 @@
   },
   {
    "id": "frostpass:spruce-mature",
-   "map": "snow-expedition / Frostpass",
+   "map": "retired Frostpass source; production route redirects home",
    "family": "spruce-mature",
    "source": "/modular-stronghold/v2/spruce-mature.png",
    "alpha": {
@@ -27613,14 +27637,14 @@
     "nonzero": 529250,
     "partialAlpha": 528871
    },
-   "cast": "MISSING: physical scenery has no directional shadow integration",
-   "receive": "MISSING: Frostpass has no scene height/receiver field",
-   "disposition": "Required follow-up integration; original source alpha retained. Crates include three collectable supply caches.",
+   "cast": "inactive: retired map source; no production caster",
+   "receive": "archived contact-only arena; no depth receiver integration",
+   "disposition": "Original alpha audited; production route is retired and not imported by the active SPA. Reactivation requires directional cast/receive integration; three archived supply caches are physical crates, not emissive pickups.",
    "placementSource": "src/expedition/snow.ts"
   },
   {
    "id": "frostpass:fir-young",
-   "map": "snow-expedition / Frostpass",
+   "map": "retired Frostpass source; production route redirects home",
    "family": "fir-young",
    "source": "/modular-stronghold/v2/fir-young.png",
    "alpha": {
@@ -27633,14 +27657,14 @@
     "nonzero": 540179,
     "partialAlpha": 539883
    },
-   "cast": "MISSING: physical scenery has no directional shadow integration",
-   "receive": "MISSING: Frostpass has no scene height/receiver field",
-   "disposition": "Required follow-up integration; original source alpha retained. Crates include three collectable supply caches.",
+   "cast": "inactive: retired map source; no production caster",
+   "receive": "archived contact-only arena; no depth receiver integration",
+   "disposition": "Original alpha audited; production route is retired and not imported by the active SPA. Reactivation requires directional cast/receive integration; three archived supply caches are physical crates, not emissive pickups.",
    "placementSource": "src/expedition/snow.ts"
   },
   {
    "id": "frostpass:cliff-snow",
-   "map": "snow-expedition / Frostpass",
+   "map": "retired Frostpass source; production route redirects home",
    "family": "cliff-snow",
    "source": "/modular-stronghold/v2/cliff-snow.png",
    "alpha": {
@@ -27653,14 +27677,14 @@
     "nonzero": 395473,
     "partialAlpha": 395176
    },
-   "cast": "MISSING: physical scenery has no directional shadow integration",
-   "receive": "MISSING: Frostpass has no scene height/receiver field",
-   "disposition": "Required follow-up integration; original source alpha retained. Crates include three collectable supply caches.",
+   "cast": "inactive: retired map source; no production caster",
+   "receive": "archived contact-only arena; no depth receiver integration",
+   "disposition": "Original alpha audited; production route is retired and not imported by the active SPA. Reactivation requires directional cast/receive integration; three archived supply caches are physical crates, not emissive pickups.",
    "placementSource": "src/expedition/snow.ts"
   },
   {
    "id": "frostpass:boulders-snow",
-   "map": "snow-expedition / Frostpass",
+   "map": "retired Frostpass source; production route redirects home",
    "family": "boulders-snow",
    "source": "/modular-stronghold/v2/boulders-snow.png",
    "alpha": {
@@ -27673,14 +27697,14 @@
     "nonzero": 370519,
     "partialAlpha": 370130
    },
-   "cast": "MISSING: physical scenery has no directional shadow integration",
-   "receive": "MISSING: Frostpass has no scene height/receiver field",
-   "disposition": "Required follow-up integration; original source alpha retained. Crates include three collectable supply caches.",
+   "cast": "inactive: retired map source; no production caster",
+   "receive": "archived contact-only arena; no depth receiver integration",
+   "disposition": "Original alpha audited; production route is retired and not imported by the active SPA. Reactivation requires directional cast/receive integration; three archived supply caches are physical crates, not emissive pickups.",
    "placementSource": "src/expedition/snow.ts"
   },
   {
    "id": "frostpass:snowdrift-edge",
-   "map": "snow-expedition / Frostpass",
+   "map": "retired Frostpass source; production route redirects home",
    "family": "snowdrift-edge",
    "source": "/modular-stronghold/v2/snowdrift-edge.png",
    "alpha": {
@@ -27693,14 +27717,14 @@
     "nonzero": 222152,
     "partialAlpha": 221876
    },
-   "cast": "flat decal; no independent caster",
-   "receive": "MISSING: Frostpass has no scene height/receiver field",
-   "disposition": "Terrain receiver integration required",
+   "cast": "flat decal in retired source",
+   "receive": "archived contact-only arena; no depth receiver integration",
+   "disposition": "Original alpha audited; production route is retired and not imported by the active SPA. Reactivation requires directional cast/receive integration; three archived supply caches are physical crates, not emissive pickups.",
    "placementSource": "src/expedition/snow.ts"
   },
   {
    "id": "frostpass:paving-worn",
-   "map": "snow-expedition / Frostpass",
+   "map": "retired Frostpass source; production route redirects home",
    "family": "paving-worn",
    "source": "/modular-stronghold/v2/paving-worn.png",
    "alpha": {
@@ -27713,14 +27737,14 @@
     "nonzero": 451445,
     "partialAlpha": 451339
    },
-   "cast": "flat decal; no independent caster",
-   "receive": "MISSING: Frostpass has no scene height/receiver field",
-   "disposition": "Terrain receiver integration required",
+   "cast": "flat decal in retired source",
+   "receive": "archived contact-only arena; no depth receiver integration",
+   "disposition": "Original alpha audited; production route is retired and not imported by the active SPA. Reactivation requires directional cast/receive integration; three archived supply caches are physical crates, not emissive pickups.",
    "placementSource": "src/expedition/snow.ts"
   },
   {
    "id": "frostpass:supply-cart",
-   "map": "snow-expedition / Frostpass",
+   "map": "retired Frostpass source; production route redirects home",
    "family": "supply-cart",
    "source": "/modular-stronghold/v2/supply-cart.png",
    "alpha": {
@@ -27733,14 +27757,14 @@
     "nonzero": 510950,
     "partialAlpha": 510127
    },
-   "cast": "MISSING: physical scenery has no directional shadow integration",
-   "receive": "MISSING: Frostpass has no scene height/receiver field",
-   "disposition": "Required follow-up integration; original source alpha retained. Crates include three collectable supply caches.",
+   "cast": "inactive: retired map source; no production caster",
+   "receive": "archived contact-only arena; no depth receiver integration",
+   "disposition": "Original alpha audited; production route is retired and not imported by the active SPA. Reactivation requires directional cast/receive integration; three archived supply caches are physical crates, not emissive pickups.",
    "placementSource": "src/expedition/snow.ts"
   },
   {
    "id": "frostpass:brazier",
-   "map": "snow-expedition / Frostpass",
+   "map": "retired Frostpass source; production route redirects home",
    "family": "brazier",
    "source": "/modular-stronghold/v2/brazier.png",
    "alpha": {
@@ -27753,14 +27777,14 @@
     "nonzero": 329536,
     "partialAlpha": 329536
    },
-   "cast": "MISSING: physical scenery has no directional shadow integration",
-   "receive": "MISSING: Frostpass has no scene height/receiver field",
-   "disposition": "Required follow-up integration; original source alpha retained. Crates include three collectable supply caches.",
+   "cast": "inactive: retired map source; no production caster",
+   "receive": "archived contact-only arena; no depth receiver integration",
+   "disposition": "Original alpha audited; production route is retired and not imported by the active SPA. Reactivation requires directional cast/receive integration; three archived supply caches are physical crates, not emissive pickups.",
    "placementSource": "src/expedition/snow.ts"
   },
   {
    "id": "frostpass:crate",
-   "map": "snow-expedition / Frostpass",
+   "map": "retired Frostpass source; production route redirects home",
    "family": "crate",
    "source": "/modular-stronghold/crate.png",
    "alpha": {
@@ -27773,9 +27797,9 @@
     "nonzero": 302290,
     "partialAlpha": 301548
    },
-   "cast": "MISSING: physical scenery has no directional shadow integration",
-   "receive": "MISSING: Frostpass has no scene height/receiver field",
-   "disposition": "Required follow-up integration; original source alpha retained. Crates include three collectable supply caches.",
+   "cast": "inactive: retired map source; no production caster",
+   "receive": "archived contact-only arena; no depth receiver integration",
+   "disposition": "Original alpha audited; production route is retired and not imported by the active SPA. Reactivation requires directional cast/receive integration; three archived supply caches are physical crates, not emissive pickups.",
    "placementSource": "src/expedition/snow.ts"
   },
   {
