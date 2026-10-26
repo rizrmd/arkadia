@@ -28,7 +28,7 @@
     "physicalPerformance": "hardware-performance-availability.json"
   },
   "files": {
-    "/static-final/report.json": "399270baf4d4d26e4a44927439889f1d19a5a8e42334fbde13496474ea4bb469",
+    "/static-final/report.json": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
     "/static-final/variants-0.png": "83413fa50bd0b93618060ec0ea6fb87994eb3b43f4943f330db4b5be132c2bc4",
     "/static-final/variants-102.png": "5f9c5a05c962f6a41e5ec7b4ce901eed627c57cf3cc681c8a0aad9e9eea8e095",
     "/static-final/variants-108.png": "15e36ca18027e62a48df0a38bae71d138843dde70f5b0481d8439ca3345b02b7",
@@ -110,6 +110,9 @@
     "/json-layer-memory.json": "94807bb51921f6ece50564131574794ac7fa3f7dc2f0a153aad85c4302846952",
     "/static-opacity-image-comparison.json": "fda0498b8b48961ac3efd60447608ae3d0d5abed902061189a62ab372df9aa15",
     "/release-memory.json": "9f155491f06ed5047893f09b17bcb6f47a87d2f57da6cf2b94f8b55767f00c9d",
-    "/inventory.json": "28824e9989e98c034ce6b3df8dfd62a5cdc195465b527154627ed83fe437da76"
-  }
+    "/inventory.json": "a0bbdff3a276408f5cc3f598fd46fd86c28ab782d9136864219d2d5b02c12255",
+    "/family-gallery.html": "faa9da65da9c86c2875c186147e59694d9251cce0e9f34132398e2ac4a0c5130"
+  },
+  "cachePolicy": "Static gallery images use per-file SHA-256 query versions. Report/asset pairing remains inspectable when CDN image caching is enabled.",
+  "denseSoftwareStress": "dense-live-summary.json"
 }

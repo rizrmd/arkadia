@@ -1,0 +1,1145 @@
+{
+  "runtime": "6e561f98",
+  "profile": "desktop",
+  "scope": "SwiftShader viewport stress: one GLB hero plus 32 nearby idle atlas NPCs, AI/VFX disabled. Static view committed and three field updates warmed per phase. Counts include offscreen renderer calls; RAF timeouts and frame distributions must be read together. Not physical-device or GPU-completion timing.",
+  "errors": [],
+  "phases": [
+    {
+      "npcTarget": 0,
+      "fieldUpdates": 30,
+      "durationMs": 29286.799999952316,
+      "rafFrames": 30,
+      "rafTimeouts": 0,
+      "rafMedianMs": 950,
+      "rafP95Ms": 1183.2000000000116,
+      "counters": {
+        "draws": 2850,
+        "uploads": 60,
+        "rendererCalls": 90
+      },
+      "drawsPerRendererCall": 31.666666666666668,
+      "uploadsPerRendererCall": 0.6666666666666666,
+      "field": {
+        "surfaces": 467,
+        "samples": 350050,
+        "rebuilds": 2,
+        "buildMs": 1339.8999998569489,
+        "bytes": 16051188,
+        "receiverPixels": 1105675,
+        "depthPixels": 1453561,
+        "ready": true,
+        "error": "",
+        "sun": {
+          "dx": 1.59394236711567,
+          "dy": 0.09168415256286729,
+          "alpha": 0.4
+        },
+        "model": "original alpha, explicit billboard/relief geometry; light-space depth compare",
+        "uploadMs": 34016.10000014305,
+        "dynamic": {
+          "updates": 73,
+          "actors": 1,
+          "extraSurfaces": 0,
+          "skinnedMeshes": 1,
+          "receiverPasses": 3,
+          "geometryBytes": 2073244,
+          "drawnVertices": 40328,
+          "pixels": 226304,
+          "bytes": 6485348,
+          "renderMs": 0.5,
+          "ready": true,
+          "casterPasses": 3,
+          "fieldSamplers": 4,
+          "opaqueEnvelope": true,
+          "step": 0.5
+        }
+      },
+      "traceFrames": [
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0.3,
+            "heroDraw": 0.4,
+            "heroCopy": 0.1,
+            "heroPost": 0.3,
+            "textureUpload": 0.1
+          },
+          "t": 115075,
+          "dtMs": 955,
+          "fps": 1.05,
+          "encountersRenderMs": 1.8,
+          "pixiRenderMs": 3.1,
+          "hero3dMs": 1.2
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0.1,
+            "heroDraw": 0.2,
+            "heroCopy": 0.1,
+            "heroPost": 0,
+            "textureUpload": 2.8
+          },
+          "t": 115992.6,
+          "dtMs": 917.6,
+          "fps": 1.09,
+          "worldDrawMs": 0.2,
+          "encountersRenderMs": 4,
+          "pixiRenderMs": 3.8,
+          "hero3dMs": 0.4
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0.1,
+            "heroDraw": 0.2,
+            "heroCopy": 0,
+            "heroPost": 0,
+            "textureUpload": 1
+          },
+          "t": 116899.1,
+          "dtMs": 906.5,
+          "fps": 1.1,
+          "worldDrawMs": 0.1,
+          "encountersStepMs": 0.1,
+          "encountersRenderMs": 2,
+          "pixiRenderMs": 3.5,
+          "hero3dMs": 0.4
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0.1,
+            "heroDraw": 0.3,
+            "heroCopy": 0,
+            "heroPost": 0.1,
+            "textureUpload": 0.2
+          },
+          "t": 117865.9,
+          "dtMs": 966.8,
+          "fps": 1.03,
+          "worldDrawMs": 0.3,
+          "encountersRenderMs": 1.6,
+          "pixiRenderMs": 3.8,
+          "hero3dMs": 0.7
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0.2,
+            "heroDraw": 0.2,
+            "heroCopy": 0,
+            "heroPost": 0,
+            "textureUpload": 0.1
+          },
+          "t": 118766.2,
+          "dtMs": 900.3,
+          "fps": 1.11,
+          "worldDrawMs": 0.1,
+          "encountersRenderMs": 0.8,
+          "pixiRenderMs": 3.3,
+          "hero3dMs": 0.5
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0.2,
+            "heroDraw": 0.3,
+            "heroCopy": 0,
+            "heroPost": 0,
+            "textureUpload": 0.2
+          },
+          "t": 119617.2,
+          "dtMs": 851,
+          "fps": 1.18,
+          "worldDrawMs": 0.1,
+          "encountersRenderMs": 1.2,
+          "pixiRenderMs": 7.7,
+          "hero3dMs": 0.6
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0,
+            "heroDraw": 0.3,
+            "heroCopy": 0,
+            "heroPost": 0,
+            "textureUpload": 0.1
+          },
+          "t": 120516.1,
+          "dtMs": 898.9,
+          "fps": 1.11,
+          "encountersRenderMs": 46.2,
+          "pixiRenderMs": 2.5,
+          "hero3dMs": 45.7
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0.1,
+            "heroDraw": 0.2,
+            "heroCopy": 0,
+            "heroPost": 3.7,
+            "textureUpload": 0.3
+          },
+          "t": 121402.6,
+          "dtMs": 886.5,
+          "fps": 1.13,
+          "worldDrawMs": 0.1,
+          "encountersRenderMs": 4.6,
+          "pixiRenderMs": 2.8,
+          "hero3dMs": 4.1
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0.1,
+            "heroDraw": 0.2,
+            "heroCopy": 1.3,
+            "heroPost": 0.2,
+            "textureUpload": 0.1
+          },
+          "t": 122372.9,
+          "dtMs": 970.3,
+          "fps": 1.03,
+          "encountersRenderMs": 2.4,
+          "pixiRenderMs": 3.8,
+          "hero3dMs": 1.9
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0,
+            "heroDraw": 0.2,
+            "heroCopy": 0,
+            "heroPost": 0.1,
+            "textureUpload": 0.1
+          },
+          "t": 123400.2,
+          "dtMs": 1027.3,
+          "fps": 0.97,
+          "worldDrawMs": 0.2,
+          "encountersStepMs": 0.1,
+          "encountersRenderMs": 0.9,
+          "pixiRenderMs": 4.7,
+          "hero3dMs": 0.4
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0,
+            "heroDraw": 0.4,
+            "heroCopy": 0,
+            "heroPost": 0,
+            "textureUpload": 0.2
+          },
+          "t": 124297.6,
+          "dtMs": 897.4,
+          "fps": 1.11,
+          "worldDrawMs": 0.1,
+          "encountersStepMs": 0.1,
+          "encountersRenderMs": 0.9,
+          "pixiRenderMs": 2,
+          "hero3dMs": 0.5
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0,
+            "heroDraw": 0.1,
+            "heroCopy": 0,
+            "heroPost": 0.1,
+            "textureUpload": 0.2
+          },
+          "t": 125228.2,
+          "dtMs": 930.6,
+          "fps": 1.07,
+          "worldDrawMs": 0.1,
+          "encountersRenderMs": 1.2,
+          "pixiRenderMs": 9.7,
+          "hero3dMs": 0.4,
+          "vfxMs": 0.1
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0,
+            "heroDraw": 0.2,
+            "heroCopy": 0,
+            "heroPost": 0,
+            "textureUpload": 0.7
+          },
+          "t": 126166.3,
+          "dtMs": 938.1,
+          "fps": 1.07,
+          "encountersRenderMs": 1.8,
+          "pixiRenderMs": 24.1,
+          "hero3dMs": 0.4
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 1.4,
+            "heroDraw": 2.1,
+            "heroCopy": 0,
+            "heroPost": 0.8,
+            "textureUpload": 0.6
+          },
+          "t": 127136.8,
+          "dtMs": 970.5,
+          "fps": 1.03,
+          "worldDrawMs": 0.2,
+          "encountersStepMs": 0.1,
+          "encountersRenderMs": 6.2,
+          "pixiRenderMs": 8.9,
+          "hero3dMs": 4.7
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0.1,
+            "heroDraw": 0.3,
+            "heroCopy": 0,
+            "heroPost": 0.2,
+            "textureUpload": 0.2
+          },
+          "t": 128145.5,
+          "dtMs": 1008.7,
+          "fps": 0.99,
+          "encountersRenderMs": 1.7,
+          "pixiRenderMs": 5.1,
+          "hero3dMs": 0.8
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0.1,
+            "heroDraw": 0.2,
+            "heroCopy": 0,
+            "heroPost": 0.1,
+            "textureUpload": 0.1
+          },
+          "t": 129281.9,
+          "dtMs": 1136.4,
+          "fps": 0.88,
+          "worldDrawMs": 0.2,
+          "encountersRenderMs": 0.9,
+          "pixiRenderMs": 12.8,
+          "hero3dMs": 0.4,
+          "vfxMs": 0.1
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0,
+            "heroDraw": 0.4,
+            "heroCopy": 0,
+            "heroPost": 0,
+            "textureUpload": 0.3
+          },
+          "t": 130213.9,
+          "dtMs": 932,
+          "fps": 1.07,
+          "worldDrawMs": 0.1,
+          "encountersRenderMs": 3.2,
+          "pixiRenderMs": 2.7,
+          "hero3dMs": 0.7,
+          "vfxMs": 0.1
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0.1,
+            "heroDraw": 0.1,
+            "heroCopy": 0,
+            "heroPost": 0.1,
+            "textureUpload": 0.2
+          },
+          "t": 131549,
+          "dtMs": 1335.1,
+          "fps": 0.75,
+          "encountersRenderMs": 1.2,
+          "pixiRenderMs": 2.1,
+          "hero3dMs": 0.6
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0.1,
+            "heroDraw": 0.3,
+            "heroCopy": 0,
+            "heroPost": 0,
+            "textureUpload": 0
+          },
+          "t": 132529.9,
+          "dtMs": 980.9,
+          "fps": 1.02,
+          "worldDrawMs": 0.1,
+          "encountersRenderMs": 0.9,
+          "pixiRenderMs": 6.7,
+          "hero3dMs": 0.4
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0,
+            "heroDraw": 1.4,
+            "heroCopy": 0.1,
+            "heroPost": 0.1,
+            "textureUpload": 0.1
+          },
+          "t": 133643.5,
+          "dtMs": 1113.6,
+          "fps": 0.9,
+          "worldDrawMs": 0.1,
+          "encountersRenderMs": 2.6,
+          "pixiRenderMs": 2,
+          "hero3dMs": 1.8,
+          "vfxMs": 0.1
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0.1,
+            "heroDraw": 0.2,
+            "heroCopy": 0,
+            "heroPost": 0.1,
+            "textureUpload": 14.1
+          },
+          "t": 134669.4,
+          "dtMs": 1025.9,
+          "fps": 0.97,
+          "encountersRenderMs": 15.4,
+          "pixiRenderMs": 2.7,
+          "hero3dMs": 0.5
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0.1,
+            "heroDraw": 0.1,
+            "heroCopy": 0,
+            "heroPost": 0.1,
+            "textureUpload": 0.2
+          },
+          "t": 135679.7,
+          "dtMs": 1010.3,
+          "fps": 0.99,
+          "encountersStepMs": 0.1,
+          "encountersRenderMs": 0.9,
+          "pixiRenderMs": 6,
+          "hero3dMs": 0.5
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0,
+            "heroDraw": 0.2,
+            "heroCopy": 0,
+            "heroPost": 0.1,
+            "textureUpload": 0.1
+          },
+          "t": 136682.8,
+          "dtMs": 1003.1,
+          "fps": 1,
+          "encountersRenderMs": 1.9,
+          "pixiRenderMs": 3.4,
+          "hero3dMs": 0.4
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0.1,
+            "heroDraw": 0.3,
+            "heroCopy": 0,
+            "heroPost": 0,
+            "textureUpload": 0.2
+          },
+          "t": 137715.1,
+          "dtMs": 1032.3,
+          "fps": 0.97,
+          "encountersRenderMs": 1.1,
+          "pixiRenderMs": 20.2,
+          "hero3dMs": 0.4,
+          "vfxMs": 0.1
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0.1,
+            "heroDraw": 0.6,
+            "heroCopy": 0,
+            "heroPost": 0.1,
+            "textureUpload": 0.3
+          },
+          "t": 138585,
+          "dtMs": 869.9,
+          "fps": 1.15,
+          "encountersRenderMs": 2.5,
+          "pixiRenderMs": 7,
+          "hero3dMs": 1.1,
+          "vfxMs": 0.1
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0.3,
+            "heroDraw": 1.3,
+            "heroCopy": 0,
+            "heroPost": 0.1,
+            "textureUpload": 0.2
+          },
+          "t": 139498.5,
+          "dtMs": 913.5,
+          "fps": 1.09,
+          "encountersRenderMs": 2.3,
+          "pixiRenderMs": 8.4,
+          "hero3dMs": 1.9
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0,
+            "heroDraw": 0.1,
+            "heroCopy": 0,
+            "heroPost": 0.2,
+            "textureUpload": 1.2
+          },
+          "t": 140400.5,
+          "dtMs": 902,
+          "fps": 1.11,
+          "worldDrawMs": 0.1,
+          "encountersRenderMs": 3.2,
+          "pixiRenderMs": 3.8,
+          "hero3dMs": 0.4
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0.1,
+            "heroDraw": 0.2,
+            "heroCopy": 0,
+            "heroPost": 0.2,
+            "textureUpload": 0.2
+          },
+          "t": 141597,
+          "dtMs": 1196.5,
+          "fps": 0.84,
+          "worldDrawMs": 0.1,
+          "encountersStepMs": 0.2,
+          "encountersRenderMs": 1.6,
+          "pixiRenderMs": 2.3,
+          "hero3dMs": 0.8
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0,
+            "heroDraw": 0.2,
+            "heroCopy": 0,
+            "heroPost": 0.1,
+            "textureUpload": 7.1
+          },
+          "t": 142500,
+          "dtMs": 903,
+          "fps": 1.11,
+          "encountersRenderMs": 14,
+          "pixiRenderMs": 6.8,
+          "hero3dMs": 0.7
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0.1,
+            "heroDraw": 0.2,
+            "heroCopy": 0,
+            "heroPost": 0.1,
+            "textureUpload": 0.2
+          },
+          "t": 143445,
+          "dtMs": 945,
+          "fps": 1.06,
+          "encountersRenderMs": 1.1,
+          "pixiRenderMs": 2.6,
+          "hero3dMs": 0.4,
+          "vfxMs": 0.1
+        }
+      ],
+      "foes": 0,
+      "glError": 0
+    },
+    {
+      "npcTarget": 32,
+      "fieldUpdates": 13,
+      "durationMs": 30625.60000014305,
+      "rafFrames": 14,
+      "rafTimeouts": 13,
+      "rafMedianMs": 99.89999999999418,
+      "rafP95Ms": 9789.100000190723,
+      "counters": {
+        "draws": 2731,
+        "uploads": 154,
+        "rendererCalls": 40
+      },
+      "drawsPerRendererCall": 68.275,
+      "uploadsPerRendererCall": 3.85,
+      "field": {
+        "surfaces": 467,
+        "samples": 350050,
+        "rebuilds": 2,
+        "buildMs": 1339.8999998569489,
+        "bytes": 16051188,
+        "receiverPixels": 1105675,
+        "depthPixels": 1453561,
+        "ready": true,
+        "error": "",
+        "sun": {
+          "dx": 1.59394236711567,
+          "dy": 0.09168415256286729,
+          "alpha": 0.4
+        },
+        "model": "original alpha, explicit billboard/relief geometry; light-space depth compare",
+        "uploadMs": 34016.10000014305,
+        "dynamic": {
+          "updates": 93,
+          "actors": 33,
+          "extraSurfaces": 0,
+          "skinnedMeshes": 1,
+          "receiverPasses": 3,
+          "geometryBytes": 2073244,
+          "drawnVertices": 40584,
+          "pixels": 306176,
+          "bytes": 8664932,
+          "renderMs": 0.7999999523162842,
+          "ready": true,
+          "casterPasses": 3,
+          "fieldSamplers": 4,
+          "opaqueEnvelope": true,
+          "step": 0.5
+        }
+      },
+      "traceFrames": [],
+      "foes": 32,
+      "glError": 0
+    },
+    {
+      "npcTarget": 0,
+      "fieldUpdates": 26,
+      "durationMs": 19315.599999904633,
+      "rafFrames": 30,
+      "rafTimeouts": 0,
+      "rafMedianMs": 850,
+      "rafP95Ms": 1433.1999999999825,
+      "counters": {
+        "draws": 2810,
+        "uploads": 54,
+        "rendererCalls": 82
+      },
+      "drawsPerRendererCall": 34.26829268292683,
+      "uploadsPerRendererCall": 0.6585365853658537,
+      "field": {
+        "surfaces": 467,
+        "samples": 350050,
+        "rebuilds": 2,
+        "buildMs": 1339.8999998569489,
+        "bytes": 16051188,
+        "receiverPixels": 1105675,
+        "depthPixels": 1453561,
+        "ready": true,
+        "error": "",
+        "sun": {
+          "dx": 1.59394236711567,
+          "dy": 0.09168415256286729,
+          "alpha": 0.4
+        },
+        "model": "original alpha, explicit billboard/relief geometry; light-space depth compare",
+        "uploadMs": 34016.10000014305,
+        "dynamic": {
+          "updates": 124,
+          "actors": 1,
+          "extraSurfaces": 0,
+          "skinnedMeshes": 1,
+          "receiverPasses": 3,
+          "geometryBytes": 2073244,
+          "drawnVertices": 40328,
+          "pixels": 226304,
+          "bytes": 6485348,
+          "renderMs": 3.3999998569488525,
+          "ready": true,
+          "casterPasses": 3,
+          "fieldSamplers": 4,
+          "opaqueEnvelope": true,
+          "step": 0.5
+        }
+      },
+      "traceFrames": [
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0.3,
+            "heroDraw": 0.4,
+            "heroCopy": 0,
+            "heroPost": 0.1,
+            "textureUpload": 1
+          },
+          "t": 188473.6,
+          "dtMs": 814.2,
+          "fps": 1.23,
+          "worldDrawMs": 0.1,
+          "encountersStepMs": 0.1,
+          "encountersRenderMs": 1.9,
+          "pixiRenderMs": 5.1,
+          "hero3dMs": 0.5
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0.1,
+            "heroDraw": 0.3,
+            "heroCopy": 0,
+            "heroPost": 0,
+            "textureUpload": 2.5
+          },
+          "t": 189129,
+          "dtMs": 655.4,
+          "fps": 1.53,
+          "encountersRenderMs": 3.6,
+          "pixiRenderMs": 3.3,
+          "hero3dMs": 0.5
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0.1,
+            "heroDraw": 0.3,
+            "heroCopy": 0,
+            "heroPost": 0.1,
+            "textureUpload": 0
+          },
+          "t": 190993.2,
+          "dtMs": 1864.2,
+          "fps": 0.54,
+          "worldDrawMs": 0.1,
+          "encountersStepMs": 0.1,
+          "encountersRenderMs": 1.1,
+          "pixiRenderMs": 5.3,
+          "hero3dMs": 0.8
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0.1,
+            "heroDraw": 2.5,
+            "heroCopy": 0,
+            "heroPost": 1.7,
+            "textureUpload": 0.1
+          },
+          "t": 191896.1,
+          "dtMs": 902.9,
+          "fps": 1.11,
+          "encountersStepMs": 0.1,
+          "encountersRenderMs": 5,
+          "pixiRenderMs": 3,
+          "hero3dMs": 4.4
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0.1,
+            "heroDraw": 0.2,
+            "heroCopy": 0,
+            "heroPost": 0,
+            "textureUpload": 0
+          },
+          "t": 192784.1,
+          "dtMs": 888,
+          "fps": 1.13,
+          "worldDrawMs": 0.5,
+          "encountersStepMs": 0.1,
+          "encountersRenderMs": 0.6,
+          "pixiRenderMs": 5.7,
+          "hero3dMs": 0.5
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0,
+            "heroDraw": 0.2,
+            "heroCopy": 0,
+            "heroPost": 0,
+            "textureUpload": 2
+          },
+          "t": 193632.3,
+          "dtMs": 848.2,
+          "fps": 1.18,
+          "worldDrawMs": 1,
+          "encountersStepMs": 0.3,
+          "encountersRenderMs": 3.3,
+          "pixiRenderMs": 3.3,
+          "hero3dMs": 0.5,
+          "vfxMs": 0.1
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0,
+            "heroDraw": 0.2,
+            "heroCopy": 2.5,
+            "heroPost": 0.1,
+            "textureUpload": 1.7
+          },
+          "t": 195072.4,
+          "dtMs": 1440.1,
+          "fps": 0.69,
+          "worldDrawMs": 0.1,
+          "encountersRenderMs": 36,
+          "pixiRenderMs": 2.6,
+          "hero3dMs": 2.9
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0.1,
+            "heroDraw": 0.1,
+            "heroCopy": 0,
+            "heroPost": 0.2,
+            "textureUpload": 0.1
+          },
+          "t": 195686.8,
+          "dtMs": 614.4,
+          "fps": 1.63,
+          "worldDrawMs": 0.1,
+          "encountersRenderMs": 0.7,
+          "pixiRenderMs": 3,
+          "hero3dMs": 0.4
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0.1,
+            "heroDraw": 0.3,
+            "heroCopy": 0,
+            "heroPost": 0,
+            "textureUpload": 0.1
+          },
+          "t": 196505.7,
+          "dtMs": 818.9,
+          "fps": 1.22,
+          "encountersRenderMs": 1,
+          "pixiRenderMs": 2.7,
+          "hero3dMs": 0.5
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0.2,
+            "heroDraw": 0.1,
+            "heroCopy": 0,
+            "heroPost": 0,
+            "textureUpload": 0.3
+          },
+          "t": 197368.6,
+          "dtMs": 862.9,
+          "fps": 1.16,
+          "encountersStepMs": 0.1,
+          "encountersRenderMs": 1.1,
+          "pixiRenderMs": 1.9,
+          "hero3dMs": 0.3
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0.1,
+            "heroDraw": 0.1,
+            "heroCopy": 0,
+            "heroPost": 0,
+            "textureUpload": 0.1
+          },
+          "t": 198215.8,
+          "dtMs": 847.2,
+          "fps": 1.18,
+          "encountersRenderMs": 0.6,
+          "pixiRenderMs": 1.7,
+          "hero3dMs": 0.3
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0.1,
+            "heroDraw": 0.2,
+            "heroCopy": 0,
+            "heroPost": 0,
+            "textureUpload": 0.1
+          },
+          "t": 199095.3,
+          "dtMs": 879.5,
+          "fps": 1.14,
+          "worldDrawMs": 0.1,
+          "encountersRenderMs": 0.7,
+          "pixiRenderMs": 4.4,
+          "hero3dMs": 0.4
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0.1,
+            "heroDraw": 0.2,
+            "heroCopy": 0,
+            "heroPost": 0,
+            "textureUpload": 0
+          },
+          "t": 199972.7,
+          "dtMs": 877.4,
+          "fps": 1.14,
+          "encountersRenderMs": 0.6,
+          "pixiRenderMs": 2,
+          "hero3dMs": 0.3,
+          "vfxMs": 0.1
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0.1,
+            "heroDraw": 0.2,
+            "heroCopy": 0,
+            "heroPost": 0.1,
+            "textureUpload": 0
+          },
+          "t": 200873.8,
+          "dtMs": 901.1,
+          "fps": 1.11,
+          "worldDrawMs": 0.3,
+          "encountersStepMs": 0.1,
+          "encountersRenderMs": 1.5,
+          "pixiRenderMs": 3.3,
+          "hero3dMs": 0.4
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0,
+            "heroDraw": 0.3,
+            "heroCopy": 0,
+            "heroPost": 0,
+            "textureUpload": 0.1
+          },
+          "t": 201801.1,
+          "dtMs": 927.3,
+          "fps": 1.08,
+          "worldDrawMs": 0.2,
+          "encountersRenderMs": 0.7,
+          "pixiRenderMs": 2.4,
+          "hero3dMs": 0.3
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0,
+            "heroDraw": 0.3,
+            "heroCopy": 0,
+            "heroPost": 0,
+            "textureUpload": 0.1
+          },
+          "t": 202602.9,
+          "dtMs": 801.8,
+          "fps": 1.25,
+          "worldDrawMs": 0.1,
+          "encountersRenderMs": 1.5,
+          "pixiRenderMs": 2.6,
+          "hero3dMs": 0.4
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0,
+            "heroDraw": 0.3,
+            "heroCopy": 0,
+            "heroPost": 0,
+            "textureUpload": 0.1
+          },
+          "t": 203488.5,
+          "dtMs": 885.6,
+          "fps": 1.13,
+          "encountersRenderMs": 1.7,
+          "pixiRenderMs": 6.8,
+          "hero3dMs": 0.5
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0,
+            "heroDraw": 0.1,
+            "heroCopy": 0,
+            "heroPost": 0.1,
+            "textureUpload": 0.1
+          },
+          "t": 204405.5,
+          "dtMs": 917,
+          "fps": 1.09,
+          "encountersStepMs": 0.1,
+          "encountersRenderMs": 0.8,
+          "pixiRenderMs": 2.9,
+          "hero3dMs": 0.4
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0,
+            "heroDraw": 0.3,
+            "heroCopy": 0,
+            "heroPost": 0,
+            "textureUpload": 0.1
+          },
+          "t": 205284,
+          "dtMs": 878.5,
+          "fps": 1.14,
+          "worldDrawMs": 0.1,
+          "encountersRenderMs": 1.1,
+          "pixiRenderMs": 4.7,
+          "hero3dMs": 0.4,
+          "vfxMs": 0.1
+        }
+      ],
+      "foes": 0,
+      "glError": 0
+    }
+  ],
+  "center": {
+    "u": 34,
+    "v": 44
+  },
+  "spawned": [
+    {
+      "u": 34.6,
+      "v": 44
+    },
+    {
+      "u": 34.584199837003226,
+      "v": 44.13678651412111
+    },
+    {
+      "u": 34.53763149851532,
+      "v": 44.26636886417931
+    },
+    {
+      "u": 34.462747608998264,
+      "v": 44.381922309333184
+    },
+    {
+      "u": 34.363492093986075,
+      "v": 44.47736097202182
+    },
+    {
+      "u": 34.245092464530494,
+      "v": 44.54765836415631
+    },
+    {
+      "u": 34.1137844987787,
+      "v": 44.58911211822342
+    },
+    {
+      "u": 33.97648382093621,
+      "v": 44.59953898065283
+    },
+    {
+      "u": 33.84042167463461,
+      "v": 44.57838979769147
+    },
+    {
+      "u": 33.712764073504765,
+      "v": 44.52677843779945
+    },
+    {
+      "u": 33.600234387232106,
+      "v": 44.44742312730603
+    },
+    {
+      "u": 33.50875924043357,
+      "v": 44.34450328901274
+    },
+    {
+      "u": 33.4431563738744,
+      "v": 44.22343942365503
+    },
+    {
+      "u": 33.40688090750356,
+      "v": 44.090607627251806
+    },
+    {
+      "u": 33.40184336892587,
+      "v": 43.95300377991748
+    },
+    {
+      "u": 33.42830907124342,
+      "v": 43.81787509237494
+    },
+    {
+      "u": 33.48488413975474,
+      "v": 43.69233841558657
+    },
+    {
+      "u": 33.56858892344639,
+      "v": 43.583005416070115
+    },
+    {
+      "u": 33.67501492489858,
+      "v": 43.49563435786988
+    },
+    {
+      "u": 33.79855698354451,
+      "v": 43.43482683085508
+    },
+    {
+      "u": 33.932708483838965,
+      "v": 43.403785397819924
+    },
+    {
+      "u": 34.070404040545576,
+      "v": 43.40414492443644
+    },
+    {
+      "u": 34.204391612864676,
+      "v": 43.435886475440824
+    },
+    {
+      "u": 34.32761444918899,
+      "v": 43.49733831190094
+    },
+    {
+      "u": 34.433582746522355,
+      "v": 43.585263937041724
+    },
+    {
+      "u": 34.516715450296914,
+      "v": 43.69503255350045
+    },
+    {
+      "u": 34.57263419294599,
+      "v": 43.820862954503845
+    },
+    {
+      "u": 34.59839389030816,
+      "v": 43.956128003899245
+    },
+    {
+      "u": 34.72,
+      "v": 44
+    },
+    {
+      "u": 34.70103980440387,
+      "v": 44.164143816945334
+    },
+    {
+      "u": 34.64515779821838,
+      "v": 44.31964263701517
+    },
+    {
+      "u": 34.55529713079792,
+      "v": 44.458306771199815
+    }
+  ],
+  "healthAttempts": [
+    200
+  ],
+  "health": 200
+}
