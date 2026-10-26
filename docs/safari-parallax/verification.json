@@ -1,0 +1,179 @@
+{
+  "pass": true,
+  "results": [
+    {
+      "engine": "chromium",
+      "fallback": false,
+      "nativeBlur": true,
+      "cases": [
+        {
+          "area": "court",
+          "mobile": false,
+          "side": "left",
+          "width": 320,
+          "height": 380,
+          "sharpEnergy": 7.005995674261858,
+          "blurEnergy": 1.5055740101697466,
+          "ms": 272.5
+        },
+        {
+          "area": "court",
+          "mobile": false,
+          "side": "right",
+          "width": 320,
+          "height": 380,
+          "sharpEnergy": 6.885525047264896,
+          "blurEnergy": 1.1373498670897526,
+          "ms": 19.099998474121094
+        },
+        {
+          "area": "court",
+          "mobile": true,
+          "side": "left",
+          "width": 180,
+          "height": 150,
+          "sharpEnergy": 18.905581637976002,
+          "blurEnergy": 2.725589225589226,
+          "ms": 49.29999923706055
+        },
+        {
+          "area": "court",
+          "mobile": true,
+          "side": "right",
+          "width": 180,
+          "height": 150,
+          "sharpEnergy": 14.46173469387755,
+          "blurEnergy": 2.1060859854829705,
+          "ms": 5.399997711181641
+        },
+        {
+          "area": "snow",
+          "mobile": false,
+          "side": "left",
+          "width": 320,
+          "height": 380,
+          "sharpEnergy": 11.570075560939031,
+          "blurEnergy": 2.6365372374283895,
+          "ms": 19.699996948242188
+        },
+        {
+          "area": "snow",
+          "mobile": false,
+          "side": "right",
+          "width": 320,
+          "height": 380,
+          "sharpEnergy": 12.750992808844048,
+          "blurEnergy": 2.9079659470963817,
+          "ms": 26.400001525878906
+        },
+        {
+          "area": "snow",
+          "mobile": true,
+          "side": "left",
+          "width": 180,
+          "height": 150,
+          "sharpEnergy": 29.39874213836478,
+          "blurEnergy": 5.567251461988304,
+          "ms": 5.900001525878906
+        },
+        {
+          "area": "snow",
+          "mobile": true,
+          "side": "right",
+          "width": 180,
+          "height": 150,
+          "sharpEnergy": 27.99189814814815,
+          "blurEnergy": 7.395555555555555,
+          "ms": 6.299999237060547
+        }
+      ]
+    },
+    {
+      "engine": "chromium",
+      "fallback": true,
+      "nativeBlur": false,
+      "cases": [
+        {
+          "area": "court",
+          "mobile": false,
+          "side": "left",
+          "width": 320,
+          "height": 380,
+          "sharpEnergy": 7.005995674261858,
+          "blurEnergy": 1.4931892705477612,
+          "ms": 172.4000015258789
+        },
+        {
+          "area": "court",
+          "mobile": false,
+          "side": "right",
+          "width": 320,
+          "height": 380,
+          "sharpEnergy": 6.885525047264896,
+          "blurEnergy": 1.1171182454529007,
+          "ms": 110.20000076293945
+        },
+        {
+          "area": "court",
+          "mobile": true,
+          "side": "left",
+          "width": 180,
+          "height": 150,
+          "sharpEnergy": 18.905581637976002,
+          "blurEnergy": 2.723063973063973,
+          "ms": 50.099998474121094
+        },
+        {
+          "area": "court",
+          "mobile": true,
+          "side": "right",
+          "width": 180,
+          "height": 150,
+          "sharpEnergy": 14.46173469387755,
+          "blurEnergy": 2.087308228730823,
+          "ms": 46.400001525878906
+        },
+        {
+          "area": "snow",
+          "mobile": false,
+          "side": "left",
+          "width": 320,
+          "height": 380,
+          "sharpEnergy": 11.570075560939031,
+          "blurEnergy": 2.628512698096943,
+          "ms": 144.5
+        },
+        {
+          "area": "snow",
+          "mobile": false,
+          "side": "right",
+          "width": 320,
+          "height": 380,
+          "sharpEnergy": 12.750992808844048,
+          "blurEnergy": 2.9025379064299037,
+          "ms": 154.79999923706055
+        },
+        {
+          "area": "snow",
+          "mobile": true,
+          "side": "left",
+          "width": 180,
+          "height": 150,
+          "sharpEnergy": 29.39874213836478,
+          "blurEnergy": 5.599415204678363,
+          "ms": 37.099998474121094
+        },
+        {
+          "area": "snow",
+          "mobile": true,
+          "side": "right",
+          "width": 180,
+          "height": 150,
+          "sharpEnergy": 27.99189814814815,
+          "blurEnergy": 7.417777777777777,
+          "ms": 34
+        }
+      ]
+    }
+  ]
+}
