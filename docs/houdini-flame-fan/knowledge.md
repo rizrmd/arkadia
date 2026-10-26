@@ -63,3 +63,11 @@ These earlier blank, overexposed, undersampled and small-frame experiments are r
 
 ![Live Pixi experiment — 320px viewport](https://ark-whachat.fural.space/houdini-flame-fan/evidence/live-320.png)
 
+
+### Reusable metadata playback verified
+
+The Pixi player now uses exported FPS, duration, pivot, aspect, camera span, fan angle and ground projection instead of fixed defaults. A browser fixture verifies a 0.75-second/48-FPS clip selects actual atlas frame 24 at +0.5s, with a changed pivot, fan angle and projection. Play/Pause, playback speed and desktop/mobile atlas tiers are also checked.
+
+[Full artifact audit](https://ark-whachat.fural.space/houdini-flame-fan/evidence/artifact-audit.json) verifies the 180 RGBA masters, five saved `.hipnc` scenes, preview-before-render ordering and page/frame/anchor consistency. The complete scope and evidence matrix is in the [English implementation notes](https://ark-whachat.fural.space/houdini-flame-fan/evidence/README.md).
+
+The approved task explicitly allows a noncommercial Apprentice experiment. Earlier status notes incorrectly made future commercial game adoption a completion prerequisite. This experimental setup/flipbook delivery can be completed while `productionApproved` stays false. Sampling noise and future game depth/occlusion, directions and physical-device validation remain stated limitations; no commercial game replacement is claimed.
