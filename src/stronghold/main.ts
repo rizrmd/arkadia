@@ -18,6 +18,9 @@ import {showMovementHint} from './movement-hint';
 
 export async function mount(app:HTMLElement,progress:Progress){
  const rt=await ensurePixiRuntime(app);
+ // The HTML loading cover hides this scene. Reserve the GPU for explicit
+ // preparation passes instead of rendering the full world behind the cover.
+ rt.app.stop();
  const canvas=rt.app.canvas;
  canvas.setAttribute('aria-label','Stronghold world. Walk with the arrow keys or WASD, or on a touch screen drag from the bottom half; drag in the top half, or with a second finger while walking, to pan. The hero attacks nearby revenants automatically.');
  canvas.tabIndex=0;
@@ -119,6 +122,9 @@ export async function mount(app:HTMLElement,progress:Progress){
  await new Promise<void>(resolve=>setTimeout(resolve,0));
  await picker.start();
  progress(995,1000,'Entering the Stronghold');
+ // Exercise the complete world/filter pipeline once while the cover is still up.
+ rt.app.render();
+ rt.app.start();
  loaded();
  void picker.picked.then(()=>{
   if(invited)lobby!.prompt(invited);

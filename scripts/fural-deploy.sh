@@ -27,6 +27,7 @@ node scripts/android-stutter/verify-flame-gpu.mjs
 node scripts/android-stutter/verify-alpha-cache.mjs
 node scripts/android-stutter/verify-chunked-upload.mjs
 npx tsc --noEmit && npx vite build --outDir "$DIST_DIR"
+SITE_DIR="$DIST_DIR" OUT="$DIST_DIR/loading-render-proof.json" node scripts/android-stutter/verify-loading-render.mjs
 # The organization shares 1 GiB of RAM across sessions: compile one package at a time under a memory limit.
 export GOFLAGS=-p=1 GOMAXPROCS=2 GOMEMLIMIT=256MiB GOTOOLCHAIN=local
 (cd server && go test ./... && CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -trimpath -ldflags="-s -w" -o "$DIST_DIR/arkodia" ./cmd/arkodia)
