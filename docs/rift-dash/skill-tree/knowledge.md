@@ -8,13 +8,25 @@ Rift Dash is an **active** skill. Its Skill Tree node now uses the same point-up
 
 ### Local verification
 
-Desktop 1440 × 900, emulated touch portrait 390 × 844 and landscape 844 × 390 passed: active classification, unlearned and learned hexagon, slot swapping, rank pips, badge and actual manual dash displacement. These are Chromium touch emulations, not physical-device tests. The first screenshot attempt hit its 30-second timeout; the full rerun with a longer screenshot timeout passed with no page errors. TypeScript passes. Live publication is pending.
+Desktop 1440 × 900, emulated touch portrait 390 × 844 and landscape 844 × 390 passed: active classification, unlearned and learned hexagon, slot swapping, rank pips, badge and actual manual dash displacement. These are Chromium touch emulations, not physical-device tests. The first screenshot attempt hit its 30-second timeout; the full rerun with a longer screenshot timeout passed with no page errors. TypeScript passes. Live publication and the same three viewport checks passed, including actual 1.5-tile manual dash displacement and no page errors. Production build, Go tests and the 40-second two-client co-op smoke check passed. The existing dedicated player still accepts its Pixi Arrival control at 760 × 560. Implementation: `0c3983f`; release: `36bb272`; runtime layer: `1793024325994-rift-dash-skill-tree-36bb272-fb25532d0bcc`.
 
 ![Local desktop Skill Tree and Equipped hexagons](/organizations/ORd5dd6f99b4308d6187031557/sandbox/US811985d3c06cf1bb66ab0a05/files?file=projects%2Farkadia%2Frift-player-fix%2Fdocs%2Frift-dash%2Fskill-tree%2Flocal-desktop-equipped.png)
 
 ![Local portrait Skill Tree and Equipped hexagons](/organizations/ORd5dd6f99b4308d6187031557/sandbox/US811985d3c06cf1bb66ab0a05/files?file=projects%2Farkadia%2Frift-player-fix%2Fdocs%2Frift-dash%2Fskill-tree%2Flocal-portrait-equipped.png)
 
 ![Local landscape Skill Tree and Equipped hexagons](/organizations/ORd5dd6f99b4308d6187031557/sandbox/US811985d3c06cf1bb66ab0a05/files?file=projects%2Farkadia%2Frift-player-fix%2Fdocs%2Frift-dash%2Fskill-tree%2Flocal-landscape-equipped.png)
+
+
+### Live verification
+
+[Live interaction report](https://ark-whachat.fural.space/rift-dash/skill-tree/live-verification.json) · [Deployment receipt](https://ark-whachat.fural.space/rift-dash/skill-tree/deployment.json)
+
+![Live desktop Skill Tree and Equipped — active Rift Dash](https://ark-whachat.fural.space/rift-dash/skill-tree/live-desktop-equipped.png)
+
+![Live portrait Skill Tree and Equipped — active Rift Dash](https://ark-whachat.fural.space/rift-dash/skill-tree/live-portrait-equipped.png)
+
+![Live landscape Skill Tree and Equipped — active Rift Dash](https://ark-whachat.fural.space/rift-dash/skill-tree/live-landscape-equipped.png)
+
 
 
 ## Dedicated generated VFX player — live verification
