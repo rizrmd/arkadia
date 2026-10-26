@@ -6,5 +6,11 @@
     "world-view.ts"
   ],
   "review": "world-view.ts changes only add loading milestones and event-loop yields during initialization. Peer daylight.ts changes cycle length and sunrise/sunset; fixed audit light vectors remain independent. Current app commit is not inferred from repository HEAD. New entry requires independent live checks.",
-  "status": "runtime_checks_pending"
+  "status": "partial",
+  "benchmarkSmoke": "Three-phase depth/legacy/depth smoke passes on /assets/index-Oya6nKbz.js with matching camera/sun; four samplers.",
+  "currentFocusedAudit": "Desktop follow-up hit 120s readiness timeout before asset cases; mobile was not run. Not counted as pass.",
+  "remaining": [
+    "Diagnose current desktop readiness timeout",
+    "Obtain paired native performance results"
+  ]
 }
