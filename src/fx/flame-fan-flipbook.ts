@@ -104,7 +104,7 @@ async function boot(){
   actorSprites.forEach(({s,m,textures},i)=>{const hit=i&&time>.22&&time<.65,clip=m.clips[i?(hit?'hit':'idle'):(time<.6?'attack-E':'idle-E')];const frame=!i&&time<.6?(time<.08?Math.min(3,Math.floor(time/.08*4)):3):Math.min(clip.frames.length-1,Math.floor((hit?time-.22:time)*clip.fps)%clip.frames.length);s.texture=textures[clip.frames[frame]];s.x=(i?forwardX(points[i][0]):points[i][0])+(hit?Math.sin((time-.22)/.43*Math.PI)*5:0);});
   phase.text=(time<.08?'Hand ignition':time<.22?'Opening':time<.45?'Full rolling flame':time<.75?'Erosion / rising smoke':burn.active?'Burning ground':'Recovery')+' · '+Math.round(time*1000)+' ms';
   levelButton.text='Level: '+level;
-  details.text=`Lv.${level} · ${level<3?'Initial hit only':`Burn Soil ${burn.ticks}/5 ticks · 1.0s · tick damage TBD`}\n`+(solo<0?'Nine layers combined · alpha body / smoke · additive ignition / core / embers':`${solo+1} / ${names[solo]} isolated · actors retained for scale`);
+  details.text=`Lv.${level} · ${level<3?'Initial hit only':`Burn Soil ${burn.ticks}/5 ticks · 1.0s · tick damage TBD`}\n`+(solo<0?'Nine Pixi layers · select a layer to inspect':`${solo+1} / ${names[solo]} isolated · actors retained for scale`);
   progress.clear().roundRect(24,578,752,5,2).fill(0x48616c).roundRect(24,578,Math.max(2,752*time/duration),5,2).fill(0xffa33b);
   play.text=paused?'Play':'Pause';looping.text='Loop: '+(loop?'On':'Off');rate.text='Speed: '+speed+'×';backdrop.text=day?'Day':'Night';comparison.text='Reference: '+(compare?'On':'Off');all.text=solo<0?'All layers ✓':'All layers';
   buttons.forEach((b,i)=>b.g.tint=i===6&&solo<0||i>=7&&i<=15&&solo===i-7?0xffaa55:0xffffff);
