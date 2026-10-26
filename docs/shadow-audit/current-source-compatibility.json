@@ -1,0 +1,10 @@
+{
+  "referenceRuntime": "2e354348",
+  "observedAppEntry": "/assets/index-Oya6nKbz.js",
+  "byteIdenticalRendererSources": 16,
+  "changedRendererSources": [
+    "world-view.ts"
+  ],
+  "review": "world-view.ts changes only add loading milestones and event-loop yields during initialization. Peer daylight.ts changes cycle length and sunrise/sunset; fixed audit light vectors remain independent. Current app commit is not inferred from repository HEAD. New entry requires independent live checks.",
+  "status": "runtime_checks_pending"
+}
