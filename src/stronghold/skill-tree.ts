@@ -1,3 +1,4 @@
+import {drawSkillHex,skillHexPoints} from '../typography/skill-hex';
 import {requestGameFrame as requestAnimationFrame,cancelGameFrame as cancelAnimationFrame} from '../app/frame-scheduler';
 import {Container,Graphics,Rectangle,Sprite,TilingSprite} from 'pixi.js';
 import {FrameSet,pickFrameScale} from '../typography/frames';
@@ -7,9 +8,9 @@ import {CAPSTONE_LEVEL,RIFT_TIER_POINTS,EMBER_TIER_POINTS,pointsSpent,riftCardUn
 
 // Rift Runner Skill Tree (Knowledge: "Rift Runner — Ascension Tree Concept", revised progression): a gold-framed panel in
 // front of the dimmed world with the HUD left uncovered. Portrait screens stack the tree bottom to top (Rift Bolt at the
-// bottom) and scroll vertically; wider screens run it left to right and scroll horizontally. Active skills are round gold
+// bottom) and scroll vertically; wider screens run it left to right and scroll horizontally. Rift Dash uses the shared Equipped hexagon; other active skills use round gold
 // rings with five rank pips, passives are borderless emblems, equipped actives carry their Skill 1/2/3 badge.
-// Skills only auto-cast: tapping a HUD skill slot opens the tree for that slot, and tapping a learned active skill there
+// Rift Dash casts manually; other skills auto-cast: tapping a HUD skill slot opens the tree for that slot, and tapping a learned active skill there
 // equips it to the slot (an equipped one swaps places).
 // Art: public/skill-tree/v1 (scripts/skill-tree/build-assets.mjs).
 
@@ -69,7 +70,7 @@ const LEVEL_ROLE:TextRole={...ROLES['hud-badge'],fill:0xfbe7b5};
 const SIZE:Record<Kind,number>={active:1,ultimate:1.08,passive:.9};
 const ICON_IN_RING=94/128,GLOW=1.7;
 
-type NodeView={def:NodeDef;root:Container;glow:Sprite;icon:Sprite;ring?:Sprite;plate:Container;level:MsdfText;name:MsdfText;pips:Sprite[];badge?:Sprite;x:number;y:number;r:number;state:string;lock:string};
+type NodeView={def:NodeDef;root:Container;glow:Sprite;icon:Sprite;ring?:Sprite|Graphics;plate:Container;level:MsdfText;name:MsdfText;pips:Sprite[];badge?:Sprite;x:number;y:number;r:number;state:string;lock:string};
 type Rect={x:number;y:number;width:number;height:number};
 type Pt={x:number;y:number};
 
@@ -356,8 +357,14 @@ export class SkillTree{
    const glow=box.addChild(new Sprite(f.texture('node-glow')));glow.anchor.set(.5);glow.width=glow.height=d*GLOW;glow.visible=false;
    const icon=box.addChild(new Sprite(this.iconTexture(`icon-${n.id}-dim`)));icon.anchor.set(.5);
    icon.width=icon.height=n.kind==='passive'?d:d*ICON_IN_RING;
-   let ring:Sprite|undefined;
-   if(n.kind!=='passive'){ring=box.addChild(new Sprite(f.texture(n.evolution?'ring-evolution':'ring-active')));ring.anchor.set(.5);ring.width=ring.height=d;}
+   let ring:Sprite|Graphics|undefined;
+   if(n.id==='rift-dash'){
+    // Crop the same skill artwork into the shared Equipped silhouette, in every rank/equip state.
+    icon.width=icon.height=d;
+    const mask=box.addChild(new Graphics().poly(skillHexPoints(0,0,rr*(1-6/48))).fill(0xffffff));
+    icon.mask=mask;
+    ring=box.addChild(new Graphics());drawSkillHex(ring,0,0,rr);
+   }else if(n.kind!=='passive'){ring=box.addChild(new Sprite(f.texture(n.evolution?'ring-evolution':'ring-active')));ring.anchor.set(.5);ring.width=ring.height=d;}
    const plateW=Math.max(44,u*.56),plateH=Math.max(18,u*.22);
    const plate=box.addChild(f.frame(LEVEL_PLATE,plateW,plateH));
    const plateY=n.kind==='passive'?rr*.62:rr*.9;
@@ -485,7 +492,7 @@ export class SkillTree{
    const g=this.content.toGlobal({x:v.x,y:v.y});
    const learned=this.learned(v);
    return {id:v.def.id,name:v.def.name,kind:v.def.kind,placeholder:!v.def.game,learned,level:learned?Number(v.level.text.replace(/\D+/g,'')):0,locked:v.lock||null,
-    pipCount:v.pips.length,ring:!!v.ring,pips:v.pips.filter(p=>p.texture===this.frames?.texture('pip-on')).length,slot:v.badge?.visible?this.slotOf(v):0,
+    shape:v.def.id==='rift-dash'?'hexagon':v.ring?'circle':'emblem',pipCount:v.pips.length,ring:!!v.ring,pips:v.pips.filter(p=>p.texture===this.frames?.texture('pip-on')).length,slot:v.badge?.visible?this.slotOf(v):0,
     screen:{x:+g.x.toFixed(1),y:+g.y.toFixed(1),r:+v.r.toFixed(1)},inView:this.inView(g.x,g.y),highlighted:this.highlighted===v.def.id};
   });
   const c=this.close?.getBounds();
