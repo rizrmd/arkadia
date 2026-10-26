@@ -84,7 +84,7 @@
    ],
    "cast": "WebGL original-alpha triangle depth field",
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "integrated explicit geometry companion; per-family visual acceptance pending",
+   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; family representative reviewed",
    "companion": "src/world/maps/shadow-companions.json#ruined-gate",
    "owner": "this task",
    "staticAudit": {
@@ -95,6 +95,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -136,7 +140,7 @@
    ],
    "cast": "WebGL original-alpha triangle depth field",
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "integrated explicit geometry companion; per-family visual acceptance pending",
+   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; family representative reviewed",
    "companion": "src/world/maps/shadow-companions.json#broken-watchtower",
    "owner": "this task",
    "staticAudit": {
@@ -147,6 +151,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -188,7 +196,7 @@
    ],
    "cast": "WebGL original-alpha triangle depth field",
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "integrated explicit geometry companion; per-family visual acceptance pending",
+   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; family representative reviewed",
    "companion": "src/world/maps/shadow-companions.json#snowy-shrine",
    "owner": "this task",
    "staticAudit": {
@@ -199,6 +207,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -423,7 +435,7 @@
    ],
    "cast": "WebGL original-alpha triangle depth field",
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "integrated explicit geometry companion; per-family visual acceptance pending",
+   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; family representative reviewed",
    "companion": "src/world/maps/shadow-companions.json#pine-tall",
    "owner": "this task",
    "staticAudit": {
@@ -464,6 +476,10 @@
     ],
     "sunCases": 93,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -561,7 +577,7 @@
    ],
    "cast": "WebGL original-alpha triangle depth field",
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "integrated explicit geometry companion; per-family visual acceptance pending",
+   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; family representative reviewed",
    "companion": "src/world/maps/shadow-companions.json#pine-broad",
    "owner": "this task",
    "staticAudit": {
@@ -581,6 +597,10 @@
     ],
     "sunCases": 30,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -733,7 +753,7 @@
    ],
    "cast": "WebGL original-alpha triangle depth field",
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "integrated explicit geometry companion; per-family visual acceptance pending",
+   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; family representative reviewed",
    "companion": "src/world/maps/shadow-companions.json#pine-sapling",
    "owner": "this task",
    "staticAudit": {
@@ -762,6 +782,10 @@
     ],
     "sunCases": 57,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -822,7 +846,7 @@
    ],
    "cast": "WebGL original-alpha triangle depth field",
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "integrated explicit geometry companion; per-family visual acceptance pending",
+   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; family representative reviewed",
    "companion": "src/world/maps/shadow-companions.json#dead-tree",
    "owner": "this task",
    "staticAudit": {
@@ -836,6 +860,10 @@
     ],
     "sunCases": 12,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -931,7 +959,7 @@
    ],
    "cast": "WebGL original-alpha triangle depth field",
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "integrated explicit geometry companion; per-family visual acceptance pending",
+   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; family representative reviewed",
    "companion": "src/world/maps/shadow-companions.json#dead-snag",
    "owner": "this task",
    "staticAudit": {
@@ -950,6 +978,10 @@
     ],
     "sunCases": 27,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -1092,7 +1124,7 @@
    ],
    "cast": "WebGL original-alpha triangle depth field",
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "integrated explicit geometry companion; per-family visual acceptance pending",
+   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; family representative reviewed",
    "companion": "src/world/maps/shadow-companions.json#shrub-juniper",
    "owner": "this task",
    "staticAudit": {
@@ -1119,6 +1151,10 @@
     ],
     "sunCases": 51,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -1225,7 +1261,7 @@
    ],
    "cast": "WebGL original-alpha triangle depth field",
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "integrated explicit geometry companion; per-family visual acceptance pending",
+   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; family representative reviewed",
    "companion": "src/world/maps/shadow-companions.json#shrub-twigs",
    "owner": "this task",
    "staticAudit": {
@@ -1246,6 +1282,10 @@
     ],
     "sunCases": 33,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -1591,7 +1631,7 @@
    ],
    "cast": "WebGL original-alpha triangle depth field",
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "integrated explicit geometry companion; per-family visual acceptance pending",
+   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; family representative reviewed",
    "companion": "src/world/maps/shadow-companions.json#grass-tussock",
    "owner": "this task",
    "staticAudit": {
@@ -1650,6 +1690,10 @@
     ],
     "sunCases": 147,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -1918,6 +1962,10 @@
     ],
     "sunCases": 75,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -2024,7 +2072,7 @@
    ],
    "cast": "WebGL original-alpha triangle depth field",
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "integrated explicit geometry companion; per-family visual acceptance pending",
+   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; family representative reviewed",
    "companion": "src/world/maps/shadow-companions.json#rock-boulders",
    "owner": "this task",
    "staticAudit": {
@@ -2045,6 +2093,10 @@
     ],
     "sunCases": 33,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -2266,6 +2318,10 @@
     ],
     "sunCases": 69,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -2308,7 +2364,7 @@
    ],
    "cast": "WebGL original-alpha triangle depth field",
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "integrated explicit geometry companion; per-family visual acceptance pending",
+   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; family representative reviewed",
    "companion": "src/world/maps/shadow-companions.json#wall-ne",
    "owner": "this task",
    "staticAudit": {
@@ -2319,6 +2375,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -2361,7 +2421,7 @@
    ],
    "cast": "WebGL original-alpha triangle depth field",
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "integrated explicit geometry companion; per-family visual acceptance pending",
+   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; family representative reviewed",
    "companion": "src/world/maps/shadow-companions.json#wall-se",
    "owner": "this task",
    "staticAudit": {
@@ -2372,6 +2432,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -2414,7 +2478,7 @@
    ],
    "cast": "WebGL original-alpha triangle depth field",
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "integrated explicit geometry companion; per-family visual acceptance pending",
+   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; family representative reviewed",
    "companion": "src/world/maps/shadow-companions.json#corner-n",
    "owner": "this task",
    "staticAudit": {
@@ -2425,6 +2489,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -2466,7 +2534,7 @@
    ],
    "cast": "WebGL original-alpha triangle depth field",
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "integrated explicit geometry companion; per-family visual acceptance pending",
+   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; family representative reviewed",
    "companion": "src/world/maps/shadow-companions.json#corner-s",
    "owner": "this task",
    "staticAudit": {
@@ -2477,6 +2545,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -2518,7 +2590,7 @@
    ],
    "cast": "WebGL original-alpha triangle depth field",
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "integrated explicit geometry companion; per-family visual acceptance pending",
+   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; family representative reviewed",
    "companion": "src/world/maps/shadow-companions.json#arch-ne",
    "owner": "this task",
    "staticAudit": {
@@ -2529,6 +2601,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -2570,7 +2646,7 @@
    ],
    "cast": "WebGL original-alpha triangle depth field",
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "integrated explicit geometry companion; per-family visual acceptance pending",
+   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; family representative reviewed",
    "companion": "src/world/maps/shadow-companions.json#arch-se",
    "owner": "this task",
    "staticAudit": {
@@ -2581,6 +2657,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -2629,7 +2709,7 @@
    ],
    "cast": "WebGL original-alpha triangle depth field",
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "integrated explicit geometry companion; per-family visual acceptance pending",
+   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; family representative reviewed",
    "companion": "src/world/maps/shadow-companions.json#pillar-intact",
    "owner": "CWSCU: preserve renderer strip count and geometry",
    "staticAudit": {
@@ -2641,6 +2721,10 @@
     ],
     "sunCases": 6,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -2703,7 +2787,7 @@
    ],
    "cast": "WebGL original-alpha triangle depth field",
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "integrated explicit geometry companion; per-family visual acceptance pending",
+   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; family representative reviewed",
    "companion": "src/world/maps/shadow-companions.json#pillar-broken",
    "owner": "CWSCU: preserve renderer strip count and geometry",
    "staticAudit": {
@@ -2717,6 +2801,10 @@
     ],
     "sunCases": 12,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -2758,7 +2846,7 @@
    ],
    "cast": "WebGL original-alpha triangle depth field",
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "integrated explicit geometry companion; per-family visual acceptance pending",
+   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; family representative reviewed",
    "companion": "src/world/maps/shadow-companions.json#stairs-ne",
    "owner": "CWSCU: preserve renderer strip count and geometry",
    "staticAudit": {
@@ -2769,6 +2857,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -2810,7 +2902,7 @@
    ],
    "cast": "WebGL original-alpha triangle depth field",
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "integrated explicit geometry companion; per-family visual acceptance pending",
+   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; family representative reviewed",
    "companion": "src/world/maps/shadow-companions.json#stairs-nw",
    "owner": "CWSCU: preserve renderer strip count and geometry",
    "staticAudit": {
@@ -2821,6 +2913,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -2901,7 +2997,7 @@
    ],
    "cast": "WebGL original-alpha triangle depth field",
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "integrated explicit geometry companion; per-family visual acceptance pending",
+   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; family representative reviewed",
    "companion": "src/world/maps/shadow-companions.json#rubble",
    "owner": "this task",
    "staticAudit": {
@@ -2918,6 +3014,10 @@
     ],
     "sunCases": 21,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -2950,7 +3050,7 @@
    "variants": [],
    "cast": "WebGL original-alpha triangle depth field",
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "integrated explicit geometry companion; per-family visual acceptance pending",
+   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; family representative reviewed",
    "companion": "src/world/maps/shadow-companions.json#foundation",
    "owner": "this task",
    "staticAudit": {
@@ -2961,6 +3061,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -3020,6 +3124,10 @@
     ],
     "sunCases": 6,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -3080,6 +3188,10 @@
     ],
     "sunCases": 6,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -3593,6 +3705,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -5240,7 +5356,7 @@
    ],
    "cast": "WebGL original-alpha triangle depth field",
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "integrated explicit geometry companion; per-family visual acceptance pending",
+   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; family representative reviewed",
    "companion": "src/world/maps/shadow-companions.json#drift-ne",
    "owner": "this task",
    "staticAudit": {
@@ -5253,6 +5369,10 @@
     ],
     "sunCases": 9,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -5307,7 +5427,7 @@
    ],
    "cast": "WebGL original-alpha triangle depth field",
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "integrated explicit geometry companion; per-family visual acceptance pending",
+   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; family representative reviewed",
    "companion": "src/world/maps/shadow-companions.json#drift-se",
    "owner": "this task",
    "staticAudit": {
@@ -5320,6 +5440,10 @@
     ],
     "sunCases": 9,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -5402,7 +5526,7 @@
    ],
    "cast": "WebGL original-alpha triangle depth field",
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "integrated explicit geometry companion; per-family visual acceptance pending",
+   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; family representative reviewed",
    "companion": "src/world/maps/shadow-companions.json#drift-mound",
    "owner": "this task",
    "staticAudit": {
@@ -5419,6 +5543,10 @@
     ],
     "sunCases": 21,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -5833,6 +5961,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -6245,6 +6377,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -6286,7 +6422,7 @@
    ],
    "cast": "WebGL original-alpha closed solid volume",
    "receive": "native visible-face geometric receiver",
-   "disposition": "actual source-authored box faces clipped to original alpha; multi-angle visual acceptance pending",
+   "disposition": "actual source-authored box faces clipped to original alpha; three-sun cast/receive controls pass; family representative reviewed",
    "companion": "src/world/maps/solid-shadow-companions.json#frontier:column-fallen",
    "owner": "this task",
    "staticAudit": {
@@ -6297,6 +6433,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -6339,7 +6479,7 @@
    ],
    "cast": "WebGL original-alpha closed solid volume",
    "receive": "native visible-face geometric receiver",
-   "disposition": "actual source-authored box faces clipped to original alpha; multi-angle visual acceptance pending",
+   "disposition": "actual source-authored box faces clipped to original alpha; three-sun cast/receive controls pass; family representative reviewed",
    "companion": "src/world/maps/solid-shadow-companions.json#frontier:column-fallen-v",
    "owner": "this task",
    "staticAudit": {
@@ -6350,6 +6490,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -6391,7 +6535,7 @@
    ],
    "cast": "WebGL original-alpha closed solid volume",
    "receive": "native visible-face geometric receiver",
-   "disposition": "actual source-authored box faces clipped to original alpha; multi-angle visual acceptance pending",
+   "disposition": "actual source-authored box faces clipped to original alpha; three-sun cast/receive controls pass; family representative reviewed",
    "companion": "src/world/maps/solid-shadow-companions.json#frontier:grave-headstone",
    "owner": "this task",
    "staticAudit": {
@@ -6402,6 +6546,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -6443,7 +6591,7 @@
    ],
    "cast": "WebGL original-alpha closed solid volume",
    "receive": "native visible-face geometric receiver",
-   "disposition": "actual source-authored box faces clipped to original alpha; multi-angle visual acceptance pending",
+   "disposition": "actual source-authored box faces clipped to original alpha; three-sun cast/receive controls pass; family representative reviewed",
    "companion": "src/world/maps/solid-shadow-companions.json#frontier:grave-cross",
    "owner": "this task",
    "staticAudit": {
@@ -6454,6 +6602,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -6495,7 +6647,7 @@
    ],
    "cast": "WebGL original-alpha closed solid volume",
    "receive": "native visible-face geometric receiver",
-   "disposition": "actual source-authored box faces clipped to original alpha; multi-angle visual acceptance pending",
+   "disposition": "actual source-authored box faces clipped to original alpha; three-sun cast/receive controls pass; family representative reviewed",
    "companion": "src/world/maps/solid-shadow-companions.json#frontier:grave-sarcophagus",
    "owner": "this task",
    "staticAudit": {
@@ -6506,6 +6658,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -6547,7 +6703,7 @@
    ],
    "cast": "WebGL original-alpha closed solid volume",
    "receive": "native visible-face geometric receiver",
-   "disposition": "actual source-authored box faces clipped to original alpha; multi-angle visual acceptance pending",
+   "disposition": "actual source-authored box faces clipped to original alpha; three-sun cast/receive controls pass; family representative reviewed",
    "companion": "src/world/maps/solid-shadow-companions.json#frontier:grave-memorial",
    "owner": "this task",
    "staticAudit": {
@@ -6558,6 +6714,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -6599,7 +6759,7 @@
    ],
    "cast": "WebGL original-alpha triangle depth field",
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "integrated explicit geometry companion; per-family visual acceptance pending",
+   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; family representative reviewed",
    "companion": "src/world/maps/shadow-companions.json#temple-podium",
    "owner": "this task",
    "staticAudit": {
@@ -6610,6 +6770,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -6692,7 +6856,7 @@
    ],
    "cast": "WebGL original-alpha folded-billboard depth field",
    "receive": "WebGL explicit proxy-height receiver",
-   "disposition": "integrated alpha proxy; per-family visual acceptance pending",
+   "disposition": "integrated alpha proxy; three-sun cast/receive controls pass; family representative reviewed",
    "staticAudit": {
     "report": "static-final/report.json",
     "reportSha256": "399270baf4d4d26e4a44927439889f1d19a5a8e42334fbde13496474ea4bb469",
@@ -6701,6 +6865,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -6783,7 +6951,7 @@
    ],
    "cast": "WebGL original-alpha folded-billboard depth field",
    "receive": "WebGL explicit proxy-height receiver",
-   "disposition": "integrated alpha proxy; per-family visual acceptance pending",
+   "disposition": "integrated alpha proxy; three-sun cast/receive controls pass; family representative reviewed",
    "staticAudit": {
     "report": "static-final/report.json",
     "reportSha256": "399270baf4d4d26e4a44927439889f1d19a5a8e42334fbde13496474ea4bb469",
@@ -6792,6 +6960,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -6844,7 +7016,7 @@
    ],
    "cast": "WebGL original-alpha folded-billboard depth field",
    "receive": "WebGL explicit proxy-height receiver",
-   "disposition": "integrated alpha proxy; per-family visual acceptance pending",
+   "disposition": "integrated alpha proxy; three-sun cast/receive controls pass; family representative reviewed",
    "staticAudit": {
     "report": "static-final/report.json",
     "reportSha256": "399270baf4d4d26e4a44927439889f1d19a5a8e42334fbde13496474ea4bb469",
@@ -6853,6 +7025,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -6915,7 +7091,7 @@
    ],
    "cast": "WebGL original-alpha folded-billboard depth field",
    "receive": "WebGL explicit proxy-height receiver",
-   "disposition": "integrated alpha proxy; per-family visual acceptance pending",
+   "disposition": "integrated alpha proxy; three-sun cast/receive controls pass; family representative reviewed",
    "staticAudit": {
     "report": "static-final/report.json",
     "reportSha256": "399270baf4d4d26e4a44927439889f1d19a5a8e42334fbde13496474ea4bb469",
@@ -6927,6 +7103,10 @@
     ],
     "sunCases": 12,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -7019,7 +7199,7 @@
    ],
    "cast": "WebGL original-alpha folded-billboard depth field",
    "receive": "WebGL explicit proxy-height receiver",
-   "disposition": "integrated alpha proxy; per-family visual acceptance pending",
+   "disposition": "integrated alpha proxy; three-sun cast/receive controls pass; family representative reviewed",
    "staticAudit": {
     "report": "static-final/report.json",
     "reportSha256": "399270baf4d4d26e4a44927439889f1d19a5a8e42334fbde13496474ea4bb469",
@@ -7031,6 +7211,10 @@
     ],
     "sunCases": 12,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -7103,7 +7287,7 @@
    ],
    "cast": "WebGL original-alpha folded-billboard depth field",
    "receive": "WebGL explicit proxy-height receiver",
-   "disposition": "integrated alpha proxy; per-family visual acceptance pending",
+   "disposition": "integrated alpha proxy; three-sun cast/receive controls pass; family representative reviewed",
    "staticAudit": {
     "report": "static-final/report.json",
     "reportSha256": "399270baf4d4d26e4a44927439889f1d19a5a8e42334fbde13496474ea4bb469",
@@ -7112,6 +7296,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -7174,7 +7362,7 @@
    ],
    "cast": "WebGL original-alpha folded-billboard depth field",
    "receive": "WebGL explicit proxy-height receiver",
-   "disposition": "integrated alpha proxy; per-family visual acceptance pending",
+   "disposition": "integrated alpha proxy; three-sun cast/receive controls pass; family representative reviewed",
    "staticAudit": {
     "report": "static-final/report.json",
     "reportSha256": "399270baf4d4d26e4a44927439889f1d19a5a8e42334fbde13496474ea4bb469",
@@ -7183,6 +7371,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -7295,6 +7487,10 @@
     ],
     "sunCases": 6,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -7396,6 +7592,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -7487,6 +7687,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -7519,7 +7723,7 @@
    ],
    "cast": "WebGL original-alpha folded-billboard depth field",
    "receive": "WebGL explicit proxy-height receiver",
-   "disposition": "integrated alpha proxy; per-family visual acceptance pending",
+   "disposition": "integrated alpha proxy; three-sun cast/receive controls pass; family representative reviewed",
    "staticAudit": {
     "report": "static-final/report.json",
     "reportSha256": "399270baf4d4d26e4a44927439889f1d19a5a8e42334fbde13496474ea4bb469",
@@ -7528,6 +7732,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -7560,7 +7768,7 @@
    ],
    "cast": "WebGL original-alpha folded-billboard depth field",
    "receive": "WebGL explicit proxy-height receiver",
-   "disposition": "integrated alpha proxy; per-family visual acceptance pending",
+   "disposition": "integrated alpha proxy; three-sun cast/receive controls pass; family representative reviewed",
    "staticAudit": {
     "report": "static-final/report.json",
     "reportSha256": "399270baf4d4d26e4a44927439889f1d19a5a8e42334fbde13496474ea4bb469",
@@ -7569,6 +7777,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -7601,7 +7813,7 @@
    ],
    "cast": "WebGL original-alpha folded-billboard depth field",
    "receive": "WebGL explicit proxy-height receiver",
-   "disposition": "integrated alpha proxy; per-family visual acceptance pending",
+   "disposition": "integrated alpha proxy; three-sun cast/receive controls pass; family representative reviewed",
    "staticAudit": {
     "report": "static-final/report.json",
     "reportSha256": "399270baf4d4d26e4a44927439889f1d19a5a8e42334fbde13496474ea4bb469",
@@ -7610,6 +7822,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -7642,7 +7858,7 @@
    ],
    "cast": "WebGL original-alpha closed solid volume",
    "receive": "native visible-face geometric receiver",
-   "disposition": "authored closed source-space face proxy clipped to original alpha; multi-angle visual acceptance pending",
+   "disposition": "authored closed source-space face proxy clipped to original alpha; three-sun cast/receive controls pass; family representative reviewed",
    "companion": "src/world/maps/solid-shadow-companions.json#court:crate",
    "staticAudit": {
     "report": "static-final/report.json",
@@ -7652,6 +7868,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -7684,7 +7904,7 @@
    ],
    "cast": "WebGL original-alpha closed solid volume",
    "receive": "front visible capped surface only",
-   "disposition": "authored cap and camera-ray interval; original alpha coverage retained; multi-angle visual acceptance pending",
+   "disposition": "authored cap and camera-ray interval; original alpha coverage retained; three-sun cast/receive controls pass; family representative reviewed",
    "companion": "src/world/maps/solid-shadow-companions.json#court:barrel",
    "staticAudit": {
     "report": "static-final/report.json",
@@ -7694,6 +7914,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -7740,7 +7964,7 @@
    },
    "cast": "WebGL original-alpha folded-billboard depth field",
    "receive": "WebGL explicit proxy-height receiver",
-   "disposition": "integrated alpha proxy; level visual acceptance pending",
+   "disposition": "integrated alpha proxy; three-sun cast/receive controls pass; family representative reviewed",
    "variants": [
     1
    ],
@@ -7753,6 +7977,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -7799,7 +8027,7 @@
    },
    "cast": "WebGL original-alpha folded-billboard depth field",
    "receive": "WebGL explicit proxy-height receiver",
-   "disposition": "integrated alpha proxy; level visual acceptance pending",
+   "disposition": "integrated alpha proxy; three-sun cast/receive controls pass; family representative reviewed",
    "variants": [
     2
    ],
@@ -7812,6 +8040,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -7858,7 +8090,7 @@
    },
    "cast": "WebGL original-alpha folded-billboard depth field",
    "receive": "WebGL explicit proxy-height receiver",
-   "disposition": "integrated alpha proxy; level visual acceptance pending",
+   "disposition": "integrated alpha proxy; three-sun cast/receive controls pass; family representative reviewed",
    "variants": [
     3
    ],
@@ -7871,6 +8103,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -7917,7 +8153,7 @@
    },
    "cast": "WebGL original-alpha folded-billboard depth field",
    "receive": "WebGL explicit proxy-height receiver",
-   "disposition": "integrated alpha proxy; level visual acceptance pending",
+   "disposition": "integrated alpha proxy; three-sun cast/receive controls pass; family representative reviewed",
    "variants": [
     1,
     2,
@@ -7932,6 +8168,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -7978,7 +8218,7 @@
    },
    "cast": "WebGL original-alpha folded-billboard depth field",
    "receive": "WebGL explicit proxy-height receiver",
-   "disposition": "integrated alpha proxy; level visual acceptance pending",
+   "disposition": "integrated alpha proxy; three-sun cast/receive controls pass; family representative reviewed",
    "variants": [
     1,
     2,
@@ -7993,6 +8233,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -8039,7 +8283,7 @@
    },
    "cast": "WebGL original-alpha folded-billboard depth field",
    "receive": "WebGL explicit proxy-height receiver",
-   "disposition": "integrated alpha proxy; level visual acceptance pending",
+   "disposition": "integrated alpha proxy; three-sun cast/receive controls pass; family representative reviewed",
    "variants": [
     1,
     2,
@@ -8054,6 +8298,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -8116,6 +8364,10 @@
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+   },
    "companion": "src/stronghold/tent-shadow.ts"
   },
   {
@@ -8162,7 +8414,7 @@
    },
    "cast": "WebGL original-alpha folded-billboard depth field",
    "receive": "WebGL explicit proxy-height receiver",
-   "disposition": "integrated alpha proxy; level visual acceptance pending",
+   "disposition": "integrated alpha proxy; three-sun cast/receive controls pass; family representative reviewed",
    "variants": [
     1,
     2,
@@ -8177,6 +8429,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -29093,6 +29349,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -29130,6 +29390,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -29167,6 +29431,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -29204,6 +29472,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -29241,6 +29513,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -29278,6 +29554,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -29315,6 +29595,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -29352,6 +29636,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -29389,6 +29677,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -29426,6 +29718,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -29463,6 +29759,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -29500,6 +29800,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -29537,6 +29841,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -29570,6 +29878,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -29607,6 +29919,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -29640,6 +29956,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -29677,6 +29997,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -29710,6 +30034,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -29747,6 +30075,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -29780,6 +30112,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -30405,7 +30741,7 @@
    },
    "cast": "relief geometry proxy; scenery visual handled by frontier",
    "receive": "WebGL authored relief height reconstruction",
-   "disposition": "authored relief intersection integrated; multi-angle visual acceptance pending",
+   "disposition": "authored relief intersection integrated; three-sun cast/receive controls pass; family representative reviewed",
    "staticAudit": {
     "report": "static-final/report.json",
     "reportSha256": "399270baf4d4d26e4a44927439889f1d19a5a8e42334fbde13496474ea4bb469",
@@ -30414,6 +30750,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -30685,7 +31025,7 @@
    },
    "cast": "relief geometry proxy; scenery visual handled by frontier",
    "receive": "WebGL authored relief height reconstruction",
-   "disposition": "authored relief intersection integrated; multi-angle visual acceptance pending",
+   "disposition": "authored relief intersection integrated; three-sun cast/receive controls pass; family representative reviewed",
    "staticAudit": {
     "report": "static-final/report.json",
     "reportSha256": "399270baf4d4d26e4a44927439889f1d19a5a8e42334fbde13496474ea4bb469",
@@ -30694,6 +31034,10 @@
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
    }
   },
   {
@@ -30712,7 +31056,20 @@
    },
    "cast": "relief geometry proxy; scenery visual handled by frontier",
    "receive": "WebGL authored relief height reconstruction",
-   "disposition": "authored relief intersection integrated; multi-angle visual acceptance pending"
+   "disposition": "Registered podium slab alpha/height proxy passes three-sun cast/receive controls; authored collision relief remains unchanged.",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "399270baf4d4d26e4a44927439889f1d19a5a8e42334fbde13496474ea4bb469",
+    "variants": [
+     "variant:36"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+   }
   },
   {
    "id": "terrain:temple-stairs",
@@ -30732,8 +31089,21 @@
     "ascend": "-u"
    },
    "cast": "relief geometry proxy; scenery visual handled by frontier",
-   "receive": "WebGL authored relief height reconstruction",
-   "disposition": "authored relief intersection integrated; multi-angle visual acceptance pending"
+   "receive": "registered CWSCU stair sprite proxy; actor collision/ramp geometry remains separate",
+   "disposition": "CWSCU-owned stair geometry retained. Three-sun sprite cast/receive controls pass; no measured per-tread reconstruction claimed.",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "399270baf4d4d26e4a44927439889f1d19a5a8e42334fbde13496474ea4bb469",
+    "variants": [
+     "variant:245"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "visualReview": {
+    "report": "static-final-review/findings.json",
+    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+   }
   },
   {
    "id": "vfx:ember-warden/attack.swing.ground",
@@ -43863,7 +44233,7 @@
   "report": "static-final/report.json",
   "variants": 313,
   "sunCases": 939,
-  "mappedRows": 86,
+  "mappedRows": 88,
   "registered": 476,
   "placements": 479,
   "receiverPainterOrder": {
