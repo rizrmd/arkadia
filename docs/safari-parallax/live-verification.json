@@ -1,0 +1,1222 @@
+{
+  "pass": true,
+  "base": "https://ark-whachat.fural.space/",
+  "results": [
+    {
+      "engine": "chromium",
+      "width": 1440,
+      "height": 900,
+      "area": "court",
+      "snapshot": {
+        "enabled": true,
+        "mode": "desktop",
+        "blurPx": 3,
+        "textureSize": {
+          "w": 320,
+          "h": 380
+        },
+        "reducedMotion": false,
+        "heroTile": {
+          "u": 9.16,
+          "v": 8.96
+        },
+        "biome": "court",
+        "biomeLabel": "Court",
+        "borderBiomes": {
+          "left": "court",
+          "right": "court"
+        },
+        "area": "court",
+        "slotAArea": "court",
+        "slotBArea": "court",
+        "activeSlot": "A",
+        "pendingArea": null,
+        "pendingMs": 0,
+        "pendingDistanceTiles": 0,
+        "transitioning": false,
+        "transitionProgress": 0,
+        "transitionCount": 0,
+        "overscanPx": {
+          "x": 60,
+          "y": 60
+        },
+        "offset": {
+          "dx": -5.06,
+          "dy": 2.03
+        },
+        "left": {
+          "alpha": 1,
+          "targetAlpha": 1,
+          "nearCombatant": false,
+          "slotAAlpha": 1,
+          "slotBAlpha": 0,
+          "box": {
+            "left": 0,
+            "top": 483,
+            "right": 317,
+            "bottom": 900
+          },
+          "file": "/environment-corners/v1/corner-court-left.webp",
+          "nextFile": null
+        },
+        "right": {
+          "alpha": 1,
+          "targetAlpha": 1,
+          "nearCombatant": false,
+          "slotAAlpha": 1,
+          "slotBAlpha": 0,
+          "box": {
+            "left": 1123,
+            "top": 483,
+            "right": 1440,
+            "bottom": 900
+          },
+          "file": "/environment-corners/v1/corner-court-right.webp",
+          "nextFile": null
+        },
+        "loadedSets": [
+          "court:desktop",
+          "snow:desktop"
+        ]
+      },
+      "textures": [
+        {
+          "canvas": true,
+          "width": 320,
+          "height": 380,
+          "fractionalAlpha": 53344,
+          "opaque": 0,
+          "samples": 93015,
+          "sharpEnergy": 6.778003547814868,
+          "blurEnergy": 1.4931892705477612
+        },
+        {
+          "canvas": true,
+          "width": 320,
+          "height": 380,
+          "fractionalAlpha": 46342,
+          "opaque": 0,
+          "samples": 71859,
+          "sharpEnergy": 6.733686803323175,
+          "blurEnergy": 1.1171182454529007
+        }
+      ]
+    },
+    {
+      "engine": "chromium",
+      "width": 1440,
+      "height": 900,
+      "area": "snow",
+      "snapshot": {
+        "enabled": true,
+        "mode": "desktop",
+        "blurPx": 3,
+        "textureSize": {
+          "w": 320,
+          "h": 380
+        },
+        "reducedMotion": false,
+        "heroTile": {
+          "u": 9.16,
+          "v": 8.96
+        },
+        "biome": "court",
+        "biomeLabel": "Court",
+        "borderBiomes": {
+          "left": "court",
+          "right": "court"
+        },
+        "area": "snow",
+        "slotAArea": "snow",
+        "slotBArea": "snow",
+        "activeSlot": "A",
+        "pendingArea": null,
+        "pendingMs": 0,
+        "pendingDistanceTiles": 0,
+        "transitioning": false,
+        "transitionProgress": 0,
+        "transitionCount": 0,
+        "overscanPx": {
+          "x": 60,
+          "y": 60
+        },
+        "offset": {
+          "dx": -5.06,
+          "dy": 2.03
+        },
+        "left": {
+          "alpha": 1,
+          "targetAlpha": 1,
+          "nearCombatant": false,
+          "slotAAlpha": 1,
+          "slotBAlpha": 0,
+          "box": {
+            "left": 0,
+            "top": 483,
+            "right": 317,
+            "bottom": 900
+          },
+          "file": "/environment-corners/v1/corner-snow-left.webp",
+          "nextFile": null
+        },
+        "right": {
+          "alpha": 1,
+          "targetAlpha": 1,
+          "nearCombatant": false,
+          "slotAAlpha": 1,
+          "slotBAlpha": 0,
+          "box": {
+            "left": 1123,
+            "top": 483,
+            "right": 1440,
+            "bottom": 900
+          },
+          "file": "/environment-corners/v1/corner-snow-right.webp",
+          "nextFile": null
+        },
+        "loadedSets": [
+          "court:desktop",
+          "snow:desktop"
+        ]
+      },
+      "textures": [
+        {
+          "canvas": true,
+          "width": 320,
+          "height": 380,
+          "fractionalAlpha": 50074,
+          "opaque": 0,
+          "samples": 75372,
+          "sharpEnergy": 11.251883988749137,
+          "blurEnergy": 2.62918590457995
+        },
+        {
+          "canvas": true,
+          "width": 320,
+          "height": 380,
+          "fractionalAlpha": 60865,
+          "opaque": 0,
+          "samples": 98664,
+          "sharpEnergy": 12.8270392443039,
+          "blurEnergy": 2.9025379064299037
+        }
+      ]
+    },
+    {
+      "engine": "chromium",
+      "width": 390,
+      "height": 844,
+      "area": "court",
+      "snapshot": {
+        "enabled": true,
+        "mode": "mobile-portrait",
+        "blurPx": 3,
+        "textureSize": {
+          "w": 180,
+          "h": 150
+        },
+        "reducedMotion": false,
+        "heroTile": {
+          "u": 9.16,
+          "v": 8.96
+        },
+        "biome": "court",
+        "biomeLabel": "Court",
+        "borderBiomes": {
+          "left": "court",
+          "right": "court"
+        },
+        "area": "court",
+        "slotAArea": "court",
+        "slotBArea": "court",
+        "activeSlot": "A",
+        "pendingArea": null,
+        "pendingMs": 0,
+        "pendingDistanceTiles": 0,
+        "transitioning": false,
+        "transitionProgress": 0,
+        "transitionCount": 0,
+        "overscanPx": {
+          "x": 0,
+          "y": 0
+        },
+        "offset": {
+          "dx": 0,
+          "dy": 0
+        },
+        "left": {
+          "alpha": 1,
+          "targetAlpha": 1,
+          "nearCombatant": false,
+          "slotAAlpha": 1,
+          "slotBAlpha": 0,
+          "box": {
+            "left": 0,
+            "top": 0,
+            "right": 70,
+            "bottom": 58
+          },
+          "file": "/environment-corners/v1/corner-court-left-mobile.webp",
+          "nextFile": null
+        },
+        "right": {
+          "alpha": 1,
+          "targetAlpha": 1,
+          "nearCombatant": false,
+          "slotAAlpha": 1,
+          "slotBAlpha": 0,
+          "box": {
+            "left": 320,
+            "top": 0,
+            "right": 390,
+            "bottom": 58
+          },
+          "file": "/environment-corners/v1/corner-court-right-mobile.webp",
+          "nextFile": null
+        },
+        "loadedSets": [
+          "court:desktop",
+          "snow:desktop",
+          "snow:mobile",
+          "court:mobile"
+        ]
+      },
+      "textures": [
+        {
+          "canvas": true,
+          "width": 180,
+          "height": 150,
+          "fractionalAlpha": 8042,
+          "opaque": 0,
+          "samples": 1188,
+          "sharpEnergy": 15.545454545454545,
+          "blurEnergy": 2.723063973063973
+        },
+        {
+          "canvas": true,
+          "width": 180,
+          "height": 150,
+          "fractionalAlpha": 8660,
+          "opaque": 0,
+          "samples": 3585,
+          "sharpEnergy": 14.205857740585774,
+          "blurEnergy": 2.087308228730823
+        }
+      ]
+    },
+    {
+      "engine": "chromium",
+      "width": 390,
+      "height": 844,
+      "area": "snow",
+      "snapshot": {
+        "enabled": true,
+        "mode": "mobile-portrait",
+        "blurPx": 3,
+        "textureSize": {
+          "w": 180,
+          "h": 150
+        },
+        "reducedMotion": false,
+        "heroTile": {
+          "u": 9.16,
+          "v": 8.96
+        },
+        "biome": "court",
+        "biomeLabel": "Court",
+        "borderBiomes": {
+          "left": "court",
+          "right": "court"
+        },
+        "area": "snow",
+        "slotAArea": "snow",
+        "slotBArea": "snow",
+        "activeSlot": "A",
+        "pendingArea": null,
+        "pendingMs": 0,
+        "pendingDistanceTiles": 0,
+        "transitioning": false,
+        "transitionProgress": 0,
+        "transitionCount": 0,
+        "overscanPx": {
+          "x": 0,
+          "y": 0
+        },
+        "offset": {
+          "dx": 0,
+          "dy": 0
+        },
+        "left": {
+          "alpha": 1,
+          "targetAlpha": 1,
+          "nearCombatant": false,
+          "slotAAlpha": 1,
+          "slotBAlpha": 0,
+          "box": {
+            "left": 0,
+            "top": 0,
+            "right": 70,
+            "bottom": 58
+          },
+          "file": "/environment-corners/v1/corner-snow-left-mobile.webp",
+          "nextFile": null
+        },
+        "right": {
+          "alpha": 1,
+          "targetAlpha": 1,
+          "nearCombatant": false,
+          "slotAAlpha": 1,
+          "slotBAlpha": 0,
+          "box": {
+            "left": 320,
+            "top": 0,
+            "right": 390,
+            "bottom": 58
+          },
+          "file": "/environment-corners/v1/corner-snow-right-mobile.webp",
+          "nextFile": null
+        },
+        "loadedSets": [
+          "court:desktop",
+          "snow:desktop",
+          "snow:mobile",
+          "court:mobile"
+        ]
+      },
+      "textures": [
+        {
+          "canvas": true,
+          "width": 180,
+          "height": 150,
+          "fractionalAlpha": 8679,
+          "opaque": 0,
+          "samples": 330,
+          "sharpEnergy": 33.50909090909091,
+          "blurEnergy": 5.681818181818182
+        },
+        {
+          "canvas": true,
+          "width": 180,
+          "height": 150,
+          "fractionalAlpha": 4824,
+          "opaque": 0,
+          "samples": 225,
+          "sharpEnergy": 36.528888888888886,
+          "blurEnergy": 7.417777777777777
+        }
+      ]
+    },
+    {
+      "engine": "chromium",
+      "width": 844,
+      "height": 390,
+      "area": "court",
+      "snapshot": {
+        "enabled": true,
+        "mode": "mobile-landscape",
+        "blurPx": 3,
+        "textureSize": {
+          "w": 76,
+          "h": 150
+        },
+        "reducedMotion": false,
+        "heroTile": {
+          "u": 9.16,
+          "v": 8.96
+        },
+        "biome": "court",
+        "biomeLabel": "Court",
+        "borderBiomes": {
+          "left": "court",
+          "right": "court"
+        },
+        "area": "court",
+        "slotAArea": "court",
+        "slotBArea": "court",
+        "activeSlot": "A",
+        "pendingArea": null,
+        "pendingMs": 0,
+        "pendingDistanceTiles": 0,
+        "transitioning": false,
+        "transitionProgress": 0,
+        "transitionCount": 0,
+        "overscanPx": {
+          "x": 0,
+          "y": 0
+        },
+        "offset": {
+          "dx": 0,
+          "dy": 0
+        },
+        "left": {
+          "alpha": 1,
+          "targetAlpha": 1,
+          "nearCombatant": false,
+          "slotAAlpha": 1,
+          "slotBAlpha": 0,
+          "box": {
+            "left": 0,
+            "top": 0,
+            "right": 59,
+            "bottom": 125
+          },
+          "file": "/environment-corners/v1/corner-court-left-mobile.webp",
+          "nextFile": null
+        },
+        "right": {
+          "alpha": 1,
+          "targetAlpha": 1,
+          "nearCombatant": false,
+          "slotAAlpha": 1,
+          "slotBAlpha": 0,
+          "box": {
+            "left": 785,
+            "top": 0,
+            "right": 844,
+            "bottom": 125
+          },
+          "file": "/environment-corners/v1/corner-court-right-mobile.webp",
+          "nextFile": null
+        },
+        "loadedSets": [
+          "court:desktop",
+          "snow:desktop",
+          "snow:mobile",
+          "court:mobile"
+        ]
+      },
+      "textures": [
+        {
+          "canvas": true,
+          "width": 76,
+          "height": 150,
+          "fractionalAlpha": 5485,
+          "opaque": 0,
+          "samples": 1188,
+          "sharpEnergy": 15.545454545454545,
+          "blurEnergy": 2.723063973063973
+        },
+        {
+          "canvas": true,
+          "width": 76,
+          "height": 150,
+          "fractionalAlpha": 6854,
+          "opaque": 0,
+          "samples": 3126,
+          "sharpEnergy": 14.723928342930263,
+          "blurEnergy": 1.8672424824056302
+        }
+      ]
+    },
+    {
+      "engine": "chromium",
+      "width": 844,
+      "height": 390,
+      "area": "snow",
+      "snapshot": {
+        "enabled": true,
+        "mode": "mobile-landscape",
+        "blurPx": 3,
+        "textureSize": {
+          "w": 76,
+          "h": 150
+        },
+        "reducedMotion": false,
+        "heroTile": {
+          "u": 9.16,
+          "v": 8.96
+        },
+        "biome": "court",
+        "biomeLabel": "Court",
+        "borderBiomes": {
+          "left": "court",
+          "right": "court"
+        },
+        "area": "snow",
+        "slotAArea": "snow",
+        "slotBArea": "snow",
+        "activeSlot": "A",
+        "pendingArea": null,
+        "pendingMs": 0,
+        "pendingDistanceTiles": 0,
+        "transitioning": false,
+        "transitionProgress": 0,
+        "transitionCount": 0,
+        "overscanPx": {
+          "x": 0,
+          "y": 0
+        },
+        "offset": {
+          "dx": 0,
+          "dy": 0
+        },
+        "left": {
+          "alpha": 1,
+          "targetAlpha": 1,
+          "nearCombatant": false,
+          "slotAAlpha": 1,
+          "slotBAlpha": 0,
+          "box": {
+            "left": 0,
+            "top": 0,
+            "right": 59,
+            "bottom": 125
+          },
+          "file": "/environment-corners/v1/corner-snow-left-mobile.webp",
+          "nextFile": null
+        },
+        "right": {
+          "alpha": 1,
+          "targetAlpha": 1,
+          "nearCombatant": false,
+          "slotAAlpha": 1,
+          "slotBAlpha": 0,
+          "box": {
+            "left": 785,
+            "top": 0,
+            "right": 844,
+            "bottom": 125
+          },
+          "file": "/environment-corners/v1/corner-snow-right-mobile.webp",
+          "nextFile": null
+        },
+        "loadedSets": [
+          "court:desktop",
+          "snow:desktop",
+          "snow:mobile",
+          "court:mobile"
+        ]
+      },
+      "textures": [
+        {
+          "canvas": true,
+          "width": 76,
+          "height": 150,
+          "fractionalAlpha": 5755,
+          "opaque": 0,
+          "samples": 330,
+          "sharpEnergy": 33.50909090909091,
+          "blurEnergy": 5.681818181818182
+        },
+        {
+          "canvas": true,
+          "width": 76,
+          "height": 150,
+          "fractionalAlpha": 4343,
+          "opaque": 0,
+          "samples": 225,
+          "sharpEnergy": 36.528888888888886,
+          "blurEnergy": 7.417777777777777
+        }
+      ]
+    },
+    {
+      "engine": "webkit",
+      "width": 1440,
+      "height": 900,
+      "area": "court",
+      "snapshot": {
+        "enabled": true,
+        "mode": "desktop",
+        "blurPx": 3,
+        "textureSize": {
+          "w": 320,
+          "h": 380
+        },
+        "reducedMotion": false,
+        "heroTile": {
+          "u": 9.16,
+          "v": 8.96
+        },
+        "biome": "court",
+        "biomeLabel": "Court",
+        "borderBiomes": {
+          "left": "court",
+          "right": "court"
+        },
+        "area": "court",
+        "slotAArea": "court",
+        "slotBArea": "court",
+        "activeSlot": "A",
+        "pendingArea": null,
+        "pendingMs": 0,
+        "pendingDistanceTiles": 0,
+        "transitioning": false,
+        "transitionProgress": 0,
+        "transitionCount": 0,
+        "overscanPx": {
+          "x": 60,
+          "y": 60
+        },
+        "offset": {
+          "dx": -5.06,
+          "dy": 2.03
+        },
+        "left": {
+          "alpha": 1,
+          "targetAlpha": 1,
+          "nearCombatant": false,
+          "slotAAlpha": 1,
+          "slotBAlpha": 0,
+          "box": {
+            "left": 0,
+            "top": 483,
+            "right": 317,
+            "bottom": 900
+          },
+          "file": "/environment-corners/v1/corner-court-left.webp",
+          "nextFile": null
+        },
+        "right": {
+          "alpha": 1,
+          "targetAlpha": 1,
+          "nearCombatant": false,
+          "slotAAlpha": 1,
+          "slotBAlpha": 0,
+          "box": {
+            "left": 1123,
+            "top": 483,
+            "right": 1440,
+            "bottom": 900
+          },
+          "file": "/environment-corners/v1/corner-court-right.webp",
+          "nextFile": null
+        },
+        "loadedSets": [
+          "court:desktop",
+          "snow:desktop"
+        ]
+      },
+      "textures": [
+        {
+          "canvas": true,
+          "width": 320,
+          "height": 380,
+          "fractionalAlpha": 53359,
+          "opaque": 0,
+          "samples": 93039,
+          "sharpEnergy": 6.779157127656144,
+          "blurEnergy": 1.4943625791334816
+        },
+        {
+          "canvas": true,
+          "width": 320,
+          "height": 380,
+          "fractionalAlpha": 46349,
+          "opaque": 0,
+          "samples": 71892,
+          "sharpEnergy": 6.7367440048962335,
+          "blurEnergy": 1.1184415512157124
+        }
+      ]
+    },
+    {
+      "engine": "webkit",
+      "width": 1440,
+      "height": 900,
+      "area": "snow",
+      "snapshot": {
+        "enabled": true,
+        "mode": "desktop",
+        "blurPx": 3,
+        "textureSize": {
+          "w": 320,
+          "h": 380
+        },
+        "reducedMotion": false,
+        "heroTile": {
+          "u": 9.16,
+          "v": 8.96
+        },
+        "biome": "court",
+        "biomeLabel": "Court",
+        "borderBiomes": {
+          "left": "court",
+          "right": "court"
+        },
+        "area": "snow",
+        "slotAArea": "snow",
+        "slotBArea": "snow",
+        "activeSlot": "A",
+        "pendingArea": null,
+        "pendingMs": 0,
+        "pendingDistanceTiles": 0,
+        "transitioning": false,
+        "transitionProgress": 0,
+        "transitionCount": 0,
+        "overscanPx": {
+          "x": 60,
+          "y": 60
+        },
+        "offset": {
+          "dx": -5.06,
+          "dy": 2.03
+        },
+        "left": {
+          "alpha": 1,
+          "targetAlpha": 1,
+          "nearCombatant": false,
+          "slotAAlpha": 1,
+          "slotBAlpha": 0,
+          "box": {
+            "left": 0,
+            "top": 483,
+            "right": 317,
+            "bottom": 900
+          },
+          "file": "/environment-corners/v1/corner-snow-left.webp",
+          "nextFile": null
+        },
+        "right": {
+          "alpha": 1,
+          "targetAlpha": 1,
+          "nearCombatant": false,
+          "slotAAlpha": 1,
+          "slotBAlpha": 0,
+          "box": {
+            "left": 1123,
+            "top": 483,
+            "right": 1440,
+            "bottom": 900
+          },
+          "file": "/environment-corners/v1/corner-snow-right.webp",
+          "nextFile": null
+        },
+        "loadedSets": [
+          "court:desktop",
+          "snow:desktop"
+        ]
+      },
+      "textures": [
+        {
+          "canvas": true,
+          "width": 320,
+          "height": 380,
+          "fractionalAlpha": 50086,
+          "opaque": 0,
+          "samples": 75432,
+          "sharpEnergy": 11.252783964365257,
+          "blurEnergy": 2.6284202990773147
+        },
+        {
+          "canvas": true,
+          "width": 320,
+          "height": 380,
+          "fractionalAlpha": 60883,
+          "opaque": 0,
+          "samples": 98712,
+          "sharpEnergy": 12.822149282761973,
+          "blurEnergy": 2.901643163951698
+        }
+      ]
+    },
+    {
+      "engine": "webkit",
+      "width": 390,
+      "height": 844,
+      "area": "court",
+      "snapshot": {
+        "enabled": true,
+        "mode": "mobile-portrait",
+        "blurPx": 3,
+        "textureSize": {
+          "w": 180,
+          "h": 150
+        },
+        "reducedMotion": false,
+        "heroTile": {
+          "u": 9.16,
+          "v": 8.96
+        },
+        "biome": "court",
+        "biomeLabel": "Court",
+        "borderBiomes": {
+          "left": "court",
+          "right": "court"
+        },
+        "area": "court",
+        "slotAArea": "court",
+        "slotBArea": "court",
+        "activeSlot": "A",
+        "pendingArea": null,
+        "pendingMs": 0,
+        "pendingDistanceTiles": 0,
+        "transitioning": false,
+        "transitionProgress": 0,
+        "transitionCount": 0,
+        "overscanPx": {
+          "x": 0,
+          "y": 0
+        },
+        "offset": {
+          "dx": 0,
+          "dy": 0
+        },
+        "left": {
+          "alpha": 1,
+          "targetAlpha": 1,
+          "nearCombatant": false,
+          "slotAAlpha": 1,
+          "slotBAlpha": 0,
+          "box": {
+            "left": 0,
+            "top": 0,
+            "right": 70,
+            "bottom": 58
+          },
+          "file": "/environment-corners/v1/corner-court-left-mobile.webp",
+          "nextFile": null
+        },
+        "right": {
+          "alpha": 1,
+          "targetAlpha": 1,
+          "nearCombatant": false,
+          "slotAAlpha": 1,
+          "slotBAlpha": 0,
+          "box": {
+            "left": 320,
+            "top": 0,
+            "right": 390,
+            "bottom": 58
+          },
+          "file": "/environment-corners/v1/corner-court-right-mobile.webp",
+          "nextFile": null
+        },
+        "loadedSets": [
+          "court:desktop",
+          "snow:desktop",
+          "snow:mobile",
+          "court:mobile"
+        ]
+      },
+      "textures": [
+        {
+          "canvas": true,
+          "width": 180,
+          "height": 150,
+          "fractionalAlpha": 8044,
+          "opaque": 0,
+          "samples": 1188,
+          "sharpEnergy": 15.546296296296296,
+          "blurEnergy": 2.733164983164983
+        },
+        {
+          "canvas": true,
+          "width": 180,
+          "height": 150,
+          "fractionalAlpha": 8660,
+          "opaque": 0,
+          "samples": 3588,
+          "sharpEnergy": 14.19788182831661,
+          "blurEnergy": 2.090022296544036
+        }
+      ]
+    },
+    {
+      "engine": "webkit",
+      "width": 390,
+      "height": 844,
+      "area": "snow",
+      "snapshot": {
+        "enabled": true,
+        "mode": "mobile-portrait",
+        "blurPx": 3,
+        "textureSize": {
+          "w": 180,
+          "h": 150
+        },
+        "reducedMotion": false,
+        "heroTile": {
+          "u": 9.16,
+          "v": 8.96
+        },
+        "biome": "court",
+        "biomeLabel": "Court",
+        "borderBiomes": {
+          "left": "court",
+          "right": "court"
+        },
+        "area": "snow",
+        "slotAArea": "snow",
+        "slotBArea": "snow",
+        "activeSlot": "A",
+        "pendingArea": null,
+        "pendingMs": 0,
+        "pendingDistanceTiles": 0,
+        "transitioning": false,
+        "transitionProgress": 0,
+        "transitionCount": 0,
+        "overscanPx": {
+          "x": 0,
+          "y": 0
+        },
+        "offset": {
+          "dx": 0,
+          "dy": 0
+        },
+        "left": {
+          "alpha": 1,
+          "targetAlpha": 1,
+          "nearCombatant": false,
+          "slotAAlpha": 1,
+          "slotBAlpha": 0,
+          "box": {
+            "left": 0,
+            "top": 0,
+            "right": 70,
+            "bottom": 58
+          },
+          "file": "/environment-corners/v1/corner-snow-left-mobile.webp",
+          "nextFile": null
+        },
+        "right": {
+          "alpha": 1,
+          "targetAlpha": 1,
+          "nearCombatant": false,
+          "slotAAlpha": 1,
+          "slotBAlpha": 0,
+          "box": {
+            "left": 320,
+            "top": 0,
+            "right": 390,
+            "bottom": 58
+          },
+          "file": "/environment-corners/v1/corner-snow-right-mobile.webp",
+          "nextFile": null
+        },
+        "loadedSets": [
+          "court:desktop",
+          "snow:desktop",
+          "snow:mobile",
+          "court:mobile"
+        ]
+      },
+      "textures": [
+        {
+          "canvas": true,
+          "width": 180,
+          "height": 150,
+          "fractionalAlpha": 8689,
+          "opaque": 0,
+          "samples": 333,
+          "sharpEnergy": 33.36336336336336,
+          "blurEnergy": 5.597597597597598
+        },
+        {
+          "canvas": true,
+          "width": 180,
+          "height": 150,
+          "fractionalAlpha": 4827,
+          "opaque": 0,
+          "samples": 228,
+          "sharpEnergy": 36.62280701754386,
+          "blurEnergy": 7.425438596491228
+        }
+      ]
+    },
+    {
+      "engine": "webkit",
+      "width": 844,
+      "height": 390,
+      "area": "court",
+      "snapshot": {
+        "enabled": true,
+        "mode": "mobile-landscape",
+        "blurPx": 3,
+        "textureSize": {
+          "w": 76,
+          "h": 150
+        },
+        "reducedMotion": false,
+        "heroTile": {
+          "u": 9.16,
+          "v": 8.96
+        },
+        "biome": "court",
+        "biomeLabel": "Court",
+        "borderBiomes": {
+          "left": "court",
+          "right": "court"
+        },
+        "area": "court",
+        "slotAArea": "court",
+        "slotBArea": "court",
+        "activeSlot": "A",
+        "pendingArea": null,
+        "pendingMs": 0,
+        "pendingDistanceTiles": 0,
+        "transitioning": false,
+        "transitionProgress": 0,
+        "transitionCount": 0,
+        "overscanPx": {
+          "x": 0,
+          "y": 0
+        },
+        "offset": {
+          "dx": 0,
+          "dy": 0
+        },
+        "left": {
+          "alpha": 1,
+          "targetAlpha": 1,
+          "nearCombatant": false,
+          "slotAAlpha": 1,
+          "slotBAlpha": 0,
+          "box": {
+            "left": 0,
+            "top": 0,
+            "right": 59,
+            "bottom": 125
+          },
+          "file": "/environment-corners/v1/corner-court-left-mobile.webp",
+          "nextFile": null
+        },
+        "right": {
+          "alpha": 1,
+          "targetAlpha": 1,
+          "nearCombatant": false,
+          "slotAAlpha": 1,
+          "slotBAlpha": 0,
+          "box": {
+            "left": 785,
+            "top": 0,
+            "right": 844,
+            "bottom": 125
+          },
+          "file": "/environment-corners/v1/corner-court-right-mobile.webp",
+          "nextFile": null
+        },
+        "loadedSets": [
+          "court:desktop",
+          "snow:desktop",
+          "snow:mobile",
+          "court:mobile"
+        ]
+      },
+      "textures": [
+        {
+          "canvas": true,
+          "width": 76,
+          "height": 150,
+          "fractionalAlpha": 5486,
+          "opaque": 0,
+          "samples": 1188,
+          "sharpEnergy": 15.546296296296296,
+          "blurEnergy": 2.733164983164983
+        },
+        {
+          "canvas": true,
+          "width": 76,
+          "height": 150,
+          "fractionalAlpha": 6858,
+          "opaque": 0,
+          "samples": 3129,
+          "sharpEnergy": 14.71204857782039,
+          "blurEnergy": 1.869926494087568
+        }
+      ]
+    },
+    {
+      "engine": "webkit",
+      "width": 844,
+      "height": 390,
+      "area": "snow",
+      "snapshot": {
+        "enabled": true,
+        "mode": "mobile-landscape",
+        "blurPx": 3,
+        "textureSize": {
+          "w": 76,
+          "h": 150
+        },
+        "reducedMotion": false,
+        "heroTile": {
+          "u": 9.16,
+          "v": 8.96
+        },
+        "biome": "court",
+        "biomeLabel": "Court",
+        "borderBiomes": {
+          "left": "court",
+          "right": "court"
+        },
+        "area": "snow",
+        "slotAArea": "snow",
+        "slotBArea": "snow",
+        "activeSlot": "A",
+        "pendingArea": null,
+        "pendingMs": 0,
+        "pendingDistanceTiles": 0,
+        "transitioning": false,
+        "transitionProgress": 0,
+        "transitionCount": 0,
+        "overscanPx": {
+          "x": 0,
+          "y": 0
+        },
+        "offset": {
+          "dx": 0,
+          "dy": 0
+        },
+        "left": {
+          "alpha": 1,
+          "targetAlpha": 1,
+          "nearCombatant": false,
+          "slotAAlpha": 1,
+          "slotBAlpha": 0,
+          "box": {
+            "left": 0,
+            "top": 0,
+            "right": 59,
+            "bottom": 125
+          },
+          "file": "/environment-corners/v1/corner-snow-left-mobile.webp",
+          "nextFile": null
+        },
+        "right": {
+          "alpha": 1,
+          "targetAlpha": 1,
+          "nearCombatant": false,
+          "slotAAlpha": 1,
+          "slotBAlpha": 0,
+          "box": {
+            "left": 785,
+            "top": 0,
+            "right": 844,
+            "bottom": 125
+          },
+          "file": "/environment-corners/v1/corner-snow-right-mobile.webp",
+          "nextFile": null
+        },
+        "loadedSets": [
+          "court:desktop",
+          "snow:desktop",
+          "snow:mobile",
+          "court:mobile"
+        ]
+      },
+      "textures": [
+        {
+          "canvas": true,
+          "width": 76,
+          "height": 150,
+          "fractionalAlpha": 5757,
+          "opaque": 0,
+          "samples": 333,
+          "sharpEnergy": 33.36336336336336,
+          "blurEnergy": 5.597597597597598
+        },
+        {
+          "canvas": true,
+          "width": 76,
+          "height": 150,
+          "fractionalAlpha": 4343,
+          "opaque": 0,
+          "samples": 228,
+          "sharpEnergy": 36.62280701754386,
+          "blurEnergy": 7.425438596491228
+        }
+      ]
+    }
+  ]
+}
