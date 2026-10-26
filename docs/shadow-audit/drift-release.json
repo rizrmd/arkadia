@@ -13,12 +13,39 @@
   ],
   "health": 200,
   "pending": [
-    "Publish final evidence and current delivered gallery",
-    "Inspect Apple/Mali native telemetry after bounded request timeout"
+    "Paired native depth/legacy/depth performance comparison; acceptance remains open."
   ],
   "limits": [
     "Finite receiver raster resolution",
     "Legacy Canvas fallback",
     "Unlit particle presentation"
-  ]
+  ],
+  "publication": {
+    "packageFilesVerified": 230,
+    "galleryDatasets": {
+      "authored": {
+        "variants": 314,
+        "plates": 53,
+        "pages": 14
+      },
+      "delivered": {
+        "runtime": "2e354348",
+        "variants": 314,
+        "plates": 53,
+        "pages": 14
+      }
+    },
+    "packageProof": "drift-package-live.json",
+    "layers": "drift-evidence-deploy.json"
+  },
+  "nativePerformance": {
+    "report": "native-performance.json",
+    "scope": "Biased real gameplay incident windows, not paired benchmark or full-session FPS.",
+    "mobileMaliWindows": 56,
+    "mobileIncidentMedianFps": 26.49,
+    "desktopAppleWindows": 49,
+    "desktopIncidentMedianFps": 57.92,
+    "acceptance": "open",
+    "controlledComparison": "native-benchmark.html"
+  }
 }
