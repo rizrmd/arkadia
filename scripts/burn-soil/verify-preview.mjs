@@ -4,8 +4,8 @@ const server=http.createServer(async(req,res)=>{try{if(req.url==='/iframe'){res.
 const browser=await launch();const reports=[];const page=await browser.newPage({hasTouch:true});page.setDefaultTimeout(15000);
 try{
  for(const [width,height] of [[1440,900],[390,844],[844,390],[320,560]]){
-  await page.setViewportSize({width,height});const errors=[],failed=[];page.on('pageerror',e=>errors.push(e.message));page.on('response',r=>{if(r.status()>=400)failed.push(r.url());});
-  await page.goto(url,{waitUntil:'domcontentloaded'});await page.waitForFunction(()=>window.__FLIPBOOK_FAN__);
+  await page.setViewportSize({width,height});const errors=[],failed=[];page.on('pageerror',e=>{errors.push(e.message);console.error('PAGE',e.message);});page.on('response',r=>{if(r.status()>=400){failed.push(r.url());console.error('HTTP',r.status(),r.url());}});
+  await page.goto(url,{waitUntil:'domcontentloaded'});await page.waitForFunction(()=>window.__FLIPBOOK_FAN__,null,{timeout:45000});
   const state=()=>page.evaluate(()=>window.__FLIPBOOK_FAN__.state());
   for(const level of (width===1440?[1,2,3,4,5]:[1,3,5])){
    await page.evaluate(l=>window.__FLIPBOOK_FAN__.setLevel(l),level);
