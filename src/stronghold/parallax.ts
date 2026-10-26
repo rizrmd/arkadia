@@ -7,6 +7,7 @@ import {fromGate,GATE,inSafeZone} from './safe-zone';
 import {WORLD} from './scene';
 import {COURT} from './terrain';
 import {measureTracelogPhase} from './tracelog';
+import {drawBlurredCanvas} from './canvas-blur';
 
 export type BiomeId=
  |'court'
@@ -152,7 +153,7 @@ export function initialParallaxFiles(
  ];
 }
 
-function bakeDepthBlur(img:HTMLImageElement,featherTop=false):HTMLCanvasElement{
+export function bakeDepthBlur(img:HTMLImageElement,featherTop=false):HTMLCanvasElement{
  const w=Math.round((img.naturalWidth||img.width)*CORNER_BLUR_SCALE);
  const h=Math.round((img.naturalHeight||img.height)*CORNER_BLUR_SCALE);
  const pad=Math.ceil(CORNER_BLUR_PX*3);
@@ -170,9 +171,7 @@ function bakeDepthBlur(img:HTMLImageElement,featherTop=false):HTMLCanvasElement{
  canvas.width=w;
  canvas.height=h;
  const ctx=canvas.getContext('2d')!;
- ctx.filter=`blur(${CORNER_BLUR_PX}px)`;
- ctx.drawImage(padded,-pad,-pad);
- ctx.filter='none';
+ drawBlurredCanvas(ctx,padded,CORNER_BLUR_PX,pad);
  // Desktop art is bottom-anchored: its opaque source top must blend into the world,
  // rather than expose the rectangular texture boundary above the blurred tower.
  // Mobile art is top-anchored and must stay opaque against the viewport edge.
