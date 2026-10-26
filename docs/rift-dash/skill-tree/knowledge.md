@@ -19,6 +19,8 @@ Desktop 1440 × 900, emulated touch portrait 390 × 844 and landscape 844 × 390
 
 ### Live verification
 
+Final merged release: `ef60a91`, layer `1793026326707-rift-dash-tree-final-ef60a91-c40543ee75b9`. A peer older full-game publication temporarily replaced the first correction and player gateway; the guard caught that change. After the peer completed, the current merged runtime and correct player gateway were restored. The final desktop, portrait and landscape checks passed with no page errors, including active classification, hexagon, slot swaps and manual dash displacement. [Final live report](https://ark-whachat.fural.space/rift-dash/skill-tree/final-verification.json). The screenshots below are from the first successful live run and show the same corrected border.
+
 [Live interaction report](https://ark-whachat.fural.space/rift-dash/skill-tree/live-verification.json) · [Deployment receipt](https://ark-whachat.fural.space/rift-dash/skill-tree/deployment.json)
 
 ![Live desktop Skill Tree and Equipped — active Rift Dash](https://ark-whachat.fural.space/rift-dash/skill-tree/live-desktop-equipped.png)
