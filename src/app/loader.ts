@@ -10,21 +10,7 @@ extensions.add(TilingSpritePipe,NineSliceSpritePipe,BitmapTextPipe,GraphicsPipe)
 
 // Drives the instant pure-HTML loading screen in index.html and owns the shared Pixi Application + MSDF
 // typography resources so the DOM holds only the single Pixi canvas (#world-canvas) once loading finishes.
-export type Progress=(done:number,total:number,label:string)=>void;
-
-interface HtmlLoadingScreenApi{
- set(pct:number,text?:string):void;
- progress(done:number,total:number,text:string):void;
- done():void;
- fail(message:string):void;
-}
-
-declare global{
- interface Window{
-  __LOADING_READY__?:boolean;
-  __LOADING_SCREEN__?:HtmlLoadingScreenApi;
- }
-}
+export {loadingScreen,type Progress} from './loading-progress';
 
 export function createCanvasSprite(canvas:HTMLCanvasElement){
  if(!canvas.width)canvas.width=1;
@@ -74,7 +60,7 @@ let runtimePromise:Promise<SharedPixiRuntime>|undefined;
 export function ensurePixiRuntime(host?:HTMLElement):Promise<SharedPixiRuntime>{
  if(runtimePromise)return runtimePromise;
  runtimePromise=(async()=>{
-  window.__LOADING_SCREEN__?.progress(8,100,'Loading the game');
+  window.__LOADING_SCREEN__?.progress(12,100,'Starting graphics');
   const app=new Application();
   await app.init({
    // Keep WebGL as the fast path, but let Pixi select its Canvas renderer when
@@ -110,7 +96,7 @@ export function ensurePixiRuntime(host?:HTMLElement):Promise<SharedPixiRuntime>{
    const done=interfaceProgress.done+fontProgress.done,total=interfaceProgress.total+fontProgress.total;
    // Reserve a separate range for interface assets; artwork continues from 32%, never from zero.
    window.__LOADING_SCREEN__?.progress(14+18*(interfaceProgress.total?done/Math.max(1,total):0),100,
-    `Loading · ${interfaceProgress.done}/${interfaceProgress.total||'…'} interface · ${fontProgress.done}/${fontProgress.total} fonts`);
+    `Loading interface · ${done}/${total||'…'}`);
   };
   const [,frames]=await Promise.all([
    loadFonts('/typography/v2/fonts/',(done,total)=>{Object.assign(fontProgress,{done,total});reportInterface();}),
@@ -124,21 +110,6 @@ export function ensurePixiRuntime(host?:HTMLElement):Promise<SharedPixiRuntime>{
   return {app,frames,worldStage,uiStage,loadingStage};
  })();
  return runtimePromise;
-}
-
-export function loadingScreen(){
- // Connects to the pure HTML loading screen already rendered in index.html at t=0ms.
- return {
-  progress(done:number,total:number,text:string){
-   window.__LOADING_SCREEN__?.progress(done,total,text);
-  },
-  done(){
-   window.__LOADING_SCREEN__?.done();
-  },
-  fail(message:string){
-   window.__LOADING_SCREEN__?.fail(message);
-  },
- };
 }
 
 // Artwork downloads count received bytes, so the bar moves with the transfer instead of with finished files:
