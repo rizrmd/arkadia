@@ -1,0 +1,48 @@
+{
+  "pass": true,
+  "release": {
+    "commit": "13fe8998b73f235adfd1468686fd7810e0085931",
+    "balancePending": true,
+    "damagePerTick": null,
+    "tickOffsetsMs": [
+      200,
+      400,
+      600,
+      800,
+      1000
+    ],
+    "preview": "/ember-warden-review/flame-fan-flipbook/"
+  },
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "scope": "Unmodified live runtime, manually invoked diagnostic cast, normal production frame loop; no test clock hook",
+  "level": 3,
+  "ticks": 5,
+  "damagePerTick": null,
+  "initialDamage": 1.1700000000000017,
+  "burning": [
+    {
+      "u": 18,
+      "v": 22,
+      "yaw": 0,
+      "radius": 5.984,
+      "rank": 3,
+      "age": 0.8700000000000003,
+      "layers": 3,
+      "opacity": 0.47500000000000003,
+      "bloom": 0,
+      "height": 0,
+      "burnSoil": true,
+      "burnDurationMs": 1000,
+      "burnOpacity": 0.12999999999999967,
+      "burnHalfAngle": 0.9424777960769379,
+      "material": "connected-sheet",
+      "backend": "pixi-render-texture",
+      "maskedSamples": 419,
+      "projectiles": 0
+    }
+  ],
+  "errors": []
+}
