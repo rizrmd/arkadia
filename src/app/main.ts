@@ -4,7 +4,7 @@ import {loadingScreen,trackBootCode,type Progress} from './loading-progress';
 // The Stronghold is the game; any other path (including the retired /stronghold.html) lands on it.
 type View={mount(root:HTMLElement,progress:Progress):Promise<void>};
 // /fx-lab previews every hero's skill FX (src/fx/lab.ts).
-const routes:Record<string,()=>Promise<View>>={'/':()=>import('../stronghold/main'),'/fx-lab':()=>import('../fx/lab'),'/fx-lab/':()=>import('../fx/lab'),'/skill-player':()=>import('../fx/lab'),'/skill-player/':()=>import('../fx/lab')};
+const routes:Record<string,()=>Promise<View>>={'/':()=>import('../stronghold/main'),'/fx-lab':()=>import('../fx/lab'),'/fx-lab/':()=>import('../fx/lab'),'/skill-player':()=>import('../fx/lab'),'/skill-player/':()=>import('../fx/lab'),'/dev':()=>import('./dev'),'/dev/':()=>import('./dev')};
 const path=location.pathname in routes?location.pathname:'/';
 if(path!==location.pathname)history.replaceState(history.state,'',path+location.search+location.hash);
 const screen=loadingScreen();
