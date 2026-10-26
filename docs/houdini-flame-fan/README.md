@@ -52,7 +52,7 @@ Masters are RGBA PNG. Pyro emission is bright relative to smoke coverage; direct
 ## Atlas and mobile budgets
 
 - Mobile: 320×180 frames, 2-pixel transparent padding, 1944×1104 atlas, **8.19 MiB decoded per active level**.
-- Desktop: 640×360 frames, two pages below 2048 per axis, **32.19 MiB decoded per active level**. Desktop is an optional inspection tier; mobile is the default.
+- Desktop: 640×360 frames, three pages below 2048 per axis, **32.19 MiB decoded per active level**. Desktop is an optional inspection tier; mobile is the default.
 - Masters: 1280×720, kept outside runtime atlases. The compressed master archive is available separately.
 - Load one level/tier and unload the previous sources. These figures exclude the renderer framebuffer, upload transients and driver overhead. No physical-device GPU benchmark has been performed.
 
