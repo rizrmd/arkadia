@@ -13,3 +13,11 @@ Build: `node scripts/rift-dash/build.mjs`. Check: `npx tsc --noEmit` and `node s
 Publish: `bash scripts/rift-dash/deploy.sh`, using the supported Arkodia layer publisher, bounded JSON batches, deployment lock and live peer process checks. It refuses to overwrite an unexpectedly changed live gateway. The general game release script also stages this player so a later release retains it. Verify live: `VERIFY_URL=https://ark-whachat.fural.space node scripts/rift-dash/player-verify.mjs`.
 
 Local/live JSON reports and images in this directory are separate evidence; earlier gameplay reports do not verify this player. The Knowledge page preserves both original DA references and existing concept/gameplay images. Chat delivery must contain an actual iframe in origin room DR1ad76840133f5b3b50b3114e after live checks pass.
+
+## Live result
+
+Implementation commit: 6fb3324. The supported layer publication is recorded in deployment.json. Desktop 1440×900, touch portrait 390×844, touch landscape 844×390, and embed 760×560 passed on the live route (live-player-verification.json). A real cross-origin iframe also loaded the player and accepted a Pixi Arrival-button click (live-iframe-verification.json). No HTML form controls or runtime page errors were observed in the passing run. Touch is browser emulation.
+
+The first live run timed out waiting for initialization; a diagnostic browser then loaded all assets and the complete subsequent interaction run passed. This was not treated as a passing first attempt. The routing fix also returns 404 for missing Rift Dash directory routes instead of masking them with the game page.
+
+The change was isolated in a separate worktree and pushed to fix/rift-dash-player. Existing shared-clone files were left untouched. Main-game behavior was not retested as part of this standalone player repair; earlier gameplay evidence is historical.
