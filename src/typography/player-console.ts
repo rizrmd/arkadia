@@ -43,15 +43,15 @@ export class PlayerConsole extends Container {
  private isPortrait = false;
  private lastHeroName = '';
  private lastLevel = 1;
- private lastValues: [number, number][] = [[100, 100], [100, 100], [0, 100]];
+ private lastValues: [number, number][] = [[100, 100], [0, 100]];
  private key = '';
 
  constructor(private frames: FrameSet) {
   super();
-  const labels = ['HP', 'GATE', 'XP'];
-  [0xf71325, 0x00d5ed, 0xffc51c].forEach((color, i) => {
+  const labels = ['HP', 'XP'];
+  [0xf71325, 0xffc51c].forEach((color, i) => {
    const plate = this.addChild(new Graphics());
-   const texture = frames.texture(['console-hp-material', 'console-gate-material', 'console-xp-material'][i]);
+   const texture = frames.texture(['console-hp-material', 'console-xp-material'][i]);
    const track = this.addChild(new Sprite(texture));
    track.tint = 0x645344;
    const trackMask = this.addChild(new Graphics());
@@ -60,7 +60,7 @@ export class PlayerConsole extends Container {
    const fillMask = this.addChild(new Graphics());
    fill.mask = fillMask;
    const trim = this.addChild(new Graphics());
-   const value = this.addChild(new MsdfText({ ...ROLES['hud-value'], font: 'console', size: i === 2 ? 14.5 : 16.5, fill: 0xfff8e7, outline: OUTLINE }, ''));
+   const value = this.addChild(new MsdfText({ ...ROLES['hud-value'], font: 'console', size: i === 1 ? 14.5 : 16.5, fill: 0xfff8e7, outline: OUTLINE }, ''));
    const label = this.addChild(new MsdfText({ ...ROLES['hud-name'], font: 'console', size: 13, fill: 0xfff4db, outline: OUTLINE }, labels[i]));
    this.rows.push({
     plate,
@@ -126,10 +126,10 @@ export class PlayerConsole extends Container {
 
   this.nameText.visible = !p;
   this.rows.forEach((row, i) => {
-   const texture=this.frames.texture(p ? ['mobile-hp-material','mobile-gate-material','mobile-xp-material'][i] : ['console-hp-material','console-gate-material','console-xp-material'][i]);
+   const texture=this.frames.texture(p ? ['mobile-hp-material','mobile-xp-material'][i] : ['console-hp-material','console-xp-material'][i]);
    row.track.texture=texture;row.fill.texture=texture;
-   const y = p ? [24, 63, 102][i] : [64, 97, 130][i];
-   const h = p ? 33 : (i === 2 ? 20 : 24);
+   const y = p ? [43, 92][i] : [76, 112][i];
+   const h = p ? 33 : (i === 1 ? 20 : 24);
    const path = [left, y + 1.5, trackRightTop, y + 1.5, trackRightBot, y + h - 1.5, bottomLeft, y + h - 1.5];
 
    row.y = y;
@@ -145,7 +145,7 @@ export class PlayerConsole extends Container {
    row.plate.clear();
    row.plate.poly([169, y + 1, rightTop, y + 1, rightBot, y + h + 2, 154, y + h + 2]).fill({ color: 0x000000, alpha: 0.55 });
    row.plate.poly([169, y, rightTop, y, rightBot, y + h, 155, y + h]).fill(0x0b0c0d).stroke({ color: INK, width: 2.1 });
-   row.plate.poly([170, y + 1, rightTop - 2, y + 1, rightBot - 1, y + h - 1, 157, y + h - 1]).stroke({ color: p ? 0xd4ac52 : (i === 2 ? 0x987526 : 0x99968b), width: 0.65 });
+   row.plate.poly([170, y + 1, rightTop - 2, y + 1, rightBot - 1, y + h - 1, 157, y + h - 1]).stroke({ color: p ? 0xd4ac52 : (i === 1 ? 0x987526 : 0x99968b), width: 0.65 });
 
    row.track.position.set(bottomLeft, y);
    row.track.width = 326;
@@ -159,7 +159,7 @@ export class PlayerConsole extends Container {
    row.trim.clear();
    row.trim.poly(path).stroke({ color: row.color, width: 1 });
    row.trim.moveTo(left + 1, y + 2).lineTo(trackRightTop - 2, y + 2).stroke({ color: 0xfff9e4, width: 0.6, alpha: 0.65 });
-   if (i === 2) {
+   if (i === 1) {
     const tickEnd = p ? 290 : 468;
     const tickStep = p ? 26 : 33;
     for (let x = 256; x < tickEnd; x += tickStep) {
@@ -168,7 +168,7 @@ export class PlayerConsole extends Container {
     }
    }
 
-   placeScaled(row.label, p ? 174 : 176, y + h * (i === 2 ? (p ? 0.64 : 0.68) : (p ? 0.62 : 0.66)), 0, labelScale);
+   placeScaled(row.label, p ? 174 : 176, y + h * (i === 1 ? (p ? 0.64 : 0.68) : (p ? 0.62 : 0.66)), 0, labelScale);
   });
 
   const bx = p ? 30 : 29;
@@ -234,7 +234,7 @@ export class PlayerConsole extends Container {
     }
    }
    row.value.text = `${Math.floor(current)} / ${Math.floor(max)}`;
-   placeScaled(row.value, valueX, y + h * (i === 2 ? (p ? 0.65 : 0.69) : (p ? 0.63 : 0.67)), 1, valueScale);
+   placeScaled(row.value, valueX, y + h * (i === 1 ? (p ? 0.65 : 0.69) : (p ? 0.63 : 0.67)), 1, valueScale);
   });
  }
 }
