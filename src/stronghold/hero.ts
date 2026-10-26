@@ -491,7 +491,7 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
   const isMovingNow=state==='move'||Math.hypot(dirInput.x,dirInput.y)>.05;
   const res3d=active3d?measureTracelogPhase('hero3d',()=>r3d!.updateAndRender({heroId:hero.id,clip:pose?pose.clip:state,moving:isMovingNow,yaw:yaw3d,dt:lastDt,tint,night,sun:s,cell})):null;
   const shadowTop=res3d?res3d.spriteTop*cell.h/(res3d.spriteH-res3d.spriteTop):0;
-  publishActorShadowFrame(heroView.sprite,{source:res3d?.sprite??atlas,frame:res3d?[0,0,res3d.spriteW,res3d.spriteH]:[f.x,f.y,f.w,f.h],width:cell.w*DISPLAY,height:(cell.h+shadowTop)*DISPLAY,pivot:[pivot.x/cell.w,(pivot.y+shadowTop)/(cell.h+shadowTop)],flip:!res3d&&dir<0,revision:res3d?.revision??`${f.x},${f.y}`,depthSpan:0,groundOffsetY:res3d?(res3d.groundY-pivot.y)*DISPLAY:0});
+  publishActorShadowFrame(heroView.sprite,{source:res3d?.sprite??atlas,frame:res3d?[0,0,res3d.spriteW,res3d.spriteH]:[f.x,f.y,f.w,f.h],width:cell.w*DISPLAY,height:(cell.h+shadowTop)*DISPLAY,pivot:[pivot.x/cell.w,(pivot.y+shadowTop)/(cell.h+shadowTop)],flip:!res3d&&dir<0,revision:res3d?.revision??`${f.x},${f.y}`,skinned:res3d?.shadowMeshes.map(p=>({...p,heightScale:p.heightScale*DISPLAY})),depthSpan:0,groundOffsetY:res3d?(res3d.groundY-pivot.y)*DISPLAY:0});
   if(res3d&&res3d.revision===last3dRevision&&key===lastCompositeKey)return;
   last3dRevision=res3d?.revision??-1;lastCompositeKey=key;
   const local=()=>c.setTransform(k,0,0,k,-box[0]*k,-box[1]*k);

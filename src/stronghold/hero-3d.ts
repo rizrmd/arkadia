@@ -1,3 +1,5 @@
+import {captureSkinnedShadowPose} from './shadow-glb-geometry';
+import type {ActorSkinnedPose} from './shadow-actor-sources';
 import {unifiedActorShadowsActive} from './shadow-actor-sources';
 // Real-time 60 FPS 3D character renderer for Stronghold (ENABLED BY DEFAULT for both Rift Runner & Ember Warden;
 // pass ?3d=0 to fall back to legacy 2D spritesheets).
@@ -110,10 +112,15 @@ export interface ShadowDrawResult {
 
 interface ThreeHeroInstance {
   canvas: HTMLCanvasElement;
+  destroy():void;
   style: ShaderStyle3D;
   isHeroReady(heroId: string): boolean;
+  auditVertices(heroId:string,indices?:number[]):{key:string;index:number;world:number[]}[];
+  auditClips(heroId:string):{name:string;duration:number;times:number[]}[];
   updateAndRender(opts: {
     heroId: string;
+    /** Isolated QA only: evaluate the production animation/skin path at an exact authored time. */
+    auditPose?:{clip:string;time:number};
     clip: string;
     moving: boolean;
     yaw: number;
@@ -130,6 +137,7 @@ interface ThreeHeroInstance {
     spriteTop: number;
     /** Ground plane in cell pixels; the orthographic camera does not place it at the atlas pivot. */
     groundY: number;
+    shadowMeshes: ActorSkinnedPose[];
     revision: number;
     shadow: ShadowDrawResult | null;
     activeClip: string;
@@ -141,15 +149,18 @@ let sharedInstance: ThreeHeroInstance | null = null;
 /** Cell px of headroom the 3D sprite carries above its 114x103 cell (room for the raised casting hand). */
 export const HERO_3D_HEADROOM = 22;
 
-export function get3dHeroRenderer(): ThreeHeroInstance {
-  if (sharedInstance) return sharedInstance;
+export function get3dHeroRenderer():ThreeHeroInstance {return sharedInstance??(sharedInstance=create3dHeroRenderer());}
+
+/** Independent renderer for isolated diagnostics; gameplay keeps its shared instance. */
+export function create3dHeroRenderer(options:{diagnostic?:boolean;heroId?:string}={}):ThreeHeroInstance {
+  let disposed=false;
 
   // Use 1x cell resolution on low-spec devices and 2x on stronger devices. The same
   // hand-painted shader, headroom and foot pivot apply at either resolution.
   const CELL_W = 114;
   const CELL_H = 103;
   let SCALE = renderQuality.get().heroScale;
-  (window as any).__HERO_3D_SCALE__=SCALE;
+  if(!options.diagnostic)(window as any).__HERO_3D_SCALE__=SCALE;
   let W = CELL_W * SCALE; // 228
   let H = CELL_H * SCALE; // 206
   // Transparent rows above the cell so a hand raised over the head while casting is not cut off. The cell maths
@@ -195,7 +206,7 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
   const heroEntries = new Map<string, HeroModelEntry>();
   let currentYaw = Math.PI * 0.25;
 
-    if (typeof window !== 'undefined') {
+    if (typeof window !== 'undefined'&&!options.diagnostic) {
       window.addEventListener(
         'keydown',
         (e) => {
@@ -209,7 +220,7 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
       );
     }
 
-  if (typeof document !== 'undefined') {
+  if (typeof document !== 'undefined'&&!options.diagnostic) {
     document.getElementById('arkadia-3d-hud-pill')?.remove();
   }
 
@@ -700,6 +711,7 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
     loader.load(
       `/assets/characters/3d/${heroId}.glb`,
       (gltf: any) => {
+        if(disposed)return;
         const model = gltf.scene;
         entry.rawModel = model;
         model.updateMatrixWorld(true);
@@ -766,7 +778,7 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
           entry.activeClip = 'idle';
         }
         entry.ready = true;
-        (window as any).__HERO_3D_READY__ = true;
+        if(!options.diagnostic)(window as any).__HERO_3D_READY__ = true;
       },
       undefined,
       () => {
@@ -797,6 +809,7 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
         dynImport('/3d-hero-lab/vendor/three.module.min.js'),
         dynImport('/3d-hero-lab/vendor/GLTFLoader.js')
       ]);
+      if(disposed)return;
       THREE = threeMod;
       const { GLTFLoader } = gltfMod;
 
@@ -861,7 +874,7 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
       scene.add(rimLight);
 
       gltfLoader = new GLTFLoader();
-      ensureHeroModel(initialHeroId);
+      ensureHeroModel(options.heroId??initialHeroId);
     } catch (e) {
       console.warn('3D hero renderer load error:', e);
     }
@@ -880,18 +893,22 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
     SHADOW_W=pipelineSimple?0:320;SHADOW_H=pipelineSimple?0:224;
     CANVAS_W=Math.max(W,SHADOW_W);CANVAS_H=HS+SHADOW_H;
     renderer.setSize(CANVAS_W,CANVAS_H,false);createSpritePipeline();copyAt.set(0,SHADOW_H);
-    (window as any).__HERO_3D_SCALE__=SCALE;cachedResult=null;
+    if(!options.diagnostic)(window as any).__HERO_3D_SCALE__=SCALE;cachedResult=null;
   }
   let revision=0,lastRenderedAt=-Infinity,lastRenderKey='',pendingDt=0;
   let cachedResult:ReturnType<ThreeHeroInstance['updateAndRender']>=null;
-  sharedInstance = {
+  const instance:ThreeHeroInstance = {
+    destroy(){if(disposed)return;disposed=true;for(const entry of heroEntries.values()){entry.mixer?.stopAllAction();entry.heroRoot?.traverse((obj:any)=>{obj.geometry?.dispose();const materials=Array.isArray(obj.material)?obj.material:[obj.material];for(const material of materials)if(material){for(const value of Object.values(material))if((value as any)?.isTexture)(value as any).dispose();material.dispose();}});for(const material of entry.originalMaterials.values())material.dispose();}heroEntries.clear();for(const pass of [postScene,botScene,paramScene,scatterScene,featherScene])pass?.traverse((obj:any)=>{obj.geometry?.dispose();obj.material?.dispose();});for(const target of [srcTex,botRT,paramRT,densRT])target?.dispose();renderer?.dispose();renderer?.forceContextLoss();glCanvas.width=glCanvas.height=1;},
     canvas: glCanvas,
     style,
     isHeroReady(heroId: string) {
       ensureHeroModel(heroId);
       return Boolean(heroEntries.get(heroId)?.ready && style !== '2d');
     },
-    updateAndRender({ heroId, clip, moving, yaw, dt, tint, night, sun, cell }) {
+    auditVertices(heroId,indices){const entry=heroEntries.get(heroId);if(!entry?.ready)throw Error('GLB not ready');const points:{key:string;index:number;world:number[]}[]=[];entry.heroRoot.traverse((mesh:any)=>{if(!mesh.isSkinnedMesh||!mesh.visible)return;const q=new THREE.Vector3();for(const index of indices??Array.from({length:mesh.geometry.attributes.position.count},(_,i)=>i)){mesh.getVertexPosition(index,q).applyMatrix4(mesh.matrixWorld);points.push({key:mesh.uuid,index,world:[q.x,q.y,q.z]});}});return points;},
+    auditClips(heroId){const entry=heroEntries.get(heroId);if(!entry?.ready)throw Error('GLB not ready');return [...entry.actions].map(([name,action]:[string,any])=>({name,duration:action.getClip().duration,times:[...new Set<number>(action.getClip().tracks.flatMap((track:any)=>Array.from(track.times) as number[]))].sort((a,b)=>a-b)}));},
+    updateAndRender({ heroId, clip, moving, yaw, dt, tint, night, sun, cell, auditPose }) {
+      if(disposed)throw Error("3D renderer disposed");
       ensureHeroModel(heroId);
       const entry = heroEntries.get(heroId);
       if (!entry || !entry.ready || !renderer || style === '2d') return null;
@@ -931,6 +948,10 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
         targetClip = 'run';
       }
 
+      if(auditPose){
+        if(!entry.actions.has(auditPose.clip)||!Number.isFinite(auditPose.time)||auditPose.time<0)throw Error('Invalid isolated GLB pose');
+        targetClip=auditPose.clip;entry.mixer.stopAllAction();const action=entry.actions.get(targetClip)!;action.reset().setEffectiveWeight(1).setEffectiveTimeScale(1).play();entry.activeAction=action;entry.activeClip=targetClip;
+      }
       if (targetClip !== entry.activeClip && entry.actions.has(targetClip)) {
         const next = entry.actions.get(targetClip)!;
         const prevClip = entry.activeClip;
@@ -952,7 +973,7 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
       // Smooth 360-degree shortest-arc yaw interpolation at 60 FPS
       let diff = ((yaw - currentYaw + Math.PI) % (Math.PI * 2)) - Math.PI;
       if (diff < -Math.PI) diff += Math.PI * 2;
-      currentYaw += diff * Math.min(1, dt * 16);
+      currentYaw = auditPose?yaw:currentYaw+diff*Math.min(1,dt*16);
       entry.heroRoot.rotation.y = currentYaw;
 
       if (tint && tint !== '255,255,255' && sunLight) {
@@ -963,16 +984,16 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
       }
 
       pendingDt+=dt;
-      const cacheKey=[unifiedActorShadowsActive(),heroId,targetClip,currentYaw.toFixed(3),tint,Math.round(night*50),sun?.alpha.toFixed(2),sun?.dx.toFixed(2),sun?.dy.toFixed(2),renderQuality.get().tier].join('|');
-      if(cachedResult&&targetClip==='idle'&&!moving&&cacheKey===lastRenderKey&&now-lastRenderedAt<1000/renderQuality.get().idleFps)return cachedResult;
+      const cacheKey=[unifiedActorShadowsActive(),heroId,cell?.w,cell?.h,cell?.pivot.x,cell?.pivot.y,targetClip,currentYaw.toFixed(3),tint,Math.round(night*50),sun?.alpha.toFixed(2),sun?.dx.toFixed(2),sun?.dy.toFixed(2),renderQuality.get().tier].join('|');
+      if(!auditPose&&cachedResult&&targetClip==='idle'&&!moving&&cacheKey===lastRenderKey&&now-lastRenderedAt<1000/renderQuality.get().idleFps)return cachedResult;
       const renderDt=pendingDt;pendingDt=0;lastRenderedAt=now;lastRenderKey=cacheKey;
-      measureRenderDetail('heroAnimation',()=>entry.mixer.update(renderDt));
+      measureRenderDetail('heroAnimation',()=>auditPose?entry.mixer.setTime(auditPose.time):entry.mixer.update(renderDt));
 
       // Casting raises one hand overhead instead of the clips' forward reach. It is laid over the evaluated clip
       // (every cast clip keys these bones each frame), so the legs, torso and other arm keep their authored motion.
       const raiseTo = entry.activeClip === 'idle_cast' || entry.activeClip === 'run_cast' ? 1 : 0;
-      entry.castRaise += (raiseTo - entry.castRaise) * Math.min(1, renderDt * (raiseTo ? 10 : 7));
-      if (entry.castRaise > 0.003) raiseCastingArm(entry, now / 1000);
+      entry.castRaise = auditPose?raiseTo:entry.castRaise+(raiseTo-entry.castRaise)*Math.min(1,renderDt*(raiseTo?10:7));
+      if (entry.castRaise > 0.003) raiseCastingArm(entry, auditPose?auditPose.time:now / 1000);
 
       // Dynamically ground the lowest foot/toe bone to y = 0 so the boots never sink below the ground pivot
       // while preserving natural upward flight bounce during 'run' and 'run_cast'
@@ -1009,14 +1030,18 @@ export function get3dHeroRenderer(): ThreeHeroInstance {
 
       const groundNdc = new THREE.Vector3(0, 0, 0).project(orthoCam);
       const groundY = (1-groundNdc.y)*HS*.5-TOP;
-      cachedResult={ groundY: groundY / SCALE, sprite: glCanvas, spriteW: W, spriteH: HS, spriteTop: TOP, revision:++revision, shadow, activeClip: entry.activeClip };
+      const heightScale=(cell?.h??CELL_H)*(HS/H)*.5*orthoCam.projectionMatrix.elements[5]*orthoCam.matrixWorldInverse.elements[5];
+      const shadowMeshes=captureSkinnedShadowPose(entry.heroRoot,THREE,orthoCam,heightScale);
+      cachedResult={ shadowMeshes, groundY: groundY / SCALE*(cell?.h??CELL_H)/CELL_H, sprite: glCanvas, spriteW: W, spriteH: HS, spriteTop: TOP, revision:++revision, shadow, activeClip: entry.activeClip };
       glCanvas.dataset.heroScale=String(SCALE);glCanvas.dataset.shadow=renderQuality.get().simpleShadow?'contact':'projected';
       return cachedResult;
     }
   };
 
-  return sharedInstance;
+  return instance;
 }
+
+if(typeof window!=='undefined')(window as any).__HERO_GLB_SHADOW_AUDIT__=(heroId='ember-warden',clip='idle',times=null,yaws=[Math.PI/4])=>import('./shadow-glb-audit').then(m=>m.auditGlbPoses(heroId,clip,times,yaws));
 
 if (typeof window !== 'undefined' && is3dHeroEnabled()) {
   setTimeout(() => {

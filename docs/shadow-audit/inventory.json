@@ -26571,9 +26571,38 @@
    "source": "/assets/characters/3d/rift-runner.glb",
    "animation": "idle",
    "loop": true,
-   "cast": "WebGL same-frame raw body alpha and crossed-body proxy",
-   "receive": "native Pixi actor-batch depth comparison",
-   "disposition": "no CPU readback; old projected shadow passes suppressed; proxy is not mesh volumetric depth; clip visual acceptance pending"
+   "cast": "same-pose skinned GLB mesh masked by original post-process alpha; geometry fringe for raster support",
+   "receive": "per-owner camera-height tile in native Pixi actor batch",
+   "companion": "src/stronghold/shadow-glb-geometry.ts",
+   "gpuAudit": {
+    "report": "glb-per-actor-low/rift-runner-idle/report.json",
+    "quality": "low",
+    "poses": 6,
+    "cases": 18,
+    "yaws": [
+     0,
+     3.141592653589793
+    ],
+    "times": [
+     0,
+     2,
+     3.99999
+    ],
+    "modelSha256": "3276bc7887c1a0873e75db67e9653318e0f882ce19575f6873040eae1e173767",
+    "cellManifestSha256": "c1d8b73412760081d770c7ee10da8b52ac3e16a38edaa0cc7d521b038909c804",
+    "rendererSources": {
+     "hero-3d.ts": "f03c316e44d7ec7982d8a9dedf42803452e665d01f05889f3939f3a41289efc6",
+     "hero.ts": "89aa0bd0e45d460c9c74556ef1ac83a312ad65035de6cd44aaf637256d2b15e9",
+     "shadow-glb-geometry.ts": "9c46155ea498b49862d29b028a6fad117364f2b49e89ee5001ab0b00986db995",
+     "shadow-skinned-mesh.ts": "170ae3de61fb47e19bd70d24de7337e3b21966e873096d6aa39342fb469aae42",
+     "shadow-alpha-shell.ts": "830140c86b9b2f8c2d887f0421eff2ebcdb42c4d3c81ed05ac65e31cffd23e56",
+     "shadow-packed-copy.ts": "2752dfa3a683ed36d316dc582a61a4ae1946224b7088798d797bb8b5356b808f",
+     "shadow-live-field.ts": "2ab989ffbcb744abfa5c923b53264f6dda15d33ea250bb17542e75c7a3f71cad",
+     "shadow-sampling.ts": "852ccfef4e7a78493ac0adb6ccdd4fdc035300db4f09ea470236ff8b61fafc4d",
+     "shadow-actor-batch.ts": "cc54946671013fdeaeaa82e6047627d02b288429f964c33d20be9296d6ec367a"
+    }
+   },
+   "disposition": "Six production-cell poses, two headings and three suns pass low-quality cast/camera/alpha and high/middle/low receiver controls. Continuous animation blends, full heading matrix and hardware performance remain open."
   },
   {
    "id": "mesh:rift-runner:run",
@@ -26582,9 +26611,38 @@
    "source": "/assets/characters/3d/rift-runner.glb",
    "animation": "run",
    "loop": true,
-   "cast": "WebGL same-frame raw body alpha and crossed-body proxy",
-   "receive": "native Pixi actor-batch depth comparison",
-   "disposition": "no CPU readback; old projected shadow passes suppressed; proxy is not mesh volumetric depth; clip visual acceptance pending"
+   "cast": "same-pose skinned GLB mesh masked by original post-process alpha; geometry fringe for raster support",
+   "receive": "per-owner camera-height tile in native Pixi actor batch",
+   "companion": "src/stronghold/shadow-glb-geometry.ts",
+   "gpuAudit": {
+    "report": "glb-per-actor-low/rift-runner-run/report.json",
+    "quality": "low",
+    "poses": 6,
+    "cases": 18,
+    "yaws": [
+     0,
+     3.141592653589793
+    ],
+    "times": [
+     0,
+     0.3166666626930237,
+     0.6333233253860474
+    ],
+    "modelSha256": "3276bc7887c1a0873e75db67e9653318e0f882ce19575f6873040eae1e173767",
+    "cellManifestSha256": "c1d8b73412760081d770c7ee10da8b52ac3e16a38edaa0cc7d521b038909c804",
+    "rendererSources": {
+     "hero-3d.ts": "f03c316e44d7ec7982d8a9dedf42803452e665d01f05889f3939f3a41289efc6",
+     "hero.ts": "89aa0bd0e45d460c9c74556ef1ac83a312ad65035de6cd44aaf637256d2b15e9",
+     "shadow-glb-geometry.ts": "9c46155ea498b49862d29b028a6fad117364f2b49e89ee5001ab0b00986db995",
+     "shadow-skinned-mesh.ts": "170ae3de61fb47e19bd70d24de7337e3b21966e873096d6aa39342fb469aae42",
+     "shadow-alpha-shell.ts": "830140c86b9b2f8c2d887f0421eff2ebcdb42c4d3c81ed05ac65e31cffd23e56",
+     "shadow-packed-copy.ts": "2752dfa3a683ed36d316dc582a61a4ae1946224b7088798d797bb8b5356b808f",
+     "shadow-live-field.ts": "2ab989ffbcb744abfa5c923b53264f6dda15d33ea250bb17542e75c7a3f71cad",
+     "shadow-sampling.ts": "852ccfef4e7a78493ac0adb6ccdd4fdc035300db4f09ea470236ff8b61fafc4d",
+     "shadow-actor-batch.ts": "cc54946671013fdeaeaa82e6047627d02b288429f964c33d20be9296d6ec367a"
+    }
+   },
+   "disposition": "Six production-cell poses, two headings and three suns pass low-quality cast/camera/alpha and high/middle/low receiver controls. Continuous animation blends, full heading matrix and hardware performance remain open."
   },
   {
    "id": "mesh:rift-runner:idle_cast",
@@ -26593,9 +26651,38 @@
    "source": "/assets/characters/3d/rift-runner.glb",
    "animation": "idle_cast",
    "loop": true,
-   "cast": "WebGL same-frame raw body alpha and crossed-body proxy",
-   "receive": "native Pixi actor-batch depth comparison",
-   "disposition": "no CPU readback; old projected shadow passes suppressed; proxy is not mesh volumetric depth; clip visual acceptance pending"
+   "cast": "same-pose skinned GLB mesh masked by original post-process alpha; geometry fringe for raster support",
+   "receive": "per-owner camera-height tile in native Pixi actor batch",
+   "companion": "src/stronghold/shadow-glb-geometry.ts",
+   "gpuAudit": {
+    "report": "glb-per-actor-low/rift-runner-idle_cast/report.json",
+    "quality": "low",
+    "poses": 6,
+    "cases": 18,
+    "yaws": [
+     0,
+     3.141592653589793
+    ],
+    "times": [
+     0,
+     1.1333333253860474,
+     2.2666566507720947
+    ],
+    "modelSha256": "3276bc7887c1a0873e75db67e9653318e0f882ce19575f6873040eae1e173767",
+    "cellManifestSha256": "c1d8b73412760081d770c7ee10da8b52ac3e16a38edaa0cc7d521b038909c804",
+    "rendererSources": {
+     "hero-3d.ts": "f03c316e44d7ec7982d8a9dedf42803452e665d01f05889f3939f3a41289efc6",
+     "hero.ts": "89aa0bd0e45d460c9c74556ef1ac83a312ad65035de6cd44aaf637256d2b15e9",
+     "shadow-glb-geometry.ts": "9c46155ea498b49862d29b028a6fad117364f2b49e89ee5001ab0b00986db995",
+     "shadow-skinned-mesh.ts": "170ae3de61fb47e19bd70d24de7337e3b21966e873096d6aa39342fb469aae42",
+     "shadow-alpha-shell.ts": "830140c86b9b2f8c2d887f0421eff2ebcdb42c4d3c81ed05ac65e31cffd23e56",
+     "shadow-packed-copy.ts": "2752dfa3a683ed36d316dc582a61a4ae1946224b7088798d797bb8b5356b808f",
+     "shadow-live-field.ts": "2ab989ffbcb744abfa5c923b53264f6dda15d33ea250bb17542e75c7a3f71cad",
+     "shadow-sampling.ts": "852ccfef4e7a78493ac0adb6ccdd4fdc035300db4f09ea470236ff8b61fafc4d",
+     "shadow-actor-batch.ts": "cc54946671013fdeaeaa82e6047627d02b288429f964c33d20be9296d6ec367a"
+    }
+   },
+   "disposition": "Six production-cell poses, two headings and three suns pass low-quality cast/camera/alpha and high/middle/low receiver controls. Continuous animation blends, full heading matrix and hardware performance remain open."
   },
   {
    "id": "mesh:rift-runner:run_cast",
@@ -26604,9 +26691,38 @@
    "source": "/assets/characters/3d/rift-runner.glb",
    "animation": "run_cast",
    "loop": true,
-   "cast": "WebGL same-frame raw body alpha and crossed-body proxy",
-   "receive": "native Pixi actor-batch depth comparison",
-   "disposition": "no CPU readback; old projected shadow passes suppressed; proxy is not mesh volumetric depth; clip visual acceptance pending"
+   "cast": "same-pose skinned GLB mesh masked by original post-process alpha; geometry fringe for raster support",
+   "receive": "per-owner camera-height tile in native Pixi actor batch",
+   "companion": "src/stronghold/shadow-glb-geometry.ts",
+   "gpuAudit": {
+    "report": "glb-per-actor-low/rift-runner-run_cast/report.json",
+    "quality": "low",
+    "poses": 6,
+    "cases": 18,
+    "yaws": [
+     0,
+     3.141592653589793
+    ],
+    "times": [
+     0,
+     0.9833333492279053,
+     1.9666566984558105
+    ],
+    "modelSha256": "3276bc7887c1a0873e75db67e9653318e0f882ce19575f6873040eae1e173767",
+    "cellManifestSha256": "c1d8b73412760081d770c7ee10da8b52ac3e16a38edaa0cc7d521b038909c804",
+    "rendererSources": {
+     "hero-3d.ts": "f03c316e44d7ec7982d8a9dedf42803452e665d01f05889f3939f3a41289efc6",
+     "hero.ts": "89aa0bd0e45d460c9c74556ef1ac83a312ad65035de6cd44aaf637256d2b15e9",
+     "shadow-glb-geometry.ts": "9c46155ea498b49862d29b028a6fad117364f2b49e89ee5001ab0b00986db995",
+     "shadow-skinned-mesh.ts": "170ae3de61fb47e19bd70d24de7337e3b21966e873096d6aa39342fb469aae42",
+     "shadow-alpha-shell.ts": "830140c86b9b2f8c2d887f0421eff2ebcdb42c4d3c81ed05ac65e31cffd23e56",
+     "shadow-packed-copy.ts": "2752dfa3a683ed36d316dc582a61a4ae1946224b7088798d797bb8b5356b808f",
+     "shadow-live-field.ts": "2ab989ffbcb744abfa5c923b53264f6dda15d33ea250bb17542e75c7a3f71cad",
+     "shadow-sampling.ts": "852ccfef4e7a78493ac0adb6ccdd4fdc035300db4f09ea470236ff8b61fafc4d",
+     "shadow-actor-batch.ts": "cc54946671013fdeaeaa82e6047627d02b288429f964c33d20be9296d6ec367a"
+    }
+   },
+   "disposition": "Six production-cell poses, two headings and three suns pass low-quality cast/camera/alpha and high/middle/low receiver controls. Continuous animation blends, full heading matrix and hardware performance remain open."
   },
   {
    "id": "mesh:rift-runner:hit",
@@ -26615,9 +26731,38 @@
    "source": "/assets/characters/3d/rift-runner.glb",
    "animation": "hit",
    "loop": false,
-   "cast": "WebGL same-frame raw body alpha and crossed-body proxy",
-   "receive": "native Pixi actor-batch depth comparison",
-   "disposition": "no CPU readback; old projected shadow passes suppressed; proxy is not mesh volumetric depth; clip visual acceptance pending"
+   "cast": "same-pose skinned GLB mesh masked by original post-process alpha; geometry fringe for raster support",
+   "receive": "per-owner camera-height tile in native Pixi actor batch",
+   "companion": "src/stronghold/shadow-glb-geometry.ts",
+   "gpuAudit": {
+    "report": "glb-per-actor-low/rift-runner-hit/report.json",
+    "quality": "low",
+    "poses": 6,
+    "cases": 18,
+    "yaws": [
+     0,
+     3.141592653589793
+    ],
+    "times": [
+     0,
+     0.8166666626930237,
+     1.6333233253860473
+    ],
+    "modelSha256": "3276bc7887c1a0873e75db67e9653318e0f882ce19575f6873040eae1e173767",
+    "cellManifestSha256": "c1d8b73412760081d770c7ee10da8b52ac3e16a38edaa0cc7d521b038909c804",
+    "rendererSources": {
+     "hero-3d.ts": "f03c316e44d7ec7982d8a9dedf42803452e665d01f05889f3939f3a41289efc6",
+     "hero.ts": "89aa0bd0e45d460c9c74556ef1ac83a312ad65035de6cd44aaf637256d2b15e9",
+     "shadow-glb-geometry.ts": "9c46155ea498b49862d29b028a6fad117364f2b49e89ee5001ab0b00986db995",
+     "shadow-skinned-mesh.ts": "170ae3de61fb47e19bd70d24de7337e3b21966e873096d6aa39342fb469aae42",
+     "shadow-alpha-shell.ts": "830140c86b9b2f8c2d887f0421eff2ebcdb42c4d3c81ed05ac65e31cffd23e56",
+     "shadow-packed-copy.ts": "2752dfa3a683ed36d316dc582a61a4ae1946224b7088798d797bb8b5356b808f",
+     "shadow-live-field.ts": "2ab989ffbcb744abfa5c923b53264f6dda15d33ea250bb17542e75c7a3f71cad",
+     "shadow-sampling.ts": "852ccfef4e7a78493ac0adb6ccdd4fdc035300db4f09ea470236ff8b61fafc4d",
+     "shadow-actor-batch.ts": "cc54946671013fdeaeaa82e6047627d02b288429f964c33d20be9296d6ec367a"
+    }
+   },
+   "disposition": "Six production-cell poses, two headings and three suns pass low-quality cast/camera/alpha and high/middle/low receiver controls. Continuous animation blends, full heading matrix and hardware performance remain open."
   },
   {
    "id": "mesh:rift-runner:death",
@@ -26626,9 +26771,38 @@
    "source": "/assets/characters/3d/rift-runner.glb",
    "animation": "death",
    "loop": false,
-   "cast": "WebGL same-frame raw body alpha and crossed-body proxy",
-   "receive": "native Pixi actor-batch depth comparison",
-   "disposition": "no CPU readback; old projected shadow passes suppressed; proxy is not mesh volumetric depth; clip visual acceptance pending"
+   "cast": "same-pose skinned GLB mesh masked by original post-process alpha; geometry fringe for raster support",
+   "receive": "per-owner camera-height tile in native Pixi actor batch",
+   "companion": "src/stronghold/shadow-glb-geometry.ts",
+   "gpuAudit": {
+    "report": "glb-per-actor-low/rift-runner-death/report.json",
+    "quality": "low",
+    "poses": 6,
+    "cases": 18,
+    "yaws": [
+     0,
+     3.141592653589793
+    ],
+    "times": [
+     0,
+     1.4833333492279053,
+     2.9666566984558105
+    ],
+    "modelSha256": "3276bc7887c1a0873e75db67e9653318e0f882ce19575f6873040eae1e173767",
+    "cellManifestSha256": "c1d8b73412760081d770c7ee10da8b52ac3e16a38edaa0cc7d521b038909c804",
+    "rendererSources": {
+     "hero-3d.ts": "f03c316e44d7ec7982d8a9dedf42803452e665d01f05889f3939f3a41289efc6",
+     "hero.ts": "89aa0bd0e45d460c9c74556ef1ac83a312ad65035de6cd44aaf637256d2b15e9",
+     "shadow-glb-geometry.ts": "9c46155ea498b49862d29b028a6fad117364f2b49e89ee5001ab0b00986db995",
+     "shadow-skinned-mesh.ts": "170ae3de61fb47e19bd70d24de7337e3b21966e873096d6aa39342fb469aae42",
+     "shadow-alpha-shell.ts": "830140c86b9b2f8c2d887f0421eff2ebcdb42c4d3c81ed05ac65e31cffd23e56",
+     "shadow-packed-copy.ts": "2752dfa3a683ed36d316dc582a61a4ae1946224b7088798d797bb8b5356b808f",
+     "shadow-live-field.ts": "2ab989ffbcb744abfa5c923b53264f6dda15d33ea250bb17542e75c7a3f71cad",
+     "shadow-sampling.ts": "852ccfef4e7a78493ac0adb6ccdd4fdc035300db4f09ea470236ff8b61fafc4d",
+     "shadow-actor-batch.ts": "cc54946671013fdeaeaa82e6047627d02b288429f964c33d20be9296d6ec367a"
+    }
+   },
+   "disposition": "Six production-cell poses, two headings and three suns pass low-quality cast/camera/alpha and high/middle/low receiver controls. Continuous animation blends, full heading matrix and hardware performance remain open."
   },
   {
    "id": "mesh:ember-warden:idle",
@@ -26637,9 +26811,38 @@
    "source": "/assets/characters/3d/ember-warden.glb",
    "animation": "idle",
    "loop": true,
-   "cast": "WebGL same-frame raw body alpha and crossed-body proxy",
-   "receive": "native Pixi actor-batch depth comparison",
-   "disposition": "no CPU readback; old projected shadow passes suppressed; proxy is not mesh volumetric depth; clip visual acceptance pending"
+   "cast": "same-pose skinned GLB mesh masked by original post-process alpha; geometry fringe for raster support",
+   "receive": "per-owner camera-height tile in native Pixi actor batch",
+   "companion": "src/stronghold/shadow-glb-geometry.ts",
+   "gpuAudit": {
+    "report": "glb-per-actor-low/ember-warden-idle/report.json",
+    "quality": "low",
+    "poses": 6,
+    "cases": 18,
+    "yaws": [
+     0,
+     3.141592653589793
+    ],
+    "times": [
+     0,
+     2,
+     3.99999
+    ],
+    "modelSha256": "27314f388adb9fa94dc7db468f6ade4ceacedafc248af4b68745f28adb793e29",
+    "cellManifestSha256": "c1d8b73412760081d770c7ee10da8b52ac3e16a38edaa0cc7d521b038909c804",
+    "rendererSources": {
+     "hero-3d.ts": "f03c316e44d7ec7982d8a9dedf42803452e665d01f05889f3939f3a41289efc6",
+     "hero.ts": "89aa0bd0e45d460c9c74556ef1ac83a312ad65035de6cd44aaf637256d2b15e9",
+     "shadow-glb-geometry.ts": "9c46155ea498b49862d29b028a6fad117364f2b49e89ee5001ab0b00986db995",
+     "shadow-skinned-mesh.ts": "170ae3de61fb47e19bd70d24de7337e3b21966e873096d6aa39342fb469aae42",
+     "shadow-alpha-shell.ts": "830140c86b9b2f8c2d887f0421eff2ebcdb42c4d3c81ed05ac65e31cffd23e56",
+     "shadow-packed-copy.ts": "2752dfa3a683ed36d316dc582a61a4ae1946224b7088798d797bb8b5356b808f",
+     "shadow-live-field.ts": "2ab989ffbcb744abfa5c923b53264f6dda15d33ea250bb17542e75c7a3f71cad",
+     "shadow-sampling.ts": "852ccfef4e7a78493ac0adb6ccdd4fdc035300db4f09ea470236ff8b61fafc4d",
+     "shadow-actor-batch.ts": "cc54946671013fdeaeaa82e6047627d02b288429f964c33d20be9296d6ec367a"
+    }
+   },
+   "disposition": "Six production-cell poses, two headings and three suns pass low-quality cast/camera/alpha and high/middle/low receiver controls. Continuous animation blends, full heading matrix and hardware performance remain open."
   },
   {
    "id": "mesh:ember-warden:run",
@@ -26648,9 +26851,38 @@
    "source": "/assets/characters/3d/ember-warden.glb",
    "animation": "run",
    "loop": true,
-   "cast": "WebGL same-frame raw body alpha and crossed-body proxy",
-   "receive": "native Pixi actor-batch depth comparison",
-   "disposition": "no CPU readback; old projected shadow passes suppressed; proxy is not mesh volumetric depth; clip visual acceptance pending"
+   "cast": "same-pose skinned GLB mesh masked by original post-process alpha; geometry fringe for raster support",
+   "receive": "per-owner camera-height tile in native Pixi actor batch",
+   "companion": "src/stronghold/shadow-glb-geometry.ts",
+   "gpuAudit": {
+    "report": "glb-per-actor-low/ember-warden-run/report.json",
+    "quality": "low",
+    "poses": 6,
+    "cases": 18,
+    "yaws": [
+     0,
+     3.141592653589793
+    ],
+    "times": [
+     0,
+     0.3166666626930237,
+     0.6333233253860474
+    ],
+    "modelSha256": "27314f388adb9fa94dc7db468f6ade4ceacedafc248af4b68745f28adb793e29",
+    "cellManifestSha256": "c1d8b73412760081d770c7ee10da8b52ac3e16a38edaa0cc7d521b038909c804",
+    "rendererSources": {
+     "hero-3d.ts": "f03c316e44d7ec7982d8a9dedf42803452e665d01f05889f3939f3a41289efc6",
+     "hero.ts": "89aa0bd0e45d460c9c74556ef1ac83a312ad65035de6cd44aaf637256d2b15e9",
+     "shadow-glb-geometry.ts": "9c46155ea498b49862d29b028a6fad117364f2b49e89ee5001ab0b00986db995",
+     "shadow-skinned-mesh.ts": "170ae3de61fb47e19bd70d24de7337e3b21966e873096d6aa39342fb469aae42",
+     "shadow-alpha-shell.ts": "830140c86b9b2f8c2d887f0421eff2ebcdb42c4d3c81ed05ac65e31cffd23e56",
+     "shadow-packed-copy.ts": "2752dfa3a683ed36d316dc582a61a4ae1946224b7088798d797bb8b5356b808f",
+     "shadow-live-field.ts": "2ab989ffbcb744abfa5c923b53264f6dda15d33ea250bb17542e75c7a3f71cad",
+     "shadow-sampling.ts": "852ccfef4e7a78493ac0adb6ccdd4fdc035300db4f09ea470236ff8b61fafc4d",
+     "shadow-actor-batch.ts": "cc54946671013fdeaeaa82e6047627d02b288429f964c33d20be9296d6ec367a"
+    }
+   },
+   "disposition": "Six production-cell poses, two headings and three suns pass low-quality cast/camera/alpha and high/middle/low receiver controls. Continuous animation blends, full heading matrix and hardware performance remain open."
   },
   {
    "id": "mesh:ember-warden:idle_cast",
@@ -26659,9 +26891,38 @@
    "source": "/assets/characters/3d/ember-warden.glb",
    "animation": "idle_cast",
    "loop": true,
-   "cast": "WebGL same-frame raw body alpha and crossed-body proxy",
-   "receive": "native Pixi actor-batch depth comparison",
-   "disposition": "no CPU readback; old projected shadow passes suppressed; proxy is not mesh volumetric depth; clip visual acceptance pending"
+   "cast": "same-pose skinned GLB mesh masked by original post-process alpha; geometry fringe for raster support",
+   "receive": "per-owner camera-height tile in native Pixi actor batch",
+   "companion": "src/stronghold/shadow-glb-geometry.ts",
+   "gpuAudit": {
+    "report": "glb-per-actor-low/ember-warden-idle_cast/report.json",
+    "quality": "low",
+    "poses": 6,
+    "cases": 18,
+    "yaws": [
+     0,
+     3.141592653589793
+    ],
+    "times": [
+     0,
+     0.800000011920929,
+     1.5999900238418578
+    ],
+    "modelSha256": "27314f388adb9fa94dc7db468f6ade4ceacedafc248af4b68745f28adb793e29",
+    "cellManifestSha256": "c1d8b73412760081d770c7ee10da8b52ac3e16a38edaa0cc7d521b038909c804",
+    "rendererSources": {
+     "hero-3d.ts": "f03c316e44d7ec7982d8a9dedf42803452e665d01f05889f3939f3a41289efc6",
+     "hero.ts": "89aa0bd0e45d460c9c74556ef1ac83a312ad65035de6cd44aaf637256d2b15e9",
+     "shadow-glb-geometry.ts": "9c46155ea498b49862d29b028a6fad117364f2b49e89ee5001ab0b00986db995",
+     "shadow-skinned-mesh.ts": "170ae3de61fb47e19bd70d24de7337e3b21966e873096d6aa39342fb469aae42",
+     "shadow-alpha-shell.ts": "830140c86b9b2f8c2d887f0421eff2ebcdb42c4d3c81ed05ac65e31cffd23e56",
+     "shadow-packed-copy.ts": "2752dfa3a683ed36d316dc582a61a4ae1946224b7088798d797bb8b5356b808f",
+     "shadow-live-field.ts": "2ab989ffbcb744abfa5c923b53264f6dda15d33ea250bb17542e75c7a3f71cad",
+     "shadow-sampling.ts": "852ccfef4e7a78493ac0adb6ccdd4fdc035300db4f09ea470236ff8b61fafc4d",
+     "shadow-actor-batch.ts": "cc54946671013fdeaeaa82e6047627d02b288429f964c33d20be9296d6ec367a"
+    }
+   },
+   "disposition": "Six production-cell poses, two headings and three suns pass low-quality cast/camera/alpha and high/middle/low receiver controls. Continuous animation blends, full heading matrix and hardware performance remain open."
   },
   {
    "id": "mesh:ember-warden:run_cast",
@@ -26670,9 +26931,38 @@
    "source": "/assets/characters/3d/ember-warden.glb",
    "animation": "run_cast",
    "loop": true,
-   "cast": "WebGL same-frame raw body alpha and crossed-body proxy",
-   "receive": "native Pixi actor-batch depth comparison",
-   "disposition": "no CPU readback; old projected shadow passes suppressed; proxy is not mesh volumetric depth; clip visual acceptance pending"
+   "cast": "same-pose skinned GLB mesh masked by original post-process alpha; geometry fringe for raster support",
+   "receive": "per-owner camera-height tile in native Pixi actor batch",
+   "companion": "src/stronghold/shadow-glb-geometry.ts",
+   "gpuAudit": {
+    "report": "glb-per-actor-low/ember-warden-run_cast/report.json",
+    "quality": "low",
+    "poses": 6,
+    "cases": 18,
+    "yaws": [
+     0,
+     3.141592653589793
+    ],
+    "times": [
+     0,
+     0.6333333253860474,
+     1.2666566507720947
+    ],
+    "modelSha256": "27314f388adb9fa94dc7db468f6ade4ceacedafc248af4b68745f28adb793e29",
+    "cellManifestSha256": "c1d8b73412760081d770c7ee10da8b52ac3e16a38edaa0cc7d521b038909c804",
+    "rendererSources": {
+     "hero-3d.ts": "f03c316e44d7ec7982d8a9dedf42803452e665d01f05889f3939f3a41289efc6",
+     "hero.ts": "89aa0bd0e45d460c9c74556ef1ac83a312ad65035de6cd44aaf637256d2b15e9",
+     "shadow-glb-geometry.ts": "9c46155ea498b49862d29b028a6fad117364f2b49e89ee5001ab0b00986db995",
+     "shadow-skinned-mesh.ts": "170ae3de61fb47e19bd70d24de7337e3b21966e873096d6aa39342fb469aae42",
+     "shadow-alpha-shell.ts": "830140c86b9b2f8c2d887f0421eff2ebcdb42c4d3c81ed05ac65e31cffd23e56",
+     "shadow-packed-copy.ts": "2752dfa3a683ed36d316dc582a61a4ae1946224b7088798d797bb8b5356b808f",
+     "shadow-live-field.ts": "2ab989ffbcb744abfa5c923b53264f6dda15d33ea250bb17542e75c7a3f71cad",
+     "shadow-sampling.ts": "852ccfef4e7a78493ac0adb6ccdd4fdc035300db4f09ea470236ff8b61fafc4d",
+     "shadow-actor-batch.ts": "cc54946671013fdeaeaa82e6047627d02b288429f964c33d20be9296d6ec367a"
+    }
+   },
+   "disposition": "Six production-cell poses, two headings and three suns pass low-quality cast/camera/alpha and high/middle/low receiver controls. Continuous animation blends, full heading matrix and hardware performance remain open."
   },
   {
    "id": "mesh:ember-warden:hit",
@@ -26681,9 +26971,38 @@
    "source": "/assets/characters/3d/ember-warden.glb",
    "animation": "hit",
    "loop": false,
-   "cast": "WebGL same-frame raw body alpha and crossed-body proxy",
-   "receive": "native Pixi actor-batch depth comparison",
-   "disposition": "no CPU readback; old projected shadow passes suppressed; proxy is not mesh volumetric depth; clip visual acceptance pending"
+   "cast": "same-pose skinned GLB mesh masked by original post-process alpha; geometry fringe for raster support",
+   "receive": "per-owner camera-height tile in native Pixi actor batch",
+   "companion": "src/stronghold/shadow-glb-geometry.ts",
+   "gpuAudit": {
+    "report": "glb-per-actor-low/ember-warden-hit/report.json",
+    "quality": "low",
+    "poses": 6,
+    "cases": 18,
+    "yaws": [
+     0,
+     3.141592653589793
+    ],
+    "times": [
+     0,
+     0.8166666626930237,
+     1.6333233253860473
+    ],
+    "modelSha256": "27314f388adb9fa94dc7db468f6ade4ceacedafc248af4b68745f28adb793e29",
+    "cellManifestSha256": "c1d8b73412760081d770c7ee10da8b52ac3e16a38edaa0cc7d521b038909c804",
+    "rendererSources": {
+     "hero-3d.ts": "f03c316e44d7ec7982d8a9dedf42803452e665d01f05889f3939f3a41289efc6",
+     "hero.ts": "89aa0bd0e45d460c9c74556ef1ac83a312ad65035de6cd44aaf637256d2b15e9",
+     "shadow-glb-geometry.ts": "9c46155ea498b49862d29b028a6fad117364f2b49e89ee5001ab0b00986db995",
+     "shadow-skinned-mesh.ts": "170ae3de61fb47e19bd70d24de7337e3b21966e873096d6aa39342fb469aae42",
+     "shadow-alpha-shell.ts": "830140c86b9b2f8c2d887f0421eff2ebcdb42c4d3c81ed05ac65e31cffd23e56",
+     "shadow-packed-copy.ts": "2752dfa3a683ed36d316dc582a61a4ae1946224b7088798d797bb8b5356b808f",
+     "shadow-live-field.ts": "2ab989ffbcb744abfa5c923b53264f6dda15d33ea250bb17542e75c7a3f71cad",
+     "shadow-sampling.ts": "852ccfef4e7a78493ac0adb6ccdd4fdc035300db4f09ea470236ff8b61fafc4d",
+     "shadow-actor-batch.ts": "cc54946671013fdeaeaa82e6047627d02b288429f964c33d20be9296d6ec367a"
+    }
+   },
+   "disposition": "Six production-cell poses, two headings and three suns pass low-quality cast/camera/alpha and high/middle/low receiver controls. Continuous animation blends, full heading matrix and hardware performance remain open."
   },
   {
    "id": "mesh:ember-warden:death",
@@ -26692,9 +27011,38 @@
    "source": "/assets/characters/3d/ember-warden.glb",
    "animation": "death",
    "loop": false,
-   "cast": "WebGL same-frame raw body alpha and crossed-body proxy",
-   "receive": "native Pixi actor-batch depth comparison",
-   "disposition": "no CPU readback; old projected shadow passes suppressed; proxy is not mesh volumetric depth; clip visual acceptance pending"
+   "cast": "same-pose skinned GLB mesh masked by original post-process alpha; geometry fringe for raster support",
+   "receive": "per-owner camera-height tile in native Pixi actor batch",
+   "companion": "src/stronghold/shadow-glb-geometry.ts",
+   "gpuAudit": {
+    "report": "glb-per-actor-low/ember-warden-death/report.json",
+    "quality": "low",
+    "poses": 6,
+    "cases": 18,
+    "yaws": [
+     0,
+     3.141592653589793
+    ],
+    "times": [
+     0,
+     1.4833333492279053,
+     2.9666566984558105
+    ],
+    "modelSha256": "27314f388adb9fa94dc7db468f6ade4ceacedafc248af4b68745f28adb793e29",
+    "cellManifestSha256": "c1d8b73412760081d770c7ee10da8b52ac3e16a38edaa0cc7d521b038909c804",
+    "rendererSources": {
+     "hero-3d.ts": "f03c316e44d7ec7982d8a9dedf42803452e665d01f05889f3939f3a41289efc6",
+     "hero.ts": "89aa0bd0e45d460c9c74556ef1ac83a312ad65035de6cd44aaf637256d2b15e9",
+     "shadow-glb-geometry.ts": "9c46155ea498b49862d29b028a6fad117364f2b49e89ee5001ab0b00986db995",
+     "shadow-skinned-mesh.ts": "170ae3de61fb47e19bd70d24de7337e3b21966e873096d6aa39342fb469aae42",
+     "shadow-alpha-shell.ts": "830140c86b9b2f8c2d887f0421eff2ebcdb42c4d3c81ed05ac65e31cffd23e56",
+     "shadow-packed-copy.ts": "2752dfa3a683ed36d316dc582a61a4ae1946224b7088798d797bb8b5356b808f",
+     "shadow-live-field.ts": "2ab989ffbcb744abfa5c923b53264f6dda15d33ea250bb17542e75c7a3f71cad",
+     "shadow-sampling.ts": "852ccfef4e7a78493ac0adb6ccdd4fdc035300db4f09ea470236ff8b61fafc4d",
+     "shadow-actor-batch.ts": "cc54946671013fdeaeaa82e6047627d02b288429f964c33d20be9296d6ec367a"
+    }
+   },
+   "disposition": "Six production-cell poses, two headings and three suns pass low-quality cast/camera/alpha and high/middle/low receiver controls. Continuous animation blends, full heading matrix and hardware performance remain open."
   },
   {
    "id": "terrain:east-ridge",
