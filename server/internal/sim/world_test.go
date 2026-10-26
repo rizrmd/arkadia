@@ -423,13 +423,13 @@ func TestRevenantsWoundHeroesWhoRespawnAndHealInTheZone(t *testing.T) {
 	}
 }
 
-func TestClockRunsOneGameHourPerRealMinute(t *testing.T) {
+func TestClockRunsOneDayPerTenRealMinutes(t *testing.T) {
 	w := newTestWorld(t)
 	w.AddPlayer("a", "A", 100)
 	start := w.Clock
-	run(w, 20*60)
-	if got := (w.Clock - start) * 24; math.Abs(got-1) > 1e-9 {
-		t.Fatalf("one minute advanced %.6f hours", got)
+	run(w, 20*60*5)
+	if got := w.Clock - start; math.Abs(got-.5) > 1e-9 {
+		t.Fatalf("five minutes advanced %.6f days", got)
 	}
 }
 
