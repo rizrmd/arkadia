@@ -1,13 +1,14 @@
-import {Application,Assets,Container,Graphics,Rectangle,Sprite,Text,Texture} from 'pixi.js';
+import {Assets,Container,Graphics,Rectangle,Sprite,Text,Texture} from 'pixi.js';
+import {advancePlayerClock,createPlayerApplication,createPlayerClock,playerBaseUrl} from './player-runtime';
 import {RiftDashVfx} from './rift-dash-vfx';
-const app=new Application();await app.init({resizeTo:window,backgroundColor:0x080d19,antialias:true,resolution:Math.min(2,devicePixelRatio||1),autoDensity:true});document.body.appendChild(app.canvas);
+const app=await createPlayerApplication({backgroundColor:0x080d19});
 const scene=app.stage.addChild(new Container()),ui=app.stage.addChild(new Container()),grid=scene.addChild(new Graphics()),aim=scene.addChild(new Graphics());
-const base=import.meta.env.BASE_URL;
+const base=playerBaseUrl();
 const art=await RiftDashVfx.load(base+"vfx/");scene.addChild(art.root);
 const sheet=await Assets.load<Texture>(base+"actors/rift-runner-run.webp");
 const actor=scene.addChild(new Sprite());actor.anchor.set(.5,360/384);
 const frames=Array.from({length:5},(_,r)=>Array.from({length:8},(_,c)=>new Texture({source:sheet.source,frame:new Rectangle(c*384,r*384,384,384)})));
-let playing=true,time=0,direction=1,speed=1,lastPose=-1;const labels:Record<string,Text>={};const faces:Record<string,Graphics>={};const dirs=['N','NE','E','SE','S','SW','W','NW'];
+const clock=createPlayerClock();let playing=true,time=0,direction=1,speed=1,lastPose=-1;const labels:Record<string,Text>={};const faces:Record<string,Graphics>={};const dirs=['N','NE','E','SE','S','SW','W','NW'];
 const buttons:Record<string,{x:number;y:number;w:number;h:number}>={};
 function text(value:string,x:number,y:number,size=14,color=0xcdd9ed){const t=ui.addChild(new Text({text:value,style:{fontFamily:'Georgia',fontSize:size,fill:color}}));t.position.set(x,y);return t;}
 function button(label:string,x:number,y:number,w:number,action:()=>void,selected=false){const c=ui.addChild(new Container()),g=c.addChild(new Graphics());g.roundRect(0,0,w,40,7).fill(selected?0x364054:0x141d2e).stroke({color:0xcaa652,width:selected?2:1});const t=c.addChild(new Text({text:label,style:{fontFamily:'Georgia',fontSize:14,fill:0xf6dfaa}}));labels[label]=t;faces[label]=g;t.anchor.set(.5);t.position.set(w/2,20);c.position.set(x,y);c.eventMode='static';c.cursor='pointer';c.hitArea=new Rectangle(0,0,w,40);c.on('pointerdown',action);buttons[label]={x,y,w,h:40};}
@@ -29,7 +30,7 @@ app.canvas.addEventListener('pointercancel',()=>{aimPointer=null;});
 window.addEventListener('blur',()=>{aimPointer=null;});
 window.addEventListener('keydown',e=>{if(e.code==='Space'){e.preventDefault();time=0;playing=true;}});
 layout();window.addEventListener('resize',()=>{aimPointer=null;lastPose=-1;layout();});
-app.ticker.add(t=>{const play=labels.Pause??labels.Play;if(play)play.text=playing?'Pause':'Play';const slow=labels['Slow ×0.35']??labels['Speed ×1'];if(slow)slow.text=speed===1?'Slow ×0.35':'Speed ×1';for(const [i,d]of dirs.entries())if(faces[d])faces[d].tint=i===direction?0xffffff:0x8c9bae;if(playing)time=(time+t.deltaMS*speed)%1500;if(lastPose!==direction)capture();const {from,to,s}=geometry();grid.clear();const gy=innerHeight-(innerWidth<600?222:166);for(let x=-innerHeight;x<innerWidth+innerHeight;x+=60)grid.moveTo(x,90).lineTo(x+gy,gy).stroke({color:0x1d2c42,width:1});for(let x=0;x<innerWidth+innerHeight;x+=60)grid.moveTo(x,90).lineTo(x-gy,gy).stroke({color:0x1d2c42,width:1});
+app.ticker.add(t=>{const play=labels.Pause??labels.Play;if(play)play.text=playing?'Pause':'Play';const slow=labels['Slow ×0.35']??labels['Speed ×1'];if(slow)slow.text=speed===1?'Slow ×0.35':'Speed ×1';for(const [i,d]of dirs.entries())if(faces[d])faces[d].tint=i===direction?0xffffff:0x8c9bae;clock.playing=playing;clock.speed=speed;time=advancePlayerClock(clock,t.deltaMS,1500);if(lastPose!==direction)capture();const {from,to,s}=geometry();grid.clear();const gy=innerHeight-(innerWidth<600?222:166);for(let x=-innerHeight;x<innerWidth+innerHeight;x+=60)grid.moveTo(x,90).lineTo(x+gy,gy).stroke({color:0x1d2c42,width:1});for(let x=0;x<innerWidth+innerHeight;x+=60)grid.moveTo(x,90).lineTo(x-gy,gy).stroke({color:0x1d2c42,width:1});
  aim.clear().ellipse(from.x,from.y,160*s,105*s).stroke({color:0x7661af,width:1,alpha:.35}).moveTo(from.x,from.y).lineTo(to.x,to.y).stroke({color:0x68e8ff,width:2,alpha:.5}).circle(to.x,to.y,5).fill(0xe4d599);
  const aa=Math.atan2(to.y-from.y,to.x-from.x);aim.moveTo(to.x-13*Math.cos(aa-.45),to.y-13*Math.sin(aa-.45)).lineTo(to.x,to.y).lineTo(to.x-13*Math.cos(aa+.45),to.y-13*Math.sin(aa+.45)).stroke({color:0x68e8ff,width:2});
  art.render(time,from,to,s);const progress=Math.min(1,Math.max(0,(time-60)/180));actor.position.set(from.x+(to.x-from.x)*progress,from.y+(to.y-from.y)*progress);actor.width=110*s;actor.height=110*s;if(direction>4)actor.scale.x=-Math.abs(actor.scale.x);actor.alpha=1;
