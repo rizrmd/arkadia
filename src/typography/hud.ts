@@ -1,3 +1,4 @@
+import type { GateHealthBar } from '../stronghold/gate-health-bar';
 import {desktopNavigationLayout} from './desktop-layout';
 import { Container, Graphics, Rectangle, Sprite, type Texture } from 'pixi.js';
 import type { FrameSet } from './frames';
@@ -422,7 +423,7 @@ export class Hud extends Container {
 
   // Fortified cyan-gold Gate HP bar accent strip inside the top-left console (Alt B)
   this.gateBarG = hit.addChild(new Graphics());
-  this.gateBarG.visible = this.isAltB;
+  this.gateBarG.visible = false;
 
   this.heroNameText = hit.addChild(new MsdfText('hud-name', s.name));
   this.heroNameText.place(195, 52.5);
@@ -460,7 +461,7 @@ export class Hud extends Container {
 
  private syncPlayerConsole() {
   const s = this.state;
-  this.playerConsole?.update(s.name, this.currentPortrait, s.level, [[s.hp,s.hpMax],[s.gateHp ?? 100,s.gateHpMax ?? 100],[s.xp,s.xpMax]]);
+  this.playerConsole?.update(s.name, this.currentPortrait, s.level, [[s.hp,s.hpMax],[s.xp,s.xpMax]]);
  }
 
  private buildStats() {
@@ -1225,29 +1226,17 @@ export class Hud extends Container {
   }
  }
 
- private gateBarReady = false;
+ private worldGateBar?: GateHealthBar;
+
+ bindGateHealthBar(bar: GateHealthBar) {
+  this.worldGateBar = bar;
+  bar.setHealth(this.state.gateHp ?? 100, this.state.gateHpMax ?? 100);
+ }
 
  setGateHp(gateHp: number, gateHpMax = 100) {
-  if (this.state.gateHp === gateHp && this.state.gateHpMax === gateHpMax && this.gateBarReady) return;
-  this.gateBarReady = true;
   this.state.gateHp = gateHp;
   this.state.gateHpMax = gateHpMax;
-  this.syncPlayerConsole();
-  if (!this.isAltB || !this.gateBarG) return;
-  const ratio = Math.max(0, Math.min(1, gateHp / Math.max(1, gateHpMax)));
-  const gx = this.isPortrait ? 162 : 186;
-  const gy = this.isPortrait ? 101 : 103;
-  const maxW = this.isPortrait ? 266 : 320;
-  this.gateBarG.clear();
-  this.gateBarG
-   .roundRect(gx, gy, maxW, 4, 2)
-   .fill({ color: 0x0b141a, alpha: 0.85 });
-  if (ratio > 0.01) {
-   this.gateBarG
-    .roundRect(gx, gy, Math.max(6, Math.round(maxW * ratio)), 4, 2)
-    .fill({ color: 0x52e0eb, alpha: 0.88 })
-    .stroke({ color: 0xf2c968, width: 0.8, alpha: 0.75 });
-  }
+  this.worldGateBar?.setHealth(gateHp, gateHpMax);
  }
 
  private lastXpArcKey = '';

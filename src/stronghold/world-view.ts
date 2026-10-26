@@ -1,3 +1,4 @@
+import {GateHealthBar} from './gate-health-bar';
 import {BRAZIER_PHYSICAL_SOURCE,withBrazierShadowMaterial} from './brazier-shadow-material';
 import {torchShadowSurfaces} from './torch-shadow';
 import {torchAssetsReady} from './torches';
@@ -247,6 +248,11 @@ export async function createWorldView(
  const hero=await createHero<(typeof objects)[number]>({hero:pick,layer:worldStage,lightmap:lighting.lightmap,surface,footprint:p=>p.id==='gate'?gateFootprint():footprint(p),sun:lighting.sun,direction:()=>encounters?encounters.steer(input()):input(),follow,pose:()=>encounters?.pose()??null,
   drive:()=>{if(!net?.active())return null;const p=net.position(),me=net.me();return {...p,face:direction(),look:me&&me.st!=='idle'?{facing:me.fc,back:me.bk,vertical:me.vt}:null};}});hero.setScene(scene());
  encounters=await createEncounters({renderer:rt.app.renderer,worldStage,uiStage,frames,hudCallbacks,showCoop:Boolean(net),cancelRoute:()=>walker?.cancel(),hero,direction:input,net});
+ const gateHealthBar=worldStage.addChild(new GateHealthBar());
+ gateHealthBar.zIndex=100;
+ encounters.hud.bindGateHealthBar(gateHealthBar);
+ rt.app.ticker.add(()=>gateHealthBar.tick());
+
  const worldMap=new WorldMap(frames,{hero:hero.position,built:()=>[...built],route:()=>walker?.route()??null,walk:(x,y)=>walker?.goTo(x,y)??false});
  walker=createAutoWalk({blocked:hero.blocked,position:hero.position,onChange:r=>encounters!.minimap.setRoute(r)});
  uiStage.addChild(worldMap);encounters.minimap.onOpen=()=>worldMap.toggle();
@@ -294,6 +300,9 @@ export async function createWorldView(
    measureRenderDetail('frontierPlace',()=>frontier.place(x,y,scale,w,h));
    measureRenderDetail('lightingPlace',()=>lighting.place(x,y,scale));
    measureRenderDetail('gatePlace',()=>doors.place(x,y,scale));
+   gateHealthBar.position.set(x+GS.x*scale,y+(GS.y-sheet.region.h*GS.pivot-24)*scale);
+   gateHealthBar.scale.set(scale);
+   gateHealthBar.visible=built.has('gate');
    measureRenderDetail('heroPlace',()=>hero.place(x,y,scale));
    measureRenderDetail('partyPlace',()=>party?.place(x,y,scale));
    measureRenderDetail('encountersPlace',()=>encounters?.place(x,y,scale));
