@@ -10,7 +10,8 @@ await fs.writeFile(root+'material-release.json',JSON.stringify(receipt,null,2)+'
 if(process.argv.includes('--prepare')){console.log(JSON.stringify({prepared:true,files:Object.keys(files).length}));process.exit(0);}
 files['/material-release.json']=(await fs.readFile(root+'material-release.json')).toString('base64');
 const layer=process.argv.includes('--verify-only')?'1793016131990-shadow-material-7957773a-evidence-fdf621af4623':await publishLayer({name:'shadow-material-7957773a-evidence',files,prefix:'/shadow-audit',check:'/shadow-audit/material-release.json'});
-for(const [p,data] of Object.entries(files)){
+const entries=Object.entries(files),verified=[];
+async function verify([p,data]){
  const expected=createHash('sha256').update(Buffer.from(data,'base64')).digest('hex');
  let actual,status;
  for(let attempt=0;attempt<3;attempt++){
@@ -20,5 +21,13 @@ for(const [p,data] of Object.entries(files)){
   console.warn(JSON.stringify({retry:attempt+1,path:p,status,actual,expected}));
  }
  if(status!==200||actual!==expected)throw Error('Evidence verification failed '+p);
+ verified.push({path:p,sha256:expected,status});
 }
+for(let i=0;i<entries.length;i+=4){
+ const results=await Promise.allSettled(entries.slice(i,i+4).map(verify));
+ await fs.writeFile(root+'material-package-live.json',JSON.stringify({layer,status:'in_progress',verified,total:entries.length},null,2)+'\n');
+ console.log(JSON.stringify({verified:verified.length,total:entries.length}));
+ const failed=results.find(r=>r.status==='rejected');if(failed)throw failed.reason;
+}
+await fs.writeFile(root+'material-package-live.json',JSON.stringify({layer,status:'pass',verified,total:entries.length},null,2)+'\n');
 console.log(JSON.stringify({layer,files:Object.keys(files).length,hashesVerified:true}));
