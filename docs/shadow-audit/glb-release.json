@@ -1,0 +1,208 @@
+{
+  "runtimeCommit": "e3e7def56dce2ff07ac97722743059063f5885c9",
+  "runtimeLayer": "1792981742538-game-e3e7def5-fff768d1f567",
+  "url": "https://ark-whachat.fural.space",
+  "deployment": "Clean detached worktree; supported scripts/fural-deploy.sh; TypeScript/Vite, shadow numeric checks, Android upload/cache/cadence regression, Go tests and co-op smoke passed.",
+  "lowMatrix": {
+    "clips": 12,
+    "poses": 72,
+    "directionalCases": 216,
+    "reportRoot": "glb-per-actor-low",
+    "failures": 0
+  },
+  "balancedRunCast": {
+    "clips": 2,
+    "poses": 12,
+    "directionalCases": 36,
+    "failures": 0
+  },
+  "overlapAndResize": "glb-camera-overlap/report.json",
+  "live": [
+    {
+      "report": "glb-live-desktop/verification.json",
+      "errors": [],
+      "viewport": "desktop",
+      "measurement": {
+        "durationMs": 7720.399999856949,
+        "rafMedianMs": 950,
+        "rafP95Ms": 1100,
+        "drawCalls": 784,
+        "frames": 8
+      },
+      "shadowStats": {
+        "surfaces": 447,
+        "samples": 340406,
+        "rebuilds": 2,
+        "buildMs": 1715.8000001907349,
+        "bytes": 16051188,
+        "receiverPixels": 1105675,
+        "depthPixels": 1453561,
+        "ready": true,
+        "error": "",
+        "sun": {
+          "dx": 1.59394236711567,
+          "dy": 0.09168415256286729,
+          "alpha": 0.4
+        },
+        "model": "original alpha, explicit billboard/relief geometry; light-space depth compare",
+        "uploadMs": 35768.09999990463,
+        "dynamic": {
+          "updates": 43,
+          "actors": 1,
+          "extraSurfaces": 0,
+          "skinnedMeshes": 1,
+          "receiverPasses": 3,
+          "geometryBytes": 2073244,
+          "drawnVertices": 40328,
+          "pixels": 226304,
+          "bytes": 6485348,
+          "renderMs": 2.4000000953674316,
+          "ready": true,
+          "casterPasses": 3,
+          "fieldSamplers": 4,
+          "opaqueEnvelope": true,
+          "step": 0.5
+        }
+      },
+      "source": {
+        "heroId": "ember-warden",
+        "revision": 5,
+        "anchor": {
+          "groundX": -63,
+          "groundY": 2336,
+          "lift": 0,
+          "owner": 3000
+        },
+        "frame": [
+          0,
+          0,
+          228,
+          250
+        ],
+        "width": 73.26,
+        "height": 83.30097087378641,
+        "pivot": [
+          0.5135135135135135,
+          0.9841538461538462
+        ],
+        "flip": false,
+        "groundOffsetY": -2.793100419698556,
+        "vertexCount": 33953,
+        "maxVertexDelta": 7.150740932715394e-08,
+        "vertexErrors": 0,
+        "maxHeightContractDelta": 1.0835207859827278e-06,
+        "heightContractErrors": 0,
+        "meshes": [
+          {
+            "vertices": 33953,
+            "bones": 24,
+            "heightScale": 40.82013456797489,
+            "heightRange": [
+              -0.13997531374884886,
+              1.4682652267029626
+            ]
+          }
+        ],
+        "tests": [],
+        "alphaSha256": "694019d954fa5c0b9181ff6584f328cae6b9547d5adfced163fe77e298044cd2"
+      }
+    },
+    {
+      "report": "glb-live-mobile/verification.json",
+      "errors": [],
+      "viewport": "mobile",
+      "measurement": {
+        "durationMs": 6112.600000143051,
+        "rafMedianMs": 816.5999999999913,
+        "rafP95Ms": 1400,
+        "drawCalls": 672,
+        "frames": 8
+      },
+      "shadowStats": {
+        "surfaces": 447,
+        "samples": 218722,
+        "rebuilds": 2,
+        "buildMs": 1486.2000000476837,
+        "bytes": 8658456,
+        "receiverPixels": 587718,
+        "depthPixels": 788448,
+        "ready": true,
+        "error": "",
+        "sun": {
+          "dx": 1.59394236711567,
+          "dy": 0.09168415256286729,
+          "alpha": 0.4
+        },
+        "model": "original alpha, explicit billboard/relief geometry; light-space depth compare",
+        "uploadMs": 8476,
+        "dynamic": {
+          "updates": 23,
+          "actors": 1,
+          "extraSurfaces": 0,
+          "skinnedMeshes": 1,
+          "receiverPasses": 3,
+          "geometryBytes": 2073244,
+          "drawnVertices": 40328,
+          "pixels": 36406,
+          "bytes": 1481828,
+          "renderMs": 1.1999998092651367,
+          "ready": true,
+          "casterPasses": 3,
+          "fieldSamplers": 4,
+          "opaqueEnvelope": true,
+          "step": 1.25
+        }
+      },
+      "source": {
+        "heroId": "ember-warden",
+        "revision": 6,
+        "anchor": {
+          "groundX": -63,
+          "groundY": 2336,
+          "lift": 0,
+          "owner": 3000
+        },
+        "frame": [
+          0,
+          0,
+          228,
+          250
+        ],
+        "width": 73.26,
+        "height": 83.30097087378641,
+        "pivot": [
+          0.5135135135135135,
+          0.9841538461538462
+        ],
+        "flip": false,
+        "groundOffsetY": -2.793100419698556,
+        "vertexCount": 33953,
+        "maxVertexDelta": 5.8884758180610675e-08,
+        "vertexErrors": 0,
+        "maxHeightContractDelta": 1.0825241503198413e-06,
+        "heightContractErrors": 0,
+        "meshes": [
+          {
+            "vertices": 33953,
+            "bones": 24,
+            "heightScale": 40.82013456797489,
+            "heightRange": [
+              -0.1310672436262168,
+              1.468171823854452
+            ]
+          }
+        ],
+        "tests": [],
+        "alphaSha256": "cee0f9dae87d04706522e736aaf5e62ac449eea3ca639e372605dbfcf7a810fd"
+      }
+    }
+  ],
+  "collision": "No map/collision/navigation/pillar/stair files changed.",
+  "performanceScope": "Headless SwiftShader with emulated viewports; CPU submission times are not GPU frame times. No physical-device performance acceptance.",
+  "acceptance": "incomplete",
+  "remaining": [
+    "Final production-cell all-heading and all-authored-frame journal; continuous blends/transitions",
+    "Procedural torch bodies, loot/pickup, VFX, parallax and review-only catalog audit",
+    "Dense-scene controlled desktop/mobile hardware performance"
+  ]
+}
