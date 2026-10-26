@@ -1,3 +1,4 @@
+import {drawSkillHex,skillHexPoints} from './skill-hex';
 import {desktopNavigationLayout} from './desktop-layout';
 import { Container, Graphics, Rectangle, Sprite, type Texture } from 'pixi.js';
 import type { FrameSet } from './frames';
@@ -1086,7 +1087,7 @@ export class Hud extends Container {
    view.hex.clear();view.hexMask!.clear();view.ringSprite.visible=!manual;
    view.artHolder.mask=manual?view.hexMask!:null;
    if(manual){
-    const points=(r:number)=>Array.from({length:6},(_,j)=>[cfg.cx+Math.cos(j*Math.PI/3-Math.PI/2)*r,cfg.cy+Math.sin(j*Math.PI/3-Math.PI/2)*r]).flat();
+    const points=(r:number)=>skillHexPoints(cfg.cx,cfg.cy,r);
     view.hexMask!.poly(points(cfg.radius-6)).fill(0xffffff);
     const g=view.glyph,cx=cfg.cx,cy=cfg.cy,k=cfg.radius/48;
     g.circle(cx+9*k,cy-17*k,5*k).fill(0xe0fbff);
@@ -1094,9 +1095,7 @@ export class Hud extends Container {
     g.moveTo(cx-2*k,cy+3*k).lineTo(cx+10*k,cy+10*k).lineTo(cx+17*k,cy+4*k).stroke({color:0xc7ffff,width:4*k});
     g.moveTo(cx+5*k,cy-8*k).lineTo(cx+16*k,cy-5*k).lineTo(cx+23*k,cy-13*k).stroke({color:0xc7ffff,width:3*k});
     for(let j=0;j<3;j++)g.moveTo(cx-29*k,cy+(-13+j*11)*k).lineTo(cx-(12+j*3)*k,cy+(-13+j*11)*k).stroke({color:0x45cfff,width:2*k,alpha:.8-j*.15});
-    view.hex.poly(points(cfg.radius)).stroke({color:0x44270b,width:8});
-    view.hex.poly(points(cfg.radius)).stroke({color:0xe8b84f,width:4});
-    view.hex.poly(points(cfg.radius-5)).stroke({color:0xffedb1,width:1.3});
+    drawSkillHex(view.hex,cfg.cx,cfg.cy,cfg.radius);
    }
 
    // Level / Locked badge at bottom of socket ring
