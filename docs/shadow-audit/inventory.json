@@ -26614,7 +26614,75 @@
      "shadow-program.ts": "7f29279852819349ed2e946141b454fedb3718f193d226f84c69e079c0af5f9d"
     }
    },
-   "disposition": "Six production-cell poses, two headings and three suns pass low-quality cast/camera/alpha and high/middle/low receiver controls. Continuous animation blends, full heading matrix and hardware performance remain open."
+   "sourceAudit": [
+    {
+     "report": "glb-source-final-low/rift-runner-idle/report.json",
+     "reportSha256": "6a98963f19b3f1fa8123f003e25974783a18cfb7fbe4b08458dc15f497492e54",
+     "quality": "low",
+     "sourceFrames": 1928,
+     "checkedVertices": 107968,
+     "maxVertexDelta": 1.0935667360545409e-7,
+     "maxHeightContractDelta": 0.000001082404132546344,
+     "maxGroundOffsetDelta": 9.83540440202546e-7,
+     "modelSha256": "3276bc7887c1a0873e75db67e9653318e0f882ce19575f6873040eae1e173767",
+     "cellManifestSha256": "c1d8b73412760081d770c7ee10da8b52ac3e16a38edaa0cc7d521b038909c804",
+     "authoredKeys": 121,
+     "interpolationMidpoints": 120,
+     "headings": 8,
+     "scope": "Original-alpha/skin/projected-height source alignment; detailed field GPU control is separate."
+    },
+    {
+     "report": "glb-source-final-high/rift-runner-idle/report.json",
+     "reportSha256": "5df2f2b70688c4e3974fd5430c44000c147d9be4cdc028de3ef28884d94c8f52",
+     "quality": "high",
+     "sourceFrames": 1928,
+     "checkedVertices": 107968,
+     "maxVertexDelta": 1.0935667360545409e-7,
+     "maxHeightContractDelta": 0.000001082404132546344,
+     "maxGroundOffsetDelta": 9.83540440202546e-7,
+     "modelSha256": "3276bc7887c1a0873e75db67e9653318e0f882ce19575f6873040eae1e173767",
+     "cellManifestSha256": "c1d8b73412760081d770c7ee10da8b52ac3e16a38edaa0cc7d521b038909c804",
+     "authoredKeys": 121,
+     "interpolationMidpoints": 120,
+     "headings": 8,
+     "scope": "Original-alpha/skin/projected-height source alignment; detailed field GPU control is separate."
+    }
+   ],
+   "blendAudit": [
+    {
+     "report": "glb-blends-low/rift-runner/report.json",
+     "reportSha256": "259be7a45101688e6013fce99a18cb6997c77b3014797740b40bcd6f7ff4e58c",
+     "quality": "low",
+     "sourceFrames": 1173,
+     "checkedVertices": 65688,
+     "maxVertexDelta": 1.1793269960591601e-7,
+     "maxHeightContractDelta": 0.0000013912887339984081,
+     "maxGroundOffsetDelta": 9.83540440202546e-7,
+     "modelSha256": "3276bc7887c1a0873e75db67e9653318e0f882ce19575f6873040eae1e173767",
+     "cellManifestSha256": "c1d8b73412760081d770c7ee10da8b52ac3e16a38edaa0cc7d521b038909c804",
+     "ticks": 1176,
+     "cachedFrames": 3,
+     "headings": 8,
+     "scope": "Normal production mixer fades, run/cast phase-lock, procedural arm raise, recovery/death, continuous yaw and day/night tint; source/skin/height alignment. GPU field controls are separate; no forced pose time."
+    },
+    {
+     "report": "glb-blends-high/rift-runner/report.json",
+     "reportSha256": "1c3793ffc3c439a4edc319a820fbac32ade6f1770482ac70fe0fb346459f9415",
+     "quality": "high",
+     "sourceFrames": 1176,
+     "checkedVertices": 65856,
+     "maxVertexDelta": 1.1726167732650783e-7,
+     "maxHeightContractDelta": 0.0000013912930256765321,
+     "maxGroundOffsetDelta": 9.83540440202546e-7,
+     "modelSha256": "3276bc7887c1a0873e75db67e9653318e0f882ce19575f6873040eae1e173767",
+     "cellManifestSha256": "c1d8b73412760081d770c7ee10da8b52ac3e16a38edaa0cc7d521b038909c804",
+     "ticks": 1176,
+     "cachedFrames": 0,
+     "headings": 8,
+     "scope": "Normal production mixer fades, run/cast phase-lock, procedural arm raise, recovery/death, continuous yaw and day/night tint; source/skin/height alignment. GPU field controls are separate; no forced pose time."
+    }
+   ],
+   "disposition": "Source alignment passes all authored keys/midpoints at eight headings in 1x/2x cells, plus normal mixer/arm/yaw/day-night transitions. Detailed GPU six-pose/two-heading/three-sun cast/receive controls pass. Full GPU heading/pose matrix and controlled hardware performance remain open."
   },
   {
    "id": "mesh:rift-runner:run",
@@ -26656,7 +26724,75 @@
      "shadow-program.ts": "7f29279852819349ed2e946141b454fedb3718f193d226f84c69e079c0af5f9d"
     }
    },
-   "disposition": "Six production-cell poses, two headings and three suns pass low-quality cast/camera/alpha and high/middle/low receiver controls. Continuous animation blends, full heading matrix and hardware performance remain open."
+   "sourceAudit": [
+    {
+     "report": "glb-source-final-low/rift-runner-run/report.json",
+     "reportSha256": "22bcb3533cb711c8b08bb9dc0653151b58846c8c81e16ded25e9003510641876",
+     "quality": "low",
+     "sourceFrames": 312,
+     "checkedVertices": 17472,
+     "maxVertexDelta": 1.056799999871183e-7,
+     "maxHeightContractDelta": 0.0000011299430155986556,
+     "maxGroundOffsetDelta": 9.83540440202546e-7,
+     "modelSha256": "3276bc7887c1a0873e75db67e9653318e0f882ce19575f6873040eae1e173767",
+     "cellManifestSha256": "c1d8b73412760081d770c7ee10da8b52ac3e16a38edaa0cc7d521b038909c804",
+     "authoredKeys": 20,
+     "interpolationMidpoints": 19,
+     "headings": 8,
+     "scope": "Original-alpha/skin/projected-height source alignment; detailed field GPU control is separate."
+    },
+    {
+     "report": "glb-source-final-high/rift-runner-run/report.json",
+     "reportSha256": "14efe34e344d1921f571bf5cc5ad33ccf5e15ca75a51100d5483118df4de3b0e",
+     "quality": "high",
+     "sourceFrames": 312,
+     "checkedVertices": 17472,
+     "maxVertexDelta": 1.056799999871183e-7,
+     "maxHeightContractDelta": 0.0000011299430155986556,
+     "maxGroundOffsetDelta": 9.83540440202546e-7,
+     "modelSha256": "3276bc7887c1a0873e75db67e9653318e0f882ce19575f6873040eae1e173767",
+     "cellManifestSha256": "c1d8b73412760081d770c7ee10da8b52ac3e16a38edaa0cc7d521b038909c804",
+     "authoredKeys": 20,
+     "interpolationMidpoints": 19,
+     "headings": 8,
+     "scope": "Original-alpha/skin/projected-height source alignment; detailed field GPU control is separate."
+    }
+   ],
+   "blendAudit": [
+    {
+     "report": "glb-blends-low/rift-runner/report.json",
+     "reportSha256": "259be7a45101688e6013fce99a18cb6997c77b3014797740b40bcd6f7ff4e58c",
+     "quality": "low",
+     "sourceFrames": 1173,
+     "checkedVertices": 65688,
+     "maxVertexDelta": 1.1793269960591601e-7,
+     "maxHeightContractDelta": 0.0000013912887339984081,
+     "maxGroundOffsetDelta": 9.83540440202546e-7,
+     "modelSha256": "3276bc7887c1a0873e75db67e9653318e0f882ce19575f6873040eae1e173767",
+     "cellManifestSha256": "c1d8b73412760081d770c7ee10da8b52ac3e16a38edaa0cc7d521b038909c804",
+     "ticks": 1176,
+     "cachedFrames": 3,
+     "headings": 8,
+     "scope": "Normal production mixer fades, run/cast phase-lock, procedural arm raise, recovery/death, continuous yaw and day/night tint; source/skin/height alignment. GPU field controls are separate; no forced pose time."
+    },
+    {
+     "report": "glb-blends-high/rift-runner/report.json",
+     "reportSha256": "1c3793ffc3c439a4edc319a820fbac32ade6f1770482ac70fe0fb346459f9415",
+     "quality": "high",
+     "sourceFrames": 1176,
+     "checkedVertices": 65856,
+     "maxVertexDelta": 1.1726167732650783e-7,
+     "maxHeightContractDelta": 0.0000013912930256765321,
+     "maxGroundOffsetDelta": 9.83540440202546e-7,
+     "modelSha256": "3276bc7887c1a0873e75db67e9653318e0f882ce19575f6873040eae1e173767",
+     "cellManifestSha256": "c1d8b73412760081d770c7ee10da8b52ac3e16a38edaa0cc7d521b038909c804",
+     "ticks": 1176,
+     "cachedFrames": 0,
+     "headings": 8,
+     "scope": "Normal production mixer fades, run/cast phase-lock, procedural arm raise, recovery/death, continuous yaw and day/night tint; source/skin/height alignment. GPU field controls are separate; no forced pose time."
+    }
+   ],
+   "disposition": "Source alignment passes all authored keys/midpoints at eight headings in 1x/2x cells, plus normal mixer/arm/yaw/day-night transitions. Detailed GPU six-pose/two-heading/three-sun cast/receive controls pass. Full GPU heading/pose matrix and controlled hardware performance remain open."
   },
   {
    "id": "mesh:rift-runner:idle_cast",
@@ -26698,7 +26834,75 @@
      "shadow-program.ts": "7f29279852819349ed2e946141b454fedb3718f193d226f84c69e079c0af5f9d"
     }
    },
-   "disposition": "Six production-cell poses, two headings and three suns pass low-quality cast/camera/alpha and high/middle/low receiver controls. Continuous animation blends, full heading matrix and hardware performance remain open."
+   "sourceAudit": [
+    {
+     "report": "glb-source-final-low/rift-runner-idle_cast/report.json",
+     "reportSha256": "94e710343238da64908cec334800b4402eb48d472f3dd9cfc4a80965d21dc10d",
+     "quality": "low",
+     "sourceFrames": 1096,
+     "checkedVertices": 61376,
+     "maxVertexDelta": 1.1819319817307772e-7,
+     "maxHeightContractDelta": 0.0000014146280449267579,
+     "maxGroundOffsetDelta": 9.83540440202546e-7,
+     "modelSha256": "3276bc7887c1a0873e75db67e9653318e0f882ce19575f6873040eae1e173767",
+     "cellManifestSha256": "c1d8b73412760081d770c7ee10da8b52ac3e16a38edaa0cc7d521b038909c804",
+     "authoredKeys": 69,
+     "interpolationMidpoints": 68,
+     "headings": 8,
+     "scope": "Original-alpha/skin/projected-height source alignment; detailed field GPU control is separate."
+    },
+    {
+     "report": "glb-source-final-high/rift-runner-idle_cast/report.json",
+     "reportSha256": "7d774512c26974dcd30ebba2074648262d72617866ba8e0d965121cbd9c769e5",
+     "quality": "high",
+     "sourceFrames": 1096,
+     "checkedVertices": 61376,
+     "maxVertexDelta": 1.1819319817307772e-7,
+     "maxHeightContractDelta": 0.0000014146280449267579,
+     "maxGroundOffsetDelta": 9.83540440202546e-7,
+     "modelSha256": "3276bc7887c1a0873e75db67e9653318e0f882ce19575f6873040eae1e173767",
+     "cellManifestSha256": "c1d8b73412760081d770c7ee10da8b52ac3e16a38edaa0cc7d521b038909c804",
+     "authoredKeys": 69,
+     "interpolationMidpoints": 68,
+     "headings": 8,
+     "scope": "Original-alpha/skin/projected-height source alignment; detailed field GPU control is separate."
+    }
+   ],
+   "blendAudit": [
+    {
+     "report": "glb-blends-low/rift-runner/report.json",
+     "reportSha256": "259be7a45101688e6013fce99a18cb6997c77b3014797740b40bcd6f7ff4e58c",
+     "quality": "low",
+     "sourceFrames": 1173,
+     "checkedVertices": 65688,
+     "maxVertexDelta": 1.1793269960591601e-7,
+     "maxHeightContractDelta": 0.0000013912887339984081,
+     "maxGroundOffsetDelta": 9.83540440202546e-7,
+     "modelSha256": "3276bc7887c1a0873e75db67e9653318e0f882ce19575f6873040eae1e173767",
+     "cellManifestSha256": "c1d8b73412760081d770c7ee10da8b52ac3e16a38edaa0cc7d521b038909c804",
+     "ticks": 1176,
+     "cachedFrames": 3,
+     "headings": 8,
+     "scope": "Normal production mixer fades, run/cast phase-lock, procedural arm raise, recovery/death, continuous yaw and day/night tint; source/skin/height alignment. GPU field controls are separate; no forced pose time."
+    },
+    {
+     "report": "glb-blends-high/rift-runner/report.json",
+     "reportSha256": "1c3793ffc3c439a4edc319a820fbac32ade6f1770482ac70fe0fb346459f9415",
+     "quality": "high",
+     "sourceFrames": 1176,
+     "checkedVertices": 65856,
+     "maxVertexDelta": 1.1726167732650783e-7,
+     "maxHeightContractDelta": 0.0000013912930256765321,
+     "maxGroundOffsetDelta": 9.83540440202546e-7,
+     "modelSha256": "3276bc7887c1a0873e75db67e9653318e0f882ce19575f6873040eae1e173767",
+     "cellManifestSha256": "c1d8b73412760081d770c7ee10da8b52ac3e16a38edaa0cc7d521b038909c804",
+     "ticks": 1176,
+     "cachedFrames": 0,
+     "headings": 8,
+     "scope": "Normal production mixer fades, run/cast phase-lock, procedural arm raise, recovery/death, continuous yaw and day/night tint; source/skin/height alignment. GPU field controls are separate; no forced pose time."
+    }
+   ],
+   "disposition": "Source alignment passes all authored keys/midpoints at eight headings in 1x/2x cells, plus normal mixer/arm/yaw/day-night transitions. Detailed GPU six-pose/two-heading/three-sun cast/receive controls pass. Full GPU heading/pose matrix and controlled hardware performance remain open."
   },
   {
    "id": "mesh:rift-runner:run_cast",
@@ -26740,7 +26944,75 @@
      "shadow-program.ts": "7f29279852819349ed2e946141b454fedb3718f193d226f84c69e079c0af5f9d"
     }
    },
-   "disposition": "Six production-cell poses, two headings and three suns pass low-quality cast/camera/alpha and high/middle/low receiver controls. Continuous animation blends, full heading matrix and hardware performance remain open."
+   "sourceAudit": [
+    {
+     "report": "glb-source-final-low/rift-runner-run_cast/report.json",
+     "reportSha256": "56dea611c4848d1b2bbebb14c73006941131c6508cdb9fd7519931bf171ed302",
+     "quality": "low",
+     "sourceFrames": 952,
+     "checkedVertices": 53312,
+     "maxVertexDelta": 1.2207369615158115e-7,
+     "maxHeightContractDelta": 0.000001402529363758731,
+     "maxGroundOffsetDelta": 9.83540440202546e-7,
+     "modelSha256": "3276bc7887c1a0873e75db67e9653318e0f882ce19575f6873040eae1e173767",
+     "cellManifestSha256": "c1d8b73412760081d770c7ee10da8b52ac3e16a38edaa0cc7d521b038909c804",
+     "authoredKeys": 60,
+     "interpolationMidpoints": 59,
+     "headings": 8,
+     "scope": "Original-alpha/skin/projected-height source alignment; detailed field GPU control is separate."
+    },
+    {
+     "report": "glb-source-final-high/rift-runner-run_cast/report.json",
+     "reportSha256": "f4d28e3fea491c4f2b36a7076974fe4c7ace7b45b8a0fee14ccf6bc35a8d5d14",
+     "quality": "high",
+     "sourceFrames": 952,
+     "checkedVertices": 53312,
+     "maxVertexDelta": 1.2207369615158115e-7,
+     "maxHeightContractDelta": 0.000001402529363758731,
+     "maxGroundOffsetDelta": 9.83540440202546e-7,
+     "modelSha256": "3276bc7887c1a0873e75db67e9653318e0f882ce19575f6873040eae1e173767",
+     "cellManifestSha256": "c1d8b73412760081d770c7ee10da8b52ac3e16a38edaa0cc7d521b038909c804",
+     "authoredKeys": 60,
+     "interpolationMidpoints": 59,
+     "headings": 8,
+     "scope": "Original-alpha/skin/projected-height source alignment; detailed field GPU control is separate."
+    }
+   ],
+   "blendAudit": [
+    {
+     "report": "glb-blends-low/rift-runner/report.json",
+     "reportSha256": "259be7a45101688e6013fce99a18cb6997c77b3014797740b40bcd6f7ff4e58c",
+     "quality": "low",
+     "sourceFrames": 1173,
+     "checkedVertices": 65688,
+     "maxVertexDelta": 1.1793269960591601e-7,
+     "maxHeightContractDelta": 0.0000013912887339984081,
+     "maxGroundOffsetDelta": 9.83540440202546e-7,
+     "modelSha256": "3276bc7887c1a0873e75db67e9653318e0f882ce19575f6873040eae1e173767",
+     "cellManifestSha256": "c1d8b73412760081d770c7ee10da8b52ac3e16a38edaa0cc7d521b038909c804",
+     "ticks": 1176,
+     "cachedFrames": 3,
+     "headings": 8,
+     "scope": "Normal production mixer fades, run/cast phase-lock, procedural arm raise, recovery/death, continuous yaw and day/night tint; source/skin/height alignment. GPU field controls are separate; no forced pose time."
+    },
+    {
+     "report": "glb-blends-high/rift-runner/report.json",
+     "reportSha256": "1c3793ffc3c439a4edc319a820fbac32ade6f1770482ac70fe0fb346459f9415",
+     "quality": "high",
+     "sourceFrames": 1176,
+     "checkedVertices": 65856,
+     "maxVertexDelta": 1.1726167732650783e-7,
+     "maxHeightContractDelta": 0.0000013912930256765321,
+     "maxGroundOffsetDelta": 9.83540440202546e-7,
+     "modelSha256": "3276bc7887c1a0873e75db67e9653318e0f882ce19575f6873040eae1e173767",
+     "cellManifestSha256": "c1d8b73412760081d770c7ee10da8b52ac3e16a38edaa0cc7d521b038909c804",
+     "ticks": 1176,
+     "cachedFrames": 0,
+     "headings": 8,
+     "scope": "Normal production mixer fades, run/cast phase-lock, procedural arm raise, recovery/death, continuous yaw and day/night tint; source/skin/height alignment. GPU field controls are separate; no forced pose time."
+    }
+   ],
+   "disposition": "Source alignment passes all authored keys/midpoints at eight headings in 1x/2x cells, plus normal mixer/arm/yaw/day-night transitions. Detailed GPU six-pose/two-heading/three-sun cast/receive controls pass. Full GPU heading/pose matrix and controlled hardware performance remain open."
   },
   {
    "id": "mesh:rift-runner:hit",
@@ -26782,7 +27054,75 @@
      "shadow-program.ts": "7f29279852819349ed2e946141b454fedb3718f193d226f84c69e079c0af5f9d"
     }
    },
-   "disposition": "Six production-cell poses, two headings and three suns pass low-quality cast/camera/alpha and high/middle/low receiver controls. Continuous animation blends, full heading matrix and hardware performance remain open."
+   "sourceAudit": [
+    {
+     "report": "glb-source-final-low/rift-runner-hit/report.json",
+     "reportSha256": "198bf98c2193cfefaa5db41604bdae6fb6db337296a93409bac1ab3a645b90e8",
+     "quality": "low",
+     "sourceFrames": 792,
+     "checkedVertices": 44352,
+     "maxVertexDelta": 1.087761426488143e-7,
+     "maxHeightContractDelta": 0.0000012148231860464875,
+     "maxGroundOffsetDelta": 9.83540440202546e-7,
+     "modelSha256": "3276bc7887c1a0873e75db67e9653318e0f882ce19575f6873040eae1e173767",
+     "cellManifestSha256": "c1d8b73412760081d770c7ee10da8b52ac3e16a38edaa0cc7d521b038909c804",
+     "authoredKeys": 50,
+     "interpolationMidpoints": 49,
+     "headings": 8,
+     "scope": "Original-alpha/skin/projected-height source alignment; detailed field GPU control is separate."
+    },
+    {
+     "report": "glb-source-final-high/rift-runner-hit/report.json",
+     "reportSha256": "e0b6e6bdd3ab8f3922f3915bd171eb6c7cd0f8e686cb6a167c43ebc44e0ccca8",
+     "quality": "high",
+     "sourceFrames": 792,
+     "checkedVertices": 44352,
+     "maxVertexDelta": 1.087761426488143e-7,
+     "maxHeightContractDelta": 0.0000012148231860464875,
+     "maxGroundOffsetDelta": 9.83540440202546e-7,
+     "modelSha256": "3276bc7887c1a0873e75db67e9653318e0f882ce19575f6873040eae1e173767",
+     "cellManifestSha256": "c1d8b73412760081d770c7ee10da8b52ac3e16a38edaa0cc7d521b038909c804",
+     "authoredKeys": 50,
+     "interpolationMidpoints": 49,
+     "headings": 8,
+     "scope": "Original-alpha/skin/projected-height source alignment; detailed field GPU control is separate."
+    }
+   ],
+   "blendAudit": [
+    {
+     "report": "glb-blends-low/rift-runner/report.json",
+     "reportSha256": "259be7a45101688e6013fce99a18cb6997c77b3014797740b40bcd6f7ff4e58c",
+     "quality": "low",
+     "sourceFrames": 1173,
+     "checkedVertices": 65688,
+     "maxVertexDelta": 1.1793269960591601e-7,
+     "maxHeightContractDelta": 0.0000013912887339984081,
+     "maxGroundOffsetDelta": 9.83540440202546e-7,
+     "modelSha256": "3276bc7887c1a0873e75db67e9653318e0f882ce19575f6873040eae1e173767",
+     "cellManifestSha256": "c1d8b73412760081d770c7ee10da8b52ac3e16a38edaa0cc7d521b038909c804",
+     "ticks": 1176,
+     "cachedFrames": 3,
+     "headings": 8,
+     "scope": "Normal production mixer fades, run/cast phase-lock, procedural arm raise, recovery/death, continuous yaw and day/night tint; source/skin/height alignment. GPU field controls are separate; no forced pose time."
+    },
+    {
+     "report": "glb-blends-high/rift-runner/report.json",
+     "reportSha256": "1c3793ffc3c439a4edc319a820fbac32ade6f1770482ac70fe0fb346459f9415",
+     "quality": "high",
+     "sourceFrames": 1176,
+     "checkedVertices": 65856,
+     "maxVertexDelta": 1.1726167732650783e-7,
+     "maxHeightContractDelta": 0.0000013912930256765321,
+     "maxGroundOffsetDelta": 9.83540440202546e-7,
+     "modelSha256": "3276bc7887c1a0873e75db67e9653318e0f882ce19575f6873040eae1e173767",
+     "cellManifestSha256": "c1d8b73412760081d770c7ee10da8b52ac3e16a38edaa0cc7d521b038909c804",
+     "ticks": 1176,
+     "cachedFrames": 0,
+     "headings": 8,
+     "scope": "Normal production mixer fades, run/cast phase-lock, procedural arm raise, recovery/death, continuous yaw and day/night tint; source/skin/height alignment. GPU field controls are separate; no forced pose time."
+    }
+   ],
+   "disposition": "Source alignment passes all authored keys/midpoints at eight headings in 1x/2x cells, plus normal mixer/arm/yaw/day-night transitions. Detailed GPU six-pose/two-heading/three-sun cast/receive controls pass. Full GPU heading/pose matrix and controlled hardware performance remain open."
   },
   {
    "id": "mesh:rift-runner:death",
@@ -26824,7 +27164,75 @@
      "shadow-program.ts": "7f29279852819349ed2e946141b454fedb3718f193d226f84c69e079c0af5f9d"
     }
    },
-   "disposition": "Six production-cell poses, two headings and three suns pass low-quality cast/camera/alpha and high/middle/low receiver controls. Continuous animation blends, full heading matrix and hardware performance remain open."
+   "sourceAudit": [
+    {
+     "report": "glb-source-final-low/rift-runner-death/report.json",
+     "reportSha256": "013e338a5ff8ccb325644b30532a127bc23590ea93e1ca21078794ba57577b67",
+     "quality": "low",
+     "sourceFrames": 1432,
+     "checkedVertices": 80192,
+     "maxVertexDelta": 1.2289267303788876e-7,
+     "maxHeightContractDelta": 0.00000106742145788985,
+     "maxGroundOffsetDelta": 9.83540440202546e-7,
+     "modelSha256": "3276bc7887c1a0873e75db67e9653318e0f882ce19575f6873040eae1e173767",
+     "cellManifestSha256": "c1d8b73412760081d770c7ee10da8b52ac3e16a38edaa0cc7d521b038909c804",
+     "authoredKeys": 90,
+     "interpolationMidpoints": 89,
+     "headings": 8,
+     "scope": "Original-alpha/skin/projected-height source alignment; detailed field GPU control is separate."
+    },
+    {
+     "report": "glb-source-final-high/rift-runner-death/report.json",
+     "reportSha256": "f5106e0e1038b344135923e006fbbf735f50c11aa4e9153f4be6ea67638f4660",
+     "quality": "high",
+     "sourceFrames": 1432,
+     "checkedVertices": 80192,
+     "maxVertexDelta": 1.2289267303788876e-7,
+     "maxHeightContractDelta": 0.00000106742145788985,
+     "maxGroundOffsetDelta": 9.83540440202546e-7,
+     "modelSha256": "3276bc7887c1a0873e75db67e9653318e0f882ce19575f6873040eae1e173767",
+     "cellManifestSha256": "c1d8b73412760081d770c7ee10da8b52ac3e16a38edaa0cc7d521b038909c804",
+     "authoredKeys": 90,
+     "interpolationMidpoints": 89,
+     "headings": 8,
+     "scope": "Original-alpha/skin/projected-height source alignment; detailed field GPU control is separate."
+    }
+   ],
+   "blendAudit": [
+    {
+     "report": "glb-blends-low/rift-runner/report.json",
+     "reportSha256": "259be7a45101688e6013fce99a18cb6997c77b3014797740b40bcd6f7ff4e58c",
+     "quality": "low",
+     "sourceFrames": 1173,
+     "checkedVertices": 65688,
+     "maxVertexDelta": 1.1793269960591601e-7,
+     "maxHeightContractDelta": 0.0000013912887339984081,
+     "maxGroundOffsetDelta": 9.83540440202546e-7,
+     "modelSha256": "3276bc7887c1a0873e75db67e9653318e0f882ce19575f6873040eae1e173767",
+     "cellManifestSha256": "c1d8b73412760081d770c7ee10da8b52ac3e16a38edaa0cc7d521b038909c804",
+     "ticks": 1176,
+     "cachedFrames": 3,
+     "headings": 8,
+     "scope": "Normal production mixer fades, run/cast phase-lock, procedural arm raise, recovery/death, continuous yaw and day/night tint; source/skin/height alignment. GPU field controls are separate; no forced pose time."
+    },
+    {
+     "report": "glb-blends-high/rift-runner/report.json",
+     "reportSha256": "1c3793ffc3c439a4edc319a820fbac32ade6f1770482ac70fe0fb346459f9415",
+     "quality": "high",
+     "sourceFrames": 1176,
+     "checkedVertices": 65856,
+     "maxVertexDelta": 1.1726167732650783e-7,
+     "maxHeightContractDelta": 0.0000013912930256765321,
+     "maxGroundOffsetDelta": 9.83540440202546e-7,
+     "modelSha256": "3276bc7887c1a0873e75db67e9653318e0f882ce19575f6873040eae1e173767",
+     "cellManifestSha256": "c1d8b73412760081d770c7ee10da8b52ac3e16a38edaa0cc7d521b038909c804",
+     "ticks": 1176,
+     "cachedFrames": 0,
+     "headings": 8,
+     "scope": "Normal production mixer fades, run/cast phase-lock, procedural arm raise, recovery/death, continuous yaw and day/night tint; source/skin/height alignment. GPU field controls are separate; no forced pose time."
+    }
+   ],
+   "disposition": "Source alignment passes all authored keys/midpoints at eight headings in 1x/2x cells, plus normal mixer/arm/yaw/day-night transitions. Detailed GPU six-pose/two-heading/three-sun cast/receive controls pass. Full GPU heading/pose matrix and controlled hardware performance remain open."
   },
   {
    "id": "mesh:ember-warden:idle",
@@ -26866,7 +27274,75 @@
      "shadow-program.ts": "7f29279852819349ed2e946141b454fedb3718f193d226f84c69e079c0af5f9d"
     }
    },
-   "disposition": "Six production-cell poses, two headings and three suns pass low-quality cast/camera/alpha and high/middle/low receiver controls. Continuous animation blends, full heading matrix and hardware performance remain open."
+   "sourceAudit": [
+    {
+     "report": "glb-source-final-low/ember-warden-idle/report.json",
+     "reportSha256": "82d251ce9eb2d2890eae4cb6b84580679cd48a4e2d48774fa579e608aee9de41",
+     "quality": "low",
+     "sourceFrames": 1928,
+     "checkedVertices": 107968,
+     "maxVertexDelta": 1.0417396079098751e-7,
+     "maxHeightContractDelta": 0.000001090125124392216,
+     "maxGroundOffsetDelta": 9.83540440202546e-7,
+     "modelSha256": "27314f388adb9fa94dc7db468f6ade4ceacedafc248af4b68745f28adb793e29",
+     "cellManifestSha256": "c1d8b73412760081d770c7ee10da8b52ac3e16a38edaa0cc7d521b038909c804",
+     "authoredKeys": 121,
+     "interpolationMidpoints": 120,
+     "headings": 8,
+     "scope": "Original-alpha/skin/projected-height source alignment; detailed field GPU control is separate."
+    },
+    {
+     "report": "glb-source-final-high/ember-warden-idle/report.json",
+     "reportSha256": "a6ee41d2883bba0ff9e84b68031e8665a85fc97d9c9a80619dd12cf50372795a",
+     "quality": "high",
+     "sourceFrames": 1928,
+     "checkedVertices": 107968,
+     "maxVertexDelta": 1.0417396079098751e-7,
+     "maxHeightContractDelta": 0.000001090125124392216,
+     "maxGroundOffsetDelta": 9.83540440202546e-7,
+     "modelSha256": "27314f388adb9fa94dc7db468f6ade4ceacedafc248af4b68745f28adb793e29",
+     "cellManifestSha256": "c1d8b73412760081d770c7ee10da8b52ac3e16a38edaa0cc7d521b038909c804",
+     "authoredKeys": 121,
+     "interpolationMidpoints": 120,
+     "headings": 8,
+     "scope": "Original-alpha/skin/projected-height source alignment; detailed field GPU control is separate."
+    }
+   ],
+   "blendAudit": [
+    {
+     "report": "glb-blends-low/ember-warden/report.json",
+     "reportSha256": "c7ea9c14b1cd0c5a71904349cd3fe48ccaa2c1aebf061d7649bcd59b8e7f464c",
+     "quality": "low",
+     "sourceFrames": 1173,
+     "checkedVertices": 65688,
+     "maxVertexDelta": 1.5457832369669688e-7,
+     "maxHeightContractDelta": 0.0000013905771396593991,
+     "maxGroundOffsetDelta": 9.83540440202546e-7,
+     "modelSha256": "27314f388adb9fa94dc7db468f6ade4ceacedafc248af4b68745f28adb793e29",
+     "cellManifestSha256": "c1d8b73412760081d770c7ee10da8b52ac3e16a38edaa0cc7d521b038909c804",
+     "ticks": 1176,
+     "cachedFrames": 3,
+     "headings": 8,
+     "scope": "Normal production mixer fades, run/cast phase-lock, procedural arm raise, recovery/death, continuous yaw and day/night tint; source/skin/height alignment. GPU field controls are separate; no forced pose time."
+    },
+    {
+     "report": "glb-blends-high/ember-warden/report.json",
+     "reportSha256": "08a43c1b0b3726081e57c97bb16a757b1891ba0c2901f3fdfde8da7f63f3dba0",
+     "quality": "high",
+     "sourceFrames": 1176,
+     "checkedVertices": 65856,
+     "maxVertexDelta": 1.4077057497452472e-7,
+     "maxHeightContractDelta": 0.0000013926096045224767,
+     "maxGroundOffsetDelta": 9.83540440202546e-7,
+     "modelSha256": "27314f388adb9fa94dc7db468f6ade4ceacedafc248af4b68745f28adb793e29",
+     "cellManifestSha256": "c1d8b73412760081d770c7ee10da8b52ac3e16a38edaa0cc7d521b038909c804",
+     "ticks": 1176,
+     "cachedFrames": 0,
+     "headings": 8,
+     "scope": "Normal production mixer fades, run/cast phase-lock, procedural arm raise, recovery/death, continuous yaw and day/night tint; source/skin/height alignment. GPU field controls are separate; no forced pose time."
+    }
+   ],
+   "disposition": "Source alignment passes all authored keys/midpoints at eight headings in 1x/2x cells, plus normal mixer/arm/yaw/day-night transitions. Detailed GPU six-pose/two-heading/three-sun cast/receive controls pass. Full GPU heading/pose matrix and controlled hardware performance remain open."
   },
   {
    "id": "mesh:ember-warden:run",
@@ -26908,7 +27384,75 @@
      "shadow-program.ts": "7f29279852819349ed2e946141b454fedb3718f193d226f84c69e079c0af5f9d"
     }
    },
-   "disposition": "Six production-cell poses, two headings and three suns pass low-quality cast/camera/alpha and high/middle/low receiver controls. Continuous animation blends, full heading matrix and hardware performance remain open."
+   "sourceAudit": [
+    {
+     "report": "glb-source-final-low/ember-warden-run/report.json",
+     "reportSha256": "5a4f5e51abdbe2d97fc0145f5557a8921bc817132a528236988c1e7ea91ddffe",
+     "quality": "low",
+     "sourceFrames": 312,
+     "checkedVertices": 17472,
+     "maxVertexDelta": 1.1152610790432504e-7,
+     "maxHeightContractDelta": 0.0000011220664006827974,
+     "maxGroundOffsetDelta": 9.83540440202546e-7,
+     "modelSha256": "27314f388adb9fa94dc7db468f6ade4ceacedafc248af4b68745f28adb793e29",
+     "cellManifestSha256": "c1d8b73412760081d770c7ee10da8b52ac3e16a38edaa0cc7d521b038909c804",
+     "authoredKeys": 20,
+     "interpolationMidpoints": 19,
+     "headings": 8,
+     "scope": "Original-alpha/skin/projected-height source alignment; detailed field GPU control is separate."
+    },
+    {
+     "report": "glb-source-final-high/ember-warden-run/report.json",
+     "reportSha256": "6ed5092600b0a930fe48881a68cfb8df43ce413d69e46886696a3bcded636d2b",
+     "quality": "high",
+     "sourceFrames": 312,
+     "checkedVertices": 17472,
+     "maxVertexDelta": 1.1152610790432504e-7,
+     "maxHeightContractDelta": 0.0000011220664006827974,
+     "maxGroundOffsetDelta": 9.83540440202546e-7,
+     "modelSha256": "27314f388adb9fa94dc7db468f6ade4ceacedafc248af4b68745f28adb793e29",
+     "cellManifestSha256": "c1d8b73412760081d770c7ee10da8b52ac3e16a38edaa0cc7d521b038909c804",
+     "authoredKeys": 20,
+     "interpolationMidpoints": 19,
+     "headings": 8,
+     "scope": "Original-alpha/skin/projected-height source alignment; detailed field GPU control is separate."
+    }
+   ],
+   "blendAudit": [
+    {
+     "report": "glb-blends-low/ember-warden/report.json",
+     "reportSha256": "c7ea9c14b1cd0c5a71904349cd3fe48ccaa2c1aebf061d7649bcd59b8e7f464c",
+     "quality": "low",
+     "sourceFrames": 1173,
+     "checkedVertices": 65688,
+     "maxVertexDelta": 1.5457832369669688e-7,
+     "maxHeightContractDelta": 0.0000013905771396593991,
+     "maxGroundOffsetDelta": 9.83540440202546e-7,
+     "modelSha256": "27314f388adb9fa94dc7db468f6ade4ceacedafc248af4b68745f28adb793e29",
+     "cellManifestSha256": "c1d8b73412760081d770c7ee10da8b52ac3e16a38edaa0cc7d521b038909c804",
+     "ticks": 1176,
+     "cachedFrames": 3,
+     "headings": 8,
+     "scope": "Normal production mixer fades, run/cast phase-lock, procedural arm raise, recovery/death, continuous yaw and day/night tint; source/skin/height alignment. GPU field controls are separate; no forced pose time."
+    },
+    {
+     "report": "glb-blends-high/ember-warden/report.json",
+     "reportSha256": "08a43c1b0b3726081e57c97bb16a757b1891ba0c2901f3fdfde8da7f63f3dba0",
+     "quality": "high",
+     "sourceFrames": 1176,
+     "checkedVertices": 65856,
+     "maxVertexDelta": 1.4077057497452472e-7,
+     "maxHeightContractDelta": 0.0000013926096045224767,
+     "maxGroundOffsetDelta": 9.83540440202546e-7,
+     "modelSha256": "27314f388adb9fa94dc7db468f6ade4ceacedafc248af4b68745f28adb793e29",
+     "cellManifestSha256": "c1d8b73412760081d770c7ee10da8b52ac3e16a38edaa0cc7d521b038909c804",
+     "ticks": 1176,
+     "cachedFrames": 0,
+     "headings": 8,
+     "scope": "Normal production mixer fades, run/cast phase-lock, procedural arm raise, recovery/death, continuous yaw and day/night tint; source/skin/height alignment. GPU field controls are separate; no forced pose time."
+    }
+   ],
+   "disposition": "Source alignment passes all authored keys/midpoints at eight headings in 1x/2x cells, plus normal mixer/arm/yaw/day-night transitions. Detailed GPU six-pose/two-heading/three-sun cast/receive controls pass. Full GPU heading/pose matrix and controlled hardware performance remain open."
   },
   {
    "id": "mesh:ember-warden:idle_cast",
@@ -26950,7 +27494,75 @@
      "shadow-program.ts": "7f29279852819349ed2e946141b454fedb3718f193d226f84c69e079c0af5f9d"
     }
    },
-   "disposition": "Six production-cell poses, two headings and three suns pass low-quality cast/camera/alpha and high/middle/low receiver controls. Continuous animation blends, full heading matrix and hardware performance remain open."
+   "sourceAudit": [
+    {
+     "report": "glb-source-final-low/ember-warden-idle_cast/report.json",
+     "reportSha256": "f9e2036933cf643473970cf1f95c7a57a51c1a594f2215a2ed8548f1d929a862",
+     "quality": "low",
+     "sourceFrames": 776,
+     "checkedVertices": 43456,
+     "maxVertexDelta": 1.3874529836144234e-7,
+     "maxHeightContractDelta": 0.0000013655898953857104,
+     "maxGroundOffsetDelta": 9.83540440202546e-7,
+     "modelSha256": "27314f388adb9fa94dc7db468f6ade4ceacedafc248af4b68745f28adb793e29",
+     "cellManifestSha256": "c1d8b73412760081d770c7ee10da8b52ac3e16a38edaa0cc7d521b038909c804",
+     "authoredKeys": 49,
+     "interpolationMidpoints": 48,
+     "headings": 8,
+     "scope": "Original-alpha/skin/projected-height source alignment; detailed field GPU control is separate."
+    },
+    {
+     "report": "glb-source-final-high/ember-warden-idle_cast/report.json",
+     "reportSha256": "eea4b61a2118a33abffd68d11ee9eba55809ea54f3f22518e783e2fec6819580",
+     "quality": "high",
+     "sourceFrames": 776,
+     "checkedVertices": 43456,
+     "maxVertexDelta": 1.3874529836144234e-7,
+     "maxHeightContractDelta": 0.0000013655898953857104,
+     "maxGroundOffsetDelta": 9.83540440202546e-7,
+     "modelSha256": "27314f388adb9fa94dc7db468f6ade4ceacedafc248af4b68745f28adb793e29",
+     "cellManifestSha256": "c1d8b73412760081d770c7ee10da8b52ac3e16a38edaa0cc7d521b038909c804",
+     "authoredKeys": 49,
+     "interpolationMidpoints": 48,
+     "headings": 8,
+     "scope": "Original-alpha/skin/projected-height source alignment; detailed field GPU control is separate."
+    }
+   ],
+   "blendAudit": [
+    {
+     "report": "glb-blends-low/ember-warden/report.json",
+     "reportSha256": "c7ea9c14b1cd0c5a71904349cd3fe48ccaa2c1aebf061d7649bcd59b8e7f464c",
+     "quality": "low",
+     "sourceFrames": 1173,
+     "checkedVertices": 65688,
+     "maxVertexDelta": 1.5457832369669688e-7,
+     "maxHeightContractDelta": 0.0000013905771396593991,
+     "maxGroundOffsetDelta": 9.83540440202546e-7,
+     "modelSha256": "27314f388adb9fa94dc7db468f6ade4ceacedafc248af4b68745f28adb793e29",
+     "cellManifestSha256": "c1d8b73412760081d770c7ee10da8b52ac3e16a38edaa0cc7d521b038909c804",
+     "ticks": 1176,
+     "cachedFrames": 3,
+     "headings": 8,
+     "scope": "Normal production mixer fades, run/cast phase-lock, procedural arm raise, recovery/death, continuous yaw and day/night tint; source/skin/height alignment. GPU field controls are separate; no forced pose time."
+    },
+    {
+     "report": "glb-blends-high/ember-warden/report.json",
+     "reportSha256": "08a43c1b0b3726081e57c97bb16a757b1891ba0c2901f3fdfde8da7f63f3dba0",
+     "quality": "high",
+     "sourceFrames": 1176,
+     "checkedVertices": 65856,
+     "maxVertexDelta": 1.4077057497452472e-7,
+     "maxHeightContractDelta": 0.0000013926096045224767,
+     "maxGroundOffsetDelta": 9.83540440202546e-7,
+     "modelSha256": "27314f388adb9fa94dc7db468f6ade4ceacedafc248af4b68745f28adb793e29",
+     "cellManifestSha256": "c1d8b73412760081d770c7ee10da8b52ac3e16a38edaa0cc7d521b038909c804",
+     "ticks": 1176,
+     "cachedFrames": 0,
+     "headings": 8,
+     "scope": "Normal production mixer fades, run/cast phase-lock, procedural arm raise, recovery/death, continuous yaw and day/night tint; source/skin/height alignment. GPU field controls are separate; no forced pose time."
+    }
+   ],
+   "disposition": "Source alignment passes all authored keys/midpoints at eight headings in 1x/2x cells, plus normal mixer/arm/yaw/day-night transitions. Detailed GPU six-pose/two-heading/three-sun cast/receive controls pass. Full GPU heading/pose matrix and controlled hardware performance remain open."
   },
   {
    "id": "mesh:ember-warden:run_cast",
@@ -26992,7 +27604,75 @@
      "shadow-program.ts": "7f29279852819349ed2e946141b454fedb3718f193d226f84c69e079c0af5f9d"
     }
    },
-   "disposition": "Six production-cell poses, two headings and three suns pass low-quality cast/camera/alpha and high/middle/low receiver controls. Continuous animation blends, full heading matrix and hardware performance remain open."
+   "sourceAudit": [
+    {
+     "report": "glb-source-final-low/ember-warden-run_cast/report.json",
+     "reportSha256": "51aeb7ee55b3a9a15c02ccabcd2a2e9dff4af94721185eb57a57467bf95be80a",
+     "quality": "low",
+     "sourceFrames": 616,
+     "checkedVertices": 34496,
+     "maxVertexDelta": 1.345828450904918e-7,
+     "maxHeightContractDelta": 0.0000013729445953458708,
+     "maxGroundOffsetDelta": 9.83540440202546e-7,
+     "modelSha256": "27314f388adb9fa94dc7db468f6ade4ceacedafc248af4b68745f28adb793e29",
+     "cellManifestSha256": "c1d8b73412760081d770c7ee10da8b52ac3e16a38edaa0cc7d521b038909c804",
+     "authoredKeys": 39,
+     "interpolationMidpoints": 38,
+     "headings": 8,
+     "scope": "Original-alpha/skin/projected-height source alignment; detailed field GPU control is separate."
+    },
+    {
+     "report": "glb-source-final-high/ember-warden-run_cast/report.json",
+     "reportSha256": "e1ccab488ab65224938d1c89574d9328852620c060c7dd47e0eff921c7a6e494",
+     "quality": "high",
+     "sourceFrames": 616,
+     "checkedVertices": 34496,
+     "maxVertexDelta": 1.345828450904918e-7,
+     "maxHeightContractDelta": 0.0000013729445953458708,
+     "maxGroundOffsetDelta": 9.83540440202546e-7,
+     "modelSha256": "27314f388adb9fa94dc7db468f6ade4ceacedafc248af4b68745f28adb793e29",
+     "cellManifestSha256": "c1d8b73412760081d770c7ee10da8b52ac3e16a38edaa0cc7d521b038909c804",
+     "authoredKeys": 39,
+     "interpolationMidpoints": 38,
+     "headings": 8,
+     "scope": "Original-alpha/skin/projected-height source alignment; detailed field GPU control is separate."
+    }
+   ],
+   "blendAudit": [
+    {
+     "report": "glb-blends-low/ember-warden/report.json",
+     "reportSha256": "c7ea9c14b1cd0c5a71904349cd3fe48ccaa2c1aebf061d7649bcd59b8e7f464c",
+     "quality": "low",
+     "sourceFrames": 1173,
+     "checkedVertices": 65688,
+     "maxVertexDelta": 1.5457832369669688e-7,
+     "maxHeightContractDelta": 0.0000013905771396593991,
+     "maxGroundOffsetDelta": 9.83540440202546e-7,
+     "modelSha256": "27314f388adb9fa94dc7db468f6ade4ceacedafc248af4b68745f28adb793e29",
+     "cellManifestSha256": "c1d8b73412760081d770c7ee10da8b52ac3e16a38edaa0cc7d521b038909c804",
+     "ticks": 1176,
+     "cachedFrames": 3,
+     "headings": 8,
+     "scope": "Normal production mixer fades, run/cast phase-lock, procedural arm raise, recovery/death, continuous yaw and day/night tint; source/skin/height alignment. GPU field controls are separate; no forced pose time."
+    },
+    {
+     "report": "glb-blends-high/ember-warden/report.json",
+     "reportSha256": "08a43c1b0b3726081e57c97bb16a757b1891ba0c2901f3fdfde8da7f63f3dba0",
+     "quality": "high",
+     "sourceFrames": 1176,
+     "checkedVertices": 65856,
+     "maxVertexDelta": 1.4077057497452472e-7,
+     "maxHeightContractDelta": 0.0000013926096045224767,
+     "maxGroundOffsetDelta": 9.83540440202546e-7,
+     "modelSha256": "27314f388adb9fa94dc7db468f6ade4ceacedafc248af4b68745f28adb793e29",
+     "cellManifestSha256": "c1d8b73412760081d770c7ee10da8b52ac3e16a38edaa0cc7d521b038909c804",
+     "ticks": 1176,
+     "cachedFrames": 0,
+     "headings": 8,
+     "scope": "Normal production mixer fades, run/cast phase-lock, procedural arm raise, recovery/death, continuous yaw and day/night tint; source/skin/height alignment. GPU field controls are separate; no forced pose time."
+    }
+   ],
+   "disposition": "Source alignment passes all authored keys/midpoints at eight headings in 1x/2x cells, plus normal mixer/arm/yaw/day-night transitions. Detailed GPU six-pose/two-heading/three-sun cast/receive controls pass. Full GPU heading/pose matrix and controlled hardware performance remain open."
   },
   {
    "id": "mesh:ember-warden:hit",
@@ -27034,7 +27714,75 @@
      "shadow-program.ts": "7f29279852819349ed2e946141b454fedb3718f193d226f84c69e079c0af5f9d"
     }
    },
-   "disposition": "Six production-cell poses, two headings and three suns pass low-quality cast/camera/alpha and high/middle/low receiver controls. Continuous animation blends, full heading matrix and hardware performance remain open."
+   "sourceAudit": [
+    {
+     "report": "glb-source-final-low/ember-warden-hit/report.json",
+     "reportSha256": "2c6367ddcf20db5f967e484573fd3476b9ad7d1462aedcd5079df51cda6d066c",
+     "quality": "low",
+     "sourceFrames": 792,
+     "checkedVertices": 44352,
+     "maxVertexDelta": 1.1031873148326099e-7,
+     "maxHeightContractDelta": 0.000001213913101594244,
+     "maxGroundOffsetDelta": 9.83540440202546e-7,
+     "modelSha256": "27314f388adb9fa94dc7db468f6ade4ceacedafc248af4b68745f28adb793e29",
+     "cellManifestSha256": "c1d8b73412760081d770c7ee10da8b52ac3e16a38edaa0cc7d521b038909c804",
+     "authoredKeys": 50,
+     "interpolationMidpoints": 49,
+     "headings": 8,
+     "scope": "Original-alpha/skin/projected-height source alignment; detailed field GPU control is separate."
+    },
+    {
+     "report": "glb-source-final-high/ember-warden-hit/report.json",
+     "reportSha256": "9138340577cc6565a093b11e45a224a1cd43c64192c45af9b62ca0d09d6858ee",
+     "quality": "high",
+     "sourceFrames": 792,
+     "checkedVertices": 44352,
+     "maxVertexDelta": 1.1031873148326099e-7,
+     "maxHeightContractDelta": 0.000001213913101594244,
+     "maxGroundOffsetDelta": 9.83540440202546e-7,
+     "modelSha256": "27314f388adb9fa94dc7db468f6ade4ceacedafc248af4b68745f28adb793e29",
+     "cellManifestSha256": "c1d8b73412760081d770c7ee10da8b52ac3e16a38edaa0cc7d521b038909c804",
+     "authoredKeys": 50,
+     "interpolationMidpoints": 49,
+     "headings": 8,
+     "scope": "Original-alpha/skin/projected-height source alignment; detailed field GPU control is separate."
+    }
+   ],
+   "blendAudit": [
+    {
+     "report": "glb-blends-low/ember-warden/report.json",
+     "reportSha256": "c7ea9c14b1cd0c5a71904349cd3fe48ccaa2c1aebf061d7649bcd59b8e7f464c",
+     "quality": "low",
+     "sourceFrames": 1173,
+     "checkedVertices": 65688,
+     "maxVertexDelta": 1.5457832369669688e-7,
+     "maxHeightContractDelta": 0.0000013905771396593991,
+     "maxGroundOffsetDelta": 9.83540440202546e-7,
+     "modelSha256": "27314f388adb9fa94dc7db468f6ade4ceacedafc248af4b68745f28adb793e29",
+     "cellManifestSha256": "c1d8b73412760081d770c7ee10da8b52ac3e16a38edaa0cc7d521b038909c804",
+     "ticks": 1176,
+     "cachedFrames": 3,
+     "headings": 8,
+     "scope": "Normal production mixer fades, run/cast phase-lock, procedural arm raise, recovery/death, continuous yaw and day/night tint; source/skin/height alignment. GPU field controls are separate; no forced pose time."
+    },
+    {
+     "report": "glb-blends-high/ember-warden/report.json",
+     "reportSha256": "08a43c1b0b3726081e57c97bb16a757b1891ba0c2901f3fdfde8da7f63f3dba0",
+     "quality": "high",
+     "sourceFrames": 1176,
+     "checkedVertices": 65856,
+     "maxVertexDelta": 1.4077057497452472e-7,
+     "maxHeightContractDelta": 0.0000013926096045224767,
+     "maxGroundOffsetDelta": 9.83540440202546e-7,
+     "modelSha256": "27314f388adb9fa94dc7db468f6ade4ceacedafc248af4b68745f28adb793e29",
+     "cellManifestSha256": "c1d8b73412760081d770c7ee10da8b52ac3e16a38edaa0cc7d521b038909c804",
+     "ticks": 1176,
+     "cachedFrames": 0,
+     "headings": 8,
+     "scope": "Normal production mixer fades, run/cast phase-lock, procedural arm raise, recovery/death, continuous yaw and day/night tint; source/skin/height alignment. GPU field controls are separate; no forced pose time."
+    }
+   ],
+   "disposition": "Source alignment passes all authored keys/midpoints at eight headings in 1x/2x cells, plus normal mixer/arm/yaw/day-night transitions. Detailed GPU six-pose/two-heading/three-sun cast/receive controls pass. Full GPU heading/pose matrix and controlled hardware performance remain open."
   },
   {
    "id": "mesh:ember-warden:death",
@@ -27076,7 +27824,75 @@
      "shadow-program.ts": "7f29279852819349ed2e946141b454fedb3718f193d226f84c69e079c0af5f9d"
     }
    },
-   "disposition": "Six production-cell poses, two headings and three suns pass low-quality cast/camera/alpha and high/middle/low receiver controls. Continuous animation blends, full heading matrix and hardware performance remain open."
+   "sourceAudit": [
+    {
+     "report": "glb-source-final-low/ember-warden-death/report.json",
+     "reportSha256": "8aef65df37b1062b10cc449926a1fdd38417dcdb85288996179b9cded2b5191a",
+     "quality": "low",
+     "sourceFrames": 1432,
+     "checkedVertices": 80192,
+     "maxVertexDelta": 1.1071709973831112e-7,
+     "maxHeightContractDelta": 0.000001072634198351352,
+     "maxGroundOffsetDelta": 9.83540440202546e-7,
+     "modelSha256": "27314f388adb9fa94dc7db468f6ade4ceacedafc248af4b68745f28adb793e29",
+     "cellManifestSha256": "c1d8b73412760081d770c7ee10da8b52ac3e16a38edaa0cc7d521b038909c804",
+     "authoredKeys": 90,
+     "interpolationMidpoints": 89,
+     "headings": 8,
+     "scope": "Original-alpha/skin/projected-height source alignment; detailed field GPU control is separate."
+    },
+    {
+     "report": "glb-source-final-high/ember-warden-death/report.json",
+     "reportSha256": "50979d6aac97ad604c24d7aedec9065fdb0438c4a072e89f3d7b60eec2ea1fc4",
+     "quality": "high",
+     "sourceFrames": 1432,
+     "checkedVertices": 80192,
+     "maxVertexDelta": 1.1071709973831112e-7,
+     "maxHeightContractDelta": 0.000001072634198351352,
+     "maxGroundOffsetDelta": 9.83540440202546e-7,
+     "modelSha256": "27314f388adb9fa94dc7db468f6ade4ceacedafc248af4b68745f28adb793e29",
+     "cellManifestSha256": "c1d8b73412760081d770c7ee10da8b52ac3e16a38edaa0cc7d521b038909c804",
+     "authoredKeys": 90,
+     "interpolationMidpoints": 89,
+     "headings": 8,
+     "scope": "Original-alpha/skin/projected-height source alignment; detailed field GPU control is separate."
+    }
+   ],
+   "blendAudit": [
+    {
+     "report": "glb-blends-low/ember-warden/report.json",
+     "reportSha256": "c7ea9c14b1cd0c5a71904349cd3fe48ccaa2c1aebf061d7649bcd59b8e7f464c",
+     "quality": "low",
+     "sourceFrames": 1173,
+     "checkedVertices": 65688,
+     "maxVertexDelta": 1.5457832369669688e-7,
+     "maxHeightContractDelta": 0.0000013905771396593991,
+     "maxGroundOffsetDelta": 9.83540440202546e-7,
+     "modelSha256": "27314f388adb9fa94dc7db468f6ade4ceacedafc248af4b68745f28adb793e29",
+     "cellManifestSha256": "c1d8b73412760081d770c7ee10da8b52ac3e16a38edaa0cc7d521b038909c804",
+     "ticks": 1176,
+     "cachedFrames": 3,
+     "headings": 8,
+     "scope": "Normal production mixer fades, run/cast phase-lock, procedural arm raise, recovery/death, continuous yaw and day/night tint; source/skin/height alignment. GPU field controls are separate; no forced pose time."
+    },
+    {
+     "report": "glb-blends-high/ember-warden/report.json",
+     "reportSha256": "08a43c1b0b3726081e57c97bb16a757b1891ba0c2901f3fdfde8da7f63f3dba0",
+     "quality": "high",
+     "sourceFrames": 1176,
+     "checkedVertices": 65856,
+     "maxVertexDelta": 1.4077057497452472e-7,
+     "maxHeightContractDelta": 0.0000013926096045224767,
+     "maxGroundOffsetDelta": 9.83540440202546e-7,
+     "modelSha256": "27314f388adb9fa94dc7db468f6ade4ceacedafc248af4b68745f28adb793e29",
+     "cellManifestSha256": "c1d8b73412760081d770c7ee10da8b52ac3e16a38edaa0cc7d521b038909c804",
+     "ticks": 1176,
+     "cachedFrames": 0,
+     "headings": 8,
+     "scope": "Normal production mixer fades, run/cast phase-lock, procedural arm raise, recovery/death, continuous yaw and day/night tint; source/skin/height alignment. GPU field controls are separate; no forced pose time."
+    }
+   ],
+   "disposition": "Source alignment passes all authored keys/midpoints at eight headings in 1x/2x cells, plus normal mixer/arm/yaw/day-night transitions. Detailed GPU six-pose/two-heading/three-sun cast/receive controls pass. Full GPU heading/pose matrix and controlled hardware performance remain open."
   },
   {
    "id": "torch-body:0",

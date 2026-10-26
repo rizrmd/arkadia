@@ -39,3 +39,9 @@ This implementation is for directional sun fields. It does not add point-light s
 ### Verification scope
 
 Stable depth probes exclude the measured raster subpixel uncertainty and possible front-surface boundaries. Partial-alpha comparisons use bilinear bounds over that footprint. Full source-alpha coverage is checked separately. Passing a sampled GPU matrix is not described as an exhaustive test of every real-valued animation time.
+
+### Complete production-source journal and normal transitions
+
+The final source journal contains 24,736 frame/heading cases: every authored key and interval midpoint, eight requested headings, both heroes and 1×/2× producer profiles. Each frame checks 32 distributed vertices plus the strongest-weight vertex for every used joint, deduplicated (56 vertices in these assets). All 12,368 matching low/high pairs have identical pose-matrix SHA-256 and height scales. The journal records original post alpha separately from pose matrices. Independent projected-height and ground/pivot errors remain below 0.000002 world pixels.
+
+A separate normal-update journal exercises mixer fades, run/cast stride phase-lock, procedural arm raising, recovery, hit and death, continuous yaw and day/night tint. It uses the production update path without forced `auditPose` times. The 4,704 requested ticks produce 4,698 source publications and six intentional idle-cache reuses. Source/skin/height checks pass for those publications. These journals do not claim an exhaustive proof over real-valued time or replace the separate GPU cast/receiver controls. The current models each have one skinned mesh, opaque material and no morph primitives or unhandled rigid mesh attachments.
