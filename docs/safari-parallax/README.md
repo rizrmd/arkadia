@@ -20,6 +20,6 @@ See `verification.json` for individual pixel metrics and bake timings.
 
 ## Delivery status
 
-The local fix is implemented and the production build passes. Push is blocked: GitHub returns HTTP 403 because connected account `mieky-kpvendorid` lacks write access to `rizrmd/arkadia`. The platform push helper confirms the same denial. No deployment is claimed.
+GitHub access is resolved using the explicitly authorized `thickkoezz` credentials. The parallax fix and the release GPU fixture correction are pushed to `feat/stronghold`.
 
-The attempted deployment stopped before publication at the existing shadow material GPU fixture's dynamic import of `/node_modules/.vite/deps/pixi__js.js`. Once write access is restored, push the fix, resolve that release-check environment failure, run the repository deployment script and verify the live game.
+The release GPU fixture now imports Pixi through Vite instead of a private optimizer-cache URL. Its 36 cases pass without WebGL errors. The full release run passed regression checks, production build, Go checks and co-op smoke, and reached release packaging. The command reached its 20-minute execution limit before publication completed. Live deployment and verification remain outstanding; no live fix is claimed.
