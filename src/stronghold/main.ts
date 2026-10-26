@@ -108,8 +108,17 @@ export async function mount(app:HTMLElement,progress:Progress){
  startFpsTracelog({rt,getCombatSnapshot:()=>worldView.encounters.snapshot(),getLiveCounts:()=>worldView.encounters.liveCounts(),net,getHeroId:()=>hero});
  // Effect construction is indivisible and can take >100 ms on older Android CPUs.
  // Finish the existing sliced pool warmup while gameplay is still behind loading.
- await Promise.all([worldView.encounters.fxStage.loaded,worldView.visibleMasksReady(),worldView.prepareGpu()]);
+ // These jobs overlap: report completions, rather than a timer pretending work finished.
+ let prepared=0;
+ const preparationLabels=['effects','visibility','graphics'];
+ progress(960,1000,'Raising the Stronghold · preparing effects, visibility and graphics');
+ await Promise.all([worldView.encounters.fxStage.loaded,worldView.visibleMasksReady(),worldView.prepareGpu()].map(async(job,index)=>{
+  await job;
+  progress(960+(++prepared)*10,1000,`Raising the Stronghold · ${preparationLabels[index]} ready · ${prepared}/3`);
+ }));
+ await new Promise<void>(resolve=>setTimeout(resolve,0));
  await picker.start();
+ progress(995,1000,'Entering the Stronghold');
  loaded();
  void picker.picked.then(()=>{
   if(invited)lobby!.prompt(invited);
