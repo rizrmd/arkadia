@@ -18,10 +18,24 @@ TypeScript and the Vite production build are checked. The Playwright fixture che
 
 Set PLAYER_URL=https://ark-whachat.fural.space/ember-warden-review/flame-burst/ to verify production. These are desktop/mobile browser viewport checks, not physical-device GPU benchmarks.
 
-Release: commit selected owned paths, push, then `fural-agent repos ship RPe11327fbfe413dbeba246526 --mode script --script scripts/flame-burst/deploy.sh`. The script holds the shared lock, verifies matching committed source, builds the isolated page, includes committed evidence and publishes one bounded layer through the existing Arkodia publisher. No game files or peer WIP are packaged. The /flame-burst prefix survives subsequent game layers because it is independent of their selected file set.
+Release: commit selected owned paths, push, then `fural-agent repos ship RPe11327fbfe413dbeba246526 --mode script --script scripts/flame-burst/deploy.sh`. The script holds the shared lock, verifies matching committed source, builds the isolated page, includes committed evidence and publishes one bounded layer through the existing Arkodia publisher. No game files or peer WIP are packaged. The /ember-warden-review/flame-burst prefix survives subsequent game layers because it is independent of their selected file set.
 
 Knowledge supports an HTML iframe, with the deployed URL. Chat capability inspection: this session exposes message text, file/photo/audio attachments, download and sandbox file-preview links; no tool or CLI operation exposes an inline interactive chat embed. An iframe is not presented as working chat content. Use the live link or the Knowledge player. The platform was not modified.
 
 ## Release verification
 
 Implementation 4042a86e and public-route correction c089cf50 were pushed and deployed through the repository script pipeline. Live checks passed 1440×900, 390×844, 320×560 and 844×390, all sixteen frames, repeated Play/Pause/FPS/background controls and all eight upright headings. Cross-origin iframe animation and pointer Pause passed at 390×700. The public `source.png?raw=1` SHA-256 matches the original attachment, and game /healthz returns 200. JSON reports and screenshots are retained alongside this document. An early /flame-burst/ route returned the game's SPA fallback; the final URL uses the existing public /ember-warden-review/ gateway route. No gateway/platform code changed.
+
+## Modular sprite sheet player
+
+`src/sprite-sheet/playback.ts` exports `SpriteSheetConfig`, `validateConfig`, `sliceGrid` and `SpriteSheetPlayback`. This engine owns cell views, frame selection and a shared clock. It has no Flame Burst asset paths, DOM controls, heading logic or scene layout. The Pixi viewer in `src/fx/flame-burst.ts` is a separate consumer. Grid slicing supports unequal cell dimensions, non-square sheets and partially occupied final rows. The viewer preserves cell aspect ratio.
+
+`public/flame-burst/clip.json` configures the Flame Burst preset. The same viewer accepts `?clip=URL_TO_JSON`; image URLs resolve relative to that JSON URL. Supply CORS access for external metadata/images. Metadata fields: `title`, `source`, `columns`, `rows`, optional `frameCount`, `fps` (1–60), normalized `pivot: {x,y}` and optional `loop` (default true). Invalid metadata produces an English error within Pixi. A preset example:
+
+```json
+{"title":"My effect","source":"effect.png","columns":3,"rows":2,"frameCount":5,"fps":10,"pivot":{"x":0.5,"y":1},"loop":false}
+```
+
+In another Pixi scene, construct `new SpriteSheetPlayback(texture, config)`, attach `player.createSprite()` to your container, and call `player.update(ticker.deltaMS)`. Use `playing`, `fps`, `seek(index)` and `step(delta)` to control it; call `resetClock()` after suspension, `detach(sprite)` when removing an instance, and `destroy()` to release generated frame views. The shared source texture remains caller-owned. Positions, scale and rotation remain scene-owned; this viewer explicitly sets rotation to zero for upright flames.
+
+`node scripts/flame-burst/test-modular.mjs` checks independent 101×99 / 3×2 / five-frame input, custom pivot, synchronization of two sprites, placement preservation, pause, step, FPS changes, looping and non-looping completion, rejected metadata and source ownership. It does not merely retest the Flame Burst preset.

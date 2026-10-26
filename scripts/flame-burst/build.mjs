@@ -1,6 +1,6 @@
 import fs from 'node:fs/promises';import {execFileSync} from 'node:child_process';import sharp from 'sharp';import {createHash} from 'node:crypto';
 execFileSync('npx',['vite','build','--config','vite.flame-burst.config.ts'],{stdio:'inherit'});
-await fs.copyFile('dist-flame-burst/flame-burst.html','dist-flame-burst/index.html');await fs.copyFile('public/flame-burst/source.png','dist-flame-burst/source.png');
+await fs.copyFile('dist-flame-burst/flame-burst.html','dist-flame-burst/index.html');await fs.copyFile('public/flame-burst/source.png','dist-flame-burst/source.png');await fs.copyFile('public/flame-burst/clip.json','dist-flame-burst/clip.json');
 const bytes=await fs.readFile('public/flame-burst/source.png'),{data,info}=await sharp(bytes).ensureAlpha().raw().toBuffer({resolveWithObject:true});
 let transparent=0,partial=0,opaque=0,opaqueNeutral=0;for(let i=0;i<data.length;i+=4){const a=data[i+3];if(a===0)transparent++;else if(a<255)partial++;else{opaque++;if(Math.max(data[i],data[i+1],data[i+2])-Math.min(data[i],data[i+1],data[i+2])<8)opaqueNeutral++;}}
 const report={attachment:'DAe32537184886822bfa31e1b6',sha256:createHash('sha256').update(bytes).digest('hex'),width:info.width,height:info.height,transparent,partial,opaque,opaqueNeutral,grid:4,frames:16,boundaries:Array.from({length:5},(_,i)=>Math.round(i*info.width/4)),alphaNote:'Original alpha preserved, no background removal or regeneration. Neutral opaque pixels counted to detect baked grayscale checkerboard.'};
