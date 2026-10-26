@@ -50,3 +50,5 @@ await import('./test-decoded-solids.mjs');
 await import('./test-drift-height.mjs');
 
 await import('./test-json-asset.mjs');
+
+await import('./test-frame-manifest-recovery.mjs');
