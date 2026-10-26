@@ -29,14 +29,21 @@ async function boot(){
   const s=new Sprite(textures[0]);s.anchor.set(m.cell.pivot.x/m.cell.w,m.cell.pivot.y/m.cell.h);s.width=m.cell.w*.98;s.height=m.cell.h*.98;if(i)s.scale.x*=-1;s.position.set(i?forwardX(points[i][0]):points[i][0],points[i][1]);actors.addChild(s);actorSprites.push({s,m,textures});
  }
  function sprite(layer:number,texture:Texture,anchor=[.04,.5]){const s=new Sprite(texture);s.anchor.set(anchor[0],anchor[1]);layers[layer].addChild(s);return s;}
- const sheetRoot=new Container();sheetRoot.position.set(171,184);sheetRoot.rotation=.30;layers[1].addChild(sheetRoot);
+ const fanYaw=.30;
+ const sheetRoot=new Container();sheetRoot.position.set(171,184);sheetRoot.rotation=fanYaw;layers[1].addChild(sheetRoot);
  const curls=Array.from({length:7},()=>sprite(2,frames[5],[.5,.8]));
  const core=sprite(3,cores[0]);core.blendMode='add';
  const hand=sprite(0,frames[0],[.5,.8]);hand.blendMode='add';hand.position.set(171,188);
  const contacts=points.slice(1).map(p=>{const s=sprite(5,frames[4],[.5,.8]);s.position.set(p[0],p[1]-35);return s;});
  const heat=new Graphics();layers[4].addChild(heat);
+ // Ground projection of the released fan: rooted at the casting position,
+ // same forward axis/spread, then contracted by the existing layer transform.
+ const groundFan=(r:number,a:number)=>{const f=395*r*Math.cos(a),l=120*r*Math.sin(a);return {x:handX+f*Math.cos(fanYaw)-l*Math.sin(fanYaw),y:262+f*Math.sin(fanYaw)+l*Math.cos(fanYaw)};};
+ const fanOutline=[handX,262];for(let i=0;i<=64;i++){const p=groundFan(1,-Math.PI*.3+i*Math.PI*.6/64);fanOutline.push(p.x,p.y);}
  const soil=new Graphics();layers[8].addChild(soil);
- const soilFlames=Array.from({length:14},()=>sprite(8,frames[4],[.5,.85]));
+ const soilMask=new Graphics().poly(fanOutline).fill(0xffffff);layers[8].addChild(soilMask);
+ const soilBody=new Container();layers[8].addChild(soilBody);soilBody.addChild(soil);soilBody.mask=soilMask;
+ const soilFlames=Array.from({length:24},()=>{const s=sprite(8,frames[4],[.5,.85]);soilBody.addChild(s);return s;});
  // Nixie owns the actual deterministic particle motion, curl noise, life curves and pooling.
  const constant=(value:number)=>({mode:'constant',value,min:value,max:value});
  function particle(layer:number,smoke:boolean){
@@ -92,13 +99,15 @@ async function boot(){
   hand.texture=frames[Math.min(15,Math.floor(time/.48*16))];hand.width=52;hand.height=65;hand.alpha=Math.max(0,Math.min(1,(.48-time)/.18));
   contacts.forEach((s,i)=>{const a=time-.22-i*.018;s.texture=frames[Math.min(15,Math.max(0,Math.floor(a/.34*16)))];s.width=48;s.height=58;s.alpha=a>0?Math.max(0,1-a/.40):0;});
   const burn=burnSoilState(level,(time-impact)*1000);soil.clear();
+  const soilFade=burn.active?Math.max(0,1-(time-impact)):0;
+  soilBody.alpha=soilFade;soilBody.visible=burn.active;
   if(burn.active){
-   soil.ellipse(370,330,160,48).fill({color:0x391409,alpha:.5});
-   for(let j=0;j<48;j++){const a=j*2.399,r=Math.sqrt((j+.5)/48);const x=370+Math.cos(a)*150*r,y=330+Math.sin(a)*42*r;
-    soil.ellipse(x,y,3+j%5,2+j%3).fill({color:j%2?0xff6516:0xffbc32,alpha:.5+.25*Math.sin(time*28+j)});
+   soil.poly(fanOutline).fill({color:0x391409,alpha:.5});
+   for(let j=0;j<72;j++){const a=(((j*.61803398875)%1)*2-1)*Math.PI*.3,r=Math.sqrt((j+.5)/72),p=groundFan(r,a);
+    soil.ellipse(p.x,p.y,3+j%5,2+j%3).fill({color:j%2?0xff6516:0xffbc32,alpha:.5+.25*Math.sin(time*28+j)});
    }
   }
-  soilFlames.forEach((s,j)=>{const a=j*2.399,r=Math.sqrt((j+.5)/14);s.position.set(370+Math.cos(a)*142*r,330+Math.sin(a)*38*r);s.texture=frames[4+(Math.floor(time*30)+j)%8];s.width=18+j%4*3;s.height=22+j%3*5;s.alpha=burn.active?.65:0;});
+  soilFlames.forEach((s,j)=>{const a=(((j*.61803398875)%1)*2-1)*Math.PI*.3,r=Math.sqrt((j+.5)/24),p=groundFan(r,a);s.position.set(p.x,p.y);s.texture=frames[4+(Math.floor(time*30)+j)%8];s.width=18+j%4*3;s.height=22+j%3*5;s.alpha=.65;});
   heat.clear();for(let i=3;i>=0;i--)heat.ellipse(370,330,160+i*12,36+i*5).fill({color:0xf56616,alpha:heatAmount*.025});
   embers.update(time);smoke.update(time);
   actorSprites.forEach(({s,m,textures},i)=>{const hit=i&&time>.22&&time<.65,clip=m.clips[i?(hit?'hit':'idle'):(time<.6?'attack-E':'idle-E')];const frame=!i&&time<.6?(time<.08?Math.min(3,Math.floor(time/.08*4)):3):Math.min(clip.frames.length-1,Math.floor((hit?time-.22:time)*clip.fps)%clip.frames.length);s.texture=textures[clip.frames[frame]];s.x=(i?forwardX(points[i][0]):points[i][0])+(hit?Math.sin((time-.22)/.43*Math.PI)*5:0);});
@@ -118,6 +127,6 @@ async function boot(){
   buttons.forEach((b,i)=>{const cols=mobile?3:6,w=mobile?242:146,h=mobile?62:42;const j=i<6?i:i-6;const row=i<6?Math.floor(i/cols):Math.ceil(6/cols)+Math.floor(j/cols);const col=i<6?i%cols:j%cols;b.c.position.set(24+col*(w+10),(mobile?775:606)+row*(h+10));b.g.clear().roundRect(0,0,w,h,7).fill(0x2b414e).stroke({color:0x8d714b,width:1});b.t.style.fontSize=mobile?24:14;b.t.anchor.set(.5);b.t.position.set(w/2,h/2);});
  }
  window.addEventListener('resize',resize);resize();render();app.ticker.maxFPS=30;app.ticker.add(t=>{if(!paused&&!document.hidden){time+=Math.min(.05,t.deltaMS/1000)*speed;if(time>=duration){if(loop){time%=duration;cycles++;}else{time=duration;paused=true;}}}render();});
- (window as any).__FLIPBOOK_FAN__={setLevel:(n:number)=>{level=Math.max(1,Math.min(5,Math.round(n)));render();},seek:(t:number)=>{time=Math.max(0,Math.min(duration,t));paused=true;render();},isolate:(i:number)=>{solo=i;render();},state:()=>({time,level,burnSoil:burnSoilState(level,(time-impact)*1000),impactMs:220,duration,paused,loop,speed,day,cycles,solo,compare,source:'DA14f9840922edc53aa33bf53f',sourceUrl:asset('hand-ignition-source.png'),frames:16,handFrame:Math.min(15,Math.floor(time/.48*16)),actors:4,targets:3,pixiUI:true,connected:time>=release&&time<.75,nixieEmitters:5,particleQuads:[embers.instance.getParticleDebugQuads().length,smoke.instance.getParticleDebugQuads().length],particleDetails:{sheet:sheetInstance.getParticleDebugQuads(),embers:embers.instance.getParticleDebugQuads(),smoke:smoke.instance.getParticleDebugQuads()},particleDefinitions:[embers.effect,smoke.effect,sheetEffect],layers:names.map((name,i)=>({name,visible:layers[i].visible,children:layers[i].children.length})),controls:buttons.map(b=>({label:b.t.text,x:root.x+(b.c.x+b.t.x)*root.scale.x,y:root.y+(b.c.y+b.t.y)*root.scale.y})),geometry:{reachScale,hand:[handX,188],cameraScale:scene.scale.x,targets:points.slice(1).map(p=>({old:[p[0],p[1]],current:[forwardX(p[0]),p[1]]})),layers:layers.map((l,i)=>{const b=measuredBounds(i);return {name:names[i],scaleX:l.scale.x,offsetX:l.x,localBounds:{x:b.x,y:b.y,width:b.width,height:b.height},oldForwardEdge:b.x+b.width,currentForwardEdge:l.x+(b.x+b.width)*l.scale.x};})},canvas:[app.screen.width,app.screen.height]})};
+ (window as any).__FLIPBOOK_FAN__={setLevel:(n:number)=>{level=Math.max(1,Math.min(5,Math.round(n)));render();},seek:(t:number)=>{time=Math.max(0,Math.min(duration,t));paused=true;render();},isolate:(i:number)=>{solo=i;render();},state:()=>({time,level,burnSoil:burnSoilState(level,(time-impact)*1000),impactMs:220,duration,paused,loop,speed,day,cycles,solo,compare,source:'DA14f9840922edc53aa33bf53f',sourceUrl:asset('hand-ignition-source.png'),frames:16,handFrame:Math.min(15,Math.floor(time/.48*16)),actors:4,targets:3,pixiUI:true,connected:time>=release&&time<.75,nixieEmitters:5,particleQuads:[embers.instance.getParticleDebugQuads().length,smoke.instance.getParticleDebugQuads().length],particleDetails:{sheet:sheetInstance.getParticleDebugQuads(),embers:embers.instance.getParticleDebugQuads(),smoke:smoke.instance.getParticleDebugQuads()},particleDefinitions:[embers.effect,smoke.effect,sheetEffect],layers:names.map((name,i)=>({name,visible:layers[i].visible,children:layers[i].children.length})),controls:buttons.map(b=>({label:b.t.text,x:root.x+(b.c.x+b.t.x)*root.scale.x,y:root.y+(b.c.y+b.t.y)*root.scale.y})),geometry:{burnSoil:{origin:[handX,262],halfAngle:Math.PI*.3,yaw:fanYaw,forward:[395*Math.cos(fanYaw),395*Math.sin(fanYaw)],lateral:[-120*Math.sin(fanYaw),120*Math.cos(fanYaw)],outline:fanOutline,opacity:soilBody.alpha},reachScale,hand:[handX,188],cameraScale:scene.scale.x,targets:points.slice(1).map(p=>({old:[p[0],p[1]],current:[forwardX(p[0]),p[1]]})),layers:layers.map((l,i)=>{const b=measuredBounds(i);return {name:names[i],scaleX:l.scale.x,offsetX:l.x,localBounds:{x:b.x,y:b.y,width:b.width,height:b.height},oldForwardEdge:b.x+b.width,currentForwardEdge:l.x+(b.x+b.width)*l.scale.x};})},canvas:[app.screen.width,app.screen.height]})};
 }
 boot().catch(e=>{console.error(e);app.stage.addChild(new Text({text:'Preview failed to load. Please reload.',style:{fill:0xffffff,fontSize:18}}));});

@@ -50,9 +50,9 @@ try {
  assert.equal(after.foes[4].hp,before.foes[4].hp,'Outside radius excluded');
  assert(!after.vfx.fx.playing.some(k=>k.includes('flame-fan.bolt')));
  const ticksBefore=before.vfx.burnSoil.totalTicks;
- if(rank>=3){assert(after.vfx.burnSoil.zones.length>0);assert.equal(sheet.burnSoil,true);
+ if(rank>=3){assert(after.vfx.burnSoil.zones.length>0);assert.equal(sheet.burnSoil,true);assert.equal(sheet.burnHalfAngle,Math.PI*.3);assert(Math.abs(sheet.burnOpacity-(1-sheet.age))<1e-8);
   await page.evaluate(()=>window.__STRONGHOLD_COMBAT__.testStep(740));
-  await page.screenshot({path:`docs/burn-soil/${external?'live':'local'}-game-${width}-lv${rank}.png`});
+  if(!process.env.SKIP_SCREENSHOTS)await page.screenshot({timeout:20000,path:`docs/burn-soil/fan-shape/${external?'live':'local'}-game-${width}-lv${rank}.png`});
  }
  await page.evaluate(()=>window.__STRONGHOLD_COMBAT__.testStep(860));
  const ended=await page.evaluate(()=>window.__STRONGHOLD_COMBAT__.snapshot());
@@ -66,5 +66,5 @@ try {
  await browser.close();browser=null;
  }
  assert.deepEqual(errors,[]);
- await fs.writeFile(`docs/burn-soil/${external?'live':'local'}-game-${process.env.WIDTH||'all'}.json`,JSON.stringify({passed:true,results,errors},null,2));console.log(JSON.stringify({passed:true,results,errors}));
+ await fs.writeFile(`docs/burn-soil/fan-shape/${external?'live':'local'}-game-${process.env.WIDTH||'all'}.json`,JSON.stringify({passed:true,results,errors},null,2));console.log(JSON.stringify({passed:true,results,errors}));
 }catch(e){const pages=browser?.contexts().flatMap(c=>c.pages())||[];if(pages[0]){await fs.writeFile('docs/burn-soil/game-failure.json',JSON.stringify(await pages[0].evaluate(()=>({s:window.__STRONGHOLD_COMBAT__?.snapshot(),body:document.body.innerText})),null,2));await pages[0].screenshot({path:'docs/burn-soil/game-failure.png'});}throw e;}finally{await browser?.close();if(server){server.closeAllConnections();await new Promise(r=>server.close(r));}}

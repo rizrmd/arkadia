@@ -58,6 +58,9 @@ s.sprite.visible=true;s.soil.visible=rank>=3;parent.addChild(s.soil,s.sprite);li
   for(let i=live.length-1;i>=0;i--){const s=live[i];s.age+=dt;
    if(s.age>=(s.rank>=3?1:duration)){s.sprite.visible=false;s.soil.visible=false;live.splice(i,1);pool.push(s);continue;}
    s.sprite.visible=s.age<duration;
+   // Keep the cached combat sector, wall clipping and ground projection fixed;
+   // fade the entire soil layer continuously through its one-second lifetime.
+   s.soil.alpha=Math.max(0,1-s.age);
    const tick=Math.floor(s.age*30);
    if(tick!==s.tick){s.tick=tick;
     if(s.rank>=3){
@@ -76,5 +79,5 @@ s.sprite.visible=true;s.soil.visible=rank>=3;parent.addChild(s.soil,s.sprite);li
    const transform=new Matrix(64*(c-n)*k,32*(c+n)*k,64*(n+c)*k,32*(n-c)*k,view.x+p.x*view.scale,view.y+p.y*view.scale);s.sprite.setFromMatrix(transform);s.soil.setFromMatrix(transform);
   }
  }
- return {prepare,spawn,frame,snapshot:()=>live.map(s=>({u:s.u,v:s.v,yaw:s.yaw,radius:s.radius,rank:s.rank,age:s.age,layers:s.rank,opacity:.34+s.rank*.045,bloom:0,height:0,burnSoil:s.rank>=3&&s.age<1,burnDurationMs:s.rank>=3?1000:0,material:'connected-sheet',backend:native?'pixi-render-texture':'canvas',maskedSamples:Number(s.sprite.label),projectiles:0}))};
+ return {prepare,spawn,frame,snapshot:()=>live.map(s=>({u:s.u,v:s.v,yaw:s.yaw,radius:s.radius,rank:s.rank,age:s.age,layers:s.rank,opacity:.34+s.rank*.045,bloom:0,height:0,burnSoil:s.rank>=3&&s.age<1,burnDurationMs:s.rank>=3?1000:0,burnOpacity:s.soil.alpha,burnHalfAngle:Math.PI*.3,material:'connected-sheet',backend:native?'pixi-render-texture':'canvas',maskedSamples:Number(s.sprite.label),projectiles:0}))};
 }
