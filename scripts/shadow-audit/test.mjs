@@ -48,3 +48,5 @@ await import('./test-material-gpu.mjs');
 await import('./test-decoded-solids.mjs');
 
 await import('./test-drift-height.mjs');
+
+await import('./test-json-asset.mjs');

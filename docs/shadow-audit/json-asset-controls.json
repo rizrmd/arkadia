@@ -1,0 +1,59 @@
+{
+  "status": "pass",
+  "scope": "Required gateway metadata recovery; original JSON preserved. Actual 404/unknown-sandbox and 502/HTML failure classes reproduced; authentication, permanent absence and request deadlines remain bounded.",
+  "cases": [
+    {
+      "name": "success retains original metadata and URL",
+      "requests": 1,
+      "delays": []
+    },
+    {
+      "name": "unknown sandbox 404 recovers",
+      "requests": 2,
+      "delays": [
+        1000
+      ]
+    },
+    {
+      "name": "502 HTML and invalid JSON recover",
+      "requests": 3,
+      "delays": [
+        1000,
+        2000
+      ]
+    },
+    {
+      "name": "HTML fallback with HTTP200 recovers",
+      "requests": 2,
+      "delays": [
+        1000
+      ]
+    },
+    {
+      "name": "network failure recovers",
+      "requests": 2,
+      "delays": [
+        1000
+      ]
+    },
+    {
+      "name": "permission failure is not retried",
+      "requests": 1,
+      "delays": []
+    },
+    {
+      "name": "missing metadata stays a bounded failure",
+      "requests": 5,
+      "delays": [
+        1000,
+        2000,
+        4000,
+        8000
+      ]
+    },
+    {
+      "name": "stalled requests abort and remain bounded",
+      "requests": 5
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "runtime": null,
+  "referenceShadowCommit": "2e3543487d85edf031660e05d72eb31e1e3cb213",
+  "profile": "desktop",
+  "scope": "Actual compiled live runtime: all 13 original/mirrored/scaled procedural drift companions at three suns and independent receiver controls. SwiftShader viewport; no native-device FPS claim.",
+  "runs": [],
+  "errors": [
+    "Unable to load Arkodia. SyntaxError: Unexpected token 'u', \"unknown sa\"... is not valid JSON"
+  ],
+  "failedResponses": [
+    {
+      "url": "https://ark-whachat.fural.space/modular-stronghold/v2/full-gateway-v7-sheet.json",
+      "status": 404
+    }
+  ],
+  "navigationAttempts": [
+    {
+      "url": "https://ark-whachat.fural.space/?offline=1&lighting=dynamic&time=.3&quality=high&shadowAudit=1793026324217-0",
+      "status": 200
+    }
+  ],
+  "resourceConsoleErrors": [
+    "Failed to load resource: the server responded with a status of 404 ()"
+  ],
+  "status": "failed",
+  "failure": "page.waitForFunction: Timeout 120000ms exceeded.\n    at /home/dev/projects/arkadia/repos/arkadia/scripts/shadow-audit/verify-drift-live.mjs:3:1156"
+}
