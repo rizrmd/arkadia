@@ -1,3 +1,4 @@
+import {uploadReleaseParts} from './release-parts.mjs';
 import fs from 'node:fs/promises';import {readFileSync} from 'node:fs';import os from 'node:os';import path from 'node:path';import {gzipSync} from 'node:zlib';import {createHash} from 'node:crypto';import {execFileSync} from 'node:child_process';import {fileURLToPath} from 'node:url';
 // Release into the one Arkodia sandbox (https://ark-whachat.fural.space, served by gateway.mjs).
 // A layer is a set of files at a URL prefix; the gateway applies new layers in order when the sandbox boots.
@@ -57,7 +58,7 @@ function installGateway(id){
  const jsonLayer=readFileSync(fileURLToPath(new URL('./apply-json-layer.mjs',import.meta.url)),'utf8');run(['organization','home-files','write','--custom-sandbox',id,'--path','apply-json-layer.mjs','--content',jsonLayer]);run(['sandboxes','update',id,'--boot-script',BOOT]);
 }
 export async function publishRelease({name='game',tgz,check='/healthz'}){
- const id=sandboxId(),{hash,parts}=await upload(id,await fs.readFile(tgz),name);
+ const id=sandboxId(),{hash,parts}=await uploadReleaseParts({file:tgz,name,dir:stage,transfer:async(local,part)=>{await retryPartTransfer(()=>run(['organization','home-files','transfer','--from-member',MEMBER,'--from',path.relative(os.homedir(),local),'--to-custom-sandbox',id,'--to',`layers/${part}`]));}});
  installGateway(id);await register(id,name,{hash,parts,format:'tgz'});await restart(id,check);
 }
 export async function deployGateway(){const id=sandboxId();installGateway(id);await restart(id,'/');}
