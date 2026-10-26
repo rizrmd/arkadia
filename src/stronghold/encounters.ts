@@ -27,6 +27,7 @@ import {characters,DEFAULT_HERO,heroInfo,type HeroId} from './heroes';
 import {createCombatVfx,facingScreenAngle,SKILL_CATALOG,type SkillId} from './combat-vfx';
 import {measureTracelogPhase} from './tracelog';
 import {SkillTree,nodeForSkill,emberNodeForSkill} from './skill-tree';
+import {restoreSkillUnlocks,saveSkillUnlocks,SKILL_SAVE_ERROR} from './skill-unlocks';
 
 const SCALE=DISPLAY/1.1;
 const HERO_REACH=STATS.hero.reach*SCALE,ENEMY_REACH=STATS.revenant.reach*SCALE,SIDE=.35*SCALE,SPACING=.72*SCALE;
@@ -80,7 +81,13 @@ export async function createEncounters(o:{
  const currentHeroId=():HeroId=>o.hero.hero?.()??DEFAULT_HERO;
  const start=o.hero.position(),h=new Fighter('hero',heroMeta.clips,toTile(start.x,start.y).u,toTile(start.x,start.y).v);
  let maxHp=STATS.hero.hp,kills=0,spawnTimer=0,ambient='255,255,255',origin={x:0,y:0,scale:1};
- let run=fresh(currentHeroId()),baseHp=100,levelUpPulseMs=0,regenAccum=0,lastCoopAutoCasts=0;
+ let skillSaveMessage='';
+ const soloRun=(hero:HeroId)=>{
+  if(o.showCoop)return fresh(hero); // Diagnostic co-op stays server-authoritative and temporary.
+  try{return restoreSkillUnlocks(localStorage,hero);}catch(error){skillSaveMessage=error instanceof Error?error.message:SKILL_SAVE_ERROR;return fresh(hero);}
+ };
+ let runHero=currentHeroId();
+ let run=soloRun(runHero),baseHp=100,levelUpPulseMs=0,regenAccum=0,lastCoopAutoCasts=0;
  const local:Foe[]=[],spawns:{u:number;v:number;m:number}[]=[];let foes=local,online=false,heroPlays=-1;
 
  // Revenant layers + Overhead bars
@@ -145,7 +152,10 @@ export async function createEncounters(o:{
  const skillTree=new SkillTree(o.uiStage,{run:()=>run,hero:currentHeroId,region:skillTreeRegion,equip:(slot,id)=>{
   // Co-op runs come from the server, which would put the old loadout straight back.
   if(online)return 'Skills can be changed in solo play';
-  if(!equip(run,slot,id,currentHeroId()))return 'That skill cannot go in this slot';
+  const next=structuredClone(run);
+  if(!equip(next,slot,id,currentHeroId()))return 'That skill cannot go in this slot';
+  try{if(!o.showCoop)saveSkillUnlocks(localStorage,currentHeroId(),next);}catch{return SKILL_SAVE_ERROR;}
+  run=next;
   lastSkillSig='';syncSkillBar();
   return true;
  }});
@@ -179,6 +189,8 @@ export async function createEncounters(o:{
  const blessingOverlay=new LevelUpBlessingOverlay(o.frames,id=>select(id));
  blessingOverlay.visible=false;
  o.uiStage.addChild(blessingOverlay);
+ const skillSaveNotice=o.uiStage.addChild(new MsdfText('tag-foe','',{size:16,align:'center'}));
+ skillSaveNotice.zIndex=100;skillSaveNotice.eventMode='none';
 
  function syncFoeLevels(){
   if(online)return;
@@ -379,7 +391,13 @@ export async function createEncounters(o:{
  function select(id:string){
   if(online&&!localOfferOverride){o.net?.chooseCard(id,run.level);return;}
   const hid=currentHeroId();
-  if(!choose(run,id,random,hid))return;
+  const next=structuredClone(run);
+  if(!choose(next,id,random,hid))return;
+  if(isActiveSkill(id)&&!o.showCoop){
+   try{saveSkillUnlocks(localStorage,hid,next);skillSaveMessage='';}
+   catch{skillSaveMessage=SKILL_SAVE_ERROR;return;}
+  }
+  run=next;
   if(isActiveSkill(id)){
    vfx.resetCooldowns();
   }
@@ -461,7 +479,11 @@ export async function createEncounters(o:{
  let lastHudHero='',lastRunGold=-1;
  function drawProgress(){
   const hid=currentHeroId();
+  if(hid!==runHero&&!online){runHero=hid;run=soloRun(hid);}
   syncHeroLoadout(run,hid);
+  skillSaveNotice.text=skillSaveMessage;
+  skillSaveNotice.visible=!!skillSaveMessage;
+  if(skillSaveMessage){skillSaveNotice.setWrapWidth(Math.min(520,innerWidth-32));skillSaveNotice.place(innerWidth/2,innerHeight/2,.5);}
   if(hid!==lastHudHero){
    lastHudHero=hid;
    const info=heroInfo(hid);
@@ -673,7 +695,7 @@ export async function createEncounters(o:{
   levelUpPulseMs=Math.max(0,levelUpPulseMs-dt);
   vfx.step(dt);
   const net=!!o.net?.active();
-  if(net!==online){run=fresh(currentHeroId());online=net;clearSouls();mirrors.clear();local.length=0;foes=local;spawnTimer=0;heroPlays=-1;lastCoopAutoCasts=0;if(!net){h.play('idle');h.hp=maxHp;}}
+  if(net!==online){run=net?fresh(currentHeroId()):soloRun(currentHeroId());online=net;clearSouls();mirrors.clear();local.length=0;foes=local;spawnTimer=0;heroPlays=-1;lastCoopAutoCasts=0;if(!net){h.play('idle');h.hp=maxHp;}}
   if(online){netStep(dt);stepSouls(dt);return;}
   if(previewMode){
    for(const f of [h,...foes])f.tick(dt);
