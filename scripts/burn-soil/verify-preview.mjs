@@ -22,5 +22,6 @@ try{
   assert.equal(await page.locator('button,input,select').count(),0);assert.equal(await page.locator('canvas').count(),1);assert.deepEqual(errors,[]);assert.deepEqual(failed,[]);reports.push({width,height,pass:true,state:await state(),errors,failed});console.log('PASS preview',mode,width);
  }
  await page.goto('http://localhost:5191/iframe');const frame=page.frames().find(f=>f.url().startsWith(url));assert(frame);await frame.waitForFunction(()=>window.__FLIPBOOK_FAN__);const a=await frame.evaluate(()=>window.__FLIPBOOK_FAN__.state().time);await page.waitForTimeout(250);const b=await frame.evaluate(()=>window.__FLIPBOOK_FAN__.state().time);assert.notEqual(a,b);
+ for(const r of reports){delete r.state.particleDefinitions;delete r.state.particleDetails;}
  await fs.writeFile(`docs/burn-soil/${mode}-preview.json`,JSON.stringify({pass:true,url,reports,iframe:{pass:true,before:a,after:b}},null,2));
 }finally{await browser.close();server.closeAllConnections();await new Promise(r=>server.close(r));}
