@@ -1,3 +1,4 @@
+import {attachStaticEvidence} from './static-evidence.mjs';
 import {glbEvidence,glbSourceEvidence,glbBlendEvidence,glbGpuMatrixEvidence} from './glb-evidence.mjs';
 import {generateSolidCompanions} from './solid-models.mjs';
 import fs from 'node:fs/promises';
@@ -70,6 +71,7 @@ for(const [sourceSet,folder] of [['gateway-producer-frames','gateway-frames-fina
  for(const f of audit.rows){const source=capture.frames.find(p=>p.index===f.index),a=await alpha('/shadow-audit/'+sourceSet+'/'+source.source);if(a.alphaSha256!==f.alphaSha256||source.alphaSha256!==f.alphaSha256||f.tests.length!==3)throw Error('Stale gateway producer evidence '+f.index);const row=rows.find(r=>r.id===f.key);(row.producerAudit??=[]).push({sourceSet,report:folder+'/report.json',alphaSha256:f.alphaSha256,sourceSize:f.sourceSize,cases:3});row.disposition='Actual stabilized producer alpha verified on desktop/mobile; three-sun cast, camera receiver, high/low object controls and controlled terrain filter pass; all frame navigation thresholds match. Original sheet alpha retained separately.';}
  }catch(error){if(error.code!=='ENOENT')throw error;}
 }
+report.staticAudit=await attachStaticEvidence(rows);
 await fs.writeFile('docs/shadow-audit/inventory.json',JSON.stringify(report,null,1)+'\n');
 await fs.writeFile('public/shadow-audit/inventory.json',JSON.stringify(report)+'\n');
 await fs.writeFile('public/shadow-audit/companions.json',JSON.stringify(companion)+'\n');

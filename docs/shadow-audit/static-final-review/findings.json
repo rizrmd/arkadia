@@ -1,0 +1,13 @@
+{
+  "reviewedFamilyPlates": 11,
+  "familyRecords": 86,
+  "geometryVariantsNumericallyExercised": 313,
+  "receiverControls": 939,
+  "reviewScope": "One visual representative per registered family; every distinct geometry variant has separate numeric three-sun controls. Not a visual review of all 313 rows.",
+  "resolved": ["Cemetery opaque bodies remain continuous", "Crate and barrel closed volumes remain continuous", "Tent roof/wall shadow gaps closed"],
+  "open": [
+    {"assets": ["frontier:drift-ne", "frontier:drift-se", "frontier:drift-mound"], "finding": "Layered horizontal proxy edges; distinguish source-alpha structure from missing solid volume before acceptance."},
+    {"assets": ["building:forge:3"], "finding": "Thin opening in afternoon projection; compare authored footprint/roof volume before acceptance."},
+    {"assets": ["court:brazier"], "finding": "Baked flame and metal share one sprite alpha/material. No separate emissive-material receive mask; report renderer limitation explicitly."}
+  ]
+}

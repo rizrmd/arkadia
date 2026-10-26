@@ -86,7 +86,16 @@
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
    "disposition": "integrated explicit geometry companion; per-family visual acceptance pending",
    "companion": "src/world/maps/shadow-companions.json#ruined-gate",
-   "owner": "this task"
+   "owner": "this task",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:219"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "frontier:broken-watchtower",
@@ -129,7 +138,16 @@
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
    "disposition": "integrated explicit geometry companion; per-family visual acceptance pending",
    "companion": "src/world/maps/shadow-companions.json#broken-watchtower",
-   "owner": "this task"
+   "owner": "this task",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:214"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "frontier:snowy-shrine",
@@ -172,7 +190,16 @@
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
    "disposition": "integrated explicit geometry companion; per-family visual acceptance pending",
    "companion": "src/world/maps/shadow-companions.json#snowy-shrine",
-   "owner": "this task"
+   "owner": "this task",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:166"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "frontier:pine-tall",
@@ -398,7 +425,46 @@
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
    "disposition": "integrated explicit geometry companion; per-family visual acceptance pending",
    "companion": "src/world/maps/shadow-companions.json#pine-tall",
-   "owner": "this task"
+   "owner": "this task",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:90",
+     "variant:92",
+     "variant:93",
+     "variant:97",
+     "variant:103",
+     "variant:107",
+     "variant:110",
+     "variant:111",
+     "variant:114",
+     "variant:117",
+     "variant:118",
+     "variant:120",
+     "variant:121",
+     "variant:122",
+     "variant:124",
+     "variant:128",
+     "variant:131",
+     "variant:133",
+     "variant:134",
+     "variant:144",
+     "variant:145",
+     "variant:154",
+     "variant:157",
+     "variant:160",
+     "variant:162",
+     "variant:163",
+     "variant:173",
+     "variant:178",
+     "variant:187",
+     "variant:200",
+     "variant:211"
+    ],
+    "sunCases": 93,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "frontier:pine-broad",
@@ -497,7 +563,25 @@
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
    "disposition": "integrated explicit geometry companion; per-family visual acceptance pending",
    "companion": "src/world/maps/shadow-companions.json#pine-broad",
-   "owner": "this task"
+   "owner": "this task",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:94",
+     "variant:98",
+     "variant:101",
+     "variant:102",
+     "variant:106",
+     "variant:135",
+     "variant:147",
+     "variant:186",
+     "variant:199",
+     "variant:207"
+    ],
+    "sunCases": 30,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "frontier:pine-sapling",
@@ -651,7 +735,34 @@
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
    "disposition": "integrated explicit geometry companion; per-family visual acceptance pending",
    "companion": "src/world/maps/shadow-companions.json#pine-sapling",
-   "owner": "this task"
+   "owner": "this task",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:96",
+     "variant:100",
+     "variant:119",
+     "variant:125",
+     "variant:129",
+     "variant:132",
+     "variant:137",
+     "variant:139",
+     "variant:142",
+     "variant:148",
+     "variant:149",
+     "variant:150",
+     "variant:153",
+     "variant:155",
+     "variant:156",
+     "variant:159",
+     "variant:175",
+     "variant:189",
+     "variant:229"
+    ],
+    "sunCases": 57,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "frontier:dead-tree",
@@ -713,7 +824,19 @@
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
    "disposition": "integrated explicit geometry companion; per-family visual acceptance pending",
    "companion": "src/world/maps/shadow-companions.json#dead-tree",
-   "owner": "this task"
+   "owner": "this task",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:188",
+     "variant:250",
+     "variant:262",
+     "variant:269"
+    ],
+    "sunCases": 12,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "frontier:dead-snag",
@@ -810,7 +933,24 @@
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
    "disposition": "integrated explicit geometry companion; per-family visual acceptance pending",
    "companion": "src/world/maps/shadow-companions.json#dead-snag",
-   "owner": "this task"
+   "owner": "this task",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:152",
+     "variant:181",
+     "variant:193",
+     "variant:195",
+     "variant:196",
+     "variant:270",
+     "variant:274",
+     "variant:275",
+     "variant:279"
+    ],
+    "sunCases": 27,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "frontier:shrub-juniper",
@@ -954,7 +1094,32 @@
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
    "disposition": "integrated explicit geometry companion; per-family visual acceptance pending",
    "companion": "src/world/maps/shadow-companions.json#shrub-juniper",
-   "owner": "this task"
+   "owner": "this task",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:91",
+     "variant:95",
+     "variant:99",
+     "variant:104",
+     "variant:109",
+     "variant:113",
+     "variant:123",
+     "variant:126",
+     "variant:127",
+     "variant:130",
+     "variant:141",
+     "variant:143",
+     "variant:158",
+     "variant:164",
+     "variant:170",
+     "variant:248",
+     "variant:251"
+    ],
+    "sunCases": 51,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "frontier:shrub-twigs",
@@ -1062,7 +1227,26 @@
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
    "disposition": "integrated explicit geometry companion; per-family visual acceptance pending",
    "companion": "src/world/maps/shadow-companions.json#shrub-twigs",
-   "owner": "this task"
+   "owner": "this task",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:177",
+     "variant:194",
+     "variant:201",
+     "variant:202",
+     "variant:212",
+     "variant:223",
+     "variant:230",
+     "variant:238",
+     "variant:266",
+     "variant:267",
+     "variant:278"
+    ],
+    "sunCases": 33,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "frontier:grass-tussock",
@@ -1409,7 +1593,64 @@
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
    "disposition": "integrated explicit geometry companion; per-family visual acceptance pending",
    "companion": "src/world/maps/shadow-companions.json#grass-tussock",
-   "owner": "this task"
+   "owner": "this task",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:105",
+     "variant:112",
+     "variant:116",
+     "variant:136",
+     "variant:140",
+     "variant:151",
+     "variant:161",
+     "variant:167",
+     "variant:169",
+     "variant:172",
+     "variant:174",
+     "variant:176",
+     "variant:182",
+     "variant:183",
+     "variant:184",
+     "variant:190",
+     "variant:191",
+     "variant:192",
+     "variant:198",
+     "variant:203",
+     "variant:204",
+     "variant:205",
+     "variant:206",
+     "variant:218",
+     "variant:224",
+     "variant:227",
+     "variant:231",
+     "variant:234",
+     "variant:243",
+     "variant:249",
+     "variant:252",
+     "variant:257",
+     "variant:260",
+     "variant:263",
+     "variant:264",
+     "variant:268",
+     "variant:271",
+     "variant:272",
+     "variant:273",
+     "variant:277",
+     "variant:281",
+     "variant:282",
+     "variant:283",
+     "variant:284",
+     "variant:285",
+     "variant:286",
+     "variant:287",
+     "variant:288",
+     "variant:289"
+    ],
+    "sunCases": 147,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "frontier:grass-patch",
@@ -1644,7 +1885,40 @@
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
    "disposition": "retain original alpha; no new height inference",
    "companion": "src/world/maps/shadow-companions.json#grass-patch",
-   "owner": "this task"
+   "owner": "this task",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:40",
+     "variant:41",
+     "variant:42",
+     "variant:46",
+     "variant:50",
+     "variant:51",
+     "variant:53",
+     "variant:54",
+     "variant:59",
+     "variant:60",
+     "variant:61",
+     "variant:62",
+     "variant:65",
+     "variant:66",
+     "variant:67",
+     "variant:68",
+     "variant:70",
+     "variant:71",
+     "variant:72",
+     "variant:76",
+     "variant:79",
+     "variant:80",
+     "variant:82",
+     "variant:84",
+     "variant:85"
+    ],
+    "sunCases": 75,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "frontier:rock-boulders",
@@ -1752,7 +2026,26 @@
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
    "disposition": "integrated explicit geometry companion; per-family visual acceptance pending",
    "companion": "src/world/maps/shadow-companions.json#rock-boulders",
-   "owner": "this task"
+   "owner": "this task",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:108",
+     "variant:115",
+     "variant:138",
+     "variant:146",
+     "variant:179",
+     "variant:185",
+     "variant:197",
+     "variant:220",
+     "variant:226",
+     "variant:235",
+     "variant:246"
+    ],
+    "sunCases": 33,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "frontier:rock-scatter",
@@ -1942,7 +2235,38 @@
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
    "disposition": "retain original alpha; no new height inference",
    "companion": "src/world/maps/shadow-companions.json#rock-scatter",
-   "owner": "this task"
+   "owner": "this task",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:43",
+     "variant:44",
+     "variant:45",
+     "variant:47",
+     "variant:48",
+     "variant:49",
+     "variant:52",
+     "variant:55",
+     "variant:56",
+     "variant:57",
+     "variant:58",
+     "variant:63",
+     "variant:64",
+     "variant:69",
+     "variant:73",
+     "variant:74",
+     "variant:75",
+     "variant:77",
+     "variant:78",
+     "variant:81",
+     "variant:83",
+     "variant:86",
+     "variant:87"
+    ],
+    "sunCases": 69,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "frontier:wall-ne",
@@ -1986,7 +2310,16 @@
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
    "disposition": "integrated explicit geometry companion; per-family visual acceptance pending",
    "companion": "src/world/maps/shadow-companions.json#wall-ne",
-   "owner": "this task"
+   "owner": "this task",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:208"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "frontier:wall-se",
@@ -2030,7 +2363,16 @@
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
    "disposition": "integrated explicit geometry companion; per-family visual acceptance pending",
    "companion": "src/world/maps/shadow-companions.json#wall-se",
-   "owner": "this task"
+   "owner": "this task",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:209"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "frontier:corner-n",
@@ -2074,7 +2416,16 @@
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
    "disposition": "integrated explicit geometry companion; per-family visual acceptance pending",
    "companion": "src/world/maps/shadow-companions.json#corner-n",
-   "owner": "this task"
+   "owner": "this task",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:232"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "frontier:corner-s",
@@ -2117,7 +2468,16 @@
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
    "disposition": "integrated explicit geometry companion; per-family visual acceptance pending",
    "companion": "src/world/maps/shadow-companions.json#corner-s",
-   "owner": "this task"
+   "owner": "this task",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:265"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "frontier:arch-ne",
@@ -2160,7 +2520,16 @@
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
    "disposition": "integrated explicit geometry companion; per-family visual acceptance pending",
    "companion": "src/world/maps/shadow-companions.json#arch-ne",
-   "owner": "this task"
+   "owner": "this task",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:221"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "frontier:arch-se",
@@ -2203,7 +2572,16 @@
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
    "disposition": "integrated explicit geometry companion; per-family visual acceptance pending",
    "companion": "src/world/maps/shadow-companions.json#arch-se",
-   "owner": "this task"
+   "owner": "this task",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:259"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "frontier:pillar-intact",
@@ -2253,7 +2631,17 @@
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
    "disposition": "integrated explicit geometry companion; per-family visual acceptance pending",
    "companion": "src/world/maps/shadow-companions.json#pillar-intact",
-   "owner": "CWSCU: preserve renderer strip count and geometry"
+   "owner": "CWSCU: preserve renderer strip count and geometry",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:171",
+     "variant:225"
+    ],
+    "sunCases": 6,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "frontier:pillar-broken",
@@ -2317,7 +2705,19 @@
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
    "disposition": "integrated explicit geometry companion; per-family visual acceptance pending",
    "companion": "src/world/maps/shadow-companions.json#pillar-broken",
-   "owner": "CWSCU: preserve renderer strip count and geometry"
+   "owner": "CWSCU: preserve renderer strip count and geometry",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:180",
+     "variant:241",
+     "variant:258",
+     "variant:276"
+    ],
+    "sunCases": 12,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "frontier:stairs-ne",
@@ -2360,7 +2760,16 @@
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
    "disposition": "integrated explicit geometry companion; per-family visual acceptance pending",
    "companion": "src/world/maps/shadow-companions.json#stairs-ne",
-   "owner": "CWSCU: preserve renderer strip count and geometry"
+   "owner": "CWSCU: preserve renderer strip count and geometry",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:217"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "frontier:stairs-nw",
@@ -2403,7 +2812,16 @@
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
    "disposition": "integrated explicit geometry companion; per-family visual acceptance pending",
    "companion": "src/world/maps/shadow-companions.json#stairs-nw",
-   "owner": "CWSCU: preserve renderer strip count and geometry"
+   "owner": "CWSCU: preserve renderer strip count and geometry",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:245"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "frontier:rubble",
@@ -2485,7 +2903,22 @@
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
    "disposition": "integrated explicit geometry companion; per-family visual acceptance pending",
    "companion": "src/world/maps/shadow-companions.json#rubble",
-   "owner": "this task"
+   "owner": "this task",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:222",
+     "variant:237",
+     "variant:239",
+     "variant:242",
+     "variant:253",
+     "variant:256",
+     "variant:261"
+    ],
+    "sunCases": 21,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "frontier:foundation",
@@ -2519,7 +2952,16 @@
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
    "disposition": "integrated explicit geometry companion; per-family visual acceptance pending",
    "companion": "src/world/maps/shadow-companions.json#foundation",
-   "owner": "this task"
+   "owner": "this task",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:310"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "frontier:floor-sunk",
@@ -2568,7 +3010,17 @@
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
    "disposition": "retain original alpha; no new height inference",
    "companion": "src/world/maps/shadow-companions.json#floor-sunk",
-   "owner": "this task"
+   "owner": "this task",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:35",
+     "variant:38"
+    ],
+    "sunCases": 6,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "frontier:paving",
@@ -2618,7 +3070,17 @@
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
    "disposition": "retain original alpha; no new height inference",
    "companion": "src/world/maps/shadow-companions.json#paving",
-   "owner": "this task"
+   "owner": "this task",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:34",
+     "variant:39"
+    ],
+    "sunCases": 6,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "frontier:flagstones-a",
@@ -3122,7 +3584,16 @@
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
    "disposition": "retain original alpha; no new height inference",
    "companion": "src/world/maps/shadow-companions.json#flagstones-a",
-   "owner": "this task"
+   "owner": "this task",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:37"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "frontier:flagstones-b",
@@ -4771,7 +5242,18 @@
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
    "disposition": "integrated explicit geometry companion; per-family visual acceptance pending",
    "companion": "src/world/maps/shadow-companions.json#drift-ne",
-   "owner": "this task"
+   "owner": "this task",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:215",
+     "variant:240",
+     "variant:254"
+    ],
+    "sunCases": 9,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "frontier:drift-se",
@@ -4827,7 +5309,18 @@
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
    "disposition": "integrated explicit geometry companion; per-family visual acceptance pending",
    "companion": "src/world/maps/shadow-companions.json#drift-se",
-   "owner": "this task"
+   "owner": "this task",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:213",
+     "variant:236",
+     "variant:255"
+    ],
+    "sunCases": 9,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "frontier:drift-mound",
@@ -4911,7 +5404,22 @@
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
    "disposition": "integrated explicit geometry companion; per-family visual acceptance pending",
    "companion": "src/world/maps/shadow-companions.json#drift-mound",
-   "owner": "this task"
+   "owner": "this task",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:165",
+     "variant:210",
+     "variant:216",
+     "variant:228",
+     "variant:233",
+     "variant:247",
+     "variant:280"
+    ],
+    "sunCases": 21,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "frontier:ground-scuff-a",
@@ -5316,7 +5824,16 @@
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
    "disposition": "retain original alpha; no new height inference",
    "companion": "src/world/maps/shadow-companions.json#ground-scuff-a",
-   "owner": "this task"
+   "owner": "this task",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:33"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "frontier:ground-scuff-b",
@@ -5719,7 +6236,16 @@
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
    "disposition": "retain original alpha; no new height inference",
    "companion": "src/world/maps/shadow-companions.json#ground-scuff-b",
-   "owner": "this task"
+   "owner": "this task",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:32"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "frontier:column-fallen",
@@ -5762,7 +6288,16 @@
    "receive": "native visible-face geometric receiver",
    "disposition": "actual source-authored box faces clipped to original alpha; multi-angle visual acceptance pending",
    "companion": "src/world/maps/solid-shadow-companions.json#frontier:column-fallen",
-   "owner": "this task"
+   "owner": "this task",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:244"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "frontier:column-fallen-v",
@@ -5806,7 +6341,16 @@
    "receive": "native visible-face geometric receiver",
    "disposition": "actual source-authored box faces clipped to original alpha; multi-angle visual acceptance pending",
    "companion": "src/world/maps/solid-shadow-companions.json#frontier:column-fallen-v",
-   "owner": "this task"
+   "owner": "this task",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:168"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "frontier:grave-headstone",
@@ -5849,7 +6393,16 @@
    "receive": "native visible-face geometric receiver",
    "disposition": "actual source-authored box faces clipped to original alpha; multi-angle visual acceptance pending",
    "companion": "src/world/maps/solid-shadow-companions.json#frontier:grave-headstone",
-   "owner": "this task"
+   "owner": "this task",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:1"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "frontier:grave-cross",
@@ -5892,7 +6445,16 @@
    "receive": "native visible-face geometric receiver",
    "disposition": "actual source-authored box faces clipped to original alpha; multi-angle visual acceptance pending",
    "companion": "src/world/maps/solid-shadow-companions.json#frontier:grave-cross",
-   "owner": "this task"
+   "owner": "this task",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:0"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "frontier:grave-sarcophagus",
@@ -5935,7 +6497,16 @@
    "receive": "native visible-face geometric receiver",
    "disposition": "actual source-authored box faces clipped to original alpha; multi-angle visual acceptance pending",
    "companion": "src/world/maps/solid-shadow-companions.json#frontier:grave-sarcophagus",
-   "owner": "this task"
+   "owner": "this task",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:2"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "frontier:grave-memorial",
@@ -5978,7 +6549,16 @@
    "receive": "native visible-face geometric receiver",
    "disposition": "actual source-authored box faces clipped to original alpha; multi-angle visual acceptance pending",
    "companion": "src/world/maps/solid-shadow-companions.json#frontier:grave-memorial",
-   "owner": "this task"
+   "owner": "this task",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:3"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "frontier:temple-podium",
@@ -6021,7 +6601,16 @@
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
    "disposition": "integrated explicit geometry companion; per-family visual acceptance pending",
    "companion": "src/world/maps/shadow-companions.json#temple-podium",
-   "owner": "this task"
+   "owner": "this task",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:36"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "court:rampart-se",
@@ -6103,7 +6692,16 @@
    ],
    "cast": "WebGL original-alpha folded-billboard depth field",
    "receive": "WebGL explicit proxy-height receiver",
-   "disposition": "integrated alpha proxy; per-family visual acceptance pending"
+   "disposition": "integrated alpha proxy; per-family visual acceptance pending",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:14"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "court:rampart-ne",
@@ -6185,7 +6783,16 @@
    ],
    "cast": "WebGL original-alpha folded-billboard depth field",
    "receive": "WebGL explicit proxy-height receiver",
-   "disposition": "integrated alpha proxy; per-family visual acceptance pending"
+   "disposition": "integrated alpha proxy; per-family visual acceptance pending",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:15"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "court:bastion",
@@ -6237,7 +6844,16 @@
    ],
    "cast": "WebGL original-alpha folded-billboard depth field",
    "receive": "WebGL explicit proxy-height receiver",
-   "disposition": "integrated alpha proxy; per-family visual acceptance pending"
+   "disposition": "integrated alpha proxy; per-family visual acceptance pending",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:9"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "court:fir-young",
@@ -6299,7 +6915,19 @@
    ],
    "cast": "WebGL original-alpha folded-billboard depth field",
    "receive": "WebGL explicit proxy-height receiver",
-   "disposition": "integrated alpha proxy; per-family visual acceptance pending"
+   "disposition": "integrated alpha proxy; per-family visual acceptance pending",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:8",
+     "variant:10",
+     "variant:18",
+     "variant:31"
+    ],
+    "sunCases": 12,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "court:spruce-mature",
@@ -6391,7 +7019,19 @@
    ],
    "cast": "WebGL original-alpha folded-billboard depth field",
    "receive": "WebGL explicit proxy-height receiver",
-   "disposition": "integrated alpha proxy; per-family visual acceptance pending"
+   "disposition": "integrated alpha proxy; per-family visual acceptance pending",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:12",
+     "variant:13",
+     "variant:16",
+     "variant:30"
+    ],
+    "sunCases": 12,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "court:cliff-snow",
@@ -6463,7 +7103,16 @@
    ],
    "cast": "WebGL original-alpha folded-billboard depth field",
    "receive": "WebGL explicit proxy-height receiver",
-   "disposition": "integrated alpha proxy; per-family visual acceptance pending"
+   "disposition": "integrated alpha proxy; per-family visual acceptance pending",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:11"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "court:boulders-snow",
@@ -6525,7 +7174,16 @@
    ],
    "cast": "WebGL original-alpha folded-billboard depth field",
    "receive": "WebGL explicit proxy-height receiver",
-   "disposition": "integrated alpha proxy; per-family visual acceptance pending"
+   "disposition": "integrated alpha proxy; per-family visual acceptance pending",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:17"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "court:paving-worn",
@@ -6627,7 +7285,17 @@
    ],
    "cast": "excluded: ground decal",
    "receive": "WebGL explicit proxy-height receiver",
-   "disposition": "retain flat decal"
+   "disposition": "retain flat decal",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:4",
+     "variant:7"
+    ],
+    "sunCases": 6,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "court:weeds-edge",
@@ -6719,7 +7387,16 @@
    ],
    "cast": "excluded: ground decal",
    "receive": "WebGL explicit proxy-height receiver",
-   "disposition": "retain flat decal"
+   "disposition": "retain flat decal",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:5"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "court:snowdrift-edge",
@@ -6801,7 +7478,16 @@
    ],
    "cast": "excluded: ground decal",
    "receive": "WebGL explicit proxy-height receiver",
-   "disposition": "retain flat decal"
+   "disposition": "retain flat decal",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:6"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "court:wall-broken",
@@ -6833,7 +7519,16 @@
    ],
    "cast": "WebGL original-alpha folded-billboard depth field",
    "receive": "WebGL explicit proxy-height receiver",
-   "disposition": "integrated alpha proxy; per-family visual acceptance pending"
+   "disposition": "integrated alpha proxy; per-family visual acceptance pending",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:23"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "court:supply-cart",
@@ -6865,7 +7560,16 @@
    ],
    "cast": "WebGL original-alpha folded-billboard depth field",
    "receive": "WebGL explicit proxy-height receiver",
-   "disposition": "integrated alpha proxy; per-family visual acceptance pending"
+   "disposition": "integrated alpha proxy; per-family visual acceptance pending",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:20"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "court:brazier",
@@ -6897,7 +7601,16 @@
    ],
    "cast": "WebGL original-alpha folded-billboard depth field",
    "receive": "WebGL explicit proxy-height receiver",
-   "disposition": "integrated alpha proxy; per-family visual acceptance pending"
+   "disposition": "integrated alpha proxy; per-family visual acceptance pending",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:26"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "court:crate",
@@ -6930,7 +7643,16 @@
    "cast": "WebGL original-alpha closed solid volume",
    "receive": "native visible-face geometric receiver",
    "disposition": "authored closed source-space face proxy clipped to original alpha; multi-angle visual acceptance pending",
-   "companion": "src/world/maps/solid-shadow-companions.json#court:crate"
+   "companion": "src/world/maps/solid-shadow-companions.json#court:crate",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:22"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "court:barrel",
@@ -6963,7 +7685,16 @@
    "cast": "WebGL original-alpha closed solid volume",
    "receive": "front visible capped surface only",
    "disposition": "authored cap and camera-ray interval; original alpha coverage retained; multi-angle visual acceptance pending",
-   "companion": "src/world/maps/solid-shadow-companions.json#court:barrel"
+   "companion": "src/world/maps/solid-shadow-companions.json#court:barrel",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:24"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "building:forge:1",
@@ -7013,7 +7744,16 @@
    "variants": [
     1
    ],
-   "note": "unique level asset"
+   "note": "unique level asset",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:21"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "building:forge:2",
@@ -7063,7 +7803,16 @@
    "variants": [
     2
    ],
-   "note": "unique level asset"
+   "note": "unique level asset",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:311"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "building:forge:3",
@@ -7113,7 +7862,16 @@
    "variants": [
     3
    ],
-   "note": "unique level asset"
+   "note": "unique level asset",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:312"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "building:barracks:1",
@@ -7165,7 +7923,16 @@
     2,
     3
    ],
-   "note": "levels share the same sprite"
+   "note": "levels share the same sprite",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:19"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "building:altar:1",
@@ -7217,7 +7984,16 @@
     2,
     3
    ],
-   "note": "levels share the same sprite"
+   "note": "levels share the same sprite",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:25"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "building:mage:1",
@@ -7269,7 +8045,16 @@
     2,
     3
    ],
-   "note": "levels share the same sprite"
+   "note": "levels share the same sprite",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:28"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "building:expedition:1",
@@ -7313,15 +8098,25 @@
      ]
     ]
    },
-   "cast": "WebGL original-alpha folded-billboard depth field",
-   "receive": "WebGL explicit proxy-height receiver",
-   "disposition": "integrated alpha proxy; level visual acceptance pending",
+   "cast": "original-alpha closed pitched-roof tent volume with structural alpha fringe",
+   "receive": "native visible roof/wall geometry",
+   "disposition": "Closed roof, walls and floor remove projection gaps; mirror/lift and original-alpha fringe checks pass. Three-sun cast/receive controls pass.",
    "variants": [
     1,
     2,
     3
    ],
-   "note": "levels share the same sprite"
+   "note": "levels share the same sprite",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:27"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   },
+   "companion": "src/stronghold/tent-shadow.ts"
   },
   {
    "id": "building:mine:1",
@@ -7373,7 +8168,16 @@
     2,
     3
    ],
-   "note": "levels share the same sprite"
+   "note": "levels share the same sprite",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:29"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "building:gate:1",
@@ -28280,7 +29084,16 @@
    "cast": "unlit original-alpha sconce; authored height and two-world-pixel camera-depth shell",
    "receive": "static scene geometry-height receiver",
    "companion": "src/stronghold/torch-shadow.ts",
-   "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive."
+   "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive.",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:290"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "torch-body:1",
@@ -28308,7 +29121,16 @@
    "cast": "unlit original-alpha sconce; authored height and two-world-pixel camera-depth shell",
    "receive": "static scene geometry-height receiver",
    "companion": "src/stronghold/torch-shadow.ts",
-   "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive."
+   "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive.",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:291"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "torch-body:2",
@@ -28336,7 +29158,16 @@
    "cast": "unlit original-alpha sconce; authored height and two-world-pixel camera-depth shell",
    "receive": "static scene geometry-height receiver",
    "companion": "src/stronghold/torch-shadow.ts",
-   "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive."
+   "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive.",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:292"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "torch-body:3",
@@ -28364,7 +29195,16 @@
    "cast": "unlit original-alpha sconce; authored height and two-world-pixel camera-depth shell",
    "receive": "static scene geometry-height receiver",
    "companion": "src/stronghold/torch-shadow.ts",
-   "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive."
+   "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive.",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:293"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "torch-body:4",
@@ -28392,7 +29232,16 @@
    "cast": "unlit original-alpha sconce; authored height and two-world-pixel camera-depth shell",
    "receive": "static scene geometry-height receiver",
    "companion": "src/stronghold/torch-shadow.ts",
-   "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive."
+   "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive.",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:294"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "torch-body:5",
@@ -28420,7 +29269,16 @@
    "cast": "unlit original-alpha sconce; authored height and two-world-pixel camera-depth shell",
    "receive": "static scene geometry-height receiver",
    "companion": "src/stronghold/torch-shadow.ts",
-   "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive."
+   "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive.",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:295"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "torch-body:6",
@@ -28448,7 +29306,16 @@
    "cast": "unlit original-alpha sconce; authored height and two-world-pixel camera-depth shell",
    "receive": "static scene geometry-height receiver",
    "companion": "src/stronghold/torch-shadow.ts",
-   "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive."
+   "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive.",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:296"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "torch-body:7",
@@ -28476,7 +29343,16 @@
    "cast": "unlit original-alpha sconce; authored height and two-world-pixel camera-depth shell",
    "receive": "static scene geometry-height receiver",
    "companion": "src/stronghold/torch-shadow.ts",
-   "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive."
+   "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive.",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:297"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "torch-body:8",
@@ -28504,7 +29380,16 @@
    "cast": "unlit original-alpha sconce; authored height and two-world-pixel camera-depth shell",
    "receive": "static scene geometry-height receiver",
    "companion": "src/stronghold/torch-shadow.ts",
-   "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive."
+   "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive.",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:298"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "torch-body:9",
@@ -28532,7 +29417,16 @@
    "cast": "unlit original-alpha sconce; authored height and two-world-pixel camera-depth shell",
    "receive": "static scene geometry-height receiver",
    "companion": "src/stronghold/torch-shadow.ts",
-   "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive."
+   "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive.",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:299"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "torch-body:10",
@@ -28560,7 +29454,16 @@
    "cast": "unlit original-alpha sconce; authored height and two-world-pixel camera-depth shell",
    "receive": "static scene geometry-height receiver",
    "companion": "src/stronghold/torch-shadow.ts",
-   "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive."
+   "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive.",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:300"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "torch-body:11",
@@ -28588,7 +29491,16 @@
    "cast": "unlit original-alpha sconce; authored height and two-world-pixel camera-depth shell",
    "receive": "static scene geometry-height receiver",
    "companion": "src/stronghold/torch-shadow.ts",
-   "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive."
+   "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive.",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:301"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "torch-body:12",
@@ -28616,7 +29528,16 @@
    "cast": "unlit original-alpha sconce; authored height and two-world-pixel camera-depth shell",
    "receive": "static scene geometry-height receiver",
    "companion": "src/stronghold/torch-shadow.ts",
-   "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive."
+   "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive.",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:302"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "torch-post:12",
@@ -28640,7 +29561,16 @@
    "cast": "original procedural stroke alpha and explicit depth shell",
    "receive": "static scene geometry-height receiver",
    "companion": "src/stronghold/torch-shadow.ts",
-   "disposition": "Integrated; nine-coordinate draw alignment and three-sun GPU cast/receive controls pass; no collision footprint added."
+   "disposition": "Integrated; nine-coordinate draw alignment and three-sun GPU cast/receive controls pass; no collision footprint added.",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:303"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "torch-body:13",
@@ -28668,7 +29598,16 @@
    "cast": "unlit original-alpha sconce; authored height and two-world-pixel camera-depth shell",
    "receive": "static scene geometry-height receiver",
    "companion": "src/stronghold/torch-shadow.ts",
-   "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive."
+   "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive.",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:304"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "torch-post:13",
@@ -28692,7 +29631,16 @@
    "cast": "original procedural stroke alpha and explicit depth shell",
    "receive": "static scene geometry-height receiver",
    "companion": "src/stronghold/torch-shadow.ts",
-   "disposition": "Integrated; nine-coordinate draw alignment and three-sun GPU cast/receive controls pass; no collision footprint added."
+   "disposition": "Integrated; nine-coordinate draw alignment and three-sun GPU cast/receive controls pass; no collision footprint added.",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:305"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "torch-body:14",
@@ -28720,7 +29668,16 @@
    "cast": "unlit original-alpha sconce; authored height and two-world-pixel camera-depth shell",
    "receive": "static scene geometry-height receiver",
    "companion": "src/stronghold/torch-shadow.ts",
-   "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive."
+   "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive.",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:306"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "torch-post:14",
@@ -28744,7 +29701,16 @@
    "cast": "original procedural stroke alpha and explicit depth shell",
    "receive": "static scene geometry-height receiver",
    "companion": "src/stronghold/torch-shadow.ts",
-   "disposition": "Integrated; nine-coordinate draw alignment and three-sun GPU cast/receive controls pass; no collision footprint added."
+   "disposition": "Integrated; nine-coordinate draw alignment and three-sun GPU cast/receive controls pass; no collision footprint added.",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:307"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "torch-body:15",
@@ -28772,7 +29738,16 @@
    "cast": "unlit original-alpha sconce; authored height and two-world-pixel camera-depth shell",
    "receive": "static scene geometry-height receiver",
    "companion": "src/stronghold/torch-shadow.ts",
-   "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive."
+   "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive.",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:308"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "torch-post:15",
@@ -28796,7 +29771,16 @@
    "cast": "original procedural stroke alpha and explicit depth shell",
    "receive": "static scene geometry-height receiver",
    "companion": "src/stronghold/torch-shadow.ts",
-   "disposition": "Integrated; nine-coordinate draw alignment and three-sun GPU cast/receive controls pass; no collision footprint added."
+   "disposition": "Integrated; nine-coordinate draw alignment and three-sun GPU cast/receive controls pass; no collision footprint added.",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:309"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "frostpass:spruce-mature",
@@ -29421,7 +30405,16 @@
    },
    "cast": "relief geometry proxy; scenery visual handled by frontier",
    "receive": "WebGL authored relief height reconstruction",
-   "disposition": "authored relief intersection integrated; multi-angle visual acceptance pending"
+   "disposition": "authored relief intersection integrated; multi-angle visual acceptance pending",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:89"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "terrain:west-terrace",
@@ -29692,7 +30685,16 @@
    },
    "cast": "relief geometry proxy; scenery visual handled by frontier",
    "receive": "WebGL authored relief height reconstruction",
-   "disposition": "authored relief intersection integrated; multi-angle visual acceptance pending"
+   "disposition": "authored relief intersection integrated; multi-angle visual acceptance pending",
+   "staticAudit": {
+    "report": "static-final/report.json",
+    "reportSha256": "54893fb04042ea3aebbfe172d78143bfdfcf1f1f8efc5c7460a87cc12c0fc0a6",
+    "variants": [
+     "variant:88"
+    ],
+    "sunCases": 3,
+    "scope": "Production cast and independent high/low receiver controls; software GPU."
+   }
   },
   {
    "id": "terrain:temple-podium",
@@ -29734,5 +30736,18 @@
    "disposition": "authored relief intersection integrated; multi-angle visual acceptance pending"
   }
  ],
- "errors": []
+ "errors": [],
+ "staticAudit": {
+  "report": "static-final/report.json",
+  "variants": 313,
+  "sunCases": 939,
+  "mappedRows": 86,
+  "registered": 476,
+  "placements": 479,
+  "receiverPainterOrder": {
+   "sourceCount": 296,
+   "colorCount": 296,
+   "mismatches": 0
+  }
+ }
 }

@@ -30,9 +30,21 @@ export function tentHeightAt(u:number,v:number){
  for(const [a,b] of edges){const dx=b[0]-a[0],dy=b[1]-a[1],t=Math.max(0,Math.min(1,((x-a[0])*dx+(y-a[1])*dy)/(dx*dx+dy*dy))),d=(x-a[0]-t*dx)**2+(y-a[1]-t*dy)**2;if(d<distance){distance=d;height=a[2]+t*(b[2]-a[2]);}}
  return height;
 }
+// Closed pitched-roof envelope. Source-camera coordinates and geometric
+// heights share the reference plane above; hidden walls/floor close the light
+// volume. Every face remains clipped to the original source alpha.
+const body:Vertex[]=[
+ [151,410,0],[371,458,0],[662,333,0],[522,272,0],
+ left,front,rear,[522,130,142],[274,140,294],[560,35,267],
+];
+const bodyFaces=[[4,8,9,7],[8,5,6,9],[0,1,5,8,4],[1,2,6,5],[2,3,7,9,6],[3,0,4,7],[0,3,2,1]];
+// Rope silhouettes stay as thin authored ribbons, rather than being dropped
+// outside the body envelope or receiving the full roof height.
+const tentVertices=body.map(v=>[...v]),tentFaces=bodyFaces.map(f=>[...f]);
+for(const [a,b] of ropes){const n=tentVertices.length;tentVertices.push([a[0]-3,a[1],a[2]],[a[0]+3,a[1],a[2]],[b[0]+3,b[1],b[2]],[b[0]-3,b[1],b[2]]);tentFaces.push([n,n+1,n+2,n+3]);}
 export function withTentGeometry(p:ShadowSurface):ShadowSurface{
- return {...p,heightAtScreen:(x,y)=>{
-  const lx=x-p.x,u=lx/p.width+.5,v=(y-p.y-(p.shear??0)*lx)/((p.vertical??1)*p.height)+p.pivot[1];
-  return tentHeightAt(u,v)*p.height/498*(p.vertical??1);
+ return {...p,solidBody:true,geometryModel:'closed-pitched-tent-v1',nativeGeometry:{completeAlpha:true,vertices:tentVertices.map(([x,y,z])=>[x/756,y/498,z/498]),faces:tentFaces,receiveFaces:[0,1,2,3,...ropes.map((_,i)=>bodyFaces.length+i)]},heightAtScreen:(x,y)=>{
+  const lx=x-p.x,u=lx/p.width*(p.flip?-1:1)+p.pivot[0],v=(y-p.y+(p.lift??0)-(p.shear??0)*lx)/((p.vertical??1)*p.height)+p.pivot[1];
+  return (p.lift??0)+tentHeightAt(u,v)*p.height/498*(p.vertical??1);
  }};
 }

@@ -25,7 +25,7 @@ export async function auditShadowFamilies(surfaces:ShadowSurface[],offset=0,limi
  const field=createSceneShadows(stage,()=>{},app.renderer),sheet=document.createElement('canvas');sheet.width=size*3;sheet.height=(size+40)*variants.length;const ctx=sheet.getContext('2d')!,rows:any[]=[],failures:string[]=[];
  let art:Sprite|null=null;const ownSources=new Map<CanvasImageSource,TextureSource>();
  const readPixels=()=>app.renderer.extract.pixels({target:stage,resolution:1,frame:new Rectangle(0,0,size,size)});
- const heightDiagnostic=new Filter({glProgram:GlProgram.from({name:'audit-receiver-height',vertex:shadowFilterVertex,fragment:'in vec2 vScreen;out vec4 finalColor;uniform sampler2D uHeight;uniform vec4 uHeightBounds;uniform vec4 uCamera;void main(){vec2 world=(vScreen-uCamera.xy)/uCamera.z,uv=(world-uHeightBounds.xy)/uHeightBounds.zw;finalColor=any(lessThan(uv,vec2(0.0)))||any(greaterThanEqual(uv,vec2(1.0)))?vec4(0.0):texture(uHeight,uv);}'}),resources:{shadowUniforms:field.filter.resources.shadowUniforms,uHeight:field.filter.resources.uHeight},resolution:1,padding:0});
+ const heightDiagnostic=new Filter({glProgram:GlProgram.from({name:'audit-receiver-height',preferredFragmentPrecision:'highp',vertex:shadowFilterVertex,fragment:'in vec2 vScreen;out vec4 finalColor;uniform sampler2D uHeight;uniform vec4 uHeightBounds;uniform vec4 uCamera;void main(){vec2 world=(vScreen-uCamera.xy)/uCamera.z,uv=(world-uHeightBounds.xy)/uHeightBounds.zw;finalColor=any(lessThan(uv,vec2(0.0)))||any(greaterThanEqual(uv,vec2(1.0)))?vec4(0.0):texture(uHeight,uv);}'}),resources:{shadowUniforms:field.filter.resources.shadowUniforms,uHeight:field.filter.resources.uHeight},resolution:1,padding:0});
  const wait=async(before:number)=>{const start=performance.now();while(!field.stats().ready||field.stats().rebuilds<=before){if(field.stats().error)throw Error(field.stats().error);if(performance.now()-start>30000)throw Error('Family audit Worker timeout');await new Promise(r=>setTimeout(r,5));}};
  const render=async(scene:ShadowSurface[],sun:ShadowSun)=>{const before=field.stats().rebuilds;field.setScene(scene);field.setSun(sun);await wait(before);return readPixels();};
  try{for(const [row,entry] of variants.entries()){
@@ -52,11 +52,11 @@ export async function auditShadowFamilies(surfaces:ShadowSurface[],offset=0,limi
    // stays hidden inside its art bounds. Read the CPU-packed receiver height
    // at an actual GPU pixel, then place an independent caster on that ray.
    await render([{...p,cast:false}],sun);
-   stage.filters=[heightDiagnostic];const packed=readPixels().pixels;stage.filters=[field.filter];
+   heightDiagnostic.resources.uHeight=field.filter.resources.uHeight;stage.filters=[heightDiagnostic];const packed=readPixels().pixels;stage.filters=[field.filter];
    let chosen:{px:number;py:number;x:number;y:number;z:number}|null=null;
    const owner=(k:number)=>packed[k]*16+Math.floor(packed[k+1]/16),height=(k:number)=>((packed[k+1]%16)*256+packed[k+2])*.5;
    for(let pass=0;pass<2&&!chosen;pass++)for(let py=2;py<size-2;py++)for(let px=2;px<size-2;px++){const k=(py*size+px)*4;if(owner(k)!==1||packed[k+3]<200)continue;const z=height(k);if(chosen&&z<=chosen.z)continue;let interior=true;if(!pass)for(let yy=py-1;yy<=py+1;yy++)for(let xx=px-1;xx<=px+1;xx++){const j=(yy*size+xx)*4;if(owner(j)!==1||Math.abs(height(j)-z)>4)interior=false;}if(!interior)continue;const x=Math.fround(Math.fround(px+.5-Math.fround(ox))/Math.fround(zoom)),y=Math.fround(Math.fround(py+.5-Math.fround(oy))/Math.fround(zoom));chosen={px,py,x,y,z};}
-   let receive:any={status:'no opaque receiver pixels'};
+   let receive:any={status:'no opaque receiver pixels'};if(!chosen&&points.some(q=>q.receive!==false&&q.alpha>=.5))failures.push(entry.id+' missing expected GPU receiver pixels');
    if(chosen){const q=chosen,external=(z:number):ShadowSurface=>({key:'external-probe-caster',source:white,sourceWidth:1,sourceHeight:1,x:q.x+sun.dx*(q.z-z),y:q.y+q.z+sun.dy*(q.z-z)-z,width:Math.max(8,8/zoom),height:Math.max(8,8/zoom),pivot:[.5,.5],constantHeight:z,cast:true});
     const at=(p:Uint8ClampedArray)=>p[(q.py*size+q.px)*4],high=await render([external(maxHeight+50),{...p,cast:false}],sun),low=await render([external(Math.max(0,q.z-8)),{...p,cast:false}],sun),highRed=at(high.pixels),lowRed=at(low.pixels);
     receive={status:highRed<250&&lowRed>=250?'pass':'needs inspection',receiverHeight:q.z,pixel:[q.px,q.py],highRed,lowRed};if(receive.status!=='pass')failures.push(entry.id+' asset reception sun '+column+' '+JSON.stringify(receive));
