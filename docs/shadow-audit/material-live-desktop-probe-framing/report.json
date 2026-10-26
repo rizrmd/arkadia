@@ -1,0 +1,147 @@
+{
+  "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+  "profile": "desktop",
+  "scope": "Compiled live legacy scene containing the actual brazier, real source material and existing receiver texture. Three-sun isolated asset controls plus independent above-scene caster on game pixels. Software viewport, not native-device performance.",
+  "errors": [],
+  "failedResponses": [],
+  "entry": "https://ark-whachat.fural.space/assets/index-BjGJB5qD.js",
+  "stats": {
+    "surfaces": 477,
+    "samples": 722551,
+    "rebuilds": 1,
+    "buildMs": 2702.7999999523163,
+    "bytes": 22854096,
+    "receiverPixels": 1174368,
+    "depthPixels": 2269578,
+    "ready": true,
+    "error": "",
+    "sun": {
+      "dx": 1.59394236711567,
+      "dy": 0.09168415256286729,
+      "alpha": 0.4
+    },
+    "model": "original alpha, explicit billboard/relief geometry; light-space depth compare",
+    "uploadMs": 12208.799999952316,
+    "dynamic": {
+      "updates": 5,
+      "actors": 1,
+      "extraSurfaces": 1,
+      "skinnedMeshes": 1,
+      "receiverPasses": 3,
+      "geometryBytes": 2073244,
+      "drawnVertices": 40379,
+      "pixels": 1182720,
+      "bytes": 32807772,
+      "renderMs": 2,
+      "ready": true,
+      "casterPasses": 3,
+      "fieldSamplers": 4,
+      "opaqueEnvelope": true,
+      "step": 0.5
+    }
+  },
+  "assetControls": {
+    "offset": 22,
+    "totalVariants": 314,
+    "totalPlacements": 480,
+    "rows": [
+      {
+        "id": "variant:22",
+        "signature": "[\"brazier:/modular-stronghold/v2/brazier.png\",null,32,48.02689075630252,[0.5,0.97],null,0,1,null,null,null,true,false,{\"materialRevision\":\"brazier:61f8c66b2c2e412a17b79d9de307e8e40d18c3d84b3cc4834933677d6bb62786\"}]",
+        "family": "brazier:/modular-stronghold/v2/brazier.png",
+        "key": "brazier:/modular-stronghold/v2/brazier.png",
+        "placements": [
+          {
+            "key": "brazier:/modular-stronghold/v2/brazier.png",
+            "x": 1101.8,
+            "y": 422.4
+          }
+        ],
+        "width": 32,
+        "height": 48.02689075630252,
+        "flip": false,
+        "groundRotation": 0,
+        "lift": 0,
+        "explicitHeight": false,
+        "solidBody": false,
+        "tests": [
+          {
+            "sun": {
+              "dx": 1.594,
+              "dy": 0.092,
+              "alpha": 0.55
+            },
+            "darkPixels": 4768,
+            "cast": true,
+            "maxHeight": 45.02521008403362,
+            "receiver": {
+              "status": "no unoccluded probe outside source bounds"
+            },
+            "receive": {
+              "status": "pass",
+              "receiverHeight": 42.5,
+              "pixel": [
+                68,
+                21
+              ],
+              "highRed": 126,
+              "lowRed": 255
+            }
+          },
+          {
+            "sun": {
+              "dx": 0.278,
+              "dy": 0.307,
+              "alpha": 0.55
+            },
+            "darkPixels": 6747,
+            "cast": true,
+            "maxHeight": 45.02521008403362,
+            "receiver": {
+              "status": "no unoccluded probe outside source bounds"
+            },
+            "receive": {
+              "status": "pass",
+              "receiverHeight": 42.5,
+              "pixel": [
+                102,
+                25
+              ],
+              "highRed": 126,
+              "lowRed": 255
+            }
+          },
+          {
+            "sun": {
+              "dx": -0.826,
+              "dy": 0.743,
+              "alpha": 0.55
+            },
+            "darkPixels": 9359,
+            "cast": true,
+            "maxHeight": 45.02521008403362,
+            "receiver": {
+              "status": "no unoccluded probe outside source bounds"
+            },
+            "receive": {
+              "status": "pass",
+              "receiverHeight": 42.5,
+              "pixel": [
+                174,
+                22
+              ],
+              "highRed": 126,
+              "lowRed": 255
+            }
+          }
+        ]
+      }
+    ],
+    "failures": [],
+    "image": "controls.png",
+    "probeSampling": "GPU packed receiver height at actual rendered pixel; float32 camera reconstruction",
+    "scope": "Actual registered static geometry plus explicitly labeled catalog/building fixtures, production GPU filter and Worker; three light vectors. Contact sheets show one representative per distinct geometry variant. Probe cases outside source bounds test visible raised receiving and above-caster rejection."
+  },
+  "status": "incomplete: camera framing excluded terrain probe",
+  "failure": "Initial camera placed the brazier at the right viewport edge. Asset controls passed, but no visible terrain pixel met the independent game-probe selection. This attempt is not counted as full material acceptance."
+}

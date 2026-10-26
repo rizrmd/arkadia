@@ -1,5 +1,5 @@
 {
-  "status": "locally integrated and validated; runtime deployment pending",
+  "status": "shipped and verified in runtime 7957773a",
   "scope": "Source-camera semantic companion only. Original artwork is unchanged; mask alpha partitions it byte-exactly. No height inferred from brightness.",
   "source": "/modular-stronghold/v2/brazier.png",
   "sourceSha256": "ce0bba103743e9cfbfe279df9acd9532510326f7c1a982b2a3f783435019998e",
@@ -187,5 +187,10 @@
       "sha256": "e18b3ff6e66c833bec950c37837492f229c960a6373843f2785528a43c31c68a"
     }
   },
-  "visualReview": "Source/physical/emissive and three-sun cast plates directly inspected. Semantic boundaries and folded geometry remain authored approximations at sample resolution."
+  "visualReview": "Source/physical/emissive and three-sun cast plates directly inspected. Semantic boundaries and folded geometry remain authored approximations at sample resolution.",
+  "liveEvidence": [
+    "material-live-desktop/report.json",
+    "material-live-mobile/report.json",
+    "delivered-static-live/report.json"
+  ]
 }

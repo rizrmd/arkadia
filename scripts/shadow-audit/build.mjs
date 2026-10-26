@@ -1,3 +1,4 @@
+import {attachDeliveredStaticEvidence} from './delivered-static-evidence.mjs';
 import {nonSolidInventory} from './non-solid-inventory.mjs';
 import {attachStaticEvidence} from './static-evidence.mjs';
 import {glbEvidence,glbSourceEvidence,glbBlendEvidence,glbGpuMatrixEvidence} from './glb-evidence.mjs';
@@ -74,6 +75,7 @@ for(const [sourceSet,folder] of [['gateway-producer-frames','gateway-frames-fina
  }catch(error){if(error.code!=='ENOENT')throw error;}
 }
 report.staticAudit=await attachStaticEvidence(rows);
+report.deliveredStaticAudit=await attachDeliveredStaticEvidence(rows);
 const delivered=await read('docs/shadow-audit/delivered-source-audit.json');for(const row of rows){const d=delivered.sources.find(d=>d.source===row.source);if(d)row.sourceDelivery={report:'delivered-source-audit.json',authoredSize:d.authoredSize,decodedSize:d.decodedSize,sourcePixelFrames:d.sourcePixelFrames,policy:d.policy};}
 
 const materials=await read('src/world/maps/shadow-material-companions.json');for(const [id,m] of Object.entries(materials.assets)){const row=rows.find(r=>r.id===id);if(!row)throw Error('Uninventoried material '+id);row.materialCompanion={manifest:'src/world/maps/shadow-material-companions.json',...m};row.cast='original-alpha physical metal/wood material in folded proxy';row.receive='source-aligned lit/emissive response in existing static receiver map';row.disposition='Original RGB and alpha retained; semantic material partition, opaque/partial glow, mirror and three-sun GPU controls pass. Folded/semantic approximation; Canvas fallback does not use this material response.';}

@@ -100,6 +100,16 @@
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
    },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:216"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
+   },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
     "authoredSize": [
@@ -169,6 +179,16 @@
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
    },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:211"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
+   },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
     "authoredSize": [
@@ -237,6 +257,16 @@
    "visualReview": {
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
+   },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:163"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
    },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
@@ -520,6 +550,46 @@
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
    },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:87",
+     "variant:89",
+     "variant:90",
+     "variant:94",
+     "variant:100",
+     "variant:104",
+     "variant:107",
+     "variant:108",
+     "variant:111",
+     "variant:114",
+     "variant:115",
+     "variant:117",
+     "variant:118",
+     "variant:119",
+     "variant:121",
+     "variant:125",
+     "variant:128",
+     "variant:130",
+     "variant:131",
+     "variant:141",
+     "variant:142",
+     "variant:151",
+     "variant:154",
+     "variant:157",
+     "variant:159",
+     "variant:160",
+     "variant:170",
+     "variant:175",
+     "variant:184",
+     "variant:197",
+     "variant:208"
+    ],
+    "sunCases": 93,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
+   },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
     "authoredSize": [
@@ -653,6 +723,25 @@
    "visualReview": {
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
+   },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:91",
+     "variant:95",
+     "variant:98",
+     "variant:99",
+     "variant:103",
+     "variant:132",
+     "variant:144",
+     "variant:183",
+     "variant:196",
+     "variant:204"
+    ],
+    "sunCases": 30,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
    },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
@@ -852,6 +941,34 @@
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
    },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:93",
+     "variant:97",
+     "variant:116",
+     "variant:122",
+     "variant:126",
+     "variant:129",
+     "variant:134",
+     "variant:136",
+     "variant:139",
+     "variant:145",
+     "variant:146",
+     "variant:147",
+     "variant:150",
+     "variant:152",
+     "variant:153",
+     "variant:156",
+     "variant:172",
+     "variant:186",
+     "variant:226"
+    ],
+    "sunCases": 57,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
+   },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
     "authoredSize": [
@@ -942,6 +1059,19 @@
    "visualReview": {
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
+   },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:185",
+     "variant:247",
+     "variant:259",
+     "variant:266"
+    ],
+    "sunCases": 12,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
    },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
@@ -1073,6 +1203,24 @@
    "visualReview": {
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
+   },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:149",
+     "variant:178",
+     "variant:190",
+     "variant:192",
+     "variant:193",
+     "variant:267",
+     "variant:271",
+     "variant:272",
+     "variant:276"
+    ],
+    "sunCases": 27,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
    },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
@@ -1260,6 +1408,32 @@
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
    },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:88",
+     "variant:92",
+     "variant:96",
+     "variant:101",
+     "variant:106",
+     "variant:110",
+     "variant:120",
+     "variant:123",
+     "variant:124",
+     "variant:127",
+     "variant:138",
+     "variant:140",
+     "variant:155",
+     "variant:161",
+     "variant:167",
+     "variant:245",
+     "variant:248"
+    ],
+    "sunCases": 51,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
+   },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
     "authoredSize": [
@@ -1403,6 +1577,26 @@
    "visualReview": {
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
+   },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:174",
+     "variant:191",
+     "variant:198",
+     "variant:199",
+     "variant:209",
+     "variant:220",
+     "variant:227",
+     "variant:235",
+     "variant:263",
+     "variant:264",
+     "variant:275"
+    ],
+    "sunCases": 33,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
    },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
@@ -1825,6 +2019,64 @@
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
    },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:102",
+     "variant:109",
+     "variant:113",
+     "variant:133",
+     "variant:137",
+     "variant:148",
+     "variant:158",
+     "variant:164",
+     "variant:166",
+     "variant:169",
+     "variant:171",
+     "variant:173",
+     "variant:179",
+     "variant:180",
+     "variant:181",
+     "variant:187",
+     "variant:188",
+     "variant:189",
+     "variant:195",
+     "variant:200",
+     "variant:201",
+     "variant:202",
+     "variant:203",
+     "variant:215",
+     "variant:221",
+     "variant:224",
+     "variant:228",
+     "variant:231",
+     "variant:240",
+     "variant:246",
+     "variant:249",
+     "variant:254",
+     "variant:257",
+     "variant:260",
+     "variant:261",
+     "variant:265",
+     "variant:268",
+     "variant:269",
+     "variant:270",
+     "variant:274",
+     "variant:279",
+     "variant:281",
+     "variant:282",
+     "variant:283",
+     "variant:284",
+     "variant:285",
+     "variant:286",
+     "variant:287",
+     "variant:289"
+    ],
+    "sunCases": 147,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
+   },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
     "authoredSize": [
@@ -2110,6 +2362,40 @@
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
    },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:36",
+     "variant:38",
+     "variant:39",
+     "variant:43",
+     "variant:47",
+     "variant:48",
+     "variant:50",
+     "variant:51",
+     "variant:56",
+     "variant:57",
+     "variant:58",
+     "variant:59",
+     "variant:62",
+     "variant:63",
+     "variant:64",
+     "variant:65",
+     "variant:67",
+     "variant:68",
+     "variant:69",
+     "variant:73",
+     "variant:76",
+     "variant:77",
+     "variant:79",
+     "variant:81",
+     "variant:82"
+    ],
+    "sunCases": 75,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
+   },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
     "authoredSize": [
@@ -2253,6 +2539,26 @@
    "visualReview": {
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
+   },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:105",
+     "variant:112",
+     "variant:135",
+     "variant:143",
+     "variant:176",
+     "variant:182",
+     "variant:194",
+     "variant:217",
+     "variant:223",
+     "variant:232",
+     "variant:243"
+    ],
+    "sunCases": 33,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
    },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
@@ -2493,6 +2799,39 @@
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
    },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:37",
+     "variant:40",
+     "variant:41",
+     "variant:42",
+     "variant:44",
+     "variant:45",
+     "variant:46",
+     "variant:49",
+     "variant:52",
+     "variant:53",
+     "variant:54",
+     "variant:55",
+     "variant:60",
+     "variant:61",
+     "variant:66",
+     "variant:70",
+     "variant:71",
+     "variant:72",
+     "variant:74",
+     "variant:75",
+     "variant:78",
+     "variant:80",
+     "variant:83",
+     "variant:84"
+    ],
+    "sunCases": 72,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
+   },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
     "authoredSize": [
@@ -2562,6 +2901,16 @@
    "visualReview": {
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
+   },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:205"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
    },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
@@ -2633,6 +2982,16 @@
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
    },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:206"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
+   },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
     "authoredSize": [
@@ -2703,6 +3062,16 @@
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
    },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:229"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
+   },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
     "authoredSize": [
@@ -2771,6 +3140,16 @@
    "visualReview": {
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
+   },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:262"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
    },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
@@ -2841,6 +3220,16 @@
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
    },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:218"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
+   },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
     "authoredSize": [
@@ -2909,6 +3298,16 @@
    "visualReview": {
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
+   },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:256"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
    },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
@@ -2986,6 +3385,17 @@
    "visualReview": {
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
+   },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:168",
+     "variant:222"
+    ],
+    "sunCases": 6,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
    },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
@@ -3080,6 +3490,19 @@
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
    },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:177",
+     "variant:238",
+     "variant:255",
+     "variant:273"
+    ],
+    "sunCases": 12,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
+   },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
     "authoredSize": [
@@ -3149,6 +3572,16 @@
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
    },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:214"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
+   },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
     "authoredSize": [
@@ -3217,6 +3650,16 @@
    "visualReview": {
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
+   },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:242"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
    },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
@@ -3332,6 +3775,22 @@
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
    },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:219",
+     "variant:234",
+     "variant:236",
+     "variant:239",
+     "variant:250",
+     "variant:253",
+     "variant:258"
+    ],
+    "sunCases": 21,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
+   },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
     "authoredSize": [
@@ -3391,6 +3850,16 @@
    "visualReview": {
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
+   },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:311"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
    },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
@@ -3468,6 +3937,17 @@
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
    },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:31",
+     "variant:34"
+    ],
+    "sunCases": 6,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
+   },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
     "authoredSize": [
@@ -3544,6 +4024,17 @@
    "visualReview": {
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
+   },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:30",
+     "variant:35"
+    ],
+    "sunCases": 6,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
    },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
@@ -4074,6 +4565,16 @@
    "visualReview": {
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
+   },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:33"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
    },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
@@ -5817,6 +6318,18 @@
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
    },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:212",
+     "variant:237",
+     "variant:251"
+    ],
+    "sunCases": 9,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
+   },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
     "authoredSize": [
@@ -5900,6 +6413,18 @@
    "visualReview": {
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
+   },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:210",
+     "variant:233",
+     "variant:252"
+    ],
+    "sunCases": 9,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
    },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
@@ -6016,6 +6541,22 @@
    "visualReview": {
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
+   },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:162",
+     "variant:207",
+     "variant:213",
+     "variant:225",
+     "variant:230",
+     "variant:244",
+     "variant:277"
+    ],
+    "sunCases": 21,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
    },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
@@ -6448,6 +6989,16 @@
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
    },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:29"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
+   },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
     "authoredSize": [
@@ -6877,6 +7428,16 @@
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
    },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:28"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
+   },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
     "authoredSize": [
@@ -6945,6 +7506,16 @@
    "visualReview": {
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
+   },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:241"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
    },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
@@ -7016,6 +7587,16 @@
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
    },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:165"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
+   },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
     "authoredSize": [
@@ -7084,6 +7665,16 @@
    "visualReview": {
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
+   },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:280"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
    },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
@@ -7154,6 +7745,16 @@
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
    },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:278"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
+   },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
     "authoredSize": [
@@ -7222,6 +7823,16 @@
    "visualReview": {
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
+   },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:288"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
    },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
@@ -7292,6 +7903,16 @@
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
    },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:290"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
+   },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
     "authoredSize": [
@@ -7360,6 +7981,16 @@
    "visualReview": {
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
+   },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:32"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
    },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
@@ -7469,6 +8100,16 @@
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
    },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:10"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
+   },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
     "authoredSize": [
@@ -7577,6 +8218,16 @@
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
    },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:11"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
+   },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
     "authoredSize": [
@@ -7654,6 +8305,16 @@
    "visualReview": {
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
+   },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:5"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
    },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
@@ -7745,6 +8406,19 @@
    "visualReview": {
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
+   },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:4",
+     "variant:6",
+     "variant:14",
+     "variant:27"
+    ],
+    "sunCases": 12,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
    },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
@@ -7867,6 +8541,19 @@
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
    },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:8",
+     "variant:9",
+     "variant:12",
+     "variant:26"
+    ],
+    "sunCases": 12,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
+   },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
     "authoredSize": [
@@ -7965,6 +8652,16 @@
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
    },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:7"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
+   },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
     "authoredSize": [
@@ -8052,6 +8749,16 @@
    "visualReview": {
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
+   },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:13"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
    },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
@@ -8182,6 +8889,17 @@
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
    },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:0",
+     "variant:3"
+    ],
+    "sunCases": 6,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
+   },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
     "authoredSize": [
@@ -8300,6 +9018,16 @@
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
    },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:1"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
+   },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
     "authoredSize": [
@@ -8408,6 +9136,16 @@
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
    },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:2"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
+   },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
     "authoredSize": [
@@ -8465,6 +9203,16 @@
    "visualReview": {
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
+   },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:19"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
    },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
@@ -8524,6 +9272,16 @@
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
    },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:16"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
+   },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
     "authoredSize": [
@@ -8581,6 +9339,16 @@
    "visualReview": {
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
+   },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:22"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
    },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
@@ -8660,6 +9428,16 @@
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
    },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:18"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
+   },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
     "authoredSize": [
@@ -8718,6 +9496,16 @@
    "visualReview": {
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
+   },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:20"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
    },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
@@ -8795,6 +9583,16 @@
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
    },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:17"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
+   },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
     "authoredSize": [
@@ -8871,6 +9669,16 @@
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
    },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:312"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
+   },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
     "authoredSize": [
@@ -8946,6 +9754,16 @@
    "visualReview": {
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
+   },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:313"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
    },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
@@ -9025,6 +9843,16 @@
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
    },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:15"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
+   },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
     "authoredSize": [
@@ -9103,6 +9931,16 @@
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
    },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:21"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
+   },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
     "authoredSize": [
@@ -9180,6 +10018,16 @@
    "visualReview": {
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
+   },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:24"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
    },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
@@ -9260,6 +10108,16 @@
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
    },
    "companion": "src/stronghold/tent-shadow.ts",
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:23"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
+   },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
     "authoredSize": [
@@ -9337,6 +10195,16 @@
    "visualReview": {
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
+   },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:25"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
    },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
@@ -36277,6 +37145,16 @@
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
    },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:291"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
+   },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
     "authoredSize": [
@@ -36330,6 +37208,16 @@
    "visualReview": {
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
+   },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:292"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
    },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
@@ -36385,6 +37273,16 @@
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
    },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:293"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
+   },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
     "authoredSize": [
@@ -36438,6 +37336,16 @@
    "visualReview": {
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
+   },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:294"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
    },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
@@ -36493,6 +37401,16 @@
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
    },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:295"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
+   },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
     "authoredSize": [
@@ -36546,6 +37464,16 @@
    "visualReview": {
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
+   },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:296"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
    },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
@@ -36601,6 +37529,16 @@
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
    },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:297"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
+   },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
     "authoredSize": [
@@ -36654,6 +37592,16 @@
    "visualReview": {
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
+   },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:298"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
    },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
@@ -36709,6 +37657,16 @@
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
    },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:299"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
+   },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
     "authoredSize": [
@@ -36762,6 +37720,16 @@
    "visualReview": {
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
+   },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:300"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
    },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
@@ -36817,6 +37785,16 @@
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
    },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:301"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
+   },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
     "authoredSize": [
@@ -36870,6 +37848,16 @@
    "visualReview": {
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
+   },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:302"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
    },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
@@ -36925,6 +37913,16 @@
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
    },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:303"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
+   },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
     "authoredSize": [
@@ -36974,6 +37972,16 @@
    "visualReview": {
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
+   },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:304"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
    }
   },
   {
@@ -37015,6 +38023,16 @@
    "visualReview": {
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
+   },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:305"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
    },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
@@ -37065,6 +38083,16 @@
    "visualReview": {
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
+   },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:306"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
    }
   },
   {
@@ -37106,6 +38134,16 @@
    "visualReview": {
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
+   },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:307"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
    },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
@@ -37156,6 +38194,16 @@
    "visualReview": {
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
+   },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:308"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
    }
   },
   {
@@ -37197,6 +38245,16 @@
    "visualReview": {
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
+   },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:309"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
    },
    "sourceDelivery": {
     "report": "delivered-source-audit.json",
@@ -37247,6 +38305,16 @@
    "visualReview": {
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
+   },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:310"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
    }
   },
   {
@@ -38106,6 +39174,16 @@
    "visualReview": {
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
+   },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:86"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
    }
   },
   {
@@ -38390,6 +39468,16 @@
    "visualReview": {
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
+   },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:85"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
    }
   },
   {
@@ -38421,6 +39509,16 @@
    "visualReview": {
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
+   },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:32"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
    }
   },
   {
@@ -38455,6 +39553,16 @@
    "visualReview": {
     "report": "static-visual-acceptance.json",
     "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance."
+   },
+   "deliveredStaticAudit": {
+    "report": "delivered-static-live/report.json",
+    "reportSha256": "38640ecac9695205d85d62df7e29854da98fbd22ca23893293d1a91f9eb6f8c5",
+    "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+    "variants": [
+     "variant:242"
+    ],
+    "sunCases": 3,
+    "scope": "Compiled live legacy scene and HTTP-decoded source assets; production three-sun cast/receive controls, software GPU. Authored raster audit remains separate."
    }
   },
   {
@@ -51645,5 +52753,12 @@
    "colorCount": 296,
    "mismatches": 0
   }
+ },
+ "deliveredStaticAudit": {
+  "report": "delivered-static-live/report.json",
+  "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+  "variants": 314,
+  "sunCases": 942,
+  "mappedRows": 88
  }
 }
