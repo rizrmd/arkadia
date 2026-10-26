@@ -4,6 +4,16 @@
  "fallback": "Canvas retains legacy ground projection without GPU receiver reconstruction",
  "coverage": [
   {
+   "entry": "src/expedition/snow.ts",
+   "kind": "playable Frostpass expedition",
+   "included": [
+    "nine scenery families",
+    "three physical supply caches",
+    "hero/revenant arena sprites"
+   ],
+   "disposition": "Missing directional cast and receiver integration; must not classify this playable map as review-only"
+  },
+  {
    "entry": "src/world/maps/arkodia-01.json",
    "kind": "gameplay map",
    "included": [
@@ -30,7 +40,7 @@
   }
  ],
  "counts": {
-  "rows": 547,
+  "rows": 586,
   "frontierFamilies": 46,
   "actorFrames": 445
  },
@@ -27043,6 +27053,904 @@
     }
    },
    "disposition": "Six production-cell poses, two headings and three suns pass low-quality cast/camera/alpha and high/middle/low receiver controls. Continuous animation blends, full heading matrix and hardware performance remain open."
+  },
+  {
+   "id": "torch-body:0",
+   "map": "arkodia-01 / stronghold",
+   "family": "wall-sconce",
+   "source": "/realistic-torch/frame-3.webp",
+   "alpha": {
+    "sha256": "bcbbde778c352a4d9141c4607dde7b60fd09a27076ef505ea1ae3727d74f0bad",
+    "alphaSha256": "c8b47aa46bd401d8d0e93f8bb24b54e29a777eddcb78d145395ec7ab9ae9a57d",
+    "size": [
+     180,
+     290
+    ],
+    "nonzero": 13123,
+    "partialAlpha": 2415
+   },
+   "variants": [
+    {
+     "u": 3,
+     "v": 0,
+     "lift": 65,
+     "wall": true
+    }
+   ],
+   "cast": "unlit original-alpha sconce; authored height and two-world-pixel camera-depth shell",
+   "receive": "static scene geometry-height receiver",
+   "companion": "src/stronghold/torch-shadow.ts",
+   "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive."
+  },
+  {
+   "id": "torch-body:1",
+   "map": "arkodia-01 / stronghold",
+   "family": "wall-sconce",
+   "source": "/realistic-torch/frame-3.webp",
+   "alpha": {
+    "sha256": "bcbbde778c352a4d9141c4607dde7b60fd09a27076ef505ea1ae3727d74f0bad",
+    "alphaSha256": "c8b47aa46bd401d8d0e93f8bb24b54e29a777eddcb78d145395ec7ab9ae9a57d",
+    "size": [
+     180,
+     290
+    ],
+    "nonzero": 13123,
+    "partialAlpha": 2415
+   },
+   "variants": [
+    {
+     "u": 0,
+     "v": 3,
+     "lift": 65,
+     "wall": true
+    }
+   ],
+   "cast": "unlit original-alpha sconce; authored height and two-world-pixel camera-depth shell",
+   "receive": "static scene geometry-height receiver",
+   "companion": "src/stronghold/torch-shadow.ts",
+   "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive."
+  },
+  {
+   "id": "torch-body:2",
+   "map": "arkodia-01 / stronghold",
+   "family": "wall-sconce",
+   "source": "/realistic-torch/frame-3.webp",
+   "alpha": {
+    "sha256": "bcbbde778c352a4d9141c4607dde7b60fd09a27076ef505ea1ae3727d74f0bad",
+    "alphaSha256": "c8b47aa46bd401d8d0e93f8bb24b54e29a777eddcb78d145395ec7ab9ae9a57d",
+    "size": [
+     180,
+     290
+    ],
+    "nonzero": 13123,
+    "partialAlpha": 2415
+   },
+   "variants": [
+    {
+     "u": 3,
+     "v": 15.5,
+     "lift": 65,
+     "wall": true
+    }
+   ],
+   "cast": "unlit original-alpha sconce; authored height and two-world-pixel camera-depth shell",
+   "receive": "static scene geometry-height receiver",
+   "companion": "src/stronghold/torch-shadow.ts",
+   "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive."
+  },
+  {
+   "id": "torch-body:3",
+   "map": "arkodia-01 / stronghold",
+   "family": "wall-sconce",
+   "source": "/realistic-torch/frame-3.webp",
+   "alpha": {
+    "sha256": "bcbbde778c352a4d9141c4607dde7b60fd09a27076ef505ea1ae3727d74f0bad",
+    "alphaSha256": "c8b47aa46bd401d8d0e93f8bb24b54e29a777eddcb78d145395ec7ab9ae9a57d",
+    "size": [
+     180,
+     290
+    ],
+    "nonzero": 13123,
+    "partialAlpha": 2415
+   },
+   "variants": [
+    {
+     "u": 15.5,
+     "v": 3,
+     "lift": 65,
+     "wall": true
+    }
+   ],
+   "cast": "unlit original-alpha sconce; authored height and two-world-pixel camera-depth shell",
+   "receive": "static scene geometry-height receiver",
+   "companion": "src/stronghold/torch-shadow.ts",
+   "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive."
+  },
+  {
+   "id": "torch-body:4",
+   "map": "arkodia-01 / stronghold",
+   "family": "wall-sconce",
+   "source": "/realistic-torch/frame-3.webp",
+   "alpha": {
+    "sha256": "bcbbde778c352a4d9141c4607dde7b60fd09a27076ef505ea1ae3727d74f0bad",
+    "alphaSha256": "c8b47aa46bd401d8d0e93f8bb24b54e29a777eddcb78d145395ec7ab9ae9a57d",
+    "size": [
+     180,
+     290
+    ],
+    "nonzero": 13123,
+    "partialAlpha": 2415
+   },
+   "variants": [
+    {
+     "u": 7.5,
+     "v": 0,
+     "lift": 65,
+     "wall": true
+    }
+   ],
+   "cast": "unlit original-alpha sconce; authored height and two-world-pixel camera-depth shell",
+   "receive": "static scene geometry-height receiver",
+   "companion": "src/stronghold/torch-shadow.ts",
+   "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive."
+  },
+  {
+   "id": "torch-body:5",
+   "map": "arkodia-01 / stronghold",
+   "family": "wall-sconce",
+   "source": "/realistic-torch/frame-3.webp",
+   "alpha": {
+    "sha256": "bcbbde778c352a4d9141c4607dde7b60fd09a27076ef505ea1ae3727d74f0bad",
+    "alphaSha256": "c8b47aa46bd401d8d0e93f8bb24b54e29a777eddcb78d145395ec7ab9ae9a57d",
+    "size": [
+     180,
+     290
+    ],
+    "nonzero": 13123,
+    "partialAlpha": 2415
+   },
+   "variants": [
+    {
+     "u": 0,
+     "v": 7.5,
+     "lift": 65,
+     "wall": true
+    }
+   ],
+   "cast": "unlit original-alpha sconce; authored height and two-world-pixel camera-depth shell",
+   "receive": "static scene geometry-height receiver",
+   "companion": "src/stronghold/torch-shadow.ts",
+   "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive."
+  },
+  {
+   "id": "torch-body:6",
+   "map": "arkodia-01 / stronghold",
+   "family": "wall-sconce",
+   "source": "/realistic-torch/frame-3.webp",
+   "alpha": {
+    "sha256": "bcbbde778c352a4d9141c4607dde7b60fd09a27076ef505ea1ae3727d74f0bad",
+    "alphaSha256": "c8b47aa46bd401d8d0e93f8bb24b54e29a777eddcb78d145395ec7ab9ae9a57d",
+    "size": [
+     180,
+     290
+    ],
+    "nonzero": 13123,
+    "partialAlpha": 2415
+   },
+   "variants": [
+    {
+     "u": 7.5,
+     "v": 15.5,
+     "lift": 65,
+     "wall": true
+    }
+   ],
+   "cast": "unlit original-alpha sconce; authored height and two-world-pixel camera-depth shell",
+   "receive": "static scene geometry-height receiver",
+   "companion": "src/stronghold/torch-shadow.ts",
+   "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive."
+  },
+  {
+   "id": "torch-body:7",
+   "map": "arkodia-01 / stronghold",
+   "family": "wall-sconce",
+   "source": "/realistic-torch/frame-3.webp",
+   "alpha": {
+    "sha256": "bcbbde778c352a4d9141c4607dde7b60fd09a27076ef505ea1ae3727d74f0bad",
+    "alphaSha256": "c8b47aa46bd401d8d0e93f8bb24b54e29a777eddcb78d145395ec7ab9ae9a57d",
+    "size": [
+     180,
+     290
+    ],
+    "nonzero": 13123,
+    "partialAlpha": 2415
+   },
+   "variants": [
+    {
+     "u": 15.5,
+     "v": 7.5,
+     "lift": 65,
+     "wall": true
+    }
+   ],
+   "cast": "unlit original-alpha sconce; authored height and two-world-pixel camera-depth shell",
+   "receive": "static scene geometry-height receiver",
+   "companion": "src/stronghold/torch-shadow.ts",
+   "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive."
+  },
+  {
+   "id": "torch-body:8",
+   "map": "arkodia-01 / stronghold",
+   "family": "wall-sconce",
+   "source": "/realistic-torch/frame-3.webp",
+   "alpha": {
+    "sha256": "bcbbde778c352a4d9141c4607dde7b60fd09a27076ef505ea1ae3727d74f0bad",
+    "alphaSha256": "c8b47aa46bd401d8d0e93f8bb24b54e29a777eddcb78d145395ec7ab9ae9a57d",
+    "size": [
+     180,
+     290
+    ],
+    "nonzero": 13123,
+    "partialAlpha": 2415
+   },
+   "variants": [
+    {
+     "u": 12,
+     "v": 0,
+     "lift": 65,
+     "wall": true
+    }
+   ],
+   "cast": "unlit original-alpha sconce; authored height and two-world-pixel camera-depth shell",
+   "receive": "static scene geometry-height receiver",
+   "companion": "src/stronghold/torch-shadow.ts",
+   "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive."
+  },
+  {
+   "id": "torch-body:9",
+   "map": "arkodia-01 / stronghold",
+   "family": "wall-sconce",
+   "source": "/realistic-torch/frame-3.webp",
+   "alpha": {
+    "sha256": "bcbbde778c352a4d9141c4607dde7b60fd09a27076ef505ea1ae3727d74f0bad",
+    "alphaSha256": "c8b47aa46bd401d8d0e93f8bb24b54e29a777eddcb78d145395ec7ab9ae9a57d",
+    "size": [
+     180,
+     290
+    ],
+    "nonzero": 13123,
+    "partialAlpha": 2415
+   },
+   "variants": [
+    {
+     "u": 0,
+     "v": 12,
+     "lift": 65,
+     "wall": true
+    }
+   ],
+   "cast": "unlit original-alpha sconce; authored height and two-world-pixel camera-depth shell",
+   "receive": "static scene geometry-height receiver",
+   "companion": "src/stronghold/torch-shadow.ts",
+   "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive."
+  },
+  {
+   "id": "torch-body:10",
+   "map": "arkodia-01 / stronghold",
+   "family": "wall-sconce",
+   "source": "/realistic-torch/frame-3.webp",
+   "alpha": {
+    "sha256": "bcbbde778c352a4d9141c4607dde7b60fd09a27076ef505ea1ae3727d74f0bad",
+    "alphaSha256": "c8b47aa46bd401d8d0e93f8bb24b54e29a777eddcb78d145395ec7ab9ae9a57d",
+    "size": [
+     180,
+     290
+    ],
+    "nonzero": 13123,
+    "partialAlpha": 2415
+   },
+   "variants": [
+    {
+     "u": 12,
+     "v": 15.5,
+     "lift": 65,
+     "wall": true
+    }
+   ],
+   "cast": "unlit original-alpha sconce; authored height and two-world-pixel camera-depth shell",
+   "receive": "static scene geometry-height receiver",
+   "companion": "src/stronghold/torch-shadow.ts",
+   "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive."
+  },
+  {
+   "id": "torch-body:11",
+   "map": "arkodia-01 / stronghold",
+   "family": "wall-sconce",
+   "source": "/realistic-torch/frame-3.webp",
+   "alpha": {
+    "sha256": "bcbbde778c352a4d9141c4607dde7b60fd09a27076ef505ea1ae3727d74f0bad",
+    "alphaSha256": "c8b47aa46bd401d8d0e93f8bb24b54e29a777eddcb78d145395ec7ab9ae9a57d",
+    "size": [
+     180,
+     290
+    ],
+    "nonzero": 13123,
+    "partialAlpha": 2415
+   },
+   "variants": [
+    {
+     "u": 15.5,
+     "v": 12,
+     "lift": 65,
+     "wall": true
+    }
+   ],
+   "cast": "unlit original-alpha sconce; authored height and two-world-pixel camera-depth shell",
+   "receive": "static scene geometry-height receiver",
+   "companion": "src/stronghold/torch-shadow.ts",
+   "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive."
+  },
+  {
+   "id": "torch-body:12",
+   "map": "arkodia-01 / stronghold",
+   "family": "post-sconce",
+   "source": "/realistic-torch/frame-3.webp",
+   "alpha": {
+    "sha256": "bcbbde778c352a4d9141c4607dde7b60fd09a27076ef505ea1ae3727d74f0bad",
+    "alphaSha256": "c8b47aa46bd401d8d0e93f8bb24b54e29a777eddcb78d145395ec7ab9ae9a57d",
+    "size": [
+     180,
+     290
+    ],
+    "nonzero": 13123,
+    "partialAlpha": 2415
+   },
+   "variants": [
+    {
+     "u": 4.5,
+     "v": 4.5,
+     "lift": 48,
+     "wall": false
+    }
+   ],
+   "cast": "unlit original-alpha sconce; authored height and two-world-pixel camera-depth shell",
+   "receive": "static scene geometry-height receiver",
+   "companion": "src/stronghold/torch-shadow.ts",
+   "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive."
+  },
+  {
+   "id": "torch-post:12",
+   "map": "arkodia-01 / stronghold",
+   "family": "procedural-torch-support",
+   "recipe": {
+    "lineWidth": 3.75,
+    "height": 34.5,
+    "worldWidth": 4,
+    "sourceScale": 3,
+    "cameraDepth": 2
+   },
+   "variants": [
+    {
+     "u": 4.5,
+     "v": 4.5,
+     "lift": 48,
+     "wall": false
+    }
+   ],
+   "cast": "original procedural stroke alpha and explicit depth shell",
+   "receive": "static scene geometry-height receiver",
+   "companion": "src/stronghold/torch-shadow.ts",
+   "disposition": "Integrated; nine-coordinate draw alignment and three-sun GPU cast/receive controls pass; no collision footprint added."
+  },
+  {
+   "id": "torch-body:13",
+   "map": "arkodia-01 / stronghold",
+   "family": "post-sconce",
+   "source": "/realistic-torch/frame-3.webp",
+   "alpha": {
+    "sha256": "bcbbde778c352a4d9141c4607dde7b60fd09a27076ef505ea1ae3727d74f0bad",
+    "alphaSha256": "c8b47aa46bd401d8d0e93f8bb24b54e29a777eddcb78d145395ec7ab9ae9a57d",
+    "size": [
+     180,
+     290
+    ],
+    "nonzero": 13123,
+    "partialAlpha": 2415
+   },
+   "variants": [
+    {
+     "u": 4.5,
+     "v": 10.5,
+     "lift": 48,
+     "wall": false
+    }
+   ],
+   "cast": "unlit original-alpha sconce; authored height and two-world-pixel camera-depth shell",
+   "receive": "static scene geometry-height receiver",
+   "companion": "src/stronghold/torch-shadow.ts",
+   "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive."
+  },
+  {
+   "id": "torch-post:13",
+   "map": "arkodia-01 / stronghold",
+   "family": "procedural-torch-support",
+   "recipe": {
+    "lineWidth": 3.75,
+    "height": 34.5,
+    "worldWidth": 4,
+    "sourceScale": 3,
+    "cameraDepth": 2
+   },
+   "variants": [
+    {
+     "u": 4.5,
+     "v": 10.5,
+     "lift": 48,
+     "wall": false
+    }
+   ],
+   "cast": "original procedural stroke alpha and explicit depth shell",
+   "receive": "static scene geometry-height receiver",
+   "companion": "src/stronghold/torch-shadow.ts",
+   "disposition": "Integrated; nine-coordinate draw alignment and three-sun GPU cast/receive controls pass; no collision footprint added."
+  },
+  {
+   "id": "torch-body:14",
+   "map": "arkodia-01 / stronghold",
+   "family": "post-sconce",
+   "source": "/realistic-torch/frame-3.webp",
+   "alpha": {
+    "sha256": "bcbbde778c352a4d9141c4607dde7b60fd09a27076ef505ea1ae3727d74f0bad",
+    "alphaSha256": "c8b47aa46bd401d8d0e93f8bb24b54e29a777eddcb78d145395ec7ab9ae9a57d",
+    "size": [
+     180,
+     290
+    ],
+    "nonzero": 13123,
+    "partialAlpha": 2415
+   },
+   "variants": [
+    {
+     "u": 10.5,
+     "v": 4.5,
+     "lift": 48,
+     "wall": false
+    }
+   ],
+   "cast": "unlit original-alpha sconce; authored height and two-world-pixel camera-depth shell",
+   "receive": "static scene geometry-height receiver",
+   "companion": "src/stronghold/torch-shadow.ts",
+   "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive."
+  },
+  {
+   "id": "torch-post:14",
+   "map": "arkodia-01 / stronghold",
+   "family": "procedural-torch-support",
+   "recipe": {
+    "lineWidth": 3.75,
+    "height": 34.5,
+    "worldWidth": 4,
+    "sourceScale": 3,
+    "cameraDepth": 2
+   },
+   "variants": [
+    {
+     "u": 10.5,
+     "v": 4.5,
+     "lift": 48,
+     "wall": false
+    }
+   ],
+   "cast": "original procedural stroke alpha and explicit depth shell",
+   "receive": "static scene geometry-height receiver",
+   "companion": "src/stronghold/torch-shadow.ts",
+   "disposition": "Integrated; nine-coordinate draw alignment and three-sun GPU cast/receive controls pass; no collision footprint added."
+  },
+  {
+   "id": "torch-body:15",
+   "map": "arkodia-01 / stronghold",
+   "family": "post-sconce",
+   "source": "/realistic-torch/frame-3.webp",
+   "alpha": {
+    "sha256": "bcbbde778c352a4d9141c4607dde7b60fd09a27076ef505ea1ae3727d74f0bad",
+    "alphaSha256": "c8b47aa46bd401d8d0e93f8bb24b54e29a777eddcb78d145395ec7ab9ae9a57d",
+    "size": [
+     180,
+     290
+    ],
+    "nonzero": 13123,
+    "partialAlpha": 2415
+   },
+   "variants": [
+    {
+     "u": 12,
+     "v": 12,
+     "lift": 48,
+     "wall": false
+    }
+   ],
+   "cast": "unlit original-alpha sconce; authored height and two-world-pixel camera-depth shell",
+   "receive": "static scene geometry-height receiver",
+   "companion": "src/stronghold/torch-shadow.ts",
+   "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive."
+  },
+  {
+   "id": "torch-post:15",
+   "map": "arkodia-01 / stronghold",
+   "family": "procedural-torch-support",
+   "recipe": {
+    "lineWidth": 3.75,
+    "height": 34.5,
+    "worldWidth": 4,
+    "sourceScale": 3,
+    "cameraDepth": 2
+   },
+   "variants": [
+    {
+     "u": 12,
+     "v": 12,
+     "lift": 48,
+     "wall": false
+    }
+   ],
+   "cast": "original procedural stroke alpha and explicit depth shell",
+   "receive": "static scene geometry-height receiver",
+   "companion": "src/stronghold/torch-shadow.ts",
+   "disposition": "Integrated; nine-coordinate draw alignment and three-sun GPU cast/receive controls pass; no collision footprint added."
+  },
+  {
+   "id": "frostpass:spruce-mature",
+   "map": "snow-expedition / Frostpass",
+   "family": "spruce-mature",
+   "source": "/modular-stronghold/v2/spruce-mature.png",
+   "alpha": {
+    "sha256": "62fa1afd990a9c8577ae1c59c0b2cff2792b68863a435c616a2e10aa32972ccf",
+    "alphaSha256": "2278ac56becaaa370012690a045c9f6980b13aca3b430820944bb39e8d10e8d7",
+    "size": [
+     907,
+     1200
+    ],
+    "nonzero": 529250,
+    "partialAlpha": 528871
+   },
+   "cast": "MISSING: physical scenery has no directional shadow integration",
+   "receive": "MISSING: Frostpass has no scene height/receiver field",
+   "disposition": "Required follow-up integration; original source alpha retained. Crates include three collectable supply caches.",
+   "placementSource": "src/expedition/snow.ts"
+  },
+  {
+   "id": "frostpass:fir-young",
+   "map": "snow-expedition / Frostpass",
+   "family": "fir-young",
+   "source": "/modular-stronghold/v2/fir-young.png",
+   "alpha": {
+    "sha256": "032fe61175e2558061355c1d7c3615fb689372d9c2f3c9c8c3f1e27401e44949",
+    "alphaSha256": "328f85b712f3f4f32682be08b96ebe2a0d8ebff797cd6a2ae7cce4adb4c65a78",
+    "size": [
+     911,
+     1092
+    ],
+    "nonzero": 540179,
+    "partialAlpha": 539883
+   },
+   "cast": "MISSING: physical scenery has no directional shadow integration",
+   "receive": "MISSING: Frostpass has no scene height/receiver field",
+   "disposition": "Required follow-up integration; original source alpha retained. Crates include three collectable supply caches.",
+   "placementSource": "src/expedition/snow.ts"
+  },
+  {
+   "id": "frostpass:cliff-snow",
+   "map": "snow-expedition / Frostpass",
+   "family": "cliff-snow",
+   "source": "/modular-stronghold/v2/cliff-snow.png",
+   "alpha": {
+    "sha256": "5d10641d7f27c9dbc53c0fb48000ea5a58a7e8fb29dd07e1ca8e36f83b471561",
+    "alphaSha256": "bfbc1dc0b73b10883e54d33975d22fffca2fbc03c22f5ecbd12daf42ffa471ca",
+    "size": [
+     1200,
+     595
+    ],
+    "nonzero": 395473,
+    "partialAlpha": 395176
+   },
+   "cast": "MISSING: physical scenery has no directional shadow integration",
+   "receive": "MISSING: Frostpass has no scene height/receiver field",
+   "disposition": "Required follow-up integration; original source alpha retained. Crates include three collectable supply caches.",
+   "placementSource": "src/expedition/snow.ts"
+  },
+  {
+   "id": "frostpass:boulders-snow",
+   "map": "snow-expedition / Frostpass",
+   "family": "boulders-snow",
+   "source": "/modular-stronghold/v2/boulders-snow.png",
+   "alpha": {
+    "sha256": "ca1b60f1c7368e4e3ffc361f1df02f5f4c1dd4c68494cc7dd949a5f00753654d",
+    "alphaSha256": "9993daebca8fbdfafd8f27407f16345021d7c48d6d27e41a17a4330c3ef081fa",
+    "size": [
+     1200,
+     523
+    ],
+    "nonzero": 370519,
+    "partialAlpha": 370130
+   },
+   "cast": "MISSING: physical scenery has no directional shadow integration",
+   "receive": "MISSING: Frostpass has no scene height/receiver field",
+   "disposition": "Required follow-up integration; original source alpha retained. Crates include three collectable supply caches.",
+   "placementSource": "src/expedition/snow.ts"
+  },
+  {
+   "id": "frostpass:snowdrift-edge",
+   "map": "snow-expedition / Frostpass",
+   "family": "snowdrift-edge",
+   "source": "/modular-stronghold/v2/snowdrift-edge.png",
+   "alpha": {
+    "sha256": "2c2907e90b1e9bfe4fc874af02571937a6043159fa7e89948815d065187576ab",
+    "alphaSha256": "92fed3bbef4c3fdda10c1527ee6678b0dc3c5119f14d3aa473546707e5617de0",
+    "size": [
+     1200,
+     430
+    ],
+    "nonzero": 222152,
+    "partialAlpha": 221876
+   },
+   "cast": "flat decal; no independent caster",
+   "receive": "MISSING: Frostpass has no scene height/receiver field",
+   "disposition": "Terrain receiver integration required",
+   "placementSource": "src/expedition/snow.ts"
+  },
+  {
+   "id": "frostpass:paving-worn",
+   "map": "snow-expedition / Frostpass",
+   "family": "paving-worn",
+   "source": "/modular-stronghold/v2/paving-worn.png",
+   "alpha": {
+    "sha256": "5526a945668ea0ff6d3b0f290b2302c321b3817937e03bfe3cdd31e4d22a88fa",
+    "alphaSha256": "c3c8ab9ea1e3fcaa2e5ea41523d6644e02a54a1d5a70b066e7b330b3ee0f7951",
+    "size": [
+     1200,
+     545
+    ],
+    "nonzero": 451445,
+    "partialAlpha": 451339
+   },
+   "cast": "flat decal; no independent caster",
+   "receive": "MISSING: Frostpass has no scene height/receiver field",
+   "disposition": "Terrain receiver integration required",
+   "placementSource": "src/expedition/snow.ts"
+  },
+  {
+   "id": "frostpass:supply-cart",
+   "map": "snow-expedition / Frostpass",
+   "family": "supply-cart",
+   "source": "/modular-stronghold/v2/supply-cart.png",
+   "alpha": {
+    "sha256": "65159feb64c457be1c70c8b6b5e1f2d64cf7bda2c37083c049d885dbceaaf30e",
+    "alphaSha256": "04052d65c44907ed0aa907ea016167a543855be7cf611bb1b5e9fe2df8aaf6e5",
+    "size": [
+     1200,
+     796
+    ],
+    "nonzero": 510950,
+    "partialAlpha": 510127
+   },
+   "cast": "MISSING: physical scenery has no directional shadow integration",
+   "receive": "MISSING: Frostpass has no scene height/receiver field",
+   "disposition": "Required follow-up integration; original source alpha retained. Crates include three collectable supply caches.",
+   "placementSource": "src/expedition/snow.ts"
+  },
+  {
+   "id": "frostpass:brazier",
+   "map": "snow-expedition / Frostpass",
+   "family": "brazier",
+   "source": "/modular-stronghold/v2/brazier.png",
+   "alpha": {
+    "sha256": "ce0bba103743e9cfbfe279df9acd9532510326f7c1a982b2a3f783435019998e",
+    "alphaSha256": "35e6dd34c4348a5f5577c2cdb161e48ad626d960665c8d63f584e64dc829cc14",
+    "size": [
+     595,
+     893
+    ],
+    "nonzero": 329536,
+    "partialAlpha": 329536
+   },
+   "cast": "MISSING: physical scenery has no directional shadow integration",
+   "receive": "MISSING: Frostpass has no scene height/receiver field",
+   "disposition": "Required follow-up integration; original source alpha retained. Crates include three collectable supply caches.",
+   "placementSource": "src/expedition/snow.ts"
+  },
+  {
+   "id": "frostpass:crate",
+   "map": "snow-expedition / Frostpass",
+   "family": "crate",
+   "source": "/modular-stronghold/crate.png",
+   "alpha": {
+    "sha256": "62baacbeec9d1efdfd40574d361d75266af3d310da737abf27601af68931e04f",
+    "alphaSha256": "53ebbdda564f9ca49c67cc366212636baf8e9e716ceb526c1ec84a8c0f393cec",
+    "size": [
+     619,
+     640
+    ],
+    "nonzero": 302290,
+    "partialAlpha": 301548
+   },
+   "cast": "MISSING: physical scenery has no directional shadow integration",
+   "receive": "MISSING: Frostpass has no scene height/receiver field",
+   "disposition": "Required follow-up integration; original source alpha retained. Crates include three collectable supply caches.",
+   "placementSource": "src/expedition/snow.ts"
+  },
+  {
+   "id": "parallax:court:left:desktop",
+   "map": "camera foreground overlay",
+   "family": "parallax-corner",
+   "source": "/environment-corners/v1/corner-court-left.webp",
+   "alpha": {
+    "sha256": "bbd657af22399d83ebab50fcbe96dac4720b84c84fc31da5830b41698c75f981",
+    "alphaSha256": "248d0a62333d7a5d17098e2e4c4a75fe83d0967b3ef12ec383f5d0fc9632e3b5",
+    "size": [
+     640,
+     760
+    ],
+    "nonzero": 196663,
+    "partialAlpha": 196069
+   },
+   "cast": "excluded: screen-anchored blurred lens foreground",
+   "receive": "excluded: no world-plane position or depth",
+   "disposition": "Intentional compositional overlay; independent camera factor and responsive cropping are not gameplay geometry."
+  },
+  {
+   "id": "parallax:court:left:mobile",
+   "map": "camera foreground overlay",
+   "family": "parallax-corner",
+   "source": "/environment-corners/v1/corner-court-left-mobile.webp",
+   "alpha": {
+    "sha256": "b23242b406bc5d8ec03fb399ece33cff569b105df1695812fd8749a2e559da93",
+    "alphaSha256": "e0a6460f43467388c2167ee92eb31d265f5c133ed90d95356b3a6955599df2a2",
+    "size": [
+     360,
+     300
+    ],
+    "nonzero": 24541,
+    "partialAlpha": 24132
+   },
+   "cast": "excluded: screen-anchored blurred lens foreground",
+   "receive": "excluded: no world-plane position or depth",
+   "disposition": "Intentional compositional overlay; independent camera factor and responsive cropping are not gameplay geometry."
+  },
+  {
+   "id": "parallax:court:right:desktop",
+   "map": "camera foreground overlay",
+   "family": "parallax-corner",
+   "source": "/environment-corners/v1/corner-court-right.webp",
+   "alpha": {
+    "sha256": "61392299a3f0da9d636e3251e4001cb595164d24961feeff16403e9847a58ff5",
+    "alphaSha256": "cb34c30b91838f99785a5e145ff8cd4e9ac9f15a6c5fae868ee0f8235a43f525",
+    "size": [
+     640,
+     760
+    ],
+    "nonzero": 166380,
+    "partialAlpha": 165519
+   },
+   "cast": "excluded: screen-anchored blurred lens foreground",
+   "receive": "excluded: no world-plane position or depth",
+   "disposition": "Intentional compositional overlay; independent camera factor and responsive cropping are not gameplay geometry."
+  },
+  {
+   "id": "parallax:court:right:mobile",
+   "map": "camera foreground overlay",
+   "family": "parallax-corner",
+   "source": "/environment-corners/v1/corner-court-right-mobile.webp",
+   "alpha": {
+    "sha256": "c77e68b303d8b6bef200b9689a1285330a2a58cd200b5b40e347b8f3036d0617",
+    "alphaSha256": "9fb6a9e3e93a420fae7c4c94808d4915da2e42070710f1ddd456a1c515cb6ac7",
+    "size": [
+     360,
+     300
+    ],
+    "nonzero": 26774,
+    "partialAlpha": 26241
+   },
+   "cast": "excluded: screen-anchored blurred lens foreground",
+   "receive": "excluded: no world-plane position or depth",
+   "disposition": "Intentional compositional overlay; independent camera factor and responsive cropping are not gameplay geometry."
+  },
+  {
+   "id": "parallax:snow:left:desktop",
+   "map": "camera foreground overlay",
+   "family": "parallax-corner",
+   "source": "/environment-corners/v1/corner-snow-left.webp",
+   "alpha": {
+    "sha256": "28c4086ea55c5971232d03c8b212f1f67171457f8e0f2df41686c7f7bfa3f751",
+    "alphaSha256": "7eb50345ecb573931bf0bd3c066f47d59cfd6a0e8c75e3ad0b7b6f2212a4fa3f",
+    "size": [
+     640,
+     760
+    ],
+    "nonzero": 173468,
+    "partialAlpha": 173132
+   },
+   "cast": "excluded: screen-anchored blurred lens foreground",
+   "receive": "excluded: no world-plane position or depth",
+   "disposition": "Intentional compositional overlay; independent camera factor and responsive cropping are not gameplay geometry."
+  },
+  {
+   "id": "parallax:snow:left:mobile",
+   "map": "camera foreground overlay",
+   "family": "parallax-corner",
+   "source": "/environment-corners/v1/corner-snow-left-mobile.webp",
+   "alpha": {
+    "sha256": "0b070c5dcf899c3a41b27a75b790bd5c51bec22c8e3cb289a95a26660104f4d5",
+    "alphaSha256": "117b5f77b68bf5e613d9df017bdaaa4763566912f2b66c63ce5c5ec36b93fd85",
+    "size": [
+     360,
+     300
+    ],
+    "nonzero": 21734,
+    "partialAlpha": 21356
+   },
+   "cast": "excluded: screen-anchored blurred lens foreground",
+   "receive": "excluded: no world-plane position or depth",
+   "disposition": "Intentional compositional overlay; independent camera factor and responsive cropping are not gameplay geometry."
+  },
+  {
+   "id": "parallax:snow:right:desktop",
+   "map": "camera foreground overlay",
+   "family": "parallax-corner",
+   "source": "/environment-corners/v1/corner-snow-right.webp",
+   "alpha": {
+    "sha256": "4e44af8d70d230c49687c11ba4d4fe04550fe1d12d757f93d548a44e5181690a",
+    "alphaSha256": "04e9549126943cfbbb93e8b931e2ae854ff055469b3f151df39e652945055407",
+    "size": [
+     640,
+     760
+    ],
+    "nonzero": 215939,
+    "partialAlpha": 215455
+   },
+   "cast": "excluded: screen-anchored blurred lens foreground",
+   "receive": "excluded: no world-plane position or depth",
+   "disposition": "Intentional compositional overlay; independent camera factor and responsive cropping are not gameplay geometry."
+  },
+  {
+   "id": "parallax:snow:right:mobile",
+   "map": "camera foreground overlay",
+   "family": "parallax-corner",
+   "source": "/environment-corners/v1/corner-snow-right-mobile.webp",
+   "alpha": {
+    "sha256": "a8366cdd49423eab5a9dbefed8ee004720d7825a53533271a798d6a7b10ba91e",
+    "alphaSha256": "1238cb52e99a6daacc8f4e6e14c9b16410e78b6fee0d57a64cebebbae1acc5d0",
+    "size": [
+     360,
+     300
+    ],
+    "nonzero": 12310,
+    "partialAlpha": 11910
+   },
+   "cast": "excluded: screen-anchored blurred lens foreground",
+   "receive": "excluded: no world-plane position or depth",
+   "disposition": "Intentional compositional overlay; independent camera factor and responsive cropping are not gameplay geometry."
+  },
+  {
+   "id": "effect:soul-pickup",
+   "map": "arkodia-01 / combat",
+   "family": "soul-energy",
+   "cast": "excluded: emissive radial glow",
+   "receive": "excluded: self-luminous collection effect",
+   "disposition": "Procedural 64px radial gradient; bob/collection animation; no physical loot bag. Inventory bag icon is HUD, not a world pickup.",
+   "sourceCode": "src/stronghold/encounters.ts"
+  },
+  {
+   "id": "effect:torch-flame",
+   "map": "arkodia-01 / stronghold",
+   "family": "torch-emission",
+   "cast": "excluded: emissive flame/glow",
+   "receive": "excluded: emitted light",
+   "disposition": "Three flame frames plus night halo. Physical unlit sconces and support posts are separately integrated.",
+   "sources": [
+    "/realistic-torch/frame-0.webp",
+    "/realistic-torch/frame-1.webp",
+    "/realistic-torch/frame-2.webp"
+   ]
   },
   {
    "id": "terrain:east-ridge",

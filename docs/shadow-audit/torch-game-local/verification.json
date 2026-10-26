@@ -1,0 +1,139 @@
+{
+  "base": "http://127.0.0.1:5631",
+  "scope": "Software SwiftShader, emulated viewports; not hardware mobile GPU measurements. Counts and screenshots do not prove receiver correctness.",
+  "runs": [
+    {
+      "mobile": true,
+      "time": 0.3,
+      "spot": "torch-court",
+      "teleported": [
+        4.5,
+        4.5
+      ],
+      "stats": {
+        "props": 834,
+        "uprights": 297,
+        "columns": 3143,
+        "atlas": "/frozen-frontier/game/atlas-5083a8ebd8c8bb4b.webp",
+        "loaded": true,
+        "failed": false,
+        "kit": 46,
+        "companions": {
+          "version": 1,
+          "atlas": "/frozen-frontier/game/atlas-5083a8ebd8c8bb4b.webp",
+          "families": 46,
+          "model": "explicit geometry proxy; NOT measured volumetric depth",
+          "receivers": "WebGL terrain and object height proxies; Canvas ground-only"
+        },
+        "occlusionImages": 12,
+        "sprites": 44,
+        "visible": 0,
+        "shadows": {
+          "casters": 297,
+          "strips": 1619,
+          "shown": 1,
+          "alpha": 0.4,
+          "dx": 1.594,
+          "dy": 0.092
+        },
+        "assets": [
+          "arch-ne",
+          "arch-se",
+          "broken-watchtower",
+          "column-fallen",
+          "column-fallen-v",
+          "corner-n",
+          "corner-s",
+          "dead-snag",
+          "dead-tree",
+          "drift-mound",
+          "drift-ne",
+          "drift-se",
+          "flagstones-a",
+          "flagstones-b",
+          "flagstones-c",
+          "flagstones-d",
+          "floor-sunk",
+          "grass-patch",
+          "grass-tussock",
+          "grave-cross",
+          "grave-headstone",
+          "grave-memorial",
+          "grave-sarcophagus",
+          "ground-scuff-a",
+          "ground-scuff-b",
+          "paving",
+          "pillar-broken",
+          "pillar-intact",
+          "pine-broad",
+          "pine-sapling",
+          "pine-tall",
+          "rock-boulders",
+          "rock-scatter",
+          "rubble",
+          "ruined-gate",
+          "shrub-juniper",
+          "shrub-twigs",
+          "snowy-shrine",
+          "stairs-ne",
+          "stairs-nw",
+          "stone-chips-a",
+          "stone-chips-b",
+          "temple-podium",
+          "wall-ne",
+          "wall-se"
+        ],
+        "sceneShadows": {
+          "surfaces": 467,
+          "samples": 91702,
+          "rebuilds": 1,
+          "buildMs": 1458,
+          "bytes": 8924600,
+          "receiverPixels": 584548,
+          "depthPixels": 823301,
+          "ready": true,
+          "error": "",
+          "sun": {
+            "dx": 1.59394236711567,
+            "dy": 0.09168415256286729,
+            "alpha": 0.4
+          },
+          "model": "original alpha, explicit billboard/relief geometry; light-space depth compare",
+          "uploadMs": 7471.799999952316,
+          "dynamic": {
+            "updates": 13,
+            "actors": 1,
+            "extraSurfaces": 1,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40379,
+            "pixels": 292544,
+            "bytes": 8356956,
+            "renderMs": 1.0999999046325684,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 1.25
+          }
+        },
+        "committedCameraBounds": [
+          180,
+          -203.75,
+          792.5,
+          1152.5
+        ]
+      },
+      "measurement": {
+        "durationMs": 191.09999990463257,
+        "rafMedianMs": 16.69999999999709,
+        "rafP95Ms": 50,
+        "drawCalls": 636,
+        "frames": 8
+      },
+      "image": "mobile-torch-court-0.3.png"
+    }
+  ],
+  "errors": []
+}

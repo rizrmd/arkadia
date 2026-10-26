@@ -11,7 +11,8 @@ export const torchesOn=(time:number)=>phaseOf(time)==='Night';
 const frames=Array.from({length:4},(_,i)=>{const image=new Image();image.src=`/realistic-torch/frame-${i}.webp`;return image;});
 export const TORCH_FRAMES=frames;
 export const torchAssetsReady=Promise.all(frames.map(image=>image.decode()));
-const W=24,H=39,TOP=15.75;
+export const TORCH_GEOMETRY={width:24,height:39,top:15.75,postStart:13.5,postWidth:3.75} as const;
+const {width:W,height:H,top:TOP}=TORCH_GEOMETRY;
 // Keep source proportions and enough texels for the maximum 2.2× camera zoom.
 const FLAME_SOURCE_HEIGHT=132,FLAME_HEIGHT=H*FLAME_SOURCE_HEIGHT/290,RESOLUTION=3;
 // Small deterministic ground patches are cached once; flame animation never
@@ -43,7 +44,7 @@ export function drawTorches(c:CanvasRenderingContext2D,lit:boolean){
  for(const t of TORCHES){
   const y=t.y-t.lift;
   if(!t.wall)c.drawImage(postGround[post++],t.x-36,t.y-19,72,36);
-  if(!t.wall){c.strokeStyle='#3b2a20';c.lineWidth=3.75;c.beginPath();c.moveTo(t.x,y+13.5);c.lineTo(t.x,t.y);c.stroke();}
+  if(!t.wall){c.strokeStyle='#3b2a20';c.lineWidth=TORCH_GEOMETRY.postWidth;c.beginPath();c.moveTo(t.x,y+TORCH_GEOMETRY.postStart);c.lineTo(t.x,t.y);c.stroke();}
   if(lit)c.drawImage(frame,0,FLAME_SOURCE_HEIGHT,180,290-FLAME_SOURCE_HEIGHT,t.x-W/2,y-TOP+FLAME_HEIGHT,W,H-FLAME_HEIGHT);
   else c.drawImage(frame,t.x-W/2,y-TOP,W,H);
  }
