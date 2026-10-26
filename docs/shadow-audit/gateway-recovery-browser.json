@@ -1,0 +1,55 @@
+{
+  "scope": "Actual clean-worktree game startup in Chromium/WebGL with required gateway metadata responses injected as 404 unknown sandbox, then 502 HTML, then original JSON. No fake frames or changed sprite/metadata bytes.",
+  "root": "/home/dev/releases/shadow-evidence-merge-1793027198",
+  "requests": [
+    "http://127.0.0.1:5671/modular-stronghold/v2/full-gateway-v7-sheet.json",
+    "http://127.0.0.1:5671/modular-stronghold/v2/full-gateway-v7-sheet.json?_assetRetry=mvpe6qud-1",
+    "http://127.0.0.1:5671/modular-stronghold/v2/full-gateway-v7-sheet.json?_assetRetry=mvpe6sfq-2"
+  ],
+  "errors": [],
+  "state": {
+    "loadingError": null,
+    "gate": {
+      "width": 389,
+      "height": 259,
+      "renderer": "gateway-lightmap-v3"
+    },
+    "field": {
+      "surfaces": 468,
+      "samples": 179458,
+      "rebuilds": 1,
+      "buildMs": 485.10000014305115,
+      "bytes": 8622712,
+      "receiverPixels": 584548,
+      "depthPixels": 785565,
+      "ready": true,
+      "error": "",
+      "sun": {
+        "dx": 1.2029684358954906,
+        "dy": 0.16645310050740103,
+        "alpha": 0.4
+      },
+      "model": "original alpha, explicit billboard/relief geometry; light-space depth compare",
+      "uploadMs": 2341.9000000953674,
+      "dynamic": {
+        "updates": 5,
+        "actors": 1,
+        "extraSurfaces": 1,
+        "skinnedMeshes": 1,
+        "receiverPasses": 3,
+        "geometryBytes": 2073244,
+        "drawnVertices": 40379,
+        "pixels": 167931,
+        "bytes": 5296476,
+        "renderMs": 4.700000047683716,
+        "ready": true,
+        "casterPasses": 3,
+        "fieldSamplers": 4,
+        "opaqueEnvelope": true,
+        "step": 1.25
+      }
+    }
+  },
+  "metadataSha256": "4c2494fe461960cba0ab760dea4e1d0fcaede5ec0089dd0ac703fa43fd2033c8",
+  "status": "pass"
+}
