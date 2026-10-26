@@ -1,0 +1,135 @@
+{
+  "scope": "Actual published benchmark smoke: live game loaded three times, depth/legacy/depth selection, fixed camera, hero count and sampler checks. SwiftShader, abbreviated phases, no performance conclusion or manual telemetry upload.",
+  "errors": [],
+  "result": {
+    "runId": "shadow-ab-1793022983284",
+    "smoke": true,
+    "expectedEntry": "/assets/index-iw_KY8x7.js",
+    "profile": "low",
+    "npcTarget": 0,
+    "scope": "Fixed offline cemetery camera, AI/VFX disabled; depth → legacy → depth paths. Last actual game-trace samples per phase, not full-session FPS or equal-feature A/B. No simulated frames.",
+    "phases": [
+      {
+        "phase": "depth-before",
+        "depth": true,
+        "entry": "https://ark-whachat.fural.space/assets/index-iw_KY8x7.js",
+        "gpu": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+        "center": {
+          "u": 34,
+          "v": 44
+        },
+        "spawned": 0,
+        "metrics": null,
+        "traceSamples": 1,
+        "traceSpanMs": 0,
+        "medianFrameMs": 474.3,
+        "telemetryId": null,
+        "field": {
+          "surfaces": 468,
+          "samples": 296393,
+          "rebuilds": 2,
+          "buildMs": 1307.3000001907349,
+          "bytes": 10795136,
+          "receiverPixels": 766912,
+          "depthPixels": 965936,
+          "ready": true,
+          "error": "",
+          "sun": {
+            "dx": 1.59394236711567,
+            "dy": 0.09168415256286729,
+            "alpha": 0.4
+          },
+          "model": "original alpha, explicit billboard/relief geometry; light-space depth compare",
+          "uploadMs": 8629,
+          "dynamic": {
+            "updates": 26,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 36406,
+            "bytes": 1481828,
+            "renderMs": 1.2000000476837158,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 1.25
+          }
+        }
+      },
+      {
+        "phase": "legacy",
+        "depth": false,
+        "entry": "https://ark-whachat.fural.space/assets/index-iw_KY8x7.js",
+        "gpu": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+        "center": {
+          "u": 34,
+          "v": 44
+        },
+        "spawned": 0,
+        "metrics": null,
+        "traceSamples": 4,
+        "traceSpanMs": 427.6000000000022,
+        "medianFrameMs": 203.8,
+        "telemetryId": null,
+        "field": null
+      },
+      {
+        "phase": "depth-after",
+        "depth": true,
+        "entry": "https://ark-whachat.fural.space/assets/index-iw_KY8x7.js",
+        "gpu": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+        "center": {
+          "u": 34,
+          "v": 44
+        },
+        "spawned": 0,
+        "metrics": null,
+        "traceSamples": 2,
+        "traceSpanMs": 407.6000000000058,
+        "medianFrameMs": 407.6,
+        "telemetryId": null,
+        "field": {
+          "surfaces": 468,
+          "samples": 296393,
+          "rebuilds": 2,
+          "buildMs": 2093,
+          "bytes": 10795136,
+          "receiverPixels": 766912,
+          "depthPixels": 965936,
+          "ready": true,
+          "error": "",
+          "sun": {
+            "dx": 1.59394236711567,
+            "dy": 0.09168415256286729,
+            "alpha": 0.4
+          },
+          "model": "original alpha, explicit billboard/relief geometry; light-space depth compare",
+          "uploadMs": 9104.700000047684,
+          "dynamic": {
+            "updates": 29,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 36406,
+            "bytes": 1481828,
+            "renderMs": 0.7000000476837158,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 1.25
+          }
+        }
+      }
+    ],
+    "status": "pass"
+  },
+  "status": "pass"
+}
