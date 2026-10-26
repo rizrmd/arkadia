@@ -1,0 +1,96 @@
+{
+  "phaseMilliseconds": 320,
+  "axis": "scene forward x, from hand x=171",
+  "cameraUnchanged": true,
+  "verticalSpreadUnchanged": true,
+  "targets": [
+    {
+      "old": [
+        487,
+        245
+      ],
+      "current": [
+        381.66666666666663,
+        245
+      ]
+    },
+    {
+      "old": [
+        417,
+        335
+      ],
+      "current": [
+        335,
+        335
+      ]
+    },
+    {
+      "old": [
+        536,
+        402
+      ],
+      "current": [
+        414.3333333333333,
+        402
+      ]
+    }
+  ],
+  "measurements": [
+    {
+      "layer": "Ignition",
+      "oldForwardReach": 26,
+      "newForwardReach": 26,
+      "ratio": 1,
+      "method": "Pixi sprite/graphics bounds"
+    },
+    {
+      "layer": "Flame sheet",
+      "oldForwardReach": 421.7138970902888,
+      "newForwardReach": 281.14259806019254,
+      "ratio": 0.6666666666666666,
+      "method": "actual rendered Nixie quad corners"
+    },
+    {
+      "layer": "Curling tongues",
+      "oldForwardReach": 424.820109798045,
+      "newForwardReach": 283.21340653203,
+      "ratio": 0.6666666666666666,
+      "method": "Pixi sprite/graphics bounds"
+    },
+    {
+      "layer": "Hot interior",
+      "oldForwardReach": 398.6431445053511,
+      "newForwardReach": 265.7620963369007,
+      "ratio": 0.6666666666666666,
+      "method": "Pixi sprite/graphics bounds"
+    },
+    {
+      "layer": "Ground heat",
+      "oldForwardReach": 395,
+      "newForwardReach": 263.3333333333333,
+      "ratio": 0.6666666666666666,
+      "method": "Pixi sprite/graphics bounds"
+    },
+    {
+      "layer": "Hit contacts",
+      "oldForwardReach": 389,
+      "newForwardReach": 259.3333333333333,
+      "ratio": 0.6666666666666666,
+      "method": "Pixi sprite/graphics bounds"
+    },
+    {
+      "layer": "Embers",
+      "oldForwardReach": 337.53291511818003,
+      "newForwardReach": 225.02194341211998,
+      "ratio": 0.6666666666666666,
+      "method": "actual rendered Nixie quad corners"
+    },
+    {
+      "layer": "Smoke",
+      "oldForwardReach": 395.2914699801589,
+      "newForwardReach": 263.52764665343926,
+      "ratio": 0.6666666666666666,
+      "method": "actual rendered Nixie quad corners"
+    }
+  ]
+}
