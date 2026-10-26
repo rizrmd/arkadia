@@ -247,16 +247,16 @@ export async function createWorldView(
  let encounters:Awaited<ReturnType<typeof createEncounters>>|undefined;
  // Keys and the stick, or else a tap-to-walk route from the full map (auto-walk.ts).
  let walker:AutoWalk|undefined;const input=()=>walker?walker.input(direction()):direction();
- await milestone(925,'Waking the hero · preparing the hero');
+ await milestone(925,'Preparing the hero');
  const hero=await createHero<(typeof objects)[number]>({hero:pick,layer:worldStage,lightmap:lighting.lightmap,surface,footprint:p=>p.id==='gate'?gateFootprint():footprint(p),sun:lighting.sun,direction:()=>encounters?encounters.steer(input()):input(),follow,pose:()=>encounters?.pose()??null,
   drive:()=>{if(!net?.active())return null;const p=net.position(),me=net.me();return {...p,face:direction(),look:me&&me.st!=='idle'?{facing:me.fc,back:me.bk,vertical:me.vt}:null};}});hero.setScene(scene());
- await milestone(930,'Waking the hero · preparing combat');
+ await milestone(930,'Preparing combat');
  encounters=await createEncounters({renderer:rt.app.renderer,worldStage,uiStage,frames,hudCallbacks,showCoop:Boolean(net),cancelRoute:()=>walker?.cancel(),hero,direction:input,net});
  const worldMap=new WorldMap(frames,{hero:hero.position,built:()=>[...built],route:()=>walker?.route()??null,walk:(x,y)=>walker?.goTo(x,y)??false});
  walker=createAutoWalk({blocked:hero.blocked,position:hero.position,onChange:r=>encounters!.minimap.setRoute(r)});
  uiStage.addChild(worldMap);encounters.minimap.onOpen=()=>worldMap.toggle();
  const party=net?createParty<(typeof objects)[number]>({layer:worldStage,frames,lightmap:lighting.lightmap,surface,footprint:p=>p.id==='gate'?gateFootprint():footprint(p),sun:lighting.sun,net,own:()=>hero.position()}):null;party?.setScene(scene());
- await milestone(940,'Waking the hero · loading backgrounds');
+ await milestone(940,'Loading backgrounds');
  const parallax=await createParallax({worldStage,anchorX:WORLD.width/2,anchorY:385,getHeroWorld:()=>hero.position(),getCombatantsWorld:()=>encounters?encounters.combatants():[hero.position()]});
  lighting.setClockSource(()=>net?.active()?net.clock():null);net?.onSnapshot(()=>{const p=hero.position();updateGate(p.x,p.y);});lighting.subscribe(s=>encounters!.setAmbient(s.ambient));
  lighting.subscribe(s=>{const [r,g,b]=s.ambient.map(v=>Math.round(Math.round(v*32)/32*255));for(const f of relief)f.view.sprite.tint=(r<<16)|(g<<8)|b;frontier.setAmbient((r<<16)|(g<<8)|b);});

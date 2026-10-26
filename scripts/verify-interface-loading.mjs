@@ -27,10 +27,10 @@ try{
  await page.goto(base,{waitUntil:'domcontentloaded'});
  await page.waitForFunction(()=>document.querySelector('#world-canvas')?.dataset.ready==='true'&&!document.querySelector('#loading-screen'),null,{timeout:180000});
  const samples=await page.evaluate(()=>window.__interfaceSamples);
- const ui=samples.filter(s=>s.label?.startsWith('Loading interface & fonts ·'));
+ const ui=samples.filter(s=>s.label?.startsWith('Loading interface ·'));
  assert.ok(new Set(ui.map(s=>s.percent)).size>=3,'interface progress must advance while resources are pending');
- assert.ok(ui.some(s=>/3\/3 fonts/.test(s.label)),'all font atlases reported ready');
- assert.ok(ui.some(s=>/\d+\/\d+ interface/.test(s.label)),'interface count visible');
+ assert.ok(ui.some(s=>{const count=s.label.match(/(\d+)\/(\d+)$/);return count&&Number(count[1])===Number(count[2])&&Number(count[2])>=3;}),'all interface and font resources reported ready');
+ assert.ok(ui.some(s=>/Loading interface · \d+\/\d+/.test(s.label)),'interface count visible');
  assert.ok(samples.every((s,i)=>!i||s.percent>=samples[i-1].percent),'progress never decreases');
  const artwork=samples.filter(s=>s.label?.startsWith('Loading artwork'));
  assert.ok(artwork.length&&artwork[0].percent>=32,'artwork starts after interface range');

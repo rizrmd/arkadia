@@ -114,10 +114,10 @@ export async function mount(app:HTMLElement,progress:Progress){
  // These jobs overlap: report completions, rather than a timer pretending work finished.
  let prepared=0;
  const preparationLabels=['effects','visibility','graphics'];
- progress(960,1000,'Raising the Stronghold · preparing effects, visibility and graphics');
+ progress(960,1000,'Preparing the Stronghold');
  await Promise.all([worldView.encounters.fxStage.loaded,worldView.visibleMasksReady(),worldView.prepareGpu()].map(async(job,index)=>{
   await job;
-  progress(960+(++prepared)*10,1000,`Raising the Stronghold · ${preparationLabels[index]} ready · ${prepared}/3`);
+  progress(960+(++prepared)*10,1000,`Preparing ${preparationLabels[index]} · ${prepared}/3 ready`);
  }));
  await new Promise<void>(resolve=>setTimeout(resolve,0));
  await picker.start();

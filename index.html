@@ -26,7 +26,7 @@ canvas{display:block;width:100%;height:100%}
 #loading-footer{position:absolute;left:26px;right:26px;top:185px;display:flex;flex-direction:column;align-items:center;gap:14px;pointer-events:none}
 #loading-meta{width:100%;display:flex;justify-content:space-between;align-items:baseline;gap:12px;pointer-events:none}
 #loading-screen[data-state="error"] #loading-meta{justify-content:center;text-align:center}
-#loading-label{font:500 17.5px/1.28 "EB Garamond","Palatino Linotype","Book Antiqua",Palatino,Georgia,"Times New Roman",serif;color:#f1e3c6;letter-spacing:0.015em;text-shadow:0 1.5px 3px rgba(0,0,0,0.95),0 0 8px rgba(0,0,0,0.8)}
+#loading-label{min-width:0;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font:500 17.5px/1.28 "EB Garamond","Palatino Linotype","Book Antiqua",Palatino,Georgia,"Times New Roman",serif;color:#f1e3c6;letter-spacing:0.015em;text-shadow:0 1.5px 3px rgba(0,0,0,0.95),0 0 8px rgba(0,0,0,0.8)}
 #loading-screen[data-state="error"] #loading-label{text-align:center}
 #loading-pct{font:600 18px/1.2 "Cinzel","EB Garamond","Palatino Linotype",Palatino,Georgia,serif;color:#f2c665;letter-spacing:0.02em;font-variant-numeric:tabular-nums;flex-shrink:0;text-shadow:0 1.5px 3px rgba(0,0,0,0.95),0 0 8px rgba(0,0,0,0.8)}
 #loading-screen[data-state="error"] #loading-pct{display:none}
@@ -76,7 +76,7 @@ canvas{display:block;width:100%;height:100%}
  var shown=pinnedPct!==null?Math.max(0,Math.min(100,Math.round(pinnedPct))):1;
  var failed=Boolean(pinnedError!==null&&pinnedError!=='');
  var finished=false;
- var statusText=failed?(pinnedError==='1'?'The Stronghold could not load. Check your connection and try again.':pinnedError):(pinnedText||'Loading the game');
+ var statusText=failed?(pinnedError==='1'?'The Stronghold could not load. Check your connection and try again.':pinnedError):(pinnedText||'Loading game code');
 
  function syncLayout(){
   var w=window.innerWidth||390,h=window.innerHeight||844;
@@ -96,7 +96,7 @@ canvas{display:block;width:100%;height:100%}
    crest.style.display=!failed&&displayPct>0?'block':'none';
    crest.style.left=(26+fillW-12)+'px';
   }
-  if(labelEl)labelEl.textContent=statusText;
+  if(labelEl){labelEl.textContent=statusText;labelEl.title=statusText;}
   if(pctEl)pctEl.textContent=failed?'':(displayPct+'%');
   if(retryBtn)retryBtn.style.display=failed?'flex':'none';
  }
@@ -105,14 +105,7 @@ canvas{display:block;width:100%;height:100%}
  window.addEventListener('resize',syncLayout);
  if(retryBtn)retryBtn.addEventListener('click',function(){location.reload();});
 
- var bootTimer=pinnedPct===null&&!failed?setInterval(function(){
-  if(failed||finished||shown>=10){clearInterval(bootTimer);return;}
-  shown+=1;
-  syncState();
- },120):0;
-
  function removeScreen(){
-  clearInterval(bootTimer);
   window.removeEventListener('resize',syncLayout);
   if(screen.parentNode)screen.parentNode.removeChild(screen);
  }
@@ -133,7 +126,6 @@ canvas{display:block;width:100%;height:100%}
    syncState();
   },
   done:function(){
-   clearInterval(bootTimer);
    if(failed)return;
    finished=true;
    if(pinnedPct===null){
@@ -148,7 +140,6 @@ canvas{display:block;width:100%;height:100%}
    }
   },
   fail:function(msg){
-   clearInterval(bootTimer);
    failed=true;
    statusText=msg;
    syncLayout();
