@@ -9,6 +9,8 @@ export type Progression={
  skills:Record<string,number>;
  stars:number;
  slots:string[];
+ // Base active ranks restored from permanent solo unlocks; excluded from this run's spent cards.
+ retainedSkills?:string[];
  autoCasts?:number;
  manualDashes?:number;dashFromU?:number;dashFromV?:number;dashU?:number;dashV?:number;
  trinityCasts?:number;
@@ -277,10 +279,10 @@ export function emberCardEligible(p:Progression,id:string):boolean{
 }
 export const CAPSTONE_LEVEL=20;
 // Points spent = level-up cards taken: every pick adds one rank (Second Wind included) or one star; the free Lv. 1
-// skill is not a pick.
+// skill and restored base active ranks are not picks.
 export function pointsSpent(p:Progression):number{
  const ranks=Object.values(p.skills??{}).reduce((a,r)=>a+Math.max(0,r|0),0);
- return Math.max(0,ranks+(p.stars??0)-1);
+ return Math.max(0,ranks+(p.stars??0)-Math.max(1,p.retainedSkills?.length??0));
 }
 // The level the pending pick belongs to (several level-ups at once are picked one by one, lowest first).
 export const offerLevel=(p:Progression)=>p.pending>0?p.level-p.pending+1:p.level;

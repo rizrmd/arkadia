@@ -1,0 +1,27 @@
+import assert from 'node:assert/strict';import http from 'node:http';import fs from 'node:fs/promises';import path from 'node:path';import {chromium} from 'playwright';
+const live=process.argv[2],out='docs/houdini-flame-fan';await fs.mkdir(out,{recursive:true});
+let server;if(!live){server=http.createServer(async(req,res)=>{try{const p=decodeURIComponent(new URL(req.url,'http://localhost').pathname).replace(/^\/houdini-flame-fan\/?/,'')||'index.html';if(p.includes('..'))throw Error();const bytes=await fs.readFile(path.join('dist-houdini-flame-fan',p));res.setHeader('Content-Type',p.endsWith('.js')?'text/javascript':p.endsWith('.json')?'application/json':p.endsWith('.png')?'image/png':'text/html');res.end(bytes);}catch{res.writeHead(404);res.end();}});await new Promise(r=>server.listen(0,'127.0.0.1',r));}
+const url=live||`http://127.0.0.1:${server.address().port}/houdini-flame-fan/`,browser=await chromium.launch({headless:true,env:{...process.env,LD_LIBRARY_PATH:process.env.HOME+'/.local/browser-libs/usr/lib/x86_64-linux-gnu'},args:['--no-sandbox','--use-gl=angle','--use-angle=swiftshader']});const reports=[];
+try{for(const viewport of [{width:1440,height:900},{width:390,height:844},{width:320,height:560}]){
+ const page=await browser.newPage({viewport}),errors=[],failed=[];const settle=()=>page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));page.on('pageerror',e=>errors.push(e.message));page.on('response',r=>{if(r.status()>=400)failed.push(r.url());});
+ await page.goto(url);await page.waitForFunction(()=>window.__houdiniFlameFan?.state.frames===36,null,{timeout:60000});
+ for(let level=1;level<=5;level++){await page.evaluate(n=>window.__houdiniFlameFan.select(n),level);await page.waitForFunction(n=>!window.__houdiniFlameFan.state.loading&&window.__houdiniFlameFan.state.level===n,level);const state=await page.evaluate(()=>window.__houdiniFlameFan.state);if(!state.canvasOnly||state.frames!==36||state.commercialEligible)throw Error('Bad player contract');}
+ const before=await page.evaluate(()=>window.__houdiniFlameFan.state.time);await page.waitForFunction(t=>window.__houdiniFlameFan.state.time!==t,before,{timeout:10000});
+ await settle();await page.mouse.click(35,130);assert.equal(await page.evaluate(()=>window.__houdiniFlameFan.state.playing),false);
+ await settle();await page.mouse.click(35,130);assert.equal(await page.evaluate(()=>window.__houdiniFlameFan.state.playing),true);
+ await settle();await page.mouse.click(190,130);assert.equal(await page.evaluate(()=>window.__houdiniFlameFan.state.speed),.5);
+ let desktopTier=false;if(viewport.width===1440){await settle();await page.mouse.click(35,172);await page.waitForFunction(()=>window.__houdiniFlameFan.state.variant==='desktop'&&!window.__houdiniFlameFan.state.loading);assert.equal(await page.evaluate(()=>window.__houdiniFlameFan.state.frames),36);desktopTier=true;await settle();await page.mouse.click(35,172);await page.waitForFunction(()=>window.__houdiniFlameFan.state.variant==='mobile'&&!window.__houdiniFlameFan.state.loading);}
+ await settle();await page.mouse.click(35,90);await page.waitForFunction(()=>window.__houdiniFlameFan.state.level===1&&!window.__houdiniFlameFan.state.loading);await page.evaluate(()=>window.__houdiniFlameFan.seek(.333));
+ await page.screenshot({path:`${out}/${live?'live':'local'}-${viewport.width}.png`});
+ if(errors.length||failed.length)throw Error(JSON.stringify({errors,failed}));reports.push({viewport,levels:5,frames:36,animation:true,pixiPointerLevel:true,canvasOnly:true,pixiPlayPause:true,pixiSpeed:true,desktopTier,errors,failed});await page.close();
+}
+const fixture=await browser.newPage({viewport:{width:1000,height:800}});
+await fixture.route('**/artifacts/manifest.json',async route=>{const response=await route.fetch(),m=await response.json();Object.assign(m.levels[0],{duration:.75,fps:48,pivot:{x:.27,y:.31},fanAngleDegrees:72});Object.assign(m.levels[0].camera,{horizontalSpan:10,groundYScale:.4});await route.fulfill({response,json:m});});
+await fixture.goto(url);await fixture.waitForFunction(()=>window.__houdiniFlameFan?.state.frames===36,null,{timeout:60000});await fixture.evaluate(()=>window.__houdiniFlameFan.seek(.5));
+await fixture.waitForFunction(()=>window.__houdiniFlameFan.state.textureFrame.y===738);
+const state=await fixture.evaluate(()=>window.__houdiniFlameFan.state);assert.equal(state.duration,.75);assert.equal(state.fps,48);assert.equal(state.textureFrame.x,2);assert.equal(state.registration.fanAngleDegrees,72);assert.equal(state.registration.groundYScale,.4);
+// World span 10 Houdini units × 2 game units: recover display width from grid spacing.
+const displayW=state.registration.unit*20,displayH=displayW*9/16;assert.ok(Math.abs(state.registration.x-displayW*.27)<1e-6);assert.ok(Math.abs(state.registration.y-displayH*.31)<1e-6);
+await fixture.evaluate(()=>window.__houdiniFlameFan.seek(100));assert.ok((await fixture.evaluate(()=>window.__houdiniFlameFan.state.time))<.75);await fixture.close();
+const parameterFixture={duration:.75,fps:48,seekSeconds:.5,actualAtlasFrame:24,pivot:[.27,.31],fanAngleDegrees:72,groundYScale:.4,horizontalSpan:10,passed:true};
+await fs.writeFile(`${out}/${live?'live':'local'}-verification.json`,JSON.stringify({url,reports,parameterFixture,physicalDeviceBenchmark:false},null,2));console.log(reports);}finally{await browser.close();if(server)await new Promise(r=>server.close(r));}
