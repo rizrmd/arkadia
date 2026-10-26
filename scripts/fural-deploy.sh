@@ -125,6 +125,12 @@ for f in docs/flame-fan-gameplay/*.png docs/flame-fan-gameplay/*.json docs/flame
  cp "$f" "$STAGE/site/ember-warden-review/flame-fan-gameplay/"
 done
 
+# Keep the dedicated Rift Dash player available on every later game release.
+node scripts/rift-dash/build.mjs
+mkdir -p "$STAGE/site/rift-dash/player"
+cp -R dist-rift-dash/. "$STAGE/site/rift-dash/player/"
+cp -R public/rift-dash/v2 "$STAGE/site/rift-dash/v2"
+
 # One versioned tarball, uploaded in parts and applied by the gateway at boot (the release also writes www/index.html).
 mkdir -p "$HOME/releases"
 # Concurrent sessions can release the same commit. Never let one tar writer replace a file

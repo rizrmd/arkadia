@@ -10,7 +10,7 @@ import http from 'node:http';import net from 'node:net';import fs from 'node:fs'
 const home=process.cwd(),www=path.join(home,'www'),layers=path.join(home,'layers'),coopBin=path.join(home,'coop/arkodia'),legacyCoopBin=path.join(home,'coop/arkadia'),applied=path.join(home,'applied.json');
 const PORT=+(process.env.PORT||3000),COOP_PORT=+(process.env.COOP_PORT||3001);
 // Folders with their own pages (directory index and .html allowed); any other .html is a retired page and redirects home.
-const OPEN=['/shadow-audit/','/3d-hero-lab/','/run-cadence/','/sprite-player/','/environment-corners/','/typography/','/rift-runner/','/enemies/','/ember-warden-review/','/knight-footfalls/review.html'];
+const OPEN=['/rift-dash/','/shadow-audit/','/3d-hero-lab/','/run-cadence/','/sprite-player/','/environment-corners/','/typography/','/rift-runner/','/enemies/','/ember-warden-review/','/knight-footfalls/review.html'];
 // Former sandbox roots, now folders.
 const MOVED={'/3d-hero-lab':'/3d-hero-lab/','/ember-warden-review':'/ember-warden-review/','/typography':'/typography/','/enemies':'/enemies/v1/','/enemies/':'/enemies/v1/'};
 
@@ -93,6 +93,7 @@ const server=http.createServer((req,res)=>{
  if(MOVED[p]){res.writeHead(302,{...NO_STORE,Location:MOVED[p]+u.search}).end();return;}
  if(p.endsWith('/')&&p!=='/'&&isOpen(p)&&fs.existsSync(path.join(www,p,'index.html')))return sendFile(req,res,path.join(www,p,'index.html'),p);
  if(p.endsWith('.html')&&p!=='/index.html'&&!isOpen(p)){res.writeHead(302,{...NO_STORE,Location:'/'+u.search}).end();return;}
+ if(p.startsWith('/rift-dash/')&&(p.endsWith('/')||!path.extname(p))){res.writeHead(404,NO_STORE).end('Rift Dash player missing');return;}
  if(p==='/index.html'||p.endsWith('/')||!path.extname(p))return gamePage(req,res);
  sendFile(req,res,path.join(www,p),p);
 });
