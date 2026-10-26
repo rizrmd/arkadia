@@ -9,9 +9,15 @@ import type {PackedShadowMap,ShadowView} from './shadow-map-builder';
 import {sampleSurface,type ShadowSurface} from './shadow-surfaces';
 export const shadowFilterVertex=`in vec2 aPosition;out vec2 vTextureCoord;out vec2 vScreen;uniform vec4 uInputSize;uniform vec4 uOutputFrame;uniform vec4 uOutputTexture;
 void main(){vec2 p=aPosition*uOutputFrame.zw+uOutputFrame.xy;vScreen=p;gl_Position=vec4(p.x*2.0/uOutputTexture.x-1.0,p.y*(2.0*uOutputTexture.z/uOutputTexture.y)-uOutputTexture.z,0.0,1.0);vTextureCoord=aPosition*uOutputFrame.zw*uInputSize.zw;}`;
+// Specialize only the stage filter. Actor materials keep their byte-identical
+// shared shader and policy; negative owners exist only in this static receiver.
+const staticSampling=SHADOW_SAMPLING_GLSL
+ .replace('bool sameCaster(float id,float own){return','bool sameCaster(float id,float own){own=abs(own);return')
+ .replace('h>2.0&&sameCaster','(h>2.0||(own<0.0&&h>0.0))&&sameCaster');
+if(!staticSampling.includes('own=abs(own)')||!staticSampling.includes('own<0.0&&h>0.0'))throw Error('Static low-relief shader specialization failed');
 const fragment=`in vec2 vTextureCoord;in vec2 vScreen;out vec4 finalColor;uniform sampler2D uTexture;uniform sampler2D uHeight;uniform sampler2D uDynamicHeight;uniform vec4 uHeightBounds;uniform vec4 uDynamicHeightBounds;
-${SHADOW_SAMPLING_GLSL}
-void main(){vec4 color=texture(uTexture,vTextureCoord);if(uSun.z<=0.0){finalColor=color;return;}vec2 world=(vScreen-uCamera.xy)/uCamera.z;vec4 receiver=texAt(uHeight,world,uHeightBounds);float emission=receiver.a>0.0?clamp((1.0-receiver.a)*255.0/127.0,0.0,1.0):0.0;vec4 dynamicHeight=texAt(uDynamicHeight,world,uDynamicHeightBounds);if(dynamicHeight.a>.5){receiver=dynamicHeight;emission=0.0;}float h=zOf(receiver),own=ownerOf(receiver);float shade=shadowCoverage(world,h,own)*uSun.z*(1.0-emission);finalColor=vec4(mix(color.rgb,color.a*vec3(.078431,.109804,.172549),shade),color.a);}`;
+${staticSampling}
+void main(){vec4 color=texture(uTexture,vTextureCoord);if(uSun.z<=0.0){finalColor=color;return;}vec2 world=(vScreen-uCamera.xy)/uCamera.z;vec4 receiver=texAt(uHeight,world,uHeightBounds);bool lowRelief=abs(receiver.a*255.0-127.0)<.5;float emission=receiver.a>0.0&&!lowRelief?clamp((1.0-receiver.a)*255.0/127.0,0.0,1.0):0.0;vec4 dynamicHeight=texAt(uDynamicHeight,world,uDynamicHeightBounds);if(dynamicHeight.a>.5){receiver=dynamicHeight;emission=0.0;}float h=zOf(receiver),own=ownerOf(receiver);if(abs(receiver.a*255.0-127.0)<.5)own=-own;float shade=shadowCoverage(world,h,own)*uSun.z*(1.0-emission);finalColor=vec4(mix(color.rgb,color.a*vec3(.078431,.109804,.172549),shade),color.a);}`;
 
 // Packed owner/height bytes must never pass through Canvas2D. Its internal
 // premultiplied storage rounds RGB when alpha <255, corrupting height/owner.
@@ -66,7 +72,7 @@ export function createSceneShadows(stage:Container,onUpdate:()=>void=()=>{},rend
   surfaces=surfaces.map(withSolidShadowGeometry);auditSurfaces=surfaces.map(p=>({...p}));
   const sampled=surfaces.map((p,i)=>{const s=sampleSurface(p,2);for(const q of s.samples)q.owner=i+1;return s;});
   const aliases=surfaces.map((p,i)=>p.cast!==false?surfaces.length*2+i+1:0);if(Math.max(surfaces.length,...aliases)>=3000)throw Error('Static shadow owner pool overlaps actor owners');
-  const total=sampled.reduce((n,s)=>n+s.samples.length,0),packed=new Float32Array(total*18);let j=0;for(const [index,s] of sampled.entries())for(const q of s.samples){packed[j++]=q.x;packed[j++]=q.y;packed[j++]=q.z;packed[j++]=q.alpha;packed[j++]=q.opaqueProxy?aliases[index]:q.owner!;packed[j++]=(s.surface.cast===false?0:1)|(q.receive===false?0:2)|(Math.round((q.emission??0)*255)<<8);packed.set(q.quad!,j);j+=12;}
+  const total=sampled.reduce((n,s)=>n+s.samples.length,0),packed=new Float32Array(total*18);let j=0;for(const [index,s] of sampled.entries())for(const q of s.samples){packed[j++]=q.x;packed[j++]=q.y;packed[j++]=q.z;packed[j++]=q.alpha;packed[j++]=q.opaqueProxy?aliases[index]:q.owner!;packed[j++]=(s.surface.cast===false?0:1)|(q.receive===false?0:2)|(q.ignoreLowSelf?4:0)|(Math.round((q.emission??0)*255)<<8);packed.set(q.quad!,j);j+=12;}
   heightRevision++;revision++;hasScene=true;stats.surfaces=surfaces.length;stats.ready=false;worker.postMessage({type:'scene',packed},[packed.buffer]);queued=true;queueMicrotask(()=>{if(!inFlight&&queued)request();});
  }
  function setSun(s:ShadowSun){live?.setSun(s);const next=s.alpha?[s.dx,s.dy,s.alpha].map(n=>n.toFixed(3)).join():'night';sun={dx:s.dx,dy:s.dy,alpha:s.alpha};if(next===key)return;if(!live&&dynamicScene.length){dynamicRevision++;dynamicQueued=true;if(!dynamicInFlight)updateDynamic();}key=next;queued=true;queueMicrotask(()=>{if(!inFlight&&queued)request();});}
@@ -75,7 +81,7 @@ export function createSceneShadows(stage:Container,onUpdate:()=>void=()=>{},rend
  const dynamicStats={updates:0,surfaces:0,buildMs:0,ready:false};
  function updateDynamic(){if(dynamicInFlight||!dynamicScene.length){dynamicQueued=true;return;}dynamicInFlight=true;dynamicQueued=false;const sampled=dynamicScene.map((p,i)=>{const a=sampleSurface(p,1.5);for(const q of a.samples)q.owner=4000+i;return a;});
   if(4000+sampled.length*2>4095)throw Error('Dynamic shadow owner pool exhausted');const aliases=sampled.map((_,i)=>4000+sampled.length+i);
-  const packed=new Float32Array(sampled.reduce((n,s)=>n+s.samples.length,0)*18);let j=0;for(const [index,s] of sampled.entries())for(const q of s.samples){packed[j++]=q.x;packed[j++]=q.y;packed[j++]=q.z;packed[j++]=q.alpha;packed[j++]=q.opaqueProxy?aliases[index]:q.owner!;packed[j++]=(s.surface.cast===false?0:1)|(q.receive===false?0:2)|(Math.round((q.emission??0)*255)<<8);packed.set(q.quad!,j);j+=12;}
+  const packed=new Float32Array(sampled.reduce((n,s)=>n+s.samples.length,0)*18);let j=0;for(const [index,s] of sampled.entries())for(const q of s.samples){packed[j++]=q.x;packed[j++]=q.y;packed[j++]=q.z;packed[j++]=q.alpha;packed[j++]=q.opaqueProxy?aliases[index]:q.owner!;packed[j++]=(s.surface.cast===false?0:1)|(q.receive===false?0:2)|(q.ignoreLowSelf?4:0)|(Math.round((q.emission??0)*255)<<8);packed.set(q.quad!,j);j+=12;}
   dynamicWorker?.postMessage({type:'scene',packed},[packed.buffer]);dynamicWorker?.postMessage({type:'build',id:dynamicRevision,revision:dynamicRevision,sun});
  }
  if(dynamicWorker)dynamicWorker.onmessage=({data})=>{dynamicInFlight=false;if(data.error){stats.error=data.error;console.error('Dynamic scene shadow:',data.error);return;}

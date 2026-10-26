@@ -1,3 +1,4 @@
+import {withDriftGeometry} from './drift-shadow';
 import models from '../world/maps/solid-shadow-companions.json';
 import catalog from '../world/maps/frozen-frontier-sprites.json';
 import type {ShadowSurface} from './shadow-surfaces';
@@ -5,6 +6,7 @@ type SolidModel={source:string;sourceSize:number[];frame:number[];capHeightFract
 const solids=models.assets as Record<string,SolidModel>;
 export function withSolidShadowGeometry(p:ShadowSurface):ShadowSurface{
  if(p.solidBody===false)return p;
+ p=withDriftGeometry(p);
  const frontier=p.key.startsWith('ff:'),id=frontier?'frontier:'+p.key.split(':')[1]:'court:'+p.key.split(':')[0],model=solids[id];if(!model)return p;
  if(frontier&&models.atlasSha256!==catalog.sha256)throw Error('Solid shadow companion atlas revision mismatch');
  if(!frontier&&!p.key.endsWith(':'+model.source))return p;

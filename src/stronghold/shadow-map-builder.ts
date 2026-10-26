@@ -5,9 +5,9 @@ export function packMap(map:ShadowPixels):PackedShadowMap{
 }
 export function receiverMap(samples:ShadowSample[],step=3){
  const b=fieldBounds(samples,{dx:0,dy:-1,alpha:1},step),n=b.width*b.height,depth=new Float32Array(n),coverage=new Uint8Array(n),owner=new Uint16Array(n);
- // Receiver alpha is material response: 255 = lit, 128 = emissive.
+ // Receiver alpha: 255 = lit, 128 = emissive; 127 = lit low-relief self-owner policy.
  // Partial glow retains the underlying terrain shadow instead of erasing it.
- for(const p of samples)if((p.alpha>=.5||(p.emission??0)>0)&&p.receive!==false)rasterSample(p,{dx:0,dy:-1,alpha:1},b,(k,z,_a,id)=>{if(owner[k]!==id||z>=depth[k]){depth[k]=p.alpha>=.5?z:0;coverage[k]=255-Math.round((p.emission??0)*p.alpha*127);owner[k]=id;}},false,false);
+ for(const p of samples)if((p.alpha>=.5||(p.emission??0)>0)&&p.receive!==false)rasterSample(p,{dx:0,dy:-1,alpha:1},b,(k,z,_a,id)=>{if(owner[k]!==id||z>=depth[k]){depth[k]=p.alpha>=.5?z:0;coverage[k]=p.ignoreLowSelf?127:255-Math.round((p.emission??0)*p.alpha*127);owner[k]=id;}},false,false);
  return packMap({bounds:b,depth,coverage,owner});
 }
 export function casterMaps(samples:ShadowSample[],sun:ShadowSun,step=3){const field=makeField(samples,sun,step);return {depth:packMap(field),second:packMap({bounds:field.bounds,depth:field.secondDepth!,coverage:field.secondCoverage!,owner:field.secondOwner})};}

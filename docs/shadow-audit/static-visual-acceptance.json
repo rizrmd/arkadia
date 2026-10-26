@@ -1,6 +1,6 @@
 {
-  "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance.",
-  "staticReportSha256": "007c90485d6a45a42e370a4a61cea6169963620a1c49f43a77efbbc2393d3b22",
+  "scope": "301 non-drift variants carried forward only after all picture pixels match runtime 7957773a baseline. Thirteen drift variants reviewed in three-sun low-height plates; 2,555,904 picture pixels exactly match final scoped renderer. No certification of continuous angles or native FPS.",
+  "staticReportSha256": "3ae665fc60901a17fb6a32e15d840abee06a0d99eddb41b3db8853afcc00fa4c",
   "variants": 314,
   "sunImages": 942,
   "plates": 53,
@@ -9,7 +9,7 @@
     "reviewed: semantic physical/emissive material companion": 1,
     "reviewed: flat ground grass dressing": 25,
     "reviewed: low-volume original-alpha cast/receive companion": 24,
-    "reviewed with proxy/raster limitation": 13
+    "reviewed: procedural source heights and scoped low-relief receiver": 13
   },
   "openFamilies": [],
   "rows": [
@@ -404,10 +404,6 @@
       "findings": []
     },
     {
-      "status": "reviewed: semantic physical/emissive material companion",
-      "findings": [
-        "Authored source-coordinate classification preserves original RGB and partitions all source alpha exactly. Physical metal/wood casts and receives; fire/glow response is encoded in existing receiver alpha. Mixed/partial glow retains underlying ground shading; no added GPU sampler/filter. Classification and folded geometry are approximations at the sampled resolution, not measured internal volume. Dedicated 36-case material and three-sun real-asset controls pass."
-      ],
       "id": "variant:26",
       "signature": "[\"brazier:/modular-stronghold/v2/brazier.png\",null,32,48.02689075630252,[0.5,0.97],null,0,1,null,null,null,true,false,{\"materialRevision\":\"brazier:61f8c66b2c2e412a17b79d9de307e8e40d18c3d84b3cc4834933677d6bb62786\"}]",
       "family": "brazier:/modular-stronghold/v2/brazier.png",
@@ -418,6 +414,10 @@
         1,
         2,
         3
+      ],
+      "status": "reviewed: semantic physical/emissive material companion",
+      "findings": [
+        "Authored source-coordinate classification preserves original RGB and partitions all source alpha exactly. Physical metal/wood casts and receives; fire/glow response is encoded in existing receiver alpha. Mixed/partial glow retains underlying ground shading; no added GPU sampler/filter. Classification and folded geometry are approximations at the sampled resolution, not measured internal volume. Dedicated 36-case material and three-sun real-asset controls pass."
       ]
     },
     {
@@ -633,10 +633,6 @@
       ]
     },
     {
-      "status": "reviewed: low-volume original-alpha cast/receive companion",
-      "findings": [
-        "All 24 actual placements, including mirrors and 327-degree ground rotation, are registered. Four focused plates / 72 sun images directly inspected. Low capped camera-ray volume is an authored approximation; it does not claim measured individual-stone geometry. Ground painter band and empty collision footprint retained."
-      ],
       "id": "variant:41",
       "signature": "[\"ff:rock-scatter\",[395,1995,160,42],64.7637,17.092200000000002,[0.5,0.6059],false,0,null,0,[0.6176,0.6904,0.7471,0.7765,0.8515,0.8765,0.9301,0.9353,0.9824,0.9706,0.9471,0.9118,0.9044,0.8765,0.8118,0.754,0.5235],null,true,false,5.982270000000001,[0.945238,0.707143,0.445238,0.37381,0.421429,0.509226,0.680357,0.788988,0.897619,0.897619,0.82619,0.754762,0.486905,0.445238,0.588095,0.754762,0.82619],null,{\"groundRotation\":327}]",
       "family": "ff:rock-scatter",
@@ -647,6 +643,10 @@
         1,
         2,
         3
+      ],
+      "status": "reviewed: low-volume original-alpha cast/receive companion",
+      "findings": [
+        "All 24 actual placements, including mirrors and 327-degree ground rotation, are registered. Four focused plates / 72 sun images directly inspected. Low capped camera-ray volume is an authored approximation; it does not claim measured individual-stone geometry. Ground painter band and empty collision footprint retained."
       ]
     },
     {
@@ -684,10 +684,6 @@
       ]
     },
     {
-      "status": "reviewed: low-volume original-alpha cast/receive companion",
-      "findings": [
-        "All 24 actual placements, including mirrors and 327-degree ground rotation, are registered. Four focused plates / 72 sun images directly inspected. Low capped camera-ray volume is an authored approximation; it does not claim measured individual-stone geometry. Ground painter band and empty collision footprint retained."
-      ],
       "id": "variant:44",
       "signature": "[\"ff:rock-scatter\",[395,1995,160,42],59.030519999999996,15.57912,[0.5,0.6059],true,0,null,0,[0.6176,0.6904,0.7471,0.7765,0.8515,0.8765,0.9301,0.9353,0.9824,0.9706,0.9471,0.9118,0.9044,0.8765,0.8118,0.754,0.5235],null,true,false,5.452692,[0.945238,0.707143,0.445238,0.37381,0.421429,0.509226,0.680357,0.788988,0.897619,0.897619,0.82619,0.754762,0.486905,0.445238,0.588095,0.754762,0.82619],null]",
       "family": "ff:rock-scatter",
@@ -698,13 +694,13 @@
         1,
         2,
         3
-      ]
-    },
-    {
+      ],
       "status": "reviewed: low-volume original-alpha cast/receive companion",
       "findings": [
         "All 24 actual placements, including mirrors and 327-degree ground rotation, are registered. Four focused plates / 72 sun images directly inspected. Low capped camera-ray volume is an authored approximation; it does not claim measured individual-stone geometry. Ground painter band and empty collision footprint retained."
-      ],
+      ]
+    },
+    {
       "id": "variant:45",
       "signature": "[\"ff:rock-scatter\",[395,1995,160,42],52.801880000000004,13.93528,[0.5,0.6059],false,0,null,0,[0.6176,0.6904,0.7471,0.7765,0.8515,0.8765,0.9301,0.9353,0.9824,0.9706,0.9471,0.9118,0.9044,0.8765,0.8118,0.754,0.5235],null,true,false,4.877348,[0.945238,0.707143,0.445238,0.37381,0.421429,0.509226,0.680357,0.788988,0.897619,0.897619,0.82619,0.754762,0.486905,0.445238,0.588095,0.754762,0.82619],null]",
       "family": "ff:rock-scatter",
@@ -715,13 +711,13 @@
         1,
         2,
         3
-      ]
-    },
-    {
+      ],
       "status": "reviewed: low-volume original-alpha cast/receive companion",
       "findings": [
         "All 24 actual placements, including mirrors and 327-degree ground rotation, are registered. Four focused plates / 72 sun images directly inspected. Low capped camera-ray volume is an authored approximation; it does not claim measured individual-stone geometry. Ground painter band and empty collision footprint retained."
-      ],
+      ]
+    },
+    {
       "id": "variant:46",
       "signature": "[\"ff:rock-scatter\",[395,1995,160,42],50.32458,13.281479999999998,[0.5,0.6059],false,0,null,0,[0.6176,0.6904,0.7471,0.7765,0.8515,0.8765,0.9301,0.9353,0.9824,0.9706,0.9471,0.9118,0.9044,0.8765,0.8118,0.754,0.5235],null,true,false,4.648517999999999,[0.945238,0.707143,0.445238,0.37381,0.421429,0.509226,0.680357,0.788988,0.897619,0.897619,0.82619,0.754762,0.486905,0.445238,0.588095,0.754762,0.82619],null]",
       "family": "ff:rock-scatter",
@@ -732,6 +728,10 @@
         1,
         2,
         3
+      ],
+      "status": "reviewed: low-volume original-alpha cast/receive companion",
+      "findings": [
+        "All 24 actual placements, including mirrors and 327-degree ground rotation, are registered. Four focused plates / 72 sun images directly inspected. Low capped camera-ray volume is an authored approximation; it does not claim measured individual-stone geometry. Ground painter band and empty collision footprint retained."
       ]
     },
     {
@@ -752,10 +752,6 @@
       ]
     },
     {
-      "status": "reviewed: low-volume original-alpha cast/receive companion",
-      "findings": [
-        "All 24 actual placements, including mirrors and 327-degree ground rotation, are registered. Four focused plates / 72 sun images directly inspected. Low capped camera-ray volume is an authored approximation; it does not claim measured individual-stone geometry. Ground painter band and empty collision footprint retained."
-      ],
       "id": "variant:48",
       "signature": "[\"ff:rock-scatter\",[395,1995,160,42],50.466139999999996,13.31884,[0.5,0.6059],false,0,null,0,[0.6176,0.6904,0.7471,0.7765,0.8515,0.8765,0.9301,0.9353,0.9824,0.9706,0.9471,0.9118,0.9044,0.8765,0.8118,0.754,0.5235],null,true,false,4.661594,[0.945238,0.707143,0.445238,0.37381,0.421429,0.509226,0.680357,0.788988,0.897619,0.897619,0.82619,0.754762,0.486905,0.445238,0.588095,0.754762,0.82619],null]",
       "family": "ff:rock-scatter",
@@ -766,13 +762,13 @@
         1,
         2,
         3
-      ]
-    },
-    {
+      ],
       "status": "reviewed: low-volume original-alpha cast/receive companion",
       "findings": [
         "All 24 actual placements, including mirrors and 327-degree ground rotation, are registered. Four focused plates / 72 sun images directly inspected. Low capped camera-ray volume is an authored approximation; it does not claim measured individual-stone geometry. Ground painter band and empty collision footprint retained."
-      ],
+      ]
+    },
+    {
       "id": "variant:49",
       "signature": "[\"ff:rock-scatter\",[395,1995,160,42],81.11388,21.407279999999997,[0.5,0.6059],false,0,null,0,[0.6176,0.6904,0.7471,0.7765,0.8515,0.8765,0.9301,0.9353,0.9824,0.9706,0.9471,0.9118,0.9044,0.8765,0.8118,0.754,0.5235],null,true,false,7.492547999999998,[0.945238,0.707143,0.445238,0.37381,0.421429,0.509226,0.680357,0.788988,0.897619,0.897619,0.82619,0.754762,0.486905,0.445238,0.588095,0.754762,0.82619],null]",
       "family": "ff:rock-scatter",
@@ -783,13 +779,13 @@
         1,
         2,
         3
-      ]
-    },
-    {
+      ],
       "status": "reviewed: low-volume original-alpha cast/receive companion",
       "findings": [
         "All 24 actual placements, including mirrors and 327-degree ground rotation, are registered. Four focused plates / 72 sun images directly inspected. Low capped camera-ray volume is an authored approximation; it does not claim measured individual-stone geometry. Ground painter band and empty collision footprint retained."
-      ],
+      ]
+    },
+    {
       "id": "variant:50",
       "signature": "[\"ff:rock-scatter\",[395,1995,160,42],64.97604,17.14824,[0.5,0.6059],false,0,null,0,[0.6176,0.6904,0.7471,0.7765,0.8515,0.8765,0.9301,0.9353,0.9824,0.9706,0.9471,0.9118,0.9044,0.8765,0.8118,0.754,0.5235],null,true,false,6.001884,[0.945238,0.707143,0.445238,0.37381,0.421429,0.509226,0.680357,0.788988,0.897619,0.897619,0.82619,0.754762,0.486905,0.445238,0.588095,0.754762,0.82619],null]",
       "family": "ff:rock-scatter",
@@ -800,6 +796,10 @@
         1,
         2,
         3
+      ],
+      "status": "reviewed: low-volume original-alpha cast/receive companion",
+      "findings": [
+        "All 24 actual placements, including mirrors and 327-degree ground rotation, are registered. Four focused plates / 72 sun images directly inspected. Low capped camera-ray volume is an authored approximation; it does not claim measured individual-stone geometry. Ground painter band and empty collision footprint retained."
       ]
     },
     {
@@ -837,10 +837,6 @@
       ]
     },
     {
-      "status": "reviewed: low-volume original-alpha cast/receive companion",
-      "findings": [
-        "All 24 actual placements, including mirrors and 327-degree ground rotation, are registered. Four focused plates / 72 sun images directly inspected. Low capped camera-ray volume is an authored approximation; it does not claim measured individual-stone geometry. Ground painter band and empty collision footprint retained."
-      ],
       "id": "variant:53",
       "signature": "[\"ff:rock-scatter\",[395,1995,160,42],62.21562,16.419719999999998,[0.5,0.6059],false,0,null,0,[0.6176,0.6904,0.7471,0.7765,0.8515,0.8765,0.9301,0.9353,0.9824,0.9706,0.9471,0.9118,0.9044,0.8765,0.8118,0.754,0.5235],null,true,false,5.746901999999999,[0.945238,0.707143,0.445238,0.37381,0.421429,0.509226,0.680357,0.788988,0.897619,0.897619,0.82619,0.754762,0.486905,0.445238,0.588095,0.754762,0.82619],null]",
       "family": "ff:rock-scatter",
@@ -851,6 +847,10 @@
         1,
         2,
         3
+      ],
+      "status": "reviewed: low-volume original-alpha cast/receive companion",
+      "findings": [
+        "All 24 actual placements, including mirrors and 327-degree ground rotation, are registered. Four focused plates / 72 sun images directly inspected. Low capped camera-ray volume is an authored approximation; it does not claim measured individual-stone geometry. Ground painter band and empty collision footprint retained."
       ]
     },
     {
@@ -888,10 +888,6 @@
       ]
     },
     {
-      "status": "reviewed: low-volume original-alpha cast/receive companion",
-      "findings": [
-        "All 24 actual placements, including mirrors and 327-degree ground rotation, are registered. Four focused plates / 72 sun images directly inspected. Low capped camera-ray volume is an authored approximation; it does not claim measured individual-stone geometry. Ground painter band and empty collision footprint retained."
-      ],
       "id": "variant:56",
       "signature": "[\"ff:rock-scatter\",[395,1995,160,42],79.13204,20.884240000000002,[0.5,0.6059],true,0,null,0,[0.6176,0.6904,0.7471,0.7765,0.8515,0.8765,0.9301,0.9353,0.9824,0.9706,0.9471,0.9118,0.9044,0.8765,0.8118,0.754,0.5235],null,true,false,7.309484,[0.945238,0.707143,0.445238,0.37381,0.421429,0.509226,0.680357,0.788988,0.897619,0.897619,0.82619,0.754762,0.486905,0.445238,0.588095,0.754762,0.82619],null]",
       "family": "ff:rock-scatter",
@@ -902,13 +898,13 @@
         1,
         2,
         3
-      ]
-    },
-    {
+      ],
       "status": "reviewed: low-volume original-alpha cast/receive companion",
       "findings": [
         "All 24 actual placements, including mirrors and 327-degree ground rotation, are registered. Four focused plates / 72 sun images directly inspected. Low capped camera-ray volume is an authored approximation; it does not claim measured individual-stone geometry. Ground painter band and empty collision footprint retained."
-      ],
+      ]
+    },
+    {
       "id": "variant:57",
       "signature": "[\"ff:rock-scatter\",[395,1995,160,42],47.139480000000006,12.44088,[0.5,0.6059],false,0,null,0,[0.6176,0.6904,0.7471,0.7765,0.8515,0.8765,0.9301,0.9353,0.9824,0.9706,0.9471,0.9118,0.9044,0.8765,0.8118,0.754,0.5235],null,true,false,4.354308,[0.945238,0.707143,0.445238,0.37381,0.421429,0.509226,0.680357,0.788988,0.897619,0.897619,0.82619,0.754762,0.486905,0.445238,0.588095,0.754762,0.82619],null]",
       "family": "ff:rock-scatter",
@@ -919,13 +915,13 @@
         1,
         2,
         3
-      ]
-    },
-    {
+      ],
       "status": "reviewed: low-volume original-alpha cast/receive companion",
       "findings": [
         "All 24 actual placements, including mirrors and 327-degree ground rotation, are registered. Four focused plates / 72 sun images directly inspected. Low capped camera-ray volume is an authored approximation; it does not claim measured individual-stone geometry. Ground painter band and empty collision footprint retained."
-      ],
+      ]
+    },
+    {
       "id": "variant:58",
       "signature": "[\"ff:rock-scatter\",[395,1995,160,42],65.96696,17.409760000000002,[0.5,0.6059],true,0,null,0,[0.6176,0.6904,0.7471,0.7765,0.8515,0.8765,0.9301,0.9353,0.9824,0.9706,0.9471,0.9118,0.9044,0.8765,0.8118,0.754,0.5235],null,true,false,6.093416,[0.945238,0.707143,0.445238,0.37381,0.421429,0.509226,0.680357,0.788988,0.897619,0.897619,0.82619,0.754762,0.486905,0.445238,0.588095,0.754762,0.82619],null]",
       "family": "ff:rock-scatter",
@@ -936,13 +932,13 @@
         1,
         2,
         3
-      ]
-    },
-    {
+      ],
       "status": "reviewed: low-volume original-alpha cast/receive companion",
       "findings": [
         "All 24 actual placements, including mirrors and 327-degree ground rotation, are registered. Four focused plates / 72 sun images directly inspected. Low capped camera-ray volume is an authored approximation; it does not claim measured individual-stone geometry. Ground painter band and empty collision footprint retained."
-      ],
+      ]
+    },
+    {
       "id": "variant:59",
       "signature": "[\"ff:rock-scatter\",[395,1995,160,42],79.83984,21.071039999999996,[0.5,0.6059],false,0,null,0,[0.6176,0.6904,0.7471,0.7765,0.8515,0.8765,0.9301,0.9353,0.9824,0.9706,0.9471,0.9118,0.9044,0.8765,0.8118,0.754,0.5235],null,true,false,7.374863999999998,[0.945238,0.707143,0.445238,0.37381,0.421429,0.509226,0.680357,0.788988,0.897619,0.897619,0.82619,0.754762,0.486905,0.445238,0.588095,0.754762,0.82619],null]",
       "family": "ff:rock-scatter",
@@ -953,6 +949,10 @@
         1,
         2,
         3
+      ],
+      "status": "reviewed: low-volume original-alpha cast/receive companion",
+      "findings": [
+        "All 24 actual placements, including mirrors and 327-degree ground rotation, are registered. Four focused plates / 72 sun images directly inspected. Low capped camera-ray volume is an authored approximation; it does not claim measured individual-stone geometry. Ground painter band and empty collision footprint retained."
       ]
     },
     {
@@ -1024,10 +1024,6 @@
       ]
     },
     {
-      "status": "reviewed: low-volume original-alpha cast/receive companion",
-      "findings": [
-        "All 24 actual placements, including mirrors and 327-degree ground rotation, are registered. Four focused plates / 72 sun images directly inspected. Low capped camera-ray volume is an authored approximation; it does not claim measured individual-stone geometry. Ground painter band and empty collision footprint retained."
-      ],
       "id": "variant:64",
       "signature": "[\"ff:rock-scatter\",[395,1995,160,42],70.28454,18.54924,[0.5,0.6059],true,0,null,0,[0.6176,0.6904,0.7471,0.7765,0.8515,0.8765,0.9301,0.9353,0.9824,0.9706,0.9471,0.9118,0.9044,0.8765,0.8118,0.754,0.5235],null,true,false,6.492234,[0.945238,0.707143,0.445238,0.37381,0.421429,0.509226,0.680357,0.788988,0.897619,0.897619,0.82619,0.754762,0.486905,0.445238,0.588095,0.754762,0.82619],null]",
       "family": "ff:rock-scatter",
@@ -1038,13 +1034,13 @@
         1,
         2,
         3
-      ]
-    },
-    {
+      ],
       "status": "reviewed: low-volume original-alpha cast/receive companion",
       "findings": [
         "All 24 actual placements, including mirrors and 327-degree ground rotation, are registered. Four focused plates / 72 sun images directly inspected. Low capped camera-ray volume is an authored approximation; it does not claim measured individual-stone geometry. Ground painter band and empty collision footprint retained."
-      ],
+      ]
+    },
+    {
       "id": "variant:65",
       "signature": "[\"ff:rock-scatter\",[395,1995,160,42],77.43332000000001,20.435920000000003,[0.5,0.6059],true,0,null,0,[0.6176,0.6904,0.7471,0.7765,0.8515,0.8765,0.9301,0.9353,0.9824,0.9706,0.9471,0.9118,0.9044,0.8765,0.8118,0.754,0.5235],null,true,false,7.152572,[0.945238,0.707143,0.445238,0.37381,0.421429,0.509226,0.680357,0.788988,0.897619,0.897619,0.82619,0.754762,0.486905,0.445238,0.588095,0.754762,0.82619],null]",
       "family": "ff:rock-scatter",
@@ -1055,6 +1051,10 @@
         1,
         2,
         3
+      ],
+      "status": "reviewed: low-volume original-alpha cast/receive companion",
+      "findings": [
+        "All 24 actual placements, including mirrors and 327-degree ground rotation, are registered. Four focused plates / 72 sun images directly inspected. Low capped camera-ray volume is an authored approximation; it does not claim measured individual-stone geometry. Ground painter band and empty collision footprint retained."
       ]
     },
     {
@@ -1126,10 +1126,6 @@
       ]
     },
     {
-      "status": "reviewed: low-volume original-alpha cast/receive companion",
-      "findings": [
-        "All 24 actual placements, including mirrors and 327-degree ground rotation, are registered. Four focused plates / 72 sun images directly inspected. Low capped camera-ray volume is an authored approximation; it does not claim measured individual-stone geometry. Ground painter band and empty collision footprint retained."
-      ],
       "id": "variant:70",
       "signature": "[\"ff:rock-scatter\",[395,1995,160,42],65.04682,17.16692,[0.5,0.6059],true,0,null,0,[0.6176,0.6904,0.7471,0.7765,0.8515,0.8765,0.9301,0.9353,0.9824,0.9706,0.9471,0.9118,0.9044,0.8765,0.8118,0.754,0.5235],null,true,false,6.008422,[0.945238,0.707143,0.445238,0.37381,0.421429,0.509226,0.680357,0.788988,0.897619,0.897619,0.82619,0.754762,0.486905,0.445238,0.588095,0.754762,0.82619],null]",
       "family": "ff:rock-scatter",
@@ -1140,6 +1136,10 @@
         1,
         2,
         3
+      ],
+      "status": "reviewed: low-volume original-alpha cast/receive companion",
+      "findings": [
+        "All 24 actual placements, including mirrors and 327-degree ground rotation, are registered. Four focused plates / 72 sun images directly inspected. Low capped camera-ray volume is an authored approximation; it does not claim measured individual-stone geometry. Ground painter band and empty collision footprint retained."
       ]
     },
     {
@@ -1194,10 +1194,6 @@
       ]
     },
     {
-      "status": "reviewed: low-volume original-alpha cast/receive companion",
-      "findings": [
-        "All 24 actual placements, including mirrors and 327-degree ground rotation, are registered. Four focused plates / 72 sun images directly inspected. Low capped camera-ray volume is an authored approximation; it does not claim measured individual-stone geometry. Ground painter band and empty collision footprint retained."
-      ],
       "id": "variant:74",
       "signature": "[\"ff:rock-scatter\",[395,1995,160,42],68.86894,18.175639999999998,[0.5,0.6059],false,0,null,0,[0.6176,0.6904,0.7471,0.7765,0.8515,0.8765,0.9301,0.9353,0.9824,0.9706,0.9471,0.9118,0.9044,0.8765,0.8118,0.754,0.5235],null,true,false,6.3614739999999985,[0.945238,0.707143,0.445238,0.37381,0.421429,0.509226,0.680357,0.788988,0.897619,0.897619,0.82619,0.754762,0.486905,0.445238,0.588095,0.754762,0.82619],null]",
       "family": "ff:rock-scatter",
@@ -1208,13 +1204,13 @@
         1,
         2,
         3
-      ]
-    },
-    {
+      ],
       "status": "reviewed: low-volume original-alpha cast/receive companion",
       "findings": [
         "All 24 actual placements, including mirrors and 327-degree ground rotation, are registered. Four focused plates / 72 sun images directly inspected. Low capped camera-ray volume is an authored approximation; it does not claim measured individual-stone geometry. Ground painter band and empty collision footprint retained."
-      ],
+      ]
+    },
+    {
       "id": "variant:75",
       "signature": "[\"ff:rock-scatter\",[395,1995,160,42],47.776500000000006,12.609,[0.5,0.6059],true,0,null,0,[0.6176,0.6904,0.7471,0.7765,0.8515,0.8765,0.9301,0.9353,0.9824,0.9706,0.9471,0.9118,0.9044,0.8765,0.8118,0.754,0.5235],null,true,false,4.41315,[0.945238,0.707143,0.445238,0.37381,0.421429,0.509226,0.680357,0.788988,0.897619,0.897619,0.82619,0.754762,0.486905,0.445238,0.588095,0.754762,0.82619],null]",
       "family": "ff:rock-scatter",
@@ -1225,13 +1221,13 @@
         1,
         2,
         3
-      ]
-    },
-    {
+      ],
       "status": "reviewed: low-volume original-alpha cast/receive companion",
       "findings": [
         "All 24 actual placements, including mirrors and 327-degree ground rotation, are registered. Four focused plates / 72 sun images directly inspected. Low capped camera-ray volume is an authored approximation; it does not claim measured individual-stone geometry. Ground painter band and empty collision footprint retained."
-      ],
+      ]
+    },
+    {
       "id": "variant:76",
       "signature": "[\"ff:rock-scatter\",[395,1995,160,42],50.53692,13.33752,[0.5,0.6059],true,0,null,0,[0.6176,0.6904,0.7471,0.7765,0.8515,0.8765,0.9301,0.9353,0.9824,0.9706,0.9471,0.9118,0.9044,0.8765,0.8118,0.754,0.5235],null,true,false,4.668132,[0.945238,0.707143,0.445238,0.37381,0.421429,0.509226,0.680357,0.788988,0.897619,0.897619,0.82619,0.754762,0.486905,0.445238,0.588095,0.754762,0.82619],null]",
       "family": "ff:rock-scatter",
@@ -1242,6 +1238,10 @@
         1,
         2,
         3
+      ],
+      "status": "reviewed: low-volume original-alpha cast/receive companion",
+      "findings": [
+        "All 24 actual placements, including mirrors and 327-degree ground rotation, are registered. Four focused plates / 72 sun images directly inspected. Low capped camera-ray volume is an authored approximation; it does not claim measured individual-stone geometry. Ground painter band and empty collision footprint retained."
       ]
     },
     {
@@ -1262,10 +1262,6 @@
       ]
     },
     {
-      "status": "reviewed: low-volume original-alpha cast/receive companion",
-      "findings": [
-        "All 24 actual placements, including mirrors and 327-degree ground rotation, are registered. Four focused plates / 72 sun images directly inspected. Low capped camera-ray volume is an authored approximation; it does not claim measured individual-stone geometry. Ground painter band and empty collision footprint retained."
-      ],
       "id": "variant:78",
       "signature": "[\"ff:rock-scatter\",[395,1995,160,42],62.92342,16.60652,[0.5,0.6059],true,0,null,0,[0.6176,0.6904,0.7471,0.7765,0.8515,0.8765,0.9301,0.9353,0.9824,0.9706,0.9471,0.9118,0.9044,0.8765,0.8118,0.754,0.5235],null,true,false,5.812282,[0.945238,0.707143,0.445238,0.37381,0.421429,0.509226,0.680357,0.788988,0.897619,0.897619,0.82619,0.754762,0.486905,0.445238,0.588095,0.754762,0.82619],null]",
       "family": "ff:rock-scatter",
@@ -1276,13 +1272,13 @@
         1,
         2,
         3
-      ]
-    },
-    {
+      ],
       "status": "reviewed: low-volume original-alpha cast/receive companion",
       "findings": [
         "All 24 actual placements, including mirrors and 327-degree ground rotation, are registered. Four focused plates / 72 sun images directly inspected. Low capped camera-ray volume is an authored approximation; it does not claim measured individual-stone geometry. Ground painter band and empty collision footprint retained."
-      ],
+      ]
+    },
+    {
       "id": "variant:79",
       "signature": "[\"ff:rock-scatter\",[395,1995,160,42],49.829119999999996,13.15072,[0.5,0.6059],false,0,null,0,[0.6176,0.6904,0.7471,0.7765,0.8515,0.8765,0.9301,0.9353,0.9824,0.9706,0.9471,0.9118,0.9044,0.8765,0.8118,0.754,0.5235],null,true,false,4.602752,[0.945238,0.707143,0.445238,0.37381,0.421429,0.509226,0.680357,0.788988,0.897619,0.897619,0.82619,0.754762,0.486905,0.445238,0.588095,0.754762,0.82619],null]",
       "family": "ff:rock-scatter",
@@ -1293,6 +1289,10 @@
         1,
         2,
         3
+      ],
+      "status": "reviewed: low-volume original-alpha cast/receive companion",
+      "findings": [
+        "All 24 actual placements, including mirrors and 327-degree ground rotation, are registered. Four focused plates / 72 sun images directly inspected. Low capped camera-ray volume is an authored approximation; it does not claim measured individual-stone geometry. Ground painter band and empty collision footprint retained."
       ]
     },
     {
@@ -1330,10 +1330,6 @@
       ]
     },
     {
-      "status": "reviewed: low-volume original-alpha cast/receive companion",
-      "findings": [
-        "All 24 actual placements, including mirrors and 327-degree ground rotation, are registered. Four focused plates / 72 sun images directly inspected. Low capped camera-ray volume is an authored approximation; it does not claim measured individual-stone geometry. Ground painter band and empty collision footprint retained."
-      ],
       "id": "variant:82",
       "signature": "[\"ff:rock-scatter\",[395,1995,160,42],60.72924,16.02744,[0.5,0.6059],true,0,null,0,[0.6176,0.6904,0.7471,0.7765,0.8515,0.8765,0.9301,0.9353,0.9824,0.9706,0.9471,0.9118,0.9044,0.8765,0.8118,0.754,0.5235],null,true,false,5.609603999999999,[0.945238,0.707143,0.445238,0.37381,0.421429,0.509226,0.680357,0.788988,0.897619,0.897619,0.82619,0.754762,0.486905,0.445238,0.588095,0.754762,0.82619],null]",
       "family": "ff:rock-scatter",
@@ -1344,6 +1340,10 @@
         1,
         2,
         3
+      ],
+      "status": "reviewed: low-volume original-alpha cast/receive companion",
+      "findings": [
+        "All 24 actual placements, including mirrors and 327-degree ground rotation, are registered. Four focused plates / 72 sun images directly inspected. Low capped camera-ray volume is an authored approximation; it does not claim measured individual-stone geometry. Ground painter band and empty collision footprint retained."
       ]
     },
     {
@@ -1364,10 +1364,6 @@
       ]
     },
     {
-      "status": "reviewed: low-volume original-alpha cast/receive companion",
-      "findings": [
-        "All 24 actual placements, including mirrors and 327-degree ground rotation, are registered. Four focused plates / 72 sun images directly inspected. Low capped camera-ray volume is an authored approximation; it does not claim measured individual-stone geometry. Ground painter band and empty collision footprint retained."
-      ],
       "id": "variant:84",
       "signature": "[\"ff:rock-scatter\",[395,1995,160,42],49.829119999999996,13.15072,[0.5,0.6059],true,0,null,0,[0.6176,0.6904,0.7471,0.7765,0.8515,0.8765,0.9301,0.9353,0.9824,0.9706,0.9471,0.9118,0.9044,0.8765,0.8118,0.754,0.5235],null,true,false,4.602752,[0.945238,0.707143,0.445238,0.37381,0.421429,0.509226,0.680357,0.788988,0.897619,0.897619,0.82619,0.754762,0.486905,0.445238,0.588095,0.754762,0.82619],null]",
       "family": "ff:rock-scatter",
@@ -1378,6 +1374,10 @@
         1,
         2,
         3
+      ],
+      "status": "reviewed: low-volume original-alpha cast/receive companion",
+      "findings": [
+        "All 24 actual placements, including mirrors and 327-degree ground rotation, are registered. Four focused plates / 72 sun images directly inspected. Low capped camera-ray volume is an authored approximation; it does not claim measured individual-stone geometry. Ground painter band and empty collision footprint retained."
       ]
     },
     {
@@ -1415,10 +1415,6 @@
       ]
     },
     {
-      "status": "reviewed: low-volume original-alpha cast/receive companion",
-      "findings": [
-        "All 24 actual placements, including mirrors and 327-degree ground rotation, are registered. Four focused plates / 72 sun images directly inspected. Low capped camera-ray volume is an authored approximation; it does not claim measured individual-stone geometry. Ground painter band and empty collision footprint retained."
-      ],
       "id": "variant:87",
       "signature": "[\"ff:rock-scatter\",[395,1995,160,42],51.59862,13.61772,[0.5,0.6059],false,0,null,0,[0.6176,0.6904,0.7471,0.7765,0.8515,0.8765,0.9301,0.9353,0.9824,0.9706,0.9471,0.9118,0.9044,0.8765,0.8118,0.754,0.5235],null,true,false,4.766202,[0.945238,0.707143,0.445238,0.37381,0.421429,0.509226,0.680357,0.788988,0.897619,0.897619,0.82619,0.754762,0.486905,0.445238,0.588095,0.754762,0.82619],null]",
       "family": "ff:rock-scatter",
@@ -1429,13 +1425,13 @@
         1,
         2,
         3
-      ]
-    },
-    {
+      ],
       "status": "reviewed: low-volume original-alpha cast/receive companion",
       "findings": [
         "All 24 actual placements, including mirrors and 327-degree ground rotation, are registered. Four focused plates / 72 sun images directly inspected. Low capped camera-ray volume is an authored approximation; it does not claim measured individual-stone geometry. Ground painter band and empty collision footprint retained."
-      ],
+      ]
+    },
+    {
       "id": "variant:88",
       "signature": "[\"ff:rock-scatter\",[395,1995,160,42],56.12854,14.81324,[0.5,0.6059],false,0,null,0,[0.6176,0.6904,0.7471,0.7765,0.8515,0.8765,0.9301,0.9353,0.9824,0.9706,0.9471,0.9118,0.9044,0.8765,0.8118,0.754,0.5235],null,true,false,5.184634,[0.945238,0.707143,0.445238,0.37381,0.421429,0.509226,0.680357,0.788988,0.897619,0.897619,0.82619,0.754762,0.486905,0.445238,0.588095,0.754762,0.82619],null]",
       "family": "ff:rock-scatter",
@@ -1446,6 +1442,10 @@
         1,
         2,
         3
+      ],
+      "status": "reviewed: low-volume original-alpha cast/receive companion",
+      "findings": [
+        "All 24 actual placements, including mirrors and 327-degree ground rotation, are registered. Four focused plates / 72 sun images directly inspected. Low capped camera-ray volume is an authored approximation; it does not claim measured individual-stone geometry. Ground painter band and empty collision footprint retained."
       ]
     },
     {
@@ -2560,7 +2560,7 @@
       "signature": "[\"ff:grass-tussock\",[1827,1872,68,52],30.17835,23.060909999999996,[0.5,0.8963],false,0,null,0,[0.7825,0.7398,0.8788,0.8345,0.8933,0.9065,0.876,0.9187,0.8811,0.8882,0.9512,0.8943,0.9289,0.8841,0.7899,0.8228,0.8862],null,true,false]",
       "family": "ff:grass-tussock",
       "plate": "static-final/variants-162.png",
-      "plateSha256": "330cb693d922bcf69fb614f476c8fc4e547522a7bdbfaf2c7743736c0788bc15",
+      "plateSha256": "670922e66a7d7f78fdeac910c85535e3bbc9c977f62573a72cbb3cc25e1499dd",
       "rowInPlate": 0,
       "sunColumns": [
         1,
@@ -2577,7 +2577,7 @@
       "signature": "[\"ff:pine-tall\",[0,0,285,610],110.69136,237.02808,[0.5,0.9587],false,0,null,0,[0.8484,0.8484,0.8492,0.8952,0.9036,0.8883,0.9645,0.9746,0.9753,0.979,0.9782,0.9739,0.9394,0.9014,0.911,0.8723,0.8687],null,true,false]",
       "family": "ff:pine-tall",
       "plate": "static-final/variants-162.png",
-      "plateSha256": "330cb693d922bcf69fb614f476c8fc4e547522a7bdbfaf2c7743736c0788bc15",
+      "plateSha256": "670922e66a7d7f78fdeac910c85535e3bbc9c977f62573a72cbb3cc25e1499dd",
       "rowInPlate": 1,
       "sunColumns": [
         1,
@@ -2592,7 +2592,7 @@
       "signature": "[\"ff:pine-tall\",[0,0,285,610],134.69976,288.43828,[0.5,0.9587],false,0,null,0,[0.8484,0.8484,0.8492,0.8952,0.9036,0.8883,0.9645,0.9746,0.9753,0.979,0.9782,0.9739,0.9394,0.9014,0.911,0.8723,0.8687],null,true,false]",
       "family": "ff:pine-tall",
       "plate": "static-final/variants-162.png",
-      "plateSha256": "330cb693d922bcf69fb614f476c8fc4e547522a7bdbfaf2c7743736c0788bc15",
+      "plateSha256": "670922e66a7d7f78fdeac910c85535e3bbc9c977f62573a72cbb3cc25e1499dd",
       "rowInPlate": 2,
       "sunColumns": [
         1,
@@ -2607,7 +2607,7 @@
       "signature": "[\"ff:shrub-juniper\",[1028,1872,139,82],63.39619,37.20879,[0.5,0.8254],false,0,null,0,[0.6111,0.7143,0.7447,0.8519,0.8763,0.9178,0.8853,0.9277,0.9431,0.9312,0.9101,0.8571,0.7817,0.8386,0.8201,0.6822,0.582],null,true,false]",
       "family": "ff:shrub-juniper",
       "plate": "static-final/variants-162.png",
-      "plateSha256": "330cb693d922bcf69fb614f476c8fc4e547522a7bdbfaf2c7743736c0788bc15",
+      "plateSha256": "670922e66a7d7f78fdeac910c85535e3bbc9c977f62573a72cbb3cc25e1499dd",
       "rowInPlate": 3,
       "sunColumns": [
         1,
@@ -2619,19 +2619,19 @@
     },
     {
       "id": "variant:166",
-      "signature": "[\"ff:drift-mound\",[557,1995,75,36],40.4855,19.485,[0.4572,0.4667],true,0,null,0,[0.4,0.4486,0.5667,0.7,0.7667,0.7889,0.8,0.8,0.7889,0.7667,0.7556,0.7347,0.7056,0.6319,0.5444,0.5444,0.5444],null,true,false]",
+      "signature": "[\"ff:drift-mound\",[557,1995,75,36],40.4855,19.485,[0.4572,0.4667],true,0,null,0,[0.4,0.4486,0.5667,0.7,0.7667,0.7889,0.8,0.8,0.7889,0.7667,0.7556,0.7347,0.7056,0.6319,0.5444,0.5444,0.5444],null,true,false,null,null,\"procedural-drift-height:47c612ee66e7c8ea1a75cf44ffc72016698efdb27809ec5d51705d4e0922bd44\"]",
       "family": "ff:drift-mound",
       "plate": "static-final/variants-162.png",
-      "plateSha256": "330cb693d922bcf69fb614f476c8fc4e547522a7bdbfaf2c7743736c0788bc15",
+      "plateSha256": "670922e66a7d7f78fdeac910c85535e3bbc9c977f62573a72cbb3cc25e1499dd",
       "rowInPlate": 4,
       "sunColumns": [
         1,
         2,
         3
       ],
-      "status": "reviewed with proxy/raster limitation",
+      "status": "reviewed: procedural source heights and scoped low-relief receiver",
       "findings": [
-        "Stepped source/receiver edge bands remain visible in enlarged composites. Independent ground-only and nearest-opaque controls distinguish them from erased opaque cast coverage. This is not approval of measured volumetric self-shadowing."
+        "Internal two-pixel-threshold bands removed; exact source recipe depth replaces folded billboard. Source alpha remains unchanged. Enlarged edge still exposes finite static receiver-map raster resolution."
       ]
     },
     {
@@ -2639,7 +2639,7 @@
       "signature": "[\"ff:snowy-shrine\",[1097,1059,259,292],114.93,129.48,[0.5,0.8591],false,0,null,0,[0.7772,0.8051,0.8766,0.9107,0.9289,0.9429,0.9532,0.9641,0.9687,0.9761,0.9614,0.9336,0.9125,0.9029,0.8742,0.8059,0.767],null,true,false]",
       "family": "ff:snowy-shrine",
       "plate": "static-final/variants-162.png",
-      "plateSha256": "330cb693d922bcf69fb614f476c8fc4e547522a7bdbfaf2c7743736c0788bc15",
+      "plateSha256": "670922e66a7d7f78fdeac910c85535e3bbc9c977f62573a72cbb3cc25e1499dd",
       "rowInPlate": 5,
       "sunColumns": [
         1,
@@ -3324,7 +3324,7 @@
       "signature": "[\"ff:wall-se\",[811,1418,367,230],163,102,[0.4908,0.7022],false,0,null,0,[0.5049,0.5458,0.5818,0.608,0.6422,0.6751,0.7108,0.752,0.7745,0.824,0.8431,0.8725,0.9069,0.9363,0.9372,0.8799,0.8358],null,true,false]",
       "family": "ff:wall-se",
       "plate": "static-final/variants-210.png",
-      "plateSha256": "69716fd0f2835edb694e224bdc0be48cd0ab1f07ba944361b308dfc584498459",
+      "plateSha256": "ab64fda8cd3280723adce1863071f9b5b7fef4be7d2658c2a351e380da34674a",
       "rowInPlate": 0,
       "sunColumns": [
         1,
@@ -3336,19 +3336,19 @@
     },
     {
       "id": "variant:211",
-      "signature": "[\"ff:drift-mound\",[557,1995,75,36],43.804750000000006,21.0825,[0.4572,0.4667],true,0,null,0,[0.4,0.4486,0.5667,0.7,0.7667,0.7889,0.8,0.8,0.7889,0.7667,0.7556,0.7347,0.7056,0.6319,0.5444,0.5444,0.5444],null,true,false]",
+      "signature": "[\"ff:drift-mound\",[557,1995,75,36],43.804750000000006,21.0825,[0.4572,0.4667],true,0,null,0,[0.4,0.4486,0.5667,0.7,0.7667,0.7889,0.8,0.8,0.7889,0.7667,0.7556,0.7347,0.7056,0.6319,0.5444,0.5444,0.5444],null,true,false,null,null,\"procedural-drift-height:47c612ee66e7c8ea1a75cf44ffc72016698efdb27809ec5d51705d4e0922bd44\"]",
       "family": "ff:drift-mound",
       "plate": "static-final/variants-210.png",
-      "plateSha256": "69716fd0f2835edb694e224bdc0be48cd0ab1f07ba944361b308dfc584498459",
+      "plateSha256": "ab64fda8cd3280723adce1863071f9b5b7fef4be7d2658c2a351e380da34674a",
       "rowInPlate": 1,
       "sunColumns": [
         1,
         2,
         3
       ],
-      "status": "reviewed with proxy/raster limitation",
+      "status": "reviewed: procedural source heights and scoped low-relief receiver",
       "findings": [
-        "Stepped source/receiver edge bands remain visible in enlarged composites. Independent ground-only and nearest-opaque controls distinguish them from erased opaque cast coverage. This is not approval of measured volumetric self-shadowing."
+        "Internal two-pixel-threshold bands removed; exact source recipe depth replaces folded billboard. Source alpha remains unchanged. Enlarged edge still exposes finite static receiver-map raster resolution."
       ]
     },
     {
@@ -3356,7 +3356,7 @@
       "signature": "[\"ff:pine-tall\",[0,0,285,610],121.3056,259.7568,[0.5,0.9587],true,0,null,0,[0.8484,0.8484,0.8492,0.8952,0.9036,0.8883,0.9645,0.9746,0.9753,0.979,0.9782,0.9739,0.9394,0.9014,0.911,0.8723,0.8687],null,true,false]",
       "family": "ff:pine-tall",
       "plate": "static-final/variants-210.png",
-      "plateSha256": "69716fd0f2835edb694e224bdc0be48cd0ab1f07ba944361b308dfc584498459",
+      "plateSha256": "ab64fda8cd3280723adce1863071f9b5b7fef4be7d2658c2a351e380da34674a",
       "rowInPlate": 2,
       "sunColumns": [
         1,
@@ -3371,7 +3371,7 @@
       "signature": "[\"ff:shrub-twigs\",[893,1872,133,84],51.813159999999996,32.74718,[0.5,0.8968],true,0,null,0,[0.4201,0.6605,0.7985,0.8297,0.9017,0.9238,0.9291,0.9484,0.9435,0.9582,0.9211,0.9214,0.9066,0.8196,0.7494,0.688,0.6437],null,true,false]",
       "family": "ff:shrub-twigs",
       "plate": "static-final/variants-210.png",
-      "plateSha256": "69716fd0f2835edb694e224bdc0be48cd0ab1f07ba944361b308dfc584498459",
+      "plateSha256": "ab64fda8cd3280723adce1863071f9b5b7fef4be7d2658c2a351e380da34674a",
       "rowInPlate": 3,
       "sunColumns": [
         1,
@@ -3385,19 +3385,19 @@
     },
     {
       "id": "variant:214",
-      "signature": "[\"ff:drift-se\",[138,1995,124,44],62.293000000000006,22.045250000000003,[0.487,0.4954],false,0,null,0,[0.2018,0.2494,0.3979,0.4771,0.5321,0.5963,0.6514,0.6972,0.7339,0.7523,0.7787,0.7987,0.8257,0.844,0.8165,0.789,0.789],null,true,false]",
+      "signature": "[\"ff:drift-se\",[138,1995,124,44],62.293000000000006,22.045250000000003,[0.487,0.4954],false,0,null,0,[0.2018,0.2494,0.3979,0.4771,0.5321,0.5963,0.6514,0.6972,0.7339,0.7523,0.7787,0.7987,0.8257,0.844,0.8165,0.789,0.789],null,true,false,null,null,\"procedural-drift-height:47c612ee66e7c8ea1a75cf44ffc72016698efdb27809ec5d51705d4e0922bd44\"]",
       "family": "ff:drift-se",
       "plate": "static-final/variants-210.png",
-      "plateSha256": "69716fd0f2835edb694e224bdc0be48cd0ab1f07ba944361b308dfc584498459",
+      "plateSha256": "ab64fda8cd3280723adce1863071f9b5b7fef4be7d2658c2a351e380da34674a",
       "rowInPlate": 4,
       "sunColumns": [
         1,
         2,
         3
       ],
-      "status": "reviewed with proxy/raster limitation",
+      "status": "reviewed: procedural source heights and scoped low-relief receiver",
       "findings": [
-        "Stepped source/receiver edge bands remain visible in enlarged composites. Independent ground-only and nearest-opaque controls distinguish them from erased opaque cast coverage. This is not approval of measured volumetric self-shadowing."
+        "Internal two-pixel-threshold bands removed; exact source recipe depth replaces folded billboard. Source alpha remains unchanged. Enlarged edge still exposes finite static receiver-map raster resolution."
       ]
     },
     {
@@ -3405,7 +3405,7 @@
       "signature": "[\"ff:broken-watchtower\",[287,0,586,584],260.35,259.27,[0.5104,0.8583],false,0,null,0,[0.7844,0.8377,0.8796,0.9271,0.9229,0.9323,0.9281,0.9587,0.975,0.9833,0.9926,0.9792,0.9688,0.9385,0.924,0.8219,0.8219],null,true,false]",
       "family": "ff:broken-watchtower",
       "plate": "static-final/variants-210.png",
-      "plateSha256": "69716fd0f2835edb694e224bdc0be48cd0ab1f07ba944361b308dfc584498459",
+      "plateSha256": "ab64fda8cd3280723adce1863071f9b5b7fef4be7d2658c2a351e380da34674a",
       "rowInPlate": 5,
       "sunColumns": [
         1,
@@ -3417,36 +3417,36 @@
     },
     {
       "id": "variant:216",
-      "signature": "[\"ff:drift-ne\",[264,1995,129,43],69.978,23.326,[0.4829,0.486],true,0,null,0,[0.729,0.7664,0.8318,0.8318,0.8224,0.7944,0.7757,0.7477,0.7009,0.6542,0.5981,0.5514,0.486,0.4206,0.3364,0.2243,0.2243],null,true,false]",
+      "signature": "[\"ff:drift-ne\",[264,1995,129,43],69.978,23.326,[0.4829,0.486],true,0,null,0,[0.729,0.7664,0.8318,0.8318,0.8224,0.7944,0.7757,0.7477,0.7009,0.6542,0.5981,0.5514,0.486,0.4206,0.3364,0.2243,0.2243],null,true,false,null,null,\"procedural-drift-height:47c612ee66e7c8ea1a75cf44ffc72016698efdb27809ec5d51705d4e0922bd44\"]",
       "family": "ff:drift-ne",
       "plate": "static-final/variants-216.png",
-      "plateSha256": "abd6521ecd08733069c844babca66778ee324ae833311187d4b303f8827ec852",
+      "plateSha256": "2425fb6c1055e296b7e225e24b612ff0dcf5e0e35fe54146b5c5ec104411318e",
       "rowInPlate": 0,
       "sunColumns": [
         1,
         2,
         3
       ],
-      "status": "reviewed with proxy/raster limitation",
+      "status": "reviewed: procedural source heights and scoped low-relief receiver",
       "findings": [
-        "Stepped source/receiver edge bands remain visible in enlarged composites. Independent ground-only and nearest-opaque controls distinguish them from erased opaque cast coverage. This is not approval of measured volumetric self-shadowing."
+        "Internal two-pixel-threshold bands removed; exact source recipe depth replaces folded billboard. Source alpha remains unchanged. Enlarged edge still exposes finite static receiver-map raster resolution."
       ]
     },
     {
       "id": "variant:217",
-      "signature": "[\"ff:drift-mound\",[557,1995,75,36],31.556250000000002,15.187500000000002,[0.4572,0.4667],false,0,null,0,[0.4,0.4486,0.5667,0.7,0.7667,0.7889,0.8,0.8,0.7889,0.7667,0.7556,0.7347,0.7056,0.6319,0.5444,0.5444,0.5444],null,true,false]",
+      "signature": "[\"ff:drift-mound\",[557,1995,75,36],31.556250000000002,15.187500000000002,[0.4572,0.4667],false,0,null,0,[0.4,0.4486,0.5667,0.7,0.7667,0.7889,0.8,0.8,0.7889,0.7667,0.7556,0.7347,0.7056,0.6319,0.5444,0.5444,0.5444],null,true,false,null,null,\"procedural-drift-height:47c612ee66e7c8ea1a75cf44ffc72016698efdb27809ec5d51705d4e0922bd44\"]",
       "family": "ff:drift-mound",
       "plate": "static-final/variants-216.png",
-      "plateSha256": "abd6521ecd08733069c844babca66778ee324ae833311187d4b303f8827ec852",
+      "plateSha256": "2425fb6c1055e296b7e225e24b612ff0dcf5e0e35fe54146b5c5ec104411318e",
       "rowInPlate": 1,
       "sunColumns": [
         1,
         2,
         3
       ],
-      "status": "reviewed with proxy/raster limitation",
+      "status": "reviewed: procedural source heights and scoped low-relief receiver",
       "findings": [
-        "Stepped source/receiver edge bands remain visible in enlarged composites. Independent ground-only and nearest-opaque controls distinguish them from erased opaque cast coverage. This is not approval of measured volumetric self-shadowing."
+        "Internal two-pixel-threshold bands removed; exact source recipe depth replaces folded billboard. Source alpha remains unchanged. Enlarged edge still exposes finite static receiver-map raster resolution."
       ]
     },
     {
@@ -3454,7 +3454,7 @@
       "signature": "[\"ff:stairs-ne\",[0,1655,251,215],111.25,95.5,[0.4816,0.6963],false,0,null,0,[0.7068,0.7349,0.7683,0.805,0.8403,0.8815,0.9228,0.9503,0.9346,0.8914,0.8626,0.8187,0.7775,0.7461,0.7199,0.6695,0.6571],null,true,false]",
       "family": "ff:stairs-ne",
       "plate": "static-final/variants-216.png",
-      "plateSha256": "abd6521ecd08733069c844babca66778ee324ae833311187d4b303f8827ec852",
+      "plateSha256": "2425fb6c1055e296b7e225e24b612ff0dcf5e0e35fe54146b5c5ec104411318e",
       "rowInPlate": 2,
       "sunColumns": [
         1,
@@ -3469,7 +3469,7 @@
       "signature": "[\"ff:grass-tussock\",[1827,1872,68,52],20.0592,15.32832,[0.5,0.8963],true,0,null,0,[0.7825,0.7398,0.8788,0.8345,0.8933,0.9065,0.876,0.9187,0.8811,0.8882,0.9512,0.8943,0.9289,0.8841,0.7899,0.8228,0.8862],null,true,false]",
       "family": "ff:grass-tussock",
       "plate": "static-final/variants-216.png",
-      "plateSha256": "abd6521ecd08733069c844babca66778ee324ae833311187d4b303f8827ec852",
+      "plateSha256": "2425fb6c1055e296b7e225e24b612ff0dcf5e0e35fe54146b5c5ec104411318e",
       "rowInPlate": 3,
       "sunColumns": [
         1,
@@ -3486,7 +3486,7 @@
       "signature": "[\"ff:ruined-gate\",[1080,612,545,386],241.82,171.08,[0.5,0.868],false,0,null,0,[0.6891,0.7229,0.7801,0.7815,0.7507,0.7844,0.7315,0.6832,0.7623,0.8414,0.928,0.9238,0.9652,0.9941,0.9595,0.9323,0.8739],null,true,false]",
       "family": "ff:ruined-gate",
       "plate": "static-final/variants-216.png",
-      "plateSha256": "abd6521ecd08733069c844babca66778ee324ae833311187d4b303f8827ec852",
+      "plateSha256": "2425fb6c1055e296b7e225e24b612ff0dcf5e0e35fe54146b5c5ec104411318e",
       "rowInPlate": 4,
       "sunColumns": [
         1,
@@ -3501,7 +3501,7 @@
       "signature": "[\"ff:rock-boulders\",[231,1872,248,106],93.483,39.916,[0.5,0.7164],false,0,null,0,[0.8255,0.9491,0.9636,0.9745,0.9818,0.9636,0.9273,0.8582,0.8764,0.9236,0.9345,0.9345,0.9455,0.9527,0.9432,0.9018,0.8691],null,true,false]",
       "family": "ff:rock-boulders",
       "plate": "static-final/variants-216.png",
-      "plateSha256": "abd6521ecd08733069c844babca66778ee324ae833311187d4b303f8827ec852",
+      "plateSha256": "2425fb6c1055e296b7e225e24b612ff0dcf5e0e35fe54146b5c5ec104411318e",
       "rowInPlate": 5,
       "sunColumns": [
         1,
@@ -3612,7 +3612,7 @@
       "signature": "[\"ff:grass-tussock\",[1827,1872,68,52],30.89475,23.608349999999998,[0.5,0.8963],true,0,null,0,[0.7825,0.7398,0.8788,0.8345,0.8933,0.9065,0.876,0.9187,0.8811,0.8882,0.9512,0.8943,0.9289,0.8841,0.7899,0.8228,0.8862],null,true,false]",
       "family": "ff:grass-tussock",
       "plate": "static-final/variants-228.png",
-      "plateSha256": "37d506cef9884d9c67f6ec0a6a562d0d182aa092dae4c6954d72d12c24a73983",
+      "plateSha256": "bbbf2ad243d44749a663013531b5ea36db278dbf623b5cc0799e0594a37752fb",
       "rowInPlate": 0,
       "sunColumns": [
         1,
@@ -3626,19 +3626,19 @@
     },
     {
       "id": "variant:229",
-      "signature": "[\"ff:drift-mound\",[557,1995,75,36],33.286,16.02,[0.4572,0.4667],true,0,null,0,[0.4,0.4486,0.5667,0.7,0.7667,0.7889,0.8,0.8,0.7889,0.7667,0.7556,0.7347,0.7056,0.6319,0.5444,0.5444,0.5444],null,true,false]",
+      "signature": "[\"ff:drift-mound\",[557,1995,75,36],33.286,16.02,[0.4572,0.4667],true,0,null,0,[0.4,0.4486,0.5667,0.7,0.7667,0.7889,0.8,0.8,0.7889,0.7667,0.7556,0.7347,0.7056,0.6319,0.5444,0.5444,0.5444],null,true,false,null,null,\"procedural-drift-height:47c612ee66e7c8ea1a75cf44ffc72016698efdb27809ec5d51705d4e0922bd44\"]",
       "family": "ff:drift-mound",
       "plate": "static-final/variants-228.png",
-      "plateSha256": "37d506cef9884d9c67f6ec0a6a562d0d182aa092dae4c6954d72d12c24a73983",
+      "plateSha256": "bbbf2ad243d44749a663013531b5ea36db278dbf623b5cc0799e0594a37752fb",
       "rowInPlate": 1,
       "sunColumns": [
         1,
         2,
         3
       ],
-      "status": "reviewed with proxy/raster limitation",
+      "status": "reviewed: procedural source heights and scoped low-relief receiver",
       "findings": [
-        "Stepped source/receiver edge bands remain visible in enlarged composites. Independent ground-only and nearest-opaque controls distinguish them from erased opaque cast coverage. This is not approval of measured volumetric self-shadowing."
+        "Internal two-pixel-threshold bands removed; exact source recipe depth replaces folded billboard. Source alpha remains unchanged. Enlarged edge still exposes finite static receiver-map raster resolution."
       ]
     },
     {
@@ -3646,7 +3646,7 @@
       "signature": "[\"ff:pine-sapling\",[1440,1655,89,160],43.23865,77.75885000000001,[0.5,0.9482],true,0,null,0,[0.6874,0.7045,0.7594,0.7504,0.7512,0.7727,0.8014,0.9582,0.9784,0.9801,0.981,0.9024,0.8033,0.7968,0.7912,0.7919,0.785],null,true,false]",
       "family": "ff:pine-sapling",
       "plate": "static-final/variants-228.png",
-      "plateSha256": "37d506cef9884d9c67f6ec0a6a562d0d182aa092dae4c6954d72d12c24a73983",
+      "plateSha256": "bbbf2ad243d44749a663013531b5ea36db278dbf623b5cc0799e0594a37752fb",
       "rowInPlate": 2,
       "sunColumns": [
         1,
@@ -3661,7 +3661,7 @@
       "signature": "[\"ff:shrub-twigs\",[893,1872,133,84],59.19816,37.414680000000004,[0.5,0.8968],true,0,null,0,[0.4201,0.6605,0.7985,0.8297,0.9017,0.9238,0.9291,0.9484,0.9435,0.9582,0.9211,0.9214,0.9066,0.8196,0.7494,0.688,0.6437],null,true,false]",
       "family": "ff:shrub-twigs",
       "plate": "static-final/variants-228.png",
-      "plateSha256": "37d506cef9884d9c67f6ec0a6a562d0d182aa092dae4c6954d72d12c24a73983",
+      "plateSha256": "bbbf2ad243d44749a663013531b5ea36db278dbf623b5cc0799e0594a37752fb",
       "rowInPlate": 3,
       "sunColumns": [
         1,
@@ -3678,7 +3678,7 @@
       "signature": "[\"ff:grass-tussock\",[1827,1872,68,52],25.82025,19.730649999999997,[0.5,0.8963],true,0,null,0,[0.7825,0.7398,0.8788,0.8345,0.8933,0.9065,0.876,0.9187,0.8811,0.8882,0.9512,0.8943,0.9289,0.8841,0.7899,0.8228,0.8862],null,true,false]",
       "family": "ff:grass-tussock",
       "plate": "static-final/variants-228.png",
-      "plateSha256": "37d506cef9884d9c67f6ec0a6a562d0d182aa092dae4c6954d72d12c24a73983",
+      "plateSha256": "bbbf2ad243d44749a663013531b5ea36db278dbf623b5cc0799e0594a37752fb",
       "rowInPlate": 4,
       "sunColumns": [
         1,
@@ -3695,7 +3695,7 @@
       "signature": "[\"ff:corner-n\",[0,1418,364,235],161.5,104.25,[0.4954,0.7141],false,0,null,0,[0.5324,0.5827,0.6361,0.6857,0.7344,0.7903,0.8414,0.9065,0.9592,0.9065,0.8462,0.7975,0.7482,0.6906,0.6379,0.5899,0.5444],null,true,false]",
       "family": "ff:corner-n",
       "plate": "static-final/variants-228.png",
-      "plateSha256": "37d506cef9884d9c67f6ec0a6a562d0d182aa092dae4c6954d72d12c24a73983",
+      "plateSha256": "bbbf2ad243d44749a663013531b5ea36db278dbf623b5cc0799e0594a37752fb",
       "rowInPlate": 5,
       "sunColumns": [
         1,
@@ -3707,19 +3707,19 @@
     },
     {
       "id": "variant:234",
-      "signature": "[\"ff:drift-mound\",[557,1995,75,36],35.9975,17.325,[0.4572,0.4667],false,0,null,0,[0.4,0.4486,0.5667,0.7,0.7667,0.7889,0.8,0.8,0.7889,0.7667,0.7556,0.7347,0.7056,0.6319,0.5444,0.5444,0.5444],null,true,false]",
+      "signature": "[\"ff:drift-mound\",[557,1995,75,36],35.9975,17.325,[0.4572,0.4667],false,0,null,0,[0.4,0.4486,0.5667,0.7,0.7667,0.7889,0.8,0.8,0.7889,0.7667,0.7556,0.7347,0.7056,0.6319,0.5444,0.5444,0.5444],null,true,false,null,null,\"procedural-drift-height:47c612ee66e7c8ea1a75cf44ffc72016698efdb27809ec5d51705d4e0922bd44\"]",
       "family": "ff:drift-mound",
       "plate": "static-final/variants-234.png",
-      "plateSha256": "a2e29f1dda4d60f5d9b59bca06418bc56878b71bce0ad344f922bac4f28afce1",
+      "plateSha256": "9f2bf2472bab1f02b214ad7471d4ee6009480b000fc523ca4ccbf29d5ad934e4",
       "rowInPlate": 0,
       "sunColumns": [
         1,
         2,
         3
       ],
-      "status": "reviewed with proxy/raster limitation",
+      "status": "reviewed: procedural source heights and scoped low-relief receiver",
       "findings": [
-        "Stepped source/receiver edge bands remain visible in enlarged composites. Independent ground-only and nearest-opaque controls distinguish them from erased opaque cast coverage. This is not approval of measured volumetric self-shadowing."
+        "Internal two-pixel-threshold bands removed; exact source recipe depth replaces folded billboard. Source alpha remains unchanged. Enlarged edge still exposes finite static receiver-map raster resolution."
       ]
     },
     {
@@ -3727,7 +3727,7 @@
       "signature": "[\"ff:grass-tussock\",[1827,1872,68,52],26.805300000000003,20.48338,[0.5,0.8963],true,0,null,0,[0.7825,0.7398,0.8788,0.8345,0.8933,0.9065,0.876,0.9187,0.8811,0.8882,0.9512,0.8943,0.9289,0.8841,0.7899,0.8228,0.8862],null,true,false]",
       "family": "ff:grass-tussock",
       "plate": "static-final/variants-234.png",
-      "plateSha256": "a2e29f1dda4d60f5d9b59bca06418bc56878b71bce0ad344f922bac4f28afce1",
+      "plateSha256": "9f2bf2472bab1f02b214ad7471d4ee6009480b000fc523ca4ccbf29d5ad934e4",
       "rowInPlate": 1,
       "sunColumns": [
         1,
@@ -3744,7 +3744,7 @@
       "signature": "[\"ff:rock-boulders\",[231,1872,248,106],115.14905999999999,49.16712,[0.5,0.7164],false,0,null,0,[0.8255,0.9491,0.9636,0.9745,0.9818,0.9636,0.9273,0.8582,0.8764,0.9236,0.9345,0.9345,0.9455,0.9527,0.9432,0.9018,0.8691],null,true,false]",
       "family": "ff:rock-boulders",
       "plate": "static-final/variants-234.png",
-      "plateSha256": "a2e29f1dda4d60f5d9b59bca06418bc56878b71bce0ad344f922bac4f28afce1",
+      "plateSha256": "9f2bf2472bab1f02b214ad7471d4ee6009480b000fc523ca4ccbf29d5ad934e4",
       "rowInPlate": 2,
       "sunColumns": [
         1,
@@ -3756,19 +3756,19 @@
     },
     {
       "id": "variant:237",
-      "signature": "[\"ff:drift-se\",[138,1995,124,44],75.306,26.6505,[0.487,0.4954],true,0,null,0,[0.2018,0.2494,0.3979,0.4771,0.5321,0.5963,0.6514,0.6972,0.7339,0.7523,0.7787,0.7987,0.8257,0.844,0.8165,0.789,0.789],null,true,false]",
+      "signature": "[\"ff:drift-se\",[138,1995,124,44],75.306,26.6505,[0.487,0.4954],true,0,null,0,[0.2018,0.2494,0.3979,0.4771,0.5321,0.5963,0.6514,0.6972,0.7339,0.7523,0.7787,0.7987,0.8257,0.844,0.8165,0.789,0.789],null,true,false,null,null,\"procedural-drift-height:47c612ee66e7c8ea1a75cf44ffc72016698efdb27809ec5d51705d4e0922bd44\"]",
       "family": "ff:drift-se",
       "plate": "static-final/variants-234.png",
-      "plateSha256": "a2e29f1dda4d60f5d9b59bca06418bc56878b71bce0ad344f922bac4f28afce1",
+      "plateSha256": "9f2bf2472bab1f02b214ad7471d4ee6009480b000fc523ca4ccbf29d5ad934e4",
       "rowInPlate": 3,
       "sunColumns": [
         1,
         2,
         3
       ],
-      "status": "reviewed with proxy/raster limitation",
+      "status": "reviewed: procedural source heights and scoped low-relief receiver",
       "findings": [
-        "Stepped source/receiver edge bands remain visible in enlarged composites. Independent ground-only and nearest-opaque controls distinguish them from erased opaque cast coverage. This is not approval of measured volumetric self-shadowing."
+        "Internal two-pixel-threshold bands removed; exact source recipe depth replaces folded billboard. Source alpha remains unchanged. Enlarged edge still exposes finite static receiver-map raster resolution."
       ]
     },
     {
@@ -3776,7 +3776,7 @@
       "signature": "[\"ff:rubble\",[0,1872,229,121],86.072,45.368,[0.4901,0.6322],false,0,null,0,[0.514,0.5529,0.6308,0.6636,0.743,0.7757,0.7897,0.8084,0.8201,0.8309,0.8452,0.8952,0.8785,0.8551,0.8084,0.6323,0.6075],null,true,false]",
       "family": "ff:rubble",
       "plate": "static-final/variants-234.png",
-      "plateSha256": "a2e29f1dda4d60f5d9b59bca06418bc56878b71bce0ad344f922bac4f28afce1",
+      "plateSha256": "9f2bf2472bab1f02b214ad7471d4ee6009480b000fc523ca4ccbf29d5ad934e4",
       "rowInPlate": 4,
       "sunColumns": [
         1,
@@ -3791,7 +3791,7 @@
       "signature": "[\"ff:shrub-twigs\",[893,1872,133,84],49.627199999999995,31.3656,[0.5,0.8968],true,0,null,0,[0.4201,0.6605,0.7985,0.8297,0.9017,0.9238,0.9291,0.9484,0.9435,0.9582,0.9211,0.9214,0.9066,0.8196,0.7494,0.688,0.6437],null,true,false]",
       "family": "ff:shrub-twigs",
       "plate": "static-final/variants-234.png",
-      "plateSha256": "a2e29f1dda4d60f5d9b59bca06418bc56878b71bce0ad344f922bac4f28afce1",
+      "plateSha256": "9f2bf2472bab1f02b214ad7471d4ee6009480b000fc523ca4ccbf29d5ad934e4",
       "rowInPlate": 5,
       "sunColumns": [
         1,
@@ -3808,7 +3808,7 @@
       "signature": "[\"ff:rubble\",[0,1872,229,121],110.73649999999999,58.3685,[0.4901,0.6322],false,0,null,0,[0.514,0.5529,0.6308,0.6636,0.743,0.7757,0.7897,0.8084,0.8201,0.8309,0.8452,0.8952,0.8785,0.8551,0.8084,0.6323,0.6075],null,true,false]",
       "family": "ff:rubble",
       "plate": "static-final/variants-240.png",
-      "plateSha256": "3ea19ebdde756ae55dd1b70bc610926e489c9750867ef010b92ee17acd6abc8b",
+      "plateSha256": "5fcc40acbea5c747d630b9e9e2f25ade4f2a5718a5ac6bd0ff471c2de6e2106b",
       "rowInPlate": 0,
       "sunColumns": [
         1,
@@ -3820,19 +3820,19 @@
     },
     {
       "id": "variant:241",
-      "signature": "[\"ff:drift-ne\",[264,1995,129,43],61.23075,20.41025,[0.4829,0.486],false,0,null,0,[0.729,0.7664,0.8318,0.8318,0.8224,0.7944,0.7757,0.7477,0.7009,0.6542,0.5981,0.5514,0.486,0.4206,0.3364,0.2243,0.2243],null,true,false]",
+      "signature": "[\"ff:drift-ne\",[264,1995,129,43],61.23075,20.41025,[0.4829,0.486],false,0,null,0,[0.729,0.7664,0.8318,0.8318,0.8224,0.7944,0.7757,0.7477,0.7009,0.6542,0.5981,0.5514,0.486,0.4206,0.3364,0.2243,0.2243],null,true,false,null,null,\"procedural-drift-height:47c612ee66e7c8ea1a75cf44ffc72016698efdb27809ec5d51705d4e0922bd44\"]",
       "family": "ff:drift-ne",
       "plate": "static-final/variants-240.png",
-      "plateSha256": "3ea19ebdde756ae55dd1b70bc610926e489c9750867ef010b92ee17acd6abc8b",
+      "plateSha256": "5fcc40acbea5c747d630b9e9e2f25ade4f2a5718a5ac6bd0ff471c2de6e2106b",
       "rowInPlate": 1,
       "sunColumns": [
         1,
         2,
         3
       ],
-      "status": "reviewed with proxy/raster limitation",
+      "status": "reviewed: procedural source heights and scoped low-relief receiver",
       "findings": [
-        "Stepped source/receiver edge bands remain visible in enlarged composites. Independent ground-only and nearest-opaque controls distinguish them from erased opaque cast coverage. This is not approval of measured volumetric self-shadowing."
+        "Internal two-pixel-threshold bands removed; exact source recipe depth replaces folded billboard. Source alpha remains unchanged. Enlarged edge still exposes finite static receiver-map raster resolution."
       ]
     },
     {
@@ -3840,7 +3840,7 @@
       "signature": "[\"ff:pillar-broken\",[1319,1655,119,166],52.75,73.5,[0.4649,0.7932],false,0,null,25,[0.7823,0.7861,0.8197,0.838,0.8707,0.8865,0.9082,0.932,0.9252,0.9048,0.8878,0.8639,0.8486,0.8333,0.7891,0.7857,0.7857],null,true,false]",
       "family": "ff:pillar-broken",
       "plate": "static-final/variants-240.png",
-      "plateSha256": "3ea19ebdde756ae55dd1b70bc610926e489c9750867ef010b92ee17acd6abc8b",
+      "plateSha256": "5fcc40acbea5c747d630b9e9e2f25ade4f2a5718a5ac6bd0ff471c2de6e2106b",
       "rowInPlate": 2,
       "sunColumns": [
         1,
@@ -3857,7 +3857,7 @@
       "signature": "[\"ff:rubble\",[0,1872,229,121],82.621,43.549,[0.4901,0.6322],false,0,null,0,[0.514,0.5529,0.6308,0.6636,0.743,0.7757,0.7897,0.8084,0.8201,0.8309,0.8452,0.8952,0.8785,0.8551,0.8084,0.6323,0.6075],null,true,false]",
       "family": "ff:rubble",
       "plate": "static-final/variants-240.png",
-      "plateSha256": "3ea19ebdde756ae55dd1b70bc610926e489c9750867ef010b92ee17acd6abc8b",
+      "plateSha256": "5fcc40acbea5c747d630b9e9e2f25ade4f2a5718a5ac6bd0ff471c2de6e2106b",
       "rowInPlate": 3,
       "sunColumns": [
         1,
@@ -3872,7 +3872,7 @@
       "signature": "[\"ff:grass-tussock\",[1827,1872,68,52],26.148600000000002,19.981559999999998,[0.5,0.8963],true,0,null,0,[0.7825,0.7398,0.8788,0.8345,0.8933,0.9065,0.876,0.9187,0.8811,0.8882,0.9512,0.8943,0.9289,0.8841,0.7899,0.8228,0.8862],null,true,false]",
       "family": "ff:grass-tussock",
       "plate": "static-final/variants-240.png",
-      "plateSha256": "3ea19ebdde756ae55dd1b70bc610926e489c9750867ef010b92ee17acd6abc8b",
+      "plateSha256": "5fcc40acbea5c747d630b9e9e2f25ade4f2a5718a5ac6bd0ff471c2de6e2106b",
       "rowInPlate": 4,
       "sunColumns": [
         1,
@@ -3889,7 +3889,7 @@
       "signature": "[\"ff:column-fallen\",[1531,1655,186,126],82.25,55.75,[0.4468,0.5691],false,0,null,25,[0.3767,0.4126,0.4484,0.5,0.5605,0.6166,0.6637,0.6771,0.7444,0.7892,0.8475,0.8946,0.9058,0.8632,0.8117,0.7668,0.7668],null,true,false,null,null,\"native-boxes:748486ff1a759a8cdae76d05de9ed5c14630acf2d52b8d83f4035cff6db896cf\"]",
       "family": "ff:column-fallen",
       "plate": "static-final/variants-240.png",
-      "plateSha256": "3ea19ebdde756ae55dd1b70bc610926e489c9750867ef010b92ee17acd6abc8b",
+      "plateSha256": "5fcc40acbea5c747d630b9e9e2f25ade4f2a5718a5ac6bd0ff471c2de6e2106b",
       "rowInPlate": 5,
       "sunColumns": [
         1,
@@ -3906,7 +3906,7 @@
       "signature": "[\"ff:stairs-nw\",[253,1655,303,210],134.25,93,[0.4993,0.6296],false,0,null,0,[0.7177,0.7527,0.7984,0.8401,0.8844,0.9315,0.9516,0.9046,0.8683,0.8145,0.7823,0.7325,0.6828,0.6398,0.5941,0.547,0.5161],null,true,false]",
       "family": "ff:stairs-nw",
       "plate": "static-final/variants-246.png",
-      "plateSha256": "487b0528cf8d0a7b44e95488dfa0ecf514e11a2d5421f3558cf96c8322e9a990",
+      "plateSha256": "a1ee79eb0e9426272e4de2f3ed3ed8ae3646c4aee43368d64dd6e41027f4e76e",
       "rowInPlate": 0,
       "sunColumns": [
         1,
@@ -3921,7 +3921,7 @@
       "signature": "[\"ff:rock-boulders\",[231,1872,248,106],102.72132,43.860640000000004,[0.5,0.7164],true,0,null,0,[0.8255,0.9491,0.9636,0.9745,0.9818,0.9636,0.9273,0.8582,0.8764,0.9236,0.9345,0.9345,0.9455,0.9527,0.9432,0.9018,0.8691],null,true,false]",
       "family": "ff:rock-boulders",
       "plate": "static-final/variants-246.png",
-      "plateSha256": "487b0528cf8d0a7b44e95488dfa0ecf514e11a2d5421f3558cf96c8322e9a990",
+      "plateSha256": "a1ee79eb0e9426272e4de2f3ed3ed8ae3646c4aee43368d64dd6e41027f4e76e",
       "rowInPlate": 1,
       "sunColumns": [
         1,
@@ -3933,19 +3933,19 @@
     },
     {
       "id": "variant:248",
-      "signature": "[\"ff:drift-mound\",[557,1995,75,36],46.8435,22.545,[0.4572,0.4667],false,0,null,0,[0.4,0.4486,0.5667,0.7,0.7667,0.7889,0.8,0.8,0.7889,0.7667,0.7556,0.7347,0.7056,0.6319,0.5444,0.5444,0.5444],null,true,false]",
+      "signature": "[\"ff:drift-mound\",[557,1995,75,36],46.8435,22.545,[0.4572,0.4667],false,0,null,0,[0.4,0.4486,0.5667,0.7,0.7667,0.7889,0.8,0.8,0.7889,0.7667,0.7556,0.7347,0.7056,0.6319,0.5444,0.5444,0.5444],null,true,false,null,null,\"procedural-drift-height:47c612ee66e7c8ea1a75cf44ffc72016698efdb27809ec5d51705d4e0922bd44\"]",
       "family": "ff:drift-mound",
       "plate": "static-final/variants-246.png",
-      "plateSha256": "487b0528cf8d0a7b44e95488dfa0ecf514e11a2d5421f3558cf96c8322e9a990",
+      "plateSha256": "a1ee79eb0e9426272e4de2f3ed3ed8ae3646c4aee43368d64dd6e41027f4e76e",
       "rowInPlate": 2,
       "sunColumns": [
         1,
         2,
         3
       ],
-      "status": "reviewed with proxy/raster limitation",
+      "status": "reviewed: procedural source heights and scoped low-relief receiver",
       "findings": [
-        "Stepped source/receiver edge bands remain visible in enlarged composites. Independent ground-only and nearest-opaque controls distinguish them from erased opaque cast coverage. This is not approval of measured volumetric self-shadowing."
+        "Internal two-pixel-threshold bands removed; exact source recipe depth replaces folded billboard. Source alpha remains unchanged. Enlarged edge still exposes finite static receiver-map raster resolution."
       ]
     },
     {
@@ -3953,7 +3953,7 @@
       "signature": "[\"ff:shrub-juniper\",[1028,1872,139,82],45.13366,26.490060000000003,[0.5,0.8254],true,0,null,0,[0.6111,0.7143,0.7447,0.8519,0.8763,0.9178,0.8853,0.9277,0.9431,0.9312,0.9101,0.8571,0.7817,0.8386,0.8201,0.6822,0.582],null,true,false]",
       "family": "ff:shrub-juniper",
       "plate": "static-final/variants-246.png",
-      "plateSha256": "487b0528cf8d0a7b44e95488dfa0ecf514e11a2d5421f3558cf96c8322e9a990",
+      "plateSha256": "a1ee79eb0e9426272e4de2f3ed3ed8ae3646c4aee43368d64dd6e41027f4e76e",
       "rowInPlate": 3,
       "sunColumns": [
         1,
@@ -3968,7 +3968,7 @@
       "signature": "[\"ff:grass-tussock\",[1827,1872,68,52],22.417350000000003,17.130309999999998,[0.5,0.8963],false,0,null,0,[0.7825,0.7398,0.8788,0.8345,0.8933,0.9065,0.876,0.9187,0.8811,0.8882,0.9512,0.8943,0.9289,0.8841,0.7899,0.8228,0.8862],null,true,false]",
       "family": "ff:grass-tussock",
       "plate": "static-final/variants-246.png",
-      "plateSha256": "487b0528cf8d0a7b44e95488dfa0ecf514e11a2d5421f3558cf96c8322e9a990",
+      "plateSha256": "a1ee79eb0e9426272e4de2f3ed3ed8ae3646c4aee43368d64dd6e41027f4e76e",
       "rowInPlate": 4,
       "sunColumns": [
         1,
@@ -3985,7 +3985,7 @@
       "signature": "[\"ff:dead-tree\",[0,1059,381,357],149.65236,140.13168000000002,[0.5,0.937],true,0,null,0,[0.6468,0.6468,0.6468,0.6976,0.8041,0.9055,0.927,0.9801,0.9685,0.9635,0.9519,0.99,0.9337,0.9436,0.8839,0.8574,0.8574],null,true,false]",
       "family": "ff:dead-tree",
       "plate": "static-final/variants-246.png",
-      "plateSha256": "487b0528cf8d0a7b44e95488dfa0ecf514e11a2d5421f3558cf96c8322e9a990",
+      "plateSha256": "a1ee79eb0e9426272e4de2f3ed3ed8ae3646c4aee43368d64dd6e41027f4e76e",
       "rowInPlate": 5,
       "sunColumns": [
         1,
@@ -4000,7 +4000,7 @@
       "signature": "[\"ff:shrub-juniper\",[1028,1872,139,82],46.17899,27.103590000000004,[0.5,0.8254],true,0,null,0,[0.6111,0.7143,0.7447,0.8519,0.8763,0.9178,0.8853,0.9277,0.9431,0.9312,0.9101,0.8571,0.7817,0.8386,0.8201,0.6822,0.582],null,true,false]",
       "family": "ff:shrub-juniper",
       "plate": "static-final/variants-252.png",
-      "plateSha256": "f8934f07b5dae289be031df4a689c674faef6cde012eeabbd138857144a94bcd",
+      "plateSha256": "e2d362d387cd3bfecf0a5f0e9aba71ae66c76afe55363216e00bfabfa98f9063",
       "rowInPlate": 0,
       "sunColumns": [
         1,
@@ -4015,7 +4015,7 @@
       "signature": "[\"ff:grass-tussock\",[1827,1872,68,52],23.491950000000003,17.95147,[0.5,0.8963],true,0,null,0,[0.7825,0.7398,0.8788,0.8345,0.8933,0.9065,0.876,0.9187,0.8811,0.8882,0.9512,0.8943,0.9289,0.8841,0.7899,0.8228,0.8862],null,true,false]",
       "family": "ff:grass-tussock",
       "plate": "static-final/variants-252.png",
-      "plateSha256": "f8934f07b5dae289be031df4a689c674faef6cde012eeabbd138857144a94bcd",
+      "plateSha256": "e2d362d387cd3bfecf0a5f0e9aba71ae66c76afe55363216e00bfabfa98f9063",
       "rowInPlate": 1,
       "sunColumns": [
         1,
@@ -4032,7 +4032,7 @@
       "signature": "[\"ff:rubble\",[0,1872,229,121],70.1365,36.9685,[0.4901,0.6322],false,0,null,0,[0.514,0.5529,0.6308,0.6636,0.743,0.7757,0.7897,0.8084,0.8201,0.8309,0.8452,0.8952,0.8785,0.8551,0.8084,0.6323,0.6075],null,true,false]",
       "family": "ff:rubble",
       "plate": "static-final/variants-252.png",
-      "plateSha256": "f8934f07b5dae289be031df4a689c674faef6cde012eeabbd138857144a94bcd",
+      "plateSha256": "e2d362d387cd3bfecf0a5f0e9aba71ae66c76afe55363216e00bfabfa98f9063",
       "rowInPlate": 2,
       "sunColumns": [
         1,
@@ -4044,36 +4044,36 @@
     },
     {
       "id": "variant:255",
-      "signature": "[\"ff:drift-ne\",[264,1995,129,43],57.37875,19.12625,[0.4829,0.486],false,0,null,0,[0.729,0.7664,0.8318,0.8318,0.8224,0.7944,0.7757,0.7477,0.7009,0.6542,0.5981,0.5514,0.486,0.4206,0.3364,0.2243,0.2243],null,true,false]",
+      "signature": "[\"ff:drift-ne\",[264,1995,129,43],57.37875,19.12625,[0.4829,0.486],false,0,null,0,[0.729,0.7664,0.8318,0.8318,0.8224,0.7944,0.7757,0.7477,0.7009,0.6542,0.5981,0.5514,0.486,0.4206,0.3364,0.2243,0.2243],null,true,false,null,null,\"procedural-drift-height:47c612ee66e7c8ea1a75cf44ffc72016698efdb27809ec5d51705d4e0922bd44\"]",
       "family": "ff:drift-ne",
       "plate": "static-final/variants-252.png",
-      "plateSha256": "f8934f07b5dae289be031df4a689c674faef6cde012eeabbd138857144a94bcd",
+      "plateSha256": "e2d362d387cd3bfecf0a5f0e9aba71ae66c76afe55363216e00bfabfa98f9063",
       "rowInPlate": 3,
       "sunColumns": [
         1,
         2,
         3
       ],
-      "status": "reviewed with proxy/raster limitation",
+      "status": "reviewed: procedural source heights and scoped low-relief receiver",
       "findings": [
-        "Stepped source/receiver edge bands remain visible in enlarged composites. Independent ground-only and nearest-opaque controls distinguish them from erased opaque cast coverage. This is not approval of measured volumetric self-shadowing."
+        "Internal two-pixel-threshold bands removed; exact source recipe depth replaces folded billboard. Source alpha remains unchanged. Enlarged edge still exposes finite static receiver-map raster resolution."
       ]
     },
     {
       "id": "variant:256",
-      "signature": "[\"ff:drift-se\",[138,1995,124,44],67.067,23.73475,[0.487,0.4954],true,0,null,0,[0.2018,0.2494,0.3979,0.4771,0.5321,0.5963,0.6514,0.6972,0.7339,0.7523,0.7787,0.7987,0.8257,0.844,0.8165,0.789,0.789],null,true,false]",
+      "signature": "[\"ff:drift-se\",[138,1995,124,44],67.067,23.73475,[0.487,0.4954],true,0,null,0,[0.2018,0.2494,0.3979,0.4771,0.5321,0.5963,0.6514,0.6972,0.7339,0.7523,0.7787,0.7987,0.8257,0.844,0.8165,0.789,0.789],null,true,false,null,null,\"procedural-drift-height:47c612ee66e7c8ea1a75cf44ffc72016698efdb27809ec5d51705d4e0922bd44\"]",
       "family": "ff:drift-se",
       "plate": "static-final/variants-252.png",
-      "plateSha256": "f8934f07b5dae289be031df4a689c674faef6cde012eeabbd138857144a94bcd",
+      "plateSha256": "e2d362d387cd3bfecf0a5f0e9aba71ae66c76afe55363216e00bfabfa98f9063",
       "rowInPlate": 4,
       "sunColumns": [
         1,
         2,
         3
       ],
-      "status": "reviewed with proxy/raster limitation",
+      "status": "reviewed: procedural source heights and scoped low-relief receiver",
       "findings": [
-        "Stepped source/receiver edge bands remain visible in enlarged composites. Independent ground-only and nearest-opaque controls distinguish them from erased opaque cast coverage. This is not approval of measured volumetric self-shadowing."
+        "Internal two-pixel-threshold bands removed; exact source recipe depth replaces folded billboard. Source alpha remains unchanged. Enlarged edge still exposes finite static receiver-map raster resolution."
       ]
     },
     {
@@ -4081,7 +4081,7 @@
       "signature": "[\"ff:rubble\",[0,1872,229,121],95.91749999999999,50.5575,[0.4901,0.6322],false,0,null,0,[0.514,0.5529,0.6308,0.6636,0.743,0.7757,0.7897,0.8084,0.8201,0.8309,0.8452,0.8952,0.8785,0.8551,0.8084,0.6323,0.6075],null,true,false]",
       "family": "ff:rubble",
       "plate": "static-final/variants-252.png",
-      "plateSha256": "f8934f07b5dae289be031df4a689c674faef6cde012eeabbd138857144a94bcd",
+      "plateSha256": "e2d362d387cd3bfecf0a5f0e9aba71ae66c76afe55363216e00bfabfa98f9063",
       "rowInPlate": 5,
       "sunColumns": [
         1,
@@ -4386,7 +4386,7 @@
       "signature": "[\"ff:dead-snag\",[1549,1418,173,228],78.84279,103.80915999999999,[0.4705,0.9175],false,0,null,0,[0.8514,0.8679,0.8679,0.8762,0.9186,0.8998,0.9751,0.9579,0.9858,0.965,0.954,0.9847,0.9599,0.9717,0.9772,0.9479,0.9198],null,true,false]",
       "family": "ff:dead-snag",
       "plate": "static-final/variants-276.png",
-      "plateSha256": "c95921d757cf3d59a6b86c93dc114f18c58233e65a417997d238b37c525aea5d",
+      "plateSha256": "ccb74dfb33eb41820169890a413d16d18640e7ce8eff4ab94d6cc586392c375e",
       "rowInPlate": 0,
       "sunColumns": [
         1,
@@ -4401,7 +4401,7 @@
       "signature": "[\"ff:pillar-broken\",[1319,1655,119,166],60.662499999999994,84.52499999999999,[0.4649,0.7932],false,0,null,0,[0.7823,0.7861,0.8197,0.838,0.8707,0.8865,0.9082,0.932,0.9252,0.9048,0.8878,0.8639,0.8486,0.8333,0.7891,0.7857,0.7857],null,true,false]",
       "family": "ff:pillar-broken",
       "plate": "static-final/variants-276.png",
-      "plateSha256": "c95921d757cf3d59a6b86c93dc114f18c58233e65a417997d238b37c525aea5d",
+      "plateSha256": "ccb74dfb33eb41820169890a413d16d18640e7ce8eff4ab94d6cc586392c375e",
       "rowInPlate": 1,
       "sunColumns": [
         1,
@@ -4416,7 +4416,7 @@
       "signature": "[\"ff:grass-tussock\",[1827,1872,68,52],24.178500000000003,18.4761,[0.5,0.8963],true,0,null,0,[0.7825,0.7398,0.8788,0.8345,0.8933,0.9065,0.876,0.9187,0.8811,0.8882,0.9512,0.8943,0.9289,0.8841,0.7899,0.8228,0.8862],null,true,false]",
       "family": "ff:grass-tussock",
       "plate": "static-final/variants-276.png",
-      "plateSha256": "c95921d757cf3d59a6b86c93dc114f18c58233e65a417997d238b37c525aea5d",
+      "plateSha256": "ccb74dfb33eb41820169890a413d16d18640e7ce8eff4ab94d6cc586392c375e",
       "rowInPlate": 2,
       "sunColumns": [
         1,
@@ -4433,7 +4433,7 @@
       "signature": "[\"ff:shrub-twigs\",[893,1872,133,84],66.76039999999999,42.1942,[0.5,0.8968],true,0,null,0,[0.4201,0.6605,0.7985,0.8297,0.9017,0.9238,0.9291,0.9484,0.9435,0.9582,0.9211,0.9214,0.9066,0.8196,0.7494,0.688,0.6437],null,true,false]",
       "family": "ff:shrub-twigs",
       "plate": "static-final/variants-276.png",
-      "plateSha256": "c95921d757cf3d59a6b86c93dc114f18c58233e65a417997d238b37c525aea5d",
+      "plateSha256": "ccb74dfb33eb41820169890a413d16d18640e7ce8eff4ab94d6cc586392c375e",
       "rowInPlate": 3,
       "sunColumns": [
         1,
@@ -4450,7 +4450,7 @@
       "signature": "[\"ff:dead-snag\",[1549,1418,173,228],69.093,90.972,[0.4705,0.9175],false,0,null,0,[0.8514,0.8679,0.8679,0.8762,0.9186,0.8998,0.9751,0.9579,0.9858,0.965,0.954,0.9847,0.9599,0.9717,0.9772,0.9479,0.9198],null,true,false]",
       "family": "ff:dead-snag",
       "plate": "static-final/variants-276.png",
-      "plateSha256": "c95921d757cf3d59a6b86c93dc114f18c58233e65a417997d238b37c525aea5d",
+      "plateSha256": "ccb74dfb33eb41820169890a413d16d18640e7ce8eff4ab94d6cc586392c375e",
       "rowInPlate": 4,
       "sunColumns": [
         1,
@@ -4462,19 +4462,19 @@
     },
     {
       "id": "variant:281",
-      "signature": "[\"ff:drift-mound\",[557,1995,75,36],37.4,18,[0.4572,0.4667],false,0,null,0,[0.4,0.4486,0.5667,0.7,0.7667,0.7889,0.8,0.8,0.7889,0.7667,0.7556,0.7347,0.7056,0.6319,0.5444,0.5444,0.5444],null,true,false]",
+      "signature": "[\"ff:drift-mound\",[557,1995,75,36],37.4,18,[0.4572,0.4667],false,0,null,0,[0.4,0.4486,0.5667,0.7,0.7667,0.7889,0.8,0.8,0.7889,0.7667,0.7556,0.7347,0.7056,0.6319,0.5444,0.5444,0.5444],null,true,false,null,null,\"procedural-drift-height:47c612ee66e7c8ea1a75cf44ffc72016698efdb27809ec5d51705d4e0922bd44\"]",
       "family": "ff:drift-mound",
       "plate": "static-final/variants-276.png",
-      "plateSha256": "c95921d757cf3d59a6b86c93dc114f18c58233e65a417997d238b37c525aea5d",
+      "plateSha256": "ccb74dfb33eb41820169890a413d16d18640e7ce8eff4ab94d6cc586392c375e",
       "rowInPlate": 5,
       "sunColumns": [
         1,
         2,
         3
       ],
-      "status": "reviewed with proxy/raster limitation",
+      "status": "reviewed: procedural source heights and scoped low-relief receiver",
       "findings": [
-        "Stepped source/receiver edge bands remain visible in enlarged composites. Independent ground-only and nearest-opaque controls distinguish them from erased opaque cast coverage. This is not approval of measured volumetric self-shadowing."
+        "Internal two-pixel-threshold bands removed; exact source recipe depth replaces folded billboard. Source alpha remains unchanged. Enlarged edge still exposes finite static receiver-map raster resolution."
       ]
     },
     {
@@ -4975,9 +4975,5 @@
       "status": "reviewed: no repeated opaque-body tears identified",
       "findings": []
     }
-  ],
-  "unchangedPictureEvidence": "material-regression.json",
-  "focusedVisualEvidence": "brazier-gpu/report.json",
-  "geometryAlignmentEvidence": "rock-scatter-controls/report.json",
-  "materialEvidence": "brazier-material/report.json"
+  ]
 }

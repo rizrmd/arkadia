@@ -17,6 +17,9 @@ for(let z=0;z<4000;z+=.37){const [r,g]=encodeDepth(z);assert.ok(Math.abs(decodeD
 const sun={dx:1,dy:.5,alpha:.4},a={x:0,y:0,z:80,alpha:1},b={x:40,y:20,z:40,alpha:1},r={x:80,y:40,z:0,alpha:1};
 assert.equal(visibilityAt(makeField([a,b],sun,1),r,sun),1);assert.equal(visibilityAt(makeField([b,a],sun,1),r,sun),1);checks+=2;
 const elevated={x:60,y:30,z:20,alpha:1,owner:2},self=makeField([{x:0,y:0,z:80,alpha:1,owner:2}],sun,1);assert.equal(visibilityAt(self,elevated,sun),0);assert.equal(visibilityAt(self,{...r,owner:2},sun),1,'contact region retains self shadow, matching the GPU contract');const mutual=makeField([{x:0,y:0,z:80,alpha:1,owner:2},{x:20,y:10,z:60,alpha:1,owner:3}],sun,1);assert.equal(visibilityAt(mutual,elevated,sun),1);checks+=3;
+// Low relief remains an object above ground; the old two-pixel cutoff
+// produced an artificial self-shadow ring on shallow procedural snow.
+for(const height of [.5,1,1.5,2,2.5]){const low={x:80-height,y:40-height*.5,z:height,alpha:1,owner:2,ignoreLowSelf:true};assert.equal(visibilityAt(self,low,sun),0,'low relief self owner');assert.equal(visibilityAt(self,{...low,owner:3},sun),1,'foreign caster still blocks low relief');checks+=2;}
 const partialOverSolid=makeField([{...a,owner:2,alpha:.2},{...b,owner:3}],sun,1);assert.equal(visibilityAt(partialOverSolid,r,sun,1),1,'partial front must not hide opaque lower caster');assert.ok(Math.abs(visibilityAt(partialOverSolid,{x:20,y:10,z:60,alpha:1},sun,1)-.2)<.005,'receiver above opaque lower layer receives only partial upper shadow');checks+=2;
 const aliased=makeField([{...a,owner:2,alpha:.2},{...b,owner:10}],sun,1);assert.equal(visibilityAt(aliased,elevated,sun,1,8),0,'physical owner ignores its own opaque volume proxy');assert.equal(visibilityAt(aliased,{...r,owner:2},sun,1,8),1,'opaque volume still shades the ground');checks+=2;
 // Regression: an opaque source-cell mesh must not tear into a dot lattice when

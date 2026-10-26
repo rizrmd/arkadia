@@ -1,7 +1,7 @@
 // Screen-world light-space depth field. All heights are explicit geometry units;
 // alpha controls coverage only. No colour channel is ever interpreted as height.
 export type ShadowSun={dx:number;dy:number;alpha:number};
-export type ShadowSample={x:number;y:number;z:number;alpha:number;owner?:number;quad?:Float32Array;receive?:boolean;emission?:number;opaqueProxy?:boolean};
+export type ShadowSample={x:number;y:number;z:number;alpha:number;owner?:number;quad?:Float32Array;receive?:boolean;emission?:number;opaqueProxy?:boolean;ignoreLowSelf?:boolean};
 export type ShadowBounds={left:number;top:number;step:number;width:number;height:number};
 export type ShadowPixels={bounds:ShadowBounds;depth:Float32Array;coverage:Uint8Array;owner?:Uint16Array;secondDepth?:Float32Array;secondCoverage?:Uint8Array;secondOwner?:Uint16Array};
 export function lightPoint(p:ShadowSample,s:ShadowSun){return {x:p.x+s.dx*p.z,y:p.y+s.dy*p.z};}
@@ -58,7 +58,7 @@ export function makeField(samples:readonly ShadowSample[],sun:ShadowSun,step=3):
 export function visibilityAt(field:ShadowPixels,p:ShadowSample,sun:ShadowSun,bias=3,aliasOffset=0){
  const q=lightPoint(p,sun),b=field.bounds,x=Math.floor((q.x-b.left)/b.step),y=Math.floor((q.y-b.top)/b.step);
  if(x<0||y<0||x>=b.width||y>=b.height)return 0;
- const same=(id:number|undefined)=>!!p.owner&&(id===p.owner||(aliasOffset>0&&p.owner<=aliasOffset/2&&id===p.owner+aliasOffset));const k=y*b.width+x,firstOwn=p.z>2&&same(field.owner?.[k]),secondOwn=p.z>2&&same(field.secondOwner?.[k]);
+ const same=(id:number|undefined)=>!!p.owner&&(id===p.owner||(aliasOffset>0&&p.owner<=aliasOffset/2&&id===p.owner+aliasOffset));const k=y*b.width+x,firstOwn=(p.z>2||!!p.ignoreLowSelf&&p.z>0)&&same(field.owner?.[k]),secondOwn=(p.z>2||!!p.ignoreLowSelf&&p.z>0)&&same(field.secondOwner?.[k]);
  const first=!firstOwn&&field.depth[k]>p.z+bias?field.coverage[k]/255:0,second=!secondOwn&&(field.secondDepth?.[k]??-1)>p.z+bias?(field.secondCoverage?.[k]??0)/255:0;return Math.max(first,second);
 }
 // Millimetre-like precision in world px (1/16 px), up to 4095 px height. Texture
