@@ -16,6 +16,8 @@ The recorded run covers Chromium native blur, Chromium with ignored filters, Web
 
 See `verification.json` for individual pixel metrics and bake timings.
 
+`node scripts/verify-safari-parallax-game.mjs` also passes on the production build in Chromium (ignored filters) and WebKit: 12 integration cases covering court/snow at 1440×900, 390×844 and 844×390. The game reaches ready state without page errors. Its visible Pixi sprites use cached canvas textures with translucent edges, the expected baked dimensions, and the landscape crops. See `game-verification.json` for the actual runtime snapshots and texture measurements.
+
 ## Delivery status
 
 The local fix is implemented and the production build passes. Push is blocked: GitHub returns HTTP 403 because connected account `mieky-kpvendorid` lacks write access to `rizrmd/arkadia`. The platform push helper confirms the same denial. No deployment is claimed.
