@@ -1,4 +1,5 @@
 import {GateHealthBar} from './gate-health-bar';
+import {loadJsonAsset} from '../app/json-asset';
 import {BRAZIER_PHYSICAL_SOURCE,withBrazierShadowMaterial} from './brazier-shadow-material';
 import {torchShadowSurfaces} from './torch-shadow';
 import {torchAssetsReady} from './torches';
@@ -235,8 +236,10 @@ export async function createWorldView(
   lighting.setShadow(soft,s.alpha,paint);
  }
 
- progress(loaded,steps,'Waking the hero');
- const sheet:GateSheet=await (await fetch(GATE_SHEET)).json();
+ // Yield after each milestone so the loading percentage paints before CPU preparation.
+ const milestone=async(done:number,label:string)=>{progress(done,steps,label);await new Promise<void>(resolve=>setTimeout(resolve,0));};
+ await milestone(loaded,'Waking the hero');
+ const sheet=await loadJsonAsset<GateSheet>(GATE_SHEET);
  const gateP=objects.find(p=>p.id==='gate')!;const gateProxy=useDepthShadows?sampleSurface({key:'gate',source:gateP.image,sourceWidth:gateP.image.naturalWidth,sourceHeight:gateP.image.naturalHeight,x:gateP.x,y:gateP.y,width:gateP.width,height:gateP.height,pivot:[.5,gateP.foot],shear:gateP.shear,vertical:gateP.vertical},1.5).surface:null;
  const doors=createGateDoors(staticStage,images.get('/modular-stronghold/v2/full-gateway-v7-closed.webp')!,gateSheetImg,sheet,open=>{gatePassable=open;setGateOpen(open);hero.setScene(scene());party?.setScene(scene());},{raster,onShadowFrame:(source,index)=>{if(gateProxy)sceneShadows?.setDynamic([{...gateProxy,key:'gateway-frame:'+index,source,sourceWidth:source.width,sourceHeight:source.height}]);},foundation:foundationLayers(objects.find(p=>p.id==='gate')!,images.get(FOUNDATION_SOIL)!,images.get(FOUNDATION_DRIFT),images.get(FOUNDATION_MOSS))!,revision:lighting.spriteRevision,torches:lighting.torches,shade:(source,target)=>lighting.shadeSprite(source,target,{left:GS.x-GS.width/2,top:GS.y-sheet.region.h*GS.pivot,width:GS.width,height:sheet.region.h})});
  gateOccluder=doors.canvas;for(const p of objects)if(p.id==='gate'){p.occluder=gateOccluder;prewarmOcclusionAlpha(p);}
@@ -245,8 +248,10 @@ export async function createWorldView(
  let encounters:Awaited<ReturnType<typeof createEncounters>>|undefined;
  // Keys and the stick, or else a tap-to-walk route from the full map (auto-walk.ts).
  let walker:AutoWalk|undefined;const input=()=>walker?walker.input(direction()):direction();
+ await milestone(925,'Preparing the hero');
  const hero=await createHero<(typeof objects)[number]>({hero:pick,layer:worldStage,lightmap:lighting.lightmap,surface,footprint:p=>p.id==='gate'?gateFootprint():footprint(p),sun:lighting.sun,direction:()=>encounters?encounters.steer(input()):input(),follow,pose:()=>encounters?.pose()??null,
   drive:()=>{if(!net?.active())return null;const p=net.position(),me=net.me();return {...p,face:direction(),look:me&&me.st!=='idle'?{facing:me.fc,back:me.bk,vertical:me.vt}:null};}});hero.setScene(scene());
+ await milestone(930,'Preparing combat');
  encounters=await createEncounters({renderer:rt.app.renderer,worldStage,uiStage,frames,hudCallbacks,showCoop:Boolean(net),cancelRoute:()=>walker?.cancel(),hero,direction:input,net});
  const gateHealthBar=worldStage.addChild(new GateHealthBar());
  gateHealthBar.zIndex=100;
@@ -257,10 +262,11 @@ export async function createWorldView(
  walker=createAutoWalk({blocked:hero.blocked,position:hero.position,onChange:r=>encounters!.minimap.setRoute(r)});
  uiStage.addChild(worldMap);encounters.minimap.onOpen=()=>worldMap.toggle();
  const party=net?createParty<(typeof objects)[number]>({layer:worldStage,frames,lightmap:lighting.lightmap,surface,footprint:p=>p.id==='gate'?gateFootprint():footprint(p),sun:lighting.sun,net,own:()=>hero.position()}):null;party?.setScene(scene());
+ await milestone(940,'Loading backgrounds');
  const parallax=await createParallax({worldStage,anchorX:WORLD.width/2,anchorY:385,getHeroWorld:()=>hero.position(),getCombatantsWorld:()=>encounters?encounters.combatants():[hero.position()]});
  lighting.setClockSource(()=>net?.active()?net.clock():null);net?.onSnapshot(()=>{const p=hero.position();updateGate(p.x,p.y);});lighting.subscribe(s=>encounters!.setAmbient(s.ambient));
  lighting.subscribe(s=>{const [r,g,b]=s.ambient.map(v=>Math.round(Math.round(v*32)/32*255));for(const f of relief)f.view.sprite.tint=(r<<16)|(g<<8)|b;frontier.setAmbient((r<<16)|(g<<8)|b);});
- progress(loaded+=40,steps,'Raising the Stronghold');
+ await milestone(loaded=950,'Raising the Stronghold');
 
  const uprights=document.createElement('canvas');uprights.id='world-uprights';uprights.width=surface.width;uprights.height=surface.height;
  const baseSurface=document.createElement('canvas');baseSurface.width=surface.width;baseSurface.height=surface.height;

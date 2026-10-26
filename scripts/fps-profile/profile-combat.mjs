@@ -7,7 +7,7 @@ import fs from 'node:fs/promises';
 import {launch} from '../vfx/browser.mjs';
 
 const [FOES=8,SECONDS=6,THROTTLE=1]=process.argv.slice(2).map(Number);
-const OUT=process.env.OUT||'';
+const OUT=process.env.OUT||'',LEVEL=Math.max(1,Number(process.env.LEVEL)||1),QUERY=process.env.QUERY||'';
 let vite=null,GAME=process.env.GAME||'';
 if(!GAME){
  vite=await createServer({cacheDir:`/tmp/combat-profile-${process.pid}`,server:{host:'127.0.0.1',port:18000+(process.pid%900),strictPort:true,hmr:false,watch:null},logLevel:'error'});
@@ -36,20 +36,22 @@ try{
   let n=0;const tick=()=>{n++;W.__FRAMES__=n;requestAnimationFrame(tick);};requestAnimationFrame(tick);
  });
  const errors=[];page.on('pageerror',e=>errors.push(e.message));const glWarnings=new Set();page.on('console',m=>{const t=m.text();if(/stall|fence|performance warning/i.test(t))glWarnings.add(t.slice(0,220));});
- await page.goto(`${GAME}/?offline=1&hero=ember-warden&time=0.5`);
+ await page.goto(`${GAME}/?offline=1&hero=ember-warden&time=0.5&${QUERY}`);
  await page.waitForFunction(()=>window.__STRONGHOLD_COMBAT__?.snapshot().vfx.fx.ready&&!document.querySelector('#loading-screen'),null,{timeout:300000});
- await page.waitForFunction(()=>window.__WORLD_HERO__?.dataset.mode==='3d-60fps',null,{timeout:180000}).catch(()=>console.log('3D hero never became ready'));
- const spot=await page.evaluate(n=>{
+ if(!QUERY.includes('3d=0'))await page.waitForFunction(()=>window.__WORLD_HERO__?.dataset.mode==='3d-60fps',null,{timeout:180000}).catch(()=>console.log('3D hero never became ready'));
+ const spot=await page.evaluate(({n,level})=>{
   const c=window.__STRONGHOLD_COMBAT__;
+  if(level>1)c.setMaxHp(100000);
+  for(let i=1;i<level;i++){const r=c.offer();if(r.offers?.length)c.choose(r.offers[0]);}
   for(let u=18;u<34;u+=.5)for(let v=18;v<34;v+=.5){
    if(c.clear(u,v)&&c.clear(u+2,v)&&c.clear(u-2,v)&&c.clear(u,v+2)&&c.clear(u,v-2)&&c.teleport(u,v)){
     c.clearFoes();
-    for(let i=0;i<n;i++){const a=i/n*Math.PI*2;c.summon(u+Math.cos(a)*1.6,v+Math.sin(a)*1.6,1);}
+    for(let i=0;i<n;i++){const a=i/n*Math.PI*2;c.summon(u+Math.cos(a)*1.6,v+Math.sin(a)*1.6,level);}
     return {u,v};
    }
   }
   return null;
- },FOES);
+ },{n:FOES,level:LEVEL});
  console.log('spot',spot);
  await page.waitForTimeout(1500);
  const cdp=await page.context().newCDPSession(page);

@@ -3,13 +3,13 @@ import {preview} from 'vite';
 import fs from 'node:fs/promises';
 import {chromium} from 'playwright';
 import {launchOptions} from './typography/browser.mjs';
-const server=await preview({build:{outDir:process.env.SITE_DIR||'dist'},preview:{host:'127.0.0.1',port:0}});
+const server=process.env.BASE_URL?null:await preview({build:{outDir:process.env.SITE_DIR||'dist'},preview:{host:'127.0.0.1',port:0}});
 const browser=await chromium.launch({...launchOptions(),args:launchOptions().args.filter(a=>a!=='--single-process')});
 try {
  const page=await browser.newPage({viewport:{width:1440,height:900}});
  const errors=[];page.on('pageerror',e=>errors.push(e.message));
  await page.addInitScript(()=>localStorage.setItem('arkodia.hero','rift-runner'));
- await page.goto(server.resolvedUrls.local[0]+'?offline=1&time=0.35');
+ await page.goto((process.env.BASE_URL||server.resolvedUrls.local[0])+'?offline=1&time=0.35');
  console.log('Waiting for game');
  await page.waitForFunction(()=>window.__PIXI_UI__&&document.querySelector('#world-canvas')?.dataset.ready==='true',null,{timeout:120000});
  const result=await page.evaluate(()=>{
@@ -39,4 +39,4 @@ try {
  assert.deepEqual(errors,[]);
  await fs.writeFile('docs/gate-health/verification.json',JSON.stringify(result,null,2)+'\n');
  console.log(JSON.stringify(result));
-} finally {await browser.close();await new Promise(r=>server.httpServer.close(r));}
+} finally {await browser.close();if(server)await new Promise(r=>server.httpServer.close(r));}

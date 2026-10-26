@@ -1,0 +1,18 @@
+{
+  "checks": [
+    {
+      "path": "/healthz",
+      "status": 200
+    },
+    {
+      "path": "/houdini-flame-fan/",
+      "status": 200
+    },
+    {
+      "path": "/ember-warden-review/flame-fan-flipbook/",
+      "status": 200
+    }
+  ],
+  "masterBytes": 7110980,
+  "masterSHA256": "8dd51d75c8ca0d82b688572146d4662aaede3196b153ab04922ca112147696da"
+}

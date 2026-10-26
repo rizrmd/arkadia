@@ -1,0 +1,17 @@
+{
+  "runtime": "app-bundle:index-Oya6nKbz.js",
+  "profile": "desktop",
+  "scope": "Actual compiled live runtime: all 13 original/mirrored/scaled procedural drift companions at three suns and independent receiver controls. SwiftShader viewport; no native-device FPS claim.",
+  "runs": [],
+  "errors": [
+    "Failed to load resource: the server responded with a status of 404 ()"
+  ],
+  "failedResponses": [
+    {
+      "url": "https://ark-whachat.fural.space/?offline=1&time=.3&quality=high",
+      "status": 404
+    }
+  ],
+  "status": "failed",
+  "failure": "page.waitForFunction: Timeout 120000ms exceeded.\n    at /home/dev/projects/arkadia/repos/arkadia/scripts/shadow-audit/verify-drift-live.mjs:3:691"
+}

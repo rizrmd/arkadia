@@ -1,3 +1,4 @@
+import {loadJsonAsset} from '../app/json-asset';
 import {Assets,Container,NineSliceSprite,Sprite,type Texture} from 'pixi.js';
 
 // HUD frames and art are exported at @1x, @2x and @3x from @3x masters (scripts/typography/build-frames.mjs).
@@ -17,8 +18,8 @@ export class FrameSet{
  static async load(base:string,scale:FrameScale,only?:(name:string)=>boolean,onProgress?:(done:number,total:number)=>void){
   const v=`?v=${__HUD_REVISION__}`;
   const [manifest,mobile]=await Promise.all([
-   fetch(base+'manifest.json'+v).then(r=>{if(!r.ok)throw Error(`Interface manifest answered ${r.status}`);return r.json() as Promise<Manifest>;}),
-   base.includes('/hud/')?fetch('/mobile-hud/v1/manifest.json').then(r=>{if(!r.ok)throw Error(`Mobile interface manifest answered ${r.status}`);return r.json();}):null,
+   loadJsonAsset<Manifest>(base+'manifest.json'+v),
+   base.includes('/hud/')?loadJsonAsset<{frames:Record<string,{width:number;height:number;file:string}>}>('/mobile-hud/v1/manifest.json'):null,
   ]);
   const names=Object.keys(manifest.frames).filter(n=>!only||only(n.replace(/\.(tl|tr|bl|br|l|r)$/,'')));
   const used=new Set(['map-frame','skill-ring','coin','clock','pin','arrow','hp-material','gate-material','xp-material'].map(n=>'mobile-'+n));

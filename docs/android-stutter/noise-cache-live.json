@@ -1,0 +1,66 @@
+{
+  "checkedAt": "2026-10-26T16:14:33.355Z",
+  "cacheProof": {
+    "url": "https://ark-whachat.fural.space/assets/chunk-DDYEJ3XB-THwkkkuN.js",
+    "boundedCache": true
+  },
+  "details": [
+    "heroQualityChange",
+    "textureUpload",
+    "flameFanFrame",
+    "fxEngine",
+    "fxOcclusion",
+    "fxUpdate",
+    "shadowFieldPlace",
+    "frontierPlace",
+    "lightingPlace",
+    "gatePlace",
+    "heroPlace",
+    "partyPlace",
+    "encountersPlace",
+    "parallaxPlace",
+    "heroAnimation",
+    "heroDraw",
+    "heroCopy",
+    "heroPost"
+  ],
+  "snapshot": {
+    "fx": {
+      "ready": true,
+      "failed": "",
+      "effects": 76,
+      "preparedEffects": 36,
+      "loadedTextures": 15,
+      "gpuPreparation": {
+        "compiledPrograms": 4,
+        "uploadedTextures": 15
+      },
+      "live": 7,
+      "played": 8,
+      "peakParticles": 159,
+      "particleBudget": 320,
+      "budgetSkipped": 0,
+      "frameMs": 57.4,
+      "occludedParticles": 17,
+      "minOcclusion": 0.32,
+      "meanOcclusion": 0.886,
+      "backEffects": 6,
+      "frontEffects": 0,
+      "particles": 149,
+      "missing": [],
+      "unsupported": [],
+      "playing": [
+        "ember-warden/flame-fan.cast:9",
+        "shared/hit.fire:29",
+        "shared/hit.fire:29",
+        "shared/hit.fire:29",
+        "shared/hit.normal:10",
+        "ember-warden/attack.swing.ground:20",
+        "ember-warden/attack.swing:23"
+      ]
+    },
+    "build": "https://ark-whachat.fural.space/assets/index-BG9pgAkD.js"
+  },
+  "errors": [],
+  "syntheticPostsIntercepted": 1
+}

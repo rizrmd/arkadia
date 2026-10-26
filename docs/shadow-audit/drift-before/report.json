@@ -1,0 +1,5666 @@
+{
+  "runtime": "7957773a",
+  "scope": "Historical plates containing the 13 drift variants, before procedural source-height and scoped low-relief fix.",
+  "batches": [
+    {
+      "offset": 162,
+      "totalVariants": 314,
+      "totalPlacements": 480,
+      "rows": [
+        {
+          "id": "variant:162",
+          "signature": "[\"ff:grass-tussock\",[1827,1872,68,52],30.17835,23.060909999999996,[0.5,0.8963],false,0,null,0,[0.7825,0.7398,0.8788,0.8345,0.8933,0.9065,0.876,0.9187,0.8811,0.8882,0.9512,0.8943,0.9289,0.8841,0.7899,0.8228,0.8862],null,true,false]",
+          "family": "ff:grass-tussock",
+          "key": "ff:grass-tussock:252",
+          "placements": [
+            {
+              "key": "ff:grass-tussock:252",
+              "x": -183.95999999999913,
+              "y": 770.880000000001
+            }
+          ],
+          "width": 30.17835,
+          "height": 23.060909999999996,
+          "flip": false,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            1827,
+            1872,
+            68,
+            52
+          ],
+          "explicitHeight": false,
+          "solidBody": false,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 5097,
+              "cast": true,
+              "maxHeight": 19.791641658999996,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 13,
+                "pixel": [
+                  69,
+                  43
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 11275,
+              "cast": true,
+              "maxHeight": 19.791641658999996,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 13,
+                "pixel": [
+                  103,
+                  61
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 16885,
+              "cast": true,
+              "maxHeight": 19.791641658999996,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 13,
+                "pixel": [
+                  141,
+                  53
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:163",
+          "signature": "[\"ff:pine-tall\",[0,0,285,610],110.69136,237.02808,[0.5,0.9587],false,0,null,0,[0.8484,0.8484,0.8492,0.8952,0.9036,0.8883,0.9645,0.9746,0.9753,0.979,0.9782,0.9739,0.9394,0.9014,0.911,0.8723,0.8687],null,true,false]",
+          "family": "ff:pine-tall",
+          "key": "ff:pine-tall:786",
+          "placements": [
+            {
+              "key": "ff:pine-tall:786",
+              "x": -2205.7199999999975,
+              "y": 773.7600000000002
+            }
+          ],
+          "width": 110.69136,
+          "height": 237.02808,
+          "flip": false,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            0,
+            0,
+            285,
+            610
+          ],
+          "explicitHeight": false,
+          "solidBody": false,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 2009,
+              "cast": true,
+              "maxHeight": 230.3028563923361,
+              "receiver": {
+                "status": "pass",
+                "height": 24,
+                "screenProbe": [
+                  -1965.290943421001,
+                  767.8808220352605
+                ],
+                "raisedMin": 127,
+                "aboveMin": 255
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 217,
+                "pixel": [
+                  41,
+                  19
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 2634,
+              "cast": true,
+              "maxHeight": 230.3028563923361,
+              "receiver": {
+                "status": "pass",
+                "height": 24,
+                "screenProbe": [
+                  -2156.4446618262455,
+                  799.1103428993391
+                ],
+                "raisedMin": 127,
+                "aboveMin": 255
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 217,
+                "pixel": [
+                  52,
+                  22
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 3803,
+              "cast": true,
+              "maxHeight": 230.3028563923361,
+              "receiver": {
+                "status": "pass",
+                "height": 24,
+                "screenProbe": [
+                  -2316.804620123654,
+                  862.4409061399824
+                ],
+                "raisedMin": 127,
+                "aboveMin": 255
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 217,
+                "pixel": [
+                  121,
+                  19
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:164",
+          "signature": "[\"ff:pine-tall\",[0,0,285,610],134.69976,288.43828,[0.5,0.9587],false,0,null,0,[0.8484,0.8484,0.8492,0.8952,0.9036,0.8883,0.9645,0.9746,0.9753,0.979,0.9782,0.9739,0.9394,0.9014,0.911,0.8723,0.8687],null,true,false]",
+          "family": "ff:pine-tall",
+          "key": "ff:pine-tall:773",
+          "placements": [
+            {
+              "key": "ff:pine-tall:773",
+              "x": -2338.84,
+              "y": 805.7600000000002
+            }
+          ],
+          "width": 134.69976,
+          "height": 288.43828,
+          "flip": false,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            0,
+            0,
+            285,
+            610
+          ],
+          "explicitHeight": false,
+          "solidBody": false,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 1946,
+              "cast": true,
+              "maxHeight": 280.29548598467346,
+              "receiver": {
+                "status": "pass",
+                "height": 24,
+                "screenProbe": [
+                  -2060.6600271615725,
+                  802.9455864893
+                ],
+                "raisedMin": 128,
+                "aboveMin": 255
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 261,
+                "pixel": [
+                  41,
+                  20
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 2549,
+              "cast": true,
+              "maxHeight": 280.29548598467346,
+              "receiver": {
+                "status": "pass",
+                "height": 24,
+                "screenProbe": [
+                  -2286.235781820267,
+                  839.7987682914423
+                ],
+                "raisedMin": 127,
+                "aboveMin": 255
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 267.5,
+                "pixel": [
+                  53,
+                  20
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 3712,
+              "cast": true,
+              "maxHeight": 280.29548598467346,
+              "receiver": {
+                "status": "pass",
+                "height": 24,
+                "screenProbe": [
+                  -2475.4725851205703,
+                  914.5335927832288
+                ],
+                "raisedMin": 127,
+                "aboveMin": 255
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 266,
+                "pixel": [
+                  122,
+                  18
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:165",
+          "signature": "[\"ff:shrub-juniper\",[1028,1872,139,82],63.39619,37.20879,[0.5,0.8254],false,0,null,0,[0.6111,0.7143,0.7447,0.8519,0.8763,0.9178,0.8853,0.9277,0.9431,0.9312,0.9101,0.8571,0.7817,0.8386,0.8201,0.6822,0.582],null,true,false]",
+          "family": "ff:shrub-juniper",
+          "key": "ff:shrub-juniper:363",
+          "placements": [
+            {
+              "key": "ff:shrub-juniper:363",
+              "x": -1471,
+              "y": 825.5999999999985
+            }
+          ],
+          "width": 63.39619,
+          "height": 37.20879,
+          "flip": false,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            1028,
+            1872,
+            139,
+            82
+          ],
+          "explicitHeight": false,
+          "solidBody": false,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 4663,
+              "cast": true,
+              "maxHeight": 34.00173501453948,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 33,
+                "pixel": [
+                  94,
+                  14
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 8570,
+              "cast": true,
+              "maxHeight": 34.00173501453948,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 33,
+                "pixel": [
+                  126,
+                  14
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 14208,
+              "cast": true,
+              "maxHeight": 34.00173501453948,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 33,
+                "pixel": [
+                  140,
+                  14
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:166",
+          "signature": "[\"ff:drift-mound\",[557,1995,75,36],40.4855,19.485,[0.4572,0.4667],true,0,null,0,[0.4,0.4486,0.5667,0.7,0.7667,0.7889,0.8,0.8,0.7889,0.7667,0.7556,0.7347,0.7056,0.6319,0.5444,0.5444,0.5444],null,true,false]",
+          "family": "ff:drift-mound",
+          "key": "ff:drift-mound:362",
+          "placements": [
+            {
+              "key": "ff:drift-mound:362",
+              "x": -1490.2000000000007,
+              "y": 867.1999999999989
+            }
+          ],
+          "width": 40.4855,
+          "height": 19.485,
+          "flip": true,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            557,
+            1995,
+            75,
+            36
+          ],
+          "explicitHeight": false,
+          "solidBody": false,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 5368,
+              "cast": true,
+              "maxHeight": 14.61375,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 13,
+                "pixel": [
+                  97,
+                  17
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 8782,
+              "cast": true,
+              "maxHeight": 14.61375,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 13,
+                "pixel": [
+                  122,
+                  18
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 12727,
+              "cast": true,
+              "maxHeight": 14.61375,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 13,
+                "pixel": [
+                  138,
+                  18
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:167",
+          "signature": "[\"ff:snowy-shrine\",[1097,1059,259,292],114.93,129.48,[0.5,0.8591],false,0,null,0,[0.7772,0.8051,0.8766,0.9107,0.9289,0.9429,0.9532,0.9641,0.9687,0.9761,0.9614,0.9336,0.9125,0.9029,0.8742,0.8059,0.767],null,true,false]",
+          "family": "ff:snowy-shrine",
+          "key": "ff:snowy-shrine:353",
+          "placements": [
+            {
+              "key": "ff:snowy-shrine:353",
+              "x": -1279,
+              "y": 870.4000000000015
+            }
+          ],
+          "width": 114.93,
+          "height": 129.48,
+          "flip": false,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            1097,
+            1059,
+            259,
+            292
+          ],
+          "explicitHeight": false,
+          "solidBody": false,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 2693,
+              "cast": true,
+              "maxHeight": 124.56343489655173,
+              "receiver": {
+                "status": "pass",
+                "height": 24,
+                "screenProbe": [
+                  -1156.1713432115862,
+                  866.4390857224843
+                ],
+                "raisedMin": 127,
+                "aboveMin": 255
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 121.5,
+                "pixel": [
+                  61,
+                  14
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 6536,
+              "cast": true,
+              "maxHeight": 124.56343489655173,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 121.5,
+                "pixel": [
+                  89,
+                  15
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 8136,
+              "cast": true,
+              "maxHeight": 124.56343489655173,
+              "receiver": {
+                "status": "pass",
+                "height": 24,
+                "screenProbe": [
+                  -1365.2118157467587,
+                  922.6727004416566
+                ],
+                "raisedMin": 127,
+                "aboveMin": 255
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 122.5,
+                "pixel": [
+                  134,
+                  14
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        }
+      ],
+      "failures": [],
+      "probeSampling": "GPU packed receiver height at actual rendered pixel; float32 camera reconstruction",
+      "scope": "Actual registered static geometry plus explicitly labeled catalog/building fixtures, production GPU filter and Worker; three light vectors. Contact sheets show one representative per distinct geometry variant. Probe cases outside source bounds test visible raised receiving and above-caster rejection.",
+      "imageSha256": "330cb693d922bcf69fb614f476c8fc4e547522a7bdbfaf2c7743736c0788bc15",
+      "image": "variants-162.png"
+    },
+    {
+      "offset": 210,
+      "totalVariants": 314,
+      "totalPlacements": 480,
+      "rows": [
+        {
+          "id": "variant:210",
+          "signature": "[\"ff:wall-se\",[811,1418,367,230],163,102,[0.4908,0.7022],false,0,null,0,[0.5049,0.5458,0.5818,0.608,0.6422,0.6751,0.7108,0.752,0.7745,0.824,0.8431,0.8725,0.9069,0.9363,0.9372,0.8799,0.8358],null,true,false]",
+          "family": "ff:wall-se",
+          "key": "ff:wall-se:275",
+          "placements": [
+            {
+              "key": "ff:wall-se:275",
+              "x": 100.20000000000073,
+              "y": 1262.3999999999996
+            },
+            {
+              "key": "ff:wall-se:306",
+              "x": -491.8000000000029,
+              "y": 1264
+            },
+            {
+              "key": "ff:wall-se:269",
+              "x": 434.91999999999825,
+              "y": 1404.1599999999999
+            },
+            {
+              "key": "ff:wall-se:322",
+              "x": 327.40000000000146,
+              "y": 1616
+            }
+          ],
+          "width": 163,
+          "height": 102,
+          "flip": false,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            811,
+            1418,
+            367,
+            230
+          ],
+          "explicitHeight": false,
+          "solidBody": false,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 1593,
+              "cast": true,
+              "maxHeight": 65.19055121951219,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 63,
+                "pixel": [
+                  120,
+                  36
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 4774,
+              "cast": true,
+              "maxHeight": 65.19055121951219,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 62.5,
+                "pixel": [
+                  138,
+                  41
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 11402,
+              "cast": true,
+              "maxHeight": 65.19055121951219,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 63,
+                "pixel": [
+                  168,
+                  37
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:211",
+          "signature": "[\"ff:drift-mound\",[557,1995,75,36],43.804750000000006,21.0825,[0.4572,0.4667],true,0,null,0,[0.4,0.4486,0.5667,0.7,0.7667,0.7889,0.8,0.8,0.7889,0.7667,0.7556,0.7347,0.7056,0.6319,0.5444,0.5444,0.5444],null,true,false]",
+          "family": "ff:drift-mound",
+          "key": "ff:drift-mound:277",
+          "placements": [
+            {
+              "key": "ff:drift-mound:277",
+              "x": 61.79999999999927,
+              "y": 1262.3999999999996
+            }
+          ],
+          "width": 43.804750000000006,
+          "height": 21.0825,
+          "flip": true,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            557,
+            1995,
+            75,
+            36
+          ],
+          "explicitHeight": false,
+          "solidBody": false,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 4967,
+              "cast": true,
+              "maxHeight": 15.907704545454546,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 14,
+                "pixel": [
+                  109,
+                  19
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 8537,
+              "cast": true,
+              "maxHeight": 15.907704545454546,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 14,
+                "pixel": [
+                  140,
+                  21
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 12207,
+              "cast": true,
+              "maxHeight": 15.907704545454546,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 14,
+                "pixel": [
+                  154,
+                  20
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:212",
+          "signature": "[\"ff:pine-tall\",[0,0,285,610],121.3056,259.7568,[0.5,0.9587],true,0,null,0,[0.8484,0.8484,0.8492,0.8952,0.9036,0.8883,0.9645,0.9746,0.9753,0.979,0.9782,0.9739,0.9394,0.9014,0.911,0.8723,0.8687],null,true,false]",
+          "family": "ff:pine-tall",
+          "key": "ff:pine-tall:761",
+          "placements": [
+            {
+              "key": "ff:pine-tall:761",
+              "x": 2471.4000000000015,
+              "y": 1269.119999999999
+            }
+          ],
+          "width": 121.3056,
+          "height": 259.7568,
+          "flip": true,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            0,
+            0,
+            285,
+            610
+          ],
+          "explicitHeight": false,
+          "solidBody": false,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 2410,
+              "cast": true,
+              "maxHeight": 252.34174242461538,
+              "receiver": {
+                "status": "pass",
+                "height": 24,
+                "screenProbe": [
+                  2706.400689688476,
+                  1264.0959683880892
+                ],
+                "raisedMin": 128,
+                "aboveMin": 255
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 243,
+                "pixel": [
+                  42,
+                  16
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 2871,
+              "cast": true,
+              "maxHeight": 252.34174242461538,
+              "receiver": {
+                "status": "pass",
+                "height": 24,
+                "screenProbe": [
+                  2507.4596826926518,
+                  1296.5977286495652
+                ],
+                "raisedMin": 127,
+                "aboveMin": 255
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 243,
+                "pixel": [
+                  54,
+                  18
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 3279,
+              "cast": true,
+              "maxHeight": 252.34174242461538,
+              "receiver": {
+                "status": "pass",
+                "height": 24,
+                "screenProbe": [
+                  2340.566923024422,
+                  1362.5082750402792
+                ],
+                "raisedMin": 127,
+                "aboveMin": 255
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 244,
+                "pixel": [
+                  122,
+                  16
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:213",
+          "signature": "[\"ff:shrub-twigs\",[893,1872,133,84],51.813159999999996,32.74718,[0.5,0.8968],true,0,null,0,[0.4201,0.6605,0.7985,0.8297,0.9017,0.9238,0.9291,0.9484,0.9435,0.9582,0.9211,0.9214,0.9066,0.8196,0.7494,0.688,0.6437],null,true,false]",
+          "family": "ff:shrub-twigs",
+          "key": "ff:shrub-twigs:316",
+          "placements": [
+            {
+              "key": "ff:shrub-twigs:316",
+              "x": -722.2000000000007,
+              "y": 1276.800000000001
+            }
+          ],
+          "width": 51.813159999999996,
+          "height": 32.74718,
+          "flip": true,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            893,
+            1872,
+            133,
+            84
+          ],
+          "explicitHeight": false,
+          "solidBody": false,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 4920,
+              "cast": true,
+              "maxHeight": 30.37816601952036,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 24,
+                "pixel": [
+                  96,
+                  29
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 8649,
+              "cast": true,
+              "maxHeight": 30.37816601952036,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 24,
+                "pixel": [
+                  142,
+                  37
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 14383,
+              "cast": true,
+              "maxHeight": 30.37816601952036,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 24,
+                "pixel": [
+                  158,
+                  35
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:214",
+          "signature": "[\"ff:drift-se\",[138,1995,124,44],62.293000000000006,22.045250000000003,[0.487,0.4954],false,0,null,0,[0.2018,0.2494,0.3979,0.4771,0.5321,0.5963,0.6514,0.6972,0.7339,0.7523,0.7787,0.7987,0.8257,0.844,0.8165,0.789,0.789],null,true,false]",
+          "family": "ff:drift-se",
+          "key": "ff:drift-se:313",
+          "placements": [
+            {
+              "key": "ff:drift-se:313",
+              "x": -463,
+              "y": 1294.4000000000015
+            }
+          ],
+          "width": 62.293000000000006,
+          "height": 22.045250000000003,
+          "flip": false,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            138,
+            1995,
+            124,
+            44
+          ],
+          "explicitHeight": false,
+          "solidBody": false,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 2434,
+              "cast": true,
+              "maxHeight": 15.811588141666668,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 13.5,
+                "pixel": [
+                  101,
+                  15
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 4880,
+              "cast": true,
+              "maxHeight": 15.811588141666668,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 13.5,
+                "pixel": [
+                  111,
+                  15
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 9591,
+              "cast": true,
+              "maxHeight": 15.811588141666668,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 13.5,
+                "pixel": [
+                  116,
+                  15
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:215",
+          "signature": "[\"ff:broken-watchtower\",[287,0,586,584],260.35,259.27,[0.5104,0.8583],false,0,null,0,[0.7844,0.8377,0.8796,0.9271,0.9229,0.9323,0.9281,0.9587,0.975,0.9833,0.9926,0.9792,0.9688,0.9385,0.924,0.8219,0.8219],null,true,false]",
+          "family": "ff:broken-watchtower",
+          "key": "ff:broken-watchtower:337",
+          "placements": [
+            {
+              "key": "ff:broken-watchtower:337",
+              "x": 1537,
+              "y": 1305.5999999999985
+            }
+          ],
+          "width": 260.35,
+          "height": 259.27,
+          "flip": false,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            287,
+            0,
+            586,
+            584
+          ],
+          "explicitHeight": false,
+          "solidBody": false,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 2007,
+              "cast": true,
+              "maxHeight": 247.21584803875515,
+              "receiver": {
+                "status": "pass",
+                "height": 24,
+                "screenProbe": [
+                  1851.3801835771662,
+                  1323.6140575783027
+                ],
+                "raisedMin": 127,
+                "aboveMin": 255
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 244,
+                "pixel": [
+                  62,
+                  13
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 6863,
+              "cast": true,
+              "maxHeight": 247.21584803875515,
+              "receiver": {
+                "status": "pass",
+                "height": 24,
+                "screenProbe": [
+                  1569.9042306553836,
+                  1369.5998705556458
+                ],
+                "raisedMin": 127,
+                "aboveMin": 255
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 244,
+                "pixel": [
+                  93,
+                  14
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 10681,
+              "cast": true,
+              "maxHeight": 247.21584803875515,
+              "receiver": {
+                "status": "pass",
+                "height": 24,
+                "screenProbe": [
+                  1333.7724282042832,
+                  1462.8548215236526
+                ],
+                "raisedMin": 127,
+                "aboveMin": 255
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 244,
+                "pixel": [
+                  149,
+                  14
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        }
+      ],
+      "failures": [],
+      "probeSampling": "GPU packed receiver height at actual rendered pixel; float32 camera reconstruction",
+      "scope": "Actual registered static geometry plus explicitly labeled catalog/building fixtures, production GPU filter and Worker; three light vectors. Contact sheets show one representative per distinct geometry variant. Probe cases outside source bounds test visible raised receiving and above-caster rejection.",
+      "imageSha256": "69716fd0f2835edb694e224bdc0be48cd0ab1f07ba944361b308dfc584498459",
+      "image": "variants-210.png"
+    },
+    {
+      "offset": 216,
+      "totalVariants": 314,
+      "totalPlacements": 480,
+      "rows": [
+        {
+          "id": "variant:216",
+          "signature": "[\"ff:drift-ne\",[264,1995,129,43],69.978,23.326,[0.4829,0.486],true,0,null,0,[0.729,0.7664,0.8318,0.8318,0.8224,0.7944,0.7757,0.7477,0.7009,0.6542,0.5981,0.5514,0.486,0.4206,0.3364,0.2243,0.2243],null,true,false]",
+          "family": "ff:drift-ne",
+          "key": "ff:drift-ne:312",
+          "placements": [
+            {
+              "key": "ff:drift-ne:312",
+              "x": -658.2000000000007,
+              "y": 1305.6000000000004
+            }
+          ],
+          "width": 69.978,
+          "height": 23.326,
+          "flip": true,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            264,
+            1995,
+            129,
+            43
+          ],
+          "explicitHeight": false,
+          "solidBody": false,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 2508,
+              "cast": true,
+              "maxHeight": 15.377276733333334,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 12.5,
+                "pixel": [
+                  133,
+                  24
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 4471,
+              "cast": true,
+              "maxHeight": 15.377276733333334,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 12.5,
+                "pixel": [
+                  143,
+                  25
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 8277,
+              "cast": true,
+              "maxHeight": 15.377276733333334,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 12.5,
+                "pixel": [
+                  148,
+                  24
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:217",
+          "signature": "[\"ff:drift-mound\",[557,1995,75,36],31.556250000000002,15.187500000000002,[0.4572,0.4667],false,0,null,0,[0.4,0.4486,0.5667,0.7,0.7667,0.7889,0.8,0.8,0.7889,0.7667,0.7556,0.7347,0.7056,0.6319,0.5444,0.5444,0.5444],null,true,false]",
+          "family": "ff:drift-mound",
+          "key": "ff:drift-mound:346",
+          "placements": [
+            {
+              "key": "ff:drift-mound:346",
+              "x": 1354.5999999999985,
+              "y": 1307.2000000000007
+            }
+          ],
+          "width": 31.556250000000002,
+          "height": 15.187500000000002,
+          "flip": false,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            557,
+            1995,
+            75,
+            36
+          ],
+          "explicitHeight": false,
+          "solidBody": false,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 7017,
+              "cast": true,
+              "maxHeight": 11.200781250000002,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 9,
+                "pixel": [
+                  58,
+                  22
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 9683,
+              "cast": true,
+              "maxHeight": 11.200781250000002,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 9,
+                "pixel": [
+                  69,
+                  24
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 15149,
+              "cast": true,
+              "maxHeight": 11.200781250000002,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 9,
+                "pixel": [
+                  88,
+                  23
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:218",
+          "signature": "[\"ff:stairs-ne\",[0,1655,251,215],111.25,95.5,[0.4816,0.6963],false,0,null,0,[0.7068,0.7349,0.7683,0.805,0.8403,0.8815,0.9228,0.9503,0.9346,0.8914,0.8626,0.8187,0.7775,0.7461,0.7199,0.6695,0.6571],null,true,false]",
+          "family": "ff:stairs-ne",
+          "key": "ff:stairs-ne:338",
+          "placements": [
+            {
+              "key": "ff:stairs-ne:338",
+              "x": 1480.0400000000009,
+              "y": 1321.2799999999988
+            }
+          ],
+          "width": 111.25,
+          "height": 95.5,
+          "flip": false,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            0,
+            1655,
+            251,
+            215
+          ],
+          "explicitHeight": false,
+          "solidBody": false,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 5139,
+              "cast": true,
+              "maxHeight": 88.47370119047619,
+              "receiver": {
+                "status": "pass",
+                "height": 22.118425297619048,
+                "screenProbe": [
+                  1571.570902239882,
+                  1328.4415306749986
+                ],
+                "raisedMin": 127,
+                "aboveMin": 255
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 87,
+                "pixel": [
+                  79,
+                  12
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 9599,
+              "cast": true,
+              "maxHeight": 88.47370119047619,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 87.5,
+                "pixel": [
+                  118,
+                  14
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 9357,
+              "cast": true,
+              "maxHeight": 88.47370119047619,
+              "receiver": {
+                "status": "pass",
+                "height": 22.118425297619048,
+                "screenProbe": [
+                  1428.1769143886913,
+                  1367.0156984812486
+                ],
+                "raisedMin": 127,
+                "aboveMin": 255
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 87.5,
+                "pixel": [
+                  127,
+                  14
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:219",
+          "signature": "[\"ff:grass-tussock\",[1827,1872,68,52],20.0592,15.32832,[0.5,0.8963],true,0,null,0,[0.7825,0.7398,0.8788,0.8345,0.8933,0.9065,0.876,0.9187,0.8811,0.8882,0.9512,0.8943,0.9289,0.8841,0.7899,0.8228,0.8862],null,true,false]",
+          "family": "ff:grass-tussock",
+          "key": "ff:grass-tussock:318",
+          "placements": [
+            {
+              "key": "ff:grass-tussock:318",
+              "x": -367,
+              "y": 1336
+            }
+          ],
+          "width": 20.0592,
+          "height": 15.32832,
+          "flip": true,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            1827,
+            1872,
+            68,
+            52
+          ],
+          "explicitHeight": false,
+          "solidBody": false,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 6490,
+              "cast": true,
+              "maxHeight": 13.095541169454545,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 8.5,
+                "pixel": [
+                  46,
+                  42
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 17090,
+              "cast": true,
+              "maxHeight": 13.095541169454545,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 8.5,
+                "pixel": [
+                  71,
+                  64
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 19853,
+              "cast": true,
+              "maxHeight": 13.095541169454545,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 8.5,
+                "pixel": [
+                  103,
+                  57
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:220",
+          "signature": "[\"ff:ruined-gate\",[1080,612,545,386],241.82,171.08,[0.5,0.868],false,0,null,0,[0.6891,0.7229,0.7801,0.7815,0.7507,0.7844,0.7315,0.6832,0.7623,0.8414,0.928,0.9238,0.9652,0.9941,0.9595,0.9323,0.8739],null,true,false]",
+          "family": "ff:ruined-gate",
+          "key": "ff:ruined-gate:268",
+          "placements": [
+            {
+              "key": "ff:ruined-gate:268",
+              "x": 282.59999999999854,
+              "y": 1340.7999999999993
+            }
+          ],
+          "width": 241.82,
+          "height": 171.08,
+          "flip": false,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            1080,
+            612,
+            545,
+            386
+          ],
+          "explicitHeight": false,
+          "solidBody": false,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 2328,
+              "cast": true,
+              "maxHeight": 130.7447252008457,
+              "receiver": {
+                "status": "pass",
+                "height": 24,
+                "screenProbe": [
+                  470.4061264403138,
+                  1341.1830540336875
+                ],
+                "raisedMin": 127,
+                "aboveMin": 255
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 128.5,
+                "pixel": [
+                  43,
+                  13
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 5728,
+              "cast": true,
+              "maxHeight": 130.7447252008457,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 129.5,
+                "pixel": [
+                  59,
+                  13
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 9375,
+              "cast": true,
+              "maxHeight": 130.7447252008457,
+              "receiver": {
+                "status": "pass",
+                "height": 24,
+                "screenProbe": [
+                  131.05357798352344,
+                  1373.441060676236
+                ],
+                "raisedMin": 127,
+                "aboveMin": 255
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 128.5,
+                "pixel": [
+                  100,
+                  13
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:221",
+          "signature": "[\"ff:rock-boulders\",[231,1872,248,106],93.483,39.916,[0.5,0.7164],false,0,null,0,[0.8255,0.9491,0.9636,0.9745,0.9818,0.9636,0.9273,0.8582,0.8764,0.9236,0.9345,0.9345,0.9455,0.9527,0.9432,0.9018,0.8691],null,true,false]",
+          "family": "ff:rock-boulders",
+          "key": "ff:rock-boulders:280",
+          "placements": [
+            {
+              "key": "ff:rock-boulders:280",
+              "x": 589.8000000000029,
+              "y": 1344
+            }
+          ],
+          "width": 93.483,
+          "height": 39.916,
+          "flip": false,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            231,
+            1872,
+            248,
+            106
+          ],
+          "explicitHeight": false,
+          "solidBody": false,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 2922,
+              "cast": true,
+              "maxHeight": 37.064383974468086,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 37,
+                "pixel": [
+                  80,
+                  10
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 6114,
+              "cast": true,
+              "maxHeight": 37.064383974468086,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 37,
+                "pixel": [
+                  94,
+                  9
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 11073,
+              "cast": true,
+              "maxHeight": 37.064383974468086,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 37,
+                "pixel": [
+                  100,
+                  10
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        }
+      ],
+      "failures": [],
+      "probeSampling": "GPU packed receiver height at actual rendered pixel; float32 camera reconstruction",
+      "scope": "Actual registered static geometry plus explicitly labeled catalog/building fixtures, production GPU filter and Worker; three light vectors. Contact sheets show one representative per distinct geometry variant. Probe cases outside source bounds test visible raised receiving and above-caster rejection.",
+      "imageSha256": "abd6521ecd08733069c844babca66778ee324ae833311187d4b303f8827ec852",
+      "image": "variants-216.png"
+    },
+    {
+      "offset": 228,
+      "totalVariants": 314,
+      "totalPlacements": 480,
+      "rows": [
+        {
+          "id": "variant:228",
+          "signature": "[\"ff:grass-tussock\",[1827,1872,68,52],30.89475,23.608349999999998,[0.5,0.8963],true,0,null,0,[0.7825,0.7398,0.8788,0.8345,0.8933,0.9065,0.876,0.9187,0.8811,0.8882,0.9512,0.8943,0.9289,0.8841,0.7899,0.8228,0.8862],null,true,false]",
+          "family": "ff:grass-tussock",
+          "key": "ff:grass-tussock:299",
+          "placements": [
+            {
+              "key": "ff:grass-tussock:299",
+              "x": -328.6000000000022,
+              "y": 1377.6000000000004
+            }
+          ],
+          "width": 30.89475,
+          "height": 23.608349999999998,
+          "flip": true,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            1827,
+            1872,
+            68,
+            52
+          ],
+          "explicitHeight": false,
+          "solidBody": false,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 5175,
+              "cast": true,
+              "maxHeight": 20.261472915,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 13.5,
+                "pixel": [
+                  80,
+                  40
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 13037,
+              "cast": true,
+              "maxHeight": 20.261472915,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 13.5,
+                "pixel": [
+                  131,
+                  61
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 17124,
+              "cast": true,
+              "maxHeight": 20.261472915,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 13.5,
+                "pixel": [
+                  155,
+                  55
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:229",
+          "signature": "[\"ff:drift-mound\",[557,1995,75,36],33.286,16.02,[0.4572,0.4667],true,0,null,0,[0.4,0.4486,0.5667,0.7,0.7667,0.7889,0.8,0.8,0.7889,0.7667,0.7556,0.7347,0.7056,0.6319,0.5444,0.5444,0.5444],null,true,false]",
+          "family": "ff:drift-mound",
+          "key": "ff:drift-mound:279",
+          "placements": [
+            {
+              "key": "ff:drift-mound:279",
+              "x": 305,
+              "y": 1380.7999999999993
+            }
+          ],
+          "width": 33.286,
+          "height": 16.02,
+          "flip": true,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            557,
+            1995,
+            75,
+            36
+          ],
+          "explicitHeight": false,
+          "solidBody": false,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 6161,
+              "cast": true,
+              "maxHeight": 11.926,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 10.5,
+                "pixel": [
+                  100,
+                  17
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 10115,
+              "cast": true,
+              "maxHeight": 11.926,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 10.5,
+                "pixel": [
+                  127,
+                  19
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 12792,
+              "cast": true,
+              "maxHeight": 11.926,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 10.5,
+                "pixel": [
+                  145,
+                  18
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:230",
+          "signature": "[\"ff:pine-sapling\",[1440,1655,89,160],43.23865,77.75885000000001,[0.5,0.9482],true,0,null,0,[0.6874,0.7045,0.7594,0.7504,0.7512,0.7727,0.8014,0.9582,0.9784,0.9801,0.981,0.9024,0.8033,0.7968,0.7912,0.7919,0.785],null,true,false]",
+          "family": "ff:pine-sapling",
+          "key": "ff:pine-sapling:765",
+          "placements": [
+            {
+              "key": "ff:pine-sapling:765",
+              "x": 2188.519999999997,
+              "y": 1392
+            }
+          ],
+          "width": 43.23865,
+          "height": 77.75885000000001,
+          "flip": true,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            1440,
+            1655,
+            89,
+            160
+          ],
+          "explicitHeight": false,
+          "solidBody": false,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 5749,
+              "cast": true,
+              "maxHeight": 75.22090263939396,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 74,
+                "pixel": [
+                  43,
+                  14
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 4847,
+              "cast": true,
+              "maxHeight": 75.22090263939396,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 74,
+                "pixel": [
+                  56,
+                  15
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 5531,
+              "cast": true,
+              "maxHeight": 75.22090263939396,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 74,
+                "pixel": [
+                  125,
+                  14
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:231",
+          "signature": "[\"ff:shrub-twigs\",[893,1872,133,84],59.19816,37.414680000000004,[0.5,0.8968],true,0,null,0,[0.4201,0.6605,0.7985,0.8297,0.9017,0.9238,0.9291,0.9484,0.9435,0.9582,0.9211,0.9214,0.9066,0.8196,0.7494,0.688,0.6437],null,true,false]",
+          "family": "ff:shrub-twigs",
+          "key": "ff:shrub-twigs:806",
+          "placements": [
+            {
+              "key": "ff:shrub-twigs:806",
+              "x": -884.7599999999984,
+              "y": 1393.92
+            }
+          ],
+          "width": 59.19816,
+          "height": 37.414680000000004,
+          "flip": true,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            893,
+            1872,
+            133,
+            84
+          ],
+          "explicitHeight": false,
+          "solidBody": false,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 4760,
+              "cast": true,
+              "maxHeight": 34.75615037469474,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 26.5,
+                "pixel": [
+                  96,
+                  32
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 8649,
+              "cast": true,
+              "maxHeight": 34.75615037469474,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 26.5,
+                "pixel": [
+                  141,
+                  43
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 14337,
+              "cast": true,
+              "maxHeight": 34.75615037469474,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 26.5,
+                "pixel": [
+                  156,
+                  39
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:232",
+          "signature": "[\"ff:grass-tussock\",[1827,1872,68,52],25.82025,19.730649999999997,[0.5,0.8963],true,0,null,0,[0.7825,0.7398,0.8788,0.8345,0.8933,0.9065,0.876,0.9187,0.8811,0.8882,0.9512,0.8943,0.9289,0.8841,0.7899,0.8228,0.8862],null,true,false]",
+          "family": "ff:grass-tussock",
+          "key": "ff:grass-tussock:273",
+          "placements": [
+            {
+              "key": "ff:grass-tussock:273",
+              "x": 362.59999999999854,
+              "y": 1400
+            }
+          ],
+          "width": 25.82025,
+          "height": 19.730649999999997,
+          "flip": true,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            1827,
+            1872,
+            68,
+            52
+          ],
+          "explicitHeight": false,
+          "solidBody": false,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 4994,
+              "cast": true,
+              "maxHeight": 17.263104556153845,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 10.5,
+                "pixel": [
+                  81,
+                  41
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 13895,
+              "cast": true,
+              "maxHeight": 17.263104556153845,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 10.5,
+                "pixel": [
+                  132,
+                  63
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 17386,
+              "cast": true,
+              "maxHeight": 17.263104556153845,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 10.5,
+                "pixel": [
+                  162,
+                  55
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:233",
+          "signature": "[\"ff:corner-n\",[0,1418,364,235],161.5,104.25,[0.4954,0.7141],false,0,null,0,[0.5324,0.5827,0.6361,0.6857,0.7344,0.7903,0.8414,0.9065,0.9592,0.9065,0.8462,0.7975,0.7482,0.6906,0.6379,0.5899,0.5444],null,true,false]",
+          "family": "ff:corner-n",
+          "key": "ff:corner-n:308",
+          "placements": [
+            {
+              "key": "ff:corner-n:308",
+              "x": -562.2000000000007,
+              "y": 1401.6000000000004
+            },
+            {
+              "key": "ff:corner-n:341",
+              "x": 1277.7999999999993,
+              "y": 1492.800000000001
+            }
+          ],
+          "width": 161.5,
+          "height": 104.25,
+          "flip": false,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            0,
+            1418,
+            364,
+            235
+          ],
+          "explicitHeight": false,
+          "solidBody": false,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 4751,
+              "cast": true,
+              "maxHeight": 71.9501688329839,
+              "receiver": {
+                "status": "pass",
+                "height": 17.987542208245976,
+                "screenProbe": [
+                  -454.71860618395135,
+                  1384.816899999162
+                ],
+                "raisedMin": 127,
+                "aboveMin": 255
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 69.5,
+                "pixel": [
+                  87,
+                  39
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 6864,
+              "cast": true,
+              "maxHeight": 71.9501688329839,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 69.5,
+                "pixel": [
+                  122,
+                  52
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 10786,
+              "cast": true,
+              "maxHeight": 71.9501688329839,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 69,
+                "pixel": [
+                  162,
+                  41
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        }
+      ],
+      "failures": [],
+      "probeSampling": "GPU packed receiver height at actual rendered pixel; float32 camera reconstruction",
+      "scope": "Actual registered static geometry plus explicitly labeled catalog/building fixtures, production GPU filter and Worker; three light vectors. Contact sheets show one representative per distinct geometry variant. Probe cases outside source bounds test visible raised receiving and above-caster rejection.",
+      "imageSha256": "37d506cef9884d9c67f6ec0a6a562d0d182aa092dae4c6954d72d12c24a73983",
+      "image": "variants-228.png"
+    },
+    {
+      "offset": 234,
+      "totalVariants": 314,
+      "totalPlacements": 480,
+      "rows": [
+        {
+          "id": "variant:234",
+          "signature": "[\"ff:drift-mound\",[557,1995,75,36],35.9975,17.325,[0.4572,0.4667],false,0,null,0,[0.4,0.4486,0.5667,0.7,0.7667,0.7889,0.8,0.8,0.7889,0.7667,0.7556,0.7347,0.7056,0.6319,0.5444,0.5444,0.5444],null,true,false]",
+          "family": "ff:drift-mound",
+          "key": "ff:drift-mound:314",
+          "placements": [
+            {
+              "key": "ff:drift-mound:314",
+              "x": -507.7999999999993,
+              "y": 1403.199999999999
+            }
+          ],
+          "width": 35.9975,
+          "height": 17.325,
+          "flip": false,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            557,
+            1995,
+            75,
+            36
+          ],
+          "explicitHeight": false,
+          "solidBody": false,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 6171,
+              "cast": true,
+              "maxHeight": 12.897499999999999,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 11,
+                "pixel": [
+                  75,
+                  20
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 9126,
+              "cast": true,
+              "maxHeight": 12.897499999999999,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 11,
+                "pixel": [
+                  90,
+                  22
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 15044,
+              "cast": true,
+              "maxHeight": 12.897499999999999,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 11,
+                "pixel": [
+                  105,
+                  22
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:235",
+          "signature": "[\"ff:grass-tussock\",[1827,1872,68,52],26.805300000000003,20.48338,[0.5,0.8963],true,0,null,0,[0.7825,0.7398,0.8788,0.8345,0.8933,0.9065,0.876,0.9187,0.8811,0.8882,0.9512,0.8943,0.9289,0.8841,0.7899,0.8228,0.8862],null,true,false]",
+          "family": "ff:grass-tussock",
+          "key": "ff:grass-tussock:812",
+          "placements": [
+            {
+              "key": "ff:grass-tussock:812",
+              "x": -1156.760000000002,
+              "y": 1403.8400000000001
+            }
+          ],
+          "width": 26.805300000000003,
+          "height": 20.48338,
+          "flip": true,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            1827,
+            1872,
+            68,
+            52
+          ],
+          "explicitHeight": false,
+          "solidBody": false,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 5205,
+              "cast": true,
+              "maxHeight": 18.184027488727274,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 11,
+                "pixel": [
+                  60,
+                  44
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 13478,
+              "cast": true,
+              "maxHeight": 18.184027488727274,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 11,
+                "pixel": [
+                  94,
+                  67
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 16950,
+              "cast": true,
+              "maxHeight": 18.184027488727274,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 11,
+                "pixel": [
+                  121,
+                  58
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:236",
+          "signature": "[\"ff:rock-boulders\",[231,1872,248,106],115.14905999999999,49.16712,[0.5,0.7164],false,0,null,0,[0.8255,0.9491,0.9636,0.9745,0.9818,0.9636,0.9273,0.8582,0.8764,0.9236,0.9345,0.9345,0.9455,0.9527,0.9432,0.9018,0.8691],null,true,false]",
+          "family": "ff:rock-boulders",
+          "key": "ff:rock-boulders:347",
+          "placements": [
+            {
+              "key": "ff:rock-boulders:347",
+              "x": 1639.4000000000015,
+              "y": 1420.7999999999993
+            }
+          ],
+          "width": 115.14905999999999,
+          "height": 49.16712,
+          "flip": false,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            231,
+            1872,
+            248,
+            106
+          ],
+          "explicitHeight": false,
+          "solidBody": false,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 2471,
+              "cast": true,
+              "maxHeight": 45.71711405213793,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 45.5,
+                "pixel": [
+                  82,
+                  10
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 5701,
+              "cast": true,
+              "maxHeight": 45.71711405213793,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 45.5,
+                "pixel": [
+                  96,
+                  10
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 10341,
+              "cast": true,
+              "maxHeight": 45.71711405213793,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 45.5,
+                "pixel": [
+                  104,
+                  10
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:237",
+          "signature": "[\"ff:drift-se\",[138,1995,124,44],75.306,26.6505,[0.487,0.4954],true,0,null,0,[0.2018,0.2494,0.3979,0.4771,0.5321,0.5963,0.6514,0.6972,0.7339,0.7523,0.7787,0.7987,0.8257,0.844,0.8165,0.789,0.789],null,true,false]",
+          "family": "ff:drift-se",
+          "key": "ff:drift-se:272",
+          "placements": [
+            {
+              "key": "ff:drift-se:272",
+              "x": 422.119999999999,
+              "y": 1421.4400000000005
+            }
+          ],
+          "width": 75.306,
+          "height": 26.6505,
+          "flip": true,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            138,
+            1995,
+            124,
+            44
+          ],
+          "explicitHeight": false,
+          "solidBody": false,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 5016,
+              "cast": true,
+              "maxHeight": 18.916705241729325,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 16,
+                "pixel": [
+                  130,
+                  15
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 5126,
+              "cast": true,
+              "maxHeight": 18.916705241729325,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 16,
+                "pixel": [
+                  141,
+                  16
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 6415,
+              "cast": true,
+              "maxHeight": 18.916705241729325,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 16,
+                "pixel": [
+                  147,
+                  15
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:238",
+          "signature": "[\"ff:rubble\",[0,1872,229,121],86.072,45.368,[0.4901,0.6322],false,0,null,0,[0.514,0.5529,0.6308,0.6636,0.743,0.7757,0.7897,0.8084,0.8201,0.8309,0.8452,0.8952,0.8785,0.8551,0.8084,0.6323,0.6075],null,true,false]",
+          "family": "ff:rubble",
+          "key": "ff:rubble:295",
+          "placements": [
+            {
+              "key": "ff:rubble:295",
+              "x": -415,
+              "y": 1424
+            }
+          ],
+          "width": 86.072,
+          "height": 45.368,
+          "flip": false,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            0,
+            1872,
+            229,
+            121
+          ],
+          "explicitHeight": false,
+          "solidBody": false,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 2978,
+              "cast": true,
+              "maxHeight": 36.123525821343875,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 36,
+                "pixel": [
+                  86,
+                  10
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 6013,
+              "cast": true,
+              "maxHeight": 36.123525821343875,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 36,
+                "pixel": [
+                  101,
+                  9
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 12780,
+              "cast": true,
+              "maxHeight": 36.123525821343875,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 36,
+                "pixel": [
+                  108,
+                  10
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:239",
+          "signature": "[\"ff:shrub-twigs\",[893,1872,133,84],49.627199999999995,31.3656,[0.5,0.8968],true,0,null,0,[0.4201,0.6605,0.7985,0.8297,0.9017,0.9238,0.9291,0.9484,0.9435,0.9582,0.9211,0.9214,0.9066,0.8196,0.7494,0.688,0.6437],null,true,false]",
+          "family": "ff:shrub-twigs",
+          "key": "ff:shrub-twigs:274",
+          "placements": [
+            {
+              "key": "ff:shrub-twigs:274",
+              "x": 621.7999999999993,
+              "y": 1436.800000000001
+            }
+          ],
+          "width": 49.627199999999995,
+          "height": 31.3656,
+          "flip": true,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            893,
+            1872,
+            133,
+            84
+          ],
+          "explicitHeight": false,
+          "solidBody": false,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 5092,
+              "cast": true,
+              "maxHeight": 28.908356164800004,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 22.5,
+                "pixel": [
+                  97,
+                  30
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 9243,
+              "cast": true,
+              "maxHeight": 28.908356164800004,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 22.5,
+                "pixel": [
+                  142,
+                  39
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 14961,
+              "cast": true,
+              "maxHeight": 28.908356164800004,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 22.5,
+                "pixel": [
+                  157,
+                  36
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        }
+      ],
+      "failures": [],
+      "probeSampling": "GPU packed receiver height at actual rendered pixel; float32 camera reconstruction",
+      "scope": "Actual registered static geometry plus explicitly labeled catalog/building fixtures, production GPU filter and Worker; three light vectors. Contact sheets show one representative per distinct geometry variant. Probe cases outside source bounds test visible raised receiving and above-caster rejection.",
+      "imageSha256": "a2e29f1dda4d60f5d9b59bca06418bc56878b71bce0ad344f922bac4f28afce1",
+      "image": "variants-234.png"
+    },
+    {
+      "offset": 240,
+      "totalVariants": 314,
+      "totalPlacements": 480,
+      "rows": [
+        {
+          "id": "variant:240",
+          "signature": "[\"ff:rubble\",[0,1872,229,121],110.73649999999999,58.3685,[0.4901,0.6322],false,0,null,0,[0.514,0.5529,0.6308,0.6636,0.743,0.7757,0.7897,0.8084,0.8201,0.8309,0.8452,0.8952,0.8785,0.8551,0.8084,0.6323,0.6075],null,true,false]",
+          "family": "ff:rubble",
+          "key": "ff:rubble:270",
+          "placements": [
+            {
+              "key": "ff:rubble:270",
+              "x": 545,
+              "y": 1440
+            }
+          ],
+          "width": 110.73649999999999,
+          "height": 58.3685,
+          "flip": false,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            0,
+            1872,
+            229,
+            121
+          ],
+          "explicitHeight": false,
+          "solidBody": false,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 2652,
+              "cast": true,
+              "maxHeight": 46.40740462380952,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 47,
+                "pixel": [
+                  91,
+                  10
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 5372,
+              "cast": true,
+              "maxHeight": 46.40740462380952,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 47,
+                "pixel": [
+                  106,
+                  10
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 12319,
+              "cast": true,
+              "maxHeight": 46.40740462380952,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 47,
+                "pixel": [
+                  112,
+                  10
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:241",
+          "signature": "[\"ff:drift-ne\",[264,1995,129,43],61.23075,20.41025,[0.4829,0.486],false,0,null,0,[0.729,0.7664,0.8318,0.8318,0.8224,0.7944,0.7757,0.7477,0.7009,0.6542,0.5981,0.5514,0.486,0.4206,0.3364,0.2243,0.2243],null,true,false]",
+          "family": "ff:drift-ne",
+          "key": "ff:drift-ne:345",
+          "placements": [
+            {
+              "key": "ff:drift-ne:345",
+              "x": 1357.7999999999993,
+              "y": 1446.3999999999996
+            }
+          ],
+          "width": 61.23075,
+          "height": 20.41025,
+          "flip": false,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            264,
+            1995,
+            129,
+            43
+          ],
+          "explicitHeight": false,
+          "solidBody": false,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 5368,
+              "cast": true,
+              "maxHeight": 13.377805588636365,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 11.5,
+                "pixel": [
+                  114,
+                  18
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 5535,
+              "cast": true,
+              "maxHeight": 13.377805588636365,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 11.5,
+                "pixel": [
+                  122,
+                  18
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 7146,
+              "cast": true,
+              "maxHeight": 13.377805588636365,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 11.5,
+                "pixel": [
+                  126,
+                  18
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:242",
+          "signature": "[\"ff:pillar-broken\",[1319,1655,119,166],52.75,73.5,[0.4649,0.7932],false,0,null,25,[0.7823,0.7861,0.8197,0.838,0.8707,0.8865,0.9082,0.932,0.9252,0.9048,0.8878,0.8639,0.8486,0.8333,0.7891,0.7857,0.7857],null,true,false]",
+          "family": "ff:pillar-broken",
+          "key": "ff:pillar-broken:290",
+          "placements": [
+            {
+              "key": "ff:pillar-broken:290",
+              "x": -182.6800000000003,
+              "y": 1447.3600000000006
+            },
+            {
+              "key": "ff:pillar-broken:287",
+              "x": -400.91999999999825,
+              "y": 1456.6399999999994
+            }
+          ],
+          "width": 52.75,
+          "height": 73.5,
+          "flip": false,
+          "groundRotation": 0,
+          "lift": 25,
+          "frame": [
+            1319,
+            1655,
+            119,
+            166
+          ],
+          "explicitHeight": false,
+          "solidBody": false,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 2192,
+              "cast": true,
+              "maxHeight": 92.30513453453453,
+              "receiver": {
+                "status": "pass",
+                "height": 23.076283633633633,
+                "screenProbe": [
+                  -75.59784982712743,
+                  1440.4681916702707
+                ],
+                "raisedMin": 133,
+                "aboveMin": 255
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 93,
+                "pixel": [
+                  43,
+                  11
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 2710,
+              "cast": true,
+              "maxHeight": 92.30513453453453,
+              "receiver": {
+                "status": "pass",
+                "height": 23.076283633633633,
+                "screenProbe": [
+                  -164.0888013964968,
+                  1454.9253000193698
+                ],
+                "raisedMin": 127,
+                "aboveMin": 255
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 93,
+                "pixel": [
+                  56,
+                  10
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 3494,
+              "cast": true,
+              "maxHeight": 92.30513453453453,
+              "receiver": {
+                "status": "pass",
+                "height": 23.076283633633633,
+                "screenProbe": [
+                  -238.3243717100103,
+                  1484.2429709040546
+                ],
+                "raisedMin": 127,
+                "aboveMin": 255
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 93,
+                "pixel": [
+                  127,
+                  11
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:243",
+          "signature": "[\"ff:rubble\",[0,1872,229,121],82.621,43.549,[0.4901,0.6322],false,0,null,0,[0.514,0.5529,0.6308,0.6636,0.743,0.7757,0.7897,0.8084,0.8201,0.8309,0.8452,0.8952,0.8785,0.8551,0.8084,0.6323,0.6075],null,true,false]",
+          "family": "ff:rubble",
+          "key": "ff:rubble:343",
+          "placements": [
+            {
+              "key": "ff:rubble:343",
+              "x": 1188.2000000000007,
+              "y": 1454.3999999999996
+            }
+          ],
+          "width": 82.621,
+          "height": 43.549,
+          "flip": false,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            0,
+            1872,
+            229,
+            121
+          ],
+          "explicitHeight": false,
+          "solidBody": false,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 3076,
+              "cast": true,
+              "maxHeight": 34.62773284285714,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 35,
+                "pixel": [
+                  89,
+                  9
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 6148,
+              "cast": true,
+              "maxHeight": 34.62773284285714,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 35,
+                "pixel": [
+                  105,
+                  8
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 13156,
+              "cast": true,
+              "maxHeight": 34.62773284285714,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 35,
+                "pixel": [
+                  111,
+                  9
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:244",
+          "signature": "[\"ff:grass-tussock\",[1827,1872,68,52],26.148600000000002,19.981559999999998,[0.5,0.8963],true,0,null,0,[0.7825,0.7398,0.8788,0.8345,0.8933,0.9065,0.876,0.9187,0.8811,0.8882,0.9512,0.8943,0.9289,0.8841,0.7899,0.8228,0.8862],null,true,false]",
+          "family": "ff:grass-tussock",
+          "key": "ff:grass-tussock:79",
+          "placements": [
+            {
+              "key": "ff:grass-tussock:79",
+              "x": 73.95999999999913,
+              "y": 1490.5600000000013
+            }
+          ],
+          "width": 26.148600000000002,
+          "height": 19.981559999999998,
+          "flip": true,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            1827,
+            1872,
+            68,
+            52
+          ],
+          "explicitHeight": false,
+          "solidBody": false,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 5248,
+              "cast": true,
+              "maxHeight": 17.647713791999998,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 11.5,
+                "pixel": [
+                  82,
+                  40
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 13134,
+              "cast": true,
+              "maxHeight": 17.647713791999998,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 11.5,
+                "pixel": [
+                  130,
+                  59
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 17050,
+              "cast": true,
+              "maxHeight": 17.647713791999998,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 11.5,
+                "pixel": [
+                  154,
+                  51
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:245",
+          "signature": "[\"ff:column-fallen\",[1531,1655,186,126],82.25,55.75,[0.4468,0.5691],false,0,null,25,[0.3767,0.4126,0.4484,0.5,0.5605,0.6166,0.6637,0.6771,0.7444,0.7892,0.8475,0.8946,0.9058,0.8632,0.8117,0.7668,0.7668],null,true,false,null,null,\"native-boxes:748486ff1a759a8cdae76d05de9ed5c14630acf2d52b8d83f4035cff6db896cf\"]",
+          "family": "ff:column-fallen",
+          "key": "ff:column-fallen:293",
+          "placements": [
+            {
+              "key": "ff:column-fallen:293",
+              "x": -379.7999999999993,
+              "y": 1492.800000000001
+            }
+          ],
+          "width": 82.25,
+          "height": 55.75,
+          "flip": false,
+          "groundRotation": 0,
+          "lift": 25,
+          "frame": [
+            1531,
+            1655,
+            186,
+            126
+          ],
+          "explicitHeight": false,
+          "solidBody": true,
+          "geometryModel": "native-boxes:748486ff1a759a8cdae76d05de9ed5c14630acf2d52b8d83f4035cff6db896cf",
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 5511,
+              "cast": true,
+              "maxHeight": 44.98,
+              "receiver": {
+                "status": "pass",
+                "height": 11.245,
+                "screenProbe": [
+                  -332.0951544444437,
+                  1480.2118902380967
+                ],
+                "raisedMin": 126,
+                "aboveMin": 255
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 45,
+                "pixel": [
+                  57,
+                  19
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 8475,
+              "cast": true,
+              "maxHeight": 44.98,
+              "receiver": {
+                "status": "pass",
+                "height": 11.245,
+                "screenProbe": [
+                  -380.40708111111036,
+                  1491.4470580952395
+                ],
+                "raisedMin": 126,
+                "aboveMin": 255
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 45,
+                "pixel": [
+                  79,
+                  22
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 10999,
+              "cast": true,
+              "maxHeight": 44.98,
+              "receiver": {
+                "status": "pass",
+                "height": 11.245,
+                "screenProbe": [
+                  -421.51372825396754,
+                  1502.5374065873025
+                ],
+                "raisedMin": 126,
+                "aboveMin": 255
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 45,
+                "pixel": [
+                  142,
+                  21
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        }
+      ],
+      "failures": [],
+      "probeSampling": "GPU packed receiver height at actual rendered pixel; float32 camera reconstruction",
+      "scope": "Actual registered static geometry plus explicitly labeled catalog/building fixtures, production GPU filter and Worker; three light vectors. Contact sheets show one representative per distinct geometry variant. Probe cases outside source bounds test visible raised receiving and above-caster rejection.",
+      "imageSha256": "3ea19ebdde756ae55dd1b70bc610926e489c9750867ef010b92ee17acd6abc8b",
+      "image": "variants-240.png"
+    },
+    {
+      "offset": 246,
+      "totalVariants": 314,
+      "totalPlacements": 480,
+      "rows": [
+        {
+          "id": "variant:246",
+          "signature": "[\"ff:stairs-nw\",[253,1655,303,210],134.25,93,[0.4993,0.6296],false,0,null,0,[0.7177,0.7527,0.7984,0.8401,0.8844,0.9315,0.9516,0.9046,0.8683,0.8145,0.7823,0.7325,0.6828,0.6398,0.5941,0.547,0.5161],null,true,false]",
+          "family": "ff:stairs-nw",
+          "key": "ff:stairs-nw:284",
+          "placements": [
+            {
+              "key": "ff:stairs-nw:284",
+              "x": -211.47999999999956,
+              "y": 1493.7600000000002
+            }
+          ],
+          "width": 134.25,
+          "height": 93,
+          "flip": false,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            253,
+            1655,
+            303,
+            210
+          ],
+          "explicitHeight": false,
+          "solidBody": false,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 5796,
+              "cast": true,
+              "maxHeight": 73.17376182728411,
+              "receiver": {
+                "status": "pass",
+                "height": 18.293440456821028,
+                "screenProbe": [
+                  -116.5311288070709,
+                  1494.9923514852317
+                ],
+                "raisedMin": 128,
+                "aboveMin": 255
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 69.5,
+                "pixel": [
+                  102,
+                  16
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 8108,
+              "cast": true,
+              "maxHeight": 73.17376182728411,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 70.5,
+                "pixel": [
+                  151,
+                  15
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 10095,
+              "cast": true,
+              "maxHeight": 73.17376182728411,
+              "receiver": {
+                "status": "pass",
+                "height": 18.293440456821028,
+                "screenProbe": [
+                  -255.66004756138878,
+                  1535.0369577359515
+                ],
+                "raisedMin": 127,
+                "aboveMin": 255
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 70.5,
+                "pixel": [
+                  160,
+                  17
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:247",
+          "signature": "[\"ff:rock-boulders\",[231,1872,248,106],102.72132,43.860640000000004,[0.5,0.7164],true,0,null,0,[0.8255,0.9491,0.9636,0.9745,0.9818,0.9636,0.9273,0.8582,0.8764,0.9236,0.9345,0.9345,0.9455,0.9527,0.9432,0.9018,0.8691],null,true,false]",
+          "family": "ff:rock-boulders",
+          "key": "ff:rock-boulders:793",
+          "placements": [
+            {
+              "key": "ff:rock-boulders:793",
+              "x": 772.8400000000001,
+              "y": 1493.7600000000002
+            }
+          ],
+          "width": 102.72132,
+          "height": 43.860640000000004,
+          "flip": true,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            231,
+            1872,
+            248,
+            106
+          ],
+          "explicitHeight": false,
+          "solidBody": false,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 2271,
+              "cast": true,
+              "maxHeight": 40.65491796441958,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 40,
+                "pixel": [
+                  122,
+                  12
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 5648,
+              "cast": true,
+              "maxHeight": 40.65491796441958,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 40,
+                "pixel": [
+                  154,
+                  11
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 10935,
+              "cast": true,
+              "maxHeight": 40.65491796441958,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 40,
+                "pixel": [
+                  160,
+                  11
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:248",
+          "signature": "[\"ff:drift-mound\",[557,1995,75,36],46.8435,22.545,[0.4572,0.4667],false,0,null,0,[0.4,0.4486,0.5667,0.7,0.7667,0.7889,0.8,0.8,0.7889,0.7667,0.7556,0.7347,0.7056,0.6319,0.5444,0.5444,0.5444],null,true,false]",
+          "family": "ff:drift-mound",
+          "key": "ff:drift-mound:298",
+          "placements": [
+            {
+              "key": "ff:drift-mound:298",
+              "x": -530.2000000000007,
+              "y": 1500.800000000001
+            }
+          ],
+          "width": 46.8435,
+          "height": 22.545,
+          "flip": false,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            557,
+            1995,
+            75,
+            36
+          ],
+          "explicitHeight": false,
+          "solidBody": false,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 4808,
+              "cast": true,
+              "maxHeight": 17.096625000000003,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 15,
+                "pixel": [
+                  65,
+                  18
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 7714,
+              "cast": true,
+              "maxHeight": 17.096625000000003,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 15,
+                "pixel": [
+                  78,
+                  19
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 13031,
+              "cast": true,
+              "maxHeight": 17.096625000000003,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 15,
+                "pixel": [
+                  93,
+                  19
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:249",
+          "signature": "[\"ff:shrub-juniper\",[1028,1872,139,82],45.13366,26.490060000000003,[0.5,0.8254],true,0,null,0,[0.6111,0.7143,0.7447,0.8519,0.8763,0.9178,0.8853,0.9277,0.9431,0.9312,0.9101,0.8571,0.7817,0.8386,0.8201,0.6822,0.582],null,true,false]",
+          "family": "ff:shrub-juniper",
+          "key": "ff:shrub-juniper:300",
+          "placements": [
+            {
+              "key": "ff:shrub-juniper:300",
+              "x": -562.1999999999971,
+              "y": 1504
+            }
+          ],
+          "width": 45.13366,
+          "height": 26.490060000000003,
+          "flip": true,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            1028,
+            1872,
+            139,
+            82
+          ],
+          "explicitHeight": false,
+          "solidBody": false,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 5663,
+              "cast": true,
+              "maxHeight": 24.036702014571432,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 22.5,
+                "pixel": [
+                  90,
+                  16
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 10424,
+              "cast": true,
+              "maxHeight": 24.036702014571432,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 22.5,
+                "pixel": [
+                  119,
+                  17
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 15824,
+              "cast": true,
+              "maxHeight": 24.036702014571432,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 22.5,
+                "pixel": [
+                  136,
+                  16
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:250",
+          "signature": "[\"ff:grass-tussock\",[1827,1872,68,52],22.417350000000003,17.130309999999998,[0.5,0.8963],false,0,null,0,[0.7825,0.7398,0.8788,0.8345,0.8933,0.9065,0.876,0.9187,0.8811,0.8882,0.9512,0.8943,0.9289,0.8841,0.7899,0.8228,0.8862],null,true,false]",
+          "family": "ff:grass-tussock",
+          "key": "ff:grass-tussock:351",
+          "placements": [
+            {
+              "key": "ff:grass-tussock:351",
+              "x": 1277.7999999999993,
+              "y": 1521.6000000000004
+            }
+          ],
+          "width": 22.417350000000003,
+          "height": 17.130309999999998,
+          "flip": false,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            1827,
+            1872,
+            68,
+            52
+          ],
+          "explicitHeight": false,
+          "solidBody": false,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 4735,
+              "cast": true,
+              "maxHeight": 15.34266698311111,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 8.5,
+                "pixel": [
+                  51,
+                  46
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 13362,
+              "cast": true,
+              "maxHeight": 15.34266698311111,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 8.5,
+                "pixel": [
+                  78,
+                  68
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 18931,
+              "cast": true,
+              "maxHeight": 15.34266698311111,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 8.5,
+                "pixel": [
+                  123,
+                  58
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:251",
+          "signature": "[\"ff:dead-tree\",[0,1059,381,357],149.65236,140.13168000000002,[0.5,0.937],true,0,null,0,[0.6468,0.6468,0.6468,0.6976,0.8041,0.9055,0.927,0.9801,0.9685,0.9635,0.9519,0.99,0.9337,0.9436,0.8839,0.8574,0.8574],null,true,false]",
+          "family": "ff:dead-tree",
+          "key": "ff:dead-tree:803",
+          "placements": [
+            {
+              "key": "ff:dead-tree:803",
+              "x": 392.6800000000003,
+              "y": 1539.2000000000007
+            }
+          ],
+          "width": 149.65236,
+          "height": 140.13168000000002,
+          "flip": true,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            0,
+            1059,
+            381,
+            357
+          ],
+          "explicitHeight": false,
+          "solidBody": false,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 3440,
+              "cast": true,
+              "maxHeight": 134.2727389328586,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 117.5,
+                "pixel": [
+                  77,
+                  25
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 6308,
+              "cast": true,
+              "maxHeight": 134.2727389328586,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 123,
+                "pixel": [
+                  120,
+                  29
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 6482,
+              "cast": true,
+              "maxHeight": 134.2727389328586,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 122,
+                "pixel": [
+                  161,
+                  25
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        }
+      ],
+      "failures": [],
+      "probeSampling": "GPU packed receiver height at actual rendered pixel; float32 camera reconstruction",
+      "scope": "Actual registered static geometry plus explicitly labeled catalog/building fixtures, production GPU filter and Worker; three light vectors. Contact sheets show one representative per distinct geometry variant. Probe cases outside source bounds test visible raised receiving and above-caster rejection.",
+      "imageSha256": "487b0528cf8d0a7b44e95488dfa0ecf514e11a2d5421f3558cf96c8322e9a990",
+      "image": "variants-246.png"
+    },
+    {
+      "offset": 252,
+      "totalVariants": 314,
+      "totalPlacements": 480,
+      "rows": [
+        {
+          "id": "variant:252",
+          "signature": "[\"ff:shrub-juniper\",[1028,1872,139,82],46.17899,27.103590000000004,[0.5,0.8254],true,0,null,0,[0.6111,0.7143,0.7447,0.8519,0.8763,0.9178,0.8853,0.9277,0.9431,0.9312,0.9101,0.8571,0.7817,0.8386,0.8201,0.6822,0.582],null,true,false]",
+          "family": "ff:shrub-juniper",
+          "key": "ff:shrub-juniper:334",
+          "placements": [
+            {
+              "key": "ff:shrub-juniper:334",
+              "x": 237.79999999999927,
+              "y": 1564.800000000001
+            }
+          ],
+          "width": 46.17899,
+          "height": 27.103590000000004,
+          "flip": true,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            1028,
+            1872,
+            139,
+            82
+          ],
+          "explicitHeight": false,
+          "solidBody": false,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 5659,
+              "cast": true,
+              "maxHeight": 24.485899464857148,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 23.5,
+                "pixel": [
+                  89,
+                  14
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 10689,
+              "cast": true,
+              "maxHeight": 24.485899464857148,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 23.5,
+                "pixel": [
+                  119,
+                  15
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 15411,
+              "cast": true,
+              "maxHeight": 24.485899464857148,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 23.5,
+                "pixel": [
+                  136,
+                  15
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:253",
+          "signature": "[\"ff:grass-tussock\",[1827,1872,68,52],23.491950000000003,17.95147,[0.5,0.8963],true,0,null,0,[0.7825,0.7398,0.8788,0.8345,0.8933,0.9065,0.876,0.9187,0.8811,0.8882,0.9512,0.8943,0.9289,0.8841,0.7899,0.8228,0.8862],null,true,false]",
+          "family": "ff:grass-tussock",
+          "key": "ff:grass-tussock:302",
+          "placements": [
+            {
+              "key": "ff:grass-tussock:302",
+              "x": -373.40000000000146,
+              "y": 1588.7999999999993
+            }
+          ],
+          "width": 23.491950000000003,
+          "height": 17.95147,
+          "flip": true,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            1827,
+            1872,
+            68,
+            52
+          ],
+          "explicitHeight": false,
+          "solidBody": false,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 5582,
+              "cast": true,
+              "maxHeight": 16.078134375111112,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 9.5,
+                "pixel": [
+                  66,
+                  42
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 15155,
+              "cast": true,
+              "maxHeight": 16.078134375111112,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 9.5,
+                "pixel": [
+                  106,
+                  64
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 16727,
+              "cast": true,
+              "maxHeight": 16.078134375111112,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 9.5,
+                "pixel": [
+                  134,
+                  55
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:254",
+          "signature": "[\"ff:rubble\",[0,1872,229,121],70.1365,36.9685,[0.4901,0.6322],false,0,null,0,[0.514,0.5529,0.6308,0.6636,0.743,0.7757,0.7897,0.8084,0.8201,0.8309,0.8452,0.8952,0.8785,0.8551,0.8084,0.6323,0.6075],null,true,false]",
+          "family": "ff:rubble",
+          "key": "ff:rubble:327",
+          "placements": [
+            {
+              "key": "ff:rubble:327",
+              "x": 122.59999999999854,
+              "y": 1651.2000000000007
+            }
+          ],
+          "width": 70.1365,
+          "height": 36.9685,
+          "flip": false,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            0,
+            1872,
+            229,
+            121
+          ],
+          "explicitHeight": false,
+          "solidBody": false,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 3361,
+              "cast": true,
+              "maxHeight": 29.248893486842107,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 29.5,
+                "pixel": [
+                  88,
+                  9
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 6687,
+              "cast": true,
+              "maxHeight": 29.248893486842107,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 29.5,
+                "pixel": [
+                  103,
+                  9
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 13601,
+              "cast": true,
+              "maxHeight": 29.248893486842107,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 29.5,
+                "pixel": [
+                  110,
+                  9
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:255",
+          "signature": "[\"ff:drift-ne\",[264,1995,129,43],57.37875,19.12625,[0.4829,0.486],false,0,null,0,[0.729,0.7664,0.8318,0.8318,0.8224,0.7944,0.7757,0.7477,0.7009,0.6542,0.5981,0.5514,0.486,0.4206,0.3364,0.2243,0.2243],null,true,false]",
+          "family": "ff:drift-ne",
+          "key": "ff:drift-ne:330",
+          "placements": [
+            {
+              "key": "ff:drift-ne:330",
+              "x": 170.59999999999854,
+              "y": 1652.7999999999993
+            }
+          ],
+          "width": 57.37875,
+          "height": 19.12625,
+          "flip": false,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            264,
+            1995,
+            129,
+            43
+          ],
+          "explicitHeight": false,
+          "solidBody": false,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 5340,
+              "cast": true,
+              "maxHeight": 12.449276124999997,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 11.5,
+                "pixel": [
+                  113,
+                  15
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 5543,
+              "cast": true,
+              "maxHeight": 12.449276124999997,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 11.5,
+                "pixel": [
+                  121,
+                  15
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 7327,
+              "cast": true,
+              "maxHeight": 12.449276124999997,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 11.5,
+                "pixel": [
+                  125,
+                  15
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:256",
+          "signature": "[\"ff:drift-se\",[138,1995,124,44],67.067,23.73475,[0.487,0.4954],true,0,null,0,[0.2018,0.2494,0.3979,0.4771,0.5321,0.5963,0.6514,0.6972,0.7339,0.7523,0.7787,0.7987,0.8257,0.844,0.8165,0.789,0.789],null,true,false]",
+          "family": "ff:drift-se",
+          "key": "ff:drift-se:331",
+          "placements": [
+            {
+              "key": "ff:drift-se:331",
+              "x": 375.40000000000146,
+              "y": 1656
+            }
+          ],
+          "width": 67.067,
+          "height": 23.73475,
+          "flip": true,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            138,
+            1995,
+            124,
+            44
+          ],
+          "explicitHeight": false,
+          "solidBody": false,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 5260,
+              "cast": true,
+              "maxHeight": 16.977280520098038,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 14.5,
+                "pixel": [
+                  125,
+                  16
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 5514,
+              "cast": true,
+              "maxHeight": 16.977280520098038,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 14.5,
+                "pixel": [
+                  134,
+                  17
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 6822,
+              "cast": true,
+              "maxHeight": 16.977280520098038,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 14.5,
+                "pixel": [
+                  140,
+                  16
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:257",
+          "signature": "[\"ff:rubble\",[0,1872,229,121],95.91749999999999,50.5575,[0.4901,0.6322],false,0,null,0,[0.514,0.5529,0.6308,0.6636,0.743,0.7757,0.7897,0.8084,0.8201,0.8309,0.8452,0.8952,0.8785,0.8551,0.8084,0.6323,0.6075],null,true,false]",
+          "family": "ff:rubble",
+          "key": "ff:rubble:325",
+          "placements": [
+            {
+              "key": "ff:rubble:325",
+              "x": 423.40000000000146,
+              "y": 1660.7999999999993
+            }
+          ],
+          "width": 95.91749999999999,
+          "height": 50.5575,
+          "flip": false,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            0,
+            1872,
+            229,
+            121
+          ],
+          "explicitHeight": false,
+          "solidBody": false,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 2896,
+              "cast": true,
+              "maxHeight": 40.19418475961538,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 40.5,
+                "pixel": [
+                  95,
+                  11
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 5734,
+              "cast": true,
+              "maxHeight": 40.19418475961538,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 40.5,
+                "pixel": [
+                  110,
+                  10
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 12751,
+              "cast": true,
+              "maxHeight": 40.19418475961538,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 40.5,
+                "pixel": [
+                  116,
+                  10
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        }
+      ],
+      "failures": [],
+      "probeSampling": "GPU packed receiver height at actual rendered pixel; float32 camera reconstruction",
+      "scope": "Actual registered static geometry plus explicitly labeled catalog/building fixtures, production GPU filter and Worker; three light vectors. Contact sheets show one representative per distinct geometry variant. Probe cases outside source bounds test visible raised receiving and above-caster rejection.",
+      "imageSha256": "f8934f07b5dae289be031df4a689c674faef6cde012eeabbd138857144a94bcd",
+      "image": "variants-252.png"
+    },
+    {
+      "offset": 276,
+      "totalVariants": 314,
+      "totalPlacements": 480,
+      "rows": [
+        {
+          "id": "variant:276",
+          "signature": "[\"ff:dead-snag\",[1549,1418,173,228],78.84279,103.80915999999999,[0.4705,0.9175],false,0,null,0,[0.8514,0.8679,0.8679,0.8762,0.9186,0.8998,0.9751,0.9579,0.9858,0.965,0.954,0.9847,0.9599,0.9717,0.9772,0.9479,0.9198],null,true,false]",
+          "family": "ff:dead-snag",
+          "key": "ff:dead-snag:789",
+          "placements": [
+            {
+              "key": "ff:dead-snag:789",
+              "x": 1122.2799999999988,
+              "y": 1902.7200000000012
+            }
+          ],
+          "width": 78.84279,
+          "height": 103.80915999999999,
+          "flip": false,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            1549,
+            1418,
+            173,
+            228
+          ],
+          "explicitHeight": false,
+          "solidBody": false,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 1896,
+              "cast": true,
+              "maxHeight": 100.7576498152,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 94,
+                "pixel": [
+                  53,
+                  19
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 4318,
+              "cast": true,
+              "maxHeight": 100.7576498152,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 94,
+                "pixel": [
+                  74,
+                  22
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 6148,
+              "cast": true,
+              "maxHeight": 100.7576498152,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 94,
+                "pixel": [
+                  126,
+                  20
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:277",
+          "signature": "[\"ff:pillar-broken\",[1319,1655,119,166],60.662499999999994,84.52499999999999,[0.4649,0.7932],false,0,null,0,[0.7823,0.7861,0.8197,0.838,0.8707,0.8865,0.9082,0.932,0.9252,0.9048,0.8878,0.8639,0.8486,0.8333,0.7891,0.7857,0.7857],null,true,false]",
+          "family": "ff:pillar-broken",
+          "key": "ff:pillar-broken:678",
+          "placements": [
+            {
+              "key": "ff:pillar-broken:678",
+              "x": -255,
+              "y": 1920
+            },
+            {
+              "key": "ff:pillar-broken:676",
+              "x": 65,
+              "y": 2144
+            },
+            {
+              "key": "ff:pillar-broken:680",
+              "x": -831,
+              "y": 2208
+            },
+            {
+              "key": "ff:pillar-broken:677",
+              "x": 321,
+              "y": 2272
+            },
+            {
+              "key": "ff:pillar-broken:679",
+              "x": 769,
+              "y": 2432
+            },
+            {
+              "key": "ff:pillar-broken:682",
+              "x": -1343,
+              "y": 2464
+            },
+            {
+              "key": "ff:pillar-broken:681",
+              "x": 193,
+              "y": 2720
+            },
+            {
+              "key": "ff:pillar-broken:683",
+              "x": -319,
+              "y": 2976
+            }
+          ],
+          "width": 60.662499999999994,
+          "height": 84.52499999999999,
+          "flip": false,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            1319,
+            1655,
+            119,
+            166
+          ],
+          "explicitHeight": false,
+          "solidBody": false,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 2924,
+              "cast": true,
+              "maxHeight": 77.72955777569392,
+              "receiver": {
+                "status": "pass",
+                "height": 19.43238944392348,
+                "screenProbe": [
+                  -166.9920916996005,
+                  1917.417282469456
+                ],
+                "raisedMin": 134,
+                "aboveMin": 255
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 78.5,
+                "pixel": [
+                  52,
+                  11
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 4920,
+              "cast": true,
+              "maxHeight": 77.72955777569392,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 78.5,
+                "pixel": [
+                  72,
+                  10
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 6027,
+              "cast": true,
+              "maxHeight": 77.72955777569392,
+              "receiver": {
+                "status": "pass",
+                "height": 19.43238944392348,
+                "screenProbe": [
+                  -303.31425069039193,
+                  1954.089069867392
+                ],
+                "raisedMin": 126,
+                "aboveMin": 255
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 78.5,
+                "pixel": [
+                  127,
+                  11
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:278",
+          "signature": "[\"ff:grass-tussock\",[1827,1872,68,52],24.178500000000003,18.4761,[0.5,0.8963],true,0,null,0,[0.7825,0.7398,0.8788,0.8345,0.8933,0.9065,0.876,0.9187,0.8811,0.8882,0.9512,0.8943,0.9289,0.8841,0.7899,0.8228,0.8862],null,true,false]",
+          "family": "ff:grass-tussock",
+          "key": "ff:grass-tussock:454",
+          "placements": [
+            {
+              "key": "ff:grass-tussock:454",
+              "x": 213.47999999999956,
+              "y": 1973.1200000000008
+            }
+          ],
+          "width": 24.178500000000003,
+          "height": 18.4761,
+          "flip": true,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            1827,
+            1872,
+            68,
+            52
+          ],
+          "explicitHeight": false,
+          "solidBody": false,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 4961,
+              "cast": true,
+              "maxHeight": 16.16545050923077,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 10,
+                "pixel": [
+                  84,
+                  41
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 12562,
+              "cast": true,
+              "maxHeight": 16.16545050923077,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 10,
+                "pixel": [
+                  136,
+                  62
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 17112,
+              "cast": true,
+              "maxHeight": 16.16545050923077,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 10,
+                "pixel": [
+                  166,
+                  54
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:279",
+          "signature": "[\"ff:shrub-twigs\",[893,1872,133,84],66.76039999999999,42.1942,[0.5,0.8968],true,0,null,0,[0.4201,0.6605,0.7985,0.8297,0.9017,0.9238,0.9291,0.9484,0.9435,0.9582,0.9211,0.9214,0.9066,0.8196,0.7494,0.688,0.6437],null,true,false]",
+          "family": "ff:shrub-twigs",
+          "key": "ff:shrub-twigs:804",
+          "placements": [
+            {
+              "key": "ff:shrub-twigs:804",
+              "x": 9.319999999999709,
+              "y": 1988.1599999999999
+            }
+          ],
+          "width": 66.76039999999999,
+          "height": 42.1942,
+          "flip": true,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            893,
+            1872,
+            133,
+            84
+          ],
+          "explicitHeight": false,
+          "solidBody": false,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 4583,
+              "cast": true,
+              "maxHeight": 39.28909548438503,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 33.5,
+                "pixel": [
+                  83,
+                  24
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 8471,
+              "cast": true,
+              "maxHeight": 39.28909548438503,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 33.5,
+                "pixel": [
+                  121,
+                  31
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 14490,
+              "cast": true,
+              "maxHeight": 39.28909548438503,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 33.5,
+                "pixel": [
+                  136,
+                  29
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:280",
+          "signature": "[\"ff:dead-snag\",[1549,1418,173,228],69.093,90.972,[0.4705,0.9175],false,0,null,0,[0.8514,0.8679,0.8679,0.8762,0.9186,0.8998,0.9751,0.9579,0.9858,0.965,0.954,0.9847,0.9599,0.9717,0.9772,0.9479,0.9198],null,true,false]",
+          "family": "ff:dead-snag",
+          "key": "ff:dead-snag:684",
+          "placements": [
+            {
+              "key": "ff:dead-snag:684",
+              "x": -447,
+              "y": 2016
+            },
+            {
+              "key": "ff:dead-snag:686",
+              "x": -1023,
+              "y": 2304
+            },
+            {
+              "key": "ff:dead-snag:688",
+              "x": 577,
+              "y": 2528
+            },
+            {
+              "key": "ff:dead-snag:692",
+              "x": -1279,
+              "y": 2560
+            },
+            {
+              "key": "ff:dead-snag:690",
+              "x": 1,
+              "y": 2816
+            },
+            {
+              "key": "ff:dead-snag:694",
+              "x": -511,
+              "y": 2944
+            }
+          ],
+          "width": 69.093,
+          "height": 90.972,
+          "flip": false,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            1549,
+            1418,
+            173,
+            228
+          ],
+          "explicitHeight": false,
+          "solidBody": false,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 1825,
+              "cast": true,
+              "maxHeight": 88.69137151304346,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 81.5,
+                "pixel": [
+                  53,
+                  20
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 4374,
+              "cast": true,
+              "maxHeight": 88.69137151304346,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 85.5,
+                "pixel": [
+                  75,
+                  16
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 6264,
+              "cast": true,
+              "maxHeight": 88.69137151304346,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 81.5,
+                "pixel": [
+                  124,
+                  21
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:281",
+          "signature": "[\"ff:drift-mound\",[557,1995,75,36],37.4,18,[0.4572,0.4667],false,0,null,0,[0.4,0.4486,0.5667,0.7,0.7667,0.7889,0.8,0.8,0.7889,0.7667,0.7556,0.7347,0.7056,0.6319,0.5444,0.5444,0.5444],null,true,false]",
+          "family": "ff:drift-mound",
+          "key": "ff:drift-mound:685",
+          "placements": [
+            {
+              "key": "ff:drift-mound:685",
+              "x": -434.2000000000007,
+              "y": 2041.6000000000004
+            },
+            {
+              "key": "ff:drift-mound:687",
+              "x": -1010.2000000000007,
+              "y": 2329.6000000000004
+            },
+            {
+              "key": "ff:drift-mound:689",
+              "x": 589.7999999999993,
+              "y": 2553.6000000000004
+            },
+            {
+              "key": "ff:drift-mound:693",
+              "x": -1266.199999999997,
+              "y": 2585.5999999999985
+            },
+            {
+              "key": "ff:drift-mound:691",
+              "x": 13.799999999999272,
+              "y": 2841.6000000000004
+            },
+            {
+              "key": "ff:drift-mound:695",
+              "x": -498.1999999999971,
+              "y": 2969.5999999999985
+            }
+          ],
+          "width": 37.4,
+          "height": 18,
+          "flip": false,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            557,
+            1995,
+            75,
+            36
+          ],
+          "explicitHeight": false,
+          "solidBody": false,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 5804,
+              "cast": true,
+              "maxHeight": 13.4,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 12,
+                "pixel": [
+                  64,
+                  17
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 9025,
+              "cast": true,
+              "maxHeight": 13.4,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 12,
+                "pixel": [
+                  76,
+                  18
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 14615,
+              "cast": true,
+              "maxHeight": 13.4,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 12,
+                "pixel": [
+                  91,
+                  18
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        }
+      ],
+      "failures": [],
+      "probeSampling": "GPU packed receiver height at actual rendered pixel; float32 camera reconstruction",
+      "scope": "Actual registered static geometry plus explicitly labeled catalog/building fixtures, production GPU filter and Worker; three light vectors. Contact sheets show one representative per distinct geometry variant. Probe cases outside source bounds test visible raised receiving and above-caster rejection.",
+      "imageSha256": "c95921d757cf3d59a6b86c93dc114f18c58233e65a417997d238b37c525aea5d",
+      "image": "variants-276.png"
+    }
+  ]
+}

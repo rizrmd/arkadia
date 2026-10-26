@@ -20,6 +20,8 @@ See `verification.json` for individual pixel metrics and bake timings.
 
 ## Delivery status
 
-The local fix is implemented and the production build passes. Push is blocked: GitHub returns HTTP 403 because connected account `mieky-kpvendorid` lacks write access to `rizrmd/arkadia`. The platform push helper confirms the same denial. No deployment is claimed.
+GitHub operations use the explicitly authorized `thickkoezz` credentials. The parallax fix and release GPU fixture correction are pushed to `feat/stronghold` and the fix is deployed at https://ark-whachat.fural.space/ through the current shared game release.
 
-The attempted deployment stopped before publication at the existing shadow material GPU fixture's dynamic import of `/node_modules/.vite/deps/pixi__js.js`. Once write access is restored, push the fix, resolve that release-check environment failure, run the repository deployment script and verify the live game.
+Live verification passes in Chromium with ignored filters and WebKit: 12 court/snow viewport cases, 24 actual visible Pixi textures, no page errors. Measured detail energy is 12.7–23.4% of each matching sharp source, including landscape strips. `live-verification.json` records the live base URL, runtime snapshots, texture dimensions, transparency and pixel metrics. Run with `PARALLAX_BASE_URL=https://ark-whachat.fural.space/` to target production instead of local preview.
+
+The release GPU fixture imports Pixi through Vite instead of a private optimizer-cache URL; all 36 controls pass without WebGL errors. The earlier standalone release command reached its 20-minute limit after building a valid archive. A later shared deployment already included the pushed fix, so no older archive was applied over newer peer changes. Live browser/pixel evidence establishes delivery independently of that earlier timeout. Physical Apple-device testing is not claimed.

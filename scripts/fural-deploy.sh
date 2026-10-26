@@ -19,12 +19,15 @@ node scripts/shadow-audit/test-tent-volume.mjs
 node scripts/shadow-audit/folded-opacity-controls.mjs
 node scripts/arkodia/verify-json-layer-memory.mjs
 node scripts/arkodia/verify-release-memory.mjs
+node scripts/arkodia/verify-publisher-memory.mjs
 node scripts/android-stutter/test.mjs
 node scripts/android-stutter/test-cadence.mjs
+node scripts/android-stutter/test-noise-cache.mjs
 node scripts/android-stutter/verify-flame-gpu.mjs
 node scripts/android-stutter/verify-alpha-cache.mjs
 node scripts/android-stutter/verify-chunked-upload.mjs
 npx tsc --noEmit && npx vite build --outDir "$DIST_DIR"
+SITE_DIR="$DIST_DIR" OUT="$DIST_DIR/loading-render-proof.json" node scripts/android-stutter/verify-loading-render.mjs
 # The organization shares 1 GiB of RAM across sessions: compile one package at a time under a memory limit.
 export GOFLAGS=-p=1 GOMAXPROCS=2 GOMEMLIMIT=256MiB GOTOOLCHAIN=local
 (cd server && go test ./... && CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -trimpath -ldflags="-s -w" -o "$DIST_DIR/arkodia" ./cmd/arkodia)
@@ -125,15 +128,24 @@ for f in docs/flame-fan-gameplay/*.png docs/flame-fan-gameplay/*.json docs/flame
  cp "$f" "$STAGE/site/ember-warden-review/flame-fan-gameplay/"
 done
 
+# Keep the dedicated Rift Dash player available on every later game release.
+node scripts/rift-dash/build.mjs
+mkdir -p "$STAGE/site/rift-dash/player"
+cp -R dist-rift-dash/. "$STAGE/site/rift-dash/player/"
+cp -R public/rift-dash/v2 "$STAGE/site/rift-dash/v2"
+
 # One versioned tarball, uploaded in parts and applied by the gateway at boot (the release also writes www/index.html).
 mkdir -p "$HOME/releases"
 # Concurrent sessions can release the same commit. Never let one tar writer replace a file
 # another publisher is reading; retain a unique completed archive for each invocation.
 tgz="$(mktemp "$HOME/releases/arkodia-game-$(git rev-parse --short HEAD)-XXXXXXXX.tgz")"
+echo "Packing release archive $tgz"
 python3 - "$STAGE" "$tgz" <<'PY'
 import sys, tarfile
-with tarfile.open(sys.argv[2], 'w:gz', format=tarfile.USTAR_FORMAT) as archive:
+with tarfile.open(sys.argv[2], 'w:gz', format=tarfile.USTAR_FORMAT, compresslevel=1) as archive:
     archive.add(sys.argv[1], arcname='.')
 PY
+echo "Validating completed archive $tgz"
 tar -tzf "$tgz" >/dev/null
+echo "Publishing completed archive $tgz"
 node scripts/arkodia/publish-layer.mjs --tgz "$tgz" --name "game-$(git rev-parse --short HEAD)"

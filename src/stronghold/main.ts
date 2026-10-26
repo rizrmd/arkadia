@@ -18,6 +18,9 @@ import {showMovementHint} from './movement-hint';
 
 export async function mount(app:HTMLElement,progress:Progress){
  const rt=await ensurePixiRuntime(app);
+ // The HTML loading cover hides this scene. Reserve the GPU for explicit
+ // preparation passes instead of rendering the full world behind the cover.
+ rt.app.stop();
  const canvas=rt.app.canvas;
  canvas.setAttribute('aria-label','Stronghold world. Walk with the arrow keys or WASD, or on a touch screen drag from the bottom half; drag in the top half, or with a second finger while walking, to pan. The hero attacks nearby revenants automatically.');
  canvas.tabIndex=0;
@@ -108,8 +111,20 @@ export async function mount(app:HTMLElement,progress:Progress){
  startFpsTracelog({rt,getCombatSnapshot:()=>worldView.encounters.snapshot(),getLiveCounts:()=>worldView.encounters.liveCounts(),net,getHeroId:()=>hero});
  // Effect construction is indivisible and can take >100 ms on older Android CPUs.
  // Finish the existing sliced pool warmup while gameplay is still behind loading.
- await Promise.all([worldView.encounters.fxStage.loaded,worldView.visibleMasksReady(),worldView.prepareGpu()]);
+ // These jobs overlap: report completions, rather than a timer pretending work finished.
+ let prepared=0;
+ const preparationLabels=['effects','visibility','graphics'];
+ progress(960,1000,'Preparing the Stronghold');
+ await Promise.all([worldView.encounters.fxStage.loaded,worldView.visibleMasksReady(),worldView.prepareGpu()].map(async(job,index)=>{
+  await job;
+  progress(960+(++prepared)*10,1000,`Preparing ${preparationLabels[index]} · ${prepared}/3 ready`);
+ }));
+ await new Promise<void>(resolve=>setTimeout(resolve,0));
  await picker.start();
+ progress(995,1000,'Entering the Stronghold');
+ // Exercise the complete world/filter pipeline once while the cover is still up.
+ rt.app.render();
+ rt.app.start();
  loaded();
  void picker.picked.then(()=>{
   if(invited)lobby!.prompt(invited);
