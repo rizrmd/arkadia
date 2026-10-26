@@ -1,3 +1,4 @@
+import {measureRenderDetail} from '../app/render-diagnostics';
 import {createBurnSoilClock,BURN_SOIL} from '../fx/burn-soil';
 import {createGameplayFlameFan} from '../fx/flame-fan-gameplay';
 import {playSkillSound} from '../app/game-audio';
@@ -627,7 +628,8 @@ export function createCombatVfx(o:{
  }
 
  function render(){
-  flameSheets.frame(fxDtMs/1000,origin);fx.frame(fxDtMs/1000);fxDtMs=0;
+  measureRenderDetail('flameFanFrame',()=>flameSheets.frame(fxDtMs/1000,origin));
+  measureRenderDetail('fxUpdate',()=>fx.frame(fxDtMs/1000));fxDtMs=0;
   const k=origin.scale,dpr=Math.min(devicePixelRatio||1,2);
 
   // Dotted ground AoE telegraphs & active impact zones (with wall/building cutOut occlusion)

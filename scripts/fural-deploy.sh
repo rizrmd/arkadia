@@ -21,6 +21,7 @@ node scripts/arkodia/verify-json-layer-memory.mjs
 node scripts/arkodia/verify-release-memory.mjs
 node scripts/android-stutter/test.mjs
 node scripts/android-stutter/test-cadence.mjs
+node scripts/android-stutter/test-noise-cache.mjs
 node scripts/android-stutter/verify-flame-gpu.mjs
 node scripts/android-stutter/verify-alpha-cache.mjs
 node scripts/android-stutter/verify-chunked-upload.mjs

@@ -533,6 +533,7 @@ export function createFxStage(o:FxStageOptions){
  let lastOccHx=-1e9,lastOccHy=-1e9;
  function frame(dt:number,render=true){
   if(!planes)return;
+  const activePlanes=planes;
   clock+=dt;
   if(render&&o.host&&!pinnedBudget){
    const now=performance.now();
@@ -550,7 +551,8 @@ export function createFxStage(o:FxStageOptions){
   }
   for(let i=pending.length-1;i>=0;i--)if(pending[i].at<=clock){const p=pending.splice(i,1)[0];p.run();}
   for(const l of live){l.age+=dt;if(l.follow){const p=l.follow();l.anchor.u=p.u;l.anchor.v=p.v;}const n=l.inst.stats.activeParticles,c=burstCost.get(l.key)??0;burstCost.set(l.key,n>c?n:c-(c-n)*.002);}
-  planes.ground.vfx.update(dt,{timeSeconds:clock});planes.world.vfx.update(dt,{timeSeconds:clock});reserved=0;
+  measureRenderDetail('fxEngine',()=>{activePlanes.ground.vfx.update(dt,{timeSeconds:clock});activePlanes.world.vfx.update(dt,{timeSeconds:clock});});reserved=0;
+  measureRenderDetail('fxOcclusion',()=>{
   const occFn=o.occlusionAt,heroPos=o.getHeroWorld?.(),layers=o.depthLayers,sc=view.scale||1;
   const hx=heroPos?.x??0,hy=heroPos?.y??0;
   if(Math.abs(hx-lastOccHx)>2||Math.abs(hy-lastOccHy)>2||heroOccCache.size>2048){
@@ -564,8 +566,8 @@ export function createFxStage(o:FxStageOptions){
     live.splice(i,1);
     l.inst.root.removeFromParent();
     const list=pool.get(l.key)??[];
-    if(list.length<POOL){l.inst.stop();l.inst.root.visible=false;planes[l.plane].vfx.removeEffect(l.inst,false);list.push(l.inst);pool.set(l.key,list);}
-    else planes[l.plane].vfx.removeEffect(l.inst,true);
+    if(list.length<POOL){l.inst.stop();l.inst.root.visible=false;activePlanes[l.plane].vfx.removeEffect(l.inst,false);list.push(l.inst);pool.set(l.key,list);}
+    else activePlanes[l.plane].vfx.removeEffect(l.inst,true);
     continue;
    }
    const a=l.anchor,pos=(l.inst as any).position??[0,0,0],cs=Math.cos(a.yaw),sn=Math.sin(a.yaw),lx=pos[0]*a.scale,lz=pos[2]*a.scale;
@@ -634,10 +636,11 @@ export function createFxStage(o:FxStageOptions){
   }
   occludedParticles=occCount;minOcclusion=occTotal?Number(occMin.toFixed(3)):1;meanOcclusion=occTotal?Number((occSum/occTotal).toFixed(3)):1;
   backEffects=backCnt;frontEffects=frontCnt;
-  peakParticles=Math.max(peakParticles,planes.world.vfx.stats.activeParticles+planes.ground.vfx.stats.activeParticles);
+  });
+  peakParticles=Math.max(peakParticles,activePlanes.world.vfx.stats.activeParticles+activePlanes.ground.vfx.stats.activeParticles);
   // Own canvases only (a host scene renders itself): nothing playing draws the cleared planes once, then leaves
   // the GPU alone until something plays.
-  const empty=!live.length&&!pending.length;if(render&&!(empty&&idle)){planes.ground.app?.render();planes.world.app?.render();}idle=empty;
+  const empty=!live.length&&!pending.length;if(render&&!(empty&&idle)){activePlanes.ground.app?.render();activePlanes.world.app?.render();}idle=empty;
  }
 
  return {

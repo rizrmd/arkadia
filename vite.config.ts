@@ -1,3 +1,4 @@
+import {nixieNoiseCache} from './scripts/vite/nixie-noise-cache.ts';
 import fs from 'node:fs';import path from 'node:path';import crypto from 'node:crypto';
 import {defineConfig,type Connect} from 'vite';
 // One page: index.html is the SPA and its router picks the view. Extensionless and directory paths fall back
@@ -10,4 +11,4 @@ const hudRevision=()=>{const hash=crypto.createHash('sha256'),walk=(dir:string)=
 const sizeList:Connect.NextHandleFunction=(req,res,next)=>{if(req.url?.split('?')[0]!=='/asset-sizes.json'){next();return;}res.setHeader('Content-Type','application/json');res.end(sizes());};
 // Co-op: /ws and /api go to the Go game server (cd server && go run ./cmd/arkodia, PORT=8787 by default here).
 const coop=process.env.COOP_SERVER||'http://127.0.0.1:8787',proxy={'/ws':{target:coop.replace(/^http/,'ws'),ws:true},'/api':{target:coop}};
-export default defineConfig({define:{__HUD_REVISION__:JSON.stringify(hudRevision())},plugins:[{name:'single-page',configureServer(s){s.middlewares.use(toHome);},configurePreviewServer(s){s.middlewares.use(toHome);}},{name:'asset-sizes',configureServer(s){s.middlewares.use(sizeList);},generateBundle(){this.emitFile({type:'asset',fileName:'asset-sizes.json',source:sizes()});}}],server:{proxy},preview:{proxy},build:{rollupOptions:{input:{index:'index.html'}}}});
+export default defineConfig({define:{__HUD_REVISION__:JSON.stringify(hudRevision())},optimizeDeps:{rolldownOptions:{plugins:[nixieNoiseCache()]}},plugins:[nixieNoiseCache(),{name:'single-page',configureServer(s){s.middlewares.use(toHome);},configurePreviewServer(s){s.middlewares.use(toHome);}},{name:'asset-sizes',configureServer(s){s.middlewares.use(sizeList);},generateBundle(){this.emitFile({type:'asset',fileName:'asset-sizes.json',source:sizes()});}}],server:{proxy},preview:{proxy},build:{rollupOptions:{input:{index:'index.html'}}}});
