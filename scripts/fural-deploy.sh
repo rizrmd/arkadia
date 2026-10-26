@@ -15,6 +15,10 @@ trap 'rm -rf "$STAGE" "$DIST_DIR" "$list"' EXIT
 
 node scripts/shadow-audit/test.mjs
 node scripts/shadow-audit/test-field.mjs
+node scripts/shadow-audit/test-tent-volume.mjs
+node scripts/shadow-audit/folded-opacity-controls.mjs
+node scripts/arkodia/verify-json-layer-memory.mjs
+node scripts/arkodia/verify-release-memory.mjs
 node scripts/android-stutter/test.mjs
 node scripts/android-stutter/test-cadence.mjs
 node scripts/android-stutter/verify-flame-gpu.mjs
