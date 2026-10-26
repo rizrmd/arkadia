@@ -1,0 +1,21 @@
+{
+  "args": [
+    "-c",
+    "import hou,json; print(json.dumps({'version':hou.applicationVersionString(),'license':str(hou.licenseCategory()),'sops':[n for n in hou.sopNodeTypeCategory().nodeTypes() if any(k in n for k in ['pyro','rasterize','filecache'])]})); hou.releaseLicense()"
+  ],
+  "command": "C:/Program Files/Side Effects Software/Houdini 22.0.466/bin/hython.exe",
+  "created_at": "2026-10-26T23:27:38.820396+07:00",
+  "duration_ms": 1982,
+  "exit_code": 0,
+  "finished_at": "2026-10-26T23:27:40.85738+07:00",
+  "id": "LRea3ca03792105a3609296a3b",
+  "node_id": "ULc8291ec0aeea885a0cf29876",
+  "node_label": "PC-FATAN",
+  "organization_id": "ORd5dd6f99b4308d6187031557",
+  "output": "{\"version\": \"22.0.466\", \"license\": \"licenseCategoryType.Apprentice\", \"sops\": [\"filecache\", \"filecache::2.0\", \"pyrobakevolume\", \"pyroburstsource\", \"pyropostprocess\", \"pyropostprocess::2.0\", \"pyroscatterfromburst\", \"pyrosolver\", \"pyrosource\", \"pyrosourceinstance\", \"pyrosourcepack\", \"pyrosourcespread\", \"pyrospawnsources\", \"pyrothrusterexhaust\", \"pyrotrailpath\", \"pyrotrailsource\", \"vdbrasterizefrustum\", \"volumerasterize\", \"volumerasterizeattributes\", \"volumerasterizecurve\", \"volumerasterizehair\", \"volumerasterizelattice\", \"volumerasterizeparticles\", \"volumerasterizepoints\"]}\r\n",
+  "request_id": "LX2bd4a0f5a426e7901e12beab",
+  "status": "succeeded",
+  "timeout_ms": 30000,
+  "updated_at": "2026-10-26T23:27:40.85738+07:00",
+  "user_id": "US2335377fac9065d5a6491e95"
+}
