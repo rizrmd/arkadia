@@ -41,6 +41,11 @@ var heroSkillSwap = map[string]map[string]string{
 }
 
 type Progression struct {
+	ManualDashes int            `json:"manualDashes,omitempty"`
+	DashFromU    float64        `json:"dashFromU,omitempty"`
+	DashFromV    float64        `json:"dashFromV,omitempty"`
+	DashU        float64        `json:"dashU,omitempty"`
+	DashV        float64        `json:"dashV,omitempty"`
 	Level        int            `json:"level"`
 	XP           int            `json:"xp"`
 	Gold         int            `json:"gold"`

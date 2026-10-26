@@ -347,7 +347,7 @@ export function createCombatVfx(o:{
   }
  }
 
- function castSkill(id:SkillId,opts:{targetU?:number;targetV?:number;forceCrit?:boolean;comboScale?:number;skipCastCue?:boolean}={}):boolean{
+ function castSkill(id:SkillId,opts:{targetU?:number;targetV?:number;forceCrit?:boolean;comboScale?:number;dashDistance?:number;skipCastCue?:boolean}={}):boolean{
   notifyHeroCast(1050);
   const h=o.getHero(),run=o.getRun();
   let angle=facingScreenAngle(h);
@@ -402,16 +402,17 @@ export function createCombatVfx(o:{
    case 'cinder-step':{
     const kind=id;
     const ghostCount=Math.min(5,3+(rank-1));
+    const dashDistance=id==='rift-dash'?(opts.dashDistance??1.5):1.5;
     for(let i=0;i<ghostCount;i++){
-     ghosts.push({id:nextId++,kind,u:h.u+dir.u*(i*.3),v:h.v+dir.v*(i*.3),angle,age:-i*40,duration:480});
+     ghosts.push({id:nextId++,kind,u:h.u+dir.u*(i*(id==='rift-dash'?dashDistance/ghostCount:.3)),v:h.v+dir.v*(i*(id==='rift-dash'?dashDistance/ghostCount:.3)),angle,age:-i*40,duration:480});
     }
     if(id==='rift-dash')addSpark('arcane',h.u+dir.u*.6,h.v+dir.v*.6,angle,36);
     spawnSlash(h.u+dir.u*.5,h.v+dir.v*.5,angle,!!opts.forceCrit,true);
     spawnAoE({
      kind:id==='cinder-step'?'flame-cone':'cleave-cone',skill:id,
      shape:'cone',
-     u:h.u+dir.u*.2,
-     v:h.v+dir.v*.2,
+     u:h.u+dir.u*(id==='rift-dash'?dashDistance:.2),
+     v:h.v+dir.v*(id==='rift-dash'?dashDistance:.2),
      angle,
      radius:1.35*reach(run)*areaMult,
      spread:Math.PI*.68,

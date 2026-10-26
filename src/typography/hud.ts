@@ -201,6 +201,7 @@ export interface HudCallbacks {
  // Tap or click on a skill slot (the game opens the skill tree on that slot; skills only auto-cast).
  onSkillClick?: (index: number) => void;
  onSkillInspect?: (index: number) => void;
+ onSkillAim?: (index:number, x:number, y:number, pointerId:number, touch:boolean) => void;
  onMenuClick?: () => void;
 }
 
@@ -256,6 +257,9 @@ interface SkillSlotView {
  cx: number;
  cy: number;
  radius: number;
+ glyph?: Graphics;
+ hex?: Graphics;
+ hexMask?: Graphics;
 }
 
 // Crescent Action Arc design-space coordinates inside `groups.br` (pivot at W=1672, H=941)
@@ -842,6 +846,9 @@ export class Hud extends Container {
   slot.on('pointerdown', (e) => {
    clearTimeout(timer);
    inspected = false;
+   if(this.state.skills[i]?.art==='skill-rift-dash' && e.button!==2){
+    inspected=true;this.callbacks.onSkillAim?.(i,e.global.x,e.global.y,e.pointerId,e.pointerType!=='mouse');return;
+   }
    if (!this.callbacks.onSkillInspect) return;
    this.contextGuardUntil = performance.now() + 2000;
    // Mouse: right-click inspects, a held left button still casts. Touch and pen: long-press.
@@ -1072,6 +1079,26 @@ export class Hud extends Container {
    view.artHolder.alpha = sk.locked ? 0.52 : 1;
    centred(view.ringSprite, cfg.cx, cfg.cy, cfg.ringSize, cfg.ringSize);
 
+   const manual=sk.art==='skill-rift-dash';
+   if(!view.hex){view.hex=view.root.addChild(new Graphics());view.hex.eventMode='none';view.hexMask=view.root.addChild(new Graphics());view.hexMask.eventMode='none';}
+   if(!view.glyph){view.glyph=new Graphics();view.root.addChildAt(view.glyph,view.root.getChildIndex(view.cooldownArc));}
+   view.glyph.clear();
+   view.hex.clear();view.hexMask!.clear();view.ringSprite.visible=!manual;
+   view.artHolder.mask=manual?view.hexMask!:null;
+   if(manual){
+    const points=(r:number)=>Array.from({length:6},(_,j)=>[cfg.cx+Math.cos(j*Math.PI/3-Math.PI/2)*r,cfg.cy+Math.sin(j*Math.PI/3-Math.PI/2)*r]).flat();
+    view.hexMask!.poly(points(cfg.radius-6)).fill(0xffffff);
+    const g=view.glyph,cx=cfg.cx,cy=cfg.cy,k=cfg.radius/48;
+    g.circle(cx+9*k,cy-17*k,5*k).fill(0xe0fbff);
+    g.moveTo(cx+6*k,cy-9*k).lineTo(cx-2*k,cy+3*k).lineTo(cx-15*k,cy+14*k).stroke({color:0x73e7ff,width:5*k});
+    g.moveTo(cx-2*k,cy+3*k).lineTo(cx+10*k,cy+10*k).lineTo(cx+17*k,cy+4*k).stroke({color:0xc7ffff,width:4*k});
+    g.moveTo(cx+5*k,cy-8*k).lineTo(cx+16*k,cy-5*k).lineTo(cx+23*k,cy-13*k).stroke({color:0xc7ffff,width:3*k});
+    for(let j=0;j<3;j++)g.moveTo(cx-29*k,cy+(-13+j*11)*k).lineTo(cx-(12+j*3)*k,cy+(-13+j*11)*k).stroke({color:0x45cfff,width:2*k,alpha:.8-j*.15});
+    view.hex.poly(points(cfg.radius)).stroke({color:0x44270b,width:8});
+    view.hex.poly(points(cfg.radius)).stroke({color:0xe8b84f,width:4});
+    view.hex.poly(points(cfg.radius-5)).stroke({color:0xffedb1,width:1.3});
+   }
+
    // Level / Locked badge at bottom of socket ring
    const badgeY = cfg.cy + cfg.radius - 16;
    if (sk.locked) {
@@ -1111,6 +1138,8 @@ export class Hud extends Container {
      .stroke({ color: 0xb88b3a, width: 1.2, alpha: 0.85 });
     view.nameText.place(cfg.cx, ny + 15.5, 0.5);
    }
+
+   if(manual){view.stateText.visible=true;view.stateText.text=this.isMobile?'Drag aim · Tap equip':'Aim cursor · Cast';view.stateText.place(cfg.cx,cfg.cy-cfg.radius-12,.5);}
 
    // Desktop Hotkey Badge (`[1]` / `[2]` / `[3]`) on upper-left of socket bezel
    view.hotkeyBadge.visible = !this.isMobile;

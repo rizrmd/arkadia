@@ -5,7 +5,7 @@
 export const PROTOCOL=1,TICK_MS=50;
 export type Hello={t:'hello';v:number;name:string;room:string;you?:string;maxHp:number;hero:string};
 export type HeroPick={t:'hero';h:string};
-export type Input={t:'in';seq:number;x:number;y:number;a?:string[];choice?:string;level?:number};
+export type Input={t:'in';seq:number;x:number;y:number;dash?:{u:number;v:number};a?:string[];choice?:string;level?:number};
 export type Ping={t:'ping';c:number};
 // Heroes in world px; which hero (h), clip state, a counter that bumps whenever a clip (re)starts, facing and kills.
 export type PlayerState={id:string;name:string;h?:string;x:number;y:number;hp:number;max:number;st:string;n:number;mv:boolean;fc:number;bk:boolean;vt:boolean;k:number;run?:import('../progression').Progression};

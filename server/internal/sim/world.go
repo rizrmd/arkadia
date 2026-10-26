@@ -60,10 +60,12 @@ func fullSpeed(sx, sy float64) float64 {
 
 // Input is one client step: a screen-space walk vector of length 0..1 for one tick.
 type Input struct {
-	Choice string
-	Level  int
-	Seq    uint32
-	X, Y   float64
+	Dash         bool
+	DashU, DashV float64
+	Choice       string
+	Level        int
+	Seq          uint32
+	X, Y         float64
 }
 
 // Player is a connected hero.
@@ -408,6 +410,9 @@ func (w *World) walkInputs(p *Player, dt float64) {
 			in := p.queue[0]
 			p.queue = p.queue[1:]
 			p.Ack = in.Seq
+			if in.Dash {
+				w.manualRiftDash(p, in.DashU, in.DashV)
+			}
 			p.last = Vec{in.X, in.Y}
 			if replay {
 				w.walk(p, p.last, dt)
@@ -435,6 +440,9 @@ func (w *World) walkInputs(p *Player, dt float64) {
 		p.queue = p.queue[1:]
 		p.tokens--
 		p.Ack = in.Seq
+		if in.Dash {
+			w.manualRiftDash(p, in.DashU, in.DashV)
+		}
 		p.last = Vec{in.X, in.Y}
 		w.walk(p, p.last, dt)
 		applied = true
@@ -577,7 +585,7 @@ func (w *World) autoCastInAoE(p *Player) {
 	}
 	anyReady := false
 	for i := 0; i < slotCount; i++ {
-		if p.slotCD[i] <= 0 {
+		if p.Run.Slots[i] != "rift-dash" && p.slotCD[i] <= 0 {
 			anyReady = true
 			break
 		}
@@ -588,7 +596,7 @@ func (w *World) autoCastInAoE(p *Player) {
 	readyIndices := make([]int, 0, slotCount)
 	fired := make([]string, 0, slotCount)
 	for i := 0; i < slotCount; i++ {
-		if p.slotCD[i] <= simultaneousSyncWindowMs {
+		if p.Run.Slots[i] != "rift-dash" && p.slotCD[i] <= simultaneousSyncWindowMs {
 			readyIndices = append(readyIndices, i)
 			fired = append(fired, p.Run.Slots[i])
 		}
@@ -967,5 +975,76 @@ func (w *World) flameFanVisible(a, b Vec) bool {
 			return false
 		}
 	}
+	return true
+}
+
+// Rift Dash is the sole manually cast Rift Runner active. Server validates equipment,
+// cooldown and finite direction, and sweeps the whole path against navigation and cliffs.
+func (w *World) manualRiftDash(p *Player, du, dv float64) bool {
+	if p.Hero != "rift-runner" || !p.F.Alive() || p.Run.Pending > 0 || math.IsNaN(du) || math.IsNaN(dv) || math.IsInf(du, 0) || math.IsInf(dv, 0) {
+		return false
+	}
+	idx := -1
+	for i, id := range p.Run.Slots {
+		if id == "rift-dash" {
+			idx = i
+			break
+		}
+	}
+	if idx < 0 || idx >= MaxSkillSlots || p.slotCD[idx] > 0 {
+		return false
+	}
+	l := hypot(du, dv)
+	if l < .0001 {
+		return false
+	}
+	du /= l
+	dv /= l
+	from := ToTile(p.X, p.Y)
+	to := from
+	for i := 1; i <= 30; i++ {
+		next := Vec{from.X + du*float64(i)*.05, from.Y + dv*float64(i)*.05}
+		px := TilePoint(next.X, next.Y)
+		prev := TilePoint(to.X, to.Y)
+		if w.nav.Blocked(px.X, px.Y, w.Gate.Passable()) || cliff(prev.X, prev.Y, px.X, px.Y) {
+			break
+		}
+		to = next
+	}
+	if hypot(to.X-from.X, to.Y-from.Y) < .05 {
+		return false
+	}
+	px := TilePoint(to.X, to.Y)
+	p.X, p.Y = px.X, px.Y
+	p.F.Pos = to
+	p.BaseX, p.BaseY = px.X, px.Y
+	p.slotCD[idx] = p.Run.skillCooldownMs("rift-dash")
+	p.F.Immune = math.Max(p.F.Immune, 260)
+	// Preserve the arrival phase-slash damage, now centered on the actual swept endpoint.
+	radius := 1.35 * p.Run.reach() * p.Run.skillAreaMultiplier("rift-dash")
+	aimX, aimY := (du-dv)*64, (du+dv)*32
+	for _, e := range w.Enemies {
+		if !e.F.Alive() {
+			continue
+		}
+		eu, ev := e.F.Pos.X-to.X, e.F.Pos.Y-to.Y
+		if hypot(eu, ev) > radius+.38 || !w.flameFanVisible(to, e.F.Pos) {
+			continue
+		}
+		ex, ey := (eu-ev)*64, (eu+ev)*32
+		if hypot(ex, ey) > .001 && (ex*aimX+ey*aimY)/(hypot(ex, ey)*hypot(aimX, aimY)) < math.Cos(math.Pi*.68*.55) {
+			continue
+		}
+		dmg := math.Max(1, math.Round(p.Run.damage()*p.Run.skillDamageMultiplier("rift-dash")*1.1))
+		if e.F.Damage(dmg) {
+			p.Kills++
+			w.dropSoul(p, e.F.Pos, e.enemyLevel())
+		}
+	}
+	p.Run.ManualDashes++
+	p.Run.DashFromU = from.X
+	p.Run.DashFromV = from.Y
+	p.Run.DashU = du
+	p.Run.DashV = dv
 	return true
 }

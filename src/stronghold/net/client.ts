@@ -138,6 +138,7 @@ export function createNet(o:{direction:()=>Walk;maxHp:()=>number;hero:()=>string
   const d=o.direction(),input:Input={t:'in',seq:++seq,x:+d.x.toFixed(4),y:+d.y.toFixed(4)};
   if(ws?.readyState===WebSocket.OPEN){
    if(choice){input.choice=choice.choice;input.level=choice.level;choice=null;}
+   if(dash){input.dash=dash;dash=null;}
    ws.send(JSON.stringify(input));stats.inputs++;
   }
   pending.push(input);if(pending.length>60)pending.shift();
@@ -148,7 +149,9 @@ export function createNet(o:{direction:()=>Walk;maxHp:()=>number;hero:()=>string
  requestAnimationFrame(frame);
  setInterval(()=>{if(ws?.readyState===WebSocket.OPEN)ws.send(JSON.stringify({t:'ping',c:performance.now()}));},1000);
  let choice:{choice:string;level:number}|null=null;
+ let dash:{u:number;v:number}|null=null;
  const api={
+  dash(u:number,v:number){if(status==='online')dash={u,v};},
  chooseCard(id:string,level:number){choice={choice:id,level};},
   join,leave,
   // The picked hero, for the rest of the room; a later hello (rejoin) carries it too.

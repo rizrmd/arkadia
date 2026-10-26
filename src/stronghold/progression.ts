@@ -10,6 +10,7 @@ export type Progression={
  stars:number;
  slots:string[];
  autoCasts?:number;
+ manualDashes?:number;dashFromU?:number;dashFromV?:number;dashU?:number;dashV?:number;
  trinityCasts?:number;
  lastCast?:string[];
 };

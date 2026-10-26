@@ -111,21 +111,22 @@ func query(r *http.Request) string {
 // Client messages. Hello must come first; then inputs at the tick rate, occasional pings and a hero message
 // whenever the player picks another hero.
 type clientMsg struct {
-	T      string   `json:"t"`
-	V      int      `json:"v"`
-	Name   string   `json:"name"`
-	Room   string   `json:"room"`
-	You    string   `json:"you"`
-	MaxHP  float64  `json:"maxHp"`
-	Hero   string   `json:"hero"` // hello: the picked hero (clients before heroes send none)
-	H      string   `json:"h"`    // hero: a new pick
-	Seq    uint32   `json:"seq"`
-	X      float64  `json:"x"`
-	Y      float64  `json:"y"`
-	Choice string   `json:"choice"`
-	Level  int      `json:"level"`
-	A      []string `json:"a"` // actions; none are defined yet (auto attack is server-side)
-	C      float64  `json:"c"` // client clock echoed in pong
+	T      string                  `json:"t"`
+	V      int                     `json:"v"`
+	Name   string                  `json:"name"`
+	Room   string                  `json:"room"`
+	You    string                  `json:"you"`
+	MaxHP  float64                 `json:"maxHp"`
+	Hero   string                  `json:"hero"` // hello: the picked hero (clients before heroes send none)
+	H      string                  `json:"h"`    // hero: a new pick
+	Dash   *struct{ U, V float64 } `json:"dash"`
+	Seq    uint32                  `json:"seq"`
+	X      float64                 `json:"x"`
+	Y      float64                 `json:"y"`
+	Choice string                  `json:"choice"`
+	Level  int                     `json:"level"`
+	A      []string                `json:"a"` // actions; none are defined yet (auto attack is server-side)
+	C      float64                 `json:"c"` // client clock echoed in pong
 }
 
 type errorMsg struct {
@@ -245,7 +246,13 @@ func (s *Server) ws(w http.ResponseWriter, r *http.Request) {
 		switch m.T {
 		case "in":
 			if !math.IsNaN(m.X) && !math.IsNaN(m.Y) {
-				rm.Input(client, sim.Input{Seq: m.Seq, X: m.X, Y: m.Y, Choice: m.Choice, Level: m.Level})
+				in := sim.Input{Seq: m.Seq, X: m.X, Y: m.Y, Choice: m.Choice, Level: m.Level}
+				if m.Dash != nil {
+					in.Dash = true
+					in.DashU = m.Dash.U
+					in.DashV = m.Dash.V
+				}
+				rm.Input(client, in)
 			}
 		case "hero":
 			if hero, ok := room.CleanHero(m.H); ok {

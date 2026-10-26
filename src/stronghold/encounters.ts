@@ -3,7 +3,7 @@ import {registerActorShadowSprite} from './shadow-actor-batch';
 import {STRONGHOLD} from './prefabs/stronghold';
 import type {ItemId} from './items';
 import {requestGameFrame as requestAnimationFrame} from '../app/frame-scheduler';
-import {Container,Sprite,Texture,type Renderer} from 'pixi.js';
+import {Container,Graphics,Sprite,Texture,type Renderer} from 'pixi.js';
 import {Minimap} from './minimap';
 import {createCanvasSprite} from '../app/loader';
 import type {FrameSet} from '../typography/frames';
@@ -133,6 +133,7 @@ export async function createEncounters(o:{
    ...o.hudCallbacks,
    // Both heroes auto-cast equipped skills; HUD interaction opens the loadout tree.
    onSkillClick:(idx)=>openSkillTree(idx),
+   onSkillAim:(idx,x,y,id,touch)=>startDashAim(idx,x,y,id,touch),
    onSkillInspect:(idx)=>openSkillTree(idx),
   },
  );
@@ -287,7 +288,7 @@ export async function createEncounters(o:{
     const cd=vfx.cooldown(sid);
     const ratio=Math.min(1,cd/Math.max(1,maxCd));
     const ready=cd<=40;
-    const stateLabel=ready?(foeInAoe?'Firing':'Auto'):`${(cd/1000).toFixed(1)}s`;
+    const stateLabel=ready?(sid==='rift-dash'?'Aim':foeInAoe?'Firing':'Auto'):`${(cd/1000).toFixed(1)}s`;
     skills.push({
      name:skillName(sid,def.name),
      level:rank,
@@ -329,8 +330,49 @@ export async function createEncounters(o:{
    return;
   }
   // Match each hero's HUD tap behavior for 1/2/3.
-  if(!run.pending)openSkillTree(idx);
+  if(!run.pending){if(run.slots[idx]==='rift-dash'&&!e.shiftKey)manualDash(cursor.x,cursor.y);else openSkillTree(idx);}
  });
+
+ let lastNetDash=0;
+ const dashTrail=o.uiStage.addChild(new Graphics());dashTrail.eventMode='none';dashTrail.zIndex=5;let trailUntil=0;
+ const dashAim=o.uiStage.addChild(new Graphics());dashAim.zIndex=100;dashAim.eventMode='none';
+ let cursor={x:innerWidth/2,y:innerHeight/2},aim:null|{id:number;x:number;y:number;touch:boolean;dx:number;dy:number}=null;
+ let lastDash:null|{from:Tile;to:Tile;distance:number}=null;
+ function dashReady(){return h.alive&&!run.pending&&!skillTree.isOpen()&&currentHeroId()==='rift-runner'&&run.slots.includes('rift-dash')&&vfx.cooldown('rift-dash')<=0;}
+ function heroScreen(){const p=o.hero.position();return {x:origin.x+p.x*origin.scale,y:origin.y+(p.y-liftAt(p.x,p.y))*origin.scale};}
+ function manualDash(x:number,y:number){
+  if(!dashReady())return false;
+  const at=heroScreen(),dx=x-at.x,dy=y-at.y;
+  if(Math.hypot(dx,dy)<8)return false;
+  const d=unproject(dx,dy),len=Math.hypot(d.x,d.y),du=d.x/len,dv=d.y/len;
+  if(online){o.net?.dash(du,dv);return true;}
+  const from={u:h.x,v:h.y};let to={...from};
+  for(let i=1;i<=30;i++){const next={u:from.u+du*i*.05,v:from.v+dv*i*.05};if(!walkable(next)||cliffTile(to.u,to.v,next.u,next.v))break;to=next;}
+  const distance=Math.hypot(to.u-from.u,to.v-from.v);if(distance<.05)return false;
+  o.cancelRoute?.();o.hero.face(dx,dy);turn(h,dx,dy);
+  vfx.castSkill('rift-dash',{targetU:from.u+du*6,targetV:from.v+dv*6,dashDistance:distance});
+  const w=tilePoint(to.u,to.v);if(!o.hero.teleport(w.x,w.y))return false;
+  h.x=to.u;h.y=to.v;h.immune=Math.max(h.immune,260);lastDash={from,to,distance};trailUntil=performance.now()+1100;syncSkillBar();return true;
+ }
+ function startDashAim(idx:number,x:number,y:number,id:number,touch:boolean){
+  if(run.slots[idx]!=='rift-dash'||skillTree.isOpen()||run.pending)return;
+  if(!touch&&!dashReady())return;
+  if(!touch){manualDash(cursor.x,cursor.y);return;}
+  aim={id,x,y,touch,dx:0,dy:0};
+ }
+ window.addEventListener('pointermove',e=>{
+  if(e.pointerType==='mouse'&&!hud.getSkillSocketScreenGeometry().sockets.some(s=>Math.hypot(e.clientX-s.x,e.clientY-s.y)<s.radius+20))cursor={x:e.clientX,y:e.clientY};
+  if(!aim||aim.id!==e.pointerId)return;
+  aim.dx=e.clientX-aim.x;aim.dy=e.clientY-aim.y;
+  const l=Math.hypot(aim.dx,aim.dy),p=heroScreen();dashAim.clear();
+  if(l>=12){const dx=aim.dx/l,dy=aim.dy/l,tx=p.x+dx*110,ty=p.y+dy*110;
+   dashAim.moveTo(p.x,p.y).lineTo(tx,ty).stroke({color:0x67edff,width:5,alpha:.85});
+   dashAim.poly([tx,ty,tx-dx*20-dy*12,ty-dy*20+dx*12,tx-dx*20+dy*12,ty-dy*20-dx*12]).fill(0xc4ffff);
+  }
+ });
+ window.addEventListener('pointerup',e=>{if(!aim||aim.id!==e.pointerId)return;const a=aim;aim=null;dashAim.clear();if(Math.hypot(a.dx,a.dy)>=12){const p=heroScreen();manualDash(p.x+a.dx*10,p.y+a.dy*10);}else openSkillTree(run.slots.indexOf('rift-dash'));});
+ const cancelDashAim=()=>{aim=null;dashAim.clear();};
+ window.addEventListener('pointercancel',cancelDashAim);window.addEventListener('blur',cancelDashAim);window.addEventListener('resize',cancelDashAim);
 
  let offerKey='';
  let localOfferOverride=false;
@@ -498,7 +540,7 @@ export async function createEncounters(o:{
   const aoeTarget=nearest(aoeCastRadius(run));
   if(!aoeTarget)return [];
   notifyHeroCast(380);
-  const equipped=run.slots.slice(0,MAX_SKILL_SLOTS).filter((id):id is SkillId=>Boolean(SKILL_CATALOG[id as SkillId]));
+  const equipped=run.slots.slice(0,MAX_SKILL_SLOTS).filter((id):id is SkillId=>id!=='rift-dash'&&Boolean(SKILL_CATALOG[id as SkillId]));
   if(!equipped.length)return [];
   if(forceAll)vfx.resetCooldowns(equipped);
   const anyReady=equipped.some(id=>vfx.cooldown(id)<=0);
@@ -605,11 +647,18 @@ export async function createEncounters(o:{
     run=me.run?structuredClone(me.run):fresh(currentHeroId());
     syncHeroLoadout(run,currentHeroId());
    }
+   if((run.manualDashes??0)>lastNetDash){
+    lastNetDash=run.manualDashes??0;const from={u:run.dashFromU??h.x,v:run.dashFromV??h.y},du=run.dashU??1,dv=run.dashV??0;
+    // Authoritative confirmation: FX starts from the recorded origin, before refreshing the local fighter position.
+    const old={x:h.x,y:h.y};h.x=from.u;h.y=from.v;
+    vfx.castSkill('rift-dash',{targetU:from.u+du*6,targetV:from.v+dv*6,dashDistance:1.5});h.x=old.x;h.y=old.y;
+    const to=toTile(me.x,me.y);lastDash={from,to,distance:Math.hypot(to.u-from.u,to.v-from.v)};trailUntil=performance.now()+1100;
+   }
    if(run.level>prevLevel){levelUpPulseMs=1200;vfx.triggerLevelUp(run.level,h.x,h.y);}
    const p=o.hero.position(),t=toTile(p.x,p.y);h.x=t.u;h.y=t.v;h.tick(dt);
    if((run.autoCasts??0)>lastCoopAutoCasts){
     lastCoopAutoCasts=run.autoCasts??0;
-    const castIds=(run.lastCast?.length?run.lastCast:run.slots).filter((id):id is SkillId=>Boolean(SKILL_CATALOG[id as SkillId]));
+    const castIds=(run.lastCast?.length?run.lastCast:run.slots).filter((id):id is SkillId=>id!=='rift-dash'&&Boolean(SKILL_CATALOG[id as SkillId]));
     if(castIds.length){
      const aoeTarget=nearest(aoeCastRadius(run));
      vfx.castSimultaneous(castIds,aoeTarget?{targetU:aoeTarget.x,targetV:aoeTarget.y}:undefined);
@@ -828,6 +877,16 @@ export async function createEncounters(o:{
  let frameAt=performance.now();
  let fpsAccumMs=0,fpsFrames=0,lastFps=60;
  const loop=(now:number)=>{
+  dashTrail.clear();
+  if(lastDash&&now<trailUntil){const {from,to}=lastDash,a=tilePoint(from.u,from.v),b=tilePoint(to.u,to.v),alpha=(trailUntil-now)/1100;
+   const ax=origin.x+a.x*origin.scale,ay=origin.y+(a.y-liftAt(a.x,a.y))*origin.scale,bx=origin.x+b.x*origin.scale,by=origin.y+(b.y-liftAt(b.x,b.y))*origin.scale;
+   const len=Math.hypot(bx-ax,by-ay)||1,nx=-(by-ay)/len,ny=(bx-ax)/len;
+   for(let strand=0;strand<3;strand++){const pts:number[]=[];
+    for(let side of [1,-1])for(let j=0;j<=20;j++){const t=side===1?j/20:1-j/20,w=Math.sin(t*Math.PI)*(strand===0?10:3)*origin.scale,offset=Math.sin(t*9+strand*2+now*.012)*Math.sin(t*Math.PI)*5*origin.scale;
+     pts.push(ax+(bx-ax)*t+nx*(w*side+offset),ay+(by-ay)*t-16+ny*(w*side+offset));}
+    dashTrail.poly(pts).fill({color:[0x7654ff,0x48daff,0xe1ffff][strand],alpha:alpha*[.22,.65,.9][strand]});
+   }
+  }
   const rawDt=last?now-last:16.67;
   if(rawDt>0&&rawDt<500){
    fpsAccumMs+=rawDt;
@@ -922,6 +981,7 @@ export async function createEncounters(o:{
   setMaxHp(n:number){baseHp=n;if(online)return;n+=health(run);if(n===maxHp)return;h.hp=Math.min(n,h.hp+Math.max(0,n-maxHp));maxHp=n;},
   liveCounts:()=>({foesRendered:foes.length,particles:vfx.fx.particleCount()}),
   snapshot:()=>({spawnDistanceM:SPAWN_DISTANCE_M,gate:GATE,metersPerTile:METERS_PER_TILE,
+   manualDash:{aiming:!!aim,last:lastDash},
    hero:{hp:h.hp,maxHp,state:h.state,u:+h.x.toFixed(2),v:+h.y.toFixed(2),meters:+meters(fromCenter(tileOf(h))).toFixed(1),safe:inSafeZone(tileOf(h)),reach:+reach(run).toFixed(2),aoeCastRadiusTiles:+aoeCastRadius(run).toFixed(2),critChance:+critChance(run).toFixed(2),critMultiplier:+critMultiplier(run).toFixed(2)},
    foes:foes.map(f=>{const lv=Math.max(1,f.level||1),mHp=f.maxHp||revenantMaxHp(lv);return {u:+f.x.toFixed(2),v:+f.y.toFixed(2),level:lv,hp:f.hp,maxHp:mHp,damage:revenantDamage(lv),xpReward:revenantXpReward(lv),label:`Lv. ${lv}`,state:f.state,safe:inSafeZone(tileOf(f)),clear:walkable(tileOf(f)),gateMeters:+meters(fromGate(tileOf(f))).toFixed(1)};}),
    soulAnimations:collecting.length,
