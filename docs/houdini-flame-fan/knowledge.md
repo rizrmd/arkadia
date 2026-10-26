@@ -10,7 +10,7 @@ PC-FATAN ran Houdini 22.0.466 with an Apprentice license. All five levels were s
 
 The source supports Lv1–Lv5, range, fan angle, intensity, duration, seed and vertical offset. It retains the approved 108° footprint, per-level range growth and two-thirds forward visual reach. Raw pivot is (0.20, 0.35). The effect is shifted upward by 15% with the bottom 20% reserved; raw watermarks are retained. The proposed crop rectangle is metadata only. Experimental normal-blend atlases explicitly increase coverage alpha by 16 in the top 80%; raw masters and watermark pixels remain untouched.
 
-Mobile atlas memory is 8.19 MiB per active level; desktop inspection uses 32.19 MiB. The player loads one level/tier and unloads old sources. Every visible label and control is English and rendered in Pixi. Local desktop/phone viewport checks passed all levels and playback; these are browser checks, not physical-device GPU benchmarks.
+Mobile atlas memory is 8.19 MiB per active level; desktop inspection uses 32.19 MiB. The player loads one level/tier and unloads old sources. Every visible label and control is English and rendered in Pixi. Local and public desktop/phone viewport checks passed all five levels, 36-frame playback, pointer controls, no HTML controls, no page errors and no failed assets; these are browser checks, not physical-device GPU benchmarks.
 
 For a 3D game, animate the atlas on a registered transparent quad with correct world scale, camera alignment, sorting/depth testing and soft intersections as appropriate. This canonical east-view bake is not a freely viewable volume. Arkodia additionally needs its existing projection, wall clipping and object mask. The separate preview does not prove game integration. Burn Soil timing is metadata only and its tick damage remains unset.
 
@@ -51,4 +51,15 @@ These earlier blank, overexposed, undersampled and small-frame experiments are r
 ![Superseded diagnostic — test-material](https://ark-whachat.fural.space/houdini-flame-fan/evidence/diagnostics/test-material.png)
 
 ![Superseded diagnostic — wide-preview](https://ark-whachat.fural.space/houdini-flame-fan/evidence/diagnostics/wide-preview.png)
+
+
+### Verified public player
+
+[Public browser report](https://ark-whachat.fural.space/houdini-flame-fan/evidence/live-verification.json). The preview and source pipeline were pushed and published using the shared deployment lock and committed-only worktree; peer working files were excluded. The production game effect remains unchanged.
+
+![Live Pixi experiment — 1440px viewport](https://ark-whachat.fural.space/houdini-flame-fan/evidence/live-1440.png)
+
+![Live Pixi experiment — 390px viewport](https://ark-whachat.fural.space/houdini-flame-fan/evidence/live-390.png)
+
+![Live Pixi experiment — 320px viewport](https://ark-whachat.fural.space/houdini-flame-fan/evidence/live-320.png)
 

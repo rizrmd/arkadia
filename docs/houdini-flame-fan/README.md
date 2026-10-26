@@ -71,3 +71,7 @@ A baked camera view is not a freely viewable 3D volume. Rotating this sprite arb
 Initial failures were corrected: executable/argument CLI syntax, resolution-mode callback, USD noncommercial save paths, camera-unit conversion and excessive emission exposure. One run lost its dispatch owner; a device/process check confirmed no renderer remained before retry. Early blank/white/noisy frames are retained as diagnostics, not successful game art. Browser libraries required reapplying the existing HOME-only organization setup before verification.
 
 Production blockers: an eligible commercial render environment with clean scene generation, approved rolling flame appearance, heading coverage, gameplay occlusion/depth integration and physical-device performance evidence. The native goal must remain incomplete until those acceptance requirements are satisfied.
+
+## Public verification
+
+The isolated player at https://ark-whachat.fural.space/houdini-flame-fan/ passes the same desktop and phone checks for all five levels, 36-frame playback, Pixi pointer controls, no HTML controls, no page errors and no failed assets. See `live-verification.json`. A fixed 200ms animation assertion was too short after public texture uploads; the check now waits for actual ticker progress with a bounded 10s deadline. The initial route fallback was corrected with a dedicated gateway review prefix. The first JSON-layer deploy rejected the master archive size; the supported chunked tar release shipped it successfully.
