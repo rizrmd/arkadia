@@ -9,6 +9,16 @@ const receipt={runtimeCommit:'7957773ab1a59f1d17733426a0a400503aca13fd',entry:'/
 await fs.writeFile(root+'material-release.json',JSON.stringify(receipt,null,2)+'\n');
 if(process.argv.includes('--prepare')){console.log(JSON.stringify({prepared:true,files:Object.keys(files).length}));process.exit(0);}
 files['/material-release.json']=(await fs.readFile(root+'material-release.json')).toString('base64');
-const layer=await publishLayer({name:'shadow-material-7957773a-evidence',files,prefix:'/shadow-audit',check:'/shadow-audit/material-release.json'});
-for(const [p,data] of Object.entries(files)){const url='https://ark-whachat.fural.space/shadow-audit'+p+(p.endsWith('.png')?'?format=png':'');const r=await fetch(url,{signal:AbortSignal.timeout(30000)});if(!r.ok)throw Error('HTTP '+r.status+' '+p);const actual=createHash('sha256').update(Buffer.from(await r.arrayBuffer())).digest('hex'),expected=createHash('sha256').update(Buffer.from(data,'base64')).digest('hex');if(actual!==expected)throw Error('SHA mismatch '+p);}
+const layer=process.argv.includes('--verify-only')?'1793016131990-shadow-material-7957773a-evidence-fdf621af4623':await publishLayer({name:'shadow-material-7957773a-evidence',files,prefix:'/shadow-audit',check:'/shadow-audit/material-release.json'});
+for(const [p,data] of Object.entries(files)){
+ const expected=createHash('sha256').update(Buffer.from(data,'base64')).digest('hex');
+ let actual,status;
+ for(let attempt=0;attempt<3;attempt++){
+  const url='https://ark-whachat.fural.space/shadow-audit'+p+'?audit='+expected+(p.endsWith('.png')?'&format=png':'');
+  const r=await fetch(url,{signal:AbortSignal.timeout(30000)});status=r.status;actual=createHash('sha256').update(Buffer.from(await r.arrayBuffer())).digest('hex');
+  if(r.ok&&actual===expected)break;
+  console.warn(JSON.stringify({retry:attempt+1,path:p,status,actual,expected}));
+ }
+ if(status!==200||actual!==expected)throw Error('Evidence verification failed '+p);
+}
 console.log(JSON.stringify({layer,files:Object.keys(files).length,hashesVerified:true}));
