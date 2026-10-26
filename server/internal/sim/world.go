@@ -85,12 +85,14 @@ type Player struct {
 	// BaseX, BaseY: where the last applied input left the hero, under the Owed guessed steps (only while Owed > 0).
 	BaseX, BaseY float64
 
-	queue    []Input
-	tokens   float64
-	steering bool
-	last     Vec // the walk vector of the last input applied
-	starved  int // ticks in a row without any input
-	slotCD   [MaxSkillSlots]float64
+	queue         []Input
+	tokens        float64
+	steering      bool
+	last          Vec // the walk vector of the last input applied
+	starved       int // ticks in a row without any input
+	slotCD        [MaxSkillSlots]float64
+	burnSoils     []burnSoilZone
+	burnSoilTicks int
 }
 
 // SetHero sets the player's hero and synchronizes their 3-slot skill loadout.
@@ -616,6 +618,9 @@ func (w *World) autoCastInAoE(p *Player) {
 		}
 		dmg := math.Max(1, math.Round(p.Run.damage()*p.Run.skillDamageMultiplier(skillID)*comboMult*scale))
 		splashR := 1.35 * p.Run.reach() * p.Run.skillAreaMultiplier(skillID)
+		if skillID == "flame-fan" && p.Run.skillRank(skillID) >= 3 {
+			p.burnSoils = append(p.burnSoils, burnSoilZone{Origin: p.F.Pos, Aim: target.F.Pos, Area: p.Run.skillAreaMultiplier(skillID)})
+		}
 		hits := 0
 		for _, e := range w.Enemies {
 			if !e.F.Alive() || (e.Gen > 0 && e.Age < 250) {
@@ -654,6 +659,7 @@ func (w *World) enemyLevelOf(f *Fighter) int {
 }
 
 func (w *World) heroStep(p *Player, dt float64) {
+	w.stepBurnSoil(p, dt)
 	for i := 0; i < MaxSkillSlots; i++ {
 		p.slotCD[i] = math.Max(0, p.slotCD[i]-dt)
 	}

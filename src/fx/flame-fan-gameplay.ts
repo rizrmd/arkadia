@@ -10,7 +10,7 @@ export function createGameplayFlameFan(parent:Container,trace?:(x0:number,y0:num
  let material:ReturnType<typeof createFlameFanMaterial>|undefined;
  let gpuMaterial:ReturnType<typeof createGpuFlameFanMaterial>|undefined;
  const native=renderer?.type===RendererType.WEBGL&&typeof WebGL2RenderingContext!=='undefined'&&(renderer as WebGLRenderer).gl instanceof WebGL2RenderingContext;
- type Sheet={u:number;v:number;yaw:number;radius:number;rank:number;age:number;tick:number;sprite:Sprite;canvas:HTMLCanvasElement;mask:HTMLCanvasElement;g:CanvasRenderingContext2D;maskCtx:CanvasRenderingContext2D;maskTexture?:Texture;target?:RenderTexture;clip:Path2D};
+ type Sheet={u:number;v:number;yaw:number;radius:number;rank:number;age:number;tick:number;sprite:Sprite;soil:Sprite;soilCanvas:HTMLCanvasElement;canvas:HTMLCanvasElement;mask:HTMLCanvasElement;g:CanvasRenderingContext2D;maskCtx:CanvasRenderingContext2D;maskTexture?:Texture;target?:RenderTexture;clip:Path2D};
  const live:Sheet[]=[],pool:Sheet[]=[];
  let preparing:Promise<void>|undefined;
  function ensureMaterial(){if(native)gpuMaterial??=createGpuFlameFanMaterial(renderer!);else material??=createFlameFanMaterial();}
@@ -19,7 +19,8 @@ export function createGameplayFlameFan(parent:Container,trace?:(x0:number,y0:num
   const target=gpuMaterial?.createTexture(),texture=target??Texture.from(canvas);texture.source.autoGarbageCollect=false;
   const maskTexture=gpuMaterial?Texture.from(canvas):undefined;if(maskTexture)maskTexture.source.autoGarbageCollect=false;
   const sprite=new Sprite(texture);sprite.anchor.set(.5);
-  return {u:0,v:0,yaw:0,radius:1,rank:1,age:0,tick:-1,sprite,canvas,mask,g:canvas.getContext('2d')!,maskCtx:mask.getContext('2d')!,maskTexture,target,clip:new Path2D()};
+  const soilCanvas=Object.assign(document.createElement('canvas'),{width:256,height:256}),soil=new Sprite(Texture.from(soilCanvas));soil.anchor.set(.5);soil.texture.source.autoGarbageCollect=false;
+  return {u:0,v:0,yaw:0,radius:1,rank:1,age:0,tick:-1,sprite,soil,soilCanvas,canvas,mask,g:canvas.getContext('2d')!,maskCtx:mask.getContext('2d')!,maskTexture,target,clip:new Path2D()};
  }
  function prepare(){return preparing??=new Promise<void>(resolve=>setTimeout(resolve,0)).then(async()=>{
   ensureMaterial();
@@ -27,12 +28,12 @@ export function createGameplayFlameFan(parent:Container,trace?:(x0:number,y0:num
   else material!.render(1,.5);
  });}
  const duration=.85;
- function spawn(u:number,v:number,yaw:number,radius:number,rank:number){
+ function spawn(u:number,v:number,yaw:number,radius:number,rank:number,age=0){
   ensureMaterial();
   let s=pool.pop();
-  if(!s&&live.length>=3){s=live.shift()!;s.sprite.visible=false;}
+  if(!s&&live.length>=3){s=live.shift()!;s.sprite.visible=false;s.soil.visible=false;}
   s??=makeSheet();
-  Object.assign(s,{u,v,yaw,radius,rank,age:0,tick:-1});
+  Object.assign(s,{u,v,yaw,radius,rank,age,tick:-1});
   // Conservative radial wall clipping. This affects appearance only; authoritative hits keep their exact ray check.
   const clip=new Path2D(),origin=tilePoint(u,v);clip.moveTo(128,128);
   for(let i=0;i<=64;i++){const a=-Math.PI*.3+i*Math.PI*.6/64,end=tilePoint(u+Math.cos(yaw+a)*radius,v+Math.sin(yaw+a)*radius),hit=trace?.(origin.x,origin.y,end.x,end.y),r=hit?.hit?Math.max(0,hit.t-.015):1;clip.lineTo(128+Math.cos(a)*r*128,128-Math.sin(a)*r*128);}
@@ -49,22 +50,31 @@ export function createGameplayFlameFan(parent:Container,trace?:(x0:number,y0:num
   }
   mask.putImageData(pixels,0,0);s.sprite.label=String(masked);
   if(gpuMaterial){const g=s.g;g.clearRect(0,0,256,256);g.save();g.clip(s.clip);g.fillStyle='white';g.fillRect(0,0,256,256);g.restore();g.globalCompositeOperation='destination-in';g.drawImage(s.mask,0,0,256,256);g.globalCompositeOperation='source-over';s.maskTexture!.source.update();}
-s.sprite.visible=true;parent.addChild(s.sprite);live.push(s);
+s.sprite.visible=true;s.soil.visible=rank>=3;parent.addChild(s.soil,s.sprite);live.push(s);
   // At most three recent casts, including high-rank overlap / scripted replays.
-  if(live.length>3){const old=live.shift()!;old.sprite.visible=false;pool.push(old);}
+  if(live.length>3){const old=live.shift()!;old.sprite.visible=false;old.soil.visible=false;pool.push(old);}
  }
  function frame(dt:number,view:View){
   for(let i=live.length-1;i>=0;i--){const s=live[i];s.age+=dt;
-   if(s.age>=duration){s.sprite.visible=false;live.splice(i,1);pool.push(s);continue;}
+   if(s.age>=(s.rank>=3?1:duration)){s.sprite.visible=false;s.soil.visible=false;live.splice(i,1);pool.push(s);continue;}
+   s.sprite.visible=s.age<duration;
    const tick=Math.floor(s.age*30);
    if(tick!==s.tick){s.tick=tick;
+    if(s.rank>=3){
+     const g=s.soilCanvas.getContext('2d')!;g.clearRect(0,0,256,256);g.save();g.clip(s.clip);
+     g.fillStyle='rgba(80,24,8,.28)';g.fillRect(0,0,256,256);
+     for(let j=0;j<55;j++){const a=((j*2.399)%1.88)-.94,r=22+(j*31%100),x=128+Math.cos(a)*r,y=128-Math.sin(a)*r;
+      g.fillStyle=`rgba(255,${80+j%70},16,${.4+.25*Math.sin(s.age*24+j)})`;g.beginPath();g.ellipse(x,y,2+j%3,1+j%2,0,0,Math.PI*2);g.fill();
+      g.strokeStyle=g.fillStyle;g.lineWidth=1.5;g.beginPath();g.moveTo(x-2,y);g.bezierCurveTo(x+5,y-3,x-3,y-6-j%4,x+Math.sin(s.age*28+j)*2,y-8-j%5);g.stroke();}
+     g.restore();g.globalCompositeOperation='destination-in';g.drawImage(s.mask,0,0,256,256);g.globalCompositeOperation='source-over';s.soil.texture.source.update();
+    }
     if(gpuMaterial)gpuMaterial.render(s.target!,s.maskTexture!,s.rank,.42+s.age/duration*2.18);
     else{const g=s.g;g.clearRect(0,0,256,256);g.save();g.clip(s.clip);g.drawImage(material!.render(s.rank,.42+s.age/duration*2.18),0,0);g.restore();g.globalCompositeOperation='destination-in';g.drawImage(s.mask,0,0,256,256);g.globalCompositeOperation='source-over';s.sprite.texture.source.update();}
    }
    const p=tilePoint(s.u,s.v),c=Math.cos(s.yaw),n=Math.sin(s.yaw),k=s.radius*view.scale/128;
    // Texture +x = aim; texture +y = -lateral (WebGL's bottom-up raster).
-   s.sprite.setFromMatrix(new Matrix(64*(c-n)*k,32*(c+n)*k,64*(n+c)*k,32*(n-c)*k,view.x+p.x*view.scale,view.y+p.y*view.scale));
+   const transform=new Matrix(64*(c-n)*k,32*(c+n)*k,64*(n+c)*k,32*(n-c)*k,view.x+p.x*view.scale,view.y+p.y*view.scale);s.sprite.setFromMatrix(transform);s.soil.setFromMatrix(transform);
   }
  }
- return {prepare,spawn,frame,snapshot:()=>live.map(s=>({u:s.u,v:s.v,yaw:s.yaw,radius:s.radius,rank:s.rank,age:s.age,layers:s.rank,opacity:.34+s.rank*.045,bloom:0,height:0,material:'connected-sheet',backend:native?'pixi-render-texture':'canvas',maskedSamples:Number(s.sprite.label),projectiles:0}))};
+ return {prepare,spawn,frame,snapshot:()=>live.map(s=>({u:s.u,v:s.v,yaw:s.yaw,radius:s.radius,rank:s.rank,age:s.age,layers:s.rank,opacity:.34+s.rank*.045,bloom:0,height:0,burnSoil:s.rank>=3&&s.age<1,burnDurationMs:s.rank>=3?1000:0,material:'connected-sheet',backend:native?'pixi-render-texture':'canvas',maskedSamples:Number(s.sprite.label),projectiles:0}))};
 }

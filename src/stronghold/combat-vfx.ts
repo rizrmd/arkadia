@@ -1,3 +1,4 @@
+import {createBurnSoilClock,BURN_SOIL} from '../fx/burn-soil';
 import {createGameplayFlameFan} from '../fx/flame-fan-gameplay';
 import {playSkillSound} from '../app/game-audio';
 import {gameSettings} from '../app/settings-state';
@@ -148,6 +149,8 @@ export function createCombatVfx(o:{
  let nextId=1,origin={x:0,y:0,scale:1};
  const floats:FloatingText[]=[],sparks:HitSpark[]=[],slashes:SlashTrail[]=[];
  const projectiles:Projectile[]=[],aoes:AoETelegraph[]=[],impacts:AoEImpact[]=[];
+ const burnSoils:{area:AoETelegraph;clock:ReturnType<typeof createBurnSoilClock>}[]=[];
+ let totalBurnSoilTicks=0;
  const lingeringFx:{fx:FxHandle[];age:number;duration:number}[]=[];
  const levelUps:LevelUpVfx[]=[],ghosts:DashGhost[]=[],combos:ComboBurstVfx[]=[];
  const shakes=new Map<object,{amp:number;age:number;duration:number;seed:number}>();
@@ -329,7 +332,19 @@ export function createCombatVfx(o:{
   a.detonated=true;
   impacts.push({id:nextId++,kind:a.kind,shape:a.shape,u:a.u,v:a.v,radius:a.radius,angle:a.angle,spread:a.spread,age:0,duration:640});
   const d=tileVec(Math.cos(a.angle),Math.sin(a.angle));
-  if(a.skill==='flame-fan')flameSheets.spawn(a.u,a.v,yawOf(d.u,d.v),a.radius,Math.max(1,skillRank(o.getRun(),'flame-fan')));
+  if(a.skill==='flame-fan'){
+   const rank=Math.max(1,skillRank(o.getRun(),'flame-fan'));
+   flameSheets.spawn(a.u,a.v,yawOf(d.u,d.v),a.radius,rank,-fxDtMs/1000+Math.max(0,a.age-a.duration)/1000);
+   if(rank>=3){const clock=createBurnSoilClock(rank,(_at,damage)=>{
+    totalBurnSoilTicks++;
+    // No rollHit/minimum-one fallback while balance is unresolved.
+    if(damage===null||o.isOnline?.())return;
+    for(const f of o.getFoes())if(f.alive&&inBurnSoil(a,f)){
+     if(f.damage(damage))o.onKill(f);
+     addSpark('fire',f.x,f.y,a.angle,12,.28);
+    }
+   });clock.advance(Math.max(0,a.age-a.duration));burnSoils.push({area:{...a},clock});}
+  }
   else cue(`${a.skill}.detonate`,{u:a.u,v:a.v,yaw:yawOf(d.u,d.v),radius:a.radius});
   const sparkKind:SparkKind=a.kind==='ember-snare'||a.kind==='flame-cone'||(a.kind==='cleave-cone'&&o.getHero().heroId==='ember-warden')?'fire':a.kind==='shockwave'?'seismic':'arcane';
   for(const f of o.getFoes()){
@@ -347,6 +362,11 @@ export function createCombatVfx(o:{
   }
  }
 
+ function inBurnSoil(a:AoETelegraph,f:Fighter){
+  const du=f.x-a.u,dv=f.y-a.v,aim=tileVec(Math.cos(a.angle),Math.sin(a.angle));
+  let diff=Math.atan2(dv,du)-yawOf(aim.u,aim.v);while(diff>Math.PI)diff-=Math.PI*2;while(diff<-Math.PI)diff+=Math.PI*2;
+  return Math.hypot(du,dv)<=a.radius+.38&&Math.abs(diff)<=a.spread*.5&&!clampTargetToWall(a.u,a.v,f.x,f.y).hit;
+ }
  function castSkill(id:SkillId,opts:{targetU?:number;targetV?:number;forceCrit?:boolean;comboScale?:number;dashDistance?:number;skipCastCue?:boolean}={}):boolean{
   notifyHeroCast(1050);
   const h=o.getHero(),run=o.getRun();
@@ -588,6 +608,8 @@ export function createCombatVfx(o:{
     projectiles.splice(i,1);
    }
   }
+
+  for(let i=burnSoils.length-1;i>=0;i--){const b=burnSoils[i];b.clock.advance(dt);if(b.clock.complete)burnSoils.splice(i,1);}
 
   // Step AoE ground telegraphs & detonate when fill reaches 100%
   for(let i=aoes.length-1;i>=0;i--){
@@ -859,6 +881,7 @@ export function createCombatVfx(o:{
    flameSheets:flameSheets.snapshot(),
    activeFloats:floats.map(f=>{const fv=floatViews.get(f.id);const hasBubbleOrFrame=Boolean(fv&&fv.root.children.some(c=>!(c instanceof MsdfText)));return {kind:f.kind,text:f.text,subtext:f.subtext,u:+f.u.toFixed(2),v:+f.v.toFixed(2),scale:+f.scale.toFixed(2),frameless:!hasBubbleOrFrame};}),
    activeProjectiles:projectiles.map(p=>({id:p.id,kind:p.kind,u:+p.u.toFixed(2),v:+p.v.toFixed(2),vx:+p.vx.toFixed(2),vy:+p.vy.toFixed(2),traveled:+p.traveled.toFixed(2)})),
+   burnSoil:{damagePerTick:BURN_SOIL.damagePerTick,balancePending:true,totalTicks:totalBurnSoilTicks,zones:burnSoils.map(b=>({elapsedMs:b.clock.elapsedMs,ticks:b.clock.emitted,u:b.area.u,v:b.area.v}))},
    activeAoEs:aoes.map(a=>({id:a.id,kind:a.kind,shape:a.shape,u:+a.u.toFixed(2),v:+a.v.toFixed(2),radius:+a.radius.toFixed(2),progress:+(a.age/a.duration).toFixed(2)})),
    activeImpacts:impacts.map(i=>({id:i.id,kind:i.kind,u:+i.u.toFixed(2),v:+i.v.toFixed(2),radius:+i.radius.toFixed(2)})),
    activeLevelUps:levelUps.map(l=>({level:l.level,u:+l.u.toFixed(2),v:+l.v.toFixed(2),progress:+(l.age/l.duration).toFixed(2)})),
