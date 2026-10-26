@@ -53,7 +53,8 @@ export async function publishLayer({name,files,prefix='',check,deferRestart=fals
 // Write this commit's gateway and boot script; they take effect at the next restart.
 function installGateway(id){
  const src=readFileSync(fileURLToPath(new URL('./gateway.mjs',import.meta.url)),'utf8');
- run(['organization','home-files','write','--custom-sandbox',id,'--path','gateway.mjs','--content',src]);run(['sandboxes','update',id,'--boot-script',BOOT]);
+ run(['organization','home-files','write','--custom-sandbox',id,'--path','gateway.mjs','--content',src]);
+ const jsonLayer=readFileSync(fileURLToPath(new URL('./apply-json-layer.mjs',import.meta.url)),'utf8');run(['organization','home-files','write','--custom-sandbox',id,'--path','apply-json-layer.mjs','--content',jsonLayer]);run(['sandboxes','update',id,'--boot-script',BOOT]);
 }
 export async function publishRelease({name='game',tgz,check='/healthz'}){
  const id=sandboxId(),{hash,parts}=await upload(id,await fs.readFile(tgz),name);

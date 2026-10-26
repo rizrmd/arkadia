@@ -26,6 +26,10 @@ export function sampleSurface(surface:ShadowSurface,step=2):SampledSurface{
  const vertices=new Float32Array((w+1)*(h+1)*3);for(let y=0;y<=h;y++)for(let x=0;x<=w;x++){const q=surfacePoint(p,x/w,y/h,g),i=(y*(w+1)+x)*3;vertices[i]=q.x;vertices[i+1]=q.y;vertices[i+2]=q.z;if(back){const screen=q.y-q.z,z=(p.lift??0)+Math.min(q.z-(p.lift??0),p.heightInterval?p.heightInterval(x/w,y/h).far:Math.max(0,(baseline(p.backGround!,x/w)-y/h)*p.height*(p.vertical??1)));back[i]=q.x;back[i+1]=screen+z;back[i+2]=z;}}
  let left=Infinity,top=Infinity,right=-Infinity,bottom=-Infinity;
  for(let y=0;y<h;y++)for(let x=0;x<w;x++){const a=data[(y*w+x)*4+3];if(!a)continue;const q:ShadowSample=surfacePoint(p,(x+.5)/w,(y+.5)/h,g);q.alpha=a/255;const quad=new Float32Array(12);for(const [j,offset] of [y*(w+1)+x,y*(w+1)+x+1,(y+1)*(w+1)+x+1,(y+1)*(w+1)+x].entries())quad.set(vertices.subarray(offset*3,offset*3+3),j*3);q.quad=quad;samples.push(q);
+  // Preserve the nearest opaque source interior independently of a higher,
+  // translucent texel from the same folded surface. Its original alpha stays
+  // unchanged; the separate owner is used only by the light-depth envelope.
+  if(!back&&p.cast!==false&&a>=240)samples.push({...q,receive:false,opaqueProxy:true});
   if(back){const far=new Float32Array(12);for(const [j,offset] of [y*(w+1)+x,y*(w+1)+x+1,(y+1)*(w+1)+x+1,(y+1)*(w+1)+x].entries())far.set(back.subarray(offset*3,offset*3+3),j*3);
    const faces=[quad];if(quad.some((n,i)=>Math.abs(n-far[i])>1e-5)){faces.push(far);for(let edge=0;edge<4;edge++){const next=(edge+1)%4,face=new Float32Array(12);face.set(quad.subarray(edge*3,edge*3+3),0);face.set(quad.subarray(next*3,next*3+3),3);face.set(far.subarray(next*3,next*3+3),6);face.set(far.subarray(edge*3,edge*3+3),9);faces.push(face);}}
    for(const [i,face] of faces.entries()){const cell:ShadowSample={x:0,y:0,z:0,alpha:q.alpha,quad:face,receive:false};for(let j=0;j<12;j+=3){cell.x+=face[j]/4;cell.y+=face[j+1]/4;cell.z+=face[j+2]/4;}if(i)samples.push(cell);// Keep a second, near-opaque depth envelope. Source interiors are 250–253

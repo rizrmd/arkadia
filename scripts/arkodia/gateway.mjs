@@ -5,7 +5,8 @@
 //   /enemies/ /rift-runner/ and every other review folder from the former split sandboxes
 //   /typography/            the MSDF typography rendering sample (HUD and Choose Your Hero)
 // Releases arrive as layers (see publish-layer.mjs) and are applied once at boot, oldest first.
-import http from 'node:http';import net from 'node:net';import fs from 'node:fs';import path from 'node:path';import {gunzipSync} from 'node:zlib';import {spawn,execFileSync} from 'node:child_process';
+import {applyJsonLayer} from './apply-json-layer.mjs';
+import http from 'node:http';import net from 'node:net';import fs from 'node:fs';import path from 'node:path';import {spawn,execFileSync} from 'node:child_process';
 const home=process.cwd(),www=path.join(home,'www'),layers=path.join(home,'layers'),coopBin=path.join(home,'coop/arkodia'),legacyCoopBin=path.join(home,'coop/arkadia'),applied=path.join(home,'applied.json');
 const PORT=+(process.env.PORT||3000),COOP_PORT=+(process.env.COOP_PORT||3001);
 // Folders with their own pages (directory index and .html allowed); any other .html is a retired page and redirects home.
@@ -17,7 +18,7 @@ function write(dest,bytes,mtime){fs.mkdirSync(path.dirname(dest),{recursive:true
 function target(key,layer){return path.join(www,path.normalize((layer.prefix||'')+key));}
 // A layer is layers/<id>.json: {seq, parts, format: 'gzjson' (gzip JSON {path: base64}) | 'tgz' (game release: arkodia + site/), prefix?}.
 // A layer without a prefix that carries /index.html is a game release: that file is the game page.
-function applyLayers(){
+async function applyLayers(){
  const done=fs.existsSync(applied)?JSON.parse(fs.readFileSync(applied,'utf8')):[];
  const pending=fs.existsSync(layers)?fs.readdirSync(layers).filter(n=>n.endsWith('.json')).map(n=>({id:n.slice(0,-5),...JSON.parse(fs.readFileSync(path.join(layers,n),'utf8'))})).sort((a,b)=>a.seq-b.seq):[];
  for(const layer of pending){
@@ -34,7 +35,7 @@ function applyLayers(){
     if(bin){fs.mkdirSync(path.dirname(coopBin),{recursive:true});fs.copyFileSync(bin,coopBin);fs.chmodSync(coopBin,0o755);if(legacyCoopBin!==coopBin)fs.rmSync(legacyCoopBin,{force:true});}
     const site=path.join(tmp,'site');if(fs.existsSync(site))for(const f of fs.readdirSync(site,{recursive:true})){const src=path.join(site,f),st=fs.statSync(src);if(st.isFile()){const dest=target('/'+f.split(path.sep).join('/'),layer);fs.mkdirSync(path.dirname(dest),{recursive:true});fs.copyFileSync(src,dest);fs.utimesSync(dest,st.mtime,st.mtime);}}
     fs.rmSync(tmp,{recursive:true,force:true});
-   }else{const bytes=Buffer.concat(layer.parts.map(n=>fs.readFileSync(path.join(layers,n))));for(const [key,b64] of Object.entries(JSON.parse(gunzipSync(bytes))))write(target(key,layer),Buffer.from(b64,'base64'));}
+   }else{await applyJsonLayer(home,www,layer);}
    done.push(layer.id);fs.writeFileSync(applied,JSON.stringify(done,null,1));console.log('Applied layer',layer.id);
   }
   for(const n of [...layer.parts,layer.id+'.json'])fs.rmSync(path.join(layers,n),{force:true});
@@ -82,7 +83,7 @@ function proxy(req,res,fallback){
  up.on('error',()=>res.headersSent?res.destroy():fallback?fallback():res.writeHead(502,NO_STORE).end('Co-op server unavailable'));req.pipe(up);
 }
 
-applyLayers();startCoop();
+await applyLayers();startCoop();
 // builds/ held the two game pages of the retired build switch.
 fs.rmSync(path.join(home,'builds'),{recursive:true,force:true});
 const server=http.createServer((req,res)=>{

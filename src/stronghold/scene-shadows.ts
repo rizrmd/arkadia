@@ -65,7 +65,7 @@ export function createSceneShadows(stage:Container,onUpdate:()=>void=()=>{},rend
  function setScene(surfaces:ShadowSurface[]){
   surfaces=surfaces.map(withSolidShadowGeometry);auditSurfaces=surfaces.map(p=>({...p}));
   const sampled=surfaces.map((p,i)=>{const s=sampleSurface(p,2);for(const q of s.samples)q.owner=i+1;return s;});
-  const aliases=surfaces.map((p,i)=>(p.backGround||p.heightInterval||p.nativeGeometry)?surfaces.length*2+i+1:0);if(Math.max(surfaces.length,...aliases)>=3000)throw Error('Static shadow owner pool overlaps actor owners');
+  const aliases=surfaces.map((p,i)=>p.cast!==false?surfaces.length*2+i+1:0);if(Math.max(surfaces.length,...aliases)>=3000)throw Error('Static shadow owner pool overlaps actor owners');
   const total=sampled.reduce((n,s)=>n+s.samples.length,0),packed=new Float32Array(total*18);let j=0;for(const [index,s] of sampled.entries())for(const q of s.samples){packed[j++]=q.x;packed[j++]=q.y;packed[j++]=q.z;packed[j++]=q.alpha;packed[j++]=q.opaqueProxy?aliases[index]:q.owner!;packed[j++]=(s.surface.cast===false?0:1)|(q.receive===false?0:2);packed.set(q.quad!,j);j+=12;}
   heightRevision++;revision++;hasScene=true;stats.surfaces=surfaces.length;stats.ready=false;worker.postMessage({type:'scene',packed},[packed.buffer]);queued=true;queueMicrotask(()=>{if(!inFlight&&queued)request();});
  }
