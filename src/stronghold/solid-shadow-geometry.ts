@@ -8,7 +8,12 @@ export function withSolidShadowGeometry(p:ShadowSurface):ShadowSurface{
  const frontier=p.key.startsWith('ff:'),id=frontier?'frontier:'+p.key.split(':')[1]:'court:'+p.key.split(':')[0],model=solids[id];if(!model)return p;
  if(frontier&&models.atlasSha256!==catalog.sha256)throw Error('Solid shadow companion atlas revision mismatch');
  if(!frontier&&!p.key.endsWith(':'+model.source))return p;
- if(p.sourceWidth!==model.sourceSize[0]||p.sourceHeight!==model.sourceSize[1]||JSON.stringify(p.frame??[0,0,p.sourceWidth,p.sourceHeight])!==JSON.stringify(model.frame))throw Error('Solid shadow companion frame mismatch: '+id);
+ // Full-image court companions use normalized UVs and remain aligned when
+ // delivery downsizes the PNG uniformly (server/webp.go rounds decoded height).
+ // Atlas/subframe companions still require exact source-pixel registration.
+ const whole=!frontier&&!p.frame&&model.frame[0]===0&&model.frame[1]===0&&model.frame[2]===model.sourceSize[0]&&model.frame[3]===model.sourceSize[1];
+ const scaled=whole&&p.sourceWidth>0&&p.sourceHeight>0&&p.sourceWidth<=model.sourceSize[0]&&p.sourceHeight<=model.sourceSize[1]&&p.sourceHeight===Math.max(1,Math.round(model.sourceSize[1]*p.sourceWidth/model.sourceSize[0]));
+ if(!scaled&&(p.sourceWidth!==model.sourceSize[0]||p.sourceHeight!==model.sourceSize[1]||JSON.stringify(p.frame??[0,0,p.sourceWidth,p.sourceHeight])!==JSON.stringify(model.frame)))throw Error('Solid shadow companion frame mismatch: '+id);
  if(model.sourceVertices)return {...p,solidBody:true,capHeight:undefined,backGround:undefined,ground:model.frontGround,geometryModel:'authored-source-vertices-v1',nativeGeometry:{vertices:model.sourceVertices}};
  if(model.nativeBoxes){const boxes=model.nativeBoxes,world=model.nativeWorld!,pivot=model.nativePivot!,scale=p.height*(p.vertical??1)/world[1];
   // Inverse source camera: u=x/128+(screenY+z)/64,

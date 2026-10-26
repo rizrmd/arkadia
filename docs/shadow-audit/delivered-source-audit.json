@@ -1,0 +1,1438 @@
+{
+  "scope": "Every unique raster source referenced by the tracked inventory, including inactive/review sources. Authored bytes and delivered dimensions/alpha are distinguished. Does not activate retired maps or certify native-device performance.",
+  "checkedAt": "2026-10-26T10:50:09.681Z",
+  "serverPolicySha256": "676b61eb36dd8cd6e9f15eb8bb60aaf47e018eb0048f28ed54db53dd80242d73",
+  "sources": [
+    {
+      "source": "/frozen-frontier/game/atlas-5083a8ebd8c8bb4b.webp",
+      "rows": [
+        "frontier:ruined-gate",
+        "frontier:broken-watchtower",
+        "frontier:snowy-shrine",
+        "frontier:pine-tall",
+        "frontier:pine-broad",
+        "frontier:pine-sapling",
+        "frontier:dead-tree",
+        "frontier:dead-snag",
+        "frontier:shrub-juniper",
+        "frontier:shrub-twigs",
+        "frontier:grass-tussock",
+        "frontier:grass-patch",
+        "frontier:rock-boulders",
+        "frontier:rock-scatter",
+        "frontier:wall-ne",
+        "frontier:wall-se",
+        "frontier:corner-n",
+        "frontier:corner-s",
+        "frontier:arch-ne",
+        "frontier:arch-se",
+        "frontier:pillar-intact",
+        "frontier:pillar-broken",
+        "frontier:stairs-ne",
+        "frontier:stairs-nw",
+        "frontier:rubble",
+        "frontier:foundation",
+        "frontier:floor-sunk",
+        "frontier:paving",
+        "frontier:flagstones-a",
+        "frontier:flagstones-b",
+        "frontier:flagstones-c",
+        "frontier:flagstones-d",
+        "frontier:stone-chips-a",
+        "frontier:stone-chips-b",
+        "frontier:drift-ne",
+        "frontier:drift-se",
+        "frontier:drift-mound",
+        "frontier:ground-scuff-a",
+        "frontier:ground-scuff-b",
+        "frontier:column-fallen",
+        "frontier:column-fallen-v",
+        "frontier:grave-headstone",
+        "frontier:grave-cross",
+        "frontier:grave-sarcophagus",
+        "frontier:grave-memorial",
+        "frontier:temple-podium"
+      ],
+      "authoredSize": [
+        2048,
+        2048
+      ],
+      "decodedSize": [
+        2048,
+        2048
+      ],
+      "contentType": "image/webp",
+      "sourcePixelFrames": true,
+      "policy": "native dimensions and alpha retained",
+      "authoredSha256": "5083a8ebd8c8bb4bb4fccc0dcaaa9f71deb9821af1648fbf053506c37617961c",
+      "deliveredSha256": "5083a8ebd8c8bb4bb4fccc0dcaaa9f71deb9821af1648fbf053506c37617961c",
+      "authoredAlphaSha256": "30bc3a537a9bf59709d6f927d7019f8c5c120f5da33f20dc853902bcdda599d2",
+      "deliveredAlphaSha256": "30bc3a537a9bf59709d6f927d7019f8c5c120f5da33f20dc853902bcdda599d2"
+    },
+    {
+      "source": "/modular-stronghold/v2/rampart-se.png",
+      "rows": [
+        "court:rampart-se"
+      ],
+      "authoredSize": [
+        1200,
+        960
+      ],
+      "decodedSize": [
+        624,
+        499
+      ],
+      "contentType": "image/webp",
+      "sourcePixelFrames": false,
+      "policy": "uniform full-image downscale; normalized UV geometry required",
+      "authoredSha256": "56b5f4dd4ef16f0d19fe377a6aaaf2e7e059859eabf35c4c2cde74ed09f7bba0",
+      "deliveredSha256": "0c09153d46c7e36300ac1418a51745ae2bbd5dc3ff045434708723b511735ea8",
+      "authoredAlphaSha256": "ead953ee2a3d33dafa03ec5135268ac280bcf5143e2c0b0b8a4139e6daa7e2e9",
+      "deliveredAlphaSha256": "9450eec3ba506f964693b07c269eda1c63a7c9c215d7bbc825706eb8a08feb13"
+    },
+    {
+      "source": "/modular-stronghold/v2/rampart-ne.png",
+      "rows": [
+        "court:rampart-ne"
+      ],
+      "authoredSize": [
+        1200,
+        960
+      ],
+      "decodedSize": [
+        624,
+        499
+      ],
+      "contentType": "image/webp",
+      "sourcePixelFrames": false,
+      "policy": "uniform full-image downscale; normalized UV geometry required",
+      "authoredSha256": "127be35c74b4365a38e5ceb3594954cde37edfb67d8e6fd4a228d6827238beb3",
+      "deliveredSha256": "8d3fcb5d4c66c36b22a676f9196ccd29ab53afd991095f30a9056075306f68ee",
+      "authoredAlphaSha256": "61c53f120ef2401aa9279fae67619bcffdf20889f641a4040d0e00ce17dc653f",
+      "deliveredAlphaSha256": "b4b3a50553bf8ebcbf3a4a7a719068412fd855fe1852bf04fb2646328ff3778e"
+    },
+    {
+      "source": "/modular-stronghold/v2/bastion.png",
+      "rows": [
+        "court:bastion"
+      ],
+      "authoredSize": [
+        1086,
+        970
+      ],
+      "decodedSize": [
+        320,
+        286
+      ],
+      "contentType": "image/webp",
+      "sourcePixelFrames": false,
+      "policy": "uniform full-image downscale; normalized UV geometry required",
+      "authoredSha256": "8ee7464dd8aa064c839ebdf547646464b7259d2bc424cfc4e20f7ebe287f4874",
+      "deliveredSha256": "f54cde9b289fd868a79f202f58eec2081ed8f165e0aba79a2f0bb5f793764188",
+      "authoredAlphaSha256": "e1df2c5a34a34edab328a09d2fa4b30916c005d803ccc59302d9f62feef2bd7e",
+      "deliveredAlphaSha256": "9795329cd16a5d520cba6e71fbba1f90bc2fba2c54828d4946859ded813b1fce"
+    },
+    {
+      "source": "/modular-stronghold/v2/fir-young.png",
+      "rows": [
+        "court:fir-young",
+        "frostpass:fir-young"
+      ],
+      "authoredSize": [
+        911,
+        1092
+      ],
+      "decodedSize": [
+        336,
+        403
+      ],
+      "contentType": "image/webp",
+      "sourcePixelFrames": false,
+      "policy": "uniform full-image downscale; normalized UV geometry required",
+      "authoredSha256": "032fe61175e2558061355c1d7c3615fb689372d9c2f3c9c8c3f1e27401e44949",
+      "deliveredSha256": "17d6e3a3d0271e37eb5f0b4d5ebfda79582c9db7a35004fb394cffad7b93d482",
+      "authoredAlphaSha256": "328f85b712f3f4f32682be08b96ebe2a0d8ebff797cd6a2ae7cce4adb4c65a78",
+      "deliveredAlphaSha256": "d152954a8ad8f4097db66471448f6402787c80abeb5a1bb4e4fbb7d2d83ba9c1"
+    },
+    {
+      "source": "/modular-stronghold/v2/spruce-mature.png",
+      "rows": [
+        "court:spruce-mature",
+        "frostpass:spruce-mature"
+      ],
+      "authoredSize": [
+        907,
+        1200
+      ],
+      "decodedSize": [
+        336,
+        445
+      ],
+      "contentType": "image/webp",
+      "sourcePixelFrames": false,
+      "policy": "uniform full-image downscale; normalized UV geometry required",
+      "authoredSha256": "62fa1afd990a9c8577ae1c59c0b2cff2792b68863a435c616a2e10aa32972ccf",
+      "deliveredSha256": "a6e1b86286f25d35048d735043202a3025c1b07c1a957a66d230c3bc02a61396",
+      "authoredAlphaSha256": "2278ac56becaaa370012690a045c9f6980b13aca3b430820944bb39e8d10e8d7",
+      "deliveredAlphaSha256": "94c9ba653907924bed8339e564d810ea6dd4cb140fd1dbea1e64f0734545df3b"
+    },
+    {
+      "source": "/modular-stronghold/v2/cliff-snow.png",
+      "rows": [
+        "court:cliff-snow",
+        "frostpass:cliff-snow"
+      ],
+      "authoredSize": [
+        1200,
+        595
+      ],
+      "decodedSize": [
+        560,
+        278
+      ],
+      "contentType": "image/webp",
+      "sourcePixelFrames": false,
+      "policy": "uniform full-image downscale; normalized UV geometry required",
+      "authoredSha256": "5d10641d7f27c9dbc53c0fb48000ea5a58a7e8fb29dd07e1ca8e36f83b471561",
+      "deliveredSha256": "26a130ea5987b8bc7b9bd3f28630f25d07c59a7f8c1d14038c9347c417ef2810",
+      "authoredAlphaSha256": "bfbc1dc0b73b10883e54d33975d22fffca2fbc03c22f5ecbd12daf42ffa471ca",
+      "deliveredAlphaSha256": "558229409aa48c4463f5ba9d19a31e29e180027658a83cb5c18b98e0df1cfffe"
+    },
+    {
+      "source": "/modular-stronghold/v2/boulders-snow.png",
+      "rows": [
+        "court:boulders-snow",
+        "frostpass:boulders-snow"
+      ],
+      "authoredSize": [
+        1200,
+        523
+      ],
+      "decodedSize": [
+        324,
+        141
+      ],
+      "contentType": "image/webp",
+      "sourcePixelFrames": false,
+      "policy": "uniform full-image downscale; normalized UV geometry required",
+      "authoredSha256": "ca1b60f1c7368e4e3ffc361f1df02f5f4c1dd4c68494cc7dd949a5f00753654d",
+      "deliveredSha256": "501d3805a95b5a83bf61ef8d3ad8c964272856944b0d90c8c0339f1a1a32579e",
+      "authoredAlphaSha256": "9993daebca8fbdfafd8f27407f16345021d7c48d6d27e41a17a4330c3ef081fa",
+      "deliveredAlphaSha256": "8ad4ebfd9d497aebba288532a5f7825e86de6693a41c81abe0f198c8ec31d1b6"
+    },
+    {
+      "source": "/modular-stronghold/v2/paving-worn.png",
+      "rows": [
+        "court:paving-worn",
+        "frostpass:paving-worn"
+      ],
+      "authoredSize": [
+        1200,
+        545
+      ],
+      "decodedSize": [
+        342,
+        155
+      ],
+      "contentType": "image/webp",
+      "sourcePixelFrames": false,
+      "policy": "uniform full-image downscale; normalized UV geometry required",
+      "authoredSha256": "5526a945668ea0ff6d3b0f290b2302c321b3817937e03bfe3cdd31e4d22a88fa",
+      "deliveredSha256": "b60d6169786946203d8550a079b6ed8e88f86fffc5789e313916d2293d1f201c",
+      "authoredAlphaSha256": "c3c8ab9ea1e3fcaa2e5ea41523d6644e02a54a1d5a70b066e7b330b3ee0f7951",
+      "deliveredAlphaSha256": "2aeaee7b0cba7df41e63630ad423a9b7d739a05dd516c79626b981a9f3bf20e3"
+    },
+    {
+      "source": "/modular-stronghold/v2/weeds-edge.png",
+      "rows": [
+        "court:weeds-edge"
+      ],
+      "authoredSize": [
+        1200,
+        573
+      ],
+      "decodedSize": [
+        224,
+        107
+      ],
+      "contentType": "image/webp",
+      "sourcePixelFrames": false,
+      "policy": "uniform full-image downscale; normalized UV geometry required",
+      "authoredSha256": "c54a37d6f668d687dce834c9f48715fe1a2e9ad7bbb291e19949c260c1f6e94f",
+      "deliveredSha256": "f51a80ae3cd03ef8d64f313f550679c132a8abfd8fe6a222d03d223352cc8f21",
+      "authoredAlphaSha256": "9b33fcd9d77cb34959577d1dbba69700fe70adfb23f919ab2c9bc67221ee1496",
+      "deliveredAlphaSha256": "d9d94a766378fc6af7c64dea5688b5c902521bdf1bd753a224a7d1d7bda70a5d"
+    },
+    {
+      "source": "/modular-stronghold/v2/snowdrift-edge.png",
+      "rows": [
+        "court:snowdrift-edge",
+        "frostpass:snowdrift-edge"
+      ],
+      "authoredSize": [
+        1200,
+        430
+      ],
+      "decodedSize": [
+        350,
+        125
+      ],
+      "contentType": "image/webp",
+      "sourcePixelFrames": false,
+      "policy": "uniform full-image downscale; normalized UV geometry required",
+      "authoredSha256": "2c2907e90b1e9bfe4fc874af02571937a6043159fa7e89948815d065187576ab",
+      "deliveredSha256": "bd6cb250fcd3262590e0d8086567fa309653d41f1e7b69b7c9ec60dd1d71929f",
+      "authoredAlphaSha256": "92fed3bbef4c3fdda10c1527ee6678b0dc3c5119f14d3aa473546707e5617de0",
+      "deliveredAlphaSha256": "2234bed115a3ed110b7badadffcbb3242c7480aa49f1c64831a1553c1512de14"
+    },
+    {
+      "source": "/modular-stronghold/v2/wall-broken.png",
+      "rows": [
+        "court:wall-broken"
+      ],
+      "authoredSize": [
+        1200,
+        772
+      ],
+      "decodedSize": [
+        300,
+        193
+      ],
+      "contentType": "image/webp",
+      "sourcePixelFrames": false,
+      "policy": "uniform full-image downscale; normalized UV geometry required",
+      "authoredSha256": "44d1f72647c617d689f312a20f63cee9e83fdb5a53f9f43113b955945304b84f",
+      "deliveredSha256": "c20442d954a48a7cd11188b3e8507007ffe379e19be3d56a3cffecb7fc0c0781",
+      "authoredAlphaSha256": "e303fba9fe446a054392404fecd16ba1f5fafeba510343feaab2e70003eda821",
+      "deliveredAlphaSha256": "4e45ae67fc15f0ac4b104d5ed4f07f73bbba6140cacd053e9dd5f854d6533faf"
+    },
+    {
+      "source": "/modular-stronghold/v2/supply-cart.png",
+      "rows": [
+        "court:supply-cart",
+        "frostpass:supply-cart"
+      ],
+      "authoredSize": [
+        1200,
+        796
+      ],
+      "decodedSize": [
+        256,
+        170
+      ],
+      "contentType": "image/webp",
+      "sourcePixelFrames": false,
+      "policy": "uniform full-image downscale; normalized UV geometry required",
+      "authoredSha256": "65159feb64c457be1c70c8b6b5e1f2d64cf7bda2c37083c049d885dbceaaf30e",
+      "deliveredSha256": "ef3e1360ce3ce86f2679f54cf9e85b45885a97acbd821f2215b714d1f1cf8b01",
+      "authoredAlphaSha256": "04052d65c44907ed0aa907ea016167a543855be7cf611bb1b5e9fe2df8aaf6e5",
+      "deliveredAlphaSha256": "1e601183648ab89e040adc9744dab0dd9408dfdb327beda29089270164ac9405"
+    },
+    {
+      "source": "/modular-stronghold/v2/brazier.png",
+      "rows": [
+        "court:brazier",
+        "frostpass:brazier"
+      ],
+      "authoredSize": [
+        595,
+        893
+      ],
+      "decodedSize": [
+        595,
+        893
+      ],
+      "contentType": "image/webp",
+      "sourcePixelFrames": false,
+      "policy": "native dimensions and alpha retained",
+      "authoredSha256": "ce0bba103743e9cfbfe279df9acd9532510326f7c1a982b2a3f783435019998e",
+      "deliveredSha256": "9e022560abaada4200e9f984a2e02980dc04deb44007d556ff76a7129454c0bc",
+      "authoredAlphaSha256": "35e6dd34c4348a5f5577c2cdb161e48ad626d960665c8d63f584e64dc829cc14",
+      "deliveredAlphaSha256": "35e6dd34c4348a5f5577c2cdb161e48ad626d960665c8d63f584e64dc829cc14"
+    },
+    {
+      "source": "/modular-stronghold/crate.png",
+      "rows": [
+        "court:crate",
+        "frostpass:crate"
+      ],
+      "authoredSize": [
+        619,
+        640
+      ],
+      "decodedSize": [
+        256,
+        265
+      ],
+      "contentType": "image/webp",
+      "sourcePixelFrames": false,
+      "policy": "uniform full-image downscale; normalized UV geometry required",
+      "authoredSha256": "62baacbeec9d1efdfd40574d361d75266af3d310da737abf27601af68931e04f",
+      "deliveredSha256": "e879a6adc52dcbfda94640f790381ec36f619c57f73402b8cc774ded731c4984",
+      "authoredAlphaSha256": "53ebbdda564f9ca49c67cc366212636baf8e9e716ceb526c1ec84a8c0f393cec",
+      "deliveredAlphaSha256": "7f9a38bef9b1748f7979a7bd38d52261e6748f38fe8ceaa11663766d40a1c495"
+    },
+    {
+      "source": "/modular-stronghold/barrel.png",
+      "rows": [
+        "court:barrel"
+      ],
+      "authoredSize": [
+        463,
+        640
+      ],
+      "decodedSize": [
+        256,
+        354
+      ],
+      "contentType": "image/webp",
+      "sourcePixelFrames": false,
+      "policy": "uniform full-image downscale; normalized UV geometry required",
+      "authoredSha256": "054016da47bf8bb38a288753daf2d1cec85f454881769a2b214a6cf8faf26e12",
+      "deliveredSha256": "8f5734c43f6e9f217891bd6d9574cb9624b827c16d858a8226b13011e09bc85b",
+      "authoredAlphaSha256": "953a08f9a425d41731653ab14cf8b93af3ec32aaa500637e71f0b7b44818c0b3",
+      "deliveredAlphaSha256": "37f42a3b39f24ca4c275a8433daa895bf20553c6216affe46a1d9dc30f31e967"
+    },
+    {
+      "source": "/fortress-ui/forge-1.webp",
+      "rows": [
+        "building:forge:1"
+      ],
+      "authoredSize": [
+        540,
+        431
+      ],
+      "decodedSize": [
+        540,
+        431
+      ],
+      "contentType": "image/webp",
+      "sourcePixelFrames": false,
+      "policy": "native dimensions and alpha retained",
+      "authoredSha256": "19692d2c99602365e5512dad7f1bdfe2947cd13575034d8b988f112aad925cfe",
+      "deliveredSha256": "19692d2c99602365e5512dad7f1bdfe2947cd13575034d8b988f112aad925cfe",
+      "authoredAlphaSha256": "f3835a03517ab0d2954b140db82115a1922e1a1a5b495e445a09189ca98a7e68",
+      "deliveredAlphaSha256": "f3835a03517ab0d2954b140db82115a1922e1a1a5b495e445a09189ca98a7e68"
+    },
+    {
+      "source": "/fortress-ui/forge-2.webp",
+      "rows": [
+        "building:forge:2"
+      ],
+      "authoredSize": [
+        523,
+        469
+      ],
+      "decodedSize": [
+        523,
+        469
+      ],
+      "contentType": "image/webp",
+      "sourcePixelFrames": false,
+      "policy": "native dimensions and alpha retained",
+      "authoredSha256": "7de81b305bfcf19511ed9f35e65a72bf36df9f0044e647ef169dde4bc9d9aa0f",
+      "deliveredSha256": "7de81b305bfcf19511ed9f35e65a72bf36df9f0044e647ef169dde4bc9d9aa0f",
+      "authoredAlphaSha256": "4ba49c48c12a63355767acf73ad4ca5b957287c35f06cf0d2b366639d3a0ce7b",
+      "deliveredAlphaSha256": "4ba49c48c12a63355767acf73ad4ca5b957287c35f06cf0d2b366639d3a0ce7b"
+    },
+    {
+      "source": "/fortress-ui/forge-3.webp",
+      "rows": [
+        "building:forge:3"
+      ],
+      "authoredSize": [
+        587,
+        567
+      ],
+      "decodedSize": [
+        587,
+        567
+      ],
+      "contentType": "image/webp",
+      "sourcePixelFrames": false,
+      "policy": "native dimensions and alpha retained",
+      "authoredSha256": "bf074bc6f480cec1356ee6ccedbb90232ffea0941aea31928f92ccd875af783f",
+      "deliveredSha256": "bf074bc6f480cec1356ee6ccedbb90232ffea0941aea31928f92ccd875af783f",
+      "authoredAlphaSha256": "390424f67fecf354af573aac0877e066f2074f5e424a26374e240213ebdab859",
+      "deliveredAlphaSha256": "390424f67fecf354af573aac0877e066f2074f5e424a26374e240213ebdab859"
+    },
+    {
+      "source": "/assets/stronghold/barracks.png",
+      "rows": [
+        "building:barracks:1"
+      ],
+      "authoredSize": [
+        640,
+        407
+      ],
+      "decodedSize": [
+        640,
+        407
+      ],
+      "contentType": "image/webp",
+      "sourcePixelFrames": false,
+      "policy": "native dimensions and alpha retained",
+      "authoredSha256": "2b32f626beb08663dd5f778084941ae2c3bd6ae767e3e9d378da7c2f3bb6ae68",
+      "deliveredSha256": "eef8b535a9de13994d900c5a3410bfafc87065bf803de604fb3f0cf7feaa7a0e",
+      "authoredAlphaSha256": "e1d18a77f694426d51f47e71360151d8efe30a73bb3099824b00b94c343fcd8b",
+      "deliveredAlphaSha256": "e1d18a77f694426d51f47e71360151d8efe30a73bb3099824b00b94c343fcd8b"
+    },
+    {
+      "source": "/assets/stronghold/altar.png",
+      "rows": [
+        "building:altar:1"
+      ],
+      "authoredSize": [
+        624,
+        640
+      ],
+      "decodedSize": [
+        624,
+        640
+      ],
+      "contentType": "image/webp",
+      "sourcePixelFrames": false,
+      "policy": "native dimensions and alpha retained",
+      "authoredSha256": "b5daf2efb7bfe1cae236302087cd831008f15c07ca501500bcb949ceb5c7b9e5",
+      "deliveredSha256": "1608bd01dc2fc2865ecec0eda712709aedd48eeea321384973f3484eb0b78a4f",
+      "authoredAlphaSha256": "b586f275c28da1db455e7a1733ee3941b1d51402cf6d38a0d4702c7d34958728",
+      "deliveredAlphaSha256": "b586f275c28da1db455e7a1733ee3941b1d51402cf6d38a0d4702c7d34958728"
+    },
+    {
+      "source": "/assets/stronghold/mage.png",
+      "rows": [
+        "building:mage:1"
+      ],
+      "authoredSize": [
+        466,
+        640
+      ],
+      "decodedSize": [
+        466,
+        640
+      ],
+      "contentType": "image/webp",
+      "sourcePixelFrames": false,
+      "policy": "native dimensions and alpha retained",
+      "authoredSha256": "d30cd199828457db478cdc91d26d915b38911833635c1c3e36453b6f7db4382b",
+      "deliveredSha256": "1c40e80a2e09ff79029780eb73937c49e720278c12a663d4413610dd6111aaf5",
+      "authoredAlphaSha256": "7b677baefeffd1a46032cd90dc57bebee0549de5c4584dbe1081545e86803364",
+      "deliveredAlphaSha256": "7b677baefeffd1a46032cd90dc57bebee0549de5c4584dbe1081545e86803364"
+    },
+    {
+      "source": "/assets/stronghold/expedition-tent.png",
+      "rows": [
+        "building:expedition:1"
+      ],
+      "authoredSize": [
+        768,
+        512
+      ],
+      "decodedSize": [
+        768,
+        512
+      ],
+      "contentType": "image/webp",
+      "sourcePixelFrames": false,
+      "policy": "native dimensions and alpha retained",
+      "authoredSha256": "733e4e8c993dd4925058e99335414d3f994b4f15265427d033e70e6b824c69ac",
+      "deliveredSha256": "386851ffe4247002edd2638fa6febcdbf692697bff6ed0cc8ed6a6456142888e",
+      "authoredAlphaSha256": "b93c3c00093592b30e455b0f0a1c964603aa098c12df8688acc6e75b6d47aae8",
+      "deliveredAlphaSha256": "b93c3c00093592b30e455b0f0a1c964603aa098c12df8688acc6e75b6d47aae8"
+    },
+    {
+      "source": "/assets/stronghold/mine.png",
+      "rows": [
+        "building:mine:1"
+      ],
+      "authoredSize": [
+        640,
+        418
+      ],
+      "decodedSize": [
+        640,
+        418
+      ],
+      "contentType": "image/webp",
+      "sourcePixelFrames": false,
+      "policy": "native dimensions and alpha retained",
+      "authoredSha256": "ddc06ed0ac4d2d7aa757b274c29eaadf16c5197eed10b5905b709b312791757d",
+      "deliveredSha256": "09b3543653bf0aa771deb82801b219b199d3288017cc41375b720e546569d519",
+      "authoredAlphaSha256": "dbbe2cdb1f4c16184828f21df78e401076ed80fa11d0731ebd909c8879f40b6b",
+      "deliveredAlphaSha256": "dbbe2cdb1f4c16184828f21df78e401076ed80fa11d0731ebd909c8879f40b6b"
+    },
+    {
+      "source": "/modular-stronghold/v2/full-gateway-v7-closed.webp",
+      "rows": [
+        "building:gate:1"
+      ],
+      "authoredSize": [
+        768,
+        512
+      ],
+      "decodedSize": [
+        768,
+        512
+      ],
+      "contentType": "image/webp",
+      "sourcePixelFrames": false,
+      "policy": "native dimensions and alpha retained",
+      "authoredSha256": "d265e75acdeebdb889786d1fdd0903b17003a36726471d8395fac7769b9dc76c",
+      "deliveredSha256": "d265e75acdeebdb889786d1fdd0903b17003a36726471d8395fac7769b9dc76c",
+      "authoredAlphaSha256": "e05efdecdc10a6faa23d21fd8d25b10679083e2e52b9967cb5d7d9d8294c1cfc",
+      "deliveredAlphaSha256": "e05efdecdc10a6faa23d21fd8d25b10679083e2e52b9967cb5d7d9d8294c1cfc"
+    },
+    {
+      "source": "/modular-stronghold/v2/full-gateway-v7-sheet.webp",
+      "rows": [
+        "gateway-frame:0",
+        "gateway-frame:1",
+        "gateway-frame:2",
+        "gateway-frame:3",
+        "gateway-frame:4",
+        "gateway-frame:5",
+        "gateway-frame:6",
+        "gateway-frame:7",
+        "gateway-frame:8",
+        "gateway-frame:9",
+        "gateway-frame:10",
+        "gateway-frame:11",
+        "gateway-frame:12",
+        "gateway-frame:13",
+        "gateway-frame:14",
+        "gateway-frame:15"
+      ],
+      "authoredSize": [
+        3072,
+        2048
+      ],
+      "decodedSize": [
+        3072,
+        2048
+      ],
+      "contentType": "image/webp",
+      "sourcePixelFrames": true,
+      "policy": "native dimensions and alpha retained",
+      "authoredSha256": "5908fc315c902cf2d06c781a331e68c453d42e8d72967b6d6863355f065051a4",
+      "deliveredSha256": "5908fc315c902cf2d06c781a331e68c453d42e8d72967b6d6863355f065051a4",
+      "authoredAlphaSha256": "843b2f42615424aa6cdf15a709e4dc410acaa93485a9a6c75a61bae83a9b80f3",
+      "deliveredAlphaSha256": "843b2f42615424aa6cdf15a709e4dc410acaa93485a9a6c75a61bae83a9b80f3"
+    },
+    {
+      "source": "/assets/characters/hero.png",
+      "rows": [
+        "actor:hero:0",
+        "actor:hero:1",
+        "actor:hero:2",
+        "actor:hero:3",
+        "actor:hero:4",
+        "actor:hero:5",
+        "actor:hero:6",
+        "actor:hero:7",
+        "actor:hero:8",
+        "actor:hero:9",
+        "actor:hero:10",
+        "actor:hero:11",
+        "actor:hero:12",
+        "actor:hero:13",
+        "actor:hero:14",
+        "actor:hero:15",
+        "actor:hero:16",
+        "actor:hero:17",
+        "actor:hero:18",
+        "actor:hero:19",
+        "actor:hero:20",
+        "actor:hero:21",
+        "actor:hero:22",
+        "actor:hero:23",
+        "actor:hero:24",
+        "actor:hero:25",
+        "actor:hero:26",
+        "actor:hero:27",
+        "actor:hero:28",
+        "actor:hero:29",
+        "actor:hero:30",
+        "actor:hero:31",
+        "actor:hero:32",
+        "actor:hero:33",
+        "actor:hero:34",
+        "actor:hero:35",
+        "actor:hero:36",
+        "actor:hero:37",
+        "actor:hero:38",
+        "actor:hero:39",
+        "actor:hero:40",
+        "actor:hero:41",
+        "actor:hero:42",
+        "actor:hero:43",
+        "actor:hero:44",
+        "actor:hero:45",
+        "actor:hero:46",
+        "actor:hero:47",
+        "actor:hero:48",
+        "actor:hero:49",
+        "actor:hero:50",
+        "actor:hero:51",
+        "actor:hero:52",
+        "actor:hero:53",
+        "actor:hero:54",
+        "actor:hero:55",
+        "actor:hero:56"
+      ],
+      "authoredSize": [
+        1228,
+        1698
+      ],
+      "decodedSize": [
+        1228,
+        1698
+      ],
+      "contentType": "image/webp",
+      "sourcePixelFrames": true,
+      "policy": "native dimensions and alpha retained",
+      "authoredSha256": "a2750639f0e49585e024d35da01b3af380c9beda5655fbb70700e1f5e958f323",
+      "deliveredSha256": "3652ec9531907553561b61212869b73724c3bf381439c3f068f6779eaa805722",
+      "authoredAlphaSha256": "03704759021621a65e5673a9eedf1129450f0f196b78d53da5092cb105bde85a",
+      "deliveredAlphaSha256": "03704759021621a65e5673a9eedf1129450f0f196b78d53da5092cb105bde85a"
+    },
+    {
+      "source": "/assets/characters/revenant.png",
+      "rows": [
+        "actor:revenant:0",
+        "actor:revenant:1",
+        "actor:revenant:2",
+        "actor:revenant:3",
+        "actor:revenant:4",
+        "actor:revenant:5",
+        "actor:revenant:6",
+        "actor:revenant:7",
+        "actor:revenant:8",
+        "actor:revenant:9",
+        "actor:revenant:10",
+        "actor:revenant:11",
+        "actor:revenant:12",
+        "actor:revenant:13",
+        "actor:revenant:14",
+        "actor:revenant:15",
+        "actor:revenant:16",
+        "actor:revenant:17",
+        "actor:revenant:18",
+        "actor:revenant:19",
+        "actor:revenant:20",
+        "actor:revenant:21",
+        "actor:revenant:22",
+        "actor:revenant:23",
+        "actor:revenant:24",
+        "actor:revenant:25",
+        "actor:revenant:26",
+        "actor:revenant:27",
+        "actor:revenant:28",
+        "actor:revenant:29",
+        "actor:revenant:30",
+        "actor:revenant:31",
+        "actor:revenant:32",
+        "actor:revenant:33",
+        "actor:revenant:34",
+        "actor:revenant:35",
+        "actor:revenant:36",
+        "actor:revenant:37",
+        "actor:revenant:38",
+        "actor:revenant:39",
+        "actor:revenant:40",
+        "actor:revenant:41",
+        "actor:revenant:42",
+        "actor:revenant:43",
+        "actor:revenant:44",
+        "actor:revenant:45",
+        "actor:revenant:46",
+        "actor:revenant:47"
+      ],
+      "authoredSize": [
+        784,
+        996
+      ],
+      "decodedSize": [
+        784,
+        996
+      ],
+      "contentType": "image/webp",
+      "sourcePixelFrames": true,
+      "policy": "native dimensions and alpha retained",
+      "authoredSha256": "b5fd563155bc98d1219eed9a7fdbb91da3212eedd3873fbbbb2be7efb100a615",
+      "deliveredSha256": "7198fcf42c7adba6cafad11531e3491711a94bc16e4f082550f4786d4809bf46",
+      "authoredAlphaSha256": "e6a2c71a0a4b7d441b518773d7e0e5da098fd3dd89053d326de16128c35e4ffa",
+      "deliveredAlphaSha256": "e6a2c71a0a4b7d441b518773d7e0e5da098fd3dd89053d326de16128c35e4ffa"
+    },
+    {
+      "source": "/assets/characters/rift-runner.webp",
+      "rows": [
+        "actor:rift-runner:0",
+        "actor:rift-runner:1",
+        "actor:rift-runner:2",
+        "actor:rift-runner:3",
+        "actor:rift-runner:4",
+        "actor:rift-runner:5",
+        "actor:rift-runner:6",
+        "actor:rift-runner:7",
+        "actor:rift-runner:8",
+        "actor:rift-runner:9",
+        "actor:rift-runner:10",
+        "actor:rift-runner:11",
+        "actor:rift-runner:12",
+        "actor:rift-runner:13",
+        "actor:rift-runner:14",
+        "actor:rift-runner:15",
+        "actor:rift-runner:16",
+        "actor:rift-runner:17",
+        "actor:rift-runner:18",
+        "actor:rift-runner:19",
+        "actor:rift-runner:20",
+        "actor:rift-runner:21",
+        "actor:rift-runner:22",
+        "actor:rift-runner:23",
+        "actor:rift-runner:24",
+        "actor:rift-runner:25",
+        "actor:rift-runner:26",
+        "actor:rift-runner:27",
+        "actor:rift-runner:28",
+        "actor:rift-runner:29",
+        "actor:rift-runner:30",
+        "actor:rift-runner:31",
+        "actor:rift-runner:32",
+        "actor:rift-runner:33",
+        "actor:rift-runner:34",
+        "actor:rift-runner:35",
+        "actor:rift-runner:36",
+        "actor:rift-runner:37",
+        "actor:rift-runner:38",
+        "actor:rift-runner:39",
+        "actor:rift-runner:40",
+        "actor:rift-runner:41",
+        "actor:rift-runner:42",
+        "actor:rift-runner:43",
+        "actor:rift-runner:44",
+        "actor:rift-runner:45",
+        "actor:rift-runner:46",
+        "actor:rift-runner:47",
+        "actor:rift-runner:48",
+        "actor:rift-runner:49",
+        "actor:rift-runner:50",
+        "actor:rift-runner:51",
+        "actor:rift-runner:52",
+        "actor:rift-runner:53",
+        "actor:rift-runner:54",
+        "actor:rift-runner:55",
+        "actor:rift-runner:56",
+        "actor:rift-runner:57",
+        "actor:rift-runner:58",
+        "actor:rift-runner:59",
+        "actor:rift-runner:60",
+        "actor:rift-runner:61",
+        "actor:rift-runner:62",
+        "actor:rift-runner:63",
+        "actor:rift-runner:64",
+        "actor:rift-runner:65",
+        "actor:rift-runner:66",
+        "actor:rift-runner:67",
+        "actor:rift-runner:68",
+        "actor:rift-runner:69",
+        "actor:rift-runner:70",
+        "actor:rift-runner:71",
+        "actor:rift-runner:72",
+        "actor:rift-runner:73",
+        "actor:rift-runner:74",
+        "actor:rift-runner:75",
+        "actor:rift-runner:76",
+        "actor:rift-runner:77",
+        "actor:rift-runner:78",
+        "actor:rift-runner:79",
+        "actor:rift-runner:80",
+        "actor:rift-runner:81",
+        "actor:rift-runner:82",
+        "actor:rift-runner:83",
+        "actor:rift-runner:84",
+        "actor:rift-runner:85",
+        "actor:rift-runner:86",
+        "actor:rift-runner:87",
+        "actor:rift-runner:88",
+        "actor:rift-runner:89",
+        "actor:rift-runner:90",
+        "actor:rift-runner:91",
+        "actor:rift-runner:92",
+        "actor:rift-runner:93",
+        "actor:rift-runner:94",
+        "actor:rift-runner:95",
+        "actor:rift-runner:96",
+        "actor:rift-runner:97",
+        "actor:rift-runner:98",
+        "actor:rift-runner:99",
+        "actor:rift-runner:100",
+        "actor:rift-runner:101",
+        "actor:rift-runner:102",
+        "actor:rift-runner:103",
+        "actor:rift-runner:104",
+        "actor:rift-runner:105",
+        "actor:rift-runner:106",
+        "actor:rift-runner:107",
+        "actor:rift-runner:108",
+        "actor:rift-runner:109",
+        "actor:rift-runner:110",
+        "actor:rift-runner:111",
+        "actor:rift-runner:112",
+        "actor:rift-runner:113",
+        "actor:rift-runner:114",
+        "actor:rift-runner:115",
+        "actor:rift-runner:116",
+        "actor:rift-runner:117",
+        "actor:rift-runner:118",
+        "actor:rift-runner:119",
+        "actor:rift-runner:120",
+        "actor:rift-runner:121",
+        "actor:rift-runner:122",
+        "actor:rift-runner:123",
+        "actor:rift-runner:124",
+        "actor:rift-runner:125",
+        "actor:rift-runner:126",
+        "actor:rift-runner:127",
+        "actor:rift-runner:128",
+        "actor:rift-runner:129",
+        "actor:rift-runner:130",
+        "actor:rift-runner:131",
+        "actor:rift-runner:132",
+        "actor:rift-runner:133",
+        "actor:rift-runner:134",
+        "actor:rift-runner:135",
+        "actor:rift-runner:136",
+        "actor:rift-runner:137",
+        "actor:rift-runner:138",
+        "actor:rift-runner:139",
+        "actor:rift-runner:140",
+        "actor:rift-runner:141",
+        "actor:rift-runner:142",
+        "actor:rift-runner:143",
+        "actor:rift-runner:144",
+        "actor:rift-runner:145",
+        "actor:rift-runner:146",
+        "actor:rift-runner:147",
+        "actor:rift-runner:148",
+        "actor:rift-runner:149",
+        "actor:rift-runner:150",
+        "actor:rift-runner:151",
+        "actor:rift-runner:152",
+        "actor:rift-runner:153",
+        "actor:rift-runner:154",
+        "actor:rift-runner:155",
+        "actor:rift-runner:156",
+        "actor:rift-runner:157",
+        "actor:rift-runner:158",
+        "actor:rift-runner:159",
+        "actor:rift-runner:160",
+        "actor:rift-runner:161",
+        "actor:rift-runner:162",
+        "actor:rift-runner:163",
+        "actor:rift-runner:164",
+        "actor:rift-runner:165",
+        "actor:rift-runner:166",
+        "actor:rift-runner:167",
+        "actor:rift-runner:168",
+        "actor:rift-runner:169"
+      ],
+      "authoredSize": [
+        2964,
+        1874
+      ],
+      "decodedSize": [
+        2964,
+        1874
+      ],
+      "contentType": "image/webp",
+      "sourcePixelFrames": true,
+      "policy": "native dimensions and alpha retained",
+      "authoredSha256": "2968c6c80c398701575333854cb85aa81f3d19a9dcc132c800644a3cdd323620",
+      "deliveredSha256": "2968c6c80c398701575333854cb85aa81f3d19a9dcc132c800644a3cdd323620",
+      "authoredAlphaSha256": "f63c3c12ce52290a05128a6650b543eaeef704da8763e69159136babda1894d7",
+      "deliveredAlphaSha256": "f63c3c12ce52290a05128a6650b543eaeef704da8763e69159136babda1894d7"
+    },
+    {
+      "source": "/assets/characters/ember-warden.webp",
+      "rows": [
+        "actor:ember-warden:0",
+        "actor:ember-warden:1",
+        "actor:ember-warden:2",
+        "actor:ember-warden:3",
+        "actor:ember-warden:4",
+        "actor:ember-warden:5",
+        "actor:ember-warden:6",
+        "actor:ember-warden:7",
+        "actor:ember-warden:8",
+        "actor:ember-warden:9",
+        "actor:ember-warden:10",
+        "actor:ember-warden:11",
+        "actor:ember-warden:12",
+        "actor:ember-warden:13",
+        "actor:ember-warden:14",
+        "actor:ember-warden:15",
+        "actor:ember-warden:16",
+        "actor:ember-warden:17",
+        "actor:ember-warden:18",
+        "actor:ember-warden:19",
+        "actor:ember-warden:20",
+        "actor:ember-warden:21",
+        "actor:ember-warden:22",
+        "actor:ember-warden:23",
+        "actor:ember-warden:24",
+        "actor:ember-warden:25",
+        "actor:ember-warden:26",
+        "actor:ember-warden:27",
+        "actor:ember-warden:28",
+        "actor:ember-warden:29",
+        "actor:ember-warden:30",
+        "actor:ember-warden:31",
+        "actor:ember-warden:32",
+        "actor:ember-warden:33",
+        "actor:ember-warden:34",
+        "actor:ember-warden:35",
+        "actor:ember-warden:36",
+        "actor:ember-warden:37",
+        "actor:ember-warden:38",
+        "actor:ember-warden:39",
+        "actor:ember-warden:40",
+        "actor:ember-warden:41",
+        "actor:ember-warden:42",
+        "actor:ember-warden:43",
+        "actor:ember-warden:44",
+        "actor:ember-warden:45",
+        "actor:ember-warden:46",
+        "actor:ember-warden:47",
+        "actor:ember-warden:48",
+        "actor:ember-warden:49",
+        "actor:ember-warden:50",
+        "actor:ember-warden:51",
+        "actor:ember-warden:52",
+        "actor:ember-warden:53",
+        "actor:ember-warden:54",
+        "actor:ember-warden:55",
+        "actor:ember-warden:56",
+        "actor:ember-warden:57",
+        "actor:ember-warden:58",
+        "actor:ember-warden:59",
+        "actor:ember-warden:60",
+        "actor:ember-warden:61",
+        "actor:ember-warden:62",
+        "actor:ember-warden:63",
+        "actor:ember-warden:64",
+        "actor:ember-warden:65",
+        "actor:ember-warden:66",
+        "actor:ember-warden:67",
+        "actor:ember-warden:68",
+        "actor:ember-warden:69",
+        "actor:ember-warden:70",
+        "actor:ember-warden:71",
+        "actor:ember-warden:72",
+        "actor:ember-warden:73",
+        "actor:ember-warden:74",
+        "actor:ember-warden:75",
+        "actor:ember-warden:76",
+        "actor:ember-warden:77",
+        "actor:ember-warden:78",
+        "actor:ember-warden:79",
+        "actor:ember-warden:80",
+        "actor:ember-warden:81",
+        "actor:ember-warden:82",
+        "actor:ember-warden:83",
+        "actor:ember-warden:84",
+        "actor:ember-warden:85",
+        "actor:ember-warden:86",
+        "actor:ember-warden:87",
+        "actor:ember-warden:88",
+        "actor:ember-warden:89",
+        "actor:ember-warden:90",
+        "actor:ember-warden:91",
+        "actor:ember-warden:92",
+        "actor:ember-warden:93",
+        "actor:ember-warden:94",
+        "actor:ember-warden:95",
+        "actor:ember-warden:96",
+        "actor:ember-warden:97",
+        "actor:ember-warden:98",
+        "actor:ember-warden:99",
+        "actor:ember-warden:100",
+        "actor:ember-warden:101",
+        "actor:ember-warden:102",
+        "actor:ember-warden:103",
+        "actor:ember-warden:104",
+        "actor:ember-warden:105",
+        "actor:ember-warden:106",
+        "actor:ember-warden:107",
+        "actor:ember-warden:108",
+        "actor:ember-warden:109",
+        "actor:ember-warden:110",
+        "actor:ember-warden:111",
+        "actor:ember-warden:112",
+        "actor:ember-warden:113",
+        "actor:ember-warden:114",
+        "actor:ember-warden:115",
+        "actor:ember-warden:116",
+        "actor:ember-warden:117",
+        "actor:ember-warden:118",
+        "actor:ember-warden:119",
+        "actor:ember-warden:120",
+        "actor:ember-warden:121",
+        "actor:ember-warden:122",
+        "actor:ember-warden:123",
+        "actor:ember-warden:124",
+        "actor:ember-warden:125",
+        "actor:ember-warden:126",
+        "actor:ember-warden:127",
+        "actor:ember-warden:128",
+        "actor:ember-warden:129",
+        "actor:ember-warden:130",
+        "actor:ember-warden:131",
+        "actor:ember-warden:132",
+        "actor:ember-warden:133",
+        "actor:ember-warden:134",
+        "actor:ember-warden:135",
+        "actor:ember-warden:136",
+        "actor:ember-warden:137",
+        "actor:ember-warden:138",
+        "actor:ember-warden:139",
+        "actor:ember-warden:140",
+        "actor:ember-warden:141",
+        "actor:ember-warden:142",
+        "actor:ember-warden:143",
+        "actor:ember-warden:144",
+        "actor:ember-warden:145",
+        "actor:ember-warden:146",
+        "actor:ember-warden:147",
+        "actor:ember-warden:148",
+        "actor:ember-warden:149",
+        "actor:ember-warden:150",
+        "actor:ember-warden:151",
+        "actor:ember-warden:152",
+        "actor:ember-warden:153",
+        "actor:ember-warden:154",
+        "actor:ember-warden:155",
+        "actor:ember-warden:156",
+        "actor:ember-warden:157",
+        "actor:ember-warden:158",
+        "actor:ember-warden:159",
+        "actor:ember-warden:160",
+        "actor:ember-warden:161",
+        "actor:ember-warden:162",
+        "actor:ember-warden:163",
+        "actor:ember-warden:164",
+        "actor:ember-warden:165",
+        "actor:ember-warden:166",
+        "actor:ember-warden:167",
+        "actor:ember-warden:168",
+        "actor:ember-warden:169"
+      ],
+      "authoredSize": [
+        2916,
+        1874
+      ],
+      "decodedSize": [
+        2916,
+        1874
+      ],
+      "contentType": "image/webp",
+      "sourcePixelFrames": true,
+      "policy": "native dimensions and alpha retained",
+      "authoredSha256": "f858949eedd77c6c9bda48538523503abf31f13c2b8c282162e8f997a94420f0",
+      "deliveredSha256": "f858949eedd77c6c9bda48538523503abf31f13c2b8c282162e8f997a94420f0",
+      "authoredAlphaSha256": "aa9964b27f83c6de3f01019adc4bf5d2928a02ecd5640949d5aa318bc9bea349",
+      "deliveredAlphaSha256": "aa9964b27f83c6de3f01019adc4bf5d2928a02ecd5640949d5aa318bc9bea349"
+    },
+    {
+      "source": "/realistic-torch/frame-3.webp",
+      "rows": [
+        "torch-body:0",
+        "torch-body:1",
+        "torch-body:2",
+        "torch-body:3",
+        "torch-body:4",
+        "torch-body:5",
+        "torch-body:6",
+        "torch-body:7",
+        "torch-body:8",
+        "torch-body:9",
+        "torch-body:10",
+        "torch-body:11",
+        "torch-body:12",
+        "torch-body:13",
+        "torch-body:14",
+        "torch-body:15"
+      ],
+      "authoredSize": [
+        180,
+        290
+      ],
+      "decodedSize": [
+        180,
+        290
+      ],
+      "contentType": "image/webp",
+      "sourcePixelFrames": false,
+      "policy": "native dimensions and alpha retained",
+      "authoredSha256": "bcbbde778c352a4d9141c4607dde7b60fd09a27076ef505ea1ae3727d74f0bad",
+      "deliveredSha256": "bcbbde778c352a4d9141c4607dde7b60fd09a27076ef505ea1ae3727d74f0bad",
+      "authoredAlphaSha256": "c8b47aa46bd401d8d0e93f8bb24b54e29a777eddcb78d145395ec7ab9ae9a57d",
+      "deliveredAlphaSha256": "c8b47aa46bd401d8d0e93f8bb24b54e29a777eddcb78d145395ec7ab9ae9a57d"
+    },
+    {
+      "source": "/environment-corners/v1/corner-court-left.webp",
+      "rows": [
+        "parallax:court:left:desktop"
+      ],
+      "authoredSize": [
+        640,
+        760
+      ],
+      "decodedSize": [
+        640,
+        760
+      ],
+      "contentType": "image/webp",
+      "sourcePixelFrames": false,
+      "policy": "native dimensions and alpha retained",
+      "authoredSha256": "bbd657af22399d83ebab50fcbe96dac4720b84c84fc31da5830b41698c75f981",
+      "deliveredSha256": "bbd657af22399d83ebab50fcbe96dac4720b84c84fc31da5830b41698c75f981",
+      "authoredAlphaSha256": "248d0a62333d7a5d17098e2e4c4a75fe83d0967b3ef12ec383f5d0fc9632e3b5",
+      "deliveredAlphaSha256": "248d0a62333d7a5d17098e2e4c4a75fe83d0967b3ef12ec383f5d0fc9632e3b5"
+    },
+    {
+      "source": "/environment-corners/v1/corner-court-left-mobile.webp",
+      "rows": [
+        "parallax:court:left:mobile"
+      ],
+      "authoredSize": [
+        360,
+        300
+      ],
+      "decodedSize": [
+        360,
+        300
+      ],
+      "contentType": "image/webp",
+      "sourcePixelFrames": false,
+      "policy": "native dimensions and alpha retained",
+      "authoredSha256": "b23242b406bc5d8ec03fb399ece33cff569b105df1695812fd8749a2e559da93",
+      "deliveredSha256": "b23242b406bc5d8ec03fb399ece33cff569b105df1695812fd8749a2e559da93",
+      "authoredAlphaSha256": "e0a6460f43467388c2167ee92eb31d265f5c133ed90d95356b3a6955599df2a2",
+      "deliveredAlphaSha256": "e0a6460f43467388c2167ee92eb31d265f5c133ed90d95356b3a6955599df2a2"
+    },
+    {
+      "source": "/environment-corners/v1/corner-court-right.webp",
+      "rows": [
+        "parallax:court:right:desktop"
+      ],
+      "authoredSize": [
+        640,
+        760
+      ],
+      "decodedSize": [
+        640,
+        760
+      ],
+      "contentType": "image/webp",
+      "sourcePixelFrames": false,
+      "policy": "native dimensions and alpha retained",
+      "authoredSha256": "61392299a3f0da9d636e3251e4001cb595164d24961feeff16403e9847a58ff5",
+      "deliveredSha256": "61392299a3f0da9d636e3251e4001cb595164d24961feeff16403e9847a58ff5",
+      "authoredAlphaSha256": "cb34c30b91838f99785a5e145ff8cd4e9ac9f15a6c5fae868ee0f8235a43f525",
+      "deliveredAlphaSha256": "cb34c30b91838f99785a5e145ff8cd4e9ac9f15a6c5fae868ee0f8235a43f525"
+    },
+    {
+      "source": "/environment-corners/v1/corner-court-right-mobile.webp",
+      "rows": [
+        "parallax:court:right:mobile"
+      ],
+      "authoredSize": [
+        360,
+        300
+      ],
+      "decodedSize": [
+        360,
+        300
+      ],
+      "contentType": "image/webp",
+      "sourcePixelFrames": false,
+      "policy": "native dimensions and alpha retained",
+      "authoredSha256": "c77e68b303d8b6bef200b9689a1285330a2a58cd200b5b40e347b8f3036d0617",
+      "deliveredSha256": "c77e68b303d8b6bef200b9689a1285330a2a58cd200b5b40e347b8f3036d0617",
+      "authoredAlphaSha256": "9fb6a9e3e93a420fae7c4c94808d4915da2e42070710f1ddd456a1c515cb6ac7",
+      "deliveredAlphaSha256": "9fb6a9e3e93a420fae7c4c94808d4915da2e42070710f1ddd456a1c515cb6ac7"
+    },
+    {
+      "source": "/environment-corners/v1/corner-snow-left.webp",
+      "rows": [
+        "parallax:snow:left:desktop"
+      ],
+      "authoredSize": [
+        640,
+        760
+      ],
+      "decodedSize": [
+        640,
+        760
+      ],
+      "contentType": "image/webp",
+      "sourcePixelFrames": false,
+      "policy": "native dimensions and alpha retained",
+      "authoredSha256": "28c4086ea55c5971232d03c8b212f1f67171457f8e0f2df41686c7f7bfa3f751",
+      "deliveredSha256": "28c4086ea55c5971232d03c8b212f1f67171457f8e0f2df41686c7f7bfa3f751",
+      "authoredAlphaSha256": "7eb50345ecb573931bf0bd3c066f47d59cfd6a0e8c75e3ad0b7b6f2212a4fa3f",
+      "deliveredAlphaSha256": "7eb50345ecb573931bf0bd3c066f47d59cfd6a0e8c75e3ad0b7b6f2212a4fa3f"
+    },
+    {
+      "source": "/environment-corners/v1/corner-snow-left-mobile.webp",
+      "rows": [
+        "parallax:snow:left:mobile"
+      ],
+      "authoredSize": [
+        360,
+        300
+      ],
+      "decodedSize": [
+        360,
+        300
+      ],
+      "contentType": "image/webp",
+      "sourcePixelFrames": false,
+      "policy": "native dimensions and alpha retained",
+      "authoredSha256": "0b070c5dcf899c3a41b27a75b790bd5c51bec22c8e3cb289a95a26660104f4d5",
+      "deliveredSha256": "0b070c5dcf899c3a41b27a75b790bd5c51bec22c8e3cb289a95a26660104f4d5",
+      "authoredAlphaSha256": "117b5f77b68bf5e613d9df017bdaaa4763566912f2b66c63ce5c5ec36b93fd85",
+      "deliveredAlphaSha256": "117b5f77b68bf5e613d9df017bdaaa4763566912f2b66c63ce5c5ec36b93fd85"
+    },
+    {
+      "source": "/environment-corners/v1/corner-snow-right.webp",
+      "rows": [
+        "parallax:snow:right:desktop"
+      ],
+      "authoredSize": [
+        640,
+        760
+      ],
+      "decodedSize": [
+        640,
+        760
+      ],
+      "contentType": "image/webp",
+      "sourcePixelFrames": false,
+      "policy": "native dimensions and alpha retained",
+      "authoredSha256": "4e44af8d70d230c49687c11ba4d4fe04550fe1d12d757f93d548a44e5181690a",
+      "deliveredSha256": "4e44af8d70d230c49687c11ba4d4fe04550fe1d12d757f93d548a44e5181690a",
+      "authoredAlphaSha256": "04e9549126943cfbbb93e8b931e2ae854ff055469b3f151df39e652945055407",
+      "deliveredAlphaSha256": "04e9549126943cfbbb93e8b931e2ae854ff055469b3f151df39e652945055407"
+    },
+    {
+      "source": "/environment-corners/v1/corner-snow-right-mobile.webp",
+      "rows": [
+        "parallax:snow:right:mobile"
+      ],
+      "authoredSize": [
+        360,
+        300
+      ],
+      "decodedSize": [
+        360,
+        300
+      ],
+      "contentType": "image/webp",
+      "sourcePixelFrames": false,
+      "policy": "native dimensions and alpha retained",
+      "authoredSha256": "a8366cdd49423eab5a9dbefed8ee004720d7825a53533271a798d6a7b10ba91e",
+      "deliveredSha256": "a8366cdd49423eab5a9dbefed8ee004720d7825a53533271a798d6a7b10ba91e",
+      "authoredAlphaSha256": "1238cb52e99a6daacc8f4e6e14c9b16410e78b6fee0d57a64cebebbae1acc5d0",
+      "deliveredAlphaSha256": "1238cb52e99a6daacc8f4e6e14c9b16410e78b6fee0d57a64cebebbae1acc5d0"
+    },
+    {
+      "source": "/modular-stronghold/v2/snow-soft-texture.png",
+      "rows": [
+        "decoration:ground-snow"
+      ],
+      "authoredSize": [
+        1024,
+        1024
+      ],
+      "decodedSize": [
+        640,
+        640
+      ],
+      "contentType": "image/webp",
+      "sourcePixelFrames": false,
+      "policy": "uniform full-image downscale; normalized UV geometry required",
+      "authoredSha256": "3c7f538fb42a17da2c896d564edaccd507203dac5a8f0e4cb4e480d867b6f5ba",
+      "deliveredSha256": "ff6c21e29b558b81132b7328a36e5f39c041fb946327fa0081a2507184920cd3",
+      "authoredAlphaSha256": "f5fb04aa5b882706b9309e885f19477261336ef76a150c3b4d3489dfac3953ec",
+      "deliveredAlphaSha256": "40d8a2da382c69025db0d947485ad71653bb8d8a94f4a168235465222fc63856"
+    },
+    {
+      "source": "/modular-stronghold/v2/paving-warm-texture.png",
+      "rows": [
+        "decoration:court-paving"
+      ],
+      "authoredSize": [
+        1024,
+        1024
+      ],
+      "decodedSize": [
+        400,
+        400
+      ],
+      "contentType": "image/webp",
+      "sourcePixelFrames": false,
+      "policy": "uniform full-image downscale; normalized UV geometry required",
+      "authoredSha256": "95774e2d60ca187fa2d835df0b384e2e403f01af58f4088d37e92e7ef40817f4",
+      "deliveredSha256": "b330c8000c435e030b436e8dec0927ed67a0da5063abdfcf339b5be9e5c4d3ca",
+      "authoredAlphaSha256": "f5fb04aa5b882706b9309e885f19477261336ef76a150c3b4d3489dfac3953ec",
+      "deliveredAlphaSha256": "cdbf6c0880cfbeebfa8480444fef83685e70091bf1f23a5e8a71564d1f8be33a"
+    },
+    {
+      "source": "/foundation-transitions/soil-moss.png",
+      "rows": [
+        "decoration:foundation-soil"
+      ],
+      "authoredSize": [
+        768,
+        106
+      ],
+      "decodedSize": [
+        160,
+        22
+      ],
+      "contentType": "image/webp",
+      "sourcePixelFrames": false,
+      "policy": "uniform full-image downscale; normalized UV geometry required",
+      "authoredSha256": "7ec12a875ba46d0950d126165d842142bbc60a92616ceba78df853c02e0a4ad7",
+      "deliveredSha256": "d296a7946d8bba14804115ea3b8c1fd59f2b613acaf8b08cd4a1727010b3c786",
+      "authoredAlphaSha256": "a57bd827a8d60eb1a172a92d64df24e9c850adb29e43ae4b2ab32686c32689d4",
+      "deliveredAlphaSha256": "e4cb6aa730a1a93ffc1443c1d0d9e50a8a4a06ebca71fe93dd7c9e8619c9fc4b"
+    },
+    {
+      "source": "/foundation-transitions/moss.png",
+      "rows": [
+        "decoration:foundation-moss"
+      ],
+      "authoredSize": [
+        384,
+        111
+      ],
+      "decodedSize": [
+        128,
+        37
+      ],
+      "contentType": "image/webp",
+      "sourcePixelFrames": false,
+      "policy": "uniform full-image downscale; normalized UV geometry required",
+      "authoredSha256": "d8a264e1901c2cbbfbbdce9b6169d7ca0e00f5249e2216365497110fe20fbcb1",
+      "deliveredSha256": "c073540d1c99110c4265bc9c56efffe36927adc4dd26e46bcf683c255467f83b",
+      "authoredAlphaSha256": "5e325209f9f60e8efd1606ff5fc005cbc68a7fdc50fc9b889f0b9d225c03f090",
+      "deliveredAlphaSha256": "f773b5d8e6f35f30a52a750468b93a7805cc7fd19a893d52487c5c829a152a38"
+    }
+  ],
+  "errors": [],
+  "uniqueSources": 43,
+  "downscaled": 18
+}

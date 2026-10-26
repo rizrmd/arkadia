@@ -45,3 +45,4 @@ const recipes=await (await import('./native-solid-models.mjs')).nativeSolidBoxes
 await import('./verify-material-regression.mjs');
 await import('./test-brazier-material.mjs');
 await import('./test-material-gpu.mjs');
+await import('./test-decoded-solids.mjs');

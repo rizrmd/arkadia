@@ -18,3 +18,9 @@ The scene filter scales shadow strength by `1 − (255 − R)/127`, with no emis
 - Full 314-variant static regression passes all 942 sun/receiver cases. All 313 non-brazier picture regions remain identical to `7eb83725`: 61,538,304 RGB/alpha pixel comparisons, no changes. Nine previous solid models, original art and collision/map definitions remain unchanged.
 
 Canvas uses its legacy projection and does not implement this material response. Particle planes retain their documented unlit presentation path. These software-GPU controls do not establish native-device performance.
+
+## Delivered image sizes
+
+The first legacy live run exposed a pre-existing registration failure: the Go delivery policy resizes crate from 619×640 to 256×265 (and barrel similarly), while the solid companion guard demanded authored dimensions. Full-image court geometry is expressed in normalized UVs, so uniform downscaling with rounded decoded height preserves registration. The guard now accepts that full-image case while retaining strict atlas/subframe checks and rejecting nonuniform, oversized or wrong-frame inputs. Logical sprite height follows the image actually drawn.
+
+The source delivery audit checks all 43 unique inventory raster URLs. Eighteen are uniformly downscaled full images; no source-pixel frame table is resized. Native-size alpha is preserved, and raw authored bytes match the repository. Authored-source GPU plates and delivered-source live controls remain distinct evidence; they are not falsely equated pixel-for-pixel.
