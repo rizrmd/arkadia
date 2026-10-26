@@ -1,0 +1,5 @@
+import {readDir,publishLayer} from '../arkodia/publish-layer.mjs';import {partitionLayerFiles} from '../flame-fan-gameplay/batch-files.mjs';import {execFileSync} from 'node:child_process';
+execFileSync('git',['diff','--exit-code','HEAD','--','src/fx/flame-burst.ts','flame-burst.html','vite.flame-burst.config.ts','public/flame-burst','scripts/flame-burst','scripts/arkodia/publish-layer.mjs','scripts/flame-fan-gameplay/batch-files.mjs'],{stdio:'inherit'});
+execFileSync('node',['scripts/flame-burst/build.mjs'],{stdio:'inherit'});const files=await readDir('dist-flame-burst');
+for(const path of execFileSync('git',['ls-files','docs/flame-burst'],{encoding:'utf8'}).trim().split('\n'))if(/\.(png|json|md)$/.test(path))files['/evidence/'+path.split('/').pop()]=execFileSync('git',['show','HEAD:'+path],{maxBuffer:8e6}).toString('base64');
+const batches=partitionLayerFiles(files,6*1024*1024);if(batches.length!==1)throw Error('Expected one bounded preview layer');await publishLayer({name:'flame-burst-'+execFileSync('git',['rev-parse','--short','HEAD'],{encoding:'utf8'}).trim(),files:batches[0],prefix:'/flame-burst'});
