@@ -70,8 +70,31 @@ A baked camera view is not a freely viewable 3D volume. Rotating this sprite arb
 
 Initial failures were corrected: executable/argument CLI syntax, resolution-mode callback, USD noncommercial save paths, camera-unit conversion and excessive emission exposure. One run lost its dispatch owner; a device/process check confirmed no renderer remained before retry. Early blank/white/noisy frames are retained as diagnostics, not successful game art. Browser libraries required reapplying the existing HOME-only organization setup before verification.
 
-Production blockers: an eligible commercial render environment with clean scene generation, approved rolling flame appearance, heading coverage, gameplay occlusion/depth integration and physical-device performance evidence. The native goal must remain incomplete until those acceptance requirements are satisfied.
+Commercial gameplay adoption would additionally require an eligible render environment with clean scene generation, approved rolling flame appearance, heading coverage, gameplay occlusion/depth integration and physical-device performance evidence. These are limitations of this noncommercial experiment, not claims made by its deliverables. The approved task explicitly allows Apprentice experiments while excluding them from commercial production.
 
 ## Public verification
 
 The isolated player at https://ark-whachat.fural.space/houdini-flame-fan/ passes the same desktop and phone checks for all five levels, 36-frame playback, Pixi pointer controls, no HTML controls, no page errors and no failed assets. See `live-verification.json`. A fixed 200ms animation assertion was too short after public texture uploads; the check now waits for actual ticker progress with a bounded 10s deadline. The initial route fallback was corrected with a dedicated gateway review prefix. The first JSON-layer deploy rejected the master archive size; the supported chunked tar release shipped it successfully.
+
+## Reusable playback correction and completion audit
+
+The player now reads FPS, clip duration, image aspect, pivot, camera world span, fan angle and ground projection from the exported metadata. Timeline seeking, frame selection, registration guides and displayed values follow those controls. A browser fixture changes duration to 0.75s, FPS to 48, pivot to (0.27, 0.31), angle to 72°, horizontal camera span to 10 and ground projection to 0.4. It verifies the actual selected atlas rectangle at +0.5s is frame 24 and checks seek bounds and registration. Standard browser checks also exercise Pixi Play/Pause, speed changes and both mobile and desktop atlas tiers.
+
+The original task is a reusable Houdini setup, rendered flipbooks and Pixi metadata, with explicitly noncommercial Apprentice isolation. Earlier notes incorrectly treated future commercial game adoption as a prerequisite to completing this experimental deliverable. Production approval remains false; the licensing and visual limitations above remain unchanged.
+
+| Requested deliverable | Authoritative evidence |
+|---|---|
+| Reusable setup with Lv1–Lv5, range/angle/intensity/duration/seed controls | `tools/houdini-flame-fan/build.py`; controls feed source, simulation, clip and metadata; five saved `.hipnc` scenes in the master archive |
+| Match current level specifications | `check-contract.mjs` evaluates the actual game's level function and checks all five exported ranges, angles and intensity multipliers |
+| Actual PC-FATAN execution and license verification | `device-license.json`, `device-preview.json`, `device-batch.json`; real node ID and successful process results |
+| Lightweight preview before full rendering | Preview finished before the final batch started; checked in `artifact-audit.json` |
+| Render every level at the requested maximum | Archive contains exactly 36 1280×720 RGBA PNG masters per level; PNG headers and logs audited for all 180 frames |
+| Consistent camera/pivot, timing and alpha | Archived manifests match atlas manifests; every frame anchor and every page's frame coverage are audited; `atlas-validation.json` records nonblank alpha/color and animated frames |
+| Mobile budgets and Pixi metadata | Under-2048 atlas axes, 8.19 MiB mobile level budget, complete page coverage; standard Pixi frame rectangles, anchors and animations |
+| Reusable metadata actually consumed by the preview | Browser parameter fixture checks actual texture-frame selection and registration under non-default timing/camera/pivot values |
+| English Pixi UI and documentation | Canvas-only browser assertions; `player.ts`, this document and published Flame Fan Knowledge section |
+| Apprentice excluded from commercial production | `commercialEligible=false`, `productionApproved=false`, `.hipnc` archive; production pack gate rejects the assets; no production gameplay import |
+| Push, deploy and preserve peers | Explicit task paths committed; committed-only deployment worktree and shared lock; public browser/evidence checks; unrelated working-tree paths retained |
+| Images embedded in project Knowledge | Existing Flame Fan page retains the inline render, player and diagnostic gallery plus the player iframe |
+
+The render still has visible noise and is not approved production art. The player demonstrates one east-facing bake. Neither arbitrary-view 3D rendering nor a production-game replacement is claimed. PC-FATAN's requested shutdown command succeeded after rendering; this audit uses stored files and server records without starting further workstation processes.
