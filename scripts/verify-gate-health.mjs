@@ -30,13 +30,13 @@ try {
  });
  assert.equal(result.pass,true);
  await fs.mkdir('docs/gate-health',{recursive:true});
- if(process.env.CAPTURE) {await page.evaluate(()=>window.__PIXI_UI__.app.stop());await page.screenshot({path:'docs/gate-health/desktop.png',timeout:60000});}
+ if(process.env.CAPTURE) {await page.waitForTimeout(1100);await page.evaluate(()=>window.__PIXI_UI__.app.stop());await page.screenshot({path:'docs/gate-health/desktop.png',timeout:60000});await page.evaluate(()=>window.__PIXI_UI__.app.start());}
  for(const [width,height] of [[390,844],[844,390]]) {
   await page.setViewportSize({width,height});await page.waitForTimeout(300);
   assert.equal(await page.evaluate(()=>window.__PIXI_UI__.hud.playerConsole.rows.length),2);
  }
- if(process.env.CAPTURE) await page.screenshot({path:'docs/gate-health/mobile-landscape.png',timeout:60000});
+ if(process.env.CAPTURE) {await page.evaluate(()=>window.__PIXI_UI__.app.stop());await page.screenshot({path:'docs/gate-health/mobile-landscape.png',timeout:60000});}
  assert.deepEqual(errors,[]);
- await fs.writeFile('docs/gate-health/verification.json',JSON.stringify(result,null,2)+'\n');
+ await fs.writeFile('docs/gate-health/verification.json',JSON.stringify({...result,source:process.env.BASE_URL||'local-production-build'},null,2)+'\n');
  console.log(JSON.stringify(result));
 } finally {await browser.close();if(server)await new Promise(r=>server.httpServer.close(r));}
