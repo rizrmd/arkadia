@@ -3,7 +3,7 @@
   "familyRecords": 86,
   "geometryVariantsNumericallyExercised": 313,
   "receiverControls": 939,
-  "reviewScope": "One visual representative per registered family; every distinct geometry variant has separate numeric three-sun controls. Not a visual review of all 313 rows.",
+  "reviewScope": "All 313 variants and 939 sun images directly inspected across 53 content-bound plates. Numeric receiver controls remain separate evidence; isolated plates do not prove all scene overlaps.",
   "resolved": [
     "Cemetery opaque bodies remain continuous",
     "Crate and barrel closed volumes remain continuous",
@@ -18,11 +18,19 @@
         "court:brazier"
       ],
       "finding": "Baked flame and metal share one sprite alpha/material. No separate emissive-material receive mask; report renderer limitation explicitly."
+    },
+    {
+      "assets": [
+        "ff:rock-scatter"
+      ],
+      "variants": 23,
+      "finding": "Raised physical rock clusters are registered as flat ground dressing with zero directional cast and zero-height receiver. Author explicit low-volume companions while preserving ground draw order and collision parity."
     }
   ],
   "limitations": [
     "Proxy geometry is authored, not measured volume or complete volumetric self-shadowing.",
     "Particle FX live on separate unlit planes with occlusion masks, not directional cast/receive.",
     "Desktop/mobile viewport measurements use SwiftShader; physical-device dense-scene acceptance remains unavailable."
-  ]
+  ],
+  "completeVariantReview": "../static-visual-acceptance.json"
 }
