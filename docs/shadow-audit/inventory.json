@@ -26614,6 +26614,36 @@
      "shadow-program.ts": "7f29279852819349ed2e946141b454fedb3718f193d226f84c69e079c0af5f9d"
     }
    },
+   "gpuMatrix": [
+    {
+     "report": "glb-gpu-final-low/rift-runner-idle/report.json",
+     "reportSha256": "9366c407cfeb2dd153024fdc3642f4995e76d2cd8e1e6079e99c01e7022ee9b9",
+     "quality": "low",
+     "poses": 24,
+     "headings": 8,
+     "sunCases": 72,
+     "times": [
+      0,
+      2,
+      3.99999
+     ],
+     "scope": "Actual production GLB skin/pose, original post-process alpha; independent CPU skin/raster reference; software GPU only."
+    },
+    {
+     "report": "glb-gpu-final-high/rift-runner-idle/report.json",
+     "reportSha256": "c691e3dd51fa4419483aefed842112601f958b1dc20d5680f6c5d2f33cb94fe1",
+     "quality": "high",
+     "poses": 24,
+     "headings": 8,
+     "sunCases": 72,
+     "times": [
+      0,
+      2,
+      3.99999
+     ],
+     "scope": "Actual production GLB skin/pose, original post-process alpha; independent CPU skin/raster reference; software GPU only."
+    }
+   ],
    "sourceAudit": [
     {
      "report": "glb-source-final-low/rift-runner-idle/report.json",
@@ -26682,7 +26712,7 @@
      "scope": "Normal production mixer fades, run/cast phase-lock, procedural arm raise, recovery/death, continuous yaw and day/night tint; source/skin/height alignment. GPU field controls are separate; no forced pose time."
     }
    ],
-   "disposition": "Source alignment passes all authored keys/midpoints at eight headings in 1x/2x cells, plus normal mixer/arm/yaw/day-night transitions. Detailed GPU six-pose/two-heading/three-sun cast/receive controls pass. Full GPU heading/pose matrix and controlled hardware performance remain open."
+   "disposition": "Source alignment passes all authored keys/midpoints at eight headings in 1x/2x cells, plus normal mixer/arm/yaw/day-night transitions. GPU start/mid/end poses at eight headings and three suns pass cast/camera/alpha/atlas-copy and high/middle/low native receiver controls in both profiles. Controlled hardware performance remains open; this is not all real-valued time."
   },
   {
    "id": "mesh:rift-runner:run",
@@ -26724,6 +26754,36 @@
      "shadow-program.ts": "7f29279852819349ed2e946141b454fedb3718f193d226f84c69e079c0af5f9d"
     }
    },
+   "gpuMatrix": [
+    {
+     "report": "glb-gpu-final-low/rift-runner-run/report.json",
+     "reportSha256": "17bc9690773b738038ecdc86f1cea715fe91521c364516e0b8d7da661fa8cae0",
+     "quality": "low",
+     "poses": 24,
+     "headings": 8,
+     "sunCases": 72,
+     "times": [
+      0,
+      0.3166666626930237,
+      0.6333233253860474
+     ],
+     "scope": "Actual production GLB skin/pose, original post-process alpha; independent CPU skin/raster reference; software GPU only."
+    },
+    {
+     "report": "glb-gpu-final-high/rift-runner-run/report.json",
+     "reportSha256": "6ea560c0b8fadccc0b2b67a5e176c28bf2a0ec08b8b6652dac85f46e24f397c9",
+     "quality": "high",
+     "poses": 24,
+     "headings": 8,
+     "sunCases": 72,
+     "times": [
+      0,
+      0.3166666626930237,
+      0.6333233253860474
+     ],
+     "scope": "Actual production GLB skin/pose, original post-process alpha; independent CPU skin/raster reference; software GPU only."
+    }
+   ],
    "sourceAudit": [
     {
      "report": "glb-source-final-low/rift-runner-run/report.json",
@@ -26792,7 +26852,7 @@
      "scope": "Normal production mixer fades, run/cast phase-lock, procedural arm raise, recovery/death, continuous yaw and day/night tint; source/skin/height alignment. GPU field controls are separate; no forced pose time."
     }
    ],
-   "disposition": "Source alignment passes all authored keys/midpoints at eight headings in 1x/2x cells, plus normal mixer/arm/yaw/day-night transitions. Detailed GPU six-pose/two-heading/three-sun cast/receive controls pass. Full GPU heading/pose matrix and controlled hardware performance remain open."
+   "disposition": "Source alignment passes all authored keys/midpoints at eight headings in 1x/2x cells, plus normal mixer/arm/yaw/day-night transitions. GPU start/mid/end poses at eight headings and three suns pass cast/camera/alpha/atlas-copy and high/middle/low native receiver controls in both profiles. Controlled hardware performance remains open; this is not all real-valued time."
   },
   {
    "id": "mesh:rift-runner:idle_cast",
@@ -26834,6 +26894,36 @@
      "shadow-program.ts": "7f29279852819349ed2e946141b454fedb3718f193d226f84c69e079c0af5f9d"
     }
    },
+   "gpuMatrix": [
+    {
+     "report": "glb-gpu-final-low/rift-runner-idle_cast/report.json",
+     "reportSha256": "14ae4e5a2477d8cd6f8deb693e7a5940dff3dcbf9b0ec65c629fb45da54b7c8d",
+     "quality": "low",
+     "poses": 24,
+     "headings": 8,
+     "sunCases": 72,
+     "times": [
+      0,
+      1.1333333253860474,
+      2.2666566507720947
+     ],
+     "scope": "Actual production GLB skin/pose, original post-process alpha; independent CPU skin/raster reference; software GPU only."
+    },
+    {
+     "report": "glb-gpu-final-high/rift-runner-idle_cast/report.json",
+     "reportSha256": "6e982e12d477001bf530ae8955d7c9cde9435f69d73f53b03305c1f5fa0bb17c",
+     "quality": "high",
+     "poses": 24,
+     "headings": 8,
+     "sunCases": 72,
+     "times": [
+      0,
+      1.1333333253860474,
+      2.2666566507720947
+     ],
+     "scope": "Actual production GLB skin/pose, original post-process alpha; independent CPU skin/raster reference; software GPU only."
+    }
+   ],
    "sourceAudit": [
     {
      "report": "glb-source-final-low/rift-runner-idle_cast/report.json",
@@ -26902,7 +26992,7 @@
      "scope": "Normal production mixer fades, run/cast phase-lock, procedural arm raise, recovery/death, continuous yaw and day/night tint; source/skin/height alignment. GPU field controls are separate; no forced pose time."
     }
    ],
-   "disposition": "Source alignment passes all authored keys/midpoints at eight headings in 1x/2x cells, plus normal mixer/arm/yaw/day-night transitions. Detailed GPU six-pose/two-heading/three-sun cast/receive controls pass. Full GPU heading/pose matrix and controlled hardware performance remain open."
+   "disposition": "Source alignment passes all authored keys/midpoints at eight headings in 1x/2x cells, plus normal mixer/arm/yaw/day-night transitions. GPU start/mid/end poses at eight headings and three suns pass cast/camera/alpha/atlas-copy and high/middle/low native receiver controls in both profiles. Controlled hardware performance remains open; this is not all real-valued time."
   },
   {
    "id": "mesh:rift-runner:run_cast",
@@ -26944,6 +27034,36 @@
      "shadow-program.ts": "7f29279852819349ed2e946141b454fedb3718f193d226f84c69e079c0af5f9d"
     }
    },
+   "gpuMatrix": [
+    {
+     "report": "glb-gpu-final-low/rift-runner-run_cast/report.json",
+     "reportSha256": "6352a2ade1ca683ff44728f74e8dd9009dfa00680bf72edd76a3ace47bf785b4",
+     "quality": "low",
+     "poses": 24,
+     "headings": 8,
+     "sunCases": 72,
+     "times": [
+      0,
+      0.9833333492279053,
+      1.9666566984558105
+     ],
+     "scope": "Actual production GLB skin/pose, original post-process alpha; independent CPU skin/raster reference; software GPU only."
+    },
+    {
+     "report": "glb-gpu-final-high/rift-runner-run_cast/report.json",
+     "reportSha256": "248d2a34de230b6e8b46e6d206f1a6c90d64879e0f50114c64b0d4e909ed04d3",
+     "quality": "high",
+     "poses": 24,
+     "headings": 8,
+     "sunCases": 72,
+     "times": [
+      0,
+      0.9833333492279053,
+      1.9666566984558105
+     ],
+     "scope": "Actual production GLB skin/pose, original post-process alpha; independent CPU skin/raster reference; software GPU only."
+    }
+   ],
    "sourceAudit": [
     {
      "report": "glb-source-final-low/rift-runner-run_cast/report.json",
@@ -27012,7 +27132,7 @@
      "scope": "Normal production mixer fades, run/cast phase-lock, procedural arm raise, recovery/death, continuous yaw and day/night tint; source/skin/height alignment. GPU field controls are separate; no forced pose time."
     }
    ],
-   "disposition": "Source alignment passes all authored keys/midpoints at eight headings in 1x/2x cells, plus normal mixer/arm/yaw/day-night transitions. Detailed GPU six-pose/two-heading/three-sun cast/receive controls pass. Full GPU heading/pose matrix and controlled hardware performance remain open."
+   "disposition": "Source alignment passes all authored keys/midpoints at eight headings in 1x/2x cells, plus normal mixer/arm/yaw/day-night transitions. GPU start/mid/end poses at eight headings and three suns pass cast/camera/alpha/atlas-copy and high/middle/low native receiver controls in both profiles. Controlled hardware performance remains open; this is not all real-valued time."
   },
   {
    "id": "mesh:rift-runner:hit",
@@ -27054,6 +27174,36 @@
      "shadow-program.ts": "7f29279852819349ed2e946141b454fedb3718f193d226f84c69e079c0af5f9d"
     }
    },
+   "gpuMatrix": [
+    {
+     "report": "glb-gpu-final-low/rift-runner-hit/report.json",
+     "reportSha256": "aeb7a67b454752cbf0f5ca422fe4cc2153131fb7572db11004d72f5d406bf3ef",
+     "quality": "low",
+     "poses": 24,
+     "headings": 8,
+     "sunCases": 72,
+     "times": [
+      0,
+      0.8166666626930237,
+      1.6333233253860473
+     ],
+     "scope": "Actual production GLB skin/pose, original post-process alpha; independent CPU skin/raster reference; software GPU only."
+    },
+    {
+     "report": "glb-gpu-final-high/rift-runner-hit/report.json",
+     "reportSha256": "908ab28bbec9a330af66906d0e76bbf4f254aa8baedc10ff2eec6b3640360f19",
+     "quality": "high",
+     "poses": 24,
+     "headings": 8,
+     "sunCases": 72,
+     "times": [
+      0,
+      0.8166666626930237,
+      1.6333233253860473
+     ],
+     "scope": "Actual production GLB skin/pose, original post-process alpha; independent CPU skin/raster reference; software GPU only."
+    }
+   ],
    "sourceAudit": [
     {
      "report": "glb-source-final-low/rift-runner-hit/report.json",
@@ -27122,7 +27272,7 @@
      "scope": "Normal production mixer fades, run/cast phase-lock, procedural arm raise, recovery/death, continuous yaw and day/night tint; source/skin/height alignment. GPU field controls are separate; no forced pose time."
     }
    ],
-   "disposition": "Source alignment passes all authored keys/midpoints at eight headings in 1x/2x cells, plus normal mixer/arm/yaw/day-night transitions. Detailed GPU six-pose/two-heading/three-sun cast/receive controls pass. Full GPU heading/pose matrix and controlled hardware performance remain open."
+   "disposition": "Source alignment passes all authored keys/midpoints at eight headings in 1x/2x cells, plus normal mixer/arm/yaw/day-night transitions. GPU start/mid/end poses at eight headings and three suns pass cast/camera/alpha/atlas-copy and high/middle/low native receiver controls in both profiles. Controlled hardware performance remains open; this is not all real-valued time."
   },
   {
    "id": "mesh:rift-runner:death",
@@ -27164,6 +27314,36 @@
      "shadow-program.ts": "7f29279852819349ed2e946141b454fedb3718f193d226f84c69e079c0af5f9d"
     }
    },
+   "gpuMatrix": [
+    {
+     "report": "glb-gpu-final-low/rift-runner-death/report.json",
+     "reportSha256": "83d17d8e0131f9ed8c3669ebe4ba41edb40f5b2463ac324ff1d301ad2b78f6e2",
+     "quality": "low",
+     "poses": 24,
+     "headings": 8,
+     "sunCases": 72,
+     "times": [
+      0,
+      1.4833333492279053,
+      2.9666566984558105
+     ],
+     "scope": "Actual production GLB skin/pose, original post-process alpha; independent CPU skin/raster reference; software GPU only."
+    },
+    {
+     "report": "glb-gpu-final-high/rift-runner-death/report.json",
+     "reportSha256": "5cd2a072c8313ab728ca615e777d6b4589d124b438dd41c4df021b77d8e7b1bc",
+     "quality": "high",
+     "poses": 24,
+     "headings": 8,
+     "sunCases": 72,
+     "times": [
+      0,
+      1.4833333492279053,
+      2.9666566984558105
+     ],
+     "scope": "Actual production GLB skin/pose, original post-process alpha; independent CPU skin/raster reference; software GPU only."
+    }
+   ],
    "sourceAudit": [
     {
      "report": "glb-source-final-low/rift-runner-death/report.json",
@@ -27232,7 +27412,7 @@
      "scope": "Normal production mixer fades, run/cast phase-lock, procedural arm raise, recovery/death, continuous yaw and day/night tint; source/skin/height alignment. GPU field controls are separate; no forced pose time."
     }
    ],
-   "disposition": "Source alignment passes all authored keys/midpoints at eight headings in 1x/2x cells, plus normal mixer/arm/yaw/day-night transitions. Detailed GPU six-pose/two-heading/three-sun cast/receive controls pass. Full GPU heading/pose matrix and controlled hardware performance remain open."
+   "disposition": "Source alignment passes all authored keys/midpoints at eight headings in 1x/2x cells, plus normal mixer/arm/yaw/day-night transitions. GPU start/mid/end poses at eight headings and three suns pass cast/camera/alpha/atlas-copy and high/middle/low native receiver controls in both profiles. Controlled hardware performance remains open; this is not all real-valued time."
   },
   {
    "id": "mesh:ember-warden:idle",
@@ -27274,6 +27454,36 @@
      "shadow-program.ts": "7f29279852819349ed2e946141b454fedb3718f193d226f84c69e079c0af5f9d"
     }
    },
+   "gpuMatrix": [
+    {
+     "report": "glb-gpu-final-low/ember-warden-idle/report.json",
+     "reportSha256": "827932c30fd9f7d0ea09f6fa80ad2e951995289cf8e1df1148eef4b523bf3bca",
+     "quality": "low",
+     "poses": 24,
+     "headings": 8,
+     "sunCases": 72,
+     "times": [
+      0,
+      2,
+      3.99999
+     ],
+     "scope": "Actual production GLB skin/pose, original post-process alpha; independent CPU skin/raster reference; software GPU only."
+    },
+    {
+     "report": "glb-gpu-final-high/ember-warden-idle/report.json",
+     "reportSha256": "bab25a6ef69bfeda385548f0195945850ac2d97773bb74d4d93065250f89a5c4",
+     "quality": "high",
+     "poses": 24,
+     "headings": 8,
+     "sunCases": 72,
+     "times": [
+      0,
+      2,
+      3.99999
+     ],
+     "scope": "Actual production GLB skin/pose, original post-process alpha; independent CPU skin/raster reference; software GPU only."
+    }
+   ],
    "sourceAudit": [
     {
      "report": "glb-source-final-low/ember-warden-idle/report.json",
@@ -27342,7 +27552,7 @@
      "scope": "Normal production mixer fades, run/cast phase-lock, procedural arm raise, recovery/death, continuous yaw and day/night tint; source/skin/height alignment. GPU field controls are separate; no forced pose time."
     }
    ],
-   "disposition": "Source alignment passes all authored keys/midpoints at eight headings in 1x/2x cells, plus normal mixer/arm/yaw/day-night transitions. Detailed GPU six-pose/two-heading/three-sun cast/receive controls pass. Full GPU heading/pose matrix and controlled hardware performance remain open."
+   "disposition": "Source alignment passes all authored keys/midpoints at eight headings in 1x/2x cells, plus normal mixer/arm/yaw/day-night transitions. GPU start/mid/end poses at eight headings and three suns pass cast/camera/alpha/atlas-copy and high/middle/low native receiver controls in both profiles. Controlled hardware performance remains open; this is not all real-valued time."
   },
   {
    "id": "mesh:ember-warden:run",
@@ -27384,6 +27594,36 @@
      "shadow-program.ts": "7f29279852819349ed2e946141b454fedb3718f193d226f84c69e079c0af5f9d"
     }
    },
+   "gpuMatrix": [
+    {
+     "report": "glb-gpu-final-low/ember-warden-run/report.json",
+     "reportSha256": "0a2d9b9b4a81b3b1348d6831a6bc5a4b8ddd47a1ccc6deb59ac26151a29c4fd5",
+     "quality": "low",
+     "poses": 24,
+     "headings": 8,
+     "sunCases": 72,
+     "times": [
+      0,
+      0.3166666626930237,
+      0.6333233253860474
+     ],
+     "scope": "Actual production GLB skin/pose, original post-process alpha; independent CPU skin/raster reference; software GPU only."
+    },
+    {
+     "report": "glb-gpu-final-high/ember-warden-run/report.json",
+     "reportSha256": "8fced7edbea6eb663c62075b265e644e43f4f95299d2997d791c346cc1a0f5ff",
+     "quality": "high",
+     "poses": 24,
+     "headings": 8,
+     "sunCases": 72,
+     "times": [
+      0,
+      0.3166666626930237,
+      0.6333233253860474
+     ],
+     "scope": "Actual production GLB skin/pose, original post-process alpha; independent CPU skin/raster reference; software GPU only."
+    }
+   ],
    "sourceAudit": [
     {
      "report": "glb-source-final-low/ember-warden-run/report.json",
@@ -27452,7 +27692,7 @@
      "scope": "Normal production mixer fades, run/cast phase-lock, procedural arm raise, recovery/death, continuous yaw and day/night tint; source/skin/height alignment. GPU field controls are separate; no forced pose time."
     }
    ],
-   "disposition": "Source alignment passes all authored keys/midpoints at eight headings in 1x/2x cells, plus normal mixer/arm/yaw/day-night transitions. Detailed GPU six-pose/two-heading/three-sun cast/receive controls pass. Full GPU heading/pose matrix and controlled hardware performance remain open."
+   "disposition": "Source alignment passes all authored keys/midpoints at eight headings in 1x/2x cells, plus normal mixer/arm/yaw/day-night transitions. GPU start/mid/end poses at eight headings and three suns pass cast/camera/alpha/atlas-copy and high/middle/low native receiver controls in both profiles. Controlled hardware performance remains open; this is not all real-valued time."
   },
   {
    "id": "mesh:ember-warden:idle_cast",
@@ -27494,6 +27734,36 @@
      "shadow-program.ts": "7f29279852819349ed2e946141b454fedb3718f193d226f84c69e079c0af5f9d"
     }
    },
+   "gpuMatrix": [
+    {
+     "report": "glb-gpu-final-low/ember-warden-idle_cast/report.json",
+     "reportSha256": "90b5dd79e37788ada675dfec101429ecdf2876fdfab161daa664904ed86813b5",
+     "quality": "low",
+     "poses": 24,
+     "headings": 8,
+     "sunCases": 72,
+     "times": [
+      0,
+      0.800000011920929,
+      1.5999900238418578
+     ],
+     "scope": "Actual production GLB skin/pose, original post-process alpha; independent CPU skin/raster reference; software GPU only."
+    },
+    {
+     "report": "glb-gpu-final-high/ember-warden-idle_cast/report.json",
+     "reportSha256": "d45bcef22a236e9e953343257a81ead8639b78bf9db1ca9ab1602723e704d7df",
+     "quality": "high",
+     "poses": 24,
+     "headings": 8,
+     "sunCases": 72,
+     "times": [
+      0,
+      0.800000011920929,
+      1.5999900238418578
+     ],
+     "scope": "Actual production GLB skin/pose, original post-process alpha; independent CPU skin/raster reference; software GPU only."
+    }
+   ],
    "sourceAudit": [
     {
      "report": "glb-source-final-low/ember-warden-idle_cast/report.json",
@@ -27562,7 +27832,7 @@
      "scope": "Normal production mixer fades, run/cast phase-lock, procedural arm raise, recovery/death, continuous yaw and day/night tint; source/skin/height alignment. GPU field controls are separate; no forced pose time."
     }
    ],
-   "disposition": "Source alignment passes all authored keys/midpoints at eight headings in 1x/2x cells, plus normal mixer/arm/yaw/day-night transitions. Detailed GPU six-pose/two-heading/three-sun cast/receive controls pass. Full GPU heading/pose matrix and controlled hardware performance remain open."
+   "disposition": "Source alignment passes all authored keys/midpoints at eight headings in 1x/2x cells, plus normal mixer/arm/yaw/day-night transitions. GPU start/mid/end poses at eight headings and three suns pass cast/camera/alpha/atlas-copy and high/middle/low native receiver controls in both profiles. Controlled hardware performance remains open; this is not all real-valued time."
   },
   {
    "id": "mesh:ember-warden:run_cast",
@@ -27604,6 +27874,36 @@
      "shadow-program.ts": "7f29279852819349ed2e946141b454fedb3718f193d226f84c69e079c0af5f9d"
     }
    },
+   "gpuMatrix": [
+    {
+     "report": "glb-gpu-final-low/ember-warden-run_cast/report.json",
+     "reportSha256": "b5c1681880064d2d90cc47adc4ee0ca8abf1c79e07ddfbe92fb1563bc299150d",
+     "quality": "low",
+     "poses": 24,
+     "headings": 8,
+     "sunCases": 72,
+     "times": [
+      0,
+      0.6333333253860474,
+      1.2666566507720947
+     ],
+     "scope": "Actual production GLB skin/pose, original post-process alpha; independent CPU skin/raster reference; software GPU only."
+    },
+    {
+     "report": "glb-gpu-final-high/ember-warden-run_cast/report.json",
+     "reportSha256": "7725000b19b7ad8eebd3b1b527cb7f83ea7adc36732018f78c854a01a4ad9de8",
+     "quality": "high",
+     "poses": 24,
+     "headings": 8,
+     "sunCases": 72,
+     "times": [
+      0,
+      0.6333333253860474,
+      1.2666566507720947
+     ],
+     "scope": "Actual production GLB skin/pose, original post-process alpha; independent CPU skin/raster reference; software GPU only."
+    }
+   ],
    "sourceAudit": [
     {
      "report": "glb-source-final-low/ember-warden-run_cast/report.json",
@@ -27672,7 +27972,7 @@
      "scope": "Normal production mixer fades, run/cast phase-lock, procedural arm raise, recovery/death, continuous yaw and day/night tint; source/skin/height alignment. GPU field controls are separate; no forced pose time."
     }
    ],
-   "disposition": "Source alignment passes all authored keys/midpoints at eight headings in 1x/2x cells, plus normal mixer/arm/yaw/day-night transitions. Detailed GPU six-pose/two-heading/three-sun cast/receive controls pass. Full GPU heading/pose matrix and controlled hardware performance remain open."
+   "disposition": "Source alignment passes all authored keys/midpoints at eight headings in 1x/2x cells, plus normal mixer/arm/yaw/day-night transitions. GPU start/mid/end poses at eight headings and three suns pass cast/camera/alpha/atlas-copy and high/middle/low native receiver controls in both profiles. Controlled hardware performance remains open; this is not all real-valued time."
   },
   {
    "id": "mesh:ember-warden:hit",
@@ -27714,6 +28014,36 @@
      "shadow-program.ts": "7f29279852819349ed2e946141b454fedb3718f193d226f84c69e079c0af5f9d"
     }
    },
+   "gpuMatrix": [
+    {
+     "report": "glb-gpu-final-low/ember-warden-hit/report.json",
+     "reportSha256": "3e0fb6570deefd54b369c0c7386279b37016f4e3e8c0acd3fa588947a3658eb1",
+     "quality": "low",
+     "poses": 24,
+     "headings": 8,
+     "sunCases": 72,
+     "times": [
+      0,
+      0.8166666626930237,
+      1.6333233253860473
+     ],
+     "scope": "Actual production GLB skin/pose, original post-process alpha; independent CPU skin/raster reference; software GPU only."
+    },
+    {
+     "report": "glb-gpu-final-high/ember-warden-hit/report.json",
+     "reportSha256": "88da6cce764d0ac8e6993933f3de00dc52180411ce61e0990366475988864153",
+     "quality": "high",
+     "poses": 24,
+     "headings": 8,
+     "sunCases": 72,
+     "times": [
+      0,
+      0.8166666626930237,
+      1.6333233253860473
+     ],
+     "scope": "Actual production GLB skin/pose, original post-process alpha; independent CPU skin/raster reference; software GPU only."
+    }
+   ],
    "sourceAudit": [
     {
      "report": "glb-source-final-low/ember-warden-hit/report.json",
@@ -27782,7 +28112,7 @@
      "scope": "Normal production mixer fades, run/cast phase-lock, procedural arm raise, recovery/death, continuous yaw and day/night tint; source/skin/height alignment. GPU field controls are separate; no forced pose time."
     }
    ],
-   "disposition": "Source alignment passes all authored keys/midpoints at eight headings in 1x/2x cells, plus normal mixer/arm/yaw/day-night transitions. Detailed GPU six-pose/two-heading/three-sun cast/receive controls pass. Full GPU heading/pose matrix and controlled hardware performance remain open."
+   "disposition": "Source alignment passes all authored keys/midpoints at eight headings in 1x/2x cells, plus normal mixer/arm/yaw/day-night transitions. GPU start/mid/end poses at eight headings and three suns pass cast/camera/alpha/atlas-copy and high/middle/low native receiver controls in both profiles. Controlled hardware performance remains open; this is not all real-valued time."
   },
   {
    "id": "mesh:ember-warden:death",
@@ -27824,6 +28154,36 @@
      "shadow-program.ts": "7f29279852819349ed2e946141b454fedb3718f193d226f84c69e079c0af5f9d"
     }
    },
+   "gpuMatrix": [
+    {
+     "report": "glb-gpu-final-low/ember-warden-death/report.json",
+     "reportSha256": "25e1f07bb97a9e07102c88d0fe8cdfd12f24e406c424599dea1b83a49d46211e",
+     "quality": "low",
+     "poses": 24,
+     "headings": 8,
+     "sunCases": 72,
+     "times": [
+      0,
+      1.4833333492279053,
+      2.9666566984558105
+     ],
+     "scope": "Actual production GLB skin/pose, original post-process alpha; independent CPU skin/raster reference; software GPU only."
+    },
+    {
+     "report": "glb-gpu-final-high/ember-warden-death/report.json",
+     "reportSha256": "a08c836c3b99a6272d12c458a2cfc6db5edf7dae596d8e43fb1c38ea9c38050b",
+     "quality": "high",
+     "poses": 24,
+     "headings": 8,
+     "sunCases": 72,
+     "times": [
+      0,
+      1.4833333492279053,
+      2.9666566984558105
+     ],
+     "scope": "Actual production GLB skin/pose, original post-process alpha; independent CPU skin/raster reference; software GPU only."
+    }
+   ],
    "sourceAudit": [
     {
      "report": "glb-source-final-low/ember-warden-death/report.json",
@@ -27892,7 +28252,7 @@
      "scope": "Normal production mixer fades, run/cast phase-lock, procedural arm raise, recovery/death, continuous yaw and day/night tint; source/skin/height alignment. GPU field controls are separate; no forced pose time."
     }
    ],
-   "disposition": "Source alignment passes all authored keys/midpoints at eight headings in 1x/2x cells, plus normal mixer/arm/yaw/day-night transitions. Detailed GPU six-pose/two-heading/three-sun cast/receive controls pass. Full GPU heading/pose matrix and controlled hardware performance remain open."
+   "disposition": "Source alignment passes all authored keys/midpoints at eight headings in 1x/2x cells, plus normal mixer/arm/yaw/day-night transitions. GPU start/mid/end poses at eight headings and three suns pass cast/camera/alpha/atlas-copy and high/middle/low native receiver controls in both profiles. Controlled hardware performance remains open; this is not all real-valued time."
   },
   {
    "id": "torch-body:0",

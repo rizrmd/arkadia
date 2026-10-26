@@ -24,3 +24,13 @@ export async function glbSourceEvidence(hero,clip){
 export async function glbBlendEvidence(hero){
  const result=[];for(const quality of ['low','high']){const {r,evidence}=await journalEvidence(`glb-blends-${quality}/${hero}/report.json`);if(r.sourceFrames+r.cachedFrames!==r.ticks||r.headings!==8||['idle','run','idle_cast','run_cast','hit','death'].some(clip=>!r.activeClips.includes(clip)))throw Error('Incomplete blend cycle '+hero);result.push({...evidence,ticks:r.ticks,cachedFrames:r.cachedFrames,headings:r.headings,scope:r.scope});}return result;
 }
+
+export async function glbGpuMatrixEvidence(hero,clip){
+ const result=[];for(const quality of ['low','high']){
+  const path=`glb-gpu-final-${quality}/${hero}-${clip}/report.json`,bytes=await fs.readFile('docs/shadow-audit/'+path),r=JSON.parse(bytes);
+  if(r.errors.length||r.failures.length||r.rows.length!==24||new Set(r.rows.map(row=>row.time+':'+row.yaw)).size!==24||r.rows.some(row=>row.tests.length!==3||row.vertexErrors||row.heightContractErrors||row.tests.some(t=>t.cameraErrors||t.cameraCopyErrors||t.alphaErrors||t.missingOpaqueHeight||t.highErrors||t.lowErrors||t.middleErrors||t.tests.some(p=>p.coverageErrors||p.clearErrors))))throw Error('Incomplete GPU matrix '+path);
+  const expectedTimes=[0,r.metadata.duration*.5,Math.max(0,r.metadata.duration-.00001)];for(const time of expectedTimes)for(let i=0;i<8;i++)if(!r.rows.some(row=>row.time===time&&Math.abs(row.yaw-i*Math.PI/4)<1e-12))throw Error('Missing GPU matrix time/heading '+path);
+  if(r.model.sha256!==hash(await fs.readFile('public'+r.model.path))||r.cellManifestSha256!==hash(await fs.readFile('public/assets/characters/manifest.json')))throw Error('Stale GPU matrix input '+path);for(const [file,sha] of Object.entries(r.rendererSources))if(sha!==hash(await fs.readFile('src/stronghold/'+file)))throw Error('Stale GPU matrix renderer '+path+' '+file);
+  result.push({report:path,reportSha256:hash(bytes),quality,poses:24,headings:8,sunCases:72,times:[...new Set(r.rows.map(row=>row.time))],scope:r.scope});
+ }return result;
+}
