@@ -91,7 +91,17 @@ Rift Dash is the only manual Rift Runner active. Equip it through the Pixi Skill
 
 The hero moves up to 1.5 ground tiles. A sweep every 0.05 tile stops at blockers or cliffs; a fully blocked cast consumes no cooldown. Arrival phase-slash damage uses the swept endpoint. The aim arrow, hexagon, runner glyph, cooldown overlay and tapered cyan-violet trail are Pixi graphics. Releasing a cancelled pointer, losing focus or rotating the device cancels aiming. No game HTML/React controls were added.
 
-Local desktop (1440 × 900), portrait touch (390 × 844), and landscape touch (844 × 390) checks passed: hold does not cast, release displaces in the selected direction, cooldown locks recasting, and skill equip stays accessible. Go tests also cover queued online input, invalid directions, unequipped casts, cooldown enforcement and preserving Rift Bolt auto-cast.
+Automated Playwright browser checks with touch emulation: local desktop (1440 × 900), portrait touch (390 × 844), and landscape touch (844 × 390) checks passed: hold does not cast, release displaces in the selected direction, cooldown locks recasting, and skill equip stays accessible. Go tests also cover queued online input, invalid directions, unequipped casts, cooldown enforcement and preserving Rift Bolt auto-cast.
+
+![Actual gameplay — live desktop dash](/organizations/ORd5dd6f99b4308d6187031557/sandbox/US4f550b10dab65dc9756fa429/files?file=projects%2Farkadia%2Frepos%2Farkadia%2Fdocs%2Frift-dash%2Flive-desktop-dash.png)
+
+![Actual gameplay — live landscape aim](/organizations/ORd5dd6f99b4308d6187031557/sandbox/US4f550b10dab65dc9756fa429/files?file=projects%2Farkadia%2Frepos%2Farkadia%2Fdocs%2Frift-dash%2Flive-landscape-aim.png)
+
+![Actual gameplay — live landscape dash](/organizations/ORd5dd6f99b4308d6187031557/sandbox/US4f550b10dab65dc9756fa429/files?file=projects%2Farkadia%2Frepos%2Farkadia%2Fdocs%2Frift-dash%2Flive-landscape-dash.png)
+
+![Actual gameplay — live mobile aim](/organizations/ORd5dd6f99b4308d6187031557/sandbox/US4f550b10dab65dc9756fa429/files?file=projects%2Farkadia%2Frepos%2Farkadia%2Fdocs%2Frift-dash%2Flive-mobile-aim.png)
+
+![Actual gameplay — live mobile dash](/organizations/ORd5dd6f99b4308d6187031557/sandbox/US4f550b10dab65dc9756fa429/files?file=projects%2Farkadia%2Frepos%2Farkadia%2Fdocs%2Frift-dash%2Flive-mobile-dash.png)
 
 ![Actual gameplay — local desktop dash](/organizations/ORd5dd6f99b4308d6187031557/sandbox/US4f550b10dab65dc9756fa429/files?file=projects%2Farkadia%2Frepos%2Farkadia%2Fdocs%2Frift-dash%2Flocal-desktop-dash.png)
 
@@ -102,3 +112,5 @@ Local desktop (1440 × 900), portrait touch (390 × 844), and landscape touch (8
 ![Actual gameplay — local mobile aim](/organizations/ORd5dd6f99b4308d6187031557/sandbox/US4f550b10dab65dc9756fa429/files?file=projects%2Farkadia%2Frepos%2Farkadia%2Fdocs%2Frift-dash%2Flocal-mobile-aim.png)
 
 ![Actual gameplay — local mobile dash](/organizations/ORd5dd6f99b4308d6187031557/sandbox/US4f550b10dab65dc9756fa429/files?file=projects%2Farkadia%2Frepos%2Farkadia%2Fdocs%2Frift-dash%2Flocal-mobile-dash.png)
+
+Live desktop, portrait touch, and landscape touch checks (including exact drag-heading and pointer cancellation) also passed at https://ark-whachat.fural.space. See the tracked verification reports and release record in docs/rift-dash.

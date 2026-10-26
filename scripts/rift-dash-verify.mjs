@@ -26,7 +26,7 @@ try{for(const [view,width,height,touch] of [['desktop',1440,900,false],['mobile'
   await send('touchEnd',[]);
  }else{await page.mouse.move(width*.3,height*.55);await page.keyboard.press('2');}
  await page.waitForTimeout(80);let b=await snap();
- assert(b.manualDash.last,`${view} actual dash`);assert(b.manualDash.last.distance>.1);assert(b.vfx.cooldowns?.['rift-dash']>0||b.loadout.slots[1].cooldownMs>0,'cooldown starts');
+ assert(b.manualDash.last,`${view} actual dash`);assert(b.manualDash.last.distance>.1);if(touch){const d=b.manualDash.last,du=d.to.u-d.from.u,dv=d.to.v-d.from.v,sx=(du-dv)*64,sy=(du+dv)*32;assert((sx*-70+sy*-50)/(Math.hypot(sx,sy)*Math.hypot(70,50))>.999,'dash follows drag heading');}assert(b.vfx.cooldowns?.['rift-dash']>0||b.loadout.slots[1].cooldownMs>0,'cooldown starts');
  assert(b.hero.u<a.hero.u||b.hero.v<a.hero.v,'selected upper-left direction changes position');
  await page.screenshot({path:`${out}/${tag}-${view}-dash.png`});
  const last=JSON.stringify(b.manualDash.last);if(!touch)await page.keyboard.press('2');
@@ -35,6 +35,13 @@ try{for(const [view,width,height,touch] of [['desktop',1440,900,false],['mobile'
  if(touch){await page.waitForTimeout(1500);const cdp=await page.context().newCDPSession(page);await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:socket.x,y:socket.y,id:1}]});await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});}else await page.keyboard.press('k');
  await page.waitForTimeout(1000);assert((await page.evaluate(()=>window.__STRONGHOLD_COMBAT__.skillTree.snapshot())).open,'skill equip accessible');
  await page.keyboard.press('Escape');
+ if(touch){const cdp=await page.context().newCDPSession(page),last=JSON.stringify((await snap()).manualDash.last);
+  await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:socket.x,y:socket.y,id:1}]});
+  await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:socket.x-45,y:socket.y-30,id:1}]});
+  await cdp.send('Input.dispatchTouchEvent',{type:'touchCancel',touchPoints:[]});
+  const cancelled=await snap();assert(!cancelled.manualDash.aiming,'cancel clears aim');assert.equal(JSON.stringify(cancelled.manualDash.last),last,'cancel never dashes');
+ }
+
  report.views[view]={before:a.hero,after:b.hero,dash:b.manualDash.last,pass:true};await browser.close();browser=null;
 }}finally{await fs.writeFile(`${out}/${tag}-verification.json`,JSON.stringify(report,null,2));await browser?.close();await vite?.close();}
 assert.deepEqual(report.errors,[]);console.log(JSON.stringify(report,null,2));
