@@ -1,0 +1,28 @@
+{
+  "evidenceCommit": "3a45b7ce3cbeda07de34fc79f8451705e9cbfbb6",
+  "runtimeCommit": "d872e6fc8d96c999d30583e5b1dbe5353eadceb4",
+  "scope": "Source/skin/height/ground alignment; does not replace detailed GPU light-field controls.",
+  "source": {
+    "report": "glb-source-final-summary.json",
+    "profiles": 24,
+    "frames": 24736,
+    "checkedVertices": 1385216,
+    "pairedPoses": 12368,
+    "maxVertexDelta": 1.3874529836144234e-7,
+    "maxHeightContractDelta": 0.0000014146280449267579,
+    "maxGroundOffsetDelta": 9.83540440202546e-7
+  },
+  "blends": {
+    "report": "glb-blends-summary.json",
+    "ticks": 4704,
+    "frames": 4698,
+    "cachedFrames": 6,
+    "checkedVertices": 263088,
+    "maxVertexDelta": 1.5457832369669688e-7,
+    "maxHeightContractDelta": 0.0000013926096045224767
+  },
+  "liveInputHashes": "glb-source-live-inputs.json",
+  "modelStructure": "glb-structure.json",
+  "inventoryRows": 586,
+  "acceptance": "incomplete: final detailed GPU heading/pose matrix, remaining effect/review disposition, controlled hardware performance"
+}
