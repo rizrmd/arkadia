@@ -1,13 +1,13 @@
 // Stronghold day clock. Pure and deterministic: time of day derives only from
 // Date.now(), so it is independent of saves and safe to unit test with node.
-export const DAY_MS=24*60*1000;
+export const DAY_MS=10*60*1000;
 export type Mode='dynamic'|'day'|'night';
 export type Phase='Dawn'|'Day'|'Dusk'|'Night';
 export type Lighting={t:number;phase:Phase;ambient:[number,number,number];lights:number;glow:number};
-// t: 0 = midnight, .5 = noon. Night takes a third of the day, 20:00 to 04:00, centred on midnight;
-// dawn and dusk sit inside the sunlit two thirds. Ambient is the sRGB multiply colour for the world.
+// t: 0 = midnight, .5 = noon. Night takes a fifth of the day, 21:36 to 02:24, centred on midnight;
+// dawn and dusk sit inside the sunlit four fifths. Ambient is the sRGB multiply colour for the world.
 // The world never gets darker than dusk (19:00): night keeps the dusk ambient and only the lamps rise.
-export const NIGHT=1/3,SUNRISE=NIGHT/2,SUNSET=1-NIGHT/2,DUSK=19/24,DUSK_AMBIENT='#88709a';
+export const NIGHT=1/5,SUNRISE=NIGHT/2,SUNSET=1-NIGHT/2,DUSK=19/24,DUSK_AMBIENT='#88709a';
 export const KEYFRAMES:{t:number;ambient:string;lights:number;glow:number}[]=[
  {t:0,ambient:DUSK_AMBIENT,lights:1,glow:.9},
  {t:SUNRISE,ambient:DUSK_AMBIENT,lights:1,glow:.9},
@@ -51,7 +51,7 @@ export function resolveTime(mode:Mode,now:number,query='',manual:number|null=nul
 }
 // ?lighting=day|night|dynamic picks the mode; the world-only view has no menu, so it is remembered.
 export function modeFrom(query:string,stored:unknown):Mode{const m=new URLSearchParams(query).get('lighting')??stored;return m==='day'||m==='night'?m:'dynamic';}
-// Sun for cast shadows: up from 04:00 to 20:00, exactly while it is not night. The sprites are painted lit from the upper left, so at
+// Sun for cast shadows: up from 02:24 to 21:36, exactly while it is not night. The sprites are painted lit from the upper left, so at
 // noon the sun stands there and shadows fall short toward the lower right; the sun's azimuth then turns
 // 180 degrees through the day, so shadows reach long to the right after sunrise and long to the left
 // before sunset. dx/dy is the screen ground offset per screen pixel of height on the 2:1 ground (depth

@@ -8,8 +8,8 @@ import (
 // TickMS is the fixed simulation step: 20 ticks per second.
 const TickMS = 50.0
 
-// DayMS is one in-game day: one real minute per game hour (daylight.ts DAY_MS).
-const DayMS = 24 * 60 * 1000.0
+// DayMS is one in-game day: ten real minutes total (daylight.ts DAY_MS).
+const DayMS = 10 * 60 * 1000.0
 
 // MaxPlayers per room.
 const MaxPlayers = 4
