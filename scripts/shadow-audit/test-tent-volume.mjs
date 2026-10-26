@@ -1,5 +1,6 @@
 import fs from 'node:fs/promises';import assert from 'node:assert/strict';import ts from 'typescript';import sharp from 'sharp';import {execFileSync} from 'node:child_process';
-const load=async p=>import('data:text/javascript;base64,'+Buffer.from(ts.transpileModule(await fs.readFile(p,'utf8'),{compilerOptions:{module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ES2022}}).outputText).toString('base64'));
+const transformUrl='data:text/javascript;base64,'+Buffer.from(ts.transpileModule(await fs.readFile('src/stronghold/shadow-source-transform.ts','utf8'),{compilerOptions:{module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ES2022}}).outputText).toString('base64');
+const load=async p=>import('data:text/javascript;base64,'+Buffer.from(ts.transpileModule((await fs.readFile(p,'utf8')).replace("'./shadow-source-transform'",JSON.stringify(transformUrl)),{compilerOptions:{module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ES2022}}).outputText).toString('base64'));
 const {withTentGeometry}=await load('src/stronghold/tent-shadow.ts'),{sampleNativeBoxes}=await load('src/stronghold/native-shadow-sampling.ts');
 const {data,info}=await sharp('public/assets/stronghold/expedition-tent.png').resize(105,70,{fit:'fill'}).ensureAlpha().raw().toBuffer({resolveWithObject:true});let checks=0;
 for(const flip of [false,true])for(const lift of [0,12]){

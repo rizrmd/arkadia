@@ -84,21 +84,21 @@
    ],
    "cast": "WebGL original-alpha triangle depth field",
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; family representative reviewed",
+   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; per-variant visual disposition recorded",
    "companion": "src/world/maps/shadow-companions.json#ruined-gate",
    "owner": "this task",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
-     "variant:219"
+     "variant:220"
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -140,21 +140,21 @@
    ],
    "cast": "WebGL original-alpha triangle depth field",
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; family representative reviewed",
+   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; per-variant visual disposition recorded",
    "companion": "src/world/maps/shadow-companions.json#broken-watchtower",
    "owner": "this task",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
-     "variant:214"
+     "variant:215"
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -196,21 +196,21 @@
    ],
    "cast": "WebGL original-alpha triangle depth field",
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; family representative reviewed",
+   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; per-variant visual disposition recorded",
    "companion": "src/world/maps/shadow-companions.json#snowy-shrine",
    "owner": "this task",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
-     "variant:166"
+     "variant:167"
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -435,51 +435,51 @@
    ],
    "cast": "WebGL original-alpha triangle depth field",
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; family representative reviewed",
+   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; per-variant visual disposition recorded",
    "companion": "src/world/maps/shadow-companions.json#pine-tall",
    "owner": "this task",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
-     "variant:90",
-     "variant:92",
+     "variant:91",
      "variant:93",
-     "variant:97",
-     "variant:103",
-     "variant:107",
-     "variant:110",
+     "variant:94",
+     "variant:98",
+     "variant:104",
+     "variant:108",
      "variant:111",
-     "variant:114",
-     "variant:117",
+     "variant:112",
+     "variant:115",
      "variant:118",
-     "variant:120",
+     "variant:119",
      "variant:121",
      "variant:122",
-     "variant:124",
-     "variant:128",
-     "variant:131",
-     "variant:133",
+     "variant:123",
+     "variant:125",
+     "variant:129",
+     "variant:132",
      "variant:134",
-     "variant:144",
+     "variant:135",
      "variant:145",
-     "variant:154",
-     "variant:157",
-     "variant:160",
-     "variant:162",
+     "variant:146",
+     "variant:155",
+     "variant:158",
+     "variant:161",
      "variant:163",
-     "variant:173",
-     "variant:178",
-     "variant:187",
-     "variant:200",
-     "variant:211"
+     "variant:164",
+     "variant:174",
+     "variant:179",
+     "variant:188",
+     "variant:201",
+     "variant:212"
     ],
     "sunCases": 93,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -577,30 +577,30 @@
    ],
    "cast": "WebGL original-alpha triangle depth field",
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; family representative reviewed",
+   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; per-variant visual disposition recorded",
    "companion": "src/world/maps/shadow-companions.json#pine-broad",
    "owner": "this task",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
-     "variant:94",
-     "variant:98",
-     "variant:101",
+     "variant:95",
+     "variant:99",
      "variant:102",
-     "variant:106",
-     "variant:135",
-     "variant:147",
-     "variant:186",
-     "variant:199",
-     "variant:207"
+     "variant:103",
+     "variant:107",
+     "variant:136",
+     "variant:148",
+     "variant:187",
+     "variant:200",
+     "variant:208"
     ],
     "sunCases": 30,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -753,39 +753,39 @@
    ],
    "cast": "WebGL original-alpha triangle depth field",
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; family representative reviewed",
+   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; per-variant visual disposition recorded",
    "companion": "src/world/maps/shadow-companions.json#pine-sapling",
    "owner": "this task",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
-     "variant:96",
-     "variant:100",
-     "variant:119",
-     "variant:125",
-     "variant:129",
-     "variant:132",
-     "variant:137",
-     "variant:139",
-     "variant:142",
-     "variant:148",
+     "variant:97",
+     "variant:101",
+     "variant:120",
+     "variant:126",
+     "variant:130",
+     "variant:133",
+     "variant:138",
+     "variant:140",
+     "variant:143",
      "variant:149",
      "variant:150",
-     "variant:153",
-     "variant:155",
+     "variant:151",
+     "variant:154",
      "variant:156",
-     "variant:159",
-     "variant:175",
-     "variant:189",
-     "variant:229"
+     "variant:157",
+     "variant:160",
+     "variant:176",
+     "variant:190",
+     "variant:230"
     ],
     "sunCases": 57,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -846,24 +846,24 @@
    ],
    "cast": "WebGL original-alpha triangle depth field",
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; family representative reviewed",
+   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; per-variant visual disposition recorded",
    "companion": "src/world/maps/shadow-companions.json#dead-tree",
    "owner": "this task",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
-     "variant:188",
-     "variant:250",
-     "variant:262",
-     "variant:269"
+     "variant:189",
+     "variant:251",
+     "variant:263",
+     "variant:270"
     ],
     "sunCases": 12,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -959,29 +959,29 @@
    ],
    "cast": "WebGL original-alpha triangle depth field",
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; family representative reviewed",
+   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; per-variant visual disposition recorded",
    "companion": "src/world/maps/shadow-companions.json#dead-snag",
    "owner": "this task",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
-     "variant:152",
-     "variant:181",
-     "variant:193",
-     "variant:195",
+     "variant:153",
+     "variant:182",
+     "variant:194",
      "variant:196",
-     "variant:270",
-     "variant:274",
+     "variant:197",
+     "variant:271",
      "variant:275",
-     "variant:279"
+     "variant:276",
+     "variant:280"
     ],
     "sunCases": 27,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -1124,37 +1124,37 @@
    ],
    "cast": "WebGL original-alpha triangle depth field",
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; family representative reviewed",
+   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; per-variant visual disposition recorded",
    "companion": "src/world/maps/shadow-companions.json#shrub-juniper",
    "owner": "this task",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
-     "variant:91",
-     "variant:95",
-     "variant:99",
-     "variant:104",
-     "variant:109",
-     "variant:113",
-     "variant:123",
-     "variant:126",
+     "variant:92",
+     "variant:96",
+     "variant:100",
+     "variant:105",
+     "variant:110",
+     "variant:114",
+     "variant:124",
      "variant:127",
-     "variant:130",
-     "variant:141",
-     "variant:143",
-     "variant:158",
-     "variant:164",
-     "variant:170",
-     "variant:248",
-     "variant:251"
+     "variant:128",
+     "variant:131",
+     "variant:142",
+     "variant:144",
+     "variant:159",
+     "variant:165",
+     "variant:171",
+     "variant:249",
+     "variant:252"
     ],
     "sunCases": 51,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -1261,31 +1261,31 @@
    ],
    "cast": "WebGL original-alpha triangle depth field",
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; family representative reviewed",
+   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; per-variant visual disposition recorded",
    "companion": "src/world/maps/shadow-companions.json#shrub-twigs",
    "owner": "this task",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
-     "variant:177",
-     "variant:194",
-     "variant:201",
+     "variant:178",
+     "variant:195",
      "variant:202",
-     "variant:212",
-     "variant:223",
-     "variant:230",
-     "variant:238",
-     "variant:266",
+     "variant:203",
+     "variant:213",
+     "variant:224",
+     "variant:231",
+     "variant:239",
      "variant:267",
-     "variant:278"
+     "variant:268",
+     "variant:279"
     ],
     "sunCases": 33,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -1631,54 +1631,53 @@
    ],
    "cast": "WebGL original-alpha triangle depth field",
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; family representative reviewed",
+   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; per-variant visual disposition recorded",
    "companion": "src/world/maps/shadow-companions.json#grass-tussock",
    "owner": "this task",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
-     "variant:105",
-     "variant:112",
-     "variant:116",
-     "variant:136",
-     "variant:140",
-     "variant:151",
-     "variant:161",
-     "variant:167",
-     "variant:169",
-     "variant:172",
-     "variant:174",
-     "variant:176",
-     "variant:182",
+     "variant:106",
+     "variant:113",
+     "variant:117",
+     "variant:137",
+     "variant:141",
+     "variant:152",
+     "variant:162",
+     "variant:168",
+     "variant:170",
+     "variant:173",
+     "variant:175",
+     "variant:177",
      "variant:183",
      "variant:184",
-     "variant:190",
+     "variant:185",
      "variant:191",
      "variant:192",
-     "variant:198",
-     "variant:203",
+     "variant:193",
+     "variant:199",
      "variant:204",
      "variant:205",
      "variant:206",
-     "variant:218",
-     "variant:224",
-     "variant:227",
-     "variant:231",
-     "variant:234",
-     "variant:243",
-     "variant:249",
-     "variant:252",
-     "variant:257",
-     "variant:260",
-     "variant:263",
+     "variant:207",
+     "variant:219",
+     "variant:225",
+     "variant:228",
+     "variant:232",
+     "variant:235",
+     "variant:244",
+     "variant:250",
+     "variant:253",
+     "variant:258",
+     "variant:261",
      "variant:264",
-     "variant:268",
-     "variant:271",
+     "variant:265",
+     "variant:269",
      "variant:272",
      "variant:273",
-     "variant:277",
-     "variant:281",
+     "variant:274",
+     "variant:278",
      "variant:282",
      "variant:283",
      "variant:284",
@@ -1686,14 +1685,15 @@
      "variant:286",
      "variant:287",
      "variant:288",
-     "variant:289"
+     "variant:289",
+     "variant:290"
     ],
     "sunCases": 147,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -1932,40 +1932,40 @@
    "owner": "this task",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
      "variant:40",
-     "variant:41",
      "variant:42",
-     "variant:46",
-     "variant:50",
+     "variant:43",
+     "variant:47",
      "variant:51",
-     "variant:53",
+     "variant:52",
      "variant:54",
-     "variant:59",
+     "variant:55",
      "variant:60",
      "variant:61",
      "variant:62",
-     "variant:65",
+     "variant:63",
      "variant:66",
      "variant:67",
      "variant:68",
-     "variant:70",
+     "variant:69",
      "variant:71",
      "variant:72",
-     "variant:76",
-     "variant:79",
+     "variant:73",
+     "variant:77",
      "variant:80",
-     "variant:82",
-     "variant:84",
-     "variant:85"
+     "variant:81",
+     "variant:83",
+     "variant:85",
+     "variant:86"
     ],
     "sunCases": 75,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -2072,31 +2072,31 @@
    ],
    "cast": "WebGL original-alpha triangle depth field",
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; family representative reviewed",
+   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; per-variant visual disposition recorded",
    "companion": "src/world/maps/shadow-companions.json#rock-boulders",
    "owner": "this task",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
-     "variant:108",
-     "variant:115",
-     "variant:138",
-     "variant:146",
-     "variant:179",
-     "variant:185",
-     "variant:197",
-     "variant:220",
-     "variant:226",
-     "variant:235",
-     "variant:246"
+     "variant:109",
+     "variant:116",
+     "variant:139",
+     "variant:147",
+     "variant:180",
+     "variant:186",
+     "variant:198",
+     "variant:221",
+     "variant:227",
+     "variant:236",
+     "variant:247"
     ],
     "sunCases": 33,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -2283,45 +2283,46 @@
      "rotation": 0
     }
    ],
-   "cast": "excluded: flat ground decal",
-   "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "retain original alpha; no new height inference",
-   "companion": "src/world/maps/shadow-companions.json#rock-scatter",
+   "cast": "WebGL original-alpha closed solid volume",
+   "receive": "front visible capped surface only",
+   "disposition": "authored cap and camera-ray interval; original alpha coverage retained; three-sun cast/receive controls pass; per-variant visual disposition recorded",
+   "companion": "src/world/maps/solid-shadow-companions.json#frontier:rock-scatter",
    "owner": "this task",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
-     "variant:43",
+     "variant:41",
      "variant:44",
      "variant:45",
-     "variant:47",
+     "variant:46",
      "variant:48",
      "variant:49",
-     "variant:52",
-     "variant:55",
+     "variant:50",
+     "variant:53",
      "variant:56",
      "variant:57",
      "variant:58",
-     "variant:63",
+     "variant:59",
      "variant:64",
-     "variant:69",
-     "variant:73",
+     "variant:65",
+     "variant:70",
      "variant:74",
      "variant:75",
-     "variant:77",
+     "variant:76",
      "variant:78",
-     "variant:81",
-     "variant:83",
-     "variant:86",
-     "variant:87"
+     "variant:79",
+     "variant:82",
+     "variant:84",
+     "variant:87",
+     "variant:88"
     ],
-    "sunCases": 69,
+    "sunCases": 72,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -2364,21 +2365,21 @@
    ],
    "cast": "WebGL original-alpha triangle depth field",
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; family representative reviewed",
+   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; per-variant visual disposition recorded",
    "companion": "src/world/maps/shadow-companions.json#wall-ne",
    "owner": "this task",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
-     "variant:208"
+     "variant:209"
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -2421,21 +2422,21 @@
    ],
    "cast": "WebGL original-alpha triangle depth field",
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; family representative reviewed",
+   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; per-variant visual disposition recorded",
    "companion": "src/world/maps/shadow-companions.json#wall-se",
    "owner": "this task",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
-     "variant:209"
+     "variant:210"
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -2478,21 +2479,21 @@
    ],
    "cast": "WebGL original-alpha triangle depth field",
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; family representative reviewed",
+   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; per-variant visual disposition recorded",
    "companion": "src/world/maps/shadow-companions.json#corner-n",
    "owner": "this task",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
-     "variant:232"
+     "variant:233"
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -2534,21 +2535,21 @@
    ],
    "cast": "WebGL original-alpha triangle depth field",
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; family representative reviewed",
+   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; per-variant visual disposition recorded",
    "companion": "src/world/maps/shadow-companions.json#corner-s",
    "owner": "this task",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
-     "variant:265"
+     "variant:266"
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -2590,21 +2591,21 @@
    ],
    "cast": "WebGL original-alpha triangle depth field",
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; family representative reviewed",
+   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; per-variant visual disposition recorded",
    "companion": "src/world/maps/shadow-companions.json#arch-ne",
    "owner": "this task",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
-     "variant:221"
+     "variant:222"
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -2646,21 +2647,21 @@
    ],
    "cast": "WebGL original-alpha triangle depth field",
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; family representative reviewed",
+   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; per-variant visual disposition recorded",
    "companion": "src/world/maps/shadow-companions.json#arch-se",
    "owner": "this task",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
-     "variant:259"
+     "variant:260"
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -2709,22 +2710,22 @@
    ],
    "cast": "WebGL original-alpha triangle depth field",
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; family representative reviewed",
+   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; per-variant visual disposition recorded",
    "companion": "src/world/maps/shadow-companions.json#pillar-intact",
    "owner": "CWSCU: preserve renderer strip count and geometry",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
-     "variant:171",
-     "variant:225"
+     "variant:172",
+     "variant:226"
     ],
     "sunCases": 6,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -2787,24 +2788,24 @@
    ],
    "cast": "WebGL original-alpha triangle depth field",
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; family representative reviewed",
+   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; per-variant visual disposition recorded",
    "companion": "src/world/maps/shadow-companions.json#pillar-broken",
    "owner": "CWSCU: preserve renderer strip count and geometry",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
-     "variant:180",
-     "variant:241",
-     "variant:258",
-     "variant:276"
+     "variant:181",
+     "variant:242",
+     "variant:259",
+     "variant:277"
     ],
     "sunCases": 12,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -2846,21 +2847,21 @@
    ],
    "cast": "WebGL original-alpha triangle depth field",
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; family representative reviewed",
+   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; per-variant visual disposition recorded",
    "companion": "src/world/maps/shadow-companions.json#stairs-ne",
    "owner": "CWSCU: preserve renderer strip count and geometry",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
-     "variant:217"
+     "variant:218"
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -2902,21 +2903,21 @@
    ],
    "cast": "WebGL original-alpha triangle depth field",
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; family representative reviewed",
+   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; per-variant visual disposition recorded",
    "companion": "src/world/maps/shadow-companions.json#stairs-nw",
    "owner": "CWSCU: preserve renderer strip count and geometry",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
-     "variant:245"
+     "variant:246"
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -2997,27 +2998,27 @@
    ],
    "cast": "WebGL original-alpha triangle depth field",
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; family representative reviewed",
+   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; per-variant visual disposition recorded",
    "companion": "src/world/maps/shadow-companions.json#rubble",
    "owner": "this task",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
-     "variant:222",
-     "variant:237",
-     "variant:239",
-     "variant:242",
-     "variant:253",
-     "variant:256",
-     "variant:261"
+     "variant:223",
+     "variant:238",
+     "variant:240",
+     "variant:243",
+     "variant:254",
+     "variant:257",
+     "variant:262"
     ],
     "sunCases": 21,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -3050,21 +3051,21 @@
    "variants": [],
    "cast": "WebGL original-alpha triangle depth field",
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; family representative reviewed",
+   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; per-variant visual disposition recorded",
    "companion": "src/world/maps/shadow-companions.json#foundation",
    "owner": "this task",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
-     "variant:310"
+     "variant:311"
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -3117,7 +3118,7 @@
    "owner": "this task",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
      "variant:35",
      "variant:38"
@@ -3126,8 +3127,8 @@
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -3181,7 +3182,7 @@
    "owner": "this task",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
      "variant:34",
      "variant:39"
@@ -3190,8 +3191,8 @@
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -3699,7 +3700,7 @@
    "owner": "this task",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
      "variant:37"
     ],
@@ -3707,8 +3708,8 @@
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -5356,23 +5357,23 @@
    ],
    "cast": "WebGL original-alpha triangle depth field",
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; family representative reviewed",
+   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; per-variant visual disposition recorded",
    "companion": "src/world/maps/shadow-companions.json#drift-ne",
    "owner": "this task",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
-     "variant:215",
-     "variant:240",
-     "variant:254"
+     "variant:216",
+     "variant:241",
+     "variant:255"
     ],
     "sunCases": 9,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -5427,23 +5428,23 @@
    ],
    "cast": "WebGL original-alpha triangle depth field",
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; family representative reviewed",
+   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; per-variant visual disposition recorded",
    "companion": "src/world/maps/shadow-companions.json#drift-se",
    "owner": "this task",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
-     "variant:213",
-     "variant:236",
-     "variant:255"
+     "variant:214",
+     "variant:237",
+     "variant:256"
     ],
     "sunCases": 9,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -5526,27 +5527,27 @@
    ],
    "cast": "WebGL original-alpha triangle depth field",
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; family representative reviewed",
+   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; per-variant visual disposition recorded",
    "companion": "src/world/maps/shadow-companions.json#drift-mound",
    "owner": "this task",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
-     "variant:165",
-     "variant:210",
-     "variant:216",
-     "variant:228",
-     "variant:233",
-     "variant:247",
-     "variant:280"
+     "variant:166",
+     "variant:211",
+     "variant:217",
+     "variant:229",
+     "variant:234",
+     "variant:248",
+     "variant:281"
     ],
     "sunCases": 21,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -5955,7 +5956,7 @@
    "owner": "this task",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
      "variant:33"
     ],
@@ -5963,8 +5964,8 @@
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -6371,7 +6372,7 @@
    "owner": "this task",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
      "variant:32"
     ],
@@ -6379,8 +6380,8 @@
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -6422,21 +6423,21 @@
    ],
    "cast": "WebGL original-alpha closed solid volume",
    "receive": "native visible-face geometric receiver",
-   "disposition": "actual source-authored box faces clipped to original alpha; three-sun cast/receive controls pass; family representative reviewed",
+   "disposition": "actual source-authored box faces clipped to original alpha; three-sun cast/receive controls pass; per-variant visual disposition recorded",
    "companion": "src/world/maps/solid-shadow-companions.json#frontier:column-fallen",
    "owner": "this task",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
-     "variant:244"
+     "variant:245"
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -6479,21 +6480,21 @@
    ],
    "cast": "WebGL original-alpha closed solid volume",
    "receive": "native visible-face geometric receiver",
-   "disposition": "actual source-authored box faces clipped to original alpha; three-sun cast/receive controls pass; family representative reviewed",
+   "disposition": "actual source-authored box faces clipped to original alpha; three-sun cast/receive controls pass; per-variant visual disposition recorded",
    "companion": "src/world/maps/solid-shadow-companions.json#frontier:column-fallen-v",
    "owner": "this task",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
-     "variant:168"
+     "variant:169"
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -6535,12 +6536,12 @@
    ],
    "cast": "WebGL original-alpha closed solid volume",
    "receive": "native visible-face geometric receiver",
-   "disposition": "actual source-authored box faces clipped to original alpha; three-sun cast/receive controls pass; family representative reviewed",
+   "disposition": "actual source-authored box faces clipped to original alpha; three-sun cast/receive controls pass; per-variant visual disposition recorded",
    "companion": "src/world/maps/solid-shadow-companions.json#frontier:grave-headstone",
    "owner": "this task",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
      "variant:1"
     ],
@@ -6548,8 +6549,8 @@
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -6591,12 +6592,12 @@
    ],
    "cast": "WebGL original-alpha closed solid volume",
    "receive": "native visible-face geometric receiver",
-   "disposition": "actual source-authored box faces clipped to original alpha; three-sun cast/receive controls pass; family representative reviewed",
+   "disposition": "actual source-authored box faces clipped to original alpha; three-sun cast/receive controls pass; per-variant visual disposition recorded",
    "companion": "src/world/maps/solid-shadow-companions.json#frontier:grave-cross",
    "owner": "this task",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
      "variant:0"
     ],
@@ -6604,8 +6605,8 @@
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -6647,12 +6648,12 @@
    ],
    "cast": "WebGL original-alpha closed solid volume",
    "receive": "native visible-face geometric receiver",
-   "disposition": "actual source-authored box faces clipped to original alpha; three-sun cast/receive controls pass; family representative reviewed",
+   "disposition": "actual source-authored box faces clipped to original alpha; three-sun cast/receive controls pass; per-variant visual disposition recorded",
    "companion": "src/world/maps/solid-shadow-companions.json#frontier:grave-sarcophagus",
    "owner": "this task",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
      "variant:2"
     ],
@@ -6660,8 +6661,8 @@
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -6703,12 +6704,12 @@
    ],
    "cast": "WebGL original-alpha closed solid volume",
    "receive": "native visible-face geometric receiver",
-   "disposition": "actual source-authored box faces clipped to original alpha; three-sun cast/receive controls pass; family representative reviewed",
+   "disposition": "actual source-authored box faces clipped to original alpha; three-sun cast/receive controls pass; per-variant visual disposition recorded",
    "companion": "src/world/maps/solid-shadow-companions.json#frontier:grave-memorial",
    "owner": "this task",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
      "variant:3"
     ],
@@ -6716,8 +6717,8 @@
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -6759,12 +6760,12 @@
    ],
    "cast": "WebGL original-alpha triangle depth field",
    "receive": "WebGL geometry-height receiver; flat decals use terrain height",
-   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; family representative reviewed",
+   "disposition": "integrated explicit geometry companion; three-sun cast/receive controls pass; per-variant visual disposition recorded",
    "companion": "src/world/maps/shadow-companions.json#temple-podium",
    "owner": "this task",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
      "variant:36"
     ],
@@ -6772,8 +6773,8 @@
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -6856,10 +6857,10 @@
    ],
    "cast": "WebGL original-alpha folded-billboard depth field",
    "receive": "WebGL explicit proxy-height receiver",
-   "disposition": "integrated alpha proxy; three-sun cast/receive controls pass; family representative reviewed",
+   "disposition": "integrated alpha proxy; three-sun cast/receive controls pass; per-variant visual disposition recorded",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
      "variant:14"
     ],
@@ -6867,8 +6868,8 @@
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -6951,10 +6952,10 @@
    ],
    "cast": "WebGL original-alpha folded-billboard depth field",
    "receive": "WebGL explicit proxy-height receiver",
-   "disposition": "integrated alpha proxy; three-sun cast/receive controls pass; family representative reviewed",
+   "disposition": "integrated alpha proxy; three-sun cast/receive controls pass; per-variant visual disposition recorded",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
      "variant:15"
     ],
@@ -6962,8 +6963,8 @@
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -7016,10 +7017,10 @@
    ],
    "cast": "WebGL original-alpha folded-billboard depth field",
    "receive": "WebGL explicit proxy-height receiver",
-   "disposition": "integrated alpha proxy; three-sun cast/receive controls pass; family representative reviewed",
+   "disposition": "integrated alpha proxy; three-sun cast/receive controls pass; per-variant visual disposition recorded",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
      "variant:9"
     ],
@@ -7027,8 +7028,8 @@
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -7091,10 +7092,10 @@
    ],
    "cast": "WebGL original-alpha folded-billboard depth field",
    "receive": "WebGL explicit proxy-height receiver",
-   "disposition": "integrated alpha proxy; three-sun cast/receive controls pass; family representative reviewed",
+   "disposition": "integrated alpha proxy; three-sun cast/receive controls pass; per-variant visual disposition recorded",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
      "variant:8",
      "variant:10",
@@ -7105,8 +7106,8 @@
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -7199,10 +7200,10 @@
    ],
    "cast": "WebGL original-alpha folded-billboard depth field",
    "receive": "WebGL explicit proxy-height receiver",
-   "disposition": "integrated alpha proxy; three-sun cast/receive controls pass; family representative reviewed",
+   "disposition": "integrated alpha proxy; three-sun cast/receive controls pass; per-variant visual disposition recorded",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
      "variant:12",
      "variant:13",
@@ -7213,8 +7214,8 @@
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -7287,10 +7288,10 @@
    ],
    "cast": "WebGL original-alpha folded-billboard depth field",
    "receive": "WebGL explicit proxy-height receiver",
-   "disposition": "integrated alpha proxy; three-sun cast/receive controls pass; family representative reviewed",
+   "disposition": "integrated alpha proxy; three-sun cast/receive controls pass; per-variant visual disposition recorded",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
      "variant:11"
     ],
@@ -7298,8 +7299,8 @@
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -7362,10 +7363,10 @@
    ],
    "cast": "WebGL original-alpha folded-billboard depth field",
    "receive": "WebGL explicit proxy-height receiver",
-   "disposition": "integrated alpha proxy; three-sun cast/receive controls pass; family representative reviewed",
+   "disposition": "integrated alpha proxy; three-sun cast/receive controls pass; per-variant visual disposition recorded",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
      "variant:17"
     ],
@@ -7373,8 +7374,8 @@
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -7480,7 +7481,7 @@
    "disposition": "retain flat decal",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
      "variant:4",
      "variant:7"
@@ -7489,8 +7490,8 @@
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -7586,7 +7587,7 @@
    "disposition": "retain flat decal",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
      "variant:5"
     ],
@@ -7594,8 +7595,8 @@
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -7681,7 +7682,7 @@
    "disposition": "retain flat decal",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
      "variant:6"
     ],
@@ -7689,8 +7690,8 @@
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -7723,10 +7724,10 @@
    ],
    "cast": "WebGL original-alpha folded-billboard depth field",
    "receive": "WebGL explicit proxy-height receiver",
-   "disposition": "integrated alpha proxy; three-sun cast/receive controls pass; family representative reviewed",
+   "disposition": "integrated alpha proxy; three-sun cast/receive controls pass; per-variant visual disposition recorded",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
      "variant:23"
     ],
@@ -7734,8 +7735,8 @@
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -7768,10 +7769,10 @@
    ],
    "cast": "WebGL original-alpha folded-billboard depth field",
    "receive": "WebGL explicit proxy-height receiver",
-   "disposition": "integrated alpha proxy; three-sun cast/receive controls pass; family representative reviewed",
+   "disposition": "integrated alpha proxy; three-sun cast/receive controls pass; per-variant visual disposition recorded",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
      "variant:20"
     ],
@@ -7779,8 +7780,8 @@
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -7813,10 +7814,10 @@
    ],
    "cast": "WebGL original-alpha folded-billboard depth field",
    "receive": "WebGL explicit proxy-height receiver",
-   "disposition": "integrated alpha proxy; three-sun cast/receive controls pass; family representative reviewed",
+   "disposition": "integrated alpha proxy; three-sun cast/receive controls pass; per-variant visual disposition recorded",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
      "variant:26"
     ],
@@ -7824,8 +7825,8 @@
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -7858,11 +7859,11 @@
    ],
    "cast": "WebGL original-alpha closed solid volume",
    "receive": "native visible-face geometric receiver",
-   "disposition": "authored closed source-space face proxy clipped to original alpha; three-sun cast/receive controls pass; family representative reviewed",
+   "disposition": "authored closed source-space face proxy clipped to original alpha; three-sun cast/receive controls pass; per-variant visual disposition recorded",
    "companion": "src/world/maps/solid-shadow-companions.json#court:crate",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
      "variant:22"
     ],
@@ -7870,8 +7871,8 @@
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -7904,11 +7905,11 @@
    ],
    "cast": "WebGL original-alpha closed solid volume",
    "receive": "front visible capped surface only",
-   "disposition": "authored cap and camera-ray interval; original alpha coverage retained; three-sun cast/receive controls pass; family representative reviewed",
+   "disposition": "authored cap and camera-ray interval; original alpha coverage retained; three-sun cast/receive controls pass; per-variant visual disposition recorded",
    "companion": "src/world/maps/solid-shadow-companions.json#court:barrel",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
      "variant:24"
     ],
@@ -7916,8 +7917,8 @@
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -7964,14 +7965,14 @@
    },
    "cast": "WebGL original-alpha folded-billboard depth field",
    "receive": "WebGL explicit proxy-height receiver",
-   "disposition": "integrated alpha proxy; three-sun cast/receive controls pass; family representative reviewed",
+   "disposition": "integrated alpha proxy; three-sun cast/receive controls pass; per-variant visual disposition recorded",
    "variants": [
     1
    ],
    "note": "unique level asset",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
      "variant:21"
     ],
@@ -7979,8 +7980,8 @@
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -8027,23 +8028,23 @@
    },
    "cast": "WebGL original-alpha folded-billboard depth field",
    "receive": "WebGL explicit proxy-height receiver",
-   "disposition": "integrated alpha proxy; three-sun cast/receive controls pass; family representative reviewed",
+   "disposition": "integrated alpha proxy; three-sun cast/receive controls pass; per-variant visual disposition recorded",
    "variants": [
     2
    ],
    "note": "unique level asset",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
-     "variant:311"
+     "variant:312"
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -8090,23 +8091,23 @@
    },
    "cast": "WebGL original-alpha folded-billboard depth field",
    "receive": "WebGL explicit proxy-height receiver",
-   "disposition": "integrated alpha proxy; three-sun cast/receive controls pass; family representative reviewed",
+   "disposition": "integrated alpha proxy; three-sun cast/receive controls pass; per-variant visual disposition recorded",
    "variants": [
     3
    ],
    "note": "unique level asset",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
-     "variant:312"
+     "variant:313"
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -8153,7 +8154,7 @@
    },
    "cast": "WebGL original-alpha folded-billboard depth field",
    "receive": "WebGL explicit proxy-height receiver",
-   "disposition": "integrated alpha proxy; three-sun cast/receive controls pass; family representative reviewed",
+   "disposition": "integrated alpha proxy; three-sun cast/receive controls pass; per-variant visual disposition recorded",
    "variants": [
     1,
     2,
@@ -8162,7 +8163,7 @@
    "note": "levels share the same sprite",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
      "variant:19"
     ],
@@ -8170,8 +8171,8 @@
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -8218,7 +8219,7 @@
    },
    "cast": "WebGL original-alpha folded-billboard depth field",
    "receive": "WebGL explicit proxy-height receiver",
-   "disposition": "integrated alpha proxy; three-sun cast/receive controls pass; family representative reviewed",
+   "disposition": "integrated alpha proxy; three-sun cast/receive controls pass; per-variant visual disposition recorded",
    "variants": [
     1,
     2,
@@ -8227,7 +8228,7 @@
    "note": "levels share the same sprite",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
      "variant:25"
     ],
@@ -8235,8 +8236,8 @@
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -8283,7 +8284,7 @@
    },
    "cast": "WebGL original-alpha folded-billboard depth field",
    "receive": "WebGL explicit proxy-height receiver",
-   "disposition": "integrated alpha proxy; three-sun cast/receive controls pass; family representative reviewed",
+   "disposition": "integrated alpha proxy; three-sun cast/receive controls pass; per-variant visual disposition recorded",
    "variants": [
     1,
     2,
@@ -8292,7 +8293,7 @@
    "note": "levels share the same sprite",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
      "variant:28"
     ],
@@ -8300,8 +8301,8 @@
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -8357,7 +8358,7 @@
    "note": "levels share the same sprite",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
      "variant:27"
     ],
@@ -8365,8 +8366,8 @@
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    },
    "companion": "src/stronghold/tent-shadow.ts"
   },
@@ -8414,7 +8415,7 @@
    },
    "cast": "WebGL original-alpha folded-billboard depth field",
    "receive": "WebGL explicit proxy-height receiver",
-   "disposition": "integrated alpha proxy; three-sun cast/receive controls pass; family representative reviewed",
+   "disposition": "integrated alpha proxy; three-sun cast/receive controls pass; per-variant visual disposition recorded",
    "variants": [
     1,
     2,
@@ -8423,7 +8424,7 @@
    "note": "levels share the same sprite",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
      "variant:29"
     ],
@@ -8431,8 +8432,8 @@
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -29343,16 +29344,16 @@
    "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive.",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
-     "variant:290"
+     "variant:291"
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -29384,16 +29385,16 @@
    "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive.",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
-     "variant:291"
+     "variant:292"
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -29425,16 +29426,16 @@
    "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive.",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
-     "variant:292"
+     "variant:293"
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -29466,16 +29467,16 @@
    "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive.",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
-     "variant:293"
+     "variant:294"
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -29507,16 +29508,16 @@
    "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive.",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
-     "variant:294"
+     "variant:295"
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -29548,16 +29549,16 @@
    "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive.",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
-     "variant:295"
+     "variant:296"
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -29589,16 +29590,16 @@
    "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive.",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
-     "variant:296"
+     "variant:297"
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -29630,16 +29631,16 @@
    "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive.",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
-     "variant:297"
+     "variant:298"
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -29671,16 +29672,16 @@
    "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive.",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
-     "variant:298"
+     "variant:299"
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -29712,16 +29713,16 @@
    "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive.",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
-     "variant:299"
+     "variant:300"
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -29753,16 +29754,16 @@
    "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive.",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
-     "variant:300"
+     "variant:301"
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -29794,16 +29795,16 @@
    "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive.",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
-     "variant:301"
+     "variant:302"
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -29835,16 +29836,16 @@
    "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive.",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
-     "variant:302"
+     "variant:303"
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -29872,16 +29873,16 @@
    "disposition": "Integrated; nine-coordinate draw alignment and three-sun GPU cast/receive controls pass; no collision footprint added.",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
-     "variant:303"
+     "variant:304"
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -29913,16 +29914,16 @@
    "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive.",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
-     "variant:304"
+     "variant:305"
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -29950,16 +29951,16 @@
    "disposition": "Integrated; nine-coordinate draw alignment and three-sun GPU cast/receive controls pass; no collision footprint added.",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
-     "variant:305"
+     "variant:306"
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -29991,16 +29992,16 @@
    "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive.",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
-     "variant:306"
+     "variant:307"
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -30028,16 +30029,16 @@
    "disposition": "Integrated; nine-coordinate draw alignment and three-sun GPU cast/receive controls pass; no collision footprint added.",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
-     "variant:307"
+     "variant:308"
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -30069,16 +30070,16 @@
    "disposition": "Integrated; exact draw anchor checked at nine source coordinates; three-sun terrain/raised cast and high/low receiver controls pass. Flames excluded as emissive.",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
-     "variant:308"
+     "variant:309"
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -30106,16 +30107,16 @@
    "disposition": "Integrated; nine-coordinate draw alignment and three-sun GPU cast/receive controls pass; no collision footprint added.",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
-     "variant:309"
+     "variant:310"
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -30741,19 +30742,19 @@
    },
    "cast": "relief geometry proxy; scenery visual handled by frontier",
    "receive": "WebGL authored relief height reconstruction",
-   "disposition": "authored relief intersection integrated; three-sun cast/receive controls pass; family representative reviewed",
+   "disposition": "authored relief intersection integrated; three-sun cast/receive controls pass; per-variant visual disposition recorded",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
-     "variant:89"
+     "variant:90"
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -31025,19 +31026,19 @@
    },
    "cast": "relief geometry proxy; scenery visual handled by frontier",
    "receive": "WebGL authored relief height reconstruction",
-   "disposition": "authored relief intersection integrated; three-sun cast/receive controls pass; family representative reviewed",
+   "disposition": "authored relief intersection integrated; three-sun cast/receive controls pass; per-variant visual disposition recorded",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
-     "variant:88"
+     "variant:89"
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -31059,7 +31060,7 @@
    "disposition": "Registered podium slab alpha/height proxy passes three-sun cast/receive controls; authored collision relief remains unchanged.",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
      "variant:36"
     ],
@@ -31067,8 +31068,8 @@
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -31093,16 +31094,16 @@
    "disposition": "CWSCU-owned stair geometry retained. Three-sun sprite cast/receive controls pass; no measured per-tread reconstruction claimed.",
    "staticAudit": {
     "report": "static-final/report.json",
-    "reportSha256": "785b8fbc19d18eea002ee0b7e4b330b8fac774d74579da78cce580096afb0797",
+    "reportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
     "variants": [
-     "variant:245"
+     "variant:246"
     ],
     "sunCases": 3,
     "scope": "Production cast and independent high/low receiver controls; software GPU."
    },
    "visualReview": {
-    "report": "static-final-review/findings.json",
-    "scope": "One representative per registered family; all geometry variants have separate numeric controls."
+    "report": "static-visual-acceptance.json",
+    "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance."
    }
   },
   {
@@ -44231,11 +44232,11 @@
  "errors": [],
  "staticAudit": {
   "report": "static-final/report.json",
-  "variants": 313,
-  "sunCases": 939,
+  "variants": 314,
+  "sunCases": 942,
   "mappedRows": 88,
-  "registered": 476,
-  "placements": 479,
+  "registered": 477,
+  "placements": 480,
   "receiverPainterOrder": {
    "sourceCount": 296,
    "colorCount": 296,

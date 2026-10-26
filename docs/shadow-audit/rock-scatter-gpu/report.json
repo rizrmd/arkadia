@@ -1,0 +1,2431 @@
+{
+  "scope": "Actual registered static geometry variants, original source alpha, production GPU shader/Worker. One placement per unique geometry variant. Software SwiftShader; not physical-device performance.",
+  "rendererSources": {
+    "tent-shadow.ts": "1825b3bd2d845237c2a07086c38a076f5a588f81a1f7f88be28faff2d24f7724",
+    "frontier-view.ts": "bf8ff0c2ed58881893e1a930fd76aba0f00dc6b967fb3bec9cbf41f3c5e8bad7",
+    "world-view.ts": "2323b2e41e6ee4c7a5380fff29dc984e8573ab0bedab4700fc1bc5773476ee9d",
+    "torch-shadow.ts": "e8c61bbd9920821ba28873c45d446e4e3bcc62d0bcb49a5d23cd4e83063fa90a",
+    "scene-shadows.ts": "006e0c3e6ef02e4fe9db3dca6f8a2274cdfdb8d1f4726ef536db0b228ec3f229",
+    "shadow-field.ts": "69cc9efb2b218c066eb8e914a4c7ec7d1e57b96144836efbff4c344937fa1514",
+    "shadow-field-worker.ts": "8b1b252f61878341474ed56ee05130fd873e652a143f59f383da9720a6054600",
+    "shadow-surfaces.ts": "4b1becf6a5c318f2de18b581ed8debed5d88c4d3190be1d99e7995082a5353a4",
+    "native-shadow-sampling.ts": "67b7301103133ff2142be89ac14b44fd1264ec15d2313d39a978d704baa6a226",
+    "shadow-source-transform.ts": "9790817c30394b6cacdfbb8b2e912665e6512081b2bd8f2956b7c4ca3fcde489",
+    "shadow-sampling.ts": "852ccfef4e7a78493ac0adb6ccdd4fdc035300db4f09ea470236ff8b61fafc4d",
+    "shadow-program.ts": "7f29279852819349ed2e946141b454fedb3718f193d226f84c69e079c0af5f9d",
+    "shadow-family-audit.ts": "554d9dd6cabd5290b2f5b598aaf39fe8cb839717b6bf1eed44a656661ebedbff",
+    "solid-shadow-geometry.ts": "ccb66427c091343118a7f548c261bb122d90bd6b6997242aa0db98df68930567"
+  },
+  "errors": [],
+  "batches": [
+    {
+      "offset": 0,
+      "totalVariants": 24,
+      "totalPlacements": 24,
+      "rows": [
+        {
+          "id": "variant:0",
+          "signature": "[\"ff:rock-scatter\",[395,1995,160,42],64.7637,17.092200000000002,[0.5,0.6059],false,0,null,0,[0.6176,0.6904,0.7471,0.7765,0.8515,0.8765,0.9301,0.9353,0.9824,0.9706,0.9471,0.9118,0.9044,0.8765,0.8118,0.754,0.5235],null,true,false,5.982270000000001,[0.945238,0.707143,0.445238,0.37381,0.421429,0.509226,0.680357,0.788988,0.897619,0.897619,0.82619,0.754762,0.486905,0.445238,0.588095,0.754762,0.82619],null,{\"groundRotation\":327}]",
+          "family": "ff:rock-scatter",
+          "key": "ff:rock-scatter:368",
+          "placements": [
+            {
+              "key": "ff:rock-scatter:368",
+              "x": -1259.7999999999993,
+              "y": 796.8000000000011
+            }
+          ],
+          "width": 64.7637,
+          "height": 17.092200000000002,
+          "flip": false,
+          "groundRotation": 327,
+          "lift": 0,
+          "frame": [
+            395,
+            1995,
+            160,
+            42
+          ],
+          "explicitHeight": false,
+          "solidBody": true,
+          "capHeight": 5.982270000000001,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 4939,
+              "cast": true,
+              "maxHeight": 5.982270000000001,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 6,
+                "pixel": [
+                  162,
+                  16
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 4796,
+              "cast": true,
+              "maxHeight": 5.982270000000001,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 6,
+                "pixel": [
+                  162,
+                  16
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 5607,
+              "cast": true,
+              "maxHeight": 5.982270000000001,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 6,
+                "pixel": [
+                  168,
+                  16
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:1",
+          "signature": "[\"ff:rock-scatter\",[395,1995,160,42],59.030519999999996,15.57912,[0.5,0.6059],true,0,null,0,[0.6176,0.6904,0.7471,0.7765,0.8515,0.8765,0.9301,0.9353,0.9824,0.9706,0.9471,0.9118,0.9044,0.8765,0.8118,0.754,0.5235],null,true,false,5.452692,[0.945238,0.707143,0.445238,0.37381,0.421429,0.509226,0.680357,0.788988,0.897619,0.897619,0.82619,0.754762,0.486905,0.445238,0.588095,0.754762,0.82619],null]",
+          "family": "ff:rock-scatter",
+          "key": "ff:rock-scatter:267",
+          "placements": [
+            {
+              "key": "ff:rock-scatter:267",
+              "x": -1485.079999999998,
+              "y": 929.2800000000007
+            }
+          ],
+          "width": 59.030519999999996,
+          "height": 15.57912,
+          "flip": true,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            395,
+            1995,
+            160,
+            42
+          ],
+          "explicitHeight": false,
+          "solidBody": true,
+          "capHeight": 5.452692,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 4328,
+              "cast": true,
+              "maxHeight": 5.452692031860352,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 5.5,
+                "pixel": [
+                  176,
+                  10
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 4712,
+              "cast": true,
+              "maxHeight": 5.452692031860352,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 5.5,
+                "pixel": [
+                  193,
+                  10
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 6626,
+              "cast": true,
+              "maxHeight": 5.452692031860352,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 5.5,
+                "pixel": [
+                  198,
+                  10
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:2",
+          "signature": "[\"ff:rock-scatter\",[395,1995,160,42],52.801880000000004,13.93528,[0.5,0.6059],false,0,null,0,[0.6176,0.6904,0.7471,0.7765,0.8515,0.8765,0.9301,0.9353,0.9824,0.9706,0.9471,0.9118,0.9044,0.8765,0.8118,0.754,0.5235],null,true,false,4.877348,[0.945238,0.707143,0.445238,0.37381,0.421429,0.509226,0.680357,0.788988,0.897619,0.897619,0.82619,0.754762,0.486905,0.445238,0.588095,0.754762,0.82619],null]",
+          "family": "ff:rock-scatter",
+          "key": "ff:rock-scatter:260",
+          "placements": [
+            {
+              "key": "ff:rock-scatter:260",
+              "x": -1050.5200000000004,
+              "y": 941.1200000000008
+            }
+          ],
+          "width": 52.801880000000004,
+          "height": 13.93528,
+          "flip": false,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            395,
+            1995,
+            160,
+            42
+          ],
+          "explicitHeight": false,
+          "solidBody": true,
+          "capHeight": 4.877348,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 4643,
+              "cast": true,
+              "maxHeight": 4.877348,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 5,
+                "pixel": [
+                  42,
+                  8
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 5099,
+              "cast": true,
+              "maxHeight": 4.877348,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 5,
+                "pixel": [
+                  45,
+                  8
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 6940,
+              "cast": true,
+              "maxHeight": 4.877348,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 5,
+                "pixel": [
+                  58,
+                  8
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:3",
+          "signature": "[\"ff:rock-scatter\",[395,1995,160,42],50.32458,13.281479999999998,[0.5,0.6059],false,0,null,0,[0.6176,0.6904,0.7471,0.7765,0.8515,0.8765,0.9301,0.9353,0.9824,0.9706,0.9471,0.9118,0.9044,0.8765,0.8118,0.754,0.5235],null,true,false,4.648517999999999,[0.945238,0.707143,0.445238,0.37381,0.421429,0.509226,0.680357,0.788988,0.897619,0.897619,0.82619,0.754762,0.486905,0.445238,0.588095,0.754762,0.82619],null]",
+          "family": "ff:rock-scatter",
+          "key": "ff:rock-scatter:261",
+          "placements": [
+            {
+              "key": "ff:rock-scatter:261",
+              "x": -1069.7200000000012,
+              "y": 959.6800000000003
+            }
+          ],
+          "width": 50.32458,
+          "height": 13.281479999999998,
+          "flip": false,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            395,
+            1995,
+            160,
+            42
+          ],
+          "explicitHeight": false,
+          "solidBody": true,
+          "capHeight": 4.648517999999999,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 4682,
+              "cast": true,
+              "maxHeight": 4.648518085479736,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 4.5,
+                "pixel": [
+                  41,
+                  7
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 5240,
+              "cast": true,
+              "maxHeight": 4.648518085479736,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 4.5,
+                "pixel": [
+                  43,
+                  7
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 6783,
+              "cast": true,
+              "maxHeight": 4.648518085479736,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 4.5,
+                "pixel": [
+                  56,
+                  7
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:4",
+          "signature": "[\"ff:rock-scatter\",[395,1995,160,42],50.466139999999996,13.31884,[0.5,0.6059],false,0,null,0,[0.6176,0.6904,0.7471,0.7765,0.8515,0.8765,0.9301,0.9353,0.9824,0.9706,0.9471,0.9118,0.9044,0.8765,0.8118,0.754,0.5235],null,true,false,4.661594,[0.945238,0.707143,0.445238,0.37381,0.421429,0.509226,0.680357,0.788988,0.897619,0.897619,0.82619,0.754762,0.486905,0.445238,0.588095,0.754762,0.82619],null]",
+          "family": "ff:rock-scatter",
+          "key": "ff:rock-scatter:247",
+          "placements": [
+            {
+              "key": "ff:rock-scatter:247",
+              "x": 180.20000000000073,
+              "y": 993.9200000000001
+            }
+          ],
+          "width": 50.466139999999996,
+          "height": 13.31884,
+          "flip": false,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            395,
+            1995,
+            160,
+            42
+          ],
+          "explicitHeight": false,
+          "solidBody": true,
+          "capHeight": 4.661594,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 4794,
+              "cast": true,
+              "maxHeight": 4.661594,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 4.5,
+                "pixel": [
+                  41,
+                  11
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 5385,
+              "cast": true,
+              "maxHeight": 4.661594,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 4.5,
+                "pixel": [
+                  44,
+                  10
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 7110,
+              "cast": true,
+              "maxHeight": 4.661594,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 4.5,
+                "pixel": [
+                  56,
+                  11
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:5",
+          "signature": "[\"ff:rock-scatter\",[395,1995,160,42],81.11388,21.407279999999997,[0.5,0.6059],false,0,null,0,[0.6176,0.6904,0.7471,0.7765,0.8515,0.8765,0.9301,0.9353,0.9824,0.9706,0.9471,0.9118,0.9044,0.8765,0.8118,0.754,0.5235],null,true,false,7.492547999999998,[0.945238,0.707143,0.445238,0.37381,0.421429,0.509226,0.680357,0.788988,0.897619,0.897619,0.82619,0.754762,0.486905,0.445238,0.588095,0.754762,0.82619],null]",
+          "family": "ff:rock-scatter",
+          "key": "ff:rock-scatter:824",
+          "placements": [
+            {
+              "key": "ff:rock-scatter:824",
+              "x": 848.3600000000006,
+              "y": 1000.9599999999991
+            }
+          ],
+          "width": 81.11388,
+          "height": 21.407279999999997,
+          "flip": false,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            395,
+            1995,
+            160,
+            42
+          ],
+          "explicitHeight": false,
+          "solidBody": true,
+          "capHeight": 7.492547999999998,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 3113,
+              "cast": true,
+              "maxHeight": 7.492547999999998,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 7.5,
+                "pixel": [
+                  46,
+                  9
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 3729,
+              "cast": true,
+              "maxHeight": 7.492547999999998,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 7.5,
+                "pixel": [
+                  49,
+                  9
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 5524,
+              "cast": true,
+              "maxHeight": 7.492547999999998,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 7.5,
+                "pixel": [
+                  59,
+                  9
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        }
+      ],
+      "failures": [],
+      "probeSampling": "GPU packed receiver height at actual rendered pixel; float32 camera reconstruction",
+      "scope": "Actual registered static geometry plus explicitly labeled catalog/building fixtures, production GPU filter and Worker; three light vectors. Contact sheets show one representative per distinct geometry variant. Probe cases outside source bounds test visible raised receiving and above-caster rejection.",
+      "imageSha256": "7977cb11ea2fbe800ef59ec4a8990e6edee8fb689846606a9b626000628f39ef",
+      "image": "variants-0.png"
+    },
+    {
+      "offset": 6,
+      "totalVariants": 24,
+      "totalPlacements": 24,
+      "rows": [
+        {
+          "id": "variant:6",
+          "signature": "[\"ff:rock-scatter\",[395,1995,160,42],64.97604,17.14824,[0.5,0.6059],false,0,null,0,[0.6176,0.6904,0.7471,0.7765,0.8515,0.8765,0.9301,0.9353,0.9824,0.9706,0.9471,0.9118,0.9044,0.8765,0.8118,0.754,0.5235],null,true,false,6.001884,[0.945238,0.707143,0.445238,0.37381,0.421429,0.509226,0.680357,0.788988,0.897619,0.897619,0.82619,0.754762,0.486905,0.445238,0.588095,0.754762,0.82619],null]",
+          "family": "ff:rock-scatter",
+          "key": "ff:rock-scatter:264",
+          "placements": [
+            {
+              "key": "ff:rock-scatter:264",
+              "x": -1355.1599999999999,
+              "y": 1004.4800000000014
+            }
+          ],
+          "width": 64.97604,
+          "height": 17.14824,
+          "flip": false,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            395,
+            1995,
+            160,
+            42
+          ],
+          "explicitHeight": false,
+          "solidBody": true,
+          "capHeight": 6.001884,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 3713,
+              "cast": true,
+              "maxHeight": 6.001884,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 6,
+                "pixel": [
+                  44,
+                  9
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 4412,
+              "cast": true,
+              "maxHeight": 6.001884,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 6,
+                "pixel": [
+                  46,
+                  8
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 6056,
+              "cast": true,
+              "maxHeight": 6.001884,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 6,
+                "pixel": [
+                  57,
+                  8
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:7",
+          "signature": "[\"ff:rock-scatter\",[395,1995,160,42],62.21562,16.419719999999998,[0.5,0.6059],false,0,null,0,[0.6176,0.6904,0.7471,0.7765,0.8515,0.8765,0.9301,0.9353,0.9824,0.9706,0.9471,0.9118,0.9044,0.8765,0.8118,0.754,0.5235],null,true,false,5.746901999999999,[0.945238,0.707143,0.445238,0.37381,0.421429,0.509226,0.680357,0.788988,0.897619,0.897619,0.82619,0.754762,0.486905,0.445238,0.588095,0.754762,0.82619],null]",
+          "family": "ff:rock-scatter",
+          "key": "ff:rock-scatter:815",
+          "placements": [
+            {
+              "key": "ff:rock-scatter:815",
+              "x": -28.43999999999869,
+              "y": 1042.5599999999995
+            }
+          ],
+          "width": 62.21562,
+          "height": 16.419719999999998,
+          "flip": false,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            395,
+            1995,
+            160,
+            42
+          ],
+          "explicitHeight": false,
+          "solidBody": true,
+          "capHeight": 5.746901999999999,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 3830,
+              "cast": true,
+              "maxHeight": 5.746901999999999,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 5.5,
+                "pixel": [
+                  43,
+                  9
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 4543,
+              "cast": true,
+              "maxHeight": 5.746901999999999,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 5.5,
+                "pixel": [
+                  46,
+                  9
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 6285,
+              "cast": true,
+              "maxHeight": 5.746901999999999,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 5.5,
+                "pixel": [
+                  56,
+                  9
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:8",
+          "signature": "[\"ff:rock-scatter\",[395,1995,160,42],79.13204,20.884240000000002,[0.5,0.6059],true,0,null,0,[0.6176,0.6904,0.7471,0.7765,0.8515,0.8765,0.9301,0.9353,0.9824,0.9706,0.9471,0.9118,0.9044,0.8765,0.8118,0.754,0.5235],null,true,false,7.309484,[0.945238,0.707143,0.445238,0.37381,0.421429,0.509226,0.680357,0.788988,0.897619,0.897619,0.82619,0.754762,0.486905,0.445238,0.588095,0.754762,0.82619],null]",
+          "family": "ff:rock-scatter",
+          "key": "ff:rock-scatter:825",
+          "placements": [
+            {
+              "key": "ff:rock-scatter:825",
+              "x": 1081.3199999999997,
+              "y": 1112.9599999999991
+            }
+          ],
+          "width": 79.13204,
+          "height": 20.884240000000002,
+          "flip": true,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            395,
+            1995,
+            160,
+            42
+          ],
+          "explicitHeight": false,
+          "solidBody": true,
+          "capHeight": 7.309484,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 3107,
+              "cast": true,
+              "maxHeight": 7.309484004974365,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 7.5,
+                "pixel": [
+                  173,
+                  10
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 3868,
+              "cast": true,
+              "maxHeight": 7.309484004974365,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 7.5,
+                "pixel": [
+                  190,
+                  9
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 5602,
+              "cast": true,
+              "maxHeight": 7.309484004974365,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 7.5,
+                "pixel": [
+                  195,
+                  9
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:9",
+          "signature": "[\"ff:rock-scatter\",[395,1995,160,42],47.139480000000006,12.44088,[0.5,0.6059],false,0,null,0,[0.6176,0.6904,0.7471,0.7765,0.8515,0.8765,0.9301,0.9353,0.9824,0.9706,0.9471,0.9118,0.9044,0.8765,0.8118,0.754,0.5235],null,true,false,4.354308,[0.945238,0.707143,0.445238,0.37381,0.421429,0.509226,0.680357,0.788988,0.897619,0.897619,0.82619,0.754762,0.486905,0.445238,0.588095,0.754762,0.82619],null]",
+          "family": "ff:rock-scatter",
+          "key": "ff:rock-scatter:124",
+          "placements": [
+            {
+              "key": "ff:rock-scatter:124",
+              "x": 584.6800000000003,
+              "y": 1129.5999999999985
+            }
+          ],
+          "width": 47.139480000000006,
+          "height": 12.44088,
+          "flip": false,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            395,
+            1995,
+            160,
+            42
+          ],
+          "explicitHeight": false,
+          "solidBody": true,
+          "capHeight": 4.354308,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 5078,
+              "cast": true,
+              "maxHeight": 4.354308128356934,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 4.5,
+                "pixel": [
+                  44,
+                  11
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 5500,
+              "cast": true,
+              "maxHeight": 4.354308128356934,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 4.5,
+                "pixel": [
+                  47,
+                  11
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 7367,
+              "cast": true,
+              "maxHeight": 4.354308128356934,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 4.5,
+                "pixel": [
+                  59,
+                  11
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:10",
+          "signature": "[\"ff:rock-scatter\",[395,1995,160,42],65.96696,17.409760000000002,[0.5,0.6059],true,0,null,0,[0.6176,0.6904,0.7471,0.7765,0.8515,0.8765,0.9301,0.9353,0.9824,0.9706,0.9471,0.9118,0.9044,0.8765,0.8118,0.754,0.5235],null,true,false,6.093416,[0.945238,0.707143,0.445238,0.37381,0.421429,0.509226,0.680357,0.788988,0.897619,0.897619,0.82619,0.754762,0.486905,0.445238,0.588095,0.754762,0.82619],null]",
+          "family": "ff:rock-scatter",
+          "key": "ff:rock-scatter:816",
+          "placements": [
+            {
+              "key": "ff:rock-scatter:816",
+              "x": -1052.4399999999987,
+              "y": 1155.199999999999
+            }
+          ],
+          "width": 65.96696,
+          "height": 17.409760000000002,
+          "flip": true,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            395,
+            1995,
+            160,
+            42
+          ],
+          "explicitHeight": false,
+          "solidBody": true,
+          "capHeight": 6.093416,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 3662,
+              "cast": true,
+              "maxHeight": 6.093416213989258,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 6,
+                "pixel": [
+                  173,
+                  11
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 4371,
+              "cast": true,
+              "maxHeight": 6.093416213989258,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 6,
+                "pixel": [
+                  189,
+                  11
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 5957,
+              "cast": true,
+              "maxHeight": 6.093416213989258,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 6,
+                "pixel": [
+                  194,
+                  11
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:11",
+          "signature": "[\"ff:rock-scatter\",[395,1995,160,42],79.83984,21.071039999999996,[0.5,0.6059],false,0,null,0,[0.6176,0.6904,0.7471,0.7765,0.8515,0.8765,0.9301,0.9353,0.9824,0.9706,0.9471,0.9118,0.9044,0.8765,0.8118,0.754,0.5235],null,true,false,7.374863999999998,[0.945238,0.707143,0.445238,0.37381,0.421429,0.509226,0.680357,0.788988,0.897619,0.897619,0.82619,0.754762,0.486905,0.445238,0.588095,0.754762,0.82619],null]",
+          "family": "ff:rock-scatter",
+          "key": "ff:rock-scatter:828",
+          "placements": [
+            {
+              "key": "ff:rock-scatter:828",
+              "x": 329.9599999999991,
+              "y": 1175.0400000000009
+            }
+          ],
+          "width": 79.83984,
+          "height": 21.071039999999996,
+          "flip": false,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            395,
+            1995,
+            160,
+            42
+          ],
+          "explicitHeight": false,
+          "solidBody": true,
+          "capHeight": 7.374863999999998,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 3095,
+              "cast": true,
+              "maxHeight": 7.374864101409912,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 7.5,
+                "pixel": [
+                  44,
+                  11
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 3893,
+              "cast": true,
+              "maxHeight": 7.374864101409912,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 7.5,
+                "pixel": [
+                  47,
+                  11
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 5496,
+              "cast": true,
+              "maxHeight": 7.374864101409912,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 7.5,
+                "pixel": [
+                  57,
+                  11
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        }
+      ],
+      "failures": [],
+      "probeSampling": "GPU packed receiver height at actual rendered pixel; float32 camera reconstruction",
+      "scope": "Actual registered static geometry plus explicitly labeled catalog/building fixtures, production GPU filter and Worker; three light vectors. Contact sheets show one representative per distinct geometry variant. Probe cases outside source bounds test visible raised receiving and above-caster rejection.",
+      "imageSha256": "404917dac9f0732eaf5c102353cb7c610a18d3d633733432256b75293c125410",
+      "image": "variants-6.png"
+    },
+    {
+      "offset": 12,
+      "totalVariants": 24,
+      "totalPlacements": 24,
+      "rows": [
+        {
+          "id": "variant:12",
+          "signature": "[\"ff:rock-scatter\",[395,1995,160,42],70.28454,18.54924,[0.5,0.6059],true,0,null,0,[0.6176,0.6904,0.7471,0.7765,0.8515,0.8765,0.9301,0.9353,0.9824,0.9706,0.9471,0.9118,0.9044,0.8765,0.8118,0.754,0.5235],null,true,false,6.492234,[0.945238,0.707143,0.445238,0.37381,0.421429,0.509226,0.680357,0.788988,0.897619,0.897619,0.82619,0.754762,0.486905,0.445238,0.588095,0.754762,0.82619],null]",
+          "family": "ff:rock-scatter",
+          "key": "ff:rock-scatter:831",
+          "placements": [
+            {
+              "key": "ff:rock-scatter:831",
+              "x": -88.59999999999854,
+              "y": 1271.0400000000009
+            }
+          ],
+          "width": 70.28454,
+          "height": 18.54924,
+          "flip": true,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            395,
+            1995,
+            160,
+            42
+          ],
+          "explicitHeight": false,
+          "solidBody": true,
+          "capHeight": 6.492234,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 3625,
+              "cast": true,
+              "maxHeight": 6.492234230041504,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 6.5,
+                "pixel": [
+                  176,
+                  11
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 4200,
+              "cast": true,
+              "maxHeight": 6.492234230041504,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 6.5,
+                "pixel": [
+                  193,
+                  11
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 5822,
+              "cast": true,
+              "maxHeight": 6.492234230041504,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 6.5,
+                "pixel": [
+                  199,
+                  11
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:13",
+          "signature": "[\"ff:rock-scatter\",[395,1995,160,42],77.43332000000001,20.435920000000003,[0.5,0.6059],true,0,null,0,[0.6176,0.6904,0.7471,0.7765,0.8515,0.8765,0.9301,0.9353,0.9824,0.9706,0.9471,0.9118,0.9044,0.8765,0.8118,0.754,0.5235],null,true,false,7.152572,[0.945238,0.707143,0.445238,0.37381,0.421429,0.509226,0.680357,0.788988,0.897619,0.897619,0.82619,0.754762,0.486905,0.445238,0.588095,0.754762,0.82619],null]",
+          "family": "ff:rock-scatter",
+          "key": "ff:rock-scatter:826",
+          "placements": [
+            {
+              "key": "ff:rock-scatter:826",
+              "x": -11.799999999999272,
+              "y": 1274.8799999999992
+            }
+          ],
+          "width": 77.43332000000001,
+          "height": 20.435920000000003,
+          "flip": true,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            395,
+            1995,
+            160,
+            42
+          ],
+          "explicitHeight": false,
+          "solidBody": true,
+          "capHeight": 7.152572,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 3319,
+              "cast": true,
+              "maxHeight": 7.152572154998779,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 7,
+                "pixel": [
+                  173,
+                  10
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 3853,
+              "cast": true,
+              "maxHeight": 7.152572154998779,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 7,
+                "pixel": [
+                  189,
+                  10
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 5687,
+              "cast": true,
+              "maxHeight": 7.152572154998779,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 7,
+                "pixel": [
+                  194,
+                  10
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:14",
+          "signature": "[\"ff:rock-scatter\",[395,1995,160,42],65.04682,17.16692,[0.5,0.6059],true,0,null,0,[0.6176,0.6904,0.7471,0.7765,0.8515,0.8765,0.9301,0.9353,0.9824,0.9706,0.9471,0.9118,0.9044,0.8765,0.8118,0.754,0.5235],null,true,false,6.008422,[0.945238,0.707143,0.445238,0.37381,0.421429,0.509226,0.680357,0.788988,0.897619,0.897619,0.82619,0.754762,0.486905,0.445238,0.588095,0.754762,0.82619],null]",
+          "family": "ff:rock-scatter",
+          "key": "ff:rock-scatter:77",
+          "placements": [
+            {
+              "key": "ff:rock-scatter:77",
+              "x": 177,
+              "y": 1426.880000000001
+            }
+          ],
+          "width": 65.04682,
+          "height": 17.16692,
+          "flip": true,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            395,
+            1995,
+            160,
+            42
+          ],
+          "explicitHeight": false,
+          "solidBody": true,
+          "capHeight": 6.008422,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 3706,
+              "cast": true,
+              "maxHeight": 6.008422,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 6,
+                "pixel": [
+                  171,
+                  9
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 4361,
+              "cast": true,
+              "maxHeight": 6.008422,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 6,
+                "pixel": [
+                  187,
+                  9
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 6146,
+              "cast": true,
+              "maxHeight": 6.008422,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 6,
+                "pixel": [
+                  193,
+                  9
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:15",
+          "signature": "[\"ff:rock-scatter\",[395,1995,160,42],68.86894,18.175639999999998,[0.5,0.6059],false,0,null,0,[0.6176,0.6904,0.7471,0.7765,0.8515,0.8765,0.9301,0.9353,0.9824,0.9706,0.9471,0.9118,0.9044,0.8765,0.8118,0.754,0.5235],null,true,false,6.3614739999999985,[0.945238,0.707143,0.445238,0.37381,0.421429,0.509226,0.680357,0.788988,0.897619,0.897619,0.82619,0.754762,0.486905,0.445238,0.588095,0.754762,0.82619],null]",
+          "family": "ff:rock-scatter",
+          "key": "ff:rock-scatter:788",
+          "placements": [
+            {
+              "key": "ff:rock-scatter:788",
+              "x": 745.9599999999991,
+              "y": 1694.7200000000012
+            }
+          ],
+          "width": 68.86894,
+          "height": 18.175639999999998,
+          "flip": false,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            395,
+            1995,
+            160,
+            42
+          ],
+          "explicitHeight": false,
+          "solidBody": true,
+          "capHeight": 6.3614739999999985,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 3660,
+              "cast": true,
+              "maxHeight": 6.36147403717041,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 6.5,
+                "pixel": [
+                  48,
+                  10
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 4204,
+              "cast": true,
+              "maxHeight": 6.36147403717041,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 6.5,
+                "pixel": [
+                  51,
+                  10
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 5938,
+              "cast": true,
+              "maxHeight": 6.36147403717041,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 6.5,
+                "pixel": [
+                  64,
+                  10
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:16",
+          "signature": "[\"ff:rock-scatter\",[395,1995,160,42],47.776500000000006,12.609,[0.5,0.6059],true,0,null,0,[0.6176,0.6904,0.7471,0.7765,0.8515,0.8765,0.9301,0.9353,0.9824,0.9706,0.9471,0.9118,0.9044,0.8765,0.8118,0.754,0.5235],null,true,false,4.41315,[0.945238,0.707143,0.445238,0.37381,0.421429,0.509226,0.680357,0.788988,0.897619,0.897619,0.82619,0.754762,0.486905,0.445238,0.588095,0.754762,0.82619],null]",
+          "family": "ff:rock-scatter",
+          "key": "ff:rock-scatter:450",
+          "placements": [
+            {
+              "key": "ff:rock-scatter:450",
+              "x": -91.15999999999985,
+              "y": 1876.4800000000014
+            }
+          ],
+          "width": 47.776500000000006,
+          "height": 12.609,
+          "flip": true,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            395,
+            1995,
+            160,
+            42
+          ],
+          "explicitHeight": false,
+          "solidBody": true,
+          "capHeight": 4.41315,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 5110,
+              "cast": true,
+              "maxHeight": 4.41315,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 4.5,
+                "pixel": [
+                  172,
+                  9
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 5569,
+              "cast": true,
+              "maxHeight": 4.41315,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 4.5,
+                "pixel": [
+                  188,
+                  8
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 6888,
+              "cast": true,
+              "maxHeight": 4.41315,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 4.5,
+                "pixel": [
+                  195,
+                  8
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:17",
+          "signature": "[\"ff:rock-scatter\",[395,1995,160,42],50.53692,13.33752,[0.5,0.6059],true,0,null,0,[0.6176,0.6904,0.7471,0.7765,0.8515,0.8765,0.9301,0.9353,0.9824,0.9706,0.9471,0.9118,0.9044,0.8765,0.8118,0.754,0.5235],null,true,false,4.668132,[0.945238,0.707143,0.445238,0.37381,0.421429,0.509226,0.680357,0.788988,0.897619,0.897619,0.82619,0.754762,0.486905,0.445238,0.588095,0.754762,0.82619],null]",
+          "family": "ff:rock-scatter",
+          "key": "ff:rock-scatter:452",
+          "placements": [
+            {
+              "key": "ff:rock-scatter:452",
+              "x": 120.03999999999724,
+              "y": 1913.6000000000004
+            }
+          ],
+          "width": 50.53692,
+          "height": 13.33752,
+          "flip": true,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            395,
+            1995,
+            160,
+            42
+          ],
+          "explicitHeight": false,
+          "solidBody": true,
+          "capHeight": 4.668132,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 4872,
+              "cast": true,
+              "maxHeight": 4.668132,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 4.5,
+                "pixel": [
+                  174,
+                  7
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 5300,
+              "cast": true,
+              "maxHeight": 4.668132,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 4.5,
+                "pixel": [
+                  191,
+                  6
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 6981,
+              "cast": true,
+              "maxHeight": 4.668132,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 4.5,
+                "pixel": [
+                  197,
+                  6
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        }
+      ],
+      "failures": [],
+      "probeSampling": "GPU packed receiver height at actual rendered pixel; float32 camera reconstruction",
+      "scope": "Actual registered static geometry plus explicitly labeled catalog/building fixtures, production GPU filter and Worker; three light vectors. Contact sheets show one representative per distinct geometry variant. Probe cases outside source bounds test visible raised receiving and above-caster rejection.",
+      "imageSha256": "4e7225ca71476dbda764ea9fac0118f87b447d89cf8aeb512cd09dc8a301936f",
+      "image": "variants-12.png"
+    },
+    {
+      "offset": 18,
+      "totalVariants": 24,
+      "totalPlacements": 24,
+      "rows": [
+        {
+          "id": "variant:18",
+          "signature": "[\"ff:rock-scatter\",[395,1995,160,42],62.92342,16.60652,[0.5,0.6059],true,0,null,0,[0.6176,0.6904,0.7471,0.7765,0.8515,0.8765,0.9301,0.9353,0.9824,0.9706,0.9471,0.9118,0.9044,0.8765,0.8118,0.754,0.5235],null,true,false,5.812282,[0.945238,0.707143,0.445238,0.37381,0.421429,0.509226,0.680357,0.788988,0.897619,0.897619,0.82619,0.754762,0.486905,0.445238,0.588095,0.754762,0.82619],null]",
+          "family": "ff:rock-scatter",
+          "key": "ff:rock-scatter:460",
+          "placements": [
+            {
+              "key": "ff:rock-scatter:460",
+              "x": 33.63999999999942,
+              "y": 2236.4799999999996
+            }
+          ],
+          "width": 62.92342,
+          "height": 16.60652,
+          "flip": true,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            395,
+            1995,
+            160,
+            42
+          ],
+          "explicitHeight": false,
+          "solidBody": true,
+          "capHeight": 5.812282,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 3892,
+              "cast": true,
+              "maxHeight": 5.812282085418701,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 6,
+                "pixel": [
+                  176,
+                  9
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 4528,
+              "cast": true,
+              "maxHeight": 5.812282085418701,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 6,
+                "pixel": [
+                  193,
+                  9
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 6291,
+              "cast": true,
+              "maxHeight": 5.812282085418701,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 6,
+                "pixel": [
+                  198,
+                  9
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:19",
+          "signature": "[\"ff:rock-scatter\",[395,1995,160,42],49.829119999999996,13.15072,[0.5,0.6059],false,0,null,0,[0.6176,0.6904,0.7471,0.7765,0.8515,0.8765,0.9301,0.9353,0.9824,0.9706,0.9471,0.9118,0.9044,0.8765,0.8118,0.754,0.5235],null,true,false,4.602752,[0.945238,0.707143,0.445238,0.37381,0.421429,0.509226,0.680357,0.788988,0.897619,0.897619,0.82619,0.754762,0.486905,0.445238,0.588095,0.754762,0.82619],null]",
+          "family": "ff:rock-scatter",
+          "key": "ff:rock-scatter:459",
+          "placements": [
+            {
+              "key": "ff:rock-scatter:459",
+              "x": 185.3199999999997,
+              "y": 2263.040000000001
+            }
+          ],
+          "width": 49.829119999999996,
+          "height": 13.15072,
+          "flip": false,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            395,
+            1995,
+            160,
+            42
+          ],
+          "explicitHeight": false,
+          "solidBody": true,
+          "capHeight": 4.602752,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 4682,
+              "cast": true,
+              "maxHeight": 4.602752208709717,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 4.5,
+                "pixel": [
+                  45,
+                  9
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 5426,
+              "cast": true,
+              "maxHeight": 4.602752208709717,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 4.5,
+                "pixel": [
+                  48,
+                  8
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 7268,
+              "cast": true,
+              "maxHeight": 4.602752208709717,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 4.5,
+                "pixel": [
+                  61,
+                  8
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:20",
+          "signature": "[\"ff:rock-scatter\",[395,1995,160,42],60.72924,16.02744,[0.5,0.6059],true,0,null,0,[0.6176,0.6904,0.7471,0.7765,0.8515,0.8765,0.9301,0.9353,0.9824,0.9706,0.9471,0.9118,0.9044,0.8765,0.8118,0.754,0.5235],null,true,false,5.609603999999999,[0.945238,0.707143,0.445238,0.37381,0.421429,0.509226,0.680357,0.788988,0.897619,0.897619,0.82619,0.754762,0.486905,0.445238,0.588095,0.754762,0.82619],null]",
+          "family": "ff:rock-scatter",
+          "key": "ff:rock-scatter:463",
+          "placements": [
+            {
+              "key": "ff:rock-scatter:463",
+              "x": -205.0799999999981,
+              "y": 2362.24
+            }
+          ],
+          "width": 60.72924,
+          "height": 16.02744,
+          "flip": true,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            395,
+            1995,
+            160,
+            42
+          ],
+          "explicitHeight": false,
+          "solidBody": true,
+          "capHeight": 5.609603999999999,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 4080,
+              "cast": true,
+              "maxHeight": 5.609603999999999,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 5.5,
+                "pixel": [
+                  174,
+                  10
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 4622,
+              "cast": true,
+              "maxHeight": 5.609603999999999,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 5.5,
+                "pixel": [
+                  190,
+                  9
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 6138,
+              "cast": true,
+              "maxHeight": 5.609603999999999,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 5.5,
+                "pixel": [
+                  196,
+                  10
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:21",
+          "signature": "[\"ff:rock-scatter\",[395,1995,160,42],49.829119999999996,13.15072,[0.5,0.6059],true,0,null,0,[0.6176,0.6904,0.7471,0.7765,0.8515,0.8765,0.9301,0.9353,0.9824,0.9706,0.9471,0.9118,0.9044,0.8765,0.8118,0.754,0.5235],null,true,false,4.602752,[0.945238,0.707143,0.445238,0.37381,0.421429,0.509226,0.680357,0.788988,0.897619,0.897619,0.82619,0.754762,0.486905,0.445238,0.588095,0.754762,0.82619],null]",
+          "family": "ff:rock-scatter",
+          "key": "ff:rock-scatter:502",
+          "placements": [
+            {
+              "key": "ff:rock-scatter:502",
+              "x": -338.84000000000015,
+              "y": 2516.800000000001
+            }
+          ],
+          "width": 49.829119999999996,
+          "height": 13.15072,
+          "flip": true,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            395,
+            1995,
+            160,
+            42
+          ],
+          "explicitHeight": false,
+          "solidBody": true,
+          "capHeight": 4.602752,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 4960,
+              "cast": true,
+              "maxHeight": 4.602752208709717,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 4.5,
+                "pixel": [
+                  170,
+                  9
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 5439,
+              "cast": true,
+              "maxHeight": 4.602752208709717,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 4.5,
+                "pixel": [
+                  186,
+                  8
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 7063,
+              "cast": true,
+              "maxHeight": 4.602752208709717,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 4.5,
+                "pixel": [
+                  193,
+                  8
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:22",
+          "signature": "[\"ff:rock-scatter\",[395,1995,160,42],51.59862,13.61772,[0.5,0.6059],false,0,null,0,[0.6176,0.6904,0.7471,0.7765,0.8515,0.8765,0.9301,0.9353,0.9824,0.9706,0.9471,0.9118,0.9044,0.8765,0.8118,0.754,0.5235],null,true,false,4.766202,[0.945238,0.707143,0.445238,0.37381,0.421429,0.509226,0.680357,0.788988,0.897619,0.897619,0.82619,0.754762,0.486905,0.445238,0.588095,0.754762,0.82619],null]",
+          "family": "ff:rock-scatter",
+          "key": "ff:rock-scatter:580",
+          "placements": [
+            {
+              "key": "ff:rock-scatter:580",
+              "x": 72.04000000000087,
+              "y": 2607.6800000000003
+            }
+          ],
+          "width": 51.59862,
+          "height": 13.61772,
+          "flip": false,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            395,
+            1995,
+            160,
+            42
+          ],
+          "explicitHeight": false,
+          "solidBody": true,
+          "capHeight": 4.766202,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 4655,
+              "cast": true,
+              "maxHeight": 4.766202,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 5,
+                "pixel": [
+                  40,
+                  11
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 5349,
+              "cast": true,
+              "maxHeight": 4.766202,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 5,
+                "pixel": [
+                  43,
+                  11
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 6820,
+              "cast": true,
+              "maxHeight": 4.766202,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 5,
+                "pixel": [
+                  56,
+                  11
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        },
+        {
+          "id": "variant:23",
+          "signature": "[\"ff:rock-scatter\",[395,1995,160,42],56.12854,14.81324,[0.5,0.6059],false,0,null,0,[0.6176,0.6904,0.7471,0.7765,0.8515,0.8765,0.9301,0.9353,0.9824,0.9706,0.9471,0.9118,0.9044,0.8765,0.8118,0.754,0.5235],null,true,false,5.184634,[0.945238,0.707143,0.445238,0.37381,0.421429,0.509226,0.680357,0.788988,0.897619,0.897619,0.82619,0.754762,0.486905,0.445238,0.588095,0.754762,0.82619],null]",
+          "family": "ff:rock-scatter",
+          "key": "ff:rock-scatter:581",
+          "placements": [
+            {
+              "key": "ff:rock-scatter:581",
+              "x": 163.5600000000013,
+              "y": 2650.879999999999
+            }
+          ],
+          "width": 56.12854,
+          "height": 14.81324,
+          "flip": false,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            395,
+            1995,
+            160,
+            42
+          ],
+          "explicitHeight": false,
+          "solidBody": true,
+          "capHeight": 5.184634,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 4082,
+              "cast": true,
+              "maxHeight": 5.184634208679199,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 5,
+                "pixel": [
+                  46,
+                  12
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 5185,
+              "cast": true,
+              "maxHeight": 5.184634208679199,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 5,
+                "pixel": [
+                  49,
+                  12
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 6815,
+              "cast": true,
+              "maxHeight": 5.184634208679199,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 5,
+                "pixel": [
+                  59,
+                  12
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        }
+      ],
+      "failures": [],
+      "probeSampling": "GPU packed receiver height at actual rendered pixel; float32 camera reconstruction",
+      "scope": "Actual registered static geometry plus explicitly labeled catalog/building fixtures, production GPU filter and Worker; three light vectors. Contact sheets show one representative per distinct geometry variant. Probe cases outside source bounds test visible raised receiving and above-caster rejection.",
+      "imageSha256": "48f5e1be1f7566824d812d6c72a1bdf5e0d2f9e9325e93d9ceb88646ae5683fe",
+      "image": "variants-18.png"
+    }
+  ],
+  "registered": 468,
+  "placements": 468,
+  "selected": 24,
+  "variants": 24,
+  "receiverPainterOrder": {
+    "sourceCount": 296,
+    "colorCount": 296,
+    "mismatches": 0
+  }
+}

@@ -210,7 +210,7 @@ export async function createWorldView(
   const court:ShadowSurface[]=objects.filter(p=>p.id!=='gate').map(p=>({key:p.id+':'+p.file,source:p.image,sourceWidth:p.image.naturalWidth,sourceHeight:p.image.naturalHeight,x:p.x,y:p.y,width:p.width,height:p.height,pivot:[.5,p.foot],shear:p.shear,vertical:p.vertical,depth:p.depth,cast:p.layer!=='ground'&&p.opacity>=1,...(p.layer==='ground'?{constantHeight:0}:{})}));
   const ff=frontier.shadowSurfaces();
   const terrain:ShadowSurface[]=relief.map(r=>({key:'relief:'+r.feature.id,source:r.canvas,sourceWidth:r.canvas.width,sourceHeight:r.canvas.height,x:r.left+r.width/2,y:r.bottom,width:r.width,height:r.height,pivot:[.5,1],heightAtScreen:(x,y)=>reliefShadowHeight(r.feature,x,y)}));
-  return [...court.map(p=>p.key.startsWith('expedition:')?withTentGeometry(p):p),...ff.filter(p=>p.constantHeight!==undefined),...terrain,...ff.filter(p=>p.constantHeight===undefined),...torchShadowSurfaces()];
+  return [...court.map(p=>p.key.startsWith('expedition:')?withTentGeometry(p):p),...ff.filter(p=>p.groundLayer||p.constantHeight!==undefined),...terrain,...ff.filter(p=>!p.groundLayer&&p.constantHeight===undefined),...torchShadowSurfaces()];
  }
  function castShadows(paint=true){
   const s=lighting.sun();frontier.setSun(s);

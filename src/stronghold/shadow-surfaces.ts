@@ -1,6 +1,7 @@
+import {shadowSourceOffset} from './shadow-source-transform';
 import {sampleNativeBoxes} from './native-shadow-sampling';
 import {type ShadowSample} from './shadow-field';
-export type ShadowSurface={key:string;source:CanvasImageSource;sourceWidth:number;sourceHeight:number;frame?:number[];x:number;y:number;width:number;height:number;pivot:number[];flip?:boolean;shear?:number;vertical?:number;lift?:number;ground?:number[];constantHeight?:number;depth?:number;cast?:boolean;solidBody?:boolean;nativeGeometry?:{boxes?:number[][];world?:number[];pivot?:number[];vertices?:number[][];faces?:number[][];receiveFaces?:number[];completeAlpha?:boolean};geometryModel?:string;heightInterval?:(u:number,v:number)=>{near:number;far:number};capHeight?:number;backGround?:number[];heightAtScreen?:(x:number,y:number)=>number};
+export type ShadowSurface={key:string;source:CanvasImageSource;sourceWidth:number;sourceHeight:number;frame?:number[];x:number;y:number;width:number;height:number;pivot:number[];flip?:boolean;shear?:number;groundRotation?:number;groundLayer?:boolean;vertical?:number;lift?:number;ground?:number[];constantHeight?:number;depth?:number;cast?:boolean;solidBody?:boolean;nativeGeometry?:{boxes?:number[][];world?:number[];pivot?:number[];vertices?:number[][];faces?:number[][];receiveFaces?:number[];completeAlpha?:boolean};geometryModel?:string;heightInterval?:(u:number,v:number)=>{near:number;far:number};capHeight?:number;backGround?:number[];heightAtScreen?:(x:number,y:number)=>number};
 export type SampledSurface={surface:ShadowSurface;samples:ShadowSample[];bounds:{left:number;top:number;right:number;bottom:number};step:number};
 // Ground contact measured from alpha, with the same 2:1 support constraint as the
 // frontier kit builder. This is an explicitly declared folded billboard proxy.
@@ -14,9 +15,9 @@ export function measuredGround(alpha:Uint8ClampedArray,w:number,h:number){
 }
 export function baseline(ground:number[],u:number){const n=ground.length-1,t=Math.max(0,Math.min(n,u*n)),i=Math.min(n-1,Math.floor(t));return n?ground[i]+(ground[i+1]-ground[i])*(t-i):ground[0];}
 export function surfacePoint(p:ShadowSurface,u:number,v:number,ground=p.ground??[p.pivot[1]]){
- const lx=(u-p.pivot[0])*p.width*(p.flip?-1:1),sy=(p.vertical??1)*p.height,screenY=p.y-(p.lift??0)+(p.shear??0)*lx+(v-p.pivot[1])*sy;
- const raw=p.heightInterval?.(u,v).near??p.constantHeight??Math.max(0,(baseline(ground,u)-v)*sy),local=p.capHeight===undefined?raw:Math.min(p.capHeight,raw),z=p.heightAtScreen?p.heightAtScreen(p.x+lx,screenY):(p.lift??0)+local;
- return {x:p.x+lx,y:screenY+z,z,alpha:1};
+ const lx=(u-p.pivot[0])*p.width*(p.flip?-1:1),sy=(p.vertical??1)*p.height,offset=p.groundRotation?shadowSourceOffset(lx,(v-p.pivot[1])*sy,p.shear,p.groundRotation):null,screenY=p.groundRotation?p.y-(p.lift??0)+offset!.y:p.y-(p.lift??0)+(p.shear??0)*lx+(v-p.pivot[1])*sy;
+ const raw=p.heightInterval?.(u,v).near??p.constantHeight??Math.max(0,(baseline(ground,u)-v)*sy),local=p.capHeight===undefined?raw:Math.min(p.capHeight,raw),z=p.heightAtScreen?p.heightAtScreen(p.x+(offset?.x??lx),screenY):(p.lift??0)+local;
+ return {x:p.x+(offset?.x??lx),y:screenY+z,z,alpha:1};
 }
 export function sampleSurface(surface:ShadowSurface,step=2):SampledSurface{
  const p=surface,w=Math.max(1,Math.ceil(p.width/step)),h=Math.max(1,Math.ceil(p.height*(p.vertical??1)/step)),c=document.createElement('canvas');c.width=w;c.height=h;

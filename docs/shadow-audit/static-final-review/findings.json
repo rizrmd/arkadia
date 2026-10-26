@@ -1,16 +1,17 @@
 {
   "reviewedFamilyPlates": 11,
   "familyRecords": 86,
-  "geometryVariantsNumericallyExercised": 313,
-  "receiverControls": 939,
-  "reviewScope": "All 313 variants and 939 sun images directly inspected across 53 content-bound plates. Numeric receiver controls remain separate evidence; isolated plates do not prove all scene overlaps.",
+  "geometryVariantsNumericallyExercised": 314,
+  "receiverControls": 942,
+  "reviewScope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance.",
   "resolved": [
     "Cemetery opaque bodies remain continuous",
     "Crate and barrel closed volumes remain continuous",
     "Tent roof/wall shadow gaps closed",
     "Folded-surface nearest opaque contributions retained independently from translucent texels: 35830 checks, previous 4188 losses now zero",
     "Ground-only controls separate white artwork/self-receiver fringes from missing ground shadow; drift interiors retain opaque coverage",
-    "Forge level 3 projection retains original-alpha open silhouette; no missing nearest-opaque contribution in focused controls"
+    "Forge level 3 projection retains original-alpha open silhouette; no missing nearest-opaque contribution in focused controls",
+    "All 24 rock-scatter placements now cast/receive using an explicit low capped volume, retaining ground painter order; mirrored/327-degree art transform aligns with production sprite. All 72 focused sun controls pass; 290 other variant picture regions remain byte-identical."
   ],
   "open": [
     {
@@ -18,13 +19,6 @@
         "court:brazier"
       ],
       "finding": "Baked flame and metal share one sprite alpha/material. No separate emissive-material receive mask; report renderer limitation explicitly."
-    },
-    {
-      "assets": [
-        "ff:rock-scatter"
-      ],
-      "variants": 23,
-      "finding": "Raised physical rock clusters are registered as flat ground dressing with zero directional cast and zero-height receiver. Author explicit low-volume companions while preserving ground draw order and collision parity."
     }
   ],
   "limitations": [

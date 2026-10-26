@@ -164,7 +164,7 @@ export function createFrontier(worldStage:Container,atlas:HTMLImageElement){
  return {scene,ready,place,setAmbient,setSun,stats,load:()=>ready,visibleMasksReady:()=>Promise.all([...maskJobs.values()]),
   setLegacyShadows:(on:boolean)=>{shade.renderable=on;},
   // Receiver ownership follows the same stable painter order as the color layers.
-  shadowSurfaces:():ShadowSurface[]=>FRONTIER_PROPS.filter(p=>!p.rot).map(p=>({key:p.key,source:atlas,sourceWidth:atlas.naturalWidth,sourceHeight:atlas.naturalHeight,frame:p.frame,x:p.x,y:p.y,width:p.width,height:p.height,pivot:p.pivot,flip:p.flip,shear:p.shear,lift:p.lift,ground:p.ground,depth:p.layer==='ground'?p.band*1e6+p.y:p.y+(p.layer==='cap'?.05:0),cast:p.layer!=='ground'||isSlab(p),...(p.layer==='ground'?{constantHeight:isSlab(p)?SLABS[p.asset]*p.s:0}:{})})).sort((a,b)=>a.depth!-b.depth!),
+  shadowSurfaces:():ShadowSurface[]=>FRONTIER_PROPS.filter(p=>!p.rot||p.asset==='rock-scatter').map(p=>({key:p.key,source:atlas,sourceWidth:atlas.naturalWidth,sourceHeight:atlas.naturalHeight,frame:p.frame,x:p.x,y:p.y,width:p.width,height:p.height,pivot:p.pivot,flip:p.flip,shear:p.shear,groundRotation:p.rot,groundLayer:p.layer==='ground',lift:p.lift,ground:p.ground,depth:p.layer==='ground'?p.band*1e6+p.y:p.y+(p.layer==='cap'?.05:0),cast:p.layer!=='ground'||isSlab(p)||p.asset==='rock-scatter',...(p.layer==='ground'&&p.asset!=='rock-scatter'?{constantHeight:isSlab(p)?SLABS[p.asset]*p.s:0}:{})})).sort((a,b)=>a.depth!-b.depth!),
   // Footprint columns for a frontier prop in the hero's scene, else undefined.
   columns:(p:{id?:unknown})=>typeof p.id==='string'?columns.get(p.id):undefined};
 }

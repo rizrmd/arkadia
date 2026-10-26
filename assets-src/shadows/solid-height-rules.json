@@ -53,6 +53,11 @@
    "source": "/modular-stronghold/barrel.png",
    "capHeightFraction": 0.745,
    "reason": "Closed cask. Front lid rim is near v=.25 and front foot near v=.995; preserve the opaque lid and side volume."
+  },
+  "frontier:rock-scatter": {
+   "asset": "rock-scatter",
+   "capHeightFraction": 0.35,
+   "reason": "Hand-authored low stone-cluster proxy capped at .35 logical frame height (6.538 world pixels at scale 1). Front support follows original-alpha baseline; back support closes each camera-ray column. Ground painter band, source alpha, mirror/ground rotation and empty collision footprint are retained. This is an approximate cluster envelope, not measured individual stones."
   }
  }
 }

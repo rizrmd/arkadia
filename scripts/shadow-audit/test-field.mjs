@@ -34,7 +34,8 @@ for(let owner=1;owner<=4095;owner+=137)for(let z=0;z<2047.5;z+=3.7){const [r,g,b
 assert.throws(()=>encodeGeometry(2048,1));assert.throws(()=>encodeGeometry(1,4096));const huge=fieldBounds([{x:0,y:0,z:0,alpha:1},{x:1e9,y:1,z:0,alpha:1}],{dx:0,dy:0,alpha:1});assert.ok(huge.width<=4096&&huge.height<=4096);checks+=3;
 // A solid native box must cast its full top projection without a depth-map
 // silhouette interpolating to zero and creating spurious triangular curtains.
-const nativeSource=await fs.readFile('src/stronghold/native-shadow-sampling.ts','utf8'),nativeJs=ts.transpileModule(nativeSource,{compilerOptions:{module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ES2022}}).outputText;
+const transformUrl='data:text/javascript;base64,'+Buffer.from(ts.transpileModule(await fs.readFile('src/stronghold/shadow-source-transform.ts','utf8'),{compilerOptions:{module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ES2022}}).outputText).toString('base64');
+const nativeSource=(await fs.readFile('src/stronghold/native-shadow-sampling.ts','utf8')).replace("'./shadow-source-transform'",JSON.stringify(transformUrl)),nativeJs=ts.transpileModule(nativeSource,{compilerOptions:{module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ES2022}}).outputText;
 const {sampleNativeBoxes}=await import('data:text/javascript;base64,'+Buffer.from(nativeJs).toString('base64'));
 const nativeAlpha=new Uint8ClampedArray(100*100*4).fill(255);
 for(const flip of [false,true])for(const vertical of [.7,1,1.3])for(const light of [{dx:1.594,dy:.092,alpha:1},{dx:.278,dy:.307,alpha:1},{dx:-.826,dy:.743,alpha:1}]){

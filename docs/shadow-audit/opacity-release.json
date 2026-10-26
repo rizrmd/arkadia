@@ -114,5 +114,9 @@
     "/family-gallery.html": "faa9da65da9c86c2875c186147e59694d9251cce0e9f34132398e2ac4a0c5130"
   },
   "cachePolicy": "Static gallery images use per-file SHA-256 query versions. Report/asset pairing remains inspectable when CDN image caching is enabled.",
-  "denseSoftwareStress": "dense-live-summary.json"
+  "denseSoftwareStress": "dense-live-summary.json",
+  "status": "historical checkpoint superseded by the rock-scatter companion release",
+  "supersededBy": "rock-release.json",
+  "historicalEvidenceCommit": "78d5155e",
+  "artifactUrlPolicy": "Canonical static-final evidence advances with subsequent releases. These hashes record the byte-verified historical snapshot at historicalEvidenceCommit; use rock-release.json for current runtime evidence."
 }

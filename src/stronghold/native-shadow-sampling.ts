@@ -1,3 +1,4 @@
+import {shadowSourceOffset} from './shadow-source-transform';
 import type {ShadowSample} from './shadow-field';
 import type {ShadowSurface,SampledSurface} from './shadow-surfaces';
 type Vertex={u:number;v:number;x:number;y:number;z:number};
@@ -7,7 +8,7 @@ type Vertex={u:number;v:number;x:number;y:number;z:number};
 function clip(input:Vertex[],axis:'u'|'v',edge:number,greater:boolean){const out:Vertex[]=[];for(let i=0;i<input.length;i++){const a=input[i],b=input[(i+1)%input.length],da=(a[axis]-edge)*(greater?1:-1),db=(b[axis]-edge)*(greater?1:-1);if(da>=-1e-10)out.push(a);if((da<0)!==(db<0)){const t=da/(da-db);out.push({u:a.u+(b.u-a.u)*t,v:a.v+(b.v-a.v)*t,x:a.x+(b.x-a.x)*t,y:a.y+(b.y-a.y)*t,z:a.z+(b.z-a.z)*t});}}return out;}
 export function sampleNativeBoxes(p:ShadowSurface,data:Uint8ClampedArray,w:number,h:number,step:number):SampledSurface{
  const geometry=p.nativeGeometry!,samples:ShadowSample[]=[],covered=new Uint8Array(w*h);
- const point=(su:number,sv:number,z:number)=>{const x=p.x+(su-p.pivot[0])*p.width*(p.flip?-1:1),height=(p.lift??0)+z,screenY=p.y-(p.lift??0)+(p.shear??0)*(x-p.x)+(sv-p.pivot[1])*p.height*(p.vertical??1);return {u:su,v:sv,x,y:screenY+height,z:height};};
+ const point=(su:number,sv:number,z:number)=>{const lx=(su-p.pivot[0])*p.width*(p.flip?-1:1),offset=p.groundRotation?shadowSourceOffset(lx,(sv-p.pivot[1])*p.height*(p.vertical??1),p.shear,p.groundRotation):null,x=p.x+(offset?.x??lx),height=(p.lift??0)+z,screenY=offset?p.y-(p.lift??0)+offset.y:p.y-(p.lift??0)+(p.shear??0)*(x-p.x)+(sv-p.pivot[1])*p.height*(p.vertical??1);return {u:su,v:sv,x,y:screenY+height,z:height};};
  const corners=(box:number[])=>{const [u0,v0,u1,v1,z0,z1]=box,world=geometry.world!,pivot=geometry.pivot!,scale=p.height*(p.vertical??1)/world[1];return [[u0,v0,z0],[u1,v0,z0],[u1,v1,z0],[u0,v1,z0],[u0,v0,z1],[u1,v0,z1],[u1,v1,z1],[u0,v1,z1]].map(([u,v,z])=>point((u-v)*64/world[0]+pivot[0],((u+v)*32-z)/world[1]+pivot[1],z*scale));};
  const solids=geometry.vertices?[geometry.vertices.map(([u,v,z])=>point(u,v,z*p.height*(p.vertical??1)))]:geometry.boxes!.map(corners);
  // First three are source-camera-visible faces: top, +u, +v.

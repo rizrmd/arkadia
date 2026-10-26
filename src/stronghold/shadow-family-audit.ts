@@ -1,10 +1,11 @@
+import {shadowSourceMatrix} from './shadow-source-transform';
 import {Application,Container,Sprite,Texture,Filter,GlProgram,ImageSource,CanvasSource,Rectangle,Matrix,type TextureSource} from 'pixi.js';
 import {createSceneShadows,shadowFilterVertex} from './scene-shadows';
 import {sampleSurface,type ShadowSurface} from './shadow-surfaces';
 import type {ShadowSun} from './shadow-field';
 const suns:ShadowSun[]=[{dx:1.594,dy:.092,alpha:.55},{dx:.278,dy:.307,alpha:.55},{dx:-.826,dy:.743,alpha:.55}];
 const family=(p:ShadowSurface)=>p.key.startsWith('ff:')?p.key.split(':').slice(0,2).join(':'):p.key;
-export const surfaceAuditSignature=(p:ShadowSurface)=>{const base=[family(p),p.frame,p.width,p.height,p.pivot,p.flip,p.shear,p.vertical,p.lift,p.ground,p.constantHeight,p.cast,!!p.heightAtScreen];return JSON.stringify((p.backGround||p.geometryModel)?[...base,p.capHeight,p.backGround,p.geometryModel]:base);};
+export const surfaceAuditSignature=(p:ShadowSurface)=>{const base=[family(p),p.frame,p.width,p.height,p.pivot,p.flip,p.shear,p.vertical,p.lift,p.ground,p.constantHeight,p.cast,!!p.heightAtScreen];const parts=(p.backGround||p.geometryModel)?[...base,p.capHeight,p.backGround,p.geometryModel]:base;return JSON.stringify(p.groundRotation?[...parts,{groundRotation:p.groundRotation}]:parts);};
 export function familyAuditInventory(surfaces:ShadowSurface[]){
  const groups=new Map<string,{id:string;signature:string;family:string;surface:ShadowSurface;placements:{key:string;x:number;y:number}[]}>();
  for(const p of surfaces){const signature=surfaceAuditSignature(p),placement={key:p.key,x:p.x,y:p.y},existing=groups.get(signature);if(existing)existing.placements.push(placement);else groups.set(signature,{id:'variant:'+groups.size,signature,family:family(p),surface:p,placements:[placement]});}
@@ -40,7 +41,7 @@ export async function auditShadowFamilies(surfaces:ShadowSurface[],offset=0,limi
    art.visible=false;const pixels=await render([p],sun);
    if(groundSheet){const uniforms=field.filter.resources.shadowUniforms.uniforms,previous=uniforms.uHeightBounds;uniforms.uHeightBounds=new Float32Array([-1e6,-1e6,1,1]);const raw=readPixels();uniforms.uHeightBounds=previous;const canvas=document.createElement('canvas');canvas.width=canvas.height=size;canvas.getContext('2d')!.putImageData(new ImageData(new Uint8ClampedArray(raw.pixels),size,size),0,0);const g=groundSheet.getContext('2d')!;g.drawImage(canvas,column*size,row*(size+40));g.fillStyle='#101820';g.fillRect(column*size,row*(size+40)+size,size,40);g.fillStyle='white';g.font='12px sans-serif';g.fillText(entry.family.slice(0,36),column*size+5,row*(size+40)+size+15);g.fillText('Ground receiver only / original alpha',column*size+5,row*(size+40)+size+31);}
    let dark=0;for(let i=0;i<pixels.pixels.length;i+=4)if(pixels.pixels[i]<250)dark++;
-   const f=p.frame??[0,0,p.sourceWidth,p.sourceHeight],sx=p.width/f[2]*(p.flip?-1:1),sy=p.height/f[3]*(p.vertical??1),shear=p.shear??0;art.setFromMatrix(new Matrix(zoom*sx,zoom*sx*shear,0,zoom*sy,ox+zoom*p.x,oy+zoom*(p.y-(p.lift??0))));art.visible=true;const colored=readPixels();art.visible=false;
+   const f=p.frame??[0,0,p.sourceWidth,p.sourceHeight],sx=p.width/f[2]*(p.flip?-1:1),sy=p.height/f[3]*(p.vertical??1),shear=p.shear??0;const [a,b,c,d]=shadowSourceMatrix(sx,sy,shear,p.groundRotation);art.setFromMatrix(new Matrix(zoom*a,zoom*b,zoom*c,zoom*d,ox+zoom*p.x,oy+zoom*(p.y-(p.lift??0))));art.visible=true;const colored=readPixels();art.visible=false;
    const image=document.createElement('canvas');image.width=image.height=size;image.getContext('2d')!.putImageData(new ImageData(new Uint8ClampedArray(colored.pixels),size,size),0,0);
    ctx.drawImage(image,column*size,row*(size+40));ctx.fillStyle='#101820';ctx.fillRect(column*size,row*(size+40)+size,size,40);ctx.fillStyle='white';ctx.font='12px sans-serif';ctx.fillText(entry.family.slice(0,36),column*size+5,row*(size+40)+size+15);ctx.fillText(`${p.flip?'mirrored':'original'} / sun ${column+1} / ${dark} shadow px`,column*size+5,row*(size+40)+size+31);
    if(p.cast===false&&dark)failures.push(entry.id+' excluded caster produced '+dark+' dark pixels');
@@ -66,7 +67,7 @@ export async function auditShadowFamilies(surfaces:ShadowSurface[],offset=0,limi
    }
    tests.push({sun,darkPixels:dark,cast:p.cast!==false,maxHeight,receiver,receive});
   }
-  rows.push({id:entry.id,signature:entry.signature,family:entry.family,key:p.key,placements:entry.placements,width:p.width,height:p.height,flip:!!p.flip,lift:p.lift??0,frame:p.frame,explicitHeight:!!p.heightAtScreen,solidBody:!!p.solidBody,capHeight:p.capHeight,geometryModel:p.geometryModel,tests});
+  rows.push({id:entry.id,signature:entry.signature,family:entry.family,key:p.key,placements:entry.placements,width:p.width,height:p.height,flip:!!p.flip,groundRotation:p.groundRotation??0,lift:p.lift??0,frame:p.frame,explicitHeight:!!p.heightAtScreen,solidBody:!!p.solidBody,capHeight:p.capHeight,geometryModel:p.geometryModel,tests});
  }
  return {...(groundSheet?{groundImage:groundSheet.toDataURL('image/png')}:{}),offset,totalVariants:all.length,totalPlacements:surfaces.length,rows,failures,image:sheet.toDataURL('image/png'),probeSampling:'GPU packed receiver height at actual rendered pixel; float32 camera reconstruction',scope:'Actual registered static geometry plus explicitly labeled catalog/building fixtures, production GPU filter and Worker; three light vectors. Contact sheets show one representative per distinct geometry variant. Probe cases outside source bounds test visible raised receiving and above-caster rejection.'};
  }finally{heightDiagnostic.destroy();field.destroy();const whiteSource=bg.texture.source;const gl=(app.renderer as any).gl as WebGLRenderingContext;app.destroy({removeView:true,releaseGlobalResources:false},{children:true,texture:true,textureSource:false});whiteSource.destroy();for(const source of ownSources.values())source.destroy();if(!gl.isContextLost())gl.getExtension('WEBGL_lose_context')?.loseContext();}

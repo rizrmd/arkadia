@@ -158,6 +158,62 @@
    ],
    "reason": "Closed cask. Front lid rim is near v=.25 and front foot near v=.995; preserve the opaque lid and side volume."
   },
+  "frontier:rock-scatter": {
+   "model": "closed alpha solid with capped front and back camera-ray intervals",
+   "source": "/frozen-frontier/game/atlas-5083a8ebd8c8bb4b.webp",
+   "sourceSize": [
+    2048,
+    2048
+   ],
+   "frame": [
+    395,
+    1995,
+    160,
+    42
+   ],
+   "sourceSha256": "5083a8ebd8c8bb4bb4fccc0dcaaa9f71deb9821af1648fbf053506c37617961c",
+   "alphaSha256": "b5581cd5a8640aefc635ac8c7bac42507b106f8b9503eca589de37dafef48f92",
+   "capHeightFraction": 0.35,
+   "frontGround": [
+    0.6176,
+    0.6904,
+    0.7471,
+    0.7765,
+    0.8515,
+    0.8765,
+    0.9301,
+    0.9353,
+    0.9824,
+    0.9706,
+    0.9471,
+    0.9118,
+    0.9044,
+    0.8765,
+    0.8118,
+    0.754,
+    0.5235
+   ],
+   "backGround": [
+    0.945238,
+    0.707143,
+    0.445238,
+    0.37381,
+    0.421429,
+    0.509226,
+    0.680357,
+    0.788988,
+    0.897619,
+    0.897619,
+    0.82619,
+    0.754762,
+    0.486905,
+    0.445238,
+    0.588095,
+    0.754762,
+    0.82619
+   ],
+   "reason": "Hand-authored low stone-cluster proxy capped at .35 logical frame height (6.538 world pixels at scale 1). Front support follows original-alpha baseline; back support closes each camera-ray column. Ground painter band, source alpha, mirror/ground rotation and empty collision footprint are retained. This is an approximate cluster envelope, not measured individual stones."
+  },
   "frontier:grave-headstone": {
    "model": "native authored box ray intervals; original alpha coverage",
    "source": "/frozen-frontier/game/atlas-5083a8ebd8c8bb4b.webp",
