@@ -1,8 +1,9 @@
 {
   "source": "GET /api/tracelogs?limit=200",
+  "checkedAt": "2026-10-26T09:42:54.813Z",
   "stored": 200,
   "hardwareCandidateLogs": 200,
-  "currentEntryBuild": "/assets/index-CKXhvwSO.js",
+  "currentEntryBuild": "/assets/index-BwSIBXsT.js",
   "currentBuildHardwareLogs": 0,
   "latestHardwareClientTime": "2026-10-26T02:58:36.832Z",
   "buildCounts": {
@@ -24,5 +25,5 @@
     "/assets/index-Bmq3DlAs.js": 8,
     "/assets/index-Cg6PWu1s.js": 5
   },
-  "limitation": "Stored FPS-drop windows are biased incident samples, not a controlled benchmark. Prior-build hardware logs cannot certify the current renderer. Physical hardware access is external to this sandbox."
+  "limitation": "Stored FPS-drop windows are biased incident samples, not a controlled benchmark. Prior-build hardware logs cannot certify the current renderer. Device/GPU identity is reported by clients; current-build candidates still need scene/profile/sample inspection before acceptance."
 }
