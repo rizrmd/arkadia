@@ -42,4 +42,6 @@ console.log(JSON.stringify({solidModels:9,checks:['source SHA','atlas SHA','sour
 const recipes=await (await import('./native-solid-models.mjs')).nativeSolidBoxes();for(const [id,g] of Object.entries(recipes)){assert.deepEqual(solids.assets['frontier:'+id].nativeBoxes,g.boxes);assert.equal(solids.assets['frontier:'+id].recipeSha256,g.recipeSha256);}console.log(JSON.stringify({nativeRecipeMatches:Object.keys(recipes).length}));
 
 // Every release must retain source/collision parity and all unaffected picture regions.
-await import('./verify-rock-regression.mjs');
+await import('./verify-material-regression.mjs');
+await import('./test-brazier-material.mjs');
+await import('./test-material-gpu.mjs');

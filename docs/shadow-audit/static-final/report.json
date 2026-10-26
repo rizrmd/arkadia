@@ -1,20 +1,22 @@
 {
   "scope": "Actual registered static geometry variants, original source alpha, production GPU shader/Worker. One placement per unique geometry variant. Software SwiftShader; not physical-device performance.",
   "rendererSources": {
+    "brazier-shadow-material.ts": "a9b7d2796bb78486981abfc8e5d9294efac298251e28556535a760a9552605f9",
+    "shadow-map-builder.ts": "71aa01297973667ab898ce0c1d94d01837083d967d514025f7ef974324b96e26",
     "tent-shadow.ts": "1825b3bd2d845237c2a07086c38a076f5a588f81a1f7f88be28faff2d24f7724",
-    "world-view.ts": "2323b2e41e6ee4c7a5380fff29dc984e8573ab0bedab4700fc1bc5773476ee9d",
+    "frontier-view.ts": "bf8ff0c2ed58881893e1a930fd76aba0f00dc6b967fb3bec9cbf41f3c5e8bad7",
+    "world-view.ts": "5f684cd1550bf2f1f2fc0fc8aa49129740e53f15fd248f9394fc9ab14638d54e",
     "torch-shadow.ts": "e8c61bbd9920821ba28873c45d446e4e3bcc62d0bcb49a5d23cd4e83063fa90a",
-    "scene-shadows.ts": "006e0c3e6ef02e4fe9db3dca6f8a2274cdfdb8d1f4726ef536db0b228ec3f229",
-    "shadow-field.ts": "69cc9efb2b218c066eb8e914a4c7ec7d1e57b96144836efbff4c344937fa1514",
-    "shadow-field-worker.ts": "8b1b252f61878341474ed56ee05130fd873e652a143f59f383da9720a6054600",
-    "shadow-surfaces.ts": "4b1becf6a5c318f2de18b581ed8debed5d88c4d3190be1d99e7995082a5353a4",
+    "scene-shadows.ts": "9ac8fa2775105deecce7a17a9774ba35a6f5aa78f349c964d8f5b438e5ba0a81",
+    "shadow-field.ts": "cec8b2a34821d4287f9de316718d1d5859a3fb5320676e229a0626ca3743e013",
+    "shadow-field-worker.ts": "089ab720e26186e30b55b91119911ff75f3e69a7b8064d1d8eb5bd57f6ce0433",
+    "shadow-surfaces.ts": "2e5d58b757b1908bbcf30219e0b057f5ad7e1623cd9fa539e83a23a9176f8eda",
     "native-shadow-sampling.ts": "67b7301103133ff2142be89ac14b44fd1264ec15d2313d39a978d704baa6a226",
     "shadow-source-transform.ts": "9790817c30394b6cacdfbb8b2e912665e6512081b2bd8f2956b7c4ca3fcde489",
     "shadow-sampling.ts": "852ccfef4e7a78493ac0adb6ccdd4fdc035300db4f09ea470236ff8b61fafc4d",
     "shadow-program.ts": "7f29279852819349ed2e946141b454fedb3718f193d226f84c69e079c0af5f9d",
-    "shadow-family-audit.ts": "554d9dd6cabd5290b2f5b598aaf39fe8cb839717b6bf1eed44a656661ebedbff",
-    "solid-shadow-geometry.ts": "ccb66427c091343118a7f548c261bb122d90bd6b6997242aa0db98df68930567",
-    "frontier-view.ts": "bf8ff0c2ed58881893e1a930fd76aba0f00dc6b967fb3bec9cbf41f3c5e8bad7"
+    "shadow-family-audit.ts": "0a25150375e3754e3226ba55fe82b77472473b6c35e0fa69b8b87e8e5bccdd05",
+    "solid-shadow-geometry.ts": "ccb66427c091343118a7f548c261bb122d90bd6b6997242aa0db98df68930567"
   },
   "errors": [],
   "batches": [
@@ -3157,7 +3159,7 @@
         },
         {
           "id": "variant:26",
-          "signature": "[\"brazier:/modular-stronghold/v2/brazier.png\",null,32,48.02689075630252,[0.5,0.97],null,0,1,null,null,null,true,false]",
+          "signature": "[\"brazier:/modular-stronghold/v2/brazier.png\",null,32,48.02689075630252,[0.5,0.97],null,0,1,null,null,null,true,false,{\"materialRevision\":\"brazier:61f8c66b2c2e412a17b79d9de307e8e40d18c3d84b3cc4834933677d6bb62786\"}]",
           "family": "brazier:/modular-stronghold/v2/brazier.png",
           "key": "brazier:/modular-stronghold/v2/brazier.png",
           "placements": [
@@ -3181,7 +3183,7 @@
                 "dy": 0.092,
                 "alpha": 0.55
               },
-              "darkPixels": 5192,
+              "darkPixels": 4768,
               "cast": true,
               "maxHeight": 45.02521008403362,
               "receiver": {
@@ -3204,7 +3206,7 @@
                 "dy": 0.307,
                 "alpha": 0.55
               },
-              "darkPixels": 6785,
+              "darkPixels": 6747,
               "cast": true,
               "maxHeight": 45.02521008403362,
               "receiver": {
@@ -3227,7 +3229,7 @@
                 "dy": 0.743,
                 "alpha": 0.55
               },
-              "darkPixels": 9947,
+              "darkPixels": 9359,
               "cast": true,
               "maxHeight": 45.02521008403362,
               "receiver": {
@@ -3580,7 +3582,7 @@
       "failures": [],
       "probeSampling": "GPU packed receiver height at actual rendered pixel; float32 camera reconstruction",
       "scope": "Actual registered static geometry plus explicitly labeled catalog/building fixtures, production GPU filter and Worker; three light vectors. Contact sheets show one representative per distinct geometry variant. Probe cases outside source bounds test visible raised receiving and above-caster rejection.",
-      "imageSha256": "cc53ce1f6284da2e7e7fdf3358409ce046dc290b2ac0f9bc913d3ffef7ccbb8e",
+      "imageSha256": "81162df5a2d012d0c3f11bb65db979d424db9a9f2be865c17fbcc326d1387c8b",
       "image": "variants-24.png"
     },
     {

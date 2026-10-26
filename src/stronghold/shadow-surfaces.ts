@@ -1,7 +1,7 @@
 import {shadowSourceOffset} from './shadow-source-transform';
 import {sampleNativeBoxes} from './native-shadow-sampling';
 import {type ShadowSample} from './shadow-field';
-export type ShadowSurface={key:string;source:CanvasImageSource;sourceWidth:number;sourceHeight:number;frame?:number[];x:number;y:number;width:number;height:number;pivot:number[];flip?:boolean;shear?:number;groundRotation?:number;groundLayer?:boolean;vertical?:number;lift?:number;ground?:number[];constantHeight?:number;depth?:number;cast?:boolean;solidBody?:boolean;nativeGeometry?:{boxes?:number[][];world?:number[];pivot?:number[];vertices?:number[][];faces?:number[][];receiveFaces?:number[];completeAlpha?:boolean};geometryModel?:string;heightInterval?:(u:number,v:number)=>{near:number;far:number};capHeight?:number;backGround?:number[];heightAtScreen?:(x:number,y:number)=>number};
+export type ShadowSurface={key:string;source:CanvasImageSource;physicalSource?:CanvasImageSource;materialRevision?:string;sourceWidth:number;sourceHeight:number;frame?:number[];x:number;y:number;width:number;height:number;pivot:number[];flip?:boolean;shear?:number;groundRotation?:number;groundLayer?:boolean;vertical?:number;lift?:number;ground?:number[];constantHeight?:number;depth?:number;cast?:boolean;solidBody?:boolean;nativeGeometry?:{boxes?:number[][];world?:number[];pivot?:number[];vertices?:number[][];faces?:number[][];receiveFaces?:number[];completeAlpha?:boolean};geometryModel?:string;heightInterval?:(u:number,v:number)=>{near:number;far:number};capHeight?:number;backGround?:number[];heightAtScreen?:(x:number,y:number)=>number};
 export type SampledSurface={surface:ShadowSurface;samples:ShadowSample[];bounds:{left:number;top:number;right:number;bottom:number};step:number};
 // Ground contact measured from alpha, with the same 2:1 support constraint as the
 // frontier kit builder. This is an explicitly declared folded billboard proxy.
@@ -22,18 +22,19 @@ export function surfacePoint(p:ShadowSurface,u:number,v:number,ground=p.ground??
 export function sampleSurface(surface:ShadowSurface,step=2):SampledSurface{
  const p=surface,w=Math.max(1,Math.ceil(p.width/step)),h=Math.max(1,Math.ceil(p.height*(p.vertical??1)/step)),c=document.createElement('canvas');c.width=w;c.height=h;
  const ctx=c.getContext('2d',{willReadFrequently:true})!,f=p.frame??[0,0,p.sourceWidth,p.sourceHeight];ctx.drawImage(p.source,f[0],f[1],f[2],f[3],0,0,w,h);const data=ctx.getImageData(0,0,w,h).data,g=p.ground??measuredGround(data,w,h),samples:ShadowSample[]=[];
+ let physical:Uint8ClampedArray|undefined;if(p.physicalSource){if(p.nativeGeometry)throw Error('Material masks require the source-cell sampler');const mask=document.createElement('canvas');mask.width=w;mask.height=h;const m=mask.getContext('2d',{willReadFrequently:true})!;m.drawImage(p.physicalSource,f[0],f[1],f[2],f[3],0,0,w,h);physical=m.getImageData(0,0,w,h).data;mask.width=mask.height=1;}
  if(p.nativeGeometry&&p.solidBody!==false){const result=sampleNativeBoxes(p,data,w,h,step);c.width=c.height=1;return result;}
  const volume=!!(p.backGround||p.heightInterval)&&p.solidBody!==false&&p.cast!==false,back=volume?new Float32Array((w+1)*(h+1)*3):null;
  const vertices=new Float32Array((w+1)*(h+1)*3);for(let y=0;y<=h;y++)for(let x=0;x<=w;x++){const q=surfacePoint(p,x/w,y/h,g),i=(y*(w+1)+x)*3;vertices[i]=q.x;vertices[i+1]=q.y;vertices[i+2]=q.z;if(back){const screen=q.y-q.z,z=(p.lift??0)+Math.min(q.z-(p.lift??0),p.heightInterval?p.heightInterval(x/w,y/h).far:Math.max(0,(baseline(p.backGround!,x/w)-y/h)*p.height*(p.vertical??1)));back[i]=q.x;back[i+1]=screen+z;back[i+2]=z;}}
  let left=Infinity,top=Infinity,right=-Infinity,bottom=-Infinity;
- for(let y=0;y<h;y++)for(let x=0;x<w;x++){const a=data[(y*w+x)*4+3];if(!a)continue;const q:ShadowSample=surfacePoint(p,(x+.5)/w,(y+.5)/h,g);q.alpha=a/255;const quad=new Float32Array(12);for(const [j,offset] of [y*(w+1)+x,y*(w+1)+x+1,(y+1)*(w+1)+x+1,(y+1)*(w+1)+x].entries())quad.set(vertices.subarray(offset*3,offset*3+3),j*3);q.quad=quad;samples.push(q);
+ for(let y=0;y<h;y++)for(let x=0;x<w;x++){const a=data[(y*w+x)*4+3];if(!a)continue;const q:ShadowSample=surfacePoint(p,(x+.5)/w,(y+.5)/h,g);q.alpha=a/255;if(physical)q.emission=Math.max(0,1-physical[(y*w+x)*4+3]/a);const quad=new Float32Array(12);for(const [j,offset] of [y*(w+1)+x,y*(w+1)+x+1,(y+1)*(w+1)+x+1,(y+1)*(w+1)+x].entries())quad.set(vertices.subarray(offset*3,offset*3+3),j*3);q.quad=quad;samples.push(q);
   // Preserve the nearest opaque source interior independently of a higher,
   // translucent texel from the same folded surface. Its original alpha stays
   // unchanged; the separate owner is used only by the light-depth envelope.
   if(!back&&p.cast!==false&&a>=240)samples.push({...q,receive:false,opaqueProxy:true});
   if(back){const far=new Float32Array(12);for(const [j,offset] of [y*(w+1)+x,y*(w+1)+x+1,(y+1)*(w+1)+x+1,(y+1)*(w+1)+x].entries())far.set(back.subarray(offset*3,offset*3+3),j*3);
    const faces=[quad];if(quad.some((n,i)=>Math.abs(n-far[i])>1e-5)){faces.push(far);for(let edge=0;edge<4;edge++){const next=(edge+1)%4,face=new Float32Array(12);face.set(quad.subarray(edge*3,edge*3+3),0);face.set(quad.subarray(next*3,next*3+3),3);face.set(far.subarray(next*3,next*3+3),6);face.set(far.subarray(edge*3,edge*3+3),9);faces.push(face);}}
-   for(const [i,face] of faces.entries()){const cell:ShadowSample={x:0,y:0,z:0,alpha:q.alpha,quad:face,receive:false};for(let j=0;j<12;j+=3){cell.x+=face[j]/4;cell.y+=face[j+1]/4;cell.z+=face[j+2]/4;}if(i)samples.push(cell);// Keep a second, near-opaque depth envelope. Source interiors are 250–253
+   for(const [i,face] of faces.entries()){const cell:ShadowSample={x:0,y:0,z:0,alpha:q.alpha,emission:q.emission,quad:face,receive:false};for(let j=0;j<12;j+=3){cell.x+=face[j]/4;cell.y+=face[j+1]/4;cell.z+=face[j+2]/4;}if(i)samples.push(cell);// Keep a second, near-opaque depth envelope. Source interiors are 250–253
    // alpha, so requiring 254 would omit the solid body. Coverage is unchanged.
    if(a>=240)samples.push({...cell,opaqueProxy:true});}
   }

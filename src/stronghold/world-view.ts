@@ -1,3 +1,4 @@
+import {BRAZIER_PHYSICAL_SOURCE,withBrazierShadowMaterial} from './brazier-shadow-material';
 import {torchShadowSurfaces} from './torch-shadow';
 import {torchAssetsReady} from './torches';
 import {withTentGeometry} from './tent-shadow';
@@ -58,7 +59,7 @@ export async function createWorldView(
  let gateOpen=false,gatePassable=false;
  const spriteFile=(id:Building,level:number)=>id==='forge'?`/fortress-ui/forge-${level}.webp`:id==='gate'?'/modular-stronghold/v2/full-gateway-v7-closed.webp':`/assets/${slots[id].asset}.png`;
  const paving='/modular-stronghold/v2/paving-warm-texture.png',snow='/modular-stronghold/v2/snow-soft-texture.png';
- const files=[...new Set([FRONTIER_ATLAS,FOUNDATION_SOIL,FOUNDATION_MOSS,FOUNDATION_DRIFT,paving,snow,CLIFF_ART,NATURAL_CLIFF_ART,'/modular-stronghold/v2/full-gateway-v7-closed.webp',...environment.map(p=>p.file),...buildings.flatMap(b=>[1,2,3].map(l=>spriteFile(b,l)))])];
+ const files=[...new Set([...(environment.some(p=>p.id==='brazier')?[BRAZIER_PHYSICAL_SOURCE]:[]),FRONTIER_ATLAS,FOUNDATION_SOIL,FOUNDATION_MOSS,FOUNDATION_DRIFT,paving,snow,CLIFF_ART,NATURAL_CLIFF_ART,'/modular-stronghold/v2/full-gateway-v7-closed.webp',...environment.map(p=>p.file),...buildings.flatMap(b=>[1,2,3].map(l=>spriteFile(b,l)))])];
  const DOWNLOAD=920,steps=1000,mb=(n:number)=>(n/1e6).toFixed(1);let loaded=DOWNLOAD;
  let queued=0;const report=()=>{queued=0;const {received,expected}=downloadedBytes();progress(320+Math.floor((DOWNLOAD-320)*received/Math.max(1,expected)),steps,`Loading artwork · ${mb(received)} of ${mb(expected)} MB`);};
  const stopReport=onDownload(()=>{queued||=requestAnimationFrame(report);});progress(320,steps,'Loading artwork');
@@ -210,7 +211,7 @@ export async function createWorldView(
   const court:ShadowSurface[]=objects.filter(p=>p.id!=='gate').map(p=>({key:p.id+':'+p.file,source:p.image,sourceWidth:p.image.naturalWidth,sourceHeight:p.image.naturalHeight,x:p.x,y:p.y,width:p.width,height:p.height,pivot:[.5,p.foot],shear:p.shear,vertical:p.vertical,depth:p.depth,cast:p.layer!=='ground'&&p.opacity>=1,...(p.layer==='ground'?{constantHeight:0}:{})}));
   const ff=frontier.shadowSurfaces();
   const terrain:ShadowSurface[]=relief.map(r=>({key:'relief:'+r.feature.id,source:r.canvas,sourceWidth:r.canvas.width,sourceHeight:r.canvas.height,x:r.left+r.width/2,y:r.bottom,width:r.width,height:r.height,pivot:[.5,1],heightAtScreen:(x,y)=>reliefShadowHeight(r.feature,x,y)}));
-  return [...court.map(p=>p.key.startsWith('expedition:')?withTentGeometry(p):p),...ff.filter(p=>p.groundLayer||p.constantHeight!==undefined),...terrain,...ff.filter(p=>!p.groundLayer&&p.constantHeight===undefined),...torchShadowSurfaces()];
+  return [...court.map(p=>p.key.startsWith('expedition:')?withTentGeometry(p):withBrazierShadowMaterial(p,images.get(BRAZIER_PHYSICAL_SOURCE))),...ff.filter(p=>p.groundLayer||p.constantHeight!==undefined),...terrain,...ff.filter(p=>!p.groundLayer&&p.constantHeight===undefined),...torchShadowSurfaces()];
  }
  function castShadows(paint=true){
   const s=lighting.sun();frontier.setSun(s);

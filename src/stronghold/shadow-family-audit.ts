@@ -5,7 +5,7 @@ import {sampleSurface,type ShadowSurface} from './shadow-surfaces';
 import type {ShadowSun} from './shadow-field';
 const suns:ShadowSun[]=[{dx:1.594,dy:.092,alpha:.55},{dx:.278,dy:.307,alpha:.55},{dx:-.826,dy:.743,alpha:.55}];
 const family=(p:ShadowSurface)=>p.key.startsWith('ff:')?p.key.split(':').slice(0,2).join(':'):p.key;
-export const surfaceAuditSignature=(p:ShadowSurface)=>{const base=[family(p),p.frame,p.width,p.height,p.pivot,p.flip,p.shear,p.vertical,p.lift,p.ground,p.constantHeight,p.cast,!!p.heightAtScreen];const parts=(p.backGround||p.geometryModel)?[...base,p.capHeight,p.backGround,p.geometryModel]:base;return JSON.stringify(p.groundRotation?[...parts,{groundRotation:p.groundRotation}]:parts);};
+export const surfaceAuditSignature=(p:ShadowSurface)=>{const base=[family(p),p.frame,p.width,p.height,p.pivot,p.flip,p.shear,p.vertical,p.lift,p.ground,p.constantHeight,p.cast,!!p.heightAtScreen];const parts:unknown[]=(p.backGround||p.geometryModel)?[...base,p.capHeight,p.backGround,p.geometryModel]:base;if(p.materialRevision)parts.push({materialRevision:p.materialRevision});return JSON.stringify(p.groundRotation?[...parts,{groundRotation:p.groundRotation}]:parts);};
 export function familyAuditInventory(surfaces:ShadowSurface[]){
  const groups=new Map<string,{id:string;signature:string;family:string;surface:ShadowSurface;placements:{key:string;x:number;y:number}[]}>();
  for(const p of surfaces){const signature=surfaceAuditSignature(p),placement={key:p.key,x:p.x,y:p.y},existing=groups.get(signature);if(existing)existing.placements.push(placement);else groups.set(signature,{id:'variant:'+groups.size,signature,family:family(p),surface:p,placements:[placement]});}

@@ -115,5 +115,9 @@
     "static-final/variants-90.png": "34f63a33c229ad634b3827561006c6eb5d3ca7af43b889032eb1df54c0d7736c",
     "static-final/variants-96.png": "57d4ab914299905e2b6d000ac82c32cd368a61d97c4366955724e42f0032125c",
     "static-visual-acceptance.json": "f2711afa6871193be9fea87176b318bc51824adb8e349907f193790048aa1e16"
-  }
+  },
+  "status": "historical stone checkpoint superseded by material companion release",
+  "supersededBy": "material-release.json",
+  "historicalEvidenceCommit": "7eb83725",
+  "artifactUrlPolicy": "Canonical static-final evidence advances with subsequent releases. Hashes record the previously byte-verified snapshot at historicalEvidenceCommit; use material-release.json for current renderer evidence."
 }

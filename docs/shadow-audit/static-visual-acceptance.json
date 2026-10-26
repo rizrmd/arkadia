@@ -1,19 +1,17 @@
 {
-  "scope": "290 previously directly reviewed variants carried forward only after 57,016,320 corresponding picture pixels are proven identical; all 24 changed/new stone variants directly reviewed on four focused plates. Numeric receiver controls are separate. Not continuous-angle or physical-device acceptance.",
-  "staticReportSha256": "17f2bdd72f91f0153584b18d68faccdc9aaa40d6a8b1bc5d9a39da3916f6b5ba",
+  "scope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance.",
+  "staticReportSha256": "663da1949cdc72e34162f0c23c57f8c9fb5de4b2f1e26ca76d0c269938b75e17",
   "variants": 314,
   "sunImages": 942,
   "plates": 53,
   "statusCounts": {
     "reviewed: no repeated opaque-body tears identified": 251,
-    "open: baked flame material participates in physical proxy": 1,
+    "reviewed: semantic physical/emissive material companion": 1,
     "reviewed: flat ground grass dressing": 25,
     "reviewed: low-volume original-alpha cast/receive companion": 24,
     "reviewed with proxy/raster limitation": 13
   },
-  "openFamilies": [
-    "brazier:/modular-stronghold/v2/brazier.png"
-  ],
+  "openFamilies": [],
   "rows": [
     {
       "id": "variant:0",
@@ -380,7 +378,7 @@
       "signature": "[\"barrel:/modular-stronghold/barrel.png\",null,27,37.32181425485961,[0.5,0.97],null,0,1,null,[0.878125,0.878125,0.886328,0.939063,0.965625,0.98125,0.992188,0.996875,0.998437,0.996875,0.990625,0.98125,0.964844,0.938477,0.886328,0.83125,0.83125],null,true,false,27.80475161987041,[1.17,0.900664,0.807891,0.783086,0.767656,0.758086,0.75125,0.748125,0.746563,0.748125,0.752422,0.759063,0.768438,0.784063,0.807891,0.895586,1.166875],null]",
       "family": "barrel:/modular-stronghold/barrel.png",
       "plate": "static-final/variants-24.png",
-      "plateSha256": "cc53ce1f6284da2e7e7fdf3358409ce046dc290b2ac0f9bc913d3ffef7ccbb8e",
+      "plateSha256": "81162df5a2d012d0c3f11bb65db979d424db9a9f2be865c17fbcc326d1387c8b",
       "rowInPlate": 0,
       "sunColumns": [
         1,
@@ -395,7 +393,7 @@
       "signature": "[\"altar:/assets/stronghold/altar.png\",null,245,251.28205128205127,[0.5,0.95],null,0.024825058313895365,1.3412195934688438,null,null,null,true,false]",
       "family": "altar:/assets/stronghold/altar.png",
       "plate": "static-final/variants-24.png",
-      "plateSha256": "cc53ce1f6284da2e7e7fdf3358409ce046dc290b2ac0f9bc913d3ffef7ccbb8e",
+      "plateSha256": "81162df5a2d012d0c3f11bb65db979d424db9a9f2be865c17fbcc326d1387c8b",
       "rowInPlate": 1,
       "sunColumns": [
         1,
@@ -406,20 +404,20 @@
       "findings": []
     },
     {
+      "status": "reviewed: semantic physical/emissive material companion",
+      "findings": [
+        "Authored source-coordinate classification preserves original RGB and partitions all source alpha exactly. Physical metal/wood casts and receives; fire/glow response is encoded in existing receiver alpha. Mixed/partial glow retains underlying ground shading; no added GPU sampler/filter. Classification and folded geometry are approximations at the sampled resolution, not measured internal volume. Dedicated 36-case material and three-sun real-asset controls pass."
+      ],
       "id": "variant:26",
-      "signature": "[\"brazier:/modular-stronghold/v2/brazier.png\",null,32,48.02689075630252,[0.5,0.97],null,0,1,null,null,null,true,false]",
+      "signature": "[\"brazier:/modular-stronghold/v2/brazier.png\",null,32,48.02689075630252,[0.5,0.97],null,0,1,null,null,null,true,false,{\"materialRevision\":\"brazier:61f8c66b2c2e412a17b79d9de307e8e40d18c3d84b3cc4834933677d6bb62786\"}]",
       "family": "brazier:/modular-stronghold/v2/brazier.png",
       "plate": "static-final/variants-24.png",
-      "plateSha256": "cc53ce1f6284da2e7e7fdf3358409ce046dc290b2ac0f9bc913d3ffef7ccbb8e",
+      "plateSha256": "81162df5a2d012d0c3f11bb65db979d424db9a9f2be865c17fbcc326d1387c8b",
       "rowInPlate": 2,
       "sunColumns": [
         1,
         2,
         3
-      ],
-      "status": "open: baked flame material participates in physical proxy",
-      "findings": [
-        "Flame and metal share the source alpha; no independent cast/receive material mask. Legacy layout asset remains in the audit scope."
       ]
     },
     {
@@ -427,7 +425,7 @@
       "signature": "[\"expedition:/assets/stronghold/expedition-tent.png\",null,210,140,[0.5,0.95],null,0.11935483870967745,1.1419354838709677,null,null,null,true,true,null,null,\"closed-pitched-tent-v1\"]",
       "family": "expedition:/assets/stronghold/expedition-tent.png",
       "plate": "static-final/variants-24.png",
-      "plateSha256": "cc53ce1f6284da2e7e7fdf3358409ce046dc290b2ac0f9bc913d3ffef7ccbb8e",
+      "plateSha256": "81162df5a2d012d0c3f11bb65db979d424db9a9f2be865c17fbcc326d1387c8b",
       "rowInPlate": 3,
       "sunColumns": [
         1,
@@ -442,7 +440,7 @@
       "signature": "[\"mage:/assets/stronghold/mage.png\",null,225,309.0128755364807,[0.5,0.95],null,-0.051867219917012486,1.2614107883817427,null,null,null,true,false]",
       "family": "mage:/assets/stronghold/mage.png",
       "plate": "static-final/variants-24.png",
-      "plateSha256": "cc53ce1f6284da2e7e7fdf3358409ce046dc290b2ac0f9bc913d3ffef7ccbb8e",
+      "plateSha256": "81162df5a2d012d0c3f11bb65db979d424db9a9f2be865c17fbcc326d1387c8b",
       "rowInPlate": 4,
       "sunColumns": [
         1,
@@ -457,7 +455,7 @@
       "signature": "[\"mine:/assets/stronghold/mine.png\",null,330,215.53125,[0.5,0.95],null,-0.09609166315197526,1.097802146304888,null,null,null,true,false]",
       "family": "mine:/assets/stronghold/mine.png",
       "plate": "static-final/variants-24.png",
-      "plateSha256": "cc53ce1f6284da2e7e7fdf3358409ce046dc290b2ac0f9bc913d3ffef7ccbb8e",
+      "plateSha256": "81162df5a2d012d0c3f11bb65db979d424db9a9f2be865c17fbcc326d1387c8b",
       "rowInPlate": 5,
       "sunColumns": [
         1,
@@ -4978,7 +4976,8 @@
       "findings": []
     }
   ],
-  "unchangedPictureEvidence": "rock-scatter-regression.json",
-  "focusedVisualEvidence": "rock-scatter-gpu/report.json",
-  "geometryAlignmentEvidence": "rock-scatter-controls/report.json"
+  "unchangedPictureEvidence": "material-regression.json",
+  "focusedVisualEvidence": "brazier-gpu/report.json",
+  "geometryAlignmentEvidence": "rock-scatter-controls/report.json",
+  "materialEvidence": "brazier-material/report.json"
 }

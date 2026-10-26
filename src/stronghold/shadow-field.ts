@@ -1,7 +1,7 @@
 // Screen-world light-space depth field. All heights are explicit geometry units;
 // alpha controls coverage only. No colour channel is ever interpreted as height.
 export type ShadowSun={dx:number;dy:number;alpha:number};
-export type ShadowSample={x:number;y:number;z:number;alpha:number;owner?:number;quad?:Float32Array;receive?:boolean;opaqueProxy?:boolean};
+export type ShadowSample={x:number;y:number;z:number;alpha:number;owner?:number;quad?:Float32Array;receive?:boolean;emission?:number;opaqueProxy?:boolean};
 export type ShadowBounds={left:number;top:number;step:number;width:number;height:number};
 export type ShadowPixels={bounds:ShadowBounds;depth:Float32Array;coverage:Uint8Array;owner?:Uint16Array;secondDepth?:Float32Array;secondCoverage?:Uint8Array;secondOwner?:Uint16Array};
 export function lightPoint(p:ShadowSample,s:ShadowSun){return {x:p.x+s.dx*p.z,y:p.y+s.dy*p.z};}
@@ -19,8 +19,8 @@ export function fieldBounds(samples:readonly ShadowSample[],sun:ShadowSun,step=3
 // leave periodic holes when sun/shear stretches adjacent samples farther than
 // two shadow texels. Shared source-cell corners form a continuous triangle mesh.
 const projectedQuad=new Float64Array(12),quadTriangles=[[0,1,2],[0,2,3]] as const;
-export function rasterSample(p:ShadowSample,sun:ShadowSun,b:ShadowBounds,write:(index:number,z:number,alpha:number,owner:number)=>void,conservative=true){
- const alpha=Math.round(p.alpha*255),owner=p.owner??1;
+export function rasterSample(p:ShadowSample,sun:ShadowSun,b:ShadowBounds,write:(index:number,z:number,alpha:number,owner:number)=>void,conservative=true,castMaterial=true){
+ const alpha=Math.round(p.alpha*255*(castMaterial?1-(p.emission??0):1)),owner=p.owner??1;if(!alpha)return;
  if(!p.quad){const q=lightPoint(p,sun),x=Math.floor((q.x-b.left)/b.step),y=Math.floor((q.y-b.top)/b.step);for(let j=0;j<2;j++)for(let i=0;i<2;i++){const xx=x+i,yy=y+j;if(xx>=0&&yy>=0&&xx<b.width&&yy<b.height)write(yy*b.width+xx,p.z,alpha,owner);}return;}
  const q=p.quad,v=projectedQuad;for(let i=0;i<12;i+=3){v[i]=(q[i]+sun.dx*q[i+2]-b.left)/b.step;v[i+1]=(q[i+1]+sun.dy*q[i+2]-b.top)/b.step;v[i+2]=q[i+2];}
  for(const ids of quadTriangles){const ai=ids[0]*3;let di=ids[1]*3,ci=ids[2]*3;const ax=v[ai],ay=v[ai+1],az=v[ai+2];let area=(v[di]-ax)*(v[ci+1]-ay)-(v[di+1]-ay)*(v[ci]-ax);if(Math.abs(area)<1e-8)continue;if(area<0){[di,ci]=[ci,di];area=-area;}
