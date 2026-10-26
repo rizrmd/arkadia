@@ -1,0 +1,30 @@
+{
+  "checkedAt": "2026-10-26T16:45:55.696Z",
+  "deployedCommit": "c552fbb7c954356dd43daaa5b3201601769890d0",
+  "layer": "1793032144141-game-c552fbb7-ab693005feda",
+  "entry": "/assets/index-qAB9Pvkm.js",
+  "focusedLive": {
+    "desktop": {
+      "variants": 13,
+      "sunCases": 39,
+      "errors": []
+    },
+    "mobile": {
+      "variants": 13,
+      "sunCases": 39,
+      "errors": []
+    }
+  },
+  "fullInventoryReference": {
+    "commit": "2e3543487d85edf031660e05d72eb31e1e3cb213",
+    "variants": 314,
+    "placements": 480,
+    "sunCases": 942
+  },
+  "limitations": [
+    "Focused current-runtime controls do not replace the reference full inventory run.",
+    "Software browser controls do not prove physical-device FPS.",
+    "Native paired depth/legacy/depth performance is pending; filtered live telemetry returned zero manual records out of 162 stored entries.",
+    "Historical 230-file evidence manifest remains a historical snapshot."
+  ]
+}
