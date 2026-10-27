@@ -1,5 +1,6 @@
 import {createGathering,type GatheringController} from './gathering';
 import {treeKind} from './gathering-rules';
+import {GAMEPLAY_SNOW,gameplaySnowPattern} from './snow-material';
 import {renderObjects} from '../environment/render';
 import {environment as authoredEnvironment,watchEnvironment,columns as authoredColumns} from '../environment/model';
 import {GateHealthBar} from './gate-health-bar';
@@ -64,7 +65,7 @@ export async function createWorldView(
  const environment=environmentSprites(),images=new Map<string,HTMLImageElement>();
  let gateOpen=false,gatePassable=false;
  const spriteFile=(id:Building,level:number)=>id==='forge'?`/fortress-ui/forge-${level}.webp`:id==='gate'?'/modular-stronghold/v2/full-gateway-v7-closed.webp':`/assets/${slots[id].asset}.png`;
- const paving='/modular-stronghold/v2/paving-warm-texture.png',snow='/modular-stronghold/v2/snow-soft-texture.png';
+ const paving='/modular-stronghold/v2/paving-warm-texture.png',snow=GAMEPLAY_SNOW;
  const files=[...new Set([...(environment.some(p=>p.id==='brazier')?[BRAZIER_PHYSICAL_SOURCE]:[]),FRONTIER_ATLAS,FOUNDATION_SOIL,FOUNDATION_MOSS,FOUNDATION_DRIFT,paving,snow,CLIFF_ART,NATURAL_CLIFF_ART,'/modular-stronghold/v2/full-gateway-v7-closed.webp',...environment.map(p=>p.file),...buildings.flatMap(b=>[1,2,3].map(l=>spriteFile(b,l)))])];
  const DOWNLOAD=920,steps=1000,mb=(n:number)=>(n/1e6).toFixed(1);let loaded=DOWNLOAD;
  let queued=0;const report=()=>{queued=0;const {received,expected}=downloadedBytes();progress(320+Math.floor((DOWNLOAD-320)*received/Math.max(1,expected)),steps,`Loading artwork · ${mb(received)} of ${mb(expected)} MB`);};
@@ -78,7 +79,7 @@ export async function createWorldView(
  let w=0,h=0,dpr=1,scale=1,cx=WORLD.width/2,cy=385,selected:Building|null=null,levels:State['levels']|undefined;
  let built=new Set<Building>(LEGACY_LAYOUT?buildings:START_BUILT);
  const material=(file:string,size:number)=>{const img=images.get(file)!,s=size*1024/img.width,p=probeCtx.createPattern(img,'repeat')!;p.setTransform(new DOMMatrix([s,s/2,-s,s/2,COURT.x,COURT.y]));return p;};
- const snowPattern=material(snow,.7),pavingPattern=material(paving,.22);
+ const snowPattern=gameplaySnowPattern(probeCtx,images.get(snow)!),pavingPattern=material(paving,.22);
  // Raised terrain (world/relief.ts): plateaus and ramps get their own sprites just above the baked surface, tinted
  // like the open snow, and join the hero's scene so they hide actors standing below and behind them.
  const relief=paintRelief(images.get(snow)!,images.get(CLIFF_ART)!,images.get(NATURAL_CLIFF_ART)!).map(r=>{const view=createCanvasSprite(r.canvas);view.sync(r.width,r.height);view.sprite.zIndex=10.5;staticStage.addChild(view.sprite);return {...r,view};});
@@ -89,8 +90,9 @@ export async function createWorldView(
  // The Frozen Frontier's ruins, landmarks and plants on the snow beyond (world/frontier.ts, frontier-view.ts).
  const frontier=createFrontier(staticStage,images.get(FRONTIER_ATLAS)!,!net);frontier.setLegacyShadows(!useDepthShadows);
  await frontier.ready;
+ const authoredGround=new Container();authoredGround.zIndex=10.025;staticStage.addChild(authoredGround);
  const authoredStage=new Container();authoredStage.zIndex=10.65;worldStage.addChild(authoredStage);
- let authoredScene=await renderObjects(net?authoredEnvironment():{...authoredEnvironment(),objects:authoredEnvironment().objects.filter(p=>!treeKind(p.asset))},authoredStage);
+ let authoredScene=await renderObjects(net?authoredEnvironment():{...authoredEnvironment(),objects:authoredEnvironment().objects.filter(p=>!treeKind(p.asset))},authoredStage,false,authoredGround);
  let gathering:GatheringController|undefined;
  const frontierScene=frontier.scene as unknown as typeof reliefScene;
  const alphaPrepared=new WeakSet<HTMLImageElement>(),alphaJobs=new Set<Promise<void>>();
@@ -261,7 +263,7 @@ if((p as any).authored)return authoredColumns((p as any).authored).map(c=>({...c
  await milestone(925,'Preparing the hero');
  const hero=await createHero<(typeof objects)[number]>({hero:pick,layer:worldStage,lightmap:lighting.lightmap,surface,footprint:p=>p.id==='gate'?gateFootprint():footprint(p),sun:lighting.sun,direction:()=>encounters?encounters.steer(input()):input(),follow,pose:()=>encounters?.pose()??null,
   drive:()=>{if(!net?.active())return null;const p=net.position(),me=net.me();const r=me?.run,dashing=r?.dashElapsed!==undefined&&r.dashElapsed<260&&!!r.dashDistance;return {...p,face:dashing?{x:((r.dashU??0)-(r.dashV??0))*64,y:((r.dashU??0)+(r.dashV??0))*32}:direction(),look:me&&me.st!=='idle'?{facing:me.fc,back:me.bk,vertical:me.vt}:null};}});hero.setScene(scene());
- watchEnvironment(async()=>{authoredStage.removeChildren().forEach(c=>c.destroy());authoredScene=await renderObjects(authoredEnvironment(),authoredStage);hero?.setScene(scene());requestDraw();});
+ watchEnvironment(async()=>{authoredGround.removeChildren().forEach(c=>c.destroy());authoredStage.removeChildren().forEach(c=>c.destroy());authoredScene=await renderObjects(net?authoredEnvironment():{...authoredEnvironment(),objects:authoredEnvironment().objects.filter(p=>!treeKind(p.asset))},authoredStage,false,authoredGround);hero?.setScene(scene());requestDraw();});
 
  await milestone(930,'Preparing combat');
  encounters=await createEncounters({renderer:rt.app.renderer,worldStage,uiStage,frames,hudCallbacks,showCoop:Boolean(net),cancelRoute:()=>walker?.cancel(),hero,direction:input,net});
@@ -308,6 +310,7 @@ if((p as any).authored)return authoredColumns((p as any).authored).map(c=>({...c
   if(!w||!h)return;
   measureTracelogPhase('worldDraw',()=>{
    if(dirty)paintWorld();const x=w/2-cx*scale,y=h/2-cy*scale;
+   for(const layer of [authoredGround,authoredStage]){layer.position.set(x,y);layer.scale.set(scale);}
    surfaceView.sprite.position.set(x+left*scale,y+top*scale);
    surfaceView.sprite.width=worldWidth*scale;
    surfaceView.sprite.height=worldHeight*scale;

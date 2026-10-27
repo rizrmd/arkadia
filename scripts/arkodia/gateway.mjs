@@ -1,3 +1,4 @@
+import {retiredVfxPage} from './retired-vfx.mjs';
 // The one public Arkodia sandbox (https://ark-whachat.fural.space). Serves every preview from disk on :3000:
 //   /                       the game (one build: solo, or co-op rooms via /?room=CODE)
 //   /ws /api/ /healthz      proxied to the co-op Go server (coop/arkodia on 127.0.0.1:3001)
@@ -103,6 +104,7 @@ fs.rmSync(path.join(home,'builds'),{recursive:true,force:true});
 const server=http.createServer((req,res)=>{
  let u,p;try{u=new URL(req.url,'http://local');p=decodeURIComponent(u.pathname);}catch{res.writeHead(400,NO_STORE).end();return;}
  if(p.includes('\0')||p.split('/').includes('..')){res.writeHead(400,NO_STORE).end();return;}
+ if(retiredVfxPage(p)){res.writeHead(302,{...NO_STORE,Location:'/fx-lab/'+u.search}).end();return;}
  if(toCoop(p))return proxy(req,res,p.toLowerCase().endsWith('.png')||p==='/asset-sizes.json'?()=>sendFile(req,res,path.join(www,p),p):null);
  if(MOVED[p]){res.writeHead(302,{...NO_STORE,Location:MOVED[p]+u.search}).end();return;}
  if(p.endsWith('/')&&p!=='/'&&isOpen(p)&&fs.existsSync(path.join(www,p,'index.html')))return sendFile(req,res,path.join(www,p,'index.html'),p);

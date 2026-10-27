@@ -1,0 +1,68 @@
+{
+  "ok": true,
+  "cases": [
+    {
+      "mobile": false,
+      "mapRevision": 1,
+      "groundTraversal": [
+        {
+          "u": 41.719,
+          "v": 14.115,
+          "player": true,
+          "enemy": true
+        },
+        {
+          "u": 49.063,
+          "v": 10.521,
+          "player": true,
+          "enemy": true
+        }
+      ],
+      "heroAfterWalk": {
+        "hp": 100,
+        "maxHp": 100,
+        "state": "idle",
+        "u": 49.06,
+        "v": 10.52,
+        "meters": 125,
+        "safe": false,
+        "reach": 1,
+        "aoeCastRadiusTiles": 2.2,
+        "critChance": 0.15,
+        "critMultiplier": 1.5
+      }
+    },
+    {
+      "mobile": true,
+      "mapRevision": 1,
+      "groundTraversal": [
+        {
+          "u": 41.719,
+          "v": 14.115,
+          "player": true,
+          "enemy": true
+        },
+        {
+          "u": 49.063,
+          "v": 10.521,
+          "player": true,
+          "enemy": true
+        }
+      ],
+      "heroAfterWalk": {
+        "hp": 100,
+        "maxHp": 100,
+        "state": "idle",
+        "u": 49.69,
+        "v": 11.15,
+        "meters": 127,
+        "safe": false,
+        "reach": 1,
+        "aoeCastRadiusTiles": 2.2,
+        "critChance": 0.15,
+        "critMultiplier": 1.5
+      }
+    }
+  ],
+  "errors": []
+}

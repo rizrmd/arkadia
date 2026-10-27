@@ -10,6 +10,7 @@ import (
 	"math"
 	"os"
 	"path/filepath"
+	"strings"
 	"sync"
 )
 
@@ -96,7 +97,7 @@ func (m Map) Validate() error {
 			}
 		}
 		for j, b := range m.Objects {
-			if i == j || b.Asset == "spawn" {
+			if i == j || b.Asset == "spawn" || strings.HasPrefix(b.Asset, "ground:") {
 				continue
 			}
 			r := (Assets[a.Asset].Footprint+Assets[b.Asset].Footprint)/2 + .2

@@ -77,6 +77,7 @@ function installGateway(id){
  run(['organization','home-files','write','--custom-sandbox',id,'--path','apply-live.mjs','--content',helper]);
  const src=readFileSync(fileURLToPath(new URL('./gateway.mjs',import.meta.url)),'utf8');
  run(['organization','home-files','write','--custom-sandbox',id,'--path','gateway.mjs','--content',src]);
+ const retired=readFileSync(fileURLToPath(new URL('./retired-vfx.mjs',import.meta.url)),'utf8');run(['organization','home-files','write','--custom-sandbox',id,'--path','retired-vfx.mjs','--content',retired]);
  const jsonLayer=readFileSync(fileURLToPath(new URL('./apply-json-layer.mjs',import.meta.url)),'utf8');run(['organization','home-files','write','--custom-sandbox',id,'--path','apply-json-layer.mjs','--content',jsonLayer]);run(['sandboxes','update',id,'--boot-script',BOOT]);
 }
 // Full-state persistence is a shipped compatibility contract, never an optional layer.
