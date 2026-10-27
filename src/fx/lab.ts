@@ -30,7 +30,7 @@ export async function mount(root:HTMLElement,progress:Progress){
  let playback:Playback='loading',playbackMessage='Loading hero and effects…';
  let run=fresh(hero),view={x:0,y:0,scale:1};
  const position={u:20,v:20},camera={u:20,v:20},keys=new Set<string>();
- let walking=false,sidebarWidth=Math.min(360,innerWidth*.76),collapsed=innerWidth<600,dropdown=false,optionScroll=0;
+ let walking=false,sidebarWidth=Math.min(360,innerWidth*.76),collapsed=innerWidth<600,heroDropdown=false,dropdown=false,optionScroll=0;
  let resizeStart:{x:number;width:number}|undefined;
  let gesture:{startY:number;lastY:number;moved:boolean;list:boolean}|undefined;
  const touches=new Map<number,{x:number;y:number}>();let pinchDistance=0,suppressTapUntil=0;
@@ -57,9 +57,16 @@ export async function mount(root:HTMLElement,progress:Progress){
   region:()=>({rect:{x:12,y:12,width:app.screen.width-24,height:app.screen.height-24},vertical:app.screen.width<720}),
   equip:()=> 'Select a skill in FX Lab to preview it.',onSelect:id=>{fullTree.open(false);void choose(id);}});
  const emptyCombat=combat.saveState();let previewAge=0,seekRequest=0;
- const editor=new FxEditor({hero:()=>hero,skill:()=>skill()?.id??feedbackKey(),rank:()=>rank,setRank:(value:number)=>{rank=value;syncUrl();drawUI();void play();},catalog:()=>combat.fx.catalog(),redraw:drawUI,replay:play,prepare:async()=>{prepared.delete(hero);combat.clearVisuals();combat.restoreState(emptyCombat);await combat.fx.prepare();prepared.add(hero);},paused:()=>paused,pause:()=>{paused=!paused;keys.clear();drawUI();},seek:async(target:number)=>{const ticket=++seekRequest;paused=true;combat.clearVisuals();combat.restoreState(emptyCombat);await play(true);if(ticket!==seekRequest)return;paused=true;let remaining=target;while(remaining>0){if(ticket!==seekRequest)return;const dt=Math.min(.025,remaining);combat.step(dt*1000);combat.render();remaining-=dt;if(Math.round(remaining*100)%50===0)await nextPaint();}previewAge=target;time=target;castUntil=1.05;nextCast=editor.duration;editor.tick(target);drawUI();}});
+ const editor=new FxEditor({hero:()=>hero,skill:()=>skill()?.id??feedbackKey(),rank:()=>rank,setRank:(value:number)=>{rank=value;syncUrl();drawUI();void play();},catalog:()=>combat.fx.catalog(),redraw:drawUI,replay:play,prepare:async()=>{prepared.delete(hero);combat.clearVisuals();combat.restoreState(emptyCombat);await combat.fx.prepare();prepared.add(hero);},paused:()=>paused,extras:(parent,button,x,y,w)=>{const third=(w-16)/3;
+ button(parent,loop?'Loop: ON':'Loop: OFF',x,y,third,()=>{loop=!loop;syncUrl();drawUI();},loop,'loop');
+ button(parent,night?'Night':'Day',x+third+8,y,third,()=>{night=!night;paintSnow();drawUI();},false,'background');
+ button(parent,'Full tree',x+2*(third+8),y,third,()=>{void fullTree.show(treeFocus());},false,'full-tree');
+ directionText=(button(parent,`Facing: ${DIRS[dir]}`,x,y+40,third,()=>{dir=(dir+1)%8;syncUrl();drawUI();},false,'direction') as Container).children.find(c=>c instanceof Text) as Text;
+ button(parent,runningInPlace?'Run in place':'Idle',x+third+8,y+40,third,()=>{runningInPlace=!runningInPlace;syncUrl();drawUI();},false,'pose');
+ button(parent,'Reset view',x+2*(third+8),y+40,third,()=>{position.u=position.v=camera.u=camera.v=20;zoom=1;layout();},false,'reset-view');
+ },pause:()=>{paused=!paused;keys.clear();drawUI();},seek:async(target:number)=>{const ticket=++seekRequest;paused=true;combat.clearVisuals();combat.restoreState(emptyCombat);await play(true);if(ticket!==seekRequest)return;paused=true;let remaining=target;while(remaining>0){if(ticket!==seekRequest)return;const dt=Math.min(.025,remaining);combat.step(dt*1000);combat.render();remaining-=dt;if(Math.round(remaining*100)%50===0)await nextPaint();}previewAge=target;time=target;castUntil=1.05;nextCast=editor.duration;editor.tick(target);drawUI();}});
  const stageWidth=()=>app.screen.width-(collapsed?0:sidebarWidth);
- let statusText:Text,zoomText:Text,directionText:Text|undefined;
+ let statusText:Text|undefined,zoomText:Text|undefined,directionText:Text|undefined;
  // Gameplay hero.face uses atan2(screenX, screenY); VFX uses tile-space yaw instead.
  const heroYaw=()=>Math.atan2(Math.cos(ANGLES[dir]*Math.PI/180),Math.sin(ANGLES[dir]*Math.PI/180));
  let pressedButton:string|undefined;const buttons:{label:string;x:number;y:number;w:number;h:number;action:()=>void}[]=[];
@@ -96,7 +103,7 @@ export async function mount(root:HTMLElement,progress:Progress){
  function text(parent:Container,value:string,x:number,y:number,size=13,color=0xdce6eb){const t=new Text({text:value,style:{fontFamily:'Arial',fontSize:size,fill:color}});t.position.set(x,y);parent.addChild(t);return t;}
  function button(parent:Container,value:string,x:number,y:number,w:number,action:()=>void,active=false,label=value){
   const c=new Container();c.label=label;c.position.set(x,y);c.addChild(new Graphics().roundRect(0,0,w,34,6).fill(active?0x37546b:0x192b3a).stroke({color:active?0xecc18b:0x496276,width:1}));
-  text(c,value,10,9,12,active?0xffd79e:0xe0e9f0);c.eventMode='static';c.cursor='pointer';c.hitArea=new Rectangle(0,0,w,34);
+  const caption=text(c,value,8,9,12,active?0xffd79e:0xe0e9f0);if(caption.width>w-16)caption.scale.set(Math.max(.55,(w-16)/caption.width));c.eventMode='static';c.cursor='pointer';c.hitArea=new Rectangle(0,0,w,34);
   buttons.push({label,x,y,w,h:34,action});parent.addChild(c);return c;
  }
  function drawOverlay(){overlay.removeChildren().forEach(c=>c.destroy({children:true}));if(playback!=='loading')return;
@@ -111,36 +118,23 @@ export async function mount(root:HTMLElement,progress:Progress){
   const x=w-sidebarWidth,pad=16,cx=x+pad,cw=sidebarWidth-pad*2;
   ui.addChild(new Graphics().rect(x,0,sidebarWidth,h).fill({color:0x0c1925,alpha:.97}));
   const handle=new Graphics().rect(x-5,0,10,h).fill({color:0x658399,alpha:.6});handle.label='sidebar-resize';handle.eventMode='static';handle.cursor='ew-resize';ui.addChild(handle);
-  text(ui,'FX LAB',cx,19,20,0xffd79e);button(ui,'›',w-48,12,32,()=>{collapsed=true;dropdown=false;layout();},false,'sidebar-close');
-  text(ui,'3D heroes · gameplay snow',cx,46,12,0x9fb4c3);
-  button(ui,'Ember Warden',cx,74,cw/2-4,()=>{void switchHero('ember-warden');},hero==='ember-warden','hero-ember');
-  button(ui,'Rift Runner',cx+cw/2+4,74,cw/2-4,()=>{void switchHero('rift-runner');},hero==='rift-runner','hero-rift');
-  text(ui,'SKILL',cx,124,11,0x9fb4c3);
-  button(ui,node().name.replace('\n',' ')+(dropdown?'  ▴':'  ▾'),cx,144,cw,()=>{dropdown=!dropdown;optionScroll=Math.max(0,Math.min(choices().length-7,choices().findIndex(n=>n.id===selected)-2));drawUI();},true,'skill-dropdown');
-  button(ui,'Preview',cx,188,(cw-8)/2,()=>{editor.open=false;drawUI();},!editor.open,'tab-preview');button(ui,'Visual editor',cx+(cw+8)/2,188,(cw-8)/2,()=>{editor.open=true;editor.select();drawUI();},editor.open,'tab-editor');
-  if(editor.open&&!dropdown){editor.draw(ui,button,cx,234,cw,h);drawOverlay();app.render();return;}
-  statusText=text(ui,status(),cx,234,12,playback==='error'?0xff9c89:playback==='loading'?0xecc18b:0x83d8bc);statusText.style.wordWrap=true;statusText.style.wordWrapWidth=cw;
-  const description=node().game?(cards[node().game!]?.description??'Gameplay skill preview'):'This skill is planned. Gameplay and VFX are not implemented yet.';
-  const info=text(ui,description,cx,272,13);info.style.wordWrap=true;info.style.wordWrapWidth=cw;const infoBottom=272+info.height;
-  const by=Math.max(372,infoBottom+18),half=(cw-8)/2;
-  button(ui,playback==='loading'?'Loading…':playback==='error'?'Reload':'Replay skill',cx,by,half,()=>{if(playback==='error')location.reload();else void play();},false,'play');
-  button(ui,paused?'Resume':'Pause',cx+half+8,by,half,()=>{paused=!paused;keys.clear();drawUI();},false,'pause');
-  button(ui,loop?'Loop: ON':'Loop: OFF',cx,by+44,half,()=>{loop=!loop;syncUrl();drawUI();},loop,'loop');
-  button(ui,night?'Night':'Day',cx+half+8,by+44,half,()=>{night=!night;syncUrl();drawUI();paintSnow();},false,'lighting');
-  text(ui,`RANK  ${rank} / 5`,cx,by+98,12,0x9fb4c3);
-  button(ui,'−',cx+cw-88,by+88,40,()=>{rank=Math.max(1,rank-1);syncUrl();drawUI();void play();},false,'rank-down');
-  button(ui,'+',cx+cw-40,by+88,40,()=>{rank=Math.min(5,rank+1);syncUrl();drawUI();void play();},false,'rank-up');
-  directionText=button(ui,`Facing: ${DIRS[dir]}`,cx,by+132,half,()=>{dir=(dir+1)%8;syncUrl();drawUI();},false,'direction').children.find(c=>c instanceof Text) as Text;
-  button(ui,runningInPlace?'Run in place':'Idle',cx+half+8,by+132,half,()=>{runningInPlace=!runningInPlace;syncUrl();drawUI();},false,'pose');
-  button(ui,'Full skill tree',cx,by+176,cw,()=>{keys.clear();void fullTree.show(treeFocus());},false,'full-tree');
-  text(ui,'WASD / arrows to walk',cx,by+226,12,0x9fb4c3);text(ui,'Scroll / pinch to zoom',cx,by+247,12,0x9fb4c3);
-  zoomText=text(ui,`Zoom ${Math.round(zoom*100)}%`,cx,by+274,12,0xecc18b);
-  button(ui,'Reset view',cx+cw-100,by+264,100,()=>{position.u=position.v=camera.u=camera.v=20;zoom=1;layout();},false,'reset-view');
+  button(ui,'›',x-28,12,24,()=>{collapsed=true;dropdown=false;layout();},false,'sidebar-close');
+  const half=(cw-8)/2;
+  text(ui,'Hero',cx,12,11,0x9fb4c3);text(ui,'Skill',cx+half+8,12,11,0x9fb4c3);
+  button(ui,(hero==='ember-warden'?'Ember Warden':'Rift Runner')+' ▾',cx,32,half,()=>{heroDropdown=!heroDropdown;dropdown=false;drawUI();},false,'hero-dropdown');
+  button(ui,node().name.replace('\n',' ')+' ▾',cx+half+8,32,half,()=>{dropdown=!dropdown;heroDropdown=false;optionScroll=Math.max(0,Math.min(choices().length-7,choices().findIndex(n=>n.id===selected)-2));drawUI();},true,'skill-dropdown');
+  editor.open=true;
+  editor.draw(ui,button,cx,82,cw,h);
+  if(heroDropdown){const menu=new Container();menu.addChild(new Graphics().rect(cx-4,70,cw+8,88).fill(0x09131e));
+   button(menu,'Ember Warden',cx,74,cw,()=>{heroDropdown=false;void switchHero('ember-warden');},hero==='ember-warden','hero-ember');
+   button(menu,'Rift Runner',cx,114,cw,()=>{heroDropdown=false;void switchHero('rift-runner');},hero==='rift-runner','hero-rift');ui.addChild(menu);
+  }
+  if(!dropdown){drawOverlay();app.render();return;}
   if(dropdown){
    const count=Math.min(7,Math.max(3,Math.floor((h-202)/48))),first=Math.min(Math.max(0,optionScroll),choices().length-count);
-   listRect={x:cx,y:184,w:cw,h:count*48};const menu=new Container();menu.label='skill-options';
-   menu.addChild(new Graphics().roundRect(cx-4,180,cw+8,count*48+8,6).fill(0x09131e).stroke({color:0x8199aa,width:1}));
-   choices().slice(first,first+count).forEach((n,i)=>{const c=button(menu,n.name.replace('\n',' '),cx,184+i*48,cw,()=>{void choose(n.id);},n.id===selected,'skill-'+n.id);text(c,n.kind==='passive'?'Passive':n.game?'Active · click to play':'Planned',10,28,9,0x9fb4c3);c.hitArea=new Rectangle(0,0,cw,46);buttons[buttons.length-1].h=46;});ui.addChild(menu);
+   listRect={x:cx,y:74,w:cw,h:count*48};const menu=new Container();menu.label='skill-options';
+   menu.addChild(new Graphics().roundRect(cx-4,70,cw+8,count*48+8,6).fill(0x09131e).stroke({color:0x8199aa,width:1}));
+   choices().slice(first,first+count).forEach((n,i)=>{const c=button(menu,n.name.replace('\n',' '),cx,74+i*48,cw,()=>{void choose(n.id);},n.id===selected,'skill-'+n.id);text(c,n.kind==='passive'?'Passive':n.game?'Active · click to play':'Planned',10,28,9,0x9fb4c3);c.hitArea=new Rectangle(0,0,cw,46);buttons[buttons.length-1].h=46;});ui.addChild(menu);
   }else listRect={x:0,y:0,w:0,h:0};
   drawOverlay();app.render();
  }
