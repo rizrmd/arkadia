@@ -16,3 +16,9 @@ A failed live application is reported to the publisher; it never silently falls 
 - `node scripts/arkodia/verify-json-layer-memory.mjs`: streaming JSON decoding and validation remain intact.
 
 Local results: [local-verification.json](local-verification.json). Public deployment results are recorded in [live-verification.json](live-verification.json).
+
+## Public result — 27 October 2026
+
+The gateway upgrade was deployed with the supported publisher. A subsequent real review layer applied with the same gateway PID throughout: **78 public HTTP requests, zero failures**. `/dev` and all twelve menu destinations returned HTTP 200, as did their external entry scripts. Chromium rendered both the Pixi developer menu and the dedicated Rift Dash player without page exceptions or HTTP failures. No game build or save data was replaced by this gateway-only deployment.
+
+Browser evidence: [browser-verification.json](browser-verification.json). Re-run `node scripts/arkodia/verify-menu-public.mjs` under the deployment lock to publish a small diagnostic layer while monitoring menu availability; `node scripts/arkodia/verify-menu-browser.mjs` checks the live Pixi pages.
