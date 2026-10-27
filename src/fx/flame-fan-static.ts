@@ -25,16 +25,47 @@ for(let i=0;i<26;i++){const p=point(130+rnd()*880,(rnd()*2-1)*half);sprite(soil,
 // Upright screen sprites sorted by their projected feet. Keep smoke behind flame at each depth.
 const air=new Container();scene.addChild(air);air.sortableChildren=true;
 function at(name:string,r:number,a:number,w:number,h:number,alpha=1,lift=0){const p=point(r,a),x=115+p.x,y=260+p.y*.53;const s=sprite(air,name,x,y-lift,w,h,0,alpha);s.anchor.set(.5,1);s.zIndex=y+(name==='glow'?-2:0);return s;}
-for(let i=0;i<24;i++){const a=i<18?-.74+i*.087:(rnd()*2-1)*.6,r=i<18?980+rnd()*40:500+rnd()*330;at(['bank','haze','puff','billow','wisp','ash-puff'][i%6],r,a,165+rnd()*55,110+rnd()*60,i<18?.46+rnd()*.15:.22);}
-for(let lane=-2;lane<=2;lane++)for(let r=170;r<1060;r+=145){const a=lane*.29+(rnd()-.5)*.07;at(['low-a','low-b','low-c','ribbon'][Math.floor(r/145+lane+4)%4],r,a,125+rnd()*40,48+rnd()*25,.95);}
-for(let i=0;i<25;i++){at(['low-a','low-b','low-c','ribbon'][i%4],280+rnd()*740,(rnd()*2-1)*.7,110+rnd()*45,46+rnd()*23,.9);}
-for(let i=0;i<12;i++){const a=-.75+i*.137;at(i%3===0?'accent':'lick',920+rnd()*80,a,43+rnd()*32,53+rnd()*38,.95);}
+// Broken, connected burning seams. Each run overlaps at the foot, while its
+// irregular tongue heights leave broad unburned plates between the seams.
+const runs=[[-.58,170,920],[-.28,110,1030],[.06,250,960],[.38,180,1050],[.66,460,990]];
+for(let lane=0;lane<runs.length;lane++){
+ const [angle,from,to]=runs[lane];let r=from,index=0;
+ while(r<to){
+  const a=angle+Math.sin(r*.014+lane)*.085;
+  const width=115+rnd()*100,height=28+rnd()*38;
+  const name=index%3===0?'ribbon':['low-a','low-b','low-c'][Math.floor(rnd()*3)];
+  const f=at(name,r,a,width,height,.82+rnd()*.17);
+  if(rnd()<.4)f.scale.x*=-1;
+  if(index%3===1){const tongue=at(index%2?'lick':'accent',r+25,a+.012,20+rnd()*23,30+rnd()*42,.85);if(rnd()<.5)tongue.scale.x*=-1;}
+  r+=80+rnd()*48;index++;
+ }
+}
+// Smaller cross-seams join selected lanes without filling the dark plate gaps.
+for(const [r,a] of [[320,-.43],[570,-.12],[780,.23],[910,.5],[460,.22]]){
+ at('ribbon',r,a,150,25,.88);
+}
+// Smoke starts throughout the burning footprint, not only on the outer rim.
+// Mixed low veils and rising plumes partially cover local fire, depth sorted by feet.
+const smokeSites=[
+ [210,-.43,105,67,.32],[340,.25,130,90,.38],[450,-.5,125,116,.43],
+ [540,-.13,180,95,.30],[640,.42,145,130,.46],[720,-.48,135,157,.55],
+ [790,.04,190,110,.34],[860,.57,155,145,.48],[990,-.60,135,164,.59],
+ [970,-.28,190,175,.52],[1030,.11,130,135,.46],[1000,.42,180,148,.48],
+ [930,.70,170,119,.40],[400,.58,115,65,.29],[620,.68,145,72,.31],
+ [830,-.28,115,125,.37],[560,.23,105,72,.27],[300,-.22,95,83,.32]
+];
+smokeSites.forEach(([r,a,w,h,opacity],i)=>{
+ const names=['wisp','puff','billow','bank','wisp','ash-puff'];
+ const plume=at(names[i%names.length],r,a,w*1.12,h*1.1,Math.min(.68,opacity*1.35),4+rnd()*13);
+ if(i%3===0)plume.scale.x*=-1;
+ plume.zIndex+=5;
+});
 for(let i=0;i<13;i++){const r=220+rnd()*800,a=(rnd()*2-1)*.74;at('cinders',r,a,70,47,.7,15+rnd()*30);if(i%3===0)at('glow',r,a,40,26,.25);}
 for(let i=0;i<9;i++)at(i%2?'ember':'spark',450+rnd()*550,(rnd()*2-1)*.7,13+rnd()*8,10+rnd()*8,.9,35+rnd()*55);
 let checker=false,reference=false;const bg=new Graphics();app.stage.addChildAt(bg,0);
-const target=await Assets.load(base+'target.png');const ref=new Sprite(target);ref.anchor.set(.5);ref.visible=false;root.addChild(ref);
-function text(s:string,size:number,color=0xe9e2d5){return new Text({text:s,style:{fontFamily:'Arial',fontSize:size,fill:color}});}
-const title=text('FLAME FAN',24),sub=text('Static composition · 30 original parts',13,0xaeb1ba),note=text('Ground projected · fire and smoke upright',12,0xaeb1ba);ui.addChild(title,sub,note);
+const target=await Assets.load(base+'revision-target.png');const ref=new Sprite(target);ref.anchor.set(.5);ref.visible=false;root.addChild(ref);
+function text(s:string,size:number,color=0xe9e2d5){return new Text({text:s,style:{fontFamily:'Arial',fontSize:size,fill:color,wordWrap:true,wordWrapWidth:330}});}
+const title=text('FLAME FAN',24),sub=text('Static composition · connected fire and distributed smoke',13,0xaeb1ba),note=text('Ground projected · fire and smoke upright',12,0xaeb1ba);ui.addChild(title,sub,note);
 function button(label:string,fn:()=>void){const c=new Container(),g=new Graphics(),t=text(label,13);g.roundRect(0,0,150,36,6).fill(0x252a35).stroke({color:0x555b68,width:1});t.position.set(12,10);c.addChild(g,t);c.eventMode='static';c.cursor='pointer';c.on('pointertap',fn);ui.addChild(c);return c;}
 const b1=button('Checkerboard',()=>{checker=!checker;layout();});const b2=button('Compare target',()=>{reference=!reference;scene.visible=!reference;ref.visible=reference;layout();});
 function layout(){const w=app.screen.width,h=app.screen.height;bg.clear().rect(0,0,w,h).fill(0x101219);if(checker)for(let y=110;y<h-80;y+=20)for(let x=0;x<w;x+=20)bg.rect(x,y,20,20).fill((Math.floor(x/20)+Math.floor(y/20))%2?0x343841:0x252932);title.position.set(22,20);sub.position.set(22,52);note.position.set(22,h-24);const scale=Math.min((w-26)/1280,(h-190)/930);root.scale.set(scale);root.position.set((w-1280*scale)/2,105+(h-190-930*scale)/2);scene.position.y=115;ref.position.set(640,465);ref.width=1250;ref.height=782;b1.scale.set(w<370?.9:1);b2.scale.set(w<370?.9:1);b1.position.set(w<370?12:22,h-75);b2.position.set(w<370?w-147:w-172,h-75);app.render();}
