@@ -13,3 +13,7 @@ Baseline: a12892f7. `before/` contains matched actual gameplay frames from that 
 `human-reference.png` is the unmodified discussion attachment DA6ab8609e7597f6565c432567 that prompted this correction. Each `*-burst` frame shows airborne fan above soil; tail frames retain ground-only fading composition. PNG captures are archived as lossless WebP with decoded RGBA equality verified, except the original human reference which retains its bytes.
 
 TypeScript, production build, progression, persistence and Go checks run before deployment. Public verification records the client/server release SHA, all compiled file hashes and unchanged approved asset pixels. Public browser validation uses the unmodified production bundle and diagnostic target/rank seeding; bounded failures and their limits are recorded honestly in the report.
+
+### Shipped result
+
+Public client and server release: **839293f43ad9a8640b8e7c4a4714ff42f7bd80be**. All 40 compiled asset hashes and the approved ember v2 decoded visible RGB/alpha match. `public-runtime.json` records actual public desktop and phone ranks 1–5, zero page errors, and elevated origins with visible approved embers. First phone loading attempt timed out after 60 seconds; one bounded retry passed all ranks. Desktop and phone live captures retain the normal production tutorial/UI state. Release command reports the shared clone SHA in its outer receipt; the isolated publisher, live manifest and health endpoint identify the actual shipped SHA above.
