@@ -18,6 +18,8 @@ If the new contour invalidates a legacy saved foot, startup searches nearby grou
 
 ## Release
 
+Shipped and publicly verified: `d775613a75b2bb4df97279c33397ec70cd8eab8b` at https://ark-whachat.fural.space. All 42 manifest client files match SHA-256; the running server reports the new authoritative movement boundary. Public desktop/mobile browser tests pass all 14 cases, including legacy position recovery. See `live/both.json` and `live/release-verification.json`.
+
 The supported `scripts/fural-deploy.sh` packages the game server and client together. It includes these captures and an exact client/binary SHA-256 manifest at `/cliff-boundary/release.json`. `/healthz` exposes `movementBoundary: hill-foot-contour-v1` so the running authority can be verified separately from static files. Public release checks and public browser reports are written to `live/` after deployment.
 
 ## Commands
