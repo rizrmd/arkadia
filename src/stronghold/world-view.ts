@@ -253,7 +253,7 @@ export async function createWorldView(
   drive:()=>{if(!net?.active())return null;const p=net.position(),me=net.me();return {...p,face:direction(),look:me&&me.st!=='idle'?{facing:me.fc,back:me.bk,vertical:me.vt}:null};}});hero.setScene(scene());
  await milestone(930,'Preparing combat');
  encounters=await createEncounters({renderer:rt.app.renderer,worldStage,uiStage,frames,hudCallbacks,showCoop:Boolean(net),cancelRoute:()=>walker?.cancel(),hero,direction:input,net});
- const gateHealthBar=worldStage.addChild(new GateHealthBar());
+ const gateHealthBar=worldStage.addChild(new GateHealthBar(frames));
  gateHealthBar.zIndex=100;
  encounters.hud.bindGateHealthBar(gateHealthBar);
 
