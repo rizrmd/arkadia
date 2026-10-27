@@ -1,0 +1,42 @@
+import {serve} from './site.mjs';import {launch} from '../vfx/browser.mjs';import fs from 'node:fs/promises';import assert from 'node:assert/strict';
+const remote=process.env.GAME,tag=remote?'live':'local',out='docs/rift-skill-fix',site=remote?null:await serve(process.env.SITE_DIR||'/home/dev/releases/rift-skill-after');
+const report={base:remote||'http://127.0.0.1:5297',views:[],errors:[],missing:[]};let b;
+try{for(const [name,width,height,touch] of [['desktop',1440,900,false],['portrait',390,844,true],['landscape',844,390,true]].filter(v=>!process.env.WIDTH||v[1]===+process.env.WIDTH)){
+ console.log('START',tag,name);b=await launch();const p=await b.newPage({viewport:{width,height},hasTouch:touch,isMobile:touch});
+ p.on('pageerror',e=>report.errors.push(e.message));p.on('console',m=>{if(m.type()==='error')report.errors.push(m.text())});p.on('response',r=>{if(r.status()>=400&&!r.url().includes('/api/'))report.missing.push(r.status()+' '+r.url())});await p.routeWebSocket('**/*',()=>{});
+ await p.addInitScript(()=>(localStorage.setItem('arkodia.desktop-movement-hint.v1','1'),localStorage.setItem('arkodia.settings.v1',JSON.stringify({quality:'low',frameRate:30,music:0,soundEffects:0}))));await p.clock.install();await p.goto(report.base+'/?offline=1&hero=rift-runner&quality=low&time=.45');await p.waitForFunction(()=>window.__STRONGHOLD_COMBAT__?.snapshot().vfx.fx.ready&&!document.querySelector('#loading-screen'),null,{timeout:120000});
+ await p.clock.pauseAt(Date.now()+500);console.log('GAME READY');const advance=async ms=>{for(let t=0;t<ms;t+=60)await p.clock.fastForward(100)};const snapshot=()=>p.evaluate(()=>window.__STRONGHOLD_COMBAT__.snapshot());const tree=()=>p.evaluate(()=>window.__STRONGHOLD_COMBAT__.skillTree.snapshot());
+ const capture=async file=>{if(process.env.NO_CAPTURE||!['tree','dash','shockwave',...(name==='landscape'?['details']:[])].includes(file))return;console.log('CAPTURE',file);const cdp=await p.context().newCDPSession(p),{data}=await cdp.send('Page.captureScreenshot',{format:'png'});await cdp.detach();await fs.writeFile(`${out}/${tag}-${name}-${file}.png`,Buffer.from(data,'base64'))};
+ const tap=async(x,y)=>{if(touch)await p.touchscreen.tap(x,y);else await p.mouse.click(x,y,{delay:70})};
+ const control=async id=>{console.log('CONTROL',id);const t=await tree(),r=t.inspection.controls[id];assert(r,id);await tap(t.panel.x+r.x,t.panel.y+r.y);await p.clock.runFor(50)};
+ await p.evaluate(async()=>{const c=window.__STRONGHOLD_COMBAT__;c.setPreviewMode(true);c.clearFoes();await c.skillTree.tree.show('rift-dash',0)});await p.clock.runFor(40);
+ // Real taps and real advancing frames: inspection must not equip, require a hold or duplicate UI.
+ let t=await tree();const initialSlots=(await snapshot()).run.slots;const other=t.nodes.find(n=>n.inView&&n.id!=='rift-dash');assert(other,'visible alternate inspection node');await tap(other.screen.x,other.screen.y);await p.clock.runFor(50);assert.equal((await tree()).inspection.selected,other.id);assert.deepEqual((await snapshot()).run.slots,initialSlots);
+ const dash=t.nodes.find(n=>n.id==='rift-dash');await tap(dash.screen.x,dash.screen.y);await p.clock.runFor(50);assert.equal((await tree()).inspection.selected,'rift-dash');await control('skill-details');assert((await tree()).inspection.details);await capture('details');await control('back-to-tree');assert(!(await tree()).inspection.details);await capture('tree');console.log('INSPECTION PASS');
+ await p.evaluate(()=>{const c=window.__STRONGHOLD_COMBAT__;c.skillTree.close();c.offer(['rift-dash','might','heal']);c.choose('rift-dash');c.offer(['rift-trap','might','heal']);c.choose('rift-trap');for(let i=0;i<3;i++){c.offer(['might','heal','nova']);c.choose('might')}c.offer(['cleave','might','heal']);c.choose('cleave');c.clearFoes();c.resetCooldowns()});
+ // Find a clear playable location well outside the stronghold and with room in two directions.
+ const spot=await p.evaluate(()=>{const c=window.__STRONGHOLD_COMBAT__;for(let u=18;u<35;u+=.5)for(let v=18;v<35;v+=.5)if(c.clear(u,v)&&c.clear(u+3,v)&&c.clear(u,v+3)&&c.teleport(u,v))return {u,v};throw Error('No playable clearing')});
+ await p.clock.runFor(40);console.log('CLEARING',spot);
+ let a=await snapshot();const socket=a.hudGeometry.sockets[1];
+ if(touch){const cdp=await p.context().newCDPSession(p);await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{id:1,x:socket.x,y:socket.y}]});await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{id:1,x:socket.x+70,y:socket.y+35}]});await p.clock.runFor(30);assert((await snapshot()).manualDash.aiming);await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});await cdp.detach();}
+ else{const at=a.hudGeometry;await p.mouse.move(width*.8,height*.6);await p.keyboard.press('2')}
+ console.log('DASH INPUT');await p.clock.runFor(120);const dashState=await snapshot();assert(dashState.manualDash.last?.distance>.05);assert(dashState.vfx.riftDashArt?.active);assert(dashState.vfx.riftDashArt.generated);assert.equal(dashState.vfx.activeSlashes,0);assert(dashState.vfx.riftDashArt.ghosts>0);await capture('dash');console.log('DASH PASS');
+ // All actual combat VFX sequences, with real HP checks and no inspection-only effects.
+ await advance(1150);await p.evaluate(({u,v})=>{const c=window.__STRONGHOLD_COMBAT__;c.teleport(u,v);c.clearFoes()},spot);
+ const skills=[];
+ for(const skill of ['rift-bolt','rift-trap','cleave','shockwave']){
+  await p.evaluate(({skill,u,v})=>{const c=window.__STRONGHOLD_COMBAT__;c.clearFoes();c.summon(u+.8,v,30);c.resetCooldowns();c.castSkill(skill,{targetU:u+.8,targetV:v,forceCrit:false})},{skill,...spot});
+  console.log('CAST',skill);const before=await snapshot();await advance(skill==='rift-trap'?720:skill==='shockwave'?520:380);const after=await snapshot();assert(after.foes[0].hp<before.foes[0].hp,skill+' damages actual enemy');if(skill==='rift-bolt')assert.equal(after.vfx.activeSlashes,0);await capture(skill);skills.push({skill,beforeHp:before.foes[0].hp,afterHp:after.foes[0].hp,aoes:before.vfx.activeAoEs});await fs.writeFile(`${out}/${tag}-${name}-progress.json`,JSON.stringify({skills},null,2));await advance(900);
+ }
+ // Wall clamp regression: find a wall ray and ensure trap center is corrected.
+ const origin=JSON.parse(await fs.readFile('src/stronghold/prefabs/stronghold.json','utf8')).court.origin;
+ const clamp=await p.evaluate(({x,y})=>{const c=window.__STRONGHOLD_COMBAT__,h=c.snapshot().hero,from={x:x+(h.u-h.v)*64,y:y+(h.u+h.v)*32};for(let i=0;i<32;i++){const a=i*Math.PI/16,u=h.u+Math.cos(a)*18,v=h.v+Math.sin(a)*18,to={x:x+(u-v)*64,y:y+(u+v)*32},r=c.traceWallRay(from.x,from.y,to.x,to.y);if(r.hit&&r.t>.02&&r.t<.95){c.resetCooldowns();c.castSkill('rift-trap',{targetU:u,targetV:v});const got=c.snapshot().vfx.activeAoEs.at(-1),expected={u:((r.x-x)/64+(r.y-y)/32)/2,v:((r.y-y)/32-(r.x-x)/64)/2};return {target:{u,v},expected,got}}}throw Error('No wall regression ray')},origin);
+ assert(Math.hypot(clamp.got.u-clamp.expected.u,clamp.got.v-clamp.expected.v)<.03,'Trap uses wall-clamped target');console.log('WALL CLAMP PASS');await advance(720);
+ // Actual automatic basic attack + Bolt must retain f9a755a0 suppression.
+ await p.evaluate(({u,v})=>{const c=window.__STRONGHOLD_COMBAT__;c.clearFoes();c.teleport(u,v);c.summon(u+.65,v,30);c.skillTree.tree.show('rift-bolt',0)},spot);await p.clock.runFor(100);t=await tree();assert.equal(t.inspection.data.rows.find(r=>r.label==='Projectiles').current,'1');
+ await p.evaluate(()=>{const c=window.__STRONGHOLD_COMBAT__;c.skillTree.close();c.resetCooldowns();c.setPreviewMode(false)});const auto=[];for(let i=0;i<8;i++){await p.clock.runFor(100);auto.push(await snapshot())}
+ assert(auto.every(s=>s.vfx.activeSlashes===0),'Bolt/basic attacks retain no-cleave fix');assert(auto.some(s=>s.run.autoCasts>0),'actual automatic combat');assert(auto.some(s=>s.foes[0].hp<auto[0].foes[0].hp),'automatic damage');await capture('automatic');
+ report.views.push({name,viewport:{width,height,touch},slots:initialSlots,dash:dashState.manualDash,art:dashState.vfx.riftDashArt,skills,clamp,autoCasts:auto.at(-1).run.autoCasts,pass:true});console.log('PASS',name);await fs.writeFile(`${out}/${tag}-verification.json`,JSON.stringify(report,null,2));await b.close();b=null;
+ }assert.deepEqual(report.errors,[]);assert.deepEqual(report.missing,[]);
+}finally{await fs.writeFile(`${out}/${tag}-verification.json`,JSON.stringify(report,null,2));await b?.close();await site?.close()}
+console.log(JSON.stringify(report));

@@ -32,7 +32,7 @@ export async function flameGpuProbe(){
  HTMLCanvasElement.prototype.getContext=function(type:any,...args:any[]){if(type==='webgl'||type==='webgl2')newWebglContexts++;return (getContext as any).call(this,type,...args); } as any;
  await native.prepare();native.spawn(18,18,.6,4.4,5);native.frame(.3,{x:0,y:0,scale:1});
  const contextsForNative=newWebglContexts;HTMLCanvasElement.prototype.getContext=getContext;
- old.spawn(18,18,.6,4.4,5);old.frame(.3,{x:0,y:0,scale:1});
+ await old.prepare();old.spawn(18,18,.6,4.4,5);old.frame(.3,{x:0,y:0,scale:1});
  // Burn Soil adds a ground layer before the flame sheet. Compare the sheet,
  // which remains the final child in both backends, rather than the soil.
  const current=parent.children.at(-1) as import('pixi.js').Sprite,previous=oldParent.children.at(-1) as import('pixi.js').Sprite;

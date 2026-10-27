@@ -1,3 +1,7 @@
+## Current gameplay update — approved projecting burst
+
+The approved directional burst supersedes the procedural connected sheet in gameplay. See [burst v1 implementation, unchanged rank balance and current verification](burst-v1/README.md). Older evidence below is preserved as history; node-tap equip was superseded by explicit Pixi inspection/Equip controls.
+
 ## Compact Flame Fan gameplay integration
 
 The live combat renderer uses the shared connected flame material, anchored at the caster's tile and transformed by the actual 64/32 isometric projection and camera. The unit-radius material is bounded by the combat radius and 108° sector. Cast release remains 420 ms; the sheet lasts 850 ms. Rank adds one to five curled strata, heat and modest density. Maximum sheet opacity is 0.385–0.565 instead of the prior preview's 0.675–0.975. There is no bloom or vertical enlargement. Flame Fan contact particles use 0.28 of their previous linear scale. Other skills are unchanged.

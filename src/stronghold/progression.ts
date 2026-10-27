@@ -15,6 +15,7 @@ export type Progression={
  manualDashes?:number;dashFromU?:number;dashFromV?:number;dashU?:number;dashV?:number;
  trinityCasts?:number;
  lastCast?:string[];
+ castGeometry?:{fromU:number;fromV:number;targetU:number;targetV:number};
 };
 export type HitRoll={damage:number;display:number;crit:boolean;multiplier:number};
 export type CardDef={
@@ -68,7 +69,7 @@ export const cards:Record<string,CardDef>={
   blessingTitle:'Rift Bolt',
   description:'Auto-cast piercing arcane bolts at foes inside AoE. Each Rank adds bolt volleys, +25% skill damage, and -8% cooldown.',
   unlockSummary:'Arcane Bolt Volley · 1.4s CD',
-  upgradeSummary:'+25% Bolt DMG · -0.3s CD',
+  upgradeSummary:'+25% Bolt DMG · -8% CD',
   kind:'active',
   badge:'BOLT',
   icon:'⚡',
@@ -90,9 +91,9 @@ export const cards:Record<string,CardDef>={
  'rift-dash':{
   name:'Rift Dash',
   blessingTitle:'Rift Dash',
-  description:'Auto-unleash warp afterimages and a phase slash across foes in AoE. Each Rank adds +25% damage, wider AoE, and -8% cooldown.',
-  unlockSummary:'Phase Warp Slash · 1.4s CD',
-  upgradeSummary:'+25% Slash DMG · -0.3s CD',
+  description:'Manually dash up to 1.5 tiles toward your aim, leaving rift afterimages and striking foes on arrival. Terrain can shorten the dash. Each rank adds +25% damage, +18% area, and -8% cooldown.',
+  unlockSummary:'Manual Rift Dash · 1.4s CD',
+  upgradeSummary:'+25% Dash DMG · +18% area · -8% CD',
   kind:'active',
   badge:'DASH',
   icon:'💨',
@@ -150,9 +151,9 @@ export const cards:Record<string,CardDef>={
  shockwave:{
   name:'Seismic Slam',
   blessingTitle:'Seismic Slam',
-  description:'Auto-detonate a ground-shattering shockwave ring inside AoE. Each Rank expands radius by +20%, adds +25% damage, and -8% cooldown.',
+  description:'Auto-detonate a ground-shattering shockwave ring inside AoE. Each Rank expands radius by +18%, adds +25% damage, and -8% cooldown.',
   unlockSummary:'Shockwave Ring · 2.8s CD',
-  upgradeSummary:'+25% Slam DMG · +20% AoE',
+  upgradeSummary:'+25% Slam DMG · +18% AoE',
   kind:'active',
   badge:'SLAM',
   icon:'💥',

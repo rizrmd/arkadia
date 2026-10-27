@@ -17,7 +17,10 @@ export function inspectionData(n:Inspection,p:Progression){
  if(id&&cards[id]?.kind==='active'){
   add('Cooldown',skillCooldownMs(p,id)/1000,skillCooldownMs(next,id)/1000,' s');
   if(id==='rift-dash')add('Max distance',1.5,1.5,' tiles');
-  else{add('Skill damage',skillDamageMultiplier(p,id),skillDamageMultiplier(next,id),'×');add('Area scale',skillAreaMultiplier(p,id),skillAreaMultiplier(next,id),'×');}
+  const base:Record<string,number>={'rift-bolt':1,'rift-dash':1.1,'rift-trap':1.25,cleave:1.2,shockwave:1.3};
+  add('Damage scale',(base[id]??1)*skillDamageMultiplier(p,id),(base[id]??1)*skillDamageMultiplier(next,id),'×');
+  if(id!=='rift-bolt')add('Area scale',skillAreaMultiplier(p,id)*reach(p),skillAreaMultiplier(next,id)*reach(next),'×');
+  if(id==='rift-bolt')add('Projectiles',rank>=3?3:Math.max(1,rank),rank+1>=3?3:rank+1,'',0);
  }else if(id){
   if(id==='might'||id==='star')add('Attack damage',damage(p),damage(next));
   if(id==='vitality'||id==='star')add('Bonus health',health(p),health(next));
@@ -27,7 +30,7 @@ export function inspectionData(n:Inspection,p:Progression){
   if(id==='might'||id==='star')add('Critical chance',critChance(p)*100,critChance(next)*100,'%');
   if(id==='heal')add('Instant recovery',35,35,'% max HP');
  }
- const description=id==='rift-dash'?'Manually dash toward your aim to evade enemies. Terrain can shorten the dash.':id==='vitality'?'Gain 20 maximum health per rank.':id&&cards[id]?cards[id].description:'This skill is a concept and is not available in the game yet.';
+ const description=id==='vitality'?'Gain 20 maximum health per rank.':id&&cards[id]?cards[id].description:'This skill is a concept and is not available in the game yet.';
  return {rank,description,rows,maxRank:inferHero(p)==='ember-warden'&&rank>=EMBER_MAX_ACTIVE_RANK&&cards[id??'']?.kind==='active'};
 }
 
@@ -102,7 +105,7 @@ export class SkillInspection{
   this.text(c,d.maxRank?'Maximum rank':`Current${d.rank?` · Lv. ${d.rank}`:''}`,mw*.55,tableY+22,12,undefined,0xf6e1ae,true);
   this.text(c,d.maxRank?'—':`Next · Lv. ${d.rank+1}`,mw*.83,tableY+22,12,undefined,0x6ae6ff,true);
   if(!n.game)this.text(c,'No progression data available.',24,tableY+55,14,mw-48);
-  d.rows.forEach((r,i)=>{const y=tableY+53+i*29;this.text(c,r.label,24,y,13);this.text(c,r.current,mw*.55,y,15,undefined,0xf6e1ae,true);this.text(c,d.maxRank?'—':r.next,mw*.83,y,15,undefined,0x6ae6ff,true);});
+  d.rows.forEach((r,i)=>{const y=tableY+53+i*(landscape?23:29);this.text(c,r.label,24,y,13);this.text(c,r.current,mw*.55,y,15,undefined,0xf6e1ae,true);this.text(c,d.maxRank?'—':r.next,mw*.83,y,15,undefined,0x6ae6ff,true);});
   const footer=mh-78,gap=12,bw2=(mw-48-gap)/2;
   c.addChild(this.f.frame('divider',mw-48,2)).position.set(24,footer-14);
   this.button(c,'back-to-tree','Back to Tree',24,footer,bw2,42,()=>this.close());

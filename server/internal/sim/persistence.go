@@ -14,6 +14,7 @@ type savedPlayer struct {
 	SlotCD        [MaxSkillSlots]float64
 	BurnSoils     []burnSoilZone
 	BurnSoilTicks int
+	FlameFans     []flameFanCast `json:",omitempty"`
 }
 type checkpoint struct {
 	Environment         environment.Map
@@ -30,7 +31,9 @@ type checkpoint struct {
 	RNG                 []byte
 }
 
-func savePlayer(p *Player) savedPlayer { return savedPlayer{p, p.slotCD, p.burnSoils, p.burnSoilTicks} }
+func savePlayer(p *Player) savedPlayer {
+	return savedPlayer{Player: p, SlotCD: p.slotCD, BurnSoils: p.burnSoils, BurnSoilTicks: p.burnSoilTicks, FlameFans: p.flameFans}
+}
 func (w *World) Checkpoint() ([]byte, error) {
 	rng, err := w.source.MarshalBinary()
 	if err != nil {
@@ -69,6 +72,7 @@ func RestoreCheckpoint(nav *Blocker, raw []byte) (*World, error) {
 		p.slotCD = a.SlotCD
 		p.burnSoils = a.BurnSoils
 		p.burnSoilTicks = a.BurnSoilTicks
+		p.flameFans = a.FlameFans
 		w.retired[p.ID] = p
 	}
 	return w, nil

@@ -698,7 +698,7 @@ export async function createEncounters(o:{
     lastNetDash=run.manualDashes??0;const from={u:run.dashFromU??h.x,v:run.dashFromV??h.y},du=run.dashU??1,dv=run.dashV??0;
     // Authoritative confirmation: FX starts from the recorded origin, before refreshing the local fighter position.
     const old={x:h.x,y:h.y};h.x=from.u;h.y=from.v;
-    vfx.castSkill('rift-dash',{targetU:from.u+du*6,targetV:from.v+dv*6,dashDistance:1.5});h.x=old.x;h.y=old.y;
+    vfx.castSkill('rift-dash',{targetU:from.u+du*6,targetV:from.v+dv*6,dashDistance:Math.hypot(toTile(me.x,me.y).u-from.u,toTile(me.x,me.y).v-from.v)});h.x=old.x;h.y=old.y;
     const to=toTile(me.x,me.y);lastDash={from,to,distance:Math.hypot(to.u-from.u,to.v-from.v)};trailUntil=performance.now()+1100;
    }
    if(!firstSnapshot&&run.level>prevLevel){levelUpPulseMs=1200;vfx.triggerLevelUp(run.level,h.x,h.y);}
@@ -708,7 +708,11 @@ export async function createEncounters(o:{
     const castIds=(run.lastCast?.length?run.lastCast:run.slots).filter((id):id is SkillId=>id!=='rift-dash'&&Boolean(SKILL_CATALOG[id as SkillId]));
     if(castIds.length){
      const aoeTarget=nearest(aoeCastRadius(run));
-     vfx.castSimultaneous(castIds,aoeTarget?{targetU:aoeTarget.x,targetV:aoeTarget.y}:undefined);
+     // Replay the authoritative origin/aim rather than retargeting after movement/latency.
+     const old={x:h.x,y:h.y};
+     if(run.castGeometry){h.x=run.castGeometry.fromU;h.y=run.castGeometry.fromV;}
+     vfx.castSimultaneous(castIds,run.castGeometry?{targetU:run.castGeometry.targetU,targetV:run.castGeometry.targetV}:aoeTarget?{targetU:aoeTarget.x,targetV:aoeTarget.y}:undefined);
+     h.x=old.x;h.y=old.y;
     }
    }else if(!firstSnapshot&&run.pending>0){
     autoCastInAoE(false);
@@ -929,7 +933,7 @@ export async function createEncounters(o:{
  let fpsAccumMs=0,fpsFrames=0,lastFps=60;
  const loop=(now:number)=>{
   dashTrail.clear();
-  if(lastDash&&now<trailUntil){const {from,to}=lastDash,a=tilePoint(from.u,from.v),b=tilePoint(to.u,to.v),alpha=(trailUntil-now)/1100;
+  if(!vfx.hasRiftDashArt()&&lastDash&&now<trailUntil){const {from,to}=lastDash,a=tilePoint(from.u,from.v),b=tilePoint(to.u,to.v),alpha=(trailUntil-now)/1100;
    const ax=origin.x+a.x*origin.scale,ay=origin.y+(a.y-liftAt(a.x,a.y))*origin.scale,bx=origin.x+b.x*origin.scale,by=origin.y+(b.y-liftAt(b.x,b.y))*origin.scale;
    const len=Math.hypot(bx-ax,by-ay)||1,nx=-(by-ay)/len,ny=(bx-ax)/len;
    for(let strand=0;strand<3;strand++){const pts:number[]=[];

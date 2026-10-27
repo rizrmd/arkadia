@@ -1,3 +1,5 @@
+import {RiftDashVfx} from '../fx/rift-dash-vfx';
+import {liftAtTile} from '../world/relief';
 import {measureRenderDetail} from '../app/render-diagnostics';
 import {createBurnSoilClock,BURN_SOIL} from '../fx/burn-soil';
 import {createGameplayFlameFan} from '../fx/flame-fan-gameplay';
@@ -40,7 +42,7 @@ export type AoEKind='rift-trap'|'ember-snare'|'shockwave'|'cleave-cone'|'flame-c
 export type AoETelegraph={
  id:number;kind:AoEKind;skill:SkillId;shape:'circle'|'cone';u:number;v:number;
  radius:number;angle:number;spread:number;age:number;duration:number;
- damageScale:number;forceCrit?:boolean;detonated:boolean;
+ damageScale:number;forceCrit?:boolean;detonated:boolean;rank?:number;
 };
 export type AoEImpact={
  id:number;kind:AoEKind;shape?:'circle'|'cone';u:number;v:number;radius:number;angle:number;spread?:number;
@@ -123,6 +125,8 @@ export function createCombatVfx(o:{
  const groundZonesLayer=new Container();
  groundZonesLayer.zIndex=21;
  const groundFx=new Container(),worldFx=new Container();
+ let dashArt:RiftDashVfx|undefined;
+ let dashAge=1100,dashPath:{from:{u:number;v:number};to:{u:number;v:number}}|undefined;
  const flameSheets=createGameplayFlameFan(groundFx,o.traceWallRay,o.occlusionAt,o.renderer);
  groundFx.zIndex=22;worldFx.zIndex=38;
  o.layer.addChild(groundZonesLayer,groundFx,worldFx);
@@ -130,7 +134,7 @@ export function createCombatVfx(o:{
  const zoneViews=new Map<number,ZoneView>(),zonePool:ZoneView[]=[],zoneBaseCache=new Map<string,HTMLCanvasElement>();
  const fx=createFxStage({
   renderer:o.renderer,
-  prepareExtra:()=>o.getHero().heroId==='ember-warden'?flameSheets.prepare():Promise.resolve(),
+  prepareExtra:async()=>{if(o.getHero().heroId==='ember-warden')await flameSheets.prepare();else{dashArt=await RiftDashVfx.load();dashArt.warmGpu(o.renderer);worldFx.addChild(dashArt.root);}},
   host:{ground:groundFx,world:worldFx},
   effectKeys:()=>cueKeys(o.getHero().heroId).flatMap(key=>resolveCue(o.getHero().heroId,key)?.cue.layers.map(l=>l.effect)??[]),
   depthLayers:{back:o.backLayer,front:o.frontLayer},
@@ -316,19 +320,20 @@ export function createCombatVfx(o:{
   const kind=opts.kind??(h.heroId==='ember-warden'?'ember-snare':'rift-trap');
   const shape=opts.shape??(kind==='cleave-cone'||kind==='flame-cone'?'cone':'circle');
   const offset=shape==='cone'?.35:.95;
-  const u=opts.u??(h.u+dir.u*offset),v=opts.v??(h.v+dir.v*offset);
-  if(clampTargetToWall(h.u,h.v,u,v).hit)totalWallHits++;
+  let u=opts.u??(h.u+dir.u*offset),v=opts.v??(h.v+dir.v*offset);
+  const target=clampTargetToWall(h.u,h.v,u,v);
+  if(target.hit){totalWallHits++;u=target.u;v=target.v;}
   totalAoEs++;
   const skill=opts.skill??AOE_SKILL[kind];
   const aoe:AoETelegraph={
    id:nextId++,kind,skill,shape,u,v,
    radius:opts.radius??1.45*reach(o.getRun()),
    angle,spread:opts.spread??(shape==='cone'?Math.PI*.62:Math.PI*2),
-   age:0,duration:opts.duration??680,
+   age:0,duration:opts.duration??680,rank:Math.max(1,skillRank(o.getRun(),skill)),
    damageScale:opts.damageScale??1.15,forceCrit:opts.forceCrit,detonated:false
   };
   aoes.push(aoe);
-  cue(`${skill}.telegraph`,{u,v,yaw:yawOf(dir.u,dir.v),radius:aoe.radius});
+  if(skill!=='rift-dash'||!dashArt)cue(`${skill}.telegraph`,{u,v,yaw:yawOf(dir.u,dir.v),radius:aoe.radius});
   return aoe;
  }
 
@@ -338,7 +343,7 @@ export function createCombatVfx(o:{
   impacts.push({id:nextId++,kind:a.kind,shape:a.shape,u:a.u,v:a.v,radius:a.radius,angle:a.angle,spread:a.spread,age:0,duration:640});
   const d=tileVec(Math.cos(a.angle),Math.sin(a.angle));
   if(a.skill==='flame-fan'){
-   const rank=Math.max(1,skillRank(o.getRun(),'flame-fan'));
+   const rank=a.rank??Math.max(1,skillRank(o.getRun(),'flame-fan'));
    flameSheets.spawn(a.u,a.v,yawOf(d.u,d.v),a.radius,rank,-fxDtMs/1000+Math.max(0,a.age-a.duration)/1000);
    if(rank>=3){const clock=createBurnSoilClock(rank,(_at,damage)=>{
     totalBurnSoilTicks++;
@@ -350,7 +355,7 @@ export function createCombatVfx(o:{
     }
    });clock.advance(Math.max(0,a.age-a.duration));burnSoils.push({area:{...a},clock});}
   }
-  else cue(`${a.skill}.detonate`,{u:a.u,v:a.v,yaw:yawOf(d.u,d.v),radius:a.radius});
+  else if(a.skill!=='rift-dash'||!dashArt)cue(`${a.skill}.detonate`,{u:a.u,v:a.v,yaw:yawOf(d.u,d.v),radius:a.radius});
   const sparkKind:SparkKind=a.kind==='ember-snare'||a.kind==='flame-cone'||(a.kind==='cleave-cone'&&o.getHero().heroId==='ember-warden')?'fire':a.kind==='shockwave'?'seismic':'arcane';
   for(const f of o.getFoes()){
    if(!f.alive)continue;
@@ -396,7 +401,7 @@ export function createCombatVfx(o:{
   lastSkill=id;
   cooldowns[id]=skillCooldownMs(run,id);
   const dir=tileVec(Math.cos(angle),Math.sin(angle));
-  if(!opts.skipCastCue)cue(`${id}.cast`,{u:h.u,v:h.v,yaw:yawOf(dir.u,dir.v),target:targetU!==undefined&&targetV!==undefined?{u:targetU,v:targetV}:undefined,follow:heroAt,radius:1.55*reach(run)*areaMult});
+  if(!opts.skipCastCue&&(id!=='rift-dash'||!dashArt))cue(`${id}.cast`,{u:h.u,v:h.v,yaw:yawOf(dir.u,dir.v),target:targetU!==undefined&&targetV!==undefined?{u:targetU,v:targetV}:undefined,follow:heroAt,radius:1.55*reach(run)*areaMult});
 
   switch(id){
    case 'rift-bolt':{
@@ -427,11 +432,16 @@ export function createCombatVfx(o:{
     const kind=id;
     const ghostCount=Math.min(5,3+(rank-1));
     const dashDistance=id==='rift-dash'?(opts.dashDistance??1.5):1.5;
-    for(let i=0;i<ghostCount;i++){
+    if(id!=='rift-dash'||!dashArt)for(let i=0;i<ghostCount;i++){
      ghosts.push({id:nextId++,kind,u:h.u+dir.u*(i*(id==='rift-dash'?dashDistance/ghostCount:.3)),v:h.v+dir.v*(i*(id==='rift-dash'?dashDistance/ghostCount:.3)),angle,age:-i*40,duration:480});
     }
-    if(id==='rift-dash')addSpark('arcane',h.u+dir.u*.6,h.v+dir.v*.6,angle,36);
-    spawnSlash(h.u+dir.u*.5,h.v+dir.v*.5,angle,!!opts.forceCrit,true);
+    if(id==='rift-dash'&&dashArt){
+     dashPath={from:{u:h.u,v:h.v},to:{u:h.u+dir.u*dashDistance,v:h.v+dir.v*dashDistance}};dashAge=0;
+     dashArt.cast(toScreen(h.u,h.v),toScreen(dashPath.to.u,dashPath.to.v),origin.scale,o.heroCanvas);
+    }else{
+     if(id==='rift-dash')addSpark('arcane',h.u+dir.u*.6,h.v+dir.v*.6,angle,36);
+     spawnSlash(h.u+dir.u*.5,h.v+dir.v*.5,angle,!!opts.forceCrit,true);
+    }
     spawnAoE({
      kind:id==='cinder-step'?'flame-cone':'cleave-cone',skill:id,
      shape:'cone',
@@ -539,7 +549,7 @@ export function createCombatVfx(o:{
  }
 
  function step(dt:number){
-  fxDtMs+=dt;
+  fxDtMs+=dt;dashAge+=dt;
   lastComboBannerMs=Math.max(0,lastComboBannerMs-dt);
   for(const k of Object.keys(cooldowns) as SkillId[]){
    cooldowns[k]=Math.max(0,(cooldowns[k]??0)-dt);
@@ -631,6 +641,7 @@ export function createCombatVfx(o:{
  }
 
  function render(){
+  if(dashArt&&dashPath){const point=(p:{u:number;v:number})=>{const s=toScreen(p.u,p.v);s.y-=liftAtTile(p.u,p.v)*origin.scale;return s;};dashArt.render(dashAge,point(dashPath.from),point(dashPath.to),origin.scale);}
   measureRenderDetail('flameFanFrame',()=>flameSheets.frame(fxDtMs/1000,origin));
   measureRenderDetail('fxUpdate',()=>fx.frame(fxDtMs/1000));fxDtMs=0;
   const k=origin.scale,dpr=Math.min(devicePixelRatio||1,2);
@@ -639,6 +650,7 @@ export function createCombatVfx(o:{
   const activeZoneIds=new Set<number>();
   const zonePalette=(kind:AoEKind)=>{
    if(kind==='ember-snare'||kind==='flame-cone')return {major:'rgba(255,112,24,0.96)',minor:'rgba(208,36,8,0.92)',grid:'rgba(68,14,4,0.90)',core:'rgba(255,216,84,0.98)'};
+   if(kind==='shockwave'&&o.getHero().heroId==='rift-runner')return {major:'rgba(108,84,255,0.96)',minor:'rgba(56,28,168,0.94)',grid:'rgba(28,8,88,0.90)',core:'rgba(136,236,255,0.98)'};
    if(kind==='shockwave')return {major:'rgba(255,124,28,0.96)',minor:'rgba(196,40,10,0.92)',grid:'rgba(58,12,4,0.90)',core:'rgba(255,224,104,0.98)'};
    if(kind==='cleave-cone')return {major:'rgba(84,118,255,0.96)',minor:'rgba(56,28,168,0.94)',grid:'rgba(28,8,88,0.90)',core:'rgba(136,236,255,0.98)'};
    return {major:'rgba(108,52,235,0.96)',minor:'rgba(68,22,180,0.94)',grid:'rgba(34,8,100,0.90)',core:'rgba(164,114,255,0.98)'};
@@ -650,7 +662,7 @@ export function createCombatVfx(o:{
    const rx=Math.max(24,Math.round(radius*64*Math.SQRT2/2)*2),ry=Math.max(12,Math.round(rx*.52));
    const padX=rx+8,padY=ry+8,wpx=padX*2,hpx=padY*2;
    const qAngle=shape==='circle'?0:Math.round(angle/(Math.PI/8))*(Math.PI/8);
-   const baseKey=`${kind}:${shape}:${rx}:${qAngle.toFixed(2)}:${spread.toFixed(2)}:${zDpr}`;
+   const baseKey=`${o.getHero().heroId}:${kind}:${shape}:${rx}:${qAngle.toFixed(2)}:${spread.toFixed(2)}:${zDpr}`;
    const zKey=baseKey;
    let zv=zoneViews.get(id);
    if(!zv){
@@ -869,12 +881,13 @@ export function createCombatVfx(o:{
  // references are rebuilt; projectile hit membership uses the saved foe order.
  function saveState(){const foes=o.getFoes();return structuredClone({nextId,cooldowns,
   projectiles:projectiles.map(({fx,hitIds,...p})=>({...p,hitIds:[...hitIds].map(f=>foes.indexOf(f as Fighter)).filter(i=>i>=0)})),
+  flameBursts:flameSheets.snapshot().map(({u,v,yaw,radius,rank,age})=>({u,v,yaw,radius,rank,age:Math.max(0,age)})),
   aoes,burnSoils:burnSoils.map(b=>({area:b.area,elapsed:b.clock.elapsedMs,emitted:b.clock.emitted})),
   totalBurnSoilTicks,totalCrits,totalNormals,totalProjectiles,totalAoEs,totalLevelUps,totalWallHits,totalAutoCasts,totalSimultaneousCasts,totalTrinityCasts,lastSkill,lastSimultaneousSkills});}
  function restoreState(s:ReturnType<typeof saveState>){
   const generation=++restoreGeneration;restoredZones.clear();
   for(const p of projectiles)for(const h of p.fx)h.release();
-  projectiles.length=0;aoes.length=0;burnSoils.length=0;
+  projectiles.length=0;aoes.length=0;burnSoils.length=0;flameSheets.clear();
   for(const k of Object.keys(cooldowns))delete cooldowns[k as SkillId];
   Object.assign(cooldowns,s.cooldowns);nextId=s.nextId;
   for(const p of s.projectiles)projectiles.push({...p,hitIds:new Set(p.hitIds.map(i=>o.getFoes()[i]).filter(Boolean)),fx:[]});
@@ -891,7 +904,8 @@ export function createCombatVfx(o:{
     p.fx=cue(`${p.skill}.bolt`,{u:p.u-p.vx/len*p.traveled,v:p.v-p.vy/len*p.traveled,yaw:yawOf(p.vx,p.vy)});
     for(const handle of p.fx)handle.setLocal(p.traveled);
    }
-   for(const b of burnSoils){const a=b.area,d=tileVec(Math.cos(a.angle),Math.sin(a.angle));flameSheets.spawn(a.u,a.v,yawOf(d.u,d.v),a.radius,Math.max(3,skillRank(o.getRun(),'flame-fan')),b.clock.elapsedMs/1000);}
+   if(s.flameBursts){for(const b of s.flameBursts)flameSheets.spawn(b.u,b.v,b.yaw,b.radius,b.rank,b.age);}
+   else for(const b of burnSoils){const a=b.area,d=tileVec(Math.cos(a.angle),Math.sin(a.angle));flameSheets.spawn(a.u,a.v,yawOf(d.u,d.v),a.radius,a.rank??Math.max(3,skillRank(o.getRun(),'flame-fan')),b.clock.elapsedMs/1000);}
   }).catch(console.error);
   totalBurnSoilTicks=s.totalBurnSoilTicks;totalCrits=s.totalCrits;totalNormals=s.totalNormals;totalProjectiles=s.totalProjectiles;totalAoEs=s.totalAoEs;totalLevelUps=s.totalLevelUps;totalWallHits=s.totalWallHits;totalAutoCasts=s.totalAutoCasts;totalSimultaneousCasts=s.totalSimultaneousCasts;totalTrinityCasts=s.totalTrinityCasts;lastSkill=s.lastSkill;lastSimultaneousSkills=[...s.lastSimultaneousSkills];
  }
@@ -903,6 +917,7 @@ export function createCombatVfx(o:{
   place(x:number,y:number,scale:number){origin={x,y,scale};fx.place(x,y,scale);},
   setFloatsVisible(visible:boolean){floatsLayer.visible=visible;},
   fx,
+  hasRiftDashArt:()=>!!dashArt,
   spawnSlash,
   applyHitToFoe,
   recordCoopEnemyDamage,
@@ -919,10 +934,11 @@ export function createCombatVfx(o:{
   cooldown:(id:SkillId)=>Math.max(0,cooldowns[id]??0),
   snapshot:()=>({
    flameSheets:flameSheets.snapshot(),
+   riftDashArt:dashArt?{...dashArt.snapshot(),age:dashAge,path:dashPath}:null,
    activeFloats:floats.map(f=>{const fv=floatViews.get(f.id);const hasBubbleOrFrame=Boolean(fv&&fv.root.children.some(c=>!(c instanceof MsdfText)));return {kind:f.kind,text:f.text,subtext:f.subtext,u:+f.u.toFixed(2),v:+f.v.toFixed(2),scale:+f.scale.toFixed(2),frameless:!hasBubbleOrFrame};}),
    activeProjectiles:projectiles.map(p=>({id:p.id,kind:p.kind,u:+p.u.toFixed(2),v:+p.v.toFixed(2),vx:+p.vx.toFixed(2),vy:+p.vy.toFixed(2),traveled:+p.traveled.toFixed(2)})),
    burnSoil:{damagePerTick:BURN_SOIL.damagePerTick,balancePending:true,totalTicks:totalBurnSoilTicks,zones:burnSoils.map(b=>({elapsedMs:b.clock.elapsedMs,ticks:b.clock.emitted,u:b.area.u,v:b.area.v}))},
-   activeAoEs:aoes.map(a=>({id:a.id,kind:a.kind,shape:a.shape,u:+a.u.toFixed(2),v:+a.v.toFixed(2),radius:+a.radius.toFixed(2),progress:+(a.age/a.duration).toFixed(2)})),
+   activeAoEs:aoes.map(a=>({id:a.id,kind:a.kind,skill:a.skill,shape:a.shape,u:+a.u.toFixed(2),v:+a.v.toFixed(2),radius:+a.radius.toFixed(2),progress:+(a.age/a.duration).toFixed(2)})),
    activeImpacts:impacts.map(i=>({id:i.id,kind:i.kind,u:+i.u.toFixed(2),v:+i.v.toFixed(2),radius:+i.radius.toFixed(2)})),
    activeLevelUps:levelUps.map(l=>({level:l.level,u:+l.u.toFixed(2),v:+l.v.toFixed(2),progress:+(l.age/l.duration).toFixed(2)})),
    activeCombos:combos.map(c=>({id:c.id,count:c.count,skills:c.skills,progress:+(c.age/c.duration).toFixed(2)})),

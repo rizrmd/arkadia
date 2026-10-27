@@ -32,6 +32,7 @@ func TestBurnSoilLevelGateAndPendingBalance(t *testing.T) {
 		e.F.HP = 100
 		w.Enemies = []*Enemy{e}
 		w.autoCastInAoE(p)
+		w.stepFlameFans(p, 420)
 		hp := e.F.HP
 		if hp >= 100 {
 			t.Fatal("initial hit missing")
