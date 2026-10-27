@@ -819,7 +819,7 @@ export async function createEncounters(o:{
    hud.layout(sw,sh);
    layoutBlessingModal();
   }
-  minimap.updateMap(o.hero.position(),sw,sh,hud.getTopRightTelemetry().screenBounds.bottom+(gathering?96:0),(document.querySelector<HTMLCanvasElement>('#world-canvas')?.dataset.buildings??'expedition,gate').split(',') as import('./economy').Building[]);
+  minimap.updateMap(o.hero.position(),sw,sh,hud.getTopRightTelemetry().screenBounds.bottom,(document.querySelector<HTMLCanvasElement>('#world-canvas')?.dataset.buildings??'expedition,gate').split(',') as import('./economy').Building[]);
   drawProgress();
   syncSkillBar();
   const dpr=Math.min(devicePixelRatio||1,2),hp=o.hero.position(),k=origin.scale,at=(x:number,y:number)=>({x:origin.x+x*k,y:origin.y+y*k});

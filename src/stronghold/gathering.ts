@@ -65,12 +65,12 @@ export async function createGathering(o:Options){
   o.changed();
  }
  function updateUi(){
-  const counts=JSON.stringify([resources.wood,resources.food,active,error]);if(counts!==lastUi){lastUi=counts;wood.text=resources.wood.toLocaleString('en-US')+' Wood';food.text=resources.food.toLocaleString('en-US')+' Food';}
+  const counts=JSON.stringify([resources.wood,resources.food,active,error]);if(counts!==lastUi){lastUi=counts;const format=(n:number)=>n<10000?n.toLocaleString('en-US'):new Intl.NumberFormat('en-US',{notation:'compact',maximumFractionDigits:1}).format(n);wood.text=format(resources.wood)+' Wood';food.text=format(resources.food)+' Food';}
   const hasAxe=axeOwned;
   tool.text=hasAxe?'Axe • automatic chopping within 5 ft':'Axe required to chop trees';
   status.text=error?'Save failed. Reload after freeing storage.':active?`Chopping • ${(chopMs/1000).toFixed(1)} / ${TREE_RULES[trees.find(t=>t.id===active)!.kind].ms/1000}s`:'';
   progress.clear();if(active){const rule=TREE_RULES[trees.find(t=>t.id===active)!.kind];progress.roundRect(0,0,252,4,2).fill(0x3b3e39).roundRect(0,0,252*Math.min(1,chopMs/rule.ms),4,2).fill(0xd8bd7d);}
-  hud.position.set(Math.max(8,innerWidth-264),o.hudBottom()+8);hud.scale.set(Math.min(1,(innerWidth-16)/252));
+  hud.position.set(8,o.hudBottom()+8);hud.scale.set(Math.min(1,(innerWidth-16)/252,innerWidth<500?(innerWidth-132)/252:1));
  }
  function target(reachTiles:number){const p=heroTile();return specs.map(s=>({...s,a:state.animals[s.id]})).filter(s=>s.a?.status==='alive'&&distance(p,s.a)<=reachTiles*METERS_PER_TILE&&!cliffTile(p.u,p.v,s.a.u,s.a.v)).sort((a,b)=>distance(p,a.a)-distance(p,b.a))[0]??null;}
  function impact(reachTiles:number){const t=target(reachTiles);if(t&&commit(()=>hunt(state,t.id,t.species)))return true;return false;}
