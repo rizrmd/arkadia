@@ -1,3 +1,4 @@
+import {ownGameplay} from './gameplay-save';
 import {createInventory} from './inventory';
 import {createSettings} from './settings';
 import {requestGameFrame as requestAnimationFrame} from '../app/frame-scheduler';
@@ -17,6 +18,7 @@ import {showFrameCapHint} from './frame-cap';
 import {showMovementHint} from './movement-hint';
 
 export async function mount(app:HTMLElement,progress:Progress){
+ if(!new URLSearchParams(location.search).has('coop'))await ownGameplay();
  const rt=await ensurePixiRuntime(app);
  // The HTML loading cover hides this scene. Reserve the GPU for explicit
  // preparation passes instead of rendering the full world behind the cover.
@@ -51,7 +53,7 @@ export async function mount(app:HTMLElement,progress:Progress){
  // Co-op sends the world's walk input once it exists: keys and the stick, or a route from the full map.
  let walk=controls.direction;
  const net=coop?createNet({direction:()=>walk(),maxHp,hero:()=>hero}):undefined;
- const lobby=net?createLobby(rt.uiStage,rt.frames,net):null,invited=lobby?.start()??'';
+ const lobby=net?createLobby(rt.uiStage,rt.frames,net):null;
  // The first visit chooses a hero once, before gameplay: the world loads behind the screen with the hero and the
  // revenants held until the pick (hero-picker.ts).
  let heroPrepared=Promise.resolve();
@@ -104,7 +106,7 @@ export async function mount(app:HTMLElement,progress:Progress){
  });
  // Saving the welcome-home state waits for a Web Lock, which the browser grants only between the first frames' long
  // paint and upload tasks; the screen does not need it, so it lands in the background.
- void transact(()=>{}).then(render,console.error);
+ if(!worldView.encounters.persistence().blocked)void transact(()=>{}).then(render,console.error);
 
  await new Promise<void>(done=>{const check=()=>canvas.dataset.ready==='true'?done():requestAnimationFrame(check);check();});
  showFrameCapHint(rt.uiStage,rt.frames);
@@ -127,6 +129,9 @@ export async function mount(app:HTMLElement,progress:Progress){
  rt.app.start();
  loaded();
  void picker.picked.then(()=>{
+  // Connect only when loading and hero preparation are complete: an empty
+  // authoritative room must not run while its returning player is behind loading.
+  const invited=lobby?.start()??'';
   if(invited)lobby!.prompt(invited);
   else showMovementHint(rt.uiStage,rt.frames,hero);
  });

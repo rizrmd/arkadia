@@ -1233,6 +1233,8 @@ export class Hud extends Container {
   bar.setHealth(this.state.gateHp ?? 100, this.state.gateHpMax ?? 100);
  }
 
+ getGateHp(){return {hp:this.state.gateHp??100,max:this.state.gateHpMax??100};}
+
  setGateHp(gateHp: number, gateHpMax = 100) {
   this.state.gateHp = gateHp;
   this.state.gateHpMax = gateHpMax;

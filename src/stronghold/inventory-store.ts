@@ -1,3 +1,4 @@
+import {prepareInventoryGameplay,withEconomyLock} from './gameplay-save';
 import {KEY,load} from './economy';
 import {transact} from './store';
 import {readInventory,changeItems,type ItemId} from './items';
@@ -17,12 +18,12 @@ export async function useItem(id:ItemId,effect:()=>ItemEffect):Promise<void>{
  if(using)throw Error('An item is already being used.');
  if(!navigator.locks)throw Error('This browser needs Web Locks to use items safely.');
  using=true;
- try{await navigator.locks.request(KEY,()=>{
+ try{await withEconomyLock(()=>{
   const s=load(localStorage.getItem(KEY));s.inventory=readInventory(s.inventory);
   changeItems(s.inventory,id,-1);
   // Effects are synchronous and recheck gameplay conditions while holding the save lock.
   // A rejected teleport throws before committing. Undo restores gameplay if saving fails.
   const applied=effect();
-  try{s.revision++;localStorage.setItem(KEY,JSON.stringify(s));}catch(error){applied.undo();throw error;}
+  try{const acknowledge=prepareInventoryGameplay(s);s.revision++;localStorage.setItem(KEY,JSON.stringify(s));acknowledge();}catch(error){applied.undo();throw error;}
  });}finally{using=false;}
 }

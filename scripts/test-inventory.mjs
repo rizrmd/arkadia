@@ -1,6 +1,6 @@
 import ts from 'typescript';import fs from 'node:fs/promises';import assert from 'node:assert/strict';
 // Compile actual modules with an in-memory data URL dependency map.
-const urls={};for(const name of ['items','economy','store','inventory-store']){
+const urls={};for(const name of ['items','economy','progression','gameplay-save','store','inventory-store']){
  let source=await fs.readFile(`src/stronghold/${name}.ts`,'utf8');
  source=ts.transpileModule(source,{compilerOptions:{module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ES2022}}).outputText;
  source=source.replace(/from ['"]\.\/([^'"]+)['"]/g,(_,dep)=>`from '${urls[dep]}'`);

@@ -1,0 +1,6 @@
+import fs from 'node:fs/promises';import assert from 'node:assert/strict';import {createHash} from 'node:crypto';import {execFileSync} from 'node:child_process';
+const base='https://ark-whachat.fural.space',r=await fetch(base+'/settings-pixi/release.json',{cache:'no-store'});assert.equal(r.status,200);const manifest=await r.json();
+execFileSync('git',['merge-base','--is-ancestor',manifest.commit,'HEAD']);
+const files=[];for(const [path,expected] of Object.entries(manifest.files)){const response=await fetch(base+path);assert.equal(response.status,200,path);const actual=createHash('sha256').update(Buffer.from(await response.arrayBuffer())).digest('hex');assert.equal(actual,expected,path);files.push(path);}
+assert.equal((await fetch(base+'/healthz')).status,200);const html=await (await fetch(base+'/')).text();const entry=html.match(/src="(\/assets\/index-[^\"]+\.js)"/)?.[1]??html.match(/src="(\/assets\/main-[^\"]+\.js)"/)?.[1];assert(entry&&manifest.files[entry],'Entry is from the Settings release');
+await fs.writeFile('docs/settings-pixi/release-verification.json',JSON.stringify({base,manifest,files,entry,passed:true,at:new Date().toISOString()},null,2));console.log('PASS public release manifest, entry and',files.length,'asset hashes');

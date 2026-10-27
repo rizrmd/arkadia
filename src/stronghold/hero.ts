@@ -9,7 +9,7 @@ import type {Walk} from './controls';
 import {createCanvasSprite,loadImage} from '../app/loader';
 import {walkStep,fullSpeed} from './net/movement';
 import {STRONGHOLD} from './prefabs/stronghold';
-import {liftAt,reliefHides,type ReliefFeature} from '../world/relief';
+import {recoverReliefPosition,liftAt,reliefHides,type ReliefFeature} from '../world/relief';
 import {characters,atlasUrl,DEFAULT_HERO,HEROES,isHero,type HeroId} from './heroes';
 import {measureTracelogPhase} from './tracelog';
 import {is3dHeroEnabled,get3dHeroRenderer,HERO_3D_HEADROOM} from './hero-3d';
@@ -543,7 +543,7 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
   setScene,
   blocked,occluders,occlusionAt,traceWallRay,sun:o.sun,
   place(ox:number,oy:number,scale:number){origin={x:ox,y:oy,scale};if(!drawn||quantizeRes(scale)!==k)render();place();},
-  start(){if(blocked(x,y)&&!blocked(SPAWN.x,SPAWN.y)){x=SPAWN.x;y=SPAWN.y;}requestAnimationFrame(loop);},
+  start(){if(blocked(x,y)){const recovered=recoverReliefPosition(x,y,blocked);if(recovered){x=recovered.x;y=recovered.y;}else if(!blocked(SPAWN.x,SPAWN.y)){x=SPAWN.x;y=SPAWN.y;}}requestAnimationFrame(loop);},
   // The point the camera follows (the hero's feet, raised onto terrain).
   anchor:()=>({x,y:y-liftAt(x,y)}),
   position:()=>({x,y}),
