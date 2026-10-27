@@ -116,3 +116,48 @@ func TestNaturalHillDenseClientParity(t *testing.T) {
 		t.Fatalf("Go/client height parity differs: %s != %s", got, golden.SHA256)
 	}
 }
+
+// Dense client collision parity covers both mirrored hills and their concave contours.
+func TestHillFootContourClientParity(t *testing.T) {
+	b, err := os.ReadFile("../../../docs/cliff-boundary/client-parity.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var cases [][]json.RawMessage
+	if err = json.Unmarshal(b, &cases); err != nil {
+		t.Fatal(err)
+	}
+	for _, c := range cases {
+		var u, v float64
+		var want bool
+		json.Unmarshal(c[0], &u)
+		json.Unmarshal(c[1], &v)
+		json.Unmarshal(c[2], &want)
+		if got := reliefBlockedTile(Vec{u, v}); got != want {
+			t.Fatalf("contour parity at %v,%v: server %v client %v", u, v, got, want)
+		}
+	}
+}
+
+func TestHillEdgesCornersAndSweep(t *testing.T) {
+	w := newTestWorld(t)
+	for _, from := range []Vec{{25.5, 7.2}, {5.5, 25}, {25.5, 11.5}, {9.5, 25}} {
+		if reliefBlockedTile(from) {
+			t.Fatalf("intended trail blocked: %v", from)
+		}
+		for d := 0; d < 16; d++ {
+			angle := float64(d) * math.Pi / 8
+			p := TilePoint(from.X, from.Y)
+			for step := 0; step < 160; step++ {
+				p.X, p.Y, _ = WalkStep(w.nav, p.X, p.Y, Vec{math.Cos(angle), math.Sin(angle)}, 50, false)
+				if reliefBlockedTile(ToTile(p.X, p.Y)) {
+					t.Fatalf("feet left surface from %v direction %d", from, d)
+				}
+			}
+		}
+	}
+	// Endpoints on snow on either side cannot tunnel through the raised hill at a large dt.
+	if !cliffTile(Vec{22, 7.2}, Vec{30, 7.2}) {
+		t.Fatal("long diagonal/teleport-like step tunneled through ridge")
+	}
+}
