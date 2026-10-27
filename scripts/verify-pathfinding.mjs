@@ -1,5 +1,8 @@
 import assert from 'node:assert/strict';
 import {createServer} from 'vite';
+// Terrain re-exports the browser parallax scheduler; only its visibility listener
+// is initialized here. No rendering or animation frames run in this unit harness.
+globalThis.document={hidden:false,addEventListener(){}};
 const vite=await createServer({server:{middlewareMode:true,hmr:false},appType:'custom',logLevel:'error',optimizeDeps:{noDiscovery:true,include:[]}});
 try{
  const {detourDirection,navClear}=await vite.ssrLoadModule('/src/stronghold/detour.ts');
