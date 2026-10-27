@@ -1,0 +1,51 @@
+{
+  "base": "http://127.0.0.1:5293",
+  "views": [
+    {
+      "name": "landscape",
+      "pass": true,
+      "inspection": {
+        "selected": "rift-dash",
+        "details": false,
+        "data": {
+          "rank": 1,
+          "description": "Manually dash toward your aim to evade enemies. Terrain can shorten the dash.",
+          "rows": [
+            {
+              "label": "Cooldown",
+              "current": "1.4 s",
+              "next": "1.29 s"
+            },
+            {
+              "label": "Max distance",
+              "current": "1.5 tiles",
+              "next": "1.5 tiles"
+            }
+          ],
+          "maxRank": false
+        },
+        "controls": {
+          "skill-details": {
+            "x": 501,
+            "y": 317,
+            "width": 190,
+            "height": 42
+          },
+          "skill-equip": {
+            "x": 701,
+            "y": 317,
+            "width": 190,
+            "height": 42
+          }
+        }
+      },
+      "panel": {
+        "x": 9,
+        "y": 9,
+        "width": 826,
+        "height": 372
+      }
+    }
+  ],
+  "errors": []
+}
