@@ -338,6 +338,7 @@ export function createLobby(uiStage:Container,frames:FrameSet,net:Net){
   isOpen:()=>panel.visible,
   start(){
    const code=normalizeCode(new URLSearchParams(location.search).get('room')),name=store.get(localStorage,NAME_KEY);
+   if(net.resume(code||undefined))return '';
    if(code&&!(name&&store.get(sessionStorage,ROOM_KEY)===code))return code;
    void join(code,name||guestName());return '';
   },

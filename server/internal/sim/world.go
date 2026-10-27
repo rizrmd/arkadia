@@ -70,18 +70,19 @@ type Input struct {
 
 // Player is a connected hero.
 type Player struct {
-	ID     string
-	Name   string
-	Hero   string // which hero the player picked (room.CleanHero); only clients draw it
-	Slot   int
-	X, Y   float64 // world px of the foot
-	F      Fighter
-	MaxHP  float64
-	Run    Progression
-	Kills  int
-	Moving bool
-	Ack    uint32 // last input sequence applied
-	Owed   int    // steps guessed ahead of inputs that are late; they are walked again when those inputs arrive
+	ResumeToken string // secret bearer credential, never included in render snapshots
+	ID          string
+	Name        string
+	Hero        string // which hero the player picked (room.CleanHero); only clients draw it
+	Slot        int
+	X, Y        float64 // world px of the foot
+	F           Fighter
+	MaxHP       float64
+	Run         Progression
+	Kills       int
+	Moving      bool
+	Ack         uint32 // last input sequence applied
+	Owed        int    // steps guessed ahead of inputs that are late; they are walked again when those inputs arrive
 	// BaseX, BaseY: where the last applied input left the hero, under the Owed guessed steps (only while Owed > 0).
 	BaseX, BaseY float64
 
@@ -266,12 +267,6 @@ func (w *World) RemovePlayer(id string) {
 			w.Players = append(w.Players[:i], w.Players[i+1:]...)
 			if w.retired == nil {
 				w.retired = map[string]*Player{}
-			}
-			if len(w.retired) >= 16 {
-				for k := range w.retired {
-					delete(w.retired, k)
-					break
-				}
 			}
 			w.retired[p.ID] = p
 			for _, e := range w.Enemies {

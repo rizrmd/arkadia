@@ -69,3 +69,21 @@ func RestoreCheckpoint(nav *Blocker, raw []byte) (*World, error) {
 	}
 	return w, nil
 }
+
+// ResumeID authenticates a private bearer token; visible player IDs are not credentials.
+func (w *World) ResumeID(token string) string {
+	if token == "" {
+		return ""
+	}
+	for _, p := range w.Players {
+		if p.ResumeToken == token {
+			return p.ID
+		}
+	}
+	for _, p := range w.retired {
+		if p.ResumeToken == token {
+			return p.ID
+		}
+	}
+	return ""
+}

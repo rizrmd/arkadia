@@ -1,4 +1,3 @@
-import {DAY_MS} from './daylight';
 import {GateHealthBar} from './gate-health-bar';
 import {loadJsonAsset} from '../app/json-asset';
 import {BRAZIER_PHYSICAL_SOURCE,withBrazierShadowMaterial} from './brazier-shadow-material';
@@ -14,7 +13,7 @@ import {environmentSprites,COURT,tilePoint,LEGACY_LAYOUT} from './terrain';
 import {slots,calibration,WORLD} from './scene';
 import {buildings,isBuilt,heroBonus,START_BUILT,type Building,type State} from './economy';
 import {createLighting} from './lighting';
-import {sunAt} from './daylight';
+import {sunAt,DAY_MS} from './daylight';
 import {createHero,prewarmOcclusionAlpha} from './hero';
 import {createEncounters} from './encounters';
 import {setGateOpen,gateTowerFront} from './navigation';
@@ -422,7 +421,7 @@ export async function createWorldView(
  // Gameplay (the hero and the revenants) starts once `hold` resolves: after the loading screen, and on a first visit
  // after Choose Your Hero. Until then the camera already frames the hero.
  const loadGateAfterDone=()=>{const s=document.querySelector<HTMLElement>('#loading-screen');if(s&&s.dataset.state!=='done'){setTimeout(loadGateAfterDone,120);return;}ensureGateSheet();};
- parallax.start();void hold.then(()=>{hero.start();encounters.start();setTimeout(loadGateAfterDone,120);});
+ parallax.start();void hold.then(()=>{doors.start();hero.start();encounters.start();setTimeout(loadGateAfterDone,120);});
  (window as any).__WORLD_MAP__={map:worldMap,walker,open:(v=true)=>worldMap.open(v),walkTo:(x:number,y:number)=>walker!.goTo(x,y),route:()=>walker!.route(),snapshot:()=>worldMap.snapshot(),screenOf:(x:number,y:number)=>worldMap.screenOf({x,y})};
  return {
   prepareGpu:()=>createGpuPreparation(rt.app.renderer).prepare(worldStage,useDepthShadows?['shadow-actors']:[]),

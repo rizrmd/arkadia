@@ -218,6 +218,7 @@ func (r *Room) SetHero(c *Client, hero string) {
 
 // Welcome is the first message after a successful hello.
 type Welcome struct {
+	Resume string    `json:"resume"`
 	T      string    `json:"t"`
 	V      int       `json:"v"`
 	Room   string    `json:"room"`
@@ -251,6 +252,8 @@ func (r *Room) run() {
 	var due time.Time // when the next tick is owed
 	sweep := time.NewTicker(time.Minute)
 	defer sweep.Stop()
+	retry := time.NewTicker(time.Second)
+	defer retry.Stop()
 	start := func() {
 		if ticker == nil {
 			ticker = time.NewTicker(time.Duration(sim.TickMS) * time.Millisecond)
@@ -269,17 +272,22 @@ func (r *Room) run() {
 		select {
 		case j := <-r.join:
 			var p *sim.Player
+			resumeID := r.world.ResumeID(j.you)
+			if j.you != "" && resumeID == "" {
+				j.reply <- ErrBadHello
+				continue
+			}
 			if j.you != "" {
 				for old := range r.clients {
-					if old.player != nil && old.player.ID == j.you {
+					if old.player != nil && old.player.ID == resumeID {
 						delete(r.clients, old)
 						close(old.Send)
-						p = r.world.ResumePlayer(j.you, j.name, j.maxHP)
+						p = r.world.ResumePlayer(resumeID, j.name, j.maxHP)
 						break
 					}
 				}
 				if p == nil && len(r.clients) < sim.MaxPlayers {
-					p = r.world.ResumePlayer(j.you, j.name, j.maxHP)
+					p = r.world.ResumePlayer(resumeID, j.name, j.maxHP)
 				}
 			}
 			if p == nil {
@@ -298,6 +306,13 @@ func (r *Room) run() {
 					j.reply <- ErrRoomFull
 					continue
 				}
+				secret := make([]byte, 24)
+				if _, err := rand.Read(secret); err != nil {
+					r.world.RemovePlayer(p.ID)
+					j.reply <- ErrServerFull
+					continue
+				}
+				p.ResumeToken = hex.EncodeToString(secret)
 			}
 			p.SetHero(j.hero)
 			j.client.player = p
@@ -307,10 +322,12 @@ func (r *Room) run() {
 				log.Printf("room checkpoint: %v", err)
 				delete(r.clients, j.client)
 				r.world.RemovePlayer(p.ID)
+				r.players.Store(int32(len(r.clients)))
+				checkpointPending = true
 				j.reply <- ErrServerFull
 				continue
 			}
-			msg, _ := json.Marshal(Welcome{T: "welcome", V: Version, Room: r.Code, You: p.ID, Rate: int(1000 / sim.TickMS), Max: sim.MaxPlayers, Layout: r.layout, State: r.world.State()})
+			msg, _ := json.Marshal(Welcome{Resume: p.ResumeToken, T: "welcome", V: Version, Room: r.Code, You: p.ID, Rate: int(1000 / sim.TickMS), Max: sim.MaxPlayers, Layout: r.layout, State: r.world.State()})
 			j.client.Send <- msg
 			j.reply <- ""
 			start()
@@ -323,6 +340,7 @@ func (r *Room) run() {
 			close(c.Send)
 			if err := r.save(); err != nil {
 				log.Printf("room checkpoint: %v", err)
+				checkpointPending = true
 			}
 			r.players.Store(int32(len(r.clients)))
 			if len(r.clients) == 0 {
@@ -339,13 +357,8 @@ func (r *Room) run() {
 			}
 		case now := <-tick:
 			if checkpointPending {
-				if err := r.save(); err != nil {
-					due = now
-					continue
-				}
-				checkpointPending = false
-				r.broadcast()
 				due = now
+				continue
 			}
 			// A ticker drops ticks when the process is starved of CPU; catch up (at most 5 per wake-up) so the
 			// world keeps 20 Hz on average, and send only the newest state.
@@ -363,6 +376,15 @@ func (r *Room) run() {
 				continue
 			}
 			r.broadcast()
+		case <-retry.C:
+			if checkpointPending {
+				if err := r.save(); err == nil {
+					checkpointPending = false
+					if len(r.clients) > 0 {
+						r.broadcast()
+					}
+				}
+			}
 		case <-sweep.C:
 			if r.reg.saveDir == "" && len(r.clients) == 0 && r.reg.now().Sub(r.emptySince) > r.reg.ttl {
 				r.closed.Store(true)

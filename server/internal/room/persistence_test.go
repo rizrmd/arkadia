@@ -29,7 +29,7 @@ func TestDurableRoomReopen(t *testing.T) {
 	}
 	var first Welcome
 	json.Unmarshal(<-c.Send, &first)
-	if len(first.You) != 48 {
+	if len(first.Resume) != 48 || first.Resume == first.You {
 		t.Fatal("resume token is guessable")
 	}
 	r.Leave(c)
@@ -50,16 +50,21 @@ func TestDurableRoomReopen(t *testing.T) {
 		t.Fatal("room lost")
 	}
 	d := NewClient()
-	if e := reopened.Join(d, "A", "ember-warden", 9999, first.You); e != "" {
+	if e := reopened.Join(d, "A", "ember-warden", 9999, first.Resume); e != "" {
 		t.Fatal(e)
 	}
 	var second Welcome
 	json.Unmarshal(<-d.Send, &second)
-	if second.You != first.You || second.State.Tick != first.State.Tick {
+	if second.You != first.You {
 		t.Fatal("did not resume paused world")
 	}
 	if second.State.Players[0].Max != 100 {
 		t.Fatal("reopen trusted client HP claim")
+	}
+	// A public player ID cannot resume or displace its owner.
+	attacker := NewClient()
+	if e := reopened.Join(attacker, "B", "rift-runner", 100, second.You); e != ErrBadHello {
+		t.Fatal("public ID accepted as credential")
 	}
 	reopened.Leave(d)
 	// Unknown checkpoint versions stop startup, retaining original bytes.

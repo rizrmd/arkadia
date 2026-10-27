@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "checks": [
+    "actual WebSocket movement and server combat",
+    "forged client reward/checkpoint ignored",
+    "public ID cannot claim hero",
+    "empty room clock and timers paused",
+    "atomic checkpoint survives real server stop/restart",
+    "private resume credential retains hero identity",
+    "HP, progression, position and rewards preserved",
+    "client maximum-HP claim ignored on resume"
+  ],
+  "room": "2SKE8",
+  "checkpointTick": 231,
+  "level": 1,
+  "gold": 40,
+  "kills": 8,
+  "hp": 96
+}

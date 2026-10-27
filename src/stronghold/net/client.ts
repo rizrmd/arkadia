@@ -29,7 +29,7 @@ export function socketUrl(){
  return (location.protocol==='https:'?'wss://':'ws://')+location.host+'/ws';
 }
 export function createNet(o:{direction:()=>Walk;maxHp:()=>number;hero:()=>string;url?:string}){
- let ws:WebSocket|null=null,status:NetStatus='idle',room='',you='',name='',layout:string[]=[],lastError='',retries=0,retryTimer=0;
+ let ws:WebSocket|null=null,status:NetStatus='idle',room='',you='',resumeToken='',name='',layout:string[]=[],lastError='',retries=0,retryTimer=0;
  let blocked:((x:number,y:number,pass:boolean)=>boolean)|null=null;
  let latest:Timed|null=null,rtt=0;const timeline=createTimeline(TICK_MS);
  let seq=0,pending:Input[]=[],margins:number[]=[],pace=1,hold=0,gate:GateGuess={open:false,frame:0},pred={x:0,y:0},prev={x:0,y:0},err={x:0,y:0},acc=0,last=0;
@@ -85,7 +85,7 @@ export function createNet(o:{direction:()=>Walk;maxHp:()=>number;hero:()=>string
    clearTimeout(retryTimer);ws?.close();let settled=false;
    const socket=new WebSocket(o.url??socketUrl());ws=socket;
    const timer=setTimeout(()=>{if(!settled){settled=true;socket.close();reject(fail('timeout','The co-op server did not answer.'));}},8000);
-   socket.onopen=()=>{const resume=code&&code===room&&you?{you}:{};const hello:Hello={t:'hello',v:PROTOCOL,name:who,room:code,...resume,maxHp:o.maxHp(),hero:o.hero()};socket.send(JSON.stringify(hello));};
+   socket.onopen=()=>{const resume=code&&code===room&&resumeToken?{you:resumeToken}:{};const hello:Hello={t:'hello',v:PROTOCOL,name:who,room:code,...resume,maxHp:o.maxHp(),hero:o.hero()};socket.send(JSON.stringify(hello));};
    socket.onmessage=e=>{
     if(settled){if(ws===socket)receive(String(e.data));return;}
     let m:ServerMessage;try{m=JSON.parse(String(e.data));}catch{return;}
@@ -114,12 +114,12 @@ export function createNet(o:{direction:()=>Walk;maxHp:()=>number;hero:()=>string
   try{await navReady;}catch(e){lastError=(e as Error).message;setStatus('offline');throw fail('nav',lastError);}
   try{
    const w=await connect(code,who);
-   room=w.room;you=w.you;name=who;layout=w.layout;retries=0;reset(w.state);
-   try{localStorage.setItem('arkodia.coop.resume.v1',JSON.stringify({version:1,room,you,name,hero:o.hero()}));}catch{lastError='Co-op resume identity could not be saved. Keep this tab open.';}
+   room=w.room;you=w.you;resumeToken=w.resume;name=who;layout=w.layout;retries=0;reset(w.state);
+   try{localStorage.setItem('arkodia.coop.resume.v1',JSON.stringify({version:1,room,you,resumeToken,name,hero:o.hero()}));}catch{lastError='Co-op resume identity could not be saved. Keep this tab open.';}
    receive(JSON.stringify({...w.state,t:'s',ack:0}));setStatus('online');return w;
   }catch(e){if(status!=='reconnecting'){lastError=(e as Error).message;setStatus('offline');}throw e;}
  }
- function leave(){try{localStorage.removeItem('arkodia.coop.resume.v1');}catch{}clearTimeout(retryTimer);const s=ws;ws=null;s?.close();you='';room='';setStatus('offline');}
+ function leave(){try{localStorage.removeItem('arkodia.coop.resume.v1');}catch{}clearTimeout(retryTimer);const s=ws;ws=null;s?.close();you='';room='';resumeToken='';setStatus('offline');}
  // One input per tick from the render loop; after a stall (background tab) it resumes instead of bursting.
  function frame(now:number){
   const dt=last?Math.min(now-last,250):16;last=now;
@@ -153,7 +153,7 @@ export function createNet(o:{direction:()=>Walk;maxHp:()=>number;hero:()=>string
   dash(u:number,v:number){if(status==='online')dash={u,v};},
  chooseCard(id:string,level:number){choice={choice:id,level};},
   join,leave,
-  resume(){try{const s=JSON.parse(localStorage.getItem('arkodia.coop.resume.v1')||'null');if(s?.version===1&&typeof s.room==='string'&&typeof s.you==='string'&&typeof s.name==='string'){room=s.room;you=s.you;name=s.name;void join(room,name).catch(e=>{lastError=e.message;setStatus('offline');});return true;}}catch{}return false;},
+  resume(requestedRoom?:string){try{const s=JSON.parse(localStorage.getItem('arkodia.coop.resume.v1')||'null');if(s?.version===1&&(!requestedRoom||requestedRoom===s.room)&&typeof s.resumeToken==='string'&&s.resumeToken.length===48&&typeof s.room==='string'&&typeof s.you==='string'&&typeof s.name==='string'){room=s.room;you=s.you;resumeToken=s.resumeToken;name=s.name;void join(room,name).catch(e=>{lastError=e.message;setStatus('offline');});return true;}}catch{}return false;},
   // The picked hero, for the rest of the room; a later hello (rejoin) carries it too.
   setHero(h:string){if(ws?.readyState===WebSocket.OPEN){const m:HeroPick={t:'hero',h};ws.send(JSON.stringify(m));}},
   status:()=>status,room:()=>room,you:()=>you,name:()=>name,error:()=>lastError,layout:()=>layout,rtt:()=>rtt,stats,timeline:timeline.stats,

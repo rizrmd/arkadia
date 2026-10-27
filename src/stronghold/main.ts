@@ -106,7 +106,7 @@ export async function mount(app:HTMLElement,progress:Progress){
  });
  // Saving the welcome-home state waits for a Web Lock, which the browser grants only between the first frames' long
  // paint and upload tasks; the screen does not need it, so it lands in the background.
- void transact(()=>{}).then(render,console.error);
+ if(!worldView.encounters.persistence().blocked)void transact(()=>{}).then(render,console.error);
 
  await new Promise<void>(done=>{const check=()=>canvas.dataset.ready==='true'?done():requestAnimationFrame(check);check();});
  showFrameCapHint(rt.uiStage,rt.frames);
