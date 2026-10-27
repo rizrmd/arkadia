@@ -31,3 +31,7 @@ Before implementation, captured actual live revision 5 at the same three viewpor
 Remaining visual limitations: baseline soil is finer/flatter than target large fractures; source rolling folds retain recognizable directional fan silhouettes; source smoke is soft radial density rather than textured reference billows. They are used sparingly. Physical-device performance and artistic parity are not claimed by browser viewport tests.
 
 Deploy uses `fural-agent repos ship RPe11327fbfe413dbeba246526 --mode script --script scripts/flame-fan-static/deploy.sh`, acquiring the normal shared Arkodia lock. Only static review prefix changes, preserving peer game layers. Live screenshots/report and final release SHA are recorded after supported shipment.
+
+### Live delivery
+
+Implementation 3e3882b4, first deployed release 2c8f27342ce657513d202bacb60d425436327391. Public release.json matched; live browser checks passed every assertion at all three viewports. Live hidden-additions comparisons are exactly equal to captured live revision 5 (mean/max delta zero at all three sizes). /healthz is healthy. Actual live screenshots attached in originating room message DM7fe47be240259aac7de02dbb and the same three images embedded inline in existing Flame Fan Knowledge NKBDbd185330904c8926506f945e, preserving all English history. Final evidence release follows without code changes.
