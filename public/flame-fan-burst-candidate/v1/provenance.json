@@ -1,0 +1,32 @@
+{
+  "generator": "Built-in image_gen.imagegen",
+  "date": "2026-10-27",
+  "candidate": "v1",
+  "intent": "Art review only; no scene integration",
+  "file": "public/flame-fan-burst-candidate/v1/flame-burst-v1.png",
+  "sha256": "2ebec4b7bfa28cb7b092fb99c0198f3b84a7cf98deb5624155825919aa31af5a",
+  "size": [
+    1586,
+    992
+  ],
+  "channels": 4,
+  "alpha_bbox": [
+    0,
+    9,
+    1575,
+    992
+  ],
+  "transparent_pixels": 830379,
+  "partial_alpha_pixels": 742933,
+  "opaque_pixels": 0,
+  "border_max_alpha": 1,
+  "source_output": "exec-d5b31c8b-b1ab-415e-9d1a-4f7bc44673e0.png",
+  "references": [
+    "public/flame-fan-static/latest-target.png",
+    "public/flame-fan-flipbook/hand-ignition-source.png",
+    "public/flame-fan-flipbook/rolling-fan-v2.png"
+  ],
+  "prompt": "docs/flame-fan-burst-candidate/prompt-v1.txt",
+  "discussion_message": "DMc5d2b82a7671267009f038b3",
+  "discussion_attachment": "DAeb639f301406beb5ad2e6e50"
+}
