@@ -39,12 +39,18 @@ export const inspectionPreviewHeight=(r:Rect)=>r.width<600?186:r.height<450?116:
 export class SkillInspection{
  readonly preview=new Container();readonly modal=new Container();
  private rect:Rect={width:0,height:0};
- private selected?:Inspection;private details=false;private key='';
+ private selected?:Inspection;private details=false;private hidden=false;private key='';
  private controls:Record<string,{x:number;y:number;width:number;height:number}>={};
  constructor(private f:FrameSet,private parent:Container,private o:{run:()=>Progression;slot:()=>number|null;equip:(id:string)=>void}){
+  this.preview.on('pointertap',e=>e.stopPropagation());
+  this.preview.on('pointerdown',e=>e.stopPropagation());
   parent.addChild(this.preview,this.modal);this.preview.label='skill-inspection-preview';this.modal.label='skill-details-modal';
  }
- select(n:Inspection){this.selected=n;this.key='';}
+ select(n:Inspection){if(this.selected?.id!==n.id)this.hidden=false;this.selected=n;this.key='';}
+ reveal(){this.hidden=false;this.render(this.rect,true);}
+ dismiss(){this.hidden=true;this.details=false;this.render(this.rect,true);}
+ isVisible(){return !!this.selected&&!this.hidden;}
+ contains(x:number,y:number){return this.isVisible()&&this.preview.getBounds().containsPoint(x,y);}
  close(){this.details=false;this.key='';this.render(this.rect,true);}
  isModal(){return this.details;}
  private text(c:Container,value:string,x:number,y:number,size:number,width?:number,color=0xf6e1ae,center=false){
@@ -64,34 +70,37 @@ export class SkillInspection{
  render(rect:Rect,force=false){
   this.rect=rect;
   const n=this.selected,p=this.o.run(),slot=this.o.slot()??0,slots=p.slots??[];
-  const key=JSON.stringify([rect,n?.id,n?.locked,this.details,slot,slots,p.skills,p.stars]);if(!force&&key===this.key)return;this.key=key;
+  const key=JSON.stringify([rect,n?.id,n?.locked,this.details,this.hidden,slot,slots,p.skills,p.stars]);if(!force&&key===this.key)return;this.key=key;
   for(const c of [this.preview,this.modal])c.removeChildren().forEach(v=>v.destroy({children:true}));this.controls={};
-  this.preview.visible=!!n;this.modal.visible=!!n&&this.details;if(!n)return;
-  const portrait=rect.width<600,ph=inspectionPreviewHeight(rect),w=rect.width;
-  this.preview.position.set(0,rect.height-ph);this.preview.eventMode='static';this.preview.hitArea=new Rectangle(0,0,w,ph);
+  this.preview.visible=!!n&&!this.hidden;this.modal.visible=!!n&&this.details&&!this.hidden;if(!n||this.hidden)return;
+  const portrait=rect.width<600,ph=inspectionPreviewHeight(rect),w=Math.min(rect.width-24,1000),px=(rect.width-w)/2,py=rect.height-ph-12;
+  this.preview.position.set(px,py);this.preview.eventMode='static';this.preview.hitArea=new Rectangle(0,0,w,ph);
   this.preview.addChild(this.f.frame('details-frame',w,ph));
+  const dismiss=this.preview.addChild(this.f.frame('close',28,28));dismiss.position.set(w-36,8);dismiss.eventMode='static';dismiss.cursor='pointer';dismiss.on('pointertap',e=>{e.stopPropagation();this.dismiss();});
+  this.controls['preview-close']={x:px+w-22,y:py+22,width:28,height:28};
   const d=inspectionData(n,p),at=n.game?slots.indexOf(n.game):-1;
   const status=n.locked?`Locked · Requires ${n.locked}`:n.kind==='passive'?(d.rank?'Passive · Learned':'Passive · Not learned'):at>=0?`Equipped · Slot ${at+1}`:d.rank?'Not Equipped':'Not learned';
   const valid=!!n.game&&n.kind!=='passive'&&d.rank>0&&!n.locked&&at!==slot;
   const notice=!n.game?'Concept only':n.locked?`Requires ${n.locked}`:!d.rank?'Learn through level-up blessings':n.kind==='passive'?'Passive skills do not use a slot':at===slot?`Equipped in Slot ${slot+1}`:slots[slot]?`Replaces ${cards[slots[slot]]?.name||slots[slot]} in Slot ${slot+1}`:`Uses Slot ${Math.min(slot,slots.length)+1}`;
   const icon=this.preview.addChild(new Sprite(n.icon));icon.position.set(18,18);icon.width=icon.height=portrait?52:76;
   if(n.id==='rift-dash'){const d=icon.width;const mask=this.preview.addChild(new Graphics().poly(skillHexPoints(18+d/2,18+d/2,d*.43)).fill(0xffffff));icon.mask=mask;drawSkillHex(this.preview.addChild(new Graphics()),18+d/2,18+d/2,d/2);}
-  this.text(this.preview,n.name,portrait?80:110,34,portrait?19:24,w-(portrait?94:520));
-  this.text(this.preview,status,portrait?80:110,58,13,w-(portrait?94:520),at>=0?0xf4c957:0x6ae6ff);
-  this.text(this.preview,d.description.length>108?d.description.slice(0,105)+'…':d.description,portrait?18:110,portrait?85:88,13,portrait?w-36:w-540);
+  this.text(this.preview,n.name,portrait?80:110,34,portrait?19:24,w-(portrait?124:520));
+  this.text(this.preview,status,portrait?80:110,58,13,w-(portrait?124:520),at>=0?0xf4c957:0x6ae6ff);
+  const excerptLimit=rect.height<450&&!portrait?48:108;
+  this.text(this.preview,d.description.length>excerptLimit?d.description.slice(0,excerptLimit-3)+'…':d.description,portrait?18:110,portrait?85:88,13,portrait?w-36:w-540);
   const bw=portrait?(w-46)/2:190,bx=portrait?18:w-420,by=portrait?ph-62:40;
   this.button(this.preview,'skill-details','Skill Details',bx,by,bw,42,()=>{this.details=true;this.key='';this.render(this.rect,true);});
   this.button(this.preview,'skill-equip',`Equip to Slot ${slot+1}`,bx+bw+10,by,bw,42,()=>this.o.equip(n.game!),true,valid);
   this.text(this.preview,notice,portrait?w/2:bx+bw+5,ph-10,11,portrait?w-30:400,0xcab990,true);
-  for(const id of ['skill-details','skill-equip'])this.controls[id].y+=rect.height-ph;
+  for(const id of ['skill-details','skill-equip']){this.controls[id].x+=px;this.controls[id].y+=py;}
   if(!this.details)return;
   const landscape=rect.height<450;
-  const aw=landscape?innerWidth:w,ah=landscape?innerHeight:rect.height,offX=landscape?-this.parent.x:0,offY=landscape?-this.parent.y:0;
+  const aw=landscape?innerWidth:rect.width,ah=landscape?innerHeight:rect.height,offX=landscape?-this.parent.x:0,offY=landscape?-this.parent.y:0;
   this.modal.position.set(offX,offY);
   this.modal.eventMode='static';this.modal.hitArea=new Rectangle(0,0,aw,ah);
-  const veil=this.modal.addChild(new Graphics().rect(0,0,aw,ah).fill({color:0x000000,alpha:.7}));veil.eventMode='static';veil.on('pointertap',e=>e.stopPropagation());
+  const veil=this.modal.addChild(new Graphics().rect(0,0,aw,ah).fill({color:0x000000,alpha:.7}));veil.eventMode='static';veil.on('pointertap',e=>{e.stopPropagation();this.close();});
   const mw=landscape?760:Math.min(760,w-16),mh=landscape?420:Math.min(rect.height-16,portrait?550:490),k=landscape?Math.min((aw-16)/mw,(ah-16)/mh):1,mx=(aw-mw*k)/2,my=(ah-mh*k)/2;
-  const c=this.modal.addChild(new Container());c.position.set(mx,my);c.scale.set(k);c.addChild(this.f.frame('details-frame',mw,mh));
+  const c=this.modal.addChild(new Container());c.position.set(mx,my);c.scale.set(k);c.eventMode='static';c.on('pointertap',e=>e.stopPropagation());c.addChild(this.f.frame('details-frame',mw,mh));
   this.text(c,'Skill Details',mw/2,40,portrait?25:32,undefined,0xffd979,true);
   const close=c.addChild(this.f.frame('close',36,36));close.position.set(mw-48,12);close.eventMode='static';close.cursor='pointer';close.on('pointertap',()=>this.close());this.controls['details-close']={x:mw-30,y:30,width:36,height:36};
   const im=c.addChild(new Sprite(n.icon));const iy=landscape?52:62,is=landscape?56:portrait?64:88;im.position.set(24,iy);im.width=im.height=is;
@@ -113,6 +122,6 @@ export class SkillInspection{
   this.text(c,notice,mw/2,mh-13,11,mw-40,0xcab990,true);
   for(const id of ['back-to-tree','details-equip','details-close']){this.controls[id].x=offX+mx+this.controls[id].x*k;this.controls[id].y=offY+my+this.controls[id].y*k;}
  }
- snapshot(){return {selected:this.selected?.id??null,details:this.details,data:this.selected?inspectionData(this.selected,this.o.run()):null,controls:this.controls};}
+ snapshot(){return {selected:this.selected?.id??null,visible:this.isVisible(),preview:this.preview.visible?{x:this.preview.x,y:this.preview.y,width:this.preview.hitArea instanceof Rectangle?this.preview.hitArea.width:0,height:this.preview.hitArea instanceof Rectangle?this.preview.hitArea.height:0}:null,details:this.details,data:this.selected?inspectionData(this.selected,this.o.run()):null,controls:this.controls};}
  destroy(){this.preview.destroy({children:true});this.modal.destroy({children:true});}
 }

@@ -1,4 +1,4 @@
-import {SkillInspection,inspectionPreviewHeight} from './skill-inspection';
+import {SkillInspection} from './skill-inspection';
 import {drawSkillHex,skillHexPoints} from '../typography/skill-hex';
 import {requestGameFrame as requestAnimationFrame,cancelGameFrame as cancelAnimationFrame} from '../app/frame-scheduler';
 import {Container,Graphics,Rectangle,Sprite,TilingSprite} from 'pixi.js';
@@ -125,7 +125,7 @@ export class SkillTree{
  private openState=false;
  constructor(private uiStage:Container,private o:{run:()=>Progression;hero?:()=>HeroKind;region:()=>{rect:Rect;vertical:boolean};equip:(slot:number,id:string)=>true|string;onClose?:()=>void}){
   this.shade.zIndex=-1;this.shade.visible=false;this.shade.eventMode='static';
-  this.shade.on('pointertap',()=>this.open(false));
+  this.shade.on('pointertap',()=>{if(this.inspection?.isVisible())this.inspection.dismiss();else this.open(false);});
   // Above the first-visit movement hint (44), under the world map (45) and the level-up offer (55).
   this.panel.zIndex=44.5;this.panel.visible=false;this.panel.eventMode='static';this.panel.label='skill-tree';
   this.viewport.eventMode='static';
@@ -137,6 +137,7 @@ export class SkillTree{
   this.statusText.eventMode='static';this.statusText.on('pointertap',()=>{if(this.loadState==='error')void this.show(this.highlighted??undefined,this.slot);});
   this.statusClose.eventMode='static';this.statusClose.cursor='pointer';this.statusClose.on('pointertap',()=>this.open(false));
   uiStage.addChild(this.shade,this.panel,this.statusPanel);
+  this.panel.on('pointerdown',()=>{if(!this.inspection?.isModal())this.inspection?.dismiss();});
   this.viewport.on('pointerdown',e=>{
    if(this.press||this.inspection?.isModal())return;
    this.press={x:e.global.x,y:e.global.y,at:this.scroll,last:this.axis(e.global),moved:false,id:e.pointerId};this.velocity=0;this.target=null;
@@ -156,10 +157,10 @@ export class SkillTree{
   addEventListener('pointerup',up);
   addEventListener('pointercancel',e=>{if(this.press?.id===e.pointerId)this.press=null;});
   addEventListener('wheel',e=>{
-   if(this.inspection?.isModal()||!this.openState||!this.inView(e.clientX,e.clientY))return;e.preventDefault();
+   if(this.inspection?.isModal()||this.inspection?.contains(e.clientX,e.clientY)||!this.openState||!this.inView(e.clientX,e.clientY))return;e.preventDefault();
    this.target=null;this.velocity=0;this.setScroll(this.scroll+(Math.abs(e.deltaX)>Math.abs(e.deltaY)?e.deltaX:e.deltaY));
   },{passive:false});
-  addEventListener('keydown',e=>{if(e.key==='Escape'&&this.openState){e.preventDefault();if(this.inspection?.isModal())this.inspection.close();else this.open(false);}});
+  addEventListener('keydown',e=>{if(e.key==='Escape'&&this.openState){e.preventDefault();if(this.inspection?.isModal())this.inspection.close();else if(this.inspection?.isVisible())this.inspection.dismiss();else this.open(false);}});
   addEventListener('resize',()=>{if(this.openState)this.layout(true);});
  }
  isOpen(){return this.openState;}
@@ -270,7 +271,6 @@ export class SkillTree{
   // Scroll viewport below the header; the scrollbar runs along the right (portrait) or the bottom (landscape).
   this.view=vertical?{x:inset,y:top,width:rect.width-inset*2-bar-4,height:rect.height-top-inset}
    :{x:inset,y:top,width:rect.width-inset*2,height:rect.height-top-inset-bar-6};
-  this.view.height-=inspectionPreviewHeight(rect);
   const v=this.view;
   this.viewport.position.set(v.x,v.y);this.viewport.hitArea=new Rectangle(0,0,v.width,v.height);
   this.clip.clear().rect(0,0,v.width,v.height).fill(0xffffff);
@@ -464,7 +464,7 @@ export class SkillTree{
   for(const v of this.views.values())if(Math.hypot(p.x-v.x,p.y-v.y)<=v.r*1.05){this.choose(v);return;}
  }
  // Inspection never changes the loadout, including locked and concept nodes.
- private choose(v:NodeView){this.highlight(v.def.id);this.say(this.prompt(),0);}
+ private choose(v:NodeView){this.highlight(v.def.id);this.inspection?.reveal();this.say(this.prompt(),0);}
  private explicitEquip(id:string){
   const v=[...this.views.values()].find(v=>v.def.game===id);
   if(!v||v.lock||!this.learned(v)||v.def.kind==='passive')return;
