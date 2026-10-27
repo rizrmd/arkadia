@@ -1,4 +1,4 @@
-import {Application,Container,Texture} from 'pixi.js';
+import {Application,Container,Texture,RenderTexture} from 'pixi.js';
 import {createGpuFlameFanMaterial} from '../../src/fx/flame-fan-gpu';
 import {createFlameFanMaterial} from '../../src/fx/flame-fan-material';
 import {createGameplayFlameFan} from '../../src/fx/flame-fan-gameplay';
@@ -33,9 +33,8 @@ export async function flameGpuProbe(){
  await native.prepare();native.spawn(18,18,.6,4.4,5);native.frame(.3,{x:0,y:0,scale:1});
  const contextsForNative=newWebglContexts;HTMLCanvasElement.prototype.getContext=getContext;
  await old.prepare();old.spawn(18,18,.6,4.4,5);old.frame(.3,{x:0,y:0,scale:1});
- // Burn Soil adds a ground layer before the flame sheet. Compare the sheet,
- // by its layer index; embers follow the burst.
- const current=parent.children[1] as import('pixi.js').Sprite,previous=oldParent.children[1] as import('pixi.js').Sprite;
+ // Find the burst by its backing texture; soil/ember sprite order is independent.
+ const current=parent.children.find(c=>(c as import('pixi.js').Sprite).texture instanceof RenderTexture) as import('pixi.js').Sprite,previous=oldParent.children.find(c=>{const r=(c as import('pixi.js').Sprite).texture?.source.resource;return r instanceof HTMLCanvasElement&&r.width===256;}) as import('pixi.js').Sprite;
  const oldCanvas=previous.texture.source.resource as HTMLCanvasElement;
  const clipped=compare(oldCanvas.getContext('2d')!.getImageData(0,0,256,256).data,app.renderer.extract.pixels(current.texture).pixels);
  const gl=(app.renderer as import('pixi.js').WebGLRenderer).gl,texImage=gl.texImage2D,texSub=gl.texSubImage2D;let uploads=0;
