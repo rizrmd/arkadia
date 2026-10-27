@@ -72,3 +72,44 @@ func TestPondsWalkableAndRequireVacantGround(t *testing.T) {
 		}
 	}
 }
+
+func TestGroundBlendPublishAndRestart(t *testing.T) {
+	s, err := Open(t.TempDir())
+	if err != nil {
+		t.Fatal(err)
+	}
+	m := Empty()
+	for _, id := range []string{"green-grass", "dry-grass", "bare-soil", "gravel"} {
+		id = "ground:" + id
+		if len(Assets[id].Blocks) != 0 || Assets[id].ID != id {
+			t.Fatal("ground must be known and walkable", id)
+		}
+		m.Objects = append(m.Objects, Object{ID: id, Asset: id, U: 520, V: 520})
+	}
+	// Flat ground blends may underlay a pond; solid objects still require pond clearance.
+	m.Objects = append(m.Objects, Object{ID: "pond", Asset: "pond-large", U: 520, V: 520})
+	draft, err := s.Save(m, false)
+	if err != nil {
+		t.Fatal(err)
+	}
+	p, err := s.Published(0)
+	if err != nil || len(p.Objects) != 0 {
+		t.Fatal("draft leaked", err)
+	}
+	p, err = s.Save(draft, true)
+	if err != nil {
+		t.Fatal(err)
+	}
+	reopened, err := Open(s.dir)
+	if err != nil {
+		t.Fatal(err)
+	}
+	restored, err := reopened.Published(p.Revision)
+	if err != nil || len(restored.Objects) != 5 {
+		t.Fatal("ground lost on restart", err)
+	}
+	restored.Objects = append(restored.Objects, Object{ID: "cliff", Asset: "cliff", U: 520, V: 520})
+	if restored.Validate() == nil {
+		t.Fatal("ground disabled pond object clearance")
+	}
+}

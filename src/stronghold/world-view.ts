@@ -87,8 +87,9 @@ export async function createWorldView(
  // The Frozen Frontier's ruins, landmarks and plants on the snow beyond (world/frontier.ts, frontier-view.ts).
  const frontier=createFrontier(staticStage,images.get(FRONTIER_ATLAS)!);frontier.setLegacyShadows(!useDepthShadows);
  await frontier.ready;
+ const authoredGround=new Container();authoredGround.zIndex=10.025;staticStage.addChild(authoredGround);
  const authoredStage=new Container();authoredStage.zIndex=10.65;worldStage.addChild(authoredStage);
- let authoredScene=await renderObjects(authoredEnvironment(),authoredStage);
+ let authoredScene=await renderObjects(authoredEnvironment(),authoredStage,false,authoredGround);
  const frontierScene=frontier.scene as unknown as typeof reliefScene;
  const alphaPrepared=new WeakSet<HTMLImageElement>(),alphaJobs=new Set<Promise<void>>();
  const prepareAlpha=(placed:(typeof frontierScene)[number])=>{
@@ -257,7 +258,7 @@ if((p as any).authored)return authoredColumns((p as any).authored).map(c=>({...c
  await milestone(925,'Preparing the hero');
  const hero=await createHero<(typeof objects)[number]>({hero:pick,layer:worldStage,lightmap:lighting.lightmap,surface,footprint:p=>p.id==='gate'?gateFootprint():footprint(p),sun:lighting.sun,direction:()=>encounters?encounters.steer(input()):input(),follow,pose:()=>encounters?.pose()??null,
   drive:()=>{if(!net?.active())return null;const p=net.position(),me=net.me();const r=me?.run,dashing=r?.dashElapsed!==undefined&&r.dashElapsed<260&&!!r.dashDistance;return {...p,face:dashing?{x:((r.dashU??0)-(r.dashV??0))*64,y:((r.dashU??0)+(r.dashV??0))*32}:direction(),look:me&&me.st!=='idle'?{facing:me.fc,back:me.bk,vertical:me.vt}:null};}});hero.setScene(scene());
- watchEnvironment(async()=>{authoredStage.removeChildren().forEach(c=>c.destroy());authoredScene=await renderObjects(authoredEnvironment(),authoredStage);hero?.setScene(scene());requestDraw();});
+ watchEnvironment(async()=>{authoredGround.removeChildren().forEach(c=>c.destroy());authoredStage.removeChildren().forEach(c=>c.destroy());authoredScene=await renderObjects(authoredEnvironment(),authoredStage,false,authoredGround);hero?.setScene(scene());requestDraw();});
 
  await milestone(930,'Preparing combat');
  encounters=await createEncounters({renderer:rt.app.renderer,worldStage,uiStage,frames,hudCallbacks,showCoop:Boolean(net),cancelRoute:()=>walker?.cancel(),hero,direction:input,net});
@@ -304,6 +305,7 @@ if((p as any).authored)return authoredColumns((p as any).authored).map(c=>({...c
   if(!w||!h)return;
   measureTracelogPhase('worldDraw',()=>{
    if(dirty)paintWorld();const x=w/2-cx*scale,y=h/2-cy*scale;
+   for(const layer of [authoredGround,authoredStage]){layer.position.set(x,y);layer.scale.set(scale);}
    surfaceView.sprite.position.set(x+left*scale,y+top*scale);
    surfaceView.sprite.width=worldWidth*scale;
    surfaceView.sprite.height=worldHeight*scale;
