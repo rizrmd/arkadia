@@ -13,6 +13,8 @@ const save=()=>fs.writeFile(`${dir}/${tag}-results.json`,JSON.stringify(report,n
 const note=async s=>{console.log(s);await save();};
 const ready=()=>page.waitForFunction(()=>document.querySelector('#world-canvas')?.dataset.ready==='true'&&!document.querySelector('#loading-screen')&&window.__SETTINGS__?.renderer==='pixi',null,{timeout:300000,polling:300});
 const snapshot=()=>page.evaluate(()=>window.__SETTINGS__.snapshot());
+// Autosave may advance bookkeeping revisions while the exact paused state stays unchanged.
+const savedStorage=()=>page.evaluate(()=>{const out={...localStorage};if(out['arkodia-stronghold-v1']){const root=JSON.parse(out['arkodia-stronghold-v1']);delete root.revision;for(const v of Object.values(root.gameplay??{}))delete v.revision;out['arkodia-stronghold-v1']=JSON.stringify(root);}return out;});
 async function bounds(id){return page.evaluate(id=>{const s=window.__SETTINGS__,find=c=>c.label===id?c:c.children?.map(find).find(Boolean);const c=id==='Open Settings'?s.gear:find(s.overlay);if(!c)throw Error('Missing '+id);const b=c.getBounds(),p=c.toGlobal({x:0,y:0});return c.hitArea?{x:p.x,y:p.y,width:c.hitArea.width,height:c.hitArea.height}:{x:b.x,y:b.y,width:b.width,height:b.height};},id);}
 async function reveal(id){for(let i=0;i<5;i++){const b=await bounds(id),s=await snapshot(),top=s.panel.y+68,bottom=s.panel.y+s.panel.height-96;if(['close','resume','cancel','confirm-reset','Open Settings'].includes(id)||b.y>=top-1&&b.y+b.height<=bottom+1)return b;await page.mouse.wheel(0,b.y<top?b.y-top:b.y+b.height-bottom);await page.waitForTimeout(60);}throw Error('Cannot reveal '+id);}
 async function click(id,touch=false){const b=await reveal(id);await (touch?page.touchscreen.tap(b.x+b.width/2,b.y+b.height/2):page.mouse.click(b.x+b.width/2,b.y+b.height/2));}
@@ -43,11 +45,11 @@ try{
   await page.setViewportSize({width,height});await page.waitForFunction(()=>window.__PIXI_UI__.app.screen.width===innerWidth&&window.__PIXI_UI__.app.screen.height===innerHeight);await page.waitForTimeout(1000);await click('Open Settings',true);const s=await snapshot();assert(s.panel.x>=0&&s.panel.y>=0&&s.panel.x+s.panel.width<=width&&s.panel.y+s.panel.height<=height);
   await screenshot(name+'-menu');await click('binding-2',true);await page.keyboard.press('r');assert.equal((await snapshot()).bindings[2],'KeyR');await screenshot(name+'-shortcuts');
   await click('reset-bindings',true);assert.deepEqual((await snapshot()).bindings,['Digit1','Digit2','Digit3']);
-  const stored=await page.evaluate(()=>({...localStorage}));
+  const stored=await savedStorage();
   await click('reset-progression',true);assert((await snapshot()).confirm);assert.equal((await snapshot()).focus,'cancel');await screenshot(name+'-confirmation');
-  await page.keyboard.press('Escape');assert(!(await snapshot()).confirm);assert.deepEqual(await page.evaluate(()=>({...localStorage})),stored);
+  await page.keyboard.press('Escape');assert(!(await snapshot()).confirm);assert.deepEqual(await savedStorage(),stored);
   await click('reset-progression',true);await click('cancel',true);assert(!(await snapshot()).confirm);
-  await click('reset-progression',true);await page.touchscreen.tap(2,2);assert(!(await snapshot()).confirm);assert.deepEqual(await page.evaluate(()=>({...localStorage})),stored);
+  await click('reset-progression',true);await page.touchscreen.tap(2,2);assert(!(await snapshot()).confirm);assert.deepEqual(await savedStorage(),stored);
   await click('resume',true);assert(!(await snapshot()).open);if(name==='portrait'||name==='landscape'){const socket=await page.evaluate(()=>window.__STRONGHOLD_COMBAT__.snapshot().hudGeometry.sockets[1]);await page.touchscreen.tap(socket.x,socket.y);await page.waitForFunction(()=>window.__STRONGHOLD_COMBAT__.skillTree.snapshot().open);await page.keyboard.press('Escape');}report.views[name]={viewport:[width,height],panel:s.panel,resetCancellation:true,touchBindings:true};await note(name+' passed');
  }
  // Confirmed reset only in this isolated test browser. Preserve preferences, bindings and unrelated storage.
