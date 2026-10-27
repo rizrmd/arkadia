@@ -7,4 +7,6 @@ for(const name of ['reference.png','ember-v1.png','ember-v2.png','provenance.jso
 for(const name of ['prompt-v1.txt','prompt-v2.txt','README.md'])files['/'+name]=execFileSync('git',['show','HEAD:docs/flame-fan-ember-candidate/'+name]).toString('base64');
 const commit=execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim();
 files['/release.json']=Buffer.from(JSON.stringify({commit,scope:'asset-only art review',sceneIntegration:false})).toString('base64');
-await publishLayer({name:'flame-ember-candidate-'+commit.slice(0,8),files,prefix:'/ember-warden-review/flame-fan-ember-candidate/v1',check:'/ember-warden-review/flame-fan-ember-candidate/v1/release.json'});
+const target=JSON.parse(execFileSync('fural-agent',['sandboxes','list'],{encoding:'utf8'})).find(s=>s.slug==='arkadia');
+if(!target)throw Error('Arkadia sandbox slug not found');
+await publishLayer({targetSandbox:target.id,name:'flame-ember-candidate-'+commit.slice(0,8),files,prefix:'/ember-warden-review/flame-fan-ember-candidate/v1',check:'/ember-warden-review/flame-fan-ember-candidate/v1/release.json'});
