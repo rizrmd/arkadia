@@ -17,3 +17,14 @@ The original human image `reference-68699.png` was downloaded as DA2ca35bc4cb955
 Run `RAYON_NUM_THREADS=2 npm run build`, then `SITE_DIR=<production build> WIDTH=390 node scripts/rift-skill-fix/verify.mjs`; `GAME=<public origin>` verifies the deployed release. The small test HTTP server serves compiled files without Vite development dependency scanning. Release through `scripts/rift-skill-fix/deploy.sh`, which uses the existing shared lock, cumulative client/server, Go tests, smoke test and supported Arkodia release publisher.
 
 An initial hypothesis about continuous inspection control reconstruction was disproved by following the layout/refresh guards. No such UI change was made. Early development-server timeouts are diagnostic harness failures, not evidence of a public loading failure.
+
+
+## Published result
+
+Runtime implementation `ebbd6745` shipped through the supported release publisher. The later Environment Editor runtime `8b863f91` includes it; the current release verification checks that ancestry, both public hostnames, the active client manifest, compiled file hashes and the four approved Dash assets. Peer Editor and availability branches are merged and preserved.
+
+Local desktop/portrait/landscape gameplay checks passed. A fresh cumulative build also passed with its matching Go server and published-map API. Live desktop and portrait checks passed, including explicit equip/swap; live portrait exercised all four damaging skill paths plus manual Dash. Mobile tests use Chromium touch emulation. The existing Pixi player passed four viewport sizes and an actual cross-origin iframe interaction.
+
+The public game tests used retrying HTTP GET routing to overcome intermittent sandbox transport resets; retries are retained in `live-verification.json`. Initial direct runs failed during concurrent deployments and interrupted downloads. The player/iframe runs used direct networking. Static-server-only post-merge testing failed because the new map API is required; the matching Go-server run supersedes it. No game startup fallback or peer API was removed.
+
+The initial render-cache hypothesis was disproved. Baseline screenshots and `before-gameplay.json` reproduce the old procedural Dash slash and discarded trap target; `pre-fix-player-regression.json` records the actual player-clock error.
