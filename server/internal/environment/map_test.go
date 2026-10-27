@@ -32,7 +32,7 @@ func TestDraftPublishRestartAndConflict(t *testing.T) {
 	}
 	old := p
 	m = p
-	m.Objects = nil
+	m.Objects = []Object{}
 	if _, e = s.Save(m, true); e != nil {
 		t.Fatal(e)
 	}
