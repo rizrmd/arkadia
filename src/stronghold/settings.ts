@@ -11,7 +11,7 @@ type Control={id:string;y:number;h:number;action:()=>void;adjust?:(step:number)=
 export function createSettings(o:Options){
  let open=false,confirm=false,busy=false,destroyed=false,capture=-1,focus='close',keyboard=false,message='',scroll=0,maxScroll=0;
  let openingTime=-Infinity;
- const openingTap=(e:FederatedPointerEvent)=>Math.abs((e.nativeEvent?.timeStamp??e.timeStamp)-openingTime)<1;
+ const openingTap=(e:FederatedPointerEvent)=>Math.abs(((e.nativeEvent as {timeStamp?:number})?.timeStamp??e.timeStamp)-openingTime)<1;
  let previous:HTMLElement|null=null,controls:Control[]=[],panelRect={x:0,y:0,width:0,height:0},viewTop=0,viewHeight=0;
  const overlay=new Container({label:'Settings',eventMode:'static'});overlay.zIndex=110;overlay.visible=false;o.stage.addChild(overlay);
  const gear=createHudActionButton(o.stage,'/ui/hud-actions/settings.webp','Open Settings',show);
