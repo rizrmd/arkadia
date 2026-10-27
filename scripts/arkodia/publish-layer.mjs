@@ -39,11 +39,31 @@ async function register(id,name,layer){
  const lid=`${Date.now()}-${name}-${layer.hash}`;run(['organization','home-files','write','--custom-sandbox',id,'--path',`layers/${lid}.json`,'--content',JSON.stringify({seq:Date.now(),...layer})]);
  console.log('Registered layer',lid,'in',layer.parts.length,'parts');return lid;
 }
-// Power cycle so the boot script applies pending layers, then wait for the gateway.
-export async function restart(id=sandboxId(),check='/healthz'){
- const state=run(['sandboxes','get',id]);
- run(['sandboxes',state.enabled===false?'on':'restart',id]);
- for(let i=0;i<60;i++){try{if((await fetch(URL_BASE+check,{signal:AbortSignal.timeout(10000)})).ok){console.log('Live:',URL_BASE+check);return;}}catch{}await new Promise(r=>setTimeout(r,5000));}
+// Apply layers without removing the public domain or listener. A gateway code upgrade needs
+// a boot-process replacement once; never power-cycle the sandbox for ordinary publishing.
+export async function restart(id=sandboxId(),check='/healthz',gatewayChanged=false){
+ const source=readFileSync(fileURLToPath(new URL('./gateway.mjs',import.meta.url)));
+ const digest=createHash('sha256').update(source).digest('hex');
+ let live;try{live=JSON.parse(run(['organization','home-files','file','--custom-sandbox',id,'--path','.gateway-live.json']).content);}catch{}
+ if(live?.version===1&&(!gatewayChanged||live.digest===digest)){
+  const job='apply-release-'+Date.now();
+  run(['sandboxes','exec',id,'--name',job,'--cmd','cd "$HOME" && node apply-live.mjs']);
+  let finished=false;
+  for(let i=0;i<100;i++){
+   const process=run(['sandboxes','ps',id]).find(p=>p.name===job);
+   if(process&&!process.running){
+    const logs=run(['sandboxes','logs',id,'--name',job,'--lines','30']);
+    if(process.exit_code!==0)throw Error('Live release failed: '+JSON.stringify(logs));
+    console.log('Applied without sandbox restart:',JSON.stringify(logs));finished=true;break;
+   }
+   await new Promise(r=>setTimeout(r,2000));
+  }
+  if(!finished)throw Error('Live release has not finished; inspect sandbox logs before retrying');
+ }else{
+  const state=run(['sandboxes','get',id]);
+  run(['sandboxes',state.enabled===false?'on':'boot',id]);
+ }
+ for(let i=0;i<60;i++){try{if((await fetch(URL_BASE+check,{signal:AbortSignal.timeout(10000)})).ok){console.log('Live:',URL_BASE+check);return;}}catch{}await new Promise(r=>setTimeout(r,1000));}
  throw Error(`${URL_BASE}${check} did not come back`);
 }
 export async function publishLayer({name,files,prefix='',check,deferRestart=false,targetSandbox}){
@@ -53,6 +73,8 @@ export async function publishLayer({name,files,prefix='',check,deferRestart=fals
 }
 // Write this commit's gateway and boot script; they take effect at the next restart.
 function installGateway(id){
+ const helper=readFileSync(fileURLToPath(new URL('./apply-live.mjs',import.meta.url)),'utf8');
+ run(['organization','home-files','write','--custom-sandbox',id,'--path','apply-live.mjs','--content',helper]);
  const src=readFileSync(fileURLToPath(new URL('./gateway.mjs',import.meta.url)),'utf8');
  run(['organization','home-files','write','--custom-sandbox',id,'--path','gateway.mjs','--content',src]);
  const jsonLayer=readFileSync(fileURLToPath(new URL('./apply-json-layer.mjs',import.meta.url)),'utf8');run(['organization','home-files','write','--custom-sandbox',id,'--path','apply-json-layer.mjs','--content',jsonLayer]);run(['sandboxes','update',id,'--boot-script',BOOT]);
@@ -68,9 +90,9 @@ export async function publishRelease({name='game',tgz,check='/healthz'}){
  const latest=applied.map(n=>n.match(/-(?:game|gameplay-progress|settings-pixi|skill-inspection|houdini-flame-fan)-([a-f0-9]{7,40})-[a-f0-9]{12}$/)?.[1]).filter(Boolean).at(-1);
  if(latest)requireReleaseAncestor(latest);
  const {hash,parts}=await uploadReleaseParts({file:tgz,name,dir:stage,transfer:async(local,part)=>{await retryPartTransfer(()=>run(['organization','home-files','transfer','--from-member',MEMBER,'--from',path.relative(os.homedir(),local),'--to-custom-sandbox',id,'--to',`layers/${part}`]));}});
- installGateway(id);await register(id,name,{hash,parts,format:'tgz'});await restart(id,check);
+ installGateway(id);await register(id,name,{hash,parts,format:'tgz'});await restart(id,check,true);
 }
-export async function deployGateway(){const id=sandboxId();installGateway(id);await restart(id,'/');}
+export async function deployGateway(){const id=sandboxId();installGateway(id);await restart(id,'/',true);}
 export async function readDir(dir){const files={};for(const f of await fs.readdir(dir,{recursive:true})){const p=path.join(dir,f);if((await fs.stat(p)).isFile())files['/'+f.split(path.sep).join('/')]=(await fs.readFile(p)).toString('base64');}return files;}
 
 if(process.argv[1]===fileURLToPath(import.meta.url)){
