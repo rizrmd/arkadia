@@ -1,0 +1,12 @@
+import {readDir,publishLayer,restart,sandboxId} from '../arkodia/publish-layer.mjs';
+import {partitionLayerFiles} from '../flame-fan-gameplay/batch-files.mjs';
+import {execFileSync} from 'node:child_process';
+const owned=['src/fx/flame-fan-static.ts','flame-fan-static.html','vite.flame-fan-static.config.ts','public/flame-fan-static','scripts/flame-fan-static','docs/flame-fan-static'];
+execFileSync('git',['diff','--exit-code','HEAD','--',...owned],{stdio:'inherit'});
+execFileSync('node',['scripts/flame-fan-static/build.mjs'],{stdio:'inherit'});
+const files=await readDir('dist-flame-fan-static');
+for(const path of execFileSync('git',['ls-files','docs/flame-fan-static'],{encoding:'utf8'}).trim().split('\n'))if(/\.(png|json|md)$/.test(path))files['/evidence/'+path.split('/').pop()]=execFileSync('git',['show','HEAD:'+path],{maxBuffer:12e6}).toString('base64');
+const sha=execFileSync('git',['rev-parse','--short','HEAD'],{encoding:'utf8'}).trim();
+const batches=partitionLayerFiles(files,6*1024*1024),id=sandboxId();
+for(let i=0;i<batches.length;i++)await publishLayer({name:`flame-fan-static-${sha}-${i}`,files:batches[i],prefix:'/ember-warden-review/flame-fan-static',deferRestart:true,targetSandbox:id});
+await restart(id,'/ember-warden-review/flame-fan-static/');
