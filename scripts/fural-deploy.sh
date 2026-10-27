@@ -117,26 +117,10 @@ cp -R public/rift-runner/sprite-player "$STAGE/site/rift-runner/sprite-player"
 mkdir -p "$STAGE/site/run-cadence/verification"
 cp docs/run-cadence/*.json docs/run-cadence/*.webp "$STAGE/site/run-cadence/verification/"
 
-# Flame Fan player and its evidence travel with the matching gameplay/VFX release.
-node scripts/flame-fan/build.mjs
-mkdir -p "$STAGE/site/ember-warden-review/flame-fan-levels/evidence"
-cp -R dist-flame-fan/. "$STAGE/site/ember-warden-review/flame-fan-levels/"
-cp docs/flame-fan/*.png docs/flame-fan/*.json docs/flame-fan/*.md "$STAGE/site/ember-warden-review/flame-fan-levels/evidence/"
-
-# The compact connected sheet player and actual-game scale evidence ship with combat.
-node scripts/flame-fan-preview/build.mjs
-mkdir -p "$STAGE/site/ember-warden-review/flame-fan-preview/evidence" "$STAGE/site/ember-warden-review/flame-fan-gameplay"
-cp -R dist-flame-fan-preview/. "$STAGE/site/ember-warden-review/flame-fan-preview/"
-cp docs/flame-fan-preview/*.png docs/flame-fan-preview/*.json docs/flame-fan-preview/*.md "$STAGE/site/ember-warden-review/flame-fan-preview/evidence/"
-for f in docs/flame-fan-gameplay/*.png docs/flame-fan-gameplay/*.json docs/flame-fan-gameplay/*.md; do
- [[ -f "$f" ]] || continue
- cp "$f" "$STAGE/site/ember-warden-review/flame-fan-gameplay/"
-done
-
-# Keep the dedicated Rift Dash player available on every later game release.
-node scripts/rift-dash/build.mjs
-mkdir -p "$STAGE/site/rift-dash/player"
-cp -R dist-rift-dash/. "$STAGE/site/rift-dash/player/"
+# FX Lab is the only VFX preview; gameplay assets remain available.
+mkdir -p "$STAGE/site/fx-lab/evidence"
+cp docs/fx-lab/*.png docs/fx-lab/*.json "$STAGE/site/fx-lab/evidence/"
+mkdir -p "$STAGE/site/rift-dash"
 cp -R public/rift-dash/v2 "$STAGE/site/rift-dash/v2"
 
 # Include task evidence and a manifest of the exact client/binary being shipped.

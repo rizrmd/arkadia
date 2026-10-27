@@ -1,3 +1,4 @@
+import {retiredVfxPage} from './scripts/arkodia/retired-vfx.mjs';
 import {bootProgress} from './scripts/vite/boot-progress';
 import {nixieNoiseCache} from './scripts/vite/nixie-noise-cache.ts';
 import fs from 'node:fs';import path from 'node:path';import crypto from 'node:crypto';
@@ -5,7 +6,7 @@ import {defineConfig,type Connect} from 'vite';
 // One page: index.html is the SPA and its router picks the view. Extensionless and directory paths fall back
 // to it (Vite's SPA fallback); retired .html pages (stronghold.html, the arena, expeditions) redirect to /.
 const retired=(p:string)=>p.endsWith('.html')&&p!=='/index.html';
-const toHome:Connect.NextHandleFunction=(req,res,next)=>{const u=new URL(req.url||'/','http://local');if(req.method==='GET'&&retired(u.pathname)){res.statusCode=302;res.setHeader('Location','/'+u.search);res.end();return;}next();};
+const toHome:Connect.NextHandleFunction=(req,res,next)=>{const u=new URL(req.url||'/','http://local');if(req.method==='GET'&&retiredVfxPage(u.pathname)){res.statusCode=302;res.setHeader('Location','/fx-lab/'+u.search);res.end();return;}if(req.method==='GET'&&retired(u.pathname)){res.statusCode=302;res.setHeader('Location','/'+u.search);res.end();return;}next();};
 // The loading screen weighs artwork by bytes: asset-sizes.json gives every public image's size before it downloads.
 const sizes=()=>{const out:Record<string,number>={},walk=(dir:string)=>{for(const e of fs.readdirSync(dir,{withFileTypes:true})){const p=path.join(dir,e.name);if(e.isDirectory())walk(p);else if(/\.(png|webp)$/.test(e.name))out['/'+path.relative('public',p).split(path.sep).join('/')]=fs.statSync(p).size;}};walk('public');return JSON.stringify(out);};
 const hudRevision=()=>{const hash=crypto.createHash('sha256'),walk=(dir:string)=>{for(const e of fs.readdirSync(dir,{withFileTypes:true}).sort((a,b)=>a.name.localeCompare(b.name))){const p=path.join(dir,e.name);if(e.isDirectory())walk(p);else if(/\.(png|webp|json)$/.test(e.name)){hash.update(path.relative('public',p));hash.update(fs.readFileSync(p));}}};walk('public/typography/v2/hud');return hash.digest('hex').slice(0,16);};

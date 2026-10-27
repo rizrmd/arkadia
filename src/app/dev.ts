@@ -3,14 +3,7 @@ import type {Progress} from './loading-progress';
 
 type Entry={label:string;path:string;kind:string;status:string};
 const entries:Entry[]=[
- {label:'Rift Dash Player',path:'/rift-dash/player/',kind:'VFX',status:'Dedicated Pixi player'},
- {label:'Skill Player',path:'/skill-player/',kind:'VFX',status:'Interactive skill catalog'},
  {label:'FX Lab',path:'/fx-lab/',kind:'VFX',status:'Full controls'},
- {label:'Flame Burst Player',path:'/flame-burst/',kind:'VFX',status:'Pixi player'},
- {label:'Flame Fan Levels',path:'/ember-warden-review/flame-fan-levels/',kind:'Spritesheet',status:'Animation levels'},
- {label:'Flame Fan Preview',path:'/ember-warden-review/flame-fan-preview/',kind:'VFX',status:'NixieFX preview'},
- {label:'Flame Fan Flipbook',path:'/ember-warden-review/flame-fan-flipbook/',kind:'Spritesheet',status:'Flipbook'},
- {label:'Rift Bolt Levels',path:'/rift-runner/rift-bolt-levels/',kind:'VFX',status:'Animation levels'},
  {label:'Sprite Player',path:'/sprite-player/',kind:'Spritesheet',status:'Hero pose player'},
  {label:'3D Hero Lab',path:'/3d-hero-lab/',kind:'3D',status:'Hero and animation lab'},
  {label:'Run Cadence',path:'/run-cadence/',kind:'Spritesheet',status:'Eight-direction review'},

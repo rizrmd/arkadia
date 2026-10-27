@@ -1,3 +1,4 @@
+import {GAMEPLAY_SNOW,gameplaySnowPattern} from './snow-material';
 import {renderObjects} from '../environment/render';
 import {environment as authoredEnvironment,watchEnvironment,columns as authoredColumns} from '../environment/model';
 import {GateHealthBar} from './gate-health-bar';
@@ -62,7 +63,7 @@ export async function createWorldView(
  const environment=environmentSprites(),images=new Map<string,HTMLImageElement>();
  let gateOpen=false,gatePassable=false;
  const spriteFile=(id:Building,level:number)=>id==='forge'?`/fortress-ui/forge-${level}.webp`:id==='gate'?'/modular-stronghold/v2/full-gateway-v7-closed.webp':`/assets/${slots[id].asset}.png`;
- const paving='/modular-stronghold/v2/paving-warm-texture.png',snow='/modular-stronghold/v2/snow-soft-texture.png';
+ const paving='/modular-stronghold/v2/paving-warm-texture.png',snow=GAMEPLAY_SNOW;
  const files=[...new Set([...(environment.some(p=>p.id==='brazier')?[BRAZIER_PHYSICAL_SOURCE]:[]),FRONTIER_ATLAS,FOUNDATION_SOIL,FOUNDATION_MOSS,FOUNDATION_DRIFT,paving,snow,CLIFF_ART,NATURAL_CLIFF_ART,'/modular-stronghold/v2/full-gateway-v7-closed.webp',...environment.map(p=>p.file),...buildings.flatMap(b=>[1,2,3].map(l=>spriteFile(b,l)))])];
  const DOWNLOAD=920,steps=1000,mb=(n:number)=>(n/1e6).toFixed(1);let loaded=DOWNLOAD;
  let queued=0;const report=()=>{queued=0;const {received,expected}=downloadedBytes();progress(320+Math.floor((DOWNLOAD-320)*received/Math.max(1,expected)),steps,`Loading artwork · ${mb(received)} of ${mb(expected)} MB`);};
@@ -76,7 +77,7 @@ export async function createWorldView(
  let w=0,h=0,dpr=1,scale=1,cx=WORLD.width/2,cy=385,selected:Building|null=null,levels:State['levels']|undefined;
  let built=new Set<Building>(LEGACY_LAYOUT?buildings:START_BUILT);
  const material=(file:string,size:number)=>{const img=images.get(file)!,s=size*1024/img.width,p=probeCtx.createPattern(img,'repeat')!;p.setTransform(new DOMMatrix([s,s/2,-s,s/2,COURT.x,COURT.y]));return p;};
- const snowPattern=material(snow,.7),pavingPattern=material(paving,.22);
+ const snowPattern=gameplaySnowPattern(probeCtx,images.get(snow)!),pavingPattern=material(paving,.22);
  // Raised terrain (world/relief.ts): plateaus and ramps get their own sprites just above the baked surface, tinted
  // like the open snow, and join the hero's scene so they hide actors standing below and behind them.
  const relief=paintRelief(images.get(snow)!,images.get(CLIFF_ART)!,images.get(NATURAL_CLIFF_ART)!).map(r=>{const view=createCanvasSprite(r.canvas);view.sync(r.width,r.height);view.sprite.zIndex=10.5;staticStage.addChild(view.sprite);return {...r,view};});
