@@ -4,9 +4,11 @@
 //   /ember-warden-review/   the Ember Warden animation review
 //   /enemies/ /rift-runner/ and every other review folder from the former split sandboxes
 //   /typography/            the MSDF typography rendering sample (HUD and Choose Your Hero)
-// Releases arrive as layers (see publish-layer.mjs) and are applied once at boot, oldest first.
+// Releases arrive as layers (see publish-layer.mjs), applied at boot or live through a local socket.
 import {applyJsonLayer} from './apply-json-layer.mjs';
-import http from 'node:http';import net from 'node:net';import fs from 'node:fs';import path from 'node:path';import {spawn,execFileSync} from 'node:child_process';
+import http from 'node:http';import net from 'node:net';import fs from 'node:fs';import path from 'node:path';import {spawn} from 'node:child_process';
+import {createHash} from 'node:crypto';
+import {fileURLToPath} from 'node:url';
 const home=process.cwd(),www=path.join(home,'www'),layers=path.join(home,'layers'),coopBin=path.join(home,'coop/arkodia'),legacyCoopBin=path.join(home,'coop/arkadia'),applied=path.join(home,'applied.json');
 const PORT=+(process.env.PORT||3000),COOP_PORT=+(process.env.COOP_PORT||3001);
 // Folders with their own pages (directory index and .html allowed); any other .html is a retired page and redirects home.
@@ -19,27 +21,39 @@ function target(key,layer){return path.join(www,path.normalize((layer.prefix||''
 // A layer is layers/<id>.json: {seq, parts, format: 'gzjson' (gzip JSON {path: base64}) | 'tgz' (game release: arkodia + site/), prefix?}.
 // A layer without a prefix that carries /index.html is a game release: that file is the game page.
 async function applyLayers(){
+ let binaryChanged=false;
  const done=fs.existsSync(applied)?JSON.parse(fs.readFileSync(applied,'utf8')):[];
  const pending=fs.existsSync(layers)?fs.readdirSync(layers).filter(n=>n.endsWith('.json')).map(n=>({id:n.slice(0,-5),...JSON.parse(fs.readFileSync(path.join(layers,n),'utf8'))})).sort((a,b)=>a.seq-b.seq):[];
  for(const layer of pending){
   if(!done.includes(layer.id)){
    if(layer.format==='tgz'){
     const tmp=path.join(home,'.layer-tmp');fs.rmSync(tmp,{recursive:true,force:true});fs.mkdirSync(tmp);
-    // Release archives exceed 350 MB. Concatenating their parts doubles that allocation and OOMs the
-    // 768 MB boot workload. Spool with one reusable 1 MiB buffer, then let tar read directly from disk.
-    const archive=path.join(home,'.layer-release.tgz'),buffer=Buffer.allocUnsafe(1<<20),out=fs.openSync(archive,'w');
-    try{for(const part of layer.parts){const input=fs.openSync(path.join(layers,part),'r');try{let n;while((n=fs.readSync(input,buffer,0,buffer.length,null))>0){let at=0;while(at<n)at+=fs.writeSync(out,buffer,at,n-at);}}finally{fs.closeSync(input);}}}finally{fs.closeSync(out);}
-    try{execFileSync('tar',['-xzf',archive,'-C',tmp],{maxBuffer:1<<20});}finally{fs.rmSync(archive,{force:true});}
-    // Releases built before the Arkadia → Arkodia rename carry the binary as 'arkadia'.
+    // Stream archive parts to disk and extract off the event loop so preview requests keep serving.
+    const archive=path.join(home,'.layer-release.tgz');
+    const buffer=Buffer.allocUnsafe(1<<20),output=await fs.promises.open(archive,'w');
+    try{for(const part of layer.parts){
+     const input=await fs.promises.open(path.join(layers,part),'r');
+     try{for(;;){const {bytesRead}=await input.read(buffer,0,buffer.length,null);if(!bytesRead)break;
+      for(let at=0;at<bytesRead;){const {bytesWritten}=await output.write(buffer,at,bytesRead-at,null);if(!bytesWritten)throw Error('Archive write made no progress');at+=bytesWritten;}
+     }}finally{await input.close();}
+    }}finally{await output.close();}
+    try{await new Promise((resolve,reject)=>{const tar=spawn('tar',['-xzf',archive,'-C',tmp],{stdio:['ignore','ignore','pipe']});let error='';tar.stderr.on('data',b=>{error=(error+b).slice(-4000);});tar.on('error',reject);tar.on('exit',code=>code===0?resolve():reject(Error('Release extraction failed: '+error)));});}finally{fs.rmSync(archive,{force:true});}
+    // Atomically replace the executable: overwriting a running Linux binary fails with ETXTBSY.
     const bin=['arkodia','arkadia'].map(n=>path.join(tmp,n)).find(f=>fs.existsSync(f));
-    if(bin){fs.mkdirSync(path.dirname(coopBin),{recursive:true});fs.copyFileSync(bin,coopBin);fs.chmodSync(coopBin,0o755);if(legacyCoopBin!==coopBin)fs.rmSync(legacyCoopBin,{force:true});}
-    const site=path.join(tmp,'site');if(fs.existsSync(site))for(const f of fs.readdirSync(site,{recursive:true})){const src=path.join(site,f),st=fs.statSync(src);if(st.isFile()){const dest=target('/'+f.split(path.sep).join('/'),layer);fs.mkdirSync(path.dirname(dest),{recursive:true});fs.copyFileSync(src,dest);fs.utimesSync(dest,st.mtime,st.mtime);}}
+    if(bin){
+     const digest=f=>createHash('sha256').update(fs.readFileSync(f)).digest('hex');
+     if(!fs.existsSync(coopBin)||digest(bin)!==digest(coopBin)){
+      fs.mkdirSync(path.dirname(coopBin),{recursive:true});fs.chmodSync(bin,0o755);fs.renameSync(bin,coopBin);binaryChanged=true;
+     }
+    }
+    const site=path.join(tmp,'site');if(fs.existsSync(site))for(const f of fs.readdirSync(site,{recursive:true}).sort((a,b)=>(a==='index.html')-(b==='index.html'))){const src=path.join(site,f),st=fs.statSync(src);if(st.isFile()){const dest=target('/'+f.split(path.sep).join('/'),layer);fs.mkdirSync(path.dirname(dest),{recursive:true});const staged=dest+'.release-tmp';fs.copyFileSync(src,staged);fs.utimesSync(staged,st.mtime,st.mtime);fs.renameSync(staged,dest);}}
     fs.rmSync(tmp,{recursive:true,force:true});
    }else{await applyJsonLayer(home,www,layer);}
    done.push(layer.id);fs.writeFileSync(applied,JSON.stringify(done,null,1));console.log('Applied layer',layer.id);
   }
   for(const n of [...layer.parts,layer.id+'.json'])fs.rmSync(path.join(layers,n),{force:true});
  }
+ return {binaryChanged,applied:done};
 }
 
 // The co-op server only answers /ws, /api and /healthz here; restart it if it exits.
@@ -49,7 +63,7 @@ function startCoop(){
  const bin=[coopBin,legacyCoopBin].find(f=>fs.existsSync(f));
  if(!bin){console.log('No co-op server binary yet');return;}
  const child=coop=spawn(bin,{env:{...process.env,PORT:String(COOP_PORT),SITE_DIR:www,GAME_SAVE_DIR:path.join(home,'game-saves')},stdio:'inherit'});
- child.on('exit',code=>{console.log('Co-op server exited',code);if(coop===child)setTimeout(startCoop,2000);});
+ child.on('exit',code=>{console.log('Co-op server exited',code);if(coop===child)setTimeout(()=>{if(coop===child)startCoop();},2000);});
 }
 for(const sig of ['SIGTERM','SIGINT'])process.on(sig,()=>{const c=coop;coop=null;c?.kill();process.exit(0);});
 
@@ -106,3 +120,34 @@ server.on('upgrade',(req,socket,head)=>{
  up.on('error',()=>socket.destroy());socket.on('error',()=>up.destroy());
 });
 server.listen(PORT,'0.0.0.0',()=>console.log('Arkodia gateway listening on',PORT));
+
+// Release control is a local Unix socket, never a public HTTP route. Updating layers must not
+// remove domain bindings or stop the gateway that serves /dev and the independent players.
+const controlPath=path.join(home,'.gateway-control.sock');
+fs.rmSync(controlPath,{force:true});
+let applying=false;
+const control=http.createServer(async(req,res)=>{
+ if(req.method!=='POST'||req.url!=='/apply'){res.writeHead(404).end();return;}
+ if(applying){res.writeHead(409).end('Another release is applying');return;}
+ applying=true;
+ try{
+  const result=await applyLayers();
+  if(result.binaryChanged){
+   const previous=coop;coop=null;
+   if(previous&&previous.exitCode===null){
+    await new Promise((resolve,reject)=>{
+     const timeout=setTimeout(()=>reject(Error('Game server did not stop gracefully')),30000);
+     previous.once('exit',()=>{clearTimeout(timeout);resolve();});previous.kill('SIGTERM');
+    });
+   }
+   startCoop();
+  }
+  res.writeHead(200,{'Content-Type':'application/json'}).end(JSON.stringify(result));
+ }catch(error){console.error('Live release failed',error);res.writeHead(500).end(String(error));}
+ finally{applying=false;}
+});
+control.listen(controlPath,()=>{
+ fs.chmodSync(controlPath,0o600);
+ const digest=createHash('sha256').update(fs.readFileSync(fileURLToPath(import.meta.url))).digest('hex');
+ fs.writeFileSync(path.join(home,'.gateway-live.json'),JSON.stringify({version:1,pid:process.pid,digest}));
+});
