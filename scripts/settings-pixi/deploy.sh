@@ -30,6 +30,7 @@ node --input-type=module <<'MANIFEST'
 import fs from 'node:fs';import {createHash} from 'node:crypto';import {execFileSync} from 'node:child_process';
 const stage=process.env.SETTINGS_RELEASE_STAGE,commit=execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim();
 const files=Object.fromEntries(fs.readdirSync(stage+'/site/assets').map(f=>['/assets/'+f,createHash('sha256').update(fs.readFileSync(stage+'/site/assets/'+f)).digest('hex')]));
+for(const name of ['panel','button']){const path='/ui/settings/v2/'+name+'.webp';files[path]=createHash('sha256').update(fs.readFileSync(stage+'/site'+path)).digest('hex');}
 fs.writeFileSync(stage+'/site/settings-pixi/release.json',JSON.stringify({commit,at:new Date().toISOString(),feature:'Native Pixi Settings and persistent equipped-skill shortcuts',files},null,2));
 MANIFEST
 python3 - "$SETTINGS_RELEASE_STAGE" <<'ARCHIVE'
