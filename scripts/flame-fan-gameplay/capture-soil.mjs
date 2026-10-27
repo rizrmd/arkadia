@@ -4,7 +4,7 @@ const server=remote?null:http.createServer((req,res)=>{if(req.url.startsWith('/a
 let browser;const errors=[],frames=[];
 try{for(const width of (process.env.WIDTH?[+process.env.WIDTH]:[1440,390])){
  browser=await launch();const page=await browser.newPage({viewport:{width,height:width===390?844:900},isMobile:width===390,hasTouch:width===390});page.on('pageerror',e=>errors.push(e.message));await page.routeWebSocket('**/*',()=>{});if(remote)await page.clock.install();
- await page.goto((remote||'http://127.0.0.1:3949')+'/?offline=1&hero=ember-warden&quality=low&time=.45',{waitUntil:'domcontentloaded'});await page.waitForFunction(()=>window.__STRONGHOLD_COMBAT__?.snapshot().vfx.fx.ready&&!document.querySelector('#loading-screen'),null,{timeout:90000});if(remote)await page.clock.pauseAt((await page.evaluate(()=>Date.now()))+100);
+ await page.goto((remote||'http://127.0.0.1:3949')+'/?offline=1&hero=ember-warden&quality=low&time=.45',{waitUntil:'domcontentloaded'});await page.waitForFunction(()=>window.__STRONGHOLD_COMBAT__?.snapshot().vfx.fx.ready&&!document.querySelector('#loading-screen'),null,{timeout:90000});if(!remote)await page.evaluate(()=>window.__PIXI_UI__.app.ticker.stop());if(remote)await page.clock.pauseAt((await page.evaluate(()=>Date.now()))+100);
  await page.evaluate(()=>{const c=window.__STRONGHOLD_COMBAT__;c.setPreviewMode(true);c.clearFoes();c.teleport(26,26);});
  for(let rank=1;rank<=5;rank++){
   if(process.env.RANKS&&!process.env.RANKS.split(',').includes(String(rank))){if(rank>1)await page.evaluate(()=>{const c=window.__STRONGHOLD_COMBAT__;c.offer(['flame-fan']);c.choose('flame-fan');});continue;}

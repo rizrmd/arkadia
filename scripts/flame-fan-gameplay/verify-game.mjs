@@ -37,7 +37,7 @@ try {
  await page.goto((external||'http://127.0.0.1:3949')+'/?offline=1&hero=ember-warden&quality=low&time=.45',{waitUntil:'domcontentloaded'});
  
  await page.waitForFunction(()=>window.__STRONGHOLD_COMBAT__?.snapshot().vfx.fx.ready&&!document.querySelector('#loading-screen'),null,{timeout:120000,polling:500});
- console.log('Game ready',width);
+ console.log('Game ready',width);await page.evaluate(()=>window.__PIXI_UI__.app.ticker.stop());
  
  const at=await page.evaluate(()=>{const c=window.__STRONGHOLD_COMBAT__;c.setPreviewMode(true);c.clearFoes();
  for(let u=18;u<60;u+=2)for(let v=18;v<60;v+=2){let valid=true;for(const a of [0,Math.PI/2,Math.PI,-Math.PI/2,Math.PI/4])for(const [x,y] of [[0,0],[2,-.8],[2,0],[2,.8],[-2,0],[9,0]]){if(c.summon(u+x*Math.cos(a)-y*Math.sin(a),v+x*Math.sin(a)+y*Math.cos(a),25)<0)valid=false;}c.clearFoes();if(valid&&c.teleport(u,v))return {u,v};}throw Error('No open outdoor test position');});
