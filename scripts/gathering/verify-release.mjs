@@ -1,0 +1,6 @@
+import assert from 'node:assert/strict';import fs from 'node:fs/promises';import {createHash} from 'node:crypto';
+const base=process.env.VERIFY_URL||'https://arkodia.online';const report={base,at:new Date().toISOString(),files:{}};
+const health=await fetch(base+'/healthz',{cache:'no-store'});assert.equal(health.status,200);report.health=await health.text();const response=await fetch(base+'/gathering-verification/release.json',{cache:'no-store'});assert.equal(response.status,200);const release=await response.json();report.commit=release.commit;
+for(const [path,expected]of Object.entries(release.files)){const r=await fetch(base+path,{cache:'no-store'});assert.equal(r.status,200,path);const bytes=Buffer.from(await r.arrayBuffer()),hash=createHash('sha256').update(bytes).digest('hex');assert.equal(hash,expected,path);report.files[path]={status:r.status,bytes:bytes.length,sha256:hash};}
+for(const path of ['/environment-editor/','/fx-lab/','/api/environment/published']){const r=await fetch(base+path,{cache:'no-store'});assert.equal(r.status,200,path);report.files[path]={status:r.status};}
+report.passed=true;await fs.writeFile('docs/gathering/live-release.json',JSON.stringify(report,null,2));console.log(JSON.stringify({commit:report.commit,health:report.health,verifiedFiles:Object.keys(report.files).length,passed:true}));
