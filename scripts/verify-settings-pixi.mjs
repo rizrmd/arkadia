@@ -40,7 +40,7 @@ try{
  // Close and reopen a real page with retained origin storage, without re-seeding preferences.
  await page.close();page=await context.newPage();attach();await page.goto(report.base+'/?offline=1&hero=rift-runner&time=.45&3d=0',{waitUntil:'domcontentloaded',timeout:180000});await ready();assert.deepEqual((await snapshot()).bindings,beforeReload.bindings);report.persistence=true;
  for(const [name,width,height] of [['desktop',1440,900],['portrait',390,844],['landscape',844,390],['small-portrait',320,568]]){
-  await page.setViewportSize({width,height});await page.waitForTimeout(350);await click('Open Settings',true);const s=await snapshot();assert(s.panel.x>=0&&s.panel.y>=0&&s.panel.x+s.panel.width<=width&&s.panel.y+s.panel.height<=height);
+  await page.setViewportSize({width,height});await page.waitForFunction(()=>window.__PIXI_UI__.app.screen.width===innerWidth&&window.__PIXI_UI__.app.screen.height===innerHeight);await page.waitForTimeout(1000);await click('Open Settings',true);const s=await snapshot();assert(s.panel.x>=0&&s.panel.y>=0&&s.panel.x+s.panel.width<=width&&s.panel.y+s.panel.height<=height);
   await screenshot(name+'-menu');await click('binding-2',true);await page.keyboard.press('r');assert.equal((await snapshot()).bindings[2],'KeyR');await screenshot(name+'-shortcuts');
   await click('reset-bindings',true);assert.deepEqual((await snapshot()).bindings,['Digit1','Digit2','Digit3']);
   const stored=await page.evaluate(()=>({...localStorage}));
@@ -51,7 +51,7 @@ try{
   await click('resume',true);assert(!(await snapshot()).open);report.views[name]={viewport:[width,height],panel:s.panel,resetCancellation:true,touchBindings:true};await note(name+' passed');
  }
  // Confirmed reset only in this isolated test browser. Preserve preferences, bindings and unrelated storage.
- await page.setViewportSize({width:1440,height:900});await page.waitForTimeout(350);await click('Open Settings');await click('binding-0');await page.keyboard.press('q');
+ await page.setViewportSize({width:1440,height:900});await page.waitForFunction(()=>window.__PIXI_UI__.app.screen.width===innerWidth&&window.__PIXI_UI__.app.screen.height===innerHeight);await page.waitForTimeout(1000);await click('Open Settings');await click('binding-0');await page.keyboard.press('q');
  const preserved=await page.evaluate(()=>({settings:localStorage.getItem('arkodia.settings.v1'),bindings:localStorage.getItem('arkodia.skill-bindings.v1')}));await click('reset-progression');await Promise.all([page.waitForEvent('domcontentloaded',{timeout:90000}),click('confirm-reset')]);await ready();
  assert.deepEqual(await page.evaluate(()=>({settings:localStorage.getItem('arkodia.settings.v1'),bindings:localStorage.getItem('arkodia.skill-bindings.v1')})),preserved);assert.equal(await page.evaluate(()=>localStorage.getItem('settings-unrelated')),'keep');
  assert.equal(await page.evaluate(()=>JSON.parse(localStorage.getItem('arkodia-stronghold-v1')).gold),600);
