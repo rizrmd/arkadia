@@ -750,7 +750,8 @@ export class Hud extends Container {
   (this.trRibbonClockIcon as Sprite).texture=this.frames.texture('mobile-clock');
   (this.trRibbonZoneIcon as Sprite).texture=this.frames.texture('mobile-pin');
   const layout=mobileHudLayout(w),k=layout.scale*1.22;
-  const left=layout.left+6+156*k,right=layout.left+6+430*k,top=layout.top+3+143*k,h=44*k;
+  const left=layout.left+6+156*k,right=layout.left+6+430*k,h=44*k;
+  const top=(this.playerConsole?.getXpBottom() ?? layout.top+3+153*k)+4;
   const mid=left+(right-left)*0.60;
   g.roundRect(left,top,right-left,h, h/2).fill({color:0x090909,alpha:.95}).stroke({color:0xd5af52,width:1});
   g.moveTo(mid,top+4).lineTo(mid,top+h-4).stroke({color:0xd5af52,width:.8});
@@ -1554,7 +1555,7 @@ export class Hud extends Container {
  topRightPopoverAnchor(row: 1 | 3): { x: number; y: number; scale: number } {
   const s = this.lastScale;
   if (this.isAltB) {
-   if(this.isMobile){const safe=mobileHudLayout(this.lastWidth),k=safe.scale*1.22;return {x:safe.left+6+430*k,y:safe.top+3+180*k,scale:k};}
+   if(this.isMobile){const safe=mobileHudLayout(this.lastWidth),k=safe.scale*1.22;return {x:safe.left+6+430*k,y:(this.playerConsole?.getXpBottom() ?? safe.top+3+153*k)+4+44*k,scale:k};}
    const t = this.getTopRightTelemetry();
    return {x: t.screenBounds.right, y: t.screenBounds.bottom + 8, scale: this.trRibbonGroup.scale.x};
   }

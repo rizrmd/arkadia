@@ -113,6 +113,11 @@ export class PlayerConsole extends Container {
   }
  }
 
+ /** Screen-space lower edge, including the XP plate's shadow and border. */
+ getXpBottom() {
+  return this.rows[2].plate.getBounds().maxY;
+ }
+
  private rebuildLayout() {
   const p = this.isPortrait;
   const rightTop = p ? 430 : 558;
