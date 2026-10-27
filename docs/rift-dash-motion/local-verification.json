@@ -1,0 +1,298 @@
+{
+  "base": "http://127.0.0.1:5297",
+  "views": [
+    {
+      "name": "portrait",
+      "width": 390,
+      "height": 844,
+      "touch": true,
+      "cases": [
+        {
+          "heading": "W",
+          "neutralInput": true,
+          "cursorOpposite": true,
+          "from": {
+            "u": 17.86047838554096,
+            "v": 18.13952161445904
+          },
+          "to": {
+            "u": 16.799818213761142,
+            "v": 19.20018178623886
+          },
+          "frames": [
+            {
+              "ms": 50,
+              "hero": {
+                "hp": 100,
+                "maxHp": 100,
+                "state": "idle",
+                "u": 17.6,
+                "v": 18.4,
+                "meters": 44.6,
+                "safe": false,
+                "reach": 1,
+                "aoeCastRadiusTiles": 2.2,
+                "critChance": 0.15,
+                "critMultiplier": 1.5
+              },
+              "travel": {
+                "from": {
+                  "u": 17.86047838554096,
+                  "v": 18.13952161445904
+                },
+                "to": {
+                  "u": 16.799818213761142,
+                  "v": 19.20018178623886
+                },
+                "age": 64
+              },
+              "art": {
+                "generated": true,
+                "arrivalVisible": false,
+                "trailRotation": 3.141592653589793,
+                "active": true,
+                "ghosts": 1,
+                "particles": 12,
+                "age": 64,
+                "path": {
+                  "from": {
+                    "u": 17.86047838554096,
+                    "v": 18.13952161445904
+                  },
+                  "to": {
+                    "u": 16.799818213761142,
+                    "v": 19.20018178623886
+                  }
+                }
+              }
+            },
+            {
+              "ms": 100,
+              "hero": {
+                "hp": 100,
+                "maxHp": 100,
+                "state": "idle",
+                "u": 17.47,
+                "v": 18.53,
+                "meters": 44.6,
+                "safe": false,
+                "reach": 1,
+                "aoeCastRadiusTiles": 2.2,
+                "critChance": 0.15,
+                "critMultiplier": 1.5
+              },
+              "travel": {
+                "from": {
+                  "u": 17.86047838554096,
+                  "v": 18.13952161445904
+                },
+                "to": {
+                  "u": 16.799818213761142,
+                  "v": 19.20018178623886
+                },
+                "age": 96
+              },
+              "art": {
+                "generated": true,
+                "arrivalVisible": false,
+                "trailRotation": 3.141592653589793,
+                "active": true,
+                "ghosts": 2,
+                "particles": 12,
+                "age": 96,
+                "path": {
+                  "from": {
+                    "u": 17.86047838554096,
+                    "v": 18.13952161445904
+                  },
+                  "to": {
+                    "u": 16.799818213761142,
+                    "v": 19.20018178623886
+                  }
+                }
+              }
+            },
+            {
+              "ms": 150,
+              "hero": {
+                "hp": 100,
+                "maxHp": 100,
+                "state": "idle",
+                "u": 17.21,
+                "v": 18.79,
+                "meters": 44.7,
+                "safe": false,
+                "reach": 1,
+                "aoeCastRadiusTiles": 2.2,
+                "critChance": 0.15,
+                "critMultiplier": 1.5
+              },
+              "travel": {
+                "from": {
+                  "u": 17.86047838554096,
+                  "v": 18.13952161445904
+                },
+                "to": {
+                  "u": 16.799818213761142,
+                  "v": 19.20018178623886
+                },
+                "age": 160
+              },
+              "art": {
+                "generated": true,
+                "arrivalVisible": false,
+                "trailRotation": 3.141592653589793,
+                "active": true,
+                "ghosts": 3,
+                "particles": 12,
+                "age": 160,
+                "path": {
+                  "from": {
+                    "u": 17.86047838554096,
+                    "v": 18.13952161445904
+                  },
+                  "to": {
+                    "u": 16.799818213761142,
+                    "v": 19.20018178623886
+                  }
+                }
+              }
+            },
+            {
+              "ms": 200,
+              "hero": {
+                "hp": 100,
+                "maxHp": 100,
+                "state": "idle",
+                "u": 17.01,
+                "v": 18.99,
+                "meters": 44.7,
+                "safe": false,
+                "reach": 1,
+                "aoeCastRadiusTiles": 2.2,
+                "critChance": 0.15,
+                "critMultiplier": 1.5
+              },
+              "travel": {
+                "from": {
+                  "u": 17.86047838554096,
+                  "v": 18.13952161445904
+                },
+                "to": {
+                  "u": 16.799818213761142,
+                  "v": 19.20018178623886
+                },
+                "age": 208
+              },
+              "art": {
+                "generated": true,
+                "arrivalVisible": false,
+                "trailRotation": 3.141592653589793,
+                "active": true,
+                "ghosts": 4,
+                "particles": 12,
+                "age": 208,
+                "path": {
+                  "from": {
+                    "u": 17.86047838554096,
+                    "v": 18.13952161445904
+                  },
+                  "to": {
+                    "u": 16.799818213761142,
+                    "v": 19.20018178623886
+                  }
+                }
+              }
+            },
+            {
+              "ms": 250,
+              "hero": {
+                "hp": 100,
+                "maxHp": 100,
+                "state": "idle",
+                "u": 16.88,
+                "v": 19.12,
+                "meters": 44.8,
+                "safe": false,
+                "reach": 1,
+                "aoeCastRadiusTiles": 2.2,
+                "critChance": 0.15,
+                "critMultiplier": 1.5
+              },
+              "travel": {
+                "from": {
+                  "u": 17.86047838554096,
+                  "v": 18.13952161445904
+                },
+                "to": {
+                  "u": 16.799818213761142,
+                  "v": 19.20018178623886
+                },
+                "age": 240
+              },
+              "art": {
+                "generated": true,
+                "arrivalVisible": false,
+                "trailRotation": 3.141592653589793,
+                "active": true,
+                "ghosts": 5,
+                "particles": 12,
+                "age": 240,
+                "path": {
+                  "from": {
+                    "u": 17.86047838554096,
+                    "v": 18.13952161445904
+                  },
+                  "to": {
+                    "u": 16.799818213761142,
+                    "v": 19.20018178623886
+                  }
+                }
+              }
+            },
+            {
+              "ms": 300,
+              "hero": {
+                "hp": 100,
+                "maxHp": 100,
+                "state": "idle",
+                "u": 16.8,
+                "v": 19.2,
+                "meters": 44.8,
+                "safe": false,
+                "reach": 1,
+                "aoeCastRadiusTiles": 2.2,
+                "critChance": 0.15,
+                "critMultiplier": 1.5
+              },
+              "travel": null,
+              "art": {
+                "generated": true,
+                "arrivalVisible": true,
+                "trailRotation": 3.141592653589793,
+                "active": true,
+                "ghosts": 5,
+                "particles": 12,
+                "age": 304,
+                "path": {
+                  "from": {
+                    "u": 17.86047838554096,
+                    "v": 18.13952161445904
+                  },
+                  "to": {
+                    "u": 16.799818213761142,
+                    "v": 19.20018178623886
+                  }
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "passed": true
+    }
+  ],
+  "errors": [],
+  "at": "2026-10-27T08:58:53.657Z",
+  "passed": true
+}

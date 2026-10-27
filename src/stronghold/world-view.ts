@@ -256,7 +256,7 @@ if((p as any).authored)return authoredColumns((p as any).authored).map(c=>({...c
  let walker:AutoWalk|undefined;const input=()=>walker?walker.input(direction()):direction();
  await milestone(925,'Preparing the hero');
  const hero=await createHero<(typeof objects)[number]>({hero:pick,layer:worldStage,lightmap:lighting.lightmap,surface,footprint:p=>p.id==='gate'?gateFootprint():footprint(p),sun:lighting.sun,direction:()=>encounters?encounters.steer(input()):input(),follow,pose:()=>encounters?.pose()??null,
-  drive:()=>{if(!net?.active())return null;const p=net.position(),me=net.me();return {...p,face:direction(),look:me&&me.st!=='idle'?{facing:me.fc,back:me.bk,vertical:me.vt}:null};}});hero.setScene(scene());
+  drive:()=>{if(!net?.active())return null;const p=net.position(),me=net.me();const r=me?.run,dashing=r?.dashElapsed!==undefined&&r.dashElapsed<260&&!!r.dashDistance;return {...p,face:dashing?{x:((r.dashU??0)-(r.dashV??0))*64,y:((r.dashU??0)+(r.dashV??0))*32}:direction(),look:me&&me.st!=='idle'?{facing:me.fc,back:me.bk,vertical:me.vt}:null};}});hero.setScene(scene());
  watchEnvironment(async()=>{authoredStage.removeChildren().forEach(c=>c.destroy());authoredScene=await renderObjects(authoredEnvironment(),authoredStage);hero?.setScene(scene());requestDraw();});
 
  await milestone(930,'Preparing combat');

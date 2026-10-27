@@ -49,6 +49,8 @@ type CastGeometry struct {
 
 type Progression struct {
 	CastGeometry *CastGeometry  `json:"castGeometry,omitempty"`
+	DashDistance float64        `json:"dashDistance,omitempty"`
+	DashElapsed  float64        `json:"dashElapsed,omitempty"`
 	ManualDashes int            `json:"manualDashes,omitempty"`
 	DashFromU    float64        `json:"dashFromU,omitempty"`
 	DashFromV    float64        `json:"dashFromV,omitempty"`

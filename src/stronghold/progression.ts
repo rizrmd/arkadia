@@ -12,7 +12,7 @@ export type Progression={
  // Base active ranks restored from permanent solo unlocks; excluded from this run's spent cards.
  retainedSkills?:string[];
  autoCasts?:number;
- manualDashes?:number;dashFromU?:number;dashFromV?:number;dashU?:number;dashV?:number;
+ dashDistance?:number;dashElapsed?:number;manualDashes?:number;dashFromU?:number;dashFromV?:number;dashU?:number;dashV?:number;
  trinityCasts?:number;
  lastCast?:string[];
  castGeometry?:{fromU:number;fromV:number;targetU:number;targetV:number};

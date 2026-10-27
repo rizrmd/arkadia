@@ -29,10 +29,10 @@ export class RiftDashVfx{
   this.root.visible=ms>=0&&ms<1100;if(!this.root.visible)return;
   const dx=to.x-from.x,dy=to.y-from.y,len=Math.hypot(dx,dy),angle=Math.atan2(dy,dx),fade=Math.max(0,1-ms/1100);
   this.departure.visible=ms<480;this.departure.texture=this.sheets.departure[Math.min(15,Math.floor(ms/30))];this.departure.position.set(from.x,from.y-16*scale);this.departure.width=118*scale;this.departure.height=100*scale;this.departure.alpha=fade;
-  this.arrival.visible=ms>=150;this.arrival.texture=this.sheets.arrival[Math.max(0,Math.min(15,Math.floor((ms-150)/45)))];this.arrival.position.set(to.x,to.y-18*scale);this.arrival.width=130*scale;this.arrival.height=112*scale;this.arrival.alpha=fade;
-  this.trail.position.set(from.x,from.y-28*scale);this.trail.rotation=angle;this.trail.width=len+20*scale;this.trail.height=68*scale;this.trail.alpha=Math.min(1,ms/90)*fade;
-  this.ghosts.forEach((s,i)=>{const t=(i+1)/6;s.visible=!!this.ghostTexture&&ms>i*24;s.position.set(from.x+dx*t,from.y+dy*t);s.height=100*scale;s.width=s.texture.width/s.texture.height*s.height;s.alpha=fade*(.12+i*.045);});
-  this.sparks.forEach((s,i)=>{const t=i/12,travel=ms*.025*scale,side=i%2?1:-1;s.position.set(from.x+dx*t-Math.sin(angle)*side*travel,from.y+dy*t-22*scale+Math.cos(angle)*side*travel);s.width=s.height=(14+i%3*5)*scale;s.rotation=angle+ms*.001;s.alpha=fade*.8;});
+  this.arrival.visible=ms>=260;this.arrival.texture=this.sheets.arrival[Math.max(0,Math.min(15,Math.floor((ms-260)/45)))];this.arrival.position.set(to.x,to.y-18*scale);this.arrival.width=130*scale;this.arrival.height=112*scale;this.arrival.alpha=fade;
+  this.trail.position.set(from.x,from.y-28*scale);this.trail.rotation=angle;this.trail.width=len*Math.min(1,ms/260)+20*scale;this.trail.height=68*scale;this.trail.alpha=Math.min(1,ms/90)*fade;
+  this.ghosts.forEach((s,i)=>{const t=(i+1)/6;s.visible=!!this.ghostTexture&&ms>t*260;s.position.set(from.x+dx*t,from.y+dy*t);s.height=100*scale;s.width=s.texture.width/s.texture.height*s.height;s.alpha=fade*(.12+i*.045);});
+  this.sparks.forEach((s,i)=>{const t=i/12;s.visible=ms>=t*260;const travel=ms*.025*scale,side=i%2?1:-1;s.position.set(from.x+dx*t-Math.sin(angle)*side*travel,from.y+dy*t-22*scale+Math.cos(angle)*side*travel);s.width=s.height=(14+i%3*5)*scale;s.rotation=angle+ms*.001;s.alpha=fade*.8;});
  }
- snapshot(){return {generated:true,active:this.root.visible,ghosts:this.ghosts.filter(s=>s.visible).length,particles:this.sparks.length};}
+ snapshot(){return {generated:true,arrivalVisible:this.root.visible&&this.arrival.visible,trailRotation:this.trail.rotation,active:this.root.visible,ghosts:this.ghosts.filter(s=>s.visible).length,particles:this.sparks.length};}
 }

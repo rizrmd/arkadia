@@ -9,12 +9,12 @@ import fs from 'node:fs/promises';import {readFileSync} from 'node:fs';import os
 // From code: import {publishLayer} from './arkodia/publish-layer.mjs'; await publishLayer({name, files: {'/path': base64}, prefix}).
 // The game itself ships only as a release: review and evidence layers take a prefix and never carry /index.html.
 const run=args=>{try{return JSON.parse(execFileSync('fural-agent',args,{encoding:'utf8',timeout:180000,maxBuffer:8e6,stdio:['ignore','pipe','pipe']}));}catch(e){throw Error((e.stderr||e.stdout||e.message).toString().slice(0,1800));}};
-export const SANDBOX='arkadia',URL_BASE='https://ark-whachat.fural.space',PROJECT='PJ8758f22f61165f3d3215e454',MEMBER=process.env.FURAL_PUBLISH_MEMBER||(()=>{try{return run(['whoami']).user_id;}catch{return '';}})()||'US4f550b10dab65dc9756fa429';
+export const SANDBOX='arkadia',URL_BASE=process.env.ARKODIA_URL_BASE||'https://arkodia.online',PROJECT='PJ8758f22f61165f3d3215e454',MEMBER=process.env.FURAL_PUBLISH_MEMBER||(()=>{try{return run(['whoami']).user_id;}catch{return '';}})()||'US4f550b10dab65dc9756fa429';
 export const BOOT=`cd "$HOME"
 if [ ! -f www/.seeded ] && ls seed/www.tgz.* >/dev/null 2>&1; then rm -rf www builds coop && cat seed/www.tgz.* | tar -xz && touch www/.seeded && rm -rf seed; fi
 exec node gateway.mjs
 `;
-export function sandboxId(){const s=run(['sandboxes','list']),list=Array.isArray(s)?s:s.sandboxes||s.items||[],b=list.find(x=>x.name===SANDBOX);if(!b)throw Error(`Custom sandbox ${SANDBOX} not found`);return b.id;}
+export function sandboxId(){const s=run(['sandboxes','list']),list=Array.isArray(s)?s:s.sandboxes||s.items||[],b=list.find(x=>x.slug===SANDBOX)||list.find(x=>x.name===SANDBOX);if(!b)throw Error(`Custom sandbox ${SANDBOX} not found`);return b.id;}
 const stage=path.join(os.homedir(),'releases/arkodia-layers');
 
 export async function retryPartTransfer(transfer,wait=ms=>new Promise(r=>setTimeout(r,ms))){

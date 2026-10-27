@@ -43,7 +43,7 @@ export function createNet(o:{direction:()=>Walk;maxHp:()=>number;hero:()=>string
  const block=(pass:boolean)=>(x:number,y:number)=>blocked!(x,y,pass);
  const othersAtGate=(s:Snapshot,open:boolean)=>s.players.some(p=>p.id!==you&&p.st!=='die'&&atGate(p.x,p.y,open));
  function reset(state:Welcome['state']){
-  timeline.reset(you);latest=null;
+  timeline.reset(you);latest=null;dashView=null;
   const unsentChoice=pending.find(i=>i.choice);
   if(unsentChoice&&!choice)choice={choice:unsentChoice.choice!,level:unsentChoice.level??1};
   pending=[];margins=[];hold=0;pace=1;seq=0;acc=0;err={x:0,y:0};
@@ -53,6 +53,17 @@ export function createNet(o:{direction:()=>Walk;maxHp:()=>number;hero:()=>string
  function reconcile(s:Snapshot){
   const me=mine(s);if(!me||!blocked)return;
   pending=pending.filter(i=>i.seq>s.ack);
+  const run=me.run;
+  if(run?.manualDashes&&run.dashDistance&&run.dashElapsed!==undefined&&run.dashElapsed<260){
+   const from={x:me.x,y:me.y},left=(1-run.dashElapsed/260)*run.dashDistance;
+   // Use server world coordinates and the same isometric tile basis as navigation.
+   dashView={id:run.manualDashes,from,to:{x:me.x+((run.dashU??0)-(run.dashV??0))*64*left,y:me.y+((run.dashU??0)+(run.dashV??0))*32*left},started:performance.now()-run.dashElapsed};
+   const fraction=run.dashElapsed/260;
+   if(fraction<1){dashView.from={x:(from.x-dashView.to.x*fraction)/(1-fraction),y:(from.y-dashView.to.y*fraction)/(1-fraction)};}
+   pred={...from};prev={...from};err={x:0,y:0};hold=s.hd??0;return;
+  }
+  if(dashView&&run?.manualDashes===dashView.id&&run.dashElapsed===260){dashView=null;pred={x:me.x,y:me.y};prev={...pred};err={x:0,y:0};}
+
   // Under any steps the server guessed ahead of late inputs (sim.Player.Owed): where the last applied input left it.
   // A hero held in a swing or hit keeps the guessed steps.
   const idle=me.st==='idle';let x=idle?s.bx??me.x:me.x,y=idle?s.by??me.y:me.y;
@@ -151,6 +162,7 @@ export function createNet(o:{direction:()=>Walk;maxHp:()=>number;hero:()=>string
  setInterval(()=>{if(ws?.readyState===WebSocket.OPEN)ws.send(JSON.stringify({t:'ping',c:performance.now()}));},1000);
  let choice:{choice:string;level:number}|null=null;
  let dash:{u:number;v:number}|null=null;
+ let dashView:{id:number;from:{x:number;y:number};to:{x:number;y:number};started:number}|null=null;
  const api={
   dash(u:number,v:number){if(status==='online')dash={u,v};},
  chooseCard(id:string,level:number){choice={choice:id,level};},
@@ -163,7 +175,7 @@ export function createNet(o:{direction:()=>Walk;maxHp:()=>number;hero:()=>string
   active:()=>!!you&&status!=='idle',
   latest:()=>latest,me:()=>mine(latest),
   // Own hero: predicted position between the last two ticks, plus the fading correction.
-  position(){const k=Math.min(1,acc/(TICK_MS*pace));return {x:lerp(prev.x,pred.x,k)+err.x,y:lerp(prev.y,pred.y,k)+err.y};},
+  position(){if(dashView){const k=Math.max(0,Math.min(1,(performance.now()-dashView.started)/260));return {x:lerp(dashView.from.x,dashView.to.x,k),y:lerp(dashView.from.y,dashView.to.y,k)};}const k=Math.min(1,acc/(TICK_MS*pace));return {x:lerp(prev.x,pred.x,k)+err.x,y:lerp(prev.y,pred.y,k)+err.y};},
   remotes:(now:number):PlayerState[]=>timeline.remotes(now),
   enemies:(now:number):EnemyState[]=>timeline.enemies(now),
   // The gateway as the own hero's prediction has it: the doors open as the hero reaches them.
