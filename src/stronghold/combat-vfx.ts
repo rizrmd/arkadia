@@ -205,6 +205,9 @@ export function createCombatVfx(o:{
  function spawnSlash(u:number,v:number,angle:number,crit=false,skipCue=false){
   const run=o.getRun(),novaRank=run.skills.nova??0,reachScale=reach(run);
   const {heroId}=o.getHero();
+  // Rift Runner's automatic basic attack can overlap Rift Bolt. Suppress only
+  // that cosmetic swing; explicit skill slashes pass skipCue=true and remain.
+  if(heroId==='rift-runner'&&!skipCue)return;
   const hasSameFrameSlash=slashes.length>0&&slashes[slashes.length-1].age===0;
   slashes.push({id:nextId++,u,v,angle,reachScale,novaRank,hero:heroId,crit,age:0,duration:crit?340:260});
   if(!hasSameFrameSlash&&!skipCue){
