@@ -48,7 +48,7 @@ try{
   await page.keyboard.press('Escape');assert(!(await snapshot()).confirm);assert.deepEqual(await page.evaluate(()=>({...localStorage})),stored);
   await click('reset-progression',true);await click('cancel',true);assert(!(await snapshot()).confirm);
   await click('reset-progression',true);await page.touchscreen.tap(2,2);assert(!(await snapshot()).confirm);assert.deepEqual(await page.evaluate(()=>({...localStorage})),stored);
-  await click('resume',true);assert(!(await snapshot()).open);report.views[name]={viewport:[width,height],panel:s.panel,resetCancellation:true,touchBindings:true};await note(name+' passed');
+  await click('resume',true);assert(!(await snapshot()).open);if(name==='portrait'||name==='landscape'){const socket=await page.evaluate(()=>window.__STRONGHOLD_COMBAT__.snapshot().hudGeometry.sockets[1]);await page.touchscreen.tap(socket.x,socket.y);await page.waitForFunction(()=>window.__STRONGHOLD_COMBAT__.skillTree.snapshot().open);await page.keyboard.press('Escape');}report.views[name]={viewport:[width,height],panel:s.panel,resetCancellation:true,touchBindings:true};await note(name+' passed');
  }
  // Confirmed reset only in this isolated test browser. Preserve preferences, bindings and unrelated storage.
  await page.setViewportSize({width:1440,height:900});await page.waitForFunction(()=>window.__PIXI_UI__.app.screen.width===innerWidth&&window.__PIXI_UI__.app.screen.height===innerHeight);await page.waitForTimeout(1000);await click('Open Settings');await click('binding-0');await page.keyboard.press('q');
