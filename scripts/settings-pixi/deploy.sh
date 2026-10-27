@@ -22,6 +22,7 @@ mkdir -p "$SETTINGS_RELEASE_STAGE/empty-site"
 (cd "$SETTINGS_RELEASE_STAGE" && GAME_SAVE_DIR="$SETTINGS_RELEASE_STAGE/smoke-saves" ARKODIA_BIN="$SETTINGS_RELEASE_STAGE/arkodia" SITE_DIR="$SETTINGS_RELEASE_STAGE/empty-site" node "$repo_root/scripts/coop-smoke.mjs")
 # Archive only the runtime binary and site; smoke save data remains outside it.
 mkdir -p "$SETTINGS_RELEASE_STAGE/site/ui/settings" "$SETTINGS_RELEASE_STAGE/site/ui/hud-actions" "$SETTINGS_RELEASE_STAGE/site/settings-pixi"
+cp -R public/ui/settings/v2 "$SETTINGS_RELEASE_STAGE/site/ui/settings/"
 cp public/ui/settings/*.webp "$SETTINGS_RELEASE_STAGE/site/ui/settings/"
 cp public/ui/hud-actions/settings.webp "$SETTINGS_RELEASE_STAGE/site/ui/hud-actions/"
 cp docs/settings-pixi/local-*.png docs/settings-pixi/local-results.json "$SETTINGS_RELEASE_STAGE/site/settings-pixi/"

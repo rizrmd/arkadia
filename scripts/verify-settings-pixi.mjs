@@ -11,7 +11,7 @@ const context=await browser.newContext({viewport:{width:1440,height:900},hasTouc
 const attach=()=>{page.on('pageerror',e=>report.errors.push(e.message));page.setDefaultTimeout(90000);};attach();
 const save=()=>fs.writeFile(`${dir}/${tag}-results.json`,JSON.stringify(report,null,2));
 const note=async s=>{console.log(s);await save();};
-const ready=()=>page.waitForFunction(()=>document.querySelector('#world-canvas')?.dataset.ready==='true'&&!document.querySelector('#loading-screen')&&window.__SETTINGS__?.renderer==='pixi',null,{timeout:300000,polling:300});
+const ready=()=>page.waitForFunction(()=>document.querySelector('#world-canvas')?.dataset.ready==='true'&&!document.querySelector('#loading-screen')&&window.__SETTINGS__?.renderer==='pixi'&&window.__SETTINGS__.snapshot().artReady,null,{timeout:300000,polling:300});
 const snapshot=()=>page.evaluate(()=>window.__SETTINGS__.snapshot());
 // Autosave may advance bookkeeping revisions while the exact paused state stays unchanged.
 const savedStorage=()=>page.evaluate(()=>{const out={...localStorage};if(out['arkodia-stronghold-v1']){const root=JSON.parse(out['arkodia-stronghold-v1']);delete root.revision;for(const v of Object.values(root.gameplay??{}))delete v.revision;out['arkodia-stronghold-v1']=JSON.stringify(root);}return out;});
@@ -43,8 +43,8 @@ try{
  await page.close();page=await context.newPage();attach();await page.goto(report.base+'/?offline=1&hero=rift-runner&time=.45&3d=0',{waitUntil:'domcontentloaded',timeout:180000});await ready();assert.deepEqual((await snapshot()).bindings,beforeReload.bindings);report.persistence=true;
  for(const [name,width,height] of [['desktop',1440,900],['portrait',390,844],['landscape',844,390],['small-portrait',320,568]]){
   await page.setViewportSize({width,height});await page.waitForFunction(()=>window.__PIXI_UI__.app.screen.width===innerWidth&&window.__PIXI_UI__.app.screen.height===innerHeight);await page.waitForTimeout(1000);await click('Open Settings',true);const s=await snapshot();assert(s.panel.x>=0&&s.panel.y>=0&&s.panel.x+s.panel.width<=width&&s.panel.y+s.panel.height<=height);
-  await screenshot(name+'-menu');await click('binding-2',true);await page.keyboard.press('r');assert.equal((await snapshot()).bindings[2],'KeyR');await screenshot(name+'-shortcuts');
-  await click('reset-bindings',true);assert.deepEqual((await snapshot()).bindings,['Digit1','Digit2','Digit3']);
+  await screenshot(name+'-menu');if(name==='desktop'){await click('binding-2',true);await page.keyboard.press('r');assert.equal((await snapshot()).bindings[2],'KeyR');await screenshot(name+'-shortcuts');
+  await click('reset-bindings',true);assert.deepEqual((await snapshot()).bindings,['Digit1','Digit2','Digit3']);}else{assert.equal(await page.evaluate(()=>{const find=c=>c.label?.startsWith('binding-')||c.label==='reset-bindings'||c.children?.some(find);return !!find(window.__SETTINGS__.overlay);}),false,'mobile omits shortcut customization');}
   const stored=await savedStorage();
   await click('reset-progression',true);assert((await snapshot()).confirm);assert.equal((await snapshot()).focus,'cancel');await screenshot(name+'-confirmation');
   await page.keyboard.press('Escape');assert(!(await snapshot()).confirm);assert.deepEqual(await savedStorage(),stored);
