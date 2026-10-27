@@ -64,6 +64,7 @@ func gateColumns(passable bool) []Column {
 // 32 px of x so a check scans only its neighbours.
 type Blocker struct {
 	static, open, closed map[int][]Column
+	extra                map[int][]Column
 }
 
 const bucket = 32.0
@@ -103,5 +104,5 @@ func (b *Blocker) Blocked(x, y float64, gatePassable bool) bool {
 	if gatePassable {
 		gate = b.open
 	}
-	return hits(b.static, x, y) || hits(gate, x, y)
+	return hits(b.extra, x, y) || hits(b.static, x, y) || hits(gate, x, y)
 }

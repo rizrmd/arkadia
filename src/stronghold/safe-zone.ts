@@ -1,3 +1,4 @@
+import {environment} from '../environment/model';
 import {unproject} from '../isometric';
 import {STRONGHOLD} from './prefabs/stronghold';
 // Distances use the square ground grid, not the isometric screen projection.
@@ -12,7 +13,7 @@ export const meters=(tiles:number)=>tiles*METERS_PER_TILE;
 export const fromCenter=(p:Tile)=>Math.hypot(p.u-CENTER.u,p.v-CENTER.v);
 export const fromGate=(p:Tile)=>Math.hypot(p.u-GATE.u,p.v-GATE.v);
 // The court side of the gateway is safe; there is no radius around the tent.
-export const inSafeZone=(p:Tile)=>p.u+p.v<=GATE.u+GATE.v;
+export const inSafeZone=(p:Tile)=>environment().revision>0?p.u>=-1.5&&p.v>=-1.5&&p.u<=16.5&&p.v<=16.5:p.u+p.v<=GATE.u+GATE.v;
 // Sample the outward-facing arc exactly 10 ground meters from the gate.
 // Re-spawns use the same gate origin, independent of the hero's position.
 export function spawnPoint(random:()=>number,_hero:Tile,walkable:(p:Tile)=>boolean,tries=60):Tile|null{

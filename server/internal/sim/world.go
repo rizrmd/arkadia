@@ -1,6 +1,7 @@
 package sim
 
 import (
+	"github.com/rizrmd/arkadia/server/internal/environment"
 	"math"
 	"math/rand/v2"
 )
@@ -104,15 +105,16 @@ func (p *Player) SetHero(hero string) {
 
 // Enemy is a revenant. Gen bumps on every respawn so clients restart its fade-in; Level scales HP, damage and XP reward.
 type Enemy struct {
-	ID     int
-	Gen    int
-	Level  int
-	MaxHP  float64
-	Age    float64
-	F      Fighter
-	Home   Vec
-	Wander *Vec
-	Target string
+	SpawnID string `json:"spawnId,omitempty"`
+	ID      int
+	Gen     int
+	Level   int
+	MaxHP   float64
+	Age     float64
+	F       Fighter
+	Home    Vec
+	Wander  *Vec
+	Target  string
 	// Side is the way it last veered round a footprint (+1 or -1; 0 counts as +1), tried first next time.
 	Side float64
 }
@@ -149,25 +151,29 @@ func (g Gate) Passable() bool { return float64(g.Frame)/float64(gateFrames-1) >=
 
 // World is one room's simulation.
 type World struct {
-	Tick       uint64
-	Clock      float64 // time of day, 0 = midnight, .5 = noon
-	Players    []*Player
-	Enemies    []*Enemy
-	Gate       Gate
-	Souls      []Soul
-	nextSoul   int
-	nextEnemy  int
-	spawnTimer float64
-	source     *rand.PCG
-	rng        *rand.Rand
-	nav        *Blocker
-	retired    map[string]*Player
+	Environment environment.Map
+	SpawnTimers map[string]float64
+	Tick        uint64
+	Clock       float64 // time of day, 0 = midnight, .5 = noon
+	Players     []*Player
+	Enemies     []*Enemy
+	Gate        Gate
+	Souls       []Soul
+	nextSoul    int
+	nextEnemy   int
+	spawnTimer  float64
+	source      *rand.PCG
+	rng         *rand.Rand
+	nav         *Blocker
+	retired     map[string]*Player
 }
 
 // NewWorld starts a world at a time of day with a deterministic seed.
 func NewWorld(nav *Blocker, clock float64, seed uint64) *World {
 	source := rand.NewPCG(seed, seed^0x9e3779b97f4a7c15)
-	return &World{Clock: clock - math.Floor(clock), source: source, rng: rand.New(source), nav: nav, nextEnemy: 1, retired: map[string]*Player{}}
+	w := &World{Environment: environment.Current(), Clock: clock - math.Floor(clock), source: source, rng: rand.New(source), nav: nav, nextEnemy: 1, retired: map[string]*Player{}}
+	w.initEnvironment()
+	return w
 }
 
 func (w *World) random() float64 { return w.rng.Float64() }
@@ -346,10 +352,14 @@ func (w *World) Step() {
 		w.foeStep(e, dt)
 	}
 	w.separate()
-	w.spawnTimer -= dt
-	if w.spawnTimer <= 0 && len(w.Enemies) < w.maxEnemies() {
-		w.spawnTimer = spawnEvery
-		w.spawn(nil)
+	if w.Environment.Revision > 0 {
+		w.tickMapSpawns(dt)
+	} else {
+		w.spawnTimer -= dt
+		if w.spawnTimer <= 0 && len(w.Enemies) < w.maxEnemies() {
+			w.spawnTimer = spawnEvery
+			w.spawn(nil)
+		}
 	}
 	w.collectSouls()
 	w.updateGate()
@@ -555,7 +565,7 @@ func (w *World) nearestAutoCastTarget(p *Player, rng float64) *Enemy {
 }
 
 func (w *World) autoCastInAoE(p *Player) {
-	if !p.F.Alive() || p.Run.Pending > 0 || InSafeZone(p.F.Pos) {
+	if !p.F.Alive() || p.Run.Pending > 0 || w.inSafeZone(p.F.Pos) {
 		return
 	}
 	p.Run.SyncHero(p.Hero)
@@ -681,7 +691,7 @@ func (w *World) heroStep(p *Player, dt float64) {
 			return
 		}
 	}
-	if InSafeZone(h.Pos) {
+	if w.inSafeZone(h.Pos) {
 		h.HP = math.Min(p.MaxHP, h.HP+regen*dt/1000)
 	}
 }
@@ -691,7 +701,7 @@ func (w *World) target(e *Enemy) *Player {
 	var best *Player
 	d := aggro
 	for _, p := range w.Players {
-		if !p.F.Alive() || InSafeZone(p.F.Pos) {
+		if !p.F.Alive() || w.inSafeZone(p.F.Pos) {
 			continue
 		}
 		if v := hypot(p.F.Pos.X-e.F.Pos.X, p.F.Pos.Y-e.F.Pos.Y); v < d {
@@ -707,7 +717,9 @@ func (w *World) foeStep(e *Enemy, dt float64) {
 	if !f.Alive() {
 		f.DeadFor += dt
 		if f.DeadFor > corpse {
-			w.spawn(e)
+			if w.Environment.Revision == 0 {
+				w.spawn(e)
+			}
 		}
 		return
 	}
@@ -717,7 +729,7 @@ func (w *World) foeStep(e *Enemy, dt float64) {
 	}
 	if f.State == Attack {
 		if f.Impact() {
-			if t := w.Player(e.Target); t != nil && t.F.Alive() && !InSafeZone(t.F.Pos) && inReach(f, &t.F, enemyReach+.25*figure, side) {
+			if t := w.Player(e.Target); t != nil && t.F.Alive() && !w.inSafeZone(t.F.Pos) && inReach(f, &t.F, enemyReach+.25*figure, side) {
 				t.F.Damage(e.damage())
 			}
 		}
@@ -744,7 +756,7 @@ func (w *World) foeStep(e *Enemy, dt float64) {
 	if e.Wander == nil || w.random() < .002 {
 		a, r := w.random()*math.Pi*2, w.random()*5
 		p := Vec{e.Home.X + math.Cos(a)*r, e.Home.Y + math.Sin(a)*r}
-		if w.random() < .5 && !InSafeZone(p) && w.clearTile(p) {
+		if w.random() < .5 && !w.inSafeZone(p) && w.clearTile(p) {
 			e.Wander = &p
 		} else {
 			here := f.Pos
@@ -805,7 +817,7 @@ func (w *World) move(e *Enemy, du, dv, dt float64) bool {
 	}
 	for _, t := range tries {
 		next := Vec{f.Pos.X + t.m.X, f.Pos.Y + t.m.Y}
-		if hypot(t.m.X, t.m.Y) < v*.4 || InSafeZone(next) || !stuck && !w.clearTile(next) || cliffTile(f.Pos, next) {
+		if hypot(t.m.X, t.m.Y) < v*.4 || w.inSafeZone(next) || !stuck && !w.clearTile(next) || cliffTile(f.Pos, next) {
 			continue
 		}
 		if t.side != 0 {
@@ -853,7 +865,7 @@ func (w *World) separate() {
 			}
 			push := (spacing - d) * k
 			next := Vec{a.Pos.X + dx/d*push, a.Pos.Y + dy/d*push}
-			if !InSafeZone(next) && w.clearTile(next) {
+			if !w.inSafeZone(next) && w.clearTile(next) {
 				a.Pos = next
 			}
 		}
@@ -894,6 +906,17 @@ func (w *World) syncEnemyLevels() {
 
 // spawn raises a new pack of one to three at the gate arc, or returns one fallen revenant there.
 func (w *World) spawn(back *Enemy) {
+	if w.Environment.Revision > 0 {
+		if back != nil {
+			for _, o := range w.Environment.Objects {
+				if o.Asset == "spawn" && o.ID == back.SpawnID {
+					w.mapSpawn(back, o)
+					return
+				}
+			}
+		}
+		return
+	}
 	p, ok := spawnPoint(w.random, w.clearTile)
 	if !ok {
 		return

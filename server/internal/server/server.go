@@ -17,6 +17,7 @@ import (
 	"time"
 
 	"github.com/coder/websocket"
+	"github.com/rizrmd/arkadia/server/internal/environment"
 	"github.com/rizrmd/arkadia/server/internal/room"
 	"github.com/rizrmd/arkadia/server/internal/sim"
 )
@@ -26,6 +27,7 @@ var BuildCommit = "development"
 
 // Server routes HTTP requests.
 type Server struct {
+	Environment  *environment.Store
 	Rooms        *room.Registry
 	Site         string // directory of the built client
 	CacheDir     string // directory for cached lossless WebP conversions (defaults to <Site>/.webp-cache)
@@ -37,6 +39,7 @@ type Server struct {
 // Handler returns the HTTP routes.
 func (s *Server) Handler() http.Handler {
 	mux := http.NewServeMux()
+	s.environmentRoutes(mux)
 	mux.HandleFunc("GET /ws", s.ws)
 	mux.HandleFunc("GET /api/rooms/{code}", s.roomInfo)
 	mux.HandleFunc("POST /api/tracelogs", s.postTracelog)

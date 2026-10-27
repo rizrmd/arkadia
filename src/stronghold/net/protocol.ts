@@ -13,7 +13,7 @@ export type PlayerState={id:string;name:string;h?:string;x:number;y:number;hp:nu
 export type EnemyState={id:number;g:number;level?:number;u:number;v:number;hp:number;max?:number;st:string;n:number;fc:number;bk:boolean;vt:boolean};
 export type GateState={open:boolean;frame:number;pass:boolean};
 export type WorldState={souls?:{id:number;owner:string;u:number;v:number;level:number;age:number}[];tick:number;clock:number;gate:GateState;players:PlayerState[];enemies:EnemyState[]};
-export type Welcome={resume:string;t:'welcome';v:number;room:string;you:string;rate:number;max:number;layout:string[];state:WorldState};
+export type Welcome={environmentRevision?:number;resume:string;t:'welcome';v:number;room:string;you:string;rate:number;max:number;layout:string[];state:WorldState};
 // ow: steps the server guessed ahead of the acknowledged input because later inputs were late, and bx, by where
 // that input left the hero under them (the guesses are walked again with the real inputs); hd: ticks a hit stun
 // or death still holds the hero (the next hd inputs do not walk; a swing holds none); q: inputs queued.
