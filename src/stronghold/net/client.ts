@@ -97,15 +97,13 @@ export function createNet(o:{direction:()=>Walk;maxHp:()=>number;hero:()=>string
   });
  }
  // An unexpected disconnect keeps the last world on screen and rejoins the same room with backoff; if the
- // room has gone (a server restart), a solo player gets a fresh one.
+ // room is unavailable, keep its identity: reconnect never creates a replacement run.
  function lost(){
   ws=null;if(status!=='online'&&status!=='reconnecting')return;setStatus('reconnecting');
   const delay=Math.min(8000,1000*2**retries++);
   retryTimer=window.setTimeout(()=>{
-   const solo=(latest?.players.length??1)<=1;
    join(room,name).catch((e:JoinError)=>{
-    if(e.code==='room_not_found'&&solo)join('',name).catch(()=>lost());
-    else if((e.code==='network'||e.code==='timeout')&&retries<7)lost();
+    if((e.code==='network'||e.code==='timeout')&&retries<7)lost();
     else{lastError=e.message;setStatus('offline');}
    });
   },delay);
@@ -117,10 +115,11 @@ export function createNet(o:{direction:()=>Walk;maxHp:()=>number;hero:()=>string
   try{
    const w=await connect(code,who);
    room=w.room;you=w.you;name=who;layout=w.layout;retries=0;reset(w.state);
+   try{localStorage.setItem('arkodia.coop.resume.v1',JSON.stringify({version:1,room,you,name,hero:o.hero()}));}catch{lastError='Co-op resume identity could not be saved. Keep this tab open.';}
    receive(JSON.stringify({...w.state,t:'s',ack:0}));setStatus('online');return w;
   }catch(e){if(status!=='reconnecting'){lastError=(e as Error).message;setStatus('offline');}throw e;}
  }
- function leave(){clearTimeout(retryTimer);const s=ws;ws=null;s?.close();you='';room='';setStatus('offline');}
+ function leave(){try{localStorage.removeItem('arkodia.coop.resume.v1');}catch{}clearTimeout(retryTimer);const s=ws;ws=null;s?.close();you='';room='';setStatus('offline');}
  // One input per tick from the render loop; after a stall (background tab) it resumes instead of bursting.
  function frame(now:number){
   const dt=last?Math.min(now-last,250):16;last=now;
@@ -154,6 +153,7 @@ export function createNet(o:{direction:()=>Walk;maxHp:()=>number;hero:()=>string
   dash(u:number,v:number){if(status==='online')dash={u,v};},
  chooseCard(id:string,level:number){choice={choice:id,level};},
   join,leave,
+  resume(){try{const s=JSON.parse(localStorage.getItem('arkodia.coop.resume.v1')||'null');if(s?.version===1&&typeof s.room==='string'&&typeof s.you==='string'&&typeof s.name==='string'){room=s.room;you=s.you;name=s.name;void join(room,name).catch(e=>{lastError=e.message;setStatus('offline');});return true;}}catch{}return false;},
   // The picked hero, for the rest of the room; a later hello (rejoin) carries it too.
   setHero(h:string){if(ws?.readyState===WebSocket.OPEN){const m:HeroPick={t:'hero',h};ws.send(JSON.stringify(m));}},
   status:()=>status,room:()=>room,you:()=>you,name:()=>name,error:()=>lastError,layout:()=>layout,rtt:()=>rtt,stats,timeline:timeline.stats,

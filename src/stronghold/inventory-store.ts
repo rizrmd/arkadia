@@ -1,3 +1,4 @@
+import {prepareInventoryGameplay} from './gameplay-save';
 import {KEY,load} from './economy';
 import {transact} from './store';
 import {readInventory,changeItems,type ItemId} from './items';
@@ -23,6 +24,6 @@ export async function useItem(id:ItemId,effect:()=>ItemEffect):Promise<void>{
   // Effects are synchronous and recheck gameplay conditions while holding the save lock.
   // A rejected teleport throws before committing. Undo restores gameplay if saving fails.
   const applied=effect();
-  try{s.revision++;localStorage.setItem(KEY,JSON.stringify(s));}catch(error){applied.undo();throw error;}
+  try{const acknowledge=prepareInventoryGameplay(s);s.revision++;localStorage.setItem(KEY,JSON.stringify(s));acknowledge();}catch(error){applied.undo();throw error;}
  });}finally{using=false;}
 }

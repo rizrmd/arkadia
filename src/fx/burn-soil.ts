@@ -7,8 +7,8 @@ export function burnSoilState(level:number,elapsedMs:number){
   damagePerTick:BURN_SOIL.damagePerTick,balancePending:BURN_SOIL.damagePerTick===null};
 }
 /** Catch up every crossed deadline, including the fifth tick before expiry. */
-export function createBurnSoilClock(level:number,onTick:(atMs:number,damage:number|null)=>void){
- let elapsed=0,emitted=0;
+export function createBurnSoilClock(level:number,onTick:(atMs:number,damage:number|null)=>void,initial={elapsed:0,emitted:0}){
+ let elapsed=initial.elapsed,emitted=initial.emitted;
  return {advance(dtMs:number){if(!Number.isFinite(dtMs)||dtMs<0)return;elapsed+=dtMs;
   const due=burnSoilState(level,elapsed).ticks;
   while(emitted<due)onTick(++emitted*200,BURN_SOIL.damagePerTick);

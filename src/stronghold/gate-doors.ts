@@ -121,6 +121,8 @@ export function createGateDoors(worldStage:Container,gateway:HTMLImageElement,sh
  }
  paint();
  return {canvas,sprite:gateView.sprite,refreshLighting:paint,
+  saveState:()=>({index,target,elapsed}),
+  restoreState(s:{index:number;target:number;elapsed:number}){index=s.index;target=s.target;elapsed=s.elapsed;shown=-1;paint();if(index!==target&&!raf)raf=requestAnimationFrame(tick);},
   hit(x:number,y:number){const u=(x-LEFT)/region.w,v=(y-(FOOT-height*PIVOT))/region.h;if(u<0||v<0||u>=1||v>=1)return false;return c.getImageData(Math.floor(u*canvas.width),Math.floor(v*canvas.height),1,1).data[3]>40;},
   order(inside:boolean){if(inside===behind)return;behind=inside;gateView.sprite.zIndex=inside?14:15;},
   setOpen(open:boolean){target=open?meta.frames-1:0;if(index!==target&&!raf)raf=requestAnimationFrame(tick);},

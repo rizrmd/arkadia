@@ -1,3 +1,4 @@
+import {ownGameplay} from './gameplay-save';
 import {createInventory} from './inventory';
 import {createSettings} from './settings';
 import {requestGameFrame as requestAnimationFrame} from '../app/frame-scheduler';
@@ -17,6 +18,7 @@ import {showFrameCapHint} from './frame-cap';
 import {showMovementHint} from './movement-hint';
 
 export async function mount(app:HTMLElement,progress:Progress){
+ if(!new URLSearchParams(location.search).has('coop'))await ownGameplay();
  const rt=await ensurePixiRuntime(app);
  // The HTML loading cover hides this scene. Reserve the GPU for explicit
  // preparation passes instead of rendering the full world behind the cover.

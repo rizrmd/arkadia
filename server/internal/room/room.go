@@ -5,9 +5,10 @@ package room
 
 import (
 	"crypto/rand"
+	"encoding/hex"
 	"encoding/json"
+	"log"
 	"math/big"
-	"strconv"
 	"strings"
 	"sync"
 	"sync/atomic"
@@ -38,6 +39,7 @@ const (
 
 // Registry holds the live rooms.
 type Registry struct {
+	saveDir  string
 	mu       sync.Mutex
 	rooms    map[string]*Room
 	nav      *sim.Blocker
@@ -85,8 +87,11 @@ func (g *Registry) Create() (*Room, bool) {
 	now := g.now()
 	seed, _ := rand.Int(rand.Reader, big.NewInt(1<<62))
 	clock := float64(now.UnixMilli()) / sim.DayMS
-	r := &Room{Code: code, reg: g, world: sim.NewWorld(g.nav, clock, seed.Uint64()), layout: g.layout,
-		join: make(chan joinReq), leave: make(chan *Client), input: make(chan inputMsg, 256), pick: make(chan heroMsg, 16), clients: map[*Client]bool{}, emptySince: now}
+	r := g.makeRoom(code, sim.NewWorld(g.nav, clock, seed.Uint64()))
+	if err := r.save(); err != nil {
+		log.Printf("room checkpoint: %v", err)
+		return nil, false
+	}
 	g.rooms[code] = r
 	go r.run()
 	return r, true
@@ -259,6 +264,7 @@ func (r *Room) run() {
 			ticker, tick = nil, nil
 		}
 	}
+	checkpointPending := false
 	for {
 		select {
 		case j := <-r.join:
@@ -282,7 +288,12 @@ func (r *Room) run() {
 					continue
 				}
 				r.nextID++
-				p = r.world.AddPlayer("p"+strconv.Itoa(r.nextID), j.name, j.maxHP)
+				token := make([]byte, 24)
+				if _, err := rand.Read(token); err != nil {
+					j.reply <- ErrServerFull
+					continue
+				}
+				p = r.world.AddPlayer(hex.EncodeToString(token), j.name, j.maxHP)
 				if p == nil {
 					j.reply <- ErrRoomFull
 					continue
@@ -292,6 +303,13 @@ func (r *Room) run() {
 			j.client.player = p
 			r.clients[j.client] = true
 			r.players.Store(int32(len(r.clients)))
+			if err := r.save(); err != nil {
+				log.Printf("room checkpoint: %v", err)
+				delete(r.clients, j.client)
+				r.world.RemovePlayer(p.ID)
+				j.reply <- ErrServerFull
+				continue
+			}
 			msg, _ := json.Marshal(Welcome{T: "welcome", V: Version, Room: r.Code, You: p.ID, Rate: int(1000 / sim.TickMS), Max: sim.MaxPlayers, Layout: r.layout, State: r.world.State()})
 			j.client.Send <- msg
 			j.reply <- ""
@@ -303,6 +321,9 @@ func (r *Room) run() {
 			delete(r.clients, c)
 			r.world.RemovePlayer(c.player.ID)
 			close(c.Send)
+			if err := r.save(); err != nil {
+				log.Printf("room checkpoint: %v", err)
+			}
 			r.players.Store(int32(len(r.clients)))
 			if len(r.clients) == 0 {
 				stop()
@@ -317,6 +338,15 @@ func (r *Room) run() {
 				m.client.player.Queue(m.in)
 			}
 		case now := <-tick:
+			if checkpointPending {
+				if err := r.save(); err != nil {
+					due = now
+					continue
+				}
+				checkpointPending = false
+				r.broadcast()
+				due = now
+			}
 			// A ticker drops ticks when the process is starved of CPU; catch up (at most 5 per wake-up) so the
 			// world keeps 20 Hz on average, and send only the newest state.
 			for n := 0; n < 5 && !now.Before(due); n++ {
@@ -327,9 +357,14 @@ func (r *Room) run() {
 				due = now
 			}
 			r.tick.Store(r.world.Tick)
+			if err := r.save(); err != nil {
+				checkpointPending = true
+				log.Printf("room checkpoint paused: %v", err)
+				continue
+			}
 			r.broadcast()
 		case <-sweep.C:
-			if len(r.clients) == 0 && r.reg.now().Sub(r.emptySince) > r.reg.ttl {
+			if r.reg.saveDir == "" && len(r.clients) == 0 && r.reg.now().Sub(r.emptySince) > r.reg.ttl {
 				r.closed.Store(true)
 				r.reg.remove(r)
 				return

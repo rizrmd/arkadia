@@ -157,6 +157,7 @@ type World struct {
 	nextSoul   int
 	nextEnemy  int
 	spawnTimer float64
+	source     *rand.PCG
 	rng        *rand.Rand
 	nav        *Blocker
 	retired    map[string]*Player
@@ -164,7 +165,8 @@ type World struct {
 
 // NewWorld starts a world at a time of day with a deterministic seed.
 func NewWorld(nav *Blocker, clock float64, seed uint64) *World {
-	return &World{Clock: clock - math.Floor(clock), rng: rand.New(rand.NewPCG(seed, seed^0x9e3779b97f4a7c15)), nav: nav, nextEnemy: 1, retired: map[string]*Player{}}
+	source := rand.NewPCG(seed, seed^0x9e3779b97f4a7c15)
+	return &World{Clock: clock - math.Floor(clock), source: source, rng: rand.New(source), nav: nav, nextEnemy: 1, retired: map[string]*Player{}}
 }
 
 func (w *World) random() float64 { return w.rng.Float64() }
@@ -212,11 +214,6 @@ func (w *World) ResumePlayer(id, name string, maxHP float64) *Player {
 		w.Players = append(w.Players, p)
 	}
 	p.Name = name
-	bonusHP := float64(p.Run.Stars*10 + p.Run.Skills["vitality"]*20)
-	p.MaxHP = clampMaxHP(maxHP) + bonusHP
-	if p.F.HP > p.MaxHP {
-		p.F.HP = p.MaxHP
-	}
 	p.Ack = 0
 	p.Owed = 0
 	p.BaseX, p.BaseY = p.X, p.Y
@@ -226,9 +223,6 @@ func (w *World) ResumePlayer(id, name string, maxHP float64) *Player {
 	p.Moving = false
 	p.last = Vec{}
 	p.starved = 0
-	if !p.F.Alive() {
-		w.place(p)
-	}
 	if p.Run.Pending > 0 && len(p.Run.Offers) == 0 {
 		w.rollForHero(&p.Run, p.Hero)
 	}
@@ -267,13 +261,6 @@ func (w *World) place(p *Player) {
 
 // RemovePlayer drops a hero from the world.
 func (w *World) RemovePlayer(id string) {
-	kept := w.Souls[:0]
-	for _, s := range w.Souls {
-		if s.Owner != id {
-			kept = append(kept, s)
-		}
-	}
-	w.Souls = kept
 	for i, p := range w.Players {
 		if p.ID == id {
 			w.Players = append(w.Players[:i], w.Players[i+1:]...)

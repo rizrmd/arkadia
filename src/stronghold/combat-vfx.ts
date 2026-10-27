@@ -859,7 +859,27 @@ export function createCombatVfx(o:{
   }
  }
 
+ // Only simulation-bearing effects are serialized. Renderer handles and object
+ // references are rebuilt; projectile hit membership uses the saved foe order.
+ function saveState(){const foes=o.getFoes();return structuredClone({nextId,cooldowns,
+  projectiles:projectiles.map(({fx,hitIds,...p})=>({...p,hitIds:[...hitIds].map(f=>foes.indexOf(f as Fighter)).filter(i=>i>=0)})),
+  aoes,burnSoils:burnSoils.map(b=>({area:b.area,elapsed:b.clock.elapsedMs,emitted:b.clock.emitted})),
+  totalBurnSoilTicks,totalCrits,totalNormals,totalProjectiles,totalAoEs,totalLevelUps,totalWallHits,totalAutoCasts,totalSimultaneousCasts,totalTrinityCasts,lastSkill,lastSimultaneousSkills});}
+ function restoreState(s:ReturnType<typeof saveState>){
+  for(const p of projectiles)for(const h of p.fx)h.release();
+  projectiles.length=0;aoes.length=0;burnSoils.length=0;
+  for(const k of Object.keys(cooldowns))delete cooldowns[k as SkillId];
+  Object.assign(cooldowns,s.cooldowns);nextId=s.nextId;
+  for(const p of s.projectiles)projectiles.push({...p,hitIds:new Set(p.hitIds.map(i=>o.getFoes()[i]).filter(Boolean)),fx:[]});
+  aoes.push(...structuredClone(s.aoes));
+  for(const b of s.burnSoils){const a=b.area;const clock=createBurnSoilClock(3,(_at,damage)=>{
+   totalBurnSoilTicks++;if(damage===null||o.isOnline?.())return;
+   for(const f of o.getFoes())if(f.alive&&inBurnSoil(a,f)){if(f.damage(damage))o.onKill(f);}
+  },{elapsed:b.elapsed,emitted:b.emitted});burnSoils.push({area:{...a},clock});}
+  totalBurnSoilTicks=s.totalBurnSoilTicks;totalCrits=s.totalCrits;totalNormals=s.totalNormals;totalProjectiles=s.totalProjectiles;totalAoEs=s.totalAoEs;totalLevelUps=s.totalLevelUps;totalWallHits=s.totalWallHits;totalAutoCasts=s.totalAutoCasts;totalSimultaneousCasts=s.totalSimultaneousCasts;totalTrinityCasts=s.totalTrinityCasts;lastSkill=s.lastSkill;lastSimultaneousSkills=[...s.lastSimultaneousSkills];
+ }
  return {
+  saveState,restoreState,
   step,
   render,
   place(x:number,y:number,scale:number){origin={x,y,scale};fx.place(x,y,scale);},

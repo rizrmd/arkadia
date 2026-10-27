@@ -43,6 +43,10 @@ func main() {
 		CacheDir: os.Getenv("WEBP_CACHE_DIR"),
 		Log:      log,
 	}
+	if err := s.Rooms.EnablePersistence(env("GAME_SAVE_DIR", "game-saves")); err != nil {
+		log.Error("gameplay checkpoint", "err", err)
+		os.Exit(1)
+	}
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer stop()
 	if len(os.Args) > 1 && os.Args[1] == "--warm-webp" {

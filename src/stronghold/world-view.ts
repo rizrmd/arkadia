@@ -1,3 +1,4 @@
+import {DAY_MS} from './daylight';
 import {GateHealthBar} from './gate-health-bar';
 import {loadJsonAsset} from '../app/json-asset';
 import {BRAZIER_PHYSICAL_SOURCE,withBrazierShadowMaterial} from './brazier-shadow-material';
@@ -264,7 +265,8 @@ export async function createWorldView(
  const party=net?createParty<(typeof objects)[number]>({layer:worldStage,frames,lightmap:lighting.lightmap,surface,footprint:p=>p.id==='gate'?gateFootprint():footprint(p),sun:lighting.sun,net,own:()=>hero.position()}):null;party?.setScene(scene());
  await milestone(940,'Loading backgrounds');
  const parallax=await createParallax({worldStage,anchorX:WORLD.width/2,anchorY:385,getHeroWorld:()=>hero.position(),getCombatantsWorld:()=>encounters?encounters.combatants():[hero.position()]});
- lighting.setClockSource(()=>net?.active()?net.clock():null);net?.onSnapshot(()=>{const p=hero.position();updateGate(p.x,p.y);});lighting.subscribe(s=>encounters!.setAmbient(s.ambient));
+ let clockBase=Date.now()/DAY_MS;
+ lighting.setClockSource(()=>net?.active()?net.clock():clockBase+encounters!.elapsed()/DAY_MS);net?.onSnapshot(()=>{const p=hero.position();updateGate(p.x,p.y);});lighting.subscribe(s=>encounters!.setAmbient(s.ambient));
  lighting.subscribe(s=>{const [r,g,b]=s.ambient.map(v=>Math.round(Math.round(v*32)/32*255));for(const f of relief)f.view.sprite.tint=(r<<16)|(g<<8)|b;frontier.setAmbient((r<<16)|(g<<8)|b);});
  await milestone(loaded=950,'Raising the Stronghold');
 
@@ -411,6 +413,10 @@ export async function createWorldView(
  }
  (window as any).__STRONGHOLD_NAV__=()=>({version:1,layout:[...built],columns:objects.filter(p=>p.layer!=='ground'&&p.opacity>=1&&p.id!=='gate').flatMap(p=>footprint(p).map(c=>({x:+c.x.toFixed(2),w:+c.w.toFixed(2),back:+c.back.toFixed(2),front:+c.front.toFixed(2)})))});
  canvas.dataset.gate='closed';setGateOpen(false);updateGate(hero.position().x,hero.position().y);
+ encounters.bindPersistence({
+  capture:()=>({clockBase,gateOpen,doors:doors.saveState(),gateHealth:encounters!.hud.getGateHp(),route:walker?.route()?.target??null}),
+  restore(s:any){clockBase=s.clockBase;gateOpen=s.gateOpen;doors.restoreState(s.doors);encounters!.hud.setGateHp(s.gateHealth.hp,s.gateHealth.max);canvas.dataset.gate=gateOpen?'open':'closed';if(s.route)setTimeout(()=>walker?.goTo(s.route.x,s.route.y),0);},
+ });
  // Open on the hero (as follow() frames it) without drawing: the first paint waits for the saved layout (main.ts).
  {const a=hero.anchor();cx=a.x;cy=a.y-40;}
  // Gameplay (the hero and the revenants) starts once `hold` resolves: after the loading screen, and on a first visit
