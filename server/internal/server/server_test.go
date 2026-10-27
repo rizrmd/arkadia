@@ -379,7 +379,7 @@ func TestReconnectingPlayerResumesInTheWildsWithoutResettingToTent(t *testing.T)
 
 	// Reconnect with "you" while the old socket is still open (simulating a mobile network drop).
 	reHello := hello("Wanderer", code)
-	reHello["you"] = you
+	reHello["you"] = wa["resume"]
 	b, wb := dial(t, ts, reHello)
 	if wb["t"] != "welcome" || wb["you"] != you {
 		t.Fatalf("expected welcome with same player id %q, got %v", you, wb)
@@ -407,5 +407,3 @@ func TestReconnectingPlayerResumesInTheWildsWithoutResettingToTent(t *testing.T)
 		t.Fatalf("expected resumed player to keep walking south past %.1f, got %.1f", y1, p2["y"])
 	}
 }
-
-

@@ -1,0 +1,11 @@
+{
+  "passed": true,
+  "attempts": 15,
+  "openingClicksOnCloseSafelyIgnored": 15,
+  "checks": [
+    "real touchscreen at mobile gear coordinates",
+    "all 15 menus remain open after compatibility click",
+    "same touch-up/click timestamp identifies opening gesture",
+    "subsequent Escape closes normally"
+  ]
+}

@@ -15,6 +15,7 @@ export type Progression={
  manualDashes?:number;dashFromU?:number;dashFromV?:number;dashU?:number;dashV?:number;
  trinityCasts?:number;
  lastCast?:string[];
+ castGeometry?:{fromU:number;fromV:number;targetU:number;targetV:number};
 };
 export type HitRoll={damage:number;display:number;crit:boolean;multiplier:number};
 export type CardDef={

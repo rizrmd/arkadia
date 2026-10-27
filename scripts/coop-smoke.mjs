@@ -18,7 +18,7 @@ if(!url){
 function client(name,room){
  return new Promise((resolve,reject)=>{
   const ws=new WebSocket(url),c={ws,name,ticks:new Map(),welcome:null,errors:[],seq:0};
-  ws.onopen=()=>ws.send(JSON.stringify({t:'hello',v:1,name,room,maxHp:100}));
+  ws.onopen=()=>ws.send(JSON.stringify({t:'hello',v:1,name,room,maxHp:100,hero:process.env.HERO||'rift-runner'}));
   ws.onmessage=e=>{const m=JSON.parse(e.data);if(m.t==='welcome'){c.welcome=m;resolve(c);}else if(m.t==='s')c.ticks.set(m.tick,m);else if(m.t==='error'){c.errors.push(m);reject(Object.assign(Error(m.message),{code:m.code}));}};
   ws.onerror=()=>reject(Error('socket error'));
   c.send=m=>ws.readyState===1&&ws.send(JSON.stringify(m));
@@ -75,6 +75,6 @@ try{
  if(!process.env.COOP_URL){const http=url.replace(/^ws/,'http').replace(/\/ws$/,'');const i1=await (await fetch(`${http}/api/rooms/${room}`)).json();await new Promise(r=>setTimeout(r,500));const i2=await (await fetch(`${http}/api/rooms/${room}`)).json();
   assert.equal(i1.players,0);assert.equal(i1.tick,i2.tick,'empty room paused');results.pausedAtTick=i2.tick;}
  results.ok=true;console.log(JSON.stringify(results,null,1));
- await fs.mkdir('docs/coop',{recursive:true});await fs.writeFile(`docs/coop/smoke${process.env.COOP_URL?'-live':''}.json`,JSON.stringify(results,null,1)+'\n');
+ await fs.mkdir('docs/coop',{recursive:true});await fs.writeFile(process.env.COOP_REPORT||`docs/coop/smoke${process.env.COOP_URL?'-live':''}.json`,JSON.stringify(results,null,1)+'\n');
 }finally{server?.kill();}
 process.exit(0);

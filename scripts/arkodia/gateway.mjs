@@ -48,7 +48,7 @@ function startCoop(){
  // Until the first release after the rename lands, the binary is still at its pre-rename path.
  const bin=[coopBin,legacyCoopBin].find(f=>fs.existsSync(f));
  if(!bin){console.log('No co-op server binary yet');return;}
- const child=coop=spawn(bin,{env:{...process.env,PORT:String(COOP_PORT),SITE_DIR:www},stdio:'inherit'});
+ const child=coop=spawn(bin,{env:{...process.env,PORT:String(COOP_PORT),SITE_DIR:www,GAME_SAVE_DIR:path.join(home,'game-saves')},stdio:'inherit'});
  child.on('exit',code=>{console.log('Co-op server exited',code);if(coop===child)setTimeout(startCoop,2000);});
 }
 for(const sig of ['SIGTERM','SIGINT'])process.on(sig,()=>{const c=coop;coop=null;c?.kill();process.exit(0);});

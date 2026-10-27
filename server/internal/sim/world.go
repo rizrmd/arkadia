@@ -70,18 +70,19 @@ type Input struct {
 
 // Player is a connected hero.
 type Player struct {
-	ID     string
-	Name   string
-	Hero   string // which hero the player picked (room.CleanHero); only clients draw it
-	Slot   int
-	X, Y   float64 // world px of the foot
-	F      Fighter
-	MaxHP  float64
-	Run    Progression
-	Kills  int
-	Moving bool
-	Ack    uint32 // last input sequence applied
-	Owed   int    // steps guessed ahead of inputs that are late; they are walked again when those inputs arrive
+	ResumeToken string // secret bearer credential, never included in render snapshots
+	ID          string
+	Name        string
+	Hero        string // which hero the player picked (room.CleanHero); only clients draw it
+	Slot        int
+	X, Y        float64 // world px of the foot
+	F           Fighter
+	MaxHP       float64
+	Run         Progression
+	Kills       int
+	Moving      bool
+	Ack         uint32 // last input sequence applied
+	Owed        int    // steps guessed ahead of inputs that are late; they are walked again when those inputs arrive
 	// BaseX, BaseY: where the last applied input left the hero, under the Owed guessed steps (only while Owed > 0).
 	BaseX, BaseY float64
 
@@ -91,6 +92,7 @@ type Player struct {
 	last          Vec // the walk vector of the last input applied
 	starved       int // ticks in a row without any input
 	slotCD        [MaxSkillSlots]float64
+	flameFans     []flameFanCast
 	burnSoils     []burnSoilZone
 	burnSoilTicks int
 }
@@ -113,7 +115,8 @@ type Enemy struct {
 	Wander *Vec
 	Target string
 	// Side is the way it last veered round a footprint (+1 or -1; 0 counts as +1), tried first next time.
-	Side float64
+	Side   float64
+	detour detourState
 }
 
 func (e *Enemy) enemyLevel() int {
@@ -157,6 +160,7 @@ type World struct {
 	nextSoul   int
 	nextEnemy  int
 	spawnTimer float64
+	source     *rand.PCG
 	rng        *rand.Rand
 	nav        *Blocker
 	retired    map[string]*Player
@@ -164,7 +168,8 @@ type World struct {
 
 // NewWorld starts a world at a time of day with a deterministic seed.
 func NewWorld(nav *Blocker, clock float64, seed uint64) *World {
-	return &World{Clock: clock - math.Floor(clock), rng: rand.New(rand.NewPCG(seed, seed^0x9e3779b97f4a7c15)), nav: nav, nextEnemy: 1, retired: map[string]*Player{}}
+	source := rand.NewPCG(seed, seed^0x9e3779b97f4a7c15)
+	return &World{Clock: clock - math.Floor(clock), source: source, rng: rand.New(source), nav: nav, nextEnemy: 1, retired: map[string]*Player{}}
 }
 
 func (w *World) random() float64 { return w.rng.Float64() }
@@ -212,11 +217,6 @@ func (w *World) ResumePlayer(id, name string, maxHP float64) *Player {
 		w.Players = append(w.Players, p)
 	}
 	p.Name = name
-	bonusHP := float64(p.Run.Stars*10 + p.Run.Skills["vitality"]*20)
-	p.MaxHP = clampMaxHP(maxHP) + bonusHP
-	if p.F.HP > p.MaxHP {
-		p.F.HP = p.MaxHP
-	}
 	p.Ack = 0
 	p.Owed = 0
 	p.BaseX, p.BaseY = p.X, p.Y
@@ -226,9 +226,6 @@ func (w *World) ResumePlayer(id, name string, maxHP float64) *Player {
 	p.Moving = false
 	p.last = Vec{}
 	p.starved = 0
-	if !p.F.Alive() {
-		w.place(p)
-	}
 	if p.Run.Pending > 0 && len(p.Run.Offers) == 0 {
 		w.rollForHero(&p.Run, p.Hero)
 	}
@@ -267,24 +264,11 @@ func (w *World) place(p *Player) {
 
 // RemovePlayer drops a hero from the world.
 func (w *World) RemovePlayer(id string) {
-	kept := w.Souls[:0]
-	for _, s := range w.Souls {
-		if s.Owner != id {
-			kept = append(kept, s)
-		}
-	}
-	w.Souls = kept
 	for i, p := range w.Players {
 		if p.ID == id {
 			w.Players = append(w.Players[:i], w.Players[i+1:]...)
 			if w.retired == nil {
 				w.retired = map[string]*Player{}
-			}
-			if len(w.retired) >= 16 {
-				for k := range w.retired {
-					delete(w.retired, k)
-					break
-				}
 			}
 			w.retired[p.ID] = p
 			for _, e := range w.Enemies {
@@ -618,8 +602,9 @@ func (w *World) autoCastInAoE(p *Player) {
 		}
 		dmg := math.Max(1, math.Round(p.Run.damage()*p.Run.skillDamageMultiplier(skillID)*comboMult*scale))
 		splashR := 1.35 * p.Run.reach() * p.Run.skillAreaMultiplier(skillID)
-		if skillID == "flame-fan" && p.Run.skillRank(skillID) >= 3 {
-			p.burnSoils = append(p.burnSoils, burnSoilZone{Origin: p.F.Pos, Aim: target.F.Pos, Area: p.Run.skillAreaMultiplier(skillID)})
+		if skillID == "flame-fan" {
+			p.flameFans = append(p.flameFans, flameFanCast{Origin: p.F.Pos, Aim: target.F.Pos, Rank: p.Run.skillRank(skillID), Area: p.Run.skillAreaMultiplier(skillID), Damage: dmg})
+			continue
 		}
 		hits := 0
 		for _, e := range w.Enemies {
@@ -647,6 +632,11 @@ func (w *World) autoCastInAoE(p *Player) {
 		p.Run.TrinityCasts++
 	}
 	p.Run.LastCast = fired
+	if containsStr(fired, "flame-fan") {
+		p.Run.CastGeometry = &CastGeometry{p.F.Pos.X, p.F.Pos.Y, target.F.Pos.X, target.F.Pos.Y}
+	} else {
+		p.Run.CastGeometry = nil
+	}
 }
 
 func (w *World) enemyLevelOf(f *Fighter) int {
@@ -660,6 +650,7 @@ func (w *World) enemyLevelOf(f *Fighter) int {
 
 func (w *World) heroStep(p *Player, dt float64) {
 	w.stepBurnSoil(p, dt)
+	w.stepFlameFans(p, dt)
 	for i := 0; i < MaxSkillSlots; i++ {
 		p.slotCD[i] = math.Max(0, p.slotCD[i]-dt)
 	}
@@ -796,11 +787,24 @@ func (w *World) clearTile(t Vec) bool {
 // may walk out. False when stopped.
 func (w *World) move(e *Enemy, du, dv, dt float64) bool {
 	f := &e.F
+	if w.clearTile(f.Pos) {
+		clear := func(a, b Vec) bool {
+			return navClear(a, b, func(p Vec) bool { return !InSafeZone(p) && w.clearTile(p) }, cliffTile)
+		}
+		next, ok := detourDirection(&e.detour, f.Pos, Vec{f.Pos.X + du, f.Pos.Y + dv}, dt, clear)
+		if !ok {
+			f.Play(Idle)
+			return false
+		}
+		du, dv = next.X-f.Pos.X, next.Y-f.Pos.Y
+	} else {
+		e.detour = detourState{}
+	}
 	l := hypot(du, dv)
 	if l < 1e-6 {
 		return false
 	}
-	v := enemySpeed * dt / 1000
+	v := math.Min(l, enemySpeed*dt/1000)
 	dx, dy := du/l*v, dv/l*v
 	stuck := !w.clearTile(f.Pos)
 	side := e.Side

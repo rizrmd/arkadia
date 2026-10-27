@@ -6,6 +6,9 @@
 # Needs Node (npm ci done), Go 1.25 (organization runtime installs it in ~/.local/go) and the Playwright Chromium
 # that scripts/organization-setup.sh prepares (used to list the files the game loads).
 set -euo pipefail
+mkdir -p "$HOME/releases"
+exec 9>"$HOME/releases/arkodia-deploy.lock"
+flock -n 9 || { echo "Another Arkodia deployment holds the lock"; exit 1; }
 cd "$(dirname "$0")/.."
 export PATH="$HOME/.local/go/bin:$HOME/.local/bin:$PATH"
 STAGE="$(mktemp -d)"
@@ -30,7 +33,7 @@ npx tsc --noEmit && npx vite build --outDir "$DIST_DIR"
 SITE_DIR="$DIST_DIR" OUT="$DIST_DIR/loading-render-proof.json" node scripts/android-stutter/verify-loading-render.mjs
 # The organization shares 1 GiB of RAM across sessions: compile one package at a time under a memory limit.
 export GOFLAGS=-p=1 GOMAXPROCS=2 GOMEMLIMIT=256MiB GOTOOLCHAIN=local
-(cd server && go test ./... && CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -trimpath -ldflags="-s -w" -o "$DIST_DIR/arkodia" ./cmd/arkodia)
+(cd server && go test ./... && CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -trimpath -ldflags="-s -w -X github.com/rizrmd/arkadia/server/internal/server.BuildCommit=$(git rev-parse HEAD)" -o "$DIST_DIR/arkodia" ./cmd/arkodia)
 cp -f "$DIST_DIR/arkodia" server/bin/arkodia 2>/dev/null || true
 ARKODIA_BIN="$DIST_DIR/arkodia" SITE_DIR="$DIST_DIR" node scripts/coop-smoke.mjs >/dev/null
 
@@ -133,6 +136,9 @@ node scripts/rift-dash/build.mjs
 mkdir -p "$STAGE/site/rift-dash/player"
 cp -R dist-rift-dash/. "$STAGE/site/rift-dash/player/"
 cp -R public/rift-dash/v2 "$STAGE/site/rift-dash/v2"
+
+# Include task evidence and a manifest of the exact client/binary being shipped.
+node scripts/cliff-boundary/stage-release.mjs "$STAGE"
 
 # One versioned tarball, uploaded in parts and applied by the gateway at boot (the release also writes www/index.html).
 mkdir -p "$HOME/releases"

@@ -40,7 +40,15 @@ var heroSkillSwap = map[string]map[string]string{
 	"ember-snare": {"rift-runner": "rift-trap", "ember-warden": "ember-snare"},
 }
 
+type CastGeometry struct {
+	FromU   float64 `json:"fromU"`
+	FromV   float64 `json:"fromV"`
+	TargetU float64 `json:"targetU"`
+	TargetV float64 `json:"targetV"`
+}
+
 type Progression struct {
+	CastGeometry *CastGeometry  `json:"castGeometry,omitempty"`
 	ManualDashes int            `json:"manualDashes,omitempty"`
 	DashFromU    float64        `json:"dashFromU,omitempty"`
 	DashFromV    float64        `json:"dashFromV,omitempty"`

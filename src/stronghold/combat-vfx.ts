@@ -42,7 +42,7 @@ export type AoEKind='rift-trap'|'ember-snare'|'shockwave'|'cleave-cone'|'flame-c
 export type AoETelegraph={
  id:number;kind:AoEKind;skill:SkillId;shape:'circle'|'cone';u:number;v:number;
  radius:number;angle:number;spread:number;age:number;duration:number;
- damageScale:number;forceCrit?:boolean;detonated:boolean;
+ damageScale:number;forceCrit?:boolean;detonated:boolean;rank?:number;
 };
 export type AoEImpact={
  id:number;kind:AoEKind;shape?:'circle'|'cone';u:number;v:number;radius:number;angle:number;spread?:number;
@@ -154,6 +154,7 @@ export function createCombatVfx(o:{
  let nextId=1,origin={x:0,y:0,scale:1};
  const floats:FloatingText[]=[],sparks:HitSpark[]=[],slashes:SlashTrail[]=[];
  const projectiles:Projectile[]=[],aoes:AoETelegraph[]=[],impacts:AoEImpact[]=[];
+ const restoredZones=new Set<number>();let restoreGeneration=0;
  const burnSoils:{area:AoETelegraph;clock:ReturnType<typeof createBurnSoilClock>}[]=[];
  let totalBurnSoilTicks=0;
  const lingeringFx:{fx:FxHandle[];age:number;duration:number}[]=[];
@@ -328,7 +329,7 @@ export function createCombatVfx(o:{
    id:nextId++,kind,skill,shape,u,v,
    radius:opts.radius??1.45*reach(o.getRun()),
    angle,spread:opts.spread??(shape==='cone'?Math.PI*.62:Math.PI*2),
-   age:0,duration:opts.duration??680,
+   age:0,duration:opts.duration??680,rank:Math.max(1,skillRank(o.getRun(),skill)),
    damageScale:opts.damageScale??1.15,forceCrit:opts.forceCrit,detonated:false
   };
   aoes.push(aoe);
@@ -342,7 +343,7 @@ export function createCombatVfx(o:{
   impacts.push({id:nextId++,kind:a.kind,shape:a.shape,u:a.u,v:a.v,radius:a.radius,angle:a.angle,spread:a.spread,age:0,duration:640});
   const d=tileVec(Math.cos(a.angle),Math.sin(a.angle));
   if(a.skill==='flame-fan'){
-   const rank=Math.max(1,skillRank(o.getRun(),'flame-fan'));
+   const rank=a.rank??Math.max(1,skillRank(o.getRun(),'flame-fan'));
    flameSheets.spawn(a.u,a.v,yawOf(d.u,d.v),a.radius,rank,-fxDtMs/1000+Math.max(0,a.age-a.duration)/1000);
    if(rank>=3){const clock=createBurnSoilClock(rank,(_at,damage)=>{
     totalBurnSoilTicks++;
@@ -766,14 +767,17 @@ export function createCombatVfx(o:{
    zv.view.sprite.alpha=alpha;
   };
   const skipHeroZones=fx.playable()&&(o.getHero().heroId==='ember-warden'||o.getHero().heroId==='rift-runner');
-  if(!skipHeroZones){
+  {
    for(const a of aoes){
+    if(skipHeroZones&&!restoredZones.has(a.id))continue;
     renderZone(a.id,a.kind,a.shape,a.u,a.v,a.radius,a.angle,a.spread,a.age,a.duration,false);
    }
    for(const imp of impacts){
+    if(skipHeroZones)continue;
     renderZone(imp.id,imp.kind,imp.shape??'circle',imp.u,imp.v,imp.radius,imp.angle,imp.spread??Math.PI*2,imp.age,imp.duration,true);
    }
   }
+  for(const id of restoredZones)if(!aoes.some(a=>a.id===id))restoredZones.delete(id);
   for(const [id,zv] of zoneViews){
    if(!activeZoneIds.has(id)){
     zoneViews.delete(id);
@@ -873,7 +877,41 @@ export function createCombatVfx(o:{
   }
  }
 
+ // Only simulation-bearing effects are serialized. Renderer handles and object
+ // references are rebuilt; projectile hit membership uses the saved foe order.
+ function saveState(){const foes=o.getFoes();return structuredClone({nextId,cooldowns,
+  projectiles:projectiles.map(({fx,hitIds,...p})=>({...p,hitIds:[...hitIds].map(f=>foes.indexOf(f as Fighter)).filter(i=>i>=0)})),
+  flameBursts:flameSheets.snapshot().map(({u,v,yaw,radius,rank,age})=>({u,v,yaw,radius,rank,age:Math.max(0,age)})),
+  aoes,burnSoils:burnSoils.map(b=>({area:b.area,elapsed:b.clock.elapsedMs,emitted:b.clock.emitted})),
+  totalBurnSoilTicks,totalCrits,totalNormals,totalProjectiles,totalAoEs,totalLevelUps,totalWallHits,totalAutoCasts,totalSimultaneousCasts,totalTrinityCasts,lastSkill,lastSimultaneousSkills});}
+ function restoreState(s:ReturnType<typeof saveState>){
+  const generation=++restoreGeneration;restoredZones.clear();
+  for(const p of projectiles)for(const h of p.fx)h.release();
+  projectiles.length=0;aoes.length=0;burnSoils.length=0;flameSheets.clear();
+  for(const k of Object.keys(cooldowns))delete cooldowns[k as SkillId];
+  Object.assign(cooldowns,s.cooldowns);nextId=s.nextId;
+  for(const p of s.projectiles)projectiles.push({...p,hitIds:new Set(p.hitIds.map(i=>o.getFoes()[i]).filter(Boolean)),fx:[]});
+  aoes.push(...structuredClone(s.aoes));for(const a of aoes)restoredZones.add(a.id);
+  for(const b of s.burnSoils){const a=b.area;const clock=createBurnSoilClock(3,(_at,damage)=>{
+   totalBurnSoilTicks++;if(damage===null||o.isOnline?.())return;
+   for(const f of o.getFoes())if(f.alive&&inBurnSoil(a,f)){if(f.damage(damage))o.onKill(f);}
+  },{elapsed:b.elapsed,emitted:b.emitted});burnSoils.push({area:{...a},clock});}
+  // GPU pools finish warming behind loading. Recreate visible emitters at the
+  // saved position without replaying casts, collisions, damage or soil ticks.
+  void fx.loaded.then(()=>{
+   if(generation!==restoreGeneration)return;
+   for(const p of projectiles){if(p.fx.length)continue;const len=Math.hypot(p.vx,p.vy)||1;
+    p.fx=cue(`${p.skill}.bolt`,{u:p.u-p.vx/len*p.traveled,v:p.v-p.vy/len*p.traveled,yaw:yawOf(p.vx,p.vy)});
+    for(const handle of p.fx)handle.setLocal(p.traveled);
+   }
+   if(s.flameBursts){for(const b of s.flameBursts)flameSheets.spawn(b.u,b.v,b.yaw,b.radius,b.rank,b.age);}
+   else for(const b of burnSoils){const a=b.area,d=tileVec(Math.cos(a.angle),Math.sin(a.angle));flameSheets.spawn(a.u,a.v,yawOf(d.u,d.v),a.radius,a.rank??Math.max(3,skillRank(o.getRun(),'flame-fan')),b.clock.elapsedMs/1000);}
+  }).catch(console.error);
+  totalBurnSoilTicks=s.totalBurnSoilTicks;totalCrits=s.totalCrits;totalNormals=s.totalNormals;totalProjectiles=s.totalProjectiles;totalAoEs=s.totalAoEs;totalLevelUps=s.totalLevelUps;totalWallHits=s.totalWallHits;totalAutoCasts=s.totalAutoCasts;totalSimultaneousCasts=s.totalSimultaneousCasts;totalTrinityCasts=s.totalTrinityCasts;lastSkill=s.lastSkill;lastSimultaneousSkills=[...s.lastSimultaneousSkills];
+ }
  return {
+  saveState,restoreState,
+  setCooldowns(values:Partial<Record<SkillId,number>>){for(const k of Object.keys(cooldowns))delete cooldowns[k as SkillId];Object.assign(cooldowns,values);},
   step,
   render,
   place(x:number,y:number,scale:number){origin={x,y,scale};fx.place(x,y,scale);},

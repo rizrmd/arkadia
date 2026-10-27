@@ -96,7 +96,7 @@ func hits(cols map[int][]Column, x, y float64) bool {
 
 // Blocked reports whether the point is off walkable ground or inside a footprint.
 func (b *Blocker) Blocked(x, y float64, gatePassable bool) bool {
-	if !walkableGround(x, y) {
+	if !walkableGround(x, y) || reliefBlockedTile(ToTile(x, y)) {
 		return true
 	}
 	gate := b.closed
