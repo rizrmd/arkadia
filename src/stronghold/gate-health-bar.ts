@@ -12,7 +12,7 @@ export class GateHealthBar extends Container {
  private max = 100;
  constructor(frames: FrameSet) {
   super();
-  this.alpha = 0.6;
+  this.alpha = 0.3;
   const shape = [-82,-11,84,-11,74,11,-92,11];
   this.addChild(new Graphics()).poly(shape).fill(0x0b0c0d).stroke({color:0x050507,width:2});
   this.addChild(new Graphics()).poly([-81,-10,82,-10,73,10,-90,10]).stroke({color:0x987526,width:.65});

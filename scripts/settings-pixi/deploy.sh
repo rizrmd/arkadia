@@ -22,6 +22,7 @@ mkdir -p "$SETTINGS_RELEASE_STAGE/empty-site"
 (cd "$SETTINGS_RELEASE_STAGE" && GAME_SAVE_DIR="$SETTINGS_RELEASE_STAGE/smoke-saves" ARKODIA_BIN="$SETTINGS_RELEASE_STAGE/arkodia" SITE_DIR="$SETTINGS_RELEASE_STAGE/empty-site" node "$repo_root/scripts/coop-smoke.mjs")
 # Archive only the runtime binary and site; smoke save data remains outside it.
 mkdir -p "$SETTINGS_RELEASE_STAGE/site/ui/settings" "$SETTINGS_RELEASE_STAGE/site/ui/hud-actions" "$SETTINGS_RELEASE_STAGE/site/settings-pixi"
+cp -R public/ui/settings/v2 "$SETTINGS_RELEASE_STAGE/site/ui/settings/"
 cp public/ui/settings/*.webp "$SETTINGS_RELEASE_STAGE/site/ui/settings/"
 cp public/ui/hud-actions/settings.webp "$SETTINGS_RELEASE_STAGE/site/ui/hud-actions/"
 cp docs/settings-pixi/local-*.png docs/settings-pixi/local-results.json "$SETTINGS_RELEASE_STAGE/site/settings-pixi/"
@@ -29,6 +30,7 @@ node --input-type=module <<'MANIFEST'
 import fs from 'node:fs';import {createHash} from 'node:crypto';import {execFileSync} from 'node:child_process';
 const stage=process.env.SETTINGS_RELEASE_STAGE,commit=execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim();
 const files=Object.fromEntries(fs.readdirSync(stage+'/site/assets').map(f=>['/assets/'+f,createHash('sha256').update(fs.readFileSync(stage+'/site/assets/'+f)).digest('hex')]));
+for(const name of ['panel','button']){const path='/ui/settings/v2/'+name+'.webp';files[path]=createHash('sha256').update(fs.readFileSync(stage+'/site'+path)).digest('hex');}
 fs.writeFileSync(stage+'/site/settings-pixi/release.json',JSON.stringify({commit,at:new Date().toISOString(),feature:'Native Pixi Settings and persistent equipped-skill shortcuts',files},null,2));
 MANIFEST
 python3 - "$SETTINGS_RELEASE_STAGE" <<'ARCHIVE'
