@@ -1,17 +1,19 @@
 import {Container,Matrix,RendererType,Sprite,Texture,type Renderer,type RenderTexture,type WebGLRenderer} from 'pixi.js';
 import {tilePoint} from '../stronghold/terrain';
 import {createFlameFanBurst,FLAME_FAN_BURST_ASSET,burstEnvelope} from './flame-fan-burst';
+import {FLAME_FAN_AIR_ORIGIN as airOriginHeight,FLAME_FAN_AIR_RISE as airRise,flameFanAirHeight} from './flame-fan-air';
 import {createFlameFanEmbers} from './flame-fan-embers';
 import type {View} from './space';
 
-/** Approved projecting burst under actors. Radius is supplied by combat, never inferred from rank.
+/** Approved projecting burst above the ground plane. Radius is supplied by combat, never inferred from rank.
  * One material pass is shared; bounded sprites retain render textures on WebGL2. */
-export function createGameplayFlameFan(parent:Container,trace?:(x0:number,y0:number,x1:number,y1:number)=>{hit:boolean;x:number;y:number;t:number},occlusionAt?:(px:number,py:number,wx:number,wy:number,rad:number,flat:boolean,includeHero:boolean,anchorY:number)=>number,renderer?:Renderer){
- const embers=createFlameFanEmbers(parent,trace,occlusionAt);
+export function createGameplayFlameFan(parent:Container,trace?:(x0:number,y0:number,x1:number,y1:number)=>{hit:boolean;x:number;y:number;t:number},occlusionAt?:(px:number,py:number,wx:number,wy:number,rad:number,flat:boolean,includeHero:boolean,anchorY:number)=>number,renderer?:Renderer,airParent:Container=parent){
+ const embers=createFlameFanEmbers(airParent,trace,occlusionAt);
  let material:ReturnType<typeof createFlameFanBurst>|undefined;
  let gpuMaterial:ReturnType<typeof createFlameFanBurst>|undefined;
  const native=renderer?.type===RendererType.WEBGL&&typeof WebGL2RenderingContext!=='undefined'&&(renderer as WebGLRenderer).gl instanceof WebGL2RenderingContext;
  type Sheet={u:number;v:number;yaw:number;radius:number;rank:number;age:number;tick:number;sprite:Sprite;soil:Sprite;soilCanvas:HTMLCanvasElement;soilBase:HTMLCanvasElement;canvas:HTMLCanvasElement;mask:HTMLCanvasElement;g:CanvasRenderingContext2D;maskCtx:CanvasRenderingContext2D;maskTexture?:Texture;target?:RenderTexture;clip:Path2D;air:{sprite:Sprite;forward:number;lateral:number;width:number;height:number;smoke:boolean;opacity:number}[]};
+ const airMasks=new WeakMap<Sheet,HTMLCanvasElement>();
  const live:Sheet[]=[],pool:Sheet[]=[];
  let preparing:Promise<void>|undefined;
  const soilParts:Record<string,HTMLImageElement>={};
@@ -85,16 +87,21 @@ export function createGameplayFlameFan(parent:Container,trace?:(x0:number,y0:num
   // Cache a ground silhouette mask once per cast. A broad sheet must be hidden per pixel,
   // rather than using the centre-particle occlusion used for small sparks.
   const mask=s.maskCtx,pixels=mask.createImageData(128,128),c=Math.cos(yaw),n=Math.sin(yaw);
+  const airMask=Object.assign(document.createElement('canvas'),{width:128,height:128}),airPixels=mask.createImageData(128,128);airMasks.set(s,airMask);
   let masked=0;
   for(let y=0;y<128;y++)for(let x=0;x<128;x++){
    const forward=(x+.5-64)/64,lateral=-(y+.5-64)/64,inside=Math.hypot(forward,lateral)<=1&&Math.abs(Math.atan2(lateral,forward))<=Math.PI*.3;
    let alpha=1;
    if(inside&&occlusionAt){const p=tilePoint(u+(forward*c-lateral*n)*radius,v+(forward*n+lateral*c)*radius);alpha=occlusionAt(p.x,p.y,p.x,p.y,0,true,false,p.y);if(alpha<.99)masked++;}
    const i=(y*128+x)*4;pixels.data[i]=pixels.data[i+1]=pixels.data[i+2]=255;pixels.data[i+3]=Math.round(alpha*255);
+   // Air and soil share world-sector clipping, but object coverage is sampled at each plane.
+   const q=tilePoint(u+(forward*c-lateral*n)*radius,v+(forward*n+lateral*c)*radius),lift=flameFanAirHeight(forward);
+   const airAlpha=inside&&occlusionAt?occlusionAt(q.x,q.y-lift,q.x,q.y,0,false,false,q.y):1;
+   airPixels.data[i]=airPixels.data[i+1]=airPixels.data[i+2]=255;airPixels.data[i+3]=Math.round(airAlpha*255);
   }
-  mask.putImageData(pixels,0,0);s.sprite.label=String(masked);
-  if(gpuMaterial){const g=s.g;g.clearRect(0,0,256,256);g.save();g.clip(s.clip);g.fillStyle='white';g.fillRect(0,0,256,256);g.restore();g.globalCompositeOperation='destination-in';g.drawImage(s.mask,0,0,256,256);g.globalCompositeOperation='source-over';s.maskTexture!.source.update();}
-s.sprite.visible=true;s.soil.visible=true;parent.addChildAt(s.soil,0);parent.addChild(s.sprite);embers.spawn(u,v,yaw,radius,rank,age);live.push(s);
+  mask.putImageData(pixels,0,0);airMask.getContext('2d')!.putImageData(airPixels,0,0);s.sprite.label=String(masked);
+  if(gpuMaterial){const g=s.g;g.clearRect(0,0,256,256);g.save();g.clip(s.clip);g.fillStyle='white';g.fillRect(0,0,256,256);g.restore();g.globalCompositeOperation='destination-in';g.drawImage(airMasks.get(s)!,0,0,256,256);g.globalCompositeOperation='source-over';s.maskTexture!.source.update();}
+s.sprite.visible=true;s.soil.visible=true;parent.addChildAt(s.soil,0);airParent.addChild(s.sprite);embers.spawn(u,v,yaw,radius,rank,age);live.push(s);
   // At most three recent casts, including high-rank overlap / scripted replays.
   if(live.length>3){const old=live.shift()!;hide(old);pool.push(old);}
  }
@@ -115,11 +122,11 @@ s.sprite.visible=true;s.soil.visible=true;parent.addChildAt(s.soil,0);parent.add
      g.globalCompositeOperation='destination-in';g.drawImage(s.mask,0,0,1024,1024);g.globalCompositeOperation='source-over';s.soil.texture.source.update();s.soilCanvas.dataset.ready='1';
     }
     if(gpuMaterial)gpuMaterial.render(s.target!,s.maskTexture!,s.rank,Math.max(0,s.age));
-    else{const g=s.g;g.clearRect(0,0,256,256);g.save();g.clip(s.clip);g.drawImage(material!.renderCanvas(s.rank,Math.max(0,s.age)),0,0);g.restore();g.globalCompositeOperation='destination-in';g.drawImage(s.mask,0,0,256,256);g.globalCompositeOperation='source-over';s.sprite.texture.source.update();}
+    else{const g=s.g;g.clearRect(0,0,256,256);g.save();g.clip(s.clip);g.drawImage(material!.renderCanvas(s.rank,Math.max(0,s.age)),0,0);g.restore();g.globalCompositeOperation='destination-in';g.drawImage(airMasks.get(s)!,0,0,256,256);g.globalCompositeOperation='source-over';s.sprite.texture.source.update();}
    }
    const p=tilePoint(s.u,s.v),c=Math.cos(s.yaw),n=Math.sin(s.yaw),k=s.radius*view.scale/128;
    // Texture +x = aim; texture +y = -lateral (WebGL's bottom-up raster).
-   const transform=new Matrix(64*(c-n)*k,32*(c+n)*k,64*(n+c)*k,32*(n-c)*k,view.x+p.x*view.scale,view.y+p.y*view.scale);s.sprite.setFromMatrix(transform);s.soil.setFromMatrix(new Matrix(transform.a/4,transform.b/4,transform.c/4,transform.d/4,transform.tx,transform.ty));
+   const transform=new Matrix(64*(c-n)*k,32*(c+n)*k,64*(n+c)*k,32*(n-c)*k,view.x+p.x*view.scale,view.y+p.y*view.scale);s.sprite.setFromMatrix(new Matrix(transform.a,transform.b-airRise*view.scale/128,transform.c,transform.d,transform.tx,transform.ty-airOriginHeight*view.scale));s.soil.setFromMatrix(new Matrix(transform.a/4,transform.b/4,transform.c/4,transform.d/4,transform.tx,transform.ty));
    for(const a of s.air){if(!a.sprite.visible)continue;
     const f=a.forward,l=a.lateral,wu=s.u+(f*c-l*n)*s.radius,wv=s.v+(f*n+l*c)*s.radius,foot=tilePoint(wu,wv);
     const end=trace?.(p.x,p.y,foot.x,foot.y),visible=!end?.hit;
@@ -131,5 +138,5 @@ s.sprite.visible=true;s.soil.visible=true;parent.addChildAt(s.soil,0);parent.add
    }
   }
  }
- return {prepare,spawn,frame,clear(){embers.clear();for(const s of live){hide(s);pool.push(s);}live.length=0;},snapshot:()=>live.map(s=>({embers:embers.snapshot().find(e=>e.rank===s.rank&&Math.abs(e.age-s.age)<.001),u:s.u,v:s.v,yaw:s.yaw,radius:s.radius,rank:s.rank,age:s.age,layers:s.rank,opacity:burstEnvelope(s.age).alpha,bloom:0,height:0,burnSoil:s.rank>=3&&s.age<1,burnDurationMs:s.rank>=3?1000:0,burnOpacity:s.rank>=3?s.soil.alpha:0,soilOpacity:s.soil.alpha,soilVisible:s.soil.visible,soilLayers:soilNames,soilUpright:s.air.filter(a=>a.sprite.visible).length,burnHalfAngle:Math.PI*.3,soilRaster:1024,soilSource:'approved-static-revision-6',material:'approved-projecting-burst-v1',asset:FLAME_FAN_BURST_ASSET,burstReach:burstEnvelope(s.age).reach,burstOpacity:burstEnvelope(s.age).alpha,backend:native?'pixi-render-texture':'canvas',maskedSamples:Number(s.sprite.label),projectiles:0}))};
+ return {prepare,spawn,frame,clear(){embers.clear();for(const s of live){hide(s);pool.push(s);}live.length=0;},snapshot:()=>live.map(s=>({embers:embers.snapshot().find(e=>e.rank===s.rank&&Math.abs(e.age-s.age)<.001),u:s.u,v:s.v,yaw:s.yaw,radius:s.radius,rank:s.rank,age:s.age,layers:s.rank,opacity:burstEnvelope(s.age).alpha,bloom:0,height:airOriginHeight,airRise,airLayer:airParent===parent?'shared':'world',burstOrigin:{x:s.sprite.position.x,y:s.sprite.position.y},soilOrigin:{x:s.soil.position.x,y:s.soil.position.y},burnSoil:s.rank>=3&&s.age<1,burnDurationMs:s.rank>=3?1000:0,burnOpacity:s.rank>=3?s.soil.alpha:0,soilOpacity:s.soil.alpha,soilVisible:s.soil.visible,soilLayers:soilNames,soilUpright:s.air.filter(a=>a.sprite.visible).length,burnHalfAngle:Math.PI*.3,soilRaster:1024,soilSource:'approved-static-revision-6',material:'approved-projecting-burst-v1',asset:FLAME_FAN_BURST_ASSET,burstReach:burstEnvelope(s.age).reach,burstOpacity:burstEnvelope(s.age).alpha,backend:native?'pixi-render-texture':'canvas',maskedSamples:Number(s.sprite.label),projectiles:0}))};
 }

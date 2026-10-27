@@ -1,5 +1,6 @@
 import {Assets,Container,Rectangle,Sprite,Texture} from 'pixi.js';
 import {tilePoint} from '../stronghold/terrain';
+import {FLAME_FAN_AIR_ORIGIN,FLAME_FAN_AIR_RISE,flameFanAirHeight} from './flame-fan-air';
 import type {View} from './space';
 export const FLAME_FAN_EMBER_ASSET='/flame-fan-ember-candidate/v1/ember-v2.png';
 // The approved sheet contains nine static silhouettes, not sequential animation frames.
@@ -22,10 +23,11 @@ export function createFlameFanEmbers(parent:Container,trace?:(x0:number,y0:numbe
   for(let i=0;i<c.sprites.length;i++){const s=c.sprites[i];if(i>=count){s.visible=false;continue;}
    const angle=c.yaw+((i*.61803398875)%1-.5)*1.72,reach=.18+((i*.381966)%1)*.73,advance=Math.min(1,c.age*7),r=c.radius*reach*advance;
    const p=tilePoint(c.u+Math.cos(angle)*r,c.v+Math.sin(angle)*r),wall=trace?.(origin.x,origin.y,p.x,p.y);
-   const alpha=(occlusionAt?.(p.x,p.y,p.x,p.y,0,true,false,p.y)??1)*Math.min(1,c.age*18)*Math.min(1,(lifetime-c.age)*4)*(.64+.12*Math.sin(c.age*23+i));
-   s.visible=!wall?.hit&&alpha>.01;s.alpha=alpha;s.position.set(view.x+p.x*view.scale,view.y+p.y*view.scale-Math.sin(c.age*11+i)*2*view.scale);
+   const lift=flameFanAirHeight(reach*advance*Math.cos(angle-c.yaw))+Math.sin(c.age*11+i)*2;
+   const alpha=(occlusionAt?.(p.x,p.y-lift,p.x,p.y,0,false,false,p.y)??1)*Math.min(1,c.age*18)*Math.min(1,(lifetime-c.age)*4)*(.64+.12*Math.sin(c.age*23+i));
+   s.visible=!wall?.hit&&alpha>.01;s.alpha=alpha;s.position.set(view.x+p.x*view.scale,view.y+(p.y-lift)*view.scale);
    const h=(22+c.rank*2+i%4*3)*view.scale*(.9+.1*Math.sin(c.age*19+i));s.height=h/ .55;s.width=s.height*s.texture.width/724;s.rotation=Math.sin(i*2.4+c.age*5)*.12;
   }
  }}
- return {prepare,spawn,frame,clear(){for(const c of casts)recycle(c);casts.length=0;},snapshot:()=>casts.map(c=>({asset:FLAME_FAN_EMBER_ASSET,rank:c.rank,age:c.age,count:8+c.rank*3,visible:c.sprites.filter(s=>s.visible).length}))};
+ return {prepare,spawn,frame,clear(){for(const c of casts)recycle(c);casts.length=0;},snapshot:()=>casts.map(c=>({asset:FLAME_FAN_EMBER_ASSET,rank:c.rank,age:c.age,count:8+c.rank*3,minHeight:FLAME_FAN_AIR_ORIGIN-2,maxHeight:FLAME_FAN_AIR_ORIGIN+.91*FLAME_FAN_AIR_RISE+2,visible:c.sprites.filter(s=>s.visible).length}))};
 }

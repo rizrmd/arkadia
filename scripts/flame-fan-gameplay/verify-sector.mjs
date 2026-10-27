@@ -39,7 +39,7 @@ try {
  await page.waitForFunction(()=>window.__STRONGHOLD_COMBAT__.snapshot().vfx.activeAoEs.length===0,null,{timeout:15000,polling:100});
  if(process.env.BASELINE)await page.waitForTimeout(150);else await page.waitForFunction(()=>window.__STRONGHOLD_COMBAT__.snapshot().vfx.flameSheets?.some(s=>s.age>.12&&s.age<.7),null,{timeout:10000,polling:10});
  const after=await page.evaluate(()=>window.__STRONGHOLD_COMBAT__.snapshot());
- const sheet=after.vfx.flameSheets?.[0];if(!process.env.BASELINE){assert.equal(sheet.rank,rank);assert.equal(sheet.layers,rank);assert.equal(sheet.bloom,0);assert.equal(sheet.height,0);assert(Math.abs(sheet.radius-4.4*(1+(rank-1)*.18))<1e-6);assert(Math.abs(Math.atan2(Math.sin(sheet.yaw-yaw),Math.cos(sheet.yaw-yaw)))<1e-6);
+ const sheet=after.vfx.flameSheets?.[0];if(!process.env.BASELINE){assert.equal(sheet.rank,rank);assert.equal(sheet.layers,rank);assert.equal(sheet.bloom,0);assert.equal(sheet.height,44);assert(Math.abs(sheet.radius-4.4*(1+(rank-1)*.18))<1e-6);assert(Math.abs(Math.atan2(Math.sin(sheet.yaw-yaw),Math.cos(sheet.yaw-yaw)))<1e-6);
  assert(!after.vfx.fx.playing.some(k=>k.startsWith('ember-warden/flame-fan.area:')));}
  assert.equal(after.vfx.totals.projectiles,before.vfx.totals.projectiles);
  assert.equal(after.vfx.totals.aoes,before.vfx.totals.aoes+1);

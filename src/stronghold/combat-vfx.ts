@@ -127,7 +127,7 @@ export function createCombatVfx(o:{
  const groundFx=new Container(),worldFx=new Container();
  let dashArt:RiftDashVfx|undefined;
  let dashAge=1100,dashPath:{from:{u:number;v:number};to:{u:number;v:number}}|undefined;
- const flameSheets=createGameplayFlameFan(groundFx,o.traceWallRay,o.occlusionAt,o.renderer);
+ const flameSheets=createGameplayFlameFan(groundFx,o.traceWallRay,o.occlusionAt,o.renderer,worldFx);
  groundFx.zIndex=22;worldFx.zIndex=38;
  o.layer.addChild(groundZonesLayer,groundFx,worldFx);
  type ZoneView={el:HTMLCanvasElement;ctx:CanvasRenderingContext2D;view:ReturnType<typeof createCanvasSprite>;key:string};
