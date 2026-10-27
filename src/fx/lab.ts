@@ -14,7 +14,7 @@ import {yawOfScreenAngle} from './space';
 import type {HeroId} from '../stronghold/heroes';
 
 export const DIRS=['N','NE','E','SE','S','SW','W','NW'] as const;
-const ANGLES=[-90,-28,0,20,90,152,180,-152];
+const ANGLES=[-90,-45,0,45,90,135,180,-135];
 const nextPaint=()=>new Promise<void>(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>resolve())));
 type Playback='loading'|'playing'|'ready'|'passive'|'planned'|'error';
 
@@ -59,7 +59,9 @@ export async function mount(root:HTMLElement,progress:Progress){
  const emptyCombat=combat.saveState();let previewAge=0,seekRequest=0;
  const editor=new FxEditor({hero:()=>hero,skill:()=>skill()?.id??feedbackKey(),rank:()=>rank,setRank:(value:number)=>{rank=value;syncUrl();drawUI();void play();},catalog:()=>combat.fx.catalog(),redraw:drawUI,replay:play,prepare:async()=>{prepared.delete(hero);combat.clearVisuals();combat.restoreState(emptyCombat);await combat.fx.prepare();prepared.add(hero);},paused:()=>paused,pause:()=>{paused=!paused;keys.clear();drawUI();},seek:async(target:number)=>{const ticket=++seekRequest;paused=true;combat.clearVisuals();combat.restoreState(emptyCombat);await play(true);if(ticket!==seekRequest)return;paused=true;let remaining=target;while(remaining>0){if(ticket!==seekRequest)return;const dt=Math.min(.025,remaining);combat.step(dt*1000);combat.render();remaining-=dt;if(Math.round(remaining*100)%50===0)await nextPaint();}previewAge=target;time=target;castUntil=1.05;nextCast=editor.duration;editor.tick(target);drawUI();}});
  const stageWidth=()=>app.screen.width-(collapsed?0:sidebarWidth);
- let statusText:Text,zoomText:Text;
+ let statusText:Text,zoomText:Text,directionText:Text|undefined;
+ // Gameplay hero.face uses atan2(screenX, screenY); VFX uses tile-space yaw instead.
+ const heroYaw=()=>Math.atan2(Math.cos(ANGLES[dir]*Math.PI/180),Math.sin(ANGLES[dir]*Math.PI/180));
  let pressedButton:string|undefined;const buttons:{label:string;x:number;y:number;w:number;h:number;action:()=>void}[]=[];
  const status=()=>playback==='loading'?playbackMessage:playback==='playing'?(paused?'Paused':`Playing · Rank ${rank}`):playback==='passive'?'Passive · no cast animation':playback==='planned'?'Planned · no gameplay VFX':playback==='error'?playbackMessage:'Ready · click skill to replay';
  function setPlayback(state:Playback,message=''){playback=state;playbackMessage=message;if(statusText&&!statusText.destroyed)statusText.text=status();drawOverlay();}
@@ -104,7 +106,7 @@ export async function mount(root:HTMLElement,progress:Progress){
  }
  let listRect={x:0,y:0,w:0,h:0};
  function drawUI(){
-  buttons.length=0;ui.removeChildren().forEach(c=>c.destroy({children:true}));const w=app.screen.width,h=app.screen.height;
+  directionText=undefined;buttons.length=0;ui.removeChildren().forEach(c=>c.destroy({children:true}));const w=app.screen.width,h=app.screen.height;
   if(collapsed){button(ui,'FX LAB ‹',w-100,16,88,()=>{collapsed=false;layout();},false,'sidebar-open');drawOverlay();app.render();return;}
   const x=w-sidebarWidth,pad=16,cx=x+pad,cw=sidebarWidth-pad*2;
   ui.addChild(new Graphics().rect(x,0,sidebarWidth,h).fill({color:0x0c1925,alpha:.97}));
@@ -128,7 +130,7 @@ export async function mount(root:HTMLElement,progress:Progress){
   text(ui,`RANK  ${rank} / 5`,cx,by+98,12,0x9fb4c3);
   button(ui,'−',cx+cw-88,by+88,40,()=>{rank=Math.max(1,rank-1);syncUrl();drawUI();void play();},false,'rank-down');
   button(ui,'+',cx+cw-40,by+88,40,()=>{rank=Math.min(5,rank+1);syncUrl();drawUI();void play();},false,'rank-up');
-  button(ui,`Facing: ${DIRS[dir]}`,cx,by+132,half,()=>{dir=(dir+1)%8;syncUrl();drawUI();},false,'direction');
+  directionText=button(ui,`Facing: ${DIRS[dir]}`,cx,by+132,half,()=>{dir=(dir+1)%8;syncUrl();drawUI();},false,'direction').children.find(c=>c instanceof Text) as Text;
   button(ui,runningInPlace?'Run in place':'Idle',cx+half+8,by+132,half,()=>{runningInPlace=!runningInPlace;syncUrl();drawUI();},false,'pose');
   button(ui,'Full skill tree',cx,by+176,cw,()=>{keys.clear();void fullTree.show(treeFocus());},false,'full-tree');
   text(ui,'WASD / arrows to walk',cx,by+226,12,0x9fb4c3);text(ui,'Scroll / pinch to zoom',cx,by+247,12,0x9fb4c3);
@@ -180,7 +182,7 @@ export async function mount(root:HTMLElement,progress:Progress){
   let sy=Number(keys.has('s')||keys.has('arrowdown'))-Number(keys.has('w')||keys.has('arrowup'));
   walking=!!movementDt&&!!(sx||sy);
   if(walking){const angle=Math.atan2(sy,sx),yaw=yawOfScreenAngle(angle);position.u+=Math.cos(yaw)*3.2*movementDt;position.v+=Math.sin(yaw)*3.2*movementDt;
-   let best=Infinity;ANGLES.forEach((a,i)=>{const d=Math.abs(Math.atan2(Math.sin(angle-a*Math.PI/180),Math.cos(angle-a*Math.PI/180)));if(d<best){best=d;dir=i;}});
+   const previousDir=dir;let best=Infinity;ANGLES.forEach((a,i)=>{const d=Math.abs(Math.atan2(Math.sin(angle-a*Math.PI/180),Math.cos(angle-a*Math.PI/180)));if(d<best){best=d;dir=i;}});if(dir!==previousDir){syncUrl();if(directionText&&!directionText.destroyed)directionText.text=`Facing: ${DIRS[dir]}`;}
    const p=tilePoint(position.u,position.v),px=view.x+p.x*view.scale,py=view.y+p.y*view.scale,dx=px-stageWidth()*.5,dy=py-app.screen.height*.55;
    if(Math.abs(dx)>stageWidth()*.26||Math.abs(dy)>app.screen.height*.27){camera.u+=Math.cos(yaw)*3.2*movementDt;camera.v+=Math.sin(yaw)*3.2*movementDt;placeCamera();}
   }
@@ -188,11 +190,11 @@ export async function mount(root:HTMLElement,progress:Progress){
   if(loop&&!paused&&!fullTree.isOpen()&&playback!=='loading'&&time>=nextCast)void play();
   if(playback==='playing'&&time>=nextCast-.1&&!loop)setPlayback('ready');
   const f=fig.getContext('2d')!;f.clearRect(0,0,fig.width,fig.height);
-  const moving=walking||runningInPlace,yaw=yawOfScreenAngle(ANGLES[dir]*Math.PI/180);
+  const moving=walking||runningInPlace,yaw=heroYaw();
   const res=model.updateAndRender({heroId:hero,clip:time<castUntil?'cast':moving?'move':'idle',moving,yaw,dt,tint:night?'167,186,218':'255,255,255',night:night?1:0});
   if(res){const cell=heroCell.getContext('2d')!;cell.clearRect(0,0,114,125);cell.drawImage(res.sprite,0,0,res.spriteW,res.spriteH,0,0,114,125);const p=tilePoint(position.u,position.v),s=view.scale*1.3,top=res.spriteTop*103/(res.spriteH-res.spriteTop);f.save();f.translate(view.x+p.x*view.scale,view.y+p.y*view.scale);f.scale(s,s);if(res.shadow){const a=res.shadow;f.drawImage(a.canvas,a.sx,a.sy,a.sw,a.sh,-a.ox,-a.oy,a.sw,a.sh);}f.drawImage(res.sprite,0,0,res.spriteW,res.spriteH,-57,-101-top,114,103+top);f.restore();}figureView.sync();
  });
- const snapshot=()=>({hero,skill:selected,rank,dir:DIRS[dir],pose:walking||runningInPlace?'run':'idle',position:{...position},zoom,editor:editor.snapshot(),sidebar:{width:sidebarWidth,collapsed,dropdown},playback,message:status(),playCount,loop,paused,bg:night?'night':'day',modelReady:model.isHeroReady(hero),terrain:GAMEPLAY_SNOW,prepared:[...prepared],nodes:nodes().map(n=>({id:n.id,kind:n.kind,implemented:!!n.game})),combat:combat.snapshot()});
+ const snapshot=()=>({hero,skill:selected,rank,dir:DIRS[dir],heroYaw:heroYaw(),facingLabel:directionText?.text??null,pose:walking||runningInPlace?'run':'idle',position:{...position},zoom,editor:editor.snapshot(),sidebar:{width:sidebarWidth,collapsed,dropdown},playback,message:status(),playCount,loop,paused,bg:night?'night':'day',modelReady:model.isHeroReady(hero),terrain:GAMEPLAY_SNOW,prepared:[...prepared],nodes:nodes().map(n=>({id:n.id,kind:n.kind,implemented:!!n.game})),combat:combat.snapshot()});
  (window as any).__FX_LAB__={state:snapshot,configuredEffect:(key:string)=>combat.fx.definition(key),controlBounds:(name:string)=>{const c=ui.getChildByLabel(name,true)??fullTree.panel.getChildByLabel(name,true);if(!c)return null;const b=c.getBounds(),p=c.getGlobalPosition();return {x:b.x,y:b.y,width:b.width,height:b.height,cx:name.startsWith('skill-node-')?p.x:b.x+b.width/2,cy:name.startsWith('skill-node-')?p.y:b.y+b.height/2};},tree:()=>fullTree.show(treeFocus()),closeTree:()=>fullTree.open(false),select:choose,setHero:switchHero,play,rank:(n:number)=>{rank=Math.max(1,Math.min(5,n));syncUrl();drawUI();return play();},pause:(p=true)=>{paused=p;keys.clear();drawUI();},direction:(n:number)=>{dir=((n%8)+8)%8;syncUrl();drawUI();}};
  document.body.dataset.fxLab='ready';app.canvas.dataset.ready='true';app.canvas.setAttribute('aria-label','FX Lab. WASD to walk, scroll or pinch to zoom. Resizable right sidebar with skill dropdown.');
  await play();progress(3,3,'FX Lab ready');
