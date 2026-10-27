@@ -14,6 +14,7 @@ export GAMEPLAY_RELEASE_STAGE="$stage"
 release_sha="$(git rev-parse HEAD)"
 npx tsc --noEmit
 node scripts/gameplay-progress/test.mjs
+node scripts/gameplay-progress/test-release.mjs
 node scripts/test-progression.mjs
 node scripts/test-inventory.mjs
 node scripts/test-settings.mjs
