@@ -20,7 +20,7 @@ try{
  assert.equal((await fetch(base+'/rift-dash/missing/')).status,404,'missing review never returns main game');
  assert.match(await (await fetch(base+'/rift-dash/player/')).text(),/Rift Dash · VFX Player/);
  for(const [name,width,height,touch]of [['desktop',1440,900,false],['portrait',390,844,true],['landscape',844,390,true],['embed',760,560,false]]){
-  browser=await chromium.launch(launchOptions());const page=await browser.newPage({viewport:{width,height},isMobile:touch,hasTouch:touch});
+  browser=await chromium.launch(launchOptions(['--disable-quic']));const page=await browser.newPage({viewport:{width,height},isMobile:touch,hasTouch:touch});
   page.on('pageerror',e=>report.errors.push(e.message));page.on('response',r=>{if(r.status()>=400)report.errors.push(`${r.status()} ${r.url()}`);});
   await page.goto(report.url);await page.waitForFunction(()=>window.__RIFT_DASH_PLAYER__?.snapshot().ready,null,{timeout:60000});
   const snap=()=>page.evaluate(()=>window.__RIFT_DASH_PLAYER__.snapshot());

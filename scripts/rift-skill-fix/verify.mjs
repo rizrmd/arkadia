@@ -1,4 +1,4 @@
-import {serve} from './site.mjs';import {launch} from '../vfx/browser.mjs';import fs from 'node:fs/promises';import assert from 'node:assert/strict';
+import {serve} from './site.mjs';import {launch} from './browser.mjs';import fs from 'node:fs/promises';import assert from 'node:assert/strict';
 const remote=process.env.GAME,tag=remote?'live':'local',out='docs/rift-skill-fix',site=remote?null:await serve(process.env.SITE_DIR||'/home/dev/releases/rift-skill-after');
 const report={base:remote||'http://127.0.0.1:5297',views:[],errors:[],missing:[]};let b;
 try{for(const [name,width,height,touch] of [['desktop',1440,900,false],['portrait',390,844,true],['landscape',844,390,true]].filter(v=>!process.env.WIDTH||v[1]===+process.env.WIDTH)){
