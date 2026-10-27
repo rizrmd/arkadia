@@ -134,7 +134,7 @@ export function createCombatVfx(o:{
  const zoneViews=new Map<number,ZoneView>(),zonePool:ZoneView[]=[],zoneBaseCache=new Map<string,HTMLCanvasElement>();
  const fx=createFxStage({
   renderer:o.renderer,
-  prepareExtra:async()=>{if(o.getHero().heroId==='ember-warden')await flameSheets.prepare();else{dashArt=await RiftDashVfx.load();worldFx.addChild(dashArt.root);}},
+  prepareExtra:async()=>{if(o.getHero().heroId==='ember-warden')await flameSheets.prepare();else{dashArt=await RiftDashVfx.load();dashArt.warmGpu(o.renderer);worldFx.addChild(dashArt.root);}},
   host:{ground:groundFx,world:worldFx},
   effectKeys:()=>cueKeys(o.getHero().heroId).flatMap(key=>resolveCue(o.getHero().heroId,key)?.cue.layers.map(l=>l.effect)??[]),
   depthLayers:{back:o.backLayer,front:o.frontLayer},
