@@ -9,6 +9,7 @@ import (
 )
 
 func TestEnvironmentAccessAndPublish(t *testing.T) {
+defer environment.SetPublished(environment.Empty())
 	store, e := environment.Open(t.TempDir())
 	if e != nil {
 		t.Fatal(e)

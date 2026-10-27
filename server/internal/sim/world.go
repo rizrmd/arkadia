@@ -116,7 +116,8 @@ type Enemy struct {
 	Wander  *Vec
 	Target  string
 	// Side is the way it last veered round a footprint (+1 or -1; 0 counts as +1), tried first next time.
-	Side float64
+	Side   float64
+	detour detourState
 }
 
 func (e *Enemy) enemyLevel() int {
@@ -790,11 +791,24 @@ func (w *World) clearTile(t Vec) bool {
 // may walk out. False when stopped.
 func (w *World) move(e *Enemy, du, dv, dt float64) bool {
 	f := &e.F
+	if w.clearTile(f.Pos) {
+		clear := func(a, b Vec) bool {
+			return navClear(a, b, func(p Vec) bool { return !InSafeZone(p) && w.clearTile(p) }, cliffTile)
+		}
+		next, ok := detourDirection(&e.detour, f.Pos, Vec{f.Pos.X + du, f.Pos.Y + dv}, dt, clear)
+		if !ok {
+			f.Play(Idle)
+			return false
+		}
+		du, dv = next.X-f.Pos.X, next.Y-f.Pos.Y
+	} else {
+		e.detour = detourState{}
+	}
 	l := hypot(du, dv)
 	if l < 1e-6 {
 		return false
 	}
-	v := enemySpeed * dt / 1000
+	v := math.Min(l, enemySpeed*dt/1000)
 	dx, dy := du/l*v, dv/l*v
 	stuck := !w.clearTile(f.Pos)
 	side := e.Side

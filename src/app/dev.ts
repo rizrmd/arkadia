@@ -1,5 +1,5 @@
 import {Application,Container,Graphics,Text} from 'pixi.js';
-import type {Progress} from './loader';
+import type {Progress} from './loading-progress';
 
 type Entry={label:string;path:string;kind:string;status:string};
 const entries:Entry[]=[
