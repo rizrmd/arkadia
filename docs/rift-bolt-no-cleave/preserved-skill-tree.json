@@ -1,0 +1,346 @@
+{
+  "open": true,
+  "loadState": "idle",
+  "loadingVisible": false,
+  "loadingMessage": "Loading skills…",
+  "slot": null,
+  "hint": "Tap a skill slot on the HUD to change its skill",
+  "vertical": false,
+  "u": 101.2,
+  "panel": {
+    "x": 20,
+    "y": 148,
+    "width": 1109,
+    "height": 732
+  },
+  "view": {
+    "x": 40,
+    "y": 240,
+    "width": 1069,
+    "height": 602
+  },
+  "close": {
+    "x": 1094,
+    "y": 182
+  },
+  "scroll": 0,
+  "maxScroll": 415,
+  "highlighted": "rift-bolt",
+  "nodes": [
+    {
+      "id": "rift-bolt",
+      "name": "Rift Bolt",
+      "kind": "active",
+      "placeholder": false,
+      "learned": true,
+      "level": 1,
+      "locked": null,
+      "shape": "circle",
+      "pipCount": 5,
+      "ring": true,
+      "pips": 1,
+      "slot": 1,
+      "screen": {
+        "x": 131.8,
+        "y": 482.8,
+        "r": 56.7
+      },
+      "inView": true,
+      "highlighted": true
+    },
+    {
+      "id": "rift-dash",
+      "name": "Rift Dash",
+      "kind": "active",
+      "placeholder": false,
+      "learned": false,
+      "level": 0,
+      "locked": null,
+      "shape": "hexagon",
+      "pipCount": 5,
+      "ring": true,
+      "pips": 0,
+      "slot": 0,
+      "screen": {
+        "x": 389.8,
+        "y": 326,
+        "r": 50.6
+      },
+      "inView": true,
+      "highlighted": false
+    },
+    {
+      "id": "rift-trap",
+      "name": "Rift Trap",
+      "kind": "active",
+      "placeholder": false,
+      "learned": false,
+      "level": 0,
+      "locked": null,
+      "shape": "circle",
+      "pipCount": 5,
+      "ring": true,
+      "pips": 0,
+      "slot": 0,
+      "screen": {
+        "x": 389.8,
+        "y": 482.8,
+        "r": 50.6
+      },
+      "inView": true,
+      "highlighted": false
+    },
+    {
+      "id": "second-wind",
+      "name": "Second Wind",
+      "kind": "passive",
+      "placeholder": false,
+      "learned": false,
+      "level": 0,
+      "locked": null,
+      "shape": "emblem",
+      "pipCount": 0,
+      "ring": false,
+      "pips": 0,
+      "slot": 0,
+      "screen": {
+        "x": 389.8,
+        "y": 634.6,
+        "r": 45.5
+      },
+      "inView": true,
+      "highlighted": false
+    },
+    {
+      "id": "titan-strike",
+      "name": "Titan Strike",
+      "kind": "passive",
+      "placeholder": false,
+      "learned": false,
+      "level": 0,
+      "locked": null,
+      "shape": "emblem",
+      "pipCount": 0,
+      "ring": false,
+      "pips": 0,
+      "slot": 0,
+      "screen": {
+        "x": 389.8,
+        "y": 758,
+        "r": 45.5
+      },
+      "inView": true,
+      "highlighted": false
+    },
+    {
+      "id": "astral-cleave",
+      "name": "Astral Cleave",
+      "kind": "active",
+      "placeholder": false,
+      "learned": false,
+      "level": 0,
+      "locked": "4 pts",
+      "shape": "circle",
+      "pipCount": 5,
+      "ring": true,
+      "pips": 0,
+      "slot": 0,
+      "screen": {
+        "x": 647.8,
+        "y": 326,
+        "r": 50.6
+      },
+      "inView": true,
+      "highlighted": false
+    },
+    {
+      "id": "seismic-slam",
+      "name": "Seismic Slam",
+      "kind": "active",
+      "placeholder": false,
+      "learned": false,
+      "level": 0,
+      "locked": "4 pts",
+      "shape": "circle",
+      "pipCount": 5,
+      "ring": true,
+      "pips": 0,
+      "slot": 0,
+      "screen": {
+        "x": 647.8,
+        "y": 482.8,
+        "r": 50.6
+      },
+      "inView": true,
+      "highlighted": false
+    },
+    {
+      "id": "arc-nova",
+      "name": "Arc Nova",
+      "kind": "passive",
+      "placeholder": false,
+      "learned": false,
+      "level": 0,
+      "locked": "4 pts",
+      "shape": "emblem",
+      "pipCount": 0,
+      "ring": false,
+      "pips": 0,
+      "slot": 0,
+      "screen": {
+        "x": 647.8,
+        "y": 634.6,
+        "r": 45.5
+      },
+      "inView": true,
+      "highlighted": false
+    },
+    {
+      "id": "soul-feast",
+      "name": "Soul Feast",
+      "kind": "passive",
+      "placeholder": false,
+      "learned": false,
+      "level": 0,
+      "locked": "4 pts",
+      "shape": "emblem",
+      "pipCount": 0,
+      "ring": false,
+      "pips": 0,
+      "slot": 0,
+      "screen": {
+        "x": 647.8,
+        "y": 758,
+        "r": 45.5
+      },
+      "inView": true,
+      "highlighted": false
+    },
+    {
+      "id": "phantom-legion",
+      "name": "Phantom Legion",
+      "kind": "ultimate",
+      "placeholder": true,
+      "learned": false,
+      "level": 0,
+      "locked": null,
+      "shape": "circle",
+      "pipCount": 5,
+      "ring": true,
+      "pips": 0,
+      "slot": 0,
+      "screen": {
+        "x": 915.9,
+        "y": 341.2,
+        "r": 54.6
+      },
+      "inView": true,
+      "highlighted": false
+    },
+    {
+      "id": "event-horizon",
+      "name": "Event Horizon",
+      "kind": "ultimate",
+      "placeholder": true,
+      "learned": false,
+      "level": 0,
+      "locked": null,
+      "shape": "circle",
+      "pipCount": 5,
+      "ring": true,
+      "pips": 0,
+      "slot": 0,
+      "screen": {
+        "x": 915.9,
+        "y": 634.6,
+        "r": 54.6
+      },
+      "inView": true,
+      "highlighted": false
+    },
+    {
+      "id": "chrono-surge",
+      "name": "Chrono Surge",
+      "kind": "passive",
+      "placeholder": false,
+      "learned": false,
+      "level": 0,
+      "locked": "8 pts",
+      "shape": "emblem",
+      "pipCount": 0,
+      "ring": false,
+      "pips": 0,
+      "slot": 0,
+      "screen": {
+        "x": 1184,
+        "y": 320.9,
+        "r": 45.5
+      },
+      "inView": false,
+      "highlighted": false
+    },
+    {
+      "id": "rift-lance",
+      "name": "Rift Lance",
+      "kind": "active",
+      "placeholder": true,
+      "learned": false,
+      "level": 0,
+      "locked": null,
+      "shape": "circle",
+      "pipCount": 5,
+      "ring": true,
+      "pips": 0,
+      "slot": 0,
+      "screen": {
+        "x": 1184,
+        "y": 482.8,
+        "r": 50.6
+      },
+      "inView": false,
+      "highlighted": false
+    },
+    {
+      "id": "furnace-heart",
+      "name": "Furnace Heart",
+      "kind": "passive",
+      "placeholder": false,
+      "learned": false,
+      "level": 0,
+      "locked": "8 pts",
+      "shape": "emblem",
+      "pipCount": 0,
+      "ring": false,
+      "pips": 0,
+      "slot": 0,
+      "screen": {
+        "x": 1184,
+        "y": 644.7,
+        "r": 45.5
+      },
+      "inView": false,
+      "highlighted": false
+    },
+    {
+      "id": "ascendant-star",
+      "name": "Ascendant Star",
+      "kind": "passive",
+      "placeholder": false,
+      "learned": false,
+      "level": 0,
+      "locked": "Lv. 20",
+      "shape": "emblem",
+      "pipCount": 0,
+      "ring": false,
+      "pips": 0,
+      "slot": 0,
+      "screen": {
+        "x": 1431.9,
+        "y": 482.8,
+        "r": 45.5
+      },
+      "inView": false,
+      "highlighted": false
+    }
+  ]
+}
