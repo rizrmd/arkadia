@@ -19,6 +19,9 @@ node --input-type=module -e 'import {build} from "vite";await build({build:{outD
 mkdir -p "$FLAME_FAN_STAGE/site/flame-fan-burst-candidate/v1" "$FLAME_FAN_STAGE/site/ember-warden-review/flame-fan-gameplay/burst-v1"
 mkdir -p "$FLAME_FAN_STAGE/site/flame-fan-static"
 for part in crust-a crust-b straight coal; do cp "public/flame-fan-static/$part.png" "$FLAME_FAN_STAGE/site/flame-fan-static/"; done
+mkdir -p "$FLAME_FAN_STAGE/site/flame-fan-ember-candidate/v1" "$FLAME_FAN_STAGE/site/ember-warden-review/flame-fan-gameplay/ember-v2"
+cp public/flame-fan-ember-candidate/v1/ember-v2.png "$FLAME_FAN_STAGE/site/flame-fan-ember-candidate/v1/"
+cp docs/flame-fan-gameplay/ember-v2/*.png docs/flame-fan-gameplay/ember-v2/*.json docs/flame-fan-gameplay/ember-v2/*.md "$FLAME_FAN_STAGE/site/ember-warden-review/flame-fan-gameplay/ember-v2/"
 cp public/flame-fan-burst-candidate/v1/flame-burst-v1.png "$FLAME_FAN_STAGE/site/flame-fan-burst-candidate/v1/"
 cp docs/flame-fan-gameplay/burst-v1/*.png docs/flame-fan-gameplay/burst-v1/*.json docs/flame-fan-gameplay/burst-v1/*.md "$FLAME_FAN_STAGE/site/ember-warden-review/flame-fan-gameplay/burst-v1/"
 node --input-type=module <<'MANIFEST'

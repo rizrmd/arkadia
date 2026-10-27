@@ -75,6 +75,7 @@ for(const kit of readdirSync(`${siteDir}/skill-tree`)){
 }
 console.error('Release file scan complete:',files.size);
 if(files.size<20)throw Error('Only '+files.size+' files loaded');
+files.add('flame-fan-ember-candidate/v1/ember-v2.png');
 files.add('flame-fan-burst-candidate/v1/flame-burst-v1.png');
 for(const part of ['crust-a','crust-b','straight','coal'])files.add('flame-fan-static/'+part+'.png');
 console.log([...files].sort().join('\n'));
