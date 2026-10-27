@@ -1,0 +1,59 @@
+{
+  "base": "http://127.0.0.1:5796",
+  "cases": [
+    {
+      "name": "desktop-ember-warden",
+      "initial": {
+        "level": 11,
+        "xp": 0,
+        "gold": 5,
+        "hp": 0,
+        "maxHp": 120,
+        "elapsedMs": 961.3000000000065,
+        "skills": {
+          "flame-fan": 3,
+          "cinder-step": 1,
+          "might": 5,
+          "vitality": 1
+        },
+        "gate": {
+          "hp": 43,
+          "max": 160
+        },
+        "souls": 1
+      },
+      "checks": [
+        "paused Settings preserves all simulation state",
+        "two exact refreshes",
+        "full browser close/relaunch with persistent profile",
+        "offline gameplay/effect/cooldown durations unchanged",
+        "gold and dead-enemy reward markers unchanged",
+        "uncollected souls retained",
+        "ranks/passives/pending cards/gate restored",
+        "separate hero saves",
+        "damaged HP retained",
+        "active skill cooldown and in-flight effects retained"
+      ],
+      "reloads": [
+        {
+          "exact": true,
+          "elapsedMs": 961.3000000000065,
+          "remainingCooldowns": {
+            "flame-fan": 1185,
+            "cinder-step": 1094
+          }
+        },
+        {
+          "exact": true,
+          "elapsedMs": 1264.700000000008,
+          "remainingCooldowns": {
+            "flame-fan": 881.5999999999985,
+            "cinder-step": 790.5999999999985
+          }
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "method": "Persistent Chromium userDataDir; actual complete browser termination/relaunch, two reloads, snapshots captured before simulation starts behind loading; real blessing choices, enemies, kills, consumable effects, independent heroes and paused timers."
+}

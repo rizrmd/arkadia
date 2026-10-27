@@ -19,7 +19,9 @@ func (w *World) dropSoul(p *Player, pos Vec, level int) {
 func (w *World) collectSouls() {
 	kept := w.Souls[:0]
 	for _, s := range w.Souls {
-		s.Age += TickMS
+		if w.Player(s.Owner) != nil {
+			s.Age += TickMS
+		}
 		collected := false
 		for _, p := range w.Players {
 			if p.ID == s.Owner && p.F.Alive() && s.Age >= 350 && hypot(p.F.Pos.X-s.U, p.F.Pos.Y-s.V) <= .85 {

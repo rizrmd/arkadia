@@ -49,6 +49,10 @@ func main() {
 		s.WarmWebPCache(ctx)
 		return
 	}
+	if err := s.Rooms.EnablePersistence(env("GAME_SAVE_DIR", "game-saves")); err != nil {
+		log.Error("gameplay checkpoint", "err", err)
+		os.Exit(1)
+	}
 	go s.WarmWebPCache(ctx)
 	srv := &http.Server{Addr: ":" + env("PORT", "3000"), Handler: s.Handler(), ReadHeaderTimeout: 10 * time.Second}
 	go func() {

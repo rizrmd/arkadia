@@ -38,8 +38,8 @@ func TestSoulAuthorityAndExactlyOnce(t *testing.T) {
 	}
 	w.dropSoul(p, at, 3)
 	w.RemovePlayer(p.ID)
-	if len(w.Souls) != 0 {
-		t.Fatal("disconnect did not clean up souls")
+	if len(w.Souls) != 1 {
+		t.Fatal("disconnect lost uncollected soul")
 	}
 }
 

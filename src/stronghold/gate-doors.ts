@@ -52,7 +52,7 @@ export function createGateDoors(worldStage:Container,gateway:HTMLImageElement,sh
   })().catch(error=>{sheetPreparing=false;console.error('Gateway sheet preparation failed',error);});
   return null;
  }
- let index=0,target=0,raf=0,last=0,elapsed=0,shown=-1,passable=false,lit=-1,flamePose=0,shownFlame=-1,flameTimer=0,pointerHeld=false,behind:boolean|null=null,onScreen=true;
+ let active=false,index=0,target=0,raf=0,last=0,elapsed=0,shown=-1,passable=false,lit=-1,flamePose=0,shownFlame=-1,flameTimer=0,pointerHeld=false,behind:boolean|null=null,onScreen=true;
  const reduced=matchMedia('(prefers-reduced-motion: reduce)');
  const torches=meta.torches??{left:{x:Math.round(frame.w*196/768),y:Math.round(frame.h*253/512),w:Math.round(frame.w*70/768),h:Math.round(frame.h*112/512)},right:{x:Math.round(frame.w*502/768),y:Math.round(frame.h*253/512),w:Math.round(frame.w*70/768),h:Math.round(frame.h*112/512)}};
  const pierPatches=[{x:torches.left.x-4,y:torches.left.y-5,w:torches.left.w+8,h:torches.left.h+8},{x:torches.right.x-4,y:torches.right.y-5,w:torches.right.w+8,h:torches.left.h+8}];
@@ -121,9 +121,12 @@ export function createGateDoors(worldStage:Container,gateway:HTMLImageElement,sh
  }
  paint();
  return {canvas,sprite:gateView.sprite,refreshLighting:paint,
+  start(){active=true;if(index!==target&&!raf)raf=requestAnimationFrame(tick);},
+  saveState:()=>({index,target,elapsed}),
+  restoreState(s:{index:number;target:number;elapsed:number}){index=s.index;target=s.target;elapsed=s.elapsed;shown=-1;paint();if(active&&index!==target&&!raf)raf=requestAnimationFrame(tick);},
   hit(x:number,y:number){const u=(x-LEFT)/region.w,v=(y-(FOOT-height*PIVOT))/region.h;if(u<0||v<0||u>=1||v>=1)return false;return c.getImageData(Math.floor(u*canvas.width),Math.floor(v*canvas.height),1,1).data[3]>40;},
   order(inside:boolean){if(inside===behind)return;behind=inside;gateView.sprite.zIndex=inside?14:15;},
-  setOpen(open:boolean){target=open?meta.frames-1:0;if(index!==target&&!raf)raf=requestAnimationFrame(tick);},
+  setOpen(open:boolean){target=open?meta.frames-1:0;if(active&&index!==target&&!raf)raf=requestAnimationFrame(tick);},
   place(x:number,y:number,scale:number){
    lastScale=scale;
    const sx=x+(LEFT+region.x)*scale,sy=y+(FOOT-height*PIVOT+region.y)*scale,sw=region.w*scale,sh=region.h*scale;

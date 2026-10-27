@@ -13,7 +13,7 @@ import {environmentSprites,COURT,tilePoint,LEGACY_LAYOUT} from './terrain';
 import {slots,calibration,WORLD} from './scene';
 import {buildings,isBuilt,heroBonus,START_BUILT,type Building,type State} from './economy';
 import {createLighting} from './lighting';
-import {sunAt} from './daylight';
+import {sunAt,DAY_MS} from './daylight';
 import {createHero,prewarmOcclusionAlpha} from './hero';
 import {createEncounters} from './encounters';
 import {setGateOpen,gateTowerFront} from './navigation';
@@ -146,7 +146,7 @@ export async function createWorldView(
  surfaceView.sprite.zIndex=10;
  staticStage.addChild(surfaceView.sprite);
 
- const sc=surface.getContext('2d')!;let dirty=true,frame=0;
+ const sc=surface.getContext('2d')!;let dirty=true,frame=0,lightingReady=false;
  const lighting=createLighting({
   worldStage:staticStage,
   surface,
@@ -155,7 +155,8 @@ export async function createWorldView(
   top,
   width:worldWidth,
   height:worldHeight,
-  onSun:()=>castShadows(),
+  // Initial light baking may cross a sun bucket before shadow buffers exist.
+  onSun:()=>{if(lightingReady)castShadows();},
   onSurfaceUpdate:()=>surfaceView.sync(worldWidth*scale,worldHeight*scale),
  });
  lighting.setScene(objects);
@@ -263,14 +264,15 @@ export async function createWorldView(
  const party=net?createParty<(typeof objects)[number]>({layer:worldStage,frames,lightmap:lighting.lightmap,surface,footprint:p=>p.id==='gate'?gateFootprint():footprint(p),sun:lighting.sun,net,own:()=>hero.position()}):null;party?.setScene(scene());
  await milestone(940,'Loading backgrounds');
  const parallax=await createParallax({worldStage,anchorX:WORLD.width/2,anchorY:385,getHeroWorld:()=>hero.position(),getCombatantsWorld:()=>encounters?encounters.combatants():[hero.position()]});
- lighting.setClockSource(()=>net?.active()?net.clock():null);net?.onSnapshot(()=>{const p=hero.position();updateGate(p.x,p.y);});lighting.subscribe(s=>encounters!.setAmbient(s.ambient));
+ let clockBase=Date.now()/DAY_MS;
+ lighting.setClockSource(()=>net?.active()?net.clock():clockBase+encounters!.elapsed()/DAY_MS);net?.onSnapshot(()=>{const p=hero.position();updateGate(p.x,p.y);});lighting.subscribe(s=>encounters!.setAmbient(s.ambient));
  lighting.subscribe(s=>{const [r,g,b]=s.ambient.map(v=>Math.round(Math.round(v*32)/32*255));for(const f of relief)f.view.sprite.tint=(r<<16)|(g<<8)|b;frontier.setAmbient((r<<16)|(g<<8)|b);});
  await milestone(loaded=950,'Raising the Stronghold');
 
  const uprights=document.createElement('canvas');uprights.id='world-uprights';uprights.width=surface.width;uprights.height=surface.height;
  const baseSurface=document.createElement('canvas');baseSurface.width=surface.width;baseSurface.height=surface.height;
  const baseUprights=document.createElement('canvas');baseUprights.width=surface.width;baseUprights.height=surface.height;
- let shadowsDirty=true,baseDirty=true;
+ let shadowsDirty=true,baseDirty=true;lightingReady=true;
  function paintWorld(){
   measureTracelogPhase('worldPaint',()=>{
    const u=uprights.getContext('2d')!;
@@ -411,12 +413,16 @@ export async function createWorldView(
  }
  (window as any).__STRONGHOLD_NAV__=()=>({version:1,layout:[...built],columns:objects.filter(p=>p.layer!=='ground'&&p.opacity>=1&&p.id!=='gate').flatMap(p=>footprint(p).map(c=>({x:+c.x.toFixed(2),w:+c.w.toFixed(2),back:+c.back.toFixed(2),front:+c.front.toFixed(2)})))});
  canvas.dataset.gate='closed';setGateOpen(false);updateGate(hero.position().x,hero.position().y);
+ encounters.bindPersistence({
+  capture:()=>({clockBase,gateOpen,doors:doors.saveState(),gateHealth:encounters!.hud.getGateHp(),route:walker?.route()?.target??null}),
+  restore(s:any){clockBase=s.clockBase;gateOpen=s.gateOpen;doors.restoreState(s.doors);encounters!.hud.setGateHp(s.gateHealth.hp,s.gateHealth.max);canvas.dataset.gate=gateOpen?'open':'closed';if(s.route)setTimeout(()=>walker?.goTo(s.route.x,s.route.y),0);},
+ });
  // Open on the hero (as follow() frames it) without drawing: the first paint waits for the saved layout (main.ts).
  {const a=hero.anchor();cx=a.x;cy=a.y-40;}
  // Gameplay (the hero and the revenants) starts once `hold` resolves: after the loading screen, and on a first visit
  // after Choose Your Hero. Until then the camera already frames the hero.
  const loadGateAfterDone=()=>{const s=document.querySelector<HTMLElement>('#loading-screen');if(s&&s.dataset.state!=='done'){setTimeout(loadGateAfterDone,120);return;}ensureGateSheet();};
- parallax.start();void hold.then(()=>{hero.start();encounters.start();setTimeout(loadGateAfterDone,120);});
+ parallax.start();void hold.then(()=>{doors.start();hero.start();encounters.start();setTimeout(loadGateAfterDone,120);});
  (window as any).__WORLD_MAP__={map:worldMap,walker,open:(v=true)=>worldMap.open(v),walkTo:(x:number,y:number)=>walker!.goTo(x,y),route:()=>walker!.route(),snapshot:()=>worldMap.snapshot(),screenOf:(x:number,y:number)=>worldMap.screenOf({x,y})};
  return {
   prepareGpu:()=>createGpuPreparation(rt.app.renderer).prepare(worldStage,useDepthShadows?['shadow-actors']:[]),

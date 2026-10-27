@@ -1,5 +1,5 @@
 import {Assets,Container,Graphics,Rectangle,Sprite,Text,type Texture,type FederatedPointerEvent} from 'pixi.js';
-import {createHudActionButton,hudActionPosition} from './hud-action-button';
+import {createHudActionButton,hudActionPosition,type HudActionGesture} from './hud-action-button';
 import {audioSnapshot} from '../app/game-audio';
 import {gameSettings,type GameSettings} from '../app/settings-state';
 import {skillBindings} from '../app/skill-bindings';
@@ -10,6 +10,8 @@ type Options={stage:Container;bounds:()=>{x:number;y:number;width:number;height:
 type Control={id:string;y:number;h:number;action:()=>void;adjust?:(step:number)=>void};
 export function createSettings(o:Options){
  let open=false,confirm=false,busy=false,destroyed=false,capture=-1,focus='close',keyboard=false,message='',scroll=0,maxScroll=0;
+ let openingTime=-Infinity;
+ const openingTap=(e:FederatedPointerEvent)=>Math.abs((e.nativeEvent?.timeStamp??e.timeStamp)-openingTime)<1;
  let previous:HTMLElement|null=null,controls:Control[]=[],panelRect={x:0,y:0,width:0,height:0},viewTop=0,viewHeight=0;
  const overlay=new Container({label:'Settings',eventMode:'static'});overlay.zIndex=110;overlay.visible=false;o.stage.addChild(overlay);
  const gear=createHudActionButton(o.stage,'/ui/hud-actions/settings.webp','Open Settings',show);
@@ -22,7 +24,7 @@ export function createSettings(o:Options){
   const t=text(c,label,0,11,16,w-8,danger?0xffc9ba:0xf4ead3);t.x=(w-t.width)/2;
   controls.push({id,y,h:44,action});
   c.on('pointerdown',(e:FederatedPointerEvent)=>{e.stopPropagation();keyboard=false;focus=id;});
-  c.on('pointertap',(e:FederatedPointerEvent)=>{e.stopPropagation();if(!busy)action();});return c;
+  c.on('pointertap',(e:FederatedPointerEvent)=>{e.stopPropagation();if(!busy&&!openingTap(e))action();});return c;
  }
  function set(patch:Partial<GameSettings>){message=gameSettings.set(patch)?'':'Settings could not be saved on this browser.';refresh();}
  function refresh(){
@@ -30,7 +32,7 @@ export function createSettings(o:Options){
   overlay.removeChildren().forEach(c=>c.destroy({children:true}));controls=[];
   const vw=innerWidth,vh=innerHeight,w=Math.max(260,Math.min(560,vw-32)),h=Math.min(confirm?700:790,vh-32),x=Math.round((vw-w)/2),y=Math.round((vh-h)/2);
   panelRect={x,y,width:w,height:h};overlay.hitArea=new Rectangle(0,0,vw,vh);
-  const shade=overlay.addChild(new Graphics().rect(0,0,vw,vh).fill({color:0,alpha:.68}));shade.eventMode='static';shade.on('pointertap',()=>confirm?cancel():close());
+  const shade=overlay.addChild(new Graphics().rect(0,0,vw,vh).fill({color:0,alpha:.68}));shade.eventMode='static';shade.on('pointertap',(e:FederatedPointerEvent)=>{if(!openingTap(e)){if(confirm)cancel();else close();}});
   const panel=overlay.addChild(new Container({label:confirm?'Reset confirmation':'Settings panel',eventMode:'static'}));panel.position.set(x,y);panel.hitArea=new Rectangle(0,0,w,h);panel.on('pointertap',e=>e.stopPropagation());
   panel.addChild(new Graphics().roundRect(0,0,w,h,10).fill(0x0d1215).stroke({color:0xd5af4b,width:2}));
   text(panel,confirm?'Reset progression?':'Settings',22,17,26,w-90);
@@ -81,7 +83,7 @@ export function createSettings(o:Options){
  function wheel(e:WheelEvent){if(!open)return;e.preventDefault();scroll+=e.deltaY;refresh();}
  function cancel(){if(busy)return;confirm=false;capture=-1;scroll=0;focus='reset-progression';message='';refresh();}
  function close(){if(busy||!open)return;capture=-1;open=false;confirm=false;drag=null;swipe=null;overlay.visible=false;o.releaseInput();if(o.solo){setGamePaused(false);o.pause(false);}previous?.focus();o.redraw();}
- function show(){if(open||!o.canOpen())return;previous=document.activeElement as HTMLElement;previous?.blur();o.releaseInput();open=true;confirm=false;capture=-1;scroll=0;focus='close';message='';overlay.visible=true;if(o.solo){setGamePaused(true);o.pause(true);}refresh();}
+ function show(gesture?:HudActionGesture){if(open||!o.canOpen())return;openingTime=gesture?.timeStamp??-Infinity;previous=document.activeElement as HTMLElement;previous?.blur();o.releaseInput();open=true;confirm=false;capture=-1;scroll=0;focus='close';message='';overlay.visible=true;if(o.solo){setGamePaused(true);o.pause(true);}refresh();}
  async function reset(){if(busy)return;busy=true;refresh();try{await resetProgression();location.reload();}catch(e){busy=false;message=e instanceof Error?e.message:'Reset failed.';refresh();}}
  function ensureFocus(){const c=controls.find(c=>c.id===focus);if(!c||['close','resume','cancel','confirm-reset'].includes(c.id))return;if(c.y<viewTop)scroll-=viewTop-c.y;else if(c.y+c.h>viewTop+viewHeight)scroll+=c.y+c.h-viewTop-viewHeight;}
  function key(e:KeyboardEvent){
