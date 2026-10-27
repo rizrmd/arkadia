@@ -433,7 +433,7 @@ if((p as any).authored)return authoredColumns((p as any).authored).map(c=>({...c
   restore(s:any){clockBase=s.clockBase;gateOpen=s.gateOpen;doors.restoreState(s.doors);encounters!.hud.setGateHp(s.gateHealth.hp,s.gateHealth.max);canvas.dataset.gate=gateOpen?'open':'closed';if(s.route)setTimeout(()=>walker?.goTo(s.route.x,s.route.y),0);},
  });
  if(!net){
-  gathering=await createGathering({worldStage,uiStage,day:clockBase+encounters.elapsed()/DAY_MS,hero:hero.position,blocked:hero.blocked,hudBottom:()=>Math.max(encounters!.hud.getTopLeftScreenBounds().bottom,encounters!.hud.getTopRightTelemetry().screenBounds.bottom),changed:()=>{requestAnimationFrame(()=>{hero.setScene(scene());shadowSceneKey='';sceneShadows?.setScene(shadowSurfaces());requestDraw();});}});
+  gathering=await createGathering({worldStage,uiStage,day:clockBase+encounters.elapsed()/DAY_MS,hero:hero.position,blocked:hero.blocked,hudBottom:()=>encounters!.hud.getTopLeftScreenBounds().bottom,resourceTop:()=>encounters!.hud.getTopRightTelemetry().screenBounds.bottom,changed:()=>{requestAnimationFrame(()=>{hero.setScene(scene());shadowSceneKey='';sceneShadows?.setScene(shadowSurfaces());requestDraw();});}});
   hero.setScene(scene());encounters.setGathering(gathering);
   lighting.setClockSource(()=>gathering!.day());
  }
