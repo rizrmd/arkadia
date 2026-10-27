@@ -1,0 +1,95 @@
+{
+ "url": "wss://arkodia.online/ws",
+ "seconds": 40,
+ "room": "BQYVR",
+ "commonTicks": 852,
+ "tickSpan": 887,
+ "ticksWithEnemies": 852,
+ "enemyIds": [
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8
+ ],
+ "lastTick": 963,
+ "kills": {
+  "Ayu": 6,
+  "Bima": 1,
+  "Cheat": 0
+ },
+ "runs": {
+  "Ayu": {
+   "castGeometry": {
+    "fromU": 19.0078125,
+    "fromV": 18.8046875,
+    "targetU": 18.696430940269575,
+    "targetV": 18.762833717185515
+   },
+   "level": 1,
+   "xp": 40,
+   "gold": 30,
+   "pending": 0,
+   "offers": [],
+   "skills": {
+    "flame-fan": 1
+   },
+   "stars": 0,
+   "slots": [
+    "flame-fan"
+   ],
+   "autoCasts": 4,
+   "lastCast": [
+    "flame-fan"
+   ]
+  },
+  "Bima": {
+   "castGeometry": {
+    "fromU": 16.593780781915257,
+    "fromV": 16.378840255968157,
+    "targetU": 18.331885930076947,
+    "targetV": 17.456825317153125
+   },
+   "level": 1,
+   "xp": 10,
+   "gold": 5,
+   "pending": 0,
+   "offers": [],
+   "skills": {
+    "flame-fan": 1
+   },
+   "stars": 0,
+   "slots": [
+    "flame-fan"
+   ],
+   "autoCasts": 5,
+   "lastCast": [
+    "flame-fan"
+   ]
+  },
+  "Cheat": {
+   "level": 1,
+   "xp": 0,
+   "gold": 0,
+   "pending": 0,
+   "offers": [],
+   "skills": {
+    "flame-fan": 1
+   },
+   "stars": 0,
+   "slots": [
+    "flame-fan"
+   ]
+  }
+ },
+ "heroesHurt": true,
+ "cheatMaxStepPx": 10.18,
+ "heroStepPx": 6,
+ "snapshotBytes": 2647,
+ "ackA": 792,
+ "inputsA": 799,
+ "ok": true
+}
