@@ -1,3 +1,4 @@
+import {detourDirection,navClear,type Detour} from './detour';
 import {skillBindings} from '../app/skill-bindings';
 import {publishActorShadowFrame,actorShadowModeRevision} from './shadow-actor-sources';
 import {registerActorShadowSprite} from './shadow-actor-batch';
@@ -532,8 +533,16 @@ export async function createEncounters(o:{
   }
  }
 
+ const detours=new WeakMap<Foe,Detour>();
  function move(f:Foe,du:number,dv:number,dt:number){
-  const len=Math.hypot(du,dv);if(len<1e-6)return false;const v=ENEMY_SPEED*dt/1000,dx=du/len*v,dy=dv/len*v,stuck=!walkable(tileOf(f));
+  const from={x:f.x,y:f.y},to={x:f.x+du,y:f.y+dv};
+  let route=detours.get(f);if(!route){route={points:[],target:to,ttl:0};detours.set(f,route);}
+  if(walkable(tileOf(f))){
+   const next=detourDirection(route,from,to,dt,(a,b)=>navClear(a,b,p=>!inSafeZone({u:p.x,v:p.y})&&walkable({u:p.x,v:p.y}),(a,b)=>cliffTile(a.x,a.y,b.x,b.y)));
+   if(next){du=next.x-f.x;dv=next.y-f.y;}else{f.play('idle');return false;}
+  }else{route.points=[];route.ttl=0;}
+
+  const len=Math.hypot(du,dv);if(len<1e-6)return false;const v=Math.min(len,ENEMY_SPEED*dt/1000),dx=du/len*v,dy=dv/len*v,stuck=!walkable(tileOf(f));
   const tryStep=(mx:number,my:number,side:number)=>{
    if(Math.hypot(mx,my)<v*.4)return false;
    const next={u:f.x+mx,v:f.y+my};
