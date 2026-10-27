@@ -9,6 +9,16 @@ for(const [speciesIndex,species] of report.species.entries()){
  for(let i=0;i<16;i++){
   const left=Math.round(i%4*meta.width/4),top=Math.round(Math.floor(i/4)*meta.height/4),right=Math.round((i%4+1)*meta.width/4),bottom=Math.round((Math.floor(i/4)+1)*meta.height/4);
   const {data,info}=await sharp(path).extract({left,top,width:right-left,height:bottom-top}).ensureAlpha().raw().toBuffer({resolveWithObject:true});
+  // Keep the main connected silhouette; generated cell edges can include tiny adjacent-cell fragments.
+  const seen=new Uint8Array(info.width*info.height);let largest=[];
+  for(let seed=0;seed<seen.length;seed++){
+   if(seen[seed]||data[seed*4+3]<=8)continue;
+   const component=[seed];seen[seed]=1;
+   for(let q=0;q<component.length;q++){const n=component[q],x=n%info.width,y=Math.floor(n/info.width);for(const [dx,dy]of [[1,0],[-1,0],[0,1],[0,-1]]){const xx=x+dx,yy=y+dy;if(xx<0||yy<0||xx>=info.width||yy>=info.height)continue;const k=yy*info.width+xx;if(!seen[k]&&data[k*4+3]>8){seen[k]=1;component.push(k);}}}
+   if(component.length>largest.length)largest=component;
+  }
+  const keep=new Uint8Array(seen.length);for(const n of largest)keep[n]=1;
+  for(let n=0;n<keep.length;n++)if(!keep[n])data[n*4+3]=0;
   let x0=info.width,y0=info.height,x1=0,y1=0,transparent=0;
   for(let y=0;y<info.height;y++)for(let x=0;x<info.width;x++){const a=data[(y*info.width+x)*4+3];if(a>24){x0=Math.min(x0,x);x1=Math.max(x1,x);y0=Math.min(y0,y);y1=Math.max(y1,y);}if(a===0)transparent++;}
   if(!transparent||x1<=x0)throw Error('Invalid frame');
