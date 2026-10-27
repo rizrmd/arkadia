@@ -13,10 +13,11 @@ void (async()=>{
  const stopCodeProgress=isDev?()=>{}:trackBootCode();
  try{
   // The catalog owns its Pixi canvas and needs no game fonts, HUD or world assets.
-  if(isDev){
+  if(isDev||path.startsWith('/fx-lab')){
+   if(!isDev)screen.progress(0,3,'Starting FX editor');
    const view=await routes[path]();
    await view.mount(document.querySelector('#app')!,screen.progress);
-   screen.done();
+   stopCodeProgress();screen.done();
    return;
   }
   screen.progress(1,100,'Loading game code');
@@ -29,6 +30,6 @@ void (async()=>{
   await loadedView.mount(document.querySelector('#app')!,screen.progress);
   screen.done();
  }
- catch(e){console.error('Unable to load Arkodia.',e);screen.fail('The Stronghold could not load. Check your connection and try again.');}
+ catch(e){console.error('Unable to load Arkodia.',e);screen.fail(path.startsWith('/fx-lab')?'The FX editor could not load. Check your connection and reload.':'The Stronghold could not load. Check your connection and try again.');}
  finally{stopCodeProgress();}
 })();

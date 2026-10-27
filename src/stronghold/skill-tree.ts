@@ -123,7 +123,7 @@ export class SkillTree{
  private press:{x:number;y:number;at:number;last:number;moved:boolean;id:number}|null=null;
  private frame=0;private lastTick=0;private stateKey='';private layoutKey='';
  private openState=false;
- constructor(private uiStage:Container,private o:{run:()=>Progression;hero?:()=>HeroKind;region:()=>{rect:Rect;vertical:boolean};equip:(slot:number,id:string)=>true|string;onClose?:()=>void}){
+ constructor(private uiStage:Container,private o:{run:()=>Progression;hero?:()=>HeroKind;region:()=>{rect:Rect;vertical:boolean};equip:(slot:number,id:string)=>true|string;onClose?:()=>void;onSelect?:(id:TreeNodeId)=>void}){
   this.shade.zIndex=-1;this.shade.visible=false;this.shade.eventMode='static';
   this.shade.on('pointertap',()=>{if(this.inspection?.isVisible())this.inspection.dismiss();else this.open(false);});
   // Above the first-visit movement hint (44), under the world map (45) and the level-up offer (55).
@@ -464,7 +464,7 @@ export class SkillTree{
   for(const v of this.views.values())if(Math.hypot(p.x-v.x,p.y-v.y)<=v.r*1.05){this.choose(v);return;}
  }
  // Inspection never changes the loadout, including locked and concept nodes.
- private choose(v:NodeView){this.highlight(v.def.id);this.inspection?.reveal();this.say(this.prompt(),0);}
+ private choose(v:NodeView){this.highlight(v.def.id);this.inspection?.reveal();this.say(this.prompt(),0);this.o.onSelect?.(v.def.id);}
  private explicitEquip(id:string){
   const v=[...this.views.values()].find(v=>v.def.game===id);
   if(!v||v.lock||!this.learned(v)||v.def.kind==='passive')return;

@@ -3,6 +3,14 @@
 # Uses the same validated release publisher and human git identity as full shipping.
 set -euo pipefail
 cd "$(dirname "$0")/../.."
+if [[ "${FX_RELEASE_TREE:-}" != 1 ]]; then
+  release_tree="$(mktemp -d "$HOME/.tmp/fx-release-tree-XXXXXXXX")"
+  git worktree add --detach "$release_tree" HEAD
+  trap 'git worktree remove --force "$release_tree"' EXIT
+  ln -s "$PWD/node_modules" "$release_tree/node_modules"
+  FX_RELEASE_TREE=1 bash "$release_tree/scripts/fx-lab/deploy.sh"
+  exit $?
+fi
 mkdir -p "$HOME/releases"
 exec 9>"$HOME/releases/arkodia-deploy.lock"
 flock -n 9 || { echo 'Another Arkodia deployment holds the lock'; exit 1; }

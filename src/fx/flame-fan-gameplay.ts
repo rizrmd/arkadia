@@ -1,3 +1,4 @@
+import {renderSpriteVisual,visualPatch} from './visuals';
 import {Container,Matrix,RendererType,Sprite,Texture,type Renderer,type RenderTexture,type WebGLRenderer} from 'pixi.js';
 import {tilePoint} from '../stronghold/terrain';
 import {createFlameFanBurst,FLAME_FAN_BURST_ASSET,burstEnvelope} from './flame-fan-burst';
@@ -12,14 +13,14 @@ export function createGameplayFlameFan(parent:Container,trace?:(x0:number,y0:num
  let material:ReturnType<typeof createFlameFanBurst>|undefined;
  let gpuMaterial:ReturnType<typeof createFlameFanBurst>|undefined;
  const native=renderer?.type===RendererType.WEBGL&&typeof WebGL2RenderingContext!=='undefined'&&(renderer as WebGLRenderer).gl instanceof WebGL2RenderingContext;
- type Sheet={u:number;v:number;yaw:number;radius:number;rank:number;age:number;tick:number;sprite:Sprite;soil:Sprite;soilCanvas:HTMLCanvasElement;soilBase:HTMLCanvasElement;canvas:HTMLCanvasElement;mask:HTMLCanvasElement;g:CanvasRenderingContext2D;maskCtx:CanvasRenderingContext2D;maskTexture?:Texture;target?:RenderTexture;clip:Path2D;air:{sprite:Sprite;forward:number;lateral:number;width:number;height:number;smoke:boolean;opacity:number}[]};
+ type Sheet={u:number;v:number;yaw:number;radius:number;rank:number;age:number;tick:number;sprite:Sprite;soil:Sprite;soilCanvas:HTMLCanvasElement;soilBase:HTMLCanvasElement;canvas:HTMLCanvasElement;mask:HTMLCanvasElement;g:CanvasRenderingContext2D;maskCtx:CanvasRenderingContext2D;maskTexture?:Texture;target?:RenderTexture;clip:Path2D;air:{sprite:Sprite;forward:number;lateral:number;width:number;height:number;smoke:boolean;opacity:number;active:boolean}[]};
  const airMasks=new WeakMap<Sheet,HTMLCanvasElement>();
  const live:Sheet[]=[],pool:Sheet[]=[];
  let preparing:Promise<void>|undefined;
  const soilParts:Record<string,HTMLImageElement>={};
  const soilNames=['crust-a','crust-b','perimeter','fragments','scorch','ash','straight','bend','fork','tee','cross','terminal','low-a','low-b','low-c','ribbon','accent','lick','wisp','puff','bank','billow','ash-puff','ember','spark','coal','char','glow','cinders','smoke-veil-v1','smoke-split-curl-v1'];
  const soilTextures:Record<string,Texture>={};
- const hide=(s:Sheet)=>{s.sprite.visible=false;s.soil.visible=false;for(const a of s.air)a.sprite.visible=false;};
+ const hide=(s:Sheet)=>{s.sprite.visible=false;s.soil.visible=false;for(const a of s.air){a.sprite.visible=false;a.active=false;}};
  const soilOpacity=(age:number,rank:number)=>Math.max(0,Math.min(1,((rank>=3?1:duration)-age)/.42));
  function ensureMaterial(){if(native)gpuMaterial??=createFlameFanBurst(renderer!);else material??=createFlameFanBurst();}
  function makeSheet():Sheet{
@@ -64,15 +65,15 @@ export function createGameplayFlameFan(parent:Container,trace?:(x0:number,y0:num
   for(let r=42;r<120;r+=28)for(let a=-.64;a<.7;a+=.31)stamp('bend',128+Math.cos(a)*r,128-Math.sin(a)*r,23,15,-a-1,.85);
   for(let j=0;j<26;j++){const a=(j*2.399%1.8)-.9,r=18+j*29%106;stamp(j%2?'coal':'char',128+Math.cos(a)*r,128-Math.sin(a)*r,7+j%5,6+j%5,j*.67,.9);}
   base.restore();
-  for(const a of s.air)a.sprite.visible=false;
+  for(const a of s.air){a.sprite.visible=false;a.active=false;}
   let airIndex=0;
   const upright=(name:string,r:number,a:number,w:number,h:number,opacity:number)=>{
    if(!soilTextures[name])return;
    let site=s.air[airIndex++];
-   if(!site){const sprite=new Sprite();sprite.anchor.set(.5,1);site={sprite,forward:0,lateral:0,width:0,height:0,smoke:false,opacity:1};s.air.push(site);}
+   if(!site){const sprite=new Sprite();sprite.anchor.set(.5,1);site={sprite,forward:0,lateral:0,width:0,height:0,smoke:false,opacity:1,active:true};s.air.push(site);}
    site.sprite.texture=soilTextures[name];site.sprite.label=name;
    Object.assign(site,{forward:Math.cos(a)*r,lateral:Math.sin(a)*r,width:w,height:h,smoke:name.startsWith('smoke-')||['wisp','puff','bank','billow','ash-puff'].includes(name),opacity});
-   site.sprite.visible=true;parent.addChild(site.sprite);
+   site.active=true;site.sprite.visible=true;parent.addChild(site.sprite);
   };
   // Broken overlapping low seams retain dark plate gaps and the approved source tongues.
   for(let lane=0;lane<5;lane++)for(let j=0;j<5;j++){
@@ -84,6 +85,10 @@ export function createGameplayFlameFan(parent:Container,trace?:(x0:number,y0:num
   for(let j=0;j<13;j++)upright('cinders',.23+j*.054,(j*2.399%1.4)-.7,.10,.07,.72);
   for(let j=0;j<9;j++)upright(j%2?'ember':'spark',.35+j*.066,(j*2.399%1.4)-.7,.022,.045,.92);
   for(let j=0;j<5;j++)upright('glow',.25+j*.15,-.55+j*.27,.12,.025,.16);
+  // Authored sprite density is a visual parameter; the combat sector remains unchanged.
+  for(const group of ['fire','smoke'] as const){const authored=s.air.slice(0,airIndex).filter(a=>group==='smoke'?a.smoke:!a.smoke),factor=visualPatch('runtime/flame-fan',group).count??1;
+   if(factor>1)for(let i=0;i<Math.ceil(authored.length*(factor-1));i++){const a=authored[i%authored.length];if(!a)continue;upright(a.sprite.label,Math.hypot(a.forward,a.lateral)+.008*(1+i%3),Math.atan2(a.lateral,a.forward)+.018*(i%2?1:-1),a.width,a.height,a.opacity);}
+  }
   // Cache a ground silhouette mask once per cast. A broad sheet must be hidden per pixel,
   // rather than using the centre-particle occlusion used for small sparks.
   const mask=s.maskCtx,pixels=mask.createImageData(128,128),c=Math.cos(yaw),n=Math.sin(yaw);
@@ -107,12 +112,13 @@ s.sprite.visible=true;s.soil.visible=true;parent.addChildAt(s.soil,0);airParent.
  }
  function frame(dt:number,view:View){
   embers.frame(dt,view);
-  for(let i=live.length-1;i>=0;i--){const s=live[i];s.age+=dt;
-   if(s.age>=(s.rank>=3?1:duration)){hide(s);live.splice(i,1);pool.push(s);continue;}
-   s.sprite.visible=s.age<duration;
+  for(let i=live.length-1;i>=0;i--){const s=live[i];s.age+=dt;const local=(layer:string)=>Math.max(0,s.age-(visualPatch('runtime/flame-fan',layer).delay??0))/(visualPatch('runtime/flame-fan',layer).lifetime??1);
+   const end=Math.max(...['burst','soil','fire','smoke','embers'].map(id=>(visualPatch('runtime/flame-fan',id).delay??0)+(s.rank>=3?1:duration)*(visualPatch('runtime/flame-fan',id).lifetime??1)));
+   if(s.age>=end){hide(s);live.splice(i,1);pool.push(s);continue;}
+   s.sprite.visible=local('burst')<duration;s.sprite.alpha=1;s.soil.visible=local('soil')<(s.rank>=3?1:duration);
    // Keep the cached combat sector, wall clipping and ground projection fixed;
    // Retain readable plates through the burst, then continuously fade to the existing expiry.
-   s.soil.alpha=soilOpacity(s.age,s.rank);
+   s.soil.alpha=soilOpacity(local('soil'),s.rank);
    const tick=Math.floor(s.age*30);
    if(tick!==s.tick){s.tick=tick;
     // The approved ground raster is static; only masking changes per cast.
@@ -121,20 +127,22 @@ s.sprite.visible=true;s.soil.visible=true;parent.addChildAt(s.soil,0);airParent.
      const g=s.soilCanvas.getContext('2d')!;g.clearRect(0,0,1024,1024);g.drawImage(s.soilBase,0,0);
      g.globalCompositeOperation='destination-in';g.drawImage(s.mask,0,0,1024,1024);g.globalCompositeOperation='source-over';s.soil.texture.source.update();s.soilCanvas.dataset.ready='1';
     }
-    if(gpuMaterial)gpuMaterial.render(s.target!,s.maskTexture!,s.rank,Math.max(0,s.age));
-    else{const g=s.g;g.clearRect(0,0,256,256);g.save();g.clip(s.clip);g.drawImage(material!.renderCanvas(s.rank,Math.max(0,s.age)),0,0);g.restore();g.globalCompositeOperation='destination-in';g.drawImage(airMasks.get(s)!,0,0,256,256);g.globalCompositeOperation='source-over';s.sprite.texture.source.update();}
+    if(gpuMaterial)gpuMaterial.render(s.target!,s.maskTexture!,s.rank,local('burst'));
+    else{const g=s.g;g.clearRect(0,0,256,256);g.save();g.clip(s.clip);g.drawImage(material!.renderCanvas(s.rank,local('burst')),0,0);g.restore();g.globalCompositeOperation='destination-in';g.drawImage(airMasks.get(s)!,0,0,256,256);g.globalCompositeOperation='source-over';s.sprite.texture.source.update();}
    }
    const p=tilePoint(s.u,s.v),c=Math.cos(s.yaw),n=Math.sin(s.yaw),k=s.radius*view.scale/128;
    // Texture +x = aim; texture +y = -lateral (WebGL's bottom-up raster).
    const transform=new Matrix(64*(c-n)*k,32*(c+n)*k,64*(n+c)*k,32*(n-c)*k,view.x+p.x*view.scale,view.y+p.y*view.scale);s.sprite.setFromMatrix(new Matrix(transform.a,transform.b-airRise*view.scale/128,transform.c,transform.d,transform.tx,transform.ty-airOriginHeight*view.scale));s.soil.setFromMatrix(new Matrix(transform.a/4,transform.b/4,transform.c/4,transform.d/4,transform.tx,transform.ty));
-   for(const a of s.air){if(!a.sprite.visible)continue;
+   renderSpriteVisual('runtime/flame-fan','burst',s.sprite,s.age,view.scale);renderSpriteVisual('runtime/flame-fan','soil',s.soil,s.age,view.scale);
+   let fireIndex=0,smokeIndex=0;const fireTotal=s.air.filter(a=>a.active&&!a.smoke).length,smokeTotal=s.air.filter(a=>a.active&&a.smoke).length;
+   for(const a of s.air){if(!a.active)continue;a.sprite.visible=true;const index=a.smoke?smokeIndex++:fireIndex++,age=local(a.smoke?'smoke':'fire');a.sprite.visible=age<(s.rank>=3?1:duration);
     const f=a.forward,l=a.lateral,wu=s.u+(f*c-l*n)*s.radius,wv=s.v+(f*n+l*c)*s.radius,foot=tilePoint(wu,wv);
     const end=trace?.(p.x,p.y,foot.x,foot.y),visible=!end?.hit;
-    const flicker=a.smoke?1: .88+.12*Math.sin(s.age*25+f*18+l*9);
-    const lift=a.smoke?s.age*9*s.radius: a.sprite.label==='ember'||a.sprite.label==='spark'?5+s.age*12:0;
+    const flicker=a.smoke?1: .88+.12*Math.sin(age*25+f*18+l*9);
+    const lift=a.smoke?age*9*s.radius*(visualPatch('runtime/flame-fan','smoke').speed??1): a.sprite.label==='ember'||a.sprite.label==='spark'?5+age*12:0;
     a.sprite.position.set(view.x+foot.x*view.scale,view.y+(foot.y-lift)*view.scale);
-    a.sprite.width=a.width*64*s.radius*view.scale;a.sprite.height=a.height*64*s.radius*view.scale*(a.smoke?1+s.age*.3:flicker);
-    a.sprite.alpha=visible?s.soil.alpha*a.opacity*(occlusionAt?.(foot.x,foot.y-lift,foot.x,foot.y,0,false,false,foot.y)??1):0;
+    a.sprite.width=a.width*64*s.radius*view.scale;a.sprite.height=a.height*64*s.radius*view.scale*(a.smoke?1+age*.3:flicker);
+    a.sprite.alpha=visible?soilOpacity(age,s.rank)*a.opacity*(occlusionAt?.(foot.x,foot.y-lift,foot.x,foot.y,0,false,false,foot.y)??1):0;renderSpriteVisual('runtime/flame-fan',a.smoke?'smoke':'fire',a.sprite,s.age,view.scale,index,a.smoke?smokeTotal:fireTotal);
    }
   }
  }

@@ -1,0 +1,9 @@
+{
+  "pass": true,
+  "checks": [
+    "Soil opacity changes original Flame Fan renderer without changing area radius",
+    "Per-layer lifetime persists visual soil beyond default expiry without changing combat radius",
+    "Phase selection selects an emitter from the chosen phase"
+  ],
+  "errors": []
+}

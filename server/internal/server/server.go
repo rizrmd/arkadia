@@ -20,6 +20,7 @@ import (
 	"github.com/rizrmd/arkadia/server/internal/environment"
 	"github.com/rizrmd/arkadia/server/internal/room"
 	"github.com/rizrmd/arkadia/server/internal/sim"
+	"github.com/rizrmd/arkadia/server/internal/vfx"
 )
 
 // BuildCommit is supplied by the supported release build for public verification.
@@ -27,6 +28,7 @@ var BuildCommit = "development"
 
 // Server routes HTTP requests.
 type Server struct {
+	VFX          *vfx.Store
 	Environment  *environment.Store
 	Rooms        *room.Registry
 	Site         string // directory of the built client
@@ -40,6 +42,7 @@ type Server struct {
 func (s *Server) Handler() http.Handler {
 	mux := http.NewServeMux()
 	s.environmentRoutes(mux)
+	s.vfxRoutes(mux)
 	mux.HandleFunc("GET /ws", s.ws)
 	mux.HandleFunc("GET /api/rooms/{code}", s.roomInfo)
 	mux.HandleFunc("POST /api/tracelogs", s.postTracelog)
@@ -71,8 +74,10 @@ func (s *Server) roomInfo(w http.ResponseWriter, r *http.Request) {
 // pages, including /stronghold.html, redirect to / with their query. Hashed build assets are immutable.
 func (s *Server) static(w http.ResponseWriter, r *http.Request) {
 	p := r.URL.Path
-if p=="/environment-editor"||p=="/environment-editor/"{p="/environment-editor/index.html"}
-	if strings.HasSuffix(p, ".html") && p != "/index.html" && p!="/environment-editor/index.html" {
+	if p == "/environment-editor" || p == "/environment-editor/" {
+		p = "/environment-editor/index.html"
+	}
+	if strings.HasSuffix(p, ".html") && p != "/index.html" && p != "/environment-editor/index.html" {
 		http.Redirect(w, r, "/"+query(r), http.StatusFound)
 		return
 	}

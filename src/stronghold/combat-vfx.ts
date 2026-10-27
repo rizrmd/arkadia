@@ -910,6 +910,7 @@ export function createCombatVfx(o:{
   totalBurnSoilTicks=s.totalBurnSoilTicks;totalCrits=s.totalCrits;totalNormals=s.totalNormals;totalProjectiles=s.totalProjectiles;totalAoEs=s.totalAoEs;totalLevelUps=s.totalLevelUps;totalWallHits=s.totalWallHits;totalAutoCasts=s.totalAutoCasts;totalSimultaneousCasts=s.totalSimultaneousCasts;totalTrinityCasts=s.totalTrinityCasts;lastSkill=s.lastSkill;lastSimultaneousSkills=[...s.lastSimultaneousSkills];
  }
  return {
+  clearVisuals(){fx.clear();flameSheets.clear();dashPath=undefined;dashAge=Infinity;if(dashArt)dashArt.root.visible=false;floats.length=sparks.length=slashes.length=impacts.length=ghosts.length=levelUps.length=combos.length=0;},
   saveState,restoreState,
   setCooldowns(values:Partial<Record<SkillId,number>>){for(const k of Object.keys(cooldowns))delete cooldowns[k as SkillId];Object.assign(cooldowns,values);},
   step,

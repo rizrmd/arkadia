@@ -7,6 +7,7 @@ import (
 	"context"
 	"errors"
 	"github.com/rizrmd/arkadia/server/internal/environment"
+	"github.com/rizrmd/arkadia/server/internal/vfx"
 	"log/slog"
 	"net/http"
 	"os"
@@ -57,6 +58,11 @@ func main() {
 		os.Exit(1)
 	}
 	s.Environment = store
+	s.VFX, err = vfx.Open(filepath.Join(env("GAME_SAVE_DIR", "game-saves"), "vfx"))
+	if err != nil {
+		log.Error("visual storage", "err", err)
+		os.Exit(1)
+	}
 	published, err := store.Published(0)
 	if err != nil {
 		log.Error("published environment", "err", err)

@@ -1,3 +1,5 @@
+import {Assets} from 'pixi.js';
+import {loadAppliedVisuals,visualVersion,compileVisualEffect,prepareVisualTextures,visualDocument} from './visuals';
 import {measureRenderDetail} from '../app/render-diagnostics';
 import {renderQuality} from '../app/render-quality';
 import {limitLowCostEffect} from './low-cost';
@@ -324,10 +326,13 @@ export function createFxStage(o:FxStageOptions){
  const gpuPreparation=createGpuPreparation(o.renderer);
  const view:View={x:0,y:0,scale:1};
  const effects=new Map<string,VfxExportedEffect>(),pool=new Map<string,PixiVfxEffectInstance[]>(),live:Live[]=[];
+ const sources=new Map<string,VfxExportedEffect>();let visualRevision=-1;
+ function clear(){pending.length=0;for(const l of live){l.inst.stop();l.inst.root.visible=false;planes?.[l.plane].vfx.removeEffect(l.inst,true);}live.length=0;}
+ function refreshVisuals(){if(visualRevision===visualVersion())return;clear();for(const [key,list] of pool)for(const inst of list)planes?.[planeOf(key)].vfx.removeEffect(inst,true);pool.clear();preparedKeys.clear();for(const [key,source] of sources)effects.set(key,compileVisualEffect(key,source));visualRevision=visualVersion();}
  const pending:{at:number;run:()=>void}[]=[];
  let clock=0,ready=false,failed='',planes:Record<Plane,{app:Application|null;vfx:PixiVfxRenderer;root:Container}>|null=null;
  let Rect:typeof import('pixi.js').Rectangle|null=null;
- let prepareSelected=async()=>{};const preparedKeys=new Set<string>();
+ let preparationJob=Promise.resolve();let prepareSelected=async()=>{};const preparedKeys=new Set<string>();
  let played=0,peakParticles=0,idle=false,occludedParticles=0,minOcclusion=1,meanOcclusion=1,backEffects=0,frontEffects=0;
  // Adaptive particle budget (game scene only). Every live particle costs CPU each frame (simulation, curl noise,
  // colour sampling), and a level-8 fight peaks near 1000 of them, which alone held a mid-range phone at ~30 fps.
@@ -356,12 +361,12 @@ export function createFxStage(o:FxStageOptions){
  let deriveAlpha:typeof import('nixie-fx/pixi').createDerivedAlphaTexture|null=null;
  const textureProvider:PixiVfxTextureProvider={
   staticAssets:true,
-  async preload(refs:VfxTextureAssetRef[]){await Promise.all(refs.map(async ref=>{if(!textures.has(ref.path)){const tex=await (await PIXI()).Assets.load<Texture>({src:'/vfx/'+ref.path,data:{scaleMode:'linear'}});if(tex?.source){tex.source.scaleMode='linear';tex.source.autoGarbageCollect=false;}textures.set(ref.path,tex);}}));},
-  getTexture:(ref:VfxTextureAssetRef)=>textures.get(ref.path),
+  async preload(refs:VfxTextureAssetRef[]){await Promise.all(refs.map(async ref=>{if(!textures.has(ref.path)){const tex=await (await PIXI()).Assets.load<Texture>({src:ref.path.startsWith('/')?ref.path:'/vfx/'+ref.path,data:{scaleMode:'linear'}});if(tex?.source){tex.source.scaleMode='linear';tex.source.autoGarbageCollect=false;}textures.set(ref.path,tex);}}));},
+  getTexture:(ref:VfxTextureAssetRef)=>textures.get(ref.path)??Assets.get<Texture>(ref.path.startsWith('/')?ref.path:'/vfx/'+ref.path),
   getAlphaTexture:(ref,opacitySource,invert)=>{
    const key=`${ref.path}|${opacitySource}|${invert?1:0}`;
    const hit=alphaTextures.get(key);if(hit)return hit;
-   const src=textures.get(ref.path);if(!src||!deriveAlpha)return undefined;
+   const src=textures.get(ref.path)??Assets.get<Texture>(ref.path.startsWith('/')?ref.path:'/vfx/'+ref.path);if(!src||!deriveAlpha)return undefined;
    const derived=deriveAlpha(src,opacitySource,invert)??src;
    if(derived?.source)derived.source.autoGarbageCollect=false;
    alphaTextures.set(key,derived);
@@ -370,6 +375,7 @@ export function createFxStage(o:FxStageOptions){
   resolveUrl:(ref:VfxTextureAssetRef)=>'/vfx/'+ref.path,
  };
  const boot=(async()=>{
+  await loadAppliedVisuals();
   // The NixieFX runtime loads with the bundle, off the game's first paint.
   const [{PixiVfxRenderer,createDerivedAlphaTexture,collectPixiVfxEffectTextureRefs},{loadVfxExportBundle},{shareParticleEffectDefinition},{normalizeShaderGraph},packed]=await Promise.all([import('nixie-fx/pixi'),import('nixie-fx/export'),import('nixie-fx'),import('nixie-fx/materials'),fetchBundle()]);
   deriveAlpha=createDerivedAlphaTexture;
@@ -414,7 +420,7 @@ export function createFxStage(o:FxStageOptions){
     }
    }
    if(o.host&&renderQuality.get().tier==='low'&&!effKey.startsWith('ui/'))limitLowCostEffect(fx);
-   effects.set(effKey,fx);
+   sources.set(effKey,structuredClone(fx));effects.set(effKey,compileVisualEffect(effKey,fx));
   }
   // Hosted gameplay requests only the current hero's resolved cue dependencies.
   // The lab still loads the complete bundle for browsing.
@@ -431,6 +437,7 @@ export function createFxStage(o:FxStageOptions){
   // so yield between instances and finish this work behind loading/hero selection.
   // Unrelated hero effects stay cold until prepare() is requested on a hero change.
   prepareSelected=async()=>{
+   refreshVisuals();await prepareVisualTextures();
    if(!o.host||!planes)return;
    const keys=o.effectKeys?new Set(o.effectKeys()):new Set(effects.keys());
    const selected=[...effects].filter(([key])=>keys.has(key)&&!key.startsWith('ui/')&&!preparedKeys.has(key));
@@ -469,6 +476,7 @@ export function createFxStage(o:FxStageOptions){
   await prepareSelected();
   await o.prepareExtra?.();
   ready=true;
+  if(o.host){const audit=(window as any).__VFX_RENDER_AUDIT__??=((window as any).__VFX_RENDER_AUDIT__=[]);audit.push((key:string)=>({definition:structuredClone(effects.get(key)),live:live.filter(l=>l.key===key).length,revision:visualDocument().revision}));}
  })().catch(e=>{failed=String(e?.message??e);console.error('NixieFX stage unavailable; skills play without particle effects.',e);});
 
  function resize(){if(!planes||!Rect)return;const Rectangle=Rect;const w=innerWidth,h=innerHeight;for(const p of Object.values(planes))p.app?.renderer.resize(w,h);
@@ -476,6 +484,7 @@ export function createFxStage(o:FxStageOptions){
  function projection(plane:Plane,a:Anchor){return plane==='ground'?groundProjection(view,a):worldProjection(view,a);}
 
  function play(key:string,at:FxPlay,delayMs=0):FxHandle|null{
+  refreshVisuals();
   if(delayMs>0){let h:FxHandle|null=null;const proxy:FxHandle={key,setLocal:(x,y,z)=>h?.setLocal(x,y,z),moveTo:(u,v)=>h?.moveTo(u,v),release:()=>{h?h.release():(cancel=true);},get alive(){return h?h.alive:!cancel;}};
    let cancel=false;pending.push({at:clock+delayMs/1000,run:()=>{if(!cancel)h=play(key,at);}});return proxy;}
   if(!planes)return null;
@@ -644,11 +653,15 @@ export function createFxStage(o:FxStageOptions){
  }
 
  return {
+  clear,
+  catalog:()=>Object.fromEntries(sources),
+  definition:(key:string)=>structuredClone(effects.get(key)),
+  visualRevision:()=>visualRevision,
   ready:()=>ready,
   // Effects can play (pool may still be warming in idle time); ready() means the pool is fully warm.
   playable:()=>Boolean(planes)&&!failed,
   loaded:boot,
-  prepare:async()=>{await boot;await prepareSelected();await o.prepareExtra?.();},
+  prepare:()=>{const job=preparationJob.catch(()=>{}).then(async()=>{await boot;await prepareSelected();await o.prepareExtra?.();});preparationJob=job;return job;},
   failed:()=>failed,
   has:(key:string)=>effects.has(key),
   keys:()=>[...effects.keys()],
@@ -656,7 +669,7 @@ export function createFxStage(o:FxStageOptions){
   play,frame,
   particleCount:activeParticles,
   liveCount:()=>live.length,
-  stats:()=>({ready,failed,effects:effects.size,preparedEffects:preparedKeys.size,loadedTextures:textures.size,gpuPreparation:gpuPreparation.stats(),live:live.length,played,peakParticles,particleBudget:budget,budgetSkipped,frameMs:+frameEma.toFixed(1),
+  stats:()=>({visualRevision,visualSettingsRevision:visualDocument().revision,visualSettings:structuredClone(visualDocument().effects),ready,failed,effects:effects.size,preparedEffects:preparedKeys.size,loadedTextures:textures.size,gpuPreparation:gpuPreparation.stats(),live:live.length,played,peakParticles,particleBudget:budget,budgetSkipped,frameMs:+frameEma.toFixed(1),
    occludedParticles,minOcclusion,meanOcclusion,backEffects,frontEffects,
    particles:planes?planes.world.vfx.stats.activeParticles+planes.ground.vfx.stats.activeParticles:0,
    missing:planes?[...planes.world.vfx.stats.missingTextureRefs,...planes.ground.vfx.stats.missingTextureRefs].map(r=>r.path):[],
