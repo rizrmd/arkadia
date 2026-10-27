@@ -1,0 +1,50 @@
+{
+  "at": "2026-10-27T07:04:00.666Z",
+  "map": {
+    "schema": 1,
+    "revision": 1,
+    "name": "Arkodia published environment",
+    "objects": [
+      {
+        "id": "swamp-small-west",
+        "asset": "pond-small",
+        "u": 440,
+        "v": 480
+      },
+      {
+        "id": "swamp-large-west",
+        "asset": "pond-large",
+        "u": 444,
+        "v": 480
+      },
+      {
+        "id": "skeleton-gateway",
+        "asset": "spawn",
+        "u": 479,
+        "v": 479,
+        "count": 3,
+        "radius": 6,
+        "interval": 5
+      },
+      {
+        "id": "skeleton-west",
+        "asset": "spawn",
+        "u": 442,
+        "v": 480,
+        "count": 3,
+        "radius": 9,
+        "interval": 8
+      },
+      {
+        "id": "skeleton-north",
+        "asset": "spawn",
+        "u": 480,
+        "v": 440,
+        "count": 2,
+        "radius": 9,
+        "interval": 10
+      }
+    ]
+  },
+  "unauthorizedDraft": 401
+}

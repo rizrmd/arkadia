@@ -1,10 +1,10 @@
 ## Environment map editor
 
-Implementation under verification. The editor is a separate native Pixi application at `/environment-editor/`; it does not initialize gameplay or load game UI. All controls, dialogs, fields and the numeric keypad render in Pixi.
+Deployed and verified on desktop and mobile. The editor is a separate native Pixi application at `/environment-editor/`; it does not initialize gameplay or load game UI. All controls, dialogs, fields and the numeric keypad render in Pixi.
 
 Drag empty ground to pan; scroll, pinch, or use +/− to zoom around the pointer. Map coordinates are tile U/V on the existing 936 × 936 map, at 3 meters per tile. Choose a palette asset and tap the map. Select an authored object to drag it, edit coordinates and spawn properties, duplicate, or delete. Undo/redo retains up to 100 operations; Ctrl/Cmd+Z, Shift+Z, D, and S are supported.
 
-The original map remains as reference terrain; authored placements are editable. The Stronghold palette object is a full enclosure assembled from existing art with the original navigation columns. Other palette entries include the expedition tent, cliff, both pond sizes, skeleton spawn markers and the Frozen Frontier asset kit.
+The original map remains as reference terrain, including the exact gameplay relief painter for cliffs and hills; authored placements are editable. The Stronghold palette object is a full enclosure assembled from existing art with the original navigation columns. Other palette entries include the expedition tent, cliff, both pond sizes, skeleton spawn markers and the Frozen Frontier asset kit.
 
 ### Drafts, publication and access
 
@@ -21,3 +21,17 @@ New solo games and co-op rooms use the latest published revision. Saved solo her
 Spawn count is the marker's population cap (1–50, at most 200 across a map); radius is ground meters (0.5–150), sampled uniformly by area; interval is seconds (0.5–3600) between population/replenishment checks. Dead skeletons remain for the existing corpse duration and replenish only on a marker check. The full map outside the actual court is eligible, including north of the old gate-only half-plane. The server owns co-op spawns; clients never submit spawn or reward claims. Solo uses the same marker algorithm and collisions.
 
 Both ponds are walkable for player and enemy. The water areas are approximately 5 m² and 25 m²; their full shoreline sprite footprints are larger. Their width/height ratio is √5. Their opaque dark water uses the approved large-pond attachment DA7e6086a588e50dd7a5dcaec7. No new pond art was invented. Pond validation, in both editor and server, requires clearance from authored objects and the original terrain, including cliffs and ruins. Existing base-map collision remains intact.
+
+
+### Release and verification
+
+- Editor: https://arkodia.online/environment-editor/
+- Gameplay: https://arkodia.online/
+- Shipped server/client runtime: `8b863f911c5d898b1f110a6916b5a8c89ba3508b`.
+- Initial published map: revision 1, two ponds and three skeleton spawn markers.
+- Public desktop/mobile Chromium: zero page errors and zero failed asset responses. Published revision 1 loaded in both editor and gameplay. Player and skeleton placement/traversal passed for both ponds. The live entry JavaScript matched the release manifest checksum.
+- Real editor operations: place, pan, select, duplicate, delete, undo, redo, save draft, explicit publish, reload; native touch spawn count/radius/interval keypad and portrait/landscape layouts.
+- Authoritative network: two clients observed northern/southern populations 4 and 3; live rooms retained revision 1 after publishing revision 2; a service restart restored the old room and immutable map.
+- Go suite and TypeScript checks pass; full gameplay preservation and release ancestry checks pass.
+
+Private operator access is delivered separately as a member-local file; the key is never committed or embedded in Knowledge.
