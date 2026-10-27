@@ -253,7 +253,8 @@ export class SkillTree{
   const titleSize=compact?24:30;
   this.title.destroy();this.title=this.panel.addChild(new MsdfText(TITLE_ROLE,'Skill Tree',{size:titleSize}));
   this.title.place(rect.width/2,header*.5+titleSize*.36,.5);
-  this.rule?.destroy();this.rule=this.panel.addChild(f.frame('panel-title-rule',Math.min(rect.width-140,560),20));this.rule.position.set((rect.width-this.rule.width)/2,header-12);
+  // The title stands on its own; the former panel-title-rule separator obscured the space below it.
+  this.rule?.destroy();this.rule=undefined;
   this.finial?.destroy();this.finial=this.panel.addChild(f.frame('panel-finial',44,26));this.finial.position.set(rect.width/2-22,-13);
   this.close?.destroy({children:true});
   const cb=compact?40:46,close=this.close=this.panel.addChild(new Container());
