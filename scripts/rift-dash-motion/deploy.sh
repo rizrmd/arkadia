@@ -7,11 +7,12 @@ release_sha="$(git rev-parse HEAD)"
 export release_sha
 mkdir -p "$HOME/releases"
 exec 9>"$HOME/releases/arkodia-deploy.lock"
-flock -n 9 || { echo 'Another Arkodia deployment holds the shared lock'; exit 1; }
+flock -w 60 9 || { echo 'Another Arkodia deployment holds the shared lock'; exit 1; }
 export PATH="$HOME/.local/go/bin:$HOME/.local/bin:$PATH"
 export GOFLAGS=-p=1 GOMAXPROCS=2 GOMEMLIMIT=256MiB GOTOOLCHAIN=local RAYON_NUM_THREADS=2
 stage="$(mktemp -d "$HOME/releases/rift-dash-motion-runtime-XXXXXXXX")"
 export RIFT_DASH_STAGE="$stage"
+node scripts/rift-dash-motion/verify-input.mjs
 npx tsc --noEmit
 node scripts/test-progression.mjs
 node scripts/gameplay-progress/test.mjs
