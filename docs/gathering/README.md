@@ -42,3 +42,7 @@ Initial full-game wall-time duration checks exposed software rendering delays an
 ### Shipping
 
 `scripts/gathering/deploy.sh` uses the repository's supported cumulative release publisher with the shared `arkodia-deploy.lock`, client/server build, editor staging, resource art, evidence and a hash manifest. Existing production assets and server save directories remain in place. The publisher rejects a release that lacks the latest applied gameplay ancestor. Real deployment evidence is recorded in `deployment.json` and `live-release.json`; a push alone is not treated as deployment.
+
+### Production recovery
+
+The first release registered successfully but could not apply: production's boot workload had already been OOM-killed, leaving a stale gateway socket. Incident and boot logs were inspected before any restart. PNG-to-WebP encodes previously ran concurrently across unrelated image paths; native encoders retain multiple full-resolution buffers. The release now serializes these conversions, serves originals for images above 8 megapixels, and gives the Go child a 256 MiB soft memory target and two runtime workers. These are delivery safeguards; original art and game saves are preserved.
