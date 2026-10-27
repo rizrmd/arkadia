@@ -18,7 +18,9 @@ node --input-type=module -e 'import {build} from "vite";await build({build:{outD
 (cd server && go test ./... && CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -trimpath -ldflags="-s -w -X github.com/rizrmd/arkadia/server/internal/server.BuildCommit=$release_sha" -o "$FLAME_FAN_STAGE/arkodia" ./cmd/arkodia)
 mkdir -p "$FLAME_FAN_STAGE/site/flame-fan-burst-candidate/v1" "$FLAME_FAN_STAGE/site/ember-warden-review/flame-fan-gameplay/burst-v1"
 mkdir -p "$FLAME_FAN_STAGE/site/flame-fan-static"
-for part in crust-a crust-b straight coal; do cp "public/flame-fan-static/$part.png" "$FLAME_FAN_STAGE/site/flame-fan-static/"; done
+for part in crust-a crust-b perimeter fragments scorch ash straight bend fork tee cross terminal low-a low-b low-c ribbon accent lick wisp puff bank billow ash-puff ember spark coal char glow cinders; do cp "public/flame-fan-static/$part.png" "$FLAME_FAN_STAGE/site/flame-fan-static/"; done
+mkdir -p "$FLAME_FAN_STAGE/site/flame-fan-supplemental/v1"
+cp public/flame-fan-supplemental/v1/smoke-*.png "$FLAME_FAN_STAGE/site/flame-fan-supplemental/v1/"
 cp public/flame-fan-burst-candidate/v1/flame-burst-v1.png "$FLAME_FAN_STAGE/site/flame-fan-burst-candidate/v1/"
 cp docs/flame-fan-gameplay/burst-v1/*.png docs/flame-fan-gameplay/burst-v1/*.json docs/flame-fan-gameplay/burst-v1/*.md "$FLAME_FAN_STAGE/site/ember-warden-review/flame-fan-gameplay/burst-v1/"
 node --input-type=module <<'MANIFEST'

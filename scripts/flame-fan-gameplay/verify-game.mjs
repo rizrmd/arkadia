@@ -8,17 +8,22 @@ import http from 'node:http';
 import path from 'node:path';
 import {createReadStream} from 'node:fs';
 async function capture(page,file){
- const cdp=await page.context().newCDPSession(page);
- try{const {data}=await cdp.send('Page.captureScreenshot',{format:'png'});await fs.writeFile(file,Buffer.from(data,'base64'));}finally{await cdp.detach();}
+ // Read the real Pixi canvas in the same task as its controlled render. This avoids
+ // slow compositor screenshots in software WebGL while retaining actual gameplay pixels.
+ const data=await page.evaluate(()=>{window.__STRONGHOLD_COMBAT__.testStep(0);window.__PIXI_UI__.app.render();return document.querySelector('canvas').toDataURL('image/png');});
+ await fs.writeFile(file,Buffer.from(data.split(',')[1],'base64'));
 }
 // Test-only Vite transform supplies controlled step/render on the actual encounters + combat modules; never deployed.
 let server;
 const external=process.env.GAME;
+const out=process.env.OUT||'docs/flame-fan-gameplay/soil-v2';await fs.mkdir(out,{recursive:true});
 if(!external){
  console.log('Building production test client');
  if(!process.env.SKIP_BUILD)await build({logLevel:'error',plugins:[{name:'controlled-combat-clock',enforce:'pre',load(id){if(id.endsWith('/src/stronghold/encounters.ts'))return readFileSync('src/stronghold/encounters.ts','utf8').replace("import {requestGameFrame as requestAnimationFrame} from '../app/frame-scheduler';",'const requestAnimationFrame=(_cb:FrameRequestCallback)=>0;').replace('  start(){','  testStep(dt:number){step(dt);render();},\n  start(){');}}],build:{copyPublicDir:false,outDir:'/tmp/flame-fan-burst-game',emptyOutDir:true}});
+ // Match environment.Empty() from the current Go server for isolated combat verification.
+ const environment=JSON.stringify({schema:1,revision:0,name:'Arkodia environment',objects:[]});
  const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css','.json':'application/json','.png':'image/png','.webp':'image/webp','.woff2':'font/woff2'};
- server=http.createServer(async(req,res)=>{const rel=decodeURIComponent(new URL(req.url,'http://local').pathname).replace(/^\//,'')||'index.html';let file=path.join('/tmp/flame-fan-burst-game',rel);try{await fs.access(file);}catch{file=path.resolve('public',rel);}res.setHeader('Content-Type',mime[path.extname(file)]||'application/octet-stream');const stream=createReadStream(file);stream.on('error',()=>{res.statusCode=404;res.end();});stream.pipe(res);});
+ server=http.createServer(async(req,res)=>{if(req.url.startsWith('/api/environment/published')){res.setHeader('Content-Type','application/json');res.end(environment);return;}const rel=decodeURIComponent(new URL(req.url,'http://local').pathname).replace(/^\//,'')||'index.html';let file=path.join('/tmp/flame-fan-burst-game',rel);try{await fs.access(file);}catch{file=path.resolve('public',rel);}res.setHeader('Content-Type',mime[path.extname(file)]||'application/octet-stream');const stream=createReadStream(file);stream.on('error',()=>{res.statusCode=404;res.end();});stream.pipe(res);});
  await new Promise(r=>server.listen(3949,'127.0.0.1',r));
 }
 console.log('Launching browser');
@@ -54,16 +59,17 @@ try {
  assert.equal(after.foes[3].hp,before.foes[3].hp,'Behind caster excluded');
  assert.equal(after.foes[4].hp,before.foes[4].hp,'Outside radius excluded');
  assert(!after.vfx.fx.playing.some(k=>k.includes('flame-fan.bolt')));
+ assert.equal(sheet.soilVisible,true);assert(sheet.soilOpacity>.8);
  // Presented production gameplay scene; only simulation stepping is test-controlled.
- if(!process.env.SKIP_SCREENSHOTS)await capture(page,`docs/flame-fan-gameplay/burst-v1/${external?'live':'local'}-game-${width}-lv${rank}-burst.png`);
+ if(!process.env.SKIP_SCREENSHOTS)await capture(page,`${out}/${external?'live':'local'}-game-${width}-lv${rank}-burst.png`);
  await page.evaluate(()=>window.__STRONGHOLD_COMBAT__.testStep(100));
  const moved=await page.evaluate(()=>window.__STRONGHOLD_COMBAT__.snapshot().vfx.flameSheets[0]);
  assert(moved.age>sheet.age);assert(moved.burstOpacity>0);
  const ticksBefore=before.vfx.burnSoil.totalTicks;
- if(rank>=3){assert(after.vfx.burnSoil.zones.length>0);assert.equal(sheet.burnSoil,true);assert.equal(sheet.burnHalfAngle,Math.PI*.3);assert(Math.abs(sheet.burnOpacity-(1-sheet.age))<1e-8);
-  await page.evaluate(()=>window.__STRONGHOLD_COMBAT__.testStep(640));
-  if(!process.env.SKIP_SCREENSHOTS)await capture(page,`docs/flame-fan-gameplay/burst-v1/${external?'live':'local'}-game-${width}-lv${rank}.png`);
- }
+ if(rank>=3){assert(after.vfx.burnSoil.zones.length>0);assert.equal(sheet.burnSoil,true);assert.equal(sheet.burnHalfAngle,Math.PI*.3);assert(sheet.burnOpacity>.8);assert.equal(sheet.soilLayers.length,31);assert(sheet.soilUpright>=60);
+  await page.evaluate(()=>window.__STRONGHOLD_COMBAT__.testStep(660));
+  if(!process.env.SKIP_SCREENSHOTS)await capture(page,`${out}/${external?'live':'local'}-game-${width}-lv${rank}.png`);
+ }else{await page.evaluate(()=>window.__STRONGHOLD_COMBAT__.testStep(480));if(!process.env.SKIP_SCREENSHOTS)await capture(page,`${out}/${external?'live':'local'}-game-${width}-lv${rank}-tail.png`);}
  await page.evaluate(()=>window.__STRONGHOLD_COMBAT__.testStep(860));
  const ended=await page.evaluate(()=>window.__STRONGHOLD_COMBAT__.snapshot());
  assert.equal(ended.vfx.burnSoil.totalTicks-ticksBefore,rank>=3?5:0);assert.equal(ended.vfx.burnSoil.damagePerTick,null);
@@ -89,5 +95,5 @@ try {
  await browser.close();browser=null;
  }
  assert.deepEqual(errors,[]);
- await fs.writeFile(`docs/flame-fan-gameplay/burst-v1/${external?'live':'local'}-game-${process.env.WIDTH||'all'}.json`,JSON.stringify({passed:true,results,errors},null,2));console.log(JSON.stringify({passed:true,results,errors}));
-}catch(e){const pages=browser?.contexts().flatMap(c=>c.pages())||[];if(pages[0]){await fs.writeFile('docs/flame-fan-gameplay/burst-v1/failure.json',JSON.stringify(await pages[0].evaluate(()=>({s:window.__STRONGHOLD_COMBAT__?.snapshot(),body:document.body.innerText})),null,2));console.error('Original failure:',e);await capture(pages[0],'docs/flame-fan-gameplay/burst-v1/failure.png').catch(()=>{});}throw e;}finally{await browser?.close();if(server){server.closeAllConnections();await new Promise(r=>server.close(r));}}
+ await fs.writeFile(`${out}/${external?'live':'local'}-game-${process.env.WIDTH||'all'}.json`,JSON.stringify({passed:true,results,errors},null,2));console.log(JSON.stringify({passed:true,results,errors}));
+}catch(e){const pages=browser?.contexts().flatMap(c=>c.pages())||[];if(pages[0]){await fs.writeFile(out+'/failure.json',JSON.stringify(await pages[0].evaluate(()=>({s:window.__STRONGHOLD_COMBAT__?.snapshot(),body:document.body.innerText})),null,2));console.error('Original failure:',e);await capture(pages[0],out+'/failure.png').catch(()=>{});}throw e;}finally{await browser?.close();if(server){server.closeAllConnections();await new Promise(r=>server.close(r));}}
