@@ -1,0 +1,20 @@
+{
+  "implementation_commit": "39b5accd",
+  "deployed_release_commit": "0cc30fd9",
+  "game": "https://ark-whachat.fural.space/?offline=1&hero=rift-runner",
+  "health": 200,
+  "bundle_matches_local": true,
+  "preserved_pages": [
+    "/rift-dash/player/",
+    "/rift-runner/rift-bolt-levels/",
+    "/ember-warden-review/flame-fan-static/"
+  ],
+  "checks": [
+    "FX compile/export/pack",
+    "all unrelated packed effects and materials unchanged",
+    "npm run build",
+    "standard game deployment checks and Go tests",
+    "local and live 1440x900 and 390x844: zero Bolt slash trails, projectile count/speed, target damage, Astral Cleave slash retained, no page errors"
+  ],
+  "verified_at": "2026-10-27T00:37:32.361765+00:00"
+}

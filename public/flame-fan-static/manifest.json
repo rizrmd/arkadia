@@ -1,0 +1,761 @@
+{
+  "attachment": "DAfcba584e98ce6d1456a9f8e0",
+  "sha256": "34d755d358b060124e1ca55553fa79574442494d411ae82d40600baeda525a5e",
+  "width": 1586,
+  "height": 992,
+  "alphaFloor": 6,
+  "notes": "Original RGB retained. Nonuniform crops with ownership masks remove adjacent parts; 3px crop-edge feather suppresses hard glow seams. Source glow margins overlap: isolated edge glow cannot be recovered exactly.",
+  "parts": [
+    {
+      "name": "crust-a",
+      "index": 0,
+      "rect": [
+        0,
+        0,
+        330,
+        310
+      ],
+      "ownershipPolygon": null,
+      "excludedRects": [],
+      "removedPixels": 17034,
+      "sourceBorderPixelsAbove32": 0
+    },
+    {
+      "name": "crust-b",
+      "index": 1,
+      "rect": [
+        335,
+        50,
+        270,
+        235
+      ],
+      "ownershipPolygon": null,
+      "excludedRects": [],
+      "removedPixels": 14642,
+      "sourceBorderPixelsAbove32": 0
+    },
+    {
+      "name": "perimeter",
+      "index": 2,
+      "rect": [
+        608,
+        30,
+        218,
+        265
+      ],
+      "ownershipPolygon": null,
+      "excludedRects": [],
+      "removedPixels": 20761,
+      "sourceBorderPixelsAbove32": 0
+    },
+    {
+      "name": "fragments",
+      "index": 3,
+      "rect": [
+        830,
+        55,
+        235,
+        230
+      ],
+      "ownershipPolygon": null,
+      "excludedRects": [],
+      "removedPixels": 16478,
+      "sourceBorderPixelsAbove32": 0
+    },
+    {
+      "name": "scorch",
+      "index": 4,
+      "rect": [
+        1070,
+        50,
+        265,
+        235
+      ],
+      "ownershipPolygon": null,
+      "excludedRects": [],
+      "removedPixels": 15191,
+      "sourceBorderPixelsAbove32": 0
+    },
+    {
+      "name": "ash",
+      "index": 5,
+      "rect": [
+        1335,
+        50,
+        251,
+        235
+      ],
+      "ownershipPolygon": null,
+      "excludedRects": [],
+      "removedPixels": 20165,
+      "sourceBorderPixelsAbove32": 0
+    },
+    {
+      "name": "straight",
+      "index": 6,
+      "rect": [
+        0,
+        315,
+        382,
+        155
+      ],
+      "ownershipPolygon": [
+        [
+          0,
+          35
+        ],
+        [
+          285,
+          10
+        ],
+        [
+          355,
+          0
+        ],
+        [
+          382,
+          90
+        ],
+        [
+          300,
+          145
+        ],
+        [
+          0,
+          155
+        ]
+      ],
+      "excludedRects": [],
+      "removedPixels": 28778,
+      "sourceBorderPixelsAbove32": 0
+    },
+    {
+      "name": "bend",
+      "index": 7,
+      "rect": [
+        355,
+        280,
+        262,
+        213
+      ],
+      "ownershipPolygon": null,
+      "excludedRects": [
+        [
+          0,
+          170,
+          80,
+          43
+        ]
+      ],
+      "removedPixels": 31136,
+      "sourceBorderPixelsAbove32": 24
+    },
+    {
+      "name": "fork",
+      "index": 8,
+      "rect": [
+        600,
+        275,
+        238,
+        220
+      ],
+      "ownershipPolygon": null,
+      "excludedRects": [
+        [
+          0,
+          185,
+          95,
+          35
+        ]
+      ],
+      "removedPixels": 29584,
+      "sourceBorderPixelsAbove32": 86
+    },
+    {
+      "name": "tee",
+      "index": 9,
+      "rect": [
+        815,
+        285,
+        280,
+        218
+      ],
+      "ownershipPolygon": null,
+      "excludedRects": [],
+      "removedPixels": 30905,
+      "sourceBorderPixelsAbove32": 25
+    },
+    {
+      "name": "cross",
+      "index": 10,
+      "rect": [
+        1080,
+        272,
+        290,
+        220
+      ],
+      "ownershipPolygon": null,
+      "excludedRects": [
+        [
+          165,
+          145,
+          125,
+          75
+        ]
+      ],
+      "removedPixels": 34303,
+      "sourceBorderPixelsAbove32": 86
+    },
+    {
+      "name": "terminal",
+      "index": 11,
+      "rect": [
+        1340,
+        290,
+        246,
+        175
+      ],
+      "ownershipPolygon": null,
+      "excludedRects": [],
+      "removedPixels": 20175,
+      "sourceBorderPixelsAbove32": 41
+    },
+    {
+      "name": "low-a",
+      "index": 12,
+      "rect": [
+        0,
+        470,
+        329,
+        163
+      ],
+      "ownershipPolygon": [
+        [
+          0,
+          100
+        ],
+        [
+          42,
+          52
+        ],
+        [
+          84,
+          22
+        ],
+        [
+          135,
+          25
+        ],
+        [
+          195,
+          0
+        ],
+        [
+          250,
+          2
+        ],
+        [
+          260,
+          52
+        ],
+        [
+          300,
+          45
+        ],
+        [
+          329,
+          100
+        ],
+        [
+          329,
+          163
+        ],
+        [
+          0,
+          163
+        ]
+      ],
+      "excludedRects": [],
+      "removedPixels": 20349,
+      "sourceBorderPixelsAbove32": 23
+    },
+    {
+      "name": "low-b",
+      "index": 13,
+      "rect": [
+        330,
+        469,
+        278,
+        165
+      ],
+      "ownershipPolygon": [
+        [
+          0,
+          90
+        ],
+        [
+          24,
+          35
+        ],
+        [
+          55,
+          0
+        ],
+        [
+          90,
+          0
+        ],
+        [
+          104,
+          65
+        ],
+        [
+          150,
+          38
+        ],
+        [
+          165,
+          70
+        ],
+        [
+          229,
+          35
+        ],
+        [
+          250,
+          45
+        ],
+        [
+          278,
+          110
+        ],
+        [
+          278,
+          165
+        ],
+        [
+          0,
+          165
+        ]
+      ],
+      "excludedRects": [
+        [
+          0,
+          145,
+          278,
+          20
+        ]
+      ],
+      "removedPixels": 23819,
+      "sourceBorderPixelsAbove32": 66
+    },
+    {
+      "name": "low-c",
+      "index": 14,
+      "rect": [
+        605,
+        455,
+        279,
+        175
+      ],
+      "ownershipPolygon": [
+        [
+          0,
+          125
+        ],
+        [
+          34,
+          80
+        ],
+        [
+          55,
+          25
+        ],
+        [
+          100,
+          0
+        ],
+        [
+          154,
+          0
+        ],
+        [
+          172,
+          62
+        ],
+        [
+          210,
+          70
+        ],
+        [
+          237,
+          52
+        ],
+        [
+          279,
+          90
+        ],
+        [
+          279,
+          175
+        ],
+        [
+          0,
+          175
+        ]
+      ],
+      "excludedRects": [
+        [
+          0,
+          0,
+          130,
+          25
+        ]
+      ],
+      "removedPixels": 21245,
+      "sourceBorderPixelsAbove32": 23
+    },
+    {
+      "name": "ribbon",
+      "index": 15,
+      "rect": [
+        880,
+        480,
+        328,
+        145
+      ],
+      "ownershipPolygon": [
+        [
+          0,
+          70
+        ],
+        [
+          70,
+          45
+        ],
+        [
+          145,
+          0
+        ],
+        [
+          170,
+          20
+        ],
+        [
+          190,
+          70
+        ],
+        [
+          258,
+          40
+        ],
+        [
+          285,
+          45
+        ],
+        [
+          295,
+          95
+        ],
+        [
+          328,
+          105
+        ],
+        [
+          328,
+          145
+        ],
+        [
+          0,
+          145
+        ]
+      ],
+      "excludedRects": [
+        [
+          0,
+          128,
+          328,
+          17
+        ]
+      ],
+      "removedPixels": 24695,
+      "sourceBorderPixelsAbove32": 60
+    },
+    {
+      "name": "accent",
+      "index": 16,
+      "rect": [
+        1205,
+        420,
+        205,
+        225
+      ],
+      "ownershipPolygon": [
+        [
+          0,
+          160
+        ],
+        [
+          30,
+          100
+        ],
+        [
+          54,
+          65
+        ],
+        [
+          70,
+          13
+        ],
+        [
+          115,
+          0
+        ],
+        [
+          150,
+          30
+        ],
+        [
+          167,
+          84
+        ],
+        [
+          190,
+          110
+        ],
+        [
+          205,
+          185
+        ],
+        [
+          205,
+          225
+        ],
+        [
+          0,
+          225
+        ]
+      ],
+      "excludedRects": [],
+      "removedPixels": 20593,
+      "sourceBorderPixelsAbove32": 38
+    },
+    {
+      "name": "lick",
+      "index": 17,
+      "rect": [
+        1420,
+        475,
+        140,
+        170
+      ],
+      "ownershipPolygon": null,
+      "excludedRects": [],
+      "removedPixels": 11285,
+      "sourceBorderPixelsAbove32": 0
+    },
+    {
+      "name": "wisp",
+      "index": 18,
+      "rect": [
+        30,
+        610,
+        174,
+        228
+      ],
+      "ownershipPolygon": null,
+      "excludedRects": [
+        [
+          0,
+          0,
+          174,
+          18
+        ]
+      ],
+      "removedPixels": 14659,
+      "sourceBorderPixelsAbove32": 47
+    },
+    {
+      "name": "puff",
+      "index": 19,
+      "rect": [
+        207,
+        614,
+        256,
+        225
+      ],
+      "ownershipPolygon": null,
+      "excludedRects": [
+        [
+          0,
+          0,
+          256,
+          14
+        ]
+      ],
+      "removedPixels": 19322,
+      "sourceBorderPixelsAbove32": 17
+    },
+    {
+      "name": "bank",
+      "index": 20,
+      "rect": [
+        463,
+        632,
+        355,
+        204
+      ],
+      "ownershipPolygon": null,
+      "excludedRects": [],
+      "removedPixels": 18376,
+      "sourceBorderPixelsAbove32": 0
+    },
+    {
+      "name": "billow",
+      "index": 21,
+      "rect": [
+        813,
+        598,
+        271,
+        240
+      ],
+      "ownershipPolygon": null,
+      "excludedRects": [
+        [
+          0,
+          0,
+          60,
+          32
+        ]
+      ],
+      "removedPixels": 17107,
+      "sourceBorderPixelsAbove32": 82
+    },
+    {
+      "name": "haze",
+      "index": 22,
+      "rect": [
+        1080,
+        650,
+        301,
+        184
+      ],
+      "ownershipPolygon": null,
+      "excludedRects": [
+        [
+          0,
+          165,
+          301,
+          19
+        ]
+      ],
+      "removedPixels": 18314,
+      "sourceBorderPixelsAbove32": 26
+    },
+    {
+      "name": "ash-puff",
+      "index": 23,
+      "rect": [
+        1370,
+        660,
+        210,
+        179
+      ],
+      "ownershipPolygon": null,
+      "excludedRects": [
+        [
+          0,
+          155,
+          210,
+          24
+        ]
+      ],
+      "removedPixels": 14470,
+      "sourceBorderPixelsAbove32": 26
+    },
+    {
+      "name": "ember",
+      "index": 24,
+      "rect": [
+        65,
+        840,
+        143,
+        125
+      ],
+      "ownershipPolygon": null,
+      "excludedRects": [],
+      "removedPixels": 9106,
+      "sourceBorderPixelsAbove32": 0
+    },
+    {
+      "name": "spark",
+      "index": 25,
+      "rect": [
+        258,
+        836,
+        225,
+        145
+      ],
+      "ownershipPolygon": null,
+      "excludedRects": [],
+      "removedPixels": 16311,
+      "sourceBorderPixelsAbove32": 0
+    },
+    {
+      "name": "coal",
+      "index": 26,
+      "rect": [
+        522,
+        840,
+        178,
+        140
+      ],
+      "ownershipPolygon": null,
+      "excludedRects": [],
+      "removedPixels": 7245,
+      "sourceBorderPixelsAbove32": 0
+    },
+    {
+      "name": "char",
+      "index": 27,
+      "rect": [
+        790,
+        836,
+        174,
+        140
+      ],
+      "ownershipPolygon": null,
+      "excludedRects": [],
+      "removedPixels": 6551,
+      "sourceBorderPixelsAbove32": 0
+    },
+    {
+      "name": "glow",
+      "index": 28,
+      "rect": [
+        1040,
+        816,
+        194,
+        176
+      ],
+      "ownershipPolygon": null,
+      "excludedRects": [],
+      "removedPixels": 11462,
+      "sourceBorderPixelsAbove32": 0
+    },
+    {
+      "name": "cinders",
+      "index": 29,
+      "rect": [
+        1272,
+        812,
+        314,
+        180
+      ],
+      "ownershipPolygon": null,
+      "excludedRects": [],
+      "removedPixels": 24013,
+      "sourceBorderPixelsAbove32": 0
+    }
+  ]
+}

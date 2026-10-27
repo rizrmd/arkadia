@@ -1,0 +1,13 @@
+{
+  "base": "http://127.0.0.1:5294",
+  "pass": true,
+  "checks": [
+    "locked inspect and disabled equip",
+    "actual Cinder Step rank comparison",
+    "explicit modal equip swaps slots",
+    "concept node with no invented data",
+    "passive cannot equip",
+    "Ember active cap displayed at rank 5"
+  ],
+  "errors": []
+}

@@ -52,3 +52,7 @@ Every magic circle and shock ring (`L.magicCircle`, `L.sigil`, `L.ring` in `scri
 
 Effects authored directly in the NixieFX editor can live next to the generated ones in `vfx/effects/`; the build only
 rewrites or prunes the files listed in `generated-effects.json`.
+
+## Player architecture
+
+All interactive media previews use the shared runtime in `src/fx/player-runtime.ts`. It owns Pixi application setup, deployment base URL resolution, and deterministic playback clocks. Individual players (`flame-fan`, `rift-bolt`, and `rift-dash`) now keep only their scene-specific assets, controls, and render composition, so new 3D/VFX/spritesheet players can reuse the same lifecycle without copying bootstrap code.

@@ -75,7 +75,7 @@ export function createSceneShadows(stage:Container,onUpdate:()=>void=()=>{},rend
   const total=sampled.reduce((n,s)=>n+s.samples.length,0),packed=new Float32Array(total*18);let j=0;for(const [index,s] of sampled.entries())for(const q of s.samples){packed[j++]=q.x;packed[j++]=q.y;packed[j++]=q.z;packed[j++]=q.alpha;packed[j++]=q.opaqueProxy?aliases[index]:q.owner!;packed[j++]=(s.surface.cast===false?0:1)|(q.receive===false?0:2)|(q.ignoreLowSelf?4:0)|(Math.round((q.emission??0)*255)<<8);packed.set(q.quad!,j);j+=12;}
   heightRevision++;revision++;hasScene=true;stats.surfaces=surfaces.length;stats.ready=false;worker.postMessage({type:'scene',packed},[packed.buffer]);queued=true;queueMicrotask(()=>{if(!inFlight&&queued)request();});
  }
- function setSun(s:ShadowSun){live?.setSun(s);const next=s.alpha?[s.dx,s.dy,s.alpha].map(n=>n.toFixed(3)).join():'night';sun={dx:s.dx,dy:s.dy,alpha:s.alpha};if(next===key)return;if(!live&&dynamicScene.length){dynamicRevision++;dynamicQueued=true;if(!dynamicInFlight)updateDynamic();}key=next;queued=true;queueMicrotask(()=>{if(!inFlight&&queued)request();});}
+ function setSun(s:ShadowSun){live?.setSun(s);const next=s.alpha?[s.dx,s.dy,s.alpha].map(n=>n.toFixed(4)).join():'night';sun={dx:s.dx,dy:s.dy,alpha:s.alpha};if(next===key)return;if(!live&&dynamicScene.length){dynamicRevision++;dynamicQueued=true;if(!dynamicInFlight)updateDynamic();}key=next;queued=true;queueMicrotask(()=>{if(!inFlight&&queued)request();});}
  const dynamicWorker=live?null:new Worker(new URL('./shadow-field-worker.ts',import.meta.url),{type:'module'});
  let dynamicRevision=0,dynamicInFlight=false,dynamicQueued=false,dynamicScene:ShadowSurface[]=[];
  const dynamicStats={updates:0,surfaces:0,buildMs:0,ready:false};

@@ -462,7 +462,7 @@ export class Hud extends Container {
 
  private syncPlayerConsole() {
   const s = this.state;
-  this.playerConsole?.update(s.name, this.currentPortrait, s.level, [[s.hp,s.hpMax],[s.xp,s.xpMax]]);
+  this.playerConsole?.update(s.name, this.currentPortrait, s.level, [[s.hp,s.hpMax],[s.gateHp ?? 100,s.gateHpMax ?? 100],[s.xp,s.xpMax]]);
  }
 
  private buildStats() {
@@ -1237,6 +1237,7 @@ export class Hud extends Container {
  setGateHp(gateHp: number, gateHpMax = 100) {
   this.state.gateHp = gateHp;
   this.state.gateHpMax = gateHpMax;
+  this.syncPlayerConsole();
   this.worldGateBar?.setHealth(gateHp, gateHpMax);
  }
 
