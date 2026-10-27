@@ -40,6 +40,9 @@ func TestCheckpointResumesExactSimulation(t *testing.T) {
 	if q.F.HP != p.F.HP || q.F.Immune != p.F.Immune || q.slotCD != p.slotCD || q.burnSoils[0].Ticks != p.burnSoils[0].Ticks || q.Run.Gold != p.Run.Gold || !q.F.ImpactDone {
 		t.Fatalf("state lost: %+v", q)
 	}
+	if got := r.State().Players[0].Cooldowns["flame-fan"]; got != p.slotCD[0] {
+		t.Fatal("authoritative cooldown missing from reconnect snapshot")
+	}
 	// Normalize the old connection bookkeeping as reconnect does before comparing future ticks.
 	w.ResumePlayer(p.ID, p.Name, 140)
 	for i := 0; i < 100; i++ {

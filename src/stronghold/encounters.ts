@@ -660,6 +660,7 @@ export async function createEncounters(o:{
   for(const id of mirrors.keys())if(!seen.has(id))mirrors.delete(id);
   foes=[...mirrors.values()];
   if(me){
+   const firstSnapshot=heroPlays<0;
    const prevHp=h.hp,prevLevel=run.level,nextSt=me.st as Fighter['state'];
    if(me.n!==heroPlays||h.state!==nextSt){
     if(me.n!==heroPlays&&nextSt==='attack')vfx.spawnSlash(h.x,h.y,facingScreenAngle({facing:me.fc,back:me.bk,vertical:me.vt}),false);
@@ -673,6 +674,7 @@ export async function createEncounters(o:{
     run=me.run?structuredClone(me.run):fresh(currentHeroId());
     syncHeroLoadout(run,currentHeroId());
    }
+   if(firstSnapshot){lastNetDash=run.manualDashes??0;lastCoopAutoCasts=run.autoCasts??0;}
    if((run.manualDashes??0)>lastNetDash){
     lastNetDash=run.manualDashes??0;const from={u:run.dashFromU??h.x,v:run.dashFromV??h.y},du=run.dashU??1,dv=run.dashV??0;
     // Authoritative confirmation: FX starts from the recorded origin, before refreshing the local fighter position.
@@ -680,7 +682,7 @@ export async function createEncounters(o:{
     vfx.castSkill('rift-dash',{targetU:from.u+du*6,targetV:from.v+dv*6,dashDistance:1.5});h.x=old.x;h.y=old.y;
     const to=toTile(me.x,me.y);lastDash={from,to,distance:Math.hypot(to.u-from.u,to.v-from.v)};trailUntil=performance.now()+1100;
    }
-   if(run.level>prevLevel){levelUpPulseMs=1200;vfx.triggerLevelUp(run.level,h.x,h.y);}
+   if(!firstSnapshot&&run.level>prevLevel){levelUpPulseMs=1200;vfx.triggerLevelUp(run.level,h.x,h.y);}
    const p=o.hero.position(),t=toTile(p.x,p.y);h.x=t.u;h.y=t.v;h.tick(dt);
    if((run.autoCasts??0)>lastCoopAutoCasts){
     lastCoopAutoCasts=run.autoCasts??0;
@@ -689,9 +691,10 @@ export async function createEncounters(o:{
      const aoeTarget=nearest(aoeCastRadius(run));
      vfx.castSimultaneous(castIds,aoeTarget?{targetU:aoeTarget.x,targetV:aoeTarget.y}:undefined);
     }
-   }else if(run.pending>0){
+   }else if(!firstSnapshot&&run.pending>0){
     autoCastInAoE(false);
    }
+   if(me.cooldowns)vfx.setCooldowns(me.cooldowns);
   }
   if(h.alive&&!inSafeZone(tileOf(h))&&nearest(aoeCastRadius(run)))notifyHeroCast(380);
  }

@@ -1,5 +1,5 @@
 import type {Container} from 'pixi.js';
-import {createHudActionButton,hudActionPosition} from './hud-action-button';
+import {createHudActionButton,hudActionPosition,type HudActionGesture} from './hud-action-button';
 import {audioSnapshot} from '../app/game-audio';
 import './settings.css';
 import {gameSettings,type GameSettings} from '../app/settings-state';
@@ -23,7 +23,7 @@ export function createSettings(o:Options){
  document.body.append(overlay,confirm);
  (window as any).__SETTINGS__={snapshot:()=>gameSettings.get(),audio:audioSnapshot};
  const panel=overlay.querySelector<HTMLElement>('.settings-panel')!;
- let open=false,busy=false,previous:HTMLElement|null=null;
+ let open=false,busy=false,previous:HTMLElement|null=null,openingGestureTime=-Infinity;
  const status=overlay.querySelector<HTMLElement>('.settings-status')!;
  const update=(s:GameSettings)=>{
   overlay.querySelectorAll<HTMLButtonElement>('[data-quality]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.quality===s.quality)));
@@ -36,9 +36,12 @@ export function createSettings(o:Options){
  gameSettings.subscribe(update);update(gameSettings.get());
  const cancel=()=>{if(busy)return;confirm.hidden=true;panel.inert=false;overlay.querySelector<HTMLButtonElement>('[data-reset]')!.focus();};
  const close=()=>{if(busy)return;confirm.hidden=true;overlay.hidden=true;panel.inert=false;open=false;if(o.solo){setGamePaused(false);o.pause(false);}previous?.focus();};
- function show(){if(!o.canOpen())return;previous=document.activeElement as HTMLElement;open=true;overlay.hidden=false;if(o.solo){setGamePaused(true);o.pause(true);}overlay.querySelector<HTMLButtonElement>('.settings-close')!.focus();}
+ function show(gesture?:HudActionGesture){if(!o.canOpen())return;openingGestureTime=gesture?.pointerType==='touch'?gesture.timeStamp:-Infinity;previous=document.activeElement as HTMLElement;open=true;overlay.hidden=false;if(o.solo){setGamePaused(true);o.pause(true);}overlay.querySelector<HTMLButtonElement>('.settings-close')!.focus();}
  overlay.querySelector<HTMLButtonElement>('.settings-close')!.onclick=close;
  overlay.querySelector<HTMLButtonElement>('.settings-resume')!.onclick=close;
+ // A touch compatibility click can land on the newly opened close button.
+ // Capture only the opening gesture's timestamp; subsequent input is unchanged.
+ overlay.addEventListener('click',e=>{if(Math.abs(e.timeStamp-openingGestureTime)<1){openingGestureTime=-Infinity;e.preventDefault();e.stopImmediatePropagation();}},true);
  overlay.onclick=e=>{if(e.target===overlay)close();};
  overlay.querySelectorAll<HTMLButtonElement>('[data-quality]').forEach(b=>b.onclick=()=>set({quality:b.dataset.quality as GameSettings['quality']}));
  overlay.querySelectorAll<HTMLButtonElement>('[data-fps]').forEach(b=>b.onclick=()=>set({frameRate:Number(b.dataset.fps) as 30|60}));

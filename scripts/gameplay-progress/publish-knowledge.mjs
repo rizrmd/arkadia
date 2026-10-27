@@ -6,7 +6,7 @@ const ids={progression:'NKBD32edf8ad4d810576bd4f538c',loadout:'NKBDb25945da946ef
 for(const id of Object.values(ids))assert(tree.some(p=>p.id===id));
 const release=await(await fetch('https://ark-whachat.fural.space/gameplay-progress/release.json')).json();
 const verified=JSON.parse(await fs.readFile('docs/gameplay-progress/release-verification.json','utf8'));assert(verified.passed&&verified.commit===release.commit);
-const local=JSON.parse(await fs.readFile('docs/gameplay-progress/browser-local.json','utf8'));assert.equal(local.cases.length,4);assert.equal(local.errors.length,0);
+const local=JSON.parse(await fs.readFile('docs/gameplay-progress/browser-local.json','utf8'));assert.equal(local.cases.length,4);assert.equal(local.errors.length,0);const live=JSON.parse(await fs.readFile('docs/gameplay-progress/browser-live.json','utf8'));assert(live.cases.length>=2&&live.errors.length===0);
 const checks=`[Desktop/mobile browser checks](https://ark-whachat.fural.space/gameplay-progress/evidence/browser-local.json) · [Live browser checks](https://ark-whachat.fural.space/gameplay-progress/evidence/browser-live.json) · [Co-op server restart checks](https://ark-whachat.fural.space/gameplay-progress/evidence/coop.json) · [Release verification](https://ark-whachat.fural.space/gameplay-progress/evidence/release-verification.json)`;
 const intro=`## Complete gameplay persistence — 27 October 2026
 

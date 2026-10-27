@@ -1,6 +1,57 @@
 {
   "base": "http://127.0.0.1:5796",
-  "cases": [],
+  "cases": [
+    {
+      "name": "desktop-rift-runner",
+      "initial": {
+        "level": 11,
+        "xp": 0,
+        "gold": 5,
+        "hp": 0,
+        "maxHp": 120,
+        "elapsedMs": 925.4000000000015,
+        "skills": {
+          "rift-bolt": 3,
+          "rift-dash": 1,
+          "might": 5,
+          "vitality": 1
+        },
+        "gate": {
+          "hp": 43,
+          "max": 160
+        },
+        "souls": 1
+      },
+      "checks": [
+        "paused Settings preserves all simulation state",
+        "two exact refreshes",
+        "full browser close/relaunch with persistent profile",
+        "offline gameplay/effect/cooldown durations unchanged",
+        "gold and dead-enemy reward markers unchanged",
+        "uncollected souls retained",
+        "ranks/passives/pending cards/gate restored",
+        "separate hero saves",
+        "damaged HP retained",
+        "active skill cooldown and in-flight effects retained"
+      ],
+      "reloads": [
+        {
+          "exact": true,
+          "elapsedMs": 925.4000000000015,
+          "remainingCooldowns": {
+            "rift-bolt": 1185
+          }
+        },
+        {
+          "exact": true,
+          "elapsedMs": 1260.7000000000044,
+          "remainingCooldowns": {
+            "rift-bolt": 849.6999999999971
+          }
+        }
+      ]
+    }
+  ],
   "errors": [],
   "method": "Persistent Chromium userDataDir; actual complete browser termination/relaunch, two reloads, snapshots captured before simulation starts behind loading; real blessing choices, enemies, kills, consumable effects, independent heroes and paused timers."
 }

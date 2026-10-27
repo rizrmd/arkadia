@@ -53,7 +53,7 @@ export async function mount(app:HTMLElement,progress:Progress){
  // Co-op sends the world's walk input once it exists: keys and the stick, or a route from the full map.
  let walk=controls.direction;
  const net=coop?createNet({direction:()=>walk(),maxHp,hero:()=>hero}):undefined;
- const lobby=net?createLobby(rt.uiStage,rt.frames,net):null,invited=lobby?.start()??'';
+ const lobby=net?createLobby(rt.uiStage,rt.frames,net):null;
  // The first visit chooses a hero once, before gameplay: the world loads behind the screen with the hero and the
  // revenants held until the pick (hero-picker.ts).
  let heroPrepared=Promise.resolve();
@@ -129,6 +129,9 @@ export async function mount(app:HTMLElement,progress:Progress){
  rt.app.start();
  loaded();
  void picker.picked.then(()=>{
+  // Connect only when loading and hero preparation are complete: an empty
+  // authoritative room must not run while its returning player is behind loading.
+  const invited=lobby?.start()??'';
   if(invited)lobby!.prompt(invited);
   else showMovementHint(rt.uiStage,rt.frames,hero);
  });

@@ -16,6 +16,10 @@ Diagnostic co-op remains server-owned and never imports a solo checkpoint or cli
 
 Only a private 192-bit resume credential can reclaim a hero; public player IDs are not credentials. The browser stores only room/identity/credential for co-op resume. Rejoining retains server HP/progression and ignores a new client maximum-HP claim. Invalid resume identities do not silently create a replacement hero. Explicit Leave ends automatic resume. A checkpoint write failure pauses room simulation until persistence succeeds. Startup rejects unsupported/corrupt server checkpoints instead of overwriting them.
 
+## Maintaining the checkpoint contract
+
+New gameplay-bearing fighter fields, statuses, world timers or rewards must be added to capture, restore and validation together. Bump or migrate the schema when meanings change. Store remaining simulation time, never an offline wall-clock deadline, and retain consumed/rewarded markers in the same atomic checkpoint.
+
 ## Verification
 
 - `node scripts/gameplay-progress/test.mjs`: legacy preservation, both heroes, full roundtrip, stale writers, quota failure/retry, atomic consumable envelope, future saves, reset fence and burn-soil deadlines without repeated ticks.

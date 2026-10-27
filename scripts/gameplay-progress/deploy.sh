@@ -3,8 +3,9 @@
 # server + persistence evidence, retaining all previously published art/players.
 set -euo pipefail
 cd "$(dirname "$0")/../.."
+git diff --quiet -- src server scripts || { echo "Commit task source before deploying"; exit 1; }
 mkdir -p "$HOME/releases"
-exec 9>"$HOME/releases/arkodia-deploy.lock"
+if [[ "${ARKODIA_DEPLOY_LOCK_HELD:-0}" != 1 ]]; then exec 9>"$HOME/releases/arkodia-deploy.lock"; fi
 flock -n 9 || { echo 'Another Arkodia deployment holds the lock'; exit 1; }
 export PATH="$HOME/.local/go/bin:$HOME/.local/bin:$PATH"
 export GOFLAGS=-p=1 GOMAXPROCS=2 GOMEMLIMIT=256MiB GOTOOLCHAIN=local
@@ -18,8 +19,11 @@ node scripts/test-inventory.mjs
 node scripts/test-settings.mjs
 node --input-type=module -e 'import {build} from "vite"; await build({build:{outDir:process.env.GAMEPLAY_RELEASE_STAGE+"/site",copyPublicDir:false}});'
 (cd server && go test ./... && CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -trimpath -ldflags="-s -w -X github.com/rizrmd/arkadia/server/internal/server.BuildCommit=$release_sha" -o "$GAMEPLAY_RELEASE_STAGE/arkodia" ./cmd/arkodia)
-GAME_SAVE_DIR="$stage/smoke-saves" ARKODIA_BIN="$stage/arkodia" SITE_DIR=public node scripts/coop-smoke.mjs
-rm -rf "$stage/smoke-saves"
+repo_root="$PWD"
+mkdir -p "$stage/empty-site"
+(cd "$stage" && GAME_SAVE_DIR="$stage/smoke-saves" ARKODIA_BIN="$stage/arkodia" SITE_DIR="$stage/empty-site" node "$repo_root/scripts/coop-smoke.mjs")
+cp "$stage/docs/coop/smoke.json" docs/gameplay-progress/coop-smoke.json
+rm -rf "$stage/smoke-saves" "$stage/empty-site" "$stage/docs"
 mkdir -p "$stage/site/gameplay-progress/evidence"
 cp docs/gameplay-progress/*.json docs/gameplay-progress/*.md "$stage/site/gameplay-progress/evidence/"
 node --input-type=module <<'RELEASE'

@@ -897,6 +897,7 @@ export function createCombatVfx(o:{
  }
  return {
   saveState,restoreState,
+  setCooldowns(values:Partial<Record<SkillId,number>>){for(const k of Object.keys(cooldowns))delete cooldowns[k as SkillId];Object.assign(cooldowns,values);},
   step,
   render,
   place(x:number,y:number,scale:number){origin={x,y,scale};fx.place(x,y,scale);},

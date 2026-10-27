@@ -1,7 +1,9 @@
 import {Assets,Container,Rectangle,Sprite,type FederatedPointerEvent} from 'pixi.js';
 
+export type HudActionGesture={pointerType:string;timeStamp:number};
+
 // Keep the original 46px utility target independent from the smaller artwork.
-export function createHudActionButton(stage:Container,icon:string,label:string,activate:()=>void){
+export function createHudActionButton(stage:Container,icon:string,label:string,activate:(gesture?:HudActionGesture)=>void){
  const button=new Container({label,eventMode:'static',cursor:'pointer'});
  // Utility actions belong to the HUD, below the clock popup (40), skill tree
  // (44.5), full map/lobby (45), and hero picker (70).
@@ -14,8 +16,7 @@ export function createHudActionButton(stage:Container,icon:string,label:string,a
  function paint(){art.width=art.height=pressed?26:30;art.y=pressed?25:23;art.tint=pressed?0xbba078:0xffffff;}
  function release(){pressed=false;pointer=-1;paint();}
  button.on('pointerdown',(e:FederatedPointerEvent)=>{if(pointer!==-1||e.button!==0)return;e.preventDefault();e.stopPropagation();pointer=e.pointerId;pressed=true;paint();});
- // Let touch compatibility clicks finish before opening an overlay above the canvas.
- button.on('pointerup',(e:FederatedPointerEvent)=>{if(e.pointerId!==pointer)return;e.stopPropagation();release();if(e.pointerType==='touch')window.requestAnimationFrame(()=>{if(!destroyed)activate();});else activate();});
+ button.on('pointerup',(e:FederatedPointerEvent)=>{if(e.pointerId!==pointer)return;e.stopPropagation();release();activate({pointerType:e.pointerType,timeStamp:e.nativeEvent?.timeStamp??e.timeStamp});});
  button.on('pointerupoutside',release);
  button.on('pointercancel',release);
  button.on('pointerleave',release);

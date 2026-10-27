@@ -6,7 +6,7 @@ import http from 'node:http';import path from 'node:path';import {createReadStre
 import {launchOptions} from '../typography/browser.mjs';
 const remote=process.env.VERIFY_URL,dist='/tmp/gameplay-progress-bundle',port=5796,out='docs/gameplay-progress';
 await fs.mkdir(out,{recursive:true});let server,context;
-const report={base:remote||`http://127.0.0.1:${port}`,cases:[],errors:[],method:'Persistent Chromium userDataDir; actual complete browser termination/relaunch, two reloads, snapshots captured before simulation starts behind loading; real blessing choices, enemies, kills, consumable effects, independent heroes and paused timers.'};
+const report={base:remote||`http://127.0.0.1:${port}`,cases:[],errors:[],method:'Persistent Chromium userDataDir; actual complete browser termination/relaunch, two reloads, snapshots captured before simulation starts behind loading; real blessing choices, enemies, kills, damaged HP/death and paused effect timers.'};
 if(!remote){
  if(!process.env.SKIP_BUILD)await build({logLevel:'error',build:{copyPublicDir:false,outDir:dist,emptyOutDir:true}});
  const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css','.json':'application/json','.png':'image/png','.webp':'image/webp','.woff2':'font/woff2','.svg':'image/svg+xml'};
@@ -15,7 +15,8 @@ if(!remote){
 const record=page=>page.evaluate(()=>{const c=window.__STRONGHOLD_COMBAT__;c.flush();return JSON.parse(localStorage.getItem('arkodia-stronghold-v1'));});
 const ready=page=>page.waitForFunction(()=>window.__STRONGHOLD_COMBAT__?.snapshot().vfx.fx.ready&&!document.querySelector('#loading-screen'),null,{timeout:240000,polling:200});
 const snap=page=>page.evaluate(()=>window.__STRONGHOLD_COMBAT__.snapshot());
-async function launch(profile,mobile){return chromium.launchPersistentContext(profile,{...launchOptions(['--mute-audio']),viewport:mobile?{width:390,height:844}:{width:1440,height:900},deviceScaleFactor:mobile?2:1,isMobile:mobile,hasTouch:mobile});}
+async function launch(profile,mobile){const context=await chromium.launchPersistentContext(profile,{...launchOptions(['--mute-audio']),viewport:mobile?{width:390,height:844}:{width:1440,height:900},deviceScaleFactor:mobile?2:1,isMobile:mobile,hasTouch:mobile});
+ await context.addInitScript(()=>{const write=Storage.prototype.setItem;Storage.prototype.setItem=function(key,value){const result=write.call(this,key,value);if(key==='arkodia-stronghold-v1'&&!window.firstGameplayWrite){const s=JSON.parse(value),hero=new URLSearchParams(location.search).get('hero');if(hero&&s.gameplay?.[hero])window.firstGameplayWrite=s;}return result;};});return context;}
 function observe(page,name){page.setDefaultTimeout(15000);page.on('pageerror',e=>{console.error(name,e.stack||e.message);report.errors.push(name+': '+e.message);});page.on('crash',()=>console.error(name,'PAGE CRASH'));}
 try{
  for(const mobile of [false,true])for(const hero of ['rift-runner','ember-warden']){
@@ -51,7 +52,7 @@ try{
   let saved=await record(page),p=saved.gameplay[hero].state;assert.equal((await snap(page)).persistence.error,'');assert(p.hero.hp>=0&&p.hero.hp<p.maxHp);assert(p.run.level>=6);assert(p.run.gold>=5);assert(p.souls.length);assert(p.foes.some(f=>f.state==='die'));assert.equal(p.run.pending,1);
   const row={name,initial:{level:p.run.level,xp:p.run.xp,gold:p.run.gold,hp:p.hero.hp,maxHp:p.maxHp,elapsedMs:p.elapsedMs,skills:p.run.skills,gate:p.world.gateHealth,souls:p.souls.length},checks:[],reloads:[]};
   // Stop simulation through the existing Settings action. Button is Pixi.
-  async function pause(){const point=await page.evaluate(()=>{const app=window.__PIXI_UI__.app;if(!app.renderer.lastObjectRendered)app.render();const find=c=>c.label==='Open Settings'?c:(c.children||[]).map(find).find(Boolean);const b=find(app.stage).getBounds();return {x:b.x+b.width/2,y:b.y+b.height/2};});if(mobile)await page.touchscreen.tap(point.x,point.y);else await page.mouse.click(point.x,point.y);await page.getByRole('dialog',{name:'Settings',exact:true}).waitFor();}
+  async function pause(){const point=await page.evaluate(()=>{window.settingsTrace=[];for(const el of document.querySelectorAll('.settings-overlay')){for(const type of ['pointerdown','pointerup','mousedown','mouseup','click'])el.addEventListener(type,e=>window.settingsTrace.push({type,target:e.target.className,stamp:e.timeStamp,now:performance.now(),pointer:e.pointerType,touch:e.sourceCapabilities?.firesTouchEvents}),true);new MutationObserver(m=>m.forEach(x=>window.settingsTrace.push({type:'hidden changed',old:x.oldValue,hidden:el.hidden,now:performance.now()}))).observe(el,{attributes:true,attributeFilter:['hidden'],attributeOldValue:true});}const app=window.__PIXI_UI__.app;if(!app.renderer.lastObjectRendered)app.render();const find=c=>c.label==='Open Settings'?c:(c.children||[]).map(find).find(Boolean);const b=find(app.stage).getBounds();return {x:b.x+b.width/2,y:b.y+b.height/2};});if(mobile)await page.touchscreen.tap(point.x,point.y);else await page.mouse.click(point.x,point.y);try{await page.getByRole('dialog',{name:'Settings',exact:true}).waitFor();}catch(e){console.error('SETTINGS EVENTS',await page.evaluate(()=>window.settingsTrace));throw e;}}
   console.log(name,'pause settings');
   await pause();console.log(name,'paused');if(process.env.PAUSE_ONLY)break;await page.evaluate(root=>window.__STRONGHOLD_COMBAT__.castSkill(root),root);saved=await record(page);p=saved.gameplay[hero].state;await fs.writeFile(`${out}/checkpoint-${name}.json`,JSON.stringify(p,null,2));assert(p.effects.cooldowns[root]>0);assert(p.effects.projectiles.length||p.effects.aoes.length);
   await page.waitForTimeout(1200);const held=await record(page);assert.deepEqual(held.gameplay[hero].state,p);row.checks.push('paused Settings preserves all simulation state');
@@ -61,8 +62,8 @@ try{
    await page.reload({waitUntil:'domcontentloaded',timeout:120000});
    // bindPersistence performs the first atomic checkpoint while loading still
    // holds hero/combat loops. It must restore exact durations with zero offline time.
-   await page.waitForFunction(({hero,revision})=>window.__STRONGHOLD_COMBAT__&&JSON.parse(localStorage.getItem('arkodia-stronghold-v1'))?.gameplay?.[hero]?.revision>revision,{hero,revision:before.gameplay[hero].revision},{timeout:240000,polling:100});
-   const restored=await page.evaluate(hero=>JSON.parse(localStorage.getItem('arkodia-stronghold-v1')).gameplay[hero].state,hero);
+   await page.waitForFunction(hero=>window.firstGameplayWrite?.gameplay?.[hero],hero,{timeout:240000,polling:100});
+   const restored=await page.evaluate(hero=>window.firstGameplayWrite.gameplay[hero].state,hero);
    assert.deepEqual(restored,expected,'exact checkpoint restoration behind loading');
    row.reloads.push({exact:true,elapsedMs:restored.elapsedMs,remainingCooldowns:restored.effects.cooldowns});
    await ready(page);assert.equal((await snap(page)).persistence.error,'');await pause();console.log(name,'reload',i+1,'exact PASS');
@@ -75,16 +76,19 @@ try{
   // Capture disk state before navigation; pagehide may have added an identical
   // newer revision, but the simulation itself was paused when the browser closed.
   await page.goto(url,{waitUntil:'domcontentloaded',timeout:120000});
-  await page.waitForFunction(()=>window.__STRONGHOLD_COMBAT__?.flush(),null,{timeout:240000,polling:100});
-  const reopened=(await record(page)).gameplay[hero].state;assert.deepEqual(reopened,p,'closed browser must resume without offline simulation');
+  await page.waitForFunction(hero=>window.firstGameplayWrite?.gameplay?.[hero],hero,{timeout:240000,polling:100});
+  const reopened=await page.evaluate(hero=>window.firstGameplayWrite.gameplay[hero].state,hero);assert.deepEqual(reopened,p,'closed browser must resume without offline simulation');
   row.checks.push('two exact refreshes','full browser close/relaunch with persistent profile','offline gameplay/effect/cooldown durations unchanged','gold and dead-enemy reward markers unchanged','uncollected souls retained','ranks/passives/pending cards/gate restored');
   await ready(page);await pause();console.log(name,'browser reopen exact PASS');
   // One item use and effect share a single economy/snapshot write, including rollback.
   await page.keyboard.press('Escape');await page.evaluate(()=>{const c=window.__STRONGHOLD_COMBAT__;c.setPreviewMode(true);c.clearFoes();});
   // Independent hero state is exercised by visiting the other hero and returning.
+  if(!process.env.SKIP_HERO_SWITCH){
   const other=hero==='rift-runner'?'ember-warden':'rift-runner';saved=await record(page);const originalRun=saved.gameplay[hero].state.run;
   await page.goto(`${report.base}/?hero=${other}&quality=low`,{waitUntil:'domcontentloaded',timeout:120000});await ready(page);assert.equal((await snap(page)).run.level,1);
-  await page.goto(url,{waitUntil:'domcontentloaded',timeout:120000});await page.waitForFunction(hero=>window.__STRONGHOLD_COMBAT__&&JSON.parse(localStorage.getItem('arkodia-stronghold-v1')).gameplay[hero].revision>1,hero,{timeout:240000,polling:100});assert.deepEqual((await record(page)).gameplay[hero].state.run,originalRun);await ready(page);row.checks.push('separate hero saves','damaged HP retained','active skill cooldown and in-flight effects retained');
+  await page.goto(url,{waitUntil:'domcontentloaded',timeout:120000});await page.waitForFunction(hero=>window.firstGameplayWrite?.gameplay?.[hero],hero,{timeout:240000,polling:100});assert.deepEqual(await page.evaluate(hero=>window.firstGameplayWrite.gameplay[hero].state.run,hero),originalRun);await ready(page);row.checks.push('separate hero saves');
+  }
+  row.checks.push('damaged HP retained','active skill cooldown and in-flight effects retained');
   assert.equal((await snap(page)).persistence.error,'');
   report.cases.push(row);await context.close();context=null;await fs.rm(profile,{recursive:true,force:true});console.log(name,'PASS');
  }

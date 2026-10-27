@@ -1,0 +1,12 @@
+{
+  "checks": [
+    "legacy unlock migration and paid economy/inventory preservation",
+    "quota failure preserves durable snapshot, pauses simulation and retries once",
+    "real Pixi scroll use: failed-save rollback and atomic count/position checkpoint",
+    "earned nonzero XP survives ownership transfer",
+    "second tab waits for exclusive ownership and resumes after owner closes",
+    "unsupported future snapshot preserved byte-for-byte and gameplay blocked",
+    "intentional Settings reset clears both current and legacy progression without stale resurrection"
+  ],
+  "errors": []
+}
