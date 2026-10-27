@@ -16,7 +16,7 @@ export function createHudActionButton(stage:Container,icon:string,label:string,a
  function paint(){art.width=art.height=pressed?26:30;art.y=pressed?25:23;art.tint=pressed?0xbba078:0xffffff;}
  function release(){pressed=false;pointer=-1;paint();}
  button.on('pointerdown',(e:FederatedPointerEvent)=>{if(pointer!==-1||e.button!==0)return;e.preventDefault();e.stopPropagation();pointer=e.pointerId;pressed=true;paint();});
- button.on('pointerup',(e:FederatedPointerEvent)=>{if(e.pointerId!==pointer)return;e.stopPropagation();release();activate({pointerType:e.pointerType,timeStamp:e.nativeEvent?.timeStamp??e.timeStamp});});
+ button.on('pointerup',(e:FederatedPointerEvent)=>{if(e.pointerId!==pointer)return;e.stopPropagation();release();activate({pointerType:e.pointerType,timeStamp:e.nativeEvent&&'timeStamp' in e.nativeEvent?e.nativeEvent.timeStamp:e.timeStamp});});
  button.on('pointerupoutside',release);
  button.on('pointercancel',release);
  button.on('pointerleave',release);
