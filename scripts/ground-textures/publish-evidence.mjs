@@ -1,0 +1,2 @@
+import fs from 'node:fs/promises';import {execFileSync} from 'node:child_process';import {publishRelease} from '../arkodia/publish-layer.mjs';
+const dir=await fs.mkdtemp('/home/dev/releases/ground-evidence-');await fs.mkdir(dir+'/site/ground-textures/evidence',{recursive:true});await fs.cp('docs/ground-textures',dir+'/site/ground-textures/evidence',{recursive:true});execFileSync('tar',['-czf',dir+'.tgz','-C',dir,'.']);await publishRelease({name:'ground-evidence-'+execFileSync('git',['rev-parse','--short','HEAD'],{encoding:'utf8'}).trim(),tgz:dir+'.tgz'});
