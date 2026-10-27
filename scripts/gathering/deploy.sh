@@ -19,9 +19,9 @@ node scripts/gameplay-progress/test.mjs
 node --input-type=module <<'BUILD'
 import {build} from 'vite';import {stageEditor} from './scripts/environment-editor/build.mjs';import fs from 'node:fs/promises';import {createHash} from 'node:crypto';import {execFileSync} from 'node:child_process';
 const stage=process.env.GATHERING_STAGE;await build({logLevel:'error',build:{outDir:stage+'/site',copyPublicDir:false}});await stageEditor(stage+'/site');
-for(const file of ['inventory/axe.svg','wildlife/gathering-atlas.webp']){await fs.mkdir(stage+'/site/'+file.split('/').slice(0,-1).join('/'),{recursive:true});await fs.copyFile('public/'+file,stage+'/site/'+file);}
+for(const file of ['inventory/axe.svg','wildlife/imagegen-atlas.png']){await fs.mkdir(stage+'/site/'+file.split('/').slice(0,-1).join('/'),{recursive:true});await fs.copyFile('public/'+file,stage+'/site/'+file);}
 await fs.mkdir(stage+'/site/gathering-verification',{recursive:true});await fs.cp('docs/gathering',stage+'/site/gathering-verification',{recursive:true});
-const files={};for(const rel of ['index.html','inventory/axe.svg','wildlife/gathering-atlas.webp',...(await fs.readdir(stage+'/site/assets')).filter(f=>/\.(js|css)$/.test(f)).map(f=>'assets/'+f)])files['/'+rel]=createHash('sha256').update(await fs.readFile(stage+'/site/'+rel)).digest('hex');
+const files={};for(const rel of ['index.html','inventory/axe.svg','wildlife/imagegen-atlas.png',...(await fs.readdir(stage+'/site/assets')).filter(f=>/\.(js|css)$/.test(f)).map(f=>'assets/'+f)])files['/'+rel]=createHash('sha256').update(await fs.readFile(stage+'/site/'+rel)).digest('hex');
 const manifest={commit:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),at:new Date().toISOString(),feature:'Persistent Wood/Food, automatic Axe harvesting, approved wildlife and exactly-once hunting loot',files};await fs.writeFile(stage+'/site/gathering-verification/release.json',JSON.stringify(manifest,null,2));
 BUILD
 tar -czf "$stage.tgz" -C "$stage" .
