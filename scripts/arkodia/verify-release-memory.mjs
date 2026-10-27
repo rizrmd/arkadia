@@ -10,7 +10,7 @@ try{
  const input=fs.openSync(archive,'r'),chunk=Buffer.allocUnsafe(4<<20),parts=[];let size;
  while((size=fs.readSync(input,chunk,0,chunk.length,null))>0){const name=`part-${parts.length}`;fs.writeFileSync(path.join(home,'layers',name),chunk.subarray(0,size));parts.push(name);}fs.closeSync(input);
  fs.writeFileSync(path.join(home,'layers/json.part'),gzipSync(JSON.stringify({'/proof.bin':'A'.repeat(64*1024*1024)})));fs.writeFileSync(path.join(home,'layers/json.json'),JSON.stringify({seq:0,format:'gzjson',parts:['json.part'],prefix:'/shadow-audit'}));fs.copyFileSync('scripts/arkodia/apply-json-layer.mjs',path.join(home,'apply-json-layer.mjs'));
- fs.writeFileSync(path.join(home,'layers/test.json'),JSON.stringify({seq:1,format:'tgz',parts}));fs.copyFileSync('scripts/arkodia/gateway.mjs',path.join(home,'gateway.mjs'));
+ fs.writeFileSync(path.join(home,'layers/test.json'),JSON.stringify({seq:1,format:'tgz',parts}));fs.copyFileSync('scripts/arkodia/gateway.mjs',path.join(home,'gateway.mjs'));fs.copyFileSync('scripts/arkodia/retired-vfx.mjs',path.join(home,'retired-vfx.mjs'));
  child=spawn(process.execPath,['gateway.mjs'],{cwd:home,env:{...process.env,PORT:String(port),COOP_PORT:'5983'},stdio:['ignore','pipe','pipe']});child.stdout.on('data',b=>logs+=b);child.stderr.on('data',b=>logs+=b);
  let ready=false;const start=Date.now();
  while(Date.now()-start<60000){
