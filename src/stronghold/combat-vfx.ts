@@ -40,7 +40,7 @@ export type AoEKind='rift-trap'|'ember-snare'|'shockwave'|'cleave-cone'|'flame-c
 export type AoETelegraph={
  id:number;kind:AoEKind;skill:SkillId;shape:'circle'|'cone';u:number;v:number;
  radius:number;angle:number;spread:number;age:number;duration:number;
- damageScale:number;forceCrit?:boolean;detonated:boolean;
+ damageScale:number;forceCrit?:boolean;detonated:boolean;rank?:number;
 };
 export type AoEImpact={
  id:number;kind:AoEKind;shape?:'circle'|'cone';u:number;v:number;radius:number;angle:number;spread?:number;
@@ -323,7 +323,7 @@ export function createCombatVfx(o:{
    id:nextId++,kind,skill,shape,u,v,
    radius:opts.radius??1.45*reach(o.getRun()),
    angle,spread:opts.spread??(shape==='cone'?Math.PI*.62:Math.PI*2),
-   age:0,duration:opts.duration??680,
+   age:0,duration:opts.duration??680,rank:Math.max(1,skillRank(o.getRun(),skill)),
    damageScale:opts.damageScale??1.15,forceCrit:opts.forceCrit,detonated:false
   };
   aoes.push(aoe);
@@ -337,7 +337,7 @@ export function createCombatVfx(o:{
   impacts.push({id:nextId++,kind:a.kind,shape:a.shape,u:a.u,v:a.v,radius:a.radius,angle:a.angle,spread:a.spread,age:0,duration:640});
   const d=tileVec(Math.cos(a.angle),Math.sin(a.angle));
   if(a.skill==='flame-fan'){
-   const rank=Math.max(1,skillRank(o.getRun(),'flame-fan'));
+   const rank=a.rank??Math.max(1,skillRank(o.getRun(),'flame-fan'));
    flameSheets.spawn(a.u,a.v,yawOf(d.u,d.v),a.radius,rank,-fxDtMs/1000+Math.max(0,a.age-a.duration)/1000);
    if(rank>=3){const clock=createBurnSoilClock(rank,(_at,damage)=>{
     totalBurnSoilTicks++;

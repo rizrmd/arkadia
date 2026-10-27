@@ -91,6 +91,7 @@ type Player struct {
 	last          Vec // the walk vector of the last input applied
 	starved       int // ticks in a row without any input
 	slotCD        [MaxSkillSlots]float64
+	flameFans     []flameFanCast
 	burnSoils     []burnSoilZone
 	burnSoilTicks int
 }
@@ -618,8 +619,9 @@ func (w *World) autoCastInAoE(p *Player) {
 		}
 		dmg := math.Max(1, math.Round(p.Run.damage()*p.Run.skillDamageMultiplier(skillID)*comboMult*scale))
 		splashR := 1.35 * p.Run.reach() * p.Run.skillAreaMultiplier(skillID)
-		if skillID == "flame-fan" && p.Run.skillRank(skillID) >= 3 {
-			p.burnSoils = append(p.burnSoils, burnSoilZone{Origin: p.F.Pos, Aim: target.F.Pos, Area: p.Run.skillAreaMultiplier(skillID)})
+		if skillID == "flame-fan" {
+			p.flameFans = append(p.flameFans, flameFanCast{Origin: p.F.Pos, Aim: target.F.Pos, Rank: p.Run.skillRank(skillID), Area: p.Run.skillAreaMultiplier(skillID), Damage: dmg})
+			continue
 		}
 		hits := 0
 		for _, e := range w.Enemies {
@@ -647,6 +649,11 @@ func (w *World) autoCastInAoE(p *Player) {
 		p.Run.TrinityCasts++
 	}
 	p.Run.LastCast = fired
+	if containsStr(fired, "flame-fan") {
+		p.Run.CastGeometry = &CastGeometry{p.F.Pos.X, p.F.Pos.Y, target.F.Pos.X, target.F.Pos.Y}
+	} else {
+		p.Run.CastGeometry = nil
+	}
 }
 
 func (w *World) enemyLevelOf(f *Fighter) int {
@@ -660,6 +667,7 @@ func (w *World) enemyLevelOf(f *Fighter) int {
 
 func (w *World) heroStep(p *Player, dt float64) {
 	w.stepBurnSoil(p, dt)
+	w.stepFlameFans(p, dt)
 	for i := 0; i < MaxSkillSlots; i++ {
 		p.slotCD[i] = math.Max(0, p.slotCD[i]-dt)
 	}

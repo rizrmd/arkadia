@@ -687,7 +687,11 @@ export async function createEncounters(o:{
     const castIds=(run.lastCast?.length?run.lastCast:run.slots).filter((id):id is SkillId=>id!=='rift-dash'&&Boolean(SKILL_CATALOG[id as SkillId]));
     if(castIds.length){
      const aoeTarget=nearest(aoeCastRadius(run));
-     vfx.castSimultaneous(castIds,aoeTarget?{targetU:aoeTarget.x,targetV:aoeTarget.y}:undefined);
+     // Replay the authoritative origin/aim rather than retargeting after movement/latency.
+     const old={x:h.x,y:h.y};
+     if(run.castGeometry){h.x=run.castGeometry.fromU;h.y=run.castGeometry.fromV;}
+     vfx.castSimultaneous(castIds,run.castGeometry?{targetU:run.castGeometry.targetU,targetV:run.castGeometry.targetV}:aoeTarget?{targetU:aoeTarget.x,targetV:aoeTarget.y}:undefined);
+     h.x=old.x;h.y=old.y;
     }
    }else if(run.pending>0){
     autoCastInAoE(false);
