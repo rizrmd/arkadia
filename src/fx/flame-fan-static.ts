@@ -7,6 +7,12 @@ const patch=new URLSearchParams(location.search).has('section');
 await Promise.all(['smoke-veil-v1','smoke-split-curl-v1'].map(async name=>{textures[name]=await Assets.load(base+name+'.png');}));
 const aerialAtlas=await Assets.load<Texture>(base+'hand-ignition-source.png');
 const frozenFrames=[4,5,6,7,8,9,10,11].map(i=>{const x=Math.round(i%4*aerialAtlas.width/4),y=Math.round(Math.floor(i/4)*aerialAtlas.height/4);return new Texture({source:aerialAtlas.source,frame:new Rectangle(x,y,Math.round((i%4+1)*aerialAtlas.width/4)-x,Math.round((Math.floor(i/4)+1)*aerialAtlas.height/4)-y)});});
+function splitAtlas(t:Texture){return Array.from({length:16},(_,i)=>{const x=Math.round(i%4*t.width/4),y=Math.round(Math.floor(i/4)*t.height/4);return new Texture({source:t.source,frame:new Rectangle(x,y,Math.round((i%4+1)*t.width/4)-x,Math.round((Math.floor(i/4)+1)*t.height/4)-y)});});}
+const sheets=splitAtlas(await Assets.load<Texture>(base+'rolling-fan-v2.png'));
+const cores=splitAtlas(await Assets.load<Texture>(base+'eroded-core-v2.png'));
+textures['flipbook-smoke']=await Assets.load<Texture>(base+'smoke-v2.png');
+textures['flipbook-spark']=Texture.WHITE;
+const handFrames=splitAtlas(aerialAtlas);
 const root=new Container(),scene=new Container(),ui=new Container();app.stage.addChild(root,ui);root.addChild(scene);
 let seed=417;function rnd(){seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;}
 // Ground-plane sector: narrow left origin, broad curved right rim. Project only ground.
@@ -87,6 +93,38 @@ const aerialSprites=aerialSites.map(([r,a,w,h],i)=>{
  flame.visible=!new URLSearchParams(location.search).has('baseline');
  return flame;
 });
+// Revision 6 additions use no baseline random draws. Every effect category in
+// flame-fan-flipbook.ts is represented; actor/reference sprites are review context.
+const combinedSprites:Sprite[]=[];
+const coverage:Record<string,{source:string;frames:number[];count:number;role:string}>={};
+function frozen(category:string,source:string,frame:number|null,r:number,a:number,w:number,h:number,alpha:number,lift=0){
+ const key='flipbook-'+category+'-'+combinedSprites.length;
+ textures[key]=source==='rolling-fan-v2.png'?sheets[frame!]:source==='eroded-core-v2.png'?cores[frame!]:source==='hand-ignition-source.png'?handFrames[frame!]:textures[source];
+ const s=at(key,r,a,w,h,alpha,lift);combinedSprites.push(s);
+ const c=coverage[category]??={source,frames:[],count:0,role:category};c.count++;if(frame!==null&&!c.frames.includes(frame))c.frames.push(frame);
+ return s;
+}
+// Small rolling folds occupy selected burning seams, never one opaque full-fan
+// overlay. These are upright screen quads, not flattened ground-plane sprites.
+for(const [i,r,a,w,h]of [[0,310,-.30,205,77],[1,610,.05,240,91],[2,850,.40,255,98]]){
+ frozen('Flame sheet','rolling-fan-v2.png',[6,8,10][i],r,a,w,h,.68);
+ const core=frozen('Hot interior','eroded-core-v2.png',[6,8,10][i],r+5,a,w*.85,h*.82,.22);core.blendMode='add';core.zIndex+=.1;
+}
+frozen('Ignition','hand-ignition-source.png',2,125,-.28,42,55,.8);
+for(const [i,r,a]of [[0,490,-.48],[1,810,.06],[2,1005,.50]])frozen('Hit contacts','hand-ignition-source.png',[3,12,13][i],r,a,38+i*5,55+i*6,.72);
+for(const [i,r,a,w,h]of [[0,250,-.38,90,74],[1,450,.18,110,90],[2,620,-.39,105,110],[3,750,.36,130,97],[4,920,-.20,120,116],[5,970,.55,125,100]]){
+ const smoke=frozen('Smoke','flipbook-smoke',null,r,a,w,h,.34,18+i%3*7);smoke.tint=0x665951;smoke.zIndex+=6;
+}
+// The source particle uses Texture.WHITE; retain its small orange additive
+// quads alongside (without moving/replacing) the approved atlas embers.
+for(let i=0;i<12;i++){
+ const e=frozen('Embers','flipbook-spark',null,290+i*59,Math.sin(i*2.4)*.56,2+i%2,3+i%3,.65,27+i%4*13);e.tint=i%2?0xffa529:0xff5f12;e.blendMode='add';
+}
+coverage['Curling tongues']={source:'hand-ignition-source.png',frames:[4,5,6,7,8,9,10,11],count:aerialSprites.length,role:'Retained revision 5 upright curls'};
+coverage['Ground heat']={source:'Pixi Graphics / retained glow.png',frames:[],count:0,role:'Existing warm foot glows retained; no broad heat ellipse obscures soil'};
+coverage['Burn Soil']={source:'Pixi Graphics + hand-ignition-source.png',frames:[4,5,6,7,8,9,10,11],count:0,role:'Approved crust, connected cracks and low flame runs retained; frozen curls above them; no second soil footprint'};
+const v5Only=new URLSearchParams(location.search).has('baselineV5');
+combinedSprites.forEach(s=>s.visible=!v5Only);
 let checker=false,reference=false;const bg=new Graphics();app.stage.addChildAt(bg,0);
 const target=await Assets.load(base+'latest-target.png');const ref=new Sprite(target);ref.anchor.set(.5);ref.visible=false;root.addChild(ref);
 function text(s:string,size:number,color=0xe9e2d5){return new Text({text:s,style:{fontFamily:'Arial',fontSize:size,fill:color,wordWrap:true,wordWrapWidth:330}});}
@@ -95,4 +133,4 @@ function button(label:string,fn:()=>void){const c=new Container(),g=new Graphics
 const b1=button('Checkerboard',()=>{checker=!checker;layout();});const b2=button('Compare target',()=>{reference=!reference;scene.visible=!reference;ref.visible=reference;layout();});
 function layout(){const w=app.screen.width,h=app.screen.height;bg.clear().rect(0,0,w,h).fill(0x101219);if(checker)for(let y=110;y<h-80;y+=20)for(let x=0;x<w;x+=20)bg.rect(x,y,20,20).fill((Math.floor(x/20)+Math.floor(y/20))%2?0x343841:0x252932);title.position.set(22,20);sub.position.set(22,52);note.position.set(22,h-24);const scale=Math.min((w-26)/1280,(h-190)/930);root.scale.set(scale);root.position.set((w-1280*scale)/2,105+(h-190-930*scale)/2);scene.position.y=115;if(patch){root.scale.set(Math.min((w-30)/530,(h-190)/420));root.position.set(w/2-660*root.scale.x,h/2-390*root.scale.y);}ref.position.set(640,465);ref.width=1250;ref.height=782;b1.scale.set(w<370?.9:1);b2.scale.set(w<370?.9:1);b1.position.set(w<370?12:22,h-75);b2.position.set(w<370?w-147:w-172,h-75);app.render();}
 window.addEventListener('resize',layout);layout();app.ticker.stop();
-Object.assign(window,{flameFanStatic:{parts:30,revision:5,baselineRevision:4,aerialFrames:[4,5,6,7,8,9,10,11],aerialCount:aerialSprites.length,section:patch,supplementalParts:2,static:true,groundProjection:.53,spriteCount:soil.children.length+air.children.length,ready:true,state:()=>({checker,reference,tickerStarted:app.ticker.started,upright:air.children.every(s=>s.rotation===0),usedParts:new Set([...soil.children,...air.children].map(s=>s.label)).size})}});
+Object.assign(window,{flameFanStatic:{parts:30,revision:6,baselineRevision:5,coverage,combinedCount:combinedSprites.length,aerialFrames:[4,5,6,7,8,9,10,11],aerialCount:aerialSprites.length,section:patch,supplementalParts:2,static:true,groundProjection:.53,spriteCount:soil.children.length+air.children.length,ready:true,setCombinedVisible:(visible:boolean)=>{combinedSprites.forEach(s=>s.visible=visible);app.render();},state:()=>({checker,reference,tickerStarted:app.ticker.started,upright:air.children.every(s=>s.rotation===0),usedParts:new Set([...soil.children,...air.children].map(s=>s.label)).size})}});
