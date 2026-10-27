@@ -21,6 +21,9 @@ import (
 	"github.com/rizrmd/arkadia/server/internal/sim"
 )
 
+// BuildCommit is supplied by the supported release build for public verification.
+var BuildCommit = "development"
+
 // Server routes HTTP requests.
 type Server struct {
 	Rooms        *room.Registry
@@ -42,7 +45,8 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("GET /asset-sizes.json", s.serveAssetSizes)
 	mux.HandleFunc("GET /healthz", func(w http.ResponseWriter, _ *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(map[string]any{"ok": true, "rooms": s.Rooms.Count(), "protocol": room.Version})
+		w.Header().Set("Cache-Control", "no-store")
+		json.NewEncoder(w).Encode(map[string]any{"ok": true, "rooms": s.Rooms.Count(), "protocol": room.Version, "build": BuildCommit})
 	})
 	mux.HandleFunc("/", s.static)
 	return mux

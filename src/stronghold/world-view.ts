@@ -146,7 +146,7 @@ export async function createWorldView(
  surfaceView.sprite.zIndex=10;
  staticStage.addChild(surfaceView.sprite);
 
- const sc=surface.getContext('2d')!;let dirty=true,frame=0;
+ const sc=surface.getContext('2d')!;let dirty=true,frame=0,lightingReady=false;
  const lighting=createLighting({
   worldStage:staticStage,
   surface,
@@ -155,7 +155,8 @@ export async function createWorldView(
   top,
   width:worldWidth,
   height:worldHeight,
-  onSun:()=>castShadows(),
+  // Initial light baking may cross a sun bucket before shadow buffers exist.
+  onSun:()=>{if(lightingReady)castShadows();},
   onSurfaceUpdate:()=>surfaceView.sync(worldWidth*scale,worldHeight*scale),
  });
  lighting.setScene(objects);
@@ -271,7 +272,7 @@ export async function createWorldView(
  const uprights=document.createElement('canvas');uprights.id='world-uprights';uprights.width=surface.width;uprights.height=surface.height;
  const baseSurface=document.createElement('canvas');baseSurface.width=surface.width;baseSurface.height=surface.height;
  const baseUprights=document.createElement('canvas');baseUprights.width=surface.width;baseUprights.height=surface.height;
- let shadowsDirty=true,baseDirty=true;
+ let shadowsDirty=true,baseDirty=true;lightingReady=true;
  function paintWorld(){
   measureTracelogPhase('worldPaint',()=>{
    const u=uprights.getContext('2d')!;

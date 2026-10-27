@@ -4,7 +4,8 @@ const vite=await createServer({server:{middlewareMode:true},appType:'custom'});
 try{
  const {createBurnSoilClock}=await vite.ssrLoadModule('/src/fx/burn-soil.ts');
  const ticks=[];const clock=createBurnSoilClock(3,at=>ticks.push(at));clock.advance(430);const resumed=createBurnSoilClock(3,at=>ticks.push(at),{elapsed:clock.elapsedMs,emitted:clock.emitted});resumed.advance(169);assert.deepEqual(ticks,[200,400]);resumed.advance(401);assert.deepEqual(ticks,[200,400,600,800,1000]);assert(resumed.complete);
- const {gameplayStore,validateGameplay}=await vite.ssrLoadModule('/src/stronghold/gameplay-save.ts');
+ const {gameplayStore,validateGameplay,nearestResumePosition}=await vite.ssrLoadModule('/src/stronghold/gameplay-save.ts');
+ const originalAt={u:2,v:3};assert.deepEqual(nearestResumePosition(originalAt,()=>true),originalAt);const recovered=nearestResumePosition(originalAt,p=>p.u>=2.5);assert(Math.hypot(recovered.u-2,recovered.v-3)<=.500001);assert.throws(()=>nearestResumePosition(originalAt,()=>false),/Original gameplay retained/);
  const {fresh,KEY}=await vite.ssrLoadModule('/src/stronghold/economy.ts');
  const progression=await vite.ssrLoadModule('/src/stronghold/progression.ts');
  const data=new Map(),storage={getItem:k=>data.get(k)??null,setItem:(k,v)=>data.set(k,v)};

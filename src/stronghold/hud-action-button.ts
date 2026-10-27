@@ -13,8 +13,9 @@ export function createHudActionButton(stage:Container,icon:string,label:string,a
  void Assets.load(icon).then(texture=>{if(destroyed)return;art.texture=texture;paint();});
  function paint(){art.width=art.height=pressed?26:30;art.y=pressed?25:23;art.tint=pressed?0xbba078:0xffffff;}
  function release(){pressed=false;pointer=-1;paint();}
- button.on('pointerdown',(e:FederatedPointerEvent)=>{if(pointer!==-1||e.button!==0)return;e.stopPropagation();pointer=e.pointerId;pressed=true;paint();});
- button.on('pointerup',(e:FederatedPointerEvent)=>{if(e.pointerId!==pointer)return;e.stopPropagation();release();activate();});
+ button.on('pointerdown',(e:FederatedPointerEvent)=>{if(pointer!==-1||e.button!==0)return;e.preventDefault();e.stopPropagation();pointer=e.pointerId;pressed=true;paint();});
+ // Let touch compatibility clicks finish before opening an overlay above the canvas.
+ button.on('pointerup',(e:FederatedPointerEvent)=>{if(e.pointerId!==pointer)return;e.stopPropagation();release();if(e.pointerType==='touch')window.requestAnimationFrame(()=>{if(!destroyed)activate();});else activate();});
  button.on('pointerupoutside',release);
  button.on('pointercancel',release);
  button.on('pointerleave',release);

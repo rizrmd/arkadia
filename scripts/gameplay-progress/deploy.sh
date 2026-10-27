@@ -10,13 +10,14 @@ export PATH="$HOME/.local/go/bin:$HOME/.local/bin:$PATH"
 export GOFLAGS=-p=1 GOMAXPROCS=2 GOMEMLIMIT=256MiB GOTOOLCHAIN=local
 stage="$(mktemp -d "$HOME/releases/gameplay-progress-runtime-XXXXXXXX")"
 export GAMEPLAY_RELEASE_STAGE="$stage"
+release_sha="$(git rev-parse HEAD)"
 npx tsc --noEmit
 node scripts/gameplay-progress/test.mjs
 node scripts/test-progression.mjs
 node scripts/test-inventory.mjs
 node scripts/test-settings.mjs
 node --input-type=module -e 'import {build} from "vite"; await build({build:{outDir:process.env.GAMEPLAY_RELEASE_STAGE+"/site",copyPublicDir:false}});'
-(cd server && go test ./... && CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -trimpath -ldflags="-s -w" -o "$GAMEPLAY_RELEASE_STAGE/arkodia" ./cmd/arkodia)
+(cd server && go test ./... && CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -trimpath -ldflags="-s -w -X github.com/rizrmd/arkadia/server/internal/server.BuildCommit=$release_sha" -o "$GAMEPLAY_RELEASE_STAGE/arkodia" ./cmd/arkodia)
 GAME_SAVE_DIR="$stage/smoke-saves" ARKODIA_BIN="$stage/arkodia" SITE_DIR=public node scripts/coop-smoke.mjs
 rm -rf "$stage/smoke-saves"
 mkdir -p "$stage/site/gameplay-progress/evidence"

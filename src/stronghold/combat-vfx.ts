@@ -150,6 +150,7 @@ export function createCombatVfx(o:{
  let nextId=1,origin={x:0,y:0,scale:1};
  const floats:FloatingText[]=[],sparks:HitSpark[]=[],slashes:SlashTrail[]=[];
  const projectiles:Projectile[]=[],aoes:AoETelegraph[]=[],impacts:AoEImpact[]=[];
+ const restoredZones=new Set<number>();let restoreGeneration=0;
  const burnSoils:{area:AoETelegraph;clock:ReturnType<typeof createBurnSoilClock>}[]=[];
  let totalBurnSoilTicks=0;
  const lingeringFx:{fx:FxHandle[];age:number;duration:number}[]=[];
@@ -754,14 +755,17 @@ export function createCombatVfx(o:{
    zv.view.sprite.alpha=alpha;
   };
   const skipHeroZones=fx.playable()&&(o.getHero().heroId==='ember-warden'||o.getHero().heroId==='rift-runner');
-  if(!skipHeroZones){
+  {
    for(const a of aoes){
+    if(skipHeroZones&&!restoredZones.has(a.id))continue;
     renderZone(a.id,a.kind,a.shape,a.u,a.v,a.radius,a.angle,a.spread,a.age,a.duration,false);
    }
    for(const imp of impacts){
+    if(skipHeroZones)continue;
     renderZone(imp.id,imp.kind,imp.shape??'circle',imp.u,imp.v,imp.radius,imp.angle,imp.spread??Math.PI*2,imp.age,imp.duration,true);
    }
   }
+  for(const id of restoredZones)if(!aoes.some(a=>a.id===id))restoredZones.delete(id);
   for(const [id,zv] of zoneViews){
    if(!activeZoneIds.has(id)){
     zoneViews.delete(id);
@@ -868,16 +872,27 @@ export function createCombatVfx(o:{
   aoes,burnSoils:burnSoils.map(b=>({area:b.area,elapsed:b.clock.elapsedMs,emitted:b.clock.emitted})),
   totalBurnSoilTicks,totalCrits,totalNormals,totalProjectiles,totalAoEs,totalLevelUps,totalWallHits,totalAutoCasts,totalSimultaneousCasts,totalTrinityCasts,lastSkill,lastSimultaneousSkills});}
  function restoreState(s:ReturnType<typeof saveState>){
+  const generation=++restoreGeneration;restoredZones.clear();
   for(const p of projectiles)for(const h of p.fx)h.release();
   projectiles.length=0;aoes.length=0;burnSoils.length=0;
   for(const k of Object.keys(cooldowns))delete cooldowns[k as SkillId];
   Object.assign(cooldowns,s.cooldowns);nextId=s.nextId;
   for(const p of s.projectiles)projectiles.push({...p,hitIds:new Set(p.hitIds.map(i=>o.getFoes()[i]).filter(Boolean)),fx:[]});
-  aoes.push(...structuredClone(s.aoes));
+  aoes.push(...structuredClone(s.aoes));for(const a of aoes)restoredZones.add(a.id);
   for(const b of s.burnSoils){const a=b.area;const clock=createBurnSoilClock(3,(_at,damage)=>{
    totalBurnSoilTicks++;if(damage===null||o.isOnline?.())return;
    for(const f of o.getFoes())if(f.alive&&inBurnSoil(a,f)){if(f.damage(damage))o.onKill(f);}
   },{elapsed:b.elapsed,emitted:b.emitted});burnSoils.push({area:{...a},clock});}
+  // GPU pools finish warming behind loading. Recreate visible emitters at the
+  // saved position without replaying casts, collisions, damage or soil ticks.
+  void fx.loaded.then(()=>{
+   if(generation!==restoreGeneration)return;
+   for(const p of projectiles){if(p.fx.length)continue;const len=Math.hypot(p.vx,p.vy)||1;
+    p.fx=cue(`${p.skill}.bolt`,{u:p.u-p.vx/len*p.traveled,v:p.v-p.vy/len*p.traveled,yaw:yawOf(p.vx,p.vy)});
+    for(const handle of p.fx)handle.setLocal(p.traveled);
+   }
+   for(const b of burnSoils){const a=b.area,d=tileVec(Math.cos(a.angle),Math.sin(a.angle));flameSheets.spawn(a.u,a.v,yawOf(d.u,d.v),a.radius,Math.max(3,skillRank(o.getRun(),'flame-fan')),b.clock.elapsedMs/1000);}
+  }).catch(console.error);
   totalBurnSoilTicks=s.totalBurnSoilTicks;totalCrits=s.totalCrits;totalNormals=s.totalNormals;totalProjectiles=s.totalProjectiles;totalAoEs=s.totalAoEs;totalLevelUps=s.totalLevelUps;totalWallHits=s.totalWallHits;totalAutoCasts=s.totalAutoCasts;totalSimultaneousCasts=s.totalSimultaneousCasts;totalTrinityCasts=s.totalTrinityCasts;lastSkill=s.lastSkill;lastSimultaneousSkills=[...s.lastSimultaneousSkills];
  }
  return {

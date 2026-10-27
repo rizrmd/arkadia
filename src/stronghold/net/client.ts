@@ -123,7 +123,7 @@ export function createNet(o:{direction:()=>Walk;maxHp:()=>number;hero:()=>string
  // One input per tick from the render loop; after a stall (background tab) it resumes instead of bursting.
  function frame(now:number){
   const dt=last?Math.min(now-last,250):16;last=now;
-  if(you&&(status==='online'||status==='reconnecting')){
+  if(you&&status==='online'){
    measureTracelogPhase('net',()=>{
     // Each input still walks one 50 ms step; pacing only changes how often one is sent.
     const every=TICK_MS*pace;acc+=dt;if(acc>4*every)acc=every;
@@ -158,7 +158,7 @@ export function createNet(o:{direction:()=>Walk;maxHp:()=>number;hero:()=>string
   setHero(h:string){if(ws?.readyState===WebSocket.OPEN){const m:HeroPick={t:'hero',h};ws.send(JSON.stringify(m));}},
   status:()=>status,room:()=>room,you:()=>you,name:()=>name,error:()=>lastError,layout:()=>layout,rtt:()=>rtt,stats,timeline:timeline.stats,
   // In co-op the server's world replaces the local simulation, also while briefly reconnecting.
-  active:()=>!!you&&(status==='online'||status==='reconnecting'),
+  active:()=>!!you&&status!=='idle',
   latest:()=>latest,me:()=>mine(latest),
   // Own hero: predicted position between the last two ticks, plus the fading correction.
   position(){const k=Math.min(1,acc/(TICK_MS*pace));return {x:lerp(prev.x,pred.x,k)+err.x,y:lerp(prev.y,pred.y,k)+err.y};},

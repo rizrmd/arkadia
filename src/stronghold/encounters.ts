@@ -1,4 +1,4 @@
-import {gameplayStore,GAMEPLAY_ERROR,setInventoryGameplayCapture} from './gameplay-save';
+import {gameplayStore,GAMEPLAY_ERROR,setInventoryGameplayCapture,nearestResumePosition} from './gameplay-save';
 import {publishActorShadowFrame,actorShadowModeRevision} from './shadow-actor-sources';
 import {registerActorShadowSprite} from './shadow-actor-batch';
 import {STRONGHOLD} from './prefabs/stronghold';
@@ -697,11 +697,12 @@ export async function createEncounters(o:{
  }
  function step(dt:number){
   if(saveBlocked||saveFault)return;
+  const net=!!o.net?.active();
+  if(net!==online){run=net?fresh(currentHeroId()):soloRun(currentHeroId());online=net;clearSouls();mirrors.clear();local.length=0;foes=local;spawnTimer=0;heroPlays=-1;lastCoopAutoCasts=0;if(!net){h.play('idle');h.hp=maxHp;}}
+  if(online&&o.net?.status()!=='online')return;
   elapsedMs+=dt;
   levelUpPulseMs=Math.max(0,levelUpPulseMs-dt);
   vfx.step(dt);
-  const net=!!o.net?.active();
-  if(net!==online){run=net?fresh(currentHeroId()):soloRun(currentHeroId());online=net;clearSouls();mirrors.clear();local.length=0;foes=local;spawnTimer=0;heroPlays=-1;lastCoopAutoCasts=0;if(!net){h.play('idle');h.hp=maxHp;}}
   if(online){netStep(dt);stepSouls(dt);return;}
   if(previewMode){
    for(const f of [h,...foes])f.tick(dt);
@@ -991,8 +992,9 @@ export async function createEncounters(o:{
   run=structuredClone(s.run);maxHp=s.maxHp;baseHp=s.baseHp;kills=s.kills;spawnTimer=s.spawnTimer;seed=s.seed;elapsedMs=s.elapsedMs;levelUpPulseMs=s.levelUpPulseMs;regenAccum=s.regenAccum;soulId=s.soulId;
   world.restore(s.world);
   // Doors restore first so a saved hero inside the open doorway remains walkable.
-  if(!o.hero.teleport(s.position.x,s.position.y))throw Error('Saved hero position is unavailable. Original save retained.');
-  Object.assign(h,s.hero);
+  let recovered:Tile|null=null;
+  if(!o.hero.teleport(s.position.x,s.position.y))recovered=nearestResumePosition(toTile(s.position.x,s.position.y),p=>{const w=tilePoint(p.u,p.v);return o.hero.teleport(w.x,w.y);});
+  Object.assign(h,s.hero);if(recovered){h.x=recovered.u;h.y=recovered.v;}o.hero.face(h.vertical?0:h.facing,h.back?-1:1);
   for(const f of s.foes)local.push(Object.assign(new Fighter('revenant',meta.clips,f.x,f.y),f));
   for(const soul of s.souls)addSoul(soul.id,soul.u,soul.v,soul.level,soul.age);
   vfx.restoreState(s.effects);lastSkillSig='';offerKey='';
