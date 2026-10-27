@@ -19,3 +19,5 @@ Gameplay code remains unchanged apart from texture/frame selection. Automatic pr
 - Release uses the supported additive publisher and existing `arkodia-deploy.lock`; published release ancestry guard protects prior gameplay. Existing maps, saves and peer routes are retained.
 
 See `atlas.json`, `verification.json`, `controller-results.json`, `local-smoke.json` and `deployment.json` for evidence.
+
+Live production smoke passed with zero page errors, real automatic deer melee hunting, harvest/save/reload, and three viewport captures. The live audit passed 47 checks: matching build/manifest, exact JS/CSS hashes, all visible RGBA and alpha values equal to the source PNG, and retained Environment Editor, FX Lab and world-concept routes. The existing server transcodes PNG responses to lossless WebP; PNG originals remain the production source and alpha/visible pixels are exact.
