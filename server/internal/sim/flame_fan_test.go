@@ -109,3 +109,43 @@ func TestFlameFanReleaseCapturesGeometryRankAndDamageEveryRank(t *testing.T) {
 		}
 	}
 }
+
+func TestFlameFanPendingReleaseSurvivesCheckpoint(t *testing.T) {
+	w := newTestWorld(t)
+	p := w.AddPlayer("resume-fan", "Resume", 100)
+	p.Hero = "ember-warden"
+	p.Run = newProgressionForHero(p.Hero)
+	p.Run.Skills["flame-fan"] = 5
+	p.F.Pos = Vec{gateTile + 4, gateTile + 4}
+	at := Vec{p.F.Pos.X + 1.3, p.F.Pos.Y}
+	e := &Enemy{ID: 1, F: newFighter(Revenant, at), Home: at}
+	e.F.HP = 100
+	w.Enemies = []*Enemy{e}
+	w.autoCastInAoE(p)
+	w.stepFlameFans(p, 200)
+	raw, err := w.Checkpoint()
+	if err != nil {
+		t.Fatal(err)
+	}
+	restored, err := RestoreCheckpoint(w.nav, raw)
+	if err != nil {
+		t.Fatal(err)
+	}
+	rp := restored.retired[p.ID]
+	if rp == nil || len(rp.flameFans) != 1 || rp.flameFans[0].Elapsed != 200 {
+		t.Fatal("pending release lost")
+	}
+	restored.stepFlameFans(rp, 219)
+	if restored.Enemies[0].F.HP != 100 {
+		t.Fatal("offline time advanced cast")
+	}
+	restored.stepFlameFans(rp, 1)
+	hp := restored.Enemies[0].F.HP
+	if hp >= 100 || len(rp.burnSoils) != 1 {
+		t.Fatal("restored release missing")
+	}
+	restored.stepFlameFans(rp, 1000)
+	if restored.Enemies[0].F.HP != hp {
+		t.Fatal("restored release duplicated")
+	}
+}

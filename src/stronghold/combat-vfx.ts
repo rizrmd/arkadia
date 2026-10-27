@@ -869,12 +869,13 @@ export function createCombatVfx(o:{
  // references are rebuilt; projectile hit membership uses the saved foe order.
  function saveState(){const foes=o.getFoes();return structuredClone({nextId,cooldowns,
   projectiles:projectiles.map(({fx,hitIds,...p})=>({...p,hitIds:[...hitIds].map(f=>foes.indexOf(f as Fighter)).filter(i=>i>=0)})),
+  flameBursts:flameSheets.snapshot().map(({u,v,yaw,radius,rank,age})=>({u,v,yaw,radius,rank,age:Math.max(0,age)})),
   aoes,burnSoils:burnSoils.map(b=>({area:b.area,elapsed:b.clock.elapsedMs,emitted:b.clock.emitted})),
   totalBurnSoilTicks,totalCrits,totalNormals,totalProjectiles,totalAoEs,totalLevelUps,totalWallHits,totalAutoCasts,totalSimultaneousCasts,totalTrinityCasts,lastSkill,lastSimultaneousSkills});}
  function restoreState(s:ReturnType<typeof saveState>){
   const generation=++restoreGeneration;restoredZones.clear();
   for(const p of projectiles)for(const h of p.fx)h.release();
-  projectiles.length=0;aoes.length=0;burnSoils.length=0;
+  projectiles.length=0;aoes.length=0;burnSoils.length=0;flameSheets.clear();
   for(const k of Object.keys(cooldowns))delete cooldowns[k as SkillId];
   Object.assign(cooldowns,s.cooldowns);nextId=s.nextId;
   for(const p of s.projectiles)projectiles.push({...p,hitIds:new Set(p.hitIds.map(i=>o.getFoes()[i]).filter(Boolean)),fx:[]});
@@ -891,7 +892,8 @@ export function createCombatVfx(o:{
     p.fx=cue(`${p.skill}.bolt`,{u:p.u-p.vx/len*p.traveled,v:p.v-p.vy/len*p.traveled,yaw:yawOf(p.vx,p.vy)});
     for(const handle of p.fx)handle.setLocal(p.traveled);
    }
-   for(const b of burnSoils){const a=b.area,d=tileVec(Math.cos(a.angle),Math.sin(a.angle));flameSheets.spawn(a.u,a.v,yawOf(d.u,d.v),a.radius,Math.max(3,skillRank(o.getRun(),'flame-fan')),b.clock.elapsedMs/1000);}
+   if(s.flameBursts){for(const b of s.flameBursts)flameSheets.spawn(b.u,b.v,b.yaw,b.radius,b.rank,b.age);}
+   else for(const b of burnSoils){const a=b.area,d=tileVec(Math.cos(a.angle),Math.sin(a.angle));flameSheets.spawn(a.u,a.v,yawOf(d.u,d.v),a.radius,a.rank??Math.max(3,skillRank(o.getRun(),'flame-fan')),b.clock.elapsedMs/1000);}
   }).catch(console.error);
   totalBurnSoilTicks=s.totalBurnSoilTicks;totalCrits=s.totalCrits;totalNormals=s.totalNormals;totalProjectiles=s.totalProjectiles;totalAoEs=s.totalAoEs;totalLevelUps=s.totalLevelUps;totalWallHits=s.totalWallHits;totalAutoCasts=s.totalAutoCasts;totalSimultaneousCasts=s.totalSimultaneousCasts;totalTrinityCasts=s.totalTrinityCasts;lastSkill=s.lastSkill;lastSimultaneousSkills=[...s.lastSimultaneousSkills];
  }

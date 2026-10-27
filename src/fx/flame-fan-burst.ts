@@ -30,9 +30,8 @@ export function createFlameFanBurst(renderer?:Renderer){
  const mesh=shader?new Mesh({geometry:new MeshGeometry({positions:new Float32Array([-1,-1,1,-1,1,1,-1,1]),indices:new Uint32Array([0,1,2,0,2,3])}),shader}):undefined;
  if(mesh)mesh.blendMode='none';
  function prepare(){return preparing??= (async()=>{
-  texture=await Assets.load<Texture>(FLAME_FAN_BURST_ASSET);texture.source.autoGarbageCollect=false;
-  image=new Image();image.src=FLAME_FAN_BURST_ASSET;await image.decode();
-  if(shader){shader.resources.uBurst=texture.source;await createGpuPreparation(renderer!).prepare(mesh!);}
+  if(shader){texture=await Assets.load<Texture>(FLAME_FAN_BURST_ASSET);texture.source.autoGarbageCollect=false;shader.resources.uBurst=texture.source;await createGpuPreparation(renderer!).prepare(mesh!);}
+  else{image=new Image();image.src=FLAME_FAN_BURST_ASSET;await image.decode();}
  })();}
  return {prepare,createTexture:()=>RenderTexture.create({width:256,height:256,resolution:1,antialias:false,autoGenerateMipmaps:false,scaleMode:'linear'}),
  render(target:RenderTexture,mask:Texture,_rank:number,time:number){
