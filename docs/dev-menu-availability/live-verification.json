@@ -1,0 +1,547 @@
+{
+  "pass": true,
+  "time": "2026-10-27T07:12:12.450Z",
+  "before": {
+    "version": 1,
+    "pid": 18,
+    "digest": "6f2fa6f81d53a5944d0ae841ef84a46ced4a67efd34b9c78d0a053e2da6c2ec0"
+  },
+  "after": {
+    "version": 1,
+    "pid": 18,
+    "digest": "6f2fa6f81d53a5944d0ae841ef84a46ced4a67efd34b9c78d0a053e2da6c2ec0"
+  },
+  "publisherExitCode": 0,
+  "publisherLogs": "Registered layer 1793085067509-dev-menu-availability-probe-7703c6f04528 in \u001b[33m1\u001b[39m parts\nApplied without sandbox restart: {\"log\":\"{\\\"binaryChanged\\\":false,\\\"applied\\\":[\\\"1792604187734-enemies-a340182efed1\\\",\\\"1792604193171-coop-69a1f7fb5991\\\",\\\"1792604524957-ember-85441211d810\\\",\\\"1792604563975-legacy-evidence-956b12b08655\\\",\\\"1792604591923-arkadia-sandbox-docs-414ce11050c4\\\",\\\"1792624910758-game-c01202a-34529583f123\\\",\\\"1792625270547-ember-61796ed69534\\\",\\\"1792625402368-arkadia-sandbox-docs-6e02132cb5fc\\\",\\\"1792625405782-coop-docs-ef3222b6f371\\\",\\\"1792625615022-coop-docs-1d6b4bb9a0f9\\\",\\\"1792627677757-game-e24bd3f-ef47d304b2f0\\\",\\\"1792627857280-hero-select-d9cabb233737\\\",\\\"1792634767548-ember-painted-8a7ea01b292b\\\",\\\"1792634885231-game-e97c345-2c84acae7e07\\\",\\\"1792634958372-sharp-torches-5e4b7665f525\\\",\\\"1792635012703-ember-painted-9efc0cef4d07\\\",\\\"1792635764308-game-c0ea00f-fdb267f0dfbe\\\",\\\"1792635806515-walk-feel-1cdab5db4fdf\\\",\\\"1792636676168-ember-animation-a59d3b39d9c2\\\",\\\"1792636824872-ember-animation-c0d53a7825c7\\\",\\\"1792636845121-ember-painted-3578930e8479\\\",\\\"1792637046032-ember-animation-5ccd0f52584e\\\",\\\"1792637392636-game-510fa19-31130fd041df\\\",\\\"1792638818594-game-d54eca5-24d2789731b8\\\",\\\"1792638883687-ember-game-fix-evidence-c9db1c6736a3\\\",\\\"1792648811035-game-c1fb03b-4935b02ec174\\\",\\\"1792658682263-game-40a7094-52caf5c53154\\\",\\\"1792659241874-game-bf5443f-a24b96edb6e9\\\",\\\"1792659253404-hero-picker-size-f8e516497cbc\\\",\\\"1792659309284-hero-picker-size-966a22701065\\\",\\\"1792665060102-game-a364b96-e6a848fcc7c5\\\",\\\"1792665238063-game-9b84d2a-7c9f75c0ab37\\\",\\\"1792665255775-hero-select-frames-50b393923137\\\",\\\"1792665259764-hero-picker-frames-e74a85bf1419\\\",\\\"1792667413207-ember-painted-4f993752b148\\\",\\\"1792667442680-ember-animation-e0b3d20ed83b\\\",\\\"1792667561836-ember-painted-6a6990500cc3\\\",\\\"1792667573740-ember-animation-a69329e96a0a\\\",\\\"1792667781409-game-fe487aa-c6df980b9fa9\\\",\\\"1792668294839-game-27980aa-3f0695b33bf2\\\",\\\"1792670480302-game-aa1a3df-c4af89923ef0\\\",\\\"1792670608626-game-aa1a3df-eeb90d29b460\\\",\\\"1792671655836-game-ba16679-d9d3ec343505\\\",\\\"1792671744420-ember-painted-352c705481fb\\\",\\\"1792671757648-ember-animation-13570fdaf63a\\\",\\\"1792672668284-game-5f86d90-e06dc880e27a\\\",\\\"1792673878786-game-caeae36-da72f6ceabd9\\\",\\\"1792675309970-game-7d47ccc-d34fe3dc6cbc\\\",\\\"1792675759124-game-6970d39-3a48f2826583\\\",\\\"1792676533634-elegant-idle-4d4bf334ca8b\\\",\\\"1792676722767-elegant-idle-4d4bf334ca8b\\\",\\\"1792676807527-game-c51ef40-385970997f46\\\",\\\"1792677617175-game-bf850b7-0a1538a294cb\\\",\\\"1792677709843-gate-seams-evidence-8870c27668ec\\\",\\\"1792678102991-game-aa874d5-58ae56078282\\\",\\\"1792680919471-game-d2cab2d-5f8bfc57fe77\\\",\\\"1792681044095-gate-foundation-evidence-ae0b2f2e8ff8\\\",\\\"1792682072104-game-2074545-21afb72d5d2e\\\",\\\"1792682097455-thumbstick-art-7702099e333e\\\",\\\"1792682182646-game-2074545-69c0615d3ef6\\\",\\\"1792682944060-game-7ef4401-933187a42bf5\\\",\\\"1792683061072-gate-seamless-evidence-eda2be46c6ae\\\",\\\"1792683544866-game-8eabd7a-d1d595140d21\\\",\\\"1792683915602-game-04eb526-a59ba65f1963\\\",\\\"1792683965662-environment-corners-v1-a6a7790331a7\\\",\\\"1792684109699-environment-corners-v1-a6a7790331a7\\\",\\\"1792684549807-game-471ad60-e6a1ab176b02\\\",\\\"1792684564825-sprite-player-74f2ed1c4084\\\",\\\"1792684720890-sprite-player-3230f6e55d2e\\\",\\\"1792684786558-sprite-player-87aaeb6c9835\\\",\\\"1792684976502-game-c71587e-6d416c9ca9f8\\\",\\\"1792685061406-game-c71587e-1c0167c8f778\\\",\\\"1792685527658-game-c09dc2c-a714a5bb4721\\\",\\\"1792685699256-gateway-final-evidence-599c268e7de4\\\",\\\"1792687117280-game-770ccb2-ee9cf0d4c516\\\",\\\"1792688000407-game-d569c96-aa256526abd5\\\",\\\"1792688025603-sprite-player-2af4aec81825\\\",\\\"1792688043477-sprite-player-2af4aec81825\\\",\\\"1792688180272-sprite-player-2af4aec81825\\\",\\\"1792688196059-sprite-player-2af4aec81825\\\",\\\"1792688957162-typography-v2-16b63e669b77\\\",\\\"1792689476697-game-bf2c1a7-4944276e3f03\\\",\\\"1792689913924-elegant-actions-2a94a4c9c81f\\\",\\\"1792692360368-game-9e3540c-e32975003972\\\",\\\"1792692873942-game-ddebe51-4dd320dfbb38\\\",\\\"1792693027777-sprite-player-ad51b679b021\\\",\\\"1792693068634-elegant-actions-v2-ecd5d43f7a38\\\",\\\"1792694818541-elegant-actions-v2-f11360619187\\\",\\\"1792695382050-elegant-actions-v2-b272f17ffe77\\\",\\\"1792695894328-game-6ef8ea9-1dc9637b9e40\\\",\\\"1792700959244-elegant-actions-v2-4e80b8321d34\\\",\\\"1792705968066-game-c1e4226-fce04481afdf\\\",\\\"1792707309442-sprite-player-bd83cd919b4c\\\",\\\"1792708389674-game-b249d33-47352f0a3c59\\\",\\\"1792708408946-sprite-player-legacy-bd83cd919b4c\\\",\\\"1792708424853-sprite-player-bd83cd919b4c\\\",\\\"1792708517042-game-b249d33-ccaea712ee60\\\",\\\"1792709874612-game-4a729e4-fd5c823b8a09\\\",\\\"1792711013163-game-d2c144c-48c0f594c3d7\\\",\\\"1792711028720-sprite-player-legacy-937b3fa2f7ce\\\",\\\"1792711039009-sprite-player-937b3fa2f7ce\\\",\\\"1792711373221-sprite-player-legacy-b3dab9f74191\\\",\\\"1792711382927-sprite-player-b3dab9f74191\\\",\\\"1792719410501-game-026e414-8fb14e40e65f\\\",\\\"1792719721000-sprite-player-legacy-5142f230427e\\\",\\\"1792719731750-sprite-player-5142f230427e\\\",\\\"1792720164446-game-867adbb-939814e731ef\\\",\\\"1792720761507-loading-fix-dc34a9a-a7dd35e65aa2\\\",\\\"1792720959683-sprite-player-legacy-1b09645e0683\\\",\\\"1792720970869-sprite-player-1b09645e0683\\\",\\\"1792721102654-game-81ea796-d00c6e0a9405\\\",\\\"1792721588749-game-1side-mirror-ee8da5653a0a\\\",\\\"1792722121076-game-d104509-414989150b1a\\\",\\\"1792722161200-game-0ddac7a-1fcc3682d7e7\\\",\\\"1792723723943-game-fix-uvs-842f2b168d4e\\\",\\\"1792724348700-game-a92c8b5-4cd3a1a23701\\\",\\\"1792725629288-game-adcdd14-398c8a5f3d1b\\\",\\\"1792726175782-game-adcdd14-398c8a5f3d1b\\\",\\\"1792726312540-game-2540420-a71abbedf26c\\\",\\\"1792726828775-game-8b30c95-6aa062321abb\\\",\\\"1792727236013-game-8b30c95-660d3c9ac5f6\\\",\\\"1792727666976-game-8b30c95-8d9f6f5a4f50\\\",\\\"1792728113619-game-33303db-cdfb36e3c288\\\",\\\"1792729960247-game-33303db-48db10d89969\\\",\\\"1792732299364-game-6cc6005-966c3f7d16b7\\\",\\\"1792732831621-game-d9c66a5-4782dcd60236\\\",\\\"1792734488723-game-01b79cb-0eb446bffdb4\\\",\\\"1792734941050-sprite-player-legacy-6dd5098e2d1c\\\",\\\"1792734955288-sprite-player-6dd5098e2d1c\\\",\\\"1792735428590-game-2586ec7-efed33f19aad\\\",\\\"1792735667006-game-f5c8fbe-2ed84e239de5\\\",\\\"1792736254856-game-e6522ad-10ceabb3ee8e\\\",\\\"1792739841984-game-2bc97a7-16895d0c6d80\\\",\\\"1792739915757-game-1c29afc-2b116ce42dea\\\",\\\"1792740657966-game-1c29afc-2b116ce42dea\\\",\\\"1792740690693-gate-seamless-v2-dc977cf589ab\\\",\\\"1792742782628-game-8781d1e-b683e5d07cc9\\\",\\\"1792744672784-game-7e60c99-51575b4abc9c\\\",\\\"1792744832448-game-7e60c99-fbddd1f0c11e\\\",\\\"1792746624840-game-7e60c99-954e19201cbf\\\",\\\"1792747424944-game-01c7e5f-a1c93a907b9b\\\",\\\"1792747964316-game-db01ba8-deb4639925ea\\\",\\\"1792749011877-game-5b8638b-d33b39da3a06\\\",\\\"1792749050948-first-hero-d8e36a3aa06e\\\",\\\"1792749172749-first-hero-186dfe8a2981\\\",\\\"1792749182042-game-5b8638b-87bfa27fc685\\\",\\\"1792749493330-game-52f1c58-004050c80865\\\",\\\"1792749655055-game-8cd23b5-cda5bb84ee60\\\",\\\"1792749967541-game-8ec2adc-37157384fe3b\\\",\\\"1792750212898-game-8ec2adc-46a702bfb4b8\\\",\\\"1792750766662-run-cadence-evidence-7ac086e542d3\\\",\\\"1792751405636-run-cadence-evidence-c68634b407d2\\\",\\\"1792751443440-game-79533dd-33ced4a58544\\\",\\\"1792751591879-game-9cc8601-97618421f15a\\\",\\\"1792751646969-game-9cc8601-c14eca23be94\\\",\\\"1792751671545-run-cadence-evidence-9b98e92c74a1\\\",\\\"1792751941765-first-hero-28c7cb88f25a\\\",\\\"1792753276510-game-a2714b6-cc0dc1827914\\\",\\\"1792753490720-game-902503f-1119b6c5c9fd\\\",\\\"1792754028374-game-2390514-7fb40fa338d9\\\",\\\"1792754283187-game-7556abf-b6388e2966f0\\\",\\\"1792755260173-game-2aee78e-d4a4a43443c8\\\",\\\"1792755448094-game-744dc27-3039bedf7600\\\",\\\"1792755813369-game-c059f04-2d2d4aaa092a\\\",\\\"1792755888146-game-c059f04-ead06950e259\\\",\\\"1792756345785-player-console-evidence-725182ffa914\\\",\\\"1792756407909-game-5962369-ed20ae24d454\\\",\\\"1792759309753-game-dd9f147-7effc7a4ef5b\\\",\\\"1792766707796-game-e6c0d93-21b0254811a0\\\",\\\"1792766842693-player-console-evidence-70549b1fec24\\\",\\\"1792768740462-game-d9bdb5c-2dbdc89ff7b5\\\",\\\"1792774087805-game-74e8ebd-0a4cf9a157ee\\\",\\\"1792774179577-game-74e8ebd-0bf00f32464e\\\",\\\"1792774202051-player-console-evidence-b77e8d240d88\\\",\\\"1792774394465-3d-hero-lab-472b85001b99\\\",\\\"1792774466018-3d-hero-lab-c3ddbd2e0fa4\\\",\\\"1792774617495-game-3136649-ee0e96f925ea\\\",\\\"1792775109757-3d-hero-lab-76bb865e25f8\\\",\\\"1792775303549-3d-hero-lab-c3943097182f\\\",\\\"1792775996796-game-16e2f76-e7d3fb9f75e3\\\",\\\"1792776090221-game-16e2f76-e3da4785817e\\\",\\\"1792776151242-arkodia-rename-5e3f2fdd0662\\\",\\\"1792776520691-game-bdbd0fe-d898f6f99d84\\\",\\\"1792777234975-3d-hero-game-dea2dda4c997\\\",\\\"1792777479256-game-cea50fe-42142b14d6e9\\\",\\\"1792777856373-3d-hero-game-1ebc0af009d1\\\",\\\"1792778707688-3d-hero-game-3e776e9f9f72\\\",\\\"1792779252045-3d-hero-game-94d1db9089dd\\\",\\\"1792779766654-game-e5171c5-5d5faa97b16b\\\",\\\"1792779947254-3d-hero-game-a5b1362ecabf\\\",\\\"1792780734011-3d-hero-game-a31b6312d533\\\",\\\"1792781143645-game-2df31b9-b13a5e2ef94b\\\",\\\"1792781929687-game-8519ef5-e48cf61f987f\\\",\\\"1792785890006-game-c615829-f21c54315c9f\\\",\\\"1792786544379-game-040b3db-9ea990271765\\\",\\\"1792787600139-3d-hero-game-344f75a85d3c\\\",\\\"1792795524777-3d-hero-game-c265cbd3d511\\\",\\\"1792797105027-game-e05586e-845b2bd30fd2\\\",\\\"1792797165483-game-e05586e-7bd87ce5edf5\\\",\\\"1792797743396-game-4e42377-31974d1248d6\\\",\\\"1792797790967-game-7843e34-7e2994e7e9fb\\\",\\\"1792797874058-player-console-evidence-9373a55892e3\\\",\\\"1792798003919-game-26a370c-203b657e847b\\\",\\\"1792798309538-minimap-evidence-85e76fec75bc\\\",\\\"1792798581319-game-f8c3ddd-1914b30c7d83\\\",\\\"1792799129838-game-cea2901-fe147e1d6059\\\",\\\"1792799155739-game-05adfbc-e66e806e1487\\\",\\\"1792799452083-minimap-obstacles-evidence-fddaee5307e2\\\",\\\"1792799648547-game-609db5e-a89f10c0d201\\\",\\\"1792799651058-game-466637f-aba8711570e9\\\",\\\"1792800305934-game-c9e4d6f-dc57c52f754f\\\",\\\"1792800911089-game-8e7be5b-af637ea76954\\\",\\\"1792801200065-game-f2f57cf-7b5b813c3bf2\\\",\\\"1792801501522-mobile-hud-evidence-v1-e2d0f3136f01\\\",\\\"1792801625113-game-aeebf9f-002692ecafcc\\\",\\\"1792809406070-game-9f23c86-54b39ce16c19\\\",\\\"1792809990343-game-a4a0102-4e13ddc4b647\\\",\\\"1792809992147-game-05a7cf2-6910b67a4eba\\\",\\\"1792810425903-desktop-26fb7f8-c24f9d4ffe33\\\",\\\"1792810534679-ember-run-a4a0102-23693013c330\\\",\\\"1792810796254-mobile-hud-padding-cd6a3bb55deb\\\",\\\"1792811096353-game-9f09bef-73d292dac2de\\\",\\\"1792811203136-game-9f09bef-9b177a9ebd90\\\",\\\"1792813015633-game-cffa7aa-f9ad23f8d904\\\",\\\"1792813610598-ember-run-28ce37e-08932f6a450b\\\",\\\"1792813620942-ember-docs-28ce37e-5e4d6f879a72\\\",\\\"1792814079840-game-199d1e5-0d64c3caf6e1\\\",\\\"1792817041438-frozen-frontier-v1-cb32a62a5f60\\\",\\\"1792817130660-frozen-frontier-v1-cb32a62a5f60\\\",\\\"1792819144841-game-60fd716-d9ead6155da8\\\",\\\"1792819602748-frozen-frontier-v2-e37ab86b9ad6\\\",\\\"1792820068126-game-d80ed7c-b49bbdd4f881\\\",\\\"1792820266811-game-eb89dc9-c2d9ee9753d5\\\",\\\"1792827271095-game-5a0beff-e0c4e801f313\\\",\\\"1792828276155-game-7d03515-0c80c8dea59c\\\",\\\"1792829478497-game-83ad8cf-28ae763cc1d2\\\",\\\"1792829706818-game-c8bad87-1c72eb1fc16e\\\",\\\"1792832892575-game-1526d1e-e00f94e6b14a\\\",\\\"1792833505344-game-696d8d6-2c61d5f3ab8e\\\",\\\"1792833553263-game-39636ee-d8710a098d97\\\",\\\"1792834239554-game-94bae0c-86c41667be02\\\",\\\"1792836594142-game-0e2b7e2-30173c46a984\\\",\\\"1792836703915-game-0e2b7e2-49b6022eab03\\\",\\\"1792836813214-game-ceb3e35-2c41cb37a16b\\\",\\\"1792844902072-game-f9e26ae-b1d0821be9a5\\\",\\\"1792846540601-game-22ceec2-9eac14aba668\\\",\\\"1792848480149-game-9e070a9-6c6aaca37589\\\",\\\"1792851992587-game-0dbcdc8-5ae2c8b27377\\\",\\\"1792887886275-game-7885c92-eb0933a884b8\\\",\\\"1792888357600-game-75fcd4b-16898928773f\\\",\\\"1792888519067-game-75fcd4b-feae25224f9b\\\",\\\"1792888791696-game-b339efe-48676fa9e4f9\\\",\\\"1792889029282-game-2cce5c1-944868dd5084\\\",\\\"1792889592233-game-56140f9-4d603258d839\\\",\\\"1792889767686-game-56140f9-f7a3ace3a8c3\\\",\\\"1792890020066-game-181e16e-b9b004411317\\\",\\\"1792890144066-game-f1ac6fc-953a9e39795e\\\",\\\"1792890235368-game-9a65e45-962ab045c50c\\\",\\\"1792890365150-game-9a65e45-9c157a40be4c\\\",\\\"1792890438303-game-9a65e45-c75ca5390990\\\",\\\"1792890610827-frontier-rendering-proof-59f0d90d547f\\\",\\\"1792900152074-game-bdfee4b-051fd0d42b42\\\",\\\"1792901658340-game-ac43165-3a204f6de1a7\\\",\\\"1792902028416-game-dc89f74-7ff51085d70c\\\",\\\"1792902901724-game-c47ac9c-fd6994102100\\\",\\\"1792904297898-game-35202c2-01734cbcacf2\\\",\\\"1792904722722-game-dbbe2d5-0725a1f034a3\\\",\\\"1792911479949-game-5a2b14a-eb1599bc8009\\\",\\\"1792911669716-game-5a2b14a-782ac899fca8\\\",\\\"1792912771712-game-6932feb-c7ddd9efb1a0\\\",\\\"1792913638166-game-9a9a1be-d74435d35a82\\\",\\\"1792913840748-game-d7926df-522b3430840e\\\",\\\"1792914565589-rift-bolt-levels-c77e46691ced\\\",\\\"1792914795246-ember-tree-stage1-2dceeeff465c\\\",\\\"1792914821245-game-807b0da-ea4d82f40da3\\\",\\\"1792914842239-rift-bolt-levels-5db21b2f08fd\\\",\\\"1792915085779-ember-tree-stage1-2dceeeff465c\\\",\\\"1792915191561-ember-tree-stage1-final-df10f561eb4c\\\",\\\"1792915268545-rift-bolt-levels-281b239a4e8a\\\",\\\"1792915345768-rift-bolt-levels-bc4da2f994f8\\\",\\\"1792917187447-rift-bolt-levels-39609e444d78\\\",\\\"1792917394462-rift-bolt-levels-2821c7e65fbd\\\",\\\"1792918107072-rift-bolt-levels-20cdc4ea3b73\\\",\\\"1792918409083-game-399ce02-eac0799e4b7f\\\",\\\"1792918893770-game-4e97d4f-e832bc473e33\\\",\\\"1792919037245-game-7a8edb4-006ed1e07d3f\\\",\\\"1792919400266-ember-tree-all-densities-32700bf7006b\\\",\\\"1792919544044-game-5b4daf6-b90275c01bc4\\\",\\\"1792919713891-game-0dcb6ad-494125b044f6\\\",\\\"1792919744548-ember-tree-verification-2b333f1b18a5\\\",\\\"1792919754727-game-ade07d2-ae20577e0f18\\\",\\\"1792919790588-grave-shadow-evidence-cf4691b00f76\\\",\\\"1792919851068-grave-shadow-verified-1fbc3b92a479\\\",\\\"1792919965994-ember-tree-final-evidence-4a5bbcef164c\\\",\\\"1792920203685-inventory-verification-f9a275ee9394\\\",\\\"1792920959840-settings-verification-0274e674df14\\\",\\\"1792921364604-game-2e57aaf-4689545a7d4c\\\",\\\"1792921560171-ember-tier-gates-evidence-8a0bdcaa67e2\\\",\\\"1792921707218-game-825d1d5-e31ef69d27a5\\\",\\\"1792921769926-game-a327cd3-2761c57bdacd\\\",\\\"1792921891013-game-5c39b81-0269278915fe\\\",\\\"1792921954536-game-660512e-e58240a2a409\\\",\\\"1792922122788-temple-grounding-verified-49c3435fe34e\\\",\\\"1792922141273-ember-tier-gates-final-evidence-8b55260eb6f4\\\",\\\"1792922632228-settings-icons-verification-50cf22e2fb66\\\",\\\"1792922650259-game-ae35079-c6b79d77bdde\\\",\\\"1792922823066-ember-tier-gates-accepted-74d6484e12c9\\\",\\\"1792922896735-game-6919931-3ec45c38b1a9\\\",\\\"1792923304350-flame-fan-levels-16ea7b1e195b\\\",\\\"1792923422507-flame-fan-levels-65e765d241f8\\\",\\\"1792923503721-flame-fan-levels-51444e07aef8\\\",\\\"1792924887127-game-1a9d931-4f36ca046ed7\\\",\\\"1792925068844-inventory-v2-verification-1fb9b2e49490\\\",\\\"1792926407515-game-0948655-d56b971ca5ee\\\",\\\"1792926828120-flame-fan-levels-096ef0a56d2a\\\",\\\"1792926983033-game-79847bd-1ffa4cdf6fd0\\\",\\\"1792927080137-temple-stair-evidence-0e6c7086776c\\\",\\\"1792927134260-temple-stair-evidence-66aa11c3b21b\\\",\\\"1792927404166-game-90216a4-472150095167\\\",\\\"1792929563738-game-1806122-c3cf9f721a70\\\",\\\"1792929798506-game-18e213b-203778b4276a\\\",\\\"1792929808778-flame-fan-preview-67e1a291379e\\\",\\\"1792930023850-flame-fan-preview-cfcbe17b219f\\\",\\\"1792930121838-shadow-audit-evidence-f40188550a4d\\\",\\\"1792931992798-flame-fan-preview-40ee04680872\\\",\\\"1792932216021-flame-fan-preview-404fb2bad760\\\",\\\"1792939152607-game-996d5d20-2139c3d30c42\\\",\\\"1792939846632-game-e6bfc959-b2a6b2f4027b\\\",\\\"1792941330590-game-7b8719ba-d5d370a507cb\\\",\\\"1792941370464-game-4c77a1c2-8e0b585e469b\\\",\\\"1792941820197-game-7701746e-6c6338e07985\\\",\\\"1792941854890-game-bf62a635-29aa0b8b31d9\\\",\\\"1792942151997-game-2b84667d-311fde0ca2a4\\\",\\\"1792942217486-flame-fan-evidence-1-af4b7aec3c10\\\",\\\"1792942223974-flame-fan-evidence-2-45800b51abc1\\\",\\\"1792942231333-flame-fan-evidence-3-d2b05fccd2ea\\\",\\\"1792942238553-flame-fan-evidence-4-7bb040775c68\\\",\\\"1792942250410-flame-fan-evidence-5-f722b099cb80\\\",\\\"1792942257742-flame-fan-evidence-6-f8920a7ca384\\\",\\\"1792942261137-flame-fan-evidence-7-1ea65ab082de\\\",\\\"1792942264719-flame-fan-evidence-8-3557a36bfdb3\\\",\\\"1792942272577-flame-fan-evidence-9-410de5362033\\\",\\\"1792942276624-flame-fan-evidence-10-2e29cfd513e8\\\",\\\"1792942278696-audio-release-gateway-manifest-b7f0193cc530\\\",\\\"1792942280485-flame-fan-evidence-11-23b258ead827\\\",\\\"1792942285572-flame-fan-evidence-12-880b6ae8004b\\\",\\\"1792942388485-flame-fan-evidence-13-3b379aa64736\\\",\\\"1792942392994-flame-fan-evidence-14-f3ab952d4393\\\",\\\"1792942397387-flame-fan-evidence-15-b3fc9e72af5e\\\",\\\"1792942406853-flame-fan-evidence-16-637360e0ceec\\\",\\\"1792942410582-flame-fan-evidence-17-053f6037bf12\\\",\\\"1792942428955-flame-fan-evidence-18-e89166f6abc7\\\",\\\"1792942639455-game-2b84667d-effb97a3f442\\\",\\\"1792942711838-shadow-tears-live-evidence-007d8ccee5b2\\\",\\\"1792942718243-audio-verification-a71b8819-d826849059d4\\\",\\\"1792942831058-flame-fan-knowledge-final-bfc4238e1d63\\\",\\\"1792943023144-inventory-pixi-verification-d09fa2695742\\\",\\\"1792943950003-game-27236d02-7592632312b4\\\",\\\"1792944579996-game-8ae24f1f-72d98312c267\\\",\\\"1792944636913-game-1bb3f6b1-9400591e3959\\\",\\\"1792946127071-game-8470959f-e46fdc8e6041\\\",\\\"1792946749341-game-1d2f5e45-c99ab42b4716\\\",\\\"1792947617120-game-b5837c44-151ee9301777\\\",\\\"1792947873240-game-b5837c44-8551fce12253\\\",\\\"1792947926518-game-89f976a7-9905767da5d6\\\",\\\"1792947946742-shadow-dynamic-verified-444a432e-129fb73cff29\\\",\\\"1792948309248-game-2e24abae-daeb4a2e7af5\\\",\\\"1792948928483-game-d3d3652a-33bacdc1be80\\\",\\\"1792948936660-tent-shadow-verification-83ee21d85167\\\",\\\"1792949323085-game-b87f912a-57e6641a4836\\\",\\\"1792949657051-game-b87f912a-e9507c8a3346\\\",\\\"1792950779367-game-72db7f15-515199e19aab\\\",\\\"1792952335734-shadow-family-evidence-61c327eb-edfcba2493cb\\\",\\\"1792955044952-game-a0eae6d0-56f62b87bf59\\\",\\\"1792957519220-game-381a2700-a06dbedc30bc\\\",\\\"1792958638651-game-49806970-3aa6a0d53eee\\\",\\\"1792958911689-shadow-live-proof-49806970-73a1b438b022\\\",\\\"1792959025781-shadow-live-proof-final-49806970-2b21de2a7d36\\\",\\\"1792960385498-game-33a61b6f-a27de720abe2\\\",\\\"1792960676567-shadow-native-live-proof-33a61b6f-73a1b438b022\\\",\\\"1792960752719-shadow-native-final-proof-33a61b6f-6e6a3a13b2f6\\\",\\\"1792963225332-game-3d4b8655-e8afeaa28f55\\\",\\\"1792963477936-shadow-actor-live-proof-3d4b8655-73a1b438b022\\\",\\\"1792963501661-shadow-actor-final-proof-3d4b8655-ed4b73b395d1\\\",\\\"1792965629829-flame-fan-flipbook-0-2629a39e61ea\\\",\\\"1792965630546-flame-fan-flipbook-1-f79d19b0e30a\\\",\\\"1792965677000-flame-fan-flipbook-0-2629a39e61ea\\\",\\\"1792965677609-flame-fan-flipbook-1-c1b8b28c140e\\\",\\\"1792968206526-game-5876e868-6dac5aed0c22\\\",\\\"1792968521787-shadow-gateway-live-proof-5876e868-8ea93b8d953e\\\",\\\"1792968548637-shadow-gateway-final-proof-5876e868-0cd3add66502\\\",\\\"1792969096248-game-a670cb1a-1b84eacef52a\\\",\\\"1792969262833-flame-fan-flipbook-0-6196f39dd316\\\",\\\"1792969263675-flame-fan-flipbook-1-8517520dbef0\\\",\\\"1792969264809-flame-fan-flipbook-2-29aebeb4f8d0\\\",\\\"1792969265436-flame-fan-flipbook-3-3148aad34ecb\\\",\\\"1792969472402-flame-fan-flipbook-0-6196f39dd316\\\",\\\"1792969473118-flame-fan-flipbook-1-8517520dbef0\\\",\\\"1792969473852-flame-fan-flipbook-2-33f9d26030a6\\\",\\\"1792969474664-flame-fan-flipbook-3-c130e45328c8\\\",\\\"1792969475192-flame-fan-flipbook-4-33d0681574cb\\\",\\\"1792978772353-flame-fan-flipbook-0-98ad2fd9e1a2\\\",\\\"1792978773027-flame-fan-flipbook-1-a3ca08d58ba7\\\",\\\"1792978774019-flame-fan-flipbook-2-f49e793df416\\\",\\\"1792978775000-flame-fan-flipbook-3-ebe8028a4fa2\\\",\\\"1792978776054-flame-fan-flipbook-4-9742f881b082\\\",\\\"1792978776778-flame-fan-flipbook-5-8671779fbabf\\\",\\\"1792978777342-flame-fan-flipbook-6-5ce3dccc5be1\\\",\\\"1792978978360-flame-fan-flipbook-0-98ad2fd9e1a2\\\",\\\"1792978979044-flame-fan-flipbook-1-a3ca08d58ba7\\\",\\\"1792978979924-flame-fan-flipbook-2-317b350282ab\\\",\\\"1792978980999-flame-fan-flipbook-3-cbd0c4230f49\\\",\\\"1792978982297-flame-fan-flipbook-4-93a93efb51f2\\\",\\\"1792978983309-flame-fan-flipbook-5-548a2db38b83\\\",\\\"1792978983954-flame-fan-flipbook-6-ca36807d7c68\\\",\\\"1792978984441-flame-fan-flipbook-7-a3efd2a66c71\\\",\\\"1792981034494-game-912328f8-6a8370406d04\\\",\\\"1792981425836-rift-dash-evidence-050d2e88-6cd60b2d2894\\\",\\\"1792981742538-game-e3e7def5-fff768d1f567\\\",\\\"1792982116557-shadow-glb-evidence-e3e7def5-7182732c85bd\\\",\\\"1792983291986-game-9a1550b2-a2d8877bd48f\\\",\\\"1792983790082-shadow-torch-proof-9a1550b2-bf035e144e5c\\\",\\\"1792985439218-game-d872e6fc-80ed1994d0ea\\\",\\\"1792985997616-shadow-instance-proof-d872e6fc-7062d2a39484\\\",\\\"1792988939982-shadow-source-journals-3a45b7ce-47ba82defb7e\\\",\\\"1792991152678-burn-soil-96d64f6a-3c6fbfe2ad06\\\",\\\"1792991524841-burn-soil-evidence-0-8da84220d6ce\\\",\\\"1792991528641-burn-soil-evidence-1-b5794a34d8e5\\\",\\\"1792991529462-burn-soil-evidence-2-92aff95a1e9b\\\",\\\"1792991563541-flame-fan-flipbook-0-19f3af1ebd34\\\",\\\"1792991566408-flame-fan-flipbook-1-f690e178bc8e\\\",\\\"1792991568285-flame-fan-flipbook-2-317b350282ab\\\",\\\"1792991570645-flame-fan-flipbook-3-cbd0c4230f49\\\",\\\"1792991574748-flame-fan-flipbook-4-93a93efb51f2\\\",\\\"1792991578784-flame-fan-flipbook-5-548a2db38b83\\\",\\\"1792991581412-flame-fan-flipbook-6-ca36807d7c68\\\",\\\"1792991584368-flame-fan-flipbook-7-a3efd2a66c71\\\",\\\"1792991800090-burn-soil-evidence-0-71af2f218422\\\",\\\"1792991806581-burn-soil-evidence-1-b5794a34d8e5\\\",\\\"1792991813376-burn-soil-evidence-2-b6a15ce19075\\\",\\\"1792991882203-shadow-gpu-final-3bd13f65-9e61bd0621e4\\\",\\\"1792994520764-shadow-static-tent-f538310c-dc7da6cc5689\\\",\\\"1792995217156-game-876300f7-3b3cd49751a8\\\",\\\"1792999001361-shadow-opacity-6e561f98-f6a25f756a65\\\",\\\"1792999369682-game-6e561f98-a4cc4975c343\\\",\\\"1793000446371-shadow-opacity-verification-63132152-c43367697b86\\\",\\\"1793003317232-shadow-final-metadata-d8108256-9c16c7102f08\\\",\\\"1793003673726-shadow-final-live-checks-e444f7c3d111\\\",\\\"1793004292619-shadow-full-visual-78d5155e-f252b6003547\\\",\\\"1793005502041-shadow-rock-candidate-200b337eb0d6\\\",\\\"1793006893833-game-4ce0726f-6be88280ad7e\\\",\\\"1793007520986-shadow-rock-verification-82e4103d-62492e16ea2f\\\",\\\"1793007805552-shadow-rock-final-7eb83725-17eb897250bc\\\",\\\"1793008350211-shadow-brazier-material-candidate-3682d18d88ed\\\",\\\"1793008676880-shadow-brazier-refined-candidate-c5af5076622b\\\",\\\"1793009950548-shadow-brazier-integrated-candidate-26e1f918c956\\\",\\\"1793010718467-game-5335e503-2187a7eb42c6\\\",\\\"1793012434704-game-7957773a-1fa2bb17c0bd\\\",\\\"1793016131990-shadow-material-7957773a-evidence-fdf621af4623\\\",\\\"1793016941937-shadow-drift-candidate-00208c067bd4\\\",\\\"1793017104119-shadow-drift-low-bias-candidate-f875028dc2f8\\\",\\\"1793018962503-burn-soil-13fe8998-c295b993c7d3\\\",\\\"1793019641386-game-2e354348-8caa5369a42d\\\",\\\"1793021695474-rift-dash-player-0-50904d0051d8\\\",\\\"1793021707669-rift-dash-player-1-90f61d1b8710\\\",\\\"1793021721395-rift-dash-player-2-bf8267e5c42f\\\",\\\"1793021733938-rift-dash-player-3-82de3d7265e8\\\",\\\"1793021791554-shadow-drift-final-0-d09b9702a2c4\\\",\\\"1793021805696-shadow-drift-final-1-50578e88401b\\\",\\\"1793021822529-shadow-drift-final-2-cab0529db2b5\\\",\\\"1793021842649-shadow-drift-final-3-aa2aa6669ea6\\\",\\\"1793021855683-shadow-drift-final-4-892cba2054df\\\",\\\"1793022047936-shadow-drift-final-5-77290ecd4676\\\",\\\"1793022063921-shadow-drift-final-6-274ffa0b7509\\\",\\\"1793022079739-shadow-drift-final-7-1156796b4c63\\\",\\\"1793022087165-shadow-drift-final-8-908f7b1f48ca\\\",\\\"1793022092985-rift-dash-player-live-evidence-07b68afc92d5\\\",\\\"1793022335598-rift-dash-knowledge-0b03e738b18c\\\",\\\"1793022952889-shadow-native-benchmark-78383402-f85bbfb11038\\\",\\\"1793023576415-shadow-drift-final-0-d09b9702a2c4\\\",\\\"1793023601782-shadow-drift-final-1-50578e88401b\\\",\\\"1793023619659-shadow-drift-final-2-cab0529db2b5\\\",\\\"1793023641359-shadow-drift-final-3-aa2aa6669ea6\\\",\\\"1793023659778-shadow-drift-final-4-892cba2054df\\\",\\\"1793023681701-shadow-drift-final-5-77290ecd4676\\\",\\\"1793023703764-shadow-drift-final-6-274ffa0b7509\\\",\\\"1793023728021-shadow-drift-final-7-1156796b4c63\\\",\\\"1793023739259-shadow-drift-final-8-f3dc8753cfde\\\",\\\"1793024325994-rift-dash-skill-tree-36bb272-fb25532d0bcc\\\",\\\"1793024985175-burn-soil-evidence-0-120da6f8c1e5\\\",\\\"1793024994226-burn-soil-evidence-1-9eb32349399f\\\",\\\"1793025003493-burn-soil-evidence-2-f76eedff55a8\\\",\\\"1793025014636-burn-soil-evidence-3-d298f64cb6a8\\\",\\\"1793025272987-shadow-native-contract-update-a9cdd8e1e433\\\",\\\"1793025855827-safari-parallax-verification-ecc47d464f0d\\\",\\\"1793026097379-game-94d8028-38ae1edeca5d\\\",\\\"1793026326707-rift-dash-tree-final-ef60a91-c40543ee75b9\\\",\\\"1793026677862-rift-dash-tree-final-evidence-53148104cc32\\\",\\\"1793028630121-game-4024c276-dd4bbe3d015c\\\",\\\"1793028741962-game-4024c276-5aadd82d94d5\\\",\\\"1793029158689-game-bad4b6b5-6048f4d2e3d2\\\",\\\"1793031191803-game-742b9fbb-0fe954ddec0f\\\",\\\"1793032144141-game-c552fbb7-ab693005feda\\\",\\\"1793032952202-game-eeffa57a-a6c5c38a9b69\\\",\\\"1793033157439-shadow-frame-recovery-evidence-be1847f999c6\\\",\\\"1793034696661-houdini-flame-fan-25b5e302-7ac6607f7966\\\",\\\"1793034811154-houdini-flame-fan-c6e0444b-5f3ea58a5123\\\",\\\"1793034980196-houdini-flame-fan-cac3144e-331045e58203\\\",\\\"1793038704094-houdini-flame-fan-35251570-31947d92e5dd\\\",\\\"1793038825901-houdini-flame-fan-e77b1b83-3a173e31cedf\\\",\\\"1793039780926-game-6db85153-1250440308e4\\\",\\\"1793040165210-gate-health-evidence-bf085d3309e2\\\",\\\"1793041610507-game-b73b0fc1-d22bd858e2e3\\\",\\\"1793042339892-skill-unlocks-evidence-49eac83d21c1\\\",\\\"1793058420944-game-65eb3f31-596994b1a0fc\\\",\\\"1793058461111-flame-burst-4042a86e-6418828d3ad3\\\",\\\"1793058534965-flame-burst-c089cf50-96326a5fbd88\\\",\\\"1793058956365-game-4fa5a2aa-fa65ebfc06c4\\\",\\\"1793058987835-flame-burst-f970b2ba-c69b8bb8a57a\\\",\\\"1793059138085-flame-burst-0120c439-a3e5eadff7e0\\\",\\\"1793059729667-flame-fan-static-e7d51b28-0-ce2d818ff2f6\\\",\\\"1793059731347-flame-fan-static-e7d51b28-1-0141cce50e6a\\\",\\\"1793059732855-flame-fan-static-e7d51b28-2-e5401eebbf86\\\",\\\"1793059860251-flame-fan-static-84221035-0-26e4d61a4e4e\\\",\\\"1793059861195-flame-fan-static-84221035-1-57f7aee8df70\\\",\\\"1793059862492-flame-fan-static-84221035-2-bc459d78c060\\\",\\\"1793059863267-flame-fan-static-84221035-3-490d52be61c3\\\",\\\"1793060006042-game-84221035-95b905d45d6c\\\",\\\"1793060546410-game-d069cf10-40525a01e269\\\",\\\"1793061173683-game-0cc30fd9-416dc97b34d9\\\",\\\"1793061705384-game-4db10da4-1dd6bbe20906\\\",\\\"1793061729358-rift-bolt-no-cleave-evidence-468a0f7e7115\\\",\\\"1793062535652-game-5fefd4cf-4e7136cdec03\\\",\\\"1793062996040-game-beb13574-de1b5f356d0c\\\",\\\"1793063273747-flame-fan-static-decf295c-0-064bd80f9550\\\",\\\"1793063274573-flame-fan-static-decf295c-1-d49c36865b1f\\\",\\\"1793063276111-flame-fan-static-decf295c-2-f03f8b8f2c39\\\",\\\"1793063276970-flame-fan-static-decf295c-3-2a2613d09d4f\\\",\\\"1793063277694-flame-fan-static-decf295c-4-84ef7cbddb35\\\",\\\"1793063278571-flame-fan-static-decf295c-5-e2100c98d70f\\\",\\\"1793063279397-flame-fan-static-decf295c-6-a867d34a5ebf\\\",\\\"1793063279866-flame-fan-static-decf295c-7-7d51ef048afd\\\",\\\"1793063292068-rift-bolt-no-cleave-evidence-492187c519da\\\",\\\"1793063393551-flame-fan-static-16692cf3-0-064bd80f9550\\\",\\\"1793063394271-flame-fan-static-16692cf3-1-60e1b0328509\\\",\\\"1793063395227-flame-fan-static-16692cf3-2-f03f8b8f2c39\\\",\\\"1793063396000-flame-fan-static-16692cf3-3-2a2613d09d4f\\\",\\\"1793063396787-flame-fan-static-16692cf3-4-84ef7cbddb35\\\",\\\"1793063397696-flame-fan-static-16692cf3-5-fe122566e577\\\",\\\"1793063398517-flame-fan-static-16692cf3-6-126584ecc4c7\\\",\\\"1793063399102-flame-fan-static-16692cf3-7-44605bc4e0e4\\\",\\\"1793063938271-flame-fan-static-02b8e319-0-39f53881ee7d\\\",\\\"1793063938913-flame-fan-static-02b8e319-1-cf17e6a0c057\\\",\\\"1793063939621-flame-fan-static-02b8e319-2-27ce8da0ad08\\\",\\\"1793063940528-flame-fan-static-02b8e319-3-f03f8b8f2c39\\\",\\\"1793063941264-flame-fan-static-02b8e319-4-2a2613d09d4f\\\",\\\"1793063941970-flame-fan-static-02b8e319-5-3afa3f6b7234\\\",\\\"1793063942840-flame-fan-static-02b8e319-6-41a8927901b9\\\",\\\"1793063943748-flame-fan-static-02b8e319-7-360a4719620a\\\",\\\"1793063944294-flame-fan-static-02b8e319-8-844a487d0608\\\",\\\"1793064010024-flame-fan-static-18082dac-0-39f53881ee7d\\\",\\\"1793064010824-flame-fan-static-18082dac-1-cf17e6a0c057\\\",\\\"1793064011680-flame-fan-static-18082dac-2-9887190cc9f7\\\",\\\"1793064012615-flame-fan-static-18082dac-3-f03f8b8f2c39\\\",\\\"1793064013414-flame-fan-static-18082dac-4-2a2613d09d4f\\\",\\\"1793064014129-flame-fan-static-18082dac-5-3afa3f6b7234\\\",\\\"1793064015083-flame-fan-static-18082dac-6-c4d193870373\\\",\\\"1793064016178-flame-fan-static-18082dac-7-133ad54cd7db\\\",\\\"1793064016903-flame-fan-static-18082dac-8-de271e7ae44e\\\",\\\"1793065864726-skill-inspection-9dd0d850-73ad2c03d10e\\\",\\\"1793066409184-skill-inspection-evidence-52e736d2-849aeafb12bf\\\",\\\"1793069587862-flame-fan-static-2c8f2734-0-9fbd37d20904\\\",\\\"1793069588556-flame-fan-static-2c8f2734-1-cf17e6a0c057\\\",\\\"1793069589299-flame-fan-static-2c8f2734-2-9333ab41b51c\\\",\\\"1793069590856-flame-fan-static-2c8f2734-3-16def6565d46\\\",\\\"1793069591805-flame-fan-static-2c8f2734-4-5eb70318db23\\\",\\\"1793069592443-flame-fan-static-2c8f2734-5-1c1f0dd2cc6a\\\",\\\"1793069593206-flame-fan-static-2c8f2734-6-cc5cfc5dc6eb\\\",\\\"1793069594250-flame-fan-static-2c8f2734-7-53392947d67d\\\",\\\"1793069595139-flame-fan-static-2c8f2734-8-9aeb50b851cb\\\",\\\"1793069596239-flame-fan-static-2c8f2734-9-7b0f8b4675a8\\\",\\\"1793069597476-flame-fan-static-2c8f2734-10-a586e9de69d8\\\",\\\"1793069597938-flame-fan-static-2c8f2734-11-6c20095636f9\\\",\\\"1793069707601-flame-fan-static-f3814983-0-9fbd37d20904\\\",\\\"1793069708598-flame-fan-static-f3814983-1-cf17e6a0c057\\\",\\\"1793069709414-flame-fan-static-f3814983-2-d63e5ae14212\\\",\\\"1793069710816-flame-fan-static-f3814983-3-16def6565d46\\\",\\\"1793069711471-flame-fan-static-f3814983-4-5eb70318db23\\\",\\\"1793069712421-flame-fan-static-f3814983-5-1c1f0dd2cc6a\\\",\\\"1793069713346-flame-fan-static-f3814983-6-cc5cfc5dc6eb\\\",\\\"1793069714640-flame-fan-static-f3814983-7-581ec51dd2e5\\\",\\\"1793069715844-flame-fan-static-f3814983-8-7e8649e1715d\\\",\\\"1793069716952-flame-fan-static-f3814983-9-95a5fac85894\\\",\\\"1793069717907-flame-fan-static-f3814983-10-7b0f8b4675a8\\\",\\\"1793069719078-flame-fan-static-f3814983-11-a586e9de69d8\\\",\\\"1793069719927-flame-fan-static-f3814983-12-6c20095636f9\\\",\\\"1793075448323-flame-burst-candidate-21c29725-b266c5a230f6\\\",\\\"1793075769349-game-d775613a-dd0c0dbd3efa\\\",\\\"1793076064671-gameplay-progress-d63f7192-4cdbadb809c5\\\",\\\"1793076498827-gameplay-evidence-1211cac0-eed8a9959fcf\\\",\\\"1793076716115-cliff-boundary-public-evidence-5cf562318d3e\\\",\\\"1793076733899-settings-pixi-f2fd319f-7225077763d6\\\",\\\"1793077289863-settings-pixi-79e93479-76df365876e1\\\",\\\"1793077480814-settings-evidence-9d77725a-783c1405112f\\\",\\\"1793078241529-game-064aaeae-4c112862057f\\\",\\\"1793078374421-gate-hud-spacing-evidence-86704198a463\\\",\\\"1793079643426-gameplay-progress-f8a8da93-9c501c7659ba\\\",\\\"1793080471641-pathfinding-19de65a6-4407dbb84386\\\",\\\"1793080720286-settings-pixi-87803da9-bce45025b901\\\",\\\"1793081149793-settings-pixi-9b5d1fd8-b996eb825fd9\\\",\\\"1793081390014-gameplay-evidence-fd301668-38f8ce423610\\\",\\\"1793081499331-settings-history-d0720aca-8e7e3ec19982\\\",\\\"1793081508150-settings-art-evidence-d0720aca-1bcc0f9b4f46\\\",\\\"1793082137550-settings-pixi-d1ee9b3b-de95b1399c94\\\",\\\"1793082345128-gameplay-final-verification-319d45deb69b\\\",\\\"1793082605416-game-414cce56-c355816cab7b\\\",\\\"1793082949195-settings-history-b5a4d027-8e7e3ec19982\\\",\\\"1793082975106-settings-art-evidence-b5a4d027-b992fc081586\\\",\\\"1793083507730-game-df146172-8ffaf65a0f43\\\",\\\"1793084356475-rift-skill-ebbd6745-6d48b0f0cd70\\\",\\\"1793084549146-environment-editor-8b863f91-7d5637c9eace\\\",\\\"1793085067509-dev-menu-availability-probe-7703c6f04528\\\"]}\"}\n(node:1962) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\nLive: https://ark-whachat.fural.space/dev-route-health/probe.txt\n",
+  "duringPublish": [
+    {
+      "path": "/dev",
+      "status": 200,
+      "bytes": 35393
+    },
+    {
+      "path": "/rift-dash/player/",
+      "status": 200,
+      "bytes": 1542
+    },
+    {
+      "path": "/dev",
+      "status": 200,
+      "bytes": 35393
+    },
+    {
+      "path": "/rift-dash/player/",
+      "status": 200,
+      "bytes": 1542
+    },
+    {
+      "path": "/dev",
+      "status": 200,
+      "bytes": 35393
+    },
+    {
+      "path": "/rift-dash/player/",
+      "status": 200,
+      "bytes": 1542
+    },
+    {
+      "path": "/dev",
+      "status": 200,
+      "bytes": 35393
+    },
+    {
+      "path": "/rift-dash/player/",
+      "status": 200,
+      "bytes": 1542
+    },
+    {
+      "path": "/dev",
+      "status": 200,
+      "bytes": 35393
+    },
+    {
+      "path": "/rift-dash/player/",
+      "status": 200,
+      "bytes": 1542
+    },
+    {
+      "path": "/dev",
+      "status": 200,
+      "bytes": 35393
+    },
+    {
+      "path": "/rift-dash/player/",
+      "status": 200,
+      "bytes": 1542
+    },
+    {
+      "path": "/dev",
+      "status": 200,
+      "bytes": 35393
+    },
+    {
+      "path": "/rift-dash/player/",
+      "status": 200,
+      "bytes": 1542
+    },
+    {
+      "path": "/dev",
+      "status": 200,
+      "bytes": 35393
+    },
+    {
+      "path": "/rift-dash/player/",
+      "status": 200,
+      "bytes": 1542
+    },
+    {
+      "path": "/dev",
+      "status": 200,
+      "bytes": 35393
+    },
+    {
+      "path": "/rift-dash/player/",
+      "status": 200,
+      "bytes": 1542
+    },
+    {
+      "path": "/dev",
+      "status": 200,
+      "bytes": 35393
+    },
+    {
+      "path": "/rift-dash/player/",
+      "status": 200,
+      "bytes": 1542
+    },
+    {
+      "path": "/dev",
+      "status": 200,
+      "bytes": 35393
+    },
+    {
+      "path": "/rift-dash/player/",
+      "status": 200,
+      "bytes": 1542
+    },
+    {
+      "path": "/dev",
+      "status": 200,
+      "bytes": 35393
+    },
+    {
+      "path": "/rift-dash/player/",
+      "status": 200,
+      "bytes": 1542
+    },
+    {
+      "path": "/dev",
+      "status": 200,
+      "bytes": 35393
+    },
+    {
+      "path": "/rift-dash/player/",
+      "status": 200,
+      "bytes": 1542
+    },
+    {
+      "path": "/dev",
+      "status": 200,
+      "bytes": 35393
+    },
+    {
+      "path": "/rift-dash/player/",
+      "status": 200,
+      "bytes": 1542
+    },
+    {
+      "path": "/dev",
+      "status": 200,
+      "bytes": 35393
+    },
+    {
+      "path": "/rift-dash/player/",
+      "status": 200,
+      "bytes": 1542
+    },
+    {
+      "path": "/dev",
+      "status": 200,
+      "bytes": 35393
+    },
+    {
+      "path": "/rift-dash/player/",
+      "status": 200,
+      "bytes": 1542
+    },
+    {
+      "path": "/dev",
+      "status": 200,
+      "bytes": 35393
+    },
+    {
+      "path": "/rift-dash/player/",
+      "status": 200,
+      "bytes": 1542
+    },
+    {
+      "path": "/dev",
+      "status": 200,
+      "bytes": 35393
+    },
+    {
+      "path": "/rift-dash/player/",
+      "status": 200,
+      "bytes": 1542
+    },
+    {
+      "path": "/dev",
+      "status": 200,
+      "bytes": 35393
+    },
+    {
+      "path": "/rift-dash/player/",
+      "status": 200,
+      "bytes": 1542
+    },
+    {
+      "path": "/dev",
+      "status": 200,
+      "bytes": 35393
+    },
+    {
+      "path": "/rift-dash/player/",
+      "status": 200,
+      "bytes": 1542
+    },
+    {
+      "path": "/dev",
+      "status": 200,
+      "bytes": 35393
+    },
+    {
+      "path": "/rift-dash/player/",
+      "status": 200,
+      "bytes": 1542
+    },
+    {
+      "path": "/dev",
+      "status": 200,
+      "bytes": 35393
+    },
+    {
+      "path": "/rift-dash/player/",
+      "status": 200,
+      "bytes": 1542
+    },
+    {
+      "path": "/dev",
+      "status": 200,
+      "bytes": 35393
+    },
+    {
+      "path": "/rift-dash/player/",
+      "status": 200,
+      "bytes": 1542
+    },
+    {
+      "path": "/dev",
+      "status": 200,
+      "bytes": 35393
+    },
+    {
+      "path": "/rift-dash/player/",
+      "status": 200,
+      "bytes": 1542
+    },
+    {
+      "path": "/dev",
+      "status": 200,
+      "bytes": 35393
+    },
+    {
+      "path": "/rift-dash/player/",
+      "status": 200,
+      "bytes": 1542
+    },
+    {
+      "path": "/dev",
+      "status": 200,
+      "bytes": 35393
+    },
+    {
+      "path": "/rift-dash/player/",
+      "status": 200,
+      "bytes": 1542
+    },
+    {
+      "path": "/dev",
+      "status": 200,
+      "bytes": 35393
+    },
+    {
+      "path": "/rift-dash/player/",
+      "status": 200,
+      "bytes": 1542
+    },
+    {
+      "path": "/dev",
+      "status": 200,
+      "bytes": 35393
+    },
+    {
+      "path": "/rift-dash/player/",
+      "status": 200,
+      "bytes": 1542
+    },
+    {
+      "path": "/dev",
+      "status": 200,
+      "bytes": 35393
+    },
+    {
+      "path": "/rift-dash/player/",
+      "status": 200,
+      "bytes": 1542
+    },
+    {
+      "path": "/dev",
+      "status": 200,
+      "bytes": 35393
+    },
+    {
+      "path": "/rift-dash/player/",
+      "status": 200,
+      "bytes": 1542
+    },
+    {
+      "path": "/dev",
+      "status": 200,
+      "bytes": 35393
+    },
+    {
+      "path": "/rift-dash/player/",
+      "status": 200,
+      "bytes": 1542
+    },
+    {
+      "path": "/dev",
+      "status": 200,
+      "bytes": 35393
+    },
+    {
+      "path": "/rift-dash/player/",
+      "status": 200,
+      "bytes": 1542
+    },
+    {
+      "path": "/dev",
+      "status": 200,
+      "bytes": 35393
+    },
+    {
+      "path": "/rift-dash/player/",
+      "status": 200,
+      "bytes": 1542
+    },
+    {
+      "path": "/dev",
+      "status": 200,
+      "bytes": 35393
+    },
+    {
+      "path": "/rift-dash/player/",
+      "status": 200,
+      "bytes": 1542
+    },
+    {
+      "path": "/dev",
+      "status": 200,
+      "bytes": 35393
+    },
+    {
+      "path": "/rift-dash/player/",
+      "status": 200,
+      "bytes": 1542
+    },
+    {
+      "path": "/dev",
+      "status": 200,
+      "bytes": 35393
+    },
+    {
+      "path": "/rift-dash/player/",
+      "status": 200,
+      "bytes": 1542
+    },
+    {
+      "path": "/dev",
+      "status": 200,
+      "bytes": 35393
+    },
+    {
+      "path": "/rift-dash/player/",
+      "status": 200,
+      "bytes": 1542
+    },
+    {
+      "path": "/dev",
+      "status": 200,
+      "bytes": 35393
+    },
+    {
+      "path": "/rift-dash/player/",
+      "status": 200,
+      "bytes": 1542
+    },
+    {
+      "path": "/dev",
+      "status": 200,
+      "bytes": 35393
+    },
+    {
+      "path": "/rift-dash/player/",
+      "status": 200,
+      "bytes": 1542
+    }
+  ],
+  "routes": [
+    {
+      "path": "/dev",
+      "status": 200,
+      "title": "Arkodia · Stronghold",
+      "scripts": [
+        {
+          "url": "https://arkodia.online/assets/index-CKVlN2xf.js",
+          "status": 200
+        }
+      ]
+    },
+    {
+      "path": "/rift-dash/player/",
+      "status": 200,
+      "title": "Rift Dash · VFX Player",
+      "scripts": [
+        {
+          "url": "https://arkodia.online/rift-dash/player/assets/rift-dash-player-B8z5mgyi.js",
+          "status": 200
+        }
+      ]
+    },
+    {
+      "path": "/skill-player/",
+      "status": 200,
+      "title": "Arkodia · Stronghold",
+      "scripts": [
+        {
+          "url": "https://arkodia.online/assets/index-CKVlN2xf.js",
+          "status": 200
+        }
+      ]
+    },
+    {
+      "path": "/fx-lab/",
+      "status": 200,
+      "title": "Arkodia · Stronghold",
+      "scripts": [
+        {
+          "url": "https://arkodia.online/assets/index-CKVlN2xf.js",
+          "status": 200
+        }
+      ]
+    },
+    {
+      "path": "/flame-burst/",
+      "status": 200,
+      "title": "Arkodia · Stronghold",
+      "scripts": [
+        {
+          "url": "https://arkodia.online/assets/index-CKVlN2xf.js",
+          "status": 200
+        }
+      ]
+    },
+    {
+      "path": "/ember-warden-review/flame-fan-levels/",
+      "status": 200,
+      "title": "Flame Fan · Animation Player",
+      "scripts": [
+        {
+          "url": "https://arkodia.online/ember-warden-review/flame-fan-levels/assets/flame-fan-player-CW1WT1Z0.js",
+          "status": 200
+        }
+      ]
+    },
+    {
+      "path": "/ember-warden-review/flame-fan-preview/",
+      "status": 200,
+      "title": "Flame Fan NixieFX Preview",
+      "scripts": [
+        {
+          "url": "https://arkodia.online/ember-warden-review/flame-fan-preview/assets/flame-fan-preview-bm0flhdp.js",
+          "status": 200
+        }
+      ]
+    },
+    {
+      "path": "/ember-warden-review/flame-fan-flipbook/",
+      "status": 200,
+      "title": "Ember Warden · Flame Fan flipbook",
+      "scripts": [
+        {
+          "url": "https://arkodia.online/ember-warden-review/flame-fan-flipbook/assets/flame-fan-flipbook-Caa4Wi3L.js",
+          "status": 200
+        }
+      ]
+    },
+    {
+      "path": "/rift-runner/rift-bolt-levels/",
+      "status": 200,
+      "title": "Rift Bolt · Animation Player",
+      "scripts": [
+        {
+          "url": "https://arkodia.online/rift-runner/rift-bolt-levels/assets/rift-bolt-player-DOsMdQKe.js",
+          "status": 200
+        }
+      ]
+    },
+    {
+      "path": "/sprite-player/",
+      "status": 200,
+      "title": "Sprite Player",
+      "scripts": [
+        {
+          "url": "https://arkodia.online/sprite-player/player.js",
+          "status": 200
+        }
+      ]
+    },
+    {
+      "path": "/3d-hero-lab/",
+      "status": 200,
+      "title": "Arkodia — Real-Time 60 FPS 3D Hero &amp; Animation Lab (Rift Runner · Meshy t2.5)",
+      "scripts": []
+    },
+    {
+      "path": "/run-cadence/",
+      "status": 200,
+      "title": "Run Cadence — Eight Directions",
+      "scripts": []
+    },
+    {
+      "path": "/modular-stronghold/",
+      "status": 200,
+      "title": "Arkodia · Stronghold",
+      "scripts": [
+        {
+          "url": "https://arkodia.online/assets/index-CKVlN2xf.js",
+          "status": 200
+        }
+      ]
+    }
+  ],
+  "probe": {
+    "status": 200,
+    "text": "Developer menu availability probe"
+  }
+}
