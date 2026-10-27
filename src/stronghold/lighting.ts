@@ -100,7 +100,14 @@ export function createLighting(o:{
 
  let live:(()=>number|null)|null=null;
  let {mode,manual}=lightingSettings(),last='',moving=0,current:Lighting=lightingAt(resolveTime(mode,Date.now(),location.search,manual));
- const sunStep=(t:number)=>{const q=Math.round(t*96)/96,s=sunAt(q);return {key:s.alpha?q.toFixed(4):'none',sun:s};};
+ const sunStep=(t:number)=>{
+  // Keep the shadow direction continuous as the clock advances. The old 1/96
+  // quantization held each sun vector for several seconds, making shadows
+  // visibly snap between positions. A fine key still coalesces redundant
+  // updates while preserving smooth motion.
+  const q=Math.round(t*2400)/2400,s=sunAt(q);
+  return {key:s.alpha?q.toFixed(5):'none',sun:s};
+ };
  let {key:sunKey,sun}=sunStep(current.t);surface.dataset.sun=sunKey;const listeners=new Set<(s:ClockState)=>void>();let spriteRevision=0;
  let uprights:HTMLCanvasElement|null=null;
  function capture(layer:HTMLCanvasElement){uprights=layer;if(base.width!==surface.width||base.height!==surface.height){base.width=surface.width;base.height=surface.height;}const c=base.getContext('2d')!;c.globalCompositeOperation='copy';c.drawImage(surface,0,0);c.globalCompositeOperation='source-over';last='';paint(current,true);}
@@ -184,7 +191,7 @@ export function createLighting(o:{
   c.globalCompositeOperation='destination-in';c.drawImage(source,0,0);c.globalCompositeOperation='source-over';
  }
  let still=0;
- setInterval(()=>{if(!document.hidden)tick();},1000);document.addEventListener('visibilitychange',()=>{if(!document.hidden)requestAnimationFrame(()=>tick());});
+ setInterval(()=>{if(!document.hidden)tick();},50);document.addEventListener('visibilitychange',()=>{if(!document.hidden)requestAnimationFrame(()=>tick());});
  return {
   lightmap,
   place(x:number,y:number,scale:number){
