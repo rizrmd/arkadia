@@ -10,4 +10,11 @@ Travel follows a swept, terrain-clamped path up to 1.5 tiles over 260 ms. Walkin
 
 Actual Go-server browser: desktop N, NE, E, SE, S, SW and W passed intermediate-position/facing/opposite-cursor checks before a 300-second budget expired during evidence capture. A later desktop attempt reached GPU warmup but exceeded startup budget. Portrait 390×844 passed an actual joystick-left gesture, neutral release and skill-socket tap; six sampled frames and a travel screenshot are saved. Physical mobile hardware and all-direction live-browser coverage are not claimed. Static-server startup was unsuitable; the matching Go server supplied successful browser validation.
 
-Peer Skill Tree preview files are excluded from this task commit and release checkout. Existing committed Pixi UI, Flame Fan, Editor, settings, persistence and BGM are preserved.
+The task commit did not modify peer Skill Tree preview files. The cumulative deployed checkout includes their committed floating Pixi inspection change, preserving immediate tap/Details/Equip, tree geometry and pan/zoom. Existing Flame Fan, Editor, settings, persistence and BGM are preserved.
+
+## Public release
+
+Implementation `5484b38a`, late-input replay correction `36c15c48`; the authoritative server and 62 compiled client/player files were verified at `36c15c48` on https://arkodia.online and https://play-arkodia.fural.space. All four approved VFX hashes match. `release-verification.json` records the exact SHA and checks.
+
+The supported locked runtime publisher registered and applied the release, then reported an error when the resource guard killed its apply job and boot process. Incidents and boot logs were inspected; a subsequent supervised boot recovered with the correct binary and files. No restart loop was used by this task. Independent public integrity verification passed after recovery. The obsolete ark-whachat hostname is no longer a bound alias; current canonical and platform domains above are verified. The shared publisher now resolves the stable sandbox slug, and the peer release updated its health URL to the canonical domain.
+
