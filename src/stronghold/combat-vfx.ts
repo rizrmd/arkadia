@@ -396,7 +396,6 @@ export function createCombatVfx(o:{
 
   switch(id){
    case 'rift-bolt':{
-    spawnSlash(h.u,h.v,angle,false,true);
     const offsets=rank>=3?[-0.22,0,0.22]:rank===2?[-0.12,0.12]:[0];
     for(const off of offsets){
      spawnProjectile({

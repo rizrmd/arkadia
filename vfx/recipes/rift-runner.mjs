@@ -36,18 +36,6 @@ export default [
 
  // 1 · Rift Bolt — arcane singularity muzzle flare launching an eroded void spear with ribbon wake, crystal shards & 8x8 Sub-UV detonation.
  {id:'rift-runner.rift-bolt.cast',name:'Rift Bolt · cast',emitters:[
-  {name:'crescent void sheath',texture:'slash',material:'rift-polar-shockwave',align:'velocity',velocity:{min:[.02,0,0],max:[.02,0,0]},
-   blend:'alpha',alpha:.95,bursts:[[0,2]],max:4,at:[.38,.58,0],life:.52,
-   sizeXY:[1.52,.84],sizeOverLife:{curve:[[0,.75],[.18,1.02],[.78,.96],[1,.36]]},color:'#ffffff',intensity:1.0,
-   colorOverLife:{c:[[0,'#4416b4'],[.45,'#32128e'],[1,'#160442']],a:[[0,0],[.08,1],[.78,.95],[1,0]]},order:0},
-  {name:'crescent violet blade',texture:'slash',material:'rift-polar-shockwave',align:'velocity',velocity:{min:[.02,0,0],max:[.02,0,0]},
-   blend:'alpha',alpha:.98,bursts:[[0,2]],max:4,at:[.36,.58,0],life:.48,
-   sizeXY:[1.28,.66],sizeOverLife:{curve:[[0,.78],[.18,1],[.76,.94],[1,.32]]},color:'#ffffff',intensity:1.0,
-   colorOverLife:{c:[[0,'#a472ff'],[.38,'#6c34eb'],[.78,'#4416b4'],[1,'#220864']],a:[[0,0],[.08,1],[.76,.95],[1,0]]},order:1},
-  {name:'crescent cyan core',texture:'slash',material:'rift-eroded-scroll',align:'velocity',velocity:{min:[.02,0,0],max:[.02,0,0]},
-   blend:'alpha',alpha:.98,bursts:[[0,2]],max:3,at:[.34,.58,0],life:.44,
-   sizeXY:[1.02,.46],sizeOverLife:{curve:[[0,.80],[.20,1],[.74,.90],[1,.28]]},color:'#ffffff',intensity:1.0,
-   colorOverLife:{c:[[0,'#eef8ff'],[.35,'#68d8ff'],[.75,'#6c34eb'],[1,'#32128e']],a:[[0,0],[.08,1],[.72,.94],[1,0]]},order:2},
   {name:'hand singularity subuv burst',texture:'rift-burst',tiles:[8,8],frames:{random:true,cycles:1},material:'rift-eroded-scroll',
    blend:'alpha',sort:'oldestFirst',alpha:.96,bursts:[[0,6]],max:8,at:HAND,shape:{type:'sphere',radius:.10},spherical:1,
    life:[.26,.42],speed:[.18,.55],rotation:[0,6.28],spin:[-1.8,1.8],
