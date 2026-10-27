@@ -1,0 +1,51 @@
+{
+  "mode": "Actual Pixi tree isolated from world loading",
+  "views": [
+    {
+      "name": "desktop",
+      "width": 1440,
+      "height": 900,
+      "pass": true,
+      "layoutInvariance": true,
+      "explicitEquip": true,
+      "outsideDismiss": true,
+      "close": true,
+      "details": true,
+      "locked": true,
+      "panPreserved": true,
+      "square": true,
+      "drag": true
+    },
+    {
+      "name": "portrait",
+      "width": 390,
+      "height": 844,
+      "pass": true,
+      "layoutInvariance": true,
+      "explicitEquip": true,
+      "outsideDismiss": true,
+      "close": true,
+      "details": true,
+      "locked": true,
+      "panPreserved": true,
+      "square": true,
+      "drag": true
+    },
+    {
+      "name": "landscape",
+      "width": 844,
+      "height": 390,
+      "pass": true,
+      "layoutInvariance": true,
+      "explicitEquip": true,
+      "outsideDismiss": true,
+      "close": true,
+      "details": true,
+      "locked": true,
+      "panPreserved": true,
+      "square": true,
+      "drag": true
+    }
+  ],
+  "errors": []
+}
