@@ -21,7 +21,7 @@ try{
   await page.clock.runFor(32);
   const before=await page.evaluate(({u,v})=>{const c=window.__STRONGHOLD_COMBAT__;c.clearFoes();c.summon(u+.65,v,12);c.setPreviewMode(false);c.resetCooldowns();return c.snapshot();},spot);
   const frames=[];
-  for(const ms of [80,160,240,400,600,800,1000]){await page.clock.runFor(ms-(frames.at(-1)?.ms||0));const snapshot=await page.evaluate(()=>window.__STRONGHOLD_COMBAT__.snapshot());assert.equal(snapshot.vfx.activeSlashes,0,'No slash during automatic close-range combat');frames.push({ms,snapshot});
+  for(const ms of [80,160,240,400,600,800,1000]){await page.clock.runFor(ms-(frames.at(-1)?.ms||0));const snapshot=await page.evaluate(()=>window.__STRONGHOLD_COMBAT__.snapshot());assert.equal(snapshot.vfx.activeSlashes,0,'No slash during automatic close-range combat');assert.ok(!snapshot.vfx.fx.playing.some(key=>key.includes('attack.swing')),'No Nixie swing cue during automatic combat');frames.push({ms,snapshot});
    if([240,600].includes(ms)){const cdp=await page.context().newCDPSession(page);const {data}=await cdp.send('Page.captureScreenshot',{format:'png'});await cdp.detach();await fs.writeFile(`${out}/${tag}-${viewport.width}-${ms}.png`,Buffer.from(data,'base64'));}}
   assert.ok(frames.some(f=>f.snapshot.hero.state==='attack'),'Basic attack actually runs');
   assert.ok(frames.some(f=>f.snapshot.foes[0].hp<before.foes[0].hp),'Normal automatic combat still damages target');
