@@ -176,9 +176,31 @@ func scaleCatmullRomNRGBA(src *image.NRGBA, targetW int) *image.NRGBA {
 // ConvertPNGToWebP decodes pngFile, strips invisible RGB noise under alpha=0 pixels,
 // applies display-exact @1.75x Catmull-Rom sizing when configured for the asset path,
 // encodes to VP8L WebP, and atomically writes cacheFile with srcModTime.
+// Lossless encoding holds several decoded image-sized buffers. Bound encodes
+// across unrelated paths as well as the existing per-path locks. Oversized review
+// sheets remain available as original PNGs.
+var webpEncodingSlot = make(chan struct{}, 1)
+
+const maxWebPConversionPixels = 8 * 1024 * 1024
+
 func ConvertPNGToWebP(cleanURLPath, pngFile, cacheFile string, srcModTime time.Time) (int64, error) {
+	webpEncodingSlot <- struct{}{}
+	defer func() { <-webpEncodingSlot }()
 	in, err := os.Open(pngFile)
 	if err != nil {
+		return 0, err
+	}
+	config, err := png.DecodeConfig(in)
+	if err != nil {
+		in.Close()
+		return 0, err
+	}
+	if config.Width <= 0 || config.Height <= 0 || int64(config.Width)*int64(config.Height) > maxWebPConversionPixels {
+		in.Close()
+		return 0, fmt.Errorf("PNG exceeds bounded WebP conversion size; serve original PNG")
+	}
+	if _, err = in.Seek(0, 0); err != nil {
+		in.Close()
 		return 0, err
 	}
 	img, err := png.Decode(in)

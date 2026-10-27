@@ -57,11 +57,14 @@ export function gameplayStore(storage:Store,hero:HeroId){
   root.gameplay={...root.gameplay,[hero]:next};return next;
  };
  return {initial:expected?.state??null,
-  save(state:any){const raw=storage.getItem(KEY),root=raw?JSON.parse(raw):fresh();const next=attach(root,state);root.revision++;storage.setItem(KEY,JSON.stringify(root));expectedSerialized=JSON.stringify(next);revision=next.revision;},
+  save(state:any){const raw=storage.getItem(KEY),root=raw?JSON.parse(raw):fresh();const next=attach(root,state);prepareGathering(root);root.revision++;storage.setItem(KEY,JSON.stringify(root));expectedSerialized=JSON.stringify(next);revision=next.revision;},
   // Called by inventory under the economy lock; acknowledge only AFTER its write.
-  prepare(root:any,state:any){const next=attach(root,state);return ()=>{expectedSerialized=JSON.stringify(next);revision=next.revision;};},
+  prepare(root:any,state:any){const next=attach(root,state);prepareGathering(root);return ()=>{expectedSerialized=JSON.stringify(next);revision=next.revision;};},
  };
 }
+let gatheringCapture:((root:any)=>void)|null=null;
+export const setGatheringCapture=(f:typeof gatheringCapture)=>gatheringCapture=f;
+export const prepareGathering=(root:any)=>gatheringCapture?.(root);
 let inventoryCapture:((root:any)=>(()=>void))|null=null;
 export const setInventoryGameplayCapture=(f:typeof inventoryCapture)=>inventoryCapture=f;
 export const prepareInventoryGameplay=(root:any)=>inventoryCapture?.(root)??(()=>{});

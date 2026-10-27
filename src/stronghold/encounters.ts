@@ -1,3 +1,4 @@
+import type {GatheringController} from './gathering';
 import {environment,sampleSpawn,type ObjectPlacement} from '../environment/model';
 import {detourDirection,navClear,type Detour} from './detour';
 import {skillBindings} from '../app/skill-bindings';
@@ -576,6 +577,7 @@ export async function createEncounters(o:{
   return fired;
  }
 
+ let gathering:GatheringController|undefined;
  function heroStep(dt:number,steering:boolean){
   if(!h.alive){h.deadFor+=dt;if(h.deadFor>HERO_RESPAWN){o.hero.respawn();const p=o.hero.position(),t=toTile(p.x,p.y);Object.assign(h,{x:t.u,y:t.v,hp:maxHp});h.play('idle');}return;}
   h.recover();
@@ -585,6 +587,7 @@ export async function createEncounters(o:{
    if(h.impact()){
     const angle=facingScreenAngle(h);
     let anyCrit=false;
+    gathering?.impact(HERO_REACH*reach(run));
     for(const f of swingTargets(h,foes,HERO_REACH*reach(run),SIDE)){
      const res=vfx.applyHitToFoe(f,{angle});
      if(res.crit)anyCrit=true;
@@ -595,6 +598,8 @@ export async function createEncounters(o:{
   }
   if(h.state==='hit')return;
   if(!steering){const f=nearest(HERO_REACH*reach(run));if(f){const s=screen(f.x-h.x,f.y-h.y);turn(h,s.x,s.y);o.hero.face(s.x,s.y);h.play('attack');return;}}
+  if(!steering){const target=gathering?.target(HERO_REACH*reach(run));if(target){const s=screen(target.a.u-h.x,target.a.v-h.y);turn(h,s.x,s.y);o.hero.face(s.x,s.y);h.play('attack');return;}}
+  if(gathering?.chopping()&&!steering){h.play('attack');return;}
   if(inSafeZone(tileOf(h))&&h.hp<maxHp){
    const before=h.hp;h.hp=Math.min(maxHp,h.hp+REGEN*dt/1000);
    regenAccum+=h.hp-before;
@@ -721,7 +726,9 @@ export async function createEncounters(o:{
   for(const f of [h,...foes])f.tick(dt);
   if(h.alive&&h.state==='idle'){const p=o.hero.position(),t=toTile(p.x,p.y);h.x=t.u;h.y=t.v;}
   stepSouls(dt);
+  gathering?.step(dt,{alive:h.alive,steering,busy:h.state==='hit'||Boolean(nearest(HERO_REACH*reach(run)))||Boolean(gathering.target(HERO_REACH*reach(run)))});
   if(!travel)heroStep(dt,steering);
+  gathering?.render();
   const heroSafe=inSafeZone(tileOf(h));
   for(const f of foes)foeStep(f,dt,heroSafe);
   separate();
@@ -978,6 +985,7 @@ export async function createEncounters(o:{
   };
  };
  const itemUseReason=(id:ItemId)=>{
+  if(id==='axe')return 'Tool ready. Approach a tree within 5 feet.';
   if(online||o.showCoop)return 'Consumables are available in solo play.';
   if(!h.alive)return 'Wait until you respawn.';
   if(run.pending>0||blessingOverlay.visible||skillTree.isOpen())return 'Finish the current choice first.';
@@ -1022,6 +1030,7 @@ export async function createEncounters(o:{
   });
  }
  const api={
+  setGathering(value:GatheringController){gathering=value;},
   hud,
   bindPersistence(adapter:typeof world){world=adapter;hydrated=true;if(!o.showCoop&&!saveBlocked)try{restoreState(persistence?.initial);flush();}catch(e){saveFault=(e as Error).message;saveBlocked=true;}},
   persistence:()=>({elapsedMs,error:saveFault,blocked:saveBlocked}),

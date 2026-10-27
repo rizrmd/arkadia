@@ -1,6 +1,6 @@
 import ts from 'typescript';import fs from 'node:fs/promises';import assert from 'node:assert/strict';
 // Compile actual modules with an in-memory data URL dependency map.
-const urls={};for(const name of ['items','economy','progression','gameplay-save','store','inventory-store']){
+const urls={};for(const name of ['daylight','gathering-rules','items','economy','progression','gameplay-save','store','inventory-store']){
  let source=await fs.readFile(`src/stronghold/${name}.ts`,'utf8');
  source=ts.transpileModule(source,{compilerOptions:{module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ES2022}}).outputText;
  source=source.replace(/from ['"]\.\/([^'"]+)['"]/g,(_,dep)=>`from '${urls[dep]}'`);
@@ -23,5 +23,5 @@ fail=true;await assert.rejects(store.useItem('health-potion',heal));fail=false;a
 await assert.rejects(store.useItem('stronghold-scroll',()=>{throw Error('Teleport blocked');}));assert.equal(store.inventorySnapshot()['stronghold-scroll'],2);
 let home=false;await store.useItem('stronghold-scroll',()=>{home=true;return {undo(){home=false;}};});assert(home);assert.equal(store.inventorySnapshot()['stronghold-scroll'],1);
 const saved=JSON.stringify(economy.load(localStorage.getItem(economy.KEY)));localStorage.setItem(economy.KEY,saved);assert.equal(store.inventorySnapshot()['stronghold-scroll'],1);
-assert.deepEqual(items.readInventory({'health-potion':-5,'stronghold-scroll':1e6}),{'health-potion':0,'stronghold-scroll':99});
+assert.deepEqual(items.readInventory({'health-potion':-5,'stronghold-scroll':1e6}),{'health-potion':0,'stronghold-scroll':99,axe:1});
 console.log('PASS: legacy migration, stacking, add/remove, bounds, shared save lock, duplicate use, effect/save rollback, successful/failed teleport and save/load.');

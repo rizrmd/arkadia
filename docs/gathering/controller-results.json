@@ -1,0 +1,17 @@
+{
+  "checks": [
+    "Real controller starts automatically within 5 ft, waits 2 seconds, awards exactly 10 Wood and removes tree",
+    "Axe required, 5-foot distance measured on ground, interruption resets progress, dead tree yields 30 after 3 seconds",
+    "Pine waits full 10 seconds and yields 100 Wood",
+    "deer hunt creates persisted loot; only proximity collection grants Food once",
+    "crocodile hunt creates persisted loot; only proximity collection grants Food once",
+    "Existing gameplay save adapter persists resources, harvest/spawn deadlines, loot state and clock atomically across reload",
+    "Actual 10-minute simulation day respawns deer and snag once; crocodile remains unavailable until day 3; respawn stays within 20m anchor",
+    "desktop actual Pixi resource HUD and approved wildlife atlas render",
+    "portrait actual Pixi resource HUD and approved wildlife atlas render",
+    "landscape actual Pixi resource HUD and approved wildlife atlas render",
+    "Injected storage failure rolls back resource/depletion changes and stops gathering; original save retained"
+  ],
+  "errors": [],
+  "passed": true
+}
