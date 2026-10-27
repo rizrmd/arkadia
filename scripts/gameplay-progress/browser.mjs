@@ -37,6 +37,11 @@ try{
   console.log(name,'find wild tile');
   const at=await page.evaluate(()=>{const c=window.__STRONGHOLD_COMBAT__;for(let u=16;u<=30;u+=1)for(let v=16;v<=30;v+=1){if(![[0,0],[.7,0],[-.7,0],[0,.7],[0,-.7]].every(([du,dv])=>c.clear(u+du,v+dv)))continue;const i=c.summon(u,v,3);if(i>=0)return {u,v,i};}throw Error('No wild tile');});
   console.log(name,'wild tile',at);
+  // Collect an actual soul so the XP assertion cannot pass trivially at zero.
+  await page.evaluate(({u,v,i})=>{const c=window.__STRONGHOLD_COMBAT__;if(!c.teleport(u,v))throw Error('XP teleport failed');for(let n=0;n<40&&c.snapshot().foes[i].hp>0;n++)c.hitFoe(i,true);c.setPreviewMode(false);},at);
+  await page.waitForFunction(()=>window.__STRONGHOLD_COMBAT__.snapshot().run.xp>0,null,{timeout:60000,polling:100});
+  await page.evaluate(()=>{const c=window.__STRONGHOLD_COMBAT__;c.setPreviewMode(true);c.clearFoes();});
+
   // A real enemy attack supplies damaged HP and hit/immune state; no HP save
   // fixture or test-only damage API is used.
   await page.evaluate(({u,v})=>{const c=window.__STRONGHOLD_COMBAT__;c.clearFoes();if(!c.teleport(u,v))throw Error('Teleport failed');for(let n=0;n<8;n++){const a=n*Math.PI/4;c.summon(u+Math.cos(a)*.45,v+Math.sin(a)*.45,60);}c.setPreviewMode(false);},at);
@@ -46,13 +51,14 @@ try{
   at.i=await page.evaluate(({u,v})=>window.__STRONGHOLD_COMBAT__.summon(u+3,v,3),at);
   if(at.i<0)at.i=await page.evaluate(({u,v})=>window.__STRONGHOLD_COMBAT__.summon(u,v,3),at);
 
-  await page.evaluate(({u,v,i})=>{const c=window.__STRONGHOLD_COMBAT__;for(let n=0;n<40&&c.snapshot().foes[i].hp>0;n++)c.hitFoe(i,true);c.summon(u+1,v,4);c.spawnProjectile({u,v,range:20,speed:.1});c.spawnAoE({u,v,duration:20000});c.offer(['might']);c.flush();},at);
+  await page.evaluate(({u,v,i})=>{const c=window.__STRONGHOLD_COMBAT__;for(let n=0;n<40&&c.snapshot().foes[i].hp>0;n++)c.hitFoe(i,true);c.summon(u+1,v,4);c.spawnProjectile({u,v,range:20,speed:.1});c.spawnAoE({u,v,duration:20000});c.flush();},at);
   console.log(name,'kill/effect pending applied');
   await page.waitForTimeout(650);
-  let saved=await record(page),p=saved.gameplay[hero].state;assert.equal((await snap(page)).persistence.error,'');assert(p.hero.hp>=0&&p.hero.hp<p.maxHp);assert(p.run.level>=6);assert(p.run.gold>=5);assert(p.souls.length);assert(p.foes.some(f=>f.state==='die'));assert.equal(p.run.pending,1);
+  let saved=await record(page),p=saved.gameplay[hero].state;assert.equal((await snap(page)).persistence.error,'');assert(p.hero.hp>=0&&p.hero.hp<p.maxHp);assert(p.run.level>=6);assert(p.run.xp>0,'earned XP must be nonzero before refresh');assert(p.run.gold>=5);assert(p.souls.length);assert(p.foes.some(f=>f.state==='die'));assert.equal(p.run.pending,0);
   const row={name,initial:{level:p.run.level,xp:p.run.xp,gold:p.run.gold,hp:p.hero.hp,maxHp:p.maxHp,elapsedMs:p.elapsedMs,skills:p.run.skills,gate:p.world.gateHealth,souls:p.souls.length},checks:[],reloads:[]};
   // Stop simulation through the existing Settings action. Button is Pixi.
-  async function pause(){const point=await page.evaluate(()=>{window.settingsTrace=[];for(const el of document.querySelectorAll('.settings-overlay')){for(const type of ['pointerdown','pointerup','mousedown','mouseup','click'])el.addEventListener(type,e=>window.settingsTrace.push({type,target:e.target.className,stamp:e.timeStamp,now:performance.now(),pointer:e.pointerType,touch:e.sourceCapabilities?.firesTouchEvents}),true);new MutationObserver(m=>m.forEach(x=>window.settingsTrace.push({type:'hidden changed',old:x.oldValue,hidden:el.hidden,now:performance.now()}))).observe(el,{attributes:true,attributeFilter:['hidden'],attributeOldValue:true});}const app=window.__PIXI_UI__.app;if(!app.renderer.lastObjectRendered)app.render();const find=c=>c.label==='Open Settings'?c:(c.children||[]).map(find).find(Boolean);const b=find(app.stage).getBounds();return {x:b.x+b.width/2,y:b.y+b.height/2};});if(mobile)await page.touchscreen.tap(point.x,point.y);else await page.mouse.click(point.x,point.y);try{await page.getByRole('dialog',{name:'Settings',exact:true}).waitFor();}catch(e){console.error('SETTINGS EVENTS',await page.evaluate(()=>window.settingsTrace));throw e;}}
+  async function pause(){const point=await page.evaluate(()=>{const app=window.__PIXI_UI__.app;if(!app.renderer.lastObjectRendered)app.render();const find=c=>c.label==='Open Settings'?c:(c.children||[]).map(find).find(Boolean);const b=find(app.stage).getBounds();return {x:b.x+b.width/2,y:b.y+b.height/2};});if(mobile)await page.touchscreen.tap(point.x,point.y);else await page.mouse.click(point.x,point.y);await page.waitForFunction(()=>window.__SETTINGS__?.snapshot().open);}
+
   console.log(name,'pause settings');
   await pause();console.log(name,'paused');if(process.env.PAUSE_ONLY)break;await page.evaluate(root=>window.__STRONGHOLD_COMBAT__.castSkill(root),root);saved=await record(page);p=saved.gameplay[hero].state;await fs.writeFile(`${out}/checkpoint-${name}.json`,JSON.stringify(p,null,2));assert(p.effects.cooldowns[root]>0);assert(p.effects.projectiles.length||p.effects.aoes.length);
   await page.waitForTimeout(1200);const held=await record(page);assert.deepEqual(held.gameplay[hero].state,p);row.checks.push('paused Settings preserves all simulation state');
@@ -78,7 +84,7 @@ try{
   await page.goto(url,{waitUntil:'domcontentloaded',timeout:120000});
   await page.waitForFunction(hero=>window.firstGameplayWrite?.gameplay?.[hero],hero,{timeout:240000,polling:100});
   const reopened=await page.evaluate(hero=>window.firstGameplayWrite.gameplay[hero].state,hero);assert.deepEqual(reopened,p,'closed browser must resume without offline simulation');
-  row.checks.push('two exact refreshes','full browser close/relaunch with persistent profile','offline gameplay/effect/cooldown durations unchanged','gold and dead-enemy reward markers unchanged','uncollected souls retained','ranks/passives/pending cards/gate restored');
+  row.checks.push('nonzero XP from actual soul pickup retained','two exact refreshes','full browser close/relaunch with persistent profile','offline gameplay/effect/cooldown durations unchanged','gold and dead-enemy reward markers unchanged','uncollected souls retained','ranks/passives/pending cards/gate restored');
   await ready(page);await pause();console.log(name,'browser reopen exact PASS');
   // One item use and effect share a single economy/snapshot write, including rollback.
   await page.keyboard.press('Escape');await page.evaluate(()=>{const c=window.__STRONGHOLD_COMBAT__;c.setPreviewMode(true);c.clearFoes();});

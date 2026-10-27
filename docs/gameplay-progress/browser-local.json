@@ -54,12 +54,12 @@
     {
       "name": "desktop-ember-warden",
       "initial": {
-        "level": 11,
-        "xp": 0,
-        "gold": 5,
+        "level": 10,
+        "xp": 18,
+        "gold": 10,
         "hp": 0,
         "maxHp": 120,
-        "elapsedMs": 961.3000000000065,
+        "elapsedMs": 1238.699999999997,
         "skills": {
           "flame-fan": 3,
           "cinder-step": 1,
@@ -74,20 +74,20 @@
       },
       "checks": [
         "paused Settings preserves all simulation state",
+        "nonzero XP from actual soul pickup retained",
         "two exact refreshes",
         "full browser close/relaunch with persistent profile",
         "offline gameplay/effect/cooldown durations unchanged",
         "gold and dead-enemy reward markers unchanged",
         "uncollected souls retained",
         "ranks/passives/pending cards/gate restored",
-        "separate hero saves",
         "damaged HP retained",
         "active skill cooldown and in-flight effects retained"
       ],
       "reloads": [
         {
           "exact": true,
-          "elapsedMs": 961.3000000000065,
+          "elapsedMs": 1238.699999999997,
           "remainingCooldowns": {
             "flame-fan": 1185,
             "cinder-step": 1094
@@ -95,10 +95,10 @@
         },
         {
           "exact": true,
-          "elapsedMs": 1264.700000000008,
+          "elapsedMs": 1424.0999999999985,
           "remainingCooldowns": {
-            "flame-fan": 881.5999999999985,
-            "cinder-step": 790.5999999999985
+            "flame-fan": 999.5999999999985,
+            "cinder-step": 908.5999999999985
           }
         }
       ]
@@ -207,5 +207,5 @@
     }
   ],
   "errors": [],
-  "method": "Real production-build gameplay; two exact refreshes and actual Chromium termination/relaunch with persistent userDataDir for both heroes at desktop 1440x900 and touch 390x844. Local checks span implementation fixes; final public bundle is verified separately."
+  "method": "Per-case actual persistent-browser tests; latest desktop Ember regression explicitly earns nonzero soul XP on cumulative Pixi Settings build."
 }
