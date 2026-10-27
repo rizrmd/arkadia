@@ -7,6 +7,9 @@ import (
 	"math"
 )
 
+// TerrainBoundaryVersion identifies the authoritative cliff rule in public health checks.
+const TerrainBoundaryVersion = "hill-foot-contour-v1"
+
 // ReliefFeature is a raised piece of terrain (src/world/relief.ts): a flat plateau, or a ramp sloping linearly from
 // BaseM to TopM, rising toward its Ascend side. Rectangles are half-open [U0, U1) x [V0, V1) in court tiles.
 type ReliefFeature struct {

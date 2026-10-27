@@ -80,3 +80,16 @@ export function reliefBlockedTile(u:number,v:number){
  }return false;
 }
 export function reliefBlocked(x:number,y:number){const t=unproject(x-O.x,y-O.y);return reliefBlockedTile(t.x,t.y);}
+// Collision updates can invalidate a legacy saved foot. Recover nearby on the same height instead of
+// leaving it stuck on a forbidden shoulder (the ordinary spawn can itself overlap a built prop).
+export function recoverReliefPosition(x:number,y:number,blocked:(x:number,y:number)=>boolean){
+ if(!reliefBlocked(x,y))return null;
+ const h=heightAt(x,y);
+ for(let r=4;r<=128;r+=4){
+  const count=Math.ceil(2*Math.PI*r/4);
+  for(let i=0;i<count;i++){
+   const a=i/count*Math.PI*2,nx=x+Math.cos(a)*r,ny=y+Math.sin(a)*r*.5;
+   if(Math.abs(heightAt(nx,ny)-h)<=MAX_STEP_M&&!blocked(nx,ny))return {x:nx,y:ny};
+  }
+ }return null;
+}

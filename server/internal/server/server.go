@@ -42,7 +42,7 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("GET /asset-sizes.json", s.serveAssetSizes)
 	mux.HandleFunc("GET /healthz", func(w http.ResponseWriter, _ *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(map[string]any{"ok": true, "rooms": s.Rooms.Count(), "protocol": room.Version})
+		json.NewEncoder(w).Encode(map[string]any{"ok": true, "rooms": s.Rooms.Count(), "protocol": room.Version, "movementBoundary": sim.TerrainBoundaryVersion})
 	})
 	mux.HandleFunc("/", s.static)
 	return mux
