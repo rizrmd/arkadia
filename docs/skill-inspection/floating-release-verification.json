@@ -1,0 +1,61 @@
+{
+  "passed": true,
+  "base": "https://arkodia.online",
+  "commit": "7f9cc982644238cc4082bdb8dffbe024a62ffd58",
+  "backendBuild": "36c15c485ee73fe5d55dd893911dfa7b7e0e5949",
+  "activeRelease": "36c15c485ee73fe5d55dd893911dfa7b7e0e5949",
+  "compiledFilesVerified": 62,
+  "screenshotPixelMatches": [
+    "desktop",
+    "portrait",
+    "landscape"
+  ],
+  "uiEvidence": {
+    "mode": "Actual Pixi tree isolated from world loading",
+    "views": [
+      {
+        "name": "desktop",
+        "width": 1440,
+        "height": 900,
+        "pass": true,
+        "layoutInvariance": true,
+        "explicitEquip": true,
+        "outsideDismiss": true,
+        "close": true,
+        "details": true,
+        "locked": true,
+        "panPreserved": true
+      },
+      {
+        "name": "portrait",
+        "width": 390,
+        "height": 844,
+        "pass": true,
+        "layoutInvariance": true,
+        "explicitEquip": true,
+        "outsideDismiss": true,
+        "close": true,
+        "details": true,
+        "locked": true,
+        "panPreserved": true
+      },
+      {
+        "name": "landscape",
+        "width": 844,
+        "height": 390,
+        "pass": true,
+        "layoutInvariance": true,
+        "explicitEquip": true,
+        "outsideDismiss": true,
+        "close": true,
+        "details": true,
+        "locked": true,
+        "panPreserved": true
+      }
+    ],
+    "errors": []
+  },
+  "remoteBranchTip": "9145cfe26e9173470346c4d04c67e8581ae3ba92",
+  "at": "2026-10-27T09:12:15.066Z",
+  "limitations": "Full-world browser startup timed out at 60 seconds. Actual Pixi tree validated in isolated browser at three viewport sizes. Old ark-whachat alias returns 404; canonical arkodia.online is verified."
+}
