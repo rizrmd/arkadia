@@ -75,6 +75,7 @@ for(const kit of readdirSync(`${siteDir}/skill-tree`)){
 }
 console.error('Release file scan complete:',files.size);
 if(files.size<20)throw Error('Only '+files.size+' files loaded');
+files.add('flame-fan-ember-candidate/v1/ember-v2.png');
 files.add('flame-fan-burst-candidate/v1/flame-burst-v1.png');
 for(const part of ['smoke-veil-v1','smoke-split-curl-v1'])files.add('flame-fan-supplemental/v1/'+part+'.png');
 for(const part of ['crust-a','crust-b','perimeter','fragments','scorch','ash','straight','bend','fork','tee','cross','terminal','low-a','low-b','low-c','ribbon','accent','lick','wisp','puff','bank','billow','ash-puff','ember','spark','coal','char','glow','cinders'])files.add('flame-fan-static/'+part+'.png');

@@ -21,6 +21,8 @@ mkdir -p "$FLAME_FAN_STAGE/site/flame-fan-static"
 for part in crust-a crust-b perimeter fragments scorch ash straight bend fork tee cross terminal low-a low-b low-c ribbon accent lick wisp puff bank billow ash-puff ember spark coal char glow cinders; do cp "public/flame-fan-static/$part.png" "$FLAME_FAN_STAGE/site/flame-fan-static/"; done
 mkdir -p "$FLAME_FAN_STAGE/site/flame-fan-supplemental/v1"
 cp public/flame-fan-supplemental/v1/smoke-*.png "$FLAME_FAN_STAGE/site/flame-fan-supplemental/v1/"
+mkdir -p "$FLAME_FAN_STAGE/site/flame-fan-ember-candidate/v1"
+cp public/flame-fan-ember-candidate/v1/ember-v2.png "$FLAME_FAN_STAGE/site/flame-fan-ember-candidate/v1/"
 cp public/flame-fan-burst-candidate/v1/flame-burst-v1.png "$FLAME_FAN_STAGE/site/flame-fan-burst-candidate/v1/"
 cp docs/flame-fan-gameplay/soil-v2/README.md "$FLAME_FAN_STAGE/site/ember-warden-review/flame-fan-gameplay/soil-v2/"
 node --input-type=module <<'MANIFEST'
