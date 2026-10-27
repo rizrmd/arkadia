@@ -1,0 +1,3 @@
+import {build} from 'vite';import fs from 'node:fs/promises';import path from 'node:path';
+export async function stageEditor(site){await build({configFile:'vite.environment-editor.config.ts',logLevel:'error'});const root='dist-environment-editor',dest=path.join(site,'environment-editor');await fs.mkdir(dest,{recursive:true});await fs.cp(root+'/assets',dest+'/assets',{recursive:true});await fs.copyFile(root+'/public/environment-editor/index.html',dest+'/index.html');await fs.copyFile('public/environment-editor/pond.webp',dest+'/pond.webp');await fs.cp('docs/environment-editor',dest+'/evidence',{recursive:true});}
+if(process.argv[2])await stageEditor(process.argv[2]);

@@ -6,10 +6,12 @@ package main
 import (
 	"context"
 	"errors"
+	"github.com/rizrmd/arkadia/server/internal/environment"
 	"log/slog"
 	"net/http"
 	"os"
 	"os/signal"
+	"path/filepath"
 	"syscall"
 	"time"
 
@@ -49,6 +51,18 @@ func main() {
 		s.WarmWebPCache(ctx)
 		return
 	}
+	store, err := environment.Open(filepath.Join(env("GAME_SAVE_DIR", "game-saves"), "environment"))
+	if err != nil {
+		log.Error("environment storage", "err", err)
+		os.Exit(1)
+	}
+	s.Environment = store
+	published, err := store.Published(0)
+	if err != nil {
+		log.Error("published environment", "err", err)
+		os.Exit(1)
+	}
+	environment.SetPublished(published)
 	if err := s.Rooms.EnablePersistence(env("GAME_SAVE_DIR", "game-saves")); err != nil {
 		log.Error("gameplay checkpoint", "err", err)
 		os.Exit(1)

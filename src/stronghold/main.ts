@@ -1,3 +1,4 @@
+import {environment,loadEnvironment} from '../environment/model';
 import {ownGameplay} from './gameplay-save';
 import {createInventory} from './inventory';
 import {createSettings} from './settings';
@@ -19,6 +20,10 @@ import {showMovementHint} from './movement-hint';
 
 export async function mount(app:HTMLElement,progress:Progress){
  if(!new URLSearchParams(location.search).has('coop'))await ownGameplay();
+ const stored=JSON.parse(localStorage.getItem(KEY)||'null');
+ const savedMap=stored?.gameplay?.[savedHero()]?.state?.environmentRevision;
+ const legacy=stored?.gameplay?.[savedHero()]&&!Number.isInteger(savedMap);
+ await loadEnvironment(legacy?0:savedMap);
  const rt=await ensurePixiRuntime(app);
  // The HTML loading cover hides this scene. Reserve the GPU for explicit
  // preparation passes instead of rendering the full world behind the cover.
@@ -61,6 +66,9 @@ export async function mount(app:HTMLElement,progress:Progress){
   current:()=>hero,
   renderer:rt.app.renderer,
   choose(id){
+   const raw=JSON.parse(localStorage.getItem(KEY)||'null'),state=raw?.gameplay?.[id]?.state;
+   const wanted=state?(state.environmentRevision??0):environment().revision;
+   if(!net&&wanted!==environment().revision){worldView.encounters.flush();saveHero(id);location.reload();return;}
    hero=id;
    saveHero(id);
    heroPrepared=worldView.setHero(id);

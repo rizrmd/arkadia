@@ -1,12 +1,10 @@
 {
   "run": {
-    "level": 11,
-    "xp": 0,
-    "gold": 5,
-    "pending": 1,
-    "offers": [
-      "might"
-    ],
+    "level": 10,
+    "xp": 18,
+    "gold": 10,
+    "pending": 0,
+    "offers": [],
     "skills": {
       "flame-fan": 3,
       "cinder-step": 1,
@@ -36,11 +34,11 @@
     "vertical": true,
     "stride": 0,
     "hp": 0,
-    "cooldown": -1301.2999999999956,
+    "cooldown": -1572,
     "impactDone": false,
     "flash": -84,
     "deadFor": 0,
-    "immune": -1301.2999999999956,
+    "immune": -1572,
     "x": 16,
     "y": 16
   },
@@ -50,13 +48,13 @@
   },
   "maxHp": 120,
   "baseHp": 100,
-  "kills": 1,
-  "spawnTimer": 1189.4000000000015,
-  "seed": 1774058628,
-  "elapsedMs": 1301.2999999999956,
+  "kills": 2,
+  "spawnTimer": 917.5,
+  "seed": 1068275111,
+  "elapsedMs": 1572,
   "levelUpPulseMs": 0,
   "regenAccum": 0,
-  "soulId": 1,
+  "soulId": 2,
   "foes": [
     {
       "state": "die",
@@ -80,8 +78,8 @@
       "wander": null,
       "age": 500,
       "side": 1,
-      "level": 11,
-      "maxHp": 12
+      "level": 3,
+      "maxHp": 4
     },
     {
       "state": "idle",
@@ -90,7 +88,7 @@
       "back": false,
       "vertical": false,
       "stride": 0,
-      "hp": 12,
+      "hp": 5,
       "cooldown": -204,
       "impactDone": false,
       "flash": -204,
@@ -105,13 +103,13 @@
       "wander": null,
       "age": 500,
       "side": 1,
-      "level": 11,
-      "maxHp": 12
+      "level": 4,
+      "maxHp": 5
     }
   ],
   "souls": [
     {
-      "id": 1,
+      "id": 2,
       "u": 19,
       "v": 16,
       "level": 3,
@@ -119,14 +117,14 @@
     }
   ],
   "effects": {
-    "nextId": 32,
+    "nextId": 35,
     "cooldowns": {
       "flame-fan": 1185,
       "cinder-step": 890
     },
     "projectiles": [
       {
-        "id": 27,
+        "id": 30,
         "kind": "flame-bolt",
         "skill": "flame-fan",
         "u": 15.985575021663792,
@@ -174,7 +172,7 @@
     ],
     "aoes": [
       {
-        "id": 28,
+        "id": 31,
         "kind": "ember-snare",
         "skill": "ember-snare",
         "shape": "circle",
@@ -189,7 +187,7 @@
         "detonated": false
       },
       {
-        "id": 31,
+        "id": 34,
         "kind": "flame-cone",
         "skill": "flame-fan",
         "shape": "cone",
@@ -207,7 +205,7 @@
     "burnSoils": [
       {
         "area": {
-          "id": 5,
+          "id": 8,
           "kind": "flame-cone",
           "skill": "flame-fan",
           "shape": "cone",
@@ -226,7 +224,7 @@
       }
     ],
     "totalBurnSoilTicks": 0,
-    "totalCrits": 1,
+    "totalCrits": 2,
     "totalNormals": 4,
     "totalProjectiles": 1,
     "totalAoEs": 4,
@@ -242,7 +240,7 @@
     ]
   },
   "world": {
-    "clockBase": 2988460.529871667,
+    "clockBase": 2988468.6436066665,
     "gateOpen": false,
     "doors": {
       "index": 0,

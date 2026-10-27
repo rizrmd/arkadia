@@ -3,6 +3,7 @@ package sim
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/rizrmd/arkadia/server/internal/environment"
 	"math/rand/v2"
 )
 
@@ -16,6 +17,8 @@ type savedPlayer struct {
 	FlameFans     []flameFanCast `json:",omitempty"`
 }
 type checkpoint struct {
+	Environment         environment.Map
+	SpawnTimers         map[string]float64
 	Version             int
 	Tick                uint64
 	Clock               float64
@@ -36,7 +39,7 @@ func (w *World) Checkpoint() ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	s := checkpoint{Version: 1, Tick: w.Tick, Clock: w.Clock, Enemies: w.Enemies, Gate: w.Gate, Souls: w.Souls, NextSoul: w.nextSoul, NextEnemy: w.nextEnemy, SpawnTimer: w.spawnTimer, RNG: rng}
+	s := checkpoint{Environment: w.Environment, SpawnTimers: w.SpawnTimers, Version: 1, Tick: w.Tick, Clock: w.Clock, Enemies: w.Enemies, Gate: w.Gate, Souls: w.Souls, NextSoul: w.nextSoul, NextEnemy: w.nextEnemy, SpawnTimer: w.spawnTimer, RNG: rng}
 	for _, p := range w.Players {
 		s.Players = append(s.Players, savePlayer(p))
 	}
@@ -57,7 +60,8 @@ func RestoreCheckpoint(nav *Blocker, raw []byte) (*World, error) {
 	if err := source.UnmarshalBinary(s.RNG); err != nil {
 		return nil, err
 	}
-	w := &World{Tick: s.Tick, Clock: s.Clock, Enemies: s.Enemies, Gate: s.Gate, Souls: s.Souls, nextSoul: s.NextSoul, nextEnemy: s.NextEnemy, spawnTimer: s.SpawnTimer, source: source, rng: rand.New(source), nav: nav, retired: map[string]*Player{}}
+	w := &World{Environment: s.Environment, SpawnTimers: s.SpawnTimers, Tick: s.Tick, Clock: s.Clock, Enemies: s.Enemies, Gate: s.Gate, Souls: s.Souls, nextSoul: s.NextSoul, nextEnemy: s.NextEnemy, spawnTimer: s.SpawnTimer, source: source, rng: rand.New(source), nav: nav, retired: map[string]*Player{}}
+	w.initEnvironment()
 	// All sockets are gone after restart: heroes wait, without advancing their
 	// cooldowns, immunity or death timers, until the holder of their resume ID joins.
 	for _, a := range append(s.Players, s.Retired...) {

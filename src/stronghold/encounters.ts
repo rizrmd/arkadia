@@ -1,3 +1,4 @@
+import {environment,sampleSpawn,type ObjectPlacement} from '../environment/model';
 import {detourDirection,navClear,type Detour} from './detour';
 import {skillBindings} from '../app/skill-bindings';
 import {gameplayStore,GAMEPLAY_ERROR,setInventoryGameplayCapture,nearestResumePosition} from './gameplay-save';
@@ -40,7 +41,7 @@ const ENEMY_SPEED=105/Math.hypot(64,32)*.55,ENEMY_STRIDE=76*DISPLAY/1.1;
 // reaches the side it faces, so the ones behind land their blows.
 const VEER=[.4,.8,1.2,1.6,2,2.4],AGGRO=13,MAX_ENEMIES=8,PACK=3,SPAWN_EVERY=2000,REGEN=8,HERO_RESPAWN=3500,CORPSE=4400;
 const SIMULTANEOUS_SYNC_WINDOW_MS=340;
-type Foe=Fighter&{home:Tile;wander:Tile|null;age:number;side:number;level:number;maxHp:number};
+type Foe=Fighter&{home:Tile;wander:Tile|null;age:number;side:number;level:number;maxHp:number;spawnId?:string};
 type Hero={
  canvas:HTMLCanvasElement;
  position():{x:number;y:number};face(sx:number,sy:number):void;respawn():void;teleport(x:number,y:number):boolean;
@@ -525,15 +526,20 @@ export async function createEncounters(o:{
   rebuildBlessingModal();
  }
 
+ let mapSpawn:ObjectPlacement|undefined;
+ let mapTimers:Record<string,number>={};
  function spawn(f?:Foe){
-  const p=spawnPoint(random,tileOf(h),walkable);if(!p)return;
-  const n=f?1:Math.min(MAX_ENEMIES-foes.length,1+Math.floor(random()*PACK));
+  const marker=mapSpawn??environment().objects.find(o=>o.id===f?.spawnId);
+  if(environment().revision>0&&!marker)return;
+  const point=()=>marker?sampleSpawn(marker,random,p=>!inSafeZone(p)&&walkable(p)):spawnPoint(random,tileOf(h),walkable);
+  const p=point();if(!p)return;
+  const n=f||marker?1:Math.min(MAX_ENEMIES-foes.length,1+Math.floor(random()*PACK));
   const lv=Math.max(1,run.level),fMaxHp=revenantMaxHp(lv);
   for(let i=0;i<n;i++){
-   const at=i?spawnPoint(random,tileOf(h),walkable):p;if(!at)continue;
+   const at=i?point():p;if(!at)continue;
    spawns.push({u:+at.u.toFixed(2),v:+at.v.toFixed(2),m:+meters(fromGate(at)).toFixed(1)});if(spawns.length>200)spawns.shift();
    const g=f??Object.assign(new Fighter('revenant',meta.clips,at.u,at.v),{home:at,wander:null,age:0,side:1,level:lv,maxHp:fMaxHp});if(!f)foes.push(g);
-   Object.assign(g,{x:at.u,y:at.v,home:at,wander:null,age:0,level:lv,maxHp:fMaxHp,hp:fMaxHp,deadFor:0,cooldown:600+random()*900});g.play('idle');
+   Object.assign(g,{spawnId:marker?.id,x:at.u,y:at.v,home:at,wander:null,age:0,level:lv,maxHp:fMaxHp,hp:fMaxHp,deadFor:0,cooldown:600+random()*900});g.play('idle');
   }
  }
 
@@ -624,7 +630,7 @@ export async function createEncounters(o:{
  }
  function foeStep(f:Foe,dt:number,heroSafe:boolean){
   f.age+=dt;
-  if(!f.alive){f.deadFor+=dt;if(f.deadFor>CORPSE)spawn(f);return;}
+  if(!f.alive){f.deadFor+=dt;if(f.deadFor>CORPSE&&environment().revision===0)spawn(f);return;}
   f.recover();if(f.state==='hit')return;
   const du=h.x-f.x,dv=h.y-f.y,dist=Math.hypot(du,dv);
   if(f.state==='attack'){
@@ -737,7 +743,7 @@ export async function createEncounters(o:{
   const heroSafe=inSafeZone(tileOf(h));
   for(const f of foes)foeStep(f,dt,heroSafe);
   separate();
-  spawnTimer-=dt;if(spawnTimer<=0&&foes.length<MAX_ENEMIES){spawnTimer=SPAWN_EVERY;spawn();}
+  if(environment().revision>0){for(const marker of environment().objects.filter(o=>o.asset==='spawn')){mapTimers[marker.id]=(mapTimers[marker.id]??0)-dt;if(mapTimers[marker.id]>0)continue;mapTimers[marker.id]=marker.interval!*1000;const owned=foes.filter(f=>f.spawnId===marker.id),count=owned.length;mapSpawn=marker;for(const f of owned)if(!f.alive&&f.deadFor>CORPSE)spawn(f);for(let i=count;i<marker.count!;i++)spawn();mapSpawn=undefined;}}else{spawnTimer-=dt;if(spawnTimer<=0&&foes.length<MAX_ENEMIES){spawnTimer=SPAWN_EVERY;spawn();}}
  }
  const cell=document.createElement('canvas');cell.width=meta.cell.w;cell.height=meta.cell.h;
  const cc=cell.getContext('2d')!,pivot=meta.cell.pivot;
@@ -1002,14 +1008,14 @@ export async function createEncounters(o:{
  let world={capture:()=>({}),restore:(_s:any)=>{}};
  const fighterState=(f:Fighter)=>Object.fromEntries(['state','t','facing','back','vertical','stride','hp','cooldown','impactDone','flash','deadFor','immune','x','y'].map(k=>[k,(f as any)[k]]));
  function captureState(){return {
-  run:structuredClone(run),hero:fighterState(h),position:o.hero.position(),maxHp,baseHp,kills,spawnTimer,seed,elapsedMs,levelUpPulseMs,regenAccum,soulId,
-  foes:local.map(f=>({...fighterState(f),home:f.home,wander:f.wander,age:f.age,side:f.side,level:f.level,maxHp:f.maxHp})),
+  environmentRevision:environment().revision,mapTimers,run:structuredClone(run),hero:fighterState(h),position:o.hero.position(),maxHp,baseHp,kills,spawnTimer,seed,elapsedMs,levelUpPulseMs,regenAccum,soulId,
+  foes:local.map(f=>({...fighterState(f),spawnId:f.spawnId,home:f.home,wander:f.wander,age:f.age,side:f.side,level:f.level,maxHp:f.maxHp})),
   souls:[...souls.values()].map(({sprite,...s})=>s),effects:vfx.saveState(),world:world.capture(),
  };}
  function restoreState(s:any){
   clearSouls();local.length=0;foes=local;vfx.resetCooldowns();
   if(!s){run=soloRun(runHero);maxHp=baseHp+health(run);h.play('idle');h.hp=maxHp;kills=0;spawnTimer=0;elapsedMs=0;vfx.restoreState(emptyEffects);return;}
-  run=structuredClone(s.run);maxHp=s.maxHp;baseHp=s.baseHp;kills=s.kills;spawnTimer=s.spawnTimer;seed=s.seed;elapsedMs=s.elapsedMs;levelUpPulseMs=s.levelUpPulseMs;regenAccum=s.regenAccum;soulId=s.soulId;
+  mapTimers=s.mapTimers??{};run=structuredClone(s.run);maxHp=s.maxHp;baseHp=s.baseHp;kills=s.kills;spawnTimer=s.spawnTimer;seed=s.seed;elapsedMs=s.elapsedMs;levelUpPulseMs=s.levelUpPulseMs;regenAccum=s.regenAccum;soulId=s.soulId;
   world.restore(s.world);
   // Doors restore first so a saved hero inside the open doorway remains walkable.
   let recovered:Tile|null=null;
