@@ -27,12 +27,7 @@ export function inside(f:ReliefFeature,u:number,v:number){
 export function featureHeight(f:ReliefFeature,u:number,v:number){
  if(f.type==='plateau')return f.heightM!;
  if(f.type==='hill'){
-  if(f.ascend==='-u'){
-   if(v<f.v0+.6||v>f.v0+2.8||(u>f.rampStartU!&&v<f.v0+1.3))return f.topM!+1;
-   return f.topM!*Math.max(0,Math.min(1,(f.u1-u)/(f.u1-f.rampStartU!)));
-  }
-  if((v>f.v0+1.2&&u<f.u0+.85)||u>f.u0+4.65||(v>f.v0+3.6&&u>f.u0+4)||(v>f.rampStartV!&&(u<f.u0+1.4||u>f.u0+3.5)))return f.topM!+1;
-  return f.topM!*Math.max(0,Math.min(1,(f.v1-v)/(f.v1-f.rampStartV!)));
+  return f.topM!*Math.max(0,Math.min(1,f.ascend==='-u'?(f.u1-u)/(f.u1-f.rampStartU!):(f.v1-v)/(f.v1-f.rampStartV!)));
  }
  const t=f.ascend==='-u'?(f.u1-u)/(f.u1-f.u0):f.ascend==='+u'?(u-f.u0)/(f.u1-f.u0):f.ascend==='-v'?(f.v1-v)/(f.v1-f.v0):(v-f.v0)/(f.v1-f.v0);
  return f.baseM!+(f.topM!-f.baseM!)*t;
@@ -45,7 +40,43 @@ export function heightAt(x:number,y:number){if(!RELIEF.length)return 0;const g=u
 export const liftAt=(x:number,y:number)=>heightAt(x,y)*PX_PER_METER;
 export const liftAtTile=(u:number,v:number)=>RELIEF.length?heightAtTile(u,v)*PX_PER_METER:0;
 // A step between two ground points that changes height by more than maxStepM: up or down a cliff face.
-export const cliff=(x0:number,y0:number,x1:number,y1:number)=>RELIEF.length>0&&Math.abs(heightAt(x1,y1)-heightAt(x0,y0))>MAX_STEP_M;
-export const cliffTile=(u0:number,v0:number,u1:number,v1:number)=>RELIEF.length>0&&Math.abs(heightAtTile(u1,v1)-heightAtTile(u0,v0))>MAX_STEP_M;
+export const cliff=(x0:number,y0:number,x1:number,y1:number)=>{const a=unproject(x0-O.x,y0-O.y),b=unproject(x1-O.x,y1-O.y);return cliffTile(a.x,a.y,b.x,b.y);};
+export function cliffTile(u0:number,v0:number,u1:number,v1:number){
+ const dx=(u1-u0-v1+v0)*64,dy=(u1-u0+v1-v0)*32,n=Math.max(1,Math.ceil(Math.hypot(dx,dy)/4));
+ let previous=heightAtTile(u0,v0);
+ for(let i=1;i<=n;i++){const u=u0+(u1-u0)*i/n,v=v0+(v1-v0)*i/n,h=heightAtTile(u,v);
+  if(Math.abs(h-previous)>MAX_STEP_M||reliefBlockedTile(u,v))return true;previous=h;
+ }return false;
+}
 // A raised feature hides an actor behind it, unless the actor stands on it or at least as high as its top.
 export const reliefHides=(f:ReliefFeature,x:number,y:number)=>{const g=unproject(x-O.x,y-O.y);if(RELIEF.some(r=>r.connectsTo===f.id&&inside(r,g.x,g.y)))return false;if(f.type==='hill')return g.y<f.v0+.8&&g.x>f.u0+.5&&g.x<f.u1-.5&&!inside(f,g.x,g.y)&&heightAtTile(g.x,g.y)<topOf(f)-.25;return !inside(f,g.x,g.y)&&heightAtTile(g.x,g.y)<topOf(f)-.25;};
+
+// Snow-top contour in normalized coordinates of the coherent core atlas (1536 x 768).
+// Excludes rock faces and the alpha snow skirt. Both hills use this same core, mirrored for -u.
+export const HILL_SURFACE=[ [.02,.87],[.13,.70],[.24,.57],[.30,.39],[.36,.21],[.43,.075],[.52,.035],[.65,.045],[.80,.10],[.89,.18],[.90,.27],[.81,.34],[.70,.39],[.59,.48],[.49,.61],[.39,.78],[.30,.94],[.12,.97],[.025,.94] ] as const;
+export function hillArtBounds(f:ReliefFeature){
+ const pts=f.outline!.map(([u,v])=>{
+  const x=(u-v)*64,y=(u+v)*32,isU=f.ascend==='-u';
+  const h=f.topM!*Math.max(0,Math.min(1,isU?(f.u1-u)/(f.u1-f.rampStartU!):(f.v1-v)/(f.v1-f.rampStartV!)))*PX_PER_METER;
+  const back=isU?Math.max(0,Math.min(1,(f.u0+2.2-u)/1.6))*Math.max(0,Math.min(1,(f.v1-1.2-v))):Math.max(0,Math.min(1,(f.v0+2.2-v)/1.6))*Math.max(0,Math.min(1,(u-f.u0-.2)/.8));
+  return {x,y,top:y-h*back};
+ });
+ return {left:Math.min(...pts.map(p=>p.x)),right:Math.max(...pts.map(p=>p.x)),top:Math.min(...pts.map(p=>p.top)),bottom:Math.max(...pts.map(p=>p.y))};
+}
+const hillBounds=new Map(RELIEF.filter(f=>f.type==='hill').map(f=>[f,hillArtBounds(f)]));
+function onHillSurface(x:number,y:number){
+ let hit=false;for(let i=0,j=HILL_SURFACE.length-1;i<HILL_SURFACE.length;j=i++){
+  const [a,b]=HILL_SURFACE[i],[c,d]=HILL_SURFACE[j];if((b>y)!==(d>y)&&x<(c-a)*(y-b)/(d-b)+a)hit=!hit;
+ }return hit;
+}
+// Check the rendered foot ellipse, rather than the unlifted ground center. Ground outside a hill stays open.
+export function reliefBlockedTile(u:number,v:number){
+ for(const [f,b] of hillBounds){if(!inside(f,u,v))continue;
+  const x=(u-v)*64,y=(u+v)*32-featureHeight(f,u,v)*PX_PER_METER;
+  for(const [dx,dy] of [[0,0],[9,0],[-9,0],[0,4.5],[0,-4.5],[6.36,3.18],[-6.36,3.18],[6.36,-3.18],[-6.36,-3.18]]){
+   let nx=(x+dx-b.left)/(b.right-b.left);if(f.ascend==='-u')nx=1-nx;
+   if(!onHillSurface(nx,(y+dy-b.top)/(b.bottom-b.top)))return true;
+  }
+ }return false;
+}
+export function reliefBlocked(x:number,y:number){const t=unproject(x-O.x,y-O.y);return reliefBlockedTile(t.x,t.y);}

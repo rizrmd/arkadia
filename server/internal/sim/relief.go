@@ -119,16 +119,11 @@ func (f *ReliefFeature) height(u, v float64) float64 {
 		return f.HeightM
 	}
 	if f.Type == "hill" {
+		t := (f.V1 - v) / (f.V1 - f.RampStartV)
 		if f.Ascend == "-u" {
-			if v < f.V0+.6 || v > f.V0+2.8 || (u > f.RampStartU && v < f.V0+1.3) {
-				return f.TopM + 1
-			}
-			return f.TopM * math.Max(0, math.Min(1, (f.U1-u)/(f.U1-f.RampStartU)))
+			t = (f.U1 - u) / (f.U1 - f.RampStartU)
 		}
-		if (v > f.V0+1.2 && u < f.U0+.85) || u > f.U0+4.65 || (v > f.V0+3.6 && u > f.U0+4) || (v > f.RampStartV && (u < f.U0+1.4 || u > f.U0+3.5)) {
-			return f.TopM + 1
-		}
-		return f.TopM * math.Max(0, math.Min(1, (f.V1-v)/(f.V1-f.RampStartV)))
+		return f.TopM * math.Max(0, math.Min(1, t))
 	}
 	var t float64
 	switch f.Ascend {
@@ -158,11 +153,85 @@ func HeightAtTile(t Vec) float64 {
 }
 
 // cliff reports a step between two world px that changes the ground height by more than maxStepM.
-func cliff(x0, y0, x1, y1 float64) bool {
-	return len(relief) > 0 && math.Abs(HeightAtTile(ToTile(x1, y1))-HeightAtTile(ToTile(x0, y0))) > maxStepM
+func cliff(x0, y0, x1, y1 float64) bool { return cliffTile(ToTile(x0, y0), ToTile(x1, y1)) }
+func cliffTile(a, b Vec) bool {
+	dx, dy := (b.X-a.X-b.Y+a.Y)*64, (b.X-a.X+b.Y-a.Y)*32
+	n := int(math.Max(1, math.Ceil(math.Hypot(dx, dy)/4)))
+	previous := HeightAtTile(a)
+	for i := 1; i <= n; i++ {
+		t := Vec{a.X + (b.X-a.X)*float64(i)/float64(n), a.Y + (b.Y-a.Y)*float64(i)/float64(n)}
+		h := HeightAtTile(t)
+		if math.Abs(h-previous) > maxStepM || reliefBlockedTile(t) {
+			return true
+		}
+		previous = h
+	}
+	return false
 }
 
-// cliffTile is cliff for ground tiles.
-func cliffTile(a, b Vec) bool {
-	return len(relief) > 0 && math.Abs(HeightAtTile(b)-HeightAtTile(a)) > maxStepM
+// Mirrors relief.ts: normalized coherent-core snow surface, excluding rock faces and alpha skirt.
+var hillSurface = [][2]float64{{.02, .87}, {.13, .70}, {.24, .57}, {.30, .39}, {.36, .21}, {.43, .075}, {.52, .035}, {.65, .045}, {.80, .10}, {.89, .18}, {.90, .27}, {.81, .34}, {.70, .39}, {.59, .48}, {.49, .61}, {.39, .78}, {.30, .94}, {.12, .97}, {.025, .94}}
+
+type hillBounds struct {
+	f                        *ReliefFeature
+	left, right, top, bottom float64
+}
+
+var hillSurfaces = makeHillSurfaces()
+
+func makeHillSurfaces() []hillBounds {
+	var out []hillBounds
+	clamp := func(t float64) float64 { return math.Max(0, math.Min(1, t)) }
+	for i := range relief {
+		f := &relief[i]
+		if f.Type != "hill" {
+			continue
+		}
+		b := hillBounds{f, math.Inf(1), math.Inf(-1), math.Inf(1), math.Inf(-1)}
+		for _, p := range f.Outline {
+			u, v := p[0], p[1]
+			x, y := (u-v)*64, (u+v)*32
+			t := (f.V1 - v) / (f.V1 - f.RampStartV)
+			back := clamp((f.V0+2.2-v)/1.6) * clamp((u-f.U0-.2)/.8)
+			if f.Ascend == "-u" {
+				t = (f.U1 - u) / (f.U1 - f.RampStartU)
+				back = clamp((f.U0+2.2-u)/1.6) * clamp(f.V1-1.2-v)
+			}
+			b.left = math.Min(b.left, x)
+			b.right = math.Max(b.right, x)
+			b.top = math.Min(b.top, y-f.TopM*clamp(t)*24*back)
+			b.bottom = math.Max(b.bottom, y)
+		}
+		out = append(out, b)
+	}
+	return out
+}
+func onHillSurface(x, y float64) bool {
+	hit := false
+	for i, j := 0, len(hillSurface)-1; i < len(hillSurface); j, i = i, i+1 {
+		a, b := hillSurface[i], hillSurface[j]
+		if (a[1] > y) != (b[1] > y) && x < (b[0]-a[0])*(y-a[1])/(b[1]-a[1])+a[0] {
+			hit = !hit
+		}
+	}
+	return hit
+}
+func reliefBlockedTile(t Vec) bool {
+	for _, b := range hillSurfaces {
+		f := b.f
+		if !f.inside(t.X, t.Y) {
+			continue
+		}
+		x, y := (t.X-t.Y)*64, (t.X+t.Y)*32-f.height(t.X, t.Y)*24
+		for _, d := range [][2]float64{{0, 0}, {9, 0}, {-9, 0}, {0, 4.5}, {0, -4.5}, {6.36, 3.18}, {-6.36, 3.18}, {6.36, -3.18}, {-6.36, -3.18}} {
+			nx := (x + d[0] - b.left) / (b.right - b.left)
+			if f.Ascend == "-u" {
+				nx = 1 - nx
+			}
+			if !onHillSurface(nx, (y+d[1]-b.top)/(b.bottom-b.top)) {
+				return true
+			}
+		}
+	}
+	return false
 }
