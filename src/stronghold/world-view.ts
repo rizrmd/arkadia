@@ -1,3 +1,5 @@
+import {createGathering,type GatheringController} from './gathering';
+import {treeKind} from './gathering-rules';
 import {renderObjects} from '../environment/render';
 import {environment as authoredEnvironment,watchEnvironment,columns as authoredColumns} from '../environment/model';
 import {GateHealthBar} from './gate-health-bar';
@@ -85,10 +87,11 @@ export async function createWorldView(
  function shadeRelief(s:{alpha:number;dx:number;dy:number}){for(const r of reliefShadows){r.view.sprite.visible=s.alpha>0;if(!s.alpha)continue;Object.assign(r,paintReliefShadow(r.feature,s.dx,s.dy,r.canvas));r.view.sync(r.width,r.height);r.view.sprite.alpha=s.alpha;}requestDraw();}
  const reliefScene=relief.map(r=>({layer:'world' as const,id:'relief:'+r.feature.id,x:r.left+r.width/2,y:r.bottom,width:r.width,height:r.height,foot:1,shear:0,vertical:1,depth:r.bottom,opacity:1,file:'relief:'+r.feature.id,selected:false,occluder:undefined as HTMLCanvasElement|undefined,image:r.canvas as unknown as HTMLImageElement,relief:r.feature}));
  // The Frozen Frontier's ruins, landmarks and plants on the snow beyond (world/frontier.ts, frontier-view.ts).
- const frontier=createFrontier(staticStage,images.get(FRONTIER_ATLAS)!);frontier.setLegacyShadows(!useDepthShadows);
+ const frontier=createFrontier(staticStage,images.get(FRONTIER_ATLAS)!,!net);frontier.setLegacyShadows(!useDepthShadows);
  await frontier.ready;
  const authoredStage=new Container();authoredStage.zIndex=10.65;worldStage.addChild(authoredStage);
- let authoredScene=await renderObjects(authoredEnvironment(),authoredStage);
+ let authoredScene=await renderObjects(net?authoredEnvironment():{...authoredEnvironment(),objects:authoredEnvironment().objects.filter(p=>!treeKind(p.asset))},authoredStage);
+ let gathering:GatheringController|undefined;
  const frontierScene=frontier.scene as unknown as typeof reliefScene;
  const alphaPrepared=new WeakSet<HTMLImageElement>(),alphaJobs=new Set<Promise<void>>();
  const prepareAlpha=(placed:(typeof frontierScene)[number])=>{
@@ -99,7 +102,7 @@ export async function createWorldView(
  };
  const alphaImages=new Set<HTMLImageElement>();
  for(const placed of frontierScene)if(!alphaImages.has(placed.image)){alphaImages.add(placed.image);placed.image.addEventListener('load',()=>prepareAlpha(placed),{once:true});prepareAlpha(placed);}
- const scene=()=>[...objects,...reliefScene,...frontierScene,...authoredScene];
+ const scene=()=>[...objects,...reliefScene,...frontierScene,...authoredScene,...(gathering?.scene()??[])];
  const polygon=(corners:number[][])=>{const path=new Path2D();corners.forEach(([u,v],i)=>{const p=tilePoint(u,v);i?path.lineTo(p.x,p.y):path.moveTo(p.x,p.y);});path.closePath();return path;};
  // Court size, gateway and its apron come from prefabs/stronghold.json.
  const N=COURT.size,G=STRONGHOLD.gate,A=G.apron,GS=STRONGHOLD.buildings.gate;
@@ -192,6 +195,7 @@ export async function createWorldView(
   return cols;
  }
  function footprint(p:(typeof objects)[number]){
+ if((p as any).gatherColumns)return (p as any).gatherColumns;
 if((p as any).authored)return authoredColumns((p as any).authored).map(c=>({...c,height:p.height}));
   if((p as {relief?:unknown}).relief)return [];
   const ff=frontier.columns(p);if(ff)return ff;
@@ -216,14 +220,14 @@ if((p as any).authored)return authoredColumns((p as any).authored).map(c=>({...c
  let shadowSceneKey='';
  let tentShadowSamples:ReturnType<typeof sampleSurface>['samples']|undefined;
  function shadowSurfaces():ShadowSurface[]{
-  const court:ShadowSurface[]=objects.filter(p=>p.id!=='gate').map(p=>({key:p.id+':'+p.file,source:p.image,sourceWidth:p.image.naturalWidth,sourceHeight:p.image.naturalHeight,x:p.x,y:p.y,width:p.width,height:p.height,pivot:[.5,p.foot],shear:p.shear,vertical:p.vertical,depth:p.depth,cast:p.layer!=='ground'&&p.opacity>=1,...(p.layer==='ground'?{constantHeight:0}:{})}));
+  const court:ShadowSurface[]=[...objects,...(gathering?.scene()??[])].filter(p=>p.id!=='gate').map(p=>({key:p.id+':'+p.file,source:p.image,sourceWidth:p.image.naturalWidth,sourceHeight:p.image.naturalHeight,x:p.x,y:p.y,width:p.width,height:p.height,pivot:[.5,p.foot],shear:p.shear,vertical:p.vertical,depth:p.depth,cast:p.layer!=='ground'&&p.opacity>=1,...(p.layer==='ground'?{constantHeight:0}:{})}));
   const ff=frontier.shadowSurfaces();
   const terrain:ShadowSurface[]=relief.map(r=>({key:'relief:'+r.feature.id,source:r.canvas,sourceWidth:r.canvas.width,sourceHeight:r.canvas.height,x:r.left+r.width/2,y:r.bottom,width:r.width,height:r.height,pivot:[.5,1],heightAtScreen:(x,y)=>reliefShadowHeight(r.feature,x,y)}));
   return [...court.map(p=>p.key.startsWith('expedition:')?withTentGeometry(p):withBrazierShadowMaterial(p,images.get(BRAZIER_PHYSICAL_SOURCE))),...ff.filter(p=>p.groundLayer||p.constantHeight!==undefined),...terrain,...ff.filter(p=>!p.groundLayer&&p.constantHeight===undefined),...torchShadowSurfaces()];
  }
  function castShadows(paint=true){
   const s=lighting.sun();frontier.setSun(s);
-  if(useDepthShadows){const sig=objects.map(p=>p.id+':'+p.file+':'+p.width).join('|');if(sig!==shadowSceneKey){shadowSceneKey=sig;sceneShadows?.setScene(shadowSurfaces());}sceneShadows?.setSun(s);lighting.setShadow(null,0,paint);return;}
+  if(useDepthShadows){const sig=objects.map(p=>p.id+':'+p.file+':'+p.width).join('|')+':gather:'+gathering?.version();if(sig!==shadowSceneKey){shadowSceneKey=sig;sceneShadows?.setScene(shadowSurfaces());}sceneShadows?.setSun(s);lighting.setShadow(null,0,paint);return;}
   shadeRelief(s);
   if(!s.alpha){lighting.setShadow(null,0,paint);return;}
   measureTracelogPhase('shadowCast',()=>{
@@ -321,6 +325,7 @@ if((p as any).authored)return authoredColumns((p as any).authored).map(c=>({...c
    measureRenderDetail('heroPlace',()=>hero.place(x,y,scale));
    measureRenderDetail('partyPlace',()=>party?.place(x,y,scale));
    measureRenderDetail('encountersPlace',()=>encounters?.place(x,y,scale));
+   gathering?.place(x,y,scale);
    measureRenderDetail('parallaxPlace',()=>parallax.place(cx,cy,scale,w,h));
 
    snowSprite.width=w;
@@ -418,12 +423,17 @@ if((p as any).authored)return authoredColumns((p as any).authored).map(c=>({...c
   gateOpen=near;doors.setOpen(near);
   canvas.dataset.gate=near?'open':'closed';
  }
- (window as any).__STRONGHOLD_NAV__=()=>({version:1,layout:[...built],columns:objects.filter(p=>p.layer!=='ground'&&p.opacity>=1&&p.id!=='gate').flatMap(p=>footprint(p).map(c=>({x:+c.x.toFixed(2),w:+c.w.toFixed(2),back:+c.back.toFixed(2),front:+c.front.toFixed(2)})))});
+ (window as any).__STRONGHOLD_NAV__=()=>({version:1,layout:[...built],columns:objects.filter(p=>p.layer!=='ground'&&p.opacity>=1&&p.id!=='gate').flatMap(p=>footprint(p).map((c:{x:number;w:number;back:number;front:number})=>({x:+c.x.toFixed(2),w:+c.w.toFixed(2),back:+c.back.toFixed(2),front:+c.front.toFixed(2)})))});
  canvas.dataset.gate='closed';setGateOpen(false);updateGate(hero.position().x,hero.position().y);
  encounters.bindPersistence({
   capture:()=>({clockBase,gateOpen,doors:doors.saveState(),gateHealth:encounters!.hud.getGateHp(),route:walker?.route()?.target??null}),
   restore(s:any){clockBase=s.clockBase;gateOpen=s.gateOpen;doors.restoreState(s.doors);encounters!.hud.setGateHp(s.gateHealth.hp,s.gateHealth.max);canvas.dataset.gate=gateOpen?'open':'closed';if(s.route)setTimeout(()=>walker?.goTo(s.route.x,s.route.y),0);},
  });
+ if(!net){
+  gathering=await createGathering({worldStage,uiStage,day:clockBase+encounters.elapsed()/DAY_MS,hero:hero.position,blocked:hero.blocked,hudBottom:()=>encounters!.hud.getTopRightTelemetry().screenBounds.bottom,changed:()=>{requestAnimationFrame(()=>{hero.setScene(scene());shadowSceneKey='';sceneShadows?.setScene(shadowSurfaces());requestDraw();});}});
+  hero.setScene(scene());encounters.setGathering(gathering);
+  lighting.setClockSource(()=>gathering!.day());
+ }
  // Open on the hero (as follow() frames it) without drawing: the first paint waits for the saved layout (main.ts).
  {const a=hero.anchor();cx=a.x;cy=a.y-40;}
  // Gameplay (the hero and the revenants) starts once `hold` resolves: after the loading screen, and on a first visit

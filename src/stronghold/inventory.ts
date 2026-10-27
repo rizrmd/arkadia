@@ -9,7 +9,7 @@ export function createInventory(o:Options){
  const bag=createHudActionButton(o.stage,'/inventory/v2/bag.webp','Open Inventory',show);
  const overlay=new Container({label:'Inventory',eventMode:'static'});overlay.zIndex=100;overlay.visible=false;o.stage.addChild(overlay);
  const textures=new Map<string,Texture>();
- const paths=['panel','slot','button',...ITEM_IDS].map(x=>`/inventory/v2/${x}.webp`);
+ const paths=['panel','slot','button',].map(x=>`/inventory/v2/${x}.webp`).concat(ITEM_IDS.map(id=>ITEMS[id].icon));
  void Promise.all(paths.map(async path=>textures.set(path,await Assets.load(path)))).then(()=>{if(!destroyed)refresh();}).catch(()=>{message='Inventory artwork unavailable.';refresh();});
  function text(parent:Container,value:string,x:number,y:number,size=16,width=200,color=0xf4ead3){const t=new Text({text:value,style:{fontFamily:'Georgia',fontSize:size,fill:color,wordWrap:true,wordWrapWidth:width,breakWords:true,lineHeight:Math.ceil(size*1.3)}});t.position.set(x,y);parent.addChild(t);return t;}
  function art(parent:Container,path:string,x:number,y:number,w:number,h:number,slice=false){const texture=textures.get(path);if(!texture)return;const s=slice?new NineSliceSprite({texture,leftWidth:64,rightWidth:64,topHeight:64,bottomHeight:64}):new Sprite(texture);s.position.set(x,y);s.width=w;s.height=h;s.eventMode='none';parent.addChild(s);return s;}
@@ -55,9 +55,9 @@ export function createInventory(o:Options){
   const desc=text(panel,item.description,tx,ty+name.height+6,short?12:13,tw);
   text(panel,`Owned: ${counts[selected]} / 99`,tx,desc.y+desc.height+6,12,tw,0xc2b69d);
   const blocked=reason(),enabled=!busy&&!blocked;
-  const button=target(panel,'Use',dx+18,dy+dh-88,dw-36,44,()=>void activate(),3,enabled);art(button,'/inventory/v2/button.webp',0,0,dw-36,44);button.alpha=enabled?1:.5;const caption=text(button,busy?'Using…':'Use',0,7,22,dw-36);caption.x=(dw-36-caption.width)/2;
+  const button=target(panel,'Use',dx+18,dy+dh-88,dw-36,44,()=>void activate(),ITEM_IDS.length+1,enabled);art(button,'/inventory/v2/button.webp',0,0,dw-36,44);button.alpha=enabled?1:.5;const caption=text(button,busy?'Using…':'Use',0,7,22,dw-36);caption.x=(dw-36-caption.width)/2;
   text(panel,message||blocked,dx+22,dy+dh-38,12,dw-44,0xe2c793);
-  text(panel,`Consumables   ${ITEM_IDS.filter(id=>counts[id]>0).length} / ${INVENTORY_SLOTS} slots`,28,h-38,12,w-56,0xbaad91);
+  text(panel,`Items   ${ITEM_IDS.filter(id=>counts[id]>0).length} / ${INVENTORY_SLOTS} slots`,28,h-38,12,w-56,0xbaad91);
   o.redraw();
  }
  async function activate(){if(busy||reason())return;busy=true;refresh();try{await useItem(selected,()=>{const why=o.reason(selected);if(why)throw Error(why);return o.apply(selected);});message=selected==='health-potion'?'Health restored.':'Returned to Stronghold.';}catch(e){message=e instanceof Error?e.message:'Item could not be used.';}finally{busy=false;refresh();}}
@@ -69,9 +69,9 @@ export function createInventory(o:Options){
   e.stopImmediatePropagation();e.preventDefault();if(e.repeat||busy)return;
   if(e.key==='Escape'||e.code==='KeyI'){close();return;}
   keyboard=true;
-  if(e.key==='Tab'){const order=reason()?[0,1,2]:[0,1,2,3];focus=order[(order.indexOf(focus)+(e.shiftKey?-1:1)+order.length)%order.length];}
-  if(e.key==='ArrowLeft'||e.key==='ArrowRight'){selected=selected===ITEM_IDS[0]?ITEM_IDS[1]:ITEM_IDS[0];focus=ITEM_IDS.indexOf(selected)+1;message='';}
-  if(e.key==='Enter'||e.key===' '){if(focus===0)close();else if(focus===3)void activate();else{selected=ITEM_IDS[focus-1];message='';}}
+  if(e.key==='Tab'){const order=Array.from({length:ITEM_IDS.length+(reason()?1:2)},(_,i)=>i);focus=order[(order.indexOf(focus)+(e.shiftKey?-1:1)+order.length)%order.length];}
+  if(e.key==='ArrowLeft'||e.key==='ArrowRight'){selected=ITEM_IDS[(ITEM_IDS.indexOf(selected)+(e.key==='ArrowRight'?1:ITEM_IDS.length-1))%ITEM_IDS.length];focus=ITEM_IDS.indexOf(selected)+1;message='';}
+  if(e.key==='Enter'||e.key===' '){if(focus===0)close();else if(focus===ITEM_IDS.length+1)void activate();else{selected=ITEM_IDS[focus-1];message='';}}
   refresh();
  }
  document.addEventListener('keydown',key,true);

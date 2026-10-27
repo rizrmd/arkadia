@@ -1,3 +1,4 @@
+import {treeKind} from './gathering-rules';
 import type {ShadowSurface} from './shadow-surfaces';
 import {proxyGroundAt,validateShadowCompanions,shadowCompanionStats} from './shadow-geometry';
 import occlusionMasks from '../world/maps/frontier-occlusion.json';
@@ -42,7 +43,8 @@ function stripMatrix(p:FrontierProp,i:number,n:number,s:Sun,receiverLift=0){
  const sx=p.width/fw*(p.flip?-1:1),sy=p.height/p.frame[3],ax=p.pivot[0]*fw,ay=p.pivot[1]*p.frame[3],dx=s.dx,dy=depthOf(s),drop=p.lift-receiverLift;
  return new Matrix(sx+dx*sy*k,p.shear*sx+sy*k*(1+dy),-dx*sy,-dy*sy,p.x+sx*(f0-ax)+dx*sy*b0+dx*drop,p.y-p.lift+p.shear*sx*(f0-ax)+sy*(b0-ay)+dy*sy*b0+(1+dy)*drop);
 }
-export function createFrontier(worldStage:Container,atlas:HTMLImageElement){
+export function createFrontier(worldStage:Container,atlas:HTMLImageElement,harvestable=false){
+ const props=FRONTIER_PROPS.filter(p=>!harvestable||!treeKind(p.asset));
  validateShadowCompanions();
  const ground=new Container(),shade=new Container(),upright=new Container();
  ground.zIndex=10.05;shade.zIndex=10.08;upright.zIndex=10.6;ground.sortableChildren=upright.sortableChildren=true;
@@ -65,7 +67,7 @@ export function createFrontier(worldStage:Container,atlas:HTMLImageElement){
  shade.addChild(topMask,solidMask);topShade.mask=topMask;groundShade.setMask({mask:solidMask,inverse:true});
  // Until the atlas arrives these images are empty (no natural size), which hero.ts treats as nothing to cut out.
  const imageKey=(p:FrontierProp)=>p.asset+(p.flip?':flip':'');
- const images=new Map(FRONTIER_PROPS.filter(p=>p.layer!=='ground'||isSlab(p)).map(p=>[imageKey(p),new Image()]));
+ const images=new Map(props.filter(p=>p.layer!=='ground'||isSlab(p)).map(p=>[imageKey(p),new Image()]));
  const maskJobs=new Map<string,Promise<void>>(),maskLanes=[Promise.resolve(),Promise.resolve()];let nextMaskLane=0;
  function prepareMask(p:FrontierProp){
   const key=imageKey(p),img=images.get(key);if(!img||maskJobs.has(key))return;
@@ -79,14 +81,14 @@ export function createFrontier(worldStage:Container,atlas:HTMLImageElement){
  }
  // Ground pivot to the hero's Placed convention: x is the sprite's horizontal centre, foot the pivot's height share.
  const share=(p:FrontierProp)=>p.flip?1-p.pivot[0]:p.pivot[0];
- const scene:FrontierPlaced[]=FRONTIER_PROPS.filter(p=>p.layer!=='ground'||isSlab(p)).map(p=>({layer:'world',id:p.key,x:p.x+p.width*(.5-share(p)),y:p.y,width:p.width,height:p.height,
+ const scene:FrontierPlaced[]=props.filter(p=>p.layer!=='ground'||isSlab(p)).map(p=>({layer:'world',id:p.key,x:p.x+p.width*(.5-share(p)),y:p.y,width:p.width,height:p.height,
   foot:(p.lift+p.height*p.pivot[1])/p.height,shear:p.shear,vertical:1,depth:p.y,opacity:1,file:'frozen-frontier:'+imageKey(p),selected:false,occluder:undefined,image:images.get(imageKey(p))!,frontier:p,relief:isSlab(p)?podium:p.asset==='stairs-nw'?RELIEF.find(f=>f.id==='temple-stairs'):undefined}));
  // Hero cutouts use the image centre; GPU sprites use the ground pivot. Account for
  // that difference so the doorway opening and both piers occlude at the drawn pixels.
  for(const s of scene)s.y+=s.shear*(s.x-s.frontier.x);
  const columns=new Map<string,Column[]>(scene.map(s=>[s.id,s.frontier.depthColumns.map(c=>({...c,height:s.height*s.foot}))]));
  type View={prop:FrontierProp;sprite:Sprite|null;x0:number;y0:number;x1:number;y1:number};
- const views:View[]=FRONTIER_PROPS.map(p=>{
+ const views:View[]=props.map(p=>{
   // A turned decal stays inside the circle around its pivot through its farthest corner (squashed 2:1 on screen).
   if(p.rot){const r=Math.hypot(Math.max(p.pivot[0],1-p.pivot[0])*p.width,2*Math.max(p.pivot[1],1-p.pivot[1])*p.height);return {prop:p,sprite:null,x0:p.x-r,x1:p.x+r,y0:p.y-r/2,y1:p.y+r/2};}
   const a=share(p),dy=[-p.width*a*p.shear,p.width*(1-a)*p.shear];return {prop:p,sprite:null,x0:p.x-p.width*a,x1:p.x+p.width*(1-a),y0:p.y-p.lift-p.height*p.pivot[1]+Math.min(...dy),y1:p.y-p.lift+p.height*(1-p.pivot[1])+Math.max(...dy)};});
@@ -155,16 +157,16 @@ export function createFrontier(worldStage:Container,atlas:HTMLImageElement){
   castShadows();cull='';
  }
  function setAmbient(rgb:number){ground.tint=rgb;upright.tint=rgb;}
- const stats=()=>({props:FRONTIER_PROPS.length,uprights:scene.length,columns:FRONTIER_COLUMNS.length,atlas:FRONTIER_ATLAS,loaded,failed,kit:FRONTIER_KIT_SIZE,
+ const stats=()=>({props:props.length,uprights:scene.length,columns:FRONTIER_COLUMNS.length,atlas:FRONTIER_ATLAS,loaded,failed,kit:FRONTIER_KIT_SIZE,
   companions:shadowCompanionStats(),occlusionImages:[...images.values()].filter(i=>i.complete&&i.naturalWidth>0).length,sprites:images.size,visible,
-  shadows:{casters:new Set(shadows.map(sh=>sh.view)).size,strips:shadows.reduce((n,sh)=>n+sh.strips.length,0),shown,alpha:sun.alpha,dx:+sun.dx.toFixed(4),dy:+sun.dy.toFixed(4)},assets:[...new Set(FRONTIER_PROPS.map(p=>p.asset))].sort()});
- (window as any).__FROZEN_FRONTIER__={stats,load:()=>ready,columns:()=>FRONTIER_COLUMNS,props:()=>FRONTIER_PROPS.map(p=>({asset:p.asset,zone:p.zone,u:p.u,v:p.v,x:p.x,y:p.y,layer:p.layer,solid:p.blocks.length>0,flip:p.flip,rot:p.rot,shear:p.shear})),ready,
+  shadows:{casters:new Set(shadows.map(sh=>sh.view)).size,strips:shadows.reduce((n,sh)=>n+sh.strips.length,0),shown,alpha:sun.alpha,dx:+sun.dx.toFixed(4),dy:+sun.dy.toFixed(4)},assets:[...new Set(props.map(p=>p.asset))].sort()});
+ (window as any).__FROZEN_FRONTIER__={stats,load:()=>ready,columns:()=>FRONTIER_COLUMNS,props:()=>props.map(p=>({asset:p.asset,zone:p.zone,u:p.u,v:p.v,x:p.x,y:p.y,layer:p.layer,solid:p.blocks.length>0,flip:p.flip,rot:p.rot,shear:p.shear})),ready,
   // QA: hide the scenery to measure what it costs (scripts/frozen-frontier-map/verify.mjs).
   setVisible:(on:boolean)=>{ground.visible=upright.visible=on;shade.renderable=on;}};
  return {scene,ready,place,setAmbient,setSun,stats,load:()=>ready,visibleMasksReady:()=>Promise.all([...maskJobs.values()]),
   setLegacyShadows:(on:boolean)=>{shade.renderable=on;},
   // Receiver ownership follows the same stable painter order as the color layers.
-  shadowSurfaces:():ShadowSurface[]=>FRONTIER_PROPS.filter(p=>!p.rot||p.asset==='rock-scatter').map(p=>({key:p.key,source:atlas,sourceWidth:atlas.naturalWidth,sourceHeight:atlas.naturalHeight,frame:p.frame,x:p.x,y:p.y,width:p.width,height:p.height,pivot:p.pivot,flip:p.flip,shear:p.shear,groundRotation:p.rot,groundLayer:p.layer==='ground',lift:p.lift,ground:p.ground,depth:p.layer==='ground'?p.band*1e6+p.y:p.y+(p.layer==='cap'?.05:0),cast:p.layer!=='ground'||isSlab(p)||p.asset==='rock-scatter',...(p.layer==='ground'&&p.asset!=='rock-scatter'?{constantHeight:isSlab(p)?SLABS[p.asset]*p.s:0}:{})})).sort((a,b)=>a.depth!-b.depth!),
+  shadowSurfaces:():ShadowSurface[]=>props.filter(p=>!p.rot||p.asset==='rock-scatter').map(p=>({key:p.key,source:atlas,sourceWidth:atlas.naturalWidth,sourceHeight:atlas.naturalHeight,frame:p.frame,x:p.x,y:p.y,width:p.width,height:p.height,pivot:p.pivot,flip:p.flip,shear:p.shear,groundRotation:p.rot,groundLayer:p.layer==='ground',lift:p.lift,ground:p.ground,depth:p.layer==='ground'?p.band*1e6+p.y:p.y+(p.layer==='cap'?.05:0),cast:p.layer!=='ground'||isSlab(p)||p.asset==='rock-scatter',...(p.layer==='ground'&&p.asset!=='rock-scatter'?{constantHeight:isSlab(p)?SLABS[p.asset]*p.s:0}:{})})).sort((a,b)=>a.depth!-b.depth!),
   // Footprint columns for a frontier prop in the hero's scene, else undefined.
   columns:(p:{id?:unknown})=>typeof p.id==='string'?columns.get(p.id):undefined};
 }

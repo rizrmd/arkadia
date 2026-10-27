@@ -1,3 +1,4 @@
+import {treeKind} from '../stronghold/gathering-rules';
 import catalog from './catalog.json';
 export type Asset={id:string;label:string;file:string;width:number;height:number;pivot:number[];frame?:number[];blocks:number[][];layer:string;footprint:number;columns?:{x:number;w:number;back:number;front:number}[];components?:{file:string;width:number;foot:number;dx:number;dy:number;shear:number;vertical:number}[]};
 export const OCCUPIED=catalog.occupied;
@@ -14,6 +15,7 @@ export function overlaps(a:ObjectPlacement,b:ObjectPlacement){const ra=asset(a.a
 const listeners=new Set<()=>Promise<void>>();
 export const watchEnvironment=(f:()=>Promise<void>)=>{listeners.add(f);return ()=>listeners.delete(f);};
 let collision:ReturnType<typeof columns>=[];
+export function manageHarvestableTreeCollision(){collision=active.objects.filter(p=>!treeKind(p.asset)).flatMap(columns);}
 let active:EnvironmentMap=structuredClone(EMPTY);
 export const environment=()=>active;
 export async function loadEnvironment(revision?:number){const r=await fetch('/api/environment/published'+(revision===undefined?'':'?revision='+revision),{cache:'no-store'});if(!r.ok)throw Error('Published map unavailable');active=await r.json();collision=active.objects.flatMap(columns);await Promise.all([...listeners].map(f=>f()));return active;}
