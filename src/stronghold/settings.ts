@@ -21,7 +21,7 @@ export function createSettings(o:Options){
  function button(p:Container,id:string,label:string,x:number,y:number,w:number,action:()=>void,selected=false,danger=false){
   const c=new Container({label:id,eventMode:'static',cursor:busy?'default':'pointer'});c.position.set(x,y);c.hitArea=new Rectangle(0,0,w,44);p.addChild(c);
   c.addChild(new Graphics().roundRect(0,0,w,44,6).fill(selected?0x135c68:danger?0x482323:0x20272a).stroke({color:keyboard&&focus===id?0x7bedff:selected?0xf4d686:0x9e8048,width:keyboard&&focus===id?2:1}));
-  const t=text(c,label,0,11,16,w-8,danger?0xffc9ba:0xf4ead3);t.x=(w-t.width)/2;
+  const t=text(c,label,0,0,16,w-8,danger?0xffc9ba:0xf4ead3);t.style.wordWrap=false;if(t.width>w-12)t.style.fontSize=Math.max(10,16*(w-12)/t.width);t.x=(w-t.width)/2;t.y=(44-t.height)/2;
   controls.push({id,y,h:44,action});
   c.on('pointerdown',(e:FederatedPointerEvent)=>{e.stopPropagation();keyboard=false;focus=id;});
   c.on('pointertap',(e:FederatedPointerEvent)=>{e.stopPropagation();if(!busy&&!openingTap(e))action();});return c;
@@ -35,7 +35,7 @@ export function createSettings(o:Options){
   const shade=overlay.addChild(new Graphics().rect(0,0,vw,vh).fill({color:0,alpha:.68}));shade.eventMode='static';shade.on('pointertap',(e:FederatedPointerEvent)=>{if(!openingTap(e)){if(confirm)cancel();else close();}});
   const panel=overlay.addChild(new Container({label:confirm?'Reset confirmation':'Settings panel',eventMode:'static'}));panel.position.set(x,y);panel.hitArea=new Rectangle(0,0,w,h);panel.on('pointertap',e=>e.stopPropagation());
   panel.addChild(new Graphics().roundRect(0,0,w,h,10).fill(0x0d1215).stroke({color:0xd5af4b,width:2}));
-  text(panel,confirm?'Reset progression?':'Settings',22,17,26,w-90);
+  text(panel,confirm?'Reset progression?':'Settings',22,17,confirm&&w<340?20:26,w-90);
   button(panel,'close','×',w-64,10,44,()=>confirm?cancel():close());
   viewTop=68;viewHeight=h-164;
   const viewport=panel.addChild(new Container({label:'Settings scroll area',eventMode:'static'}));viewport.position.set(18,viewTop);viewport.hitArea=new Rectangle(0,0,w-36,viewHeight);
