@@ -1,10 +1,12 @@
-import {Application,Assets,Container,Graphics,Sprite,Text,Texture} from 'pixi.js';
+import {Application,Assets,Container,Graphics,Rectangle,Sprite,Text,Texture} from 'pixi.js';
 const app=new Application();await app.init({resizeTo:window,background:'#101219',antialias:true,resolution:Math.min(devicePixelRatio,2),autoDensity:true});document.body.appendChild(app.canvas);
 const base=import.meta.env.BASE_URL;
 const manifest=await (await fetch(base+'manifest.json')).json();
 const textures:Record<string,Texture>={};await Promise.all(manifest.parts.map(async(p:{name:string})=>{textures[p.name]=await Assets.load(base+p.name+'.png');}));
 const patch=new URLSearchParams(location.search).has('section');
 await Promise.all(['smoke-veil-v1','smoke-split-curl-v1'].map(async name=>{textures[name]=await Assets.load(base+name+'.png');}));
+const aerialAtlas=await Assets.load<Texture>(base+'hand-ignition-source.png');
+const frozenFrames=[4,5,6,7,8,9,10,11].map(i=>{const x=Math.round(i%4*aerialAtlas.width/4),y=Math.round(Math.floor(i/4)*aerialAtlas.height/4);return new Texture({source:aerialAtlas.source,frame:new Rectangle(x,y,Math.round((i%4+1)*aerialAtlas.width/4)-x,Math.round((Math.floor(i/4)+1)*aerialAtlas.height/4)-y)});});
 const root=new Container(),scene=new Container(),ui=new Container();app.stage.addChild(root,ui);root.addChild(scene);
 let seed=417;function rnd(){seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;}
 // Ground-plane sector: narrow left origin, broad curved right rim. Project only ground.
@@ -68,6 +70,23 @@ smokeSites.forEach(([r,a,w,h,opacity],i)=>{
 for(let i=0;i<13;i++){const r=220+rnd()*800,a=(rnd()*2-1)*.74;at('cinders',r,a,70,47,.7,15+rnd()*30);if(i%3===0)at('glow',r,a,40,26,.25);}
 for(let i=0;i<9;i++)at(i%2?'ember':'spark',450+rnd()*550,(rnd()*2-1)*.7,13+rnd()*8,10+rnd()*8,.9,35+rnd()*55);
 for(let i=0;i<35;i++){const p=point(1020+rnd()*65,(rnd()*2-1)*half);const d=sprite(air,'fragments',115+p.x,260+p.y*.53,7+rnd()*15,5+rnd()*10,0,.5+rnd()*.35);d.zIndex=d.y;}
+// Frozen curling-tongue frames from the existing flipbook. Append after all
+// revision 4 randomness so soil, low fire, smoke and embers remain identical.
+// Feet share the existing depth order; upright quads never inherit ground squash.
+const aerialSites=[
+ [235,-.29,66,100],[355,-.52,77,120],[420,.03,78,113],
+ [505,-.30,89,139],[565,.36,84,130],[630,-.54,95,152],
+ [700,.04,100,156],[765,.51,90,140],[810,-.29,105,169],
+ [890,-.53,93,154],[930,.12,107,174],[975,.42,95,152],
+ [1015,-.14,90,148],[875,.65,76,123]
+];
+const aerialSprites=aerialSites.map(([r,a,w,h],i)=>{
+ const name='flipbook-tongue-'+i; textures[name]=frozenFrames[(i*3)%frozenFrames.length];
+ const flame=at(name,r,a,w,h,.88);flame.anchor.y=.88;
+ if(i%3===1)flame.scale.x*=-1;
+ flame.visible=!new URLSearchParams(location.search).has('baseline');
+ return flame;
+});
 let checker=false,reference=false;const bg=new Graphics();app.stage.addChildAt(bg,0);
 const target=await Assets.load(base+'latest-target.png');const ref=new Sprite(target);ref.anchor.set(.5);ref.visible=false;root.addChild(ref);
 function text(s:string,size:number,color=0xe9e2d5){return new Text({text:s,style:{fontFamily:'Arial',fontSize:size,fill:color,wordWrap:true,wordWrapWidth:330}});}
@@ -76,4 +95,4 @@ function button(label:string,fn:()=>void){const c=new Container(),g=new Graphics
 const b1=button('Checkerboard',()=>{checker=!checker;layout();});const b2=button('Compare target',()=>{reference=!reference;scene.visible=!reference;ref.visible=reference;layout();});
 function layout(){const w=app.screen.width,h=app.screen.height;bg.clear().rect(0,0,w,h).fill(0x101219);if(checker)for(let y=110;y<h-80;y+=20)for(let x=0;x<w;x+=20)bg.rect(x,y,20,20).fill((Math.floor(x/20)+Math.floor(y/20))%2?0x343841:0x252932);title.position.set(22,20);sub.position.set(22,52);note.position.set(22,h-24);const scale=Math.min((w-26)/1280,(h-190)/930);root.scale.set(scale);root.position.set((w-1280*scale)/2,105+(h-190-930*scale)/2);scene.position.y=115;if(patch){root.scale.set(Math.min((w-30)/530,(h-190)/420));root.position.set(w/2-660*root.scale.x,h/2-390*root.scale.y);}ref.position.set(640,465);ref.width=1250;ref.height=782;b1.scale.set(w<370?.9:1);b2.scale.set(w<370?.9:1);b1.position.set(w<370?12:22,h-75);b2.position.set(w<370?w-147:w-172,h-75);app.render();}
 window.addEventListener('resize',layout);layout();app.ticker.stop();
-Object.assign(window,{flameFanStatic:{parts:30,revision:4,section:patch,supplementalParts:2,static:true,groundProjection:.53,spriteCount:soil.children.length+air.children.length,ready:true,state:()=>({checker,reference,tickerStarted:app.ticker.started,upright:air.children.every(s=>s.rotation===0),usedParts:new Set([...soil.children,...air.children].map(s=>s.label)).size})}});
+Object.assign(window,{flameFanStatic:{parts:30,revision:5,baselineRevision:4,aerialFrames:[4,5,6,7,8,9,10,11],aerialCount:aerialSprites.length,section:patch,supplementalParts:2,static:true,groundProjection:.53,spriteCount:soil.children.length+air.children.length,ready:true,state:()=>({checker,reference,tickerStarted:app.ticker.started,upright:air.children.every(s=>s.rotation===0),usedParts:new Set([...soil.children,...air.children].map(s=>s.label)).size})}});
