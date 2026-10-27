@@ -548,8 +548,9 @@ export async function createHero<P extends Placed>(o:{layer:Container;lightmap:H
   anchor:()=>({x,y:y-liftAt(x,y)}),
   position:()=>({x,y}),
   face,
+  facingDirection:()=>({x:Math.sin(yaw3d),y:Math.cos(yaw3d)}),
   respawn(){x=SPAWN.x;y=SPAWN.y;back=false;vertical=false;horizontal=false;facing=1;drawn='';o.follow(x,y-liftAt(x,y),1e4);},
-  teleport(px:number,py:number){if(blocked(px,py))return false;x=px;y=py;drawn='';o.follow(x,y-liftAt(x,y),1e4);return true;},
+  teleport(px:number,py:number,smooth=false){if(blocked(px,py))return false;x=px;y=py;drawn='';if(!smooth)o.follow(x,y-liftAt(x,y),1e4);return true;},
   async setHero(id:HeroId){wanted=id;if(id===hero.id)return;const next=await load(id);if(wanted!==id)return;hero=next;({meta,atlas}=next);fit();drawn='';},
   hero:()=>hero.id,
   remove(){stopped=true;heroView.sprite.removeFromParent();heroView.sprite.destroy();}

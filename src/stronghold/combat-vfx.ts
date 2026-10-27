@@ -377,7 +377,7 @@ export function createCombatVfx(o:{
   let diff=Math.atan2(dv,du)-yawOf(aim.u,aim.v);while(diff>Math.PI)diff-=Math.PI*2;while(diff<-Math.PI)diff+=Math.PI*2;
   return Math.hypot(du,dv)<=a.radius+.38&&Math.abs(diff)<=a.spread*.5&&!clampTargetToWall(a.u,a.v,f.x,f.y).hit;
  }
- function castSkill(id:SkillId,opts:{targetU?:number;targetV?:number;forceCrit?:boolean;comboScale?:number;dashDistance?:number;skipCastCue?:boolean}={}):boolean{
+ function castSkill(id:SkillId,opts:{targetU?:number;targetV?:number;forceCrit?:boolean;comboScale?:number;dashDistance?:number;dashElapsed?:number;skipCastCue?:boolean}={}):boolean{
   notifyHeroCast(1050);
   const h=o.getHero(),run=o.getRun();
   let angle=facingScreenAngle(h);
@@ -436,7 +436,7 @@ export function createCombatVfx(o:{
      ghosts.push({id:nextId++,kind,u:h.u+dir.u*(i*(id==='rift-dash'?dashDistance/ghostCount:.3)),v:h.v+dir.v*(i*(id==='rift-dash'?dashDistance/ghostCount:.3)),angle,age:-i*40,duration:480});
     }
     if(id==='rift-dash'&&dashArt){
-     dashPath={from:{u:h.u,v:h.v},to:{u:h.u+dir.u*dashDistance,v:h.v+dir.v*dashDistance}};dashAge=0;
+     dashPath={from:{u:h.u,v:h.v},to:{u:h.u+dir.u*dashDistance,v:h.v+dir.v*dashDistance}};dashAge=opts.dashElapsed??0;
      dashArt.cast(toScreen(h.u,h.v),toScreen(dashPath.to.u,dashPath.to.v),origin.scale,o.heroCanvas);
     }else{
      if(id==='rift-dash')addSpark('arcane',h.u+dir.u*.6,h.v+dir.v*.6,angle,36);

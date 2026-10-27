@@ -92,6 +92,7 @@ type Player struct {
 	steering      bool
 	last          Vec // the walk vector of the last input applied
 	starved       int // ticks in a row without any input
+	dashTravel    *riftDashTravel
 	slotCD        [MaxSkillSlots]float64
 	flameFans     []flameFanCast
 	burnSoils     []burnSoilZone
@@ -331,6 +332,7 @@ func (w *World) Step() {
 	w.Tick++
 	for _, p := range w.Players {
 		w.walkInputs(p, dt)
+		w.stepRiftDash(p, dt)
 	}
 	for _, p := range w.Players {
 		if p.Run.Pending > 0 {
@@ -476,6 +478,9 @@ func held(p *Player) bool { return p.F.State != Idle && p.F.State != Attack }
 // the acknowledged one instead of walking them in its prediction. A swing holds none: a walking input cancels it
 // and walks, and a still one stands anyway.
 func (p *Player) HoldTicks() int {
+	if p.dashTravel != nil {
+		return int(math.Ceil((260 - p.dashTravel.age) / TickMS))
+	}
 	s := kinds[p.F.Kind]
 	switch p.F.State {
 	case Hit:
@@ -488,6 +493,9 @@ func (p *Player) HoldTicks() int {
 
 // walk moves a hero one tick along a screen-space vector, sliding along whatever blocks the full step (hero.ts).
 func (w *World) walk(p *Player, input Vec, dt float64) {
+	if p.dashTravel != nil {
+		return
+	}
 	if p.F.State == Attack && (input.X != 0 || input.Y != 0) {
 		p.F.Play(Idle)
 	}
@@ -659,6 +667,9 @@ func (w *World) enemyLevelOf(f *Fighter) int {
 }
 
 func (w *World) heroStep(p *Player, dt float64) {
+	if p.dashTravel != nil {
+		return
+	}
 	w.stepBurnSoil(p, dt)
 	w.stepFlameFans(p, dt)
 	for i := 0; i < MaxSkillSlots; i++ {
@@ -1014,7 +1025,7 @@ func (w *World) flameFanVisible(a, b Vec) bool {
 // Rift Dash is the sole manually cast Rift Runner active. Server validates equipment,
 // cooldown and finite direction, and sweeps the whole path against navigation and cliffs.
 func (w *World) manualRiftDash(p *Player, du, dv float64) bool {
-	if p.Hero != "rift-runner" || !p.F.Alive() || p.Run.Pending > 0 || math.IsNaN(du) || math.IsNaN(dv) || math.IsInf(du, 0) || math.IsInf(dv, 0) {
+	if p.dashTravel != nil || p.Hero != "rift-runner" || !p.F.Alive() || p.Run.Pending > 0 || math.IsNaN(du) || math.IsNaN(dv) || math.IsInf(du, 0) || math.IsInf(dv, 0) {
 		return false
 	}
 	idx := -1
@@ -1047,12 +1058,59 @@ func (w *World) manualRiftDash(p *Player, du, dv float64) bool {
 	if hypot(to.X-from.X, to.Y-from.Y) < .05 {
 		return false
 	}
-	px := TilePoint(to.X, to.Y)
-	p.X, p.Y = px.X, px.Y
-	p.F.Pos = to
-	p.BaseX, p.BaseY = px.X, px.Y
+	p.dashTravel = &riftDashTravel{from: from, to: to}
+	p.F.Play(Idle)
+	p.Owed = 0
+	p.BaseX, p.BaseY = p.X, p.Y
 	p.slotCD[idx] = p.Run.skillCooldownMs("rift-dash")
 	p.F.Immune = math.Max(p.F.Immune, 260)
+
+	p.Run.ManualDashes++
+	p.Run.DashFromU = from.X
+	p.Run.DashFromV = from.Y
+	p.Run.DashU = du
+	p.Run.DashV = dv
+	p.Run.DashDistance = hypot(to.X-from.X, to.Y-from.Y)
+	p.Run.DashElapsed = 0
+	turn(&p.F, (du-dv)*64, (du+dv)*32)
+	return true
+}
+
+// Dash travel is a world clock action, never multiplied by queued/replayed walk inputs.
+type riftDashTravel struct {
+	from, to Vec
+	age      float64
+}
+
+func (w *World) stepRiftDash(p *Player, dt float64) {
+	d := p.dashTravel
+	if d == nil {
+		return
+	}
+	if !p.F.Alive() {
+		p.Run.DashElapsed = 260
+		p.dashTravel = nil
+		return
+	}
+	d.age = math.Min(260, d.age+dt)
+	k := d.age / 260
+	to := Vec{d.from.X + (d.to.X-d.from.X)*k, d.from.Y + (d.to.Y-d.from.Y)*k}
+	px := TilePoint(to.X, to.Y)
+	if w.nav.Blocked(px.X, px.Y, w.Gate.Passable()) || cliff(p.X, p.Y, px.X, px.Y) {
+		p.Run.DashElapsed = 260
+		p.dashTravel = nil
+		return
+	}
+	p.X, p.Y = px.X, px.Y
+	p.F.Pos = to
+	p.BaseX, p.BaseY = p.X, p.Y
+	p.Moving = true
+	p.Run.DashElapsed = d.age
+	if d.age < 260 {
+		return
+	}
+	p.dashTravel = nil
+	du, dv := p.Run.DashU, p.Run.DashV
 	// Preserve the arrival phase-slash damage, now centered on the actual swept endpoint.
 	radius := 1.35 * p.Run.reach() * p.Run.skillAreaMultiplier("rift-dash")
 	aimX, aimY := (du-dv)*64, (du+dv)*32
@@ -1074,10 +1132,4 @@ func (w *World) manualRiftDash(p *Player, du, dv float64) bool {
 			w.dropSoul(p, e.F.Pos, e.enemyLevel())
 		}
 	}
-	p.Run.ManualDashes++
-	p.Run.DashFromU = from.X
-	p.Run.DashFromV = from.Y
-	p.Run.DashU = du
-	p.Run.DashV = dv
-	return true
 }
