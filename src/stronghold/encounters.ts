@@ -1,3 +1,4 @@
+import {skillBindings} from '../app/skill-bindings';
 import {publishActorShadowFrame,actorShadowModeRevision} from './shadow-actor-sources';
 import {registerActorShadowSprite} from './shadow-actor-batch';
 import {STRONGHOLD} from './prefabs/stronghold';
@@ -309,7 +310,7 @@ export async function createEncounters(o:{
      locked:false,
      cooldownRatio:ready?0:ratio,
      cooldownSec:ready?0:cd/1000,
-     hotkey:String(i+1),
+     hotkey:skillBindings.label(i),
     });
    }else{
     skills.push({
@@ -320,28 +321,31 @@ export async function createEncounters(o:{
      locked:true,
      cooldownRatio:0,
      cooldownSec:0,
-     hotkey:String(i+1),
+     hotkey:skillBindings.label(i),
     });
    }
   }
-  const sig=skills.map(s=>`${s.name}:${s.level}:${s.art}:${s.stateLabel}:${Math.round((s.cooldownRatio??0)*25)}`).join('|');
+  const sig=skills.map(s=>`${s.hotkey}:${s.name}:${s.level}:${s.art}:${s.stateLabel}:${Math.round((s.cooldownRatio??0)*25)}`).join('|');
   if(sig!==lastSkillSig){
    lastSkillSig=sig;
    hud.setSkills(skills);
   }
  }
 
+ skillBindings.subscribe(syncSkillBar);
  window.addEventListener('keydown',e=>{
   if(!h.alive||e.repeat)return;
   const tag=(e.target as HTMLElement|null)?.tagName;if(tag==='INPUT'||tag==='TEXTAREA')return;
   if(e.code==='KeyK'&&!e.ctrlKey&&!e.metaKey&&!e.altKey){if(skillTree.isOpen())skillTree.open(false);else openSkillTree();return;}
-  const idx=['1','2','3'].indexOf(e.key);
+  if(e.ctrlKey||e.metaKey||e.altKey)return;
+  // Blessing choices retain their numbered UI; equipped shortcuts follow preferences.
+  const idx=run.pending?['1','2','3'].indexOf(e.key):skillBindings.slot(e.code);
   if(idx<0)return;
   if(run.pending&&run.offers[idx]){
    select(run.offers[idx]);
    return;
   }
-  // Match each hero's HUD tap behavior for 1/2/3.
+  // Match each hero's HUD tap behavior for the configured slot shortcut.
   if(!run.pending){if(run.slots[idx]==='rift-dash'&&!e.shiftKey)manualDash(cursor.x,cursor.y);else openSkillTree(idx);}
  });
 

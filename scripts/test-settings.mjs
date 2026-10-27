@@ -15,4 +15,13 @@ const {resetProgression,PROGRESSION_KEYS}=await server.ssrLoadModule('/src/stron
 await resetProgression();for(const k of PROGRESSION_KEYS)if(k!=='arkodia-stronghold-v1')assert(!data.has(k));assert.equal(JSON.parse(data.get('arkodia-stronghold-v1')).gold,600);for(const k of [SETTINGS_KEY,'unrelated','arkodia.hero','arkodia.minimap.layout.v1'])assert(data.has(k));
 console.log('PASS settings validation, quality/frame independence, reset allowlist and preserved unrelated storage');
 
+const bindings=await server.ssrLoadModule('/src/app/skill-bindings.ts');
+assert.deepEqual(bindings.readBindings('null'),['Digit1','Digit2','Digit3']);
+for(const raw of ['["KeyW","KeyQ","KeyE"]','["KeyQ","KeyQ","Digit3"]','["F5","KeyQ","KeyE"]','{}'])assert.deepEqual(bindings.readBindings(raw),['Digit1','Digit2','Digit3']);
+assert.equal(bindings.skillBindings.assign(0,'KeyQ'),'');assert.equal(bindings.skillBindings.slot('KeyQ'),0);assert.equal(bindings.skillBindings.label(0),'Q');
+assert.match(bindings.skillBindings.assign(1,'KeyQ'),/already/);assert.match(bindings.skillBindings.assign(0,'KeyW'),/Reserved/);
+assert.deepEqual(bindings.readBindings(data.get(bindings.BINDINGS_KEY)),['KeyQ','Digit2','Digit3']);
+await resetProgression();assert.equal(data.get(bindings.BINDINGS_KEY),'["KeyQ","Digit2","Digit3"]');
+bindings.skillBindings.reset();assert.equal(bindings.skillBindings.slot('Digit1'),0);
+console.log('PASS binding migration, reserved/conflicting keys, input lookup, labels, persistence and progression reset preservation');
 await server.close();

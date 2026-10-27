@@ -16,7 +16,7 @@ try{
  assert(await page.evaluate(()=>window.__INVENTORY__.overlay.children.length>0));
  await click('Use');assert.equal(await page.evaluate(()=>window.__INVENTORY__.snapshot()['health-potion']),5,'full-health use retains potion');
  await click('Open Settings');assert(await page.locator('.settings-overlay:not([hidden])').count()===0,'inventory blocks Settings');
- await page.keyboard.press('Escape');await click('Open Settings');await page.getByRole('dialog',{name:'Settings',exact:true}).waitFor();await page.keyboard.press('i');assert(!(await isOpen()),'Settings blocks inventory');await page.keyboard.press('Escape');await page.keyboard.press('i');report.settingsExclusion=true;
+ await page.keyboard.press('Escape');await click('Open Settings');await page.waitForFunction(()=>window.__SETTINGS__.snapshot().open);await page.keyboard.press('i');assert(!(await isOpen()),'Settings blocks inventory');await page.keyboard.press('Escape');await page.keyboard.press('i');report.settingsExclusion=true;
  for(const [name,width,height] of [['desktop',1440,900],['portrait',390,844],['landscape',844,390],['small-landscape',667,375],['small-portrait',320,568]]){
   await page.keyboard.press('Escape');await page.setViewportSize({width,height});await page.waitForTimeout(600);await click('Open Inventory',true);assert(await isOpen());
   for(const item of ['Health Potion','Stronghold Teleport Scroll']){await click(item,true);await page.waitForTimeout(150);await page.screenshot({path:`${dir}/${tag}-${name}-${item==='Health Potion'?'potion':'scroll'}.png`});}
