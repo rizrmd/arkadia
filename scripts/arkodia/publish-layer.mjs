@@ -87,7 +87,7 @@ export async function publishRelease({name='game',tgz,check='/healthz'}){
  requireReleaseAncestor('d63f71921b6cf0c715fd4daa9423eeb96e8c73d6');
  const id=sandboxId();
  const applied=JSON.parse(run(['organization','home-files','file','--custom-sandbox',id,'--path','applied.json']).content);
- const latest=applied.map(n=>n.match(/-(?:game|gameplay-progress|settings-pixi|skill-inspection|houdini-flame-fan)-([a-f0-9]{7,40})-[a-f0-9]{12}$/)?.[1]).filter(Boolean).at(-1);
+ const latest=applied.map(n=>n.match(/-(?:game|gameplay-progress|environment-editor|settings-pixi|skill-inspection|houdini-flame-fan)-([a-f0-9]{7,40})-[a-f0-9]{12}$/)?.[1]).filter(Boolean).at(-1);
  if(latest)requireReleaseAncestor(latest);
  const {hash,parts}=await uploadReleaseParts({file:tgz,name,dir:stage,transfer:async(local,part)=>{await retryPartTransfer(()=>run(['organization','home-files','transfer','--from-member',MEMBER,'--from',path.relative(os.homedir(),local),'--to-custom-sandbox',id,'--to',`layers/${part}`]));}});
  installGateway(id);await register(id,name,{hash,parts,format:'tgz'});await restart(id,check,true);

@@ -1,10 +1,10 @@
 {
- "url": "ws://127.0.0.1:19564/ws",
+ "url": "ws://127.0.0.1:19475/ws",
  "seconds": 40,
- "room": "ZJCBS",
- "commonTicks": 716,
- "tickSpan": 808,
- "ticksWithEnemies": 716,
+ "room": "ANTVN",
+ "commonTicks": 793,
+ "tickSpan": 806,
+ "ticksWithEnemies": 793,
  "enemyIds": [
   1,
   2,
@@ -21,17 +21,35 @@
   13,
   14
  ],
- "lastTick": 809,
+ "lastTick": 808,
  "kills": {
-  "Ayu": 21,
-  "Bima": 1,
+  "Ayu": 12,
+  "Bima": 17,
   "Cheat": 0
  },
  "runs": {
   "Ayu": {
+   "level": 1,
+   "xp": 90,
+   "gold": 60,
+   "pending": 0,
+   "offers": [],
+   "skills": {
+    "rift-bolt": 1
+   },
+   "stars": 0,
+   "slots": [
+    "rift-bolt"
+   ],
+   "autoCasts": 13,
+   "lastCast": [
+    "rift-bolt"
+   ]
+  },
+  "Bima": {
    "level": 2,
-   "xp": 60,
-   "gold": 105,
+   "xp": 20,
+   "gold": 85,
    "pending": 1,
    "offers": [
     "might",
@@ -45,25 +63,7 @@
    "slots": [
     "rift-bolt"
    ],
-   "autoCasts": 10,
-   "lastCast": [
-    "rift-bolt"
-   ]
-  },
-  "Bima": {
-   "level": 1,
-   "xp": 10,
-   "gold": 5,
-   "pending": 0,
-   "offers": [],
-   "skills": {
-    "rift-bolt": 1
-   },
-   "stars": 0,
-   "slots": [
-    "rift-bolt"
-   ],
-   "autoCasts": 13,
+   "autoCasts": 12,
    "lastCast": [
     "rift-bolt"
    ]
@@ -86,9 +86,9 @@
  "heroesHurt": false,
  "cheatMaxStepPx": 10.18,
  "heroStepPx": 6,
- "snapshotBytes": 3519,
+ "snapshotBytes": 3943,
  "ackA": 798,
  "inputsA": 798,
- "pausedAtTick": 811,
+ "pausedAtTick": 810,
  "ok": true
 }
