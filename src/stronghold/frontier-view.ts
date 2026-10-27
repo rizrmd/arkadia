@@ -150,14 +150,14 @@ export function createFrontier(worldStage:Container,atlas:HTMLImageElement){
  }
  // The sun (daylight.ts sunAt) moves in steps; each step re-lays every shadow strip (a few hundred props, cheap).
  function setSun(s:Sun){
-  const key=s.alpha?[s.alpha,s.dx,s.dy].map(n=>n.toFixed(3)).join():'none';if(key===sunKey)return;sunKey=key;sun={alpha:s.alpha,dx:s.dx,dy:s.dy};
+  const key=s.alpha?[s.alpha,s.dx,s.dy].map(n=>n.toFixed(4)).join():'none';if(key===sunKey)return;sunKey=key;sun={alpha:s.alpha,dx:s.dx,dy:s.dy};
   shadeFilter.matrix=[0,0,0,0,20/255, 0,0,0,0,28/255, 0,0,0,0,44/255, 0,0,0,s.alpha,0];
   castShadows();cull='';
  }
  function setAmbient(rgb:number){ground.tint=rgb;upright.tint=rgb;}
  const stats=()=>({props:FRONTIER_PROPS.length,uprights:scene.length,columns:FRONTIER_COLUMNS.length,atlas:FRONTIER_ATLAS,loaded,failed,kit:FRONTIER_KIT_SIZE,
   companions:shadowCompanionStats(),occlusionImages:[...images.values()].filter(i=>i.complete&&i.naturalWidth>0).length,sprites:images.size,visible,
-  shadows:{casters:new Set(shadows.map(sh=>sh.view)).size,strips:shadows.reduce((n,sh)=>n+sh.strips.length,0),shown,alpha:sun.alpha,dx:+sun.dx.toFixed(3),dy:+sun.dy.toFixed(3)},assets:[...new Set(FRONTIER_PROPS.map(p=>p.asset))].sort()});
+  shadows:{casters:new Set(shadows.map(sh=>sh.view)).size,strips:shadows.reduce((n,sh)=>n+sh.strips.length,0),shown,alpha:sun.alpha,dx:+sun.dx.toFixed(4),dy:+sun.dy.toFixed(4)},assets:[...new Set(FRONTIER_PROPS.map(p=>p.asset))].sort()});
  (window as any).__FROZEN_FRONTIER__={stats,load:()=>ready,columns:()=>FRONTIER_COLUMNS,props:()=>FRONTIER_PROPS.map(p=>({asset:p.asset,zone:p.zone,u:p.u,v:p.v,x:p.x,y:p.y,layer:p.layer,solid:p.blocks.length>0,flip:p.flip,rot:p.rot,shear:p.shear})),ready,
   // QA: hide the scenery to measure what it costs (scripts/frozen-frontier-map/verify.mjs).
   setVisible:(on:boolean)=>{ground.visible=upright.visible=on;shade.renderable=on;}};
