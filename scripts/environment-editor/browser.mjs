@@ -1,11 +1,11 @@
 import {launchOptions} from '../typography/browser.mjs';
 import {chromium} from 'playwright';import {createServer} from 'vite';import {spawn} from 'node:child_process';import fs from 'node:fs/promises';import assert from 'node:assert/strict';
-const dir=await fs.mkdtemp('/home/dev/releases/editor-test-');const server=spawn('/home/dev/releases/environment-editor-test',[],{env:{...process.env,PORT:'8893',SITE_DIR:'public',GAME_SAVE_DIR:dir},stdio:['ignore','pipe','pipe']});let logs='';server.stdout.on('data',x=>logs+=x);server.stderr.on('data',x=>logs+=x);
+const dir=await fs.mkdtemp('/home/dev/releases/editor-test-');const server=spawn('/home/dev/releases/environment-editor-test',[],{env:{...process.env,PORT:'8893',SITE_DIR:dir,GAME_SAVE_DIR:dir},stdio:['ignore','pipe','pipe']});let logs='';server.stdout.on('data',x=>logs+=x);server.stderr.on('data',x=>logs+=x);
 const vite=await createServer({configFile:false,server:{port:5193,host:'127.0.0.1',proxy:{'/api':'http://127.0.0.1:8893'}}});await vite.listen();
 const browser=await chromium.launch(launchOptions());const errors=[];const page=await browser.newPage({viewport:{width:1280,height:900}});page.setDefaultTimeout(30000);page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text())});
 try{
  await page.goto('http://127.0.0.1:5193/public/environment-editor/index.html');await page.waitForFunction(()=>window.__ENVIRONMENT_EDITOR__?.().notice==='Published map loaded',{timeout:60000});
- await page.waitForTimeout(3000);
+ await page.waitForTimeout(1500);
  console.log('loaded',await page.evaluate(()=>window.__ENVIRONMENT_EDITOR__()));
  await page.screenshot({timeout:60000,path:'docs/environment-editor/desktop-initial.png'});
  // Native access field; no DOM form controls.

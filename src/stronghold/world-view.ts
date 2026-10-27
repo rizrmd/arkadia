@@ -89,7 +89,6 @@ export async function createWorldView(
  await frontier.ready;
  const authoredStage=new Container();authoredStage.zIndex=10.65;worldStage.addChild(authoredStage);
  let authoredScene=await renderObjects(authoredEnvironment(),authoredStage);
- watchEnvironment(async()=>{authoredStage.removeChildren().forEach(c=>c.destroy());authoredScene=await renderObjects(authoredEnvironment(),authoredStage);hero?.setScene(scene());requestDraw();});
  const frontierScene=frontier.scene as unknown as typeof reliefScene;
  const alphaPrepared=new WeakSet<HTMLImageElement>(),alphaJobs=new Set<Promise<void>>();
  const prepareAlpha=(placed:(typeof frontierScene)[number])=>{
@@ -258,6 +257,8 @@ if((p as any).authored)return authoredColumns((p as any).authored).map(c=>({...c
  await milestone(925,'Preparing the hero');
  const hero=await createHero<(typeof objects)[number]>({hero:pick,layer:worldStage,lightmap:lighting.lightmap,surface,footprint:p=>p.id==='gate'?gateFootprint():footprint(p),sun:lighting.sun,direction:()=>encounters?encounters.steer(input()):input(),follow,pose:()=>encounters?.pose()??null,
   drive:()=>{if(!net?.active())return null;const p=net.position(),me=net.me();return {...p,face:direction(),look:me&&me.st!=='idle'?{facing:me.fc,back:me.bk,vertical:me.vt}:null};}});hero.setScene(scene());
+ watchEnvironment(async()=>{authoredStage.removeChildren().forEach(c=>c.destroy());authoredScene=await renderObjects(authoredEnvironment(),authoredStage);hero?.setScene(scene());requestDraw();});
+
  await milestone(930,'Preparing combat');
  encounters=await createEncounters({renderer:rt.app.renderer,worldStage,uiStage,frames,hudCallbacks,showCoop:Boolean(net),cancelRoute:()=>walker?.cancel(),hero,direction:input,net});
  const gateHealthBar=worldStage.addChild(new GateHealthBar(frames));

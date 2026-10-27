@@ -64,7 +64,7 @@ type Map struct {
 
 func Empty() Map { return Map{Schema: 1, Name: "Arkodia environment", Objects: []Object{}} }
 func (m Map) Validate() error {
-	if m.Schema != 1 || len(m.Objects) > 1000 || len(m.Name) > 80 {
+	if m.Schema != 1 || m.Revision < 0 || m.Objects == nil || len(m.Objects) > 1000 || len(m.Name) > 80 {
 		return fmt.Errorf("unsupported schema or map size")
 	}
 	ids := map[string]bool{}
