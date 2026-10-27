@@ -43,15 +43,15 @@ export class PlayerConsole extends Container {
  private isPortrait = false;
  private lastHeroName = '';
  private lastLevel = 1;
- private lastValues: [number, number][] = [[100, 100], [0, 100]];
+ private lastValues: [number, number][] = [[100, 100], [100, 100], [0, 100]];
  private key = '';
 
  constructor(private frames: FrameSet) {
   super();
-  const labels = ['HP', 'XP'];
-  [0xf71325, 0xffc51c].forEach((color, i) => {
+  const labels = ['HP', 'GATE', 'XP'];
+  [0xf71325, 0x00d5ed, 0xffc51c].forEach((color, i) => {
    const plate = this.addChild(new Graphics());
-   const texture = frames.texture(['console-hp-material', 'console-xp-material'][i]);
+   const texture = frames.texture(['console-hp-material', 'console-xp-material', 'console-xp-material'][i]);
    const track = this.addChild(new Sprite(texture));
    track.tint = 0x645344;
    const trackMask = this.addChild(new Graphics());
@@ -59,6 +59,7 @@ export class PlayerConsole extends Container {
    const fill = this.addChild(new Sprite(texture));
    const fillMask = this.addChild(new Graphics());
    fill.mask = fillMask;
+   if (i === 1) fill.tint = 0x00d5ed;
    const trim = this.addChild(new Graphics());
    const value = this.addChild(new MsdfText({ ...ROLES['hud-value'], font: 'console', size: i === 1 ? 14.5 : 16.5, fill: 0xfff8e7, outline: OUTLINE }, ''));
    const label = this.addChild(new MsdfText({ ...ROLES['hud-name'], font: 'console', size: 13, fill: 0xfff4db, outline: OUTLINE }, labels[i]));
@@ -126,10 +127,10 @@ export class PlayerConsole extends Container {
 
   this.nameText.visible = !p;
   this.rows.forEach((row, i) => {
-   const texture=this.frames.texture(p ? ['mobile-hp-material','mobile-xp-material'][i] : ['console-hp-material','console-xp-material'][i]);
+   const texture=this.frames.texture(p ? ['mobile-hp-material','mobile-xp-material','mobile-xp-material'][i] : ['console-hp-material','console-xp-material','console-xp-material'][i]);
    row.track.texture=texture;row.fill.texture=texture;
-   const y = p ? [43, 92][i] : [76, 112][i];
-   const h = p ? 33 : (i === 1 ? 20 : 24);
+   const y = p ? [35, 78, 121][i] : [68, 101, 132][i];
+   const h = p ? 30 : (i === 0 ? 24 : 20);
    const path = [left, y + 1.5, trackRightTop, y + 1.5, trackRightBot, y + h - 1.5, bottomLeft, y + h - 1.5];
 
    row.y = y;
@@ -159,7 +160,7 @@ export class PlayerConsole extends Container {
    row.trim.clear();
    row.trim.poly(path).stroke({ color: row.color, width: 1 });
    row.trim.moveTo(left + 1, y + 2).lineTo(trackRightTop - 2, y + 2).stroke({ color: 0xfff9e4, width: 0.6, alpha: 0.65 });
-   if (i === 1) {
+   if (i === 2) {
     const tickEnd = p ? 290 : 468;
     const tickStep = p ? 26 : 33;
     for (let x = 256; x < tickEnd; x += tickStep) {
