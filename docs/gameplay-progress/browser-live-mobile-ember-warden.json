@@ -1,0 +1,58 @@
+{
+  "base": "https://ark-whachat.fural.space",
+  "cases": [
+    {
+      "name": "mobile-ember-warden",
+      "initial": {
+        "level": 11,
+        "xp": 0,
+        "gold": 5,
+        "hp": 0,
+        "maxHp": 120,
+        "elapsedMs": 1097.2999999999956,
+        "skills": {
+          "flame-fan": 3,
+          "cinder-step": 1,
+          "might": 5,
+          "vitality": 1
+        },
+        "gate": {
+          "hp": 43,
+          "max": 160
+        },
+        "souls": 1
+      },
+      "checks": [
+        "paused Settings preserves all simulation state",
+        "two exact refreshes",
+        "full browser close/relaunch with persistent profile",
+        "offline gameplay/effect/cooldown durations unchanged",
+        "gold and dead-enemy reward markers unchanged",
+        "uncollected souls retained",
+        "ranks/passives/pending cards/gate restored",
+        "damaged HP retained",
+        "active skill cooldown and in-flight effects retained"
+      ],
+      "reloads": [
+        {
+          "exact": true,
+          "elapsedMs": 1301.2999999999956,
+          "remainingCooldowns": {
+            "flame-fan": 1185,
+            "cinder-step": 890
+          }
+        },
+        {
+          "exact": true,
+          "elapsedMs": 1654.6999999999898,
+          "remainingCooldowns": {
+            "flame-fan": 831.6000000000058,
+            "cinder-step": 536.6000000000058
+          }
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "method": "Persistent Chromium userDataDir; actual complete browser termination/relaunch, two reloads, snapshots captured before simulation starts behind loading; real blessing choices, enemies, kills, damaged HP/death and paused effect timers."
+}

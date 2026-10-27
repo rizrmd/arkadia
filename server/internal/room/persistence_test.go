@@ -72,8 +72,12 @@ func TestDurableRoomReopen(t *testing.T) {
 	json.Unmarshal(raw, &saved)
 	saved["Version"] = 99
 	bad, _ := json.Marshal(saved)
-	os.WriteFile(filepath.Join(dir, r.Code+".json"), bad, 0600)
-	if err = NewRegistry(nav, time.Minute, 10).EnablePersistence(dir); err == nil {
+	// Isolate corrupted input from the live room goroutines, whose final save is asynchronous.
+	corruptDir := t.TempDir()
+	if err = os.WriteFile(filepath.Join(corruptDir, r.Code+".json"), bad, 0600); err != nil {
+		t.Fatal(err)
+	}
+	if err = NewRegistry(nav, time.Minute, 10).EnablePersistence(corruptDir); err == nil {
 		t.Fatal("future checkpoint accepted")
 	}
 }
