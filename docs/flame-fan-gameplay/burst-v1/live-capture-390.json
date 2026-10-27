@@ -1,0 +1,31 @@
+{
+  "passed": true,
+  "base": "https://ark-whachat.fural.space",
+  "rank": 5,
+  "burst": {
+    "u": 26,
+    "v": 26,
+    "yaw": 0.7853981633974483,
+    "radius": 7.5680000000000005,
+    "rank": 5,
+    "age": 0.18,
+    "layers": 5,
+    "opacity": 0.84,
+    "bloom": 0,
+    "height": 0,
+    "burnSoil": true,
+    "burnDurationMs": 1000,
+    "burnOpacity": 0.8200000000000001,
+    "burnHalfAngle": 0.9424777960769379,
+    "soilSource": "approved-static-revision-6",
+    "material": "approved-projecting-burst-v1",
+    "asset": "/flame-fan-burst-candidate/v1/flame-burst-v1.png",
+    "burstReach": 1,
+    "burstOpacity": 0.84,
+    "backend": "pixi-render-texture",
+    "maskedSamples": 466,
+    "projectiles": 0
+  },
+  "method": "Actual production bundle with existing diagnostic target/rank seeding. Browser clock advances normal game frames then pauses only to capture; no testStep hook or game-code transform.",
+  "errors": []
+}

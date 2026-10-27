@@ -18,7 +18,7 @@ HUD touch/click and the configured skill shortcut open native Pixi inspection/eq
 
 ## Authority and persistence
 
-Solo captures rank, radius, damage and geometry when the cast starts. Co-op now also queues damage for the 420 ms release (quantized by the existing 20 Hz server) instead of applying it at cast start. The server captures origin, aim, rank and damage, owns hits/rewards, and sends cast geometry for local visual replay. Movement or upgrades during windup cannot change a pending hit. Client hit/reward claims are not accepted.
+Solo captures rank, radius, damage multiplier and geometry when the cast starts. Co-op now also queues damage for the 420 ms release (quantized by the existing 20 Hz server) instead of applying it at cast start. The server captures origin, aim, rank and damage, owns hits/rewards, and sends cast geometry for local visual replay. Movement or upgrades during windup cannot change a pending hit. Client hit/reward claims are not accepted.
 
 Pending authoritative casts survive server checkpoints without advancing offline or duplicating damage. Active client bursts save/restore their remaining phase; old saves without burst state retain the previous Burn Soil reconstruction path. Existing complete gameplay persistence is merged and preserved.
 
@@ -26,8 +26,14 @@ Pending authoritative casts survive server checkpoints without advancing offline
 
 `local-game-1440.json` and `local-game-390.json` run actual combat/render modules with a test-only controlled simulation clock. They cover five ranks/directions, three forward targets, rear/range exclusion, original radius, no projectiles, animation, rank-gated soil, five events and expiry without unapproved tick damage. The test clock is never shipped.
 
-`runtime-local-1440.json` verifies the unmodified frame loop, five ranks, and desktop inspection/equip/auto-cast. `live-*.json` records public normal-runtime checks, real keyboard/touch inspection, pointer equip, and normal auto-casts at every rank. Debugger pauses are only for representative captures. Existing diagnostics seed eligible ranks and targets for repeatability; this is not a claim of organically earning every rank or physical-device performance.
+`runtime-local-1440.json` verifies the unmodified frame loop, five ranks, and desktop inspection/equip/auto-cast. `live-*.json` records public normal-runtime checks, real keyboard/touch inspection, pointer equip, and normal auto-casts at every rank. Desktop captures use debugger pauses; the phone capture uses a paused browser clock. Gameplay assertions run separately with the normal production frame loop. Existing diagnostics seed eligible ranks and targets for repeatability; this is not a claim of organically earning every rank or physical-device performance.
 
 Go tests cover all-rank sectors, no early release, immutable cast geometry/rank/damage, no duplicate hit, checkpoint resume, soil gates and pending balance. GPU checks cover source/fallback parity, zero extra WebGL contexts, zero steady-state flame uploads and the three-burst cap. Two Ember clients verify identical authoritative snapshots and rejection of forged damage/rewards.
 
 The additive cumulative game release uses `scripts/flame-fan-gameplay/deploy.sh`, the normal shared lock and existing versioned `publishRelease` pipeline. Compiled client/server, approved asset and evidence ship while existing artwork/players remain. `release.json` identifies the runtime commit; deployment and public verification are recorded separately.
+
+## Public completion evidence
+
+The canonical public site is https://ark-whachat.fural.space. Both `live-1440.json` and `live-390.json` pass five ranks, actual keyboard/touch upgrade selection, inspection, explicit Equip swapping, normal auto-casts, three forward hits, rear/range exclusion, no projectiles, soil event gates and zero page/asset errors. `coop-live.json` verifies two Ember clients against the public authoritative server. `live-capture-390.json` documents the separately paused phone capture.
+
+Feature deployment df146172 is preserved in the later cumulative runtime 8b863f91. The current server build and client manifest match and descend from the feature commit; current client assets and the original approved sprite are verified. The `arkodia.online` route had intermittent transport/502 failures in this sandbox; canonical-site checks completed without restarting the healthy gateway. No physical-device performance benchmark is claimed.
