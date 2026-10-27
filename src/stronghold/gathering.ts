@@ -54,10 +54,10 @@ export async function createGathering(o:Options){
   for(let n=0;n<80;n++){const a=n*.7,r=1+n*.12,p={u:anchor.u+Math.cos(a)*r,v:anchor.v+Math.sin(a)*r};if(clear(p)&&trees.every(t=>state.trees[t.id].down||distance(p,state.trees[t.id])>2))return p;}return null;
  }
  for(const spec of specs)if(!state.animals[spec.id]){const p=animalPoint(spec.species);if(p)state.animals[spec.id]={...p,cycle:0,readyDay:state.day,status:'alive'};}
- const atlasTex=await Assets.load<Texture>('/wildlife/gathering-atlas.webp');
+ const atlasTex=await Assets.load<Texture>('/wildlife/imagegen-atlas.png');
  const clipNames=['deer-walk','deer-run','crocodile-crawl','crocodile-swim'];
  const clipDurations=[1600,800,2400,2000];
- const frames=clipNames.map((_,row)=>Array.from({length:16},(_,i)=>new Texture({source:atlasTex.source,frame:new Rectangle(i*128,row*128,128,128)})));
+ const frames=clipNames.map((_,row)=>Array.from({length:8},(_,i)=>new Texture({source:atlasTex.source,frame:new Rectangle(i*256,row*256,256,256)})));
  const animalViews=specs.map((spec,i)=>{const sprite=new Sprite(frames[i===0?0:2][0]),loot=new Container(),g=new Graphics();meat(g,-16,-18,1.2);loot.addChild(g);const label=new Text({text:`${WILDLIFE_RULES[spec.species].food} Food`,style:{fontFamily:'Georgia',fontSize:12,fill:0xffdfad,stroke:{color:0x151c21,width:3}}});label.anchor.set(.5);label.y=-27;loot.addChild(label);sprite.anchor.set(.5,.82);animalsLayer.addChild(sprite,loot);return {...spec,sprite,loot};});
  let scene:any[]=[];
  function refreshScene(){
@@ -94,7 +94,7 @@ export async function createGathering(o:Options){
   const {x,y,scale}=origin;
   for(const t of trees){const a=state.trees[t.id],p=tilePoint(a.u,a.v);t.sprite.visible=!a.down&&x+(p.x+t.width)*scale>0&&x+(p.x-t.width)*scale<innerWidth&&y+p.y*scale>0&&y+(p.y-t.height)*scale<innerHeight;t.sprite.position.set(x+p.x*scale,y+p.y*scale);t.sprite.width=t.width*scale;t.sprite.height=t.height*scale;t.sprite.zIndex=p.y;}
   const clips=specs.map(s=>s.species==='deer'?(distance(heroTile(),state.animals[s.id]??GATE)<6?'deer-run':'deer-walk'):(environment().objects.some(p=>p.asset.startsWith('pond-')&&distance({u:p.u-ORIGIN.u,v:p.v-ORIGIN.v},state.animals[s.id]??GATE)<5)?'crocodile-swim':'crocodile-crawl'));
-  for(const v of animalViews){const a=state.animals[v.id];const clip=clipNames.indexOf(clips[v.species==='deer'?0:1]);v.sprite.texture=frames[clip][Math.floor(animationMs/clipDurations[clip]*16)%16];v.sprite.visible=a?.status==='alive';v.loot.visible=a?.status==='loot';if(!a)continue;const p=tilePoint(a.u,a.v);v.sprite.position.set(x+p.x*scale,y+p.y*scale);v.sprite.width=v.sprite.height=(v.species==='deer'?125:155)*scale;v.loot.position.copyFrom(v.sprite.position);v.loot.scale.set(scale);v.sprite.zIndex=p.y;}
+  for(const v of animalViews){const a=state.animals[v.id];const clip=clipNames.indexOf(clips[v.species==='deer'?0:1]);v.sprite.texture=frames[clip][Math.floor(animationMs/clipDurations[clip]*8)%8];v.sprite.visible=a?.status==='alive';v.loot.visible=a?.status==='loot';if(!a)continue;const p=tilePoint(a.u,a.v);v.sprite.position.set(x+p.x*scale,y+p.y*scale);v.sprite.width=v.sprite.height=(v.species==='deer'?125:155)*scale;v.loot.position.copyFrom(v.sprite.position);v.loot.scale.set(scale);v.sprite.zIndex=p.y;}
  }
  const api={step,target,impact,place,render,day:()=>state.day,scene:()=>scene,version:()=>sceneVersion,chopping:()=>!!active,snapshot:()=>({resources:structuredClone(resources),state:structuredClone(state),active,chopMs,error,trees:trees.map(t=>({id:t.id,kind:t.kind,anchor:t.anchor,...state.trees[t.id]})),animals:specs.map(s=>({...s,...state.animals[s.id]})),ui:{x:hud.x,y:hud.y,width:252,height:90}})};
  refreshScene();updateUi();(window as any).__GATHERING__=api;return api;

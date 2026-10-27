@@ -46,3 +46,7 @@ Initial full-game wall-time duration checks exposed software rendering delays an
 ### Production recovery
 
 The first release registered successfully but could not apply: production's boot workload had already been OOM-killed, leaving a stale gateway socket. Incident and boot logs were inspected before any restart. PNG-to-WebP encodes previously ran concurrently across unrelated image paths; native encoders retain multiple full-resolution buffers. The release now serializes these conversions, serves originals for images above 8 megapixels, and gives the Go child a 256 MiB soft memory target and two runtime workers. These are delivery safeguards; original art and game saves are preserved.
+
+
+## Superseding wildlife visuals
+The model-baked atlas described above is retired by task #GYECL. Production now loads imagegen PNG sheets; see `docs/wildlife-sprites/README.md`. Historical standalone motion previews remain archived. Gameplay rules and persistence are unchanged.

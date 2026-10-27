@@ -97,7 +97,7 @@ mkdir -p "$STAGE/site/skill-tree"; cp docs/skill-tree/*.webp docs/skill-tree/*.p
 cp -R public/shadow-audit "$STAGE/site/shadow-audit"
 node scripts/shadow-audit/stage-sources.mjs "$STAGE/site"
 # Resource tools and approved wildlife models load on demand.
-mkdir -p "$STAGE/site/wildlife"; cp public/wildlife/gathering-atlas.webp "$STAGE/site/wildlife/"
+mkdir -p "$STAGE/site/wildlife"; cp public/wildlife/imagegen-atlas.png "$STAGE/site/wildlife/"
 mkdir -p "$STAGE/site/inventory"; cp public/inventory/axe.svg "$STAGE/site/inventory/"
 # Settings audio icons load only when the menu opens.
 mkdir -p "$STAGE/site/ui/settings"; cp public/ui/settings/*.webp "$STAGE/site/ui/settings/"
