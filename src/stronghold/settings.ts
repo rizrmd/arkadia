@@ -80,7 +80,7 @@ export function createSettings(o:Options){
   const contentControls=controls.slice(1);for(const c of contentControls)c.y+=viewTop-scroll;
   if(confirm){const bw=(w-50)/2;button(panel,'cancel','Cancel',24,h-88,bw-6,cancel);button(panel,'confirm-reset',busy?'Resetting…':'Reset Progression',26+bw,h-88,bw-6,()=>void reset(),false,true);}
   else button(panel,'resume','Resume Game',26,h-88,w-52,close,true);
-  text(panel,message||(maxScroll?'Scroll or swipe for more settings.':mobile()?'':'Esc to close'),28,h-45,12,w-56,0xe2c793);
+  text(panel,message||(maxScroll?'Scroll or swipe for more settings.':mobile()?'':'Esc to close'),28,h-54,12,w-56,0xe2c793);
   o.redraw();
  }
  let drag:null|{key:'music'|'soundEffects';x:number;width:number;pointer:number}=null;
