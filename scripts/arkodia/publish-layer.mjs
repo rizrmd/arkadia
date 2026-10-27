@@ -14,7 +14,7 @@ export const BOOT=`cd "$HOME"
 if [ ! -f www/.seeded ] && ls seed/www.tgz.* >/dev/null 2>&1; then rm -rf www builds coop && cat seed/www.tgz.* | tar -xz && touch www/.seeded && rm -rf seed; fi
 exec node gateway.mjs
 `;
-export function sandboxId(){const s=run(['sandboxes','list']),list=Array.isArray(s)?s:s.sandboxes||s.items||[],b=list.find(x=>x.name===SANDBOX);if(!b)throw Error(`Custom sandbox ${SANDBOX} not found`);return b.id;}
+export function sandboxId(){const s=run(['sandboxes','list']),list=Array.isArray(s)?s:s.sandboxes||s.items||[],b=list.find(x=>x.slug===SANDBOX)||list.find(x=>x.name===SANDBOX);if(!b)throw Error(`Custom sandbox ${SANDBOX} not found`);return b.id;}
 const stage=path.join(os.homedir(),'releases/arkodia-layers');
 
 export async function retryPartTransfer(transfer,wait=ms=>new Promise(r=>setTimeout(r,ms))){
