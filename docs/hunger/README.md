@@ -14,3 +14,9 @@ Hunger is shared with the existing shared gathering state across heroes. Legacy 
 - Existing gathering, economy, inventory, gameplay persistence and Go checks remain required.
 
 Release uses `scripts/hunger/deploy.sh`, the supported additive publisher, the shared deployment lock and the latest-game ancestor guard. Existing art/review routes, map data, gameplay persistence, cliffs, settings, skills and resources remain cumulative.
+
+## Shipped evidence
+
+Production applied `1793109682660-game-a742c8ec-c54e3eca896e`; health reports `a742c8ec90006c020edcfa66c4a158d60d805c35`. All 46 public release files/routes passed verification, with JavaScript bytes checked by SHA-256 and losslessly converted PNG checked by visible RGBA. The final merged source passed the full local gameplay browser run and the real Pixi mouse/touch controller suite.
+
+Public-domain browser startup encountered QUIC and Cloudflare 520 asset transport errors. Disabling QUIC diagnosed the transport failure; the historical sandbox alias returned 404. These are retained as failed browser attempts, not claimed as passes. The meaningful validation alternative is final-source full local gameplay, real desktop/mobile pointer input and persistence, plus exact production build/asset checks. No production restart was required for these browser failures.
