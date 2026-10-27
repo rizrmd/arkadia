@@ -1,5 +1,5 @@
 import {tilePoint} from './terrain';
-import {PX_PER_METER,type ReliefFeature} from '../world/relief';
+import {PX_PER_METER,hillArtBounds,type ReliefFeature} from '../world/relief';
 
 // The core atlas region is a complete, alpha-feathered hill with its own trail,
 // snow caps and rock shoulders. Compositing the extracted modules over that core
@@ -21,11 +21,12 @@ export function naturalHillArt(f:ReliefFeature,snow:HTMLImageElement,rock:HTMLIm
   return {u,v,g,h,t:{x:g.x,y:g.y-h},hull:{x:g.x,y:g.y-h*backT}};
  });
  const pad=32;
- const gMinX=Math.min(...ring.map(p=>p.g.x));
- const gMaxX=Math.max(...ring.map(p=>p.g.x));
+ const bounds=hillArtBounds(f),origin=tilePoint(0,0);
+ const gMinX=bounds.left+origin.x;
+ const gMaxX=bounds.right+origin.x;
  const gMinY=Math.min(...ring.map(p=>p.g.y));
- const gMaxY=Math.max(...ring.map(p=>p.g.y));
- const hullMinY=Math.min(...ring.map(p=>p.hull.y));
+ const gMaxY=bounds.bottom+origin.y;
+ const hullMinY=bounds.top+origin.y;
 
  const left=Math.floor(gMinX)-pad;
  const right=Math.ceil(gMaxX)+pad;

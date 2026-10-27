@@ -1,0 +1,17 @@
+{
+  "at": "2026-10-27T05:29:20.929Z",
+  "health": {
+    "ok": true,
+    "protocol": 1,
+    "rooms": 0
+  },
+  "liveEntry": [
+    "/assets/index-Bs5NfFSL.js"
+  ],
+  "obsoletePersistenceManifest": "d63f71921b6cf0c715fd4daa9423eeb96e8c73d6",
+  "liveMain": "/assets/main-C7aJZNw4.js",
+  "liveMainHash": "e971bd9d2f8439d67294fdc6efad1cb019ab5df50c2b7e6663612fc22ebf7bec",
+  "liveHasFullSaveError": false,
+  "expectedPersistenceCommit": "d63f71921b6cf0c715fd4daa9423eeb96e8c73d6",
+  "rootCause": "Later feat/stronghold release did not descend from complete gameplay persistence; obsolete manifest remained additively while active entry and Go binary were replaced."
+}

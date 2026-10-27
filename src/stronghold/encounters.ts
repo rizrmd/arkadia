@@ -1,4 +1,6 @@
+import {detourDirection,navClear,type Detour} from './detour';
 import {skillBindings} from '../app/skill-bindings';
+import {gameplayStore,GAMEPLAY_ERROR,setInventoryGameplayCapture,nearestResumePosition} from './gameplay-save';
 import {publishActorShadowFrame,actorShadowModeRevision} from './shadow-actor-sources';
 import {registerActorShadowSprite} from './shadow-actor-batch';
 import {STRONGHOLD} from './prefabs/stronghold';
@@ -28,7 +30,7 @@ import {characters,DEFAULT_HERO,heroInfo,type HeroId} from './heroes';
 import {createCombatVfx,facingScreenAngle,SKILL_CATALOG,type SkillId} from './combat-vfx';
 import {measureTracelogPhase} from './tracelog';
 import {SkillTree,nodeForSkill,emberNodeForSkill} from './skill-tree';
-import {restoreSkillUnlocks,saveSkillUnlocks,SKILL_SAVE_ERROR} from './skill-unlocks';
+import {restoreSkillUnlocks,SKILL_SAVE_ERROR} from './skill-unlocks';
 
 const SCALE=DISPLAY/1.1;
 const HERO_REACH=STATS.hero.reach*SCALE,ENEMY_REACH=STATS.revenant.reach*SCALE,SIDE=.35*SCALE,SPACING=.72*SCALE;
@@ -82,13 +84,15 @@ export async function createEncounters(o:{
  const currentHeroId=():HeroId=>o.hero.hero?.()??DEFAULT_HERO;
  const start=o.hero.position(),h=new Fighter('hero',heroMeta.clips,toTile(start.x,start.y).u,toTile(start.x,start.y).v);
  let maxHp=STATS.hero.hp,kills=0,spawnTimer=0,ambient='255,255,255',origin={x:0,y:0,scale:1};
- let skillSaveMessage='';
+ let skillSaveMessage='',saveFault='',saveBlocked=false;
+ let persistence:ReturnType<typeof gameplayStore>|null=null;
+ if(!o.showCoop)try{persistence=gameplayStore(localStorage,currentHeroId());}catch(e){saveFault=(e as Error).message;saveBlocked=true;}
  const soloRun=(hero:HeroId)=>{
   if(o.showCoop)return fresh(hero); // Diagnostic co-op stays server-authoritative and temporary.
   try{return restoreSkillUnlocks(localStorage,hero);}catch(error){skillSaveMessage=error instanceof Error?error.message:SKILL_SAVE_ERROR;return fresh(hero);}
  };
  let runHero=currentHeroId();
- let run=soloRun(runHero),baseHp=100,levelUpPulseMs=0,regenAccum=0,lastCoopAutoCasts=0;
+ let run:Progression=persistence?.initial?.run??soloRun(runHero),baseHp=100,levelUpPulseMs=0,regenAccum=0,lastCoopAutoCasts=0;
  const local:Foe[]=[],spawns:{u:number;v:number;m:number}[]=[];let foes=local,online=false,heroPlays=-1;
 
  // Revenant layers + Overhead bars
@@ -155,8 +159,8 @@ export async function createEncounters(o:{
   if(online)return 'Skills can be changed in solo play';
   const next=structuredClone(run);
   if(!equip(next,slot,id,currentHeroId()))return 'That skill cannot go in this slot';
-  try{if(!o.showCoop)saveSkillUnlocks(localStorage,currentHeroId(),next);}catch{return SKILL_SAVE_ERROR;}
-  run=next;
+  const previous=run;run=next;
+  if(!o.showCoop&&!flush()){run=previous;return saveFault;}
   lastSkillSig='';syncSkillBar();
   return true;
  }});
@@ -397,10 +401,6 @@ export async function createEncounters(o:{
   const hid=currentHeroId();
   const next=structuredClone(run);
   if(!choose(next,id,random,hid))return;
-  if(isActiveSkill(id)&&!o.showCoop){
-   try{saveSkillUnlocks(localStorage,hid,next);skillSaveMessage='';}
-   catch{skillSaveMessage=SKILL_SAVE_ERROR;return;}
-  }
   run=next;
   if(isActiveSkill(id)){
    vfx.resetCooldowns();
@@ -411,6 +411,7 @@ export async function createEncounters(o:{
   if(h.hp>beforeHp)vfx.recordHeroHeal(h.hp-beforeHp,h.x,h.y,cards[id]?.name.toUpperCase());
   drawProgress();
   syncSkillBar();
+  flush();
  }
 
  function rebuildBlessingModal(){
@@ -483,11 +484,15 @@ export async function createEncounters(o:{
  let lastHudHero='',lastRunGold=-1;
  function drawProgress(){
   const hid=currentHeroId();
-  if(hid!==runHero&&!online){runHero=hid;run=soloRun(hid);}
+  if(hid!==runHero&&!online&&!o.showCoop){
+   flush();runHero=hid;
+   try{persistence=gameplayStore(localStorage,hid);run=persistence.initial?.run??soloRun(hid);restoreState(persistence.initial);}
+   catch(e){saveFault=(e as Error).message;saveBlocked=true;}
+  }
   syncHeroLoadout(run,hid);
-  skillSaveNotice.text=skillSaveMessage;
-  skillSaveNotice.visible=!!skillSaveMessage;
-  if(skillSaveMessage){skillSaveNotice.setWrapWidth(Math.min(520,innerWidth-32));skillSaveNotice.place(innerWidth/2,innerHeight/2,.5);}
+  skillSaveNotice.text=saveFault||skillSaveMessage;
+  skillSaveNotice.visible=!!(saveFault||skillSaveMessage);
+  if(saveFault||skillSaveMessage){skillSaveNotice.setWrapWidth(Math.min(520,innerWidth-32));skillSaveNotice.place(innerWidth/2,innerHeight/2,.5);}
   if(hid!==lastHudHero){
    lastHudHero=hid;
    const info=heroInfo(hid);
@@ -532,8 +537,16 @@ export async function createEncounters(o:{
   }
  }
 
+ const detours=new WeakMap<Foe,Detour>();
  function move(f:Foe,du:number,dv:number,dt:number){
-  const len=Math.hypot(du,dv);if(len<1e-6)return false;const v=ENEMY_SPEED*dt/1000,dx=du/len*v,dy=dv/len*v,stuck=!walkable(tileOf(f));
+  const from={x:f.x,y:f.y},to={x:f.x+du,y:f.y+dv};
+  let route=detours.get(f);if(!route){route={points:[],target:to,ttl:0};detours.set(f,route);}
+  if(walkable(tileOf(f))){
+   const next=detourDirection(route,from,to,dt,(a,b)=>navClear(a,b,p=>!inSafeZone({u:p.x,v:p.y})&&walkable({u:p.x,v:p.y}),(a,b)=>cliffTile(a.x,a.y,b.x,b.y)));
+   if(next){du=next.x-f.x;dv=next.y-f.y;}else{f.play('idle');return false;}
+  }else{route.points=[];route.ttl=0;}
+
+  const len=Math.hypot(du,dv);if(len<1e-6)return false;const v=Math.min(len,ENEMY_SPEED*dt/1000),dx=du/len*v,dy=dv/len*v,stuck=!walkable(tileOf(f));
   const tryStep=(mx:number,my:number,side:number)=>{
    if(Math.hypot(mx,my)<v*.4)return false;
    const next={u:f.x+mx,v:f.y+my};
@@ -557,7 +570,7 @@ export async function createEncounters(o:{
  let previewMode=false;
  function steer(input:Walk):Walk{
   // Blessing choices are non-modal: keep keyboard, touch and route movement active while choosing.
-  return input;
+  return saveBlocked||saveFault?{x:0,y:0}:input;
  }
 
  function autoCastInAoE(forceAll=false):SkillId[]{
@@ -660,6 +673,7 @@ export async function createEncounters(o:{
   for(const id of mirrors.keys())if(!seen.has(id))mirrors.delete(id);
   foes=[...mirrors.values()];
   if(me){
+   const firstSnapshot=heroPlays<0;
    const prevHp=h.hp,prevLevel=run.level,nextSt=me.st as Fighter['state'];
    if(me.n!==heroPlays||h.state!==nextSt){
     if(me.n!==heroPlays&&nextSt==='attack')vfx.spawnSlash(h.x,h.y,facingScreenAngle({facing:me.fc,back:me.bk,vertical:me.vt}),false);
@@ -673,6 +687,7 @@ export async function createEncounters(o:{
     run=me.run?structuredClone(me.run):fresh(currentHeroId());
     syncHeroLoadout(run,currentHeroId());
    }
+   if(firstSnapshot){lastNetDash=run.manualDashes??0;lastCoopAutoCasts=run.autoCasts??0;}
    if((run.manualDashes??0)>lastNetDash){
     lastNetDash=run.manualDashes??0;const from={u:run.dashFromU??h.x,v:run.dashFromV??h.y},du=run.dashU??1,dv=run.dashV??0;
     // Authoritative confirmation: FX starts from the recorded origin, before refreshing the local fighter position.
@@ -680,7 +695,7 @@ export async function createEncounters(o:{
     vfx.castSkill('rift-dash',{targetU:from.u+du*6,targetV:from.v+dv*6,dashDistance:1.5});h.x=old.x;h.y=old.y;
     const to=toTile(me.x,me.y);lastDash={from,to,distance:Math.hypot(to.u-from.u,to.v-from.v)};trailUntil=performance.now()+1100;
    }
-   if(run.level>prevLevel){levelUpPulseMs=1200;vfx.triggerLevelUp(run.level,h.x,h.y);}
+   if(!firstSnapshot&&run.level>prevLevel){levelUpPulseMs=1200;vfx.triggerLevelUp(run.level,h.x,h.y);}
    const p=o.hero.position(),t=toTile(p.x,p.y);h.x=t.u;h.y=t.v;h.tick(dt);
    if((run.autoCasts??0)>lastCoopAutoCasts){
     lastCoopAutoCasts=run.autoCasts??0;
@@ -693,17 +708,21 @@ export async function createEncounters(o:{
      vfx.castSimultaneous(castIds,run.castGeometry?{targetU:run.castGeometry.targetU,targetV:run.castGeometry.targetV}:aoeTarget?{targetU:aoeTarget.x,targetV:aoeTarget.y}:undefined);
      h.x=old.x;h.y=old.y;
     }
-   }else if(run.pending>0){
+   }else if(!firstSnapshot&&run.pending>0){
     autoCastInAoE(false);
    }
+   if(me.cooldowns)vfx.setCooldowns(me.cooldowns);
   }
   if(h.alive&&!inSafeZone(tileOf(h))&&nearest(aoeCastRadius(run)))notifyHeroCast(380);
  }
  function step(dt:number){
-  levelUpPulseMs=Math.max(0,levelUpPulseMs-dt);
-  vfx.step(dt);
+  if(saveBlocked||saveFault)return;
   const net=!!o.net?.active();
   if(net!==online){run=net?fresh(currentHeroId()):soloRun(currentHeroId());online=net;clearSouls();mirrors.clear();local.length=0;foes=local;spawnTimer=0;heroPlays=-1;lastCoopAutoCasts=0;if(!net){h.play('idle');h.hp=maxHp;}}
+  if(online&&o.net?.status()!=='online')return;
+  elapsedMs+=dt;
+  levelUpPulseMs=Math.max(0,levelUpPulseMs-dt);
+  vfx.step(dt);
   if(online){netStep(dt);stepSouls(dt);return;}
   if(previewMode){
    for(const f of [h,...foes])f.tick(dt);
@@ -978,8 +997,48 @@ export async function createEncounters(o:{
   if(id==='stronghold-scroll'&&inSafeZone(tileOf(h)))return 'You are already in the Stronghold.';
   return '';
  };
+ const emptyEffects=vfx.saveState();
+ let elapsedMs=0,hydrated=false;
+ let world={capture:()=>({}),restore:(_s:any)=>{}};
+ const fighterState=(f:Fighter)=>Object.fromEntries(['state','t','facing','back','vertical','stride','hp','cooldown','impactDone','flash','deadFor','immune','x','y'].map(k=>[k,(f as any)[k]]));
+ function captureState(){return {
+  run:structuredClone(run),hero:fighterState(h),position:o.hero.position(),maxHp,baseHp,kills,spawnTimer,seed,elapsedMs,levelUpPulseMs,regenAccum,soulId,
+  foes:local.map(f=>({...fighterState(f),home:f.home,wander:f.wander,age:f.age,side:f.side,level:f.level,maxHp:f.maxHp})),
+  souls:[...souls.values()].map(({sprite,...s})=>s),effects:vfx.saveState(),world:world.capture(),
+ };}
+ function restoreState(s:any){
+  clearSouls();local.length=0;foes=local;vfx.resetCooldowns();
+  if(!s){run=soloRun(runHero);maxHp=baseHp+health(run);h.play('idle');h.hp=maxHp;kills=0;spawnTimer=0;elapsedMs=0;vfx.restoreState(emptyEffects);return;}
+  run=structuredClone(s.run);maxHp=s.maxHp;baseHp=s.baseHp;kills=s.kills;spawnTimer=s.spawnTimer;seed=s.seed;elapsedMs=s.elapsedMs;levelUpPulseMs=s.levelUpPulseMs;regenAccum=s.regenAccum;soulId=s.soulId;
+  world.restore(s.world);
+  // Doors restore first so a saved hero inside the open doorway remains walkable.
+  let recovered:Tile|null=null;
+  if(!o.hero.teleport(s.position.x,s.position.y))recovered=nearestResumePosition(toTile(s.position.x,s.position.y),p=>{const w=tilePoint(p.u,p.v);return o.hero.teleport(w.x,w.y);});
+  Object.assign(h,s.hero);if(recovered){h.x=recovered.u;h.y=recovered.v;}o.hero.face(h.vertical?0:h.facing,h.back?-1:1);
+  for(const f of s.foes)local.push(Object.assign(new Fighter('revenant',meta.clips,f.x,f.y),f));
+  for(const soul of s.souls)addSoul(soul.id,soul.u,soul.v,soul.level,soul.age);
+  vfx.restoreState(s.effects);lastSkillSig='';offerKey='';
+ }
+ function flush(){
+  if(!hydrated||!persistence||saveBlocked||o.showCoop||online)return false;
+  try{persistence.save(captureState());saveFault='';return true;}
+  catch(e){saveFault=GAMEPLAY_ERROR+' '+(e as Error).message;return false;}
+ }
+ if(!o.showCoop){
+  setInterval(()=>{flush();},500);
+  addEventListener('pagehide',flush);
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)flush();});
+  setInventoryGameplayCapture(root=>{
+   if(saveFault||saveBlocked||!persistence)throw Error(saveFault||GAMEPLAY_ERROR);
+   return persistence.prepare(root,captureState());
+  });
+ }
  const api={
   hud,
+  bindPersistence(adapter:typeof world){world=adapter;hydrated=true;if(!o.showCoop&&!saveBlocked)try{restoreState(persistence?.initial);flush();}catch(e){saveFault=(e as Error).message;saveBlocked=true;}},
+  persistence:()=>({elapsedMs,error:saveFault,blocked:saveBlocked}),
+  flush,
+  elapsed:()=>elapsedMs,
   itemUseReason,
   applyItem(id:ItemId){
    const reason=itemUseReason(id);if(reason)throw Error(reason);
@@ -1011,6 +1070,7 @@ export async function createEncounters(o:{
   setMaxHp(n:number){baseHp=n;if(online)return;n+=health(run);if(n===maxHp)return;h.hp=Math.min(n,h.hp+Math.max(0,n-maxHp));maxHp=n;},
   liveCounts:()=>({foesRendered:foes.length,particles:vfx.fx.particleCount()}),
   snapshot:()=>({spawnDistanceM:SPAWN_DISTANCE_M,gate:GATE,metersPerTile:METERS_PER_TILE,
+   persistence:{elapsedMs,error:saveFault,blocked:saveBlocked},
    manualDash:{aiming:!!aim,last:lastDash},
    hero:{hp:h.hp,maxHp,state:h.state,u:+h.x.toFixed(2),v:+h.y.toFixed(2),meters:+meters(fromCenter(tileOf(h))).toFixed(1),safe:inSafeZone(tileOf(h)),reach:+reach(run).toFixed(2),aoeCastRadiusTiles:+aoeCastRadius(run).toFixed(2),critChance:+critChance(run).toFixed(2),critMultiplier:+critMultiplier(run).toFixed(2)},
    foes:foes.map(f=>{const lv=Math.max(1,f.level||1),mHp=f.maxHp||revenantMaxHp(lv);return {u:+f.x.toFixed(2),v:+f.y.toFixed(2),level:lv,hp:f.hp,maxHp:mHp,damage:revenantDamage(lv),xpReward:revenantXpReward(lv),label:`Lv. ${lv}`,state:f.state,safe:inSafeZone(tileOf(f)),clear:walkable(tileOf(f)),gateMeters:+meters(fromGate(tileOf(f))).toFixed(1)};}),

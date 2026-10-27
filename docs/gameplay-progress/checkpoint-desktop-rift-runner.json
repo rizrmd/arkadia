@@ -1,0 +1,262 @@
+{
+  "run": {
+    "level": 11,
+    "xp": 0,
+    "gold": 5,
+    "pending": 1,
+    "offers": [
+      "might"
+    ],
+    "skills": {
+      "rift-bolt": 3,
+      "rift-dash": 1,
+      "might": 5,
+      "vitality": 1
+    },
+    "stars": 0,
+    "slots": [
+      "rift-bolt",
+      "rift-dash"
+    ],
+    "autoCasts": 1,
+    "trinityCasts": 0,
+    "lastCast": [
+      "rift-bolt"
+    ],
+    "retainedSkills": [
+      "rift-bolt"
+    ]
+  },
+  "hero": {
+    "state": "die",
+    "t": 0,
+    "facing": 1,
+    "back": true,
+    "vertical": true,
+    "stride": 0,
+    "hp": 0,
+    "cooldown": -925.4000000000015,
+    "impactDone": false,
+    "flash": 120,
+    "deadFor": 0,
+    "immune": -925.4000000000015,
+    "x": 16,
+    "y": 16
+  },
+  "position": {
+    "x": 577,
+    "y": 864
+  },
+  "maxHp": 120,
+  "baseHp": 100,
+  "kills": 1,
+  "spawnTimer": 1242,
+  "seed": 1148277651,
+  "elapsedMs": 925.4000000000015,
+  "levelUpPulseMs": 0,
+  "regenAccum": 0,
+  "soulId": 1,
+  "foes": [
+    {
+      "state": "die",
+      "t": 0,
+      "facing": 1,
+      "back": false,
+      "vertical": false,
+      "stride": 0,
+      "hp": 0,
+      "cooldown": 0,
+      "impactDone": false,
+      "flash": 120,
+      "deadFor": 0,
+      "immune": 0,
+      "x": 19,
+      "y": 16,
+      "home": {
+        "u": 19,
+        "v": 16
+      },
+      "wander": null,
+      "age": 500,
+      "side": 1,
+      "level": 11,
+      "maxHp": 12
+    },
+    {
+      "state": "idle",
+      "t": 0,
+      "facing": 1,
+      "back": false,
+      "vertical": false,
+      "stride": 0,
+      "hp": 12,
+      "cooldown": 0,
+      "impactDone": false,
+      "flash": 0,
+      "deadFor": 0,
+      "immune": 0,
+      "x": 17,
+      "y": 16,
+      "home": {
+        "u": 17,
+        "v": 16
+      },
+      "wander": null,
+      "age": 500,
+      "side": 1,
+      "level": 11,
+      "maxHp": 12
+    }
+  ],
+  "souls": [
+    {
+      "id": 1,
+      "u": 19,
+      "v": 16,
+      "level": 3,
+      "age": 0
+    }
+  ],
+  "effects": {
+    "nextId": 28,
+    "cooldowns": {
+      "rift-bolt": 1185
+    },
+    "projectiles": [
+      {
+        "id": 23,
+        "kind": "rift-bolt",
+        "skill": "rift-bolt",
+        "u": 16,
+        "v": 16,
+        "vx": -0.07071067811865475,
+        "vy": -0.07071067811865475,
+        "radius": 0.38,
+        "range": 20,
+        "traveled": 0,
+        "damageScale": 0.85,
+        "trail": [
+          {
+            "u": 16,
+            "v": 16
+          }
+        ],
+        "age": 0,
+        "alive": true,
+        "hitIds": []
+      },
+      {
+        "id": 25,
+        "kind": "rift-bolt",
+        "skill": "rift-bolt",
+        "u": 16.24,
+        "v": 16,
+        "vx": 7.109735529456049,
+        "vy": -2.387815047525731,
+        "radius": 0.38,
+        "range": 5.2,
+        "traveled": 0,
+        "damageScale": 1.5,
+        "trail": [
+          {
+            "u": 16.24,
+            "v": 16
+          }
+        ],
+        "age": 0,
+        "alive": true,
+        "hitIds": []
+      },
+      {
+        "id": 26,
+        "kind": "rift-bolt",
+        "skill": "rift-bolt",
+        "u": 16.24,
+        "v": 16,
+        "vx": 7.5,
+        "vy": 0,
+        "radius": 0.38,
+        "range": 5.2,
+        "traveled": 0,
+        "damageScale": 1.5,
+        "trail": [
+          {
+            "u": 16.24,
+            "v": 16
+          }
+        ],
+        "age": 0,
+        "alive": true,
+        "hitIds": []
+      },
+      {
+        "id": 27,
+        "kind": "rift-bolt",
+        "skill": "rift-bolt",
+        "u": 16.24,
+        "v": 16,
+        "vx": 7.293934313725361,
+        "vy": 1.7460017832349835,
+        "radius": 0.38,
+        "range": 5.2,
+        "traveled": 0,
+        "damageScale": 1.5,
+        "trail": [
+          {
+            "u": 16.24,
+            "v": 16
+          }
+        ],
+        "age": 0,
+        "alive": true,
+        "hitIds": []
+      }
+    ],
+    "aoes": [
+      {
+        "id": 24,
+        "kind": "rift-trap",
+        "skill": "rift-trap",
+        "shape": "circle",
+        "u": 16,
+        "v": 16,
+        "radius": 1.45,
+        "angle": -1.5707963267948966,
+        "spread": 6.283185307179586,
+        "age": 0,
+        "duration": 20000,
+        "damageScale": 1.15,
+        "detonated": false
+      }
+    ],
+    "burnSoils": [],
+    "totalBurnSoilTicks": 0,
+    "totalCrits": 4,
+    "totalNormals": 3,
+    "totalProjectiles": 7,
+    "totalAoEs": 1,
+    "totalLevelUps": 0,
+    "totalWallHits": 0,
+    "totalAutoCasts": 1,
+    "totalSimultaneousCasts": 0,
+    "totalTrinityCasts": 0,
+    "lastSkill": "rift-bolt",
+    "lastSimultaneousSkills": [
+      "rift-bolt"
+    ]
+  },
+  "world": {
+    "clockBase": 2988460.196211667,
+    "gateOpen": false,
+    "doors": {
+      "index": 0,
+      "target": 0,
+      "elapsed": 0
+    },
+    "gateHealth": {
+      "hp": 43,
+      "max": 160
+    },
+    "route": null
+  }
+}

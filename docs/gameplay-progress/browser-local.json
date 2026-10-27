@@ -1,0 +1,211 @@
+{
+  "base": "http://127.0.0.1:5796",
+  "cases": [
+    {
+      "name": "desktop-rift-runner",
+      "initial": {
+        "level": 11,
+        "xp": 0,
+        "gold": 5,
+        "hp": 0,
+        "maxHp": 120,
+        "elapsedMs": 925.4000000000015,
+        "skills": {
+          "rift-bolt": 3,
+          "rift-dash": 1,
+          "might": 5,
+          "vitality": 1
+        },
+        "gate": {
+          "hp": 43,
+          "max": 160
+        },
+        "souls": 1
+      },
+      "checks": [
+        "paused Settings preserves all simulation state",
+        "two exact refreshes",
+        "full browser close/relaunch with persistent profile",
+        "offline gameplay/effect/cooldown durations unchanged",
+        "gold and dead-enemy reward markers unchanged",
+        "uncollected souls retained",
+        "ranks/passives/pending cards/gate restored",
+        "separate hero saves",
+        "damaged HP retained",
+        "active skill cooldown and in-flight effects retained"
+      ],
+      "reloads": [
+        {
+          "exact": true,
+          "elapsedMs": 925.4000000000015,
+          "remainingCooldowns": {
+            "rift-bolt": 1185
+          }
+        },
+        {
+          "exact": true,
+          "elapsedMs": 1260.7000000000044,
+          "remainingCooldowns": {
+            "rift-bolt": 849.6999999999971
+          }
+        }
+      ]
+    },
+    {
+      "name": "desktop-ember-warden",
+      "initial": {
+        "level": 10,
+        "xp": 18,
+        "gold": 10,
+        "hp": 0,
+        "maxHp": 120,
+        "elapsedMs": 1238.699999999997,
+        "skills": {
+          "flame-fan": 3,
+          "cinder-step": 1,
+          "might": 5,
+          "vitality": 1
+        },
+        "gate": {
+          "hp": 43,
+          "max": 160
+        },
+        "souls": 1
+      },
+      "checks": [
+        "paused Settings preserves all simulation state",
+        "nonzero XP from actual soul pickup retained",
+        "two exact refreshes",
+        "full browser close/relaunch with persistent profile",
+        "offline gameplay/effect/cooldown durations unchanged",
+        "gold and dead-enemy reward markers unchanged",
+        "uncollected souls retained",
+        "ranks/passives/pending cards/gate restored",
+        "damaged HP retained",
+        "active skill cooldown and in-flight effects retained"
+      ],
+      "reloads": [
+        {
+          "exact": true,
+          "elapsedMs": 1238.699999999997,
+          "remainingCooldowns": {
+            "flame-fan": 1185,
+            "cinder-step": 1094
+          }
+        },
+        {
+          "exact": true,
+          "elapsedMs": 1424.0999999999985,
+          "remainingCooldowns": {
+            "flame-fan": 999.5999999999985,
+            "cinder-step": 908.5999999999985
+          }
+        }
+      ]
+    },
+    {
+      "name": "mobile-rift-runner",
+      "initial": {
+        "level": 11,
+        "xp": 0,
+        "gold": 5,
+        "hp": 0,
+        "maxHp": 120,
+        "elapsedMs": 678,
+        "skills": {
+          "rift-bolt": 3,
+          "rift-dash": 1,
+          "might": 5,
+          "vitality": 1
+        },
+        "gate": {
+          "hp": 43,
+          "max": 160
+        },
+        "souls": 1
+      },
+      "checks": [
+        "paused Settings preserves all simulation state",
+        "two exact refreshes",
+        "full browser close/relaunch with persistent profile",
+        "offline gameplay/effect/cooldown durations unchanged",
+        "gold and dead-enemy reward markers unchanged",
+        "uncollected souls retained",
+        "ranks/passives/pending cards/gate restored",
+        "separate hero saves",
+        "damaged HP retained",
+        "active skill cooldown and in-flight effects retained"
+      ],
+      "reloads": [
+        {
+          "exact": true,
+          "elapsedMs": 882,
+          "remainingCooldowns": {
+            "rift-bolt": 1185
+          }
+        },
+        {
+          "exact": true,
+          "elapsedMs": 1352,
+          "remainingCooldowns": {
+            "rift-bolt": 715
+          }
+        }
+      ]
+    },
+    {
+      "name": "mobile-ember-warden",
+      "initial": {
+        "level": 11,
+        "xp": 0,
+        "gold": 5,
+        "hp": 0,
+        "maxHp": 120,
+        "elapsedMs": 844.5000000000073,
+        "skills": {
+          "flame-fan": 3,
+          "cinder-step": 1,
+          "might": 5,
+          "vitality": 1
+        },
+        "gate": {
+          "hp": 43,
+          "max": 160
+        },
+        "souls": 1
+      },
+      "checks": [
+        "paused Settings preserves all simulation state",
+        "two exact refreshes",
+        "full browser close/relaunch with persistent profile",
+        "offline gameplay/effect/cooldown durations unchanged",
+        "gold and dead-enemy reward markers unchanged",
+        "uncollected souls retained",
+        "ranks/passives/pending cards/gate restored",
+        "separate hero saves",
+        "damaged HP retained",
+        "active skill cooldown and in-flight effects retained"
+      ],
+      "reloads": [
+        {
+          "exact": true,
+          "elapsedMs": 980.5000000000073,
+          "remainingCooldowns": {
+            "flame-fan": 1185,
+            "cinder-step": 908
+          }
+        },
+        {
+          "exact": true,
+          "elapsedMs": 1367.2000000000044,
+          "remainingCooldowns": {
+            "flame-fan": 798.3000000000029,
+            "cinder-step": 521.3000000000029
+          }
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "method": "Per-case actual persistent-browser tests; latest desktop Ember regression explicitly earns nonzero soul XP on cumulative Pixi Settings build."
+}

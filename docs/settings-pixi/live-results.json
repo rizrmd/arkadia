@@ -1,0 +1,65 @@
+{
+  "base": "https://ark-whachat.fural.space",
+  "views": {
+    "desktop": {
+      "viewport": [
+        1440,
+        900
+      ],
+      "panel": {
+        "x": 440,
+        "y": 55,
+        "width": 560,
+        "height": 790
+      },
+      "resetCancellation": true,
+      "touchBindings": true
+    },
+    "portrait": {
+      "viewport": [
+        390,
+        844
+      ],
+      "panel": {
+        "x": 16,
+        "y": 27,
+        "width": 358,
+        "height": 790
+      },
+      "resetCancellation": true,
+      "touchBindings": true
+    },
+    "landscape": {
+      "viewport": [
+        844,
+        390
+      ],
+      "panel": {
+        "x": 142,
+        "y": 16,
+        "width": 560,
+        "height": 358
+      },
+      "resetCancellation": true,
+      "touchBindings": true
+    },
+    "small-portrait": {
+      "viewport": [
+        320,
+        568
+      ],
+      "panel": {
+        "x": 16,
+        "y": 16,
+        "width": 288,
+        "height": 536
+      },
+      "resetCancellation": true,
+      "touchBindings": true
+    }
+  },
+  "errors": [],
+  "persistence": true,
+  "resetConfirmed": true,
+  "passed": true
+}
