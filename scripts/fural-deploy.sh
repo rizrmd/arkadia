@@ -20,6 +20,8 @@ node scripts/shadow-audit/test.mjs
 node scripts/shadow-audit/test-field.mjs
 node scripts/shadow-audit/test-tent-volume.mjs
 node scripts/shadow-audit/folded-opacity-controls.mjs
+node scripts/arkodia/verify-live-release.mjs
+node scripts/arkodia/verify-publish-lifecycle.mjs
 node scripts/arkodia/verify-json-layer-memory.mjs
 node scripts/arkodia/verify-release-memory.mjs
 node scripts/arkodia/verify-publisher-memory.mjs

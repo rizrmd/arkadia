@@ -15,6 +15,10 @@ export class RiftDashVfx{
   this.root.visible=false;
  }
  static async load(base="/rift-dash/v2/"){return new RiftDashVfx(await Promise.all(['departure','arrival','particles','trail'].map(n=>Assets.load<Texture>(`${base}${n}.webp`))));}
+ warmGpu(renderer?:{texture?:{initSource?:(source:any)=>void}}){
+  const sources=new Set([this.trail.texture.source,...Object.values(this.sheets).map(frames=>frames[0].source)]);
+  for(const source of sources){source.autoGarbageCollect=false;renderer?.texture?.initSource?.(source);}
+ }
  cast(from:Point,to:Point,scale:number,canvas?:HTMLCanvasElement,now=performance.now()){
   this.from=from;this.to=to;this.scale=scale;this.started=now;
   this.ghostTexture?.destroy(true);this.ghostTexture=undefined;

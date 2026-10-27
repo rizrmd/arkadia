@@ -1,3 +1,4 @@
+import {environmentBlocked} from '../environment/model';
 import {reliefBlocked} from '../world/relief';
 import {unproject} from '../isometric';
 import {COURT} from './terrain';
@@ -6,7 +7,7 @@ const {court:{walkInset,openSnowFrom},gate:G}=STRONGHOLD;
 // The court remains enclosed except for the front gateway. Beyond its approach,
 // the hero can explore the snow; the masonry still has physical footprints.
 export function walkableGround(x:number,y:number){
- if(reliefBlocked(x,y))return false;
+ if(environmentBlocked(x,y)||reliefBlocked(x,y))return false;
  const g=unproject(x-COURT.x,y-COURT.y),edge=walkInset;
  const court=g.x>=edge&&g.y>=edge&&g.x<=COURT.size-edge&&g.y<=COURT.size-edge;
  // Through the arch the passage joins court and snow; beside it only the apron in front of the towers is open.

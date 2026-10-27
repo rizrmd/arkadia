@@ -1,0 +1,8 @@
+{
+  "url": "https://ark-whachat.fural.space/rift-dash/player/",
+  "reproduced": true,
+  "action": "Select Departure and hold across subsequent frames",
+  "expectedTimeMs": 80,
+  "observedTimeMs": 133.29999999999927,
+  "rootCause": "Ticker overwrote display time from unsynchronized internal player clock"
+}

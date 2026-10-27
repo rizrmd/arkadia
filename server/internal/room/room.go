@@ -218,15 +218,16 @@ func (r *Room) SetHero(c *Client, hero string) {
 
 // Welcome is the first message after a successful hello.
 type Welcome struct {
-	Resume string    `json:"resume"`
-	T      string    `json:"t"`
-	V      int       `json:"v"`
-	Room   string    `json:"room"`
-	You    string    `json:"you"`
-	Rate   int       `json:"rate"`
-	Max    int       `json:"max"`
-	Layout []string  `json:"layout"`
-	State  sim.State `json:"state"`
+	EnvironmentRevision int       `json:"environmentRevision"`
+	Resume              string    `json:"resume"`
+	T                   string    `json:"t"`
+	V                   int       `json:"v"`
+	Room                string    `json:"room"`
+	You                 string    `json:"you"`
+	Rate                int       `json:"rate"`
+	Max                 int       `json:"max"`
+	Layout              []string  `json:"layout"`
+	State               sim.State `json:"state"`
 }
 
 // Snapshot is the per-tick world state plus, for this client, the last input sequence the server applied, how
@@ -327,7 +328,7 @@ func (r *Room) run() {
 				j.reply <- ErrServerFull
 				continue
 			}
-			msg, _ := json.Marshal(Welcome{Resume: p.ResumeToken, T: "welcome", V: Version, Room: r.Code, You: p.ID, Rate: int(1000 / sim.TickMS), Max: sim.MaxPlayers, Layout: r.layout, State: r.world.State()})
+			msg, _ := json.Marshal(Welcome{EnvironmentRevision: r.world.Environment.Revision, Resume: p.ResumeToken, T: "welcome", V: Version, Room: r.Code, You: p.ID, Rate: int(1000 / sim.TickMS), Max: sim.MaxPlayers, Layout: r.layout, State: r.world.State()})
 			j.client.Send <- msg
 			j.reply <- ""
 			start()

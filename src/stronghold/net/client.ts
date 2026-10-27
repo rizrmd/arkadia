@@ -1,3 +1,4 @@
+import {loadEnvironment} from '../../environment/model';
 import {requestGameFrame as requestAnimationFrame} from '../../app/frame-scheduler';
 import {PROTOCOL,TICK_MS,type EnemyState,type Hello,type HeroPick,type Input,type PlayerState,type ServerMessage,type Snapshot,type Welcome} from './protocol';
 import {FRONTIER_COLUMNS} from '../../world/frontier';
@@ -114,6 +115,7 @@ export function createNet(o:{direction:()=>Walk;maxHp:()=>number;hero:()=>string
   try{await navReady;}catch(e){lastError=(e as Error).message;setStatus('offline');throw fail('nav',lastError);}
   try{
    const w=await connect(code,who);
+   await loadEnvironment(w.environmentRevision??0);
    room=w.room;you=w.you;resumeToken=w.resume;name=who;layout=w.layout;retries=0;reset(w.state);
    try{localStorage.setItem('arkodia.coop.resume.v1',JSON.stringify({version:1,room,you,resumeToken,name,hero:o.hero()}));}catch{lastError='Co-op resume identity could not be saved. Keep this tab open.';}
    receive(JSON.stringify({...w.state,t:'s',ack:0}));setStatus('online');return w;

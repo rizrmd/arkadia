@@ -1,3 +1,5 @@
+import {renderObjects} from '../environment/render';
+import {environment as authoredEnvironment,watchEnvironment,columns as authoredColumns} from '../environment/model';
 import {GateHealthBar} from './gate-health-bar';
 import {loadJsonAsset} from '../app/json-asset';
 import {BRAZIER_PHYSICAL_SOURCE,withBrazierShadowMaterial} from './brazier-shadow-material';
@@ -85,6 +87,8 @@ export async function createWorldView(
  // The Frozen Frontier's ruins, landmarks and plants on the snow beyond (world/frontier.ts, frontier-view.ts).
  const frontier=createFrontier(staticStage,images.get(FRONTIER_ATLAS)!);frontier.setLegacyShadows(!useDepthShadows);
  await frontier.ready;
+ const authoredStage=new Container();authoredStage.zIndex=10.65;worldStage.addChild(authoredStage);
+ let authoredScene=await renderObjects(authoredEnvironment(),authoredStage);
  const frontierScene=frontier.scene as unknown as typeof reliefScene;
  const alphaPrepared=new WeakSet<HTMLImageElement>(),alphaJobs=new Set<Promise<void>>();
  const prepareAlpha=(placed:(typeof frontierScene)[number])=>{
@@ -95,7 +99,7 @@ export async function createWorldView(
  };
  const alphaImages=new Set<HTMLImageElement>();
  for(const placed of frontierScene)if(!alphaImages.has(placed.image)){alphaImages.add(placed.image);placed.image.addEventListener('load',()=>prepareAlpha(placed),{once:true});prepareAlpha(placed);}
- const scene=()=>[...objects,...reliefScene,...frontierScene];
+ const scene=()=>[...objects,...reliefScene,...frontierScene,...authoredScene];
  const polygon=(corners:number[][])=>{const path=new Path2D();corners.forEach(([u,v],i)=>{const p=tilePoint(u,v);i?path.lineTo(p.x,p.y):path.moveTo(p.x,p.y);});path.closePath();return path;};
  // Court size, gateway and its apron come from prefabs/stronghold.json.
  const N=COURT.size,G=STRONGHOLD.gate,A=G.apron,GS=STRONGHOLD.buildings.gate;
@@ -188,6 +192,7 @@ export async function createWorldView(
   return cols;
  }
  function footprint(p:(typeof objects)[number]){
+if((p as any).authored)return authoredColumns((p as any).authored).map(c=>({...c,height:p.height}));
   if((p as {relief?:unknown}).relief)return [];
   const ff=frontier.columns(p);if(ff)return ff;
   const key=p.file+'|'+p.x+'|'+p.y+'|'+p.width;let cols=footprints.get(key);if(cols)return cols;cols=[];
@@ -252,6 +257,8 @@ export async function createWorldView(
  await milestone(925,'Preparing the hero');
  const hero=await createHero<(typeof objects)[number]>({hero:pick,layer:worldStage,lightmap:lighting.lightmap,surface,footprint:p=>p.id==='gate'?gateFootprint():footprint(p),sun:lighting.sun,direction:()=>encounters?encounters.steer(input()):input(),follow,pose:()=>encounters?.pose()??null,
   drive:()=>{if(!net?.active())return null;const p=net.position(),me=net.me();return {...p,face:direction(),look:me&&me.st!=='idle'?{facing:me.fc,back:me.bk,vertical:me.vt}:null};}});hero.setScene(scene());
+ watchEnvironment(async()=>{authoredStage.removeChildren().forEach(c=>c.destroy());authoredScene=await renderObjects(authoredEnvironment(),authoredStage);hero?.setScene(scene());requestDraw();});
+
  await milestone(930,'Preparing combat');
  encounters=await createEncounters({renderer:rt.app.renderer,worldStage,uiStage,frames,hudCallbacks,showCoop:Boolean(net),cancelRoute:()=>walker?.cancel(),hero,direction:input,net});
  const gateHealthBar=worldStage.addChild(new GateHealthBar(frames));
