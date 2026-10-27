@@ -171,3 +171,24 @@ func TestRiftDashQueuedBurstDoesNotAccelerateTravel(t *testing.T) {
 		t.Fatalf("burst displacement %v", d)
 	}
 }
+
+func TestRiftDashLateInputClearsGuessesAfterReplay(t *testing.T) {
+	w := newTestWorld(t)
+	p := w.AddPlayer("dash", "Dash", 100)
+	p.Hero = "rift-runner"
+	p.Run.Skills["rift-dash"] = 1
+	p.Run.Slots = []string{"rift-dash"}
+	p.Queue(Input{Seq: 1, X: 1})
+	w.Step()
+	w.Step()
+	w.Step()
+	if p.Owed == 0 {
+		t.Fatal("test must exercise late replay")
+	}
+	p.Queue(Input{Seq: 2, Dash: true, DashU: 1})
+	p.Queue(Input{Seq: 3})
+	w.Step()
+	if p.Owed != 0 || p.Run.DashElapsed != TickMS || p.Run.ManualDashes != 1 {
+		t.Fatalf("invalid replay accounting: owed=%d elapsed=%v", p.Owed, p.Run.DashElapsed)
+	}
+}

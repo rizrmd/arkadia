@@ -1060,7 +1060,6 @@ func (w *World) manualRiftDash(p *Player, du, dv float64) bool {
 	}
 	p.dashTravel = &riftDashTravel{from: from, to: to}
 	p.F.Play(Idle)
-	p.Owed = 0
 	p.BaseX, p.BaseY = p.X, p.Y
 	p.slotCD[idx] = p.Run.skillCooldownMs("rift-dash")
 	p.F.Immune = math.Max(p.F.Immune, 260)
@@ -1092,6 +1091,8 @@ func (w *World) stepRiftDash(p *Player, dt float64) {
 		p.dashTravel = nil
 		return
 	}
+	// Clear guesses only after walkInputs has finished replay bookkeeping.
+	p.Owed = 0
 	d.age = math.Min(260, d.age+dt)
 	k := d.age / 260
 	to := Vec{d.from.X + (d.to.X-d.from.X)*k, d.from.Y + (d.to.Y-d.from.Y)*k}
