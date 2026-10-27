@@ -1,0 +1,67 @@
+{
+  "passed": true,
+  "base": "https://arkodia.online",
+  "commit": "4a5887a3c965c7c832386462f2a0d8f1e7a0402f",
+  "backendBuild": "4a5887a3c965c7c832386462f2a0d8f1e7a0402f",
+  "activeRelease": "4a5887a3c965c7c832386462f2a0d8f1e7a0402f",
+  "compiledFilesVerified": 40,
+  "screenshotPixelMatches": [
+    "desktop",
+    "portrait",
+    "landscape"
+  ],
+  "uiEvidence": {
+    "mode": "Actual Pixi tree isolated from world loading",
+    "views": [
+      {
+        "name": "desktop",
+        "width": 1440,
+        "height": 900,
+        "pass": true,
+        "layoutInvariance": true,
+        "explicitEquip": true,
+        "outsideDismiss": true,
+        "close": true,
+        "details": true,
+        "locked": true,
+        "panPreserved": true,
+        "square": true,
+        "drag": true
+      },
+      {
+        "name": "portrait",
+        "width": 390,
+        "height": 844,
+        "pass": true,
+        "layoutInvariance": true,
+        "explicitEquip": true,
+        "outsideDismiss": true,
+        "close": true,
+        "details": true,
+        "locked": true,
+        "panPreserved": true,
+        "square": true,
+        "drag": true
+      },
+      {
+        "name": "landscape",
+        "width": 844,
+        "height": 390,
+        "pass": true,
+        "layoutInvariance": true,
+        "explicitEquip": true,
+        "outsideDismiss": true,
+        "close": true,
+        "details": true,
+        "locked": true,
+        "panPreserved": true,
+        "square": true,
+        "drag": true
+      }
+    ],
+    "errors": []
+  },
+  "remoteBranchTip": "041e1439904201152f0def980f02ea803c0fb69b",
+  "at": "2026-10-27T09:28:30.858Z",
+  "limitations": "Actual Pixi tree validated in isolated browser at three viewport sizes, including mouse/touch drag, square geometry and invariant tree layout. Public compiled files and backend verified independently."
+}
