@@ -40,7 +40,7 @@ export function createSettings(o:Options){
   const shade=overlay.addChild(new Graphics().rect(0,0,vw,vh).fill({color:0,alpha:.68}));shade.eventMode='static';shade.on('pointertap',(e:FederatedPointerEvent)=>{if(!openingTap(e)){if(confirm)cancel();else close();}});
   const panel=overlay.addChild(new Container({label:confirm?'Reset confirmation':'Settings panel',eventMode:'static'}));panel.position.set(x,y);panel.hitArea=new Rectangle(0,0,w,h);panel.on('pointertap',e=>e.stopPropagation());
   panel.addChild(new Graphics().rect(10,10,w-20,h-20).fill(0x0b0c0d));art(panel,'panel',w,h);
-  const title=text(panel,confirm?'Reset progression?':'Settings',32,18,confirm&&w<340?19:26,w-100,0xf3d59a,true);if(title.width>w-108)title.scale.set((w-108)/title.width);title.y=37-title.inkCenterY()*title.scale.y;
+  const title=text(panel,confirm?'Reset progression?':'Settings',32,18,confirm&&w<340?19:26,w-100,0xf3d59a,true);if(title.width>w-108)title.scale.set((w-108)/title.width);title.y=37-title.inkCenterY()*title.scale.y;if(!confirm)title.x=(w-title.width)/2;
   panel.addChild(new Graphics().moveTo(26,62).lineTo(w-26,62).stroke({color:0x9d7942,alpha:.65,width:1}));
   button(panel,'close','×',w-68,15,44,()=>confirm?cancel():close());
   viewTop=68;viewHeight=h-164;
