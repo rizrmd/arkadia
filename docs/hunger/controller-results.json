@@ -1,0 +1,15 @@
+{
+  "checks": [
+    "Legacy/new save starts full and rejects eating at full",
+    "Hungry player with zero carried Food consumes nothing",
+    "Real controller drains 50 points in five saved simulation days; hunting remains intact",
+    "desktop Pixi hit target consumes exactly one Food and restores capped 20 points",
+    "portrait Pixi hit target consumes exactly one Food and restores capped 20 points",
+    "landscape Pixi hit target consumes exactly one Food and restores capped 20 points",
+    "Repeated taps at full spend nothing",
+    "Atomic Food/hunger checkpoint survives reload with no offline depletion",
+    "Quota failure rolls back both hunger and Food and preserves original checkpoint"
+  ],
+  "errors": [],
+  "passed": true
+}

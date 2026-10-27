@@ -1,0 +1,123 @@
+{
+  "base": "http://127.0.0.1:5616",
+  "errors": [],
+  "checks": [
+    "Full game scene, real collision and gameplay save adapter integrate with automatic controller harvest (controlled simulation stepping).",
+    "Full-game reload preserves exactly-one harvest and unavailable tree.",
+    "Existing automatic hero melee impact hunts real game deer and creates loot."
+  ],
+  "harvest": {
+    "id": "ff:dead-snag:281",
+    "before": {
+      "wood": 0,
+      "food": 0,
+      "storedWood": 0,
+      "storedFood": 0
+    },
+    "after": {
+      "wood": 10,
+      "food": 0,
+      "storedWood": 0,
+      "storedFood": 0
+    },
+    "down": true,
+    "clock": 2988514.6200720016,
+    "gameplay": {
+      "rift-runner": {
+        "version": 1,
+        "revision": 13,
+        "hero": "rift-runner",
+        "state": {
+          "environmentRevision": 0,
+          "mapTimers": {},
+          "run": {
+            "level": 1,
+            "xp": 0,
+            "gold": 0,
+            "pending": 0,
+            "offers": [],
+            "skills": {
+              "rift-bolt": 1
+            },
+            "stars": 0,
+            "slots": [
+              "rift-bolt"
+            ],
+            "autoCasts": 0,
+            "trinityCasts": 0,
+            "lastCast": [],
+            "retainedSkills": [
+              "rift-bolt"
+            ]
+          },
+          "hero": {
+            "state": "idle",
+            "t": 371.2000000000007,
+            "facing": 1,
+            "back": false,
+            "vertical": false,
+            "stride": 0,
+            "hp": 100,
+            "cooldown": -371.2000000000007,
+            "impactDone": false,
+            "flash": -371.2000000000007,
+            "deadFor": 0,
+            "immune": -371.2000000000007,
+            "x": 17.99999999999999,
+            "y": 23.100000000000023
+          },
+          "position": {
+            "x": 250.59999999999786,
+            "y": 1155.2000000000003
+          },
+          "maxHp": 100,
+          "baseHp": 100,
+          "kills": 0,
+          "spawnTimer": 1644.7999999999993,
+          "seed": 2226457523,
+          "elapsedMs": 371.2000000000007,
+          "levelUpPulseMs": 0,
+          "regenAccum": 0,
+          "soulId": 0,
+          "foes": [],
+          "souls": [],
+          "effects": {
+            "nextId": 1,
+            "cooldowns": {},
+            "projectiles": [],
+            "flameBursts": [],
+            "aoes": [],
+            "burnSoils": [],
+            "totalBurnSoilTicks": 0,
+            "totalCrits": 0,
+            "totalNormals": 0,
+            "totalProjectiles": 0,
+            "totalAoEs": 0,
+            "totalLevelUps": 0,
+            "totalWallHits": 0,
+            "totalAutoCasts": 0,
+            "totalSimultaneousCasts": 0,
+            "totalTrinityCasts": 0,
+            "lastSkill": "",
+            "lastSimultaneousSkills": []
+          },
+          "world": {
+            "clockBase": 2988514.61612,
+            "gateOpen": false,
+            "doors": {
+              "index": 0,
+              "target": 0,
+              "elapsed": 0
+            },
+            "gateHealth": {
+              "hp": 100,
+              "max": 100
+            },
+            "route": null
+          }
+        }
+      }
+    }
+  },
+  "passed": true
+}

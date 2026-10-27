@@ -9,9 +9,9 @@ import {cliffTile,liftAtTile} from '../world/relief';
 import {KEY,load} from './economy';
 import {prepareInventoryGameplay,setGatheringCapture} from './gameplay-save';
 import {readInventory} from './items';
-import {advanceClock,CHOP_METERS,TREE_RULES,WILDLIFE_RULES,treeKind,readGathering,readResources,harvest,hunt,collect,respawnTree,respawnAnimal,type Gathering,type Resources,type Point,type TreeKind,type Species} from './gathering-rules';
+import {eat,advanceClock,CHOP_METERS,TREE_RULES,WILDLIFE_RULES,treeKind,readGathering,readResources,harvest,hunt,collect,respawnTree,respawnAnimal,type Gathering,type Resources,type Point,type TreeKind,type Species} from './gathering-rules';
 export type GatherStep={alive:boolean;steering:boolean;busy:boolean};
-type Options={worldStage:Container;uiStage:Container;day:number;hero:()=>{x:number;y:number};blocked:(x:number,y:number)=>boolean;changed:()=>void;hudBottom:()=>number};
+type Options={worldStage:Container;uiStage:Container;day:number;hero:()=>{x:number;y:number};blocked:(x:number,y:number)=>boolean;changed:()=>void;hudBottom:()=>number;resourceTop?:()=>number};
 type Tree={id:string;kind:TreeKind;anchor:Point;width:number;height:number;pivot:[number,number];texture:Texture;image:HTMLImageElement;sprite:Sprite};
 const distance=(a:Point,b:Point)=>Math.hypot(a.u-b.u,a.v-b.v)*METERS_PER_TILE;
 export async function createGathering(o:Options){
@@ -26,6 +26,9 @@ export async function createGathering(o:Options){
  // Meat silhouette with a white bone; the same icon is used on loot.
  function meat(g:Graphics,x=0,y=0,s=1){g.circle(x+21*s,y+17*s,3*s).circle(x+23*s,y+14*s,3*s).fill(0xf4ead8).moveTo(x+15*s,y+12*s).lineTo(x+21*s,y+16*s).stroke({color:0xf4ead8,width:4*s}).ellipse(x+10*s,y+9*s,9*s,7*s).fill(0xa83e42).stroke({color:0xe79278,width:s});}
  meat(icons,131,5);const tool=new Text({text:'Axe • automatic chopping within 5 ft',style:{fontFamily:'Georgia',fontSize:11,fill:0xc5bdac}});tool.position.set(9,36);hud.addChild(bg,icons,wood,food,tool,status);
+ const hungerHud=new Container({label:'Hunger'}),hungerBar=new Graphics(),hungerText=new Text({text:'',style:{fontFamily:'Georgia',fontSize:12,fill:0xffe1ae}});hungerHud.addChild(hungerBar,hungerText);hungerText.position.set(7,4);o.uiStage.addChild(hungerHud);hungerHud.zIndex=12;
+ const eatButton=new Container({label:'Eat meat'});eatButton.eventMode='static';eatButton.cursor='pointer';eatButton.hitArea=new Rectangle(125,0,127,55);hud.addChild(eatButton);let feedback='',feedbackMs=0;
+ eatButton.on('pointerdown',e=>e.stopPropagation());eatButton.on('pointertap',e=>{e.stopPropagation();consume();});
  const progress=new Graphics();progress.y=58;hud.addChild(progress);
  let active:string|null=null,chopMs=0,retry=0,animationMs=0,lastUi='',sceneVersion=0,axeOwned=readInventory(initial.inventory).axe>0;
  const heroTile=()=>{const p=o.hero(),t=unproject(p.x-COURT.x,p.y-COURT.y);return {u:t.x,v:t.y};};
@@ -33,6 +36,7 @@ export async function createGathering(o:Options){
   const root=load(localStorage.getItem(KEY));root.resources=structuredClone(resources);root.gathering=structuredClone(state);
   const acknowledge=prepareInventoryGameplay(root);root.revision++;localStorage.setItem(KEY,JSON.stringify(root));acknowledge();
  }
+ function consume(){if(error)return false;const reason=state.hunger>=100?'Hunger Full':resources.food<1?'Not Enough Food':'';const ok=!reason&&commit(()=>eat(state,resources));feedback=reason||(ok?'Ate meat • +20 Hunger':'');feedbackMs=2500;updateUi();return !!ok;}
  function commit(change:()=>boolean){const old=structuredClone(state),oldR=structuredClone(resources);try{if(!change())return false;persist();return true;}catch(e){state=old;resources=oldR;error=(e as Error).message;active=null;chopMs=0;return false;}}
  setGatheringCapture(root=>{if(error)throw Error('Gathering save failed: '+error);root.gathering=structuredClone(state);root.resources=structuredClone(resources);});
  async function addTree(id:string,kind:TreeKind,anchor:Point,texture:Texture,width:number,height:number,pivot:[number,number],flip=false){
@@ -54,10 +58,10 @@ export async function createGathering(o:Options){
   for(let n=0;n<80;n++){const a=n*.7,r=1+n*.12,p={u:anchor.u+Math.cos(a)*r,v:anchor.v+Math.sin(a)*r};if(clear(p)&&trees.every(t=>state.trees[t.id].down||distance(p,state.trees[t.id])>2))return p;}return null;
  }
  for(const spec of specs)if(!state.animals[spec.id]){const p=animalPoint(spec.species);if(p)state.animals[spec.id]={...p,cycle:0,readyDay:state.day,status:'alive'};}
- const atlasTex=await Assets.load<Texture>('/wildlife/gathering-atlas.webp');
+ const atlasTex=await Assets.load<Texture>('/wildlife/imagegen-atlas.png');
  const clipNames=['deer-walk','deer-run','crocodile-crawl','crocodile-swim'];
  const clipDurations=[1600,800,2400,2000];
- const frames=clipNames.map((_,row)=>Array.from({length:16},(_,i)=>new Texture({source:atlasTex.source,frame:new Rectangle(i*128,row*128,128,128)})));
+ const frames=clipNames.map((_,row)=>Array.from({length:8},(_,i)=>new Texture({source:atlasTex.source,frame:new Rectangle(i*256,row*256,256,256)})));
  const animalViews=specs.map((spec,i)=>{const sprite=new Sprite(frames[i===0?0:2][0]),loot=new Container(),g=new Graphics();meat(g,-16,-18,1.2);loot.addChild(g);const label=new Text({text:`${WILDLIFE_RULES[spec.species].food} Food`,style:{fontFamily:'Georgia',fontSize:12,fill:0xffdfad,stroke:{color:0x151c21,width:3}}});label.anchor.set(.5);label.y=-27;loot.addChild(label);sprite.anchor.set(.5,.82);animalsLayer.addChild(sprite,loot);return {...spec,sprite,loot};});
  let scene:any[]=[];
  function refreshScene(){
@@ -68,14 +72,16 @@ export async function createGathering(o:Options){
   const counts=JSON.stringify([resources.wood,resources.food,active,error]);if(counts!==lastUi){lastUi=counts;const format=(n:number)=>n<10000?n.toLocaleString('en-US'):new Intl.NumberFormat('en-US',{notation:'compact',maximumFractionDigits:1}).format(n);wood.text=format(resources.wood)+' Wood';food.text=format(resources.food)+' Food';}
   const hasAxe=axeOwned;
   tool.text=hasAxe?'Axe • automatic chopping within 5 ft':'Axe required to chop trees';
-  status.text=error?'Save failed. Reload after freeing storage.':active?`Chopping • ${(chopMs/1000).toFixed(1)} / ${TREE_RULES[trees.find(t=>t.id===active)!.kind].ms/1000}s`:'';
+  status.text=error?'Save failed. Reload after freeing storage.':feedbackMs>0?feedback:active?`Chopping • ${(chopMs/1000).toFixed(1)} / ${TREE_RULES[trees.find(t=>t.id===active)!.kind].ms/1000}s`:'';
   progress.clear();if(active){const rule=TREE_RULES[trees.find(t=>t.id===active)!.kind];progress.roundRect(0,0,252,4,2).fill(0x3b3e39).roundRect(0,0,252*Math.min(1,chopMs/rule.ms),4,2).fill(0xd8bd7d);}
-  hud.position.set(8,o.hudBottom()+8);hud.scale.set(Math.min(1,(innerWidth-16)/252,innerWidth<500?(innerWidth-132)/252:1));
+  const scale=Math.min(1,(innerWidth-16)/252,innerWidth<500?(innerWidth-132)/252:1);hud.scale.set(scale);hud.position.set(innerWidth-8-252*scale,(o.resourceTop?.()??o.hudBottom())+(innerWidth<=600?81:62));
+  hungerHud.position.set(8,o.hudBottom()+34);hungerHud.scale.set(scale);hungerBar.clear().roundRect(0,0,180,24,5).fill(0x171e21).stroke({color:0xb59a61,width:1});if(state.hunger>0)hungerBar.roundRect(2,2,176*state.hunger/100,20,3).fill({color:state.hunger<20?0x9b543d:0x796a37,alpha:.9});hungerText.text=`Hunger ${state.hunger===0?0:Math.ceil(state.hunger)}%`;
+  food.alpha=state.hunger>=100||resources.food<1||error.length>0?0.65:1;
  }
  function target(reachTiles:number){const p=heroTile();return specs.map(s=>({...s,a:state.animals[s.id]})).filter(s=>s.a?.status==='alive'&&distance(p,s.a)<=reachTiles*METERS_PER_TILE&&!cliffTile(p.u,p.v,s.a.u,s.a.v)).sort((a,b)=>distance(p,a.a)-distance(p,b.a))[0]??null;}
  function impact(reachTiles:number){const t=target(reachTiles);if(t&&commit(()=>hunt(state,t.id,t.species)))return true;return false;}
  function step(dt:number,context:GatherStep){
-  if(error)return;advanceClock(state,dt);animationMs+=dt;retry+=dt;const p=heroTile();
+  if(error)return;advanceClock(state,dt);feedbackMs=Math.max(0,feedbackMs-dt);animationMs+=dt;retry+=dt;const p=heroTile();
   if(retry>=1000){retry=0;axeOwned=readInventory(load(localStorage.getItem(KEY)).inventory).axe>0;let changed=false;commit(()=>{
    for(const t of trees)changed=respawnTree(state,t.id,t.anchor,METERS_PER_TILE,q=>{if(!clear(q))return false;return trees.every(other=>other.id===t.id||state.trees[other.id].down||distance(q,state.trees[other.id])>2);},Math.random)||changed;
    for(const spec of specs){const a=state.animals[spec.id];if(a?.status==='waiting'&&state.day>=a.readyDay){const q=animalPoint(spec.species);if(q)changed=respawnAnimal(state,spec.id,q)||changed;}}
@@ -94,9 +100,9 @@ export async function createGathering(o:Options){
   const {x,y,scale}=origin;
   for(const t of trees){const a=state.trees[t.id],p=tilePoint(a.u,a.v);t.sprite.visible=!a.down&&x+(p.x+t.width)*scale>0&&x+(p.x-t.width)*scale<innerWidth&&y+p.y*scale>0&&y+(p.y-t.height)*scale<innerHeight;t.sprite.position.set(x+p.x*scale,y+p.y*scale);t.sprite.width=t.width*scale;t.sprite.height=t.height*scale;t.sprite.zIndex=p.y;}
   const clips=specs.map(s=>s.species==='deer'?(distance(heroTile(),state.animals[s.id]??GATE)<6?'deer-run':'deer-walk'):(environment().objects.some(p=>p.asset.startsWith('pond-')&&distance({u:p.u-ORIGIN.u,v:p.v-ORIGIN.v},state.animals[s.id]??GATE)<5)?'crocodile-swim':'crocodile-crawl'));
-  for(const v of animalViews){const a=state.animals[v.id];const clip=clipNames.indexOf(clips[v.species==='deer'?0:1]);v.sprite.texture=frames[clip][Math.floor(animationMs/clipDurations[clip]*16)%16];v.sprite.visible=a?.status==='alive';v.loot.visible=a?.status==='loot';if(!a)continue;const p=tilePoint(a.u,a.v);v.sprite.position.set(x+p.x*scale,y+p.y*scale);v.sprite.width=v.sprite.height=(v.species==='deer'?125:155)*scale;v.loot.position.copyFrom(v.sprite.position);v.loot.scale.set(scale);v.sprite.zIndex=p.y;}
+  for(const v of animalViews){const a=state.animals[v.id];const clip=clipNames.indexOf(clips[v.species==='deer'?0:1]);v.sprite.texture=frames[clip][Math.floor(animationMs/clipDurations[clip]*8)%8];v.sprite.visible=a?.status==='alive';v.loot.visible=a?.status==='loot';if(!a)continue;const p=tilePoint(a.u,a.v);v.sprite.position.set(x+p.x*scale,y+p.y*scale);v.sprite.width=v.sprite.height=(v.species==='deer'?125:155)*scale;v.loot.position.copyFrom(v.sprite.position);v.loot.scale.set(scale);v.sprite.zIndex=p.y;}
  }
- const api={step,target,impact,place,render,day:()=>state.day,scene:()=>scene,version:()=>sceneVersion,chopping:()=>!!active,snapshot:()=>({resources:structuredClone(resources),state:structuredClone(state),active,chopMs,error,trees:trees.map(t=>({id:t.id,kind:t.kind,anchor:t.anchor,...state.trees[t.id]})),animals:specs.map(s=>({...s,...state.animals[s.id]})),ui:{x:hud.x,y:hud.y,width:252,height:90}})};
+ const api={eat:consume,step,target,impact,place,render,day:()=>state.day,scene:()=>scene,version:()=>sceneVersion,chopping:()=>!!active,snapshot:()=>({resources:structuredClone(resources),state:structuredClone(state),active,chopMs,error,trees:trees.map(t=>({id:t.id,kind:t.kind,anchor:t.anchor,...state.trees[t.id]})),animals:specs.map(s=>({...s,...state.animals[s.id]})),ui:{x:hud.x,y:hud.y,width:252*hud.scale.x,height:90*hud.scale.y,hunger:{x:hungerHud.x,y:hungerHud.y,width:180*hungerHud.scale.x,height:24*hungerHud.scale.y},eat:{x:hud.x+125*hud.scale.x,y:hud.y,width:127*hud.scale.x,height:55*hud.scale.y}}})};
  refreshScene();updateUi();(window as any).__GATHERING__=api;return api;
 }
 export type GatheringController=Awaited<ReturnType<typeof createGathering>>;
