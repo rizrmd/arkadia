@@ -6,16 +6,16 @@
 # Needs Node (npm ci done), Go 1.25 (organization runtime installs it in ~/.local/go) and the Playwright Chromium
 # that scripts/organization-setup.sh prepares (used to list the files the game loads).
 set -euo pipefail
-mkdir -p "$HOME/releases"
-exec 9>"$HOME/releases/arkodia-deploy.lock"
-flock -n 9 || { echo "Another Arkodia deployment holds the lock"; exit 1; }
 cd "$(dirname "$0")/.."
+source scripts/arkodia/deploy-lock.sh
+acquire_arkodia_deploy_lock
 export PATH="$HOME/.local/go/bin:$HOME/.local/bin:$PATH"
 STAGE="$(mktemp -d)"
 DIST_DIR="$(mktemp -d)"
 list="$(mktemp)"
-trap 'rm -rf "$STAGE" "$DIST_DIR" "$list"' EXIT
+trap 'rm -rf "$STAGE" "$DIST_DIR" "$list"; release_arkodia_deploy_lock_metadata' EXIT
 
+python3 scripts/arkodia/test_deploy_lock.py
 node scripts/shadow-audit/test.mjs
 node scripts/shadow-audit/test-field.mjs
 node scripts/shadow-audit/test-tent-volume.mjs
