@@ -1,0 +1,55 @@
+{
+  "metadata": {
+    "name": "actual live publication",
+    "duration": 0,
+    "times": []
+  },
+  "subpixelBits": 0,
+  "rows": [
+    {
+      "heroId": "ember-warden",
+      "revision": 6,
+      "anchor": {
+        "groundX": -63,
+        "groundY": 2336,
+        "lift": 0,
+        "owner": 3000
+      },
+      "frame": [
+        0,
+        0,
+        228,
+        250
+      ],
+      "width": 73.26,
+      "height": 83.30097087378641,
+      "pivot": [
+        0.5135135135135135,
+        0.9841538461538462
+      ],
+      "flip": false,
+      "groundOffsetY": -2.793100419698556,
+      "vertexCount": 33953,
+      "maxVertexDelta": 5.8884758180610675e-8,
+      "vertexErrors": 0,
+      "maxHeightContractDelta": 0.0000010825241503198413,
+      "heightContractErrors": 0,
+      "meshes": [
+        {
+          "vertices": 33953,
+          "bones": 24,
+          "heightScale": 40.82013456797489,
+          "heightRange": [
+            -0.1310672436262168,
+            1.468171823854452
+          ]
+        }
+      ],
+      "tests": [],
+      "alphaSha256": "cee0f9dae87d04706522e736aaf5e62ac449eea3ca639e372605dbfcf7a810fd"
+    }
+  ],
+  "failures": [],
+  "image": "mobile-cemetery-0.3-body.png",
+  "scope": "Observed actual gameplay onActorShadowFrame publication; no forced clip, animation time or pose. Pixel readback only in this explicitly invoked diagnostic."
+}

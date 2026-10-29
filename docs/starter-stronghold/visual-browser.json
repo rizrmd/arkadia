@@ -1,0 +1,221 @@
+{
+  "base": "http://127.0.0.1:19770",
+  "cases": [
+    {
+      "mode": "locked",
+      "hero": "rift-runner",
+      "walls": 12,
+      "bastions": 0,
+      "tower": {
+        "visible": false,
+        "anchor": 0.9555555555555556
+      },
+      "painted": {
+        "cpu": [
+          217,
+          187,
+          167,
+          255
+        ],
+        "gpu": [
+          241,
+          228,
+          228,
+          255
+        ],
+        "difference": 126,
+        "outsideAlpha": 0
+      },
+      "resourceChargesPreserved": true,
+      "crossFactionDenied": false,
+      "coreGateEnforced": true
+    }
+  ],
+  "errors": [],
+  "scope": "Offline isolated browser saves; production map read only",
+  "visual": [
+    {
+      "visible": true,
+      "renderable": true,
+      "alpha": 1,
+      "x": -1121.5238095238096,
+      "y": -625.3714285714287,
+      "w": 3403.5809523809526,
+      "h": 1766.4,
+      "bounds": {
+        "x": -1121.5238095238096,
+        "y": -625.3714285714287,
+        "w": 3403.5809523809526,
+        "h": 1766.4
+      },
+      "source": [
+        4020,
+        2086
+      ],
+      "frame": {
+        "type": "rectangle",
+        "x": 0,
+        "y": 0,
+        "width": 4020,
+        "height": 2086
+      },
+      "uvs": {
+        "x0": 0,
+        "y0": 0,
+        "x1": 1,
+        "y1": 0,
+        "x2": 1,
+        "y2": 1,
+        "x3": 0,
+        "y3": 1
+      },
+      "textureScaleMode": "linear",
+      "maxTexture": 8192,
+      "glError": 0,
+      "parentVisible": true,
+      "layerProbe": [
+        {
+          "z": 10.05,
+          "pixel": [
+            241,
+            228,
+            228,
+            255
+          ]
+        },
+        {
+          "z": 10.08,
+          "pixel": [
+            241,
+            228,
+            228,
+            255
+          ]
+        },
+        {
+          "z": 10.4,
+          "pixel": [
+            241,
+            228,
+            228,
+            255
+          ],
+          "type": "sprite"
+        },
+        {
+          "z": 10.4,
+          "pixel": [
+            241,
+            228,
+            228,
+            255
+          ],
+          "type": "sprite"
+        },
+        {
+          "z": 10.5,
+          "pixel": [
+            241,
+            228,
+            228,
+            255
+          ],
+          "type": "sprite"
+        },
+        {
+          "z": 10.5,
+          "pixel": [
+            241,
+            228,
+            228,
+            255
+          ],
+          "type": "sprite"
+        },
+        {
+          "z": 10.6,
+          "pixel": [
+            241,
+            228,
+            228,
+            255
+          ]
+        },
+        {
+          "z": 11,
+          "pixel": [
+            241,
+            228,
+            228,
+            255
+          ]
+        },
+        {
+          "z": 12,
+          "pixel": [
+            241,
+            228,
+            228,
+            255
+          ]
+        }
+      ],
+      "children": [
+        {
+          "id": "",
+          "pipe": "tilingSprite",
+          "z": 0
+        },
+        {
+          "z": 9.9
+        },
+        {
+          "id": "world-surface",
+          "pipe": "sprite",
+          "z": 10
+        },
+        {
+          "z": 10.05
+        },
+        {
+          "z": 10.08
+        },
+        {
+          "id": "",
+          "pipe": "sprite",
+          "z": 10.4
+        },
+        {
+          "id": "",
+          "pipe": "sprite",
+          "z": 10.4
+        },
+        {
+          "id": "",
+          "pipe": "sprite",
+          "z": 10.5
+        },
+        {
+          "id": "",
+          "pipe": "sprite",
+          "z": 10.5
+        },
+        {
+          "z": 10.6
+        },
+        {
+          "z": 11
+        },
+        {
+          "z": 12
+        },
+        {
+          "id": "world-gate-doors",
+          "pipe": "sprite",
+          "z": 14
+        }
+      ]
+    }
+  ],
+  "pass": true
+}

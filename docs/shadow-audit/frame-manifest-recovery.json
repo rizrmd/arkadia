@@ -1,0 +1,134 @@
+{
+  "scope": "Real FrameSet metadata/texture loads with one injected 502 per skill-tree manifest and one 404 for mobile HUD; source frames and texture dimensions preserved.",
+  "profiles": [
+    {
+      "engine": "chromium",
+      "status": "pass",
+      "requests": {
+        "/skill-tree/v1/manifest.json": [
+          "http://127.0.0.1:5672/skill-tree/v1/manifest.json?v=frame-manifest-recovery",
+          "http://127.0.0.1:5672/skill-tree/v1/manifest.json?v=frame-manifest-recovery&_assetRetry=mvpghv1j-1"
+        ],
+        "/skill-tree/ember-v1/manifest.json": [
+          "http://127.0.0.1:5672/skill-tree/ember-v1/manifest.json?v=frame-manifest-recovery",
+          "http://127.0.0.1:5672/skill-tree/ember-v1/manifest.json?v=frame-manifest-recovery&_assetRetry=mvpghvvk-1"
+        ],
+        "/mobile-hud/v1/manifest.json": [
+          "http://127.0.0.1:5672/mobile-hud/v1/manifest.json",
+          "http://127.0.0.1:5672/mobile-hud/v1/manifest.json?_assetRetry=mvpghwo9-1"
+        ]
+      },
+      "rows": [
+        {
+          "base": "/skill-tree/v1/",
+          "name": "ring-active",
+          "size": {
+            "width": 128,
+            "height": 128
+          },
+          "texture": [
+            128,
+            128
+          ],
+          "expected": {
+            "width": 128,
+            "height": 128
+          }
+        },
+        {
+          "base": "/skill-tree/ember-v1/",
+          "name": "icon-flame-fan",
+          "size": {
+            "width": 94,
+            "height": 94
+          },
+          "texture": [
+            94,
+            94
+          ],
+          "expected": {
+            "width": 94,
+            "height": 94
+          }
+        },
+        {
+          "base": "mobile",
+          "size": {
+            "width": 109,
+            "height": 99
+          },
+          "texture": [
+            109,
+            99
+          ]
+        }
+      ],
+      "errors": []
+    },
+    {
+      "engine": "webkit",
+      "status": "pass",
+      "requests": {
+        "/skill-tree/v1/manifest.json": [
+          "http://127.0.0.1:5672/skill-tree/v1/manifest.json?v=frame-manifest-recovery",
+          "http://127.0.0.1:5672/skill-tree/v1/manifest.json?v=frame-manifest-recovery&_assetRetry=mvpghykc-1"
+        ],
+        "/skill-tree/ember-v1/manifest.json": [
+          "http://127.0.0.1:5672/skill-tree/ember-v1/manifest.json?v=frame-manifest-recovery",
+          "http://127.0.0.1:5672/skill-tree/ember-v1/manifest.json?v=frame-manifest-recovery&_assetRetry=mvpghzfs-1"
+        ],
+        "/mobile-hud/v1/manifest.json": [
+          "http://127.0.0.1:5672/mobile-hud/v1/manifest.json",
+          "http://127.0.0.1:5672/mobile-hud/v1/manifest.json?_assetRetry=mvpgi097-1"
+        ]
+      },
+      "rows": [
+        {
+          "base": "/skill-tree/v1/",
+          "name": "ring-active",
+          "size": {
+            "width": 128,
+            "height": 128
+          },
+          "texture": [
+            128,
+            128
+          ],
+          "expected": {
+            "width": 128,
+            "height": 128
+          }
+        },
+        {
+          "base": "/skill-tree/ember-v1/",
+          "name": "icon-flame-fan",
+          "size": {
+            "width": 94,
+            "height": 94
+          },
+          "texture": [
+            94,
+            94
+          ],
+          "expected": {
+            "width": 94,
+            "height": 94
+          }
+        },
+        {
+          "base": "mobile",
+          "size": {
+            "width": 109,
+            "height": 99
+          },
+          "texture": [
+            109,
+            99
+          ]
+        }
+      ],
+      "errors": []
+    }
+  ],
+  "status": "pass"
+}

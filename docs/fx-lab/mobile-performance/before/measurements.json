@@ -1,0 +1,165 @@
+{
+  "environment": "Headless Chromium, SwiftShader software GPU, no CPU throttle; not physical phone latency",
+  "errors": [],
+  "layouts": [
+    {
+      "size": {
+        "width": 390,
+        "height": 844
+      },
+      "samples": [
+        {
+          "id": "sidebar-open",
+          "handlerMs": 136.29999995231628
+        },
+        {
+          "id": "sidebar-close",
+          "handlerMs": 20.799999952316284
+        },
+        {
+          "id": "sidebar-open",
+          "handlerMs": 41.60000014305115
+        },
+        {
+          "id": "sidebar-close",
+          "handlerMs": 52.799999952316284
+        },
+        {
+          "id": "sidebar-open",
+          "handlerMs": 68.09999990463257
+        },
+        {
+          "id": "sidebar-close",
+          "handlerMs": 17.600000143051147
+        },
+        {
+          "id": "sidebar-open",
+          "handlerMs": 52.30000019073486
+        },
+        {
+          "id": "layer-select-0",
+          "handlerMs": 46.89999985694885
+        },
+        {
+          "id": "import-close-pin",
+          "handlerMs": 16.40000009536743
+        },
+        {
+          "id": "layer-visible-0",
+          "handlerMs": 50.09999990463257
+        },
+        {
+          "id": "editor-undo",
+          "handlerMs": 12
+        }
+      ],
+      "scroll": {
+        "available": true,
+        "handlerMs": 386.09999990463257
+      },
+      "frames": {
+        "median": 16.700000000000728,
+        "max": 1066.7000000000007
+      }
+    },
+    {
+      "size": {
+        "width": 844,
+        "height": 390
+      },
+      "samples": [
+        {
+          "id": "sidebar-close",
+          "handlerMs": 18
+        },
+        {
+          "id": "sidebar-open",
+          "handlerMs": 23
+        },
+        {
+          "id": "sidebar-close",
+          "handlerMs": 39
+        },
+        {
+          "id": "sidebar-open",
+          "handlerMs": 53.69999980926514
+        },
+        {
+          "id": "sidebar-close",
+          "handlerMs": 24
+        },
+        {
+          "id": "sidebar-open",
+          "handlerMs": 36.200000047683716
+        },
+        {
+          "id": "editor-undo",
+          "handlerMs": 1.6999998092651367
+        }
+      ],
+      "scroll": {
+        "available": false
+      },
+      "frames": {
+        "median": 66.59999999999854,
+        "max": 100.09999999999854
+      }
+    },
+    {
+      "size": {
+        "width": 1440,
+        "height": 1000
+      },
+      "samples": [
+        {
+          "id": "sidebar-close",
+          "handlerMs": 72.20000004768372
+        },
+        {
+          "id": "sidebar-open",
+          "handlerMs": 129.60000014305115
+        },
+        {
+          "id": "sidebar-close",
+          "handlerMs": 68.30000019073486
+        },
+        {
+          "id": "sidebar-open",
+          "handlerMs": 84.39999985694885
+        },
+        {
+          "id": "sidebar-close",
+          "handlerMs": 922.5999999046326
+        },
+        {
+          "id": "sidebar-open",
+          "handlerMs": 67.29999995231628
+        },
+        {
+          "id": "layer-select-0",
+          "handlerMs": 131.40000009536743
+        },
+        {
+          "id": "import-close-pin",
+          "handlerMs": 30.899999856948853
+        },
+        {
+          "id": "layer-visible-0",
+          "handlerMs": 85
+        },
+        {
+          "id": "editor-undo",
+          "handlerMs": 13.900000095367432
+        }
+      ],
+      "scroll": {
+        "available": true,
+        "handlerMs": 353.2999999523163
+      },
+      "frames": {
+        "median": 166.60000000000582,
+        "max": 2533.199999999997
+      }
+    }
+  ]
+}

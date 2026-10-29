@@ -1,0 +1,13 @@
+{
+  "implementationCommit": "0948655302a218762952bff7260074898e2dd1de",
+  "gameReleaseLayer": "1792926407515-game-0948655-d56b971ca5ee",
+  "pipeline": "scripts/fural-deploy.sh from clean committed worktree",
+  "liveGame": "https://ark-whachat.fural.space/",
+  "livePlayer": "https://ark-whachat.fural.space/ember-warden-review/flame-fan-levels/",
+  "localGame": "passed desktop/mobile all ranks",
+  "liveGameChecks": "passed desktop/touch mobile all ranks; three forward targets damaged, rear target excluded, zero projectiles",
+  "playerChecks": "passed local/live 1440x900,390x844,320x560; controls and iframe; zero errors",
+  "server": "all Go tests and six-target Lv.1 auto-cast regression passed",
+  "regressions": "progression, Ember/Rift gate parity, production build, supported release co-op smoke passed",
+  "peerChanges": "preserved; inventory and Settings commits included"
+}

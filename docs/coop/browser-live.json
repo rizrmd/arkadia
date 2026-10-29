@@ -1,0 +1,152 @@
+{
+ "url": "https://ark-whachat.fural.space",
+ "room": "4SCXU",
+ "tagOnA": "Bima",
+ "tagOnB": "Guest 6260",
+ "shots": [
+  "docs/coop/1-court-desktop-live.webp",
+  "docs/coop/1-court-phone-live.webp",
+  "docs/coop/2-wilds-desktop-live.webp",
+  "docs/coop/2-wilds-phone-live.webp"
+ ],
+ "predictionWhileWalking": {
+  "corrections": 1,
+  "maxCorrectionPx": 18,
+  "inputs": 388,
+  "rttMs": 301
+ },
+ "sameEnemies": {
+  "commonTicks": 244,
+  "mismatched": 0,
+  "atTick": 486,
+  "enemies": [
+   [
+    1,
+    1,
+    0,
+    "die"
+   ],
+   [
+    2,
+    1,
+    1,
+    "idle"
+   ],
+   [
+    3,
+    1,
+    0,
+    "die"
+   ],
+   [
+    4,
+    1,
+    0,
+    "die"
+   ],
+   [
+    5,
+    1,
+    0,
+    "die"
+   ],
+   [
+    6,
+    1,
+    1,
+    "idle"
+   ],
+   [
+    7,
+    1,
+    0,
+    "die"
+   ],
+   [
+    8,
+    1,
+    0,
+    "die"
+   ],
+   [
+    9,
+    1,
+    0,
+    "die"
+   ],
+   [
+    10,
+    1,
+    0,
+    "die"
+   ],
+   [
+    11,
+    1,
+    0,
+    "die"
+   ]
+  ]
+ },
+ "hud": {
+  "a": {
+   "low": "false",
+   "zone": "wild",
+   "hp": "80",
+   "max": "100",
+   "state": "attack",
+   "kills": "4",
+   "foes": "2"
+  },
+  "b": {
+   "low": "false",
+   "zone": "wild",
+   "hp": "100",
+   "max": "100",
+   "state": "attack",
+   "kills": "5",
+   "foes": "2"
+  }
+ },
+ "stats": {
+  "a": {
+   "status": "online",
+   "room": "4SCXU",
+   "you": "p1",
+   "snapshots": 486,
+   "inputs": 461,
+   "corrections": 1,
+   "maxCorrection": 18,
+   "lastCorrection": 18,
+   "totalCorrection": 18,
+   "bytes": 552824,
+   "pace": 1,
+   "margin": 1,
+   "delay": 81,
+   "extrapolated": 2,
+   "held": 0,
+   "blended": 6,
+   "rtt": 307.90000009536743
+  },
+  "b": {
+   "status": "online",
+   "room": "4SCXU",
+   "you": "p2",
+   "snapshots": 256,
+   "inputs": 248,
+   "corrections": 3,
+   "maxCorrection": 5.952453275751089,
+   "lastCorrection": 4.617899955607533,
+   "totalCorrection": 16.52280650710971,
+   "bytes": 365417,
+   "pace": 1,
+   "margin": 1,
+   "delay": 81,
+   "extrapolated": 8,
+   "held": 0,
+   "blended": 4,
+   "rtt": 288.59999990463257
+  }
+ },
+ "ok": true
+}

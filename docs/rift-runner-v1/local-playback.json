@@ -1,0 +1,134 @@
+{
+  "base": "http://127.0.0.1:39627",
+  "errors": [],
+  "results": [
+    {
+      "action": "idle",
+      "clipCount": 8,
+      "framesObserved": 32,
+      "allFramesRendered": true,
+      "elapsedSeconds": 1.8333000000000006
+    },
+    {
+      "action": "run",
+      "clipCount": 8,
+      "framesObserved": 48,
+      "allFramesRendered": true,
+      "elapsedSeconds": 1.4833,
+      "transitionPhasesObserved": [
+        "idle before",
+        "action",
+        "idle after"
+      ]
+    },
+    {
+      "action": "pulse-shot",
+      "clipCount": 8,
+      "framesObserved": 56,
+      "allFramesRendered": true,
+      "elapsedSeconds": 1.866600000000001,
+      "transitionPhasesObserved": [
+        "idle before",
+        "action",
+        "idle after"
+      ]
+    },
+    {
+      "action": "phase-dash",
+      "clipCount": 8,
+      "framesObserved": 56,
+      "allFramesRendered": true,
+      "elapsedSeconds": 1.7333000000000018,
+      "transitionPhasesObserved": [
+        "idle before",
+        "action",
+        "idle after"
+      ]
+    },
+    {
+      "action": "rift-trap",
+      "clipCount": 8,
+      "framesObserved": 56,
+      "allFramesRendered": true,
+      "elapsedSeconds": 1.7666000000000026,
+      "transitionPhasesObserved": [
+        "idle before",
+        "action",
+        "idle after"
+      ]
+    },
+    {
+      "action": "overdrive",
+      "clipCount": 8,
+      "framesObserved": 56,
+      "allFramesRendered": true,
+      "elapsedSeconds": 1.7165999999999986,
+      "transitionPhasesObserved": [
+        "idle before",
+        "action",
+        "idle after"
+      ]
+    },
+    {
+      "action": "projectile",
+      "clipCount": 8,
+      "framesObserved": 32,
+      "allFramesRendered": true,
+      "elapsedSeconds": 1.2165999999999983
+    },
+    {
+      "action": "afterimage",
+      "clipCount": 8,
+      "framesObserved": 32,
+      "allFramesRendered": true,
+      "elapsedSeconds": 1.2832000000000008
+    },
+    {
+      "action": "trap",
+      "clipCount": 1,
+      "framesObserved": 12,
+      "allFramesRendered": true,
+      "elapsedSeconds": 2.616599999999997
+    },
+    {
+      "action": "aura",
+      "clipCount": 1,
+      "framesObserved": 12,
+      "allFramesRendered": true,
+      "elapsedSeconds": 2.6499
+    },
+    {
+      "action": "hurt",
+      "clipCount": 8,
+      "framesObserved": 64,
+      "allFramesRendered": true,
+      "elapsedSeconds": 1.5832000000000042,
+      "transitionPhasesObserved": [
+        "neutral before",
+        "action",
+        "neutral after"
+      ]
+    },
+    {
+      "action": "death",
+      "clipCount": 8,
+      "framesObserved": 64,
+      "allFramesRendered": true,
+      "elapsedSeconds": 2.0999000000000017,
+      "transitionPhasesObserved": [
+        "neutral before",
+        "action",
+        "terminal hold"
+      ]
+    }
+  ],
+  "checks": [
+    "all current clips rendered every frame during real-time requestAnimationFrame playback",
+    "idle/action/idle transitions exercised for run and all four body skills in all eight slots",
+    "pause and next-frame controls work"
+  ],
+  "limits": [
+    "Rendering coverage is not a visual quality pass.",
+    "No physical device or gameplay integration tested."
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "reviewedFamilyPlates": 11,
+  "familyRecords": 86,
+  "geometryVariantsNumericallyExercised": 314,
+  "receiverControls": 942,
+  "reviewScope": "313 previously reviewed variants carried forward after 61,538,304 corresponding picture pixels are proven identical to 7eb83725; changed brazier directly reviewed in source/physical/emissive and three-sun plates. Numeric receiver controls remain separate. Not continuous-angle or native-device acceptance.",
+  "resolved": [
+    "Cemetery opaque bodies remain continuous",
+    "Crate and barrel closed volumes remain continuous",
+    "Tent roof/wall shadow gaps closed",
+    "Folded-surface nearest opaque contributions retained independently from translucent texels: 35830 checks, previous 4188 losses now zero",
+    "Ground-only controls separate white artwork/self-receiver fringes from missing ground shadow; drift interiors retain opaque coverage",
+    "Forge level 3 projection retains original-alpha open silhouette; no missing nearest-opaque contribution in focused controls",
+    "All 24 rock-scatter placements now cast/receive using an explicit low capped volume, retaining ground painter order; mirrored/327-degree art transform aligns with production sprite. All 72 focused sun controls pass; 290 other variant picture regions remain byte-identical.",
+    "Brazier now uses source-aligned physical/emissive companion alpha. Original RGB/alpha retained; metal/wood casts and receives, fire/glow response occupies existing receiver alpha. 531335 exact alpha partitions, 20 semantic probes, 36 independent material controls and three-sun asset controls pass."
+  ],
+  "open": [],
+  "limitations": [
+    "Proxy geometry is authored, not measured volume or complete volumetric self-shadowing.",
+    "Particle FX live on separate unlit planes with occlusion masks, not directional cast/receive.",
+    "Desktop/mobile viewport measurements use SwiftShader; physical-device dense-scene acceptance remains unavailable.",
+    "Authored semantic material classification and mixed edge response are approximations at the static receiver-map resolution; no measured internal brazier volume."
+  ],
+  "completeVariantReview": "../static-visual-acceptance.json"
+}

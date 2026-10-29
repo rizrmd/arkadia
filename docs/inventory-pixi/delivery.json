@@ -1,0 +1,27 @@
+{
+  "implementation": "e121bf2f",
+  "integrated_game": "2b84667d",
+  "own_release_layer": "1792941370464-game-4c77a1c2-8e0b585e469b",
+  "live": "https://ark-whachat.fural.space/",
+  "report": "https://ark-whachat.fural.space/inventory-pixi-verification/live-results.json",
+  "checks": [
+    "inventory transaction suite",
+    "TypeScript/Vite production build",
+    "all Go tests",
+    "deployment shadow suites and co-op smoke",
+    "five actual-game local viewports",
+    "five actual-game live viewports",
+    "actual damage and healing 84 to 100",
+    "one-scroll return, save/reload, stacking",
+    "keyboard input, Settings and blessing guards",
+    "zero page errors",
+    "six exact committed texture hashes",
+    "no HTML inventory overlay"
+  ],
+  "knowledge": "NKBDf7551a4f88f1a1eba3475c3f",
+  "limits": [
+    "existing 3d=0 hero fallback",
+    "browser-emulated touch; no physical device benchmark"
+  ],
+  "deployment_recovery": "Transient TLS upload failure; peer quarantined oversized evidence layer that caused boot OOM; concurrent restart availability failures. Final passing navigation HTTP 200 without retry."
+}

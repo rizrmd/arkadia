@@ -1,0 +1,568 @@
+{
+  "version": 2,
+  "status": "asset-and-composition-review",
+  "generator": "Built-in image_gen, one independent call per sprite, transparent_background=true",
+  "camera": {
+    "projection": "2:1 dimetric",
+    "groundSlope": 0.5,
+    "tileMeters": 3,
+    "halfWidth": 64,
+    "halfHeight": 32
+  },
+  "lighting": "Soft upper-left daylight; slate blue shadows; ivory snow; weathered beige grey stone",
+  "heroReference": {
+    "heightM": 1.8,
+    "heightWorld": 66.6,
+    "verticalPixelsPerMeter": 37
+  },
+  "placement": "At ground (x,y): draw asset at (x-pivot.x*scale,y-pivot.y*scale), size asset.size*scale. Pivots refer to padded exports, not original images.",
+  "limitations": "Painted perspective and footprints are approximate. Future map integration needs collision, occlusion and walkability calibration. No game imports or preloads.",
+  "assets": [
+    {
+      "id": "ruined-gate",
+      "category": "Landmarks",
+      "file": "assets/ruined-gate.png",
+      "source": "assets-src/frozen-frontier/v2/ruined-gate.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "sourceCrop": {
+        "left": 86,
+        "top": 26,
+        "width": 1377,
+        "height": 973
+      },
+      "size": [
+        1008,
+        726
+      ],
+      "pivot": {
+        "x": 504,
+        "y": 614
+      },
+      "scale": 0.25084745762711863,
+      "widthWorld": 252.85423728813558,
+      "heightM": 4,
+      "footprintM": [
+        5,
+        1.5
+      ],
+      "alpha": {
+        "clearPixels": 953701,
+        "solidPixels": 572217,
+        "visibleSourceTouchesEdge": false,
+        "cropAlphaThreshold": 8
+      },
+      "subject": "Broad broken limestone arch with two uneven ruined piers and fallen stones.",
+      "pivotStatus": "Visual ground contact center; design reference, not collision geometry"
+    },
+    {
+      "id": "broken-watchtower",
+      "category": "Landmarks",
+      "file": "assets/broken-watchtower.png",
+      "source": "assets-src/frozen-frontier/v2/broken-watchtower.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "sourceCrop": {
+        "left": 334,
+        "top": 11,
+        "width": 992,
+        "height": 988
+      },
+      "size": [
+        1008,
+        1004
+      ],
+      "pivot": {
+        "x": 514,
+        "y": 846
+      },
+      "scale": 0.27007299270072993,
+      "widthWorld": 272.2335766423358,
+      "heightM": 6,
+      "footprintM": [
+        4,
+        4
+      ],
+      "alpha": {
+        "clearPixels": 883069,
+        "solidPixels": 614488,
+        "visibleSourceTouchesEdge": false,
+        "cropAlphaThreshold": 8
+      },
+      "subject": "Squat round limestone watchtower, collapsed jagged upper wall and exposed timber floor.",
+      "pivotStatus": "Visual ground contact center; design reference, not collision geometry"
+    },
+    {
+      "id": "snowy-shrine",
+      "category": "Landmarks",
+      "file": "assets/snowy-shrine.png",
+      "source": "assets-src/frozen-frontier/v2/snowy-shrine.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "sourceCrop": {
+        "left": 327,
+        "top": 2,
+        "width": 891,
+        "height": 1004
+      },
+      "size": [
+        1008,
+        1130
+      ],
+      "pivot": {
+        "x": 504,
+        "y": 955
+      },
+      "scale": 0.11922663802363051,
+      "widthWorld": 120.18045112781955,
+      "heightM": 3,
+      "footprintM": [
+        3,
+        3
+      ],
+      "alpha": {
+        "clearPixels": 1026868,
+        "solidPixels": 461465,
+        "visibleSourceTouchesEdge": false,
+        "cropAlphaThreshold": 8
+      },
+      "subject": "Octagonal stepped plinth, carved standing stone and broken canopy on two pillars.",
+      "pivotStatus": "Visual ground contact center; design reference, not collision geometry"
+    },
+    {
+      "id": "pine-tall",
+      "category": "Pines",
+      "file": "assets/pine-tall.png",
+      "source": "assets-src/frozen-frontier/v2/pine-tall.png",
+      "sourceSize": [
+        1024,
+        1536
+      ],
+      "sourceCrop": {
+        "left": 173,
+        "top": 23,
+        "width": 688,
+        "height": 1478
+      },
+      "size": [
+        688,
+        1423
+      ],
+      "pivot": {
+        "x": 344,
+        "y": 1344
+      },
+      "scale": 0.1962121212121212,
+      "widthWorld": 134.99393939393937,
+      "heightM": 7,
+      "footprintM": [
+        2.5,
+        2.5
+      ],
+      "alpha": {
+        "clearPixels": 1050458,
+        "solidPixels": 359561,
+        "visibleSourceTouchesEdge": false,
+        "cropAlphaThreshold": 8
+      },
+      "subject": "Tall narrow alpine pine, irregular layered dark evergreen needles, heavy snow and visible trunk.",
+      "pivotStatus": "Visual ground contact center; design reference, not collision geometry"
+    },
+    {
+      "id": "pine-broad",
+      "category": "Pines",
+      "file": "assets/pine-broad.png",
+      "source": "assets-src/frozen-frontier/v2/pine-broad.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "sourceCrop": {
+        "left": 243,
+        "top": 10,
+        "width": 1051,
+        "height": 988
+      },
+      "size": [
+        688,
+        650
+      ],
+      "pivot": {
+        "x": 344,
+        "y": 590
+      },
+      "scale": 0.32685512367491165,
+      "widthWorld": 224.87632508833923,
+      "heightM": 5,
+      "footprintM": [
+        3.8,
+        3.8
+      ],
+      "alpha": {
+        "clearPixels": 922228,
+        "solidPixels": 384213,
+        "visibleSourceTouchesEdge": false,
+        "cropAlphaThreshold": 8
+      },
+      "subject": "Broad mature alpine pine with asymmetrical spreading boughs, snow pillows and sturdy trunk.",
+      "pivotStatus": "Visual ground contact center; design reference, not collision geometry"
+    },
+    {
+      "id": "pine-sapling",
+      "category": "Pines",
+      "file": "assets/pine-sapling.png",
+      "source": "assets-src/frozen-frontier/v2/pine-sapling.png",
+      "sourceSize": [
+        1280,
+        1229
+      ],
+      "sourceCrop": {
+        "left": 324,
+        "top": 14,
+        "width": 655,
+        "height": 1181
+      },
+      "size": [
+        688,
+        1202
+      ],
+      "pivot": {
+        "x": 344,
+        "y": 1120
+      },
+      "scale": 0.06076642335766424,
+      "widthWorld": 41.807299270072996,
+      "heightM": 1.8,
+      "footprintM": [
+        1,
+        1
+      ],
+      "alpha": {
+        "clearPixels": 1231733,
+        "solidPixels": 199568,
+        "visibleSourceTouchesEdge": false,
+        "cropAlphaThreshold": 8
+      },
+      "subject": "Young alpine pine sapling with sparse irregular green boughs, snow and slender trunk.",
+      "pivotStatus": "Visual ground contact center; design reference, not collision geometry"
+    },
+    {
+      "id": "dead-tree",
+      "category": "Deadwood",
+      "file": "assets/dead-tree.png",
+      "source": "assets-src/frozen-frontier/v2/dead-tree.png",
+      "sourceSize": [
+        1319,
+        1193
+      ],
+      "sourceCrop": {
+        "left": 45,
+        "top": 11,
+        "width": 1232,
+        "height": 1153
+      },
+      "size": [
+        688,
+        647
+      ],
+      "pivot": {
+        "x": 344,
+        "y": 587
+      },
+      "scale": 0.26287744227353466,
+      "widthWorld": 180.85968028419185,
+      "heightM": 4,
+      "footprintM": [
+        2,
+        2
+      ],
+      "alpha": {
+        "clearPixels": 944329,
+        "solidPixels": 317565,
+        "visibleSourceTouchesEdge": false,
+        "cropAlphaThreshold": 8
+      },
+      "subject": "Twisted weathered grey brown dead tree with bare branches, snow deposits and roots.",
+      "pivotStatus": "Visual ground contact center; design reference, not collision geometry"
+    },
+    {
+      "id": "dead-snag",
+      "category": "Deadwood",
+      "file": "assets/dead-snag.png",
+      "source": "assets-src/frozen-frontier/v2/dead-snag.png",
+      "sourceSize": [
+        1269,
+        1240
+      ],
+      "sourceCrop": {
+        "left": 216,
+        "top": 15,
+        "width": 914,
+        "height": 1206
+      },
+      "size": [
+        688,
+        892
+      ],
+      "pivot": {
+        "x": 325,
+        "y": 800
+      },
+      "scale": 0.11920103092783506,
+      "widthWorld": 82.01030927835052,
+      "heightM": 2.5,
+      "footprintM": [
+        1.2,
+        1.2
+      ],
+      "alpha": {
+        "clearPixels": 1098527,
+        "solidPixels": 368328,
+        "visibleSourceTouchesEdge": false,
+        "cropAlphaThreshold": 8
+      },
+      "subject": "Broken dead pine snag with jagged trunk, snapped branches, exposed roots and snow.",
+      "pivotStatus": "Visual ground contact center; design reference, not collision geometry"
+    },
+    {
+      "id": "shrub-juniper",
+      "category": "Shrubs",
+      "file": "assets/shrub-juniper.png",
+      "source": "assets-src/frozen-frontier/v2/shrub-juniper.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "sourceCrop": {
+        "left": 33,
+        "top": 76,
+        "width": 1485,
+        "height": 867
+      },
+      "size": [
+        688,
+        422
+      ],
+      "pivot": {
+        "x": 344,
+        "y": 334
+      },
+      "scale": 0.09548387096774194,
+      "widthWorld": 65.69290322580646,
+      "heightM": 0.8,
+      "footprintM": [
+        1.3,
+        1
+      ],
+      "alpha": {
+        "clearPixels": 812972,
+        "solidPixels": 606333,
+        "visibleSourceTouchesEdge": false,
+        "cropAlphaThreshold": 8
+      },
+      "subject": "Low irregular winter juniper shrub, blue green foliage, snow pillows and woody stems.",
+      "pivotStatus": "Visual ground contact center; design reference, not collision geometry"
+    },
+    {
+      "id": "shrub-twigs",
+      "category": "Shrubs",
+      "file": "assets/shrub-twigs.png",
+      "source": "assets-src/frozen-frontier/v2/shrub-twigs.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "sourceCrop": {
+        "left": 67,
+        "top": 58,
+        "width": 1402,
+        "height": 883
+      },
+      "size": [
+        688,
+        451
+      ],
+      "pivot": {
+        "x": 344,
+        "y": 387
+      },
+      "scale": 0.09173553719008265,
+      "widthWorld": 63.114049586776865,
+      "heightM": 0.9,
+      "footprintM": [
+        1.2,
+        1
+      ],
+      "alpha": {
+        "clearPixels": 883619,
+        "solidPixels": 219932,
+        "visibleSourceTouchesEdge": false,
+        "cropAlphaThreshold": 8
+      },
+      "subject": "Leafless winter shrub, tangled reddish grey brown twigs and sparse snow.",
+      "pivotStatus": "Visual ground contact center; design reference, not collision geometry"
+    },
+    {
+      "id": "grass-tussock",
+      "category": "Grass",
+      "file": "assets/grass-tussock.png",
+      "source": "assets-src/frozen-frontier/v2/grass-tussock.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "sourceCrop": {
+        "left": 147,
+        "top": 34,
+        "width": 1267,
+        "height": 967
+      },
+      "size": [
+        688,
+        536
+      ],
+      "pivot": {
+        "x": 344,
+        "y": 463
+      },
+      "scale": 0.046355353075170844,
+      "widthWorld": 31.89248291571754,
+      "heightM": 0.55,
+      "footprintM": [
+        0.65,
+        0.65
+      ],
+      "alpha": {
+        "clearPixels": 846097,
+        "solidPixels": 386127,
+        "visibleSourceTouchesEdge": false,
+        "cropAlphaThreshold": 8
+      },
+      "subject": "Dry grass tussock, curled ochre straw blades, tall seed heads and snow at roots.",
+      "pivotStatus": "Visual ground contact center; design reference, not collision geometry"
+    },
+    {
+      "id": "grass-patch",
+      "category": "Grass",
+      "file": "assets/grass-patch.png",
+      "source": "assets-src/frozen-frontier/v2/grass-patch.png",
+      "sourceSize": [
+        1774,
+        887
+      ],
+      "sourceCrop": {
+        "left": 38,
+        "top": 208,
+        "width": 1703,
+        "height": 498
+      },
+      "size": [
+        688,
+        235
+      ],
+      "pivot": {
+        "x": 344,
+        "y": 164
+      },
+      "scale": 0.06607142857142857,
+      "widthWorld": 45.457142857142856,
+      "heightM": 0.25,
+      "footprintM": [
+        1.3,
+        0.7
+      ],
+      "alpha": {
+        "clearPixels": 1039868,
+        "solidPixels": 322047,
+        "visibleSourceTouchesEdge": false,
+        "cropAlphaThreshold": 8
+      },
+      "subject": "Low sprawling sparse dry grass patch, wind bent ochre clumps and snow between roots.",
+      "pivotStatus": "Visual ground contact center; design reference, not collision geometry"
+    },
+    {
+      "id": "rock-boulders",
+      "category": "Rocks",
+      "file": "assets/rock-boulders.png",
+      "source": "assets-src/frozen-frontier/v2/rock-boulders.png",
+      "sourceSize": [
+        1774,
+        887
+      ],
+      "sourceCrop": {
+        "left": 52,
+        "top": 100,
+        "width": 1677,
+        "height": 711
+      },
+      "size": [
+        688,
+        319
+      ],
+      "pivot": {
+        "x": 344,
+        "y": 219
+      },
+      "scale": 0.17076923076923078,
+      "widthWorld": 117.48923076923077,
+      "heightM": 0.9,
+      "footprintM": [
+        2,
+        1.4
+      ],
+      "alpha": {
+        "clearPixels": 872989,
+        "solidPixels": 634167,
+        "visibleSourceTouchesEdge": false,
+        "cropAlphaThreshold": 8
+      },
+      "subject": "Three angular grey beige boulders, ochre lichen, thick snow caps and small pebbles.",
+      "pivotStatus": "Visual ground contact center; design reference, not collision geometry"
+    },
+    {
+      "id": "rock-scatter",
+      "category": "Rocks",
+      "file": "assets/rock-scatter.png",
+      "source": "assets-src/frozen-frontier/v2/rock-scatter.png",
+      "sourceSize": [
+        1774,
+        887
+      ],
+      "sourceCrop": {
+        "left": 18,
+        "top": 260,
+        "width": 1733,
+        "height": 450
+      },
+      "size": [
+        688,
+        214
+      ],
+      "pivot": {
+        "x": 344,
+        "y": 125
+      },
+      "scale": 0.1099009900990099,
+      "widthWorld": 75.61188118811882,
+      "heightM": 0.3,
+      "footprintM": [
+        1.4,
+        0.8
+      ],
+      "alpha": {
+        "clearPixels": 1115134,
+        "solidPixels": 430807,
+        "visibleSourceTouchesEdge": false,
+        "cropAlphaThreshold": 8
+      },
+      "subject": "Low loose crescent of flat weathered stones and pebbles, snow patches and lichen.",
+      "pivotStatus": "Visual ground contact center; design reference, not collision geometry"
+    }
+  ]
+}

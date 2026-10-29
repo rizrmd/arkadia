@@ -1,0 +1,152 @@
+{
+ "url": "http://127.0.0.1:8792",
+ "room": "9AFX9",
+ "tagOnA": "Bima",
+ "tagOnB": "Guest 8888",
+ "shots": [
+  "docs/coop/1-court-desktop.webp",
+  "docs/coop/1-court-phone.webp",
+  "docs/coop/2-wilds-desktop.webp",
+  "docs/coop/2-wilds-phone.webp"
+ ],
+ "predictionWhileWalking": {
+  "corrections": 2,
+  "maxCorrectionPx": 4.5,
+  "inputs": 261,
+  "rttMs": 1
+ },
+ "sameEnemies": {
+  "commonTicks": 224,
+  "mismatched": 0,
+  "atTick": 341,
+  "enemies": [
+   [
+    1,
+    1,
+    2,
+    "move"
+   ],
+   [
+    2,
+    1,
+    0,
+    "die"
+   ],
+   [
+    3,
+    1,
+    0,
+    "die"
+   ],
+   [
+    4,
+    1,
+    0,
+    "die"
+   ],
+   [
+    5,
+    1,
+    0,
+    "die"
+   ],
+   [
+    6,
+    1,
+    2,
+    "attack"
+   ],
+   [
+    7,
+    1,
+    0,
+    "die"
+   ],
+   [
+    8,
+    1,
+    1,
+    "idle"
+   ],
+   [
+    9,
+    1,
+    0,
+    "die"
+   ],
+   [
+    10,
+    1,
+    0,
+    "die"
+   ],
+   [
+    11,
+    1,
+    0,
+    "die"
+   ]
+  ]
+ },
+ "hud": {
+  "a": {
+   "low": "false",
+   "zone": "wild",
+   "hp": "76",
+   "max": "100",
+   "state": "attack",
+   "kills": "5",
+   "foes": "4"
+  },
+  "b": {
+   "low": "false",
+   "zone": "wild",
+   "hp": "100",
+   "max": "100",
+   "state": "attack",
+   "kills": "3",
+   "foes": "4"
+  }
+ },
+ "stats": {
+  "a": {
+   "status": "online",
+   "room": "9AFX9",
+   "you": "p1",
+   "snapshots": 341,
+   "inputs": 313,
+   "corrections": 2,
+   "maxCorrection": 4.5,
+   "lastCorrection": 4.5,
+   "totalCorrection": 9,
+   "bytes": 401296,
+   "pace": 1,
+   "margin": 1,
+   "delay": 81,
+   "extrapolated": 3,
+   "held": 1,
+   "blended": 4,
+   "rtt": 0.2999999523162842
+  },
+  "b": {
+   "status": "online",
+   "room": "9AFX9",
+   "you": "p2",
+   "snapshots": 237,
+   "inputs": 230,
+   "corrections": 3,
+   "maxCorrection": 4.540099117860795,
+   "lastCorrection": 4.540099117860795,
+   "totalCorrection": 13.616353852055923,
+   "bytes": 331102,
+   "pace": 0.95,
+   "margin": 0,
+   "delay": 79,
+   "extrapolated": 1,
+   "held": 1,
+   "blended": 20,
+   "rtt": 0.39999985694885254
+  }
+ },
+ "ok": true
+}

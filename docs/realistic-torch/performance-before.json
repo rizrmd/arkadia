@@ -1,0 +1,28 @@
+{
+  "url": "local",
+  "viewport": "390x844",
+  "cpuSlowdown": 4,
+  "phases": [
+    {
+      "mode": "idle",
+      "frames": 55,
+      "p95Ms": 100.09999999999854,
+      "maxMs": 116.70000000000073,
+      "flameDraws": 528,
+      "lightPaints": "5",
+      "taskMs": 2978.134000000001,
+      "layoutMs": 1.1999999999999926
+    },
+    {
+      "mode": "pan",
+      "frames": 263,
+      "p95Ms": 66.70000000000073,
+      "maxMs": 100,
+      "flameDraws": 1376,
+      "lightPaints": "5",
+      "taskMs": 7974.201000000001,
+      "layoutMs": 7.960999999999996
+    }
+  ],
+  "errors": []
+}

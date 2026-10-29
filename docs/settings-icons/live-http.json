@@ -1,0 +1,28 @@
+[
+  {
+    "path": "/healthz",
+    "status": 200,
+    "type": "application/json"
+  },
+  {
+    "path": "/ui/settings/gear.webp",
+    "status": 200,
+    "type": "image/webp",
+    "matchesCommittedAsset": true,
+    "sha256": "8b18d15037cdab8c7a75cb3bce924cc2d6c4e744e2ed17fdffa6cad456e17259"
+  },
+  {
+    "path": "/ui/settings/music.webp",
+    "status": 200,
+    "type": "image/webp",
+    "matchesCommittedAsset": true,
+    "sha256": "f517c2707ac4ae829102c68cce2c5a27091e719b4bb4309917e4fcbf9c7899e0"
+  },
+  {
+    "path": "/ui/settings/sound-effects.webp",
+    "status": 200,
+    "type": "image/webp",
+    "matchesCommittedAsset": true,
+    "sha256": "6d6977e25a096f956395eb5a5d11f071af016b1557df612fac5cc48391df981b"
+  }
+]

@@ -1,0 +1,17 @@
+{
+  "source": "GET /api/tracelogs?limit=200",
+  "checkedAt": "2026-10-26T13:13:48.915Z",
+  "stored": 200,
+  "hardwareCandidateLogs": 200,
+  "currentEntryBuild": "/assets/index-iw_KY8x7.js",
+  "currentBuildHardwareLogs": 73,
+  "latestHardwareClientTime": "2026-10-26T13:13:38.471Z",
+  "buildCounts": {
+    "/assets/index-iw_KY8x7.js": 73,
+    "/assets/index-ClG2Kfj9.js": 57,
+    "/assets/index-BjGJB5qD.js": 61,
+    "/assets/index-D7hdN5-C.js": 1,
+    "/assets/index-CWCjU2kk.js": 8
+  },
+  "limitation": "Stored FPS-drop windows are biased incident samples, not a controlled benchmark. Prior-build hardware logs cannot certify the current renderer. Device/GPU identity is reported by clients; current-build candidates still need scene/profile/sample inspection before acceptance."
+}

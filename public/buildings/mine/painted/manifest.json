@@ -1,0 +1,617 @@
+{
+  "building": "Mine",
+  "format": "painted imagegen RGBA sprites",
+  "canvas": [
+    1254,
+    1254
+  ],
+  "pivot": [
+    627,
+    1130
+  ],
+  "anchor": [
+    0.5,
+    0.9011164274322169
+  ],
+  "footprintMeters": [
+    6,
+    5
+  ],
+  "entranceClearanceMeters": 1.5,
+  "orientation": "Entrance and rails toward screen bottom-right",
+  "projection": {
+    "azimuth": 45,
+    "elevation": 30,
+    "type": "orthographic target"
+  },
+  "material": "Baked sRGB painted timber, rock, iron, terracotta, snow; amber lantern and upper-left light",
+  "milestones": [
+    {
+      "level": 1,
+      "file": "level-01.png",
+      "detail": "Timber-supported mine entrance",
+      "sha256": "dd7e46102e550b79ac1686547d7442cb73b447d3164061f0625f8ab70894d249"
+    },
+    {
+      "level": 5,
+      "file": "level-05.png",
+      "detail": "Reinforced entrance beams",
+      "sha256": "028badcff6b8de51c2261f65c320f6cf713cb124519758a4eb505206f09006b6"
+    },
+    {
+      "level": 10,
+      "file": "level-10.png",
+      "detail": "Stone entrance and organized tools",
+      "sha256": "fc6182d16ebda1ca9689084595f1f4493bf4c4d58a7e2db2c763e812ab995c9b"
+    },
+    {
+      "level": 15,
+      "file": "level-15.png",
+      "detail": "Fortified covered loading bay",
+      "sha256": "5a13200f5419ba4524c49ec124fd0935f10085cf8f852dd24fa30156515f3124"
+    },
+    {
+      "level": 20,
+      "file": "level-20.png",
+      "detail": "Refined mining fittings",
+      "sha256": "a50c1302d15365a1a959e58ad5f45082b87aac5f6eb067cd40e3ee4915e30d4a"
+    },
+    {
+      "level": 25,
+      "file": "level-25.png",
+      "detail": "Elite mine frontage",
+      "sha256": "1c249ac71dbb2046f5fc3176dcef30234ae1cc5460f66c186126970ef6b074ef"
+    },
+    {
+      "level": 30,
+      "file": "level-30.png",
+      "detail": "Masterwork mining hall",
+      "sha256": "2b62cc1a9653d9bae9a0fb402e61bdc3032e94c791b553caeb27634f9a16041b"
+    }
+  ],
+  "levels": [
+    {
+      "level": 1,
+      "milestone": 1,
+      "sprite": "level-01.png",
+      "incrementalRepairPairs": 0,
+      "detail": "Timber-supported mine entrance",
+      "decals": []
+    },
+    {
+      "level": 2,
+      "milestone": 1,
+      "sprite": "level-01.png",
+      "incrementalRepairPairs": 1,
+      "detail": "1 cumulative cosmetic rail-sleeper repair straps",
+      "decals": [
+        {
+          "x": 750,
+          "y": 930,
+          "size": 42
+        }
+      ]
+    },
+    {
+      "level": 3,
+      "milestone": 1,
+      "sprite": "level-01.png",
+      "incrementalRepairPairs": 2,
+      "detail": "2 cumulative cosmetic rail-sleeper repair straps",
+      "decals": [
+        {
+          "x": 750,
+          "y": 930,
+          "size": 42
+        },
+        {
+          "x": 805,
+          "y": 965,
+          "size": 42
+        }
+      ]
+    },
+    {
+      "level": 4,
+      "milestone": 1,
+      "sprite": "level-01.png",
+      "incrementalRepairPairs": 3,
+      "detail": "3 cumulative cosmetic rail-sleeper repair straps",
+      "decals": [
+        {
+          "x": 750,
+          "y": 930,
+          "size": 42
+        },
+        {
+          "x": 805,
+          "y": 965,
+          "size": 42
+        },
+        {
+          "x": 860,
+          "y": 1000,
+          "size": 42
+        }
+      ]
+    },
+    {
+      "level": 5,
+      "milestone": 5,
+      "sprite": "level-05.png",
+      "incrementalRepairPairs": 0,
+      "detail": "Reinforced entrance beams",
+      "decals": []
+    },
+    {
+      "level": 6,
+      "milestone": 5,
+      "sprite": "level-05.png",
+      "incrementalRepairPairs": 1,
+      "detail": "1 cumulative cosmetic rail-sleeper repair straps",
+      "decals": [
+        {
+          "x": 750,
+          "y": 930,
+          "size": 42
+        }
+      ]
+    },
+    {
+      "level": 7,
+      "milestone": 5,
+      "sprite": "level-05.png",
+      "incrementalRepairPairs": 2,
+      "detail": "2 cumulative cosmetic rail-sleeper repair straps",
+      "decals": [
+        {
+          "x": 750,
+          "y": 930,
+          "size": 42
+        },
+        {
+          "x": 805,
+          "y": 965,
+          "size": 42
+        }
+      ]
+    },
+    {
+      "level": 8,
+      "milestone": 5,
+      "sprite": "level-05.png",
+      "incrementalRepairPairs": 3,
+      "detail": "3 cumulative cosmetic rail-sleeper repair straps",
+      "decals": [
+        {
+          "x": 750,
+          "y": 930,
+          "size": 42
+        },
+        {
+          "x": 805,
+          "y": 965,
+          "size": 42
+        },
+        {
+          "x": 860,
+          "y": 1000,
+          "size": 42
+        }
+      ]
+    },
+    {
+      "level": 9,
+      "milestone": 5,
+      "sprite": "level-05.png",
+      "incrementalRepairPairs": 4,
+      "detail": "4 cumulative cosmetic rail-sleeper repair straps",
+      "decals": [
+        {
+          "x": 750,
+          "y": 930,
+          "size": 42
+        },
+        {
+          "x": 805,
+          "y": 965,
+          "size": 42
+        },
+        {
+          "x": 860,
+          "y": 1000,
+          "size": 42
+        },
+        {
+          "x": 915,
+          "y": 1035,
+          "size": 42
+        }
+      ]
+    },
+    {
+      "level": 10,
+      "milestone": 10,
+      "sprite": "level-10.png",
+      "incrementalRepairPairs": 0,
+      "detail": "Stone entrance and organized tools",
+      "decals": []
+    },
+    {
+      "level": 11,
+      "milestone": 10,
+      "sprite": "level-10.png",
+      "incrementalRepairPairs": 1,
+      "detail": "1 cumulative cosmetic rail-sleeper repair straps",
+      "decals": [
+        {
+          "x": 750,
+          "y": 930,
+          "size": 42
+        }
+      ]
+    },
+    {
+      "level": 12,
+      "milestone": 10,
+      "sprite": "level-10.png",
+      "incrementalRepairPairs": 2,
+      "detail": "2 cumulative cosmetic rail-sleeper repair straps",
+      "decals": [
+        {
+          "x": 750,
+          "y": 930,
+          "size": 42
+        },
+        {
+          "x": 805,
+          "y": 965,
+          "size": 42
+        }
+      ]
+    },
+    {
+      "level": 13,
+      "milestone": 10,
+      "sprite": "level-10.png",
+      "incrementalRepairPairs": 3,
+      "detail": "3 cumulative cosmetic rail-sleeper repair straps",
+      "decals": [
+        {
+          "x": 750,
+          "y": 930,
+          "size": 42
+        },
+        {
+          "x": 805,
+          "y": 965,
+          "size": 42
+        },
+        {
+          "x": 860,
+          "y": 1000,
+          "size": 42
+        }
+      ]
+    },
+    {
+      "level": 14,
+      "milestone": 10,
+      "sprite": "level-10.png",
+      "incrementalRepairPairs": 4,
+      "detail": "4 cumulative cosmetic rail-sleeper repair straps",
+      "decals": [
+        {
+          "x": 750,
+          "y": 930,
+          "size": 42
+        },
+        {
+          "x": 805,
+          "y": 965,
+          "size": 42
+        },
+        {
+          "x": 860,
+          "y": 1000,
+          "size": 42
+        },
+        {
+          "x": 915,
+          "y": 1035,
+          "size": 42
+        }
+      ]
+    },
+    {
+      "level": 15,
+      "milestone": 15,
+      "sprite": "level-15.png",
+      "incrementalRepairPairs": 0,
+      "detail": "Fortified covered loading bay",
+      "decals": []
+    },
+    {
+      "level": 16,
+      "milestone": 15,
+      "sprite": "level-15.png",
+      "incrementalRepairPairs": 1,
+      "detail": "1 cumulative cosmetic rail-sleeper repair straps",
+      "decals": [
+        {
+          "x": 750,
+          "y": 930,
+          "size": 42
+        }
+      ]
+    },
+    {
+      "level": 17,
+      "milestone": 15,
+      "sprite": "level-15.png",
+      "incrementalRepairPairs": 2,
+      "detail": "2 cumulative cosmetic rail-sleeper repair straps",
+      "decals": [
+        {
+          "x": 750,
+          "y": 930,
+          "size": 42
+        },
+        {
+          "x": 805,
+          "y": 965,
+          "size": 42
+        }
+      ]
+    },
+    {
+      "level": 18,
+      "milestone": 15,
+      "sprite": "level-15.png",
+      "incrementalRepairPairs": 3,
+      "detail": "3 cumulative cosmetic rail-sleeper repair straps",
+      "decals": [
+        {
+          "x": 750,
+          "y": 930,
+          "size": 42
+        },
+        {
+          "x": 805,
+          "y": 965,
+          "size": 42
+        },
+        {
+          "x": 860,
+          "y": 1000,
+          "size": 42
+        }
+      ]
+    },
+    {
+      "level": 19,
+      "milestone": 15,
+      "sprite": "level-15.png",
+      "incrementalRepairPairs": 4,
+      "detail": "4 cumulative cosmetic rail-sleeper repair straps",
+      "decals": [
+        {
+          "x": 750,
+          "y": 930,
+          "size": 42
+        },
+        {
+          "x": 805,
+          "y": 965,
+          "size": 42
+        },
+        {
+          "x": 860,
+          "y": 1000,
+          "size": 42
+        },
+        {
+          "x": 915,
+          "y": 1035,
+          "size": 42
+        }
+      ]
+    },
+    {
+      "level": 20,
+      "milestone": 20,
+      "sprite": "level-20.png",
+      "incrementalRepairPairs": 0,
+      "detail": "Refined mining fittings",
+      "decals": []
+    },
+    {
+      "level": 21,
+      "milestone": 20,
+      "sprite": "level-20.png",
+      "incrementalRepairPairs": 1,
+      "detail": "1 cumulative cosmetic rail-sleeper repair straps",
+      "decals": [
+        {
+          "x": 750,
+          "y": 930,
+          "size": 42
+        }
+      ]
+    },
+    {
+      "level": 22,
+      "milestone": 20,
+      "sprite": "level-20.png",
+      "incrementalRepairPairs": 2,
+      "detail": "2 cumulative cosmetic rail-sleeper repair straps",
+      "decals": [
+        {
+          "x": 750,
+          "y": 930,
+          "size": 42
+        },
+        {
+          "x": 805,
+          "y": 965,
+          "size": 42
+        }
+      ]
+    },
+    {
+      "level": 23,
+      "milestone": 20,
+      "sprite": "level-20.png",
+      "incrementalRepairPairs": 3,
+      "detail": "3 cumulative cosmetic rail-sleeper repair straps",
+      "decals": [
+        {
+          "x": 750,
+          "y": 930,
+          "size": 42
+        },
+        {
+          "x": 805,
+          "y": 965,
+          "size": 42
+        },
+        {
+          "x": 860,
+          "y": 1000,
+          "size": 42
+        }
+      ]
+    },
+    {
+      "level": 24,
+      "milestone": 20,
+      "sprite": "level-20.png",
+      "incrementalRepairPairs": 4,
+      "detail": "4 cumulative cosmetic rail-sleeper repair straps",
+      "decals": [
+        {
+          "x": 750,
+          "y": 930,
+          "size": 42
+        },
+        {
+          "x": 805,
+          "y": 965,
+          "size": 42
+        },
+        {
+          "x": 860,
+          "y": 1000,
+          "size": 42
+        },
+        {
+          "x": 915,
+          "y": 1035,
+          "size": 42
+        }
+      ]
+    },
+    {
+      "level": 25,
+      "milestone": 25,
+      "sprite": "level-25.png",
+      "incrementalRepairPairs": 0,
+      "detail": "Elite mine frontage",
+      "decals": []
+    },
+    {
+      "level": 26,
+      "milestone": 25,
+      "sprite": "level-25.png",
+      "incrementalRepairPairs": 1,
+      "detail": "1 cumulative cosmetic rail-sleeper repair straps",
+      "decals": [
+        {
+          "x": 750,
+          "y": 930,
+          "size": 42
+        }
+      ]
+    },
+    {
+      "level": 27,
+      "milestone": 25,
+      "sprite": "level-25.png",
+      "incrementalRepairPairs": 2,
+      "detail": "2 cumulative cosmetic rail-sleeper repair straps",
+      "decals": [
+        {
+          "x": 750,
+          "y": 930,
+          "size": 42
+        },
+        {
+          "x": 805,
+          "y": 965,
+          "size": 42
+        }
+      ]
+    },
+    {
+      "level": 28,
+      "milestone": 25,
+      "sprite": "level-25.png",
+      "incrementalRepairPairs": 3,
+      "detail": "3 cumulative cosmetic rail-sleeper repair straps",
+      "decals": [
+        {
+          "x": 750,
+          "y": 930,
+          "size": 42
+        },
+        {
+          "x": 805,
+          "y": 965,
+          "size": 42
+        },
+        {
+          "x": 860,
+          "y": 1000,
+          "size": 42
+        }
+      ]
+    },
+    {
+      "level": 29,
+      "milestone": 25,
+      "sprite": "level-25.png",
+      "incrementalRepairPairs": 4,
+      "detail": "4 cumulative cosmetic rail-sleeper repair straps",
+      "decals": [
+        {
+          "x": 750,
+          "y": 930,
+          "size": 42
+        },
+        {
+          "x": 805,
+          "y": 965,
+          "size": 42
+        },
+        {
+          "x": 860,
+          "y": 1000,
+          "size": 42
+        },
+        {
+          "x": 915,
+          "y": 1035,
+          "size": 42
+        }
+      ]
+    },
+    {
+      "level": 30,
+      "milestone": 30,
+      "sprite": "level-30.png",
+      "incrementalRepairPairs": 0,
+      "detail": "Masterwork mining hall",
+      "decals": []
+    }
+  ]
+}

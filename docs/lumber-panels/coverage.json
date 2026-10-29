@@ -1,0 +1,246 @@
+{
+  "pass": true,
+  "checks": "All 30 published recipes; below/equal/above completed Core gating; maximum level; invalid saves; in-progress target ignored; no transaction handler",
+  "coverage": [
+    {
+      "level": 1,
+      "operation": "Build",
+      "gold": 75,
+      "wood": 40,
+      "minutes": 1,
+      "requiredCore": 1
+    },
+    {
+      "level": 2,
+      "operation": "Upgrade",
+      "gold": 94,
+      "wood": 50,
+      "minutes": 2,
+      "requiredCore": 2
+    },
+    {
+      "level": 3,
+      "operation": "Upgrade",
+      "gold": 118,
+      "wood": 63,
+      "minutes": 2,
+      "requiredCore": 3
+    },
+    {
+      "level": 4,
+      "operation": "Upgrade",
+      "gold": 147,
+      "wood": 79,
+      "minutes": 2,
+      "requiredCore": 4
+    },
+    {
+      "level": 5,
+      "operation": "Upgrade",
+      "gold": 184,
+      "wood": 98,
+      "minutes": 3,
+      "requiredCore": 5
+    },
+    {
+      "level": 6,
+      "operation": "Upgrade",
+      "gold": 229,
+      "wood": 123,
+      "minutes": 3,
+      "requiredCore": 6
+    },
+    {
+      "level": 7,
+      "operation": "Upgrade",
+      "gold": 287,
+      "wood": 153,
+      "minutes": 3,
+      "requiredCore": 7
+    },
+    {
+      "level": 8,
+      "operation": "Upgrade",
+      "gold": 358,
+      "wood": 191,
+      "minutes": 4,
+      "requiredCore": 8
+    },
+    {
+      "level": 9,
+      "operation": "Upgrade",
+      "gold": 448,
+      "wood": 239,
+      "minutes": 5,
+      "requiredCore": 9
+    },
+    {
+      "level": 10,
+      "operation": "Upgrade",
+      "gold": 559,
+      "wood": 299,
+      "minutes": 6,
+      "requiredCore": 10
+    },
+    {
+      "level": 11,
+      "operation": "Upgrade",
+      "gold": 699,
+      "wood": 373,
+      "minutes": 7,
+      "requiredCore": 11
+    },
+    {
+      "level": 12,
+      "operation": "Upgrade",
+      "gold": 874,
+      "wood": 466,
+      "minutes": 8,
+      "requiredCore": 12
+    },
+    {
+      "level": 13,
+      "operation": "Upgrade",
+      "gold": 1092,
+      "wood": 583,
+      "minutes": 9,
+      "requiredCore": 13
+    },
+    {
+      "level": 14,
+      "operation": "Upgrade",
+      "gold": 1365,
+      "wood": 728,
+      "minutes": 11,
+      "requiredCore": 14
+    },
+    {
+      "level": 15,
+      "operation": "Upgrade",
+      "gold": 1706,
+      "wood": 910,
+      "minutes": 13,
+      "requiredCore": 15
+    },
+    {
+      "level": 16,
+      "operation": "Upgrade",
+      "gold": 2132,
+      "wood": 1137,
+      "minutes": 16,
+      "requiredCore": 16
+    },
+    {
+      "level": 17,
+      "operation": "Upgrade",
+      "gold": 2665,
+      "wood": 1422,
+      "minutes": 19,
+      "requiredCore": 17
+    },
+    {
+      "level": 18,
+      "operation": "Upgrade",
+      "gold": 3331,
+      "wood": 1777,
+      "minutes": 23,
+      "requiredCore": 18
+    },
+    {
+      "level": 19,
+      "operation": "Upgrade",
+      "gold": 4164,
+      "wood": 2221,
+      "minutes": 27,
+      "requiredCore": 19
+    },
+    {
+      "level": 20,
+      "operation": "Upgrade",
+      "gold": 5205,
+      "wood": 2776,
+      "minutes": 32,
+      "requiredCore": 20
+    },
+    {
+      "level": 21,
+      "operation": "Upgrade",
+      "gold": 6506,
+      "wood": 3470,
+      "minutes": 39,
+      "requiredCore": 21
+    },
+    {
+      "level": 22,
+      "operation": "Upgrade",
+      "gold": 8132,
+      "wood": 4337,
+      "minutes": 47,
+      "requiredCore": 22
+    },
+    {
+      "level": 23,
+      "operation": "Upgrade",
+      "gold": 10165,
+      "wood": 5422,
+      "minutes": 56,
+      "requiredCore": 23
+    },
+    {
+      "level": 24,
+      "operation": "Upgrade",
+      "gold": 12706,
+      "wood": 6777,
+      "minutes": 67,
+      "requiredCore": 24
+    },
+    {
+      "level": 25,
+      "operation": "Upgrade",
+      "gold": 15882,
+      "wood": 8471,
+      "minutes": 80,
+      "requiredCore": 25
+    },
+    {
+      "level": 26,
+      "operation": "Upgrade",
+      "gold": 19853,
+      "wood": 10588,
+      "minutes": 96,
+      "requiredCore": 26
+    },
+    {
+      "level": 27,
+      "operation": "Upgrade",
+      "gold": 24816,
+      "wood": 13235,
+      "minutes": 115,
+      "requiredCore": 27
+    },
+    {
+      "level": 28,
+      "operation": "Upgrade",
+      "gold": 31020,
+      "wood": 16544,
+      "minutes": 138,
+      "requiredCore": 28
+    },
+    {
+      "level": 29,
+      "operation": "Upgrade",
+      "gold": 38775,
+      "wood": 20680,
+      "minutes": 165,
+      "requiredCore": 29
+    },
+    {
+      "level": 30,
+      "operation": "Upgrade",
+      "gold": 48468,
+      "wood": 25850,
+      "minutes": 198,
+      "requiredCore": 30
+    }
+  ]
+}

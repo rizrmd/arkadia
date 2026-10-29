@@ -1,0 +1,10 @@
+import {publishLayer} from '../arkodia/publish-layer.mjs';
+import {execFileSync} from 'node:child_process';
+const owned=['public/flame-fan-burst-candidate/v1','docs/flame-fan-burst-candidate','scripts/flame-fan-burst-candidate'];
+execFileSync('git',['diff','--exit-code','HEAD','--',...owned],{stdio:'inherit'});
+const files={};
+for(const name of ['flame-burst-v1.png','provenance.json'])files['/'+name]=execFileSync('git',['show','HEAD:public/flame-fan-burst-candidate/v1/'+name],{maxBuffer:12e6}).toString('base64');
+for(const name of ['prompt-v1.txt','README.md'])files['/'+name]=execFileSync('git',['show','HEAD:docs/flame-fan-burst-candidate/'+name]).toString('base64');
+const commit=execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim();
+files['/release.json']=Buffer.from(JSON.stringify({commit,scope:'asset-only art review',sceneIntegration:false})).toString('base64');
+await publishLayer({name:'flame-burst-candidate-'+commit.slice(0,8),files,prefix:'/ember-warden-review/flame-fan-burst-candidate/v1',check:'/ember-warden-review/flame-fan-burst-candidate/v1/release.json'});

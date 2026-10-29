@@ -1,0 +1,39 @@
+{
+  "base": "http://127.0.0.1:5587",
+  "views": {
+    "landscape": {
+      "checks": [
+        "game-ready",
+        "menu-open",
+        "solo-paused",
+        "controls-real-rendering-and-audio",
+        "reset-cancel-escape-backdrop-preserve"
+      ],
+      "viewport": [
+        844,
+        390
+      ],
+      "saved": {
+        "quality": "low",
+        "frameRate": 30,
+        "music": 23,
+        "soundEffects": 41,
+        "screenShake": false,
+        "showFps": false
+      },
+      "audio": {
+        "state": "running",
+        "music": 0.004139999859035015,
+        "soundEffects": 0.018449999392032623
+      },
+      "confirmation": "Cancel, Escape, backdrop preserve; second confirmation resets allowlist",
+      "bounds": {
+        "x": 237,
+        "y": 12,
+        "width": 370,
+        "height": 366
+      }
+    }
+  },
+  "errors": []
+}

@@ -1,0 +1,7 @@
+import sharp from 'sharp';
+import fs from 'node:fs/promises';
+const dir='public/lumber-panels/kit';
+await sharp(dir+'/lumber-original.png').trim().resize(320,256,{fit:'inside'}).png().toFile(dir+'/lumber.png');
+await fs.writeFile(dir+'/prompts.md',`## Lumber Mill panel icon\n\nGenerated with built-in imagegen on 29 October 2026. Transparent PNG original preserved. Runtime copy only trims transparent margins and downsamples.\n\nPrompt: Paint a compact stack of three freshly cut timber logs, a small chopping block and a hand axe leaning against them. Hand-painted realistic fantasy game UI icon, warm oak end-grain, dark iron, antique gold highlights, subtle contact shadow; isometric, isolated transparent, no text or frame. Match gold/charcoal Stronghold Core UI. Reusable for build 1 and upgrades 2–30.\n\nShared frame, charcoal, hammer, header, gold, wood, clock, tick, divider and three button states reuse the separately imagegen-generated Core kit at /core-upgrade/kit/. No procedural replacement artwork.\n`);
+const shared=['frame','charcoal','hammer','header','gold','wood','clock','tick','divider','button','button-disabled','button-pressed'];
+await fs.writeFile(dir+'/manifest.json',JSON.stringify({generated:'2026-10-29',tool:'built-in imagegen',icon:'/lumber-panels/kit/lumber.png',original:'/lumber-panels/kit/lumber-original.png',shared:Object.fromEntries(shared.map(n=>[n,`/core-upgrade/kit/${n}.png`])),coverage:Array.from({length:30},(_,i)=>({target:i+1,operation:i?'upgrade':'build',completedCoreRequired:i+1}))},null,2));

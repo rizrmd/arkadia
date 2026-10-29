@@ -1,0 +1,244 @@
+{
+  "base": "https://ark-whachat.fural.space",
+  "cases": [
+    {
+      "name": "desktop-ember-warden",
+      "viewport": [
+        1440,
+        900
+      ],
+      "learned": "ember-snare",
+      "saved": {
+        "version": 1,
+        "learned": [
+          "flame-fan",
+          "ember-snare"
+        ],
+        "slots": [
+          "flame-fan",
+          "ember-snare"
+        ]
+      },
+      "reloads": [
+        {
+          "reload": 1,
+          "level": 1,
+          "skills": {
+            "flame-fan": 1,
+            "ember-snare": 1
+          },
+          "slots": [
+            "flame-fan",
+            "ember-snare"
+          ],
+          "currencyUnchanged": true
+        },
+        {
+          "reload": 2,
+          "level": 1,
+          "skills": {
+            "flame-fan": 1,
+            "ember-snare": 1
+          },
+          "slots": [
+            "flame-fan",
+            "ember-snare"
+          ],
+          "currencyUnchanged": true
+        }
+      ],
+      "checks": [
+        "fresh legacy save",
+        "failed storage rolls back choice",
+        "actual Pixi blessing unlock",
+        "no currency deducted",
+        "two reloads retain learned active and slots",
+        "level, XP, passives, stars, ranks and run gold reset",
+        "learned tree node unlocked",
+        "retained skill casts without repurchase",
+        "legacy economy/inventory unchanged",
+        "other hero remains fresh"
+      ]
+    },
+    {
+      "name": "desktop-rift-runner",
+      "viewport": [
+        1440,
+        900
+      ],
+      "learned": "rift-dash",
+      "saved": {
+        "version": 1,
+        "learned": [
+          "rift-bolt",
+          "rift-dash"
+        ],
+        "slots": [
+          "rift-bolt",
+          "rift-dash"
+        ]
+      },
+      "reloads": [
+        {
+          "reload": 1,
+          "level": 1,
+          "skills": {
+            "rift-bolt": 1,
+            "rift-dash": 1
+          },
+          "slots": [
+            "rift-bolt",
+            "rift-dash"
+          ],
+          "currencyUnchanged": true
+        },
+        {
+          "reload": 2,
+          "level": 1,
+          "skills": {
+            "rift-bolt": 1,
+            "rift-dash": 1
+          },
+          "slots": [
+            "rift-bolt",
+            "rift-dash"
+          ],
+          "currencyUnchanged": true
+        }
+      ],
+      "checks": [
+        "fresh legacy save",
+        "failed storage rolls back choice",
+        "actual Pixi blessing unlock",
+        "no currency deducted",
+        "two reloads retain learned active and slots",
+        "level, XP, passives, stars, ranks and run gold reset",
+        "learned tree node unlocked",
+        "retained skill casts without repurchase",
+        "legacy economy/inventory unchanged",
+        "other hero remains fresh"
+      ]
+    },
+    {
+      "name": "mobile-ember-warden",
+      "viewport": [
+        390,
+        844
+      ],
+      "learned": "ember-snare",
+      "saved": {
+        "version": 1,
+        "learned": [
+          "flame-fan",
+          "ember-snare"
+        ],
+        "slots": [
+          "flame-fan",
+          "ember-snare"
+        ]
+      },
+      "reloads": [
+        {
+          "reload": 1,
+          "level": 1,
+          "skills": {
+            "flame-fan": 1,
+            "ember-snare": 1
+          },
+          "slots": [
+            "flame-fan",
+            "ember-snare"
+          ],
+          "currencyUnchanged": true
+        },
+        {
+          "reload": 2,
+          "level": 1,
+          "skills": {
+            "flame-fan": 1,
+            "ember-snare": 1
+          },
+          "slots": [
+            "flame-fan",
+            "ember-snare"
+          ],
+          "currencyUnchanged": true
+        }
+      ],
+      "checks": [
+        "fresh legacy save",
+        "failed storage rolls back choice",
+        "actual Pixi blessing unlock",
+        "no currency deducted",
+        "two reloads retain learned active and slots",
+        "level, XP, passives, stars, ranks and run gold reset",
+        "learned tree node unlocked",
+        "retained skill casts without repurchase",
+        "legacy economy/inventory unchanged",
+        "other hero remains fresh"
+      ]
+    },
+    {
+      "name": "mobile-rift-runner",
+      "viewport": [
+        390,
+        844
+      ],
+      "learned": "rift-trap",
+      "saved": {
+        "version": 1,
+        "learned": [
+          "rift-bolt",
+          "rift-trap"
+        ],
+        "slots": [
+          "rift-bolt",
+          "rift-trap"
+        ]
+      },
+      "reloads": [
+        {
+          "reload": 1,
+          "level": 1,
+          "skills": {
+            "rift-bolt": 1,
+            "rift-trap": 1
+          },
+          "slots": [
+            "rift-bolt",
+            "rift-trap"
+          ],
+          "currencyUnchanged": true
+        },
+        {
+          "reload": 2,
+          "level": 1,
+          "skills": {
+            "rift-bolt": 1,
+            "rift-trap": 1
+          },
+          "slots": [
+            "rift-bolt",
+            "rift-trap"
+          ],
+          "currencyUnchanged": true
+        }
+      ],
+      "checks": [
+        "fresh legacy save",
+        "failed storage rolls back choice",
+        "actual Pixi blessing unlock",
+        "no currency deducted",
+        "two reloads retain learned active and slots",
+        "level, XP, passives, stars, ranks and run gold reset",
+        "learned tree node unlocked",
+        "retained skill casts without repurchase",
+        "legacy economy/inventory unchanged",
+        "other hero remains fresh"
+      ]
+    }
+  ],
+  "errors": [],
+  "method": "Actual roll via offer() level diagnostic, Pixi blessing selection, browser reload, tree equip and real combat cast. No injected skill records.",
+  "passed": true
+}

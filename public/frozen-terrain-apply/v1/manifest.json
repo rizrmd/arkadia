@@ -1,0 +1,1579 @@
+{
+  "version": 1,
+  "sourceTask": "lrtskdrxdwsrkwnqhiljqgzo",
+  "annotation": "DA164a1a1fb84052585c51d9b4",
+  "boundary": [
+    [
+      0,
+      0
+    ],
+    [
+      385,
+      0
+    ],
+    [
+      375,
+      45
+    ],
+    [
+      350,
+      100
+    ],
+    [
+      353,
+      145
+    ],
+    [
+      385,
+      173
+    ],
+    [
+      425,
+      205
+    ],
+    [
+      445,
+      225
+    ],
+    [
+      520,
+      242
+    ],
+    [
+      595,
+      262
+    ],
+    [
+      720,
+      266
+    ],
+    [
+      790,
+      287
+    ],
+    [
+      865,
+      341
+    ],
+    [
+      897,
+      390
+    ],
+    [
+      928,
+      451
+    ],
+    [
+      970,
+      510
+    ],
+    [
+      970,
+      590
+    ],
+    [
+      990,
+      654
+    ],
+    [
+      986,
+      681
+    ],
+    [
+      959,
+      727
+    ],
+    [
+      937,
+      801
+    ],
+    [
+      901,
+      850
+    ],
+    [
+      835,
+      871
+    ],
+    [
+      750,
+      875
+    ],
+    [
+      650,
+      892
+    ],
+    [
+      565,
+      911
+    ],
+    [
+      500,
+      912
+    ],
+    [
+      449,
+      877
+    ],
+    [
+      395,
+      820
+    ],
+    [
+      363,
+      791
+    ],
+    [
+      316,
+      787
+    ],
+    [
+      290,
+      805
+    ],
+    [
+      280,
+      837
+    ],
+    [
+      243,
+      869
+    ],
+    [
+      190,
+      904
+    ],
+    [
+      150,
+      919
+    ],
+    [
+      90,
+      960
+    ],
+    [
+      0,
+      1016
+    ]
+  ],
+  "registration": {
+    "scale": 6,
+    "anchor": [
+      637,
+      480
+    ],
+    "origin": [
+      577,
+      320
+    ]
+  },
+  "coverage": {
+    "snow-ground": 5038780,
+    "packed-snow": 215139,
+    "frozen-dirt": 30329,
+    "cracked-ice": 773627,
+    "rocky-ground": 67681,
+    "ruined-stone-paving": 10893
+  },
+  "hashes": {
+    "snow-ground": "6547eb2e5066134b124d88038368d4c2aa9a602e9e661be3e92e910c51fad80f",
+    "packed-snow": "ffd051d870ca929dedcf17e3ff1fdf1ac65487415321ae983211b750b36eefa7",
+    "frozen-dirt": "d21fcc7f4417863c6480d6e291b240b0bdc265dd736d68a0698e62cff0c220a7",
+    "cracked-ice": "a1b58e4b8da46546352fa7b51f9b90ab614d468cd517ee4bccd4ecf085672bfe",
+    "rocky-ground": "784f61088e48ddd3e33b28163ad149d6e497539121c78bf9a343a37d71768dcb",
+    "ruined-stone-paving": "7a3252104581d29249079c8a7bde91e3729da2495d464c42421b925ee84ec667",
+    "snow-dirt-edge": "3956eaf9f9414334e0355e6e31f25e743f74ef98625c0984a7a569022b42b8ed",
+    "snow-ice-edge": "5133acee7012bbbfaec576f97745708b1f7ab5283415cd81729fb2f470449905",
+    "snow-paving-edge": "9957e557c221c5b70037b884b98f574ea92639acd8feecf8d91f5c18785384f2"
+  },
+  "assets": [
+    {
+      "id": "ground:frozen-region-0--1",
+      "label": "Frozen terrain segment",
+      "file": "/frozen-terrain-apply/v1/surface-0--1.png",
+      "width": 768,
+      "height": 768,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6,
+      "hidden": true
+    },
+    {
+      "id": "ground:frozen-region-1--1",
+      "label": "Frozen terrain segment",
+      "file": "/frozen-terrain-apply/v1/surface-1--1.png",
+      "width": 768,
+      "height": 768,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6,
+      "hidden": true
+    },
+    {
+      "id": "ground:frozen-region-2--1",
+      "label": "Frozen terrain segment",
+      "file": "/frozen-terrain-apply/v1/surface-2--1.png",
+      "width": 768,
+      "height": 768,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6,
+      "hidden": true
+    },
+    {
+      "id": "ground:frozen-region-3--1",
+      "label": "Frozen terrain segment",
+      "file": "/frozen-terrain-apply/v1/surface-3--1.png",
+      "width": 768,
+      "height": 768,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6,
+      "hidden": true
+    },
+    {
+      "id": "ground:frozen-region-0-0",
+      "label": "Frozen terrain segment",
+      "file": "/frozen-terrain-apply/v1/surface-0-0.png",
+      "width": 768,
+      "height": 768,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6,
+      "hidden": true
+    },
+    {
+      "id": "ground:frozen-region-1-0",
+      "label": "Frozen terrain segment",
+      "file": "/frozen-terrain-apply/v1/surface-1-0.png",
+      "width": 768,
+      "height": 768,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6,
+      "hidden": true
+    },
+    {
+      "id": "ground:frozen-region-2-0",
+      "label": "Frozen terrain segment",
+      "file": "/frozen-terrain-apply/v1/surface-2-0.png",
+      "width": 768,
+      "height": 768,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6,
+      "hidden": true
+    },
+    {
+      "id": "ground:frozen-region-3-0",
+      "label": "Frozen terrain segment",
+      "file": "/frozen-terrain-apply/v1/surface-3-0.png",
+      "width": 768,
+      "height": 768,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6,
+      "hidden": true
+    },
+    {
+      "id": "ground:frozen-region-0-1",
+      "label": "Frozen terrain segment",
+      "file": "/frozen-terrain-apply/v1/surface-0-1.png",
+      "width": 768,
+      "height": 768,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6,
+      "hidden": true
+    },
+    {
+      "id": "ground:frozen-region-1-1",
+      "label": "Frozen terrain segment",
+      "file": "/frozen-terrain-apply/v1/surface-1-1.png",
+      "width": 768,
+      "height": 768,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6,
+      "hidden": true
+    },
+    {
+      "id": "ground:frozen-region-2-1",
+      "label": "Frozen terrain segment",
+      "file": "/frozen-terrain-apply/v1/surface-2-1.png",
+      "width": 768,
+      "height": 768,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6,
+      "hidden": true
+    },
+    {
+      "id": "ground:frozen-region-3-1",
+      "label": "Frozen terrain segment",
+      "file": "/frozen-terrain-apply/v1/surface-3-1.png",
+      "width": 768,
+      "height": 768,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6,
+      "hidden": true
+    },
+    {
+      "id": "ground:frozen-region-4-1",
+      "label": "Frozen terrain segment",
+      "file": "/frozen-terrain-apply/v1/surface-4-1.png",
+      "width": 768,
+      "height": 768,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6,
+      "hidden": true
+    },
+    {
+      "id": "ground:frozen-region-5-1",
+      "label": "Frozen terrain segment",
+      "file": "/frozen-terrain-apply/v1/surface-5-1.png",
+      "width": 768,
+      "height": 768,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6,
+      "hidden": true
+    },
+    {
+      "id": "ground:frozen-region-6-1",
+      "label": "Frozen terrain segment",
+      "file": "/frozen-terrain-apply/v1/surface-6-1.png",
+      "width": 768,
+      "height": 768,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6,
+      "hidden": true
+    },
+    {
+      "id": "ground:frozen-region-7-1",
+      "label": "Frozen terrain segment",
+      "file": "/frozen-terrain-apply/v1/surface-7-1.png",
+      "width": 768,
+      "height": 768,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6,
+      "hidden": true
+    },
+    {
+      "id": "ground:frozen-region-0-2",
+      "label": "Frozen terrain segment",
+      "file": "/frozen-terrain-apply/v1/surface-0-2.png",
+      "width": 768,
+      "height": 768,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6,
+      "hidden": true
+    },
+    {
+      "id": "ground:frozen-region-1-2",
+      "label": "Frozen terrain segment",
+      "file": "/frozen-terrain-apply/v1/surface-1-2.png",
+      "width": 768,
+      "height": 768,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6,
+      "hidden": true
+    },
+    {
+      "id": "ground:frozen-region-2-2",
+      "label": "Frozen terrain segment",
+      "file": "/frozen-terrain-apply/v1/surface-2-2.png",
+      "width": 768,
+      "height": 768,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6,
+      "hidden": true
+    },
+    {
+      "id": "ground:frozen-region-3-2",
+      "label": "Frozen terrain segment",
+      "file": "/frozen-terrain-apply/v1/surface-3-2.png",
+      "width": 768,
+      "height": 768,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6,
+      "hidden": true
+    },
+    {
+      "id": "ground:frozen-region-4-2",
+      "label": "Frozen terrain segment",
+      "file": "/frozen-terrain-apply/v1/surface-4-2.png",
+      "width": 768,
+      "height": 768,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6,
+      "hidden": true
+    },
+    {
+      "id": "ground:frozen-region-5-2",
+      "label": "Frozen terrain segment",
+      "file": "/frozen-terrain-apply/v1/surface-5-2.png",
+      "width": 768,
+      "height": 768,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6,
+      "hidden": true
+    },
+    {
+      "id": "ground:frozen-region-6-2",
+      "label": "Frozen terrain segment",
+      "file": "/frozen-terrain-apply/v1/surface-6-2.png",
+      "width": 768,
+      "height": 768,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6,
+      "hidden": true
+    },
+    {
+      "id": "ground:frozen-region-7-2",
+      "label": "Frozen terrain segment",
+      "file": "/frozen-terrain-apply/v1/surface-7-2.png",
+      "width": 768,
+      "height": 768,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6,
+      "hidden": true
+    },
+    {
+      "id": "ground:frozen-region-0-3",
+      "label": "Frozen terrain segment",
+      "file": "/frozen-terrain-apply/v1/surface-0-3.png",
+      "width": 768,
+      "height": 768,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6,
+      "hidden": true
+    },
+    {
+      "id": "ground:frozen-region-1-3",
+      "label": "Frozen terrain segment",
+      "file": "/frozen-terrain-apply/v1/surface-1-3.png",
+      "width": 768,
+      "height": 768,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6,
+      "hidden": true
+    },
+    {
+      "id": "ground:frozen-region-2-3",
+      "label": "Frozen terrain segment",
+      "file": "/frozen-terrain-apply/v1/surface-2-3.png",
+      "width": 768,
+      "height": 768,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6,
+      "hidden": true
+    },
+    {
+      "id": "ground:frozen-region-3-3",
+      "label": "Frozen terrain segment",
+      "file": "/frozen-terrain-apply/v1/surface-3-3.png",
+      "width": 768,
+      "height": 768,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6,
+      "hidden": true
+    },
+    {
+      "id": "ground:frozen-region-4-3",
+      "label": "Frozen terrain segment",
+      "file": "/frozen-terrain-apply/v1/surface-4-3.png",
+      "width": 768,
+      "height": 768,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6,
+      "hidden": true
+    },
+    {
+      "id": "ground:frozen-region-5-3",
+      "label": "Frozen terrain segment",
+      "file": "/frozen-terrain-apply/v1/surface-5-3.png",
+      "width": 768,
+      "height": 768,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6,
+      "hidden": true
+    },
+    {
+      "id": "ground:frozen-region-6-3",
+      "label": "Frozen terrain segment",
+      "file": "/frozen-terrain-apply/v1/surface-6-3.png",
+      "width": 768,
+      "height": 768,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6,
+      "hidden": true
+    },
+    {
+      "id": "ground:frozen-region-7-3",
+      "label": "Frozen terrain segment",
+      "file": "/frozen-terrain-apply/v1/surface-7-3.png",
+      "width": 768,
+      "height": 768,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6,
+      "hidden": true
+    },
+    {
+      "id": "ground:frozen-region-8-3",
+      "label": "Frozen terrain segment",
+      "file": "/frozen-terrain-apply/v1/surface-8-3.png",
+      "width": 768,
+      "height": 768,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6,
+      "hidden": true
+    },
+    {
+      "id": "ground:frozen-region-0-4",
+      "label": "Frozen terrain segment",
+      "file": "/frozen-terrain-apply/v1/surface-0-4.png",
+      "width": 768,
+      "height": 768,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6,
+      "hidden": true
+    },
+    {
+      "id": "ground:frozen-region-1-4",
+      "label": "Frozen terrain segment",
+      "file": "/frozen-terrain-apply/v1/surface-1-4.png",
+      "width": 768,
+      "height": 768,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6,
+      "hidden": true
+    },
+    {
+      "id": "ground:frozen-region-2-4",
+      "label": "Frozen terrain segment",
+      "file": "/frozen-terrain-apply/v1/surface-2-4.png",
+      "width": 768,
+      "height": 768,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6,
+      "hidden": true
+    },
+    {
+      "id": "ground:frozen-region-3-4",
+      "label": "Frozen terrain segment",
+      "file": "/frozen-terrain-apply/v1/surface-3-4.png",
+      "width": 768,
+      "height": 768,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6,
+      "hidden": true
+    },
+    {
+      "id": "ground:frozen-region-4-4",
+      "label": "Frozen terrain segment",
+      "file": "/frozen-terrain-apply/v1/surface-4-4.png",
+      "width": 768,
+      "height": 768,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6,
+      "hidden": true
+    },
+    {
+      "id": "ground:frozen-region-5-4",
+      "label": "Frozen terrain segment",
+      "file": "/frozen-terrain-apply/v1/surface-5-4.png",
+      "width": 768,
+      "height": 768,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6,
+      "hidden": true
+    },
+    {
+      "id": "ground:frozen-region-6-4",
+      "label": "Frozen terrain segment",
+      "file": "/frozen-terrain-apply/v1/surface-6-4.png",
+      "width": 768,
+      "height": 768,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6,
+      "hidden": true
+    },
+    {
+      "id": "ground:frozen-region-7-4",
+      "label": "Frozen terrain segment",
+      "file": "/frozen-terrain-apply/v1/surface-7-4.png",
+      "width": 768,
+      "height": 768,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6,
+      "hidden": true
+    },
+    {
+      "id": "ground:frozen-region-8-4",
+      "label": "Frozen terrain segment",
+      "file": "/frozen-terrain-apply/v1/surface-8-4.png",
+      "width": 768,
+      "height": 768,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6,
+      "hidden": true
+    },
+    {
+      "id": "ground:frozen-region-0-5",
+      "label": "Frozen terrain segment",
+      "file": "/frozen-terrain-apply/v1/surface-0-5.png",
+      "width": 768,
+      "height": 768,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6,
+      "hidden": true
+    },
+    {
+      "id": "ground:frozen-region-1-5",
+      "label": "Frozen terrain segment",
+      "file": "/frozen-terrain-apply/v1/surface-1-5.png",
+      "width": 768,
+      "height": 768,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6,
+      "hidden": true
+    },
+    {
+      "id": "ground:frozen-region-2-5",
+      "label": "Frozen terrain segment",
+      "file": "/frozen-terrain-apply/v1/surface-2-5.png",
+      "width": 768,
+      "height": 768,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6,
+      "hidden": true
+    },
+    {
+      "id": "ground:frozen-region-3-5",
+      "label": "Frozen terrain segment",
+      "file": "/frozen-terrain-apply/v1/surface-3-5.png",
+      "width": 768,
+      "height": 768,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6,
+      "hidden": true
+    },
+    {
+      "id": "ground:frozen-region-4-5",
+      "label": "Frozen terrain segment",
+      "file": "/frozen-terrain-apply/v1/surface-4-5.png",
+      "width": 768,
+      "height": 768,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6,
+      "hidden": true
+    },
+    {
+      "id": "ground:frozen-region-5-5",
+      "label": "Frozen terrain segment",
+      "file": "/frozen-terrain-apply/v1/surface-5-5.png",
+      "width": 768,
+      "height": 768,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6,
+      "hidden": true
+    },
+    {
+      "id": "ground:frozen-region-6-5",
+      "label": "Frozen terrain segment",
+      "file": "/frozen-terrain-apply/v1/surface-6-5.png",
+      "width": 768,
+      "height": 768,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6,
+      "hidden": true
+    },
+    {
+      "id": "ground:frozen-region-7-5",
+      "label": "Frozen terrain segment",
+      "file": "/frozen-terrain-apply/v1/surface-7-5.png",
+      "width": 768,
+      "height": 768,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6,
+      "hidden": true
+    },
+    {
+      "id": "ground:frozen-region-8-5",
+      "label": "Frozen terrain segment",
+      "file": "/frozen-terrain-apply/v1/surface-8-5.png",
+      "width": 768,
+      "height": 768,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6,
+      "hidden": true
+    },
+    {
+      "id": "ground:frozen-region-0-6",
+      "label": "Frozen terrain segment",
+      "file": "/frozen-terrain-apply/v1/surface-0-6.png",
+      "width": 768,
+      "height": 768,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6,
+      "hidden": true
+    },
+    {
+      "id": "ground:frozen-region-1-6",
+      "label": "Frozen terrain segment",
+      "file": "/frozen-terrain-apply/v1/surface-1-6.png",
+      "width": 768,
+      "height": 768,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6,
+      "hidden": true
+    },
+    {
+      "id": "ground:frozen-region-2-6",
+      "label": "Frozen terrain segment",
+      "file": "/frozen-terrain-apply/v1/surface-2-6.png",
+      "width": 768,
+      "height": 768,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6,
+      "hidden": true
+    },
+    {
+      "id": "ground:frozen-region-3-6",
+      "label": "Frozen terrain segment",
+      "file": "/frozen-terrain-apply/v1/surface-3-6.png",
+      "width": 768,
+      "height": 768,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6,
+      "hidden": true
+    },
+    {
+      "id": "ground:frozen-region-4-6",
+      "label": "Frozen terrain segment",
+      "file": "/frozen-terrain-apply/v1/surface-4-6.png",
+      "width": 768,
+      "height": 768,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6,
+      "hidden": true
+    },
+    {
+      "id": "ground:frozen-region-5-6",
+      "label": "Frozen terrain segment",
+      "file": "/frozen-terrain-apply/v1/surface-5-6.png",
+      "width": 768,
+      "height": 768,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6,
+      "hidden": true
+    },
+    {
+      "id": "ground:frozen-region-6-6",
+      "label": "Frozen terrain segment",
+      "file": "/frozen-terrain-apply/v1/surface-6-6.png",
+      "width": 768,
+      "height": 768,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6,
+      "hidden": true
+    },
+    {
+      "id": "ground:frozen-region-7-6",
+      "label": "Frozen terrain segment",
+      "file": "/frozen-terrain-apply/v1/surface-7-6.png",
+      "width": 768,
+      "height": 768,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6,
+      "hidden": true
+    },
+    {
+      "id": "ground:frozen-region-8-6",
+      "label": "Frozen terrain segment",
+      "file": "/frozen-terrain-apply/v1/surface-8-6.png",
+      "width": 768,
+      "height": 768,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6,
+      "hidden": true
+    },
+    {
+      "id": "ground:frozen-region-0-7",
+      "label": "Frozen terrain segment",
+      "file": "/frozen-terrain-apply/v1/surface-0-7.png",
+      "width": 768,
+      "height": 768,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6,
+      "hidden": true
+    },
+    {
+      "id": "ground:frozen-region-1-7",
+      "label": "Frozen terrain segment",
+      "file": "/frozen-terrain-apply/v1/surface-1-7.png",
+      "width": 768,
+      "height": 768,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6,
+      "hidden": true
+    },
+    {
+      "id": "ground:frozen-snow-ground",
+      "label": "Snow Ground",
+      "file": "/frozen-terrain-apply/v1/snow-ground.png",
+      "width": 768,
+      "height": 384,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6
+    },
+    {
+      "id": "ground:frozen-packed-snow",
+      "label": "Packed Snow",
+      "file": "/frozen-terrain-apply/v1/packed-snow.png",
+      "width": 768,
+      "height": 384,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6
+    },
+    {
+      "id": "ground:frozen-frozen-dirt",
+      "label": "Frozen Dirt",
+      "file": "/frozen-terrain-apply/v1/frozen-dirt.png",
+      "width": 768,
+      "height": 384,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6
+    },
+    {
+      "id": "ground:frozen-cracked-ice",
+      "label": "Cracked Ice",
+      "file": "/frozen-terrain-apply/v1/cracked-ice.png",
+      "width": 768,
+      "height": 384,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6
+    },
+    {
+      "id": "ground:frozen-rocky-ground",
+      "label": "Rocky Ground",
+      "file": "/frozen-terrain-apply/v1/rocky-ground.png",
+      "width": 768,
+      "height": 384,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6
+    },
+    {
+      "id": "ground:frozen-ruined-stone-paving",
+      "label": "Ruined Stone Paving",
+      "file": "/frozen-terrain-apply/v1/ruined-stone-paving.png",
+      "width": 768,
+      "height": 384,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "blocks": [],
+      "layer": "ground",
+      "footprint": 6
+    }
+  ],
+  "placements": [
+    {
+      "id": "frozen-v1-surface-0--1",
+      "asset": "ground:frozen-region-0--1",
+      "u": 389.4921875,
+      "v": 452.5078125
+    },
+    {
+      "id": "frozen-v1-surface-1--1",
+      "asset": "ground:frozen-region-1--1",
+      "u": 395.4921875,
+      "v": 446.5078125
+    },
+    {
+      "id": "frozen-v1-surface-2--1",
+      "asset": "ground:frozen-region-2--1",
+      "u": 401.4921875,
+      "v": 440.5078125
+    },
+    {
+      "id": "frozen-v1-surface-3--1",
+      "asset": "ground:frozen-region-3--1",
+      "u": 407.4921875,
+      "v": 434.5078125
+    },
+    {
+      "id": "frozen-v1-surface-0-0",
+      "asset": "ground:frozen-region-0-0",
+      "u": 401.4921875,
+      "v": 464.5078125
+    },
+    {
+      "id": "frozen-v1-surface-1-0",
+      "asset": "ground:frozen-region-1-0",
+      "u": 407.4921875,
+      "v": 458.5078125
+    },
+    {
+      "id": "frozen-v1-surface-2-0",
+      "asset": "ground:frozen-region-2-0",
+      "u": 413.4921875,
+      "v": 452.5078125
+    },
+    {
+      "id": "frozen-v1-surface-3-0",
+      "asset": "ground:frozen-region-3-0",
+      "u": 419.4921875,
+      "v": 446.5078125
+    },
+    {
+      "id": "frozen-v1-surface-0-1",
+      "asset": "ground:frozen-region-0-1",
+      "u": 413.4921875,
+      "v": 476.5078125
+    },
+    {
+      "id": "frozen-v1-surface-1-1",
+      "asset": "ground:frozen-region-1-1",
+      "u": 419.4921875,
+      "v": 470.5078125
+    },
+    {
+      "id": "frozen-v1-surface-2-1",
+      "asset": "ground:frozen-region-2-1",
+      "u": 425.4921875,
+      "v": 464.5078125
+    },
+    {
+      "id": "frozen-v1-surface-3-1",
+      "asset": "ground:frozen-region-3-1",
+      "u": 431.4921875,
+      "v": 458.5078125
+    },
+    {
+      "id": "frozen-v1-surface-4-1",
+      "asset": "ground:frozen-region-4-1",
+      "u": 437.4921875,
+      "v": 452.5078125
+    },
+    {
+      "id": "frozen-v1-surface-5-1",
+      "asset": "ground:frozen-region-5-1",
+      "u": 443.4921875,
+      "v": 446.5078125
+    },
+    {
+      "id": "frozen-v1-surface-6-1",
+      "asset": "ground:frozen-region-6-1",
+      "u": 449.4921875,
+      "v": 440.5078125
+    },
+    {
+      "id": "frozen-v1-surface-7-1",
+      "asset": "ground:frozen-region-7-1",
+      "u": 455.4921875,
+      "v": 434.5078125
+    },
+    {
+      "id": "frozen-v1-surface-0-2",
+      "asset": "ground:frozen-region-0-2",
+      "u": 425.4921875,
+      "v": 488.5078125
+    },
+    {
+      "id": "frozen-v1-surface-1-2",
+      "asset": "ground:frozen-region-1-2",
+      "u": 431.4921875,
+      "v": 482.5078125
+    },
+    {
+      "id": "frozen-v1-surface-2-2",
+      "asset": "ground:frozen-region-2-2",
+      "u": 437.4921875,
+      "v": 476.5078125
+    },
+    {
+      "id": "frozen-v1-surface-3-2",
+      "asset": "ground:frozen-region-3-2",
+      "u": 443.4921875,
+      "v": 470.5078125
+    },
+    {
+      "id": "frozen-v1-surface-4-2",
+      "asset": "ground:frozen-region-4-2",
+      "u": 449.4921875,
+      "v": 464.5078125
+    },
+    {
+      "id": "frozen-v1-surface-5-2",
+      "asset": "ground:frozen-region-5-2",
+      "u": 455.4921875,
+      "v": 458.5078125
+    },
+    {
+      "id": "frozen-v1-surface-6-2",
+      "asset": "ground:frozen-region-6-2",
+      "u": 461.4921875,
+      "v": 452.5078125
+    },
+    {
+      "id": "frozen-v1-surface-7-2",
+      "asset": "ground:frozen-region-7-2",
+      "u": 467.4921875,
+      "v": 446.5078125
+    },
+    {
+      "id": "frozen-v1-surface-0-3",
+      "asset": "ground:frozen-region-0-3",
+      "u": 437.4921875,
+      "v": 500.5078125
+    },
+    {
+      "id": "frozen-v1-surface-1-3",
+      "asset": "ground:frozen-region-1-3",
+      "u": 443.4921875,
+      "v": 494.5078125
+    },
+    {
+      "id": "frozen-v1-surface-2-3",
+      "asset": "ground:frozen-region-2-3",
+      "u": 449.4921875,
+      "v": 488.5078125
+    },
+    {
+      "id": "frozen-v1-surface-3-3",
+      "asset": "ground:frozen-region-3-3",
+      "u": 455.4921875,
+      "v": 482.5078125
+    },
+    {
+      "id": "frozen-v1-surface-4-3",
+      "asset": "ground:frozen-region-4-3",
+      "u": 461.4921875,
+      "v": 476.5078125
+    },
+    {
+      "id": "frozen-v1-surface-5-3",
+      "asset": "ground:frozen-region-5-3",
+      "u": 467.4921875,
+      "v": 470.5078125
+    },
+    {
+      "id": "frozen-v1-surface-6-3",
+      "asset": "ground:frozen-region-6-3",
+      "u": 473.4921875,
+      "v": 464.5078125
+    },
+    {
+      "id": "frozen-v1-surface-7-3",
+      "asset": "ground:frozen-region-7-3",
+      "u": 479.4921875,
+      "v": 458.5078125
+    },
+    {
+      "id": "frozen-v1-surface-8-3",
+      "asset": "ground:frozen-region-8-3",
+      "u": 485.4921875,
+      "v": 452.5078125
+    },
+    {
+      "id": "frozen-v1-surface-0-4",
+      "asset": "ground:frozen-region-0-4",
+      "u": 449.4921875,
+      "v": 512.5078125
+    },
+    {
+      "id": "frozen-v1-surface-1-4",
+      "asset": "ground:frozen-region-1-4",
+      "u": 455.4921875,
+      "v": 506.5078125
+    },
+    {
+      "id": "frozen-v1-surface-2-4",
+      "asset": "ground:frozen-region-2-4",
+      "u": 461.4921875,
+      "v": 500.5078125
+    },
+    {
+      "id": "frozen-v1-surface-3-4",
+      "asset": "ground:frozen-region-3-4",
+      "u": 467.4921875,
+      "v": 494.5078125
+    },
+    {
+      "id": "frozen-v1-surface-4-4",
+      "asset": "ground:frozen-region-4-4",
+      "u": 473.4921875,
+      "v": 488.5078125
+    },
+    {
+      "id": "frozen-v1-surface-5-4",
+      "asset": "ground:frozen-region-5-4",
+      "u": 479.4921875,
+      "v": 482.5078125
+    },
+    {
+      "id": "frozen-v1-surface-6-4",
+      "asset": "ground:frozen-region-6-4",
+      "u": 485.4921875,
+      "v": 476.5078125
+    },
+    {
+      "id": "frozen-v1-surface-7-4",
+      "asset": "ground:frozen-region-7-4",
+      "u": 491.4921875,
+      "v": 470.5078125
+    },
+    {
+      "id": "frozen-v1-surface-8-4",
+      "asset": "ground:frozen-region-8-4",
+      "u": 497.4921875,
+      "v": 464.5078125
+    },
+    {
+      "id": "frozen-v1-surface-0-5",
+      "asset": "ground:frozen-region-0-5",
+      "u": 461.4921875,
+      "v": 524.5078125
+    },
+    {
+      "id": "frozen-v1-surface-1-5",
+      "asset": "ground:frozen-region-1-5",
+      "u": 467.4921875,
+      "v": 518.5078125
+    },
+    {
+      "id": "frozen-v1-surface-2-5",
+      "asset": "ground:frozen-region-2-5",
+      "u": 473.4921875,
+      "v": 512.5078125
+    },
+    {
+      "id": "frozen-v1-surface-3-5",
+      "asset": "ground:frozen-region-3-5",
+      "u": 479.4921875,
+      "v": 506.5078125
+    },
+    {
+      "id": "frozen-v1-surface-4-5",
+      "asset": "ground:frozen-region-4-5",
+      "u": 485.4921875,
+      "v": 500.5078125
+    },
+    {
+      "id": "frozen-v1-surface-5-5",
+      "asset": "ground:frozen-region-5-5",
+      "u": 491.4921875,
+      "v": 494.5078125
+    },
+    {
+      "id": "frozen-v1-surface-6-5",
+      "asset": "ground:frozen-region-6-5",
+      "u": 497.4921875,
+      "v": 488.5078125
+    },
+    {
+      "id": "frozen-v1-surface-7-5",
+      "asset": "ground:frozen-region-7-5",
+      "u": 503.4921875,
+      "v": 482.5078125
+    },
+    {
+      "id": "frozen-v1-surface-8-5",
+      "asset": "ground:frozen-region-8-5",
+      "u": 509.4921875,
+      "v": 476.5078125
+    },
+    {
+      "id": "frozen-v1-surface-0-6",
+      "asset": "ground:frozen-region-0-6",
+      "u": 473.4921875,
+      "v": 536.5078125
+    },
+    {
+      "id": "frozen-v1-surface-1-6",
+      "asset": "ground:frozen-region-1-6",
+      "u": 479.4921875,
+      "v": 530.5078125
+    },
+    {
+      "id": "frozen-v1-surface-2-6",
+      "asset": "ground:frozen-region-2-6",
+      "u": 485.4921875,
+      "v": 524.5078125
+    },
+    {
+      "id": "frozen-v1-surface-3-6",
+      "asset": "ground:frozen-region-3-6",
+      "u": 491.4921875,
+      "v": 518.5078125
+    },
+    {
+      "id": "frozen-v1-surface-4-6",
+      "asset": "ground:frozen-region-4-6",
+      "u": 497.4921875,
+      "v": 512.5078125
+    },
+    {
+      "id": "frozen-v1-surface-5-6",
+      "asset": "ground:frozen-region-5-6",
+      "u": 503.4921875,
+      "v": 506.5078125
+    },
+    {
+      "id": "frozen-v1-surface-6-6",
+      "asset": "ground:frozen-region-6-6",
+      "u": 509.4921875,
+      "v": 500.5078125
+    },
+    {
+      "id": "frozen-v1-surface-7-6",
+      "asset": "ground:frozen-region-7-6",
+      "u": 515.4921875,
+      "v": 494.5078125
+    },
+    {
+      "id": "frozen-v1-surface-8-6",
+      "asset": "ground:frozen-region-8-6",
+      "u": 521.4921875,
+      "v": 488.5078125
+    },
+    {
+      "id": "frozen-v1-surface-0-7",
+      "asset": "ground:frozen-region-0-7",
+      "u": 485.4921875,
+      "v": 548.5078125
+    },
+    {
+      "id": "frozen-v1-surface-1-7",
+      "asset": "ground:frozen-region-1-7",
+      "u": 491.4921875,
+      "v": 542.5078125
+    }
+  ]
+}

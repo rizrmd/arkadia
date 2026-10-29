@@ -1,0 +1,9 @@
+## Flame Fan generated flipbook preview
+
+Preview only, independent of gameplay. Original attachment DA14f9840922edc53aa33bf53f is used byte-for-byte as a sixteen-frame texture atlas. Frame boundaries round each quarter of the original 1254×1254 image; no resampling, black keying, or regenerated substitute. The alpha report records 851,959 transparent pixels and zero opaque black pixels.
+
+Pixi renders the entire interface and scene, including English play/pause, replay, loop, half-speed, day/night and timeline controls. Normal-alpha overlapping orange-red tongues form the connected fan. Ember holds the committed attack-E impact pose, facing the three committed Revenant actors; feet use a 0.5 ground projection. Hand ignition plays once through the source frames; flame folds cycle middle frames, and compact contacts finish with the breakup frames. This is an artistic preview, not a new combat integration or balance change.
+
+Build: `node scripts/flame-fan-flipbook/build.mjs`. Verify: `node scripts/flame-fan-flipbook/verify.mjs` (append `--live` after deployment). Verification uses the existing member Chromium wrapper, three viewport sizes, pointer-operated Pixi controls and cross-origin iframe playback at two widths. These are emulated viewport tests, not physical Android performance measurements.
+
+Deploy: `fural-agent repos ship RPe11327fbfe413dbeba246526 --mode script --script scripts/flame-fan-flipbook/deploy.sh`. Only the new prefix `/ember-warden-review/flame-fan-flipbook/` is published. The existing approved comparison and gameplay evidence remain intact. Actor assets are read from git HEAD, not peer WIP. The small-layer pipeline checks owned source against HEAD, bounds decoded JSON to 6 MiB, registers all layers then restarts once. Read the deployment receipt under the session attachments directory. Source and result evidence remain under this new prefix.

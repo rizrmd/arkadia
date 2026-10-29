@@ -1,0 +1,89 @@
+{
+  "runtime": "6e561f98",
+  "scope": "Software viewport stress only. All renderer calls include offscreen copies. No native-device FPS acceptance.",
+  "profiles": {
+    "desktop": {
+      "healthAttempts": [
+        200
+      ],
+      "errors": [],
+      "phases": [
+        {
+          "npcTarget": 0,
+          "actors": 1,
+          "samplers": 4,
+          "estimatedShadowTargetBytes": 6485348,
+          "rafFrames": 30,
+          "rafTimeouts": 0,
+          "durationMs": 29286.799999952316,
+          "fieldUpdates": 30,
+          "glError": 0
+        },
+        {
+          "npcTarget": 32,
+          "actors": 33,
+          "samplers": 4,
+          "estimatedShadowTargetBytes": 8664932,
+          "rafFrames": 14,
+          "rafTimeouts": 13,
+          "durationMs": 30625.60000014305,
+          "fieldUpdates": 13,
+          "glError": 0
+        },
+        {
+          "npcTarget": 0,
+          "actors": 1,
+          "samplers": 4,
+          "estimatedShadowTargetBytes": 6485348,
+          "rafFrames": 30,
+          "rafTimeouts": 0,
+          "durationMs": 19315.599999904633,
+          "fieldUpdates": 26,
+          "glError": 0
+        }
+      ]
+    },
+    "mobile": {
+      "healthAttempts": [
+        503,
+        200
+      ],
+      "errors": [],
+      "phases": [
+        {
+          "npcTarget": 0,
+          "actors": 1,
+          "samplers": 4,
+          "estimatedShadowTargetBytes": 1481828,
+          "rafFrames": 30,
+          "rafTimeouts": 0,
+          "durationMs": 12670.100000143051,
+          "fieldUpdates": 30,
+          "glError": 0
+        },
+        {
+          "npcTarget": 32,
+          "actors": 33,
+          "samplers": 4,
+          "estimatedShadowTargetBytes": 1895780,
+          "rafFrames": 30,
+          "rafTimeouts": 9,
+          "durationMs": 24557.5,
+          "fieldUpdates": 22,
+          "glError": 0
+        },
+        {
+          "npcTarget": 0,
+          "actors": 1,
+          "samplers": 4,
+          "estimatedShadowTargetBytes": 1481828,
+          "rafFrames": 30,
+          "rafTimeouts": 0,
+          "durationMs": 8002.400000095367,
+          "fieldUpdates": 22,
+          "glError": 0
+        }
+      ]
+    }
+  }
+}

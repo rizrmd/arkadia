@@ -1,0 +1,548 @@
+{
+  "scope": "Production Worker/filter tests: metal, emissive and mixed material, opaque and 64/255 source alpha, both mirrors, three suns; CPU ground-cast alpha and transparent-glow ground retention controls. Pure field controls, not color material compositing or physical-device performance proof.",
+  "cases": 36,
+  "rows": [
+    {
+      "alpha": 255,
+      "flip": false,
+      "sun": {
+        "dx": 1.594,
+        "dy": 0.092,
+        "alpha": 0.55
+      },
+      "column": 0,
+      "physicalFraction": 1,
+      "red": 126,
+      "expected": 126,
+      "packedReceiverAlpha": 255,
+      "outputAlpha": 255
+    },
+    {
+      "alpha": 255,
+      "flip": false,
+      "sun": {
+        "dx": 1.594,
+        "dy": 0.092,
+        "alpha": 0.55
+      },
+      "column": 1,
+      "physicalFraction": 0,
+      "red": 255,
+      "expected": 255,
+      "packedReceiverAlpha": 128,
+      "outputAlpha": 255
+    },
+    {
+      "alpha": 255,
+      "flip": false,
+      "sun": {
+        "dx": 1.594,
+        "dy": 0.092,
+        "alpha": 0.55
+      },
+      "column": 2,
+      "physicalFraction": 0.5,
+      "red": 190,
+      "expected": 190,
+      "packedReceiverAlpha": 192,
+      "outputAlpha": 255
+    },
+    {
+      "alpha": 255,
+      "flip": false,
+      "sun": {
+        "dx": 0.278,
+        "dy": 0.307,
+        "alpha": 0.55
+      },
+      "column": 0,
+      "physicalFraction": 1,
+      "red": 126,
+      "expected": 126,
+      "packedReceiverAlpha": 255,
+      "outputAlpha": 255
+    },
+    {
+      "alpha": 255,
+      "flip": false,
+      "sun": {
+        "dx": 0.278,
+        "dy": 0.307,
+        "alpha": 0.55
+      },
+      "column": 1,
+      "physicalFraction": 0,
+      "red": 255,
+      "expected": 255,
+      "packedReceiverAlpha": 128,
+      "outputAlpha": 255
+    },
+    {
+      "alpha": 255,
+      "flip": false,
+      "sun": {
+        "dx": 0.278,
+        "dy": 0.307,
+        "alpha": 0.55
+      },
+      "column": 2,
+      "physicalFraction": 0.5,
+      "red": 190,
+      "expected": 190,
+      "packedReceiverAlpha": 192,
+      "outputAlpha": 255
+    },
+    {
+      "alpha": 255,
+      "flip": false,
+      "sun": {
+        "dx": -0.826,
+        "dy": 0.743,
+        "alpha": 0.55
+      },
+      "column": 0,
+      "physicalFraction": 1,
+      "red": 126,
+      "expected": 126,
+      "packedReceiverAlpha": 255,
+      "outputAlpha": 255
+    },
+    {
+      "alpha": 255,
+      "flip": false,
+      "sun": {
+        "dx": -0.826,
+        "dy": 0.743,
+        "alpha": 0.55
+      },
+      "column": 1,
+      "physicalFraction": 0,
+      "red": 255,
+      "expected": 255,
+      "packedReceiverAlpha": 128,
+      "outputAlpha": 255
+    },
+    {
+      "alpha": 255,
+      "flip": false,
+      "sun": {
+        "dx": -0.826,
+        "dy": 0.743,
+        "alpha": 0.55
+      },
+      "column": 2,
+      "physicalFraction": 0.5,
+      "red": 190,
+      "expected": 190,
+      "packedReceiverAlpha": 192,
+      "outputAlpha": 255
+    },
+    {
+      "alpha": 255,
+      "flip": true,
+      "sun": {
+        "dx": 1.594,
+        "dy": 0.092,
+        "alpha": 0.55
+      },
+      "column": 0,
+      "physicalFraction": 1,
+      "red": 126,
+      "expected": 126,
+      "packedReceiverAlpha": 255,
+      "outputAlpha": 255
+    },
+    {
+      "alpha": 255,
+      "flip": true,
+      "sun": {
+        "dx": 1.594,
+        "dy": 0.092,
+        "alpha": 0.55
+      },
+      "column": 1,
+      "physicalFraction": 0,
+      "red": 255,
+      "expected": 255,
+      "packedReceiverAlpha": 128,
+      "outputAlpha": 255
+    },
+    {
+      "alpha": 255,
+      "flip": true,
+      "sun": {
+        "dx": 1.594,
+        "dy": 0.092,
+        "alpha": 0.55
+      },
+      "column": 2,
+      "physicalFraction": 0.5,
+      "red": 190,
+      "expected": 190,
+      "packedReceiverAlpha": 192,
+      "outputAlpha": 255
+    },
+    {
+      "alpha": 255,
+      "flip": true,
+      "sun": {
+        "dx": 0.278,
+        "dy": 0.307,
+        "alpha": 0.55
+      },
+      "column": 0,
+      "physicalFraction": 1,
+      "red": 126,
+      "expected": 126,
+      "packedReceiverAlpha": 255,
+      "outputAlpha": 255
+    },
+    {
+      "alpha": 255,
+      "flip": true,
+      "sun": {
+        "dx": 0.278,
+        "dy": 0.307,
+        "alpha": 0.55
+      },
+      "column": 1,
+      "physicalFraction": 0,
+      "red": 255,
+      "expected": 255,
+      "packedReceiverAlpha": 128,
+      "outputAlpha": 255
+    },
+    {
+      "alpha": 255,
+      "flip": true,
+      "sun": {
+        "dx": 0.278,
+        "dy": 0.307,
+        "alpha": 0.55
+      },
+      "column": 2,
+      "physicalFraction": 0.5,
+      "red": 190,
+      "expected": 190,
+      "packedReceiverAlpha": 192,
+      "outputAlpha": 255
+    },
+    {
+      "alpha": 255,
+      "flip": true,
+      "sun": {
+        "dx": -0.826,
+        "dy": 0.743,
+        "alpha": 0.55
+      },
+      "column": 0,
+      "physicalFraction": 1,
+      "red": 126,
+      "expected": 126,
+      "packedReceiverAlpha": 255,
+      "outputAlpha": 255
+    },
+    {
+      "alpha": 255,
+      "flip": true,
+      "sun": {
+        "dx": -0.826,
+        "dy": 0.743,
+        "alpha": 0.55
+      },
+      "column": 1,
+      "physicalFraction": 0,
+      "red": 255,
+      "expected": 255,
+      "packedReceiverAlpha": 128,
+      "outputAlpha": 255
+    },
+    {
+      "alpha": 255,
+      "flip": true,
+      "sun": {
+        "dx": -0.826,
+        "dy": 0.743,
+        "alpha": 0.55
+      },
+      "column": 2,
+      "physicalFraction": 0.5,
+      "red": 190,
+      "expected": 190,
+      "packedReceiverAlpha": 192,
+      "outputAlpha": 255
+    },
+    {
+      "alpha": 64,
+      "flip": false,
+      "sun": {
+        "dx": 1.594,
+        "dy": 0.092,
+        "alpha": 0.55
+      },
+      "column": 0,
+      "physicalFraction": 1,
+      "red": 126,
+      "expected": 126,
+      "packedReceiverAlpha": 255,
+      "outputAlpha": 255
+    },
+    {
+      "alpha": 64,
+      "flip": false,
+      "sun": {
+        "dx": 1.594,
+        "dy": 0.092,
+        "alpha": 0.55
+      },
+      "column": 1,
+      "physicalFraction": 0,
+      "red": 158,
+      "expected": 158,
+      "packedReceiverAlpha": 223,
+      "outputAlpha": 255
+    },
+    {
+      "alpha": 64,
+      "flip": false,
+      "sun": {
+        "dx": 1.594,
+        "dy": 0.092,
+        "alpha": 0.55
+      },
+      "column": 2,
+      "physicalFraction": 0.5,
+      "red": 142,
+      "expected": 142,
+      "packedReceiverAlpha": 239,
+      "outputAlpha": 255
+    },
+    {
+      "alpha": 64,
+      "flip": false,
+      "sun": {
+        "dx": 0.278,
+        "dy": 0.307,
+        "alpha": 0.55
+      },
+      "column": 0,
+      "physicalFraction": 1,
+      "red": 126,
+      "expected": 126,
+      "packedReceiverAlpha": 255,
+      "outputAlpha": 255
+    },
+    {
+      "alpha": 64,
+      "flip": false,
+      "sun": {
+        "dx": 0.278,
+        "dy": 0.307,
+        "alpha": 0.55
+      },
+      "column": 1,
+      "physicalFraction": 0,
+      "red": 158,
+      "expected": 158,
+      "packedReceiverAlpha": 223,
+      "outputAlpha": 255
+    },
+    {
+      "alpha": 64,
+      "flip": false,
+      "sun": {
+        "dx": 0.278,
+        "dy": 0.307,
+        "alpha": 0.55
+      },
+      "column": 2,
+      "physicalFraction": 0.5,
+      "red": 142,
+      "expected": 142,
+      "packedReceiverAlpha": 239,
+      "outputAlpha": 255
+    },
+    {
+      "alpha": 64,
+      "flip": false,
+      "sun": {
+        "dx": -0.826,
+        "dy": 0.743,
+        "alpha": 0.55
+      },
+      "column": 0,
+      "physicalFraction": 1,
+      "red": 126,
+      "expected": 126,
+      "packedReceiverAlpha": 255,
+      "outputAlpha": 255
+    },
+    {
+      "alpha": 64,
+      "flip": false,
+      "sun": {
+        "dx": -0.826,
+        "dy": 0.743,
+        "alpha": 0.55
+      },
+      "column": 1,
+      "physicalFraction": 0,
+      "red": 158,
+      "expected": 158,
+      "packedReceiverAlpha": 223,
+      "outputAlpha": 255
+    },
+    {
+      "alpha": 64,
+      "flip": false,
+      "sun": {
+        "dx": -0.826,
+        "dy": 0.743,
+        "alpha": 0.55
+      },
+      "column": 2,
+      "physicalFraction": 0.5,
+      "red": 142,
+      "expected": 142,
+      "packedReceiverAlpha": 239,
+      "outputAlpha": 255
+    },
+    {
+      "alpha": 64,
+      "flip": true,
+      "sun": {
+        "dx": 1.594,
+        "dy": 0.092,
+        "alpha": 0.55
+      },
+      "column": 0,
+      "physicalFraction": 1,
+      "red": 126,
+      "expected": 126,
+      "packedReceiverAlpha": 255,
+      "outputAlpha": 255
+    },
+    {
+      "alpha": 64,
+      "flip": true,
+      "sun": {
+        "dx": 1.594,
+        "dy": 0.092,
+        "alpha": 0.55
+      },
+      "column": 1,
+      "physicalFraction": 0,
+      "red": 158,
+      "expected": 158,
+      "packedReceiverAlpha": 223,
+      "outputAlpha": 255
+    },
+    {
+      "alpha": 64,
+      "flip": true,
+      "sun": {
+        "dx": 1.594,
+        "dy": 0.092,
+        "alpha": 0.55
+      },
+      "column": 2,
+      "physicalFraction": 0.5,
+      "red": 142,
+      "expected": 142,
+      "packedReceiverAlpha": 239,
+      "outputAlpha": 255
+    },
+    {
+      "alpha": 64,
+      "flip": true,
+      "sun": {
+        "dx": 0.278,
+        "dy": 0.307,
+        "alpha": 0.55
+      },
+      "column": 0,
+      "physicalFraction": 1,
+      "red": 126,
+      "expected": 126,
+      "packedReceiverAlpha": 255,
+      "outputAlpha": 255
+    },
+    {
+      "alpha": 64,
+      "flip": true,
+      "sun": {
+        "dx": 0.278,
+        "dy": 0.307,
+        "alpha": 0.55
+      },
+      "column": 1,
+      "physicalFraction": 0,
+      "red": 158,
+      "expected": 158,
+      "packedReceiverAlpha": 223,
+      "outputAlpha": 255
+    },
+    {
+      "alpha": 64,
+      "flip": true,
+      "sun": {
+        "dx": 0.278,
+        "dy": 0.307,
+        "alpha": 0.55
+      },
+      "column": 2,
+      "physicalFraction": 0.5,
+      "red": 142,
+      "expected": 142,
+      "packedReceiverAlpha": 239,
+      "outputAlpha": 255
+    },
+    {
+      "alpha": 64,
+      "flip": true,
+      "sun": {
+        "dx": -0.826,
+        "dy": 0.743,
+        "alpha": 0.55
+      },
+      "column": 0,
+      "physicalFraction": 1,
+      "red": 126,
+      "expected": 126,
+      "packedReceiverAlpha": 255,
+      "outputAlpha": 255
+    },
+    {
+      "alpha": 64,
+      "flip": true,
+      "sun": {
+        "dx": -0.826,
+        "dy": 0.743,
+        "alpha": 0.55
+      },
+      "column": 1,
+      "physicalFraction": 0,
+      "red": 158,
+      "expected": 158,
+      "packedReceiverAlpha": 223,
+      "outputAlpha": 255
+    },
+    {
+      "alpha": 64,
+      "flip": true,
+      "sun": {
+        "dx": -0.826,
+        "dy": 0.743,
+        "alpha": 0.55
+      },
+      "column": 2,
+      "physicalFraction": 0.5,
+      "red": 142,
+      "expected": 142,
+      "packedReceiverAlpha": 239,
+      "outputAlpha": 255
+    }
+  ],
+  "glError": 0,
+  "errors": []
+}

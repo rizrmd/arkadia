@@ -1,0 +1,10 @@
+import {build} from 'vite';
+import fs from 'node:fs/promises';
+import {createHash} from 'node:crypto';
+import {execFileSync} from 'node:child_process';
+if(!process.env.AUTO_CHOP_STAGE)throw Error('AUTO_CHOP_STAGE required');
+const site=process.env.AUTO_CHOP_STAGE+'/site';
+await build({logLevel:'error',build:{outDir:site,copyPublicDir:false}});
+await fs.cp('docs/auto-chop',site+'/auto-chop-verification',{recursive:true});
+const files={};for(const rel of ['index.html',...(await fs.readdir(site+'/assets')).map(f=>'assets/'+f)])files['/'+rel]=createHash('sha256').update(await fs.readFile(site+'/'+rel)).digest('hex');
+await fs.writeFile(site+'/auto-chop-verification/release.json',JSON.stringify({commit:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),files},null,2));

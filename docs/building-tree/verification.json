@@ -1,0 +1,20 @@
+{
+  "pass": true,
+  "checks": [
+    "both approved building branches",
+    "unknown hero denied",
+    "cross-faction denied atomically",
+    "co-op denied atomically",
+    "allowed build and resource charge",
+    "duplicate denied without charge",
+    "insufficient resources preserve save",
+    "legacy and per-hero persistence",
+    "unknown save fields preserved",
+    "invalid defense save rejected and Core level 12 construction gate",
+    "common building regression",
+    "generic enemy targeting and range",
+    "live gathering owner acknowledges resource charges",
+    "failed storage writes preserve resources and save"
+  ],
+  "economyKey": "arkodia-stronghold-v1"
+}

@@ -1,0 +1,190 @@
+import {loadEnvironment} from '../../environment/model';
+import {requestGameFrame as requestAnimationFrame} from '../../app/frame-scheduler';
+import {PROTOCOL,TICK_MS,type EnemyState,type Hello,type HeroPick,type Input,type PlayerState,type ServerMessage,type Snapshot,type Welcome} from './protocol';
+import {FRONTIER_COLUMNS} from '../../world/frontier';
+import {walkStep,navBlocker,atGate,gatePassable,gateTick,type Column,type GateGuess} from './movement';
+import {createTimeline,type Timed} from './timeline';
+import {DAY_MS} from '../daylight';
+import type {Walk} from '../controls';
+import {measureTracelogPhase} from '../tracelog';
+// The co-op connection. The server owns the world; this client sends one walk input per 50 ms tick and renders
+// snapshots. The own hero is predicted: every input is applied locally with the server's walking rule at once,
+// and each snapshot rebases it on the server's position after the last acknowledged input, replaying the rest.
+// Steps the server guessed ahead of late inputs are not part of that position (it sends the one under them):
+// it walks them again with the real inputs when they arrive, as this prediction already has.
+// A hit stun or death holds the hero for the next few inputs the server applies (hd), not from the moment this
+// client hears of it, so prediction skips exactly those and walks the rest; a walking input cancels a swing. A mismatch that remains (an
+// auto-step, inputs used up by a hit before this client knew of it) is blended out over ~90 ms instead of
+// snapping. Other heroes and every revenant are drawn slightly in the past on an adaptive render clock with
+// bounded extrapolation (timeline.ts).
+export type NetStatus='idle'|'connecting'|'online'|'reconnecting'|'offline';
+export type JoinError=Error&{code:string};
+const SMOOTH_MS=90,SNAP_PX=80;
+// Input pacing: the fewest inputs waiting at the server over the last second (queued minus walked ahead) is kept
+// between 1 and 2 by sending up to 5% faster or slower, so jitter is absorbed by the queue and stops stay exact.
+const PACE_WINDOW=20,PACE=.05;
+const lerp=(a:number,b:number,k:number)=>a+(b-a)*k;
+const fail=(code:string,message:string)=>Object.assign(new Error(message),{code}) as JoinError;
+export function socketUrl(){
+ const q=new URLSearchParams(location.search).get('server');if(q)return q;
+ return (location.protocol==='https:'?'wss://':'ws://')+location.host+'/ws';
+}
+export function createNet(o:{direction:()=>Walk;maxHp:()=>number;hero:()=>string;url?:string}){
+ let ws:WebSocket|null=null,status:NetStatus='idle',room='',you='',resumeToken='',name='',layout:string[]=[],lastError='',retries=0,retryTimer=0;
+ let blocked:((x:number,y:number,pass:boolean)=>boolean)|null=null;
+ let latest:Timed|null=null,rtt=0;const timeline=createTimeline(TICK_MS);
+ let seq=0,pending:Input[]=[],margins:number[]=[],pace=1,hold=0,gate:GateGuess={open:false,frame:0},pred={x:0,y:0},prev={x:0,y:0},err={x:0,y:0},acc=0,last=0;
+ const stats={snapshots:0,inputs:0,corrections:0,maxCorrection:0,lastCorrection:0,totalCorrection:0,bytes:0,pace:1,margin:0};
+ const snapshotListeners=new Set<(s:Snapshot)=>void>(),statusListeners=new Set<(s:NetStatus)=>void>();
+ const setStatus=(s:NetStatus)=>{if(s===status)return;status=s;for(const f of statusListeners)f(s);};
+ const navReady=fetch('/coop/nav.json').then(r=>{if(!r.ok)throw Error('Co-op collision data missing');return r.json();}).then((n:{columns:Column[]})=>{blocked=navBlocker([...n.columns,...FRONTIER_COLUMNS]);});
+ navReady.catch(()=>{});
+ const mine=(s:Snapshot|null)=>s?.players.find(p=>p.id===you)??null;
+ const block=(pass:boolean)=>(x:number,y:number)=>blocked!(x,y,pass);
+ const othersAtGate=(s:Snapshot,open:boolean)=>s.players.some(p=>p.id!==you&&p.st!=='die'&&atGate(p.x,p.y,open));
+ function reset(state:Welcome['state']){
+  timeline.reset(you);latest=null;dashView=null;
+  const unsentChoice=pending.find(i=>i.choice);
+  if(unsentChoice&&!choice)choice={choice:unsentChoice.choice!,level:unsentChoice.level??1};
+  pending=[];margins=[];hold=0;pace=1;seq=0;acc=0;err={x:0,y:0};
+  const me=state.players.find(p=>p.id===you);if(me){pred={x:me.x,y:me.y};prev={...pred};}gate={open:state.gate.open,frame:state.gate.frame};
+ }
+ // Rebase the own hero on the server and replay inputs it has not applied yet.
+ function reconcile(s:Snapshot){
+  const me=mine(s);if(!me||!blocked)return;
+  pending=pending.filter(i=>i.seq>s.ack);
+  const run=me.run;
+  if(run?.manualDashes&&run.dashDistance&&run.dashElapsed!==undefined&&run.dashElapsed<260){
+   const from={x:me.x,y:me.y},left=(1-run.dashElapsed/260)*run.dashDistance;
+   // Use server world coordinates and the same isometric tile basis as navigation.
+   dashView={id:run.manualDashes,from,to:{x:me.x+((run.dashU??0)-(run.dashV??0))*64*left,y:me.y+((run.dashU??0)+(run.dashV??0))*32*left},started:performance.now()-run.dashElapsed};
+   const fraction=run.dashElapsed/260;
+   if(fraction<1){dashView.from={x:(from.x-dashView.to.x*fraction)/(1-fraction),y:(from.y-dashView.to.y*fraction)/(1-fraction)};}
+   pred={...from};prev={...from};err={x:0,y:0};hold=s.hd??0;return;
+  }
+  if(dashView&&run?.manualDashes===dashView.id&&run.dashElapsed===260){dashView=null;pred={x:me.x,y:me.y};prev={...pred};err={x:0,y:0};}
+
+  // Under any steps the server guessed ahead of late inputs (sim.Player.Owed): where the last applied input left it.
+  // A hero held in a swing or hit keeps the guessed steps.
+  const idle=me.st==='idle';let x=idle?s.bx??me.x:me.x,y=idle?s.by??me.y:me.y;
+  // The next hd inputs the server applies are used up by a hit stun or death. A swing holds none: a walking input
+  // cancels it on the server as in solo play, so a missing hd (omitted when 0) never freezes the prediction.
+  hold=s.hd??0;
+  margins.push((s.q??0)-(s.ow??0));if(margins.length>PACE_WINDOW)margins.shift();
+  const margin=Math.min(...margins);pace=margin<1?1-PACE:margin>2?1+PACE:1;stats.pace=pace;stats.margin=margin;
+  // The gateway as it will stand for each input (its doors move once per server tick, after that tick's walk).
+  let g:GateGuess={open:s.gate.open,frame:s.gate.frame};
+  for(const i of pending){if(hold>0)hold--;else{const r=walkStep(block(gatePassable(g)),x,y,i,TICK_MS);x=r.x;y=r.y;}g=gateTick(g,atGate(x,y,g.open)||othersAtGate(s,g.open));}
+  gate=g;
+  const dx=pred.x-x,dy=pred.y-y,d=Math.hypot(dx,dy);
+  if(d>.5){stats.corrections++;stats.totalCorrection+=d;stats.lastCorrection=d;stats.maxCorrection=Math.max(stats.maxCorrection,d);}
+  // A respawn or teleport jumps; anything smaller glides.
+  if(d>SNAP_PX){err={x:0,y:0};prev={x,y};}else{err.x+=dx;err.y+=dy;prev.x-=dx;prev.y-=dy;}
+  pred={x,y};
+ }
+ function receive(raw:string){
+  measureTracelogPhase('net',()=>{
+   let m:ServerMessage;try{m=JSON.parse(raw);}catch{return;}
+   stats.bytes+=raw.length;
+   if(m.t==='s'){
+    const s=timeline.push(m,performance.now());latest=s;stats.snapshots++;
+    reconcile(s);for(const f of snapshotListeners)f(s);
+   }else if(m.t==='pong')rtt=performance.now()-m.c;
+  });
+ }
+ function connect(code:string,who:string){
+  return new Promise<Welcome>((resolve,reject)=>{
+   clearTimeout(retryTimer);ws?.close();let settled=false;
+   const socket=new WebSocket(o.url??socketUrl());ws=socket;
+   const timer=setTimeout(()=>{if(!settled){settled=true;socket.close();reject(fail('timeout','The co-op server did not answer.'));}},8000);
+   socket.onopen=()=>{const resume=code&&code===room&&resumeToken?{you:resumeToken}:{};const hello:Hello={t:'hello',v:PROTOCOL,name:who,room:code,...resume,maxHp:o.maxHp(),hero:o.hero()};socket.send(JSON.stringify(hello));};
+   socket.onmessage=e=>{
+    if(settled){if(ws===socket)receive(String(e.data));return;}
+    let m:ServerMessage;try{m=JSON.parse(String(e.data));}catch{return;}
+    settled=true;clearTimeout(timer);
+    if(m.t==='welcome')resolve(m);else{socket.close();reject(fail(m.t==='error'?m.code:'bad_reply',m.t==='error'?m.message:'Unexpected reply from the server.'));}
+   };
+   socket.onerror=()=>{};
+   socket.onclose=()=>{clearTimeout(timer);if(!settled){settled=true;reject(fail('network','Could not reach the co-op server.'));return;}if(ws===socket)lost();};
+  });
+ }
+ // An unexpected disconnect keeps the last world on screen and rejoins the same room with backoff; if the
+ // room is unavailable, keep its identity: reconnect never creates a replacement run.
+ function lost(){
+  ws=null;if(status!=='online'&&status!=='reconnecting')return;setStatus('reconnecting');
+  const delay=Math.min(8000,1000*2**retries++);
+  retryTimer=window.setTimeout(()=>{
+   join(room,name).catch((e:JoinError)=>{
+    if((e.code==='network'||e.code==='timeout')&&retries<7)lost();
+    else{lastError=e.message;setStatus('offline');}
+   });
+  },delay);
+ }
+ // Join a room by code, or create one with an empty code.
+ async function join(code:string,who:string){
+  setStatus(status==='reconnecting'?'reconnecting':'connecting');lastError='';
+  try{await navReady;}catch(e){lastError=(e as Error).message;setStatus('offline');throw fail('nav',lastError);}
+  try{
+   const w=await connect(code,who);
+   await loadEnvironment(w.environmentRevision??0);
+   room=w.room;you=w.you;resumeToken=w.resume;name=who;layout=w.layout;retries=0;reset(w.state);
+   try{localStorage.setItem('arkodia.coop.resume.v1',JSON.stringify({version:1,room,you,resumeToken,name,hero:o.hero()}));}catch{lastError='Co-op resume identity could not be saved. Keep this tab open.';}
+   receive(JSON.stringify({...w.state,t:'s',ack:0}));setStatus('online');return w;
+  }catch(e){if(status!=='reconnecting'){lastError=(e as Error).message;setStatus('offline');}throw e;}
+ }
+ function leave(){try{localStorage.removeItem('arkodia.coop.resume.v1');}catch{}clearTimeout(retryTimer);const s=ws;ws=null;s?.close();you='';room='';resumeToken='';setStatus('offline');}
+ // One input per tick from the render loop; after a stall (background tab) it resumes instead of bursting.
+ function frame(now:number){
+  const dt=last?Math.min(now-last,250):16;last=now;
+  if(you&&status==='online'){
+   measureTracelogPhase('net',()=>{
+    // Each input still walks one 50 ms step; pacing only changes how often one is sent.
+    const every=TICK_MS*pace;acc+=dt;if(acc>4*every)acc=every;
+    while(acc>=every){acc-=every;tick();}
+    const k=Math.exp(-dt/SMOOTH_MS);err.x*=k;err.y*=k;
+   });
+  }
+  requestAnimationFrame(frame);
+ }
+ function tick(){
+  const d=o.direction(),input:Input={t:'in',seq:++seq,x:+d.x.toFixed(4),y:+d.y.toFixed(4)};
+  if(ws?.readyState===WebSocket.OPEN){
+   if(choice){input.choice=choice.choice;input.level=choice.level;choice=null;}
+   if(dash){input.dash=dash;dash=null;}
+   ws.send(JSON.stringify(input));stats.inputs++;
+  }
+  pending.push(input);if(pending.length>60)pending.shift();
+  prev={...pred};
+  if(hold>0)hold--;else if(blocked&&latest){const r=walkStep(block(gatePassable(gate)),pred.x,pred.y,input,TICK_MS);pred={x:r.x,y:r.y};}
+  if(latest)gate=gateTick(gate,atGate(pred.x,pred.y,gate.open)||othersAtGate(latest,gate.open));
+ }
+ requestAnimationFrame(frame);
+ setInterval(()=>{if(ws?.readyState===WebSocket.OPEN)ws.send(JSON.stringify({t:'ping',c:performance.now()}));},1000);
+ let choice:{choice:string;level:number}|null=null;
+ let dash:{u:number;v:number}|null=null;
+ let dashView:{id:number;from:{x:number;y:number};to:{x:number;y:number};started:number}|null=null;
+ const api={
+  dash(u:number,v:number){if(status==='online')dash={u,v};},
+ chooseCard(id:string,level:number){choice={choice:id,level};},
+  join,leave,
+  resume(requestedRoom?:string){try{const s=JSON.parse(localStorage.getItem('arkodia.coop.resume.v1')||'null');if(s?.version===1&&(!requestedRoom||requestedRoom===s.room)&&typeof s.resumeToken==='string'&&s.resumeToken.length===48&&typeof s.room==='string'&&typeof s.you==='string'&&typeof s.name==='string'){room=s.room;you=s.you;resumeToken=s.resumeToken;name=s.name;void join(room,name).catch(e=>{lastError=e.message;setStatus('offline');});return true;}}catch{}return false;},
+  // The picked hero, for the rest of the room; a later hello (rejoin) carries it too.
+  setHero(h:string){if(ws?.readyState===WebSocket.OPEN){const m:HeroPick={t:'hero',h};ws.send(JSON.stringify(m));}},
+  status:()=>status,room:()=>room,you:()=>you,name:()=>name,error:()=>lastError,layout:()=>layout,rtt:()=>rtt,stats,timeline:timeline.stats,
+  // In co-op the server's world replaces the local simulation, also while briefly reconnecting.
+  active:()=>!!you&&status!=='idle',
+  latest:()=>latest,me:()=>mine(latest),
+  // Own hero: predicted position between the last two ticks, plus the fading correction.
+  position(){if(dashView){const k=Math.max(0,Math.min(1,(performance.now()-dashView.started)/260));return {x:lerp(dashView.from.x,dashView.to.x,k),y:lerp(dashView.from.y,dashView.to.y,k)};}const k=Math.min(1,acc/(TICK_MS*pace));return {x:lerp(prev.x,pred.x,k)+err.x,y:lerp(prev.y,pred.y,k)+err.y};},
+  remotes:(now:number):PlayerState[]=>timeline.remotes(now),
+  enemies:(now:number):EnemyState[]=>timeline.enemies(now),
+  // The gateway as the own hero's prediction has it: the doors open as the hero reaches them.
+  gate:()=>latest?{...gate,pass:gatePassable(gate)}:null,
+  // Server time of day, advanced between snapshots while connected.
+  clock(){if(!latest)return null;const t=latest.clock+(status==='online'?(performance.now()-latest.at)/DAY_MS:0);return t-Math.floor(t);},
+  onSnapshot(f:(s:Snapshot)=>void){snapshotListeners.add(f);return ()=>snapshotListeners.delete(f);},
+  onStatus(f:(s:NetStatus)=>void){statusListeners.add(f);return ()=>statusListeners.delete(f);}
+ };
+ return api;
+}
+export type Net=ReturnType<typeof createNet>;

@@ -1,0 +1,14 @@
+{
+  "assetCommit": "eedebe8a3ada0ba43670d071c0a175da49a2ba8d",
+  "viewer": "https://arkodia.online/sprite-player/mine/",
+  "assets": "https://arkodia.online/buildings/mine/painted/",
+  "verification": {
+    "pass": true,
+    "levels": 30,
+    "resources": 13,
+    "errors": []
+  },
+  "deployment": "Existing Arkodia publish-layer workflow under shared arkodia-deploy.lock; additive asset and viewer layers",
+  "routingFix": "/buildings/ HTML navigations resolve to game shell; use dedicated /sprite-player/mine/ route",
+  "approval": "Technical checks passed; human art approval remains separate."
+}

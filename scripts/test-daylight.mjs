@@ -1,0 +1,31 @@
+import {readFileSync} from 'node:fs';
+import {strict as a} from 'node:assert';
+import {DAY_MS,KEYFRAMES,AMBIENT_FLOOR,timeOfDay,lightingAt,phaseOf,clockLabel,resolveTime,modeFrom,luma,sunAt,SHADOW_ALPHA,NIGHT,SUNRISE,SUNSET,DUSK} from '../src/stronghold/daylight.ts';
+import {LIGHT_SPRITES} from '../src/stronghold/light-anchors.ts';
+let tests=0;const test=(name,fn)=>{fn();tests++;console.log('PASS',name);};
+const near=(x,y,e=1e-6)=>a.ok(Math.abs(x-y)<=e,`${x} != ${y}`);
+test('keyframes are ordered and wrap seamlessly',()=>{for(let i=1;i<KEYFRAMES.length;i++)a.ok(KEYFRAMES[i].t>KEYFRAMES[i-1].t);a.equal(KEYFRAMES[0].t,0);a.equal(KEYFRAMES.at(-1).t,1);a.deepEqual({...KEYFRAMES[0],t:1},KEYFRAMES.at(-1));
+ const before=lightingAt(.99999),after=lightingAt(0);before.ambient.forEach((v,i)=>near(v,after.ambient[i],1e-3));near(before.lights,after.lights,1e-3);});
+test('interpolation hits every keyframe exactly',()=>{for(const k of KEYFRAMES.slice(0,-1)){const l=lightingAt(k.t),hex='#'+l.ambient.map(v=>Math.round(v*255).toString(16).padStart(2,'0')).join('');a.equal(hex,k.ambient);near(l.lights,k.lights);near(l.glow,k.glow);}});
+test('noon is full daylight with lights off',()=>{const l=lightingAt(.5);a.deepEqual(l.ambient.map(v=>Math.round(v*255)),[255,255,255]);a.equal(l.lights,0);a.equal(l.glow,0);a.equal(l.phase,'Day');});
+test('night never drops below the readability floor',()=>{for(let t=0;t<1;t+=.001){const l=lightingAt(t);a.ok(luma(l.ambient)>=AMBIENT_FLOOR-1e-9,`t=${t}`);for(const v of [...l.ambient,l.lights,l.glow])a.ok(v>=0&&v<=1);}});
+test('night is never darker than dusk',()=>{const dusk=luma(lightingAt(DUSK).ambient);for(let t=0;t<1;t+=.001)a.ok(luma(lightingAt(t).ambient)>=dusk-1e-9,`t=${t}`);for(const t of [0,.1,SUNSET,.9])lightingAt(t).ambient.forEach((v,i)=>near(v,lightingAt(DUSK).ambient[i]));});
+test('phases and clock labels',()=>{a.equal(phaseOf(0),'Night');a.equal(phaseOf(.25),'Dawn');a.equal(phaseOf(.5),'Day');a.equal(phaseOf(.75),'Dusk');a.equal(phaseOf(.9),'Night');a.equal(phaseOf(-.1),'Night');a.equal(clockLabel(0),'00:00');a.equal(clockLabel(.5),'12:00');a.equal(clockLabel(.75),'18:00');a.equal(clockLabel(1),'00:00');});
+test('ten-minute cycle has eight minutes of daylight and two minutes of night',()=>{a.equal(DAY_MS,600000);near(NIGHT,1/5);near((SUNSET-SUNRISE)*DAY_MS,480000);near(NIGHT*DAY_MS,120000);let night=0;const n=24*60*10;for(let i=0;i<n;i++)if(phaseOf(i/n)==='Night')night++;near(night/n,1/5,1e-3);a.equal(phaseOf(SUNRISE-1e-6),'Night');a.equal(phaseOf(SUNRISE),'Dawn');a.equal(phaseOf(SUNSET-1e-6),'Dusk');a.equal(phaseOf(SUNSET),'Night');
+ for(const t of [0,SUNRISE,SUNSET])a.equal(luma(lightingAt(t).ambient).toFixed(4),luma(lightingAt(0).ambient).toFixed(4),'night is fully dark from 21:36 to 02:24');});
+test('server and client use the same cycle duration',()=>{const server=readFileSync(new URL('../server/internal/sim/world.go',import.meta.url),'utf8');const expression=server.match(/const DayMS = ([0-9 *+.]+)/)[1];a.equal(Function(`return ${expression}`)(),DAY_MS);});
+test('time of day is deterministic and periodic',()=>{const now=Date.UTC(2026,9,21,8,30);a.equal(timeOfDay(now),timeOfDay(now+DAY_MS));near(timeOfDay(now+DAY_MS/4),(timeOfDay(now)+.25)%1);a.equal(timeOfDay(0),0);near(timeOfDay(DAY_MS/2),.5);});
+test('modes and URL overrides',()=>{const now=123456789;a.equal(resolveTime('day',now),.5);a.equal(resolveTime('night',now),0);a.equal(resolveTime('dynamic',now,'?time=0.85'),.85);a.equal(resolveTime('day',now,'?time=0.1'),.1);near(resolveTime('dynamic',now,'?daySpeed=60'),timeOfDay(now,DAY_MS/60));a.equal(resolveTime('dynamic',now,'?time=abc'),timeOfDay(now));
+ a.equal(modeFrom('',undefined),'dynamic');a.equal(modeFrom('?lighting=night',undefined),'night');a.equal(modeFrom('','day'),'day');a.equal(modeFrom('?lighting=dynamic','night'),'dynamic');a.equal(modeFrom('?lighting=bogus','night'),'dynamic');a.equal(modeFrom('','evil'),'dynamic');});
+test('manual clock time wins over the mode but not over ?time',()=>{const now=123456789;a.equal(resolveTime('night',now,'',.5),.5);a.equal(resolveTime('dynamic',now,'',1.25),.25);a.equal(resolveTime('day',now,'?time=0.1',.5),.1);a.equal(resolveTime('dynamic',now,'',null),timeOfDay(now));});
+test('sun casts shadows only by day, longest near sunrise and sunset',()=>{for(const t of [0,.1,SUNRISE,SUNSET,.9])a.equal(sunAt(t).alpha,0);a.ok(sunAt(.2).alpha>0&&sunAt(.8).alpha>0,'sun is up just after sunrise and before sunset');const noon=sunAt(.5),morning=sunAt(.3),evening=sunAt(.7);near(noon.alpha,SHADOW_ALPHA);
+ const len=s=>Math.hypot(s.dx,s.dy*2);a.ok(len(morning)>len(noon)&&len(evening)>len(noon));a.ok(len(sunAt(.27))<=1.7+1e-9);
+ a.ok(morning.dx>0&&evening.dx<0,'shadows swing from right to left');a.ok(noon.dx>0&&noon.dy>0,'noon shadows fall to the lower right, away from the painted upper-left light');for(let t=0;t<1;t+=.001){const s=sunAt(t);a.ok(s.alpha>=0&&s.alpha<=SHADOW_ALPHA+1e-9&&Number.isFinite(s.dx)&&Number.isFinite(s.dy));}});
+test('figure shadows keep their width across the sun, so low-sun shadows stay attached to the feet',()=>{for(let t=SUNRISE+.002;t<SUNSET;t+=.002){const s=sunAt(t);if(!s.alpha)continue;
+ // On the unsquashed ground (screen y doubled) the width axis is a unit vector perpendicular to the shadow.
+ near(Math.hypot(s.wx,s.wy*2),1);near(s.wx*s.dx+s.wy*2*s.dy*2,0);a.ok(s.wx*s.dy*2-s.wy*2*s.dx>0,'width keeps one side of the shadow all day, never mirroring mid-day');}
+ const noon=sunAt(.5);a.ok(noon.wx>.8,'noon width stays close to screen x');
+ // At 06:00 the shadow runs along screen x: a width along x would sweep no area, the turned width keeps the full body.
+ const dawn=sunAt(.25);a.ok(Math.abs(dawn.dy)<.2&&Math.abs(dawn.wx*dawn.dy-dawn.wy*dawn.dx)>.5);});
+test('every authored light anchor is valid',()=>{const kinds=['fire','window','candle','holy','arcane'];for(const [file,list] of Object.entries(LIGHT_SPRITES)){a.ok(list.length,file);for(const l of list){a.ok(kinds.includes(l.kind),file);a.ok(l.size>0&&l.radius>=0&&l.x>=0&&l.y>=0,file);if(l.radius)a.ok(l.drop>=0&&l.intensity>0&&l.intensity<=1,file);}}});
+console.log(`${tests} daylight tests passed`);

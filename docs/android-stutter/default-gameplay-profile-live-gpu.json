@@ -1,0 +1,597 @@
+{
+ "frames": 23,
+ "ms": 11262.700000047684,
+ "prof": {
+  "2d.drawImage": {
+   "ms": 79.09999990463257,
+   "n": 260
+  },
+  "2d.getImageData": {
+   "ms": 1.7999999523162842,
+   "n": 2
+  },
+  "gl2.texImage2D": {
+   "ms": 81.2999997138977,
+   "n": 22
+  },
+  "gl2.texSubImage2D": {
+   "ms": 13.000001668930054,
+   "n": 185
+  },
+  "2d.putImageData": {
+   "ms": 0.19999980926513672,
+   "n": 1
+  }
+ },
+ "snap": {
+  "foes": 8,
+  "alive": 8,
+  "particles": 155,
+  "hero": "attack",
+  "heroMode": "3d-60fps"
+ },
+ "self": [
+  [
+   "(idle) :0",
+   8313.949000000093
+  ],
+  [
+   "(garbage collector) :0",
+   237.0499999999998
+  ],
+  [
+   "bindTexture :0",
+   142.1
+  ],
+  [
+   "getContext :0",
+   137.231
+  ],
+  [
+   "G chunk-DDYEJ3XB-nSedMJGN.js:1",
+   92.25899999999997
+  ],
+  [
+   "ke main-B8XujUVV.js:26",
+   86.14399999999999
+  ],
+  [
+   "texImage2D :0",
+   81.184
+  ],
+  [
+   "execute index-iXFD5qMw.js:2934",
+   73.07300000000001
+  ],
+  [
+   "_updateDistanceField index-iXFD5qMw.js:2310",
+   71.737
+  ],
+  [
+   "F chunk-WCBGJP2D-CpuWmkW4.js:1",
+   71.053
+  ],
+  [
+   "execute index-iXFD5qMw.js:2737",
+   66.92999999999999
+  ],
+  [
+   "get visible Filter-D6JpcDm_.js:1",
+   63.229
+  ],
+  [
+   "bufferSubData :0",
+   62.55
+  ],
+  [
+   "(anon) main-B8XujUVV.js:26",
+   61.978
+  ],
+  [
+   "set blendMode Filter-D6JpcDm_.js:1",
+   43.546
+  ],
+  [
+   "(program) :0",
+   30.770000000000003
+  ],
+  [
+   "bind index-iXFD5qMw.js:2644",
+   29.752
+  ],
+  [
+   "c.emit CanvasPool-Bfa7zDPb.js:1",
+   25.489
+  ],
+  [
+   "K heroes-C3TgeCZf.js:2",
+   17.769000000000002
+  ],
+  [
+   "updateUniformGroup index-iXFD5qMw.js:2734",
+   15.730999999999996
+  ],
+  [
+   "collectRenderablesSimple Filter-D6JpcDm_.js:1",
+   14.214999999999998
+  ],
+  [
+   "updateElement GCManagedHash-Bz8k4ITX.js:3",
+   13.078
+  ],
+  [
+   "texSubImage2D :0",
+   9.580000000000002
+  ],
+  [
+   "_updateContext index-iXFD5qMw.js:2310",
+   8.72
+  ],
+  [
+   "useProgram :0",
+   8.693
+  ],
+  [
+   "start index-iXFD5qMw.js:2414",
+   7.093
+  ],
+  [
+   "drawImage :0",
+   7.001
+  ],
+  [
+   "packAttributes GCManagedHash-Bz8k4ITX.js:224",
+   6.982000000000001
+  ],
+  [
+   "drawElements :0",
+   6.6530000000000005
+  ],
+  [
+   "collectRenderables Filter-D6JpcDm_.js:1",
+   6.003
+  ],
+  [
+   "setTransform :0",
+   5.3420000000000005
+  ],
+  [
+   "getAttribute CanvasPool-Bfa7zDPb.js:23",
+   5.244
+  ],
+  [
+   "(anon) main-B8XujUVV.js:28",
+   5.152
+  ],
+  [
+   "(anon) index-iXFD5qMw.js:2614",
+   5
+  ],
+  [
+   "z RenderTargetSystem-CCfFNQoA.js:182",
+   4.859
+  ],
+  [
+   "D heroes-C3TgeCZf.js:2",
+   4.805999999999999
+  ],
+  [
+   "(anon) :1",
+   4.759
+  ],
+  [
+   "Ft pixi-B9xrokWD.js:57",
+   4.624
+  ],
+  [
+   "_calculateFilterArea index-iXFD5qMw.js:2134",
+   4.618
+  ],
+  [
+   "bind index-iXFD5qMw.js:2737",
+   4.589
+  ],
+  [
+   "_setupFilterTextures index-iXFD5qMw.js:2134",
+   4.582
+  ],
+  [
+   "v heroes-C3TgeCZf.js:32",
+   4.566
+  ],
+  [
+   "Ui main-B8XujUVV.js:26",
+   4.202
+  ],
+  [
+   "apply index-iXFD5qMw.js:3039",
+   4.184000000000001
+  ],
+  [
+   "get positions index-iXFD5qMw.js:2205",
+   4.169
+  ],
+  [
+   "save :0",
+   4.061
+  ],
+  [
+   "k main-B8XujUVV.js:8",
+   4.031
+  ],
+  [
+   "pe main-B8XujUVV.js:26",
+   4.027
+  ],
+  [
+   "unbind index-iXFD5qMw.js:2737",
+   4.009
+  ],
+  [
+   "Vt three.module.min.js:6",
+   3.668
+  ],
+  [
+   "wi main-B8XujUVV.js:26",
+   3.3590000000000004
+  ],
+  [
+   "(anon) three.module.min.js:6",
+   3.3259999999999996
+  ],
+  [
+   "renderBufferDirect three.module.min.js:6",
+   3.293
+  ],
+  [
+   "packAttributes main-B8XujUVV.js:8",
+   3.14
+  ],
+  [
+   "render RenderTargetSystem-CCfFNQoA.js:182",
+   3.101
+  ],
+  [
+   "Ai index-iXFD5qMw.js:2",
+   2.924
+  ],
+  [
+   "packQuadAttributes GCManagedHash-Bz8k4ITX.js:224",
+   2.6430000000000002
+  ],
+  [
+   "pm index-iXFD5qMw.js:2441",
+   2.517
+  ],
+  [
+   "d index-iXFD5qMw.js:2",
+   2.511
+  ],
+  [
+   "It main-B8XujUVV.js:28",
+   2.4910000000000005
+  ]
+ ],
+ "incl": [
+  [
+   "(root) :0",
+   10074.130000000181
+  ],
+  [
+   "(idle) :0",
+   8313.949000000093
+  ],
+  [
+   "re heroes-C3TgeCZf.js:2",
+   762.4469999999994
+  ],
+  [
+   "pt heroes-C3TgeCZf.js:2",
+   759.8979999999995
+  ],
+  [
+   "P main-B8XujUVV.js:8",
+   726.4519999999997
+  ],
+  [
+   "u.render heroes-C3TgeCZf.js:2",
+   726.4519999999997
+  ],
+  [
+   "render RenderTargetSystem-CCfFNQoA.js:1",
+   711.2369999999996
+  ],
+  [
+   "emit RenderTargetSystem-CCfFNQoA.js:1",
+   710.9719999999995
+  ],
+  [
+   "render RenderTargetSystem-CCfFNQoA.js:182",
+   696.8749999999994
+  ],
+  [
+   "_tick Filter-D6JpcDm_.js:1",
+   654.9659999999998
+  ],
+  [
+   "emit Filter-D6JpcDm_.js:1",
+   654.5019999999998
+  ],
+  [
+   "update Filter-D6JpcDm_.js:1",
+   654.5019999999998
+  ],
+  [
+   "render index-iXFD5qMw.js:959",
+   654.2349999999998
+  ],
+  [
+   "e.update index-iXFD5qMw.js:2",
+   654.2349999999998
+  ],
+  [
+   "z RenderTargetSystem-CCfFNQoA.js:182",
+   525.824
+  ],
+  [
+   "Ht main-B8XujUVV.js:28",
+   477.5639999999996
+  ],
+  [
+   "It main-B8XujUVV.js:28",
+   454.4009999999996
+  ],
+  [
+   "(anon) main-B8XujUVV.js:26",
+   284.63299999999987
+  ],
+  [
+   "Ne main-B8XujUVV.js:26",
+   282.59999999999997
+  ],
+  [
+   "Se heroes-C3TgeCZf.js:245",
+   280.88299999999975
+  ],
+  [
+   "ke main-B8XujUVV.js:26",
+   280.787
+  ],
+  [
+   "execute RenderTargetSystem-CCfFNQoA.js:182",
+   256.136
+  ],
+  [
+   "k main-B8XujUVV.js:8",
+   244.38700000000006
+  ],
+  [
+   "(garbage collector) :0",
+   237.0499999999998
+  ],
+  [
+   "O main-B8XujUVV.js:8",
+   229.70100000000002
+  ],
+  [
+   "H heroes-C3TgeCZf.js:2",
+   206.19199999999992
+  ],
+  [
+   "K heroes-C3TgeCZf.js:2",
+   202.86599999999999
+  ],
+  [
+   "update pixi-B9xrokWD.js:57",
+   190.78899999999993
+  ],
+  [
+   "draw pixi-B9xrokWD.js:57",
+   183.54699999999997
+  ],
+  [
+   "drawParticleViews pixi-B9xrokWD.js:57",
+   183.23399999999998
+  ],
+  [
+   "Mt pixi-B9xrokWD.js:57",
+   182.46899999999994
+  ],
+  [
+   "Ft pixi-B9xrokWD.js:57",
+   179.09499999999994
+  ],
+  [
+   "bind index-iXFD5qMw.js:2737",
+   170.60899999999998
+  ],
+  [
+   "_updateRenderGroups RenderTargetSystem-CCfFNQoA.js:182",
+   167.94999999999987
+  ],
+  [
+   "bindSource index-iXFD5qMw.js:2737",
+   166.601
+  ],
+  [
+   "execute index-iXFD5qMw.js:2205",
+   165.83999999999997
+  ],
+  [
+   "execute index-iXFD5qMw.js:2737",
+   165.29599999999996
+  ],
+  [
+   "jt main-B8XujUVV.js:28",
+   164.461
+  ],
+  [
+   "An.r.execute main-B8XujUVV.js:23",
+   151.696
+  ],
+  [
+   "a.execute main-B8XujUVV.js:8",
+   148.197
+  ],
+  [
+   "_buildInstructions RenderTargetSystem-CCfFNQoA.js:182",
+   146.982
+  ],
+  [
+   "collectRenderables Filter-D6JpcDm_.js:1",
+   145.349
+  ],
+  [
+   "collectRenderablesSimple Filter-D6JpcDm_.js:1",
+   145.349
+  ],
+  [
+   "collectRenderablesWithEffects Filter-D6JpcDm_.js:1",
+   145.349
+  ],
+  [
+   "bindTexture :0",
+   142.1
+  ],
+  [
+   "getContext :0",
+   137.231
+  ],
+  [
+   "onSourceUpdate index-iXFD5qMw.js:2737",
+   110.39099999999998
+  ],
+  [
+   "s.<computed> heroes-C3TgeCZf.js:2",
+   108.00899999999999
+  ],
+  [
+   "Lh index-iXFD5qMw.js:2737",
+   108.00899999999999
+  ],
+  [
+   "upload index-iXFD5qMw.js:2737",
+   108.00899999999999
+  ],
+  [
+   "addRenderable index-iXFD5qMw.js:2310",
+   107.528
+  ],
+  [
+   "start index-iXFD5qMw.js:2414",
+   104.176
+  ],
+  [
+   "updateAndRender heroes-C3TgeCZf.js:245",
+   99.822
+  ],
+  [
+   "proto.<computed> :4",
+   98.99999999999999
+  ],
+  [
+   "getGlSource index-iXFD5qMw.js:2737",
+   98.68999999999998
+  ],
+  [
+   "_initSource index-iXFD5qMw.js:2737",
+   98.42899999999999
+  ],
+  [
+   "b chunk-NKQMBJ4W-7MmQg0y9.js:1",
+   95.46999999999998
+  ],
+  [
+   "(anon) heroes-C3TgeCZf.js:245",
+   94.069
+  ],
+  [
+   "K chunk-DDYEJ3XB-nSedMJGN.js:1",
+   93.32199999999997
+  ],
+  [
+   "J chunk-DDYEJ3XB-nSedMJGN.js:1",
+   93.32199999999997
+  ],
+  [
+   "G chunk-DDYEJ3XB-nSedMJGN.js:1",
+   92.25899999999997
+  ],
+  [
+   "(anon) heroes-C3TgeCZf.js:2",
+   90.764
+  ],
+  [
+   "render three.module.min.js:6",
+   89.199
+  ],
+  [
+   "execute index-iXFD5qMw.js:2934",
+   87.42800000000001
+  ],
+  [
+   "Xt three.module.min.js:6",
+   84.012
+  ],
+  [
+   "Wt three.module.min.js:6",
+   84.012
+  ],
+  [
+   "Ht three.module.min.js:6",
+   84.012
+  ],
+  [
+   "renderBufferDirect three.module.min.js:6",
+   83.08099999999999
+  ],
+  [
+   "wi main-B8XujUVV.js:26",
+   81.76699999999998
+  ],
+  [
+   "texImage2D :0",
+   81.184
+  ],
+  [
+   "(anon) three.module.min.js:6",
+   79.28699999999999
+  ],
+  [
+   "n._updateDistanceField index-iXFD5qMw.js:3039",
+   78.405
+  ],
+  [
+   "E three.module.min.js:6",
+   77.75699999999999
+  ],
+  [
+   "wo three.module.min.js:6",
+   77.75699999999999
+  ],
+  [
+   "kt main-B8XujUVV.js:28",
+   76.086
+  ],
+  [
+   "N heroes-C3TgeCZf.js:245",
+   75.694
+  ],
+  [
+   "Ci main-B8XujUVV.js:26",
+   74.74099999999999
+  ],
+  [
+   "bindTexture three.module.min.js:6",
+   74.246
+  ],
+  [
+   "upload three.module.min.js:6",
+   74.246
+  ],
+  [
+   "y heroes-C3TgeCZf.js:32",
+   73.27199999999999
+  ]
+ ]
+}

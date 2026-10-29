@@ -1,0 +1,278 @@
+{
+  "source": "assets-src/starter-boundary/starter-components-cutout.png",
+  "method": "Built-in imagegen background extraction; original pixel isolation, no repainted runtime stand-ins",
+  "assets": [
+    {
+      "name": "straight-ne-a",
+      "file": "straight-ne-a.png",
+      "sourceRect": [
+        0,
+        0,
+        416,
+        256
+      ],
+      "width": 416,
+      "height": 256,
+      "alpha": {
+        "clear": 64141,
+        "solid": 35418,
+        "edge": 0
+      }
+    },
+    {
+      "name": "straight-ne-b",
+      "file": "straight-ne-b.png",
+      "sourceRect": [
+        384,
+        0,
+        384,
+        256
+      ],
+      "width": 384,
+      "height": 256,
+      "alpha": {
+        "clear": 60855,
+        "solid": 30245,
+        "edge": 0
+      }
+    },
+    {
+      "name": "straight-se-a",
+      "file": "straight-se-a.png",
+      "sourceRect": [
+        768,
+        0,
+        416,
+        256
+      ],
+      "width": 416,
+      "height": 256,
+      "alpha": {
+        "clear": 68573,
+        "solid": 30740,
+        "edge": 0
+      }
+    },
+    {
+      "name": "straight-se-b",
+      "file": "straight-se-b.png",
+      "sourceRect": [
+        1152,
+        0,
+        384,
+        256
+      ],
+      "width": 384,
+      "height": 256,
+      "alpha": {
+        "clear": 62543,
+        "solid": 29350,
+        "edge": 59
+      }
+    },
+    {
+      "name": "corner-west",
+      "file": "corner-west.png",
+      "sourceRect": [
+        0,
+        256,
+        416,
+        256
+      ],
+      "width": 416,
+      "height": 256,
+      "alpha": {
+        "clear": 60636,
+        "solid": 38362,
+        "edge": 0
+      }
+    },
+    {
+      "name": "corner-south",
+      "file": "corner-south.png",
+      "sourceRect": [
+        384,
+        256,
+        384,
+        256
+      ],
+      "width": 384,
+      "height": 256,
+      "alpha": {
+        "clear": 55400,
+        "solid": 35962,
+        "edge": 0
+      }
+    },
+    {
+      "name": "corner-north",
+      "file": "corner-north.png",
+      "sourceRect": [
+        768,
+        256,
+        384,
+        256
+      ],
+      "width": 384,
+      "height": 256,
+      "alpha": {
+        "clear": 57449,
+        "solid": 34016,
+        "edge": 0
+      }
+    },
+    {
+      "name": "corner-east",
+      "file": "corner-east.png",
+      "sourceRect": [
+        1152,
+        256,
+        384,
+        256
+      ],
+      "width": 384,
+      "height": 256,
+      "alpha": {
+        "clear": 56075,
+        "solid": 35345,
+        "edge": 0
+      }
+    },
+    {
+      "name": "gate-frame",
+      "file": "gate-frame.png",
+      "sourceRect": [
+        0,
+        512,
+        512,
+        248
+      ],
+      "width": 512,
+      "height": 248,
+      "alpha": {
+        "clear": 65725,
+        "solid": 52703,
+        "edge": 0
+      }
+    },
+    {
+      "name": "gate-leaf-left",
+      "file": "gate-leaf-left.png",
+      "sourceRect": [
+        530,
+        512,
+        225,
+        248
+      ],
+      "width": 225,
+      "height": 248,
+      "alpha": {
+        "clear": 30761,
+        "solid": 22027,
+        "edge": 0
+      }
+    },
+    {
+      "name": "gate-leaf-right",
+      "file": "gate-leaf-right.png",
+      "sourceRect": [
+        810,
+        512,
+        230,
+        248
+      ],
+      "width": 230,
+      "height": 248,
+      "alpha": {
+        "clear": 28907,
+        "solid": 24471,
+        "edge": 0
+      }
+    },
+    {
+      "name": "threshold",
+      "file": "threshold.png",
+      "sourceRect": [
+        1070,
+        512,
+        466,
+        248
+      ],
+      "width": 466,
+      "height": 248,
+      "alpha": {
+        "clear": 58774,
+        "solid": 50106,
+        "edge": 0
+      }
+    },
+    {
+      "name": "broken-se",
+      "file": "broken-se.png",
+      "sourceRect": [
+        0,
+        768,
+        416,
+        256
+      ],
+      "width": 416,
+      "height": 256,
+      "alpha": {
+        "clear": 64606,
+        "solid": 34780,
+        "edge": 0
+      }
+    },
+    {
+      "name": "broken-ne",
+      "file": "broken-ne.png",
+      "sourceRect": [
+        400,
+        768,
+        416,
+        256
+      ],
+      "width": 416,
+      "height": 256,
+      "alpha": {
+        "clear": 60624,
+        "solid": 38246,
+        "edge": 0
+      }
+    },
+    {
+      "name": "debris",
+      "file": "debris.png",
+      "sourceRect": [
+        768,
+        768,
+        384,
+        256
+      ],
+      "width": 384,
+      "height": 256,
+      "alpha": {
+        "clear": 61513,
+        "solid": 31247,
+        "edge": 0
+      }
+    },
+    {
+      "name": "endcap",
+      "file": "endcap.png",
+      "sourceRect": [
+        1152,
+        768,
+        384,
+        256
+      ],
+      "width": 384,
+      "height": 256,
+      "alpha": {
+        "clear": 60462,
+        "solid": 32390,
+        "edge": 0
+      }
+    }
+  ]
+}

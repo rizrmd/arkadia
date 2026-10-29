@@ -1,0 +1,36 @@
+{
+  "feature_commit": "d43947a",
+  "initial_shared_game_commit": "5b4daf6",
+  "initial_game_layer": "1792919544044-game-5b4daf6-b90275c01bc4",
+  "verified_integrated_game_commit": "7a8edb4",
+  "integrated_tree_asset_fix": "f6de656",
+  "url": "https://ark-whachat.fural.space",
+  "verified_at": "2026-10-25T09:35:14.370838+00:00",
+  "knowledge_id": "NKBD0371cf6e1c94e3ee7c0bb9b5",
+  "viewports": {
+    "desktop": [
+      1440,
+      900
+    ],
+    "mobile": [
+      390,
+      844
+    ],
+    "landscape": [
+      844,
+      390
+    ]
+  },
+  "page_errors": 0,
+  "console_errors": 0,
+  "checks": [
+    "persisted real rendering and independent audio controls",
+    "solo pause",
+    "desktop keyboard and focus",
+    "mobile touch, short-screen scroll and safe-area geometry",
+    "Cancel, Escape and backdrop preserve progression",
+    "second confirmation resets only allowlisted progression",
+    "fresh game loads after reset",
+    "preferences, chosen hero and unrelated storage retained"
+  ]
+}

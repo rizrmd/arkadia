@@ -1,0 +1,124 @@
+{
+ "tag": "fixed",
+ "phone": true,
+ "offline": false,
+ "bots": 3,
+ "scene": {
+  "revenants": 15,
+  "onScreen": 15,
+  "zone": "wild",
+  "heroes": 4
+ },
+ "frames": 314,
+ "fps": 25.5,
+ "frameMs": {
+  "p50": 33.4,
+  "p90": 50,
+  "p99": 83.4,
+  "max": 250
+ },
+ "slowFrames": 272,
+ "idlePct": 1.2,
+ "drawImagePct": 14.1,
+ "self": [
+  [
+   "(program)",
+   66.2
+  ],
+  [
+   "drawImage",
+   14.1
+  ],
+  [
+   "B main.js:1",
+   5
+  ],
+  [
+   "(anonymous) main.js:1",
+   2.9
+  ],
+  [
+   "(idle)",
+   1.2
+  ],
+  [
+   "fe main.js:1",
+   1
+  ],
+  [
+   "c main.js:1",
+   0.6
+  ],
+  [
+   "V main.js:1",
+   0.6
+  ],
+  [
+   "U main.js:1",
+   0.6
+  ],
+  [
+   "he main.js:1",
+   0.5
+  ],
+  [
+   "setTransform",
+   0.4
+  ],
+  [
+   "requestAnimationFrame",
+   0.4
+  ]
+ ],
+ "inclusive": [
+  [
+   "(program)",
+   66.2
+  ],
+  [
+   "B main.js:1",
+   14.4
+  ],
+  [
+   "U main.js:1",
+   14.2
+  ],
+  [
+   "drawImage",
+   14.1
+  ],
+  [
+   "he main.js:1",
+   12.7
+  ],
+  [
+   "fe main.js:1",
+   11.3
+  ],
+  [
+   "se main.js:1",
+   7.4
+  ],
+  [
+   "I main.js:1",
+   7
+  ],
+  [
+   "(anonymous) main.js:1",
+   4.9
+  ],
+  [
+   "place main.js:1",
+   3.7
+  ],
+  [
+   "_t main.js:1",
+   2.2
+  ],
+  [
+   "ct main.js:1",
+   2.1
+  ]
+ ],
+ "errors": []
+}

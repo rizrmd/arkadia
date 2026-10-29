@@ -1,0 +1,4 @@
+import {build} from 'vite';import fs from 'node:fs/promises';import {execFileSync} from 'node:child_process';import {createHash} from 'node:crypto';
+const site=process.env.RESOURCE_PANEL_STAGE+'/site';await build({logLevel:'error',build:{outDir:site,copyPublicDir:false}});
+const r=await fetch('https://arkodia.online/asset-sizes.json');if(!r.ok)throw Error('Live inventory unavailable');await fs.writeFile(site+'/asset-sizes.json',await r.text());await fs.cp('docs/resource-panel',site+'/resource-panel',{recursive:true});
+const files={};for(const f of ['index.html',...(await fs.readdir(site+'/assets')).map(f=>'assets/'+f)])files['/'+f]=createHash('sha256').update(await fs.readFile(site+'/'+f)).digest('hex');await fs.writeFile(site+'/resource-panel/release.json',JSON.stringify({commit:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),files},null,2));

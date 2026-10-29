@@ -1,0 +1,395 @@
+[
+  {
+    "baselineWidth": 1440,
+    "meanChannelDelta": 0,
+    "maxChannelDelta": 0,
+    "staticFramesEqual": true
+  },
+  {
+    "width": 1440,
+    "height": 1000,
+    "state": {
+      "parts": 30,
+      "revision": 6,
+      "baselineRevision": 5,
+      "coverage": {
+        "Flame sheet": {
+          "source": "rolling-fan-v2.png",
+          "frames": [
+            6,
+            8,
+            10
+          ],
+          "count": 3,
+          "role": "Flame sheet"
+        },
+        "Hot interior": {
+          "source": "eroded-core-v2.png",
+          "frames": [
+            6,
+            8,
+            10
+          ],
+          "count": 3,
+          "role": "Hot interior"
+        },
+        "Ignition": {
+          "source": "hand-ignition-source.png",
+          "frames": [
+            2
+          ],
+          "count": 1,
+          "role": "Ignition"
+        },
+        "Hit contacts": {
+          "source": "hand-ignition-source.png",
+          "frames": [
+            3,
+            12,
+            13
+          ],
+          "count": 3,
+          "role": "Hit contacts"
+        },
+        "Smoke": {
+          "source": "flipbook-smoke",
+          "frames": [],
+          "count": 6,
+          "role": "Smoke"
+        },
+        "Embers": {
+          "source": "flipbook-spark",
+          "frames": [],
+          "count": 12,
+          "role": "Embers"
+        },
+        "Curling tongues": {
+          "source": "hand-ignition-source.png",
+          "frames": [
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11
+          ],
+          "count": 14,
+          "role": "Retained revision 5 upright curls"
+        },
+        "Ground heat": {
+          "source": "Pixi Graphics / retained glow.png",
+          "frames": [],
+          "count": 0,
+          "role": "Existing warm foot glows retained; no broad heat ellipse obscures soil"
+        },
+        "Burn Soil": {
+          "source": "Pixi Graphics + hand-ignition-source.png",
+          "frames": [
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11
+          ],
+          "count": 0,
+          "role": "Approved crust, connected cracks and low flame runs retained; frozen curls above them; no second soil footprint"
+        }
+      },
+      "combinedCount": 28,
+      "aerialFrames": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "aerialCount": 14,
+      "section": false,
+      "supplementalParts": 2,
+      "static": true,
+      "groundProjection": 0.53,
+      "spriteCount": 481,
+      "ready": true
+    },
+    "checked": {
+      "checker": true,
+      "reference": true,
+      "tickerStarted": false,
+      "upright": true,
+      "usedParts": 73
+    },
+    "errors": [],
+    "failed": [],
+    "htmlControls": 0
+  },
+  {
+    "baselineWidth": 390,
+    "meanChannelDelta": 0,
+    "maxChannelDelta": 0,
+    "staticFramesEqual": true
+  },
+  {
+    "width": 390,
+    "height": 844,
+    "state": {
+      "parts": 30,
+      "revision": 6,
+      "baselineRevision": 5,
+      "coverage": {
+        "Flame sheet": {
+          "source": "rolling-fan-v2.png",
+          "frames": [
+            6,
+            8,
+            10
+          ],
+          "count": 3,
+          "role": "Flame sheet"
+        },
+        "Hot interior": {
+          "source": "eroded-core-v2.png",
+          "frames": [
+            6,
+            8,
+            10
+          ],
+          "count": 3,
+          "role": "Hot interior"
+        },
+        "Ignition": {
+          "source": "hand-ignition-source.png",
+          "frames": [
+            2
+          ],
+          "count": 1,
+          "role": "Ignition"
+        },
+        "Hit contacts": {
+          "source": "hand-ignition-source.png",
+          "frames": [
+            3,
+            12,
+            13
+          ],
+          "count": 3,
+          "role": "Hit contacts"
+        },
+        "Smoke": {
+          "source": "flipbook-smoke",
+          "frames": [],
+          "count": 6,
+          "role": "Smoke"
+        },
+        "Embers": {
+          "source": "flipbook-spark",
+          "frames": [],
+          "count": 12,
+          "role": "Embers"
+        },
+        "Curling tongues": {
+          "source": "hand-ignition-source.png",
+          "frames": [
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11
+          ],
+          "count": 14,
+          "role": "Retained revision 5 upright curls"
+        },
+        "Ground heat": {
+          "source": "Pixi Graphics / retained glow.png",
+          "frames": [],
+          "count": 0,
+          "role": "Existing warm foot glows retained; no broad heat ellipse obscures soil"
+        },
+        "Burn Soil": {
+          "source": "Pixi Graphics + hand-ignition-source.png",
+          "frames": [
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11
+          ],
+          "count": 0,
+          "role": "Approved crust, connected cracks and low flame runs retained; frozen curls above them; no second soil footprint"
+        }
+      },
+      "combinedCount": 28,
+      "aerialFrames": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "aerialCount": 14,
+      "section": false,
+      "supplementalParts": 2,
+      "static": true,
+      "groundProjection": 0.53,
+      "spriteCount": 481,
+      "ready": true
+    },
+    "checked": {
+      "checker": true,
+      "reference": true,
+      "tickerStarted": false,
+      "upright": true,
+      "usedParts": 73
+    },
+    "errors": [],
+    "failed": [],
+    "htmlControls": 0
+  },
+  {
+    "baselineWidth": 320,
+    "meanChannelDelta": 0,
+    "maxChannelDelta": 0,
+    "staticFramesEqual": true
+  },
+  {
+    "width": 320,
+    "height": 560,
+    "state": {
+      "parts": 30,
+      "revision": 6,
+      "baselineRevision": 5,
+      "coverage": {
+        "Flame sheet": {
+          "source": "rolling-fan-v2.png",
+          "frames": [
+            6,
+            8,
+            10
+          ],
+          "count": 3,
+          "role": "Flame sheet"
+        },
+        "Hot interior": {
+          "source": "eroded-core-v2.png",
+          "frames": [
+            6,
+            8,
+            10
+          ],
+          "count": 3,
+          "role": "Hot interior"
+        },
+        "Ignition": {
+          "source": "hand-ignition-source.png",
+          "frames": [
+            2
+          ],
+          "count": 1,
+          "role": "Ignition"
+        },
+        "Hit contacts": {
+          "source": "hand-ignition-source.png",
+          "frames": [
+            3,
+            12,
+            13
+          ],
+          "count": 3,
+          "role": "Hit contacts"
+        },
+        "Smoke": {
+          "source": "flipbook-smoke",
+          "frames": [],
+          "count": 6,
+          "role": "Smoke"
+        },
+        "Embers": {
+          "source": "flipbook-spark",
+          "frames": [],
+          "count": 12,
+          "role": "Embers"
+        },
+        "Curling tongues": {
+          "source": "hand-ignition-source.png",
+          "frames": [
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11
+          ],
+          "count": 14,
+          "role": "Retained revision 5 upright curls"
+        },
+        "Ground heat": {
+          "source": "Pixi Graphics / retained glow.png",
+          "frames": [],
+          "count": 0,
+          "role": "Existing warm foot glows retained; no broad heat ellipse obscures soil"
+        },
+        "Burn Soil": {
+          "source": "Pixi Graphics + hand-ignition-source.png",
+          "frames": [
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11
+          ],
+          "count": 0,
+          "role": "Approved crust, connected cracks and low flame runs retained; frozen curls above them; no second soil footprint"
+        }
+      },
+      "combinedCount": 28,
+      "aerialFrames": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "aerialCount": 14,
+      "section": false,
+      "supplementalParts": 2,
+      "static": true,
+      "groundProjection": 0.53,
+      "spriteCount": 481,
+      "ready": true
+    },
+    "checked": {
+      "checker": true,
+      "reference": true,
+      "tickerStarted": false,
+      "upright": true,
+      "usedParts": 73
+    },
+    "errors": [],
+    "failed": [],
+    "htmlControls": 0
+  }
+]

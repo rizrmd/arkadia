@@ -1,0 +1,111 @@
+{
+  "base": "http://127.0.0.1:5631",
+  "scope": "Software SwiftShader, emulated viewports; not hardware mobile GPU measurements. Counts and screenshots do not prove receiver correctness.",
+  "runs": [
+    {
+      "mobile": true,
+      "time": 0.52,
+      "stats": {
+        "props": 834,
+        "uprights": 297,
+        "columns": 3143,
+        "atlas": "/frozen-frontier/game/atlas-5083a8ebd8c8bb4b.webp",
+        "loaded": true,
+        "failed": false,
+        "kit": 46,
+        "companions": {
+          "version": 1,
+          "atlas": "/frozen-frontier/game/atlas-5083a8ebd8c8bb4b.webp",
+          "families": 46,
+          "model": "explicit geometry proxy; NOT measured volumetric depth",
+          "receivers": "snow plus temple top; no general object receivers"
+        },
+        "occlusionImages": 7,
+        "sprites": 44,
+        "visible": 163,
+        "shadows": {
+          "casters": 297,
+          "strips": 1619,
+          "shown": 26,
+          "alpha": 0.4,
+          "dx": 0.278,
+          "dy": 0.307
+        },
+        "assets": [
+          "arch-ne",
+          "arch-se",
+          "broken-watchtower",
+          "column-fallen",
+          "column-fallen-v",
+          "corner-n",
+          "corner-s",
+          "dead-snag",
+          "dead-tree",
+          "drift-mound",
+          "drift-ne",
+          "drift-se",
+          "flagstones-a",
+          "flagstones-b",
+          "flagstones-c",
+          "flagstones-d",
+          "floor-sunk",
+          "grass-patch",
+          "grass-tussock",
+          "grave-cross",
+          "grave-headstone",
+          "grave-memorial",
+          "grave-sarcophagus",
+          "ground-scuff-a",
+          "ground-scuff-b",
+          "paving",
+          "pillar-broken",
+          "pillar-intact",
+          "pine-broad",
+          "pine-sapling",
+          "pine-tall",
+          "rock-boulders",
+          "rock-scatter",
+          "rubble",
+          "ruined-gate",
+          "shrub-juniper",
+          "shrub-twigs",
+          "snowy-shrine",
+          "stairs-ne",
+          "stairs-nw",
+          "stone-chips-a",
+          "stone-chips-b",
+          "temple-podium",
+          "wall-ne",
+          "wall-se"
+        ],
+        "sceneShadows": {
+          "surfaces": 448,
+          "samples": 723012,
+          "rebuilds": 2,
+          "buildMs": 721.7000000476837,
+          "bytes": 18839100,
+          "receiverPixels": 2418285,
+          "depthPixels": 2291490,
+          "sun": {
+            "alpha": 0.4,
+            "dx": 0.2783514542531099,
+            "dy": 0.3071673753819102,
+            "wx": 0.9108638249211758,
+            "wy": -0.20635351490219736,
+            "elevation": 1.04215500875938
+          },
+          "model": "original alpha, explicit billboard/relief geometry; light-space depth compare"
+        }
+      },
+      "measurement": {
+        "durationMs": 3831.7000000476837,
+        "rafMedianMs": 566.7000000000044,
+        "rafP95Ms": 766.7000000000044,
+        "drawCalls": 616,
+        "frames": 8
+      },
+      "image": "mobile-cemetery-0.52.png"
+    }
+  ],
+  "errors": []
+}

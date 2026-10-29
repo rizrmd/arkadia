@@ -1,0 +1,13 @@
+{
+  "pass": true,
+  "checks": [
+    "Real clipboard paste detects six frames, margins and gutters",
+    "Pixi controls and keyboard correct FPS and playback order",
+    "Missing Codex connection is explicit and retains pixel draft",
+    "Asset image and metadata persist independently of Save / Apply",
+    "Saved texture is loaded into selected layer draft",
+    "Import image and metadata draft survive reload",
+    "Real touch swipe and pinned close work on mobile"
+  ],
+  "errors": []
+}

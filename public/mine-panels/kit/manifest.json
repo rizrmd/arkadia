@@ -1,0 +1,382 @@
+{
+  "generation": "Built-in image_gen: new Mine portrait; reuse approved imagegen Core kit-v2 components.",
+  "portrait": {
+    "file": "/mine-panels/kit/mine.png",
+    "sha256": "db7eb1ce4cc929f7e9328c5fe05c5d7bedf129327bcc4a611db553a8768cafe9"
+  },
+  "components": [
+    {
+      "file": "/core-upgrade/kit-v2/frame.png",
+      "sha256": "6167e6d098b9801c859fac9d4d5d00cf27b00208c03b8454b6d5e03a05a3fe0e"
+    },
+    {
+      "file": "/core-upgrade/kit-v2/charcoal.png",
+      "sha256": "556c87a439bb10398221b4fc756798eb958a3b324c2b1f4b1cc68de30231b29d"
+    },
+    {
+      "file": "/core-upgrade/kit-v2/hammer.png",
+      "sha256": "eee9e9fad94bd38322b1ea2b2e5798001ef22707c916766aedf926d4411fffda"
+    },
+    {
+      "file": "/core-upgrade/kit-v2/header.png",
+      "sha256": "4a4f350ecdf01a1514c34d3a34c5594fa279b7ab65b3538cafa55f43d7ecb4de"
+    },
+    {
+      "file": "/core-upgrade/kit-v2/gold.png",
+      "sha256": "1dc1341e87e22037981850cfe543fa5721b8adaa7b4c6e93cf63343854a6a84e"
+    },
+    {
+      "file": "/core-upgrade/kit-v2/wood.png",
+      "sha256": "5db27863a61d5a07b8faec12b5db6b030b3785c06414a7dbb50bccbf74e98108"
+    },
+    {
+      "file": "/core-upgrade/kit-v2/clock.png",
+      "sha256": "d609cb2d809180007d7d3185dfe4014aa900db7377555d5377d75af4a0b88e47"
+    },
+    {
+      "file": "/core-upgrade/kit-v2/tick.png",
+      "sha256": "eded1b9c2b1fb3efd2a39c6788fe894e15855f0ed8f6f03cb575618495af69f7"
+    },
+    {
+      "file": "/core-upgrade/kit-v2/divider.png",
+      "sha256": "0349fd27bf860377f26c1f471254f70c3555c61834f1361258c33d9a86362b1c"
+    },
+    {
+      "file": "/core-upgrade/kit-v2/button-disabled.png",
+      "sha256": "da629eb52a44658f2b2f07709ec2b31184a59fc2ff75baeaa12a22e569c93c66"
+    }
+  ],
+  "targets": [
+    {
+      "target": 1,
+      "operation": "Build",
+      "from": 0,
+      "gold": 150,
+      "wood": 100,
+      "minutes": 3,
+      "requiredCompletedCore": 1,
+      "portrait": "/mine-panels/kit/mine.png",
+      "capture": "/mine-panels/target-01.png"
+    },
+    {
+      "target": 2,
+      "operation": "Upgrade",
+      "from": 1,
+      "gold": 188,
+      "wood": 125,
+      "minutes": 4,
+      "requiredCompletedCore": 2,
+      "portrait": "/mine-panels/kit/mine.png",
+      "capture": "/mine-panels/target-02.png"
+    },
+    {
+      "target": 3,
+      "operation": "Upgrade",
+      "from": 2,
+      "gold": 235,
+      "wood": 157,
+      "minutes": 5,
+      "requiredCompletedCore": 3,
+      "portrait": "/mine-panels/kit/mine.png",
+      "capture": "/mine-panels/target-03.png"
+    },
+    {
+      "target": 4,
+      "operation": "Upgrade",
+      "from": 3,
+      "gold": 293,
+      "wood": 196,
+      "minutes": 6,
+      "requiredCompletedCore": 4,
+      "portrait": "/mine-panels/kit/mine.png",
+      "capture": "/mine-panels/target-04.png"
+    },
+    {
+      "target": 5,
+      "operation": "Upgrade",
+      "from": 4,
+      "gold": 367,
+      "wood": 245,
+      "minutes": 7,
+      "requiredCompletedCore": 5,
+      "portrait": "/mine-panels/kit/mine.png",
+      "capture": "/mine-panels/target-05.png"
+    },
+    {
+      "target": 6,
+      "operation": "Upgrade",
+      "from": 5,
+      "gold": 458,
+      "wood": 306,
+      "minutes": 8,
+      "requiredCompletedCore": 6,
+      "portrait": "/mine-panels/kit/mine.png",
+      "capture": "/mine-panels/target-06.png"
+    },
+    {
+      "target": 7,
+      "operation": "Upgrade",
+      "from": 6,
+      "gold": 573,
+      "wood": 382,
+      "minutes": 9,
+      "requiredCompletedCore": 7,
+      "portrait": "/mine-panels/kit/mine.png",
+      "capture": "/mine-panels/target-07.png"
+    },
+    {
+      "target": 8,
+      "operation": "Upgrade",
+      "from": 7,
+      "gold": 716,
+      "wood": 477,
+      "minutes": 11,
+      "requiredCompletedCore": 8,
+      "portrait": "/mine-panels/kit/mine.png",
+      "capture": "/mine-panels/target-08.png"
+    },
+    {
+      "target": 9,
+      "operation": "Upgrade",
+      "from": 8,
+      "gold": 895,
+      "wood": 597,
+      "minutes": 13,
+      "requiredCompletedCore": 9,
+      "portrait": "/mine-panels/kit/mine.png",
+      "capture": "/mine-panels/target-09.png"
+    },
+    {
+      "target": 10,
+      "operation": "Upgrade",
+      "from": 9,
+      "gold": 1118,
+      "wood": 746,
+      "minutes": 16,
+      "requiredCompletedCore": 10,
+      "portrait": "/mine-panels/kit/mine.png",
+      "capture": "/mine-panels/target-10.png"
+    },
+    {
+      "target": 11,
+      "operation": "Upgrade",
+      "from": 10,
+      "gold": 1397,
+      "wood": 932,
+      "minutes": 19,
+      "requiredCompletedCore": 11,
+      "portrait": "/mine-panels/kit/mine.png",
+      "capture": "/mine-panels/target-11.png"
+    },
+    {
+      "target": 12,
+      "operation": "Upgrade",
+      "from": 11,
+      "gold": 1747,
+      "wood": 1165,
+      "minutes": 23,
+      "requiredCompletedCore": 12,
+      "portrait": "/mine-panels/kit/mine.png",
+      "capture": "/mine-panels/target-12.png"
+    },
+    {
+      "target": 13,
+      "operation": "Upgrade",
+      "from": 12,
+      "gold": 2183,
+      "wood": 1456,
+      "minutes": 27,
+      "requiredCompletedCore": 13,
+      "portrait": "/mine-panels/kit/mine.png",
+      "capture": "/mine-panels/target-13.png"
+    },
+    {
+      "target": 14,
+      "operation": "Upgrade",
+      "from": 13,
+      "gold": 2729,
+      "wood": 1819,
+      "minutes": 33,
+      "requiredCompletedCore": 14,
+      "portrait": "/mine-panels/kit/mine.png",
+      "capture": "/mine-panels/target-14.png"
+    },
+    {
+      "target": 15,
+      "operation": "Upgrade",
+      "from": 14,
+      "gold": 3411,
+      "wood": 2274,
+      "minutes": 39,
+      "requiredCompletedCore": 15,
+      "portrait": "/mine-panels/kit/mine.png",
+      "capture": "/mine-panels/target-15.png"
+    },
+    {
+      "target": 16,
+      "operation": "Upgrade",
+      "from": 15,
+      "gold": 4264,
+      "wood": 2843,
+      "minutes": 47,
+      "requiredCompletedCore": 16,
+      "portrait": "/mine-panels/kit/mine.png",
+      "capture": "/mine-panels/target-16.png"
+    },
+    {
+      "target": 17,
+      "operation": "Upgrade",
+      "from": 16,
+      "gold": 5330,
+      "wood": 3553,
+      "minutes": 56,
+      "requiredCompletedCore": 17,
+      "portrait": "/mine-panels/kit/mine.png",
+      "capture": "/mine-panels/target-17.png"
+    },
+    {
+      "target": 18,
+      "operation": "Upgrade",
+      "from": 17,
+      "gold": 6662,
+      "wood": 4441,
+      "minutes": 67,
+      "requiredCompletedCore": 18,
+      "portrait": "/mine-panels/kit/mine.png",
+      "capture": "/mine-panels/target-18.png"
+    },
+    {
+      "target": 19,
+      "operation": "Upgrade",
+      "from": 18,
+      "gold": 8327,
+      "wood": 5552,
+      "minutes": 80,
+      "requiredCompletedCore": 19,
+      "portrait": "/mine-panels/kit/mine.png",
+      "capture": "/mine-panels/target-19.png"
+    },
+    {
+      "target": 20,
+      "operation": "Upgrade",
+      "from": 19,
+      "gold": 10409,
+      "wood": 6939,
+      "minutes": 96,
+      "requiredCompletedCore": 20,
+      "portrait": "/mine-panels/kit/mine.png",
+      "capture": "/mine-panels/target-20.png"
+    },
+    {
+      "target": 21,
+      "operation": "Upgrade",
+      "from": 20,
+      "gold": 13011,
+      "wood": 8674,
+      "minutes": 116,
+      "requiredCompletedCore": 21,
+      "portrait": "/mine-panels/kit/mine.png",
+      "capture": "/mine-panels/target-21.png"
+    },
+    {
+      "target": 22,
+      "operation": "Upgrade",
+      "from": 21,
+      "gold": 16264,
+      "wood": 10843,
+      "minutes": 139,
+      "requiredCompletedCore": 22,
+      "portrait": "/mine-panels/kit/mine.png",
+      "capture": "/mine-panels/target-22.png"
+    },
+    {
+      "target": 23,
+      "operation": "Upgrade",
+      "from": 22,
+      "gold": 20329,
+      "wood": 13553,
+      "minutes": 166,
+      "requiredCompletedCore": 23,
+      "portrait": "/mine-panels/kit/mine.png",
+      "capture": "/mine-panels/target-23.png"
+    },
+    {
+      "target": 24,
+      "operation": "Upgrade",
+      "from": 23,
+      "gold": 25411,
+      "wood": 16941,
+      "minutes": 199,
+      "requiredCompletedCore": 24,
+      "portrait": "/mine-panels/kit/mine.png",
+      "capture": "/mine-panels/target-24.png"
+    },
+    {
+      "target": 25,
+      "operation": "Upgrade",
+      "from": 24,
+      "gold": 31764,
+      "wood": 21176,
+      "minutes": 239,
+      "requiredCompletedCore": 25,
+      "portrait": "/mine-panels/kit/mine.png",
+      "capture": "/mine-panels/target-25.png"
+    },
+    {
+      "target": 26,
+      "operation": "Upgrade",
+      "from": 25,
+      "gold": 39705,
+      "wood": 26470,
+      "minutes": 287,
+      "requiredCompletedCore": 26,
+      "portrait": "/mine-panels/kit/mine.png",
+      "capture": "/mine-panels/target-26.png"
+    },
+    {
+      "target": 27,
+      "operation": "Upgrade",
+      "from": 26,
+      "gold": 49631,
+      "wood": 33088,
+      "minutes": 344,
+      "requiredCompletedCore": 27,
+      "portrait": "/mine-panels/kit/mine.png",
+      "capture": "/mine-panels/target-27.png"
+    },
+    {
+      "target": 28,
+      "operation": "Upgrade",
+      "from": 27,
+      "gold": 62039,
+      "wood": 41360,
+      "minutes": 413,
+      "requiredCompletedCore": 28,
+      "portrait": "/mine-panels/kit/mine.png",
+      "capture": "/mine-panels/target-28.png"
+    },
+    {
+      "target": 29,
+      "operation": "Upgrade",
+      "from": 28,
+      "gold": 77549,
+      "wood": 51699,
+      "minutes": 495,
+      "requiredCompletedCore": 29,
+      "portrait": "/mine-panels/kit/mine.png",
+      "capture": "/mine-panels/target-29.png"
+    },
+    {
+      "target": 30,
+      "operation": "Upgrade",
+      "from": 29,
+      "gold": 96936,
+      "wood": 64624,
+      "minutes": 594,
+      "requiredCompletedCore": 30,
+      "portrait": "/mine-panels/kit/mine.png",
+      "capture": "/mine-panels/target-30.png"
+    }
+  ],
+  "transactionsAvailable": false
+}

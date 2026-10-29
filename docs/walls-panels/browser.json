@@ -1,0 +1,21 @@
+{
+  "errors": [],
+  "checks": [
+    "actual pointer tap opens native Pixi panel",
+    "Walls open hides and disables Core/Farm/Lumber/Kitchen/Mine badges and ignores blocked events",
+    "Pixi previous/next target preview and current-operation reset",
+    "Close and Escape restore badges; Core opening also suppresses Walls",
+    "leave range closes panel; Escape closes; co-op hides interaction",
+    "mobile panel fits viewport",
+    "level 30 maximum tier",
+    "all 30 target panels rendered; target Core threshold rejects one level below",
+    "destroying an open Walls panel restores external badges"
+  ],
+  "mobileBounds": {
+    "x": 12,
+    "y": 216.02222222222218,
+    "width": 366,
+    "height": 316.92888888888893
+  },
+  "pass": true
+}

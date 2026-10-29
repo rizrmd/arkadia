@@ -1,0 +1,170 @@
+{
+ "base": "http://127.0.0.1:5669",
+ "shots": {
+  "desktop-cemetery-entrance": {
+   "teleport": [
+    34,
+    40
+   ],
+   "visible": 237,
+   "drawCalls": {
+    "shown": 102.7,
+    "hidden": 102.7,
+    "added": 0
+   }
+  },
+  "desktop-cemetery-gardens": {
+   "teleport": [
+    34,
+    44
+   ],
+   "visible": 276,
+   "drawCalls": {
+    "shown": 102.7,
+    "hidden": 102.7,
+    "added": 0
+   }
+  },
+  "desktop-cemetery-crosswalk": {
+   "teleport": [
+    34,
+    46.5
+   ],
+   "visible": 275,
+   "drawCalls": {
+    "shown": 102.7,
+    "hidden": 102.7,
+    "added": 0
+   }
+  },
+  "desktop-cemetery-memorial": {
+   "teleport": [
+    34,
+    54.5
+   ],
+   "visible": 171,
+   "drawCalls": {
+    "shown": 102.7,
+    "hidden": 102.7,
+    "added": 0
+   }
+  },
+  "portrait-cemetery-gardens": {
+   "teleport": [
+    34,
+    44
+   ],
+   "visible": 163,
+   "drawCalls": {
+    "shown": 86.3,
+    "hidden": 86.3,
+    "added": 0
+   }
+  },
+  "portrait-cemetery-memorial": {
+   "teleport": [
+    34,
+    54.5
+   ],
+   "visible": 73,
+   "drawCalls": {
+    "shown": 86.3,
+    "hidden": 86.3,
+    "added": 0
+   }
+  }
+ },
+ "errors": [],
+ "console": [],
+ "frontier": {
+  "props": 836,
+  "uprights": 297,
+  "columns": 3148,
+  "atlas": "/frozen-frontier/game/atlas.webp",
+  "loaded": true,
+  "failed": false,
+  "kit": 45,
+  "occlusionImages": 41,
+  "sprites": 43,
+  "visible": 0,
+  "assets": [
+   "arch-ne",
+   "arch-se",
+   "broken-watchtower",
+   "column-fallen",
+   "column-fallen-v",
+   "corner-n",
+   "corner-s",
+   "dead-snag",
+   "dead-tree",
+   "drift-mound",
+   "drift-ne",
+   "drift-se",
+   "flagstones-a",
+   "flagstones-b",
+   "flagstones-c",
+   "flagstones-d",
+   "floor-sunk",
+   "foundation",
+   "grass-patch",
+   "grass-tussock",
+   "grave-cross",
+   "grave-headstone",
+   "grave-memorial",
+   "grave-sarcophagus",
+   "ground-scuff-a",
+   "ground-scuff-b",
+   "paving",
+   "pillar-broken",
+   "pillar-intact",
+   "pine-broad",
+   "pine-sapling",
+   "pine-tall",
+   "rock-boulders",
+   "rock-scatter",
+   "rubble",
+   "ruined-gate",
+   "shrub-juniper",
+   "shrub-twigs",
+   "snowy-shrine",
+   "stairs-ne",
+   "stairs-nw",
+   "stone-chips-a",
+   "stone-chips-b",
+   "wall-ne",
+   "wall-se"
+  ]
+ },
+ "traversal": [
+  {
+   "label": "approach",
+   "blocked": [],
+   "pass": true
+  },
+  {
+   "label": "approach-bend",
+   "blocked": [],
+   "pass": true
+  },
+  {
+   "label": "entrance",
+   "blocked": [],
+   "pass": true
+  },
+  {
+   "label": "main-avenue",
+   "blocked": [],
+   "pass": true
+  },
+  {
+   "label": "crosswalk",
+   "blocked": [],
+   "pass": true
+  },
+  {
+   "label": "headstone-blocks-movement",
+   "pass": true
+  }
+ ],
+ "ok": true
+}

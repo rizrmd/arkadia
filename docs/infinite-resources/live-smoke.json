@@ -1,0 +1,99 @@
+{
+  "base": "https://arkodia.online",
+  "errors": [],
+  "failedRequests": [],
+  "checks": [
+    "Actual full-game HUD infinity labels and enabled Lumber build with zero stored Wood",
+    "Physical Pixi build click charges only Gold and preserves all finite Wood/Food",
+    "Published one-minute deadline saved in actual game envelope"
+  ],
+  "bounded": true,
+  "telemetry": {
+    "mode": {
+      "infiniteWoodFood": true
+    },
+    "hud": {
+      "woodLabel": "∞ Wood",
+      "foodLabel": "∞ Food",
+      "resourceScale": 0.3,
+      "resourceBounds": {
+        "left": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "width": 0,
+        "height": 0
+      },
+      "variant": "desktop-navigation-column",
+      "isPortrait": false,
+      "goldLabel": "0 Gold",
+      "timeLabel": "17:33",
+      "zoneLabel": "Safe Zone",
+      "coopLabel": null,
+      "pingLabel": null,
+      "fpsLabel": "60 fps",
+      "telemetryTextScale": 0.7,
+      "ribbonScale": 0.36163522012578614,
+      "designBounds": {
+        "goldPlaque": {
+          "medX": 1357,
+          "rightX": 1477,
+          "cy": 40,
+          "h": 38,
+          "medR": 27
+        },
+        "clockPlaque": {
+          "medX": 1516,
+          "rightX": 1626,
+          "cy": 40,
+          "h": 38,
+          "medR": 27
+        },
+        "ledger": {
+          "leftX": 1510,
+          "sepX": 1623,
+          "rightX": 1623,
+          "cy": 82
+        },
+        "filigreeRule": {
+          "leftX": 1013,
+          "midX": 1318,
+          "rightX": 1623,
+          "y": 103
+        },
+        "telemetry": {
+          "leftX": 1578,
+          "sepX": 1578,
+          "rightX": 1623,
+          "cy": 124
+        }
+      },
+      "screenBounds": {
+        "left": 1030,
+        "right": 1260,
+        "top": 16,
+        "bottom": 61.20440251572327,
+        "width": 230,
+        "height": 45.20440251572327
+      }
+    }
+  },
+  "pending": {
+    "gold": 925,
+    "resources": {
+      "wood": 11,
+      "food": 17,
+      "storedWood": 0,
+      "storedFood": 19
+    },
+    "construction": {
+      "kind": "lumber",
+      "from": 0,
+      "to": 1,
+      "startedAt": 1793273878246,
+      "readyAt": 1793273938246
+    }
+  },
+  "persistenceEvidence": "Focused rules perform finite save/load and timer roundtrips; desktop/portrait real-store tests exercise completion. Earlier full-world reload initialization exceeded bounded 60s without JavaScript or network errors.",
+  "pass": true
+}

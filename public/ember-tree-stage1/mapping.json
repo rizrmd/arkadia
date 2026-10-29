@@ -1,0 +1,165 @@
+{
+  "schemaVersion": 1,
+  "status": "Stage 1 design contract; no gameplay changes",
+  "nodes": [
+    {
+      "id": "flame-fan",
+      "name": "Flame Fan",
+      "kind": "active",
+      "tier": "Start",
+      "points": 0,
+      "implemented": true,
+      "levelGate": 1
+    },
+    {
+      "id": "cinder-step",
+      "name": "Cinder Step",
+      "kind": "active",
+      "tier": "I",
+      "points": 0,
+      "implemented": true,
+      "levelGate": 1
+    },
+    {
+      "id": "ember-snare",
+      "name": "Ember Snare",
+      "kind": "active",
+      "tier": "I",
+      "points": 0,
+      "implemented": true,
+      "levelGate": 1
+    },
+    {
+      "id": "heal",
+      "name": "Second Wind",
+      "kind": "passive",
+      "tier": "I",
+      "points": 0,
+      "implemented": true,
+      "levelGate": 1
+    },
+    {
+      "id": "might",
+      "name": "Titan Strike",
+      "kind": "passive",
+      "tier": "I",
+      "points": 0,
+      "implemented": true,
+      "levelGate": 1
+    },
+    {
+      "id": "cleave",
+      "name": "Molten Cleave",
+      "kind": "active",
+      "tier": "II",
+      "points": 4,
+      "implemented": true,
+      "levelGate": 1
+    },
+    {
+      "id": "shockwave",
+      "name": "Seismic Slam (Molten)",
+      "kind": "active",
+      "tier": "II",
+      "points": 4,
+      "implemented": true,
+      "levelGate": 1
+    },
+    {
+      "id": "nova",
+      "name": "Arc Nova",
+      "kind": "passive",
+      "tier": "II",
+      "points": 4,
+      "implemented": true,
+      "levelGate": 1
+    },
+    {
+      "id": "leech",
+      "name": "Soul Feast",
+      "kind": "passive",
+      "tier": "II",
+      "points": 4,
+      "implemented": true,
+      "levelGate": 1
+    },
+    {
+      "id": "haste",
+      "name": "Chrono Surge",
+      "kind": "passive",
+      "tier": "III",
+      "points": 8,
+      "implemented": true,
+      "levelGate": 1
+    },
+    {
+      "id": "vitality",
+      "name": "Furnace Heart",
+      "kind": "passive",
+      "tier": "III",
+      "points": 8,
+      "implemented": true,
+      "levelGate": 1
+    },
+    {
+      "id": "star",
+      "name": "Ascendant Star",
+      "kind": "passive",
+      "tier": "Capstone",
+      "points": null,
+      "implemented": true,
+      "levelGate": 20
+    },
+    {
+      "id": "concept-inferno-avatar",
+      "gameId": null,
+      "name": "Inferno Avatar",
+      "kind": "active",
+      "tier": "Ultimate",
+      "implemented": false,
+      "points": null,
+      "levelGate": null
+    },
+    {
+      "id": "concept-caldera-eruption",
+      "gameId": null,
+      "name": "Caldera Eruption",
+      "kind": "active",
+      "tier": "Ultimate",
+      "implemented": false,
+      "points": null,
+      "levelGate": null
+    },
+    {
+      "id": "concept-solar-fan",
+      "gameId": null,
+      "name": "Solar Fan",
+      "kind": "active",
+      "tier": "Evolution",
+      "implemented": false,
+      "points": null,
+      "levelGate": null
+    }
+  ],
+  "gateSemantics": "Cards taken before current pick; free Flame Fan excluded. Owned rank-ups remain eligible. Star requires pending offer level >=20.",
+  "fresh": {
+    "skills": {
+      "flame-fan": 1
+    },
+    "slots": [
+      "flame-fan"
+    ]
+  },
+  "slotDemo": {
+    "skills": {
+      "flame-fan": 1,
+      "cinder-step": 1,
+      "ember-snare": 1
+    },
+    "slots": [
+      "flame-fan",
+      "cinder-step",
+      "ember-snare"
+    ]
+  }
+}

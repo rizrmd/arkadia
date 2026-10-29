@@ -1,0 +1,290 @@
+{
+  "at": "2026-10-29T10:15:07.062Z",
+  "health": {
+    "build": "7b6c3851cde1cb8531ad419e2d469c14eb3537c5",
+    "movementBoundary": "hill-foot-contour-v1",
+    "ok": true,
+    "protocol": 1,
+    "rooms": 2
+  },
+  "releaseCommit": "7b6c3851cde1cb8531ad419e2d469c14eb3537c5",
+  "kitchenReleaseCommit": "8f10887137cbe5137198b5851aca4f4fcb24b2db",
+  "checks": [
+    {
+      "path": "/index.html",
+      "sha256": "4743fe3c13e012104d14a37d4cc7cb83b6574535e14e82083bb0aca414f46d29",
+      "exactBytes": true
+    },
+    {
+      "path": "/assets/main-xbVf3Gm8.js",
+      "sha256": "b46a568845352edc92755ea1842b659a2f0e03efcb8a62e020d6d7348c443f4f",
+      "exactBytes": true
+    },
+    {
+      "path": "/kitchen-panels/kit/kitchen-original.png",
+      "bytes": 1685230,
+      "sha256": "6826675ab1265e3b14ceb3ce3c7fa1a97449e5188b00bdda43048e6ef9ef20b1",
+      "exactBytes": false,
+      "decodedPixelsEqual": true
+    },
+    {
+      "path": "/kitchen-panels/kit/kitchen.png",
+      "bytes": 103858,
+      "sha256": "0fa296958c540e6a1f2939c8dcfab4a0aed8151b167331747c5197591b78b6d6",
+      "exactBytes": false,
+      "decodedPixelsEqual": true
+    },
+    {
+      "path": "/kitchen-panels/pixi-mobile.png",
+      "bytes": 162664,
+      "sha256": "54861775aca241c0fcd7532d1a2caaa2ac078f7293a78c0c3901049fd46efc8b",
+      "exactBytes": false,
+      "decodedPixelsEqual": true
+    },
+    {
+      "path": "/kitchen-panels/kit/source-kit.zip",
+      "bytes": 2272307,
+      "sha256": "9ddd5c46c240c830d894da96b33eb6926e32675a38389adba9b117b300b6c1ca",
+      "exactBytes": true
+    },
+    {
+      "path": "/kitchen-panels/browser.json",
+      "bytes": 670,
+      "sha256": "6bf8e7bbbc6a6b57795f72672179d7230c17aafeda60fc9ac4b37f94c1bbc588",
+      "exactBytes": true
+    },
+    {
+      "path": "/kitchen-panels/target-01.png",
+      "bytes": 291382,
+      "sha256": "abc45e4dca09cee49f435c56fa2cd8a37fb37f80b57e6eae6651e5c174004291",
+      "exactBytes": false,
+      "decodedPixelsEqual": true
+    },
+    {
+      "path": "/kitchen-panels/target-02.png",
+      "bytes": 292380,
+      "sha256": "303e945019e6b9cdf7e61cfd1431c1d637a7f588aff0b76157f535c9a8a289c7",
+      "exactBytes": false,
+      "decodedPixelsEqual": true
+    },
+    {
+      "path": "/kitchen-panels/target-03.png",
+      "bytes": 292502,
+      "sha256": "1d2b766563401e0bdb3d556bdf15d843d5fd707bc8fbbcb360fc36eac0e5338a",
+      "exactBytes": false,
+      "decodedPixelsEqual": true
+    },
+    {
+      "path": "/kitchen-panels/target-04.png",
+      "bytes": 292512,
+      "sha256": "733fe8d18c7a1be83f6722d7150818f7c61d17b2892ffd7260a97d078d9ba236",
+      "exactBytes": false,
+      "decodedPixelsEqual": true
+    },
+    {
+      "path": "/kitchen-panels/target-05.png",
+      "bytes": 292616,
+      "sha256": "cce23904c5b09636d63d9bc8871a17657f553eb2b630a7fd14c2a4aeafeb664d",
+      "exactBytes": false,
+      "decodedPixelsEqual": true
+    },
+    {
+      "path": "/kitchen-panels/target-06.png",
+      "bytes": 292942,
+      "sha256": "6422f9854bbebb92c55a9f97570642bc60a70e3cdcab141889268482c9934a6e",
+      "exactBytes": false,
+      "decodedPixelsEqual": true
+    },
+    {
+      "path": "/kitchen-panels/target-07.png",
+      "bytes": 292662,
+      "sha256": "404d7bda2be6216e8c66752343f84f0d7d456e693375a2a6bdc4ef3a8f714e3a",
+      "exactBytes": false,
+      "decodedPixelsEqual": true
+    },
+    {
+      "path": "/kitchen-panels/target-08.png",
+      "bytes": 292868,
+      "sha256": "e74a37fee41a8193fe74f9617b1e402a76efc1468bed0366fe4a28eabd4f3c6f",
+      "exactBytes": false,
+      "decodedPixelsEqual": true
+    },
+    {
+      "path": "/kitchen-panels/target-09.png",
+      "bytes": 293036,
+      "sha256": "44471c43281643f922fd581980d2626b7d5b06d29c60500665621405a242bb41",
+      "exactBytes": false,
+      "decodedPixelsEqual": true
+    },
+    {
+      "path": "/kitchen-panels/target-10.png",
+      "bytes": 293622,
+      "sha256": "77c7d7327db422888ce13480dc3bad17b7604732bd936b6715fc83fe644b3ac2",
+      "exactBytes": false,
+      "decodedPixelsEqual": true
+    },
+    {
+      "path": "/kitchen-panels/target-11.png",
+      "bytes": 292906,
+      "sha256": "4852eaf86d5d487241785c20c2f8195f0b955936523e4863c072e8e9042b28b0",
+      "exactBytes": false,
+      "decodedPixelsEqual": true
+    },
+    {
+      "path": "/kitchen-panels/target-12.png",
+      "bytes": 293334,
+      "sha256": "4cd7e3dfbf1751b78efe55f76c38d5f0a0227c1478633c927c3c214217be4e14",
+      "exactBytes": false,
+      "decodedPixelsEqual": true
+    },
+    {
+      "path": "/kitchen-panels/target-13.png",
+      "bytes": 293582,
+      "sha256": "1af03ac2f764bbb26bcd5287bba6bb5c9551a34ae609cc697c415769014a1576",
+      "exactBytes": false,
+      "decodedPixelsEqual": true
+    },
+    {
+      "path": "/kitchen-panels/target-14.png",
+      "bytes": 293610,
+      "sha256": "8d508c7d6957c51538699c4f38add7b08b6e4f5eca5318ac8722cc143d11fc84",
+      "exactBytes": false,
+      "decodedPixelsEqual": true
+    },
+    {
+      "path": "/kitchen-panels/target-15.png",
+      "bytes": 293374,
+      "sha256": "1af816fc2e820bbb2ffada59054b084f1e813126297c1f422eb341f6c864aef3",
+      "exactBytes": false,
+      "decodedPixelsEqual": true
+    },
+    {
+      "path": "/kitchen-panels/target-16.png",
+      "bytes": 293684,
+      "sha256": "ca08455c4b7ea0612afb645f3febcafbbd57580cb7f12cc5486207f4f9c34b42",
+      "exactBytes": false,
+      "decodedPixelsEqual": true
+    },
+    {
+      "path": "/kitchen-panels/target-17.png",
+      "bytes": 294012,
+      "sha256": "67b9c8b88ed93712a090b7daa486aa0e423d576af4cc07fe318d2a6c68f727c3",
+      "exactBytes": false,
+      "decodedPixelsEqual": true
+    },
+    {
+      "path": "/kitchen-panels/target-18.png",
+      "bytes": 293704,
+      "sha256": "cab38df7d9cb683e3d86d8f6d95a3580b4bf030972d9a8bdeaa6af8685133aa3",
+      "exactBytes": false,
+      "decodedPixelsEqual": true
+    },
+    {
+      "path": "/kitchen-panels/target-19.png",
+      "bytes": 293962,
+      "sha256": "a705430693d390bf49bf0b3ad49c0d558b44dc6a3001acbd4a6c6542bcfe5e84",
+      "exactBytes": false,
+      "decodedPixelsEqual": true
+    },
+    {
+      "path": "/kitchen-panels/target-20.png",
+      "bytes": 294380,
+      "sha256": "eafc23619c5941c7d864e7a3d98a367f9d3ca729cdd29a95485530bcd2867add",
+      "exactBytes": false,
+      "decodedPixelsEqual": true
+    },
+    {
+      "path": "/kitchen-panels/target-21.png",
+      "bytes": 293964,
+      "sha256": "9e66e3af29dbf64bcf8cb9efab4cbf53a5c229bb7abe179aadb25bbe2d35bfeb",
+      "exactBytes": false,
+      "decodedPixelsEqual": true
+    },
+    {
+      "path": "/kitchen-panels/target-22.png",
+      "bytes": 294184,
+      "sha256": "23e7c54da4789bc990d3f06a87d3d9aa8b1fe03e698c7ebdde267aa05f645042",
+      "exactBytes": false,
+      "decodedPixelsEqual": true
+    },
+    {
+      "path": "/kitchen-panels/target-23.png",
+      "bytes": 294444,
+      "sha256": "5c1f5078305b07fbb8516f3ce4b76e14b6fa366a03b1cf85ed94c57867c8f4a1",
+      "exactBytes": false,
+      "decodedPixelsEqual": true
+    },
+    {
+      "path": "/kitchen-panels/target-24.png",
+      "bytes": 294538,
+      "sha256": "11521e3e66bcd5c5d92b22ce378422f16f4e51eb7c62be055fb42688dcb5222b",
+      "exactBytes": false,
+      "decodedPixelsEqual": true
+    },
+    {
+      "path": "/kitchen-panels/target-25.png",
+      "bytes": 294618,
+      "sha256": "306cfaabc3ff6f9a13e3b51b73330cb3922f185b9700d73787bc3041708631ae",
+      "exactBytes": false,
+      "decodedPixelsEqual": true
+    },
+    {
+      "path": "/kitchen-panels/target-26.png",
+      "bytes": 294860,
+      "sha256": "c9ccb4c33da5cd523da7da2e36f35e46d488afe3fb089737ac84cee5a28df1f1",
+      "exactBytes": false,
+      "decodedPixelsEqual": true
+    },
+    {
+      "path": "/kitchen-panels/target-27.png",
+      "bytes": 294598,
+      "sha256": "af94d0bbe5c3ec6de1639c7a814953d98446170781887a539a12eaabf0ec324d",
+      "exactBytes": false,
+      "decodedPixelsEqual": true
+    },
+    {
+      "path": "/kitchen-panels/target-28.png",
+      "bytes": 294828,
+      "sha256": "20fd419a26dca2b13a31028e533c9005577fdc5e4c12a177c2d9bededbc159dd",
+      "exactBytes": false,
+      "decodedPixelsEqual": true
+    },
+    {
+      "path": "/kitchen-panels/target-29.png",
+      "bytes": 294910,
+      "sha256": "4822577aefda849db30160b25cd1a65ff591bcb51ae1e9d99dcf13b953a1ac85",
+      "exactBytes": false,
+      "decodedPixelsEqual": true
+    },
+    {
+      "path": "/kitchen-panels/target-30.png",
+      "bytes": 295236,
+      "sha256": "3eca714aa8f2927330b5489cadef6a8b8aee9c0c346005e9f70689d3fa8e991a",
+      "exactBytes": false,
+      "decodedPixelsEqual": true
+    },
+    {
+      "path": "/farm-panels/kit/source-kit.zip",
+      "exactBytes": true
+    },
+    {
+      "path": "/lumber-panels/kit/source-kit.zip",
+      "exactBytes": true
+    },
+    {
+      "path": "/core-upgrade/kit-v2/manifest.json",
+      "exactBytes": true
+    },
+    {
+      "path": "/environment-editor/",
+      "status": "302"
+    },
+    {
+      "path": "/sprite-player/",
+      "status": "302"
+    }
+  ],
+  "allSixPanels": true,
+  "pass": true,
+  "note": "Current release is a descendant of the Kitchen release. Current entry and bundle hashes match its manifest; all six panels remain integrated. Kitchen PNG endpoints match visible RGBA pixels; source ZIP bytes match exactly."
+}

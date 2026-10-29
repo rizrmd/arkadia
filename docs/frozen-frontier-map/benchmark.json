@@ -1,0 +1,184 @@
+{
+ "tool": "scripts/frozen-frontier-map/bench.mjs 240 <root>",
+ "method": "Alternating before/after runs on the shared sandbox (load average 20-35). Fake clock, one rAF per 16.7 ms, hero walking a loop through the ruined gate, foes cleared each leg. jsMsPerFrame = main-thread busy ms inside the game loop minus renderer.render; SwiftShader GPU waits land in renderer.render (pixiMs) and are not comparable to real GPUs. Whole-frame draw calls vary with combat and HUD state; verification.json measures the scenery alone (shown vs hidden at the same frame).",
+ "desktop": "1440x900 DPR 1",
+ "phone": "390x844 DPR 3",
+ "runs": [
+  {
+   "view": "phone",
+   "root": "before (HEAD 6eea5ba)",
+   "frames": 240,
+   "readyMs": 9565,
+   "wallMsPerFrame": 493.7,
+   "busyMsPerFrame": 465.77,
+   "jsMsPerFrame": 17.76,
+   "pixiMs": 448.01,
+   "heroRenderMs": 12,
+   "worldDrawMs": 0.54,
+   "frontierPlaceMs": 0,
+   "blockedMs": 0.043,
+   "occludersMs": 0.013,
+   "gcMs": 1.91,
+   "drawCallsPerFrame": 119.7,
+   "visibleProps": 0,
+   "heroEnd": [
+    22.85,
+    20.51
+   ]
+  },
+  {
+   "view": "phone",
+   "root": "after (Frozen Frontier)",
+   "frames": 240,
+   "readyMs": 27825,
+   "wallMsPerFrame": 495.2,
+   "busyMsPerFrame": 470.56,
+   "jsMsPerFrame": 16.75,
+   "pixiMs": 453.81,
+   "heroRenderMs": 8.58,
+   "worldDrawMs": 0.25,
+   "frontierPlaceMs": 0.002,
+   "blockedMs": 0.073,
+   "occludersMs": 0.294,
+   "gcMs": 3.46,
+   "drawCallsPerFrame": 123.1,
+   "visibleProps": 42,
+   "heroEnd": [
+    22.3,
+    25.06
+   ]
+  },
+  {
+   "view": "phone",
+   "root": "before (HEAD 6eea5ba)",
+   "frames": 240,
+   "readyMs": 11754,
+   "wallMsPerFrame": 304.9,
+   "busyMsPerFrame": 283.83,
+   "jsMsPerFrame": 9.18,
+   "pixiMs": 274.66,
+   "heroRenderMs": 5.08,
+   "worldDrawMs": 0.68,
+   "frontierPlaceMs": 0,
+   "blockedMs": 0.002,
+   "occludersMs": 0.012,
+   "gcMs": 1.53,
+   "drawCallsPerFrame": 99.8,
+   "visibleProps": 0,
+   "heroEnd": [
+    21.85,
+    22.12
+   ]
+  },
+  {
+   "view": "phone",
+   "root": "after (Frozen Frontier)",
+   "frames": 240,
+   "readyMs": 16021,
+   "wallMsPerFrame": 452.4,
+   "busyMsPerFrame": 423.84,
+   "jsMsPerFrame": 15.52,
+   "pixiMs": 408.32,
+   "heroRenderMs": 10.11,
+   "worldDrawMs": 0.58,
+   "frontierPlaceMs": 0.016,
+   "blockedMs": 0.046,
+   "occludersMs": 0.282,
+   "gcMs": 2.56,
+   "drawCallsPerFrame": 122.4,
+   "visibleProps": 41,
+   "heroEnd": [
+    23.67,
+    23.74
+   ]
+  },
+  {
+   "view": "desktop",
+   "root": "before (HEAD 6eea5ba)",
+   "frames": 240,
+   "readyMs": 12176,
+   "wallMsPerFrame": 317.2,
+   "busyMsPerFrame": 293.61,
+   "jsMsPerFrame": 11.4,
+   "pixiMs": 282.22,
+   "heroRenderMs": 5.12,
+   "worldDrawMs": 0.3,
+   "frontierPlaceMs": 0,
+   "blockedMs": 0.005,
+   "occludersMs": 0.01,
+   "gcMs": 2.24,
+   "drawCallsPerFrame": 128.6,
+   "visibleProps": 0,
+   "heroEnd": [
+    19.87,
+    25.2
+   ]
+  },
+  {
+   "view": "desktop",
+   "root": "after (Frozen Frontier)",
+   "frames": 240,
+   "readyMs": 15045,
+   "wallMsPerFrame": 380.8,
+   "busyMsPerFrame": 360.66,
+   "jsMsPerFrame": 10.95,
+   "pixiMs": 349.72,
+   "heroRenderMs": 6.56,
+   "worldDrawMs": 0.39,
+   "frontierPlaceMs": 0.008,
+   "blockedMs": 0.033,
+   "occludersMs": 0.265,
+   "gcMs": 1.76,
+   "drawCallsPerFrame": 177,
+   "visibleProps": 83,
+   "heroEnd": [
+    20.13,
+    28.03
+   ]
+  },
+  {
+   "view": "desktop",
+   "root": "before (HEAD 6eea5ba)",
+   "frames": 240,
+   "readyMs": 12844,
+   "wallMsPerFrame": 335.3,
+   "busyMsPerFrame": 315.06,
+   "jsMsPerFrame": 11.81,
+   "pixiMs": 303.24,
+   "heroRenderMs": 7.99,
+   "worldDrawMs": 0.32,
+   "frontierPlaceMs": 0,
+   "blockedMs": 0.005,
+   "occludersMs": 0.01,
+   "gcMs": 1.51,
+   "drawCallsPerFrame": 170.8,
+   "visibleProps": 0,
+   "heroEnd": [
+    21.66,
+    22.85
+   ]
+  },
+  {
+   "view": "desktop",
+   "root": "after (Frozen Frontier)",
+   "frames": 240,
+   "readyMs": 10232,
+   "wallMsPerFrame": 434,
+   "busyMsPerFrame": 410.27,
+   "jsMsPerFrame": 13.24,
+   "pixiMs": 397.04,
+   "heroRenderMs": 7.9,
+   "worldDrawMs": 0.65,
+   "frontierPlaceMs": 0.001,
+   "blockedMs": 0.038,
+   "occludersMs": 0.121,
+   "gcMs": 2.41,
+   "drawCallsPerFrame": 151.7,
+   "visibleProps": 81,
+   "heroEnd": [
+    19.61,
+    23.32
+   ]
+  }
+ ]
+}

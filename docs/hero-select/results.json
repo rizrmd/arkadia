@@ -1,0 +1,65 @@
+{
+ "url": "http://127.0.0.1:8794",
+ "picker": {
+  "first": "true",
+  "cards": [
+   "Rift Runner",
+   "Ember Warden"
+  ],
+  "focused": "rift-runner",
+  "closeShown": false,
+  "portraits": [
+   true,
+   true
+  ],
+  "frames": [
+   "url(\"http://127.0.0.1:8794/ui/hero-card-frame-active.webp\")",
+   "url(\"http://127.0.0.1:8794/ui/hero-card-frame.webp\")"
+  ]
+ },
+ "shots": [
+  "docs/hero-select/1-picker-phone.webp",
+  "docs/hero-select/2-ember-phone.webp",
+  "docs/hero-select/7-reset-picker.webp",
+  "docs/hero-select/3-ember-attack-desktop.webp",
+  "docs/hero-select/4-picker-desktop.webp",
+  "docs/hero-select/5-rift-runner-desktop.webp",
+  "docs/hero-select/6-coop-allies.webp"
+ ],
+ "emberHud": "Ember Warden",
+ "reloadAsks": false,
+ "reset": {
+  "first": "true",
+  "focused": "rift-runner",
+  "hero": "rift-runner",
+  "x": 590,
+  "y": 420,
+  "savedHero": null,
+  "pickedSession": null,
+  "savedPos": null,
+  "urlHero": null
+ },
+ "walkViews": {
+  "SE": "move-SE",
+  "SW": "move-SW",
+  "NE": "move-NE",
+  "NW": "move-NW",
+  "S": "move-S",
+  "N": "move-N"
+ },
+ "attackClip": "attack-SE",
+ "reopen": {
+  "first": "false",
+  "closeShown": true,
+  "focused": "ember-warden"
+ },
+ "riftClip": "idle-SE",
+ "room": "G84CR",
+ "roster": [
+  "Guest 2026Ember Warden",
+  "BimaRift Runner"
+ ],
+ "coopSwitch": "ally shown as Ember Warden after switching",
+ "errors": [],
+ "pass": true
+}

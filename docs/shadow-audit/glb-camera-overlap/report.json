@@ -1,0 +1,153 @@
+{
+  "result": {
+    "ok": true,
+    "rows": [
+      {
+        "sourceSize": 200,
+        "samples": [
+          {
+            "owner": 3000,
+            "height": 30,
+            "alpha": 255,
+            "base": 0,
+            "shaded": 11,
+            "tile": [
+              0,
+              960,
+              204,
+              204
+            ]
+          },
+          {
+            "owner": 3001,
+            "height": 50,
+            "alpha": 255,
+            "base": 0,
+            "shaded": 0,
+            "tile": [
+              204,
+              960,
+              204,
+              204
+            ]
+          }
+        ],
+        "stats": {
+          "updates": 1,
+          "actors": 2,
+          "extraSurfaces": 0,
+          "skinnedMeshes": 2,
+          "receiverPasses": 5,
+          "geometryBytes": 643616,
+          "drawnVertices": 20410,
+          "pixels": 199680,
+          "bytes": 6470024,
+          "renderMs": 99.5,
+          "ready": true,
+          "casterPasses": 3,
+          "fieldSamplers": 4,
+          "opaqueEnvelope": true,
+          "step": 0.5
+        }
+      },
+      {
+        "sourceSize": 100,
+        "samples": [
+          {
+            "owner": 3000,
+            "height": 30,
+            "alpha": 255,
+            "base": 0,
+            "shaded": 11,
+            "tile": [
+              0,
+              960,
+              204,
+              204
+            ]
+          },
+          {
+            "owner": 3001,
+            "height": 50,
+            "alpha": 255,
+            "base": 0,
+            "shaded": 0,
+            "tile": [
+              204,
+              960,
+              204,
+              204
+            ]
+          }
+        ],
+        "stats": {
+          "updates": 2,
+          "actors": 2,
+          "extraSurfaces": 0,
+          "skinnedMeshes": 2,
+          "receiverPasses": 5,
+          "geometryBytes": 643616,
+          "drawnVertices": 20410,
+          "pixels": 199680,
+          "bytes": 6470024,
+          "renderMs": 1.8999998569488525,
+          "ready": true,
+          "casterPasses": 3,
+          "fieldSamplers": 4,
+          "opaqueEnvelope": true,
+          "step": 0.5
+        }
+      },
+      {
+        "sourceSize": 200,
+        "samples": [
+          {
+            "owner": 3000,
+            "height": 30,
+            "alpha": 255,
+            "base": 0,
+            "shaded": 11,
+            "tile": [
+              0,
+              960,
+              204,
+              204
+            ]
+          },
+          {
+            "owner": 3001,
+            "height": 50,
+            "alpha": 255,
+            "base": 0,
+            "shaded": 0,
+            "tile": [
+              204,
+              960,
+              204,
+              204
+            ]
+          }
+        ],
+        "stats": {
+          "updates": 3,
+          "actors": 2,
+          "extraSurfaces": 0,
+          "skinnedMeshes": 2,
+          "receiverPasses": 5,
+          "geometryBytes": 643616,
+          "drawnVertices": 20410,
+          "pixels": 199680,
+          "bytes": 6470024,
+          "renderMs": 1.5,
+          "ready": true,
+          "casterPasses": 3,
+          "fieldSamplers": 4,
+          "opaqueEnvelope": true,
+          "step": 0.5
+        }
+      }
+    ],
+    "scope": "Two overlapping owners; native upper/lower receiver control; 2x to 1x to 2x source resize; translation without pose revision. Software GPU only."
+  },
+  "errors": []
+}

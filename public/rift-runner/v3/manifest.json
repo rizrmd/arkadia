@@ -1,0 +1,6268 @@
+{
+  "status": "painted-style-correction-under-playback-review",
+  "cell": [
+    320,
+    320
+  ],
+  "bodyPivot": [
+    160,
+    224
+  ],
+  "directions": [
+    "N",
+    "NE",
+    "E",
+    "SE",
+    "S",
+    "SW",
+    "W",
+    "NW"
+  ],
+  "sheets": [
+    {
+      "image": "sheets/hurt-N.png",
+      "cell": [
+        320,
+        320
+      ],
+      "clips": [
+        {
+          "id": "hurt-N",
+          "action": "hurt",
+          "direction": "N",
+          "frames": [
+            {
+              "cell": [
+                0,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                105,
+                34,
+                213,
+                224
+              ],
+              "time": 0,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                1,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                114,
+                41,
+                230,
+                224
+              ],
+              "time": 0.14285714285714285,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                2,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                111,
+                69,
+                243,
+                224
+              ],
+              "time": 0.2857142857142857,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                3,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                104,
+                43,
+                223,
+                224
+              ],
+              "time": 0.42857142857142855,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                0,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                104,
+                40,
+                231,
+                224
+              ],
+              "time": 0.5714285714285714,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                1,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                104,
+                36,
+                216,
+                224
+              ],
+              "time": 0.7142857142857143,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                2,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                104,
+                35,
+                215,
+                224
+              ],
+              "time": 0.8571428571428571,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                3,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                105,
+                34,
+                213,
+                224
+              ],
+              "time": 1,
+              "muzzle": [
+                160,
+                160
+              ]
+            }
+          ],
+          "fps": 12,
+          "loop": false,
+          "holdLastFrame": false,
+          "duration": 0.6666666666666666,
+          "cellSize": 320,
+          "image": "sheets/hurt-N.png",
+          "layer": "body",
+          "source": "painted-v3"
+        }
+      ]
+    },
+    {
+      "image": "sheets/hurt-NE.png",
+      "cell": [
+        320,
+        320
+      ],
+      "clips": [
+        {
+          "id": "hurt-NE",
+          "action": "hurt",
+          "direction": "NE",
+          "frames": [
+            {
+              "cell": [
+                0,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                108,
+                35,
+                212,
+                224
+              ],
+              "time": 0,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                1,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                104,
+                39,
+                223,
+                224
+              ],
+              "time": 0.14285714285714285,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                2,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                98,
+                61,
+                229,
+                224
+              ],
+              "time": 0.2857142857142857,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                3,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                105,
+                42,
+                219,
+                224
+              ],
+              "time": 0.42857142857142855,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                0,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                106,
+                39,
+                215,
+                224
+              ],
+              "time": 0.5714285714285714,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                1,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                107,
+                37,
+                214,
+                224
+              ],
+              "time": 0.7142857142857143,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                2,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                108,
+                36,
+                212,
+                224
+              ],
+              "time": 0.8571428571428571,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                3,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                108,
+                35,
+                212,
+                224
+              ],
+              "time": 1,
+              "muzzle": [
+                160,
+                160
+              ]
+            }
+          ],
+          "fps": 12,
+          "loop": false,
+          "holdLastFrame": false,
+          "duration": 0.6666666666666666,
+          "cellSize": 320,
+          "image": "sheets/hurt-NE.png",
+          "layer": "body",
+          "source": "painted-v3"
+        }
+      ]
+    },
+    {
+      "image": "sheets/hurt-E.png",
+      "cell": [
+        320,
+        320
+      ],
+      "clips": [
+        {
+          "id": "hurt-E",
+          "action": "hurt",
+          "direction": "E",
+          "frames": [
+            {
+              "cell": [
+                0,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                114,
+                34,
+                208,
+                224
+              ],
+              "time": 0,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                1,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                101,
+                41,
+                217,
+                224
+              ],
+              "time": 0.14285714285714285,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                2,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                101,
+                62,
+                231,
+                224
+              ],
+              "time": 0.2857142857142857,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                3,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                103,
+                45,
+                212,
+                224
+              ],
+              "time": 0.42857142857142855,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                0,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                113,
+                41,
+                210,
+                224
+              ],
+              "time": 0.5714285714285714,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                1,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                111,
+                39,
+                207,
+                224
+              ],
+              "time": 0.7142857142857143,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                2,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                112,
+                39,
+                205,
+                224
+              ],
+              "time": 0.8571428571428571,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                3,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                114,
+                34,
+                208,
+                224
+              ],
+              "time": 1,
+              "muzzle": [
+                160,
+                160
+              ]
+            }
+          ],
+          "fps": 12,
+          "loop": false,
+          "holdLastFrame": false,
+          "duration": 0.6666666666666666,
+          "cellSize": 320,
+          "image": "sheets/hurt-E.png",
+          "layer": "body",
+          "source": "painted-v3"
+        }
+      ]
+    },
+    {
+      "image": "sheets/hurt-SE.png",
+      "cell": [
+        320,
+        320
+      ],
+      "clips": [
+        {
+          "id": "hurt-SE",
+          "action": "hurt",
+          "direction": "SE",
+          "frames": [
+            {
+              "cell": [
+                0,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                94,
+                33,
+                229,
+                224
+              ],
+              "time": 0,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                1,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                91,
+                43,
+                228,
+                224
+              ],
+              "time": 0.14285714285714285,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                2,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                87,
+                63,
+                225,
+                224
+              ],
+              "time": 0.2857142857142857,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                3,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                95,
+                50,
+                228,
+                224
+              ],
+              "time": 0.42857142857142855,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                0,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                95,
+                34,
+                229,
+                224
+              ],
+              "time": 0.5714285714285714,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                1,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                96,
+                32,
+                227,
+                224
+              ],
+              "time": 0.7142857142857143,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                2,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                94,
+                31,
+                228,
+                224
+              ],
+              "time": 0.8571428571428571,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                3,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                94,
+                33,
+                229,
+                224
+              ],
+              "time": 1,
+              "muzzle": [
+                160,
+                160
+              ]
+            }
+          ],
+          "fps": 12,
+          "loop": false,
+          "holdLastFrame": false,
+          "duration": 0.6666666666666666,
+          "cellSize": 320,
+          "image": "sheets/hurt-SE.png",
+          "layer": "body",
+          "source": "painted-v3"
+        }
+      ]
+    },
+    {
+      "image": "sheets/hurt-S.png",
+      "cell": [
+        320,
+        320
+      ],
+      "clips": [
+        {
+          "id": "hurt-S",
+          "action": "hurt",
+          "direction": "S",
+          "frames": [
+            {
+              "cell": [
+                0,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                72,
+                34,
+                220,
+                224
+              ],
+              "time": 0,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                1,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                70,
+                46,
+                217,
+                224
+              ],
+              "time": 0.14285714285714285,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                2,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                74,
+                61,
+                223,
+                224
+              ],
+              "time": 0.2857142857142857,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                3,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                70,
+                47,
+                222,
+                224
+              ],
+              "time": 0.42857142857142855,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                0,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                73,
+                41,
+                219,
+                224
+              ],
+              "time": 0.5714285714285714,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                1,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                74,
+                41,
+                220,
+                224
+              ],
+              "time": 0.7142857142857143,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                2,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                74,
+                42,
+                222,
+                224
+              ],
+              "time": 0.8571428571428571,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                3,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                72,
+                34,
+                220,
+                224
+              ],
+              "time": 1,
+              "muzzle": [
+                160,
+                160
+              ]
+            }
+          ],
+          "fps": 12,
+          "loop": false,
+          "holdLastFrame": false,
+          "duration": 0.6666666666666666,
+          "cellSize": 320,
+          "image": "sheets/hurt-S.png",
+          "layer": "body",
+          "source": "painted-v3"
+        }
+      ]
+    },
+    {
+      "image": "sheets/hurt-SW.png",
+      "cell": [
+        320,
+        320
+      ],
+      "clips": [
+        {
+          "id": "hurt-SW",
+          "action": "hurt",
+          "direction": "SW",
+          "frames": [
+            {
+              "cell": [
+                0,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                70,
+                34,
+                233,
+                224
+              ],
+              "time": 0,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                1,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                73,
+                40,
+                228,
+                224
+              ],
+              "time": 0.14285714285714285,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                2,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                67,
+                58,
+                226,
+                224
+              ],
+              "time": 0.2857142857142857,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                3,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                70,
+                38,
+                230,
+                224
+              ],
+              "time": 0.42857142857142855,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                0,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                68,
+                38,
+                233,
+                224
+              ],
+              "time": 0.5714285714285714,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                1,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                69,
+                41,
+                231,
+                224
+              ],
+              "time": 0.7142857142857143,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                2,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                68,
+                38,
+                235,
+                224
+              ],
+              "time": 0.8571428571428571,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                3,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                70,
+                34,
+                233,
+                224
+              ],
+              "time": 1,
+              "muzzle": [
+                160,
+                160
+              ]
+            }
+          ],
+          "fps": 12,
+          "loop": false,
+          "holdLastFrame": false,
+          "duration": 0.6666666666666666,
+          "cellSize": 320,
+          "image": "sheets/hurt-SW.png",
+          "layer": "body",
+          "source": "painted-v3"
+        }
+      ]
+    },
+    {
+      "image": "sheets/hurt-W.png",
+      "cell": [
+        320,
+        320
+      ],
+      "clips": [
+        {
+          "id": "hurt-W",
+          "action": "hurt",
+          "direction": "W",
+          "frames": [
+            {
+              "cell": [
+                0,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                86,
+                34,
+                217,
+                224
+              ],
+              "time": 0,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                1,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                69,
+                46,
+                200,
+                224
+              ],
+              "time": 0.14285714285714285,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                2,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                62,
+                69,
+                198,
+                224
+              ],
+              "time": 0.2857142857142857,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                3,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                62,
+                51,
+                194,
+                224
+              ],
+              "time": 0.42857142857142855,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                0,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                72,
+                42,
+                205,
+                224
+              ],
+              "time": 0.5714285714285714,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                1,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                72,
+                40,
+                199,
+                224
+              ],
+              "time": 0.7142857142857143,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                2,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                82,
+                39,
+                212,
+                224
+              ],
+              "time": 0.8571428571428571,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                3,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                86,
+                34,
+                217,
+                224
+              ],
+              "time": 1,
+              "muzzle": [
+                160,
+                160
+              ]
+            }
+          ],
+          "fps": 12,
+          "loop": false,
+          "holdLastFrame": false,
+          "duration": 0.6666666666666666,
+          "cellSize": 320,
+          "image": "sheets/hurt-W.png",
+          "layer": "body",
+          "source": "painted-v3"
+        }
+      ]
+    },
+    {
+      "image": "sheets/hurt-NW.png",
+      "cell": [
+        320,
+        320
+      ],
+      "clips": [
+        {
+          "id": "hurt-NW",
+          "action": "hurt",
+          "direction": "NW",
+          "frames": [
+            {
+              "cell": [
+                0,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                76,
+                34,
+                234,
+                224
+              ],
+              "time": 0,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                1,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                75,
+                35,
+                230,
+                224
+              ],
+              "time": 0.14285714285714285,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                2,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                69,
+                57,
+                229,
+                224
+              ],
+              "time": 0.2857142857142857,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                3,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                75,
+                33,
+                236,
+                224
+              ],
+              "time": 0.42857142857142855,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                0,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                75,
+                34,
+                230,
+                224
+              ],
+              "time": 0.5714285714285714,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                1,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                76,
+                34,
+                233,
+                224
+              ],
+              "time": 0.7142857142857143,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                2,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                76,
+                33,
+                236,
+                224
+              ],
+              "time": 0.8571428571428571,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                3,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                76,
+                34,
+                234,
+                224
+              ],
+              "time": 1,
+              "muzzle": [
+                160,
+                160
+              ]
+            }
+          ],
+          "fps": 12,
+          "loop": false,
+          "holdLastFrame": false,
+          "duration": 0.6666666666666666,
+          "cellSize": 320,
+          "image": "sheets/hurt-NW.png",
+          "layer": "body",
+          "source": "painted-v3"
+        }
+      ]
+    },
+    {
+      "image": "sheets/death-N.png",
+      "cell": [
+        320,
+        320
+      ],
+      "clips": [
+        {
+          "id": "death-N",
+          "action": "death",
+          "direction": "N",
+          "frames": [
+            {
+              "cell": [
+                0,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                106,
+                34,
+                213,
+                224
+              ],
+              "time": 0,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                1,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                88,
+                47,
+                232,
+                224
+              ],
+              "time": 0.14285714285714285,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                2,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                86,
+                77,
+                234,
+                224
+              ],
+              "time": 0.2857142857142857,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                3,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                76,
+                110,
+                245,
+                224
+              ],
+              "time": 0.42857142857142855,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                0,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                69,
+                120,
+                251,
+                224
+              ],
+              "time": 0.5714285714285714,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                1,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                68,
+                124,
+                253,
+                224
+              ],
+              "time": 0.7142857142857143,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                2,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                68,
+                129,
+                252,
+                224
+              ],
+              "time": 0.8571428571428571,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                3,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                68,
+                129,
+                252,
+                224
+              ],
+              "time": 1,
+              "muzzle": [
+                160,
+                160
+              ]
+            }
+          ],
+          "fps": 9,
+          "loop": false,
+          "holdLastFrame": true,
+          "duration": 0.8888888888888888,
+          "cellSize": 320,
+          "image": "sheets/death-N.png",
+          "layer": "body",
+          "source": "painted-v3"
+        }
+      ]
+    },
+    {
+      "image": "sheets/death-NE.png",
+      "cell": [
+        320,
+        320
+      ],
+      "clips": [
+        {
+          "id": "death-NE",
+          "action": "death",
+          "direction": "NE",
+          "frames": [
+            {
+              "cell": [
+                0,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                108,
+                35,
+                211,
+                224
+              ],
+              "time": 0,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                1,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                99,
+                55,
+                221,
+                224
+              ],
+              "time": 0.14285714285714285,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                2,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                95,
+                94,
+                226,
+                224
+              ],
+              "time": 0.2857142857142857,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                3,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                86,
+                118,
+                234,
+                224
+              ],
+              "time": 0.42857142857142855,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                0,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                78,
+                137,
+                241,
+                224
+              ],
+              "time": 0.5714285714285714,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                1,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                68,
+                145,
+                253,
+                224
+              ],
+              "time": 0.7142857142857143,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                2,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                67,
+                146,
+                252,
+                224
+              ],
+              "time": 0.8571428571428571,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                3,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                67,
+                146,
+                252,
+                224
+              ],
+              "time": 1,
+              "muzzle": [
+                160,
+                160
+              ]
+            }
+          ],
+          "fps": 9,
+          "loop": false,
+          "holdLastFrame": true,
+          "duration": 0.8888888888888888,
+          "cellSize": 320,
+          "image": "sheets/death-NE.png",
+          "layer": "body",
+          "source": "painted-v3"
+        }
+      ]
+    },
+    {
+      "image": "sheets/death-E.png",
+      "cell": [
+        320,
+        320
+      ],
+      "clips": [
+        {
+          "id": "death-E",
+          "action": "death",
+          "direction": "E",
+          "frames": [
+            {
+              "cell": [
+                0,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                112,
+                33,
+                208,
+                224
+              ],
+              "time": 0,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                1,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                95,
+                69,
+                225,
+                224
+              ],
+              "time": 0.14285714285714285,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                2,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                96,
+                99,
+                224,
+                224
+              ],
+              "time": 0.2857142857142857,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                3,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                62,
+                120,
+                259,
+                224
+              ],
+              "time": 0.42857142857142855,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                0,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                60,
+                145,
+                260,
+                224
+              ],
+              "time": 0.5714285714285714,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                1,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                64,
+                173,
+                257,
+                224
+              ],
+              "time": 0.7142857142857143,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                2,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                60,
+                173,
+                261,
+                224
+              ],
+              "time": 0.8571428571428571,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                3,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                60,
+                173,
+                261,
+                224
+              ],
+              "time": 1,
+              "muzzle": [
+                160,
+                160
+              ]
+            }
+          ],
+          "fps": 9,
+          "loop": false,
+          "holdLastFrame": true,
+          "duration": 0.8888888888888888,
+          "cellSize": 320,
+          "image": "sheets/death-E.png",
+          "layer": "body",
+          "source": "painted-v3"
+        }
+      ]
+    },
+    {
+      "image": "sheets/death-SE.png",
+      "cell": [
+        320,
+        320
+      ],
+      "clips": [
+        {
+          "id": "death-SE",
+          "action": "death",
+          "direction": "SE",
+          "frames": [
+            {
+              "cell": [
+                0,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                92,
+                34,
+                228,
+                224
+              ],
+              "time": 0,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                1,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                92,
+                71,
+                228,
+                224
+              ],
+              "time": 0.14285714285714285,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                2,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                87,
+                89,
+                233,
+                224
+              ],
+              "time": 0.2857142857142857,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                3,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                73,
+                111,
+                246,
+                224
+              ],
+              "time": 0.42857142857142855,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                0,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                72,
+                136,
+                248,
+                224
+              ],
+              "time": 0.5714285714285714,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                1,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                73,
+                162,
+                247,
+                224
+              ],
+              "time": 0.7142857142857143,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                2,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                72,
+                162,
+                248,
+                224
+              ],
+              "time": 0.8571428571428571,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                3,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                72,
+                162,
+                248,
+                224
+              ],
+              "time": 1,
+              "muzzle": [
+                160,
+                160
+              ]
+            }
+          ],
+          "fps": 9,
+          "loop": false,
+          "holdLastFrame": true,
+          "duration": 0.8888888888888888,
+          "cellSize": 320,
+          "image": "sheets/death-SE.png",
+          "layer": "body",
+          "source": "painted-v3"
+        }
+      ]
+    },
+    {
+      "image": "sheets/death-S.png",
+      "cell": [
+        320,
+        320
+      ],
+      "clips": [
+        {
+          "id": "death-S",
+          "action": "death",
+          "direction": "S",
+          "frames": [
+            {
+              "cell": [
+                0,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                82,
+                35,
+                237,
+                224
+              ],
+              "time": 0,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                1,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                86,
+                59,
+                233,
+                224
+              ],
+              "time": 0.14285714285714285,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                2,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                78,
+                82,
+                241,
+                224
+              ],
+              "time": 0.2857142857142857,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                3,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                70,
+                81,
+                249,
+                224
+              ],
+              "time": 0.42857142857142855,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                0,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                69,
+                101,
+                251,
+                224
+              ],
+              "time": 0.5714285714285714,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                1,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                69,
+                108,
+                250,
+                224
+              ],
+              "time": 0.7142857142857143,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                2,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                69,
+                109,
+                250,
+                224
+              ],
+              "time": 0.8571428571428571,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                3,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                69,
+                109,
+                250,
+                224
+              ],
+              "time": 1,
+              "muzzle": [
+                160,
+                160
+              ]
+            }
+          ],
+          "fps": 9,
+          "loop": false,
+          "holdLastFrame": true,
+          "duration": 0.8888888888888888,
+          "cellSize": 320,
+          "image": "sheets/death-S.png",
+          "layer": "body",
+          "source": "painted-v3"
+        }
+      ]
+    },
+    {
+      "image": "sheets/death-SW.png",
+      "cell": [
+        320,
+        320
+      ],
+      "clips": [
+        {
+          "id": "death-SW",
+          "action": "death",
+          "direction": "SW",
+          "frames": [
+            {
+              "cell": [
+                0,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                79,
+                33,
+                241,
+                224
+              ],
+              "time": 0,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                1,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                80,
+                52,
+                239,
+                224
+              ],
+              "time": 0.14285714285714285,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                2,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                80,
+                77,
+                240,
+                224
+              ],
+              "time": 0.2857142857142857,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                3,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                66,
+                93,
+                254,
+                224
+              ],
+              "time": 0.42857142857142855,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                0,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                67,
+                122,
+                253,
+                224
+              ],
+              "time": 0.5714285714285714,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                1,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                69,
+                153,
+                252,
+                224
+              ],
+              "time": 0.7142857142857143,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                2,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                67,
+                153,
+                253,
+                224
+              ],
+              "time": 0.8571428571428571,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                3,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                67,
+                153,
+                253,
+                224
+              ],
+              "time": 1,
+              "muzzle": [
+                160,
+                160
+              ]
+            }
+          ],
+          "fps": 9,
+          "loop": false,
+          "holdLastFrame": true,
+          "duration": 0.8888888888888888,
+          "cellSize": 320,
+          "image": "sheets/death-SW.png",
+          "layer": "body",
+          "source": "painted-v3"
+        }
+      ]
+    },
+    {
+      "image": "sheets/death-W.png",
+      "cell": [
+        320,
+        320
+      ],
+      "clips": [
+        {
+          "id": "death-W",
+          "action": "death",
+          "direction": "W",
+          "frames": [
+            {
+              "cell": [
+                0,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                93,
+                34,
+                226,
+                224
+              ],
+              "time": 0,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                1,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                91,
+                53,
+                229,
+                224
+              ],
+              "time": 0.14285714285714285,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                2,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                88,
+                88,
+                231,
+                224
+              ],
+              "time": 0.2857142857142857,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                3,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                84,
+                101,
+                235,
+                224
+              ],
+              "time": 0.42857142857142855,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                0,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                86,
+                142,
+                235,
+                224
+              ],
+              "time": 0.5714285714285714,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                1,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                84,
+                164,
+                237,
+                224
+              ],
+              "time": 0.7142857142857143,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                2,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                84,
+                171,
+                237,
+                224
+              ],
+              "time": 0.8571428571428571,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                3,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                84,
+                171,
+                237,
+                224
+              ],
+              "time": 1,
+              "muzzle": [
+                160,
+                160
+              ]
+            }
+          ],
+          "fps": 9,
+          "loop": false,
+          "holdLastFrame": true,
+          "duration": 0.8888888888888888,
+          "cellSize": 320,
+          "image": "sheets/death-W.png",
+          "layer": "body",
+          "source": "painted-v3"
+        }
+      ]
+    },
+    {
+      "image": "sheets/death-NW.png",
+      "cell": [
+        320,
+        320
+      ],
+      "clips": [
+        {
+          "id": "death-NW",
+          "action": "death",
+          "direction": "NW",
+          "frames": [
+            {
+              "cell": [
+                0,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                82,
+                34,
+                238,
+                224
+              ],
+              "time": 0,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                1,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                80,
+                59,
+                240,
+                224
+              ],
+              "time": 0.14285714285714285,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                2,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                73,
+                80,
+                247,
+                224
+              ],
+              "time": 0.2857142857142857,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                3,
+                0
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                73,
+                93,
+                247,
+                224
+              ],
+              "time": 0.42857142857142855,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                0,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                69,
+                99,
+                251,
+                224
+              ],
+              "time": 0.5714285714285714,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                1,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                70,
+                117,
+                250,
+                224
+              ],
+              "time": 0.7142857142857143,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                2,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                70,
+                120,
+                250,
+                224
+              ],
+              "time": 0.8571428571428571,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                3,
+                1
+              ],
+              "pivot": [
+                160,
+                224
+              ],
+              "alphaBounds": [
+                70,
+                120,
+                250,
+                224
+              ],
+              "time": 1,
+              "muzzle": [
+                160,
+                160
+              ]
+            }
+          ],
+          "fps": 9,
+          "loop": false,
+          "holdLastFrame": true,
+          "duration": 0.8888888888888888,
+          "cellSize": 320,
+          "image": "sheets/death-NW.png",
+          "layer": "body",
+          "source": "painted-v3"
+        }
+      ]
+    }
+  ],
+  "clips": [
+    {
+      "id": "hurt-N",
+      "action": "hurt",
+      "direction": "N",
+      "frames": [
+        {
+          "cell": [
+            0,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            105,
+            34,
+            213,
+            224
+          ],
+          "time": 0,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            1,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            114,
+            41,
+            230,
+            224
+          ],
+          "time": 0.14285714285714285,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            2,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            111,
+            69,
+            243,
+            224
+          ],
+          "time": 0.2857142857142857,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            3,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            104,
+            43,
+            223,
+            224
+          ],
+          "time": 0.42857142857142855,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            0,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            104,
+            40,
+            231,
+            224
+          ],
+          "time": 0.5714285714285714,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            1,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            104,
+            36,
+            216,
+            224
+          ],
+          "time": 0.7142857142857143,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            2,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            104,
+            35,
+            215,
+            224
+          ],
+          "time": 0.8571428571428571,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            3,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            105,
+            34,
+            213,
+            224
+          ],
+          "time": 1,
+          "muzzle": [
+            160,
+            160
+          ]
+        }
+      ],
+      "fps": 12,
+      "loop": false,
+      "holdLastFrame": false,
+      "duration": 0.6666666666666666,
+      "cellSize": 320,
+      "image": "sheets/hurt-N.png",
+      "layer": "body",
+      "source": "painted-v3"
+    },
+    {
+      "id": "hurt-NE",
+      "action": "hurt",
+      "direction": "NE",
+      "frames": [
+        {
+          "cell": [
+            0,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            108,
+            35,
+            212,
+            224
+          ],
+          "time": 0,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            1,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            104,
+            39,
+            223,
+            224
+          ],
+          "time": 0.14285714285714285,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            2,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            98,
+            61,
+            229,
+            224
+          ],
+          "time": 0.2857142857142857,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            3,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            105,
+            42,
+            219,
+            224
+          ],
+          "time": 0.42857142857142855,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            0,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            106,
+            39,
+            215,
+            224
+          ],
+          "time": 0.5714285714285714,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            1,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            107,
+            37,
+            214,
+            224
+          ],
+          "time": 0.7142857142857143,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            2,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            108,
+            36,
+            212,
+            224
+          ],
+          "time": 0.8571428571428571,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            3,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            108,
+            35,
+            212,
+            224
+          ],
+          "time": 1,
+          "muzzle": [
+            160,
+            160
+          ]
+        }
+      ],
+      "fps": 12,
+      "loop": false,
+      "holdLastFrame": false,
+      "duration": 0.6666666666666666,
+      "cellSize": 320,
+      "image": "sheets/hurt-NE.png",
+      "layer": "body",
+      "source": "painted-v3"
+    },
+    {
+      "id": "hurt-E",
+      "action": "hurt",
+      "direction": "E",
+      "frames": [
+        {
+          "cell": [
+            0,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            114,
+            34,
+            208,
+            224
+          ],
+          "time": 0,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            1,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            101,
+            41,
+            217,
+            224
+          ],
+          "time": 0.14285714285714285,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            2,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            101,
+            62,
+            231,
+            224
+          ],
+          "time": 0.2857142857142857,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            3,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            103,
+            45,
+            212,
+            224
+          ],
+          "time": 0.42857142857142855,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            0,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            113,
+            41,
+            210,
+            224
+          ],
+          "time": 0.5714285714285714,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            1,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            111,
+            39,
+            207,
+            224
+          ],
+          "time": 0.7142857142857143,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            2,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            112,
+            39,
+            205,
+            224
+          ],
+          "time": 0.8571428571428571,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            3,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            114,
+            34,
+            208,
+            224
+          ],
+          "time": 1,
+          "muzzle": [
+            160,
+            160
+          ]
+        }
+      ],
+      "fps": 12,
+      "loop": false,
+      "holdLastFrame": false,
+      "duration": 0.6666666666666666,
+      "cellSize": 320,
+      "image": "sheets/hurt-E.png",
+      "layer": "body",
+      "source": "painted-v3"
+    },
+    {
+      "id": "hurt-SE",
+      "action": "hurt",
+      "direction": "SE",
+      "frames": [
+        {
+          "cell": [
+            0,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            94,
+            33,
+            229,
+            224
+          ],
+          "time": 0,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            1,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            91,
+            43,
+            228,
+            224
+          ],
+          "time": 0.14285714285714285,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            2,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            87,
+            63,
+            225,
+            224
+          ],
+          "time": 0.2857142857142857,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            3,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            95,
+            50,
+            228,
+            224
+          ],
+          "time": 0.42857142857142855,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            0,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            95,
+            34,
+            229,
+            224
+          ],
+          "time": 0.5714285714285714,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            1,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            96,
+            32,
+            227,
+            224
+          ],
+          "time": 0.7142857142857143,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            2,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            94,
+            31,
+            228,
+            224
+          ],
+          "time": 0.8571428571428571,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            3,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            94,
+            33,
+            229,
+            224
+          ],
+          "time": 1,
+          "muzzle": [
+            160,
+            160
+          ]
+        }
+      ],
+      "fps": 12,
+      "loop": false,
+      "holdLastFrame": false,
+      "duration": 0.6666666666666666,
+      "cellSize": 320,
+      "image": "sheets/hurt-SE.png",
+      "layer": "body",
+      "source": "painted-v3"
+    },
+    {
+      "id": "hurt-S",
+      "action": "hurt",
+      "direction": "S",
+      "frames": [
+        {
+          "cell": [
+            0,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            72,
+            34,
+            220,
+            224
+          ],
+          "time": 0,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            1,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            70,
+            46,
+            217,
+            224
+          ],
+          "time": 0.14285714285714285,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            2,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            74,
+            61,
+            223,
+            224
+          ],
+          "time": 0.2857142857142857,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            3,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            70,
+            47,
+            222,
+            224
+          ],
+          "time": 0.42857142857142855,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            0,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            73,
+            41,
+            219,
+            224
+          ],
+          "time": 0.5714285714285714,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            1,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            74,
+            41,
+            220,
+            224
+          ],
+          "time": 0.7142857142857143,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            2,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            74,
+            42,
+            222,
+            224
+          ],
+          "time": 0.8571428571428571,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            3,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            72,
+            34,
+            220,
+            224
+          ],
+          "time": 1,
+          "muzzle": [
+            160,
+            160
+          ]
+        }
+      ],
+      "fps": 12,
+      "loop": false,
+      "holdLastFrame": false,
+      "duration": 0.6666666666666666,
+      "cellSize": 320,
+      "image": "sheets/hurt-S.png",
+      "layer": "body",
+      "source": "painted-v3"
+    },
+    {
+      "id": "hurt-SW",
+      "action": "hurt",
+      "direction": "SW",
+      "frames": [
+        {
+          "cell": [
+            0,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            70,
+            34,
+            233,
+            224
+          ],
+          "time": 0,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            1,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            73,
+            40,
+            228,
+            224
+          ],
+          "time": 0.14285714285714285,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            2,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            67,
+            58,
+            226,
+            224
+          ],
+          "time": 0.2857142857142857,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            3,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            70,
+            38,
+            230,
+            224
+          ],
+          "time": 0.42857142857142855,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            0,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            68,
+            38,
+            233,
+            224
+          ],
+          "time": 0.5714285714285714,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            1,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            69,
+            41,
+            231,
+            224
+          ],
+          "time": 0.7142857142857143,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            2,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            68,
+            38,
+            235,
+            224
+          ],
+          "time": 0.8571428571428571,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            3,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            70,
+            34,
+            233,
+            224
+          ],
+          "time": 1,
+          "muzzle": [
+            160,
+            160
+          ]
+        }
+      ],
+      "fps": 12,
+      "loop": false,
+      "holdLastFrame": false,
+      "duration": 0.6666666666666666,
+      "cellSize": 320,
+      "image": "sheets/hurt-SW.png",
+      "layer": "body",
+      "source": "painted-v3"
+    },
+    {
+      "id": "hurt-W",
+      "action": "hurt",
+      "direction": "W",
+      "frames": [
+        {
+          "cell": [
+            0,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            86,
+            34,
+            217,
+            224
+          ],
+          "time": 0,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            1,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            69,
+            46,
+            200,
+            224
+          ],
+          "time": 0.14285714285714285,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            2,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            62,
+            69,
+            198,
+            224
+          ],
+          "time": 0.2857142857142857,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            3,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            62,
+            51,
+            194,
+            224
+          ],
+          "time": 0.42857142857142855,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            0,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            72,
+            42,
+            205,
+            224
+          ],
+          "time": 0.5714285714285714,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            1,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            72,
+            40,
+            199,
+            224
+          ],
+          "time": 0.7142857142857143,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            2,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            82,
+            39,
+            212,
+            224
+          ],
+          "time": 0.8571428571428571,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            3,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            86,
+            34,
+            217,
+            224
+          ],
+          "time": 1,
+          "muzzle": [
+            160,
+            160
+          ]
+        }
+      ],
+      "fps": 12,
+      "loop": false,
+      "holdLastFrame": false,
+      "duration": 0.6666666666666666,
+      "cellSize": 320,
+      "image": "sheets/hurt-W.png",
+      "layer": "body",
+      "source": "painted-v3"
+    },
+    {
+      "id": "hurt-NW",
+      "action": "hurt",
+      "direction": "NW",
+      "frames": [
+        {
+          "cell": [
+            0,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            76,
+            34,
+            234,
+            224
+          ],
+          "time": 0,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            1,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            75,
+            35,
+            230,
+            224
+          ],
+          "time": 0.14285714285714285,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            2,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            69,
+            57,
+            229,
+            224
+          ],
+          "time": 0.2857142857142857,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            3,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            75,
+            33,
+            236,
+            224
+          ],
+          "time": 0.42857142857142855,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            0,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            75,
+            34,
+            230,
+            224
+          ],
+          "time": 0.5714285714285714,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            1,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            76,
+            34,
+            233,
+            224
+          ],
+          "time": 0.7142857142857143,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            2,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            76,
+            33,
+            236,
+            224
+          ],
+          "time": 0.8571428571428571,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            3,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            76,
+            34,
+            234,
+            224
+          ],
+          "time": 1,
+          "muzzle": [
+            160,
+            160
+          ]
+        }
+      ],
+      "fps": 12,
+      "loop": false,
+      "holdLastFrame": false,
+      "duration": 0.6666666666666666,
+      "cellSize": 320,
+      "image": "sheets/hurt-NW.png",
+      "layer": "body",
+      "source": "painted-v3"
+    },
+    {
+      "id": "death-N",
+      "action": "death",
+      "direction": "N",
+      "frames": [
+        {
+          "cell": [
+            0,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            106,
+            34,
+            213,
+            224
+          ],
+          "time": 0,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            1,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            88,
+            47,
+            232,
+            224
+          ],
+          "time": 0.14285714285714285,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            2,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            86,
+            77,
+            234,
+            224
+          ],
+          "time": 0.2857142857142857,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            3,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            76,
+            110,
+            245,
+            224
+          ],
+          "time": 0.42857142857142855,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            0,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            69,
+            120,
+            251,
+            224
+          ],
+          "time": 0.5714285714285714,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            1,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            68,
+            124,
+            253,
+            224
+          ],
+          "time": 0.7142857142857143,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            2,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            68,
+            129,
+            252,
+            224
+          ],
+          "time": 0.8571428571428571,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            3,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            68,
+            129,
+            252,
+            224
+          ],
+          "time": 1,
+          "muzzle": [
+            160,
+            160
+          ]
+        }
+      ],
+      "fps": 9,
+      "loop": false,
+      "holdLastFrame": true,
+      "duration": 0.8888888888888888,
+      "cellSize": 320,
+      "image": "sheets/death-N.png",
+      "layer": "body",
+      "source": "painted-v3"
+    },
+    {
+      "id": "death-NE",
+      "action": "death",
+      "direction": "NE",
+      "frames": [
+        {
+          "cell": [
+            0,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            108,
+            35,
+            211,
+            224
+          ],
+          "time": 0,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            1,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            99,
+            55,
+            221,
+            224
+          ],
+          "time": 0.14285714285714285,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            2,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            95,
+            94,
+            226,
+            224
+          ],
+          "time": 0.2857142857142857,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            3,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            86,
+            118,
+            234,
+            224
+          ],
+          "time": 0.42857142857142855,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            0,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            78,
+            137,
+            241,
+            224
+          ],
+          "time": 0.5714285714285714,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            1,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            68,
+            145,
+            253,
+            224
+          ],
+          "time": 0.7142857142857143,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            2,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            67,
+            146,
+            252,
+            224
+          ],
+          "time": 0.8571428571428571,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            3,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            67,
+            146,
+            252,
+            224
+          ],
+          "time": 1,
+          "muzzle": [
+            160,
+            160
+          ]
+        }
+      ],
+      "fps": 9,
+      "loop": false,
+      "holdLastFrame": true,
+      "duration": 0.8888888888888888,
+      "cellSize": 320,
+      "image": "sheets/death-NE.png",
+      "layer": "body",
+      "source": "painted-v3"
+    },
+    {
+      "id": "death-E",
+      "action": "death",
+      "direction": "E",
+      "frames": [
+        {
+          "cell": [
+            0,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            112,
+            33,
+            208,
+            224
+          ],
+          "time": 0,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            1,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            95,
+            69,
+            225,
+            224
+          ],
+          "time": 0.14285714285714285,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            2,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            96,
+            99,
+            224,
+            224
+          ],
+          "time": 0.2857142857142857,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            3,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            62,
+            120,
+            259,
+            224
+          ],
+          "time": 0.42857142857142855,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            0,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            60,
+            145,
+            260,
+            224
+          ],
+          "time": 0.5714285714285714,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            1,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            64,
+            173,
+            257,
+            224
+          ],
+          "time": 0.7142857142857143,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            2,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            60,
+            173,
+            261,
+            224
+          ],
+          "time": 0.8571428571428571,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            3,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            60,
+            173,
+            261,
+            224
+          ],
+          "time": 1,
+          "muzzle": [
+            160,
+            160
+          ]
+        }
+      ],
+      "fps": 9,
+      "loop": false,
+      "holdLastFrame": true,
+      "duration": 0.8888888888888888,
+      "cellSize": 320,
+      "image": "sheets/death-E.png",
+      "layer": "body",
+      "source": "painted-v3"
+    },
+    {
+      "id": "death-SE",
+      "action": "death",
+      "direction": "SE",
+      "frames": [
+        {
+          "cell": [
+            0,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            92,
+            34,
+            228,
+            224
+          ],
+          "time": 0,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            1,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            92,
+            71,
+            228,
+            224
+          ],
+          "time": 0.14285714285714285,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            2,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            87,
+            89,
+            233,
+            224
+          ],
+          "time": 0.2857142857142857,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            3,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            73,
+            111,
+            246,
+            224
+          ],
+          "time": 0.42857142857142855,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            0,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            72,
+            136,
+            248,
+            224
+          ],
+          "time": 0.5714285714285714,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            1,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            73,
+            162,
+            247,
+            224
+          ],
+          "time": 0.7142857142857143,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            2,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            72,
+            162,
+            248,
+            224
+          ],
+          "time": 0.8571428571428571,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            3,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            72,
+            162,
+            248,
+            224
+          ],
+          "time": 1,
+          "muzzle": [
+            160,
+            160
+          ]
+        }
+      ],
+      "fps": 9,
+      "loop": false,
+      "holdLastFrame": true,
+      "duration": 0.8888888888888888,
+      "cellSize": 320,
+      "image": "sheets/death-SE.png",
+      "layer": "body",
+      "source": "painted-v3"
+    },
+    {
+      "id": "death-S",
+      "action": "death",
+      "direction": "S",
+      "frames": [
+        {
+          "cell": [
+            0,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            82,
+            35,
+            237,
+            224
+          ],
+          "time": 0,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            1,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            86,
+            59,
+            233,
+            224
+          ],
+          "time": 0.14285714285714285,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            2,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            78,
+            82,
+            241,
+            224
+          ],
+          "time": 0.2857142857142857,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            3,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            70,
+            81,
+            249,
+            224
+          ],
+          "time": 0.42857142857142855,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            0,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            69,
+            101,
+            251,
+            224
+          ],
+          "time": 0.5714285714285714,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            1,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            69,
+            108,
+            250,
+            224
+          ],
+          "time": 0.7142857142857143,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            2,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            69,
+            109,
+            250,
+            224
+          ],
+          "time": 0.8571428571428571,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            3,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            69,
+            109,
+            250,
+            224
+          ],
+          "time": 1,
+          "muzzle": [
+            160,
+            160
+          ]
+        }
+      ],
+      "fps": 9,
+      "loop": false,
+      "holdLastFrame": true,
+      "duration": 0.8888888888888888,
+      "cellSize": 320,
+      "image": "sheets/death-S.png",
+      "layer": "body",
+      "source": "painted-v3"
+    },
+    {
+      "id": "death-SW",
+      "action": "death",
+      "direction": "SW",
+      "frames": [
+        {
+          "cell": [
+            0,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            79,
+            33,
+            241,
+            224
+          ],
+          "time": 0,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            1,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            80,
+            52,
+            239,
+            224
+          ],
+          "time": 0.14285714285714285,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            2,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            80,
+            77,
+            240,
+            224
+          ],
+          "time": 0.2857142857142857,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            3,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            66,
+            93,
+            254,
+            224
+          ],
+          "time": 0.42857142857142855,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            0,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            67,
+            122,
+            253,
+            224
+          ],
+          "time": 0.5714285714285714,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            1,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            69,
+            153,
+            252,
+            224
+          ],
+          "time": 0.7142857142857143,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            2,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            67,
+            153,
+            253,
+            224
+          ],
+          "time": 0.8571428571428571,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            3,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            67,
+            153,
+            253,
+            224
+          ],
+          "time": 1,
+          "muzzle": [
+            160,
+            160
+          ]
+        }
+      ],
+      "fps": 9,
+      "loop": false,
+      "holdLastFrame": true,
+      "duration": 0.8888888888888888,
+      "cellSize": 320,
+      "image": "sheets/death-SW.png",
+      "layer": "body",
+      "source": "painted-v3"
+    },
+    {
+      "id": "death-W",
+      "action": "death",
+      "direction": "W",
+      "frames": [
+        {
+          "cell": [
+            0,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            93,
+            34,
+            226,
+            224
+          ],
+          "time": 0,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            1,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            91,
+            53,
+            229,
+            224
+          ],
+          "time": 0.14285714285714285,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            2,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            88,
+            88,
+            231,
+            224
+          ],
+          "time": 0.2857142857142857,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            3,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            84,
+            101,
+            235,
+            224
+          ],
+          "time": 0.42857142857142855,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            0,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            86,
+            142,
+            235,
+            224
+          ],
+          "time": 0.5714285714285714,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            1,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            84,
+            164,
+            237,
+            224
+          ],
+          "time": 0.7142857142857143,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            2,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            84,
+            171,
+            237,
+            224
+          ],
+          "time": 0.8571428571428571,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            3,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            84,
+            171,
+            237,
+            224
+          ],
+          "time": 1,
+          "muzzle": [
+            160,
+            160
+          ]
+        }
+      ],
+      "fps": 9,
+      "loop": false,
+      "holdLastFrame": true,
+      "duration": 0.8888888888888888,
+      "cellSize": 320,
+      "image": "sheets/death-W.png",
+      "layer": "body",
+      "source": "painted-v3"
+    },
+    {
+      "id": "death-NW",
+      "action": "death",
+      "direction": "NW",
+      "frames": [
+        {
+          "cell": [
+            0,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            82,
+            34,
+            238,
+            224
+          ],
+          "time": 0,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            1,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            80,
+            59,
+            240,
+            224
+          ],
+          "time": 0.14285714285714285,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            2,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            73,
+            80,
+            247,
+            224
+          ],
+          "time": 0.2857142857142857,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            3,
+            0
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            73,
+            93,
+            247,
+            224
+          ],
+          "time": 0.42857142857142855,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            0,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            69,
+            99,
+            251,
+            224
+          ],
+          "time": 0.5714285714285714,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            1,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            70,
+            117,
+            250,
+            224
+          ],
+          "time": 0.7142857142857143,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            2,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            70,
+            120,
+            250,
+            224
+          ],
+          "time": 0.8571428571428571,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            3,
+            1
+          ],
+          "pivot": [
+            160,
+            224
+          ],
+          "alphaBounds": [
+            70,
+            120,
+            250,
+            224
+          ],
+          "time": 1,
+          "muzzle": [
+            160,
+            160
+          ]
+        }
+      ],
+      "fps": 9,
+      "loop": false,
+      "holdLastFrame": true,
+      "duration": 0.8888888888888888,
+      "cellSize": 320,
+      "image": "sheets/death-NW.png",
+      "layer": "body",
+      "source": "painted-v3"
+    }
+  ],
+  "audits": [
+    {
+      "clip": "hurt-N",
+      "frames": 8,
+      "source": "source/hurt-N.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "rowBreak": 512,
+      "scale": 0.4439252336448598,
+      "scaling": "one constant scale per clip based on standing neutral, never normalize individual poses",
+      "alignment": "boot center and ground",
+      "alpha": true,
+      "endpointPolicy": "last frame is exact first-frame neutral"
+    },
+    {
+      "clip": "hurt-NE",
+      "frames": 8,
+      "source": "source/hurt-NE.png",
+      "sourceSize": [
+        1774,
+        887
+      ],
+      "rowBreak": 453,
+      "scale": 0.45023696682464454,
+      "scaling": "one constant scale per clip based on standing neutral, never normalize individual poses",
+      "alignment": "boot center and ground",
+      "alpha": true,
+      "endpointPolicy": "last frame is exact first-frame neutral"
+    },
+    {
+      "clip": "hurt-E",
+      "frames": 8,
+      "source": "source/hurt-E.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "rowBreak": 513,
+      "scale": 0.42035398230088494,
+      "scaling": "one constant scale per clip based on standing neutral, never normalize individual poses",
+      "alignment": "boot center and ground",
+      "alpha": true,
+      "endpointPolicy": "last frame is exact first-frame neutral"
+    },
+    {
+      "clip": "hurt-SE",
+      "frames": 8,
+      "source": "source/hurt-SE.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "rowBreak": 521,
+      "scale": 0.45454545454545453,
+      "scaling": "one constant scale per clip based on standing neutral, never normalize individual poses",
+      "alignment": "boot center and ground",
+      "alpha": true,
+      "endpointPolicy": "last frame is exact first-frame neutral"
+    },
+    {
+      "clip": "hurt-S",
+      "frames": 8,
+      "source": "source/hurt-S.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "rowBreak": 520,
+      "scale": 0.4668304668304668,
+      "scaling": "one constant scale per clip based on standing neutral, never normalize individual poses",
+      "alignment": "boot center and ground",
+      "alpha": true,
+      "endpointPolicy": "last frame is exact first-frame neutral"
+    },
+    {
+      "clip": "hurt-SW",
+      "frames": 8,
+      "source": "source/hurt-SW.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "rowBreak": 526,
+      "scale": 0.46454767726161367,
+      "scaling": "one constant scale per clip based on standing neutral, never normalize individual poses",
+      "alignment": "boot center and ground",
+      "alpha": true,
+      "endpointPolicy": "last frame is exact first-frame neutral"
+    },
+    {
+      "clip": "hurt-W",
+      "frames": 8,
+      "source": "source/hurt-W.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "rowBreak": 523,
+      "scale": 0.41575492341356673,
+      "scaling": "one constant scale per clip based on standing neutral, never normalize individual poses",
+      "alignment": "boot center and ground",
+      "alpha": true,
+      "endpointPolicy": "last frame is exact first-frame neutral"
+    },
+    {
+      "clip": "hurt-NW",
+      "frames": 8,
+      "source": "source/hurt-NW.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "rowBreak": 524,
+      "scale": 0.48223350253807107,
+      "scaling": "one constant scale per clip based on standing neutral, never normalize individual poses",
+      "alignment": "boot center and ground",
+      "alpha": true,
+      "endpointPolicy": "last frame is exact first-frame neutral"
+    },
+    {
+      "clip": "death-N",
+      "frames": 8,
+      "source": "source/death-N.png",
+      "sourceSize": [
+        1774,
+        887
+      ],
+      "rowBreak": 552,
+      "scale": 0.46228710462287104,
+      "scaling": "one constant scale per clip based on standing neutral, never normalize individual poses",
+      "alignment": "whole-body center and floor; requires fall-path visual review",
+      "alpha": true,
+      "endpointPolicy": "last two frames share exact settled corpse pixels"
+    },
+    {
+      "clip": "death-NE",
+      "frames": 8,
+      "source": "source/death-NE.png",
+      "sourceSize": [
+        1774,
+        887
+      ],
+      "rowBreak": 558,
+      "scale": 0.4398148148148148,
+      "scaling": "one constant scale per clip based on standing neutral, never normalize individual poses",
+      "alignment": "whole-body center and floor; requires fall-path visual review",
+      "alpha": true,
+      "endpointPolicy": "last two frames share exact settled corpse pixels"
+    },
+    {
+      "clip": "death-E",
+      "frames": 8,
+      "source": "source/death-E.png",
+      "sourceSize": [
+        1774,
+        887
+      ],
+      "rowBreak": 553,
+      "scale": 0.46454767726161367,
+      "scaling": "one constant scale per clip based on standing neutral, never normalize individual poses",
+      "alignment": "whole-body center and floor; requires fall-path visual review",
+      "alpha": true,
+      "endpointPolicy": "last two frames share exact settled corpse pixels"
+    },
+    {
+      "clip": "death-SE",
+      "frames": 8,
+      "source": "source/death-SE.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "rowBreak": 614,
+      "scale": 0.47146401985111663,
+      "scaling": "one constant scale per clip based on standing neutral, never normalize individual poses",
+      "alignment": "whole-body center and floor; requires fall-path visual review",
+      "alpha": true,
+      "endpointPolicy": "last two frames share exact settled corpse pixels"
+    },
+    {
+      "clip": "death-S",
+      "frames": 8,
+      "source": "source/death-S.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "rowBreak": 639,
+      "scale": 0.48717948717948717,
+      "scaling": "one constant scale per clip based on standing neutral, never normalize individual poses",
+      "alignment": "whole-body center and floor; requires fall-path visual review",
+      "alpha": true,
+      "endpointPolicy": "last two frames share exact settled corpse pixels"
+    },
+    {
+      "clip": "death-SW",
+      "frames": 8,
+      "source": "source/death-SW.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "rowBreak": 613,
+      "scale": 0.49868766404199477,
+      "scaling": "one constant scale per clip based on standing neutral, never normalize individual poses",
+      "alignment": "whole-body center and floor; requires fall-path visual review",
+      "alpha": true,
+      "endpointPolicy": "last two frames share exact settled corpse pixels"
+    },
+    {
+      "clip": "death-W",
+      "frames": 8,
+      "source": "source/death-W.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "rowBreak": 645,
+      "scale": 0.40948275862068967,
+      "scaling": "one constant scale per clip based on standing neutral, never normalize individual poses",
+      "alignment": "whole-body center and floor; requires fall-path visual review",
+      "alpha": true,
+      "endpointPolicy": "last two frames share exact settled corpse pixels"
+    },
+    {
+      "clip": "death-NW",
+      "frames": 8,
+      "source": "source/death-NW.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "rowBreak": 576,
+      "scale": 0.48717948717948717,
+      "scaling": "one constant scale per clip based on standing neutral, never normalize individual poses",
+      "alignment": "whole-body center and floor; requires fall-path visual review",
+      "alpha": true,
+      "endpointPolicy": "last two frames share exact settled corpse pixels"
+    }
+  ],
+  "frameCount": 128
+}

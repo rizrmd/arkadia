@@ -1,0 +1,92 @@
+{
+  "result": {
+    "ok": true,
+    "rows": [
+      {
+        "anchor": {
+          "x": 50,
+          "groundY": 80,
+          "lift": 0
+        },
+        "pixel": [
+          50,
+          70
+        ],
+        "base": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "actual": [
+          137,
+          142,
+          150,
+          255
+        ],
+        "expected": 137
+      },
+      {
+        "anchor": {
+          "x": 130,
+          "groundY": 140,
+          "lift": 0
+        },
+        "pixel": [
+          130,
+          130
+        ],
+        "base": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "actual": [
+          137,
+          142,
+          150,
+          255
+        ],
+        "expected": 137
+      },
+      {
+        "anchor": {
+          "x": 210,
+          "groundY": 120,
+          "lift": 40
+        },
+        "pixel": [
+          210,
+          70
+        ],
+        "base": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "actual": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "expected": 255
+      }
+    ],
+    "batches": [
+      {
+        "textures": 1,
+        "size": 18
+      }
+    ],
+    "anchorOnlyPixel": 255,
+    "perOwnerTilePixels": [
+      255,
+      137
+    ],
+    "failures": []
+  },
+  "errors": []
+}

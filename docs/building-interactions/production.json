@@ -1,0 +1,239 @@
+{
+  "at": "2026-10-29T11:23:48.445Z",
+  "url": "https://arkodia.online",
+  "commit": "a19fb7a1f90adee064ef2fdc1cc314e8b93854e5",
+  "health": {
+    "build": "a19fb7a1f90adee064ef2fdc1cc314e8b93854e5",
+    "movementBoundary": "hill-foot-contour-v1",
+    "ok": true,
+    "protocol": 1,
+    "rooms": 2
+  },
+  "checks": [
+    "Server asset sizes report cached WebP sizes as designed",
+    "Retained /core-upgrade/kit-v2/manifest.json",
+    "Retained /farm-panels/kit/manifest.json",
+    "Retained /lumber-panels/kit/manifest.json",
+    "Retained /kitchen-panels/kit/manifest.json",
+    "Retained /walls-panels/kit/manifest.json",
+    "Retained /mine-panels/kit/manifest.json",
+    "Retained /ground-textures/evidence/release-verification.json",
+    "Healthy deployed binary matches release commit",
+    "Every release file matches SHA-256 or decoded screenshot pixels",
+    "Live entry point references this release bundle",
+    "Live world bundle contains all six panel integrations and eligibility feedback",
+    "Ground/editor/prior-panel ancestry retained",
+    "Published map remains readable and retired editor routes retained",
+    "Published map byte-identical before and after padding release"
+  ],
+  "files": [
+    "/asset-sizes.json",
+    "/index.html",
+    "/building-interactions/browser.json",
+    "/building-interactions/desktop.png",
+    "/building-interactions/knowledge.md",
+    "/building-interactions/mobile.png",
+    "/building-interactions/padding-core-desktop.png",
+    "/building-interactions/padding-core-mobile.png",
+    "/building-interactions/padding-farm-desktop.png",
+    "/building-interactions/padding-farm-mobile.png",
+    "/building-interactions/padding-kitchen-desktop.png",
+    "/building-interactions/padding-kitchen-mobile.png",
+    "/building-interactions/padding-knowledge.md",
+    "/building-interactions/padding-lumber-desktop.png",
+    "/building-interactions/padding-lumber-mobile.png",
+    "/building-interactions/padding-mine-desktop.png",
+    "/building-interactions/padding-mine-mobile.png",
+    "/building-interactions/padding-walls-desktop.png",
+    "/building-interactions/padding-walls-mobile.png",
+    "/building-interactions/world-browser.json",
+    "/assets/chunk-3RFD363Z-BI6cQP4u.js",
+    "/assets/chunk-4R3OWZBT-BD6vpul8.js",
+    "/assets/chunk-5JFECSLO-CEm-FhCM.js",
+    "/assets/chunk-DDYEJ3XB-THwkkkuN.js",
+    "/assets/chunk-NKQMBJ4W-DhncVxxD.js",
+    "/assets/chunk-WCBGJP2D-CpuWmkW4.js",
+    "/assets/chunk-ZQBYP5NH-CD_rdFpK.js",
+    "/assets/dist-DdwIGc0q.js",
+    "/assets/export-ChqyjRCH.js",
+    "/assets/frozen-frontier-sprites-DbttR55M.js",
+    "/assets/index-D7nXx0XE.js",
+    "/assets/loader-C6a8kUTS.js",
+    "/assets/main-DVxxnLPX.js",
+    "/assets/materials-CWDNucib.js",
+    "/assets/pixi-D0er08rP.js",
+    "/assets/pixi-runtime-CA1NfsWd.js",
+    "/assets/render-diagnostics-DNBiSKAv.js",
+    "/assets/render-quality-BoFiw7MZ.js",
+    "/assets/rolldown-runtime-XKyaHtl9.js",
+    "/assets/scene-Bo2-0aTJ.js",
+    "/assets/shadow-actor-batch-pTmA1cSN.js",
+    "/assets/shadow-actor-frame-audit-_jmhQifn.js",
+    "/assets/shadow-family-audit-Dpgy7VFp.js",
+    "/assets/shadow-field-worker-P-hTkuJD.js",
+    "/assets/shadow-fixture-Ds5Pdxr6.js",
+    "/assets/shadow-gateway-frame-audit-BU1nEDdT.js",
+    "/assets/shadow-glb-audit-C1KWGvBT.js",
+    "/assets/shadow-live-fixture-B7xjSxh5.js",
+    "/assets/shadow-shared-atlas-fixture-DeIH4LdF.js",
+    "/assets/skill-swoosh-DBSJ__0c.wav"
+  ],
+  "browser": {
+    "errors": [],
+    "checks": [
+      "desktop core header clearances",
+      "desktop farm header clearances",
+      "desktop lumber header clearances",
+      "desktop kitchen header clearances",
+      "desktop walls header clearances",
+      "desktop mine header clearances",
+      "mobile core header clearances",
+      "mobile farm header clearances",
+      "mobile lumber header clearances",
+      "mobile kitchen header clearances",
+      "mobile walls header clearances",
+      "mobile mine header clearances",
+      "All six physical Pixi badge/button hit tests",
+      "Disabled artwork and noninteractive actions",
+      "Escape and outside pointer sequence restore badges without world actions",
+      "160 distance inclusive boundary; 161 and former 239 excluded",
+      "Live Gold/Wood/prerequisite changes",
+      "0.75 previous desktop/mobile fit and proportional hit areas",
+      "Co-op suppression",
+      "Header clearances, relocated close hit areas and target/reset hit tests across desktop/mobile"
+    ],
+    "panels": [
+      {
+        "i": 0,
+        "panel": {
+          "x": 500,
+          "y": 356.85,
+          "width": 405,
+          "height": 350.70000000000005,
+          "scale": 0.75
+        },
+        "button": {
+          "x": 500,
+          "y": 455.25,
+          "width": 220.5,
+          "height": 40.5,
+          "eventMode": "none",
+          "tint": 10066329,
+          "texture": "http://127.0.0.1:5207/core-upgrade/kit-v2/button-disabled.png"
+        }
+      },
+      {
+        "i": 1,
+        "panel": {
+          "x": 500,
+          "y": 381.75,
+          "width": 405,
+          "height": 316.5,
+          "scale": 0.75
+        },
+        "button": {
+          "x": 500,
+          "y": 485.25,
+          "width": 220.5,
+          "height": 40.5,
+          "eventMode": "none",
+          "tint": 10066329,
+          "texture": "http://127.0.0.1:5207/core-upgrade/kit/button-disabled.png"
+        }
+      },
+      {
+        "i": 2,
+        "panel": {
+          "x": 500,
+          "y": 381.75,
+          "width": 405,
+          "height": 316.5,
+          "scale": 0.75
+        },
+        "button": {
+          "x": 500,
+          "y": 485.25,
+          "width": 220.5,
+          "height": 40.5,
+          "eventMode": "none",
+          "tint": 10066329,
+          "texture": "http://127.0.0.1:5207/core-upgrade/kit/button-disabled.png"
+        }
+      },
+      {
+        "i": 3,
+        "panel": {
+          "x": 500,
+          "y": 381.75,
+          "width": 405,
+          "height": 316.5,
+          "scale": 0.75
+        },
+        "button": {
+          "x": 500,
+          "y": 485.25,
+          "width": 220.5,
+          "height": 40.5,
+          "eventMode": "none",
+          "tint": 10066329,
+          "texture": "http://127.0.0.1:5207/core-upgrade/kit/button-disabled.png"
+        }
+      },
+      {
+        "i": 4,
+        "panel": {
+          "x": 500,
+          "y": 356.85,
+          "width": 405,
+          "height": 350.70000000000005,
+          "scale": 0.75
+        },
+        "button": {
+          "x": 500,
+          "y": 455.25,
+          "width": 220.5,
+          "height": 40.5,
+          "eventMode": "none",
+          "tint": 10066329,
+          "texture": "http://127.0.0.1:5207/core-upgrade/kit-v2/button-disabled.png"
+        }
+      },
+      {
+        "i": 5,
+        "panel": {
+          "x": 500,
+          "y": 356.85,
+          "width": 405,
+          "height": 350.70000000000005,
+          "scale": 0.75
+        },
+        "button": {
+          "x": 500,
+          "y": 455.25,
+          "width": 220.5,
+          "height": 40.5,
+          "eventMode": "none",
+          "tint": 10066329,
+          "texture": "http://127.0.0.1:5207/core-upgrade/kit-v2/button-disabled.png"
+        }
+      }
+    ],
+    "pass": true
+  },
+  "world": {
+    "pass": false,
+    "errors": [],
+    "checks": [],
+    "limit": "One bounded 60-second world initialization attempt; no production save mutation.",
+    "failure": "TimeoutError: page.waitForFunction: Timeout 60000ms exceeded.",
+    "loading": "\n \n \n \n  \n  \n  \n  \n   \n   \n   \n  \n  \n   \n    Preparing visibility · 1/3 ready\n    97%\n   \n   Try Again\n  \n \n"
+  },
+  "environmentRevision": 3,
+  "environmentHash": "ad5a14c9496d1ee19e5c6eeae56a84bd85df5c548f137a5a098f5bbba16fd0cf",
+  "pass": true,
+  "mapPreservation": {
+    "revision": 3,
+    "sha256": "4aaf8961d8a4840d0244a1132d13c3b0a6df01d3888147bc7421ebb34eeb982e",
+    "unchanged": true
+  }
+}

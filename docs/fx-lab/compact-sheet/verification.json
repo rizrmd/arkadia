@@ -1,0 +1,12 @@
+{
+  "pass": true,
+  "checks": [
+    "FPS and pivot replace existing values; repeated metadata edits do not encode the image",
+    "Authenticated asset save succeeds independently of game Apply",
+    "Use asset updates layer draft; Save and Apply persist against isolated Go storage",
+    "390px: pinned actions fit; wheel scrolling does not rebuild sidebar",
+    "844px: pinned actions fit; wheel scrolling does not rebuild sidebar",
+    "Real touch drag scrolls retained sheet controls without sidebar rebuilds"
+  ],
+  "errors": []
+}

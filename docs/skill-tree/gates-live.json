@@ -1,0 +1,57 @@
+{
+ "base": "https://ark-whachat.fural.space",
+ "runs": [
+  {
+   "level": 2,
+   "pending": 1,
+   "offers": [
+    "heal",
+    "rift-trap",
+    "rift-bolt"
+   ],
+   "dialog": true,
+   "shot": "live-gates-first-levelup.webp",
+   "tree": {
+    "rift-bolt": "Lv. 1",
+    "rift-dash": "open",
+    "rift-trap": "open",
+    "second-wind": "Lv. 1",
+    "titan-strike": "open",
+    "astral-cleave": "4 pts",
+    "seismic-slam": "4 pts",
+    "arc-nova": "4 pts",
+    "soul-feast": "4 pts",
+    "chrono-surge": "8 pts",
+    "furnace-heart": "8 pts",
+    "ascendant-star": "Lv. 20"
+   },
+   "treeShot": "live-gates-tree-locked.webp"
+  },
+  {
+   "level": 2,
+   "pending": 1,
+   "offers": [
+    "heal",
+    "rift-dash",
+    "rift-bolt"
+   ],
+   "dialog": true,
+   "tree": {
+    "rift-bolt": "Lv. 1",
+    "rift-dash": "open",
+    "rift-trap": "open",
+    "second-wind": "Lv. 1",
+    "titan-strike": "open",
+    "astral-cleave": "4 pts",
+    "seismic-slam": "4 pts",
+    "arc-nova": "4 pts",
+    "soul-feast": "4 pts",
+    "chrono-surge": "8 pts",
+    "furnace-heart": "8 pts",
+    "ascendant-star": "Lv. 20"
+   }
+  }
+ ],
+ "errors": [],
+ "ok": true
+}

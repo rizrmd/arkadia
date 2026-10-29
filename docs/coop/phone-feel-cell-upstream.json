@@ -1,0 +1,75 @@
+{
+ "build": "reference",
+ "cpuThrottle": 1,
+ "network": {
+  "model": "cell",
+  "base": 40,
+  "jitter": 50,
+  "spike": 0.03,
+  "spikeMs": 120,
+  "wake": 100,
+  "stall": 0.025,
+  "stallMs": [
+   250,
+   500
+  ]
+ },
+ "offline": {
+  "world": {
+   "frames": 611,
+   "medianPxPerS": 90.6,
+   "cv": 0.509,
+   "stalls": 119,
+   "jumps": 0
+  },
+  "screen": {
+   "frames": 611,
+   "medianPxPerS": 47,
+   "cv": 0.843,
+   "stalls": 237,
+   "jumps": 227
+  },
+  "frames": {
+   "medianMs": 16.7,
+   "p95Ms": 16.7,
+   "maxMs": 33.4,
+   "over50": 0
+  }
+ },
+ "coop": {
+  "world": {
+   "frames": 583,
+   "medianPxPerS": 85.2,
+   "cv": 0.677,
+   "stalls": 118,
+   "jumps": 28
+  },
+  "screen": {
+   "frames": 583,
+   "medianPxPerS": 58,
+   "cv": 0.949,
+   "stalls": 195,
+   "jumps": 91
+  },
+  "frames": {
+   "medianMs": 16.7,
+   "p95Ms": 33.3,
+   "maxMs": 33.4,
+   "over50": 0
+  },
+  "server": {
+   "queuedMedian": 4,
+   "queuedP95": 6,
+   "trailPxMedian": 28.3,
+   "trailPxP95": 48.9
+  },
+  "net": {
+   "corrections": 14,
+   "maxCorrection": 59.4,
+   "totalCorrection": 0,
+   "pace": 1.05,
+   "margin": 4,
+   "rtt": 180
+  }
+ }
+}

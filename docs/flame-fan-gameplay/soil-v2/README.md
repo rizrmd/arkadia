@@ -1,0 +1,17 @@
+## Approved soil reconciliation
+
+The prior gameplay renderer used four crops (two crusts, straight crack and coal), omitted branching cracks/ash/char/source low flames/smoke/cinders, and hid all soil below rank 3. This correction adopts the approved static revision-6 soil composition: 29 original atlas crops and both supplemental smoke parts. The unused haze crop and rejected giant plates-v3 remain excluded. Original source images are unchanged.
+
+Ground plates, ash/scorch/fragments/perimeter, straight/bent/branching/terminal cracks, coal and char are baked at 1024 pixels per cast. Seventy-two pooled upright sprites retain low flame seams, accents/licks, smoke, cinders, embers, sparks and subtle source glows. Ground uses exact combat projection and clipping; upright layers retain their feet and object/wall occlusion. The approved projecting burst remains unchanged. At most three casts are retained, with one ground upload per cast rather than one per frame.
+
+Ranks 1–2 show transient soil only during the 850 ms burst. Ranks 3–5 retain one-second Burn Soil and five scheduled events; unapproved tick damage remains unset. Soil holds visibility before a continuous 420 ms fade, ending at the same existing expiry. No progression, damage, cooldown, radius, server or network timing change.
+
+All-rank desktop 1440×900 and touch 390×844 checks use compiled actual encounters/combat with test-only simulation stepping and the server's default Empty environment fixture. Three forward targets take initial damage, rear/range targets remain excluded, zero projectiles, correct soil rank gates/ticks/expiry, keyboard/touch HUD inspection and Pixi-only controls pass. GPU parity/pool/context/upload checks pass. Screenshot capture explicitly renders the real Pixi application before reading its framebuffer. Blank pre-render capture attempts are excluded. Browser viewport emulation is not a physical-device performance benchmark.
+
+## Public acceptance
+
+Runtime 8cd0a2df is deployed at https://arkodia.online. Health/server build and client manifest agree. All 40 compiled assets match hashes. All 31 soil images plus the approved burst and independently approved ember-v2 image have zero decoded alpha or visible RGB differences. Original PNG/source files remain unchanged. The old ark-whachat alias currently returns 404; canonical arkodia.online is healthy.
+
+The unmodified deployed game passes active and tail captures for every rank at 1440×900 and touch 390×844, plus post-burst lingering captures at approximately 875–908 ms for ranks 3–5. Browser-clock stepping drives the normal simulation; existing diagnostics seed ranks/targets. Continuous presentation is paused to reduce software-renderer load, then the actual Pixi application renders each capture. This does not claim organic progression or physical-device GPU performance. Source-level controlled combat checks, final GPU parity/pool/context/upload checks, progression, Rift Dash input checks, TypeScript/build and all Go tests pass. Two-client protocol smoke also passes authoritative shared state and forged-message rejection against the exact deployed binary. No Flame Fan server/network timing code changed.
+
+The same three representative live PNGs are attached to the task discussion and embedded in the existing English Flame Fan Knowledge page. All earlier history remains. The independent ember-v2, latest Rift Dash and square draggable floating skill preview are preserved in this cumulative release.

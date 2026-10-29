@@ -1,0 +1,22 @@
+{
+  "game_commit": "912328f88a9c870e1f7a7169dbdf4b50e9ce3730",
+  "branch": "feat/stronghold",
+  "url": "https://ark-whachat.fural.space",
+  "deployment": "existing scripts/fural-deploy.sh from clean detached worktree; supported release-layer publisher",
+  "game_layer": "1792981034494-game-912328f8-6a8370406d04",
+  "health": {
+    "ok": true,
+    "protocol": 1
+  },
+  "tests": [
+    "TypeScript noEmit",
+    "full production build and deployment integration checks",
+    "Go all packages including manual dash queue, direction, cooldown, invalid aim, equipment and auto-cast isolation",
+    "local desktop / portrait touch / landscape touch",
+    "live desktop / portrait touch / landscape touch, exact drag direction and pointer cancel"
+  ],
+  "browser_testing": "Playwright Chromium; mobile devices use touch emulation",
+  "original_references_verified_by_sha256": true,
+  "knowledge_page": "NKBD9e0bb13ac2dffbd264a34d98",
+  "peer_uncommitted_files_left_untouched": 901
+}

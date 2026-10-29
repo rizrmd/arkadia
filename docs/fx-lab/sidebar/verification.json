@@ -1,0 +1,14 @@
+{
+  "pass": true,
+  "base": "http://127.0.0.1:5194",
+  "checks": [
+    "Equal Hero/Skill row; removed lower controls and tabs; layer toolbar above list",
+    "Layer selection, visibility, undo and redo update actual draft",
+    "Solo, pause, playback speed and timeline scrub remain functional",
+    "Expandable properties preserve keyboard editing",
+    "Unauthorized writes rejected; existing credential dialog works; Save and Apply remain separate",
+    "Hero selector changes hero and skill catalog",
+    "Mobile renders; game controls are Pixi; no JavaScript errors"
+  ],
+  "errors": []
+}

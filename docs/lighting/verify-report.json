@@ -1,0 +1,397 @@
+{
+ "phases": {
+  "desktop-night": {
+   "phase": "Night",
+   "state": "on",
+   "flicker": "block",
+   "lights": 28,
+   "lightPaints": 3,
+   "surfacePaints": 2,
+   "shadowPaints": 2,
+   "sun": "none",
+   "tint": "60,72,120",
+   "snow": "url(\"data:",
+   "sameTransform": true,
+   "layers": [
+    "snow",
+    "world-surface",
+    "world-glow"
+   ]
+  },
+  "desktop-dawn": {
+   "phase": "Dawn",
+   "state": "on",
+   "flicker": "block",
+   "lights": 28,
+   "lightPaints": 4,
+   "surfacePaints": 2,
+   "shadowPaints": 2,
+   "sun": "none",
+   "tint": "187,163,171",
+   "snow": "url(\"data:",
+   "sameTransform": true,
+   "layers": [
+    "snow",
+    "world-surface",
+    "world-glow"
+   ]
+  },
+  "desktop-day": {
+   "phase": "Day",
+   "state": "off",
+   "flicker": "none",
+   "lights": 28,
+   "lightPaints": 3,
+   "surfacePaints": 2,
+   "shadowPaints": 2,
+   "sun": "0.5000",
+   "tint": "off",
+   "snow": "url(\"data:",
+   "sameTransform": true,
+   "layers": [
+    "snow",
+    "world-surface"
+   ]
+  },
+  "desktop-dusk": {
+   "phase": "Dusk",
+   "state": "on",
+   "flicker": "block",
+   "lights": 28,
+   "lightPaints": 3,
+   "surfacePaints": 2,
+   "shadowPaints": 2,
+   "sun": "none",
+   "tint": "167,139,159",
+   "snow": "url(\"data:",
+   "sameTransform": true,
+   "layers": [
+    "snow",
+    "world-surface",
+    "world-glow"
+   ]
+  },
+  "wide-night": {
+   "phase": "Night",
+   "state": "on",
+   "flicker": "block",
+   "lights": 28,
+   "lightPaints": 3,
+   "surfacePaints": 2,
+   "shadowPaints": 2,
+   "sun": "none",
+   "tint": "60,72,120",
+   "snow": "url(\"data:",
+   "sameTransform": true,
+   "layers": [
+    "snow",
+    "world-surface",
+    "world-glow"
+   ]
+  },
+  "wide-dawn": {
+   "phase": "Dawn",
+   "state": "on",
+   "flicker": "block",
+   "lights": 28,
+   "lightPaints": 4,
+   "surfacePaints": 2,
+   "shadowPaints": 2,
+   "sun": "none",
+   "tint": "187,163,171",
+   "snow": "url(\"data:",
+   "sameTransform": true,
+   "layers": [
+    "snow",
+    "world-surface",
+    "world-glow"
+   ]
+  },
+  "wide-day": {
+   "phase": "Day",
+   "state": "off",
+   "flicker": "none",
+   "lights": 28,
+   "lightPaints": 3,
+   "surfacePaints": 2,
+   "shadowPaints": 2,
+   "sun": "0.5000",
+   "tint": "off",
+   "snow": "url(\"data:",
+   "sameTransform": true,
+   "layers": [
+    "snow",
+    "world-surface"
+   ]
+  },
+  "wide-dusk": {
+   "phase": "Dusk",
+   "state": "on",
+   "flicker": "block",
+   "lights": 28,
+   "lightPaints": 3,
+   "surfacePaints": 2,
+   "shadowPaints": 2,
+   "sun": "none",
+   "tint": "167,139,159",
+   "snow": "url(\"data:",
+   "sameTransform": true,
+   "layers": [
+    "snow",
+    "world-surface",
+    "world-glow"
+   ]
+  },
+  "portrait-night": {
+   "phase": "Night",
+   "state": "on",
+   "flicker": "block",
+   "lights": 28,
+   "lightPaints": 3,
+   "surfacePaints": 2,
+   "shadowPaints": 2,
+   "sun": "none",
+   "tint": "60,72,120",
+   "snow": "url(\"data:",
+   "sameTransform": true,
+   "layers": [
+    "snow",
+    "world-surface",
+    "world-glow"
+   ]
+  },
+  "portrait-dawn": {
+   "phase": "Dawn",
+   "state": "on",
+   "flicker": "block",
+   "lights": 28,
+   "lightPaints": 3,
+   "surfacePaints": 2,
+   "shadowPaints": 2,
+   "sun": "none",
+   "tint": "187,163,171",
+   "snow": "url(\"data:",
+   "sameTransform": true,
+   "layers": [
+    "snow",
+    "world-surface",
+    "world-glow"
+   ]
+  },
+  "portrait-day": {
+   "phase": "Day",
+   "state": "off",
+   "flicker": "none",
+   "lights": 28,
+   "lightPaints": 3,
+   "surfacePaints": 2,
+   "shadowPaints": 2,
+   "sun": "0.5000",
+   "tint": "off",
+   "snow": "url(\"data:",
+   "sameTransform": true,
+   "layers": [
+    "snow",
+    "world-surface"
+   ]
+  },
+  "portrait-dusk": {
+   "phase": "Dusk",
+   "state": "on",
+   "flicker": "block",
+   "lights": 28,
+   "lightPaints": 4,
+   "surfacePaints": 2,
+   "shadowPaints": 2,
+   "sun": "none",
+   "tint": "167,139,159",
+   "snow": "url(\"data:",
+   "sameTransform": true,
+   "layers": [
+    "snow",
+    "world-surface",
+    "world-glow"
+   ]
+  },
+  "landscape-night": {
+   "phase": "Night",
+   "state": "on",
+   "flicker": "block",
+   "lights": 28,
+   "lightPaints": 3,
+   "surfacePaints": 2,
+   "shadowPaints": 2,
+   "sun": "none",
+   "tint": "60,72,120",
+   "snow": "url(\"data:",
+   "sameTransform": true,
+   "layers": [
+    "snow",
+    "world-surface",
+    "world-glow"
+   ]
+  },
+  "landscape-dawn": {
+   "phase": "Dawn",
+   "state": "on",
+   "flicker": "block",
+   "lights": 28,
+   "lightPaints": 3,
+   "surfacePaints": 2,
+   "shadowPaints": 2,
+   "sun": "none",
+   "tint": "187,163,171",
+   "snow": "url(\"data:",
+   "sameTransform": true,
+   "layers": [
+    "snow",
+    "world-surface",
+    "world-glow"
+   ]
+  },
+  "landscape-day": {
+   "phase": "Day",
+   "state": "off",
+   "flicker": "none",
+   "lights": 28,
+   "lightPaints": 3,
+   "surfacePaints": 2,
+   "shadowPaints": 2,
+   "sun": "0.5000",
+   "tint": "off",
+   "snow": "url(\"data:",
+   "sameTransform": true,
+   "layers": [
+    "snow",
+    "world-surface"
+   ]
+  },
+  "landscape-dusk": {
+   "phase": "Dusk",
+   "state": "on",
+   "flicker": "block",
+   "lights": 28,
+   "lightPaints": 3,
+   "surfacePaints": 2,
+   "shadowPaints": 2,
+   "sun": "none",
+   "tint": "167,139,159",
+   "snow": "url(\"data:",
+   "sameTransform": true,
+   "layers": [
+    "snow",
+    "world-surface",
+    "world-glow"
+   ]
+  }
+ },
+ "buildings": {
+  "forge": {
+   "peak": 765,
+   "lit": 935
+  },
+  "barracks": {
+   "peak": 765,
+   "lit": 763
+  },
+  "altar": {
+   "peak": 765,
+   "lit": 3141
+  },
+  "mage": {
+   "peak": 765,
+   "lit": 1860
+  },
+  "expedition": {
+   "peak": 765,
+   "lit": 1822
+  },
+  "mine": {
+   "peak": 765,
+   "lit": 3879
+  },
+  "gate": {
+   "peak": 765,
+   "lit": 2283
+  }
+ },
+ "checks": [
+  "every building, gateway and brazier sprite has authored light anchors",
+  "4 phases x 4 viewports: phase, layer state, snow tint and input surface",
+  "night lightmap: ambient 252/765, 1680 emissive white pixels, light at all 7 buildings",
+  "night screen luma 42.4 vs day 110.7",
+  "clock ticks: lightmap paints 4->8, 3 shadow rebuilds and 0 world re-rasters for 3 sun steps",
+  "sun step (preset click to shadows on screen): median 155.5 ms, max 183.3 ms, 0 world re-rasters",
+  "in-game clock: slider and presets relight, sun shadows by day only, pinned hour remembered, Live restores the cycle",
+  "clock drag 05:00 -> 17:00: p95 50.0 ms, 0 world re-rasters while dragging or on release",
+  "?lighting=night|day persists across reloads, ?lighting=dynamic restores the clock",
+  "night roof hit-test selects the Forge and relights the selection",
+  "prefers-reduced-motion disables flicker",
+  "mobile pan (390x844, DPR 3, 4x CPU, best of 3): zero world repaints; median day 16.4 / night 16.6 ms, p95 day 20.7 / night 18.9 ms"
+ ],
+ "screenLuma": {
+  "day": 110.7288590461284,
+  "night": 42.40576220679026
+ },
+ "sunStep": {
+  "paints": 0,
+  "median": 155.5,
+  "max": 183.3
+ },
+ "clockDrag": {
+  "during": {
+   "paints": 0,
+   "state": "preview",
+   "tint": "preview"
+  },
+  "after": {
+   "paints": 0,
+   "shadows": 1,
+   "state": "on",
+   "sun": "0.7083"
+  },
+  "p95": 50
+ },
+ "pan": {
+  "day": [
+   {
+    "p50": 19.3,
+    "p95": 66.5,
+    "flickerHidden": true
+   },
+   {
+    "p50": 16.4,
+    "p95": 24.6,
+    "flickerHidden": true
+   },
+   {
+    "p50": 16.7,
+    "p95": 20.7,
+    "flickerHidden": true
+   }
+  ],
+  "night": [
+   {
+    "p50": 17.4,
+    "p95": 63.6,
+    "flickerHidden": true
+   },
+   {
+    "p50": 16.6,
+    "p95": 22,
+    "flickerHidden": true
+   },
+   {
+    "p50": 16.6,
+    "p95": 18.9,
+    "flickerHidden": true
+   }
+  ],
+  "gate": {
+   "dayP50": 16.4,
+   "nightP50": 16.6,
+   "dayP95": 20.7,
+   "nightP95": 18.9
+  }
+ }
+}

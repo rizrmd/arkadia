@@ -1,0 +1,1539 @@
+{
+  "pass": true,
+  "url": "https://ark-whachat.fural.space/ember-warden-review/flame-fan-flipbook/",
+  "reports": [
+    {
+      "width": 1440,
+      "height": 900,
+      "pass": true,
+      "state": {
+        "time": 0.92,
+        "level": 4,
+        "burnSoil": {
+          "enabled": true,
+          "active": true,
+          "ticks": 3,
+          "damagePerTick": null,
+          "balancePending": true
+        },
+        "impactMs": 220,
+        "duration": 1.4,
+        "paused": true,
+        "loop": true,
+        "speed": 1,
+        "day": true,
+        "cycles": 0,
+        "solo": -1,
+        "compare": true,
+        "source": "DA14f9840922edc53aa33bf53f",
+        "sourceUrl": "https://ark-whachat.fural.space/ember-warden-review/flame-fan-flipbook/hand-ignition-source.png",
+        "frames": 16,
+        "handFrame": 15,
+        "actors": 4,
+        "targets": 3,
+        "pixiUI": true,
+        "connected": false,
+        "nixieEmitters": 5,
+        "particleQuads": [
+          0,
+          0
+        ],
+        "layers": [
+          {
+            "name": "Ignition",
+            "visible": true,
+            "children": 1
+          },
+          {
+            "name": "Flame sheet",
+            "visible": true,
+            "children": 1
+          },
+          {
+            "name": "Curling tongues",
+            "visible": true,
+            "children": 7
+          },
+          {
+            "name": "Hot interior",
+            "visible": true,
+            "children": 1
+          },
+          {
+            "name": "Ground heat",
+            "visible": true,
+            "children": 1
+          },
+          {
+            "name": "Hit contacts",
+            "visible": true,
+            "children": 3
+          },
+          {
+            "name": "Embers",
+            "visible": true,
+            "children": 1
+          },
+          {
+            "name": "Smoke",
+            "visible": true,
+            "children": 1
+          },
+          {
+            "name": "Burn Soil",
+            "visible": true,
+            "children": 15
+          }
+        ],
+        "controls": [
+          {
+            "label": "Play",
+            "x": 364.4117647058823,
+            "y": 553.2352941176471
+          },
+          {
+            "label": "Replay",
+            "x": 502.0588235294117,
+            "y": 553.2352941176471
+          },
+          {
+            "label": "Loop: On",
+            "x": 639.7058823529412,
+            "y": 553.2352941176471
+          },
+          {
+            "label": "Speed: 1\u00d7",
+            "x": 777.3529411764705,
+            "y": 553.2352941176471
+          },
+          {
+            "label": "Day",
+            "x": 915,
+            "y": 553.2352941176471
+          },
+          {
+            "label": "Reference: On",
+            "x": 1052.6470588235293,
+            "y": 553.2352941176471
+          },
+          {
+            "label": "All layers \u2713",
+            "x": 364.4117647058823,
+            "y": 599.1176470588235
+          },
+          {
+            "label": "1 Ignition",
+            "x": 502.0588235294117,
+            "y": 599.1176470588235
+          },
+          {
+            "label": "2 Flame sheet",
+            "x": 639.7058823529412,
+            "y": 599.1176470588235
+          },
+          {
+            "label": "3 Curling tongues",
+            "x": 777.3529411764705,
+            "y": 599.1176470588235
+          },
+          {
+            "label": "4 Hot interior",
+            "x": 915,
+            "y": 599.1176470588235
+          },
+          {
+            "label": "5 Ground heat",
+            "x": 1052.6470588235293,
+            "y": 599.1176470588235
+          },
+          {
+            "label": "6 Hit contacts",
+            "x": 364.4117647058823,
+            "y": 645
+          },
+          {
+            "label": "7 Embers",
+            "x": 502.0588235294117,
+            "y": 645
+          },
+          {
+            "label": "8 Smoke",
+            "x": 639.7058823529412,
+            "y": 645
+          },
+          {
+            "label": "9 Burn Soil",
+            "x": 777.3529411764705,
+            "y": 645
+          },
+          {
+            "label": "Ignite 40ms",
+            "x": 915,
+            "y": 645
+          },
+          {
+            "label": "Open 150ms",
+            "x": 1052.6470588235293,
+            "y": 645
+          },
+          {
+            "label": "Roll 320ms",
+            "x": 364.4117647058823,
+            "y": 690.8823529411765
+          },
+          {
+            "label": "Fade 600ms",
+            "x": 502.0588235294117,
+            "y": 690.8823529411765
+          },
+          {
+            "label": "Level: 4",
+            "x": 639.7058823529412,
+            "y": 690.8823529411765
+          },
+          {
+            "label": "Tick +0.2s",
+            "x": 777.3529411764705,
+            "y": 690.8823529411765
+          },
+          {
+            "label": "Tick +0.4s",
+            "x": 915,
+            "y": 690.8823529411765
+          },
+          {
+            "label": "Tick +0.6s",
+            "x": 1052.6470588235293,
+            "y": 690.8823529411765
+          },
+          {
+            "label": "Tick +0.8s",
+            "x": 364.4117647058823,
+            "y": 736.7647058823529
+          },
+          {
+            "label": "Tick +1.0s",
+            "x": 502.0588235294117,
+            "y": 736.7647058823529
+          }
+        ],
+        "geometry": {
+          "reachScale": 0.6666666666666666,
+          "hand": [
+            171,
+            188
+          ],
+          "cameraScale": 1,
+          "targets": [
+            {
+              "old": [
+                487,
+                245
+              ],
+              "current": [
+                381.66666666666663,
+                245
+              ]
+            },
+            {
+              "old": [
+                417,
+                335
+              ],
+              "current": [
+                335,
+                335
+              ]
+            },
+            {
+              "old": [
+                536,
+                402
+              ],
+              "current": [
+                414.3333333333333,
+                402
+              ]
+            }
+          ],
+          "layers": [
+            {
+              "name": "Ignition",
+              "scaleX": 1,
+              "offsetX": 0,
+              "localBounds": {
+                "x": 145,
+                "y": 136,
+                "width": 52,
+                "height": 65
+              },
+              "oldForwardEdge": 197,
+              "currentForwardEdge": 197
+            },
+            {
+              "name": "Flame sheet",
+              "scaleX": 0.6666666666666666,
+              "offsetX": 57.00000000000001,
+              "localBounds": {
+                "x": 171,
+                "y": 188,
+                "width": 0,
+                "height": 0
+              },
+              "oldForwardEdge": 171,
+              "currentForwardEdge": 171
+            },
+            {
+              "name": "Curling tongues",
+              "scaleX": 0.6666666666666666,
+              "offsetX": 57.00000000000001,
+              "localBounds": {
+                "x": 192.83710610889153,
+                "y": 132.62363545699156,
+                "width": 402.98300368915346,
+                "height": 252.38959903414434
+              },
+              "oldForwardEdge": 595.820109798045,
+              "currentForwardEdge": 454.21340653203
+            },
+            {
+              "name": "Hot interior",
+              "scaleX": 0.6666666666666666,
+              "offsetX": 57.00000000000001,
+              "localBounds": {
+                "x": 120.40504521288966,
+                "y": 69.67858123141167,
+                "width": 449.2380992924614,
+                "height": 346.3067592280359
+              },
+              "oldForwardEdge": 569.6431445053511,
+              "currentForwardEdge": 436.7620963369007
+            },
+            {
+              "name": "Ground heat",
+              "scaleX": 0.6666666666666666,
+              "offsetX": 57.00000000000001,
+              "localBounds": {
+                "x": 174,
+                "y": 279,
+                "width": 392,
+                "height": 102
+              },
+              "oldForwardEdge": 566,
+              "currentForwardEdge": 434.3333333333333
+            },
+            {
+              "name": "Hit contacts",
+              "scaleX": 0.6666666666666666,
+              "offsetX": 57.00000000000001,
+              "localBounds": {
+                "x": 393,
+                "y": 163.6,
+                "width": 167,
+                "height": 215.00000000000003
+              },
+              "oldForwardEdge": 560,
+              "currentForwardEdge": 430.3333333333333
+            },
+            {
+              "name": "Embers",
+              "scaleX": 0.6666666666666666,
+              "offsetX": 57.00000000000001,
+              "localBounds": {
+                "x": 171,
+                "y": 188,
+                "width": 0,
+                "height": 0
+              },
+              "oldForwardEdge": 171,
+              "currentForwardEdge": 171
+            },
+            {
+              "name": "Smoke",
+              "scaleX": 0.6666666666666666,
+              "offsetX": 57.00000000000001,
+              "localBounds": {
+                "x": 171,
+                "y": 188,
+                "width": 0,
+                "height": 0
+              },
+              "oldForwardEdge": 171,
+              "currentForwardEdge": 171
+            },
+            {
+              "name": "Burn Soil",
+              "scaleX": 0.6666666666666666,
+              "offsetX": 57.00000000000001,
+              "localBounds": {
+                "x": 210,
+                "y": 277.11025254256714,
+                "width": 320,
+                "height": 100.88974745743286
+              },
+              "oldForwardEdge": 530,
+              "currentForwardEdge": 410.3333333333333
+            }
+          ]
+        },
+        "canvas": [
+          1440,
+          900
+        ]
+      },
+      "errors": [],
+      "failed": []
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "pass": true,
+      "state": {
+        "time": 0.92,
+        "level": 4,
+        "burnSoil": {
+          "enabled": true,
+          "active": true,
+          "ticks": 3,
+          "damagePerTick": null,
+          "balancePending": true
+        },
+        "impactMs": 220,
+        "duration": 1.4,
+        "paused": true,
+        "loop": true,
+        "speed": 1,
+        "day": true,
+        "cycles": 0,
+        "solo": -1,
+        "compare": false,
+        "source": "DA14f9840922edc53aa33bf53f",
+        "sourceUrl": "https://ark-whachat.fural.space/ember-warden-review/flame-fan-flipbook/hand-ignition-source.png",
+        "frames": 16,
+        "handFrame": 15,
+        "actors": 4,
+        "targets": 3,
+        "pixiUI": true,
+        "connected": false,
+        "nixieEmitters": 5,
+        "particleQuads": [
+          0,
+          0
+        ],
+        "layers": [
+          {
+            "name": "Ignition",
+            "visible": true,
+            "children": 1
+          },
+          {
+            "name": "Flame sheet",
+            "visible": true,
+            "children": 1
+          },
+          {
+            "name": "Curling tongues",
+            "visible": true,
+            "children": 7
+          },
+          {
+            "name": "Hot interior",
+            "visible": true,
+            "children": 1
+          },
+          {
+            "name": "Ground heat",
+            "visible": true,
+            "children": 1
+          },
+          {
+            "name": "Hit contacts",
+            "visible": true,
+            "children": 3
+          },
+          {
+            "name": "Embers",
+            "visible": true,
+            "children": 1
+          },
+          {
+            "name": "Smoke",
+            "visible": true,
+            "children": 1
+          },
+          {
+            "name": "Burn Soil",
+            "visible": true,
+            "children": 15
+          }
+        ],
+        "controls": [
+          {
+            "label": "Play",
+            "x": 70.6875,
+            "y": 449.3
+          },
+          {
+            "label": "Replay",
+            "x": 193.5375,
+            "y": 449.3
+          },
+          {
+            "label": "Loop: On",
+            "x": 316.3875,
+            "y": 449.3
+          },
+          {
+            "label": "Speed: 1\u00d7",
+            "x": 70.6875,
+            "y": 484.4
+          },
+          {
+            "label": "Day",
+            "x": 193.5375,
+            "y": 484.4
+          },
+          {
+            "label": "Reference: Off",
+            "x": 316.3875,
+            "y": 484.4
+          },
+          {
+            "label": "All layers \u2713",
+            "x": 70.6875,
+            "y": 519.5
+          },
+          {
+            "label": "1 Ignition",
+            "x": 193.5375,
+            "y": 519.5
+          },
+          {
+            "label": "2 Flame sheet",
+            "x": 316.3875,
+            "y": 519.5
+          },
+          {
+            "label": "3 Curling tongues",
+            "x": 70.6875,
+            "y": 554.5999999999999
+          },
+          {
+            "label": "4 Hot interior",
+            "x": 193.5375,
+            "y": 554.5999999999999
+          },
+          {
+            "label": "5 Ground heat",
+            "x": 316.3875,
+            "y": 554.5999999999999
+          },
+          {
+            "label": "6 Hit contacts",
+            "x": 70.6875,
+            "y": 589.6999999999999
+          },
+          {
+            "label": "7 Embers",
+            "x": 193.5375,
+            "y": 589.6999999999999
+          },
+          {
+            "label": "8 Smoke",
+            "x": 316.3875,
+            "y": 589.6999999999999
+          },
+          {
+            "label": "9 Burn Soil",
+            "x": 70.6875,
+            "y": 624.8
+          },
+          {
+            "label": "Ignite 40ms",
+            "x": 193.5375,
+            "y": 624.8
+          },
+          {
+            "label": "Open 150ms",
+            "x": 316.3875,
+            "y": 624.8
+          },
+          {
+            "label": "Roll 320ms",
+            "x": 70.6875,
+            "y": 659.9
+          },
+          {
+            "label": "Fade 600ms",
+            "x": 193.5375,
+            "y": 659.9
+          },
+          {
+            "label": "Level: 4",
+            "x": 316.3875,
+            "y": 659.9
+          },
+          {
+            "label": "Tick +0.2s",
+            "x": 70.6875,
+            "y": 695
+          },
+          {
+            "label": "Tick +0.4s",
+            "x": 193.5375,
+            "y": 695
+          },
+          {
+            "label": "Tick +0.6s",
+            "x": 316.3875,
+            "y": 695
+          },
+          {
+            "label": "Tick +0.8s",
+            "x": 70.6875,
+            "y": 730.1
+          },
+          {
+            "label": "Tick +1.0s",
+            "x": 193.5375,
+            "y": 730.1
+          }
+        ],
+        "geometry": {
+          "reachScale": 0.6666666666666666,
+          "hand": [
+            171,
+            188
+          ],
+          "cameraScale": 1.23,
+          "targets": [
+            {
+              "old": [
+                487,
+                245
+              ],
+              "current": [
+                381.66666666666663,
+                245
+              ]
+            },
+            {
+              "old": [
+                417,
+                335
+              ],
+              "current": [
+                335,
+                335
+              ]
+            },
+            {
+              "old": [
+                536,
+                402
+              ],
+              "current": [
+                414.3333333333333,
+                402
+              ]
+            }
+          ],
+          "layers": [
+            {
+              "name": "Ignition",
+              "scaleX": 1,
+              "offsetX": 0,
+              "localBounds": {
+                "x": 145,
+                "y": 136,
+                "width": 52,
+                "height": 65
+              },
+              "oldForwardEdge": 197,
+              "currentForwardEdge": 197
+            },
+            {
+              "name": "Flame sheet",
+              "scaleX": 0.6666666666666666,
+              "offsetX": 57.00000000000001,
+              "localBounds": {
+                "x": 171,
+                "y": 188,
+                "width": 0,
+                "height": 0
+              },
+              "oldForwardEdge": 171,
+              "currentForwardEdge": 171
+            },
+            {
+              "name": "Curling tongues",
+              "scaleX": 0.6666666666666666,
+              "offsetX": 57.00000000000001,
+              "localBounds": {
+                "x": 192.83710610889153,
+                "y": 132.62363545699156,
+                "width": 402.98300368915346,
+                "height": 252.38959903414434
+              },
+              "oldForwardEdge": 595.820109798045,
+              "currentForwardEdge": 454.21340653203
+            },
+            {
+              "name": "Hot interior",
+              "scaleX": 0.6666666666666666,
+              "offsetX": 57.00000000000001,
+              "localBounds": {
+                "x": 120.40504521288966,
+                "y": 69.67858123141167,
+                "width": 449.2380992924614,
+                "height": 346.3067592280359
+              },
+              "oldForwardEdge": 569.6431445053511,
+              "currentForwardEdge": 436.7620963369007
+            },
+            {
+              "name": "Ground heat",
+              "scaleX": 0.6666666666666666,
+              "offsetX": 57.00000000000001,
+              "localBounds": {
+                "x": 174,
+                "y": 279,
+                "width": 392,
+                "height": 102
+              },
+              "oldForwardEdge": 566,
+              "currentForwardEdge": 434.3333333333333
+            },
+            {
+              "name": "Hit contacts",
+              "scaleX": 0.6666666666666666,
+              "offsetX": 57.00000000000001,
+              "localBounds": {
+                "x": 393,
+                "y": 163.6,
+                "width": 167,
+                "height": 215.00000000000003
+              },
+              "oldForwardEdge": 560,
+              "currentForwardEdge": 430.3333333333333
+            },
+            {
+              "name": "Embers",
+              "scaleX": 0.6666666666666666,
+              "offsetX": 57.00000000000001,
+              "localBounds": {
+                "x": 171,
+                "y": 188,
+                "width": 0,
+                "height": 0
+              },
+              "oldForwardEdge": 171,
+              "currentForwardEdge": 171
+            },
+            {
+              "name": "Smoke",
+              "scaleX": 0.6666666666666666,
+              "offsetX": 57.00000000000001,
+              "localBounds": {
+                "x": 171,
+                "y": 188,
+                "width": 0,
+                "height": 0
+              },
+              "oldForwardEdge": 171,
+              "currentForwardEdge": 171
+            },
+            {
+              "name": "Burn Soil",
+              "scaleX": 0.6666666666666666,
+              "offsetX": 57.00000000000001,
+              "localBounds": {
+                "x": 210,
+                "y": 277.11025254256714,
+                "width": 320,
+                "height": 100.88974745743286
+              },
+              "oldForwardEdge": 530,
+              "currentForwardEdge": 410.3333333333333
+            }
+          ]
+        },
+        "canvas": [
+          390,
+          844
+        ]
+      },
+      "errors": [],
+      "failed": []
+    },
+    {
+      "width": 844,
+      "height": 390,
+      "pass": true,
+      "state": {
+        "time": 0.92,
+        "level": 4,
+        "burnSoil": {
+          "enabled": true,
+          "active": true,
+          "ticks": 3,
+          "damagePerTick": null,
+          "balancePending": true
+        },
+        "impactMs": 220,
+        "duration": 1.4,
+        "paused": true,
+        "loop": true,
+        "speed": 1,
+        "day": true,
+        "cycles": 0,
+        "solo": -1,
+        "compare": true,
+        "source": "DA14f9840922edc53aa33bf53f",
+        "sourceUrl": "https://ark-whachat.fural.space/ember-warden-review/flame-fan-flipbook/hand-ignition-source.png",
+        "frames": 16,
+        "handFrame": 15,
+        "actors": 4,
+        "targets": 3,
+        "pixiUI": true,
+        "connected": false,
+        "nixieEmitters": 5,
+        "particleQuads": [
+          0,
+          0
+        ],
+        "layers": [
+          {
+            "name": "Ignition",
+            "visible": true,
+            "children": 1
+          },
+          {
+            "name": "Flame sheet",
+            "visible": true,
+            "children": 1
+          },
+          {
+            "name": "Curling tongues",
+            "visible": true,
+            "children": 7
+          },
+          {
+            "name": "Hot interior",
+            "visible": true,
+            "children": 1
+          },
+          {
+            "name": "Ground heat",
+            "visible": true,
+            "children": 1
+          },
+          {
+            "name": "Hit contacts",
+            "visible": true,
+            "children": 3
+          },
+          {
+            "name": "Embers",
+            "visible": true,
+            "children": 1
+          },
+          {
+            "name": "Smoke",
+            "visible": true,
+            "children": 1
+          },
+          {
+            "name": "Burn Soil",
+            "visible": true,
+            "children": 15
+          }
+        ],
+        "controls": [
+          {
+            "label": "Play",
+            "x": 267.9117647058824,
+            "y": 239.73529411764704
+          },
+          {
+            "label": "Replay",
+            "x": 327.55882352941177,
+            "y": 239.73529411764704
+          },
+          {
+            "label": "Loop: On",
+            "x": 387.2058823529412,
+            "y": 239.73529411764704
+          },
+          {
+            "label": "Speed: 1\u00d7",
+            "x": 446.8529411764706,
+            "y": 239.73529411764704
+          },
+          {
+            "label": "Day",
+            "x": 506.5,
+            "y": 239.73529411764704
+          },
+          {
+            "label": "Reference: On",
+            "x": 566.1470588235294,
+            "y": 239.73529411764704
+          },
+          {
+            "label": "All layers \u2713",
+            "x": 267.9117647058824,
+            "y": 259.61764705882354
+          },
+          {
+            "label": "1 Ignition",
+            "x": 327.55882352941177,
+            "y": 259.61764705882354
+          },
+          {
+            "label": "2 Flame sheet",
+            "x": 387.2058823529412,
+            "y": 259.61764705882354
+          },
+          {
+            "label": "3 Curling tongues",
+            "x": 446.8529411764706,
+            "y": 259.61764705882354
+          },
+          {
+            "label": "4 Hot interior",
+            "x": 506.5,
+            "y": 259.61764705882354
+          },
+          {
+            "label": "5 Ground heat",
+            "x": 566.1470588235294,
+            "y": 259.61764705882354
+          },
+          {
+            "label": "6 Hit contacts",
+            "x": 267.9117647058824,
+            "y": 279.5
+          },
+          {
+            "label": "7 Embers",
+            "x": 327.55882352941177,
+            "y": 279.5
+          },
+          {
+            "label": "8 Smoke",
+            "x": 387.2058823529412,
+            "y": 279.5
+          },
+          {
+            "label": "9 Burn Soil",
+            "x": 446.8529411764706,
+            "y": 279.5
+          },
+          {
+            "label": "Ignite 40ms",
+            "x": 506.5,
+            "y": 279.5
+          },
+          {
+            "label": "Open 150ms",
+            "x": 566.1470588235294,
+            "y": 279.5
+          },
+          {
+            "label": "Roll 320ms",
+            "x": 267.9117647058824,
+            "y": 299.38235294117646
+          },
+          {
+            "label": "Fade 600ms",
+            "x": 327.55882352941177,
+            "y": 299.38235294117646
+          },
+          {
+            "label": "Level: 4",
+            "x": 387.2058823529412,
+            "y": 299.38235294117646
+          },
+          {
+            "label": "Tick +0.2s",
+            "x": 446.8529411764706,
+            "y": 299.38235294117646
+          },
+          {
+            "label": "Tick +0.4s",
+            "x": 506.5,
+            "y": 299.38235294117646
+          },
+          {
+            "label": "Tick +0.6s",
+            "x": 566.1470588235294,
+            "y": 299.38235294117646
+          },
+          {
+            "label": "Tick +0.8s",
+            "x": 267.9117647058824,
+            "y": 319.2647058823529
+          },
+          {
+            "label": "Tick +1.0s",
+            "x": 327.55882352941177,
+            "y": 319.2647058823529
+          }
+        ],
+        "geometry": {
+          "reachScale": 0.6666666666666666,
+          "hand": [
+            171,
+            188
+          ],
+          "cameraScale": 1,
+          "targets": [
+            {
+              "old": [
+                487,
+                245
+              ],
+              "current": [
+                381.66666666666663,
+                245
+              ]
+            },
+            {
+              "old": [
+                417,
+                335
+              ],
+              "current": [
+                335,
+                335
+              ]
+            },
+            {
+              "old": [
+                536,
+                402
+              ],
+              "current": [
+                414.3333333333333,
+                402
+              ]
+            }
+          ],
+          "layers": [
+            {
+              "name": "Ignition",
+              "scaleX": 1,
+              "offsetX": 0,
+              "localBounds": {
+                "x": 145,
+                "y": 136,
+                "width": 52,
+                "height": 65
+              },
+              "oldForwardEdge": 197,
+              "currentForwardEdge": 197
+            },
+            {
+              "name": "Flame sheet",
+              "scaleX": 0.6666666666666666,
+              "offsetX": 57.00000000000001,
+              "localBounds": {
+                "x": 171,
+                "y": 188,
+                "width": 0,
+                "height": 0
+              },
+              "oldForwardEdge": 171,
+              "currentForwardEdge": 171
+            },
+            {
+              "name": "Curling tongues",
+              "scaleX": 0.6666666666666666,
+              "offsetX": 57.00000000000001,
+              "localBounds": {
+                "x": 192.83710610889153,
+                "y": 132.62363545699156,
+                "width": 402.98300368915346,
+                "height": 252.38959903414434
+              },
+              "oldForwardEdge": 595.820109798045,
+              "currentForwardEdge": 454.21340653203
+            },
+            {
+              "name": "Hot interior",
+              "scaleX": 0.6666666666666666,
+              "offsetX": 57.00000000000001,
+              "localBounds": {
+                "x": 120.40504521288966,
+                "y": 69.67858123141167,
+                "width": 449.2380992924614,
+                "height": 346.3067592280359
+              },
+              "oldForwardEdge": 569.6431445053511,
+              "currentForwardEdge": 436.7620963369007
+            },
+            {
+              "name": "Ground heat",
+              "scaleX": 0.6666666666666666,
+              "offsetX": 57.00000000000001,
+              "localBounds": {
+                "x": 174,
+                "y": 279,
+                "width": 392,
+                "height": 102
+              },
+              "oldForwardEdge": 566,
+              "currentForwardEdge": 434.3333333333333
+            },
+            {
+              "name": "Hit contacts",
+              "scaleX": 0.6666666666666666,
+              "offsetX": 57.00000000000001,
+              "localBounds": {
+                "x": 393,
+                "y": 163.6,
+                "width": 167,
+                "height": 215.00000000000003
+              },
+              "oldForwardEdge": 560,
+              "currentForwardEdge": 430.3333333333333
+            },
+            {
+              "name": "Embers",
+              "scaleX": 0.6666666666666666,
+              "offsetX": 57.00000000000001,
+              "localBounds": {
+                "x": 171,
+                "y": 188,
+                "width": 0,
+                "height": 0
+              },
+              "oldForwardEdge": 171,
+              "currentForwardEdge": 171
+            },
+            {
+              "name": "Smoke",
+              "scaleX": 0.6666666666666666,
+              "offsetX": 57.00000000000001,
+              "localBounds": {
+                "x": 171,
+                "y": 188,
+                "width": 0,
+                "height": 0
+              },
+              "oldForwardEdge": 171,
+              "currentForwardEdge": 171
+            },
+            {
+              "name": "Burn Soil",
+              "scaleX": 0.6666666666666666,
+              "offsetX": 57.00000000000001,
+              "localBounds": {
+                "x": 210,
+                "y": 277.11025254256714,
+                "width": 320,
+                "height": 100.88974745743286
+              },
+              "oldForwardEdge": 530,
+              "currentForwardEdge": 410.3333333333333
+            }
+          ]
+        },
+        "canvas": [
+          844,
+          390
+        ]
+      },
+      "errors": [],
+      "failed": []
+    },
+    {
+      "width": 320,
+      "height": 560,
+      "pass": true,
+      "state": {
+        "time": 0.92,
+        "level": 4,
+        "burnSoil": {
+          "enabled": true,
+          "active": true,
+          "ticks": 3,
+          "damagePerTick": null,
+          "balancePending": true
+        },
+        "impactMs": 220,
+        "duration": 1.4,
+        "paused": true,
+        "loop": true,
+        "speed": 1,
+        "day": true,
+        "cycles": 0,
+        "solo": -1,
+        "compare": false,
+        "source": "DA14f9840922edc53aa33bf53f",
+        "sourceUrl": "https://ark-whachat.fural.space/ember-warden-review/flame-fan-flipbook/hand-ignition-source.png",
+        "frames": 16,
+        "handFrame": 15,
+        "actors": 4,
+        "targets": 3,
+        "pixiUI": true,
+        "connected": false,
+        "nixieEmitters": 5,
+        "particleQuads": [
+          0,
+          0
+        ],
+        "layers": [
+          {
+            "name": "Ignition",
+            "visible": true,
+            "children": 1
+          },
+          {
+            "name": "Flame sheet",
+            "visible": true,
+            "children": 1
+          },
+          {
+            "name": "Curling tongues",
+            "visible": true,
+            "children": 7
+          },
+          {
+            "name": "Hot interior",
+            "visible": true,
+            "children": 1
+          },
+          {
+            "name": "Ground heat",
+            "visible": true,
+            "children": 1
+          },
+          {
+            "name": "Hit contacts",
+            "visible": true,
+            "children": 3
+          },
+          {
+            "name": "Embers",
+            "visible": true,
+            "children": 1
+          },
+          {
+            "name": "Smoke",
+            "visible": true,
+            "children": 1
+          },
+          {
+            "name": "Burn Soil",
+            "visible": true,
+            "children": 15
+          }
+        ],
+        "controls": [
+          {
+            "label": "Play",
+            "x": 64.79999999999998,
+            "y": 300.9066666666667
+          },
+          {
+            "label": "Replay",
+            "x": 158.88,
+            "y": 300.9066666666667
+          },
+          {
+            "label": "Loop: On",
+            "x": 252.96,
+            "y": 300.9066666666667
+          },
+          {
+            "label": "Speed: 1\u00d7",
+            "x": 64.79999999999998,
+            "y": 327.7866666666667
+          },
+          {
+            "label": "Day",
+            "x": 158.88,
+            "y": 327.7866666666667
+          },
+          {
+            "label": "Reference: Off",
+            "x": 252.96,
+            "y": 327.7866666666667
+          },
+          {
+            "label": "All layers \u2713",
+            "x": 64.79999999999998,
+            "y": 354.6666666666667
+          },
+          {
+            "label": "1 Ignition",
+            "x": 158.88,
+            "y": 354.6666666666667
+          },
+          {
+            "label": "2 Flame sheet",
+            "x": 252.96,
+            "y": 354.6666666666667
+          },
+          {
+            "label": "3 Curling tongues",
+            "x": 64.79999999999998,
+            "y": 381.5466666666667
+          },
+          {
+            "label": "4 Hot interior",
+            "x": 158.88,
+            "y": 381.5466666666667
+          },
+          {
+            "label": "5 Ground heat",
+            "x": 252.96,
+            "y": 381.5466666666667
+          },
+          {
+            "label": "6 Hit contacts",
+            "x": 64.79999999999998,
+            "y": 408.4266666666667
+          },
+          {
+            "label": "7 Embers",
+            "x": 158.88,
+            "y": 408.4266666666667
+          },
+          {
+            "label": "8 Smoke",
+            "x": 252.96,
+            "y": 408.4266666666667
+          },
+          {
+            "label": "9 Burn Soil",
+            "x": 64.79999999999998,
+            "y": 435.3066666666667
+          },
+          {
+            "label": "Ignite 40ms",
+            "x": 158.88,
+            "y": 435.3066666666667
+          },
+          {
+            "label": "Open 150ms",
+            "x": 252.96,
+            "y": 435.3066666666667
+          },
+          {
+            "label": "Roll 320ms",
+            "x": 64.79999999999998,
+            "y": 462.18666666666667
+          },
+          {
+            "label": "Fade 600ms",
+            "x": 158.88,
+            "y": 462.18666666666667
+          },
+          {
+            "label": "Level: 4",
+            "x": 252.96,
+            "y": 462.18666666666667
+          },
+          {
+            "label": "Tick +0.2s",
+            "x": 64.79999999999998,
+            "y": 489.06666666666666
+          },
+          {
+            "label": "Tick +0.4s",
+            "x": 158.88,
+            "y": 489.06666666666666
+          },
+          {
+            "label": "Tick +0.6s",
+            "x": 252.96,
+            "y": 489.06666666666666
+          },
+          {
+            "label": "Tick +0.8s",
+            "x": 64.79999999999998,
+            "y": 515.9466666666667
+          },
+          {
+            "label": "Tick +1.0s",
+            "x": 158.88,
+            "y": 515.9466666666667
+          }
+        ],
+        "geometry": {
+          "reachScale": 0.6666666666666666,
+          "hand": [
+            171,
+            188
+          ],
+          "cameraScale": 1.23,
+          "targets": [
+            {
+              "old": [
+                487,
+                245
+              ],
+              "current": [
+                381.66666666666663,
+                245
+              ]
+            },
+            {
+              "old": [
+                417,
+                335
+              ],
+              "current": [
+                335,
+                335
+              ]
+            },
+            {
+              "old": [
+                536,
+                402
+              ],
+              "current": [
+                414.3333333333333,
+                402
+              ]
+            }
+          ],
+          "layers": [
+            {
+              "name": "Ignition",
+              "scaleX": 1,
+              "offsetX": 0,
+              "localBounds": {
+                "x": 145,
+                "y": 136,
+                "width": 52,
+                "height": 65
+              },
+              "oldForwardEdge": 197,
+              "currentForwardEdge": 197
+            },
+            {
+              "name": "Flame sheet",
+              "scaleX": 0.6666666666666666,
+              "offsetX": 57.00000000000001,
+              "localBounds": {
+                "x": 171,
+                "y": 188,
+                "width": 0,
+                "height": 0
+              },
+              "oldForwardEdge": 171,
+              "currentForwardEdge": 171
+            },
+            {
+              "name": "Curling tongues",
+              "scaleX": 0.6666666666666666,
+              "offsetX": 57.00000000000001,
+              "localBounds": {
+                "x": 192.83710610889153,
+                "y": 132.62363545699156,
+                "width": 402.98300368915346,
+                "height": 252.38959903414434
+              },
+              "oldForwardEdge": 595.820109798045,
+              "currentForwardEdge": 454.21340653203
+            },
+            {
+              "name": "Hot interior",
+              "scaleX": 0.6666666666666666,
+              "offsetX": 57.00000000000001,
+              "localBounds": {
+                "x": 120.40504521288966,
+                "y": 69.67858123141167,
+                "width": 449.2380992924614,
+                "height": 346.3067592280359
+              },
+              "oldForwardEdge": 569.6431445053511,
+              "currentForwardEdge": 436.7620963369007
+            },
+            {
+              "name": "Ground heat",
+              "scaleX": 0.6666666666666666,
+              "offsetX": 57.00000000000001,
+              "localBounds": {
+                "x": 174,
+                "y": 279,
+                "width": 392,
+                "height": 102
+              },
+              "oldForwardEdge": 566,
+              "currentForwardEdge": 434.3333333333333
+            },
+            {
+              "name": "Hit contacts",
+              "scaleX": 0.6666666666666666,
+              "offsetX": 57.00000000000001,
+              "localBounds": {
+                "x": 393,
+                "y": 163.6,
+                "width": 167,
+                "height": 215.00000000000003
+              },
+              "oldForwardEdge": 560,
+              "currentForwardEdge": 430.3333333333333
+            },
+            {
+              "name": "Embers",
+              "scaleX": 0.6666666666666666,
+              "offsetX": 57.00000000000001,
+              "localBounds": {
+                "x": 171,
+                "y": 188,
+                "width": 0,
+                "height": 0
+              },
+              "oldForwardEdge": 171,
+              "currentForwardEdge": 171
+            },
+            {
+              "name": "Smoke",
+              "scaleX": 0.6666666666666666,
+              "offsetX": 57.00000000000001,
+              "localBounds": {
+                "x": 171,
+                "y": 188,
+                "width": 0,
+                "height": 0
+              },
+              "oldForwardEdge": 171,
+              "currentForwardEdge": 171
+            },
+            {
+              "name": "Burn Soil",
+              "scaleX": 0.6666666666666666,
+              "offsetX": 57.00000000000001,
+              "localBounds": {
+                "x": 210,
+                "y": 277.11025254256714,
+                "width": 320,
+                "height": 100.88974745743286
+              },
+              "oldForwardEdge": 530,
+              "currentForwardEdge": 410.3333333333333
+            }
+          ]
+        },
+        "canvas": [
+          320,
+          560
+        ]
+      },
+      "errors": [],
+      "failed": []
+    }
+  ],
+  "iframe": {
+    "pass": true,
+    "before": 0.42,
+    "after": 0.7033000000000001
+  }
+}

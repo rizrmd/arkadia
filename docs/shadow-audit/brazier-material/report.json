@@ -1,0 +1,196 @@
+{
+  "status": "shipped and verified in runtime 7957773a",
+  "scope": "Source-camera semantic companion only. Original artwork is unchanged; mask alpha partitions it byte-exactly. No height inferred from brightness.",
+  "source": "/modular-stronghold/v2/brazier.png",
+  "sourceSha256": "ce0bba103743e9cfbfe279df9acd9532510326f7c1a982b2a3f783435019998e",
+  "sourceSize": [
+    595,
+    893
+  ],
+  "rulesSha256": "1c271610b1f091e51ed9919e70dbdf55f0295fe624b7268ca82f147128e6b834",
+  "partitionChecks": 531335,
+  "physicalPixels": 245752,
+  "emissivePixels": 88467,
+  "probes": [
+    {
+      "x": 300,
+      "y": 420,
+      "material": "physical",
+      "sourceAlpha": 253,
+      "physicalAlpha": 253,
+      "emissiveAlpha": 0
+    },
+    {
+      "x": 191,
+      "y": 98,
+      "material": "physical",
+      "sourceAlpha": 251,
+      "physicalAlpha": 251,
+      "emissiveAlpha": 0
+    },
+    {
+      "x": 467,
+      "y": 116,
+      "material": "physical",
+      "sourceAlpha": 252,
+      "physicalAlpha": 252,
+      "emissiveAlpha": 0
+    },
+    {
+      "x": 154,
+      "y": 337,
+      "material": "physical",
+      "sourceAlpha": 253,
+      "physicalAlpha": 253,
+      "emissiveAlpha": 0
+    },
+    {
+      "x": 293,
+      "y": 618,
+      "material": "physical",
+      "sourceAlpha": 253,
+      "physicalAlpha": 253,
+      "emissiveAlpha": 0
+    },
+    {
+      "x": 127,
+      "y": 772,
+      "material": "physical",
+      "sourceAlpha": 253,
+      "physicalAlpha": 253,
+      "emissiveAlpha": 0
+    },
+    {
+      "x": 510,
+      "y": 815,
+      "material": "physical",
+      "sourceAlpha": 253,
+      "physicalAlpha": 253,
+      "emissiveAlpha": 0
+    },
+    {
+      "x": 56,
+      "y": 154,
+      "material": "physical",
+      "sourceAlpha": 252,
+      "physicalAlpha": 252,
+      "emissiveAlpha": 0
+    },
+    {
+      "x": 230,
+      "y": 278,
+      "material": "physical",
+      "sourceAlpha": 252,
+      "physicalAlpha": 252,
+      "emissiveAlpha": 0
+    },
+    {
+      "x": 345,
+      "y": 352,
+      "material": "physical",
+      "sourceAlpha": 252,
+      "physicalAlpha": 252,
+      "emissiveAlpha": 0
+    },
+    {
+      "x": 568,
+      "y": 843,
+      "material": "physical",
+      "sourceAlpha": 251,
+      "physicalAlpha": 251,
+      "emissiveAlpha": 0
+    },
+    {
+      "x": 478,
+      "y": 734,
+      "material": "physical",
+      "sourceAlpha": 251,
+      "physicalAlpha": 251,
+      "emissiveAlpha": 0
+    },
+    {
+      "x": 330,
+      "y": 551,
+      "material": "physical",
+      "sourceAlpha": 253,
+      "physicalAlpha": 253,
+      "emissiveAlpha": 0
+    },
+    {
+      "x": 332,
+      "y": 200,
+      "material": "emissive",
+      "sourceAlpha": 253,
+      "physicalAlpha": 0,
+      "emissiveAlpha": 253
+    },
+    {
+      "x": 350,
+      "y": 285,
+      "material": "emissive",
+      "sourceAlpha": 252,
+      "physicalAlpha": 0,
+      "emissiveAlpha": 252
+    },
+    {
+      "x": 276,
+      "y": 349,
+      "material": "emissive",
+      "sourceAlpha": 253,
+      "physicalAlpha": 0,
+      "emissiveAlpha": 253
+    },
+    {
+      "x": 301,
+      "y": 80,
+      "material": "emissive",
+      "sourceAlpha": 19,
+      "physicalAlpha": 0,
+      "emissiveAlpha": 19
+    },
+    {
+      "x": 202,
+      "y": 469,
+      "material": "emissive",
+      "sourceAlpha": 253,
+      "physicalAlpha": 0,
+      "emissiveAlpha": 253
+    },
+    {
+      "x": 286,
+      "y": 490,
+      "material": "emissive",
+      "sourceAlpha": 253,
+      "physicalAlpha": 0,
+      "emissiveAlpha": 253
+    },
+    {
+      "x": 367,
+      "y": 483,
+      "material": "emissive",
+      "sourceAlpha": 253,
+      "physicalAlpha": 0,
+      "emissiveAlpha": 253
+    }
+  ],
+  "output": {
+    "physical": {
+      "url": "/shadow-audit/materials/brazier-physical.png",
+      "sha256": "61f8c66b2c2e412a17b79d9de307e8e40d18c3d84b3cc4834933677d6bb62786"
+    },
+    "emissive": {
+      "url": "/shadow-audit/materials/brazier-emissive.png",
+      "sha256": "2cb756102de3e42398c9500f5fe27ac5a18eb52546a4ce8f149d2a38cb795889"
+    },
+    "mask": {
+      "url": "/shadow-audit/materials/brazier-mask.png",
+      "sha256": "e18b3ff6e66c833bec950c37837492f229c960a6373843f2785528a43c31c68a"
+    }
+  },
+  "visualReview": "Source/physical/emissive and three-sun cast plates directly inspected. Semantic boundaries and folded geometry remain authored approximations at sample resolution.",
+  "liveEvidence": [
+    "material-live-desktop/report.json",
+    "material-live-mobile/report.json",
+    "delivered-static-live/report.json"
+  ]
+}

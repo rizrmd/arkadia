@@ -1,0 +1,127 @@
+{
+  "base": "http://127.0.0.1:5591",
+  "views": {
+    "desktop": {
+      "viewport": [
+        1440,
+        900
+      ],
+      "bounds": {
+        "x": 360,
+        "y": 180,
+        "width": 720,
+        "height": 540
+      },
+      "geometry": {
+        "bag": {
+          "x": 1320.5,
+          "y": 397.5,
+          "w": 46,
+          "h": 46
+        },
+        "gear": null,
+        "use": {
+          "x": 807,
+          "y": 572,
+          "w": 238,
+          "h": 48
+        }
+      },
+      "slots": [
+        {
+          "w": 91,
+          "h": 91
+        },
+        {
+          "w": 89,
+          "h": 89
+        }
+      ]
+    },
+    "portrait": {
+      "viewport": [
+        390,
+        844
+      ],
+      "bounds": {
+        "x": 12,
+        "y": 159.34375,
+        "width": 366,
+        "height": 525.3125
+      },
+      "geometry": {
+        "bag": {
+          "x": 284,
+          "y": 123,
+          "w": 46,
+          "h": 46
+        },
+        "gear": null,
+        "use": {
+          "x": 41,
+          "y": 558.40625,
+          "w": 308,
+          "h": 48
+        }
+      },
+      "slots": [
+        {
+          "w": 75,
+          "h": 75
+        },
+        {
+          "w": 73,
+          "h": 73
+        }
+      ]
+    },
+    "landscape": {
+      "viewport": [
+        844,
+        390
+      ],
+      "bounds": {
+        "x": 237,
+        "y": 12,
+        "width": 370,
+        "height": 366
+      },
+      "geometry": {
+        "bag": {
+          "x": 738,
+          "y": 132,
+          "w": 46,
+          "h": 46
+        },
+        "gear": null,
+        "use": {
+          "x": 262,
+          "y": 275.59375,
+          "w": 320,
+          "h": 44
+        }
+      },
+      "slots": [
+        {
+          "w": 78,
+          "h": 46
+        },
+        {
+          "w": 76,
+          "h": 44
+        }
+      ]
+    }
+  },
+  "errors": [],
+  "healing": {
+    "hpBefore": 84,
+    "hpAfter": 100,
+    "max": 100
+  },
+  "persisted": {
+    "health-potion": 4,
+    "stronghold-scroll": 1
+  },
+  "passed": true
+}

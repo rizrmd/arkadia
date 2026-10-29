@@ -1,0 +1,66 @@
+{
+ "base": "local build (vite preview)",
+ "date": "2026-10-23T10:28:48.001Z",
+ "results": [
+  {
+   "name": "first visit: loading screen lifts onto Choose Your Hero",
+   "pass": true,
+   "detail": "saved=null"
+  },
+  {
+   "name": "gameplay held while choosing (hero and revenants still, keys ignored)",
+   "pass": true,
+   "detail": "{\"before\":[9.16,8.96,\"idle\"],\"after\":[9.16,8.96,\"idle\"],\"foesSame\":true}"
+  },
+  {
+   "name": "no Back control",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "Escape does not close the screen",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "clicking where Back used to be does not close it",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "Begin Journey starts gameplay (hero walks)",
+   "pass": true,
+   "detail": "{\"from\":[9.16,8.96,\"idle\"],\"to\":[9.28,8.85,\"idle\"],\"moved\":true}"
+  },
+  {
+   "name": "pick saved on the device and shown in the HUD",
+   "pass": true,
+   "detail": "saved=ember-warden hud=Ember Warden"
+  },
+  {
+   "name": "HUD hero panel and Escape do not reopen the screen",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "reload goes straight to the game",
+   "pass": true,
+   "detail": "hud=Ember Warden"
+  },
+  {
+   "name": "new tab on the same device goes straight to the game",
+   "pass": true,
+   "detail": "hud=Ember Warden {\"from\":[9.27,8.85,\"idle\"],\"to\":[9.5,8.63,\"idle\"],\"moved\":true}"
+  },
+  {
+   "name": "?hero=reset asks again",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "no page errors",
+   "pass": true,
+   "detail": ""
+  }
+ ]
+}

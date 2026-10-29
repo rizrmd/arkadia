@@ -1,0 +1,137 @@
+{
+  "errors": [],
+  "snapshots": [
+    {
+      "ready3d": true,
+      "canvas": {
+        "x": "590.0",
+        "y": "420.0",
+        "hero": "ember-warden",
+        "state": "idle",
+        "clip": "idle-SE",
+        "clip3d": "idle",
+        "frame": "1",
+        "facing": "1",
+        "behind": "0",
+        "tint": "255,255,255",
+        "night": "0.00",
+        "mode": "3d-60fps",
+        "targetFps": "30",
+        "shadow": "contact",
+        "width": 115,
+        "height": 135,
+        "opaque": 1935
+      },
+      "sprites": [
+        {
+          "label": "Sprite",
+          "visible": true,
+          "alpha": 1,
+          "bounds": {
+            "x": 133.37460317460318,
+            "y": 355.015873015873,
+            "width": 123.25079365079364,
+            "height": 144.6857142857143
+          },
+          "resource": true
+        }
+      ],
+      "hero": {
+        "hp": 100,
+        "maxHp": 100,
+        "state": "idle",
+        "u": 9.16,
+        "v": 8.96,
+        "meters": 6.6,
+        "safe": true,
+        "reach": 1,
+        "aoeCastRadiusTiles": 2.2,
+        "critChance": 0.15,
+        "critMultiplier": 1.5
+      },
+      "shadows": {
+        "updates": 3,
+        "actors": 1,
+        "extraSurfaces": 1,
+        "skinnedMeshes": 1,
+        "receiverPasses": 3,
+        "geometryBytes": 2073244,
+        "drawnVertices": 40379,
+        "pixels": 189504,
+        "bytes": 5883996,
+        "renderMs": 6.8999998569488525,
+        "ready": true,
+        "casterPasses": 3,
+        "fieldSamplers": 4,
+        "opaqueEnvelope": true,
+        "step": 1.25
+      }
+    },
+    {
+      "ready3d": true,
+      "canvas": {
+        "x": "590.0",
+        "y": "420.0",
+        "hero": "ember-warden",
+        "state": "idle",
+        "clip": "idle-SE",
+        "clip3d": "idle",
+        "frame": "2",
+        "facing": "1",
+        "behind": "0",
+        "tint": "255,255,255",
+        "night": "0.00",
+        "mode": "3d-60fps",
+        "targetFps": "30",
+        "shadow": "contact",
+        "width": 115,
+        "height": 135,
+        "opaque": 1938
+      },
+      "sprites": [
+        {
+          "label": "Sprite",
+          "visible": true,
+          "alpha": 1,
+          "bounds": {
+            "x": 133.37460317460318,
+            "y": 355.015873015873,
+            "width": 123.25079365079364,
+            "height": 144.6857142857143
+          },
+          "resource": true
+        }
+      ],
+      "hero": {
+        "hp": 100,
+        "maxHp": 100,
+        "state": "idle",
+        "u": 9.16,
+        "v": 8.96,
+        "meters": 6.6,
+        "safe": true,
+        "reach": 1,
+        "aoeCastRadiusTiles": 2.2,
+        "critChance": 0.15,
+        "critMultiplier": 1.5
+      },
+      "shadows": {
+        "updates": 5,
+        "actors": 1,
+        "extraSurfaces": 1,
+        "skinnedMeshes": 1,
+        "receiverPasses": 3,
+        "geometryBytes": 2073244,
+        "drawnVertices": 40379,
+        "pixels": 189504,
+        "bytes": 5883996,
+        "renderMs": 2.1999998092651367,
+        "ready": true,
+        "casterPasses": 3,
+        "fieldSamplers": 4,
+        "opaqueEnvelope": true,
+        "step": 1.25
+      }
+    }
+  ]
+}

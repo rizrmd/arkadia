@@ -1,0 +1,17 @@
+{
+  "bug": "The gate passage rule (|x-577|<=145 && y>=710) made the masonry strip between the court edge and each gate tower's front face walkable, so the hero could stand on top of the front wall beside either tower and was drawn over it.",
+  "fix": "src/stronghold/navigation.ts: beside the arch (|x-577|>=36) the passage is walkable only in front of the tower fronts (gateTowerFront), and no further out than the towers (135 px).",
+  "before": {"walkableInsideMasonry": [[451,726],[707,722],[699,726]]},
+  "after": {
+    "teleportRefused": [[451,726],[699,730],[707,722]],
+    "walkIntoLeftCorner": {"keys": "S+A", "stopsAt": [460.9,709.6], "hiddenBehindWall": true},
+    "walkIntoRightCorner": {"keys": "S+D", "stopsAt": [693.1,709.6], "hiddenBehindWall": true}
+  },
+  "regressions": {
+    "verify-gate-animation": "pass (hero still walks out through the arch)",
+    "verify-hero-walk": "pass",
+    "verify-gateway-depth": "pass",
+    "verify-encounters": "pass",
+    "verify-walk-behind": "fails identically on the unmodified baseline (south at x=545 stops at y=735.2); unrelated to this change"
+  }
+}

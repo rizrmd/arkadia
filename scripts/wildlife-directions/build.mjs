@@ -1,0 +1,13 @@
+import {build} from 'vite';
+import fs from 'node:fs/promises';
+import {createHash} from 'node:crypto';
+import {execFileSync} from 'node:child_process';
+const stage=process.env.WILDLIFE_STAGE;if(!stage)throw Error('WILDLIFE_STAGE required');
+const site=stage+'/site';await build({logLevel:'error',build:{outDir:site,copyPublicDir:false}});
+await fs.mkdir(site+'/wildlife',{recursive:true});await fs.copyFile('public/wildlife/eight-directions-atlas.png',site+'/wildlife/eight-directions-atlas.png');
+await fs.cp('public/wildlife-directions',site+'/wildlife-directions',{recursive:true});
+for(const f of ['atlas.json','tests.json','README.md'])await fs.copyFile('docs/wildlife-directions/'+f,site+'/wildlife-directions/'+f);
+const response=await fetch('https://arkodia.online/asset-sizes.json',{signal:AbortSignal.timeout(20000)});if(!response.ok)throw Error('Live inventory unavailable');const sizes=await response.json();sizes['/wildlife/eight-directions-atlas.png']=(await fs.stat('public/wildlife/eight-directions-atlas.png')).size;
+await fs.writeFile(site+'/asset-sizes.json',JSON.stringify(sizes));
+const files={};for(const rel of ['index.html','wildlife/eight-directions-atlas.png',...(await fs.readdir(site+'/assets')).map(f=>'assets/'+f)])files['/'+rel]=createHash('sha256').update(await fs.readFile(site+'/'+rel)).digest('hex');
+await fs.writeFile(site+'/wildlife-directions/release.json',JSON.stringify({commit:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),files},null,2));

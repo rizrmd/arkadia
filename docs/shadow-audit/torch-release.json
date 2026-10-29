@@ -1,0 +1,36 @@
+{
+  "runtimeCommit": "9a1550b2fc5ab07b3158c478c17c7390fd21dc6a",
+  "runtimeLayer": "1792983291986-game-9a1550b2-a2d8877bd48f",
+  "surfaces": 20,
+  "sourceAlignmentChecks": 180,
+  "directionalGpuCases": 60,
+  "gpuReport": "torch-gpu/report.json",
+  "liveReport": "torch-game-live/verification.json",
+  "liveErrors": [],
+  "registered": [
+    {
+      "mobile": false,
+      "surfaces": 20,
+      "measurement": {
+        "durationMs": 320.09999990463257,
+        "rafMedianMs": 16.69999999999709,
+        "rafP95Ms": 100,
+        "drawCalls": 734,
+        "frames": 8
+      }
+    },
+    {
+      "mobile": true,
+      "surfaces": 20,
+      "measurement": {
+        "durationMs": 219.79999995231628,
+        "rafMedianMs": 16.700000000004366,
+        "rafP95Ms": 50.099999999998545,
+        "drawCalls": 616,
+        "frames": 8
+      }
+    }
+  ],
+  "inventoryRows": 586,
+  "acceptance": "incomplete: Frostpass scene/actor integration, full-frame/blend and hardware performance still open"
+}

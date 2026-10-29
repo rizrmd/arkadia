@@ -1,0 +1,25 @@
+{
+  "base": "http://127.0.0.1:5731",
+  "views": {
+    "mobile": {
+      "viewport": [
+        390,
+        844
+      ],
+      "checks": [
+        "Fresh run: Flame Fan Lv.1 only; 15 nodes, 3 concepts; five active pips, borderless passives",
+        "Inspect gesture focuses and scrolls without casting; real ranks, passive count, 1/2/3 badges and learned unequipped node",
+        "Drag/wheel scroll works",
+        "X, Esc, K and outside close; concept remains unlearned; capstone reachable",
+        "Tap opens Ember skill tree without casting"
+      ],
+      "screenshots": [
+        "docs/skill-diamond-spacing/local-mobile-fresh.webp",
+        "docs/skill-diamond-spacing/local-mobile-inspect.webp",
+        "docs/skill-diamond-spacing/local-mobile-concept.webp"
+      ],
+      "pass": true
+    }
+  },
+  "errors": []
+}

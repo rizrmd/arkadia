@@ -1,0 +1,100 @@
+(node:4398) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+{
+ "url": "ws://127.0.0.1:18998/ws",
+ "seconds": 40,
+ "room": "N9E5C",
+ "commonTicks": 659,
+ "tickSpan": 806,
+ "ticksWithEnemies": 659,
+ "enemyIds": [
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10,
+  11,
+  12,
+  13,
+  14
+ ],
+ "lastTick": 808,
+ "kills": {
+  "Ayu": 17,
+  "Bima": 9,
+  "Cheat": 0
+ },
+ "runs": {
+  "Ayu": {
+   "level": 2,
+   "xp": 20,
+   "gold": 85,
+   "pending": 1,
+   "offers": [
+    "might",
+    "rift-dash",
+    "rift-bolt"
+   ],
+   "skills": {
+    "rift-bolt": 1
+   },
+   "stars": 0,
+   "slots": [
+    "rift-bolt"
+   ],
+   "autoCasts": 7,
+   "lastCast": [
+    "rift-bolt"
+   ]
+  },
+  "Bima": {
+   "level": 2,
+   "xp": 18,
+   "gold": 45,
+   "pending": 1,
+   "offers": [
+    "might",
+    "rift-dash",
+    "rift-bolt"
+   ],
+   "skills": {
+    "rift-bolt": 1
+   },
+   "stars": 0,
+   "slots": [
+    "rift-bolt"
+   ],
+   "autoCasts": 11,
+   "lastCast": [
+    "rift-bolt"
+   ]
+  },
+  "Cheat": {
+   "level": 1,
+   "xp": 0,
+   "gold": 0,
+   "pending": 0,
+   "offers": [],
+   "skills": {
+    "rift-bolt": 1
+   },
+   "stars": 0,
+   "slots": [
+    "rift-bolt"
+   ]
+  }
+ },
+ "heroesHurt": false,
+ "cheatMaxStepPx": 10.18,
+ "heroStepPx": 6,
+ "snapshotBytes": 3619,
+ "ackA": 798,
+ "inputsA": 798,
+ "pausedAtTick": 808,
+ "ok": true
+}

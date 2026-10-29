@@ -1,0 +1,593 @@
+{
+ "frames": 23,
+ "ms": 11467.399999856949,
+ "prof": {
+  "gl2.texImage2D": {
+   "ms": 16.5,
+   "n": 22
+  },
+  "gl2.texSubImage2D": {
+   "ms": 9.900000095367432,
+   "n": 186
+  },
+  "2d.drawImage": {
+   "ms": 60.799999713897705,
+   "n": 260
+  },
+  "2d.putImageData": {
+   "ms": 0.09999990463256836,
+   "n": 1
+  }
+ },
+ "snap": {
+  "foes": 8,
+  "alive": 8,
+  "particles": 236,
+  "hero": "attack",
+  "heroMode": "3d-60fps"
+ },
+ "self": [
+  [
+   "(idle) :0",
+   9114.70200000004
+  ],
+  [
+   "apply msdf.ts:134",
+   69.93699999999998
+  ],
+  [
+   "generateShaderSyncCode lib-Ddgq7cyz.js:29236",
+   69.316
+  ],
+  [
+   "getAlphaMask hero.ts:47",
+   63.16100000000001
+  ],
+  [
+   "spawn flame-fan-gameplay.ts:64",
+   60.273
+  ],
+  [
+   "oo three.module.min.js:6",
+   57.935
+  ],
+  [
+   "texSubImage2D :0",
+   55.479
+  ],
+  [
+   "(anon) tracelog.ts:148",
+   54.526999999999994
+  ],
+  [
+   "(garbage collector) :0",
+   34.31699999999999
+  ],
+  [
+   "cornerGradient chunk-DDYEJ3XB-DZ63mDls.js:487",
+   27.361
+  ],
+  [
+   "texImage2D :0",
+   16.055000000000007
+  ],
+  [
+   "(program) :0",
+   14.305
+  ],
+  [
+   "collectRenderables Filter-B3Ta1z3x.js:372",
+   14.014000000000001
+  ],
+  [
+   "frontY hero.ts:435",
+   9.647000000000002
+  ],
+  [
+   "(anon) :1",
+   7.587000000000001
+  ],
+  [
+   "occlusionAt hero.ts:523",
+   6.897
+  ],
+  [
+   "uniformMatrix3fv :0",
+   6.791
+  ],
+  [
+   "drawImage :0",
+   6.507000000000001
+  ],
+  [
+   "update lib-Ddgq7cyz.js:37572",
+   6.44
+  ],
+  [
+   "adaptor.execute shadow-actor-batch.ts:133",
+   6.284
+  ],
+  [
+   "bufferSubData :0",
+   5.741999999999999
+  ],
+  [
+   "updateParticle nixie-fx_pixi.js:2234",
+   5.622
+  ],
+  [
+   "measureTracelogPhase tracelog.ts:21",
+   4.9879999999999995
+  ],
+  [
+   "position settings.ts:139",
+   4.822
+  ],
+  [
+   "sceneNear hero.ts:324",
+   4.753
+  ],
+  [
+   "(anon) hero-3d.ts:884",
+   4.731
+  ],
+  [
+   "_CanvasTextMetrics.experimentalLetterSpacing lib-Ddgq7cyz.js:22963",
+   4.642
+  ],
+  [
+   "boundsOf shadow-live-field.ts:341",
+   4.611000000000001
+  ],
+  [
+   "collectRenderablesSimple Filter-B3Ta1z3x.js:2531",
+   4.5840000000000005
+  ],
+  [
+   "_updateDistanceField lib-Ddgq7cyz.js:25185",
+   4.417
+  ],
+  [
+   "render shadow-live-field.ts:439",
+   4.375000000000002
+  ],
+  [
+   "sampleParticleGradientColor chunk-WCBGJP2D-XEF-xIeY.js:2375",
+   4.326
+  ],
+  [
+   "traceWallRay hero.ts:475",
+   4.256
+  ],
+  [
+   "frameIndex hero.ts:578",
+   4.119
+  ],
+  [
+   "break GCManagedHash-BoMhMrVg.js:281",
+   3.9550000000000005
+  ],
+  [
+   "frameShadowProfile hero.ts:124",
+   3.9539999999999997
+  ],
+  [
+   "update lib-Ddgq7cyz.js:36523",
+   3.7520000000000002
+  ],
+  [
+   "project space.ts:25",
+   3.559
+  ],
+  [
+   "render encounters.ts:1095",
+   3.554
+  ],
+  [
+   "shakeOffset combat-vfx.ts:295",
+   3.439
+  ],
+  [
+   "updateBuffer lib-Ddgq7cyz.js:27792",
+   3.325
+  ],
+  [
+   "step hero.ts:632",
+   3.203
+  ],
+  [
+   "srgbToLinear chunk-WCBGJP2D-XEF-xIeY.js:2425",
+   3.143
+  ],
+  [
+   "executeInstructions RenderTargetSystem-H8GNUAjd.js:1113",
+   3.0810000000000004
+  ],
+  [
+   "setTransform :0",
+   3.0260000000000002
+  ],
+  [
+   "set Filter-B3Ta1z3x.js:59",
+   2.9610000000000003
+  ],
+  [
+   "getContext :0",
+   2.866
+  ],
+  [
+   "updateTier2ParticleMaterialShaderDynamicParams nixie-fx_pixi.js:623",
+   2.767
+  ],
+  [
+   "MsdfFxShader msdf.ts:44",
+   2.764
+  ],
+  [
+   "collectRenderablesSimple Filter-B3Ta1z3x.js:379",
+   2.7350000000000003
+  ],
+  [
+   "get Cache-DO2MCJQa.js:35",
+   2.695
+  ],
+  [
+   "execute lib-Ddgq7cyz.js:18330",
+   2.586
+  ],
+  [
+   "packedHeight shadow-live-field.ts:6",
+   2.513
+  ],
+  [
+   "gradientNoise3DGradientInto chunk-DDYEJ3XB-DZ63mDls.js:495",
+   2.4290000000000003
+  ],
+  [
+   "addChild Filter-B3Ta1z3x.js:1673",
+   2.403
+  ],
+  [
+   "raiseCastingArm hero-3d.ts:539",
+   2.23
+  ],
+  [
+   "snapshot minimap.ts:464",
+   2.1340000000000003
+  ],
+  [
+   "detonateAoE combat-vfx.ts:500",
+   2.1180000000000003
+  ],
+  [
+   "setFromQuaternion three.module.min.js:6",
+   2.089
+  ],
+  [
+   "execute RenderTargetSystem-H8GNUAjd.js:706",
+   1.979
+  ]
+ ],
+ "incl": [
+  [
+   "(root) :0",
+   10006.91300000004
+  ],
+  [
+   "(idle) :0",
+   9114.70200000004
+  ],
+  [
+   "tick frame-scheduler.ts:20",
+   465.9859999999996
+  ],
+  [
+   "measureTracelogPhase tracelog.ts:21",
+   463.98899999999963
+  ],
+  [
+   "wrapper shadow-live-field.ts:505",
+   314.59999999999934
+  ],
+  [
+   "renderer.render tracelog.ts:119",
+   314.59999999999934
+  ],
+  [
+   "_tick Filter-B3Ta1z3x.js:3108",
+   312.7909999999994
+  ],
+  [
+   "render lib-Ddgq7cyz.js:4371",
+   312.38699999999943
+  ],
+  [
+   "emit Filter-B3Ta1z3x.js:2950",
+   312.38699999999943
+  ],
+  [
+   "update Filter-B3Ta1z3x.js:3385",
+   312.38699999999943
+  ],
+  [
+   "ticker.update frame-cadence.ts:33",
+   312.38699999999943
+  ],
+  [
+   "loop encounters.ts:1257",
+   309.5989999999995
+  ],
+  [
+   "emit RenderTargetSystem-H8GNUAjd.js:59",
+   302.4349999999995
+  ],
+  [
+   "render RenderTargetSystem-H8GNUAjd.js:193",
+   302.0829999999995
+  ],
+  [
+   "render RenderTargetSystem-H8GNUAjd.js:1485",
+   300.4529999999995
+  ],
+  [
+   "render encounters.ts:1095",
+   198.31999999999982
+  ],
+  [
+   "render combat-vfx.ts:908",
+   157.22899999999998
+  ],
+  [
+   "executeInstructions RenderTargetSystem-H8GNUAjd.js:1113",
+   156.01500000000004
+  ],
+  [
+   "loop hero.ts:882",
+   153.601
+  ],
+  [
+   "measureRenderDetail render-diagnostics.ts:3",
+   151.35199999999992
+  ],
+  [
+   "frame stage.ts:2065",
+   150.28300000000004
+  ],
+  [
+   "(anon) hero.ts:896",
+   148.5
+  ],
+  [
+   "render hero.ts:690",
+   146.53900000000002
+  ],
+  [
+   "_updateRenderGroups RenderTargetSystem-H8GNUAjd.js:1548",
+   142.50500000000002
+  ],
+  [
+   "_buildInstructions RenderTargetSystem-H8GNUAjd.js:1573",
+   140.411
+  ],
+  [
+   "(anon) hero.ts:785",
+   136.71000000000006
+  ],
+  [
+   "updateAndRender hero-3d.ts:809",
+   135.77900000000005
+  ],
+  [
+   "collectRenderables Filter-B3Ta1z3x.js:372",
+   134.28300000000002
+  ],
+  [
+   "collectRenderablesSimple Filter-B3Ta1z3x.js:379",
+   134.28300000000002
+  ],
+  [
+   "collectRenderablesWithEffects Filter-B3Ta1z3x.js:384",
+   134.28300000000002
+  ],
+  [
+   "collectRenderablesSimple Filter-B3Ta1z3x.js:2531",
+   114.067
+  ],
+  [
+   "render three.module.min.js:6",
+   113.93900000000004
+  ],
+  [
+   "Xt three.module.min.js:6",
+   112.20200000000003
+  ],
+  [
+   "Wt three.module.min.js:6",
+   112.20200000000003
+  ],
+  [
+   "Ht three.module.min.js:6",
+   112.20200000000003
+  ],
+  [
+   "(anon) hero-3d.ts:913",
+   111.99700000000003
+  ],
+  [
+   "renderBufferDirect three.module.min.js:6",
+   111.59100000000002
+  ],
+  [
+   "(anon) three.module.min.js:6",
+   110.74000000000002
+  ],
+  [
+   "step encounters.ts:915",
+   108.65700000000001
+  ],
+  [
+   "(anon) encounters.ts:1275",
+   108.65700000000001
+  ],
+  [
+   "setValue three.module.min.js:6",
+   107.986
+  ],
+  [
+   "step combat-vfx.ts:764",
+   98.45400000000004
+  ],
+  [
+   "detonateAoE combat-vfx.ts:500",
+   98.08700000000005
+  ],
+  [
+   "addRenderable lib-Ddgq7cyz.js:25114",
+   95.293
+  ],
+  [
+   "occlusionAt hero.ts:523",
+   92.15199999999999
+  ],
+  [
+   "spawn flame-fan-gameplay.ts:64",
+   90.57700000000003
+  ],
+  [
+   "execute lib-Ddgq7cyz.js:36668",
+   89.03500000000007
+  ],
+  [
+   "bind lib-Ddgq7cyz.js:29629",
+   80.89000000000006
+  ],
+  [
+   "pipe._updateDistanceField msdf.ts:166",
+   79.71199999999999
+  ],
+  [
+   "proto.<computed> :4",
+   78.54700000000004
+  ],
+  [
+   "update nixie-fx_pixi.js:1974",
+   77.554
+  ],
+  [
+   "update nixie-fx_pixi.js:1232",
+   76.053
+  ],
+  [
+   "execute lib-Ddgq7cyz.js:36724",
+   75.95800000000004
+  ],
+  [
+   "frontY hero.ts:435",
+   72.247
+  ],
+  [
+   "apply msdf.ts:134",
+   71.26599999999999
+  ],
+  [
+   "generateShaderSyncCode lib-Ddgq7cyz.js:29236",
+   69.316
+  ],
+  [
+   "_generateShaderSync lib-Ddgq7cyz.js:29704",
+   69.316
+  ],
+  [
+   "walkInst stage.ts:2133",
+   69.12599999999998
+  ],
+  [
+   "draw nixie-fx_pixi.js:1250",
+   66.68600000000004
+  ],
+  [
+   "drawParticleViews nixie-fx_pixi.js:1343",
+   65.97700000000005
+  ],
+  [
+   "drawEmitterView nixie-fx_pixi.js:2110",
+   65.19100000000005
+  ],
+  [
+   "getAlphaMask hero.ts:47",
+   63.16100000000001
+  ],
+  [
+   "updateParticle nixie-fx_pixi.js:2234",
+   60.70600000000004
+  ],
+  [
+   "go three.module.min.js:6",
+   58.159
+  ],
+  [
+   "oo three.module.min.js:6",
+   57.935
+  ],
+  [
+   "texSubImage2D :0",
+   55.479
+  ],
+  [
+   "(anon) tracelog.ts:148",
+   54.526999999999994
+  ],
+  [
+   "E three.module.min.js:6",
+   50.075
+  ],
+  [
+   "L three.module.min.js:6",
+   49.827000000000005
+  ],
+  [
+   "wo three.module.min.js:6",
+   49.827000000000005
+  ],
+  [
+   "texSubImage2D three.module.min.js:6",
+   49.061
+  ],
+  [
+   "render shadow-live-field.ts:439",
+   43.31000000000002
+  ],
+  [
+   "execute RenderTargetSystem-H8GNUAjd.js:706",
+   41.61400000000002
+  ],
+  [
+   "(garbage collector) :0",
+   34.31699999999999
+  ],
+  [
+   "renderPass shadow-live-field.ts:401",
+   31.451999999999998
+  ],
+  [
+   "applyNoiseDisplacement chunk-NKQMBJ4W-C8BATpNk.js:95",
+   31.374999999999996
+  ],
+  [
+   "sampleCurlNoise3 chunk-DDYEJ3XB-DZ63mDls.js:561",
+   31.198
+  ],
+  [
+   "gradientNoise3DGradientInto chunk-DDYEJ3XB-DZ63mDls.js:495",
+   30.845
+  ],
+  [
+   "cornerGradient chunk-DDYEJ3XB-DZ63mDls.js:487",
+   27.647000000000002
+  ],
+  [
+   "adaptor.execute shadow-actor-batch.ts:133",
+   26.28400000000001
+  ]
+ ]
+}

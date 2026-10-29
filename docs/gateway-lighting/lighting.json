@@ -1,0 +1,88 @@
+{
+  "day": {
+    "renderer": "gateway-lightmap-v3",
+    "torches": "off",
+    "frame": {
+      "w": 768,
+      "h": 512
+    },
+    "stone": [
+      53,
+      51,
+      54,
+      252
+    ],
+    "nearTorch": [
+      59,
+      40,
+      29,
+      255
+    ],
+    "door": [
+      81,
+      60,
+      49,
+      253
+    ],
+    "fireLuma": 225.40099999999995
+  },
+  "night": {
+    "renderer": "gateway-lightmap-v3",
+    "torches": "lit",
+    "frame": {
+      "w": 768,
+      "h": 512
+    },
+    "stone": [
+      28,
+      23,
+      33,
+      252
+    ],
+    "nearTorch": [
+      107,
+      63,
+      38,
+      255
+    ],
+    "door": [
+      80,
+      43,
+      36,
+      253
+    ],
+    "fireLuma": 251.87699999999998
+  },
+  "clockTransitionsPassed": true,
+  "dusk": {
+    "renderer": "gateway-lightmap-v3",
+    "torches": "off",
+    "frame": {
+      "w": 768,
+      "h": 512
+    },
+    "stone": [
+      30,
+      24,
+      34,
+      252
+    ],
+    "nearTorch": [
+      86,
+      48,
+      31,
+      255
+    ],
+    "door": [
+      74,
+      40,
+      36,
+      253
+    ],
+    "fireLuma": 210.30299999999997
+  },
+  "ratios": {
+    "nightAmbient": 0.49355025028879473,
+    "nightTorch": 1.6500326378103405
+  }
+}

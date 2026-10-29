@@ -1,0 +1,27 @@
+{
+  "pass": true,
+  "release": {
+    "commit": "13fe8998b73f235adfd1468686fd7810e0085931",
+    "balancePending": true,
+    "damagePerTick": null,
+    "tickOffsetsMs": [
+      200,
+      400,
+      600,
+      800,
+      1000
+    ],
+    "preview": "/ember-warden-review/flame-fan-flipbook/"
+  },
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "scope": "Unmodified live runtime, manually invoked diagnostic cast, normal production frame loop; browser debugger paused only to capture the presented frame without advancing past expiry; no test clock hook",
+  "level": 3,
+  "ticks": 5,
+  "damagePerTick": null,
+  "initialDamage": 1.1700000000000017,
+  "burning": [],
+  "errors": []
+}

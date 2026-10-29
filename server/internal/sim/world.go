@@ -1,0 +1,1136 @@
+package sim
+
+import (
+	"github.com/rizrmd/arkadia/server/internal/environment"
+	"math"
+	"math/rand/v2"
+)
+
+// TickMS is the fixed simulation step: 20 ticks per second.
+const TickMS = 50.0
+
+// DayMS is one in-game day: ten real minutes total (daylight.ts DAY_MS).
+const DayMS = 10 * 60 * 1000.0
+
+// MaxPlayers per room.
+const MaxPlayers = 4
+
+// Encounter tuning, from encounters.ts. Distances are ground tiles; the arena's reach is scaled to the
+// Stronghold's smaller figures (DISPLAY/1.1).
+const (
+	figure      = .48 / 1.1
+	heroReach   = 1.15 * figure
+	enemyReach  = .85 * figure
+	side        = .35 * figure
+	spacing     = .72 * figure
+	aggro       = 13.0
+	pack        = 3
+	spawnEvery  = 2000.0
+	regen       = 8.0
+	heroRespawn = 3500.0
+	corpse      = 4400.0
+	baseEnemies = 8
+	// Each extra player brings this many more revenants into the snow.
+	enemiesPerPlayer = 3
+)
+
+// Hero walking, from net/movement.ts: full speed is screen px/s straight across and straight up/down, on an
+// ellipse between them (112 px/s along a tile edge).
+const (
+	heroAcross = 120.0
+	heroUpDown = 90.0
+)
+
+var (
+	enemySpeed = 105 / hypot(64, 32) * .55 // tiles/s, a bit over half the hero's
+	// The hero starts (and respawns) just in front of the tent in the centre of the court.
+	heroSpawn = stronghold.HeroSpawn
+	// Later players stand beside the first so the party never spawns stacked.
+	spawnOffsets = []Vec{{0, 0}, {-26, 12}, {26, 12}, {0, 26}}
+)
+
+// fullSpeed is the hero's speed in screen px/s along (sx, sy) at a full push (fullSpeed in movement.ts); WalkStep
+// scales it by the input's length.
+func fullSpeed(sx, sy float64) float64 {
+	l := hypot(sx, sy)
+	if l == 0 {
+		return 0
+	}
+	return l / hypot(sx/heroAcross, sy/heroUpDown)
+}
+
+// Input is one client step: a screen-space walk vector of length 0..1 for one tick.
+type Input struct {
+	Dash         bool
+	DashU, DashV float64
+	Choice       string
+	Level        int
+	Seq          uint32
+	X, Y         float64
+}
+
+// Player is a connected hero.
+type Player struct {
+	ResumeToken string // secret bearer credential, never included in render snapshots
+	ID          string
+	Name        string
+	Hero        string // which hero the player picked (room.CleanHero); only clients draw it
+	Slot        int
+	X, Y        float64 // world px of the foot
+	F           Fighter
+	MaxHP       float64
+	Run         Progression
+	Kills       int
+	Moving      bool
+	Ack         uint32 // last input sequence applied
+	Owed        int    // steps guessed ahead of inputs that are late; they are walked again when those inputs arrive
+	// BaseX, BaseY: where the last applied input left the hero, under the Owed guessed steps (only while Owed > 0).
+	BaseX, BaseY float64
+
+	queue         []Input
+	tokens        float64
+	steering      bool
+	last          Vec // the walk vector of the last input applied
+	starved       int // ticks in a row without any input
+	dashTravel    *riftDashTravel
+	slotCD        [MaxSkillSlots]float64
+	flameFans     []flameFanCast
+	burnSoils     []burnSoilZone
+	burnSoilTicks int
+}
+
+// SetHero sets the player's hero and synchronizes their 3-slot skill loadout.
+func (p *Player) SetHero(hero string) {
+	p.Hero = hero
+	p.Run.SyncHero(hero)
+}
+
+// Enemy is a revenant. Gen bumps on every respawn so clients restart its fade-in; Level scales HP, damage and XP reward.
+type Enemy struct {
+	SpawnID string `json:"spawnId,omitempty"`
+	ID      int
+	Gen     int
+	Level   int
+	MaxHP   float64
+	Age     float64
+	F       Fighter
+	Home    Vec
+	Wander  *Vec
+	Target  string
+	// Side is the way it last veered round a footprint (+1 or -1; 0 counts as +1), tried first next time.
+	Side   float64
+	detour detourState
+}
+
+func (e *Enemy) enemyLevel() int {
+	if e.Level < 1 {
+		return 1
+	}
+	return e.Level
+}
+
+func (e *Enemy) maxHP() float64 {
+	if e.MaxHP > 0 {
+		return e.MaxHP
+	}
+	return RevenantMaxHP(e.enemyLevel())
+}
+
+func (e *Enemy) damage() float64 {
+	return RevenantDamage(e.enemyLevel())
+}
+
+// Gate is the gateway: open while a hero stands at the threshold; Frame follows the 16-frame, 20 fps door sheet
+// one frame per tick, and heroes pass once the leaves are 80% open.
+type Gate struct {
+	Open  bool
+	Frame int
+}
+
+var gateFrames = stronghold.Gate.Frames
+
+// Passable mirrors gate-doors.ts: passable from progress passableAt (0.8).
+func (g Gate) Passable() bool { return float64(g.Frame)/float64(gateFrames-1) >= gateSpec.PassableAt }
+
+// World is one room's simulation.
+type World struct {
+	Environment environment.Map
+	SpawnTimers map[string]float64
+	Tick        uint64
+	Clock       float64 // time of day, 0 = midnight, .5 = noon
+	Players     []*Player
+	Enemies     []*Enemy
+	Gate        Gate
+	Souls       []Soul
+	nextSoul    int
+	nextEnemy   int
+	spawnTimer  float64
+	source      *rand.PCG
+	rng         *rand.Rand
+	nav         *Blocker
+	retired     map[string]*Player
+}
+
+// NewWorld starts a world at a time of day with a deterministic seed.
+func NewWorld(nav *Blocker, clock float64, seed uint64) *World {
+	source := rand.NewPCG(seed, seed^0x9e3779b97f4a7c15)
+	w := &World{Environment: environment.Current(), Clock: clock - math.Floor(clock), source: source, rng: rand.New(source), nav: nav, nextEnemy: 1, retired: map[string]*Player{}}
+	w.initEnvironment()
+	return w
+}
+
+func (w *World) random() float64 { return w.rng.Float64() }
+
+func (w *World) freeSlot() int {
+	used := map[int]bool{}
+	for _, p := range w.Players {
+		used[p.Slot] = true
+	}
+	slot := 0
+	for used[slot] {
+		slot++
+	}
+	return slot
+}
+
+// AddPlayer places a hero at the tent in the first free slot. It returns nil when the room is full.
+func (w *World) AddPlayer(id, name string, maxHP float64) *Player {
+	if len(w.Players) >= MaxPlayers {
+		return nil
+	}
+	p := &Player{ID: id, Name: name, Slot: w.freeSlot(), MaxHP: clampMaxHP(maxHP), tokens: 2, Run: newProgression()}
+	w.place(p)
+	w.Players = append(w.Players, p)
+	return p
+}
+
+// ResumePlayer reclaims an existing or recently disconnected hero in the room so a brief reconnect
+// keeps the hero's world position and progression instead of resetting them to the tent at Level 1.
+func (w *World) ResumePlayer(id, name string, maxHP float64) *Player {
+	if id == "" {
+		return nil
+	}
+	p := w.Player(id)
+	if p == nil {
+		if len(w.Players) >= MaxPlayers || w.retired == nil {
+			return nil
+		}
+		p = w.retired[id]
+		if p == nil {
+			return nil
+		}
+		delete(w.retired, id)
+		p.Slot = w.freeSlot()
+		w.Players = append(w.Players, p)
+	}
+	p.Name = name
+	p.Ack = 0
+	p.Owed = 0
+	p.BaseX, p.BaseY = p.X, p.Y
+	p.queue = nil
+	p.tokens = 2
+	p.steering = false
+	p.Moving = false
+	p.last = Vec{}
+	p.starved = 0
+	if p.Run.Pending > 0 && len(p.Run.Offers) == 0 {
+		w.rollForHero(&p.Run, p.Hero)
+	}
+	w.syncEnemyLevels()
+	return p
+}
+
+// Hit points the Stronghold's Warden, training, skills and weapon can add (economy.ts heroBonus).
+func clampMaxHP(v float64) float64 {
+	if math.IsNaN(v) || v < 100 {
+		return 100
+	}
+	return math.Min(math.Round(v), 210)
+}
+
+func (w *World) place(p *Player) {
+	at := heroSpawn
+	if o := spawnOffsets[p.Slot%len(spawnOffsets)]; !w.nav.Blocked(at.X+o.X, at.Y+o.Y, w.Gate.Passable()) {
+		at = Vec{at.X + o.X, at.Y + o.Y}
+	}
+	plays := p.F.Plays
+	respawn := p.F.State == Die || plays > 0
+	p.X, p.Y = at.X, at.Y
+	p.BaseX, p.BaseY = at.X, at.Y
+	p.Owed = 0
+	p.F = newFighter(Hero, ToTile(at.X, at.Y))
+	if respawn {
+		p.F.Plays = plays + 1
+	}
+	p.F.HP = p.MaxHP
+	p.Moving = false
+	p.steering = false
+	p.last = Vec{}
+	p.starved = 0
+}
+
+// RemovePlayer drops a hero from the world.
+func (w *World) RemovePlayer(id string) {
+	for i, p := range w.Players {
+		if p.ID == id {
+			w.Players = append(w.Players[:i], w.Players[i+1:]...)
+			if w.retired == nil {
+				w.retired = map[string]*Player{}
+			}
+			w.retired[p.ID] = p
+			for _, e := range w.Enemies {
+				if e.Target == id {
+					e.Target = ""
+				}
+			}
+			w.syncEnemyLevels()
+			return
+		}
+	}
+}
+
+// Player finds a hero by id.
+func (w *World) Player(id string) *Player {
+	for _, p := range w.Players {
+		if p.ID == id {
+			return p
+		}
+	}
+	return nil
+}
+
+const maxQueue = 30
+
+// Queued is how many inputs wait to be applied.
+func (p *Player) Queued() int { return len(p.queue) }
+
+// Queue buffers a client input. Each input is applied exactly once, for one tick, in sequence order; stale or
+// malformed inputs are dropped, and a walk vector longer than 1 is shortened to 1.
+func (p *Player) Queue(in Input) {
+	last := p.Ack
+	if n := len(p.queue); n > 0 {
+		last = p.queue[n-1].Seq
+	}
+	if in.Seq <= last || math.IsNaN(in.X) || math.IsNaN(in.Y) || math.IsInf(in.X, 0) || math.IsInf(in.Y, 0) {
+		return
+	}
+	if l := hypot(in.X, in.Y); l > 1 {
+		in.X, in.Y = in.X/l, in.Y/l
+	}
+	p.choose(in.Choice, in.Level)
+	p.queue = append(p.queue, in)
+	if len(p.queue) > maxQueue {
+		p.queue = p.queue[len(p.queue)-maxQueue:]
+	}
+}
+
+func (w *World) maxEnemies() int { return baseEnemies + enemiesPerPlayer*max(0, len(w.Players)-1) }
+
+// Step advances the world by one tick.
+func (w *World) Step() {
+	const dt = TickMS
+	w.Tick++
+	for _, p := range w.Players {
+		w.walkInputs(p, dt)
+		w.stepRiftDash(p, dt)
+	}
+	for _, p := range w.Players {
+		if p.Run.Pending > 0 {
+			p.F.Immune = 200
+			if len(p.Run.Offers) == 0 {
+				w.rollForHero(&p.Run, p.Hero)
+			}
+		}
+		p.F.Tick(dt)
+		if p.F.Alive() && p.F.State == Idle {
+			p.F.Pos = ToTile(p.X, p.Y)
+		}
+	}
+	for _, e := range w.Enemies {
+		e.F.Tick(dt)
+	}
+	for _, p := range w.Players {
+		w.heroStep(p, dt)
+	}
+	for _, e := range w.Enemies {
+		w.foeStep(e, dt)
+	}
+	w.separate()
+	if w.Environment.Revision > 0 {
+		w.tickMapSpawns(dt)
+	} else {
+		w.spawnTimer -= dt
+		if w.spawnTimer <= 0 && len(w.Enemies) < w.maxEnemies() {
+			w.spawnTimer = spawnEvery
+			w.spawn(nil)
+		}
+	}
+	w.collectSouls()
+	w.updateGate()
+	w.Clock += dt / DayMS
+	w.Clock -= math.Floor(w.Clock)
+}
+
+// walkInputs applies this tick's inputs. A token bucket refilled once per tick caps a client at 20 steps per
+// second on average however fast it sends. A shorter queue is the client's jitter buffer: it paces its sending to
+// keep one or two inputs here. An input that is merely late (browsers send in bursts on frame boundaries, phone
+// networks jitter) would stop the hero for a tick and double its step the next, which every other client sees as
+// a stutter. So when no input has arrived, a hero that was walking keeps its last walk vector for up to maxOwed
+// ticks (Owed). Those steps are only a guess: when the late inputs arrive the hero goes back to where the last
+// real input left it (Base) and walks them, so a thumbstick that turned or let go during the gap is followed
+// exactly, and the client's prediction (which walked the real inputs) needs no correction.
+// A longer stall (a phone network holding packets for half a second) leaves a backlog behind it: the ticks spent
+// waiting bank tokens (up to maxTokens), and more than `backlog` waiting inputs walk two a tick until caught up,
+// so the server never stays hundreds of ms behind the player. The total walked never exceeds one step per tick
+// on average plus the banked tokens.
+const (
+	maxOwed   = 3
+	backlog   = 2
+	maxTokens = 8
+	quiet     = 20
+)
+
+func (w *World) walkInputs(p *Player, dt float64) {
+	// Steering (which holds off the auto attack) follows the player's last real input, not the vector walked this
+	// tick: a key held through a late input still steers, so the hero is not locked into a swing by a gap in the
+	// network. A client quiet for a second has let go.
+	defer func() { p.steering = (p.last.X != 0 || p.last.Y != 0) && p.starved <= quiet }()
+	p.tokens = math.Min(p.tokens+1, maxTokens)
+	if p.Owed > 0 && len(p.queue) > 0 {
+		p.starved = 0
+		k := min(p.Owed, len(p.queue))
+		// A hero held in a hit since keeps its place; those inputs are only acknowledged.
+		replay := !held(p)
+		if replay {
+			p.X, p.Y = p.BaseX, p.BaseY
+		}
+		for i := 0; i < k; i++ {
+			in := p.queue[0]
+			p.queue = p.queue[1:]
+			p.Ack = in.Seq
+			if in.Dash {
+				w.manualRiftDash(p, in.DashU, in.DashV)
+			}
+			p.last = Vec{in.X, in.Y}
+			if replay {
+				w.walk(p, p.last, dt)
+			}
+		}
+		p.Owed -= k
+		p.BaseX, p.BaseY = p.X, p.Y
+		// Guesses still standing for inputs not here yet follow the newest real input.
+		if replay {
+			for i := 0; i < p.Owed; i++ {
+				w.walk(p, p.last, dt)
+			}
+		}
+	}
+	n := 0
+	if len(p.queue) > 0 {
+		n = 1
+		if len(p.queue) > backlog {
+			n = 2
+		}
+	}
+	applied := false
+	for i := 0; i < n && p.tokens >= 1; i++ {
+		in := p.queue[0]
+		p.queue = p.queue[1:]
+		p.tokens--
+		p.Ack = in.Seq
+		if in.Dash {
+			w.manualRiftDash(p, in.DashU, in.DashV)
+		}
+		p.last = Vec{in.X, in.Y}
+		w.walk(p, p.last, dt)
+		applied = true
+	}
+	if applied || len(p.queue) > 0 {
+		p.starved = 0
+		if !applied {
+			w.walk(p, Vec{}, dt)
+		}
+		return
+	}
+	p.starved++
+	if p.starved <= maxOwed && p.Owed < maxOwed && p.tokens >= 1 && (p.last.X != 0 || p.last.Y != 0) && !held(p) {
+		if p.Owed == 0 {
+			p.BaseX, p.BaseY = p.X, p.Y
+		}
+		p.tokens--
+		p.Owed++
+		w.walk(p, p.last, dt)
+		return
+	}
+	// A client that went quiet (a background tab, a dropped connection) stops; its guessed steps stand and its
+	// prediction rebases on wherever the server left the hero.
+	if p.starved > quiet {
+		p.Owed = 0
+	}
+	w.walk(p, Vec{}, dt)
+}
+
+// held: a hit stun or death holds the hero in place. A swing does not: walking cancels it (walk), as in solo play.
+func held(p *Player) bool { return p.F.State != Idle && p.F.State != Attack }
+
+// HoldTicks is how many more ticks a hit stun holds the hero in place (a death: until it respawns). The input
+// applied in each of them is used up without walking, so the client skips as many of the inputs it has sent since
+// the acknowledged one instead of walking them in its prediction. A swing holds none: a walking input cancels it
+// and walks, and a still one stands anyway.
+func (p *Player) HoldTicks() int {
+	if p.dashTravel != nil {
+		return int(math.Ceil((260 - p.dashTravel.age) / TickMS))
+	}
+	s := kinds[p.F.Kind]
+	switch p.F.State {
+	case Hit:
+		return max(0, int(math.Ceil((s.hitMs-p.F.T)/TickMS)))
+	case Die:
+		return 1 << 20
+	}
+	return 0
+}
+
+// walk moves a hero one tick along a screen-space vector, sliding along whatever blocks the full step (hero.ts).
+func (w *World) walk(p *Player, input Vec, dt float64) {
+	if p.dashTravel != nil {
+		return
+	}
+	if p.F.State == Attack && (input.X != 0 || input.Y != 0) {
+		p.F.Play(Idle)
+	}
+	if p.F.State != Idle {
+		p.Moving = false
+		return
+	}
+	d := input
+	m := hypot(d.X, d.Y)
+	progress := 0.0
+	if m > 0 {
+		turn(&p.F, d.X, d.Y)
+		x, y, prog := WalkStep(w.nav, p.X, p.Y, d, dt, w.Gate.Passable())
+		p.X, p.Y, progress = x, y, prog
+	}
+	threshold := 5.0
+	if p.Moving {
+		threshold = 2
+	}
+	p.Moving = progress/(dt/1000) > threshold
+}
+
+// WalkStep is the hero's movement rule, shared with the client's prediction (src/stronghold/net/movement.ts):
+// it returns the new foot position and the screen px walked.
+func WalkStep(nav *Blocker, x, y float64, d Vec, dt float64, gatePassable bool) (float64, float64, float64) {
+	m := hypot(d.X, d.Y)
+	if m == 0 {
+		return x, y, 0
+	}
+	v := fullSpeed(d.X, d.Y) * dt / 1000
+	dx, dy := d.X*v, d.Y*v
+	stuck := nav.Blocked(x, y, gatePassable)
+	for _, s := range [3]Vec{{dx, dy}, {dx, 0}, {0, dy}} {
+		if s.X == 0 && s.Y == 0 {
+			continue
+		}
+		if (stuck || !nav.Blocked(x+s.X, y+s.Y, gatePassable)) && !cliff(x, y, x+s.X, y+s.Y) {
+			return x + s.X, y + s.Y, hypot(s.X, s.Y)
+		}
+	}
+	return x, y, 0
+}
+
+func (w *World) nearestEnemy(p *Player, rng float64) *Enemy {
+	var best *Enemy
+	d := rng
+	for _, e := range w.Enemies {
+		if v := hypot(e.F.Pos.X-p.F.Pos.X, e.F.Pos.Y-p.F.Pos.Y); e.F.Alive() && v <= d {
+			d, best = v, e
+		}
+	}
+	return best
+}
+
+func (w *World) enemyFighters() []*Fighter {
+	list := make([]*Fighter, 0, len(w.Enemies))
+	for _, e := range w.Enemies {
+		list = append(list, &e.F)
+	}
+	return list
+}
+
+const simultaneousSyncWindowMs = 340.0
+
+func (w *World) nearestAutoCastTarget(p *Player, rng float64) *Enemy {
+	var best *Enemy
+	d := rng
+	for _, e := range w.Enemies {
+		if !e.F.Alive() || (e.Gen > 0 && e.Age < 250) {
+			continue
+		}
+		if v := hypot(e.F.Pos.X-p.F.Pos.X, e.F.Pos.Y-p.F.Pos.Y); v <= d {
+			d, best = v, e
+		}
+	}
+	return best
+}
+
+func (w *World) autoCastInAoE(p *Player) {
+	if !p.F.Alive() || p.Run.Pending > 0 || w.inSafeZone(p.F.Pos) {
+		return
+	}
+	p.Run.SyncHero(p.Hero)
+	target := w.nearestAutoCastTarget(p, p.Run.aoeCastRadius())
+	if target == nil {
+		return
+	}
+	slotCount := min(MaxSkillSlots, len(p.Run.Slots))
+	if slotCount == 0 {
+		return
+	}
+	anyReady := false
+	for i := 0; i < slotCount; i++ {
+		if p.Run.Slots[i] != "rift-dash" && p.slotCD[i] <= 0 {
+			anyReady = true
+			break
+		}
+	}
+	if !anyReady {
+		return
+	}
+	readyIndices := make([]int, 0, slotCount)
+	fired := make([]string, 0, slotCount)
+	for i := 0; i < slotCount; i++ {
+		if p.Run.Slots[i] != "rift-dash" && p.slotCD[i] <= simultaneousSyncWindowMs {
+			readyIndices = append(readyIndices, i)
+			fired = append(fired, p.Run.Slots[i])
+		}
+	}
+	comboMult := 1.0
+	if len(readyIndices) >= 3 {
+		comboMult = 1.30
+	} else if len(readyIndices) == 2 {
+		comboMult = 1.15
+	}
+	for _, idx := range readyIndices {
+		skillID := p.Run.Slots[idx]
+		p.slotCD[idx] = p.Run.skillCooldownMs(skillID)
+		scale := 1.0
+		if skillID == "flame-fan" {
+			scale = .78
+		}
+		dmg := math.Max(1, math.Round(p.Run.damage()*p.Run.skillDamageMultiplier(skillID)*comboMult*scale))
+		splashR := 1.35 * p.Run.reach() * p.Run.skillAreaMultiplier(skillID)
+		if skillID == "flame-fan" {
+			p.flameFans = append(p.flameFans, flameFanCast{Origin: p.F.Pos, Aim: target.F.Pos, Rank: p.Run.skillRank(skillID), Area: p.Run.skillAreaMultiplier(skillID), Damage: dmg})
+			continue
+		}
+		hits := 0
+		for _, e := range w.Enemies {
+			if !e.F.Alive() || (e.Gen > 0 && e.Age < 250) {
+				continue
+			}
+			eligible := e == target || hypot(e.F.Pos.X-target.F.Pos.X, e.F.Pos.Y-target.F.Pos.Y) <= splashR
+			if skillID == "flame-fan" {
+				eligible = flameFanContains(p.F.Pos, target.F.Pos, e.F.Pos, p.Run.skillAreaMultiplier(skillID)) && w.flameFanVisible(p.F.Pos, e.F.Pos)
+			}
+			if eligible {
+				if e.F.Damage(dmg) {
+					p.Kills++
+					w.dropSoul(p, e.F.Pos, e.enemyLevel())
+				}
+				hits++
+				if skillID != "flame-fan" && hits >= cleave {
+					break
+				}
+			}
+		}
+	}
+	p.Run.AutoCasts++
+	if len(fired) >= 3 {
+		p.Run.TrinityCasts++
+	}
+	p.Run.LastCast = fired
+	if containsStr(fired, "flame-fan") {
+		p.Run.CastGeometry = &CastGeometry{p.F.Pos.X, p.F.Pos.Y, target.F.Pos.X, target.F.Pos.Y}
+	} else {
+		p.Run.CastGeometry = nil
+	}
+}
+
+func (w *World) enemyLevelOf(f *Fighter) int {
+	for _, e := range w.Enemies {
+		if &e.F == f {
+			return e.enemyLevel()
+		}
+	}
+	return w.spawnLevel()
+}
+
+func (w *World) heroStep(p *Player, dt float64) {
+	if p.dashTravel != nil {
+		return
+	}
+	w.stepBurnSoil(p, dt)
+	w.stepFlameFans(p, dt)
+	for i := 0; i < MaxSkillSlots; i++ {
+		p.slotCD[i] = math.Max(0, p.slotCD[i]-dt)
+	}
+	h := &p.F
+	if !h.Alive() {
+		h.DeadFor += dt
+		if h.DeadFor > heroRespawn {
+			w.place(p)
+		}
+		return
+	}
+	h.Recover()
+	if p.Run.Pending > 0 {
+		return
+	}
+	w.autoCastInAoE(p)
+	if h.State == Attack {
+		if h.Impact() {
+			for _, f := range swingTargets(h, w.enemyFighters(), heroReach*p.Run.reach(), side) {
+				if f.Damage(p.Run.damage()) {
+					p.Kills++
+					w.dropSoul(p, f.Pos, w.enemyLevelOf(f))
+				}
+			}
+		}
+		return
+	}
+	if h.State == Hit {
+		return
+	}
+	if !p.steering {
+		if e := w.nearestEnemy(p, heroReach*p.Run.reach()); e != nil {
+			s := screen(e.F.Pos.X-h.Pos.X, e.F.Pos.Y-h.Pos.Y)
+			turn(h, s.X, s.Y)
+			h.Play(Attack)
+			p.Moving = false
+			return
+		}
+	}
+	if w.inSafeZone(h.Pos) {
+		h.HP = math.Min(p.MaxHP, h.HP+regen*dt/1000)
+	}
+}
+
+// target: the nearest living hero out in the wilds within aggro range.
+func (w *World) target(e *Enemy) *Player {
+	var best *Player
+	d := aggro
+	for _, p := range w.Players {
+		if !p.F.Alive() || w.inSafeZone(p.F.Pos) {
+			continue
+		}
+		if v := hypot(p.F.Pos.X-e.F.Pos.X, p.F.Pos.Y-e.F.Pos.Y); v < d {
+			d, best = v, p
+		}
+	}
+	return best
+}
+
+func (w *World) foeStep(e *Enemy, dt float64) {
+	e.Age += dt
+	f := &e.F
+	if !f.Alive() {
+		f.DeadFor += dt
+		if f.DeadFor > corpse {
+			if w.Environment.Revision == 0 {
+				w.spawn(e)
+			}
+		}
+		return
+	}
+	f.Recover()
+	if f.State == Hit {
+		return
+	}
+	if f.State == Attack {
+		if f.Impact() {
+			if t := w.Player(e.Target); t != nil && t.F.Alive() && !w.inSafeZone(t.F.Pos) && inReach(f, &t.F, enemyReach+.25*figure, side) {
+				t.F.Damage(e.damage())
+			}
+		}
+		return
+	}
+	if t := w.target(e); t != nil {
+		du, dv := t.F.Pos.X-f.Pos.X, t.F.Pos.Y-f.Pos.Y
+		if hypot(du, dv) > enemyReach {
+			w.move(e, du, dv, dt)
+			return
+		}
+		s := screen(du, dv)
+		turn(f, s.X, s.Y)
+		if f.Cooldown <= 0 {
+			f.Cooldown = 1500 + w.random()*1200
+			e.Target = t.ID
+			f.Play(Attack)
+		} else {
+			f.Play(Idle)
+		}
+		return
+	}
+	// Wander around the spawn point, outside the zone.
+	if e.Wander == nil || w.random() < .002 {
+		a, r := w.random()*math.Pi*2, w.random()*5
+		p := Vec{e.Home.X + math.Cos(a)*r, e.Home.Y + math.Sin(a)*r}
+		if w.random() < .5 && !w.inSafeZone(p) && w.clearTile(p) {
+			e.Wander = &p
+		} else {
+			here := f.Pos
+			e.Wander = &here
+		}
+	}
+	// A wander target behind an obstacle is given up for a new one.
+	wu, wv := e.Wander.X-f.Pos.X, e.Wander.Y-f.Pos.Y
+	if hypot(wu, wv) > .15 {
+		if !w.move(e, wu, wv, dt) {
+			e.Wander = nil
+		}
+	} else {
+		f.Play(Idle)
+	}
+}
+
+// veers are the turns (radians) a blocked revenant tries, shallowest first (encounters.ts VEER).
+var veers = [...]float64{.4, .8, 1.2, 1.6, 2, 2.4}
+
+// clearTile mirrors encounters.ts walkable(): walkable ground outside every footprint, as for a hero, with the
+// gate passage open (revenants never cross it anyway: the safe zone stops them first).
+func (w *World) clearTile(t Vec) bool {
+	p := TilePoint(t.X, t.Y)
+	return !w.nav.Blocked(p.X, p.Y, true)
+}
+
+// move walks a revenant (encounters.ts move): a step that would enter the safe zone, leave walkable snow or walk
+// into a footprint slides along it, veers around it or stops. Veering takes the shallowest free turn, first to the
+// side it last turned to; a slide that barely covers ground does not count. One already overlapping a footprint
+// may walk out. False when stopped.
+func (w *World) move(e *Enemy, du, dv, dt float64) bool {
+	f := &e.F
+	if w.clearTile(f.Pos) {
+		clear := func(a, b Vec) bool {
+			return navClear(a, b, func(p Vec) bool { return !InSafeZone(p) && w.clearTile(p) }, cliffTile)
+		}
+		next, ok := detourDirection(&e.detour, f.Pos, Vec{f.Pos.X + du, f.Pos.Y + dv}, dt, clear)
+		if !ok {
+			f.Play(Idle)
+			return false
+		}
+		du, dv = next.X-f.Pos.X, next.Y-f.Pos.Y
+	} else {
+		e.detour = detourState{}
+	}
+	l := hypot(du, dv)
+	if l < 1e-6 {
+		return false
+	}
+	v := math.Min(l, enemySpeed*dt/1000)
+	dx, dy := du/l*v, dv/l*v
+	stuck := !w.clearTile(f.Pos)
+	side := e.Side
+	if side == 0 {
+		side = 1
+	}
+	type try struct {
+		m    Vec
+		side float64
+	}
+	var tries [3 + 2*len(veers)]try
+	tries[0], tries[1], tries[2] = try{Vec{dx, dy}, 0}, try{Vec{dx, 0}, 0}, try{Vec{0, dy}, 0}
+	n := 3
+	for _, t := range [2]float64{1, -1} {
+		for _, a := range veers {
+			a *= t * side
+			tries[n] = try{Vec{dx*math.Cos(a) - dy*math.Sin(a), dx*math.Sin(a) + dy*math.Cos(a)}, math.Copysign(1, a)}
+			n++
+		}
+	}
+	for _, t := range tries {
+		next := Vec{f.Pos.X + t.m.X, f.Pos.Y + t.m.Y}
+		if hypot(t.m.X, t.m.Y) < v*.4 || w.inSafeZone(next) || !stuck && !w.clearTile(next) || cliffTile(f.Pos, next) {
+			continue
+		}
+		if t.side != 0 {
+			e.Side = t.side
+		}
+		f.Pos = next
+		s := screen(t.m.X, t.m.Y)
+		turn(f, s.X, s.Y)
+		f.Play(Move)
+		return true
+	}
+	s := screen(du, dv)
+	turn(f, s.X, s.Y)
+	f.Play(Idle)
+	return false
+}
+
+// separate keeps revenants a body's width apart and off the heroes; only revenants are pushed, never into the zone.
+func (w *World) separate() {
+	var list []*Fighter
+	for _, e := range w.Enemies {
+		if e.F.Alive() {
+			list = append(list, &e.F)
+		}
+	}
+	others := append([]*Fighter{}, list...)
+	heroes := map[*Fighter]bool{}
+	for _, p := range w.Players {
+		others = append(others, &p.F)
+		heroes[&p.F] = true
+	}
+	for _, a := range list {
+		for _, b := range others {
+			if a == b {
+				continue
+			}
+			dx, dy := a.Pos.X-b.Pos.X, a.Pos.Y-b.Pos.Y
+			d := hypot(dx, dy)
+			if d >= spacing || d < 1e-6 {
+				continue
+			}
+			k := .5
+			if heroes[b] {
+				k = 1
+			}
+			push := (spacing - d) * k
+			next := Vec{a.Pos.X + dx/d*push, a.Pos.Y + dy/d*push}
+			if !w.inSafeZone(next) && w.clearTile(next) {
+				a.Pos = next
+			}
+		}
+	}
+}
+
+// spawnLevel returns the highest current Hero progression level in the room (minimum 1).
+func (w *World) spawnLevel() int {
+	lv := 1
+	for _, p := range w.Players {
+		if p.Run.Level > lv {
+			lv = p.Run.Level
+		}
+	}
+	return lv
+}
+
+func (w *World) syncEnemyLevels() {
+	if len(w.Players) == 0 {
+		return
+	}
+	targetLv := w.spawnLevel()
+	for _, e := range w.Enemies {
+		if e.enemyLevel() != targetLv {
+			prevMax := e.maxHP()
+			ratio := 1.0
+			if e.F.Alive() && prevMax > 0 {
+				ratio = math.Min(1, e.F.HP/prevMax)
+			}
+			e.Level = targetLv
+			e.MaxHP = RevenantMaxHP(targetLv)
+			if e.F.Alive() {
+				e.F.HP = math.Round(ratio*e.MaxHP*100) / 100
+			}
+		}
+	}
+}
+
+// spawn raises a new pack of one to three at the gate arc, or returns one fallen revenant there.
+func (w *World) spawn(back *Enemy) {
+	if w.Environment.Revision > 0 {
+		if back != nil {
+			for _, o := range w.Environment.Objects {
+				if o.Asset == "spawn" && o.ID == back.SpawnID {
+					w.mapSpawn(back, o)
+					return
+				}
+			}
+		}
+		return
+	}
+	p, ok := spawnPoint(w.random, w.clearTile)
+	if !ok {
+		return
+	}
+	n := 1
+	if back == nil {
+		n = min(w.maxEnemies()-len(w.Enemies), 1+int(math.Floor(w.random()*pack)))
+	}
+	lv := w.spawnLevel()
+	maxHP := RevenantMaxHP(lv)
+	for i := 0; i < n; i++ {
+		at := p
+		if i > 0 {
+			if at, ok = spawnPoint(w.random, w.clearTile); !ok {
+				continue
+			}
+		}
+		e := back
+		if e == nil {
+			e = &Enemy{ID: w.nextEnemy, Level: lv, MaxHP: maxHP, F: newFighter(Revenant, at)}
+			w.nextEnemy++
+			w.Enemies = append(w.Enemies, e)
+		}
+		e.F.Pos, e.Home, e.Wander, e.Target = at, at, nil, ""
+		if e.Side == 0 {
+			e.Side = 1
+		}
+		e.Level = lv
+		e.MaxHP = maxHP
+		e.F.HP, e.F.DeadFor, e.F.Cooldown, e.Age = maxHP, 0, 600+w.random()*900, 0
+		e.F.Play(Idle)
+		e.Gen++
+	}
+}
+
+// updateGate opens the gateway while any living hero stands at the threshold, with hysteresis (world-view.ts).
+func (w *World) updateGate() {
+	near := false
+	for _, p := range w.Players {
+		if !p.F.Alive() {
+			continue
+		}
+		r := gateSpec.Trigger.Closed
+		if w.Gate.Open {
+			r = gateSpec.Trigger.Open
+		}
+		if math.Abs(p.X-gateSpec.X) < r.X && math.Abs(p.Y-gateSpec.Trigger.Y) < r.Y {
+			near = true
+		}
+	}
+	w.Gate.Open = near
+	switch {
+	case near && w.Gate.Frame < gateFrames-1:
+		w.Gate.Frame++
+	case !near && w.Gate.Frame > 0:
+		w.Gate.Frame--
+	}
+}
+
+// Sample the same ground ray used by client wall clipping.
+func (w *World) flameFanVisible(a, b Vec) bool {
+	steps := int(math.Ceil(hypot(b.X-a.X, b.Y-a.Y) / .08))
+	for i := 1; i <= steps; i++ {
+		t := float64(i) / float64(steps)
+		p := TilePoint(a.X+(b.X-a.X)*t, a.Y+(b.Y-a.Y)*t)
+		if w.nav.Blocked(p.X, p.Y, w.Gate.Passable()) {
+			return false
+		}
+	}
+	return true
+}
+
+// Rift Dash is the sole manually cast Rift Runner active. Server validates equipment,
+// cooldown and finite direction, and sweeps the whole path against navigation and cliffs.
+func (w *World) manualRiftDash(p *Player, du, dv float64) bool {
+	if p.dashTravel != nil || p.Hero != "rift-runner" || !p.F.Alive() || p.Run.Pending > 0 || math.IsNaN(du) || math.IsNaN(dv) || math.IsInf(du, 0) || math.IsInf(dv, 0) {
+		return false
+	}
+	idx := -1
+	for i, id := range p.Run.Slots {
+		if id == "rift-dash" {
+			idx = i
+			break
+		}
+	}
+	if idx < 0 || idx >= MaxSkillSlots || p.slotCD[idx] > 0 {
+		return false
+	}
+	l := hypot(du, dv)
+	if l < .0001 {
+		return false
+	}
+	du /= l
+	dv /= l
+	from := ToTile(p.X, p.Y)
+	to := from
+	for i := 1; i <= 30; i++ {
+		next := Vec{from.X + du*float64(i)*.05, from.Y + dv*float64(i)*.05}
+		px := TilePoint(next.X, next.Y)
+		prev := TilePoint(to.X, to.Y)
+		if w.nav.Blocked(px.X, px.Y, w.Gate.Passable()) || cliff(prev.X, prev.Y, px.X, px.Y) {
+			break
+		}
+		to = next
+	}
+	if hypot(to.X-from.X, to.Y-from.Y) < .05 {
+		return false
+	}
+	p.dashTravel = &riftDashTravel{from: from, to: to}
+	p.F.Play(Idle)
+	p.BaseX, p.BaseY = p.X, p.Y
+	p.slotCD[idx] = p.Run.skillCooldownMs("rift-dash")
+	p.F.Immune = math.Max(p.F.Immune, 260)
+
+	p.Run.ManualDashes++
+	p.Run.DashFromU = from.X
+	p.Run.DashFromV = from.Y
+	p.Run.DashU = du
+	p.Run.DashV = dv
+	p.Run.DashDistance = hypot(to.X-from.X, to.Y-from.Y)
+	p.Run.DashElapsed = 0
+	turn(&p.F, (du-dv)*64, (du+dv)*32)
+	return true
+}
+
+// Dash travel is a world clock action, never multiplied by queued/replayed walk inputs.
+type riftDashTravel struct {
+	from, to Vec
+	age      float64
+}
+
+func (w *World) stepRiftDash(p *Player, dt float64) {
+	d := p.dashTravel
+	if d == nil {
+		return
+	}
+	if !p.F.Alive() {
+		p.Run.DashElapsed = 260
+		p.dashTravel = nil
+		return
+	}
+	// Clear guesses only after walkInputs has finished replay bookkeeping.
+	p.Owed = 0
+	d.age = math.Min(260, d.age+dt)
+	k := d.age / 260
+	to := Vec{d.from.X + (d.to.X-d.from.X)*k, d.from.Y + (d.to.Y-d.from.Y)*k}
+	px := TilePoint(to.X, to.Y)
+	if w.nav.Blocked(px.X, px.Y, w.Gate.Passable()) || cliff(p.X, p.Y, px.X, px.Y) {
+		p.Run.DashElapsed = 260
+		p.dashTravel = nil
+		return
+	}
+	p.X, p.Y = px.X, px.Y
+	p.F.Pos = to
+	p.BaseX, p.BaseY = p.X, p.Y
+	p.Moving = true
+	p.Run.DashElapsed = d.age
+	if d.age < 260 {
+		return
+	}
+	p.dashTravel = nil
+	du, dv := p.Run.DashU, p.Run.DashV
+	// Preserve the arrival phase-slash damage, now centered on the actual swept endpoint.
+	radius := 1.35 * p.Run.reach() * p.Run.skillAreaMultiplier("rift-dash")
+	aimX, aimY := (du-dv)*64, (du+dv)*32
+	for _, e := range w.Enemies {
+		if !e.F.Alive() {
+			continue
+		}
+		eu, ev := e.F.Pos.X-to.X, e.F.Pos.Y-to.Y
+		if hypot(eu, ev) > radius+.38 || !w.flameFanVisible(to, e.F.Pos) {
+			continue
+		}
+		ex, ey := (eu-ev)*64, (eu+ev)*32
+		if hypot(ex, ey) > .001 && (ex*aimX+ey*aimY)/(hypot(ex, ey)*hypot(aimX, aimY)) < math.Cos(math.Pi*.68*.55) {
+			continue
+		}
+		dmg := math.Max(1, math.Round(p.Run.damage()*p.Run.skillDamageMultiplier("rift-dash")*1.1))
+		if e.F.Damage(dmg) {
+			p.Kills++
+			w.dropSoul(p, e.F.Pos, e.enemyLevel())
+		}
+	}
+}

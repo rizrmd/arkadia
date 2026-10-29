@@ -1,0 +1,70 @@
+[
+  {
+    "width": 390,
+    "height": 844,
+    "actions": [
+      {
+        "label": "Open Settings",
+        "z": 20,
+        "index": 4,
+        "treeIndex": 7,
+        "mapIndex": 8,
+        "clockZ": 40
+      },
+      {
+        "label": "Open Inventory",
+        "z": 20,
+        "index": 5,
+        "treeIndex": 7,
+        "mapIndex": 8,
+        "clockZ": 40
+      }
+    ],
+    "hits": [
+      {
+        "label": "Open Settings",
+        "coveredByMap": true,
+        "hit": null
+      },
+      {
+        "label": "Open Inventory",
+        "coveredByMap": true,
+        "hit": null
+      }
+    ]
+  },
+  {
+    "width": 1440,
+    "height": 900,
+    "actions": [
+      {
+        "label": "Open Settings",
+        "z": 20,
+        "index": 4,
+        "treeIndex": 8,
+        "mapIndex": 9,
+        "clockZ": 40
+      },
+      {
+        "label": "Open Inventory",
+        "z": 20,
+        "index": 5,
+        "treeIndex": 8,
+        "mapIndex": 9,
+        "clockZ": 40
+      }
+    ],
+    "hits": [
+      {
+        "label": "Open Settings",
+        "coveredByMap": true,
+        "hit": "Graphics"
+      },
+      {
+        "label": "Open Inventory",
+        "coveredByMap": true,
+        "hit": "Graphics"
+      }
+    ]
+  }
+]

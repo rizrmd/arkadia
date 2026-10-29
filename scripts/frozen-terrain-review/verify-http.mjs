@@ -1,0 +1,7 @@
+import fs from 'node:fs/promises';import {createHash} from 'node:crypto';import sharp from 'sharp';
+const dir='public/frozen-terrain-review/v1',url='https://arkodia.online/frozen-terrain-review/v1/';
+const files=(await fs.readdir(dir)).filter(n=>n!=='verification.json');const results=[];
+for(const n of files){const r=await fetch(url+n+'?format=png',{signal:AbortSignal.timeout(15000)});if(!r.ok)throw Error(`${n}: HTTP ${r.status}`);const body=Buffer.from(await r.arrayBuffer()),local=await fs.readFile(`${dir}/${n}`);const hash=b=>createHash('sha256').update(b).digest('hex');if(hash(body)!==hash(local))throw Error(`${n}: hash mismatch`);if(n.endsWith('.png'))await sharp(body).metadata();results.push({file:n,status:r.status,sha256:hash(body),bytes:body.length});console.log('Verified',n);}
+const health=await (await fetch('https://arkodia.online/healthz',{signal:AbortSignal.timeout(15000)})).json();
+const report={verifiedAt:new Date().toISOString(),assetCommit:'443e53ce10730ee99ab4c1fbe073a3907d156ca8',layer:'1793117161038-frozen-terrain-review-v1-928520c0b80d',method:'Download every published file, compare SHA-256 to local bytes, decode each PNG metadata; check runtime health.',results,health};
+await fs.writeFile(`${dir}/verification.json`,JSON.stringify(report,null,2));console.log(`Verified ${results.length} public files, byte-identical; runtime health: ${JSON.stringify(health)}`);

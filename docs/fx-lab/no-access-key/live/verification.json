@@ -1,0 +1,10 @@
+{
+  "pass": true,
+  "base": "https://arkodia.online",
+  "checks": [
+    "Production Save commits and pushes without a key; effects are unchanged",
+    "Mobile Save succeeds without a credential dialog",
+    "Mobile renders; game controls are Pixi; no JavaScript errors"
+  ],
+  "errors": []
+}

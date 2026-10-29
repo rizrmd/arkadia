@@ -1,0 +1,381 @@
+{
+  "checks": [
+    "Exactly two existing wildlife species; no invented species",
+    "32 distinct transparent PNG frames",
+    "All four clips render in actual Pixi with eight distinct poses",
+    "Aligned fixed pivots, consistent species scale and no clipped silhouettes",
+    "Zero browser page errors"
+  ],
+  "atlas": {
+    "generator": "Built-in imagegen",
+    "species": [
+      "deer",
+      "crocodile"
+    ],
+    "frameSize": 256,
+    "columns": 8,
+    "rows": 4,
+    "pivot": [
+      0.5,
+      0.82
+    ],
+    "clips": [
+      {
+        "name": "deer-walk",
+        "row": 0,
+        "frames": 8,
+        "ms": 1600
+      },
+      {
+        "name": "deer-run",
+        "row": 1,
+        "frames": 8,
+        "ms": 800
+      },
+      {
+        "name": "crocodile-crawl",
+        "row": 2,
+        "frames": 8,
+        "ms": 2400
+      },
+      {
+        "name": "crocodile-swim",
+        "row": 3,
+        "frames": 8,
+        "ms": 2000
+      }
+    ],
+    "frames": [
+      {
+        "species": "deer",
+        "index": 0,
+        "row": 0,
+        "column": 0,
+        "width": 143,
+        "height": 192,
+        "pivotY": 210,
+        "sha256": "ace78eb49f7a6dfd294504b2845cd10862162af3674c60c02e84254e037b847a"
+      },
+      {
+        "species": "deer",
+        "index": 1,
+        "row": 0,
+        "column": 1,
+        "width": 150,
+        "height": 191,
+        "pivotY": 210,
+        "sha256": "8fa9c4e4ccf1bc47ef2240b310243b11c5df3cacfc3950d9e5bf7dd63457b5e5"
+      },
+      {
+        "species": "deer",
+        "index": 2,
+        "row": 0,
+        "column": 2,
+        "width": 154,
+        "height": 195,
+        "pivotY": 210,
+        "sha256": "9972b19db96012eac97409d933568d27c78d2465eeecad1eed6f53c2b2c3b2d6"
+      },
+      {
+        "species": "deer",
+        "index": 3,
+        "row": 0,
+        "column": 3,
+        "width": 149,
+        "height": 193,
+        "pivotY": 210,
+        "sha256": "00711eaacfc6f5ebb810bfd982367121bda710eb10836b383f11571f264e5ca7"
+      },
+      {
+        "species": "deer",
+        "index": 4,
+        "row": 0,
+        "column": 4,
+        "width": 164,
+        "height": 198,
+        "pivotY": 210,
+        "sha256": "27b0acc41721216efcb677d3177c22e3a8df8f16fa18f112946dd07685fd6aaa"
+      },
+      {
+        "species": "deer",
+        "index": 5,
+        "row": 0,
+        "column": 5,
+        "width": 156,
+        "height": 196,
+        "pivotY": 210,
+        "sha256": "8d935f6a8820351fd7504fcc0f4a6343dfd04c43dd73708fc80a04885a2f5ead"
+      },
+      {
+        "species": "deer",
+        "index": 6,
+        "row": 0,
+        "column": 6,
+        "width": 176,
+        "height": 197,
+        "pivotY": 210,
+        "sha256": "12c09ac2fb6a23a3ee3e5c69427532c9477e584b6b0be4399bc46eec4314f8d3"
+      },
+      {
+        "species": "deer",
+        "index": 7,
+        "row": 0,
+        "column": 7,
+        "width": 160,
+        "height": 197,
+        "pivotY": 210,
+        "sha256": "7bdd299046b9185cd87d618239fc25d34ceb858759e2cbe1d3858514d39d70f8"
+      },
+      {
+        "species": "deer",
+        "index": 8,
+        "row": 1,
+        "column": 0,
+        "width": 148,
+        "height": 186,
+        "pivotY": 210,
+        "sha256": "2e98e5b6404c606818b82f042469d08be5fdeaa878a87dd9dd3310b7f777d0b1"
+      },
+      {
+        "species": "deer",
+        "index": 9,
+        "row": 1,
+        "column": 1,
+        "width": 182,
+        "height": 170,
+        "pivotY": 210,
+        "sha256": "c6ad613a7fd2f03e9519ab9b199286e09fefddb3402e1f27d3c6ca72af00986d"
+      },
+      {
+        "species": "deer",
+        "index": 10,
+        "row": 1,
+        "column": 2,
+        "width": 199,
+        "height": 184,
+        "pivotY": 210,
+        "sha256": "eea3372e1087844667c4813dbe8a1c703e55fa74ed597ce378b9e67991485ffa"
+      },
+      {
+        "species": "deer",
+        "index": 11,
+        "row": 1,
+        "column": 3,
+        "width": 179,
+        "height": 182,
+        "pivotY": 210,
+        "sha256": "9a6c796b9ccaef1f9d851928f901313e4d931a5cb244ec27da3dc3e80510d1ed"
+      },
+      {
+        "species": "deer",
+        "index": 12,
+        "row": 1,
+        "column": 4,
+        "width": 152,
+        "height": 162,
+        "pivotY": 210,
+        "sha256": "3e039a6b0722302dd56f80a63e047833d77d417a115873b3126c9952903ddb91"
+      },
+      {
+        "species": "deer",
+        "index": 13,
+        "row": 1,
+        "column": 5,
+        "width": 185,
+        "height": 160,
+        "pivotY": 210,
+        "sha256": "252a1e25a32bdf215962d5a8d690c1f3ac6ac13da345df6e9c0583906acab403"
+      },
+      {
+        "species": "deer",
+        "index": 14,
+        "row": 1,
+        "column": 6,
+        "width": 188,
+        "height": 183,
+        "pivotY": 210,
+        "sha256": "f9305cc1f1316e9e50f83e593eaf18b89d27805598f9f7a476abeade25c1894b"
+      },
+      {
+        "species": "deer",
+        "index": 15,
+        "row": 1,
+        "column": 7,
+        "width": 152,
+        "height": 183,
+        "pivotY": 210,
+        "sha256": "19c0206368cb52ba29c1ebb4872f46a2c12d78d3b3d75cba003317839bfa516c"
+      },
+      {
+        "species": "crocodile",
+        "index": 0,
+        "row": 2,
+        "column": 0,
+        "width": 215,
+        "height": 172,
+        "pivotY": 210,
+        "sha256": "dfb96eff9e53d0b32d1dfa457b1fe448d8e1da1fe53fa0d25bc78a8f68a4f955"
+      },
+      {
+        "species": "crocodile",
+        "index": 1,
+        "row": 2,
+        "column": 1,
+        "width": 213,
+        "height": 152,
+        "pivotY": 210,
+        "sha256": "0830041f24481174cd332a30da80c0b896a2346655cc932c54c6e9e110edec5e"
+      },
+      {
+        "species": "crocodile",
+        "index": 2,
+        "row": 2,
+        "column": 2,
+        "width": 207,
+        "height": 166,
+        "pivotY": 210,
+        "sha256": "2198bccabd940112371a8fb802a756b4ee593ddc2e223ad1e91c31930b853af3"
+      },
+      {
+        "species": "crocodile",
+        "index": 3,
+        "row": 2,
+        "column": 3,
+        "width": 215,
+        "height": 172,
+        "pivotY": 210,
+        "sha256": "76687295b2c15bab7dc63350cbfc977ce7c08ccfac4b272b1e1c48423d5e7ab9"
+      },
+      {
+        "species": "crocodile",
+        "index": 4,
+        "row": 2,
+        "column": 4,
+        "width": 217,
+        "height": 182,
+        "pivotY": 210,
+        "sha256": "e8b0a9e6af61c2fbf00838ebf62c29b9b17f089dea6196628c245a09c9aefbcb"
+      },
+      {
+        "species": "crocodile",
+        "index": 5,
+        "row": 2,
+        "column": 5,
+        "width": 215,
+        "height": 160,
+        "pivotY": 210,
+        "sha256": "beb797efcca59d682280d9dc1d9f8e902722ffcfa5e6b898751db6b85625dea3"
+      },
+      {
+        "species": "crocodile",
+        "index": 6,
+        "row": 2,
+        "column": 6,
+        "width": 218,
+        "height": 180,
+        "pivotY": 210,
+        "sha256": "8f296598677a760f43902fd77a3949be88afd3601b09791450246478eda274c9"
+      },
+      {
+        "species": "crocodile",
+        "index": 7,
+        "row": 2,
+        "column": 7,
+        "width": 211,
+        "height": 167,
+        "pivotY": 210,
+        "sha256": "b59489a89cfda300e1ecdcf8f6a93a214439c4f10265e41cbd598eca26cb9384"
+      },
+      {
+        "species": "crocodile",
+        "index": 8,
+        "row": 3,
+        "column": 0,
+        "width": 217,
+        "height": 146,
+        "pivotY": 210,
+        "sha256": "15117f5d1ff58f8967fb62fadfa770a348406556304c61ba6b7a52b1bed4fb82"
+      },
+      {
+        "species": "crocodile",
+        "index": 9,
+        "row": 3,
+        "column": 1,
+        "width": 220,
+        "height": 156,
+        "pivotY": 210,
+        "sha256": "2733efac2778619410f0f6afd4660af1f8bea15f679f7791003872b0662ff834"
+      },
+      {
+        "species": "crocodile",
+        "index": 10,
+        "row": 3,
+        "column": 2,
+        "width": 222,
+        "height": 141,
+        "pivotY": 210,
+        "sha256": "49110b1c18ed36715d3d786e27a29cc648af148be6007df41a9bc4280135f664"
+      },
+      {
+        "species": "crocodile",
+        "index": 11,
+        "row": 3,
+        "column": 3,
+        "width": 219,
+        "height": 145,
+        "pivotY": 210,
+        "sha256": "287f64378ababe6b93c667d851a99af9ab211462d58bc893e63f6becb4805d80"
+      },
+      {
+        "species": "crocodile",
+        "index": 12,
+        "row": 3,
+        "column": 4,
+        "width": 216,
+        "height": 177,
+        "pivotY": 210,
+        "sha256": "b47dddadfd4644f35183f4ac23d9637c983fa8dac2852ec087cb70b716e6b017"
+      },
+      {
+        "species": "crocodile",
+        "index": 13,
+        "row": 3,
+        "column": 5,
+        "width": 220,
+        "height": 140,
+        "pivotY": 210,
+        "sha256": "79f366a5581e123403a141107a0cb82bd329cb432b862ddb7b1f5d7d895985e0"
+      },
+      {
+        "species": "crocodile",
+        "index": 14,
+        "row": 3,
+        "column": 6,
+        "width": 222,
+        "height": 172,
+        "pivotY": 210,
+        "sha256": "a414c7a4de34f7b0b16fd4e7e73ab406cfc861c1022f1babd745064f395c5eab"
+      },
+      {
+        "species": "crocodile",
+        "index": 15,
+        "row": 3,
+        "column": 7,
+        "width": 210,
+        "height": 160,
+        "pivotY": 210,
+        "sha256": "45a758baefe4221f8e278242066826625aba40484569bc3b531a62b29d4a05f4"
+      }
+    ]
+  },
+  "rendered": [
+    "ac4e0bba0520d3290e6497d4c6720b5534d2411556edf941b4acc418263cffc4",
+    "75cdce86aeab57ccebf552d29ab959b70633d2048704ed7752d320a3c0f9807c",
+    "910f28635675d49338585852d697b9b960ccb20de004cf7d575a42f1a50005d5",
+    "a9ca9b68aaa97c0c5909cca2522a4e4db7669788b10973986ed99a59cbf72161",
+    "4a4d77578df1775669182b2daba49cd2194692e99fdad8640500d11c9fe8e554",
+    "1f7355569d5a1a97fedecee7914d47811713a640f35447b7ad520c13d4aa8e82",
+    "0763d9aabe5499ad2f27e270f38cbae5a98407d37f6f5c4570d8e322bf69ec08",
+    "f74b70f3d443165603e6b7ab3567dc6487790403fa62e3cf402933b7af24729f"
+  ]
+}

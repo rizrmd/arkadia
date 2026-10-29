@@ -1,0 +1,103 @@
+{
+  "status": "atlas-export-pass",
+  "clips": 8,
+  "frames": 64,
+  "cell": [
+    384,
+    384
+  ],
+  "atlas": [
+    3072,
+    3072
+  ],
+  "audit": [
+    {
+      "action": "idle",
+      "frames": 8,
+      "uniqueFrames": 7,
+      "scale": 0.6218905472636815,
+      "minimumMargin": 62,
+      "neutralEndpoints": null,
+      "terminalHold": null,
+      "source": "source/idle-SE.png",
+      "calibration": "alpha bounds and dark boot pixels; not a source-rig foot-contact measurement"
+    },
+    {
+      "action": "run",
+      "frames": 8,
+      "uniqueFrames": 8,
+      "scale": 0.6738544474393531,
+      "minimumMargin": 47,
+      "neutralEndpoints": null,
+      "terminalHold": null,
+      "source": "source/run-SE.png",
+      "calibration": "alpha bounds and dark boot pixels; not a source-rig foot-contact measurement"
+    },
+    {
+      "action": "flame-fan",
+      "frames": 8,
+      "uniqueFrames": 7,
+      "scale": 0.6775067750677507,
+      "minimumMargin": 51,
+      "neutralEndpoints": true,
+      "terminalHold": null,
+      "source": "source/flame-fan-SE.png",
+      "calibration": "alpha bounds and dark boot pixels; not a source-rig foot-contact measurement"
+    },
+    {
+      "action": "cinder-step",
+      "frames": 8,
+      "uniqueFrames": 7,
+      "scale": 0.6925207756232687,
+      "minimumMargin": 56,
+      "neutralEndpoints": true,
+      "terminalHold": null,
+      "source": "source/cinder-step-SE.png",
+      "calibration": "alpha bounds and dark boot pixels; not a source-rig foot-contact measurement"
+    },
+    {
+      "action": "ember-snare",
+      "frames": 8,
+      "uniqueFrames": 7,
+      "scale": 0.6561679790026247,
+      "minimumMargin": 46,
+      "neutralEndpoints": true,
+      "terminalHold": null,
+      "source": "source/ember-snare-SE.png",
+      "calibration": "alpha bounds and dark boot pixels; not a source-rig foot-contact measurement"
+    },
+    {
+      "action": "furnace-heart",
+      "frames": 8,
+      "uniqueFrames": 7,
+      "scale": 0.6648936170212766,
+      "minimumMargin": 63,
+      "neutralEndpoints": true,
+      "terminalHold": null,
+      "source": "source/furnace-heart-SE.png",
+      "calibration": "alpha bounds and dark boot pixels; not a source-rig foot-contact measurement"
+    },
+    {
+      "action": "hurt",
+      "frames": 8,
+      "uniqueFrames": 7,
+      "scale": 0.6702412868632708,
+      "minimumMargin": 62,
+      "neutralEndpoints": true,
+      "terminalHold": null,
+      "source": "source/hurt-SE.png",
+      "calibration": "alpha bounds and dark boot pixels; not a source-rig foot-contact measurement"
+    },
+    {
+      "action": "death",
+      "frames": 8,
+      "uniqueFrames": 7,
+      "scale": 0.6596306068601583,
+      "minimumMargin": 63,
+      "neutralEndpoints": null,
+      "terminalHold": true,
+      "source": "source/death-SE.png",
+      "calibration": "alpha bounds and dark boot pixels; not a source-rig foot-contact measurement"
+    }
+  ]
+}

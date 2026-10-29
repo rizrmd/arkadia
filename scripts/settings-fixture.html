@@ -1,0 +1,6 @@
+<!doctype html><html lang="en"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Settings functional test fixture</title><style>html,body{margin:0;background:#33434b;height:100%;font-family:serif}</style><p>Isolated Settings test fixture — not gameplay verification</p><canvas id="world-canvas" data-ready="true"></canvas><script type="module">
+import '/src/app/render-settings.ts';
+import {createSettings} from '/src/stronghold/settings.ts';import {renderQuality} from '/src/app/render-quality.ts';
+const canvas=document.querySelector('canvas');const sync=()=>{canvas.dataset.quality=renderQuality.get().tier;canvas.dataset.targetFps=String(renderQuality.get().targetFps);};renderQuality.subscribe(sync);sync();
+createSettings({solo:true,pause:()=>{},canOpen:()=>true,bounds:()=>({x:innerWidth-140,y:30,width:120,height:120}),showFps:show=>canvas.dataset.showFps=String(show)});
+</script></html>

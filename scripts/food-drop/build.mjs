@@ -1,0 +1,17 @@
+import {build} from 'vite';
+import fs from 'node:fs/promises';
+import {createHash} from 'node:crypto';
+import {execFileSync} from 'node:child_process';
+const site=process.env.FOOD_DROP_STAGE+'/site';
+if(!process.env.FOOD_DROP_STAGE)throw Error('FOOD_DROP_STAGE required');
+await build({logLevel:'error',build:{outDir:site,copyPublicDir:false}});
+await fs.cp('public/food-drop',site+'/food-drop',{recursive:true});
+for(const f of ['deer-loot.png','crocodile-loot.png','controller-desktop.png','controller-portrait.png','controller-landscape.png','controller-results.json','README.md'])await fs.copyFile('docs/food-drop/'+f,site+'/food-drop/'+f);
+const response=await fetch('https://arkodia.online/asset-sizes.json',{signal:AbortSignal.timeout(20000)});
+if(!response.ok)throw Error('Live asset inventory unavailable');
+const sizes=await response.json();sizes['/food-drop/raw-meat-v1.png']=(await fs.stat('public/food-drop/raw-meat-v1.png')).size;
+await fs.writeFile(site+'/asset-sizes.json',JSON.stringify(sizes));
+const files={};
+for(const rel of ['index.html','food-drop/raw-meat-v1.png',...(await fs.readdir(site+'/assets')).map(f=>'assets/'+f)])files['/'+rel]=createHash('sha256').update(await fs.readFile(site+'/'+rel)).digest('hex');
+await fs.writeFile(site+'/food-drop/release.json',JSON.stringify({commit:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),files},null,2));
+console.log('Built additive food icon release; existing editor, artwork and saves retained.');

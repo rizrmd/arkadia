@@ -1,0 +1,55 @@
+{
+  "metadata": {
+    "name": "actual live publication",
+    "duration": 0,
+    "times": []
+  },
+  "subpixelBits": 0,
+  "rows": [
+    {
+      "heroId": "ember-warden",
+      "revision": 5,
+      "anchor": {
+        "groundX": 577,
+        "groundY": 128,
+        "lift": 0,
+        "owner": 3000
+      },
+      "frame": [
+        0,
+        0,
+        228,
+        250
+      ],
+      "width": 73.26,
+      "height": 83.30097087378641,
+      "pivot": [
+        0.5135135135135135,
+        0.9841538461538462
+      ],
+      "flip": false,
+      "groundOffsetY": -2.793100419698556,
+      "vertexCount": 33953,
+      "maxVertexDelta": 7.216297359669e-8,
+      "vertexErrors": 0,
+      "maxHeightContractDelta": 0.000001082846530664483,
+      "heightContractErrors": 0,
+      "meshes": [
+        {
+          "vertices": 33953,
+          "bones": 24,
+          "heightScale": 40.82013456797489,
+          "heightRange": [
+            -0.13344625103995256,
+            1.4686491080479156
+          ]
+        }
+      ],
+      "tests": [],
+      "alphaSha256": "fcbb26924e70a3167a99056c1af035e0ec18256708246a8f8f2dfde852792ab2"
+    }
+  ],
+  "failures": [],
+  "image": "mobile-torch-court-0.3-body.png",
+  "scope": "Observed actual gameplay onActorShadowFrame publication; no forced clip, animation time or pose. Pixel readback only in this explicitly invoked diagnostic."
+}

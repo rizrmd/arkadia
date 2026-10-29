@@ -1,0 +1,105 @@
+{
+  "base": "http://127.0.0.1:5587",
+  "views": {
+    "desktop": {
+      "checks": [
+        "game-ready",
+        "menu-open",
+        "controls-real-rendering-and-audio",
+        "reset-cancel-escape-backdrop-preserve"
+      ],
+      "viewport": [
+        1440,
+        900
+      ],
+      "saved": {
+        "quality": "low",
+        "frameRate": 30,
+        "music": 23,
+        "soundEffects": 41,
+        "screenShake": false,
+        "showFps": false
+      },
+      "audio": {
+        "state": "running",
+        "music": 0.004159524105489254,
+        "soundEffects": 0.018449999392032623
+      },
+      "confirmation": "Cancel, Escape, backdrop preserve; second confirmation resets allowlist",
+      "bounds": {
+        "x": 450,
+        "y": 131,
+        "width": 540,
+        "height": 638
+      }
+    },
+    "mobile": {
+      "checks": [
+        "game-ready",
+        "menu-open",
+        "controls-real-rendering-and-audio",
+        "reset-cancel-escape-backdrop-preserve"
+      ],
+      "viewport": [
+        390,
+        844
+      ],
+      "saved": {
+        "quality": "low",
+        "frameRate": 30,
+        "music": 23,
+        "soundEffects": 41,
+        "screenShake": false,
+        "showFps": false
+      },
+      "audio": {
+        "state": "running",
+        "music": 0.004139999859035015,
+        "soundEffects": 0.018449999392032623
+      },
+      "confirmation": "Cancel, Escape, backdrop preserve; second confirmation resets allowlist",
+      "bounds": {
+        "x": 12,
+        "y": 120,
+        "width": 366,
+        "height": 604
+      }
+    },
+    "landscape": {
+      "checks": [
+        "game-ready",
+        "menu-open",
+        "controls-real-rendering-and-audio",
+        "reset-cancel-escape-backdrop-preserve"
+      ],
+      "viewport": [
+        844,
+        390
+      ],
+      "saved": {
+        "quality": "low",
+        "frameRate": 30,
+        "music": 23,
+        "soundEffects": 41,
+        "screenShake": false,
+        "showFps": false
+      },
+      "audio": {
+        "state": "running",
+        "music": 0.005596777889877558,
+        "soundEffects": 0.018466617912054062
+      },
+      "confirmation": "Cancel, Escape, backdrop preserve; second confirmation resets allowlist",
+      "bounds": {
+        "x": 237,
+        "y": 12,
+        "width": 370,
+        "height": 366
+      }
+    }
+  },
+  "errors": [],
+  "consoleErrors": [],
+  "renderer": "2d",
+  "deployedSha": null
+}

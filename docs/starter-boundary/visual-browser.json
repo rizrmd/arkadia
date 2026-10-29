@@ -1,0 +1,186 @@
+{
+  "base": "http://127.0.0.1:19770",
+  "cases": [
+    {
+      "mode": "locked",
+      "hero": "rift-runner",
+      "walls": 16,
+      "bastions": 0,
+      "tower": {
+        "visible": false,
+        "anchor": 0.9555555555555556
+      },
+      "painted": {
+        "cpu": [
+          152,
+          133,
+          113
+        ],
+        "gpu": [
+          152,
+          134,
+          113
+        ],
+        "difference": 1,
+        "outsideAlpha": 0
+      },
+      "resourceChargesPreserved": true,
+      "crossFactionDenied": false,
+      "coreGateEnforced": true
+    }
+  ],
+  "errors": [],
+  "scope": "Offline isolated browser saves; production map read only",
+  "starterMovement": {
+    "initial": {
+      "x": 590,
+      "y": 420
+    },
+    "after": {
+      "x": 590,
+      "y": 505.9889383603529
+    },
+    "clearGatewayApproach": true
+  },
+  "crossingAttempt": {
+    "hp": 100,
+    "maxHp": 100,
+    "state": "idle",
+    "u": 16.68,
+    "v": 16.68,
+    "meters": 39,
+    "safe": false,
+    "reach": 1,
+    "aoeCastRadiusTiles": 2.2,
+    "critChance": 0.15,
+    "critMultiplier": 1.5
+  },
+  "gate": {
+    "initial": {
+      "state": "closed",
+      "clear": false
+    },
+    "open": {
+      "state": "open",
+      "clear": true
+    },
+    "crossed": {
+      "hp": 100,
+      "maxHp": 100,
+      "state": "idle",
+      "u": 16.68,
+      "v": 16.68,
+      "meters": 39,
+      "safe": false,
+      "reach": 1,
+      "aoeCastRadiusTiles": 2.2,
+      "critChance": 0.15,
+      "critMultiplier": 1.5
+    },
+    "closedAgain": true
+  },
+  "gateClosedAgain": {
+    "state": "closed",
+    "clear": false
+  },
+  "coopColumns": 2431,
+  "mobileResize": true,
+  "visual": [
+    {
+      "visible": true,
+      "renderable": true,
+      "alpha": 1,
+      "x": -1582.75873015873,
+      "y": -681.8984126984126,
+      "w": 3740.3936507936505,
+      "h": 1941.1999999999998,
+      "bounds": {
+        "x": -1582.75873015873,
+        "y": -681.8984126984126,
+        "w": 3740.3936507936505,
+        "h": 1941.1999999999998
+      },
+      "source": [
+        4020,
+        2086
+      ],
+      "frame": {
+        "type": "rectangle",
+        "x": 0,
+        "y": 0,
+        "width": 4020,
+        "height": 2086
+      },
+      "uvs": {
+        "x0": 0,
+        "y0": 0,
+        "x1": 1,
+        "y1": 0,
+        "x2": 1,
+        "y2": 1,
+        "x3": 0,
+        "y3": 1
+      },
+      "textureScaleMode": "linear",
+      "maxTexture": 8192,
+      "glError": 0,
+      "parentVisible": true,
+      "children": [
+        {
+          "id": "",
+          "pipe": "tilingSprite",
+          "z": 0
+        },
+        {
+          "z": 9.9
+        },
+        {
+          "id": "world-surface",
+          "pipe": "sprite",
+          "z": 10
+        },
+        {
+          "z": 10.05
+        },
+        {
+          "z": 10.08
+        },
+        {
+          "id": "",
+          "pipe": "sprite",
+          "z": 10.4
+        },
+        {
+          "id": "",
+          "pipe": "sprite",
+          "z": 10.4
+        },
+        {
+          "id": "",
+          "pipe": "sprite",
+          "z": 10.5
+        },
+        {
+          "id": "",
+          "pipe": "sprite",
+          "z": 10.5
+        },
+        {
+          "z": 10.6
+        },
+        {
+          "z": 11
+        },
+        {
+          "z": 12
+        },
+        {
+          "id": "world-gate-doors",
+          "pipe": "sprite",
+          "z": 14
+        }
+      ]
+    }
+  ],
+  "pass": true
+}

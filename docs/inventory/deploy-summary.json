@@ -1,0 +1,22 @@
+{
+  "task": "#HXSUC",
+  "feature_commit": "3205e15",
+  "final_ui_commit": "18c9441",
+  "game_release_commit": "5b4daf65fd805aa58abac27294b5e140c3e413b6",
+  "live_integration_commit": "ade07d2",
+  "live_url": "https://ark-whachat.fural.space/",
+  "smoke_url": "https://ark-whachat.fural.space/?3d=0",
+  "checks": [
+    "production TypeScript/Vite build",
+    "all Go server tests and deployment co-op smoke",
+    "inventory migration/stack/count/duplicate/save rollback tests",
+    "8 economy/save/offline tests",
+    "Frostpass checkpoint/reward persistence",
+    "five component viewports including longer scroll details",
+    "live desktop/portrait/landscape, real usage, save/load, keyboard, Settings exclusion and blessing transition"
+  ],
+  "live_passed": true,
+  "page_errors": 0,
+  "knowledge": "NKBDf7551a4f88f1a1eba3475c3f",
+  "limitations": "Uses the existing 2D hero fallback for browser smoke due to an unrelated pre-existing 3D shader error. Consumables are solo-only."
+}

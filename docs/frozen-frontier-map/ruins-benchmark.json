@@ -1,0 +1,306 @@
+{
+ "tool": "scripts/frozen-frontier-map/bench.mjs 240 <root> (VIEW=desktop|phone)",
+ "method": "Alternating before/after runs on the shared sandbox (load average 8-19 during the runs). before = a clean git worktree of 7958b84; after = the ruin rework. Fake clock, one rAF per 16.7 ms, hero walking a loop through the ruined gate, foes cleared each leg. jsMsPerFrame = main-thread busy ms inside the game loop minus renderer.render; SwiftShader GPU work lands in renderer.render (pixiMs) and is not representative of real GPUs. Whole-frame draw calls vary with combat and HUD state; verification.json measures the scenery alone (shown vs hidden in the same frame: 0 draw calls added at every spot, before and after). Four runs died in headless Chromium under load (no JSON) and were rerun.",
+ "summary": {
+  "frontierJsMsPerFrame": "place + blocked + occluders stay under 1 ms per frame before and after (place 0.001-0.03, blocked 0.02-0.30, occluders 0.19-0.57)",
+  "desktopJsMsPerFrame": {
+   "before": [
+    9.51,
+    12.22,
+    20.68,
+    18.17
+   ],
+   "after": [
+    12.94,
+    21.33,
+    23.76
+   ]
+  },
+  "phoneJsMsPerFrame": {
+   "before": [
+    11.82,
+    10.81
+   ],
+   "after": [
+    18.38,
+    10.12
+   ]
+  },
+  "drawCallsPerFrame": {
+   "desktopBefore": [
+    124.1,
+    145.4,
+    163.7,
+    127.9
+   ],
+   "desktopAfter": [
+    157.2,
+    166.6,
+    117.5
+   ],
+   "phoneBefore": [
+    116,
+    111.4
+   ],
+   "phoneAfter": [
+    111,
+    117.8
+   ]
+  },
+  "propsInView": "desktop about 83 before, 215-218 after on the same walk (the ruins now carry floors, trails, drifts and rubble); phone 41-42 before, 123 after; all from the one atlas, batched with neighbouring layers",
+  "placements": {
+   "before": 249,
+   "after": 475
+  },
+  "atlas": {
+   "before": "29 sprites, 1.18 MB at 2.5 px/world px",
+   "after": "39 sprites, 1.16 MB at 2.4 px/world px"
+  }
+ },
+ "desktop": "1440x900 DPR 1",
+ "phone": "390x844 DPR 3",
+ "runs": [
+  {
+   "view": "desktop",
+   "root": "before (HEAD 7958b84)",
+   "frames": 240,
+   "readyMs": 10795,
+   "wallMsPerFrame": 415.2,
+   "busyMsPerFrame": 390.19,
+   "jsMsPerFrame": 9.51,
+   "pixiMs": 380.69,
+   "heroRenderMs": 5.87,
+   "worldDrawMs": 0.29,
+   "frontierPlaceMs": 0.002,
+   "blockedMs": 0.032,
+   "occludersMs": 0.274,
+   "gcMs": 1.56,
+   "drawCallsPerFrame": 124.1,
+   "visibleProps": 81,
+   "heroEnd": [
+    22.67,
+    24.75
+   ]
+  },
+  {
+   "view": "desktop",
+   "root": "after (ruin rework)",
+   "frames": 240,
+   "readyMs": 11663,
+   "wallMsPerFrame": 547.9,
+   "busyMsPerFrame": 524.5,
+   "jsMsPerFrame": 12.94,
+   "pixiMs": 511.56,
+   "heroRenderMs": 8.33,
+   "worldDrawMs": 0.19,
+   "frontierPlaceMs": 0.006,
+   "blockedMs": 0.027,
+   "occludersMs": 0.506,
+   "gcMs": 1.76,
+   "drawCallsPerFrame": 157.2,
+   "visibleProps": 217,
+   "heroEnd": [
+    20.43,
+    28.11
+   ]
+  },
+  {
+   "view": "phone",
+   "root": "before (HEAD 7958b84)",
+   "frames": 240,
+   "readyMs": 10533,
+   "wallMsPerFrame": 408.6,
+   "busyMsPerFrame": 389.17,
+   "jsMsPerFrame": 11.82,
+   "pixiMs": 377.35,
+   "heroRenderMs": 6.46,
+   "worldDrawMs": 0.37,
+   "frontierPlaceMs": 0.053,
+   "blockedMs": 0.055,
+   "occludersMs": 0.191,
+   "gcMs": 2.34,
+   "drawCallsPerFrame": 116,
+   "visibleProps": 42,
+   "heroEnd": [
+    20.11,
+    27.7
+   ]
+  },
+  {
+   "view": "desktop",
+   "root": "before (HEAD 7958b84)",
+   "frames": 240,
+   "readyMs": 12031,
+   "wallMsPerFrame": 369,
+   "busyMsPerFrame": 348.26,
+   "jsMsPerFrame": 12.22,
+   "pixiMs": 336.04,
+   "heroRenderMs": 6.57,
+   "worldDrawMs": 0.14,
+   "frontierPlaceMs": 0.002,
+   "blockedMs": 0.021,
+   "occludersMs": 0.147,
+   "gcMs": 3.09,
+   "drawCallsPerFrame": 145.4,
+   "visibleProps": 82,
+   "heroEnd": [
+    20.51,
+    22.51
+   ]
+  },
+  {
+   "view": "phone",
+   "root": "before (HEAD 7958b84)",
+   "frames": 240,
+   "readyMs": 19895,
+   "wallMsPerFrame": 571.8,
+   "busyMsPerFrame": 540.63,
+   "jsMsPerFrame": 10.81,
+   "pixiMs": 529.82,
+   "heroRenderMs": 5.08,
+   "worldDrawMs": 0.58,
+   "frontierPlaceMs": 0.03,
+   "blockedMs": 0.079,
+   "occludersMs": 0.141,
+   "gcMs": 3.09,
+   "drawCallsPerFrame": 111.4,
+   "visibleProps": 41,
+   "heroEnd": [
+    20.99,
+    25.18
+   ]
+  },
+  {
+   "view": "desktop",
+   "root": "after (ruin rework)",
+   "frames": 240,
+   "readyMs": 22489,
+   "wallMsPerFrame": 631,
+   "busyMsPerFrame": 600.49,
+   "jsMsPerFrame": 21.33,
+   "pixiMs": 579.16,
+   "heroRenderMs": 13.03,
+   "worldDrawMs": 0.37,
+   "frontierPlaceMs": 0.007,
+   "blockedMs": 0.054,
+   "occludersMs": 0.567,
+   "gcMs": 3.2,
+   "drawCallsPerFrame": 166.6,
+   "visibleProps": 218,
+   "heroEnd": [
+    20.9,
+    28.32
+   ]
+  },
+  {
+   "view": "phone",
+   "root": "after (ruin rework)",
+   "frames": 240,
+   "readyMs": 10100,
+   "wallMsPerFrame": 593.3,
+   "busyMsPerFrame": 565.5,
+   "jsMsPerFrame": 18.38,
+   "pixiMs": 547.12,
+   "heroRenderMs": 11.33,
+   "worldDrawMs": 0.5,
+   "frontierPlaceMs": 0.028,
+   "blockedMs": 0.047,
+   "occludersMs": 0.308,
+   "gcMs": 3.66,
+   "drawCallsPerFrame": 111,
+   "visibleProps": 123,
+   "heroEnd": [
+    20.31,
+    28.31
+   ]
+  },
+  {
+   "view": "desktop",
+   "root": "before (HEAD 7958b84)",
+   "frames": 240,
+   "readyMs": 15217,
+   "wallMsPerFrame": 486.3,
+   "busyMsPerFrame": 458.14,
+   "jsMsPerFrame": 20.68,
+   "pixiMs": 437.46,
+   "heroRenderMs": 12.84,
+   "worldDrawMs": 0.08,
+   "frontierPlaceMs": 0.005,
+   "blockedMs": 0.009,
+   "occludersMs": 0.52,
+   "gcMs": 3.8,
+   "drawCallsPerFrame": 163.7,
+   "visibleProps": 84,
+   "heroEnd": [
+    21.01,
+    27.26
+   ]
+  },
+  {
+   "view": "phone",
+   "frames": 240,
+   "readyMs": 12108,
+   "wallMsPerFrame": 621.2,
+   "busyMsPerFrame": 589.73,
+   "jsMsPerFrame": 10.12,
+   "pixiMs": 579.6,
+   "heroRenderMs": 5.16,
+   "worldDrawMs": 0.7,
+   "frontierPlaceMs": 0.033,
+   "blockedMs": 0.024,
+   "occludersMs": 0.246,
+   "gcMs": 2.03,
+   "drawCallsPerFrame": 117.8,
+   "visibleProps": 123,
+   "heroEnd": [
+    20.65,
+    27.66
+   ],
+   "root": "after (ruin rework)"
+  },
+  {
+   "view": "desktop",
+   "root": "before (HEAD 7958b84)",
+   "frames": 240,
+   "readyMs": 11605,
+   "wallMsPerFrame": 513.8,
+   "busyMsPerFrame": 476.46,
+   "jsMsPerFrame": 18.17,
+   "pixiMs": 458.29,
+   "heroRenderMs": 9.65,
+   "worldDrawMs": 0.39,
+   "frontierPlaceMs": 0,
+   "blockedMs": 0.261,
+   "occludersMs": 0.622,
+   "gcMs": 4.62,
+   "drawCallsPerFrame": 127.9,
+   "visibleProps": 83,
+   "heroEnd": [
+    20.09,
+    28.31
+   ]
+  },
+  {
+   "view": "desktop",
+   "root": "after (ruin rework)",
+   "frames": 240,
+   "readyMs": 11217,
+   "wallMsPerFrame": 649.4,
+   "busyMsPerFrame": 622.62,
+   "jsMsPerFrame": 23.76,
+   "pixiMs": 598.87,
+   "heroRenderMs": 10.6,
+   "worldDrawMs": 0.09,
+   "frontierPlaceMs": 0.001,
+   "blockedMs": 0.304,
+   "occludersMs": 0.191,
+   "gcMs": 4.63,
+   "drawCallsPerFrame": 117.5,
+   "visibleProps": 215,
+   "heroEnd": [
+    19.99,
+    28
+   ]
+  }
+ ]
+}

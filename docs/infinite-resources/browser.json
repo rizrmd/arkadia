@@ -1,0 +1,43 @@
+{
+  "errors": [],
+  "checks": [
+    "Actual Pixi mouse/touch buttons for all six create/upgrade paths",
+    "Zero finite Wood enables permitted operation; Gold and requirements disable it",
+    "Atomic real store transaction, no wood/food deduction, queue prevents repeat taps",
+    "Timer settlement and persisted completed level",
+    "Desktop/portrait layout and infinity text"
+  ],
+  "viewports": [
+    {
+      "width": 1000,
+      "height": 800,
+      "counters": {
+        "text": "∞ Wood   ∞ Food",
+        "bounds": {
+          "x": 99,
+          "y": 35.75,
+          "width": 168,
+          "height": 31.5
+        },
+        "glyphs": 1,
+        "infinityGlyph": true
+      }
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "counters": {
+        "text": "∞ Wood   ∞ Food",
+        "bounds": {
+          "x": 99,
+          "y": 35.75,
+          "width": 168,
+          "height": 31.5
+        },
+        "glyphs": 1,
+        "infinityGlyph": true
+      }
+    }
+  ],
+  "pass": true
+}

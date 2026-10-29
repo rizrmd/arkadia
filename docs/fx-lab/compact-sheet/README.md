@@ -1,0 +1,7 @@
+## Compact sprite sheet editor
+
+The mobile screenshot showed a narrow, tall modal with oversized controls, duplicated header content and save actions below the fold. The editor now uses the full compact viewport, Grid / Playback / Frames tabs, pinned Close / Save asset / Use asset actions, a visible save workflow and a bounded retained scroll area. Desktop retains the existing sidebar footprint. All visible UI remains Pixi and English.
+
+Scroll and touch drag translate existing rows and update their visibility without a full sidebar build. Source PNG data is stored separately from small draft metadata; repeated FPS, pivot, order and name changes neither encode nor rewrite the image. Geometry changes rebuild frame textures; playback metadata changes reuse them. Existing combined drafts remain readable. Background looping casts pause while the modal is open. Mobile browsers without showOpenFilePicker use the native file chooser, launched from a Pixi button.
+
+Verification: `npx tsc --noEmit`, `node scripts/fx-lab/verify-spritesheet-analysis.mjs`, and `node scripts/fx-lab/verify-compact-sheet.mjs`. The integration test starts an isolated Go API, exercises authenticated asset saving, Use asset, Save draft, Apply saved, metadata draft reopening, desktop and two mobile orientations, real touch drag, pinned control bounds, scroll build counts and PNG encoding counts. No production visual settings are modified by the test. The browser uses software rendering, so these assertions do not establish hardware frame rates.

@@ -1,0 +1,222 @@
+{
+  "environment": "Headless Chromium, SwiftShader software GPU, no CPU throttle; not physical phone latency",
+  "errors": [],
+  "layouts": [
+    {
+      "size": {
+        "width": 390,
+        "height": 844
+      },
+      "samples": [
+        {
+          "id": "sidebar-open",
+          "handlerMs": 2
+        },
+        {
+          "id": "sidebar-close",
+          "handlerMs": 0.5999999046325684
+        },
+        {
+          "id": "sidebar-open",
+          "handlerMs": 0.7000000476837158
+        },
+        {
+          "id": "sidebar-close",
+          "handlerMs": 0.7999999523162842
+        },
+        {
+          "id": "sidebar-open",
+          "handlerMs": 2.5
+        },
+        {
+          "id": "sidebar-close",
+          "handlerMs": 0.5999999046325684
+        },
+        {
+          "id": "sidebar-open",
+          "handlerMs": 0.7000000476837158
+        },
+        {
+          "id": "mobile-layers",
+          "handlerMs": 0.8000001907348633
+        },
+        {
+          "id": "layer-select-0",
+          "handlerMs": 1.4000000953674316
+        },
+        {
+          "id": "import-close-pin",
+          "handlerMs": 0.5
+        },
+        {
+          "id": "layer-visible-0",
+          "handlerMs": 1.1999998092651367
+        },
+        {
+          "id": "mobile-playback",
+          "handlerMs": 0.7000000476837158
+        },
+        {
+          "id": "editor-undo",
+          "handlerMs": 0.7999999523162842
+        },
+        {
+          "id": "mobile-layers",
+          "handlerMs": 0.5
+        }
+      ],
+      "scroll": {
+        "available": true,
+        "handlerMs": 2.700000047683716,
+        "buildsBefore": 10,
+        "buildsAfter": 11
+      },
+      "frames": {
+        "median": 16.69999999999709,
+        "max": 649.8999999999978
+      },
+      "ui": {
+        "builds": 21,
+        "totalMs": 262.40000081062317,
+        "maxMs": 53.799999952316284,
+        "pending": false
+      }
+    },
+    {
+      "size": {
+        "width": 844,
+        "height": 390
+      },
+      "samples": [
+        {
+          "id": "sidebar-close",
+          "handlerMs": 0.40000009536743164
+        },
+        {
+          "id": "sidebar-open",
+          "handlerMs": 0.5
+        },
+        {
+          "id": "sidebar-close",
+          "handlerMs": 0.40000009536743164
+        },
+        {
+          "id": "sidebar-open",
+          "handlerMs": 0.7999999523162842
+        },
+        {
+          "id": "sidebar-close",
+          "handlerMs": 0.6000001430511475
+        },
+        {
+          "id": "sidebar-open",
+          "handlerMs": 0.3000001907348633
+        },
+        {
+          "id": "mobile-layers",
+          "handlerMs": 0.39999985694885254
+        },
+        {
+          "id": "layer-select-0",
+          "handlerMs": 0.9000000953674316
+        },
+        {
+          "id": "import-close-pin",
+          "handlerMs": 0.40000009536743164
+        },
+        {
+          "id": "layer-visible-0",
+          "handlerMs": 0.6999998092651367
+        },
+        {
+          "id": "mobile-playback",
+          "handlerMs": 0.39999985694885254
+        },
+        {
+          "id": "mobile-layers",
+          "handlerMs": 0.40000009536743164
+        }
+      ],
+      "scroll": {
+        "available": true,
+        "handlerMs": 1,
+        "buildsBefore": 29,
+        "buildsAfter": 30
+      },
+      "frames": {
+        "median": 16.700000000000728,
+        "max": 100
+      },
+      "ui": {
+        "builds": 37,
+        "totalMs": 1227.400000333786,
+        "maxMs": 829,
+        "pending": false
+      }
+    },
+    {
+      "size": {
+        "width": 1440,
+        "height": 1000
+      },
+      "samples": [
+        {
+          "id": "sidebar-close",
+          "handlerMs": 0.7000000476837158
+        },
+        {
+          "id": "sidebar-open",
+          "handlerMs": 0.40000009536743164
+        },
+        {
+          "id": "sidebar-close",
+          "handlerMs": 0.7999999523162842
+        },
+        {
+          "id": "sidebar-open",
+          "handlerMs": 0.40000009536743164
+        },
+        {
+          "id": "sidebar-close",
+          "handlerMs": 0.8999998569488525
+        },
+        {
+          "id": "sidebar-open",
+          "handlerMs": 0.40000009536743164
+        },
+        {
+          "id": "layer-select-0",
+          "handlerMs": 3.9000000953674316
+        },
+        {
+          "id": "import-close-pin",
+          "handlerMs": 0.39999985694885254
+        },
+        {
+          "id": "layer-visible-0",
+          "handlerMs": 0.7999999523162842
+        },
+        {
+          "id": "editor-undo",
+          "handlerMs": 0.5
+        }
+      ],
+      "scroll": {
+        "available": true,
+        "handlerMs": 1.5,
+        "buildsBefore": 44,
+        "buildsAfter": 45
+      },
+      "frames": {
+        "median": 16.700000000004366,
+        "max": 1516.5999999999985
+      },
+      "ui": {
+        "builds": 52,
+        "totalMs": 2726.399999856949,
+        "maxMs": 949.6999998092651,
+        "pending": false
+      }
+    }
+  ]
+}

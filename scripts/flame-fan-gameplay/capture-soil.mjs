@@ -1,0 +1,22 @@
+import fs from 'node:fs/promises';import http from 'node:http';import path from 'node:path';import {createReadStream,existsSync} from 'node:fs';import assert from 'node:assert/strict';import {launch} from './browser.mjs';
+const out='docs/flame-fan-gameplay/soil-v2',remote=process.env.GAME;
+const server=remote?null:http.createServer((req,res)=>{if(req.url.startsWith('/api/environment/published')){res.setHeader('Content-Type','application/json');res.end(JSON.stringify({schema:1,revision:0,name:'Arkodia environment',objects:[]}));return;}let rel=decodeURIComponent(req.url.split('?')[0]).replace(/^\//,'')||'index.html',file=path.join('/tmp/flame-fan-burst-game',rel);if(!existsSync(file))file=path.resolve('public',rel);res.setHeader('Content-Type',({'.html':'text/html','.js':'text/javascript','.json':'application/json','.png':'image/png','.webp':'image/webp','.css':'text/css','.woff2':'font/woff2'})[path.extname(file)]||'application/octet-stream');const s=createReadStream(file);s.on('error',()=>res.writeHead(404).end());s.pipe(res)});if(server)await new Promise(r=>server.listen(3949,'127.0.0.1',r));
+let browser;const errors=[],frames=[];
+try{for(const width of (process.env.WIDTH?[+process.env.WIDTH]:[1440,390])){
+ browser=await launch();const page=await browser.newPage({viewport:{width,height:width===390?844:900},isMobile:width===390,hasTouch:width===390});page.on('pageerror',e=>errors.push(e.message));await page.routeWebSocket('**/*',()=>{});if(remote)await page.clock.install();
+ await page.goto((remote||'http://127.0.0.1:3949')+'/?offline=1&hero=ember-warden&quality=low&time=.45',{waitUntil:'domcontentloaded'});await page.waitForFunction(()=>window.__STRONGHOLD_COMBAT__?.snapshot().vfx.fx.ready&&!document.querySelector('#loading-screen'),null,{timeout:90000});await page.evaluate(()=>window.__PIXI_UI__.app.ticker.stop());if(remote)await page.clock.pauseAt((await page.evaluate(()=>Date.now()))+100);
+ await page.evaluate(()=>{const c=window.__STRONGHOLD_COMBAT__;c.setPreviewMode(true);c.clearFoes();c.teleport(26,26);});
+ for(let rank=1;rank<=5;rank++){
+  if(process.env.RANKS&&!process.env.RANKS.split(',').includes(String(rank))){if(rank>1)await page.evaluate(()=>{const c=window.__STRONGHOLD_COMBAT__;c.offer(['flame-fan']);c.choose('flame-fan');});continue;}
+  await page.evaluate(rank=>{const c=window.__STRONGHOLD_COMBAT__;if(rank>1){c.offer(['flame-fan']);c.choose('flame-fan');}c.clearFoes();c.resetCooldowns();c.teleport(26,26);for(const [u,v]of[[28,27],[27,28],[28,28]])c.summon(u,v,25);c.castSkill('flame-fan',{targetU:29,targetV:29});if(c.testStep){c.testStep(420);c.testStep(140);}},rank);if(remote)await page.clock.runFor(560);
+  for(const phase of ['active','tail',...(rank>=3?['lingering']:[])]){
+   if(phase!=='active'){const dt=phase==='tail'?560:200;if(remote)await page.clock.runFor(dt);else await page.evaluate(dt=>window.__STRONGHOLD_COMBAT__.testStep(dt),dt);}
+   if(process.env.PHASES&&!process.env.PHASES.split(',').includes(phase))continue;
+   const result=await page.evaluate(()=>{const c=window.__STRONGHOLD_COMBAT__;window.__PIXI_UI__.app.render();return {data:document.querySelector('canvas').toDataURL('image/png'),s:c.snapshot().vfx.flameSheets};});
+   const s=result.s.find(s=>s.rank===rank);assert(s?.soilVisible&&s.soilOpacity>0,JSON.stringify(result.s));assert.equal(s.soilLayers.length,31);
+   const file=`${remote?'live':'local'}-${width}-rank${rank}-${phase}.png`;await fs.writeFile(out+'/'+file,Buffer.from(result.data.split(',')[1],'base64'));frames.push({width,rank,phase,file,s});console.log('Captured',file,s.age);await fs.writeFile(out+`/${remote?'live':'local'}-${process.env.PHASES||'full'}-${width}-frames.json`,JSON.stringify({frames,errors},null,2));
+  }
+  if(remote)await page.clock.runFor(1500);else await page.evaluate(()=>window.__STRONGHOLD_COMBAT__.testStep(1500));
+ }
+ await browser.close();browser=null;
+}assert.deepEqual(errors,[]);await fs.writeFile(out+`/${remote?'live':'local'}-${process.env.PHASES||'full'}-frames.json`,JSON.stringify({passed:true,method:remote?'Unmodified public runtime; browser clock advances normal simulation frames, diagnostic rank/target seeding; redundant continuous presentation paused and actual Pixi application rendered at capture.':'Compiled actual gameplay with test-only simulation stepping and actual Pixi renderer capture; server default Empty environment fixture.',frames,errors},null,2));}finally{await browser?.close();if(server){server.closeAllConnections();await new Promise(r=>server.close(r));}}

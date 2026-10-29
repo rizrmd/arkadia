@@ -1,0 +1,13 @@
+{
+  "pass": true,
+  "checks": [
+    "Compact primary toolbar gives layer list more vertical space",
+    "Grouped playback and preview menus execute existing actions",
+    "Right-click selects the target layer without opening its sheet; Solo executes",
+    "Escape and outside click dismiss menus",
+    "Layer visibility and undo/redo menus mutate real drafts",
+    "Keyboard Enter executes focused layer action",
+    "Mobile overflow buttons open bounded menus; properties and layer scrolling remain usable"
+  ],
+  "errors": []
+}

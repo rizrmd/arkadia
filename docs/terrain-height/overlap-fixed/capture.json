@@ -1,0 +1,144 @@
+{
+ "shots": {
+  "desktop-court": {
+   "teleport": null
+  },
+  "desktop-ridge-ramp": {
+   "teleport": [
+    25.5,
+    14.2
+   ]
+  },
+  "desktop-on-ridge": {
+   "teleport": [
+    25.5,
+    7.2
+   ]
+  },
+  "desktop-ramp-middle": {
+   "teleport": [
+    25.5,
+    11.5
+   ]
+  },
+  "desktop-ramp-shoulder": {
+   "teleport": [
+    24.5,
+    10.2
+   ]
+  },
+  "desktop-behind-ridge": {
+   "teleport": [
+    25.5,
+    4.5
+   ]
+  },
+  "desktop-on-terrace": {
+   "teleport": [
+    5.5,
+    25
+   ]
+  },
+  "phone-court": {
+   "teleport": null
+  },
+  "phone-on-ridge": {
+   "teleport": [
+    25.5,
+    7.2
+   ]
+  },
+  "phone-ramp-middle": {
+   "teleport": [
+    25.5,
+    11.5
+   ]
+  },
+  "dusk-on-ridge": {
+   "teleport": [
+    25.5,
+    7.2
+   ]
+  }
+ },
+ "errors": [],
+ "traversal": [
+  {
+   "label": "ascent",
+   "from": [
+    25.5,
+    13.5
+   ],
+   "to": [
+    25.35,
+    8.98
+   ]
+  },
+  {
+   "label": "descent",
+   "from": [
+    25.5,
+    9.5
+   ],
+   "to": [
+    25.56,
+    14.03
+   ]
+  },
+  {
+   "label": "cliff-block",
+   "from": [
+    29,
+    7.5
+   ],
+   "to": [
+    27.88,
+    7.37
+   ]
+  }
+ ],
+ "performance": [
+  {
+   "camera": "desktop",
+   "frameIntervalMs": {
+    "p50": 583.3000000000029,
+    "p95": 800
+   },
+   "resources": [
+    {
+     "name": "http://127.0.0.1:5668/terrain-height/natural/cliff-strip.webp",
+     "transferSize": 308584,
+     "decodedBodySize": 308284
+    }
+   ]
+  },
+  {
+   "camera": "phone",
+   "frameIntervalMs": {
+    "p50": 100.10000000000582,
+    "p95": 200
+   },
+   "resources": [
+    {
+     "name": "http://127.0.0.1:5668/terrain-height/natural/cliff-strip.webp",
+     "transferSize": 308584,
+     "decodedBodySize": 308284
+    }
+   ]
+  },
+  {
+   "camera": "dusk",
+   "frameIntervalMs": {
+    "p50": 366.6999999999971,
+    "p95": 699.9999999999964
+   },
+   "resources": [
+    {
+     "name": "http://127.0.0.1:5668/terrain-height/natural/cliff-strip.webp",
+     "transferSize": 308584,
+     "decodedBodySize": 308284
+    }
+   ]
+  }
+ ]
+}

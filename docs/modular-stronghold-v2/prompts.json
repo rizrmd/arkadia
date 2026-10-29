@@ -1,0 +1,66 @@
+[
+  {
+    "id": "paving-warm",
+    "prompt": "Use case: stylized-concept. Input image is STYLE AND MATERIAL reference only, not an edit target. Produce one seamless square ground MATERIAL TEXTURE for the courtyard paving visible in the reference. Flat top-down orthographic, no perspective, fill the entire square edge to edge. Warm gray limestone rectangular paving stones in a regular offset running bond, worn rounded edges, restrained subtle moss in joints, gentle dust and low-contrast variation. Approximately 12 rows by 12 columns of stones in the square. Match the reference's premium detailed hand-painted fantasy game finish, calm broad readable stones, warm gray beige not dark charcoal, soft diffuse lighting with no directional cast shadow. Crucial: uniform material scale and brightness at opposite edges so it tiles, no mirror symmetry, no kaleidoscopic patterns, no large focal cracks, no outlines, no border, no objects, no building, no UI, no text. This is a texture atlas surface, not a scene or a diamond tile."
+  },
+  {
+    "id": "snow-soft",
+    "prompt": "Use case stylized-concept. Reference image is style/material reference only. Generate ONE seamless square top-down texture of snow-covered mountain earth for outside the fortress, full square edge to edge. Match snowy terrain in reference: broad soft blue-white snow cover over cold blue-gray soil, very occasional small gray stones and muted green moss emerging, about 85% smooth snow and 15% earth. Premium hand-painted detailed fantasy strategy game material. Calm low contrast, diffuse cool daylight, no directional brush streaks, no regular stripes, no mirror patterns, no isolated objects or terrain relief, no trees, no buildings, no text. No perspective and no horizon. Opposite edges should tile seamlessly with consistent color and scale. Do not draw a diamond or a landscape."
+  },
+  {
+    "id": "rampart-ne",
+    "prompt": "Use case stylized-concept. Reference image is the visual quality/style/material target. Generate ONE standalone modular fortress wall sprite as detailed and substantial as the reference. Thick weathered gray limestone rampart, substantial tall facade, raised crenellations with beveled capstones, narrow top walkway visible, moss and irregular footing stones at base. Face has 7-8 courses of masonry. Wall runs LOWER LEFT to UPPER RIGHT, exact 2:1 dimetric ground baseline slope -0.5, vertical architecture stays vertical. No corner tower and no end cap, clean butt joins for adjacent copies. Width roughly three times the front-face height, NOT a low fence. Soft upper left daylight, warm gray stone, dark warm crevices, restrained moss, rich hand-painted fantasy strategy art matching the screenshot. Whole wall isolated on genuinely transparent background, no floor slab, no scene, no text, no UI. Keep crisp detailed stone at its intended large display size."
+  },
+  {
+    "id": "rampart-se",
+    "prompt": "Use case stylized-concept. Reference screenshot is style, material and quality target. ONE modular fortress rampart sprite, the opposite facing orientation: wall runs UPPER LEFT to LOWER RIGHT on screen, ground baseline slope +0.5. Tall substantial thick gray limestone defensive wall, 7-8 masonry courses on front, crenellations with bevelled coping, visible narrow top walkway, subtle buttress, aged mossy footing stones, rich warm gray stone and deep warm joints, soft upper-left daylight. Premium detailed hand-painted fantasy game artwork matching the reference, no generic plastic render. Width around three times front-face height, NOT a thin low fence. Clean vertical butt ends for modular joining, no tower, no gate, no ground patch. Entire object including feet isolated on transparent background, no scenery, no text or UI. Vertical posts remain vertical, orthographic 2:1 dimetric ground."
+  },
+  {
+    "id": "bastion",
+    "prompt": "Use case stylized-concept. Use reference screenshot as quality and architectural-material target. ONE substantial square medieval fortress corner bastion, relatively squat and wide, gray limestone walls with deep arrow slit, open battlement top, thick bevelled crenellations, mossy weathered foundation, a dark blue cloth banner attached to front face. No roof, no attached long walls, no surrounding floor. Orthographic 2:1 dimetric view, vertical sides vertical, two base axes +/-0.5, upper left daylight, warm gray stone and cool shadows. Match lush highly detailed hand-painted fantasy strategy game reference, rich material variation with crisp edges, not plastic, not low polygon. Isolated whole object including feet on genuinely transparent background, no text, no UI."
+  },
+  {
+    "id": "gateway-grand",
+    "prompt": "Use case stylized-concept. Screenshot is quality, camera and style reference. Generate ONE ornate medieval fortress gateway module isolated on transparent background. Broad closed oak double doors under a gray limestone arch, two stout square crenellated flanking piers, blue hanging compass-star banner, two small lit warm torches, rich iron hinges, substantial mossy stone foundation. Match the foreground gate in reference with premium hand-painted game art, warm gray stone and warm wood, blue cloth, fine chipped stone and weathered material detail. Orthographic near-front dimetric camera with symmetric two visible short side faces, whole gateway visible, no extended walls attached, no scenery or ground plane, no text or UI. Width-to-height roughly 1.4:1, not a tall castle. Main gate facade horizontal like the reference foreground gate; freestanding module can join side walls."
+  },
+  {
+    "id": "spruce-mature",
+    "prompt": "Use case stylized-concept. Screenshot is STYLE/COLOR reference. ONE large alpine spruce tree prop matching the rich painterly snowy firs outside the fortress. Full broad mature evergreen with irregular natural silhouette, dense dark blue-green layered branches, thick soft clumps of snow on upper branches, visible gnarled brown trunk and little roots. Orthographic dimetric game camera seen slightly from above, warm upper-left daylight, cool deep shadows. High-end hand-painted fantasy strategy game art, detailed but readable foliage shapes, not a photographic cutout or thin Christmas tree. Whole tree including tip and feet isolated on transparent background, no floor/soil patch, no scenic backdrop, no text or UI."
+  },
+  {
+    "id": "fir-young",
+    "prompt": "Use case stylized-concept. Reference screenshot supplies style/material/camera. ONE young alpine fir tree, asymmetrical compact rounded evergreen silhouette, broad rich dark blue-green layered foliage, heavy irregular white snow pillows on upper branches, short thick brown trunk and exposed roots. A distinct smaller tree variant, not the tall thin perfect conical shape. High-detail lush hand-painted fantasy strategy game sprite matching reference, soft upper-left daylight, readable foliage masses, warm highlights and cool blue shadow. Orthographic dimetric viewed slightly above. Whole object on genuinely transparent background, no soil patch, no scenery, no other trees, no text or UI."
+  },
+  {
+    "id": "cliff-snow",
+    "prompt": "Use case stylized-concept. Screenshot is exact style/camera/material quality reference. ONE reusable alpine cliff module for modular terrain outside a fortress. Broad irregular cluster of tall angular slate-gray rock faces and broken ledges, thick soft white snow caps on tops, crevices cool blue-gray, little dark moss near foot. Width about twice height. Orthographic 2:1 dimetric camera, vertical rock strata remain vertical, rich highly detailed hand-painted fantasy strategy game finish, upper-left diffuse daylight. Entire rocky cluster including feet isolated on genuine transparent background, irregular silhouette, no landscape, no sky, no trees, no buildings, no UI or text. This prop should create a substantial mountain edge, not a pile of little pebbles."
+  },
+  {
+    "id": "boulders-snow",
+    "prompt": "Use case stylized-concept. Reference screenshot supplies painterly game style, palette and quality. ONE isolated broad low boulder cluster for snowy fortress terrain: five irregular blue-gray granite rocks, broken facets, tiny moss in crevices, thick soft white snow on upper planes, small pebbles near feet. Make different natural silhouette from a cliff, width about 2.5 times height. Upper-left diffuse daylight, warm highlights, cool shadows, high-detail premium hand-painted fantasy strategy art, orthographic 2:1 dimetric camera. Whole prop on genuine transparent background, no soil platform, no scene or sky, no buildings, no trees, no text or UI."
+  },
+  {
+    "id": "weeds-edge",
+    "prompt": "Use case stylized-concept. Reference image provides lush painterly medieval fortress style and muted palette. ONE modular ground vegetation decal: irregular sparse patch of low olive-green moss, several tufts of fine grass and tiny weeds growing between a few small gray stones, scattered fallen brown leaves. Broad flat footprint seen in orthographic 2:1 dimetric view. Organic transparent fringes and irregular edge, no hard polygon tile, no solid opaque soil rectangle. Muted soft color, readable natural detail, upper-left diffuse daylight. Isolate on genuine transparent background, whole patch visible. No trees, no buildings, no text, no UI. It will overlay the stone paving around fortress walls, never cover entire courtyard."
+  },
+  {
+    "id": "snowdrift-edge",
+    "prompt": "Use case stylized-concept. Reference screenshot is art style and quality reference. ONE reusable snowdrift ground-edge decal for modular fortress terrain. Broad irregular low bank of clean soft white snow with cool pale blue shadow, scattered tiny exposed gray stones and a little dark moss at one edge, thin soft feathered melting margins. Flat ground in orthographic 2:1 dimetric view. Shape roughly broad horizontal crescent, no large mound or terrain slab, no hard diamond outline. Painterly detailed fantasy strategy game artwork matching reference, diffuse upper-left daylight, restrained texture and broad readable forms. Entire decal isolated on genuine transparent background, no floor underneath, no trees, no structures, no text or UI."
+  },
+  {
+    "id": "supply-cart",
+    "prompt": "Use case stylized-concept. Reference screenshot is style/camera/material target. ONE medieval supply handcart prop with two wooden wheels, short pull shafts, dark oak planks and forged iron braces, loaded with two tied burlap sacks and split firewood. No person or animal. Orthographic 2:1 dimetric view, front edge ground slope +0.5, vertical edges vertical. Premium detailed warm hand-painted fantasy strategy art matching reference's forge furniture, warm oak highlights, muted tan fabric, dark iron, soft upper-left lighting. Entire cart including wheels and shafts on genuine transparent background, no ground plane, no scenery, no buildings, no text or UI."
+  },
+  {
+    "id": "brazier",
+    "prompt": "Use case stylized-concept. Reference screenshot supplies art style/camera/material quality. ONE freestanding medieval fire brazier game prop: ornate black wrought iron bowl cage on a short sturdy tripod pedestal, bright small golden orange fire and a few glowing embers, slightly soot-darkened metal. Orthographic 2:1 dimetric view, upper-left ambient daylight with subtle warm local flame light. Highly detailed premium hand-painted fantasy strategy game artwork matching the reference's altar/gate torches, warm but restrained glow. Entire prop and feet visible isolated on genuine transparent background, no floor, no backdrop, no buildings, no text or UI."
+  },
+  {
+    "id": "paving-worn",
+    "prompt": "Use case stylized-concept. Screenshot is quality/style material reference. ONE flat reusable courtyard detail overlay, irregular worn stone paving patch with hairline cracks, a few tiny chips, small olive moss tufts in joints, scattered dust. Top surface in orthographic 2:1 dimetric view, broad low flat irregular footprint, warm gray beige stone matching reference's paving. Sparse subtle natural detail, premium hand-painted fantasy strategy game texture, not a coarse rubble pile. Transparent soft irregular outer edge, no fixed diamond slab or side thickness, no cast shadow, no scene or structures, no text/UI. Entire patch isolated on genuine transparent background. Intended to interrupt repeated floor material while leaving most clean courtyard visible."
+  },
+  {
+    "id": "wall-broken",
+    "prompt": "Use case stylized-concept. Reference image is art quality/style/material target. ONE modular damaged fortress wall ending sprite: a short thick gray limestone battlement section with a broken crumbling top at one end, four courses of standing masonry, scattered large loose capstones and mossy rubble at its foot. Runs from lower left to upper right, 2:1 dimetric baseline slope -0.5, verticals vertical. Rich hand-painted medieval fantasy strategy artwork, soft upper-left daylight, warm gray stone, subtle olive moss, detailed chips and deep joints. Whole object including loose stones on genuine transparent background, no large ground slab, no scenery, no text or UI. Intended as an organic wall termination and transition, not a whole ruin scene."
+  }
+]

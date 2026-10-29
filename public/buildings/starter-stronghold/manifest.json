@@ -1,0 +1,70 @@
+{
+  "version": 1,
+  "generator": "Built-in imagegen",
+  "wallLevel": 1,
+  "palisade": {
+    "sourceSize": [
+      1280,
+      1280
+    ],
+    "sourceContacts": [
+      [
+        170,
+        1164
+      ],
+      [
+        1110,
+        718
+      ]
+    ],
+    "worldSpan": 320,
+    "vertical": 0.4,
+    "foot": 0.73515625,
+    "source": "/buildings/walls/painted/level-01.png",
+    "style": "Approved snowy timber with iron bindings"
+  },
+  "towerCanvas": [
+    640,
+    900
+  ],
+  "towerPivot": [
+    0.5,
+    0.9555555555555556
+  ],
+  "core": "Existing approved saved-level Stronghold Core composition unchanged",
+  "permissions": "Core 3 wall construction; Core 12 faction defenses; no granted towers",
+  "assets": {
+    "palisade-se.png": {
+      "bytes": 225131,
+      "sha256": "28c87dee58cb3fcc8315fafd97327b2605228fb7bdf0ea276a2b9d015d54740d"
+    },
+    "palisade-ne.png": {
+      "bytes": 225343,
+      "sha256": "070bc55b41e0906e017daa49d65d22b9d5e12fccb6810e9aea2d89cdb7d9467a"
+    },
+    "source-palisade.png": {
+      "bytes": 224969,
+      "sha256": "c6b034048335d8db4af652d657bb05f109ebdfbeb60479ba1f3798009f33b146"
+    },
+    "runetower-01.png": {
+      "bytes": 967374,
+      "sha256": "2ccc657dd31aea21f0167ebf69b04f1c50c337d85ceae1854dfc513a5c7ffb4b"
+    },
+    "tower-source.png": {
+      "bytes": 1616284,
+      "sha256": "06704f74907f125e7155e45d4742b7dd65acea07af5a4dd05a5036c8be407e34"
+    },
+    "watchtower-01.png": {
+      "bytes": 948582,
+      "sha256": "beaa52d238f786f44abd0e3d0e55ce703176d7792f3a2fbd592942c47d8f4b00"
+    },
+    "snowy-ne.png": {
+      "bytes": 1901776,
+      "sha256": "238f474b0421daa3dd5326417dd6cdbb03356e4c50add931026cf5d32957300f"
+    },
+    "snowy-se.png": {
+      "bytes": 1901577,
+      "sha256": "222949b135bdea1f1a8ae57701a5592acba7c338a869121bbd8d21e226a8e593"
+    }
+  }
+}

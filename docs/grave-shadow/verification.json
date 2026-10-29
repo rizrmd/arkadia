@@ -1,0 +1,29 @@
+{
+ "base": "http://127.0.0.1:5667",
+ "runs": [
+  {
+   "view": "portrait",
+   "time": 0.52,
+   "shots": {
+    "cemetery-gardens": {
+     "teleport": [
+      34,
+      44
+     ],
+     "visible": 163,
+     "shadows": {
+      "casters": 299,
+      "strips": 1159,
+      "shown": 26,
+      "alpha": 0.4,
+      "dx": 0.278,
+      "dy": 0.307
+     }
+    }
+   }
+  }
+ ],
+ "errors": [],
+ "console": [],
+ "ok": true
+}

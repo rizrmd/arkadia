@@ -1,0 +1,48 @@
+{
+  "operations": [
+    "four Ground palette entries placed with overlapping alpha",
+    "select, drag, duplicate, delete, undo, redo",
+    "unauthenticated write rejected",
+    "authenticated draft save/load and explicit publish/reload",
+    "mobile Ground palette fits viewport"
+  ],
+  "errors": [],
+  "map": {
+    "schema": 1,
+    "revision": 2,
+    "name": "Arkodia environment",
+    "objects": [
+      {
+        "id": "5eb90dab-ae4d-4f0e-be62-8be28096e713",
+        "asset": "ground:green-grass",
+        "u": 502.219,
+        "v": 474.615
+      },
+      {
+        "id": "0e42c058-462a-4960-a12b-2a7360c1a65c",
+        "asset": "ground:dry-grass",
+        "u": 501.802,
+        "v": 472.115
+      },
+      {
+        "id": "ef42e666-c115-414d-a0e9-9b2c76d89edf",
+        "asset": "ground:bare-soil",
+        "u": 507.115,
+        "v": 472.219
+      },
+      {
+        "id": "88394790-82aa-494b-9190-438815678009",
+        "asset": "ground:gravel",
+        "u": 509.563,
+        "v": 471.021
+      },
+      {
+        "id": "44f39eaa-52dc-4305-ab9b-70ae8ec7aa25",
+        "asset": "tent",
+        "u": 506.646,
+        "v": 472.271
+      }
+    ]
+  },
+  "ok": true
+}

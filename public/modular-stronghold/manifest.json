@@ -1,0 +1,464 @@
+{
+  "version": 2,
+  "generator": "Built-in imagegen; one call per asset",
+  "projection": {
+    "halfWidth": 64,
+    "halfHeight": 32,
+    "axes": [
+      -0.5,
+      0.5
+    ]
+  },
+  "assets": {
+    "paving": {
+      "file": "/modular-stronghold/paving.png",
+      "source": "assets-src/modular-stronghold/paving.png",
+      "width": 256,
+      "height": 128,
+      "displayWidth": 128,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "terrain"
+    },
+    "snow": {
+      "file": "/modular-stronghold/snow.png",
+      "source": "assets-src/modular-stronghold/snow.png",
+      "width": 256,
+      "height": 128,
+      "displayWidth": 128,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "terrain"
+    },
+    "wall-ne": {
+      "file": "/modular-stronghold/wall-ne.png",
+      "source": "assets-src/modular-stronghold/wall-ne.png",
+      "width": 640,
+      "height": 323,
+      "displayWidth": 256,
+      "pivot": [
+        0.5,
+        0.97
+      ],
+      "kind": "structure"
+    },
+    "wall-se": {
+      "file": "/modular-stronghold/wall-se.png",
+      "source": "assets-src/modular-stronghold/wall-se.png",
+      "width": 640,
+      "height": 441,
+      "displayWidth": 256,
+      "pivot": [
+        0.5,
+        0.97
+      ],
+      "kind": "structure"
+    },
+    "tower": {
+      "file": "/modular-stronghold/tower.png",
+      "source": "assets-src/modular-stronghold/tower.png",
+      "width": 550,
+      "height": 640,
+      "displayWidth": 110,
+      "pivot": [
+        0.5,
+        0.97
+      ],
+      "kind": "structure"
+    },
+    "gate": {
+      "file": "/modular-stronghold/gate.png",
+      "source": "assets-src/modular-stronghold/gate.png",
+      "width": 640,
+      "height": 599,
+      "displayWidth": 230,
+      "pivot": [
+        0.5,
+        0.97
+      ],
+      "kind": "structure"
+    },
+    "pine": {
+      "file": "/modular-stronghold/pine.png",
+      "source": "assets-src/modular-stronghold/pine.png",
+      "width": 379,
+      "height": 640,
+      "displayWidth": 100,
+      "pivot": [
+        0.5,
+        0.97
+      ],
+      "kind": "prop"
+    },
+    "rocks": {
+      "file": "/modular-stronghold/rocks.png",
+      "source": "assets-src/modular-stronghold/rocks.png",
+      "width": 640,
+      "height": 268,
+      "displayWidth": 180,
+      "pivot": [
+        0.5,
+        0.97
+      ],
+      "kind": "prop"
+    },
+    "moss": {
+      "file": "/modular-stronghold/moss.png",
+      "source": "assets-src/modular-stronghold/moss.png",
+      "width": 640,
+      "height": 277,
+      "displayWidth": 80,
+      "pivot": [
+        0.5,
+        0.97
+      ],
+      "kind": "prop"
+    },
+    "crate": {
+      "file": "/modular-stronghold/crate.png",
+      "source": "assets-src/modular-stronghold/crate.png",
+      "width": 619,
+      "height": 640,
+      "displayWidth": 34,
+      "pivot": [
+        0.5,
+        0.97
+      ],
+      "kind": "prop"
+    },
+    "barrel": {
+      "file": "/modular-stronghold/barrel.png",
+      "source": "assets-src/modular-stronghold/barrel.png",
+      "width": 463,
+      "height": 640,
+      "displayWidth": 26,
+      "pivot": [
+        0.5,
+        0.97
+      ],
+      "kind": "prop"
+    },
+    "banner": {
+      "file": "/modular-stronghold/banner.png",
+      "source": "assets-src/modular-stronghold/banner.png",
+      "width": 413,
+      "height": 640,
+      "displayWidth": 34,
+      "pivot": [
+        0.5,
+        0.97
+      ],
+      "kind": "prop"
+    },
+    "torch": {
+      "file": "/modular-stronghold/torch.png",
+      "source": "assets-src/modular-stronghold/torch.png",
+      "width": 440,
+      "height": 640,
+      "displayWidth": 18,
+      "pivot": [
+        0.5,
+        0.97
+      ],
+      "kind": "prop"
+    },
+    "forge": {
+      "file": "/assets/stronghold/forge.png",
+      "source": "assets-src/stronghold/forge.png",
+      "kind": "building",
+      "pivot": [
+        0.5,
+        0.95
+      ],
+      "reused": true
+    },
+    "barracks": {
+      "file": "/assets/stronghold/barracks.png",
+      "source": "assets-src/stronghold/barracks.png",
+      "kind": "building",
+      "pivot": [
+        0.5,
+        0.95
+      ],
+      "reused": true
+    },
+    "altar": {
+      "file": "/assets/stronghold/altar.png",
+      "source": "assets-src/stronghold/altar.png",
+      "kind": "building",
+      "pivot": [
+        0.5,
+        0.95
+      ],
+      "reused": true
+    },
+    "mage": {
+      "file": "/assets/stronghold/mage.png",
+      "source": "assets-src/stronghold/mage.png",
+      "kind": "building",
+      "pivot": [
+        0.5,
+        0.95
+      ],
+      "reused": true
+    },
+    "mine": {
+      "file": "/assets/stronghold/mine.png",
+      "source": "assets-src/stronghold/mine.png",
+      "kind": "building",
+      "pivot": [
+        0.5,
+        0.95
+      ],
+      "reused": true
+    },
+    "expedition": {
+      "file": "/assets/stronghold/expedition.png",
+      "source": "assets-src/stronghold/expedition.png",
+      "kind": "building",
+      "pivot": [
+        0.5,
+        0.95
+      ],
+      "reused": true
+    },
+    "forge-states": {
+      "file": "/fortress-ui/forge-states.webp",
+      "kind": "building states",
+      "reused": true
+    },
+    "paving-warm": {
+      "file": "/modular-stronghold/v2/paving-warm.png",
+      "source": "assets-src/modular-stronghold-v2/paving-warm.png",
+      "width": 512,
+      "height": 256,
+      "displayWidth": 128,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "terrain",
+      "revision": 2,
+      "generation": "2766d809-e86d-4447-9082-3a23df555f3a",
+      "texture": "/modular-stronghold/v2/paving-warm-texture.png",
+      "materialScale": 0.22
+    },
+    "snow-soft": {
+      "file": "/modular-stronghold/v2/snow-soft.png",
+      "source": "assets-src/modular-stronghold-v2/snow-soft.png",
+      "width": 512,
+      "height": 256,
+      "displayWidth": 128,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "kind": "terrain",
+      "revision": 2,
+      "generation": "ff303c45-a42f-42f8-b1c3-920a469cae2d",
+      "texture": "/modular-stronghold/v2/snow-soft-texture.png",
+      "materialScale": 0.7
+    },
+    "rampart-ne": {
+      "file": "/modular-stronghold/v2/rampart-ne.png",
+      "source": "assets-src/modular-stronghold-v2/rampart-ne.png",
+      "width": 1200,
+      "height": 784,
+      "displayWidth": 410,
+      "pivot": [
+        0.5,
+        0.74
+      ],
+      "kind": "structure",
+      "revision": 2,
+      "generation": "079ea905-98a2-496c-8096-26251810e5d5"
+    },
+    "rampart-se": {
+      "file": "/modular-stronghold/v2/rampart-se.png",
+      "source": "assets-src/modular-stronghold-v2/rampart-se.png",
+      "width": 1200,
+      "height": 808,
+      "displayWidth": 410,
+      "pivot": [
+        0.5,
+        0.74
+      ],
+      "kind": "structure",
+      "revision": 2,
+      "generation": "9e2f5c72-1b63-4457-a437-c8668def943b"
+    },
+    "bastion": {
+      "file": "/modular-stronghold/v2/bastion.png",
+      "source": "assets-src/modular-stronghold-v2/bastion.png",
+      "width": 1086,
+      "height": 970,
+      "displayWidth": 180,
+      "pivot": [
+        0.5,
+        0.97
+      ],
+      "kind": "structure",
+      "revision": 2,
+      "generation": "4f168d60-6fa7-498f-ac92-6942dc51b68d"
+    },
+    "gateway-grand": {
+      "file": "/modular-stronghold/v2/gateway-grand.png",
+      "source": "assets-src/modular-stronghold-v2/gateway-grand.png",
+      "width": 1200,
+      "height": 749,
+      "displayWidth": 270,
+      "pivot": [
+        0.5,
+        0.97
+      ],
+      "kind": "structure",
+      "revision": 2,
+      "generation": "be0f1c25-423e-4376-b505-f1a68b391a23"
+    },
+    "spruce-mature": {
+      "file": "/modular-stronghold/v2/spruce-mature.png",
+      "source": "assets-src/modular-stronghold-v2/spruce-mature.png",
+      "width": 907,
+      "height": 1200,
+      "displayWidth": 160,
+      "pivot": [
+        0.5,
+        0.97
+      ],
+      "kind": "prop",
+      "revision": 2,
+      "generation": "752ed32d-9572-4e09-81fa-d7fe82ef56a6"
+    },
+    "fir-young": {
+      "file": "/modular-stronghold/v2/fir-young.png",
+      "source": "assets-src/modular-stronghold-v2/fir-young.png",
+      "width": 911,
+      "height": 1092,
+      "displayWidth": 130,
+      "pivot": [
+        0.5,
+        0.97
+      ],
+      "kind": "prop",
+      "revision": 2,
+      "generation": "7dd80517-031b-4a28-bf4b-7e5a28161232"
+    },
+    "cliff-snow": {
+      "file": "/modular-stronghold/v2/cliff-snow.png",
+      "source": "assets-src/modular-stronghold-v2/cliff-snow.png",
+      "width": 1200,
+      "height": 595,
+      "displayWidth": 360,
+      "pivot": [
+        0.5,
+        0.97
+      ],
+      "kind": "prop",
+      "revision": 2,
+      "generation": "46dccaea-95d2-4ce1-943d-71a970485c3a"
+    },
+    "boulders-snow": {
+      "file": "/modular-stronghold/v2/boulders-snow.png",
+      "source": "assets-src/modular-stronghold-v2/boulders-snow.png",
+      "width": 1200,
+      "height": 523,
+      "displayWidth": 200,
+      "pivot": [
+        0.5,
+        0.97
+      ],
+      "kind": "prop",
+      "revision": 2,
+      "generation": "20336039-7481-4e7c-a87d-c0956e80e710"
+    },
+    "weeds-edge": {
+      "file": "/modular-stronghold/v2/weeds-edge.png",
+      "source": "assets-src/modular-stronghold-v2/weeds-edge.png",
+      "width": 1200,
+      "height": 573,
+      "displayWidth": 130,
+      "pivot": [
+        0.5,
+        0.97
+      ],
+      "kind": "prop",
+      "revision": 2,
+      "generation": "bea6ef66-a8a8-4261-b44b-c4b8c2fb37c1"
+    },
+    "snowdrift-edge": {
+      "file": "/modular-stronghold/v2/snowdrift-edge.png",
+      "source": "assets-src/modular-stronghold-v2/snowdrift-edge.png",
+      "width": 1200,
+      "height": 430,
+      "displayWidth": 230,
+      "pivot": [
+        0.5,
+        0.97
+      ],
+      "kind": "prop",
+      "revision": 2,
+      "generation": "9e32e906-a27c-45be-be6d-ed12d8d6fc3a"
+    },
+    "supply-cart": {
+      "file": "/modular-stronghold/v2/supply-cart.png",
+      "source": "assets-src/modular-stronghold-v2/supply-cart.png",
+      "width": 1200,
+      "height": 796,
+      "displayWidth": 90,
+      "pivot": [
+        0.5,
+        0.97
+      ],
+      "kind": "prop",
+      "revision": 2,
+      "generation": "603d2c1b-d211-41a7-921e-a332d342f4ab"
+    },
+    "brazier": {
+      "file": "/modular-stronghold/v2/brazier.png",
+      "source": "assets-src/modular-stronghold-v2/brazier.png",
+      "width": 595,
+      "height": 893,
+      "displayWidth": 35,
+      "pivot": [
+        0.5,
+        0.97
+      ],
+      "kind": "prop",
+      "revision": 2,
+      "generation": "ec6a4990-efa3-4b05-8572-88413baf0078"
+    },
+    "paving-worn": {
+      "file": "/modular-stronghold/v2/paving-worn.png",
+      "source": "assets-src/modular-stronghold-v2/paving-worn.png",
+      "width": 1200,
+      "height": 545,
+      "displayWidth": 190,
+      "pivot": [
+        0.5,
+        0.97
+      ],
+      "kind": "prop",
+      "revision": 2,
+      "generation": "20fe77e5-cbaf-474a-a46a-161408421e6e"
+    },
+    "wall-broken": {
+      "file": "/modular-stronghold/v2/wall-broken.png",
+      "source": "assets-src/modular-stronghold-v2/wall-broken.png",
+      "width": 1200,
+      "height": 772,
+      "displayWidth": 210,
+      "pivot": [
+        0.5,
+        0.97
+      ],
+      "kind": "structure",
+      "revision": 2,
+      "generation": "8d1da457-0b51-4964-b34e-4fb8079737a8"
+    }
+  },
+  "reference": "TA1c2c474293792da1bac027a7"
+}

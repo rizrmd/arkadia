@@ -1,0 +1,677 @@
+{
+  "base": "https://ark-whachat.fural.space",
+  "scope": "Software SwiftShader, emulated viewports; not hardware mobile GPU measurements. Counts and screenshots do not prove receiver correctness.",
+  "runs": [
+    {
+      "mobile": false,
+      "time": 0.3,
+      "spot": "torch-court",
+      "teleported": [
+        5.5,
+        5.5
+      ],
+      "stats": {
+        "props": 834,
+        "uprights": 297,
+        "columns": 3143,
+        "atlas": "/frozen-frontier/game/atlas-5083a8ebd8c8bb4b.webp",
+        "loaded": true,
+        "failed": false,
+        "kit": 46,
+        "companions": {
+          "version": 1,
+          "atlas": "/frozen-frontier/game/atlas-5083a8ebd8c8bb4b.webp",
+          "families": 46,
+          "model": "explicit geometry proxy; NOT measured volumetric depth",
+          "receivers": "WebGL terrain and object height proxies; Canvas ground-only"
+        },
+        "occlusionImages": 22,
+        "sprites": 44,
+        "visible": 0,
+        "shadows": {
+          "casters": 297,
+          "strips": 1619,
+          "shown": 5,
+          "alpha": 0.4,
+          "dx": 1.594,
+          "dy": 0.092
+        },
+        "assets": [
+          "arch-ne",
+          "arch-se",
+          "broken-watchtower",
+          "column-fallen",
+          "column-fallen-v",
+          "corner-n",
+          "corner-s",
+          "dead-snag",
+          "dead-tree",
+          "drift-mound",
+          "drift-ne",
+          "drift-se",
+          "flagstones-a",
+          "flagstones-b",
+          "flagstones-c",
+          "flagstones-d",
+          "floor-sunk",
+          "grass-patch",
+          "grass-tussock",
+          "grave-cross",
+          "grave-headstone",
+          "grave-memorial",
+          "grave-sarcophagus",
+          "ground-scuff-a",
+          "ground-scuff-b",
+          "paving",
+          "pillar-broken",
+          "pillar-intact",
+          "pine-broad",
+          "pine-sapling",
+          "pine-tall",
+          "rock-boulders",
+          "rock-scatter",
+          "rubble",
+          "ruined-gate",
+          "shrub-juniper",
+          "shrub-twigs",
+          "snowy-shrine",
+          "stairs-ne",
+          "stairs-nw",
+          "stone-chips-a",
+          "stone-chips-b",
+          "temple-podium",
+          "wall-ne",
+          "wall-se"
+        ],
+        "sceneShadows": {
+          "surfaces": 467,
+          "samples": 243047,
+          "rebuilds": 1,
+          "buildMs": 1033.8999998569489,
+          "bytes": 18938656,
+          "receiverPixels": 1174368,
+          "depthPixels": 1780148,
+          "ready": true,
+          "error": "",
+          "sun": {
+            "dx": 1.59394236711567,
+            "dy": 0.09168415256286729,
+            "alpha": 0.4
+          },
+          "model": "original alpha, explicit billboard/relief geometry; light-space depth compare",
+          "uploadMs": 14054,
+          "dynamic": {
+            "updates": 14,
+            "actors": 1,
+            "extraSurfaces": 1,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40379,
+            "pixels": 269696,
+            "bytes": 7808604,
+            "renderMs": 0.8999998569488525,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 1.25
+          }
+        },
+        "committedCameraBounds": [
+          -203.75,
+          -203.75,
+          1560,
+          1176.25
+        ]
+      },
+      "measurement": {
+        "durationMs": 355.2000000476837,
+        "rafMedianMs": 50,
+        "rafP95Ms": 66.69999999999709,
+        "drawCalls": 796,
+        "frames": 8
+      },
+      "torchAudit": [
+        {
+          "key": "torch-body:0",
+          "width": 24,
+          "height": 39,
+          "pivot": [
+            0.5,
+            2.0705128205128207
+          ],
+          "geometryModel": "unlit original-alpha sconce; authored anchor and two-pixel camera-depth shell"
+        },
+        {
+          "key": "torch-body:1",
+          "width": 24,
+          "height": 39,
+          "pivot": [
+            0.5,
+            2.0705128205128207
+          ],
+          "geometryModel": "unlit original-alpha sconce; authored anchor and two-pixel camera-depth shell"
+        },
+        {
+          "key": "torch-body:2",
+          "width": 24,
+          "height": 39,
+          "pivot": [
+            0.5,
+            2.0705128205128207
+          ],
+          "geometryModel": "unlit original-alpha sconce; authored anchor and two-pixel camera-depth shell"
+        },
+        {
+          "key": "torch-body:3",
+          "width": 24,
+          "height": 39,
+          "pivot": [
+            0.5,
+            2.0705128205128207
+          ],
+          "geometryModel": "unlit original-alpha sconce; authored anchor and two-pixel camera-depth shell"
+        },
+        {
+          "key": "torch-body:4",
+          "width": 24,
+          "height": 39,
+          "pivot": [
+            0.5,
+            2.0705128205128207
+          ],
+          "geometryModel": "unlit original-alpha sconce; authored anchor and two-pixel camera-depth shell"
+        },
+        {
+          "key": "torch-body:5",
+          "width": 24,
+          "height": 39,
+          "pivot": [
+            0.5,
+            2.0705128205128207
+          ],
+          "geometryModel": "unlit original-alpha sconce; authored anchor and two-pixel camera-depth shell"
+        },
+        {
+          "key": "torch-body:6",
+          "width": 24,
+          "height": 39,
+          "pivot": [
+            0.5,
+            2.0705128205128207
+          ],
+          "geometryModel": "unlit original-alpha sconce; authored anchor and two-pixel camera-depth shell"
+        },
+        {
+          "key": "torch-body:7",
+          "width": 24,
+          "height": 39,
+          "pivot": [
+            0.5,
+            2.0705128205128207
+          ],
+          "geometryModel": "unlit original-alpha sconce; authored anchor and two-pixel camera-depth shell"
+        },
+        {
+          "key": "torch-body:8",
+          "width": 24,
+          "height": 39,
+          "pivot": [
+            0.5,
+            2.0705128205128207
+          ],
+          "geometryModel": "unlit original-alpha sconce; authored anchor and two-pixel camera-depth shell"
+        },
+        {
+          "key": "torch-body:9",
+          "width": 24,
+          "height": 39,
+          "pivot": [
+            0.5,
+            2.0705128205128207
+          ],
+          "geometryModel": "unlit original-alpha sconce; authored anchor and two-pixel camera-depth shell"
+        },
+        {
+          "key": "torch-body:10",
+          "width": 24,
+          "height": 39,
+          "pivot": [
+            0.5,
+            2.0705128205128207
+          ],
+          "geometryModel": "unlit original-alpha sconce; authored anchor and two-pixel camera-depth shell"
+        },
+        {
+          "key": "torch-body:11",
+          "width": 24,
+          "height": 39,
+          "pivot": [
+            0.5,
+            2.0705128205128207
+          ],
+          "geometryModel": "unlit original-alpha sconce; authored anchor and two-pixel camera-depth shell"
+        },
+        {
+          "key": "torch-body:12",
+          "width": 24,
+          "height": 39,
+          "pivot": [
+            0.5,
+            1.6346153846153846
+          ],
+          "geometryModel": "unlit original-alpha sconce; authored anchor and two-pixel camera-depth shell"
+        },
+        {
+          "key": "torch-post:12",
+          "width": 4,
+          "height": 34.5,
+          "pivot": [
+            0.5,
+            1
+          ],
+          "geometryModel": "procedural 3.75px support stroke; two-pixel camera-depth shell"
+        },
+        {
+          "key": "torch-body:13",
+          "width": 24,
+          "height": 39,
+          "pivot": [
+            0.5,
+            1.6346153846153846
+          ],
+          "geometryModel": "unlit original-alpha sconce; authored anchor and two-pixel camera-depth shell"
+        },
+        {
+          "key": "torch-post:13",
+          "width": 4,
+          "height": 34.5,
+          "pivot": [
+            0.5,
+            1
+          ],
+          "geometryModel": "procedural 3.75px support stroke; two-pixel camera-depth shell"
+        },
+        {
+          "key": "torch-body:14",
+          "width": 24,
+          "height": 39,
+          "pivot": [
+            0.5,
+            1.6346153846153846
+          ],
+          "geometryModel": "unlit original-alpha sconce; authored anchor and two-pixel camera-depth shell"
+        },
+        {
+          "key": "torch-post:14",
+          "width": 4,
+          "height": 34.5,
+          "pivot": [
+            0.5,
+            1
+          ],
+          "geometryModel": "procedural 3.75px support stroke; two-pixel camera-depth shell"
+        },
+        {
+          "key": "torch-body:15",
+          "width": 24,
+          "height": 39,
+          "pivot": [
+            0.5,
+            1.6346153846153846
+          ],
+          "geometryModel": "unlit original-alpha sconce; authored anchor and two-pixel camera-depth shell"
+        },
+        {
+          "key": "torch-post:15",
+          "width": 4,
+          "height": 34.5,
+          "pivot": [
+            0.5,
+            1
+          ],
+          "geometryModel": "procedural 3.75px support stroke; two-pixel camera-depth shell"
+        }
+      ],
+      "image": "desktop-torch-court-0.3.png"
+    },
+    {
+      "mobile": true,
+      "time": 0.3,
+      "spot": "torch-court",
+      "teleported": [
+        5.5,
+        5.5
+      ],
+      "stats": {
+        "props": 834,
+        "uprights": 297,
+        "columns": 3143,
+        "atlas": "/frozen-frontier/game/atlas-5083a8ebd8c8bb4b.webp",
+        "loaded": true,
+        "failed": false,
+        "kit": 46,
+        "companions": {
+          "version": 1,
+          "atlas": "/frozen-frontier/game/atlas-5083a8ebd8c8bb4b.webp",
+          "families": 46,
+          "model": "explicit geometry proxy; NOT measured volumetric depth",
+          "receivers": "WebGL terrain and object height proxies; Canvas ground-only"
+        },
+        "occlusionImages": 12,
+        "sprites": 44,
+        "visible": 0,
+        "shadows": {
+          "casters": 297,
+          "strips": 1619,
+          "shown": 0,
+          "alpha": 0.4,
+          "dx": 1.594,
+          "dy": 0.092
+        },
+        "assets": [
+          "arch-ne",
+          "arch-se",
+          "broken-watchtower",
+          "column-fallen",
+          "column-fallen-v",
+          "corner-n",
+          "corner-s",
+          "dead-snag",
+          "dead-tree",
+          "drift-mound",
+          "drift-ne",
+          "drift-se",
+          "flagstones-a",
+          "flagstones-b",
+          "flagstones-c",
+          "flagstones-d",
+          "floor-sunk",
+          "grass-patch",
+          "grass-tussock",
+          "grave-cross",
+          "grave-headstone",
+          "grave-memorial",
+          "grave-sarcophagus",
+          "ground-scuff-a",
+          "ground-scuff-b",
+          "paving",
+          "pillar-broken",
+          "pillar-intact",
+          "pine-broad",
+          "pine-sapling",
+          "pine-tall",
+          "rock-boulders",
+          "rock-scatter",
+          "rubble",
+          "ruined-gate",
+          "shrub-juniper",
+          "shrub-twigs",
+          "snowy-shrine",
+          "stairs-ne",
+          "stairs-nw",
+          "stone-chips-a",
+          "stone-chips-b",
+          "temple-podium",
+          "wall-ne",
+          "wall-se"
+        ],
+        "sceneShadows": {
+          "surfaces": 467,
+          "samples": 91641,
+          "rebuilds": 1,
+          "buildMs": 502.5,
+          "bytes": 8908072,
+          "receiverPixels": 584548,
+          "depthPixels": 821235,
+          "ready": true,
+          "error": "",
+          "sun": {
+            "dx": 1.59394236711567,
+            "dy": 0.09168415256286729,
+            "alpha": 0.4
+          },
+          "model": "original alpha, explicit billboard/relief geometry; light-space depth compare",
+          "uploadMs": 3573.899999856949,
+          "dynamic": {
+            "updates": 11,
+            "actors": 1,
+            "extraSurfaces": 1,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40379,
+            "pixels": 269696,
+            "bytes": 7808604,
+            "renderMs": 1,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 1.25
+          }
+        },
+        "committedCameraBounds": [
+          180,
+          -203.75,
+          792.5,
+          1152.5
+        ]
+      },
+      "measurement": {
+        "durationMs": 290.90000009536743,
+        "rafMedianMs": 16.69999999999709,
+        "rafP95Ms": 66.70000000000437,
+        "drawCalls": 619,
+        "frames": 8
+      },
+      "torchAudit": [
+        {
+          "key": "torch-body:0",
+          "width": 24,
+          "height": 39,
+          "pivot": [
+            0.5,
+            2.0705128205128207
+          ],
+          "geometryModel": "unlit original-alpha sconce; authored anchor and two-pixel camera-depth shell"
+        },
+        {
+          "key": "torch-body:1",
+          "width": 24,
+          "height": 39,
+          "pivot": [
+            0.5,
+            2.0705128205128207
+          ],
+          "geometryModel": "unlit original-alpha sconce; authored anchor and two-pixel camera-depth shell"
+        },
+        {
+          "key": "torch-body:2",
+          "width": 24,
+          "height": 39,
+          "pivot": [
+            0.5,
+            2.0705128205128207
+          ],
+          "geometryModel": "unlit original-alpha sconce; authored anchor and two-pixel camera-depth shell"
+        },
+        {
+          "key": "torch-body:3",
+          "width": 24,
+          "height": 39,
+          "pivot": [
+            0.5,
+            2.0705128205128207
+          ],
+          "geometryModel": "unlit original-alpha sconce; authored anchor and two-pixel camera-depth shell"
+        },
+        {
+          "key": "torch-body:4",
+          "width": 24,
+          "height": 39,
+          "pivot": [
+            0.5,
+            2.0705128205128207
+          ],
+          "geometryModel": "unlit original-alpha sconce; authored anchor and two-pixel camera-depth shell"
+        },
+        {
+          "key": "torch-body:5",
+          "width": 24,
+          "height": 39,
+          "pivot": [
+            0.5,
+            2.0705128205128207
+          ],
+          "geometryModel": "unlit original-alpha sconce; authored anchor and two-pixel camera-depth shell"
+        },
+        {
+          "key": "torch-body:6",
+          "width": 24,
+          "height": 39,
+          "pivot": [
+            0.5,
+            2.0705128205128207
+          ],
+          "geometryModel": "unlit original-alpha sconce; authored anchor and two-pixel camera-depth shell"
+        },
+        {
+          "key": "torch-body:7",
+          "width": 24,
+          "height": 39,
+          "pivot": [
+            0.5,
+            2.0705128205128207
+          ],
+          "geometryModel": "unlit original-alpha sconce; authored anchor and two-pixel camera-depth shell"
+        },
+        {
+          "key": "torch-body:8",
+          "width": 24,
+          "height": 39,
+          "pivot": [
+            0.5,
+            2.0705128205128207
+          ],
+          "geometryModel": "unlit original-alpha sconce; authored anchor and two-pixel camera-depth shell"
+        },
+        {
+          "key": "torch-body:9",
+          "width": 24,
+          "height": 39,
+          "pivot": [
+            0.5,
+            2.0705128205128207
+          ],
+          "geometryModel": "unlit original-alpha sconce; authored anchor and two-pixel camera-depth shell"
+        },
+        {
+          "key": "torch-body:10",
+          "width": 24,
+          "height": 39,
+          "pivot": [
+            0.5,
+            2.0705128205128207
+          ],
+          "geometryModel": "unlit original-alpha sconce; authored anchor and two-pixel camera-depth shell"
+        },
+        {
+          "key": "torch-body:11",
+          "width": 24,
+          "height": 39,
+          "pivot": [
+            0.5,
+            2.0705128205128207
+          ],
+          "geometryModel": "unlit original-alpha sconce; authored anchor and two-pixel camera-depth shell"
+        },
+        {
+          "key": "torch-body:12",
+          "width": 24,
+          "height": 39,
+          "pivot": [
+            0.5,
+            1.6346153846153846
+          ],
+          "geometryModel": "unlit original-alpha sconce; authored anchor and two-pixel camera-depth shell"
+        },
+        {
+          "key": "torch-post:12",
+          "width": 4,
+          "height": 34.5,
+          "pivot": [
+            0.5,
+            1
+          ],
+          "geometryModel": "procedural 3.75px support stroke; two-pixel camera-depth shell"
+        },
+        {
+          "key": "torch-body:13",
+          "width": 24,
+          "height": 39,
+          "pivot": [
+            0.5,
+            1.6346153846153846
+          ],
+          "geometryModel": "unlit original-alpha sconce; authored anchor and two-pixel camera-depth shell"
+        },
+        {
+          "key": "torch-post:13",
+          "width": 4,
+          "height": 34.5,
+          "pivot": [
+            0.5,
+            1
+          ],
+          "geometryModel": "procedural 3.75px support stroke; two-pixel camera-depth shell"
+        },
+        {
+          "key": "torch-body:14",
+          "width": 24,
+          "height": 39,
+          "pivot": [
+            0.5,
+            1.6346153846153846
+          ],
+          "geometryModel": "unlit original-alpha sconce; authored anchor and two-pixel camera-depth shell"
+        },
+        {
+          "key": "torch-post:14",
+          "width": 4,
+          "height": 34.5,
+          "pivot": [
+            0.5,
+            1
+          ],
+          "geometryModel": "procedural 3.75px support stroke; two-pixel camera-depth shell"
+        },
+        {
+          "key": "torch-body:15",
+          "width": 24,
+          "height": 39,
+          "pivot": [
+            0.5,
+            1.6346153846153846
+          ],
+          "geometryModel": "unlit original-alpha sconce; authored anchor and two-pixel camera-depth shell"
+        },
+        {
+          "key": "torch-post:15",
+          "width": 4,
+          "height": 34.5,
+          "pivot": [
+            0.5,
+            1
+          ],
+          "geometryModel": "procedural 3.75px support stroke; two-pixel camera-depth shell"
+        }
+      ],
+      "image": "mobile-torch-court-0.3.png"
+    }
+  ],
+  "errors": [
+    "day shadows missing"
+  ]
+}

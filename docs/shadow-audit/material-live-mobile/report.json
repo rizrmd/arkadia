@@ -1,0 +1,271 @@
+{
+  "runtime": "7957773ab1a59f1d17733426a0a400503aca13fd",
+  "profile": "mobile",
+  "scope": "Compiled live legacy scene containing the actual brazier, real source material and existing receiver texture. Three-sun isolated asset controls plus independent above-scene caster on game pixels. Software viewport, not native-device performance.",
+  "errors": [],
+  "failedResponses": [],
+  "entry": "https://ark-whachat.fural.space/assets/index-BjGJB5qD.js",
+  "framing": {
+    "before": 1,
+    "u": 13.2,
+    "v": 6.2
+  },
+  "stats": {
+    "surfaces": 477,
+    "samples": 461437,
+    "rebuilds": 2,
+    "buildMs": 2084.0999999046326,
+    "bytes": 14513144,
+    "receiverPixels": 692576,
+    "depthPixels": 1467855,
+    "ready": true,
+    "error": "",
+    "sun": {
+      "dx": 1.59394236711567,
+      "dy": 0.09168415256286729,
+      "alpha": 0.4
+    },
+    "model": "original alpha, explicit billboard/relief geometry; light-space depth compare",
+    "uploadMs": 13082.5,
+    "dynamic": {
+      "updates": 39,
+      "actors": 1,
+      "extraSurfaces": 1,
+      "skinnedMeshes": 1,
+      "receiverPasses": 3,
+      "geometryBytes": 2073244,
+      "drawnVertices": 40379,
+      "pixels": 218747,
+      "bytes": 6726732,
+      "renderMs": 0.7999999523162842,
+      "ready": true,
+      "casterPasses": 3,
+      "fieldSamplers": 4,
+      "opaqueEnvelope": true,
+      "step": 1.25
+    }
+  },
+  "assetControls": {
+    "offset": 22,
+    "totalVariants": 314,
+    "totalPlacements": 480,
+    "rows": [
+      {
+        "id": "variant:22",
+        "signature": "[\"brazier:/modular-stronghold/v2/brazier.png\",null,32,48.02689075630252,[0.5,0.97],null,0,1,null,null,null,true,false,{\"materialRevision\":\"brazier:61f8c66b2c2e412a17b79d9de307e8e40d18c3d84b3cc4834933677d6bb62786\"}]",
+        "family": "brazier:/modular-stronghold/v2/brazier.png",
+        "key": "brazier:/modular-stronghold/v2/brazier.png",
+        "placements": [
+          {
+            "key": "brazier:/modular-stronghold/v2/brazier.png",
+            "x": 1101.8,
+            "y": 422.4
+          }
+        ],
+        "width": 32,
+        "height": 48.02689075630252,
+        "flip": false,
+        "groundRotation": 0,
+        "lift": 0,
+        "explicitHeight": false,
+        "solidBody": false,
+        "tests": [
+          {
+            "sun": {
+              "dx": 1.594,
+              "dy": 0.092,
+              "alpha": 0.55
+            },
+            "darkPixels": 4768,
+            "cast": true,
+            "maxHeight": 45.02521008403362,
+            "receiver": {
+              "status": "no unoccluded probe outside source bounds"
+            },
+            "receive": {
+              "status": "pass",
+              "receiverHeight": 42.5,
+              "pixel": [
+                68,
+                21
+              ],
+              "highRed": 126,
+              "lowRed": 255
+            }
+          },
+          {
+            "sun": {
+              "dx": 0.278,
+              "dy": 0.307,
+              "alpha": 0.55
+            },
+            "darkPixels": 6747,
+            "cast": true,
+            "maxHeight": 45.02521008403362,
+            "receiver": {
+              "status": "no unoccluded probe outside source bounds"
+            },
+            "receive": {
+              "status": "pass",
+              "receiverHeight": 42.5,
+              "pixel": [
+                102,
+                25
+              ],
+              "highRed": 126,
+              "lowRed": 255
+            }
+          },
+          {
+            "sun": {
+              "dx": -0.826,
+              "dy": 0.743,
+              "alpha": 0.55
+            },
+            "darkPixels": 9359,
+            "cast": true,
+            "maxHeight": 45.02521008403362,
+            "receiver": {
+              "status": "no unoccluded probe outside source bounds"
+            },
+            "receive": {
+              "status": "pass",
+              "receiverHeight": 42.5,
+              "pixel": [
+                174,
+                22
+              ],
+              "highRed": 126,
+              "lowRed": 255
+            }
+          }
+        ]
+      }
+    ],
+    "failures": [],
+    "image": "controls.png",
+    "probeSampling": "GPU packed receiver height at actual rendered pixel; float32 camera reconstruction",
+    "scope": "Actual registered static geometry plus explicitly labeled catalog/building fixtures, production GPU filter and Worker; three light vectors. Contact sheets show one representative per distinct geometry variant. Probe cases outside source bounds test visible raised receiving and above-caster rejection."
+  },
+  "gameMaterial": {
+    "sun": {
+      "dx": 1.59394236711567,
+      "dy": 0.09168415256286729,
+      "alpha": 0.4
+    },
+    "source": "brazier:/modular-stronghold/v2/brazier.png",
+    "materialRevision": "brazier:61f8c66b2c2e412a17b79d9de307e8e40d18c3d84b3cc4834933677d6bb62786",
+    "camera": [
+      -1178.174560546875,
+      -141.73841857910156,
+      1.3396825790405273,
+      954
+    ],
+    "candidateCounts": {
+      "emissive": 5,
+      "physical": 259,
+      "terrain": 285
+    },
+    "rows": [
+      {
+        "material": "emissive",
+        "world": [
+          1104.375,
+          388.125
+        ],
+        "pixel": [
+          301,
+          378
+        ],
+        "red": 252,
+        "materialByte": 143,
+        "height": 28,
+        "before": [
+          252,
+          224,
+          111,
+          255
+        ],
+        "after": [
+          241,
+          215,
+          108,
+          255
+        ],
+        "expected": [
+          241,
+          215,
+          108
+        ],
+        "redDrop": 11
+      },
+      {
+        "material": "physical",
+        "world": [
+          1105.625,
+          393.125
+        ],
+        "pixel": [
+          303,
+          384
+        ],
+        "red": 253,
+        "materialByte": 253,
+        "height": 24.5,
+        "before": [
+          253,
+          210,
+          77,
+          255
+        ],
+        "after": [
+          161,
+          138,
+          64,
+          255
+        ],
+        "expected": [
+          161,
+          138,
+          64
+        ],
+        "redDrop": 92
+      },
+      {
+        "material": "terrain",
+        "world": [
+          1131.875,
+          393.125
+        ],
+        "pixel": [
+          338,
+          384
+        ],
+        "red": 199,
+        "materialByte": 255,
+        "height": 0,
+        "before": [
+          199,
+          172,
+          134,
+          255
+        ],
+        "after": [
+          127,
+          114,
+          98,
+          255
+        ],
+        "expected": [
+          127,
+          114,
+          98
+        ],
+        "redDrop": 72
+      }
+    ]
+  },
+  "health": 200,
+  "status": "pass",
+  "arithmeticValidation": "Recorded game pixel RGB agrees within 2/255 with the packed receiver material response."
+}

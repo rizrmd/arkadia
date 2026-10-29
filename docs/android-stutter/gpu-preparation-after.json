@@ -1,0 +1,72 @@
+{
+  "baseline": false,
+  "prepared": {
+    "ready": true,
+    "failed": "",
+    "effects": 76,
+    "preparedEffects": 36,
+    "loadedTextures": 15,
+    "gpuPreparation": {
+      "compiledPrograms": 4,
+      "uploadedTextures": 15
+    },
+    "live": 0,
+    "played": 0,
+    "peakParticles": 0,
+    "particleBudget": 400,
+    "budgetSkipped": 0,
+    "frameMs": 27.7,
+    "occludedParticles": 0,
+    "minOcclusion": 1,
+    "meanOcclusion": 1,
+    "backEffects": 0,
+    "frontEffects": 0,
+    "particles": 0,
+    "missing": [],
+    "unsupported": [],
+    "playing": []
+  },
+  "result": {
+    "linkedPrograms": [],
+    "fx": {
+      "ready": true,
+      "failed": "",
+      "effects": 76,
+      "preparedEffects": 36,
+      "loadedTextures": 15,
+      "gpuPreparation": {
+        "compiledPrograms": 4,
+        "uploadedTextures": 15
+      },
+      "live": 6,
+      "played": 14,
+      "peakParticles": 460,
+      "particleBudget": 260,
+      "budgetSkipped": 0,
+      "frameMs": 77.3,
+      "occludedParticles": 0,
+      "minOcclusion": 1,
+      "meanOcclusion": 1,
+      "backEffects": 2,
+      "frontEffects": 3,
+      "particles": 78,
+      "missing": [],
+      "unsupported": [],
+      "playing": [
+        "shared/level-up.ground:52",
+        "shared/level-up:4",
+        "ember-warden/flame-fan.cast:1",
+        "ember-warden/cinder-step.cast:2",
+        "ember-warden/cinder-step.detonate:6",
+        "ember-warden/ember-snare.detonate:13"
+      ]
+    }
+  },
+  "vfxLinks": [],
+  "actorCache": {
+    "sameProgram": true,
+    "independentUniforms": true,
+    "differentSamplerCounts": true
+  },
+  "errors": []
+}

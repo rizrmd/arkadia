@@ -1,0 +1,373 @@
+{
+  "runtime": "4ce0726f81958e0c3cc48d36df9c7873cfd43362",
+  "profile": "desktop",
+  "scope": "Actual compiled live runtime: original, mirrored and rotated low stone companions at three suns and independent receiver controls. SwiftShader viewport; no native-device FPS claim.",
+  "runs": [
+    {
+      "offset": 28,
+      "totalVariants": 306,
+      "totalPlacements": 472,
+      "rows": [
+        {
+          "id": "variant:28",
+          "signature": "[\"ff:rock-scatter\",[395,1995,160,42],64.7637,17.092200000000002,[0.5,0.6059],false,0,null,0,[0.6176,0.6904,0.7471,0.7765,0.8515,0.8765,0.9301,0.9353,0.9824,0.9706,0.9471,0.9118,0.9044,0.8765,0.8118,0.754,0.5235],null,true,false,5.982270000000001,[0.945238,0.707143,0.445238,0.37381,0.421429,0.509226,0.680357,0.788988,0.897619,0.897619,0.82619,0.754762,0.486905,0.445238,0.588095,0.754762,0.82619],null,{\"groundRotation\":327}]",
+          "family": "ff:rock-scatter",
+          "key": "ff:rock-scatter:368",
+          "placements": [
+            {
+              "key": "ff:rock-scatter:368",
+              "x": -1259.7999999999993,
+              "y": 796.8000000000011
+            }
+          ],
+          "width": 64.7637,
+          "height": 17.092200000000002,
+          "flip": false,
+          "groundRotation": 327,
+          "lift": 0,
+          "frame": [
+            395,
+            1995,
+            160,
+            42
+          ],
+          "explicitHeight": false,
+          "solidBody": true,
+          "capHeight": 5.982270000000001,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 4939,
+              "cast": true,
+              "maxHeight": 5.982270000000001,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 6,
+                "pixel": [
+                  162,
+                  16
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 4796,
+              "cast": true,
+              "maxHeight": 5.982270000000001,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 6,
+                "pixel": [
+                  162,
+                  16
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 5607,
+              "cast": true,
+              "maxHeight": 5.982270000000001,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 6,
+                "pixel": [
+                  168,
+                  16
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        }
+      ],
+      "failures": [],
+      "image": "control-0.png",
+      "probeSampling": "GPU packed receiver height at actual rendered pixel; float32 camera reconstruction",
+      "scope": "Actual registered static geometry plus explicitly labeled catalog/building fixtures, production GPU filter and Worker; three light vectors. Contact sheets show one representative per distinct geometry variant. Probe cases outside source bounds test visible raised receiving and above-caster rejection."
+    },
+    {
+      "offset": 31,
+      "totalVariants": 306,
+      "totalPlacements": 472,
+      "rows": [
+        {
+          "id": "variant:31",
+          "signature": "[\"ff:rock-scatter\",[395,1995,160,42],59.030519999999996,15.57912,[0.5,0.6059],true,0,null,0,[0.6176,0.6904,0.7471,0.7765,0.8515,0.8765,0.9301,0.9353,0.9824,0.9706,0.9471,0.9118,0.9044,0.8765,0.8118,0.754,0.5235],null,true,false,5.452692,[0.945238,0.707143,0.445238,0.37381,0.421429,0.509226,0.680357,0.788988,0.897619,0.897619,0.82619,0.754762,0.486905,0.445238,0.588095,0.754762,0.82619],null]",
+          "family": "ff:rock-scatter",
+          "key": "ff:rock-scatter:267",
+          "placements": [
+            {
+              "key": "ff:rock-scatter:267",
+              "x": -1485.079999999998,
+              "y": 929.2800000000007
+            }
+          ],
+          "width": 59.030519999999996,
+          "height": 15.57912,
+          "flip": true,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            395,
+            1995,
+            160,
+            42
+          ],
+          "explicitHeight": false,
+          "solidBody": true,
+          "capHeight": 5.452692,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 4328,
+              "cast": true,
+              "maxHeight": 5.452692031860352,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 5.5,
+                "pixel": [
+                  176,
+                  10
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 4712,
+              "cast": true,
+              "maxHeight": 5.452692031860352,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 5.5,
+                "pixel": [
+                  193,
+                  10
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 6626,
+              "cast": true,
+              "maxHeight": 5.452692031860352,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 5.5,
+                "pixel": [
+                  198,
+                  10
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        }
+      ],
+      "failures": [],
+      "image": "control-1.png",
+      "probeSampling": "GPU packed receiver height at actual rendered pixel; float32 camera reconstruction",
+      "scope": "Actual registered static geometry plus explicitly labeled catalog/building fixtures, production GPU filter and Worker; three light vectors. Contact sheets show one representative per distinct geometry variant. Probe cases outside source bounds test visible raised receiving and above-caster rejection."
+    },
+    {
+      "offset": 32,
+      "totalVariants": 306,
+      "totalPlacements": 472,
+      "rows": [
+        {
+          "id": "variant:32",
+          "signature": "[\"ff:rock-scatter\",[395,1995,160,42],52.801880000000004,13.93528,[0.5,0.6059],false,0,null,0,[0.6176,0.6904,0.7471,0.7765,0.8515,0.8765,0.9301,0.9353,0.9824,0.9706,0.9471,0.9118,0.9044,0.8765,0.8118,0.754,0.5235],null,true,false,4.877348,[0.945238,0.707143,0.445238,0.37381,0.421429,0.509226,0.680357,0.788988,0.897619,0.897619,0.82619,0.754762,0.486905,0.445238,0.588095,0.754762,0.82619],null]",
+          "family": "ff:rock-scatter",
+          "key": "ff:rock-scatter:260",
+          "placements": [
+            {
+              "key": "ff:rock-scatter:260",
+              "x": -1050.5200000000004,
+              "y": 941.1200000000008
+            }
+          ],
+          "width": 52.801880000000004,
+          "height": 13.93528,
+          "flip": false,
+          "groundRotation": 0,
+          "lift": 0,
+          "frame": [
+            395,
+            1995,
+            160,
+            42
+          ],
+          "explicitHeight": false,
+          "solidBody": true,
+          "capHeight": 4.877348,
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 4643,
+              "cast": true,
+              "maxHeight": 4.877348,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 5,
+                "pixel": [
+                  42,
+                  8
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 5099,
+              "cast": true,
+              "maxHeight": 4.877348,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 5,
+                "pixel": [
+                  45,
+                  8
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 6940,
+              "cast": true,
+              "maxHeight": 4.877348,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "pass",
+                "receiverHeight": 5,
+                "pixel": [
+                  58,
+                  8
+                ],
+                "highRed": 126,
+                "lowRed": 255
+              }
+            }
+          ]
+        }
+      ],
+      "failures": [],
+      "image": "control-2.png",
+      "probeSampling": "GPU packed receiver height at actual rendered pixel; float32 camera reconstruction",
+      "scope": "Actual registered static geometry plus explicitly labeled catalog/building fixtures, production GPU filter and Worker; three light vectors. Contact sheets show one representative per distinct geometry variant. Probe cases outside source bounds test visible raised receiving and above-caster rejection."
+    }
+  ],
+  "errors": [],
+  "failedResponses": [],
+  "entry": "https://ark-whachat.fural.space/assets/index-BwSIBXsT.js",
+  "stats": {
+    "surfaces": 468,
+    "samples": 474188,
+    "rebuilds": 1,
+    "buildMs": 1013,
+    "bytes": 19002176,
+    "receiverPixels": 1174368,
+    "depthPixels": 1788088,
+    "ready": true,
+    "error": "",
+    "sun": {
+      "dx": 1.59394236711567,
+      "dy": 0.09168415256286729,
+      "alpha": 0.4
+    },
+    "model": "original alpha, explicit billboard/relief geometry; light-space depth compare",
+    "uploadMs": 8261.5,
+    "dynamic": {
+      "updates": 4,
+      "actors": 1,
+      "extraSurfaces": 1,
+      "skinnedMeshes": 1,
+      "receiverPasses": 3,
+      "geometryBytes": 2073244,
+      "drawnVertices": 40379,
+      "pixels": 1182720,
+      "bytes": 32807772,
+      "renderMs": 3.799999952316284,
+      "ready": true,
+      "casterPasses": 3,
+      "fieldSamplers": 4,
+      "opaqueEnvelope": true,
+      "step": 0.5
+    }
+  },
+  "health": 200
+}

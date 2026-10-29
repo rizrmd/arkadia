@@ -1,0 +1,389 @@
+{
+  "status": "single-direction-painted-gait-proof-needs-contact-and-seam-review",
+  "actions": [
+    "run"
+  ],
+  "sheets": [
+    {
+      "image": "../v3/run-proof/run-SW.png",
+      "cell": [
+        352,
+        352
+      ],
+      "clips": [
+        {
+          "id": "run-SW",
+          "action": "run",
+          "direction": "SW",
+          "image": "../v3/run-proof/run-SW.png",
+          "cellSize": 352,
+          "frames": [
+            {
+              "cell": [
+                0,
+                0
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                116,
+                77,
+                320,
+                255
+              ],
+              "time": 0,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                1,
+                0
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                131,
+                76,
+                320,
+                247
+              ],
+              "time": 0.125,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                2,
+                0
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                123,
+                74,
+                324,
+                240
+              ],
+              "time": 0.25,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                3,
+                0
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                105,
+                68,
+                338,
+                227
+              ],
+              "time": 0.375,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                0,
+                1
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                133,
+                78,
+                326,
+                243
+              ],
+              "time": 0.5,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                1,
+                1
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                132,
+                70,
+                326,
+                236
+              ],
+              "time": 0.625,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                2,
+                1
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                131,
+                68,
+                316,
+                236
+              ],
+              "time": 0.75,
+              "muzzle": [
+                160,
+                160
+              ]
+            },
+            {
+              "cell": [
+                3,
+                1
+              ],
+              "pivot": [
+                176,
+                240
+              ],
+              "alphaBounds": [
+                109,
+                65,
+                329,
+                228
+              ],
+              "time": 0.875,
+              "muzzle": [
+                160,
+                160
+              ]
+            }
+          ],
+          "fps": 10,
+          "loop": true,
+          "duration": 0.8,
+          "layer": "body"
+        }
+      ]
+    }
+  ],
+  "clips": [
+    {
+      "id": "run-SW",
+      "action": "run",
+      "direction": "SW",
+      "image": "../v3/run-proof/run-SW.png",
+      "cellSize": 352,
+      "frames": [
+        {
+          "cell": [
+            0,
+            0
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            116,
+            77,
+            320,
+            255
+          ],
+          "time": 0,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            1,
+            0
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            131,
+            76,
+            320,
+            247
+          ],
+          "time": 0.125,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            2,
+            0
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            123,
+            74,
+            324,
+            240
+          ],
+          "time": 0.25,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            3,
+            0
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            105,
+            68,
+            338,
+            227
+          ],
+          "time": 0.375,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            0,
+            1
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            133,
+            78,
+            326,
+            243
+          ],
+          "time": 0.5,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            1,
+            1
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            132,
+            70,
+            326,
+            236
+          ],
+          "time": 0.625,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            2,
+            1
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            131,
+            68,
+            316,
+            236
+          ],
+          "time": 0.75,
+          "muzzle": [
+            160,
+            160
+          ]
+        },
+        {
+          "cell": [
+            3,
+            1
+          ],
+          "pivot": [
+            176,
+            240
+          ],
+          "alphaBounds": [
+            109,
+            65,
+            329,
+            228
+          ],
+          "time": 0.875,
+          "muzzle": [
+            160,
+            160
+          ]
+        }
+      ],
+      "fps": 10,
+      "loop": true,
+      "duration": 0.8,
+      "layer": "body"
+    }
+  ],
+  "cell": [
+    352,
+    352
+  ],
+  "bodyPivot": [
+    176,
+    240
+  ]
+}

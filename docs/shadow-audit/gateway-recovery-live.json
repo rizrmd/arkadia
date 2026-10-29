@@ -1,0 +1,63 @@
+{
+  "scope": "Actual compiled live game startup in Chromium/WebGL with required gateway metadata responses injected as 404 unknown sandbox, then 502 HTML, then original JSON. No fake frames or changed sprite/metadata bytes.",
+  "root": "/home/dev/projects/arkadia/repos/arkadia",
+  "requests": [
+    "https://ark-whachat.fural.space/modular-stronghold/v2/full-gateway-v7-sheet.json",
+    "https://ark-whachat.fural.space/modular-stronghold/v2/full-gateway-v7-sheet.json?_assetRetry=mvpf7ox6-1",
+    "https://ark-whachat.fural.space/modular-stronghold/v2/full-gateway-v7-sheet.json?_assetRetry=mvpf7qhm-2"
+  ],
+  "errors": [],
+  "navigation": [
+    {
+      "status": 200
+    }
+  ],
+  "lastMetadataStatus": 200,
+  "deliveredMetadataSha256": "4c2494fe461960cba0ab760dea4e1d0fcaede5ec0089dd0ac703fa43fd2033c8",
+  "state": {
+    "loadingError": null,
+    "gate": {
+      "width": 389,
+      "height": 259,
+      "renderer": "gateway-lightmap-v3"
+    },
+    "field": {
+      "surfaces": 468,
+      "samples": 179599,
+      "rebuilds": 1,
+      "buildMs": 791.5,
+      "bytes": 8622712,
+      "receiverPixels": 584548,
+      "depthPixels": 785565,
+      "ready": true,
+      "error": "",
+      "sun": {
+        "dx": 1.2029684358954906,
+        "dy": 0.16645310050740103,
+        "alpha": 0.4
+      },
+      "model": "original alpha, explicit billboard/relief geometry; light-space depth compare",
+      "uploadMs": 2909.5,
+      "dynamic": {
+        "updates": 3,
+        "actors": 1,
+        "extraSurfaces": 1,
+        "skinnedMeshes": 1,
+        "receiverPasses": 3,
+        "geometryBytes": 2073244,
+        "drawnVertices": 40379,
+        "pixels": 167931,
+        "bytes": 5296476,
+        "renderMs": 167.29999995231628,
+        "ready": true,
+        "casterPasses": 3,
+        "fieldSamplers": 4,
+        "opaqueEnvelope": true,
+        "step": 1.25
+      }
+    }
+  },
+  "metadataSha256": "4c2494fe461960cba0ab760dea4e1d0fcaede5ec0089dd0ac703fa43fd2033c8",
+  "entry": "https://ark-whachat.fural.space/assets/index-B7Ab3MjJ.js",
+  "status": "pass"
+}

@@ -1,0 +1,126 @@
+{
+  "tag": "local",
+  "views": {
+    "desktop": {
+      "before": {
+        "hp": 100,
+        "maxHp": 100,
+        "state": "idle",
+        "u": 9.16,
+        "v": 8.96,
+        "meters": 6.6,
+        "safe": true,
+        "reach": 1,
+        "aoeCastRadiusTiles": 2.2,
+        "critChance": 0.15,
+        "critMultiplier": 1.5
+      },
+      "after": {
+        "hp": 100,
+        "maxHp": 100,
+        "state": "idle",
+        "u": 8.04,
+        "v": 9.95,
+        "meters": 7.5,
+        "safe": true,
+        "reach": 1,
+        "aoeCastRadiusTiles": 2.2,
+        "critChance": 0.15,
+        "critMultiplier": 1.5
+      },
+      "dash": {
+        "from": {
+          "u": 9.1640625,
+          "v": 8.9609375
+        },
+        "to": {
+          "u": 8.039305716952361,
+          "v": 9.95336995563027
+        },
+        "distance": 1.5000000000000007
+      },
+      "pass": true
+    },
+    "mobile": {
+      "before": {
+        "hp": 100,
+        "maxHp": 100,
+        "state": "idle",
+        "u": 9.16,
+        "v": 8.96,
+        "meters": 6.6,
+        "safe": true,
+        "reach": 1,
+        "aoeCastRadiusTiles": 2.2,
+        "critChance": 0.15,
+        "critMultiplier": 1.5
+      },
+      "after": {
+        "hp": 100,
+        "maxHp": 100,
+        "state": "idle",
+        "u": 7.69,
+        "v": 8.7,
+        "meters": 3.6,
+        "safe": true,
+        "reach": 1,
+        "aoeCastRadiusTiles": 2.2,
+        "critChance": 0.15,
+        "critMultiplier": 1.5
+      },
+      "dash": {
+        "from": {
+          "u": 9.1640625,
+          "v": 8.9609375
+        },
+        "to": {
+          "u": 7.686887161773095,
+          "v": 8.700259499136429
+        },
+        "distance": 1.4999999999999998
+      },
+      "pass": true
+    },
+    "landscape": {
+      "before": {
+        "hp": 100,
+        "maxHp": 100,
+        "state": "idle",
+        "u": 9.16,
+        "v": 8.96,
+        "meters": 6.6,
+        "safe": true,
+        "reach": 1,
+        "aoeCastRadiusTiles": 2.2,
+        "critChance": 0.15,
+        "critMultiplier": 1.5
+      },
+      "after": {
+        "hp": 100,
+        "maxHp": 100,
+        "state": "idle",
+        "u": 7.69,
+        "v": 8.7,
+        "meters": 3.6,
+        "safe": true,
+        "reach": 1,
+        "aoeCastRadiusTiles": 2.2,
+        "critChance": 0.15,
+        "critMultiplier": 1.5
+      },
+      "dash": {
+        "from": {
+          "u": 9.1640625,
+          "v": 8.9609375
+        },
+        "to": {
+          "u": 7.686887161773095,
+          "v": 8.700259499136429
+        },
+        "distance": 1.4999999999999998
+      },
+      "pass": true
+    }
+  },
+  "errors": []
+}

@@ -1,0 +1,121 @@
+{
+  "scope": "Actual registered static geometry variants, original source alpha, production GPU shader/Worker. One placement per unique geometry variant. Software SwiftShader; not physical-device performance.",
+  "rendererSources": {
+    "scene-shadows.ts": "24f5f57a8c1fecef0cee69bfcf3392a4168c3e3341aa21c6ca02e15309fc18a1",
+    "shadow-field.ts": "69cc9efb2b218c066eb8e914a4c7ec7d1e57b96144836efbff4c344937fa1514",
+    "shadow-field-worker.ts": "8b1b252f61878341474ed56ee05130fd873e652a143f59f383da9720a6054600",
+    "shadow-surfaces.ts": "b7053171fb3230232cdc564b8ae0852ce6cea4c35f907a69a8bc03a9072128ce",
+    "native-shadow-sampling.ts": "701902b062f862e02d6b6aeb6767a5a55f3c30d2bb0fe6ff5210c3bc3b689817",
+    "shadow-sampling.ts": "852ccfef4e7a78493ac0adb6ccdd4fdc035300db4f09ea470236ff8b61fafc4d",
+    "shadow-program.ts": "7f29279852819349ed2e946141b454fedb3718f193d226f84c69e079c0af5f9d",
+    "shadow-family-audit.ts": "40bc1eeec7f77bde9874068e23183c6d123b73cfc773b5b23cb89d8f805d546f",
+    "solid-shadow-geometry.ts": "ccb66427c091343118a7f548c261bb122d90bd6b6997242aa0db98df68930567"
+  },
+  "errors": [],
+  "batches": [
+    {
+      "offset": 0,
+      "totalVariants": 1,
+      "totalPlacements": 1,
+      "rows": [
+        {
+          "id": "variant:0",
+          "signature": "[\"expedition:/assets/stronghold/expedition-tent.png\",null,210,140,[0.5,0.95],null,0.11935483870967745,1.1419354838709677,null,null,null,true,true,null,null,\"closed-pitched-tent-v1\"]",
+          "family": "expedition:/assets/stronghold/expedition-tent.png",
+          "key": "expedition:/assets/stronghold/expedition-tent.png",
+          "placements": [
+            {
+              "key": "expedition:/assets/stronghold/expedition-tent.png",
+              "x": 577,
+              "y": 320
+            }
+          ],
+          "width": 210,
+          "height": 140,
+          "flip": false,
+          "lift": 0,
+          "explicitHeight": true,
+          "solidBody": true,
+          "geometryModel": "closed-pitched-tent-v1",
+          "tests": [
+            {
+              "sun": {
+                "dx": 1.594,
+                "dy": 0.092,
+                "alpha": 0.55
+              },
+              "darkPixels": 4588,
+              "cast": true,
+              "maxHeight": 94.26006522481548,
+              "receiver": {
+                "status": "pass",
+                "height": 23.56501630620387,
+                "screenProbe": [
+                  691.6818756808663,
+                  270.3523735961877
+                ],
+                "raisedMin": 128,
+                "aboveMin": 255
+              },
+              "receive": {
+                "status": "no opaque receiver pixels"
+              }
+            },
+            {
+              "sun": {
+                "dx": 0.278,
+                "dy": 0.307,
+                "alpha": 0.55
+              },
+              "darkPixels": 5639,
+              "cast": true,
+              "maxHeight": 94.26006522481548,
+              "receiver": {
+                "status": "no unoccluded probe outside source bounds"
+              },
+              "receive": {
+                "status": "no opaque receiver pixels"
+              }
+            },
+            {
+              "sun": {
+                "dx": -0.826,
+                "dy": 0.743,
+                "alpha": 0.55
+              },
+              "darkPixels": 9701,
+              "cast": true,
+              "maxHeight": 94.26006522481548,
+              "receiver": {
+                "status": "pass",
+                "height": 23.56501630620387,
+                "screenProbe": [
+                  489.92214937140693,
+                  332.33583216036027
+                ],
+                "raisedMin": 127,
+                "aboveMin": 255
+              },
+              "receive": {
+                "status": "no opaque receiver pixels"
+              }
+            }
+          ]
+        }
+      ],
+      "failures": [],
+      "probeSampling": "GPU packed receiver height at actual rendered pixel; float32 camera reconstruction",
+      "scope": "Actual registered static geometry plus explicitly labeled catalog/building fixtures, production GPU filter and Worker; three light vectors. Contact sheets show one representative per distinct geometry variant. Probe cases outside source bounds test visible raised receiving and above-caster rejection.",
+      "image": "variants-0.png"
+    }
+  ],
+  "registered": 467,
+  "placements": 471,
+  "selected": 1,
+  "variants": 1,
+  "receiverPainterOrder": {
+    "sourceCount": 296,
+    "colorCount": 296,
+    "mismatches": 0
+  }
+}

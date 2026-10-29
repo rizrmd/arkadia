@@ -1,0 +1,24 @@
+{
+  "base": "https://ark-whachat.fural.space",
+  "errors": [],
+  "views": {
+    "desktop": {
+      "pass": true,
+      "checks": [
+        "Rift roster and fresh root preserved",
+        "K/Esc toggle",
+        "HUD tap opens slot tree without casting",
+        "Rift Dash focused and visible"
+      ]
+    },
+    "mobile": {
+      "pass": true,
+      "checks": [
+        "Rift roster and fresh root preserved",
+        "K/Esc toggle",
+        "HUD tap opens slot tree without casting",
+        "Rift Dash focused and visible"
+      ]
+    }
+  }
+}

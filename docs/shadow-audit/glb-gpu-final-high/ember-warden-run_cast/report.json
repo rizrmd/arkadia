@@ -1,0 +1,4922 @@
+{
+  "metadata": {
+    "name": "run_cast",
+    "duration": 1.2666666507720947,
+    "times": [
+      0,
+      0.03333333507180214,
+      0.06666667014360428,
+      0.10000000149011612,
+      0.13333334028720856,
+      0.1666666716337204,
+      0.20000000298023224,
+      0.23333333432674408,
+      0.2666666805744171,
+      0.30000001192092896,
+      0.3333333432674408,
+      0.36666667461395264,
+      0.4000000059604645,
+      0.4333333373069763,
+      0.46666666865348816,
+      0.5,
+      0.5333333611488342,
+      0.5666666626930237,
+      0.6000000238418579,
+      0.6333333253860474,
+      0.6666666865348816,
+      0.699999988079071,
+      0.7333333492279053,
+      0.7666666507720947,
+      0.800000011920929,
+      0.8333333134651184,
+      0.8666666746139526,
+      0.8999999761581421,
+      0.9333333373069763,
+      0.9666666388511658,
+      1,
+      1.0333333015441895,
+      1.0666667222976685,
+      1.100000023841858,
+      1.1333333253860474,
+      1.1666666269302368,
+      1.2000000476837158,
+      1.2333333492279053,
+      1.2666666507720947
+    ]
+  },
+  "subpixelBits": 4,
+  "rows": [
+    {
+      "vertexCount": 33953,
+      "vertexErrors": 0,
+      "maxVertexDelta": 9.753605678675115e-8,
+      "heightContractErrors": 0,
+      "maxHeightContractDelta": 0.0000013621611429925906,
+      "cell": {
+        "w": 111,
+        "h": 104,
+        "pivot": {
+          "x": 57,
+          "y": 102
+        }
+      },
+      "heroId": "ember-warden",
+      "clip": "run_cast",
+      "time": 0,
+      "yaw": 0,
+      "activeClip": "run_cast",
+      "revision": 1,
+      "sourceSize": [
+        228,
+        250
+      ],
+      "alphaSha256": "5115469b9df1623c408401c469faa59714183808c509dc4cee3a35357ca81d51",
+      "meshes": [
+        {
+          "vertices": 33953,
+          "triangles": 31594,
+          "bones": 24,
+          "heightScale": 40.82013456797489,
+          "heightRange": [
+            -0.0340395023002191,
+            1.7745994955279838
+          ]
+        }
+      ],
+      "tests": [
+        {
+          "angle": 0,
+          "cameraOpaque": 1556,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.24998092651367188,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 3581,
+          "alphaPartial": 829,
+          "alphaClear": 21397,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 302,
+              "clear": 223009,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 247,
+              "clear": 223580,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 908,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 196,
+          "middleClear": 668,
+          "contactPixels": 6,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 1,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 226304,
+            "bytes": 6485348,
+            "renderMs": 100.90000009536743,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        },
+        {
+          "angle": 1,
+          "cameraOpaque": 1556,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.24998092651367188,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 3581,
+          "alphaPartial": 829,
+          "alphaClear": 21397,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 412,
+              "clear": 135332,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 377,
+              "clear": 135892,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 908,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 196,
+          "middleClear": 668,
+          "contactPixels": 6,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 2,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 138240,
+            "bytes": 4021604,
+            "renderMs": 4.700000047683716,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        },
+        {
+          "angle": 2,
+          "cameraOpaque": 1556,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.24998092651367188,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 3581,
+          "alphaPartial": 829,
+          "alphaClear": 21397,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 996,
+              "clear": 185240,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 646,
+              "clear": 187134,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 908,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 196,
+          "middleClear": 668,
+          "contactPixels": 6,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 3,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 191488,
+            "bytes": 5387108,
+            "renderMs": 2.5999999046325684,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        }
+      ]
+    },
+    {
+      "vertexCount": 33953,
+      "vertexErrors": 0,
+      "maxVertexDelta": 9.753605656470654e-8,
+      "heightContractErrors": 0,
+      "maxHeightContractDelta": 0.0000013621611429925906,
+      "cell": {
+        "w": 111,
+        "h": 104,
+        "pivot": {
+          "x": 57,
+          "y": 102
+        }
+      },
+      "heroId": "ember-warden",
+      "clip": "run_cast",
+      "time": 0,
+      "yaw": 0.7853981633974483,
+      "activeClip": "run_cast",
+      "revision": 2,
+      "sourceSize": [
+        228,
+        250
+      ],
+      "alphaSha256": "ff9f0882ff9f5a7fc41f38bd7d1cc2f3512cf3369b8fa5a44d9c7e3bff3ceaed",
+      "meshes": [
+        {
+          "vertices": 33953,
+          "triangles": 31594,
+          "bones": 24,
+          "heightScale": 40.82013456797489,
+          "heightRange": [
+            -0.03403950230021913,
+            1.7745994955279842
+          ]
+        }
+      ],
+      "tests": [
+        {
+          "angle": 0,
+          "cameraOpaque": 1419,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.2499828338623047,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 3500,
+          "alphaPartial": 832,
+          "alphaClear": 21470,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 404,
+              "clear": 221643,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 313,
+              "clear": 222766,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 898,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 197,
+          "middleClear": 664,
+          "contactPixels": 20,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 4,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 226304,
+            "bytes": 6485348,
+            "renderMs": 1.3999998569488525,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        },
+        {
+          "angle": 1,
+          "cameraOpaque": 1419,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.2499828338623047,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 3500,
+          "alphaPartial": 832,
+          "alphaClear": 21470,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 420,
+              "clear": 134964,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 343,
+              "clear": 135663,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 898,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 197,
+          "middleClear": 664,
+          "contactPixels": 20,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 5,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 138240,
+            "bytes": 4021604,
+            "renderMs": 0.7999999523162842,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        },
+        {
+          "angle": 2,
+          "cameraOpaque": 1419,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.2499828338623047,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 3500,
+          "alphaPartial": 832,
+          "alphaClear": 21470,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 645,
+              "clear": 186339,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 455,
+              "clear": 187729,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 898,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 197,
+          "middleClear": 664,
+          "contactPixels": 20,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 6,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 191488,
+            "bytes": 5387108,
+            "renderMs": 0.7999999523162842,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        }
+      ]
+    },
+    {
+      "vertexCount": 33953,
+      "vertexErrors": 0,
+      "maxVertexDelta": 9.753605678675115e-8,
+      "heightContractErrors": 0,
+      "maxHeightContractDelta": 0.0000013621611429925906,
+      "cell": {
+        "w": 111,
+        "h": 104,
+        "pivot": {
+          "x": 57,
+          "y": 102
+        }
+      },
+      "heroId": "ember-warden",
+      "clip": "run_cast",
+      "time": 0,
+      "yaw": 1.5707963267948966,
+      "activeClip": "run_cast",
+      "revision": 3,
+      "sourceSize": [
+        228,
+        250
+      ],
+      "alphaSha256": "282145bd97fa7d49fab373b22506e046fdb00fb21d58c88fbe97f61ed87bcfbd",
+      "meshes": [
+        {
+          "vertices": 33953,
+          "triangles": 31594,
+          "bones": 24,
+          "heightScale": 40.82013456797489,
+          "heightRange": [
+            -0.0340395023002191,
+            1.7745994955279838
+          ]
+        }
+      ],
+      "tests": [
+        {
+          "angle": 0,
+          "cameraOpaque": 1438,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.2495250701904297,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 3049,
+          "alphaPartial": 560,
+          "alphaClear": 22193,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 814,
+              "clear": 220621,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 476,
+              "clear": 222317,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 781,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 108,
+          "middleClear": 635,
+          "contactPixels": 21,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 7,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 226304,
+            "bytes": 6485348,
+            "renderMs": 4.700000047683716,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        },
+        {
+          "angle": 1,
+          "cameraOpaque": 1438,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.2495250701904297,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 3049,
+          "alphaPartial": 560,
+          "alphaClear": 22193,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 504,
+              "clear": 135416,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 374,
+              "clear": 136039,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 781,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 108,
+          "middleClear": 635,
+          "contactPixels": 21,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 8,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 138240,
+            "bytes": 4021604,
+            "renderMs": 0.7000000476837158,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        },
+        {
+          "angle": 2,
+          "cameraOpaque": 1438,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.2495250701904297,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 3049,
+          "alphaPartial": 560,
+          "alphaClear": 22193,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 613,
+              "clear": 187476,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 491,
+              "clear": 188223,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 781,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 108,
+          "middleClear": 635,
+          "contactPixels": 21,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 9,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 191488,
+            "bytes": 5387108,
+            "renderMs": 1.0999999046325684,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        }
+      ]
+    },
+    {
+      "vertexCount": 33953,
+      "vertexErrors": 0,
+      "maxVertexDelta": 9.753605678675115e-8,
+      "heightContractErrors": 0,
+      "maxHeightContractDelta": 0.0000013621611429925906,
+      "cell": {
+        "w": 111,
+        "h": 104,
+        "pivot": {
+          "x": 57,
+          "y": 102
+        }
+      },
+      "heroId": "ember-warden",
+      "clip": "run_cast",
+      "time": 0,
+      "yaw": 2.356194490192345,
+      "activeClip": "run_cast",
+      "revision": 4,
+      "sourceSize": [
+        228,
+        250
+      ],
+      "alphaSha256": "a9b0019183405b580882c6649bd3640dca736475b0ae514221d783c26def4b02",
+      "meshes": [
+        {
+          "vertices": 33953,
+          "triangles": 31594,
+          "bones": 24,
+          "heightScale": 40.82013456797489,
+          "heightRange": [
+            -0.0340395023002191,
+            1.7745994955279838
+          ]
+        }
+      ],
+      "tests": [
+        {
+          "angle": 0,
+          "cameraOpaque": 1910,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.2498798370361328,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 3901,
+          "alphaPartial": 726,
+          "alphaClear": 21181,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 732,
+              "clear": 221231,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 435,
+              "clear": 222598,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 996,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 146,
+          "middleClear": 799,
+          "contactPixels": 21,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 10,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 226304,
+            "bytes": 6485348,
+            "renderMs": 0.7999999523162842,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        },
+        {
+          "angle": 1,
+          "cameraOpaque": 1910,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.2498798370361328,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 3901,
+          "alphaPartial": 726,
+          "alphaClear": 21181,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 383,
+              "clear": 136103,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 308,
+              "clear": 136434,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 996,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 146,
+          "middleClear": 799,
+          "contactPixels": 21,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 11,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 138240,
+            "bytes": 4021604,
+            "renderMs": 0.8999998569488525,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        },
+        {
+          "angle": 2,
+          "cameraOpaque": 1910,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.2498798370361328,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 3901,
+          "alphaPartial": 726,
+          "alphaClear": 21181,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 552,
+              "clear": 186968,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 510,
+              "clear": 188162,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 996,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 146,
+          "middleClear": 799,
+          "contactPixels": 21,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 12,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 191488,
+            "bytes": 5387108,
+            "renderMs": 0.6000001430511475,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        }
+      ]
+    },
+    {
+      "vertexCount": 33953,
+      "vertexErrors": 0,
+      "maxVertexDelta": 9.753605678675115e-8,
+      "heightContractErrors": 0,
+      "maxHeightContractDelta": 0.0000013621611429925906,
+      "cell": {
+        "w": 111,
+        "h": 104,
+        "pivot": {
+          "x": 57,
+          "y": 102
+        }
+      },
+      "heroId": "ember-warden",
+      "clip": "run_cast",
+      "time": 0,
+      "yaw": 3.141592653589793,
+      "activeClip": "run_cast",
+      "revision": 5,
+      "sourceSize": [
+        228,
+        250
+      ],
+      "alphaSha256": "50189de57c694b4bd536e2095fbf8f8cf969652197ee0d99dee379720af69042",
+      "meshes": [
+        {
+          "vertices": 33953,
+          "triangles": 31594,
+          "bones": 24,
+          "heightScale": 40.82013456797489,
+          "heightRange": [
+            -0.0340395023002191,
+            1.7745994955279838
+          ]
+        }
+      ],
+      "tests": [
+        {
+          "angle": 0,
+          "cameraOpaque": 2712,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.24999618530273438,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 5097,
+          "alphaPartial": 877,
+          "alphaClear": 19834,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 491,
+              "clear": 222410,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 324,
+              "clear": 223326,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 1302,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 257,
+          "middleClear": 968,
+          "contactPixels": 11,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 13,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 226304,
+            "bytes": 6485348,
+            "renderMs": 4.3999998569488525,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        },
+        {
+          "angle": 1,
+          "cameraOpaque": 2712,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.24999618530273438,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 5097,
+          "alphaPartial": 877,
+          "alphaClear": 19834,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 249,
+              "clear": 136305,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 250,
+              "clear": 136461,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 1302,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 257,
+          "middleClear": 968,
+          "contactPixels": 11,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 14,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 138240,
+            "bytes": 4021604,
+            "renderMs": 0.6000001430511475,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        },
+        {
+          "angle": 2,
+          "cameraOpaque": 2712,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.24999618530273438,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 5097,
+          "alphaPartial": 877,
+          "alphaClear": 19834,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 455,
+              "clear": 186756,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 342,
+              "clear": 188068,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 1302,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 257,
+          "middleClear": 968,
+          "contactPixels": 11,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 15,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 191488,
+            "bytes": 5387108,
+            "renderMs": 0.6000001430511475,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        }
+      ]
+    },
+    {
+      "vertexCount": 33953,
+      "vertexErrors": 0,
+      "maxVertexDelta": 9.753605656470654e-8,
+      "heightContractErrors": 0,
+      "maxHeightContractDelta": 0.0000013621611429925906,
+      "cell": {
+        "w": 111,
+        "h": 104,
+        "pivot": {
+          "x": 57,
+          "y": 102
+        }
+      },
+      "heroId": "ember-warden",
+      "clip": "run_cast",
+      "time": 0,
+      "yaw": 3.9269908169872414,
+      "activeClip": "run_cast",
+      "revision": 6,
+      "sourceSize": [
+        228,
+        250
+      ],
+      "alphaSha256": "bc2e2111e8648862de520a51a4a6a335af6977444be3db24936dccdf97a501ad",
+      "meshes": [
+        {
+          "vertices": 33953,
+          "triangles": 31594,
+          "bones": 24,
+          "heightScale": 40.82013456797489,
+          "heightRange": [
+            -0.03403950230021913,
+            1.7745994955279842
+          ]
+        }
+      ],
+      "tests": [
+        {
+          "angle": 0,
+          "cameraOpaque": 2573,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.2665572166442871,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 5005,
+          "alphaPartial": 810,
+          "alphaClear": 19991,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 288,
+              "clear": 223030,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 284,
+              "clear": 223612,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 1278,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 284,
+          "middleClear": 913,
+          "contactPixels": 20,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 16,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 226304,
+            "bytes": 6485348,
+            "renderMs": 1,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        },
+        {
+          "angle": 1,
+          "cameraOpaque": 2573,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.2665572166442871,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 5005,
+          "alphaPartial": 810,
+          "alphaClear": 19991,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 203,
+              "clear": 136267,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 224,
+              "clear": 136477,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 1278,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 284,
+          "middleClear": 913,
+          "contactPixels": 20,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 17,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 138240,
+            "bytes": 4021604,
+            "renderMs": 8.599999904632568,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        },
+        {
+          "angle": 2,
+          "cameraOpaque": 2573,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.2665572166442871,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 5005,
+          "alphaPartial": 810,
+          "alphaClear": 19991,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 383,
+              "clear": 187390,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 351,
+              "clear": 188354,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 1278,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 284,
+          "middleClear": 913,
+          "contactPixels": 20,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 18,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 191488,
+            "bytes": 5387108,
+            "renderMs": 0.5,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        }
+      ]
+    },
+    {
+      "vertexCount": 33953,
+      "vertexErrors": 0,
+      "maxVertexDelta": 9.753605678675115e-8,
+      "heightContractErrors": 0,
+      "maxHeightContractDelta": 0.0000013621611572034453,
+      "cell": {
+        "w": 111,
+        "h": 104,
+        "pivot": {
+          "x": 57,
+          "y": 102
+        }
+      },
+      "heroId": "ember-warden",
+      "clip": "run_cast",
+      "time": 0,
+      "yaw": 4.71238898038469,
+      "activeClip": "run_cast",
+      "revision": 7,
+      "sourceSize": [
+        228,
+        250
+      ],
+      "alphaSha256": "04de84d0df6846360bcd41477503f9925f0c8006505bd8b03e338659cc6990ce",
+      "meshes": [
+        {
+          "vertices": 33953,
+          "triangles": 31594,
+          "bones": 24,
+          "heightScale": 40.82013456797489,
+          "heightRange": [
+            -0.0340395023002191,
+            1.7745994955279838
+          ]
+        }
+      ],
+      "tests": [
+        {
+          "angle": 0,
+          "cameraOpaque": 1826,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.24999237060546875,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 3787,
+          "alphaPartial": 700,
+          "alphaClear": 21319,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 414,
+              "clear": 222473,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 324,
+              "clear": 223481,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 965,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 197,
+          "middleClear": 705,
+          "contactPixels": 24,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 19,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 226304,
+            "bytes": 6485348,
+            "renderMs": 0.5,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        },
+        {
+          "angle": 1,
+          "cameraOpaque": 1826,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.24999237060546875,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 3787,
+          "alphaPartial": 700,
+          "alphaClear": 21319,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 333,
+              "clear": 136394,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 352,
+              "clear": 136617,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 965,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 197,
+          "middleClear": 705,
+          "contactPixels": 24,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 20,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 138240,
+            "bytes": 4021604,
+            "renderMs": 0.7000000476837158,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        },
+        {
+          "angle": 2,
+          "cameraOpaque": 1826,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.24999237060546875,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 3787,
+          "alphaPartial": 700,
+          "alphaClear": 21319,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 764,
+              "clear": 187232,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 639,
+              "clear": 188095,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 965,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 197,
+          "middleClear": 705,
+          "contactPixels": 24,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 21,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 191488,
+            "bytes": 5387108,
+            "renderMs": 0.5,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        }
+      ]
+    },
+    {
+      "vertexCount": 33953,
+      "vertexErrors": 0,
+      "maxVertexDelta": 9.753605678675115e-8,
+      "heightContractErrors": 0,
+      "maxHeightContractDelta": 0.0000013621611429925906,
+      "cell": {
+        "w": 111,
+        "h": 104,
+        "pivot": {
+          "x": 57,
+          "y": 102
+        }
+      },
+      "heroId": "ember-warden",
+      "clip": "run_cast",
+      "time": 0,
+      "yaw": 5.497787143782138,
+      "activeClip": "run_cast",
+      "revision": 8,
+      "sourceSize": [
+        228,
+        250
+      ],
+      "alphaSha256": "a6371cc7b7357d613caae89b58d21268c2b7f74f78270816f5d7554a3a9dd94e",
+      "meshes": [
+        {
+          "vertices": 33953,
+          "triangles": 31594,
+          "bones": 24,
+          "heightScale": 40.82013456797489,
+          "heightRange": [
+            -0.0340395023002191,
+            1.7745994955279838
+          ]
+        }
+      ],
+      "tests": [
+        {
+          "angle": 0,
+          "cameraOpaque": 1435,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.24999046325683594,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 3189,
+          "alphaPartial": 589,
+          "alphaClear": 22030,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 426,
+              "clear": 222549,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 260,
+              "clear": 223483,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 819,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 118,
+          "middleClear": 659,
+          "contactPixels": 12,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 22,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 226304,
+            "bytes": 6485348,
+            "renderMs": 11,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        },
+        {
+          "angle": 1,
+          "cameraOpaque": 1435,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.24999046325683594,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 3189,
+          "alphaPartial": 589,
+          "alphaClear": 22030,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 373,
+              "clear": 136144,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 400,
+              "clear": 136374,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 819,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 118,
+          "middleClear": 659,
+          "contactPixels": 12,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 23,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 138240,
+            "bytes": 4021604,
+            "renderMs": 1,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        },
+        {
+          "angle": 2,
+          "cameraOpaque": 1435,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.24999046325683594,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 3189,
+          "alphaPartial": 589,
+          "alphaClear": 22030,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 1146,
+              "clear": 185825,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 767,
+              "clear": 187266,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 819,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 118,
+          "middleClear": 659,
+          "contactPixels": 12,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 24,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 191488,
+            "bytes": 5387108,
+            "renderMs": 1.5999999046325684,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        }
+      ]
+    },
+    {
+      "vertexCount": 33953,
+      "vertexErrors": 0,
+      "maxVertexDelta": 8.135719437030176e-8,
+      "heightContractErrors": 0,
+      "maxHeightContractDelta": 0.000001377017810000325,
+      "cell": {
+        "w": 111,
+        "h": 104,
+        "pivot": {
+          "x": 57,
+          "y": 102
+        }
+      },
+      "heroId": "ember-warden",
+      "clip": "run_cast",
+      "time": 0.6333333253860474,
+      "yaw": 0,
+      "activeClip": "run_cast",
+      "revision": 9,
+      "sourceSize": [
+        228,
+        250
+      ],
+      "alphaSha256": "6b4412e3c1cc4205cd7ab26859926d4dc055beae13148740442d85773de4695a",
+      "meshes": [
+        {
+          "vertices": 33953,
+          "triangles": 31594,
+          "bones": 24,
+          "heightScale": 40.82013456797489,
+          "heightRange": [
+            -0.0340395023002191,
+            1.7932229856111683
+          ]
+        }
+      ],
+      "tests": [
+        {
+          "angle": 0,
+          "cameraOpaque": 1544,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.24998092651367188,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 3586,
+          "alphaPartial": 845,
+          "alphaClear": 21379,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 300,
+              "clear": 222980,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 245,
+              "clear": 223551,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 926,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 196,
+          "middleClear": 686,
+          "contactPixels": 6,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 25,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 226304,
+            "bytes": 6485348,
+            "renderMs": 0.7999999523162842,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        },
+        {
+          "angle": 1,
+          "cameraOpaque": 1544,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.24998092651367188,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 3586,
+          "alphaPartial": 845,
+          "alphaClear": 21379,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 415,
+              "clear": 135331,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 380,
+              "clear": 135891,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 926,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 196,
+          "middleClear": 686,
+          "contactPixels": 6,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 26,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 138240,
+            "bytes": 4021604,
+            "renderMs": 2.9000000953674316,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        },
+        {
+          "angle": 2,
+          "cameraOpaque": 1544,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.24998092651367188,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 3586,
+          "alphaPartial": 845,
+          "alphaClear": 21379,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 979,
+              "clear": 185296,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 629,
+              "clear": 187190,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 926,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 196,
+          "middleClear": 686,
+          "contactPixels": 6,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 27,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 191488,
+            "bytes": 5387108,
+            "renderMs": 1.2999999523162842,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        }
+      ]
+    },
+    {
+      "vertexCount": 33953,
+      "vertexErrors": 0,
+      "maxVertexDelta": 8.063617706888238e-8,
+      "heightContractErrors": 0,
+      "maxHeightContractDelta": 0.000001377017810000325,
+      "cell": {
+        "w": 111,
+        "h": 104,
+        "pivot": {
+          "x": 57,
+          "y": 102
+        }
+      },
+      "heroId": "ember-warden",
+      "clip": "run_cast",
+      "time": 0.6333333253860474,
+      "yaw": 0.7853981633974483,
+      "activeClip": "run_cast",
+      "revision": 10,
+      "sourceSize": [
+        228,
+        250
+      ],
+      "alphaSha256": "9b9b6fde99d833a5f7365859240415b8f4b6fffeaf43c8978e2b83a981c91970",
+      "meshes": [
+        {
+          "vertices": 33953,
+          "triangles": 31594,
+          "bones": 24,
+          "heightScale": 40.82013456797489,
+          "heightRange": [
+            -0.03403950230021913,
+            1.7932229856111688
+          ]
+        }
+      ],
+      "tests": [
+        {
+          "angle": 0,
+          "cameraOpaque": 1427,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.2499828338623047,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 3448,
+          "alphaPartial": 821,
+          "alphaClear": 21538,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 425,
+              "clear": 221656,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 334,
+              "clear": 222779,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 887,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 197,
+          "middleClear": 653,
+          "contactPixels": 20,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 28,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 226304,
+            "bytes": 6485348,
+            "renderMs": 2.5,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        },
+        {
+          "angle": 1,
+          "cameraOpaque": 1427,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.2499828338623047,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 3448,
+          "alphaPartial": 821,
+          "alphaClear": 21538,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 428,
+              "clear": 135003,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 352,
+              "clear": 135702,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 887,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 197,
+          "middleClear": 653,
+          "contactPixels": 20,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 29,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 138240,
+            "bytes": 4021604,
+            "renderMs": 0.7999999523162842,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        },
+        {
+          "angle": 2,
+          "cameraOpaque": 1427,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.2499828338623047,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 3448,
+          "alphaPartial": 821,
+          "alphaClear": 21538,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 627,
+              "clear": 186415,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 437,
+              "clear": 187805,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 887,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 197,
+          "middleClear": 653,
+          "contactPixels": 20,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 30,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 191488,
+            "bytes": 5387108,
+            "renderMs": 0.5,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        }
+      ]
+    },
+    {
+      "vertexCount": 33953,
+      "vertexErrors": 0,
+      "maxVertexDelta": 8.135719434254618e-8,
+      "heightContractErrors": 0,
+      "maxHeightContractDelta": 0.000001377017810000325,
+      "cell": {
+        "w": 111,
+        "h": 104,
+        "pivot": {
+          "x": 57,
+          "y": 102
+        }
+      },
+      "heroId": "ember-warden",
+      "clip": "run_cast",
+      "time": 0.6333333253860474,
+      "yaw": 1.5707963267948966,
+      "activeClip": "run_cast",
+      "revision": 11,
+      "sourceSize": [
+        228,
+        250
+      ],
+      "alphaSha256": "fcf24e5012521d8430975ce2d47f7e4b5616b409e8bbbbb5d6775e66333ab50a",
+      "meshes": [
+        {
+          "vertices": 33953,
+          "triangles": 31594,
+          "bones": 24,
+          "heightScale": 40.82013456797489,
+          "heightRange": [
+            -0.0340395023002191,
+            1.7932229856111683
+          ]
+        }
+      ],
+      "tests": [
+        {
+          "angle": 0,
+          "cameraOpaque": 1466,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.2495250701904297,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 3065,
+          "alphaPartial": 563,
+          "alphaClear": 22175,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 843,
+              "clear": 220673,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 505,
+              "clear": 222369,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 786,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 108,
+          "middleClear": 640,
+          "contactPixels": 21,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 31,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 226304,
+            "bytes": 6485348,
+            "renderMs": 0.9000000953674316,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        },
+        {
+          "angle": 1,
+          "cameraOpaque": 1466,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.2495250701904297,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 3065,
+          "alphaPartial": 563,
+          "alphaClear": 22175,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 505,
+              "clear": 135475,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 373,
+              "clear": 136095,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 786,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 108,
+          "middleClear": 640,
+          "contactPixels": 21,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 32,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 138240,
+            "bytes": 4021604,
+            "renderMs": 0.6000001430511475,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        },
+        {
+          "angle": 2,
+          "cameraOpaque": 1466,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.2495250701904297,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 3065,
+          "alphaPartial": 563,
+          "alphaClear": 22175,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 624,
+              "clear": 187417,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 506,
+              "clear": 188164,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 786,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 108,
+          "middleClear": 640,
+          "contactPixels": 21,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 33,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 191488,
+            "bytes": 5387108,
+            "renderMs": 1.4000000953674316,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        }
+      ]
+    },
+    {
+      "vertexCount": 33953,
+      "vertexErrors": 0,
+      "maxVertexDelta": 8.063617706888238e-8,
+      "heightContractErrors": 0,
+      "maxHeightContractDelta": 0.000001377017810000325,
+      "cell": {
+        "w": 111,
+        "h": 104,
+        "pivot": {
+          "x": 57,
+          "y": 102
+        }
+      },
+      "heroId": "ember-warden",
+      "clip": "run_cast",
+      "time": 0.6333333253860474,
+      "yaw": 2.356194490192345,
+      "activeClip": "run_cast",
+      "revision": 12,
+      "sourceSize": [
+        228,
+        250
+      ],
+      "alphaSha256": "b503674282afa233cf6b490943b1ce8c2ef06597e493dfa7172666f3ed69e2c6",
+      "meshes": [
+        {
+          "vertices": 33953,
+          "triangles": 31594,
+          "bones": 24,
+          "heightScale": 40.82013456797489,
+          "heightRange": [
+            -0.0340395023002191,
+            1.7932229856111683
+          ]
+        }
+      ],
+      "tests": [
+        {
+          "angle": 0,
+          "cameraOpaque": 1944,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.2498798370361328,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 3944,
+          "alphaPartial": 721,
+          "alphaClear": 21141,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 724,
+              "clear": 221313,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 427,
+              "clear": 222680,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 1003,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 146,
+          "middleClear": 806,
+          "contactPixels": 21,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 34,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 226304,
+            "bytes": 6485348,
+            "renderMs": 2.8999998569488525,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        },
+        {
+          "angle": 1,
+          "cameraOpaque": 1944,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.2498798370361328,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 3944,
+          "alphaPartial": 721,
+          "alphaClear": 21141,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 397,
+              "clear": 136125,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 320,
+              "clear": 136457,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 1003,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 146,
+          "middleClear": 806,
+          "contactPixels": 21,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 35,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 138240,
+            "bytes": 4021604,
+            "renderMs": 5.5,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        },
+        {
+          "angle": 2,
+          "cameraOpaque": 1944,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.2498798370361328,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 3944,
+          "alphaPartial": 721,
+          "alphaClear": 21141,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 559,
+              "clear": 186918,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 521,
+              "clear": 188112,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 1003,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 146,
+          "middleClear": 806,
+          "contactPixels": 21,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 36,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 191488,
+            "bytes": 5387108,
+            "renderMs": 0.9000000953674316,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        }
+      ]
+    },
+    {
+      "vertexCount": 33953,
+      "vertexErrors": 0,
+      "maxVertexDelta": 8.135719456459078e-8,
+      "heightContractErrors": 0,
+      "maxHeightContractDelta": 0.000001377017810000325,
+      "cell": {
+        "w": 111,
+        "h": 104,
+        "pivot": {
+          "x": 57,
+          "y": 102
+        }
+      },
+      "heroId": "ember-warden",
+      "clip": "run_cast",
+      "time": 0.6333333253860474,
+      "yaw": 3.141592653589793,
+      "activeClip": "run_cast",
+      "revision": 13,
+      "sourceSize": [
+        228,
+        250
+      ],
+      "alphaSha256": "d0198905898af96c003eb56fb17a1ac49d5ba5cc92f60a3ec1ee4a8f7c5a7693",
+      "meshes": [
+        {
+          "vertices": 33953,
+          "triangles": 31594,
+          "bones": 24,
+          "heightScale": 40.82013456797489,
+          "heightRange": [
+            -0.0340395023002191,
+            1.7932229856111683
+          ]
+        }
+      ],
+      "tests": [
+        {
+          "angle": 0,
+          "cameraOpaque": 2636,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.24997711181640625,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 5078,
+          "alphaPartial": 853,
+          "alphaClear": 19877,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 515,
+              "clear": 222418,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 347,
+              "clear": 223334,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 1306,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 257,
+          "middleClear": 972,
+          "contactPixels": 11,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 37,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 226304,
+            "bytes": 6485348,
+            "renderMs": 0.5999999046325684,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        },
+        {
+          "angle": 1,
+          "cameraOpaque": 2636,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.24997711181640625,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 5078,
+          "alphaPartial": 853,
+          "alphaClear": 19877,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 248,
+              "clear": 136310,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 260,
+              "clear": 136467,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 1306,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 257,
+          "middleClear": 972,
+          "contactPixels": 11,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 38,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 138240,
+            "bytes": 4021604,
+            "renderMs": 2.4000000953674316,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        },
+        {
+          "angle": 2,
+          "cameraOpaque": 2636,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.24997711181640625,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 5078,
+          "alphaPartial": 853,
+          "alphaClear": 19877,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 440,
+              "clear": 186797,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 327,
+              "clear": 188109,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 1306,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 257,
+          "middleClear": 972,
+          "contactPixels": 11,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 39,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 191488,
+            "bytes": 5387108,
+            "renderMs": 0.5,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        }
+      ]
+    },
+    {
+      "vertexCount": 33953,
+      "vertexErrors": 0,
+      "maxVertexDelta": 8.063617706888238e-8,
+      "heightContractErrors": 0,
+      "maxHeightContractDelta": 0.000001377017810000325,
+      "cell": {
+        "w": 111,
+        "h": 104,
+        "pivot": {
+          "x": 57,
+          "y": 102
+        }
+      },
+      "heroId": "ember-warden",
+      "clip": "run_cast",
+      "time": 0.6333333253860474,
+      "yaw": 3.9269908169872414,
+      "activeClip": "run_cast",
+      "revision": 14,
+      "sourceSize": [
+        228,
+        250
+      ],
+      "alphaSha256": "19f5a16c4e5eefb67bc545319de4f93542ac16acf53a15189714801d0fd0184e",
+      "meshes": [
+        {
+          "vertices": 33953,
+          "triangles": 31594,
+          "bones": 24,
+          "heightScale": 40.82013456797489,
+          "heightRange": [
+            -0.03403950230021913,
+            1.7932229856111688
+          ]
+        }
+      ],
+      "tests": [
+        {
+          "angle": 0,
+          "cameraOpaque": 2507,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.2665572166442871,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 4929,
+          "alphaPartial": 801,
+          "alphaClear": 20075,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 305,
+              "clear": 223032,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 299,
+              "clear": 223614,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 1261,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 284,
+          "middleClear": 896,
+          "contactPixels": 20,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 40,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 226304,
+            "bytes": 6485348,
+            "renderMs": 2.700000047683716,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        },
+        {
+          "angle": 1,
+          "cameraOpaque": 2507,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.2665572166442871,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 4929,
+          "alphaPartial": 801,
+          "alphaClear": 20075,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 199,
+              "clear": 136281,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 221,
+              "clear": 136491,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 1261,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 284,
+          "middleClear": 896,
+          "contactPixels": 20,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 41,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 138240,
+            "bytes": 4021604,
+            "renderMs": 1.1000001430511475,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        },
+        {
+          "angle": 2,
+          "cameraOpaque": 2507,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.2665572166442871,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 4929,
+          "alphaPartial": 801,
+          "alphaClear": 20075,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 390,
+              "clear": 187436,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 358,
+              "clear": 188400,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 1261,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 284,
+          "middleClear": 896,
+          "contactPixels": 20,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 42,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 191488,
+            "bytes": 5387108,
+            "renderMs": 0.7999999523162842,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        }
+      ]
+    },
+    {
+      "vertexCount": 33953,
+      "vertexErrors": 0,
+      "maxVertexDelta": 8.135719434254618e-8,
+      "heightContractErrors": 0,
+      "maxHeightContractDelta": 0.000001377017810000325,
+      "cell": {
+        "w": 111,
+        "h": 104,
+        "pivot": {
+          "x": 57,
+          "y": 102
+        }
+      },
+      "heroId": "ember-warden",
+      "clip": "run_cast",
+      "time": 0.6333333253860474,
+      "yaw": 4.71238898038469,
+      "activeClip": "run_cast",
+      "revision": 15,
+      "sourceSize": [
+        228,
+        250
+      ],
+      "alphaSha256": "b47a7dc5e6bef087a1aeb43fc0cd1a45ee066b81856b9182b45b133d057eeee8",
+      "meshes": [
+        {
+          "vertices": 33953,
+          "triangles": 31594,
+          "bones": 24,
+          "heightScale": 40.82013456797489,
+          "heightRange": [
+            -0.0340395023002191,
+            1.7932229856111683
+          ]
+        }
+      ],
+      "tests": [
+        {
+          "angle": 0,
+          "cameraOpaque": 1861,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.2496662139892578,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 3765,
+          "alphaPartial": 692,
+          "alphaClear": 21349,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 405,
+              "clear": 222458,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 315,
+              "clear": 223466,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 963,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 197,
+          "middleClear": 703,
+          "contactPixels": 24,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 43,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 226304,
+            "bytes": 6485348,
+            "renderMs": 1.3999998569488525,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        },
+        {
+          "angle": 1,
+          "cameraOpaque": 1861,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.2496662139892578,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 3765,
+          "alphaPartial": 692,
+          "alphaClear": 21349,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 333,
+              "clear": 136414,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 349,
+              "clear": 136637,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 963,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 197,
+          "middleClear": 703,
+          "contactPixels": 24,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 44,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 138240,
+            "bytes": 4021604,
+            "renderMs": 0.5,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        },
+        {
+          "angle": 2,
+          "cameraOpaque": 1861,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.2496662139892578,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 3765,
+          "alphaPartial": 692,
+          "alphaClear": 21349,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 746,
+              "clear": 187230,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 621,
+              "clear": 188093,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 963,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 197,
+          "middleClear": 703,
+          "contactPixels": 24,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 45,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 191488,
+            "bytes": 5387108,
+            "renderMs": 0.6000001430511475,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        }
+      ]
+    },
+    {
+      "vertexCount": 33953,
+      "vertexErrors": 0,
+      "maxVertexDelta": 8.063617706888238e-8,
+      "heightContractErrors": 0,
+      "maxHeightContractDelta": 0.000001377017810000325,
+      "cell": {
+        "w": 111,
+        "h": 104,
+        "pivot": {
+          "x": 57,
+          "y": 102
+        }
+      },
+      "heroId": "ember-warden",
+      "clip": "run_cast",
+      "time": 0.6333333253860474,
+      "yaw": 5.497787143782138,
+      "activeClip": "run_cast",
+      "revision": 16,
+      "sourceSize": [
+        228,
+        250
+      ],
+      "alphaSha256": "716248017e488015af542da0ef13accf1df4719e97a7c929c4180b81d2afa1e6",
+      "meshes": [
+        {
+          "vertices": 33953,
+          "triangles": 31594,
+          "bones": 24,
+          "heightScale": 40.82013456797489,
+          "heightRange": [
+            -0.0340395023002191,
+            1.7932229856111683
+          ]
+        }
+      ],
+      "tests": [
+        {
+          "angle": 0,
+          "cameraOpaque": 1487,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.24999046325683594,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 3209,
+          "alphaPartial": 600,
+          "alphaClear": 21999,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 413,
+              "clear": 222594,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 245,
+              "clear": 223528,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 821,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 118,
+          "middleClear": 661,
+          "contactPixels": 12,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 46,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 226304,
+            "bytes": 6485348,
+            "renderMs": 0.7000000476837158,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        },
+        {
+          "angle": 1,
+          "cameraOpaque": 1487,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.24999046325683594,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 3209,
+          "alphaPartial": 600,
+          "alphaClear": 21999,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 378,
+              "clear": 136169,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 410,
+              "clear": 136399,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 821,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 118,
+          "middleClear": 661,
+          "contactPixels": 12,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 47,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 138240,
+            "bytes": 4021604,
+            "renderMs": 2,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        },
+        {
+          "angle": 2,
+          "cameraOpaque": 1487,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.24999046325683594,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 3209,
+          "alphaPartial": 600,
+          "alphaClear": 21999,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 1166,
+              "clear": 185804,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 787,
+              "clear": 187245,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 821,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 118,
+          "middleClear": 661,
+          "contactPixels": 12,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 48,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 191488,
+            "bytes": 5387108,
+            "renderMs": 0.5,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        }
+      ]
+    },
+    {
+      "vertexCount": 33953,
+      "vertexErrors": 0,
+      "maxVertexDelta": 1.1319630610628906e-7,
+      "heightContractErrors": 0,
+      "maxHeightContractDelta": 0.0000013592736536338634,
+      "cell": {
+        "w": 111,
+        "h": 104,
+        "pivot": {
+          "x": 57,
+          "y": 102
+        }
+      },
+      "heroId": "ember-warden",
+      "clip": "run_cast",
+      "time": 1.2666566507720947,
+      "yaw": 0,
+      "activeClip": "run_cast",
+      "revision": 17,
+      "sourceSize": [
+        228,
+        250
+      ],
+      "alphaSha256": "aa22ab84849d66de93a59a6ad05610b179379be9d1a7c148ef185491805291c5",
+      "meshes": [
+        {
+          "vertices": 33953,
+          "triangles": 31594,
+          "bones": 24,
+          "heightScale": 40.82013456797489,
+          "heightRange": [
+            -0.0340366054120462,
+            1.7730760369336485
+          ]
+        }
+      ],
+      "tests": [
+        {
+          "angle": 0,
+          "cameraOpaque": 1550,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.24990463256835938,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 3586,
+          "alphaPartial": 827,
+          "alphaClear": 21395,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 309,
+              "clear": 222992,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 255,
+              "clear": 223563,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 908,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 196,
+          "middleClear": 668,
+          "contactPixels": 6,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 49,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 226304,
+            "bytes": 6485348,
+            "renderMs": 0.7000000476837158,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        },
+        {
+          "angle": 1,
+          "cameraOpaque": 1550,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.24990463256835938,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 3586,
+          "alphaPartial": 827,
+          "alphaClear": 21395,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 413,
+              "clear": 135323,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 378,
+              "clear": 135883,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 908,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 196,
+          "middleClear": 668,
+          "contactPixels": 6,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 50,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 138240,
+            "bytes": 4021604,
+            "renderMs": 0.5,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        },
+        {
+          "angle": 2,
+          "cameraOpaque": 1550,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.24990463256835938,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 3586,
+          "alphaPartial": 827,
+          "alphaClear": 21395,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 980,
+              "clear": 185245,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 625,
+              "clear": 187139,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 908,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 196,
+          "middleClear": 668,
+          "contactPixels": 6,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 51,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 191488,
+            "bytes": 5387108,
+            "renderMs": 0.5,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        }
+      ]
+    },
+    {
+      "vertexCount": 33953,
+      "vertexErrors": 0,
+      "maxVertexDelta": 1.1319630610628906e-7,
+      "heightContractErrors": 0,
+      "maxHeightContractDelta": 0.0000013592736536338634,
+      "cell": {
+        "w": 111,
+        "h": 104,
+        "pivot": {
+          "x": 57,
+          "y": 102
+        }
+      },
+      "heroId": "ember-warden",
+      "clip": "run_cast",
+      "time": 1.2666566507720947,
+      "yaw": 0.7853981633974483,
+      "activeClip": "run_cast",
+      "revision": 18,
+      "sourceSize": [
+        228,
+        250
+      ],
+      "alphaSha256": "54aa1f082ef3d85f4223c4077b7586b1adf5b652176352dc9220041ee0f42212",
+      "meshes": [
+        {
+          "vertices": 33953,
+          "triangles": 31594,
+          "bones": 24,
+          "heightScale": 40.82013456797489,
+          "heightRange": [
+            -0.03403660541204623,
+            1.7730760369336487
+          ]
+        }
+      ],
+      "tests": [
+        {
+          "angle": 0,
+          "cameraOpaque": 1419,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.24994277954101562,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 3497,
+          "alphaPartial": 820,
+          "alphaClear": 21486,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 400,
+              "clear": 221667,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 308,
+              "clear": 222783,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 895,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 197,
+          "middleClear": 661,
+          "contactPixels": 20,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 52,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 226304,
+            "bytes": 6485348,
+            "renderMs": 0.7000000476837158,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        },
+        {
+          "angle": 1,
+          "cameraOpaque": 1419,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.24994277954101562,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 3497,
+          "alphaPartial": 820,
+          "alphaClear": 21486,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 426,
+              "clear": 134969,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 352,
+              "clear": 135668,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 895,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 197,
+          "middleClear": 661,
+          "contactPixels": 20,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 53,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 138240,
+            "bytes": 4021604,
+            "renderMs": 0.5,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        },
+        {
+          "angle": 2,
+          "cameraOpaque": 1419,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.24994277954101562,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 3497,
+          "alphaPartial": 820,
+          "alphaClear": 21486,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 637,
+              "clear": 186356,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 449,
+              "clear": 187746,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 895,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 197,
+          "middleClear": 661,
+          "contactPixels": 20,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 54,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 191488,
+            "bytes": 5387108,
+            "renderMs": 0.40000009536743164,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        }
+      ]
+    },
+    {
+      "vertexCount": 33953,
+      "vertexErrors": 0,
+      "maxVertexDelta": 1.1319630632833366e-7,
+      "heightContractErrors": 0,
+      "maxHeightContractDelta": 0.0000013592736536338634,
+      "cell": {
+        "w": 111,
+        "h": 104,
+        "pivot": {
+          "x": 57,
+          "y": 102
+        }
+      },
+      "heroId": "ember-warden",
+      "clip": "run_cast",
+      "time": 1.2666566507720947,
+      "yaw": 1.5707963267948966,
+      "activeClip": "run_cast",
+      "revision": 19,
+      "sourceSize": [
+        228,
+        250
+      ],
+      "alphaSha256": "9ea700291c0df3dcc72853c8b8063294320de8ae9f0593461d505c17a82019eb",
+      "meshes": [
+        {
+          "vertices": 33953,
+          "triangles": 31594,
+          "bones": 24,
+          "heightScale": 40.82013456797489,
+          "heightRange": [
+            -0.0340366054120462,
+            1.7730760369336485
+          ]
+        }
+      ],
+      "tests": [
+        {
+          "angle": 0,
+          "cameraOpaque": 1434,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.24929046630859375,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 3052,
+          "alphaPartial": 562,
+          "alphaClear": 22188,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 818,
+              "clear": 220629,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 480,
+              "clear": 222310,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 780,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 109,
+          "middleClear": 633,
+          "contactPixels": 21,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 55,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 226304,
+            "bytes": 6485348,
+            "renderMs": 0.5,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        },
+        {
+          "angle": 1,
+          "cameraOpaque": 1434,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.24929046630859375,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 3052,
+          "alphaPartial": 562,
+          "alphaClear": 22188,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 508,
+              "clear": 135426,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 377,
+              "clear": 136053,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 780,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 109,
+          "middleClear": 633,
+          "contactPixels": 21,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 56,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 138240,
+            "bytes": 4021604,
+            "renderMs": 0.7000000476837158,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        },
+        {
+          "angle": 2,
+          "cameraOpaque": 1434,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.24929046630859375,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 3052,
+          "alphaPartial": 562,
+          "alphaClear": 22188,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 621,
+              "clear": 187474,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 496,
+              "clear": 188223,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 780,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 109,
+          "middleClear": 633,
+          "contactPixels": 21,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 57,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 191488,
+            "bytes": 5387108,
+            "renderMs": 0.40000009536743164,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        }
+      ]
+    },
+    {
+      "vertexCount": 33953,
+      "vertexErrors": 0,
+      "maxVertexDelta": 1.1319630588424445e-7,
+      "heightContractErrors": 0,
+      "maxHeightContractDelta": 0.0000013592736536338634,
+      "cell": {
+        "w": 111,
+        "h": 104,
+        "pivot": {
+          "x": 57,
+          "y": 102
+        }
+      },
+      "heroId": "ember-warden",
+      "clip": "run_cast",
+      "time": 1.2666566507720947,
+      "yaw": 2.356194490192345,
+      "activeClip": "run_cast",
+      "revision": 20,
+      "sourceSize": [
+        228,
+        250
+      ],
+      "alphaSha256": "17d021eb58da4b34bc5e6020372683a456d8257d9fde0eba6267ab73f2a785f4",
+      "meshes": [
+        {
+          "vertices": 33953,
+          "triangles": 31594,
+          "bones": 24,
+          "heightScale": 40.82013456797489,
+          "heightRange": [
+            -0.0340366054120462,
+            1.7730760369336485
+          ]
+        }
+      ],
+      "tests": [
+        {
+          "angle": 0,
+          "cameraOpaque": 1942,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.24997329711914062,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 3909,
+          "alphaPartial": 734,
+          "alphaClear": 21164,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 734,
+              "clear": 221233,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 438,
+              "clear": 222600,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 996,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 146,
+          "middleClear": 799,
+          "contactPixels": 21,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 58,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 226304,
+            "bytes": 6485348,
+            "renderMs": 1.3999998569488525,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        },
+        {
+          "angle": 1,
+          "cameraOpaque": 1942,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.24997329711914062,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 3909,
+          "alphaPartial": 734,
+          "alphaClear": 21164,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 393,
+              "clear": 136108,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 320,
+              "clear": 136438,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 996,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 146,
+          "middleClear": 799,
+          "contactPixels": 21,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 59,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 138240,
+            "bytes": 4021604,
+            "renderMs": 0.7000000476837158,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        },
+        {
+          "angle": 2,
+          "cameraOpaque": 1942,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.24997329711914062,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 3909,
+          "alphaPartial": 734,
+          "alphaClear": 21164,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 559,
+              "clear": 186937,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 517,
+              "clear": 188131,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 996,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 146,
+          "middleClear": 799,
+          "contactPixels": 21,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 60,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 191488,
+            "bytes": 5387108,
+            "renderMs": 0.5,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        }
+      ]
+    },
+    {
+      "vertexCount": 33953,
+      "vertexErrors": 0,
+      "maxVertexDelta": 1.1319630610628906e-7,
+      "heightContractErrors": 0,
+      "maxHeightContractDelta": 0.0000013592736536338634,
+      "cell": {
+        "w": 111,
+        "h": 104,
+        "pivot": {
+          "x": 57,
+          "y": 102
+        }
+      },
+      "heroId": "ember-warden",
+      "clip": "run_cast",
+      "time": 1.2666566507720947,
+      "yaw": 3.141592653589793,
+      "activeClip": "run_cast",
+      "revision": 21,
+      "sourceSize": [
+        228,
+        250
+      ],
+      "alphaSha256": "98dd6c23428f35e9afcae7ea47a9bf0d944857182d20252723ea3bd396fbfacb",
+      "meshes": [
+        {
+          "vertices": 33953,
+          "triangles": 31594,
+          "bones": 24,
+          "heightScale": 40.82013456797489,
+          "heightRange": [
+            -0.0340366054120462,
+            1.7730760369336485
+          ]
+        }
+      ],
+      "tests": [
+        {
+          "angle": 0,
+          "cameraOpaque": 2711,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.2499103546142578,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 5111,
+          "alphaPartial": 878,
+          "alphaClear": 19818,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 481,
+              "clear": 222427,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 315,
+              "clear": 223343,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 1299,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 257,
+          "middleClear": 965,
+          "contactPixels": 11,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 61,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 226304,
+            "bytes": 6485348,
+            "renderMs": 1,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        },
+        {
+          "angle": 1,
+          "cameraOpaque": 2711,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.2499103546142578,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 5111,
+          "alphaPartial": 878,
+          "alphaClear": 19818,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 247,
+              "clear": 136309,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 247,
+              "clear": 136465,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 1299,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 257,
+          "middleClear": 965,
+          "contactPixels": 11,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 62,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 138240,
+            "bytes": 4021604,
+            "renderMs": 2.1000001430511475,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        },
+        {
+          "angle": 2,
+          "cameraOpaque": 2711,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.2499103546142578,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 5111,
+          "alphaPartial": 878,
+          "alphaClear": 19818,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 460,
+              "clear": 186786,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 347,
+              "clear": 188099,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 1299,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 257,
+          "middleClear": 965,
+          "contactPixels": 11,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 63,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 191488,
+            "bytes": 5387108,
+            "renderMs": 2.3000001907348633,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        }
+      ]
+    },
+    {
+      "vertexCount": 33953,
+      "vertexErrors": 0,
+      "maxVertexDelta": 1.1319630588424445e-7,
+      "heightContractErrors": 0,
+      "maxHeightContractDelta": 0.0000013592736536338634,
+      "cell": {
+        "w": 111,
+        "h": 104,
+        "pivot": {
+          "x": 57,
+          "y": 102
+        }
+      },
+      "heroId": "ember-warden",
+      "clip": "run_cast",
+      "time": 1.2666566507720947,
+      "yaw": 3.9269908169872414,
+      "activeClip": "run_cast",
+      "revision": 22,
+      "sourceSize": [
+        228,
+        250
+      ],
+      "alphaSha256": "20fb8b2a0f62eedbfacfc92b95b7b1bba405e8837e5d2702d4fc8733c2ebbb65",
+      "meshes": [
+        {
+          "vertices": 33953,
+          "triangles": 31594,
+          "bones": 24,
+          "heightScale": 40.82013456797489,
+          "heightRange": [
+            -0.03403660541204623,
+            1.7730760369336487
+          ]
+        }
+      ],
+      "tests": [
+        {
+          "angle": 0,
+          "cameraOpaque": 2575,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.24985885620117188,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 5007,
+          "alphaPartial": 817,
+          "alphaClear": 19982,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 297,
+              "clear": 223026,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 292,
+              "clear": 223607,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 1277,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 284,
+          "middleClear": 912,
+          "contactPixels": 20,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 64,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 226304,
+            "bytes": 6485348,
+            "renderMs": 1.1000001430511475,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        },
+        {
+          "angle": 1,
+          "cameraOpaque": 2575,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.24985885620117188,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 5007,
+          "alphaPartial": 817,
+          "alphaClear": 19982,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 204,
+              "clear": 136261,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 226,
+              "clear": 136471,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 1277,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 284,
+          "middleClear": 912,
+          "contactPixels": 20,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 65,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 138240,
+            "bytes": 4021604,
+            "renderMs": 2.5999999046325684,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        },
+        {
+          "angle": 2,
+          "cameraOpaque": 2575,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.24985885620117188,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 5007,
+          "alphaPartial": 817,
+          "alphaClear": 19982,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 379,
+              "clear": 187357,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 348,
+              "clear": 188321,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 1277,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 284,
+          "middleClear": 912,
+          "contactPixels": 20,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 66,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 191488,
+            "bytes": 5387108,
+            "renderMs": 0.5,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        }
+      ]
+    },
+    {
+      "vertexCount": 33953,
+      "vertexErrors": 0,
+      "maxVertexDelta": 1.1319630632833366e-7,
+      "heightContractErrors": 0,
+      "maxHeightContractDelta": 0.0000013592736536338634,
+      "cell": {
+        "w": 111,
+        "h": 104,
+        "pivot": {
+          "x": 57,
+          "y": 102
+        }
+      },
+      "heroId": "ember-warden",
+      "clip": "run_cast",
+      "time": 1.2666566507720947,
+      "yaw": 4.71238898038469,
+      "activeClip": "run_cast",
+      "revision": 23,
+      "sourceSize": [
+        228,
+        250
+      ],
+      "alphaSha256": "94913604a70ce9e0462c6148619ffb774ac2fa68234535f881abc1ee5961b139",
+      "meshes": [
+        {
+          "vertices": 33953,
+          "triangles": 31594,
+          "bones": 24,
+          "heightScale": 40.82013456797489,
+          "heightRange": [
+            -0.0340366054120462,
+            1.7730760369336485
+          ]
+        }
+      ],
+      "tests": [
+        {
+          "angle": 0,
+          "cameraOpaque": 1817,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.2492694854736328,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 3781,
+          "alphaPartial": 704,
+          "alphaClear": 21321,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 402,
+              "clear": 222437,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 311,
+              "clear": 223447,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 964,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 197,
+          "middleClear": 704,
+          "contactPixels": 24,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 67,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 226304,
+            "bytes": 6485348,
+            "renderMs": 0.6999998092651367,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        },
+        {
+          "angle": 1,
+          "cameraOpaque": 1817,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.2492694854736328,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 3781,
+          "alphaPartial": 704,
+          "alphaClear": 21321,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 332,
+              "clear": 136378,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 353,
+              "clear": 136601,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 964,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 197,
+          "middleClear": 704,
+          "contactPixels": 24,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 68,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 138240,
+            "bytes": 4021604,
+            "renderMs": 5.200000047683716,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        },
+        {
+          "angle": 2,
+          "cameraOpaque": 1817,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.2492694854736328,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 3781,
+          "alphaPartial": 704,
+          "alphaClear": 21321,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 766,
+              "clear": 187172,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 641,
+              "clear": 188037,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 964,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 197,
+          "middleClear": 704,
+          "contactPixels": 24,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 69,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 191488,
+            "bytes": 5387108,
+            "renderMs": 1,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        }
+      ]
+    },
+    {
+      "vertexCount": 33953,
+      "vertexErrors": 0,
+      "maxVertexDelta": 1.1319630588424445e-7,
+      "heightContractErrors": 0,
+      "maxHeightContractDelta": 0.0000013592736536338634,
+      "cell": {
+        "w": 111,
+        "h": 104,
+        "pivot": {
+          "x": 57,
+          "y": 102
+        }
+      },
+      "heroId": "ember-warden",
+      "clip": "run_cast",
+      "time": 1.2666566507720947,
+      "yaw": 5.497787143782138,
+      "activeClip": "run_cast",
+      "revision": 24,
+      "sourceSize": [
+        228,
+        250
+      ],
+      "alphaSha256": "f6264ef20e33a7f0be6ca74b493f082a74ad143f2740916ccafecc0a28b4cb91",
+      "meshes": [
+        {
+          "vertices": 33953,
+          "triangles": 31594,
+          "bones": 24,
+          "heightScale": 40.82013456797489,
+          "heightRange": [
+            -0.0340366054120462,
+            1.7730760369336485
+          ]
+        }
+      ],
+      "tests": [
+        {
+          "angle": 0,
+          "cameraOpaque": 1439,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.24993133544921875,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 3185,
+          "alphaPartial": 599,
+          "alphaClear": 22027,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 422,
+              "clear": 222570,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 257,
+              "clear": 223503,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 820,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 118,
+          "middleClear": 660,
+          "contactPixels": 12,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 70,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 226304,
+            "bytes": 6485348,
+            "renderMs": 1,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        },
+        {
+          "angle": 1,
+          "cameraOpaque": 1439,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.24993133544921875,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 3185,
+          "alphaPartial": 599,
+          "alphaClear": 22027,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 373,
+              "clear": 136135,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 404,
+              "clear": 136365,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 820,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 118,
+          "middleClear": 660,
+          "contactPixels": 12,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 71,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 138240,
+            "bytes": 4021604,
+            "renderMs": 0.40000009536743164,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        },
+        {
+          "angle": 2,
+          "cameraOpaque": 1439,
+          "cameraErrors": 0,
+          "maxCameraDelta": 0.24993133544921875,
+          "cameraCopyErrors": 0,
+          "alphaOpaque": 3185,
+          "alphaPartial": 599,
+          "alphaClear": 22027,
+          "alphaErrors": 0,
+          "tests": [
+            {
+              "receiver": 0,
+              "opaque": 1143,
+              "clear": 185819,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            },
+            {
+              "receiver": 20,
+              "opaque": 768,
+              "clear": 187260,
+              "coverageErrors": 0,
+              "clearErrors": 0
+            }
+          ],
+          "receiveOpaque": 820,
+          "highErrors": 0,
+          "lowErrors": 0,
+          "middleErrors": 0,
+          "middleShadow": 118,
+          "middleClear": 660,
+          "contactPixels": 12,
+          "missingOpaqueHeight": 0,
+          "edgeHeightExtensions": 0,
+          "gpu": {
+            "updates": 72,
+            "actors": 1,
+            "extraSurfaces": 0,
+            "skinnedMeshes": 1,
+            "receiverPasses": 3,
+            "geometryBytes": 2073244,
+            "drawnVertices": 40328,
+            "pixels": 191488,
+            "bytes": 5387108,
+            "renderMs": 0.3000001907348633,
+            "ready": true,
+            "casterPasses": 3,
+            "fieldSamplers": 4,
+            "opaqueEnvelope": true,
+            "step": 0.5
+          },
+          "examples": []
+        }
+      ]
+    }
+  ],
+  "failures": [],
+  "heightImage": "height.png",
+  "image": "frames.png",
+  "scope": "Actual production GLB skin/pose, original post-process alpha; independent CPU skin/raster reference; software GPU only.",
+  "errors": [],
+  "quality": "high",
+  "model": {
+    "path": "/assets/characters/3d/ember-warden.glb",
+    "sha256": "27314f388adb9fa94dc7db468f6ade4ceacedafc248af4b68745f28adb793e29"
+  },
+  "cellManifestSha256": "c1d8b73412760081d770c7ee10da8b52ac3e16a38edaa0cc7d521b038909c804",
+  "rendererSources": {
+    "hero-3d.ts": "f03c316e44d7ec7982d8a9dedf42803452e665d01f05889f3939f3a41289efc6",
+    "hero.ts": "89aa0bd0e45d460c9c74556ef1ac83a312ad65035de6cd44aaf637256d2b15e9",
+    "shadow-glb-geometry.ts": "9c46155ea498b49862d29b028a6fad117364f2b49e89ee5001ab0b00986db995",
+    "shadow-skinned-mesh.ts": "170ae3de61fb47e19bd70d24de7337e3b21966e873096d6aa39342fb469aae42",
+    "shadow-alpha-shell.ts": "830140c86b9b2f8c2d887f0421eff2ebcdb42c4d3c81ed05ac65e31cffd23e56",
+    "shadow-packed-copy.ts": "2752dfa3a683ed36d316dc582a61a4ae1946224b7088798d797bb8b5356b808f",
+    "shadow-live-field.ts": "2ab989ffbcb744abfa5c923b53264f6dda15d33ea250bb17542e75c7a3f71cad",
+    "shadow-sampling.ts": "852ccfef4e7a78493ac0adb6ccdd4fdc035300db4f09ea470236ff8b61fafc4d",
+    "shadow-actor-batch.ts": "b561ecaf7105fc927bb8deca0f1e21b5ef7ac8722bb7316852c3998f60f1f052",
+    "shadow-actor-sources.ts": "9efa6dd3535fd6ed4a2fba65d09500c0fc1dde5e136b3e52b7874915f4bf0c3d",
+    "shadow-program.ts": "7f29279852819349ed2e946141b454fedb3718f193d226f84c69e079c0af5f9d"
+  }
+}

@@ -1,0 +1,115 @@
+{
+ "base": "http://127.0.0.1:5786",
+ "runs": [
+  {
+   "view": "desktop",
+   "time": 0.52,
+   "shots": {
+    "pillar-courtyard": {
+     "teleport": [
+      20.6,
+      31.6
+     ],
+     "visible": 176,
+     "shadows": {
+      "casters": 299,
+      "strips": 591,
+      "shown": 66,
+      "alpha": 0.4,
+      "dx": 0.278,
+      "dy": 0.307
+     }
+    },
+    "ruined-gate": {
+     "teleport": [
+      21,
+      23.6
+     ],
+     "visible": 217,
+     "shadows": {
+      "casters": 299,
+      "strips": 591,
+      "shown": 43,
+      "alpha": 0.4,
+      "dx": 0.278,
+      "dy": 0.307
+     }
+    },
+    "settlement": {
+     "teleport": [
+      17.48,
+      30.78
+     ],
+     "visible": 164,
+     "shadows": {
+      "casters": 299,
+      "strips": 591,
+      "shown": 58,
+      "alpha": 0.4,
+      "dx": 0.278,
+      "dy": 0.307
+     }
+    }
+   }
+  },
+  {
+   "view": "desktop",
+   "time": 0.3,
+   "shots": {
+    "pillar-courtyard": {
+     "teleport": [
+      20.6,
+      31.6
+     ],
+     "visible": 176,
+     "shadows": {
+      "casters": 299,
+      "strips": 591,
+      "shown": 66,
+      "alpha": 0.4,
+      "dx": 1.594,
+      "dy": 0.092
+     }
+    },
+    "ruined-gate": {
+     "teleport": [
+      21,
+      23.6
+     ],
+     "visible": 217,
+     "shadows": {
+      "casters": 299,
+      "strips": 591,
+      "shown": 49,
+      "alpha": 0.4,
+      "dx": 1.594,
+      "dy": 0.092
+     }
+    },
+    "settlement": {
+     "teleport": [
+      17.48,
+      30.78
+     ],
+     "visible": 164,
+     "shadows": {
+      "casters": 299,
+      "strips": 591,
+      "shown": 59,
+      "alpha": 0.4,
+      "dx": 1.594,
+      "dy": 0.092
+     }
+    }
+   }
+  },
+  {
+   "view": "desktop",
+   "time": 0.3,
+   "shots": {}
+  }
+ ],
+ "errors": [],
+ "console": [],
+ "ok": true
+}

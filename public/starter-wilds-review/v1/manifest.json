@@ -1,0 +1,194 @@
+{
+  "status": "Review only; not activated in editor or gameplay",
+  "generator": "Built-in imagegen; individual reference-guided raster edits",
+  "optimization": "Sharp alpha-preserving resize; 8 px transparent padding; PNG indexed palette 256 colors quality 95",
+  "assets": [
+    {
+      "name": "green-grass",
+      "width": 512,
+      "height": 512,
+      "bytes": 163158,
+      "sha256": "670b4919e98e69e802bcd3f28c88edfcd752b9721f50f1a35cd7adb7945c7e7c",
+      "originalBytes": 3292799,
+      "originalSha256": "87e16d944123863a95d105ed815d53f4b9681ac47f1ec1a47fcb4317bb608393",
+      "generatedSha256": "fde51db054d628ae36b23ba3bc1dbe5b082d4f1aa017fbd8184dca934e20155b",
+      "alpha": {
+        "min": 0,
+        "max": 252,
+        "transparentPixels": 89120,
+        "partialPixels": 173024,
+        "borderMax": 0
+      }
+    },
+    {
+      "name": "dry-grass",
+      "width": 512,
+      "height": 512,
+      "bytes": 165676,
+      "sha256": "4eaf133a119464338271d0a7f22846e3025c46de51df7c2a7bdc6ccd579027c9",
+      "originalBytes": 3523198,
+      "originalSha256": "d37556a34f8d2b37dde9f8a268fc0bf9d9b34bfc9ccd820f3ba57c692fdf2d84",
+      "generatedSha256": "fe55576cb5fe0c02f029a4d4a2e04838cd8f965c2f1f9f4609d9eaeadbe17860",
+      "alpha": {
+        "min": 0,
+        "max": 252,
+        "transparentPixels": 88489,
+        "partialPixels": 173655,
+        "borderMax": 0
+      }
+    },
+    {
+      "name": "bare-soil",
+      "width": 512,
+      "height": 512,
+      "bytes": 145096,
+      "sha256": "0bfa9df08ef3196a12b819e91375ace7cfbf35cef7b59f605f0b200d70f79e0e",
+      "originalBytes": 2885223,
+      "originalSha256": "c27c45b8163d3d8505dcd9dc5ec23cf1d5fc0c38015b5a57a0f41cffcd67df38",
+      "generatedSha256": "75359c523c685b40382eb3acb7ef7a48e709adb6dc942967830da66aa4b326ff",
+      "alpha": {
+        "min": 0,
+        "max": 253,
+        "transparentPixels": 106830,
+        "partialPixels": 155314,
+        "borderMax": 0
+      }
+    },
+    {
+      "name": "gravel",
+      "width": 512,
+      "height": 512,
+      "bytes": 155305,
+      "sha256": "6f6979b6a8667a2c6c17161b5eb659f97024a9707b91d42113f2a3a55790ba29",
+      "originalBytes": 3316981,
+      "originalSha256": "66502078e640303e66fc5c181ab109d321d0fdc2b5d2e4570c3301f1b1a2ab49",
+      "generatedSha256": "01fa3fccc2d5fc74349f29e2ca033a2844bfafbcbdb36b80114449c234affe4f",
+      "alpha": {
+        "min": 0,
+        "max": 253,
+        "transparentPixels": 99836,
+        "partialPixels": 162308,
+        "borderMax": 0
+      }
+    },
+    {
+      "name": "green-oak",
+      "width": 768,
+      "height": 718,
+      "bytes": 264658,
+      "sha256": "950f00edc27de947759619b38f7a2ba556827f7e9cb5dd69b4d3ce5a0945a102",
+      "originalBytes": 2351902,
+      "originalSha256": "04dfa57cac938162bff0a8ea98543c08acfdcb3d17321b84cbb35c9631a2e108",
+      "generatedSha256": "69f66838dd8429bc8911696a1e7cf9809478c04bf14b8616f1d30997766d69e5",
+      "alpha": {
+        "min": 0,
+        "max": 252,
+        "transparentPixels": 232346,
+        "partialPixels": 319078,
+        "borderMax": 0
+      }
+    },
+    {
+      "name": "pine-tree",
+      "width": 643,
+      "height": 768,
+      "bytes": 142174,
+      "sha256": "5c4b1deb7046bd6c9a2544433ac9d22cc35fdd148c5873230866e6dffb09fec9",
+      "originalBytes": 1307660,
+      "originalSha256": "0d34e3316d755d1cc4763482cd0f76733ed4ac62f414505bdffdd60e8648c28d",
+      "generatedSha256": "f0699b1877a99a8f3e4b479e347528a15e6cff0601e4fbeb863bba795494bd85",
+      "alpha": {
+        "min": 0,
+        "max": 253,
+        "transparentPixels": 312290,
+        "partialPixels": 181534,
+        "borderMax": 0
+      }
+    },
+    {
+      "name": "golden-tree",
+      "width": 740,
+      "height": 768,
+      "bytes": 234381,
+      "sha256": "45679b6146ccb6af5c134f076277f3f6cdcf8c591446cf6c8abbadafa43f5f48",
+      "originalBytes": 2045698,
+      "originalSha256": "d57333ec22983cfaeee196219248383a7ce9ba2197afd72d6cc3633e401709ff",
+      "generatedSha256": "ea9f464932c390d90e88f7c6504c9e3a1fc43ae3eb6a91406e15669445e6229a",
+      "alpha": {
+        "min": 0,
+        "max": 253,
+        "transparentPixels": 272912,
+        "partialPixels": 295408,
+        "borderMax": 0
+      }
+    },
+    {
+      "name": "dead-tree",
+      "width": 768,
+      "height": 703,
+      "bytes": 158516,
+      "sha256": "1c436745d8777b18cc3633a8c6a45c40de1d485a23ddfa09cc507eda927287c9",
+      "originalBytes": 1436043,
+      "originalSha256": "6e4a793e467275387282dc55e93685007ca0251fe33456e0c3c19bae2b1a051f",
+      "generatedSha256": "c38db2b7718b68f3bdd62340f36ae4037fb39bd97be22a90eb336c4a450bfc36",
+      "alpha": {
+        "min": 0,
+        "max": 253,
+        "transparentPixels": 364948,
+        "partialPixels": 174956,
+        "borderMax": 0
+      }
+    },
+    {
+      "name": "wild-bush",
+      "width": 384,
+      "height": 261,
+      "bytes": 40879,
+      "sha256": "786a513805fd944e49b2a6224fca62c27c949798339439822688ecf5e11b3785",
+      "originalBytes": 2563251,
+      "originalSha256": "5347d2aa72eba5acbc0dc96b0d186984fb538f9b0ab6d284481cb65a85254f10",
+      "generatedSha256": "893b3c5a8cb580a07aefb1da7c2dde531b40417f3f6f8ab864dcfd1502b5e423",
+      "alpha": {
+        "min": 0,
+        "max": 253,
+        "transparentPixels": 59034,
+        "partialPixels": 41190,
+        "borderMax": 0
+      }
+    },
+    {
+      "name": "tall-grass",
+      "width": 384,
+      "height": 323,
+      "bytes": 53165,
+      "sha256": "dcca4f8f02c45f1641597ad0b3d99d4979dc5ef5e0a1c46c5c4ec08e504cc07a",
+      "originalBytes": 1787887,
+      "originalSha256": "78fac9627aa6fe34d41fef42cb6ca6d7ace8a578d08f7f52d6fe6b9de08d7269",
+      "generatedSha256": "ea7a304f91ed1ee96325f2ec1ba2a1eb3831a0cb338894bbd58f57356d4a5dee",
+      "alpha": {
+        "min": 0,
+        "max": 253,
+        "transparentPixels": 65770,
+        "partialPixels": 58262,
+        "borderMax": 0
+      }
+    },
+    {
+      "name": "pond-reeds",
+      "width": 384,
+      "height": 352,
+      "bytes": 48745,
+      "sha256": "6ffff81a7fd3566470171110e4f4f00c48cb3f0875a071a2746623b02b55c476",
+      "originalBytes": 1533088,
+      "originalSha256": "577b816bcd7b6dd205de28aea5c2ce9eec17dd8d2653312715ac7fb99075de5d",
+      "generatedSha256": "cc33922029900873d39996c94943fcde7042f2965fbb2dc2d21741163e600873",
+      "alpha": {
+        "min": 0,
+        "max": 254,
+        "transparentPixels": 78952,
+        "partialPixels": 56216,
+        "borderMax": 0
+      }
+    }
+  ]
+}

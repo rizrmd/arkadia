@@ -1,0 +1,10 @@
+{
+  "pass": true,
+  "base": "http://127.0.0.1:5194",
+  "checks": [
+    "Save without a key persists after reload; Apply saved publishes the revision without a key",
+    "Mobile Save succeeds without a credential dialog",
+    "Mobile renders; game controls are Pixi; no JavaScript errors"
+  ],
+  "errors": []
+}

@@ -1,0 +1,63 @@
+{
+ "version": 1,
+ "units": "Fraction of the logical source-frame height; vertical placement scale is applied once.",
+ "rules": {
+  "court:crate": {
+   "source": "/modular-stronghold/crate.png",
+   "capHeightFraction": 0.56,
+   "reason": "Authored closed box proxy: source-space roof diamond and corresponding foot diamond; fixed .56 frame-height body. Original alpha clips all faces.",
+   "sourceVertices": [
+    [
+     0.5,
+     0.59,
+     0
+    ],
+    [
+     0.97,
+     0.74,
+     0
+    ],
+    [
+     0.5,
+     0.96,
+     0
+    ],
+    [
+     0.03,
+     0.81,
+     0
+    ],
+    [
+     0.5,
+     0.03,
+     0.56
+    ],
+    [
+     0.97,
+     0.18,
+     0.56
+    ],
+    [
+     0.5,
+     0.4,
+     0.56
+    ],
+    [
+     0.03,
+     0.25,
+     0.56
+    ]
+   ]
+  },
+  "court:barrel": {
+   "source": "/modular-stronghold/barrel.png",
+   "capHeightFraction": 0.745,
+   "reason": "Closed cask. Front lid rim is near v=.25 and front foot near v=.995; preserve the opaque lid and side volume."
+  },
+  "frontier:rock-scatter": {
+   "asset": "rock-scatter",
+   "capHeightFraction": 0.35,
+   "reason": "Hand-authored low stone-cluster proxy capped at .35 logical frame height (6.538 world pixels at scale 1). Front support follows original-alpha baseline; back support closes each camera-ray column. Ground painter band, source alpha, mirror/ground rotation and empty collision footprint are retained. This is an approximate cluster envelope, not measured individual stones."
+  }
+ }
+}

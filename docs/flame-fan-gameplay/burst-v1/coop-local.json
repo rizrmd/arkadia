@@ -1,0 +1,106 @@
+{
+ "url": "ws://127.0.0.1:18714/ws",
+ "seconds": 40,
+ "room": "T87HR",
+ "commonTicks": 785,
+ "tickSpan": 807,
+ "ticksWithEnemies": 785,
+ "enemyIds": [
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10,
+  11,
+  12,
+  13,
+  14
+ ],
+ "lastTick": 810,
+ "kills": {
+  "Ayu": 12,
+  "Bima": 25,
+  "Cheat": 0
+ },
+ "runs": {
+  "Ayu": {
+   "castGeometry": {
+    "fromU": 15.84375,
+    "fromV": 15.640625,
+    "targetU": 16.93073789255472,
+    "targetV": 16.902243173972835
+   },
+   "level": 1,
+   "xp": 60,
+   "gold": 60,
+   "pending": 0,
+   "offers": [],
+   "skills": {
+    "flame-fan": 1
+   },
+   "stars": 0,
+   "slots": [
+    "flame-fan"
+   ],
+   "autoCasts": 12,
+   "lastCast": [
+    "flame-fan"
+   ]
+  },
+  "Bima": {
+   "castGeometry": {
+    "fromU": 18.387761953021936,
+    "fromV": 18.24308454067939,
+    "targetU": 17.21581544830738,
+    "targetV": 17.910659639650785
+   },
+   "level": 2,
+   "xp": 20,
+   "gold": 125,
+   "pending": 1,
+   "offers": [
+    "heal",
+    "ember-snare",
+    "flame-fan"
+   ],
+   "skills": {
+    "flame-fan": 1
+   },
+   "stars": 0,
+   "slots": [
+    "flame-fan"
+   ],
+   "autoCasts": 10,
+   "lastCast": [
+    "flame-fan"
+   ]
+  },
+  "Cheat": {
+   "level": 1,
+   "xp": 0,
+   "gold": 0,
+   "pending": 0,
+   "offers": [],
+   "skills": {
+    "flame-fan": 1
+   },
+   "stars": 0,
+   "slots": [
+    "flame-fan"
+   ]
+  }
+ },
+ "heroesHurt": false,
+ "cheatMaxStepPx": 10.18,
+ "heroStepPx": 6,
+ "snapshotBytes": 5658,
+ "ackA": 742,
+ "inputsA": 742,
+ "pausedAtTick": 814,
+ "ok": true
+}

@@ -1,0 +1,142 @@
+{
+  "status": "animation-export-and-playback-pass",
+  "base": "http://127.0.0.1:37371/",
+  "transport": "Direct local HTTP",
+  "clips": 8,
+  "frames": 64,
+  "atlasPixelComparisons": 64,
+  "resourcesVerified": 31,
+  "results": [
+    {
+      "action": "idle",
+      "speed": 1,
+      "observedFrames": 8
+    },
+    {
+      "action": "idle",
+      "speed": 0.25,
+      "observedFrames": 8
+    },
+    {
+      "action": "idle",
+      "scrubbedFrames": 8,
+      "transition": "loop"
+    },
+    {
+      "action": "run",
+      "speed": 1,
+      "observedFrames": 8
+    },
+    {
+      "action": "run",
+      "speed": 0.25,
+      "observedFrames": 8
+    },
+    {
+      "action": "run",
+      "scrubbedFrames": 8,
+      "transition": "loop"
+    },
+    {
+      "action": "flame-fan",
+      "speed": 1,
+      "observedFrames": 8
+    },
+    {
+      "action": "flame-fan",
+      "speed": 0.25,
+      "observedFrames": 8
+    },
+    {
+      "action": "flame-fan",
+      "scrubbedFrames": 8,
+      "transition": "idle recovery"
+    },
+    {
+      "action": "cinder-step",
+      "speed": 1,
+      "observedFrames": 8
+    },
+    {
+      "action": "cinder-step",
+      "speed": 0.25,
+      "observedFrames": 8
+    },
+    {
+      "action": "cinder-step",
+      "scrubbedFrames": 8,
+      "transition": "idle recovery"
+    },
+    {
+      "action": "ember-snare",
+      "speed": 1,
+      "observedFrames": 8
+    },
+    {
+      "action": "ember-snare",
+      "speed": 0.25,
+      "observedFrames": 8
+    },
+    {
+      "action": "ember-snare",
+      "scrubbedFrames": 8,
+      "transition": "idle recovery"
+    },
+    {
+      "action": "furnace-heart",
+      "speed": 1,
+      "observedFrames": 8
+    },
+    {
+      "action": "furnace-heart",
+      "speed": 0.25,
+      "observedFrames": 8
+    },
+    {
+      "action": "furnace-heart",
+      "scrubbedFrames": 8,
+      "transition": "idle recovery"
+    },
+    {
+      "action": "hurt",
+      "speed": 1,
+      "observedFrames": 8
+    },
+    {
+      "action": "hurt",
+      "speed": 0.25,
+      "observedFrames": 8
+    },
+    {
+      "action": "hurt",
+      "scrubbedFrames": 8,
+      "transition": "idle recovery"
+    },
+    {
+      "action": "death",
+      "speed": 1,
+      "observedFrames": 8
+    },
+    {
+      "action": "death",
+      "speed": 0.25,
+      "observedFrames": 8
+    },
+    {
+      "action": "death",
+      "scrubbedFrames": 8,
+      "transition": "terminal hold"
+    },
+    {
+      "width": 390,
+      "playback": true,
+      "background": true,
+      "horizontalOverflow": false
+    },
+    {
+      "failedSheetRetryRecovered": true
+    }
+  ],
+  "pageErrors": [],
+  "limitation": "Playback and pixel checks do not validate source anatomy, gait contacts, or production art approval."
+}

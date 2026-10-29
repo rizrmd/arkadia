@@ -1,0 +1,78 @@
+{
+  "pass": true,
+  "base": "https://arkodia.online",
+  "results": [
+    {
+      "hero": "rift-runner",
+      "pixiTree": true,
+      "constructed": "watchtower",
+      "crossFactionMenuDenied": true,
+      "duplicateMenuDenied": true,
+      "autosaveChargeRetained": true,
+      "reloadPreserved": true,
+      "responsive": true,
+      "target": {
+        "i": 0,
+        "u": 18,
+        "v": 12
+      },
+      "combat": {
+        "defense": "watchtower",
+        "site": {
+          "u": 12.5,
+          "v": 10.5
+        },
+        "shots": 1,
+        "totalDamage": 10,
+        "cooldown": 531.4000000953602,
+        "damage": 10,
+        "range": 12,
+        "interval": 1500
+      },
+      "collision": {
+        "siteClear": false,
+        "siteTeleport": false,
+        "spawnClear": true,
+        "kills": 1
+      },
+      "night": false
+    },
+    {
+      "hero": "ember-warden",
+      "pixiTree": true,
+      "constructed": "arcane-tower",
+      "crossFactionMenuDenied": true,
+      "duplicateMenuDenied": true,
+      "autosaveChargeRetained": true,
+      "reloadPreserved": true,
+      "responsive": true,
+      "target": {
+        "i": 0,
+        "u": 18,
+        "v": 12
+      },
+      "combat": {
+        "defense": "arcane-tower",
+        "site": {
+          "u": 12.5,
+          "v": 10.5
+        },
+        "shots": 1,
+        "totalDamage": 10,
+        "cooldown": 663.2999999046369,
+        "damage": 10,
+        "range": 12,
+        "interval": 1500
+      },
+      "collision": {
+        "siteClear": false,
+        "siteTeleport": false,
+        "spawnClear": true,
+        "kills": 1
+      },
+      "night": true
+    }
+  ],
+  "starterCoreGate": true,
+  "errors": []
+}

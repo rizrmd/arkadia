@@ -1,0 +1,302 @@
+{
+ "scales": [
+  1,
+  2,
+  3
+ ],
+ "note": "Sizes and slices in @1x pixels; @Nx files are N times larger.",
+ "frames": {
+  "pill": {
+   "width": 120,
+   "height": 48,
+   "slice": [
+    34,
+    24,
+    34,
+    24
+   ]
+  },
+  "pill-wide": {
+   "width": 120,
+   "height": 60,
+   "slice": [
+    36,
+    30,
+    36,
+    30
+   ]
+  },
+  "keycap": {
+   "width": 28,
+   "height": 28,
+   "slice": [
+    9,
+    9,
+    9,
+    9
+   ]
+  },
+  "hp-frame": {
+   "width": 200,
+   "height": 40,
+   "slice": [
+    18,
+    20,
+    46,
+    20
+   ]
+  },
+  "hp-fill": {
+   "width": 40,
+   "height": 18,
+   "slice": [
+    6,
+    9,
+    6,
+    9
+   ]
+  },
+  "hp-fill-green": {
+   "width": 40,
+   "height": 18,
+   "slice": [
+    6,
+    9,
+    6,
+    9
+   ]
+  },
+  "xp-frame": {
+   "width": 200,
+   "height": 50,
+   "slice": [
+    62,
+    25,
+    62,
+    25
+   ]
+  },
+  "xp-fill": {
+   "width": 40,
+   "height": 24,
+   "slice": [
+    6,
+    12,
+    6,
+    12
+   ]
+  },
+  "hero-plate": {
+   "width": 200,
+   "height": 104,
+   "slice": [
+    24,
+    16,
+    64,
+    16
+   ]
+  },
+  "portrait-ring": {
+   "width": 176,
+   "height": 176
+  },
+  "level-medallion": {
+   "width": 60,
+   "height": 60
+  },
+  "corner": {
+   "width": 470,
+   "height": 230
+  },
+  "skill-ring": {
+   "width": 156,
+   "height": 156
+  },
+  "badge-level": {
+   "width": 64,
+   "height": 26,
+   "slice": [
+    13,
+    13,
+    13,
+    13
+   ]
+  },
+  "badge-auto": {
+   "width": 84,
+   "height": 28,
+   "slice": [
+    20,
+    14,
+    20,
+    14
+   ]
+  },
+  "panel-bronze": {
+   "width": 240,
+   "height": 180,
+   "slice": [
+    42,
+    42,
+    42,
+    42
+   ]
+  },
+  "card-blessing": {
+   "width": 220,
+   "height": 140,
+   "slice": [
+    32,
+    32,
+    32,
+    32
+   ]
+  },
+  "card-blessing-active": {
+   "width": 220,
+   "height": 140,
+   "slice": [
+    32,
+    32,
+    32,
+    32
+   ]
+  },
+  "button-bronze": {
+   "width": 180,
+   "height": 48,
+   "slice": [
+    28,
+    24,
+    28,
+    24
+   ]
+  },
+  "input-frame": {
+   "width": 160,
+   "height": 40,
+   "slice": [
+    18,
+    20,
+    18,
+    20
+   ]
+  },
+  "slider-track": {
+   "width": 160,
+   "height": 14,
+   "slice": [
+    12,
+    7,
+    12,
+    7
+   ]
+  },
+  "slider-thumb": {
+   "width": 26,
+   "height": 26
+  },
+  "overhead-bar": {
+   "width": 56,
+   "height": 12,
+   "slice": [
+    7,
+    6,
+    7,
+    6
+   ]
+  },
+  "thumbstick-ring": {
+   "width": 136,
+   "height": 136
+  },
+  "thumbstick-cap": {
+   "width": 60,
+   "height": 60
+  },
+  "icon-coins": {
+   "width": 40,
+   "height": 30
+  },
+  "icon-clock": {
+   "width": 26,
+   "height": 26
+  },
+  "icon-pin": {
+   "width": 22,
+   "height": 28
+  },
+  "icon-users": {
+   "width": 30,
+   "height": 26
+  },
+  "portrait-ember-warden": {
+   "width": 124,
+   "height": 124
+  },
+  "portrait-rift-runner": {
+   "width": 124,
+   "height": 124
+  },
+  "skill-flame-fan": {
+   "width": 114,
+   "height": 114
+  },
+  "skill-rift-bolt": {
+   "width": 114,
+   "height": 114
+  },
+  "skill-empty": {
+   "width": 114,
+   "height": 114
+  },
+  "skill-rift-trap": {
+   "width": 114,
+   "height": 114
+  },
+  "skill-seismic-slam": {
+   "width": 114,
+   "height": 114
+  },
+  "skill-cinder-step": {
+   "width": 114,
+   "height": 114
+  },
+  "skill-ember-snare": {
+   "width": 114,
+   "height": 114
+  },
+  "skill-rift-dash": {
+   "width": 114,
+   "height": 114
+  },
+  "skill-cleave": {
+   "width": 114,
+   "height": 114
+  },
+  "skill-blessing": {
+   "width": 114,
+   "height": 114
+  },
+  "console-hp-material": {
+   "width": 320,
+   "height": 24
+  },
+  "console-gate-material": {
+   "width": 320,
+   "height": 24
+  },
+  "console-xp-material": {
+   "width": 320,
+   "height": 24
+  },
+  "console-portrait-rift-runner": {
+   "width": 140,
+   "height": 140
+  },
+  "console-portrait-ember-warden": {
+   "width": 140,
+   "height": 140
+  }
+ }
+}

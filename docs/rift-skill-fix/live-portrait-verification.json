@@ -1,0 +1,145 @@
+{
+  "base": "https://arkodia.online",
+  "views": [
+    {
+      "name": "portrait",
+      "equipSwap": true,
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "touch": true
+      },
+      "slots": [
+        "rift-bolt"
+      ],
+      "dash": {
+        "aiming": false,
+        "last": {
+          "from": {
+            "u": 18,
+            "v": 18
+          },
+          "to": {
+            "u": 19.5,
+            "v": 18
+          },
+          "distance": 1.5
+        }
+      },
+      "art": {
+        "generated": true,
+        "active": true,
+        "ghosts": 5,
+        "particles": 12,
+        "age": 128,
+        "path": {
+          "from": {
+            "u": 18,
+            "v": 18
+          },
+          "to": {
+            "u": 19.5,
+            "v": 18
+          }
+        }
+      },
+      "skills": [
+        {
+          "skill": "rift-bolt",
+          "beforeHp": 31,
+          "afterHp": 28.5,
+          "aoes": []
+        },
+        {
+          "skill": "rift-trap",
+          "beforeHp": 31,
+          "afterHp": 27.87,
+          "aoes": [
+            {
+              "id": 6,
+              "kind": "rift-trap",
+              "skill": "rift-trap",
+              "shape": "circle",
+              "u": 18.8,
+              "v": 18,
+              "radius": 1.45,
+              "progress": 0
+            }
+          ]
+        },
+        {
+          "skill": "cleave",
+          "beforeHp": 31,
+          "afterHp": 28,
+          "aoes": [
+            {
+              "id": 11,
+              "kind": "cleave-cone",
+              "skill": "cleave",
+              "shape": "cone",
+              "u": 18,
+              "v": 18,
+              "radius": 1.55,
+              "progress": 0
+            }
+          ]
+        },
+        {
+          "skill": "shockwave",
+          "beforeHp": 31,
+          "afterHp": 27.75,
+          "aoes": [
+            {
+              "id": 15,
+              "kind": "shockwave",
+              "skill": "shockwave",
+              "shape": "circle",
+              "u": 18,
+              "v": 18,
+              "radius": 1.65,
+              "progress": 0
+            }
+          ]
+        }
+      ],
+      "clamp": {
+        "target": {
+          "u": 3.0335469785541846,
+          "v": 28.000264194352837
+        },
+        "expected": {
+          "u": 9.81522100389682,
+          "v": 23.468894481286707
+        },
+        "got": {
+          "id": 19,
+          "kind": "rift-trap",
+          "skill": "rift-trap",
+          "shape": "circle",
+          "u": 9.82,
+          "v": 23.47,
+          "radius": 1.45,
+          "progress": 0
+        }
+      },
+      "autoCasts": 1,
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "missing": [],
+  "transportRetries": [
+    {
+      "url": "https://arkodia.online/?offline=1&hero=rift-runner&quality=low&time=.45",
+      "status": 502
+    },
+    {
+      "url": "https://arkodia.online/?offline=1&hero=rift-runner&quality=low&time=.45",
+      "status": 502
+    },
+    {
+      "url": "https://arkodia.online/typography/v2/hud/@1x/input-frame.png?v=fd5a9422bda18d9f",
+      "status": 502
+    }
+  ]
+}

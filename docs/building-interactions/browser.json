@@ -1,0 +1,142 @@
+{
+  "errors": [],
+  "checks": [
+    "desktop core header clearances",
+    "desktop farm header clearances",
+    "desktop lumber header clearances",
+    "desktop kitchen header clearances",
+    "desktop walls header clearances",
+    "desktop mine header clearances",
+    "mobile core header clearances",
+    "mobile farm header clearances",
+    "mobile lumber header clearances",
+    "mobile kitchen header clearances",
+    "mobile walls header clearances",
+    "mobile mine header clearances",
+    "All six physical Pixi badge/button hit tests",
+    "Disabled artwork and noninteractive actions",
+    "Escape and outside pointer sequence restore badges without world actions",
+    "160 distance inclusive boundary; 161 and former 239 excluded",
+    "Live Gold/Wood/prerequisite changes",
+    "0.75 previous desktop/mobile fit and proportional hit areas",
+    "Co-op suppression",
+    "Header clearances, relocated close hit areas and target/reset hit tests across desktop/mobile"
+  ],
+  "panels": [
+    {
+      "i": 0,
+      "panel": {
+        "x": 500,
+        "y": 356.85,
+        "width": 405,
+        "height": 350.70000000000005,
+        "scale": 0.75
+      },
+      "button": {
+        "x": 500,
+        "y": 455.25,
+        "width": 220.5,
+        "height": 40.5,
+        "eventMode": "none",
+        "tint": 10066329,
+        "texture": "http://127.0.0.1:5207/core-upgrade/kit-v2/button-disabled.png"
+      }
+    },
+    {
+      "i": 1,
+      "panel": {
+        "x": 500,
+        "y": 381.75,
+        "width": 405,
+        "height": 316.5,
+        "scale": 0.75
+      },
+      "button": {
+        "x": 500,
+        "y": 485.25,
+        "width": 220.5,
+        "height": 40.5,
+        "eventMode": "none",
+        "tint": 10066329,
+        "texture": "http://127.0.0.1:5207/core-upgrade/kit/button-disabled.png"
+      }
+    },
+    {
+      "i": 2,
+      "panel": {
+        "x": 500,
+        "y": 381.75,
+        "width": 405,
+        "height": 316.5,
+        "scale": 0.75
+      },
+      "button": {
+        "x": 500,
+        "y": 485.25,
+        "width": 220.5,
+        "height": 40.5,
+        "eventMode": "none",
+        "tint": 10066329,
+        "texture": "http://127.0.0.1:5207/core-upgrade/kit/button-disabled.png"
+      }
+    },
+    {
+      "i": 3,
+      "panel": {
+        "x": 500,
+        "y": 381.75,
+        "width": 405,
+        "height": 316.5,
+        "scale": 0.75
+      },
+      "button": {
+        "x": 500,
+        "y": 485.25,
+        "width": 220.5,
+        "height": 40.5,
+        "eventMode": "none",
+        "tint": 10066329,
+        "texture": "http://127.0.0.1:5207/core-upgrade/kit/button-disabled.png"
+      }
+    },
+    {
+      "i": 4,
+      "panel": {
+        "x": 500,
+        "y": 356.85,
+        "width": 405,
+        "height": 350.70000000000005,
+        "scale": 0.75
+      },
+      "button": {
+        "x": 500,
+        "y": 455.25,
+        "width": 220.5,
+        "height": 40.5,
+        "eventMode": "none",
+        "tint": 10066329,
+        "texture": "http://127.0.0.1:5207/core-upgrade/kit-v2/button-disabled.png"
+      }
+    },
+    {
+      "i": 5,
+      "panel": {
+        "x": 500,
+        "y": 356.85,
+        "width": 405,
+        "height": 350.70000000000005,
+        "scale": 0.75
+      },
+      "button": {
+        "x": 500,
+        "y": 455.25,
+        "width": 220.5,
+        "height": 40.5,
+        "eventMode": "none",
+        "tint": 10066329,
+        "texture": "http://127.0.0.1:5207/core-upgrade/kit-v2/button-disabled.png"
+      }
+    }
+  ],
+  "pass": true
+}

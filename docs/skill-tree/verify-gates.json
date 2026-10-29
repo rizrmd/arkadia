@@ -1,0 +1,32 @@
+{
+ "ok": true,
+ "baselineRef": "d7926df",
+ "seeds": 400,
+ "strategies": [
+  "random",
+  "rank-rift-bolt",
+  "passives-only",
+  "actives-first"
+ ],
+ "riftRunner": {
+  "offersChecked": 30400,
+  "lockedTierOffers": 0,
+  "ascendantStarOffers": 1600,
+  "offersUsingFallback": 0,
+  "distinctFirstOffers": [
+   "Second Wind · Rift Dash · Rift Bolt",
+   "Second Wind · Rift Trap · Rift Bolt",
+   "Titan Strike · Rift Dash · Rift Bolt",
+   "Titan Strike · Rift Trap · Rift Bolt"
+  ]
+ },
+ "emberWarden": {
+  "offersCompared": 30400,
+  "identicalToBaseline": true
+ },
+ "baselineBug": {
+  "firstOffersWithLockedCard": 349,
+  "of": 400
+ },
+ "failures": []
+}

@@ -1,0 +1,248 @@
+{
+  "environment": "Headless Chromium / ANGLE SwiftShader software GPU; CDP sustained touch input; rAF intervals include deferred work and presentation scheduling, not physical-device FPS",
+  "results": [
+    {
+      "size": {
+        "width": 390,
+        "height": 844
+      },
+      "raf": {
+        "count": 281,
+        "p50": 33.29999999999927,
+        "p95": 416.6999999999971,
+        "p99": 1366.5999999999985,
+        "max": 1883.300000000003,
+        "over33": 119,
+        "over50": 110
+      },
+      "render": {
+        "count": 319,
+        "p50": 0.8999998569488525,
+        "p95": 25.899999856948853,
+        "p99": 45.19999980926514,
+        "max": 84.70000004768372,
+        "over33": 12,
+        "over50": 3
+      },
+      "renderIntervals": {
+        "count": 318,
+        "p50": 20.59999990463257,
+        "p95": 420.5,
+        "p99": 1242.1000001430511,
+        "max": 1893.5999999046326,
+        "over33": 131,
+        "over50": 112
+      },
+      "tick": {
+        "combat": {
+          "count": 0,
+          "over33": 0,
+          "over50": 0
+        },
+        "hero": {
+          "count": 0,
+          "over33": 0,
+          "over50": 0
+        },
+        "copy": {
+          "count": 0,
+          "over33": 0,
+          "over50": 0
+        },
+        "total": {
+          "count": 0,
+          "over33": 0,
+          "over50": 0
+        }
+      },
+      "longTasks": [
+        53,
+        58,
+        59,
+        62,
+        62,
+        72,
+        57,
+        53,
+        88
+      ],
+      "elapsed": 34155.200000047684,
+      "builds": 80,
+      "playCount": 2,
+      "scrollSamples": [
+        482,
+        0,
+        482,
+        0
+      ],
+      "navigation": {
+        "tab": "Layers",
+        "scroll": 0,
+        "maxScroll": 482,
+        "top": 242,
+        "compact": true
+      },
+      "errors": []
+    },
+    {
+      "size": {
+        "width": 844,
+        "height": 390
+      },
+      "raf": {
+        "count": 228,
+        "p50": 83.39999999999964,
+        "p95": 299.90000000000146,
+        "p99": 749.8999999999996,
+        "max": 866.5999999999985,
+        "over33": 159,
+        "over50": 146
+      },
+      "render": {
+        "count": 265,
+        "p50": 0.5,
+        "p95": 13.200000047683716,
+        "p99": 25.700000047683716,
+        "max": 37.90000009536743,
+        "over33": 2,
+        "over50": 0
+      },
+      "renderIntervals": {
+        "count": 264,
+        "p50": 68.5,
+        "p95": 263.40000009536743,
+        "p99": 736,
+        "max": 862.4000000953674,
+        "over33": 168,
+        "over50": 152
+      },
+      "tick": {
+        "combat": {
+          "count": 0,
+          "over33": 0,
+          "over50": 0
+        },
+        "hero": {
+          "count": 0,
+          "over33": 0,
+          "over50": 0
+        },
+        "copy": {
+          "count": 0,
+          "over33": 0,
+          "over50": 0
+        },
+        "total": {
+          "count": 0,
+          "over33": 0,
+          "over50": 0
+        }
+      },
+      "longTasks": [
+        74,
+        64,
+        55,
+        84
+      ],
+      "elapsed": 25287.200000047684,
+      "builds": 82,
+      "playCount": 2,
+      "scrollSamples": [
+        88,
+        4,
+        84,
+        0
+      ],
+      "navigation": {
+        "tab": "Layers",
+        "scroll": 0,
+        "maxScroll": 936,
+        "top": 242,
+        "compact": true
+      },
+      "errors": []
+    },
+    {
+      "size": {
+        "width": 1440,
+        "height": 1000
+      },
+      "raf": {
+        "count": 245,
+        "p50": 50,
+        "p95": 816.6000000000058,
+        "p99": 2149.9000000000015,
+        "max": 2816.600000000002,
+        "over33": 123,
+        "over50": 118
+      },
+      "render": {
+        "count": 281,
+        "p50": 1,
+        "p95": 25.5,
+        "p99": 65.70000004768372,
+        "max": 76.90000009536743,
+        "over33": 8,
+        "over50": 4
+      },
+      "renderIntervals": {
+        "count": 280,
+        "p50": 32.60000014305115,
+        "p95": 781.5999999046326,
+        "p99": 2175.600000143051,
+        "max": 2822.899999856949,
+        "over33": 137,
+        "over50": 122
+      },
+      "tick": {
+        "combat": {
+          "count": 0,
+          "over33": 0,
+          "over50": 0
+        },
+        "hero": {
+          "count": 0,
+          "over33": 0,
+          "over50": 0
+        },
+        "copy": {
+          "count": 0,
+          "over33": 0,
+          "over50": 0
+        },
+        "total": {
+          "count": 0,
+          "over33": 0,
+          "over50": 0
+        }
+      },
+      "longTasks": [
+        54,
+        65,
+        66,
+        78,
+        65,
+        69,
+        54,
+        68
+      ],
+      "elapsed": 60727.799999952316,
+      "builds": 65,
+      "playCount": 1,
+      "scrollSamples": [
+        358,
+        0,
+        358,
+        0
+      ],
+      "navigation": {
+        "tab": "Layers",
+        "scroll": 0,
+        "maxScroll": 358,
+        "top": 442,
+        "compact": false
+      },
+      "errors": []
+    }
+  ]
+}

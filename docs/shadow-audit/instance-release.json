@@ -1,0 +1,322 @@
+{
+  "runtimeCommit": "d872e6fc8d96c999d30583e5b1dbe5353eadceb4",
+  "runtimeLayer": "1792985439218-game-d872e6fc-80ed1994d0ea",
+  "regressions": {
+    "atlasFrames": 445,
+    "atlasCases": 2670,
+    "glbClips": 12,
+    "glbPoses": 72,
+    "glbSunCases": 216,
+    "failures": 0
+  },
+  "sharedAtlas": "Independent anchor, owner and height tile per quad; 3 sprites / 1 batch / 1 color source slot; cached anchor-only and tile-only updates pass.",
+  "live": [
+    {
+      "folder": "instance-live",
+      "mobile": false,
+      "spot": "torch-court",
+      "measurement": {
+        "durationMs": 190.19999980926514,
+        "rafMedianMs": 16.69999999999709,
+        "rafP95Ms": 66.60000000000582,
+        "drawCalls": 731,
+        "frames": 8
+      },
+      "fixture": {
+        "ok": true,
+        "rows": [
+          {
+            "anchor": {
+              "x": 50,
+              "groundY": 80,
+              "lift": 0
+            },
+            "pixel": [
+              50,
+              70
+            ],
+            "base": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "actual": [
+              137,
+              142,
+              150,
+              255
+            ],
+            "expected": 137
+          },
+          {
+            "anchor": {
+              "x": 130,
+              "groundY": 140,
+              "lift": 0
+            },
+            "pixel": [
+              130,
+              130
+            ],
+            "base": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "actual": [
+              137,
+              142,
+              150,
+              255
+            ],
+            "expected": 137
+          },
+          {
+            "anchor": {
+              "x": 210,
+              "groundY": 120,
+              "lift": 40
+            },
+            "pixel": [
+              210,
+              70
+            ],
+            "base": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "actual": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "expected": 255
+          }
+        ],
+        "batches": [
+          {
+            "textures": 1,
+            "size": 18
+          }
+        ],
+        "anchorOnlyPixel": 255,
+        "perOwnerTilePixels": [
+          255,
+          137
+        ],
+        "failures": []
+      }
+    },
+    {
+      "folder": "instance-live",
+      "mobile": true,
+      "spot": "torch-court",
+      "measurement": {
+        "durationMs": 121.30000019073486,
+        "rafMedianMs": 16.69999999999709,
+        "rafP95Ms": 16.80000000000291,
+        "drawCalls": 619,
+        "frames": 8
+      },
+      "fixture": {
+        "ok": true,
+        "rows": [
+          {
+            "anchor": {
+              "x": 50,
+              "groundY": 80,
+              "lift": 0
+            },
+            "pixel": [
+              50,
+              70
+            ],
+            "base": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "actual": [
+              137,
+              142,
+              150,
+              255
+            ],
+            "expected": 137
+          },
+          {
+            "anchor": {
+              "x": 130,
+              "groundY": 140,
+              "lift": 0
+            },
+            "pixel": [
+              130,
+              130
+            ],
+            "base": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "actual": [
+              137,
+              142,
+              150,
+              255
+            ],
+            "expected": 137
+          },
+          {
+            "anchor": {
+              "x": 210,
+              "groundY": 120,
+              "lift": 40
+            },
+            "pixel": [
+              210,
+              70
+            ],
+            "base": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "actual": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "expected": 255
+          }
+        ],
+        "batches": [
+          {
+            "textures": 1,
+            "size": 18
+          }
+        ],
+        "anchorOnlyPixel": 255,
+        "perOwnerTilePixels": [
+          255,
+          137
+        ],
+        "failures": []
+      }
+    },
+    {
+      "folder": "instance-live-cemetery",
+      "mobile": false,
+      "spot": "cemetery",
+      "measurement": {
+        "durationMs": 171.39999985694885,
+        "rafMedianMs": 16.69999999999709,
+        "rafP95Ms": 50,
+        "drawCalls": 748,
+        "frames": 8
+      },
+      "fixture": {
+        "ok": true,
+        "rows": [
+          {
+            "anchor": {
+              "x": 50,
+              "groundY": 80,
+              "lift": 0
+            },
+            "pixel": [
+              50,
+              70
+            ],
+            "base": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "actual": [
+              137,
+              142,
+              150,
+              255
+            ],
+            "expected": 137
+          },
+          {
+            "anchor": {
+              "x": 130,
+              "groundY": 140,
+              "lift": 0
+            },
+            "pixel": [
+              130,
+              130
+            ],
+            "base": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "actual": [
+              137,
+              142,
+              150,
+              255
+            ],
+            "expected": 137
+          },
+          {
+            "anchor": {
+              "x": 210,
+              "groundY": 120,
+              "lift": 40
+            },
+            "pixel": [
+              210,
+              70
+            ],
+            "base": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "actual": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "expected": 255
+          }
+        ],
+        "batches": [
+          {
+            "textures": 1,
+            "size": 18
+          }
+        ],
+        "anchorOnlyPixel": 255,
+        "perOwnerTilePixels": [
+          255,
+          137
+        ],
+        "failures": []
+      }
+    }
+  ],
+  "entrypoints": "entrypoints/report.json",
+  "frostpass": "Source is archived; live HTML routes redirect 302 to /. Renderer unavailability retained in inventory, not reactivated or certified.",
+  "performance": "Software SwiftShader, emulated viewports, eight RAF samples after opt-in GPU diagnostic; not controlled hardware performance or comparative benchmark.",
+  "acceptance": "incomplete: final full source-frame/blend journal, remaining effect/review disposition and physical-device performance"
+}

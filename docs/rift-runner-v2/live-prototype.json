@@ -1,0 +1,105 @@
+{
+  "base": "https://arkadia-stronghold-whachat.fural.space",
+  "status": "prototype-playback-verified-not-game-ready",
+  "framesObserved": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11
+  ],
+  "errors": [],
+  "checks": [
+    "all 12 actual playback frames observed",
+    "pause",
+    "step",
+    "RGBA transparency",
+    "numerical rig contacts"
+  ],
+  "contactAudit": {
+    "samples": 482,
+    "maxPlantedFootDisplacement": 9.801652700591745e-8,
+    "maxFloorError": 5.21540641784668e-8
+  },
+  "images": [
+    {
+      "file": "frame-00.png",
+      "width": 384,
+      "height": 384,
+      "alpha": true
+    },
+    {
+      "file": "frame-01.png",
+      "width": 384,
+      "height": 384,
+      "alpha": true
+    },
+    {
+      "file": "frame-02.png",
+      "width": 384,
+      "height": 384,
+      "alpha": true
+    },
+    {
+      "file": "frame-03.png",
+      "width": 384,
+      "height": 384,
+      "alpha": true
+    },
+    {
+      "file": "frame-04.png",
+      "width": 384,
+      "height": 384,
+      "alpha": true
+    },
+    {
+      "file": "frame-05.png",
+      "width": 384,
+      "height": 384,
+      "alpha": true
+    },
+    {
+      "file": "frame-06.png",
+      "width": 384,
+      "height": 384,
+      "alpha": true
+    },
+    {
+      "file": "frame-07.png",
+      "width": 384,
+      "height": 384,
+      "alpha": true
+    },
+    {
+      "file": "frame-08.png",
+      "width": 384,
+      "height": 384,
+      "alpha": true
+    },
+    {
+      "file": "frame-09.png",
+      "width": 384,
+      "height": 384,
+      "alpha": true
+    },
+    {
+      "file": "frame-10.png",
+      "width": 384,
+      "height": 384,
+      "alpha": true
+    },
+    {
+      "file": "frame-11.png",
+      "width": 384,
+      "height": 384,
+      "alpha": true
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "pass": true,
+  "checks": [
+    "Reference layout: compact tabs and filters, continuous large-thumbnail rows, blue selection and transport below stack",
+    "Authenticated Save/Apply preserves created layers, names, source and order in isolated server storage",
+    "Rename, create, duplicate, drag reorder, delete, undo, and local reload persist real layer metadata",
+    "Grouped playback and preview menus execute existing actions",
+    "Right-click selects the target layer without opening its sheet; Solo executes",
+    "Escape and outside click dismiss menus",
+    "Layer visibility and undo/redo menus mutate real drafts",
+    "Keyboard Enter executes focused layer action",
+    "Mobile overflow buttons open bounded menus; properties and layer scrolling remain usable",
+    "Short landscape context menus fit viewport and retain every layer action"
+  ],
+  "errors": []
+}

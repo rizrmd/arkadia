@@ -1,0 +1,50 @@
+{
+  "passed": true,
+  "framelessVerified": true,
+  "expBar": {
+    "level": 1,
+    "xp": 10,
+    "nextXp": 20,
+    "percent": 50,
+    "pulsing": false
+  },
+  "critStats": {
+    "critChance": 0.15,
+    "critMultiplier": 1.5
+  },
+  "activeFloatsSample": [
+    {
+      "kind": "banner",
+      "text": "LEVEL UP!",
+      "subtext": "LV. 2",
+      "u": 18.45,
+      "v": 17.88,
+      "scale": 1.35,
+      "frameless": true
+    },
+    {
+      "kind": "banner",
+      "text": "TRINITY AUTO-CAST!",
+      "subtext": "RIFT BOLT + RIFT DASH + RIFT TRAP",
+      "u": 18.45,
+      "v": 17.88,
+      "scale": 1.35,
+      "frameless": true
+    }
+  ],
+  "vfxTotals": {
+    "crits": 7,
+    "normals": 6,
+    "projectiles": 7,
+    "aoes": 6,
+    "levelUps": 3,
+    "autoCasts": 2,
+    "simultaneousCasts": 1,
+    "trinityCasts": 1
+  },
+  "screenshots": [
+    "docs/combat-vfx/ro-crit-and-exp-bar.webp",
+    "docs/combat-vfx/aoe-telegraph-and-projectiles.webp",
+    "docs/combat-vfx/level-up-vfx-and-aoe-impact.webp"
+  ]
+}

@@ -1,0 +1,6 @@
+import http from 'node:http';import fs from 'node:fs';import path from 'node:path';
+const root=path.resolve(process.env.SITE_DIR||'dist');const types={'.html':'text/html','.js':'text/javascript','.css':'text/css','.json':'application/json','.png':'image/png','.webp':'image/webp'};
+// One page: directory and extensionless paths serve index.html (the SPA router picks the view);
+// retired .html pages, including /stronghold.html, redirect to / with their query.
+const retired=p=>p.endsWith('.html')&&p!=='/index.html',isPage=p=>p.endsWith('/')||!/\.[^/]+$/.test(p);
+http.createServer((req,res)=>{let url,p;try{url=new URL(req.url,'http://local');if(retired(url.pathname)){res.writeHead(302,{Location:'/'+url.search}).end();return;}p=path.resolve(root,'.'+decodeURIComponent(isPage(url.pathname)?'/index.html':url.pathname));}catch{res.writeHead(400).end();return;}if(!p.startsWith(root+path.sep)){res.writeHead(403).end();return;}fs.stat(p,(err,stat)=>{if(err||!stat.isFile()){res.writeHead(404).end('Not found');return;}res.writeHead(200,{'Content-Type':types[path.extname(p)]||'application/octet-stream','Content-Length':stat.size,'Cache-Control':'no-cache'});fs.createReadStream(p).pipe(res);});}).listen(Number(process.env.PORT||3000),'0.0.0.0',()=>console.log('Arkodia listening on 3000'));

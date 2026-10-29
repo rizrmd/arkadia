@@ -1,0 +1,48 @@
+{
+  "scope": "Normal production mixer/arm/stride/yaw/day-night source alignment; no forced pose times. Detailed field GPU controls remain separate.",
+  "runs": [
+    {
+      "quality": "low",
+      "hero": "ember-warden",
+      "report": "glb-blends-low/ember-warden/report.json",
+      "ticks": 1176,
+      "sourceFrames": 1173,
+      "cachedFrames": 3,
+      "checkedVertices": 65688
+    },
+    {
+      "quality": "low",
+      "hero": "rift-runner",
+      "report": "glb-blends-low/rift-runner/report.json",
+      "ticks": 1176,
+      "sourceFrames": 1173,
+      "cachedFrames": 3,
+      "checkedVertices": 65688
+    },
+    {
+      "quality": "high",
+      "hero": "ember-warden",
+      "report": "glb-blends-high/ember-warden/report.json",
+      "ticks": 1176,
+      "sourceFrames": 1176,
+      "cachedFrames": 0,
+      "checkedVertices": 65856
+    },
+    {
+      "quality": "high",
+      "hero": "rift-runner",
+      "report": "glb-blends-high/rift-runner/report.json",
+      "ticks": 1176,
+      "sourceFrames": 1176,
+      "cachedFrames": 0,
+      "checkedVertices": 65856
+    }
+  ],
+  "ticks": 4704,
+  "sourceFrames": 4698,
+  "cachedFrames": 6,
+  "checkedVertices": 263088,
+  "maxVertexDelta": 1.5457832369669688e-7,
+  "maxHeightContractDelta": 0.0000013926096045224767,
+  "maxGroundOffsetDelta": 9.83540440202546e-7
+}

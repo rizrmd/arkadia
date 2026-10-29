@@ -1,0 +1,1094 @@
+{
+ "version": 3,
+ "status": "in-game",
+ "retired": [
+  "snow-cap-ne",
+  "snow-cap-se"
+ ],
+ "generator": "scripts/frozen-frontier-map/ground-kit.mjs (deterministic, derived from the v1 kit art)",
+ "camera": {
+  "projection": "2:1 dimetric",
+  "halfWidth": 64,
+  "halfHeight": 32
+ },
+ "lighting": "Soft upper-left daylight, matching v1/v2",
+ "note": "Grounded v1 modules replace their v1 exports in the game atlas (same ids, same ground pivot and footprint). The pillars, stairs and fallen columns are modelled in true 2:1 isometric (recipe.iso; their footprints are set in layout.mjs); the rest are new ground decals. Recipe parameters are recorded per asset.",
+ "assets": [
+  {
+   "id": "wall-ne",
+   "file": "assets/wall-ne.png",
+   "size": [
+    652,
+    409
+   ],
+   "pivot": {
+    "x": 320,
+    "y": 285.8
+   },
+   "scale": 0.25,
+   "widthWorld": 163,
+   "heightM": 2.4,
+   "footprintM": [
+    3,
+    0.45
+   ],
+   "source": "public/frozen-frontier/v1/assets/wall-ne.png",
+   "recipe": {
+    "kind": "grounded",
+    "bank": [
+     7,
+     15
+    ],
+    "spill": 4,
+    "tail": 12,
+    "band": 22
+   }
+  },
+  {
+   "id": "wall-se",
+   "file": "assets/wall-se.png",
+   "size": [
+    652,
+    410
+   ],
+   "pivot": {
+    "x": 320,
+    "y": 286.5
+   },
+   "scale": 0.25,
+   "widthWorld": 163,
+   "heightM": 2.4,
+   "footprintM": [
+    3,
+    0.45
+   ],
+   "source": "public/frozen-frontier/v1/assets/wall-se.png",
+   "recipe": {
+    "kind": "grounded",
+    "bank": [
+     7,
+     15
+    ],
+    "spill": 4,
+    "tail": 12,
+    "band": 22
+   }
+  },
+  {
+   "id": "corner-n",
+   "file": "assets/corner-n.png",
+   "size": [
+    648,
+    420
+   ],
+   "pivot": {
+    "x": 320,
+    "y": 297.8
+   },
+   "scale": 0.25,
+   "widthWorld": 162,
+   "heightM": 2.4,
+   "footprintM": [
+    1.5,
+    1.5
+   ],
+   "source": "public/frozen-frontier/v1/assets/corner-n.png",
+   "recipe": {
+    "kind": "grounded",
+    "bank": [
+     8,
+     15
+    ],
+    "spill": 4,
+    "tail": 10,
+    "band": 22
+   }
+  },
+  {
+   "id": "corner-s",
+   "file": "assets/corner-s.png",
+   "size": [
+    647,
+    410
+   ],
+   "pivot": {
+    "x": 332.5,
+    "y": 312
+   },
+   "scale": 0.25,
+   "widthWorld": 161.75,
+   "heightM": 2.4,
+   "footprintM": [
+    1.5,
+    1.5
+   ],
+   "source": "assets-src/frozen-frontier/v4/corner-s.png",
+   "recipe": {
+    "kind": "generated-grounded-corner",
+    "projection": "2:1 dimetric",
+    "leftPlaneShear": 0.1,
+    "centralArrisX": 810,
+    "baselineSamples": {
+     "left": [
+      [
+       65,
+       408
+      ],
+      [
+       810,
+       855
+      ]
+     ],
+     "right": [
+      [
+       810,
+       855
+      ],
+      [
+       1515,
+       499
+      ]
+     ]
+    },
+    "note": "Built-in image_gen; same limestone and snow, calibrated left wall to the floor grid; snow bank included."
+   }
+  },
+  {
+   "id": "arch-ne",
+   "file": "assets/arch-ne.png",
+   "size": [
+    693,
+    592
+   ],
+   "pivot": {
+    "x": 344,
+    "y": 479.4
+   },
+   "scale": 0.25,
+   "widthWorld": 173.25,
+   "heightM": 3.6,
+   "footprintM": [
+    3,
+    0.65
+   ],
+   "source": "public/frozen-frontier/v1/assets/arch-ne.png",
+   "recipe": {
+    "kind": "grounded",
+    "bank": [
+     7,
+     13
+    ],
+    "spill": 4,
+    "tail": 9,
+    "band": 22,
+    "gaps": true
+   }
+  },
+  {
+   "id": "arch-se",
+   "file": "assets/arch-se.png",
+   "size": [
+    696,
+    645
+   ],
+   "pivot": {
+    "x": 344,
+    "y": 524.1
+   },
+   "scale": 0.25,
+   "widthWorld": 174,
+   "heightM": 3.6,
+   "footprintM": [
+    3,
+    0.65
+   ],
+   "source": "public/frozen-frontier/v1/assets/arch-se.png",
+   "recipe": {
+    "kind": "grounded",
+    "bank": [
+     7,
+     13
+    ],
+    "spill": 4,
+    "tail": 9,
+    "band": 22,
+    "gaps": true
+   }
+  },
+  {
+   "id": "pillar-intact",
+   "file": "assets/pillar-intact.png",
+   "size": [
+    213,
+    457
+   ],
+   "pivot": {
+    "x": 98.1,
+    "y": 392.4
+   },
+   "scale": 0.25,
+   "widthWorld": 53.25,
+   "heightM": 2.42,
+   "footprintM": [
+    0.88,
+    0.88
+   ],
+   "source": "procedural 2:1 isometric blocks (iso-solid.mjs), stone from v1 pillar-intact and paving",
+   "recipe": {
+    "kind": "grounded",
+    "bank": [
+     3,
+     6
+    ],
+    "spill": 3,
+    "tail": 6,
+    "band": 16,
+    "cap": false,
+    "iso": {
+     "boxes": 6
+    }
+   }
+  },
+  {
+   "id": "pillar-broken",
+   "file": "assets/pillar-broken.png",
+   "size": [
+    213,
+    297
+   ],
+   "pivot": {
+    "x": 98.1,
+    "y": 233.2
+   },
+   "scale": 0.25,
+   "widthWorld": 53.25,
+   "heightM": 1.3,
+   "footprintM": [
+    0.88,
+    0.88
+   ],
+   "source": "procedural 2:1 isometric blocks (iso-solid.mjs), stone from v1 pillar-intact and paving",
+   "recipe": {
+    "kind": "grounded",
+    "bank": [
+     2,
+     4
+    ],
+    "spill": 3,
+    "tail": 6,
+    "band": 14,
+    "cap": false,
+    "iso": {
+     "boxes": 7
+    }
+   }
+  },
+  {
+   "id": "stairs-ne",
+   "file": "assets/stairs-ne.png",
+   "size": [
+    447,
+    385
+   ],
+   "pivot": {
+    "x": 214.3,
+    "y": 266
+   },
+   "scale": 0.25,
+   "widthWorld": 111.75,
+   "heightM": 1.13,
+   "footprintM": [
+    1.98,
+    2.34
+   ],
+   "source": "procedural 2:1 isometric blocks (iso-solid.mjs), stone from v1 pillar-intact and paving",
+   "recipe": {
+    "kind": "grounded",
+    "bank": [
+     2,
+     4
+    ],
+    "spill": 4,
+    "tail": 8,
+    "band": 10,
+    "cap": false,
+    "iso": {
+     "boxes": 18,
+     "climbs": "-v",
+     "n": 6,
+     "H": 39,
+     "run": 0.78,
+     "w": 0.66
+    }
+   }
+  },
+  {
+   "id": "stairs-nw",
+   "file": "assets/stairs-nw.png",
+   "size": [
+    539,
+    374
+   ],
+   "pivot": {
+    "x": 268.1,
+    "y": 234.2
+   },
+   "scale": 0.25,
+   "widthWorld": 134.75,
+   "heightM": 0.77,
+   "footprintM": [
+    1.8,
+    3.6
+   ],
+   "source": "procedural 2:1 isometric blocks (iso-solid.mjs), stone from v1 pillar-intact and paving",
+   "recipe": {
+    "kind": "grounded",
+    "bank": [
+     2,
+     4
+    ],
+    "spill": 4,
+    "tail": 8,
+    "band": 10,
+    "cap": false,
+    "iso": {
+     "boxes": 12,
+     "climbs": "-u",
+     "n": 4,
+     "H": 25.3,
+     "run": 0.6,
+     "w": 1.2
+    }
+   }
+  },
+  {
+   "id": "rubble",
+   "file": "assets/rubble.png",
+   "size": [
+    408,
+    216
+   ],
+   "pivot": {
+    "x": 199,
+    "y": 135.3
+   },
+   "scale": 0.25,
+   "widthWorld": 102,
+   "heightM": 0.5,
+   "footprintM": [
+    1.5,
+    1
+   ],
+   "source": "public/frozen-frontier/v1/assets/rubble.png",
+   "recipe": {
+    "kind": "grounded",
+    "bank": [
+     4,
+     8
+    ],
+    "spill": 3,
+    "tail": 7,
+    "band": 12
+   }
+  },
+  {
+   "id": "foundation",
+   "file": "assets/foundation.png",
+   "size": [
+    1071,
+    702
+   ],
+   "pivot": {
+    "x": 521,
+    "y": 378.7
+   },
+   "scale": 0.25,
+   "widthWorld": 267.75,
+   "heightM": 0.3,
+   "footprintM": [
+    6,
+    6
+   ],
+   "source": "public/frozen-frontier/v1/assets/foundation.png",
+   "recipe": {
+    "kind": "grounded",
+    "bank": [
+     2,
+     4
+    ],
+    "spill": 2,
+    "tail": 3,
+    "band": 8,
+    "cap": false
+   }
+  },
+  {
+   "id": "floor-sunk",
+   "file": "assets/floor-sunk.png",
+   "size": [
+    852,
+    467
+   ],
+   "pivot": {
+    "x": 434,
+    "y": 243.3
+   },
+   "scale": 0.25,
+   "widthWorld": 213,
+   "heightM": 0,
+   "footprintM": [
+    6,
+    6
+   ],
+   "source": "public/frozen-frontier/v1/assets/foundation.png",
+   "recipe": {
+    "kind": "sunk",
+    "from": "foundation",
+    "face": [
+     384,
+     208,
+     376,
+     196
+    ],
+    "edge": [
+     0.9,
+     0.16
+    ],
+    "bites": [
+     [
+      0.55,
+      -0.3,
+      0.2,
+      0.32
+     ],
+     [
+      -0.2,
+      0.62,
+      0.16,
+      0.3
+     ]
+    ],
+    "holes": 0.7,
+    "footprintM": [
+     6,
+     6
+    ]
+   }
+  },
+  {
+   "id": "paving",
+   "file": "assets/paving.png",
+   "size": [
+    789,
+    414
+   ],
+   "pivot": {
+    "x": 390,
+    "y": 205.2
+   },
+   "scale": 0.25,
+   "widthWorld": 197.25,
+   "heightM": 0,
+   "footprintM": [
+    6,
+    6
+   ],
+   "source": "public/frozen-frontier/v1/assets/paving.png",
+   "recipe": {
+    "kind": "sunk",
+    "from": "paving",
+    "face": [
+     384,
+     265,
+     383,
+     263
+    ],
+    "squash": 0.728,
+    "edge": [
+     0.84,
+     0.2
+    ],
+    "bites": [
+     [
+      -0.5,
+      -0.3,
+      0.22,
+      0.35
+     ],
+     [
+      0.45,
+      0.4,
+      0.18,
+      0.3
+     ]
+    ],
+    "holes": 0.66,
+    "drift": 0.62,
+    "footprintM": [
+     6,
+     6
+    ]
+   }
+  },
+  {
+   "id": "flagstones-a",
+   "file": "assets/flagstones-a.png",
+   "size": [
+    339,
+    169
+   ],
+   "pivot": {
+    "x": 165,
+    "y": 84
+   },
+   "scale": 0.25,
+   "widthWorld": 84.75,
+   "heightM": 0,
+   "footprintM": [
+    2.13953488372093,
+    0.9627906976744186
+   ],
+   "source": "public/frozen-frontier/v1/assets/paving.png",
+   "recipe": {
+    "kind": "flagstones",
+    "a": 46,
+    "b": 0.9,
+    "off": [
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "id": "flagstones-b",
+   "file": "assets/flagstones-b.png",
+   "size": [
+    307,
+    124
+   ],
+   "pivot": {
+    "x": 160,
+    "y": 59
+   },
+   "scale": 0.25,
+   "widthWorld": 76.75,
+   "heightM": 0,
+   "footprintM": [
+    1.8604651162790697,
+    0.7441860465116279
+   ],
+   "source": "public/frozen-frontier/v1/assets/paving.png",
+   "recipe": {
+    "kind": "flagstones",
+    "a": 40,
+    "b": 0.8,
+    "off": [
+     -6,
+     3
+    ]
+   }
+  },
+  {
+   "id": "flagstones-c",
+   "file": "assets/flagstones-c.png",
+   "size": [
+    390,
+    147
+   ],
+   "pivot": {
+    "x": 204,
+    "y": 73
+   },
+   "scale": 0.25,
+   "widthWorld": 97.5,
+   "heightM": 0,
+   "footprintM": [
+    2.4186046511627906,
+    0.9069767441860465
+   ],
+   "source": "public/frozen-frontier/v1/assets/paving.png",
+   "recipe": {
+    "kind": "flagstones",
+    "a": 52,
+    "b": 0.75,
+    "off": [
+     5,
+     -2
+    ]
+   }
+  },
+  {
+   "id": "flagstones-d",
+   "file": "assets/flagstones-d.png",
+   "size": [
+    270,
+    128
+   ],
+   "pivot": {
+    "x": 130,
+    "y": 63.5
+   },
+   "scale": 0.25,
+   "widthWorld": 67.5,
+   "heightM": 0,
+   "footprintM": [
+    1.6744186046511629,
+    0.7953488372093023
+   ],
+   "source": "public/frozen-frontier/v1/assets/paving.png",
+   "recipe": {
+    "kind": "flagstones",
+    "a": 36,
+    "b": 0.95,
+    "off": [
+     3,
+     5
+    ]
+   }
+  },
+  {
+   "id": "stone-chips-a",
+   "file": "assets/stone-chips-a.png",
+   "size": [
+    194,
+    97
+   ],
+   "pivot": {
+    "x": 83,
+    "y": 55.4
+   },
+   "scale": 0.25,
+   "widthWorld": 48.5,
+   "heightM": 0.15,
+   "footprintM": [
+    1.302325581395349,
+    0.6046511627906976
+   ],
+   "source": "public/frozen-frontier/v1/assets/paving.png",
+   "recipe": {
+    "kind": "chips",
+    "w": 56,
+    "h": 26,
+    "n": 7,
+    "r": [
+     2.5,
+     6
+    ]
+   }
+  },
+  {
+   "id": "stone-chips-b",
+   "file": "assets/stone-chips-b.png",
+   "size": [
+    150,
+    86
+   ],
+   "pivot": {
+    "x": 65,
+    "y": 50.8
+   },
+   "scale": 0.25,
+   "widthWorld": 37.5,
+   "heightM": 0.15,
+   "footprintM": [
+    1.0232558139534884,
+    0.5116279069767442
+   ],
+   "source": "public/frozen-frontier/v1/assets/paving.png",
+   "recipe": {
+    "kind": "chips",
+    "w": 44,
+    "h": 22,
+    "n": 5,
+    "r": [
+     3,
+     7
+    ]
+   }
+  },
+  {
+   "id": "drift-ne",
+   "file": "assets/drift-ne.png",
+   "size": [
+    324,
+    111
+   ],
+   "pivot": {
+    "x": 155,
+    "y": 54
+   },
+   "scale": 0.25,
+   "widthWorld": 81,
+   "heightM": 0.21621621621621623,
+   "footprintM": [
+    2.13953488372093,
+    0.6976744186046512
+   ],
+   "density": 1.6,
+   "source": "procedural",
+   "recipe": {
+    "kind": "drift",
+    "a": 46,
+    "b": 15,
+    "axis": "ne",
+    "hmax": 8
+   }
+  },
+  {
+   "id": "drift-se",
+   "file": "assets/drift-se.png",
+   "size": [
+    310,
+    113
+   ],
+   "pivot": {
+    "x": 150,
+    "y": 56
+   },
+   "scale": 0.25,
+   "widthWorld": 77.5,
+   "heightM": 0.21621621621621623,
+   "footprintM": [
+    2.13953488372093,
+    0.6976744186046512
+   ],
+   "density": 1.6,
+   "source": "procedural",
+   "recipe": {
+    "kind": "drift",
+    "a": 46,
+    "b": 15,
+    "axis": "se",
+    "hmax": 8
+   }
+  },
+  {
+   "id": "drift-mound",
+   "file": "assets/drift-mound.png",
+   "size": [
+    189,
+    94
+   ],
+   "pivot": {
+    "x": 85.5,
+    "y": 44
+   },
+   "scale": 0.25,
+   "widthWorld": 47.25,
+   "heightM": 0.16216216216216217,
+   "footprintM": [
+    1.1162790697674418,
+    0.9302325581395349
+   ],
+   "density": 1.6,
+   "source": "procedural",
+   "recipe": {
+    "kind": "drift",
+    "a": 24,
+    "b": 20,
+    "axis": "round",
+    "hmax": 6
+   }
+  },
+  {
+   "id": "ground-scuff-a",
+   "file": "assets/ground-scuff-a.png",
+   "size": [
+    734,
+    294
+   ],
+   "pivot": {
+    "x": 382,
+    "y": 145
+   },
+   "scale": 0.25,
+   "widthWorld": 183.5,
+   "heightM": 0,
+   "footprintM": [
+    5.116279069767442,
+    1.9534883720930232
+   ],
+   "density": 1.2,
+   "source": "procedural",
+   "recipe": {
+    "kind": "scuff",
+    "a": 110,
+    "b": 84,
+    "grass": 70,
+    "pebbles": 24
+   }
+  },
+  {
+   "id": "ground-scuff-b",
+   "file": "assets/ground-scuff-b.png",
+   "size": [
+    457,
+    154
+   ],
+   "pivot": {
+    "x": 224,
+    "y": 81
+   },
+   "scale": 0.25,
+   "widthWorld": 114.25,
+   "heightM": 0,
+   "footprintM": [
+    3.255813953488372,
+    1.069767441860465
+   ],
+   "density": 1.2,
+   "source": "procedural",
+   "recipe": {
+    "kind": "scuff",
+    "a": 70,
+    "b": 46,
+    "grass": 34,
+    "pebbles": 12
+   }
+  },
+  {
+   "id": "column-fallen",
+   "file": "assets/column-fallen.png",
+   "size": [
+    332,
+    225
+   ],
+   "pivot": {
+    "x": 147,
+    "y": 126.9
+   },
+   "scale": 0.25,
+   "widthWorld": 83,
+   "heightM": 0.5,
+   "footprintM": [
+    2.66,
+    0.7
+   ],
+   "source": "procedural 2:1 isometric blocks (iso-solid.mjs), stone from v1 pillar-intact and paving",
+   "recipe": {
+    "kind": "grounded",
+    "bank": [
+     1.5,
+     3.5
+    ],
+    "spill": 3,
+    "tail": 5,
+    "band": 8,
+    "cap": false,
+    "iso": {
+     "boxes": 4
+    }
+   }
+  },
+  {
+   "id": "column-fallen-v",
+   "file": "assets/column-fallen-v.png",
+   "size": [
+    332,
+    224
+   ],
+   "pivot": {
+    "x": 163.2,
+    "y": 126.9
+   },
+   "scale": 0.25,
+   "widthWorld": 83,
+   "heightM": 0.5,
+   "footprintM": [
+    0.7,
+    2.66
+   ],
+   "source": "procedural 2:1 isometric blocks (iso-solid.mjs), stone from v1 pillar-intact and paving",
+   "recipe": {
+    "kind": "grounded",
+    "bank": [
+     1.5,
+     3.5
+    ],
+    "spill": 3,
+    "tail": 5,
+    "band": 8,
+    "cap": false,
+    "iso": {
+     "boxes": 4
+    }
+   }
+  },
+  {
+   "id": "grave-headstone",
+   "file": "assets/grave-headstone.png",
+   "size": [
+    296,
+    368
+   ],
+   "pivot": {
+    "x": 136.8,
+    "y": 282.8
+   },
+   "scale": 0.25,
+   "widthWorld": 74,
+   "heightM": 1.59,
+   "footprintM": [
+    1.08,
+    1.68
+   ],
+   "source": "procedural 2:1 isometric blocks (iso-solid.mjs), stone from v1 pillar-intact",
+   "recipe": {
+    "kind": "grounded",
+    "bank": [
+     3.5,
+     6
+    ],
+    "spill": 3,
+    "tail": 5,
+    "band": 10,
+    "cap": false,
+    "gaps": true,
+    "iso": {
+     "boxes": 4
+    }
+   }
+  },
+  {
+   "id": "grave-cross",
+   "file": "assets/grave-cross.png",
+   "size": [
+    296,
+    397
+   ],
+   "pivot": {
+    "x": 136.8,
+    "y": 311.8
+   },
+   "scale": 0.25,
+   "widthWorld": 74,
+   "heightM": 1.84,
+   "footprintM": [
+    1.08,
+    1.68
+   ],
+   "source": "procedural 2:1 isometric blocks (iso-solid.mjs), stone from v1 pillar-intact",
+   "recipe": {
+    "kind": "grounded",
+    "bank": [
+     3.5,
+     6
+    ],
+    "spill": 3,
+    "tail": 5,
+    "band": 10,
+    "cap": false,
+    "gaps": true,
+    "iso": {
+     "boxes": 3
+    }
+   }
+  },
+  {
+   "id": "grave-sarcophagus",
+   "file": "assets/grave-sarcophagus.png",
+   "size": [
+    402,
+    347
+   ],
+   "pivot": {
+    "x": 193.1,
+    "y": 236
+   },
+   "scale": 0.25,
+   "widthWorld": 100.5,
+   "heightM": 1,
+   "footprintM": [
+    1.44,
+    2.52
+   ],
+   "source": "procedural 2:1 isometric blocks (iso-solid.mjs), stone from v1 pillar-intact",
+   "recipe": {
+    "kind": "grounded",
+    "bank": [
+     4,
+     7
+    ],
+    "spill": 3,
+    "tail": 5,
+    "band": 10,
+    "cap": false,
+    "gaps": true,
+    "iso": {
+     "boxes": 3
+    }
+   }
+  },
+  {
+   "id": "grave-memorial",
+   "file": "assets/grave-memorial.png",
+   "size": [
+    571,
+    572
+   ],
+   "pivot": {
+    "x": 275,
+    "y": 417.5
+   },
+   "scale": 0.25,
+   "widthWorld": 142.75,
+   "heightM": 2.51,
+   "footprintM": [
+    3,
+    3
+   ],
+   "source": "procedural 2:1 isometric blocks (iso-solid.mjs), stone from v1 pillar-intact",
+   "recipe": {
+    "kind": "grounded",
+    "bank": [
+     3.5,
+     6
+    ],
+    "spill": 3,
+    "tail": 5,
+    "band": 10,
+    "cap": false,
+    "gaps": true,
+    "iso": {
+     "boxes": 5
+    }
+   }
+  },
+  {
+   "id": "temple-podium",
+   "file": "assets/temple-podium.png",
+   "size": [
+    1154,
+    671
+   ],
+   "pivot": {
+    "x": 576.936,
+    "y": 377.868
+   },
+   "scale": 0.3333333333333333,
+   "widthWorld": 384.6666666666667,
+   "heightM": 1.0541666666666667,
+   "footprintM": [
+    5.874,
+    11.874
+   ],
+   "source": "continuous 2:1 stone podium, textured from the reviewed foundation and pillar",
+   "recipe": {
+    "kind": "temple-podium",
+    "height": 25.3,
+    "u": [
+     -0.979,
+     0.979
+    ],
+    "v": [
+     -1.979,
+     1.979
+    ],
+    "entrance": [
+     -0.6,
+     0.6
+    ]
+   }
+  }
+ ]
+}

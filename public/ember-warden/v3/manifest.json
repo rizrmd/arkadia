@@ -1,0 +1,1909 @@
+{
+  "version": 3,
+  "status": "painted-animation-candidate",
+  "direction": "SE",
+  "directions": [
+    "SE"
+  ],
+  "cell": [
+    384,
+    384
+  ],
+  "pivot": [
+    192,
+    320
+  ],
+  "atlas": "ember-warden-SE.png",
+  "atlasJson": "atlas.json",
+  "actions": [
+    "idle",
+    "run",
+    "flame-fan",
+    "cinder-step",
+    "ember-snare",
+    "furnace-heart",
+    "hurt",
+    "death"
+  ],
+  "clips": [
+    {
+      "id": "idle-SE",
+      "action": "idle",
+      "direction": "SE",
+      "image": "sheets/idle-SE.png",
+      "fps": 6,
+      "loop": true,
+      "holdLastFrame": false,
+      "next": null,
+      "durationMs": 1333,
+      "frames": [
+        {
+          "index": 0,
+          "rect": [
+            0,
+            0,
+            384,
+            384
+          ],
+          "atlasRect": [
+            0,
+            0,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            131,
+            70,
+            254,
+            320
+          ],
+          "durationMs": 166.66666666666666,
+          "sha256": "da0308e22463d329fc881dc3a45095834c3eb5f821a3a9602078d65de3fcc4d1"
+        },
+        {
+          "index": 1,
+          "rect": [
+            384,
+            0,
+            384,
+            384
+          ],
+          "atlasRect": [
+            384,
+            0,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            131,
+            70,
+            254,
+            320
+          ],
+          "durationMs": 166.66666666666666,
+          "sha256": "738ae37fbe31c3852471afc8e37375e365f32b7c3e0564d65b31f82f10fe03d5"
+        },
+        {
+          "index": 2,
+          "rect": [
+            768,
+            0,
+            384,
+            384
+          ],
+          "atlasRect": [
+            768,
+            0,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            131,
+            69,
+            255,
+            320
+          ],
+          "durationMs": 166.66666666666666,
+          "sha256": "5fc33286ddd3f30d3eaba0dcf2e76ca7cb4bf8ada9bfcf97a176c4843fb40404"
+        },
+        {
+          "index": 3,
+          "rect": [
+            1152,
+            0,
+            384,
+            384
+          ],
+          "atlasRect": [
+            1152,
+            0,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            130,
+            69,
+            254,
+            320
+          ],
+          "durationMs": 166.66666666666666,
+          "sha256": "58a953b323caa31a3cf64b860637f640c6b3f144b5b45339af98f349fd627a42"
+        },
+        {
+          "index": 4,
+          "rect": [
+            0,
+            384,
+            384,
+            384
+          ],
+          "atlasRect": [
+            1536,
+            0,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            132,
+            66,
+            255,
+            322
+          ],
+          "durationMs": 166.66666666666666,
+          "sha256": "fcc2dfd8b1886ee94f58ee6db0c456af93b67cf0ff6a9dd72e8521c842c9b15f"
+        },
+        {
+          "index": 5,
+          "rect": [
+            384,
+            384,
+            384,
+            384
+          ],
+          "atlasRect": [
+            1920,
+            0,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            132,
+            66,
+            255,
+            322
+          ],
+          "durationMs": 166.66666666666666,
+          "sha256": "82c925924daadda955725bbbbcf518b7987c1c7c4c8c9d7e22d4f4cfeb8b7cc4"
+        },
+        {
+          "index": 6,
+          "rect": [
+            768,
+            384,
+            384,
+            384
+          ],
+          "atlasRect": [
+            2304,
+            0,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            131,
+            66,
+            255,
+            322
+          ],
+          "durationMs": 166.66666666666666,
+          "sha256": "10bf535c786e39d97e78b2b47ba7fcecccc2b5400f6d752717c64da195c07409"
+        },
+        {
+          "index": 7,
+          "rect": [
+            1152,
+            384,
+            384,
+            384
+          ],
+          "atlasRect": [
+            2688,
+            0,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            131,
+            70,
+            254,
+            320
+          ],
+          "durationMs": 166.66666666666666,
+          "sha256": "da0308e22463d329fc881dc3a45095834c3eb5f821a3a9602078d65de3fcc4d1"
+        }
+      ],
+      "effects": "none"
+    },
+    {
+      "id": "run-SE",
+      "action": "run",
+      "direction": "SE",
+      "image": "sheets/run-SE.png",
+      "fps": 12,
+      "loop": true,
+      "holdLastFrame": false,
+      "next": null,
+      "durationMs": 667,
+      "frames": [
+        {
+          "index": 0,
+          "rect": [
+            0,
+            0,
+            384,
+            384
+          ],
+          "atlasRect": [
+            0,
+            384,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            131,
+            70,
+            254,
+            320
+          ],
+          "durationMs": 83.33333333333333,
+          "sha256": "b84d76212072a9f7e34ee4ce1b455cc9d9ca104824e74ad5ca8d7e34a570e911"
+        },
+        {
+          "index": 1,
+          "rect": [
+            384,
+            0,
+            384,
+            384
+          ],
+          "atlasRect": [
+            384,
+            384,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            131,
+            71,
+            254,
+            326
+          ],
+          "durationMs": 83.33333333333333,
+          "sha256": "4ca02aa149143c622cfc56223760b8d2e035cba9b7475c45248a8f92052bfc5e"
+        },
+        {
+          "index": 2,
+          "rect": [
+            768,
+            0,
+            384,
+            384
+          ],
+          "atlasRect": [
+            768,
+            384,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            103,
+            72,
+            284,
+            327
+          ],
+          "durationMs": 83.33333333333333,
+          "sha256": "3749deddc3048923cdab6edbbf5e361df9d20158eedcf9695cae5548ce165f6b"
+        },
+        {
+          "index": 3,
+          "rect": [
+            1152,
+            0,
+            384,
+            384
+          ],
+          "atlasRect": [
+            1152,
+            384,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            127,
+            71,
+            264,
+            324
+          ],
+          "durationMs": 83.33333333333333,
+          "sha256": "de82afab9c073a4275f41f544b5ea58b4e51b2ca1ff5ee9c3cd0acacc36792e9"
+        },
+        {
+          "index": 4,
+          "rect": [
+            0,
+            384,
+            384,
+            384
+          ],
+          "atlasRect": [
+            1536,
+            384,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            127,
+            70,
+            264,
+            327
+          ],
+          "durationMs": 83.33333333333333,
+          "sha256": "2a5ce77956c1c10e9ebb932eb37fd2e210f7a33ff8493f42a6e8d3b2f3c20e76"
+        },
+        {
+          "index": 5,
+          "rect": [
+            384,
+            384,
+            384,
+            384
+          ],
+          "atlasRect": [
+            1920,
+            384,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            120,
+            71,
+            272,
+            329
+          ],
+          "durationMs": 83.33333333333333,
+          "sha256": "df24fd55be2b3015a036eb86b4679b05e384394a335a3d0ce2dcfd4c50028bba"
+        },
+        {
+          "index": 6,
+          "rect": [
+            768,
+            384,
+            384,
+            384
+          ],
+          "atlasRect": [
+            2304,
+            384,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            115,
+            72,
+            273,
+            337
+          ],
+          "durationMs": 83.33333333333333,
+          "sha256": "fbc2b58668977ec19442b3af1672c81f069eef00ebfb7833736fa2245cd60f7d"
+        },
+        {
+          "index": 7,
+          "rect": [
+            1152,
+            384,
+            384,
+            384
+          ],
+          "atlasRect": [
+            2688,
+            384,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            104,
+            71,
+            284,
+            322
+          ],
+          "durationMs": 83.33333333333333,
+          "sha256": "3212a8fd482bb8c9513953438cc0504e3d65cd6c14dd6d0e9b3d9583fb79417f"
+        }
+      ],
+      "effects": "none"
+    },
+    {
+      "id": "flame-fan-SE",
+      "action": "flame-fan",
+      "direction": "SE",
+      "image": "sheets/flame-fan-SE.png",
+      "fps": 10,
+      "loop": false,
+      "holdLastFrame": false,
+      "next": "idle",
+      "durationMs": 800,
+      "frames": [
+        {
+          "index": 0,
+          "rect": [
+            0,
+            0,
+            384,
+            384
+          ],
+          "atlasRect": [
+            0,
+            768,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            131,
+            70,
+            254,
+            320
+          ],
+          "durationMs": 100,
+          "sha256": "da0308e22463d329fc881dc3a45095834c3eb5f821a3a9602078d65de3fcc4d1"
+        },
+        {
+          "index": 1,
+          "rect": [
+            384,
+            0,
+            384,
+            384
+          ],
+          "atlasRect": [
+            384,
+            768,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            122,
+            77,
+            270,
+            322
+          ],
+          "durationMs": 100,
+          "sha256": "564b21b4fc8c0c0ce9f78ebbd34796657eef291e132b605aa9560c6a3f1b3e66"
+        },
+        {
+          "index": 2,
+          "rect": [
+            768,
+            0,
+            384,
+            384
+          ],
+          "atlasRect": [
+            768,
+            768,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            78,
+            82,
+            277,
+            321
+          ],
+          "durationMs": 100,
+          "sha256": "40ee3b11add02e383d994d2cce8254412f0891251020d6e547661998c9247b64"
+        },
+        {
+          "index": 3,
+          "rect": [
+            1152,
+            0,
+            384,
+            384
+          ],
+          "atlasRect": [
+            1152,
+            768,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            113,
+            79,
+            290,
+            320
+          ],
+          "durationMs": 100,
+          "sha256": "3138daa971e0dcd4a6c872bef1593629b4b943c15ba4766f4b34e23bffc2d83a"
+        },
+        {
+          "index": 4,
+          "rect": [
+            0,
+            384,
+            384,
+            384
+          ],
+          "atlasRect": [
+            1536,
+            768,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            116,
+            77,
+            333,
+            320
+          ],
+          "durationMs": 100,
+          "sha256": "366b745d803e8379da2f2330a40a4a7e81b779a5ff765ae76bba49fd24e85f1d"
+        },
+        {
+          "index": 5,
+          "rect": [
+            384,
+            384,
+            384,
+            384
+          ],
+          "atlasRect": [
+            1920,
+            768,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            116,
+            79,
+            330,
+            321
+          ],
+          "durationMs": 100,
+          "sha256": "3c930cfe8a5145e18ff6ccfeb33ce94f262d6bc00aa11a961ab4e42c7aec02f2"
+        },
+        {
+          "index": 6,
+          "rect": [
+            768,
+            384,
+            384,
+            384
+          ],
+          "atlasRect": [
+            2304,
+            768,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            127,
+            68,
+            261,
+            321
+          ],
+          "durationMs": 100,
+          "sha256": "088f38f4709cad53ee437dbd1abb0ec1a596b77671023927c7e55f4213c7078e"
+        },
+        {
+          "index": 7,
+          "rect": [
+            1152,
+            384,
+            384,
+            384
+          ],
+          "atlasRect": [
+            2688,
+            768,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            131,
+            70,
+            254,
+            320
+          ],
+          "durationMs": 100,
+          "sha256": "da0308e22463d329fc881dc3a45095834c3eb5f821a3a9602078d65de3fcc4d1"
+        }
+      ],
+      "effects": "baked into RGBA frames"
+    },
+    {
+      "id": "cinder-step-SE",
+      "action": "cinder-step",
+      "direction": "SE",
+      "image": "sheets/cinder-step-SE.png",
+      "fps": 12,
+      "loop": false,
+      "holdLastFrame": false,
+      "next": "idle",
+      "durationMs": 667,
+      "frames": [
+        {
+          "index": 0,
+          "rect": [
+            0,
+            0,
+            384,
+            384
+          ],
+          "atlasRect": [
+            0,
+            1152,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            131,
+            70,
+            254,
+            320
+          ],
+          "durationMs": 83.33333333333333,
+          "sha256": "da0308e22463d329fc881dc3a45095834c3eb5f821a3a9602078d65de3fcc4d1"
+        },
+        {
+          "index": 1,
+          "rect": [
+            384,
+            0,
+            384,
+            384
+          ],
+          "atlasRect": [
+            384,
+            1152,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            121,
+            116,
+            262,
+            320
+          ],
+          "durationMs": 83.33333333333333,
+          "sha256": "99b14bdd9668da4204df45bc4ac5f22965cd78952fb82cc61cf04eafbd2f2a2e"
+        },
+        {
+          "index": 2,
+          "rect": [
+            768,
+            0,
+            384,
+            384
+          ],
+          "atlasRect": [
+            768,
+            1152,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            84,
+            118,
+            274,
+            321
+          ],
+          "durationMs": 83.33333333333333,
+          "sha256": "5f6e537ae9001685dcc2d8685e3d9597087989c8a670b9021603220f058b66f0"
+        },
+        {
+          "index": 3,
+          "rect": [
+            1152,
+            0,
+            384,
+            384
+          ],
+          "atlasRect": [
+            1152,
+            1152,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            94,
+            106,
+            296,
+            321
+          ],
+          "durationMs": 83.33333333333333,
+          "sha256": "eda9776ba4c3584255d00dd51bc0106b5a3a040eca3ddbfb8fcd397d51a3f1f4"
+        },
+        {
+          "index": 4,
+          "rect": [
+            0,
+            384,
+            384,
+            384
+          ],
+          "atlasRect": [
+            1536,
+            1152,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            91,
+            172,
+            321,
+            328
+          ],
+          "durationMs": 83.33333333333333,
+          "sha256": "85a161bf0bbeb2f0f8fff2f4f2d0894deebc00287a7137eac869fca61bad5330"
+        },
+        {
+          "index": 5,
+          "rect": [
+            384,
+            384,
+            384,
+            384
+          ],
+          "atlasRect": [
+            1920,
+            1152,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            84,
+            154,
+            270,
+            322
+          ],
+          "durationMs": 83.33333333333333,
+          "sha256": "c6c9b2b3c6469faa6607836f03e96be3c4d4dff568e93a293a868ea97d73e5e7"
+        },
+        {
+          "index": 6,
+          "rect": [
+            768,
+            384,
+            384,
+            384
+          ],
+          "atlasRect": [
+            2304,
+            1152,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            100,
+            103,
+            274,
+            320
+          ],
+          "durationMs": 83.33333333333333,
+          "sha256": "62c58bc014b0334a327ec0a2128539289ceaa270934dbd58378cd27a61227059"
+        },
+        {
+          "index": 7,
+          "rect": [
+            1152,
+            384,
+            384,
+            384
+          ],
+          "atlasRect": [
+            2688,
+            1152,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            131,
+            70,
+            254,
+            320
+          ],
+          "durationMs": 83.33333333333333,
+          "sha256": "da0308e22463d329fc881dc3a45095834c3eb5f821a3a9602078d65de3fcc4d1"
+        }
+      ],
+      "effects": "baked into RGBA frames"
+    },
+    {
+      "id": "ember-snare-SE",
+      "action": "ember-snare",
+      "direction": "SE",
+      "image": "sheets/ember-snare-SE.png",
+      "fps": 9,
+      "loop": false,
+      "holdLastFrame": false,
+      "next": "idle",
+      "durationMs": 889,
+      "frames": [
+        {
+          "index": 0,
+          "rect": [
+            0,
+            0,
+            384,
+            384
+          ],
+          "atlasRect": [
+            0,
+            1536,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            131,
+            70,
+            254,
+            320
+          ],
+          "durationMs": 111.11111111111111,
+          "sha256": "da0308e22463d329fc881dc3a45095834c3eb5f821a3a9602078d65de3fcc4d1"
+        },
+        {
+          "index": 1,
+          "rect": [
+            384,
+            0,
+            384,
+            384
+          ],
+          "atlasRect": [
+            384,
+            1536,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            122,
+            86,
+            279,
+            320
+          ],
+          "durationMs": 111.11111111111111,
+          "sha256": "9401abebff5f42aba297ff50b0e2c83b63399aef5f3727c97b713495367dd2c0"
+        },
+        {
+          "index": 2,
+          "rect": [
+            768,
+            0,
+            384,
+            384
+          ],
+          "atlasRect": [
+            768,
+            1536,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            117,
+            124,
+            282,
+            321
+          ],
+          "durationMs": 111.11111111111111,
+          "sha256": "946ec9eb3432a197dce02abbfd2bbf151ccca31b335a65eedbf0ee05b5e748de"
+        },
+        {
+          "index": 3,
+          "rect": [
+            1152,
+            0,
+            384,
+            384
+          ],
+          "atlasRect": [
+            1152,
+            1536,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            109,
+            146,
+            282,
+            338
+          ],
+          "durationMs": 111.11111111111111,
+          "sha256": "55933918e2e6af2609dda382d306ce11041c42f6b9e611121e5be0be92005b2a"
+        },
+        {
+          "index": 4,
+          "rect": [
+            0,
+            384,
+            384,
+            384
+          ],
+          "atlasRect": [
+            1536,
+            1536,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            107,
+            81,
+            289,
+            321
+          ],
+          "durationMs": 111.11111111111111,
+          "sha256": "6bebb170431459891cbaad80d661bbe668fdccb1f00cd01b04abd0cbab00f917"
+        },
+        {
+          "index": 5,
+          "rect": [
+            384,
+            384,
+            384,
+            384
+          ],
+          "atlasRect": [
+            1920,
+            1536,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            105,
+            72,
+            279,
+            322
+          ],
+          "durationMs": 111.11111111111111,
+          "sha256": "ce173377a6c107ed02f599f3ef312356d4dd1f25fbc1acaf85004739f600d05e"
+        },
+        {
+          "index": 6,
+          "rect": [
+            768,
+            384,
+            384,
+            384
+          ],
+          "atlasRect": [
+            2304,
+            1536,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            131,
+            69,
+            255,
+            320
+          ],
+          "durationMs": 111.11111111111111,
+          "sha256": "54581aacb98d52f738288ac602423e955d03ddc33e1399b3158c4313e7696aa3"
+        },
+        {
+          "index": 7,
+          "rect": [
+            1152,
+            384,
+            384,
+            384
+          ],
+          "atlasRect": [
+            2688,
+            1536,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            131,
+            70,
+            254,
+            320
+          ],
+          "durationMs": 111.11111111111111,
+          "sha256": "da0308e22463d329fc881dc3a45095834c3eb5f821a3a9602078d65de3fcc4d1"
+        }
+      ],
+      "effects": "baked into RGBA frames"
+    },
+    {
+      "id": "furnace-heart-SE",
+      "action": "furnace-heart",
+      "direction": "SE",
+      "image": "sheets/furnace-heart-SE.png",
+      "fps": 8,
+      "loop": false,
+      "holdLastFrame": false,
+      "next": "idle",
+      "durationMs": 1000,
+      "frames": [
+        {
+          "index": 0,
+          "rect": [
+            0,
+            0,
+            384,
+            384
+          ],
+          "atlasRect": [
+            0,
+            1920,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            131,
+            70,
+            254,
+            320
+          ],
+          "durationMs": 125,
+          "sha256": "da0308e22463d329fc881dc3a45095834c3eb5f821a3a9602078d65de3fcc4d1"
+        },
+        {
+          "index": 1,
+          "rect": [
+            384,
+            0,
+            384,
+            384
+          ],
+          "atlasRect": [
+            384,
+            1920,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            143,
+            71,
+            241,
+            321
+          ],
+          "durationMs": 125,
+          "sha256": "0f7ccfa761df299fb9a65c07d6e9a93a8638941a4368c952195d40afd958d86d"
+        },
+        {
+          "index": 2,
+          "rect": [
+            768,
+            0,
+            384,
+            384
+          ],
+          "atlasRect": [
+            768,
+            1920,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            98,
+            79,
+            269,
+            321
+          ],
+          "durationMs": 125,
+          "sha256": "4e2961a1086f2a22f79f758fe23542528e5a45382fecf064aff3dc8fa3a6089e"
+        },
+        {
+          "index": 3,
+          "rect": [
+            1152,
+            0,
+            384,
+            384
+          ],
+          "atlasRect": [
+            1152,
+            1920,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            121,
+            70,
+            265,
+            321
+          ],
+          "durationMs": 125,
+          "sha256": "e0cab85f6df9bb7c99595e80210ec86bd13a515f7bded533d3d9ab3bbeba6324"
+        },
+        {
+          "index": 4,
+          "rect": [
+            0,
+            384,
+            384,
+            384
+          ],
+          "atlasRect": [
+            1536,
+            1920,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            108,
+            68,
+            279,
+            321
+          ],
+          "durationMs": 125,
+          "sha256": "306d3d0ad296f64e5e7500164b1c7d5befd420911d528faace9bb1d65a210650"
+        },
+        {
+          "index": 5,
+          "rect": [
+            384,
+            384,
+            384,
+            384
+          ],
+          "atlasRect": [
+            1920,
+            1920,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            111,
+            68,
+            272,
+            321
+          ],
+          "durationMs": 125,
+          "sha256": "24e8e60a86aef29a6427c9e6553056c76b182145a4e37f531f465d83337a6db2"
+        },
+        {
+          "index": 6,
+          "rect": [
+            768,
+            384,
+            384,
+            384
+          ],
+          "atlasRect": [
+            2304,
+            1920,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            133,
+            68,
+            255,
+            321
+          ],
+          "durationMs": 125,
+          "sha256": "dfbd9d4384c664b9bd38521d015be2d927e807c23f90452668a8505a93e46eff"
+        },
+        {
+          "index": 7,
+          "rect": [
+            1152,
+            384,
+            384,
+            384
+          ],
+          "atlasRect": [
+            2688,
+            1920,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            131,
+            70,
+            254,
+            320
+          ],
+          "durationMs": 125,
+          "sha256": "da0308e22463d329fc881dc3a45095834c3eb5f821a3a9602078d65de3fcc4d1"
+        }
+      ],
+      "effects": "baked into RGBA frames"
+    },
+    {
+      "id": "hurt-SE",
+      "action": "hurt",
+      "direction": "SE",
+      "image": "sheets/hurt-SE.png",
+      "fps": 12,
+      "loop": false,
+      "holdLastFrame": false,
+      "next": "idle",
+      "durationMs": 667,
+      "frames": [
+        {
+          "index": 0,
+          "rect": [
+            0,
+            0,
+            384,
+            384
+          ],
+          "atlasRect": [
+            0,
+            2304,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            131,
+            70,
+            254,
+            320
+          ],
+          "durationMs": 83.33333333333333,
+          "sha256": "da0308e22463d329fc881dc3a45095834c3eb5f821a3a9602078d65de3fcc4d1"
+        },
+        {
+          "index": 1,
+          "rect": [
+            384,
+            0,
+            384,
+            384
+          ],
+          "atlasRect": [
+            384,
+            2304,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            134,
+            75,
+            249,
+            320
+          ],
+          "durationMs": 83.33333333333333,
+          "sha256": "869d010bdf7a4b95161f3615fb6df98c8e61edac1375ed3e6bb7a4cbafb2eb8e"
+        },
+        {
+          "index": 2,
+          "rect": [
+            768,
+            0,
+            384,
+            384
+          ],
+          "atlasRect": [
+            768,
+            2304,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            107,
+            76,
+            266,
+            321
+          ],
+          "durationMs": 83.33333333333333,
+          "sha256": "7dcebb890f7ee1db79df660af05a83ffb0b25e193daa034fa7378ccb1e243f58"
+        },
+        {
+          "index": 3,
+          "rect": [
+            1152,
+            0,
+            384,
+            384
+          ],
+          "atlasRect": [
+            1152,
+            2304,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            114,
+            76,
+            269,
+            321
+          ],
+          "durationMs": 83.33333333333333,
+          "sha256": "bcf30e5bf373f3c09203076824b0975fbf97085d2826e9405774d60f601f47e4"
+        },
+        {
+          "index": 4,
+          "rect": [
+            0,
+            384,
+            384,
+            384
+          ],
+          "atlasRect": [
+            1536,
+            2304,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            127,
+            73,
+            259,
+            322
+          ],
+          "durationMs": 83.33333333333333,
+          "sha256": "ea88dddaeff63f97095febb3024332a1fe9c38b52f65573ae47c6621b173410a"
+        },
+        {
+          "index": 5,
+          "rect": [
+            384,
+            384,
+            384,
+            384
+          ],
+          "atlasRect": [
+            1920,
+            2304,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            130,
+            63,
+            255,
+            322
+          ],
+          "durationMs": 83.33333333333333,
+          "sha256": "cccfdaa4f909873157dee8e54a2484530096b2960d89186642860753f3c6d957"
+        },
+        {
+          "index": 6,
+          "rect": [
+            768,
+            384,
+            384,
+            384
+          ],
+          "atlasRect": [
+            2304,
+            2304,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            130,
+            62,
+            256,
+            321
+          ],
+          "durationMs": 83.33333333333333,
+          "sha256": "6eed88bdb88052254133d2f8a40186835395691cec2b0352fe9247250b2303d3"
+        },
+        {
+          "index": 7,
+          "rect": [
+            1152,
+            384,
+            384,
+            384
+          ],
+          "atlasRect": [
+            2688,
+            2304,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            131,
+            70,
+            254,
+            320
+          ],
+          "durationMs": 83.33333333333333,
+          "sha256": "da0308e22463d329fc881dc3a45095834c3eb5f821a3a9602078d65de3fcc4d1"
+        }
+      ],
+      "effects": "none"
+    },
+    {
+      "id": "death-SE",
+      "action": "death",
+      "direction": "SE",
+      "image": "sheets/death-SE.png",
+      "fps": 8,
+      "loop": false,
+      "holdLastFrame": true,
+      "next": null,
+      "durationMs": 1000,
+      "frames": [
+        {
+          "index": 0,
+          "rect": [
+            0,
+            0,
+            384,
+            384
+          ],
+          "atlasRect": [
+            0,
+            2688,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            131,
+            70,
+            254,
+            320
+          ],
+          "durationMs": 125,
+          "sha256": "da0308e22463d329fc881dc3a45095834c3eb5f821a3a9602078d65de3fcc4d1"
+        },
+        {
+          "index": 1,
+          "rect": [
+            384,
+            0,
+            384,
+            384
+          ],
+          "atlasRect": [
+            384,
+            2688,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            125,
+            86,
+            260,
+            320
+          ],
+          "durationMs": 125,
+          "sha256": "9429df5096a3776d1dc44a2f2969e141ecdf910bf8857bc536d3e89b78c3e417"
+        },
+        {
+          "index": 2,
+          "rect": [
+            768,
+            0,
+            384,
+            384
+          ],
+          "atlasRect": [
+            768,
+            2688,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            128,
+            125,
+            256,
+            320
+          ],
+          "durationMs": 125,
+          "sha256": "a0f26ec4a2b79b912efceccfcf2611890d6a451eb6dafad6753e909fda083572"
+        },
+        {
+          "index": 3,
+          "rect": [
+            1152,
+            0,
+            384,
+            384
+          ],
+          "atlasRect": [
+            1152,
+            2688,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            103,
+            162,
+            282,
+            320
+          ],
+          "durationMs": 125,
+          "sha256": "e27b9bb18b7a27e03ed6956c245609708f1b3e77f5ba388ff02ab353190eaf4e"
+        },
+        {
+          "index": 4,
+          "rect": [
+            0,
+            384,
+            384,
+            384
+          ],
+          "atlasRect": [
+            1536,
+            2688,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            93,
+            170,
+            292,
+            321
+          ],
+          "durationMs": 125,
+          "sha256": "a196e33b57d1b7691cf2d1c5d41ab488a8d5e7f6742dae4da341f74272be064c"
+        },
+        {
+          "index": 5,
+          "rect": [
+            384,
+            384,
+            384,
+            384
+          ],
+          "atlasRect": [
+            1920,
+            2688,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            72,
+            193,
+            313,
+            321
+          ],
+          "durationMs": 125,
+          "sha256": "8e35682dd2b08070db833fd34e19ea38f8140be308cc496a5d634e0b09145ac6"
+        },
+        {
+          "index": 6,
+          "rect": [
+            768,
+            384,
+            384,
+            384
+          ],
+          "atlasRect": [
+            2304,
+            2688,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            74,
+            224,
+            311,
+            320
+          ],
+          "durationMs": 125,
+          "sha256": "fd0d5763e577062bf67a615e4544d6978530bb5a631e0e3e2f0ee4ad21a1ec10"
+        },
+        {
+          "index": 7,
+          "rect": [
+            1152,
+            384,
+            384,
+            384
+          ],
+          "atlasRect": [
+            2688,
+            2688,
+            384,
+            384
+          ],
+          "pivot": [
+            192,
+            320
+          ],
+          "alphaBounds": [
+            74,
+            224,
+            311,
+            320
+          ],
+          "durationMs": 125,
+          "sha256": "fd0d5763e577062bf67a615e4544d6978530bb5a631e0e3e2f0ee4ad21a1ec10"
+        }
+      ],
+      "effects": "none"
+    }
+  ],
+  "resources": {
+    "source/cinder-step-SE.png": "06975f698a62fd0359cbc73cb3ddbcf622b4b737271be5a6fcf542f12e7e636b",
+    "source/death-SE.png": "a902aafc1125013ee9c758b427dfa4b88367d09f1bf2ccea9b8dcbc2d477e4d8",
+    "source/ember-snare-SE.png": "f5eac822e858f9d2cf966f62dabd2cfdb002eaf63256d2e23f49629b57cffff1",
+    "source/flame-fan-SE-layout-study.png": "b072bf33d08ff1f50703c4813a816fadff7a1409635399105b4ec0e3ed14fcc1",
+    "source/flame-fan-SE.png": "b072bf33d08ff1f50703c4813a816fadff7a1409635399105b4ec0e3ed14fcc1",
+    "source/furnace-heart-SE.png": "bfae2c0cec13dd9a1662c53e98549fb01518f6ac701f7c4a5e8ca0ff344c1484",
+    "source/hurt-SE.png": "a83c7e698824ef39065d77237cd24843e2fbd55ac210d6eab54e38ff49afbd0a",
+    "source/idle-SE.png": "f5f7889d80f8621b729f373687677bcee8ca889bd445c962fbdced858a046f38",
+    "source/run-SE-first-study.png": "f57771a294a838ac87244a23caf260656d199809c83367fbc30c024e2e021ffd",
+    "source/run-SE-second-study.png": "35863b15e163ab1352ca204a4e0ed56fa3053d3c72618ff5be325c8ff35b6a78",
+    "source/run-SE-third-study.png": "35863b15e163ab1352ca204a4e0ed56fa3053d3c72618ff5be325c8ff35b6a78",
+    "source/run-SE.png": "35863b15e163ab1352ca204a4e0ed56fa3053d3c72618ff5be325c8ff35b6a78",
+    "source/run-pose-guide.png": "5ec942fd17631381691b7a65dfa86561d9d6f68309179a9147b862af2488ae16",
+    "sheets/cinder-step-SE.png": "4746cac40764fd5eb86c60b420b43af25e0870097200a522c8586cbdace9cc07",
+    "sheets/death-SE.png": "f63412c87cfd7e372cf83dcc785402dd9f52f2d4e3099aa6e4943f2a44ffd2b9",
+    "sheets/ember-snare-SE.png": "aa9f2fa97757e30dedd1c26dc74f2bc41a1cfc411fc46d62c9133f142985cfb6",
+    "sheets/flame-fan-SE.png": "4104aaefa596ed5ebfd2d604527df1a32bc183ea83cab82698a57beffd04e14f",
+    "sheets/furnace-heart-SE.png": "497f27d5c5f9bdc5a2217ceff4a217948dad6f1339a1ee7e587349343931cd82",
+    "sheets/hurt-SE.png": "b1a6f95edee5636b7cd6d814e6cb8305eb0358732bbfba56fef2b11ba9617333",
+    "sheets/idle-SE.png": "6b897b368f273ea8adb5e62d8e52a18708cceca4ae798eb2eb4af2363606ea64",
+    "sheets/run-SE.png": "6922b576f0d41f97afc43c826c821f1b506c129e221f8d5dd988a3fed15035da",
+    "previews/cinder-step-SE.webp": "e7de78ff479e8b29b07399eec31bc8ff5f6f2a1ede8e1a864fbc3141004dfae3",
+    "previews/death-SE.webp": "b3a322d8819f634a0407eb83e8b137839585cb48077556f303b96531c53b5288",
+    "previews/ember-snare-SE.webp": "a6c549c08267ca9a1e4ad731e350a143d1fc0bda32de38ab5554653538ea5488",
+    "previews/flame-fan-SE.webp": "65b3064058763c0cd1694cd7c386aa687c569a99c0d05e1446fca87be6b3fc15",
+    "previews/furnace-heart-SE.webp": "d89cbd3dbd4367f8b5244e9eb2da77ce158261be3ad237dfb9df3c56ff35bf08",
+    "previews/hurt-SE.webp": "42d5c9eb778763191df77b9cc524759c737dd52c8d7e8d721d4b6f4101dd57d8",
+    "previews/idle-SE.webp": "8f9fdb56e75fd9717d17a850a51e5ed46e361e7d484a8fc5085c89f42dc8d8cb",
+    "previews/run-SE.webp": "0fc90232f0ba1c54f9a4e56866d7dcd56a8685dfecedce8c8de1a416c50bb4ad",
+    "ember-warden-SE.png": "7e2171d4bfd7eb4e9fed0d0cac6111dbae93e6076195e19dd891e03878f6b81d",
+    "atlas.json": "ed2a884d4df10c925ede907ceedaa305cea7f7c328dda8580b4f43659842fa1e"
+  },
+  "notes": [
+    "Eight southeast animations, eight frames each.",
+    "Skills have baked effects; these are not separate body and VFX layers.",
+    "Single-direction export; no gameplay hero or mechanics integration.",
+    "Generated gait, foot contacts and cloth continuity still require animator review; pixel/playback checks do not prove physical correctness."
+  ]
+}

@@ -1,0 +1,12 @@
+import {strict as a} from 'node:assert';
+import {fresh,settle,claim,upgrade,action,load,rewardRun,BALANCE} from './economy-test-module.mjs';
+const hour=3600000;let tests=0;const test=(name,fn)=>{fn();tests++;console.log('PASS',name);};
+test('offline cap, overflow loss and claim idempotency',()=>{const s=fresh(0);settle(s,48*hour);a.equal(s.storedGold,1200);a.equal(s.storedMana,120);const before=s.gold;claim(s);a.equal(s.gold,before+1200);claim(s);a.equal(s.gold,before+1200);settle(s,48*hour);a.equal(s.storedGold,0);settle(s,49*hour);a.equal(s.storedGold,120);});
+test('clock rollback cannot duplicate production',()=>{const s=fresh(hour);settle(s,0);a.equal(s.at,hour);settle(s,hour);a.equal(s.storedGold,0);});
+test('upgrade spending, requirements and cap',()=>{const s=fresh(0);upgrade(s,'mine');a.equal(s.gold,500);a.equal(s.levels.mine,2);s.gold=0;const before=JSON.stringify(s);a.throws(()=>upgrade(s,'mine'));a.equal(JSON.stringify(s),before);s.gold=10000;upgrade(s,'mine');upgrade(s,'forge');upgrade(s,'forge');a.throws(()=>upgrade(s,'forge'));});
+test('mine requirement rejects before spending',()=>{const s=fresh();s.gold=10000;upgrade(s,'mine');upgrade(s,'forge');const before=JSON.stringify(s);a.throws(()=>upgrade(s,'forge'));a.equal(JSON.stringify(s),before);});
+test('actions spend resources and enforce rank / hero limits',()=>{const s=fresh();action(s,'altar');a.equal(s.souls,10);a.throws(()=>action(s,'altar'));action(s,'barracks');a.equal(s.training,1);a.throws(()=>action(s,'barracks'));action(s,'mage');a.equal(s.skill,1);action(s,'forge');a.equal(s.weapon,1);action(s,'forge');a.equal(s.affix,1);});
+test('save round trip, invalid save rejection and pending output',()=>{const s=fresh(0);settle(s,hour);action(s,'forge');const restored=load(JSON.stringify(s),hour);a.deepEqual(restored,{...s,careerDefenses:{}});a.throws(()=>load('{broken'));a.throws(()=>load(JSON.stringify({...s,gold:-1})));a.throws(()=>load(JSON.stringify({...s,levels:{...s.levels,mine:999}})));});
+test('run reward binds to current run and cannot repeat',()=>{const s=fresh();s.runId='run-1';a.throws(()=>rewardRun(s,'run-1',4));a.throws(()=>rewardRun(s,'other',10));rewardRun(s,'run-1',5);a.equal(s.souls,BALANCE.start.souls+3);a.throws(()=>rewardRun(s,'run-1',10));});
+test('settle before upgrade keeps historical production rate',()=>{const s=fresh(0);settle(s,hour);upgrade(s,'mine');settle(s,2*hour);a.equal(s.storedGold,360);});
+console.log(`${tests} economy/save/offline tests passed`);

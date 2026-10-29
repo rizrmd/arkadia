@@ -1,0 +1,23 @@
+{
+  "pass": true,
+  "base": "http://127.0.0.1:5193",
+  "checks": [
+    "ember-warden S movement, gameplay model yaw and live Facing label",
+    "ember-warden N movement, gameplay model yaw and live Facing label",
+    "ember-warden E movement, gameplay model yaw and live Facing label",
+    "ember-warden W movement, gameplay model yaw and live Facing label",
+    "ember-warden SE movement, gameplay model yaw and live Facing label",
+    "ember-warden SW movement, gameplay model yaw and live Facing label",
+    "ember-warden NE movement, gameplay model yaw and live Facing label",
+    "ember-warden NW movement, gameplay model yaw and live Facing label",
+    "rift-runner S movement, gameplay model yaw and live Facing label",
+    "rift-runner N movement, gameplay model yaw and live Facing label",
+    "rift-runner E movement, gameplay model yaw and live Facing label",
+    "rift-runner W movement, gameplay model yaw and live Facing label",
+    "rift-runner SE movement, gameplay model yaw and live Facing label",
+    "rift-runner SW movement, gameplay model yaw and live Facing label",
+    "rift-runner NE movement, gameplay model yaw and live Facing label",
+    "rift-runner NW movement, gameplay model yaw and live Facing label"
+  ],
+  "errors": []
+}

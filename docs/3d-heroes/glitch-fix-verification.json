@@ -1,0 +1,62 @@
+{
+  "verifiedAt": "2026-10-24T00:12:20.287Z",
+  "syntheticTileGlitchTest": {
+    "heroOriginalCount": 7260,
+    "heroRemaining": 7260,
+    "garbageRemaining": 0
+  },
+  "captures": {
+    "mobile_ember-warden": {
+      "hero": "ember-warden",
+      "mode": "3d-60fps",
+      "clip3d": "idle",
+      "canvasSize": [
+        328,
+        355
+      ],
+      "totalOpaquePixels": 10068,
+      "borderOpaquePixels": 0,
+      "spriteOpaquePixels": 10180,
+      "spriteTopLeftRightBorderOpaque": 0
+    },
+    "mobile_rift-runner": {
+      "hero": "rift-runner",
+      "mode": "3d-60fps",
+      "clip3d": "idle",
+      "canvasSize": [
+        328,
+        355
+      ],
+      "totalOpaquePixels": 11967,
+      "borderOpaquePixels": 0,
+      "spriteOpaquePixels": 11902,
+      "spriteTopLeftRightBorderOpaque": 0
+    }
+  },
+  "emberCastAndRunContinuityTest": {
+    "idle_cast": {
+      "minOpaque": 8044,
+      "maxOpaque": 11451,
+      "zeroOrLowFrames": 0,
+      "maxBorderOpaque": 0
+    },
+    "run_cast": {
+      "minOpaque": 7362,
+      "maxOpaque": 10460,
+      "zeroOrLowFrames": 0,
+      "maxBorderOpaque": 0
+    },
+    "run": {
+      "minOpaque": 7124,
+      "maxOpaque": 9968,
+      "zeroOrLowFrames": 0,
+      "maxBorderOpaque": 0
+    },
+    "idle": {
+      "minOpaque": 8646,
+      "maxOpaque": 10171,
+      "zeroOrLowFrames": 0,
+      "maxBorderOpaque": 0
+    }
+  }
+}

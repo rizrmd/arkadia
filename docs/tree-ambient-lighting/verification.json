@@ -1,0 +1,133 @@
+{
+  "taskId": "ovqaasjeexjisrzjxvlhxjie",
+  "checkedAt": "2026-10-29T11:52:15.326Z",
+  "publishedMapRevision": 3,
+  "errors": [],
+  "checks": [
+    "Component harness: gathering.setAmbient(0x5c4f78) updates both harvestable trees layer and wildlife layer while preserving child sprite local tint.",
+    "Full game night (?time=0.02): gathering layer and wildlife layer ambient tint synchronized to 0x877097 across 81 trees.",
+    "Full game day (?time=0.5): gathering layer and wildlife layer ambient tint restored to 0xffffff."
+  ],
+  "component": {
+    "dayAmbient": 16777215,
+    "dayAnimalsAmbient": 16777215,
+    "nightAmbient": 6049656,
+    "nightAnimalsAmbient": 6049656,
+    "sampleTreeDay": {
+      "id": "ff:dead-snag:281",
+      "kind": "dead-snag",
+      "anchor": {
+        "u": 17.69999999999999,
+        "v": 23.100000000000023
+      },
+      "u": 17.69999999999999,
+      "v": 23.100000000000023,
+      "cycle": 0,
+      "readyDay": 100,
+      "down": false,
+      "tint": 16777215,
+      "groupColor": 16777215
+    },
+    "sampleTreeNight": {
+      "id": "ff:dead-snag:281",
+      "kind": "dead-snag",
+      "anchor": {
+        "u": 17.69999999999999,
+        "v": 23.100000000000023
+      },
+      "u": 17.69999999999999,
+      "v": 23.100000000000023,
+      "cycle": 0,
+      "readyDay": 100,
+      "down": false,
+      "tint": 16777215,
+      "groupColor": 16777215
+    }
+  },
+  "night": {
+    "ambientHex": "0x877097",
+    "ambient": 8876183,
+    "animalsAmbientHex": "0x877097",
+    "animalsAmbient": 8876183,
+    "treeCount": 81,
+    "deadTreeCount": 4,
+    "chosenTree": {
+      "id": "ff:dead-tree:366",
+      "u": 5.300000000000011,
+      "v": 33.89999999999998,
+      "heroU": 7.5000000000000115,
+      "heroV": 33.89999999999998
+    },
+    "sampleTrees": [
+      {
+        "id": "ff:dead-snag:281",
+        "kind": "dead-snag",
+        "tint": "0xffffff",
+        "groupColor": "0x977087"
+      },
+      {
+        "id": "ff:dead-snag:352",
+        "kind": "dead-snag",
+        "tint": "0xffffff",
+        "groupColor": "0x977087"
+      },
+      {
+        "id": "ff:dead-tree:366",
+        "kind": "dead-tree",
+        "tint": "0xffffff",
+        "groupColor": "0x977087"
+      },
+      {
+        "id": "ff:dead-snag:684",
+        "kind": "dead-snag",
+        "tint": "0xffffff",
+        "groupColor": "0x977087"
+      },
+      {
+        "id": "ff:dead-snag:686",
+        "kind": "dead-snag",
+        "tint": "0xffffff",
+        "groupColor": "0x977087"
+      }
+    ]
+  },
+  "day": {
+    "ambientHex": "0xffffff",
+    "ambient": 16777215,
+    "animalsAmbientHex": "0xffffff",
+    "animalsAmbient": 16777215,
+    "sampleTrees": [
+      {
+        "id": "ff:dead-snag:281",
+        "kind": "dead-snag",
+        "tint": "0xffffff",
+        "groupColor": "0xffffff"
+      },
+      {
+        "id": "ff:dead-snag:352",
+        "kind": "dead-snag",
+        "tint": "0xffffff",
+        "groupColor": "0xffffff"
+      },
+      {
+        "id": "ff:dead-tree:366",
+        "kind": "dead-tree",
+        "tint": "0xffffff",
+        "groupColor": "0xffffff"
+      },
+      {
+        "id": "ff:dead-snag:684",
+        "kind": "dead-snag",
+        "tint": "0xffffff",
+        "groupColor": "0xffffff"
+      },
+      {
+        "id": "ff:dead-snag:686",
+        "kind": "dead-snag",
+        "tint": "0xffffff",
+        "groupColor": "0xffffff"
+      }
+    ]
+  },
+  "passed": true
+}

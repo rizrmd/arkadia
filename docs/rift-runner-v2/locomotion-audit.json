@@ -1,0 +1,29 @@
+{
+  "status": "evaluated-source-proof-visual-review-still-required",
+  "results": [
+    {
+      "action": "run",
+      "samples": 240,
+      "leftRightFootPathMaxError": 0,
+      "leftRightArmPhaseMaxError": 0.0,
+      "stanceFloorMaxError": 6.705522537231445e-08,
+      "flightFraction": 0.4,
+      "doubleSupportFraction": 0.0,
+      "frontFootHasOppositeArm": true,
+      "periodSeconds": 0.8,
+      "pass": true
+    },
+    {
+      "action": "walk",
+      "samples": 240,
+      "leftRightFootPathMaxError": 0,
+      "leftRightArmPhaseMaxError": 0.0,
+      "stanceFloorMaxError": 7.450580596923828e-08,
+      "flightFraction": 0.0,
+      "doubleSupportFraction": 0.24166666666666667,
+      "frontFootHasOppositeArm": true,
+      "periodSeconds": 1.2,
+      "pass": true
+    }
+  ]
+}

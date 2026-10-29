@@ -1,0 +1,66 @@
+{
+ "profile": "lan",
+ "network": {
+  "base": 0,
+  "jitter": 0,
+  "spike": 0,
+  "spikeMs": 0
+ },
+ "build": "working tree",
+ "own": {
+  "frames": 172,
+  "medianPxPerS": 66.1,
+  "cv": 0.023,
+  "stalls": 0,
+  "jumps": 0,
+  "minPxPerS": 65.5,
+  "maxPxPerS": 71.9
+ },
+ "remote": {
+  "frames": 169,
+  "medianPxPerS": 69.1,
+  "cv": 0.043,
+  "stalls": 0,
+  "jumps": 0,
+  "minPxPerS": 65.5,
+  "maxPxPerS": 72.3
+ },
+ "serverSteps": {
+  "ticks": 100,
+  "histogram": {
+   "3.3": 100
+  }
+ },
+ "stats": {
+  "a": {
+   "status": "online",
+   "room": "GD4EF",
+   "you": "p1",
+   "corrections": 0,
+   "maxCorrection": 0,
+   "lastCorrection": 0,
+   "pace": 1,
+   "margin": 1,
+   "delay": 93,
+   "extrapolated": 3,
+   "held": 0,
+   "blended": 0,
+   "rtt": 13.5
+  },
+  "b": {
+   "status": "online",
+   "room": "GD4EF",
+   "you": "p2",
+   "corrections": 0,
+   "maxCorrection": 0,
+   "lastCorrection": 0,
+   "pace": 1,
+   "margin": 2,
+   "delay": 91,
+   "extrapolated": 2,
+   "held": 2,
+   "blended": 6,
+   "rtt": 4.6000001430511475
+  }
+ }
+}

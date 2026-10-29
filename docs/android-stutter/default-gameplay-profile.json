@@ -1,0 +1,593 @@
+{
+ "frames": 4,
+ "ms": 15428.799999952316,
+ "prof": {
+  "gl2.texImage2D": {
+   "ms": 552.5999999046326,
+   "n": 29
+  },
+  "gl2.texSubImage2D": {
+   "ms": 3.700000286102295,
+   "n": 27
+  },
+  "2d.drawImage": {
+   "ms": 37.89999985694885,
+   "n": 69
+  },
+  "2d.getImageData": {
+   "ms": 4.799999952316284,
+   "n": 5
+  }
+ },
+ "snap": {
+  "foes": 8,
+  "alive": 8,
+  "particles": 93,
+  "hero": "idle",
+  "heroMode": "3d-60fps"
+ },
+ "self": [
+  [
+   "getProgramParameter :0",
+   6406.850000000061
+  ],
+  [
+   "(idle) :0",
+   5042.582
+  ],
+  [
+   "texImage2D :0",
+   551.9609999999998
+  ],
+  [
+   "(garbage collector) :0",
+   433.8669999999999
+  ],
+  [
+   "qm index-B3OsDNbU.js:2614",
+   75.183
+  ],
+  [
+   "zn chunk-WCBGJP2D-CpuWmkW4.js:1",
+   46.452
+  ],
+  [
+   "drawImage :0",
+   36.257999999999996
+  ],
+  [
+   "ke main-CONgdCVc.js:26",
+   22.416999999999998
+  ],
+  [
+   "(program) :0",
+   16.239
+  ],
+  [
+   "(anon) main-CONgdCVc.js:28",
+   14.589
+  ],
+  [
+   "se main-CONgdCVc.js:26",
+   10.972000000000001
+  ],
+  [
+   "copyFramebufferToTexture three.module.min.js:6",
+   7.452999999999999
+  ],
+  [
+   "texSubImage2D :0",
+   6.17
+  ],
+  [
+   "break GCManagedHash-Bz8k4ITX.js:3",
+   6.085
+  ],
+  [
+   "place main-CONgdCVc.js:26",
+   5.884
+  ],
+  [
+   "zi main-CONgdCVc.js:26",
+   5.688000000000001
+  ],
+  [
+   "Hv index-B3OsDNbU.js:2825",
+   5.207
+  ],
+  [
+   "D heroes-BUUilnpg.js:2",
+   5.07
+  ],
+  [
+   "update three.module.min.js:6",
+   4.342
+  ],
+  [
+   "z heroes-BUUilnpg.js:2",
+   4.163
+  ],
+  [
+   "Si main-CONgdCVc.js:26",
+   4.152
+  ],
+  [
+   "ye heroes-BUUilnpg.js:243",
+   4.009
+  ],
+  [
+   "getImageData :0",
+   3.755
+  ],
+  [
+   "de main-CONgdCVc.js:26",
+   3.516
+  ],
+  [
+   "G chunk-DDYEJ3XB-nSedMJGN.js:1",
+   3.391
+  ],
+  [
+   "addAttribute CanvasPool-Bfa7zDPb.js:23",
+   3.168
+  ],
+  [
+   "execute index-B3OsDNbU.js:2737",
+   3.002
+  ],
+  [
+   "N heroes-BUUilnpg.js:243",
+   2.826
+  ],
+  [
+   "addChild Filter-D6JpcDm_.js:1",
+   2.748
+  ],
+  [
+   "setTransform :0",
+   2.423
+  ],
+  [
+   "Vt pixi-CdzreP1B.js:57",
+   2.267
+  ],
+  [
+   "collectRenderables Filter-D6JpcDm_.js:1",
+   2.198
+  ],
+  [
+   "At heroes-BUUilnpg.js:2",
+   2.089
+  ],
+  [
+   "db index-B3OsDNbU.js:3039",
+   1.9409999999999998
+  ],
+  [
+   "_getGpuSprite RenderTargetSystem-CCfFNQoA.js:182",
+   1.846
+  ],
+  [
+   "_e heroes-BUUilnpg.js:243",
+   1.8159999999999998
+  ],
+  [
+   "set alpha Filter-D6JpcDm_.js:1",
+   1.79
+  ],
+  [
+   "Ll three.module.min.js:6",
+   1.7839999999999998
+  ],
+  [
+   "updateAndRender heroes-BUUilnpg.js:243",
+   1.71
+  ],
+  [
+   "collectRenderablesSimple Filter-D6JpcDm_.js:1",
+   1.7009999999999996
+  ],
+  [
+   "getContext :0",
+   1.644
+  ],
+  [
+   "St main-CONgdCVc.js:28",
+   1.642
+  ],
+  [
+   "ge heroes-BUUilnpg.js:243",
+   1.64
+  ],
+  [
+   "bufferSubData :0",
+   1.623
+  ],
+  [
+   "Di main-CONgdCVc.js:26",
+   1.5109999999999997
+  ],
+  [
+   "Ke GraphicsContext-IuTlWSRp.js:1",
+   1.491
+  ],
+  [
+   "xe heroes-BUUilnpg.js:243",
+   1.479
+  ],
+  [
+   "ri main-CONgdCVc.js:26",
+   1.4580000000000002
+  ],
+  [
+   "bindAttribLocation :0",
+   1.4169999999999998
+  ],
+  [
+   "set data CanvasPool-Bfa7zDPb.js:23",
+   1.384
+  ],
+  [
+   "get color GraphicsContext-IuTlWSRp.js:1",
+   1.301
+  ],
+  [
+   "s.<computed> heroes-BUUilnpg.js:2",
+   1.292
+  ],
+  [
+   "destroy index-B3OsDNbU.js:2205",
+   1.265
+  ],
+  [
+   "updateMap main-CONgdCVc.js:26",
+   1.2360000000000002
+  ],
+  [
+   "T main-CONgdCVc.js:8",
+   1.137
+  ],
+  [
+   "packQuadIndex GCManagedHash-Bz8k4ITX.js:3",
+   1.117
+  ],
+  [
+   "resizeStates chunk-WCBGJP2D-CpuWmkW4.js:1",
+   1.037
+  ],
+  [
+   "apply index-B3OsDNbU.js:3039",
+   0.911
+  ],
+  [
+   "H heroes-BUUilnpg.js:2",
+   0.857
+  ],
+  [
+   "updateBuffers index-B3OsDNbU.js:2441",
+   0.855
+  ]
+ ],
+ "incl": [
+  [
+   "(root) :0",
+   12827.357000000098
+  ],
+  [
+   "P main-CONgdCVc.js:8",
+   7094.515000000061
+  ],
+  [
+   "u.render heroes-BUUilnpg.js:2",
+   7094.515000000061
+  ],
+  [
+   "render index-B3OsDNbU.js:959",
+   7094.515000000061
+  ],
+  [
+   "emit Filter-D6JpcDm_.js:1",
+   7094.515000000061
+  ],
+  [
+   "update Filter-D6JpcDm_.js:1",
+   7094.515000000061
+  ],
+  [
+   "e.update index-B3OsDNbU.js:2",
+   7094.515000000061
+  ],
+  [
+   "_tick Filter-D6JpcDm_.js:1",
+   7094.515000000061
+  ],
+  [
+   "render RenderTargetSystem-CCfFNQoA.js:182",
+   7093.876000000061
+  ],
+  [
+   "emit RenderTargetSystem-CCfFNQoA.js:1",
+   7093.876000000061
+  ],
+  [
+   "render RenderTargetSystem-CCfFNQoA.js:1",
+   7093.876000000061
+  ],
+  [
+   "z RenderTargetSystem-CCfFNQoA.js:182",
+   7059.3930000000555
+  ],
+  [
+   "execute index-B3OsDNbU.js:2934",
+   6496.980000000066
+  ],
+  [
+   "bind index-B3OsDNbU.js:2644",
+   6486.974000000066
+  ],
+  [
+   "_createProgramData index-B3OsDNbU.js:2644",
+   6409.4410000000635
+  ],
+  [
+   "_getProgramData index-B3OsDNbU.js:2644",
+   6409.4410000000635
+  ],
+  [
+   "_setProgram index-B3OsDNbU.js:2644",
+   6409.4410000000635
+  ],
+  [
+   "lh index-B3OsDNbU.js:2644",
+   6409.157000000063
+  ],
+  [
+   "getProgramParameter :0",
+   6406.850000000061
+  ],
+  [
+   "(idle) :0",
+   5042.582
+  ],
+  [
+   "oh index-B3OsDNbU.js:2641",
+   935.2719999999993
+  ],
+  [
+   "proto.<computed> :4",
+   598.1439999999998
+  ],
+  [
+   "H heroes-BUUilnpg.js:2",
+   584.9289999999999
+  ],
+  [
+   "(anon) heroes-BUUilnpg.js:2",
+   560.5649999999997
+  ],
+  [
+   "s.<computed> heroes-BUUilnpg.js:2",
+   560.2799999999997
+  ],
+  [
+   "Lh index-B3OsDNbU.js:2737",
+   560.2799999999997
+  ],
+  [
+   "upload index-B3OsDNbU.js:2737",
+   560.2799999999997
+  ],
+  [
+   "onSourceUpdate index-B3OsDNbU.js:2737",
+   560.2799999999997
+  ],
+  [
+   "execute RenderTargetSystem-CCfFNQoA.js:182",
+   557.216
+  ],
+  [
+   "bindSource index-B3OsDNbU.js:2737",
+   555.6999999999998
+  ],
+  [
+   "On.r.execute main-CONgdCVc.js:23",
+   555.049
+  ],
+  [
+   "getGlSource index-B3OsDNbU.js:2737",
+   555.0109999999997
+  ],
+  [
+   "_initSource index-B3OsDNbU.js:2737",
+   554.8859999999997
+  ],
+  [
+   "a.execute main-CONgdCVc.js:8",
+   554.519
+  ],
+  [
+   "texImage2D :0",
+   551.9609999999998
+  ],
+  [
+   "execute index-B3OsDNbU.js:2414",
+   480.58700000000005
+  ],
+  [
+   "(garbage collector) :0",
+   433.8669999999999
+  ],
+  [
+   "N heroes-BUUilnpg.js:2",
+   230.47399999999993
+  ],
+  [
+   "Qe heroes-BUUilnpg.js:2",
+   230.1579999999999
+  ],
+  [
+   "Ht main-CONgdCVc.js:28",
+   166.30199999999994
+  ],
+  [
+   "It main-CONgdCVc.js:28",
+   147.20199999999997
+  ],
+  [
+   "xe heroes-BUUilnpg.js:243",
+   87.21399999999997
+  ],
+  [
+   "U heroes-BUUilnpg.js:2",
+   85.73499999999997
+  ],
+  [
+   "k main-CONgdCVc.js:8",
+   76.57900000000002
+  ],
+  [
+   "O main-CONgdCVc.js:8",
+   75.94000000000001
+  ],
+  [
+   "qm index-B3OsDNbU.js:2614",
+   75.183
+  ],
+  [
+   "_generateShaderSync index-B3OsDNbU.js:2644",
+   75.183
+  ],
+  [
+   "bind index-B3OsDNbU.js:2737",
+   75.113
+  ],
+  [
+   "(anon) main-CONgdCVc.js:26",
+   61.292999999999985
+  ],
+  [
+   "ah index-B3OsDNbU.js:2641",
+   58.384
+  ],
+  [
+   "update pixi-CdzreP1B.js:57",
+   58.091
+  ],
+  [
+   "Mt pixi-CdzreP1B.js:57",
+   56.817
+  ],
+  [
+   "drawParticleViews pixi-CdzreP1B.js:57",
+   56.817
+  ],
+  [
+   "draw pixi-CdzreP1B.js:57",
+   56.817
+  ],
+  [
+   "Ft pixi-CdzreP1B.js:57",
+   55.818999999999996
+  ],
+  [
+   "Vt pixi-CdzreP1B.js:57",
+   48.719
+  ],
+  [
+   "Ne main-CONgdCVc.js:26",
+   48.222
+  ],
+  [
+   "ke main-CONgdCVc.js:26",
+   47.906
+  ],
+  [
+   "zn chunk-WCBGJP2D-CpuWmkW4.js:1",
+   46.452
+  ],
+  [
+   "U chunk-WCBGJP2D-CpuWmkW4.js:1",
+   46.452
+  ],
+  [
+   "H chunk-WCBGJP2D-CpuWmkW4.js:1",
+   46.452
+  ],
+  [
+   "jt main-CONgdCVc.js:28",
+   44.672000000000004
+  ],
+  [
+   "(anon) main-CONgdCVc.js:28",
+   41.841
+  ],
+  [
+   "kt main-CONgdCVc.js:28",
+   37.534
+  ],
+  [
+   "drawImage :0",
+   36.257999999999996
+  ],
+  [
+   "f main-CONgdCVc.js:28",
+   35.14099999999999
+  ],
+  [
+   "_updateRenderGroups RenderTargetSystem-CCfFNQoA.js:182",
+   34.48299999999999
+  ],
+  [
+   "_buildInstructions RenderTargetSystem-CCfFNQoA.js:182",
+   33.62599999999999
+  ],
+  [
+   "collectRenderablesWithEffects Filter-D6JpcDm_.js:1",
+   32.70099999999999
+  ],
+  [
+   "collectRenderables Filter-D6JpcDm_.js:1",
+   32.70099999999999
+  ],
+  [
+   "collectRenderablesSimple Filter-D6JpcDm_.js:1",
+   32.70099999999999
+  ],
+  [
+   "D heroes-BUUilnpg.js:2",
+   27.419000000000008
+  ],
+  [
+   "fe main-CONgdCVc.js:26",
+   22.10900000000001
+  ],
+  [
+   "updateAndRender heroes-BUUilnpg.js:243",
+   19.246000000000002
+  ],
+  [
+   "St main-CONgdCVc.js:28",
+   19.099999999999998
+  ],
+  [
+   "(anon) heroes-BUUilnpg.js:243",
+   17.172000000000004
+  ],
+  [
+   "(program) :0",
+   16.239
+  ],
+  [
+   "se main-CONgdCVc.js:26",
+   16.238
+  ],
+  [
+   "addRenderable index-B3OsDNbU.js:2310",
+   15.077999999999998
+  ],
+  [
+   "rn main-CONgdCVc.js:28",
+   13.516000000000002
+  ]
+ ]
+}

@@ -1,0 +1,829 @@
+{
+  "building": "Stronghold Core",
+  "format": "imagegen hand-painted RGBA PNG",
+  "canvas": [
+    1440,
+    1440
+  ],
+  "pivotPixels": [
+    720,
+    1300
+  ],
+  "anchor": [
+    0.5,
+    0.9027777777777778
+  ],
+  "footprintMetres": [
+    6,
+    6
+  ],
+  "entrance": "front centre, towards screen bottom",
+  "approachWidthMetres": 1.4,
+  "camera": {
+    "projection": "orthographic 2:1 isometric ground",
+    "azimuth": 45,
+    "elevation": 30,
+    "groundSlope": 0.5
+  },
+  "role": "Base progression controller and base Gold storage; no production implied",
+  "milestones": [
+    {
+      "level": 1,
+      "file": "level-01.png",
+      "detail": "Camp marker and basic foundation",
+      "source": "originals/level-01.png",
+      "sourceFootPixels": [
+        627,
+        1198
+      ],
+      "registrationOffset": [
+        93,
+        102
+      ],
+      "sha256": "728e699ad8ff18cedf0e6387c9e9d8d6efd629cb0acc1a185994d618efc09fda",
+      "sourceSha256": "72b0d6050df451329068cc6fee12868b78bd9c1360f4ea3ff8085a0a02716ddc"
+    },
+    {
+      "level": 5,
+      "file": "level-05.png",
+      "detail": "Reinforced camp foundation",
+      "source": "originals/level-05.png",
+      "sourceFootPixels": [
+        627,
+        1201
+      ],
+      "registrationOffset": [
+        93,
+        99
+      ],
+      "sha256": "0eb130773d645b8e9629264f15ff3a1bcd11de83bfdc05c22ef7d44cb9e2d9d1",
+      "sourceSha256": "1419e2c5e3e5c556e0c4c4729369f5ed98fe72600219fcc573c4652dfef4f645"
+    },
+    {
+      "level": 10,
+      "file": "level-10.png",
+      "detail": "Established stone outpost",
+      "source": "originals/level-10.png",
+      "sourceFootPixels": [
+        627,
+        1174
+      ],
+      "registrationOffset": [
+        93,
+        126
+      ],
+      "sha256": "b2c3afdd2399b49839ae0a23eb42e05906a64ba511743b75342199d917e13d93",
+      "sourceSha256": "a9fc3ef3dd662e8648790b7d5421bbb3411c52ed6b009c9bcf4cd9a236a8ad7a"
+    },
+    {
+      "level": 15,
+      "file": "level-15.png",
+      "detail": "Fortified keep",
+      "source": "originals/level-15.png",
+      "sourceFootPixels": [
+        627,
+        1176
+      ],
+      "registrationOffset": [
+        93,
+        124
+      ],
+      "sha256": "aea9305d9aa74f4ef3c894a63d5287e9dfe948fa4260cd8b7bb038665cc9f292",
+      "sourceSha256": "c0299b80652442eed36e940fc7b97b559aee76a211191ebc6aa833e84eb98ac1"
+    },
+    {
+      "level": 20,
+      "file": "level-20.png",
+      "detail": "Advanced stronghold",
+      "source": "originals/level-20.png",
+      "sourceFootPixels": [
+        627,
+        1180
+      ],
+      "registrationOffset": [
+        93,
+        120
+      ],
+      "sha256": "d6dd113ae1ab88427de4e79106d40e4bca69ca4793988c95e32cec6fc43964af",
+      "sourceSha256": "3fe79b818c2cb925e03b44a4672af8e2ac1c119f4bb85a25b60a14d4d0411281"
+    },
+    {
+      "level": 25,
+      "file": "level-25.png",
+      "detail": "Elite citadel",
+      "source": "originals/level-25.png",
+      "sourceFootPixels": [
+        627,
+        1182
+      ],
+      "registrationOffset": [
+        93,
+        118
+      ],
+      "sha256": "0ba21eb6c7dbf6a1a5ab7f8ead226e4191c1ad506b58bfb8ce45c05be710c894",
+      "sourceSha256": "74f2648add4c6f9d8a28a4429ab94961d403d301cd3bba689cb86fe9fc64ea94"
+    },
+    {
+      "level": 30,
+      "file": "level-30.png",
+      "detail": "Master stronghold",
+      "source": "originals/level-30.png",
+      "sourceFootPixels": [
+        627,
+        1216
+      ],
+      "registrationOffset": [
+        93,
+        84
+      ],
+      "sha256": "b1b730d65e79a7eca124bc3a137c5a7b6f0179a6a713dd2e64b6b28df65e716d",
+      "sourceSha256": "bc756c595c37fdd27bff0415f45e366576d4597a361068ab31295642d070e806"
+    }
+  ],
+  "levels": [
+    {
+      "level": 1,
+      "milestone": 1,
+      "sprite": "/buildings/starting-campfire/campfire-v1.png",
+      "repairCount": 0,
+      "decals": [],
+      "detail": "Starting campfire \u2014 Stronghold Core Level 1",
+      "canvas": [
+        1774,
+        887
+      ],
+      "pivotPixels": [
+        887,
+        545
+      ]
+    },
+    {
+      "level": 2,
+      "milestone": 1,
+      "sprite": "level-01.png",
+      "repairCount": 1,
+      "decals": [
+        {
+          "x": 337,
+          "y": 1043,
+          "width": 40,
+          "height": 34,
+          "skewY": 0.463647609
+        }
+      ],
+      "detail": "Camp marker and basic foundation; 1 cumulative curb repair plates"
+    },
+    {
+      "level": 3,
+      "milestone": 1,
+      "sprite": "level-01.png",
+      "repairCount": 2,
+      "decals": [
+        {
+          "x": 337,
+          "y": 1043,
+          "width": 40,
+          "height": 34,
+          "skewY": 0.463647609
+        },
+        {
+          "x": 385,
+          "y": 1067,
+          "width": 40,
+          "height": 34,
+          "skewY": 0.463647609
+        }
+      ],
+      "detail": "Camp marker and basic foundation; 2 cumulative curb repair plates"
+    },
+    {
+      "level": 4,
+      "milestone": 1,
+      "sprite": "level-01.png",
+      "repairCount": 3,
+      "decals": [
+        {
+          "x": 337,
+          "y": 1043,
+          "width": 40,
+          "height": 34,
+          "skewY": 0.463647609
+        },
+        {
+          "x": 385,
+          "y": 1067,
+          "width": 40,
+          "height": 34,
+          "skewY": 0.463647609
+        },
+        {
+          "x": 433,
+          "y": 1091,
+          "width": 40,
+          "height": 34,
+          "skewY": 0.463647609
+        }
+      ],
+      "detail": "Camp marker and basic foundation; 3 cumulative curb repair plates"
+    },
+    {
+      "level": 5,
+      "milestone": 5,
+      "sprite": "level-05.png",
+      "repairCount": 0,
+      "decals": [],
+      "detail": "Reinforced camp foundation"
+    },
+    {
+      "level": 6,
+      "milestone": 5,
+      "sprite": "level-05.png",
+      "repairCount": 1,
+      "decals": [
+        {
+          "x": 337,
+          "y": 1040,
+          "width": 40,
+          "height": 34,
+          "skewY": 0.463647609
+        }
+      ],
+      "detail": "Reinforced camp foundation; 1 cumulative curb repair plates"
+    },
+    {
+      "level": 7,
+      "milestone": 5,
+      "sprite": "level-05.png",
+      "repairCount": 2,
+      "decals": [
+        {
+          "x": 337,
+          "y": 1040,
+          "width": 40,
+          "height": 34,
+          "skewY": 0.463647609
+        },
+        {
+          "x": 385,
+          "y": 1064,
+          "width": 40,
+          "height": 34,
+          "skewY": 0.463647609
+        }
+      ],
+      "detail": "Reinforced camp foundation; 2 cumulative curb repair plates"
+    },
+    {
+      "level": 8,
+      "milestone": 5,
+      "sprite": "level-05.png",
+      "repairCount": 3,
+      "decals": [
+        {
+          "x": 337,
+          "y": 1040,
+          "width": 40,
+          "height": 34,
+          "skewY": 0.463647609
+        },
+        {
+          "x": 385,
+          "y": 1064,
+          "width": 40,
+          "height": 34,
+          "skewY": 0.463647609
+        },
+        {
+          "x": 433,
+          "y": 1088,
+          "width": 40,
+          "height": 34,
+          "skewY": 0.463647609
+        }
+      ],
+      "detail": "Reinforced camp foundation; 3 cumulative curb repair plates"
+    },
+    {
+      "level": 9,
+      "milestone": 5,
+      "sprite": "level-05.png",
+      "repairCount": 4,
+      "decals": [
+        {
+          "x": 337,
+          "y": 1040,
+          "width": 40,
+          "height": 34,
+          "skewY": 0.463647609
+        },
+        {
+          "x": 385,
+          "y": 1064,
+          "width": 40,
+          "height": 34,
+          "skewY": 0.463647609
+        },
+        {
+          "x": 433,
+          "y": 1088,
+          "width": 40,
+          "height": 34,
+          "skewY": 0.463647609
+        },
+        {
+          "x": 481,
+          "y": 1112,
+          "width": 40,
+          "height": 34,
+          "skewY": 0.463647609
+        }
+      ],
+      "detail": "Reinforced camp foundation; 4 cumulative curb repair plates"
+    },
+    {
+      "level": 10,
+      "milestone": 10,
+      "sprite": "level-10.png",
+      "repairCount": 0,
+      "decals": [],
+      "detail": "Established stone outpost"
+    },
+    {
+      "level": 11,
+      "milestone": 10,
+      "sprite": "level-10.png",
+      "repairCount": 1,
+      "decals": [
+        {
+          "x": 337,
+          "y": 1067,
+          "width": 40,
+          "height": 34,
+          "skewY": 0.463647609
+        }
+      ],
+      "detail": "Established stone outpost; 1 cumulative curb repair plates"
+    },
+    {
+      "level": 12,
+      "milestone": 10,
+      "sprite": "level-10.png",
+      "repairCount": 2,
+      "decals": [
+        {
+          "x": 337,
+          "y": 1067,
+          "width": 40,
+          "height": 34,
+          "skewY": 0.463647609
+        },
+        {
+          "x": 385,
+          "y": 1091,
+          "width": 40,
+          "height": 34,
+          "skewY": 0.463647609
+        }
+      ],
+      "detail": "Established stone outpost; 2 cumulative curb repair plates"
+    },
+    {
+      "level": 13,
+      "milestone": 10,
+      "sprite": "level-10.png",
+      "repairCount": 3,
+      "decals": [
+        {
+          "x": 337,
+          "y": 1067,
+          "width": 40,
+          "height": 34,
+          "skewY": 0.463647609
+        },
+        {
+          "x": 385,
+          "y": 1091,
+          "width": 40,
+          "height": 34,
+          "skewY": 0.463647609
+        },
+        {
+          "x": 433,
+          "y": 1115,
+          "width": 40,
+          "height": 34,
+          "skewY": 0.463647609
+        }
+      ],
+      "detail": "Established stone outpost; 3 cumulative curb repair plates"
+    },
+    {
+      "level": 14,
+      "milestone": 10,
+      "sprite": "level-10.png",
+      "repairCount": 4,
+      "decals": [
+        {
+          "x": 337,
+          "y": 1067,
+          "width": 40,
+          "height": 34,
+          "skewY": 0.463647609
+        },
+        {
+          "x": 385,
+          "y": 1091,
+          "width": 40,
+          "height": 34,
+          "skewY": 0.463647609
+        },
+        {
+          "x": 433,
+          "y": 1115,
+          "width": 40,
+          "height": 34,
+          "skewY": 0.463647609
+        },
+        {
+          "x": 481,
+          "y": 1139,
+          "width": 40,
+          "height": 34,
+          "skewY": 0.463647609
+        }
+      ],
+      "detail": "Established stone outpost; 4 cumulative curb repair plates"
+    },
+    {
+      "level": 15,
+      "milestone": 15,
+      "sprite": "level-15.png",
+      "repairCount": 0,
+      "decals": [],
+      "detail": "Fortified keep"
+    },
+    {
+      "level": 16,
+      "milestone": 15,
+      "sprite": "level-15.png",
+      "repairCount": 1,
+      "decals": [
+        {
+          "x": 337,
+          "y": 1065,
+          "width": 40,
+          "height": 34,
+          "skewY": 0.463647609
+        }
+      ],
+      "detail": "Fortified keep; 1 cumulative curb repair plates"
+    },
+    {
+      "level": 17,
+      "milestone": 15,
+      "sprite": "level-15.png",
+      "repairCount": 2,
+      "decals": [
+        {
+          "x": 337,
+          "y": 1065,
+          "width": 40,
+          "height": 34,
+          "skewY": 0.463647609
+        },
+        {
+          "x": 385,
+          "y": 1089,
+          "width": 40,
+          "height": 34,
+          "skewY": 0.463647609
+        }
+      ],
+      "detail": "Fortified keep; 2 cumulative curb repair plates"
+    },
+    {
+      "level": 18,
+      "milestone": 15,
+      "sprite": "level-15.png",
+      "repairCount": 3,
+      "decals": [
+        {
+          "x": 337,
+          "y": 1065,
+          "width": 40,
+          "height": 34,
+          "skewY": 0.463647609
+        },
+        {
+          "x": 385,
+          "y": 1089,
+          "width": 40,
+          "height": 34,
+          "skewY": 0.463647609
+        },
+        {
+          "x": 433,
+          "y": 1113,
+          "width": 40,
+          "height": 34,
+          "skewY": 0.463647609
+        }
+      ],
+      "detail": "Fortified keep; 3 cumulative curb repair plates"
+    },
+    {
+      "level": 19,
+      "milestone": 15,
+      "sprite": "level-15.png",
+      "repairCount": 4,
+      "decals": [
+        {
+          "x": 337,
+          "y": 1065,
+          "width": 40,
+          "height": 34,
+          "skewY": 0.463647609
+        },
+        {
+          "x": 385,
+          "y": 1089,
+          "width": 40,
+          "height": 34,
+          "skewY": 0.463647609
+        },
+        {
+          "x": 433,
+          "y": 1113,
+          "width": 40,
+          "height": 34,
+          "skewY": 0.463647609
+        },
+        {
+          "x": 481,
+          "y": 1137,
+          "width": 40,
+          "height": 34,
+          "skewY": 0.463647609
+        }
+      ],
+      "detail": "Fortified keep; 4 cumulative curb repair plates"
+    },
+    {
+      "level": 20,
+      "milestone": 20,
+      "sprite": "level-20.png",
+      "repairCount": 0,
+      "decals": [],
+      "detail": "Advanced stronghold"
+    },
+    {
+      "level": 21,
+      "milestone": 20,
+      "sprite": "level-20.png",
+      "repairCount": 1,
+      "decals": [
+        {
+          "x": 337,
+          "y": 1061,
+          "width": 40,
+          "height": 34,
+          "skewY": 0.463647609
+        }
+      ],
+      "detail": "Advanced stronghold; 1 cumulative curb repair plates"
+    },
+    {
+      "level": 22,
+      "milestone": 20,
+      "sprite": "level-20.png",
+      "repairCount": 2,
+      "decals": [
+        {
+          "x": 337,
+          "y": 1061,
+          "width": 40,
+          "height": 34,
+          "skewY": 0.463647609
+        },
+        {
+          "x": 385,
+          "y": 1085,
+          "width": 40,
+          "height": 34,
+          "skewY": 0.463647609
+        }
+      ],
+      "detail": "Advanced stronghold; 2 cumulative curb repair plates"
+    },
+    {
+      "level": 23,
+      "milestone": 20,
+      "sprite": "level-20.png",
+      "repairCount": 3,
+      "decals": [
+        {
+          "x": 337,
+          "y": 1061,
+          "width": 40,
+          "height": 34,
+          "skewY": 0.463647609
+        },
+        {
+          "x": 385,
+          "y": 1085,
+          "width": 40,
+          "height": 34,
+          "skewY": 0.463647609
+        },
+        {
+          "x": 433,
+          "y": 1109,
+          "width": 40,
+          "height": 34,
+          "skewY": 0.463647609
+        }
+      ],
+      "detail": "Advanced stronghold; 3 cumulative curb repair plates"
+    },
+    {
+      "level": 24,
+      "milestone": 20,
+      "sprite": "level-20.png",
+      "repairCount": 4,
+      "decals": [
+        {
+          "x": 337,
+          "y": 1061,
+          "width": 40,
+          "height": 34,
+          "skewY": 0.463647609
+        },
+        {
+          "x": 385,
+          "y": 1085,
+          "width": 40,
+          "height": 34,
+          "skewY": 0.463647609
+        },
+        {
+          "x": 433,
+          "y": 1109,
+          "width": 40,
+          "height": 34,
+          "skewY": 0.463647609
+        },
+        {
+          "x": 481,
+          "y": 1133,
+          "width": 40,
+          "height": 34,
+          "skewY": 0.463647609
+        }
+      ],
+      "detail": "Advanced stronghold; 4 cumulative curb repair plates"
+    },
+    {
+      "level": 25,
+      "milestone": 25,
+      "sprite": "level-25.png",
+      "repairCount": 0,
+      "decals": [],
+      "detail": "Elite citadel"
+    },
+    {
+      "level": 26,
+      "milestone": 25,
+      "sprite": "level-25.png",
+      "repairCount": 1,
+      "decals": [
+        {
+          "x": 337,
+          "y": 1059,
+          "width": 40,
+          "height": 34,
+          "skewY": 0.463647609
+        }
+      ],
+      "detail": "Elite citadel; 1 cumulative curb repair plates"
+    },
+    {
+      "level": 27,
+      "milestone": 25,
+      "sprite": "level-25.png",
+      "repairCount": 2,
+      "decals": [
+        {
+          "x": 337,
+          "y": 1059,
+          "width": 40,
+          "height": 34,
+          "skewY": 0.463647609
+        },
+        {
+          "x": 385,
+          "y": 1083,
+          "width": 40,
+          "height": 34,
+          "skewY": 0.463647609
+        }
+      ],
+      "detail": "Elite citadel; 2 cumulative curb repair plates"
+    },
+    {
+      "level": 28,
+      "milestone": 25,
+      "sprite": "level-25.png",
+      "repairCount": 3,
+      "decals": [
+        {
+          "x": 337,
+          "y": 1059,
+          "width": 40,
+          "height": 34,
+          "skewY": 0.463647609
+        },
+        {
+          "x": 385,
+          "y": 1083,
+          "width": 40,
+          "height": 34,
+          "skewY": 0.463647609
+        },
+        {
+          "x": 433,
+          "y": 1107,
+          "width": 40,
+          "height": 34,
+          "skewY": 0.463647609
+        }
+      ],
+      "detail": "Elite citadel; 3 cumulative curb repair plates"
+    },
+    {
+      "level": 29,
+      "milestone": 25,
+      "sprite": "level-25.png",
+      "repairCount": 4,
+      "decals": [
+        {
+          "x": 337,
+          "y": 1059,
+          "width": 40,
+          "height": 34,
+          "skewY": 0.463647609
+        },
+        {
+          "x": 385,
+          "y": 1083,
+          "width": 40,
+          "height": 34,
+          "skewY": 0.463647609
+        },
+        {
+          "x": 433,
+          "y": 1107,
+          "width": 40,
+          "height": 34,
+          "skewY": 0.463647609
+        },
+        {
+          "x": 481,
+          "y": 1131,
+          "width": 40,
+          "height": 34,
+          "skewY": 0.463647609
+        }
+      ],
+      "detail": "Elite citadel; 4 cumulative curb repair plates"
+    },
+    {
+      "level": 30,
+      "milestone": 30,
+      "sprite": "level-30.png",
+      "repairCount": 0,
+      "decals": [],
+      "detail": "Master stronghold"
+    }
+  ],
+  "lighting": "Baked upper-left warm light, amber lanterns, cool winter ambient and contact shadow",
+  "occlusion": "Single sprite; shared ground pivot for sorting; roof/foreground masks require later integration",
+  "colorSpace": "sRGB",
+  "alpha": "Original generated RGBA preserved; normal Pixi premultiplied-alpha loading",
+  "repairDecal": {
+    "file": "repair-plate.png",
+    "source": "repair-plate-source.png",
+    "cropBox": [
+      361,
+      378,
+      894,
+      875
+    ],
+    "method": "Trim transparent margin only; original retained",
+    "displaySize": [
+      40,
+      34
+    ],
+    "skewY": 0.463647609
+  },
+  "levelOneDesign": "Existing campfire; one Core using saved expedition ID. Levels 2\u201330 retain their original mappings."
+}

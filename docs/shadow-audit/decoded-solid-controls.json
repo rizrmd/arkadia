@@ -1,0 +1,84 @@
+{
+  "scope": "Normalized full-image court geometry accepts uniform source downscaling with one rounded decoded height. Atlas/subframe, nonuniform and oversize inputs remain rejected. Actual HTTP delivery is validated separately.",
+  "cases": 72,
+  "rows": [
+    {
+      "id": "court:crate",
+      "authored": [
+        619,
+        640
+      ],
+      "decoded": [
+        619,
+        640
+      ],
+      "normalizedGeometryRetained": true
+    },
+    {
+      "id": "court:crate",
+      "authored": [
+        619,
+        640
+      ],
+      "decoded": [
+        256,
+        265
+      ],
+      "normalizedGeometryRetained": true
+    },
+    {
+      "id": "court:crate",
+      "authored": [
+        619,
+        640
+      ],
+      "decoded": [
+        127,
+        131
+      ],
+      "normalizedGeometryRetained": true
+    },
+    {
+      "id": "court:barrel",
+      "authored": [
+        463,
+        640
+      ],
+      "decoded": [
+        463,
+        640
+      ],
+      "normalizedGeometryRetained": true
+    },
+    {
+      "id": "court:barrel",
+      "authored": [
+        463,
+        640
+      ],
+      "decoded": [
+        256,
+        354
+      ],
+      "normalizedGeometryRetained": true
+    },
+    {
+      "id": "court:barrel",
+      "authored": [
+        463,
+        640
+      ],
+      "decoded": [
+        127,
+        176
+      ],
+      "normalizedGeometryRetained": true
+    }
+  ],
+  "guards": [
+    "wrong aspect",
+    "explicit subframe resize",
+    "upscale",
+    "atlas resize"
+  ]
+}

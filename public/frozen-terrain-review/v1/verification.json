@@ -1,0 +1,153 @@
+{
+  "verifiedAt": "2026-10-27T16:07:41.069Z",
+  "assetCommit": "443e53ce10730ee99ab4c1fbe073a3907d156ca8",
+  "layer": "1793117161038-frozen-terrain-review-v1-928520c0b80d",
+  "method": "Download every published file, compare SHA-256 to local bytes, decode each PNG metadata; check runtime health.",
+  "results": [
+    {
+      "file": "README.md",
+      "status": 200,
+      "sha256": "33e7abcf3ab50db5502ac9e6ae02d1733f80878a2471a343e0d53c52d7dcd1e1",
+      "bytes": 3393
+    },
+    {
+      "file": "cracked-ice.png",
+      "status": 200,
+      "sha256": "a1b58e4b8da46546352fa7b51f9b90ab614d468cd517ee4bccd4ecf085672bfe",
+      "bytes": 3702699
+    },
+    {
+      "file": "dirt-ice-edge.png",
+      "status": 200,
+      "sha256": "bbcf41d0ab63a5f18dabf92cf3cb3507d3a6b902ae93d467e00970895e73f14f",
+      "bytes": 4317201
+    },
+    {
+      "file": "dirt-paving-edge.png",
+      "status": 200,
+      "sha256": "8f234989c3d9f59a62a851e392d639a272588fe171ccfb8ef4fc12847db3e157",
+      "bytes": 4402960
+    },
+    {
+      "file": "frozen-dirt.png",
+      "status": 200,
+      "sha256": "d21fcc7f4417863c6480d6e291b240b0bdc265dd736d68a0698e62cff0c220a7",
+      "bytes": 4742896
+    },
+    {
+      "file": "ice-paving-edge.png",
+      "status": 200,
+      "sha256": "b958420b870bb4153240ea4c31f84711beffa8f05620babcb882e286f18caa85",
+      "bytes": 4074974
+    },
+    {
+      "file": "manifest.json",
+      "status": 200,
+      "sha256": "af427e6eb6690f48a885755c0216df08b98aeb2292d449cabb506fb3316a2476",
+      "bytes": 4669
+    },
+    {
+      "file": "packed-snow.png",
+      "status": 200,
+      "sha256": "ffd051d870ca929dedcf17e3ff1fdf1ac65487415321ae983211b750b36eefa7",
+      "bytes": 3659054
+    },
+    {
+      "file": "prompts.json",
+      "status": 200,
+      "sha256": "90febb93aa0157bb294d60b02a5c6061c154f411f4e80a0d0c39f6db00221061",
+      "bytes": 4698
+    },
+    {
+      "file": "review-bases.png",
+      "status": 200,
+      "sha256": "b6f9cc40b15591a01c46cfb84ebda3d662711f4b024b7a5ad59337809516ae3b",
+      "bytes": 2161772
+    },
+    {
+      "file": "review-edges.png",
+      "status": 200,
+      "sha256": "0d7a457a79ea9c2864af458a44411dd0a088e6984ea9c7bcde7675322be60c1b",
+      "bytes": 2346871
+    },
+    {
+      "file": "review-repeat-cracked-ice.png",
+      "status": 200,
+      "sha256": "970227fff280b9bff9ec7df42c08252ca030d66d12d2118af2023754875b745d",
+      "bytes": 444104
+    },
+    {
+      "file": "review-repeat-frozen-dirt.png",
+      "status": 200,
+      "sha256": "7ce63e5d18710a4d1f59d3f382b871bca1f2a08bb676d0d5330fccbf31273045",
+      "bytes": 523457
+    },
+    {
+      "file": "review-repeat-packed-snow.png",
+      "status": 200,
+      "sha256": "7766cb8b5ad31e1d12c9b5b5545d621bc58c9815ef28a350455f0b1257be1b9f",
+      "bytes": 451995
+    },
+    {
+      "file": "review-repeat-rocky-ground.png",
+      "status": 200,
+      "sha256": "d40ee4611703a0643e42b50f10306bd1f4ca41a6e7183e3344be90468261b3ec",
+      "bytes": 481958
+    },
+    {
+      "file": "review-repeat-ruined-stone-paving.png",
+      "status": 200,
+      "sha256": "12783802105e050f64bd63df3c55d66424bb3230196d05ba6d9e4f77f128a221",
+      "bytes": 503662
+    },
+    {
+      "file": "review-repeat-snow-ground.png",
+      "status": 200,
+      "sha256": "3b4aec2a94977dc41406208f8827a3699de766cc1b794964e8198734a7ed6f2e",
+      "bytes": 455498
+    },
+    {
+      "file": "rocky-ground.png",
+      "status": 200,
+      "sha256": "784f61088e48ddd3e33b28163ad149d6e497539121c78bf9a343a37d71768dcb",
+      "bytes": 4391308
+    },
+    {
+      "file": "ruined-stone-paving.png",
+      "status": 200,
+      "sha256": "7a3252104581d29249079c8a7bde91e3729da2495d464c42421b925ee84ec667",
+      "bytes": 4206740
+    },
+    {
+      "file": "snow-dirt-edge.png",
+      "status": 200,
+      "sha256": "3956eaf9f9414334e0355e6e31f25e743f74ef98625c0984a7a569022b42b8ed",
+      "bytes": 4146499
+    },
+    {
+      "file": "snow-ground.png",
+      "status": 200,
+      "sha256": "6547eb2e5066134b124d88038368d4c2aa9a602e9e661be3e92e910c51fad80f",
+      "bytes": 3606548
+    },
+    {
+      "file": "snow-ice-edge.png",
+      "status": 200,
+      "sha256": "5133acee7012bbbfaec576f97745708b1f7ab5283415cd81729fb2f470449905",
+      "bytes": 3972781
+    },
+    {
+      "file": "snow-paving-edge.png",
+      "status": 200,
+      "sha256": "9957e557c221c5b70037b884b98f574ea92639acd8feecf8d91f5c18785384f2",
+      "bytes": 3776189
+    }
+  ],
+  "health": {
+    "build": "d5c18256d195efcd6dfcbb56db05f0e8159ff70b",
+    "movementBoundary": "hill-foot-contour-v1",
+    "ok": true,
+    "protocol": 1,
+    "rooms": 2
+  }
+}

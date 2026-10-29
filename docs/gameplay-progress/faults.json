@@ -1,0 +1,15 @@
+{
+  "checks": [
+    "legacy unlock migration and paid economy/inventory preservation",
+    "quota failure preserves durable snapshot, pauses simulation and retries once",
+    "real Pixi scroll use: failed-save rollback and atomic count/position checkpoint",
+    "earned nonzero XP survives ownership transfer",
+    "second tab waits for exclusive ownership and resumes after owner closes",
+    "unsupported future snapshot preserved byte-for-byte and gameplay blocked",
+    "intentional Settings reset clears both current and legacy progression without stale resurrection",
+    "real mobile browser co-op freezes on disconnect and retains solo checkpoint",
+    "co-op room/hero resumes automatically after browser AND server reopen with same private credential, exact server tick and HP/progression"
+  ],
+  "errors": [],
+  "passed": true
+}

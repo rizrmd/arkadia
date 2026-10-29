@@ -1,0 +1,108 @@
+{
+  "base": "https://arkodia.online",
+  "cases": [
+    {
+      "mode": "locked",
+      "hero": "rift-runner",
+      "walls": 12,
+      "bastions": 0,
+      "tower": {
+        "visible": false,
+        "anchor": 0.9555555555555556
+      },
+      "painted": {
+        "cpu": [
+          152,
+          133,
+          113
+        ],
+        "gpu": [
+          152,
+          134,
+          113
+        ],
+        "difference": 1,
+        "outsideAlpha": 0
+      },
+      "resourceChargesPreserved": true,
+      "crossFactionDenied": false,
+      "coreGateEnforced": true
+    },
+    {
+      "mode": "watchtower",
+      "hero": "rift-runner",
+      "walls": 12,
+      "bastions": 0,
+      "tower": {
+        "visible": true,
+        "anchor": 0.9555555555555556
+      },
+      "painted": {
+        "cpu": [
+          152,
+          133,
+          113
+        ],
+        "gpu": [
+          152,
+          134,
+          113
+        ],
+        "difference": 1,
+        "outsideAlpha": 0
+      },
+      "resourceChargesPreserved": true,
+      "crossFactionDenied": true,
+      "coreGateEnforced": false
+    },
+    {
+      "mode": "runetower",
+      "hero": "ember-warden",
+      "walls": 12,
+      "bastions": 0,
+      "tower": {
+        "visible": true,
+        "anchor": 0.9555555555555556
+      },
+      "painted": {
+        "cpu": [
+          152,
+          133,
+          113
+        ],
+        "gpu": [
+          152,
+          134,
+          113
+        ],
+        "difference": 1,
+        "outsideAlpha": 0
+      },
+      "resourceChargesPreserved": true,
+      "crossFactionDenied": true,
+      "coreGateEnforced": false
+    }
+  ],
+  "errors": [],
+  "scope": "Offline isolated browser saves; production map read only",
+  "starterMovement": {
+    "initial": {
+      "x": 590,
+      "y": 420
+    },
+    "after": {
+      "x": 590,
+      "y": 532.4091430381087
+    },
+    "clearGatewayApproach": true
+  },
+  "loaded": [
+    "/buildings/starter-stronghold/palisade-se.png",
+    "/buildings/starter-stronghold/palisade-ne.png",
+    "/buildings/starter-stronghold/watchtower-01.png",
+    "/buildings/starter-stronghold/runetower-01.png"
+  ],
+  "reloadPreserved": true,
+  "mobilePixiResize": true,
+  "pass": true
+}

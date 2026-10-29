@@ -1,0 +1,98 @@
+{
+ "url": "ws://127.0.0.1:8791/ws",
+ "seconds": 40,
+ "room": "8JUNR",
+ "commonTicks": 806,
+ "tickSpan": 805,
+ "ticksWithEnemies": 806,
+ "enemyIds": [
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10,
+  11,
+  12,
+  13,
+  14
+ ],
+ "lastTick": 807,
+ "kills": {
+  "Ayu": 2,
+  "Bima": 2,
+  "Cheat": 0
+ },
+ "runs": {
+  "Ayu": {
+   "level": 2,
+   "xp": 0,
+   "gold": 10,
+   "pending": 1,
+   "offers": [
+    "vitality",
+    "haste",
+    "shockwave"
+   ],
+   "skills": {
+    "rift-bolt": 1
+   },
+   "stars": 0,
+   "slots": [
+    "rift-bolt"
+   ],
+   "autoCasts": 1,
+   "lastCast": [
+    "rift-bolt"
+   ]
+  },
+  "Bima": {
+   "level": 2,
+   "xp": 8,
+   "gold": 10,
+   "pending": 1,
+   "offers": [
+    "rift-trap",
+    "cleave",
+    "haste"
+   ],
+   "skills": {
+    "rift-bolt": 1
+   },
+   "stars": 0,
+   "slots": [
+    "rift-bolt"
+   ],
+   "autoCasts": 2,
+   "lastCast": [
+    "rift-bolt"
+   ]
+  },
+  "Cheat": {
+   "level": 1,
+   "xp": 0,
+   "gold": 0,
+   "pending": 0,
+   "offers": [],
+   "skills": {
+    "rift-bolt": 1
+   },
+   "stars": 0,
+   "slots": [
+    "rift-bolt"
+   ]
+  }
+ },
+ "heroesHurt": false,
+ "cheatMaxStepPx": 10.18,
+ "heroStepPx": 6,
+ "snapshotBytes": 2650,
+ "ackA": 798,
+ "inputsA": 798,
+ "pausedAtTick": 808,
+ "ok": true
+}

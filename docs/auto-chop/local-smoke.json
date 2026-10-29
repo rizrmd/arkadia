@@ -1,0 +1,16 @@
+{
+  "base": "http://127.0.0.1:5631",
+  "errors": [],
+  "checks": [
+    "Real game ticker automatically chops a reachable dead tree for exactly 30 Wood without manual gathering.step calls",
+    "Reload preserves Wood and depleted tree"
+  ],
+  "harvest": {
+    "target": {
+      "id": "ff:dead-tree:366",
+      "before": 0
+    },
+    "wood": 30
+  },
+  "passed": true
+}

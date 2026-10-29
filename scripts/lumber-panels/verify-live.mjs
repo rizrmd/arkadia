@@ -1,0 +1,9 @@
+import fs from 'node:fs/promises';import sharp from 'sharp';import {createHash} from 'node:crypto';import {execFileSync} from 'node:child_process';import assert from 'node:assert/strict';
+const fetch=p=>execFileSync('curl',['-fsS','--retry','2','--max-time','25','https://arkodia.online'+p],{maxBuffer:40e6});const sha=b=>createHash('sha256').update(b).digest('hex');
+const r=JSON.parse(fetch('/lumber-panels/release.json')),report={health:JSON.parse(fetch('/healthz')),releaseCommit:r.commit,checks:[]};
+for(const p of ['/lumber-panels/kit/lumber-original.png','/lumber-panels/kit/lumber.png','/lumber-panels/coverage.png','/lumber-panels/target-01.png','/lumber-panels/target-30.png','/lumber-panels/kit/source-kit.zip','/lumber-panels/browser.json','/index.html']){
+ const live=fetch(p);let exact=sha(live)===r.files[p],pixels=false;
+ if(p.endsWith('.png')){const local=p.startsWith('/lumber-panels/kit/')?'public'+p:'docs'+p;const a=await sharp(live).ensureAlpha().raw().toBuffer({resolveWithObject:true}),b=await sharp(local).ensureAlpha().raw().toBuffer({resolveWithObject:true});assert.deepEqual(a.info,b.info);for(const image of [a,b])for(let i=0;i<image.data.length;i+=4)if(image.data[i+3]===0)image.data.fill(0,i,i+3);pixels=sha(a.data)===sha(b.data);assert(pixels,p);}else assert(exact,p);
+ report.checks.push({path:p,bytes:live.length,sha256:sha(live),exactBytes:exact,decodedPixelsEqual:p.endsWith('.png')?pixels:undefined});
+}
+report.pass=true;report.note='Publisher serves PNG paths as lossless WebP. Original PNG source ZIP remains byte-identical; all compared visible RGBA pixels match (hidden RGB under fully transparent pixels ignored).';await fs.writeFile('docs/lumber-panels/production.json',JSON.stringify(report,null,2));await fs.writeFile('docs/lumber-panels/release.json',JSON.stringify(r,null,2));console.log({pass:true,commit:r.commit,checks:report.checks.length});

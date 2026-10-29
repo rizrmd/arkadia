@@ -1,0 +1,6425 @@
+{
+ "tool": "scripts/frozen-frontier-map/angle-check.mjs",
+ "assets": "public/frozen-frontier/v3/assets at 0dbcdc8 (before the 2:1 redraw)",
+ "grid": "vertical or screen slope ±1/2 (±26.57°)",
+ "toleranceDeg": 5,
+ "minLinePx": 7,
+ "top": 3,
+ "minShare": 0.7,
+ "sprites": {
+  "pillar-intact": {
+   "gated": true,
+   "pass": false,
+   "longestSlantLines": [
+    {
+     "angle": 14.1,
+     "lengthPx": 11.9,
+     "offGridDeg": 12.5
+    },
+    {
+     "angle": 15.1,
+     "lengthPx": 11.9,
+     "offGridDeg": 11.5
+    },
+    {
+     "angle": 14,
+     "lengthPx": 11.6,
+     "offGridDeg": 12.5
+    }
+   ],
+   "slantOnGridShare": 0.239,
+   "lines": [
+    {
+     "from": [
+      12.3,
+      15.3
+     ],
+     "to": [
+      12.3,
+      76.8
+     ],
+     "lengthPx": 61.5,
+     "angle": 90,
+     "offGrid": 0
+    },
+    {
+     "from": [
+      34.3,
+      19.5
+     ],
+     "to": [
+      34.3,
+      75.3
+     ],
+     "lengthPx": 55.8,
+     "angle": 90,
+     "offGrid": 0
+    },
+    {
+     "from": [
+      33.8,
+      20
+     ],
+     "to": [
+      33.8,
+      74.5
+     ],
+     "lengthPx": 54.5,
+     "angle": 90,
+     "offGrid": 0
+    },
+    {
+     "from": [
+      34.5,
+      19.3
+     ],
+     "to": [
+      34.5,
+      75.5
+     ],
+     "lengthPx": 56.3,
+     "angle": 90,
+     "offGrid": 0
+    },
+    {
+     "from": [
+      12,
+      14
+     ],
+     "to": [
+      12.3,
+      52.3
+     ],
+     "lengthPx": 38.3,
+     "angle": 89.8,
+     "offGrid": 0.2
+    },
+    {
+     "from": [
+      12.8,
+      19.8
+     ],
+     "to": [
+      12.8,
+      76.3
+     ],
+     "lengthPx": 56.5,
+     "angle": 90,
+     "offGrid": 0
+    },
+    {
+     "from": [
+      34.8,
+      19
+     ],
+     "to": [
+      34.8,
+      75.5
+     ],
+     "lengthPx": 56.5,
+     "angle": 90,
+     "offGrid": 0
+    },
+    {
+     "from": [
+      13,
+      19.8
+     ],
+     "to": [
+      13,
+      76
+     ],
+     "lengthPx": 56.3,
+     "angle": 90,
+     "offGrid": 0
+    },
+    {
+     "from": [
+      13.5,
+      18.3
+     ],
+     "to": [
+      13.5,
+      76.3
+     ],
+     "lengthPx": 58,
+     "angle": 90,
+     "offGrid": 0
+    },
+    {
+     "from": [
+      12,
+      31.8
+     ],
+     "to": [
+      12,
+      40.3
+     ],
+     "lengthPx": 8.5,
+     "angle": 90,
+     "offGrid": 0
+    },
+    {
+     "from": [
+      34.8,
+      56.3
+     ],
+     "to": [
+      34.8,
+      63.5
+     ],
+     "lengthPx": 7.3,
+     "angle": 90,
+     "offGrid": 0
+    },
+    {
+     "from": [
+      25.3,
+      62
+     ],
+     "to": [
+      25.3,
+      81
+     ],
+     "lengthPx": 19,
+     "angle": 89.9,
+     "offGrid": 0.1
+    },
+    {
+     "from": [
+      25.3,
+      62.8
+     ],
+     "to": [
+      25,
+      81.5
+     ],
+     "lengthPx": 18.8,
+     "angle": 90.1,
+     "offGrid": 0.1
+    },
+    {
+     "from": [
+      33.5,
+      2.8
+     ],
+     "to": [
+      22.5,
+      0.3
+     ],
+     "lengthPx": 11.3,
+     "angle": 13.6,
+     "offGrid": 12.9
+    },
+    {
+     "from": [
+      33.5,
+      3
+     ],
+     "to": [
+      26,
+      1
+     ],
+     "lengthPx": 7.8,
+     "angle": 14.1,
+     "offGrid": 12.4
+    },
+    {
+     "from": [
+      21,
+      0.3
+     ],
+     "to": [
+      13.5,
+      4.5
+     ],
+     "lengthPx": 8.6,
+     "angle": 151.2,
+     "offGrid": 2.2
+    },
+    {
+     "from": [
+      20.8,
+      0.3
+     ],
+     "to": [
+      13.5,
+      4.3
+     ],
+     "lengthPx": 8.3,
+     "angle": 151.5,
+     "offGrid": 2
+    },
+    {
+     "from": [
+      33.5,
+      3.3
+     ],
+     "to": [
+      26,
+      1.3
+     ],
+     "lengthPx": 7.8,
+     "angle": 14.1,
+     "offGrid": 12.4
+    },
+    {
+     "from": [
+      25,
+      23.5
+     ],
+     "to": [
+      13.5,
+      20.5
+     ],
+     "lengthPx": 11.9,
+     "angle": 14.1,
+     "offGrid": 12.5
+    },
+    {
+     "from": [
+      33.5,
+      2.5
+     ],
+     "to": [
+      26.3,
+      0.5
+     ],
+     "lengthPx": 7.5,
+     "angle": 13.7,
+     "offGrid": 12.9
+    },
+    {
+     "from": [
+      20,
+      0.3
+     ],
+     "to": [
+      13.8,
+      3.8
+     ],
+     "lengthPx": 7.2,
+     "angle": 150.2,
+     "offGrid": 3.3
+    },
+    {
+     "from": [
+      25,
+      23.3
+     ],
+     "to": [
+      13.5,
+      20.3
+     ],
+     "lengthPx": 11.9,
+     "angle": 15.1,
+     "offGrid": 11.5
+    },
+    {
+     "from": [
+      25,
+      63
+     ],
+     "to": [
+      25,
+      70.8
+     ],
+     "lengthPx": 7.8,
+     "angle": 90.3,
+     "offGrid": 0.3
+    },
+    {
+     "from": [
+      24.8,
+      23.8
+     ],
+     "to": [
+      13.5,
+      21
+     ],
+     "lengthPx": 11.6,
+     "angle": 14,
+     "offGrid": 12.5
+    },
+    {
+     "from": [
+      24.8,
+      25
+     ],
+     "to": [
+      18,
+      23
+     ],
+     "lengthPx": 7,
+     "angle": 15.1,
+     "offGrid": 11.4
+    }
+   ]
+  },
+  "pillar-broken": {
+   "gated": true,
+   "pass": false,
+   "longestSlantLines": [
+    {
+     "angle": 21.7,
+     "lengthPx": 7.4,
+     "offGridDeg": 4.9
+    },
+    {
+     "angle": 23.5,
+     "lengthPx": 7.4,
+     "offGridDeg": 3.1
+    },
+    {
+     "angle": 16.3,
+     "lengthPx": 7.3,
+     "offGridDeg": 10.3
+    }
+   ],
+   "slantOnGridShare": 0.67,
+   "lines": [
+    {
+     "from": [
+      34,
+      7.8
+     ],
+     "to": [
+      34,
+      37.8
+     ],
+     "lengthPx": 30,
+     "angle": 90.8,
+     "offGrid": 0.8
+    },
+    {
+     "from": [
+      9.3,
+      19.8
+     ],
+     "to": [
+      9,
+      3
+     ],
+     "lengthPx": 16.8,
+     "angle": 89,
+     "offGrid": 1
+    },
+    {
+     "from": [
+      34.5,
+      15.3
+     ],
+     "to": [
+      34.3,
+      38
+     ],
+     "lengthPx": 22.8,
+     "angle": 91,
+     "offGrid": 1
+    },
+    {
+     "from": [
+      9.5,
+      20.5
+     ],
+     "to": [
+      9.3,
+      2.8
+     ],
+     "lengthPx": 17.8,
+     "angle": 89,
+     "offGrid": 1
+    },
+    {
+     "from": [
+      33.5,
+      7.3
+     ],
+     "to": [
+      33.5,
+      36.5
+     ],
+     "lengthPx": 29.3,
+     "angle": 90,
+     "offGrid": 0
+    },
+    {
+     "from": [
+      9,
+      38.8
+     ],
+     "to": [
+      9,
+      24.3
+     ],
+     "lengthPx": 14.5,
+     "angle": 89.1,
+     "offGrid": 0.9
+    },
+    {
+     "from": [
+      10,
+      22
+     ],
+     "to": [
+      9.5,
+      2.8
+     ],
+     "lengthPx": 19.3,
+     "angle": 88.7,
+     "offGrid": 1.3
+    },
+    {
+     "from": [
+      34.8,
+      15.8
+     ],
+     "to": [
+      34.5,
+      24.3
+     ],
+     "lengthPx": 8.5,
+     "angle": 92.1,
+     "offGrid": 2.1
+    },
+    {
+     "from": [
+      8.8,
+      39
+     ],
+     "to": [
+      8.8,
+      24.5
+     ],
+     "lengthPx": 14.5,
+     "angle": 89.1,
+     "offGrid": 0.9
+    },
+    {
+     "from": [
+      33.5,
+      23.8
+     ],
+     "to": [
+      33.5,
+      36
+     ],
+     "lengthPx": 12.3,
+     "angle": 90,
+     "offGrid": 0
+    },
+    {
+     "from": [
+      34,
+      21.5
+     ],
+     "to": [
+      34,
+      8
+     ],
+     "lengthPx": 13.5,
+     "angle": 90,
+     "offGrid": 0
+    },
+    {
+     "from": [
+      23.5,
+      4.5
+     ],
+     "to": [
+      16.8,
+      1.5
+     ],
+     "lengthPx": 7.4,
+     "angle": 21.7,
+     "offGrid": 4.9
+    },
+    {
+     "from": [
+      33.3,
+      8
+     ],
+     "to": [
+      26.3,
+      6
+     ],
+     "lengthPx": 7.3,
+     "angle": 16.3,
+     "offGrid": 10.3
+    },
+    {
+     "from": [
+      10,
+      25
+     ],
+     "to": [
+      9.5,
+      4.8
+     ],
+     "lengthPx": 20.3,
+     "angle": 88.4,
+     "offGrid": 1.6
+    },
+    {
+     "from": [
+      17.5,
+      42.3
+     ],
+     "to": [
+      10.8,
+      39.3
+     ],
+     "lengthPx": 7.4,
+     "angle": 23.5,
+     "offGrid": 3.1
+    }
+   ]
+  },
+  "stairs-nw": {
+   "gated": true,
+   "pass": false,
+   "longestSlantLines": [
+    {
+     "angle": 159,
+     "lengthPx": 36.6,
+     "offGridDeg": 5.6
+    },
+    {
+     "angle": 159.1,
+     "lengthPx": 36.6,
+     "offGridDeg": 5.6
+    },
+    {
+     "angle": 159,
+     "lengthPx": 34.3,
+     "offGridDeg": 5.6
+    }
+   ],
+   "slantOnGridShare": 0.066,
+   "lines": [
+    {
+     "from": [
+      58.8,
+      11.8
+     ],
+     "to": [
+      24.5,
+      24.8
+     ],
+     "lengthPx": 36.6,
+     "angle": 159,
+     "offGrid": 5.6
+    },
+    {
+     "from": [
+      58,
+      12.5
+     ],
+     "to": [
+      26,
+      24.8
+     ],
+     "lengthPx": 34.3,
+     "angle": 159,
+     "offGrid": 5.6
+    },
+    {
+     "from": [
+      58.8,
+      11.5
+     ],
+     "to": [
+      24.5,
+      24.5
+     ],
+     "lengthPx": 36.6,
+     "angle": 159.1,
+     "offGrid": 5.6
+    },
+    {
+     "from": [
+      68.3,
+      20
+     ],
+     "to": [
+      48.3,
+      27
+     ],
+     "lengthPx": 21.2,
+     "angle": 159.2,
+     "offGrid": 5.8
+    },
+    {
+     "from": [
+      79.3,
+      32.3
+     ],
+     "to": [
+      48.3,
+      42.5
+     ],
+     "lengthPx": 32.7,
+     "angle": 161.1,
+     "offGrid": 7.7
+    },
+    {
+     "from": [
+      66.8,
+      20
+     ],
+     "to": [
+      37.8,
+      31
+     ],
+     "lengthPx": 31,
+     "angle": 159,
+     "offGrid": 5.6
+    },
+    {
+     "from": [
+      102.5,
+      72
+     ],
+     "to": [
+      70.5,
+      81.8
+     ],
+     "lengthPx": 33.5,
+     "angle": 162.9,
+     "offGrid": 9.5
+    },
+    {
+     "from": [
+      57.3,
+      13.3
+     ],
+     "to": [
+      33.3,
+      22.3
+     ],
+     "lengthPx": 25.6,
+     "angle": 159.7,
+     "offGrid": 6.3
+    },
+    {
+     "from": [
+      101,
+      31
+     ],
+     "to": [
+      86.3,
+      16.3
+     ],
+     "lengthPx": 20.9,
+     "angle": 44.6,
+     "offGrid": 18.1
+    },
+    {
+     "from": [
+      90.3,
+      58.8
+     ],
+     "to": [
+      63.8,
+      69.3
+     ],
+     "lengthPx": 28.5,
+     "angle": 159.2,
+     "offGrid": 5.8
+    },
+    {
+     "from": [
+      79.5,
+      32.5
+     ],
+     "to": [
+      48.5,
+      43
+     ],
+     "lengthPx": 32.7,
+     "angle": 161.1,
+     "offGrid": 7.7
+    },
+    {
+     "from": [
+      68.8,
+      20
+     ],
+     "to": [
+      59.3,
+      23.3
+     ],
+     "lengthPx": 10,
+     "angle": 160.3,
+     "offGrid": 6.8
+    },
+    {
+     "from": [
+      116.8,
+      51.8
+     ],
+     "to": [
+      103,
+      37
+     ],
+     "lengthPx": 20.2,
+     "angle": 45.2,
+     "offGrid": 18.6
+    },
+    {
+     "from": [
+      76,
+      33
+     ],
+     "to": [
+      48,
+      42.5
+     ],
+     "lengthPx": 29.6,
+     "angle": 161,
+     "offGrid": 7.6
+    },
+    {
+     "from": [
+      77,
+      48.3
+     ],
+     "to": [
+      55,
+      55.8
+     ],
+     "lengthPx": 23.2,
+     "angle": 161.9,
+     "offGrid": 8.5
+    },
+    {
+     "from": [
+      54,
+      74.5
+     ],
+     "to": [
+      38.8,
+      58.5
+     ],
+     "lengthPx": 22.1,
+     "angle": 45.1,
+     "offGrid": 18.6
+    },
+    {
+     "from": [
+      90.5,
+      59.5
+     ],
+     "to": [
+      70.3,
+      67
+     ],
+     "lengthPx": 21.6,
+     "angle": 159.1,
+     "offGrid": 5.6
+    },
+    {
+     "from": [
+      87.3,
+      13.5
+     ],
+     "to": [
+      76.3,
+      6
+     ],
+     "lengthPx": 13.3,
+     "angle": 33.4,
+     "offGrid": 6.8
+    },
+    {
+     "from": [
+      82,
+      78.5
+     ],
+     "to": [
+      72.8,
+      81.3
+     ],
+     "lengthPx": 9.7,
+     "angle": 162.9,
+     "offGrid": 9.5
+    },
+    {
+     "from": [
+      86.5,
+      12
+     ],
+     "to": [
+      67.8,
+      0.3
+     ],
+     "lengthPx": 22.1,
+     "angle": 32.1,
+     "offGrid": 5.5
+    },
+    {
+     "from": [
+      64,
+      20.8
+     ],
+     "to": [
+      37.8,
+      30.8
+     ],
+     "lengthPx": 28.1,
+     "angle": 159,
+     "offGrid": 5.5
+    },
+    {
+     "from": [
+      104.3,
+      34.3
+     ],
+     "to": [
+      96.8,
+      26.8
+     ],
+     "lengthPx": 10.6,
+     "angle": 45.1,
+     "offGrid": 18.5
+    },
+    {
+     "from": [
+      83.5,
+      61.8
+     ],
+     "to": [
+      70,
+      66.8
+     ],
+     "lengthPx": 14.4,
+     "angle": 159.1,
+     "offGrid": 5.6
+    },
+    {
+     "from": [
+      103.5,
+      53.5
+     ],
+     "to": [
+      92.3,
+      42.5
+     ],
+     "lengthPx": 15.7,
+     "angle": 44.8,
+     "offGrid": 18.2
+    },
+    {
+     "from": [
+      76,
+      49.3
+     ],
+     "to": [
+      57.8,
+      55
+     ],
+     "lengthPx": 19.1,
+     "angle": 162,
+     "offGrid": 8.6
+    },
+    {
+     "from": [
+      79.3,
+      47.3
+     ],
+     "to": [
+      54.8,
+      55.5
+     ],
+     "lengthPx": 25.9,
+     "angle": 161.8,
+     "offGrid": 8.4
+    },
+    {
+     "from": [
+      18,
+      19.5
+     ],
+     "to": [
+      7.8,
+      23.5
+     ],
+     "lengthPx": 11,
+     "angle": 158.4,
+     "offGrid": 4.9
+    },
+    {
+     "from": [
+      9,
+      31.5
+     ],
+     "to": [
+      8.3,
+      54.8
+     ],
+     "lengthPx": 23.3,
+     "angle": 92.9,
+     "offGrid": 2.9
+    },
+    {
+     "from": [
+      100.8,
+      72.3
+     ],
+     "to": [
+      76.3,
+      79.8
+     ],
+     "lengthPx": 25.6,
+     "angle": 162.9,
+     "offGrid": 9.5
+    },
+    {
+     "from": [
+      8.3,
+      43.3
+     ],
+     "to": [
+      7.8,
+      54.5
+     ],
+     "lengthPx": 11.3,
+     "angle": 93,
+     "offGrid": 3
+    },
+    {
+     "from": [
+      58,
+      12.8
+     ],
+     "to": [
+      33.5,
+      22.3
+     ],
+     "lengthPx": 26.3,
+     "angle": 158.1,
+     "offGrid": 4.6
+    },
+    {
+     "from": [
+      96,
+      25.5
+     ],
+     "to": [
+      86.3,
+      18
+     ],
+     "lengthPx": 12.3,
+     "angle": 38.1,
+     "offGrid": 11.5
+    },
+    {
+     "from": [
+      92.8,
+      35.3
+     ],
+     "to": [
+      76.8,
+      21.8
+     ],
+     "lengthPx": 20.9,
+     "angle": 40.1,
+     "offGrid": 13.5
+    },
+    {
+     "from": [
+      114,
+      49.3
+     ],
+     "to": [
+      103,
+      38.8
+     ],
+     "lengthPx": 15.2,
+     "angle": 42.3,
+     "offGrid": 15.7
+    },
+    {
+     "from": [
+      83.5,
+      61.3
+     ],
+     "to": [
+      64.3,
+      68.5
+     ],
+     "lengthPx": 20.6,
+     "angle": 159.2,
+     "offGrid": 5.8
+    },
+    {
+     "from": [
+      9,
+      42.8
+     ],
+     "to": [
+      8.5,
+      54.8
+     ],
+     "lengthPx": 12,
+     "angle": 92.9,
+     "offGrid": 2.9
+    },
+    {
+     "from": [
+      85,
+      10.8
+     ],
+     "to": [
+      77,
+      5.8
+     ],
+     "lengthPx": 9.4,
+     "angle": 32.5,
+     "offGrid": 5.9
+    },
+    {
+     "from": [
+      61.8,
+      38.8
+     ],
+     "to": [
+      48.5,
+      43.3
+     ],
+     "lengthPx": 14,
+     "angle": 160.9,
+     "offGrid": 7.5
+    },
+    {
+     "from": [
+      42,
+      73
+     ],
+     "to": [
+      29.5,
+      64.5
+     ],
+     "lengthPx": 15.1,
+     "angle": 33.6,
+     "offGrid": 7.1
+    },
+    {
+     "from": [
+      62,
+      21.3
+     ],
+     "to": [
+      37.8,
+      30.5
+     ],
+     "lengthPx": 26,
+     "angle": 158.9,
+     "offGrid": 5.5
+    },
+    {
+     "from": [
+      52,
+      72.5
+     ],
+     "to": [
+      39,
+      59.8
+     ],
+     "lengthPx": 18.2,
+     "angle": 44.1,
+     "offGrid": 17.5
+    },
+    {
+     "from": [
+      18.8,
+      19.5
+     ],
+     "to": [
+      10,
+      23
+     ],
+     "lengthPx": 9.4,
+     "angle": 157.9,
+     "offGrid": 4.5
+    },
+    {
+     "from": [
+      86.5,
+      29.3
+     ],
+     "to": [
+      77.3,
+      21.8
+     ],
+     "lengthPx": 11.9,
+     "angle": 40,
+     "offGrid": 13.4
+    },
+    {
+     "from": [
+      114,
+      48.8
+     ],
+     "to": [
+      103,
+      38.5
+     ],
+     "lengthPx": 15,
+     "angle": 42.9,
+     "offGrid": 16.3
+    },
+    {
+     "from": [
+      32.5,
+      47.8
+     ],
+     "to": [
+      21.8,
+      38
+     ],
+     "lengthPx": 14.5,
+     "angle": 42,
+     "offGrid": 15.4
+    },
+    {
+     "from": [
+      100.5,
+      73
+     ],
+     "to": [
+      93,
+      75.8
+     ],
+     "lengthPx": 8,
+     "angle": 161,
+     "offGrid": 7.6
+    },
+    {
+     "from": [
+      25.3,
+      24.3
+     ],
+     "to": [
+      17.8,
+      19.8
+     ],
+     "lengthPx": 8.7,
+     "angle": 33.5,
+     "offGrid": 6.9
+    },
+    {
+     "from": [
+      115,
+      48.8
+     ],
+     "to": [
+      103,
+      38.3
+     ],
+     "lengthPx": 15.9,
+     "angle": 41.2,
+     "offGrid": 14.6
+    },
+    {
+     "from": [
+      40,
+      72.3
+     ],
+     "to": [
+      29.3,
+      64.8
+     ],
+     "lengthPx": 13.1,
+     "angle": 34.5,
+     "offGrid": 7.9
+    },
+    {
+     "from": [
+      72.8,
+      34
+     ],
+     "to": [
+      60.3,
+      38.3
+     ],
+     "lengthPx": 13.2,
+     "angle": 160.8,
+     "offGrid": 7.4
+    },
+    {
+     "from": [
+      8.5,
+      32
+     ],
+     "to": [
+      7.8,
+      41.8
+     ],
+     "lengthPx": 9.8,
+     "angle": 93.1,
+     "offGrid": 3.1
+    },
+    {
+     "from": [
+      78.3,
+      63.3
+     ],
+     "to": [
+      64.5,
+      68
+     ],
+     "lengthPx": 14.5,
+     "angle": 162.3,
+     "offGrid": 8.8
+    },
+    {
+     "from": [
+      34,
+      21
+     ],
+     "to": [
+      23.8,
+      24.3
+     ],
+     "lengthPx": 10.8,
+     "angle": 160.4,
+     "offGrid": 7
+    },
+    {
+     "from": [
+      95.5,
+      25.3
+     ],
+     "to": [
+      86.3,
+      17.5
+     ],
+     "lengthPx": 12.1,
+     "angle": 38.2,
+     "offGrid": 11.6
+    },
+    {
+     "from": [
+      95,
+      25.8
+     ],
+     "to": [
+      86.5,
+      18.3
+     ],
+     "lengthPx": 11.3,
+     "angle": 40.1,
+     "offGrid": 13.5
+    },
+    {
+     "from": [
+      25.8,
+      24.3
+     ],
+     "to": [
+      19,
+      19.8
+     ],
+     "lengthPx": 8.1,
+     "angle": 34.4,
+     "offGrid": 7.8
+    },
+    {
+     "from": [
+      36,
+      32.5
+     ],
+     "to": [
+      26.5,
+      36.8
+     ],
+     "lengthPx": 10.4,
+     "angle": 157.6,
+     "offGrid": 4.2
+    },
+    {
+     "from": [
+      85.5,
+      11.8
+     ],
+     "to": [
+      76.5,
+      6
+     ],
+     "lengthPx": 10.7,
+     "angle": 31.6,
+     "offGrid": 5
+    },
+    {
+     "from": [
+      39.8,
+      53.3
+     ],
+     "to": [
+      38.8,
+      73.5
+     ],
+     "lengthPx": 20.3,
+     "angle": 92.1,
+     "offGrid": 2.1
+    }
+   ]
+  },
+  "stairs-ne": {
+   "gated": true,
+   "pass": false,
+   "longestSlantLines": [
+    {
+     "angle": 135,
+     "lengthPx": 48.8,
+     "offGridDeg": 18.4
+    },
+    {
+     "angle": 16.1,
+     "lengthPx": 46.2,
+     "offGridDeg": 10.5
+    },
+    {
+     "angle": 132.1,
+     "lengthPx": 43.2,
+     "offGridDeg": 21.3
+    }
+   ],
+   "slantOnGridShare": 0,
+   "lines": [
+    {
+     "from": [
+      52.8,
+      7
+     ],
+     "to": [
+      18.3,
+      41.5
+     ],
+     "lengthPx": 48.8,
+     "angle": 135,
+     "offGrid": 18.4
+    },
+    {
+     "from": [
+      47.8,
+      13.5
+     ],
+     "to": [
+      19.8,
+      41
+     ],
+     "lengthPx": 39.2,
+     "angle": 134.9,
+     "offGrid": 18.5
+    },
+    {
+     "from": [
+      102.3,
+      20.5
+     ],
+     "to": [
+      66.5,
+      9
+     ],
+     "lengthPx": 37.6,
+     "angle": 17.1,
+     "offGrid": 9.5
+    },
+    {
+     "from": [
+      102.3,
+      20.8
+     ],
+     "to": [
+      69.5,
+      10.8
+     ],
+     "lengthPx": 34.2,
+     "angle": 16.1,
+     "offGrid": 10.5
+    },
+    {
+     "from": [
+      99.8,
+      29.8
+     ],
+     "to": [
+      55.3,
+      17.5
+     ],
+     "lengthPx": 46.2,
+     "angle": 16.1,
+     "offGrid": 10.5
+    },
+    {
+     "from": [
+      100.8,
+      20.3
+     ],
+     "to": [
+      70.3,
+      11.5
+     ],
+     "lengthPx": 31.7,
+     "angle": 15.9,
+     "offGrid": 10.6
+    },
+    {
+     "from": [
+      102,
+      19.8
+     ],
+     "to": [
+      66.3,
+      8.8
+     ],
+     "lengthPx": 37.4,
+     "angle": 17,
+     "offGrid": 9.5
+    },
+    {
+     "from": [
+      92.5,
+      27.5
+     ],
+     "to": [
+      56.3,
+      17.3
+     ],
+     "lengthPx": 37.7,
+     "angle": 16,
+     "offGrid": 10.6
+    },
+    {
+     "from": [
+      75,
+      48.5
+     ],
+     "to": [
+      38.5,
+      36.5
+     ],
+     "lengthPx": 38.4,
+     "angle": 18,
+     "offGrid": 8.5
+    },
+    {
+     "from": [
+      85.8,
+      39
+     ],
+     "to": [
+      47.5,
+      26.5
+     ],
+     "lengthPx": 40.2,
+     "angle": 18.1,
+     "offGrid": 8.5
+    },
+    {
+     "from": [
+      53.8,
+      12.5
+     ],
+     "to": [
+      24.5,
+      44.3
+     ],
+     "lengthPx": 43.2,
+     "angle": 132.1,
+     "offGrid": 21.3
+    },
+    {
+     "from": [
+      79.3,
+      24.3
+     ],
+     "to": [
+      55.3,
+      17.8
+     ],
+     "lengthPx": 24.9,
+     "angle": 15.9,
+     "offGrid": 10.7
+    },
+    {
+     "from": [
+      75.5,
+      49
+     ],
+     "to": [
+      56,
+      42.3
+     ],
+     "lengthPx": 20.6,
+     "angle": 18.2,
+     "offGrid": 8.4
+    },
+    {
+     "from": [
+      73.3,
+      53.8
+     ],
+     "to": [
+      49.3,
+      46.8
+     ],
+     "lengthPx": 25,
+     "angle": 16.9,
+     "offGrid": 9.7
+    },
+    {
+     "from": [
+      74,
+      47.8
+     ],
+     "to": [
+      38.8,
+      36.3
+     ],
+     "lengthPx": 37.1,
+     "angle": 18,
+     "offGrid": 8.6
+    },
+    {
+     "from": [
+      64,
+      58
+     ],
+     "to": [
+      28.8,
+      47
+     ],
+     "lengthPx": 36.9,
+     "angle": 17.9,
+     "offGrid": 8.6
+    },
+    {
+     "from": [
+      45.8,
+      15
+     ],
+     "to": [
+      28.3,
+      32.3
+     ],
+     "lengthPx": 24.6,
+     "angle": 135,
+     "offGrid": 18.4
+    },
+    {
+     "from": [
+      44.8,
+      15
+     ],
+     "to": [
+      28.3,
+      32
+     ],
+     "lengthPx": 23.7,
+     "angle": 134.2,
+     "offGrid": 19.2
+    },
+    {
+     "from": [
+      69.3,
+      40.3
+     ],
+     "to": [
+      48.3,
+      33.8
+     ],
+     "lengthPx": 22,
+     "angle": 16.1,
+     "offGrid": 10.4
+    },
+    {
+     "from": [
+      94.3,
+      18
+     ],
+     "to": [
+      69.3,
+      10.5
+     ],
+     "lengthPx": 26.1,
+     "angle": 16.2,
+     "offGrid": 10.4
+    },
+    {
+     "from": [
+      64,
+      57.8
+     ],
+     "to": [
+      41.5,
+      50.5
+     ],
+     "lengthPx": 23.6,
+     "angle": 18,
+     "offGrid": 8.6
+    },
+    {
+     "from": [
+      79.8,
+      30.5
+     ],
+     "to": [
+      60,
+      25
+     ],
+     "lengthPx": 20.5,
+     "angle": 16,
+     "offGrid": 10.5
+    },
+    {
+     "from": [
+      55.3,
+      12.3
+     ],
+     "to": [
+      46.8,
+      20
+     ],
+     "lengthPx": 11.5,
+     "angle": 134.9,
+     "offGrid": 18.5
+    },
+    {
+     "from": [
+      60.3,
+      50.5
+     ],
+     "to": [
+      49.3,
+      47
+     ],
+     "lengthPx": 11.5,
+     "angle": 17.1,
+     "offGrid": 9.4
+    },
+    {
+     "from": [
+      64,
+      58.8
+     ],
+     "to": [
+      28.5,
+      47.3
+     ],
+     "lengthPx": 37.3,
+     "angle": 18,
+     "offGrid": 8.6
+    },
+    {
+     "from": [
+      59.8,
+      63.5
+     ],
+     "to": [
+      32.5,
+      54.3
+     ],
+     "lengthPx": 28.8,
+     "angle": 18.9,
+     "offGrid": 7.6
+    },
+    {
+     "from": [
+      84.3,
+      38.3
+     ],
+     "to": [
+      52.8,
+      28
+     ],
+     "lengthPx": 33.1,
+     "angle": 18,
+     "offGrid": 8.6
+    },
+    {
+     "from": [
+      32.5,
+      35.3
+     ],
+     "to": [
+      23.3,
+      44.5
+     ],
+     "lengthPx": 13.1,
+     "angle": 134.5,
+     "offGrid": 19
+    },
+    {
+     "from": [
+      76.8,
+      22.8
+     ],
+     "to": [
+      58.5,
+      17.5
+     ],
+     "lengthPx": 19,
+     "angle": 16,
+     "offGrid": 10.6
+    },
+    {
+     "from": [
+      71.5,
+      34.5
+     ],
+     "to": [
+      46.8,
+      26.8
+     ],
+     "lengthPx": 25.9,
+     "angle": 18,
+     "offGrid": 8.6
+    },
+    {
+     "from": [
+      53.5,
+      61.8
+     ],
+     "to": [
+      43.8,
+      58.5
+     ],
+     "lengthPx": 10.3,
+     "angle": 18.6,
+     "offGrid": 8
+    },
+    {
+     "from": [
+      116.5,
+      14.8
+     ],
+     "to": [
+      116.3,
+      23.8
+     ],
+     "lengthPx": 9,
+     "angle": 91.3,
+     "offGrid": 1.3
+    },
+    {
+     "from": [
+      61.3,
+      50
+     ],
+     "to": [
+      49.8,
+      46.5
+     ],
+     "lengthPx": 12,
+     "angle": 17.1,
+     "offGrid": 9.5
+    },
+    {
+     "from": [
+      47.5,
+      53.3
+     ],
+     "to": [
+      29,
+      47.5
+     ],
+     "lengthPx": 19.4,
+     "angle": 17.9,
+     "offGrid": 8.7
+    },
+    {
+     "from": [
+      98.8,
+      29.8
+     ],
+     "to": [
+      91.8,
+      38.3
+     ],
+     "lengthPx": 11,
+     "angle": 130,
+     "offGrid": 23.5
+    },
+    {
+     "from": [
+      94.5,
+      28.3
+     ],
+     "to": [
+      88,
+      35.3
+     ],
+     "lengthPx": 9.6,
+     "angle": 131,
+     "offGrid": 22.5
+    },
+    {
+     "from": [
+      102.3,
+      19.3
+     ],
+     "to": [
+      85.8,
+      14.8
+     ],
+     "lengthPx": 17.1,
+     "angle": 15.5,
+     "offGrid": 11.1
+    },
+    {
+     "from": [
+      79.8,
+      30.3
+     ],
+     "to": [
+      65.8,
+      26.5
+     ],
+     "lengthPx": 14.5,
+     "angle": 16,
+     "offGrid": 10.6
+    },
+    {
+     "from": [
+      116.5,
+      35.3
+     ],
+     "to": [
+      116.3,
+      43.8
+     ],
+     "lengthPx": 8.5,
+     "angle": 91.5,
+     "offGrid": 1.5
+    },
+    {
+     "from": [
+      69,
+      39.5
+     ],
+     "to": [
+      53,
+      35
+     ],
+     "lengthPx": 16.6,
+     "angle": 16.5,
+     "offGrid": 10.1
+    },
+    {
+     "from": [
+      77.8,
+      30.3
+     ],
+     "to": [
+      62.3,
+      26
+     ],
+     "lengthPx": 16.1,
+     "angle": 15.9,
+     "offGrid": 10.7
+    },
+    {
+     "from": [
+      47.5,
+      40
+     ],
+     "to": [
+      37.8,
+      37
+     ],
+     "lengthPx": 10.2,
+     "angle": 18,
+     "offGrid": 8.6
+    },
+    {
+     "from": [
+      74.3,
+      47.3
+     ],
+     "to": [
+      66.3,
+      45
+     ],
+     "lengthPx": 8.3,
+     "angle": 17.5,
+     "offGrid": 9.1
+    },
+    {
+     "from": [
+      84.3,
+      37.8
+     ],
+     "to": [
+      65.3,
+      31.8
+     ],
+     "lengthPx": 19.9,
+     "angle": 17.9,
+     "offGrid": 8.7
+    },
+    {
+     "from": [
+      99,
+      30.3
+     ],
+     "to": [
+      94.5,
+      35.8
+     ],
+     "lengthPx": 7.1,
+     "angle": 128.9,
+     "offGrid": 24.6
+    },
+    {
+     "from": [
+      98.5,
+      30
+     ],
+     "to": [
+      91.3,
+      38.5
+     ],
+     "lengthPx": 11.2,
+     "angle": 130.1,
+     "offGrid": 23.4
+    },
+    {
+     "from": [
+      116,
+      14.5
+     ],
+     "to": [
+      116,
+      23.5
+     ],
+     "lengthPx": 9,
+     "angle": 90.7,
+     "offGrid": 0.7
+    },
+    {
+     "from": [
+      61.8,
+      31.3
+     ],
+     "to": [
+      45.3,
+      27.3
+     ],
+     "lengthPx": 17,
+     "angle": 15.3,
+     "offGrid": 11.3
+    },
+    {
+     "from": [
+      63.8,
+      20
+     ],
+     "to": [
+      54.5,
+      17.8
+     ],
+     "lengthPx": 9.5,
+     "angle": 15,
+     "offGrid": 11.6
+    },
+    {
+     "from": [
+      72.3,
+      29
+     ],
+     "to": [
+      62.3,
+      26.3
+     ],
+     "lengthPx": 10.4,
+     "angle": 16.1,
+     "offGrid": 10.5
+    }
+   ]
+  },
+  "wall-ne": {
+   "gated": false,
+   "pass": false,
+   "longestSlantLines": [
+    {
+     "angle": 160.2,
+     "lengthPx": 19.9,
+     "offGridDeg": 6.7
+    },
+    {
+     "angle": 160.3,
+     "lengthPx": 18.9,
+     "offGridDeg": 6.9
+    },
+    {
+     "angle": 160,
+     "lengthPx": 18.3,
+     "offGridDeg": 6.6
+    }
+   ],
+   "slantOnGridShare": 0.518,
+   "lines": [
+    {
+     "from": [
+      90,
+      19.3
+     ],
+     "to": [
+      71.3,
+      26
+     ],
+     "lengthPx": 19.9,
+     "angle": 160.2,
+     "offGrid": 6.7
+    },
+    {
+     "from": [
+      88.5,
+      19.3
+     ],
+     "to": [
+      71.3,
+      25.5
+     ],
+     "lengthPx": 18.3,
+     "angle": 160,
+     "offGrid": 6.6
+    },
+    {
+     "from": [
+      117.3,
+      9.5
+     ],
+     "to": [
+      100.3,
+      15.8
+     ],
+     "lengthPx": 18.1,
+     "angle": 160.1,
+     "offGrid": 6.7
+    },
+    {
+     "from": [
+      118,
+      9.5
+     ],
+     "to": [
+      100.3,
+      16
+     ],
+     "lengthPx": 18.9,
+     "angle": 160.3,
+     "offGrid": 6.9
+    },
+    {
+     "from": [
+      87.5,
+      19.3
+     ],
+     "to": [
+      71.5,
+      25
+     ],
+     "lengthPx": 17,
+     "angle": 160.1,
+     "offGrid": 6.7
+    },
+    {
+     "from": [
+      150.5,
+      2.8
+     ],
+     "to": [
+      150.8,
+      32.3
+     ],
+     "lengthPx": 29.5,
+     "angle": 90,
+     "offGrid": 0
+    },
+    {
+     "from": [
+      25,
+      68.8
+     ],
+     "to": [
+      12.8,
+      76
+     ],
+     "lengthPx": 14.2,
+     "angle": 149.1,
+     "offGrid": 4.3
+    },
+    {
+     "from": [
+      102,
+      28.3
+     ],
+     "to": [
+      94.5,
+      30.5
+     ],
+     "lengthPx": 7.8,
+     "angle": 161,
+     "offGrid": 7.6
+    },
+    {
+     "from": [
+      24,
+      68.8
+     ],
+     "to": [
+      12.8,
+      75.5
+     ],
+     "lengthPx": 13.1,
+     "angle": 149.2,
+     "offGrid": 4.2
+    },
+    {
+     "from": [
+      25.5,
+      68.8
+     ],
+     "to": [
+      16,
+      74
+     ],
+     "lengthPx": 10.9,
+     "angle": 149.9,
+     "offGrid": 3.6
+    },
+    {
+     "from": [
+      118.3,
+      9.8
+     ],
+     "to": [
+      106,
+      13.8
+     ],
+     "lengthPx": 12.9,
+     "angle": 161.4,
+     "offGrid": 8
+    },
+    {
+     "from": [
+      101.8,
+      27.5
+     ],
+     "to": [
+      94.3,
+      30.3
+     ],
+     "lengthPx": 8,
+     "angle": 160.6,
+     "offGrid": 7.1
+    },
+    {
+     "from": [
+      82,
+      21
+     ],
+     "to": [
+      71.8,
+      24.8
+     ],
+     "lengthPx": 10.9,
+     "angle": 160.5,
+     "offGrid": 7
+    },
+    {
+     "from": [
+      55.8,
+      55.5
+     ],
+     "to": [
+      41,
+      65
+     ],
+     "lengthPx": 17.5,
+     "angle": 147.2,
+     "offGrid": 6.3
+    },
+    {
+     "from": [
+      26.3,
+      69
+     ],
+     "to": [
+      13,
+      74.3
+     ],
+     "lengthPx": 14.3,
+     "angle": 157.9,
+     "offGrid": 4.4
+    },
+    {
+     "from": [
+      49.5,
+      44
+     ],
+     "to": [
+      37,
+      50
+     ],
+     "lengthPx": 13.9,
+     "angle": 154,
+     "offGrid": 0.5
+    },
+    {
+     "from": [
+      56.5,
+      43.5
+     ],
+     "to": [
+      47.3,
+      47.3
+     ],
+     "lengthPx": 10,
+     "angle": 159.6,
+     "offGrid": 6.1
+    },
+    {
+     "from": [
+      85.5,
+      26.3
+     ],
+     "to": [
+      77.5,
+      29.5
+     ],
+     "lengthPx": 8.6,
+     "angle": 158.1,
+     "offGrid": 4.6
+    },
+    {
+     "from": [
+      29,
+      67.8
+     ],
+     "to": [
+      18.5,
+      72.8
+     ],
+     "lengthPx": 11.6,
+     "angle": 156,
+     "offGrid": 2.6
+    },
+    {
+     "from": [
+      51,
+      58.5
+     ],
+     "to": [
+      38.8,
+      65.8
+     ],
+     "lengthPx": 14.2,
+     "angle": 151.6,
+     "offGrid": 1.9
+    },
+    {
+     "from": [
+      73.3,
+      38
+     ],
+     "to": [
+      66,
+      40.5
+     ],
+     "lengthPx": 7.7,
+     "angle": 160.2,
+     "offGrid": 6.8
+    },
+    {
+     "from": [
+      49.5,
+      43.8
+     ],
+     "to": [
+      37.5,
+      49.3
+     ],
+     "lengthPx": 13.2,
+     "angle": 155.8,
+     "offGrid": 2.4
+    },
+    {
+     "from": [
+      49.3,
+      44.5
+     ],
+     "to": [
+      37,
+      50.3
+     ],
+     "lengthPx": 13.5,
+     "angle": 155.5,
+     "offGrid": 2
+    },
+    {
+     "from": [
+      40.3,
+      53
+     ],
+     "to": [
+      31.8,
+      57.8
+     ],
+     "lengthPx": 9.7,
+     "angle": 153.4,
+     "offGrid": 0
+    },
+    {
+     "from": [
+      150.5,
+      7
+     ],
+     "to": [
+      150.5,
+      19.5
+     ],
+     "lengthPx": 12.5,
+     "angle": 90,
+     "offGrid": 0
+    },
+    {
+     "from": [
+      49.5,
+      43.5
+     ],
+     "to": [
+      37.3,
+      49.8
+     ],
+     "lengthPx": 13.8,
+     "angle": 153.6,
+     "offGrid": 0.2
+    },
+    {
+     "from": [
+      46,
+      61.3
+     ],
+     "to": [
+      38.3,
+      64
+     ],
+     "lengthPx": 8.2,
+     "angle": 159,
+     "offGrid": 5.6
+    },
+    {
+     "from": [
+      50.8,
+      59.8
+     ],
+     "to": [
+      38.8,
+      66.3
+     ],
+     "lengthPx": 13.6,
+     "angle": 153.3,
+     "offGrid": 0.1
+    },
+    {
+     "from": [
+      53,
+      45.8
+     ],
+     "to": [
+      45,
+      50.5
+     ],
+     "lengthPx": 9.3,
+     "angle": 150.5,
+     "offGrid": 2.9
+    },
+    {
+     "from": [
+      80,
+      21.5
+     ],
+     "to": [
+      72.3,
+      24.3
+     ],
+     "lengthPx": 8.2,
+     "angle": 161.5,
+     "offGrid": 8.1
+    },
+    {
+     "from": [
+      84.8,
+      26.3
+     ],
+     "to": [
+      77.5,
+      29
+     ],
+     "lengthPx": 7.8,
+     "angle": 157.7,
+     "offGrid": 4.3
+    },
+    {
+     "from": [
+      141,
+      7
+     ],
+     "to": [
+      133,
+      10
+     ],
+     "lengthPx": 8.5,
+     "angle": 159.4,
+     "offGrid": 6
+    },
+    {
+     "from": [
+      35.5,
+      69.8
+     ],
+     "to": [
+      24.5,
+      75
+     ],
+     "lengthPx": 12.2,
+     "angle": 155.3,
+     "offGrid": 1.8
+    },
+    {
+     "from": [
+      39,
+      54.8
+     ],
+     "to": [
+      31.5,
+      58.8
+     ],
+     "lengthPx": 8.5,
+     "angle": 155.6,
+     "offGrid": 2.2
+    },
+    {
+     "from": [
+      51.3,
+      45.3
+     ],
+     "to": [
+      50.3,
+      34
+     ],
+     "lengthPx": 11.3,
+     "angle": 84,
+     "offGrid": 6
+    },
+    {
+     "from": [
+      51,
+      59.5
+     ],
+     "to": [
+      39,
+      66
+     ],
+     "lengthPx": 13.6,
+     "angle": 153.7,
+     "offGrid": 0.3
+    },
+    {
+     "from": [
+      39,
+      54
+     ],
+     "to": [
+      31.5,
+      59
+     ],
+     "lengthPx": 9,
+     "angle": 147.9,
+     "offGrid": 5.5
+    }
+   ]
+  },
+  "wall-se": {
+   "gated": false,
+   "pass": false,
+   "longestSlantLines": [
+    {
+     "angle": 16.9,
+     "lengthPx": 23.5,
+     "offGridDeg": 9.7
+    },
+    {
+     "angle": 16.1,
+     "lengthPx": 21.6,
+     "offGridDeg": 10.5
+    },
+    {
+     "angle": 16.6,
+     "lengthPx": 20.4,
+     "offGridDeg": 9.9
+    }
+   ],
+   "slantOnGridShare": 0.226,
+   "lines": [
+    {
+     "from": [
+      72,
+      15.3
+     ],
+     "to": [
+      52.8,
+      9.8
+     ],
+     "lengthPx": 20,
+     "angle": 16,
+     "offGrid": 10.6
+    },
+    {
+     "from": [
+      109.8,
+      27.3
+     ],
+     "to": [
+      87.3,
+      20.5
+     ],
+     "lengthPx": 23.5,
+     "angle": 16.9,
+     "offGrid": 9.7
+    },
+    {
+     "from": [
+      71.8,
+      15.5
+     ],
+     "to": [
+      52.8,
+      10
+     ],
+     "lengthPx": 19.8,
+     "angle": 15.3,
+     "offGrid": 11.3
+    },
+    {
+     "from": [
+      11.3,
+      41.5
+     ],
+     "to": [
+      10.5,
+      3.8
+     ],
+     "lengthPx": 37.8,
+     "angle": 88.9,
+     "offGrid": 1.1
+    },
+    {
+     "from": [
+      11.3,
+      3
+     ],
+     "to": [
+      10.5,
+      40.8
+     ],
+     "lengthPx": 37.8,
+     "angle": 91,
+     "offGrid": 1
+    },
+    {
+     "from": [
+      72.5,
+      16.3
+     ],
+     "to": [
+      51.8,
+      10.3
+     ],
+     "lengthPx": 21.6,
+     "angle": 16.1,
+     "offGrid": 10.5
+    },
+    {
+     "from": [
+      71.3,
+      14.5
+     ],
+     "to": [
+      54.8,
+      9.8
+     ],
+     "lengthPx": 17.2,
+     "angle": 16.1,
+     "offGrid": 10.5
+    },
+    {
+     "from": [
+      11,
+      8.3
+     ],
+     "to": [
+      10.8,
+      41
+     ],
+     "lengthPx": 32.8,
+     "angle": 91,
+     "offGrid": 1
+    },
+    {
+     "from": [
+      10.5,
+      4
+     ],
+     "to": [
+      10.5,
+      40.3
+     ],
+     "lengthPx": 36.3,
+     "angle": 89.9,
+     "offGrid": 0.1
+    },
+    {
+     "from": [
+      47,
+      30
+     ],
+     "to": [
+      31.3,
+      25.3
+     ],
+     "lengthPx": 16.5,
+     "angle": 16.6,
+     "offGrid": 10
+    },
+    {
+     "from": [
+      11.3,
+      25.8
+     ],
+     "to": [
+      11,
+      8.8
+     ],
+     "lengthPx": 17,
+     "angle": 89.1,
+     "offGrid": 0.9
+    },
+    {
+     "from": [
+      135.3,
+      56.8
+     ],
+     "to": [
+      122.3,
+      52.5
+     ],
+     "lengthPx": 13.7,
+     "angle": 16.9,
+     "offGrid": 9.6
+    },
+    {
+     "from": [
+      51,
+      31.3
+     ],
+     "to": [
+      31.5,
+      25.3
+     ],
+     "lengthPx": 20.4,
+     "angle": 16.6,
+     "offGrid": 9.9
+    },
+    {
+     "from": [
+      29,
+      14.8
+     ],
+     "to": [
+      29,
+      37.8
+     ],
+     "lengthPx": 23,
+     "angle": 90,
+     "offGrid": 0
+    },
+    {
+     "from": [
+      36.8,
+      5.3
+     ],
+     "to": [
+      37.3,
+      19.5
+     ],
+     "lengthPx": 14.3,
+     "angle": 89.7,
+     "offGrid": 0.3
+    },
+    {
+     "from": [
+      89.5,
+      33.3
+     ],
+     "to": [
+      80,
+      30.3
+     ],
+     "lengthPx": 10,
+     "angle": 17.8,
+     "offGrid": 8.8
+    },
+    {
+     "from": [
+      72,
+      16
+     ],
+     "to": [
+      71.5,
+      31.3
+     ],
+     "lengthPx": 15.3,
+     "angle": 93.1,
+     "offGrid": 3.1
+    },
+    {
+     "from": [
+      46.3,
+      24.5
+     ],
+     "to": [
+      38.3,
+      22
+     ],
+     "lengthPx": 8.4,
+     "angle": 18.9,
+     "offGrid": 7.7
+    },
+    {
+     "from": [
+      104.8,
+      25.3
+     ],
+     "to": [
+      93.5,
+      21.5
+     ],
+     "lengthPx": 11.9,
+     "angle": 17.6,
+     "offGrid": 9
+    },
+    {
+     "from": [
+      72.3,
+      16.3
+     ],
+     "to": [
+      71.8,
+      31.5
+     ],
+     "lengthPx": 15.3,
+     "angle": 92.9,
+     "offGrid": 2.9
+    },
+    {
+     "from": [
+      82.3,
+      46.3
+     ],
+     "to": [
+      71.5,
+      42.3
+     ],
+     "lengthPx": 11.5,
+     "angle": 21.5,
+     "offGrid": 5.1
+    },
+    {
+     "from": [
+      36.5,
+      5.3
+     ],
+     "to": [
+      36.8,
+      19.3
+     ],
+     "lengthPx": 14,
+     "angle": 90.4,
+     "offGrid": 0.4
+    },
+    {
+     "from": [
+      28.5,
+      14.5
+     ],
+     "to": [
+      28.8,
+      23.5
+     ],
+     "lengthPx": 9,
+     "angle": 89.7,
+     "offGrid": 0.3
+    },
+    {
+     "from": [
+      81,
+      36.3
+     ],
+     "to": [
+      72.8,
+      32.3
+     ],
+     "lengthPx": 9.2,
+     "angle": 24.7,
+     "offGrid": 1.8
+    },
+    {
+     "from": [
+      64.3,
+      20.8
+     ],
+     "to": [
+      47,
+      15.8
+     ],
+     "lengthPx": 18,
+     "angle": 17.1,
+     "offGrid": 9.5
+    },
+    {
+     "from": [
+      79.8,
+      36
+     ],
+     "to": [
+      73,
+      33
+     ],
+     "lengthPx": 7.4,
+     "angle": 22.1,
+     "offGrid": 4.5
+    },
+    {
+     "from": [
+      72,
+      23.5
+     ],
+     "to": [
+      72,
+      31.5
+     ],
+     "lengthPx": 8,
+     "angle": 92,
+     "offGrid": 2
+    },
+    {
+     "from": [
+      89.3,
+      50
+     ],
+     "to": [
+      79.8,
+      46.5
+     ],
+     "lengthPx": 10.1,
+     "angle": 21.1,
+     "offGrid": 5.5
+    },
+    {
+     "from": [
+      123,
+      53
+     ],
+     "to": [
+      116.8,
+      42
+     ],
+     "lengthPx": 12.7,
+     "angle": 62,
+     "offGrid": 28
+    },
+    {
+     "from": [
+      45.3,
+      24.8
+     ],
+     "to": [
+      38.3,
+      21.8
+     ],
+     "lengthPx": 7.6,
+     "angle": 23.6,
+     "offGrid": 2.9
+    },
+    {
+     "from": [
+      71.8,
+      16
+     ],
+     "to": [
+      71,
+      30.8
+     ],
+     "lengthPx": 14.8,
+     "angle": 93.2,
+     "offGrid": 3.2
+    },
+    {
+     "from": [
+      36.3,
+      9.5
+     ],
+     "to": [
+      36.3,
+      18.8
+     ],
+     "lengthPx": 9.3,
+     "angle": 90.1,
+     "offGrid": 0.1
+    },
+    {
+     "from": [
+      28.5,
+      14.8
+     ],
+     "to": [
+      19.5,
+      11
+     ],
+     "lengthPx": 9.8,
+     "angle": 21.2,
+     "offGrid": 5.3
+    },
+    {
+     "from": [
+      30.3,
+      23.3
+     ],
+     "to": [
+      17,
+      18.8
+     ],
+     "lengthPx": 14,
+     "angle": 19.7,
+     "offGrid": 6.9
+    },
+    {
+     "from": [
+      46,
+      24.3
+     ],
+     "to": [
+      38.3,
+      21
+     ],
+     "lengthPx": 8.4,
+     "angle": 22.5,
+     "offGrid": 4.1
+    },
+    {
+     "from": [
+      36.8,
+      18.8
+     ],
+     "to": [
+      36.8,
+      7.8
+     ],
+     "lengthPx": 11,
+     "angle": 90,
+     "offGrid": 0
+    },
+    {
+     "from": [
+      60.8,
+      19.3
+     ],
+     "to": [
+      47.3,
+      15.8
+     ],
+     "lengthPx": 13.9,
+     "angle": 16.3,
+     "offGrid": 10.2
+    },
+    {
+     "from": [
+      80.8,
+      24
+     ],
+     "to": [
+      80.5,
+      35.8
+     ],
+     "lengthPx": 11.8,
+     "angle": 89.9,
+     "offGrid": 0.1
+    },
+    {
+     "from": [
+      87.5,
+      20.8
+     ],
+     "to": [
+      79.8,
+      25.8
+     ],
+     "lengthPx": 9.2,
+     "angle": 146.8,
+     "offGrid": 6.7
+    },
+    {
+     "from": [
+      52.5,
+      10.3
+     ],
+     "to": [
+      45.3,
+      14
+     ],
+     "lengthPx": 8.2,
+     "angle": 151.5,
+     "offGrid": 1.9
+    },
+    {
+     "from": [
+      89,
+      21
+     ],
+     "to": [
+      80,
+      25
+     ],
+     "lengthPx": 9.8,
+     "angle": 153.9,
+     "offGrid": 0.5
+    },
+    {
+     "from": [
+      64.3,
+      16.8
+     ],
+     "to": [
+      63.3,
+      34.3
+     ],
+     "lengthPx": 17.5,
+     "angle": 92.7,
+     "offGrid": 2.7
+    },
+    {
+     "from": [
+      104.8,
+      50
+     ],
+     "to": [
+      104.3,
+      65.5
+     ],
+     "lengthPx": 15.5,
+     "angle": 92.9,
+     "offGrid": 2.9
+    },
+    {
+     "from": [
+      29.5,
+      29.8
+     ],
+     "to": [
+      22.5,
+      27.3
+     ],
+     "lengthPx": 7.4,
+     "angle": 19.7,
+     "offGrid": 6.8
+    },
+    {
+     "from": [
+      53.5,
+      10.3
+     ],
+     "to": [
+      45,
+      15
+     ],
+     "lengthPx": 9.7,
+     "angle": 152.9,
+     "offGrid": 0.5
+    },
+    {
+     "from": [
+      121.5,
+      51.3
+     ],
+     "to": [
+      117,
+      42.8
+     ],
+     "lengthPx": 9.6,
+     "angle": 63.1,
+     "offGrid": 26.9
+    },
+    {
+     "from": [
+      45.8,
+      24.8
+     ],
+     "to": [
+      45.8,
+      13.5
+     ],
+     "lengthPx": 11.3,
+     "angle": 89,
+     "offGrid": 1
+    },
+    {
+     "from": [
+      17.8,
+      0.3
+     ],
+     "to": [
+      11.3,
+      3.5
+     ],
+     "lengthPx": 7.3,
+     "angle": 153.2,
+     "offGrid": 0.3
+    },
+    {
+     "from": [
+      46,
+      24.8
+     ],
+     "to": [
+      38.8,
+      22.5
+     ],
+     "lengthPx": 7.6,
+     "angle": 17.2,
+     "offGrid": 9.3
+    },
+    {
+     "from": [
+      18.5,
+      0.3
+     ],
+     "to": [
+      11.3,
+      4
+     ],
+     "lengthPx": 8.2,
+     "angle": 153.9,
+     "offGrid": 0.4
+    },
+    {
+     "from": [
+      89.5,
+      21
+     ],
+     "to": [
+      80.8,
+      25.3
+     ],
+     "lengthPx": 9.7,
+     "angle": 153.4,
+     "offGrid": 0
+    },
+    {
+     "from": [
+      65.5,
+      17.8
+     ],
+     "to": [
+      55.3,
+      14.8
+     ],
+     "lengthPx": 10.7,
+     "angle": 13,
+     "offGrid": 13.5
+    },
+    {
+     "from": [
+      81,
+      36
+     ],
+     "to": [
+      80.8,
+      25.5
+     ],
+     "lengthPx": 10.5,
+     "angle": 89.5,
+     "offGrid": 0.5
+    },
+    {
+     "from": [
+      87.5,
+      50.3
+     ],
+     "to": [
+      87.8,
+      62.8
+     ],
+     "lengthPx": 12.5,
+     "angle": 89.6,
+     "offGrid": 0.4
+    },
+    {
+     "from": [
+      103,
+      46
+     ],
+     "to": [
+      96,
+      43.5
+     ],
+     "lengthPx": 7.4,
+     "angle": 21.7,
+     "offGrid": 4.8
+    },
+    {
+     "from": [
+      80.3,
+      35.8
+     ],
+     "to": [
+      80.3,
+      26
+     ],
+     "lengthPx": 9.8,
+     "angle": 89.6,
+     "offGrid": 0.4
+    }
+   ]
+  },
+  "corner-n": {
+   "gated": false,
+   "pass": false,
+   "longestSlantLines": [
+    {
+     "angle": 32,
+     "lengthPx": 31,
+     "offGridDeg": 5.4
+    },
+    {
+     "angle": 32,
+     "lengthPx": 23,
+     "offGridDeg": 5.5
+    },
+    {
+     "angle": 28.2,
+     "lengthPx": 18.7,
+     "offGridDeg": 1.6
+    }
+   ],
+   "slantOnGridShare": 0.795,
+   "lines": [
+    {
+     "from": [
+      70.8,
+      26.3
+     ],
+     "to": [
+      58,
+      20
+     ],
+     "lengthPx": 14.2,
+     "angle": 26,
+     "offGrid": 0.6
+    },
+    {
+     "from": [
+      101.8,
+      20.3
+     ],
+     "to": [
+      89.5,
+      26
+     ],
+     "lengthPx": 13.5,
+     "angle": 154.2,
+     "offGrid": 0.7
+    },
+    {
+     "from": [
+      10.3,
+      45.8
+     ],
+     "to": [
+      9,
+      3.5
+     ],
+     "lengthPx": 42.3,
+     "angle": 88,
+     "offGrid": 2
+    },
+    {
+     "from": [
+      102.5,
+      20.3
+     ],
+     "to": [
+      89.3,
+      26.5
+     ],
+     "lengthPx": 14.7,
+     "angle": 154.3,
+     "offGrid": 0.9
+    },
+    {
+     "from": [
+      123.3,
+      9.3
+     ],
+     "to": [
+      113,
+      14.3
+     ],
+     "lengthPx": 11.4,
+     "angle": 153.8,
+     "offGrid": 0.4
+    },
+    {
+     "from": [
+      80.3,
+      40.5
+     ],
+     "to": [
+      79.8,
+      86
+     ],
+     "lengthPx": 45.5,
+     "angle": 91,
+     "offGrid": 1
+    },
+    {
+     "from": [
+      80,
+      40.5
+     ],
+     "to": [
+      79.5,
+      80.8
+     ],
+     "lengthPx": 40.3,
+     "angle": 90.9,
+     "offGrid": 0.9
+    },
+    {
+     "from": [
+      71.3,
+      27.5
+     ],
+     "to": [
+      57.3,
+      20
+     ],
+     "lengthPx": 15.9,
+     "angle": 27.2,
+     "offGrid": 0.7
+    },
+    {
+     "from": [
+      70.8,
+      26.5
+     ],
+     "to": [
+      58.3,
+      20
+     ],
+     "lengthPx": 14.1,
+     "angle": 26.4,
+     "offGrid": 0.2
+    },
+    {
+     "from": [
+      125,
+      9.5
+     ],
+     "to": [
+      112.3,
+      15.8
+     ],
+     "lengthPx": 14.2,
+     "angle": 153.6,
+     "offGrid": 0.2
+    },
+    {
+     "from": [
+      9.8,
+      45.3
+     ],
+     "to": [
+      9.3,
+      25
+     ],
+     "lengthPx": 20.3,
+     "angle": 88.2,
+     "offGrid": 1.8
+    },
+    {
+     "from": [
+      68.5,
+      53.8
+     ],
+     "to": [
+      68.5,
+      78.5
+     ],
+     "lengthPx": 24.8,
+     "angle": 90,
+     "offGrid": 0
+    },
+    {
+     "from": [
+      68.8,
+      54
+     ],
+     "to": [
+      69,
+      78.8
+     ],
+     "lengthPx": 24.8,
+     "angle": 90,
+     "offGrid": 0
+    },
+    {
+     "from": [
+      9.8,
+      32
+     ],
+     "to": [
+      9.3,
+      3.5
+     ],
+     "lengthPx": 28.5,
+     "angle": 88.2,
+     "offGrid": 1.8
+    },
+    {
+     "from": [
+      80.5,
+      57.8
+     ],
+     "to": [
+      80,
+      86
+     ],
+     "lengthPx": 28.3,
+     "angle": 91.1,
+     "offGrid": 1.1
+    },
+    {
+     "from": [
+      80.8,
+      58.3
+     ],
+     "to": [
+      66.8,
+      50.8
+     ],
+     "lengthPx": 15.9,
+     "angle": 27.3,
+     "offGrid": 0.7
+    },
+    {
+     "from": [
+      79.8,
+      40.3
+     ],
+     "to": [
+      79.5,
+      57
+     ],
+     "lengthPx": 16.8,
+     "angle": 91.3,
+     "offGrid": 1.3
+    },
+    {
+     "from": [
+      47.8,
+      15.8
+     ],
+     "to": [
+      35.3,
+      9.3
+     ],
+     "lengthPx": 14.1,
+     "angle": 26.6,
+     "offGrid": 0
+    },
+    {
+     "from": [
+      125.5,
+      9.5
+     ],
+     "to": [
+      112.5,
+      15.8
+     ],
+     "lengthPx": 14.4,
+     "angle": 154,
+     "offGrid": 0.6
+    },
+    {
+     "from": [
+      98.5,
+      21
+     ],
+     "to": [
+      90.8,
+      24.8
+     ],
+     "lengthPx": 8.6,
+     "angle": 154.5,
+     "offGrid": 1.1
+    },
+    {
+     "from": [
+      79,
+      83
+     ],
+     "to": [
+      52.8,
+      66.5
+     ],
+     "lengthPx": 31,
+     "angle": 32,
+     "offGrid": 5.4
+    },
+    {
+     "from": [
+      150.5,
+      19.3
+     ],
+     "to": [
+      149.8,
+      34.5
+     ],
+     "lengthPx": 15.3,
+     "angle": 92.5,
+     "offGrid": 2.5
+    },
+    {
+     "from": [
+      68.3,
+      52.8
+     ],
+     "to": [
+      54.5,
+      45
+     ],
+     "lengthPx": 15.8,
+     "angle": 28.3,
+     "offGrid": 1.8
+    },
+    {
+     "from": [
+      18.5,
+      26.5
+     ],
+     "to": [
+      17.5,
+      50.3
+     ],
+     "lengthPx": 23.8,
+     "angle": 92.1,
+     "offGrid": 2.1
+    },
+    {
+     "from": [
+      68.3,
+      39.3
+     ],
+     "to": [
+      68.3,
+      50
+     ],
+     "lengthPx": 10.8,
+     "angle": 89.3,
+     "offGrid": 0.7
+    },
+    {
+     "from": [
+      28.5,
+      51.5
+     ],
+     "to": [
+      9.3,
+      39
+     ],
+     "lengthPx": 23,
+     "angle": 32,
+     "offGrid": 5.5
+    },
+    {
+     "from": [
+      58.3,
+      55.8
+     ],
+     "to": [
+      47,
+      49.3
+     ],
+     "lengthPx": 13,
+     "angle": 32,
+     "offGrid": 5.4
+    },
+    {
+     "from": [
+      68,
+      54
+     ],
+     "to": [
+      51.8,
+      44.8
+     ],
+     "lengthPx": 18.7,
+     "angle": 28.2,
+     "offGrid": 1.6
+    },
+    {
+     "from": [
+      51.3,
+      31.8
+     ],
+     "to": [
+      38.5,
+      26.3
+     ],
+     "lengthPx": 13.9,
+     "angle": 24.5,
+     "offGrid": 2.1
+    },
+    {
+     "from": [
+      28,
+      46
+     ],
+     "to": [
+      28,
+      55
+     ],
+     "lengthPx": 9,
+     "angle": 90.7,
+     "offGrid": 0.7
+    },
+    {
+     "from": [
+      9.3,
+      32.3
+     ],
+     "to": [
+      9.5,
+      45
+     ],
+     "lengthPx": 12.8,
+     "angle": 89.9,
+     "offGrid": 0.1
+    },
+    {
+     "from": [
+      79.8,
+      41.3
+     ],
+     "to": [
+      79.3,
+      57.3
+     ],
+     "lengthPx": 16,
+     "angle": 91.5,
+     "offGrid": 1.5
+    },
+    {
+     "from": [
+      48.3,
+      63
+     ],
+     "to": [
+      47.8,
+      48.8
+     ],
+     "lengthPx": 14.3,
+     "angle": 89.5,
+     "offGrid": 0.5
+    },
+    {
+     "from": [
+      45.3,
+      14.3
+     ],
+     "to": [
+      34.8,
+      9.3
+     ],
+     "lengthPx": 11.6,
+     "angle": 25.4,
+     "offGrid": 1.2
+    },
+    {
+     "from": [
+      63.3,
+      30
+     ],
+     "to": [
+      46.8,
+      21.8
+     ],
+     "lengthPx": 18.4,
+     "angle": 25.2,
+     "offGrid": 1.3
+    },
+    {
+     "from": [
+      18.3,
+      32.8
+     ],
+     "to": [
+      17.8,
+      49.8
+     ],
+     "lengthPx": 17,
+     "angle": 92,
+     "offGrid": 2
+    },
+    {
+     "from": [
+      67.8,
+      25
+     ],
+     "to": [
+      61.3,
+      21.8
+     ],
+     "lengthPx": 7.3,
+     "angle": 26.8,
+     "offGrid": 0.2
+    },
+    {
+     "from": [
+      49.3,
+      49.5
+     ],
+     "to": [
+      48.8,
+      64.3
+     ],
+     "lengthPx": 14.8,
+     "angle": 91.8,
+     "offGrid": 1.8
+    },
+    {
+     "from": [
+      27.5,
+      4
+     ],
+     "to": [
+      20,
+      0.3
+     ],
+     "lengthPx": 8.4,
+     "angle": 26.3,
+     "offGrid": 0.2
+    },
+    {
+     "from": [
+      29,
+      31.3
+     ],
+     "to": [
+      20.3,
+      26.3
+     ],
+     "lengthPx": 10.1,
+     "angle": 28.5,
+     "offGrid": 1.9
+    },
+    {
+     "from": [
+      17,
+      24.8
+     ],
+     "to": [
+      17,
+      50.3
+     ],
+     "lengthPx": 25.5,
+     "angle": 89.8,
+     "offGrid": 0.2
+    },
+    {
+     "from": [
+      68,
+      54.3
+     ],
+     "to": [
+      56,
+      47.5
+     ],
+     "lengthPx": 13.8,
+     "angle": 28.4,
+     "offGrid": 1.8
+    },
+    {
+     "from": [
+      79.5,
+      43.5
+     ],
+     "to": [
+      69.3,
+      38
+     ],
+     "lengthPx": 11.6,
+     "angle": 28.7,
+     "offGrid": 2.1
+    },
+    {
+     "from": [
+      26.8,
+      46.3
+     ],
+     "to": [
+      26.3,
+      54.8
+     ],
+     "lengthPx": 8.5,
+     "angle": 93.1,
+     "offGrid": 3.1
+    },
+    {
+     "from": [
+      27,
+      5.3
+     ],
+     "to": [
+      27,
+      12.8
+     ],
+     "lengthPx": 7.5,
+     "angle": 92,
+     "offGrid": 2
+    },
+    {
+     "from": [
+      80.5,
+      69.3
+     ],
+     "to": [
+      80.5,
+      78
+     ],
+     "lengthPx": 8.8,
+     "angle": 90.3,
+     "offGrid": 0.3
+    },
+    {
+     "from": [
+      51.8,
+      43
+     ],
+     "to": [
+      51.3,
+      28
+     ],
+     "lengthPx": 15,
+     "angle": 87.8,
+     "offGrid": 2.2
+    },
+    {
+     "from": [
+      18.3,
+      24.5
+     ],
+     "to": [
+      17.8,
+      34
+     ],
+     "lengthPx": 9.5,
+     "angle": 91.2,
+     "offGrid": 1.2
+    },
+    {
+     "from": [
+      67.8,
+      52.8
+     ],
+     "to": [
+      52.3,
+      44.8
+     ],
+     "lengthPx": 17.4,
+     "angle": 27.4,
+     "offGrid": 0.8
+    },
+    {
+     "from": [
+      47.8,
+      58.8
+     ],
+     "to": [
+      47.5,
+      48.8
+     ],
+     "lengthPx": 10,
+     "angle": 88.9,
+     "offGrid": 1.1
+    },
+    {
+     "from": [
+      48,
+      23.3
+     ],
+     "to": [
+      47.8,
+      15.5
+     ],
+     "lengthPx": 7.8,
+     "angle": 87.5,
+     "offGrid": 2.5
+    },
+    {
+     "from": [
+      27.8,
+      6
+     ],
+     "to": [
+      27.8,
+      13.8
+     ],
+     "lengthPx": 7.8,
+     "angle": 90.1,
+     "offGrid": 0.1
+    },
+    {
+     "from": [
+      63,
+      58
+     ],
+     "to": [
+      63.3,
+      72
+     ],
+     "lengthPx": 14,
+     "angle": 89.6,
+     "offGrid": 0.4
+    },
+    {
+     "from": [
+      10.5,
+      21
+     ],
+     "to": [
+      10,
+      32
+     ],
+     "lengthPx": 11,
+     "angle": 91,
+     "offGrid": 1
+    },
+    {
+     "from": [
+      28.8,
+      46.3
+     ],
+     "to": [
+      28.5,
+      55.3
+     ],
+     "lengthPx": 9,
+     "angle": 92.9,
+     "offGrid": 2.9
+    },
+    {
+     "from": [
+      27.3,
+      21.8
+     ],
+     "to": [
+      19.3,
+      16.3
+     ],
+     "lengthPx": 9.7,
+     "angle": 33.2,
+     "offGrid": 6.6
+    },
+    {
+     "from": [
+      16.8,
+      30.8
+     ],
+     "to": [
+      16.5,
+      43.3
+     ],
+     "lengthPx": 12.5,
+     "angle": 90,
+     "offGrid": 0
+    }
+   ]
+  },
+  "corner-s": {
+   "gated": false,
+   "pass": false,
+   "longestSlantLines": [
+    {
+     "angle": 137.6,
+     "lengthPx": 17.2,
+     "offGridDeg": 15.9
+    },
+    {
+     "angle": 125.1,
+     "lengthPx": 14.7,
+     "offGridDeg": 28.4
+    },
+    {
+     "angle": 12.6,
+     "lengthPx": 12.5,
+     "offGridDeg": 14
+    }
+   ],
+   "slantOnGridShare": 0.328,
+   "lines": [
+    {
+     "from": [
+      11,
+      2.8
+     ],
+     "to": [
+      9.8,
+      33
+     ],
+     "lengthPx": 30.3,
+     "angle": 91.9,
+     "offGrid": 1.9
+    },
+    {
+     "from": [
+      10.5,
+      3.3
+     ],
+     "to": [
+      9.8,
+      25
+     ],
+     "lengthPx": 21.8,
+     "angle": 91.8,
+     "offGrid": 1.8
+    },
+    {
+     "from": [
+      11.3,
+      2.5
+     ],
+     "to": [
+      10,
+      33
+     ],
+     "lengthPx": 30.5,
+     "angle": 92,
+     "offGrid": 2
+    },
+    {
+     "from": [
+      81.5,
+      62
+     ],
+     "to": [
+      81,
+      81.5
+     ],
+     "lengthPx": 19.5,
+     "angle": 91,
+     "offGrid": 1
+    },
+    {
+     "from": [
+      11.5,
+      2.3
+     ],
+     "to": [
+      10.3,
+      29.5
+     ],
+     "lengthPx": 27.3,
+     "angle": 92.1,
+     "offGrid": 2.1
+    },
+    {
+     "from": [
+      81.3,
+      49.8
+     ],
+     "to": [
+      81,
+      79.5
+     ],
+     "lengthPx": 29.8,
+     "angle": 90.8,
+     "offGrid": 0.8
+    },
+    {
+     "from": [
+      22.5,
+      10.8
+     ],
+     "to": [
+      22.5,
+      35.8
+     ],
+     "lengthPx": 25,
+     "angle": 90.2,
+     "offGrid": 0.2
+    },
+    {
+     "from": [
+      86.3,
+      40.5
+     ],
+     "to": [
+      76.3,
+      35.5
+     ],
+     "lengthPx": 11.2,
+     "angle": 27.7,
+     "offGrid": 1.2
+    },
+    {
+     "from": [
+      22.3,
+      14
+     ],
+     "to": [
+      22,
+      36.3
+     ],
+     "lengthPx": 22.3,
+     "angle": 90.2,
+     "offGrid": 0.2
+    },
+    {
+     "from": [
+      11,
+      11.3
+     ],
+     "to": [
+      10.8,
+      28.8
+     ],
+     "lengthPx": 17.5,
+     "angle": 91.2,
+     "offGrid": 1.2
+    },
+    {
+     "from": [
+      86,
+      40.8
+     ],
+     "to": [
+      75.8,
+      35.8
+     ],
+     "lengthPx": 11.4,
+     "angle": 28.3,
+     "offGrid": 1.8
+    },
+    {
+     "from": [
+      81,
+      49.5
+     ],
+     "to": [
+      80.8,
+      67
+     ],
+     "lengthPx": 17.5,
+     "angle": 90.9,
+     "offGrid": 0.9
+    },
+    {
+     "from": [
+      24.5,
+      35.5
+     ],
+     "to": [
+      23.8,
+      23.8
+     ],
+     "lengthPx": 11.8,
+     "angle": 87,
+     "offGrid": 3
+    },
+    {
+     "from": [
+      10.3,
+      3.5
+     ],
+     "to": [
+      9.8,
+      16
+     ],
+     "lengthPx": 12.5,
+     "angle": 91.8,
+     "offGrid": 1.8
+    },
+    {
+     "from": [
+      22,
+      18.5
+     ],
+     "to": [
+      21.8,
+      36
+     ],
+     "lengthPx": 17.5,
+     "angle": 90.1,
+     "offGrid": 0.1
+    },
+    {
+     "from": [
+      24.5,
+      31.8
+     ],
+     "to": [
+      24,
+      23.8
+     ],
+     "lengthPx": 8,
+     "angle": 86.5,
+     "offGrid": 3.5
+    },
+    {
+     "from": [
+      81.8,
+      62
+     ],
+     "to": [
+      81.5,
+      78.8
+     ],
+     "lengthPx": 16.8,
+     "angle": 90.8,
+     "offGrid": 0.8
+    },
+    {
+     "from": [
+      107,
+      38.3
+     ],
+     "to": [
+      94.3,
+      49.8
+     ],
+     "lengthPx": 17.2,
+     "angle": 137.6,
+     "offGrid": 15.9
+    },
+    {
+     "from": [
+      129.5,
+      8.8
+     ],
+     "to": [
+      129.5,
+      20.3
+     ],
+     "lengthPx": 11.5,
+     "angle": 90.1,
+     "offGrid": 0.1
+    },
+    {
+     "from": [
+      130.3,
+      7.8
+     ],
+     "to": [
+      129.8,
+      20.3
+     ],
+     "lengthPx": 12.5,
+     "angle": 90.7,
+     "offGrid": 0.7
+    },
+    {
+     "from": [
+      69.3,
+      52.5
+     ],
+     "to": [
+      60.8,
+      47.5
+     ],
+     "lengthPx": 9.9,
+     "angle": 32.8,
+     "offGrid": 6.2
+    },
+    {
+     "from": [
+      61.5,
+      50
+     ],
+     "to": [
+      51.8,
+      43.8
+     ],
+     "lengthPx": 11.6,
+     "angle": 32.2,
+     "offGrid": 5.7
+    },
+    {
+     "from": [
+      11.8,
+      29
+     ],
+     "to": [
+      10.8,
+      18.8
+     ],
+     "lengthPx": 10.3,
+     "angle": 85.4,
+     "offGrid": 4.6
+    },
+    {
+     "from": [
+      70,
+      48.3
+     ],
+     "to": [
+      63.5,
+      42.8
+     ],
+     "lengthPx": 8.5,
+     "angle": 37.4,
+     "offGrid": 10.8
+    },
+    {
+     "from": [
+      137.8,
+      4.5
+     ],
+     "to": [
+      129.8,
+      8.3
+     ],
+     "lengthPx": 8.8,
+     "angle": 153.2,
+     "offGrid": 0.2
+    },
+    {
+     "from": [
+      137.3,
+      4.3
+     ],
+     "to": [
+      130.3,
+      8
+     ],
+     "lengthPx": 7.9,
+     "angle": 151.9,
+     "offGrid": 1.5
+    },
+    {
+     "from": [
+      107,
+      38.5
+     ],
+     "to": [
+      98.3,
+      46.5
+     ],
+     "lengthPx": 11.9,
+     "angle": 134.7,
+     "offGrid": 18.7
+    },
+    {
+     "from": [
+      28.8,
+      9.8
+     ],
+     "to": [
+      27.8,
+      19.8
+     ],
+     "lengthPx": 10,
+     "angle": 95.2,
+     "offGrid": 5.2
+    },
+    {
+     "from": [
+      24,
+      36
+     ],
+     "to": [
+      23.5,
+      26
+     ],
+     "lengthPx": 10,
+     "angle": 86.1,
+     "offGrid": 3.9
+    },
+    {
+     "from": [
+      44.8,
+      21.3
+     ],
+     "to": [
+      38.8,
+      15.8
+     ],
+     "lengthPx": 8.1,
+     "angle": 40.7,
+     "offGrid": 14.2
+    },
+    {
+     "from": [
+      29.3,
+      21.5
+     ],
+     "to": [
+      27.5,
+      8
+     ],
+     "lengthPx": 13.6,
+     "angle": 83.7,
+     "offGrid": 6.3
+    },
+    {
+     "from": [
+      137.3,
+      4.5
+     ],
+     "to": [
+      130.5,
+      7.8
+     ],
+     "lengthPx": 7.5,
+     "angle": 153.3,
+     "offGrid": 0.1
+    },
+    {
+     "from": [
+      69.5,
+      52.3
+     ],
+     "to": [
+      61.5,
+      47.5
+     ],
+     "lengthPx": 9.3,
+     "angle": 32.6,
+     "offGrid": 6.1
+    },
+    {
+     "from": [
+      129.5,
+      19.5
+     ],
+     "to": [
+      129.5,
+      9.3
+     ],
+     "lengthPx": 10.3,
+     "angle": 90,
+     "offGrid": 0
+    },
+    {
+     "from": [
+      138.3,
+      4.8
+     ],
+     "to": [
+      130,
+      9
+     ],
+     "lengthPx": 9.3,
+     "angle": 153,
+     "offGrid": 0.5
+    },
+    {
+     "from": [
+      54.3,
+      28.5
+     ],
+     "to": [
+      44,
+      23.5
+     ],
+     "lengthPx": 11.4,
+     "angle": 24.4,
+     "offGrid": 2.2
+    },
+    {
+     "from": [
+      59.5,
+      40
+     ],
+     "to": [
+      54.5,
+      33.5
+     ],
+     "lengthPx": 8.2,
+     "angle": 50.9,
+     "offGrid": 24.3
+    },
+    {
+     "from": [
+      70,
+      48.8
+     ],
+     "to": [
+      63.3,
+      43.5
+     ],
+     "lengthPx": 8.6,
+     "angle": 37.2,
+     "offGrid": 10.6
+    },
+    {
+     "from": [
+      68.5,
+      52.5
+     ],
+     "to": [
+      60.5,
+      47.8
+     ],
+     "lengthPx": 9.3,
+     "angle": 32.3,
+     "offGrid": 5.8
+    },
+    {
+     "from": [
+      117.5,
+      28.5
+     ],
+     "to": [
+      108.8,
+      40.3
+     ],
+     "lengthPx": 14.7,
+     "angle": 125.1,
+     "offGrid": 28.4
+    },
+    {
+     "from": [
+      28.5,
+      21
+     ],
+     "to": [
+      27.5,
+      9.8
+     ],
+     "lengthPx": 11.3,
+     "angle": 87.2,
+     "offGrid": 2.8
+    },
+    {
+     "from": [
+      117.5,
+      41
+     ],
+     "to": [
+      105.3,
+      38.8
+     ],
+     "lengthPx": 12.5,
+     "angle": 12.6,
+     "offGrid": 14
+    },
+    {
+     "from": [
+      70,
+      47.8
+     ],
+     "to": [
+      63.3,
+      42.3
+     ],
+     "lengthPx": 8.7,
+     "angle": 37.5,
+     "offGrid": 11
+    },
+    {
+     "from": [
+      61.3,
+      52
+     ],
+     "to": [
+      60.8,
+      59
+     ],
+     "lengthPx": 7,
+     "angle": 93.3,
+     "offGrid": 3.3
+    }
+   ]
+  },
+  "arch-ne": {
+   "gated": false,
+   "pass": false,
+   "longestSlantLines": [
+    {
+     "angle": 167.1,
+     "lengthPx": 24.4,
+     "offGridDeg": 13.7
+    },
+    {
+     "angle": 24.1,
+     "lengthPx": 22.9,
+     "offGridDeg": 2.4
+    },
+    {
+     "angle": 24.1,
+     "lengthPx": 20.1,
+     "offGridDeg": 2.5
+    }
+   ],
+   "slantOnGridShare": 0.798,
+   "lines": [
+    {
+     "from": [
+      62.5,
+      77.3
+     ],
+     "to": [
+      62.5,
+      115.5
+     ],
+     "lengthPx": 38.3,
+     "angle": 90,
+     "offGrid": 0
+    },
+    {
+     "from": [
+      62,
+      77.5
+     ],
+     "to": [
+      61.8,
+      114.3
+     ],
+     "lengthPx": 36.8,
+     "angle": 90,
+     "offGrid": 0
+    },
+    {
+     "from": [
+      109,
+      93.8
+     ],
+     "to": [
+      107.8,
+      54.3
+     ],
+     "lengthPx": 39.5,
+     "angle": 88.1,
+     "offGrid": 1.9
+    },
+    {
+     "from": [
+      61.8,
+      77.8
+     ],
+     "to": [
+      61.8,
+      107.3
+     ],
+     "lengthPx": 29.5,
+     "angle": 90,
+     "offGrid": 0
+    },
+    {
+     "from": [
+      131.3,
+      94.8
+     ],
+     "to": [
+      130.8,
+      67.3
+     ],
+     "lengthPx": 27.5,
+     "angle": 89,
+     "offGrid": 1
+    },
+    {
+     "from": [
+      62.8,
+      76.8
+     ],
+     "to": [
+      62.8,
+      115.8
+     ],
+     "lengthPx": 39,
+     "angle": 90,
+     "offGrid": 0
+    },
+    {
+     "from": [
+      63,
+      74.8
+     ],
+     "to": [
+      62.8,
+      91.8
+     ],
+     "lengthPx": 17,
+     "angle": 90.6,
+     "offGrid": 0.6
+    },
+    {
+     "from": [
+      109,
+      57.3
+     ],
+     "to": [
+      108.3,
+      94.5
+     ],
+     "lengthPx": 37.3,
+     "angle": 91,
+     "offGrid": 1
+    },
+    {
+     "from": [
+      38.8,
+      79.3
+     ],
+     "to": [
+      38.3,
+      122.3
+     ],
+     "lengthPx": 43,
+     "angle": 90.7,
+     "offGrid": 0.7
+    },
+    {
+     "from": [
+      108.3,
+      68.8
+     ],
+     "to": [
+      108.3,
+      81
+     ],
+     "lengthPx": 12.3,
+     "angle": 90,
+     "offGrid": 0
+    },
+    {
+     "from": [
+      137,
+      102.3
+     ],
+     "to": [
+      135.8,
+      59.3
+     ],
+     "lengthPx": 43,
+     "angle": 88.2,
+     "offGrid": 1.8
+    },
+    {
+     "from": [
+      131,
+      94.5
+     ],
+     "to": [
+      130.5,
+      77
+     ],
+     "lengthPx": 17.5,
+     "angle": 89.2,
+     "offGrid": 0.8
+    },
+    {
+     "from": [
+      63.3,
+      74.3
+     ],
+     "to": [
+      63,
+      83.8
+     ],
+     "lengthPx": 9.5,
+     "angle": 92,
+     "offGrid": 2
+    },
+    {
+     "from": [
+      127,
+      74.5
+     ],
+     "to": [
+      127,
+      98.5
+     ],
+     "lengthPx": 24,
+     "angle": 89.9,
+     "offGrid": 0.1
+    },
+    {
+     "from": [
+      123,
+      56.8
+     ],
+     "to": [
+      123,
+      100.5
+     ],
+     "lengthPx": 43.8,
+     "angle": 90,
+     "offGrid": 0
+    },
+    {
+     "from": [
+      137,
+      99.3
+     ],
+     "to": [
+      136,
+      59
+     ],
+     "lengthPx": 40.3,
+     "angle": 88.2,
+     "offGrid": 1.8
+    },
+    {
+     "from": [
+      147.5,
+      37
+     ],
+     "to": [
+      145.8,
+      25
+     ],
+     "lengthPx": 12.1,
+     "angle": 81.7,
+     "offGrid": 8.3
+    },
+    {
+     "from": [
+      122.8,
+      59.3
+     ],
+     "to": [
+      122.8,
+      100.5
+     ],
+     "lengthPx": 41.3,
+     "angle": 90,
+     "offGrid": 0
+    },
+    {
+     "from": [
+      38.8,
+      122.3
+     ],
+     "to": [
+      38,
+      77
+     ],
+     "lengthPx": 45.3,
+     "angle": 89.1,
+     "offGrid": 0.9
+    },
+    {
+     "from": [
+      108.8,
+      57.3
+     ],
+     "to": [
+      108,
+      94.8
+     ],
+     "lengthPx": 37.5,
+     "angle": 91,
+     "offGrid": 1
+    },
+    {
+     "from": [
+      127.3,
+      81.5
+     ],
+     "to": [
+      127.3,
+      98.5
+     ],
+     "lengthPx": 17,
+     "angle": 89.7,
+     "offGrid": 0.3
+    },
+    {
+     "from": [
+      123.3,
+      62.5
+     ],
+     "to": [
+      123.3,
+      99.8
+     ],
+     "lengthPx": 37.3,
+     "angle": 90,
+     "offGrid": 0
+    },
+    {
+     "from": [
+      20.3,
+      71.3
+     ],
+     "to": [
+      19.3,
+      110
+     ],
+     "lengthPx": 38.8,
+     "angle": 92,
+     "offGrid": 2
+    },
+    {
+     "from": [
+      20,
+      71.3
+     ],
+     "to": [
+      19.3,
+      94.3
+     ],
+     "lengthPx": 23,
+     "angle": 92.8,
+     "offGrid": 2.8
+    },
+    {
+     "from": [
+      38.5,
+      91.8
+     ],
+     "to": [
+      38.5,
+      122.3
+     ],
+     "lengthPx": 30.5,
+     "angle": 90,
+     "offGrid": 0
+    },
+    {
+     "from": [
+      152.5,
+      80.5
+     ],
+     "to": [
+      152.5,
+      60.5
+     ],
+     "lengthPx": 20,
+     "angle": 89.4,
+     "offGrid": 0.6
+    },
+    {
+     "from": [
+      131.3,
+      78
+     ],
+     "to": [
+      131,
+      67.8
+     ],
+     "lengthPx": 10.3,
+     "angle": 89.6,
+     "offGrid": 0.4
+    },
+    {
+     "from": [
+      109.3,
+      78.5
+     ],
+     "to": [
+      109,
+      92.8
+     ],
+     "lengthPx": 14.3,
+     "angle": 91.2,
+     "offGrid": 1.2
+    },
+    {
+     "from": [
+      136.5,
+      102.5
+     ],
+     "to": [
+      136.3,
+      90
+     ],
+     "lengthPx": 12.5,
+     "angle": 88.1,
+     "offGrid": 1.9
+    },
+    {
+     "from": [
+      152.3,
+      81.5
+     ],
+     "to": [
+      152,
+      72.5
+     ],
+     "lengthPx": 9,
+     "angle": 87.7,
+     "offGrid": 2.3
+    },
+    {
+     "from": [
+      38.3,
+      81.8
+     ],
+     "to": [
+      17.5,
+      72
+     ],
+     "lengthPx": 22.9,
+     "angle": 24.1,
+     "offGrid": 2.4
+    },
+    {
+     "from": [
+      136.8,
+      83.5
+     ],
+     "to": [
+      136.3,
+      58.8
+     ],
+     "lengthPx": 24.8,
+     "angle": 88.4,
+     "offGrid": 1.6
+    },
+    {
+     "from": [
+      107.5,
+      52.3
+     ],
+     "to": [
+      107.3,
+      43.8
+     ],
+     "lengthPx": 8.5,
+     "angle": 87.5,
+     "offGrid": 2.5
+    },
+    {
+     "from": [
+      153,
+      60.3
+     ],
+     "to": [
+      152.8,
+      77.3
+     ],
+     "lengthPx": 17,
+     "angle": 90.1,
+     "offGrid": 0.1
+    },
+    {
+     "from": [
+      20.8,
+      74.5
+     ],
+     "to": [
+      19.5,
+      94.5
+     ],
+     "lengthPx": 20,
+     "angle": 93.4,
+     "offGrid": 3.4
+    },
+    {
+     "from": [
+      38.3,
+      80.5
+     ],
+     "to": [
+      21,
+      72
+     ],
+     "lengthPx": 19.2,
+     "angle": 25.1,
+     "offGrid": 1.5
+    },
+    {
+     "from": [
+      38.3,
+      83
+     ],
+     "to": [
+      20.8,
+      74.8
+     ],
+     "lengthPx": 19.3,
+     "angle": 24.9,
+     "offGrid": 1.6
+    },
+    {
+     "from": [
+      38.3,
+      81
+     ],
+     "to": [
+      21,
+      73.3
+     ],
+     "lengthPx": 18.9,
+     "angle": 24.1,
+     "offGrid": 2.5
+    },
+    {
+     "from": [
+      19.8,
+      74
+     ],
+     "to": [
+      19.5,
+      84
+     ],
+     "lengthPx": 10,
+     "angle": 92.3,
+     "offGrid": 2.3
+    },
+    {
+     "from": [
+      148,
+      40.3
+     ],
+     "to": [
+      145.5,
+      24.8
+     ],
+     "lengthPx": 15.7,
+     "angle": 81.7,
+     "offGrid": 8.3
+    },
+    {
+     "from": [
+      38.3,
+      83.5
+     ],
+     "to": [
+      20.8,
+      75
+     ],
+     "lengthPx": 19.5,
+     "angle": 25,
+     "offGrid": 1.6
+    },
+    {
+     "from": [
+      39,
+      84.5
+     ],
+     "to": [
+      20.8,
+      76
+     ],
+     "lengthPx": 20.1,
+     "angle": 24.1,
+     "offGrid": 2.5
+    },
+    {
+     "from": [
+      38.3,
+      79.5
+     ],
+     "to": [
+      21,
+      71.5
+     ],
+     "lengthPx": 19,
+     "angle": 25.1,
+     "offGrid": 1.5
+    },
+    {
+     "from": [
+      37.5,
+      79.5
+     ],
+     "to": [
+      21.3,
+      72
+     ],
+     "lengthPx": 17.9,
+     "angle": 25,
+     "offGrid": 1.6
+    },
+    {
+     "from": [
+      21.3,
+      71.5
+     ],
+     "to": [
+      20.3,
+      86.5
+     ],
+     "lengthPx": 15,
+     "angle": 93.6,
+     "offGrid": 3.6
+    },
+    {
+     "from": [
+      84.8,
+      35.3
+     ],
+     "to": [
+      82.5,
+      18
+     ],
+     "lengthPx": 17.4,
+     "angle": 83.6,
+     "offGrid": 6.4
+    },
+    {
+     "from": [
+      128.5,
+      74.3
+     ],
+     "to": [
+      128.3,
+      86.5
+     ],
+     "lengthPx": 12.3,
+     "angle": 91.6,
+     "offGrid": 1.6
+    },
+    {
+     "from": [
+      74,
+      14
+     ],
+     "to": [
+      63.3,
+      18.5
+     ],
+     "lengthPx": 11.7,
+     "angle": 158.3,
+     "offGrid": 4.9
+    },
+    {
+     "from": [
+      75,
+      21.8
+     ],
+     "to": [
+      64.8,
+      27.5
+     ],
+     "lengthPx": 11.8,
+     "angle": 149.9,
+     "offGrid": 3.6
+    },
+    {
+     "from": [
+      152.8,
+      70.5
+     ],
+     "to": [
+      151.8,
+      84
+     ],
+     "lengthPx": 13.5,
+     "angle": 95.3,
+     "offGrid": 5.3
+    },
+    {
+     "from": [
+      38,
+      95.5
+     ],
+     "to": [
+      38,
+      103.5
+     ],
+     "lengthPx": 8,
+     "angle": 90,
+     "offGrid": 0
+    },
+    {
+     "from": [
+      150.5,
+      50.8
+     ],
+     "to": [
+      148.8,
+      39.5
+     ],
+     "lengthPx": 11.4,
+     "angle": 81.4,
+     "offGrid": 8.6
+    },
+    {
+     "from": [
+      96.8,
+      10.5
+     ],
+     "to": [
+      81,
+      5.8
+     ],
+     "lengthPx": 16.5,
+     "angle": 16.7,
+     "offGrid": 9.9
+    },
+    {
+     "from": [
+      37.8,
+      82.5
+     ],
+     "to": [
+      21.3,
+      74.8
+     ],
+     "lengthPx": 18.2,
+     "angle": 24.9,
+     "offGrid": 1.6
+    },
+    {
+     "from": [
+      51.5,
+      43.5
+     ],
+     "to": [
+      27.8,
+      49
+     ],
+     "lengthPx": 24.4,
+     "angle": 167.1,
+     "offGrid": 13.7
+    },
+    {
+     "from": [
+      151.8,
+      75.3
+     ],
+     "to": [
+      151.3,
+      83.5
+     ],
+     "lengthPx": 8.3,
+     "angle": 93.7,
+     "offGrid": 3.7
+    },
+    {
+     "from": [
+      61.5,
+      58.3
+     ],
+     "to": [
+      61.5,
+      68.5
+     ],
+     "lengthPx": 10.3,
+     "angle": 89.6,
+     "offGrid": 0.4
+    },
+    {
+     "from": [
+      74,
+      21
+     ],
+     "to": [
+      66.8,
+      27
+     ],
+     "lengthPx": 9.4,
+     "angle": 140.6,
+     "offGrid": 12.8
+    }
+   ]
+  },
+  "arch-se": {
+   "gated": false,
+   "pass": false,
+   "longestSlantLines": [
+    {
+     "angle": 10,
+     "lengthPx": 33.7,
+     "offGridDeg": 16.6
+    },
+    {
+     "angle": 10,
+     "lengthPx": 32,
+     "offGridDeg": 16.6
+    },
+    {
+     "angle": 10.1,
+     "lengthPx": 30.7,
+     "offGridDeg": 16.5
+    }
+   ],
+   "slantOnGridShare": 0,
+   "lines": [
+    {
+     "from": [
+      18.8,
+      67
+     ],
+     "to": [
+      18.8,
+      102.3
+     ],
+     "lengthPx": 35.3,
+     "angle": 90,
+     "offGrid": 0
+    },
+    {
+     "from": [
+      18.8,
+      69.3
+     ],
+     "to": [
+      18.8,
+      85.5
+     ],
+     "lengthPx": 16.3,
+     "angle": 90,
+     "offGrid": 0
+    },
+    {
+     "from": [
+      19.3,
+      69.5
+     ],
+     "to": [
+      19.3,
+      101.8
+     ],
+     "lengthPx": 32.3,
+     "angle": 90,
+     "offGrid": 0
+    },
+    {
+     "from": [
+      114.3,
+      122.3
+     ],
+     "to": [
+      113.3,
+      88.3
+     ],
+     "lengthPx": 34,
+     "angle": 89,
+     "offGrid": 1
+    },
+    {
+     "from": [
+      49.8,
+      75
+     ],
+     "to": [
+      16.5,
+      69.3
+     ],
+     "lengthPx": 33.7,
+     "angle": 10,
+     "offGrid": 16.6
+    },
+    {
+     "from": [
+      113.8,
+      121.8
+     ],
+     "to": [
+      112.8,
+      86
+     ],
+     "lengthPx": 35.8,
+     "angle": 88.9,
+     "offGrid": 1.1
+    },
+    {
+     "from": [
+      49.8,
+      70.3
+     ],
+     "to": [
+      19.5,
+      64.8
+     ],
+     "lengthPx": 30.7,
+     "angle": 10.1,
+     "offGrid": 16.5
+    },
+    {
+     "from": [
+      136.5,
+      93.3
+     ],
+     "to": [
+      111.3,
+      88.3
+     ],
+     "lengthPx": 25.7,
+     "angle": 10.9,
+     "offGrid": 15.7
+    },
+    {
+     "from": [
+      18.5,
+      46.3
+     ],
+     "to": [
+      18.3,
+      59.3
+     ],
+     "lengthPx": 13,
+     "angle": 90.2,
+     "offGrid": 0.2
+    },
+    {
+     "from": [
+      19.5,
+      67.5
+     ],
+     "to": [
+      19.8,
+      102
+     ],
+     "lengthPx": 34.5,
+     "angle": 90,
+     "offGrid": 0
+    },
+    {
+     "from": [
+      113.5,
+      121.3
+     ],
+     "to": [
+      112.5,
+      85.3
+     ],
+     "lengthPx": 36,
+     "angle": 88.9,
+     "offGrid": 1.1
+    },
+    {
+     "from": [
+      64,
+      104
+     ],
+     "to": [
+      64,
+      70.5
+     ],
+     "lengthPx": 33.5,
+     "angle": 89,
+     "offGrid": 1
+    },
+    {
+     "from": [
+      113,
+      121.5
+     ],
+     "to": [
+      113,
+      106.5
+     ],
+     "lengthPx": 15,
+     "angle": 89.9,
+     "offGrid": 0.1
+    },
+    {
+     "from": [
+      64.8,
+      104.3
+     ],
+     "to": [
+      64.3,
+      70.3
+     ],
+     "lengthPx": 34,
+     "angle": 88.9,
+     "offGrid": 1.1
+    },
+    {
+     "from": [
+      137.5,
+      88
+     ],
+     "to": [
+      113.5,
+      83.8
+     ],
+     "lengthPx": 24.4,
+     "angle": 10.5,
+     "offGrid": 16
+    },
+    {
+     "from": [
+      114,
+      108
+     ],
+     "to": [
+      113.5,
+      88.3
+     ],
+     "lengthPx": 19.8,
+     "angle": 89,
+     "offGrid": 1
+    },
+    {
+     "from": [
+      64,
+      102.8
+     ],
+     "to": [
+      63.5,
+      70.8
+     ],
+     "lengthPx": 32,
+     "angle": 88.9,
+     "offGrid": 1.1
+    },
+    {
+     "from": [
+      58.3,
+      6
+     ],
+     "to": [
+      42.3,
+      0.3
+     ],
+     "lengthPx": 17,
+     "angle": 19.9,
+     "offGrid": 6.7
+    },
+    {
+     "from": [
+      45.5,
+      74.8
+     ],
+     "to": [
+      19.8,
+      69.5
+     ],
+     "lengthPx": 26.3,
+     "angle": 12,
+     "offGrid": 14.6
+    },
+    {
+     "from": [
+      58.5,
+      6.5
+     ],
+     "to": [
+      40.5,
+      0.3
+     ],
+     "lengthPx": 19.1,
+     "angle": 19,
+     "offGrid": 7.6
+    },
+    {
+     "from": [
+      112.8,
+      121.8
+     ],
+     "to": [
+      112.8,
+      106.8
+     ],
+     "lengthPx": 15,
+     "angle": 89.9,
+     "offGrid": 0.1
+    },
+    {
+     "from": [
+      51.3,
+      68.3
+     ],
+     "to": [
+      19.8,
+      62.8
+     ],
+     "lengthPx": 32,
+     "angle": 10,
+     "offGrid": 16.6
+    },
+    {
+     "from": [
+      20,
+      69.5
+     ],
+     "to": [
+      20,
+      102.5
+     ],
+     "lengthPx": 33,
+     "angle": 90,
+     "offGrid": 0
+    },
+    {
+     "from": [
+      63.5,
+      103.3
+     ],
+     "to": [
+      63.5,
+      79.8
+     ],
+     "lengthPx": 23.5,
+     "angle": 89.1,
+     "offGrid": 0.9
+    },
+    {
+     "from": [
+      161,
+      106.8
+     ],
+     "to": [
+      161,
+      131.5
+     ],
+     "lengthPx": 24.8,
+     "angle": 90,
+     "offGrid": 0
+    },
+    {
+     "from": [
+      135.3,
+      94.5
+     ],
+     "to": [
+      120,
+      91.3
+     ],
+     "lengthPx": 15.6,
+     "angle": 11.8,
+     "offGrid": 14.8
+    },
+    {
+     "from": [
+      48.8,
+      110.3
+     ],
+     "to": [
+      49,
+      120.8
+     ],
+     "lengthPx": 10.5,
+     "angle": 89.5,
+     "offGrid": 0.5
+    },
+    {
+     "from": [
+      138,
+      86.3
+     ],
+     "to": [
+      113.8,
+      81.8
+     ],
+     "lengthPx": 24.7,
+     "angle": 10.4,
+     "offGrid": 16.2
+    },
+    {
+     "from": [
+      49,
+      77
+     ],
+     "to": [
+      33,
+      74
+     ],
+     "lengthPx": 16.3,
+     "angle": 10.9,
+     "offGrid": 15.7
+    },
+    {
+     "from": [
+      57.5,
+      5.3
+     ],
+     "to": [
+      42,
+      0.3
+     ],
+     "lengthPx": 16.3,
+     "angle": 18,
+     "offGrid": 8.6
+    },
+    {
+     "from": [
+      35.8,
+      67.5
+     ],
+     "to": [
+      24.5,
+      65.5
+     ],
+     "lengthPx": 11.4,
+     "angle": 10.2,
+     "offGrid": 16.4
+    },
+    {
+     "from": [
+      137.3,
+      88
+     ],
+     "to": [
+      124.8,
+      85.8
+     ],
+     "lengthPx": 12.7,
+     "angle": 10.2,
+     "offGrid": 16.4
+    },
+    {
+     "from": [
+      51.8,
+      68
+     ],
+     "to": [
+      39.5,
+      66.3
+     ],
+     "lengthPx": 12.4,
+     "angle": 9.3,
+     "offGrid": 17.2
+    },
+    {
+     "from": [
+      31.3,
+      107
+     ],
+     "to": [
+      30.8,
+      87.8
+     ],
+     "lengthPx": 19.3,
+     "angle": 89.2,
+     "offGrid": 0.8
+    },
+    {
+     "from": [
+      41.5,
+      91.3
+     ],
+     "to": [
+      41.5,
+      78.8
+     ],
+     "lengthPx": 12.5,
+     "angle": 89.9,
+     "offGrid": 0.1
+    },
+    {
+     "from": [
+      148.5,
+      77
+     ],
+     "to": [
+      147.8,
+      58.3
+     ],
+     "lengthPx": 18.8,
+     "angle": 89,
+     "offGrid": 1
+    },
+    {
+     "from": [
+      147.5,
+      58
+     ],
+     "to": [
+      147.8,
+      76.3
+     ],
+     "lengthPx": 18.3,
+     "angle": 90.9,
+     "offGrid": 0.9
+    },
+    {
+     "from": [
+      136.5,
+      93
+     ],
+     "to": [
+      113.8,
+      88.5
+     ],
+     "lengthPx": 23.2,
+     "angle": 10.9,
+     "offGrid": 15.7
+    },
+    {
+     "from": [
+      38.8,
+      50.5
+     ],
+     "to": [
+      39,
+      36.3
+     ],
+     "lengthPx": 14.3,
+     "angle": 89.9,
+     "offGrid": 0.1
+    },
+    {
+     "from": [
+      148.8,
+      77
+     ],
+     "to": [
+      148.3,
+      59
+     ],
+     "lengthPx": 18,
+     "angle": 89.1,
+     "offGrid": 0.9
+    },
+    {
+     "from": [
+      148,
+      76.5
+     ],
+     "to": [
+      147,
+      57.5
+     ],
+     "lengthPx": 19,
+     "angle": 87.9,
+     "offGrid": 2.1
+    },
+    {
+     "from": [
+      57.3,
+      5
+     ],
+     "to": [
+      43.5,
+      0.3
+     ],
+     "lengthPx": 14.5,
+     "angle": 19,
+     "offGrid": 7.6
+    },
+    {
+     "from": [
+      111,
+      27.8
+     ],
+     "to": [
+      97,
+      23.8
+     ],
+     "lengthPx": 14.6,
+     "angle": 15.1,
+     "offGrid": 11.5
+    },
+    {
+     "from": [
+      22.3,
+      29.3
+     ],
+     "to": [
+      21.3,
+      42.5
+     ],
+     "lengthPx": 13.3,
+     "angle": 94.4,
+     "offGrid": 4.4
+    },
+    {
+     "from": [
+      111.3,
+      121.5
+     ],
+     "to": [
+      110.5,
+      134.3
+     ],
+     "lengthPx": 12.8,
+     "angle": 92.9,
+     "offGrid": 2.9
+    },
+    {
+     "from": [
+      29,
+      18.5
+     ],
+     "to": [
+      29,
+      6.3
+     ],
+     "lengthPx": 12.3,
+     "angle": 89.7,
+     "offGrid": 0.3
+    },
+    {
+     "from": [
+      30,
+      4.8
+     ],
+     "to": [
+      29.8,
+      18.5
+     ],
+     "lengthPx": 13.8,
+     "angle": 90,
+     "offGrid": 0
+    },
+    {
+     "from": [
+      161.5,
+      107.3
+     ],
+     "to": [
+      161.5,
+      125.5
+     ],
+     "lengthPx": 18.3,
+     "angle": 90,
+     "offGrid": 0
+    },
+    {
+     "from": [
+      97.8,
+      20
+     ],
+     "to": [
+      86.3,
+      16.3
+     ],
+     "lengthPx": 12.1,
+     "angle": 17.8,
+     "offGrid": 8.7
+    },
+    {
+     "from": [
+      30.8,
+      65
+     ],
+     "to": [
+      20.5,
+      63.3
+     ],
+     "lengthPx": 10.4,
+     "angle": 10,
+     "offGrid": 16.5
+    },
+    {
+     "from": [
+      22.5,
+      29
+     ],
+     "to": [
+      22,
+      45.3
+     ],
+     "lengthPx": 16.3,
+     "angle": 92.2,
+     "offGrid": 2.2
+    },
+    {
+     "from": [
+      29.5,
+      6.3
+     ],
+     "to": [
+      28.8,
+      18.8
+     ],
+     "lengthPx": 12.5,
+     "angle": 91,
+     "offGrid": 1
+    },
+    {
+     "from": [
+      111.5,
+      121.3
+     ],
+     "to": [
+      110.8,
+      134.3
+     ],
+     "lengthPx": 13,
+     "angle": 93,
+     "offGrid": 3
+    },
+    {
+     "from": [
+      76.3,
+      35.8
+     ],
+     "to": [
+      66.3,
+      35.5
+     ],
+     "lengthPx": 10,
+     "angle": 3.9,
+     "offGrid": 22.7
+    },
+    {
+     "from": [
+      49,
+      110.3
+     ],
+     "to": [
+      49.3,
+      120.8
+     ],
+     "lengthPx": 10.5,
+     "angle": 89.5,
+     "offGrid": 0.5
+    },
+    {
+     "from": [
+      40.8,
+      75.3
+     ],
+     "to": [
+      33.8,
+      73.8
+     ],
+     "lengthPx": 7.2,
+     "angle": 11,
+     "offGrid": 15.5
+    },
+    {
+     "from": [
+      136,
+      128.8
+     ],
+     "to": [
+      114.5,
+      124
+     ],
+     "lengthPx": 22,
+     "angle": 13,
+     "offGrid": 13.6
+    },
+    {
+     "from": [
+      40.8,
+      71.5
+     ],
+     "to": [
+      32.8,
+      70
+     ],
+     "lengthPx": 8.1,
+     "angle": 10.9,
+     "offGrid": 15.7
+    },
+    {
+     "from": [
+      111,
+      26.8
+     ],
+     "to": [
+      98.8,
+      25.3
+     ],
+     "lengthPx": 12.3,
+     "angle": 5.7,
+     "offGrid": 20.8
+    }
+   ]
+  },
+  "rubble": {
+   "gated": false,
+   "pass": false,
+   "longestSlantLines": [
+    {
+     "angle": 30.8,
+     "lengthPx": 12.6,
+     "offGridDeg": 4.2
+    },
+    {
+     "angle": 44.5,
+     "lengthPx": 11,
+     "offGridDeg": 17.9
+    },
+    {
+     "angle": 28.6,
+     "lengthPx": 10.6,
+     "offGridDeg": 2
+    }
+   ],
+   "slantOnGridShare": 0.415,
+   "lines": [
+    {
+     "from": [
+      53.8,
+      6.8
+     ],
+     "to": [
+      43,
+      0.3
+     ],
+     "lengthPx": 12.6,
+     "angle": 30.8,
+     "offGrid": 4.2
+    },
+    {
+     "from": [
+      51.8,
+      5
+     ],
+     "to": [
+      42.3,
+      0.3
+     ],
+     "lengthPx": 10.6,
+     "angle": 28.6,
+     "offGrid": 2
+    },
+    {
+     "from": [
+      53.8,
+      6
+     ],
+     "to": [
+      44.8,
+      0.8
+     ],
+     "lengthPx": 10.4,
+     "angle": 30.8,
+     "offGrid": 4.3
+    },
+    {
+     "from": [
+      29.8,
+      22.3
+     ],
+     "to": [
+      22,
+      29.5
+     ],
+     "lengthPx": 10.6,
+     "angle": 135.3,
+     "offGrid": 18.2
+    },
+    {
+     "from": [
+      34.3,
+      24
+     ],
+     "to": [
+      26.8,
+      31.3
+     ],
+     "lengthPx": 10.4,
+     "angle": 135.1,
+     "offGrid": 18.3
+    },
+    {
+     "from": [
+      17.5,
+      16.8
+     ],
+     "to": [
+      10.5,
+      21.8
+     ],
+     "lengthPx": 8.6,
+     "angle": 144.8,
+     "offGrid": 8.6
+    },
+    {
+     "from": [
+      42.3,
+      19
+     ],
+     "to": [
+      42.8,
+      9
+     ],
+     "lengthPx": 10,
+     "angle": 91.4,
+     "offGrid": 1.4
+    },
+    {
+     "from": [
+      86,
+      28
+     ],
+     "to": [
+      78.3,
+      20.3
+     ],
+     "lengthPx": 11,
+     "angle": 44.5,
+     "offGrid": 17.9
+    },
+    {
+     "from": [
+      49.5,
+      4.3
+     ],
+     "to": [
+      41.8,
+      0.3
+     ],
+     "lengthPx": 8.7,
+     "angle": 26.6,
+     "offGrid": 0.1
+    },
+    {
+     "from": [
+      34.5,
+      24.8
+     ],
+     "to": [
+      27.5,
+      31.3
+     ],
+     "lengthPx": 9.6,
+     "angle": 136.4,
+     "offGrid": 17
+    },
+    {
+     "from": [
+      28.8,
+      22.5
+     ],
+     "to": [
+      22,
+      29.3
+     ],
+     "lengthPx": 9.5,
+     "angle": 135.7,
+     "offGrid": 17.8
+    },
+    {
+     "from": [
+      29.5,
+      3
+     ],
+     "to": [
+      28.3,
+      10.8
+     ],
+     "lengthPx": 7.9,
+     "angle": 99.6,
+     "offGrid": 9.6
+    },
+    {
+     "from": [
+      53.5,
+      6.8
+     ],
+     "to": [
+      53.3,
+      13.8
+     ],
+     "lengthPx": 7,
+     "angle": 92.4,
+     "offGrid": 2.4
+    }
+   ]
+  }
+ },
+ "ok": false
+}

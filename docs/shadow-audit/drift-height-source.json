@@ -1,0 +1,73 @@
+{
+  "status": "pass",
+  "checks": [
+    {
+      "id": "drift-ne",
+      "exactSourceRgbaPixels": 35964,
+      "frame": [
+        264,
+        1995,
+        129,
+        43
+      ],
+      "crop": [
+        0,
+        2,
+        321,
+        107
+      ],
+      "sourceCrop": [
+        82,
+        123
+      ],
+      "maxQuantizationErrorWorldPx": 0.00020408867073620773,
+      "heightCells": 5547
+    },
+    {
+      "id": "drift-se",
+      "exactSourceRgbaPixels": 35030,
+      "frame": [
+        138,
+        1995,
+        124,
+        44
+      ],
+      "crop": [
+        0,
+        2,
+        308,
+        109
+      ],
+      "sourceCrop": [
+        87,
+        121
+      ],
+      "maxQuantizationErrorWorldPx": 0.00020776324764693044,
+      "heightCells": 5456
+    },
+    {
+      "id": "drift-mound",
+      "exactSourceRgbaPixels": 17766,
+      "frame": [
+        557,
+        1995,
+        75,
+        36
+      ],
+      "crop": [
+        0,
+        2,
+        187,
+        90
+      ],
+      "sourceCrop": [
+        46,
+        63
+      ],
+      "maxQuantizationErrorWorldPx": 0.0001716373242546254,
+      "heightCells": 2700
+    }
+  ],
+  "recipeSha256": "47c612ee66e7c8ea1a75cf44ffc72016698efdb27809ec5d51705d4e0922bd44",
+  "priorSeedIncrements": 20
+}

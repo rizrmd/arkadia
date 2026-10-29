@@ -1,0 +1,12 @@
+import {createServer} from 'vite';import {chromium} from 'playwright';import {launchOptions} from '../typography/browser.mjs';import assert from 'node:assert/strict';import fs from 'node:fs/promises';
+const v=await createServer({configFile:false,plugins:[{name:'test-disabled-release',transform(code,id){if(id.endsWith('/src/stronghold/resource-mode.ts'))return code.replace('INFINITE_WOOD_FOOD = true','INFINITE_WOOD_FOOD = false');}}],cacheDir:'node_modules/.vite-infinite-off',optimizeDeps:{include:['pixi.js'],entries:[]},server:{port:5220,host:'127.0.0.1',hmr:false,watch:null},logLevel:'error'});await v.listen();let b;const errors=[];
+try{
+ b=await chromium.launch({...launchOptions(),args:launchOptions().args.filter(a=>a!=='--single-process')});const p=await b.newPage({viewport:{width:1000,height:800}});p.on('pageerror',e=>errors.push(e.message));await p.route('**/infinite-fixture',r=>r.fulfill({contentType:'text/html',body:'<style>body{margin:0}</style><script type="module" src="/scripts/infinite-resources/fixture.ts"></script>'}));await p.goto('http://127.0.0.1:5220/infinite-fixture');await p.waitForFunction(()=>window.fixture,{timeout:45000});
+ for(let i=0;i<6;i++){
+  await p.evaluate(async i=>window.fixture.reset(0,1e9,i===0?1:30,i===1?0:30),i);const badge=await p.evaluate(i=>window.fixture.badge(i),i);await p.mouse.click(badge.x,badge.y);
+  assert.equal((await p.evaluate(i=>window.fixture.button(i),i)).eventMode,'none');assert.equal((await p.evaluate(()=>window.fixture.counters())).text,'0 Wood   0 Food');
+  await p.evaluate(()=>window.fixture.set({wood:1e8}));const button=await p.evaluate(i=>window.fixture.button(i),i);assert.equal(button.eventMode,'static');await p.mouse.click(button.x,button.y);await p.waitForFunction(()=>window.fixture.save().construction);
+  const s=await p.evaluate(()=>window.fixture.save());assert(s.resources.storedWood<1e8);assert(s.resources.storedWood>=0);assert.equal(s.resources.wood,13);assert.equal(s.resources.food,17);assert.equal(s.resources.storedFood,19);await p.keyboard.press('Escape');
+ }
+ assert.deepEqual(errors,[]);const report={pass:true,checks:['Actual disabled configuration compiled by Vite','All six Pixi buttons disable at zero Wood and enable when funded','All six transactions charge finite Wood normally','Carried balances, Food, stored Food remain finite and unchanged'],errors};await fs.writeFile('docs/infinite-resources/browser-off.json',JSON.stringify(report,null,2));console.log(report);
+}finally{if(b)await b.close();await v.close();}

@@ -1,0 +1,10 @@
+import sharp from 'sharp';import fs from 'node:fs/promises';
+// Derived material data, not replacement artwork: luminance-gated hot core with
+// deterministic advected noise erosion and a yellow-to-ivory fire color ramp.
+const {data,info}=await sharp('public/flame-fan-flipbook/rolling-fan-v2.png').ensureAlpha().raw().toBuffer({resolveWithObject:true});const out=Buffer.alloc(data.length);
+for(let y=0;y<info.height;y++)for(let x=0;x<info.width;x++){const i=(y*info.width+x)*4,phase=Math.floor(x/(info.width/4))+4*Math.floor(y/(info.height/4));const u=x%(info.width/4),v=y%(info.height/4);const n=.5+.24*Math.sin(u*.11+v*.07-phase*.8)+.16*Math.sin(u*.24-v*.13+phase*.7);const hot=Math.max(0,Math.min(1,(data[i+1]/255-.35)*2));const a=data[i+3]/255*hot*Math.max(0,Math.min(1,(n-.20)*2));out[i]=255;out[i+1]=Math.round(155+65*hot);out[i+2]=Math.round(10+35*hot);out[i+3]=Math.round(a*255);}
+await sharp(out,{raw:info}).png().toFile('public/flame-fan-flipbook/eroded-core-v2.png');
+// Soft alpha smoke sprite from layered radial density; Nixie supplies rise, curl,
+// expansion and lifetime fade. Deliberately no additive glow.
+const N=128,smoke=Buffer.alloc(N*N*4);for(let y=0;y<N;y++)for(let x=0;x<N;x++){const i=(y*N+x)*4;let a=0;for(let j=0;j<7;j++){const cx=64+Math.sin(j*9)*23,cy=64+Math.cos(j*7)*20,r=Math.hypot(x-cx,y-cy)/43;a+=Math.exp(-r*r*3)*.17;}const edge=Math.max(0,1-Math.hypot(x-64,y-64)/64);smoke[i]=smoke[i+1]=smoke[i+2]=255;smoke[i+3]=Math.round(Math.min(1,a)*edge*255);}await sharp(smoke,{raw:{width:N,height:N,channels:4}}).png().toFile('public/flame-fan-flipbook/smoke-v2.png');
+await fs.writeFile('docs/flame-fan-flipbook/materials-v2.json',JSON.stringify({core:'16 baked phases: source green-channel heat, advected two-frequency erosion, orange-yellow-ivory LUT; additive .28',smoke:'soft radial multi-lobe alpha density; Nixie curl noise and life curves',atlas:{width:info.width,height:info.height},generation:'Built-in imagegen, approved reference as style/composition input; 4x4 full rolling fan atlas'},null,2));

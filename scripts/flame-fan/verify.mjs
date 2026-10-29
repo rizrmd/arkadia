@@ -1,0 +1,11 @@
+// Both URLs share one player; verify the legacy URL's packaged actors, ranks and controls.
+import fs from 'node:fs/promises';
+import http from 'node:http';
+import path from 'node:path';
+import assert from 'node:assert/strict';
+import {launch} from '../vfx/browser.mjs';
+const external=process.env.VERIFY_URL,prefix='/ember-warden-review/flame-fan-levels/';
+const server=external?null:http.createServer(async(req,res)=>{try{const rel=new URL(req.url,'http://local').pathname.replace(prefix,'');const file=path.resolve('dist-flame-fan',rel||'index.html');if(!file.startsWith(path.resolve('dist-flame-fan')+'/'))throw Error('Invalid path');res.setHeader('Content-Type',({'.html':'text/html','.js':'text/javascript','.css':'text/css','.json':'application/json','.png':'image/png','.webp':'image/webp'})[path.extname(file)]||'application/octet-stream');res.end(await fs.readFile(file));}catch{res.statusCode=404;res.end();}});
+if(server)await new Promise(r=>server.listen(3957,'127.0.0.1',r));
+const errors=[],checks=[];
+try{for(const width of [1440,390]){const browser=await launch();try{const page=await browser.newPage({viewport:{width,height:844}});page.on('pageerror',e=>errors.push(e.message));page.on('response',r=>{if(r.status()>=400)errors.push(`HTTP ${r.status()} ${r.url()}`);});await page.goto(external||'http://127.0.0.1:3957'+prefix);await page.waitForFunction(()=>window.__FAN_PREVIEW__,null,{timeout:60000});for(let rank=1;rank<=5;rank++){await page.selectOption('#level',String(rank));await page.evaluate(()=>window.__FAN_PREVIEW__.seek(.95));const s=await page.evaluate(()=>window.__FAN_PREVIEW__.state());assert.equal(s.level,rank);assert.equal(s.actorsLoaded,2);assert.equal(s.projectiles,0);assert(s.comparison.every(c=>c.scale===38));}await page.click('#replay');assert(!(await page.evaluate(()=>window.__FAN_PREVIEW__.state().paused)));assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));checks.push({width,ranks:5,actors:2,projectiles:0,controls:true,overflow:false});}finally{await browser.close();}}assert.deepEqual(errors,[]);await fs.writeFile(`docs/flame-fan-gameplay/legacy-player-${external?'live':'local'}.json`,JSON.stringify({passed:true,checks,errors},null,2));console.log('Legacy player PASS',checks);}finally{if(server){server.closeAllConnections();await new Promise(r=>server.close(r));}}

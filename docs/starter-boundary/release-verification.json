@@ -1,0 +1,42 @@
+{
+  "pass": true,
+  "checkedAt": "2026-10-29T06:08:33.294Z",
+  "releaseCommit": "55686ad7f9fa8caaf5a3dd058c2d11468484b910",
+  "health": {
+    "build": "55686ad7f9fa8caaf5a3dd058c2d11468484b910",
+    "movementBoundary": "hill-foot-contour-v1",
+    "ok": true,
+    "protocol": 1,
+    "rooms": 2
+  },
+  "gameCompiledFilesMatched": 42,
+  "editorCompiledFilesMatched": 14,
+  "visibleRasterPixelsMatched": [
+    "straight-ne-a.png",
+    "straight-ne-b.png",
+    "straight-se-a.png",
+    "straight-se-b.png",
+    "corner-west.png",
+    "corner-south.png",
+    "corner-north.png",
+    "corner-east.png",
+    "gate-frame.png",
+    "gate-leaf-left.png",
+    "gate-leaf-right.png",
+    "threshold.png",
+    "broken-se.png",
+    "broken-ne.png",
+    "debris.png",
+    "endcap.png",
+    "gate-closed.png",
+    "gate-open.png",
+    "gate-sheet.png"
+  ],
+  "clientServerNavColumns": 2561,
+  "mapPreserved": {
+    "revision": 3,
+    "objects": 67,
+    "sha256": "ad5a14c9496d1ee19e5c6eeae56a84bd85df5c548f137a5a098f5bbba16fd0cf"
+  },
+  "scope": "Read-only production HTTP, full compiled game/editor byte hashes, every exported component and gate RGBA pixels, nav equality and published map integrity. Browser evidence is recorded separately."
+}

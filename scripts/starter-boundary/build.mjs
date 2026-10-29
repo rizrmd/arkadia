@@ -1,0 +1,10 @@
+import {build} from 'vite';import fs from 'node:fs/promises';import path from 'node:path';import {execFileSync} from 'node:child_process';import {createHash} from 'node:crypto';
+const root=process.env.STARTER_STAGE;if(!root)throw Error('STARTER_STAGE required');
+const site=root+'/site';await build({logLevel:'error',build:{outDir:site,copyPublicDir:false}});
+await fs.mkdir(site+'/coop',{recursive:true});await fs.copyFile('public/coop/nav.json',site+'/coop/nav.json');
+await fs.mkdir(site+'/buildings',{recursive:true});await fs.cp('public/buildings/starter-boundary',site+'/buildings/starter-boundary',{recursive:true});
+// Retain the complete cumulative byte inventory; this workspace deliberately
+// restores only the artwork changed by this task.
+const r=await fetch('https://arkodia.online/asset-sizes.json',{signal:AbortSignal.timeout(15000)});if(!r.ok)throw Error('Live artwork inventory unavailable');const sizes=await r.json();for(const f of await fs.readdir('public/buildings/starter-boundary'))if(/\.(png|webp)$/.test(f))sizes['/buildings/starter-boundary/'+f]=(await fs.stat('public/buildings/starter-boundary/'+f)).size;await fs.writeFile(site+'/asset-sizes.json',JSON.stringify(sizes));
+await fs.mkdir(site+'/starter-boundary',{recursive:true});for(const f of await fs.readdir('docs/starter-boundary'))if(/\.(md|json|webp)$/.test(f))await fs.copyFile('docs/starter-boundary/'+f,site+'/starter-boundary/'+f);
+const files={};for(const f of ['index.html',...(await fs.readdir(site+'/assets')).map(f=>'assets/'+f)])files['/'+f]=createHash('sha256').update(await fs.readFile(site+'/'+f)).digest('hex');await fs.writeFile(site+'/starter-boundary/release.json',JSON.stringify({commit:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),at:new Date().toISOString(),files,scope:'Approved starter component boundary and makeshift gate; unchanged economy, saves, higher tiers and published map'},null,2));console.log('Built cumulative game:',path.resolve(site));

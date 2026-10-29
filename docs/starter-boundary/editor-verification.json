@@ -1,0 +1,30 @@
+{
+  "operations": [
+    "Starter palette discoverable; approved straight and open gate placed; duplicate/remove/undo/redo",
+    "Isolated authenticated draft/save/load/publish/reload persistence",
+    "English native Pixi controls, desktop and mobile palette"
+  ],
+  "errors": [],
+  "baseWalls": 16,
+  "pixiMatricesMatchGame": true,
+  "map": {
+    "schema": 1,
+    "revision": 2,
+    "name": "Arkodia environment",
+    "objects": [
+      {
+        "id": "f934d8de-51c2-4b42-8364-43573b367f2b",
+        "asset": "starter-boundary:straight-ne-a",
+        "u": 502.219,
+        "v": 474.615
+      },
+      {
+        "id": "f6bc4297-4dcb-4549-bf21-504ca7cee74d",
+        "asset": "starter-boundary:gate-open",
+        "u": 508.729,
+        "v": 466.021
+      }
+    ]
+  },
+  "pass": true
+}

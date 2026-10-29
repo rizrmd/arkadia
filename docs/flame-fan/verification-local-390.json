@@ -1,0 +1,62 @@
+{
+  "passed": true,
+  "url": "local",
+  "results": [
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "levels": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "targetCounts": [
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "projectileCounts": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "damageMultipliers": [
+        1,
+        1.25,
+        1.5,
+        1.75,
+        2
+      ],
+      "cooldownsMs": [
+        1400,
+        1288,
+        1185,
+        1090,
+        1003
+      ],
+      "areaScales": [
+        1,
+        1.18,
+        1.36,
+        1.54,
+        1.72
+      ],
+      "phases": [
+        "Casting",
+        "Flame area",
+        "Dissipating"
+      ],
+      "controls": "passed"
+    }
+  ],
+  "pageErrors": [],
+  "httpFailures": []
+}

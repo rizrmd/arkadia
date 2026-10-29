@@ -1,0 +1,23 @@
+{
+  "pass": true,
+  "base": "http://127.0.0.1:5191",
+  "checks": [
+    "FX boot loads no HUD atlas or world/map API",
+    "Real keyboard edits compile into preview renderer definitions",
+    "Undo and redo update preview",
+    "Draft survives reload",
+    "Layer isolation toggles without changing saved config",
+    "Playback speed and real pointer timeline scrubbing work",
+    "Texture edits preload a real local asset",
+    "Save persists without applying to game",
+    "Explicit Apply publishes visuals and preserves player save",
+    "Already-running game adopts applied texture, color and opacity without combat/progression changes",
+    "Test visual changes restored through Save / Apply",
+    "Authored Rift Dash particle count changes actual renderer",
+    "Shared healing feedback is editable from gameplay cue definitions",
+    "Available phase filtering replays actual feedback"
+  ],
+  "errors": [],
+  "savedRevision": 1,
+  "restored": true
+}

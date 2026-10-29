@@ -1,0 +1,411 @@
+{
+ "compare": [
+  {
+   "name": "compare-desktop-ember",
+   "label": "Desktop 1672 × 941 · DPR 1 · Ember Warden",
+   "viewport": [
+    1672,
+    941
+   ],
+   "dpr": 1,
+   "pixels": [
+    1672,
+    941
+   ],
+   "reference": "public/typography/v2/references/choose-your-hero-desktop.png",
+   "layout": "desktop",
+   "frameScale": 1,
+   "stageScale": 1,
+   "hero": "ember-warden",
+   "open": true,
+   "files": [
+    "compare-desktop-ember.webp",
+    "compare-desktop-ember-side-by-side.webp",
+    "compare-desktop-ember-overlay.webp"
+   ]
+  },
+  {
+   "name": "compare-desktop-rift",
+   "label": "Desktop 1672 × 941 · DPR 1 · Rift Runner",
+   "viewport": [
+    1672,
+    941
+   ],
+   "dpr": 1,
+   "pixels": [
+    1672,
+    941
+   ],
+   "reference": "public/typography/v2/references/rift-runner-desktop.png",
+   "layout": "desktop",
+   "frameScale": 1,
+   "stageScale": 1,
+   "hero": "rift-runner",
+   "open": true,
+   "files": [
+    "compare-desktop-rift.webp",
+    "compare-desktop-rift-side-by-side.webp",
+    "compare-desktop-rift-overlay.webp"
+   ]
+  },
+  {
+   "name": "compare-mobile-ember",
+   "label": "Mobile 432 × 912 CSS px · DPR 2 · Ember Warden",
+   "viewport": [
+    432,
+    912
+   ],
+   "dpr": 2,
+   "pixels": [
+    864,
+    1824
+   ],
+   "reference": "public/typography/v2/references/ember-warden-mobile.png",
+   "layout": "portrait",
+   "frameScale": 1,
+   "stageScale": 0.5,
+   "hero": "ember-warden",
+   "open": true,
+   "files": [
+    "compare-mobile-ember.webp",
+    "compare-mobile-ember-side-by-side.webp",
+    "compare-mobile-ember-overlay.webp"
+   ]
+  },
+  {
+   "name": "compare-mobile-rift",
+   "label": "Mobile 432 × 912 CSS px · DPR 2 · Rift Runner",
+   "viewport": [
+    432,
+    912
+   ],
+   "dpr": 2,
+   "pixels": [
+    864,
+    1824
+   ],
+   "reference": "public/typography/v2/references/rift-runner-mobile.png",
+   "layout": "portrait",
+   "frameScale": 1,
+   "stageScale": 0.5,
+   "hero": "rift-runner",
+   "open": true,
+   "files": [
+    "compare-mobile-rift.webp",
+    "compare-mobile-rift-side-by-side.webp",
+    "compare-mobile-rift-overlay.webp"
+   ]
+  }
+ ],
+ "consoleErrors": [],
+ "fx": {
+  "files": [
+   "fx-card.webp",
+   "fx-button.webp"
+  ],
+  "Highlights loaded": "ui/button.glow, ui/button.press, ui/card.aura.ember-warden, ui/card.aura.rift-runner, ui/card.hover, ui/card.select.ember-warden, ui/card.select.rift-runner"
+ },
+ "shots": [
+  {
+   "name": "desktop-1440-ember",
+   "width": 1440,
+   "height": 900,
+   "dpr": 2,
+   "hero": "ember-warden",
+   "label": "Desktop 1440 × 900 · DPR 2 · Ember Warden",
+   "file": "desktop-1440-ember.webp",
+   "layout": "desktop",
+   "frameScale": 2,
+   "stageScale": 0.8612,
+   "open": true
+  },
+  {
+   "name": "desktop-1280-rift",
+   "width": 1280,
+   "height": 720,
+   "dpr": 1,
+   "hero": "rift-runner",
+   "label": "Desktop 1280 × 720 · DPR 1 · Rift Runner",
+   "file": "desktop-1280-rift.webp",
+   "layout": "desktop",
+   "frameScale": 1,
+   "stageScale": 0.7651,
+   "open": true
+  },
+  {
+   "name": "portrait-390-ember",
+   "width": 390,
+   "height": 844,
+   "dpr": 3,
+   "touch": true,
+   "hero": "ember-warden",
+   "label": "Phone portrait 390 × 844 · DPR 3 · Ember Warden",
+   "file": "portrait-390-ember.webp",
+   "layout": "portrait",
+   "frameScale": 2,
+   "stageScale": 0.4514,
+   "open": true
+  },
+  {
+   "name": "portrait-412-rift",
+   "width": 412,
+   "height": 915,
+   "dpr": 2.625,
+   "touch": true,
+   "hero": "rift-runner",
+   "label": "Phone portrait 412 × 915 · DPR 2.625 · Rift Runner",
+   "file": "portrait-412-rift.webp",
+   "layout": "portrait",
+   "frameScale": 2,
+   "stageScale": 0.4769,
+   "open": true
+  },
+  {
+   "name": "landscape-844-ember",
+   "width": 844,
+   "height": 390,
+   "dpr": 3,
+   "touch": true,
+   "hero": "ember-warden",
+   "label": "Phone landscape 844 × 390 · DPR 3 · Ember Warden",
+   "file": "landscape-844-ember.webp",
+   "layout": "landscape",
+   "frameScale": 2,
+   "stageScale": 0.65,
+   "open": true
+  },
+  {
+   "name": "landscape-915-rift",
+   "width": 915,
+   "height": 412,
+   "dpr": 2.625,
+   "touch": true,
+   "hero": "rift-runner",
+   "label": "Phone landscape 915 × 412 · DPR 2.625 · Rift Runner",
+   "file": "landscape-915-rift.webp",
+   "layout": "landscape",
+   "frameScale": 2,
+   "stageScale": 0.6867,
+   "open": true
+  },
+  {
+   "name": "tablet-820-rift",
+   "width": 820,
+   "height": 1180,
+   "dpr": 2,
+   "touch": true,
+   "hero": "rift-runner",
+   "label": "Tablet portrait 820 × 1180 · DPR 2 · Rift Runner",
+   "file": "tablet-820-rift.webp",
+   "layout": "portrait",
+   "frameScale": 2,
+   "stageScale": 0.6469,
+   "open": true
+  }
+ ],
+ "resize": [
+  {
+   "viewport": [
+    390,
+    844
+   ],
+   "layout": "portrait",
+   "frameScale": 1,
+   "stageScale": 0.4514,
+   "hero": "rift-runner",
+   "open": true
+  },
+  {
+   "viewport": [
+    844,
+    390
+   ],
+   "layout": "landscape",
+   "frameScale": 2,
+   "stageScale": 0.65,
+   "hero": "rift-runner",
+   "open": true
+  },
+  {
+   "viewport": [
+    1280,
+    720
+   ],
+   "layout": "desktop",
+   "frameScale": 2,
+   "stageScale": 0.7651,
+   "hero": "rift-runner",
+   "open": true
+  }
+ ],
+ "crisp": [
+  {
+   "dpr": 1,
+   "viewport": [
+    1280,
+    720
+   ],
+   "layout": "desktop",
+   "frameScale": 1,
+   "stageScale": 0.7651,
+   "hero": "ember-warden",
+   "open": true,
+   "file": "crisp-dpr1.png",
+   "edges": {
+    "CHOOSE YOUR HERO": 1.26,
+    "Choose a hero to begin y…": 1.4,
+    "Back": 1.42,
+    "Selected": 2.04,
+    "LOADOUT": 1.15,
+    "Lv. 1": 1.12,
+    "Skills cast automaticall…": 1.31
+   }
+  },
+  {
+   "dpr": 2,
+   "viewport": [
+    1280,
+    720
+   ],
+   "layout": "desktop",
+   "frameScale": 2,
+   "stageScale": 0.7651,
+   "hero": "ember-warden",
+   "open": true,
+   "file": "crisp-dpr2.png",
+   "edges": {
+    "CHOOSE YOUR HERO": 1.3,
+    "Choose a hero to begin y…": 1.33,
+    "Back": 1.48,
+    "Selected": 1.98,
+    "LOADOUT": 1.11,
+    "Lv. 1": 1.14,
+    "Skills cast automaticall…": 1.21
+   }
+  },
+  {
+   "dpr": 3,
+   "viewport": [
+    1280,
+    720
+   ],
+   "layout": "desktop",
+   "frameScale": 3,
+   "stageScale": 0.7651,
+   "hero": "ember-warden",
+   "open": true,
+   "file": "crisp-dpr3.png",
+   "edges": {
+    "CHOOSE YOUR HERO": 1.37,
+    "Choose a hero to begin y…": 1.36,
+    "Back": 1.27,
+    "Selected": 1.7,
+    "LOADOUT": 1.11,
+    "Lv. 1": 1.11,
+    "Skills cast automaticall…": 1.18
+   }
+  },
+  {
+   "dpr": 2.625,
+   "viewport": [
+    1280,
+    720
+   ],
+   "layout": "desktop",
+   "frameScale": 2,
+   "stageScale": 0.7651,
+   "hero": "ember-warden",
+   "open": true,
+   "file": "crisp-dpr2_625.png",
+   "edges": {
+    "CHOOSE YOUR HERO": 1.33,
+    "Choose a hero to begin y…": 1.41,
+    "Back": 1.21,
+    "Selected": 1.92,
+    "LOADOUT": 1.13,
+    "Lv. 1": 1.13,
+    "Skills cast automaticall…": 1.22
+   }
+  },
+  {
+   "dpr": 2.625,
+   "viewport": [
+    1672,
+    941
+   ],
+   "layout": "desktop",
+   "frameScale": 3,
+   "stageScale": 1,
+   "hero": "ember-warden",
+   "open": true,
+   "note": "full desktop composition at DPR 2.625"
+  }
+ ],
+ "input": [
+  {
+   "name": "mouse tap on a card selects it",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "releasing outside Begin Journey does not confirm",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "mouse Begin Journey confirms and closes",
+   "pass": true,
+   "detail": "saved hero ember-warden"
+  },
+  {
+   "name": "the game swaps to the chosen hero (HUD name)",
+   "pass": true,
+   "detail": "HUD shows Ember Warden, was Rift Runner"
+  },
+  {
+   "name": "ArrowUp switches hero",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "Tab switches hero",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "Shift+Tab switches back",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "Enter held keeps the screen open (pressed state)",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "Enter release begins with the selected hero",
+   "pass": true,
+   "detail": "saved hero ember-warden"
+  },
+  {
+   "name": "Escape goes back and keeps the playing hero",
+   "pass": true,
+   "detail": "HUD Rift Runner → Rift Runner, saved rift-runner"
+  },
+  {
+   "name": "touch tap on a card selects it",
+   "pass": true,
+   "detail": ""
+  },
+  {
+   "name": "touch Begin Journey confirms",
+   "pass": true,
+   "detail": "saved hero rift-runner"
+  },
+  {
+   "name": "touch Back closes (hit target ≥ 44 CSS px)",
+   "pass": true,
+   "detail": "Back hit area 49.7 CSS px"
+  }
+ ]
+}

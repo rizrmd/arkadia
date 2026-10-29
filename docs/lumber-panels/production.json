@@ -1,0 +1,67 @@
+{
+  "health": {
+    "build": "249e9365a4cdfc4fb5f9600c4282f267c4506c6e",
+    "movementBoundary": "hill-foot-contour-v1",
+    "ok": true,
+    "protocol": 1,
+    "rooms": 2
+  },
+  "releaseCommit": "249e9365a4cdfc4fb5f9600c4282f267c4506c6e",
+  "checks": [
+    {
+      "path": "/lumber-panels/kit/lumber-original.png",
+      "bytes": 1504106,
+      "sha256": "63e19142c158afd8b793916b620eb5f24c87692450640711ce529df372144fa2",
+      "exactBytes": false,
+      "decodedPixelsEqual": true
+    },
+    {
+      "path": "/lumber-panels/kit/lumber.png",
+      "bytes": 123168,
+      "sha256": "20286a024238c14bfa87a1749b60d7e919456a3dd99a368264cbcd5ecef372f3",
+      "exactBytes": false,
+      "decodedPixelsEqual": true
+    },
+    {
+      "path": "/lumber-panels/coverage.png",
+      "bytes": 436750,
+      "sha256": "e24d05d14f69f561541584df49d53cdb0b592037c6437727ce3a1b68315a773c",
+      "exactBytes": false,
+      "decodedPixelsEqual": true
+    },
+    {
+      "path": "/lumber-panels/target-01.png",
+      "bytes": 290382,
+      "sha256": "7b08b7c19e694147152bc16fdae4c4be1e67ce600abc819a7fb20d93ae4c3a42",
+      "exactBytes": false,
+      "decodedPixelsEqual": true
+    },
+    {
+      "path": "/lumber-panels/target-30.png",
+      "bytes": 293864,
+      "sha256": "b708889f39f9ef14960463c299d603698cee48123a1b26be4267c6983aff65da",
+      "exactBytes": false,
+      "decodedPixelsEqual": true
+    },
+    {
+      "path": "/lumber-panels/kit/source-kit.zip",
+      "bytes": 7328590,
+      "sha256": "802bc6dd52dbe40f04a33dc5605c38b17e04d60e9669138468e46c3a47adce66",
+      "exactBytes": true
+    },
+    {
+      "path": "/lumber-panels/browser.json",
+      "bytes": 458,
+      "sha256": "cd0f19958b59759d35dba67a06df33e58a4c9b2ebb7714faf4f08fc99e065267",
+      "exactBytes": true
+    },
+    {
+      "path": "/index.html",
+      "bytes": 34680,
+      "sha256": "e5b796c9d01e92fe5b17adeb0454716f035b734a98179ef051d4efb762109d14",
+      "exactBytes": true
+    }
+  ],
+  "pass": true,
+  "note": "Publisher serves PNG paths as lossless WebP. Original PNG source ZIP remains byte-identical; all compared visible RGBA pixels match (hidden RGB under fully transparent pixels ignored)."
+}

@@ -1,0 +1,1418 @@
+{
+  "base": "http://127.0.0.1:18143",
+  "loadingCpuThrottle": 4,
+  "combatCpuThrottle": 1,
+  "shadowField": false,
+  "emulatedDevice": "Android / 4 GB / 392x735 / DPR 2.75 (software GPU, not Adreno hardware)",
+  "boot": {
+    "quality": 30,
+    "frontier": {
+      "props": 834,
+      "uprights": 297,
+      "columns": 3143,
+      "atlas": "/frozen-frontier/game/atlas-5083a8ebd8c8bb4b.webp",
+      "loaded": true,
+      "failed": false,
+      "kit": 46,
+      "companions": {
+        "version": 1,
+        "atlas": "/frozen-frontier/game/atlas-5083a8ebd8c8bb4b.webp",
+        "families": 46,
+        "model": "explicit geometry proxy; NOT measured volumetric depth",
+        "receivers": "snow plus temple top; no general object receivers"
+      },
+      "occlusionImages": 13,
+      "sprites": 44,
+      "visible": 0,
+      "shadows": {
+        "casters": 297,
+        "strips": 1619,
+        "shown": 0,
+        "alpha": 0.4,
+        "dx": 0.333,
+        "dy": 0.289
+      },
+      "assets": [
+        "arch-ne",
+        "arch-se",
+        "broken-watchtower",
+        "column-fallen",
+        "column-fallen-v",
+        "corner-n",
+        "corner-s",
+        "dead-snag",
+        "dead-tree",
+        "drift-mound",
+        "drift-ne",
+        "drift-se",
+        "flagstones-a",
+        "flagstones-b",
+        "flagstones-c",
+        "flagstones-d",
+        "floor-sunk",
+        "grass-patch",
+        "grass-tussock",
+        "grave-cross",
+        "grave-headstone",
+        "grave-memorial",
+        "grave-sarcophagus",
+        "ground-scuff-a",
+        "ground-scuff-b",
+        "paving",
+        "pillar-broken",
+        "pillar-intact",
+        "pine-broad",
+        "pine-sapling",
+        "pine-tall",
+        "rock-boulders",
+        "rock-scatter",
+        "rubble",
+        "ruined-gate",
+        "shrub-juniper",
+        "shrub-twigs",
+        "snowy-shrine",
+        "stairs-ne",
+        "stairs-nw",
+        "stone-chips-a",
+        "stone-chips-b",
+        "temple-podium",
+        "wall-ne",
+        "wall-se"
+      ]
+    },
+    "fx": {
+      "ready": true,
+      "failed": "",
+      "effects": 76,
+      "preparedEffects": 36,
+      "loadedTextures": 15,
+      "live": 0,
+      "played": 0,
+      "peakParticles": 0,
+      "particleBudget": 400,
+      "budgetSkipped": 0,
+      "frameMs": 23.3,
+      "occludedParticles": 0,
+      "minOcclusion": 1,
+      "meanOcclusion": 1,
+      "backEffects": 0,
+      "frontEffects": 0,
+      "particles": 0,
+      "missing": [],
+      "unsupported": [],
+      "playing": []
+    },
+    "build": "/@vite/client"
+  },
+  "combat": {
+    "stats": {
+      "fps": 5.93,
+      "minFps": 1.97,
+      "targetFps": 30,
+      "thresholdFps": 29,
+      "windowMs": 5060.7,
+      "sampleCount": 30,
+      "slowFrames": 24,
+      "droppedFrames": 112,
+      "avgFrameMs": 168.69,
+      "p50FrameMs": 168.7,
+      "p95FrameMs": 320.5,
+      "p99FrameMs": 342.4,
+      "maxFrameMs": 507.2,
+      "phasesAvg": {
+        "worldDrawMs": 0.13,
+        "worldPaintMs": 0,
+        "shadowCastMs": 0,
+        "encountersStepMs": 9.56,
+        "encountersRenderMs": 11.45,
+        "pixiRenderMs": 5.29,
+        "netMs": 0,
+        "unaccountedMs": 142.26,
+        "hero3dMs": 3.08,
+        "vfxMs": 5.17
+      },
+      "phasesMax": {
+        "worldDrawMs": 2.4,
+        "worldPaintMs": 0,
+        "shadowCastMs": 0,
+        "encountersStepMs": 279,
+        "encountersRenderMs": 72.4,
+        "pixiRenderMs": 37.5,
+        "netMs": 0,
+        "unaccountedMs": 480.9,
+        "hero3dMs": 50.1,
+        "vfxMs": 24.8
+      },
+      "bottleneck": "encounters-step",
+      "sentCount": 0,
+      "lastTracelogId": null,
+      "lastReason": null,
+      "lastBottleneck": null,
+      "config": {
+        "thresholdFps": 29,
+        "spikeMs": 85,
+        "cooldownMs": 10000,
+        "windowFrames": 30,
+        "maxRingFrames": 120,
+        "endpoint": "/api/tracelogs"
+      }
+    },
+    "capture": {
+      "id": "tl-mvo0hwo6-1",
+      "clientTime": "2026-10-25T15:58:06.246Z",
+      "reason": "manual",
+      "client": {
+        "url": "/?offline=1&hero=ember-warden&time=0.5&shadowField=0",
+        "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Mobile Safari/537.36",
+        "viewportWidth": 392,
+        "viewportHeight": 735,
+        "dpr": 2.75,
+        "hardwareConcurrency": 8,
+        "deviceMemoryGb": 4,
+        "battery": {
+          "charging": true,
+          "level": 1
+        },
+        "build": "development",
+        "gpu": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+        "renderQuality": {
+          "tier": "low",
+          "targetFps": 30,
+          "resolution": 1,
+          "heroScale": 1,
+          "idleFps": 15,
+          "simpleShadow": true,
+          "particleLimit": 400,
+          "reason": "device-hint",
+          "pinned": false,
+          "antialias": false
+        }
+      },
+      "metrics": {
+        "fps": 5.93,
+        "minFps": 1.97,
+        "targetFps": 30,
+        "thresholdFps": 29,
+        "windowMs": 5060.7,
+        "sampleCount": 30,
+        "slowFrames": 24,
+        "droppedFrames": 112,
+        "avgFrameMs": 168.69,
+        "p50FrameMs": 168.7,
+        "p95FrameMs": 320.5,
+        "p99FrameMs": 342.4,
+        "maxFrameMs": 507.2,
+        "phasesAvg": {
+          "worldDrawMs": 0.13,
+          "worldPaintMs": 0,
+          "shadowCastMs": 0,
+          "encountersStepMs": 9.56,
+          "encountersRenderMs": 11.45,
+          "pixiRenderMs": 5.29,
+          "netMs": 0,
+          "unaccountedMs": 142.26,
+          "hero3dMs": 3.08,
+          "vfxMs": 5.17
+        },
+        "phasesMax": {
+          "worldDrawMs": 2.4,
+          "worldPaintMs": 0,
+          "shadowCastMs": 0,
+          "encountersStepMs": 279,
+          "encountersRenderMs": 72.4,
+          "pixiRenderMs": 37.5,
+          "netMs": 0,
+          "unaccountedMs": 480.9,
+          "hero3dMs": 50.1,
+          "vfxMs": 24.8
+        },
+        "bottleneck": "encounters-step"
+      },
+      "scene": {
+        "mode": "solo",
+        "hero": "ember-warden",
+        "heroState": "idle",
+        "heroU": 9.16,
+        "heroV": 8.96,
+        "safeZone": true,
+        "level": 8,
+        "heroesCount": 1,
+        "foesTotal": 3,
+        "foesRendered": 3,
+        "particles": 0,
+        "particleBudget": 260,
+        "liveEffects": 0,
+        "activeFloats": 0,
+        "projectiles": 0,
+        "aoes": 0,
+        "scale": 1.17,
+        "camera": "idle",
+        "gate": "closed",
+        "lighting": "off",
+        "torches": "off",
+        "sun": "0.5000",
+        "surfacePaints": 1,
+        "lightPaints": 4,
+        "shadowPaints": 1
+      },
+      "frames": [
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0.4,
+            "heroDraw": 4.7,
+            "heroCopy": 0.1,
+            "heroShadow": 0,
+            "heroPost": 0.4,
+            "textureUpload": 0.6
+          },
+          "t": 32899.9,
+          "dtMs": 260.4,
+          "fps": 3.84,
+          "encountersStepMs": 1,
+          "encountersRenderMs": 5.6,
+          "pixiRenderMs": 7.4,
+          "hero3dMs": 1.4,
+          "vfxMs": 2.2,
+          "foesRendered": 1
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0.6,
+            "heroDraw": 1,
+            "heroCopy": 0,
+            "heroShadow": 0,
+            "heroPost": 0.1,
+            "textureUpload": 3.9
+          },
+          "t": 34102.5,
+          "dtMs": 1202.6,
+          "fps": 0.83,
+          "encountersStepMs": 0.3,
+          "encountersRenderMs": 113.4,
+          "pixiRenderMs": 1087.3,
+          "hero3dMs": 3,
+          "vfxMs": 109.8,
+          "foesRendered": 1,
+          "particles": 271
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0.3,
+            "heroDraw": 0.9,
+            "heroCopy": 0.1,
+            "heroShadow": 0,
+            "heroPost": 0,
+            "textureUpload": 4.1
+          },
+          "t": 35341.1,
+          "dtMs": 1238.6,
+          "fps": 0.81,
+          "worldDrawMs": 0.1,
+          "encountersStepMs": 0.4,
+          "encountersRenderMs": 21.8,
+          "pixiRenderMs": 1214.5,
+          "hero3dMs": 1.8,
+          "vfxMs": 18.3,
+          "foesRendered": 1,
+          "particles": 277
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 14.9,
+            "heroDraw": 2.1,
+            "heroCopy": 0,
+            "heroShadow": 0,
+            "heroPost": 0,
+            "textureUpload": 20
+          },
+          "t": 35398,
+          "dtMs": 56.9,
+          "fps": 17.57,
+          "worldDrawMs": 0.2,
+          "encountersStepMs": 0.2,
+          "encountersRenderMs": 40.4,
+          "pixiRenderMs": 15.1,
+          "hero3dMs": 17.6,
+          "vfxMs": 4.8,
+          "foesRendered": 1,
+          "particles": 321
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "textureUpload": 0.2
+          },
+          "t": 35650.8,
+          "dtMs": 252.8,
+          "fps": 3.96,
+          "encountersStepMs": 0.1,
+          "encountersRenderMs": 34.4,
+          "pixiRenderMs": 5.5,
+          "hero3dMs": 0.1,
+          "vfxMs": 30.7,
+          "foesRendered": 1,
+          "particles": 326
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0.4,
+            "heroDraw": 0.2,
+            "heroCopy": 0,
+            "heroShadow": 0,
+            "heroPost": 0.2,
+            "textureUpload": 0.1
+          },
+          "t": 35685.4,
+          "dtMs": 34.6,
+          "fps": 28.9,
+          "encountersStepMs": 0.1,
+          "encountersRenderMs": 26.6,
+          "pixiRenderMs": 4.2,
+          "hero3dMs": 1,
+          "vfxMs": 24.8,
+          "foesRendered": 1,
+          "particles": 325
+        },
+        {
+          "details": {
+            "heroQualityChange": 0.2
+          },
+          "t": 35711.6,
+          "dtMs": 26.2,
+          "fps": 38.17,
+          "worldDrawMs": 0.1,
+          "encountersStepMs": 0.1,
+          "encountersRenderMs": 12.7,
+          "pixiRenderMs": 8.7,
+          "hero3dMs": 0.2,
+          "vfxMs": 11.9,
+          "foesRendered": 1,
+          "particles": 319
+        },
+        {
+          "details": {
+            "heroQualityChange": 0
+          },
+          "t": 35737.2,
+          "dtMs": 25.6,
+          "fps": 39.06,
+          "encountersStepMs": 0.2,
+          "encountersRenderMs": 7,
+          "pixiRenderMs": 1.8,
+          "hero3dMs": 0.1,
+          "vfxMs": 6.8,
+          "foesRendered": 1,
+          "particles": 314
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 1.1,
+            "heroDraw": 0.2,
+            "heroCopy": 0,
+            "heroShadow": 0,
+            "heroPost": 0.1,
+            "textureUpload": 0.1
+          },
+          "t": 36079.6,
+          "dtMs": 342.4,
+          "fps": 2.92,
+          "encountersStepMs": 279,
+          "encountersRenderMs": 13.5,
+          "pixiRenderMs": 4,
+          "hero3dMs": 1.8,
+          "vfxMs": 11,
+          "foesRendered": 1,
+          "particles": 305
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0.2,
+            "heroDraw": 1.7,
+            "heroCopy": 0,
+            "heroShadow": 0,
+            "heroPost": 0,
+            "textureUpload": 0.2
+          },
+          "t": 36122.1,
+          "dtMs": 42.5,
+          "fps": 23.53,
+          "encountersStepMs": 0.2,
+          "encountersRenderMs": 6.5,
+          "pixiRenderMs": 3.4,
+          "hero3dMs": 2.4,
+          "vfxMs": 3.5,
+          "foesRendered": 1,
+          "particles": 306
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "textureUpload": 0
+          },
+          "t": 36313.8,
+          "dtMs": 191.7,
+          "fps": 5.22,
+          "encountersRenderMs": 4.2,
+          "pixiRenderMs": 8.7,
+          "vfxMs": 3.4,
+          "foesRendered": 1,
+          "particles": 299
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 2.5,
+            "heroDraw": 0.3,
+            "heroCopy": 0.1,
+            "heroShadow": 0,
+            "heroPost": 1.2,
+            "textureUpload": 0.1
+          },
+          "t": 36482.5,
+          "dtMs": 168.7,
+          "fps": 5.93,
+          "worldDrawMs": 0.1,
+          "encountersStepMs": 2.2,
+          "encountersRenderMs": 72.4,
+          "pixiRenderMs": 5.6,
+          "hero3dMs": 4.3,
+          "vfxMs": 9.8,
+          "foesRendered": 1,
+          "particles": 297
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0,
+            "heroDraw": 0.2,
+            "heroCopy": 0,
+            "heroShadow": 0,
+            "heroPost": 0.1,
+            "textureUpload": 0.1
+          },
+          "t": 36695.6,
+          "dtMs": 213.1,
+          "fps": 4.69,
+          "encountersStepMs": 0.6,
+          "encountersRenderMs": 5.6,
+          "pixiRenderMs": 8,
+          "hero3dMs": 0.5,
+          "vfxMs": 4.6,
+          "foesRendered": 1,
+          "particles": 394
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0.1,
+            "heroDraw": 0.4,
+            "heroCopy": 0,
+            "heroShadow": 0,
+            "heroPost": 0,
+            "textureUpload": 0.4
+          },
+          "t": 37001.3,
+          "dtMs": 305.7,
+          "fps": 3.27,
+          "worldDrawMs": 0.1,
+          "encountersStepMs": 0.9,
+          "encountersRenderMs": 11.5,
+          "pixiRenderMs": 27,
+          "hero3dMs": 0.7,
+          "vfxMs": 4.7,
+          "foesRendered": 1,
+          "particles": 388
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0.2,
+            "heroDraw": 0.3,
+            "heroCopy": 0.1,
+            "heroShadow": 0,
+            "heroPost": 0.4,
+            "textureUpload": 0.5
+          },
+          "t": 37321.8,
+          "dtMs": 320.5,
+          "fps": 3.12,
+          "worldDrawMs": 2.4,
+          "encountersStepMs": 0.6,
+          "encountersRenderMs": 14.6,
+          "pixiRenderMs": 37.5,
+          "hero3dMs": 1,
+          "vfxMs": 11.7,
+          "foesRendered": 1,
+          "particles": 382
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0.2,
+            "heroDraw": 2.3,
+            "heroCopy": 0,
+            "heroShadow": 0,
+            "heroPost": 0.9,
+            "textureUpload": 0.2
+          },
+          "t": 37829,
+          "dtMs": 507.2,
+          "fps": 1.97,
+          "worldDrawMs": 0.1,
+          "encountersStepMs": 0.1,
+          "encountersRenderMs": 16.1,
+          "pixiRenderMs": 10,
+          "hero3dMs": 3.5,
+          "vfxMs": 12,
+          "foesRendered": 1,
+          "particles": 323
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0.2,
+            "heroDraw": 0.5,
+            "heroCopy": 0,
+            "heroShadow": 0,
+            "heroPost": 0,
+            "textureUpload": 0.4
+          },
+          "t": 38000.5,
+          "dtMs": 171.5,
+          "fps": 5.83,
+          "worldDrawMs": 0.1,
+          "encountersStepMs": 0.2,
+          "encountersRenderMs": 7.9,
+          "pixiRenderMs": 4.6,
+          "hero3dMs": 1.1,
+          "vfxMs": 5.8,
+          "foesRendered": 1,
+          "particles": 231
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0.2,
+            "heroDraw": 0.8,
+            "heroCopy": 0.1,
+            "heroShadow": 0,
+            "heroPost": 0.2,
+            "textureUpload": 0.3
+          },
+          "t": 38196.1,
+          "dtMs": 195.6,
+          "fps": 5.11,
+          "encountersStepMs": 0.1,
+          "encountersRenderMs": 10.7,
+          "pixiRenderMs": 2.2,
+          "hero3dMs": 3.8,
+          "vfxMs": 5.7,
+          "foesRendered": 1,
+          "particles": 208
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0,
+            "heroDraw": 0.2,
+            "heroCopy": 0,
+            "heroShadow": 0,
+            "heroPost": 0.1,
+            "textureUpload": 0.1
+          },
+          "t": 38332.9,
+          "dtMs": 136.8,
+          "fps": 7.31,
+          "worldDrawMs": 0.1,
+          "encountersStepMs": 0.2,
+          "encountersRenderMs": 3.4,
+          "pixiRenderMs": 1.8,
+          "hero3dMs": 0.6,
+          "vfxMs": 2.5,
+          "foesRendered": 1,
+          "particles": 188
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 2.3,
+            "heroDraw": 0.2,
+            "heroCopy": 0,
+            "heroShadow": 0,
+            "heroPost": 0,
+            "textureUpload": 0.2
+          },
+          "t": 38623,
+          "dtMs": 290.1,
+          "fps": 3.45,
+          "worldDrawMs": 0.1,
+          "encountersStepMs": 0.1,
+          "encountersRenderMs": 5.1,
+          "pixiRenderMs": 3.2,
+          "hero3dMs": 2.7,
+          "vfxMs": 1.9,
+          "foesRendered": 1,
+          "particles": 171
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0.5,
+            "heroDraw": 1.1,
+            "heroCopy": 0,
+            "heroShadow": 0,
+            "heroPost": 0.1,
+            "textureUpload": 0.3
+          },
+          "t": 38818.9,
+          "dtMs": 195.9,
+          "fps": 5.1,
+          "encountersStepMs": 0.6,
+          "encountersRenderMs": 10.4,
+          "pixiRenderMs": 1.3,
+          "hero3dMs": 2.1,
+          "vfxMs": 7,
+          "foesRendered": 1,
+          "particles": 162
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0,
+            "heroDraw": 0.1,
+            "heroCopy": 0,
+            "heroShadow": 0,
+            "heroPost": 0,
+            "textureUpload": 0.1
+          },
+          "t": 38908.4,
+          "dtMs": 89.5,
+          "fps": 11.17,
+          "encountersStepMs": 0.1,
+          "encountersRenderMs": 1.6,
+          "pixiRenderMs": 1.9,
+          "hero3dMs": 0.2,
+          "vfxMs": 0.9,
+          "foesRendered": 1,
+          "particles": 147
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0.1,
+            "heroDraw": 0.2,
+            "heroCopy": 0,
+            "heroShadow": 0,
+            "heroPost": 0.1,
+            "textureUpload": 4.4
+          },
+          "t": 39124.2,
+          "dtMs": 215.8,
+          "fps": 4.63,
+          "worldDrawMs": 0.1,
+          "encountersStepMs": 0.1,
+          "encountersRenderMs": 11.4,
+          "pixiRenderMs": 2.7,
+          "hero3dMs": 0.6,
+          "vfxMs": 5.8,
+          "foesRendered": 1,
+          "particles": 142
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 2.5,
+            "heroDraw": 1.4,
+            "heroCopy": 0.1,
+            "heroShadow": 0,
+            "heroPost": 45.9,
+            "textureUpload": 0.1
+          },
+          "t": 39360.6,
+          "dtMs": 236.4,
+          "fps": 4.23,
+          "encountersStepMs": 0.3,
+          "encountersRenderMs": 53.5,
+          "pixiRenderMs": 2.9,
+          "hero3dMs": 50.1,
+          "vfxMs": 1,
+          "foesRendered": 1,
+          "particles": 73
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0.4,
+            "heroDraw": 0.2,
+            "heroCopy": 0,
+            "heroShadow": 0,
+            "heroPost": 0,
+            "textureUpload": 0.1
+          },
+          "t": 39508.3,
+          "dtMs": 147.7,
+          "fps": 6.77,
+          "worldDrawMs": 0.1,
+          "encountersStepMs": 0.1,
+          "encountersRenderMs": 16.6,
+          "pixiRenderMs": 1.3,
+          "hero3dMs": 1.1,
+          "vfxMs": 14.1,
+          "foesRendered": 1,
+          "particles": 14
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0.1,
+            "heroDraw": 0.4,
+            "heroCopy": 0,
+            "heroShadow": 0,
+            "heroPost": 0.7,
+            "textureUpload": 0.1
+          },
+          "t": 39687.3,
+          "dtMs": 179,
+          "fps": 5.59,
+          "worldDrawMs": 0.1,
+          "encountersStepMs": 0.1,
+          "encountersRenderMs": 2.9,
+          "pixiRenderMs": 4,
+          "hero3dMs": 1.3,
+          "vfxMs": 0.5,
+          "foesRendered": 1,
+          "particles": 11
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0,
+            "heroDraw": 0.3,
+            "heroCopy": 0,
+            "heroShadow": 0,
+            "heroPost": 0.1,
+            "textureUpload": 0.1
+          },
+          "t": 39826,
+          "dtMs": 138.7,
+          "fps": 7.21,
+          "encountersStepMs": 0.2,
+          "encountersRenderMs": 1.2,
+          "pixiRenderMs": 3.7,
+          "hero3dMs": 0.5,
+          "vfxMs": 0.4,
+          "foesRendered": 1,
+          "particles": 10
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0,
+            "heroDraw": 1.4,
+            "heroCopy": 0,
+            "heroShadow": 0,
+            "heroPost": 0,
+            "textureUpload": 0
+          },
+          "t": 39888.1,
+          "dtMs": 62.1,
+          "fps": 16.1,
+          "worldDrawMs": 0.1,
+          "encountersRenderMs": 5.7,
+          "pixiRenderMs": 1.1,
+          "hero3dMs": 1.5,
+          "vfxMs": 0.4,
+          "foesRendered": 1,
+          "particles": 9
+        },
+        {
+          "details": {
+            "heroQualityChange": 0
+          },
+          "t": 40006.9,
+          "dtMs": 118.8,
+          "fps": 8.42,
+          "encountersStepMs": 0.1,
+          "encountersRenderMs": 1.5,
+          "pixiRenderMs": 2.6,
+          "vfxMs": 1.5,
+          "foesRendered": 1,
+          "particles": 8
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0.1,
+            "heroDraw": 0.1,
+            "heroCopy": 0.1,
+            "heroShadow": 0,
+            "heroPost": 0,
+            "textureUpload": 0
+          },
+          "t": 40178.5,
+          "dtMs": 171.6,
+          "fps": 5.83,
+          "worldDrawMs": 0.1,
+          "encountersStepMs": 0.1,
+          "encountersRenderMs": 0.9,
+          "pixiRenderMs": 1.2,
+          "hero3dMs": 0.4,
+          "vfxMs": 0.2,
+          "foesRendered": 1,
+          "particles": 5
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0,
+            "heroDraw": 0.2,
+            "heroCopy": 0,
+            "heroShadow": 0,
+            "heroPost": 0.1,
+            "textureUpload": 0
+          },
+          "t": 40300.9,
+          "dtMs": 122.4,
+          "fps": 8.17,
+          "worldDrawMs": 0.1,
+          "encountersStepMs": 0.2,
+          "encountersRenderMs": 1.2,
+          "pixiRenderMs": 1.4,
+          "hero3dMs": 0.4,
+          "vfxMs": 0.2,
+          "foesRendered": 1,
+          "particles": 4
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0.1,
+            "heroDraw": 0.2,
+            "heroCopy": 0.1,
+            "heroShadow": 0,
+            "heroPost": 0,
+            "textureUpload": 0.1
+          },
+          "t": 40417.9,
+          "dtMs": 117,
+          "fps": 8.55,
+          "encountersStepMs": 0.1,
+          "encountersRenderMs": 1.3,
+          "pixiRenderMs": 1.2,
+          "hero3dMs": 0.4,
+          "vfxMs": 0.2,
+          "foesRendered": 3,
+          "particles": 3
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0,
+            "heroDraw": 8,
+            "heroCopy": 0,
+            "heroShadow": 0,
+            "heroPost": 0,
+            "textureUpload": 0
+          },
+          "t": 40500.8,
+          "dtMs": 82.9,
+          "fps": 12.06,
+          "worldDrawMs": 0.1,
+          "encountersStepMs": 0.1,
+          "encountersRenderMs": 12.4,
+          "pixiRenderMs": 0.9,
+          "hero3dMs": 8.3,
+          "vfxMs": 0.3,
+          "foesRendered": 3,
+          "particles": 1
+        },
+        {
+          "details": {
+            "heroQualityChange": 0,
+            "heroAnimation": 0,
+            "heroDraw": 0.3,
+            "heroCopy": 0,
+            "heroShadow": 0,
+            "heroPost": 1.5,
+            "textureUpload": 0.1
+          },
+          "t": 40506.5,
+          "dtMs": 5.7,
+          "fps": 175.44,
+          "encountersRenderMs": 2.5,
+          "pixiRenderMs": 0.7,
+          "hero3dMs": 1.9,
+          "vfxMs": 0.1,
+          "foesRendered": 3,
+          "particles": 1
+        },
+        {
+          "details": {
+            "heroQualityChange": 0
+          },
+          "t": 40711.5,
+          "dtMs": 205,
+          "fps": 4.88,
+          "encountersStepMs": 0.2,
+          "encountersRenderMs": 2.7,
+          "pixiRenderMs": 1,
+          "vfxMs": 2.5,
+          "foesRendered": 3,
+          "particles": 1
+        }
+      ],
+      "longTasks": [
+        {
+          "startTime": 32892.5,
+          "duration": 122,
+          "name": "self"
+        },
+        {
+          "startTime": 33015,
+          "duration": 1111,
+          "name": "self"
+        },
+        {
+          "startTime": 34126.4,
+          "duration": 1255,
+          "name": "self"
+        },
+        {
+          "startTime": 35382.7,
+          "duration": 50,
+          "name": "self"
+        },
+        {
+          "startTime": 35737,
+          "duration": 337,
+          "name": "self"
+        },
+        {
+          "startTime": 36305.1,
+          "duration": 83,
+          "name": "self"
+        },
+        {
+          "startTime": 37281.6,
+          "duration": 58,
+          "name": "self"
+        },
+        {
+          "startTime": 39121.1,
+          "duration": 57,
+          "name": "self"
+        }
+      ],
+      "renderOperations": [
+        {
+          "phase": "heroAnimation",
+          "startTime": 35341.4,
+          "duration": 14.9
+        },
+        {
+          "phase": "textureUpload",
+          "startTime": 35359.1,
+          "duration": 17.2
+        },
+        {
+          "phase": "script",
+          "startTime": 32899.90000009537,
+          "duration": 114.40000009536743,
+          "sourceURL": "http://127.0.0.1:18143/src/app/frame-scheduler.ts",
+          "sourceFunctionName": "tick"
+        },
+        {
+          "phase": "script",
+          "startTime": 33015.10000014305,
+          "duration": 1087.3999998569489,
+          "sourceURL": "http://127.0.0.1:18143/node_modules/.vite/deps/Filter-B3Ta1z3x.js?v=7f3e9de8",
+          "sourceFunctionName": ""
+        },
+        {
+          "phase": "script",
+          "startTime": 34102.5,
+          "duration": 23.40000009536743,
+          "sourceURL": "http://127.0.0.1:18143/src/app/frame-scheduler.ts",
+          "sourceFunctionName": "tick"
+        },
+        {
+          "phase": "script",
+          "startTime": 34126.40000009537,
+          "duration": 1214.5999999046326,
+          "sourceURL": "http://127.0.0.1:18143/node_modules/.vite/deps/Filter-B3Ta1z3x.js?v=7f3e9de8",
+          "sourceFunctionName": ""
+        },
+        {
+          "phase": "script",
+          "startTime": 35341,
+          "duration": 40.80000019073486,
+          "sourceURL": "http://127.0.0.1:18143/src/app/frame-scheduler.ts",
+          "sourceFunctionName": "tick"
+        },
+        {
+          "phase": "script",
+          "startTime": 35382.700000047684,
+          "duration": 15.100000143051147,
+          "sourceURL": "http://127.0.0.1:18143/node_modules/.vite/deps/Filter-B3Ta1z3x.js?v=7f3e9de8",
+          "sourceFunctionName": ""
+        },
+        {
+          "phase": "script",
+          "startTime": 35397.800000190735,
+          "duration": 34.89999985694885,
+          "sourceURL": "http://127.0.0.1:18143/src/app/frame-scheduler.ts",
+          "sourceFunctionName": "tick"
+        },
+        {
+          "phase": "script",
+          "startTime": 35650.800000190735,
+          "duration": 26.799999952316284,
+          "sourceURL": "http://127.0.0.1:18143/src/app/frame-scheduler.ts",
+          "sourceFunctionName": "tick"
+        },
+        {
+          "phase": "script",
+          "startTime": 35737.10000014305,
+          "duration": 292.7999999523163,
+          "sourceURL": "http://127.0.0.1:18143/src/app/frame-scheduler.ts",
+          "sourceFunctionName": "tick"
+        },
+        {
+          "phase": "script",
+          "startTime": 36305.10000014305,
+          "duration": 8.700000047683716,
+          "sourceURL": "http://127.0.0.1:18143/node_modules/.vite/deps/Filter-B3Ta1z3x.js?v=7f3e9de8",
+          "sourceFunctionName": ""
+        },
+        {
+          "phase": "script",
+          "startTime": 36313.800000190735,
+          "duration": 74.69999980926514,
+          "sourceURL": "http://127.0.0.1:18143/src/app/frame-scheduler.ts",
+          "sourceFunctionName": "tick"
+        },
+        {
+          "phase": "script",
+          "startTime": 36687.5,
+          "duration": 8,
+          "sourceURL": "http://127.0.0.1:18143/node_modules/.vite/deps/Filter-B3Ta1z3x.js?v=7f3e9de8",
+          "sourceFunctionName": ""
+        },
+        {
+          "phase": "script",
+          "startTime": 36695.5,
+          "duration": 12.700000047683716,
+          "sourceURL": "http://127.0.0.1:18143/src/app/frame-scheduler.ts",
+          "sourceFunctionName": "tick"
+        },
+        {
+          "phase": "script",
+          "startTime": 36973.90000009537,
+          "duration": 27.299999952316284,
+          "sourceURL": "http://127.0.0.1:18143/node_modules/.vite/deps/Filter-B3Ta1z3x.js?v=7f3e9de8",
+          "sourceFunctionName": ""
+        },
+        {
+          "phase": "script",
+          "startTime": 37001.200000047684,
+          "duration": 15.400000095367432,
+          "sourceURL": "http://127.0.0.1:18143/src/app/frame-scheduler.ts",
+          "sourceFunctionName": "tick"
+        },
+        {
+          "phase": "script",
+          "startTime": 37281.800000190735,
+          "duration": 37.59999990463257,
+          "sourceURL": "http://127.0.0.1:18143/node_modules/.vite/deps/Filter-B3Ta1z3x.js?v=7f3e9de8",
+          "sourceFunctionName": ""
+        },
+        {
+          "phase": "script",
+          "startTime": 37319.40000009537,
+          "duration": 18.799999952316284,
+          "sourceURL": "http://127.0.0.1:18143/src/app/frame-scheduler.ts",
+          "sourceFunctionName": "tick"
+        },
+        {
+          "phase": "script",
+          "startTime": 37818.700000047684,
+          "duration": 10.100000143051147,
+          "sourceURL": "http://127.0.0.1:18143/node_modules/.vite/deps/Filter-B3Ta1z3x.js?v=7f3e9de8",
+          "sourceFunctionName": ""
+        },
+        {
+          "phase": "script",
+          "startTime": 37828.800000190735,
+          "duration": 8.399999856948853,
+          "sourceURL": "http://127.0.0.1:18143/src/app/frame-scheduler.ts",
+          "sourceFunctionName": "tick"
+        },
+        {
+          "phase": "script",
+          "startTime": 38000.200000047684,
+          "duration": 11.299999952316284,
+          "sourceURL": "http://127.0.0.1:18143/src/app/frame-scheduler.ts",
+          "sourceFunctionName": "tick"
+        },
+        {
+          "phase": "heroPost",
+          "startTime": 39128.6,
+          "duration": 45.9
+        },
+        {
+          "phase": "script",
+          "startTime": 38622.700000047684,
+          "duration": 11.900000095367432,
+          "sourceURL": "http://127.0.0.1:18143/src/app/frame-scheduler.ts",
+          "sourceFunctionName": "tick"
+        },
+        {
+          "phase": "script",
+          "startTime": 38908.200000047684,
+          "duration": 11.700000047683716,
+          "sourceURL": "http://127.0.0.1:18143/src/app/frame-scheduler.ts",
+          "sourceFunctionName": "tick"
+        },
+        {
+          "phase": "script",
+          "startTime": 39124.10000014305,
+          "duration": 53.89999985694885,
+          "sourceURL": "http://127.0.0.1:18143/src/app/frame-scheduler.ts",
+          "sourceFunctionName": "tick"
+        },
+        {
+          "phase": "script",
+          "startTime": 39360.5,
+          "duration": 17.100000143051147,
+          "sourceURL": "http://127.0.0.1:18143/src/app/frame-scheduler.ts",
+          "sourceFunctionName": "tick"
+        },
+        {
+          "phase": "heroDraw",
+          "startTime": 40418.3,
+          "duration": 8
+        }
+      ]
+    },
+    "fx": {
+      "ready": true,
+      "failed": "",
+      "effects": 76,
+      "preparedEffects": 36,
+      "loadedTextures": 15,
+      "live": 0,
+      "played": 9,
+      "peakParticles": 394,
+      "particleBudget": 260,
+      "budgetSkipped": 0,
+      "frameMs": 81.8,
+      "occludedParticles": 0,
+      "minOcclusion": 1,
+      "meanOcclusion": 1,
+      "backEffects": 0,
+      "frontEffects": 0,
+      "particles": 0,
+      "missing": [],
+      "unsupported": [],
+      "playing": []
+    },
+    "history": [
+      {
+        "phase": "heroAnimation",
+        "startTime": 35341.4,
+        "duration": 14.9
+      },
+      {
+        "phase": "textureUpload",
+        "startTime": 35359.1,
+        "duration": 17.2
+      },
+      {
+        "phase": "script",
+        "startTime": 32899.90000009537,
+        "duration": 114.40000009536743,
+        "sourceURL": "http://127.0.0.1:18143/src/app/frame-scheduler.ts",
+        "sourceFunctionName": "tick"
+      },
+      {
+        "phase": "script",
+        "startTime": 33015.10000014305,
+        "duration": 1087.3999998569489,
+        "sourceURL": "http://127.0.0.1:18143/node_modules/.vite/deps/Filter-B3Ta1z3x.js?v=7f3e9de8",
+        "sourceFunctionName": ""
+      },
+      {
+        "phase": "script",
+        "startTime": 34102.5,
+        "duration": 23.40000009536743,
+        "sourceURL": "http://127.0.0.1:18143/src/app/frame-scheduler.ts",
+        "sourceFunctionName": "tick"
+      },
+      {
+        "phase": "script",
+        "startTime": 34126.40000009537,
+        "duration": 1214.5999999046326,
+        "sourceURL": "http://127.0.0.1:18143/node_modules/.vite/deps/Filter-B3Ta1z3x.js?v=7f3e9de8",
+        "sourceFunctionName": ""
+      },
+      {
+        "phase": "script",
+        "startTime": 35341,
+        "duration": 40.80000019073486,
+        "sourceURL": "http://127.0.0.1:18143/src/app/frame-scheduler.ts",
+        "sourceFunctionName": "tick"
+      },
+      {
+        "phase": "script",
+        "startTime": 35382.700000047684,
+        "duration": 15.100000143051147,
+        "sourceURL": "http://127.0.0.1:18143/node_modules/.vite/deps/Filter-B3Ta1z3x.js?v=7f3e9de8",
+        "sourceFunctionName": ""
+      },
+      {
+        "phase": "script",
+        "startTime": 35397.800000190735,
+        "duration": 34.89999985694885,
+        "sourceURL": "http://127.0.0.1:18143/src/app/frame-scheduler.ts",
+        "sourceFunctionName": "tick"
+      },
+      {
+        "phase": "script",
+        "startTime": 35650.800000190735,
+        "duration": 26.799999952316284,
+        "sourceURL": "http://127.0.0.1:18143/src/app/frame-scheduler.ts",
+        "sourceFunctionName": "tick"
+      },
+      {
+        "phase": "script",
+        "startTime": 35737.10000014305,
+        "duration": 292.7999999523163,
+        "sourceURL": "http://127.0.0.1:18143/src/app/frame-scheduler.ts",
+        "sourceFunctionName": "tick"
+      },
+      {
+        "phase": "script",
+        "startTime": 36305.10000014305,
+        "duration": 8.700000047683716,
+        "sourceURL": "http://127.0.0.1:18143/node_modules/.vite/deps/Filter-B3Ta1z3x.js?v=7f3e9de8",
+        "sourceFunctionName": ""
+      },
+      {
+        "phase": "script",
+        "startTime": 36313.800000190735,
+        "duration": 74.69999980926514,
+        "sourceURL": "http://127.0.0.1:18143/src/app/frame-scheduler.ts",
+        "sourceFunctionName": "tick"
+      },
+      {
+        "phase": "script",
+        "startTime": 36687.5,
+        "duration": 8,
+        "sourceURL": "http://127.0.0.1:18143/node_modules/.vite/deps/Filter-B3Ta1z3x.js?v=7f3e9de8",
+        "sourceFunctionName": ""
+      },
+      {
+        "phase": "script",
+        "startTime": 36695.5,
+        "duration": 12.700000047683716,
+        "sourceURL": "http://127.0.0.1:18143/src/app/frame-scheduler.ts",
+        "sourceFunctionName": "tick"
+      },
+      {
+        "phase": "script",
+        "startTime": 36973.90000009537,
+        "duration": 27.299999952316284,
+        "sourceURL": "http://127.0.0.1:18143/node_modules/.vite/deps/Filter-B3Ta1z3x.js?v=7f3e9de8",
+        "sourceFunctionName": ""
+      },
+      {
+        "phase": "script",
+        "startTime": 37001.200000047684,
+        "duration": 15.400000095367432,
+        "sourceURL": "http://127.0.0.1:18143/src/app/frame-scheduler.ts",
+        "sourceFunctionName": "tick"
+      },
+      {
+        "phase": "script",
+        "startTime": 37281.800000190735,
+        "duration": 37.59999990463257,
+        "sourceURL": "http://127.0.0.1:18143/node_modules/.vite/deps/Filter-B3Ta1z3x.js?v=7f3e9de8",
+        "sourceFunctionName": ""
+      },
+      {
+        "phase": "script",
+        "startTime": 37319.40000009537,
+        "duration": 18.799999952316284,
+        "sourceURL": "http://127.0.0.1:18143/src/app/frame-scheduler.ts",
+        "sourceFunctionName": "tick"
+      },
+      {
+        "phase": "script",
+        "startTime": 37818.700000047684,
+        "duration": 10.100000143051147,
+        "sourceURL": "http://127.0.0.1:18143/node_modules/.vite/deps/Filter-B3Ta1z3x.js?v=7f3e9de8",
+        "sourceFunctionName": ""
+      },
+      {
+        "phase": "script",
+        "startTime": 37828.800000190735,
+        "duration": 8.399999856948853,
+        "sourceURL": "http://127.0.0.1:18143/src/app/frame-scheduler.ts",
+        "sourceFunctionName": "tick"
+      },
+      {
+        "phase": "script",
+        "startTime": 38000.200000047684,
+        "duration": 11.299999952316284,
+        "sourceURL": "http://127.0.0.1:18143/src/app/frame-scheduler.ts",
+        "sourceFunctionName": "tick"
+      },
+      {
+        "phase": "heroPost",
+        "startTime": 39128.6,
+        "duration": 45.9
+      },
+      {
+        "phase": "script",
+        "startTime": 38622.700000047684,
+        "duration": 11.900000095367432,
+        "sourceURL": "http://127.0.0.1:18143/src/app/frame-scheduler.ts",
+        "sourceFunctionName": "tick"
+      },
+      {
+        "phase": "script",
+        "startTime": 38908.200000047684,
+        "duration": 11.700000047683716,
+        "sourceURL": "http://127.0.0.1:18143/src/app/frame-scheduler.ts",
+        "sourceFunctionName": "tick"
+      },
+      {
+        "phase": "script",
+        "startTime": 39124.10000014305,
+        "duration": 53.89999985694885,
+        "sourceURL": "http://127.0.0.1:18143/src/app/frame-scheduler.ts",
+        "sourceFunctionName": "tick"
+      },
+      {
+        "phase": "script",
+        "startTime": 39360.5,
+        "duration": 17.100000143051147,
+        "sourceURL": "http://127.0.0.1:18143/src/app/frame-scheduler.ts",
+        "sourceFunctionName": "tick"
+      },
+      {
+        "phase": "heroDraw",
+        "startTime": 40418.3,
+        "duration": 8
+      }
+    ]
+  },
+  "errors": []
+}
