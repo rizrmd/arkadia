@@ -1,3 +1,25 @@
+# Arkodia — Historical Archive
+
+**Obsolete repository. No active development or deployments.**
+
+This repository, formerly named arkadia, is retained for historical reference.
+Active repositories: [arkodia-game](https://github.com/rizrmd/arkodia-game) and
+[arkodia-editor](https://github.com/rizrmd/arkodia-editor).
+
+Access this archive only inside the shared custom sandbox **arkodia-archived**
+(CSc638ec2a0373608800d3a680), at $HOME/repos/arkodia-archived. Do not clone,
+mirror, copy, fetch or restore it or its historical backup into a member/personal
+sandbox, and do not register or repair a member workspace for it. Use the
+shared sandbox terminal/file manager or fural-agent sandboxes exec.
+
+The complete-history backup is retained inside that shared sandbox at
+$HOME/backups/arkadia-20261030. See AGENTS.md and the project Knowledge page
+**Archived Repository — Access Policy** for the access rules.
+
+The material below describes historical behavior and is not current setup guidance.
+
+---
+
 ## Arkodia — Perbatasan Abu / asset lab
 
 Run `npm ci`, `npm run extract`, `npm run build`, then `node server.mjs` (port 3000). The extraction requires `../attachments/kit-or-preview-1.png`, the original attachment DA0679ae3e0624f52236ea60ea. Its unmodified copy is retained in public/assets/source-kit.png.
